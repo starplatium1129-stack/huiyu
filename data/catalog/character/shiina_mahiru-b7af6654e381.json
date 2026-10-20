@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mahiru",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 112,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "shiina_mahiru",
     "profile": {
@@ -89,7 +89,7 @@
         "真昼",
         "隔壁天使"
       ],
-      "identityProse": "Mahiru Shiina from The Angel Next Door, the perfect school angel with silky flaxen blonde hair reaching her waist, striking amber-gold eyes, a graceful slender figure, and an unconsciously radiant, gentle smile",
+      "identityProse": "Mahiru Shiina from The Angel Next Door, with waist-length flaxen-blonde hair and amber-gold eyes.",
       "identityTokens": [
         "shiina_mahiru",
         "otonari no tenshi-sama ni itsunomanika dame ningen ni sareteita ken",

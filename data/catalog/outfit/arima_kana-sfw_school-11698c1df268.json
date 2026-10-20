@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_school",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 534,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
@@ -15,10 +15,10 @@
       "prose": "a tidy dark school blazer, white blouse, ribbon tie and knee-length pleated skirt",
       "tokens": [
         "school_uniform",
-        "blazer",
+        "dark blazer",
         "white_blouse",
-        "ribbon",
-        "pleated_skirt"
+        "ribbon tie",
+        "knee-length pleated skirt"
       ]
     }
   }

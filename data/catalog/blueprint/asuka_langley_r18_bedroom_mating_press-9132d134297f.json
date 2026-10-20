@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_r18_bedroom_mating_press",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1033,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "侧卧大床半透红真丝吊带若隐若现，赭红双马尾散落，单手托胸另一手在裙下深层自抚，含泪娇喘抽泣",
     "adult": true,
@@ -26,11 +26,10 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "red_sleep_camisole",
-    "promptProse": "She curls on the white bed with one hand at her chest and the other beneath the blanket. Warm bedside light falls across her spread twintails.",
+    "promptProse": "She curls on the white silk bedding with one hand at her chest and the other beneath her camisole, her forehead pressed into the pillow. Warm orange bedside light falls across her spread twintails and the sheets.",
     "promptTokens": [
-      "adult",
       "bedroom",
-      "red camisole",
+      "red silk camisole",
       "see-through",
       "lying",
       "on side",

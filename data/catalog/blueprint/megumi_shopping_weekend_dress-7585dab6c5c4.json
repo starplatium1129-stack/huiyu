@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_shopping_weekend_dress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1439,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "megumi_shopping_weekend_dress",
     "title": "加藤惠 · 周末服装店的认真挑选·「这两件衣服……伦也君觉得哪一件更好看呢」",
@@ -28,10 +28,10 @@
       "serious",
       "cute"
     ],
-    "promptProse": "She holds up a summer dress on each hanger, comparing them against her outfit with her gaze lowered to the fabrics.",
+    "promptProse": "She holds up a summer dress on each hanger, comparing them against her outfit with her gaze lowered to the fabrics. Warm boutique spotlights fall on the dresses, softened by reflections from the fitting-room mirrors.",
     "promptTokens": [
       "holding clothes",
-      "dress",
+      "holding dresses",
       "boutique",
       "long hair",
       "ponytail"

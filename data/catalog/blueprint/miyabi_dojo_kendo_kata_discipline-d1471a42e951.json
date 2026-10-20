@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_dojo_kendo_kata_discipline",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1066,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "action": "双手持木刀摆出中段持剑姿态，赤足站立，眼神如刀锋般锐利清澈",
     "camera": "full body, front view, disciplined martial composition",
@@ -36,7 +36,6 @@
       "barefoot",
       "hand_wraps",
       "fox_ears",
-      "fox_tail",
       "discipline"
     ],
     "timeOfDay": "清晨",

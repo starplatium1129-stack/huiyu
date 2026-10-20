@@ -140,9 +140,10 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       const outfit = character ? findPopularOutfit(character, entry.outfitId || '') : null
       if (character && outfit) {
         const found = entry.blueprintId ? findPopularBlueprint(pb.sceneBlueprints, entry.blueprintId) : null
-        const blueprint = found?.characterId === character.id && (!found.outfitId || found.outfitId === outfit.id) ? found : null
-        if (entry.blueprintId && !blueprint) restoreNotes.push('原蓝图不可用或角色/服装绑定已变化，未恢复蓝图')
-        pb.setPopularSubject(character.id, outfit.id, blueprint?.id ?? null)
+        const blueprint = found?.characterId === character.id ? found : null
+        if (entry.blueprintId && !blueprint) restoreNotes.push('原蓝图不可用或角色绑定已变化，未恢复蓝图')
+        pb.setPopularSubject(character.id, outfit.id, blueprint?.id ?? null, { outfitExplicit: entry.outfitExplicit })
+        if (entry.outfitOverride) pb.setOutfitOverride(entry.outfitOverride.tokens, entry.outfitOverride.replaced)
         if (blueprint) {
           const decision = inferBlueprintDecisions(blueprint)
           if (decision.shot) pb.setShot(decision.shot)

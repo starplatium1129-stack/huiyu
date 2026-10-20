@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_07",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 317,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_07",
     "title": "克洛伊 · 夏日祭的草莓面具",
@@ -14,7 +14,7 @@
     "description": "【冬木夏日祭·黄昏】克洛伊穿着草莓粉浴衣站在面具摊前，先把一枚狐狸面具扣到自己脸上，又从摊主手里抢到最后一枚草莓糖；她掀开面具对镜头得意眨眼。",
     "location": "Fuyuki summer festival mask stall",
     "action": "祭典面具摊戴狐狸面具抢到最后一枚草莓糖，掀面具朝镜头得意眨眼",
-    "timeOfDay": "日间",
+    "timeOfDay": "黄昏",
     "lighting": "lantern glow at blue evening",
     "camera": "medium shot, horizontal framing",
     "mood": "把胜负心变成节日可爱战利品",
@@ -27,8 +27,7 @@
       "sandals",
       "orange_eyes",
       "wink",
-      "evening",
-      "afternoon_light"
+      "evening"
     ],
     "promptProse": "Holding the strawberry candy in one hand, she lifts the fox mask with the other and winks at the viewer. Lantern glow reaches her face beside the stall's hanging masks.",
     "promptTokens": [

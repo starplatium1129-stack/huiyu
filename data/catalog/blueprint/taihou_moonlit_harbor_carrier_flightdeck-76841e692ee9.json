@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_moonlit_harbor_carrier_flightdeck",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1081,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "taihou_moonlit_harbor_carrier_flightdeck",
     "title": "大凤 · 极夜港口的烈焰航母出击",
@@ -31,7 +31,7 @@
       "twintails",
       "ocean"
     ],
-    "promptProse": "Taihou raises one wide sleeve to signal the launch from the armored flight deck. Fiery aircraft climb behind her as red flames stream along the deck beneath the cold moonlit sea horizon.",
+    "promptProse": "Taihou raises a wide sleeve to signal launch from the armored flight deck; fiery aircraft climb behind her above red deck flames and the cold moonlit horizon.",
     "promptTokens": [
       "aircraft carrier",
       "fire",

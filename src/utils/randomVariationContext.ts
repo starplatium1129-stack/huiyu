@@ -3,6 +3,7 @@ import type { SceneBlueprint } from '../types/sceneBlueprint'
 import type { DraftRandomVariation, PromptBuilderDraft } from './promptBuilderPersistence'
 import { sceneShot, sceneLighting, sceneComposition, sceneColorMood } from './sceneInference.ts'
 import { renderRandomVariationProse } from './randomVariationProse.ts'
+import { inferBlueprintLighting } from './blueprintLighting.ts'
 
 type Context = { char: string; sceneId: string | null; subject: unknown }
 type Controls = { selections: { shot: string | null; lighting: string | null }; visualDescription: string }
@@ -27,13 +28,14 @@ export function activeRandomVariation(variation: DraftRandomVariation | null, co
 const userDescription = (text: string) => /^[\x20-\x7e]+$/.test(text.trim()) ? text.trim() : ''
 export function variedStudioScene(source: Scene, variation: DraftRandomVariation, controls: Controls): Scene {
   return { ...source, prompt: [variation.prompt, ...variation.outfit].filter(Boolean).join(', '), tags: variation.tags,
-    animaCaption: userDescription(controls.visualDescription) || renderRandomVariationProse(variation.prose, controls.selections.shot, controls.selections.lighting),
-    camera: controls.selections.shot ? '' : source.camera, lighting: controls.selections.lighting ? '' : source.lighting, emotion: '' }
+    animaCaption: userDescription(controls.visualDescription) || renderRandomVariationProse(variation.prose, controls.selections.shot, controls.selections.lighting, sceneLighting(source)),
+    camera: controls.selections.shot ? '' : source.camera, lighting: source.lighting || sceneLighting(source) || '', emotion: '' }
 }
 export function variedPopularScene(source: SceneBlueprint, variation: DraftRandomVariation, controls: Controls): SceneBlueprint {
   return { ...source, promptTokens: variation.prompt.split(',').map(token => token.trim()).filter(Boolean),
-    promptProse: userDescription(controls.visualDescription) ? '' : renderRandomVariationProse(variation.prose, controls.selections.shot, controls.selections.lighting),
-    sceneTags: variation.tags, camera: controls.selections.shot ? '' : source.camera, lighting: controls.selections.lighting ? '' : source.lighting, mood: '' }
+    promptProse: userDescription(controls.visualDescription) ? '' : renderRandomVariationProse(variation.prose, controls.selections.shot, controls.selections.lighting, inferBlueprintLighting(source)),
+    sceneTags: variation.tags, camera: controls.selections.shot ? '' : source.camera,
+    lighting: source.lighting || inferBlueprintLighting(source) || '', mood: '' }
 }
 
 export function sceneStyleBaseline(scene: Scene) {

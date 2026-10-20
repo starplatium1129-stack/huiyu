@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_abandoned_classroom",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 858,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐桌沿抬起一条腿，用双手收紧大腿绷带。",
     "adult": true,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "patrol_shirt_stockings",
-    "promptProse": "Adult Hina sits on the reinforced desk after patrol, using both hands to tighten a bandage around her raised thigh beside the medical kit.",
+    "promptProse": "After patrol, Hina sits on the reinforced desk and tightens a bandage around her raised thigh with both hands beside the medical kit. Evening sunlight enters through the broken window from the side.",
     "promptTokens": [
       "adult",
       "1girl",

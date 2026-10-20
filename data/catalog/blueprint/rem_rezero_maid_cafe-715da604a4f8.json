@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_maid_cafe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 436,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rem_rezero_maid_cafe",
     "title": "雷姆 · 女仆咖啡厅",
@@ -25,7 +25,7 @@
       "bright",
       "indoor"
     ],
-    "promptProse": "Rem presents the tray toward the viewer with both hands, a small chocolate heart visible on the latte foam. Warm cafe light rises through the steam beside her welcoming smile.",
+    "promptProse": "Rem offers the tray in both hands, a chocolate heart on the latte foam; warm cafe light shines through steam beside her smile.",
     "promptTokens": [
       "tray",
       "coffee",

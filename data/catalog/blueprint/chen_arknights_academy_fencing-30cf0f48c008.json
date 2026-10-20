@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_academy_fencing",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 646,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
-    "action": "双手持细剑，标准刺击预备姿势",
+    "action": "一手握细剑刺向前方，另一手抬在身后保持平衡，呈标准刺击预备姿势",
     "adult": false,
     "camera": "medium shot, eye level",
     "category": "泰拉回忆",
@@ -23,7 +23,7 @@
       "modern gym equipment"
     ],
     "outfitId": "cadet_royal_guard",
-    "promptProse": "She holds the rapier in a precise thrust-ready stance. Tall windows cast cool morning light along the blade and wooden floor.",
+    "promptProse": "She takes a precise fencing stance with one hand holding the rapier forward and the other raised behind for balance. Tall windows cast cool morning light along the blade and wooden floor.",
     "promptTokens": [
       "fencing hall",
       "rapier",

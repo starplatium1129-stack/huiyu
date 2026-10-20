@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1526,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_06",
     "title": "和泉纱雾 · 夏日祭的和服",
@@ -15,7 +15,7 @@
     "location": "夏祭捞金鱼摊",
     "action": "一手收住浴衣袖口，盯着破掉的纸网懊恼地轻轻跺脚。",
     "timeOfDay": "夜晚",
-    "lighting": "soft daylight",
+    "lighting": "warm lantern light reflected from the goldfish basin",
     "camera": "medium shot, environmental portrait",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
@@ -31,7 +31,7 @@
       "evening",
       "medium_shot"
     ],
-    "promptProse": "She gathers the loose yukata sleeve with one hand and studies the torn paper net held in the other; soft daylight shines on the stall basin beside her frustrated face.",
+    "promptProse": "She gathers the loose yukata sleeve with one hand and studies the torn paper net held in the other; warm lantern light glints on the stall basin beside her frustrated face.",
     "promptTokens": [
       "goldfish scooping",
       "festival",

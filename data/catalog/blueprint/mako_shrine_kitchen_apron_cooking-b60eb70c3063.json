@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_shrine_kitchen_apron_cooking",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1131,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "action": "系着白围裙双手端汤碗托盘，露出可爱猫嘴笑意，丰满胸部在围裙下起伏",
     "camera": "medium shot, eye-level warmth, intimate household framing",
@@ -20,7 +20,7 @@
     "mood": "温馨治愈",
     "negativeTokens": [],
     "outfitId": "shrine_casual",
-    "promptProse": "Mako supports the miso-soup tray with both hands as she brings breakfast toward Masaomi at the table. Steam rises into the warm light passing through the kitchen’s wooden lattice window.",
+    "promptProse": "Mako supports the miso-soup tray with both hands as she brings breakfast toward Masaomi seated just outside the frame at the table. Steam rises into the warm light passing through the kitchen’s wooden lattice window.",
     "promptTokens": [
       "tray",
       "miso soup",

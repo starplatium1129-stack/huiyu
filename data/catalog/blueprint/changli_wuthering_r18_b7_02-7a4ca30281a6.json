@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_r18_b7_02",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1656,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "changli_wuthering_r18_b7_02",
     "title": "长离 · 焚身离火温汤水光湿身独奏 ·「把体内的离火真气排解出来……才能保持神智清明」",
@@ -12,7 +12,7 @@
     "characterId": "changli_wuthering",
     "description": "【今州后山离火灵泉·夜】雾气蒸腾的朱红汤池。长离赤裸着倚靠在汉白玉石阶上，身上的薄红纱衣浸水后紧紧吸附在妖娆曼妙的成熟肉体上。单手在滚烫的灵泉水底轻抚着自己被真气灼烧得泥泞不堪的花核，凤眸微眯吐气如兰——「这离火之毒……唯有漂泊者在身边……才能彻底平息呢……」",
     "location": "今州后山离火灵泉·夜",
-    "action": "斜坐灵泉薄红纱衣湿透透肉，单手水底自抚，红白长发浮水凤眸迷离娇喘",
+    "action": "斜坐灵泉薄红纱衣湿透透肉，单手水底自抚，粉色长发浮水凤眸迷离娇喘",
     "timeOfDay": "night",
     "lighting": "liquid_reflection_lighting",
     "camera": "intimate vertical medium shot",
@@ -30,7 +30,7 @@
       "steam",
       "water_droplets"
     ],
-    "promptProse": "She leans back against white jade with one hand beneath the heated water between her thighs. Phoenix vapor curls over the spring.",
+    "promptProse": "Seated on the white-jade steps, she leans back with one hand beneath the heated water between her thighs. Her long hair floats on the water as steam rises from the crimson spring.",
     "promptTokens": [
       "hot spring",
       "red silk undergarment",

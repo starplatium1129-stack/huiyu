@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_rain_umbrella_park",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1469,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "mahiru_rain_umbrella_park",
     "title": "椎名真昼 · 细雨公园递出雨伞的初遇·「淋湿的话，可是会感冒的哦」",
@@ -34,7 +34,7 @@
       "overcast_light",
       "medium_shot"
     ],
-    "promptProse": "Amane extends the umbrella handle toward Mahiru beside the swing, holding the canopy over her before she accepts it. She looks up and reaches with one hesitant hand through the soft grey rain light.",
+    "promptProse": "Amane holds the umbrella over Mahiru at the swing and offers its handle; she looks up, one hesitant hand reaching through soft gray rain light.",
     "promptTokens": [
       "Mahiru Shiina",
       "Amane Fujimiya",

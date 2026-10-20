@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "iroha_christmas_backstage_blush",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 364,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "iroha_christmas_backstage_blush",
     "title": "一色彩羽 · 圣诞晚会后台的微醺红晕·「前辈……今晚可不可以只当我的圣诞老人呢」",
-    "category": "圣洁花嫁",
+    "category": "节日相伴",
     "characterId": "isshiki_iroha",
     "outfitId": "student_council_blazer",
     "description": "【联合圣诞晚会礼堂后台·雪夜】大获成功的圣诞活动幕后。彩羽头戴小红帽发箍，身上披着红色天鹅绒小斗篷，怀里抱着给你的特制礼物盒。在彩灯与幕布之间，她难得收起了小恶魔面具，眼中泛起真诚温润的水光，通红着脸将礼物递到你的怀里。",
@@ -48,7 +48,7 @@
     "kreaStyleHint": "anime_portrait_sharp",
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
-      "bridal",
+      "festival",
       "romance",
       "iconic"
     ]

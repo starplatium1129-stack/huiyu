@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuonji_alice",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 139,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "kuonji_alice",
     "profile": {
@@ -73,7 +73,7 @@
         "久远寺有珠",
         "Alice Kuonji"
       ],
-      "identityProse": "Alice Kuonji from Witch on the Holy Night, a reserved witch with short dark hair, lifted side sections near the temples and deep dark eyes. Her still expression and precise movements suit quiet rooms and careful rituals.",
+      "identityProse": "Alice Kuonji from Witch on the Holy Night, a witch with short dark hair, lifted side sections near the temples and dark eyes.",
       "identityTokens": [
         "kuonji_alice",
         "mahou_tsukai_no_yoru",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_r18_plugsuit_peel_intimacy",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1031,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "红色战斗服褪至腰间被按在金属舱壁上，双手被按在墙上，丰满双乳挺立被抚摸揉捏，面泛高潮潮红娇喘",
     "adult": true,
@@ -26,15 +26,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "plugsuit_red",
-    "promptProse": "Adult Asuka leans against a padded wall with one knee on a tool case, holding her peeled suit edge while the other hand rests between her thighs.",
+    "promptProse": "She stands against the metal hangar wall with both hands raised against it and her suit lowered to the waist, turning her flushed face toward her offscreen companion. A warm warning lamp lights the wall beside the dark maintenance bay.",
     "promptTokens": [
-      "adult",
       "hangar",
       "red plugsuit",
       "open clothes",
       "topless",
-      "knees up",
-      "hand between legs",
+      "standing",
+      "metal wall",
+      "raised arms",
       "blush",
       "cowboy shot"
     ],

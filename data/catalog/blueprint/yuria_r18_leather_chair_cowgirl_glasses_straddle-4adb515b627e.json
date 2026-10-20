@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_r18_leather_chair_cowgirl_glasses_straddle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1210,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yuria_r18_leather_chair_cowgirl_glasses_straddle",
     "title": "春寺由梨亚 · 办公转椅西装半褪与摘镜单人深层自抚",
@@ -37,7 +37,7 @@
     "promptProse": "She rests one leg across the chair armrest, one hand at her breast and the other beneath her lifted skirt, her folded red glasses beside her in the desk lamp's warm light.",
     "promptTokens": [
       "open blouse",
-      "lifted skirt",
+      "lifted black suit skirt",
       "garter straps",
       "black stockings",
       "leg up",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_library_closed",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 346,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_library_closed",
     "title": "雪之下雪乃 · 闭馆后的图书馆",
@@ -25,7 +25,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Yukino grips the ladder rail with one hand and slips the other beneath her skirt after the community library closes.",
+    "promptProse": "Seated on the rolling ladder with one raised knee caught at her blouse hem, Yukino grips the rail with one hand and slips the other beneath her skirt. Dim aisle lights meet pale moonlight between the closed library's shelves.",
     "promptTokens": [
       "adult",
       "open navy blouse",

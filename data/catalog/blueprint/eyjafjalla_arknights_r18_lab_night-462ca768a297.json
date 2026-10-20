@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_lab_night",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 552,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "坐在实验台边，外套大衣半褪",
     "adult": true,
@@ -16,25 +16,25 @@
     "description": "【艾雅法拉 · 夜班实验室】深夜无人的地质实验室内，外套大衣半褪的艾雅法拉坐在实验台边缘，雪白娇小的身躯在暖黄色的台灯下透着诱人的粉红。她红着脸将头埋进你的胸口——「前辈……实验室的门已经锁好了。听力不好的我……只能通过前辈剧烈的心跳，来感受前辈有多喜欢我了……」",
     "id": "eyjafjalla_arknights_r18_lab_night",
     "kreaStyleHint": "",
-    "lighting": "dim lab glow",
+    "lighting": "warm desk lamp on the bench and notes, with the rest of the laboratory dim",
     "location": "罗德岛实验室",
     "mood": "疲惫而娇柔",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "lab_coat_camisole",
-    "promptProse": "Seated on the counter with one boot on a stool, she steadies a glowing vial while touching herself beneath the coat.",
+    "promptProse": "Seated on the laboratory counter, she leans her head against the viewer's clothed chest at the frame edge, her hands holding the offered sleeve. A warm desk lamp illuminates the quiet corner and finished notes.",
     "promptTokens": [
       "adult",
-      "lab coat",
+      "white lab coat",
       "off shoulder",
-      "camisole lift",
-      "topless",
+      "cream camisole",
       "sitting",
-      "masturbation",
-      "vial",
+      "holding sleeve",
+      "leaning",
       "laboratory",
       "night",
+      "desk lamp",
       "blush"
     ],
     "recommendedSize": "1152x1536",
@@ -47,6 +47,7 @@
       "dim_light"
     ],
     "timeOfDay": "深夜",
-    "title": "艾雅法拉 · 夜班实验室"
+    "title": "艾雅法拉 · 夜班实验室",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_pool_shower_solo",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1503,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "yamada_nsfw_pool_shower_solo",
     "title": "山田杏奈 · 泳池更衣室淋浴的水光湿身 ·「训练完好热……市川递一下浴巾好不好」",
@@ -12,7 +12,7 @@
     "characterId": "yamada_anna",
     "description": "【学校室内泳池浴室·黄昏】训练结束后的淋浴间。温热的水流冲刷着山田高挑健美、凹凸有致的肉体，白色侧片的藏蓝连体竞速泳衣被水浸泡得完全贴在肌肤上，勒出惊人的胸臀轮廓与骆驼趾痕迹。她单手抚摸着自己的小腹，眼神迷离地喘息——「市川在外面等得着急了吗……可是身体……好舒服……停不下来……」",
     "location": "学校室内泳池浴室·黄昏",
-    "action": "淋浴喷头下水流冲刷高挑身段，紧身泳衣透肉勒痕，手抚腿间迷离轻喘",
+    "action": "站在淋浴下，一手轻覆小腹，水流沿竞速泳衣落下",
     "timeOfDay": "深夜",
     "lighting": "柔和暖光与唯美阴影交错",
     "camera": "cowboy shot",
@@ -24,7 +24,7 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Adult Yamada tilts her head back beneath the shower, slipping one hand under the tight leg opening of her soaked competition swimsuit.",
+    "promptProse": "Adult Yamada stands beneath the shower in her soaked navy competition swimsuit, one hand resting over her lower abdomen as the warm water runs down the white side panels.",
     "nsfwProse": "",
     "promptTokens": [
       "adult",
@@ -32,12 +32,11 @@
       "wet clothes",
       "see-through",
       "standing",
-      "head back",
-      "masturbation",
       "shower",
       "steam",
       "cowboy shot",
-      "white side panels"
+      "white side panels",
+      "hand on stomach"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

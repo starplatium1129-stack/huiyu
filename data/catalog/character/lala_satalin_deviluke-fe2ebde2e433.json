@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lala_satalin_deviluke",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "lala_satalin_deviluke",
     "profile": {
@@ -127,7 +127,7 @@
       ],
       "franchise": "To LOVE-Ru",
       "id": "lala_satalin_deviluke",
-      "identityProse": "Lala Satalin Deviluke from To LOVE-Ru by Kentaro Yabuki, the first princess of Planet Deviluke with ankle-length vibrant bubblegum-pink hair, a prominent bouncy ahoge, cheerful emerald-green eyes, a voluptuous hourglass figure, and a slender black devil tail with a spade-shaped heart tip.",
+      "identityProse": "Lala Satalin Deviluke from To LOVE-Ru, with ankle-length pink hair, an ahoge, green eyes and a black devil tail with a spade-shaped heart tip.",
       "identityTokens": [
         "lala_satalin_deviluke",
         "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_r18_b6_01",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1583,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "zero_two_r18_b6_01",
     "title": "02 · 鹤望兰号驾驶舱红色紧身皮衣主控跨坐 ·「我的达令……想要和02一起融化在这架机体里吗」",
@@ -30,7 +30,7 @@
       "pilot_suit",
       "red_bodysuit"
     ],
-    "promptProse": "Zero Two moves astride the viewer's lap inside Strelizia, her red pilot suit unzipped to the hips and glowing horns above her windblown pink hair.",
+    "promptProse": "Zero Two moves astride the viewer's lap inside Strelizia with both hands on their chest, her red pilot suit unzipped to the hips and glowing horns above her windblown pink hair.",
     "promptTokens": [
       "adult",
       "1girl",

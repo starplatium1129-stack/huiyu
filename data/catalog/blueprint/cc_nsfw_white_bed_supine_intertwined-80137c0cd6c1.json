@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_nsfw_white_bed_supine_intertwined",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1318,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "action": "全裸仰卧在纯白床榻上，双腿大开曲膝，双手与视角十指相扣，眼眸迷离泛着潮红",
     "adult": true,
@@ -27,7 +27,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "She lies on white silk and interlocks her fingers with the viewer's hand on the pillow, looking upward in moonlight.",
+    "promptProse": "She lies on white silk and interlocks her fingers with both of the viewer's hands beside the pillow, looking upward in moonlight.",
     "promptTokens": [
       "bedroom",
       "nude",

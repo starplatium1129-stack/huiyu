@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sparkle_hsr",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 100,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "sparkle_hsr",
     "profile": {
@@ -98,14 +98,17 @@
         "假面愚者花火",
         "千面戏子"
       ],
-      "identityProse": "Sparkle from Honkai: Star Rail, a mischievous and elusive Masked Fool girl with glossy raven-black hair in uneven twin-tails tied with crimson ribbons, vibrant pink eyes with cherry blossom-like highlights, and a wicked, theatrical smirk",
+      "identityProse": "Sparkle from Honkai: Star Rail, with uneven black twintails tied with crimson ribbons and pink eyes with cherry-blossom highlights.",
       "identityTokens": [
         "sparkle_(honkai:_star_rail)",
         "honkai: star rail",
         "black hair",
         "twintails",
+        "asymmetrical hair",
+        "uneven twintails",
         "red ribbon",
-        "pink eyes"
+        "pink eyes",
+        "cherry-blossom eye highlights"
       ],
       "exactTokens": [
         "sparkle_(honkai:_star_rail)"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_bedroom_red_sweater_lift",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yor_r18_bedroom_red_sweater_lift",
     "characterId": "yor_forger",
@@ -24,11 +24,13 @@
       "pink_nipples",
       "drunken_blush"
     ],
-    "promptProse": "Yor holds her sweater above her breasts and fingers herself beneath the loosened skirt, one thigh raised on the warm-lit bed.",
+    "promptProse": "Adult Yor sits at the bed edge, holding up the hem of her red sweater between her teeth and glancing toward the viewer. Warm bedside light falls across the knit folds and the dark skirt.",
     "promptTokens": [
       "Yor Forger",
-      "red sweater",
+      "red backless chunky knit sweater",
       "black skirt",
+      "biting clothes",
+      "sweater lift",
       "sitting",
       "bed",
       "lamplight"
@@ -38,9 +40,7 @@
     "adultEligibility": "adult",
     "adultArtistHint": "@rella",
     "nsfwTokens": [
-      "topless",
-      "masturbation",
-      "hand under clothes"
+      "topless"
     ],
     "nsfwProse": "",
     "category": "私密写真",

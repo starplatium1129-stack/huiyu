@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tachibana_mikari",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tachibana_mikari",
     "profile": {
@@ -85,14 +85,16 @@
         "ミカリン",
         "みかリン"
       ],
-      "identityProse": "Mikari Tachibana from 2.5 Dimensional Seduction, a popular professional teen fashion model with long light chestnut brown hair parted off-center, strands falling between her eyes and long asymmetrical sidelocks, the upper strands gathered into two side-up bunches tied with pink ribbons, plus vivid pink eyes. Fashionable, composed, and fiercely devoted to her childhood sweetheart Okumura Masamune.",
+      "identityProse": "Adult Mikari Tachibana from 2.5 Dimensional Seduction, with long light-brown hair in two side-up bunches, pink ribbons and pink eyes.",
       "identityTokens": [
         "tachibana_mikari",
         "2.5 jigen no ririsa",
         "brown hair",
+        "long hair",
         "two side up",
         "pink ribbon",
-        "pink eyes"
+        "pink eyes",
+        "adult"
       ],
       "exactTokens": [
         "tachibana_mikari"

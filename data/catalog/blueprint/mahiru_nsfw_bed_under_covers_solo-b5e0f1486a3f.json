@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_nsfw_bed_under_covers_solo",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1483,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "mahiru_nsfw_bed_under_covers_solo",
     "title": "椎名真昼 · 暴雨夜被窝深处的羞涩探寻 ·「被子里面……只有我和关于你的心跳」",
@@ -12,7 +12,7 @@
     "characterId": "shiina_mahiru",
     "description": "【真昼卧室·雷雨深夜】窗外电闪雷鸣，害怕雷声的真昼整个人蜷缩在羽绒被里。大号睡裙被推到小腹以上，微热的掌心在双腿之间颤抖摸索，脑海里一遍遍重现周握住自己手掌的触感——「只要想着周……就不会害怕了……哈啊……周……救救我……」",
     "location": "真昼卧室·雷雨深夜",
-    "action": "被窝深处睡裙掀至胸口自抚，蜷身咬唇眼角挂泪，细腿夹紧轻颤",
+    "action": "被窝深处睡裙掀至小腹自抚，蜷身咬唇眼角挂泪，细腿夹紧轻颤",
     "timeOfDay": "深夜",
     "lighting": "柔和暖光与唯美阴影交错",
     "camera": "medium shot, from above",
@@ -27,7 +27,7 @@
     "promptProse": "Adult Mahiru clutches the duvet during the storm, touching herself beneath her raised nightgown as she curls into the bedding.",
     "nsfwProse": "",
     "promptTokens": [
-      "white nightgown",
+      "loose white nightgown",
       "clothes lift",
       "masturbation",
       "under covers",

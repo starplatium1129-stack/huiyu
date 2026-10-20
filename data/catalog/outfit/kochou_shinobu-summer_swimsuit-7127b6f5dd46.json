@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/summer_swimsuit",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 803,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
@@ -12,9 +12,9 @@
       "name": "紫白蝶纹海滨泳装",
       "prose": "a purple-and-white string bikini with butterfly print and a gauzy violet sarong tied at the hip",
       "tokens": [
-        "purple and white bikini",
+        "purple and white string bikini",
         "butterfly print",
-        "violet sarong"
+        "violet sarong tied at hip"
       ]
     }
   }

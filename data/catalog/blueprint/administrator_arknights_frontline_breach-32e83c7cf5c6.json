@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_frontline_breach",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 752,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "administrator_arknights_frontline_breach",
     "characterId": "administrator_arknights",
@@ -29,10 +29,8 @@
     ],
     "promptTokens": [
       "doorway",
-      "blindfold",
       "shopping bag",
-      "evening",
-      "cowboy shot"
+      "evening"
     ],
     "promptProse": "Keeping one hand on the doorframe, she reaches for the shopping bag in the viewer's hand and steps aside. Warm entry light meets the cool dusk in the corridor.",
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_04",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1616,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_04",
     "title": "春日野穹 · 乡间白屋的雪色花嫁",
@@ -14,7 +14,7 @@
     "description": "【奥木染旧宅·春日午后】穹穿着简洁的雪白婚纱坐在旧宅廊下，白发双马尾垂过肩头；她没有看花束，而是把一只小兔玩偶放在裙边，抬眼时安静的灰瞳里有只对熟悉之人开放的依恋。",
     "location": "veranda of the Kasugano country house",
     "action": "旧宅廊下把兔子玩偶放在捧花旁，白发双马尾垂肩，安静依恋地抬眼",
-    "timeOfDay": "黄昏",
+    "timeOfDay": "春日午后",
     "lighting": "gentle spring light through falling petals",
     "camera": "medium full shot, vertical framing",
     "mood": "熟悉日常里难得的花嫁温柔",
@@ -30,13 +30,14 @@
       "petals",
       "afternoon_light"
     ],
-    "promptProse": "Sora rests her hand on the rabbit plush beside her bouquet, looking up toward the familiar viewer from the old-house veranda. Spring light filters through drifting petals onto the white folds of her dress.",
+    "promptProse": "Sora rests her hand on the rabbit plush beside her bouquet and looks toward the familiar viewer from the old-house veranda. Spring light filters through drifting petals onto her dress folds.",
     "promptTokens": [
       "rabbit plush",
       "bouquet",
       "veranda",
       "spring",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

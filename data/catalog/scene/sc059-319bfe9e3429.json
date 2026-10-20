@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc059",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
     "id": "sc059",
     "title": "白衬衫与两颗空扣",
@@ -43,6 +43,6 @@
     "storyJa": "【夏目・空のボタンが2つ付いた白いシャツ】秋の朝、夏目はあなたの白いシャツを一時的なパジャマとして扱い、キッチンに立ってコーヒーが淹れるのを待ちます。上の２つのボタンは外されていました。あなたの視線に気づいた彼女は、まず襟を引っ張り、それからわざとカップをかざして顔の半分を覆いました。――「荷物に入れていたパジャマがまだ乾いてないから、借りただけ。これ以上見ていたら、今日のコーヒーはブラックだけにする。」",
     "rating": "All",
     "auditRevision": "careful-batch03-2026-08-27",
-    "animaCaption": "She raises the mug to hide her blushing lower face while straightening the oversized shirt collar with her free hand; autumn window light falls across the mug handle and kitchen counter."
+    "animaCaption": "She raises the mug to hide her blushing lower face while straightening the collar of the viewer's oversized shirt with her free hand, its top two buttons undone; autumn window light falls across the mug handle and kitchen counter."
   }
 }

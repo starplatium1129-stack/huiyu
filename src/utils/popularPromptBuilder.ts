@@ -11,7 +11,9 @@ import {
 import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
 import { normalizeProseKey } from './promptPhraseTables.ts'
 import { compositionNegative, compositionTokens } from './blueprintComposition.ts'
-import { cameraTokensFromText } from './promptCamera.ts'
+import { cameraTokensFromText, mergeCameraControls } from './promptCamera.ts'
+import { inferBlueprintLighting } from './blueprintLighting.ts'
+import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
 import { SHOT, LIGHTING, COMPOSITION } from '../config/promptConstants.ts'
 import { isGarmentToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
 
@@ -42,11 +44,11 @@ export interface PopularPromptOptions {
    */
   outfitOverride?: ReadonlyArray<string> | null
   /**
-   * 服装是否由用户**显式**选择（非回退到默认）（2026-08-29）。
+   * Whether the user selected this outfit, including an explicit default outfit.
    *
    * 基础提示词对标 studio（宁宁/夏目）：它们无场景时 `characterControlTokens`
    * 返回空，只留人物基本特征。故 popular 在无蓝图且服装仍是默认时**不注入服装**，
-   * 让反推词条与手动词条自由生效；用户主动挑了某套服装才注入。
+   * 让反推词条与手动词条自由生效；用户主动挑了任意一套服装才注入。
    */
   outfitExplicit?: boolean
   /** 词条池 Mature 分类键集（tags.json cat==='Mature'，调用方派生）。
@@ -139,11 +141,7 @@ function identityWithoutOutfit(prose: string): string {
     .trim()
 }
 
-/**
- * 成人蓝图必须把「成年版本」落实到最终提示词，而不能只依赖 UI 门禁字段。
- * 角色库仍需保留原作身份供 SFW 使用，因此仅在 adult 分支转换容易把
- * 模型拉回学生/少女形态的称谓，并在 Krea/Anima caption 中加入明确年龄锚点。
- */
+/** Keep one adult identity anchor without repeating the existing adult wording. */
 function adultIdentityProse(prose: string): string {
   const identity = identityWithoutOutfit(prose)
     .replace(/\b(?:young\s+)?girl\b/gi, 'adult woman')
@@ -151,7 +149,7 @@ function adultIdentityProse(prose: string): string {
     .replace(/\b(?:middle|junior high|high)[- ]school student\b/gi, 'adult alumna')
     .replace(/\bstudent\b/gi, 'adult alumna')
     .replace(/\bteen(?:age|aged)?\b/gi, 'adult')
-  return `The unmistakably adult, age-twenty-plus version of ${identity}`
+  return /\badult\b/i.test(identity) ? identity : `Adult ${identity}`
 }
 
 const ADULT_IDENTITY_EXCLUDE_RE =
@@ -211,13 +209,20 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const outfitActive = Boolean(overridden) || Boolean(blueprint) || options.outfitExplicit === true
   // 手动 Mature 词条仅联动分级与负向，不参与访问控制。
   const manualR18 = isManualR18Tags(manual, options.matureTokens)
-  const identitySource = blueprint?.identityTokensOverride?.length ? blueprint.identityTokensOverride : character.identityTokens
-  const identityProse = blueprint?.identityProseOverride || character.identityProse
+  const outfitAppearance = outfitActive && !adult && !overridden ? outfit : null
+  const identitySource = blueprint?.identityTokensOverride?.length ? blueprint.identityTokensOverride
+    : outfitAppearance?.identityTokensOverride?.length ? outfitAppearance.identityTokensOverride : character.identityTokens
+  const identityProse = blueprint?.identityProseOverride || outfitAppearance?.identityProseOverride || character.identityProse
   const ratingLevel = (adult || manualR18) ? 'R18' : 'ALL'
   const shotToken = SHOT.find(item => item.id === options.shot)?.prompt || ''
-  const cameraTokens = [...(shotToken ? [shotToken] : []), ...cameraTokensFromText(blueprint?.camera)]
+  const cameraTokens = mergeCameraControls(
+    shotToken ? [shotToken] : [],
+    cameraTokensFromText(blueprint?.camera),
+    !options.shot || options.shot === inferBlueprintDecisions(blueprint).shot,
+  )
   const lightingToken = LIGHTING.find(item => item.id === options.lighting)?.prompt || ''
   const lightingTokens = lightingToken ? [lightingToken] : []
+  const authoredLighting = blueprint ? inferBlueprintLighting(blueprint) ?? blueprint.lighting : undefined
   const compositionToken = COMPOSITION.find(item => item.id === options.composition)?.prompt || ''
   // Character DNA 锁 avoid（v2）：从常驻身份锚定流过滤易失真元素（如 C.C. 印记、
   // 花火面具、式和服类死绑回归）。只过滤 identity 标签流；场景蓝图按需使用不受限。
@@ -236,7 +241,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
 
   const emotionTokens = options.emotion || []
   const subjectProse = !blueprint
-    ? standaloneIdentityProse(character)
+    ? standaloneIdentityProse({ ...character, identityTokens: identitySource, identityProse })
     : adult
       ? adultIdentityProse(identityProse)
       : (outfitActive
@@ -248,7 +253,8 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const sourceOutfit = blueprint?.outfitId
     ? character.outfits.find(item => item.id === blueprint.outfitId)
     : character.outfits.find(item => item.default) ?? character.outfits[0]
-  const stableIdentity = new Set([...identitySource, ...character.exactTokens].map(normalizeProseKey))
+  const stableIdentity = new Set([...character.exactTokens, ...identitySource.filter(token =>
+    !isGarmentToken(normalizeProseKey(token)) && mutualGroupWithCategory(token)?.category !== 'outfit')].map(normalizeProseKey))
   const replacedOutfit = !adult && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id)
     ? new Set(sourceOutfit.tokens.map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
     : new Set<string>()
@@ -282,7 +288,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       emotion: emotionTokens,
       camera: cameraTokens,
       lighting: lightingTokens,
-      authoredLighting: blueprint?.lighting,
+      authoredLighting,
       palette: options.palette,
       composition: compositionToken ? [compositionToken] : [],
       manual,
@@ -304,6 +310,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     ? identitySource
     : identitySource.filter(token =>
         mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
+    .filter(token => !replacedOutfit.has(normalizeProseKey(token)))
     .filter(token => !dnaAvoid.has(normalizeProseKey(token)))
     .filter(token => !adult || (!isGarmentToken(token)
       && !ADULT_IDENTITY_EXCLUDE_RE.test(String(token || '').trim().toLowerCase())))
@@ -331,7 +338,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     emotion: emotionTokens,
     camera: cameraTokens,
     lighting: lightingTokens,
-    authoredLighting: blueprint?.lighting,
+    authoredLighting,
     palette: options.palette,
     composition: compositionToken ? [compositionToken] : [],
     manual,

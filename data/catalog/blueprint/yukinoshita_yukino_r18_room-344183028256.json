@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_room",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 341,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_room",
     "title": "雪之下雪乃 · 冰山融化的和室",
@@ -26,17 +26,17 @@
       "night",
       "discarded_yukata"
     ],
-    "promptProse": "The age-twenty-plus Yukino holds the loosened obi in one hand and touches herself with the other, one knee folded beneath her on the futon.",
+    "promptProse": "Adult Yukino sits sideways on the tatami with her knees bent, both hands gathering the loosened yukata lapels as she looks shyly toward the viewer. The andon lamp warms the indigo folds and straw mat.",
     "promptTokens": [
       "adult",
       "open indigo yukata",
       "topless",
       "knee up",
       "sitting",
-      "female masturbation",
       "futon",
       "tatami",
-      "paper lantern"
+      "paper lantern",
+      "holding clothes"
     ],
     "negativeTokens": [
       "school uniform"

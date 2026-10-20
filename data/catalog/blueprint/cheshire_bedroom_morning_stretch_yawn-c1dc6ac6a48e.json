@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_bedroom_morning_stretch_yawn",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1087,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "cheshire_bedroom_morning_stretch_yawn",
     "title": "柴郡 · 晨光微熹的猫猫伸懒腰",
@@ -32,10 +32,9 @@
       "fake_hair_ornament",
       "morning_light"
     ],
-    "promptProse": "She reaches both arms along the bedroom rug in a sleepy stretch. Soft morning light reaches the knit fabric and her palms.",
+    "promptProse": "Kneeling on the bedroom rug, she lowers her chest close to it and reaches both arms straight forward in a sleepy stretch. Soft morning light reaches the knit fabric and her palms.",
     "promptTokens": [
       "bedroom",
-      "cat-ear headband",
       "kneeling",
       "stretching",
       "yawning",

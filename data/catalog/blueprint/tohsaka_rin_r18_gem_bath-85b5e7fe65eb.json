@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_gem_bath",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tohsaka_rin_r18_gem_bath",
     "title": "远坂凛 · 宝石汤浴",
@@ -25,7 +25,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Rin rolls a glowing jewel along her inner thigh while bracing on the tub rim, red mana spreading through the water.",
+    "promptProse": "Adult Rin reclines at the marble tub rim, turning a red jewel between her fingers and looking toward the viewer; candlelight and gem reflections ripple through steam.",
     "promptTokens": [
       "adult Rin",
       "nude",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_street_taiyaki_bench_eating",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1219,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在长凳上双手捧鲷鱼烧小口品尝，双腿并拢，金发如瀑垂落，眼神满足而矜持",
     "camera": "medium shot, seated eye-level, intimate charming framing",
@@ -20,9 +20,8 @@
     "mood": "反差萌动",
     "negativeTokens": [],
     "outfitId": "gothic_dress",
-    "promptProse": "Yami eats warm taiyaki with both hands on the bench, shoppers passing behind her in the afternoon shade.",
+    "promptProse": "Seated on the bench with her knees together, she holds the warm taiyaki in both hands and takes a small bite. Shoppers pass behind her in the afternoon shade.",
     "promptTokens": [
-      "Yami",
       "taiyaki",
       "sitting",
       "bench",

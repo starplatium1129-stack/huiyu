@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_r18_b7_03",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 307,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "chloe_von_einzbern_r18_b7_03",
     "title": "克洛伊 · 成人研修院旧泳装拉伸崩裂的更衣事故 ·「呀！泳衣胸口崩线了……士郎快用嘴帮我挡住♪」",
@@ -13,8 +13,8 @@
     "description": "【学校室内泳池更衣室·放学后】偷偷试穿伊莉雅的小号旧式深蓝连体泳衣，因为身材过于凹凸有致导致胸前缝线整条崩断。小黑双手撑在更衣长椅上，泳衣胸口大敞，雪白与褐色交界的饱满胸脯完全弹跳出来，下身泳衣被卡进股沟。她坏笑着回头眨眼——「哎呀呀……被士郎看到了呢……既然弄坏了衣服，就拿你的身体来赔偿吧？」",
     "location": "学校室内泳池更衣室·放学后",
     "action": "撑更衣长椅塌腰回眸泳装胸线崩断双乳弹出，下摆卡股沟，吐舌坏笑挑衅",
-    "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
+    "timeOfDay": "afternoon",
+    "lighting": "cool fluorescent locker-room lights",
     "camera": "cowboy shot, eye level",
     "mood": "意外失控与羞赧",
     "sceneTags": [
@@ -26,11 +26,10 @@
       "dressing_room",
       "school_swimsuit",
       "torn_clothes",
-      "broken_zipper",
       "clothes_pull",
       "dark_skin"
     ],
-    "promptProse": "Adult Chloe leans over the locker bench after the swimsuit's front seam splits, looking back beneath the fluorescent lights.",
+    "promptProse": "Adult Chloe leans over the locker bench with both hands braced on it after the swimsuit's front seam splits, looking back beneath the cool fluorescent lights.",
     "promptTokens": [
       "adult",
       "locker room",

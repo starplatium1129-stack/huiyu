@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_r18_public_bath_steam",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 837,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "打烊后淋浴，疲惫地靠着瓷砖墙",
     "adult": true,
@@ -26,17 +26,16 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "bath_towel",
-    "promptProse": "Adult Byakuya reclines on a submerged step with one hand on the rim and the other beneath the water. Ripples spread through floating soap petals.",
+    "promptProse": "Adult Byakuya leans against the shower tiles, towel secured around her, face tilted up beneath the water. A dim fluorescent lamp catches droplets in the steam.",
     "promptTokens": [
       "adult",
-      "bathhouse",
       "wet towel",
-      "see-through",
-      "reclining",
-      "knees up",
-      "hand between legs",
+      "standing",
+      "leaning against wall",
+      "shower",
+      "water droplets",
       "steam",
-      "cowboy shot"
+      "tiles"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

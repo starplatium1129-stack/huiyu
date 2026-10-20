@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_bridal_vow_white_chapel",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1475,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "mahiru_bridal_vow_white_chapel",
     "title": "椎名真昼 · 圣洁教堂纯白誓约·「真昼的全部……从此属于你一个人」",
@@ -29,7 +29,7 @@
       "radiant_smile",
       "angelic"
     ],
-    "promptProse": "Mahiru holds the calla-lily bouquet in both hands and raises a tearful smile toward the person speaking the vows. Cathedral light shines through the edge of her moving veil.",
+    "promptProse": "Mahiru holds the calla-lily bouquet in both hands, smiling tearfully toward the person speaking vows; cathedral light shines through her moving veil.",
     "promptTokens": [
       "shiina_mahiru",
       "calla lily",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_03",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_03",
     "title": "牧之原翔子 · 借书卡里的海风",
@@ -29,12 +29,15 @@
       "afternoon",
       "medium_shot"
     ],
-    "promptProse": "Shouko holds the page flat beside its shell bookmark, glancing toward the curtain lifting in the breeze. Diffuse afternoon light falls over the open book and her white vest.",
+    "promptProse": "Shouko holds the page flat beside its shell bookmark and glances at the wind-lifted curtain. Afternoon light falls on the book and her hands.",
     "promptTokens": [
       "1girl",
       "solo",
       "shell bookmark",
       "book",
+      "sitting",
+      "table",
+      "window",
       "library",
       "afternoon"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_r18_b6_01",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 100,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tobiichi_origami_r18_b6_01",
     "title": "鸢一折纸 · AST紧身战甲绝灭天使主控跨坐 ·「士道……根据我的计算，今晚的受孕概率是99.8%」",
@@ -42,7 +42,8 @@
       "expressionless",
       "bed",
       "cowboy shot",
-      "from below"
+      "from below",
+      "latex"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,6 +59,15 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "identityTokensOverride": [
+      "tobiichi_origami",
+      "date_a_live",
+      "white_hair",
+      "short_hair",
+      "blue_eyes",
+      "hair_ornament"
+    ],
+    "identityProseOverride": "Origami Tobiichi from Date A Live, with short snow-white hair, pale blue eyes and a hair ornament."
   }
 }

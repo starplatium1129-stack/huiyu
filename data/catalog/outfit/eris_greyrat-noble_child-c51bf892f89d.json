@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "eris_greyrat/noble_child",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 262,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "eris_greyrat",
     "outfit": {
@@ -12,10 +12,12 @@
       "id": "noble_child",
       "isDefault": false,
       "name": "格雷拉特贵族礼裙",
-      "prose": "An ivory formal dress with a structured waist, a full skirt and restrained frilled cuffs. A deep-crimson waist sash, headband and hair ribbon tie the noble silhouette to her vivid palette.",
+      "prose": "An ivory formal dress with a structured waist, full skirt and frilled cuffs, a crimson waist sash, headband and hair ribbon.",
       "tokens": [
         "ivory dress",
-        "frills",
+        "fitted waist",
+        "full skirt",
+        "frilled cuffs",
         "red waist sash",
         "headband",
         "hair ribbon"

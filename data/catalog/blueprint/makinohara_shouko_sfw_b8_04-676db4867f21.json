@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_04",
     "title": "牧之原翔子 · 七里滨的潮声花嫁",
@@ -29,7 +29,7 @@
       "gentle_smile",
       "sunset"
     ],
-    "promptProse": "Shouko holds the small white bouquet in both hands at the open seaside chapel door, turning a reassuring smile toward the viewer. Peach sunset and reflected sea light soften the edges of her veil.",
+    "promptProse": "At the seaside chapel door, Shouko holds the white bouquet in both hands and smiles toward the viewer. Peach sunset and sea reflections edge her veil.",
     "promptTokens": [
       "1girl",
       "solo",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1665,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_02",
     "title": "八奈见杏菜 · 野餐盒里的最后一口",
@@ -30,7 +30,7 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Yanami sits on the picnic mat with the last piece of chicken placed beside her rice ball, her hands resting together above the lunch box. She looks up as the river breeze crosses the sunlit grass, her disappointed expression softening.",
+    "promptProse": "Yanami sits on the picnic mat with the last chicken piece beside her rice ball, hands together above the bento. She looks up as the river breeze crosses sunlit grass, her disappointment softening.",
     "promptTokens": [
       "bento",
       "picnic",

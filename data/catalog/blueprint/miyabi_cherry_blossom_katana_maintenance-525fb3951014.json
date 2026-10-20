@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_cherry_blossom_katana_maintenance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1070,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "action": "双手捧着大拉面碗，腮帮仍鼓着，抬眼看向刚坐到身旁的人，双耳竖起",
     "camera": "medium shot, counter seating perspective, focus on puffed cheeks, steam, and blushing fox ears",
@@ -39,7 +39,6 @@
       "chopsticks",
       "puffed_cheeks",
       "fox_ears",
-      "fox_tail",
       "blushing"
     ],
     "timeOfDay": "夜晚",

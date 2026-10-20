@@ -188,7 +188,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
 
   function selectPopularOutfit(outfitId: string) {
     if (pb.subject.kind !== 'popular') return
-    pb.setPopularSubject(pb.subject.characterId, outfitId, pb.subject.blueprintId, { preserveReference: true })
+    pb.setPopularSubject(pb.subject.characterId, outfitId, pb.subject.blueprintId, { preserveReference: true, outfitExplicit: true })
     patchAnimaState({ styleLoraId: '' })
     resetBlueprintRotation()
   }

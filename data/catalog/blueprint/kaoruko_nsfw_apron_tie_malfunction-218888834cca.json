@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_apron_tie_malfunction",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1515,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "kaoruko_nsfw_apron_tie_malfunction",
     "title": "和栗薰子 · 后厨真空围裙系带松脱事故 ·「面粉蹭到身上了……凛太郎快帮我擦擦」",
@@ -24,14 +24,13 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Adult Kaoruko leans over the prep table as her apron ties snap and the fabric slips, looking back for help with her skirt caught high.",
+    "promptProse": "Adult Kaoruko steadies herself on the bakery prep table with one hand and holds the slipped apron at her chest with the other, looking back for help with its loosened ties.",
     "nsfwProse": "",
     "promptTokens": [
       "white apron",
       "navy skirt",
       "broken strap",
       "breast slip",
-      "skirt lift",
       "bent over",
       "looking back",
       "bakery kitchen",

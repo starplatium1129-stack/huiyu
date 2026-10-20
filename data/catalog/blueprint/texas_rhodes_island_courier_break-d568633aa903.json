@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_rhodes_island_courier_break",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 662,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "斜倚在舒适布艺沙发上，单手递出一根巧克力棒，神情慵懒温柔",
     "camera": "medium shot, eye level",
@@ -20,7 +20,7 @@
     "mood": "温馨放松",
     "negativeTokens": [],
     "outfitId": "penguin_logistics",
-    "promptProse": "Texas rests on the lounge sofa with one knee drawn up and offers a chocolate stick toward the viewer. The red box rests beside her while soft porthole light carries the houseplant shadows across the sofa.",
+    "promptProse": "Texas rests on the sofa with one knee raised, offering a chocolate stick toward the viewer; its red box lies beside her as porthole light casts plant shadows on the sofa.",
     "promptTokens": [
       "sofa",
       "chocolate stick",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_07",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1747,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_07",
     "title": "不知火舞 · 夏祭折扇与苹果糖",
@@ -30,7 +30,7 @@
       "night",
       "night_light"
     ],
-    "promptProse": "She offers the candy apple toward the offscreen viewer with one hand, her fan shielding the sticky fingers of the other while visitors pass beneath the lanterns.",
+    "promptProse": "She offers the candy apple to the off-frame viewer, fan shielding her other sticky hand, as visitors pass beneath the lanterns.",
     "promptTokens": [
       "candy apple",
       "folding fan",

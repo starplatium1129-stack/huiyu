@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_03",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1635,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_03",
     "title": "久远寺有珠 · 束胸衣系带被使魔绞紧的更衣事故 ·「罗宾！……叫你拿剪刀不是让你乱咬！」",
@@ -12,8 +12,8 @@
     "characterId": "kuonji_alice",
     "description": "【有珠卧室更衣镜前·黄昏】换装时使魔知更鸟罗宾误将复古鲸骨束腰的系带打成了死结。有珠双手反剪在背后撑在梳妆台上，紧绷的束腰将她的纤腰勒到极细，本就可观的胸脯被挤压得几乎爆出衣领，黑色裙裾掀起露出象牙般的修长美腿。她罕见地咬牙回头，满脸通红——「草十郎……不要站在那里发呆……快把罗宾抓走……」",
     "location": "有珠卧室更衣镜前·黄昏",
-    "action": "撑梳妆台塌腰回眸双手反剪扯束腰带，鲸骨束胸勒出深壑溢乳，黑眸含嗔急促喘息",
-    "timeOfDay": "afternoon",
+    "action": "双手向后撑住梳妆台，罗宾缠住背后束腰带；回头求助，领口绷紧、裙摆提起。",
+    "timeOfDay": "黄昏",
     "lighting": "warm_cinematic_lighting",
     "camera": "intimate horizontal medium shot",
     "mood": "意外失控与羞赧",
@@ -30,7 +30,7 @@
       "clothes_pull",
       "hands_behind_back"
     ],
-    "promptProse": "Adult Alice leans over the vanity as Robin tangles her corset laces, her neckline tight and skirt raised; she looks back for help.",
+    "promptProse": "Adult Alice braces both hands behind her on the vanity while Robin tangles the corset laces at her back. Her neckline is taut and the skirt raised; she turns toward her off-frame companion for help in the fading window light.",
     "promptTokens": [
       "black corset dress",
       "breast slip",

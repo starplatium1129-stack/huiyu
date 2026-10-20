@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_03",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1739,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_03",
     "title": "不知火舞 · 发簪的传承",
@@ -29,7 +29,7 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "She steadies her grandmother's hairpin with one hand while checking it in the mirror, morning light catching the ornament above its open wooden case.",
+    "promptProse": "Seen over her shoulder, Mai steadies her grandmother's hairpin and checks it in the mirror; morning light catches the ornament above its open case.",
     "promptTokens": [
       "hairpin",
       "mirror",

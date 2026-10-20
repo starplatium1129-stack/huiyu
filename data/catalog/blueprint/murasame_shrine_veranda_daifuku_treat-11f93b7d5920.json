@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_shrine_veranda_daifuku_treat",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1120,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "双膝并拢端坐在走廊坐垫上，双手捧着草莓大福小口品尝，嘴角沾粉，眼神陶醉",
     "camera": "medium shot, seated eye-level, intimate cozy framing",
@@ -20,7 +20,7 @@
     "mood": "治愈甜美",
     "negativeTokens": [],
     "outfitId": "spirit_kimono",
-    "promptProse": "Murasame holds the strawberry daifuku in both hands, smiling with flour at the corner of her mouth while the sword rests against a nearby post.",
+    "promptProse": "Murasame holds the strawberry daifuku in both hands, smiling with flour at the corner of her mouth while the sword rests against a nearby post. Slanting sunlight enters below the eaves, with soft reflected light from the garden pond.",
     "promptTokens": [
       "kneeling",
       "daifuku",

@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "ciel_nsfw_altar_table_bent_over_prone",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1341,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "双手撑在长木桌俯身弓腰翘臀，法衣半褪单手探入内裤自抚花瓣，回头微扶眼镜含泪娇喘",
+    "action": "一手撑在长木桌俯身弓腰翘臀，法衣半褪单手探入内裤自抚花瓣，戴着微斜的眼镜回头含泪娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
     "camera": "cowboy shot, dutch angle",
@@ -17,7 +17,7 @@
       "prone",
       "solo"
     ],
-    "description": "【希耶尔 · 圣堂教坛前法衣半褪的自抚】幽暗清冷的圣堂大厅内，高耸彩窗透下银蓝月光。希耶尔深蓝修女法衣被解开带子半褪至腰际，露出圆润白皙的雪乳与饱满紧致的腰臀。她双手撑在沉重的橡木教坛长桌边缘俯身弓腰，单手探入裙底拉开内裤边缘自抚湿润的花瓣，推了推微斜的眼镜。耳根红透，回头回眸时眼眸水雾迷离——「就算身为代行者……面对你的时候……身体也会彻底诚实呢……」",
+    "description": "【希耶尔 · 圣堂教坛前法衣半褪的自抚】幽暗清冷的圣堂大厅内，高耸彩窗透下银蓝月光。希耶尔深蓝修女法衣被解开带子半褪至腰际，露出圆润白皙的雪乳与饱满紧致的腰臀。她一手撑在沉重的橡木教坛长桌边缘俯身弓腰，单手探入裙底拉开内裤边缘自抚湿润的花瓣，眼镜在鼻梁上略微倾斜。耳根红透，回头回眸时眼眸水雾迷离——「就算身为代行者……面对你的时候……身体也会彻底诚实呢……」",
     "id": "ciel_nsfw_altar_table_bent_over_prone",
     "kreaStyleHint": "r18_explicit_h_cg",
     "lighting": "高耸彩窗透下的幽冷银蓝月光",
@@ -25,7 +25,7 @@
     "mood": "神圣禁忌、唯美自抚",
     "negativeTokens": [],
     "outfitId": "official_burial_agency_habit",
-    "promptProse": "She leans across the oak table, gripping its edge with one hand while the other rests beneath her raised habit. Blue moonlight enters the hall.",
+    "promptProse": "With her habit lowered to her waist, she leans across the oak table, gripping its edge with one hand while the other rests beneath the raised skirt. Silver-blue moonlight enters through the high stained-glass windows.",
     "promptTokens": [
       "white trim",
       "church",
@@ -36,6 +36,7 @@
       "bent over",
       "masturbation",
       "glasses",
+      "looking back",
       "moonlight"
     ],
     "recommendedSize": "1536x1152",
@@ -45,7 +46,7 @@
       "altar_table",
       "bent_over",
       "arched_back",
-      "hands_on_table",
+      "hand_on_table",
       "skirt_lift",
       "habit",
       "panties_aside",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_r18_b8_03",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 66,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "makinohara_shouko_r18_b8_03",
     "title": "牧之原翔子 · 教堂试衣间花嫁白纱的滑落事故 ·「咲太君……新娘的拉链卡住了，能来帮帮我吗」",
@@ -12,7 +12,7 @@
     "characterId": "makinohara_shouko",
     "description": "【海边白教堂更衣室·午后】在只有两人知道的秘密试穿。纯白婚纱背后珍珠镶边旁的拉链意外卡住，大翔子双手反剪在背后吃力地微躬身子。紧绷的鱼尾裙摆勾勒出极致的腰臀比，胸口深V领口由于受力而深陷溢乳。她侧脸回头，耳根绯红——「咲太君……要成为我真正的新郎……就先帮我解开这个难题吧？」",
     "location": "海边白教堂更衣室·午后",
-    "action": "撑更衣镜塌腰回眸双手反剪整理拉链，婚纱半褪鱼尾紧绷溢乳，蓝瞳含笑娇羞",
+    "action": "微躬身靠近更衣镜，双手都伸向背后卡住的拉链，侧脸回头求助，婚纱领口因受力绷紧。",
     "timeOfDay": "afternoon",
     "lighting": "warm_cinematic_lighting",
     "camera": "intimate horizontal medium shot",
@@ -30,7 +30,7 @@
       "stuck_zipper",
       "clothes_pull"
     ],
-    "promptProse": "Adult Shouko leans against the bridal vanity with her gown zipper caught and its neckline pulled tight, looking back with a teasing smile.",
+    "promptProse": "Shouko leans beside the bridal vanity, both hands reaching for the caught back zipper. Her neckline pulls taut as she looks back to her off-frame companion for help.",
     "promptTokens": [
       "pearl trim",
       "white mermaid wedding dress",

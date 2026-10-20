@@ -34,6 +34,15 @@ export interface DraftOutfitOverride {
   replaced: string | null
 }
 
+export function parseOutfitOverride(value: unknown): DraftOutfitOverride | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+  const input = value as Record<string, unknown>
+  const tokens = Array.isArray(input.tokens)
+    ? [...new Set(input.tokens.filter((token): token is string => typeof token === 'string').map(token => token.trim()).filter(Boolean))]
+    : []
+  return tokens.length ? { tokens, replaced: typeof input.replaced === 'string' ? input.replaced : null } : null
+}
+
 /** Only tags actually introduced by reverse inference; user-owned duplicates are excluded. */
 export interface DraftReferenceInput {
   tags: string[]
@@ -87,6 +96,7 @@ export interface PromptBuilderDraft {
   subject?: 'studio' | 'popular'
   characterId?: string
   outfitId?: string
+  outfitExplicit?: boolean
   blueprintId?: string | null
   noLora?: boolean
 }

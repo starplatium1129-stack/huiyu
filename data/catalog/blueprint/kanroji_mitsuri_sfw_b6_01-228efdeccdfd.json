@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1458,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "午后缘侧，蜜璃抱着盛满樱饼的盘子，举起一块准备品尝，绿瞳里全是期待",
     "adult": false,
@@ -19,7 +19,7 @@
     "description": "午后缘侧，蜜璃抱着盛满樱饼的盘子，举起一块准备品尝，绿瞳里全是期待。粉色长辫的绿发梢落在腰带边，茶杯和庭院樱叶映着柔光；只呈现当前粉发形态。",
     "id": "kanroji_mitsuri_sfw_b6_01",
     "kreaStyleHint": "anime_portrait_sharp",
-    "lighting": "delighted, daylight",
+    "lighting": "soft afternoon daylight reflected from the veranda and garden",
     "location": "庭院缘侧",
     "mood": "自然日常",
     "negativeTokens": [

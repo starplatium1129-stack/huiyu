@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_sfw_b9_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1729,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "dorothy_nikke_sfw_b9_03",
     "title": "桃乐丝 · 温室花房的修剪",
@@ -31,7 +31,6 @@
     ],
     "promptProse": "She steadies the faded rose stem with one gloved hand and closes the small shears with the other. Greenhouse light falls across the petals and the trimmed branches.",
     "promptTokens": [
-      "dorothy_(nikke)",
       "greenhouse",
       "shears",
       "rose pruning"

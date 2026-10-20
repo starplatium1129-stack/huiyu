@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_r18_b8_03",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1551,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "shinjou_akane_r18_b8_03",
     "title": "新条茜 · 粘土台毛衣被美工刀划破的走光事故 ·「刀片滑掉了……不过……你好像很兴奋呢？」",
     "category": "更衣事故",
     "characterId": "shinjou_akane",
-    "description": "【制作台前·深夜】雕刻怪兽粘土时不慎划破了毛衣下摆与内衣吊带。茜双手按在粘土屑横飞的桌面上，毛衣侧边完全撕裂开，从胸侧到大腿根部的白皙软肉一览无遗，粉嫩乳晕在破口边缘若隐若现。她侧脸回头，赤瞳里闪烁着危险的病态光芒——「被划破了呢……要不要干脆……全部割开给你看？」",
+    "description": "【制作台前·深夜】雕刻怪兽粘土时不慎划破了毛衣下摆与内衣吊带。茜一手按在粘土屑横飞的桌面上，毛衣侧边完全撕裂开，从胸侧到大腿根部的白皙软肉一览无遗，粉嫩乳晕在破口边缘若隐若现。她侧脸回头，赤瞳里闪烁着危险的病态光芒——「被划破了呢……要不要干脆……全部割开给你看？」",
     "location": "制作台前·深夜",
     "action": "撑粘土台塌腰回眸毛衣侧裂露侧乳，赤瞳狂气浅笑，指尖摩挲破口挑衅",
     "timeOfDay": "night",
@@ -30,7 +30,7 @@
       "torn_sweater",
       "open_clothes"
     ],
-    "promptProse": "A slipped modeling knife has cut the sweater's side seam; Akane looks back over the clay bench while tapping the dull side against her thigh.",
+    "promptProse": "Akane braces one hand on the clay bench, the other at her cut sweater seam, looking back; the modeling knife lies on the work surface.",
     "promptTokens": [
       "adult",
       "1girl",

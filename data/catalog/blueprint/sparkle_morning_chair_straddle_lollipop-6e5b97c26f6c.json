@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_morning_chair_straddle_lollipop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1043,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "sparkle_morning_chair_straddle_lollipop",
     "title": "花火 · 晨间椅背跨坐的棒棒糖挑衅",
@@ -28,7 +28,7 @@
       "playful_smile",
       "winking"
     ],
-    "promptProse": "Sparkle sits backwards on the swivel chair with her chin resting on its back, a strawberry lollipop at her lips. Her feet dangle above the floor as she watches the viewer through the gold morning light.",
+    "promptProse": "Sparkle sits backwards on a swivel chair, chin on its back, strawberry lollipop at her lips and feet dangling; she watches the viewer in golden morning light.",
     "promptTokens": [
       "sitting backwards",
       "lollipop",

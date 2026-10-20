@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_salon_solitaire_tea",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "furina_salon_solitaire_tea",
     "title": "芙宁娜 · 独奏沙龙午后茶歇",
@@ -34,7 +34,7 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "She smiles at a small water spirit bobbing above the cake while holding the cup at her lips and supporting its saucer.",
+    "promptProse": "Seated sideways in the armchair, she smiles at a small water spirit bobbing above the cake while holding the cup at her lips and supporting its saucer.",
     "promptTokens": [
       "teacup",
       "saucer",

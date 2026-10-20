@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc222",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 217,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
   "data": {
     "id": "sc222",
     "title": "玻璃花房骤雨下的诱导过载",
@@ -18,7 +18,7 @@
     "emotion": "恋爱",
     "season": "夏",
     "time": "白天",
-    "timeOfDay": "all_day",
+    "timeOfDay": "afternoon",
     "tags": [
       "hair_ribbon",
       "white_summer_dress",
@@ -37,7 +37,7 @@
     "location": "后花园玻璃温室木质长椅",
     "weather": "天台骤雨",
     "camera": "近景正面水平特写",
-    "lighting": "闪电与强烈的日照穿透玻璃水珠的炫目折射",
+    "lighting": "暴雨散射天光与闪电透过玻璃屋顶的短暂亮光",
     "usage": [
       "绝对独占",
       "壁纸级",

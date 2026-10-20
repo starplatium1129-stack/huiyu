@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_dog_park",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 416,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "makima_dog_park",
     "title": "玛奇玛 · 遛狗",
@@ -32,7 +32,7 @@
       "grounded_shadows",
       "medium_wide_shot"
     ],
-    "promptProse": "Crouched between the dogs, she pets the Akita on her right with her right hand and holds both slack leashes in her left; the husky stands on her left in the dappled light.",
+    "promptProse": "Crouched between the dogs, she pets the Akita to her right with her right hand and holds both slack leashes in her left; the husky stands to her left. Upper-left sunlight filters through leaves onto their heads, while grass bounce keeps their faces readable. Paw and leash shadows rest on the grass; the brick path leads past a drinking fountain toward a bench under darker trees.",
     "promptTokens": [
       "1girl",
       "solo",

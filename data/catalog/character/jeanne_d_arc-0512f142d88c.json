@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "jeanne_d_arc",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "jeanne_d_arc",
     "profile": {
@@ -90,7 +90,7 @@
         "法兰西圣女",
         "白贞"
       ],
-      "identityProse": "Jeanne d'Arc from Fate, the Holy Maiden of Orleans and Ruler-class Servant, a serene saintly beauty with waist-length golden-blonde hair, a small ahoge, expressive violet-blue eyes filled with compassion, and a gentle forgiving smile",
+      "identityProse": "Jeanne d'Arc from Fate, with waist-length golden-blonde hair, an ahoge and violet-blue eyes.",
       "identityTokens": [
         "jeanne d'arc (fate)",
         "fate/grand_order",

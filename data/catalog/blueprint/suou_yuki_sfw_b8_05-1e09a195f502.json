@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 788,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "海边祭典摊位举起捞到的星星面具，半扎发在灯笼与海风里轻摇",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "宅系少女的海滨约会活力",
     "negativeTokens": [],
     "outfitId": "sfw_beach",
-    "promptProse": "Yuki raises her chosen star mask toward the camera, warm stall lanterns meeting blue evening sea light.",
+    "promptProse": "Seated beside the seaside festival stall, Yuki raises her chosen star mask toward the camera, warm stall lanterns meeting blue evening sea light.",
     "promptTokens": [
       "star mask",
       "festival",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_apartment_bath",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 419,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "makima_r18_apartment_bath",
     "title": "玛奇玛 · 公寓浴缸",
@@ -25,12 +25,12 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Adult Makima reclines in the candlelit bath, moving two fingers through the water between her thighs as her wet braid rests on the rim.",
+    "promptProse": "Seen at water level, Makima reclines in the bubble bath, beckoning to the off-frame viewer with one arm. Her braid rests on the rim; candlelight crosses the water against city lights.",
     "promptTokens": [
       "adult Makima",
       "nude",
-      "bent knee",
-      "hand between legs",
+      "reclining",
+      "beckoning",
       "bubble bath",
       "candlelight"
     ],

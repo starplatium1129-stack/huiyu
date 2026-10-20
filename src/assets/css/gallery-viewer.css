@@ -43,7 +43,8 @@
 .art-viewer[data-image-transition]::before { content:''; position:absolute; inset:0; z-index:-1; background:var(--bg-deep); opacity:var(--viewer-backdrop-opacity,1); pointer-events:none; }
 dialog.art-viewer:not([open]) { display:none; }
 dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-backdrop-opacity,1); }
-.art-viewer .viewer-compare-host { @apply tw:w-full; height:calc(100vh - 120px); max-width:min(90vw, 1200px); @apply tw:flex tw:items-center tw:justify-center; }
+.art-viewer .viewer-compare-host { @apply tw:w-full; height:100%; min-height:0; max-width:min(90vw, 1200px); display:grid; grid-template-rows:minmax(0,1fr) auto; }
+.art-viewer .viewer-compare-notice { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:var(--s-2); margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
 .art-viewer .viewer-compare-toggle {
   @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-[18px] tw:right-[64px] tw:inline-flex tw:items-center tw:gap-[4px];
   padding:6px 12px; @apply tw:rounded-md;

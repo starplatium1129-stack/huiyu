@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc004",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "Peeking around the bookshelf toward the viewer, she draws the uppermost book close against her chest; window light catches the ends of her hair.",
+    "animaCaption": "Peeking around the bookshelf toward the viewer, she draws the top book against her chest; window light catches her hair.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "校园",

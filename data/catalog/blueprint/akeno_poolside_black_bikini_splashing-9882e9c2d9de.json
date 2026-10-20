@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_poolside_black_bikini_splashing",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1290,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "akeno_poolside_black_bikini_splashing",
     "title": "姬岛朱乃 · 阳光池畔的水光嬉戏",
@@ -28,9 +28,9 @@
       "splashing_water",
       "seductive_smile"
     ],
-    "promptProse": "Seated on the pool edge, she kicks her feet in the water and scoops a splash toward the viewer with one hand. Sunlight catches the droplets above the wet tiles.",
+    "promptProse": "Seated on the infinity-pool edge, she kicks her feet in the water and scoops a splash toward the viewer with one hand. Sunlight catches the droplets while blue-and-gold water reflections ripple over the wet tiles.",
     "promptTokens": [
-      "pool",
+      "infinity pool",
       "sitting",
       "kicking",
       "splashing",

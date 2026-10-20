@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "emilia_rezero",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 16,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "emilia_rezero",
     "profile": {
@@ -25,10 +25,10 @@
         "hair_color": "银",
         "eyes": "淡紫",
         "hairstyle": "长直发 · 两侧卷发 · 呆毛",
-        "uniform": "白裙红饰（王选礼服）",
+        "uniform": "白紫绣边王选礼裙",
         "expression": "纯洁善良 · 天然认真",
         "style": "pure silver half-elf",
-        "signature": "银发紫瞳、独角与白裙"
+        "signature": "银发紫瞳、尖耳与白花发饰"
       },
       "personality": [
         "纯洁善良",
@@ -56,7 +56,7 @@
       "tags": [
         "银发",
         "紫瞳",
-        "独角",
+        "尖耳",
         "半精灵",
         "白裙"
       ],
@@ -101,7 +101,7 @@
         "re zero",
         "emilia from re zero"
       ],
-      "identityProse": "Emilia from Re:Zero, a half-elf maiden with flowing silver-white hair, soft pointed elf ears, amethyst purple eyes, and a white flower hair clip.",
+      "identityProse": "Emilia from Re:Zero, with long silver-white hair, pointed half-elf ears, amethyst eyes and a white flower hair clip.",
       "identityTokens": [
         "emilia (re:zero)",
         "1girl",
@@ -110,7 +110,7 @@
         "long_hair",
         "purple_eyes",
         "pointy_ears",
-        "hair_flower",
+        "white_hair_flower",
         "re:zero"
       ],
       "exactTokens": [
@@ -136,7 +136,7 @@
       "canon": {
         "world": "奇幻（Re:Zero）",
         "era": "中世纪风",
-        "formNotes": "银发紫瞳半精灵；独角外露；契约精灵帕克；冰雪系",
+        "formNotes": "银发紫瞳半精灵；尖耳与白花发饰；契约精灵帕克；冰雪系",
         "research": "2026-08-14 调研"
       },
       "animeStudio": "white fox, official anime screencap, anime coloring",

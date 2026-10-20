@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshimi_miyabi",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 78,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "hoshimi_miyabi",
     "profile": {
@@ -23,14 +23,14 @@
         "alt": "星见雅 样张立绘"
       },
       "visual_dna": {
-        "hair": "乌黑丝缎高马尾 · 灵动白狐耳",
+        "hair": "黑色长发 · 齐刘海与侧编发 · 深色狐耳",
         "hair_color": "墨黑",
-        "eyes": "锐利澄澈金黄狐瞳",
-        "hairstyle": "高束单马尾 · 纯白毛茸狐耳 · 黑尖白狐尾",
-        "uniform": "对空六课课长军官制服 / 传统御守巫女服",
+        "eyes": "红色瞳孔",
+        "hairstyle": "长直发与侧编发 · 高耸深色狐耳与浅色内耳绒",
+        "uniform": "蓝灰宽袖外套、白衬衫与深色内搭、黑色长袴及红色编绳",
         "expression": "清冷肃穆 · 一丝不苟 · 偶尔天然呆",
         "style": "stoic fox swordmaster",
-        "signature": "雪白狐耳、黑发高马尾、锐利金瞳与佩刀居合"
+        "signature": "深色狐耳、黑色长发、红瞳与佩刀居合"
       },
       "personality": [
         "极度自律且坚守法度",
@@ -47,22 +47,21 @@
       ],
       "classic_cg": {
         "title": "月夜竹林的虚空居合",
-        "description": "苍白冷月下，雅拇指推刀出鞘，极寒剑气撕裂竹林残叶，狐尾迎风招展，宛若画中剑仙。"
+        "description": "苍白冷月下，雅拇指推刀出鞘，极寒剑气撕裂竹林残叶，宽袖随风扬起，宛若画中剑仙。"
       },
       "identity": {
-        "role": "新艾利都治安局对空六课课长 / 星见流宗家之女",
+        "role": "对空六课课长 / 星见流宗家之女",
         "age": "青年",
         "occupation": "对空六课课长 / 武学宗师",
-        "faction": "新艾利都 · 治安局对空六课"
+        "faction": "新艾利都 · 对空六课"
       },
       "tags": [
         "狐耳",
-        "狐尾",
-        "黑发高马尾",
-        "金瞳",
+        "黑色长发",
+        "红瞳",
         "太刀",
         "居合斩",
-        "军服制服"
+        "对空六课制服"
       ],
       "bg_story": "星见雅是《绝区零》中对空事务六课的课长，出身于武学名门星见流，是新艾利都公认的顶尖太刀居合斩名手。她性格冷峻严肃、恪尽职守，面对再凶险的以太灾害也面不改色，但在日常生活上偶尔有着不谙世故的纯真天然反差。",
       "palette": [
@@ -82,12 +81,13 @@
         "1girl",
         "solo",
         "black_hair",
-        "high_ponytail",
         "fox_ears",
-        "fox_tail",
-        "amber_eyes",
-        "katana",
-        "zenless_zone_zero"
+        "zenless_zone_zero",
+        "long_hair",
+        "blunt_bangs",
+        "side_braid",
+        "red_eyes",
+        "katana"
       ],
       "accent_color": "#38bdf8",
       "bg_color": "#070b14"
@@ -124,17 +124,19 @@
       ],
       "franchise": "Zenless Zone Zero",
       "id": "hoshimi_miyabi",
-      "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, Section 6 chief and master swordswoman with long silky black hair in a high ponytail, fluffy white fox ears, sharp amber golden eyes, a fluffy black-tipped white fox tail, and a refined stoic expression.",
+      "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, with long black hair, blunt bangs, a side braid, tall dark fox ears with pale inner fur and red eyes.",
       "identityTokens": [
         "hoshimi miyabi",
         "1girl",
         "solo",
         "black_hair",
-        "high_ponytail",
         "fox_ears",
-        "fox_tail",
-        "amber_eyes",
-        "zenless_zone_zero"
+        "tall dark fox ears with pale inner fur",
+        "zenless_zone_zero",
+        "long_hair",
+        "blunt_bangs",
+        "side_braid",
+        "red_eyes"
       ],
       "negativeTokens": [
         "bad anatomy",

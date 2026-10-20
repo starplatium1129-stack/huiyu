@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_summer_cabin",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 206,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -35,7 +35,7 @@
       "blush",
       "daylight"
     ],
-    "promptProse": "Adult, age-twenty-plus Mash holds her wet towel at the chest while smoothing water from her inner thigh on the spring steps.",
+    "promptProse": "Adult Mash holds the wet towel at her chest with one hand and smooths water from her inner thigh with the other on the spring steps. Bright daylight reflects from the hot-spring surface across the steps and towel.",
     "promptTokens": [
       "1girl",
       "solo",

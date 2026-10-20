@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_shopping_street",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 153,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tohsaka_rin_shopping_street",
     "title": "远坂凛 · 逛街战利品",
@@ -32,7 +32,7 @@
       "shop_window_light",
       "medium_shot"
     ],
-    "promptProse": "Rin looks back proudly while carrying a paper shopping bag in each hand along the evening street. Sunset from behind outlines the bag folds, while the shop window beside her warms her cheek and cardigan buttons.",
+    "promptProse": "Rin walks along the stone-paved shopping street and looks back proudly, a paper bag in each hand. Golden-hour light from behind her left rims the paper folds, while the shop window on her right warms her cheek and cardigan buttons; the bags cast long slanted shadows on the paving.",
     "promptTokens": [
       "shopping bags",
       "walking",

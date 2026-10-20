@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "jeanne_alter",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "jeanne_alter",
     "profile": {
@@ -105,7 +105,7 @@
         "short_hair",
         "yellow_eyes"
       ],
-      "identityProse": "Jeanne d'Arc (Alter) from Fate, the vengeful dragon witch with messy short silver hair, piercing golden-yellow eyes, and a confident smirk.",
+      "identityProse": "Jeanne d'Arc (Alter) from Fate, with messy short silver hair and golden-yellow eyes.",
       "animeStudio": "type-moon, ufotable, official anime screencap",
       "negativeTokens": [
         "bad anatomy",

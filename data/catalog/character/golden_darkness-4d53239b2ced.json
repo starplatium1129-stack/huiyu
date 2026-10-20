@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "golden_darkness",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "golden_darkness",
     "profile": {
@@ -128,7 +128,7 @@
       ],
       "franchise": "To LOVE-Ru",
       "id": "golden_darkness",
-      "identityProse": "Golden Darkness (Yami) from To LOVE-Ru by Kentaro Yabuki, the galaxy's deadliest bio-weapon assassin with floor-length lustrous golden blonde hair, distinctive hair intakes, calm yet expressive ruby-red eyes, petite yet curvaceous figure, and an aloof kuudere demeanor.",
+      "identityProse": "Adult Golden Darkness (Yami) from To LOVE-Ru, with floor-length golden-blonde hair, hair intakes and ruby-red eyes.",
       "identityTokens": [
         "golden_darkness",
         "1girl",

@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 342,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yukinoshita_yukino_family_restaurant",
     "title": "雪之下雪乃 · 家庭餐厅",
@@ -31,7 +31,7 @@
       "warm_pendant_light",
       "medium_shot"
     ],
-    "promptProse": "Yukino pauses with a knife and fork above the partly cut hamburger steak, listening to the unseen diner opposite. The pendant lamp warms her cheek and the sauce while evening streetlights reflect faintly in the window.",
+    "promptProse": "Yukino pauses with a knife and fork above the partly cut hamburger steak, listening to the unseen diner opposite. The upper-left pendant lamp warms her cheek and the sauce while evening streetlights reflect faintly in the window; beyond the booth's low partition, an aisle leads between the neighboring tables.",
     "promptTokens": [
       "knife",
       "fork",

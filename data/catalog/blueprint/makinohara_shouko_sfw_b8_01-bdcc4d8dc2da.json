@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_01",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 52,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_01",
     "title": "牧之原翔子 · 七里滨的白色连衣裙",
@@ -30,7 +30,7 @@
       "evening_light",
       "medium_shot"
     ],
-    "promptProse": "Shouko gathers her windblown hair with one hand and turns a small smile toward the viewer as she walks along the wet sand. The evening sea forms a warm band of light behind her.",
+    "promptProse": "Shouko gathers her windblown hair with one hand and looks back toward the viewer, smiling as she walks along wet sand. The distant sea forms a low band of warm evening light behind her.",
     "promptTokens": [
       "1girl",
       "solo",

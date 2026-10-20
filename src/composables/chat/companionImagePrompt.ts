@@ -55,7 +55,7 @@ export function companionPromptDraft(pb: ReturnType<typeof usePromptBuilderStore
   if (mature) manual.add('nsfw')
   const draft: CompanionPromptDraft = {
     char, charPrompt: CHAR_PROMPT[char], subject: character && outfit
-      ? { kind: 'popular', characterId: character.id, outfitId: outfit.id, blueprintId: null } : { kind: 'studio' },
+      ? { kind: 'popular', characterId: character.id, outfitId: outfit.id, blueprintId: null, outfitExplicit: requestedOutfit !== 'default' } : { kind: 'studio' },
     isPopular: Boolean(character), sceneId: null, activeScene: null, story: args.description.trim(), visualDescription: visual,
     artistStyleIds: [...pb.artistStyleIds], directorMode: pb.directorMode, colorMood: null, concise: pb.concise, emotionPrompt: '',
     manualTags: manual, randomVariation: null, referenceInput: null, selections: { emotion: [], shot: null, lighting: null, composition: null },
@@ -84,8 +84,7 @@ export function companionPromptDraft(pb: ReturnType<typeof usePromptBuilderStore
   if (state.family === 'anima' && !pb.artistStyleIds.length) {
     for (const tag of inferred.styleTags) draft.manualTags.add(animaArtistTag(tag))
   }
-  if (referenceOutfit.length) draft.outfitOverride = { tokens: referenceOutfit, replaced: outfit?.name ?? null }
   if (!merged.accepted.length && !referenceOutfit.length) throw new Error('参考图没有可安全采用的服装、姿势或背景词条，请重新提供图片或描述')
   report?.(`已反推参考图并采用 ${merged.accepted.length + referenceOutfit.filter(tag => !merged.accepted.includes(tag)).length} 个画面词条，人物身份跟随 ${character?.displayName || (char === 'nene' ? '宁宁' : '夏目')}`)
-  return draft
+  return referenceOutfit.length ? { ...draft, outfitOverride: { tokens: referenceOutfit, replaced: outfit?.name ?? null } } : draft
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eris_greyrat",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 52,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "eris_greyrat",
     "profile": {
@@ -123,7 +123,7 @@
       ],
       "franchise": "Mushoku Tensei",
       "id": "eris_greyrat",
-      "identityProse": "Eris Greyrat from Mushoku Tensei, a noble-born swordswoman with deep crimson wavy long hair, red eyes, thick eyebrows and a small ahoge, tall and athletic with a tomboyish \"mad dog\" aura that contrasts her noble upbringing",
+      "identityProse": "Eris Greyrat from Mushoku Tensei, tall and athletic, with long wavy crimson hair, red eyes, thick eyebrows and a small ahoge.",
       "identityTokens": [
         "eris_greyrat",
         "1girl",
@@ -133,7 +133,10 @@
         "curly_hair",
         "red_eyes",
         "thick_eyebrows",
+        "ahoge",
         "headband",
+        "athletic",
+        "tall_female",
         "mushoku_tensei"
       ],
       "negativeTokens": [

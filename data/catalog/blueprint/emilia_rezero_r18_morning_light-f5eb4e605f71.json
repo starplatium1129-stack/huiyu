@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_r18_morning_light",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 450,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "emilia_rezero_r18_morning_light",
     "title": "爱蜜莉雅 · 晨光寝宫",
@@ -24,7 +24,7 @@
       "tall_windows",
       "intimate"
     ],
-    "promptProse": "The sheet has slipped to her hips; the age-twenty-plus Emilia rubs one sleepy eye while gathering the fabric between her thighs.",
+    "promptProse": "Seated at the bed edge with the sheet slipped to her hips, she rubs one sleepy eye while gathering the fabric between her thighs. Warm golden morning sunlight falls across the bed.",
     "promptTokens": [
       "1girl",
       "solo",

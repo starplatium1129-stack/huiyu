@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 786,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "她的房间，松垮卫衣、盘腿坐地毯，左手薯片右手漫画，头发乱翘",
     "adult": false,
@@ -25,7 +25,7 @@
     "outfitId": "sfw_casual",
     "promptProse": "Sitting cross-legged on the bedroom carpet, she laughs at the manga in her right hand while holding a chip in her left, warm lamplight falling across the pages.",
     "promptTokens": [
-      "crossed legs",
+      "cross-legged",
       "manga",
       "chips",
       "bedroom",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_insane_love_cowgirl_straddle",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 1309,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "albedo_nsfw_insane_love_cowgirl_straddle",
     "title": "雅儿贝德 · 狂乱独占的魅魔女皇骑乘",
@@ -30,13 +30,11 @@
       "sweat",
       "heavy_blush"
     ],
-    "promptProse": "She straddles the viewer's waist on silk bedding, using her spread wings for balance as she leans forward.",
+    "promptProse": "She straddles the viewer's waist on silk bedding, both hands braced on the viewer's chest and wings spread as she leans forward. Flickering magical firelight illuminates them.",
     "promptTokens": [
       "bedroom",
       "nude",
       "straddling",
-      "black wings",
-      "horns",
       "sweat",
       "blush",
       "from below",

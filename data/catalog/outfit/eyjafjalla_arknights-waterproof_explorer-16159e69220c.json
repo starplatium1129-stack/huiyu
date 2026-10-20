@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/waterproof_explorer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 315,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
@@ -15,7 +15,7 @@
       "prose": "A muted moss-grey waterproof hooded jacket with practical cargo pockets and narrow amber-orange seam accents, paired with dark cargo trousers, gloves and sturdy hiking boots.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "grey green hooded jacket",
+        "grey green waterproof hooded jacket",
         "cargo pockets",
         "gloves",
         "dark cargo pants",

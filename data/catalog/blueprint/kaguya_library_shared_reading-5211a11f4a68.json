@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_library_shared_reading",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1400,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "并肩共读留三厘米距离，侧脸微近，余光偷看",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "计算中的心动、静谧",
     "negativeTokens": [],
     "outfitId": "official_shuchiin_uniform",
-    "promptProse": "Kaguya sits beside her companion with a small gap between their open books, glancing at his page without moving her own. Window light catches the dust between them and the edges of the paper.",
+    "promptProse": "Kaguya and her companion sit side by side at the window reading seat, their two open books separated by a three-centimeter gap. She glances at her companion's page without moving her own book; window light catches dust and paper edges.",
     "promptTokens": [
       "shinomiya_kaguya",
       "reading",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1751,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_04",
     "title": "丰川祥子 · Ave Mujica 的黑蓝花嫁",
@@ -30,7 +30,7 @@
       "stage_light",
       "night"
     ],
-    "promptProse": "Sakiko looks up toward the viewer with her hands resting lightly on the piano keys, the removed mask beside her bouquet. Blue stage light outlines her veil while warmer light traces the piano rim.",
+    "promptProse": "Sakiko looks toward the viewer, hands on the piano keys and removed mask beside her bouquet; blue stage light rims her veil, warmer light tracing the piano.",
     "promptTokens": [
       "Sakiko Togawa",
       "piano",

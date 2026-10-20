@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1716,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_01",
     "title": "玛露希尔 · 魔物料理的真香现场",
@@ -32,7 +32,7 @@
       "embarrassed_smile",
       "firelight"
     ],
-    "promptProse": "Three panels run from left to right: Marcille refuses the meal, cautiously tastes a spoonful, then holds out her bowl for a second helping. The same cooking-pot fire lights her changing expression in each panel.",
+    "promptProse": "Left to right, three panels show Marcille refusing the meal, tasting a spoonful, then offering her bowl for seconds. The same cooking fire lights each expression.",
     "promptTokens": [
       "marcille_donato",
       "cooking pot",

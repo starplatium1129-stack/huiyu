@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_r18_test_plugsuit_sensual",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 1034,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "穿着半透明紧身测试服屈膝坐在光滑地面上，单手揉胸，另一手手指插入私处自慰娇喘",
     "adult": true,
@@ -26,18 +26,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "test_plugsuit_translucent",
-    "promptProse": "She reclines on the chamber floor with one hand at her chest and the other between her legs. Cool light catches the wet suit.",
+    "promptProse": "Seated on the chamber floor with knees bent, she keeps one hand at her chest and the other between her legs. Dim blue chamber light and a soft spotlight catch the wet suit.",
     "promptTokens": [
-      "adult",
       "testing chamber",
       "orange and white plugsuit",
-      "translucent fabric",
       "see-through",
-      "lying",
-      "on back",
       "knees up",
       "masturbation",
-      "sweat"
+      "sweat",
+      "sitting on floor"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

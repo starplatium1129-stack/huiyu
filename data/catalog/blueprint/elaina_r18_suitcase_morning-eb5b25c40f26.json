@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_suitcase_morning",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 390,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "elaina_r18_suitcase_morning",
     "title": "伊雷娜 · 晨光与旅行箱",
@@ -12,7 +12,7 @@
     "characterId": "elaina",
     "description": "【伊蕾娜 · 晨光与旅行箱】清晨金色阳光洒满房间，伊蕾娜穿着单薄的象牙白衬衫坐在敞开的大号旅行箱旁整理衣物。她伸了个大大的懒腰，衣摆滑落露出紧致平坦的小腹——「呜哇——睡得好饱！今天又是崭新的旅程……在出发之前，不打算帮我把这件衣服扣好吗？」",
     "location": "旅店房间",
-    "action": "坐在敞开的旅行箱旁",
+    "action": "坐在敞开的旅行箱旁举臂伸懒腰，整理好的衣物留在箱内",
     "timeOfDay": "清晨",
     "lighting": "soft morning light through the window",
     "camera": "medium shot, from the side",
@@ -25,20 +25,19 @@
       "travel",
       "intimate"
     ],
-    "promptProse": "Beside the open suitcase, she holds the lid back and retrieves black lace caught beneath her knee.",
+    "promptProse": "Seated beside the open suitcase, she stretches both arms upward with a sleepy smile. Soft morning window light reaches her cuffs and the folded clothes inside the case.",
     "promptTokens": [
-      "adult",
       "open shirt",
       "topless",
-      "kneeling",
       "suitcase",
-      "looking back",
       "blush",
       "inn",
       "morning light",
       "medium shot",
       "ivory shirt",
-      "gray cuffs"
+      "gray cuffs",
+      "sitting",
+      "stretching"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

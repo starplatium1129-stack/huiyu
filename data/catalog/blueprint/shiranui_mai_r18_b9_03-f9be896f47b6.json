@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_r18_b9_03",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1749,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shiranui_mai_r18_b9_03",
     "title": "不知火舞 · 忍装背部注连绳结卡死崩裂的更衣事故 ·「呀！后背的粗绳死结解不开了……快来帮舞姐姐一把！」",
@@ -30,7 +30,7 @@
       "rope",
       "tied_up"
     ],
-    "promptProse": "Mai braces both hands on the dressing bench while knotted costume ropes pull her tunic tight; she looks back toward the offscreen companion for help in dusk light.",
+    "promptProse": "Mai braces both hands on the dressing bench while knotted ropes at the back pull her tunic tight; she looks back toward the offscreen companion for help in dusk light.",
     "promptTokens": [
       "red ninja outfit",
       "rope",
@@ -40,7 +40,10 @@
       "dressing room",
       "breast slip",
       "thong",
-      "cowboy shot"
+      "cowboy shot",
+      "sleeveless",
+      "white trim",
+      "thick white rope"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

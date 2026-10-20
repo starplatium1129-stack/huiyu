@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_r18_highrise_window_doggystyle_thrust",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1108,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "坐在窗前深潜服侧拉链拉开半露香肩大胸，脊柱接口泛光，单手探入紧身衣深抚，紫眸含泪娇喘",
     "adult": true,
@@ -25,7 +25,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "netrunner_suit",
-    "promptProse": "Lucy sits on the window cushion with one bent leg along the sill and her white netrunner suit unzipped at the side. One hand braces against the rain-streaked glass while the other touches her beneath the open suit, her spinal interfaces glowing against the city neon.",
+    "promptProse": "Lucy sits with one bent leg along the sill, her white netrunner suit unzipped at the side. One hand braces on the rainy window, the other beneath the suit; spinal ports glow against city neon.",
     "promptTokens": [
       "1girl",
       "solo",

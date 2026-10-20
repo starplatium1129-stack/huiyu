@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cheshire_azur",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "cheshire_azur",
     "profile": {
@@ -109,7 +109,7 @@
         "皇家重巡",
         "royal navy"
       ],
-      "identityProse": "Cheshire from Azur Lane, Royal Navy priority heavy cruiser with long flowing bluish-grey hair with subtle cyan streaks in twintails, an iconic black cat-ear headband, vivid jewel-green eyes, a lush curvy figure, and a joyful energetic smile.",
+      "identityProse": "Cheshire from Azur Lane, with long blue-gray twintails streaked cyan, a black cat-ear headband and vivid green eyes.",
       "identityTokens": [
         "cheshire (azur lane)",
         "1girl",
@@ -117,6 +117,7 @@
         "grey_hair",
         "blue_hair",
         "streaked_hair",
+        "long_hair",
         "twintails",
         "cat_ear_headband",
         "green_eyes",

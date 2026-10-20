@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_library_fox",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 637,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "捧着书，狐耳微微转动",
     "camera": "medium shot, open book and hands visible",
@@ -22,7 +22,7 @@
       "closed book"
     ],
     "outfitId": "standard",
-    "promptProse": "Suzuran holds the open picture book toward the viewer from her armchair, keeping a finger beside the story illustration. Warm afternoon light lies across the page and the tips of her curious fox ears.",
+    "promptProse": "Suzuran holds an open picture book toward the viewer from her armchair, a finger beside its illustration; afternoon light crosses the page and her fox-ear tips.",
     "promptTokens": [
       "picture book",
       "armchair",

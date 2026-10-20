@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_rooftop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tohsaka_rin_rooftop",
     "title": "远坂凛 · 学校天台",
@@ -29,7 +29,7 @@
       "sunset_light",
       "medium_shot"
     ],
-    "promptProse": "Rin keeps both hands on the rooftop fence and turns toward the viewer with a teasing smile. The evening wind lifts her twintails into the last warm edge of the sunset.",
+    "promptProse": "Rin keeps both hands on the rooftop fence and smiles teasingly toward the viewer, wind lifting her twintails into the sunset’s warm edge.",
     "promptTokens": [
       "hands on fence",
       "looking back",

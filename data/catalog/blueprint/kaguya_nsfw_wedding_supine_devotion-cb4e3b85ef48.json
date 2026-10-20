@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "kaguya_nsfw_wedding_supine_devotion",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 1405,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
-    "action": "仰卧床榻双腿微屈分开展露，黑发铺散枕面，手探腿间动情喘息，泪笑交织",
+    "action": "仰卧床榻双膝微屈，黑发铺散枕面，抬头望向近处，泪笑交织",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
     "camera": "cowboy shot, from above",
@@ -26,15 +26,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult, age-twenty-plus Kaguya lies on the bridal bed, her removed white bridal kimono beside the bedding. One hand rests on her chest while the other touches herself between her raised knees.",
+    "promptProse": "Adult Kaguya lies with bent knees and hair spread on the pillow, removed bridal kimono beside the bed. She lifts a tearful smile toward the viewer in lamplight.",
     "promptTokens": [
       "1girl",
       "solo",
       "nude",
       "on back",
       "bent knees",
-      "masturbation",
-      "hand between legs",
       "bed",
       "from above"
     ],
@@ -52,6 +50,16 @@
     ],
     "timeOfDay": "深夜",
     "title": "四宫辉夜 · 花嫁初夜的 conceded 誓约·「胜负……早就无所谓了」",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "identityTokensOverride": [
+      "shinomiya_kaguya",
+      "kaguya-sama wa kokurasetai ~tensai-tachi no renai zunousen~",
+      "1girl",
+      "solo",
+      "black hair",
+      "hair down",
+      "red eyes"
+    ],
+    "identityProseOverride": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with loose black hair, parted bangs, sidelocks, red eyes and gently downturned eye corners"
   }
 }

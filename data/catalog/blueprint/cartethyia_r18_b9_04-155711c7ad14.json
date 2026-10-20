@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_04",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1666,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "cartethyia_r18_b9_04",
     "title": "卡提希娅 · 圣殿寝宫大床上的誓约臣服独奏 ·「只要能追随在您的身后……这具身躯全部任您驱使」",
@@ -12,7 +12,7 @@
     "characterId": "cartethyia",
     "description": "【圣殿寝宫高台大床·深夜】骑士誓言彻底化作男女私情。卡提希娅完全赤裸地仰躺在纯白丝绸床榻上，长剑倒在床头。双腿大开，手指在滚烫泥泞的私处深处疯狂抽送，结实紧致的腹肌随着剧烈的高潮起伏弓起，眼角泛起动情的泪花——「漂泊者大人……圣骑士卡提希娅……发誓今生今世……只属于您一个人……哈啊……」",
     "location": "圣殿寝宫高台大床·深夜",
-    "action": "仰卧圣殿白床全裸自抚抽送，长发散落如流银，双腿大开弓身含泪绝顶",
+    "action": "仰卧圣殿白床全裸自抚抽送，金色长发散落，双腿大开弓身含泪绝顶",
     "timeOfDay": "night",
     "lighting": "silver_moonlight",
     "camera": "cowboy shot",
@@ -32,7 +32,6 @@
     ],
     "promptProse": "She lies on white silk with her sword against the bedpost and one hand between her legs. Moonlight passes through the sanctuary glass.",
     "promptTokens": [
-      "adult",
       "bedroom",
       "nude",
       "lying",

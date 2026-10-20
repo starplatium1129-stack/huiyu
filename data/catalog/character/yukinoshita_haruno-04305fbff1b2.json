@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yukinoshita_haruno",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 115,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "yukinoshita_haruno",
     "profile": {
@@ -89,14 +89,15 @@
         "阳乃小姐",
         "魔性姐姐"
       ],
-      "identityProse": "Haruno Yukinoshita from Oregairu, the alluring and enigmatic older sister of Yukino, a captivating beauty with shoulder-length glossy black hair, piercing sharp brown eyes with a dangerous intoxicating gaze, and a mature, composed figure",
+      "identityProse": "Haruno Yukinoshita from Oregairu, with shoulder-length black hair and brown eyes.",
       "identityTokens": [
         "yukinoshita_haruno",
         "oregairu",
         "1girl",
         "solo",
         "black hair",
-        "medium hair"
+        "medium hair",
+        "brown eyes"
       ],
       "exactTokens": [
         "yukinoshita_haruno"

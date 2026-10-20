@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_apartment",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 542,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在沙发扶手边，解开领口",
     "adult": true,
@@ -26,17 +26,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "standard",
-    "promptProse": "Adult Ch'en sits beside her sheathed sword, one hand on the armrest and the other between her thighs under the loosened uniform.",
+    "promptProse": "She sits beside the sofa armrest with her shirt's upper buttons undone, holding a beer can and looking toward the viewer with a faint blush. The living-room lamp warms the can and skirt edge.",
     "promptTokens": [
-      "adult",
       "apartment",
       "sofa",
       "white shirt",
-      "open shirt",
-      "topless",
-      "unfastened black skirt",
-      "crossed legs",
-      "hand between legs"
+      "loosened collar",
+      "black pleated skirt",
+      "beer can",
+      "sitting",
+      "blush",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

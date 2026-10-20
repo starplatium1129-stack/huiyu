@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1627,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_05",
     "title": "久远寺有珠 · 潮池里的玻璃魔法",
@@ -34,7 +34,8 @@
       "glowing seaweed",
       "tide pool",
       "afternoon",
-      "glass jar"
+      "glass jar",
+      "sitting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

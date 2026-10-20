@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc112",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
-    "animaCaption": "From the seated viewer's eye level, her hands brace the chair back on either side of their shoulders as she leans close; dim light from the rain-streaked window outlines her dark hair.",
+    "animaCaption": "From the seated viewer's low angle, she braces the chair back on either side of their shoulders and leans close; dim light from the rainy window outlines her hair.",
     "auditRevision": "careful-batch05-2026-08-27",
     "camera": "座椅上主观仰看的面部与扶椅双手近景",
     "category": "恋爱/同人",
@@ -48,7 +48,7 @@
       "壁纸级",
       "R15"
     ],
-    "weather": "窗外暴雨如注",
+    "weather": "骤雨初歇",
     "recommendedSize": "832x1216"
   }
 }

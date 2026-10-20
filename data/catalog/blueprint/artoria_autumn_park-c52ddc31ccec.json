@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "artoria_autumn_park",
     "title": "阿尔托莉雅 · 银杏长椅边的热茶",
@@ -32,7 +32,7 @@
       "leaf_shadows",
       "medium_shot"
     ],
-    "promptProse": "Seated with her knees together, she cups the warm tea in both hands beneath her face and smiles at its rising steam. Low sunlight from behind her left shoulder catches the scarf as the stone path curves behind the bench.",
+    "promptProse": "Seated with her knees together, she cups the warm tea in both hands beneath her face and smiles at its rising steam. Low sunlight from behind her left shoulder catches the scarf and blue hair ribbon, with shadows under the bench and beside her boots. The stone path curves behind the bench, a low stone railing separating it from the lawn beyond.",
     "promptTokens": [
       "park",
       "ginkgo",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc303",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 298,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
     "id": "sc303",
     "title": "暴雨夜的绝对坦诚",
@@ -37,10 +37,10 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, low_camera_between_raised_knees, 1girl, solo, adult_shiki_natsume, shiki_natsume, black_hair, long_hair, two_red_hairclips, mole_under_eye, yellow_eyes, naked, nude, bare_breasts, nipples, navel, pussy, lying_on_back_with_knees_raised_and_legs_spread_around_the_camera, anatomically_correct_torso, fair_skin, heavy_blush, sweat, messy_hair, intense_look, bedroom, bed, soft_shadows, rain_on_window, warm_lamp_lighting, sensual, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, young-looking, fused legs, closed legs, skirt, bra, shirt, standing, sitting, distant camera, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "natsume_r18, adult, visual novel event CG, low viewpoint, 1girl, solo, shiki_natsume, long hair, two_red_hairclips, nude, bare breasts, nipples, navel, pussy, lying, on back, knees up, spread legs, heavy blush, sweat, messy hair, intense gaze, bedroom, bed, soft shadows, rain on window, warm lamp light, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "fused legs, closed legs, skirt, bra, shirt, standing, sitting, distant camera, school uniform, gym uniform",
     "storyJa": "【大人のAfter Story・夏目・豪雨の夜の素直さ】窓に激しい雨が叩きつけられ、寝室には荒い呼吸だけが残っていた。夏目は乱れたベッドの上に仰向けに寝転び、両脚を上げてゆっくりと開き、裸の体をランプの光に晒している。胸も、脚の付け根の一番秘かな場所も、はっきりと見える。彼女はあなたを見つめ、掠れた声で言った。「よく見て。今夜、夏目は最後の場所まであなたに預けるわ。」",
-    "animaCaption": "In a medium shot in a dimly lit bedroom during a stormy night on soft bedding, she looks toward the viewer with an intense and resolute expression, under moody ambient lighting.",
+    "animaCaption": "On the rumpled bed, she raises both knees around the low viewpoint and looks directly at the viewer; a warm lamp lights her face against the rain-dark window.",
     "auditRevision": "careful-batch11-2026-08-27"
   }
 }

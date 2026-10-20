@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 279,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_03",
     "title": "美杜莎 Rider · 厨房里的围裙反差",
@@ -30,7 +30,7 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Medusa guides the kitchen knife with her right hand while her curled left fingertips steady the vegetables. The lunch box and her removed glasses rest beside the board in the morning light.",
+    "promptProse": "Medusa cuts vegetables with her right hand while curled left fingertips steady them. Her lunch box and removed glasses rest beside the board in morning light.",
     "promptTokens": [
       "1girl",
       "solo",

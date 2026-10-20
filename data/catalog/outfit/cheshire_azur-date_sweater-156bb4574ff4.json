@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "cheshire_azur/date_sweater",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 595,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "characterId": "cheshire_azur",
     "outfit": {
       "id": "date_sweater",
       "name": "奶油绞花露背毛衣与百褶裙",
-      "prose": "An ivory cable-knit sweater with an open back, a crisp black pleated skirt, sheer black tights and brown ankle boots. A small cat-face handbag adds her playful signature.",
+      "prose": "An ivory cable-knit sweater with an open back, a black pleated skirt, sheer black tights, brown ankle boots and a small cat-face handbag.",
       "tokens": [
         "ivory sweater",
         "cable knit",

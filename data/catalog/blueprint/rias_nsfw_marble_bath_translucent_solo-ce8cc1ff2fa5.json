@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_marble_bath_translucent_solo",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1288,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "rias_nsfw_marble_bath_translucent_solo",
     "title": "莉雅丝 · 玫瑰浴池的水光湿身私语",
@@ -30,7 +30,7 @@
       "heavy_blush",
       "sensual_solo"
     ],
-    "promptProse": "Adult Rias reclines against the marble bath ledge in her soaked robe, sliding one hand between her thighs beneath the rose-strewn water.",
+    "promptProse": "Adult Rias reclines against the marble bath ledge in her soaked robe, sliding one hand between her thighs beneath the rose-strewn water. Golden underwater spotlights shine through the rippling water and rising steam.",
     "promptTokens": [
       "red robe",
       "wet clothes",
@@ -38,7 +38,8 @@
       "hand between legs",
       "bathtub",
       "rose petals",
-      "steam"
+      "steam",
+      "silk robe"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

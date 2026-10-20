@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_convenience",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 5,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "raiden_shogun_convenience",
     "title": "成年雷电将军 · 团子甜点与紫电私语",
@@ -26,7 +26,7 @@
       "dango",
       "purple_lightning"
     ],
-    "promptProse": "The age-twenty-plus Ei holds a dango skewer while touching herself with the other hand, one bent leg securing the dessert box on the cushioned ledge.",
+    "promptProse": "Adult Ei holds the dango in one hand and touches herself with the other, one bent leg securing the dessert box on the ledge. Warm afternoon window light mingles with the soft purple Electro glow.",
     "promptTokens": [
       "adult",
       "black backless sweater",
@@ -37,7 +37,9 @@
       "female masturbation",
       "electricity",
       "window seat",
-      "afternoon"
+      "afternoon",
+      "turtleneck",
+      "sleeveless"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

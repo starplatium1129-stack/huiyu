@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_skirt_zipper_malfunction",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 367,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "iroha_nsfw_skirt_zipper_malfunction",
     "title": "一色彩羽 · 活动室百褶裙拉链卡壳事故 ·「别装君子啦……前辈明明想看很久了吧」",
@@ -12,9 +12,9 @@
     "characterId": "isshiki_iroha",
     "description": "【奉仕部活动室·放学后】换便服时制服百褶裙的侧边拉链突然卡死在丝袜边缘。彩羽双手撑在活动室窗台上，腰部被勒紧，裙摆卡在一半露出蕾丝内裤与饱满臀型。她侧脸回头，娇嗔地咬着下唇——「拉链真的拉不开了啦！前辈如果趁机碰奇怪的地方……我会去成年同事会举报你的哦？」",
     "location": "奉仕部活动室·放学后",
-    "action": "撑窗台塌腰回眸双手反剪扯拉链，百褶裙卡死勒出黑丝软肉，咬唇假意抗拒",
-    "timeOfDay": "深夜",
-    "lighting": "柔和暖光与唯美阴影交错",
+    "action": "双手撑住活动室窗台，回头示意卡在丝袜边缘的侧拉链，裙摆停在原来的位置。",
+    "timeOfDay": "放学后的黄昏",
+    "lighting": "窗外金色暮光照入活动室，窗台在背光处留下清楚的投影",
     "camera": "horizontal POV, wide shot",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
@@ -24,7 +24,7 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Adult Iroha leans over the windowsill with her skirt zipper caught in her tights and the hem raised over lace underwear. She looks back in the golden dusk light.",
+    "promptProse": "Adult Iroha braces both hands on the windowsill with her skirt zipper caught in her tights and the hem raised over lace underwear. She looks back in the golden dusk light.",
     "nsfwProse": "",
     "promptTokens": [
       "adult",

@@ -174,9 +174,10 @@
             <ImageCompareSlider
               :before-src="parentImageUrl || thumbUrls[current!.id]"
               :after-src="viewerUrl"
-              :before-label="parentImageUrl ? '修改前原图' : '缩略图预览'"
+              :before-label="parentImageLabel"
               after-label="当前成片"
             />
+            <p v-if="parentImageStatus.message" class="viewer-compare-notice" role="status"><span>{{ parentImageStatus.message }}</span><button v-if="parentImageStatus.failed" class="btn btn-ghost btn-sm" type="button" @click="retryComparisonOriginal">重新读取修改前原图</button></p>
           </div>
           <component :is="PhotoSwipeStage" v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="failGesture" />
         </template>
@@ -409,13 +410,17 @@ compareMode,
 hasComparableImage,
 viewerUrl, viewerLoadFailed, retryViewerImage,
 neighborPreviews,
-parentImageUrl,
+parentImageUrl, parentImageLabel, parentImageStatus, retryParentImage,
 current,
 characterName,
 facts,
 downloadCurrent, downloading,
 copyPrompt
 } = workspace
+function retryComparisonOriginal(event: MouseEvent) {
+  if (event.currentTarget instanceof HTMLElement) event.currentTarget.closest('.viewer-compare-host')?.querySelector<HTMLElement>('[role="slider"]')?.focus({ preventScroll:true })
+  void retryParentImage()
+}
 const cardLabels = computed(() => new Map(pagedVisible.value.map(item => [item.id, {
   title: sceneTitle(item.scene, item), character: characterName(item.character, item), date: formatDate(stamp(item)),
 }])))

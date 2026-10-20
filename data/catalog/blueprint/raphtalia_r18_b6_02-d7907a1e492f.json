@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_r18_b6_02",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1574,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "raphtalia_r18_b6_02",
     "title": "拉芙塔莉雅 · 森林清泉水雾中的兽耳水光湿身 ·「被尚文大人洗过尾巴……身体就会变得好烫」",
@@ -30,7 +30,7 @@
       "forest",
       "water_droplets"
     ],
-    "promptProse": "Adult Raphtalia touches herself in the forest brook beneath a wet white covering, her tail moving across the water in the dawn light.",
+    "promptProse": "Seated on a rock in the forest brook, adult Raphtalia touches herself beneath a wet white covering, her tail moving across the water in the dawn light.",
     "promptTokens": [
       "nude",
       "wet cloth",

@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/official_miko_robe",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 698,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "official_miko_robe",
       "name": "传统神道绯袴巫女服",
-      "prose": "her traditional Japanese shrine maiden miko attire: a pristine white haori kimono top with wide flowing sleeves, a vibrant red hakama pleated skirt, and an orange decorative tie at the collar",
+      "prose": "A white wide-sleeved kimono top, red pleated hakama and an orange collar tie.",
       "tokens": [
         "miko",
         "white kimono",
         "wide sleeves",
         "red hakama",
-        "orange ribbon"
+        "orange neck ribbon"
       ],
       "default": true,
       "isDefault": true

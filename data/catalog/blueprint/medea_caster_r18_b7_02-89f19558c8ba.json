@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_02",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 310,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "medea_caster_r18_b7_02",
     "title": "美狄亚 · 龙牙魔药温汤水光湿身独奏 ·「神代的魔药……也治不好想念您的相思之毒」",
@@ -12,7 +12,7 @@
     "characterId": "medea_caster",
     "description": "【工房药草汤池·夜】散发着神代草药芬芳的水池。美狄亚赤裸地倚在雕花石壁上，薄透的紫色薄纱浸水后紧贴在成熟曼妙的胸腰曲线上。单手在热水中抚弄着自己早已湿透的私处，尖耳泛起艳丽的红晕——「宗一郎大人……只要看着您的背影……我就无法自控……」",
     "location": "工房药草汤池·夜",
-    "action": "靠石壁紫纱湿透贴身，尖耳通红手探水底自抚，紫眸迷醉仰头轻喘",
+    "action": "靠石壁紫纱湿透贴身，尖耳通红手探水底自抚，蓝眸迷醉仰头轻喘",
     "timeOfDay": "night",
     "lighting": "liquid_reflection_lighting",
     "camera": "intimate vertical medium shot",
@@ -30,7 +30,7 @@
       "steam",
       "water_droplets"
     ],
-    "promptProse": "Medea rests against the basalt spring edge, touching herself beneath the water as her soaked purple silk clings to her chest.",
+    "promptProse": "Medea rests against the carved stone wall of the herbal pool, touching herself beneath the water as her soaked purple silk clings to her chest; water reflections move across the carved stone.",
     "promptTokens": [
       "1girl",
       "solo",

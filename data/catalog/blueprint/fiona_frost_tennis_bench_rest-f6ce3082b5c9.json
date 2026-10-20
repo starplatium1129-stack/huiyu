@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_tennis_bench_rest",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 819,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "fiona_frost_tennis_bench_rest",
     "characterId": "fiona_frost",
@@ -28,7 +28,7 @@
       "spotlight",
       "rest_break"
     ],
-    "promptProse": "A towel rests across her shoulders as she drinks from the open bottle on the bench; her racket leans against her knee beneath the court lights.",
+    "promptProse": "Seated sideways on the bench with a towel across her shoulders, she drinks from the open bottle while her racket leans against her knee. Soft court floodlights reach her from behind and to the side.",
     "promptTokens": [
       "towel",
       "racket",

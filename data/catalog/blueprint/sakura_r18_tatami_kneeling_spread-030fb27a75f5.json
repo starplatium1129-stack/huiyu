@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_tatami_kneeling_spread",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 178,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "sakura_r18_tatami_kneeling_spread",
     "characterId": "matou_sakura",
@@ -14,22 +14,20 @@
     "sceneTags": [
       "tatami",
       "japanese_room",
-      "open_apron",
-      "bottomless",
-      "kneeling_spread",
-      "exposed_pussy",
-      "detailed_vulva",
-      "large_breasts",
-      "pink_nipples",
-      "teary_blush"
+      "white_apron",
+      "naked_apron",
+      "kneeling",
+      "sitting_on_heels",
+      "teary_eyes",
+      "paper_lantern"
     ],
-    "promptProse": "The age-twenty-plus Sakura kneels on her heels and opens one knee while gathering her apron hem, violet magic curling around her beneath lantern light.",
+    "promptProse": "Adult Sakura sits on her heels wearing only the white apron, looking tearfully toward the off-frame viewer. Lantern light reaches her face and the near tatami; the room recedes into shadow.",
     "promptTokens": [
       "white apron",
       "kneeling",
+      "sitting on heels",
       "tatami",
       "futon",
-      "purple magic",
       "lantern",
       "frills"
     ],

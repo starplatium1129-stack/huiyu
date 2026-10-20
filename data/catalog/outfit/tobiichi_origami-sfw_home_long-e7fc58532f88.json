@@ -1,23 +1,34 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_home_long",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "sfw_home_long",
       "name": "浅蓝长袖居家套装",
-      "prose": "A pale-blue blouse with a small stand collar pairs with an ivory ankle-length skirt, its narrow pleats falling in a clean line.",
+      "prose": "A pale-blue stand-collar blouse and ivory ankle-length skirt with narrow pleats.",
       "tokens": [
         "pale blue blouse",
+        "stand collar",
         "long sleeves",
-        "ivory long skirt"
+        "ivory ankle-length skirt",
+        "narrow pleats"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "identityTokensOverride": [
+        "tobiichi_origami",
+        "date_a_live",
+        "white_hair",
+        "long_hair",
+        "blue_eyes",
+        "hair_ornament"
+      ],
+      "identityProseOverride": "Origami Tobiichi from Date A Live, with waist-length snow-white hair, pale blue eyes and a hair ornament."
     }
   }
 }

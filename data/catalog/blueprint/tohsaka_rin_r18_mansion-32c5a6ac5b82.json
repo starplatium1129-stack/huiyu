@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_mansion",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 150,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tohsaka_rin_r18_mansion",
     "title": "远坂凛 · 魔术工房·暖炉夕照与红毛衣松垮过膝袜",
@@ -47,7 +47,7 @@
       "detailed_background",
       "intimate"
     ],
-    "promptProse": "Rin adjusts her hair ribbons on the stool, one foot raised and its stocking slouched while her sweater slips open in stove and sunset light.",
+    "promptProse": "Rin stands beside the stool with one foot on its edge, its stocking slouched, and adjusts her hair ribbons with both hands; her sweater slips open in stove and sunset light.",
     "promptTokens": [
       "adult Rin",
       "red backless sweater",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_r18_uniform_off",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 989,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "淋浴间百叶窗晨光下敞开军装衬衫擦发回眸",
     "adult": true,
@@ -13,17 +13,17 @@
     "category": "成人",
     "characterId": "mikasa_ackerman",
     "coverageTags": [],
-    "description": "【三笠 · 训练营阳光淋浴间热气擦拭】（彻底重构单调木床）清晨训练结束后的淋浴间木隔断旁，三笠穿着敞襟军装衬衫与松开的长裤擦拭湿润黑发，红围巾搭在木栏杆上，晨光穿透百叶窗，水汽与水珠在白皙锁骨、纤细腰肢与饱满胸型上泛着晶莹光泽，回眸浅笑。",
+    "description": "【三笠 · 训练营阳光淋浴间热气擦拭】清晨训练结束后的淋浴间木隔断旁，三笠穿着敞襟军装衬衫与松开的长裤擦拭湿润黑发，红围巾搭在木栏杆上，晨光穿透百叶窗，水汽与水珠在白皙锁骨、纤细腰肢与饱满胸型上泛着晶莹光泽，回眸浅笑。",
     "id": "mikasa_ackerman_r18_uniform_off",
     "kreaStyleHint": "",
     "lighting": "morning sunlight through washroom blinds, reflected softly by the steam",
-    "location": "月华露台",
+    "location": "训练营淋浴间木隔断与百叶窗旁",
     "mood": "湿身清爽温情",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "military_underlayer",
-    "promptProse": "Adult Mikasa wipes her chest with a cloth in one hand and loosens the damp thigh bandage with the other. She sits on the washroom bench with her military shirt open under the morning light.",
+    "promptProse": "Mikasa towels her hair beside the washroom partition, military shirt open and trousers loose. Her red scarf rests on the rail; blind-cast sunlight crosses the steam as she looks back.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -31,10 +31,12 @@
       "open white military shirt",
       "bare breasts",
       "loose trousers",
-      "wiping sweat",
-      "thigh bandage",
-      "bench",
-      "washroom"
+      "drying hair",
+      "towel",
+      "red scarf on rail",
+      "wooden partition",
+      "washroom",
+      "morning"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -54,7 +56,7 @@
       "firm_breasts",
       "daylight"
     ],
-    "timeOfDay": "月夜",
+    "timeOfDay": "清晨",
     "title": "三笠 · 训练营阳光淋浴间热气擦拭"
   }
 }

@@ -83,14 +83,15 @@ export function characterControlTokens(
   activeLoras: Record<string, string> = {},
 ): string[] {
   if (!scene) return []
-  const source = normalizeKey([scene.prompt || '', ...(scene.tags || [])].join(','))
+  // Search/display tags are metadata, not authored model instructions.
+  const source = normalizeKey(scene.prompt || '')
   const controls: string[] = []
   const includesNene = character === 'nene' || character === 'triad'
   const includesNatsume = character === 'natsume' || character === 'triad'
   const neneSupportsControls = /ayachi_nene_v(?:18|19|[2-9]\d)/i.test(activeLoras.nene || '')
-    || /^L_NENE_V(?:18|19|20)/i.test(activeLoras.nene || '')
+    || /^L_NENE_V(?:18|19|[2-9]\d)/i.test(activeLoras.nene || '')
   const natsumeSupportsControls = /shiki_natsume_v(?:17|18|19|[2-9]\d)/i.test(activeLoras.natsume || '')
-    || /^L_NAT_V(?:17|18|19|20)/i.test(activeLoras.natsume || '')
+    || /^L_NAT_V(?:17|18|19|[2-9]\d)/i.test(activeLoras.natsume || '')
 
   if (includesNene && neneSupportsControls) {
     if (sceneRating(scene) === 'R18') controls.push('nene_r18')

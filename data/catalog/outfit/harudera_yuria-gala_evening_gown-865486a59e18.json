@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/gala_evening_gown",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 656,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
@@ -12,13 +12,13 @@
       "name": "潜入夜宴露背深蓝晚礼服",
       "prose": "a backless midnight-navy silk gown with a plunging sweetheart neckline and side slit, diamond drop earrings, opera gloves and silver strappy heels",
       "tokens": [
-        "navy evening gown",
+        "navy silk evening gown",
         "backless dress",
-        "plunging neckline",
+        "plunging sweetheart neckline",
         "side slit",
         "diamond earrings",
         "elbow gloves",
-        "high heels"
+        "silver strappy heels"
       ],
       "default": false,
       "isDefault": false

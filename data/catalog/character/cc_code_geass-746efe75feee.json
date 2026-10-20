@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cc_code_geass",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 101,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "cc_code_geass",
     "profile": {
@@ -116,7 +116,7 @@
       ],
       "franchise": "Code Geass",
       "id": "cc_code_geass",
-      "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, and a serene, detached yet intimately teasing smile",
+      "identityProse": "C.C. from Code Geass, with knee-length lime-green hair and golden-amber eyes.",
       "identityTokens": [
         "c.c._(code_geass)",
         "green_hair",

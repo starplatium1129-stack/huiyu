@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_summer_festival_yukata",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 778,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "手持红彤彤的苹果糖递向镜头，回眸浅笑",
     "camera": "medium shot",
@@ -24,8 +24,7 @@
       "offering",
       "lantern",
       "night",
-      "medium shot",
-      "hair bun"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +39,17 @@
       "light_blue_yukata"
     ],
     "timeOfDay": "夏夜",
-    "title": "艾莉莎·米哈伊洛夫娜·九条 · 夏日祭典·和风浴衣与苹果糖"
+    "title": "艾莉莎·米哈伊洛夫娜·九条 · 夏日祭典·和风浴衣与苹果糖",
+    "identityTokensOverride": [
+      "alisa_mikhailovna_kujou",
+      "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+      "1girl",
+      "solo",
+      "silver_hair",
+      "blue_eyes",
+      "hair_bun",
+      "blue_ribbon"
+    ],
+    "identityProseOverride": "Alisa Mikhailovna Kujou from Alya Sometimes Hides Her Feelings in Russian, with silver hair pinned into a bun with blue ribbons and blue eyes."
   }
 }

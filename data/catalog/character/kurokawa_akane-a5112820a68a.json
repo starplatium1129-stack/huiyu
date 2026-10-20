@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kurokawa_akane",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "kurokawa_akane",
     "profile": {
@@ -118,7 +118,7 @@
       ],
       "franchise": "Oshi no Ko",
       "id": "kurokawa_akane",
-      "identityProse": "Kurokawa Akane from Oshi no Ko, a slim cool-beauty actress with blue-violet long straight hair and blue-purple eyes, who gains intense brilliant star-shaped pupils during passionate performances",
+      "identityProse": "Kurokawa Akane from Oshi no Ko, with long blue-violet hair and blue-violet eyes that develop star-shaped pupils during performances.",
       "identityTokens": [
         "kurokawa_akane",
         "1girl",

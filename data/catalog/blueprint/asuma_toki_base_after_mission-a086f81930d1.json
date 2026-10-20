@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_base_after_mission",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 877,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在装甲旁检查模块，空出的手按着大腿上的淤伤。",
     "adult": true,
@@ -26,9 +26,8 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_white_combat_suit",
-    "promptProse": "Adult Toki examines a damaged module beside discarded armor, her free hand at a bruised inner thigh. Emergency light fills the room.",
+    "promptProse": "She examines a damaged module beside discarded armor, her free hand at a bruised inner thigh. Blue emergency light falls from the side across the workbench in the dim room.",
     "promptTokens": [
-      "adult",
       "base interior",
       "black and white combat suit",
       "torn clothes",

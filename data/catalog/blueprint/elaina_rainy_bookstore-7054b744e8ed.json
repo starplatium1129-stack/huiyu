@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 385,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "elaina_rainy_bookstore",
     "title": "伊雷娜 · 雨天书店",
@@ -32,7 +32,7 @@
       "warm_interior_lamps",
       "medium_shot"
     ],
-    "promptProse": "She supports the open spellbook in her left hand and turns a page with the right; the closed umbrella leans against her chair and a cup rests on the sill. Cool window light from the left meets warm shop lamps behind her.",
+    "promptProse": "She supports the open spellbook in her left hand and turns a page with the right; the closed umbrella leans against her chair and a cup rests on the sill. Waist-high bookcases lead into a narrow aisle behind her, while the wet stone street is visible beyond the rain-streaked window. Cool window light from the left meets warm shop lamps behind her to the right, with contact shadows under the chair legs and umbrella tip.",
     "promptTokens": [
       "sitting",
       "reading",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_shower_steam_translucent",
-  "revision": 5,
+  "revision": 9,
   "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "全裸立于花洒水幕下，水珠顺着白皙肩颈与胸腹流淌，仰头轻抚锁骨",
     "adult": true,
@@ -23,15 +23,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "The age-twenty-plus Alya rests one foot on a stone stool, one hand against the shower wall and the other between her thighs beneath the running water.",
+    "promptProse": "Viewed through the steamy shower glass, she tilts her face upward beneath the water with one hand at her collarbone. Warm bathroom light diffuses through the steam and outlines her wet hair.",
     "promptTokens": [
-      "adult",
       "nude",
       "shower",
       "frosted glass",
       "steam",
-      "raised leg",
-      "masturbation"
+      "wet hair",
+      "standing",
+      "looking up",
+      "hand on collarbone",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc224",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
     "animaCaption": "She catches the dress hem in both hands and turns toward the viewer at the rooftop door, feathered wings spread behind her; sunset rims the feathers and her windblown hair above her visible shoes.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "extra wings, cropped feet",
-    "prompt": "1girl, ayachi_nene, petal layered skirt, pearl waist chain, scalloped neckline, white angel dress, feathered wings, halo, holding hem, rooftop, sunset, full body",
+    "prompt": "1girl, ayachi_nene, petal layered skirt, pearl waist chain, scalloped neckline, white angel dress, feathered wings, halo, holding hem, rooftop, sunset, full body, centered composition",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 天台天使装反差萌】学园祭前夕被晚霞染红的学校天台。为了帮戏剧部试衣，宁宁换上了一套极其精致的纯白圣洁天使连衣裙，背后一对洁白的羽毛翅膀与头顶的发光光环在强烈的夕阳逆光中散发着神圣的光晕。微风吹过，她银白色的低双马尾与裙摆一同飞扬。原本正有些羞耻地在镜子前练习动作，一回头却发现你正靠在门边含笑注视着她。宁宁瞬间满脸通红，头顶的呆毛慌乱地跟着翅膀一起颤动起来，急忙用手捂住裙摆大声自曝——「呜啊！柊、柊史！什么时候进来的啦！不准看！人家、人家只是帮戏剧部试一下衣服而已，绝对没有故意穿成这样在等你哦……呜，笨蛋，快转过头去！」",

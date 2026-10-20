@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc106",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
     "id": "sc106",
     "title": "安全屋的绝对盲区",
@@ -46,11 +46,11 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, solo, (POV male hand firmly pinning her wrist overhead against concrete wall:1.7), second male hand lifting her chin, close face-to-face distance, black tactical vest, thigh holster, (black tactical vest:1.55), utility belts, pinned against a concrete safehouse wall, tense close contact, shiki_natsume, mole_under_eye, tactical_gear, unzipped, cleavage, trapped_by_viewer, leaning_against_wall, heavy_blush, tears_in_eyes, tsundere, bare_legs, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, underwear, pants, panties, hoodie, swimsuit, casual jacket, standing alone, empty hands, no interaction, distant full body, child, loli, underage",
+    "prompt": "1girl, solo, shiki_natsume, (POV male hand firmly pinning her wrist overhead against concrete wall:1.7), (black tactical vest:1.55), thigh holster, utility belts, tactical_gear, unzipped, cleavage, trapped_by_viewer, leaning_against_wall, heavy_blush, tears_in_eyes, tsundere, bare_legs, safehouse, night, strong_shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "pants, hoodie, swimsuit, casual jacket, distant full body",
     "storyJa": "【夏目・緻密な戦術的統一守備が崩壊】任務が撤収された後の秘密の隠れ家は、空気がほんのりと暖かかった。普段は飄々として堅物だった夏目が、あなたに後ろ手に組まれて少し恥ずかしい様子で壁に釘付けになりました。彼が着ていたぴったりとした黒のエージェントジャンプスーツは、襟から腹部まで引き開かれ、誇らしげなラインと内側の繊細で赤らんだ皮膚の広い領域が明らかになりました。極度の恥ずかしさと素早い喘ぎに、彼女の目尻の泣きぼくろが激しく震えた。彼女はまだ執拗に悪態をつきながらも、あなたの強引なキスを歓迎するために、率先して涙目で目を閉じました。――「もう、この変態店長……それ以上からかったら、本気で怒るから。」",
     "rating": "R18",
     "auditRevision": "careful-batch11-2026-08-27",
-    "animaCaption": "In a close-up framing in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "The viewer's second hand lifts her chin at close face-to-face distance against the concrete wall. A tactical flashlight strikes from one side, leaving the safehouse dark beyond them."
   }
 }

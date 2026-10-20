@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_lunar_tear_field_blindfold_touch",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1114,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yorha_2b_lunar_tear_field_blindfold_touch",
     "title": "2B · 月之泪花海的微风轻拂",
@@ -31,7 +31,7 @@
       "god_rays",
       "peaceful"
     ],
-    "promptProse": "2B kneels among the white Lunar Tears and touches the edge of her blindfold with her right fingertips. Light from the ceiling fissure reaches her glove and the blossoms moving beside her black skirt.",
+    "promptProse": "2B kneels on one knee among the white Lunar Tears and touches the edge of her blindfold with her right fingertips. Light from the ceiling fissure reaches her glove and the blossoms moving beside her black skirt.",
     "promptTokens": [
       "kneeling",
       "Lunar Tears",

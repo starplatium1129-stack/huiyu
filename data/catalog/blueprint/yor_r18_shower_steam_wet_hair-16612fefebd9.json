@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_shower_steam_wet_hair",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 813,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yor_r18_shower_steam_wet_hair",
     "characterId": "yor_forger",
@@ -20,28 +20,28 @@
       "spy",
       "mirror"
     ],
-    "promptProse": "Yor keeps her hair raised with one hand and touches herself with the other, one foot braced on the shower bench.",
+    "promptProse": "Adult Yor looks back from beside the steaming shower while slipping the golden needle from the towel’s edge into a drawer. Her wet hair rests against her back in the warm bathroom light.",
     "promptTokens": [
       "Yor Forger",
       "shower",
       "steam",
-      "foot up",
-      "holding hair",
-      "looking back"
+      "wet hair",
+      "looking back",
+      "drawer",
+      "towel",
+      "golden needle"
     ],
     "negativeTokens": [],
     "adult": true,
     "adultEligibility": "adult",
     "adultArtistHint": "@rella",
     "nsfwTokens": [
-      "nude",
-      "masturbation",
-      "hand between legs"
+      "nude"
     ],
     "nsfwProse": "",
     "category": "私密写真",
     "location": "福杰家浴室",
-    "action": "湿发贴背回眸，浴巾旁搁着荆棘针",
+    "action": "淋浴旁湿发贴背回眸，一手把浴巾边的荆棘针收进抽屉",
     "timeOfDay": "夜晚",
     "lighting": "warm bathroom lamp glow, dense steam, soft water reflections",
     "camera": "medium shot",
@@ -49,6 +49,18 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "identityTokensOverride": [
+      "yor_briar",
+      "1girl",
+      "solo",
+      "black hair",
+      "long hair",
+      "hair_down",
+      "red eyes",
+      "flower earrings",
+      "spy x family"
+    ],
+    "identityProseOverride": "Adult Yor Forger from SPY x FAMILY, with long wet black hair resting against her back, red eyes and gold rose earrings."
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_r18_b5_01",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1425,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
-    "action": "跪坐酒店大床侧马尾轻晃，挑起下巴坏笑，开衫大敞饱满双峰主动下压",
+    "action": "在酒店床上跨坐视角腿间侧马尾轻晃，挑起下巴坏笑，开衫大敞饱满双峰主动下压",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
     "camera": "medium shot, low angle",
@@ -27,7 +27,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "beige_cardigan_blue_lace",
-    "promptProse": "Adult Hayasaka kneels on the hotel bed and lifts the offscreen viewer's chin with her fingertips, her cardigan open and bralette lowered beneath her chest.",
+    "promptProse": "She sits astride the viewer's lap on the hotel bed and lifts their chin with her fingertips, her cardigan open and bralette lowered beneath her chest.",
     "promptTokens": [
       "adult",
       "hotel room",
@@ -37,11 +37,12 @@
       "blue lace bra",
       "bra pull",
       "topless",
-      "kneeling",
+      "straddling",
       "leaning forward",
       "smirk",
       "night",
-      "from below"
+      "from below",
+      "side ponytail"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,7 +54,6 @@
       "cowgirl_position",
       "on_lap",
       "gyaru",
-      "office_uniform",
       "cardigan",
       "open_clothes"
     ],

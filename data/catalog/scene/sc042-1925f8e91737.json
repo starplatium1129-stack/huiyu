@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc042",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
-    "animaCaption": "Keeping her face turned toward the pillow, she reaches back from beneath the blanket to find the viewer's palm.",
+    "animaCaption": "Keeping her face turned toward the pillow, she reaches back past the blanket edge to find the viewer's palm.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "枕边侧面与毯外牵手近景",
     "category": "恋爱",

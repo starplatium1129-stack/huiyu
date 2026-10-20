@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_workbench_bomb_defusal_tools",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1190,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "sachi_workbench_bomb_defusal_tools",
     "title": "小岭幸 · 地下工坊的硬核防爆拆解",
@@ -31,7 +31,7 @@
       "focused",
       "pink_hair"
     ],
-    "promptProse": "Sachi bends over the apparatus with a screwdriver in her gloved hand, watching the small assembly on the workbench. The cold-white lamp isolates her hands and the metal parts against the dim workshop.",
+    "promptProse": "Sachi bends over the apparatus with a screwdriver in one gloved hand and wire cutters in the other, watching the small assembly on the workbench. The cold-white lamp isolates her hands and the metal parts against the dim workshop.",
     "promptTokens": [
       "gloves",
       "workbench",

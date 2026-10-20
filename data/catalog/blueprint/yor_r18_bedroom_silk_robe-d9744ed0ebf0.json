@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_bedroom_silk_robe",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "yor_r18_bedroom_silk_robe",
     "title": "约尔·福杰 · 浴后睡袍",
@@ -16,7 +16,7 @@
     "location": "主卧床边",
     "action": "浴后站在床边，睡袍滑落肩头",
     "timeOfDay": "night",
-    "lighting": "warm_lamp_light",
+    "lighting": "卧房烛光在真丝睡袍边缘形成柔和暖亮部",
     "camera": "side view, medium shot, horizontal framing",
     "mood": "sensual",
     "sceneTags": [
@@ -29,22 +29,20 @@
       "night",
       "soft_glow"
     ],
-    "promptProse": "Yor tightens the loose sash around one thigh while fingering herself, her robe gathered below her breasts on the canopy bed.",
+    "promptProse": "Adult Yor stands beside the bed after her bath, the black silk robe slipping from one shoulder as she lowers her gaze. Candlelight traces the soft fabric folds.",
     "promptTokens": [
       "Yor Forger",
       "black silk robe",
-      "sash",
-      "kneeling",
-      "canopy bed",
+      "off shoulder",
+      "standing",
+      "bedroom",
       "candlelight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "nsfwProse": "",
     "nsfwTokens": [
-      "topless",
-      "masturbation",
-      "hand between legs"
+      "topless"
     ],
     "kreaStyleHint": "r18_elegant_boudoir",
     "animaStyleHint": "r18_elegant_boudoir",

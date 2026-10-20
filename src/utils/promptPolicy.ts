@@ -28,11 +28,8 @@ export type { PromptScene } from './sceneFraming.ts'
 //       framing 冲突消解、场景模板净化、结构健康报告
 
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
-import {
-  sanitizeNatsumeSoloTemplate,
-  sanitizeNeneSoloTemplate,
-  sanitizeSoloTemplate,
-} from './soloTemplateSanitize.ts'
+import { sanitizeSoloTemplate } from './soloTemplateSanitize.ts'
+import { compositionIntent, compositionNegative } from './blueprintComposition.ts'
 
 export { sanitizeSoloTemplate } from './soloTemplateSanitize.ts'
 
@@ -340,7 +337,7 @@ export function assembleNegative(
   const merged = engine === 'sd'
     ? mergeTokenText(custom, NEGATIVE_PROTECTION, profileNegative)
     : profileNegative
-  const adapted = adaptNegative(merged, scene, { shot: context.shot, character: context.character, ratingMode: profile?.rating_mode })
+  const adapted = compositionNegative(adaptNegative(merged, scene, { shot: context.shot, character: context.character, ratingMode: profile?.rating_mode }), scene)
   const formatted = engine === 'anima' ? formatPromptForProfile(adapted, profile, engine) : adapted
   if (profile?.strip_quality_tokens === true) {
     return tokenize(formatted).filter(token => !/^score_\d+$/i.test(normalizeKey(token))).join(', ')
@@ -423,9 +420,6 @@ export function enrichDualPrompt(template: string, neneTags: string[], natsumeTa
   return `${[global, enrichedLeft].filter(Boolean).join(', ')} BREAK ${enrichedRight}`
 }
 
-// ── 单人引擎防分身净化已收敛至 ./soloTemplateSanitize.ts（2026-09-05 单体拆分，
-//    三个 sanitize 函数共享 sanitizeSections 内核，行为不变）
-
 /** 场景是否支持该角色（避免把宁宁场景套到夏目身上） */
 export function sceneSupportsCharacter(scene: PromptScene | null | undefined, char: string): boolean {
   if (!scene) return false
@@ -463,16 +457,10 @@ export function sceneTemplateText(
       ['ayachi_nene', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes', 'ahoge', 'hair_ribbon'],
       ['shiki_natsume', 'black_hair', 'long_hair', 'yellow_eyes', 'mole_under_eye', 'hairclip'],
     )
-  } else if (opts.char === 'natsume') {
-    // The character line supplies the canonical identity; scenes remain solo regardless of old interaction tags.
-    template = sanitizeNatsumeSoloTemplate(template)
-  } else if (opts.char === 'nene') {
-    template = sanitizeNeneSoloTemplate(template)
   }
-  // 单人创作模式：只要不是显式双人组合（triad），无论任何引擎，强制净化掉多余主体词（如 2girls）
+  // Explicit group scenes retain companions even when only the main character is selected.
   const isDualScene = opts.char === 'triad' || scene?.char === 'triad' || scene?.char === 'both'
-  const capabilities = resolveDrawCapabilities(opts.engine || 'sd', opts.profile)
-  if (!isDualScene || !capabilities.dualCharacter) {
+  if (compositionIntent(scene) === 'single' && (!isDualScene || !resolveDrawCapabilities(opts.engine || 'sd', opts.profile).dualCharacter)) {
     template = sanitizeSoloTemplate(template)
   }
   // 姿势消解：当 manualTags（如反推采纳）中已有明确姿势时，场景模板中异组旧姿势自动让位

@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_r18_b6_03",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 1615,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "mouri_ran_r18_b6_03",
     "title": "毛利兰 · 伊豆海滩更衣室红色比基尼系带松脱事故 ·「呀！比基尼后背系带滑开了……新一快转过去！」",
     "category": "更衣事故",
     "characterId": "mouri_ran",
-    "description": "【伊豆海滨更衣木屋·午后】准备去海滩游泳换衣服时，大红色分体比基尼的脖颈挂脖细绳意外解开。小兰双手护在胸前撑在木质更衣台上，健美修长的小麦色身躯在阳光下闪闪发亮，胸口布料滑落，两团极富弹性的雪峰直接溢出掌心，下身系带微型泳裤卡在紧实翘臀间。她慌忙回头满脸通红——「新一！不许看！……快闭上眼睛帮我系好啦！」",
+    "description": "【伊豆海滨更衣木屋·午后】准备去海滩游泳换衣服时，大红色分体比基尼的脖颈挂脖细绳意外解开。小兰左掌撑在木质更衣台上，右手按住胸前滑落的泳衣布料，健美修长的小麦色身躯在阳光下闪闪发亮，胸口布料滑落，两团极富弹性的雪峰直接溢出掌心，下身系带微型泳裤卡在紧实翘臀间。她慌忙回头满脸通红——「新一！不许看！……快闭上眼睛帮我系好啦！」",
     "location": "伊豆海滨更衣木屋·午后",
-    "action": "撑更衣台塌腰回眸双手护胸比基尼滑脱，健美翘臀紧绷，羞急咬唇跺脚",
+    "action": "左掌撑住更衣台、右手按住滑落的泳衣前片，俯身回头求助，脸颊通红。",
     "timeOfDay": "afternoon",
     "lighting": "warm_cinematic_lighting",
     "camera": "intimate horizontal medium shot",
@@ -30,7 +30,7 @@
       "strap_slip",
       "open_clothes"
     ],
-    "promptProse": "Adult Ran bends over the changing-hut bench as her bikini neck tie comes undone, trying to cover her chest while looking back in embarrassment.",
+    "promptProse": "Ran braces her left palm on the changing bench and holds the loose bikini front with her right, looking back to her off-frame companion. The undone neck tie hangs in afternoon light.",
     "promptTokens": [
       "red bikini",
       "untied bikini",

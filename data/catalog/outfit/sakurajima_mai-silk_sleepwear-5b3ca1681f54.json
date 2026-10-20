@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/silk_sleepwear",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
@@ -16,7 +16,7 @@
         "spaghetti straps",
         "matching shorts"
       ],
-      "prose": "a pearl-grey silk camisole with slim shoulder straps and matching loose shorts, finished with a narrow tonal edge",
+      "prose": "A pearl-gray silk camisole with narrow straps and matching loose shorts.",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

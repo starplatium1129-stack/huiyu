@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_jade_bath",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 656,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
-    "action": "倚在玉池边，一手稳住池沿酒杯，另一手在花瓣水面下",
+    "action": "倚在白玉池壁，一手稳住池沿酒杯，另一手轻拨水面桃花瓣。",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
@@ -23,16 +23,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Ling balances a wine cup on the bath rim while her other hand moves between her thighs beneath the petal-strewn water.",
+    "promptProse": "Adult Ling rests against the jade bath wall, steadying the wine cup on the rim with one hand and moving a floating peach petal with the other. Candlelight through the carved lattice glimmers on the water; incense smoke rises beside the celadon burner.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Ling",
       "nude",
-      "knee up",
+      "reclining",
       "wine cup",
-      "hand between legs",
-      "jade bath"
+      "peach blossoms",
+      "jade bath",
+      "steam"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

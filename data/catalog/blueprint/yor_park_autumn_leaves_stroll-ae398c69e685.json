@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_park_autumn_leaves_stroll",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 806,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yor_park_autumn_leaves_stroll",
     "characterId": "yor_forger",
@@ -25,7 +25,7 @@
       "small_smile",
       "red_leaf"
     ],
-    "promptProse": "Yor holds the maple leaf toward the sun with one hand and braces her other palm on the bench. Afternoon light shines through the red veins as she studies them with a quiet smile.",
+    "promptProse": "Seated sideways on the bench with knees together, Yor holds the maple leaf toward the sun with one hand and braces her other palm on the seat. Afternoon light shines through the red veins as she studies them with a quiet smile.",
     "promptTokens": [
       "Yor",
       "maple leaf",

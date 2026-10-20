@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_r18_b8_02",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "makinohara_shouko_r18_b8_02",
     "title": "牧之原翔子 · 露天海风汤池的水光湿身 ·「被海水与温水包围……心脏跳动得好真实」",
@@ -13,7 +13,7 @@
     "description": "【海边露天温泉·黄昏】海风习习的岩石温泉。翔子整个人没入温暖的泉水中，薄如蝉翼的白色吊带里衣被水浸透紧贴在心脏手术疤痕附近。她的手指温柔地抚摸过那道象征新生的痕迹，随后滑入水下的大腿内侧——「多亏了咲太君的温柔……这颗心脏，才能跳动得这么剧烈呢……」",
     "location": "海边露天温泉·黄昏",
     "action": "斜靠温泉石池湿透白纱透肉，单手抚胸口疤痕后探入水底自抚，眼波流转含泪浅笑",
-    "timeOfDay": "afternoon",
+    "timeOfDay": "黄昏",
     "lighting": "liquid_reflection_lighting",
     "camera": "intimate vertical medium shot",
     "mood": "湿身水光与私密自持",
@@ -30,11 +30,12 @@
       "hot_spring",
       "ocean_view"
     ],
-    "promptProse": "Adult Shouko reclines against the infinity bath rim and touches herself beneath the water, her soaked camisole lit by the sunset sea.",
+    "promptProse": "Shouko reclines against the seaside hot-spring rim, touching herself underwater in a soaked white camisole. Sunset reflects from the sea.",
     "promptTokens": [
       "white camisole",
       "wet clothes",
       "see-through",
+      "scar on chest",
       "masturbation",
       "hand between legs",
       "onsen",

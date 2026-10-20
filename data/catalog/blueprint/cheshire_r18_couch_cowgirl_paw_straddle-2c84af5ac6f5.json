@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_r18_couch_cowgirl_paw_straddle",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 1099,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "cheshire_r18_couch_cowgirl_paw_straddle",
     "title": "柴郡 · 沙发戴爪跨坐骑乘与娇憨起伏",
@@ -14,10 +14,10 @@
     "coverageTags": [
       "cowgirl"
     ],
-    "description": "【成年柴郡 · 天鹅绒沙发扶手的猫系独处】成年柴郡独自跨坐沙发扶手，白蕾丝女仆比基尼松开，一手抓靠背、一手在腿间自抚，猫尾避开双腿。",
+    "description": "【成年柴郡 · 天鹅绒沙发扶手的猫系独处】成年柴郡独自跨坐沙发扶手，白蕾丝女仆比基尼松开，一手抓靠背、一手在腿间自抚。",
     "location": "私密休息室天鹅绒大沙发",
     "action": "独自跨坐沙发扶手，一手抓靠背、一手腿间自抚",
-    "timeOfDay": "下午",
+    "timeOfDay": "黄昏",
     "lighting": "遮光窗帘缝隙透入的一抹浓金落日余晖映照在雪肤与猫耳上",
     "camera": "cowboy shot, from below",
     "mood": "极乐沉沦",
@@ -33,15 +33,15 @@
       "smile",
       "heavy_blush"
     ],
-    "promptProse": "Adult Cheshire straddles the sofa arm with one gloved hand on the backrest and the other between her thighs. A strip of sunset through the curtains falls across the velvet.",
+    "promptProse": "She straddles the sofa arm with one gloved hand on the backrest and the other between her thighs. A strip of sunset through the curtains falls across the velvet.",
     "promptTokens": [
-      "adult",
       "lounge",
       "velvet sofa",
       "white bikini",
+      "lace trim",
       "topless",
       "bikini aside",
-      "gloves",
+      "white gloves",
       "straddling",
       "masturbation"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_ship_corridor",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 726,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "双手抱胸倚靠在合金舱壁旁，尾巴轻摆，挑眉看向迎面走来的人",
     "camera": "medium shot",
@@ -21,8 +21,7 @@
     "promptTokens": [
       "crossed arms",
       "leaning",
-      "spacecraft interior",
-      "night"
+      "spacecraft interior"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/sfw_training",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 1002,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
       "id": "sfw_training",
       "name": "红白道场训练装",
-      "prose": "A red cotton training jacket wraps securely beneath a broad white belt, paired with loose white trousers.",
+      "prose": "A securely wrapped red cotton jacket with broad white belt and loose white trousers.",
       "tokens": [
-        "red dougi",
+        "closed red cotton dougi",
         "long sleeves",
-        "white pants",
-        "white belt"
+        "loose white pants",
+        "broad white belt"
       ],
       "default": true,
       "isDefault": true

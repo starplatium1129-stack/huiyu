@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_r18_b9_01",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1715,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "maomao_r18_b9_01",
     "title": "猫猫 · 翡翠宫后宫药室长桌汉服主控跨坐 ·「壬氏大人……这是为了验证春药药效的必须步骤」",
@@ -14,7 +14,7 @@
     "location": "后宫翡翠宫配药偏殿·深夜",
     "action": "跨坐药桌汉服襦裙大开露小乳，雀斑脸颊染春药红晕，死鱼眼含春主动起伏",
     "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
+    "lighting": "warm pharmacy lamp light across the desk and medicine jars",
     "camera": "cowboy shot, first-person view, low angle",
     "mood": "主动亲密与失神",
     "sceneTags": [
@@ -30,7 +30,7 @@
       "open_clothes",
       "freckles"
     ],
-    "promptProse": "Adult Maomao rides astride her companion on the medicine desk after taking an experimental aphrodisiac, her hanfu open as the jars rattle beside them.",
+    "promptProse": "Maomao sits astride her off-frame companion on the medicine desk, her hanfu open. The pharmacy lamp lights her hands and the jars.",
     "promptTokens": [
       "green hanfu",
       "open clothes",

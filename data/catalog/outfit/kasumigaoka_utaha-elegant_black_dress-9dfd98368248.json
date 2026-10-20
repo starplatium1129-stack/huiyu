@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/elegant_black_dress",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
@@ -16,7 +16,8 @@
         "off shoulder",
         "side slit",
         "black stockings",
-        "silver earrings"
+        "silver earrings",
+        "crepe"
       ]
     }
   }

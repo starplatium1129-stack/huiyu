@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "frieren_city_cafe",
     "title": "芙莉莲 · 现代咖啡馆",
@@ -32,7 +32,7 @@
       "filtered_daylight",
       "medium_shot"
     ],
-    "promptProse": "She rests her right cheek in her palm while her left hand lies beside the saucer, studying the tiny foam cat. Filtered light from the front right catches the latte and her eyes; beyond the terrace rail, bicycles line the brighter street.",
+    "promptProse": "She rests her right cheek in her palm while her left hand lies beside the saucer, studying the tiny foam cat. Filtered light from the front right catches the latte and her eyes, with a soft shadow beneath the cup and saucer; beyond the terrace rail, bicycles line the brighter street.",
     "promptTokens": [
       "1girl",
       "solo",

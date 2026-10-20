@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ereshkigal_fate/sfw_underworld_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "ereshkigal_fate",
     "outfit": {
@@ -12,7 +12,8 @@
       "name": "魂火金边纯白婚纱",
       "prose": "An opaque floor-length ivory satin gown with a softly draped bodice and fine gold embroidery following the hem. A long white veil falls beneath her golden tiara.",
       "tokens": [
-        "white wedding dress",
+        "ivory satin wedding dress",
+        "draped bodice",
         "long dress",
         "gold embroidery",
         "long veil",

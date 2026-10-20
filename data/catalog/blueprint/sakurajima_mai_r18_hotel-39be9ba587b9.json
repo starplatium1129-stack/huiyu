@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_hotel",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "sakurajima_mai_r18_hotel",
     "title": "樱岛麻衣 · 酒店私密·兔女郎的半解时刻",
@@ -24,16 +24,17 @@
       "soft_lighting",
       "sheer_tights"
     ],
-    "promptProse": "The age-twenty-plus Mai pulls down a cup of her unzipped bunny suit while seated on the hotel bed, her other hand supporting her beneath warm wall lamps.",
+    "promptProse": "Adult Mai sits with crossed legs on the hotel bed, lowering one cup of her unzipped bunny suit with one hand, the other supporting her. Warm wall light meets moonlight from the window.",
     "promptTokens": [
-      "black bunny suit",
+      "black velvet bunny suit",
       "black fishnet pantyhose",
       "sitting",
       "bed",
       "hotel",
       "city lights",
       "breast slip",
-      "cowboy shot"
+      "cowboy shot",
+      "crossed legs"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

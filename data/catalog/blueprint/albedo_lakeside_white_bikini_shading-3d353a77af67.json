@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_lakeside_white_bikini_shading",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1301,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "albedo_lakeside_white_bikini_shading",
     "title": "雅儿贝德 · 湖畔水光的黑翼遮阳",
@@ -30,7 +30,7 @@
       "wet_legs",
       "seductive_smile"
     ],
-    "promptProse": "Seated on the white rock, she arches one wing over the companion beside her while her toes touch the lake. Reflected water light moves across the rock beneath the shaded feathers.",
+    "promptProse": "Seated on the white rock, she arches one wing toward the viewer to provide shade while her toes touch the lake. Reflected water light moves across the rock beneath the shaded feathers.",
     "promptTokens": [
       "lake",
       "rock",
@@ -46,6 +46,6 @@
       "summer",
       "vacation"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

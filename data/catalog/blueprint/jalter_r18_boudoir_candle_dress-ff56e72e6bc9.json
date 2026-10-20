@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_boudoir_candle_dress",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 184,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "jalter_r18_boudoir_candle_dress",
     "title": "贞德[Alter] · 闺阁烛光",
@@ -29,7 +29,7 @@
       "night",
       "warm_glow"
     ],
-    "promptProse": "The age-twenty-plus Jeanne Alter sits on the canopy bed with her gown lowered from her chest. One hand braces on the mattress while the other touches herself beneath the dress slit; she looks aside with a stubborn blush.",
+    "promptProse": "Jeanne Alter sits on the canopy bed with her gown below her chest, bracing one hand on the mattress while the other touches herself beneath its slit. She looks aside with a stubborn blush.",
     "promptTokens": [
       "1girl",
       "solo",

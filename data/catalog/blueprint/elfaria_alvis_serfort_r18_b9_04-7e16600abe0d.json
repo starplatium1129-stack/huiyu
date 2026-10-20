@@ -1,20 +1,20 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_r18_b9_04",
-  "revision": 2,
+  "revision": 6,
   "sortOrder": 1698,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_r18_b9_04",
     "title": "艾尔菲利亚 · 塔顶羽绒大床上的纯白融化独奏 ·「快点来到我的身边吧……把这千年的孤独全部打破」",
     "category": "私密自持",
     "characterId": "elfaria_alvis_serfort",
-    "description": "【至高塔顶层寝殿·极夜】孤独统治塔顶的思念之夜。艾尔菲利亚赤裸地躺在纯白羽绒大床上，雪白长发铺满床榻。手指在湿热滑腻的穴肉深处急速抽送，冰雪魔力在四周凝聚成雪花飞舞，泪水顺着冰蓝色的眼眸滑落——「威尔……威尔……只要能和你重聚……哪怕从至高塔坠落也无所谓……哈啊……」",
+    "description": "【至高塔顶层寝殿·极夜】孤独统治塔顶的思念之夜。艾尔菲利亚赤裸地躺在纯白羽绒大床上，冰蓝长发铺满床榻。手指在湿热滑腻的穴肉深处急速抽送，冰雪魔力在四周凝聚成雪花飞舞，泪水顺着冰蓝色的眼眸滑落——「威尔……威尔……只要能和你重聚……哪怕从至高塔坠落也无所谓……哈啊……」",
     "location": "至高塔顶层寝殿·极夜",
     "action": "仰卧羽绒大床全裸自抚抽送，雪花环绕长发飘散，泪洒枕巾弓身绝顶",
     "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
+    "lighting": "cool aurora light through the skylight and faint glow from magical snowflakes",
     "camera": "intimate vertical medium shot",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
@@ -30,9 +30,8 @@
       "completely_nude",
       "bare_breasts"
     ],
-    "promptProse": "She touches herself alone beneath the aurora skylight, with her hair spread across the sheets and magical snowflakes drifting above.",
+    "promptProse": "She touches herself alone beneath the aurora skylight, with her hair spread across the white down bedding and faintly glowing magical snowflakes drifting above.",
     "promptTokens": [
-      "adult",
       "nude",
       "on back",
       "on bed",

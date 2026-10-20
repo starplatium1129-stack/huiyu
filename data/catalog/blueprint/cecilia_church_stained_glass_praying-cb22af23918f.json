@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "cecilia_church_stained_glass_praying",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 835,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "双手合十闭目祈祷，金发在圣光下熠熠生辉，白色修女袍以金边勾勒，神圣纯洁得令人屏息",
+    "action": "双手合十闭目祈祷，薄荷绿发在圣光下熠熠生辉，白色修女袍以金边勾勒，神圣纯洁得令人屏息",
     "adult": false,
     "camera": "cowboy shot, kneeling at cathedral altar under stained glass light",
     "category": "日常羁绊",
@@ -15,14 +15,14 @@
       "iconic",
       "daily"
     ],
-    "description": "【塞西莉亚 · 神圣大教堂·彩绘玻璃祈祷与圣光流淌】古老教堂恢弘的彩绘玻璃窗在午后阳光下投射出万千斑斓的光柱，金发圣洁的塞西莉亚双手合十虔诚祈祷，神圣光晕流淌在她洁白的修女长袍与温柔的面容上——「神啊，请保佑这个小镇的所有人平安喜乐……还有，愿劳伦斯今天烤的司康饼依然香甜美味。」",
+    "description": "【塞西莉亚 · 神圣大教堂·彩绘玻璃祈祷与圣光流淌】古老教堂恢弘的彩绘玻璃窗在午后阳光下投射出万千斑斓的光柱，薄荷绿发圣洁的塞西莉亚双手合十虔诚祈祷，神圣光晕流淌在她洁白的修女长袍与温柔的面容上——「神啊，请保佑这个小镇的所有人平安喜乐……还有，愿劳伦斯今天烤的司康饼依然香甜美味。」",
     "id": "cecilia_church_stained_glass_praying",
     "lighting": "巨大的玫瑰彩绘玻璃投下五彩斑斓的华美圣光，神圣丁达尔光束穿透空灵殿堂",
     "location": "小镇大教堂圣坛前",
     "mood": "庄严圣洁",
     "negativeTokens": [],
     "outfitId": "saint_nun_habit",
-    "promptProse": "She kneels with joined hands and closed eyes before the altar. Colored light from the rose window crosses her white habit and the stone floor.",
+    "promptProse": "She kneels with joined hands and closed eyes before the altar. Colored sunlight beams through the rose window and the cathedral air, crossing her white habit and the stone floor.",
     "promptTokens": [
       "cathedral",
       "prayer",

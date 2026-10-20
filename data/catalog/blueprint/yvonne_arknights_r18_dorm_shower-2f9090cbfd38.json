@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_dorm_shower",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 743,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "action": "浴室浴缸泡沫中撩水眨眼",
     "adult": true,
@@ -23,18 +23,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_bath_wrap",
-    "promptProse": "Yvonne balances foam on one palm while her other hand moves beneath the water, her raised knee beside the curled tail tip.",
+    "promptProse": "Yvonne raises a small splash from the bubble bath and gives the viewer a playful wink. Foam rests around the white wrap and her tail while morning light passes through the blinds.",
     "promptTokens": [
       "adult",
       "wet white wrap",
       "see-through clothes",
       "sunglasses",
-      "raised knee",
       "bubble bath",
-      "female masturbation",
       "wink",
       "sunlight",
-      "cowboy shot"
+      "cowboy shot",
+      "splashing"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

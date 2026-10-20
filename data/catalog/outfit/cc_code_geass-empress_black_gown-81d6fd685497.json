@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "cc_code_geass/empress_black_gown",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 713,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "cc_code_geass",
     "outfit": {
@@ -12,11 +12,9 @@
       "name": "金饰黑丝绒晚礼服",
       "prose": "A black velvet evening gown with gold filigree at the fitted bodice, high side slits, an open back and a light sheer train.",
       "tokens": [
-        "black dress",
-        "velvet dress",
-        "evening gown",
-        "gold trim",
-        "side slit",
+        "black velvet evening gown",
+        "gold filigree",
+        "high side slits",
         "backless dress",
         "sheer train"
       ]

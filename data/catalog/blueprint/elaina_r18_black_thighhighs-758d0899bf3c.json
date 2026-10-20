@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_black_thighhighs",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 389,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "elaina_r18_black_thighhighs",
     "title": "伊雷娜 · 黑丝的旅夜",
@@ -26,20 +26,16 @@
       "night",
       "intimate"
     ],
-    "promptProse": "She rolls down one stocking with both hands, pointing her bare foot toward the viewer beneath the hat brim.",
+    "promptProse": "She sits at the bed edge with her stockinged legs crossed, touching one pointed toe with a fingertip and looking toward the viewer with a teasing smile. Warm lantern light catches the fabric and bedside wood.",
     "promptTokens": [
-      "adult",
       "black thighhighs",
       "nude",
       "sitting",
       "on bed",
       "crossed legs",
-      "removing stockings",
-      "bare foot",
       "blush",
       "inn",
-      "full body",
-      "witch hat"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

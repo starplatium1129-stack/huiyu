@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "elaina",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 10,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "elaina",
     "profile": {
@@ -99,12 +99,13 @@
         "wandering witch",
         "elaina (majo no tabitabi)"
       ],
-      "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, an inquisitive traveling witch with very long ash-gray hair with a silvery sheen, violet eyes, with a confident smile",
+      "identityProse": "Elaina from Wandering Witch: The Journey of Elaina, with very long ash-gray hair with a silvery sheen and violet eyes.",
       "identityTokens": [
         "elaina (majo no tabitabi)",
         "1girl",
         "solo",
-        "long_grey_hair",
+        "grey_hair",
+        "very_long_hair",
         "purple_eyes",
         "majo_no_tabitabi"
       ],

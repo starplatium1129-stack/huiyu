@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "gotoh_hitori",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 66,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "gotoh_hitori",
     "profile": {
@@ -109,7 +109,7 @@
         "后藤独",
         "guitarhero"
       ],
-      "identityProse": "Gotoh Hitori (Bocchi) from Bocchi the Rock!, a bashful and socially anxious high school guitarist with long messy pink hair, a distinctive blue and yellow cubic hair clip on the side, wide apprehensive aqua-blue eyes with an endearing flustered shimmer, and a sweet blushing expression",
+      "identityProse": "Adult Gotoh Hitori (Bocchi) from Bocchi the Rock!, with long messy pink hair, a blue-and-yellow cubic hair clip and aqua-blue eyes.",
       "identityTokens": [
         "gotoh_hitori",
         "1girl",
@@ -118,6 +118,7 @@
         "long_hair",
         "blue_eyes",
         "cube_hair_ornament",
+        "blue and yellow hair clip",
         "bocchi_the_rock!"
       ],
       "exactTokens": [

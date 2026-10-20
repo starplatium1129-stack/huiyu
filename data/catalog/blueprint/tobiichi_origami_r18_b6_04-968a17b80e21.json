@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_r18_b6_04",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 103,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tobiichi_origami_r18_b6_04",
     "title": "鸢一折纸 · 监听士道心跳床褥深处的极致狂热独奏 ·「听着士道的呼吸声……手指就完全停不下来」",
@@ -14,7 +14,7 @@
     "location": "折纸房间全景监控台前·深夜",
     "action": "全裸仰卧地板戴耳机监听，三指急速自抚抽送，银发散乱病娇绝顶高潮",
     "timeOfDay": "night",
-    "lighting": "warm_cinematic_lighting",
+    "lighting": "监控台显示屏的绿色光照亮近处地板与人物侧面，房间其余区域较暗",
     "camera": "cowboy shot, high angle",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
@@ -30,7 +30,7 @@
       "bare_breasts",
       "pink_nipples"
     ],
-    "promptProse": "Origami presses one headphone cup to her ear with one hand while touching herself with the other on the floor beneath the heartbeat monitors, green display light crossing the wood.",
+    "promptProse": "Origami holds one headphone cup to her ear and touches herself with the other hand beneath the heartbeat monitors, green display light crossing the wooden floor. The display also lights her side while the rest of the room remains dark.",
     "promptTokens": [
       "adult",
       "nude",

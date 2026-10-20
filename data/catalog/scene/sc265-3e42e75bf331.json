@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc265",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 260,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
     "id": "sc265",
     "recommendedSize": "1344×768",
@@ -38,8 +38,8 @@
       "展示图",
       "成人向"
     ],
-    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_composition, diagonal_overhead_view, 1girl, solo, adult_ayachi_nene, silver_gray_hair_in_two_thick_long_braids, purple_eyes, nude, topless, nipples, bottomless, anatomically_correct_torso, exactly_two_breasts, lying_on_her_right_side, blue_short_sleeved_polka_dot_pajama_top_lifted_above_chest, bare_hips_and_thighs_filling_the_left_foreground, one_knee_bent, one_hand_at_inner_thigh, vulnerable_direct_eye_contact, flushed_cheeks, parted_lips, dark_navy_pillows_and_sheets, cool_moonlit_bedroom, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, extra breast, third breast, fused breasts, malformed torso, blanket, covered body, dress, nightgown, fully clothed, sitting, standing, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "nene_r18, adult, visual novel event CG, dutch angle, from above, 1girl, solo, twin braids, long hair, nude, topless, nipples, bottomless, exactly two breasts, lying, on side, blue pajama shirt, short sleeves, polka dot, shirt lift, hips, thighs, bent knee, hand on inner thigh, looking at viewer, blush, parted lips, navy pillows, navy sheets, moonlight, bedroom, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "extra breast, malformed torso, blanket, dress, nightgown, fully clothed, sitting, standing",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R18",
     "officialCgCandidate": "ocn10",
@@ -51,7 +51,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn10-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer, as cool silver moonlight bathes the surroundings.",
+    "animaCaption": "She lies on her right side against the navy pillows, her braids spread over the bedding. Her hips and thighs fill the left foreground, one knee bent and one hand at her inner thigh; cool side moonlight reaches her face as she meets the viewer's gaze.",
     "auditRevision": "careful-batch15-2026-08-27"
   }
 }

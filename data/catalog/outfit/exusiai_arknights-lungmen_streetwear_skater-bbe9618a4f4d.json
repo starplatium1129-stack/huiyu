@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/lungmen_streetwear_skater",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 366,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
@@ -14,12 +14,12 @@
       "name": "龙门红白滑板机能装",
       "prose": "An oversized red-and-white cotton hoodie under a short black utility vest, paired with tapered black cargo pants and chunky sneakers. Headphones rest around the neck.",
       "tokens": [
-        "red hoodie",
+        "oversized red hoodie",
         "white panels",
-        "utility vest",
+        "short black utility vest",
         "headphones around neck",
-        "black cargo pants",
-        "sneakers"
+        "tapered black cargo pants",
+        "chunky sneakers"
       ]
     }
   }

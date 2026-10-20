@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "arcueid_brunestud",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 103,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "arcueid_brunestud",
     "profile": {
@@ -89,12 +89,13 @@
         "纯白吸血姬",
         "月姬"
       ],
-      "identityProse": "Arcueid Brunestud from Tsukihime, the supreme True Ancestor vampire princess, an ethereal beauty with neck-length silky blonde hair with gentle playful bangs, radiant crimson-ruby eyes, an expressive feline smile, and an aura of transcendent, ancient royalty mingled with innocent curiosity",
+      "identityProse": "Arcueid Brunestud from Tsukihime, a vampire with a neck-length blonde bob and red eyes.",
       "identityTokens": [
         "arcueid_brunestud",
         "tsukihime",
         "blonde_hair",
         "short_hair",
+        "bob_cut",
         "red_eyes",
         "vampire"
       ],

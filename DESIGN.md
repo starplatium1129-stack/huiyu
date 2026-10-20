@@ -143,18 +143,34 @@ disagree, update the CSS to follow this document. `docs/guides/art/art-direction
 intentionally separate: it specifies the visual direction of generated CG
 artwork, not website UI.
 
-Design engineering and motion follow the project adaptation of
-[Emil Kowalski's skills](https://github.com/emilkowalski/skills/tree/2d228630ba1446365f614a108cb8252f1feda202).
-Selected resizing, artwork-viewer and container-layout principles also draw
-from the independent [open-claude-ui analysis](https://github.com/Caho1/open-claude-ui),
-with source revisions and adoption limits recorded in the UI skill.
-Selected reading, data-alignment, form and inset-geometry principles also draw
-from [TypeUI UI Foundations](https://www.typeui.sh/ui-foundations/configurator).
-The adopted rules live here; [studio-ui-design](.agents/skills/studio-ui-design/SKILL.md)
-provides conditional Vue implementation guidance and source attribution.
-These principles guide future UI work alongside HUIYU's brand,
-desktop scope and AGENTS.md constraints. Review upstream changes before adopting
-them; a newer upstream version does not silently replace this standard.
+Design engineering and motion follow the project adaptation of Emil Kowalski,
+with selected TypeUI and open-claude-ui principles. Adopted standards live here;
+[studio-ui-design](.agents/skills/studio-ui-design/SKILL.md) routes implementation
+work to conditional Vue references. Source versions, licenses and adoption limits
+live in [Sources](.agents/skills/studio-ui-design/references/sources.md).
+AGENTS.md owns collaboration and verification scope. Upstream updates require
+review and do not silently replace the project standard.
+
+## Reading guide
+
+For UI work, start with [UI delivery standard](#ui-delivery-standard) and
+[Component and dependency policy](#component-and-dependency-policy), then read
+the sections relevant to the affected flow. Use the skill for implementation
+details; do not load every reference for a local change.
+
+| Task | Design sections |
+| --- | --- |
+| Page composition or brand | [Product character](#product-character), [Layout](#layout), [Anime Visual Language](#anime-visual-language), [绘遇品牌](#绘遇品牌) |
+| Theme or material | [Colors](#colors), [Elevation & Depth](#elevation--depth) |
+| Text, spacing or geometry | [Typography](#typography), [Layout](#layout), [Shapes](#shapes) |
+| Controls, forms or feedback | [Vue interaction components](#vue-interaction-components), [Components](#components) |
+| Motion or animation performance | [Interaction & motion](#interaction--motion); choose the skill's motion or performance reference as needed |
+| Drawing workspace | [Director stage](#director-stage), [绘制工作台 · 素材与参数](#绘制工作台--素材与参数) |
+| Visual acceptance | [Desktop review](#desktop-review) and the affected component's states |
+
+Existing adaptations are reviewed through their local implementation. Consult
+upstream demos and matching source when adopting a new effect or updating a
+source version, following the Sources reference.
 
 ## UI delivery standard
 
@@ -177,53 +193,36 @@ or recovery and back, applicable states, shared component/style owners and the
 intended visual reference. Keep the reference's hierarchy, depth and motion
 visible while making the flow complete. Scope implementation and review to the
 affected flow and consumers of changed shared rules.
+Trace shared changes through local overrides, remove superseded styling in this
+scope, and keep affected pages in the same component family.
 
 ## Product character
 
 Anime and Galgame establish the identity: characters, intimate dialogue, artwork,
-and the feeling of entering a story. The selected reference is VoltAgent's
-[Linear DESIGN.md](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/linear.app/DESIGN.md),
-an independent analysis of Linear's marketing site, not its application specification.
-Borrow its surface hierarchy, consistent control geometry, measured spacing and
-clear emphasis. Apply these principles to the existing creation workspace;
-retain HUIYU's character colors, artwork, Chinese typography and both themes.
-Its near-black palette, lavender brand color, proprietary fonts, large promotional
-headlines and landing-page section spacing are outside this adaptation.
+and the feeling of entering a story. Consistent control geometry, measured spacing
+and clear surface hierarchy support HUIYU's character colors, artwork and Chinese
+typography. Visual upgrades may reshape existing components and shared surfaces
+while preserving task state, readable content and immediate actions in both themes.
+Short Japanese decoration and private studio copy may support the character cover.
 
-Artwork preview effects refer to [Sakuria](https://sakuria.syarolia.com/zh-CN):
-image-card lift, picture zoom and soft highlights with distinct timing. This
-reference covers images and image cards. Navigation, page transitions, dialogs
-and other controls follow HUIYU's own design goals and suitable Inspira UI patterns.
+Visual references have specific scopes: Linear informs hierarchy and geometry;
+Sakuria informs image-card lift, zoom and soft highlights; Inspira UI, Magic UI,
+AIRI, WebGAL and Lucian inform suitable component composition and motion.
+Their detailed adoption boundaries are in the Sources reference. Integrate
+effects into one HUIYU component family with visible depth and authored rhythm.
+Use faint dot motifs only on navigation and chapter furniture, keeping text and
+artwork clear. Demo autoplay and simulated progress never become product behavior.
 
-Component composition also draws from Inspira UI's layered cards and interactive
-controls, and Magic UI's Bento layouts. Adapt their material hierarchy, artwork
-depth and authored motion into one HUIYU component family. Visual upgrades may
-reshape existing components and shared surfaces while preserving task state,
-readable Chinese typography and immediate actions in both themes.
-
-Everyday controls additionally reference [AIRI's light interaction details](https://airi.moeru.ai/docs/ja/blog/DevLog-2025.03.10/)
-and [WebGAL's visual-novel menus](https://docs.openwebgal.com/webgal-script/custom-ui.html).
-Adapt their small decorative rhythms, translucent menu highlights and character-first
-composition to HUIYU's warm paper, hand-drawn icons and existing night palette.
-Use a faint dot motif only on navigation and chapter furniture; keep text and artwork
-clear. These are visual references, not imported components or a replacement palette.
-
-[Lucian UX/UI Prompt](https://lucianlabs.dev/uxui-prompt/) is an ongoing reference
-for component styling and motion across controls, navigation, filtering, details,
-save feedback and artwork handoffs. Study the working example and its source
-before adapting its trigger, origin, phases, timing and interruption behavior to
-the actual HUIYU flow. Keep the reference's visible motion and surface hierarchy,
-map it to shared Vue components and theme tokens, and retain keyboard access,
-reduced-motion alternatives and truthful request states. Gallery autoplay and
-simulated progress demonstrate an effect; they do not become product behavior.
-
-The home opening and character archive retain the composition from the installed
-desktop layout in `faddab4a`. Home sections expand together up to 1800 CSS px,
+Home and the character archive retain their established composition.
+Home sections expand together up to 1800 CSS px,
 with shared outer gutters; the opening's height and title follow its actual
 container width while its reading plane stays bounded. The opening pairs one
 character artwork with a calm reading plane,
 manual Nene/Natsume selection, a serif title and character accent. Scene and character discovery precede the tool
-catalog. Utilities use short labels and progressive disclosure. Status bars
+catalog. Available recent works and recently used scenes follow the opening,
+then the creation guide, featured scenes, character discovery and tool catalog.
+Home styles live in `src/assets/css/home.css`; titles do not fade with scrolling.
+Utilities use short labels and progressive disclosure. Status bars
 communicate actual state without decorative radar, arbitrary coordinates, or
 repeated chapter totals. Compact collection headers reserve the space for works.
 
@@ -238,6 +237,7 @@ or voice feedback—not to periodic transforms on a still portrait.
 The atelier supports dark and light themes, with dark as the default. Dark
 surfaces use blue-gray night tones; light surfaces use warm paper and readable rose-ink
 accents. Both themes preserve the same layout, action hierarchy, and character identity.
+Character hues remain accents, not full-page washes.
 
 The default atelier maps these shared roles to both themes. Preserve per-character
 overrides and body aura mappings in `src/assets/css/director/tokens.css`.
@@ -401,6 +401,17 @@ project touch target, not an Apple platform point conversion. Expand controls in
 normal layout without overlapping neighboring targets; retain desktop text size
 on narrow screens. Mobile compatibility must not weaken the desktop stage.
 
+Scene discovery must expose search and the most useful filters near the results.
+Do not require a friend who has never used the site to understand the taxonomy
+before they can find a scene.
+
+The footer is a quiet colophon, not a floating island: pages keep it pinned to
+the bottom of the viewport on short content (`body` is a column flex container
+and the footer uses `margin-top: auto`), so no page shows a stranded footer with
+empty space beneath it.
+
+### Desktop review
+
 Desktop visual review prioritizes the primary 4K output machine, then 2K
 monitors and the usual laptop proportions. At 100% browser zoom, use these
 physical-resolution / Windows-scale combinations as the desktop baseline:
@@ -422,15 +433,6 @@ emulation establishes equivalent layout only, not real 4K/2K device acceptance.
 When target hardware is unavailable, continue browser viewport review and
 implementation fixes. Keep only physical DPI, sharpness and device performance
 acceptance pending; their absence does not block equivalent layout review.
-
-Scene discovery must expose search and the most useful filters near the results.
-Do not require a friend who has never used the site to understand the taxonomy
-before they can find a scene.
-
-The footer is a quiet colophon, not a floating island: pages keep it pinned to
-the bottom of the viewport on short content (`body` is a column flex container
-and the footer uses `margin-top: auto`), so no page shows a stranded footer with
-empty space beneath it.
 
 ## Elevation & Depth
 
@@ -454,7 +456,9 @@ Depth makes grouping, focus and interactive layers visible:
 Glass surfaces are allowed for navigation, floating utilities, and the director
 stage chrome. They must have an opaque fallback and must not be stacked until
 text becomes hazy. Prefer one clear surface boundary over several nested glowing
-cards. Motion uses `--motion-press` (120ms), `--motion-hover` (160ms),
+cards. Reading cards are opaque; optional liquid refraction belongs to floating
+structural chrome. Cards do not stack backdrop filters.
+Motion uses `--motion-press` (120ms), `--motion-hover` (160ms),
 `--motion-control` (200ms) and `--motion-surface` (260ms). Artwork hover, route and
 character presentations have distinct longer roles. Use shared tokens for those
 roles, retain reduced-motion fallbacks and keep actions available throughout.
@@ -468,9 +472,10 @@ manual preference. Restoring the system setting restores the user's own choice.
 
 Motion is a visible part of HUIYU's design. Page transitions, card interactions,
 list handoffs and artwork reveals should have a recognizable shape through
-displacement, scale, depth, stagger and rhythm. Review an applicable approved reference's
-actual behavior before choosing an effect. Preserve or strengthen that visual
-intent while improving continuity and response. Frequency alone does not justify
+displacement, scale, depth, stagger and rhythm. Review existing adaptations in
+their local components; for a new effect, observe the applicable approved demo
+and matching source as described in the Sources reference. Preserve or strengthen
+that visual intent while improving continuity and response. Frequency alone does not justify
 reducing amplitude, shortening duration or replacing a designed effect with a fade.
 
 Actions respond immediately; visual motion can continue while the next action
@@ -584,40 +589,19 @@ the affected flow:
 ## Vue interaction components
 
 Reusable interaction primitives live in `src/components/ui/` and use Reka UI.
-Rich character labels reuse `StudioSelect` through its `value`, `option` and
-`header` slots; the shared component retains keyboard, focus, portal and motion
-ownership. Slots supply content without replacing control geometry or states.
-`StudioSelect` provides single selection and replaces every native `<select>`;
-it accepts flat or grouped options, disabled entries, string or numeric values,
-and treats an empty-string value as a real choice ("all / auto / none") rather
-than as "nothing selected". `StudioPopover` provides non-modal anchored content with collision
-handling and focus restoration. `StudioTooltip` replaces the native `title`
-attribute for explanatory hints, opening on hover and on keyboard focus, and
-re-routing its portal into an ancestor `<dialog>` so it is not buried under a
-modal. `StudioMediaPlayer` renders audio and video without the browser's native
-control chrome, keeping the decoded element as the playback core. Views retain their deferred-loading
-boundaries. Data tools use `StudioPopover`, with file inputs kept outside the
-transient surface and an explicit focus handoff to the restore dialog.
-The secondary navigation also uses `StudioPopover`, loading `AppMoreMenu`
-only on first use. Keep destinations as actual links, and preserve route/settings
-focus handoffs when the menu closes. A failed menu download must leave primary
-navigation usable and explain how to recover by refreshing; never automatically
-reload a workspace that could have an active generation task.
-Business views supply values and content; the wrappers own theme styling and
-keyboard behavior. Search fields and select triggers keep opaque theme surfaces,
-shared borders and 40/32px minimum control geometry in every workspace; controls
-grow with the desktop typography scale instead of clipping text. Their components
-own those rules. `studio-fields.css` owns the common field geometry, material and
-native text-field states; each Studio component owns its internal layout and
-interaction motion. `native-controls.css` owns browser chrome and native choice
-controls. Page styles must not redefine field surfaces, heights or focus states.
-Theme and motion preferences must remain effective across portals and live changes.
-Optional glass belongs to floating menus and structural chrome,
-not nested fields. Page styles arrange controls without repainting them.
-Do not add a second focus trap or manual viewport positioning
-around these primitives. Existing modal dialogs keep their current focus stack
-until migrated and manually reviewed as a complete flow; portalled content inside legacy
-trapped dialogs needs an explicit integration check.
+`StudioSelect`, `StudioPopover`, `StudioTooltip` and `StudioMediaPlayer` own
+selection, anchored content, explanatory hints and media controls respectively.
+Business views provide values and content; shared wrappers own geometry, theme,
+keyboard behavior, focus, portals and motion. Page styles arrange controls without
+repainting fields or overriding heights and focus states.
+
+Search fields and select triggers use opaque theme surfaces, shared borders and
+the control geometry in Layout, growing with the desktop typography scale.
+Optional glass belongs to floating menus and structural chrome. Theme and motion
+preferences remain effective across portals and live changes. Preserve lazy
+loading, recovery and existing modal ownership when changing a flow.
+Component slots, tooltip anchors, portal integration and style owners are specified
+in [交互落地](.agents/skills/studio-ui-design/references/interaction.md#共享组件接入).
 
 ### Native browser chrome
 
@@ -625,27 +609,12 @@ The system skin never ships: a native `<select>`, a `<audio>`/`<video>` with the
 `controls` attribute, a `title` tooltip, or a
 `window.confirm`/`alert`/`prompt` call is a defect, not a shortcut, because none
 of them can follow the theme, the character accent, or the project's focus flow.
-The native `title` attribute is retired across all native HTML elements.
-Vue component props such as `ArchiveStatePanel.title` and
-`ModelCalibrationFields.title` are distinct from native tooltips.
-Two integration shapes matter — wrap the
-control in `StudioTooltip` with `anchor` when the control can be disabled
-(disabled controls do not dispatch pointer events, so a plain wrapper never
-receives hover), and for a `StudioSelect` host put the hint on the select itself
-rather than wrapping it, because the trigger is the focusable element.
-Popovers (`StudioPopover`) attach anchoring directly to their `#trigger` slot;
-keep trigger buttons bare with `aria-label` rather than wrapping them in
-`StudioTooltip`, preserving clean anchor geometry. `StudioTooltip` with
-`anchor` employs a MutationObserver to observe subtree `disabled` and
-`aria-disabled` attributes, dynamically synchronizing focus proxies and
-tabindex across runtime reactive state transitions.
+The native `title` attribute is retired across all native HTML elements;
+Vue component props named `title` remain valid.
 Native checkboxes and radios retain their existing themed uses through
 `native-controls.css`; selection menus continue to use `StudioSelect`.
-`native-controls.css` covers the remaining browser surfaces the theme cannot
-reach through components: autofill fills, tap highlights, caret color, search
-field decorations, file-selector buttons, spinners, range thumbs, progress bars,
-and image drag ghosts. When a new native surface appears, extend that file rather
-than styling the leak at the call site.
+Extend the shared native-control styles for uncovered browser surfaces instead
+of styling them at individual call sites.
 
 ## Anime Visual Language
 
@@ -656,7 +625,9 @@ for character presence.
 
 ### Decor layers
 
-- Use a restrained static ambient wash and the existing character-aware aura.
+- RouteAtmosphere owns one bounded, static ambient surface using the existing
+  character-aware aura. Do not add duplicate body glows, blur passes or permanent
+  will-change to static backgrounds.
 - Foreground petals are reserved for the character room. Home, discovery,
   collections, and workspaces keep text and controls clear.
 - The global starfield and vertical watermark are retired.
@@ -694,7 +665,8 @@ for character presence.
 
 Keep the primary navigation short and stable. The current page is visible, but
 navigation does not compete with the artwork. Mobile navigation opens as a clear
-menu with text labels.
+menu with text labels. The shared floating navigation keeps its rounded container;
+collapsed menus scroll internally and close after choosing a destination.
 When a layout change hides or removes a trigger, close any transient surface
 that loses its anchor. Hand off focus to an available equivalent or a logical
 reading position only when focus belonged to that hidden/removed entry or the
@@ -704,7 +676,8 @@ Shared atelier chrome lives in `src/assets/css/design-system.css`: `.nav-back`,
 `.page-kicker` (aliases `.pb-kicker` / `.gallery-kicker`), `.page-title`,
 `.page-subtitle`, `.page-intro`, `.atelier-shell`, `.sticky-toolbar`,
 `.filter-pill`, and `.empty-state`. Prefer these over page-local copies.
-Director-only layout lives in `src/assets/css/director/workspace.css`.
+Director geometry lives in `src/assets/css/director/layout.css`; workspace
+surfaces and typography live in `src/assets/css/director/workspace.css`.
 
 ### Buttons
 
@@ -720,13 +693,17 @@ hit area, focus indication, and readable disabled text retained.
 Cards express grouping or selection, not decoration. Avoid a card inside a card
 inside another card unless each boundary represents a real interaction layer.
 Selectable scene cards prioritize title, character, story cue, and preview;
-technical tags are supporting metadata.
+technical tags are supporting metadata. Read scene titles and character data
+from their existing owners rather than duplicating them in page markup.
+Hover rims and ordinary image entrances animate opacity/transform; rating masks
+remain independent of decorative effects.
 
 Scene cards lead with the real reviewed sample, not a decorative gradient: the
 card band loads `/scene-showcase/thumbs/<scene-id>.jpg` and silently falls back
 to the gradient band when the thumbnail is missing, so the page still works on a
-plain static server. Adult-rated thumbnails stay blurred until hover or keyboard
-focus. A small mono archive code (`SC-XXX`) sits on the artwork as provenance,
+plain static server. Adult-rated scene and reference thumbnails stay blurred
+until hover or keyboard focus. The user's artwork album displays thumbnails
+without a rating mask. A small mono archive code (`SC-XXX`) sits on the artwork as provenance,
 and signature or curated marks appear as one quiet corner badge at most.
 Internal audit labels such as `official_cg` or `visual_audited` never render as
 visible tags.
@@ -783,14 +760,11 @@ input over the current painted image zooms around the pointer; letterboxing and
 neighboring covers retain wheel navigation. Reaching a zoom limit must not turn
 that same image gesture into a page change. Scale 3D perspective and depth with
 the stage width so neighboring covers retain their hierarchy on large desktops.
-`useArtworkInfoDrawer` owns the shared sidebar-to-drawer breakpoint, nested
-focus scope and focus handoff for scene, showcase, gallery and batch viewers. Keyboard
-opening/closing is immediate; resizing must never leave focus in a hidden panel
-or launcher. Viewers keep their own image data and enclosing modal lifecycle.
-Native modals, including chat image previews, open through `useFluidDialog` for
-scroll locking, entry motion and focus return. Select, popover, tooltip and model
-picker portals use `useModalPortalHost` to stay inside their owning modal; each
-Reka primitive keeps its own keyboard and dismissal semantics.
+Scene, showcase, gallery and batch viewers share sidebar-to-drawer behavior.
+Keyboard opening/closing is immediate; resizing must never leave focus in a
+hidden panel or launcher. Modals preserve scroll locking and focus return,
+with nested controls accessible inside their owning modal. Implementation
+ownership is defined in [交互落地](.agents/skills/studio-ui-design/references/interaction.md#图片查看).
 Thumbnail-to-viewer
 transitions are optional enhancements: a missing origin, unavailable API or
 interrupted transition must leave viewing, closing and focus restoration usable.
@@ -829,44 +803,6 @@ Invitations can be emotional; action labels, progress, and failures must be
 literal and useful. Missing previews are explicitly labeled. Resource filenames
 belong inside installation details, not in the default creative composition.
 
-## Do's and Don'ts
-
-### Do
-
-- Make the first useful click obvious to a friend seeing the site for the first
-  time.
-- Let artwork occupy the largest meaningful area in creation and review flows.
-- Reuse variables and shared components from `src/assets/css/design-system.css`.
-- Use progressive disclosure for expert controls.
-- Keep current selection, progress, empty, error, and success states explicit.
-- Manually review affected desktop and narrow-window layouts in both themes;
-  include mobile only when requested, following AGENTS.md.
-- Preserve keyboard focus, readable contrast, reduced-motion support, and
-  minimum target sizes.
-- Give key interactions visible motion and keep a clear hierarchy around them.
-- Follow the approved visual reference while preserving HUIYU's identity.
-
-### Don't
-
-- Do not add decorative whitespace, glow, blur, gradients, or floating shapes
-  without a hierarchy or storytelling purpose.
-- Do not hide the generated image behind parameters, logs, or prompt text.
-- Do not introduce page-local colors, shadows, or radii when a shared token fits.
-- Do not use emoji-only controls for navigation or important actions.
-- Do not duplicate Scene titles or character data in page markup.
-- Do not show every advanced option merely because space is available.
-- Do not redesign a page in isolation from its shared components and styles.
-  Trace changed shared rules to their actual consumers and local overrides;
-  keep affected pages in one family and remove superseded styling in this scope.
-
-## 2026-09-07 · 夜色手帐布局
-
-采用二次元博客的角色封面、日文短句与私人画室语气，结合克制的深色表面、留白和明确操作层级。全站基础表面统一为石墨蓝灰，樱粉只强调主要操作与少量标题；角色专属主题继续由 director/tokens.css 管理。
-
-首页顺序为封面与继续创作、四个常用入口、精选场景、角色横条、档案、最近作品。首页样式由 src/assets/css/home.css 独立维护；取消标题滚动淡出，避免阅读与点击目标漂移。导航采用悬浮圆角容器，手机折叠菜单允许内部滚动，归档选中后自动收起。
-
-通用页面框架在 1000 / 768 / 480px 分级适配；绘制区、目录和弹窗按上文 Layout 的内容断点补充。卡片只使用 transform 进行位移动效，遵循 reduced-motion。图标复用 ArchiveIcon；文案不展示 LoRA 契约等内部实现细节。
-
 ## 绘制工作台 · 素材与参数
 
 绘制区以作品为中心：左侧创作素材按角色、场景、描述分类，专家模式额外提供历史。一级分类使用可键盘切换的下划线标签，首次加载后通过 v-show 保留组件实例。宽桌面默认素材栏 336px、参数栏 368px、栏间距 24px，仍可拖动或用方向键调整；宽度由 useDirectorLayout 按实际内容区收敛，几何规则集中在 director/layout.css，表面与文字分别由 workspace.css、atelier.css 及组件样式负责。
@@ -888,7 +824,7 @@ belong inside installation details, not in the default creative composition.
 - 图标不承担文字标签职责；纯图标按钮仍须有可访问名称。图标本体不获取焦点，交互状态由宿主按钮呈现。
 - 深浅主题继承宿主的语义颜色，不在图标内部固定颜色。新图标在所属 icons 分组登记，类型从实际定义推导；交付前检查路径合法性、画布边界和实际页面。
 
-## 绘遇品牌（2026-09-09）
+## 绘遇品牌
 
 名称：绘遇 · HUIYU。标语：让想象成形，让故事相遇。画框与翻页线条象征角色从画面进入故事，沿用 ArchiveIcon 的圆头手绘描边。
 
@@ -897,10 +833,3 @@ belong inside installation details, not in the default creative composition.
 母版为 `assets/brand-mark.svg`；`npm run wf -- brand:build` 生成深浅字标、favicon、七尺寸 ICO 和原生安装器路径。字标由 BrandLogo 跟随应用主题切换，不使用滤镜或发光覆盖文字。业务功能色和角色强调色保留独立语义。
 
 兼容约束：`com.aics.studio`、内部 AI-CG-Studio 安装标识、可执行文件名、注册表路径、存储键和备份协议继续保留，用户可见名称统一为绘遇。
-
-## Background material hierarchy
-
-- Dark surfaces use blue-gray night tones; light surfaces use warm paper neutrals. Character hues remain accents, not full-page washes.
-- RouteAtmosphere owns one bounded, static ambient surface. Do not add duplicate body glows, blur passes, or permanent will-change to static backgrounds.
-- Reading cards are opaque. Optional liquid refraction belongs to floating structural chrome; cards do not stack backdrop filters.
-- Card hover rims and ordinary image entrances animate opacity/transform. Rating masks remain enforced independently of decorative effects.

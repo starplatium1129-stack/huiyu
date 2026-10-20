@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_ruins_geass_sigil_moonlight",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1307,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "迎着夜风立于断壁残垣之上，纯白拘束带飘舞，额间Geass红光微闪，侧身回眸从容浅笑",
     "camera": "cowboy shot, low angle, dramatic wind perspective",
@@ -21,7 +21,7 @@
     "mood": "神秘孤高",
     "negativeTokens": [],
     "outfitId": "official_straitjacket",
-    "promptProse": "She turns over her shoulder among the broken ramparts. The red Geass mark glows beneath her bangs against the cool moonlit masonry.",
+    "promptProse": "She turns over her shoulder among the broken ramparts, loose straitjacket straps streaming in the night wind. The red Geass mark glows beneath her bangs against the cool moonlit masonry.",
     "promptTokens": [
       "clock tower ruins",
       "forehead mark",

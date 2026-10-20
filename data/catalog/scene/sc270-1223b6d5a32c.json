@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc270",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 265,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
     "id": "sc270",
     "recommendedSize": "1344×768",
@@ -39,8 +39,8 @@
       "展示图",
       "成人向"
     ],
-    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_extreme_pov_from_between_raised_legs, 1girl, solo, adult_ayachi_nene, nene_red_cardigan_uniform, white_silver_hair, purple_eyes, lying_on_back_on_a_dark_navy_pillow, open_burgundy_cardigan_and_white_shirt, pink_lace_panties, white_frilled_socks, both_bare_legs_raised_vertically_and_dominating_foreground, holding_a_small_pink_vibrator_near_her_lips_with_both_hands, embarrassed_direct_gaze, heavy_blush, white_bedding, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, fused legs, closed legs, standing, sitting, full body distant shot, blue clothing, child, loli, underage",
+    "prompt": "nene_r18, adult, visual novel event CG, pov, foreshortening, 1girl, solo, nene_red_cardigan_uniform, lying, on back, navy pillow, open burgundy cardigan, open white shirt, pink lace panties, white frilled socks, bare legs, legs up, holding pink vibrator, embarrassed, looking at viewer, heavy blush, white bedding, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "fused legs, closed legs, standing, sitting, full body distant shot, blue clothing",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R18",
     "officialCgCandidate": "ocn15",
@@ -52,7 +52,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn15-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer with a gentle blush on her cheeks, as cool silver moonlight bathes the surroundings.",
+    "animaCaption": "Against the navy pillow, she holds the small pink vibrator near her lips with both hands, bare legs raised vertically around the viewpoint. Cool light reaches her hair and open shirt as she meets the viewer's gaze.",
     "auditRevision": "careful-batch13-2026-08-27"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_infirmary_gentle_checkup_care",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1078,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "taihou_infirmary_gentle_checkup_care",
     "title": "大凤 · 私密保健室的贴身诊疗",
@@ -31,7 +31,7 @@
       "whispering",
       "twintails"
     ],
-    "promptProse": "Taihou holds the stethoscope against the viewer's chest, leaning close to listen with her free hand resting on the examination bed. Pale light filtered through the curtain falls across her attentive face.",
+    "promptProse": "Taihou holds the stethoscope to the viewer’s chest, free hand on the examination bed, listening in pale curtain-filtered light.",
     "promptTokens": [
       "stethoscope",
       "examination bed",

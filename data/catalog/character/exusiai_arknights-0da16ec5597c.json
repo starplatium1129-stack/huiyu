@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "exusiai_arknights",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "exusiai_arknights",
     "profile": {
@@ -93,7 +93,7 @@
       "animeStudio": "arknights, hypergryph, official anime art",
       "canon": {
         "era": "近未来奇幻",
-        "formNotes": "白发蓝瞳光环小翅膀；企鹅物流黑白制服；活泼乐天",
+        "formNotes": "红色短发红瞳、光环与发光小羽翼；企鹅物流黑白制服；活泼乐天",
         "research": "2026-08-15 调研（Danbooru exusiai_(arknights) 5612 posts）",
         "world": "泰拉（企鹅物流）"
       },
@@ -109,7 +109,7 @@
       ],
       "franchise": "Arknights",
       "id": "exusiai_arknights",
-      "identityProse": "Exusiai from Arknights, an energetic Sankta courier with vibrant short red hair, bright red eyes, a radiant golden halo, and luminous white wings.",
+      "identityProse": "Exusiai from Arknights, with short red hair, red eyes, a glowing golden halo and luminous white wings.",
       "identityTokens": [
         "exusiai (arknights)",
         "1girl",
@@ -118,7 +118,9 @@
         "short_hair",
         "red_eyes",
         "halo",
-        "wings",
+        "white_wings",
+        "glowing_wings",
+        "small_wings",
         "arknights"
       ],
       "negativeTokens": [

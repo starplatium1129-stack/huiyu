@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/millennium_uniform",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 505,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
@@ -16,17 +16,14 @@
       "tokens": [
         "school_uniform",
         "sleeveless_shirt",
-        "white_shirt",
+        "white collared shirt",
         "blue_necktie",
         "open_jacket",
-        "navy_jacket",
+        "navy blazer draped over shoulders",
         "id_card",
-        "pleated_skirt",
-        "black_skirt",
-        "black_thighhighs",
-        "loafers",
-        "millennium",
-        "seminar"
+        "black pleated miniskirt",
+        "black thighhighs with white trim",
+        "brown loafers"
       ]
     }
   }

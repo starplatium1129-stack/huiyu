@@ -1,19 +1,20 @@
 {
   "kind": "outfit",
   "id": "marcille_donato/sfw_rest",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 989,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "marcille_donato",
     "outfit": {
       "id": "sfw_rest",
       "name": "奶油针织衫与栗棕休息长裤",
-      "prose": "A soft cream knit top with ribbed cuffs and a small lace-up neckline, paired with comfortable chestnut-brown trousers.",
+      "prose": "A cream knit top with ribbed cuffs and lace-up neckline, and chestnut trousers.",
       "tokens": [
         "cream sweater",
         "ribbed cuffs",
+        "lace-up neckline",
         "brown pants"
       ],
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suou_amane/summer_bikini",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 646,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "suou_amane",
     "outfit": {
@@ -12,11 +12,11 @@
       "name": "夏日灼阳细带比基尼",
       "prose": "a cherry-red string bikini with halterneck ties, a translucent white sarong at one hip and sunglasses resting in her hair",
       "tokens": [
-        "red bikini",
+        "cherry red bikini",
         "string bikini",
         "halterneck",
-        "sarong",
-        "sunglasses"
+        "translucent white sarong at one hip",
+        "sunglasses in hair"
       ],
       "default": false,
       "isDefault": false

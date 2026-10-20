@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_halo_street_evening",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 631,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "靠着灯柱，百无聊赖地踢石子",
     "camera": "full body, eye level",
@@ -21,7 +21,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "halo",
       "leaning",
       "lamppost",
       "neon lights",

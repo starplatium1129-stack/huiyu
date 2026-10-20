@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "marcille_donato",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "marcille_donato",
     "profile": {
@@ -73,12 +73,14 @@
         "玛露希尔",
         "Marcille Donato"
       ],
-      "identityProse": "Marcille Donato from Delicious in Dungeon, with long blonde hair, a high forehead, pointed ears and lively green eyes. Her carefully arranged braids and expressive reactions reveal an earnest, studious mage.",
+      "identityProse": "Marcille Donato from Delicious in Dungeon, with long blonde braids, a high forehead, pointed ears and green eyes.",
       "identityTokens": [
         "marcille_donato",
         "dungeon meshi",
         "blonde hair",
+        "long hair",
         "braid",
+        "high forehead",
         "green eyes",
         "pointy ears"
       ],

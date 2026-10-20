@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_bathroom_warm_tub",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 357,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "yui_r18_bathroom_warm_tub",
     "title": "由比滨结衣 · 结衣家浴缸的泡泡歌谣",
@@ -27,7 +27,7 @@
       "warm_light",
       "steam"
     ],
-    "promptProse": "The age-twenty-plus Yui shapes a little dog from bubbles on her raised thigh while cupping a breast with her other hand; a speaker and towel sit beside the tub.",
+    "promptProse": "Yui shapes a bubble dog on her raised thigh with one hand and cups a breast with the other; a speaker and towel sit beside the tub.",
     "promptTokens": [
       "adult",
       "nude",

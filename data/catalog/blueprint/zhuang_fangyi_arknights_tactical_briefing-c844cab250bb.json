@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_tactical_briefing",
-  "revision": 6,
+  "revision": 4,
   "sortOrder": 743,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_tactical_briefing",
     "characterId": "zhuang_fangyi_arknights",
@@ -38,7 +38,7 @@
       "tea shop",
       "evening"
     ],
-    "promptProse": "Zhuang Fangyi slides the warm cup toward the viewer with a welcoming smile, closed documents beside her and two pastries between them. Evening window light catches the steam above the tea.",
+    "promptProse": "Seated at one side of the tea table, Zhuang Fangyi slides the warm cup toward the viewer with a welcoming smile, closed documents beside her and two pastries between them. Evening window light catches the steam above the tea.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

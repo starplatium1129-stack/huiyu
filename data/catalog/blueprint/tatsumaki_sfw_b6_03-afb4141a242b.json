@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1585,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_03",
     "title": "战栗的龙卷 · 门口藏不住的礼物",
@@ -29,7 +29,7 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "Tatsumaki hovers just off the hallway floor with a gift bag hidden in one hand behind her back, the other raised to knock at her sister’s door. Warm hall light catches the betraying corner of the bag.",
+    "promptProse": "Tatsumaki hovers above the hallway floor, gift bag hidden behind her in one hand, the other raised to knock at her sister’s door; warm light reveals the bag’s corner.",
     "promptTokens": [
       "Tatsumaki",
       "gift bag",

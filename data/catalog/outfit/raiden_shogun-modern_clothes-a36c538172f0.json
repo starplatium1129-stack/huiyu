@@ -1,19 +1,20 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/modern_clothes",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "modern_clothes",
       "name": "深紫收腰长袖便裙",
-      "prose": "A refined deep-purple crepe midi dress with long softly tapered sleeves and subtle pleats gathered at the waist, finished by one small pale-gold clasp.",
+      "prose": "A deep-purple crepe midi dress with tapered sleeves, waist pleats and a pale-gold clasp.",
       "tokens": [
-        "purple dress",
+        "deep purple crepe dress",
         "long sleeves",
+        "tapered sleeves",
         "midi dress",
         "waist pleats"
       ],

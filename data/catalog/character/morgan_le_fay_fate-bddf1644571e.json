@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "morgan_le_fay_fate",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "morgan_le_fay_fate",
     "profile": {
@@ -104,7 +104,7 @@
         "aesc",
         "fgo"
       ],
-      "identityProse": "Morgan le Fay from Fate/Grand Order, the Winter Queen of Faerie Britain, a tall fairy queen with long straight silver-white hair, icy blue eyes and pale skin",
+      "identityProse": "Morgan le Fay from Fate/Grand Order, with long straight silver-white hair, ice-blue eyes and pale skin.",
       "identityTokens": [
         "morgan (fate/grand order)",
         "1girl",

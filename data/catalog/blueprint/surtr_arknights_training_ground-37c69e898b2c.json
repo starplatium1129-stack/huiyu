@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_training_ground",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 520,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "单手持剑，剑锋斜指地面",
     "camera": "cowboy shot, low angle, sword pointed toward the scorched floor visible",
@@ -20,7 +20,7 @@
     "mood": "凛然战意",
     "negativeTokens": [],
     "outfitId": "prelude_to_transcendence",
-    "promptProse": "Surtr lowers her sword toward the scorched floor and smirks, morning light catching its edge and her chains.",
+    "promptProse": "Surtr lowers her sword toward the scorched floor and smirks, cool morning light catching its edge and her chains.",
     "promptTokens": [
       "Surtr",
       "chains",

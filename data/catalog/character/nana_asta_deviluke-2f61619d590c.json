@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nana_asta_deviluke",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "nana_asta_deviluke",
     "profile": {
@@ -24,7 +24,7 @@
         "alt": "娜娜 样张立绘"
       },
       "visual_dna": {
-        "hair": "粉色长双马尾 · 齐刘海 · 娇小萝莉身姿",
+        "hair": "粉色长双马尾 · 齐刘海",
         "hair_color": "粉色",
         "eyes": "深邃紫粉色眼眸 · 傲娇虎牙",
         "hairstyle": "双马尾 · 黑色爱心恶魔尾巴 · 贫乳平胸",
@@ -127,15 +127,17 @@
       ],
       "franchise": "To LOVE-Ru",
       "id": "nana_asta_deviluke",
-      "identityProse": "Nana Asta Deviluke from To LOVE-Ru by Kentaro Yabuki, the second princess of Planet Deviluke with long pink twin-tails, sharp yet endearing purple-pink eyes, a slender athletic petite figure, a delicate black spade-heart devil tail, and a feisty tsundere expression.",
+      "identityProse": "Nana Asta Deviluke from To LOVE-Ru, with long pink twintails, purple-pink eyes and a black spade-heart tail.",
       "identityTokens": [
         "nana_asta_deviluke",
         "1girl",
         "solo",
         "pink hair",
+        "long hair",
         "twintails",
         "purple eyes",
         "demon tail",
+        "black spade-heart tail",
         "to love-ru"
       ],
       "negativeTokens": [

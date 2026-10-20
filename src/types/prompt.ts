@@ -1,6 +1,7 @@
 export type PromptFamily = 'sd' | 'anima' | 'krea2'
 
 export interface PromptSceneContext {
+  compositionIntent?: import('./sceneBlueprint').BlueprintCompositionIntent
   title?: string
   category?: string
   tags?: string[]
@@ -16,9 +17,14 @@ export interface PromptSceneContext {
   usage?: string[]
   /** Authored Anima caption for the visible moment, atmosphere and spatial/prop relationships. */
   animaCaption?: string
+  /** Explicit appearance variant for this scene; replaces the default identity anchors. */
+  identityTokensOverride?: string[]
+  identityProseOverride?: string
 }
 
 export interface PromptPlan {
+  /** Free-subject inputs must not invent a woman, a solo count or an empty scene. */
+  freeSubject?: boolean
   quality: string[]; rating: string[]; identity: string[]; exactControls: string[]
   /** Name/alias classification only; appearance and outfit tokens stay in ordinary tags. */
   characterTokens: string[]
@@ -41,7 +47,7 @@ export interface PromptPlan {
   outfitProse: string
   /** 环境散文（自然语言渲染器使用 blueprint.promptProse 原样织入）。 */
   sceneProse: string
-  /** 工作室场景的结构化上下文，仅供 Krea 自然语言渲染。 */
+  /** 工作室场景的显式正文、外貌变体与导演上下文。 */
   scene: PromptSceneContext | null
   /** Krea 的自然语言画师风格短语。 */
   artistProse: string

@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1312,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "单手支颐侧卧在草地野餐垫上，发丝铺散，神情慵懒戏弄地看着视角",
     "camera": "cowboy shot, diagonal angle, relaxing lawn view",
@@ -25,7 +25,7 @@
       "plush toy"
     ],
     "outfitId": "lawn_sweater_no_plush",
-    "promptProse": "She rests her chin in one hand with a grass stem between her lips, watching her companion read. Dappled light reaches the sandwiches and juice beside them.",
+    "promptProse": "Lying on her side on the picnic blanket, she rests her chin in one hand with a grass stem between her lips, watching her companion read. Dappled light reaches the sandwiches and juice beside them.",
     "promptTokens": [
       "couple",
       "picnic blanket",

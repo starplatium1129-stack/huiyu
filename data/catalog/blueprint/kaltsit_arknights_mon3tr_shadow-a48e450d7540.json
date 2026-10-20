@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_mon3tr_shadow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 527,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "action": "坐在沙发上双手捧着自己的茶杯，抬眼向观看者露出放松的浅笑，身旁留着空座，矮桌近侧已为观看者放好另一杯热茶",
     "camera": "wide shot, eye level, seated viewer perspective",
@@ -29,7 +29,7 @@
       "office"
     ],
     "outfitId": "afterwork_cardigan",
-    "promptProse": "Kal'tsit holds her own tea cup in both hands and smiles toward the viewer. An empty place remains beside her, with a second cup ready on the low table.",
+    "promptProse": "Kal'tsit smiles over her tea cup, held in both hands; a second cup waits on the low table beside the empty seat. The lamp to her right warms her cheek and the cups against blue dusk at the window.",
     "promptTokens": [
       "sitting",
       "sofa",

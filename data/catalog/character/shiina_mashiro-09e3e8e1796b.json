@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mashiro",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shiina_mashiro",
     "profile": {
@@ -73,12 +73,12 @@
         "椎名真白",
         "Mashiro Shiina"
       ],
-      "identityProse": "Mashiro Shiina from The Pet Girl of Sakurasou, a quiet young painter with very long straight cream-blonde hair, pale orange eyes and slightly upturned eyelids. Her expression changes through tiny shifts of her gaze rather than broad smiles.",
+      "identityProse": "Mashiro Shiina from The Pet Girl of Sakurasou, with very long cream-blonde hair, pale-orange eyes and slightly upturned eyelids.",
       "identityTokens": [
         "shiina_mashiro",
         "sakura-sou no pet na kanojo",
         "blonde hair",
-        "long hair",
+        "very long hair",
         "orange eyes",
         "hair between eyes"
       ],

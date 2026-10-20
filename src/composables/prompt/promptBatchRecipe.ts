@@ -49,7 +49,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
   const blueprintList = () => blueprints
   const getPopularList = () => characters
   type StyleSnapshot = Pick<HistoryEntry, 'emotion' | 'shot' | 'lighting' | 'composition' | 'colorMood'>
-  const plans = new Map<string, { negative?: string; outfitId?: string; size?: string; style: StyleSnapshot }>()
+  const plans = new Map<string, { negative?: string; outfitId?: string; outfitExplicit?: boolean; outfitOverride?: DraftOutfitOverride | null; size?: string; style: StyleSnapshot }>()
 
   /**
    * 从当前完整提示词中剥离原角色的特征、专属服装与 LoRA 标签，
@@ -71,8 +71,9 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       if (pop.outfits) {
         pop.outfits.forEach(o => {
           if (o.prose) text = text.replace(o.prose, '')
+          if (o.identityProseOverride) text = text.replace(o.identityProseOverride, '')
           if (o.tokens) {
-            o.tokens.forEach(tok => {
+            [...o.tokens, ...(o.identityTokensOverride || [])].forEach(tok => {
               text = text.split(',').filter(part => normalizeKey(part) !== normalizeKey(tok)).join(',')
             })
           }
@@ -155,15 +156,21 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
     if (charInfo?.kind === 'popular') {
       const pop = charInfo.char
       const blueprint = target.kind === 'scene' ? blueprintList().find(item => item.id === target.id) || null : null
-      const outfit = (blueprint?.outfitId ? findOutfit(pop, blueprint.outfitId) : null) || defaultOutfit(pop)
+      const selected = !blueprint && pb.subject.kind === 'popular' && pb.subject.characterId === pop.id
+        ? findOutfit(pop, pb.subject.outfitId) : null
+      const outfit = (blueprint?.outfitId ? findOutfit(pop, blueprint.outfitId) : null) || selected || defaultOutfit(pop)
       if (!outfit) throw new Error('目标角色没有可用服装')
+      const outfitExplicit = Boolean(selected && pb.subject.kind === 'popular'
+        && (pb.subject.outfitExplicit ?? selected.id !== defaultOutfit(pop)?.id))
+      const outfitOverride = detectOutfitOverrideFromContext()
       const source = pb.subject.kind === 'popular' ? findPopularCharacter(getPopularList(), pb.subject.characterId) : null
-      const sourceKeys = new Set([...(source?.identityTokens || []), ...(source?.exactTokens || []), ...(source?.copyrightTokens || []), ...(source?.characterTokens || []), ...(source?.aliases || []), ...(CHAR_PROMPT[pb.char] || '').split(','), ...(STUDIO_PROMPT_SUBJECTS[pb.char]?.copyrightTokens || [])].map(normalizeKey))
+      const sourceKeys = new Set([...(source?.identityTokens || []), ...(source?.outfits.flatMap(item => item.identityTokensOverride || []) || []), ...(source?.exactTokens || []), ...(source?.copyrightTokens || []), ...(source?.characterTokens || []), ...(source?.aliases || []), ...(CHAR_PROMPT[pb.char] || '').split(','), ...(STUDIO_PROMPT_SUBJECTS[pb.char]?.copyrightTokens || [])].map(normalizeKey))
       const engine = state.family === 'krea2' ? 'krea2' : 'anima'
       const decisions = blueprint ? inferBlueprintDecisions(blueprint) : null
       const currentSubject = pb.subject
       const sourceBlueprint = currentSubject.kind === 'popular' && currentSubject.blueprintId
         ? pb.sceneBlueprints.find(item => item.id === currentSubject.blueprintId) : null
+      sourceBlueprint?.identityTokensOverride?.forEach(token => sourceKeys.add(normalizeKey(token)))
       const inherited = !blueprint ? null : sourceBlueprint ? inferBlueprintDecisions(sourceBlueprint)
         : currentSubject.kind === 'studio' && pb.activeScene ? sceneStyleBaseline(pb.activeScene) : null
       const shot = pb.selections.shot === inherited?.shot ? null : pb.selections.shot
@@ -183,11 +190,12 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         palette: mood ? tokenize(mood.prompt) : [],
         visualDescription: target.kind === 'character'
           ? (inheritedNewline < 0 ? baseText : baseText.slice(inheritedNewline + 1).replace(/\s+/g, ' ')) : pb.visualDescription,
-        outfitOverride: detectOutfitOverrideFromContext(),
+        outfitOverride, outfitExplicit,
         matureTokens: new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en))),
         artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
       })
-      plans.set(target.id, { negative: planResult.negative, outfitId: outfit.id, size: blueprint?.recommendedSize,
+      plans.set(target.id, { negative: planResult.negative, outfitId: outfit.id, outfitExplicit,
+        outfitOverride: outfitOverride ? { tokens: [...outfitOverride], replaced: pb.outfitOverride?.replaced ?? null } : null, size: blueprint?.recommendedSize,
         style: { emotion: pb.emotionPrompt ? [...pb.selections.emotion] : [], shot: shot ?? decisions?.shot ?? null,
           lighting: lighting ?? decisions?.lighting ?? null, composition: composition ?? decisions?.composition ?? null, colorMood: mood?.id ?? null } })
       return planResult.prompt
@@ -260,6 +268,8 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
           subject: 'popular' as const,
           characterId: charInfo.char.id,
           outfitId: plans.get(target.id)?.outfitId || defaultOutfit(charInfo.char)?.id,
+          outfitExplicit: plans.get(target.id)?.outfitExplicit,
+          outfitOverride: plans.get(target.id)?.outfitOverride,
           blueprintId: target.kind === 'scene' ? target.id : null,
         } : charInfo?.kind === 'studio' ? {
           character: charInfo.charKey,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_velvet_bed_supine_devotion",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 1307,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "albedo_nsfw_velvet_bed_supine_devotion",
     "title": "雅儿贝德 · 天鹅绒大床的深情仰卧",
@@ -20,7 +20,6 @@
     "sceneTags": [
       "bedroom",
       "black_velvet_bed",
-      "completely_nude",
       "lying_on_back",
       "spread_legs",
       "bare_breasts",
@@ -31,17 +30,15 @@
       "teary_eyes",
       "parted_lips"
     ],
-    "promptProse": "Adult Albedo reclines on the bed with her gown lowered and wings along the mattress, one hand at her chest and the other between her legs.",
+    "promptProse": "She reclines with her gown lowered and wings along the mattress, one hand at her chest and the other between her legs.",
     "promptTokens": [
-      "adult",
       "bedroom",
-      "velvet bed",
+      "black velvet bed",
       "white dress",
       "open clothes",
       "topless",
       "lying",
       "knees up",
-      "black wings",
       "masturbation",
       "candlelight",
       "gold necklace",

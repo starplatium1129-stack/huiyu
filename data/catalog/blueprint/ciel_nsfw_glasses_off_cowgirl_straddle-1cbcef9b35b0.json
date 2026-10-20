@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_nsfw_glasses_off_cowgirl_straddle",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1342,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸前，俯身深吻，眼神充满深沉爱意",
     "adult": true,
@@ -27,7 +27,7 @@
       "glasses worn"
     ],
     "outfitId": "nsfw_nude",
-    "promptProse": "Without her glasses, she leans down to kiss the viewer while straddling the viewer's waist on the bed.",
+    "promptProse": "Without her glasses, she leans down to kiss the viewer while straddling the viewer's waist on the bed, both hands resting on their chest. The bedside wall lamp casts warm orange light across the bed.",
     "promptTokens": [
       "bedroom",
       "nude",

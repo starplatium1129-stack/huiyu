@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/casual_summer_dress",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 767,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "id": "casual_summer_dress",
       "name": "白棉海军结·盛夏连衣裙",
-      "prose": "A white cotton sundress with narrow shoulder straps, a neat navy bow at the bodice and a knee-length skirt shaped by long flared panels.",
+      "prose": "A strappy white cotton sundress with navy bodice bow and flared knee-length skirt.",
       "tokens": [
         "white sundress",
         "cotton",
-        "navy ribbon",
+        "navy bodice bow",
         "spaghetti straps",
-        "flared skirt"
+        "flared knee-length skirt"
       ]
     }
   }

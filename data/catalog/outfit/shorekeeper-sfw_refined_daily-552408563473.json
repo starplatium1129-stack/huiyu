@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_refined_daily",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 944,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
@@ -12,9 +12,11 @@
       "name": "海蓝针织休憩装",
       "prose": "a sea-blue long-sleeved cable-knit sweater over an opaque ivory ankle-length dress, with flat closed shoes and no veil",
       "tokens": [
-        "blue cable knit sweater",
-        "ivory long dress",
-        "flat shoes"
+        "sea blue cable knit sweater",
+        "long sleeves",
+        "ivory ankle-length dress",
+        "opaque fabric",
+        "closed flat shoes"
       ],
       "isDefault": false,
       "isNsfw": false

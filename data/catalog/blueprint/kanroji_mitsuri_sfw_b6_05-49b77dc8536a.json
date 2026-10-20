@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1462,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "遮阳伞下抱高高刨冰，浪花打湿沙滩巾后护住樱花糖浆大笑",
     "adult": false,
@@ -30,7 +30,8 @@
       "shaved ice",
       "parasol",
       "beach",
-      "medium shot"
+      "medium shot",
+      "sitting"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",

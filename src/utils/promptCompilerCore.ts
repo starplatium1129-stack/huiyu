@@ -3,21 +3,23 @@ export type { PromptFamily, PromptSceneContext, PromptPlan } from '../types/prom
 
 import {
   formatPromptForEngine,
-  QUALITY_OR_SCORE_RE,
-  QUALITY_WORDS,
   normalizeKey,
   tokenize,
   type ModelProfile,
 } from './promptPolicy.ts'
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { sceneLighting, sceneShot } from './sceneInference.ts'
-import { authoredAnimaCaption } from './promptCaption.ts'
+import { authoredSceneCaption } from './promptCaption.ts'
+import { lightingOverride, lightingTokenId } from './promptLighting.ts'
+import { sanitizeKreaProse, sanitizeKreaTokens, sanitizeVisualArtifacts } from './promptVisualText.ts'
 import { orderedAnimaTags } from './animaPromptOrder.ts'
-import { cameraTokensFromText, resolveCameraTags } from './promptCamera.ts'
-import { SHOT } from '../config/promptConstants.ts'
-import { proseToken, normalizeProseKey, actionPhrase, outfitPhrase, moodPhrase, compactMood, cameraPhrase, lightPhrase, animaLightPhrase, environmentPhrase, isEnvironmentKey, removeIndoorSkyPhrases } from './promptPhraseTables.ts'
+import { cameraTokensFromText, mergeCameraControls, resolveCameraTags } from './promptCamera.ts'
+import { compositionIntent, compositionTokens } from './blueprintComposition.ts'
+import { SHOT, LIGHTING } from '../config/promptConstants.ts'
+import { proseToken, normalizeProseKey, actionPhrase, outfitPhrase, moodPhrase, compactMood, cameraPhrase, lightPhrase, environmentPhrase, isEnvironmentKey, removeIndoorSkyPhrases } from './promptPhraseTables.ts'
 
 export interface PromptCompilerInput {
+  freeSubject?: boolean
   profile?: ModelProfile | null; identity?: string; controls?: string[]; scenePrompt?: string
   characterTokens?: string[]; copyrightTokens?: string[]
   artists?: string[]; artistProse?: string
@@ -46,33 +48,35 @@ function conflictsWithFairSkin(value: string): boolean {
 const KREA_META_KEYS = new Set([
   '1girl', 'solo', '2girls', 'official_cg', 'visual_audited', 'landscape', 'portrait',
   'general', 'sensitive', 'safe', 'explicit', 'adult', 'visual_novel_event_cg',
+  'nene_r18', 'natsume_r18', 'adult_after_story', 'official_visual_novel_cg_framing',
 ])
 const KREA_CAMERA_KEYS = new Set([
   'close_up', 'extreme_close_up', 'close_up_detail', 'medium_shot', 'upper_body',
   'half_body', 'waist_up', 'cowboy_shot', 'wide_shot', 'long_shot', 'full_body',
   'pov', 'pov_shot', 'high_angle', 'low_angle', 'from_above', 'from_below',
-  'side_view', 'profile', 'dutch_angle', 'cinematic_16_9_clockwise_dutch_angle',
+  'side_view', 'from_side', 'front_view', 'back_view', 'from_behind', 'profile', 'dutch_angle', 'cinematic_16_9_clockwise_dutch_angle',
   'waist_up_close_shot', 'portrait_shot', 'establishing_shot', 'face_focus',
-  'three_quarter_view', 'over_the_shoulder', 'selfie',
+  'three_quarter_view', 'over_the_shoulder', 'selfie', 'eye_level',
+  'front_three_quarter_view', 'rear_three_quarter_view', 'back_three_quarter_view', 'side_three_quarter_view',
 ])
 const KREA_LIGHT_KEYS = new Set([
   'window_light', 'golden_hour', 'golden_light', 'backlight', 'backlit', 'rim_light',
   'moonlight', 'lantern_light', 'overcast', 'soft_light', 'soft_lighting',
   'warm_light', 'warm_lighting', 'cinematic_lighting', 'volumetric_lighting',
 ])
-const KREA_IDENTITY_KEYS = new Set([
-  'ayachi_nene', 'shiki_natsume', 'nene', 'natsume', 'white_hair', 'black_hair',
-  'very_long_hair', 'very_long_black_hair', 'low_twintails', 'purple_eyes',
-  'golden_yellow_eyes', 'yellow_eyes', 'ahoge', 'pink_hair_ribbons', 'hair_ribbon',
-  'two_red_hairclips', 'two_red_hairclips_only', 'mole_under_eye', 'no_hair_ribbon',
-])
-const KREA_OUTFIT_RE = /(?:^|_)(?:clothes|clothing|outfit|uniform|shirt|blouse|skirt|dress|apron|lingerie|underwear|panties|bra|bikini|swimsuit|pantyhose|thighhighs|stockings|coat|sweater|cardigan|pajamas|sleepwear|nightgown|towel|yukata|kimono|qipao|cheongsam|robe|jacket|blazer|collar|sleeves|gloves|boots|shoes|bow|ribbon|maid|serafuku|tactical_gear|office_lady)(?:_|$)/
+const KREA_OUTFIT_RE = /(?:^|_)(?:clothes|clothing|outfit|uniform|shirt|blouse|skirt|miniskirt|dress|apron|lingerie|underwear|panties|bra|bikini|swimsuit|pantyhose|thighhighs|stockings|tights|socks|scarf|tabi|geta|coat|sweater|cardigan|pajamas|sleepwear|nightgown|towel|yukata|kimono|furisode|obi|qipao|cheongsam|robe|jacket|blazer|collar|sleeves|gloves|boots|shoes|bow|ribbon|maid|serafuku|tactical_gear|office_lady)(?:_|$)/
 const KREA_BODY_DETAIL_RE = /^(?:nude|naked|fully_nude|bare_|cleavage|sideboob|underboob|no_bra|no_panties|panties_aside|pulling_down_panties|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone|navel|slender_thighs|nipples|areola|pussy|cameltoe|breasts_out|topless|bottomless|lifted_skirt|legs_apart|spread_legs|parted_lips|open_mouth|ahegao|closed_eyes|half_closed_eyes|averting_gaze|blushing|deep_blush|heavy_blush|heavy_breathing|drooling|wet_skin|wet_hair|wet_clothes|sweat|sweaty_skin|see_through|translucent|hugging_pillow|sex|intercourse|vaginal|anal|oral|fellatio|blowjob|deepthroat|cunnilingus|paizuri|titfuck|handjob|fingering|masturbation|female_masturbation|missionary|doggystyle|cowgirl_position|mating_press|spooning|grinding|penetration|cum|cum_on_face|cum_in_mouth|cum_on_breasts|cum_on_body|internal_cumshot|creampie|excessive_cum|after_sex|panty_pull|skirt_lift|grabbed_breasts|groping)/
 const KREA_ACTION_RE = /^(?:holding|carrying|standing|sitting|lying|waiting|leaning|kneeling|straddling|clinging|swimming|walking|running|reaching|undressing|looking|turning|adjusting|sweeping|tripping|squeezing|hand_gripping|skirt_hem_caught|one_hand|both_hands|propped|cross_legged|legs_apart|skirt_lift|neck_kiss|eye_contact|close_distance)(?:_|$)/
 const KREA_MOOD_RE = /(?:^|_)(?:smile|blush|shy|happy|calm|relaxed|serious|sad|melancholic|nervous|expectant|panicked|embarrassed|tears|tearful|teary|tsundere|sensual|intimate|romantic|seductive|passionate|expressionless|in_love|soft_eyes|bright_eyes|red_ears|heavy_breathing)(?:_|$)/
 
 function naturalList(values: string[]): string {
-  const unique = [...new Set(values.map(value => value.trim()).filter(Boolean))]
+  const seen = new Set<string>()
+  const unique = values.map(value => value.trim()).filter(value => {
+    const key = value.toLowerCase().replace(/[_\s]+/g, ' ')
+    if (!key || seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
   if (!unique.length) return ''
   if (unique.length === 1) return unique[0]
   if (unique.length === 2) return `${unique[0]} and ${unique[1]}`
@@ -121,7 +125,7 @@ const KREA_CANONICAL_OUTFITS: ReadonlyArray<readonly [string, string]> = Object.
 
 function outfitPhrases(plan: PromptPlan): string[] {
   if (plan.outfitProse) return [clean(plan.outfitProse)]
-  const keys = new Set(plan.exactControls.map(normalizeProseKey))
+  const keys = new Set([...plan.exactControls, ...plan.sceneVisualFragments].map(normalizeProseKey))
   const canonical = KREA_CANONICAL_OUTFITS.find(([key]) => keys.has(key))
   if (canonical) return [canonical[1]]
   // 角色主词（preserveTokens = exactTokens）是**身份**不是服装。outfitProse 为空时
@@ -136,7 +140,6 @@ function outfitPhrases(plan: PromptPlan): string[] {
       if (!key || identityKeys.has(key)) return false
       return KREA_OUTFIT_RE.test(key)
         && !KREA_META_KEYS.has(key)
-        && !KREA_IDENTITY_KEYS.has(key)
         && !/^(?:nene|natsume)_r18$/.test(key)
     })
     .map(proseToken)
@@ -162,12 +165,16 @@ function mappedPhrases(value: unknown, mappings: ReadonlyArray<readonly [RegExp,
 const LOCATION_PHRASES: ReadonlyArray<readonly [RegExp, string]> = [
   [/卧室|主卧|床榻|大床|被窝|宿舍/, 'inside a bedroom'],
   [/咖啡馆|咖啡厅|café|咖啡吧台|猫咖啡/i, 'inside a cafe'],
-  [/浴室|洗手台|温泉|风吕|汤池/, 'inside a bathroom'],
+  [/浴室|洗手台/, 'inside a bathroom'],
+  [/温泉|风吕|汤池/, 'at a bathing pool'],
+  [/露天|户外/, 'outdoors'],
   [/客厅|家庭影音室/, 'inside a living room'],
   [/教室|课桌/, 'inside a classroom'],
   [/厨房|料理台|后厨/, 'inside a kitchen'],
   [/图书馆|图书室|书库/, 'inside a library'],
   [/书店/, 'inside a bookstore'],
+  [/玄关|门厅/, 'inside an entrance hall'],
+  [/礼堂|颁奖台/, 'inside an auditorium'],
   [/海边|海滨|海岸|沙滩/, 'on a beach'],
   [/神社|古寺/, 'at a shrine'],
   [/天台|屋顶/, 'on a rooftop'],
@@ -185,11 +192,6 @@ const WEATHER_PHRASES: ReadonlyArray<readonly [RegExp, string]> = [
   [/风/, 'in a light breeze'],
 ]
 
-const LIGHT_FIELD_PHRASE = {
-  golden: 'golden-hour light', window: 'window light', back: 'backlighting',
-  moon: 'moonlight', lantern: 'warm light', overcast: 'diffused overcast light',
-} as const
-
 function sceneFieldPhrases(scene: PromptSceneContext | null): string[] {
   if (!scene) return []
   const phrases: string[] = []
@@ -206,14 +208,14 @@ function sceneCameraTokens(scene: PromptSceneContext | null): string[] {
   return [SHOT.find(option => option.id === shot)?.prompt || '', /三分之四/.test(String(scene.camera || '')) ? 'three-quarter view' : ''].filter(Boolean)
 }
 
-function sceneLightingPhrases(scene: PromptSceneContext | null): string[] {
+function sceneLightingPhrases(scene: PromptSceneContext | null, replacedSource?: string): string[] {
   if (!scene) return []
   const text = String(scene.lighting || '')
   const lighting = sceneLighting(scene)
   return [
-    lighting ? LIGHT_FIELD_PHRASE[lighting] : '',
+    lighting && !replacedSource ? lightPhrase(LIGHTING.find(option => option.id === lighting)?.prompt || '') : '',
     /轮廓光|边缘光/.test(text) ? 'soft rim light' : '',
-    /暖光|暖灯|暖色|暖黄|橙光/.test(text) ? 'warm lighting' : '',
+    replacedSource !== 'lantern' && /暖光|暖灯|暖色|暖黄|橙光/.test(text) ? 'warm lighting' : '',
     /柔和|柔光/.test(text) ? 'soft lighting' : '',
   ].filter(Boolean)
 }
@@ -222,33 +224,37 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   const style = inferredKreaStyle(plan)
   const dual = plan.identity.some(token => normalizeProseKey(token) === '2girls')
   const subject = clean(plan.subjectProse || proseList(plan.identity))
-    .replace(/[.!?]+\s*/g, '; ')
-    .replace(/;\s*$/, '')
+  const subjectText = `_${normalizeProseKey(subject).replace(/[.,;:]/g, '_')}_`
+  const identityKeys = new Set(plan.identity.map(normalizeProseKey))
   const exactKeys = new Set(plan.exactControls.map(normalizeProseKey))
+  const outfitKeys = new Set([...exactKeys, ...plan.sceneVisualFragments.map(normalizeProseKey)])
   const outfit = outfitPhrases(plan)
-  const hasCanonicalOutfit = Boolean(plan.outfitProse)
-    || KREA_CANONICAL_OUTFITS.some(([key]) => exactKeys.has(key))
+  const consumedOutfitKey = !plan.outfitProse
+    ? KREA_CANONICAL_OUTFITS.find(([key]) => outfitKeys.has(key))?.[0] : undefined
+  const authoredProse = plan.sceneProse || sanitizeKreaProse(plainEnglish(plan.scene?.animaCaption))
 
   const action: string[] = []
+  const artists = [...plan.artists].map(token => proseToken(token.replace(/^@/, '')))
   const mood: string[] = [...plan.emotion.map(moodPhrase).filter(Boolean)]
   const environment: string[] = []
   const manualBackground: string[] = []
   const camera: string[] = []
-  const lighting: string[] = [...plan.lighting.map(lightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
+  const lighting: string[] = [...plan.lighting.map(lightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene, lightingOverride(plan)?.source)]
   for (const token of resolveCameraTags([...plan.camera, ...sceneCameraTokens(plan.scene), ...plan.sceneVisualFragments, ...plan.manual], plan.manual, plan.camera)) {
     const key = normalizeProseKey(token)
-    if (!key || KREA_META_KEYS.has(key) || KREA_IDENTITY_KEYS.has(key) || exactKeys.has(key)) continue
-    if (KREA_ACTION_RE.test(key) || KREA_BODY_DETAIL_RE.test(key)) { action.push(actionPhrase(token)); continue }
-    if (/(?:^|_)(?:hairclips?|hair_ribbons?|hair_ornaments?)(?:_|$)/.test(key)) continue
+    if (!key || KREA_META_KEYS.has(key) || exactKeys.has(key) || key === consumedOutfitKey) continue
+    if (identityKeys.has(key) && subjectText.includes(`_${key}_`)) continue
+    if (/^no_hair_ribbons?$/.test(key) && subject.includes('no ribbons in her hair')) continue
+    if (token.startsWith('@')) { artists.push(proseToken(token.slice(1))); continue }
+    if (KREA_ACTION_RE.test(key) || key.startsWith('folding_') || KREA_BODY_DETAIL_RE.test(key)) { action.push(actionPhrase(token)); continue }
     if (KREA_CAMERA_KEYS.has(key)) { camera.push(cameraPhrase(token)); continue }
     if (KREA_LIGHT_KEYS.has(key) || /(?:light|lighting|shadow|shadows|backlit)$/.test(key)) { lighting.push(lightPhrase(token)); continue }
-    if (KREA_OUTFIT_RE.test(key)) {
-      if (hasCanonicalOutfit) continue
+    if (KREA_OUTFIT_RE.test(key) && !/_(?:on|over|beside|under)_/.test(key)) {
       if (key === 'apron_only' && outfit.some(item => /only .*apron/i.test(item))) continue
-      outfit.push(outfitPhrase(token))
+      outfit.push(outfitPhrase(token).replace(/^(?:wearing|dressed in)\s+/i, ''))
       continue
     }
-    if (KREA_MOOD_RE.test(key)) { mood.push(moodPhrase(token)); continue }
+    if (KREA_MOOD_RE.test(key) && key !== 'red_ears') { mood.push(moodPhrase(token)); continue }
     if (isEnvironmentKey(key) || /^(?:morning|afternoon|evening|night|late_night|dawn|sunset|clear_sky|starry_sky|rain|snow|snowfall)$/.test(key)) {
       environment.push(environmentPhrase(token))
       if (isEnvironmentKey(key) && plan.manual.includes(token)) manualBackground.push(proseToken(token))
@@ -264,36 +270,20 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   }
 
   const parts = [style]
-  // 2026-08-30：身份保护句（防止 Krea 散文扩写将热门角色泛化为通用动漫）。
-  // 调研 + 样图对照：别人在 prompt 开头明确 "Preserve <Name>'s iconic recognizable
-  // character identity, existing appearance and original design logic..." 锁定
-  // 角色视觉指纹；项目 5 桶拼接把 identityProse 淹没在散文中，没有"保护"指令，
-  // Krea 内部扩写倾向把 IP 角色泛化（出图不认角色）。提取 subjectProse 头部
-  // 角色名（兼容 "Name from Series" / "Name, the role" / "Alias, Name from" /
-  // "Name (Alias) from" 四种常见身份散文开头），注入保护句。
-  if (subject && !dual) {
-    // 兼容 "Name from Series" / "Name, the role" / "Alias, Name from" /
-    // "Name (Alias) from"（括号别名如 Reze (Bomb Devil)；连词如 Jeanne d'Arc）。
-    // 取「从开头到大写单词序列结束」为止的名字：遇到 ", " / " (" / " from " 即停。
-    const nameMatch = subject.match(/^([A-Z][A-Za-z'-]*(?:\s+(?!from\s)[A-Za-z][A-Za-z'-]*)*)(?=\s+from\s+|,|\s*\()/)
-    const ipName = nameMatch ? nameMatch[1].trim() : null
-    if (ipName) {
-      parts.push(sentence(
-        `Preserve ${ipName}'s iconic recognizable character identity, her established appearance, and her original design logic. Do not substitute the character with a generic anime girl.`,
-      ))
-    }
-  }
+  if (artists.length) parts.push(sentence(`Use artistic influences from ${naturalList(artists)}`))
   const outfitText = naturalList(outfit)
-  if (subject) parts.push(sentence(outfitText ? `${subject}, wearing ${outfitText}` : subject))
+  if (subject) parts.push(sentence(subject))
+  // Outfit prose may already be a complete sentence; do not attach it to "wearing".
+  if (outfitText) parts.push(sentence(`Clothing: ${outfitText}`))
   const actionText = naturalList(action.map(proseClause))
   const moodText = naturalList(compactMood(mood))
   const portrayal: string[] = []
-  if (actionText) portrayal.push(plan.sceneProse ? `Include ${actionText}` : `${dual ? 'They are' : 'She is'} ${actionText}`)
+  if (actionText) portrayal.push(`Include ${actionText}`)
   if (moodText) portrayal.push(dual ? `their expressions are ${moodText}` : `${actionText ? 'her' : 'Her'} expression is ${moodText}`)
   if (plan.visualDescription) portrayal.push(clean(plan.visualDescription).replace(/[.!?]+\s*/g, '; ').replace(/;\s*$/, ''))
   if (portrayal.length) parts.push(sentence(portrayal.join(actionText && moodText ? ', while ' : ', ')))
   // 精简蓝图将环境与镜头放在标签，关系放在 prose；两个通道都须消费。
-  if (plan.sceneProse) parts.push(sentence(plan.sceneProse))
+  if (authoredProse) parts.push(sentence(authoredSceneCaption(plan, authoredProse, false)))
   const environmentText = naturalList(environment)
   // 2026-08-30 调研 §七/§八：Krea 见「室内/场景」就爱画人，官方推荐空场景
   // 在正句追加 "no characters, no people, no figures"（本地 Turbo 负面失效的
@@ -302,7 +292,7 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   // 场景（studio 背景图）自动兜底。
   const emptySceneGuard = !subject && !outfitText && Boolean(environmentText)
     && !/no characters|no people|no figures/i.test(environmentText)
-    && !/\b(?:she|her|girl|woman|figure|character|person)\b/i.test(`${environmentText} ${plan.sceneProse}`)
+    && !/\b(?:she|her|girl|woman|figure|character|person)\b/i.test(`${environmentText} ${authoredProse}`)
   if (environmentText) {
     parts.push(sentence(
       `The scene takes place ${environmentText}${emptySceneGuard ? '; no characters, no people, no figures' : ''}`,
@@ -310,7 +300,7 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   }
   // Authored blueprint/recipe prose also carries actions and spatial relations, so keep it.
   // Its presence must not swallow manual background tags; make their narrower priority explicit.
-  if (plan.sceneProse && manualBackground.length) {
+  if (authoredProse && manualBackground.length) {
     parts.push(sentence(`For the background, use ${naturalList(manualBackground)} in preference to the earlier setting`))
   }
   const direction = naturalList([...camera, ...plan.composition.map(cameraPhrase).filter(Boolean)])
@@ -334,7 +324,36 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   return parts.filter(Boolean).join(' ')
 }
 
-const ANIMA_RELATION_RE = /^(?:holding|carrying|standing|sitting|lying|waiting|leaning|kneeling|straddling|clinging|swimming|walking|running|reaching|undressing|looking|turning|adjusting|hug|hugging|back_hug|kiss|kissing|touch|touching|press|pressed|hands?|one_hand|both_hands|playing|reading|writing|drinking|eating|cooking|dancing|sleeping|crying|smiling|eye_contact|close_distance|interlocked_fingers|bare_|nude|naked|cleavage|sideboob|no_bra|no_panties|wet_skin|wet_clothes|see_through|translucent|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone)/
+/** Free subjects retain all supplied people and relationships without assigning a default gender. */
+function buildFreeKreaDescription(plan: PromptPlan): string {
+  const tokens = resolveCameraTags([...plan.identity, ...plan.exactControls, ...plan.sceneVisualFragments,
+    ...plan.emotion, ...plan.camera, ...plan.lighting, ...plan.palette, ...plan.composition, ...plan.manual], plan.manual, plan.camera)
+  const details: string[] = [], camera: string[] = [], lighting: string[] = [], subjects: string[] = [], artists: string[] = []
+  for (const token of tokens) {
+    const safe = sanitizeKreaProse(token), key = normalizeProseKey(safe)
+    if (!key) continue
+    const count = /^(\d+)\+?(girls?|boys?|others?|people)$/.exec(safe.toLowerCase().replace(/\s+/g, ''))
+    if (count) {
+      const kind = /^girl/.test(count[2]) ? 'female character' : /^boy/.test(count[2]) ? 'male character' : 'person'
+      subjects.push(`${count[1]}${token.includes('+') ? ' or more' : ''} ${Number(count[1]) === 1 ? kind : kind === 'person' ? 'people' : `${kind}s`}`)
+    } else if (safe.startsWith('@')) artists.push(safe.slice(1))
+    else if (key === 'solo') subjects.push('a single subject')
+    else if (key === 'no_humans') subjects.push('no people')
+    else if (KREA_META_KEYS.has(key)) continue
+    else if (KREA_CAMERA_KEYS.has(key)) camera.push(cameraPhrase(safe))
+    else if (KREA_LIGHT_KEYS.has(key) || /(?:light|lighting|shadow|shadows|backlit)$/.test(key)) lighting.push(lightPhrase(safe))
+    else details.push(actionPhrase(safe))
+  }
+  return [
+    ...plan.style.map(sentence), sentence(plan.artistProse),
+    artists.length ? sentence(`Use artistic influences from ${naturalList(artists)}`) : '',
+    subjects.length ? sentence(`The image contains ${naturalList(subjects)}`) : '',
+    details.length ? sentence(`Include ${naturalList(details)}`) : '',
+    plan.sceneProse ? sentence(authoredSceneCaption(plan, plan.sceneProse, false)) : '', sentence(plan.visualDescription),
+    camera.length ? sentence(`The composition uses ${naturalList(camera)}`) : '',
+    lighting.length ? sentence(`The scene is lit by ${naturalList(lighting)}`) : '',
+  ].filter(Boolean).join(' ')
+}
 
 function proseClause(value: string): string {
   return clean(value)
@@ -343,89 +362,18 @@ function proseClause(value: string): string {
     .trim()
 }
 
-function compactPhrases(values: string[], limit: number): string[] {
-  return [...new Set(values.map(value => clean(value)).filter(Boolean))].slice(0, limit)
-}
-
-function actionPriority(value: string): number {
-  const text = value.toLowerCase()
-  if (/holding|carrying|adjusting|hands?|wrapper|cup|letter|papers|sandals/.test(text)) return 0
-  if (/looking|eye contact|turning/.test(text)) return 1
-  return 2
-}
-
-function compactActions(values: string[], limit: number): string[] {
-  return [...new Set(values.map(value => clean(value)).filter(Boolean))]
-    .map((value, index) => ({ value, index, priority: actionPriority(value) }))
-    .sort((left, right) => left.priority - right.priority || left.index - right.index)
-    .slice(0, limit)
-    .map(item => item.value)
-}
-
-/**
- * 全局视觉瑕疵防御过滤器：
- * 阻断将「耳红/害羞」误译为 burning ears / flaming red 的病态词导致模型画出物理火苗/耳朵冒火。
- */
-function sanitizeVisualArtifacts(text: string): string {
-  if (!text) return ''
-  return text
-    .replace(/\b(?:ears?\s+(?:burn(?:ing)?|flam(?:ing)?)(?:\s+completely)?(?:\s+bright)?(?:\s+red)?|(?:burn(?:ing)?|flam(?:ing)?)\s+(?:bright\s+)?red\s+ears?)\b/gi, 'flushed cheeks')
-    .replace(/\b(?:flaming|burning)\s+red\s+ears?\b/gi, 'flushed cheeks')
-    .replace(/\bburning_red_ears\b/gi, 'blush')
-    .replace(/\bburning\s+(?:face|cheeks?)\b/gi, 'flushed cheeks')
-    .replace(/\b(?:red|blushing|crimson)\s+ears?\b/gi, 'flushed cheeks')
-    .replace(/\bears?\s+(?:flushed\s+crimson|flush\s+(?:bright\s+)?crimson)\b/gi, 'flushed cheeks')
-}
-
-function buildStudioAnimaCaption(plan: PromptPlan): string {
-  const explicit = sanitizeVisualArtifacts(clean(String(plan.scene?.animaCaption || '')))
-  if (explicit) return sentence(sanitizeVisualArtifacts(authoredAnimaCaption(plan, explicit)))
-
-  const identityKeys = new Set(plan.identity.map(normalizeProseKey))
-  const exactKeys = new Set(plan.exactControls.map(normalizeProseKey))
-  const actions: string[] = []
-  const environment: string[] = []
-  const camera: string[] = [...plan.camera, ...sceneCameraTokens(plan.scene)].map(cameraPhrase).filter(Boolean)
-  const lighting: string[] = [...plan.lighting.map(animaLightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
-  for (const token of [...plan.sceneVisualFragments, ...plan.manual]) {
-    const key = normalizeProseKey(token)
-    if (!key || KREA_META_KEYS.has(key) || identityKeys.has(key) || exactKeys.has(key)) continue
-    if (QUALITY_OR_SCORE_RE.test(key) || /^(?:general|sensitive|safe|nsfw)$/.test(key)) continue
-    if (ANIMA_RELATION_RE.test(key)) { actions.push(actionPhrase(token)); continue }
-    if (KREA_CAMERA_KEYS.has(key)) { camera.push(cameraPhrase(token)); continue }
-    if (KREA_LIGHT_KEYS.has(key) || /(?:light|lighting|shadow|shadows|backlit)$/.test(key)) { lighting.push(lightPhrase(token)); continue }
-    if (isEnvironmentKey(key) || /^(?:morning|afternoon|evening|night|late_night|dawn|sunset|rain|snow|snowfall)$/.test(key)) {
-      environment.push(environmentPhrase(token))
-    }
-  }
-  environment.push(...sceneFieldPhrases(plan.scene))
-
-  const clauses: string[] = []
-  if (plan.visualDescription) clauses.push(proseClause(plan.visualDescription))
-  const actionText = naturalList(compactActions(actions, 2))
-  if (actionText) clauses.push(`She is ${actionText}`)
-  const environmentText = naturalList(compactPhrases(environment, 2))
-  if (environmentText) clauses.push(`the scene is ${environmentText}`)
-  const direction = naturalList(compactPhrases([...camera, ...plan.composition.map(cameraPhrase).filter(Boolean)], 2))
-  if (direction) clauses.push(`framed with ${direction}`)
-  const atmosphere = naturalList(compactPhrases(lighting, 3))
-  if (atmosphere) clauses.push(`lit by ${atmosphere}`)
-  return sentence(clauses.join('; '))
-}
-
 /**
  * Anima uses tags for identity and clothing, captions for authored scene relationships.
  * Do not repeat the character and outfit dossiers after their tags. Only visual fields are read;
  * title, story, dialogue, search metadata, and audit metadata never enter here.
  */
 function buildAnimaVisualDirection(plan: PromptPlan): string {
-  const structured = Boolean(plan.subjectProse || plan.outfitProse || plan.sceneProse || plan.scene)
-  if (!structured) return sentence(plan.visualDescription)
-  if (plan.scene) return buildStudioAnimaCaption(plan)
-  if (plan.sceneProse) {
-    return sentence(sanitizeVisualArtifacts(authoredAnimaCaption(plan, clean(plan.sceneProse))))
-  }
-  return buildStudioAnimaCaption(plan)
+  const authored = clean(String(plan.scene?.animaCaption || plan.sceneProse || ''))
+  // Tags already carry camera, light, action and environment. Only authored
+  // relationships belong in the caption; never reconstruct and truncate them.
+  return authored
+    ? sentence(sanitizeVisualArtifacts(authoredSceneCaption(plan, authored)))
+    : sentence(sanitizeVisualArtifacts(plan.visualDescription))
 }
 
 export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
@@ -433,25 +381,55 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
   const promptRating = input.profile?.rating_mode === 'prompt'
   const authoredRating = promptRating && [...split(input.scenePrompt), ...(input.manual || []), ...(input.controls || [])].some(isRating)
   const quality = split(input.profile?.quality_prefix)
+  const sceneIdentity = input.scene?.identityTokensOverride
+  const defaultCamera = SHOT.find(option => option.id === sceneShot(input.scene ?? null))?.prompt
+  const camera = mergeCameraControls(input.camera || [], cameraTokensFromText(input.scene?.camera),
+    !input.camera?.length || Boolean(defaultCamera && input.camera.every(token => normalizeKey(token) === normalizeKey(defaultCamera))))
   const plan: PromptPlan = {
+    freeSubject: input.freeSubject,
     quality: authoredRating ? quality.filter(tag => !isRating(tag)) : quality,
     rating: !promptRating && input.rating ? [input.rating] : [],
-    identity: split(input.identity), exactControls: [...new Set(input.controls || [])],
+    identity: Array.isArray(sceneIdentity) && sceneIdentity.length ? [...sceneIdentity] : split(input.identity),
+    exactControls: [...new Set(input.controls || [])],
     characterTokens: [...new Set(input.characterTokens || [])], copyrightTokens: [...new Set(input.copyrightTokens || [])],
     artists: [...new Set(input.artists || [])],
     preserveTokens: [...new Set(input.exactTokens || [])],
     sceneVisualFragments: split(input.scenePrompt), emotion: [...(input.emotion || [])],
-    camera: [...(input.camera || []), ...cameraTokensFromText(input.scene?.camera)], lighting: [...(input.lighting || [])], palette: [...(input.palette || [])],
+    camera, lighting: [...(input.lighting || [])], palette: [...(input.palette || [])],
     authoredLighting: input.authoredLighting,
     composition: [...(input.composition || [])], manual: [...(input.manual || [])],
     negative: split(input.negative), visualDescription: plainEnglish(input.visualDescription),
     style: [...new Set(input.style || [])],
     medium: String(input.medium || '').trim(),
-    subjectProse: String(input.subjectProse || '').trim(),
+    subjectProse: String(input.scene?.identityProseOverride || input.subjectProse || '').trim(),
     outfitProse: String(input.outfitProse || '').trim(),
     sceneProse: String(input.sceneProse || '').trim(),
     scene: input.scene ?? null,
     artistProse: String(input.artistProse || '').trim(),
+  }
+  if (compositionIntent(input.scene) !== 'single') {
+    const source = { ...input.scene, promptTokens: plan.sceneVisualFragments }
+    plan.identity = compositionTokens(plan.identity, source)
+    plan.sceneVisualFragments = compositionTokens(plan.sceneVisualFragments, source)
+    plan.subjectProse = plan.subjectProse.replace(/\bis the only prominent character,\s*/i, 'is ')
+  }
+  // Studio's default low twintails must yield to an explicitly authored updo,
+  // loose hairstyle or braids. Authored/exact scene and manual tokens stay intact.
+  if ([...plan.sceneVisualFragments, ...plan.exactControls, ...plan.manual]
+    .some(token => /(?:^|_)(?:hair_up|hair_down|twin_braids|two(?:_[a-z]+){0,3}_braids)(?:_|$)/.test(normalizeKey(token)))) {
+    plan.identity = plan.identity.filter(token => normalizeKey(token) !== 'low_twintails')
+  }
+  // An explicit scene variant can remove Nene's default hair ribbons.
+  if ([...plan.sceneVisualFragments, ...plan.manual].some(token => /^no_hair_ribbons?$/.test(normalizeKey(token)))) {
+    plan.identity = plan.identity.filter(token => !['pink_hair_ribbons', 'hair_ribbon'].includes(normalizeKey(token)))
+    plan.subjectProse = plan.subjectProse.replace(/\bpink hair ribbons\b/gi, 'no ribbons in her hair')
+  }
+  const light = lightingOverride(plan)
+  if (light) {
+    const exact = new Set([...plan.preserveTokens, ...(input.profile?.exact_tokens || [])].map(normalizeKey))
+    plan.sceneVisualFragments = plan.sceneVisualFragments.filter(token => exact.has(normalizeKey(token))
+      || input.profile?.exact_prefixes?.some(prefix => token.toLowerCase().startsWith(prefix.toLowerCase()))
+      || lightingTokenId(token) !== light.source)
   }
   if (input.profile?.model_id === 'anima-miaomiao-v1.6') {
     const authored = [...plan.identity, ...plan.exactControls, ...plan.sceneVisualFragments, ...plan.manual]
@@ -469,30 +447,9 @@ function allTags(plan: PromptPlan, includeStyle = true): string[] {
     ...plan.composition, ...plan.manual ].filter(Boolean)
   return raw.map(tag => {
     const k = normalizeProseKey(tag)
-    if (k === 'burning_red_ears' || k === 'blushing_ears' || k === 'red_ears') return 'blush'
+    if (k === 'burning_red_ears') return 'blushing ears'
     return tag
   })
-}
-
-/** Krea 散文禁词（score/质量词），由 promptPolicy.QUALITY_WORDS 单一清单派生。 */
-const KREA_BANNED_WORDS_RE = new RegExp(`\\b(?:${QUALITY_WORDS.join('|')}|score_\\d+)\\b`, 'gi')
-
-/**
- * Krea 2 散文统一净化 —— krea2 渲染分支入口的唯一强制点（与「负面恒空」并列）。
- * 三条铁律：禁 (tag:1.5) 权重语法、禁下划线 token、禁 score/质量词。
- * subjectProse/outfitProse/sceneProse/visualDescription/artistProse/style/medium
- * 全部先过这里，禁止在调用方各自擦除（2026-08-15 审计：此前 sceneProse 等只过
- * clean()，场景模板里的 (xxx:1.5) 会以字面文本进入 Krea）。
- */
-function sanitizeKreaProse(value: string): string {
-  return sanitizeVisualArtifacts(String(value || '')
-    .replace(/<lora:[^>]+>/gi, '')
-    .replace(/\bBREAK\b/g, ', ')
-    .replace(/\(([^()\n]*[a-z][^()\n]*):\s*-?\d+(?:\.\d+)?\s*\)/gi, '$1')
-    .replace(KREA_BANNED_WORDS_RE, '')
-    .replace(/_/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim())
 }
 
 export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile?: ModelProfile | null): { prompt: string; negative: string } {
@@ -500,6 +457,11 @@ export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile
   if (capabilities.promptFormat === 'natural-language') {
     const proseSafe: PromptPlan = {
       ...plan,
+      identity: sanitizeKreaTokens(plan.identity), exactControls: sanitizeKreaTokens(plan.exactControls),
+      sceneVisualFragments: sanitizeKreaTokens(plan.sceneVisualFragments), emotion: sanitizeKreaTokens(plan.emotion),
+      camera: sanitizeKreaTokens(plan.camera), lighting: sanitizeKreaTokens(plan.lighting),
+      palette: sanitizeKreaTokens(plan.palette), composition: sanitizeKreaTokens(plan.composition),
+      manual: sanitizeKreaTokens(plan.manual),
       subjectProse: sanitizeKreaProse(plan.subjectProse),
       outfitProse: sanitizeKreaProse(plan.outfitProse),
       sceneProse: sanitizeKreaProse(plan.sceneProse),
@@ -508,7 +470,7 @@ export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile
       style: plan.style.map(sanitizeKreaProse).filter(Boolean),
       medium: sanitizeKreaProse(plan.medium),
     }
-    return { prompt: buildStructuredKreaDescription(proseSafe), negative: '' }
+    return { prompt: sanitizeKreaProse(plan.freeSubject ? buildFreeKreaDescription(proseSafe) : buildStructuredKreaDescription(proseSafe)), negative: '' }
   }
   const tags = allTags(plan)
   if (capabilities.promptFormat === 'anima-tags') {

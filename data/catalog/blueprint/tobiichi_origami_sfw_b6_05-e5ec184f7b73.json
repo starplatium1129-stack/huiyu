@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_05",
     "title": "鸢一折纸 · AST 休假海滩的测风",
@@ -30,7 +30,7 @@
       "deadpan",
       "summer"
     ],
-    "promptProse": "Standing in the shallows beside the orange buoy, she raises the recovered notebook with a composed expression, sea haze softening the bright blue daylight.",
+    "promptProse": "By the orange buoy, she raises the recovered notebook from the shallows, expression composed in haze-softened blue daylight.",
     "promptTokens": [
       "notebook",
       "buoy",

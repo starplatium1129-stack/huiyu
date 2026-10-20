@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "frieren",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 5,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "frieren",
     "profile": {
@@ -77,10 +77,11 @@
         "frieren",
         "1girl",
         "solo",
-        "long_white_hair",
+        "long_hair",
+        "white_hair",
         "very_long_hair",
-        "twin_braids",
-        "purple_eyes",
+        "twintails",
+        "green_eyes",
         "elf",
         "pointy_ears",
         "gold_earrings"
@@ -99,13 +100,14 @@
         "frieren the slayer",
         "elf mage"
       ],
-      "identityProse": "Frieren from Frieren: Beyond Journey's End, an elf mage who has lived for over a thousand years, with very long silver-white hair in twintails, green eyes, pointed ears and a calm, contemplative expression",
+      "identityProse": "Frieren from Frieren: Beyond Journey's End, with very long silver-white twintails, green eyes, pointed elf ears and gold earrings.",
       "identityTokens": [
         "frieren",
         "sousou_no_frieren",
         "1girl",
         "solo",
-        "long_white_hair",
+        "very_long_hair",
+        "white_hair",
         "twintails",
         "green_eyes",
         "pointy_ears",
@@ -134,7 +136,7 @@
       "canon": {
         "world": "古典奇幻（葬送的芙莉莲）",
         "era": "中世纪风",
-        "formNotes": "精灵长寿者；低双马尾；紫眼（已修正）",
+        "formNotes": "精灵长寿者；银白长发双马尾；绿瞳与精灵长耳",
         "research": "2026-08-14 调研"
       },
       "animeStudio": "madhouse, official anime screencap, anime coloring",

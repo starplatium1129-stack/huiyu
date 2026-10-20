@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc261",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 256,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she sits gracefully, under soft ambient lighting.",
+    "animaCaption": "Against the pink pillows, she rubs one sleepy eye and looks toward the viewer, the blanket at her waist; morning light catches her pajama collar.",
     "audit": {
       "attempt": 2,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn04-a2.png",
@@ -16,7 +16,7 @@
       "seedKey": "official-cg:ocn04:2"
     },
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "官方CG横幅构图",
+    "camera": "卧室略俯视斜向半身近景横幅构图",
     "category": "官方CG灵感",
     "char": "nene",
     "character": [
@@ -24,13 +24,13 @@
     ],
     "emotion": "心动",
     "id": "sc261",
-    "lighting": "柔和自然光",
+    "lighting": "晨间窗光落在粉色枕被与蓝睡衣上",
     "location": "卧室",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, pink pajamas, purple pajamas, crop top, exposed midriff, camera, photography equipment, dark blue bedding, lying on side, nsfw, nude, explicit",
+    "negative": "pink pajamas, purple pajamas, crop top, exposed midriff, dark blue bedding, lying on side, nsfw, nude, explicit",
     "officialCgCandidate": "ocn04",
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, diagonal_medium_close_up_from_above, 1girl, solo, ayachi_nene, nene_blue_pajamas, white_hair, very_long_hair, purple_eyes, ahoge, (sky_blue_patterned_button_up_pajama_shirt), small_navy_animal_pattern, contrasting_pink_collar, sitting_upright_in_a_pink_bedroom_bed, pale_pink_blanket_pulled_to_her_waist, very_long_silver_hair_spread_across_pink_pillows_and_sheets, quiet_direct_eye_contact, faint_blush, soft_morning_window_light, intimate_wholesome_atmosphere, <lora:ayachi_nene_v18_wd14:0.9>",
+    "prompt": "visual novel event CG, medium close up, dutch angle, from above, 1girl, solo, ayachi_nene, nene_blue_pajamas, very_long_hair, ahoge, (sky blue pajamas), button-up shirt, animal print, pink collar, sitting, bed, pink blanket, pink pillows, hair spread out, looking at viewer, slight blush, morning, window light, <lora:ayachi_nene_v18_wd14:0.9>",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",

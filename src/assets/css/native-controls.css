@@ -20,7 +20,7 @@
 :where(button):disabled { color:var(--text-disabled); cursor:not-allowed; }
 :where(button, input, textarea):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 /* Image layers paint above inset shadows, so their keyboard marker is an overlay. */
-:where(.zoomable-image-viewer,.image-compare-slider,.image-split-compare,.candidate-viewport,.gallery-orbit):focus-visible::after {
+:where(.zoomable-image-viewer,.compare-surface,.candidate-viewport,.gallery-orbit):focus-visible::after {
   content:""; position:absolute; inset:auto 0 0; height:2px; z-index:var(--z-raised);
   background:var(--on-art-primary); box-shadow:0 -1px 0 var(--art-scrim); pointer-events:none;
 }

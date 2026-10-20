@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_studio_scrolls",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 572,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "跪坐宣纸，一手运笔，另一手留在袍下。",
     "adult": true,
     "adultArtistHint": "@anmi",
-    "animaStyleHint": "lying_on_bed, barefoot, 5_toes, detailed_toes, dragon_horns, dragon_tail, nightgown, soft lighting",
+    "animaStyleHint": "",
     "camera": "full body, from below",
     "category": "成人",
     "characterId": "dusk_arknights",
@@ -19,18 +19,18 @@
     "description": "成年夕跪在铺开的宣纸上，黑袍松开，一手引画笔经过发光墨迹，另一手留在袍下；画中的山峦从纸面浮起。",
     "id": "dusk_arknights_r18_studio_scrolls",
     "kreaStyleHint": "r18_elegant_boudoir",
-    "lighting": "青铜烛台摇曳的暖黄烛光与窗外夜色，真丝薄纱透肤与水润白皙肌肤",
+    "lighting": "青铜烛台的暖黄光照亮宣纸近端，发光墨迹在画笔与手部形成微弱冷色反光",
     "location": "夕的私人画阁榻榻米",
     "mood": "慵懒魅惑与古典私密",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_ink_robe",
-    "promptProse": "Adult Dusk guides her brush through luminous ink with one hand while the other rests beneath the robe. Painted mountains rise from the paper.",
+    "promptProse": "She guides her brush through luminous ink with one hand while the other rests beneath the robe. Painted mountains rise from the paper. A bronze candelabrum warms the paper in the foreground, while the glowing ink casts faint cool reflections on the brush and her hands.",
     "promptTokens": [
-      "adult",
       "painting studio",
       "black robe",
+      "wide sleeves",
       "open clothes",
       "topless",
       "kneeling",
@@ -43,14 +43,13 @@
       "tatami",
       "painting_scrolls",
       "ink",
-      "nightgown",
       "barefoot",
-      "5_toes",
-      "detailed_toes",
       "dragon_horns",
-      "dragon_tail"
+      "dragon_tail",
+      "black_robe",
+      "kneeling"
     ],
     "timeOfDay": "深夜",
-    "title": "夕 · 画室墨夜·真丝睡裙与宣纸上的玉足"
+    "title": "夕 · 墨夜画卷"
   }
 }

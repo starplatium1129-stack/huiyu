@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suou_amane",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 88,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "suou_amane",
     "profile": {
@@ -109,7 +109,7 @@
         "灰色的果实",
         "grisaia"
       ],
-      "identityProse": "Suou Amane from Grisaia by Frontwing, the voluptuous and caring older-sister heroine with very long flowing crimson-red hair styled with distinctive circular hair rings at the sides, striking deep sapphire blue eyes, towering curvy figure with an ample bust, and a warm seductive smile.",
+      "identityProse": "Suou Amane from Grisaia, with very long crimson hair, circular side hair rings and deep blue eyes.",
       "identityTokens": [
         "suou_amane",
         "1girl",

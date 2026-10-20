@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_moon_clocktower",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 74,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tokisaki_kurumi_moon_clocktower",
     "title": "时崎狂三 · 月下钟楼",
@@ -30,7 +30,7 @@
       "wind",
       "full_body"
     ],
-    "promptProse": "Kurumi tilts her head above the clock-tower crown, golden dial light meeting moonlight along the stone ledge.",
+    "promptProse": "Kurumi stands on the clock-tower crown before a giant golden clock and tilts her head toward the viewer; the dial's light meets moonlight along the stone ledge.",
     "promptTokens": [
       "clock tower",
       "red moon",

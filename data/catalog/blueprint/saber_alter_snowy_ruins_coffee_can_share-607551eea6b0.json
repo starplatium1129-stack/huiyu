@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_snowy_ruins_coffee_can_share",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 225,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "saber_alter_snowy_ruins_coffee_can_share",
     "title": "黑呆 · 寒风断壁的热咖啡分享",
@@ -34,6 +34,7 @@
       "coffee can",
       "snow",
       "vending machine",
+      "hair bun",
       "cowboy shot"
     ],
     "negativeTokens": [

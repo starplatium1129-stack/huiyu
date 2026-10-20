@@ -1,8 +1,9 @@
-import { COMPOSITION, LIGHTING, SHOT } from '../config/promptConstants.ts'
+import { COMPOSITION, SHOT } from '../config/promptConstants.ts'
 import { mutualGroupWithCategory, normalizeKey, tokenize } from './promptPolicy.ts'
 import { isGarmentToken } from './popularIdentity.ts'
 import { isStableIdentityToken } from './interrogateReference.ts'
 import type { DraftRandomVariation } from './promptBuilderPersistence.ts'
+import { lightingTokenId } from './promptLighting.ts'
 
 /** Authored rendering input, not search metadata or a character's recommended scene. */
 export interface RandomSceneContext {
@@ -71,7 +72,6 @@ export function sceneAllowsAction(scene: RandomSceneContext, token: string): boo
 }
 
 const cameraKeys = new Set(SHOT.filter(option => !['turn', 'over'].includes(option.id)).map(option => key(option.prompt ?? '')))
-const lightKeys = new Set(LIGHTING.map(option => key(option.prompt ?? '')))
 const compositionKeys = new Set(COMPOSITION.map(option => key(option.prompt ?? '')))
 
 /** Remove known replaceable fields only; unknown relationship tokens survive. */
@@ -84,7 +84,7 @@ export function sceneVariationOverlay(scene: RandomSceneContext | undefined, out
     if (outfit.length && (isGarmentToken(normalized) || categories.get(normalized) === 'Clothing'
       || mutualGroupWithCategory(normalized)?.category === 'outfit')) return true
     return (Boolean(shot) && (cameraKeys.has(normalized) || categories.get(normalized) === 'Camera'))
-      || compositionKeys.has(normalized) || (Boolean(lighting) && (lightKeys.has(normalized) || categories.get(normalized) === 'Lighting'))
+      || compositionKeys.has(normalized) || (Boolean(lighting) && lighting !== scene?.lighting && Boolean(scene?.lighting) && lightingTokenId(token) === scene?.lighting)
       || (!scene?.prose && categories.get(normalized) === 'Emotion')
   }
   const tokens = tokenize(scene?.prompt ?? '').filter(token => !variable(token))

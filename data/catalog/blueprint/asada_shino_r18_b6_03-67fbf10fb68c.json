@@ -1,20 +1,20 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_r18_b6_03",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 1385,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "asada_shino_r18_b6_03",
     "title": "朝田诗乃 · 战术紧身衣背后散热阀卡壳事故 ·「散热阀锁死了……身体好热，快帮我拉开背后的拉链！」",
     "category": "更衣事故",
     "characterId": "asada_shino",
-    "description": "【GGO准备室·出击前夕】高强度战斗后战术紧身衣的背部散热拉链卡死在防弹夹层里。诗乃双手反剪在背后撑在弹药箱上，身体前倾塌腰，过紧的作战服将娇小的腰身与浑圆挺翘的臀部勾勒得极为惊人，前胸被勒得紧绷几乎透肉。她转头咬着下唇，满脸潮红喘息——「体温已经超过警报线了……快点用刀把后背切开啦！」",
+    "description": "【GGO准备室·出击前夕】高强度战斗后战术紧身衣的背部散热拉链卡死在防弹夹层里。诗乃一手撑在弹药箱上，另一手伸到背后尝试拉开卡住的拉链，身体前倾塌腰，过紧的作战服将娇小的腰身与浑圆挺翘的臀部勾勒得极为惊人，前胸被勒得紧绷几乎透肉。她转头咬着下唇，满脸潮红喘息——「体温已经超过警报线了……快点用刀把后背切开啦！」",
     "location": "GGO准备室·出击前夕",
-    "action": "撑弹药箱塌腰回眸双手反剪扯战术拉链，紧身皮衣勒臀溢乳，猫耳下耷娇喘求助",
+    "action": "一手撑住弹药箱、另一手伸到背后拉住卡住的拉链，眉头压低回眸",
     "timeOfDay": "night",
-    "lighting": "warm_cinematic_lighting",
+    "lighting": "green terminal light with soft overhead preparation-room light",
     "camera": "cowboy shot, eye level",
     "mood": "意外失控与羞赧",
     "sceneTags": [
@@ -30,17 +30,15 @@
       "stuck_zipper",
       "clothes_pull"
     ],
-    "promptProse": "She leans over the ammunition crate with the rear vent zipper jammed against the lining. Green terminal light illuminates the tight suit.",
+    "promptProse": "She leans forward with one hand braced on the ammunition crate and the other reaching behind for the rear vent zipper jammed against the lining. Green terminal light meets the soft overhead preparation-room light on her suit.",
     "promptTokens": [
-      "adult",
       "armory",
       "ammunition box",
-      "tactical bodysuit",
+      "green bodysuit",
+      "black reinforced panels",
       "stuck zipper",
       "bent over",
-      "looking back",
-      "cat ears",
-      "cat tail"
+      "looking back"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -55,6 +53,15 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "identityTokensOverride": [
+      "asada_shino",
+      "sword_art_online",
+      "1girl",
+      "solo",
+      "blue_hair",
+      "short_hair"
+    ],
+    "identityProseOverride": "Shino Asada (Sinon) in her Gun Gale Online form from Sword Art Online, with short pale-blue hair and human ears."
   }
 }

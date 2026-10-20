@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_amusement_park_fireworks_view",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1110,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yorha_2b_amusement_park_fireworks_view",
     "title": "2B · 废弃游乐园城堡的机械烟火",
@@ -19,7 +19,7 @@
     "action": "单手扶栏杆仰望满天机械烟火，清凉战斗服随风扬起，微仰下颌若有所思",
     "timeOfDay": "夜晚",
     "lighting": "盛大璀璨烟花在夜空中爆裂的多色艳丽光晕与古堡暗色剪影",
-    "camera": "medium shot, 3/4 low angle, vibrant night sky focus",
+    "camera": "medium shot, three-quarter view, low angle, vibrant night sky focus",
     "mood": "梦幻悲怆",
     "sceneTags": [
       "amusement_park",

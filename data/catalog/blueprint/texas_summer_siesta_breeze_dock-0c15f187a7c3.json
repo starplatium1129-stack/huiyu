@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_summer_siesta_breeze_dock",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 664,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "坐在木质栈桥边缘双腿悬空，推起墨镜凝望碧蓝大海，微风拂动狼尾",
     "camera": "full body, seated figure and feet above water visible",
@@ -20,7 +20,7 @@
     "mood": "惬意悠闲",
     "negativeTokens": [],
     "outfitId": "summer_sunbreeze",
-    "promptProse": "Texas pushes her sunglasses up with one hand from her seat on the wooden dock, her feet hanging above the blue water. Sea wind stirs her loose white shirt and wolf tail in the bright harbor sunlight.",
+    "promptProse": "Seated on the dock with feet above the water, Texas pushes up her sunglasses with one hand; harbor wind stirs her loose white shirt and wolf tail in sunlight.",
     "promptTokens": [
       "pier",
       "sea",

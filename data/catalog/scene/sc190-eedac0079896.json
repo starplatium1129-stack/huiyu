@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc190",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 187,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
     "id": "sc190",
     "title": "祭典终幕：巫女服的禁忌拆封协议",
@@ -51,10 +51,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, hair_ribbon, ahoge, miko_uniform, disheveled_clothes, unbuttoned_shirt, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, child, loli, underage",
+    "prompt": "1girl, ayachi_nene, ahoge, miko_uniform, disheveled_clothes, unbuttoned_shirt, cleavage, bare_shoulders, lying_on_bed, bare_legs, heavy_blush, tears_in_eyes, shrine, night, lantern_light, tatami, sensual, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "",
     "storyJa": "【寧々・大人のアフターストーリー · ·伝統的な魔女の衣装が究極のエロゲを明らかにします】夏祭りが終わった深夜、古びた神社の奥座敷。畳の香りと暖かい夜風が空気に満ちています。寧々は、神聖で優雅な日本の魔女の衣装を着ることを強制されました。この瞬間、彼女はあなたによって柔らかいベッドの真ん中でそっと押し倒されました。白い巫女の上着はあなたによってボタンが完全に外され、肩の両側まで落ち、内側の繊細で赤みを帯びた雪のように白い体が広範囲に露出しました。赤い緋の袴も腰まで引き上げられ、滑らかな絶対領域が無防備になった。彼女は純白の広い袖口を引っ張り、恥ずかしさで溶けそうになった頬を覆った。彼女の頭のアホ毛は長い間、興奮により麻痺してハート型の螺旋を描いていた。――「もう、柊史……神聖な社務所で巫女服を引っ張るなんて、罰が当たりますよ。だから……早く、ちゃんと抱きしめてください。」",
     "rating": "R18",
-    "animaCaption": "In a close-up framing before the vermilion torii gate and stone lanterns at the shrine, she looks forward toward the viewer with a soft, reassuring smile, as cool silver moonlight bathes the surroundings."
+    "animaCaption": "She lies on the futon in the shrine's tatami guest room and brings a wide white sleeve toward her face. The paper lantern supplies the room's soft warm light."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_goldfish_scooping_festival",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1047,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "sparkle_goldfish_scooping_festival",
     "title": "花火 · 和风游园的金鱼池笑靥",
@@ -28,7 +28,7 @@
       "radiant_smile",
       "twintails"
     ],
-    "promptProse": "Sparkle crouches beside the basin and raises a bag containing one red goldfish toward the viewer, her torn paper net lowered in her other hand. Warm lantern reflections tremble across the water beneath her delighted grin.",
+    "promptProse": "Sparkle crouches beside the basin, raising a bag with one red goldfish toward the viewer, torn paper net lowered in her other hand; warm lanterns reflect in the water beneath her grin.",
     "promptTokens": [
       "crouching",
       "paper net",

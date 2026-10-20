@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_sword_honing",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 540,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "以布擦拭剑身",
     "camera": "medium shot",
@@ -13,14 +13,14 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【陈 · 磨剑】静谧的剑道练习室内，陈盘腿坐于地板中央，手持细软的白棉布极其专注地擦拭着泛着赤红锋芒的赤霄剑身。察觉到你的到来，她收剑入鞘抬起头——「剑就像意志，一日不磨便会生锈。博士，随时准备好迎击下一次风暴了吗？」",
+    "description": "【陈 · 磨剑】静谧的剑道练习室内，陈盘腿坐于地板中央，手持细软的白棉布极其专注地擦拭着泛着赤红锋芒的赤霄剑身。察觉到你的到来，她停下擦拭，握稳剑柄抬起头——「剑就像意志，一日不磨便会生锈。博士，随时准备好迎击下一次风暴了吗？」",
     "id": "chen_arknights_sword_honing",
     "lighting": "cool morning light",
     "location": "龙门训练室",
     "mood": "专注沉淀",
     "negativeTokens": [],
     "outfitId": "morning_kendo_robe",
-    "promptProse": "Seated cross-legged, she supports the sword by its hilt with one hand and draws the soft cloth along the blade with the other, watching the polished edge. Cool morning light catches the steel.",
+    "promptProse": "Seated cross-legged, she supports Chi Xiao by its hilt with one hand and draws the soft cloth along the blade with the other, watching its red edge. Cool morning light catches the steel.",
     "promptTokens": [
       "dojo",
       "sword",
@@ -32,7 +32,6 @@
     "sceneTags": [
       "training",
       "sword",
-      "whetstone",
       "morning",
       "focus"
     ],

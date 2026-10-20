@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "scathach_fate",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 61,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "scathach_fate",
     "profile": {
@@ -88,7 +88,7 @@
         "弑神师匠",
         "Siabhair"
       ],
-      "identityProse": "Scathach from Fate/Grand Order, the immortal warrior queen of the Land of Shadows and teacher of Cu Chulainn, a tall mature woman with very long purple hair, crimson-red eyes and a poised, confident presence",
+      "identityProse": "Scathach from Fate/Grand Order, with very long purple hair and crimson eyes.",
       "identityTokens": [
         "scathach (fate)",
         "fate/grand order",

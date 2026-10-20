@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_r18_b5_03",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1535,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "izumi_sagiri_r18_b5_03",
     "title": "和泉纱雾 · 埃罗芒阿面具卡壳的更衣受力事故 ·「面具系带打死结了！……哥哥不要从后面偷看啊！」",
@@ -30,7 +30,7 @@
       "entangled",
       "clothes_pull"
     ],
-    "promptProse": "Adult Sagiri bends over her drawing desk after the mask straps catch in the back of her nightgown and lift its hem. She looks back as the livestream countdown runs on the screen.",
+    "promptProse": "Adult Sagiri braces both hands on her drawing desk after the mask straps catch in the back of her nightgown and lift its hem. She looks back as the livestream countdown runs on the screen.",
     "promptTokens": [
       "adult",
       "bedroom",

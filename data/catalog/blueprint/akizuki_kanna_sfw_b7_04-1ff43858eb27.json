@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1155,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "action": "咖啡馆开店前把咖啡豆与小白花放入捧花，闻到点心香后放松微笑",
     "adult": false,
@@ -48,7 +48,7 @@
       "relaxed_smile",
       "morning_light"
     ],
-    "timeOfDay": "黄昏",
+    "timeOfDay": "清晨",
     "title": "明月栞那 · 星光咖啡馆的白色花嫁"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/white_plain_dress",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 332,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
@@ -12,12 +12,13 @@
       "id": "white_plain_dress",
       "isDefault": false,
       "name": "素白棉质短袖裙",
-      "prose": "A plain white cotton dress with a round neckline, short sleeves and a softly gathered waist.",
+      "prose": "A white cotton dress with round neck, short sleeves and gathered waist.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
         "white cotton dress",
         "round neck",
-        "short sleeves"
+        "short sleeves",
+        "gathered waist"
       ]
     }
   }

@@ -1,22 +1,17 @@
 {
   "kind": "outfit",
   "id": "fubuki_one_punch/nsfw_boudoir",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 906,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "characterId": "fubuki_one_punch",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "吹雪·成人私密造型",
-      "prose": "a private adult ensemble built around evening_dress, green_dress, pearl_necklace, black_lace, dressing_room, completely_nude",
+      "name": "吹雪·无衣装状态",
+      "prose": "No clothing.",
       "tokens": [
-        "evening_dress",
-        "green_dress",
-        "pearl_necklace",
-        "black_lace",
-        "dressing_room",
         "completely_nude"
       ],
       "default": false,

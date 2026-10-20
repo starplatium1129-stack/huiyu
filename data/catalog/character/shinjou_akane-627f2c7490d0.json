@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinjou_akane",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 149,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "shinjou_akane",
     "profile": {
@@ -73,7 +73,7 @@
         "新条茜",
         "Akane Shinjou"
       ],
-      "identityProse": "Akane Shinjou from SSSS.GRIDMAN, with a short pale-purple bob and clear red eyes. Her polished social smile contrasts with the absorbed, quieter expression she has while designing monster models; glasses are optional workwear.",
+      "identityProse": "Akane Shinjou from SSSS.GRIDMAN, with a short pale-purple bob and red eyes.",
       "identityTokens": [
         "shinjou_akane",
         "gridman_universe",

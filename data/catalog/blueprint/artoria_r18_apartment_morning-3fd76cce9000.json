@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_apartment_morning",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 145,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "artoria_r18_apartment_morning",
     "title": "阿尔托莉雅 · 公寓晨光",
@@ -24,11 +24,12 @@
       "morning_sunlight",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Artoria stretches in her open white shirt on the bed edge with one leg folded onto the mattress and the other reaching toward the floor. Morning sun enters through the curtains.",
+    "promptProse": "She stretches on the bed edge with one leg folded onto the mattress and the other reaching toward the floor. Morning sun enters through the curtains.",
     "promptTokens": [
-      "adult",
       "bedroom",
       "oversized white shirt",
+      "long sleeves",
+      "cotton",
       "open clothes",
       "topless",
       "sitting",
@@ -49,6 +50,18 @@
     "nsfwProse": "",
     "adultArtistHint": "@jazz_jack",
     "outfitId": "white_sleep_shirt",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "identityProseOverride": "Artoria Pendragon (Saber) from Fate/stay night, with loose blonde hair, green eyes and an ahoge.",
+    "identityTokensOverride": [
+      "artoria pendragon (fate)",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "long_hair",
+      "hair_down",
+      "green_eyes",
+      "ahoge",
+      "fate/stay_night"
+    ]
   }
 }

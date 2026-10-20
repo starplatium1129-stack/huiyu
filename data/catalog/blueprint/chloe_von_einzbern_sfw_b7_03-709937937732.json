@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 285,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_03",
     "title": "克洛伊 · 游戏厅的连胜",
@@ -30,7 +30,7 @@
       "colored_lighting",
       "medium_shot"
     ],
-    "promptProse": "Her left hand holds the arcade joystick and her right rests over the buttons as she breaks into a victory grin. Colored screen light reaches her hair and fingertips.",
+    "promptProse": "Her left hand holds the arcade joystick and her right rests over the buttons as she breaks into a victory grin, with schoolchildren watching behind her. Colored screen light reaches her hair and fingertips.",
     "promptTokens": [
       "arcade",
       "sitting",

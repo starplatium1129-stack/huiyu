@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 163,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_toy_store",
     "title": "伊莉雅丝菲尔 · 玩具店",
@@ -31,7 +31,7 @@
       "contact_shadows",
       "full_body_side_view"
     ],
-    "promptProse": "Illyasviel buries her face in the giant teddy's middle while hugging it, both her shoes and the bear's broad feet resting on the floor.",
+    "promptProse": "Illyasviel buries her face in the giant teddy's middle while hugging it, both her shoes and the bear's broad feet resting on the floor. Front-left window light catches the fur edges while overhead shop lights fill the inner plush; low toy shelves and paper-star window decorations stand behind them.",
     "promptTokens": [
       "hugging stuffed toy",
       "teddy bear",

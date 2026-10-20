@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_ortinax_launch",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 203,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "negativeTokens": [
       "readable telemetry"
@@ -32,7 +32,7 @@
       "cool_hangar_light",
       "full_body"
     ],
-    "promptProse": "Mash clenches her fists on the launch platform and takes a steadying breath before advancing.",
+    "promptProse": "Mash stands with clenched fists on the launch platform, taking a steadying breath. Blue light glows from the gaps in her black armor beneath the cold hangar lights.",
     "promptTokens": [
       "clenched fists",
       "launch platform",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_beach_bungalow_rear",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1375,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "asuna_nsfw_beach_bungalow_rear",
     "title": "结城明日奈 · 海滨水屋细带比基尼解纽与沙滩椅斜倚·「在海风吹过的地方……身体就会变得格外敏感呢……」",
@@ -29,10 +29,9 @@
       "exposed_pussy",
       "wet_skin"
     ],
-    "promptProse": "She reclines sideways on the bamboo lounger with her bikini top undone and one hand drawing the bottom aside. Sunlight filters through the bamboo screen as the sea breeze moves the curtains.",
+    "promptProse": "She reclines sideways on the bamboo lounger with her bikini top undone and one hand drawing the bottom aside. Sunlight filters through the bamboo screen in bands, with reflected water light moving over the lounger as the sea breeze moves the curtains.",
     "nsfwProse": "",
     "promptTokens": [
-      "adult",
       "beach bungalow",
       "daybed",
       "red bikini",

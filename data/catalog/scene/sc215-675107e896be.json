@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc215",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 210,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
-    "animaCaption": "She hugs the magic-history book against her chest and looks up toward the viewer between the shelves; cool moonlight edges her silver hair while the desk lamp warms her hands.",
+    "animaCaption": "Between receding rows of shelves, she hugs the magic-history book to her chest and looks up at the viewer; moonlight edges her hair while the desk lamp warms her hands.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "平视中景，书架形成纵深",
     "category": "校园",
@@ -24,8 +24,8 @@
     "prompt": "1girl, ayachi_nene, nene_school_uniform, holding book, standing, library, bookshelves, moonlight, desk lamp, medium shot",
     "rating": "All",
     "season": "秋",
-    "story": "【宁宁 · 图书馆的月光练习】闭馆前的图书馆安静得只剩翻页声。宁宁把一本关于魔法史的旧书抱在胸前，犹豫了很久才邀请你一起核对笔记。窗外的月光落在她银白色的发带上，她明明紧张得指尖发凉，却还是认真地抬起眼睛——「这次不是因为害怕才找你帮忙。只是……我想和你一起把它读完。」",
-    "storyJa": "【寧々・月明かりの読書室】閉館前の図書室には、ページをめくる音だけが残っていた。寧々は魔法史の古い本を胸に抱え、迷った末にあなたへノートを照らし合わせようと誘う。月明かりが銀色の髪飾りに落ちる中、震える指先を隠して彼女は顔を上げた――「怖いから頼るんじゃないの。一緒に最後まで読みたいだけ……」",
+    "story": "【宁宁 · 图书馆的月光练习】闭馆前的图书馆安静得只剩翻页声。宁宁把一本关于魔法史的旧书抱在胸前，犹豫了很久才邀请你一起核对笔记。窗外的月光落在她银白色的发丝与粉色发带上，她明明紧张得指尖发凉，却还是认真地抬起眼睛——「这次不是因为害怕才找你帮忙。只是……我想和你一起把它读完。」",
+    "storyJa": "【寧々・月明かりの読書室】閉館前の図書室には、ページをめくる音だけが残っていた。寧々は魔法史の古い本を胸に抱え、迷った末にあなたへノートを照らし合わせようと誘う。月明かりが銀白色の髪とピンクのリボンに落ちる中、震える指先を隠して彼女は顔を上げた――「怖いから頼るんじゃないの。一緒に最後まで読みたいだけ……」",
     "tags": [
       "hair_ribbon",
       "school_uniform",

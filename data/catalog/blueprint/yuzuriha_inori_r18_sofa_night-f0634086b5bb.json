@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_sofa_night",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 336,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_sofa_night",
     "title": "楪祈 · 深夜回放的共鸣失控",
@@ -27,7 +27,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Inori presses a headphone against her chest and slips her other hand beneath the lace, keeping time with the recorded harmony.",
+    "promptProse": "Inori presses a headphone against her chest while her other hand slips beneath the lace in time with the recorded harmony. Its faint cyan glow mingles with amber audio-player indicators and cool city light through the window.",
     "promptTokens": [
       "adult",
       "open red robe",

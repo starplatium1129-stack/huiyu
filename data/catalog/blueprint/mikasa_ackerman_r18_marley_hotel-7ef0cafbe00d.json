@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_r18_marley_hotel",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 990,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "落地窗边软椅上半解白衬衫斜倚",
     "adult": true,
@@ -23,17 +23,19 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "hotel_white_shirt",
-    "promptProse": "Adult Mikasa holds her scarf in one hand while fingering herself beneath the open shirt on the hotel window ledge.",
+    "promptProse": "Mikasa rests in the hotel armchair, white shirt partly unbuttoned and red scarf on her lap. Morning light through the sheer curtain softens the chair shadow.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Mikasa",
       "open white shirt",
       "bare breasts",
-      "bent leg",
-      "red scarf",
-      "fingering",
-      "window seat"
+      "sitting",
+      "armchair",
+      "red scarf on lap",
+      "hotel window",
+      "morning light",
+      "loose shirt"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -50,7 +52,7 @@
       "cleavage",
       "daylight"
     ],
-    "timeOfDay": "白天",
+    "timeOfDay": "清晨",
     "title": "三笠 · 马莱旅店落地窗晨光白衬衫"
   }
 }

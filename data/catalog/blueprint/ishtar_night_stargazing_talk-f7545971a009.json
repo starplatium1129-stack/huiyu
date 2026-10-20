@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_night_stargazing_talk",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 259,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "ishtar_night_stargazing_talk",
     "title": "伊什塔尔 · 星空下的真心话·「金星……是我最喜欢的一颗」",
@@ -28,7 +28,7 @@
       "golden_tiara",
       "wide_two_shot"
     ],
-    "promptProse": "Ishtar reclines on the left beside her clothed companion on the temple roof, pointing toward Venus low over the western twilight while the companion follows her gesture.",
+    "promptProse": "Ishtar reclines on the left beside her clothed companion on the temple roof, pointing toward Venus low over the western twilight while the companion follows her gesture. Warm temple lamps softly light the pair.",
     "promptTokens": [
       "2people",
       "reclining",

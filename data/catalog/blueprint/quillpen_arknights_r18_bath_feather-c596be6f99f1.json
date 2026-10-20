@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_bath_feather",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 623,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "倚在浴桶内的长凳上，一手持羽毛停在锁骨旁。",
     "adult": true,
@@ -23,7 +23,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_bath_camisole",
-    "promptProse": "La Pluma traces a feather along her collarbone while touching herself underwater, resting on the submerged bench.",
+    "promptProse": "La Pluma traces a feather along her collarbone while touching herself underwater, resting on the submerged bench. Warm light passes through thin steam and reflects softly on the cedar rim and water.",
     "promptTokens": [
       "adult",
       "white camisole",

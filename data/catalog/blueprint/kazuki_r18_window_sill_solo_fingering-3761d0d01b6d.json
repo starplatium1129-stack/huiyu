@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_window_sill_solo_fingering",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 1178,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "kazuki_r18_window_sill_solo_fingering",
     "title": "风见一姬 · 月夜窗台的私密情愫自抚",
@@ -31,14 +31,14 @@
       "red_eyes",
       "heavy_blush"
     ],
-    "promptProse": "Adult Kazuki reclines along the broad sill with her dress pooled below her chest, bracing on the frame while fingering herself.",
+    "promptProse": "Adult Kazuki sits on the cushioned windowsill with the skirt gathered at her knees, one hand resting against her chest and the other beneath the lifted hem. She looks toward the night sky in the cool moonlight.",
     "promptTokens": [
       "1girl",
       "solo",
-      "open dress",
-      "bare breasts",
-      "reclining",
-      "one leg bent",
+      "white dress",
+      "skirt lift",
+      "hand on own chest",
+      "sitting",
       "fingering",
       "windowsill",
       "moonlight"

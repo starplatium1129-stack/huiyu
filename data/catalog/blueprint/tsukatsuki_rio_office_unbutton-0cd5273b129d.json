@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_office_unbutton",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 887,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "坐办公桌半解制服",
     "adult": true,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "seminar_uniform",
-    "promptProse": "Adult Rio balances a tablet in one hand while the other slips beneath her waistband. Her sweater is rolled below her chest and her legs are crossed at the desk.",
+    "promptProse": "Rio sits on the office desk, black turtleneck lowered from one shoulder, looking toward the viewer; the dim desk lamp lights her face and pleated skirt.",
     "promptTokens": [
       "charcoal pleated skirt",
       "adult",
@@ -35,9 +35,6 @@
       "open black turtleneck",
       "topless",
       "black pantyhose",
-      "crossed legs",
-      "tablet",
-      "hand between legs",
       "desk",
       "office",
       "night"

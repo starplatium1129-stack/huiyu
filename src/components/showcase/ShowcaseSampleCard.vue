@@ -3,13 +3,13 @@
     data-reveal :data-reveal-key="`sample:${entry.id}`">
     <button class="sample-visual tw:block tw:w-full tw:p-0 tw:text-left tw:relative tw:overflow-hidden" type="button"
       :style="imageStyle"
-      :aria-label="'查看 ' + entry.title + ' 大图'" @click="emit('open', entry.id)">
-      <span v-if="!loaded && !broken" class="sample-loading" aria-hidden="true"><ArchiveIcon name="image" /></span>
+      :aria-label="`${broken || !image.src ? '预览暂未连接，' : ''}查看 ${entry.title} 大图`" @click="emit('open', entry.id)">
+      <span v-if="image.src && !loaded && !broken" class="sample-loading" aria-hidden="true"><ArchiveIcon name="image" /></span>
       <img v-if="image.src && !broken" v-bind="{ ...image, onLoad: measureImage }" class="sample-image tw:w-full tw:h-auto tw:block" :class="{ 'sample-image-ready': loaded }"
         :alt="entry.title" :width="dimensions.width" :height="dimensions.height" loading="lazy" decoding="async" />
-      <span v-else class="sample-image-fallback tw:grid tw:min-h-[260px] tw:text-glyph" aria-hidden="true"><ArchiveIcon name="image" /></span>
+      <span v-else class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /><span>预览暂未连接 · 可查看大图</span></span>
       <SensitivePreviewVeil v-if="entry.rating === 'R18' && image.src && !broken" :src="image.src" :crossorigin="image.crossorigin" />
-      <span v-if="entry.rating === 'R18'" class="sample-sensitive tw:absolute tw:grid tw:gap-[2px] tw:min-w-[112px] tw:rounded-pill tw:pointer-events-none"><strong>R18</strong><span>悬停或聚焦预览</span></span>
+      <span v-if="entry.rating === 'R18' && image.src && !broken" class="sample-sensitive tw:absolute tw:grid tw:gap-[2px] tw:min-w-[112px] tw:rounded-pill tw:pointer-events-none"><strong>R18</strong><span>悬停或聚焦预览</span></span>
     </button>
     <div class="sample-caption">
       <div class="sample-kicker tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs tw:leading-body"><span>{{ characterLabel }}</span><span v-if="featured" class="sample-featured"><ArchiveIcon name="star" /><span class="sr-only">精选</span></span><span class="sample-rating tw:shrink-0 tw:text-muted">{{ ratingLabel }}</span></div>
@@ -81,7 +81,8 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-image-ready { opacity:1; }
 /* Picture light stays below captions; rating masks retain their own layer. */
 .sample:not(.sample-r18) .sample-visual::after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
-.sample-image-fallback { @apply tw:h-full tw:min-h-0; place-items:center; color:var(--on-art-secondary); }
+.sample-image-fallback { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:var(--s-2); height:100%; min-height:0; padding:var(--s-3); color:var(--on-art-secondary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); text-align:center; }
+.sample-image-fallback > .archive-icon { width:28px; height:28px; }
 /* The blurred veil cross-fades above an otherwise stable sharp image. */
 .sample-sensitive { z-index:var(--z-raised); inset:50% auto auto 50%; justify-items:center; padding:var(--s-3) var(--s-4); transform:translate(-50%,-50%); border:1px solid var(--on-art-line); background:var(--art-scrim); color:var(--on-art-primary); transition:opacity 340ms var(--ease-out); }
 .sample-sensitive strong { @apply tw:text-label-sm; letter-spacing:.12em; }

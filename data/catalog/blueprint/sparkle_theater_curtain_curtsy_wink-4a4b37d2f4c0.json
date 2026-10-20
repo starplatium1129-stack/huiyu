@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_theater_curtain_curtsy_wink",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1048,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "sparkle_theater_curtain_curtsy_wink",
     "title": "花火 · 帷幕之后的绝妙谢幕",
@@ -28,7 +28,7 @@
       "mini_kimono",
       "seductive_smile"
     ],
-    "promptProse": "Sparkle dips into a curtsy in the gap between the closing curtains, one hand lifting her skirt and the other raising a finger to her lips. She winks toward the viewer as the last stage light catches the gold curtain fringe.",
+    "promptProse": "Between closing curtains, Sparkle curtsies with one hand lifting her skirt and the other finger to her lips, winking toward the viewer; stage light catches the gold fringe.",
     "promptTokens": [
       "curtsy",
       "wink",

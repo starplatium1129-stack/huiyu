@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_r18_b7_03",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yae_miko_r18_b7_03",
     "title": "八重神子 · 神社更衣室朱红礼袍系带被狐尾缠死的事故 ·「这笨尾巴……小家伙，还不快来帮本宫司解开」",
@@ -30,7 +30,7 @@
       "fox_ears",
       "fox_tail"
     ],
-    "promptProse": "Yae Miko looks back for help as her tails knot the robe cords and pull its bodice open over the vanity.",
+    "promptProse": "Yae Miko braces both hands on the vanity and looks back for help as her tails knot the robe cords and pull its bodice open.",
     "promptTokens": [
       "Yae Miko",
       "white kimono",

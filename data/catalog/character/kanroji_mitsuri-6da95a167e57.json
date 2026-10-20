@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kanroji_mitsuri",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kanroji_mitsuri",
     "profile": {
@@ -79,7 +79,7 @@
       ],
       "franchise": "Kimetsu no Yaiba",
       "id": "kanroji_mitsuri",
-      "identityProse": "Mitsuri Kanroji from Demon Slayer, a cheerful swordswoman with long pink braids fading to green at their ends, bright green eyes and small moles beneath her eyes. Her open expressions reveal enthusiasm and kindness.",
+      "identityProse": "Mitsuri Kanroji from Demon Slayer, with long pink braids fading to green, green eyes and small moles beneath her eyes.",
       "identityTokens": [
         "kanroji_mitsuri",
         "kimetsu_no_yaiba",
@@ -88,7 +88,8 @@
         "gradient_hair",
         "multiple_braids",
         "green_eyes",
-        "mole_under_eye"
+        "mole_under_eye",
+        "long hair"
       ],
       "negativeTokens": [
         "worst_quality",

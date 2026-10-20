@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1604,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_02",
     "title": "毛利兰 · 侦探事务所的晚餐",
@@ -30,7 +30,7 @@
       "evening_light",
       "medium_shot"
     ],
-    "promptProse": "Ran carries the tray of miso soup toward the dinner table with both hands. The last evening light softens the rising steam against her blue apron.",
+    "promptProse": "Ran carries the tray of miso soup toward the dinner table with both hands. The last evening light softens the steam rising above the tray.",
     "promptTokens": [
       "mouri_ran",
       "miso soup",

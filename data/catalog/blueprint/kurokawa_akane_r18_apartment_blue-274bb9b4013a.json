@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_apartment_blue",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 969,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在窗边弯起一腿，一手伸向背后拉链，另一手留在裙内",
     "adult": true,
@@ -13,7 +13,7 @@
     "category": "成人",
     "characterId": "kurokawa_akane",
     "coverageTags": [],
-    "description": "夜晚公寓窗边，成年茜坐在窗台座位上，一腿弯起，长裙松开，一手伸向背后的拉链，窗帘垂在身侧。",
+    "description": "清晨公寓窗边，成年茜坐在窗台座位上，一腿弯起，长裙松开，一手伸向背后的拉链，窗帘垂在身侧。",
     "id": "kurokawa_akane_r18_apartment_blue",
     "kreaStyleHint": "",
     "lighting": "宽大落地窗倾泻的淡金晨光与漫射天光",
@@ -23,7 +23,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "long_zip_dress",
-    "promptProse": "Adult Akane reaches behind for her dress zipper while fingering herself beneath its loose skirt, seated beside the billowing curtains.",
+    "promptProse": "Adult Akane reaches behind for her dress zipper while fingering herself beneath its loose skirt, seated with one leg bent on the window seat beside the billowing curtains. Pale-gold morning light and diffuse daylight enter through the tall window.",
     "promptTokens": [
       "1girl",
       "solo",

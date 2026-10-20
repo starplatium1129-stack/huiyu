@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/official_school_uniform",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 815,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "official_school_uniform",
       "name": "私立高校水手西装制服",
-      "prose": "a navy blazer with gold crest buttons over a white shirt and striped necktie, a grey pleated skirt, brown tights and leather school shoes",
+      "prose": "A gold-buttoned navy blazer, white shirt, striped tie, gray pleated skirt, brown tights and school shoes.",
       "tokens": [
         "school uniform",
         "navy blazer",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_post_office",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 616,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "将调好的粉色鸡尾酒沿吧台推向观众，雪克壶放在另一只手旁，困倦地轻轻打哈欠。",
     "camera": "medium shot, slightly low angle",
@@ -20,7 +20,7 @@
     "mood": "慵懒微醺",
     "negativeTokens": [],
     "outfitId": "classic_bartender_apron",
-    "promptProse": "La Pluma slides the finished pink cocktail toward the viewer, her other hand resting beside the shaker. Colored neon reflects along the glass rim as she hides a small sleepy yawn.",
+    "promptProse": "La Pluma slides the pink cocktail toward the viewer, her other hand beside the shaker, yawning softly as neon colors reflect on the glass.",
     "promptTokens": [
       "cocktail shaker",
       "pink cocktail",

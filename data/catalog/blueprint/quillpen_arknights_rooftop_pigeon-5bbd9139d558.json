@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_rooftop_pigeon",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 618,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "蜷在躺椅里扶着遮阳伞柄打盹，另一手轻抓观众的衣角。",
     "camera": "medium shot, eye level, chair and parasol visible",
@@ -17,7 +17,7 @@
     "mood": "惬意慵懒",
     "negativeTokens": [],
     "outfitId": "dossoles_tropical_casual",
-    "promptProse": "La Pluma curls into the beach chair with one arm around the parasol shaft, her free hand lightly catching the viewer's sleeve. The canopy shades her drowsy face while reflected water sparkles beyond its edge.",
+    "promptProse": "La Pluma curls in the beach chair, one arm around the parasol shaft, the other hand catching the viewer's sleeve. The canopy shades her face beside sparkling water.",
     "promptTokens": [
       "sleeping",
       "beach chair",
@@ -33,8 +33,9 @@
       "waterpark",
       "swimming_pool",
       "tropical_drink",
-      "bikini",
-      "sunny_day"
+      "sunny_day",
+      "white_top",
+      "denim_shorts"
     ],
     "timeOfDay": "午后",
     "title": "羽毛笔 · 夏卉日光浴",

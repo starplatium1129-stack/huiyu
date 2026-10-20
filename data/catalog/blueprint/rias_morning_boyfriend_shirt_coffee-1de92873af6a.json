@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_morning_boyfriend_shirt_coffee",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1275,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rias_morning_boyfriend_shirt_coffee",
     "title": "莉雅丝 · 晨光微熹的大号衬衫",
@@ -27,7 +27,7 @@
       "gentle_smile",
       "blush"
     ],
-    "promptProse": "She turns toward her companion with a coffee mug in both hands; morning light crosses the kitchen counter.",
+    "promptProse": "She turns to her off-frame companion, coffee mug in both hands; morning light through the sheer curtain reaches the steam and wooden kitchen floor.",
     "promptTokens": [
       "holding cup",
       "coffee",

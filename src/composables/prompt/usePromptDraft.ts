@@ -76,6 +76,7 @@ export function usePromptDraft(state: PromptDraftState) {
           subject: 'popular' as const,
           characterId: subject.value.characterId,
           outfitId: subject.value.outfitId,
+          outfitExplicit: subject.value.outfitExplicit,
           blueprintId: subject.value.blueprintId,
           noLora: true,
         }

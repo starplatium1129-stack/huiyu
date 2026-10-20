@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_r18_shower_steam_wall_press",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 669,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "独自靠住淋浴湿墙，一脚踩低凳，一手撑墙、一手随水流在腿间自抚，湿衬衫敞开",
     "adult": true,
@@ -30,7 +30,7 @@
       "masturbation"
     ],
     "outfitId": "white_shirt",
-    "promptProse": "Texas braces one hand against the tile and touches herself with the other, one foot on a bench beneath the shower.",
+    "promptProse": "Texas braces one hand against the tile and touches herself with the other, one foot on a low shower bench; her tail stays behind her, clear of both legs. Soft overhead light passes through the water mist.",
     "promptTokens": [
       "Texas",
       "white poplin shirt",
@@ -38,7 +38,7 @@
       "shower",
       "foot up",
       "steam",
-      "medium shot",
+      "full body",
       "concealed placket"
     ],
     "recommendedSize": "1536x1152",

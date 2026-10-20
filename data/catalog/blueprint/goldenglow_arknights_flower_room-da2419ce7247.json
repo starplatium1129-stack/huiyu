@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_flower_room",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 597,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "提着水壶，弯腰浇花",
     "camera": "medium shot",
@@ -20,7 +20,7 @@
     "mood": "清新柔和",
     "negativeTokens": [],
     "outfitId": "greenhouse_tea",
-    "promptProse": "She tips the watering can toward the soil around the marigolds while faint static jumps between her free fingertips and a petal; greenhouse morning light shines through the leaves.",
+    "promptProse": "Bending toward the marigolds, she tips the watering can toward their soil while faint static jumps between her free fingertips and a petal; greenhouse morning light shines through the leaves.",
     "promptTokens": [
       "1girl",
       "solo",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_shiromuku_bridal_vow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1399,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "白无垢端坐神前捧扇，闻誓词睫毛颤动落泪红瞳",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "放下胜负、泪光倾城",
     "negativeTokens": [],
     "outfitId": "white_shiromuku",
-    "promptProse": "Kaguya sits before the shrine with both hands supporting the ceremonial fan, tears gathering as she listens to the vows. Soft light under the eaves reveals the woven folds of her white robes.",
+    "promptProse": "Kaguya holds the ceremonial fan in both hands before the shrine, tearful as she listens to vows; eave-filtered light reveals the woven robes.",
     "promptTokens": [
       "shinomiya_kaguya",
       "folding fan",

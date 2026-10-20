@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_r18_snow_spring",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 449,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "emilia_rezero_r18_snow_spring",
     "title": "爱蜜莉雅 · 雪中温泉",
@@ -25,7 +25,7 @@
       "winter",
       "intimate"
     ],
-    "promptProse": "On a submerged stone step, the age-twenty-plus Emilia grips the rock edge while her other hand moves beneath the ripples, melting tiny ice crystals.",
+    "promptProse": "On a submerged stone step in the milky spring, she grips the rock edge while her other hand moves beneath the ripples, melting tiny ice crystals. Pale winter light reaches the water through steam and falling snow.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -50,6 +50,18 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "bath_towel",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "identityTokensOverride": [
+      "emilia (re:zero)",
+      "1girl",
+      "solo",
+      "silver_hair",
+      "hair_bun",
+      "purple_eyes",
+      "pointy_ears",
+      "white_hair_flower",
+      "re:zero"
+    ],
+    "identityProseOverride": "Emilia from Re:Zero, with silver-white hair pinned in a bun, pointed half-elf ears, amethyst eyes and a white flower hair clip."
   }
 }

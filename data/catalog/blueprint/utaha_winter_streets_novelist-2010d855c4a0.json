@@ -4,7 +4,7 @@
   "revision": 6,
   "sortOrder": 1430,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "utaha_winter_streets_novelist",
     "title": "霞之丘诗羽 · 冬街围巾的毒舌·「手冷的话……借你一次也没关系」",
@@ -27,13 +27,14 @@
       "smile",
       "date"
     ],
-    "promptProse": "Utaha extends her cold hand toward her walking companion, amber streetlights meeting blue snow reflections.",
+    "promptProse": "In a medium two-shot, Utaha walks beside her companion and extends her cold hand toward them, her fingertips slightly reddened. Amber streetlights meet blue snow reflections.",
     "promptTokens": [
       "kasumigaoka_utaha",
       "hair down",
       "reaching out",
       "winter street",
-      "medium shot"
+      "medium shot",
+      "2people"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

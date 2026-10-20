@@ -4,7 +4,7 @@
   "revision": 6,
   "sortOrder": 1080,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "taihou_tatami_bedroom_fan_dance",
     "title": "大凤 · 和风寝殿的红扇雅舞",
@@ -31,7 +31,7 @@
       "twintails",
       "graceful"
     ],
-    "promptProse": "Taihou turns on the tatami with one open red-and-gold fan in each hand, her wide sleeves following the curve of the dance. Palace lamplight shimmers over the phoenix screen behind her bare feet.",
+    "promptProse": "Taihou turns barefoot on tatami, an open red-and-gold fan in each hand and wide sleeves following her movement; lamplight shimmers on the phoenix screen behind her.",
     "promptTokens": [
       "dual fans",
       "dancing",

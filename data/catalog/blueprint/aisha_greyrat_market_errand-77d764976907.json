@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_market_errand",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 487,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "aisha_greyrat_market_errand",
     "title": "爱夏·香料摊前的比较",
@@ -25,13 +25,13 @@
       "town"
     ],
     "description": "爱夏停在市集香料摊前，左手将一只小陶罐托到视线下方，右手把采购单压在木柜台边缘。旅行斗篷的兜帽垂在肩后，马尾和发带完整露出，挎包闭合。棚布投下柔和阴影，罐口与手背接住摊位外的日光；横幅背景以空置摊架、布幌和石墙交代市集。",
-    "promptProse": "Adult Aisha compares the spice jar in her left palm with the shopping slip pinned to the counter by her right hand. Beneath the awning, sunlight catches the jar rim and her knuckles while the stall remains in soft shade.",
+    "promptProse": "She compares the spice jar in her left palm with the shopping slip held on the counter by her right hand. Sunlight catches the jar rim and her knuckles beneath the shaded awning.",
     "promptTokens": [
       "market",
       "jar",
       "awning",
       "daytime",
-      "cowboy shot"
+      "hood down"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",

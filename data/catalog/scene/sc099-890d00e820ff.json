@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc099",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "She keeps a finger on the emergency-call button while the viewer's forearm braces against the wall beside her; the elevator's overhead emergency light reveals her startled glance at their close distance.",
+    "animaCaption": "Her finger stays on the emergency-call button as the viewer braces a forearm against the wall beside her; overhead emergency light reveals her startled glance at their closeness.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "主观狭窄空间近景",
     "category": "日常",

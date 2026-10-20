@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chen_arknights",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 21,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "chen_arknights",
     "profile": {
@@ -112,16 +112,17 @@
       ],
       "franchise": "Arknights",
       "id": "chen_arknights",
-      "identityProse": "Ch'en from Arknights, the disciplined Lung inspector with dark teal hair tied in low twin tails with red ribbons, sharp amber eyes, dragon horns, and a slender dragon tail.",
+      "identityProse": "Ch'en from Arknights, with dark teal low twintails, red ribbons, amber eyes, dragon horns and a dragon tail.",
       "identityTokens": [
         "ch'en (arknights)",
         "1girl",
         "solo",
         "teal_hair",
         "low_twintails",
+        "red_hair_ribbon",
         "amber_eyes",
-        "horns",
-        "tail",
+        "dragon_horns",
+        "dragon_tail",
         "arknights"
       ],
       "negativeTokens": [

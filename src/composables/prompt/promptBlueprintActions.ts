@@ -7,7 +7,7 @@ import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '@/config/prom
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { usePromptBuilderStore, Scene } from '@/stores/promptBuilderStore'
-import { cloneReferenceInput, isSDParamKey, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
+import { cloneReferenceInput, parseOutfitOverride, isSDParamKey, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit, type SceneBlueprint } from '@/utils/popularContent'
 import type { DrawEngine } from '@/storage/settingsRepository'
 
@@ -118,8 +118,10 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
       return { applied: false, message: '蓝图引用的角色场景已不可用或归属不一致', warnings }
     }
     ctx.selectPopularSource('popular')
-    pb.setPopularSubject(character.id, outfit.id, blueprint?.id ?? null)
+    pb.setPopularSubject(character.id, outfit.id, blueprint?.id ?? null, { outfitExplicit: draft.outfitExplicit })
     if (blueprint) ctx.selectBlueprint(blueprint)
+    // Loading the scene seeds defaults; restore the saved wardrobe choice afterwards.
+    pb.subject = { kind: 'popular', characterId: character.id, outfitId: outfit.id, blueprintId: blueprint?.id ?? null, outfitExplicit: draft.outfitExplicit }
   } else {
     if (pb.isPopular) ctx.selectPopularSource('studio')
     if (draft.char === 'none') pb.setUnboundSubject()
@@ -244,12 +246,6 @@ function draftStrings(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
 }
 
-function parseOutfitOverride(value: unknown): DraftOutfitOverride | null {
-  if (!draftRecord(value)) return null
-  const tokens = [...new Set(draftStrings(value.tokens).map(token => token.trim()).filter(Boolean))]
-  return tokens.length ? { tokens, replaced: draftNullableText(value.replaced) ?? null } : null
-}
-
 function parseReferenceInput(value: unknown): DraftReferenceInput | null {
   if (!draftRecord(value)) return null
   const tags = [...new Set(draftStrings(value.tags).map(tag => tag.trim()).filter(Boolean))]
@@ -340,6 +336,7 @@ function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | null {
     subject: value.subject === 'popular' ? 'popular' : 'studio',
     characterId: draftText(value.characterId),
     outfitId: draftText(value.outfitId),
+    outfitExplicit: typeof value.outfitExplicit === 'boolean' ? value.outfitExplicit : undefined,
     blueprintId: draftNullableText(value.blueprintId),
     noLora: typeof value.noLora === 'boolean' ? value.noLora : undefined,
   }
@@ -401,7 +398,7 @@ export function restorePromptDraft(state: PromptDraftState, raw: string): boolea
     sdParamsTouched.value = new Set((d.sdParamsTouched ?? []).filter(isSDParamKey))
     if (typeof d.projectId === 'string') projectId.value = d.projectId
     if (d.subject === 'popular' && d.characterId && d.outfitId) {
-      subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null }
+      subject.value = { kind: 'popular', characterId: d.characterId, outfitId: d.outfitId, blueprintId: d.blueprintId ?? null, outfitExplicit: d.outfitExplicit }
     } else {
       subject.value = { kind: 'studio' }
     }

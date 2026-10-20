@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1181,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "amane_rooftop_night_sky_confession_wind",
     "title": "周防天音 · 学园天台的夜风倾诉",
@@ -32,7 +32,7 @@
       "hair_rings",
       "emotional"
     ],
-    "promptProse": "She looks toward Yuuji beyond the frame with her hands behind her back. Wind moves her hair against the fence, with city lights far below.",
+    "promptProse": "She looks toward Yuuji beyond the frame with her hands behind her back. Wind moves her hair against the fence, with city lights far below. Cold starlight gives her hair a faint rim.",
     "promptTokens": [
       "school rooftop",
       "chain-link fence",

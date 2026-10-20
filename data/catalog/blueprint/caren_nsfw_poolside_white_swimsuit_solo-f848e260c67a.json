@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_poolside_white_swimsuit_solo",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "caren_nsfw_poolside_white_swimsuit_solo",
     "title": "卡莲 · 黄昏泳池白泳装的圣女卸防低吟",
@@ -29,11 +29,14 @@
       "hand_between_legs",
       "sensual_solo"
     ],
-    "promptProse": "She rests in the shallow end, drawing the swimsuit panel aside beneath the water with one hand between her thighs. Dusk through the high windows lays broken gold reflections over the pool.",
+    "promptProse": "She sits leaning against the pool wall in the shallow end, drawing the swimsuit panel aside beneath the water with one hand between her thighs. Dusk through the high windows lays broken gold reflections over the pool.",
     "promptTokens": [
-      "adult",
       "indoor pool",
       "white one-piece swimsuit",
+      "highleg",
+      "high collar",
+      "crossed back straps",
+      "side cutouts",
       "wet clothes",
       "see-through",
       "swimsuit aside",

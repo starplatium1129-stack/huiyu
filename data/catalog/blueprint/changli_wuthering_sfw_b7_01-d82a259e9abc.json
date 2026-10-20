@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_01",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1633,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_01",
     "title": "长离 · 边庭的沙盘推演",
@@ -30,9 +30,8 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "She moves a piece on the strategy board and lifts her eyes toward the viewer. Afternoon light reveals the arrangement on the grid.",
+    "promptProse": "Leaning over the large strategy board, she moves a piece and lifts her eyes toward the viewer. Afternoon light reveals the arrangement on the grid.",
     "promptTokens": [
-      "changli_(wuthering_waves)",
       "courtyard",
       "strategy board",
       "moving piece",

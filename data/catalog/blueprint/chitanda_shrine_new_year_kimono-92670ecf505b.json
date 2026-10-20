@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_shrine_new_year_kimono",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 1482,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "chitanda_shrine_new_year_kimono",
     "title": "千反田爱瑠 · 神社初诣振袖和服的端庄回眸·「新年快乐，折木同学」",
@@ -38,8 +38,7 @@
       "folded hands",
       "snow",
       "morning",
-      "full body",
-      "hair bun"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +49,18 @@
     "coverageTags": [
       "traditional",
       "iconic"
-    ]
+    ],
+    "identityTokensOverride": [
+      "chitanda_eru",
+      "hyouka",
+      "1girl",
+      "solo",
+      "black_hair",
+      "bangs",
+      "large_eyes",
+      "purple_eyes",
+      "hair_bun"
+    ],
+    "identityProseOverride": "Eru Chitanda from Hyouka, with black hair pinned in a bun, bangs and large purple eyes."
   }
 }

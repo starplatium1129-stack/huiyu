@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_beach_resort_sunshade_drink",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1279,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "rias_beach_resort_sunshade_drink",
     "title": "莉雅丝 · 碧海金沙的遮阳伞私语",
@@ -29,7 +29,7 @@
       "hourglass_figure",
       "smirk"
     ],
-    "promptProse": "She lowers her sunglasses with one hand and extends the cold tropical drink toward the viewer with the other from beneath the parasol.",
+    "promptProse": "She lowers her sunglasses with one hand and extends the cold tropical drink toward the viewer with the other from beneath the parasol. The parasol's soft shade meets bright tropical sunlight at the chair edge.",
     "promptTokens": [
       "sunglasses",
       "drink",

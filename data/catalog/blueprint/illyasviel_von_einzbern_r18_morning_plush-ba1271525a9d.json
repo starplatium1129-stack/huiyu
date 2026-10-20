@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_morning_plush",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 168,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_morning_plush",
     "title": "伊莉雅丝菲尔 · 晨光与玩偶",
@@ -12,7 +12,7 @@
     "characterId": "illyasviel_von_einzbern",
     "description": "【成年 After Story · 伊莉雅 · 晨光与熊形靠垫】二十岁以上成年后的伊莉雅独自在四柱大床上醒来，大号熊形靠垫垫在背后而不是抱在怀里。红色睡衣敞到腰际，她把修长双腿收进晨光，一手揉着困倦红瞳，另一手探入下摆；成熟身体与银色长发铺在白床单间——「早安……今天不需要谁陪我玩，只想把醒来的第一段时间留给自己。」",
     "location": "城堡卧室",
-    "action": "抱着毛绒熊醒来",
+    "action": "靠坐在熊形靠垫前醒来，一手揉眼睛，另一手留在睡衣下摆内",
     "timeOfDay": "清晨",
     "lighting": "pale dawn light through frosty window",
     "camera": "medium shot, high angle",

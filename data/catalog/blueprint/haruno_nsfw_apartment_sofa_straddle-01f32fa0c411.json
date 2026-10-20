@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_apartment_sofa_straddle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 376,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "haruno_nsfw_apartment_sofa_straddle",
     "title": "雪之下阳乃 · 深夜单身公寓的黑丝魅影 ·「真物什么的……比得上现在贴紧的温度吗」",
@@ -12,7 +12,7 @@
     "characterId": "yukinoshita_haruno",
     "description": "【阳乃的高层公寓客厅·午夜】微醺的魔性大姐姐跨坐在你的腰间，薄如蝉翼的黑色吊带睡裙滑到腰间。黑丝长腿死死盘住你的腰，指甲陷入你的肩膀，平日里玩世不恭的笑容化作灼热的执念——「比企谷君……整天把‘真物’挂在嘴边……那现在，姐姐身上流出来的热度，算不算真物呢？」",
     "location": "阳乃的高层公寓客厅·午夜",
-    "action": "跪坐皮质沙发身体前倾黑丝缠腿，吊带裙褪落露出丰满双峰，凤眸微眯吐气如兰",
+    "action": "跨坐近处同伴腰间，双手扶住对方肩膀，睡裙聚在腰侧",
     "timeOfDay": "深夜",
     "lighting": "柔和暖光与唯美阴影交错",
     "camera": "cowboy shot, from below",
@@ -24,20 +24,21 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Haruno kneels forward on the leather sofa, her chemise slipped to her hips and stockinged legs tucked beneath her.",
+    "promptProse": "Adult Haruno sits astride her companion on the leather sofa, both hands resting on their shoulders. Her black chemise is gathered at her hips and the city lights glow beyond the apartment window.",
     "nsfwProse": "",
     "promptTokens": [
       "black chemise",
       "clothes down",
       "topless",
-      "torn black stockings",
-      "kneeling",
       "leaning forward",
       "blush",
       "sofa",
       "city lights",
       "night",
-      "from below"
+      "from below",
+      "black stockings",
+      "pov",
+      "on lap"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

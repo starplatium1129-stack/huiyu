@@ -34,7 +34,7 @@ export async function applyCompanionDraft(path: string, deps: PromptDeepLinkDeps
     pb.clearScene()
     if (studio) pb.setChar(reference.character as 'nene' | 'natsume')
     else if (character && catalogOutfit) {
-      pb.setPopularSubject(character.id, catalogOutfit.id, null)
+      pb.setPopularSubject(character.id, catalogOutfit.id, null, { outfitExplicit: outfit !== 'default' })
       deps.applyRecommendedEngine(character)
     }
     pb.setStory(reference.description)

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_09",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1538,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_09",
     "title": "宝多六花 · 体育仓库后的喘息",
@@ -34,7 +34,7 @@
       "daylight",
       "waist_up"
     ],
-    "promptProse": "After relay practice, she drinks with one hand holding the bottle and the other at her waist, standing in the storehouse doorway where daylight meets the shaded equipment.",
+    "promptProse": "After relay practice, she drinks from a bottle with one hand, the other at her waist, in the storehouse doorway between daylight and shaded equipment.",
     "promptTokens": [
       "water bottle",
       "storehouse",

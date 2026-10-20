@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1705,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "maomao_sfw_b9_01",
     "title": "猫猫 · 药房的调配",
@@ -30,7 +30,7 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "She places a sealed herb packet on one pan of the small balance and watches the beam settle in the pharmacy window light, plant powder still on her nose.",
+    "promptProse": "She places a sealed herb packet on the balance and watches the beam in the pharmacy window light, plant powder on her nose.",
     "promptTokens": [
       "herb packets",
       "balance scale",

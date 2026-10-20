@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_sixth_street_convenience_store_snack",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1055,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在长凳上品尝草莓冰淇淋，大号卫衣露出单肩，鲨鱼尾在凳后轻扫",
     "camera": "cowboy shot, slightly low angle",
@@ -23,6 +23,8 @@
     "promptProse": "She tastes a strawberry cone on the red bench, a faintly satisfied look softening her tired eyes as her tail curls behind the seat. Warm shop light falls across the cone beneath the cooler street neon.",
     "promptTokens": [
       "sitting",
+      "crossed legs",
+      "off shoulder",
       "bench",
       "ice cream",
       "convenience store",

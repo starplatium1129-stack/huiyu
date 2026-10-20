@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "momo_velia_deviluke",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "momo_velia_deviluke",
     "profile": {
@@ -133,15 +133,18 @@
       ],
       "franchise": "To LOVE-Ru",
       "id": "momo_velia_deviluke",
-      "identityProse": "Momo Belia Deviluke from To LOVE-Ru by Kentaro Yabuki, the third princess of Planet Deviluke with shoulder-length soft pastel pink hair with two curled strands sticking out, seductive amethyst purple-pink eyes, a voluptuous hourglass figure, a slender spade-heart devil tail, and a demure yet mischievous expression.",
+      "identityProse": "Momo Belia Deviluke from To LOVE-Ru, with shoulder-length pink hair and two curled strands, purple-pink eyes and a slender spade-heart tail.",
       "identityTokens": [
         "momo_velia_deviluke",
         "1girl",
         "solo",
         "pink hair",
         "short hair",
+        "shoulder-length hair",
         "purple eyes",
         "demon tail",
+        "black tail",
+        "heart-shaped tail tip",
         "to love-ru"
       ],
       "negativeTokens": [

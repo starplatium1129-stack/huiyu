@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_dressing_camisole_slip_solo",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1332,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "黑吊带滑脱露胸，双手环抱自抚腿心，咬唇羞耻眼角泛泪娇喘",
+    "action": "黑吊带滑脱露胸，一手留在身前，另一手自抚腿心，咬唇羞耻眼角泛泪娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
     "camera": "cowboy shot",
@@ -25,7 +25,7 @@
     "mood": "羞耻自持",
     "negativeTokens": [],
     "outfitId": "black_lace_sensual_camisole",
-    "promptProse": "Her camisole slips from her shoulders as she stands by the mirror with one hand beneath her panties, glancing toward the doorway.",
+    "promptProse": "Her camisole slips from her shoulders as she stands with her legs together by the mirror, one hand beneath her panties and the other held in front, glancing toward the doorway. The bedside lamp casts warm light into the mirror.",
     "promptTokens": [
       "bedroom",
       "mirror",

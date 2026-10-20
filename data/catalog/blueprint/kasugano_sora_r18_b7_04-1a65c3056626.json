@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_r18_b7_04",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 1626,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kasugano_sora_r18_b7_04",
     "title": "春日野穹 · 禁忌门扉榻榻米上的绝望独奏 ·「哪怕全天下都指责我们……穹也只要悠」",
@@ -30,7 +30,7 @@
       "bare_breasts",
       "pink_nipples"
     ],
-    "promptProse": "Adult Sora lies on the tatami by the sliding door, fingering herself and calling her brother’s name in the moonlight.",
+    "promptProse": "Adult Sora lies on the tatami by the sliding door, fingering herself and calling her brother’s name in the moonlight. Her loose white hair spreads across the mat.",
     "promptTokens": [
       "nude",
       "masturbation",
@@ -54,6 +54,16 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "identityTokensOverride": [
+      "kasugano_sora",
+      "yosuga_no_sora",
+      "white_hair",
+      "antenna_hair",
+      "grey_eyes",
+      "long hair",
+      "hair down"
+    ],
+    "identityProseOverride": "Sora Kasugano from Yosuga no Sora, with long loose white hair, antenna-like hair strands and grey eyes."
   }
 }

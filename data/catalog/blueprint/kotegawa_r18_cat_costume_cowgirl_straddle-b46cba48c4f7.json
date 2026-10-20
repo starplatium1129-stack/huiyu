@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_r18_cat_costume_cowgirl_straddle",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 1265,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "跪坐软垫猫娘皮革连体服抹胸拉链半崩溢乳，双手戴猫爪护胸，猫尾扫过腿间自抚娇喘",
     "adult": true,
@@ -25,13 +25,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "cat_costume",
-    "promptProse": "Adult Yui kneels on the mat with the leotard zipper strained open, pressing her paw mittens to her chest while the tail brushes between her thighs.",
+    "promptProse": "Adult Yui kneels on the mat with the leotard zipper strained open, pressing her paw mittens to her chest while the tail brushes between her thighs. Warm overhead light catches the black leather against the soft mat.",
     "promptTokens": [
       "cat costume",
       "cat ears",
       "cat tail",
       "paw gloves",
-      "strapless leotard",
+      "black leather strapless leotard",
       "cleavage",
       "kneeling",
       "spread legs",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_tyrant_cowgirl_straddle",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 229,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "saber_alter_nsfw_tyrant_cowgirl_straddle",
     "title": "黑呆 · 暴君骑士王的狂热主控骑乘",
@@ -30,9 +30,10 @@
       "dominant",
       "heavy_blush"
     ],
-    "promptProse": "Adult Saber Alter straddles the offscreen viewer on the silk bed, her hands on their shoulders as she leans down to kiss them.",
+    "promptProse": "She straddles the offscreen viewer on the silk bed, her hands on their shoulders as she leans down to kiss them. A dim wall lamp lights the bed.",
     "promptTokens": [
       "nude",
+      "hair down",
       "cowgirl position",
       "kissing",
       "bed",

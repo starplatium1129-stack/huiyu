@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_records",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 939,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
@@ -15,7 +15,7 @@
         "pale blue jacket",
         "high collar",
         "silver piping",
-        "white long skirt",
+        "white straight long skirt",
         "flat shoes"
       ],
       "default": false,

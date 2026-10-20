@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 41,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
@@ -12,7 +12,7 @@
       "name": "深蓝运动泳装与白色防晒夹克",
       "prose": "a navy athletic one-piece swimsuit beneath a light white zip-front sun jacket, paired with clear protective glasses",
       "tokens": [
-        "navy athletic swimsuit",
+        "navy athletic one-piece swimsuit",
         "white sun jacket",
         "zipper",
         "clear glasses"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_shrine_veranda_tea_sweets",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1142,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "端坐捧着红豆点心偷吃，两颊鼓鼓，被撞见瞬间慌乱藏在身后，脸颊通红",
     "camera": "medium shot, eye level",
@@ -20,7 +20,7 @@
     "mood": "反差娇萌",
     "negativeTokens": [],
     "outfitId": "shrine_maiden",
-    "promptProse": "She hides the half-eaten kintsuba behind her with one hand and looks toward the offscreen Masaomi, cheeks still full as dappled sunlight crosses the wooden veranda.",
+    "promptProse": "She hides half-eaten kintsuba behind her with one hand, looking toward offscreen Masaomi with full cheeks as dappled sunlight crosses the veranda.",
     "promptTokens": [
       "sitting",
       "cushion",

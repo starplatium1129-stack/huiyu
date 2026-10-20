@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hatsune_miku/sfw_street_hoodie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 188,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "hatsune_miku",
     "outfit": {
@@ -15,7 +15,7 @@
         "oversized teal hoodie",
         "black drawstring",
         "magenta zipper pull",
-        "black skirt",
+        "black knee-length skirt",
         "black tights",
         "white sneakers"
       ],

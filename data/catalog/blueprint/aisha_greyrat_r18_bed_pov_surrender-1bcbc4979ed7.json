@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_r18_bed_pov_surrender",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 493,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "aisha_greyrat_r18_bed_pov_surrender",
     "title": "爱夏·锦衾微醺献媚",
@@ -32,19 +32,16 @@
       "lamp"
     ],
     "description": "深夜卧房的主卧大床上，第一人称主观视角（POV）俯视着卸下所有防线的爱夏。她全裸仰卧在微乱的象牙白真丝床单上，修长丰润的双腿顺应着视线大大敞开呈诱人的M字曲膝姿态，毫无遮掩地将晶莹润泽的花径幽谷全然奉献在明亮视线下。饱满高耸的雪峰随急促喘息剧烈起伏，粉嫩乳尖挺立颤动。她满面红霞、泪眼汪汪地仰视着镜头，双手紧紧抓着两侧的褶皱床单，唇瓣微启，低吟溢出。",
-    "promptProse": "She lies on the bed gripping the sheets and looking up toward the viewer, with her knees raised and apart. A bedside lamp lights her against the shaded canopy.",
+    "promptProse": "She lies on the bed gripping the sheets with both hands and looking up toward the viewer, her knees raised and apart. Warm bedside light falls across the ivory sheets, leaving the canopy in shadow.",
     "promptTokens": [
-      "adult",
       "bedroom",
       "canopy bed",
-      "silk sheets",
+      "ivory silk sheets",
       "nude",
       "lying",
       "on back",
       "knees up",
       "spread legs",
-      "pov",
-      "from above",
       "night"
     ],
     "nsfwProse": "",

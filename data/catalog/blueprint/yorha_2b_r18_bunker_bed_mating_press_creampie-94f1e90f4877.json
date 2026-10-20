@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_bunker_bed_mating_press_creampie",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 1120,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yorha_2b_r18_bunker_bed_mating_press_creampie",
     "title": "2B · 水没都市清泉浅滩半透湿白衬衫与解下眼罩波光深抚",
@@ -36,7 +36,7 @@
       "masturbation",
       "water_droplets"
     ],
-    "promptProse": "2B reclines on the mossy stone with one hand beneath the water between her thighs, tears on her face.",
+    "promptProse": "2B reclines on the mossy stone with one hand beneath the water between her thighs, tears on her face. Moonlight reaches the shallow water through the ruined buildings and reflects across her wet shirt.",
     "promptTokens": [
       "wet white shirt",
       "see-through clothes",
@@ -57,6 +57,17 @@
     "kreaStyleHint": "r18_passionate_love",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "identityTokensOverride": [
+      "2b (nier:automata)",
+      "1girl",
+      "solo",
+      "short_hair",
+      "white_hair",
+      "blue_eyes",
+      "mole_under_mouth",
+      "nier:automata"
+    ],
+    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips."
   }
 }

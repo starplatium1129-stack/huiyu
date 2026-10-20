@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_07",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1726,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_07",
     "title": "玛露希尔 · 学院古籍的书签",
@@ -30,12 +30,13 @@
       "scholarly_delight",
       "afternoon_light"
     ],
-    "promptProse": "Marcille lifts the dried leaf-vein bookmark over the open old book, smiling as she checks its delicate pattern. Light from the high window shines through the leaf.",
+    "promptProse": "Marcille holds the dried leaf-vein bookmark above an open book, smiling as high-window light reveals its pattern.",
     "promptTokens": [
       "leaf bookmark",
       "old book",
       "library window",
-      "afternoon"
+      "afternoon",
+      "sitting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

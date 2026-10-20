@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1414,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "矮桌旁核对完花束预算合上家计簿，向镜头露出没有超支的满足笑",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "把精打细算也变成花嫁幸福",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Kei rests her hand on the closed household ledger and looks up with a satisfied smile, the inexpensive fresh bouquet beside it. Morning light crosses the low table and her silver-white dress.",
+    "promptProse": "Seated at the low table, Kei rests a hand on the closed household ledger and smiles, an inexpensive fresh bouquet beside it in the morning light.",
     "promptTokens": [
       "Kei Shirogane",
       "bouquet",

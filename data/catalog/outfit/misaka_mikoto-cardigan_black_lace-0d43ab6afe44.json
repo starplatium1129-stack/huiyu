@@ -1,17 +1,18 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/cardigan_black_lace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1411,
-  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "createdAt": "2026-10-15T14:37:48.939637+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
       "id": "cardigan_black_lace",
       "name": "茶米色开衫与黑蕾丝套装",
       "tokens": [
-        "beige cardigan",
+        "loose beige cardigan",
+        "knit",
         "black lace lingerie"
       ],
       "prose": "A loose tea-beige knit cardigan over a black lace lingerie set.",

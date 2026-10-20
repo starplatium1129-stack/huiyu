@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_apple_pie_cooling_rack",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 694,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfitId": "apple_pie_bakery_patissiere",
@@ -20,7 +20,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "halo",
       "oven mitts",
       "pie",
       "bakery",

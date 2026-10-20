@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 289,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_01",
     "title": "美狄亚 · 柳洞寺厨房的手作料理",
@@ -31,7 +31,7 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Medea lifts the cooking spoon to taste the dish, her long sleeves secured clear of the pot. Morning light reaches her concentrated profile in the temple kitchen.",
+    "promptProse": "Medea lifts the spoon to taste the dish, sleeves secured clear of the pot in the morning-lit temple kitchen.",
     "promptTokens": [
       "1girl",
       "solo",

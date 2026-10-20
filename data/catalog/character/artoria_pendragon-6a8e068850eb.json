@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "artoria_pendragon",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "artoria_pendragon",
     "profile": {
@@ -104,13 +104,14 @@
         "fate/stay night",
         "artoria_pendragon (fate)"
       ],
-      "identityProse": "Artoria Pendragon (Saber) from Fate/stay night, the noble King of Knights with braided golden-blonde hair tied in a bun with a blue ribbon, emerald green eyes, and an ahoge.",
+      "identityProse": "Artoria Pendragon (Saber) from Fate/stay night, with a blonde braided bun, blue hair ribbon, green eyes and an ahoge.",
       "identityTokens": [
         "artoria pendragon (fate)",
         "1girl",
         "solo",
         "blonde_hair",
         "braided_bun",
+        "blue_hair_ribbon",
         "green_eyes",
         "ahoge",
         "fate/stay_night"

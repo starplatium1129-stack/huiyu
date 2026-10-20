@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yanami_anna",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "yanami_anna",
     "profile": {
@@ -73,7 +73,7 @@
         "八奈见杏菜",
         "Anna Yanami"
       ],
-      "identityProse": "Anna Yanami from Too Many Losing Heroines!, with medium-length blue hair, a lively ahoge and expressive blue eyes. Her open reactions and enthusiasm for food coexist with quieter moments of reflection.",
+      "identityProse": "Anna Yanami from Too Many Losing Heroines!, with medium-length blue hair, an ahoge and blue eyes.",
       "identityTokens": [
         "yanami_anna",
         "make_heroine_ga_oo_sugiru!",

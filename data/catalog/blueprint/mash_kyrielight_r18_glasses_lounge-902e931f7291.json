@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_glasses_lounge",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 207,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -31,7 +31,7 @@
       "blush",
       "daylight"
     ],
-    "promptProse": "Adult, age-twenty-plus Mash leans over a broad sofa cushion, her forearms braced on top as it presses against her bare chest.",
+    "promptProse": "Adult Mash leans over the sofa cushion, forearms braced on top as it presses against her bare chest. Warm afternoon sun enters through the broad floor-length windows, with diffuse daylight filling the lounge.",
     "promptTokens": [
       "1girl",
       "solo",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misono_mika",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "misono_mika",
     "profile": {
@@ -144,16 +144,17 @@
       ],
       "franchise": "Blue Archive",
       "id": "misono_mika",
-      "identityProse": "Misono Mika from Blue Archive, Trinity Tea Party princess with pastel pink hair in a side ponytail, gradient starry eyes, feathered white wings, an intricate gold halo, and a curvy figure.",
+      "identityProse": "Misono Mika from Blue Archive, with a pink side ponytail, starry orange eyes, white wings and an intricate gold halo.",
       "identityTokens": [
         "mika (blue archive)",
         "1girl",
         "solo",
         "pink hair",
+        "long hair",
         "side ponytail",
         "orange eyes",
-        "wings",
-        "halo",
+        "white wings",
+        "gold halo",
         "blue archive"
       ],
       "negativeTokens": [

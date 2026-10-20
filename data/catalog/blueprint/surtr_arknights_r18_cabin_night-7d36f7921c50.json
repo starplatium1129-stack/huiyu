@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_cabin_night",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 522,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "半倚床沿，回眸相望",
     "adult": true,
@@ -22,20 +22,16 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [
-      "topless",
-      "masturbation",
-      "hand between legs"
+      "topless"
     ],
     "outfitId": "cabin_shirt_coat",
-    "promptProse": "Surtr steadies Laevatain against the floor and touches herself beneath her loosened belt on the cabin bunk.",
+    "promptProse": "Surtr reclines at the cabin bunk’s edge in a loose black shirt and red-lined coat, looking toward the viewer; warm candlelight meets blue night at the bedside.",
     "promptTokens": [
       "Surtr",
       "black coat",
       "open black shirt",
-      "crossed legs",
+      "reclining",
       "bunk",
-      "sword",
-      "firelight",
       "red coat lining",
       "metal buckle belt"
     ],

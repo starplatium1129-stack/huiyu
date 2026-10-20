@@ -236,7 +236,7 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   let lighting: string | null = null
   if (chance(options.rich ? 1 : 0.9, rng)) {
     lighting = draw(options.scene ? LIGHTING.map(item => item.id).filter(id => sceneAllowsLight(options.scene!, id)) : LIGHT_MAIN, 1, rng)[0] ?? null
-    if (options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableLight(options.scene.prose)))) lighting = options.scene.lighting
+    if (options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableLight(options.scene.prose, options.scene.lighting)))) lighting = options.scene.lighting
     if (lighting && chance(0.4, rng)) {
       // back 逆光作为可叠加标签进入 manualTags（与主光源不互斥）
       add('backlighting')
@@ -361,7 +361,7 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
       ...(!(options.allowClothing ?? !explicitIdentity) || !canVarySceneOutfit(options.scene) ? ['服装'] : []),
       ...(options.scene.prose ? ['原文表情'] : []),
       ...(options.scene.prose && !hasVariableCamera(options.scene.prose) ? ['原文镜头'] : []),
-      ...(options.scene.prose && !hasVariableLight(options.scene.prose) ? ['原文光源'] : []),
+      ...(options.scene.prose && !hasVariableLight(options.scene.prose, options.scene.lighting) ? ['原文光源'] : []),
     ] : [],
     variation: { ...sceneVariationOverlay(options.scene, outfit, options.tags, shot, lighting), context: options.context ?? '' },
     emotions,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_throne_spread_legs",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 172,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "jalter_r18_throne_spread_legs",
     "characterId": "jeanne_alter",
@@ -24,9 +24,9 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "open jacket",
+      "open black leather jacket",
       "nude",
-      "boots",
+      "black boots",
       "reclining",
       "throne",
       "flagpole",
@@ -43,7 +43,7 @@
     "location": "暗黑大圣堂漆黑王座",
     "action": "靠卧王座，一条腿搭扶手，手持短旗杆横放腿上。",
     "timeOfDay": "深夜",
-    "lighting": "王座两侧幽暗烛台与冷冽月光交织，极致高光对比凸显白瓷肌肤",
+    "lighting": "black magical flames around the throne, subdued reflected firelight on the face and silver hair",
     "camera": "full body, from below",
     "mood": "傲娇霸道与私密",
     "recommendedSize": "1152x1536",

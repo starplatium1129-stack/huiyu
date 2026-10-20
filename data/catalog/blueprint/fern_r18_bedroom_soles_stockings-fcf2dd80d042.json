@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_bedroom_soles_stockings",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "fern_r18_bedroom_soles_stockings",
     "characterId": "fern_frieren",
@@ -20,7 +20,7 @@
       "night",
       "purple_hair"
     ],
-    "promptProse": "She rolls one stocking toward her ankle with both hands, extending the bare sole toward the hearth while the other leg remains covered.",
+    "promptProse": "She rolls one stocking toward her ankle with both hands, extending the bare sole through the foreground toward the hearth while the other leg remains covered. Warm amber firelight meets the soft snowlight reflected from the window.",
     "promptTokens": [
       "1girl",
       "solo",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 795,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "踮起脚尖，双手将写好的绘马挂在神社木架上",
     "adult": false,
@@ -23,7 +23,7 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_winter",
-    "promptProse": "Maria rises onto her toes to loop the written ema onto the shrine rack with both hands. Winter morning light falls across her quiet smile above the wishes for her sister and friends.",
+    "promptProse": "Maria stands on tiptoe, looping the ema onto the shrine rack with both hands in winter morning light.",
     "promptTokens": [
       "ema",
       "hanging",

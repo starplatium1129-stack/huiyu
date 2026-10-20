@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_05",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1709,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "maomao_sfw_b9_05",
     "title": "猫猫 · 海滨药草茶的苦味研究",
@@ -30,7 +30,7 @@
       "small_satisfaction",
       "afternoon_light"
     ],
-    "promptProse": "She slides the finished herbal tea toward the viewer across the harbor stall counter, a fresh citrus slice at the glass rim and a serious, satisfied look on her face.",
+    "promptProse": "She slides the herbal tea toward the viewer across the harbor stall, a citrus slice on the rim and satisfaction in her gaze. Clear afternoon light catches the glass and green herb leaves.",
     "promptTokens": [
       "herbal tea",
       "harbor",

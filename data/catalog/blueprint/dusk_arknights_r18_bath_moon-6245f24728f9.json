@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_bath_moon",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 573,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "斜倚浴池，一手扶池沿画笔，另一手留在水下。",
     "adult": true,
@@ -23,11 +23,11 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_ink_robe",
-    "promptProse": "Adult Dusk steadies a brush on the bath rim while her other hand moves beneath the water among painted lotus petals.",
+    "promptProse": "Reclining against the stone bath, she steadies a brush on the rim while her other hand moves beneath the water among painted lotus petals. Moonlight and floating lanterns reflect across the surface.",
     "promptTokens": [
-      "adult",
       "stone bath",
       "translucent black robe",
+      "wide sleeves",
       "open clothes",
       "topless",
       "knees up",

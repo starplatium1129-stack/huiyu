@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_morning_shirt_couch_side",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 427,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "reze_r18_morning_shirt_couch_side",
     "characterId": "reze_chainsaw",
@@ -20,7 +20,7 @@
       "window",
       "barefoot"
     ],
-    "promptProse": "The age-twenty-plus Reze stretches both arms behind her, pulling the shirt open as she sits sideways on the worn bed.",
+    "promptProse": "Adult Reze sits sideways on the bed, stretching both arms behind her and pulling her shirt open, looking back with a mischievous smile. Warm morning light slants through the dusty window and rims her bare legs.",
     "promptTokens": [
       "adult",
       "white shirt",

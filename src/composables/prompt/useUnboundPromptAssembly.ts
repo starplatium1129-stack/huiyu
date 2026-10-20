@@ -23,8 +23,16 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
       ...directions.map(([options, id]) => options.find(item => item.id === id)?.prompt),
     ].filter(Boolean).join(', ')
     if (family === 'krea2') {
-      // Keep all recognized subjects and counts; do not synthesize a woman or an empty-scene guard.
-      tags = tags.replace(/\(([^()\n]+):\s*-?\d+(?:\.\d+)?\s*\)/g, '$1').replace(/_/g, ' ').replace(/\b(\d+)(girls?|boys?)\b/g, '$1 $2')
+      const plan = createPromptPlan({
+        freeSubject: true, scenePrompt: [...pb.manualTags].join(', '), sceneProse: description,
+        emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
+        camera: [SHOT.find(item => item.id === pb.selections.shot)?.prompt || ''],
+        lighting: [LIGHTING.find(item => item.id === pb.selections.lighting)?.prompt || ''],
+        composition: [COMPOSITION.find(item => item.id === pb.selections.composition)?.prompt || ''],
+        palette: [COLOR_MOODS.find(item => item.id === pb.colorMood)?.prompt || ''],
+        manual: [...pb.manualTags], artistProse: artistStyleProse(artists, family),
+      })
+      return renderPromptPlan(plan, family, profile.value).prompt
     } else {
       const styleTags = artistTagsForEngine(artists, family)
       // Model defaults alone must not turn an empty draft into a drawable scene.
@@ -36,6 +44,8 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
         const tagKeys = new Set(tokenize(tags).map(tag => normalizeKey(tag.replace(/\\([()])/g, '$1'))))
         const plan = createPromptPlan({
           profile: profile.value, scenePrompt: tags, sceneProse: description, artists: styleTags,
+          manual: [...pb.manualTags], camera: [SHOT.find(item => item.id === pb.selections.shot)?.prompt || ''],
+          lighting: [LIGHTING.find(item => item.id === pb.selections.lighting)?.prompt || ''],
           characterTokens: [...subjects.flatMap(subject => subject.characterTokens || []), ...(pb.referenceInput?.characterTokens ?? [])],
           // Free subjects only order explicitly entered works; never add catalogue defaults.
           copyrightTokens: [...subjects.flatMap(subject => subject.copyrightTokens || []), ...(pb.referenceInput?.copyrightTokens ?? [])]
@@ -48,7 +58,7 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
       }
       tags = mergeTokenText(tags, profile.value?.quality_prefix || '')
     }
-    return [tags, description, family === 'krea2' ? artistStyleProse(artists, family) : ''].filter(Boolean).join('\n')
+    return [tags, description].filter(Boolean).join('\n')
   })
   const negativePrompt = computed(() => resolveDrawCapabilities(engine.value, profile.value).negative
     ? mergeTokenText(pb.sdParams.negativeCustom, profile.value?.negative_prefix || '') : '')

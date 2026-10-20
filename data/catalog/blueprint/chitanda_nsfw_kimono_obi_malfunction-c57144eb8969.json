@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_kimono_obi_malfunction",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1493,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "chitanda_nsfw_kimono_obi_malfunction",
     "title": "千反田爱瑠 · 和服腰带松脱的更衣室事故 ·「带结解不开了……折木同学快帮帮我」",
@@ -12,7 +12,7 @@
     "characterId": "chitanda_eru",
     "description": "【千反田宅更衣室·祭典归来】祭典结束后的更衣时刻，华丽的振袖腰带发生严重错位卡死。爱瑠双手背在身后吃力地拉扯，过紧的勒束让饱满的胸脯几乎呼之欲出，和服下摆掀起露出白皙大腿根部——「呜……越拉越紧了……好难受……再这样下去衣服要坏掉了啦……」",
     "location": "千反田宅更衣室·祭典归来",
-    "action": "撑矮桌塌腰回眸双手反剪扯腰带，和服半落胸口深陷勒肉，紫瞳含泪娇喘",
+    "action": "身体前倾靠近矮桌，双手伸向背后拉扯腰带并回眸，和服半落胸口深陷勒肉，紫瞳含泪娇喘",
     "timeOfDay": "深夜",
     "lighting": "柔和暖光与唯美阴影交错",
     "camera": "wide shot, from the side",
@@ -24,10 +24,9 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Adult Chitanda bends over the cedar table as her obi catches, pulling the kimono open and lifting its hem. Warm light reaches the tatami beneath her.",
+    "promptProse": "She leans toward the cedar table while reaching behind with both hands to free the caught obi. Warm dressing-room light falls across the loosened kimono and the tatami below.",
     "nsfwProse": "",
     "promptTokens": [
-      "adult",
       "dressing room",
       "purple furisode",
       "gold obi",

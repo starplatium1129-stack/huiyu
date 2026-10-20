@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_rooftop_sunset_hair_flowing_wind",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1224,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "双手轻扶铁丝网侧立，晚风将及踝金色长发大面积吹拂卷起，红眸凝望远方落日",
     "camera": "wide dramatic shot, low angle, sweeping sunset sky scale",
@@ -20,9 +20,8 @@
     "mood": "凄美辽阔",
     "negativeTokens": [],
     "outfitId": "gothic_dress_no_snack",
-    "promptProse": "Yami watches the horizon with both hands on the fence, sunset passing through her windblown hair.",
+    "promptProse": "She watches the horizon with both hands on the fence, sunset passing through her windblown hair.",
     "promptTokens": [
-      "Yami",
       "hands on fence",
       "rooftop",
       "sunset",

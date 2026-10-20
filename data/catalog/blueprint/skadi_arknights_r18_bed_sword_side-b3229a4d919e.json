@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_bed_sword_side",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 614,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "侧卧在大床上，手垂向床边的巨剑剑柄",
     "adult": true,
@@ -22,12 +22,10 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [
-      "topless",
-      "masturbation",
-      "hand between legs"
+      "topless"
     ],
     "outfitId": "black_rest_dress",
-    "promptProse": "Skadi touches herself while her other hand rests on the sheathed sword beside the mattress, her dress gathered at her hips.",
+    "promptProse": "Skadi lies on her side with the black dress gathered at her waist, one hand reaching toward the sheathed greatsword beside the bed; moonlight traces the red neckline and her profile.",
     "promptTokens": [
       "Skadi",
       "black dress",

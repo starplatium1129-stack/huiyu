@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lala_satalin_deviluke/sainan_uniform",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 670,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "lala_satalin_deviluke",
     "outfit": {
@@ -17,9 +17,10 @@
         "sainan high school uniform",
         "white shirt",
         "teal sailor collar",
-        "teal pleated skirt",
+        "teal pleated miniskirt",
         "loose socks",
-        "loafers"
+        "loafers",
+        "short sleeves"
       ]
     }
   }

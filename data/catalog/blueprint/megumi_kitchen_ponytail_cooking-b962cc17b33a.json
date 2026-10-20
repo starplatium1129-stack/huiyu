@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_kitchen_ponytail_cooking",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1441,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "megumi_kitchen_ponytail_cooking",
     "title": "加藤惠 · 厨房里的第一次翻面",
@@ -30,7 +30,7 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "One hand steadies the pan handle while the other slides the spatula beneath the fried egg, her focused expression softening into a small smile.",
+    "promptProse": "One hand steadies the pan handle while the other slides the spatula beneath the fried egg, her focused expression softening into a small smile. Clear kitchen window light falls across her hands and the pan.",
     "promptTokens": [
       "frying pan",
       "fried egg",

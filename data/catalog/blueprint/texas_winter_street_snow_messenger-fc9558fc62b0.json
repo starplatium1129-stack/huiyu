@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 663,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "漫步在积雪街道旁驻足，单手端热咖啡，微吐白雾，目光温柔看向镜头",
     "camera": "medium shot, slightly low angle",
@@ -20,7 +20,7 @@
     "mood": "冬日宁静",
     "negativeTokens": [],
     "outfitId": "willpower_winter",
-    "promptProse": "Texas pauses beside the red-brick corner with her messenger bag in one hand and steaming coffee in the other. She looks toward the viewer as falling snow drifts through the amber streetlight.",
+    "promptProse": "Texas pauses at the red-brick corner, messenger bag in one hand and hot coffee in the other, looking toward the viewer through snow in amber streetlight.",
     "promptTokens": [
       "coffee",
       "snow",

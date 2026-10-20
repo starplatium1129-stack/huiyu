@@ -4,7 +4,7 @@
   "revision": 3,
   "sortOrder": 402,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
@@ -15,13 +15,15 @@
       "tokens": [
         "white jacket",
         "off shoulder",
-        "tube top",
+        "cobalt lining",
+        "gold cord fastenings",
+        "grey and white tube top",
         "white pants",
-        "gold trim",
-        "black boots",
+        "ocher patterned hems",
+        "black ankle boots",
         "tassel earrings",
         "bead bracelet",
-        "necklace"
+        "bronze-block necklace"
       ],
       "prose": "a white off-shoulder jacket with cobalt lining and gold cord fastenings over a grey-and-white strapless top, white trousers with ocher patterned hems, black ankle boots, tassel earrings, a bronze-block necklace and pale bead bracelets",
       "category": "官方衣装"

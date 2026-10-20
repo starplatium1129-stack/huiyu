@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tohsaka_rin",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tohsaka_rin",
     "profile": {
@@ -21,14 +21,14 @@
         "alt": "远坂凛 样张立绘"
       },
       "visual_dna": {
-        "hair": "黑色双马尾",
-        "hair_color": "黑",
+        "hair": "深棕色长发与双马尾",
+        "hair_color": "深棕",
         "eyes": "蓝",
-        "hairstyle": "高双马尾 · 红色蝴蝶结发带",
+        "hairstyle": "双马尾 · 黑色蝴蝶结发带",
         "uniform": "红黑配色制服 / 红色外套",
         "expression": "傲娇自信 · 外冷内热",
         "style": "proud tsundere mage",
-        "signature": "黑发双马尾、红丝带与蓝瞳"
+        "signature": "深棕双马尾、黑发带与碧蓝眼睛"
       },
       "personality": [
         "傲娇",
@@ -54,13 +54,13 @@
         "faction": "冬木市远坂家"
       },
       "tags": [
-        "黑发双马尾",
-        "红丝带",
+        "深棕双马尾",
+        "黑发带",
         "蓝瞳",
         "宝石魔术",
         "傲娇"
       ],
-      "bg_story": "远坂凛是《Fate/stay night》的女主角之一，冬木市魔术世家远坂家的当主。黑发双马尾与红丝带是标志，宝石魔术与傲娇性格深入人心。场景应偏现代校园、都市与魔术工坊。",
+      "bg_story": "远坂凛是《Fate/stay night》的女主角之一，冬木市魔术世家远坂家的当主。深棕双马尾与黑发带是标志，宝石魔术与傲娇性格深入人心。场景应偏现代校园、都市与魔术工坊。",
       "palette": [
         "红",
         "黑",
@@ -98,7 +98,7 @@
         "rin tohsaka",
         "fate/stay night"
       ],
-      "identityProse": "Tohsaka Rin from Fate/stay night, an elegant twin-tailed mage with long brown hair tied in twintails with black ribbons, aqua-blue eyes, and a tsundere expression.",
+      "identityProse": "Tohsaka Rin from Fate/stay night, with long brown twintails tied with black ribbons and aqua-blue eyes.",
       "identityTokens": [
         "tohsaka rin",
         "1girl",

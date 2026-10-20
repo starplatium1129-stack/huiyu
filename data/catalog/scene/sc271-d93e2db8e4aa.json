@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc271",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 266,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "In a medium shot in a quiet room, she sits gracefully with glistening, emotive eyes, under soft ambient lighting.",
+    "animaCaption": "On the folding chair, she raises one knee toward the foreground and adjusts the stocking edge, looking up at the viewer; soft light reaches her face with white lockers behind her.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs01-a1.png",
@@ -16,7 +16,7 @@
       "seedKey": "official-cg:ocs01:1"
     },
     "auditRevision": "careful-batch04-2026-08-27",
-    "camera": "官方CG横幅构图",
+    "camera": "更衣室斜向俯视中景横幅构图",
     "category": "官方CG灵感",
     "char": "natsume",
     "character": [
@@ -24,13 +24,13 @@
     ],
     "emotion": "心动",
     "id": "sc271",
-    "lighting": "柔和自然光",
-    "location": "室内场景",
+    "lighting": "更衣室柔和顶光",
+    "location": "更衣室折叠椅前",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "negative": "nudity, nsfw, nude, explicit",
     "officialCgCandidate": "ocs01",
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, high_angle_diagonal_shot, 1girl, solo, adult_shiki_natsume, black_hair, very_long_hair, yellow_eyes, two_red_hairclips, mole_under_eye, lavender_lace_bra_and_panties, black_thighhigh_stockings, sitting_on_a_locker_room_bench, one_knee_raised_toward_the_foreground_while_adjusting_a_stocking, embarrassed_direct_eye_contact, white_lockers_and_shower_room_behind_her, soft_indoor_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "visual novel event CG, from above, dutch angle, 1girl, solo, two_red_hairclips, lavender lace bra, lavender lace panties, black thighhighs, sitting, folding chair, locker room, knee up, adjusting stocking, embarrassed, looking at viewer, white lockers, shower room, soft indoor lighting, <lora:shiki_natsume_v18_wd14:0.85>, adult",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",
@@ -41,10 +41,7 @@
       "visual_audited",
       "landscape",
       "natsume",
-      "solo",
-      "folded_opaque_kraft_paper_wrapper",
-      "paper_pouch",
-      "both_cupped_hands_presenting_one_sweet"
+      "solo"
     ],
     "time": "白天",
     "timeOfDay": "afternoon",

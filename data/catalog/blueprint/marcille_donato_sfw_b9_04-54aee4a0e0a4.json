@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1719,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_04",
     "title": "玛露希尔 · 迷宫营地的精灵花嫁",
@@ -30,7 +30,7 @@
       "firelight",
       "twilight"
     ],
-    "promptProse": "Marcille holds the glowing flowers at her chest and smiles toward the viewer beside the completed ceremony circle. Orange firelight and blue runes light opposite folds of her bridal robe.",
+    "promptProse": "Marcille holds glowing flowers at her chest beside the completed ceremony circle. Orange firelight and blue runes illuminate opposite sides as she smiles.",
     "promptTokens": [
       "glowing flowers",
       "magic circle",

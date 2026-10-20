@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_refined_daily",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 537,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
@@ -14,7 +14,7 @@
       "name": "锈棕格纹短外套与贝雷帽",
       "prose": "A cropped rust-brown wool check jacket, cream blouse, navy wide-leg trousers and a soft brown felt beret.",
       "tokens": [
-        "brown checkered jacket",
+        "cropped brown checkered jacket",
         "wool jacket",
         "cream blouse",
         "navy blue wide-leg pants",

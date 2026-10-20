@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_seaside_sunset_breeze_bikini",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1077,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "taihou_seaside_sunset_breeze_bikini",
     "title": "大凤 · 暮色海潮的细带红比基尼",
@@ -32,7 +32,7 @@
       "twintails",
       "cleavage"
     ],
-    "promptProse": "Taihou lifts a wet length of her black twintails clear of her shoulder as the evening tide retreats around her feet. The sea breeze lifts her black sarong against the gold-red horizon.",
+    "promptProse": "Taihou lifts wet hair clear of her shoulder as the tide retreats around her feet; sea breeze lifts her black sarong against the gold-red horizon.",
     "promptTokens": [
       "beach",
       "sunset",

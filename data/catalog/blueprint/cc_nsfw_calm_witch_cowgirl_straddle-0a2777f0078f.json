@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_nsfw_calm_witch_cowgirl_straddle",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 1320,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "全裸正面跨坐缓慢起伏骑乘，双手按在膝头，俯身凝视低语，眼神充满深邃爱意",
     "adult": true,
@@ -18,7 +18,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "description": "【C.C. · 不老魔女的从容低语骑乘】昏黄幽静的卧房中，C.C.浑身赤裸跨坐在你的腰跨之上。她腰背挺立，修长的绿色发丝在身后随身体动作轻柔摇曳。双手从容地撑在你的胸口，腰肢随着呼吸缓慢而深沉地下沉吞吐。小巧坚挺的胸脯在微光中微微晃动，额前的Geass印记闪烁着微弱的红芒。她俯下身凑在你的耳边，轻吐热气低语——「感受到了吗？这份灵魂深处相融的契约……现在，我们彻底合为一体了。」",
+    "description": "【C.C. · 不老魔女的从容低语骑乘】昏黄幽静的卧房中，C.C.浑身赤裸跨坐在你的腰跨之上。她腰背挺立，修长的绿色发丝在身后随身体动作轻柔摇曳。双手从容地撑在自己的膝头，腰肢随着呼吸缓慢而深沉地下沉吞吐。小巧坚挺的胸脯在微光中微微晃动，额前的Geass印记闪烁着微弱的红芒。她俯下身凑在你的耳边，轻吐热气低语——「感受到了吗？这份灵魂深处相融的契约……现在，我们彻底合为一体了。」",
     "id": "cc_nsfw_calm_witch_cowgirl_straddle",
     "kreaStyleHint": "r18_explicit_h_cg",
     "lighting": "壁炉幽暗的暖红炭火微光",
@@ -27,16 +27,17 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "She leans forward while straddling the viewer on silk bedding, her hands resting on her thighs and green hair pooling over the sheets.",
+    "promptProse": "She leans forward while straddling the viewer on silk bedding, her hands resting on her knees and green hair pooling over the sheets. The faint red Geass mark glows at her forehead in the fireplace's dim red ember light.",
     "promptTokens": [
       "bedroom",
       "nude",
       "straddling",
-      "hands on thighs",
+      "hands on knees",
       "looking at viewer",
       "blush",
       "from below",
-      "cowgirl position"
+      "cowgirl position",
+      "forehead mark"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_cafe_black",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 880,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "端黑咖啡审视对方",
     "adult": false,
@@ -26,13 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "seminar_uniform",
-    "promptProse": "Rio holds her black coffee near her lips, watching the viewer’s hand add sugar across the table with a nearly hidden smile. Warm cafe light glints on the cup beside the shared doughnut.",
+    "promptProse": "Rio holds black coffee near her lips, watching the viewer’s hand add sugar across the table with a faint smile; warm cafe light catches the cup beside their shared doughnut.",
     "promptTokens": [
       "Rio",
       "coffee",
       "doughnut",
       "cafe",
-      "close-up"
+      "close-up",
+      "shallow depth of field"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

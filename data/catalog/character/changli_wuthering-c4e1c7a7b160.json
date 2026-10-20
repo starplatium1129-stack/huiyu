@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "changli_wuthering",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 142,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "changli_wuthering",
     "profile": {
@@ -73,7 +73,7 @@
         "长离",
         "Changli"
       ],
-      "identityProse": "Changli from Wuthering Waves, with long pink hair arranged into distinctive looped sections, an ahoge and warm orange eyes. Her attentive smile and measured hands convey a patient teacher’s confidence.",
+      "identityProse": "Changli from Wuthering Waves, with long pink hair in looped sections and braids, an ahoge and orange eyes.",
       "identityTokens": [
         "changli_(wuthering_waves)",
         "wuthering_waves",
@@ -81,6 +81,7 @@
         "long_hair",
         "ring_hair_extensions",
         "braid",
+        "ahoge",
         "orange_eyes"
       ],
       "exactTokens": [

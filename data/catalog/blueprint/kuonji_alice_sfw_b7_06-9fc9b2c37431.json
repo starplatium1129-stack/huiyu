@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1628,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_06",
     "title": "久远寺有珠 · 茶杯旁的第一声雨",
@@ -35,7 +35,8 @@
       "teaspoon",
       "teapot",
       "breakfast",
-      "rainy window"
+      "rainy window",
+      "sitting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

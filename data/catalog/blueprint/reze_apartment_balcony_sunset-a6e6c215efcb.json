@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_apartment_balcony_sunset",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 430,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "reze_apartment_balcony_sunset",
     "title": "蕾塞 · 公寓阳台黄昏",
@@ -29,7 +29,7 @@
       "choker",
       "warm_tones"
     ],
-    "promptProse": "Reze rests her crossed forearms on the balcony rail, watching the first city lights below. Sunset warms her profile and the white laundry moving beside her.",
+    "promptProse": "Reze rests crossed forearms on the rail, watching the first city lights; golden-hour light warms her profile and the white shirts moving on the clothesline.",
     "promptTokens": [
       "leaning",
       "railing",

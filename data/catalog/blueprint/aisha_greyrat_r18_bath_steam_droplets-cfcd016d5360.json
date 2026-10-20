@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_r18_bath_steam_droplets",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 492,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "aisha_greyrat_r18_bath_steam_droplets",
     "title": "爱夏·雾气私汤凝脂",
@@ -32,7 +32,6 @@
     "description": "在深夜静谧的宅邸私密浴池中，温热的水汽在古朴石壁间徐徐蒸腾。爱夏褪去所有衣物全裸坐在浸没于温水中的青石阶梯上，双膝自然微分。滚烫的温泉水汽将雪白剔透的肌肤蒸透成诱人的淡绯色，晶莹剔透的水珠顺着优美锁骨、饱满娇挺的双乳与粉色乳头缓缓滑下，在紧致小腹与修长腿根凝聚滴落。她一手轻挽因吸饱水汽而服帖在颈侧的深栗红马尾，微张樱唇呼出微热白汽，眼神湿润而动情。",
     "promptProse": "She sits on submerged stone steps, gathering her wet ponytail with one hand as she glances back. Warm wall-lamp light reflects from the water through the steam.",
     "promptTokens": [
-      "adult",
       "hot spring",
       "stone bath",
       "steam",
@@ -40,8 +39,7 @@
       "sitting",
       "wet hair",
       "lantern",
-      "night",
-      "medium shot"
+      "night"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],

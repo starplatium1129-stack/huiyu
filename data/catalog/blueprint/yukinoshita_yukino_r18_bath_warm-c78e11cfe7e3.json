@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_bath_warm",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 345,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_bath_warm",
     "title": "雪之下雪乃 · 热汤浴后",
@@ -15,7 +15,7 @@
     "action": "泡在浴缸里",
     "timeOfDay": "夜晚",
     "lighting": "soft warm bathroom light and steam",
-    "camera": "full body, seated figure and both feet visible",
+    "camera": "medium shot, face, hands and waterline visible",
     "mood": "冰融的松弛",
     "sceneTags": [
       "bathroom",
@@ -25,18 +25,18 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Yukino twists the soaked towel across her chest with both hands, seated on the cedar rim with one foot in the bath and the other on a stool.",
+    "promptProse": "Adult Yukino sits immersed in the warm bath with her hair pinned up, both hands holding the wet white towel across her chest. She lowers her gaze through the steam beneath soft bathroom light.",
     "promptTokens": [
       "adult",
       "wet towel",
       "see-through",
       "sitting",
-      "foot in water",
       "wooden tub",
-      "stool",
       "steam",
       "blush",
-      "night"
+      "night",
+      "hair up",
+      "submerged"
     ],
     "negativeTokens": [
       "school uniform"

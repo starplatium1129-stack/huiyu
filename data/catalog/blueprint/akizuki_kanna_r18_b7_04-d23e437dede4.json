@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_r18_b7_04",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1165,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
-    "action": "仰卧床榻全裸自抚抽送，黑羽拍打被单，红瞳含泪弓腰失神高潮",
+    "action": "仰卧床榻全裸自抚抽送，黑羽拍打被单，粉色眼眸含泪弓腰失神高潮",
     "adult": true,
     "animaStyleHint": "r18_sensual_cg",
     "camera": "medium shot",
@@ -17,7 +17,7 @@
       "self_control",
       "special_nsfw"
     ],
-    "description": "【栞那单身公寓卧房·深夜】摘下巨大红色发带与死神镰刀。栞那浑身赤裸躺在凌乱的羽绒被上，银白长发披散。手指在湿成一片的私处急速抽送，死神羽翼在床头无意识地拍打着，红瞳满溢动情的泪水——「什么掌管死亡的神明啊……现在的我……明明只想做你一个人的可爱女仆……哈啊……」",
+    "description": "【栞那单身公寓卧房·深夜】摘下巨大红色发带与死神镰刀。栞那浑身赤裸躺在凌乱的羽绒被上，银白长发披散。手指在湿成一片的私处急速抽送，死神羽翼在床头无意识地拍打着，粉色眼眸满溢动情的泪水——「什么掌管死亡的神明啊……现在的我……明明只想做你一个人的可爱女仆……哈啊……」",
     "id": "akizuki_kanna_r18_b7_04",
     "kreaStyleHint": "",
     "lighting": "silver_moonlight",
@@ -55,6 +55,16 @@
       "pink_nipples"
     ],
     "timeOfDay": "night",
-    "title": "明月栞那 · 死神公寓床单上的贪心宣泄独奏 ·「把寿命借给你可以……但是你必须一直陪着我」"
+    "title": "明月栞那 · 死神公寓床单上的贪心宣泄独奏 ·「把寿命借给你可以……但是你必须一直陪着我」",
+    "identityProseOverride": "Kanna Akizuki from Cafe Stella and the Reapers' Butterflies, with long white hair worn loose, an ahoge and pink eyes.",
+    "identityTokensOverride": [
+      "akizuki_kanna",
+      "cafe_stella_to_shinigami_no_chou",
+      "white_hair",
+      "very_long_hair",
+      "hair_down",
+      "ahoge",
+      "pink_eyes"
+    ]
   }
 }

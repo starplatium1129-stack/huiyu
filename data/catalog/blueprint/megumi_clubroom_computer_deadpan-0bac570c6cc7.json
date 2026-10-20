@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_clubroom_computer_deadpan",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1437,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "megumi_clubroom_computer_deadpan",
     "title": "加藤惠 · 社团电脑前的无声吐槽·「伦也君……这个剧情是不是太奇怪了」",
@@ -28,12 +28,13 @@
       "school_uniform",
       "red_cardigan"
     ],
-    "promptProse": "Megumi rests her cheek in one hand while trying the game with the mouse, giving the screen a dry, unimpressed look.",
+    "promptProse": "Megumi rests her cheek in one hand while trying the game with the mouse, giving the screen a dry, unimpressed look. Screen light cools her near cheek while sunset warms the window side of the desk.",
     "promptTokens": [
       "computer mouse",
       "hand on own cheek",
       "clubroom",
-      "bob cut"
+      "bob cut",
+      "sitting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_biker_leather_solo_fingering",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1189,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "amane_r18_biker_leather_solo_fingering",
     "title": "周防天音 · 车库独处机车旁私密自抚情愫",
@@ -30,7 +30,7 @@
       "heavy_blush",
       "teary_eyes"
     ],
-    "promptProse": "Adult Amane leans against the parked motorcycle with one boot on a service stand, holding the handlebar while her other hand reaches beneath the loosened suit. The garage work lamp reflects on the chrome.",
+    "promptProse": "Amane leans against the parked motorcycle, one boot on a service stand and one hand on the handlebar, the other beneath her loosened suit; a work lamp reflects on chrome.",
     "promptTokens": [
       "adult",
       "garage",

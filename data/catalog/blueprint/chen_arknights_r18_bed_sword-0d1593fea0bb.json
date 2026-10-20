@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_bed_sword",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 544,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "侧卧榻上，剑搁在枕边",
     "adult": true,
@@ -23,16 +23,16 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Ch'en rests one hand on the scabbard beside her extended leg and the other between her thighs. The sheathed blade remains separate from her body.",
+    "promptProse": "She lies on her side with one hand over the viewer's hand on the sheet. Her sheathed sword rests beside the pillow, separate from her body. The bedside lamp lights her softened expression and the sword fittings.",
     "promptTokens": [
-      "adult",
       "bedroom",
       "nude",
-      "thigh strap",
       "sheathed sword",
-      "reclining",
-      "knees up",
-      "masturbation"
+      "lying",
+      "on side",
+      "holding hands",
+      "pillow",
+      "night"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

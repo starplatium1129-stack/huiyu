@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_highroller_club_balcony_cocktail",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1102,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "手执荧光鸡尾酒杯靠在琉璃吧台旁，高开叉长裙展现修长美腿，眼神敏锐侦查",
     "camera": "cowboy shot, eye level, bar and executives beyond the water curtain visible",
@@ -20,12 +20,13 @@
     "mood": "冷艳高贵",
     "negativeTokens": [],
     "outfitId": "neon_evening_dress",
-    "promptProse": "Lucy holds her glowing martini at the rooftop club bar, watching the Arasaka executives beyond the water curtain. Its pink and violet reflections ripple across her silver dress.",
+    "promptProse": "Lucy watches the Arasaka executives beyond the water curtain, holding her glowing martini at the rooftop bar. Pink and violet reflections ripple over the glass.",
     "promptTokens": [
       "martini",
       "bar",
       "holographic fish",
-      "nightclub"
+      "nightclub",
+      "leaning on bar"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc089",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "Across the picnic blanket, she offers the viewer a drink while steadying the open lunchbox, its sandwiches and fruit arranged for two; soft lakeside sunlight falls across the meal and her expectant face.",
+    "animaCaption": "Across the picnic blanket, she offers a drink while steadying the lunchbox arranged for two; lakeside sunlight falls on the meal and her expectant face.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "野餐盒与递饮料半身中景",
     "category": "旅行",

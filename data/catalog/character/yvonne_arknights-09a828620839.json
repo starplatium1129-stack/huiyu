@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yvonne_arknights",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "yvonne_arknights",
     "profile": {
@@ -130,7 +130,7 @@
       ],
       "franchise": "Arknights: Endfield",
       "id": "yvonne_arknights",
-      "identityProse": "Yvonne from Arknights: Endfield, a Vaivai dragon-kin girl with pink hair in twin tails with color-streaked tips, blue eyes, small horns, a tail and pointed ears, a gyaru-punk genius engineer who dual-wields handguns",
+      "identityProse": "Yvonne from Arknights: Endfield, a Vaivai with pink twin tails and streaked tips, blue eyes, small horns, pointed ears and a tail.",
       "identityTokens": [
         "yvonne (arknights)",
         "1girl",

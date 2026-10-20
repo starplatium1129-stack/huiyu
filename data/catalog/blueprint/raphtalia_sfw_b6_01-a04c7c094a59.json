@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1563,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_01",
     "title": "拉芙塔莉雅 · 晨训后的擦剑",
@@ -31,7 +31,7 @@
       "dawn_light",
       "medium_shot"
     ],
-    "promptProse": "Seated on the stump, she holds the sword steady by its hilt and draws a cloth along the blade with her other hand, ears turned toward the morning birds.",
+    "promptProse": "Seated on the stump, she holds the sword hilt and wipes the blade with her other hand, ears turned toward morning birds.",
     "promptTokens": [
       "sword",
       "cleaning",

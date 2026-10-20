@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_moon_garden",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 433,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rem_rezero_moon_garden",
     "title": "雷姆 · 月光庭院",
@@ -26,7 +26,7 @@
       "mansion",
       "fantasy"
     ],
-    "promptProse": "Rem pauses beside the roses with the watering can lowered and turns gently toward the viewer. Silver moonlight traces the petals and the blue folds of her gown.",
+    "promptProse": "Rem turns toward the viewer beside the roses, watering can lowered; moonlight traces petals, the can rim and damp path.",
     "promptTokens": [
       "roses",
       "watering can",

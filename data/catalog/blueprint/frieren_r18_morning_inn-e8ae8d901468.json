@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_morning_inn",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "frieren_r18_morning_inn",
     "title": "芙莉莲 · 旅店晨光",
@@ -25,22 +25,21 @@
       "wooden_room",
       "intimate"
     ],
-    "promptProse": "She rubs one sleepy eye while her other hand rests beneath the blanket between folded thighs. The first morning light crosses the rumpled sheets from the wooden window.",
+    "promptProse": "She rubs one sleepy eye while her other hand gathers the blanket at her waist as she sits up. The first morning light crosses the rumpled sheets from the wooden window.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult",
-      "pointy ears",
       "open nightgown",
       "topless",
       "sitting",
       "on bed",
       "knees up",
       "rubbing eyes",
-      "hand between legs",
       "morning",
       "ivory nightgown",
-      "green piping"
+      "long sleeves",
+      "green cuff piping"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

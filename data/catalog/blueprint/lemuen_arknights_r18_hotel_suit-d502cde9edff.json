@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_hotel_suit",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 565,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "action": "坐在落地窗前的轮椅上侧身回眸，夜色与微光交织",
     "adult": true,
@@ -23,18 +23,18 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "hotel_trouser_suit",
-    "promptProse": "Adult Lemuen sits backward on the velvet chair, hooking one arm over its back while her other hand slips beneath her trouser waistband.",
+    "promptProse": "Lemuen turns toward her off-frame companion from the wheelchair by the hotel window, her trouser suit loosened. City lights and her halo outline the chair and her profile.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Lemuen",
       "open suit",
-      "bare breasts",
       "loose trousers",
-      "sitting backwards",
-      "chair",
-      "hand under clothes",
-      "hotel"
+      "wheelchair",
+      "sitting",
+      "looking back",
+      "hotel window",
+      "city lights"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

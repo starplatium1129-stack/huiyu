@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mikasa_ackerman/marley_uniform",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 541,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "characterId": "mikasa_ackerman",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "marley_uniform",
       "isDefault": false,
       "name": "马莱黑色束带战术制服",
-      "prose": "her black Marley-arc military uniform with fitted breastplate and straps over a white shirt, finished with the red scarf",
+      "prose": "A black military uniform with breastplate and straps over a white shirt, with a red scarf.",
       "tokens": [
         "black military uniform",
         "breastplate",

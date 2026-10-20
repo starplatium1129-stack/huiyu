@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_nape",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 146,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "artoria_r18_nape",
     "title": "阿尔托莉雅 · 解发时分",
@@ -12,9 +12,9 @@
     "characterId": "artoria_pendragon",
     "description": "【阿尔托莉雅 · 解发时分】卧房内烛光柔和，阿尔托莉雅抬起双手轻轻解开发带，整齐盘起的金色长发如瀑布般披散而下，将修长白皙的后颈展露在你面前。她耳根微红轻声低语——「解开发带的模样……唯独只允许你一人注视。今晚，就请不要移开你的视线。」",
     "location": "王城寝宫",
-    "action": "解开高马尾露出后颈",
+    "action": "双手解开盘发的蓝色发带，露出后颈并回头望向镜头",
     "timeOfDay": "夜晚",
-    "lighting": "warm fireplace and silver moonlight",
+    "lighting": "warm candlelight in the royal bedchamber",
     "camera": "cowboy shot, rear three-quarter view",
     "mood": "卸甲后的温柔",
     "sceneTags": [
@@ -26,14 +26,12 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Seated in a rear three-quarter view, adult Artoria releases her braided bun and looks over her shoulder. The blue ribbon remains at her wrist, Excalibur's scabbard lies across the stool, and the opaque mirror reflects only candlelight.",
+    "promptProse": "Seated in a rear three-quarter view with her hair just released, she looks over her shoulder. The blue ribbon rests at her wrist and Excalibur's scabbard lies across the stool; the opaque mirror reflects only candlelight.",
     "promptTokens": [
-      "adult",
       "bedroom",
       "vanity",
       "nude",
       "blue ribbon",
-      "hair down",
       "raised arms",
       "looking back",
       "candlelight",
@@ -53,6 +51,18 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
+    ],
+    "identityProseOverride": "Artoria Pendragon (Saber) from Fate/stay night, with loose blonde hair, green eyes and an ahoge.",
+    "identityTokensOverride": [
+      "artoria pendragon (fate)",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "long_hair",
+      "hair_down",
+      "green_eyes",
+      "ahoge",
+      "fate/stay_night"
     ]
   }
 }

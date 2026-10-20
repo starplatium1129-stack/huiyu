@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/netrunner_suit",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 602,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
@@ -12,9 +12,9 @@
       "id": "netrunner_suit",
       "isDefault": true,
       "name": "黑白深潜战术衣",
-      "prose": "Her asymmetrical sleeveless white netrunner bodysuit with hip cutouts, high-waisted dark shorts and a cropped high-collar black jacket with white line accents, paired with sheer dark stockings and tall cyber boots.",
+      "prose": "An asymmetrical sleeveless white bodysuit with hip cutouts, dark high-waisted shorts, a white-trimmed cropped black jacket, dark stockings and cyber boots.",
       "tokens": [
-        "white bodysuit",
+        "sleeveless white bodysuit",
         "asymmetrical clothes",
         "side cutouts",
         "black cropped jacket",

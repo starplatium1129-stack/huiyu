@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_bath_blue_solo",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 274,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "ereshkigal_nsfw_bath_blue_solo",
     "title": "埃列什基伽勒 · 魂泉的幽蓝独奏·「今夜的日记……禁止归档」",
@@ -27,10 +27,9 @@
       "masturbation",
       "steam"
     ],
-    "promptProse": "She reclines at the soul spring, touching herself beneath the water while her hair floats beside her and a private diary lies nearby.",
+    "promptProse": "She reclines at the soul spring, touching herself beneath the water while her hair floats beside her and a private diary lies nearby. Blue soul-fire glows through the steam and across the water.",
     "nsfwProse": "",
     "promptTokens": [
-      "adult",
       "blue lingerie",
       "black lace",
       "wet clothes",

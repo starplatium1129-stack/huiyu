@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_05",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1536,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_05",
     "title": "宝多六花 · 哥哥住处的漫画借阅",
@@ -31,9 +31,9 @@
       "low_angle",
       "medium_shot"
     ],
-    "promptProse": "Sitting cross-legged before the apartment bookshelf, she holds the borrowed manga in one hand and tucks her hair behind an ear with the other, the coffee can beside her in daylight.",
+    "promptProse": "Cross-legged before the bookshelf, she holds the borrowed manga in one hand and tucks her hair behind an ear with the other, coffee can beside her in daylight.",
     "promptTokens": [
-      "crossed legs",
+      "cross-legged",
       "manga",
       "coffee can",
       "cowboy shot"

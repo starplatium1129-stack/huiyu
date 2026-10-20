@@ -126,15 +126,13 @@ export function usePopularPromptAssembly(
   })
 
   /**
-   * 用户是否**显式**挑过服装（而非选中角色时自动回退到默认那套）。
-   *
-   * 对标 studio：宁宁/夏目无场景时服装控制词为空，只留人物基本特征。故 popular 在
-   * 「无蓝图 + 服装仍是默认」时不注入服装，基础提示词保持干净；用户主动挑了别的
-   * 服装才注入。反推顶替不受此限制（参考图服装必须出来）。
+   * An explicit choice includes the default outfit. Legacy drafts have no choice flag;
+   * retain their nondefault selection without turning an automatic default into a choice.
    */
   const outfitExplicit = computed(() => {
     const subject = pb.subject
     if (subject.kind !== 'popular' || !subject.outfitId) return false
+    if (subject.outfitExplicit !== undefined) return subject.outfitExplicit
     const current = character.value
     const fallbackId = current ? defaultOutfit(current)?.id : undefined
     return Boolean(fallbackId) && subject.outfitId !== fallbackId

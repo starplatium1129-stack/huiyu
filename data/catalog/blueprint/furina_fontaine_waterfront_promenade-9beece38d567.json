@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_fontaine_waterfront_promenade",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "furina_fontaine_waterfront_promenade",
     "title": "芙宁娜 · 海滨漫步与甜点时光",
@@ -34,7 +34,7 @@
       "morning",
       "medium_shot"
     ],
-    "promptProse": "She savors a forkful of cake while resting her cheek in her free hand beneath the parasol.",
+    "promptProse": "She savors a forkful of cake while resting her cheek in her free hand beneath the parasol. Morning sunlight and sea reflections reach the white cast-iron table.",
     "promptTokens": [
       "cake",
       "strawberry",

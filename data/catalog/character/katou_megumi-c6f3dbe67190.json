@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "katou_megumi",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "katou_megumi",
     "profile": {
@@ -89,7 +89,7 @@
         "惠",
         "路人女主"
       ],
-      "identityProse": "Megumi Kato from Saekano, a quietly charming high-school girl with soft brown eyes and natural brown hair and blunt bangs, whose understated expressions and ordinary warmth carry profound subtle magnetism",
+      "identityProse": "Megumi Kato from Saenai Heroine no Sodatekata, with brown hair, blunt bangs and brown eyes.",
       "identityTokens": [
         "katou_megumi",
         "saenai_heroine_no_sodatekata",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "albedo_overlord",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "albedo_overlord",
     "profile": {
@@ -87,13 +87,14 @@
         "守护者总管",
         "纯白恶魔"
       ],
-      "identityProse": "Albedo from OVERLORD, the supreme Guardian Overseer of the Great Tomb of Nazarick, an exquisite succubus with long glossy raven-black hair, curved white horns on the sides of her head, luminous golden-slitted eyes, a majestic pair of feathered black wings emerging from her waist, and a flawless hourglass figure",
+      "identityProse": "Albedo from OVERLORD, with long black hair, curved white horns, golden slit-pupil eyes and black feathered wings at her waist.",
       "identityTokens": [
         "albedo_(overlord)",
         "overlord",
         "black_hair",
         "very_long_hair",
         "curved_horns",
+        "white_horns",
         "yellow_eyes",
         "slit_pupils",
         "black_wings"

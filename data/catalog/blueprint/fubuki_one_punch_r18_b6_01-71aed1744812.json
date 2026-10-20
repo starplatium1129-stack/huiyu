@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_01",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1603,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_01",
     "title": "吹雪 · 吹雪组总部沙发皮草大衣主控跨坐 ·「加入吹雪组的最高阶待遇……今晚只破例赋予你」",
@@ -12,7 +12,7 @@
     "characterId": "fubuki_one_punch",
     "description": "【吹雪组高层秘密会议室·深夜】地狱的吹雪展现成熟御姐的绝对支配。吹雪披着昂贵的白色毛领皮草大衣，内里墨绿色紧身晚礼服完全滑落至腰际，跨坐在你的腰间。成熟丰满、凹凸有致的完美肉体在壁炉火光下泛着诱人光泽，珍珠项链挂在傲人的巨乳深沟间，双手按住你的双肩主动沉腰研磨——「只要成为我的心腹……地狱的吹雪，就是属于你的所有物。」",
     "location": "吹雪组高层秘密会议室·深夜",
-    "action": "跨坐皮沙发披白皮草大衣露巨乳，珍珠项链挂深沟，墨绿短发成熟妖艳主动沉腰",
+    "action": "跨坐皮沙发披白皮草大衣露巨乳，珍珠项链挂深沟，墨黑短发成熟妖艳主动沉腰",
     "timeOfDay": "night",
     "lighting": "warm_firelight",
     "camera": "intimate vertical medium shot",
@@ -30,11 +30,11 @@
       "green_dress",
       "open_clothes"
     ],
-    "promptProse": "She straddles the viewer on the headquarters sofa, both hands on their shoulders and the dress lowered to her waist beneath the fur coat; firelight catches her pearls and green hair.",
+    "promptProse": "She straddles the viewer on the headquarters sofa, both hands on their shoulders and the dress lowered to her waist beneath the fur coat; firelight catches her pearls and dark bob.",
     "promptTokens": [
       "1girl",
-      "fur coat",
-      "green dress",
+      "white fur coat",
+      "dark green dress",
       "open clothes",
       "topless",
       "pearl necklace",

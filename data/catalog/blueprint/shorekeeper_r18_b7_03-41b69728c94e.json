@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_03",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1661,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_03",
     "title": "守岸人 · 概念投影礼服流光锁链卡壳事故 ·「逻辑指令错误……流光纠缠无法解除，请协助我」",
@@ -14,7 +14,7 @@
     "location": "神殿中枢控制台前·早晨",
     "action": "撑全息台塌腰回眸数据链勒肉溢乳，裙摆卡死露雪臀，空灵眸子染上红晕娇喘",
     "timeOfDay": "morning",
-    "lighting": "warm_cinematic_lighting",
+    "lighting": "全息控制台的青蓝光照亮前侧，侧窗晨光提供较柔和的环境补光",
     "camera": "wide shot, horizontal composition, holographic console visible",
     "mood": "意外失控与羞赧",
     "sceneTags": [
@@ -30,7 +30,7 @@
       "data_cable",
       "energy_chain"
     ],
-    "promptProse": "The dress's data chains tighten during recalibration, holding its skirt high as she leans over the console and looks back for assistance.",
+    "promptProse": "The dress's data chains tighten during recalibration, holding its skirt high as she braces both palms on the holographic console and looks back for assistance. Cyan console light reaches her front, with softer morning fill from the side window.",
     "promptTokens": [
       "Shorekeeper",
       "black and white long dress",

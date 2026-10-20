@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/classic_bartender_apron",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 359,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
@@ -12,14 +12,16 @@
       "id": "classic_bartender_apron",
       "isDefault": false,
       "name": "白衬衫与深棕帆布调酒围裙",
-      "prose": "A crisp white short-sleeved collared shirt with a narrow crimson ribbon tie, paired with a dark-brown canvas half apron and sturdy leather harness straps.",
+      "prose": "A short-sleeved white collared shirt, crimson ribbon tie, brown canvas half-apron with leather straps, charcoal high-waist trousers and black leather shoes.",
       "tokens": [
-        "white shirt",
+        "white collared shirt",
         "short sleeves",
         "crimson ribbon tie",
         "brown half apron",
         "canvas",
-        "leather straps"
+        "leather straps",
+        "charcoal high-waist straight-leg pants",
+        "black leather shoes"
       ]
     }
   }

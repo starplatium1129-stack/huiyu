@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_convenience_store_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1438,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "megumi_convenience_store_night",
     "title": "加藤惠 · 赶工后的便利店热饮",
@@ -31,7 +31,7 @@
       "streetlight",
       "medium_shot"
     ],
-    "promptProse": "She holds the warm drink in both hands and turns a tired smile toward the streetlights, the unopened rice-ball bag beside her on the bench.",
+    "promptProse": "She holds the warm drink in both hands and turns a tired smile toward the streetlights, the unopened rice-ball bag beside her on the bench. Soft storefront light reaches her hands and the cup.",
     "promptTokens": [
       "hot drink",
       "sitting",

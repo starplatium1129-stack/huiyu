@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_swimsuit_watermelon",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 908,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "蹲在西瓜旁研究",
     "adult": false,
@@ -31,7 +31,9 @@
       "watermelon",
       "plastic knife",
       "crouching",
-      "poolside"
+      "poolside",
+      "hair buns",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

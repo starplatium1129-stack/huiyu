@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_convenience_store_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 826,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "打工下班数着硬币",
     "adult": false,
@@ -21,7 +21,7 @@
     "mood": "quiet",
     "negativeTokens": [],
     "outfitId": "tattered_oversized_jersey_street",
-    "promptProse": "Seated on the bench after her shift, she counts coins into her worn wallet with a relieved little breath. Store light spills across her lap beside the dim streetlamp.",
+    "promptProse": "She counts coins into her worn wallet on the bench, store light spilling across her lap beside the dim streetlamp.",
     "promptTokens": [
       "street",
       "bench",

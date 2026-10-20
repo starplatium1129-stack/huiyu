@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1675,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_01",
     "title": "橘美花莉 · 摄影棚收工的三秒",
@@ -34,7 +34,7 @@
       "studio_light",
       "medium_shot"
     ],
-    "promptProse": "Mikari holds a water cup in one hand and checks club messages on her phone with the other, relaxing before the white backdrop. The studio lights stay soft while staff review pictures behind her.",
+    "promptProse": "Mikari holds a water cup in one hand and checks club messages on her phone with the other before the white backdrop; staff review pictures behind her in soft studio light.",
     "promptTokens": [
       "Mikari Tachibana",
       "water",

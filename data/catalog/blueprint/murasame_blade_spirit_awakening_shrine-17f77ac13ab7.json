@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "murasame_blade_spirit_awakening_shrine",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1119,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
-    "action": "轻盈悬浮于空中半落姿态，双手背在身后微微前倾，鬼火环绕，神刀在腰间发光",
+    "action": "双手背后微倾身从空中缓缓降下，青蓝鬼火环绕；将臣在下方握着发光断刀。",
     "camera": "full body, low angle, descending Murasame above Masaomi holding the broken sword",
     "category": "刀灵显世",
     "characterId": "murasame",
@@ -20,7 +20,7 @@
     "mood": "神秘元气",
     "negativeTokens": [],
     "outfitId": "spirit_kimono",
-    "promptProse": "Murasame floats down with her hands behind her back while Masaomi holds the shining broken Murasamemaru below her. Golden light through the shrine trees meets the blue spirit flames around her.",
+    "promptProse": "Murasame descends with hands behind her back; below, Masaomi holds the glowing broken Murasamemaru. Golden tree-filtered light meets blue spirit flames.",
     "promptTokens": [
       "2people",
       "arichi masaomi",

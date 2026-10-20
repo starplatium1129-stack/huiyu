@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc272",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 267,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "In a medium shot in a quiet room, she looks forward toward the viewer with glistening, emotive eyes, under soft ambient lighting.",
+    "animaCaption": "One index finger near her lips, she quietly addresses the viewer; soft light catches the checked knit and her hairclips, with the open blue case behind her.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs02-a1.png",
@@ -16,7 +16,7 @@
       "seedKey": "official-cg:ocs02:1"
     },
     "auditRevision": "careful-batch03-2026-08-27",
-    "camera": "官方CG横幅构图",
+    "camera": "略倾斜的半身近景横幅构图",
     "category": "官方CG灵感",
     "char": "natsume",
     "character": [
@@ -25,12 +25,12 @@
     "emotion": "心动",
     "id": "sc272",
     "lighting": "柔和自然光",
-    "location": "室内场景",
+    "location": "公寓杂物间蓝色箱子旁",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, nsfw, nude, explicit",
+    "negative": "nudity, nsfw, nude, explicit",
     "officialCgCandidate": "ocs02",
-    "prompt": "visual_novel_event_cg, cinematic_16:9_composition, tilted_medium_close_up, 1girl, solo, shiki_natsume, very_long_black_hair, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, pink_gingham_off_shoulder_knit_sweater, one_index_finger_resting_near_her_lips, shy_thoughtful_expression, subtle_blush, apartment_utility_room_and_open_blue_case_in_background, soft_neutral_indoor_light, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "visual novel event CG, dutch angle, medium close up, 1girl, solo, shiki_natsume, two_red_hairclips, no_hair_ribbon, pink sweater, gingham, off shoulder, knit fabric, finger near lips, shy, thoughtful, slight blush, apartment utility room, open blue case, soft indoor light, sharp face focus, <lora:shiki_natsume_v18_wd14:0.85>, very long hair",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",

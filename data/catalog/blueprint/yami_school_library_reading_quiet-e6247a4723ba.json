@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_school_library_reading_quiet",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1220,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "倚靠在窗台书桌旁单手捧厚书阅读，制服裙摆微拂，金发及踝，眼神清冷专注",
     "camera": "cowboy shot, eye level, Yami by the desk and approaching companion visible",
@@ -22,7 +22,6 @@
     "outfitId": "sainan_uniform",
     "promptProse": "Yami supports the heavy encyclopedia against the desk with one hand and looks up toward Rito approaching from the aisle. Clear window light shines over the open pages and her long hair.",
     "promptTokens": [
-      "Yami",
       "encyclopedia",
       "library",
       "cowboy shot"
@@ -35,8 +34,7 @@
       "reading",
       "holding_book",
       "sainan_high_school_uniform",
-      "school_uniform",
-      "twintails"
+      "school_uniform"
     ],
     "timeOfDay": "午后",
     "title": "小暗 · 窗边书架的寂静阅读",

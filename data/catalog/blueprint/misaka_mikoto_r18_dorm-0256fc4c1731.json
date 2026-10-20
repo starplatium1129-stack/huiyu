@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_r18_dorm",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 394,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "斜倚沙发屈起一腿，开衫滑肩，单手拨开蕾丝内衣自抚，静电沿靠垫跳动",
     "adult": true,
@@ -23,7 +23,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "cardigan_black_lace",
-    "promptProse": "Adult, age-twenty-plus Mikoto reclines on the sofa with one knee drawn up, moving the lace aside to touch herself as static crawls over the cushions.",
+    "promptProse": "Adult Mikoto reclines with one knee drawn up, moving lace aside to touch herself as static crosses the sofa cushions. Cool city light enters through the rain-streaked window, meeting the warm floor lamp and blue-white static along the cushion edges.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -35,7 +35,9 @@
       "bent knee",
       "masturbation",
       "sofa",
-      "static"
+      "static",
+      "rainy window",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

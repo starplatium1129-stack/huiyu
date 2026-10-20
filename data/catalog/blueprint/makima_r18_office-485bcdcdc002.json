@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_office",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 415,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "makima_r18_office",
     "title": "玛奇玛 · 反锁会议室·百叶窗夕照与正装黑领带",
@@ -41,7 +41,7 @@
       "dramatic_lighting",
       "intimate"
     ],
-    "promptProse": "Adult Makima sits nude except for her black necktie in the executive chair, chin in one hand as sunset through the blinds stripes her crossed legs.",
+    "promptProse": "Makima sits in the executive chair wearing only a black tie, chin in one hand; sunset through the blinds stripes her crossed legs.",
     "promptTokens": [
       "1girl",
       "solo",

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc216",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
-    "animaCaption": "Reclining on the narrow sofa, she reaches both forearms toward the viewer's shoulders for support; the reading lamp on the left warms her flushed ear and the cushion beside the folded fan and empty mug.",
+    "animaCaption": "Reclining on the narrow sofa, she reaches both forearms toward the viewer's shoulders for support; the reading lamp on the left warms her flushed ear and the cushion. The folded fan and empty mug rest on the side table beside her.",
     "auditRevision": "careful-batch13-2026-08-27",
     "camera": "medium close-up, sofa-level POV, face and forearms visible",
     "category": "日常",

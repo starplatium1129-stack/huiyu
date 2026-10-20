@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_02",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 290,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_02",
     "title": "美狄亚 · 深夜的模型制作",
@@ -14,7 +14,7 @@
     "description": "她的房间，台灯下摊着精密模型套件与镊子，她戴着细框眼镜用魔术微雕零件；完成一处的满足感，是她少数不设防的快乐。",
     "location": "台灯下模型工作桌",
     "action": "她的房间，台灯下摊着精密模型套件与镊子，她戴着细框眼镜用魔术微雕零件",
-    "timeOfDay": "日间",
+    "timeOfDay": "深夜",
     "lighting": "desk_lamp",
     "camera": "medium shot",
     "mood": "自然日常",
@@ -30,7 +30,7 @@
       "desk_lamp",
       "medium_shot"
     ],
-    "promptProse": "Medea steadies a tiny model part with tweezers and shapes it with a faint thread of magic from her free hand. The desk lamp pools light over the work beneath her glasses.",
+    "promptProse": "Medea steadies a model part with tweezers, shaping it with magic from her free hand. The desk lamp lights her work beneath her glasses.",
     "promptTokens": [
       "1girl",
       "solo",

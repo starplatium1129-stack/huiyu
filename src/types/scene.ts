@@ -21,11 +21,13 @@ export interface SceneRecord {
 }
 
 export interface Scene {
+  compositionIntent?: import('./sceneBlueprint').BlueprintCompositionIntent
   id: string; title: string; story?: string; prompt?: string; tags?: string[]; visualDescription?: string
   char?: string; category?: string; season?: string; series?: string
   rating?: string; mature?: boolean; lora?: string; time?: string; timeOfDay?: string
   lighting?: string; camera?: string; negative?: string
   location?: string; weather?: string; emotion?: string
   recommendedSize?: string; animaCaption?: string
+  identityTokensOverride?: string[]; identityProseOverride?: string
   usage?: string[]; [k: string]: unknown
 }

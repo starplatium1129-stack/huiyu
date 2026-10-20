@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_dorm_night",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 205,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -29,11 +29,11 @@
       "cleavage",
       "large_breasts",
       "bare_legs",
-      "standing",
+      "sitting",
       "blush",
       "daylight"
     ],
-    "promptProse": "Adult, age-twenty-plus Mash steadies a tilted tea cup while wiping droplets from between her legs beneath the slipped sweater.",
+    "promptProse": "Adult Mash steadies the tilted teacup with one hand and wipes spilled droplets between her thighs with the other beneath her slipped sweater. Pale-gold morning light through the blinds falls across the desk and steaming cup, softened by diffuse room daylight.",
     "promptTokens": [
       "off shoulder",
       "1girl",
@@ -45,7 +45,8 @@
       "teacup",
       "spilled tea",
       "desk",
-      "morning"
+      "morning",
+      "glasses"
     ],
     "recommendedSize": "1536x1152",
     "outfitId": "loose_knit_sweater",

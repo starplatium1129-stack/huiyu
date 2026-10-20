@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "viviana_arknights",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "viviana_arknights",
     "profile": {
@@ -25,7 +25,7 @@
       "visual_dna": {
         "hair": "波浪金发及腰 · 贵族卷发",
         "hair_color": "耀眼金黄",
-        "eyes": "温润琥珀金瞳",
+        "eyes": "温润的蓝宝石色眼眸",
         "hairstyle": "优雅波浪长发 · 华丽金角埃拉菲亚鹿角与鹿耳",
         "uniform": "卡西米尔象牙白金铠甲礼装 / 莱塔尼亚贵族晚礼裙",
         "expression": "高贵优雅 · 温柔清澈 · 诗意斐然",
@@ -127,7 +127,7 @@
       ],
       "franchise": "Arknights",
       "id": "viviana_arknights",
-      "identityProse": "Viviana Droste from Arknights, the Candle Knight of Kazimierz with flowing wavy golden-blonde hair, magnificent golden deer antlers, soft deer ears, sapphire eyes, and a gentle noble smile.",
+      "identityProse": "Viviana Droste from Arknights, the Candle Knight with wavy golden-blonde hair, golden deer antlers, deer ears and sapphire-blue eyes.",
       "identityTokens": [
         "viviana (arknights)",
         "1girl",

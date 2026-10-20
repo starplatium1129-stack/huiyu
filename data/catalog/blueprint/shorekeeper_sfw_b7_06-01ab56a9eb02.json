@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1644,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_06",
     "title": "守岸人 · 与贝壳的对话",
@@ -31,7 +31,7 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Shorekeeper crouches at the edge of the shallows with a shell held to one ear, her free hand resting on her knee. Afternoon light passes through the small ripples beside her skirt as she listens with a faint smile.",
+    "promptProse": "Shorekeeper crouches in the shallows, shell to one ear and free hand on her knee, listening with a faint smile as afternoon light crosses the ripples.",
     "promptTokens": [
       "shell",
       "crouching",

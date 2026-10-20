@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_goddess_straddle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 273,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "ereshkigal_nsfw_goddess_straddle",
     "title": "埃列什基伽勒 · 女王的主动跨坐·「主动一点……也需要练习的」",
@@ -30,13 +30,11 @@
     "promptProse": "She straddles the viewer's waist and studies their expression, her hair falling around their faces in the soul glow.",
     "nsfwProse": "",
     "promptTokens": [
-      "adult",
       "blue lingerie",
       "black lace",
       "open clothes",
       "topless",
       "straddling",
-      "hair down",
       "blush",
       "from below"
     ],
@@ -52,6 +50,17 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "identityProseOverride": "Ereshkigal from Fate/Grand Order, with very long loose blonde hair and red eyes.",
+    "identityTokensOverride": [
+      "ereshkigal (fate)",
+      "fate/grand_order",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "very_long_hair",
+      "hair_down",
+      "red_eyes"
+    ]
   }
 }

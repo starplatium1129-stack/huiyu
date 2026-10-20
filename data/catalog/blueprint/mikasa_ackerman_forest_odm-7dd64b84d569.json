@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_forest_odm",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 979,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "立体机动装置疾驰",
     "camera": "cowboy shot, high-speed ODM flight between giant trees with dual blades drawn",
@@ -18,7 +18,7 @@
     "mood": "凌厉迅捷",
     "negativeTokens": [],
     "outfitId": "survey_corps_uniform",
-    "promptProse": "Mikasa flies between the giant trees with a drawn blade in each hand, her maneuver lines taut and red scarf streaming behind. Shafts of forest light flash along the two blades.",
+    "promptProse": "Mikasa flies between giant trees with a blade in each hand and taut maneuver lines. Her red scarf trails behind; shafts of daylight break between the trunks and flash on both blades.",
     "promptTokens": [
       "dual blades",
       "flying",

@@ -1,4 +1,5 @@
 import type { ArtworkRecord } from '@/types/artwork'
+import { parseOutfitOverride } from './promptBuilderPersistence'
 
 /** Read-only projection for recipe restoration. Never fills or rewrites the stored record. */
 export function parseHistoryRecipe(record: ArtworkRecord) {
@@ -44,6 +45,8 @@ export function parseHistoryRecipe(record: ArtworkRecord) {
     id: record.id, engine,
     subject: text('subject'), character: text('character'), characterId: text('characterId'),
     outfitId: text('outfitId'), blueprintId: nullableText('blueprintId'), noLora: boolean('noLora'),
+    outfitExplicit: boolean('outfitExplicit'),
+    outfitOverride: record.outfitOverride === undefined ? undefined : parseOutfitOverride(record.outfitOverride),
     model: text('model'), checkpoint: text('checkpoint'), styleLoraId: nullableText('styleLoraId'),
     loraId: text('loraId'), loraStrength: number('loraStrength'),
     size: text('size'), seed: number('seed'), steps: number('steps'), cfg: number('cfg'),

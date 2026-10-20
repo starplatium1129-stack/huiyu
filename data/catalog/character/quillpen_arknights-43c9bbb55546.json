@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "quillpen_arknights",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 32,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "quillpen_arknights",
     "profile": {
@@ -113,7 +113,7 @@
       ],
       "franchise": "Arknights",
       "id": "quillpen_arknights",
-      "identityProse": "La Pluma (Rafaela) from Arknights, a soft-spoken Liberi girl with white-to-teal gradient hair, feathery winged ears, sleepy crimson eyes, and an ahoge.",
+      "identityProse": "La Pluma from Arknights, with white-to-teal hair, feathered ears, crimson eyes and an ahoge.",
       "identityTokens": [
         "la pluma (arknights)",
         "1girl",
@@ -122,6 +122,7 @@
         "gradient hair",
         "winged ears",
         "red eyes",
+        "ahoge",
         "arknights"
       ],
       "negativeTokens": [

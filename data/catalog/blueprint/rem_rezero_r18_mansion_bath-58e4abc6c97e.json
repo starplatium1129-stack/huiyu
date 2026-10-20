@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_r18_mansion_bath",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 439,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "rem_rezero_r18_mansion_bath",
     "title": "雷姆 · 宅邸浴汤",
@@ -25,7 +25,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Rem braces a hand on the marble rim and lets the other follow the ripples between her thighs, a soaked towel across her chest.",
+    "promptProse": "Adult Rem braces one hand on the marble bath rim, the other between her thighs underwater, a wet towel across her chest. One knee rises above the water while the other leg extends beneath it, candlelight passing through the steam.",
     "promptTokens": [
       "adult",
       "wet white towel",

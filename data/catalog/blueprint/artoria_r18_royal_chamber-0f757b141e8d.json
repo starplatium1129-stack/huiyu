@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_royal_chamber",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "artoria_r18_royal_chamber",
     "title": "阿尔托莉雅 · 卡美洛沙龙·贵妃榻与誓约蓝宝石",
@@ -40,9 +40,8 @@
       "oil_painting_aesthetic",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Artoria rests her chin on one hand on the emerald chaise. Firelight illuminates her beside the table holding Excalibur's scabbard and discarded lace.",
+    "promptProse": "She rests her chin on one hand on the emerald chaise. Warm orange firelight edges her silhouette while the far side remains in shadow; beside her, the table holds Excalibur, the golden Avalon scabbard and discarded lace.",
     "promptTokens": [
-      "adult",
       "castle",
       "velvet chaise longue",
       "nude",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misaka_mikoto",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "misaka_mikoto",
     "profile": {
@@ -99,7 +99,7 @@
       "animeStudio": "j.c.staff, official anime screencap, anime coloring",
       "canon": {
         "era": "近未来",
-        "formNotes": "茶发棕眼齐刘海；常盘台水手服；超电磁炮=硬币电光",
+        "formNotes": "茶色短发、棕眼与花形发夹；常盘台白衬衫配浅棕针织背心和米色百褶裙；超电磁炮以硬币为弹体，蓝白电弧围绕橙红主光束。",
         "research": "2026-08-14 调研",
         "world": "学园都市（超电磁炮）"
       },
@@ -115,7 +115,7 @@
       ],
       "franchise": "A Certain Scientific Railgun",
       "id": "misaka_mikoto",
-      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, an energetic Tokiwadai student with short chestnut-brown hair carrying a soft glossy sheen, warm brown eyes, and a white flower hair clip",
+      "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, with short chestnut-brown hair, brown eyes and a white flower hair clip.",
       "identityTokens": [
         "misaka_mikoto",
         "1girl",
@@ -123,7 +123,7 @@
         "brown hair",
         "short hair",
         "brown eyes",
-        "flower hair clip",
+        "white flower hair clip",
         "toaru kagaku no railgun"
       ],
       "negativeTokens": [

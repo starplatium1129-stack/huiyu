@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc267",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 262,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
     "id": "sc267",
     "recommendedSize": "1344×768",
@@ -42,7 +42,7 @@
       "criss_cross_halter"
     ],
     "mature": true,
-    "location": "私密书房木桌",
+    "location": "社办木桌前",
     "weather": "晴",
     "camera": "后视翘臀站立俯趴横幅构图",
     "lighting": "暖色室内顶光与肌肤高光",
@@ -52,8 +52,8 @@
       "展示图",
       "R15"
     ],
-    "prompt": "nsfw, explicit, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, from_behind, ass_focus, 1girl, solo, adult_ayachi_nene, ayachi_nene, nene_r18, nene_witch_canonical, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, witch_hat, pink_striped_hat_ribbon, official_witch_outfit, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, bare_back, detached_sleeves, black_wrist_cuffs_with_pink_stripes, black_skirt, skirt_lift, bottomless, no_panties, pussy, exposed_pussy, ass, raised_ass, bent_over_desk, standing_bent_over_table, upper_body_prone_on_wooden_table, standing_on_floor, leaning_forward_on_desk, looking_back_over_shoulder, looking_at_viewer, open_mouth, heavy_blush, panting, thighhighs, asymmetrical_legwear, striped_thighhigh, wooden_table, warm_ambient_lighting, soft_shadows, sensual, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, generic witch dress, plain black dress, full-length gown, simple witch costume, kneeling on table, all fours on table, standing straight, lying on back, fully dressed, closed dress, pink hair, blonde hair, floor only, child, loli, underage",
+    "prompt": "nsfw, explicit, visual novel event CG, from behind, ass focus, 1girl, solo, ayachi_nene, nene_r18, nene_witch_canonical, very_long_hair, ahoge, witch_hat, pink_striped_hat_ribbon, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, bare back, detached_sleeves, black wrist cuffs, pink stripes, black_skirt, skirt lift, bottomless, no panties, exposed pussy, raised ass, bent over, standing, leaning on desk, looking back, looking at viewer, open mouth, heavy blush, panting, thighhighs, asymmetrical_legwear, striped_thighhigh, wooden table, warm ambient lighting, soft shadows, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "generic witch dress, plain black dress, full-length gown, kneeling on table, all fours on table, standing straight, lying on back",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R18",
     "officialCgCandidate": "ocn12",
@@ -65,7 +65,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn12-a2.png",
       "result": "pass"
     },
-    "animaCaption": "In an intimate cinematic visual novel CG framed from behind, Ayachi Nene in her official witch costume stands on the floor and bends over the wooden desk with her upper body leaning prone on the table, with her black skirt lifted up high to reveal her bare raised buttocks and exposed pussy in sharp perspective, looking back over her shoulder at the viewer with blushing cheeks and an open mouth under warm soft indoor lighting.",
+    "animaCaption": "Standing on the floor, she bends over the desk with her upper body resting on its surface, skirt lifted high. She looks back over her shoulder toward the viewer with a blush and open mouth under soft warm light.",
     "recommendedModel": "anima-aesthetic-v1.1",
     "auditRevision": "careful-batch02-2026-08-27"
   }

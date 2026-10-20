@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_starry_tower",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 388,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "elaina_r18_starry_tower",
     "title": "伊雷娜 · 星光塔顶",
@@ -19,20 +19,17 @@
     "mood": "星空下的俏皮",
     "sceneTags": [
       "witch_tower",
-      "window_seat",
       "starry_sky",
       "candlelight",
       "night",
-      "intimate"
+      "intimate",
+      "stone_balustrade"
     ],
-    "promptProse": "She hooks one heel on the balustrade and steadies a broom between her folded legs as the wind opens her robe.",
+    "promptProse": "She rests one hand on the stone balustrade and extends the other toward the viewer. Wind moves her robe at the clock-tower terrace; moonlight outlines the small star embroidered at her cuff while a candle lights the nearby stone.",
     "promptTokens": [
-      "adult",
       "sheer robe",
       "open clothes",
       "topless",
-      "sitting",
-      "broom",
       "tower",
       "starry sky",
       "wind",
@@ -40,7 +37,10 @@
       "cowboy shot",
       "from below",
       "silver gray robe",
-      "star embroidery"
+      "star embroidery",
+      "standing",
+      "reaching",
+      "stone balustrade"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_nsfw_church_mat_supine_devotion",
-  "revision": 5,
+  "revision": 9,
   "sortOrder": 1340,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "全裸仰卧软榻上，双腿曲膝大开，单手与视角十指紧扣，眼眸水润迷乱娇喘",
     "adult": true,
@@ -26,16 +26,16 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Ciel holds a scripture page to her chest with one hand and rests the other between her folded legs beneath stained-glass light.",
+    "promptProse": "Without her glasses, she lies on the dark-blue velvet couch, interlocking one hand with the viewer's hand beside the cushion while the other rests near her lips. Warm candlelight reaches her face and the velvet folds.",
     "promptTokens": [
-      "adult",
       "church room",
-      "mat",
+      "velvet couch",
       "nude",
       "lying",
-      "scripture",
-      "masturbation",
-      "glasses"
+      "on back",
+      "knees up",
+      "holding hands",
+      "candlelight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

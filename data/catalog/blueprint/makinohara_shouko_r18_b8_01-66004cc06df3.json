@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_r18_b8_01",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "makinohara_shouko_r18_b8_01",
     "title": "牧之原翔子 · 七里滨海景房白裙海风柔情 ·「咲太君……大人的翔子小姐，今天只属于你」",
@@ -12,7 +12,7 @@
     "characterId": "makinohara_shouko",
     "description": "【江之岛海景民宿·深夜】海浪声回荡的窗边。大翔子小姐解开纯白连衣裙的肩带，跨坐在你的腰间。深蓝色的长发如瀑布般倾泻在你的肩头，姬发式的鬓发扫过锁骨，那双承载了无数平行时空的深邃蓝瞳泛起动情的涟漪——「咲太君……这一次的未来，我们终于走到一起了呢……」",
     "location": "江之岛海景民宿·深夜",
-    "action": "跪坐在落地窗前软垫上白裙褪至腰际，深蓝长发垂落，蓝瞳含笑带泪温柔前倾",
+    "action": "跨坐在画面外同伴腰间，白裙褪至腰际，长发垂落，温柔前倾。",
     "timeOfDay": "night",
     "lighting": "silver_moonlight",
     "camera": "intimate vertical medium shot",
@@ -29,16 +29,16 @@
       "bare_shoulders",
       "bare_breasts"
     ],
-    "promptProse": "Adult Shouko kneels forward on the cushions with her white dress lowered to her waist, holding a gentle, tearful smile before the moonlit sea.",
+    "promptProse": "Shouko sits astride her off-frame companion, her white dress at her waist, leaning toward them with a tearful smile. Sea-window moonlight edges her loose hair.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Shouko",
       "open white dress",
       "bare breasts",
-      "kneeling",
+      "straddling",
+      "on lap",
       "leaning forward",
-      "cushion",
       "coastal window",
       "moonlight"
     ],

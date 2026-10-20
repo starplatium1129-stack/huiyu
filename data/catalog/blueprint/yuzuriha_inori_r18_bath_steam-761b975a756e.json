@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_bath_steam",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 335,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_bath_steam",
     "title": "楪祈 · 虚空花瓣的蒸汽浴",
@@ -15,7 +15,7 @@
     "action": "侧坐浴缸石沿一腿屈起，湿透红纱贴肤半透，单手在水下自抚并引出虚空花瓣",
     "timeOfDay": "夜晚",
     "lighting": "暖色壁灯穿透蒸汽，淡青虚空花瓣从水下补光",
-    "camera": "medium three-quarter shot, raised-knee compression, face and waterline visible",
+    "camera": "medium shot, three-quarter view, raised knee, face and waterline visible",
     "mood": "成年后的生命实感、湿润空灵与私密颤栗",
     "sceneTags": [
       "bathroom",
@@ -26,7 +26,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Inori sits sideways on the tub rim with one leg in the water, her submerged hand creating ripples and cyan Void petals between her thighs.",
+    "promptProse": "Inori sits sideways on the tub rim with one leg in the water, her submerged hand creating ripples and cyan Void petals between her thighs. Their glow rises through the water beneath the warm wall lamps shining through steam.",
     "promptTokens": [
       "adult",
       "wet red wrap",

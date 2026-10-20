@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_dawn_nude_bedroom",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 910,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在床沿身披半透白纱晨袍若隐若现，洁白羽翼微拢轻颤，单手托胸另一手在裙下自抚含泪动情",
     "adult": true,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_lace_morning_robe",
-    "promptProse": "Adult Mika cups her breast through the sheer robe and touches herself beneath its hem, her white wings sheltering her sides on the sunlit bed.",
+    "promptProse": "Adult Mika cups her breast through the sheer robe and touches herself beneath its hem, her white wings sheltering her sides on the bed. Golden morning beams enter through the stained-glass window and spread across the white bedding.",
     "promptTokens": [
       "white robe",
       "see-through",
@@ -36,7 +36,9 @@
       "hand under clothes",
       "bed",
       "dawn",
-      "rose lace trim"
+      "rose lace trim",
+      "stained glass",
+      "sunbeams"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

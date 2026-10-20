@@ -2,6 +2,7 @@ import type { SceneDraft, SceneRating } from '@/types/api'
 import type { BlueprintCompositionIntent, SceneBlueprint } from '@/types/sceneBlueprint'
 import type { GeneratedRecipe } from '@/types/generatedRecipe'
 import type { HistorySnapshot } from '@/types/promptHistory'
+import { parseOutfitOverride } from './promptBuilderPersistence.ts'
 
 export interface GeneratedSceneSource {
   recipe: HistorySnapshot
@@ -21,7 +22,7 @@ const textKeys = ['character', 'characterId', 'outfitId', 'blueprintId', 'subjec
   'story', 'visualDescription', 'shot', 'lighting', 'composition', 'colorMood', 'lora', 'loraId',
   'checkpoint', 'model', 'profile', 'provider', 'sampler', 'scheduler', 'size', 'styleLoraId', 'hiresUpscaler'] as const
 const numberKeys = ['seed', 'steps', 'cfg', 'loraStrength', 'width', 'height', 'hiresScale', 'hiresSteps', 'hiresDenoise'] as const
-const booleanKeys = ['noLora', 'hiresFix', 'faceDetailer'] as const
+const booleanKeys = ['noLora', 'hiresFix', 'faceDetailer', 'outfitExplicit'] as const
 const listKeys = ['emotion', 'manual_tags', 'artistStyleIds'] as const
 const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
 
@@ -35,6 +36,7 @@ function parameters(value: Record<string, unknown>): HistorySnapshot {
   }
   for (const key of booleanKeys) if (typeof value[key] === 'boolean') output[key] = value[key]
   for (const key of listKeys) if (Array.isArray(value[key]) && value[key].every(item => typeof item === 'string')) output[key] = [...value[key]]
+  if (value.outfitOverride !== undefined) output.outfitOverride = parseOutfitOverride(value.outfitOverride)
   if (Array.isArray(value.loras) && value.loras.every(item => record(item) && typeof item.id === 'string'
     && typeof item.strength === 'number' && Number.isFinite(item.strength))) {
     output.loras = value.loras.map(item => ({ id: item.id, strength: item.strength }))

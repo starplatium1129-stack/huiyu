@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_rooftop_wind",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 846,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "迎风站立警戒远方",
     "adult": false,
@@ -16,17 +16,17 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【空崎日奈 · 旧校舍天台的极目远眺】歌赫娜废弃校舍的天台上，强劲的夜风吹拂着日奈宽大的黑色军制服大衣与飘逸的银白长发。她单手按着军帽，红瞳锐利地扫视着夜幕中的城市。察觉到你在为她披上毛毯，她神色瞬间柔和下来——「谢谢你，老师……只要能守护好大家与老师的平静日常，再辛苦也是值得的。」",
+    "description": "【空崎日奈 · 旧校舍天台的极目远眺】歌赫娜废弃校舍的天台上，强劲的夜风吹拂着日奈宽大的黑色军制服大衣与飘逸的银白长发。她单手按着军帽，紫瞳锐利地扫视着夜幕中的城市。察觉到你在为她披上毛毯，她神色瞬间柔和下来——「谢谢你，老师……只要能守护好大家与老师的平静日常，再辛苦也是值得的。」",
     "id": "sorasaki_hina_rooftop_wind",
     "kreaStyleHint": "",
-    "lighting": "风卷云层的光",
+    "lighting": "云层间的冷月光勾出发丝与衣缘，天台较暗的环境光保留军装轮廓",
     "location": "歌赫娜旧校舍天台",
     "mood": "凛然",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "gehenna_uniform",
-    "promptProse": "Hina holds her cap against the rooftop wind while the teacher places a blanket around her shoulders.",
+    "promptProse": "Hina holds her cap against the rooftop wind while the teacher places a blanket around her shoulders. Cold moonlight through the clouds edges her hair and coat, with dark rooftop ambient light retaining the uniform's shape.",
     "promptTokens": [
       "Hina",
       "cap",

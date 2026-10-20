@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_lava_glow",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 525,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "赤身倚靠光滑黑石壁，熔岩火光勾勒曼妙身段",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "dramatic intimate angle",
+    "camera": "medium shot, three-quarter view, black stone wall visible",
     "category": "成人",
     "characterId": "surtr_arknights",
     "coverageTags": [
@@ -24,19 +24,15 @@
     "mood": "炽烈魅惑",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [
-      "masturbation",
-      "hand between legs"
-    ],
+    "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Surtr grips the cooling rail and touches herself before the lava-filled window.",
+    "promptProse": "Surtr leans against smooth black stone, looking toward the viewer; red geothermal light traces her silhouette against the chamber’s shadowed recesses.",
     "promptTokens": [
       "Surtr",
       "nude",
-      "kneeling",
-      "railing",
-      "observation window",
-      "lava",
+      "leaning",
+      "black stone wall",
+      "lava glow",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_04",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1566,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_04",
     "title": "拉芙塔莉雅 · 边境小镇的白誓约",
@@ -14,7 +14,7 @@
     "description": "【边境小镇石砌教堂·午后】旅途暂歇，她换上简洁的象牙白婚纱，浣熊耳朵紧张地竖起，双手捧着野花束走过彩窗下的长椅；尾巴小心收在裙后，听见钟声时终于露出可靠又羞涩的笑。",
     "location": "stone chapel beside a frontier town",
     "action": "彩窗下捧野花束回眸，兽耳竖起，尾巴藏在裙后露出可靠的羞涩笑",
-    "timeOfDay": "黄昏",
+    "timeOfDay": "午后",
     "lighting": "warm afternoon rays through stained glass",
     "camera": "full-body shot",
     "mood": "旅途后的可靠幸福",
@@ -28,9 +28,9 @@
       "raccoon_tail",
       "grateful_smile",
       "blush",
-      "sitting"
+      "walking"
     ],
-    "promptProse": "Raphtalia walks toward the altar with wildflowers held in both hands, her ears lifted nervously above the short veil.",
+    "promptProse": "Raphtalia carries wildflowers toward the altar in both hands, ears above her short veil and tail tucked behind her skirt, smiling back shyly. Stained-glass afternoon light crosses the aisle and pews.",
     "promptTokens": [
       "bouquet",
       "church",

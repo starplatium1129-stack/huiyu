@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_sweets_shop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 559,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
-    "action": "坐在靠窗桌边的轮椅上，捧着精致圣代笑意盈盈",
+    "action": "坐在靠窗桌边的轮椅上，一手托住草莓圣代，另一手把一勺冰淇淋递向画面外同伴。",
     "camera": "medium close-up",
     "category": "泰拉都市",
     "characterId": "lemuen_arknights",

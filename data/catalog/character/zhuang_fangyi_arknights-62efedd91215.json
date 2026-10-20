@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zhuang_fangyi_arknights",
-  "revision": 6,
+  "revision": 5,
   "sortOrder": 162,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights",
     "profile": {
@@ -108,16 +108,18 @@
       ],
       "franchise": "Arknights: Endfield",
       "id": "zhuang_fangyi_arknights",
-      "identityProse": "Zhuang Fangyi from Arknights: Endfield, a Qilin researcher and representative of the Wuling Scientific Development Area, with very long loose black hair fading into teal-green lengths, red streaks framing her face, green eyes, branching dark red eastern-dragon horns, pointed ears and a long eastern-dragon tail.",
+      "identityProse": "Zhuang Fangyi from Arknights: Endfield, with long black hair fading to teal, red face-framing streaks, green eyes, branching dark-red horns, pointed ears and an eastern-dragon tail.",
       "identityTokens": [
         "zhuang fangyi (arknights)",
         "1girl",
         "solo",
         "black hair",
         "green hair",
+        "gradient hair",
         "red streaks",
         "green eyes",
         "eastern dragon horns",
+        "red horns",
         "eastern dragon tail",
         "arknights: endfield"
       ],

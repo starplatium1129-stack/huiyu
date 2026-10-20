@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/standard",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 414,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
@@ -15,7 +15,7 @@
       "prose": "her black sleeveless combat dress with a short layered ragged skirt and pink interior, white collar, metal pendant and chest straps, a loose jacket, long black gloves, pink purse, thigh straps and knee boots",
       "tokens": [
         "black sleeveless dress",
-        "layered skirt",
+        "short layered skirt",
         "ragged hem",
         "pink lining",
         "white collar",

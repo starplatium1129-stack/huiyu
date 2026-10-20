@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_bath_flowers",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 603,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "靠在浴缸里，指尖拨弄花瓣",
     "adult": true,
@@ -23,20 +23,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "She catches a flower with one hand and touches herself beneath the ripples with the other, pink static passing through the petals.",
+    "promptProse": "She rests one forearm on the tub rim and stirs the floating rose petals with the fingertips of her other hand, lowering her flushed face near the water. Candlelight glints between the petals and the wet pink folds of her ears.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult",
-      "cat ears",
-      "pink hair",
       "nude",
       "reclining",
-      "knee up",
-      "masturbation",
-      "bath",
       "flower petals",
-      "steam"
+      "bath",
+      "steam",
+      "candlelight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

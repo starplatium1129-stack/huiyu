@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_bathrobe_morning",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 420,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "makima_r18_bathrobe_morning",
     "title": "玛奇玛 · 晨袍沙发",
@@ -25,18 +25,16 @@
       "balcony",
       "intimate"
     ],
-    "promptProse": "Adult Makima steadies her coffee on one crossed knee with one hand and draws the robe belt around her other thigh, her silk robe open in the morning light.",
+    "promptProse": "Makima rests against the leather sofa cushions, her white silk robe off one shoulder. She smiles toward the viewer in the first morning light.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Makima",
       "white silk robe",
-      "open clothes",
-      "bare breasts",
-      "crossed legs",
-      "coffee",
-      "robe belt",
+      "off shoulder",
+      "sitting",
       "sofa",
+      "cushions",
       "morning"
     ],
     "negativeTokens": [],

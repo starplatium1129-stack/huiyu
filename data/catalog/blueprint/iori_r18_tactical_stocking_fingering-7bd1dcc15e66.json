@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_r18_tactical_stocking_fingering",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 937,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "被按在集装箱铁壁上，紧身衣拉链拉开，内裤拨至一侧，承受手指快速抽插抽搐",
     "adult": true,
@@ -26,18 +26,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "tactical_night_ops",
-    "promptProse": "Adult Iori holds the torn stocking edge apart while touching herself beside the locker, her holstered weapon secured behind her.",
+    "promptProse": "Iori covers her mouth with one hand against the container wall in the abandoned hangar’s narrow gap. Moonlight catches her open tactical suit; reflected flashlight light reaches the metal wall.",
     "promptTokens": [
       "adult",
       "open black tactical bodysuit",
       "topless",
-      "torn stockings",
-      "kneeling",
-      "female masturbation",
       "sweat",
       "blush",
-      "locker",
-      "emergency lighting"
+      "standing",
+      "container",
+      "hangar",
+      "moonlight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

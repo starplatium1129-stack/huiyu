@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tokisaki_kurumi",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tokisaki_kurumi",
     "profile": {
@@ -101,7 +101,7 @@
         "kurumi tokisaki",
         "date a live"
       ],
-      "identityProse": "Tokisaki Kurumi from Date A Live, a mysterious girl with long dark hair in side twintails, two-tone red and gold eyes with an intense gleam, a pale elegant face, and an enigmatic, composed manner",
+      "identityProse": "Tokisaki Kurumi from Date A Live, with long black hair in uneven twintails, a gold clock-patterned left eye and a red right eye.",
       "identityTokens": [
         "tokisaki_kurumi",
         "1girl",
@@ -110,6 +110,8 @@
         "uneven twintails",
         "heterochromia",
         "clock eye",
+        "yellow_left_eye",
+        "red_right_eye",
         "date a live"
       ],
       "exactTokens": [

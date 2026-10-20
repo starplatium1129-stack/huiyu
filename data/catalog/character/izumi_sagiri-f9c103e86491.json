@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "izumi_sagiri",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "izumi_sagiri",
     "profile": {
@@ -73,7 +73,7 @@
         "和泉纱雾",
         "Sagiri Izumi"
       ],
-      "identityProse": "Sagiri Izumi from Eromanga Sensei, a young illustrator with long silvery hair fading into pale pink-violet tips, ribbon-tied sidelocks and bright aqua-blue eyes. Her expressive face shifts readily between concentration, embarrassment and delight.",
+      "identityProse": "Sagiri Izumi from Eromanga Sensei, with long silver hair fading to pink-violet tips, ribbon-tied sidelocks and aqua-blue eyes.",
       "identityTokens": [
         "izumi_sagiri",
         "eromanga_sensei",

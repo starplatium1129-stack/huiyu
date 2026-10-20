@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_04",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1708,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "maomao_sfw_b9_04",
     "title": "猫猫 · 后宫药房的草木花嫁",
@@ -14,7 +14,7 @@
     "description": "【后宫温室礼堂·午后】猫猫穿着带草木刺绣的淡绿色婚服坐在药草温室，头纱被她别在发髻后，捧花里混着能闻出药性的花叶；她先凑近确认无毒，随后抬眼向镜头露出难得坦率的好奇。",
     "location": "imperial palace medicinal greenhouse",
     "action": "温室里逐朵确认捧花无毒，最后抬眼向镜头露出坦率好奇",
-    "timeOfDay": "黄昏",
+    "timeOfDay": "午后",
     "lighting": "warm filtered light through leaves and glass",
     "camera": "cowboy shot",
     "mood": "药师也会认真准备一场花嫁",
@@ -29,7 +29,7 @@
       "curious_smile",
       "botanical_light"
     ],
-    "promptProse": "She holds the herbal bouquet near her face and looks up curiously toward the viewer, filtered greenhouse light falling across the leaves.",
+    "promptProse": "Seated in the greenhouse with her cream veil pinned behind her bun, she holds the herbal bouquet near her face and looks up curiously toward the viewer. Warm light filters through leaves and glass onto the bouquet.",
     "promptTokens": [
       "herb bouquet",
       "greenhouse"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_home_tea_morning",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 245,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "scathach_home_tea_morning",
     "title": "斯卡哈 · 晨间茶室的师匠私语·「休息也是修行的一部分，坐下」",
@@ -15,7 +15,7 @@
     "action": "点茶结束后把茶筅放好，双手转正茶碗并轻推到桌对面",
     "timeOfDay": "清晨",
     "lighting": "障子纸滤入的柔白晨光，茶汤升起细细热气",
-    "camera": "medium shot, seiza tea pouring, tatami room morning calm",
+    "camera": "medium shot, seiza at low tea table, bowl and resting whisk visible",
     "mood": "宁静温存、师匠柔情",
     "sceneTags": [
       "tatami_tea_room",
@@ -29,7 +29,7 @@
       "morning_screen_light",
       "medium_shot"
     ],
-    "promptProse": "Scathach slides the matcha bowl toward the viewer with both hands, the whisk already resting beside the tray. Morning light diffused by the shoji catches the thin curl of steam between them. Her long hair is loosely tied back.",
+    "promptProse": "Scathach slides the matcha bowl toward the viewer in both hands, whisk beside the tray and hair loosely tied back. Shoji-filtered morning light catches the steam.",
     "promptTokens": [
       "seiza",
       "matcha",

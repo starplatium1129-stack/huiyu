@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_poisson_rain_reflection",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "furina_poisson_rain_reflection",
     "title": "芙宁娜 · 雨幕中的落寞独白",
@@ -30,7 +30,7 @@
       "distant_streetlights",
       "medium_shot"
     ],
-    "promptProse": "She studies the rain gathering in her upturned palm, her other hand on the wet balustrade; distant streetlights soften through the rain behind her.",
+    "promptProse": "She studies the rain gathering in her upturned palm, her other hand on the wet balustrade. Cool diffuse rain light reaches her, with warm streetlights softened by the rain behind her.",
     "promptTokens": [
       "leaning",
       "open hand",

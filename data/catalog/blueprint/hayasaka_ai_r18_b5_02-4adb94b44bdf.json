@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_r18_b5_02",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1426,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "靠泳池浮标湿透高叉泳衣贴身，单手探入水下深处自抚，水光勾勒结实腰臀",
     "adult": true,
@@ -27,11 +27,11 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_agent_swimsuit",
-    "promptProse": "Adult Hayasaka holds the lane divider while her other hand reaches beneath her swimsuit underwater. Pool spotlights shine through the ripples.",
+    "promptProse": "She holds the lane divider while her other hand reaches beneath her swimsuit underwater. Blue pool spotlights shine through the ripples.",
     "promptTokens": [
       "adult",
       "indoor pool",
-      "black swimsuit",
+      "black one-piece swimsuit",
       "highleg swimsuit",
       "wet clothes",
       "see-through",

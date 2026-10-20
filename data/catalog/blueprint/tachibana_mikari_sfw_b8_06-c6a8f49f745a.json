@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1680,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_06",
     "title": "橘美花莉 · 巧克力盒上的蝴蝶结",
@@ -33,7 +33,7 @@
       "afternoon",
       "medium_shot"
     ],
-    "promptProse": "Mikari reties the chocolate box ribbon when its ends fall unevenly, afternoon light crossing the spare boxes.",
+    "promptProse": "Seated at the dining table, Mikari reties the chocolate box ribbon when its ends fall unevenly, afternoon light crossing the spare boxes.",
     "promptTokens": [
       "Mikari Tachibana",
       "ribbon",

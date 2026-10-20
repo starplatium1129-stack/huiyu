@@ -21,7 +21,7 @@ import { parseGeneratedRecipe } from './generatedSceneDraft.ts'
 
 export type DrawSubject =
   | { kind: 'studio' }
-  | { kind: 'popular'; characterId: string; outfitId: string; blueprintId: string | null }
+  | { kind: 'popular'; characterId: string; outfitId: string; blueprintId: string | null; outfitExplicit?: boolean }
 
 // ── 严格解析 ───────────────────────────────────────────────────────────────
 // 解析守卫已收敛至 ./popularParseGuards.ts（2026-09-05 单体拆分）。
@@ -42,6 +42,8 @@ function parseOutfit(value: unknown): PopularOutfit | null {
     prose: requiredString(value, 'prose'),
     tokens,
     default: value.default === true,
+    identityTokensOverride: value.identityTokensOverride === undefined ? undefined : requiredStringList(value, 'identityTokensOverride'),
+    identityProseOverride: stringValue(value.identityProseOverride),
   }
 }
 

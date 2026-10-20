@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
     "title": "黑呆 · 冬木残垣的卑王铁槌",
@@ -29,7 +29,7 @@
       "golden_eyes",
       "full_body"
     ],
-    "promptProse": "Saber Alter raises Excalibur Morgan in both hands atop a broken pillar, its red light falling across her gauntlets.",
+    "promptProse": "Saber Alter raises Excalibur Morgan in both hands atop a broken pillar, its red light falling across her gauntlets above the dark, roiling mud in the ruins.",
     "promptTokens": [
       "excalibur_morgan",
       "raised arms",

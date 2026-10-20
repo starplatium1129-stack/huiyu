@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yor_forger",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 41,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "yor_forger",
     "profile": {
@@ -109,7 +109,7 @@
         "flower earrings",
         "spy x family"
       ],
-      "identityProse": "Yor Forger (Thorn Princess) from SPY x FAMILY, a lethal assassin and loving mother with elegant updo black hair with a sleek shine, striking ruby red eyes, gold rose earrings, and an endearing innocent blush",
+      "identityProse": "Yor Forger from SPY x FAMILY, with black hair in an updo, red eyes and gold rose earrings.",
       "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring",
       "negativeTokens": [
         "bad anatomy",

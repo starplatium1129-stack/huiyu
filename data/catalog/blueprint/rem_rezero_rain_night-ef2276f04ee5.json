@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 434,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "rem_rezero_rain_night",
     "title": "雷姆 · 雨夜告白",
@@ -25,7 +25,7 @@
       "outdoors",
       "warm_light"
     ],
-    "promptProse": "Rem clasps the viewer's hand beneath the clock tower and looks back through the rain with a trembling smile. Warm streetlight catches her tears against the cool rain beyond her shoulders.",
+    "promptProse": "Rem clasps the viewer's hand low in the foreground beneath the clock tower and looks back through the rain with a trembling smile. Warm streetlight catches her tears against the cool rain beyond her shoulders.",
     "promptTokens": [
       "holding hands",
       "looking back",

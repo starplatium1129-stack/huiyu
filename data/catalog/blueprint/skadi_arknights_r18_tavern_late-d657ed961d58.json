@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_tavern_late",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 615,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在酒馆长椅上，一手端着未动的酒杯，另一手留在裙边。",
     "adult": true,
@@ -22,12 +22,10 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [
-      "topless",
-      "masturbation",
-      "hand under clothes"
+      "topless"
     ],
     "outfitId": "tavern_coat_dress",
-    "promptProse": "Skadi holds an untouched drink and touches herself beneath her skirt on the tavern bench, her dress open under amber lamps.",
+    "promptProse": "On the tavern bench, Skadi holds an untouched glass in one hand, the other beside her skirt; amber lamps light her loose neckline and dark-red coat lining. Faint light from the distant windows remains behind the amber-lit bench.",
     "promptTokens": [
       "Skadi",
       "black coat",

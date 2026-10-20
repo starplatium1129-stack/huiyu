@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_skyline_roof",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 628,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "单膝蹲在天台边缘，手搭凉棚远眺龙门都市",
     "camera": "wide shot, eye level",
@@ -21,8 +21,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "halo",
-      "wings",
       "guns",
       "one knee",
       "hand above eyes",

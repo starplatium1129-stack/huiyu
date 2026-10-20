@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc268",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 263,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
     "id": "sc268",
     "recommendedSize": "1344×768",
@@ -18,8 +18,8 @@
     "lora": "ayachi_nene_v21_anima",
     "emotion": "亲密",
     "season": "不限",
-    "time": "夜晚",
-    "timeOfDay": "night",
+    "time": "清晨",
+    "timeOfDay": "morning",
     "tags": [
       "official_cg",
       "visual_audited",
@@ -32,15 +32,15 @@
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
-    "lighting": "夜色氛围光",
+    "lighting": "晨间窗光与白色被褥漫反射",
     "usage": [
       "官方CG灵感",
       "实机审核通过",
       "展示图",
       "R15"
     ],
-    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_diagonal_close_up, 1girl, solo, adult_ayachi_nene, nene_green_sleepwear, silver_white_hair_in_two_thick_long_braids, purple_eyes, lying_on_her_back_in_white_bedding, mint_green_polka_dot_pajama_shirt_pulled_upward_and_held_against_her_chest_with_both_hands, bare_abdomen, pink_lace_panties_peeking_above_white_blanket, direct_shy_eye_contact, dark_navy_pillow_at_left, soft_morning_light, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, blue pajamas, closed shirt, fully clothed, sitting, standing, full body long shot, child, loli, underage",
+    "prompt": "nene_r18, adult, visual novel event CG, dutch angle, close up, 1girl, solo, nene_green_sleepwear, twin braids, long hair, lying, on back, white bedding, mint green pajama shirt, polka dot, shirt lift, holding hem, bare abdomen, pink lace panties, white blanket, looking at viewer, shy, navy pillow, morning light, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "blue pajamas, closed shirt, sitting, standing, full body long shot",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn13",
@@ -52,7 +52,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn13-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer, as cool silver moonlight bathes the surroundings.",
+    "animaCaption": "Lying back, she holds the pajama hem in both hands near her chest and looks toward the viewer. Her panties show above the white blanket, with a navy pillow on the left; morning window light reaches her braids.",
     "auditRevision": "careful-batch02-2026-08-27"
   }
 }

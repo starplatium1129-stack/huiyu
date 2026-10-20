@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_coronation",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 988,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "加冕礼上接过王冠",
     "camera": "cowboy shot",
-    "category": "战斗前线",
+    "category": "女王加冕",
     "characterId": "krista_lenz",
     "coverageTags": [
       "iconic"
@@ -20,7 +20,7 @@
     "mood": "神圣决意",
     "negativeTokens": [],
     "outfitId": "coronation_investiture",
-    "promptProse": "Before the throne, Historia lifts both hands to receive the crown from the attendant on her right, raising her face into the cathedral light.",
+    "promptProse": "Before the throne, Historia lifts both hands to receive the crown from the attendant on her right, raising her face into the cathedral's shafts of daylight.",
     "promptTokens": [
       "2people",
       "crown",

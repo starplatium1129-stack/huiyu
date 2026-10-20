@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "typhon_arknights",
-  "revision": 7,
+  "revision": 5,
   "sortOrder": 165,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "typhon_arknights",
     "profile": {
@@ -97,7 +97,7 @@
       ],
       "franchise": "Arknights",
       "id": "typhon_arknights",
-      "identityProse": "Typhon from Arknights, a female Sarkaz hunter from Sami with very long pale lavender hair gathered into low twintails with curled drill-shaped ends, pink-magenta eyes and large dark horns fitted with metal ornaments.",
+      "identityProse": "Typhon from Arknights, a Sarkaz hunter with very long pale-lavender low twintails ending in drills, pink-magenta eyes and dark horns with metal ornaments.",
       "identityTokens": [
         "typhon_(arknights)",
         "1girl",

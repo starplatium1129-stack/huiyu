@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kafka",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 71,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "kafka",
     "profile": {
@@ -104,7 +104,7 @@
         "卡芙卡",
         "星核猎手卡芙卡"
       ],
-      "identityProse": "Kafka from Honkai: Star Rail, a dangerous and elegant Stellaron Hunter woman with long wine-red magenta hair tied back in a low ponytail, hypnotic lilac purple ringed eyes, a stylish pair of tinted aviator sunglasses rested on top of her head, and an alluring, composed smile",
+      "identityProse": "Kafka from Honkai: Star Rail, with wine-red hair in a low ponytail, lilac ringed eyes and tinted aviator sunglasses on her head.",
       "identityTokens": [
         "kafka (honkai: star rail)",
         "1girl",

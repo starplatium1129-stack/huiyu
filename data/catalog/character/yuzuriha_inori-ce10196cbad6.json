@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuzuriha_inori",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yuzuriha_inori",
     "profile": {
@@ -21,14 +21,14 @@
         "alt": "楪祈 样张立绘"
       },
       "visual_dna": {
-        "hair": "粉色长发 · 下双马尾",
-        "hair_color": "粉",
+        "hair": "粉橘渐变长发，脸侧细发束由红色发筒固定",
+        "hair_color": "粉色渐变至橘色",
         "eyes": "红",
-        "hairstyle": "下双马尾 · 红色发夹",
+        "hairstyle": "长发与两侧束发 · 红色发筒及发夹",
         "uniform": "红色歌姬战斗服 / 白裙",
         "expression": "三无歌姬 · 空灵",
         "style": "ethereal void singer",
-        "signature": "粉发下双马尾、红瞳与红发夹"
+        "signature": "粉橘渐变长发、赤红眼眸与红色发筒"
       },
       "personality": [
         "三无",
@@ -100,15 +100,16 @@
         "inori yuzuriha",
         "guilty crown"
       ],
-      "identityProse": "Yuzuriha Inori from Guilty Crown, a delicate singer with long flowing pink-to-orange gradient hair shimmering like sunset silk, two slender front locks held by red hair tubes, bright crimson eyes with a glassy sheen, red hair clips, and a fragile ethereal presence",
+      "identityProse": "Yuzuriha Inori from Guilty Crown, with long pink-to-orange hair, two front locks in red hair tubes, crimson eyes and red hair clips.",
       "identityTokens": [
         "yuzuriha_inori",
         "1girl",
         "solo",
         "pink hair",
+        "orange hair",
         "gradient hair",
         "two side up",
-        "hair tubes",
+        "red hair tubes",
         "red eyes",
         "guilty crown"
       ],

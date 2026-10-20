@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suzuran_arknights",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 35,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "suzuran_arknights",
     "profile": {
@@ -106,7 +106,7 @@
       ],
       "franchise": "Arknights",
       "id": "suzuran_arknights",
-      "identityProse": "Suzuran (Lisa) from Arknights, an adorable young Vulpo nine-tailed fox with silky blonde hair, expressive fox ears, bright blue eyes, and nine fluffy golden tails.",
+      "identityProse": "Adult Suzuran (Lisa) from Arknights, with long blonde hair, fox ears, blue eyes and nine golden tails.",
       "identityTokens": [
         "suzuran (arknights)",
         "1girl",
@@ -116,7 +116,10 @@
         "blue_eyes",
         "fox_ears",
         "nine_tails",
-        "arknights"
+        "golden tails",
+        "fluffy tails",
+        "arknights",
+        "adult"
       ],
       "negativeTokens": [
         "bad anatomy",

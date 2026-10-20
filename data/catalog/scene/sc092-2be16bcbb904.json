@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc092",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
-    "animaCaption": "After straightening her collar, she rests her forehead gently against the viewer's in a shy morning greeting.",
+    "animaCaption": "After straightening the collar of the viewer's borrowed shirt, she rests her forehead gently against theirs in a shy morning greeting.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "床边主观半身近景",
     "category": "恋爱/After_Story",

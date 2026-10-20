@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_r18_qipao_lift_mirror_fingering",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 1100,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "cheshire_r18_qipao_lift_mirror_fingering",
     "title": "柴郡 · 落地镜前旗袍高撩私密自抚",
@@ -14,9 +14,9 @@
     "coverageTags": [
       "solo_nsfw"
     ],
-    "description": "【柴郡 · 落地镜前旗袍高撩私密自抚】东煌客房落地穿衣大镜前，柴郡将冰蓝丝绸旗袍撩高到腰际。她单腿轻轻踩在软凳上，一只小手轻托着沉甸甸的丰满玉乳，另一只纤细的手指轻巧地在敏感花径间缓缓抚弄。看着镜中自己春意盎然的娇羞模样，猫耳发饰害羞地耷拉下来，小手微掩脸颊——「呜……柴郡明明只是等亲爱的等得太寂寞了……怎么会变得这么热呀……」",
+    "description": "【柴郡 · 落地镜前旗袍高撩私密自抚】东煌客房落地穿衣大镜前，柴郡将冰蓝丝绸旗袍撩高到腰际。她单腿轻轻踩在软凳上，一只手抓住撩起的旗袍下摆，另一只纤细的手指轻巧地在敏感花径间缓缓抚弄。看着镜中自己春意盎然的娇羞模样，她害羞地低下头，猫耳发箍随之倾斜，脸颊泛起红晕——「呜……柴郡明明只是等亲爱的等得太寂寞了……怎么会变得这么热呀……」",
     "location": "客房古典雕花落地大穿衣镜前",
-    "action": "单腿踩凳撩起旗袍，对着镜子手指轻柔自抚私处，托乳娇喘，猫耳含羞垂下",
+    "action": "单腿踩凳撩起旗袍，对着镜子手指轻柔自抚私处，抓住衣摆娇喘，低头使猫耳发箍随之倾斜",
     "timeOfDay": "夜间",
     "lighting": "镜前两侧复古壁灯映射的柔和香槟金色光晕",
     "camera": "mirror reflection, full body, voyeuristic intimate view, focus on blushing face and lifted qipao",
@@ -31,15 +31,14 @@
       "fake_hair_ornament",
       "heavy_blush"
     ],
-    "promptProse": "Adult Cheshire rests one foot on a stool, holding her qipao hem with one hand while the other rests between her thighs beside the lit mirror.",
+    "promptProse": "She rests one foot on a stool, holding her qipao hem at her waist with one hand while the other rests between her thighs. She lowers her head toward her reflection, tilting the cat-ear headband with it. Warm wall lamps on both sides illuminate the mirror.",
     "promptTokens": [
-      "adult",
       "dressing room",
       "mirror",
       "light blue china dress",
       "silk",
+      "gold embroidery",
       "dress lift",
-      "topless",
       "raised leg",
       "masturbation"
     ],

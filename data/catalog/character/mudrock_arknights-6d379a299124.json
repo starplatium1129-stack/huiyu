@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mudrock_arknights",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 30,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "mudrock_arknights",
     "profile": {
@@ -104,7 +104,7 @@
       ],
       "franchise": "Arknights",
       "id": "mudrock_arknights",
-      "identityProse": "Mudrock from Arknights, a gentle yet formidable Sarkaz with flowing silver-white hair, obsidian curved horns, ruby eyes, and a voluptuous figure.",
+      "identityProse": "Mudrock from Arknights, with long silver-white hair, curved black horns and red eyes.",
       "identityTokens": [
         "mudrock (arknights)",
         "1girl",
@@ -112,7 +112,8 @@
         "silver hair",
         "long hair",
         "red eyes",
-        "horns",
+        "black horns",
+        "curved horns",
         "arknights"
       ],
       "negativeTokens": [

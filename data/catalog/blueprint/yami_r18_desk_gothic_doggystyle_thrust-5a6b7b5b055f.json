@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_r18_desk_gothic_doggystyle_thrust",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1230,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "侧卧微蜷双手抱胸，金色发丝化作触手轻缠床柱，战裙半解露肩，红眸湿润咬唇轻颤",
     "adult": true,
@@ -25,7 +25,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "gothic_dress",
-    "promptProse": "Yami curls on her side clutching her chest as her golden hair transforms into soft tendrils around the bedposts. Her dress has slipped from one shoulder in the moonlight.",
+    "promptProse": "Yami curls on her side with both arms folded across her chest as her golden hair transforms into soft tendrils around the bedposts. Her loosened strapless dress catches silver moonlight and the faint warmth of a floor lamp.",
     "promptTokens": [
       "crimson lining",
       "silver chain clasps",
@@ -36,7 +36,7 @@
       "off shoulder",
       "on side",
       "curled up",
-      "hand on chest",
+      "crossed arms",
       "prehensile hair",
       "bed",
       "window",

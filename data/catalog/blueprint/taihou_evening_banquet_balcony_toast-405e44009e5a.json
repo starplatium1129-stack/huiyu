@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_evening_banquet_balcony_toast",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1079,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "taihou_evening_banquet_balcony_toast",
     "title": "大凤 · 盛宴露台的月下独酌",
@@ -31,7 +31,7 @@
       "moonlight",
       "harbor_view"
     ],
-    "promptProse": "Taihou rests one hand on the terrace railing and raises her champagne glass toward the viewer over her shoulder. Candlelight warms the red velvet beneath moonlit drapes, with the harbor lights far below.",
+    "promptProse": "Taihou rests one hand on the terrace railing, raising champagne toward the viewer over her shoulder; candlelight warms red velvet beneath moonlit drapes, harbor lights below.",
     "promptTokens": [
       "champagne",
       "looking back",

@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_firing_range",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 847,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
-    "action": "双手持枪专注瞄准",
+    "action": "打完最后一发后双手稳住机枪，枪口沿靶道放低，回头看向老师",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【空崎日奈 · 射击训练场的专注姿态】地下实弹靶场内，日奈双手稳健地端起重型机枪，红瞳透过瞄准镜专注凝神，子弹精准撕裂靶心。打完最后一发弹匣后，她放下枪回过头，额头上带着一层薄汗——「老师一直在旁边看着吗？……咳，打得还算及格吧。有老师在旁边看着，绝对不能露出难看的模样呢。」",
+    "description": "【空崎日奈 · 射击训练场的专注姿态】地下实弹靶场内，日奈双手稳健地端起重型机枪，紫瞳透过瞄准镜专注凝神，子弹精准撕裂靶心。打完最后一发弹匣后，她放下枪回过头，额头上带着一层薄汗——「老师一直在旁边看着吗？……咳，打得还算及格吧。有老师在旁边看着，绝对不能露出难看的模样呢。」",
     "id": "sorasaki_hina_firing_range",
     "kreaStyleHint": "",
     "lighting": "室内顶灯与靶位灯光",
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "combat_gear",
-    "promptProse": "After the final shot, Hina keeps both hands on the machine gun, its barrel lowered safely along the firing lane, and turns toward the teacher. Overhead light catches the sweat at her temple.",
+    "promptProse": "Hina holds the machine gun with both hands, barrel lowered along the firing lane after the last shot, looking toward the teacher; overhead light catches sweat at her temple.",
     "promptTokens": [
       "Hina",
       "machine gun",

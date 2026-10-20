@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_sfw_b6_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1378,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "asada_shino_sfw_b6_06",
     "title": "朝田诗乃 · 深夜下线之后",
@@ -32,7 +32,7 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "She lifts off the AmuSphere and looks toward her glasses on the desk. Monitor light reaches the headset and her nearer cheek.",
+    "promptProse": "She lifts off the AmuSphere and looks toward her glasses on the desk. Blue monitor light reaches the headset and her nearer cheek.",
     "promptTokens": [
       "bedroom",
       "AmuSphere",

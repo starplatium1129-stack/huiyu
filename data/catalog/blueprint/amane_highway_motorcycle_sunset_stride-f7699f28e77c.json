@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_highway_motorcycle_sunset_stride",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1175,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "amane_highway_motorcycle_sunset_stride",
     "title": "周防天音 · 沿海公路的机车烈焰英姿",
@@ -31,7 +31,7 @@
       "hair_rings",
       "large_breasts"
     ],
-    "promptProse": "She leans against the parked motorcycle, holding her helmet at her hip. Sunset rims her windblown hair and the paintwork, with breaking waves below the guardrail.",
+    "promptProse": "She leans against the parked black motorcycle, holding her helmet at her hip. Golden-hour light rims her windblown hair and the paintwork, with breaking waves below the guardrail.",
     "promptTokens": [
       "coastal road",
       "motorcycle",

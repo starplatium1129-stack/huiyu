@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "texas_arknights",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 74,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "texas_arknights",
     "profile": {
@@ -125,14 +125,16 @@
       ],
       "franchise": "Arknights",
       "id": "texas_arknights",
-      "identityProse": "Texas from Arknights, a calm and stoic Lupo courier with sleek straight black hair, pointy wolf ears, a bushy black tail, and golden-amber eyes.",
+      "identityProse": "Texas from Arknights, with long straight black hair, pointed wolf ears, a bushy black tail and golden-amber eyes.",
       "identityTokens": [
         "texas (arknights)",
         "1girl",
         "solo",
         "black hair",
+        "long hair",
         "wolf ears",
         "wolf tail",
+        "bushy black tail",
         "amber eyes",
         "arknights"
       ],

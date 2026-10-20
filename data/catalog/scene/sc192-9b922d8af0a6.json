@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc192",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 189,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
     "id": "sc192",
     "title": "壁炉余温：单肩滑落的松垮毛衣乐章",
@@ -41,11 +41,11 @@
       "绝对独占",
       "成人向"
     ],
-    "prompt": "1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_oversized_thick_knit_sweater, one_sleeve_slipped_off_shoulder_with_neckline_slid_below_arm, sideboob, no_underwear, lying_on_back_on_thick_fur_carpet_before_fireplace, slender_bare_legs_relaxed_with_soft_skin_sheen_catching_firelight, barefoot_with_soft_toes_on_rug, relaxed_contented_blush_with_ahoge_drooping_into_heart_shape, warm_fireplace_crackling_light_with_rug_bokeh, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, snowy_night, blizzard_outside, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, sitting, standing, stockings, thighhighs, cropped_feet, upper_body",
+    "prompt": "1girl, solo, ayachi_nene, heart-shaped ahoge, oversized sweater, cable knit, off shoulder, sideboob, no underwear, lying, on back, fur rug, bare legs, relaxed, blush, fireplace, firelight, depth of field, close up, night, blizzard, very_long_hair, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "sitting, standing, stockings, thighhighs",
     "storyJa": "【寧々・大人のアフターストーリー・・ホリデーキャビンセーターワンショルダーずり落ちバキューム】雪の降る冬の夜遅く、貸切の別荘で、暖炉の薪がパチパチと音を立て、オレンジがかった赤の暖かい火の光が飛び散っていた。寧々は今夜は守備を完全に下げた。彼女は大きな厚手のニットセーターを着ているだけで、何も着ていませんでした。彼女は毛の長い分厚いカーペットの上に仰向けになってのんびりと横たわっていた。彼女のセーターの広いネックラインは片方の腕に完全に滑り込み、丸い肩とふっくらとしたセクシーな白い胸の半分が露出しました。彼女の細くて柔らかい脚は、火の光の下で魅惑的な暖かい光沢を放ち、頭のアホ毛は究極の快適さと安心感のために完璧なハートの形に素直に垂れ下がりました。――「もう、肩ばかり見てどうしたんですか？　暖炉も暖かいですけど……あなたに抱きしめてもらうほうが、もっと暖かいです。」",
     "rating": "R18",
-    "animaCaption": "By the crackling fireplace of the snowy cabin, Nene lies relaxed on her back on the thick fur carpet wearing only an oversized knit sweater whose wide neckline has slipped below one arm, exposing her round shoulder and the swell of one breast, bare legs glowing in the warm orange firelight, the ahoge drooping into a heart.",
+    "animaCaption": "She lies on her back on the cabin's thick fur rug, the sweater neckline slipped below one arm; orange firelight warms her bare legs while the blizzard continues outside.",
     "auditRevision": "careful-batch13-2026-08-27"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc305",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 300,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
     "id": "sc305",
     "title": "闭店后的专属交付",
@@ -43,8 +43,8 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "natsume_r18, natsume_maid_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, high_angle, diagonal_composition, head_in_upper_right, legs_to_lower_left, 1girl, solo_focus, pov, adult_shiki_natsume, shiki_natsume, black_hair, very_long_hair_spread_on_warm_wooden_floor, two_red_hairclips, golden_yellow_eyes, mole_under_eye, blushing_cheeks, open_mouth, heavy_blush, open_dark_gray_maid_dress, yellow_bra_pulled_down_under_breasts, breasts_out, bare_breasts, nipples, collarbone, navel, yellow_panties_around_one_leg, panties_around_one_knee, black_thigh_strap, garter_strap, thighs_spread, knees_raised, lying_on_back, on_back, warm_brown_wooden_floor, warm_amber_lighting, soft_shadows, sensual, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, 1boy, 2boys, multiple girls, couple, extra person, multiple persons, fully dressed, closed dress, blue bed, dark blue bedding, night, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "natsume_r18, natsume_maid_uniform, adult, visual novel event CG, from above, diagonal composition, 1girl, solo focus, pov, shiki_natsume, hair spread out, two_red_hairclips, open mouth, heavy blush, open dark gray maid dress, yellow bra, bra pull, breasts out, nipples, navel, yellow panties, panties around one knee, black thigh strap, garter strap, spread thighs, knees up, lying, on back, warm brown wooden floor, warm amber lighting, soft shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "fully dressed, closed dress, blue bed, dark blue bedding, school uniform, gym uniform",
     "storyJa": "【大人のAfter Story・夏目・閉店後の専属の受け渡し】カフェの営業が終わった奥の部屋、温かな木目の床の上に二人の体温だけが残っていた。夏目は仰向けに横たわり、メイド服の前を完全に開き、黄色いブラジャーを胸の下まで引き下げて豊満な胸をさらけ出している。片方の脚に引っかかったショーツと黒のガーターストラップが暖かな光に照らし出されていた。彼女は頬を紅潮させ、かすかに唇を開き、琥珀色の瞳でまっすぐにあなたを見つめる。「あなたの言う通りにしたよ……夏目をこんな姿にしたんだから、最後まで責任を取って。」",
     "audit": {
       "reviewer": "user-selection-and-direct-vision",
@@ -56,7 +56,7 @@
       "image": "E:\\code\\2\\lora\\AI\\SceneShowcase\\2026-08-18_v24\\images\\sc305.jpg",
       "result": "pass"
     },
-    "animaCaption": "In a cinematic high-angle view looking down at a diagonal, Shiki Natsume lies on her back across a warm wooden surface with her head in the upper right, her dark maid dress pulled open with her yellow bra pulled down under her bare breasts, her yellow panties slipped down around one knee, looking up toward the viewer with blushing cheeks, under bright warm indoor lighting.",
+    "animaCaption": "From the diagonal overhead view, her head lies at the upper right and her legs extend toward the lower left across the warm wooden floor. She looks up at the viewer, dress open and underwear displaced, in bright warm light.",
     "auditRevision": "careful-batch15-2026-08-27"
   }
 }

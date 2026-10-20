@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ayanami_rei/white_one_piece_swimsuit",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 560,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "characterId": "ayanami_rei",
     "outfit": {
@@ -13,7 +13,7 @@
       "isDefault": false,
       "name": "纯白极简连体泳装",
       "prose": "A plain opaque white athletic one-piece swimsuit with a clean scoop neckline and smooth tonal seams.",
-      "styleHint": "azure pool water caustic light reflections on pale skin",
+      "styleHint": "",
       "tokens": [
         "white one-piece swimsuit",
         "scoop neck"

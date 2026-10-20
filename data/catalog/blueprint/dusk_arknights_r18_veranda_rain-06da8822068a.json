@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_veranda_rain",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 574,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "独坐雨夜回廊，一手持墨碟、一手沿湿袍探向腿间，水墨游鱼环绕",
     "adult": true,
@@ -23,11 +23,11 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_ink_robe",
-    "promptProse": "Adult Dusk sits against a wooden pillar with an ink dish in one hand and the other beneath the robe hem. Dim lantern light breaks across the wet floorboards where painted black koi spread.",
+    "promptProse": "She sits on a bamboo mat against a wooden pillar, her wet robe gathered at her waist, with an ink dish in one hand and the other beneath the robe hem. Dim lantern light breaks across the wet floorboards where painted black koi spread.",
     "promptTokens": [
-      "adult",
       "veranda",
       "wet black robe",
+      "wide sleeves",
       "open clothes",
       "topless",
       "sitting",
@@ -42,7 +42,7 @@
       "rain",
       "night",
       "lantern",
-      "lying_on_side"
+      "sitting"
     ],
     "timeOfDay": "雨夜",
     "title": "夕 · 雨夜廊下"

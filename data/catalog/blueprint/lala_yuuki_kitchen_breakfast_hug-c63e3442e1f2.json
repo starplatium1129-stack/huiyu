@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_yuuki_kitchen_breakfast_hug",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1231,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "飞扑跳跃紧紧搂住对方脖颈拥抱，胸前丰满紧贴，爱心尾巴缠绕，笑容灿烂如阳",
     "camera": "medium shot, first-person view from Rito",
@@ -20,10 +20,9 @@
     "mood": "甜美热烈",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "From Rito’s viewpoint, Lala has thrown both arms around his neck in a bright morning hug. The breakfast table and white dishes catch the kitchen-window light behind her.",
+    "promptProse": "Lala throws both arms around the off-frame viewer's neck in a bright morning hug, seen from their viewpoint. The breakfast table and white dishes catch the kitchen-window light behind her.",
     "promptTokens": [
       "Lala",
-      "Rito Yuuki",
       "hugging",
       "jumping",
       "kitchen",
@@ -43,9 +42,7 @@
     ],
     "timeOfDay": "早晨",
     "title": "菈菈 · 结城家清晨的飞扑拥抱",
-    "compositionIntent": "group",
-    "characterTokens": [
-      "Rito Yuuki"
-    ]
+    "compositionIntent": "single",
+    "characterTokens": []
   }
 }

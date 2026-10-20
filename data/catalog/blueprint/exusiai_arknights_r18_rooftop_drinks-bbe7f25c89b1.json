@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_rooftop_drinks",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 635,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐天台躺椅，一脚搭栏杆，一手开汽水罐，另一手留在衣料下。",
     "adult": true,
@@ -17,41 +17,41 @@
     "id": "exusiai_arknights_r18_rooftop_drinks",
     "kreaStyleHint": "",
     "lighting": "city lights",
-    "location": "龙门近卫局宿舍窗畔",
+    "location": "企鹅物流安全屋天台躺椅旁",
     "mood": "畅快亲近",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "tied_delivery_shirt",
-    "promptProse": "With one booted leg on the rail, she hooks a soda-can tab while reaching beneath her shorts with her other hand.",
+    "promptProse": "With one booted leg on the rail, she hooks a soda-can tab while reaching beneath her shorts with her other hand. City lights glow beyond the rooftop railing.",
     "promptTokens": [
       "1girl",
       "solo",
-      "halo",
+      "white shirt",
       "tied shirt",
       "topless",
-      "shorts",
+      "black shorts",
+      "black boots",
       "sitting",
       "lounge chair",
       "legs up",
       "soda can",
       "hand between legs",
       "rooftop",
-      "night",
-      "adult"
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
     "sceneTags": [
-      "apartment",
-      "interior",
-      "floor_to_ceiling_window",
+      "rooftop",
+      "lounge_chair",
+      "railing",
       "night",
       "city_light",
       "drinks",
       "sitting"
     ],
     "timeOfDay": "深夜",
-    "title": "能天使 · 窗畔夜饮"
+    "title": "能天使 · 天台夜饮"
   }
 }

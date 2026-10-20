@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "tachibana_mikari/sfw_school",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 961,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "characterId": "tachibana_mikari",
     "outfit": {
       "id": "sfw_school",
       "name": "黑色开襟西装制服",
-      "prose": "An open black blazer with gold buttons layers over a beige knit vest and white shirt, retaining the red bow, grey pleated skirt, white socks and dark-brown loafers.",
+      "prose": "An open black blazer with gold buttons, beige knit vest, white shirt, red bow, grey pleated skirt, white socks and dark-brown loafers.",
       "tokens": [
         "black blazer",
         "open jacket",

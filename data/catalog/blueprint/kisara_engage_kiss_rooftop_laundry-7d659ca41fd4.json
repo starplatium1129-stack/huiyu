@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_rooftop_laundry",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 511,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kisara_engage_kiss_rooftop_laundry",
     "title": "木更 · 屋顶晾衣",
@@ -32,7 +32,7 @@
       "transmitted_daylight",
       "medium_shot"
     ],
-    "promptProse": "Kisara supports the sheet with her left hand and fastens a peg with her right, smiling back from the rooftop clothesline.",
+    "promptProse": "Kisara lifts the sheet to the clothesline with her left hand and clips it with her right, smiling back. A laundry basket and peg box sit in the foreground; the hung sheets lead toward the far railing, neighboring rooftops and sea horizon. Back-right daylight passes through the thin sheets and her pink hair, casting fabric shadows over the tiles beside her trouser hems.",
     "promptTokens": [
       "tiptoes",
       "laundry",

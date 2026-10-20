@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 759,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rossy_arknights_canteen_energy_can",
     "characterId": "rossy_arknights",
@@ -38,7 +38,7 @@
       "kitchen",
       "medium shot"
     ],
-    "promptProse": "Rossy offers a small plate of homemade cookies toward the viewer, the oven mitt gathered in her other hand. Warm kitchen light picks out the uneven golden edges as she waits eagerly for a taste.",
+    "promptProse": "Rossi offers the cookie plate with an oven mitt in her other hand, watching expectantly as warm kitchen light catches the uneven golden edges.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

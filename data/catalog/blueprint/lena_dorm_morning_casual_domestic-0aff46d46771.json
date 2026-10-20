@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1354,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "倚着窗台单手捧红茶，宽松白衬衫下裸露小腿，睡眼惺忪地微笑",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "慵懒治愈、人妻感满溢",
     "negativeTokens": [],
     "outfitId": "sfw_morning_white_shirt",
-    "promptProse": "Lena leans against the dorm windowsill with warm tea in one hand and loose hair gathered in the other. She smiles sleepily toward the viewer as morning light filters through the white curtain.",
+    "promptProse": "In the viewer's oversized white shirt, Lena leans against the dorm windowsill with warm tea in one hand and loose hair gathered in the other. She smiles sleepily toward them as morning light filters through the white curtain.",
     "promptTokens": [
       "vladilena_millize",
       "tea",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_poolside_petite_summer",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1452,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "池边晃脚仰头瞪你，递防晒霜，紫瞳鼓脸",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "毒舌鼓脸、小巧可爱",
     "negativeTokens": [],
     "outfitId": "summer_swimsuit",
-    "promptProse": "Shinobu offers the sunscreen bottle toward the viewer with a slight pout, her feet stirring the pool from her seat at its edge. Reflected sunlight ripples over her outstretched hand and the violet sarong gathered beside her.",
+    "promptProse": "Shinobu offers the sunscreen bottle toward the viewer with a slight pout, her feet stirring the pool from her seat at its edge. Reflected sunlight ripples over her outstretched hand and the water beside her.",
     "promptTokens": [
       "sitting",
       "poolside",

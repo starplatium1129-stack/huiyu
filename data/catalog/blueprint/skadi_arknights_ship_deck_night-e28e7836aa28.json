@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_ship_deck_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 608,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "站在船舷边，任海风吹动长发",
     "camera": "medium back shot",
@@ -20,7 +20,7 @@
     "mood": "深蓝寂寥",
     "negativeTokens": [],
     "outfitId": "deep_sea_hunter_trench_coat",
-    "promptProse": "The viewer’s hands settle the blanket over Skadi’s shoulders from behind as she turns her face back toward them. Dim deck lamps catch the edge of the blanket and her windblown silver hair.",
+    "promptProse": "The viewer’s hands settle a blanket over Skadi’s shoulders from behind as she looks back; deck lamps catch its edge and her windblown silver hair.",
     "promptTokens": [
       "Skadi",
       "blanket",

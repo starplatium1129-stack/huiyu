@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yae_miko",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yae_miko",
     "profile": {
@@ -20,7 +20,7 @@
         "alt": "八重神子 · 鸣神大社的晨间洒扫场景样张"
       },
       "visual_dna": {
-        "signature": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief; no permanent fox tail is added to the everyday form.",
+        "signature": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief.",
         "hair": "pink_hair, long_hair, low-tied_long_hair",
         "eyes": "purple_eyes",
         "uniform": "鸣神大社端庄宫司和装",
@@ -73,13 +73,14 @@
         "八重神子",
         "Yae Miko"
       ],
-      "identityProse": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief; no permanent fox tail is added to the everyday form.",
+      "identityProse": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and drooping fox ears.",
       "identityTokens": [
         "yae_miko",
         "genshin impact",
         "pink hair",
         "low-tied long hair",
         "purple eyes",
+        "fox ears",
         "floppy ears"
       ],
       "exactTokens": [

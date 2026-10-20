@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togawa_sakiko",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 159,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "togawa_sakiko",
     "profile": {
@@ -73,7 +73,7 @@
         "丰川祥子",
         "Sakiko Togawa"
       ],
-      "identityProse": "Sakiko Togawa from BanG Dream!, with long blue hair tied into two side sections with ribbons and clear amber-yellow eyes. Her careful posture softens when she concentrates on the piano or an unfinished score.",
+      "identityProse": "Sakiko Togawa from BanG Dream!, with long blue hair in two side-up sections tied with ribbons and amber-yellow eyes.",
       "identityTokens": [
         "togawa_sakiko",
         "bang_dream!",

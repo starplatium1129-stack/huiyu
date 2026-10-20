@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_bedroom_wing",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 564,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "独自侧卧宽床，一手支颐、一手在床单间自抚，旅行衬衫敞开，翼架置于远处椅上",
     "adult": true,
@@ -33,7 +33,7 @@
       "adult Lemuen",
       "open shirt",
       "bare breasts",
-      "rolled stocking",
+      "one stocking rolled below the knee",
       "on side",
       "masturbation",
       "bed",
@@ -49,6 +49,16 @@
       "night"
     ],
     "timeOfDay": "夜晚",
-    "title": "蕾缪安 · 羽翼轻展"
+    "title": "蕾缪安 · 羽翼轻展",
+    "identityTokensOverride": [
+      "lemuen (arknights)",
+      "1girl",
+      "solo",
+      "pink_hair",
+      "long_hair",
+      "halo",
+      "arknights"
+    ],
+    "identityProseOverride": "Lemuen from Arknights, a Sankta sharpshooter with long pink hair and a luminous halo."
   }
 }

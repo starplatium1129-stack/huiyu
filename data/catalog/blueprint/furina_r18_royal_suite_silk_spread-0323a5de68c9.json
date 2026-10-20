@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_r18_royal_suite_silk_spread",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "furina_r18_royal_suite_silk_spread",
     "title": "芙宁娜 · 贵宾套房的丝绸初绽",
@@ -31,13 +31,14 @@
       "fingering",
       "heavy_blush"
     ],
-    "promptProse": "She lies across the blue silk bedding and touches herself in the warm fireplace glow.",
+    "promptProse": "She lies across the blue silk bedding and touches herself in the warm red fireplace glow, with dim side light from the bedside lamp.",
     "promptTokens": [
       "adult",
       "nude",
       "on back",
       "on bed",
       "spread legs",
+      "knees up",
       "masturbation",
       "blush",
       "blue sheets",

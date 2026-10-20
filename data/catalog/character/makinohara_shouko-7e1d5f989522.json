@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makinohara_shouko",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "makinohara_shouko",
     "profile": {
@@ -73,7 +73,7 @@
         "牧之原翔子",
         "Shouko Makinohara"
       ],
-      "identityProse": "Shouko Makinohara from Rascal Does Not Dream, with long dark hair, softly cut side locks and calm blue eyes. Her small smiles and considerate gestures carry the quiet warmth associated with the seaside.",
+      "identityProse": "Shouko Makinohara from Rascal Does Not Dream, with long black hair, a hime cut and blue eyes.",
       "identityTokens": [
         "makinohara_shouko",
         "seishun_buta_yarou",

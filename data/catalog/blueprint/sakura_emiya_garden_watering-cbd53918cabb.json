@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_emiya_garden_watering",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 185,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "sakura_emiya_garden_watering",
     "title": "间桐樱 · 卫宫家庭院",
@@ -32,7 +32,7 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Sakura supports the watering can with both hands and turns a smile toward the viewer while its stream falls on the flowers. Sunlight catches the fine spray beside the garden wall.",
+    "promptProse": "Sakura smiles toward the viewer while supporting the watering can in both hands; sunlit spray falls on flowers beside the garden wall.",
     "promptTokens": [
       "Sakura",
       "watering can",

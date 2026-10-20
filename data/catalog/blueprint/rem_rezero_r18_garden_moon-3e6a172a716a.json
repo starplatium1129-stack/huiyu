@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_r18_garden_moon",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 440,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "rem_rezero_r18_garden_moon",
     "title": "雷姆 · 月光花园",
@@ -25,17 +25,14 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Rem rests one leg on the stone bench, holding the watering can steady while her other hand slips beneath her robe.",
+    "promptProse": "Adult Rem sits among the roses, holding one robe corner open as she turns to invite the off-frame viewer; moonlight outlines the flowers and stone bench.",
     "promptTokens": [
       "lace trim",
       "adult",
-      "pale sheer robe",
-      "wet clothes",
+      "pale sleeveless sheer robe",
       "see-through clothes",
       "sitting",
-      "leg up",
-      "female masturbation",
-      "watering can",
+      "stone bench",
       "roses",
       "moonlight"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_evening_dress_piano",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 911,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "穿晚礼服弹钢琴",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【空崎日奈 · 晚宴钢琴前的深情独奏】格黑娜盛大晚宴的聚光灯下，日奈换上了一袭高贵优雅的深紫色露背晚礼服，银白长发挽起露出优美修长的天鹅颈。她端坐在三角钢琴前弹奏着动人的旋律，紫红色的眼眸在乐声中深情地望向台下的你——「这首曲子……是专门为你一个人弹奏的，老师。」",
+    "description": "【空崎日奈 · 晚宴钢琴前的深情独奏】格黑娜盛大晚宴的聚光灯下，日奈换上了一袭高贵优雅的深紫色露背晚礼服，银白长发挽起露出优美修长的天鹅颈。她端坐在三角钢琴前弹奏着动人的旋律，紫色的眼眸在乐声中深情地望向台下的你——「这首曲子……是专门为你一个人弹奏的，老师。」",
     "id": "sorasaki_hina_evening_dress_piano",
     "kreaStyleHint": "",
     "lighting": "宴会暖光与钢琴灯",
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "midnight_piano_gown",
-    "promptProse": "Hina plays at the grand piano and looks toward the teacher beyond it, the piano lamp lighting her hands.",
+    "promptProse": "Hina plays at the grand piano and looks toward the teacher beyond it, the piano lamp lighting her hands against softly blurred warm banquet lights.",
     "promptTokens": [
       "Hina",
       "piano",
@@ -44,6 +44,20 @@
       "blue_archive"
     ],
     "timeOfDay": "夜晚",
-    "title": "空崎日奈 · 晚宴钢琴前的深情独奏"
+    "title": "空崎日奈 · 晚宴钢琴前的深情独奏",
+    "identityTokensOverride": [
+      "hina (blue archive)",
+      "1girl",
+      "solo",
+      "silver hair",
+      "updo",
+      "black horns",
+      "halo",
+      "purple halo",
+      "small bat wings",
+      "purple eyes",
+      "blue archive"
+    ],
+    "identityProseOverride": "Sorasaki Hina from Blue Archive, with silver-purple hair pinned up, black demon horns, a purple halo, small bat wings and purple eyes."
   }
 }

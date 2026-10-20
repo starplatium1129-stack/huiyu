@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "makima/casual",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 235,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "casual",
       "name": "象牙衬衫与深灰休闲裙装",
-      "prose": "A relaxed ivory crepe shirt tucked into a straight charcoal midi skirt, with an open short black jacket and polished black loafers. A narrow belt keeps the quiet off-duty silhouette precise.",
+      "prose": "An ivory crepe shirt tucked into a charcoal midi skirt, an open cropped black jacket, a narrow belt and black loafers.",
       "tokens": [
         "ivory shirt",
         "charcoal midi skirt",

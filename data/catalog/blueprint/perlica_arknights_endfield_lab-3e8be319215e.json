@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_endfield_lab",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 712,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "站在全息投影前核对数据",
     "camera": "medium shot",
@@ -20,7 +20,7 @@
     "mood": "冷静专业",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "One hand touches the communicator by her ear as she turns from the glowing energy-network projection toward the offscreen Administrator.",
+    "promptProse": "One hand touches the communicator by her ear as she turns from the glowing energy-network projection toward the offscreen Administrator. Cool laboratory light surrounds the glowing hologram.",
     "promptTokens": [
       "communication device",
       "hologram",

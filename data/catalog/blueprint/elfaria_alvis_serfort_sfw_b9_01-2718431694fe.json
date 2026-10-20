@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_sfw_b9_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1685,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_sfw_b9_01",
     "title": "艾尔菲利亚 · 高塔之巅的俯瞰",
@@ -31,7 +31,6 @@
     ],
     "promptProse": "Her expression softens when the familiar boy appears within the observation crystal overlooking the academy. Cool morning light crosses the tower window and the crystal's edge.",
     "promptTokens": [
-      "blue hair",
       "crystal",
       "reflection",
       "tower",

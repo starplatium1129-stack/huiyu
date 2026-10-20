@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc166",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 163,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
     "animaCaption": "Viewed from behind at a large walnut vanity mirror, she presses both palms flat against the glass; the camera sees both hand backs and one aligned reflection.",
     "camera": "近景特写",
@@ -19,8 +19,8 @@
     "location": "卧室梳妆镜前",
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, missing_mirror, no_reflection, rear_view_only, reflection_mismatch, duplicate_body_outside_mirror, missing_hair_ribbon, one_hand_holding_clothes, hand_away_from_mirror, palms_facing_viewer, reversed_hand_orientation, mismatched_reflection_clothes, duplicate_reflection, child, loli, underage",
-    "prompt": "1girl, ayachi_nene, low_twintails, pink_hair_ribbons, ahoge, undressing, shirt_slid_down, bare_shoulders, bare_back, dressing_mirror, mirror_reflection, hands_on_mirror, back_view_facing_mirror, both_palms_pressed_flat_on_mirror, backs_of_both_hands_visible_to_camera, single_aligned_reflection, breath_fog_on_mirror, heavy_blush, tears_in_eyes, heavy_breathing, bedroom, night, dim_lighting, sensual, warm_lighting, a_large_walnut_dressing_mirror_fills_the_center_of_the_frame._ayachi_nene_stands_with_her_back_to_the_viewer_and_presses_both_palms_flat_against_the_glass_so_the_viewer_sees_the_backs_of_both_hands._her_reflected_face_and_exposed_shoulders_align_directly_in_front_of_her_real_body_without_any_overlapping_duplicate_torso, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "reflection mismatch, duplicate body outside mirror, mismatched reflection clothes, duplicate reflection, palms facing viewer",
+    "prompt": "1girl, ayachi_nene, ahoge, undressing, lowered shirt, bare shoulders, bare back, dressing mirror, reflection, hands on mirror, from behind, standing, breath, fogged mirror, heavy blush, teary eyes, open mouth, bedroom, night, dim warm lighting, sensual, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R18",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 梳妆镜前极致工口篇】深夜紧闭的卧室，巨大的胡桃木梳妆镜前。宁宁被你从身后完全笼罩，身上的睡衣已被褪至腰间，双手无力地撑在冰凉的镜面上。镜子里清晰地倒映出她香肩全露、大片雪白肌肤剧烈起伏的诱人画面。她被迫看着镜子里的自己和你，头顶的呆毛早已因为极度动情而瘫软成一个极其颤抖的心形。她双眼含泪，面红耳赤地咬着下唇，温热的喘息扑在镜面上化为雾气——「呜...柊史...太羞耻了...不要让人家看着镜子做这种事啦...」",

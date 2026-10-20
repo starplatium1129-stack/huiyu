@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1695,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "vivy_sfw_b9_01",
     "title": "Vivy · 无人小舞台的每日首唱",
@@ -30,7 +30,7 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Vivy stands at her mark and sings toward the empty amusement-park seats. Morning light reaches the small stage and the edge of her white-and-blue dress.",
+    "promptProse": "Vivy stands at her mark and sings toward the empty amusement-park seats. Morning light reaches the small stage and her dress edge.",
     "promptTokens": [
       "Vivy",
       "singing",

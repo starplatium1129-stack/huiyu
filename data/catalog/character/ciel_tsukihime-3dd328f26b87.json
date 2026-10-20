@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ciel_tsukihime",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "ciel_tsukihime",
     "profile": {
@@ -96,12 +96,13 @@
         "埋葬机关第七位",
         "咖喱学姐"
       ],
-      "identityProse": "Ciel from Tsukihime, the Seventh Member of the Holy Church's Burial Agency, a cool-headed and formidable executor with neat chin-length navy-blue hair, sharp dark sapphire eyes, and an intellectual yet deeply passionate aura",
+      "identityProse": "Ciel from Tsukihime, with a chin-length navy-blue bob and dark sapphire eyes.",
       "identityTokens": [
         "ciel_(tsukihime)",
         "tsukihime",
         "blue_hair",
         "short_hair",
+        "bob_cut",
         "blue_eyes"
       ],
       "exactTokens": [

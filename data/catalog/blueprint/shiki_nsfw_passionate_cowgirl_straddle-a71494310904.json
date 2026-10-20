@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_passionate_cowgirl_straddle",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1353,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸肩，俯身轻喘，眼神水润情动",
     "adult": true,
@@ -26,7 +26,7 @@
     "mood": "热情相融",
     "negativeTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Shiki straddles the offscreen viewer on the bed, both hands resting on their shoulders as she leans forward with flushed cheeks.",
+    "promptProse": "Shiki straddles the offscreen viewer on the bed, both hands resting on their shoulders as she leans forward with flushed cheeks. Dim warm wall-lamp light outlines her back above the white bedcover.",
     "promptTokens": [
       "bed",
       "looking at viewer",

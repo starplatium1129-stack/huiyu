@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_r18_b9_03",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1728,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "marcille_donato_r18_b9_03",
     "title": "玛露希尔 · 法杖缎带缠绕长袍的更衣事故 ·「法杖的挂带打结了！……莱欧斯不许看，快拿剪刀来！」",
@@ -12,7 +12,7 @@
     "characterId": "marcille_donato",
     "description": "【安全营地换衣屏风后·早晨】更换破损的法师长袍时，法杖上的魔法缎带和内衣系带死死缠绕在一起。玛露希尔双手撑在行囊箱上，身体前倾塌腰，过紧的袍服被拉扯得高高扬起，露出圆润白皙的精灵翘臀与开档内裤，胸前领口深陷溢乳。她哭丧着脸回头大叫——「呜哇！系带越拉越紧了！……再看把你变成蛤蟆哦！」",
     "location": "安全营地换衣屏风后·早晨",
-    "action": "撑行囊箱塌腰回眸双手扯法杖带，长袍撕扯露翘臀溢乳，尖耳通红哭腔威胁",
+    "action": "双掌撑住行囊箱，法杖挂带缠住袍服系带并牵起衣料；回头向画面外同伴求助，尖耳通红。",
     "timeOfDay": "morning",
     "lighting": "warm_cinematic_lighting",
     "camera": "intimate horizontal medium shot",
@@ -30,7 +30,7 @@
       "robe",
       "blue_robe"
     ],
-    "promptProse": "Marcille leans over a supply crate as the staff sling catches her robe ties and pulls the fabric aside, looking back in tearful frustration.",
+    "promptProse": "Marcille braces both palms on the crate as the staff sling catches her robe ties, pulling the fabric aside. She looks back to her off-frame companion in tearful frustration.",
     "promptTokens": [
       "1girl",
       "solo",

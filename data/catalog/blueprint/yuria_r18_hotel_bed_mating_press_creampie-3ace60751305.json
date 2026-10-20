@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_r18_hotel_bed_mating_press_creampie",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1209,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yuria_r18_hotel_bed_mating_press_creampie",
     "title": "春寺由梨亚 · 豪华套房半透真丝薄纱睡袍与卸下心防的深层自抚",
@@ -34,9 +34,10 @@
       "glasses_removed",
       "teary_eyes"
     ],
-    "promptProse": "Yuria reclines on the white sheets, one hand against her breast through the sheer negligee and the other beneath its hem.",
+    "promptProse": "Yuria reclines on the white silk sheets, one hand against her breast through the sheer negligee and the other beneath its hem. Warm orange bedside wall lamps light the sheets and black fabric.",
     "promptTokens": [
-      "black negligee",
+      "black silk negligee",
+      "lace trim",
       "see-through clothes",
       "lying on side",
       "hand on own breast",

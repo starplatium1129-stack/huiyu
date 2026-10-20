@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hatsune_miku",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "hatsune_miku",
     "profile": {
@@ -101,7 +101,7 @@
         "miku hatsune",
         "vocaloid"
       ],
-      "identityProse": "Hatsune Miku, the VOCALOID virtual singer, a cheerful girl with iconic long teal twin-tails with a glossy sheen, bright turquoise eyes, black square hair ribbons, red 01 shoulder tattoo, and a vibrant stage presence",
+      "identityProse": "Hatsune Miku from VOCALOID, with long teal twintails, turquoise eyes, black square hair ribbons and a red 01 shoulder tattoo.",
       "identityTokens": [
         "hatsune_miku",
         "1girl",
@@ -110,7 +110,8 @@
         "twintails",
         "teal_hair",
         "teal_eyes",
-        "01_shoulder_tattoo",
+        "black square hair ribbons",
+        "red 01 shoulder tattoo",
         "vocaloid"
       ],
       "exactTokens": [

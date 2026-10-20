@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_mansion",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 432,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rem_rezero_mansion",
     "title": "雷姆 · 宅邸女仆日常",
@@ -12,7 +12,7 @@
     "characterId": "rem_rezero",
     "description": "【雷姆 · 宅邸女仆日常】罗兹瓦尔豪宅宽敞整洁的走廊与庭院间，雷姆穿着黑白相间的女仆装轻快地穿梭忙碌，水蓝色的短发在阳光下散发着清新的香气。看到迎面走来的昴，她立刻提起裙摆优雅欠身——「昴君，早上好！今天的打扫与茶点准备全部顺利完成，只要能帮上昴君的忙，雷姆就是最幸福的。」",
     "location": "罗兹瓦尔宅邸",
-    "action": "在走廊与庭院间忙碌",
+    "action": "在通向庭院的走廊停步，双手轻提裙侧，向迎面而来的同行者欠身问好。",
     "timeOfDay": "白天",
     "lighting": "明亮日光",
     "camera": "medium shot",
@@ -26,11 +26,10 @@
       "fantasy",
       "interior"
     ],
-    "promptProse": "Rem carries the tea tray level in both hands toward the courtyard, glancing up to greet the approaching viewer. Daylight from the arched windows makes alternating bright and shaded bands along the corridor.",
+    "promptProse": "Rem curtsies toward the approaching viewer, both hands lifting her skirt sides. Arched-window daylight bands the corridor toward the courtyard.",
     "promptTokens": [
-      "tea service",
-      "tray",
-      "walking",
+      "curtsy",
+      "holding skirt",
       "hallway",
       "arched window",
       "daylight"

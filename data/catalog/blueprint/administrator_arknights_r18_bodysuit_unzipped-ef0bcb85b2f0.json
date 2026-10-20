@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_bodysuit_unzipped",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 770,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "administrator_arknights_r18_bodysuit_unzipped",
     "characterId": "administrator_arknights",
@@ -29,6 +29,7 @@
     ],
     "promptTokens": [
       "black bodysuit",
+      "charcoal panels",
       "gold piping",
       "unzipped",
       "topless",
@@ -37,7 +38,7 @@
       "metal wall",
       "cowboy shot"
     ],
-    "promptProse": "In the decontamination airlock, she opens her bodysuit to the navel while leaning against the wall under warm service lights.",
+    "promptProse": "Leaning against the changing cabin's metal wall, she lowers the bodysuit's front zipper to her navel. Yellow warning lamps and a service spotlight illuminate the wall.",
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_cinema",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 412,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "makima_cinema",
     "title": "玛奇玛 · 电影院约会",
@@ -26,7 +26,7 @@
       "intimate",
       "city"
     ],
-    "promptProse": "Makima sits on the left and turns a gentle, unreadable smile toward Denji in the adjacent seat on the right, both faces lit by the screen.",
+    "promptProse": "Makima sits left, smiling toward Denji in the right-hand seat; cool screen light reaches both faces in the dark auditorium.",
     "promptTokens": [
       "2people",
       "Denji",

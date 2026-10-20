@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "yami_mikan_kitchen_cooking_assist",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1225,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
-    "action": "双手握菜刀在砧板前极其认真精准切胡萝卜丝，神态专注如临大敌，脸颊微红",
+    "action": "右手握菜刀，左手蜷起指尖稳住胡萝卜，在砧板前认真切成细丝，美柑在旁指导",
     "camera": "medium shot, eye level, both characters and hands at the cutting board visible",
     "category": "家庭温馨",
     "characterId": "golden_darkness",
@@ -24,7 +24,6 @@
     "promptProse": "Yami holds the knife in her right hand and steadies the carrot with curled left fingertips while Mikan guides her from beside the counter. Warm pendant light falls on their hands and the thin slices beside the steaming stove.",
     "promptTokens": [
       "2girls",
-      "Yami",
       "Mikan Yuuki",
       "cooking",
       "carrots",

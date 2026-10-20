@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1153,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
-    "action": "休息室的沙发，她双手捧着智能手机如临大敌，指尖悬在屏幕上方迟迟不敢点下去",
+    "action": "坐在休息室沙发上双手捧着误触后的手机，低头微微鞠躬道歉",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
     "camera": "medium shot",
@@ -15,7 +15,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "休息室的沙发，她双手捧着智能手机如临大敌，指尖悬在屏幕上方迟迟不敢点下去；终于误触弹出满屏通知，她对着手机微微鞠躬道歉——旧时代死神的日常战役。",
+    "description": "休息室的沙发上，她双手捧着刚误触弹出通知的智能手机，低头向它微微鞠躬道歉；一根手指还犹豫地停在屏幕边缘，神情认真又窘迫。",
     "id": "akizuki_kanna_sfw_b7_02",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "soft_light",

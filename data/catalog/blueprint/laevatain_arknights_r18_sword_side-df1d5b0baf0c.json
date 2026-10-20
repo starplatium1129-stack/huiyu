@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_sword_side",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 734,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "action": "赤身侧卧在床单上，指尖搭在床头大剑熔光剑柄上",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate close shot",
     "category": "成人",
     "characterId": "laevatain_arknights",
-    "description": "【莱万汀 · 剑侧夜话】昏暗的卧室床单上，赤身侧卧的莱万汀指尖搭在床头大剑的熔光剑柄上，修长丰满的大腿毫无防备地大开。她微眯起金红色的眼眸拉近你的身躯——「在战场上我是你最锋利的剑刃……而在今夜的床上，我只想做被你征服的女人。」",
+    "description": "【莱万汀 · 剑侧夜话】昏暗的卧室床单上，赤身侧卧的莱万汀指尖搭在床头大剑的熔光剑柄上，修长丰满的大腿毫无防备地大开。她微眯起紫色的眼眸拉近你的身躯——「在战场上我是你最锋利的剑刃……而在今夜的床上，我只想做被你征服的女人。」",
     "id": "laevatain_arknights_r18_sword_side",
     "kreaStyleHint": "",
     "lighting": "thin ember light",
@@ -23,17 +23,16 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Laevatain lies on her side, resting one hand on the sheathed sword beside the bed while her other hand moves between her thighs.",
+    "promptProse": "Laevatain lies on her side, one hand on the glowing greatsword hilt beside the bed, turning toward her off-frame companion. Ember light catches her fingers and the nearest sheet folds.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Laevatain",
       "nude",
-      "bare breasts",
       "on side",
-      "hand between legs",
-      "sheathed sword",
-      "bed"
+      "greatsword",
+      "bed",
+      "ember glow"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

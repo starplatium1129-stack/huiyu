@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_r18_b7_03",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1657,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "changli_wuthering_r18_b7_03",
     "title": "长离 · 弈棋书阁羽衣系带被棋笥勾住的更衣事故 ·「哎呀……羽衣被棋笥勾住了呢，还不快来帮本座整理」",
@@ -12,7 +12,7 @@
     "characterId": "changli_wuthering",
     "description": "【今州书阁·深夜】整理古籍时不慎被雕花棋笥的铜扣勾住了羽衣系带。长离双手撑在黄花梨书案上，身体前倾塌腰，华丽的羽衣从后背整条滑脱，露出滑腻如脂的白皙背脊与完全暴露的浑圆蜜桃臀，胸口羽毛被挤压得几乎遮掩不住高耸的雪峰。她侧脸回头，嘴角噙着玩味的浅笑——「看了这么久……不帮本座解围的话，可是要被抓去大理寺受罚的哦？」",
     "location": "今州书阁·深夜",
-    "action": "撑书案塌腰回眸双手护胸羽衣滑脱露背，巨乳深陷勒肉，凤眸含笑戏谑调情",
+    "action": "双手撑在书案上前倾回眸，羽衣系带被棋笥铜扣勾住，衣料滑落，神情带着玩味浅笑",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
     "camera": "intimate horizontal medium shot",
@@ -30,7 +30,7 @@
       "feathers",
       "stuck_clothes"
     ],
-    "promptProse": "Her gown tassel catches in the go bowl, pulling the fabric down as she leans over the desk. She looks back in the warm study light.",
+    "promptProse": "Her robe tassel catches on the go bowl clasp as she leans forward with both hands braced on the desk. She looks back, the loosened fabric lit by the warm study lamp.",
     "promptTokens": [
       "study",
       "desk",

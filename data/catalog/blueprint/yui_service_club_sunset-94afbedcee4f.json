@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_service_club_sunset",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 348,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yui_service_club_sunset",
     "characterId": "yuigahama_yui",
@@ -20,7 +20,7 @@
       "window_light",
       "gentle_smile"
     ],
-    "promptProse": "Yui offers the red teacup toward the viewer with a bright smile beside the sunlit clubroom window.",
+    "promptProse": "Seated beside the sunlit clubroom window, Yui offers the red teacup toward the viewer with both hands and a bright smile.",
     "promptTokens": [
       "teacup",
       "offering",

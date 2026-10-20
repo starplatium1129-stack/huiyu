@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_hotel_mirror_dressing_gown",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "fern_r18_hotel_mirror_dressing_gown",
     "characterId": "fern_frieren",
@@ -13,14 +13,14 @@
     "outfitId": "plum_silk_robe",
     "sceneTags": [
       "mirror",
-      "mirror_reflection",
       "standing",
-      "front_view",
       "bare_back",
       "bare_buttocks",
       "exposed_pussy",
       "detailed_vulva",
-      "huge_breasts"
+      "huge_breasts",
+      "fogged_mirror",
+      "from_behind"
     ],
     "promptProse": "Her sash catches on the mirror frame; she reaches back to free it while holding the slipping robe against her chest. Steam obscures any distinct reflection.",
     "promptTokens": [

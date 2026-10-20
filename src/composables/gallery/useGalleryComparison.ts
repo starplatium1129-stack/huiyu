@@ -48,17 +48,19 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
 
   // A filtered/off-page parent must not depend on having visited its wall card.
   // Own one preview separately: wall LRU eviction must never revoke our Blob URL.
-  const parentPreview = ref(''), parentLoading = ref(false);
+  const parentPreview = ref(''), parentLoading = ref(false), parentError = ref(''), parentOriginal = ref(false);
   let parentObjectUrl = '', version = 0, active = true, disposed = false;
   let parentRead: AbortController | null = null;
+  let parentTimer: ReturnType<typeof setTimeout> | undefined;
   let relation: { child: ArtworkRecord; parent: ArtworkRecord } | null = null;
-  let parentOriginal = false, readingOriginal = false;
+  let readingOriginal = false;
   function releaseParent() {
     version++;
+    clearTimeout(parentTimer);
     parentRead?.abort(); parentRead = null;
     if (parentObjectUrl) URL.revokeObjectURL(parentObjectUrl);
-    parentObjectUrl = ''; parentPreview.value = ''; parentLoading.value = false;
-    relation = null; parentOriginal = false; readingOriginal = false;
+    parentObjectUrl = ''; parentPreview.value = ''; parentLoading.value = false; parentError.value = '';
+    relation = null; parentOriginal.value = false; readingOriginal = false;
   }
   async function loadParent() {
     const retained = relation && sameArtworkMedia(relation.child, current.value ?? undefined)
@@ -70,8 +72,9 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
     relation = { child, parent };
     // A mode toggle upgrades this pair; it never discards a usable preview or
     // downgrades an owned original. An original already in flight can finish.
-    if (parentOriginal || (!compareMode.value && parentPreview.value)
+    if (parentOriginal.value || (!compareMode.value && parentPreview.value)
       || (parentRead && (!compareMode.value || readingOriginal))) return;
+    clearTimeout(parentTimer);
     parentRead?.abort();
     const token = ++version, controller = new AbortController();
     parentRead = controller; readingOriginal = compareMode.value;
@@ -101,14 +104,20 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
         if (!decoded || !isCurrent()) return false;
         if (parentObjectUrl && parentObjectUrl !== source) URL.revokeObjectURL(parentObjectUrl);
         parentObjectUrl = candidate; candidate = '';
-        parentPreview.value = source; parentOriginal = true;
+        parentPreview.value = source; parentOriginal.value = true;
         return true;
       } catch { return false; }
       finally { controller.signal.removeEventListener('abort', abort); release(); }
     }
     const cached = thumbUrls[parent.id];
     if (!compareMode.value && cached?.startsWith('data:image/')) { parentPreview.value = cached; parentRead = null; return; }
-    parentLoading.value = true;
+    parentLoading.value = true; parentError.value = '';
+    const timer = setTimeout(() => {
+      if (!isCurrent()) return;
+      parentError.value = '修改前原图读取超时。';
+      controller.abort(); parentRead = null; parentLoading.value = false; readingOriginal = false;
+    }, 35_000);
+    parentTimer = timer;
     try {
       if (parent.image_id) {
         // Desktop derives missing thumbnails locally. Legacy web records may
@@ -130,8 +139,14 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
         const fallback = safeImageUrl(source?.image_url) || (source?.image_data?.startsWith('data:image/') ? source.image_data : '');
         if (fallback) await publishOriginal(fallback);
       }
+    } catch {
+      if (isCurrent()) parentError.value = '修改前原图暂时无法读取。';
     } finally {
-      if (isCurrent()) { parentLoading.value = false; parentRead = null; readingOriginal = false; }
+      clearTimeout(timer);
+      if (isCurrent()) {
+        if (readingOriginal && !parentOriginal.value && !parentError.value) parentError.value = '修改前原图暂时无法读取。';
+        parentLoading.value = false; parentRead = null; readingOriginal = false;
+      }
     }
   }
   watch(() => {
@@ -160,8 +175,15 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
   const hasComparableImage = computed(() => {
     if (!current.value)
       return false;
-    return Boolean(parentImageUrl.value || (!parentLoading.value && thumbUrls[current.value.id]));
+    return Boolean(parentArtwork.value || parentImageUrl.value || thumbUrls[current.value.id]);
   });
+  const parentImageLabel = computed(() => parentOriginal.value ? '修改前原图' : parentImageUrl.value ? '修改前预览' : '缩略图预览');
+  const parentImageStatus = computed(() => ({
+    failed: Boolean(parentError.value),
+    message: parentLoading.value ? `正在读取修改前原图${parentImageUrl.value ? '，当前保留预览' : ''}…`
+      : parentError.value ? `${parentError.value}${parentImageUrl.value ? '当前显示预览，可重新读取原图。' : '可重新读取修改前原图。'}` : '',
+  }));
+  async function retryParentImage() { if (!parentLoading.value) await loadParent(); }
 
   return {
     compareMode,
@@ -170,6 +192,7 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
     compareSelected,
     compareFromRoute,
     parentImageUrl,
+    parentImageLabel, parentImageStatus, retryParentImage,
     hasComparableImage,
   };
 }

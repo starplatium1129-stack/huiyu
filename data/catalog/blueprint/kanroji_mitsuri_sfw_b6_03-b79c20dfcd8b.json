@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1460,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "推过去缝好的软垫，收好双手期待猫咪试坐。",
     "adult": false,
@@ -23,7 +23,7 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_refined_daily",
-    "promptProse": "With the new cushion set before the tabby, Mitsuri waits with both hands gathered on her knees as the cat tries one paw on it. Reflected garden light warms the soft fabric and her restrained smile.",
+    "promptProse": "Kneeling on the veranda with the new cushion before the tabby, Mitsuri waits with both hands gathered on her knees as the cat tries one paw on it. Reflected garden light warms the soft fabric and her restrained smile.",
     "promptTokens": [
       "cushion",
       "tabby cat",

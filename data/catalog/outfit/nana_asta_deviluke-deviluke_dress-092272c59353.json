@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nana_asta_deviluke/deviluke_dress",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 686,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "nana_asta_deviluke",
     "outfit": {
@@ -12,13 +12,13 @@
       "id": "deviluke_dress",
       "isDefault": false,
       "name": "朱红嵌线王女科技短裙",
-      "prose": "a fitted dark-grey sleeveless minidress with vermilion inset panels and narrow metallic edging, flared detached sleeves and thigh-high boots",
+      "prose": "A dark-gray sleeveless minidress with vermilion panels and metallic edging, flared detached sleeves and thigh boots.",
       "tokens": [
-        "dark grey dress",
+        "dark grey minidress",
         "sleeveless dress",
-        "red trim",
+        "vermilion panels",
         "metal trim",
-        "detached sleeves",
+        "flared detached sleeves",
         "thighhigh boots"
       ]
     }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/winter_shuchiin_uniform",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 770,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
@@ -12,10 +12,10 @@
       "id": "winter_shuchiin_uniform",
       "isDefault": false,
       "name": "墨黑收腰大衣·雪夜校服",
-      "prose": "Her Shuchiin uniform under a fitted black double-breasted wool coat with a softly flared hem, a white scarf, black tights, polished shoes and her red hair ribbon.",
+      "prose": "The Shuchiin uniform under a fitted black double-breasted wool coat, with white scarf, black tights, polished shoes and red hair ribbon.",
       "tokens": [
         "school uniform",
-        "black coat",
+        "fitted black wool coat",
         "double-breasted coat",
         "white scarf",
         "black tights",

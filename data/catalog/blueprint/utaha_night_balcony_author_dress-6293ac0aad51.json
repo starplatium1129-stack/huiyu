@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "utaha_night_balcony_author_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1425,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "utaha_night_balcony_author_dress",
     "title": "霞之丘诗羽 · 深夜阳台的黑裙作家·「下一章的恶役，就用你来写」",
-    "category": "战斗高光",
+    "category": "都市夜话",
     "characterId": "kasumigaoka_utaha",
     "description": "【公寓阳台·深夜】完稿的深夜，诗羽倚在阳台栏杆上，黑色晚礼服的开衩里露出一条黑丝裹着的修长长腿。城市的灯火在她红瞳里明明灭灭，她把烟一样的长发拢到耳后，朝你举起酒杯——「毒舌作家霞诗子的下一章已经想好了。恶役的角色……嗯，就用今晚偷看我稿子的你来写吧。」",
     "location": "公寓阳台栏杆边",
@@ -27,7 +27,7 @@
       "city_lights",
       "iconic"
     ],
-    "promptProse": "Utaha leans on the balcony rail and raises her wine glass toward the viewer after finishing the manuscript. Moonlight traces her dark dress above the changing city lights.",
+    "promptProse": "Utaha leans on the balcony rail and raises her wine glass toward the viewer after finishing the manuscript. Moonlight outlines her figure above the changing city lights.",
     "promptTokens": [
       "kasumigaoka_utaha",
       "wine glass",

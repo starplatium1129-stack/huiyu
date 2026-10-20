@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_bridal_verdant_vow",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 248,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "scathach_bridal_verdant_vow",
     "title": "斯卡哈 · 绿野花环的永恒誓约·「比起不死的永恒，我选择了会结束的今日」",
@@ -29,7 +29,7 @@
       "afternoon_light",
       "full_body"
     ],
-    "promptProse": "Scathach offers her hand toward the viewer from the white flowers of the valley. Warm light passing through the branches rests on her veil and the softened red of her eyes.",
+    "promptProse": "Scathach offers her hand among the white valley flowers, her hair arranged in a flower-wreathed crown braid beneath the veil; branch-filtered light reaches the veil and her softened red eyes.",
     "promptTokens": [
       "reaching out",
       "flowers",

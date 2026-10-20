@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_hotspring_bodysuit_solo",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 252,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "scathach_nsfw_hotspring_bodysuit_solo",
     "title": "斯卡哈 · 温泉湿身紧身衣独奏·「不死者也会热……这是你不知道的影之国秘密」",
@@ -27,7 +27,7 @@
       "masturbation",
       "steam"
     ],
-    "promptProse": "Scathach reclines against the hot spring's rock rim and touches herself beneath the water, her wet bodysuit translucent in lantern light.",
+    "promptProse": "Scathach reclines against the hot spring's rock rim and touches herself beneath the water, her torn wet bodysuit translucent. Warm lanterns between the rocks meet dim water reflections beneath violet mist.",
     "nsfwProse": "",
     "promptTokens": [
       "Scathach",
@@ -35,7 +35,8 @@
       "wet clothes",
       "onsen",
       "steam",
-      "lantern"
+      "lantern",
+      "torn clothes"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

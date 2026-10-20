@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "asuna_rooftop_sunset_wind_golden_hair",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 940,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
-    "action": "张开双臂迎接晚风，长及脚踝的金色长发大面积飞散，面向落日神采飞扬",
+    "action": "张开双臂迎接晚风，长及脚踝的金色长发大面积飞散，背对落日神采飞扬",
     "camera": "sweeping wide shot, low angle, majestic silhouette",
     "category": "天台晚霞",
     "characterId": "ichinose_asuna",

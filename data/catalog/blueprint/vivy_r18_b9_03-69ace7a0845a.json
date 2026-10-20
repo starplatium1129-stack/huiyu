@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_03",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1707,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "vivy_r18_b9_03",
     "title": "Vivy · 舞台礼服后置散热接口卡壳的更衣事故 ·「后背动力管线被裙钩锁死……无法完成自我检修」",
@@ -12,9 +12,9 @@
     "characterId": "vivy",
     "description": "【歌姬后台化妆室·散场后】演出后更换常服时，舞台礼服的高强度碳纤维拉链卡进了脊椎后置的数据散热接口中。Vivy双手撑在化妆台镜子前，身体前倾塌腰，礼服被死死绷在腰间，露出光洁完美的仿生脊背与从衣领溢出的大半截雪乳。她侧脸回头，冰蓝色的眸子里闪烁着微弱的过热警报红光——「伴奏者先生……请手动解除硬件干涉……体温正在以每秒0.5度的速度急剧上升……」",
     "location": "歌姬后台化妆室·散场后",
-    "action": "撑化妆台塌腰回眸双手反剪扯拉链，礼服卡扣勒胸溢乳，蓝眸闪烁警报微光娇喘",
+    "action": "双手撑化妆台前倾回眸，礼服卡扣勒胸溢乳，蓝眸闪烁警报微光娇喘",
     "timeOfDay": "night",
-    "lighting": "warm_cinematic_lighting",
+    "lighting": "化妆镜边灯照亮台面与侧脸，后台保留较弱环境光",
     "camera": "intimate horizontal medium shot",
     "mood": "意外失控与羞赧",
     "sceneTags": [
@@ -30,7 +30,7 @@
       "stuck_zipper",
       "clothes_pull"
     ],
-    "promptProse": "Vivy looks back for help as the white and teal gown zipper catches in her cooling port, pulling the neckline and split skirt open beneath mirror bulbs.",
+    "promptProse": "Bracing both hands on the dressing table, Vivy looks back for help as the white and teal gown zipper catches in her cooling port, pulling the neckline and split skirt open beneath mirror bulbs.",
     "promptTokens": [
       "Vivy",
       "android",

@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "marcille_donato/sfw_bridal",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 992,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "marcille_donato",
     "outfit": {
       "id": "sfw_bridal",
       "name": "蓝白藤叶刺绣精灵婚袍",
-      "prose": "A blue-and-white bridal robe with long flowing sleeves and fine pale-gold leaf embroidery along the collar and hem, paired with a light translucent veil.",
+      "prose": "A blue-and-white bridal robe with flowing sleeves, pale-gold leaf embroidery and a translucent veil.",
       "tokens": [
         "blue and white wedding gown",
         "long sleeves",
-        "leaf embroidery",
+        "flowing sleeves",
+        "pale gold leaf embroidery",
         "veil"
       ],
       "default": false,

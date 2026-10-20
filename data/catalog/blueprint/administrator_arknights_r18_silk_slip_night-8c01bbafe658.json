@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_silk_slip_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 769,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "administrator_arknights_r18_silk_slip_night",
     "characterId": "administrator_arknights",
     "title": "管理员 · 私人寝舱夜半春光",
-    "description": "【管理员 · 私人寝舱夜半春光】私人寝舱床沿，黑银丝绸细吊带从香肩滑脱，傲人饱满的丰盈胸脯与挺拔粉晕在柔光下彻底暴露，金色眸光闪烁着帝王般的高贵与动情。",
+    "description": "【管理员 · 私人寝舱夜半春光】私人寝舱床沿，黑银丝绸细吊带从香肩滑脱，傲人饱满的丰盈胸脯与挺拔粉晕在柔光下彻底暴露，眸光闪烁着帝王般的高贵与动情。",
     "category": "成人",
     "location": "最高管理员奢华卧舱",
     "action": "黑银丝绸细吊带从香肩滑脱，傲人饱满的丰盈胸脯与挺拔粉晕在柔光下彻底暴露",
@@ -25,8 +25,7 @@
       "nightgown",
       "strap_slip",
       "breasts",
-      "cleavage",
-      "golden_eyes"
+      "cleavage"
     ],
     "promptTokens": [
       "bedroom",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_07",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 105,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_07",
     "title": "鸢一折纸 · 长发形态的晨间整理",
@@ -30,7 +30,7 @@
       "curiosity",
       "afternoon_light"
     ],
-    "promptProse": "Origami secures her newly grown hair and inspects its shape in the sunrise-lit mirror.",
+    "promptProse": "Seen over her shoulder, Origami secures her newly grown waist-length white hair and inspects its shape in the sunrise-lit mirror.",
     "promptTokens": [
       "long hair",
       "mirror",

@@ -47,7 +47,7 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
       if (popular && entry.blueprintId !== undefined) {
         applied = true
         const blueprint = entry.blueprintId ? findBlueprint(pb.sceneBlueprints, entry.blueprintId) : null
-        if (!entry.blueprintId || blueprint && blueprint.characterId === entry.characterId && (!blueprint.outfitId || blueprint.outfitId === entry.outfitId)) pb.setPopularBlueprint(entry.blueprintId ?? null)
+        if (!entry.blueprintId || blueprint && blueprint.characterId === entry.characterId) pb.setPopularBlueprint(entry.blueprintId ?? null)
         else { pb.setPopularBlueprint(null); notes.push('原蓝图不可用或角色不匹配，已清除蓝图；请核对提示词') }
       } else if (!popular && entry.scene !== undefined) {
         applied = true
@@ -56,6 +56,11 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
           pb.sceneId = scene?.id ?? null
           pb.sceneBaseStory = scene?.story ?? ''
         } else { pb.sceneId = null; pb.sceneBaseStory = ''; notes.push('原场景不可用或角色不匹配，已清除场景；请核对提示词') }
+      }
+      if (pb.subject.kind === 'popular') {
+        const current = pb.subject
+        apply(entry.outfitExplicit, value => { pb.subject = { ...current, outfitExplicit: value } })
+        apply(entry.outfitOverride, value => { pb.outfitOverride = value ? { tokens: [...value.tokens], replaced: value.replaced } : null })
       }
       apply(entry.story, value => pb.setStory(value))
       apply(entry.visualDescription, value => { pb.visualDescription = value })

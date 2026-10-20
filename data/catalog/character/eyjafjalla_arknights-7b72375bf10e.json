@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eyjafjalla_arknights",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "eyjafjalla_arknights",
     "profile": {
@@ -90,7 +90,7 @@
       "animeStudio": "arknights, hypergryph, official anime art",
       "canon": {
         "era": "近未来奇幻",
-        "formNotes": "粉发红瞳羊角；火山学家",
+        "formNotes": "浅茶褐色双马尾、红瞳、羊角与羊耳；火山学家",
         "research": "2026-08-15 调研（Danbooru eyjafjalla_(arknights) 2237 posts）",
         "world": "泰拉（罗德岛）"
       },
@@ -106,7 +106,7 @@
       ],
       "franchise": "Arknights",
       "id": "eyjafjalla_arknights",
-      "identityProse": "Eyjafjalla from Arknights, a gentle Caprinae volcanologist with soft light brown hair tied in twintails, curved sheep horns, and warm crimson eyes.",
+      "identityProse": "Eyjafjalla from Arknights, with light-brown twintails, curved sheep horns and crimson eyes.",
       "identityTokens": [
         "eyjafjalla (arknights)",
         "1girl",
@@ -114,7 +114,8 @@
         "light_brown_hair",
         "twintails",
         "red_eyes",
-        "horns",
+        "sheep_horns",
+        "sheep_ears",
         "arknights"
       ],
       "negativeTokens": [

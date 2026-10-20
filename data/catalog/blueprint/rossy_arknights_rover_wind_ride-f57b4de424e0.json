@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_rover_wind_ride",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 760,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "rossy_arknights_rover_wind_ride",
     "characterId": "rossy_arknights",
@@ -36,7 +36,7 @@
       "sunset",
       "full body"
     ],
-    "promptProse": "Rossy turns on the riverside path and reaches one empty hand back toward the viewer. The reflected sunset catches her swinging skirt and the soft curve of her tail above the path.",
+    "promptProse": "Rossi turns on the riverside path, one empty hand reaching back toward the viewer; golden-hour light reflected from the river edges her skirt and curved tail.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

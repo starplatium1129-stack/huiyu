@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_devil_wings_demonic_crest",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1274,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "rias_devil_wings_demonic_crest",
     "title": "莉雅丝 · 纯血恶魔破灭之翼",
@@ -27,7 +27,7 @@
       "energy_aura",
       "flowing_crimson_hair"
     ],
-    "promptProse": "She hovers above the old school roof with wings spread, the crimson Gremory crest gathering over her upturned palm beneath the red moon.",
+    "promptProse": "She hovers above the old school roof with black bat wings spread, the glowing crimson Gremory crest gathering over her upturned palm beneath the red moon.",
     "promptTokens": [
       "bat wings",
       "spread wings",

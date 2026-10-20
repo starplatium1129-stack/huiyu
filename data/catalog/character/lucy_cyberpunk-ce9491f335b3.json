@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lucy_cyberpunk",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "lucy_cyberpunk",
     "profile": {
@@ -125,7 +125,7 @@
       ],
       "franchise": "Cyberpunk: Edgerunners",
       "id": "lucy_cyberpunk",
-      "identityProse": "Lucy from Cyberpunk: Edgerunners, an elite netrunner in Night City with asymmetrical short hair blending white and pastel rainbow gradients, vibrant purple eyeliner, red eyeshadow, glowing cyberware spinal interface ports, and a slender agile silhouette.",
+      "identityProse": "Lucy from Cyberpunk: Edgerunners, with asymmetrical short white-to-pastel hair, purple eyeliner, red eyeshadow and spinal cyberware ports.",
       "identityTokens": [
         "lucy (cyberpunk)",
         "1girl",

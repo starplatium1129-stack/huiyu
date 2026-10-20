@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1721,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_06",
     "title": "玛露希尔 · 蘑菇图鉴的争论",
@@ -30,7 +30,7 @@
       "lantern_light",
       "medium_shot"
     ],
-    "promptProse": "Marcille holds the mushroom notebook open toward her companion across the camp table, pointing firmly at one drawing. The lantern between them lights the page and her indignant expression.",
+    "promptProse": "Marcille points to a drawing in the open mushroom notebook held toward her companion across the table. Their lantern lights the page and her indignant face.",
     "promptTokens": [
       "marcille_donato",
       "mushroom notebook",

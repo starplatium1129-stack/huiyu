@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_sofa_morning_hoodie",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 353,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yui_r18_sofa_morning_hoodie",
     "characterId": "yuigahama_yui",
@@ -20,7 +20,7 @@
       "frying_pan",
       "dog_ears"
     ],
-    "promptProse": "The age-twenty-plus Yui steadies the breakfast plate with one hand and wipes butter from her inner thigh with the other, curled into the sunlit sofa with her coral hoodie open.",
+    "promptProse": "Yui steadies the breakfast plate with one hand and wipes butter from her inner thigh with the other, curled on the sunlit sofa in her open coral hoodie.",
     "promptTokens": [
       "adult",
       "open coral hoodie",
@@ -41,7 +41,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "category": "私密写真",
-    "location": "由比滨家晨光厨房",
+    "location": "由比滨家客厅沙发",
     "action": "蜷坐晨光沙发，连帽衫敞开，一手端早餐盘、一手擦去大腿内侧融化黄油",
     "timeOfDay": "清晨",
     "lighting": "warm morning window light across the sofa cushions",

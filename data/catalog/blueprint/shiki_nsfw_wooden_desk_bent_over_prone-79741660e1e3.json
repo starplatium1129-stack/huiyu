@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_wooden_desk_bent_over_prone",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1352,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "一手撑木案俯身，另一手探入和服下摆自抚，回头望向身后",
     "adult": true,
@@ -18,7 +18,7 @@
       "solo",
       "special_nsfw"
     ],
-    "description": "【两仪式 · 木案前和服半褪的更衣自抚】伽蓝之堂空无一人的深处，两仪式的和服下摆被解开半褪至腰际，露出紧致白皙的曼妙裸背与翘臀曲线。式双手撑在深色实木大长案上俯身弓背，单手探入和服裙底拉开内裤边缘轻揉敏感花瓣。她咬住下唇发出细碎轻颤的娇啼，耳根红透，侧脸回眸带着一层羞涩水光——「别一直……盯着看啊……身体自己……擅自变得好热……」",
+    "description": "【两仪式 · 木案前和服半褪的更衣自抚】伽蓝之堂空无一人的深处，两仪式的和服下摆被解开半褪至腰际，露出紧致白皙的曼妙裸背与翘臀曲线。式一手撑在深色实木大长案上俯身弓背，单手探入和服裙底拉开内裤边缘轻揉敏感花瓣。她咬住下唇发出细碎轻颤的娇啼，耳根红透，侧脸回眸带着一层羞涩水光——「别一直……盯着看啊……身体自己……擅自变得好热……」",
     "id": "shiki_nsfw_wooden_desk_bent_over_prone",
     "kreaStyleHint": "r18_explicit_h_cg",
     "lighting": "百叶窗斜投下来的月光银色横条光泽",
@@ -26,7 +26,7 @@
     "mood": "咬牙沉沦、唯美自抚",
     "negativeTokens": [],
     "outfitId": "sfw_white_kimono_without_jacket",
-    "promptProse": "Shiki braces one hand on the wooden desk and touches herself beneath her raised kimono with the other, glancing back through striped moonlight.",
+    "promptProse": "Shiki braces one hand on the wooden desk and touches herself beneath her loosened kimono with the other, the garment gathered at her waist as she glances back through striped moonlight.",
     "promptTokens": [
       "white kimono",
       "bent over",

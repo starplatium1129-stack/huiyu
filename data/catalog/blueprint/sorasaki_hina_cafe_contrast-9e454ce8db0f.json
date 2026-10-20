@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_cafe_contrast",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 848,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "小口品尝草莓芭菲，并用勺子把最甜的草莓递给你；头顶的小翅膀开心拍打",
+    "action": "小口品尝草莓芭菲，并用勺子把最甜的草莓递给你；背部的小翅膀开心拍打",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
@@ -17,7 +17,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【空崎日奈 · 甜品店里的反差萌】谁也想不到，令不良学生闻风丧胆的风纪委员长私底下其实超喜欢甜食。在隐蔽的咖啡店角落，日奈坐在你对面，小口品尝着草莓芭菲，头顶的小翅膀开心地微微拍打——「……老师，这可是绝对机密，绝对不准告诉风纪委员会的其他人哦！作为封口费……分你一颗最甜的草莓。」",
+    "description": "【空崎日奈 · 甜品店里的反差萌】谁也想不到，令不良学生闻风丧胆的风纪委员长私底下其实超喜欢甜食。在隐蔽的咖啡店角落，日奈坐在你对面，小口品尝着草莓芭菲，背部的小翅膀开心地微微拍打——「……老师，这可是绝对机密，绝对不准告诉风纪委员会的其他人哦！作为封口费……分你一颗最甜的草莓。」",
     "id": "sorasaki_hina_cafe_contrast",
     "kreaStyleHint": "",
     "lighting": "咖啡店暖光",
@@ -27,7 +27,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "casual_black",
-    "promptProse": "Hina holds a spoon with the selected strawberry toward the teacher across the cafe table. Warm light catches the fruit and her lifted small wings.",
+    "promptProse": "Hina holds a spoon with the selected strawberry toward the teacher across the cafe table. Warm light catches the fruit and her lifted small wings. The cafe behind her falls softly out of focus.",
     "promptTokens": [
       "Hina",
       "wings",

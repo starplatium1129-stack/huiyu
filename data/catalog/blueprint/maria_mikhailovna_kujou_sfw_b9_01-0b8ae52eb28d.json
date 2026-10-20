@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 790,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "学生会室，她跪坐在矮柜前为大家沏茶，文件在膝边码得整整齐齐",
     "adult": false,
@@ -24,7 +24,7 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_school",
-    "promptProse": "Maria kneels by the low cabinet and offers a cup on its saucer toward a council member outside the frame. Afternoon light falls across the documents stacked beside her knees.",
+    "promptProse": "Maria kneels by the low cabinet, offering a cup and saucer to the off-frame council member. Afternoon light crosses the documents beside her knees.",
     "promptTokens": [
       "kneeling",
       "tea",

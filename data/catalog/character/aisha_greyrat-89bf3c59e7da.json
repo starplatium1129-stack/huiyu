@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aisha_greyrat",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "aisha_greyrat",
     "profile": {
@@ -129,7 +129,7 @@
       ],
       "franchise": "Mushoku Tensei",
       "id": "aisha_greyrat",
-      "identityProse": "Aisha Greyrat from Mushoku Tensei as a grown woman, the quick-witted daughter of Paul and the maid Lilia, with short reddish-brown auburn hair gathered into a neat ponytail by a plain white hairband, sidelocks framing her cheeks, vivid green eyes, a small fang showing when she smiles, and a composed, perceptive presence.",
+      "identityProse": "Adult Aisha Greyrat from Mushoku Tensei, with short auburn hair in a ponytail, a plain white hairband, sidelocks, green eyes and a small fang.",
       "identityTokens": [
         "aisha_greyrat",
         "solo",
@@ -137,8 +137,9 @@
         "red_hair",
         "short_hair",
         "ponytail",
-        "hairband",
+        "white_hairband",
         "green_eyes",
+        "fang",
         "mushoku_tensei"
       ],
       "negativeTokens": [

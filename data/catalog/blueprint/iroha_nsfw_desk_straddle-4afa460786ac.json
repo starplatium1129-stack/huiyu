@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_desk_straddle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 365,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "iroha_nsfw_desk_straddle",
     "title": "一色彩羽 · 成年同事会室桌上的小恶魔诱惑 ·「前辈……是在向我求欢吗？真拿你没办法♪」",
@@ -12,9 +12,9 @@
     "characterId": "isshiki_iroha",
     "description": "【成年同事会办公室·熄灯后】门锁咔哒一声合上。彩羽跳上会议桌，顺势跨坐在你的大腿上，总武高制服裙被撩到大腿根部。她伸出食指抵在你的嘴唇上，小恶魔般的浅笑在潮红的脸颊上绽放——「前辈要是露出这种可怜巴巴的眼神……就算被你欺负一下，我也只能负起责任了呢♪」",
     "location": "成年同事会办公室·熄灯后",
-    "action": "斜坐在长桌边缘制服裙高撩，食指抵唇小恶魔浅笑，波浪发轻晃俯身微喘",
-    "timeOfDay": "深夜",
-    "lighting": "柔和暖光与唯美阴影交错",
+    "action": "跨坐在画外同行者腿上，靠近会议桌边缘，一根手指轻抵对方唇边，露出小恶魔般的浅笑。",
+    "timeOfDay": "黄昏入夜",
+    "lighting": "窗边最后的琥珀色暮光，桌下与办公室深处渐暗",
     "camera": "cowboy shot, from below",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
@@ -24,7 +24,7 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Adult Iroha sits on the conference table edge and leans toward the viewer with one finger at her lips. Amber sunset fades into the office shadows.",
+    "promptProse": "Adult Iroha straddles the offscreen viewer's lap at the conference-table edge and touches one finger to their lips, smiling as the last amber light fades across the dark office.",
     "nsfwProse": "",
     "promptTokens": [
       "adult",
@@ -35,7 +35,7 @@
       "topless",
       "skirt lift",
       "black pantyhose",
-      "sitting",
+      "straddling",
       "leaning forward",
       "smirk",
       "sunset",

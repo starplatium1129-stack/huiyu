@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_04",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 292,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_04",
     "title": "美狄亚 · 柳洞寺后院的蓝色誓约",
@@ -14,7 +14,7 @@
     "description": "【柳洞寺庭院·清晨】美狄亚穿着深蓝长袖婚纱站在石灯笼与白梅之间，侧辫用银线束好；她将亲手做的蓝色花环放在掌心，面对镜头时古老魔女的严肃神情化作温柔而专注的祝福。",
     "location": "Ryuudou Temple plum garden",
     "action": "梅树下检查亲手编的蓝花环，确认无误后温柔递向镜头",
-    "timeOfDay": "黄昏",
+    "timeOfDay": "清晨",
     "lighting": "clear morning light across stone lanterns",
     "camera": "medium full shot, vertical framing",
     "mood": "魔女亲手准备的温柔祝福",
@@ -28,7 +28,7 @@
       "protective_smile",
       "morning_light"
     ],
-    "promptProse": "Medea offers the blue flower wreath toward the viewer beneath the white plum blossoms. Clear morning light catches its petals and the silver thread of her bridal gown.",
+    "promptProse": "Medea offers the blue wreath toward the viewer beneath white plum blossoms in morning light; the stone lantern casts a short shadow across the path.",
     "promptTokens": [
       "1girl",
       "solo",

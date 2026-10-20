@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_office_night",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 845,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "深夜独自整理文件",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【空崎日奈 · 风纪委员会深夜】深夜万籁俱寂的格黑娜风纪委员会办公室内，只有日奈桌前的台灯依然亮着。娇小的委员长强打着精神整理着如山的文件，银白色长发垂落在地面，头顶的恶魔之角随着困倦微微下垂。看到推门进来的你，她红瞳中立刻浮现出依赖与安心——「……老师？这么晚了你怎么会来……刚好，能在旁边陪我坐一会儿吗？有你在的话，感觉头痛都缓解了许多……」",
+    "description": "【空崎日奈 · 风纪委员会深夜】深夜万籁俱寂的格黑娜风纪委员会办公室内，只有日奈桌前的台灯依然亮着。娇小的委员长强打着精神整理着如山的文件，银白色长发垂落在地面，困倦地垂下头，黑色双角随之倾斜。看到推门进来的你，她紫瞳中立刻浮现出依赖与安心——「……老师？这么晚了你怎么会来……刚好，能在旁边陪我坐一会儿吗？有你在的话，感觉头痛都缓解了许多……」",
     "id": "sorasaki_hina_office_night",
     "kreaStyleHint": "",
     "lighting": "台灯冷光",
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "gehenna_uniform",
-    "promptProse": "Hina looks up with relief from the midnight paperwork as the teacher arrives, the desk lamp lighting her tired face.",
+    "promptProse": "Hina looks up with relief from the midnight paperwork as the teacher arrives, cool desk-lamp light reaching her tired face.",
     "promptTokens": [
       "Hina",
       "documents",

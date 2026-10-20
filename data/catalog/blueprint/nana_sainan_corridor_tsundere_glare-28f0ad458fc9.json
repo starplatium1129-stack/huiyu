@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_sainan_corridor_tsundere_glare",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1263,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "双手叉腰前倾身躯，露出可爱小虎牙傲娇瞪视，粉发双马尾与爱心尾巴晃荡",
     "camera": "cowboy shot, eye-level, classic tsundere confrontation framing",
@@ -20,7 +20,7 @@
     "mood": "傲娇好胜",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Nana plants both hands on her hips and blocks Rito at the corridor corner, one small fang showing as she pouts. Morning light rims her pink twintails and stretches across the wooden floor between them.",
+    "promptProse": "Nana blocks Rito at the corridor corner, hands on hips and a fang showing. Morning light rims her twintails and crosses the floor between them.",
     "promptTokens": [
       "2people",
       "yuuki rito",
@@ -46,6 +46,9 @@
     "title": "娜娜 · 走廊拐角的傲娇小虎牙",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "characterTokens": [
+      "yuuki rito"
+    ]
   }
 }

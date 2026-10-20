@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_library_think",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 881,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "靠书架沉思",
     "adult": false,
@@ -31,7 +31,8 @@
       "Rio",
       "data chip",
       "archive",
-      "medium shot"
+      "medium shot",
+      "shallow depth of field"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zero_two",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 129,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "zero_two",
     "profile": {
@@ -73,7 +73,7 @@
         "02",
         "Zero Two"
       ],
-      "identityProse": "Zero Two from DARLING in the FRANXX, a spirited girl with long pink hair, vivid green eyes, small red horns and a white headband. Her energy softens into thoughtful attention when she reads a familiar picture book.",
+      "identityProse": "Zero Two from DARLING in the FRANXX, with long pink hair, green eyes, small red horns and a white headband.",
       "identityTokens": [
         "zero_two_(darling_in_the_franxx)",
         "darling in the franxx",

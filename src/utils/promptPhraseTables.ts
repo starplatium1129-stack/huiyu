@@ -26,7 +26,7 @@ export function proseToken(value: string): string {
     .replace(/^natsume_fixing_nene_hair_ornament$/i, "Natsume is fixing Nene's hair ornament")
   if (!readable) return ''
   if (/^(?:nene|natsume)_/i.test(readable)) return ''
-  return readable.replace(/_/g, ' ').replace(/\b1girl\b/gi, 'one girl').replace(/\bsolo\b/gi, 'alone')
+  return readable.replace(/_/g, ' ').replace(/\b1girl\b/gi, 'one girl').replace(/\b2people\b/gi, 'two people').replace(/\bsolo\b/gi, 'alone')
 }
 
 export function normalizeProseKey(value: string): string {
@@ -44,94 +44,46 @@ export function normalizeProseKey(value: string): string {
 const ACTION_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   smile: 'smiling', gentle_smile: 'wearing a gentle smile', blush: 'blushing softly',
   blushing: 'with flushed cheeks', deep_blush: 'deeply blushing', heavy_blush: 'with bright rosy blushing cheeks',
-  looking_at_viewer: 'looking toward the viewer', looking_back: 'looking back over her shoulder',
-  holding_papers: 'holding a stack of papers', holding_hands: 'holding the viewer\'s hand',
+  looking_at_viewer: 'looking toward the viewer', looking_back: 'looking back over the shoulder',
+  holding_papers: 'holding papers', holding_hands: 'holding hands',
   holding_viewer_right_hand: "holding the viewer's right hand", holding_viewer_left_hand: "holding the viewer's left hand",
-  one_hand_adjusting_hair_ribbon: 'using one hand to adjust her pink hair ribbon',
-  holding_papers_in_other_arm: 'holding lecture papers securely in her other arm',
-  carrying_sandals_in_one_hand: 'carrying her sandals visibly in one hand',
-  walking_on_beach: 'walking barefoot along the wet beach',
+  one_hand_adjusting_hair_ribbon: 'using one hand to adjust a hair ribbon',
+  holding_papers_in_other_arm: 'holding papers in the other arm',
+  carrying_sandals_in_one_hand: 'carrying sandals in one hand',
+  walking_on_beach: 'walking on the beach',
   holding_letter: 'holding a letter', standing: 'standing', sitting: 'sitting', waiting: 'waiting',
   sweeping_shrine_steps_with_bamboo_broom: 'sweeping the shrine steps with a bamboo broom',
-  skirt_hem_caught_on_flower_stand: 'caught by her skirt hem on a flower stand',
-  hand_gripping_dress_edge: 'gripping the edge of her dress with one hand',
-  tripping_on_long_kimono_hem: 'tripping on the hem of her long kimono',
-  squeezing_sweater_sleeve: 'squeezing her sweater sleeve',
+  skirt_hem_caught_on_flower_stand: 'skirt hem caught on a flower stand',
+  hand_gripping_dress_edge: 'gripping the edge of a dress with one hand',
+  tripping_on_long_kimono_hem: 'tripping on the hem of a long kimono',
+  squeezing_sweater_sleeve: 'squeezing a sweater sleeve',
   in_love: 'showing quiet affection', eye_contact: 'maintaining direct eye contact',
-  tears: 'with tears in her eyes', crying: 'crying', sleeping: 'sleeping peacefully',
-  sitting_on_counter: 'sitting on a counter', sitting_on_lap: 'sitting on the viewer\'s lap',
-  sitting_on_bed: 'sitting gracefully in bed', sitting_on_desk: 'sitting on a desk',
-  lying_on_bed: 'lying softly in bed', lying_on_side: 'reclining gracefully on her side',
-  lying_on_back: 'lying gracefully on her back', legs_apart: 'with her legs parted gently',
-  spread_legs: 'with her legs parted sensually', kneeling: 'kneeling softly', hugging_pillow: 'hugging a soft white pillow',
+  tears: 'with tears in the eyes', crying: 'crying', sleeping: 'sleeping',
+  sitting_on_counter: 'sitting on a counter', sitting_on_lap: 'sitting on a lap',
+  sitting_on_bed: 'sitting in bed', sitting_on_desk: 'sitting on a desk',
+  lying_on_bed: 'lying in bed', lying_on_side: 'lying on one side',
+  lying_on_back: 'lying on the back', legs_apart: 'with legs apart',
+  spread_legs: 'with legs spread', kneeling: 'kneeling', hugging_pillow: 'hugging a pillow',
   straddling_viewer: 'straddling the viewer', clinging_to_viewer: 'clinging to the viewer',
-  hair_blowing: 'with her hair moving in the breeze', windblown_hair: 'with her hair moving in the breeze',
-  wet_hair: 'with glistening wet hair', wet_skin: 'with translucent glistening skin',
-  wet_clothes: 'with clinging wet fabric', bare_back: 'with her smooth bare back',
-  bare_legs: 'with her slender bare legs', bare_shoulders: 'with her delicate bare shoulders',
-  bare_chest: 'with her soft bare chest', exposed_breasts: 'with her supple bare breasts',
-  breasts_out: 'with her exposed bare breasts', topless: 'topless with her bare breasts exposed',
-  cleavage: 'with an alluring cleavage', sideboob: 'revealing delicate sideboob',
-  underboob: 'revealing subtle underboob', no_bra: 'wearing no bra',
-  no_panties: 'wearing no panties', panties_aside: 'with her panties pulled aside',
-  pulling_down_panties: 'pulling down her panties', unbuttoned_shirt: 'with her unbuttoned shirt falling open',
-  open_shirt: 'with her shirt open revealing her bare chest', off_shoulder: 'with her clothes sliding off her shoulders',
-  lifted_skirt: 'with her skirt gently lifted', bottomless: 'bottomless with bare thighs',
-  nude: 'completely nude', naked: 'completely naked', fully_nude: 'completely nude',
-  nipples: 'with delicate pink nipples', areola: 'with tender areolas', pussy: 'with her intimate curves',
-  cameltoe: 'with delicate contours', collarbone: 'with a slender delicate collarbone',
-  navel: 'with her delicate navel visible', slender_thighs: 'with slender fair thighs',
-  parted_lips: 'with softly parted lips', open_mouth: 'with mouth softly open in a breathless sigh',
-  ahegao: 'with an intensely flushed, ecstatically blushing face and parted lips',
-  closed_eyes: 'with eyes closed in serenity', half_closed_eyes: 'with drowsy half-closed eyes',
-  averting_gaze: 'shyly averting her gaze', heavy_breathing: 'breathing heavily with flushed cheeks',
-  drooling: 'with a tiny glistening drop at the corner of her lips',
-  // ── Explicit Sex & Erotic Actions ──
-  sex: 'engaged in intimate lovemaking',
-  intercourse: 'engaged in passionate intercourse',
-  vaginal: 'during vaginal intercourse',
-  anal: 'during anal intercourse',
-  oral: 'performing oral pleasure',
-  fellatio: 'performing fellatio with her lips softly wrapped around him',
-  blowjob: 'giving a passionate blowjob with saliva glistening on her lips',
-  deepthroat: 'engaged in deepthroat with tears in her flushed eyes',
-  cunnilingus: 'receiving oral pleasure with arched back and trembling thighs',
-  paizuri: 'performing a breast slip paizuri with her soft cleavage tightly pressed',
-  titfuck: 'performing paizuri with breasts pressed around him',
-  handjob: 'stroking gently with her delicate hand',
-  fingering: 'touching herself intimately with glistening fingertips',
-  masturbation: 'pleasuring herself intimately with arched back',
-  female_masturbation: 'pleasuring herself intimately with flushed cheeks',
-  missionary: 'in missionary position with legs spread softly',
-  doggystyle: 'on all fours from behind in doggystyle position',
-  cowgirl_position: 'riding on top in cowgirl position with bouncing breasts',
-  mating_press: 'in a passionate mating press position with legs pressed back',
-  spooning: 'in a cozy side-by-side spooning embrace',
-  grinding: 'grinding her hips intimately with flushed cheeks',
-  penetration: 'during intimate penetration',
-  cum: 'with glistening white love liquid',
-  cum_on_face: 'with splashes of white liquid across her blushing cheeks',
-  cum_in_mouth: 'with white liquid inside her softly open mouth',
-  cum_on_breasts: 'with white liquid splashed across her bare breasts',
-  cum_on_body: 'with glistening white liquid on her smooth skin',
-  internal_cumshot: 'with white liquid overflowing from her intimate entrance',
-  creampie: 'with glistening white liquid slowly overflowing from within her',
-  excessive_cum: 'with abundant glistening white liquid coating her thighs',
-  sweat: 'with glistening beads of sweat',
-  sweaty_skin: 'with dewy glistening sweaty skin',
-  after_sex: 'resting peacefully in bed after passionate lovemaking',
-  panty_pull: 'delicately pulling her panties aside with one finger',
-  skirt_lift: 'lifting her skirt with both hands revealing her bare thighs',
-  grabbed_breasts: 'with hands gently fondling her soft bare breasts',
-  groping: 'being caressed intimately across her soft curves',
+  hair_blowing: 'with hair moving in the breeze', windblown_hair: 'with hair moving in the breeze',
+  wet_hair: 'with wet hair', wet_skin: 'with wet skin',
+  wet_clothes: 'with wet clothes', bare_back: 'with a bare back',
+  bare_legs: 'with bare legs', bare_shoulders: 'with bare shoulders',
+  no_bra: 'wearing no bra', no_panties: 'wearing no panties',
+  panties_aside: 'with panties pulled aside', unbuttoned_shirt: 'with an unbuttoned shirt',
+  open_shirt: 'with an open shirt', off_shoulder: 'with clothing off the shoulders',
+  lifted_skirt: 'with a lifted skirt', skirt_lift: 'with a lifted skirt',
+  fully_nude: 'completely nude',
+  parted_lips: 'with parted lips', open_mouth: 'with an open mouth',
+  closed_eyes: 'with eyes closed', half_closed_eyes: 'with eyes half closed',
+  averting_gaze: 'averting the gaze', heavy_breathing: 'breathing heavily',
+  // Other tags stay literal. Authored prose owns participants, hands, exposure,
+  // body details and emotion; a vocabulary alias must not invent those facts.
 })
 
 export function actionPhrase(value: string): string {
   const key = normalizeProseKey(value)
   if (ACTION_REWRITES[key]) return ACTION_REWRITES[key]
-  if (/^holding_one_clearly_wrapped_sweet_/.test(key)) {
-    return 'presenting one clearly wrapped sweet in both cupped hands, with the folded paper wrapper fully visible'
-  }
   const readable = proseToken(value)
   if (/^holding_/.test(key)) return `holding ${readable.replace(/^holding\s+/i, '')}`
   if (/^sitting_on_/.test(key)) return `sitting on ${readable.replace(/^sitting on\s+/i, '')}`
@@ -141,7 +93,7 @@ export function actionPhrase(value: string): string {
 }
 
 const OUTFIT_REWRITES: Readonly<Record<string, string>> = Object.freeze({
-  casual_clothes: 'casual clothes', naked_apron: 'only a cafe apron', apron_only: 'only an apron',
+  casual_clothes: 'casual clothes', naked_apron: 'only an apron', apron_only: 'only an apron',
   nude: 'no clothing', naked: 'no clothing', school_uniform: 'a school uniform',
   maid_uniform: 'a maid uniform', cafe_uniform: 'a cafe uniform', pajamas: 'pajamas',
 })
@@ -161,7 +113,7 @@ const MOOD_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   tsundere: 'guarded and flustered', sensual: 'sensual', intimate: 'intimate',
   romantic_atmosphere: 'romantic', seductive_look: 'seductive', passionate_look: 'passionate',
   expressionless: 'composed and expressionless', in_love: 'quietly affectionate',
-  soft_eyes: 'soft-eyed', bright_eyes: 'bright-eyed', red_ears: 'flushed cheeks',
+  soft_eyes: 'soft-eyed', bright_eyes: 'bright-eyed', red_ears: 'flushed ears',
   heavy_breathing: 'breathless',
 })
 
@@ -193,6 +145,7 @@ const CAMERA_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   cinematic_16_9_clockwise_dutch_angle: 'a cinematic 16:9 clockwise Dutch angle',
   portrait_shot: 'a portrait shot', establishing_shot: 'an establishing shot', face_focus: 'tight facial focus',
   three_quarter_view: 'a three-quarter view', over_the_shoulder: 'an over-the-shoulder view', selfie: 'a selfie composition',
+  eye_level: 'an eye-level viewpoint', front_view: 'a front view', back_view: 'a back view', from_behind: 'a back view', from_side: 'a side view',
 })
 
 export function cameraPhrase(value: string): string {
@@ -214,20 +167,6 @@ const LIGHT_REWRITES: Readonly<Record<string, string>> = Object.freeze({
 export function lightPhrase(value: string): string {
   const key = normalizeProseKey(value)
   return LIGHT_REWRITES[key] || proseToken(value)
-}
-
-/** Describe a selected source's shading without adding emitters, props or weather. */
-const ANIMA_LIGHT_REWRITES: Readonly<Record<string, string>> = Object.freeze({
-  golden_hour: 'golden-hour light with warm highlights, gentle reflected fill and readable cast shadows',
-  window_light: 'window light shaping lit and shaded surfaces with gentle reflected fill',
-  backlighting: 'backlighting separating the subject edges from the background while keeping shadow detail readable',
-  moonlight: 'moonlight with cool highlights and softly readable shadow detail',
-  warm_lighting: 'warm lighting with gentle reflected fill and readable highlights and shadows',
-  overcast: 'diffused overcast light with soft contact shadows and gentle tonal separation',
-})
-
-export function animaLightPhrase(value: string): string {
-  return ANIMA_LIGHT_REWRITES[normalizeProseKey(value)] || lightPhrase(value)
 }
 
 const ENVIRONMENT_RE = /(?:^|_)(?:background|classroom|clubroom|cafe|coffee|beach|ocean|sea|forest|street|station|bedroom|bathroom|shrine|park|garden|rooftop|city|library|bookstore|kitchen|palace|ruins|bridge|river|theater|backstage|supermarket|aquarium|cinema|safehouse|hotel|balcony|pool|tatami|office|elevator|train|vehicle|apartment|living_room|studio|gallery|store|shop|festival|bookshelf|blackboard|desk|window|wall|rack|indoors|outdoors|interior)(?:_|$)/

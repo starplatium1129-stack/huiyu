@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "harudera_yuria",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "harudera_yuria",
     "profile": {
@@ -112,15 +112,17 @@
         "灰色的果实",
         "grisaia"
       ],
-      "identityProse": "Harudera Yuria (JB) from Grisaia by Frontwing, CIRS chief and Yuuji's official handler and guardian with long wavy honey-blonde hair, a distinct beauty mark beneath her right eye, sharp intelligent sapphire-blue eyes, and commanding yet affectionate mature grace.",
+      "identityProse": "Harudera Yuria (JB) from Grisaia, a mature woman with long wavy honey-blonde hair, a beauty mark beneath her right eye and sapphire-blue eyes.",
       "identityTokens": [
         "harudera_yuria",
         "1girl",
         "solo",
         "blonde_hair",
+        "long_hair",
         "wavy_hair",
         "blue_eyes",
         "mole_under_eye",
+        "mole beneath right eye",
         "mature_female",
         "grisaia_(series)"
       ],

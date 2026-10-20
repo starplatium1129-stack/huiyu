@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_bubble_bath",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 503,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "泡在泡泡浴里",
     "adult": true,
@@ -23,17 +23,16 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Marin holds suds in one palm while moving her other hand between her thighs beneath the bathwater, winking above the foam.",
+    "promptProse": "Seen at water level, adult Marin cups a heap of foam in both palms and blows it toward the viewer from the round bath. Soft warm light diffuses through the steam and brightens the bubbles against the darker water.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Marin",
       "nude",
       "bubble bath",
-      "knee up",
       "holding bubbles",
-      "hand between legs",
-      "wink"
+      "blowing bubbles",
+      "steam"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_05",
     "title": "尤贝尔 · 海边捡到的有趣贝壳",
@@ -30,7 +30,7 @@
       "curious_smile",
       "sea_breeze"
     ],
-    "promptProse": "Ubel lifts an unusual shell from the sorting tray as the tide reaches her ankles on the black-sand shore.",
+    "promptProse": "Ubel lifts an unusual shell from the wet sand as the tide reaches her ankles on the black-sand shore.",
     "promptTokens": [
       "crouching",
       "shells",

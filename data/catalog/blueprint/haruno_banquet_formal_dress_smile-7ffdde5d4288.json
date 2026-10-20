@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_banquet_formal_dress_smile",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 371,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "haruno_banquet_formal_dress_smile",
     "title": "雪之下阳乃 · 晚宴幕间的独处",
@@ -31,7 +31,7 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Seated at the velvet chair's edge, Haruno studies the removed clip-on earring in her palm, her social smile easing into fatigue. The wall lamp picks out the small silver glint against the quiet corridor.",
+    "promptProse": "Seated at the velvet chair's edge, Haruno holds the removed clip-on earring in her palm and looks along the quiet corridor, her social smile easing into fatigue. The wall lamp picks out the small silver glint.",
     "promptTokens": [
       "earring",
       "sitting",

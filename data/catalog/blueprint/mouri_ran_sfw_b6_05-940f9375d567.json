@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_sfw_b6_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1607,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_05",
     "title": "毛利兰 · 海浪里的沙滩排球",
@@ -29,7 +29,7 @@
       "waving",
       "summer_sunlight"
     ],
-    "promptProse": "Ran bends her knees beneath the rising volleyball, her joined forearms still extended from the pass. Sea wind lifts her hair while bright water sparkles beyond the beach umbrellas.",
+    "promptProse": "Ran bends her knees beneath the rising volleyball, forearms joined after the pass; sea wind lifts her hair against sparkling water and beach umbrellas.",
     "promptTokens": [
       "beach volleyball",
       "bent knees",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_02",
     "title": "鸢一折纸 · 整备台上的检查记录",
@@ -30,7 +30,7 @@
       "bright_overhead_lighting",
       "medium_shot"
     ],
-    "promptProse": "She holds the inactive unit against the rubber mat with one hand and inspects its cable connector with the other beneath even overhead work lights.",
+    "promptProse": "She steadies the inactive unit on a rubber mat with one hand and inspects its cable connector with the other under even work lights.",
     "promptTokens": [
       "short hair",
       "diagnostic unit",

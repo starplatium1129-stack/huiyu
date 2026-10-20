@@ -1,53 +1,49 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_r18_spring_bath",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 644,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
-    "action": "坐在水下石阶上，一手扶起浮在水面的尾巴。",
-    "adult": true,
+    "action": "裹好浴巾坐在水下石阶，一手扶尾巴，另一手扶石阶。",
+    "adult": false,
     "adultArtistHint": "@anmi",
-    "animaStyleHint": "r18_sensual_cg",
-    "camera": "side view, medium shot, horizontal framing",
-    "category": "成人",
+    "animaStyleHint": "",
+    "camera": "medium shot, eye level",
+    "category": "日常生活",
     "characterId": "suzuran_arknights",
-    "description": "夜间温泉里，铃兰坐在没入水中的石阶上，白色浴巾被泉水浸湿。一手扶着浮起的狐尾，灯笼的倒影在蒸汽与水波间轻晃。",
+    "description": "夜间温泉里，铃兰裹好不透明白色浴巾，坐在水下石阶上，一手扶住浮起的尾巴，另一手扶着石阶。灯笼倒影在蒸汽与水波间轻晃。",
     "id": "suzuran_arknights_r18_spring_bath",
     "kreaStyleHint": "",
     "lighting": "steam and lantern light",
     "location": "泰拉温泉",
-    "mood": "湿润柔软",
+    "mood": "温和安静",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_bath_wrap",
-    "promptProse": "Suzuran, an adult woman aged twenty or older, steadies one of her nine floating tails while her other hand moves beneath the bathwater. She sits on a submerged step in a soaked white wrap.",
+    "promptProse": "Securely wrapped in an opaque white towel, Suzuran sits on a submerged stone step, one hand steadying a floating tail, the other supporting her on the step; lantern reflections ripple through steam.",
     "promptTokens": [
-      "adult",
-      "1girl",
-      "solo",
-      "fox ears",
-      "multiple tails",
-      "wet wrap",
-      "see-through",
+      "white towel",
+      "wrapped towel",
       "sitting",
-      "masturbation",
       "hot spring",
-      "cherry petals",
-      "steam"
+      "steam",
+      "lantern"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
     "sceneTags": [
       "hot_spring",
-      "night",
-      "steam",
-      "lantern",
-      "wet_tail"
+      "towel",
+      "steam"
     ],
     "timeOfDay": "夜晚",
-    "title": "铃兰 · 汤泉九尾"
+    "title": "铃兰 · 温泉休憩",
+    "coverageTags": [
+      "daily"
+    ],
+    "styleHint": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_flower_field",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "raiden_shogun_flower_field",
     "title": "雷电将军 · 花海逆光",
@@ -32,7 +32,7 @@
       "rim_light",
       "medium_shot"
     ],
-    "promptProse": "Ei turns back along the flower path and offers her hand to the viewer. Sunset rims her cheek while the breeze carries her braid and purple hem over the swaying cosmos.",
+    "promptProse": "Ei turns back along the flower path and offers her hand to the viewer. Golden-hour light rims her cheek while the breeze carries her braid and skirt hem over the swaying cosmos.",
     "promptTokens": [
       "reaching",
       "looking back",

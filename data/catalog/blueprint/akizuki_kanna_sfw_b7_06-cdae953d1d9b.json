@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1157,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
-    "action": "清晨的咖啡馆，她推开木门让第一缕阳光照进来，深吸一口气开始擦拭吧台",
+    "action": "微笑着擦拭吧台，打开的木门让清晨阳光照进咖啡馆",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
     "camera": "medium shot",
@@ -15,7 +15,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "清晨的咖啡馆，她推开木门让第一缕阳光照进来，深吸一口气开始擦拭吧台；桌椅归位、花瓶换水，百年死神认真经营「今天」的每一帧。",
+    "description": "清晨的咖啡馆，木门保持打开，第一缕阳光落到吧台边缘。栞那正用布巾擦拭台面，带着安静的微笑；桌椅已经归位，换好清水的花瓶在后方，百年死神认真经营今天。",
     "id": "akizuki_kanna_sfw_b7_06",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "morning_light",

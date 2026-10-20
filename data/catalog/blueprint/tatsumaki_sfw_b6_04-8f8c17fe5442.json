@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1586,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_04",
     "title": "战栗的龙卷 · 浮空花廊的傲娇花嫁",
@@ -31,7 +31,7 @@
       "sunset",
       "rose_bouquet"
     ],
-    "promptProse": "Tatsumaki holds the bouquet in one arm and rests her other hand on her hip, turning her blushing face aside as telekinesis suspends the long veil and hem clear of the floor. Sunset rims the veil against its emerald glow.",
+    "promptProse": "Tatsumaki holds the bouquet in one arm, other hand on her hip, turning her blushing face aside; telekinesis lifts the veil and hem clear of the floor, golden-hour light rimming the veil against emerald light.",
     "promptTokens": [
       "Tatsumaki",
       "bouquet",

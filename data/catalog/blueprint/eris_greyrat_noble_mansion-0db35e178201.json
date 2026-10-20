@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_noble_mansion",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 476,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "花园中追逐蝴蝶",
     "camera": "full body, eye level",
@@ -45,7 +45,6 @@
       "eris_greyrat",
       "1girl",
       "solo",
-      "child",
       "red_hair",
       "long_hair",
       "red_eyes",
@@ -54,6 +53,6 @@
       "headband",
       "mushoku_tensei"
     ],
-    "identityProseOverride": "Eris Greyrat from Mushoku Tensei in her childhood form, with long wavy crimson hair, red eyes, thick eyebrows, a headband and a small ahoge."
+    "identityProseOverride": "Adult Eris Greyrat from Mushoku Tensei, with long wavy crimson hair, red eyes, thick eyebrows, a headband and a small ahoge."
   }
 }

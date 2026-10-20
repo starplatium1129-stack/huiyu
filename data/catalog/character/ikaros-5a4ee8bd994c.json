@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ikaros",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "ikaros",
     "profile": {
@@ -112,7 +112,7 @@
         "天降之物",
         "sora no otoshimono"
       ],
-      "identityProse": "Ikaros from Sora no Otoshimono, the type Alpha strategic battle angeloid with long pastel pink twin-tails, a delicate ahoge, luminous emerald-green eyes, a metal collar around her neck with a trailing broken chain, mechanical ear winglets, massive pure white feathered angel wings, and a quiet gentle expression.",
+      "identityProse": "Ikaros from Sora no Otoshimono, an angeloid with long pink twintails, an ahoge, green eyes, mechanical ear winglets, a metal collar with a broken chain and white feathered wings.",
       "identityTokens": [
         "ikaros",
         "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "administrator_arknights",
-  "revision": 6,
+  "revision": 3,
   "sortOrder": 163,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "administrator_arknights",
     "profile": {
@@ -99,7 +99,7 @@
       ],
       "franchise": "Arknights: Endfield",
       "id": "administrator_arknights",
-      "identityProse": "The female Endministrator from Arknights: Endfield, the administrator of Endfield Industries and a protector of civilization on Talos-II, with short black hair in a layered bob.",
+      "identityProse": "Female Endministrator from Arknights: Endfield, with short black hair in a layered bob.",
       "identityTokens": [
         "female endministrator (arknights)",
         "1girl",

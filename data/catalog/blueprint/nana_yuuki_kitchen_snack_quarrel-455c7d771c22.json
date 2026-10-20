@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_yuuki_kitchen_snack_quarrel",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1268,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "跪坐地毯怀抱零食袋护食，露出可爱小虎牙瞪眼示威，爱心尾巴竖直紧绷",
     "camera": "medium shot, eye-level seated framing, lively domestic interaction",
@@ -20,7 +20,7 @@
     "mood": "欢快护食",
     "negativeTokens": [],
     "outfitId": "casual_denim_no_pet",
-    "promptProse": "Nana kneels beside the low table and hugs the open chip bag to her chest as Rito reaches toward it. The television casts shifting colors over her protesting fang and the bag crinkled between her arms.",
+    "promptProse": "Nana hugs the chip bag beside the low table as Rito reaches for it. Warm diffuse ceiling light fills the room, while television colors cross her protesting fang and the crumpled bag.",
     "promptTokens": [
       "2people",
       "yuuki rito",
@@ -50,6 +50,9 @@
     "title": "娜娜 · 客厅抢薯片的傲娇斗法",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "characterTokens": [
+      "yuuki rito"
+    ]
   }
 }

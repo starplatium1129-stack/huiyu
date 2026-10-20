@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_bedroom_soles_foreshortening",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 783,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "半坐床头用俄语低语，指尖绕着银色发梢",
     "adult": true,
     "adultArtistHint": "@rella",
-    "animaStyleHint": "lying_on_bed, bent_knees, barefoot, 5_toes, detailed_toes, detailed_soles, silver_hair, blushing",
-    "camera": "full-body shot, first-person view from above",
+    "animaStyleHint": "",
+    "camera": "medium shot, eye level",
     "category": "成人",
     "characterId": "alisa_mikhailovna_kujou",
     "coverageTags": [
@@ -26,32 +26,41 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "The age-twenty-plus Alya draws one knee toward her chest and extends one sole toward the foreground, one hand at her thigh and the other between her legs. Moonlight falls over the white sheets.",
+    "promptProse": "Propped against the headboard with a sheet around her, she winds a lock of hair around one finger and blushes toward the viewer. Moonlight through the blinds stripes the white bedding beside the warm bedside lamp.",
     "promptTokens": [
-      "adult",
       "bedroom",
-      "nude",
-      "lying",
-      "on back",
-      "knees up",
-      "sole",
-      "foreshortening",
-      "masturbation",
+      "bed sheet",
+      "sitting",
+      "holding hair",
+      "blush",
       "moonlight",
-      "from above"
+      "night",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
     "sceneTags": [
       "bed",
       "bedroom",
+      "bed_sheet",
       "moonlight",
       "night",
       "silver_hair",
-      "nightgown",
-      "lamp"
+      "lamp",
+      "blush"
     ],
     "timeOfDay": "深夜",
-    "title": "艾莉莎·九条 · 枕边俄语私语"
+    "title": "艾莉莎·九条 · 枕边俄语私语",
+    "identityTokensOverride": [
+      "alisa_mikhailovna_kujou",
+      "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+      "1girl",
+      "solo",
+      "silver_hair",
+      "blue_eyes",
+      "long_hair",
+      "hair_down"
+    ],
+    "identityProseOverride": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, with loose long silver hair, blue eyes and no hair ribbons."
   }
 }

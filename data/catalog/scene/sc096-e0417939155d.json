@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc096",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
-    "animaCaption": "Seated cross-legged beside the open refrigerator, she steadies the ice-cream tub for the viewer's approaching spoon while keeping her own spoon in her right hand; cold fridge light meets the warm kitchen lamp across her guilty smile.",
+    "animaCaption": "Wearing the viewer's oversized T-shirt, she sits cross-legged by the refrigerator and steadies the ice-cream tub for their spoon, keeping her own in her right hand. Cold fridge light meets the warm kitchen lamp across her guilty smile.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "冰箱前坐姿与冰淇淋半身中景",
     "category": "日常/After_Story",
@@ -46,8 +46,8 @@
       "blue_drawstring_shorts",
       "white_piping"
     ],
-    "time": "夜晚",
-    "timeOfDay": "night",
+    "time": "深夜",
+    "timeOfDay": "late_night",
     "title": "凌晨两点的冰淇淋同盟",
     "usage": [
       "展示图"

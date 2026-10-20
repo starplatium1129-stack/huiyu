@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_toes",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 504,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在粉白柔软床垫上，双膝自然弯曲，手中拿着指甲油刷，晶莹粉嫩的十趾整齐舒展，微笑着向你展示",
     "adult": true,
@@ -20,13 +20,13 @@
     "id": "kitagawa_marin_r18_toes",
     "kreaStyleHint": "",
     "lighting": "床头暖光台灯与霓虹小夜灯柔光，脚趾指甲油反射诱人水润光泽",
-    "location": "海梦的温馨现代卧室",
+    "location": "酒店卧室的柔软大床",
     "mood": "私密撩人",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Marin steadies her raised foot with one hand and paints her toenails pink with the other on the hotel bed.",
+    "promptProse": "Adult Marin steadies her raised foot with one hand and paints her toenails pink with the other on the hotel bed. Her toes remain sharply focused against the softened bedding; warm bedside light and the small neon nightlight catch the glitter in the pink polish.",
     "promptTokens": [
       "1girl",
       "solo",

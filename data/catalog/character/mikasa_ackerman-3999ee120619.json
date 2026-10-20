@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mikasa_ackerman",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "mikasa_ackerman",
     "profile": {
@@ -116,15 +116,16 @@
       ],
       "franchise": "Attack on Titan",
       "id": "mikasa_ackerman",
-      "identityProse": "Mikasa Ackerman from Attack on Titan, a skilled soldier with chin-length black hair that covers her ears, gray eyes, pale skin and no scar, always wearing her iconic red scarf",
+      "identityProse": "Mikasa Ackerman from Attack on Titan, with chin-length black hair covering her ears, gray eyes, pale skin and an unscarred face.",
       "identityTokens": [
         "mikasa_ackerman",
         "1girl",
         "solo",
         "black hair",
         "short hair",
-        "red scarf",
-        "attack on titan"
+        "chin-length hair",
+        "attack on titan",
+        "gray eyes"
       ],
       "negativeTokens": [
         "scar",

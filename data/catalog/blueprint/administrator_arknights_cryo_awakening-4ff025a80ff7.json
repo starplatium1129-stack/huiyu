@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_cryo_awakening",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 753,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "administrator_arknights_cryo_awakening",
     "characterId": "administrator_arknights",
@@ -38,7 +38,7 @@
       "smile",
       "medium shot"
     ],
-    "promptProse": "With her face uncovered, she sets a warm glass of milk beside the viewer's hand using both hands. Morning light enters through the open curtains.",
+    "promptProse": "With her face uncovered, she sets a warm mug of milk beside the viewer's place using both hands. Morning light enters through the open curtains.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

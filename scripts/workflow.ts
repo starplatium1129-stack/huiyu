@@ -323,6 +323,16 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     opts: '--output <候选目录> --ids sc001,sc002 [--concurrency 1] [--dry-run]',
     run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--dry-run': ['preview'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/generate-scene-showcase-anima11.js:71-77,269-285', unknown: [] },
   },
+  'scenes:pin-capture': {
+    desc: '采纳已审查的单条定稿场景基线，保留其他保护条目',
+    cmd: ['node', 'scripts/maintenance/pin-scene-prompts.js', '--capture'],
+    opts: '--id=<场景ID> [--candidate=<完整scene记录JSON>]',
+    docs: 'docs/maintenance.md#迁移与保护',
+    run: { nature: ['writes-source'], machine: ['node'], resume: 'idempotent',
+      evidence: 'scripts/maintenance/pin-scene-prompts.ts',
+      notes: ['只更新已存在的单条定稿基线；候选使用 kind/id/data 记录格式，保留候选字节摘要', '不会写工作库或生成图片；实际保存仍通过 content:catalog，并显式导出快照'],
+      unknown: ['命令不会代替提示词、编译和画面的人工验收'] },
+  },
   'showcase:fill-gaps': {
     docs: 'docs/workflow.md',
     desc: '只读样张清单并生成缺口待审核候选（MiaoMiao v1.6，沿用蓝图画幅，默认并发3）',

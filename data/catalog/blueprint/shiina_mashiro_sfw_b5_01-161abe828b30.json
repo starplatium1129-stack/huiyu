@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1513,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_01",
     "title": "椎名真白 · 画室中央的新作",
@@ -34,7 +34,7 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Mashiro turns from the tall canvas toward the doorway, brush still horizontal in her hand in soft daylight.",
+    "promptProse": "Mashiro turns from the canvas, taller than herself, toward the doorway, brush still horizontal in her hand in soft daylight.",
     "promptTokens": [
       "shiina_mashiro",
       "paintbrush",

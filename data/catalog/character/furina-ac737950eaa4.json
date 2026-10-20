@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "furina",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "furina",
     "profile": {
@@ -106,7 +106,7 @@
         "芙宁娜",
         "芙卡洛斯"
       ],
-      "identityProse": "Furina from Genshin Impact, the theatrical and dramatic former Hydro Archon of Fontaine, with dual-toned silvery-white and deep cobalt-blue hair in side twin-tails, striking heterochromia teardrop eyes (deep ocean blue and pale cerulean), an expressive ahoge",
+      "identityProse": "Furina from Genshin Impact, with silver-white and cobalt-blue side twintails, an ahoge and heterochromatic deep-blue and pale-cerulean eyes with teardrop pupils.",
       "identityTokens": [
         "furina (genshin impact)",
         "1girl",
@@ -116,6 +116,7 @@
         "heterochromia",
         "blue_eyes",
         "cyan_eyes",
+        "teardrop pupils",
         "ahoge",
         "twin_ponytails",
         "genshin_impact"

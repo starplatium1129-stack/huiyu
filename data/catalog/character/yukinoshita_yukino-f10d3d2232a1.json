@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yukinoshita_yukino",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "yukinoshita_yukino",
     "profile": {
@@ -101,7 +101,7 @@
         "oregairu",
         "yahari ore no seishun"
       ],
-      "identityProse": "Yukinoshita Yukino from Oregairu, an elegant high-school student with long straight black hair with a glossy mirror shine, cool blue eyes, an ahoge, and neat red hair ribbons on her side locks",
+      "identityProse": "Yukinoshita Yukino from Oregairu, with long straight black hair, blue eyes, an ahoge and red ribbons on her sidelocks.",
       "identityTokens": [
         "yukinoshita_yukino",
         "1girl",

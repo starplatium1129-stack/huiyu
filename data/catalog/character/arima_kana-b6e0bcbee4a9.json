@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "arima_kana",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "arima_kana",
     "profile": {
@@ -79,14 +79,16 @@
       ],
       "franchise": "Oshi no Ko",
       "id": "arima_kana",
-      "identityProse": "Kana Arima from Oshi no Ko, a hardworking young actress with a chin-length wine-red bob, straight bangs and ruby-red eyes. A small snaggletooth appears in her unguarded smile, while her expressive gaze moves between professional focus and prickly pride.",
+      "identityProse": "Kana Arima from Oshi no Ko, with a chin-length red bob, straight bangs, red eyes and a small fang.",
       "identityTokens": [
         "arima_kana",
         "oshi_no_ko",
         "red_hair",
         "short_hair",
+        "bob_cut",
         "blunt_bangs",
-        "red_eyes"
+        "red_eyes",
+        "fang"
       ],
       "negativeTokens": [
         "worst_quality",

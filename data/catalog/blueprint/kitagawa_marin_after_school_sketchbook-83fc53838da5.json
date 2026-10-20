@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_after_school_sketchbook",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 505,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfitId": "school_uniform",
@@ -25,7 +25,8 @@
       "fabric swatches",
       "classroom",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "sitting"
     ],
     "camera": "medium shot, seated at a classroom desk with sketchbook and both hands visible",
     "lighting": "斜照在课桌上的午后窗光",

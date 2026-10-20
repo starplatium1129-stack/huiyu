@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kotegawa_yui/cat_costume",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 681,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "kotegawa_yui",
     "outfit": {
@@ -17,7 +17,7 @@
         "cat costume",
         "animal ear headband",
         "fake tail",
-        "black leotard",
+        "black leather leotard",
         "strapless",
         "paw gloves",
         "black thighhighs"

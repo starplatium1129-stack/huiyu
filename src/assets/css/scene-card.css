@@ -92,7 +92,7 @@
 .sc-id {
   @apply tw:absolute; z-index: var(--z-raised); @apply tw:left-s-2 tw:bottom-s-2;
   font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: 0.12em;
-  color: var(--on-art-primary); background: color-mix(in srgb, var(--art-scrim-soft) 88%, var(--bg-deep));
+  color: var(--on-art-primary); background: var(--art-scrim);
   padding: 2px var(--s-2); @apply tw:rounded-sm;
   box-shadow: inset 0 1px 0 var(--hl-inset-08), 0 2px 6px rgba(0, 0, 0, 0.3);
 }

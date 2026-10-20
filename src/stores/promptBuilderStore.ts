@@ -249,10 +249,10 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     colorMood.value = null; artistStyleIds.value = []
   }
   function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null,
-    options: { preserveReference?: boolean; preserveOutfitOverride?: boolean } = {}) {
+    options: { preserveReference?: boolean; preserveOutfitOverride?: boolean; outfitExplicit?: boolean } = {}) {
     clearInheritedStory(blueprintId)
     clearRandomVariation()
-    subject.value = { kind: 'popular', characterId, outfitId, blueprintId }
+    subject.value = { kind: 'popular', characterId, outfitId, blueprintId, outfitExplicit: options.outfitExplicit }
     if (!options.preserveReference) clearReferenceInput()
     if (!options.preserveOutfitOverride) outfitOverride.value = null
   }
@@ -405,7 +405,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   /** Compatibility adapter for incomplete old inputs; the use case captures it before waiting. */
   function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {
     const currentSubject = entry.subject === 'popular'
-      ? { kind: 'popular' as const, characterId: entry.characterId || '', outfitId: entry.outfitId || '', blueprintId: entry.blueprintId }
+      ? { kind: 'popular' as const, characterId: entry.characterId || '', outfitId: entry.outfitId || '', blueprintId: entry.blueprintId, outfitExplicit: entry.outfitExplicit }
       : entry.subject === 'studio' ? { kind: 'studio' as const } : subject.value
     const isPopular = currentSubject.kind === 'popular'
     const popChar = isPopular ? popularCharacters.value.find(c => c.id === currentSubject.characterId) : null

@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_01",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 309,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "medea_caster_r18_b7_01",
     "title": "美狄亚 · 柳洞寺魔术工房紫袍主控跨坐 ·「宗一郎大人……背叛之魔女今晚只献身给您」",
     "category": "主控骑乘",
     "characterId": "medea_caster",
-    "description": "【柳洞寺地下神殿工房·深夜】魔术结界笼罩的密室。美狄亚脱下兜帽，华丽的深紫色魔女长袍滑落至臂弯，露出精灵般的尖耳与成熟高挑的丰腴肉体。她跨坐在你的腰间，双手环绕你的脖颈，那双紫罗兰色的眸子里盛满了至死不渝的爱意与甘愿沉沦——「为了宗一郎大人……神明也好世界也罢，我都可以背叛……请狠狠占有我吧。」",
+    "description": "【柳洞寺地下神殿工房·深夜】魔术结界笼罩的密室。美狄亚脱下兜帽，华丽的深紫色魔女长袍滑落至臂弯，露出精灵般的尖耳与成熟高挑的丰腴肉体。她跨坐在你的腰间，双手环绕你的脖颈，那双蓝色的眸子里盛满了至死不渝的爱意与甘愿沉沦——「为了宗一郎大人……神明也好世界也罢，我都可以背叛……请狠狠占有我吧。」",
     "location": "柳洞寺地下神殿工房·深夜",
-    "action": "跨坐腰间紫袍半褪露尖耳，双峰饱满压下，紫眸深情凝视主动沉腰",
+    "action": "跨坐腰间紫袍半褪露尖耳，双峰饱满压下，蓝眸深情凝视主动沉腰",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
     "camera": "intimate vertical medium shot",
@@ -30,7 +30,7 @@
       "off_shoulder",
       "elf_ears"
     ],
-    "promptProse": "Medea straddles the viewer-facing lap at the workshop altar, her robe slipped to her elbows as she reaches to cradle the viewer's face.",
+    "promptProse": "Medea straddles the off-frame viewer's lap at the workshop altar, her purple robe slipped to her elbows and both arms resting around their neck.",
     "promptTokens": [
       "1girl",
       "solo",

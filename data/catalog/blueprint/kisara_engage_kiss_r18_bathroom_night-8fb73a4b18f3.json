@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_r18_bathroom_night",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 513,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "kisara_engage_kiss_r18_bathroom_night",
     "title": "木更 · 深夜浴室",
     "category": "成人",
     "characterId": "kisara_engage_kiss",
-    "description": "【木更 · 深夜浴室】浴室的花洒喷洒出滚烫的水雾，湿透的黑发贴在木更纤细滑腻的后背与饱满的胸口。她转身将你拉进淋浴的水幕中，紧紧贴住你的胸膛，眼神近乎痴迷——「修的心跳声好清楚……洗完澡之后，今晚一整夜……都绝对不准离开我的视线哦。」",
+    "description": "【木更 · 深夜浴室】浴室的花洒喷洒出滚烫的水雾，湿透的粉发贴在木更纤细滑腻的后背与饱满的胸口。她转身将你拉进淋浴的水幕中，紧紧贴住你的胸膛，眼神近乎痴迷——「修的心跳声好清楚……洗完澡之后，今晚一整夜……都绝对不准离开我的视线哦。」",
     "location": "契约者公寓浴室",
     "action": "淋浴水幕中紧贴胸膛，湿发贴身眼神痴迷",
     "timeOfDay": "深夜",
@@ -25,15 +25,13 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Adult Kisara braces against the shower glass with one foot on a stool, her other hand following the water between her thighs.",
+    "promptProse": "Adult Kisara pulls Shu close under the shower and rests against his chest, her wet pink hair trailing behind her shoulders. Warm bathroom light diffuses through the spray around their joined silhouettes.",
     "promptTokens": [
       "1girl",
-      "solo",
+      "1boy",
       "nude",
       "wet hair",
-      "leaning",
-      "leg up",
-      "hand between legs",
+      "hug",
       "shower",
       "steam",
       "amber light"
@@ -47,6 +45,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tsunako",
     "outfitId": "nsfw_nude",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "compositionIntent": "group"
   }
 }

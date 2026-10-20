@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_sea_bath",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 613,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "站在浅水中，湿发贴着背",
     "adult": true,
@@ -21,17 +21,16 @@
     "mood": "清冷幽美",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [
-      "masturbation",
-      "hand between legs"
-    ],
+    "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Skadi grips the rock edge and touches herself underwater, bioluminescent ripples spreading around her.",
+    "promptProse": "Skadi looks back from the shallows, extending one hand toward the viewer; wet silver hair lies against her back above moonlit water.",
     "promptTokens": [
       "Skadi",
       "nude",
-      "tidal pool",
-      "knee up",
+      "standing",
+      "shallow water",
+      "looking back",
+      "outstretched arm",
       "night"
     ],
     "recommendedSize": "1536x1152",

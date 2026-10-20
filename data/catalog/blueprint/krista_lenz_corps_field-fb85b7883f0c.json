@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_corps_field",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 990,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "行军间歇回头微笑",
     "camera": "full body",
@@ -18,7 +18,7 @@
     "mood": "温柔治愈",
     "negativeTokens": [],
     "outfitId": "corps_uniform",
-    "promptProse": "Historia pauses during the march and smiles back across the grassland, her green cape lifted by the wind.",
+    "promptProse": "Historia pauses during the march and smiles back across the grassland. Wind lifts the loose strands of her low ponytail, while the sunlit grass leads toward the distant horizon.",
     "promptTokens": [
       "low ponytail",
       "looking back",

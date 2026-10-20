@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_01",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1633,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_01",
     "title": "久远寺有珠 · 维多利亚洋馆安乐椅的主控跨坐 ·「童话里的魔女……今夜为你打破纯洁之誓」",
@@ -30,7 +30,7 @@
       "victorian_clothes",
       "bare_breasts"
     ],
-    "promptProse": "Adult Alice rides astride her companion in the velvet armchair, her dress open to the waist and her hands resting on their shoulders in the dying firelight.",
+    "promptProse": "Adult Alice sits astride her off-frame companion in the velvet armchair, her dress open to the waist and her hands resting on their shoulders in the dying firelight.",
     "promptTokens": [
       "black dress",
       "open clothes",
@@ -39,7 +39,8 @@
       "armchair",
       "fireplace",
       "from below",
-      "pintucks"
+      "pintucks",
+      "long sleeves"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,24 +1,18 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/nsfw_nude",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 696,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "her completely naked and breathtaking body, with long crimson hair cascading over her soft shoulders, full natural breasts, slender waist, and flawless ivory skin glowing with a faint warm luster",
+      "prose": "No clothing.",
       "tokens": [
-        "completely_nude",
-        "bare_breasts",
-        "nipples",
-        "areola",
-        "pussy",
-        "navel",
-        "hourglass_body"
+        "completely_nude"
       ]
     }
   }

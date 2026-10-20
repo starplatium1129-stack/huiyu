@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_maid_cafe_shift",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 831,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "端着托盘小心走过，差点绊倒",
     "adult": false,
@@ -21,7 +21,7 @@
     "mood": "lighthearted",
     "negativeTokens": [],
     "outfitId": "part_time_maid_apron",
-    "promptProse": "Having recovered her footing, she holds the tray level with both hands and offers a small apologetic bow in the cafe aisle. Warm light catches the tea and cake as her flushed face turns toward the waiting customer outside the frame.",
+    "promptProse": "She holds the tray level with both hands and bows apologetically toward the off-frame customer. Warm cafe light catches the tea, cake and her flushed face.",
     "promptTokens": [
       "maid cafe",
       "tray",

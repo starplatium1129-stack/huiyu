@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "laevatain_arknights",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 28,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "laevatain_arknights",
     "profile": {
@@ -18,11 +18,11 @@
       "type": "popular",
       "icon": "🗡️",
       "visual_dna": {
-        "hair": "鲜亮炽烈的洋红/绯红长发，及腰微卷，发丝层次分明且具有自然垂坠感，前额有碎发刘海，两侧修长鬓发垂于胸前（Long magenta/scarlet red hair, slightly wavy, bangs, long side strands）",
-        "hair_color": "炽红色 / 绯红（Scarlet Red / Magenta，已确认深红至洋红色系）",
-        "eyes": "深邃而锐利的赤红瞳孔（Red eyes），眼眸明亮，眼角微扬，眼神沉静冷峻且带有萨卡兹族特有的强大气场",
-        "hairstyle": "微卷披肩红发（Long slightly wavy hair），发尾微散卷曲，前额为自然分束的修饰刘海与垂肩侧鬓",
-        "uniform": "基础立绘服装：近未来工业机能风（Techwear）战术特勤服。内搭贴身高领露脐黑色无袖作战背心与黑色紧身皮质短裤，外披一件深灰拼接工业白色、点缀黄色警示条纹的短款硬质战术风衣；腰间配备多功能战术织带、金属插扣与多联装储物腰包；下身着不对称战术腿环绑带、硬质防护护膝及黑色高筒机能厚底战术皮靴；双手佩戴战术露指手套与护腕装置，领口配有战术颈环",
+        "hair": "红色层次发型，颈侧有较短分束，两侧与后方保留较长发束。",
+        "hair_color": "红色 / 绯红（Red / scarlet hair）",
+        "eyes": "锐利的蓝紫至紫色眼眸（Purple eyes）",
+        "hairstyle": "层次分明的红发，侧面和后方的长发束与颈侧短束并存。",
+        "uniform": "黑色无袖短层次战裙，破边裙摆与粉色内衬；白色领饰与金属坠件、黑色长手套、胸前绑带、松披外套、粉色腰包、腿部绑带和深色长靴。",
         "expression": "冷艳孤高、内敛沉稳、自信从容。战斗中目光炽烈果决、杀气逼人；非战斗状态下神色冷淡疏离、喜怒不形于色，但在享用冷饮甜品时会浮现极罕见的放松与温和",
         "style": "近未来工业机能风（Techwear）、科幻末世前线、萨卡兹恶魔、炽炎重剑士、冷艳干练",
         "signature": "头顶生有一对线条优雅、微微向后上方弯曲的深黑质感恶魔角（Black curved horns）；身后拖有一根修长带箭尖形尾梢的黑色恶魔细长尾（Black spade devil tail）；手持散发金红高温火光与熔岩裂纹的巨大工业双手重剑（Molten Greatsword）；战斗中周身伴随金红色高温熔岩余烬与烈焰波纹（Molten heat / Fire sparks）"
@@ -51,8 +51,9 @@
         "faction": "终末地工业（Endfield Industries）"
       },
       "tags": [
-        "炽红色 / 绯红（Scarlet Red / Magenta，已确认深红至洋红色系）",
-        "深邃而锐利的赤红瞳孔（Red eyes），眼眸明亮，眼角微扬，眼神沉静冷峻且带有萨卡兹族特有的强大气场"
+        "红色层次发束",
+        "紫色眼睛",
+        "黑色弯角"
       ],
       "bg_story": "莱万汀是活跃于塔罗斯-II开拓一线的终末地工业精锐特勤干员，以其无与伦比的重剑技巧与掌控高温熔岩源石技艺的能力著称。她的记忆深处埋藏着与古老源石文明及萨卡兹族历史紧密相连的纷乱碎片，始终在战斗中追寻自我存在的源头与真谛。在环境严苛且侵蚀泛滥的荒原前线，她手握熔岩大剑跨越险境，为终末地开拓队劈开前行道路，并在每一次烈火挥击中寻找属于自己的答案。",
       "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
@@ -61,18 +62,15 @@
         "1girl",
         "solo",
         "red_hair",
-        "long_hair",
-        "red_eyes",
-        "horns",
+        "layered_hair",
+        "purple_eyes",
+        "black_horns",
         "devil_tail",
-        "black_clothes",
-        "white_clothes",
-        "tactical",
-        "jacket",
-        "crop_top",
-        "shorts",
+        "black_dress",
+        "pink_lining",
+        "long_gloves",
         "greatsword",
-        "arknights"
+        "arknights_endfield"
       ],
       "portrait": {
         "image": "../assets/characters/popular-laevatain_arknights.png?v=6684ff1025c4",
@@ -101,7 +99,7 @@
       "animeStudio": "arknights endfield, hypergryph, official anime art",
       "canon": {
         "era": "近未来科幻",
-        "formNotes": "红长发+紫瞳+短黑弯角(禁large!)+恶魔尾+黑双层裙(puffy petticoat裙撑+外层焦烧撕裂+品红内层)+白翼状分离领+黑choker金属坠+黑胸衣交叉绑带+双手黑肘套+黑腰封+粉腰包+裸腿+黑thigh strap+黑高跟短靴+碎片翼+熔岩大剑",
+        "formNotes": "红色层次发型，侧面与后方留较长发束+紫瞳+短黑弯角(禁large!)+恶魔尾+黑双层裙(puffy petticoat裙撑+外层焦烧撕裂+品红内层)+白翼状分离领+黑choker金属坠+黑胸衣交叉绑带+双手黑肘套+黑腰封+粉腰包+裸腿+黑thigh strap+黑高跟短靴+碎片翼+熔岩大剑",
         "research": "2026-09-01 v19: Danbooru 8图全统计——cleavage 6/8(75%,用户证实官方露乳沟), layered_dress+torn_dress(Narukamitooru 官网立绘同款3052x3508), (cleavage:1.4), 去 long_floating_dress",
         "world": "塔罗斯-II（罗德岛·终末地）"
       },
@@ -117,17 +115,18 @@
       ],
       "franchise": "Arknights: Endfield",
       "id": "laevatain_arknights",
-      "identityProse": "Laevatain from Arknights: Endfield, a fierce Sarkaz combatant with fiery red short hair, black curved horns, sharp purple eyes with slit pupils, lipstick, and a voluptuous figure.",
+      "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz with layered red hair, longer side and back locks, black curved horns, a long tail and purple eyes with slit pupils.",
       "identityTokens": [
         "laevatain (arknights)",
         "arknights_endfield",
         "1girl",
         "solo",
         "red_hair",
-        "short_hair",
         "black_horns",
         "purple_eyes",
-        "slit_pupils"
+        "slit_pupils",
+        "layered hair",
+        "tail"
       ],
       "negativeTokens": [
         "bad anatomy",

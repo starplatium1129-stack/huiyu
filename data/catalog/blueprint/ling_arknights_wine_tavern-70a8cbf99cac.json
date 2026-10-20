@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 649,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "倚栏独坐举盏温酒轻啜",
     "camera": "medium shot, slightly high angle",
@@ -22,13 +22,14 @@
       "daylight"
     ],
     "outfitId": "standard",
-    "promptProse": "She sips wine beside the upstairs railing, warm lantern light on her hand while the market visitors pass along the street below.",
+    "promptProse": "She sips wine beside the upstairs railing, warm lantern light on her hand while the market visitors pass along the street below. Soft moonlight enters through the window beyond the warm lantern glow.",
     "promptTokens": [
       "wine cup",
       "railing",
       "tavern",
       "lantern",
-      "night"
+      "night",
+      "sitting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_01",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 1599,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_01",
     "title": "战栗的龙卷 · 英雄协会高层公寓念动力浮空主控跨坐 ·「秃头……不对，你！今晚要是敢说我像小孩子，就把你撕成碎片！」",
@@ -14,7 +14,7 @@
     "location": "A市高层防核公寓·暴风雨夜",
     "action": "念动力浮空跨坐黑开衩裙掀起，双臂抱胸翠绿卷发飘扬，傲娇怒视主动重压",
     "timeOfDay": "night",
-    "lighting": "warm_cinematic_lighting",
+    "lighting": "绿色念动力照亮近处轮廓，窗外暴雨夜的冷光透入房间",
     "camera": "intimate vertical medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
@@ -30,7 +30,7 @@
       "green_aura",
       "black_dress"
     ],
-    "promptProse": "Tatsumaki rides astride her companion using telekinesis, her torn dress open beneath green psychic light and the storm outside.",
+    "promptProse": "Tatsumaki rides astride her companion using telekinesis, arms folded at her chest, her dress lifted beneath green psychic light and the cold storm light entering from outside.",
     "promptTokens": [
       "Tatsumaki",
       "black dress",

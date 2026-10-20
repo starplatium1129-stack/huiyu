@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_07",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_07",
     "title": "牧之原翔子 · 厨房里系好的围裙",
@@ -12,9 +12,9 @@
     "characterId": "makinohara_shouko",
     "outfitId": "sfw_kitchen",
     "description": "【梓川家厨房·清晨】翔子把长发束成侧辫，穿着素雅围裙准备便当，先把每一块水果摆成整齐的小花，再把写好祝福的便签压在盒盖下。",
-    "location": "Kajigawa family kitchen",
+    "location": "Azusagawa family kitchen",
     "action": "准备便当把水果摆成小花，将祝福便签压在盒盖下",
-    "timeOfDay": "日间",
+    "timeOfDay": "清晨",
     "lighting": "soft morning light over a clean counter",
     "camera": "medium shot, vertical framing",
     "mood": "把照料写进每一个便当细节",
@@ -26,10 +26,9 @@
       "side_braid",
       "handwritten_note",
       "calm_smile",
-      "morning_light",
-      "afternoon_light"
+      "morning_light"
     ],
-    "promptProse": "Shouko arranges the fruit into a small flower in the lunch box, its lid resting beside a tucked-in note. Soft morning light falls across her hands and the clean kitchen counter.",
+    "promptProse": "Shouko arranges fruit into a flower in the lunch box; a note is tucked beneath the lid beside it on the morning-lit counter.",
     "promptTokens": [
       "1girl",
       "solo",

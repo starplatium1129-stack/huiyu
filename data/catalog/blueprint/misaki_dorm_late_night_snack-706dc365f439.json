@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_dorm_late_night_snack",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 405,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "系好长睡袍盘坐地毯，一手递出甜点叉，另一手扶矮桌边，含笑邀请分享蛋糕。",
     "adult": false,
@@ -27,9 +27,9 @@
       "readable writing"
     ],
     "outfitId": "sfw_silk_dorm_robe",
-    "promptProse": "Misaki offers a dessert fork while steadying herself on the low table, inviting the viewer to share the cake.",
+    "promptProse": "Sitting cross-legged on the rug, Misaki offers a dessert fork while steadying herself on the low table, inviting the viewer to share the cake in warm shaded desk-lamp light.",
     "promptTokens": [
-      "crossed legs",
+      "cross-legged",
       "dessert fork",
       "strawberry cake",
       "low table"

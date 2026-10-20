@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_service_club_desk_afterschool",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 351,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yui_r18_service_club_desk_afterschool",
     "characterId": "yuigahama_yui",
@@ -23,7 +23,7 @@
       "pink_nipples",
       "heavy_blush"
     ],
-    "promptProse": "The age-twenty-plus Yui braces both palms on the worktable in a rented volunteer office, her skirt riding up as stacked chairs and a dog keychain frame the scene.",
+    "promptProse": "Sitting on the worktable edge in a rented volunteer office, Yui braces both palms behind her, her skirt riding up as stacked chairs and a dog keychain frame the scene.",
     "promptTokens": [
       "adult",
       "coral blouse",

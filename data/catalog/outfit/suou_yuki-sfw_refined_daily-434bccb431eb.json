@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_refined_daily",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 451,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
@@ -12,11 +12,11 @@
       "name": "淡黄针织背心便装",
       "prose": "a butter-yellow knitted vest over a white puff-sleeved blouse, a navy calf-length skirt and lace-up ankle boots",
       "tokens": [
-        "yellow_sweater_vest",
-        "white_blouse",
-        "puff_sleeves",
-        "long_skirt",
-        "ankle_boots"
+        "butter yellow sweater vest",
+        "white blouse",
+        "puff sleeves",
+        "navy calf-length skirt",
+        "lace-up ankle boots"
       ],
       "isDefault": false,
       "isNsfw": false

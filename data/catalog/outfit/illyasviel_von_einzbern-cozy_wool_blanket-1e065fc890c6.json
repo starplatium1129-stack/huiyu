@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "illyasviel_von_einzbern/cozy_wool_blanket",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "characterId": "illyasviel_von_einzbern",
     "outfit": {
@@ -16,7 +16,7 @@
         "fringe"
       ],
       "prose": "A thick oatmeal wool blanket with a short, soft fringe.",
-      "styleHint": "soft cinematic lighting",
+      "styleHint": "",
       "isDefault": false,
       "default": false
     }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_motorcycle_seat_doggystyle_thrust",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1186,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "amane_r18_motorcycle_seat_doggystyle_thrust",
     "title": "周防天音 · 海滨公路机车皮夹克拉链大敞露深邃巨乳与鞍座自抚",
@@ -36,16 +36,17 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "She sits astride the parked motorcycle, leaning toward the handlebar with one hand beneath her unbuttoned shorts. Road lamps reflect on the chrome.",
+    "promptProse": "She sits astride the parked red motorcycle in her open cropped leather jacket, one hand on the handlebar and the other beneath her unbuttoned shorts. Mercury-vapor road lamps and moonlight reflect on the red paint and chrome.",
     "promptTokens": [
       "coastal road",
-      "motorcycle",
-      "black leather jacket",
+      "red motorcycle",
+      "open cropped black leather jacket",
       "red tank top",
       "denim shorts",
       "straddling",
       "masturbation",
-      "night"
+      "night",
+      "knee-high leather boots"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

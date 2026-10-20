@@ -122,13 +122,13 @@ export function useRandomInspiration() {
     if (pb.subject.kind === 'popular') {
       const character = findCharacter(pb.popularCharacters, pb.subject.characterId)!
       const selectedOutfit = findOutfit(character, pb.subject.outfitId)
-      allowClothing &&= !selectedOutfit || selectedOutfit.id === defaultOutfit(character)?.id
+      allowClothing &&= !pb.subject.outfitExplicit && (!selectedOutfit || selectedOutfit.id === defaultOutfit(character)?.id)
       outfits = Object.fromEntries(character.outfits.map(outfit => [outfit.id, outfit.tokens]))
       if (pb.subject.blueprintId) {
         const blueprintId = pb.subject.blueprintId
         const blueprint = pb.sceneBlueprints.find(item => item.id === blueprintId && (!item.characterId || item.characterId === character.id))
         if (!blueprint) { pb.flash('当前场景尚未就绪，无法随机', 2500, 'warning'); return false }
-        allowClothing = !pb.outfitOverride && (!selectedOutfit || selectedOutfit.id === defaultOutfit(character)?.id || selectedOutfit.id === blueprint.outfitId)
+        allowClothing = !pb.outfitOverride && !pb.subject.outfitExplicit && (!selectedOutfit || selectedOutfit.id === defaultOutfit(character)?.id || selectedOutfit.id === blueprint.outfitId)
         const decisions = inferBlueprintDecisions(blueprint)
         scene = { source: randomVariationSource(blueprint), prompt: blueprint.promptTokens.join(', '), prose: blueprint.promptProse,
           tags: blueprint.sceneTags, action: blueprint.action, time: blueprint.timeOfDay,

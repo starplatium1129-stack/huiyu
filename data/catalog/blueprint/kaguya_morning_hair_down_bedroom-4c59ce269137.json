@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1396,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "抱枕坐在床中央，散发披肩红瞳惺忪，傲娇别脸又偷瞄",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "冰融反差、娇软日常",
     "negativeTokens": [],
     "outfitId": "casual_summer_dress",
-    "promptProse": "Kaguya hugs the pillow in the middle of the bed, her face turned aside but her sleepy eyes stealing a glance at the viewer. Lace-filtered morning light touches her loose black hair.",
+    "promptProse": "Kaguya hugs the pillow, face turned aside but sleepy eyes glancing at the viewer; lace-filtered light reaches her loose hair.",
     "promptTokens": [
       "shinomiya_kaguya",
       "loose hair",

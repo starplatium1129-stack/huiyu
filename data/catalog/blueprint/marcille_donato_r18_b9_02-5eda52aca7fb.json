@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_r18_b9_02",
-  "revision": 2,
+  "revision": 6,
   "sortOrder": 1727,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "marcille_donato_r18_b9_02",
     "title": "玛露希尔 · 地下矮人温汤水光湿身独奏 ·「把魔物油脂洗干净……身上黏糊糊的难受死了」",
@@ -30,7 +30,7 @@
       "ruins",
       "dungeon"
     ],
-    "promptProse": "Marcille rests in the underground geothermal pool, touching herself underwater as her ears droop and a tear runs down her cheek.",
+    "promptProse": "Marcille rests in the underground pool, her loose blonde hair floating on the surface, touching herself underwater with drooping ears and a tear on her cheek.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -55,6 +55,17 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "identityTokensOverride": [
+      "marcille_donato",
+      "dungeon meshi",
+      "blonde hair",
+      "long hair",
+      "high forehead",
+      "green eyes",
+      "pointy ears",
+      "hair down"
+    ],
+    "identityProseOverride": "Marcille Donato from Delicious in Dungeon, with loose long blonde hair, a high forehead, pointed ears and green eyes."
   }
 }

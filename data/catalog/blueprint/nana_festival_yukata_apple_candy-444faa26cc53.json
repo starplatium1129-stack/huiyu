@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_festival_yukata_apple_candy",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1269,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "单手举着红亮苹果糖递向对方喂食，脸颊微红露出小虎牙，爱心尾巴欢快甩动",
     "camera": "medium shot, eye level, both companions visible",
@@ -20,7 +20,7 @@
     "mood": "甜美傲娇",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Nana holds the candy apple toward Rito beside her, her small fang showing in a hesitant smile. Lantern light glows along the red candy shell between them as the festival stalls recede behind.",
+    "promptProse": "Nana offers the candy apple to Rito beside her, a fang showing in her hesitant smile. Lanterns light the red candy against receding festival stalls.",
     "promptTokens": [
       "2people",
       "yuuki rito",

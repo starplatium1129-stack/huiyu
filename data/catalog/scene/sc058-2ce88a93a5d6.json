@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc058",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "A close mirror view shows her embarrassed face and the robe at her shoulder as she turns toward the viewer behind her, with the phone hidden at her back; morning light falls softly across the reflected cheek.",
+    "animaCaption": "In the mirror, her embarrassed face turns toward the viewer behind her, the phone hidden at her back. Morning light crosses her reflected cheek and the robe at her shoulder.",
     "auditRevision": "careful-batch13-2026-08-27",
     "camera": "镜面中单一面部与肩部衣装的近景",
     "category": "恋爱/After_Story",

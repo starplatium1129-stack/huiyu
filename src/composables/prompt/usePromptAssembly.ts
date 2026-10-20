@@ -34,6 +34,7 @@ import { createPromptPlan, plainEnglish, renderPromptPlan } from '@/utils/prompt
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { studioDualSubject } from '@/utils/studioDualSubject'
+import { compositionTokens } from '@/utils/blueprintComposition'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PromptAssemblyState = Pick<PromptBuilderStore, 'activeScene' | 'artistStyleIds' | 'char' | 'characters' | 'charPrompt'
@@ -67,6 +68,9 @@ function sceneContext(scene: PromptBuilderStore['activeScene']) {
     recommendedSize: typeof scene.recommendedSize === 'string' ? scene.recommendedSize : undefined,
     usage: Array.isArray(scene.usage) ? scene.usage.filter((item): item is string => typeof item === 'string') : undefined,
     animaCaption: typeof scene.animaCaption === 'string' ? scene.animaCaption : undefined,
+    compositionIntent: scene.compositionIntent,
+    identityTokensOverride: Array.isArray(scene.identityTokensOverride) ? [...scene.identityTokensOverride] : undefined,
+    identityProseOverride: typeof scene.identityProseOverride === 'string' ? scene.identityProseOverride : undefined,
   }
 }
 
@@ -227,7 +231,7 @@ export function usePromptAssembly(
       .filter(trait => pb.manualTags.has(trait.tag))
       .map(trait => trait.tag)
     const controlTags = characterControlTokens(scene, pb.char, controlLoraIds.value)
-    const charLine = pb.charPrompt
+    const charLine = compositionTokens(tokenize(pb.charPrompt), { ...scene, promptTokens: tokenize(sceneTemplate) }).join(', ')
     if (charLine) {
       const identityTags = [...controlTags, ...traitTags]
       parts.push({ cls: 'c', text: format(identityTags.length ? `${charLine}, ${identityTags.join(', ')}` : charLine) })

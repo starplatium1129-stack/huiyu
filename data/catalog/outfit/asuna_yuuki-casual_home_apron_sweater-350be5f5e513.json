@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asuna_yuuki/casual_home_apron_sweater",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 746,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "asuna_yuuki",
     "outfit": {
@@ -12,7 +12,7 @@
       "name": "木屋奶油针织与蔷薇围裙",
       "prose": "An oversized cream cable-knit sweater under a pink rose-print apron with a fine red border.",
       "tokens": [
-        "cream sweater",
+        "oversized cream sweater",
         "cable knit",
         "pink floral apron",
         "red piping"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "artoria_pendragon_alter",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "artoria_pendragon_alter",
     "profile": {
@@ -94,11 +94,11 @@
         "黑无毛",
         "暴君骑士王"
       ],
-      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, with pale platinum-blonde hair, amber-gold eyes, ivory skin and a reserved, composed presence",
+      "identityProse": "Artoria Pendragon Alter (Saber Alter) from Fate/stay night, with platinum-blonde hair, amber-gold eyes and pale skin.",
       "identityTokens": [
         "saber_alter",
         "fate/stay_night",
-        "blonde_hair",
+        "platinum_blonde_hair",
         "yellow_eyes",
         "pale_skin"
       ],

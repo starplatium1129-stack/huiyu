@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kasugano_sora",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 138,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kasugano_sora",
     "profile": {
@@ -73,7 +73,7 @@
         "春日野穹",
         "Sora Kasugano"
       ],
-      "identityProse": "Sora Kasugano from Yosuga no Sora, with very long straight white hair, ribbon-tied twin tails, fine antenna-like strands and quiet grey eyes. Her reserved expressions become more open around familiar comforts.",
+      "identityProse": "Sora Kasugano from Yosuga no Sora, with long white twin tails tied with black ribbons, antenna-like hair strands and grey eyes.",
       "identityTokens": [
         "kasugano_sora",
         "yosuga_no_sora",
@@ -81,7 +81,8 @@
         "twintails",
         "black_ribbon",
         "antenna_hair",
-        "grey_eyes"
+        "grey_eyes",
+        "long hair"
       ],
       "exactTokens": [
         "kasugano_sora"

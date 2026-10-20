@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_inn_bath",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "frieren_r18_inn_bath",
     "title": "芙莉莲 · 旅店浴后·千年的精灵与炉火",
@@ -27,19 +27,16 @@
       "barefoot",
       "5_toes"
     ],
-    "promptProse": "After bathing, she props one heel on the mattress and dries her inner thigh with a folded towel. Fireplace light warms the open white robe and the wooden bed frame.",
+    "promptProse": "She sits at the wooden bed edge with wet hair resting over her shoulders, looking toward the viewer with a calm, welcoming expression. Fireplace light warms her open robe and the bed frame.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult",
-      "pointy ears",
       "open robe",
       "topless",
       "wet hair",
       "sitting",
       "on bed",
-      "knee up",
-      "towel",
       "inn",
       "firelight",
       "cowboy shot",
@@ -55,6 +52,19 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "wizard_robe",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "identityProseOverride": "Frieren from Frieren: Beyond Journey's End, with long loose silver-white hair, green eyes, pointed elf ears and gold earrings.",
+    "identityTokensOverride": [
+      "frieren",
+      "sousou_no_frieren",
+      "1girl",
+      "solo",
+      "long_hair",
+      "white_hair",
+      "hair_down",
+      "green_eyes",
+      "pointy_ears",
+      "gold_earrings"
+    ]
   }
 }

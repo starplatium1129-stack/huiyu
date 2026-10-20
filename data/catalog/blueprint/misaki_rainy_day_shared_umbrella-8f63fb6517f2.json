@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_rainy_day_shared_umbrella",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 407,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "钻进你的伞下紧贴肩膀，星瞳别扭又满足",
     "adult": false,
@@ -26,7 +26,7 @@
     "mood": "别扭甜蜜、雨日心动",
     "negativeTokens": [],
     "outfitId": "official_tokiwadai_uniform",
-    "promptProse": "Misaki stands on the left with her handbag lowered, shoulder touching her companion on the right, who holds the umbrella over them in the summer rain.",
+    "promptProse": "Misaki stands on the left with her handbag lowered, shoulder touching her companion on the right, who holds the umbrella over them in the summer rain. Warm streetlight meets the blue-gray rain outside the umbrella.",
     "promptTokens": [
       "2people",
       "shared umbrella",

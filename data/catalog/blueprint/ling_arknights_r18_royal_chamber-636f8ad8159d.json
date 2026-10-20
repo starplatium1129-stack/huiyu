@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_royal_chamber",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 655,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
-    "action": "坐在软榻上，一手举酒盏，烟气绕过榻柱。",
+    "action": "斜倚锦被，一手举酒盏，另一手向画面外同伴招手，烟气绕过榻柱。",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
@@ -26,13 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Ling sits on the daybed, raising a wine cup as dragon smoke curls around the posts.",
+    "promptProse": "Ling reclines among layered silk cushions, raising a wine cup and beckoning to her off-frame companion with her free hand. Dragon smoke curls around the bedposts in red candlelight beyond the half-drawn curtains.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Ling",
       "nude",
-      "sitting",
+      "reclining",
+      "beckoning",
       "wine cup",
       "daybed",
       "dragon smoke"

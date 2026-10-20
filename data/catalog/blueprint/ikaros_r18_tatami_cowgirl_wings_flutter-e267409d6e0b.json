@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_r18_tatami_cowgirl_wings_flutter",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1221,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "独自跨坐软垫，一手扶翼根，另一手留在腿间。",
     "adult": true,
@@ -18,14 +18,14 @@
     "description": "成年伊卡洛斯独自跨坐榻榻米软垫，白裙松落，一手扶住翼根，另一手留在腿间；胸前蓝光与和纸灯笼的暖光交映。",
     "id": "ikaros_r18_tatami_cowgirl_wings_flutter",
     "kreaStyleHint": "r18_sensual_bedroom",
-    "lighting": "和纸灯笼柔和温暖的光线洒在起伏的雪肤与纯白羽毛上",
+    "lighting": "和纸灯笼暖光照亮白色羽毛与榻榻米，胸前蓝光在近处衣料上留下冷色反光",
     "location": "和室榻榻米坐席中央骑乘姿态",
     "mood": "极乐沉沦",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "angeloid_dress",
-    "promptProse": "Adult Ikaros sits astride a tatami cushion, steadying a wing root with one hand and touching herself with the other as blue light pulses at her chest.",
+    "promptProse": "Adult Ikaros sits astride a tatami cushion, steadying a wing root with one hand and touching herself with the other as blue light pulses at her chest; warm paper-lantern light falls across her white feathers and the mat.",
     "promptTokens": [
       "adult",
       "dress down",
@@ -44,7 +44,7 @@
     "sceneTags": [
       "cowgirl",
       "straddling",
-      "open_shirt",
+      "open_dress",
       "bouncing_breasts",
       "large_breasts",
       "angel_wings"

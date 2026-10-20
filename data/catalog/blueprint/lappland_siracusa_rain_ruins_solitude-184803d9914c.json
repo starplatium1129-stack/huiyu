@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_rain_ruins_solitude",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 676,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "独自坐在雨夜古堡断壁顶端，双刀插在身侧，仰天狂笑，任由暴雨冲刷",
     "camera": "cowboy shot, low angle",
@@ -20,7 +20,7 @@
     "mood": "狂暴凄美",
     "negativeTokens": [],
     "outfitId": "nomad_wasteland",
-    "promptProse": "Lappland sits atop the ruined wall with both swords planted beside her, laughing into the storm.",
+    "promptProse": "Lappland sits atop the ruined wall with both swords planted beside her, laughing into the storm. A blue-white lightning flash reveals her rain-soaked hair and the broken stone against the dark sky.",
     "promptTokens": [
       "swords",
       "sitting",

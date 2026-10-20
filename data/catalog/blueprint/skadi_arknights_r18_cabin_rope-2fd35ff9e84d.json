@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_cabin_rope",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 612,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "坐在床沿，解开发绳",
     "adult": true,
@@ -25,16 +25,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [
-      "nude",
-      "masturbation",
-      "hand between legs"
+      "nude"
     ],
     "outfitId": "nsfw_nude",
-    "promptProse": "Skadi sits on the bunk with a loose cord looped around her wrist and raised knee, holding its end with one hand while touching herself with the other. Her sword stays sheathed at the far wall.",
+    "promptProse": "Skadi sits on the cabin bunk’s edge, lifting a loosened hair tie with both hands as silver hair falls over her shoulders; the warm lamp catches her fingers and red eyes.",
     "promptTokens": [
       "Skadi",
-      "thigh straps",
-      "red cord",
+      "hair tie",
       "sitting",
       "bunk",
       "cabin",

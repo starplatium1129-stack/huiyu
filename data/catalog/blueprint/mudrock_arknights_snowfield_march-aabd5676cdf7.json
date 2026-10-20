@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 577,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "扛着战锤稳步前行",
     "camera": "full-body shot",
@@ -17,7 +17,7 @@
     "mood": "沉默坚毅",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Mudrock carries the engineering warhammer over one shoulder and glances back to check her companions beyond the frame.",
+    "promptProse": "Mudrock carries the engineering warhammer, taller than herself, over one shoulder as she walks through knee-deep snow and looks back to check her off-frame companions. Pale snow-reflected light catches the armor edges.",
     "promptTokens": [
       "hammer",
       "walking",

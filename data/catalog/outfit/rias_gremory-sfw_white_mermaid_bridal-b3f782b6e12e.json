@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/sfw_white_mermaid_bridal",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 1147,
   "createdAt": "2026-10-06T14:13:16.548313600+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
@@ -14,14 +14,14 @@
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "A white satin mermaid bridal gown with an off-shoulder neckline, a soft trailing hem and long lace veil, paired with closed white bridal shoes.",
+      "prose": "A white satin mermaid gown with off-shoulder neckline, trailing hem, long lace veil and closed white bridal shoes.",
       "tokens": [
-        "white wedding gown",
+        "white satin wedding gown",
         "mermaid dress",
         "off shoulder",
-        "lace veil",
+        "long lace veil",
         "train",
-        "white bridal shoes"
+        "closed white bridal shoes"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_data_archive",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 716,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "站在数据架前检索终端",
     "camera": "medium shot",
@@ -17,12 +17,11 @@
     "mood": "专注求知",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Her hand remains on the archive terminal as she turns toward the offscreen Administrator, screen light falling across her attentive face.",
+    "promptProse": "Her hand remains on the archive terminal between towering data-storage stacks as she turns toward the offscreen Administrator, screen light falling across her attentive face.",
     "promptTokens": [
       "terminal",
       "data storage",
       "looking back",
-      "night",
       "screen light"
     ],
     "recommendedSize": "1152x1536",

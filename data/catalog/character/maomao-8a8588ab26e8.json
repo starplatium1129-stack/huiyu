@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "maomao",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "maomao",
     "profile": {
@@ -73,13 +73,14 @@
         "猫猫",
         "Maomao"
       ],
-      "identityProse": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, blue eyes and small freckles across her face. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",
+      "identityProse": "Maomao from The Apothecary Diaries, with dark-green hair in a bun, blue eyes and freckles.",
       "identityTokens": [
         "maomao_(kusuriya_no_hitorigoto)",
         "kusuriya no hitorigoto",
         "green hair",
         "hair bun",
-        "freckles"
+        "freckles",
+        "blue eyes"
       ],
       "exactTokens": [
         "maomao_(kusuriya_no_hitorigoto)"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_hotel_mirror_reflection",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "对镜练习俄语情话，说完瞬间捂脸",
     "adult": true,
@@ -23,16 +23,16 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "The age-twenty-plus Alya gathers her hair with one hand and touches her inner thigh with the other beside a steam-clouded mirror showing only blurred light.",
+    "promptProse": "She hides her flushed face behind a bath towel; the mirror reflects her red ears and loose hair. Warm lantern light diffuses through the bathhouse steam.",
     "promptTokens": [
-      "adult",
-      "hotel room",
-      "fogged mirror",
-      "nude",
-      "black thighhighs",
-      "hair up",
-      "looking back",
-      "three-quarter view"
+      "bathhouse",
+      "dressing room",
+      "mirror",
+      "towel",
+      "holding towel",
+      "blush",
+      "night",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -46,6 +46,17 @@
       "steam"
     ],
     "timeOfDay": "夜晚",
-    "title": "艾莉莎·九条 · 镜前练习的俄语情话"
+    "title": "艾莉莎·九条 · 镜前练习的俄语情话",
+    "identityTokensOverride": [
+      "alisa_mikhailovna_kujou",
+      "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
+      "1girl",
+      "solo",
+      "silver_hair",
+      "blue_eyes",
+      "long_hair",
+      "hair_down"
+    ],
+    "identityProseOverride": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, with loose long silver hair, blue eyes and no hair ribbons."
   }
 }

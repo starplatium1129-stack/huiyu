@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_sofa_sweater",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 891,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "半倚沙发高领毛衣半褪",
     "adult": true,
@@ -26,17 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "seminar_uniform",
-    "promptProse": "Adult Rio holds her sweater beneath her chin while touching herself under the skirt, one leg extended along the cushion and the other folded inward.",
+    "promptProse": "Rio reclines on the sofa with her black sweater lowered at the neckline; warm floor-lamp light crosses her dark skirt and tired expression.",
     "promptTokens": [
       "black turtleneck",
       "adult",
       "1girl",
       "solo",
-      "sweater lift",
       "topless",
-      "open charcoal pleated skirt",
       "reclining",
-      "masturbation",
       "sofa",
       "night"
     ],

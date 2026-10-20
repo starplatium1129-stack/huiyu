@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_03",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1565,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_03",
     "title": "拉芙塔莉雅 · 篝火旁的晚餐分餐",
@@ -14,7 +14,7 @@
     "description": "旅途营地，她跪坐在篝火边把炖菜分进每个人的碗里，尾巴被火光照得暖融融；确认大家都拿到之后才给自己盛，动作自然得像呼吸。",
     "location": "旅途篝火营地",
     "action": "旅途营地，她跪坐在篝火边把炖菜分进每个人的碗里，尾巴被火光照得暖融融",
-    "timeOfDay": "日间",
+    "timeOfDay": "夜晚",
     "lighting": "firelight",
     "camera": "medium shot",
     "mood": "自然日常",
@@ -31,7 +31,7 @@
       "bedroll",
       "horizontal_composition"
     ],
-    "promptProse": "Kneeling beside the pot, she ladles stew with one hand into a bowl held by a companion across the fire, keeping the waiting bowls within reach.",
+    "promptProse": "Kneeling beside the pot, she ladles stew into her companion's bowl across the fire; waiting bowls remain within reach.",
     "promptTokens": [
       "kneeling",
       "serving food",

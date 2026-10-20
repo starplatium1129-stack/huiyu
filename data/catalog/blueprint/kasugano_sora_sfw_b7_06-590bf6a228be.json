@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1618,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_06",
     "title": "春日野穹 · 赫尔辛基的雪",
@@ -30,7 +30,7 @@
       "winter_sun",
       "medium_shot"
     ],
-    "promptProse": "Sora looks back toward the viewer from the snow-covered plaza, her relieved expression above the grey scarf. Winter sunlight catches her white breath and the edge of her coat.",
+    "promptProse": "Sora looks back toward the viewer from the snow-covered plaza, her expression quietly relieved. Winter sunlight catches her white breath and the edge of her coat.",
     "promptTokens": [
       "kasugano_sora",
       "looking back",

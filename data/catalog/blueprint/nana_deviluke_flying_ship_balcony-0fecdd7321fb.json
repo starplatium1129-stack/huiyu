@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_deviluke_flying_ship_balcony",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1265,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "单手扶着护盾栏杆眺望蔚蓝地球，微重力下长双马尾与爱心尾巴飘拂，神采飞扬",
     "camera": "cowboy shot, low angle, sweeping cosmic planetary backdrop",
@@ -20,7 +20,7 @@
     "mood": "辽阔壮丽",
     "negativeTokens": [],
     "outfitId": "deviluke_dress",
-    "promptProse": "Nana rests one hand on the energy railing and turns toward Earth below the observation deck. The blue atmospheric arc lights the edge of her face while her pink twintails drift against the stars.",
+    "promptProse": "Nana rests one hand on the energy rail, watching Earth below. Its blue arc edges her face as her twintails drift against the stars.",
     "promptTokens": [
       "hand on railing",
       "looking down",

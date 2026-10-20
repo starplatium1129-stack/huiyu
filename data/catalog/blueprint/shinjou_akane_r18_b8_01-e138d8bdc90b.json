@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_r18_b8_01",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1549,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "shinjou_akane_r18_b8_01",
     "title": "新条茜 · 怪兽工作室粉紫长开衫主控跨坐 ·「你是为我而存在的吧？……那就全部交给我支配」",
@@ -30,7 +30,7 @@
       "bottomless",
       "barefoot"
     ],
-    "promptProse": "Akane moves astride the viewer's lap in her sculpture-filled bedroom, one hand against their throat and her long lavender knit cardigan open under green monitor light.",
+    "promptProse": "Akane moves astride the viewer's lap in her sculpture-filled basement workshop, one hand against their throat and her long lavender knit cardigan open under green monitor light.",
     "promptTokens": [
       "adult",
       "1girl",
@@ -41,7 +41,7 @@
       "barefoot",
       "cowgirl position",
       "on lap",
-      "bedroom",
+      "workshop",
       "monitor glow",
       "from below",
       "lavender cardigan"

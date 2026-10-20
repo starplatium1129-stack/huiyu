@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_armor_workshop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 576,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "单膝跪地调试装甲关节",
     "camera": "medium shot",
@@ -21,7 +21,7 @@
     "mood": "专注温柔",
     "negativeTokens": [],
     "outfitId": "elite2",
-    "promptProse": "Kneeling beside the empty power armor, she fits the wrench into its exposed knee joint, steadying the fitting with her other hand above the open toolbox.",
+    "promptProse": "Kneeling beside the empty armor, she fits the wrench into its knee joint while her other hand steadies the fitting above the toolbox.",
     "promptTokens": [
       "kneeling",
       "wrench",

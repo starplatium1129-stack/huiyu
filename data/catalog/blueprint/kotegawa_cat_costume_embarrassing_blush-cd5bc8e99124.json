@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_cat_costume_embarrassing_blush",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1258,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "戴猫爪手套双手护在深沟胸前，满面通红泪眼汪汪娇嗔，猫耳与尾巴紧绷微颤",
     "camera": "medium shot, eye-level, extreme flustered blush focus",
@@ -25,7 +25,12 @@
     "promptProse": "Adult Yui holds her plush paw mittens over the neckline of her black leotard, embarrassed beneath the warm dressing-room lights.",
     "promptTokens": [
       "blush",
-      "dressing room"
+      "dressing room",
+      "black leather leotard",
+      "strapless",
+      "cat ear headband",
+      "fake cat tail",
+      "paw mittens"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

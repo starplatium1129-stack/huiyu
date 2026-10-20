@@ -4,7 +4,7 @@
   "revision": 6,
   "sortOrder": 166,
   "createdAt": "2026-10-04T10:59:50+00:00",
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shu_arknights",
     "profile": {
@@ -116,17 +116,25 @@
       ],
       "franchise": "Arknights",
       "id": "shu_arknights",
-      "identityProse": "Shu from Arknights, an adult female agricultural Tianshi of Yan. She has very long silver-gray hair with golden streaks and deep cobalt-blue ends, turquoise eyes with amber-orange pupils, branched ivory-and-gold dragon horns, long pointed ears, golden-yellow hands, and a pale scaled dragon tail edged with gold and blue.",
+      "identityProse": "Shu from Arknights: very long silver-gray hair with gold streaks and cobalt ends, turquoise eyes with amber-orange pupils, branched ivory-and-gold dragon horns, pointed ears, golden-yellow hands and a pale scaled tail edged in gold and blue.",
       "identityTokens": [
         "shu_(arknights)",
         "1girl",
         "solo",
         "grey hair",
+        "very long hair",
         "gradient hair",
+        "gold hair streaks",
+        "cobalt blue hair tips",
         "aqua eyes",
+        "amber-orange pupils",
         "eastern dragon horns",
+        "branched ivory and gold horns",
+        "pointy ears",
         "dragon tail",
-        "colored extremities"
+        "pale scaled tail with gold and blue edges",
+        "colored extremities",
+        "golden-yellow hands"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1045,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "sparkle_mask_taken_off_flustered_tsundere",
     "title": "花火 · 被摘面具的破防羞恼",
@@ -29,7 +29,7 @@
       "flustered",
       "tsundere_pout"
     ],
-    "promptProse": "Sparkle reaches with both hands for the fox mask in the viewer's hand at the edge of the frame. A narrow backstage spotlight catches her flushed cheeks and bitten lip against the dark curtain.",
+    "promptProse": "Sparkle reaches with both hands for the fox mask held by the viewer at the frame’s edge; a backstage spotlight catches her flushed cheeks and bitten lip against the dark curtain.",
     "promptTokens": [
       "fox mask",
       "reaching",

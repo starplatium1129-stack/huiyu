@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1568,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_06",
     "title": "拉芙塔莉雅 · 冬夜壁炉前的信",
@@ -14,7 +14,7 @@
     "description": "旅馆壁炉前，她就着火光给故乡方向写一封没有收件人的信，耳朵低垂；写完后把信纸仔细折好收进怀里——有些思念不需要寄出。",
     "location": "旅馆壁炉边书桌",
     "action": "旅馆壁炉前，她就着火光给故乡方向写一封没有收件人的信，耳朵低垂",
-    "timeOfDay": "日间",
+    "timeOfDay": "冬夜",
     "lighting": "firelight",
     "camera": "medium shot",
     "mood": "自然日常",

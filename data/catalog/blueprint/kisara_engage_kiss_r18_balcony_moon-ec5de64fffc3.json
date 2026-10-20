@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_r18_balcony_moon",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 514,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kisara_engage_kiss_r18_balcony_moon",
     "title": "木更 · 阳台月色",
@@ -25,20 +25,20 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Adult Kisara draws her knees close on the balcony bench, winding a demon ribbon around one thigh while her other hand slips beneath the open nightgown.",
+    "promptProse": "Adult Kisara leans against the balcony railing in her pale-pink sheer nightgown and looks back toward the viewer. Cool moonlight defines the outer edge of her silhouette while warm room light reaches her face from inside.",
     "promptTokens": [
       "red piping",
       "1girl",
       "solo",
       "pale pink sheer nightgown",
-      "open clothes",
-      "bare breasts",
-      "sitting",
-      "bent knees",
-      "ribbon",
-      "hand between legs",
+      "see-through",
+      "leaning",
+      "railing",
+      "looking back",
       "balcony",
-      "moonlight"
+      "moonlight",
+      "warm light",
+      "thin straps"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

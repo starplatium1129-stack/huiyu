@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_clubroom_flustered_weak_point",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1287,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "akeno_clubroom_flustered_weak_point",
     "title": "姬岛朱乃 · 触碰软肋的破防娇羞",
@@ -29,7 +29,7 @@
       "shy",
       "flustered"
     ],
-    "promptProse": "Her companion stands close behind her with one arm around her waist, brushing her ear with his free hand. She turns her flushed face aside and catches his collar near her shoulder; evening light reaches them beside the bookshelves.",
+    "promptProse": "Her companion stands close behind her with one arm around her waist, brushing her ear with his free hand. She turns her flushed face aside and catches his collar near her shoulder with both hands; golden window light reaches them beside the shaded bookshelves.",
     "promptTokens": [
       "couple",
       "blush",

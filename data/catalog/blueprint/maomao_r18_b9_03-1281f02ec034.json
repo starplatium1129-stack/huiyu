@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_r18_b9_03",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 1717,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "maomao_r18_b9_03",
     "title": "猫猫 · 宫女襦裙系带被药柜抽屉夹住的更衣事故 ·「痛痛痛……系带被抽屉咬死了，快帮我剪断！」",
@@ -13,7 +13,7 @@
     "description": "【太医院药柜前·黄昏】搬运沉重的百味药斗时，宽大的汉服襦裙系带不慎被药柜抽屉死死卡死。猫猫双手撑在药柜台面上，身体前倾塌腰，襦裙被强行拉扯得高高扬起，露出白皙光洁的娇小翘臀与半透明的丝绸衬裤。胸前交领被拉扯得向外散开，露出毫无防备的小巧双乳。她急得回头跳脚——「不要光在那里发呆傻笑啦！要是被宦官们看到……我们两个都要掉脑袋的！」",
     "location": "太医院药柜前·黄昏",
     "action": "俯身撑住药柜台面，裙带卡在抽屉内牵起衣裙，回头望向画外来人求助",
-    "timeOfDay": "afternoon",
+    "timeOfDay": "黄昏",
     "lighting": "warm_cinematic_lighting",
     "camera": "medium shot, three-quarter rear view",
     "mood": "意外失控与羞赧",
@@ -30,7 +30,7 @@
       "stuck_clothes",
       "clothes_pull"
     ],
-    "promptProse": "Adult Maomao bends over the apothecary counter as her sash catches in a drawer, lifting her skirt and parting the collar; she looks back for help before the inspector arrives.",
+    "promptProse": "Seen from a three-quarter rear view, Maomao braces both palms on the counter, her sash caught in the drawer and pulling her skirt and collar aside as she looks back for help.",
     "promptTokens": [
       "green hanfu",
       "stuck clothes",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_r18_b6_03",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1575,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "raphtalia_r18_b6_03",
     "title": "拉芙塔莉雅 · 武器店试衣皮甲搭扣卡死的受力事故 ·「尚文大人……搭扣被尾巴毛卡住了，动不了啦」",
@@ -30,7 +30,7 @@
       "clothes_pull",
       "animal_ears"
     ],
-    "promptProse": "Adult Raphtalia leans over the smith’s bench as the armor buckle catches in her tail fur, tightening the breastplate and raising her skirt; she looks back to her master for help.",
+    "promptProse": "Raphtalia braces both palms on the fitting table, her armor buckle caught in her tail fur, tightening the cuirass and raising her skirt as she looks back for help.",
     "promptTokens": [
       "brown leather armor",
       "stuck clothes",
@@ -38,7 +38,7 @@
       "skirt lift",
       "bent over",
       "looking back",
-      "forge",
+      "armor shop fitting room",
       "red brown skirt"
     ],
     "negativeTokens": [],

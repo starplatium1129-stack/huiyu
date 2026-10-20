@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_snowy_wall",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 993,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "披袍立于雪中眺望",
     "camera": "cowboy shot",
@@ -18,7 +18,7 @@
     "mood": "悲悯坚定",
     "negativeTokens": [],
     "outfitId": "coronation_winter_wall",
-    "promptProse": "Historia stands wrapped in her cloak among the snowy battlements, gazing beyond the wall.",
+    "promptProse": "Historia stands wrapped in her cloak among the snowy battlements, gazing beyond the wall. Overcast snowlight catches her crown above the muted snowfield.",
     "promptTokens": [
       "battlement",
       "snow"

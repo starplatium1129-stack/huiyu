@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_rhongomyniad",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 190,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "negativeTokens": [
       "readable inscription"
@@ -32,7 +32,7 @@
       "sunset_light",
       "full_body"
     ],
-    "promptProse": "Morgan steadies the upright Rhongomyniad with one hand, her other hand resting beside her skirt as she looks beyond the battlements. The last golden light catches the lance and her windblown hem.",
+    "promptProse": "Morgan steadies the upright Rhongomyniad with one hand, the other beside her skirt, watching beyond the battlements. Sunset catches the lance and windblown hem.",
     "promptTokens": [
       "1girl",
       "solo",

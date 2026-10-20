@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_r18_magical_girl_torn_dress",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 833,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "破碎战服半挂，无防备地跌坐",
     "adult": true,
@@ -24,7 +24,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "magical_girl_dress",
-    "promptProse": "The age-twenty-plus Byakuya kneels after the fight, holding her cracked wand against the ground while examining a glowing mark on her inner thigh.",
+    "promptProse": "Adult Byakuya sits exhausted on rubble, one hand braced beside her, the other holding the cracked wand. She looks toward the viewer as moonlight edges the torn dress through smoke.",
     "promptTokens": [
       "adult",
       "ruins",
@@ -32,7 +32,8 @@
       "topless",
       "ripped black stocking",
       "wand",
-      "kneeling"
+      "sitting",
+      "rubble"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

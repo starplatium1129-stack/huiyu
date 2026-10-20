@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 278,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_02",
     "title": "美杜莎 Rider · 单车篮里的鲜面包",
@@ -30,7 +30,7 @@
       "morning",
       "medium_shot"
     ],
-    "promptProse": "Medusa keeps one hand on the bread bag in the bicycle basket while the other tightens its cloth strap. Her hair is gathered forward over one shoulder, clear of the wheels in the soft morning light.",
+    "promptProse": "Medusa holds the bread bag in the bicycle basket with one hand and tightens its strap with the other. Her hair rests over her shoulder, clear of the wheels in morning light.",
     "promptTokens": [
       "1girl",
       "solo",

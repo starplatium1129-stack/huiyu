@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "cartethyia/sfw_bridal",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 949,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
@@ -13,7 +13,7 @@
       "prose": "A pale-blue bridal gown beneath a short cream mantle, its braided gold edges meeting at a round gold clasp.",
       "tokens": [
         "light blue wedding dress",
-        "cream mantle",
+        "short cream mantle",
         "braided gold trim",
         "gold clasp"
       ],

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/sensual_lace_lingerie",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 818,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "sensual_lace_lingerie",
       "name": "浅金镶边白蕾丝套装",
-      "prose": "a white scalloped-lace bra and matching briefs with pale-gold edging, paired with a light silk robe",
+      "prose": "A white scalloped-lace bra and briefs with pale-gold trim, under a light silk robe.",
       "tokens": [
         "white lingerie",
         "gold trim",

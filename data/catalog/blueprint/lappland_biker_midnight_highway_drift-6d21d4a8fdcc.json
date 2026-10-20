@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_biker_midnight_highway_drift",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 674,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "斜靠在黑色重型改装机车旁，手指转动车钥匙，皮衣敞开露出小蛮腰，狂野挑衅",
     "camera": "cowboy shot, low angle",
@@ -20,7 +20,7 @@
     "mood": "狂野叛逆",
     "negativeTokens": [],
     "outfitId": "casual_leather",
-    "promptProse": "Lappland leans beside her heavy motorcycle and spins its keys around one finger with a challenging grin.",
+    "promptProse": "Lappland leans beside her heavy motorcycle and spins its keys around one finger with a challenging grin. The headlamp lights the near guardrail while distant city neon traces the elevated roads below.",
     "promptTokens": [
       "motorcycle",
       "keys",

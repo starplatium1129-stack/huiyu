@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_alien_greenhouse_plant_summon",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1243,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "单手抬起操控发光外星藤蔓环绕身姿，王女礼服勾勒曲线，爱心尾巴自如摇摆，神态优雅神秘",
     "camera": "cowboy shot",
@@ -20,7 +20,7 @@
     "mood": "神秘优雅",
     "negativeTokens": [],
     "outfitId": "deviluke_dress",
-    "promptProse": "She holds the D-Dial in one hand and raises the other gloved hand, guiding the blue-purple vines around her wrist and waist beneath the greenhouse glass.",
+    "promptProse": "She holds the D-Dial in one hand, guiding blue-purple vines around her wrist and waist with the other gloved hand. Leaf-filtered daylight through the greenhouse dome meets the vines’ violet glow.",
     "promptTokens": [
       "white gloves",
       "D-Dial",

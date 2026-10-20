@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_flower_field",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 579,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "弯腰捡起一朵野花",
     "camera": "medium shot",
@@ -30,7 +30,6 @@
       "flower_field",
       "wildflowers",
       "afternoon",
-      "armor",
       "horns",
       "gentle"
     ],

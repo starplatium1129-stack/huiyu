@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_library_desk",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 596,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "action": "站在理发台前细心擦拭整理剪刀与梳子",
     "camera": "medium shot",
@@ -17,7 +17,7 @@
     "description": "【澄闪 · 理发沙龙前台】罗德岛阳光温暖的生活区理发小店内，粉发粉耳的菲林少女苏茜正站在明亮的梳妆台前，极其细心地用软布擦拭整理着各式锋利的剪刀与梳子。看到你推门进来，她头顶毛茸茸的猫耳敏锐地抖了抖，绽放出甜美治愈的微笑——「博士！欢迎光临苏茜的理发屋！今天想剪一个什么样的新发型呢？」",
     "id": "goldenglow_arknights_library_desk",
     "lighting": "warm salon sunlight",
-    "location": "维多利亚理发沙龙",
+    "location": "罗德岛生活区理发沙龙",
     "mood": "专注温婉",
     "negativeTokens": [],
     "outfitId": "salon_dreamer_work_apron",
@@ -28,8 +28,7 @@
       "scissors",
       "comb",
       "hair salon",
-      "medium shot",
-      "high twintails"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

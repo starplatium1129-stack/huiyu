@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_cabin_robe",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 532,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "坐在床边，持诊断平板检查手腕。",
     "adult": true,
@@ -13,17 +13,17 @@
     "camera": "medium shot",
     "category": "成人",
     "characterId": "kaltsit_arknights",
-    "description": "成年凯尔希坐在私人舱室床边，黑色长袍松开，一手拿诊断平板，另一手检查手腕；关闭的门外映着抽象的 Mon3tr 影子。",
+    "description": "成年凯尔希坐在私人舱室床边，黑色长袍松开，一手拿诊断平板，另一手检查手腕；闭合的舱门上落着抽象的 Mon3tr 轮廓影。",
     "id": "kaltsit_arknights_r18_cabin_robe",
     "kreaStyleHint": "",
     "lighting": "舰内低照度暖色光廊与舷窗外泰拉夜空星海，丝绸与白瓷肌肤高光细腻",
-    "location": "罗德岛舰长室私人回廊",
+    "location": "罗德岛私人舱室床边",
     "mood": "高贵清冷与私密",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_cabin_robe",
-    "promptProse": "Adult Kal'tsit sits beside the cabin bed with her robe open, holding the diagnostic tablet in one hand and checking that wrist with the other; an abstract Mon3tr shadow falls beyond the closed door.",
+    "promptProse": "Adult Kal'tsit sits beside the cabin bed with her robe open, holding the diagnostic tablet in one hand and checking that wrist with the other; an abstract Mon3tr shadow falls across the closed cabin door.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -40,15 +40,17 @@
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
     "sceneTags": [
-      "luxury_room",
-      "wine_glass",
-      "evening_gown",
-      "open_back",
-      "cat_ears",
-      "green_hair",
-      "soft_lighting"
+      "private_cabin",
+      "bed",
+      "black_robe",
+      "tablet",
+      "wrist_check",
+      "closed_door",
+      "abstract_shadow",
+      "lamplight",
+      "night"
     ],
     "timeOfDay": "深夜",
-    "title": "凯尔希 · 深夜私语·墨绿晚礼服与清冷回眸"
+    "title": "凯尔希 · 舱室灯下的腕部复查"
   }
 }

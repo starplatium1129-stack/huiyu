@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_dark_shadow_bedroom",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 180,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "sakura_r18_dark_shadow_bedroom",
     "characterId": "matou_sakura",
@@ -22,7 +22,7 @@
       "pink_nipples",
       "intense_blush"
     ],
-    "promptProse": "The age-twenty-plus Sakura directs supporting shadow ribbons beneath her bent knees while touching herself with the other hand, red markings glowing over her exposed torso.",
+    "promptProse": "Adult Sakura controls two shadow ribbons supporting her thighs with her knees bent, one hand directing them and the other touching herself; her black dress remains at her waist. Red markings glow on her torso as her loose hair floats upward.",
     "promptTokens": [
       "black dress",
       "floating",
@@ -52,6 +52,18 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "identityTokensOverride": [
+      "matou_sakura",
+      "1girl",
+      "solo",
+      "purple hair",
+      "long hair",
+      "red hair ribbon",
+      "hair ribbon on left side",
+      "red eyes",
+      "fate/stay night"
+    ],
+    "identityProseOverride": "Sakura Matou from Fate/stay night in her dark form, with long purple hair, a red ribbon on her left side and red eyes."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_flower_bouquet",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 447,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "emilia_rezero_flower_bouquet",
     "title": "爱蜜莉雅 · 超市花束",
@@ -29,7 +29,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "casual",
       "bouquet",
       "white lily",
       "flower shop",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_atelier",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 331,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_atelier",
     "title": "楪祈 · 虚空晶簇间的独奏",
@@ -24,7 +24,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Inori presses the small Void crystal over her exposed heart, making the surrounding cyan shards brighten as the demo loops.",
+    "promptProse": "Inori presses the small Void crystal to her chest, brightening the surrounding cyan shards as the demo loops.",
     "promptTokens": [
       "chiffon",
       "layered skirt",

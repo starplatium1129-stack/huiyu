@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "roxy_migurdia",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "roxy_migurdia",
     "profile": {
@@ -25,10 +25,10 @@
         "hair_color": "浅蓝",
         "eyes": "浅蓝",
         "hairstyle": "长双辫 · 长刘海",
-        "uniform": "蓝袍白围裙 + 尖顶魔女帽",
+        "uniform": "蓝色魔女帽、白色褶边上衣与蓝裙",
         "expression": "内向认真 · 努力型",
         "style": "earnest migurd mage",
-        "signature": "浅蓝发双辫、浅蓝肤与尖顶魔女帽"
+        "signature": "浅蓝长发双辫、蓝眼与尖顶魔女帽"
       },
       "personality": [
         "内向认真",
@@ -49,9 +49,9 @@
       },
       "identity": {
         "role": "魔导师（水圣级）",
-        "age": "米格路德族（数百岁，外貌年轻）",
+        "age": "长寿的米格路德族，已成年",
         "occupation": "魔导师 / 教师",
-        "faction": "米里斯魔法学院"
+        "faction": "米格路德族；与格雷拉特家关系密切"
       },
       "tags": [
         "浅蓝发",
@@ -102,7 +102,7 @@
       "animeStudio": "studio bind, official anime screencap, anime coloring",
       "canon": {
         "era": "中世纪风",
-        "formNotes": "浅蓝发双辫+浅蓝肤；矮个；蓝袍白围裙+尖顶魔女帽",
+        "formNotes": "浅蓝长发双辫、蓝眼；蓝色魔女帽、白色褶边上衣与蓝裙",
         "research": "2026-08-14 调研",
         "world": "异世界奇幻（无职转生）"
       },
@@ -118,14 +118,16 @@
       ],
       "franchise": "Mushoku Tensei",
       "id": "roxy_migurdia",
-      "identityProse": "Roxy Migurdia from Mushoku Tensei, a Migurd magic teacher with long pale-blue hair tied into twin braids with a soft silky shine, blue eyes, a mole on her left collarbone",
+      "identityProse": "Roxy Migurdia from Mushoku Tensei, with pale-blue twin braids, blue eyes and a mole on her left collarbone.",
       "identityTokens": [
         "roxy_migurdia",
         "1girl",
         "solo",
         "blue hair",
+        "long hair",
         "twin braids",
         "blue eyes",
+        "mole on left collarbone",
         "mushoku tensei"
       ],
       "negativeTokens": [

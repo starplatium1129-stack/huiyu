@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rias_gremory",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rias_gremory",
     "profile": {
@@ -89,7 +89,7 @@
         "红发的灭杀姬",
         "吉蒙里公爵千金"
       ],
-      "identityProse": "Rias Gremory from High School DxD, a voluptuous pureblood devil noblewoman with knee-length vivid crimson-red hair, an expressive ahoge on top, striking aquamarine-cyan eyes, and a regal yet deeply affectionate demeanor",
+      "identityProse": "Rias Gremory from High School DxD, with knee-length crimson hair, an ahoge and aquamarine eyes.",
       "identityTokens": [
         "rias_gremory",
         "high school dxd",

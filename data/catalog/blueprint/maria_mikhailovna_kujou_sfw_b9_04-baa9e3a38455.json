@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 793,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "温室钢琴旁弹完旋律向镜头点头，捧花里藏着给妹妹的花",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "把照顾家人的心意写成花嫁",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Maria sits at the greenhouse piano with her hands resting lightly on the keys, nodding toward the viewer after the melody. Her bouquet rests on the closed upper lid, dappled by light through the glass and leaves.",
+    "promptProse": "Maria rests her hands on the greenhouse piano keys, nodding toward the viewer. Her bouquet lies on the upper lid beneath leaf-dappled light.",
     "promptTokens": [
       "piano",
       "bouquet",
@@ -45,7 +45,7 @@
       "considerate_smile",
       "afternoon_light"
     ],
-    "timeOfDay": "黄昏",
+    "timeOfDay": "午后",
     "title": "玛夏 · 温室钢琴旁的温柔花嫁"
   }
 }

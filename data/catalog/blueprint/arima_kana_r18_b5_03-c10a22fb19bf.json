@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_r18_b5_03",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 980,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "撑试衣台塌腰回眸双手反剪扯拉链，紧身包臀裙卡死勒肉，贝雷帽微歪娇恼",
+    "action": "身体前倾靠着试衣台，双手伸到背后尝试拉开拉链并回眸，紧身包臀裙卡死勒肉，贝雷帽微歪娇恼",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
     "camera": "cowboy shot, eye level",
@@ -27,11 +27,10 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "wine_red_fitting_dress",
-    "promptProse": "She leans over a fitting stool with the rear zipper jammed and the dress hem caught above her stockings and lace panties. She looks back with her beret askew.",
+    "promptProse": "She leans against the fitting counter and reaches behind her back with both hands for the jammed zipper, the dress hem caught above her stockings and lace panties. She looks back with her beret askew.",
     "promptTokens": [
-      "adult",
       "dressing room",
-      "dark red dress",
+      "dark red mini dress",
       "tight dress",
       "stuck zipper",
       "bent over",
@@ -40,7 +39,8 @@
       "lace panties",
       "looking back",
       "tears",
-      "white piping"
+      "white piping",
+      "red beret"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

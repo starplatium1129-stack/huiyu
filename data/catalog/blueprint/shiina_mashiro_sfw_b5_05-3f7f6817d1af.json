@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_05",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1516,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_05",
     "title": "椎名真白 · 画室里的赭色指印",
@@ -30,7 +30,7 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Mashiro uses her brush to turn the ochre fingerprint at the paper’s corner into a leaf, the wiping cloth resting beside her. Clear window light illuminates the small wet mark.",
+    "promptProse": "Seated before the easel, Mashiro paints the ochre fingerprint into a leaf at the paper corner, cloth beside her; window light reaches the wet mark.",
     "promptTokens": [
       "Mashiro Shiina",
       "paintbrush",

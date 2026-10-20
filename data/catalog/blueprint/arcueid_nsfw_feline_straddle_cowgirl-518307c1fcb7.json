@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_feline_straddle_cowgirl",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1331,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸膛，俯身贴颈轻磨犬齿，眼眸赤红泛着痴情",
     "adult": true,
@@ -25,7 +25,7 @@
     "mood": "痴情狂热",
     "negativeTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "She straddles the viewer's waist on rumpled bedding and leans toward the viewer's neck.",
+    "promptProse": "She straddles the viewer's waist on rumpled bedding with both hands braced on the viewer's chest, leaning toward the viewer's neck. Warm candlelight flickers across the bedding.",
     "promptTokens": [
       "bedroom",
       "nude",

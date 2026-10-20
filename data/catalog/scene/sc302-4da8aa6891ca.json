@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc302",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 297,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
     "id": "sc302",
     "title": "深夜镜前的完整坦诚",
@@ -30,17 +30,17 @@
     "mature": true,
     "location": "深夜的更衣室镜前",
     "weather": "室内恒温",
-    "camera": "官方CG半身构图",
+    "camera": "镜前全身构图",
     "lighting": "暖色台灯与镜面反光",
     "usage": [
       "官方CG灵感",
       "壁纸级",
       "成人向"
     ],
-    "prompt": "nene_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_composition, 1girl, solo, adult_ayachi_nene, ayachi_nene, white_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, naked, nude, completely_naked, pussy, standing, front_view, mirror_reflection, bare_breasts, nipples, navel, fair_skin, heavy_blush, shy_open_mouth, night, lamp, soft_lighting, sensual, official_visual_novel_cg_framing, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, day, bright, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "nene_r18, adult, visual novel event CG, 1girl, solo, ayachi_nene, ahoge, nude, pussy, standing, front view, mirror reflection, bare breasts, nipples, navel, heavy blush, shy, open mouth, night, lamp, soft lighting, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "extreme close-up, duplicate reflection, day, school uniform, gym uniform",
     "storyJa": "【大人のAfter Story・寧々・深夜の鏡の前の素直さ】更衣室には、暖かなランプが一つだけ灯っていた。寧々は鏡の前に立ち、最後の一枚を脱ぎ捨てると、正面から鏡に向き直った。白い胸も、腰の線も、脚の付け根の一番秘かな場所も、鏡の中にはっきりと映っている。彼女は唇を結び、小さく柔らかな声で言った。「大人になった寧々は、ここもちゃんと成長してるの……よく見てね。寧々はあなたにだけ見せるんだから。」",
-    "animaCaption": "In a medium shot standing before a softly lit dressing mirror at night, she looks forward toward the viewer with a gentle blush, her reflection clearly visible under warm lamplight.",
+    "animaCaption": "Standing before the dressing mirror at night, she faces the glass; the full-length view includes her body and one corresponding reflection. The warm lamp lights her face and the mirror frame.",
     "auditRevision": "careful-batch15-2026-08-27"
   }
 }

@@ -1,20 +1,18 @@
 {
   "kind": "outfit",
   "id": "kafka/nsfw_nude",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 574,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "characterId": "kafka",
     "outfit": {
       "id": "nsfw_nude",
       "name": "极致胴体",
-      "prose": "completely nude and unclad, showcasing her mature voluptuous figure, slender waist, and flawless pale skin",
+      "prose": "No clothing.",
       "tokens": [
-        "nude",
-        "completely_naked",
-        "bare_skin"
+        "nude"
       ],
       "default": false,
       "isDefault": false

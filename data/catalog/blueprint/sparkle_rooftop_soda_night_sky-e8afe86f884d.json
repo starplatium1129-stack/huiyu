@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_rooftop_soda_night_sky",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1046,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "sparkle_rooftop_soda_night_sky",
     "title": "花火 · 梦境天台的汽水与私语",
@@ -29,10 +29,9 @@
       "soft_expression",
       "twintails"
     ],
-    "promptProse": "Sparkle sits beside her companion on the rooftop edge, a half-finished soda bottle in one hand and a fox-tail cushion beside her. She turns toward them with a quiet smile while the city lights below trace the edge of her silk nightgown.",
+    "promptProse": "Sparkle sits beside her companion on the rooftop edge, half-finished soda in one hand, smiling toward them; city lights rim her silk nightgown.",
     "promptTokens": [
       "soda",
-      "cushion",
       "companion",
       "rooftop",
       "night",

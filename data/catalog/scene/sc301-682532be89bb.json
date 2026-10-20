@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc301",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 296,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
     "id": "sc301",
     "title": "晨光里的坦诚",
@@ -37,10 +37,10 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, white_hair, very_long_hair, low_twintails, pink_hair_ribbons, purple_eyes, ahoge, naked, nude, bare_breasts, nipples, navel, pussy, lying_on_back_with_knees_raised_and_legs_spread, anatomically_correct_torso, heavy_blush, shy_open_mouth, looking_at_viewer, bedroom, bed, morning_light, golden_hour, soft_shadows, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, night, dark, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, visual novel event CG, very_long_hair, ahoge, nude, bare breasts, nipples, navel, pussy, lying, on back, knees up, spread legs, heavy blush, shy, open mouth, looking at viewer, bedroom, bed, morning light, golden hour, soft shadows, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "night, school uniform, gym uniform",
     "storyJa": "【大人のAfter Story・寧々・朝の光の中の素直さ】朝の寝室には、まだ淡い金色の光が満ちていた。寧々は仰向けに寝転び、両脚を上げてゆっくりと開き、裸の体を朝の光にさらけ出している。白い胸も、脚の付け根の一番秘かな場所も、はっきりと見えている。彼女は顔を赤らめながら、必死に声を落ち着けて言った。「約束して、寧々だけを見て……ここも、寧々が好きな人にだけ見せるんだから。」",
-    "animaCaption": "In an intimate cinematic view, Ayachi Nene lies gracefully on the soft bed with knees raised apart, looking shyly toward the viewer in the warm morning light.",
+    "animaCaption": "On the soft bed, she raises her knees apart and looks shyly toward the viewer in warm morning light.",
     "auditRevision": "careful-batch15-2026-08-27"
   }
 }

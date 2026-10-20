@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_training_dummy",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 581,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "拄锤而立，气定神闲",
     "camera": "wide shot, low angle",
@@ -20,7 +20,7 @@
     "mood": "沉稳如山",
     "negativeTokens": [],
     "outfitId": "elite2",
-    "promptProse": "Mudrock stands relaxed beside her planted warhammer after the drill, stone guardians encircling the yard behind her.",
+    "promptProse": "Mudrock stands relaxed beside her planted warhammer after the drill, stone guardians encircling the yard behind her in cool morning light.",
     "promptTokens": [
       "hammer",
       "standing",

@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_01",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 1663,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "cartethyia_r18_b9_01",
     "title": "卡提希娅 · 圣都王座殿白银铠甲主控跨坐 ·「漂泊者……圣洁的圣骑士，今夜只臣服于你的剑下」",
     "category": "主控骑乘",
     "characterId": "cartethyia",
-    "description": "【圣都王座神殿·深夜】圣洁高傲的王女骑士卸下甲胄。卡提希娅将破损的白银胸甲解开，跨坐在你的腰间。雪白的长发如流银披散，纯净的浅蓝双眸在动情中泛起涟漪，结实修长的大腿内侧勒着铠甲绑带，主动按住你的胸膛下沉起伏——「与你一同拯救的这片大地……如果能在这里孕育属于我们的未来……」",
+    "description": "【圣都王座神殿·深夜】圣洁高傲的王女骑士卸下甲胄。卡提希娅将破损的白银胸甲解开，跨坐在你的腰间。金色的长发披散在肩后，纯净的浅蓝双眸在动情中泛起涟漪，结实修长的大腿内侧勒着铠甲绑带，主动按住你的胸膛下沉起伏——「与你一同拯救的这片大地……如果能在这里孕育属于我们的未来……」",
     "location": "圣都王座神殿·深夜",
-    "action": "跨坐腰间铠甲半褪露雪白双峰，银白长发飘拂，冰蓝眼眸深情含羞主动下沉",
+    "action": "跨坐腰间铠甲半褪露雪白双峰，金色长发飘拂，冰蓝眼眸深情含羞主动下沉",
     "timeOfDay": "night",
     "lighting": "silver_moonlight",
     "camera": "medium shot, first-person view from below",
@@ -30,9 +30,8 @@
       "silver_armor",
       "open_clothes"
     ],
-    "promptProse": "She straddles the viewer's lap with her cuirass open, cupping the viewer's face in her gauntlets beneath stained-glass moonlight.",
+    "promptProse": "She straddles the viewer's lap with her cuirass open, her gauntleted hands resting against the viewer's chest beneath stained-glass moonlight. Armor straps remain fastened around her thighs.",
     "promptTokens": [
-      "adult",
       "sanctuary",
       "marble dais",
       "silver armor",
@@ -56,6 +55,17 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "identityTokensOverride": [
+      "cartethyia",
+      "wuthering_waves",
+      "blonde_hair",
+      "long_hair",
+      "hair_down",
+      "blue_eyes",
+      "pointy_ears",
+      "halo"
+    ],
+    "identityProseOverride": "Cartethyia from Wuthering Waves, with loose long blonde hair, blue eyes, pointed ears and a halo."
   }
 }

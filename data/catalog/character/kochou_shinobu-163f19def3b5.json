@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kochou_shinobu",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "kochou_shinobu",
     "profile": {
@@ -29,9 +29,9 @@
         "eyes": "紫色眼眸 · 微笑时弯成月牙",
         "hairstyle": "波浪渐变发 · 后发髻",
         "uniform": "鬼杀队队服 · 蝶翼羽织",
-        "expression": "永远温柔的微笑 · 笑容之下是向死而行的觉悟",
+        "expression": "日常温柔克制，微笑下藏着坚定；场景中的悲伤、疲惫与认真也可自然流露。",
         "style": "gentle insect hashira smile",
-        "signature": "蝶翼羽织、渐变紫发与不灭的微笑"
+        "signature": "蝶翼羽织、渐变紫发与克制温柔的神态"
       },
       "personality": [
         "杀鬼的刀与治愈的手并存",
@@ -71,7 +71,7 @@
         "insect_hashira",
         "butterfly_mansion",
         "wisteria_poison",
-        "eternal_smile"
+        "gentle_smile"
       ],
       "accent_color": "#a78bfa",
       "bg_color": "#4c1d95"
@@ -98,7 +98,7 @@
       ],
       "franchise": "Kimetsu no Yaiba",
       "id": "kochou_shinobu",
-      "identityProse": "Kochou Shinobu from Kimetsu no Yaiba, the Insect Hashira and master of the Butterfly Mansion, a petite, eternally-smiling beauty with pale skin, purple eyes, and two-tone black wavy hair that fades to dark purple",
+      "identityProse": "Kochou Shinobu from Kimetsu no Yaiba, the Insect Hashira with purple eyes and wavy black hair fading to dark purple.",
       "identityTokens": [
         "kochou_shinobu",
         "kimetsu_no_yaiba",

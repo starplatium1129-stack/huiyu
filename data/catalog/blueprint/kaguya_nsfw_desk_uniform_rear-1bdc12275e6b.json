@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_nsfw_desk_uniform_rear",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1406,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "撑长桌塌腰翘臀更衣整理受力，裙摆掀起黑丝勒大腿，咬手背回眸羞怯隐忍",
     "adult": true,
@@ -16,7 +16,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "description": "【成年同事会室·放学后熄灯】批阅文件的钢笔滚落一地。辉夜双手撑在会长长桌上，制服裙被掀到腰际，黑丝裤袜拉到大腿处勒出软肉。她死死咬住自己的手背，黑发的折叠马尾散了半边——「呼啊……这里、这里可是成年同事会室……要是被人听到……啊啊、不是我……是你在欺负我……」",
+    "description": "【成年同事会室·放学后熄灯】批阅文件的钢笔滚落一地。辉夜一手撑在会长长桌上，制服裙被掀到腰际，黑丝裤袜拉到大腿处勒出软肉。她死死咬住自己的手背，黑发的折叠马尾散了半边——「呼啊……这里、这里可是成年同事会室……要是被人听到……啊啊、不是我……是你在欺负我……」",
     "id": "kaguya_nsfw_desk_uniform_rear",
     "kreaStyleHint": "r18_explicit_h_cg",
     "lighting": "窗外路灯光在制服与白皙肌肤上勾出明暗",
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "official_shuchiin_uniform",
-    "promptProse": "Adult Kaguya leans over the council desk with her skirt raised to her waist and her tights lowered to her thighs. One hand grips the desk while she bites the back of the other and looks over her shoulder.",
+    "promptProse": "Adult Kaguya leans over the council desk with her skirt raised to her waist and her tights lowered to her thighs. One hand grips the desk while she bites the back of the other and looks over her shoulder. One side of her folded ponytail has come loose; streetlight enters through the window and edges the uniform.",
     "promptTokens": [
       "adult",
       "office",
@@ -37,7 +37,6 @@
       "bent over",
       "looking back",
       "biting hand",
-      "sunset",
       "wide shot",
       "white blouse",
       "black pinafore dress"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_rooftop_kiss",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 545,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "倚着落地窗，回眸凝视",
     "adult": true,
@@ -23,16 +23,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "standard",
-    "promptProse": "Adult Ch'en presses two fingers to her lips beneath the rooftop shelter while her other hand follows her inner thigh. Her sheathed sword rests farther away.",
+    "promptProse": "She leans against the apartment window with both arms around her companion's neck for a kiss. Cool city light reaches her clothes from the neon skyline beyond the glass.",
     "promptTokens": [
-      "adult",
-      "rooftop",
-      "wet uniform",
+      "apartment",
+      "floor-to-ceiling window",
       "white shirt",
       "open shirt",
-      "topless",
-      "unfastened black skirt",
-      "finger to lips",
+      "black pleated skirt",
+      "embrace",
+      "kiss",
       "neon",
       "night"
     ],
@@ -47,6 +46,7 @@
       "moonlight"
     ],
     "timeOfDay": "深夜",
-    "title": "陈 · 深夜窗畔"
+    "title": "陈 · 深夜窗畔",
+    "compositionIntent": "group"
   }
 }

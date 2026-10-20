@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asuka_langley",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 68,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "asuka_langley",
     "profile": {
@@ -132,12 +132,13 @@
       ],
       "franchise": "Neon Genesis Evangelion",
       "id": "asuka_langley",
-      "identityProse": "Asuka Langley from Neon Genesis Evangelion, a spirited and fiercely confident Eva pilot with long flowing ginger-orange hair tied into high twintails with red A10 neural interface clips, vibrant sapphire-blue eyes, and a bold, charismatic tsundere expression",
+      "identityProse": "Asuka Langley from Neon Genesis Evangelion, with long orange hair in twintails, red A10 interface clips and blue eyes.",
       "identityTokens": [
         "asuka_langley",
         "1girl",
         "solo",
         "orange_hair",
+        "long_hair",
         "twintails",
         "blue_eyes",
         "interface_headset",

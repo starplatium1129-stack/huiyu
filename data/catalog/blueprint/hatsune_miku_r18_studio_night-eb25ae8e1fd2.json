@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_studio_night",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 325,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "hatsune_miku_r18_studio_night",
     "title": "初音未来 · 录音室深夜",
@@ -19,19 +19,17 @@
     "mood": "演出后的慵懒",
     "sceneTags": [
       "recording_studio",
-      "leather_sofa",
       "mixing_console",
       "dim_light",
       "night",
       "intimate"
     ],
-    "promptProse": "She sits on the mixing console with one foot on an empty chair, bracing one hand beside her while the other moves between her thighs; dim teal console lights illuminate her headphones and face.",
+    "promptProse": "She sits at the mixing-console edge with one foot resting on an empty chair, one hand braced on the surface beside her and the other resting on her knee. Dim teal console lights illuminate her monitoring headphones and face.",
     "promptTokens": [
       "adult",
       "nude",
       "headphones",
       "sitting",
-      "female masturbation",
       "blush",
       "mixing console",
       "studio",

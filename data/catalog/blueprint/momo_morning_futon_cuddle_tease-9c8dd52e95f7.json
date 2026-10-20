@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_morning_futon_cuddle_tease",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1246,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "侧卧被窝内手撑香腮贴近对方，半透薄纱睡裙露出深邃乳沟，爱心尾巴暗中缠腿调情",
     "camera": "close-up two-shot, side view",
@@ -22,7 +22,7 @@
       "nude"
     ],
     "outfitId": "harem_negligee",
-    "promptProse": "Adult Momo lies on the left beside her partner's pillow, chin resting in one palm as she looks toward him on the right; her tail curls around his leg beneath the blanket.",
+    "promptProse": "Adult Momo lies on the left beside her partner's pillow, chin resting in one palm as she looks toward him on the right; her tail curls around his leg beneath the blanket. Cool morning light reaches the white bedding while warm bedside glow touches their faces.",
     "promptTokens": [
       "2people",
       "under covers",

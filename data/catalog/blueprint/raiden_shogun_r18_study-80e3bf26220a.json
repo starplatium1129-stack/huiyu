@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_study",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "raiden_shogun_r18_study",
     "title": "雷电将军 · 书斋墨夜",
@@ -26,7 +26,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Ei braces one hand behind her on the floor cushions and moves the other beneath her robe, a bent leg holding the scattered decrees.",
+    "promptProse": "Adult Ei braces one hand behind her on the cushions, the other beneath her robe, a bent leg holding the scattered decrees. The robe rests at her waist; warm paper-lantern light meets purple arcs along her braid and the scrolls.",
     "promptTokens": [
       "adult",
       "purple robe",

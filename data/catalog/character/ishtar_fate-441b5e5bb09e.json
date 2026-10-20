@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ishtar_fate",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 62,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "ishtar_fate",
     "profile": {
@@ -88,7 +88,7 @@
         "美与战争的女神",
         "Rin脸女神"
       ],
-      "identityProse": "Ishtar from Fate/Grand Order, the Babylonian goddess of love and war as an Archer-class pseudo-Servant using Tohsaka Rin's body, a haughty yet endearing goddess with black hair styled two-side-up in high twintail puffs, and radiant red eyes that soften when flustered",
+      "identityProse": "Ishtar from Fate/Grand Order, a goddess with black two-side-up hair and red eyes.",
       "identityTokens": [
         "ishtar (fate)",
         "fate/grand_order",

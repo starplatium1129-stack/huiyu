@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_01",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 301,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_01",
     "title": "美杜莎 Rider · 鲜血神殿王座黑色乳胶紧身衣主控跨坐 ·「Master……被魔物吞噬的觉悟，准备好了吗」",
@@ -30,7 +30,7 @@
       "highleg_bodysuit",
       "deep_v"
     ],
-    "promptProse": "From the seated companion’s viewpoint, Medusa straddles their lap on the stone throne with her bodysuit unzipped and blindfold removed. Torchlight catches her uncovered mystic eyes.",
+    "promptProse": "From the seated companion's viewpoint, Medusa straddles their lap on the stone throne, bodysuit unzipped and blindfold removed; torchlight catches her mystic eyes.",
     "promptTokens": [
       "1girl",
       "black latex bodysuit",

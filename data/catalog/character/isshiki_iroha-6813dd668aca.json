@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "isshiki_iroha",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "isshiki_iroha",
     "profile": {
@@ -25,10 +25,10 @@
         "alt": "一色彩羽 样张立绘"
       },
       "visual_dna": {
-        "hair": "及肩的蜜糖微卷波浪发 · 低束双马尾",
+        "hair": "及肩的蜜糖棕微卷发，侧分刘海自然贴在脸侧。",
         "hair_color": "蜜糖棕 / 浅栗金",
         "eyes": "闪烁着戏谑狡黠光芒的浅褐榛色双眸",
-        "hairstyle": "微卷侧分发 · 俏皮低双马尾",
+        "hairstyle": "及肩微卷侧分发。",
         "uniform": "总武高制服西装与米白针织开衫 · 黑色超薄连裤袜",
         "expression": "托腮坏笑 · 摆手假意发好人卡 · 动情时害羞咬下唇",
         "style": "mischievous adorable devil kouhai",
@@ -91,7 +91,7 @@
         "小恶魔学妹",
         "后辈君"
       ],
-      "identityProse": "Iroha Isshiki from Oregairu, the mischievous yet hardworking student council president kouhai, a fashionable beauty with shoulder-length honey-brown hair parted to the side with bangs, warm hazel-brown eyes, and a sly, playfully teasing smirk",
+      "identityProse": "Iroha Isshiki from Oregairu, with shoulder-length honey-brown hair, side-swept bangs and hazel-brown eyes.",
       "identityTokens": [
         "isshiki_iroha",
         "oregairu",

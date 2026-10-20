@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_sfw_b6_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1608,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_06",
     "title": "毛利兰 · 雪夜的等待",
@@ -32,7 +32,7 @@
       "lamplight",
       "medium_shot"
     ],
-    "promptProse": "Ran cups the reheated milk in both hands at the entryway and looks up toward the approaching viewer. Lamplight warms the edge of her knitted scarf as steam curls between her face and the cup.",
+    "promptProse": "Ran holds the warm milk in both hands at the entryway, looking toward the viewer; lamplight catches her knitted scarf and rising steam.",
     "promptTokens": [
       "holding cup",
       "milk",

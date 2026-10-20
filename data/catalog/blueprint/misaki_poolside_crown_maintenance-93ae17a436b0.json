@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_poolside_crown_maintenance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 404,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "躺椅上拉低墨镜打量你，湿发铺开星瞳狡黠",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "女王调情、盛夏诱惑",
     "negativeTokens": [],
     "outfitId": "summer_swimsuit",
-    "promptProse": "Reclining in the pool chair, she draws down her crown-shaped sunglasses with her bare fingertips and studies the viewer over the frame.",
+    "promptProse": "Reclining in the pool chair, she draws down her crown-shaped sunglasses with her bare fingertips and studies the viewer over the frame. Reflected pool light ripples across the chair and her wet hair.",
     "promptTokens": [
       "sunglasses",
       "wet hair",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1678,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_04",
     "title": "橘美花莉 · 摄影棚的金色花嫁",
@@ -31,7 +31,7 @@
       "shy_wink",
       "softbox_light"
     ],
-    "promptProse": "Mikari holds the bouquet in both hands and gives the camera a shy wink from her practiced bridal pose. Golden studio light picks out the white-and-gold folds against the soft pastel backdrop.",
+    "promptProse": "Mikari holds the bouquet in both hands and gives the camera a shy wink; golden studio light catches white-and-gold folds against a pastel backdrop.",
     "promptTokens": [
       "Mikari Tachibana",
       "bridal cosplay",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "vladilena_milize",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 107,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "vladilena_milize",
     "profile": {
@@ -98,7 +98,7 @@
       ],
       "franchise": "86 -Eighty Six-",
       "id": "vladilena_milize",
-      "identityProse": "Vladilena Milizé (Lena) from 86 -Eighty Six-, the valiant commander known as Bloody Reina, an aristocratic beauty with long silky silver-white hair and two antenna-like ahoge strands, expressive silver-grey eyes, and unwavering resolve",
+      "identityProse": "Vladilena Milizé (Lena) from 86 -Eighty Six-, with long silver-white hair, two antenna-like strands and silver-grey eyes.",
       "identityTokens": [
         "vladilena_millize",
         "86 -eighty six-",

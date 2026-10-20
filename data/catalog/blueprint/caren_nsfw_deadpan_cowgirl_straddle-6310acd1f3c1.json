@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_deadpan_cowgirl_straddle",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 218,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "caren_nsfw_deadpan_cowgirl_straddle",
     "title": "卡莲 · 小恶魔修女的毒舌主控骑乘",
@@ -30,11 +30,11 @@
       "deadpan",
       "heavy_blush"
     ],
-    "promptProse": "She straddles the viewer's hips on white sheets and looks down with a restrained smirk.",
+    "promptProse": "She straddles the viewer's hips on white sheets, both hands on their chest, and looks down with a restrained smirk. A dim bedside lamp lights the sheets.",
     "promptTokens": [
-      "adult",
       "bedroom",
       "nude",
+      "stigmata",
       "straddling",
       "on lap",
       "sweat",

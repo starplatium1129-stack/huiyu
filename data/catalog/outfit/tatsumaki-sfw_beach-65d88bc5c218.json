@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tatsumaki/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 901,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "tatsumaki",
     "outfit": {
@@ -12,8 +12,9 @@
       "name": "黑翡翠绿拼色泳装",
       "prose": "a black swimsuit with emerald side panels and a short matching wrap skirt",
       "tokens": [
-        "black and green swimsuit",
-        "wrap skirt"
+        "black swimsuit",
+        "emerald side panels",
+        "short matching wrap skirt"
       ],
       "default": false,
       "isDefault": false

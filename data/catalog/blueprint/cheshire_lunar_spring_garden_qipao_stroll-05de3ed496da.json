@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_lunar_spring_garden_qipao_stroll",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1088,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "cheshire_lunar_spring_garden_qipao_stroll",
     "title": "柴郡 · 冰雪仙子新春旗袍漫步",
@@ -16,7 +16,7 @@
     ],
     "description": "【柴郡 · 冰雪仙子新春旗袍漫步】张灯结彩的重樱东煌庭院雪景中，红灯笼在白雪屋檐下摇曳。柴郡身穿冰蓝刺金的高叉丝绸旗袍，肩披雪白狐毛披肩，双腿裹在薄透白丝中亭亭玉立。她俏皮地单脚点地转身，高叉下白皙丰腴的腿根若隐若现，笑颜如春花般灿烂——「亲爱的快看！东煌的这套旗袍是不是显得柴郡更可爱了呢？」",
     "location": "积雪覆檐的东煌水榭回廊",
-    "action": "身穿高叉旗袍单脚轻盈转身，手提毛绒暖手筒，发髻猫耳相映生辉",
+    "action": "身穿高叉旗袍单脚轻盈转身，手提毛绒暖手筒，双马尾与猫耳发箍相映",
     "timeOfDay": "下午",
     "lighting": "红灯笼暖光与庭院白雪漫射的明丽冷暖交织",
     "camera": "full body, 3/4 dynamic angle, flowing fabric",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshino_ai",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "hoshino_ai",
     "profile": {
@@ -122,7 +122,7 @@
       ],
       "franchise": "Oshi no Ko",
       "id": "hoshino_ai",
-      "identityProse": "Hoshino Ai from Oshi no Ko, the top idol of B-Komachi with long purple hair styled with one side up, hair between her eyes and purple eyes with star-shaped pupils, wearing her signature rabbit hair ornament and a sleeveless frilled pink dress with a heart brooch",
+      "identityProse": "Hoshino Ai from Oshi no Ko, with long purple hair in a one-side-up style, purple eyes with star-shaped pupils and a rabbit hair ornament.",
       "identityTokens": [
         "hoshino_ai",
         "1girl",

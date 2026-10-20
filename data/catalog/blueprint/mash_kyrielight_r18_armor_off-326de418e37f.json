@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_armor_off",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 208,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -32,7 +32,7 @@
       "sitting",
       "bright_room"
     ],
-    "promptProse": "Adult, age-twenty-plus Mash grips her undersuit zipper while wiping sweat from her inner thigh on the bench, her removed armor beside her.",
+    "promptProse": "Adult Mash sits on the bench, one hand gripping her undersuit zipper, the other wiping sweat from her inner thigh; removed armor rests beside her. Even overhead white light fills the training-room changing area.",
     "promptTokens": [
       "1girl",
       "solo",

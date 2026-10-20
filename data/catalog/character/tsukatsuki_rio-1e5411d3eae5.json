@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tsukatsuki_rio",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tsukatsuki_rio",
     "profile": {
@@ -129,7 +129,7 @@
       ],
       "franchise": "Blue Archive",
       "id": "tsukatsuki_rio",
-      "identityProse": "Tsukatsuki Rio from Blue Archive, the cool calculating Millennium student council president with flowing raven-black hair, piercing ruby eyes, a red geometric halo, and a mature voluptuous figure.",
+      "identityProse": "Tsukatsuki Rio from Blue Archive, with very long black hair, ruby-red eyes and a red geometric halo.",
       "identityTokens": [
         "rio (blue archive)",
         "1girl",

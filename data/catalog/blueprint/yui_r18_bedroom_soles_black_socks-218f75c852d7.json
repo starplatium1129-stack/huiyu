@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_bedroom_soles_black_socks",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 352,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yui_r18_bedroom_soles_black_socks",
     "characterId": "yuigahama_yui",
@@ -21,7 +21,7 @@
       "pajamas",
       "window"
     ],
-    "promptProse": "The age-twenty-plus Yui holds the cookie carton while brushing crumbs from her inner thigh, one leg folded and the other stretched toward the box.",
+    "promptProse": "Yui steadies the cookie carton near her foot with one hand and brushes crumbs from her inner thigh with the other; one leg is folded beside her and the other extends into the foreground.",
     "promptTokens": [
       "adult",
       "open cream fleece pajama top",

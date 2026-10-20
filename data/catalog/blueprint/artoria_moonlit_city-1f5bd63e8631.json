@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_moonlit_city",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "artoria_moonlit_city",
     "title": "阿尔托莉雅 · 月下誓约·「请问，你是我的御主吗？」",
@@ -27,12 +27,12 @@
       "blonde_hair",
       "braid"
     ],
-    "promptProse": "She stands among the broken city walls, firmly gripping the invisible sword hilt as she looks toward the viewer. Silver moonlight outlines the rubble while blue magic traces the ground at her feet.",
+    "promptProse": "She stands in the moonlit courtyard of the Emiya residence, firmly gripping the invisible sword hilt as she looks toward the viewer. Silver moonlight outlines the courtyard while blue magic traces the ground at her feet.",
     "promptTokens": [
-      "ruins",
+      "courtyard",
       "invisible sword",
       "full moon",
-      "magic",
+      "magic circle",
       "wind",
       "full body",
       "from below"

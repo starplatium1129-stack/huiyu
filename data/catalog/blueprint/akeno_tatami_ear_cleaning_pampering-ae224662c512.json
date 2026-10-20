@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_tatami_ear_cleaning_pampering",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1289,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "akeno_tatami_ear_cleaning_pampering",
     "title": "姬岛朱乃 · 和室榻榻米的治愈耳语",
@@ -28,7 +28,7 @@
       "pampering",
       "gentle_smile"
     ],
-    "promptProse": "Holding a bamboo ear pick in one hand, she pats her lap with the other to invite the viewer closer. Daylight through the bamboo blind stripes the tatami beside her knees.",
+    "promptProse": "Holding a cotton-tipped ear pick in one hand, she pats her lap with the other to invite the viewer closer. Daylight through the bamboo blind stripes the tatami beside her knees.",
     "promptTokens": [
       "kneeling",
       "ear pick",

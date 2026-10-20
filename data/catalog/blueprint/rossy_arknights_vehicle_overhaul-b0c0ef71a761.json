@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 755,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rossy_arknights_vehicle_overhaul",
     "characterId": "rossy_arknights",
@@ -36,7 +36,7 @@
       "flower shop",
       "cowboy shot"
     ],
-    "promptProse": "Rossy offers the little bunch of daisies toward the viewer, supporting the stems with one hand and pinching the wrapping with the other. Daylight catches the white petals beneath her red hood and her open, delighted smile.",
+    "promptProse": "Rossi offers the daisies, one hand supporting the stems and the other pinching the wrapping; daylight catches the petals and her delighted smile.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

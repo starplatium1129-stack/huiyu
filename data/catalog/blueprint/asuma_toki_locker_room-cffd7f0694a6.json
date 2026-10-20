@@ -1,22 +1,22 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_locker_room",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 876,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "更衣室半解战斗紧身衣拉链，金发披散回眸",
+    "action": "一手拉开战斗紧身衣前襟拉链，另一手扶住长凳，转头看向视角",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, rear three-quarter view",
+    "camera": "medium shot, front three-quarter view",
     "category": "成人私密",
     "characterId": "asuma_toki",
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【飞鸟马时 · C&C更衣室半脱】激战归来的更衣室内，时背对着你解开紧绷的战斗紧身衣拉链，金发披散在光滑白皙的后背与腰窝间。面对你的视线，她平静地回过头，蓝眸里带着全然的信赖——「主人，装备维护需要褪下紧身内衬……在主人面前，时没有任何需要隐藏的秘密。」",
+    "description": "【飞鸟马时 · C&C更衣室半脱】激战归来的更衣室内，时侧身面向你解开战斗紧身衣前襟的拉链，金发披散在光滑白皙的后背与腰窝间。面对你的视线，她平静地回过头，蓝眸里带着全然的信赖——「主人，装备维护需要褪下紧身内衬……在主人面前，时没有任何需要隐藏的秘密。」",
     "id": "asuma_toki_locker_room",
     "kreaStyleHint": "",
     "lighting": "冷白更衣室灯",
@@ -26,9 +26,8 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_white_combat_suit",
-    "promptProse": "Adult Toki turns her upper body toward the viewer in a rear three-quarter view, pulling the suit zipper behind her with one hand and steadying herself on the bench with the other.",
+    "promptProse": "Turning toward the viewer in a front three-quarter view, she lowers the front zipper with one hand and steadies herself on the bench with the other. Cold locker-room light reaches the open suit and metal lockers.",
     "promptTokens": [
-      "adult",
       "locker room",
       "black and white combat suit",
       "unzipped",
@@ -46,6 +45,18 @@
       "intimate"
     ],
     "timeOfDay": "夜晚",
-    "title": "飞鸟马时 · C&C更衣室半脱"
+    "title": "飞鸟马时 · C&C更衣室半脱",
+    "identityProseOverride": "Asuma Toki from Blue Archive, with loose blonde hair, blue eyes and a halo.",
+    "identityTokensOverride": [
+      "toki (blue archive)",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "long_hair",
+      "hair_down",
+      "blue_eyes",
+      "halo",
+      "blue_archive"
+    ]
   }
 }

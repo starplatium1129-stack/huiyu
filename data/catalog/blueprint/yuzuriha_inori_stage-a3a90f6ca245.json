@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 328,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "yuzuriha_inori_stage",
     "title": "楪祈 · 歌姬舞台",
@@ -14,7 +14,7 @@
     "location": "废墟中的演唱会",
     "action": "穿红色层叠长袖舞台礼裙闭眼歌唱，金色灯光与光粒围绕",
     "timeOfDay": "夜晚",
-    "lighting": "舞台红光",
+    "lighting": "舞台金色追光照亮歌姬与裙褶，较弱红色环境光烘托后场",
     "camera": "medium shot",
     "mood": "空灵决绝",
     "sceneTags": [
@@ -28,12 +28,11 @@
       "gradient_hair",
       "medium_shot"
     ],
-    "promptProse": "Inori sings with closed eyes and relaxed hands before her on the temporary stage. Golden spotlights cross the red glow along her layered skirt as sparse luminous particles rise toward the broken arches.",
+    "promptProse": "Inori sings with closed eyes and relaxed hands at the center of the large stage. Golden spotlights cross the red glow along her layered skirt as sparse luminous particles rise above her.",
     "promptTokens": [
       "closed eyes",
       "singing",
       "stage",
-      "ruins",
       "gold spotlights",
       "red lighting"
     ],

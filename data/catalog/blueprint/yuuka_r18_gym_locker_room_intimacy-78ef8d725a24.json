@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_r18_gym_locker_room_intimacy",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 924,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "靠坐跳箱汗湿白背心贴身透肉露大胸，体操短裤微褪勒大腿，咬运动毛巾单手自抚含泪破防",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【早濑优香 · 器材室汗湿体操服贴身透肉与咬毛巾破防自抚】晄轮大祭赛后黄昏无人的体育器材室内，弥漫着微热甜腻的香汗气息。优香背靠着跳箱坐在长木凳边缘，身上的深蓝拉链运动外套大敞，里面的白色运动背心被热汗完全浸湿透肉（wet translucent cloth），半透明地紧贴在丰满起伏的高耸双峰上，深色运动内衣与白皙雪肌若隐若现。深蓝体操短裤微褪，紧勒在以肉感著称的雪白大腿上陷出动人勒痕（flesh indentation）。生怕被外面借器材的成年同事听见的禁忌感让心跳狂飙，优香单手死死咬住白色运动毛巾一角遮掩喘息，另一只手在汗湿微透的下身深处急促律动，琥珀色双眸泛起羞耻失神的盈盈泪光——「呜……咬住毛巾……不能发出声音……但是身体……已经完全停不下来了……哈啊……！」",
+    "description": "【早濑优香 · 器材室汗湿体操服贴身透肉与咬毛巾破防自抚】晄轮大祭赛后黄昏无人的体育器材室内，弥漫着微热甜腻的香汗气息。优香背靠着跳箱坐在长木凳边缘，身上的深蓝拉链运动外套大敞，里面的白色运动背心被热汗完全浸湿透肉（wet translucent cloth），半透明地紧贴在丰满起伏的高耸双峰上，深色运动内衣与白皙雪肌若隐若现。深蓝体操短裤微褪，紧勒在以肉感著称的雪白大腿上陷出动人勒痕（flesh indentation）。生怕被外面借器材的成年同事听见的禁忌感让心跳狂飙，优香单手死死咬住白色运动毛巾一角遮掩喘息，另一只手在汗湿微透的下身深处急促律动，深蓝色双眸泛起羞耻失神的盈盈泪光——「呜……咬住毛巾……不能发出声音……但是身体……已经完全停不下来了……哈啊……！」",
     "id": "yuuka_r18_gym_locker_room_intimacy",
     "kreaStyleHint": "r18_sensual_bedroom",
     "lighting": "百叶窗透入的微弱夕阳橙红光斑与跳箱角落昏暗阴影形成的强烈私密反差",
@@ -26,13 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "gym_tank_variant",
-    "promptProse": "Adult Yuuka leans against the vaulting horse with her shorts lowered and damp tank top beneath an open jacket. She bites her towel while touching herself, listening for adult colleagues outside.",
+    "promptProse": "Seated at the edge of the wooden bench, she leans against the vaulting horse with her shorts lowered and damp tank top beneath an open jacket. She bites her towel while touching herself, listening for adult colleagues outside. Faint orange-red sunset bands enter through the blinds and contrast with the shadowed equipment corner.",
     "promptTokens": [
       "adult",
       "1girl",
       "solo",
       "open jacket",
       "white tank top",
+      "dark sports bra",
       "wet clothes",
       "see-through",
       "shorts down",

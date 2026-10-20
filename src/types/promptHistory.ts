@@ -1,4 +1,5 @@
 import type { AnimaPromptRegion, AnimaSketchControl } from './animaComposition'
+import type { DraftOutfitOverride } from '@/utils/promptBuilderPersistence'
 
 export type CharKey = 'nene' | 'natsume' | 'triad' | 'none'
 export type DrawEngine = 'sd' | 'anima' | 'krea2'
@@ -32,6 +33,8 @@ export type HistoryEntry = {
   subject?: 'studio' | 'popular'
   characterId?: string
   outfitId?: string
+  outfitExplicit?: boolean
+  outfitOverride?: DraftOutfitOverride | null
   blueprintId?: string | null
   noLora?: boolean
   /** 生成时实际使用的 Krea Style LoRA id；旧历史缺省无 Style LoRA。 */

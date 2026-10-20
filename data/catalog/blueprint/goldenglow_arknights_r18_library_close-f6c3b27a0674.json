@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_library_close",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 602,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在图书室窗边长椅上，将书放在膝上，开衫与衬衫衣襟松开。",
     "adult": true,
@@ -17,18 +17,17 @@
     "id": "goldenglow_arknights_r18_library_close",
     "kreaStyleHint": "",
     "lighting": "single warm lamp",
-    "location": "维多利亚理发沙龙",
+    "location": "罗德岛图书室窗边长椅",
     "mood": "静谧私语",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "library_cardigan_skirt",
-    "promptProse": "She holds a book on the window bench while her other hand moves beneath her skirt, faint static lifting her hair.",
+    "promptProse": "She holds a book on the window bench while her other hand moves beneath her skirt, faint static lifting her hair. A single warm lamp lights the bench in the nighttime library.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult",
-      "cat ears",
       "open cardigan",
       "open blouse",
       "topless",
@@ -47,14 +46,13 @@
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
     "sceneTags": [
-      "hair_salon",
-      "barbershop",
-      "mirror",
+      "library",
+      "window_bench",
+      "book",
       "night",
-      "lamp",
-      "after_hours"
+      "lamp"
     ],
     "timeOfDay": "夜晚",
-    "title": "澄闪 · 打烊之后"
+    "title": "澄闪 · 图书室夜读"
   }
 }

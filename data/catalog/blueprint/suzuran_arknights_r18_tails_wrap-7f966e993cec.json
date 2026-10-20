@@ -1,56 +1,48 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_r18_tails_wrap",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 643,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
-    "action": "侧卧，九条尾巴环绕身周",
-    "adult": true,
+    "action": "穿居家服侧卧，九尾围在身侧，脸颊轻靠近处手掌。",
+    "adult": false,
     "adultArtistHint": "@anmi",
-    "animaStyleHint": "r18_sensual_cg",
-    "camera": "intimate overhead",
-    "category": "成人",
+    "animaStyleHint": "",
+    "camera": "medium shot, eye level",
+    "category": "日常生活",
     "characterId": "suzuran_arknights",
     "coverageTags": [
-      "special_nsfw"
+      "daily"
     ],
-    "description": "【铃兰 · 九尾环绕】宽大舒适的床榻上，赤身侧卧的丽萨将九条蓬松温暖的金色狐尾完全舒展开来，温柔地将你整个人环抱进毛茸茸的尾巴丛深处。她把滚烫的小脸贴在你的掌心里——「被尾巴紧紧抱住的时候……博士就不会觉得孤单和冷了对吧？请尽情摸摸丽萨的尾巴吧。」",
+    "description": "铃兰穿奶油黄绒面居家服侧卧在床上，九条尾巴松松围成柔软的弧形。她把脸颊轻靠在近处伸来的手掌，安静听着故事。",
     "id": "suzuran_arknights_r18_tails_wrap",
     "kreaStyleHint": "",
     "lighting": "moonlight",
     "location": "罗德岛·铃兰宿舍",
-    "mood": "柔软依恋",
+    "mood": "温和安静",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
-    "promptProse": "Suzuran, an adult woman aged twenty or older, parts the nine tails loosely wrapped around her raised thigh and touches herself with her other hand.",
+    "outfitId": "cozy_fluffy_pajamas",
+    "promptProse": "Suzuran lies on her side in cream fleece pajamas, nine tails around the bedding, cheek against the visitor’s hand as she listens in moonlight.",
     "promptTokens": [
-      "adult",
-      "1girl",
-      "solo",
-      "fox ears",
+      "pajamas",
+      "on side",
+      "bed",
       "multiple tails",
-      "nude",
-      "gold ribbon",
-      "reclining",
-      "knee up",
-      "masturbation",
-      "futon",
       "moonlight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
     "sceneTags": [
+      "pajamas",
       "bed",
-      "nine_tails",
-      "moonlight",
-      "night",
-      "lying"
+      "companionship"
     ],
     "timeOfDay": "深夜",
-    "title": "铃兰 · 九尾环绕"
+    "title": "铃兰 · 九尾陪伴",
+    "styleHint": ""
   }
 }

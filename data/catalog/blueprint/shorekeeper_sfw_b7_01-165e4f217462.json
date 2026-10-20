@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_01",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1639,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_01",
     "title": "守岸人 · 黑海岸的潮起",
@@ -31,7 +31,7 @@
       "profile",
       "medium_shot"
     ],
-    "promptProse": "Shorekeeper holds a glowing butterfly above her open palm in the dawn shallows, her other hand lifting the veil clear of her face. A small wave washes around her bare feet as pale sunrise catches the blue embroidery.",
+    "promptProse": "In the dawn shallows, Shorekeeper holds a glowing butterfly above one palm, its light reaching her cheek, and lifts her veil clear of her face with the other hand. Sunrise catches blue embroidery as a wave washes her bare feet.",
     "promptTokens": [
       "barefoot",
       "butterfly",

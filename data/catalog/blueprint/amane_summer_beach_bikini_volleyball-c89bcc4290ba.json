@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_summer_beach_bikini_volleyball",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1178,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "amane_summer_beach_bikini_volleyball",
     "title": "周防天音 · 耀阳金滩的细带艳红惊艳",
@@ -31,7 +31,7 @@
       "hair_rings",
       "large_breasts"
     ],
-    "promptProse": "She holds the volleyball on one palm and looks back toward the viewer beside the court. Sea light flashes beyond the net while the breeze lifts her sarong from the bright sand.",
+    "promptProse": "Beside the court, she holds the volleyball on one palm and looks back toward the viewer; sea light flashes beyond the net as the breeze lifts her sarong.",
     "promptTokens": [
       "beach",
       "volleyball",

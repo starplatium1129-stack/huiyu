@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "taihou_azur",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "taihou_azur",
     "profile": {
@@ -106,14 +106,17 @@
         "重樱装母",
         "sakura empire"
       ],
-      "identityProse": "Taihou from Azur Lane, Sakura Empire armored aircraft carrier with floor-sweeping jet-black twin tails, intense fiery red-amber eyes, an extraordinarily voluptuous hourglass figure, devoted seductive gaze, and gold phoenix hair accessories.",
+      "identityProse": "Taihou from Azur Lane, with floor-length black twintails, red-amber eyes and gold phoenix hair ornaments.",
       "identityTokens": [
         "taihou (azur lane)",
         "1girl",
         "solo",
         "black hair",
+        "very long hair",
+        "floor-length hair",
         "twintails",
         "red eyes",
+        "gold phoenix hair ornaments",
         "azur lane"
       ],
       "exactTokens": [

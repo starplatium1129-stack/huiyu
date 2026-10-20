@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
@@ -13,8 +13,9 @@
       "prose": "a dark-navy quilted jacket with a stand collar, a soft gray wool scarf, warm straight trousers and plain glasses",
       "tokens": [
         "navy quilted jacket",
+        "stand collar",
         "gray wool scarf",
-        "warm trousers",
+        "warm straight trousers",
         "glasses"
       ],
       "default": false,

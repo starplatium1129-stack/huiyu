@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_05",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1567,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_05",
     "title": "拉芙塔莉雅 · 海风里的尾巴防线",
@@ -30,10 +30,10 @@
       "sun_hat",
       "laughing"
     ],
-    "promptProse": "Seated in the beach chair, she holds the drying cloth around her tail on her lap with one hand and shades her eyes with the other, ears lifted by the sea breeze.",
+    "promptProse": "Seated in the beach chair, she holds the cloth around her tail on her lap with one hand, shading her eyes with the other in the sea breeze.",
     "promptTokens": [
       "sitting",
-      "towel",
+      "holding towel",
       "drying tail",
       "beach chair",
       "sea",

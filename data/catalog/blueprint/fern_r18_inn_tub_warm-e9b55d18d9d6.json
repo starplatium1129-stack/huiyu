@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_inn_tub_warm",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "fern_r18_inn_tub_warm",
     "title": "菲伦 · 雪夜旅店的魔法木桶浴",
@@ -28,20 +28,19 @@
       "snow",
       "magic_book"
     ],
-    "promptProse": "Reclining against the wooden tub, she traces a rune beneath the water as the spellbook floats beside her raised knee; violet ripples meet the alcove's candlelight in the steam.",
+    "promptProse": "She reclines against the wooden tub with her eyes closed, quietly reciting a spell. The open spellbook rests on a dry stool beside her. Alcove candlelight warms the steam against the cool snowlight at the window.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult",
       "nude",
-      "hair up",
       "reclining",
-      "knee up",
       "wooden tub",
-      "floating book",
       "magic",
       "steam",
-      "candlelight"
+      "candlelight",
+      "book on stool",
+      "closed eyes"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +49,18 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "identityProseOverride": "Fern from Frieren: Beyond Journey's End, with purple hair pinned up, straight bangs, long sidelocks and violet eyes.",
+    "identityTokensOverride": [
+      "fern (sousou no frieren)",
+      "sousou_no_frieren",
+      "1girl",
+      "solo",
+      "purple_hair",
+      "updo",
+      "straight_bangs",
+      "sidelocks",
+      "purple_eyes"
+    ]
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mimori_byakuya",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "mimori_byakuya",
     "profile": {
@@ -27,7 +27,7 @@
         "hair_color": "银白（Silver White）",
         "eyes": "蓝（Gradient Blue）",
         "hairstyle": "双螺旋角发包（twin horn buns）· 长鬓发",
-        "uniform": "维多利亚蕾丝白洋装 / 打工围裙 / 旧运动外套",
+        "uniform": "粉白荷叶边魔法战裙 / 打工围裙 / 旧运动外套",
         "expression": "天然呆 · 面无表情的可爱",
         "style": "delicate poor magical girl",
         "signature": "螺旋角发包、蓝瞳与不幸体质"
@@ -108,7 +108,7 @@
       "animeStudio": "BONES, official anime screencap, anime coloring",
       "canon": {
         "era": "当代",
-        "formNotes": "银白发；蓝瞳；标志性双螺旋角发包；维多利亚蕾丝白色洋装；孤儿+打工族+贫穷；天然呆、不幸体质；魔法少女活动名 Glass Happiness",
+        "formNotes": "银白发；蓝瞳；标志性双螺旋角发包；粉白荷叶边魔法战裙；孤儿+打工族+贫穷；天然呆、不幸体质；魔法少女活动名 Glass Happiness",
         "research": "2026-08-18 调研",
         "world": "现代都市+魔法少女（魔法少女与恶曾是敌人，藤原可可亚）"
       },
@@ -126,7 +126,7 @@
       ],
       "franchise": "The Magical Girl and the Evil Officer",
       "id": "mimori_byakuya",
-      "identityProse": "Mimori Byakuya from The Magical Girl and the Evil Officer, a petite deadpan magical girl with long straight platinum-white hair styled in iconic twin horn buns, clear blue eyes, a slender flat-chested build, and an expressionless stoic demeanor.",
+      "identityProse": "Mimori Byakuya from The Magical Girl and the Evil Officer, with long platinum-white hair in twin horn buns and blue eyes.",
       "identityTokens": [
         "byakuya (mahimaho)",
         "katsute mahou shoujo to aku wa tekitai shiteita.",
@@ -135,6 +135,7 @@
         "white hair",
         "long hair",
         "hair horns",
+        "double bun",
         "blue eyes"
       ],
       "negativeTokens": [

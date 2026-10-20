@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_sfw_b5_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 970,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "action": "手指抵着下巴默读剧本，帽子放在荧光笔与便签旁。",
     "adult": false,
@@ -23,10 +23,13 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_casual",
-    "promptProse": "She silently rehearses from an annotated script before the table read, with empty chairs behind her and soft overhead light on the pages.",
+    "promptProse": "She silently rehearses from the annotated script with one finger resting at her chin before the table read. Her beret lies beside the highlighter and sticky notes, and soft overhead light falls on the pages with empty chairs behind her.",
     "promptTokens": [
       "meeting room",
       "script",
+      "highlighter",
+      "sticky notes",
+      "beret",
       "hand on chin",
       "reading",
       "medium shot"

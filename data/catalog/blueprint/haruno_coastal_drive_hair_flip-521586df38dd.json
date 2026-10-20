@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_coastal_drive_hair_flip",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 373,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "haruno_coastal_drive_hair_flip",
     "title": "雪之下阳乃 · 海滨停车点的短暂停留",
@@ -29,7 +29,7 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "With her sunglasses resting on her head, Haruno gathers a loose strand of hair in the parked convertible. Reflected afternoon light reaches her face through the open door toward the shoreline.",
+    "promptProse": "Seated sideways in the parked convertible's driver's seat with her sunglasses on her head, Haruno gathers a loose strand of hair. Reflected afternoon light reaches her face through the open door toward the shoreline.",
     "promptTokens": [
       "sunglasses on head",
       "convertible",

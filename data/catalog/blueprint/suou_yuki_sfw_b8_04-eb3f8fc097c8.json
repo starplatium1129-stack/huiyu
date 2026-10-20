@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "礼堂花卡旁以淑女姿态整理缎带，确认无人后向镜头淘气眨眼",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "淑女端庄与宅系淘气的花嫁切换",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Yuki arranges flower cards beside the publicity board and winks toward the camera in afternoon light.",
+    "promptProse": "Seated beside the publicity board, Yuki arranges flower cards and winks toward the camera, a purple satin ribbon tying her half-up hair in the afternoon light.",
     "promptTokens": [
       "wink",
       "flower cards",

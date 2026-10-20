@@ -1,19 +1,19 @@
 {
   "kind": "blueprint",
   "id": "miyabi_executive_office_report_reading",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1068,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
-    "action": "坐在皮椅上翻阅机密卷宗签字，神态专注端庄，黑丝长腿交叠",
+    "action": "坐在皮椅上，一手按住卷宗，另一手执笔签字，长袴覆住交叠的双腿",
     "camera": "cowboy shot, three-quarter view",
     "category": "职场威严",
     "characterId": "hoshimi_miyabi",
     "coverageTags": [
       "office"
     ],
-    "description": "【星见雅 · 对空六课课长的严谨案卷】充满现代机能美感的对空六课总指挥办公室内，巨幅防弹落地窗外俯瞰着繁华璀璨的新艾利都天际线。雅坐在高背真皮皮椅上，面前整齐码放着机密空洞调查卷宗。她手执钢笔正专注签批报告，修长黑丝美腿在办公桌下优雅交叠，狐尾从椅背侧面垂下自然蜷曲，散发出上位者不可侵犯的清冷威严。",
+    "description": "【星见雅 · 对空六课课长的严谨案卷】充满现代机能美感的对空六课总指挥办公室内，巨幅防弹落地窗外俯瞰着繁华璀璨的新艾利都天际线。雅坐在高背真皮皮椅上，面前整齐码放着机密空洞调查卷宗。她手执钢笔正专注签批报告，长袴覆住桌下交叠的双腿，外套衣摆自然垂在椅侧，散发出上位者不可侵犯的清冷威严。",
     "id": "miyabi_executive_office_report_reading",
     "lighting": "落地窗外落日熔金晚霞与室内冷白科技全息光幕",
     "location": "对空六课总指挥官高空办公室",
@@ -38,8 +38,7 @@
       "pen",
       "executive_chair",
       "city_view",
-      "fox_ears",
-      "fox_tail"
+      "fox_ears"
     ],
     "timeOfDay": "黄昏",
     "title": "星见雅 · 对空六课课长的严谨案卷"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_bookstore",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 438,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rem_rezero_bookstore",
     "title": "雷姆 · 街角书店",
@@ -25,7 +25,7 @@
       "daylight",
       "indoor"
     ],
-    "promptProse": "Rem holds the cookbook open at an illustrated recipe and turns toward the viewer beside her, one finger marking the page. Soft daylight falls across the paper between the quiet wooden shelves.",
+    "promptProse": "Rem turns toward the viewer beside her with the cookbook open, one finger marking the illustrated recipe; daylight reaches the page between wooden shelves.",
     "promptTokens": [
       "cookbook",
       "reading",

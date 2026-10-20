@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_summer_beach_bikini_spade_flick",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1249,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "踩在清凉海水中侧身回眸，浅紫比基尼勾勒极致三围，爱心尾巴在水中划水挑逗",
     "camera": "full-body shot, three-quarter view",
@@ -22,7 +22,7 @@
       "nude"
     ],
     "outfitId": "summer_bikini",
-    "promptProse": "Adult Momo looks back while standing in the shallow surf, her tail tip tracing a small splash beside her feet in the sunlight.",
+    "promptProse": "Adult Momo looks back while standing in the shallow surf, her tail tip tracing a small splash beside her feet. Tropical sunlight catches the splash while reflected water patterns ripple over her legs.",
     "promptTokens": [
       "wet skin",
       "looking back",

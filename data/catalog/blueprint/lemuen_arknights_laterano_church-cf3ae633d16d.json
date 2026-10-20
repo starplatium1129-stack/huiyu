@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_laterano_church",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 556,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在轮椅上双手合十，在圣光中垂眸祈祷",
     "camera": "medium shot, symmetrical",
@@ -28,7 +28,8 @@
       "lap blanket",
       "praying",
       "cathedral",
-      "stained glass"
+      "stained glass",
+      "symmetrical composition"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

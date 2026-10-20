@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_city_night",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "sakurajima_mai_city_night",
     "title": "樱岛麻衣 · 湘南街角·大衣与私服漫步",
@@ -30,7 +30,7 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Beneath the clock tower, she holds her beret brim with one hand and offers the other toward the offscreen viewer, warm street lamps catching her backward smile.",
+    "promptProse": "She holds her beret with one hand, offering the other to the off-frame viewer beneath the clock tower; warm streetlights catch her backward smile while shop-window neon forms soft bokeh in the shallow background.",
     "promptTokens": [
       "reaching out",
       "clock tower",

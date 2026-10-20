@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1741,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_05",
     "title": "不知火舞 · 海滨道场的扇子与浪花",
@@ -30,7 +30,7 @@
       "ocean",
       "noon"
     ],
-    "promptProse": "Seated at the edge of the dojo deck, she catches sea spray on the fan in one hand and raises a victory sign with the other, droplets shining in the noon sun.",
+    "promptProse": "Seated on the deck, she catches sea spray on her fan and raises a victory sign with her free hand; droplets shine in noon sunlight.",
     "promptTokens": [
       "barefoot",
       "folding fan",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "raiden_shogun",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 2,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "raiden_shogun",
     "profile": {
@@ -107,12 +107,13 @@
         "genshin impact",
         "electro archon"
       ],
-      "identityProse": "Raiden Shogun from Genshin Impact, also known as Raiden Ei, the Electro Archon, a serene and regal woman with long lavender hair in a braid, glowing violet eyes, and a calm expressionless gaze",
+      "identityProse": "Raiden Ei from Genshin Impact, with a long purple braid, violet eyes, a mole beneath her right eye and a floral hair ornament.",
       "identityTokens": [
         "raiden_shogun",
         "1girl",
         "solo",
         "purple hair",
+        "long hair",
         "single braid",
         "purple eyes",
         "mole under right eye",

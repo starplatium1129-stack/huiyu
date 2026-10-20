@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_gym_locker_room_flat_chest_pout",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1271,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "左手压住长凳上备用制服的袖口，右手把软尺拉到肩缝，低头鼓腮检查袖长。",
     "camera": "medium shot, eye level, closed sports outfit and measuring hands on the bench visible",
@@ -20,10 +20,10 @@
     "mood": "尺码偏大后的气鼓鼓喜剧",
     "negativeTokens": [],
     "outfitId": "sfw_gym_track_set",
-    "promptProse": "Nana pins the spare blouse cuff to the bench with her left hand and stretches the tape to its shoulder seam with her right. The ceiling light falls on the white sleeve and measuring marks as she puffs her cheeks at the result.",
+    "promptProse": "Seated beside the bench in her fully zipped sports jacket, Nana pins the spare blouse laid flat on the bench at its cuff with her left hand, stretching the tape to its shoulder seam with her right. Warm ceiling light reaches the measuring marks, with soft shade beneath the bench, as she pouts.",
     "promptTokens": [
       "measuring tape",
-      "shirt",
+      "shirt on bench",
       "bench",
       "pout",
       "locker room",
@@ -58,7 +58,7 @@
       "black_spade_heart_tail",
       "to_love-ru"
     ],
-    "identityProseOverride": "Nana Asta Deviluke from To LOVE-Ru, Deviluke's feisty second princess with long pink twintails, purple-pink eyes and a black spade-heart tail",
+    "identityProseOverride": "Nana Asta Deviluke from To LOVE-Ru, with long pink twintails, purple-pink eyes and a black spade-heart tail.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

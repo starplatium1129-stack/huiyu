@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1415,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "海滨贩卖机前比较冷饮性价比，坐到海堤边贴脸降温并偷偷得意",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "把节俭过成小小胜利",
     "negativeTokens": [],
     "outfitId": "sfw_beach",
-    "promptProse": "Kei presses her chosen cold drink to her cheek on the seawall in warm afternoon sun.",
+    "promptProse": "Kei sits on the seawall and presses her chosen cold drink to her cheek in warm afternoon sun.",
     "promptTokens": [
       "Kei Shirogane",
       "drink can",

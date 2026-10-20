@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_rain_patrol",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 849,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "与你共撑黑伞在雨夜巡逻，微微仰头让伞面覆盖你们两人，制服下摆沾着雨水",
     "adult": false,
@@ -17,7 +17,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【空崎日奈 · 雨夜巡逻的伞下同行】大雨倾盆的格黑娜街道上，日奈撑着一把黑伞巡逻，制服下摆沾湿了些许雨水。当你走到她身边将大伞移到她头顶时，她微微仰起头，绯红色的眼眸中闪烁着动人的微光——「……老师真是的，明明自己肩膀都湿透了。靠近一点吧……我们两个人共撑一把伞就好。」",
+    "description": "【空崎日奈 · 雨夜巡逻的伞下同行】大雨倾盆的格黑娜街道上，日奈撑着一把黑伞巡逻，制服下摆沾湿了些许雨水。当你走到她身边将大伞移到她头顶时，她微微仰起头，紫色的眼眸中闪烁着动人的微光——「……老师真是的，明明自己肩膀都湿透了。靠近一点吧……我们两个人共撑一把伞就好。」",
     "id": "sorasaki_hina_rain_patrol",
     "kreaStyleHint": "",
     "lighting": "路灯与湿润反光",
@@ -27,7 +27,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "gehenna_uniform",
-    "promptProse": "Hina walks close beside the teacher, who holds the single umbrella centered above them, and looks up at his face. Streetlights reflect along the wet paving beneath the canopy.",
+    "promptProse": "Hina walks beside the teacher, who holds their shared umbrella, and looks up at him; streetlights reflect on wet paving beneath the canopy.",
     "promptTokens": [
       "Hina",
       "teacher",

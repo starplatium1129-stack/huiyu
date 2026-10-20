@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kasumigaoka_utaha",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "kasumigaoka_utaha",
     "profile": {
@@ -28,7 +28,7 @@
         "hair_color": "墨黑 / 夜黑",
         "eyes": "红色凤眼 · 讥诮里藏温柔",
         "hairstyle": "长直发齐刘海",
-        "uniform": "丰桥学园制服 · 黑丝裤袜",
+        "uniform": "丰之崎学园制服 · 黑色裤袜",
         "expression": "毒舌从容 · 撒娇时成熟妖艳 · 认真时灼热",
         "style": "sharp-tongued novelist senpai",
         "signature": "白発箍、黑丝长腿与毒舌作家的红瞳"
@@ -48,7 +48,7 @@
         "title": "深夜阳台的黑裙取材",
         "description": "开衩黑裙倚着栏杆，下一章的恶役角色正对你微笑宣判。"
       },
-      "identity": "路人女主的养成方法 女主角之一 · 丰桥学园三年级 · 恋爱小说家霞诗子",
+      "identity": "路人女主的养成方法 女主角之一 · 丰之崎学园三年级 · 恋爱小说家霞诗子",
       "tags": [
         "路人女主",
         "毒舌学姐",
@@ -57,7 +57,7 @@
         "黑丝",
         "小说家"
       ],
-      "bg_story": "笔名霞诗子的天才小说家，丰桥学园的三年级学姐。她的毒舌能把人扎得体无完肤，笔下情话却让百万读者落泪——因为那些说不出口的话，全都写进了书里。遇到你之后，她终于决定：这一次的结局，由她亲自执笔，不再胆怯。",
+      "bg_story": "笔名霞诗子的天才小说家，丰之崎学园的三年级学姐。她的毒舌能把人扎得体无完肤，笔下情话却让百万读者落泪——因为那些说不出口的话，全都写进了书里。遇到你之后，她终于决定：这一次的结局，由她亲自执笔，不再胆怯。",
       "palette": [
         "#ef4444",
         "#f8fafc",
@@ -88,7 +88,7 @@
         "霞诗子",
         "毒舌学姐"
       ],
-      "identityProse": "Kasumigaoka Utaha from Saenai Heroine no Sodatekata, the sharp-tongued romantic novelist senpai, a bewitching beauty with long black hair and blunt bangs, piercing red eyes, and a mature curvaceous figure she uses to tease without mercy",
+      "identityProse": "Kasumigaoka Utaha from Saenai Heroine no Sodatekata, a novelist with long black hair, blunt bangs and red eyes.",
       "identityTokens": [
         "kasumigaoka_utaha",
         "saenai_heroine_no_sodatekata",

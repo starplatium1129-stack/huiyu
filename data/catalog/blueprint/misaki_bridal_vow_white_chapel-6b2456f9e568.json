@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_bridal_vow_white_chapel",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 406,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "捧白纱花束立于圣堂，星瞳湿润含笑",
     "adult": false,
@@ -27,7 +27,7 @@
       "power gesture"
     ],
     "outfitId": "sfw_white_bridal_gown",
-    "promptProse": "She holds the white bouquet in both hands and smiles through tears toward the viewer, colored light from the chapel windows crossing her veil.",
+    "promptProse": "She holds the white bouquet in both hands and smiles through tears toward the viewer, colored beams from the chapel's stained-glass windows crossing her veil.",
     "promptTokens": [
       "bouquet",
       "chapel",

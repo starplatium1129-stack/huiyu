@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_opera_epiclese_trial",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 10,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "furina_opera_epiclese_trial",
     "title": "芙宁娜 · 欧庇克莱的独舞审判",
@@ -29,7 +29,7 @@
       "hand_on_hat",
       "theatrical_pose"
     ],
-    "promptProse": "She tips her hat while leaning forward on the judgement throne to listen, framed by the blue water curtain.",
+    "promptProse": "She tips her hat while leaning forward on the judgement throne to listen, framed by the blue water curtain. Chandelier light from above meets the blue glow from the curtain.",
     "promptTokens": [
       "sitting",
       "throne",

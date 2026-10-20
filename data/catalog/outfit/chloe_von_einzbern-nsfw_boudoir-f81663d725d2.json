@@ -1,20 +1,17 @@
 {
   "kind": "outfit",
   "id": "chloe_von_einzbern/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 165,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "characterId": "chloe_von_einzbern",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "克洛伊·成人私密造型",
-      "prose": "a private adult ensemble built around wet_towel, small_towel, dressing_room, completely_nude",
+      "name": "克洛伊·无衣装状态",
+      "prose": "No clothing.",
       "tokens": [
-        "wet_towel",
-        "small_towel",
-        "dressing_room",
         "completely_nude"
       ],
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1750,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_03",
     "title": "丰川祥子 · 客服电话结束的一秒",
@@ -32,7 +32,7 @@
       "office_lighting",
       "medium_shot"
     ],
-    "promptProse": "Sakiko moves the headset microphone away with one hand after the call, the other resting on the computer mouse. Her professional smile relaxes beneath the cool office lights.",
+    "promptProse": "After the call, Sakiko moves the headset microphone aside with one hand, the other on the mouse, her professional smile relaxing under cool office lights.",
     "promptTokens": [
       "Sakiko Togawa",
       "headset",

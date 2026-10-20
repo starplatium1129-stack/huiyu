@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_hot_spring_private",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 554,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "趴在池边，湿发贴着肩颈",
     "adult": true,
@@ -23,18 +23,18 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_bath_wrap",
-    "promptProse": "She keeps her hearing aid above the water while her other hand moves beneath the surface, sending small bubbles outward.",
+    "promptProse": "She rests both forearms on the pool edge and looks back, wet curls lying against her neck. Her bath wrap rests at the waterline; moonlight catches the nearby stone and rising steam.",
     "promptTokens": [
       "adult",
       "white wrap",
       "wet clothes",
       "see-through",
-      "reclining",
-      "knee up",
+      "leaning on edge",
+      "looking back",
       "hot spring",
       "steam",
-      "hand between legs",
-      "dusk"
+      "moonlight",
+      "night"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

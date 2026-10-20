@@ -1,17 +1,17 @@
 {
   "kind": "blueprint",
   "id": "cecilia_r18_bedroom_soles_nun_veil",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 843,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "披着月光立于彩绘玻璃前轻声祈祷",
     "adult": true,
     "adultArtistHint": "@rella",
     "adultEligibility": "adult",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "full-body shot, first-person view",
+    "camera": "full body, eye level",
     "category": "私密写真",
     "characterId": "saint_cecilia",
     "coverageTags": [
@@ -27,16 +27,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Cecilia folds one leg beneath her and lifts the other foot toward the foreground, massaging its arch with both hands.",
+    "promptProse": "Cecilia stands with hands clasped before the bell-tower glass; colored moonlight crosses her mint hair and wind-lifted white veil.",
     "promptTokens": [
       "adult",
-      "dormitory",
-      "bed",
       "nude",
       "white veil",
-      "thigh ribbons",
-      "raised foot",
-      "sitting",
+      "standing",
+      "hands clasped",
+      "church bell tower",
+      "stained glass",
       "moonlight"
     ],
     "recommendedSize": "1152x1536",
@@ -51,6 +50,17 @@
       "tower"
     ],
     "timeOfDay": "深夜",
-    "title": "塞西莉亚 · 教堂钟楼的白月光"
+    "title": "塞西莉亚 · 教堂钟楼的白月光",
+    "identityTokensOverride": [
+      "cecilia (pastor lawrence)",
+      "shiro seijo to kuro bokushi",
+      "1girl",
+      "solo",
+      "mint green hair",
+      "long hair",
+      "hair down",
+      "emerald eyes"
+    ],
+    "identityProseOverride": "Cecilia from Shiro Seijo to Kuro Bokushi, with long mint-green hair worn loose and emerald eyes."
   }
 }

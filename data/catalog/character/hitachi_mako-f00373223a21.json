@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hitachi_mako",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "hitachi_mako",
     "profile": {
@@ -127,17 +127,18 @@
       ],
       "franchise": "YUZUSOFT",
       "id": "hitachi_mako",
-      "identityProse": "Hitachi Mako from Senren Banka by YUZUSOFT, the skilled shinobi guardian of the Tomotake family with short black hair and distinctive long sidelocks, a playful ahoge, bright emerald green eyes, an adorable cat-like mouth, and a curvaceous athletic figure.",
+      "identityProse": "Hitachi Mako from Senren Banka, with short black hair, long sidelocks, an ahoge, green eyes and a cat-like mouth.",
       "identityTokens": [
         "hitachi_mako",
         "1girl",
         "solo",
         "black_hair",
-        "short_hair_with_long_locks",
         "ahoge",
         "green_eyes",
         "cat_mouth",
-        "senren_banka"
+        "senren_banka",
+        "short_hair",
+        "long sidelocks"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -39,7 +39,7 @@
 
 - 提示词、蓝图、服装绑定/换装改动核对编译 Token 与真实渲染；场景切换同步 outfitId、镜头和参数。批量内容逐条真实重写并审查交付差异，不得模板拼接或虚报覆盖，UI 文案不代替真实渲染。
 - `data/prompt-pinned-scenes.json` 的 prompt/negative/animaCaption/recommendedSize/rating/mature 为字节级保护基线，批量任务跳过；单条改动先真实出图，再 `npm run scenes:pin-capture`，附证据。
-- 项目内角色统一按成年创作设定处理；成人内容不按本机、远程、内容开关或成年资格字段门控，仅保留列表缩略图的 R18 默认模糊遮罩，大图预览直接展示并保留立体观画及原图缩放。设备、私人文件及工作区操作继续遵守各自权限。
+- 项目内角色统一按成年创作设定处理；成人内容不按本机、远程、内容开关或成年资格字段门控。场景与参考样张目录保留 R18 缩略图默认模糊遮罩；用户作品册不添加遮罩。大图预览直接展示并保留立体观画及原图缩放。设备、私人文件及工作区操作继续遵守各自权限。
 - UI 保留双主题、WCAG AA、扫光不压字；禁用文字用 `--text-disabled`，不用 opacity 压字。全局令牌检查不代替动态样式/图片叠字的实际画面。高频动画只用 transform/opacity，例外写 `/* compositor-exempt: 理由 */` 并评审基线；图标沿用 `ArchiveIcon.vue` 手绘线条 SVG，不用 Emoji/实心图标。
 - `assets/character-references/` 不入 Git；参考权威源为 `data/references/` 分片，经 `/api/character-reference-profile/:id` 懒加载，旧聚合仅兼容，pending 不算交付资产。人物/服装/场景/蓝图的工作权威为运行目录 `content/catalog.sqlite`；`data/catalog/` 是显式导出的项目快照，旧分片只作升级导入来源，不再手改或聚合回写。不显著影响使用的美术细节只记录，不阻塞独立工作或引发反复出图。
 

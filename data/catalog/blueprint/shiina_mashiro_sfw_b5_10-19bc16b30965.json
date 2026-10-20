@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_10",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1518,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_10",
     "title": "椎名真白 · 毕业展的白色展厅",
@@ -29,7 +29,7 @@
       "soft_lighting",
       "medium_shot"
     ],
-    "promptProse": "Mashiro turns toward visitors studying her large painting, her hands quietly clasped behind her back. Soft gallery light falls evenly across her ivory dress and the canvas.",
+    "promptProse": "Mashiro turns to visitors studying her large painting, hands clasped behind her back; soft gallery light falls across the canvas.",
     "promptTokens": [
       "Mashiro Shiina",
       "hands behind back",

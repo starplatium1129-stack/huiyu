@@ -92,6 +92,7 @@
 | 词条分片与字典 | tags:build / tags:check | 校验 manifest、重复词/别名决策和源路径；保留旧 ID，生成聚合与字典，失效旧压缩 |
 | 离线释义待补词统计 | tags:untranslated --input <文件> | 读取本地 PixAI JSON/JSONL 或 WD14 CSV；按现行界面释义区分完整中文、部分中文与英文回退，保留原词；--json 输出清单，--general-top / --character-top 只限制待补候选；分别标明样本出现次数与 Danbooru 频次，不以置信度代替频次；不上传、不翻译、不写词典 |
 | 内容记录读写、历史与导出 | content:catalog | 显式运行目录；patch/import 默认预览，export 显式选择记录范围 |
+| 单条定稿基线更新 | scenes:pin-capture | `--id=<场景ID>`，可用 `--candidate=<完整scene记录JSON>`；不批量捕获，不写工作库 |
 | 数据契约与版本 | data:validate | DATA_VERSION 哈希域以 scripts/lib/data-version.js 为唯一事实源 |
 | 未迁移旧资料修复 | legacy:* | 仅旧格式用途；已有内容库/快照拒绝回写，见[迁移与保护](maintenance.md#迁移与保护) |
 | 桌面端个人内容目录 | desktop:content-sync | 默认只读预览；退出桌面端后，`--apply` 按打包白名单先备份覆盖项、逐文件原子写入，目标独有项保留；`--clear-webview-cache` 另清 WebView2 缓存；支持实际配置/资料根覆盖，完成后再启动，不证明界面 |

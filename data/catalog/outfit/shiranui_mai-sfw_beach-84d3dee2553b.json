@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1008,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
@@ -13,7 +13,7 @@
       "prose": "A crimson athletic swimsuit is layered with a cropped white cotton wrap shirt.",
       "tokens": [
         "crimson one-piece swimsuit",
-        "white shirt",
+        "cropped white cotton wrap shirt",
         "short sleeves"
       ],
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_fireworks_yukata_wishing_gaze",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1506,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "waguri_fireworks_yukata_wishing_gaze",
     "title": "和栗薰子 · 烟花下收好的金鱼袋",
@@ -31,7 +31,7 @@
       "lantern_light",
       "medium_shot"
     ],
-    "promptProse": "Waguri holds her goldfish bag with both hands and looks up as fireworks rise beyond the festival rail.",
+    "promptProse": "Waguri holds her goldfish bag with both hands and looks up as fireworks rise beyond the festival rail, warm lantern light filling her face beneath their distant flashes.",
     "promptTokens": [
       "twin braids",
       "goldfish bag",

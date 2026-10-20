@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_white_socks",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 462,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
-    "action": "白丝脚搭在椅子横梁上",
+    "action": "反坐高木椅，一只脚跟抬到椅面，手指卷住袜口，身体轻靠椅背",
     "adult": true,
     "adultArtistHint": "@tiv",
     "animaStyleHint": "r18_elegant_boudoir",

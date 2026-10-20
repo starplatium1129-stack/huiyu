@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_r18_thigh_bandage",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 515,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "kisara_engage_kiss_r18_thigh_bandage",
     "title": "木更 · 绷带与月色",
@@ -25,16 +25,18 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Adult Kisara kneels on the sheets and pulls the thigh bandage taut with both hands, looking up as the mark on her chest glows.",
+    "promptProse": "Adult Kisara reclines on the sheets with one bandaged thigh raised, extending a hand toward the viewer to ask for help with the dressing. Soft bedside light and blue moonlight meet across the bandage and rumpled sheets.",
     "promptTokens": [
       "1girl",
       "solo",
       "nude",
       "thigh bandage",
-      "kneeling",
-      "holding bandage",
+      "reclining",
+      "leg up",
+      "reaching out",
       "bed",
-      "lamplight"
+      "lamplight",
+      "moonlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

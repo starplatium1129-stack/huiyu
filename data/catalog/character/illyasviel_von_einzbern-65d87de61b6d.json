@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "illyasviel_von_einzbern",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "illyasviel_von_einzbern",
     "profile": {
@@ -98,14 +98,14 @@
         "snow field",
         "fate/stay night"
       ],
-      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a petite homunculus girl with flowing silky pure white hair, deep ruby-red eyes, and porcelain fair skin.",
+      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a homunculus woman with long white hair and ruby-red eyes.",
       "identityTokens": [
         "illyasviel von einzbern",
         "1girl",
         "solo",
         "white_hair",
         "long_hair",
-        "ruby_eyes",
+        "red_eyes",
         "fate/stay_night"
       ],
       "exactTokens": [
@@ -131,7 +131,7 @@
       "canon": {
         "world": "现代魔术（Fate）",
         "era": "当代",
-        "formNotes": "银发红眼幼态；紫裙；爱因兹贝伦古堡",
+        "formNotes": "原作设定银发红眼、外貌幼态；本项目生成采用成年创作体态；爱因兹贝伦古堡",
         "research": "2026-08-14 调研"
       },
       "animeStudio": "silver link, ufotable, official anime screencap",

@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "ciel_morning_kitchen_curry_tasting",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1330,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
-    "action": "系着围裙吹着勺中热咖喱递向前方，稍微被烫到吐舌头轻笑，眼眸含情",
+    "action": "把吹凉的咖喱勺递向视角，微微吐舌轻笑，眼眸满是期待",
     "camera": "cowboy shot, eye level, warm domestic view",
     "category": "晨间女友",
     "characterId": "ciel_tsukihime",
@@ -15,20 +15,19 @@
       "sweet",
       "curry"
     ],
-    "description": "【希耶尔 · 晨间厨房的特制咖喱试吃】晨光洒进整洁的公寓厨房，锅中冒着浓郁醇厚的咖喱香气。希耶尔系着白色蕾丝小围裙，穿着修身的知性针织毛衣，双手端着勺子吹了吹滚烫的特制香浓咖喱，递向你的嘴边。因为尝了一小口烫到舌尖，她俏皮地微微吐了吐粉红的舌头，眼镜后眼眸满是期待——「啊——张嘴！这次我特别加了苹果和蜂蜜，绝对是天下第一美味的咖喱，快夸夸我！」",
+    "description": "【希耶尔 · 晨间厨房的特制咖喱试吃】晨光洒进整洁的公寓厨房，锅中冒着浓郁醇厚的咖喱香气。希耶尔系着白色蕾丝小围裙，穿着修身的知性针织毛衣，将已经吹凉的咖喱勺递向你的嘴边。刚才试味时烫到了舌尖，她俏皮地微微吐了吐粉红的舌头，眼镜后眼眸满是期待——「啊——张嘴！这次我特别加了苹果和蜂蜜，绝对是天下第一美味的咖喱，快夸夸我！」",
     "id": "ciel_morning_kitchen_curry_tasting",
     "lighting": "晨光穿过明净玻璃洒满厨房台面",
     "location": "香气四溢、阳光明媚的公寓现代厨房灶台前",
     "mood": "温馨贤惠",
     "negativeTokens": [],
     "outfitId": "sfw_curry_lace_apron",
-    "promptProse": "She blows gently across a spoonful of curry, holding it toward the viewer's mouth while waiting for a reaction. Morning sun reaches her expectant smile, the spoon and the steaming pot.",
+    "promptProse": "She offers the cooled spoonful of curry toward the viewer, smiling with her tongue slightly out. Morning sun reaches her expectant face, the spoon and the steaming pot.",
     "promptTokens": [
       "kitchen",
       "glasses",
       "curry",
       "spoon",
-      "blowing",
       "morning",
       "cowboy shot"
     ],

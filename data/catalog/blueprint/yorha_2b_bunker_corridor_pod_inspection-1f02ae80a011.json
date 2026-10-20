@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1109,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "yorha_2b_bunker_corridor_pod_inspection",
     "title": "2B · 残破大教堂的纯白誓约花嫁",
@@ -52,6 +52,6 @@
       "mole_under_mouth",
       "nier:automata"
     ],
-    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult battle android with a silver-white bob, uncovered sapphire-blue eyes and the small beauty mark beneath the left corner of her lips"
+    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips."
   }
 }

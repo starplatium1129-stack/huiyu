@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_package_run",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 629,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "抱着包裹全力奔跑，衣摆飞扬",
     "camera": "full body, from below",
@@ -24,7 +24,6 @@
     "promptTokens": [
       "1girl",
       "crowd",
-      "halo",
       "running",
       "parcel",
       "street",

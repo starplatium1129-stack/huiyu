@@ -38,8 +38,8 @@
 - 工程：[TypeScript](guides/engineering/typescript-development.md)、[Tailwind](guides/engineering/tailwind-styling.md)、[维护性边界](guides/engineering/maintainability-boundaries.md)。
 - 桌面：[Live2D](guides/desktop/live2d-native-runtime.md)、[安装界面](guides/desktop/game-installer.md)、[陪伴配置](guides/desktop/companion-dsh-agent-architecture.md)。
 - 内容：[角色接入](guides/characters/character-onboarding-workflow.md)、[粒子管线](guides/characters/particle-portrait-pipeline.md)、[视频工作流](guides/video/video-ai-storyboard.md)。
-- 提示词：[项目 skill](../.agents/skills/studio-prompt-craft/SKILL.md)及其作者规则、Anima/Krea 编译和交付参考；本次不修改提示词或生产内容。
-- UI：[studio-ui-design](../.agents/skills/studio-ui-design/SKILL.md) 是项目设计工程入口，按需读取交互、动效和性能参考；采用规则统一维护在 DESIGN.md，来源版本与 MIT 许可证随 skill 保留。
+- 提示词：[项目 skill](../.agents/skills/studio-prompt-craft/SKILL.md)负责创作流程与模型路由；语法、作者配方和编译消费分别维护在 Anima/Krea 与版本参考中，写入和定稿按交付参考执行。
+- UI：[设计规范查阅入口](../DESIGN.md#reading-guide)定位当前标准，[studio-ui-design](../.agents/skills/studio-ui-design/SKILL.md)提供实施路径，按需读取交互、动效和性能参考；引入新效果或更新上游时查[来源与采用边界](../.agents/skills/studio-ui-design/references/sources.md)，其中保留版本与许可。
 - [研究来源与采用边界](research/README.md)：只保留必要来源和未采纳条件，候选不等于实施承诺。
 
 ## 维护方式

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_street_date_shared_crepe",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1276,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rias_street_date_shared_crepe",
     "title": "莉雅丝 · 商业街午后的甜蜜可丽饼",
@@ -28,7 +28,7 @@
       "shy_smile",
       "blush"
     ],
-    "promptProse": "She holds the crepe in both hands and offers its top strawberry toward the offscreen viewer across the cafe table, sunlight filtering through cherry branches.",
+    "promptProse": "Seated beneath the parasol, she offers the crepe's top strawberry to the off-frame viewer with both hands; cherry-filtered sunlight scatters petal shadows beside the bench.",
     "promptTokens": [
       "crepe",
       "strawberry",

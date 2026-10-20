@@ -4,7 +4,7 @@
   "revision": 6,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
     "title": "胡桃 · 秘境温泉落月幽欢",
@@ -14,7 +14,7 @@
     "location": "无妄坡隐秘地热温泉池",
     "action": "独自斜倚秘泉岩台，湿符纹薄纱敞开，一手托鬼火莲灯、一手在水下自抚，一腿屈起抵住石沿",
     "timeOfDay": "夜晚",
-    "lighting": "夜空清冽月光与温泉水面波光倒影",
+    "lighting": "冷月光落在泉水与深红裹布上，身旁幽蓝火莲补出低位蓝色微光",
     "camera": "cowboy shot, vertical framing",
     "mood": "野性欢愉",
     "sceneTags": [
@@ -25,16 +25,14 @@
       "water_splashes",
       "wet_skin",
       "wet_hair",
-      "completely_nude",
-      "straddling",
-      "cowgirl_position",
-      "riding",
-      "heavy_blush"
+      "heavy_blush",
+      "reclining",
+      "red_clothes"
     ],
     "promptProse": "Resting against the warm rock shelf with one knee bent, she balances the ghost-flame lotus in one palm while her other hand moves underwater; its blue light reaches her eyes beneath the moonlit mist.",
     "promptTokens": [
       "adult",
-      "wet veil",
+      "wet dark red wrap",
       "topless",
       "reclining",
       "knee up",

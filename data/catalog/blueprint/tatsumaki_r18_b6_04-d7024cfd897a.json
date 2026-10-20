@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_04",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1602,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_04",
     "title": "战栗的龙卷 · 顶层防核卧室床单上的绝顶崩坏自持 ·「姐姐才没有撒娇……只是稍微……想要被抱紧而已……」",
@@ -14,7 +14,7 @@
     "location": "龙卷专属豪宅大床·深夜",
     "action": "仰卧床单全裸手指插穴自抚，念力微压床铺，娇小身躯弓起抽泣绝顶",
     "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
+    "lighting": "床面附近的绿色念动力微光，寝室其余区域保持暗部",
     "camera": "intimate vertical medium shot",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
@@ -30,7 +30,7 @@
       "completely_nude",
       "bare_breasts"
     ],
-    "promptProse": "Tatsumaki fingers herself on the bed, green telekinesis pressing the mattress beneath her as tears run down her face.",
+    "promptProse": "Tatsumaki fingers herself on the bed, green telekinesis pressing the mattress beneath her as tears run down her face. The green glow stays near the bed, leaving the rest of the bedroom dark.",
     "promptTokens": [
       "Tatsumaki",
       "on back",

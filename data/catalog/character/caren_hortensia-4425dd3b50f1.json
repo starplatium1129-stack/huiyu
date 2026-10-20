@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "caren_hortensia",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "caren_hortensia",
     "profile": {
@@ -26,7 +26,7 @@
       "visual_dna": {
         "hair": "银白及颈短发 · 层次碎发",
         "hair_color": "银白 / 铂银",
-        "eyes": "幽冷淡紫 / 丁香紫眼眸",
+        "eyes": "琥珀黄 / 金黄色眼眸",
         "hairstyle": "清冷层次短发 · 额前自然碎刘海",
         "uniform": "无裙下摆特殊黑白祭服 · 抹大拉圣骸布",
         "expression": "面无表情 · 毒舌嘲弄 · 圣痕发作时的脆弱依偎",
@@ -92,12 +92,13 @@
         "毒舌修女",
         "抹大拉的圣骸布"
       ],
-      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, a serene and sharp-tongued beauty with chin-length layered platinum-silver hair, piercing amber-yellow eyes, a slender fragile silhouette, and a cool, deadpan composure",
+      "identityProse": "Caren Hortensia from Fate/hollow ataraxia, with a chin-length layered silver bob and amber-yellow eyes.",
       "identityTokens": [
         "caren_hortensia",
         "fate/hollow_ataraxia",
         "white_hair",
         "short_hair",
+        "bob_cut",
         "yellow_eyes"
       ],
       "exactTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_silk_curtain",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 657,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "立于窗边，一手举过头顶抓住丝帘，夜风拂动帘幕。",
     "adult": true,
@@ -23,14 +23,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Ling catches the silk curtain overhead, a ribbon of dragon air following the night breeze.",
+    "promptProse": "Adult Ling stands by the lattice window and catches the silk curtain overhead, glancing back toward the viewer as the night breeze lifts the fabric. Cool blue moonlight casts sheer-curtain shadows across her near side and a silver rim along her long blue hair.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Ling",
       "nude",
       "arm up",
-      "hand between legs",
       "curtain",
       "lattice window",
       "night"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_r18_chamber",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 435,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rem_rezero_r18_chamber",
     "title": "雷姆 · 女仆的侍奉",
@@ -25,18 +25,15 @@
       "intimate",
       "night"
     ],
-    "promptProse": "The age-twenty-plus Rem kneels at the bed with apron ribbon around her wrists, both hands over her heart as her small horn glows.",
+    "promptProse": "Adult Rem kneels beside the bed in her opened maid dress, hands over her heart, looking tearfully at the off-frame viewer. Candlelight meets moonbeams across the bedding.",
     "promptTokens": [
       "white apron",
       "white lace headdress",
       "adult",
       "open black maid dress",
       "topless",
-      "ribbon",
-      "bound wrists",
       "hands on own chest",
       "kneeling",
-      "horn",
       "blush",
       "bed",
       "candlelight"

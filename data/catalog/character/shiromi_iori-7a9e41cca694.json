@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiromi_iori",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 73,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shiromi_iori",
     "profile": {
@@ -131,17 +131,23 @@
       ],
       "franchise": "Blue Archive",
       "id": "shiromi_iori",
-      "identityProse": "Shiromi Iori from Blue Archive, a fiery dark-skinned Gehenna specialist with silver twintails, asymmetrical bangs falling over one eye, red eyes, a pale violet crosshair halo, pointy elf ears, black hair ribbons, and a slender demon tail.",
+      "identityProse": "Shiromi Iori from Blue Archive: dark skin, silver twintails with black ribbons, bangs covering one eye, red eyes, a pale violet crosshair halo, pointed ears and a slender demon tail.",
       "identityTokens": [
         "iori (blue archive)",
         "1girl",
         "solo",
         "silver hair",
+        "long hair",
         "twintails",
+        "black hair ribbons",
+        "hair over one eye",
+        "red eyes",
         "halo",
+        "pale violet crosshair halo",
         "dark skin",
         "pointy ears",
-        "tail",
+        "demon tail",
+        "slender black tail",
         "blue archive"
       ],
       "negativeTokens": [

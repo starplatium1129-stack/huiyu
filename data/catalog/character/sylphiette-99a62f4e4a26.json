@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sylphiette",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 37,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "sylphiette",
     "profile": {
@@ -23,17 +23,17 @@
         "alt": "希露菲叶特 样张立绘"
       },
       "visual_dna": {
-        "hair": "幼年绿发 → 青年银白短发（米格路德族长耳族 1/4 混血）",
+        "hair": "幼年绿发 → 青年银白短发（长耳族血统）",
         "hair_color": "绿（幼年）/ 银白（青年）",
         "eyes": "红（Ruby Red）",
         "hairstyle": "短发 · 齐刘海 · 又长又尖的双耳（高兴时会扑腾）",
-        "uniform": "学徒法师长袍 / 夏亚魔法学院执事装（菲兹）",
+        "uniform": "学徒法师长袍 / 拉诺亚魔法大学执事装（菲兹）",
         "expression": "温柔羞怯 · 小天使",
         "style": "gentle white-haired elf girl",
         "signature": "尖耳、红瞳与绿发变白发的成长线"
       },
       "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
-      "bg_story": "希露菲叶特是《无职转生》的女主角之一，鲁迪的青梅竹马。拥有 1/4 长耳族（米格路德族）血统，又长又尖的双耳是她的个人标志。幼年因斯佩路德族般的绿发被欺负，被鲁迪所救后成为朋友并一同学习魔术。青年时期以「菲兹」之名在夏亚魔法学院活跃，最终与鲁迪重逢并结为夫妻。",
+      "bg_story": "希露菲叶特是《无职转生》的女主角之一，鲁迪的青梅竹马。拥有长耳族血统，又长又尖的双耳是她的个人标志。幼年因斯佩路德族般的绿发被欺负，被鲁迪所救后成为朋友并一同学习魔术。青年时期以「菲兹」之名在拉诺亚魔法大学活跃，最终与鲁迪重逢并结为夫妻。",
       "personality": [
         "温柔体贴",
         "害羞内向",
@@ -71,7 +71,7 @@
         "role": "鲁迪的青梅竹马 / 妻子",
         "age": "幼年 → 青年（作品时间跨度）",
         "occupation": "魔术师（后任阿斯拉王国宫廷魔术师）",
-        "faction": "格雷拉特家 / 夏亚魔法大学"
+        "faction": "格雷拉特家 / 拉诺亚魔法大学"
       },
       "tags": [
         "尖耳",
@@ -122,7 +122,7 @@
       ],
       "franchise": "Mushoku Tensei",
       "id": "sylphiette",
-      "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair with a feathery texture, delicate long pointed elf ears, and ruby red eyes with a warm glow, carrying a sweet shy demeanor",
+      "identityProse": "Sylphiette from Mushoku Tensei, with feathery short white hair, long pointed elf ears and ruby-red eyes.",
       "identityTokens": [
         "sylphiette",
         "1girl",

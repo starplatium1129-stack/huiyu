@@ -3,6 +3,7 @@ import type { HistoryEntry } from '@/types/promptHistory'
 import type { AnimaResultContext } from '@/types/anima'
 import type { ArtworkRecord } from '@/types/artwork'
 import { historyFromResultContext } from '@/utils/resultContext'
+import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
 
 /** Existing commit input; callers can keep their snapshots and parent identity unchanged. */
 export type GeneratedArtworkInput = Partial<HistoryEntry> & {
@@ -23,7 +24,7 @@ export type LegacyArtworkDefaults = Readonly<Required<Pick<HistoryEntry,
   | 'composition' | 'colorMood' | 'lora' | 'cfg' | 'steps' | 'sampler' | 'scheduler' | 'model' | 'size'
   | 'hiresFix' | 'hiresScale' | 'hiresUpscaler' | 'hiresSteps' | 'hiresDenoise' | 'faceDetailer' | 'project'
 >> & {
-  subject: Readonly<{ kind: 'studio' } | { kind: 'popular'; characterId: string; outfitId: string; blueprintId?: string | null }>
+  subject: Readonly<{ kind: 'studio' } | { kind: 'popular'; characterId: string; outfitId: string; blueprintId?: string | null; outfitExplicit?: boolean }>
   emotion: readonly string[]
   manual_tags: ReadonlySet<string> | readonly string[]
   artistStyleIds: readonly string[]
@@ -72,6 +73,7 @@ export function prepareGeneratedArtwork(input: GeneratedArtworkInput, resolveDef
     emotion: merged.emotion ? [...merged.emotion] : merged.emotion,
     manual_tags: merged.manual_tags ? [...merged.manual_tags] : merged.manual_tags,
     artistStyleIds: merged.artistStyleIds ? [...merged.artistStyleIds] : merged.artistStyleIds,
+    outfitOverride: merged.outfitOverride === undefined ? undefined : parseOutfitOverride(merged.outfitOverride),
     loras: merged.loras?.map(lora => ({ ...lora })),
     sketchControl: merged.sketchControl ? { ...merged.sketchControl } : undefined,
     sketchControlModel: merged.sketchControlModel ? { ...merged.sketchControlModel } : undefined,

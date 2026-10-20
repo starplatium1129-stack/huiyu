@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_helicopter_airdrop_briefing",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1201,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yuria_helicopter_airdrop_briefing",
     "title": "春寺由梨亚 · 客厅沙发抱枕微醺小酌与慵懒依恋",
@@ -30,12 +30,12 @@
       "holding_pillow",
       "whiskey_glass",
       "oversized_shirt",
-      "thighhighs",
+      "knee_socks",
       "curled_up",
       "glasses_removed",
       "blushing"
     ],
-    "promptProse": "Curled on the sofa for a late movie, Yuria hugs a cushion with one arm and holds the iced whiskey with the other; her folded glasses rest on the coffee table.",
+    "promptProse": "Curled on the sofa for a late movie, Yuria hugs a cushion with one arm and holds the iced whiskey with the other; her folded glasses rest on the coffee table. Warm golden floor-lamp light mingles with the dim television glow.",
     "promptTokens": [
       "cushion",
       "hugging",

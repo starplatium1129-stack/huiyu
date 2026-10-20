@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_r18_maid_desk_unbutton",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 490,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "aisha_greyrat_r18_maid_desk_unbutton",
     "title": "爱夏·夜阑账房解衣",
@@ -28,21 +28,19 @@
       "night"
     ],
     "description": "夜深人静，爱夏在核验完最后一叠账卷后反锁了书房。松懈下日间的严谨克制，她倚坐在坚实的胡桃木书桌边缘，解开深色女仆连衣裙的前襟，把白色围裙推到腰侧，任由薄棉衣料向两侧大敞，饱满雪白的双乳与娇嫩的粉红乳头完全袒露在微凉空气中。她一手轻抚锁骨下起伏的胸脯，另一手撩起深褐裙裾，展示出紧勒着吊袜带与黑色过膝袜的大腿线条，面泛潮红，目光微转。",
-    "promptProse": "Adult Aisha sits on the desk edge with her maid bodice open, one hand near her throat and the other lifting her skirt hem. A shaded oil lamp warms the ledgers while cool moonlight enters through the window behind her.",
+    "promptProse": "She sits on the desk edge with the bodice open and the white apron gathered to one side at her waist, one hand near her throat and the other lifting the skirt hem. A shaded oil lamp lights the ledgers; moonlight enters from behind.",
     "promptTokens": [
-      "adult",
       "office",
       "dark brown maid dress",
       "white apron",
       "open clothes",
       "topless",
       "skirt lift",
-      "thighhighs",
+      "black thighhighs",
       "garter straps",
       "desk",
-      "lantern",
-      "moonlight",
-      "cowboy shot"
+      "oil lamp",
+      "moonlight"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],

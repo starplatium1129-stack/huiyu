@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_sfw_b8_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1544,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "shinjou_akane_sfw_b8_06",
     "title": "新条茜 · 文化祭的忙碌身影",
@@ -13,7 +13,7 @@
     "outfitId": "sfw_festival",
     "description": "文化祭班级摊位，她系着围裙熟练地招呼客人，笑容亲切、动作麻利，完美履行「班级人气王」的职责；忙完躲到器材室后墙边，靠着墙滑坐下来发了五秒钟的呆。",
     "location": "文化祭摊位后方",
-    "action": "文化祭班级摊位，她系着围裙熟练地招呼客人，笑容亲切、动作麻利，完美履行「班级人气王」的职责",
+    "action": "忙完摊位服务后，系着围裙靠器材室后墙坐下，短暂放空",
     "timeOfDay": "日间",
     "lighting": "stall_light",
     "camera": "medium shot",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_spell_notes",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 485,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "aisha_greyrat_spell_notes",
     "title": "爱夏·页边的术式修订",
@@ -25,14 +25,12 @@
       "fantasy"
     ],
     "description": "爱夏侧坐在藏书室长桌旁，左手食指按着参考书中的术式图，右手在旁边的笔记页上补画一条连线。她微微前倾，视线落在笔尖；高领衬衫和绿色马甲清晰可辨。斜射午后日光横过两本打开的书，墨水瓶放在远离袖口的桌角，背景仅保留拱窗和书脊。",
-    "promptProse": "Adult Aisha rests her left index finger on the reference diagram and adds a connecting stroke to her notebook with the right. Leaning toward the pen tip, she studies the two pages crossed by afternoon light.",
+    "promptProse": "She points to the reference diagram with her left index finger and draws a connecting line in the notebook with her right. Afternoon light crosses both pages.",
     "promptTokens": [
       "library",
       "book",
       "notebook",
-      "quill",
-      "medium shot",
-      "three-quarter view"
+      "quill"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",

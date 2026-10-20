@@ -80,11 +80,7 @@ patch 可递归更新对象，数组完整替换，显式 null 保留为 null；
 
 存在目标快照时只合并选中记录，范围外记录保持目标原值，选中下架记录转入 retired。新目录只保存所选范围，适合作为编写基线或导入包，不能代替完整备份。没有选择器时沿用全库导出。
 
-改写验收可直接读取这些记录快照，按角色及 SFW 缩小范围，同时导出真实编译文本：
-
-    npm run wf -- check:rewrite --delivery <改写后快照目录> --baseline-file <编写前快照目录或JSON> --character typhon_arknights --sfw --compiled-out runtime/typhon-prompts.json
-
-未指定 delivery 时读取当前项目 data/catalog；默认 Git 基线为 HEAD，优先读取该提交的记录快照，迁移前提交才使用旧分片。`--ids` 可精确选择蓝图/场景，`--targeted` 继续用于单点纠错。编译出口适用于热门角色蓝图，使用当前 Anima/Krea profile、实际服装绑定与导演参数；只输出文本，不调用模型。词条、官方衣装及真实画面仍需对应资料或人工核对。
+改写审查直接读取工作库记录或显式导出的快照，保留原修订号和候选差异。通过工作台的生产编译器核对当前 Anima/Krea profile、实际服装绑定与导演参数生成的文本；独立场景模板复用 `scripts/lib/scene-render-contract.js`。编译内容与词条、官方衣装及真实画面分别核对，文本编译不代表模型调用或画质验收。一次性处理工具与原始编译输出遵循仓库的归档目录约定。
 
 ## 迁移与保护
 
@@ -95,5 +91,7 @@ patch 可递归更新对象，数组完整替换，显式 null 保留为 null；
 未迁移旧来源的修复统一放在 `legacy:*`：场景补丁/导入/规范化、热门角色/蓝图/标签拆分与导入。用 `npm run wf -- legacy --help` 查看入口。保留原写入守卫、定稿保护和隔离回滚；只用于受支持的旧来源升级准备，待对应升级来源退出后再移除。它们不会导入或修改现行 `content/catalog.sqlite`，日常维护使用 `content:catalog`。
 
 data/prompt-pinned-scenes.json 继续受保护。批量修改跳过保护字段；单条定稿调整仍先真实出图，再用 scenes:pin-capture 维护基线。普通记录保存只能保持保护字段原值，或与已验证的新基线完全一致。模型调用数量、费用与安装均服从用户授权。
+
+记录式定稿使用 `npm run scenes:pin-capture -- --id=sc033 --candidate=runtime/sc033-candidate.json`；候选为包含 `kind: "scene"`、`id` 和完整 `data` 的单条记录。省略 `--candidate` 时读取项目快照的该条内容。命令只更新已存在的目标基线，保留其他条目与原来源，并记录候选字节摘要；它不写工作库、不生成图片，也不证明画质。随后使用同一内容来源根，分别预览 `prompt-pinned-scenes` 文档的单记录快照 `import` 和场景的修订号 `patch`，确认后保存并定向导出。系统文档不接受普通 patch；其导入内容必须等于刚维护的基线，仍执行本地冲突保护。当前用户明确调整验收要求时按其授权执行，仍如实区分编译与画面证据。
 
 所有内容管理接口仅供本机访问。远程共享继续要求独立审核、分级和字节绑定；内容变化不会继承旧发布的可服务资格。

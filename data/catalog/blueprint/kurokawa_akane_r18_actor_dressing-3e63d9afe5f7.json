@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_actor_dressing",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 968,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "跪坐烤箱旁，一手持勺，一手擦去腿上的面粉",
     "adult": true,
@@ -20,13 +20,13 @@
     "id": "kurokawa_akane_r18_actor_dressing",
     "kreaStyleHint": "",
     "lighting": "厨房窗户透入的清亮晨光",
-    "location": "单人更衣室",
+    "location": "晨光厨房烤箱旁",
     "mood": "日常私密温情",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "kitchen_apron_only",
-    "promptProse": "Adult Akane kneels beside the oven with her apron slipped below her chest, holding a spoon and wiping flour from her inner thigh.",
+    "promptProse": "Adult Akane kneels beside the oven with her apron slipped below her chest, holding a spoon and wiping flour from her inner thigh. Clear morning window light reaches the oven and her hands.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -53,7 +53,7 @@
       "morning_sun",
       "daylight"
     ],
-    "timeOfDay": "白天",
+    "timeOfDay": "清晨",
     "title": "黑川茜 · 晨光厨房单薄围裙"
   }
 }

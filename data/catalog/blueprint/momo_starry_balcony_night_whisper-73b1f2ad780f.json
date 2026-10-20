@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_starry_balcony_night_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1251,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "踮脚凑近对方耳边轻声耳语，薄纱睡裙微拂，爱心尾巴缠绕手腕，神情妩媚深情",
     "camera": "medium two-shot",
@@ -22,7 +22,7 @@
       "nude"
     ],
     "outfitId": "harem_negligee",
-    "promptProse": "Adult Momo leans from the left toward her companion's ear on the right, her tail curling gently around his wrist beside the balcony railing.",
+    "promptProse": "Adult Momo leans from the left toward her companion's ear on the right, her tail curling gently around his wrist beside the balcony railing. Warm light spills from indoors across the railing against the cool starry sky.",
     "promptTokens": [
       "2people",
       "whispering",

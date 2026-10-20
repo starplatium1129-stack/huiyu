@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_feather_shop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 621,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "端着装有碎冰的果味鸡尾酒，将吸管轻轻转向观众，邀请对方品尝。",
     "camera": "medium close-up shot",
@@ -19,7 +19,7 @@
       "empty glass"
     ],
     "outfitId": "classic_bartender_apron",
-    "promptProse": "La Pluma holds the iced cocktail toward the viewer and turns its straw within reach, smiling at the invitation. Warm bar light glints through the amber fruit drink and the clear ice beside her fingers.",
+    "promptProse": "La Pluma offers the iced cocktail, turning its straw toward the viewer. Warm bar light glints through the amber drink and ice beside her fingers.",
     "promptTokens": [
       "cocktail",
       "drinking straw",

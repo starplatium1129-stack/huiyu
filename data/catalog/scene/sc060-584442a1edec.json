@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc060",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "animaCaption": "Under a bus stop awning in heavy rain, Ayachi Nene in a navy Stella school uniform shares a blazer as a makeshift umbrella, silky white thighhighs hugging smooth thighs with a thigh gap, brown loafers on wet pavement. Wet silver hair clings to her caring, vulnerable blush.",
+    "animaCaption": "In a medium two-shot under the bus-stop roof, Nene stands beside the companion who lent her the blazer. She pulls its fronts together at her chest and looks up at her companion with relief; rain-diffused light glances off her wet hair.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "屋檐下双人中景",
     "category": "恋爱",
@@ -20,8 +20,8 @@
     "location": "雨中校园",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, 2girls, black_thighhighs, bare_legs, cropped_feet, upper_body",
-    "prompt": "1girl, nene_school_uniform, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, wearing_navy_stella_school_uniform_blazer_and_pleated_miniskirt_with_sheer_white_thighhigh_stockings_and_wet_sheen, silky_white_thighhighs_hugging_smooth_thighs_with_thigh_gap_and_faint_garter_line, entire_legs_and_feet_fully_visible_in_frame, polished_brown_loafers_on_wet_pavement, sharing_one_large_blazer_as_makeshift_umbrella_over_both_heads_under_bus_stop_awning_in_heavy_rain, wet_hair_clinging_to_face_with_caring_vulnerable_blush, dramatic_rain_bokeh_and_puddle_reflections_with_overcast_soft_light, cinematic_depth_of_field, delicate_collarbone_and_slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "",
+    "prompt": "1girl, 2people, ayachi_nene, nene_school_uniform, borrowed blazer, coat over shoulders, wet hair, holding clothes, bus stop, awning, rain, afternoon, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 暴雨里的校服外套】放学时暴雨突至，宁宁的制服外套被雨水打湿，冷得缩起肩膀。你赶来把自己的外套披到她身上，她先担心你会着凉，确认两个人能一起躲进屋檐后才松口气。雨声里，她攥住外套前襟——「谢谢你来找我。衣服湿掉没关系……只是刚才一个人站着的时候，有一点害怕。」",
@@ -45,6 +45,7 @@
       "展示图",
       "头像"
     ],
-    "weather": "雨"
+    "weather": "雨",
+    "compositionIntent": "group"
   }
 }

@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc007",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "Under their shared umbrella, she lays her hand over the viewer's hand around the handle near her shoulder; rain beyond the canopy softens the daylight around her relieved smile.",
+    "animaCaption": "Under their shared umbrella, her hand rests over the viewer's on the handle near her shoulder; rainy daylight softens her relieved smile.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "伞下双人近景",
+    "camera": "伞下主观面部与交握双手近景",
     "category": "恋爱",
     "char": "nene",
     "character": [

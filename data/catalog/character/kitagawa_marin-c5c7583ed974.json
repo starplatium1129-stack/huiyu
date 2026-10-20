@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kitagawa_marin",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "kitagawa_marin",
     "profile": {
@@ -23,12 +23,12 @@
       "visual_dna": {
         "hair": "金色长发（高马尾/双马尾）",
         "hair_color": "金",
-        "eyes": "蓝",
+        "eyes": "粉色眼眸；角色扮演场景可按明确选择佩戴彩色隐形眼镜。",
         "hairstyle": "长发 · 常扎高马尾",
         "uniform": "西装校服 / 辣妹私服",
         "expression": "元气辣妹 · 下垂眼",
         "style": "energetic gyaru cosplayer",
-        "signature": "金发蓝眼与辣妹妆"
+        "signature": "金色长发、粉色发梢、粉瞳与辣妹妆"
       },
       "personality": [
         "开朗外向",
@@ -55,12 +55,12 @@
       },
       "tags": [
         "金发",
-        "蓝眼",
+        "粉瞳",
         "辣妹",
         "cosplayer",
         "制衣"
       ],
-      "bg_story": "喜多川海梦是《更衣人偶坠入爱河》的女主角，元气辣妹 cosplayer。金发蓝眼与下垂眼妆是标志。场景应偏制衣工房、漫展、游乐园等明亮日常。",
+      "bg_story": "喜多川海梦是《更衣人偶坠入爱河》的女主角，元气辣妹 cosplayer。金发粉瞳与下垂眼妆是标志。场景应偏制衣工房、漫展、游乐园等明亮日常。",
       "palette": [
         "亮金",
         "海梦粉",
@@ -101,7 +101,7 @@
       "animeStudio": "cloverworks, official anime screencap, anime coloring",
       "canon": {
         "era": "当代",
-        "formNotes": "金发蓝眼（已修正）；辣妹妆；缝纫/cosplay 核心",
+        "formNotes": "金色长发、粉色发梢与粉瞳；辣妹妆；缝纫与 cosplay 是日常核心。",
         "research": "2026-08-14 调研",
         "world": "现代日常（更衣人偶）"
       },
@@ -117,7 +117,7 @@
       ],
       "franchise": "My Dress-Up Darling",
       "id": "kitagawa_marin",
-      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a glamorous bubbly high school gyaru with long blonde hair with pink dip-dyed tips and a glossy sheen, bright dark-pink contact lenses, long painted nails and silver ear piercings",
+      "identityProse": "Kitagawa Marin from My Dress-Up Darling, a gyaru with long blonde hair fading to pink tips, pink contact lenses and silver ear piercings.",
       "identityTokens": [
         "kitagawa_marin",
         "1girl",

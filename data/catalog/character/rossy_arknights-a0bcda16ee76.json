@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rossy_arknights",
-  "revision": 6,
+  "revision": 3,
   "sortOrder": 164,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rossy_arknights",
     "profile": {
@@ -99,7 +99,7 @@
       ],
       "franchise": "Arknights: Endfield",
       "id": "rossy_arknights",
-      "identityProse": "Rossi from Arknights: Endfield, a Lupo sword user and Wulfgard's younger sister who leads a wolf pack, with long light-blonde hair, wolf ears and a fluffy wolf tail.",
+      "identityProse": "Rossi from Arknights: Endfield, with long light-blonde hair, wolf ears and a fluffy wolf tail.",
       "identityTokens": [
         "rossi (arknights)",
         "1girl",

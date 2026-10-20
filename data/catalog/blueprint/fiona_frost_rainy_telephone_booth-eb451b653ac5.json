@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_rainy_telephone_booth",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 814,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "fiona_frost_rainy_telephone_booth",
     "characterId": "fiona_frost",
@@ -13,7 +13,7 @@
     "outfitId": "wise_agent_trench",
     "category": "间谍日常",
     "location": "雨夜柏林特街头电话亭",
-    "action": "撑伞站在电话亭内单手持听筒汇报密电",
+    "action": "站在电话亭内，一手持听筒汇报密电，另一手将收拢的雨伞靠在玻璃门侧",
     "timeOfDay": "深夜",
     "lighting": "电话亭昏黄暖光与湿漉雨夜反光",
     "camera": "cowboy shot",

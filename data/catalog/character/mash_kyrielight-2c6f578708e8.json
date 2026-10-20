@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mash_kyrielight",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "mash_kyrielight",
     "profile": {
@@ -103,7 +103,7 @@
         "fgo",
         "shielder"
       ],
-      "identityProse": "Mash Kyrielight from Fate/Grand Order, a petite Demi-Servant girl with short pink-lavender hair covering her right eye, violet eyes, and a gentle devoted smile",
+      "identityProse": "Mash Kyrielight from Fate/Grand Order, with short pink-lavender hair covering her right eye and violet eyes.",
       "identityTokens": [
         "mash_kyrielight",
         "1girl",
@@ -111,6 +111,7 @@
         "pink hair",
         "short hair",
         "hair over one eye",
+        "right eye covered",
         "purple eyes",
         "fgo"
       ],

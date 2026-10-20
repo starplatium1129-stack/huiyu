@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_r18_b8_04",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1424,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "穿白色棉质吊带睡衣躺在薄被褥上，抱紧枕头，侧耳听地板声",
     "adult": true,
@@ -27,7 +27,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_camisole",
-    "promptProse": "Adult Kei lies on her thin futon in a white cotton camisole, holding a pillow close as she listens to the creaking floorboards. Moonlight filters through the paper screens.",
+    "promptProse": "Kei lies on her thin futon in a white cotton camisole, clutching a pillow and listening to creaking floorboards beneath moonlit paper screens.",
     "promptTokens": [
       "adult",
       "1girl",

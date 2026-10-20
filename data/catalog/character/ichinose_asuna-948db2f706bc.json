@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ichinose_asuna",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 81,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "ichinose_asuna",
     "profile": {
@@ -58,7 +58,6 @@
       "tags": [
         "兔女郎",
         "金发及踝",
-        "犬耳",
         "女仆装",
         "高挑身段",
         "开朗甜美",
@@ -124,7 +123,7 @@
       ],
       "franchise": "Blue Archive",
       "id": "ichinose_asuna",
-      "identityProse": "Ichinose Asuna from Blue Archive, C&C agent and combat maid with floor-length golden blonde hair covering one eye, striking blue eyes, towering voluptuous hourglass figure, sweet beaming smile, and a delicate ring halo.",
+      "identityProse": "Ichinose Asuna from Blue Archive, with floor-length golden-blonde hair covering one eye, blue eyes and a ring halo.",
       "identityTokens": [
         "asuna (blue archive)",
         "1girl",

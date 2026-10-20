@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_medical_bath",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 533,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
-    "action": "站在花洒下仰头任水流冲刷",
+    "action": "靠在浴池水下长凳，一手撑住瓷砖，另一手沿大腿内侧检查治疗线。",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
@@ -16,7 +16,7 @@
     "description": "成年凯尔希穿着湿白内衫靠在浴池的水下长凳，一手撑住瓷砖，另一手沿大腿内侧检查治疗线；蓝光映着水汽。",
     "id": "kaltsit_arknights_r18_medical_bath",
     "kreaStyleHint": "",
-    "lighting": "warm steam and soft light",
+    "lighting": "blue clinical light diffused through warm bath steam",
     "location": "罗德岛医疗部浴间",
     "mood": "疲惫而放松",
     "negativeTokens": [],
@@ -39,10 +39,13 @@
     "sampleRating": "R18",
     "sceneTags": [
       "bathroom",
-      "shower",
+      "bathtub",
+      "submerged_bench",
+      "white_undershirt",
+      "wet_clothes",
       "steam",
-      "night",
-      "wet_hair"
+      "blue_light",
+      "night"
     ],
     "timeOfDay": "夜晚",
     "title": "凯尔希 · 医疗部浴间"

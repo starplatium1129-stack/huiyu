@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_desk_night",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 461,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "action": "深夜伏在书桌前，单薄睡衣滑落肩头",
     "adult": true,
@@ -23,15 +23,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "blue_nightgown",
-    "promptProse": "Adult Roxy holds a parchment flat with one hand and reaches beneath her gathered nightwear with the other, lifting ink droplets from the water-magic scroll.",
+    "promptProse": "Roxy rests one hand on the finished water-magic notes and rubs a tired eye with the other. The oil lamp lights the parchment and the nightgown slipped at one shoulder.",
     "promptTokens": [
       "light blue nightgown",
-      "open clothes",
-      "topless",
+      "off shoulder",
       "leaning on desk",
-      "hand under clothes",
+      "rubbing eyes",
+      "parchment",
       "scroll",
-      "magic",
       "oil lamp"
     ],
     "recommendedSize": "1536x1152",

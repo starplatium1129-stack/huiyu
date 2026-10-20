@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_02",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 134,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_02",
     "title": "尤贝尔 · 森林幽溪冰冷泉水中的水光湿身 ·「连水都能斩断的魔法……却斩不断这股燥热呢」",
     "category": "水光湿身",
     "characterId": "ubel_frieren",
-    "description": "【迷宫深处地下暗河·夜】冰冷刺骨的暗河中。尤贝尔浑身赤裸坐在光滑的黑石上，绿色的长发湿透贴在脊背。单手在激荡的水流中毫不留情地蹂躏着自己湿透的密穴，碧眸闪烁着嗜血与动情的狂热光芒——「眼镜仔的分身魔法真有趣啊……如果把本体在这里彻底弄坏……会露出什么表情呢？」",
+    "description": "【迷宫深处地下暗河·夜】冰冷刺骨的暗河中。尤贝尔浑身赤裸坐在光滑的黑石上，绿色的长发湿透贴在脊背。单手在激荡的水流中毫不留情地蹂躏着自己湿透的密穴，紫眸闪烁着嗜血与动情的狂热光芒——「眼镜仔的分身魔法真有趣啊……如果把本体在这里彻底弄坏……会露出什么表情呢？」",
     "location": "迷宫深处地下暗河·夜",
-    "action": "坐暗河黑石全裸自抚，绿发湿透贴背，单手深探密穴，碧眸狂热娇喘",
+    "action": "坐暗河黑石全裸自抚，绿发湿透贴背，单手深探密穴，紫眸狂热娇喘",
     "timeOfDay": "night",
     "lighting": "liquid_reflection_lighting",
     "camera": "cowboy shot",
@@ -30,7 +30,7 @@
       "dark",
       "water_droplets"
     ],
-    "promptProse": "Ubel touches herself on a slick river boulder, luminescent moss and torchlight reflected in the underground water.",
+    "promptProse": "Seated on a slick river boulder, Ubel touches herself as luminescent moss and torchlight reflect in the underground water.",
     "promptTokens": [
       "boulder",
       "cave river",

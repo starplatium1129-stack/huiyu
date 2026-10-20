@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_cryo_fluid_translucent",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 771,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "administrator_arknights_r18_cryo_fluid_translucent",
     "characterId": "administrator_arknights",
@@ -31,6 +31,7 @@
       "pool",
       "wet clothes",
       "white tunic",
+      "sleeveless",
       "black piping",
       "yellow tab",
       "see-through",
@@ -38,7 +39,7 @@
       "standing",
       "full body"
     ],
-    "promptProse": "She steps out of the recovery bath in the wet tunic. Blue light rises through the water while the white examination light catches the wet fabric and hair.",
+    "promptProse": "She stands in the recovery bath with gel wetting her sleeveless tunic. Blue light rises through the gel while the white examination light catches the wet fabric and hair.",
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,

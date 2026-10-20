@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "saint_cecilia/oversized_pastor_shirt",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 479,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "saint_cecilia",
     "outfit": {
@@ -12,12 +12,13 @@
       "id": "oversized_pastor_shirt",
       "isDefault": false,
       "name": "宽大黑色牧师衬衫",
-      "prose": "Lawrence's oversized black pastor shirt with a simple stand collar and long sleeves extending over the hands",
+      "prose": "Lawrence's oversized black stand-collar shirt, sleeves extending over her hands.",
       "styleHint": "sweet domestic morning romance",
       "tokens": [
-        "oversized shirt",
-        "black shirt",
+        "oversized black shirt",
+        "stand collar",
         "long sleeves",
+        "sleeves past wrists",
         "button-up shirt"
       ]
     }

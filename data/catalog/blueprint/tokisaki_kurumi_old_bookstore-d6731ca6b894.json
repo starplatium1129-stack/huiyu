@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tokisaki_kurumi_old_bookstore",
     "title": "时崎狂三 · 旧书店午后",
@@ -31,7 +31,7 @@
       "afternoon",
       "medium_shot"
     ],
-    "promptProse": "Her left hand supports the album's spine as her right lifts one page, red and amber afternoon light crossing the ivory cuff and yellowed paper beside the bookstore sill.",
+    "promptProse": "Her left hand supports the album’s spine, right hand lifting one page; red and amber afternoon light crosses her ivory cuff and yellowed paper by the bookstore sill.",
     "promptTokens": [
       "art book",
       "stained glass",

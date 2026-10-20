@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "taihou_azur/seaside_daydream",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 599,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "taihou_azur",
     "outfit": {
@@ -14,7 +14,7 @@
       "tokens": [
         "red string bikini",
         "gold belly chain",
-        "black sarong",
+        "sheer black sarong tied at hips",
         "barefoot"
       ],
       "default": false,

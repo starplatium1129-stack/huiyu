@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lemuen_arknights",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "lemuen_arknights",
     "profile": {
@@ -20,9 +20,9 @@
       "type": "popular",
       "icon": "🕊️",
       "visual_dna": {
-        "hair": "温婉柔顺的暖橙棕色/姜红褐色微卷长发（Warm ginger-brown / light amber-brown wavy hair），发质细腻蓬松，两侧梳理有精致的细麻花辫与低垂的侧马尾散发，头顶有自然分叉的灵动发丝，额前配有轻薄自然的空气感斜刘海",
-        "hair_color": "暖橙棕色/姜褐色（Ginger-brown / warm amber hair；与亲妹妹能天使鲜亮活泼的亮红发相比，色调更加温润柔雅，呈现柔和的暖栗橙棕色调，绝非白发或纯金发，AI绘图提示词需明确指定 ginger-brown hair / warm amber hair）",
-        "eyes": "澄澈深邃的琥珀金/暖橙色眼眸（Warm amber / golden-orange eyes），眼眸明亮温和，常含有一抹沉着从容、兼具敏锐洞察与若隐若现幽默感的笑意",
+        "hair": "柔顺的粉色长发，发束自然垂落于肩侧。",
+        "hair_color": "粉色（Pink hair）",
+        "eyes": "明亮而沉着的眼神，日常温和，瞄准时锐利专注。",
         "hairstyle": "优雅半扎低垂微卷发配侧编发（Half-up wavy long hair with delicate side braids and low ponytail），发梢自然垂散于胸前与肩膀，既具圣职人员的端庄典雅，又显居家闲适的温柔感",
         "uniform": "拉特兰教廷公证所兼教宗枢机处高级顾问风纪正装：外穿深深灰黑色高定质感长款风衣外套（Slate dark tailored overcoat），内搭洁白挺括的修身翻领衬衫与纯黑细领带，衣领和胸前饰有精致的拉特兰金色圣徽金属徽章与流线暗纹；下身穿深色修身西裤与黑色短靴，腿部及膝盖常覆有保暖典雅的深色毛呢盖毯或战术护套；端坐于极具工业科技感的拉特兰专属定制机械轮椅上",
         "expression": "温和恬静、优雅从容、唇角常带一丝若有若无的玩味与腹黑微笑（Gentle, serene, subtle playful and confident smile）；在举枪瞄准与战场指挥时转为绝对冷静、波澜不惊的锐利专注神情",
@@ -53,8 +53,9 @@
         "faction": "拉特兰（Laterano） / 罗德岛（Rhodes Island）"
       },
       "tags": [
-        "暖橙棕色/姜褐色（Ginger-brown / warm amber hair；与亲妹妹能天使鲜亮活泼的亮红发相比，色调更加温润柔雅，呈现柔和的暖栗橙棕色调，绝非白发或纯金发，AI绘图提示词需明确指定 ginger-brown hair / warm amber hair）",
-        "澄澈深邃的琥珀金/暖橙色眼眸（Warm amber / golden-orange eyes），眼眸明亮温和，常含有一抹沉着从容、兼具敏锐洞察与若隐若现幽默感的笑意"
+        "粉色长发",
+        "萨科塔光环",
+        "轮椅神射手"
       ],
       "bg_story": "蕾缪安是拉特兰公证所声名赫赫的顶尖神射手，亦是能天使（蕾缪尔）敬爱的亲生姐姐。早年她曾与莫斯提马、菲亚梅塔、安多恩组成备受瞩目的拉特兰精英小队，但在八年前的意外变故中遭受重创并陷入长达五年的昏迷。苏醒后因下肢神经受损不得不依靠特制轮椅代步，然而身体的创伤从未磨灭她强大的内心与炉火纯青的铳术。在‘吾导先路’与‘空想花庭’等关乎拉特兰局势的关键事件中，她作为教宗万国峰会与第七厅的核心智囊，凭借惊人的远距狙击视野和超凡定力多次扭转危局。随后她以合作干员身份登上罗德岛，在接受神经康复治疗的同时，以无懈可击的战略视野为罗德岛提供绝对信赖的超远距狙击支援。",
       "source": "Hypergryph《明日方舟 / Arknights》",
@@ -62,9 +63,8 @@
         "lemuen (arknights)",
         "1girl",
         "solo",
-        "ginger_hair",
+        "pink_hair",
         "long_hair",
-        "amber_eyes",
         "halo",
         "wings",
         "dark_clothes",
@@ -92,7 +92,7 @@
       "animeStudio": "arknights, hypergryph, official anime art",
       "canon": {
         "era": "近未来奇幻",
-        "formNotes": "银白长发蓝瞳；萨科塔光环+小翅膀；蓝白战术服",
+        "formNotes": "粉色长发，萨科塔光环与小型光翼；使用轮椅的拉特兰神射手。",
         "research": "2026-08-15 调研（Danbooru lemuen_(arknights) 1554 posts）",
         "world": "泰拉（拉特兰）"
       },
@@ -108,14 +108,13 @@
       ],
       "franchise": "Arknights",
       "id": "lemuen_arknights",
-      "identityProse": "Lemuen from Arknights, a serene Sankta sharpshooter with ginger long hair, warm amber eyes, a luminous angelic halo, and delicate white wings.",
+      "identityProse": "Lemuen from Arknights, a Sankta sharpshooter with long pink hair, a luminous halo and delicate wings.",
       "identityTokens": [
         "lemuen (arknights)",
         "1girl",
         "solo",
-        "ginger_hair",
+        "pink_hair",
         "long_hair",
-        "amber_eyes",
         "halo",
         "wings",
         "arknights"

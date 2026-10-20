@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_flaming_ruins_flag",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 169,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "jalter_flaming_ruins_flag",
     "characterId": "jeanne_alter",
@@ -23,7 +23,7 @@
       "firelight",
       "full_body"
     ],
-    "promptProse": "Jeanne Alter steadies the planted dragon banner with one hand and holds her sword low in the other. Firelight rises across the black armor and her fierce smile above the broken masonry.",
+    "promptProse": "Jeanne Alter steadies the planted dragon banner with one hand and holds her sword low in a reverse grip with the other. Firelight catches her fierce smile and the edges of her figure above the broken masonry.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -39,7 +39,7 @@
     ],
     "adult": false,
     "recommendedEngine": "anima-miaomiao-v1.2",
-    "category": "日常羁绊",
+    "category": "战斗高光",
     "location": "法兰西百年战争燃烧废墟",
     "action": "一手稳住已插入碎石地面的邪龙旗，另一手反握诅咒之剑低垂在身侧",
     "timeOfDay": "夜晚",

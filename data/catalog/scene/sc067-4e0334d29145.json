@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc067",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
-    "animaCaption": "Standing outside the dressing room with the rejected outfits hanging beside her, she adjusts her hairclip and looks toward the viewer for their response; window light falls across the chosen cardigan and blouse.",
+    "animaCaption": "Outside the dressing room, with rejected outfits hanging beside her, she adjusts her hairclip and looks toward the viewer for approval; window light crosses her chosen cardigan and blouse.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "恋爱",

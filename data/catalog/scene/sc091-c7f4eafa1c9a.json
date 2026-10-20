@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc091",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
     "id": "sc091",
     "title": "门外递来的换洗衣物",
@@ -45,7 +45,7 @@
     ],
     "storyJa": "【夏目・ドアの外に着替えが届けられます】冬の夜、バスルームのドアがしっかりと閉まっていなかったため、バスタオルを巻いた夏目が赤い顔の半分だけを出し、寝室に残っている服を取り出すのを手伝ってほしいと頼みました。あなたは服をドアに渡し、振り返った。彼女は数秒間沈黙し、そっとそれらを受け取りました。――「処置は一応、合格。着替えたら……お礼に温かい飲み物くらいは淹れてあげる。」",
     "rating": "R15",
-    "animaCaption": "Her flushed half-face appears through the door gap as she accepts the folded clothes from the viewer's outstretched hands; warm bathroom light catches the steam while her wrapped towel stays behind the door.",
+    "animaCaption": "Her flushed half-face appears in the door gap as she accepts the clothes from the viewer's outstretched hands. Warm light catches the steam; her wrapped towel stays behind the door.",
     "auditRevision": "fix-no-burn-ears-2026-09-05"
   }
 }

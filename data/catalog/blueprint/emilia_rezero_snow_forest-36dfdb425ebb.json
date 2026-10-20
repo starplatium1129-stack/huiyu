@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 442,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "emilia_rezero_snow_forest",
     "title": "爱蜜莉雅 · 艾利欧尔雪林",
@@ -31,7 +31,7 @@
       "snow_bounce_light",
       "cowboy_shot"
     ],
-    "promptProse": "She pauses on the Elior Forest path, mittened hands holding her cloak collar as she looks back along her footprints. Winter sun from behind her right shoulder rims the silver hair and low icy branches; reflected snowlight softens her face.",
+    "promptProse": "She pauses on the Elior Forest path, mittened hands holding her cloak collar as she looks back along her footprints. Low icy branches cross the foreground, with staggered trunks receding into pale-blue snowy distance. Winter sun from behind her right shoulder rims her hair and cloak; reflected snowlight softens her face while tree shadows cross the path.",
     "promptTokens": [
       "1girl",
       "solo",

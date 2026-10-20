@@ -1,14 +1,15 @@
 <template>
+  <div class="image-compare-slider" role="group" :aria-label="`${beforeLabel}与${afterLabel}对比`">
   <div
     ref="containerRef"
-    class="image-compare-slider tw:[container-type:inline-size] tw:relative tw:block tw:w-full tw:h-full tw:overflow-hidden tw:select-none tw:cursor-ew-resize tw:touch-none tw:rounded-md tw:[outline:0]"
+    class="compare-surface tw:[container-type:inline-size] tw:relative tw:block tw:w-full tw:h-full tw:overflow-hidden tw:select-none tw:cursor-ew-resize tw:touch-none tw:rounded-md tw:[outline:0]"
     :class="{ 'is-dragging': isDragging }"
     role="slider"
     :aria-valuenow="Math.round(splitPos)"
     :aria-valuetext="`对比位置 ${Math.round(splitPos)}%：${beforeLabel}与${afterLabel}`"
     aria-valuemin="0"
     aria-valuemax="100"
-    aria-label="图像对比滑块"
+    aria-label="图像对比滑块，方向键调整，Home 和 End 查看单侧"
     aria-orientation="horizontal"
     tabindex="0"
     @keydown="onKeydown"
@@ -19,14 +20,14 @@
     @lostpointercapture="stopDrag"
   >
     <!-- 底层 (After: 高清/修复后) -->
-    <img :crossorigin="runtimeResourceCors()" class="compare-img after-img tw:absolute tw:inset-0 tw:w-full tw:h-full tw:object-contain tw:pointer-events-none" :src="resolveRuntimeUrl(afterSrc)" :alt="afterLabel" decoding="async" />
-    <span class="compare-badge badge-after tw:absolute tw:bottom-s-3 tw:[padding:2px_var(--s-2)] tw:rounded-pill tw:[background:color-mix(in_srgb,_var(--bg-deep)_85%,_transparent)] tw:text-secondary tw:[font:700_var(--fs-label-xs)_var(--font-mono)] tw:[letter-spacing:.05em] tw:pointer-events-none tw:[z-index:var(--z-raised)] tw:right-s-3">{{ afterLabel }}</span>
+    <img v-if="after.src.value && !after.failed.value" v-bind="after.image.value" class="compare-img after-img tw:absolute tw:inset-0 tw:w-full tw:h-full tw:object-contain tw:pointer-events-none" :alt="afterLabel" decoding="async" draggable="false" />
+    <span class="compare-badge badge-after">{{ afterLabel }}</span>
 
     <!-- 顶层 (Before: 原图，根据 splitRatio 裁剪) -->
     <div ref="clippedLayer" class="compare-overlay tw:absolute tw:inset-0 tw:w-full tw:h-full tw:pointer-events-none">
       <div ref="clippedContent" class="compare-content tw:absolute tw:inset-0">
-      <img :crossorigin="runtimeResourceCors()" class="compare-img before-img tw:absolute tw:inset-0 tw:w-full tw:h-full tw:object-contain tw:pointer-events-none" :src="resolveRuntimeUrl(beforeSrc)" :alt="beforeLabel" decoding="async" />
-      <span class="compare-badge badge-before tw:absolute tw:bottom-s-3 tw:[padding:2px_var(--s-2)] tw:rounded-pill tw:[background:color-mix(in_srgb,_var(--bg-deep)_85%,_transparent)] tw:text-secondary tw:[font:700_var(--fs-label-xs)_var(--font-mono)] tw:[letter-spacing:.05em] tw:pointer-events-none tw:[z-index:var(--z-raised)] tw:left-s-3">{{ beforeLabel }}</span>
+      <img v-if="before.src.value && !before.failed.value" v-bind="before.image.value" class="compare-img before-img tw:absolute tw:inset-0 tw:w-full tw:h-full tw:object-contain tw:pointer-events-none" :alt="beforeLabel" decoding="async" draggable="false" />
+      <span class="compare-badge badge-before">{{ beforeLabel }}</span>
       </div>
     </div>
 
@@ -37,12 +38,21 @@
       </div>
     </div>
   </div>
+  <!-- Recovery controls are outside the slider's presentational descendants. -->
+  <div v-if="feedback.length" class="compare-feedback" role="status">
+    <p v-for="item in feedback" :key="item.side">
+      <span>{{ item.message }}</span>
+      <button v-if="item.failed" type="button" @click="retry(item.side)">重新读取{{ item.label }}</button>
+    </p>
+  </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { computed } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useImageComparison } from '@/composables/useImageComparison'
+import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
 const props = withDefaults(defineProps<{
   beforeSrc: string
@@ -59,10 +69,23 @@ const props = withDefaults(defineProps<{
 const { position: splitPos, container: containerRef, clippedLayer, clippedContent, divider, isDragging, startDrag, onDrag, stopDrag, onKeydown } = useImageComparison(
   props.initialRatio * 100, 'left', value => `对比位置 ${value}%：${props.beforeLabel}与${props.afterLabel}`,
 )
+const before = useRuntimeImage(() => props.beforeSrc), after = useRuntimeImage(() => props.afterSrc)
+const feedback = computed(() => ([
+  { side: 'before' as const, label: props.beforeLabel, image: before },
+  { side: 'after' as const, label: props.afterLabel, image: after },
+]).flatMap(({ side, label, image }) => image.loaded.value ? [] : [{
+  side, label, failed: image.failed.value,
+  message: image.failed.value ? `${label}暂时无法读取` : image.src.value ? `正在读取${label}…` : `${label}暂无可用图片`,
+}]))
+function retry(side: 'before' | 'after') {
+  containerRef.value?.focus({ preventScroll: true })
+  ;(side === 'before' ? before : after).retry()
+}
 </script>
 
 <style scoped>
-.image-compare-slider:focus-visible {
+.image-compare-slider { position:relative; width:100%; height:100%; min-width:0; min-height:0; border-radius:var(--r-md); background:var(--art-stage); }
+.compare-surface:focus-visible {
   outline: none;
   box-shadow: var(--focus-shadow);
 }
@@ -70,7 +93,7 @@ const { position: splitPos, container: containerRef, clippedLayer, clippedConten
   outline: none;
   box-shadow: var(--focus-shadow);
 }
-.image-compare-slider.is-dragging .compare-handle {
+.compare-surface.is-dragging .compare-handle {
   transform: translate(-50%, -50%) scale(1.15);
   background: var(--accent);
   color: var(--text-inverse);
@@ -80,11 +103,15 @@ const { position: splitPos, container: containerRef, clippedLayer, clippedConten
   overflow: hidden;
   transform: translateX(-50%);
 }
-.compare-content { transform: translateX(50%); }
+.compare-content { transform: translateX(50%); background:var(--art-stage); }
 
-.compare-badge {
-  backdrop-filter: blur(8px);
-}
+.compare-badge { position:absolute; bottom:var(--s-3); z-index:var(--z-raised); max-width:calc(100% - 2 * var(--s-3)); padding:var(--s-1) var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-sm); background:var(--art-scrim); color:var(--on-art-primary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); overflow-wrap:anywhere; pointer-events:none; }
+.badge-before { left:var(--s-3); }
+.badge-after { right:var(--s-3); }
+.compare-feedback { position:absolute; inset:var(--s-3) var(--s-3) auto; z-index:var(--z-overlay); display:grid; gap:var(--s-2); max-height:calc(100% - 2 * var(--s-3)); overflow:auto; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
+.compare-feedback p { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:var(--s-2); margin:0; }
+.compare-feedback button { min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-elevated); color:var(--text-primary); font:inherit; cursor:pointer; }
+.compare-feedback button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 
 .compare-divider {
   transform: translateX(calc(50cqw - 50%));
@@ -94,6 +121,7 @@ const { position: splitPos, container: containerRef, clippedLayer, clippedConten
   transform: translate(-50%, -50%);
 }
 @media (forced-colors: active) {
-  .image-compare-slider:focus-visible, .image-compare-slider:hover .compare-handle { outline: 2px solid Highlight; outline-offset: 2px; }
+  .compare-surface:focus-visible, .image-compare-slider:hover .compare-handle, .compare-feedback button:focus-visible { outline: 2px solid Highlight; outline-offset: -2px; }
+  .compare-badge,.compare-feedback { background:Canvas; color:CanvasText; border-color:CanvasText; }
 }
 </style>

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_dangerous_beast",
-  "revision": 2,
+  "revision": 6,
   "sortOrder": 202,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "negativeTokens": [],
     "id": "mash_kyrielight_dangerous_beast",
@@ -27,19 +27,21 @@
       "warm_lighting",
       "wolf_ears"
     ],
-    "promptProse": "Adult, age-twenty-plus Mash sits on the velvet bench with both legs folded, touching one costume ear while her other hand moves through the bodysuit opening.",
+    "promptProse": "Adult Mash sits with folded legs on the velvet bench, one hand touching a costume ear, the other moving through the bodysuit opening. Courtyard sunset meets warm indoor lamplight across her glasses and the plush costume tail.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Mash",
       "Dangerous Beast",
-      "wolf ears",
+      "fake wolf ears",
       "open bodysuit",
       "bare breasts",
       "crotchless lingerie",
       "folded legs",
       "masturbation",
-      "velvet bench"
+      "velvet bench",
+      "glasses",
+      "costume tail"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "dangerous_beast",

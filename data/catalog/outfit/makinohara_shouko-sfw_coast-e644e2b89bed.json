@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/sfw_coast",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "sfw_coast",
       "name": "七里滨白色连衣裙",
-      "prose": "an opaque white short-sleeved summer dress with a knee-length hem, worn barefoot on the shore",
+      "prose": "An opaque white short-sleeved summer dress with a knee-length hem, worn barefoot.",
       "tokens": [
         "white_dress",
         "short_sleeves",

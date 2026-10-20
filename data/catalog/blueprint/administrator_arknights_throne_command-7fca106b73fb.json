@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_throne_command",
-  "revision": 6,
+  "revision": 4,
   "sortOrder": 749,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "administrator_arknights_throne_command",
     "characterId": "administrator_arknights",
@@ -31,14 +31,11 @@
       "upper_body"
     ],
     "promptTokens": [
-      "indoors",
       "breakfast",
-      "blindfold",
       "toast",
       "coffee",
       "sitting",
-      "smile",
-      "medium shot"
+      "smile"
     ],
     "promptProse": "She slides a toast plate toward the viewer's place at the breakfast table. Morning window light falls across her reaching hand and the plate.",
     "negativeTokens": [],

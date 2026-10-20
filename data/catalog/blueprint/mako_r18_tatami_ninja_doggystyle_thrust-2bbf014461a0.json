@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "mako_r18_tatami_ninja_doggystyle_thrust",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1141,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "侧坐缘侧无袖忍者服侧扣解开露大胸，黑色短马尾随风摇曳，单手护胸另一手深层自抚，猫嘴含泪娇喘",
+    "action": "侧坐缘侧无袖忍者服侧扣解开露大胸，黑色短发与耳侧长发束随风摇曳，单手护胸另一手深层自抚，猫嘴含泪娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
     "camera": "cowboy shot, seated veranda perspective, focus on heaving cleavage, cat-mouth lips, and ninja suit",
@@ -15,7 +15,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【常陆茉子 · 缘侧夜风无袖忍者紧身装侧扣解开露饱满酥胸自抚】夜凉如水的后院回廊缘侧上，庭院水景在月光下波光粼粼。茉子身上的无袖紧身忍者战装侧扣被解开，贴身黑布大敞滑落，露出极其雪白丰满的硕大酥胸与平坦小腹（cleavage spill），黑布紧绷包裹着柔软乳肉。平日里机警敏捷的护卫忍者，侧坐在木质地板边缘，黑色短发马尾随夜风轻舞。猫嘴小口轻咬下唇，两颊泛起极度甜腻动情的酡红。茉子单手按在饱满起伏的胸脯上借力，另一只手探入紧身忍者短裤缝隙深处自我抚慰，猫嘴微张溢出甜美娇软的轻吟——「哈啊……护卫什么的……现在在下……只是渴望被你支配的女人而已……！」",
+    "description": "【常陆茉子 · 缘侧夜风无袖忍者紧身装侧扣解开露饱满酥胸自抚】夜凉如水的后院回廊缘侧上，庭院水景在月光下波光粼粼。茉子身上的无袖紧身忍者战装侧扣被解开，贴身黑布大敞滑落，露出极其雪白丰满的硕大酥胸与平坦小腹（cleavage spill），黑布紧绷包裹着柔软乳肉。平日里机警敏捷的护卫忍者，侧坐在木质地板边缘，黑色短发与耳侧长发束随夜风轻舞。猫嘴小口轻咬下唇，两颊泛起极度甜腻动情的酡红。茉子单手按在饱满起伏的胸脯上借力，另一只手探入紧身忍者短裤缝隙深处自我抚慰，猫嘴微张溢出甜美娇软的轻吟——「哈啊……护卫什么的……现在在下……只是渴望被你支配的女人而已……！」",
     "id": "mako_r18_tatami_ninja_doggystyle_thrust",
     "kreaStyleHint": "r18_sensual_bedroom",
     "lighting": "庭院池塘倒映的清冷月光与木质走廊柔和灯笼光芒交织的幽静氛围",
@@ -25,7 +25,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "ninja_suit",
-    "promptProse": "Adult Mako leans against the veranda pillar with her ninja suit unclasped, one hand at her chest and the other beneath her shorts.",
+    "promptProse": "Adult Mako leans against the veranda pillar with her ninja suit unclasped, one hand at her chest and the other beneath her shorts. Cool moonlight reflected from the garden pond meets the soft lantern light along the wooden corridor.",
     "promptTokens": [
       "pleated wrap skirt",
       "black bike shorts",

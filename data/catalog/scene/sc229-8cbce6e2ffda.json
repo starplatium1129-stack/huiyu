@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc229",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 224,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
   "data": {
     "animaCaption": "Holding the console in one hand, she draws half the blanket over the viewer's knees with the other; the lamp warms her glasses and knit sleeve against the rainy attic window.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -17,7 +17,7 @@
     "emotion": "恋爱",
     "id": "sc229",
     "lighting": "窗外阴雨朦胧弱光与室内台灯柔和暖光",
-    "location": "温馨阁楼地毯单人沙发",
+    "location": "温馨阁楼书房沙发",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",

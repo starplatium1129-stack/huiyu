@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_forbidden_library",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 891,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "在古老藏书库的高书架前伸手取一本旧书",
     "adult": false,
@@ -32,7 +32,8 @@
       "bookshelf",
       "old book",
       "library",
-      "candlelight"
+      "candlelight",
+      "tiptoes"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

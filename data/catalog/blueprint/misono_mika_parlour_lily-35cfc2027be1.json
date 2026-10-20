@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_parlour_lily",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 890,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "在茶具旁整理白蔷薇，回望微笑",
     "adult": false,
@@ -32,7 +32,8 @@
       "teacup",
       "white rose",
       "parlor",
-      "close-up"
+      "close-up",
+      "shallow depth of field"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

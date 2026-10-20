@@ -1,54 +1,48 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_r18_kimono_slip",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 642,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
-    "action": "跪坐榻上，衣襟微敞",
-    "adult": true,
+    "action": "跪坐草席，双手轻扶腰带结，抬头微笑。",
+    "adult": false,
     "adultArtistHint": "@anmi",
-    "animaStyleHint": "r18_sensual_cg",
-    "camera": "intimate medium shot",
-    "category": "成人",
+    "animaStyleHint": "",
+    "camera": "medium shot, eye level",
+    "category": "日常生活",
     "characterId": "suzuran_arknights",
-    "description": "【铃兰 · 和服微敞】和室幽暗的烛光下，跪坐在柔软草席上的丽萨小和服衣襟悄然微敞，露出纤细雪白的锁骨与娇嫩如凝脂的肌肤。九条毛茸茸的金色尾巴害羞地轻轻护在身前，她红透了小脸仰望你——「博士……丽萨是大家的光芒……但在今夜，丽萨只想做博士一个人专属的小狐狸。」",
+    "description": "和室烛光下，铃兰穿领口整齐的白色和服跪坐在草席上，双手轻扶腰带结，九条尾巴绕在身侧。她抬头向近处的人微笑。",
     "id": "suzuran_arknights_r18_kimono_slip",
     "kreaStyleHint": "",
     "lighting": "candlelight",
     "location": "罗德岛·铃兰宿舍",
-    "mood": "青涩旖旎",
+    "mood": "温和安静",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "small_kimono",
-    "promptProse": "Suzuran, an adult woman aged twenty or older, holds the loosened obi while touching herself beneath the open kimono. Her nine tails curve behind her hands.",
+    "promptProse": "Suzuran kneels on tatami in a closed white kimono, both hands beside the obi knot and tails around the cushion, looking up in candlelight.",
     "promptTokens": [
-      "adult",
-      "1girl",
-      "solo",
-      "fox ears",
-      "multiple tails",
       "white kimono",
-      "off shoulder",
-      "topless",
-      "kneeling",
-      "obi",
-      "masturbation",
+      "seiza",
+      "hands on obi",
       "tatami",
-      "night"
+      "candlelight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
     "sceneTags": [
-      "bedroom",
       "kimono",
-      "candle",
-      "night",
-      "kneeling"
+      "tatami",
+      "candlelight"
     ],
     "timeOfDay": "夜晚",
-    "title": "铃兰 · 和服微敞"
+    "title": "铃兰 · 和室小憩",
+    "coverageTags": [
+      "daily"
+    ],
+    "styleHint": ""
   }
 }

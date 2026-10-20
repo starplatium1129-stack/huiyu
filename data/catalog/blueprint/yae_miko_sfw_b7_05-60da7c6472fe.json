@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_sfw_b7_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yae_miko_sfw_b7_05",
     "title": "八重神子 · 海滨祭典的油豆腐冰饮",
@@ -30,7 +30,7 @@
       "knowing_smile",
       "summer"
     ],
-    "promptProse": "Yae Miko looks back toward the viewer with her folding fan open in one hand, the chilled drink resting beside her on the seaside platform. Fireworks glimmer in the glass above the dark summer sea.",
+    "promptProse": "Seated on the seaside platform, Yae Miko looks back toward the viewer with her folding fan open in one hand and the chilled drink resting beside her. Fireworks glimmer in the glass above the dark summer sea.",
     "promptTokens": [
       "folding fan",
       "drink",

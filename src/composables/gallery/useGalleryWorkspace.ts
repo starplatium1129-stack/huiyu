@@ -132,6 +132,7 @@ export function useGalleryWorkspace() {
         compareSelected: openSelectedComparison,
         compareFromRoute: openRouteComparison,
         parentImageUrl,
+        parentImageLabel, parentImageStatus, retryParentImage,
         hasComparableImage,
     } = useGalleryComparison({
         history,
@@ -409,7 +410,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
         hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed,
-        compareMode, hasComparableImage, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, parentImageUrl, current, characterName,
+        compareMode, hasComparableImage, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, parentImageUrl, parentImageLabel, parentImageStatus, retryParentImage, current, characterName,
         facts, downloadCurrent, downloading: actions.downloading, copyPrompt, showToast, releaseCardResources,
     };
 }

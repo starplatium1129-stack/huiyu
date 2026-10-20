@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_dessert_cafe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 446,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "emilia_rezero_dessert_cafe",
     "title": "爱蜜莉雅 · 甜品店",
@@ -29,7 +29,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "casual",
       "parfait",
       "spoon",
       "cafe",

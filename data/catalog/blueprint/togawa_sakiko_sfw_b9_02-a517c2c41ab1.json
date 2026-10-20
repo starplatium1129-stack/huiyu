@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1749,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_02",
     "title": "丰川祥子 · 唱片店试听的午后",
@@ -32,7 +32,7 @@
       "shop_light",
       "medium_shot"
     ],
-    "promptProse": "Sakiko holds one headphone cup and rests her other hand on her knee, pausing her quiet beat as a harmony draws a faint smile. Soft shop light reaches her face at the listening station.",
+    "promptProse": "Sakiko holds one headphone cup, other hand paused on her knee as a harmony draws a faint smile; soft shop light falls on her face at the listening station.",
     "promptTokens": [
       "Sakiko Togawa",
       "headphones",

@@ -1,4 +1,7 @@
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
+import { createHash } from 'node:crypto';
+import { writeJsonAtomic } from '../lib/atomic-files';
+import catalogSnapshot = require('../lib/catalog-snapshot');
 /**
  * 定稿场景提示词保护（pinned scene prompts）
  *
@@ -9,7 +12,8 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
  * 用法：
  *   node scripts/maintenance/pin-scene-prompts.js            # 报告漂移（默认 --source=auto）
  *   node scripts/maintenance/pin-scene-prompts.js --apply    # 回滚被批次覆盖的字段到目标来源
- *   node scripts/maintenance/pin-scene-prompts.js --capture  # 以当前工作区为新一版基线（改动须先真实出图自测）
+ *   node scripts/maintenance/pin-scene-prompts.js --capture --id=sc033 --candidate=runtime/candidate.json
+ *     # 采纳已审查的单条 scene 记录候选；仅更新该条基线，后续通过记录服务保存
  *   node scripts/maintenance/pin-scene-prompts.js --check    # 门禁：与基线逐字节一致，否则退出码 1
  *   --source=auto|baseline|history                           # 目标来源，默认 auto
  *
@@ -103,6 +107,9 @@ function gitScene(commit: any, id: any) {
 }
 
 function loadShards() {
+  const records = catalogSnapshot.read(ROOT);
+  if (records) return records.filter(record => record.kind === 'scene')
+    .map(record => ({ file: record.id, arr: [record.data] }));
   const manifest = JSON.parse(fs.readFileSync(path.join(SHARDS_DIR, 'manifest.json'), 'utf8'));
   const { expandShardFiles }: typeof import('../lib/scene-store') = require('../lib/scene-store');
   const shards: any[] = [];
@@ -131,6 +138,8 @@ function indexShards(shards: any) {
 // ── 主流程 ────────────────────────────────────────────────────────────────
 const mode = process.argv[2] || '--report';
 const source = process.argv.find((arg: any) => arg.startsWith('--source='))?.slice(9) || 'auto';
+const captureId = process.argv.find(arg => arg.startsWith('--id='))?.slice(5);
+const candidateFile = process.argv.find(arg => arg.startsWith('--candidate='))?.slice(12);
 
 function readBaseline() {
   const payload = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
@@ -143,6 +152,39 @@ function readBaseline() {
     }
   }
   return payload.scenes;
+}
+
+function captureSelectedScene(id: string, file?: string): void {
+  const previous = readBaseline();
+  if (!Object.hasOwn(previous, id)) throw new Error(`场景 ${id} 不属于现有定稿基线`);
+  const payload = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
+  let entry: Record<string, unknown>;
+  let candidateHash: string | undefined;
+  if (file) {
+    const bytes = fs.readFileSync(path.resolve(ROOT, file));
+    const record = JSON.parse(bytes.toString('utf8'));
+    if (record?.kind !== 'scene' || record.id !== id || record.data?.id !== id
+        || typeof record.data.prompt !== 'string' || !record.data.prompt.trim()) {
+      throw new Error('候选必须是与 --id 一致、包含完整 data 的 scene 记录');
+    }
+    entry = record.data;
+    candidateHash = createHash('sha256').update(bytes).digest('hex');
+  } else {
+    const current = indexShards(loadShards()).get(id);
+    if (!current) throw new Error(`当前项目快照中没有场景 ${id}`);
+    entry = current.entry;
+  }
+  const changed = diffFields(pick(entry), previous[id]);
+  if (!changed.length) { console.log(`${id}: 定稿字段未变化`); return; }
+  payload.scenes[id] = {
+    ...previous[id], ...pick(entry),
+    pinSource: candidateHash
+      ? [...new Set([...previous[id].pinSource, `candidate-sha256:${candidateHash}`])]
+      : previous[id].pinSource,
+  };
+  payload.pinnedAt = new Date().toISOString().slice(0, 19);
+  writeJsonAtomic(BASELINE_PATH, payload);
+  console.log(`captured ${id}: ${changed.join(', ')}；其余定稿条目保持原值`);
 }
 
 function resolveTargets() {
@@ -168,9 +210,13 @@ function resolveTargets() {
 
 try {
 if (!['--report', '--apply', '--capture', '--check'].includes(mode) || !['auto', 'baseline', 'history'].includes(source)
-    || process.argv.slice(3).some((arg: any) => !/^--source=(auto|baseline|history)$/.test(arg))) {
-  console.error(`usage: node ${path.basename(__filename)} [--report|--apply|--capture|--check] [--source=auto|baseline|history]`);
+    || process.argv.slice(3).some(arg => !/^--source=(auto|baseline|history)$|^--id=.+$|^--candidate=.+$/.test(arg))
+    || ((captureId || candidateFile) && mode !== '--capture') || (candidateFile && !captureId)
+    || ['--source=', '--id=', '--candidate='].some(prefix => process.argv.filter(arg => arg.startsWith(prefix)).length > 1)) {
+  console.error(`usage: node ${path.basename(__filename)} [--report|--apply|--capture|--check] [--source=auto|baseline|history] [--capture: --id=<scene> --candidate=<record JSON>]`);
   process.exitCode = 2;
+} else if (mode === '--capture' && captureId) {
+  captureSelectedScene(captureId, candidateFile);
 } else if (mode === '--check') {
   if (!fs.existsSync(BASELINE_PATH)) {
     console.error('baseline 缺失：先运行 --capture 生成 data/prompt-pinned-scenes.json');
@@ -194,6 +240,7 @@ if (!['--report', '--apply', '--capture', '--check'].includes(mode) || !['auto',
     process.exitCode = bad ? 1 : 0;
   }
 } else if (mode === '--capture') {
+  if (catalogSnapshot.read(ROOT)) throw new Error('记录式内容库必须指定 --id 单条定稿，不能批量捕获全部保护字段');
   const entries = indexShards(loadShards());
   // An existing reviewed baseline owns both membership and provenance. Capturing
   // its current fields must not require historical Git objects or drop entries.
@@ -219,6 +266,7 @@ if (!['--report', '--apply', '--capture', '--check'].includes(mode) || !['auto',
   console.log(`captured baseline: ${Object.keys(scenes).length} scenes -> data/prompt-pinned-scenes.json`);
 } else {
   // --report / --apply
+  if (mode === '--apply') catalogSnapshot.assertLegacyWrite(ROOT);
   const shards = loadShards();
   const entries = indexShards(shards);
   const { targets, origin } = resolveTargets();

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chitanda_eru",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "chitanda_eru",
     "profile": {
@@ -89,7 +89,7 @@
         "我很好奇",
         "古典部部长"
       ],
-      "identityProse": "Eru Chitanda from Hyouka, the polite and curious heiress of the Chitanda estate, with long lustrous black hair, enormous expressive purple eyes that sparkle with intense curiosity, and a graceful dignified bearing",
+      "identityProse": "Eru Chitanda from Hyouka, with long black hair, bangs and large purple eyes.",
       "identityTokens": [
         "chitanda_eru",
         "hyouka",
@@ -98,6 +98,7 @@
         "black_hair",
         "long_hair",
         "bangs",
+        "large_eyes",
         "purple_eyes"
       ],
       "exactTokens": [

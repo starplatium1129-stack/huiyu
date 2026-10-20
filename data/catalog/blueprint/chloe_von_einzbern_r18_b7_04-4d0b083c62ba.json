@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_r18_b7_04",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 308,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "chloe_von_einzbern_r18_b7_04",
     "title": "克洛伊 · 城堡天鹅绒床铺上的极乐补魔独奏 ·「把大哥哥的魔力……全都吸进小黑的最深处」",
@@ -12,7 +12,7 @@
     "characterId": "chloe_von_einzbern",
     "description": "【爱因兹贝伦城堡客房·深夜】魔力消耗殆尽后的强烈渴求。小黑赤裸地躺在红色天鹅绒大床上，褐色的双腿高高抬起折向胸口。两根手指疯狂在暴洪般的爱液中抽插，嘴里发出断断续续的娇媚啼鸣——「哈啊……好想要……好想要士郎的全部……快点来吻我……」",
     "location": "爱因兹贝伦城堡客房·深夜",
-    "action": "仰卧天鹅绒大床双腿架起手指抽送，褐肤红发汗湿，失神高潮娇啼",
+    "action": "仰卧天鹅绒大床双腿架起手指抽送，褐肤浅粉长发汗湿，失神高潮娇啼",
     "timeOfDay": "night",
     "lighting": "silver_moonlight",
     "camera": "intimate vertical medium shot",
@@ -27,7 +27,7 @@
       "bed_sheet",
       "dark_skin",
       "tan",
-      "red_hair",
+      "pink_hair",
       "completely_nude"
     ],
     "promptProse": "Adult Chloe lies across scarlet velvet with one hand between her legs. Moonlight from the Gothic window crosses the bedding.",
@@ -38,6 +38,7 @@
       "lying",
       "on back",
       "spread legs",
+      "knees up",
       "arched back",
       "masturbation",
       "sweat",

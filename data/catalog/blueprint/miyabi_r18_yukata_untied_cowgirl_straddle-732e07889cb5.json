@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_r18_yukata_untied_cowgirl_straddle",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1077,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "独自跨坐软垫，一手扶腿、一手腿间自抚",
     "adult": true,
@@ -15,17 +15,17 @@
     "coverageTags": [
       "cowgirl"
     ],
-    "description": "成年星见雅独自跨坐榻榻米软垫，深蓝浴衣松至胸下，一手扶腿，另一手留在腿间，白色狐尾避开四肢。",
+    "description": "成年星见雅独自跨坐榻榻米软垫，深蓝浴衣松至胸下，一手扶腿，另一手留在腿间。",
     "id": "miyabi_r18_yukata_untied_cowgirl_straddle",
     "kreaStyleHint": "r18_sensual_bedroom",
-    "lighting": "和纸灯笼透出的暖黄柔光打在渗汗的玉肌与白狐尾上",
+    "lighting": "和纸灯笼透出的暖黄柔光打在渗汗的玉肌上",
     "location": "温泉旅馆榻榻米和室",
     "mood": "极乐沉沦",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "moonlight_yukata",
-    "promptProse": "Adult Miyabi straddles the tatami cushion with her yukata gathered below her chest, one hand on her thigh while the other fingers herself.",
+    "promptProse": "Adult Miyabi straddles the tatami cushion with her yukata gathered below her chest, one hand on her thigh while the other fingers herself. A paper lantern casts soft warm yellow light across the scene.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -48,7 +48,6 @@
       "open_clothes",
       "large_breasts",
       "fox_ears",
-      "fox_tail",
       "heavy_blush"
     ],
     "timeOfDay": "深夜",

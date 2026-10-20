@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_sfw_b6_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1376,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "asada_shino_sfw_b6_04",
     "title": "朝田诗乃 · 静音礼堂里的蓝色花嫁",
@@ -14,7 +14,7 @@
     "description": "【郊外小教堂·清晨】诗乃穿着剪裁简洁的蓝白婚纱站在钢琴旁，黑框眼镜被换成细小的银色发饰；她指尖轻触捧花上的蓝色小花，面对镜头时的安静笑容像一段终于完成的旋律。",
     "location": "small countryside chapel with an upright piano",
     "action": "钢琴旁整理银色发饰并轻触蓝花捧花，安静回眸微笑",
-    "timeOfDay": "黄昏",
+    "timeOfDay": "清晨",
     "lighting": "clear morning light and pale blue window glow",
     "camera": "medium full shot, vertical framing",
     "mood": "现实世界里的安静誓约",

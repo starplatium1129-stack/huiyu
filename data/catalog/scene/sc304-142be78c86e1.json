@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc304",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 299,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
     "id": "sc304",
     "title": "月光窗前的完整姿态",
@@ -39,10 +39,10 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_composition, 1girl, solo, adult_shiki_natsume, shiki_natsume, black_hair, long_hair, two_red_hairclips, mole_under_eye, yellow_eyes, naked, nude, completely_naked, pussy, standing, front_view, bare_breasts, nipples, navel, fair_skin, calm_smile, night, french_window, moonlight, soft_shadows, sensual, full_body, wide_shot, official_visual_novel_cg_framing, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, extreme close-up, cropped head, out of frame, cut off, zoomed in, macro, bad framing, day, bright, rain, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "natsume_r18, adult, visual novel event CG, 1girl, solo, shiki_natsume, long hair, two_red_hairclips, nude, pussy, standing, front view, bare breasts, nipples, navel, calm smile, night, french window, moonlight, soft shadows, sensual, full body, wide shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "extreme close-up, cropped feet, day, rain, school uniform, gym uniform",
     "storyJa": "【大人のAfter Story・夏目・月明かりの窓辺の姿】夜も更け、夏目は窓辺に立っていた。月の光が彼女の輪郭を照らしている。ガウンを解いてそのまま滑り落とし、正面から月明かりに晒す。胸も、腰も、脚の付け根の一番秘かな場所も、銀色の光の中に何の隠しもなく浮かんでいる。彼女は目をそらさず、笑みを含んだ声で言った。「見飽きるまで、目を離さないで。今夜の月明かりは、最後の場所まであなたにだけ分けてあげる。」",
-    "animaCaption": "In a graceful full-body view standing before a large moonlit window at night, she looks forward with a calm smile, silver moonlight illuminating her figure.",
+    "animaCaption": "She stands before the large window with a calm smile, silver moonlight illuminating her figure.",
     "auditRevision": "careful-batch11-2026-08-27"
   }
 }

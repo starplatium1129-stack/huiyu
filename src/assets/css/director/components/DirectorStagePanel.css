@@ -105,8 +105,8 @@
 .pb.atelier-workspace .result-image-wrap.archive-canvas { --canvas-artwork-inset:clamp(20px,3cqw,40px); display:flex; align-items:center; justify-content:center; border:0; border-radius:0; padding:var(--canvas-artwork-inset); background:var(--bg-base); box-shadow:none; }
 .pb.atelier-workspace .result-artwork { position:relative; flex:none; width:min(100%,calc((100cqh - 2 * var(--canvas-artwork-inset)) * var(--result-aspect))); max-height:100%; aspect-ratio:var(--result-aspect); border-radius:var(--r-sm); box-shadow:none; }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal,
-.pb.atelier-workspace .result-image-reveal .result-image,
-.pb.atelier-workspace .result-image-wrap .image-split-compare { background:transparent; border-radius:inherit; }
+.pb.atelier-workspace .result-image-reveal .result-image { background:transparent; border-radius:inherit; }
+.pb.atelier-workspace .result-image-wrap .image-compare-slider { border-radius:inherit; }
 /* Use this same image's decoded state for old results too, without replaying CG reveal. */
 .pb .result-image-wrap.is-error { opacity:0; pointer-events:none; }
 .pb .result-image-wrap:has(.cg-image-reveal:not(.is-loaded)) { background:transparent; pointer-events:none; }

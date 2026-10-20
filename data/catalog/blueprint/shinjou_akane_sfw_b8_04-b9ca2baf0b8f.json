@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_sfw_b8_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1542,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "shinjou_akane_sfw_b8_04",
     "title": "新条茜 · 怪兽模型礼堂的粉色花嫁",
@@ -30,7 +30,7 @@
       "soft_gaze",
       "sunset"
     ],
-    "promptProse": "Akane adjusts a miniature monster among her bouquet's roses beside the model display in pink-gold dusk light.",
+    "promptProse": "Seated beside the model display, Akane adjusts a miniature monster among her bouquet's roses in pink-gold light through the high window.",
     "promptTokens": [
       "Akane Shinjo",
       "bouquet",

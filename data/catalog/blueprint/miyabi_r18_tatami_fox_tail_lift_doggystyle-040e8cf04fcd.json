@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_r18_tatami_fox_tail_lift_doggystyle",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1075,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "站在木凳旁，一腿踏凳，一手扶松开的衣襟，另一手留在袴内",
     "adult": true,
@@ -15,7 +15,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "深夜道场更衣室里，成年雅一腿踏上木长凳，练功服系带松开。她一手扶住衣襟，另一手留在袴内，纸窗月光与暖色壁灯照亮身侧的狐尾。",
+    "description": "深夜道场更衣室里，成年雅一腿踏上木长凳，练功服系带松开。她一手扶住衣襟，另一手留在袴内，纸窗月光与暖色壁灯照亮身侧的衣料。",
     "id": "miyabi_r18_tatami_fox_tail_lift_doggystyle",
     "kreaStyleHint": "r18_sensual_bedroom",
     "lighting": "道场日式纸窗透入的清冷月光与更衣室暖黄壁灯交织的典雅禁忌氛围",
@@ -25,16 +25,16 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "dojo_training",
-    "promptProse": "Miyabi holds her loosened training robe with one hand while touching herself beneath the hakama, one leg raised on the dojo bench.",
+    "promptProse": "Miyabi holds her loosened training robe with one hand while touching herself beneath the hakama, one leg raised on the dojo bench. Cool moonlight through the paper windows meets warm yellow changing-room wall lights along the fabric at her side.",
     "promptTokens": [
       "1girl",
       "solo",
-      "open keikogi",
+      "open white keikogi",
+      "indigo hakama",
       "cleavage",
       "leg up",
       "holding lapel",
       "masturbation",
-      "fox tail",
       "bench",
       "dojo"
     ],
@@ -49,11 +49,10 @@
       "cleavage",
       "large_breasts",
       "fox_ears",
-      "fox_tail",
       "masturbation",
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "星见雅 · 道场更衣长凳练功服系带解开露香肩酥胸与白狐尾羞耻自抚"
+    "title": "星见雅 · 道场更衣长凳练功服系带松开"
   }
 }

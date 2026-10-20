@@ -1,4 +1,5 @@
 export interface PromptScene {
+  compositionIntent?: import('../types/sceneBlueprint').BlueprintCompositionIntent
   char?: string
   prompt?: string
   tags?: string[]

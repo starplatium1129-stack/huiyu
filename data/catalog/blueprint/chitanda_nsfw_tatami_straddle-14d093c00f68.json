@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_tatami_straddle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1491,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "chitanda_nsfw_tatami_straddle",
     "title": "千反田爱瑠 · 千反田家和室的主控跨坐 ·「奉太郎……我很好奇……男女之间的事」",
@@ -24,10 +24,9 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Adult Chitanda leans forward while straddling the viewer's hips, her loosened yukata lit by moonlight and warm light beyond the screens.",
+    "promptProse": "She leans forward while straddling the viewer's hips, her loosened yukata lit by moonlight and warm light beyond the screens.",
     "nsfwProse": "",
     "promptTokens": [
-      "adult",
       "japanese room",
       "tatami",
       "ivory yukata",

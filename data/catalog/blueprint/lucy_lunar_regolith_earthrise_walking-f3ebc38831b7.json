@@ -1,31 +1,33 @@
 {
   "kind": "blueprint",
   "id": "lucy_lunar_regolith_earthrise_walking",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1100,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "单手抱着宇航头盔立于月球灰白岩原，仰望漆黑星空中巨大的蔚蓝地球",
+    "action": "戴着透明面罩密闭头盔立于月球灰白岩原，仰望漆黑星空中的蔚蓝地球。",
     "camera": "wide shot, lunar landscape with the entire standing figure visible",
     "category": "月面追寻",
     "characterId": "lucy_cyberpunk",
     "coverageTags": [
       "space"
     ],
-    "description": "【露西 · 荒凉月表的蔚蓝地出漫步】寂静无声的月球静海灰白平原上，无数环形山延绵至星空尽头。露西身穿轻型白色太空服，头盔夹在臂弯之下。她独立在细密的月壤上，迎着宇宙的永恒微风，仰望着漆黑天幕中那一颗璀璨升起的蔚蓝地球。没有枪声、没有荒坂、没有杀戮，她的眼中倒映着地球的蓝光，嘴角泛起释怀而又悲悯的微笑。",
+    "description": "【露西 · 荒凉月表的蔚蓝地出漫步】寂静无声的月球静海灰白平原上，无数环形山延绵至星空尽头。露西身穿轻型白色太空服，戴好透明面罩的密闭头盔。她独立在细密的月壤上，在没有风的真空中，仰望着漆黑天幕中那一颗璀璨升起的蔚蓝地球。没有枪声、没有荒坂、没有杀戮，透明面罩倒映着地球的蓝光，嘴角泛起释怀而又悲悯的微笑。",
     "id": "lucy_lunar_regolith_earthrise_walking",
     "lighting": "没有大气散射的极高对比度宇宙阳光与蔚蓝地球的柔和反光",
     "location": "月球表面宁静海陨石坑边缘",
     "mood": "空灵唯美",
     "negativeTokens": [],
     "outfitId": "moon_spacesuit",
-    "promptProse": "Lucy stands on the grey lunar plain with her helmet under one arm, gazing up at the blue Earth. Direct sunlight makes a sharp shadow beside her boots, while the Earth is reflected in her eyes.",
+    "promptProse": "Lucy gazes at Earth through her clear helmet visor on the windless lunar plain. Direct sunlight casts a sharp shadow beside her boots; Earth reflects in the visor.",
     "promptTokens": [
-      "helmet under arm",
+      "space helmet",
+      "transparent visor",
       "moon surface",
       "earthrise",
-      "wide shot"
+      "wide shot",
+      "standing"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

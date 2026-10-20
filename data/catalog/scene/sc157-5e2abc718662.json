@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc157",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
-    "animaCaption": "Nene in a cream cable knit top with pink cuffs sits on the left holding the viewer's left hand; Natsume in a charcoal fine knit top with a burgundy collar sits on the right with one arm around their shoulder, both faces visible in the bedside two-shot.",
+    "animaCaption": "Nene in a cream cable knit top with pink cuffs sits on the left holding the viewer's left hand; Natsume in a charcoal fine knit top with a burgundy collar sits on the right with one arm around their shoulder, both faces visible in the bedside two-shot. The bedside lamp on the left lights both faces and the sheet against the dark headboard.",
     "auditRevision": "careful-batch13-2026-08-27",
     "camera": "medium two-shot, bedside POV, Nene on the left and Natsume on the right, faces and hand contacts visible",
     "category": "Active_Sync_Scenes",

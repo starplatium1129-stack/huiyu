@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_dominant_straddle",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 251,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "scathach_nsfw_dominant_straddle",
     "title": "斯卡哈 · 师匠的主控反客为主骑乘特训·「今晚的课业只有一项：撑住，不许昏过去」",
@@ -28,17 +28,19 @@
       "exposed_pussy",
       "dominant"
     ],
-    "promptProse": "The age-twenty-plus Scathach straddles a training cushion and touches herself in the torchlit bedchamber, her black-and-crimson lace lowered beneath her breasts.",
+    "promptProse": "Scathach straddles the training cushion with both hands resting on her knees, her lace top lowered as she looks toward the low viewpoint in the dim warm bedside light.",
     "nsfwProse": "",
     "promptTokens": [
       "Scathach",
-      "lingerie",
-      "thighhighs",
+      "black lingerie",
+      "black thighhighs",
       "straddling",
       "cushion",
       "bedroom",
-      "torch",
-      "low angle"
+      "bedside light",
+      "low angle",
+      "crimson lace",
+      "garter belt"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,9 +55,7 @@
       "special_nsfw"
     ],
     "nsfwTokens": [
-      "topless",
-      "masturbation",
-      "hand between legs"
+      "topless"
     ]
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "vivy",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 153,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "vivy",
     "profile": {
@@ -73,13 +73,14 @@
         "Vivy",
         "Vivy"
       ],
-      "identityProse": "Vivy from Vivy: Fluorite Eye's Song, a singer with long blue hair, an ahoge, long sidelocks and luminous blue eyes. Her precise posture is softened by the care she brings to music and small promises.",
+      "identityProse": "Vivy from Vivy: Fluorite Eye's Song, a singer with long blue hair, an ahoge, long sidelocks and blue eyes.",
       "identityTokens": [
         "vivy",
         "vivy: fluorite eye's song",
         "blue hair",
         "long hair",
-        "blue eyes"
+        "blue eyes",
+        "ahoge"
       ],
       "exactTokens": [
         "vivy"

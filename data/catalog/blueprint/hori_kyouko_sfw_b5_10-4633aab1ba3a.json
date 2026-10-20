@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_10",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1558,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_10",
     "title": "堀京子 · 发廊前的犹豫",
@@ -47,6 +47,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "allowRepeatedSubject": true
   }
 }

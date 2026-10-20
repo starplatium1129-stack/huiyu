@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_academy",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 453,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "在书架间查找魔法典籍",
     "camera": "medium shot",
@@ -13,14 +13,14 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【洛琪希 · 魔法学院图书馆】夏亚魔法大学高耸的穹顶图书馆内，洛琪希踩在木梯上专注地抽出一本厚重的王级水魔术典籍。虽然身材娇小常被误认为少女，但她转过头时的眼神却充满了身为导师的威严与睿智——「水魔术的精髓在于魔力的压缩与形态变化。上课的时候要是敢走神，我可是要罚你抄写咏唱词的。」",
+    "description": "【洛琪希 · 魔法学院图书馆】拉诺亚魔法大学高耸的穹顶图书馆内，洛琪希踩在木梯上专注地抽出一本厚重的王级水魔术典籍。虽然身材娇小常被误认为少女，但她转过头时的眼神却充满了身为导师的威严与睿智——「水魔术的精髓在于魔力的压缩与形态变化。上课的时候要是敢走神，我可是要罚你抄写咏唱词的。」",
     "id": "roxy_migurdia_academy",
     "lighting": "窗边暖光",
     "location": "魔法学院",
     "mood": "认真专注",
     "negativeTokens": [],
     "outfitId": "witch_outfit",
-    "promptProse": "Roxy braces one hand on the ladder and draws a water-magic book from the shelf with the other; her staff rests below. Window light catches the book cover as she turns her head toward the viewer.",
+    "promptProse": "Roxy braces on the ladder with one hand, drawing a water-magic book with the other; her staff rests below. Window light catches its cover as she turns toward the viewer.",
     "promptTokens": [
       "Roxy Migurdia",
       "ladder",

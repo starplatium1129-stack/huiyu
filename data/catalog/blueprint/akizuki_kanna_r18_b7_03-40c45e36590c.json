@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_r18_b7_03",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 1164,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "撑长椅塌腰回眸双手扯羽翼带结，女仆装勒肉溢乳，黑丝吊带紧绷羞恼跺脚",
+    "action": "双手撑住长椅、身体前倾回眸，衣服系带缠在羽翼上，女仆装勒肉溢乳，黑丝吊带紧绷羞恼跺脚",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
     "camera": "medium shot",
@@ -27,7 +27,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_maid_uniform",
-    "promptProse": "Her uniform ties catch around her wings as she leans over the bench, opening the bodice and lifting the skirt. She looks back under the warm locker-room light.",
+    "promptProse": "Leaning forward, she braces both hands on the bench and looks back. The uniform ties are caught around her wings, leaving the bodice open and skirt raised under warm locker-room light.",
     "promptTokens": [
       "dressing room",
       "bench",
@@ -37,7 +37,7 @@
       "topless",
       "black wings",
       "skirt lift",
-      "thighhighs",
+      "black thighhighs",
       "garter straps",
       "looking back"
     ],

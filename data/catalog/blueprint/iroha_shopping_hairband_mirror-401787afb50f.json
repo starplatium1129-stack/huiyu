@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_shopping_hairband_mirror",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 362,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "id": "iroha_shopping_hairband_mirror",
     "title": "一色彩羽 · 商业街试戴发饰的镜前戏谑·「这个发箍好看吗？……前辈要是夸我可爱，我就买下来哦」",
@@ -31,7 +31,7 @@
       "off_shoulder",
       "cute"
     ],
-    "promptProse": "Iroha tries a cat-ear headband and winks at her reflection with both cheeks in her palms. Warm display lights frame her pink sweater.",
+    "promptProse": "Iroha tries a cat-ear headband and winks at her reflection with both cheeks in her palms. Warm display lights frame her face in the mirror.",
     "promptTokens": [
       "1girl",
       "solo",

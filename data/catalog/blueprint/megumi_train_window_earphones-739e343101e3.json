@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_train_window_earphones",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1440,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "megumi_train_window_earphones",
     "title": "加藤惠 · 傍晚通勤电车靠窗的晚霞·「耳机里……在放着我们游戏的主题曲哦」",
@@ -28,13 +28,14 @@
       "calm",
       "looking_out_window"
     ],
-    "promptProse": "Her phone rests loosely in her hands as she turns toward the violet-orange sunset beyond the train window, white earphone wires falling over her collar.",
+    "promptProse": "Her phone rests loosely in her hands as she turns toward the violet-orange sunset beyond the train window, white earphone wires falling over her collar. Broad orange and pale-violet bands of window light cross her quiet face.",
     "promptTokens": [
       "earphones",
       "phone",
       "train window",
       "sunset",
-      "bob cut"
+      "bob cut",
+      "sitting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_deviluke_formal_palace_gown",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1246,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "手执香槟杯倚在观景玻璃前侧身而立，抹胸礼裙展露丰满曲线，爱心尾巴优雅卷曲",
     "camera": "cowboy shot",
@@ -20,7 +20,7 @@
     "mood": "高贵迷离",
     "negativeTokens": [],
     "outfitId": "deviluke_dress",
-    "promptProse": "Momo stands beside the royal starship's observation window with a champagne glass, the nebula beyond her shoulder.",
+    "promptProse": "Momo stands beside the royal starship's observation window with a champagne glass, the nebula beyond her shoulder. Violet nebula light through the panoramic dome meets champagne-colored chandelier light on the glass.",
     "promptTokens": [
       "champagne",
       "standing",

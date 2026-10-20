@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sakurajima_mai",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "sakurajima_mai",
     "profile": {
@@ -23,12 +23,12 @@
       "visual_dna": {
         "hair": "黑色长直发",
         "hair_color": "黑",
-        "eyes": "棕色",
+        "eyes": "蓝紫色",
         "hairstyle": "中分长直发",
         "uniform": "峰岸高中制服 / 黑色兔女郎装",
         "expression": "冷静沉稳 · 成熟御姐",
         "style": "composed actress senpai",
-        "signature": "黑长直、棕瞳与兔女郎名场面"
+        "signature": "黑长直、蓝紫瞳与兔女郎名场面"
       },
       "personality": [
         "冷静沉稳",
@@ -55,7 +55,7 @@
       },
       "tags": [
         "黑长直",
-        "棕瞳",
+        "蓝紫瞳",
         "兔女郎装",
         "女演员",
         "成熟气质"
@@ -80,12 +80,10 @@
         "long_black_hair",
         "straight_hair",
         "purple_eyes",
-        "brown_eyes",
         "bangs",
         "ahoge",
         "rabbit_hair_ornament",
-        "hair_clip",
-        "beauty_mark"
+        "hair_clip"
       ],
       "accent_color": "#38bdf8",
       "bg_color": "#0f172a"
@@ -101,7 +99,7 @@
         "mai-san",
         "bunny girl senpai"
       ],
-      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, with a composed, attentive manner",
+      "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, with long straight black hair, purple-gray eyes and a white rabbit hair clip.",
       "identityTokens": [
         "sakurajima_mai",
         "seishun buta yarou",
@@ -110,7 +108,7 @@
         "black hair",
         "long hair",
         "purple eyes",
-        "rabbit hair ornament"
+        "white rabbit hairclip"
       ],
       "exactTokens": [
         "sakurajima_mai"
@@ -135,7 +133,7 @@
       "canon": {
         "world": "现代校园（青春猪头少年）",
         "era": "当代",
-        "formNotes": "兔女郎装为名场面造型；瞳色为棕色（已修正）",
+        "formNotes": "兔女郎装为名场面造型；官方角色正面立绘呈蓝紫色眼睛。",
         "research": "2026-08-14 调研"
       },
       "animeStudio": "cloverworks, official anime screencap, anime coloring",

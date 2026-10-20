@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_01",
     "title": "夜刀神十香 · 面包店的黄豆粉面包",
@@ -30,7 +30,7 @@
       "shop_light",
       "medium_shot"
     ],
-    "promptProse": "Tohka takes a delighted first bite from her bread's paper sleeve beside the warmly lit bakery display.",
+    "promptProse": "Tohka holds the bread in its paper sleeve with both hands and takes a delighted first bite beside the warmly lit bakery display.",
     "promptTokens": [
       "kinako bread",
       "bakery",

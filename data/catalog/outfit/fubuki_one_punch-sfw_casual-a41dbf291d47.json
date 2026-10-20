@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "fubuki_one_punch/sfw_casual",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 904,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "fubuki_one_punch",
     "outfit": {
@@ -13,8 +13,8 @@
       "prose": "a fitted dark-green fine-knit cardigan over a cream silk blouse, with high-waisted black tailored trousers and pearl earrings",
       "tokens": [
         "dark green cardigan",
-        "cream blouse",
-        "black tailored pants",
+        "cream silk blouse",
+        "high-waisted black tailored pants",
         "pearl earrings"
       ],
       "default": false,

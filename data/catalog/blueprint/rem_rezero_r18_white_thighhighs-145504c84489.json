@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_r18_white_thighhighs",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 441,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rem_rezero_r18_white_thighhighs",
     "title": "雷姆 · 白丝袜足",
@@ -26,15 +26,15 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Rem rolls one stocking to the ankle while the other remains in place, her crossed legs bringing a bare sole toward the foreground.",
+    "promptProse": "Adult Rem sits with crossed legs and both white stockings in place, hands gathering her skirt. She looks down shyly as candlelight meets moonlight on the stockings.",
     "promptTokens": [
       "adult",
       "open blouse",
       "topless",
+      "skirt",
       "white thighhighs",
-      "removing stockings",
       "crossed legs",
-      "soles",
+      "holding skirt",
       "bed",
       "warm lighting"
     ],

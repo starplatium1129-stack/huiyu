@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_r18_b8_02",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "futaba_rio_r18_b8_02",
     "title": "双叶理央 · 实验楼淋浴间的水光湿身透肉 ·「冲凉水也没有用……体温一直在上升」",
@@ -30,10 +30,11 @@
       "water_droplets",
       "wet_clothes"
     ],
-    "promptProse": "She leans her head against the tiled wall and reaches beneath her wet skirt while the shower runs.",
+    "promptProse": "Standing beneath the shower with her head tilted up, she reaches beneath her wet skirt while the water runs over her shirt.",
     "promptTokens": [
       "adult",
       "white shirt",
+      "dark bra",
       "navy pleated skirt",
       "wet clothes",
       "see-through",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc276",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 271,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
     "id": "sc276",
     "recommendedSize": "1344×768",
@@ -32,15 +32,15 @@
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
-    "lighting": "夜色氛围光",
+    "lighting": "床头琥珀暖灯与深色木墙阴影",
     "usage": [
       "官方CG灵感",
       "实机审核通过",
       "展示图",
       "成人向"
     ],
-    "prompt": "natsume_r18, adult, visual_novel_event_cg, cinematic_16:9_composition, intimate_diagonal_close_up, 1girl, solo, adult_shiki_natsume, very_long_black_hair_flowing_across_the_bed, golden_yellow_eyes, two_red_hairclips, mole_under_eye, no_hair_ribbon, lying_topless_on_her_side_in_a_warm_bedroom, one_arm_covering_part_of_her_chest, bare_shoulders_and_cleavage, eyes_closed, deeply_blushing_embarrassed_expression, dark_wooden_wall_and_amber_bedside_light, tasteful_adult_visual_novel_cg, face_and_red_clips_in_sharp_focus, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
+    "prompt": "natsume_r18, adult, visual novel event CG, dutch angle, close up, 1girl, solo, hair spread out, two_red_hairclips, no_hair_ribbon, lying, on side, topless, bed, arm over face, bare shoulders, cleavage, closed eyes, heavy blush, embarrassed, dark wooden wall, amber bedside lamp, sharp face focus, <lora:shiki_natsume_v18_wd14:0.85>, very long hair",
+    "negative": "cold blue light",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "R18",
     "officialCgCandidate": "ocs10",
@@ -52,7 +52,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs10-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "animaCaption": "She lies on her side with her eyes closed and an arm partly shielding her flushed face. The amber bedside lamp lights her dark hair against the wooden wall.",
     "auditRevision": "careful-batch08-2026-08-27"
   }
 }

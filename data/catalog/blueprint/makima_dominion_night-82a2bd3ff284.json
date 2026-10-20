@@ -1,17 +1,17 @@
 {
   "kind": "blueprint",
   "id": "makima_dominion_night",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 414,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "makima_dominion_night",
-    "title": "玛奇玛 · 支配之夜·恶魔真身与血色光环",
+    "title": "玛奇玛 · 暴雨神社的支配者",
     "category": "现代都市",
     "characterId": "makima",
     "description": "【玛奇玛 · 支配之夜】暴雨倾盆的神社鸟居长阶之上，玛奇玛撑着一把黑伞静静伫立在漫天雨幕中。她优雅地摘下黑色皮手套，身后缠绕着令人窒息的无形支配气场——「无论恶魔还是人类，在绝对的支配面前皆一视同仁。跪伏在我的脚下吧，这是你唯一的归宿。」",
-    "location": "黄昏鸟居之巅与血色云海",
+    "location": "暴雨中的神社鸟居长阶",
     "action": "撑着黑伞站在暴雨中的神社长阶上，俯视前方",
     "timeOfDay": "黄昏",
     "lighting": "暴雨中的阴晦天光与湿润反光",
@@ -27,7 +27,7 @@
       "red_braid",
       "suit"
     ],
-    "promptProse": "Makima stands on the long shrine steps beneath a black umbrella, looking down through the rain.",
+    "promptProse": "Makima stands on the long shrine steps beneath a black umbrella, looking down through the rain. Overcast daylight reflects off the wet steps below her.",
     "promptTokens": [
       "black umbrella",
       "shrine stairs",

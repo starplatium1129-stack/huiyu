@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc264",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 259,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
   "data": {
     "id": "sc264",
     "recommendedSize": "1344×768",
@@ -18,8 +18,8 @@
     "lora": "ayachi_nene_v21_anima",
     "emotion": "亲密",
     "season": "不限",
-    "time": "白天",
-    "timeOfDay": "afternoon",
+    "time": "黄昏",
+    "timeOfDay": "sunset",
     "tags": [
       "official_cg",
       "visual_audited",
@@ -31,16 +31,16 @@
     "mature": false,
     "location": "图书室",
     "weather": "晴",
-    "camera": "官方CG横幅构图",
-    "lighting": "柔和自然光",
+    "camera": "书架通道斜向半身近景横幅构图",
+    "lighting": "书架间夕阳逆光与暖色阴影",
     "usage": [
       "官方CG灵感",
       "实机审核通过",
       "展示图",
       "R15"
     ],
-    "prompt": "nene_r18, nene_school_uniform, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_composition, dramatic_clockwise_dutch_angle, medium_close-up, 1girl, solo, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, moist_eyes, tearful_gaze, heavy_blush, sweat_on_face, parted_lips, embarrassed, plaid_skirt, pleated_skirt, miniskirt, skirt_lift, lifted_by_self, pink_panties, bow_panties, pantyshot, black_thighhighs, zettai_ryouiki, narrow_library_aisle, bookshelf, library, indoors, golden_hour, rim_light, warm_atmosphere, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, child, loli, underage",
+    "prompt": "nene_r18, nene_school_uniform, adult, visual novel event CG, dutch angle, medium close up, 1girl, solo, very_long_hair, teary eyes, heavy blush, sweat on face, parted lips, embarrassed, plaid skirt, pleated skirt, miniskirt, skirt lift, pink panties, bow panties, pantyshot, black thighhighs, zettai ryouiki, narrow aisle, bookshelf, library, golden hour, rim light, <lora:ayachi_nene_v18_wd14:0.95>",
+    "negative": "",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "rating": "R15",
     "officialCgCandidate": "ocn09",
@@ -52,7 +52,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn09-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a dramatic Dutch angle medium close-up inside a narrow library bookshelf aisle during golden hour sunset, she leans against the shelves with tearful, blushing purple eyes and parted lips, lifting her plaid skirt to reveal delicate pink panties while warm golden sunlight bathes her silver hair in a radiant rim light.",
+    "animaCaption": "Leaning against the shelves in the narrow aisle, she lifts her skirt with a tearful blush and parted lips; sunset rims her hair.",
     "auditRevision": "careful-batch12-2026-08-27"
   }
 }

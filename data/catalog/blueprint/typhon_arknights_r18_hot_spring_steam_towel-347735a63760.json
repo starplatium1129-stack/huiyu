@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_r18_hot_spring_steam_towel",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 702,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "typhon_arknights_r18_hot_spring_steam_towel",
     "characterId": "typhon_arknights",
@@ -16,8 +16,8 @@
     "mood": "羞怯野性",
     "lighting": "雪地地热泉雾霭中的微弱提灯光",
     "timeOfDay": "黄昏",
-    "camera": "medium shot, waist-deep water and floating towel visible",
-    "outfitId": "nsfw_nude",
+    "camera": "medium shot, waist-deep water and lowered towel visible",
+    "outfitId": "hot_spring_towel",
     "recommendedSize": "1152x1536",
     "sceneTags": [
       "onsen",
@@ -32,17 +32,15 @@
       "adult",
       "1girl",
       "solo",
-      "nude",
       "wet",
-      "covering breasts",
       "blush",
-      "floating towel",
+      "towel around waist",
       "hot spring",
       "snow",
       "steam",
       "lantern"
     ],
-    "promptProse": "Typhon's towel slips into the spring and floats away as she folds her arms across her chest. Snowbanks surround the lantern-lit water.",
+    "promptProse": "Typhon rests in the geothermal spring with the wet white towel gathered at her waist. Lantern reflections move over the warm water while steam softens the surrounding snowbanks.",
     "negativeTokens": [],
     "coverageTags": [
       "special_nsfw"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_school_rooftop",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 970,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "跪坐在戏服箱旁，一手拿剧本，另一手放在腿间",
     "adult": true,
@@ -23,7 +23,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "rehearsal_maid",
-    "promptProse": "Adult Akane kneels beside costume cases after graduation, holding her marked script while her other hand moves between her legs beneath the opened maid costume.",
+    "promptProse": "Adult Akane kneels beside costume cases after graduation, holding her marked script while her other hand moves between her legs beneath the opened maid costume. Violet-gold sunset light edges her hair and the fabric against the rooftop.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -40,7 +40,7 @@
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
     "sceneTags": [
-      "studio",
+      "rooftop",
       "maid_dress",
       "black_pantyhose",
       "dress_lift",
@@ -48,9 +48,9 @@
       "star_eyes",
       "looking_back",
       "cleavage",
-      "daylight"
+      "sunset"
     ],
     "timeOfDay": "黄昏",
-    "title": "黑川茜 · 阳光排练室女仆装微嗔"
+    "title": "黑川茜 · 晚霞屋顶的排练间隙"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_06",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 282,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_06",
     "title": "美杜莎 Rider · 天马的梦",
@@ -14,7 +14,7 @@
     "description": "开满野花的草原黄昏，她站在风里望向天空，身旁隐约有天马的虚影；不是战斗的召唤，而是被诅咒之前的、作为「美杜莎」之外某个自己的梦。",
     "location": "黄昏野花草原",
     "action": "开满野花的草原黄昏，她站在风里望向天空，身旁隐约有天马的虚影",
-    "timeOfDay": "日间",
+    "timeOfDay": "黄昏",
     "lighting": "dusk_light",
     "camera": "medium shot",
     "mood": "自然日常",
@@ -30,14 +30,14 @@
       "dusk_light",
       "medium_shot"
     ],
-    "promptProse": "Medusa looks up at the faint Pegasus-like shape in the evening clouds, standing among wildflowers bending in the wind. The last light softens the edge of her white dress.",
+    "promptProse": "Medusa watches the dusk sky among wind-bent flowers, a faint Pegasus silhouette beside her. The last light traces her hair and its translucent wings.",
     "promptTokens": [
       "1girl",
       "solo",
       "medusa_(fate)",
       "wildflowers",
       "meadow",
-      "horse-shaped cloud",
+      "ethereal pegasus",
       "dusk"
     ],
     "negativeTokens": [

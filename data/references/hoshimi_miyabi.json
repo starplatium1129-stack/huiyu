@@ -4,43 +4,36 @@
     "displayName": "星见雅",
     "originalName": "Hoshimi Miyabi",
     "source": "Zenless Zone Zero",
-    "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, Section 6 chief and master swordswoman with long silky black hair in a high ponytail, fluffy white fox ears, sharp amber golden eyes, a fluffy black-tipped white fox tail, refined stoic expression, and a sheathed katana.",
+    "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, chief of Hollow Special Operations Section 6, with long black hair, blunt bangs and a side braid, tall dark fox ears with pale inner fur, red eyes and a composed expression.",
     "identityTokens": [
       "hoshimi miyabi",
       "1girl",
       "solo",
       "black_hair",
-      "high_ponytail",
+      "long_hair",
+      "blunt_bangs",
+      "side_braid",
       "fox_ears",
-      "fox_tail",
-      "amber_eyes",
-      "yellow_eyes",
-      "katana",
-      "sheath",
+      "red_eyes",
       "zenless_zone_zero"
     ],
     "outfits": [
       {
         "id": "section6_uniform",
-        "name": "对空六课课长军服",
+        "name": "对空六课课长制服",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "Section 6 executive uniform: sleek futuristic navy blue military coat with ceremonial gold cord tassels, black sleeveless under-armor top, pleated high-waisted haori miniskirt, sheer absolute-territory black thighhighs, armored gauntlet arm guards, tactical sheath harness, and polished dark low-heeled boots",
+        "prose": "her Section 6 uniform: a blue-gray wide-sleeved coat with red braided shoulder cord, a white shirt over a fitted dark inner layer, long black pleated hakama, armored forearm guards and a sheath harness",
         "tokens": [
-          "military_uniform",
-          "coat",
-          "navy_coat",
-          "sleeveless_shirt",
-          "pleated_skirt",
-          "black_skirt",
-          "miniskirt",
-          "thighhighs",
-          "black_thighhighs",
-          "gauntlets",
-          "armor",
-          "sheath",
-          "boots",
-          "section_6"
+          "blue gray coat",
+          "wide sleeves",
+          "white shirt",
+          "black vest",
+          "red cord",
+          "armored bracers",
+          "black hakama",
+          "pleated pants",
+          "sheath harness"
         ]
       },
       {
@@ -109,7 +102,7 @@
         "name": "🔞 私密全裸 / 纯粹形态",
         "isDefault": false,
         "isNsfw": true,
-        "prose": "completely naked, full nudity, luminous flawless porcelain white skin, beautifully shaped firm medium breasts with sensitive pale rosy nipples, slender toned midriff, exposed pussy, twitching white fox ears with dark ear tufts, large luxurious fluffy white fox tail curled alongside her thighs, bare feet, soft moonlight ambience",
+        "prose": "completely naked, full nudity, luminous flawless porcelain white skin, beautifully shaped firm medium breasts with sensitive pale rosy nipples, slender toned midriff, exposed pussy, bare feet",
         "tokens": [
           "nude",
           "completely_naked",
@@ -121,7 +114,6 @@
           "navel",
           "pussy",
           "fox_ears",
-          "fox_tail",
           "bare_legs",
           "bare_feet"
         ]
@@ -132,14 +124,14 @@
     "characterId": "hoshimi_miyabi",
     "displayName": "星见雅",
     "source": "Zenless Zone Zero",
-    "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, Section 6 chief and master swordswoman with long silky black hair in a high ponytail, fluffy white fox ears, sharp amber golden eyes, a fluffy black-tipped white fox tail, refined stoic expression, and a sheathed katana.",
+    "identityProse": "Hoshimi Miyabi from Zenless Zone Zero, chief of Hollow Special Operations Section 6, with long black hair, blunt bangs and a side braid, tall dark fox ears with pale inner fur, red eyes and a composed expression.",
     "outfits": [
       {
         "outfitId": "section6_uniform",
-        "outfitName": "对空六课课长军服",
+        "outfitName": "对空六课课长制服",
         "isDefault": true,
         "isNsfw": false,
-        "prose": "Section 6 executive uniform: sleek futuristic navy blue military coat with ceremonial gold cord tassels, black sleeveless under-armor top, pleated high-waisted haori miniskirt, sheer absolute-territory black thighhighs, armored gauntlet arm guards, tactical sheath harness, and polished dark low-heeled boots",
+        "prose": "her Section 6 uniform: a blue-gray wide-sleeved coat with red braided shoulder cord, a white shirt over a fitted dark inner layer, long black pleated hakama, armored forearm guards and a sheath harness",
         "references": [
           {
             "id": "ref_01_face_closeup",
@@ -583,7 +575,7 @@
         "outfitName": "🔞 私密全裸 / 纯粹形态",
         "isDefault": false,
         "isNsfw": true,
-        "prose": "completely naked, full nudity, luminous flawless porcelain white skin, beautifully shaped firm medium breasts with sensitive pale rosy nipples, slender toned midriff, exposed pussy, twitching white fox ears with dark ear tufts, large luxurious fluffy white fox tail curled alongside her thighs, bare feet, soft moonlight ambience",
+        "prose": "completely naked, full nudity, luminous flawless porcelain white skin, beautifully shaped firm medium breasts with sensitive pale rosy nipples, slender toned midriff, exposed pussy, bare feet",
         "references": [
           {
             "id": "ref_01_face_closeup",

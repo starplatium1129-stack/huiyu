@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 756,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "rossy_arknights_mining_drill_proud",
     "characterId": "rossy_arknights",
@@ -37,7 +37,7 @@
       "bakery",
       "cowboy shot"
     ],
-    "promptProse": "Rossy cradles the warm paper bag against one arm and offers a small round loaf to the viewer with her other hand. At the bakery doorway, soft shop light meets daylight along her red hood.",
+    "promptProse": "Rossi holds the paper bag against one arm, offering a round loaf with her other hand; shop light meets daylight on her cheek at the bakery door.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

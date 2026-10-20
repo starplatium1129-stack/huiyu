@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shorekeeper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "shorekeeper",
     "profile": {
@@ -73,7 +73,7 @@
         "守岸人",
         "The Shorekeeper"
       ],
-      "identityProse": "The Shorekeeper from Wuthering Waves, with long layered blue hair and quiet violet eyes. Her precise, gentle gestures suggest someone learning to appreciate small experiences; the veil is part of her selected coastal attire.",
+      "identityProse": "The Shorekeeper from Wuthering Waves, with long blue jellyfish-cut hair and violet eyes.",
       "identityTokens": [
         "the_shorekeeper_(wuthering_waves)",
         "wuthering_waves",

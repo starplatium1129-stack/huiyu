@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/official_kimono_leather_jacket",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 729,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
@@ -15,9 +15,9 @@
       "prose": "a white kimono with a dark patterned obi under a red leather biker jacket and brown lace-up combat boots",
       "tokens": [
         "white kimono",
-        "obi",
-        "red leather jacket",
-        "boots"
+        "dark patterned obi",
+        "red leather biker jacket",
+        "brown lace-up combat boots"
       ]
     }
   }

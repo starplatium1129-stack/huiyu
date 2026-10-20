@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_shopping_blush_sidewalk",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1473,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "mahiru_shopping_blush_sidewalk",
     "title": "椎名真昼 · 商业街并肩同行的微热红晕·「被同学看到的话……会误会的……但我不讨厌」",
@@ -29,7 +29,7 @@
       "shy",
       "looking_down"
     ],
-    "promptProse": "Mahiru keeps one hand around the edge of her companion’s coat, her fingertips brushing theirs beside the sleeve. She lowers her flushed face into the scarf as winter sunlight crosses the brick pavement.",
+    "promptProse": "Mahiru holds her companion's coat edge, fingertips brushing theirs. She lowers her flushed face into her scarf above the winter-lit pavement.",
     "promptTokens": [
       "shiina_mahiru",
       "holding clothes",

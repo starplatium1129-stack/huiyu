@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tobiichi_origami",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "tobiichi_origami",
     "profile": {
@@ -73,7 +73,7 @@
         "鸢一折纸",
         "Origami Tobiichi"
       ],
-      "identityProse": "Origami Tobiichi from Date A Live, a reserved girl with snow-white hair and pale blue eyes. Her composed face reveals feelings through small shifts of her gaze; hair length belongs to the selected timeline outfit.",
+      "identityProse": "Origami Tobiichi from Date A Live, with snow-white hair and pale blue eyes.",
       "identityTokens": [
         "tobiichi_origami",
         "date_a_live",

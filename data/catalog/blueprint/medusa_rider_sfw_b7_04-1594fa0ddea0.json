@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 280,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_04",
     "title": "美杜莎 Rider · 暮色图书馆的紫色花嫁",
@@ -29,7 +29,7 @@
       "trusting_gaze",
       "twilight"
     ],
-    "promptProse": "Medusa rests her left hand on the old book nestled in the bouquet on her lap and holds her removed glasses in her right. She meets the viewer’s gaze as violet twilight crosses the library window.",
+    "promptProse": "Medusa rests her left hand on the book among the flowers on her lap, glasses in her right, meeting the viewer's gaze in violet window twilight.",
     "promptTokens": [
       "1girl",
       "solo",

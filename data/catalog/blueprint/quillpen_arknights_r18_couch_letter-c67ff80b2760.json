@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_couch_letter",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 624,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "斜倚沙发阅读来信，一手持纸，另一手留在裙边。",
     "adult": true,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "grey_jacket_skirt",
-    "promptProse": "La Pluma lies diagonally across the couch reading a private letter, her other hand beneath her skirt.",
+    "promptProse": "La Pluma lies diagonally across the couch reading a private letter, her other hand beneath her skirt. A dim amber floor lamp lights the paper edge, with faint neon spill reaching the couch.",
     "promptTokens": [
       "adult",
       "grey jacket",

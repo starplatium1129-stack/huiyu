@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_rehearsal_sweat",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 866,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
-    "action": "排练后靠在低音音箱旁喘气，衬衫领口缎带扯开",
+    "action": "排练后靠着低音音箱喘气，黑色衬衫领口纽扣松开，抬眼向画面外同伴要水。",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【杏山和纱 · 排练后汗水与成年礼服半解】高强度的乐队排练结束后，和纱脱力地靠在巨大的低音音箱旁轻轻喘息。衬衫领口的缎带被扯开，细密的汗珠沿着白皙修长的脖颈滑入锁骨，黑发湿漉漉地贴在微红的脸颊边。她抬起湿润的粉瞳看向你——「呼……好热……老师，把水递给我一下……顺便，能帮我把黏在后背的头发拨开吗？」",
+    "description": "【杏山和纱 · 排练后汗水与成年礼服半解】高强度的乐队排练结束后，和纱脱力地靠在巨大的低音音箱旁轻轻喘息。黑色衬衫领口的纽扣松开，细密的汗珠沿着白皙修长的脖颈滑入锁骨，黑发湿漉漉地贴在微红的脸颊边。她抬起湿润的粉瞳看向你——「呼……好热……老师，把水递给我一下……顺便，能帮我把黏在后背的头发拨开吗？」",
     "id": "kyouyama_kazusa_rehearsal_sweat",
     "kreaStyleHint": "",
     "lighting": "昏暗排练灯",
@@ -26,19 +26,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "live_stage",
-    "promptProse": "Adult Kazusa leans on the amplifier with one knee raised, pressing the cool drink bottle to her neck with one hand while the other traces a bead of sweat along her inner thigh.",
+    "promptProse": "Adult Kazusa rests against the bass amplifier after rehearsal, the collar buttons of her black stage shirt loosened. Damp hair lies against her flushed cheek as she looks toward the off-frame viewer for water; the dim rehearsal light catches the sweat at her neck and the amplifier edge.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Kazusa",
       "black cropped shirt",
-      "open shirt",
-      "bare breasts",
+      "open collar",
       "sweat",
-      "knee up",
-      "drink",
+      "leaning",
       "amplifier",
-      "studio"
+      "rehearsal room"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

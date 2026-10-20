@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_evening_shrine_prayer",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 187,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "sakura_evening_shrine_prayer",
     "title": "间桐樱 · 郊外神社祈愿（想象）",
@@ -31,7 +31,7 @@
       "sunset_light",
       "medium_shot"
     ],
-    "promptProse": "Sakura supports the ema with her left hand while securing its red cord to the shrine rack with her right. Evening sun warms the wood and the ribbon moving beside her hair.",
+    "promptProse": "Sakura holds the ema in her left hand and ties its red cord to the shrine rack with her right; evening light warms the wood.",
     "promptTokens": [
       "Sakura",
       "ema",

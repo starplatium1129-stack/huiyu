@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_rehearsal_room",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 949,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "action": "镜前反复彩排",
     "camera": "full-body shot, three-quarter rear view",
@@ -35,7 +35,6 @@
       "mirror",
       "dance_studio",
       "idol",
-      "pink_dress",
       "interior",
       "daylight"
     ],

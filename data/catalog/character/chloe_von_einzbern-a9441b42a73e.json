@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chloe_von_einzbern",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 135,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "chloe_von_einzbern",
     "profile": {
@@ -73,13 +73,14 @@
         "克洛伊",
         "Chloe von Einzbern"
       ],
-      "identityProse": "Chloe von Einzbern from Fate/kaleid liner Prisma Illya, a lively girl with warm brown skin, long pale pink hair, face-framing sidelocks and bright orange eyes. Her confident grin gives way to quieter feelings when she is alone.",
+      "identityProse": "Adult Chloe von Einzbern from Fate/kaleid liner Prisma Illya, with warm brown skin, long pale-pink hair, face-framing sidelocks and orange eyes.",
       "identityTokens": [
         "chloe_von_einzbern",
         "fate/kaleid_liner_prisma_illya",
         "dark_skin",
         "pink_hair",
         "long_hair",
+        "sidelocks",
         "orange_eyes"
       ],
       "exactTokens": [

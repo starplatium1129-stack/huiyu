@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_commander_office_tea_waiting",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1076,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "taihou_commander_office_tea_waiting",
     "title": "大凤 · 官邸深夜的温情侍奉",
@@ -31,7 +31,7 @@
       "twintails",
       "gentle_smile"
     ],
-    "promptProse": "Taihou leans beside the Commander's desk and touches the viewer's cheek with one gloved hand, the tea already resting on its saucer. Warm lamplight meets a narrow edge of moonlight along her shoulder.",
+    "promptProse": "Taihou leans beside the Commander’s desk, one gloved hand touching the viewer’s cheek, tea on its saucer; warm lamplight meets moonlight along her shoulder.",
     "promptTokens": [
       "tea",
       "cheek touch",

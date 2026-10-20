@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc146",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "Standing on tiptoe directly before the viewer, she pinches their tie knot in one hand and straightens the hanging tie with the other; soft morning light crosses her white blouse and flushed face.",
+    "animaCaption": "On tiptoe before the viewer, she pinches their tie knot and straightens the tie with her free hand; morning light crosses her blouse and flushed face.",
     "auditRevision": "fix-cowboy-framing-sc146-2026-09-05",
     "camera": "七分身亲密平视",
     "category": "恋爱",

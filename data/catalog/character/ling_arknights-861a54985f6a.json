@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ling_arknights",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "ling_arknights",
     "profile": {
@@ -53,8 +53,8 @@
         "faction": "大炎 / 岁兽一脉"
       },
       "tags": [
-        "极长的白色长发带淡青/水蓝渐变（very long white hair with pale aqua-blue streaks）",
-        "金色/琥珀金双瞳，眼型细长慵懒（golden-yellow eyes, long lazy eye shape）"
+        "极长蓝色长发与浅青挑染",
+        "蓝色眼眸、慵懒神态"
       ],
       "bg_story": "令是大炎岁相十二子之一——龙的化身，与夕、年、重岳等为兄弟姐妹。她于万年前沉睡，苏醒后游历人间，以诗人自居，喜饮酒吟诗，说话常带三分醉意与禅机。她应罗德岛之邀成为合作干员，看似慵懒随性，实则洞明世事、举重若轻，战斗时召出龙影，威能莫测。",
       "source": "Hypergryph《明日方舟 / Arknights》",
@@ -95,8 +95,8 @@
       "animeStudio": "arknights, hypergryph, official anime art",
       "canon": {
         "era": "近未来奇幻",
-        "formNotes": "白发金瞳；岁十二生肖之龙；慵懒诗人；精二白发如瀑浮空；丹博鲁词条 ling_(arknights)",
-        "research": "2026-08-30 调研（Danbooru ling_(arknights) 1100+ posts；WD14 词表实测：white_hair/very_long_hair/streaked_hair/yellow_eyes/dragon_horns/pointy_ears/chinese_clothes/long_dress 全命中，golden_eyes 不在词表故取 yellow_eyes）",
+        "formNotes": "蓝色长发与浅色挑染、蓝瞳、龙角和尖耳；岁兽一脉的慵懒诗人。",
+        "research": "2026-08-30 调研",
         "world": "泰拉（岁兽一脉）"
       },
       "curatedArtistStyles": [
@@ -111,7 +111,7 @@
       ],
       "franchise": "Arknights",
       "id": "ling_arknights",
-      "identityProse": "Ling from Arknights, a free-spirited dragon poetess with flowing deep cerulean hair with white streaks, translucent dragon horns, serene blue eyes, and a powerful dragon tail.",
+      "identityProse": "Ling from Arknights, a dragon poet with very long blue hair streaked white, blue eyes, translucent dragon horns and a dragon tail.",
       "identityTokens": [
         "ling (arknights)",
         "1girl",
@@ -120,9 +120,10 @@
         "very_long_hair",
         "blue_eyes",
         "dragon_horns",
-        "tail",
+        "dragon tail",
         "pointy_ears",
-        "arknights"
+        "arknights",
+        "white hair streaks"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hayasaka_ai",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "hayasaka_ai",
     "profile": {
@@ -78,7 +78,7 @@
       ],
       "franchise": "Kaguya-sama: Love Is War",
       "id": "hayasaka_ai",
-      "identityProse": "Ai Hayasaka from Kaguya-sama: Love Is War, a resourceful young attendant with pale blonde hair and perceptive blue eyes. Her controlled expression can shift quickly between professional composure and a practiced sociable smile.",
+      "identityProse": "Ai Hayasaka from Kaguya-sama: Love Is War, with pale-blonde hair and blue eyes.",
       "identityTokens": [
         "hayasaka_ai",
         "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",

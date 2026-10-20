@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_dominant_tatami_straddle",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1296,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "akeno_nsfw_dominant_tatami_straddle",
     "title": "姬岛朱乃 · 榻榻米上的雷光恶魔骑乘",
@@ -29,7 +29,7 @@
       "dominant_smile",
       "heavy_blush"
     ],
-    "promptProse": "She straddles the viewer on the tatami, her ponytail moving and wings spread behind her in candlelight.",
+    "promptProse": "She straddles the viewer on the tatami with both hands on their shoulders, her ponytail moving and wings spread behind her. Warm candlelight casts the wings' shadows across the mat.",
     "promptTokens": [
       "nude",
       "straddling",

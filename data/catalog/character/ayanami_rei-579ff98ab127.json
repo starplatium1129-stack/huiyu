@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ayanami_rei",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "ayanami_rei",
     "profile": {
@@ -125,7 +125,7 @@
       ],
       "franchise": "Neon Genesis Evangelion",
       "id": "ayanami_rei",
-      "identityProse": "Ayanami Rei from Neon Genesis Evangelion, an ethereal and introverted Eva pilot with short feathery pale sky-blue hair, translucent fair porcelain skin, calm piercing crimson-red albino eyes, and an enigmatic, quiet presence",
+      "identityProse": "Ayanami Rei from Neon Genesis Evangelion, with short pale-blue hair, red eyes and pale skin.",
       "identityTokens": [
         "ayanami_rei",
         "1girl",

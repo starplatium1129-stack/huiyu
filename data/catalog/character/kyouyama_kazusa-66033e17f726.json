@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kyouyama_kazusa",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 48,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "kyouyama_kazusa",
     "profile": {
@@ -135,7 +135,7 @@
       ],
       "franchise": "Blue Archive",
       "id": "kyouyama_kazusa",
-      "identityProse": "Kyouyama Kazusa from Blue Archive, a cool cat-eared student with short black hair, feline ears and tail, a sleek halo, and a sweet, slightly tsundere gaze.",
+      "identityProse": "Kyouyama Kazusa from Blue Archive, with short black hair, pink eyes, feline ears and tail, and a halo.",
       "identityTokens": [
         "kazusa (blue archive)",
         "1girl",
@@ -145,7 +145,8 @@
         "halo",
         "cat_ears",
         "cat_tail",
-        "blue_archive"
+        "blue_archive",
+        "pink_eyes"
       ],
       "negativeTokens": [
         "bad anatomy",

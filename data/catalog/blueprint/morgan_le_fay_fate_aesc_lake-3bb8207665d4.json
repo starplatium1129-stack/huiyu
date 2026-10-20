@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_aesc_lake",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 192,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "negativeTokens": [
       "readable spell text"
@@ -32,7 +32,7 @@
       "daylight_reflections",
       "medium_shot"
     ],
-    "promptProse": "Aesc steadies her staff with one hand in the knee-deep lake while fine light gathers at her other fingertips. Ripples reflect onto the wet lower folds of her blue robe.",
+    "promptProse": "Aesc steadies her staff in the knee-deep lake, light gathering at her free fingertips. Ripples reflect on the submerged folds and staff.",
     "promptTokens": [
       "1girl",
       "solo",

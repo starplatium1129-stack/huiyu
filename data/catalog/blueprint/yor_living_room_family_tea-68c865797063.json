@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_living_room_family_tea",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 805,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yor_living_room_family_tea",
     "characterId": "yor_forger",
@@ -25,7 +25,7 @@
       "relieved",
       "window_light"
     ],
-    "promptProse": "Yor steadies the teapot lid while pouring, smiling with relief as the tea reaches the cup without spilling.",
+    "promptProse": "Seated at the small kitchen table, Yor holds the teapot handle with one hand and steadies its lid with the other while pouring, smiling with relief as the tea reaches the cup without spilling.",
     "promptTokens": [
       "Yor",
       "teapot",

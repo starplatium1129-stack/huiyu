@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_bathroom_steam_mirror",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 188,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "sakura_r18_bathroom_steam_mirror",
     "title": "间桐樱 · 卫宫家晨间雾气",
@@ -17,7 +17,7 @@
     "action": "晨雾中抬手擦亮镜面",
     "timeOfDay": "清晨",
     "lighting": "soft diffused morning light through frosted window, gentle misty glow",
-    "camera": "medium shot",
+    "camera": "medium shot, rear three-quarter view toward the mirror",
     "mood": "温柔晨静",
     "sceneTags": [
       "bathroom",
@@ -28,7 +28,7 @@
       "purple_hair",
       "window"
     ],
-    "promptProse": "The age-twenty-plus Sakura wipes the mirror with one hand and squeezes the wet ends of her hair with the other, seated on the vanity with her towel at her waist. Diffuse morning light fills the fogged glass without a distinct reflected figure.",
+    "promptProse": "Viewed from behind at a three-quarter angle toward the mirror, Adult Sakura sits on the vanity with the towel at her waist, one hand clearing a mirror patch, the other squeezing her wet hair. Her face reflects in the patch amid morning-lit mist.",
     "promptTokens": [
       "bathroom",
       "mirror",
@@ -38,9 +38,7 @@
       "sitting",
       "morning light"
     ],
-    "negativeTokens": [
-      "reflected person"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "nsfwProse": "",
     "nsfwTokens": [

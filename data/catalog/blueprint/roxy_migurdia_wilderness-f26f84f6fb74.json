@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_wilderness",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 454,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "握法杖独行于荒野",
     "camera": "wide shot",
@@ -19,7 +19,7 @@
       "travel robe"
     ],
     "outfitId": "witch_outfit",
-    "promptProse": "Roxy plants her staff in the plain and watches the horizon as sunset casts long shadows over the grass.",
+    "promptProse": "Roxy plants her staff, taller than herself, in the plain and watches the horizon; golden-hour light casts long shadows over the grass while wind lifts her hat and skirt hem.",
     "promptTokens": [
       "Roxy Migurdia",
       "grassland",

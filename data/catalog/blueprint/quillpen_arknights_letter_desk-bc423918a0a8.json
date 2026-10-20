@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_letter_desk",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 620,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "action": "抱抱枕蜷缩在沙发上安稳沉睡",
     "camera": "intimate medium shot",
@@ -20,7 +20,7 @@
     "mood": "温馨恬静",
     "negativeTokens": [],
     "outfitId": "sleepy_oversized_loungewear",
-    "promptProse": "La Pluma sleeps curled around the fluffy cushion on the lounge sofa, her hair feather resting above it. A soft patch of window sunlight reaches her closed eyelids and the folds of her oversized sleeves.",
+    "promptProse": "La Pluma sleeps curled around the sofa cushion, her hair feather resting above it. Window light reaches her eyelids and the folds beneath her hands.",
     "promptTokens": [
       "sleeping",
       "curled up",

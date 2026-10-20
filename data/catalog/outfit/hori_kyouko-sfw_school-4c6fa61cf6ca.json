@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/sfw_school",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 876,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
@@ -16,7 +16,7 @@
         "white shirt",
         "wing collar",
         "dark blazer",
-        "pleated skirt"
+        "knee-length pleated skirt"
       ],
       "default": true,
       "isDefault": true

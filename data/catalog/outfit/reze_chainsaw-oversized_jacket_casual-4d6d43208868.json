@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "reze_chainsaw/oversized_jacket_casual",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 241,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "reze_chainsaw",
     "outfit": {
@@ -13,10 +13,10 @@
       "tokens": [
         "oversized olive bomber jacket",
         "purple lining",
-        "black tank top",
+        "black cropped tank top",
         "black shorts"
       ],
-      "prose": "An oversized muted-olive bomber jacket with a dark-purple lining, a cropped black tank top and black shorts.",
+      "prose": "An oversized olive bomber with purple lining, cropped black tank and black shorts.",
       "styleHint": "",
       "isDefault": false,
       "default": false

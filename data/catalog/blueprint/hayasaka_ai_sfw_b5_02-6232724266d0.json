@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_02",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1406,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "对着手镜补好唇色，练习从职业表情切换成亲切笑容。",
     "adult": false,
@@ -23,7 +23,7 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_school",
-    "promptProse": "She holds the small mirror in one hand and pauses with the lipstick in the other, practicing an exaggerated smile at her reflection in the empty classroom.",
+    "promptProse": "With her uniform collar loosened, she holds the small mirror in one hand and pauses with the lipstick in the other, practicing an exaggerated smile at her reflection in the empty classroom.",
     "promptTokens": [
       "side ponytail",
       "hand mirror",
@@ -49,6 +49,7 @@
     "timeOfDay": "日间",
     "title": "早坂爱 · 放学后的辣妹切换",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "allowRepeatedSubject": true
   }
 }

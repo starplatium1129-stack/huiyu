@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc085",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "She strokes the sleeping calico cat curled on her lap and glances at the viewer beside the empty seat; winter window light softens the cat's fur and her embarrassed expression.",
+    "animaCaption": "Stroking the sleeping calico on her lap, she glances toward the viewer beside the empty seat; winter window light softens the cat's fur and her embarrassed face.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "半身中景",
     "category": "日常",

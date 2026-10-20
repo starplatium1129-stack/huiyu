@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_academy_courtyard_fountain",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 471,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "action": "坐在喷泉边沿短暂小憩，墨镜挂在衣领",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【希露菲 · 学院庭院喷泉】夏亚魔法大学开满鲜花的中庭喷泉旁，希露菲将墨镜挂在白衬衫衣领上，坐在大理石喷泉沿上享受着片刻的宁静。微风拂过她柔顺的白发，她转头对你露出治愈的微笑——「偶尔像这样什么也不思考地晒晒太阳，感觉心底所有的不安都被洗净了呢。」",
+    "description": "【希露菲 · 学院庭院喷泉】拉诺亚魔法大学开满鲜花的中庭喷泉旁，希露菲将墨镜挂在白衬衫衣领上，坐在大理石喷泉沿上享受着片刻的宁静。微风拂过她柔顺的白发，她转头对你露出治愈的微笑——「偶尔像这样什么也不思考地晒晒太阳，感觉心底所有的不安都被洗净了呢。」",
     "id": "sylphiette_academy_courtyard_fountain",
     "lighting": "sunlight",
     "location": "夏亚魔法大学庭院喷泉",

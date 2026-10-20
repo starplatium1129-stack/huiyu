@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_bath",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "raiden_shogun_r18_bath",
     "title": "雷电将军 · 天守阁汤殿",
@@ -26,15 +26,12 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Ei cups one breast while her other hand traces circles underwater, Electro sparks following the ripples around her raised knee.",
+    "promptProse": "Seen at water level, Ei rests against the stone bath with her face tilted upward; violet lantern reflections ripple beneath steam and water beads at her jaw.",
     "promptTokens": [
       "adult",
       "nude",
       "reclining",
-      "knee up",
-      "hand on own breast",
-      "female masturbation",
-      "electricity",
+      "head back",
       "stone bath",
       "steam",
       "violet lighting"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hitachi_mako/school_uniform",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 622,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "hitachi_mako",
     "outfit": {
@@ -15,12 +15,12 @@
       "prose": "a short-sleeved white sailor shirt with a navy collar and green ribbon tie, a navy pleated miniskirt, white loose socks and brown loafers",
       "tokens": [
         "school uniform",
-        "white sailor shirt",
+        "short-sleeved white sailor shirt",
         "navy sailor collar",
         "green ribbon",
-        "navy pleated skirt",
-        "loose socks",
-        "loafers"
+        "navy pleated miniskirt",
+        "white loose socks",
+        "brown loafers"
       ]
     }
   }

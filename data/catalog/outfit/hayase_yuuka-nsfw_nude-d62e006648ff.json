@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/nsfw_nude",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 510,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
@@ -12,22 +12,11 @@
       "id": "nsfw_nude",
       "isDefault": false,
       "name": "🔞 私密全裸 / 纯粹形态",
-      "prose": "completely naked, full nudity, bare skin, soft natural female body, voluptuous breasts with perky pink nipples, famously thick and soft thighs, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-      "styleHint": "tender romantic candlelight",
+      "prose": "Nude.",
+      "styleHint": "",
       "tokens": [
         "nude",
-        "completely_naked",
-        "uncensored",
-        "breasts",
-        "pink_nipples",
-        "thick_thighs",
-        "slender_waist",
-        "navel",
-        "pussy",
-        "bare_shoulders",
-        "collarbone",
-        "bare_legs",
-        "bare_feet"
+        "uncensored"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_field_cabin",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1000,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "action": "晴空木窗前解开衬衫微风吹拂",
     "adult": true,
@@ -16,14 +16,14 @@
     "description": "【希斯特里亚 · 田野木屋晴空微风白衬衫】田野木屋晴空窗边，明媚微风吹拂白窗帘，希斯特里亚解开白衬衫纽扣，充沛的阳光倾泻在她娇嫩白皙的肌肤与小巧可人的胸脯上，脸颊微红笑颜治愈。",
     "id": "krista_lenz_r18_field_cabin",
     "kreaStyleHint": "",
-    "lighting": "木窗倾泻的绚烂暖金夕阳与金色光束",
-    "location": "田野暖夕木屋",
+    "lighting": "明亮日光从木窗侧面照入，白窗帘反射柔光，窗框阴影落在室内",
+    "location": "晴空田野木屋窗边",
     "mood": "纯真治愈",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "corps_uniform",
-    "promptProse": "Adult Historia braces on the cabin window frame with one knee drawn in, fingering herself beneath her loosened trouser waistband.",
+    "promptProse": "Historia loosens her white shirt buttons beside the cabin window, smiling with a blush. The breeze lifts the white curtain; side daylight and the wooden frame's shadow cross the room.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -31,11 +31,11 @@
       "open white shirt",
       "bare breasts",
       "white trousers",
-      "sitting",
-      "knee up",
-      "fingering",
-      "windowsill",
-      "cabin"
+      "standing",
+      "unbuttoning",
+      "window",
+      "cabin",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,7 +50,7 @@
       "cleavage",
       "daylight"
     ],
-    "timeOfDay": "黄昏",
+    "timeOfDay": "白天",
     "title": "希斯特里亚 · 田野木屋晴空微风白衬衫"
   }
 }

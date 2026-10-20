@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_archive_reading",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 521,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "低头翻看一本旧书",
     "camera": "medium close-up, eye level, face and open book visible",
@@ -22,7 +22,7 @@
       "readable text"
     ],
     "outfitId": "liberte_echec",
-    "promptProse": "Surtr turns an old Sakaz geography book at the archive desk, afternoon light crossing its pages beside her skateboard.",
+    "promptProse": "Surtr turns the yellowed pages of an old Sakaz geography book at the archive desk, golden light filtering through the shelves beside her skateboard.",
     "promptTokens": [
       "Surtr",
       "book",

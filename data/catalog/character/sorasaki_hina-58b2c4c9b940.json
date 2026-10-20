@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sorasaki_hina",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 47,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "sorasaki_hina",
     "profile": {
@@ -148,15 +148,19 @@
       ],
       "franchise": "Blue Archive",
       "id": "sorasaki_hina",
-      "identityProse": "Sorasaki Hina from Blue Archive, the petite Gehenna Head Prefect with floor-length silver-purple hair, sleek black demon horns, a floating purple halo, small bat wings, and sleepy yet sharp purple eyes.",
+      "identityProse": "Sorasaki Hina from Blue Archive, with floor-length silver-purple hair, black demon horns, a purple halo, small bat wings and purple eyes.",
       "identityTokens": [
         "hina (blue archive)",
         "1girl",
         "solo",
         "silver hair",
-        "horns",
+        "very long hair",
+        "floor-length hair",
+        "black horns",
         "halo",
-        "bat wings",
+        "purple halo",
+        "small bat wings",
+        "purple eyes",
         "blue archive"
       ],
       "negativeTokens": [

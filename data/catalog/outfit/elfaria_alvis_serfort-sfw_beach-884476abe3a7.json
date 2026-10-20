@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "elfaria_alvis_serfort/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 972,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "elfaria_alvis_serfort",
     "outfit": {
@@ -13,6 +13,7 @@
       "prose": "An opaque ice-blue one-piece swimsuit with a softly draped neckline, a light white shoulder wrap and a small clear-crystal hair clasp.",
       "tokens": [
         "light blue one-piece swimsuit",
+        "draped neckline",
         "white shawl",
         "crystal hair ornament"
       ],

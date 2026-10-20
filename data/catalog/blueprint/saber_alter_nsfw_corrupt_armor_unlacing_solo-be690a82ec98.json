@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 228,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
     "title": "黑呆 · 漆黑哥特战铠半褪与锁骨暗纹自持",
     "category": "卸甲事故",
     "characterId": "artoria_pendragon_alter",
-    "description": "【黑呆 · 漆黑哥特战铠半褪与锁骨暗纹自持】破败阴森的黑色王座圣殿内，阿尔托莉雅·Alter单手拄着暗红光芒缭绕的誓约胜利之剑。身上的漆黑哥特板甲搭扣完全解开，沉重的黑铁胸甲半滑脱下坠，露出一对饱满白皙、极具力量线条与肉感的丰满雪乳，挺立嫣红的乳尖在黑甲的反衬下散发着冷艳的光泽。锁骨处的黑化血丝暗纹因体内魔力奔涌而散发微弱的赤红暗芒，引发全身潮红发热。黑呆单膝跪地，一只手按在冰凉的黑曜石地砖上，另一只手探入战裙下摆贴着平坦紧致的下腹深入腿心自抚，暗金色的眼眸泛起狂乱的水汽与屈辱的动情，咬牙冷酷低语——「唔……身体的魔力炉心……竟然发热到了这种地步……休想看到本王这副狼狈沉沦的姿态……！」",
+    "description": "【黑呆 · 漆黑哥特战铠半褪与锁骨暗纹自持】破败阴森的黑色王座圣殿内，阿尔托莉雅·Alter单手拄着暗红光芒缭绕的誓约胜利之剑。身上的漆黑哥特板甲搭扣完全解开，沉重的黑铁胸甲半滑脱下坠，露出一对饱满白皙、极具力量线条与肉感的丰满雪乳，挺立嫣红的乳尖在黑甲的反衬下散发着冷艳的光泽。锁骨处的黑化血丝暗纹因体内魔力奔涌而散发微弱的赤红暗芒，引发全身潮红发热。黑呆单膝跪地，一只手扶着拄地的剑柄，另一只手探入战裙下摆贴着平坦紧致的下腹深入腿心自抚，暗金色的眼眸泛起狂乱的水汽与屈辱的动情，咬牙冷酷低语——「唔……身体的魔力炉心……竟然发热到了这种地步……休想看到本王这副狼狈沉沦的姿态……！」",
     "location": "黑曜石王座之间冰凉坚硬的大理石地砖上",
     "action": "单膝跪地，胸甲解开，一手拄剑支撑，另一手探入裙下自抚，暗红魔纹泛光",
     "timeOfDay": "深夜月影",
@@ -33,7 +33,7 @@
       "heavy_blush",
       "sensual_solo"
     ],
-    "promptProse": "Adult Saber Alter kneels on one knee with her breastplate unlatched, leaning on her sword while touching herself beneath her skirts as crimson magic circuits glow.",
+    "promptProse": "Kneeling on one knee with the breastplate unlatched, she supports herself on the sword with one hand and keeps the other beneath her skirt; crimson magic circuits glow at her collarbone. Cool moonlight enters through the broken dome, meeting the sword's dark-red glow.",
     "promptTokens": [
       "red trim",
       "dark blue dress",

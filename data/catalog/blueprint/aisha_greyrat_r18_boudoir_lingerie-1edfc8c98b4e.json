@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_r18_boudoir_lingerie",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 491,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "aisha_greyrat_r18_boudoir_lingerie",
     "title": "爱夏·闺房酒红薄绡",
@@ -29,20 +29,17 @@
       "candlelight"
     ],
     "description": "归入私密卧房后，爱夏斜卧在宽大的深红丝绒贵妃榻上。轻薄如烟的酒红缎面丝袍滑落垂在腰际，胸前半透的绯红蕾丝薄衣彻底敞落，圆润饱满的双峰在跳跃的烛光下泛着诱人的温润光泽与粉嫩乳头。修长的右腿微微蜷曲，修长纤细的右手指尖勾住蕾丝小裤的侧带缓缓拉偏，无遮掩地露出光洁晶莹的隐秘私处与润泽水迹，面带绯红，绿眸微阖脉脉含情。",
-    "promptProse": "She reclines sideways on the crimson couch with her ivory-trimmed burgundy robe lowered to her waist, drawing her panties aside. Warm candlelight from the silver bedside candelabrum falls across the velvet cushions.",
+    "promptProse": "Reclining on her side with her right knee bent, she draws her panties aside with her right hand, her robe lowered to her waist. A silver bedside candelabrum lights the velvet cushions.",
     "promptTokens": [
-      "adult",
       "bedroom",
-      "velvet couch",
+      "crimson velvet couch",
       "reclining",
       "burgundy satin robe",
       "ivory piping",
       "open clothes",
       "topless",
       "panties aside",
-      "candlelight",
-      "from side",
-      "medium shot"
+      "candlelight"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],

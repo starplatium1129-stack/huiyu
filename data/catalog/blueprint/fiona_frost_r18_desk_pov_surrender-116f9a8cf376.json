@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_r18_desk_pov_surrender",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 827,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "fiona_frost_r18_desk_pov_surrender",
     "characterId": "fiona_frost",
@@ -32,7 +32,7 @@
       "night",
       "lamp"
     ],
-    "promptProse": "She lies across the mahogany office desk, looking up at the viewer with parted legs while dossiers frame her shoulders.",
+    "promptProse": "She lies across the mahogany office desk, looking up at the viewer with parted legs while dossiers frame her shoulders. A green-shaded banker's lamp casts a warm golden beam across the desk.",
     "promptTokens": [
       "nude",
       "on back",

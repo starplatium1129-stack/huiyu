@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_silk_morning",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "action": "金黄草垛旁抱膝褪去白裙娇羞微笑",
     "adult": true,
@@ -25,18 +25,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Historia reclines across the clean hay with one arm overhead, her other hand moving between her thighs beneath the dawn window.",
+    "promptProse": "Historia sits on the hay hugging her knees, her removed white dress beside her. Morning light through the boards illuminates foreground straw, leaving the hayloft behind her in shade.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Historia",
       "nude",
-      "reclining",
-      "arm up",
-      "bent leg",
-      "hand between legs",
+      "sitting",
+      "hugging knees",
       "hay",
-      "sunrise"
+      "barn",
+      "morning light"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -52,7 +51,7 @@
       "bare_legs",
       "daylight"
     ],
-    "timeOfDay": "白天",
+    "timeOfDay": "清晨",
     "title": "希斯特里亚 · 农场阳光草垛纯欲"
   }
 }

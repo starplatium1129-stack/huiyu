@@ -1,5 +1,6 @@
 import { PendingMediaUploadError } from './mediaUpload.ts'
 import { ArtworkSaveSupersededError } from './artworkSaveInput'
+import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
 import type { HistoryEntry } from '@/types/promptHistory'
 import type { ArtworkCommitIdentity, ArtworkSaveSnapshot, GeneratedArtworkInput, LegacyArtworkDefaults, SaveGeneratedArtworkDependencies, SaveGeneratedArtworkResult } from './artworkSaveInput'
 
@@ -56,6 +57,8 @@ function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDef
     subject: isPopular ? 'popular' : 'studio',
     characterId: isPopular ? currentSubject.characterId : undefined,
     outfitId: isPopular ? currentSubject.outfitId : undefined,
+    outfitExplicit: isPopular ? entry.outfitExplicit ?? currentSubject.outfitExplicit : undefined,
+    outfitOverride: isPopular ? parseOutfitOverride(entry.outfitOverride) : undefined,
     blueprintId: isPopular ? currentSubject.blueprintId : undefined,
     noLora: entry.noLora ?? (isPopular && !recordedLora), styleLoraId: entry.styleLoraId ?? null,
     artistStyleIds: normalizeStyles(entry.artistStyleIds ?? defaults.artistStyleIds),

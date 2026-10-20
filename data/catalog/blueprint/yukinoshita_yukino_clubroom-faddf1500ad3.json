@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_clubroom",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 338,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "yukinoshita_yukino_clubroom",
     "title": "雪之下雪乃 · 侍奉部教室",
@@ -29,7 +29,7 @@
       "afternoon_window_light",
       "medium_shot"
     ],
-    "promptProse": "Yukino supports the paperback in one hand and turns a page with the other as the clubroom door opens. Warm window light lies across the paper beside the steaming tea and gently moving curtain.",
+    "promptProse": "Seated by the window, Yukino supports the paperback in one hand and turns a page with the other as the clubroom door opens. Warm window light lies across the paper beside the steaming tea and gently moving curtain.",
     "promptTokens": [
       "paperback",
       "page turning",

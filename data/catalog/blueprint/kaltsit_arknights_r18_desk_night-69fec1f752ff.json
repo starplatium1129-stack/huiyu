@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_desk_night",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 534,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在红木办公桌沿，单手挑起下颌眼神深邃",
     "adult": true,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "evening_gown",
-    "promptProse": "Adult Kal'tsit leans over the medical desk with one knee on the chair. Her dress is lowered from her chest; one hand steadies a report while the other reaches beneath the hem.",
+    "promptProse": "Kal'tsit sits on the mahogany desk edge with crossed legs, lifting the offscreen viewer's chin with one hand. The lamp lights her near cheek against the dark office.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -34,12 +34,13 @@
       "velvet",
       "open clothes",
       "bare breasts",
-      "leaning forward",
-      "knee up",
-      "hand under clothes",
+      "black stockings",
+      "sitting",
+      "crossed legs",
+      "chin touch",
       "desk",
       "documents",
-      "green light"
+      "desk lamp"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

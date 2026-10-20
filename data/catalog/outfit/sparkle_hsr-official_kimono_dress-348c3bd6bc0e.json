@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/official_kimono_dress",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 575,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
@@ -12,10 +12,11 @@
       "name": "红黑金鱼和风短裙",
       "prose": "A red-and-black short kimono dress keeps its gold floral trim, wide sleeves and dark obi with a goldfish tassel, paired with black thigh-high stockings.",
       "tokens": [
-        "red and black kimono dress",
-        "gold trim",
+        "red and black short kimono dress",
+        "gold floral trim",
         "wide sleeves",
         "black obi",
+        "goldfish tassel",
         "black thighhighs"
       ],
       "default": true,

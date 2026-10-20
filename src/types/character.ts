@@ -6,6 +6,9 @@ export interface PopularOutfit {
   prose: string
   tokens: string[]
   default?: boolean
+  /** Explicit hair/accessory variant when this outfit participates in the prompt. */
+  identityTokensOverride?: string[]
+  identityProseOverride?: string
 }
 
 export interface PopularCharacter {

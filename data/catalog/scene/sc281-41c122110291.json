@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc281",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 276,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
     "id": "sc281",
     "recommendedSize": "1344×768",
@@ -31,15 +31,15 @@
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
-    "lighting": "夜色氛围光",
+    "lighting": "右上方床头暖灯与木墙暗部",
     "usage": [
       "官方CG灵感",
       "实机审核通过",
       "展示图",
       "成人向"
     ],
-    "prompt": "natsume_r18, adult, visual_novel_event_cg, adult_after_story, cinematic_16:9_intimate_close_up, 1girl, solo, adult_shiki_natsume, very_long_black_hair, golden_yellow_eyes, mole_under_eye, nude, topless, nipples, lying_on_stomach_across_a_warm_bed, upper_body_propped_on_elbows, one_hand_near_lips, hips_at_left_edge, face_and_chest_dominate_frame, direct_vulnerable_gaze, amber_bedside_light_from_upper_right, dark_wooden_bedroom, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, lingerie, bra, shirt, standing, sitting, lying on back, cold blue light, child, loli, underage, school_uniform, gym_uniform",
+    "prompt": "natsume_r18, adult, visual novel event CG, close up, 1girl, solo, nude, topless, nipples, lying, on side, bed, propped on elbow, reaching toward viewer, looking at viewer, amber bedside light, dark wooden bedroom, <lora:shiki_natsume_v18_wd14:0.85>, very long hair",
+    "negative": "lingerie, bra, shirt, standing, sitting, lying on back, cold blue light",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "R18",
     "officialCgCandidate": "ocs15",
@@ -51,7 +51,7 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs15-a1.png",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot in a private bedroom on soft bedding, she looks forward toward the viewer with glistening, emotive eyes, as cool silver moonlight bathes the surroundings.",
+    "animaCaption": "Propped on one elbow, she reaches her free hand toward the viewer; hips at the left edge, her face and chest fill most of the frame. The upper-right bedside lamp lights her face against the dark wooden room.",
     "auditRevision": "careful-batch14-2026-08-27"
   }
 }

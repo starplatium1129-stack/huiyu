@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/field_work",
-  "revision": 4,
+  "revision": 3,
   "sortOrder": 403,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
@@ -13,10 +13,12 @@
       "default": false,
       "isDefault": false,
       "tokens": [
-        "green shirt",
+        "sage green linen shirt",
+        "stand collar",
         "sleeves rolled up",
-        "white pants",
-        "brown lace-up boots"
+        "cream straight-leg pants",
+        "braided brown belt",
+        "dark brown lace-up boots"
       ],
       "prose": "a sage-green linen stand-collar shirt with rolled cuffs, cream straight trousers, braided brown belt and dark brown lace-up boots",
       "category": "日常衣装（创作）"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kazami_kazuki",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
   "data": {
     "id": "kazami_kazuki",
     "profile": {
@@ -108,7 +108,7 @@
         "灰色的果实",
         "grisaia"
       ],
-      "identityProse": "Kazami Kazuki from Grisaia by Frontwing, the legendary genius older sister of Yuuji with floor-sweeping silvery-white hair, blunt bangs framing her delicate face, sharp yet intensely devoted crimson red eyes, slender graceful figure, and a cool stoic demeanor.",
+      "identityProse": "Kazami Kazuki from Grisaia, with floor-length silver-white hair, blunt bangs and crimson eyes.",
       "identityTokens": [
         "kazami_kazuki",
         "1girl",

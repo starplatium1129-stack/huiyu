@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "matou_sakura",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "matou_sakura",
     "profile": {
@@ -102,11 +102,13 @@
         "1girl",
         "solo",
         "purple hair",
+        "long hair",
         "red hair ribbon",
+        "hair ribbon on left side",
         "purple eyes",
         "fate/stay night"
       ],
-      "identityProse": "Sakura Matou from Fate/stay night, a gentle girl with long purple hair, a red ribbon tied on the left side, deep violet eyes with a tender gleam, and a devoted affectionate gaze",
+      "identityProse": "Sakura Matou from Fate/stay night, with long purple hair, a red ribbon on her left side and violet eyes.",
       "animeStudio": "type-moon, ufotable, official anime screencap",
       "negativeTokens": [
         "bad anatomy",

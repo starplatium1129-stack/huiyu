@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_windowsill_bent_over_prone",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 1330,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "双手撑在玻璃窗上俯身弓腰翘臀，裙摆被撩起，单手探入内裤自抚花瓣，回头含泪咬唇喘息",
+    "action": "一手撑在玻璃窗上俯身弓腰翘臀，裙摆被撩起，单手探入内裤自抚花瓣，回头含泪咬唇喘息",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
     "camera": "cowboy shot, dutch angle",
@@ -17,7 +17,7 @@
       "prone",
       "solo"
     ],
-    "description": "【爱尔奎特 · 落地月光窗前的毛衣半褪自抚】高层公寓巨大落地窗前，爱尔奎特的白色高领毛衣被推至锁骨露出饱满雪乳，长紫裙彻底撩起堆在腰间。她双手轻撑在冰凉的玻璃窗上俯身弓腰，展现着丰满圆润的雪白臀部曲线。单手探入裙底拉开内裤边缘自抚晶莹的花瓣，呼吸在窗户上扑出一层薄雾。咬紧嘴唇回头，耳根红透，含泪的赤瞳泛着近乎失控的甜蜜愉悦——「啊……哈……身体好热……真祖的心跳……全部乱掉了……」",
+    "description": "【爱尔奎特 · 落地月光窗前的毛衣半褪自抚】高层公寓巨大落地窗前，爱尔奎特的白色高领毛衣被推至锁骨露出饱满雪乳，长紫裙彻底撩起堆在腰间。她一手轻撑在冰凉的玻璃窗上俯身弓腰，展现着丰满圆润的雪白臀部曲线。单手探入裙底拉开内裤边缘自抚晶莹的花瓣，呼吸在窗户上扑出一层薄雾。咬紧嘴唇回头，耳根红透，含泪的赤瞳泛着近乎失控的甜蜜愉悦——「啊……哈……身体好热……真祖的心跳……全部乱掉了……」",
     "id": "arcueid_nsfw_windowsill_bent_over_prone",
     "kreaStyleHint": "r18_explicit_h_cg",
     "lighting": "落地窗外浩瀚银白月光洒在雪白肌肤上",
@@ -25,7 +25,7 @@
     "mood": "狂乱自抚、唯美心动",
     "negativeTokens": [],
     "outfitId": "official_white_sweater_purple_skirt",
-    "promptProse": "She braces one hand against the window while the other reaches beneath her gathered skirt. Her breath clouds the glass above the moonlit city.",
+    "promptProse": "With her sweater raised and skirt gathered at her waist, she braces one hand against the window while the other reaches beneath her skirt. Her breath clouds the glass above the moonlit city.",
     "promptTokens": [
       "window",
       "cityscape",
@@ -44,7 +44,7 @@
       "glass_window",
       "bent_over",
       "arched_back",
-      "hands_on_glass",
+      "hand_on_glass",
       "skirt_lift",
       "panties_aside",
       "exposed_pussy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_r18_b7_01",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 313,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kama_fate_r18_b7_01",
     "title": "迦摩 · 宇宙爱欲神殿金莲花座主控跨坐 ·「Master……要被爱之神彻底堕落溺死吗」",
@@ -30,7 +30,7 @@
       "floating_hair",
       "white_hair"
     ],
-    "promptProse": "Seated astride her companion on the golden lotus, she rests both hands on their chest, her black ribbons lowered from her shoulders; celestial rim light outlines her floating white hair.",
+    "promptProse": "Seated astride the offscreen viewer on the golden lotus, she rests both hands on their chest, her black veil lowered from her shoulders; celestial rim light outlines her floating white hair.",
     "promptTokens": [
       "1girl",
       "solo",

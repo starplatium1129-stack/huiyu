@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_footbath",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 347,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_footbath",
     "title": "雪之下雪乃 · 足浴时分",
@@ -15,7 +15,7 @@
     "action": "泡脚时黑丝褪至脚踝",
     "timeOfDay": "夜晚",
     "lighting": "moonlight along the veranda with a warm light beside the footbath",
-    "camera": "full body, raised foot and footbath visible",
+    "camera": "full body, seated pose and both feet in the footbath visible",
     "mood": "冰融的慵懒",
     "sceneTags": [
       "bathroom",
@@ -25,15 +25,12 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Yukino dries the arch of her raised foot with the loose obi while her other foot stirs the water.",
+    "promptProse": "Adult Yukino sits on the wooden veranda with both feet immersed in the warm footbath and her lowered stockings gathered at her ankles. She turns her flushed face aside beneath the moonlight and the small warm lamp.",
     "promptTokens": [
       "adult",
       "indigo yukata",
-      "open clothes",
-      "topless",
       "rolled stockings",
       "sitting",
-      "raised foot",
       "foot bath",
       "veranda",
       "moonlight"

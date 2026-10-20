@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ellen_joe",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "ellen_joe",
     "profile": {
@@ -125,7 +125,7 @@
       ],
       "franchise": "Zenless Zone Zero",
       "id": "ellen_joe",
-      "identityProse": "Ellen Joe from Zenless Zone Zero, a high school maid from Victoria Housekeeping with two-tone black and crimson short hair, tired dark red eyes, red hairpins, a huge black and white spiky shark tail, sharp shark teeth, and a cool deadpan expression.",
+      "identityProse": "Adult Ellen Joe from Zenless Zone Zero, with short black-and-crimson hair, dark red eyes, red razor-blade hair ornaments, a large black-and-white spiky shark tail and sharp teeth.",
       "identityTokens": [
         "ellen joe",
         "1girl",
@@ -136,6 +136,8 @@
         "colored_inner_hair",
         "red_eyes",
         "shark_tail",
+        "large_tail",
+        "spiked_tail",
         "shark_teeth",
         "razor_blade_hair_ornament",
         "zenless_zone_zero"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "dusk_arknights",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 22,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "dusk_arknights",
     "profile": {
@@ -109,7 +109,7 @@
       ],
       "franchise": "Arknights",
       "id": "dusk_arknights",
-      "identityProse": "Dusk from Arknights, a reclusive dragon painter with flowing floor-length ink-black hair, slit emerald eyes, curved black dragon horns, and a long scaly tail.",
+      "identityProse": "Dusk from Arknights, with floor-length ink-black hair, emerald slit eyes, curved black dragon horns and a long scaly tail.",
       "identityTokens": [
         "dusk (arknights)",
         "1girl",
@@ -117,8 +117,9 @@
         "black_hair",
         "very_long_hair",
         "green_eyes",
-        "horns",
-        "tail",
+        "slit_pupils",
+        "dragon_horns",
+        "dragon_tail",
         "arknights"
       ],
       "negativeTokens": [

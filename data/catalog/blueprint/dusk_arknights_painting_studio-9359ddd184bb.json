@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_painting_studio",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 567,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "盘坐在宣纸中央，手持毛笔悬停沉思，墨龙与山峦从纸面逸出",
     "camera": "wide shot, eye level",
@@ -20,12 +20,9 @@
     "mood": "东方古典与磅礴",
     "negativeTokens": [],
     "outfitId": "atelier_slouchy_loungewear",
-    "promptProse": "Sitting cross-legged on the spread paper, she holds the brush poised above it as ink dragons and mountains rise from the strokes. Blue lantern light catches the wet ink and nearby scrolls.",
+    "promptProse": "Sitting cross-legged on the spread paper, she holds the brush poised above it as ink dragons and mountains rise from the strokes. Cold cyan light glows from the wet ink beside the scrolls, catching scattered gold-leaf flecks.",
     "promptTokens": [
       "studio",
-      "horns",
-      "tail",
-      "messy bun",
       "barefoot",
       "sitting",
       "crossed legs",

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc065",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 63,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "From the bookshelf aisle, the viewer sees her peeking over the burgundy book that hides her lower face; window light follows her dark hair onto the open pages.",
+    "animaCaption": "Seen from the aisle, she peeks over the burgundy book hiding her lower face; window light follows her hair onto the pages.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "侧面",
     "category": "R15",

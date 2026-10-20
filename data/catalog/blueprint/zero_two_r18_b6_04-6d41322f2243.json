@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_r18_b6_04",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1586,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "zero_two_r18_b6_04",
     "title": "02 · 绘本床单上叫龙本能觉醒的深情狂野独奏 ·「哪怕变成真正的怪物……达令也是我的翅膀」",
@@ -14,7 +14,7 @@
     "location": "13部队个人卧房·深夜",
     "action": "仰卧被褥抱绘本全裸自抚，红角血光流转，双腿大开野性抽搐绝顶高潮",
     "timeOfDay": "night",
-    "lighting": "warm_cinematic_lighting",
+    "lighting": "红角发出的红色微光照亮近处被褥和绘本，卧房其余区域较暗",
     "camera": "intimate vertical medium shot",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [

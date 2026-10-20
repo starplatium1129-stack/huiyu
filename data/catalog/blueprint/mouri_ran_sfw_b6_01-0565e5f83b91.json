@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_sfw_b6_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1603,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_01",
     "title": "毛利兰 · 空手道社的晨训",
@@ -31,7 +31,7 @@
       "morning_light",
       "medium_full_shot"
     ],
-    "promptProse": "Ran finishes a straight punch, her tied hair settling behind her shoulders. Morning sun enters the high dojo windows and catches the fine sheen of sweat on her cheek.",
+    "promptProse": "Ran holds the end of a straight punch, tied hair settling behind her; high-window sunlight catches sweat on her cheek.",
     "promptTokens": [
       "mouri_ran",
       "hair tied",

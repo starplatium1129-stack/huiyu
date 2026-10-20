@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "goldenglow_arknights",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "goldenglow_arknights",
     "profile": {
@@ -92,7 +92,7 @@
       "animeStudio": "arknights, hypergryph, official anime art",
       "canon": {
         "era": "近未来奇幻",
-        "formNotes": "金发蓝瞳双马尾；温婉图书管理员",
+        "formNotes": "粉色双马尾、蓝色眼眸与折耳猫耳；罗德岛驭械术师、理发师",
         "research": "2026-08-15 调研（Danbooru goldenglow_(arknights) 2586 posts）",
         "world": "泰拉（罗德岛）"
       },
@@ -108,7 +108,7 @@
       ],
       "franchise": "Arknights",
       "id": "goldenglow_arknights",
-      "identityProse": "Goldenglow (Susie) from Arknights, a sweet Scottish Fold hairdresser with fluffy pastel pink twintails, folded feline ears, blue eyes, and a slender cat tail.",
+      "identityProse": "Goldenglow (Susie) from Arknights, with fluffy pastel-pink twintails, folded cat ears, blue eyes and a slender cat tail.",
       "identityTokens": [
         "goldenglow (arknights)",
         "1girl",
@@ -117,6 +117,7 @@
         "twintails",
         "blue_eyes",
         "cat_ears",
+        "folded_ears",
         "cat_tail",
         "arknights"
       ],

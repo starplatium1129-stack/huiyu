@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/standard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 424,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
@@ -12,17 +12,17 @@
       "id": "standard",
       "isDefault": true,
       "name": "武陵白绿分袖中式衣装",
-      "prose": "her white-and-celadon sleeveless Chinese-style top with a dark high neckline and black waist harness, separate black-and-white sleeves, black gloves and a layered belt with small hanging ornaments, flowing green trousers with pale upper panels and dark patterned hems, and black boots",
+      "prose": "Her white-and-celadon sleeveless Chinese-style top has a dark high neckline and black waist harness, with detached black-and-white sleeves, black gloves, a layered belt, wide green trousers with pale upper panels and dark patterned hems, and black boots.",
       "tokens": [
         "chinese clothes",
         "white sleeveless top",
         "celadon trim",
         "high collar",
         "black waist harness",
-        "detached sleeves",
+        "black and white detached sleeves",
         "black gloves",
         "layered belt",
-        "wide green pants",
+        "wide green pants with pale upper panels and dark patterned hems",
         "black boots"
       ],
       "category": "官方衣装"

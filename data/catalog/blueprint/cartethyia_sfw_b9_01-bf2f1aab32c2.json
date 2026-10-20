@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1645,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_01",
     "title": "卡提希娅 · 埃格拉小镇的归还",
@@ -33,7 +33,6 @@
     "promptProse": "She hesitates at the familiar stone-paved corner before taking her first step home. Morning light follows the shopfronts behind her.",
     "promptTokens": [
       "town",
-      "halo",
       "standing",
       "morning",
       "medium shot"

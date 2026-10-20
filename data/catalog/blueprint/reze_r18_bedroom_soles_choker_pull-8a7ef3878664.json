@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_bedroom_soles_choker_pull",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 426,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "reze_r18_bedroom_soles_choker_pull",
     "characterId": "reze_chainsaw",
@@ -20,17 +20,16 @@
       "barefoot",
       "dramatic_shadows"
     ],
-    "promptProse": "The age-twenty-plus Reze hooks a finger around her choker pin while bracing her other hand beside the cracked window, one foot extending toward the viewer.",
+    "promptProse": "Adult Reze sits barefoot on the sill, one hand braced beside her, the other beckoning. Moonlight glints on her choker pin and casts a long shadow, faintly filled by streetlight.",
     "promptTokens": [
       "adult",
       "nude",
       "choker",
       "sitting",
-      "knee up",
-      "soles",
+      "barefoot",
+      "beckoning",
       "window sill",
-      "ruins",
-      "city lights",
+      "apartment",
       "moonlight"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eunectes_arknights",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 23,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "eunectes_arknights",
     "profile": {
@@ -107,7 +107,7 @@
       ],
       "franchise": "Arknights",
       "id": "eunectes_arknights",
-      "identityProse": "Eunectes (Zumama) from Arknights, an inventive Pythia engineer with lush forest-green long hair, sharp golden reptilian eyes, and a thick snake tail.",
+      "identityProse": "Eunectes (Zumama) from Arknights, with long forest-green hair, golden reptilian eyes and a thick snake tail.",
       "identityTokens": [
         "eunectes (arknights)",
         "1girl",
@@ -115,7 +115,8 @@
         "green_hair",
         "long_hair",
         "golden_eyes",
-        "tail",
+        "snake_tail",
+        "thick_tail",
         "arknights"
       ],
       "negativeTokens": [

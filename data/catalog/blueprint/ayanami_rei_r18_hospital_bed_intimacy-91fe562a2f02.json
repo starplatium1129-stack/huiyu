@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_r18_hospital_bed_intimacy",
-  "revision": 2,
+  "revision": 6,
   "sortOrder": 1022,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "独自仰卧病床，一手绕绷带、一手腿间自抚",
     "adult": true,
@@ -26,13 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "hospital_bandages_gown",
-    "promptProse": "Adult Rei lies on the bed holding a loose bandage with one hand while the other rests between her thighs. Moonlight enters through the curtains.",
+    "promptProse": "She lies on the bed holding a loose bandage with one hand while the other rests between her thighs. Moonlight enters through the curtains.",
     "promptTokens": [
-      "adult",
       "hospital",
+      "white hospital gown",
       "open gown",
       "topless",
       "bandages",
+      "medical eyepatch",
       "lying",
       "knees up",
       "masturbation",
@@ -46,7 +47,6 @@
       "moonlight",
       "white_sheets",
       "gauze_bandages",
-      "completely_nude",
       "spread_legs",
       "bent_knees",
       "heavy_blush"

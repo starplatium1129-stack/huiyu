@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "surtr_arknights",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 34,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "surtr_arknights",
     "profile": {
@@ -109,15 +109,19 @@
       ],
       "franchise": "Arknights",
       "id": "surtr_arknights",
-      "identityProse": "Surtr from Arknights, a lone Sarkaz swordswoman with wine-red long hair in a side low ponytail under a black headband, amber-orange eyes, black-red curved horns, and a slender athletic build.",
+      "identityProse": "Surtr from Arknights, with long wine-red hair in a low side ponytail, black headband, amber-orange eyes and curved black-red horns.",
       "identityTokens": [
         "surtr (arknights)",
         "1girl",
         "solo",
         "red hair",
+        "long hair",
         "side ponytail",
+        "low ponytail",
+        "black headband",
         "amber eyes",
         "horns",
+        "curved black-red horns",
         "arknights"
       ],
       "negativeTokens": [

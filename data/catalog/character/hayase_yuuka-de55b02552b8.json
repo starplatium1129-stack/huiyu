@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hayase_yuuka",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "hayase_yuuka",
     "profile": {
@@ -131,7 +131,7 @@
       ],
       "franchise": "Blue Archive",
       "id": "hayase_yuuka",
-      "identityProse": "Hayase Yuuka from Blue Archive, the meticulous Millennium Seminar treasurer with twin navy blue twintails, bright blue eyes, a geometric floating halo, and voluptuous soft thighs.",
+      "identityProse": "Hayase Yuuka from Blue Archive, with navy-blue twintails, blue eyes, a geometric floating halo and thick thighs.",
       "identityTokens": [
         "yuuka (blue archive)",
         "1girl",
@@ -140,6 +140,7 @@
         "twintails",
         "blue_eyes",
         "halo",
+        "thick_thighs",
         "blue_archive"
       ],
       "negativeTokens": [

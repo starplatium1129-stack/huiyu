@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_r18_b9_01",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1758,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "togawa_sakiko_r18_b9_01",
     "title": "丰川祥子 · 舞台面具破裂黑色蕾丝礼服主控跨坐 ·「忘却一切烦恼……今晚就由我Oblivionis来赐予你安息」",
@@ -30,7 +30,7 @@
       "mask",
       "broken_mask"
     ],
-    "promptProse": "Sakiko moves astride the viewer's lap with her black lace and indigo satin gown torn open, crying as pieces of her feather mask lie across the green-room floor.",
+    "promptProse": "Sakiko moves astride the viewer's lap with both hands gripping their shoulders, her black lace and indigo satin gown torn open; she cries as pieces of her feather mask lie across the green-room floor.",
     "promptTokens": [
       "adult",
       "1girl",

@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/casual",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 244,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "casual",
       "name": "雾蓝收腰针织与藏蓝中裙",
-      "prose": "a mist-blue fine-knit sweater with fitted ribbed cuffs and a narrow white lace neckline, tucked into a high-waist navy A-line midi skirt",
+      "prose": "A mist-blue knit sweater with ribbed cuffs and white lace neckline, tucked into a high-waist navy A-line midi skirt.",
       "tokens": [
-        "light blue sweater",
+        "light blue knit sweater",
         "ribbed cuffs",
-        "navy skirt",
-        "high-waist skirt",
-        "white lace trim"
+        "white lace neckline",
+        "navy high-waist A-line midi skirt"
       ],
       "isDefault": false,
       "default": false

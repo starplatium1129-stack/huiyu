@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1710,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "maomao_sfw_b9_06",
     "title": "猫猫 · 雨廊下的药箱",
@@ -30,7 +30,7 @@
       "overcast_light",
       "medium_shot"
     ],
-    "promptProse": "Sheltered beneath the corridor roof, she supports the open medicine case in one arm and checks its upright bottles with her free hand as rain falls beyond the eaves.",
+    "promptProse": "Under the corridor roof, she supports the open medicine case in one arm and checks the upright bottles with her free hand; rain falls beyond the eaves.",
     "promptTokens": [
       "medicine case",
       "bottles",

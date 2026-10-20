@@ -4,14 +4,13 @@
     "displayName": "蕾缪安",
     "originalName": "Lemuen",
     "source": "Arknights",
-    "identityProse": "Lemuen from Arknights, a serene Sankta sharpshooter with ginger long hair, warm amber eyes, a luminous angelic halo, and delicate white wings.",
+    "identityProse": "Lemuen from Arknights, a serene Sankta sharpshooter with long pink hair, a luminous angelic halo and delicate wings. Her calm, attentive gaze remains composed.",
     "identityTokens": [
       "lemuen (arknights)",
       "1girl",
       "solo",
-      "ginger_hair",
+      "pink_hair",
       "long_hair",
-      "amber_eyes",
       "halo",
       "wings",
       "arknights"
@@ -121,7 +120,7 @@
     "characterId": "lemuen_arknights",
     "displayName": "蕾缪安",
     "source": "Arknights",
-    "identityProse": "Lemuen from Arknights, a serene Sankta sharpshooter with ginger long hair, warm amber eyes, a luminous angelic halo, and delicate white wings.",
+    "identityProse": "Lemuen from Arknights, a serene Sankta sharpshooter with long pink hair, a luminous angelic halo and delicate wings. Her calm, attentive gaze remains composed.",
     "outfits": [
       {
         "outfitId": "standard",

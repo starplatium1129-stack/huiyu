@@ -102,7 +102,7 @@
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :class="{ 'is-error': failedResultUrl === displayResultUrl }">
       <div class="result-artwork" :style="{ '--result-aspect': resultAspect }">
-        <ImageSplitCompare
+        <ImageCompareSlider
           v-if="inpaintCompareActive && inpaintOriginalUrl"
           :before-src="inpaintOriginalUrl"
           :after-src="displayResultUrl"
@@ -145,7 +145,7 @@ import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
-import ImageSplitCompare from '@/components/visual/ImageSplitCompare.vue'
+import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
 import GenerationParticles from '@/components/visual/GenerationParticles.vue'
 import BorderBeam from '@/components/visual/BorderBeam.vue'

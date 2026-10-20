@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_starry_stage",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 998,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "低头全神贯注弹奏电吉他，发丝随激烈演奏飘扬",
     "camera": "medium shot, dynamic low angle",
@@ -20,7 +20,7 @@
     "mood": "激情热烈",
     "negativeTokens": [],
     "outfitId": "kessoku_band_live_tshirt",
-    "promptProse": "She bends over the black-and-gold electric guitar, fretting with one hand and picking with the other as blue side light catches her swinging hair.",
+    "promptProse": "She bends over the black-and-gold electric guitar, fretting with one hand and picking with the other beneath the bright overhead stage spotlight; cold blue side light catches her swinging hair.",
     "promptTokens": [
       "electric guitar",
       "playing instrument",

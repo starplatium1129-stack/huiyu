@@ -17,10 +17,12 @@ function normalize(text: string): string {
 /** Match authored light sources without replacing lamps, fire or daylight with a different source. */
 export function inferBlueprintLighting(source: BlueprintLightSource): string | null {
   const light = normalize(source.lighting || '')
+  const directLight = light.replace(/\bafter sunset\b|\b(?:blue|cool|cold|deep) dusk\b/g, '')
+  const coolEvening = /\b(?:cold|cool|blue|violet|lavender)\b[^,;]*\b(?:sunset|dusk)\b|冷(?:冽|白|蓝|色|调)?[^，,;；]*(?:夕阳|夕照|晚霞|黄昏)/.test(light)
   // The saved selection ID remains stable; its prompt now means warm light only.
   if (IDS.has(light)) return light
   if (/\bmoon(?:light|lit)\b|月光|月色|冷月/.test(light)) return 'moon'
-  if (/\bgolden hour\b|\bsunset\b|\bdusk\b|夕阳|夕照|落日|晚霞|黄昏|黄金时刻/.test(light)) return 'golden'
+  if (!coolEvening && /\bgolden hour\b|\bsunset\b|\bdusk\b|夕阳|夕照|落日|晚霞|黄昏|黄金时刻/.test(directLight)) return 'golden'
   if (/\bovercast\b|阴天|阴雨|阴云/.test(light)) return 'overcast'
   if (/\bbacklight(?:ing)?\b|\bbacklit\b|逆光|背光/.test(light)) return 'back'
   if (/\bwindow light\b|窗光|侧窗光/.test(light)) return 'window'

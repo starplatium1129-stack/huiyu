@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_snow_visit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 638,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "拎着食盒，站在门前",
     "camera": "medium shot",
@@ -19,7 +19,7 @@
       "summer"
     ],
     "outfitId": "fluffy_cloak",
-    "promptProse": "Suzuran waits at the Doctor's door with the insulated food box held carefully in both hands. She smiles as the door opens, warm window light catching her breath against the snowy corridor.",
+    "promptProse": "Suzuran holds a two-tier insulated food box in both hands at the Doctor's door, smiling as it opens; warm window light catches her breath against the snowy corridor.",
     "promptTokens": [
       "food box",
       "snow",

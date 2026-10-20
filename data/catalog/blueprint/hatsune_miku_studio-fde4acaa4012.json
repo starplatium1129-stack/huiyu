@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_studio",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 319,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "hatsune_miku_studio",
     "title": "初音未来 · 录音棚",
@@ -29,7 +29,7 @@
       "warm_studio_light",
       "medium_shot"
     ],
-    "promptProse": "After the take, Miku lifts her headphones with one hand and waves toward the control-room window with the other, the microphone still on its stand.",
+    "promptProse": "After the take, Miku lifts her headphones with one hand and waves toward the control-room window with the other, the microphone still on its stand in the warm recording-studio light.",
     "promptTokens": [
       "headphones",
       "waving",

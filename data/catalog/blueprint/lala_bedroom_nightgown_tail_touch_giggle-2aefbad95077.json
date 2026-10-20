@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_bedroom_nightgown_tail_touch_giggle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1238,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "侧卧床上被触碰尾巴尖端，满面通红蜷缩娇笑，薄纱睡裙半透雪肌，身姿曼妙",
     "camera": "medium shot, bedside intimate framing, sensitive blush focus",
@@ -22,7 +22,7 @@
       "nude"
     ],
     "outfitId": "pajamas_negligee",
-    "promptProse": "Lala curls on the sheets with a startled laugh as Rito accidentally brushes her tail from beside the bed. Cool moonlight and the small bedside lamp meet across the folds of the pink negligee.",
+    "promptProse": "Lala curls on the sheets with a startled laugh as her off-frame companion accidentally brushes her tail beside the bed. Cool moonlight and the small bedside lamp meet across the folds of the bedding.",
     "promptTokens": [
       "curled up",
       "bed",

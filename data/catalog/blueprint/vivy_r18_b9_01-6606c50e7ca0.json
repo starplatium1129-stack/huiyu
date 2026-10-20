@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_01",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1705,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
   "data": {
     "id": "vivy_r18_b9_01",
     "title": "Vivy · 歌姬主题公园钢琴台礼服主控跨坐 ·「伴奏者先生……请听这具机械身体为你唱出的心跳」",
@@ -30,7 +30,7 @@
       "dress",
       "white_dress"
     ],
-    "promptProse": "Vivy rides astride her companion on the piano and guides their hands to her chest, her gown open beneath the theater spotlights.",
+    "promptProse": "Vivy rides astride her companion on the piano and rests both hands on their chest, her gown open beneath the theater spotlights.",
     "promptTokens": [
       "Vivy",
       "android",

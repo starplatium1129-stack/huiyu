@@ -1,17 +1,17 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_bedroom_soles_foreshortening",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 467,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
-    "action": "仰卧床褥，一手扶住抬起的大腿，另一手自抚，一侧足底朝向俯视镜头",
+    "action": "仰卧床褥，双膝屈起，双手紧抓枕头，足底朝向镜头",
     "adult": true,
     "adultArtistHint": "@rella",
     "adultEligibility": "adult",
     "animaStyleHint": "lying_on_bed, bent_knees, barefoot, 5_toes, detailed_toes, elf_ears, blushing, soft lighting",
-    "camera": "full body, high angle, pov",
+    "camera": "full body, view from the foot of the bed, foreshortened feet and face visible",
     "category": "私密写真",
     "characterId": "sylphiette",
     "coverageTags": [
@@ -27,7 +27,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Sylphiette steadies one thigh and touches herself with the other hand, one sole extended toward the overhead view in morning light.",
+    "promptProse": "Viewed from the foot of the bed, Sylphiette lies back with bent knees and both hands gripping the pillow, her feet closer to the camera than her flushed ears and face; morning window light crosses the sheets.",
     "promptTokens": [
       "adult",
       "on back",
@@ -36,10 +36,10 @@
       "foreshortening",
       "bed",
       "nude",
-      "masturbation",
       "spread legs",
       "full body",
-      "high angle"
+      "high angle",
+      "holding pillow"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

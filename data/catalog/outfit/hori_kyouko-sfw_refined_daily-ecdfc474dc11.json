@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/sfw_refined_daily",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 881,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
@@ -12,9 +12,9 @@
       "name": "薄荷条纹背带家务装",
       "prose": "A mint-and-white striped cotton shirt beneath indigo full-length dungarees with rolled cuffs and indoor slippers.",
       "tokens": [
-        "mint striped shirt",
+        "mint and white striped shirt",
         "long sleeves",
-        "indigo overalls",
+        "indigo full-length overalls",
         "rolled cuffs",
         "slippers"
       ],

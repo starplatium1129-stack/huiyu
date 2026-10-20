@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "medusa_rider",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 134,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
   "data": {
     "id": "medusa_rider",
     "profile": {
@@ -20,7 +20,7 @@
         "alt": "美杜莎 Rider · 书店文库本的站立阅读场景样张"
       },
       "visual_dna": {
-        "signature": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression remain recognizable without a blindfold, weapon or glasses permanently attached to her identity.",
+        "signature": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression convey a steady, thoughtful presence.",
         "hair": "purple_hair, very_long_hair",
         "eyes": "purple_eyes",
         "uniform": "书店与采购针织便装",
@@ -73,7 +73,7 @@
         "美杜莎 Rider",
         "Medusa (Rider)"
       ],
-      "identityProse": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression remain recognizable without a blindfold, weapon or glasses permanently attached to her identity.",
+      "identityProse": "Medusa, Rider from Fate/stay night, with very long purple hair and violet eyes.",
       "identityTokens": [
         "medusa_(fate)",
         "fate/stay_night",

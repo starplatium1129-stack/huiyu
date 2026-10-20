@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_castle_bath",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "artoria_r18_castle_bath",
     "title": "阿尔托莉雅 · 城堡浴殿",
@@ -25,13 +25,12 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Adult Artoria reclines on a submerged bath step with wet linen below her chest, raising one knee and gathering her hair with both hands. Excalibur and one gauntlet rest on the rim.",
+    "promptProse": "She reclines on a submerged step with wet linen below her chest, one knee raised and both hands gathering her hair. Excalibur and a gauntlet rest on the rim.",
     "promptTokens": [
-      "adult",
       "castle",
       "stone bath",
       "steam",
-      "wet towel",
+      "wet white linen towel",
       "topless",
       "reclining",
       "knees up",

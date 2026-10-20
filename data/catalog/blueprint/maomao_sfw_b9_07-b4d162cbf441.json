@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_07",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1715,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "maomao_sfw_b9_07",
     "title": "猫猫 · 夜市药草茶的闻香",
@@ -31,7 +31,7 @@
       "evening",
       "night_light"
     ],
-    "promptProse": "Holding the small cup near her lips with one hand, she draws the aromatic leaf aside with the other, a satisfied glance warmed by the market lanterns.",
+    "promptProse": "After sunset, she holds the small cup near her lips with one hand and draws the aromatic leaf aside with the other, a satisfied glance warmed by the red market lanterns.",
     "promptTokens": [
       "tea",
       "herb leaf",

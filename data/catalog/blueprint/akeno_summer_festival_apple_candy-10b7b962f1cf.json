@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_summer_festival_apple_candy",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1288,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "akeno_summer_festival_apple_candy",
     "title": "姬岛朱乃 · 仲夏夜祭的紫阳花花火",
@@ -29,7 +29,7 @@
       "exposed_nape",
       "gentle_smile"
     ],
-    "promptProse": "She pauses on the shrine steps and looks back at the viewer with a candy apple in hand. Lanterns line the stairs while a distant firework lights the sky.",
+    "promptProse": "She pauses on the shrine steps and looks back at the viewer with a candy apple in hand. Red lanterns warm the stairs while a distant golden firework lights the back of her neck and her collarbone.",
     "promptTokens": [
       "candy apple",
       "looking back",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_royal_tea_party_cat_pounce",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1086,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "cheshire_royal_tea_party_cat_pounce",
     "title": "柴郡 · 皇家红茶会的猫扑撒娇",
@@ -36,7 +36,6 @@
     "promptProse": "Bracing one gloved hand at the table edge, she reaches eagerly toward the Commander just beyond the frame. Light through the rose arbor touches the pastry stand and lace tablecloth.",
     "promptTokens": [
       "garden",
-      "cat-ear headband",
       "tea table",
       "scones",
       "white roses",

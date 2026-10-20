@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_03",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 1665,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "cartethyia_r18_b9_03",
     "title": "卡提希娅 · 骑士礼装锁扣卡死在佩剑绑带上的事故 ·「请不要误会……我绝不是故意在您面前衣冠不整」",
     "category": "更衣事故",
     "characterId": "cartethyia",
-    "description": "【骑士团更衣室·午后】更换仪式礼服时，后背的白银锁甲搭扣死死咬住了重剑佩带。卡提希娅双手撑在武器架上，身体前倾塌腰，紧绷的战袍将丰满的胸部勒得高高隆起，后背银甲滑脱露出一整片雪白背脊与圆润翘臀。她回头满面通红咬唇抗议——「漂泊者……请以骑士的名义立誓闭上双眼……再帮我把锁扣解开！」",
+    "description": "【骑士团更衣室·午后】更换仪式礼服时，后背的白银锁甲搭扣死死咬住了重剑佩带。卡提希娅一手撑在武器架上，另一手伸向背后卡住的搭扣，身体前倾塌腰，紧绷的战袍将丰满的胸部勒得高高隆起，后背银甲滑脱露出一整片雪白背脊与圆润翘臀。她回头满面通红咬唇抗议——「漂泊者……请以骑士的名义立誓闭上双眼……再帮我把锁扣解开！」",
     "location": "骑士团更衣室·午后",
-    "action": "撑武器架塌腰回眸双手反剪扯锁甲，银甲滑脱露雪背巨乳深陷，咬唇羞愤抗议",
+    "action": "一手撑武器架前倾回眸，另一手伸到背后解卡住的锁甲搭扣，银甲滑脱，咬唇羞赧",
     "timeOfDay": "afternoon",
     "lighting": "warm_cinematic_lighting",
     "camera": "wide shot",
@@ -28,11 +28,10 @@
       "plate_armor",
       "stuck_clothes",
       "clothes_pull",
-      "hands_behind_back"
+      "hand_behind_back"
     ],
-    "promptProse": "She leans over a weapon rack with the dress buckles caught in her scabbard straps. Afternoon light reaches the silver armor and open back.",
+    "promptProse": "She braces one hand on the weapon rack while the other reaches behind for the armor buckle caught in her scabbard straps. Afternoon window light reaches the silver armor and open back.",
     "promptTokens": [
-      "adult",
       "armory",
       "silver armor",
       "chainmail",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "medea_caster",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "medea_caster",
     "profile": {
@@ -73,11 +73,12 @@
         "美狄亚",
         "Medea (Caster)"
       ],
-      "identityProse": "Medea, Caster from Fate/stay night, with long blue hair, a side braid, pointed ears and clear blue eyes. Her precise hands and restrained expression reveal the same patience in craftwork as in magic.",
+      "identityProse": "Medea, Caster from Fate/stay night, with long blue hair, a side braid, pointed ears and blue eyes.",
       "identityTokens": [
         "medea_(caster)_(fate)",
         "fate/stay night",
         "blue hair",
+        "long hair",
         "side braid",
         "pointy ears",
         "blue eyes"

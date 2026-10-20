@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_shower",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在长椅上，一手用布擦角，另一手留在毛巾下。",
     "adult": true,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "shower_towel",
-    "promptProse": "Adult Hina dries one horn with a small cloth while her other hand slips beneath the towel between her thighs, seated beside the private shower.",
+    "promptProse": "Seated beside the private shower, Hina dries one horn with a cloth, her other hand beneath the towel between her thighs. Soft morning light enters through the high window and reaches the steam haze.",
     "promptTokens": [
       "adult",
       "1girl",

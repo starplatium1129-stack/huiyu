@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_locker_mirror",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 857,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "坐在长椅上一手扶衣柜，另一手留在腿侧。",
     "adult": true,
@@ -28,7 +28,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "locker_stockings",
-    "promptProse": "Adult Hina steadies herself against the locker and traces her inner thigh with her other hand, hair gathered over one shoulder. The opaque mirror catches only diffuse halo light.",
+    "promptProse": "Hina braces one hand against the locker and traces her inner thigh with the other, hair over one shoulder; the opaque mirror holds only diffuse halo light. Cool white changing-room lamps light the bench and lockers.",
     "promptTokens": [
       "adult",
       "1girl",

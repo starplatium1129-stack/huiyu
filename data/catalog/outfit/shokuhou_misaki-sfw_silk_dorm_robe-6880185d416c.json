@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/sfw_silk_dorm_robe",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
@@ -12,13 +12,14 @@
       "id": "sfw_silk_dorm_robe",
       "isDefault": false,
       "name": "浅蓝金边·宿舍长睡袍",
-      "prose": "An opaque pale-blue silk dressing gown with fine gold piping, long sleeves and a sash-tied closed front, worn over full-length pajamas.",
+      "prose": "An opaque pale-blue silk gown with gold piping, long sleeves and sash-tied closed front over full-length pajamas.",
       "tokens": [
-        "pale blue dressing gown",
-        "silk",
+        "pale blue long dressing gown",
+        "opaque silk",
         "gold piping",
-        "tied sash",
-        "pajamas"
+        "long sleeves",
+        "sash-tied closed front",
+        "full-length pajamas"
       ]
     }
   }

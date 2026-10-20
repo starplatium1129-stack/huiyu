@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_witch_robes",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 196,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -15,7 +15,7 @@
     "characterId": "morgan_le_fay_fate",
     "description": "【成年梣形态 · 林间魔女木屋晴窗】妖精秘境的林间木屋里，二十岁以上成年梣形态的摩根独坐深窗台。宽大蓝色魔女法袍滑落并聚在腰际，显露成熟锁骨与丰满胸线；她把一条腿踩在法术箱上，用双手收紧刻有雨之卢恩的腿带，蓝光映出肌肤勒痕。银发在晴窗前发亮，冰蓝眼眸保留梣的真挚，却明确呈现成年女王体态。",
     "location": "妖精森林日光木屋",
-    "action": "木屋晴窗前解开魔女长袍立姿半遮回眸",
+    "action": "独坐木屋窗台，一腿踩在法术箱上，蓝袍滑至腰间，双手收紧雨之卢恩腿带。",
     "timeOfDay": "白天",
     "lighting": "树冠透射的金绿阳光与斑驳光柱",
     "camera": "medium shot, seated three-quarter view, window bench and both hands on thigh sash visible",
@@ -31,10 +31,10 @@
       "cleavage",
       "bare_shoulders",
       "bare_legs",
-      "standing",
+      "sitting",
       "daylight"
     ],
-    "promptProse": "Adult, age-twenty-plus Aesc sits on the window bench with her robe open, tightening a rune-marked sash around one thigh with both hands.",
+    "promptProse": "Adult Aesc sits on the window bench with one foot on a spell chest, her blue robe gathered at her waist, tightening the rune-marked thigh sash with both hands. Gold-green canopy light falls through the window against the sash’s blue rune glow.",
     "promptTokens": [
       "1girl",
       "solo",

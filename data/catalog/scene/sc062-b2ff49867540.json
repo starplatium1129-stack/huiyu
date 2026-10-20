@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc062",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "Still half asleep after the first alarm, she cups the viewer's wrist in both hands and presses it to her cheek; soft morning light falls across the pillow and her closed eyes.",
+    "animaCaption": "Half asleep, she holds the viewer's wrist in both hands against her cheek; morning light crosses the pillow and her closed eyes.",
     "auditRevision": "careful-batch02-2026-08-27",
     "camera": "枕边面部与交握手腕近景",
     "category": "恋爱/After_Story",

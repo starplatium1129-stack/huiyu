@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_mudland_excavation",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 587,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "扛着勘探镐，用毛巾擦汗",
     "camera": "full-body shot",
@@ -22,6 +22,8 @@
       "pickaxe",
       "towel",
       "sweat",
+      "tan",
+      "athletic",
       "jungle",
       "excavation",
       "full body"

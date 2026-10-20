@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_r18_b7_01",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 305,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "id": "chloe_von_einzbern_r18_b7_01",
     "title": "克洛伊 · 小黑小恶魔战袍的主控补魔跨坐 ·「士郎……补魔要由内到外、彻底吸收才行哦♪」",
     "category": "主控骑乘",
     "characterId": "chloe_von_einzbern",
-    "description": "【爱因兹贝伦城堡卧房·深夜】褐肤红发小恶魔的补魔特权。小黑穿着那套标志性的红黑开胸魔法战袍，跨坐在你的腰间。褐色纤细的身体贴紧你的胸膛，金红色的眸子里满溢着调皮与肉欲，主动俯身吻住你的唇瓣，小腰飞快扭动——「哈啊……魔力不够用了呢……大哥哥如果不把所有的精华都交出来……小黑可不会放你走哦！」",
+    "description": "【爱因兹贝伦城堡卧房·深夜】褐肤浅粉长发小恶魔的补魔特权。小黑穿着那套标志性的红黑开胸魔法战袍，跨坐在你的腰间。褐色纤细的身体贴紧你的胸膛，金红色的眸子里满溢着调皮与肉欲，主动俯身吻住你的唇瓣，小腰飞快扭动——「哈啊……魔力不够用了呢……大哥哥如果不把所有的精华都交出来……小黑可不会放你走哦！」",
     "location": "爱因兹贝伦城堡卧房·深夜",
-    "action": "跨坐腰间褐肤红发，开胸战袍露雪白软肉，俯身吻唇小腰主动飞转",
+    "action": "跨坐腰间褐肤浅粉长发，开胸战袍露雪白软肉，俯身吻唇小腰主动飞转",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
     "camera": "intimate vertical medium shot",
@@ -26,8 +26,8 @@
       "on_lap",
       "dark_skin",
       "tan",
-      "red_hair",
-      "short_hair"
+      "pink_hair",
+      "long_hair"
     ],
     "promptProse": "Adult Chloe straddles the viewer's lap on the antique bed and leans in for a kiss. A crimson magic circle glows beneath the bed.",
     "promptTokens": [

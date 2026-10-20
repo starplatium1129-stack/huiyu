@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_apron_only",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 865,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "只穿围裙慌乱遮掩",
     "adult": true,
@@ -26,17 +26,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_apron_only",
-    "promptProse": "Adult Kazusa sits backward on a chair with her apron bib lowered, holding the chair back while wiping flour from her inner thigh.",
+    "promptProse": "Adult Kazusa presses both hands over the lower edge of her white baking apron after the changing-room mishap, turning toward the unexpected off-frame visitor with a flustered expression. The warm changing-room lamp keeps her face and hands clear.",
     "promptTokens": [
       "white apron",
       "1girl",
       "solo",
       "adult Kazusa",
       "naked apron",
-      "bare breasts",
-      "sitting backwards",
-      "chair",
-      "flour",
+      "holding clothes",
+      "blush",
       "changing room"
     ],
     "recommendedSize": "1152x1536",

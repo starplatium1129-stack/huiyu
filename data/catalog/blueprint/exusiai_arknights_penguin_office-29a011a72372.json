@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_penguin_office",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 626,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "把脚翘在桌上，比了个耶",
     "camera": "full body, eye level",
@@ -21,7 +21,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "halo",
       "legs up",
       "pie",
       "peace sign",

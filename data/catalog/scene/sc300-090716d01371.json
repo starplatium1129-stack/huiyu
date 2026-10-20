@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc300",
-  "revision": 1,
+  "revision": 6,
   "sortOrder": 295,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
   "data": {
     "id": "sc300",
     "title": "暖金咖啡馆的魔女休息日",
@@ -62,8 +62,8 @@
       "R15"
     ],
     "recommendedSize": "832×1216",
-    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, nene_witch_canonical, official_witch_outfit, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black_pleated_mini_skirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, white_hair, very_long_hair, low_twintails, purple_eyes, pink_hair_ribbons, ahoge, sitting_on_bar_stool, holding_one_coffee_cup, cafe, wooden_bar_counter, arched_window, golden_hour, warm_lighting, soft_rim_light, medium_shot, cowboy_shot, cinematic_composition, masterpiece, best_quality, score_7, <lora:ayachi_nene_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, distant shot, far away, extreme wide shot, cropped head, multiple girls, extra person, split screen, comic, panel layout, generic witch dress, plain black dress, full-length gown, simple witch costume, child, loli, underage",
+    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, nene_witch_canonical, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black pleated miniskirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, very_long_hair, ahoge, sitting, bar stool, holding cup, coffee, cafe, wooden bar counter, arched window, golden hour, warm lighting, rim light, medium shot, <lora:ayachi_nene_v18_wd14:0.85>",
+    "negative": "distant shot, generic witch dress, plain black dress, full-length gown",
     "audit": {
       "reviewer": "user-selection-and-direct-vision",
       "seed": 20260809,
@@ -73,6 +73,6 @@
       "image": "E:\\code\\2\\lora\\AI\\SceneShowcase\\2026-08-18_v24\\images\\sc300.jpg",
       "result": "pass"
     },
-    "animaCaption": "In a medium shot at a wooden cafe bar counter, Ayachi Nene sits gracefully on a bar stool holding a warm coffee cup, looking toward the viewer with a gentle shy smile, bathed in warm golden-hour sunlight streaming through the arched window."
+    "animaCaption": "Seated at the wooden counter, she holds the coffee cup with both hands and looks toward the viewer with a shy smile; golden sunlight through the arched window meets the cafe's warm light."
   }
 }

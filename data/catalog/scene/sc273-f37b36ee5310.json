@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc273",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 268,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
   "data": {
-    "animaCaption": "In a medium shot in a quiet room, she stands poised with glistening, emotive eyes, under soft ambient lighting.",
+    "animaCaption": "Against the wooden door, she clasps both hands low at the skirt hem and glances shyly toward the viewer; warm light catches the red silk and gold floral embroidery.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs04-a1.png",
@@ -16,7 +16,7 @@
       "seedKey": "official-cg:ocs04:1"
     },
     "auditRevision": "careful-batch09-2026-08-27",
-    "camera": "官方CG横幅构图",
+    "camera": "门前略倾斜全身构图",
     "category": "官方CG灵感",
     "char": "natsume",
     "character": [
@@ -24,13 +24,13 @@
     ],
     "emotion": "心动",
     "id": "sc273",
-    "lighting": "柔和自然光",
-    "location": "室内场景",
+    "lighting": "室内暖光落在红丝绸与金绣上",
+    "location": "公寓木门前",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, bad proportions, duplicate, cropped, 3d render, photorealistic, young-looking, navy qipao, navy dress, blue qipao, blue dress, green qipao, green dress, black qipao, dark dress, hands at chest, clasped hands at chest, lying, reclining, sitting, floor pose, cabinet, red vines, nsfw, nude, explicit",
+    "negative": "blue qipao, green qipao, black qipao, hands at chest, lying, reclining, sitting, nsfw, nude, explicit",
     "officialCgCandidate": "ocs04",
-    "prompt": "visual_novel_event_cg, (bright_red_qipao), (crimson_china_dress), cinematic_16:9_composition, tilted_full_body_standing_portrait, 1girl, solo, shiki_natsume, natsume_official_qipao, black_hair_arranged_in_elegant_twin_braided_buns, yellow_eyes, two_red_hairclips, mole_under_eye, red_flower_hair_ornament, vivid_scarlet_silk_fabric, elaborate_metallic_gold_floral_embroidery_and_gold_trim, high_side_slit, black_thighhigh_stockings_with_visible_garter_straps, (standing_upright), back_against_a_plain_wooden_apartment_door, (both_hands_clasped_between_her_thighs), hands_at_skirt_hem, arms_hanging_down, blushing_direct_eye_contact, warm_indoor_light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "visual novel event CG, (bright red qipao), (crimson china dress), dutch angle, full body, 1girl, solo, shiki_natsume, natsume_official_qipao, braided buns, double bun, two_red_hairclips, red flower hair ornament, scarlet silk, gold floral embroidery, gold trim, high side slit, black thighhighs, garter straps, (standing), wooden door, (clasped hands), hands at skirt hem, lowered arms, blush, looking at viewer, warm indoor light, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",

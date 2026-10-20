@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1409,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
   "data": {
     "action": "看着镜中剪短的头发，膝上的手指慢慢松开。",
     "adult": false,
@@ -49,6 +49,7 @@
     "timeOfDay": "日间",
     "title": "早坂爱 · 美发沙龙的决断",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "allowRepeatedSubject": true
   }
 }

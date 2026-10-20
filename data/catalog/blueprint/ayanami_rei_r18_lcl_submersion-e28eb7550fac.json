@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_r18_lcl_submersion",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1020,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "action": "独自屈膝漂浮，一手扶腿，另一手放在腿间。",
     "adult": true,
@@ -26,9 +26,8 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Rei floats in orange LCL light, with one hand holding a thigh and the other between her legs. Bubbles rise around her while the cables remain farther away.",
+    "promptProse": "She floats in orange LCL light, one hand holding a thigh and the other between her legs. Bubbles rise around her while the cables remain farther away.",
     "promptTokens": [
-      "adult",
       "culture tank",
       "lcl",
       "nude",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_battle_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 506,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "kisara_battle_night",
     "title": "木更 · 都市恶魔战斗",
@@ -29,7 +29,7 @@
       "demon_wings",
       "cursed_sword"
     ],
-    "promptProse": "With her cursed blade drawn back for a strike and wings spread between the towers, she looks down toward Shu beyond the frame, neon and fire outlining her silhouette.",
+    "promptProse": "With her cursed blade drawn back for a strike and black energy wings spread between the towers, she looks down toward Shu beyond the frame. Violet-black light trails along the blade; neon and fire outline her silhouette.",
     "promptTokens": [
       "demon wings",
       "sword",

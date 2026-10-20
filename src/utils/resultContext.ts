@@ -1,15 +1,17 @@
 import type { CharKey, HistoryEntry } from '@/types/promptHistory'
 import type { AnimaResultContext } from '@/types/anima'
+import { parseOutfitOverride } from './promptBuilderPersistence'
 
 /** 页面适配传入当前需要的创作字段；普通对象即可，不要求 Store/Pinia。 */
 export interface ResultContextInput {
   readonly subject: Readonly<{ kind: 'studio' } | {
-    kind: 'popular'; characterId: string; outfitId: string; blueprintId: string | null
+    kind: 'popular'; characterId: string; outfitId: string; blueprintId: string | null; outfitExplicit?: boolean
   }>
   readonly sceneId: string | null
   readonly story: string
   readonly char: CharKey
   readonly visualDescription: string
+  readonly outfitOverride?: { readonly tokens: readonly string[]; readonly replaced: string | null } | null
   readonly selections: Readonly<{
     emotion: readonly string[]; shot: string | null
     lighting: string | null; composition: string | null
@@ -50,6 +52,8 @@ export function captureResultContext(pb: ResultContextInput): AnimaResultContext
       artistStyleIds: pb.directorMode === 'pro' ? [...pb.artistStyleIds] : [],
       project: pb.projectId,
       negativeCustom: pb.sdParams.negativeCustom,
+      outfitExplicit: subject.kind === 'popular' ? subject.outfitExplicit : undefined,
+      outfitOverride: subject.kind === 'popular' ? parseOutfitOverride(pb.outfitOverride) : undefined,
     },
   }
 }

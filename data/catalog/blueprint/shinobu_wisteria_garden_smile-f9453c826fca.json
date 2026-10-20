@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_wisteria_garden_smile",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1449,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "仰头立于花帘下，花瓣落发，转身浅笑藏悲",
     "adult": false,
@@ -25,7 +25,7 @@
     "mood": "向死而生、温柔悲伤",
     "negativeTokens": [],
     "outfitId": "official_demon_slayer_uniform",
-    "promptProse": "Shinobu turns from the hanging wisteria toward the viewer, a trace of sadness held in her small smile. Sunlight filters through the violet flowers and falls in soft patches over her butterfly haori.",
+    "promptProse": "Shinobu turns from the hanging wisteria toward the viewer, a trace of sadness held in her small smile. Sunlight filters through the violet flowers and falls in soft patches over her shoulders.",
     "promptTokens": [
       "wisteria",
       "bittersweet smile",

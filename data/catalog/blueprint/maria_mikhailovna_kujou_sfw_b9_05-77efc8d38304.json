@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 794,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
   "data": {
     "action": "海滨温泉木台上披肩捧热可可，向镜头举杯分享冬日温暖",
     "adult": false,
@@ -47,7 +47,7 @@
       "steam",
       "dusk"
     ],
-    "timeOfDay": "日间",
+    "timeOfDay": "黄昏",
     "title": "玛夏 · 冬日海湾的披肩与热可可"
   }
 }

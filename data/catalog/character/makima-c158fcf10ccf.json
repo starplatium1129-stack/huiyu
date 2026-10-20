@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makima",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "makima",
     "profile": {
@@ -21,14 +21,14 @@
         "alt": "玛奇玛 样张立绘"
       },
       "visual_dna": {
-        "hair": "淡粉长发（日常）/ 红发麻花辫（真身）",
-        "hair_color": "淡粉（日常）/ 红（真身）",
-        "eyes": "红（日常正常瞳孔）/ 金圈圈眼（真身）",
-        "hairstyle": "长发 · 红色发饰（日常）",
-        "uniform": "白色西装 / 黑裤",
+        "hair": "鲑粉色长发，编成松整的低麻花辫。",
+        "hair_color": "鲑粉色",
+        "eyes": "金色同心圆眼睛",
+        "hairstyle": "长发低辫与自然侧刘海",
+        "uniform": "白衬衫、黑领带与黑色裙装；正式场合可搭精裁黑西装。",
         "expression": "冷静掌控 · 高深莫测",
         "style": "calm unnerving dominator",
-        "signature": "淡粉长发、红瞳与白西装；真身为红发圈圈眼"
+        "signature": "鲑粉色长辫、金色同心圆眼睛与从容难测的神态"
       },
       "personality": [
         "冷静掌控",
@@ -99,13 +99,14 @@
         "control devil",
         "makima (chainsaw man)"
       ],
-      "identityProse": "Makima from Chainsaw Man, a calm Public Safety leader with long salmon-pink hair braided into a low loose braid with a silky texture, golden concentric-ring eyes, and an unreadable magnetic smile",
+      "identityProse": "Makima from Chainsaw Man, with salmon-pink hair in a low braid and golden concentric-ring eyes.",
       "identityTokens": [
         "makima (chainsaw man)",
         "1girl",
         "solo",
         "pink hair",
         "single braid",
+        "golden eyes",
         "ringed eyes",
         "chainsaw man"
       ],
@@ -132,7 +133,7 @@
       "canon": {
         "world": "现代暗黑（电锯人）",
         "era": "当代",
-        "formNotes": "日常=淡粉发+正常红瞳+白西装；支配恶魔真身=红发+圈圈眼+麻花辫（独立 outfit）；不用剑",
+        "formNotes": "鲑粉色长发编成低辫，金色同心圆眼睛；服装区分工作正装与休闲场合，换装不改变发色、瞳孔或角色身份；不使用剑。",
         "research": "2026-08-14 调研"
       },
       "animeStudio": "mappa, official anime screencap, anime coloring",

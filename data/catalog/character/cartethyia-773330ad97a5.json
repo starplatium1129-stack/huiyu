@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cartethyia",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 156,
   "createdAt": null,
-  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
+  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
   "data": {
     "id": "cartethyia",
     "profile": {
@@ -73,7 +73,7 @@
         "卡提希娅",
         "Cartethyia"
       ],
-      "identityProse": "Cartethyia from Wuthering Waves, a wandering knight with long blonde braided hair, clear blue eyes, pointed ears and a delicate halo. Her attentive posture softens in familiar town surroundings.",
+      "identityProse": "Cartethyia from Wuthering Waves, with long blonde braids, blue eyes, pointed ears and a halo.",
       "identityTokens": [
         "cartethyia",
         "wuthering_waves",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_sickbed_forehead_touch",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1474,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "mahiru_sickbed_forehead_touch",
     "title": "椎名真昼 · 床头换好的温热毛巾",
@@ -28,7 +28,7 @@
       "soft_bedside_light",
       "medium_shot"
     ],
-    "promptProse": "Mahiru rests the backs of her fingers against the folded towel on the bedside tray, nodding gently toward the person outside the frame. Soft bedside light falls across the towel and her hand.",
+    "promptProse": "Seated on the bed edge with her hair tied behind her shoulder, Mahiru checks the towel with the backs of her fingers on the bedside tray, nodding to the off-frame person in soft light.",
     "promptTokens": [
       "warm towel",
       "tray",

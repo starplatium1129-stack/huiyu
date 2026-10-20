@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_r18_deep_dive_tub_sensual_fingering",
-  "revision": 3,
+  "revision": 7,
   "sortOrder": 1111,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "action": "仰靠在浴缸边水下手指自抚私处，轻柔探索，双目含情泛红微喘，水波微澜",
     "adult": true,
@@ -25,15 +25,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Lucy steadies a disconnected cable with one hand and fingers herself underwater, one knee raised above the dive tub.",
+    "promptProse": "Seen at water level, Lucy reclines against the dive-tub rim, one hand on her cheek and the other touching herself underwater. Tub light and the cyan terminal reflect in the ripples.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Lucy",
       "nude",
-      "knee up",
+      "reclining",
+      "hand on cheek",
       "fingering",
-      "neural cable",
       "dive tub",
       "cyan light"
     ],

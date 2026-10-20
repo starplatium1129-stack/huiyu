@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lappland_arknights",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 75,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
   "data": {
     "id": "lappland_arknights",
     "profile": {
@@ -125,7 +125,7 @@
       ],
       "franchise": "Arknights",
       "id": "lappland_arknights",
-      "identityProse": "Lappland from Arknights, an unhinged Lupo swordswoman with wild messy silver-white hair, wolf ears, a bushy tail, manic grey eyes, and a sharp predatory smirk.",
+      "identityProse": "Lappland from Arknights, a Lupo with long messy silver-white hair, wolf ears, a bushy tail, grey eyes and sharp teeth.",
       "identityTokens": [
         "lappland (arknights)",
         "1girl",
@@ -136,7 +136,8 @@
         "wolf_tail",
         "grey_eyes",
         "sharp_teeth",
-        "arknights"
+        "arknights",
+        "long hair"
       ],
       "negativeTokens": [
         "bad anatomy",
