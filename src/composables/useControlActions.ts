@@ -7,7 +7,7 @@ import { downloadBlob } from '../utils/downloadBlob.ts'
  * 公网隧道启停与诊断导出。所有 HTTP 都走统一错误信封。
  */
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import {
   controlApi,
   type ControlService,
@@ -71,6 +71,8 @@ export function useControlActions(
 
   const savingConfig = ref(false)
   const configSaved = ref(false)
+  watch([status.sdHost, status.comfyHost, status.ttsHost, status.ttsEngine, status.voiceNeneLora, status.voiceNatsumeLora,
+    status.voiceNeneRef, status.voiceNenePrompt, status.voiceNatsumeRef, status.voiceNatsumePrompt], () => { configSaved.value = false })
   async function saveConfig(event?: Event) {
     if (event instanceof KeyboardEvent && (event.isComposing || event.keyCode === 229)) return
     if (savingConfig.value || status.opBusy.value || !status.statusLoaded.value) return

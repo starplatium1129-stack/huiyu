@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onActivated, onBeforeUnmount, onDeactivated, ref, useAttrs, watch } from 'vue'
+import { useResizeObserver } from '@vueuse/core'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
 import { usePageScrollLock } from '@/composables/usePageScrollLock'
 import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
@@ -66,6 +67,7 @@ const props = withDefaults(defineProps<{
 })
 
 const modelValue = defineModel<string | number>({ default: '' })
+const emit = defineEmits<{ 'trigger-hidden': [] }>()
 
 // Reka 的条目值必须是非空字符串，而空串在原生 select 里是「全部分类」这类真实选项，
 // 因此统一映射成一个内部哨兵键，回写时再还原成调用方原本的空串或数字类型。
@@ -103,7 +105,10 @@ onDeactivated(() => {
 onBeforeUnmount(() => { viewActive = false })
 // Cached and unmounted owners must not restore focus from an exiting portal.
 function onCloseAutoFocus(event: Event) {
-  if (!viewActive || open.value) event.preventDefault()
+  if (!viewActive || open.value || !wrapperEl.value?.getClientRects().length) {
+    event.preventDefault()
+    if (viewActive && !open.value && wrapperEl.value && !wrapperEl.value.getClientRects().length) emit('trigger-hidden')
+  }
 }
 function onEscape(event: KeyboardEvent) {
   if (!open.value || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
@@ -126,6 +131,10 @@ const triggerAttrs = computed(() => {
 })
 
 const wrapperEl = ref<HTMLElement | null>(null)
+// Retained settings panels and responsive navigation can hide without deactivation.
+useResizeObserver(() => open.value ? wrapperEl.value : null, entries => {
+  if (entries.some(entry => !entry.contentRect.width || !entry.contentRect.height)) open.value = false
+})
 // Tooltip provides a separate Popper context; select positioning uses its own trigger.
 const selectTrigger = ref<{ $el: HTMLElement } | null>(null)
 const { portalTarget, collisionBoundary } = useModalPortalHost(() => wrapperEl.value, open)

@@ -143,12 +143,6 @@ export function useControlStatus({ showToast }: StatusHooks) {
     if (voiceNatsumeRef.value.trim() && voiceNatsumePrompt.value.trim() && (ttsEngine.value !== 'voxcpm2' || voiceNatsumeLora.value.trim())) n += 1
     return n
   })
-  const readyLabel = computed(() => {
-    if (statusError.value) return '服务状态待确认'
-    if (!statusLoaded.value) return '正在检测服务…'
-    const n = [llamaOnline.value, comfyOnline.value, ttsOnline.value, ollamaOnline.value].filter(Boolean).length
-    return n + ' / 4 服务在线'
-  })
 
   function fmt(seconds: number) {
     const v = Math.max(0, Number(seconds) || 0)
@@ -409,7 +403,6 @@ export function useControlStatus({ showToast }: StatusHooks) {
     feedbackText, actionNote, overviewFeedback, imageProvider, logs, logBoxEl,
     logsOpen, logsLoading, logsLoaded, logsError, logsSummary,
     opBusy, opStatusLabel, opProgress, opCompletedStages, ollamaMeta, voiceConfiguredCount,
-    readyLabel,
     lastStatus: () => lastStatus,
     captureConfigEdits, acknowledgeConfigEdits,
     pollStatus, pollLogs, clearLogs, startPolling, stopPolling,

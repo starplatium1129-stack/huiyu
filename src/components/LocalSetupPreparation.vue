@@ -35,7 +35,7 @@
           <p>当前绘遇检查的目录：</p><code>{{ snapshot.comfy.path }}</code>
           <p>手动管理已有 ComfyUI 时，工作区选择其父目录；绘遇一键准备的环境无需修改目录。Desktop 要对照实际实例，不能只选择安装器所在目录。</p>
           <p>下方精确路径只有在该 ComfyUI 实例实际读取同一 models 目录时才成立。若使用共享模型目录、extra_model_paths.yaml 或其他实例，请先统一对应关系；只修改服务地址不会改变绘遇的文件检查目录。</p>
-          <button v-if="desktop" class="btn btn-ghost btn-sm" type="button" @click="$emit('workspace')">选择 AI 工作区</button>
+          <button v-if="desktop" class="btn btn-ghost btn-sm" type="button" :disabled="blocked || !!activeId || !!downloadId" @click="$emit('workspace')">选择 AI 工作区</button>
           <p>更换工作区后完全退出并重启绘遇，再查看新目录清单。手动启动 ComfyUI 后，在控制室核对实际本机地址（当前 {{ snapshot.comfy.host }}），不要同时启动第二个实例。</p>
         </li>
         <li>
@@ -61,7 +61,7 @@
               <a v-if="model.preparation?.upstreamLicenseUrl" :href="model.preparation.upstreamLicenseUrl" target="_blank" rel="noopener noreferrer">组件上游许可</a>
               <p v-if="model.preparation">应为 {{ formatBytes(model.preparation.expectedBytes) }} · {{ model.preparation.expectedBytes.toLocaleString('zh-CN') }} 字节<span v-if="model.bytes !== null">；本次发现 {{ model.bytes.toLocaleString('zh-CN') }} 字节</span></p>
               <div class="verification-actions">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="!!activeId || !!downloadId || state(model) !== 'bytes-match'" @click="verify(model)">校验 {{ model.label }} 的 SHA-256</button>
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="blocked || !!activeId || !!downloadId || state(model) !== 'bytes-match'" @click="verify(model)">校验 {{ model.label }} 的 SHA-256</button>
                 <button v-if="activeId === model.id" class="btn btn-ghost btn-sm" type="button" @click="cancel">取消校验</button>
               </div>
               <p v-if="activeId === model.id" role="status">正在只读校验 {{ formatBytes(bytesRead) }} / {{ formatBytes(expectedBytes) }}（{{ Math.floor(bytesRead / expectedBytes * 100) }}%）</p>
@@ -125,18 +125,19 @@ import { useLocalSetupVerification } from '../composables/useLocalSetupVerificat
 import { useLocalSetupDownload } from '../composables/useLocalSetupDownload.ts'
 import { copyText } from '../utils/clipboard.ts'
 
-const props = defineProps<{ snapshot: LocalSetupResponse; desktop: boolean; workspacePending?: boolean; workspaceUnconfirmed?: boolean }>()
-const emit = defineEmits<{ workspace: []; refresh: []; 'verification-result': [result: LocalSetupVerificationResult]; 'download-result': [result: LocalSetupDownloadResult] }>()
+const props = defineProps<{ snapshot: LocalSetupResponse; desktop: boolean; blocked: boolean; workspacePending?: boolean; workspaceUnconfirmed?: boolean }>()
+const emit = defineEmits<{ busy: [value: boolean]; workspace: []; refresh: []; 'verification-result': [result: LocalSetupVerificationResult]; 'download-result': [result: LocalSetupDownloadResult] }>()
 const route = ref(props.snapshot.comfy.layout === 'portable' ? 'portable' : props.snapshot.comfy.layout === 'venv' ? 'manual' : 'desktop')
 const reviewed = ref(false), confirmed = ref(false), copyNotice = ref('')
 const models = computed(() => props.snapshot.models.filter(model => model.required))
 const { activeId, bytesRead, expectedBytes, results, notices, verify, cancel } = useLocalSetupVerification(models)
-const workspaceBlocked = computed(() => props.workspacePending || props.workspaceUnconfirmed)
+const workspaceBlocked = computed(() => props.blocked || props.workspacePending || props.workspaceUnconfirmed)
 const downloadReady = computed(() => reviewed.value && confirmed.value && !workspaceBlocked.value && !activeId.value)
 const { activeId: downloadId, bytesRead: downloadBytes, expectedBytes: downloadExpected, phase: downloadPhase,
   notices: downloadNotices, failed: downloadFailed, download, cancel: cancelDownload } = useLocalSetupDownload(
   computed(() => props.snapshot.workspace.path), downloadReady, result => emit('download-result', result))
 const downloadPhaseLabel = computed(() => ({ checking: '正在核对已有文件', downloading: '正在下载', verifying: '正在验证并发布' })[downloadPhase.value] ?? '正在处理')
+watch([activeId, downloadId], values => emit('busy', values.some(Boolean)), { immediate: true })
 const downloadPercent = computed(() => Math.max(0, Math.min(100, Math.floor(downloadBytes.value / (downloadExpected.value || 1) * 100))))
 watch(results, values => { for (const result of Object.values(values)) emit('verification-result', result) })
 const matched = computed(() => models.value.filter(model => state(model) === 'bytes-match').length)

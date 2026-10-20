@@ -1,9 +1,9 @@
 <template>
-  <details id="control-inference" class="panel-card inference-settings" open>
-    <StudioDisclosureSummary><span id="inference-settings-title">原生绘图 · 首次配置</span>
-      <span v-if="snapshot" class="inference-active">当前引擎 · {{ engineLabel(snapshot.active.engine) }}</span>
-    </StudioDisclosureSummary>
-    <div data-disclosure-content>
+  <section id="control-inference" class="panel-card inference-settings" aria-labelledby="inference-settings-title">
+    <header class="inference-heading">
+      <div><span class="panel-kicker">其他绘图方式</span><h2 id="inference-settings-title" tabindex="-1">原生绘图</h2></div>
+      <span v-if="snapshot" class="inference-active">当前使用 · {{ engineLabel(snapshot.active.engine) }}</span>
+    </header>
     <p v-if="!isLocal">请在运行绘遇的电脑上修改引擎设置。</p>
     <template v-else>
       <p v-if="error" role="alert" class="inference-error">{{ error }}</p>
@@ -12,18 +12,18 @@
       <template v-if="snapshot">
         <p v-if="snapshot.restartRequired" role="status">新设置将在重启后生效。</p>
         <p v-if="snapshot.environmentOverrides.length">{{ snapshot.environmentOverrides.join('、') }} 由启动配置指定，请在启动配置中修改。</p>
-        <p v-if="dirty">请先保存引擎设置的修改，再继续原生准备。</p>
-        <AsyncPanel :loader="loadInferenceSetup" label="原生引擎准备" v-slot="{ component }"><component :is="component" :configured="snapshot.configured" :blocked="loading || saving || dirty" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @activated="refresh" /></AsyncPanel>
+        <p v-if="blocked" role="status">上方的模型准备正在处理，完成后可配置原生引擎。</p><p v-if="dirty">请先保存引擎设置的修改，再继续原生准备。</p>
+        <AsyncPanel :loader="loadInferenceSetup" label="原生引擎准备" v-slot="{ component }"><component :is="component" :configured="snapshot.configured" :blocked="blocked || loading || saving || dirty" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @working="setupWorking = $event" @activated="activated" /></AsyncPanel>
         <details class="inference-advanced" :open="advancedOpen" @toggle="advancedOpen = ($event.target as HTMLDetailsElement).open">
-          <StudioDisclosureSummary>已有资源与高级设置</StudioDisclosureSummary>
+          <StudioDisclosureSummary><span>已有模型？复用资源与高级设置<small class="inference-disclosure-hint">手动路径、引擎切换与性能选项</small></span></StudioDisclosureSummary>
           <div data-disclosure-content>
-          <button class="btn btn-quiet btn-sm" type="button" :disabled="loading || saving || setupBusy" @click="refresh">重新检查已有资源</button>
+          <button class="btn btn-quiet btn-sm" type="button" :disabled="blocked || loading || saving || setupBusy" @click="refresh">重新检查已有资源</button>
         <div v-if="discovery" class="inference-reuse" aria-labelledby="inference-reuse-title">
           <h3 id="inference-reuse-title">复用本机资源</h3>
           <p>{{ discovery.modelCount }} 个原生图像底模 · {{ discovery.loraCount }} 个角色或风格 LoRA</p>
           <p v-if="discovery.missing.length">尚缺：{{ discovery.missing.join('、') }}</p>
           <div class="inference-actions">
-            <button class="btn btn-primary btn-sm" type="button" :disabled="loading || saving || setupBusy || dirty || !discovery.canAdopt || !adoptionChanges" @click="adopt">{{ saving ? '保存中…' : !discovery.canAdopt ? '资源待补齐' : adoptionChanges ? '采用并启用' : '已采用' }}</button>
+            <button class="btn btn-primary btn-sm" type="button" :disabled="blocked || loading || saving || setupBusy || dirty || !discovery.canAdopt || !adoptionChanges" @click="adoptSettings">{{ saving ? '保存中…' : !discovery.canAdopt ? '资源待补齐' : adoptionChanges ? '采用并启用' : '已采用' }}</button>
             <span v-if="dirty">请先保存当前修改</span>
           </div>
           <details class="inference-selected-paths">
@@ -34,19 +34,19 @@
             </div>
           </details>
         </div>
-        <form class="inference-form" @submit.prevent="save">
+        <form class="inference-form" @submit.prevent="saveSettings">
           <div class="inference-field">
             <label for="inference-engine">绘图引擎</label>
-            <StudioSelect id="inference-engine" v-model="draft.engine" label="绘图引擎" :options="engineOptions" :disabled="saving || loading || setupBusy || snapshot.environmentOverrides.includes('engine')" />
+            <StudioSelect id="inference-engine" v-model="draft.engine" label="绘图引擎" :options="engineOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('engine')" />
           </div>
           <div class="inference-field">
             <label for="inference-acceleration">独立引擎加速模式</label>
-            <StudioSelect id="inference-acceleration" v-model="draft.acceleration" label="独立引擎加速模式" :options="accelerationOptions" :disabled="saving || loading || setupBusy" />
+            <StudioSelect id="inference-acceleration" v-model="draft.acceleration" label="独立引擎加速模式" :options="accelerationOptions" :disabled="blocked || saving || loading || setupBusy" />
             <small v-if="draft.acceleration !== 'native'">需要 SageAttention 运行库。</small>
           </div>
           <div class="inference-field">
             <label for="inference-memory">独立引擎显存策略</label>
-            <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="独立引擎显存策略" :options="memoryOptions" :disabled="saving || loading || setupBusy" />
+            <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="独立引擎显存策略" :options="memoryOptions" :disabled="blocked || saving || loading || setupBusy" />
             <small>{{ draft.memoryPolicy === 'offload' ? '减少显存占用，生成时需要在内存与显卡间传输模型。' : '模型保留在显卡中，适合连续生成。' }}</small>
           </div>
           <details class="inference-paths" :open="advancedPathsOpen" @toggle="advancedPathsOpen = ($event.target as HTMLDetailsElement).open">
@@ -56,19 +56,19 @@
             <div class="inference-path-grid">
               <div v-for="field in pathFields" :key="field.key" class="inference-field">
                 <label :for="`inference-${field.key}`">{{ field.label }}</label>
-                <input :id="`inference-${field.key}`" v-model="draft[field.key]" type="text" :disabled="saving || loading || setupBusy || snapshot.environmentOverrides.includes(field.key)" spellcheck="false" autocomplete="off" :aria-describedby="`inference-${field.key}-hint`" />
+                <input :id="`inference-${field.key}`" v-model="draft[field.key]" class="input" type="text" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes(field.key)" spellcheck="false" autocomplete="off" :aria-describedby="`inference-${field.key}-hint`" />
                 <small :id="`inference-${field.key}-hint`">{{ field.hint }}</small>
               </div>
             <div class="inference-field inference-paths">
               <label for="inference-adapter-python">Krea / Qwen 独立 Python</label>
-              <input id="inference-adapter-python" v-model="draft.adapterPython" type="text" :disabled="saving || loading || setupBusy || snapshot.environmentOverrides.includes('adapterPython')" spellcheck="false" autocomplete="off" aria-describedby="inference-adapter-python-hint" />
+              <input id="inference-adapter-python" v-model="draft.adapterPython" class="input" type="text" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('adapterPython')" spellcheck="false" autocomplete="off" aria-describedby="inference-adapter-python-hint" />
               <small id="inference-adapter-python-hint">可选。填写已安装 adapters 依赖的独立 Python 路径，模型放在模型根目录的对应型号目录内。此环境也供原生视频使用；请保留 Anima 自己的运行库。</small>
             </div>
             </div>
             </div>
           </details>
           <div class="inference-actions">
-            <button class="btn btn-primary btn-sm" type="submit" :disabled="saving || loading || setupBusy || !dirty">{{ saving ? '保存中…' : '保存设置' }}</button>
+            <button class="btn btn-primary btn-sm" type="submit" :disabled="blocked || saving || loading || setupBusy || !dirty">{{ saving ? '保存中…' : '保存设置' }}</button>
             <span v-if="dirty">保存后重启绘遇生效</span>
           </div>
         </form>
@@ -101,8 +101,7 @@
       </template>
       <p v-else-if="loading" role="status">正在读取已保存的推理设置…</p>
     </template>
-    </div>
-  </details>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -114,7 +113,22 @@ const loadInferenceSetup = () => import('./InferenceSetupPanel.vue')
 import type { PreparedInferencePaths } from '@/api/inferenceSetupApi'
 import { useInferenceSettings } from '@/composables/useInferenceSettings'
 const { isLocal, draft, snapshot, diagnostics, discovery, adoptionChanges, adopt, loading, saving, error, notice, dirty, refresh, save, probe, probing, probeError, diagnose } = useInferenceSettings()
-const setupBusy = ref(false)
+const props = defineProps<{ blocked: boolean; settingsRevision: number }>()
+const emit = defineEmits<{ busy: [value: boolean]; configured: []; ready: [] }>()
+const setupBusy = ref(false), setupWorking = ref(false)
+watch([setupWorking, saving], values => emit('busy', values.some(Boolean)), { immediate: true })
+watch(() => props.settingsRevision, () => { void refresh() })
+async function saveSettings() {
+  if (props.blocked || setupBusy.value) return
+  await save()
+  if (!error.value) emit('configured')
+}
+async function adoptSettings() {
+  if (props.blocked || setupBusy.value) return
+  await adopt()
+  if (!error.value) emit('configured')
+}
+function activated() { void refresh(); emit('configured') }
 const advancedOpen = ref(false)
 const advancedPathsOpen = ref(false)
 const diagnosticsOpen = ref(false)
@@ -125,7 +139,7 @@ watch([() => diagnostics.value?.configuration === 'invalid', probeError], ([inva
 })
 function retrySettings(event: MouseEvent) {
   // The initial error button disappears while reading; retain a visible focus stop.
-  (event.currentTarget as HTMLElement).closest('details')?.querySelector('summary')?.focus({ preventScroll: true })
+  (event.currentTarget as HTMLElement).closest('section')?.querySelector<HTMLElement>('h2')?.focus({ preventScroll: true })
   void refresh()
 }
 function fillPreparedPaths(paths: PreparedInferencePaths) {
@@ -144,11 +158,14 @@ const pathFields = [
   { key: 'python', label: 'Python 可执行文件', hint: '已准备推理依赖的 Python 绝对路径。' },
   { key: 'worker', label: '推理 Worker 文件', hint: '绘遇独立推理 Worker 脚本的绝对路径。' },
 ] as const
-onMounted(refresh)
+onMounted(async () => { await refresh(); emit('ready') })
 </script>
 
 <style scoped>
-.inference-settings { margin-bottom: var(--s-5); color: var(--text-primary); }
+.inference-settings { color: var(--text-primary); container-type: inline-size; }
+.inference-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-3); padding-bottom:var(--s-4); border-bottom:1px solid var(--border-soft); }
+.inference-heading h2 { margin:0; font-size:var(--fs-title-sm); }
+.inference-disclosure-hint { display:block; margin-top:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:400; }
 .inference-active { font-size: var(--fs-label-sm); color: var(--text-secondary); }
 .inference-advanced { margin-top: var(--s-4); border-top: 1px solid var(--border-soft); padding-top: var(--s-2); }
 .inference-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
@@ -156,9 +173,7 @@ onMounted(refresh)
 .inference-form, .inference-path-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
 .inference-field { display: grid; align-content: start; gap: var(--s-2); min-width: 0; }
 .inference-field label { color: var(--text-primary); }
-.inference-field input { width: 100%; min-width: 0; box-sizing: border-box; border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); background: var(--bg-surface); color: var(--text-primary); font: inherit; }
-.inference-field input:focus-visible, summary:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-.inference-field input:disabled { color: var(--text-disabled); }
+.inference-field input { width:100%; min-width:0; }
 .inference-field small { color: var(--text-secondary); line-height: var(--lh-body); }
 .inference-paths, .inference-actions { grid-column: 1 / -1; }
 .inference-actions { justify-content: flex-start; color: var(--text-secondary); }
@@ -170,5 +185,5 @@ summary { cursor: pointer; min-height: 44px; align-content: center; color: var(-
 .inference-selected-paths dd { margin: 0 0 var(--s-3); overflow-wrap: anywhere; color: var(--text-secondary); }
 .inference-selected-paths dt { color: var(--text-primary); }
 .inference-settings .inference-error { color: var(--text-primary); padding: var(--s-3); border: 1px solid var(--border-soft); }
-@media (max-width: 760px) { .inference-form, .inference-path-grid { grid-template-columns: minmax(0, 1fr); } }
+@container (max-width: 640px) { .inference-form, .inference-path-grid { grid-template-columns: minmax(0, 1fr); } }
 </style>

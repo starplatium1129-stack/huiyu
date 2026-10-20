@@ -47,7 +47,6 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const canInspect = computed(() => !locked.value && currentPlan.value && !!sourceDir.value.trim() && !!configured.value.modelsRoot)
   const canImport = computed(() => !locked.value && currentPlan.value && !!inspection.value && importReviewed.value)
   const canCancel = computed(() => hasRunningOperation.value && operation.value?.cancelAllowed !== false && !['pending', 'accepted'].includes(cancelState.value))
-  const progress = computed(() => operation.value?.totalBytes ? Math.min(100, Math.round((operation.value.downloadedBytes ?? 0) / operation.value.totalBytes * 100)) : null)
   let disposed = false, observing = false, inspectionVersion = 0, planVersion = 0, workspaceOpenVersion = 0
   let inspectionController: AbortController | null = null, planController: AbortController | null = null, activationController: AbortController | null = null
   let submission: Submission | null = null, previousOperationId: string | null = null
@@ -180,8 +179,10 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
         && (operation.value ? value.id === operation.value.id : submission ? matchesPending(value) : true)
       if (!own) {
         if (submission || (operation.value?.status === 'running' && belongsToWorkspace(operation.value))) throw new Error('尚未找到本次操作的确切状态；请勿重复提交，并查看控制室日志')
-        if (value?.status === 'running') throw new Error('控制室另有操作正在运行，请等待结束后重新核对')
         operation.value = null; operationUncertain.value = false; busy.value = false
+        if (value?.status === 'running') {
+          error.value = ''; message.value = '另一项准备正在进行，可在对应入口查看进度。完成后再检查原生引擎。'
+        }
         return
       }
       error.value = ''; checking.value = false
@@ -299,7 +300,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     workspaceOpenVersion++; workspaceOpening.value = false; workspaceOpen.value = false
   }
   async function saveWorkspace() {
-    if (!desktop || workspaceSaving.value || !workspaceOpen.value || disposed) return
+    if (!desktop || locked.value || !workspaceOpen.value || disposed) return
     workspaceSaving.value = true; workspaceError.value = ''
     try {
       const result = await desktop.setWorkspace(workspaceDraft.value.trim())
@@ -336,7 +337,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   })
   return { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
     basePython, wheelhouse, workspacePath, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
-    operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
+    operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, message, error, cancelState, operationUncertain,
     workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
     recheck, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
     openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart }

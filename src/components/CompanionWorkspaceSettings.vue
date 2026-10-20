@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
@@ -66,11 +67,21 @@ const dialogEl = ref<HTMLDialogElement | null>(null)
 onUnmounted(registerMaintenanceParticipant(() => { if (props.open || props.saving || picking.value) throw new Error('OPEN_WORKSPACE_SETTINGS') }))
 const inputEl = ref<HTMLInputElement | null>(null)
 const fluid = useFluidDialog(dialogEl)
+const route = useRoute()
+let dismissedByNavigation = false
+watch(() => route.fullPath, () => {
+  if (!props.open) return
+  dismissedByNavigation = true
+  pickerRevision++
+  fluid.close()
+  if (!props.saving) emit('close')
+})
+watch(() => props.saving, saving => { if (!saving && dismissedByNavigation && props.open) emit('close') })
 watch(() => props.open, (open) => {
   pickerRevision++
   pickerError.value = ''
-  if (open) { fluid.open(props.returnFocusEl); inputEl.value?.focus() }
-  else fluid.close()
+  if (open && !dismissedByNavigation) { fluid.open(props.returnFocusEl); inputEl.value?.focus() }
+  else { fluid.close(); if (!open) dismissedByNavigation = false }
 }, { flush: 'post' })
 
 onUnmounted(() => { pickerRevision++ })

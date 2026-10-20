@@ -1,4 +1,4 @@
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
 import { drawingSetupReadiness } from '../utils/localSetupPreparation.ts'
 import { localSetupApi } from '../api/localSetupApi.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
@@ -8,7 +8,7 @@ import { flushProfileWrites } from '../platform/web/profileStorage'
 import type { LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
 
 /** Owns first-setup reads, workspace activation and verification evidence. */
-export function useLocalSetup() {
+export function useLocalSetup(blocked: Ref<boolean>) {
   const isLocal = isLocalStudioHost()
   const desktop = isLocal ? getDesktopCapabilities() : undefined
   const snapshot = ref<LocalSetupResponse | null>(null)
@@ -22,12 +22,12 @@ export function useLocalSetup() {
   }
   const restarting = ref(false)
   async function restartForSetup() {
-    if (!desktop?.restartForSetup || restarting.value || disposed) return
+    if (!desktop?.restartForSetup || blocked.value || restarting.value || disposed) return
     restarting.value = true
     workspaceError.value = ''
     try {
       await flushProfileWrites()
-      if (!disposed) await desktop.restartForSetup()
+      if (!disposed && !blocked.value) await desktop.restartForSetup()
     } catch (cause) {
       if (!disposed) workspaceError.value = cause instanceof Error ? cause.message : '重启未完成，请完全退出后重新打开绘遇'
     } finally { restarting.value = false }
@@ -107,7 +107,7 @@ export function useLocalSetup() {
     }
   }
   async function openWorkspace() {
-    if (!desktop || workspaceLoading.value || workspaceSaving.value || disposed) return
+    if (!desktop || blocked.value || workspaceLoading.value || workspaceSaving.value || disposed) return
     workspaceLoading.value = true; workspaceError.value = ''
     ++workspaceRead
     try {
@@ -125,14 +125,14 @@ export function useLocalSetup() {
   }
   function closeWorkspace() { if (!workspaceSaving.value) workspaceOpen.value = false }
   async function chooseWorkspace() {
-    if (!desktop || workspaceLoading.value || workspaceSaving.value || disposed) return
+    if (!desktop || blocked.value || workspaceLoading.value || workspaceSaving.value || disposed) return
     workspaceLoading.value = true; workspaceError.value = ''
     ++workspaceRead
     try {
       const binding = await desktop.getWorkspace()
       if (disposed) return
       const root = await desktop.pickWorkspace(binding.root)
-      if (disposed || root === null) return
+      if (disposed || blocked.value || root === null) return
       workspaceSaving.value = true
       await applyWorkspace(root)
     } catch (cause) {
@@ -150,7 +150,7 @@ export function useLocalSetup() {
     workspaceOpen.value = false
   }
   async function saveWorkspace() {
-    if (!desktop || workspaceSaving.value || !workspaceOpen.value || disposed) return
+    if (!desktop || blocked.value || workspaceSaving.value || !workspaceOpen.value || disposed) return
     workspaceSaving.value = true; workspaceError.value = ''
     ++workspaceRead
     try {
@@ -159,8 +159,20 @@ export function useLocalSetup() {
       if (!disposed) workspaceError.value = cause instanceof Error ? cause.message : '保存失败，工作区尚未确认变更。'
     } finally { if (!disposed) workspaceSaving.value = false }
   }
-  onMounted(() => { void refresh() })
-  onUnmounted(() => { disposed = true; controller?.abort(); controller = null })
+  function workspaceChanged() {
+    workspaceActiveRoot.value = null
+    workspacePending.value = true
+    controller?.abort(); controller = null; loading.value = false
+    void refresh()
+  }
+  onMounted(() => {
+    if (desktop) window.addEventListener('huiyu:ai-workspace-changed', workspaceChanged)
+    void refresh()
+  })
+  onUnmounted(() => {
+    disposed = true; controller?.abort(); controller = null
+    window.removeEventListener('huiyu:ai-workspace-changed', workspaceChanged)
+  })
 
   return { isLocal, desktop, snapshot, loading, error, nextStep, basicComplete, currentCheck,
     workspaceButton, workspaceOpen, workspaceDraft, workspaceSavedRoot, workspaceLoading, workspaceSaving, restarting,

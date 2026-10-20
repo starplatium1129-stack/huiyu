@@ -2,25 +2,25 @@
   <section ref="panel" class="inference-setup" aria-labelledby="native-setup-title">
     <div class="setup-intro">
       <span class="setup-mark"><ArchiveIcon name="spark" /></span>
-      <div><h3 id="native-setup-title" ref="title" tabindex="-1">让画室准备好</h3><p>自动准备运行库和模型，无需手工配置。</p></div>
+      <div><h3 id="native-setup-title" ref="title" tabindex="-1">准备原生引擎</h3><p>使用独立运行库绘图。先确认设备支持，再选择模型下载并启用。</p></div>
     </div>
     <ol class="setup-route" aria-label="配置流程">
-      <li :data-ready="currentPlan"><span>1</span>选择位置</li>
-      <li :data-ready="currentPlan && !!plan?.supported && !!plan.runtime.installed && !!selectedModel?.installed"><span>2</span>自动准备</li>
-      <li :data-ready="nativeEnabled"><span>3</span>开始创作</li>
+      <li><span>1</span>确认存放位置</li>
+      <li><span>2</span>选择绘图模型</li>
+      <li><span>3</span>下载并启用</li>
     </ol>
     <div class="setup-location">
-      <ArchiveIcon name="detail" />
-      <div><span class="setup-label">AI 工作区</span><code>{{ workspaceDraft || plan?.workspacePath || '正在读取…' }}</code><small v-if="!workspacePending && plan?.freeBytes !== null && plan?.freeBytes !== undefined">剩余 {{ formatSetupBytes(plan.freeBytes) }}</small></div>
-      <div class="setup-actions"><button v-if="desktop" ref="workspaceButton" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="openWorkspace">更改</button><button v-if="desktop && plan && !workspacePending" class="btn btn-quiet btn-sm" type="button" @click="openFolder">打开</button></div>
+      <ArchiveIcon name="folder" />
+      <div><span class="setup-label">模型存放位置</span><code>{{ workspaceDraft || plan?.workspacePath || '正在读取…' }}</code><small v-if="!workspacePending && plan?.freeBytes !== null && plan?.freeBytes !== undefined">磁盘剩余 {{ formatSetupBytes(plan.freeBytes) }}</small><small>运行库、模型和下载缓存统一存放。</small></div>
+      <div class="setup-actions"><button v-if="desktop" ref="workspaceButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="openWorkspace">更换位置</button><button v-if="desktop && plan && !workspacePending" class="btn btn-quiet btn-sm" type="button" @click="openFolder">打开文件夹</button></div>
     </div>
     <p v-if="workspaceError" class="setup-error" role="alert">{{ workspaceError }}</p>
     <div v-if="workspacePending" class="setup-status" role="status"><ArchiveIcon name="info" /><div><strong>存放位置已更改</strong><p>重启绘遇后，在新目录继续准备。已有文件会保留。</p></div></div>
     <template v-else-if="plan">
-      <div class="setup-field">
-        <label for="native-model-download">准备哪个绘图模型</label>
-        <StudioSelect id="native-model-download" :model-value="modelId" label="绘图模型" :options="modelOptions" :disabled="locked" @update:model-value="selectModel(String($event))" />
-        <small>Krea / Qwen 使用独立运行库；可以逐个添加模型，已完成的资源会保留。</small>
+      <div class="setup-field setup-model-choice">
+        <label for="native-model-download">绘图模型</label>
+        <StudioSelect id="native-model-download" :model-value="modelId" label="绘图模型" :options="modelOptions" :disabled="locked" @update:model-value="chooseModel" />
+        <small>这里列出当前版本可准备的原生模型；可逐个添加，已下载的文件会保留。</small>
       </div>
       <div class="setup-status" :data-state="nativeEnabled ? 'ready' : plan.supported ? 'available' : 'unavailable'" role="status">
         <ArchiveIcon :name="plan.supported ? 'success' : 'info'" />
@@ -35,7 +35,7 @@
         <p v-if="!setupSpaceEnough" class="setup-error" role="status">空间不足，请更换存放位置或释放空间后重新检查。</p>
         <div v-if="selectedModel.requiresAccess && !selectedModel.installed && !running" class="setup-field">
           <label for="native-hf-token">Hugging Face 只读访问令牌</label>
-          <input id="native-hf-token" v-model="hfToken" type="password" :disabled="locked" autocomplete="off" spellcheck="false" maxlength="512" aria-describedby="native-hf-token-hint" />
+          <input id="native-hf-token" v-model="hfToken" class="input" type="password" :disabled="locked" autocomplete="off" spellcheck="false" maxlength="512" aria-describedby="native-hf-token-hint" />
           <small id="native-hf-token-hint">先在 <a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">模型页面</a>接受许可并取得访问权，再填写该模型的只读令牌。仅用于本次 Hugging Face 下载，不保存到配置；完整缓存可离线继续。</small>
         </div>
         <label v-if="!running" class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !currentPlan" /><span>同意下载、安装并启用原生绘图，已阅读并接受 <a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="所选模型许可，在新窗口打开">所选模型许可</a>。</span></label>
@@ -44,26 +44,25 @@
       <p v-if="pendingRestart" role="status">准备完成。重启后即可使用原生引擎。</p>
     </template>
     <p v-else role="status">{{ checking ? '正在检查设备与配置…' : '暂时无法读取配置，请重新检查。' }}</p>
-    <div v-if="running" class="setup-progress" role="status" aria-live="polite">
-      <div><strong>{{ operationTitle }}</strong><span v-if="progress !== null">下载 {{ progress }}%</span></div>
-      <progress v-if="operation?.totalBytes" :value="operation.downloadedBytes ?? 0" :max="operation.totalBytes" aria-label="下载进度" />
-      <p>{{ operation?.cancelAllowed === false ? '请在 Windows 安装器中继续或取消。' : operation?.message }}</p>
-      <small v-if="operation?.totalBytes">{{ formatSetupBytes(operation.downloadedBytes ?? 0) }} / {{ formatSetupBytes(operation.totalBytes) }}</small>
-    </div>
+    <SetupTransferProgress v-if="running" :title="operationTitle" :phase="setupTransferPhase(operation)"
+      :received="operation?.downloadedBytes" :total="operation?.totalBytes" :current-file="operation?.currentFile"
+      :message="operation?.message">
+      <small v-if="operation?.cancelAllowed === false">{{ operation.phase === 'activating' ? '正在启用配置，请等待完成。' : '系统安装步骤请在 Windows 安装器中继续或取消。' }}</small>
+    </SetupTransferProgress>
     <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
     <p v-else-if="message && !running && !pendingRestart && !nativeEnabled" role="status">{{ message }}</p>
     <div ref="actions" class="setup-primary" tabindex="-1" role="group" aria-label="原生引擎操作">
       <RouterLink v-if="nativeEnabled && !operationUncertain" class="btn btn-primary" :to="selectedModel?.family === 'qwen-image' ? { path: '/qwen-studio', query: { preparedModel: modelId } } : { path: '/prompt-builder', query: { preparedModel: modelId } }"><ArchiveIcon name="spark" />{{ selectedModel?.family === 'qwen-image' ? '打开 Qwen 创作' : '开始创作' }}</RouterLink>
       <button v-else-if="desktop?.restartForSetup && !operationUncertain && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" :aria-busy="restarting" @click="restart">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
       <button v-else-if="operationUncertain" class="btn btn-primary" type="button" :disabled="checking" @click="reconcile">{{ checking ? '核对中…' : '继续核对进度' }}</button>
-      <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续准备' : '一键准备' }}</button>
+      <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续下载与配置' : '下载并自动配置' }}</button>
       <button v-else class="btn btn-primary" type="button" :disabled="locked" @click="recheck">{{ checking ? '检查中…' : '重新检查' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
-      <RouterLink v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" :to="{ query: $route.query, hash: '#control-comfy' }" @click="openOtherSetup">查看其他配置</RouterLink>
+      <RouterLink v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" :to="{ path: '/control', hash: '#control-setup' }">返回推荐模型下载</RouterLink>
       <small v-if="running">可以离开此页，后台会继续准备。</small>
     </div>
-    <details v-if="plan && !workspacePending" id="control-image-resources" class="setup-details" :open="typeof route.query.resource === 'string'">
-      <StudioDisclosureSummary>辅助模型与 LoRA</StudioDisclosureSummary>
+    <details v-if="plan && !workspacePending" id="control-image-resources" class="setup-details" :open="typeof route.query.resource === 'string' || route.hash === '#control-image-resources'">
+      <StudioDisclosureSummary><span>添加更多绘图能力<small class="setup-disclosure-hint">自动蒙版、高清放大、草图与角色 LoRA · 按需下载</small></span></StudioDisclosureSummary>
       <div class="setup-detail-content">
         <section>
           <p>按需准备自动蒙版、高清放大、草图、漫画线稿与 LoRA。无需安装或启动 ComfyUI。</p>
@@ -100,8 +99,8 @@
       <StudioDisclosureSummary>离线配置与模型导入</StudioDisclosureSummary>
       <div class="setup-detail-content">
         <section v-if="plan && !workspacePending"><h4>单项管理</h4><label class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !plan.supported" /><span>同意当前清单的下载、安装与许可。</span></label><div class="setup-actions"><button class="btn btn-ghost btn-sm" type="button" :disabled="!canInstall" @click="installRuntime">仅准备运行库</button><button class="btn btn-ghost btn-sm" type="button" :disabled="!canDownload" @click="downloadModel">仅准备模型</button><button class="btn btn-ghost btn-sm" type="button" :disabled="!canActivate || nativeEnabled" @click="activate">仅启用引擎</button></div></section>
-        <section><h4>离线运行库</h4><p>使用已有可信 Python 和离线依赖。</p><div class="setup-fields"><div class="setup-field"><label for="native-base-python">Python 文件</label><input id="native-base-python" v-model="basePython" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div><div class="setup-field"><label for="native-wheelhouse">wheelhouse 目录</label><input id="native-wheelhouse" v-model="wheelhouse" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div></div><label class="setup-consent"><input v-model="runtimeReviewed" type="checkbox" :disabled="locked" />信任此 Python 与依赖的来源和许可。</label><div class="setup-actions"><button class="btn btn-ghost btn-sm" type="button" :disabled="!canPrepare" @click="prepare">准备离线运行库</button><button v-if="preparedPaths" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="fillSettings">填入高级设置</button></div></section>
-        <section><h4>已有模型</h4><p>导入配齐组件的 Anima Diffusers 目录；已有模型和 LoRA 也可在高级设置直接复用。</p><div class="setup-fields"><div class="setup-field"><label for="native-import-model">对应型号</label><StudioSelect id="native-import-model" v-model="importModelId" label="对应型号" :options="inferenceImportModels" :disabled="locked" /></div><div class="setup-field"><label for="native-import-source">来源目录</label><input id="native-import-source" v-model="sourceDir" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div></div><button class="btn btn-ghost btn-sm" type="button" :disabled="!canInspect" @click="inspect">{{ inspecting ? '检查中…' : '查看导入计划' }}</button><div v-if="inspection" class="setup-import"><p>来源：<code>{{ inspection.sourceDir }}</code></p><p>目标：<code>{{ inspection.targetDir }}</code></p><p>{{ inspection.fileCount }} 个文件 · {{ formatSetupBytes(inspection.totalBytes) }}。复制到新目录，保留来源；仅检查目录布局，兼容性需加载确认。</p><label class="setup-consent"><input v-model="importReviewed" type="checkbox" :disabled="locked" />同意此模型的许可与复制计划。</label><button class="btn btn-ghost btn-sm" type="button" :disabled="!canImport" @click="importModel">导入模型</button></div></section>
+        <section><h4>离线运行库</h4><p>使用已有可信 Python 和离线依赖。</p><div class="setup-fields"><div class="setup-field"><label for="native-base-python">Python 文件</label><input id="native-base-python" class="input" v-model="basePython" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div><div class="setup-field"><label for="native-wheelhouse">wheelhouse 目录</label><input id="native-wheelhouse" class="input" v-model="wheelhouse" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div></div><label class="setup-consent"><input v-model="runtimeReviewed" type="checkbox" :disabled="locked" />信任此 Python 与依赖的来源和许可。</label><div class="setup-actions"><button class="btn btn-ghost btn-sm" type="button" :disabled="!canPrepare" @click="prepare">准备离线运行库</button><button v-if="preparedPaths" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="fillSettings">填入高级设置</button></div></section>
+        <section><h4>已有模型</h4><p>导入配齐组件的 Anima Diffusers 目录；已有模型和 LoRA 也可在高级设置直接复用。</p><div class="setup-fields"><div class="setup-field"><label for="native-import-model">对应型号</label><StudioSelect id="native-import-model" v-model="importModelId" label="对应型号" :options="inferenceImportModels" :disabled="locked" /></div><div class="setup-field"><label for="native-import-source">来源目录</label><input id="native-import-source" class="input" v-model="sourceDir" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div></div><button class="btn btn-ghost btn-sm" type="button" :disabled="!canInspect" @click="inspect">{{ inspecting ? '检查中…' : '查看导入计划' }}</button><div v-if="inspection" class="setup-import"><p>来源：<code>{{ inspection.sourceDir }}</code></p><p>目标：<code>{{ inspection.targetDir }}</code></p><p>{{ inspection.fileCount }} 个文件 · {{ formatSetupBytes(inspection.totalBytes) }}。复制到新目录，保留来源；仅检查目录布局，兼容性需加载确认。</p><label class="setup-consent"><input v-model="importReviewed" type="checkbox" :disabled="locked" />同意此模型的许可与复制计划。</label><button class="btn btn-ghost btn-sm" type="button" :disabled="!canImport" @click="importModel">导入模型</button></div></section>
       </div>
     </details>
     <CompanionWorkspaceSettings v-if="desktop" :open="workspaceOpen" v-model="workspaceDraft" :saving="workspaceSaving" :error="workspaceError" :return-focus-el="workspaceButton" @close="closeWorkspace" @save="saveWorkspace" />
@@ -109,10 +108,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUpdate, onMounted, onUpdated, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUpdate, onMounted, onUpdated, ref, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import SetupTransferProgress from '@/components/control/SetupTransferProgress.vue'
+import { setupTransferPhase } from '@/utils/setupOperationProgress'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CompanionWorkspaceSettings from './CompanionWorkspaceSettings.vue'
 import { useInferenceSetup } from '@/composables/useInferenceSetup'
@@ -120,10 +121,10 @@ import { inferenceImportModels, type PreparedInferencePaths } from '@/api/infere
 import type { InferenceSettings } from '@/api/inferenceSettingsApi'
 import { formatSetupBytes } from '@/utils/localSetupPreparation'
 const props = defineProps<{ configured: InferenceSettings; blocked: boolean }>()
-const emit = defineEmits<{ prepared: [paths: PreparedInferencePaths]; busy: [value: boolean]; activated: [] }>()
+const emit = defineEmits<{ prepared: [paths: PreparedInferencePaths]; busy: [value: boolean]; working: [value: boolean]; activated: [] }>()
 const { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
   basePython, wheelhouse, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
-  operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
+  operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, message, error, cancelState, operationUncertain,
   workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
   recheck, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
   openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart } = useInferenceSetup(computed(() => props.configured), computed(() => props.blocked), () => emit('activated'))
@@ -151,14 +152,39 @@ const resourcePaths = computed(() => plan.value ? [
 ] : [])
 function sourceName(label: string) { return label.startsWith('Python') ? 'Python.org' : label.startsWith('PyTorch') ? 'PyTorch' : label.startsWith('PyPI') ? 'PyPI' : label.startsWith('Microsoft') ? 'Microsoft VC++' : label.startsWith('NVIDIA') ? 'NVIDIA CUDA' : label }
 function fillSettings() { if (preparedPaths.value && !locked.value) emit('prepared', { ...preparedPaths.value }) }
-function openOtherSetup() { const section = document.getElementById('control-comfy'); if (section instanceof HTMLDetailsElement) section.open = true }
 const route = useRoute()
 let appliedResourceQuery: string | null = null
 watch([() => route.query.resource, locked], ([value, isLocked]) => {
   if (typeof value !== 'string') { appliedResourceQuery = null; return }
   if (!isLocked && value !== appliedResourceQuery) { resourceId.value = value; appliedResourceQuery = value }
 }, { immediate: true })
-if (typeof route.query.model === 'string' && ['krea2-raw', 'krea2-turbo', 'qwen-image-2.1', 'qwen-image-2.1-turbo'].includes(route.query.model)) modelId.value = route.query.model
+const linkedModels = ['anima-miaomiao-v1.6', 'anima-base-v1.0', 'krea2-raw', 'krea2-turbo', 'qwen-image-2.1', 'qwen-image-2.1-turbo']
+let appliedModelQuery: string | null = null
+if (typeof route.query.model === 'string' && linkedModels.includes(route.query.model)) {
+  modelId.value = route.query.model
+  appliedModelQuery = route.query.model
+}
+watch([() => route.query.model, locked], ([value, isLocked]) => {
+  if (typeof value !== 'string') { appliedModelQuery = null; return }
+  if (!isLocked && linkedModels.includes(value) && value !== appliedModelQuery) {
+    appliedModelQuery = value
+    void selectModel(value)
+  }
+})
+let revealedResourceLink = ''
+watch([() => route.fullPath, () => !!plan.value], async () => {
+  const resourceLink = route.path === '/control' && (route.hash === '#control-image-resources'
+    || typeof route.query.resource === 'string' && ['', '#control-setup', '#control-inference'].includes(route.hash))
+  if (!resourceLink) { revealedResourceLink = ''; return }
+  if (!plan.value || revealedResourceLink === route.fullPath) return
+  const location = route.fullPath
+  await nextTick()
+  const details = document.getElementById('control-image-resources')
+  if (location !== route.fullPath || !(details instanceof HTMLDetailsElement) || !details.getClientRects().length) return
+  revealedResourceLink = location
+  details.open = true
+  details.scrollIntoView({ block: 'start', behavior: 'instant' })
+}, { immediate: true })
 const panel = ref<HTMLElement | null>(null), title = ref<HTMLElement | null>(null), actions = ref<HTMLElement | null>(null)
 let focusOrigin: HTMLButtonElement | null = null
 let focusHost: HTMLElement | null = null
@@ -166,6 +192,14 @@ function visible(element: HTMLElement | null) {
   if (!element?.isConnected || element.closest('[hidden], [inert], [aria-hidden="true"]') || getComputedStyle(element).visibility === 'hidden') return false
   const bounds = element.getBoundingClientRect()
   return bounds.width > 0 && bounds.height > 0 && bounds.bottom > 0 && bounds.top < innerHeight
+}
+async function chooseModel(value: string | number) {
+  const active = document.activeElement
+  const ownsFocus = active instanceof HTMLElement && (active.id === 'native-model-download' || !!active.closest('[role="listbox"]'))
+  await selectModel(String(value))
+  await nextTick()
+  if (!ownsFocus || locked.value || route.path !== '/control' || !document.hasFocus() || document.activeElement !== document.body || !visible(panel.value)) return
+  ;[document.getElementById('native-model-download'), actions.value, title.value].find(visible)?.focus({ preventScroll: true })
 }
 onBeforeUpdate(() => {
   const active = document.activeElement
@@ -182,11 +216,14 @@ onUpdated(() => {
   ;[host, actions.value, title.value].find(visible)?.focus({ preventScroll: true })
 })
 watch([busy, checking, inspecting, activating, restarting, workspaceSaving, operationUncertain], () => emit('busy', busy.value || checking.value || inspecting.value || activating.value || restarting.value || workspaceSaving.value || operationUncertain.value), { immediate: true })
+// Background device checks do not own the backend lock; explicit import inspection does.
+watch([busy, inspecting, activating, restarting, workspaceSaving], values => emit('working', values.some(Boolean)), { immediate: true })
 onMounted(recheck)
 </script>
 
 <style scoped>
-.inference-setup { display:grid; gap:var(--s-4); margin-top:var(--s-5); }
+.inference-setup { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-4); margin-top:var(--s-5); }
+.inference-setup > * { grid-column:1 / -1; }
 .setup-intro { display:flex; align-items:center; gap:var(--s-3); }
 .setup-mark { display:grid; place-items:center; width:48px; height:48px; flex-shrink:0; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-elevated); color:var(--accent); }
 .setup-mark .archive-icon { width:24px; height:24px; }
@@ -194,11 +231,13 @@ onMounted(recheck)
 .inference-setup h3 { font-size:var(--fs-title-sm); }
 .inference-setup p, .inference-setup li, .inference-setup small { color:var(--text-secondary); line-height:var(--lh-body); overflow-wrap:anywhere; }
 .setup-label { color:var(--text-secondary); font-size:var(--fs-label-sm); }
-.setup-route { display:flex; flex-wrap:wrap; gap:var(--s-5); padding:0; margin:0; list-style:none; }
+.setup-route { display:flex; flex-wrap:wrap; gap:var(--s-5); padding:0 0 var(--s-2); margin:0; list-style:none; }
 .setup-route li { display:flex; align-items:center; gap:var(--s-2); font-size:var(--fs-label-sm); }
 .setup-route li > span { display:grid; place-items:center; width:24px; height:24px; border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-secondary); }
-.setup-route li[data-ready="true"] > span { border-color:var(--success-text); color:var(--success-text); }
-.setup-location { display:flex; align-items:center; gap:var(--s-3); padding-block:var(--s-4); border-block:1px solid var(--border-soft); }
+.setup-location { grid-column:1; display:flex; align-items:flex-start; flex-wrap:wrap; align-content:start; gap:var(--s-3); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); }
+.setup-location .setup-actions { width:100%; }
+.setup-model-choice { grid-column:2; align-content:start; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); }
+.setup-disclosure-hint { display:block; margin-top:var(--s-1); font-size:var(--fs-label-xs); font-weight:400; }
 .setup-location > .archive-icon { flex-shrink:0; color:var(--text-secondary); }
 .setup-location > div:first-of-type { display:grid; gap:var(--s-1); min-width:0; flex:1; }
 code { color:var(--text-primary); font-size:var(--fs-label-sm); overflow-wrap:anywhere; }
@@ -208,7 +247,7 @@ code { color:var(--text-primary); font-size:var(--fs-label-sm); overflow-wrap:an
 .setup-status[data-state="ready"] > .archive-icon, .setup-status[data-state="available"] > .archive-icon { color:var(--success-text); }
 .setup-status > div { display:grid; gap:var(--s-1); flex:1; min-width:0; }
 .setup-status strong, .setup-model strong { color:var(--text-primary); }
-.setup-model { display:flex; align-items:center; gap:var(--s-4); flex-wrap:wrap; }
+.setup-model { display:flex; align-items:center; gap:var(--s-4); flex-wrap:wrap; padding:var(--s-4) 0; border-block:1px solid var(--border-soft); }
 .setup-model-copy { display:flex; align-items:center; gap:var(--s-3); flex:1; }
 .setup-model-copy > div { display:grid; gap:var(--s-1); }
 .setup-model-copy .archive-icon { color:var(--text-secondary); }
@@ -220,9 +259,6 @@ code { color:var(--text-primary); font-size:var(--fs-label-sm); overflow-wrap:an
 .setup-hint { margin-top:calc(-1 * var(--s-2)); }
 .setup-primary { min-height:var(--control-height); padding-bottom:var(--s-2); }
 .setup-primary > .btn-primary { min-width:160px; }
-.setup-progress { display:grid; gap:var(--s-2); }
-.setup-progress > div { display:flex; align-items:center; justify-content:space-between; }
-.setup-progress progress { width:100%; }
 .setup-details { border-top:1px solid var(--border-soft); padding-top:var(--s-2); }
 .setup-detail-content, .setup-detail-content section, .setup-import { display:grid; gap:var(--s-3); }
 .setup-detail-content { padding-block:var(--s-4); }
@@ -236,11 +272,12 @@ code { color:var(--text-primary); font-size:var(--fs-label-sm); overflow-wrap:an
 .setup-paths dd { margin:0; min-width:0; }
 .setup-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-4); }
 .setup-field { display:grid; gap:var(--s-2); min-width:0; }
-.setup-field input { box-sizing:border-box; width:100%; min-width:0; min-height:var(--control-height); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font:inherit; }
+.setup-field input { width:100%; min-width:0; }
 .inference-setup .setup-error { color:var(--danger-text); }
 .inference-setup :is(input,button):disabled { color:var(--text-disabled); }
 .inference-setup :is(input,button,summary,a,#native-setup-title,.setup-primary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .inference-setup a:not(.btn) { color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
 @media(forced-colors:active) { .inference-setup :is(#native-setup-title,.setup-primary):focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 @media(max-width:768px) { .setup-fields, .setup-paths { grid-template-columns:minmax(0,1fr); } .setup-status { flex-wrap:wrap; } .setup-location { align-items:flex-start; flex-wrap:wrap; } .setup-budget { width:100%; } }
+@container(max-width:640px) { .inference-setup { grid-template-columns:1fr; } .setup-model-choice, .setup-location { grid-column:1; } .setup-fields { grid-template-columns:1fr; } }
 </style>

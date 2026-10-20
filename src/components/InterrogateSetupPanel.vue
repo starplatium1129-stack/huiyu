@@ -32,14 +32,11 @@
         </div>
       </details>
     </template>
-    <div v-if="running" class="interrogate-progress" role="status" aria-live="polite">
-      <div><strong>{{ operation ? operation.stages[operation.stageIndex] || '正在准备图片反推' : '正在准备图片反推' }}</strong><span v-if="progress !== null">{{ progress }}%</span></div>
-      <progress v-if="operation && operation.totalBytes > 0" :value="operation.downloadedBytes" :max="operation.totalBytes" aria-label="图片反推下载进度" />
-      <p>{{ cancelState === 'accepted' ? '已请求取消，等待后台结束。' : operation?.message }}</p>
-      <code v-if="operation?.currentFile" class="interrogate-current-file">{{ operation.currentFile }}</code>
-      <small v-if="operation?.totalBytes">{{ formatSetupBytes(operation.downloadedBytes) }} / {{ formatSetupBytes(operation.totalBytes) }}</small>
+    <SetupTransferProgress v-if="running" :title="operation?.stages[operation.stageIndex] || '正在准备图片反推'"
+      :phase="setupTransferPhase(operation)" :received="operation?.downloadedBytes" :total="operation?.totalBytes"
+      :current-file="operation?.currentFile" :message="cancelState === 'accepted' ? '已请求取消，等待后台结束。' : operation?.message">
       <p v-if="operation?.cancelAllowed === false" class="interrogate-hint">{{ operation.phase === 'activating' ? '正在保存并启用反推配置，请等待完成。' : '正在完成系统安装步骤，请在 Windows 安装器中继续或取消。' }}</p>
-    </div>
+    </SetupTransferProgress>
     <p v-if="otherBusy" role="status">控制室另有操作正在进行，结束后即可准备图片反推。</p>
     <p v-if="error" class="interrogate-error" role="alert">{{ error }}</p>
     <p v-if="message && !running" role="status">{{ message }}</p>
@@ -57,11 +54,13 @@ import { computed, onBeforeUpdate, onMounted, onUpdated, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import SetupTransferProgress from '@/components/control/SetupTransferProgress.vue'
+import { setupTransferPhase } from '@/utils/setupOperationProgress'
 import { useInterrogateSetup } from '@/composables/useInterrogateSetup'
 import { formatSetupBytes } from '@/utils/localSetupPreparation'
 
 const { plan, operation, readiness, checking, submitting, running, busy, ready, enoughSpace, canPrepare, canCancel,
-  otherBusy, workspacePending, operationUncertain, progress, cancelState, error, message, initialize, refresh, reconcile, prepare, cancel } = useInterrogateSetup()
+  otherBusy, workspacePending, operationUncertain, cancelState, error, message, initialize, refresh, reconcile, prepare, cancel } = useInterrogateSetup()
 const paths = computed(() => plan.value ? [
   { label: '运行库', path: plan.value.paths.runtimeRoot }, { label: '反推模型', path: plan.value.paths.modelRoot },
   { label: '模型依赖', path: plan.value.paths.depsRoot }, { label: '下载缓存', path: plan.value.paths.cacheRoot },
@@ -116,10 +115,6 @@ onMounted(() => { void initialize() })
 .interrogate-paths dd { margin:0; }
 .interrogate-sources { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-4); list-style:none; margin:0; padding:0; }
 .interrogate-sources li { display:flex; gap:var(--s-2); }
-.interrogate-progress { display:grid; gap:var(--s-2); padding:var(--s-4); background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:var(--r-md); }
-.interrogate-progress > div { display:flex; justify-content:space-between; flex-wrap:wrap; gap:var(--s-2); }
-.interrogate-progress progress { width:100%; height:8px; accent-color:var(--accent); }
-.interrogate-current-file { color:var(--text-secondary); }
 .interrogate-setup :is(button,a,#interrogate-setup-title,.interrogate-actions):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .interrogate-setup button:disabled { color:var(--text-disabled); opacity:1; }
 @media (forced-colors:active) { .interrogate-setup :is(button,a,#interrogate-setup-title,.interrogate-actions):focus-visible { outline:2px solid Highlight; outline-offset:2px; } }

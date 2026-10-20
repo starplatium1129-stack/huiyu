@@ -94,6 +94,8 @@ const router = createRouter({
   // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置
   scrollBehavior(to, from, savedPosition) {
     cancelPendingScrollRestore()
+    // The control room resolves legacy anchors after revealing its retained panel.
+    if (to.path === '/control') return false
     if (savedPosition) {
       routeScrollMemory.delete(to.fullPath)
       // Browser back can arrive before the destination's async list grows.

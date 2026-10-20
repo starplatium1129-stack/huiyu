@@ -11,11 +11,6 @@ export function useLocalSetupPanelLoading() {
   function onStorage(event: StorageEvent) {
     if (event.key === null || event.key === LOCAL_SETUP_DRAFT_SETTING.key) checkRecovery()
   }
-  function onLocalSetupToggle(event: Event) {
-    // Native toggle covers pointer, keyboard and navigation's programmatic open.
-    // Never unmount on close: the panel owns downloads and operation recovery.
-    if ((event.currentTarget as HTMLDetailsElement).open) localSetupRequested.value = true
-  }
   onMounted(() => {
     window.addEventListener('huiyu:setup-operation', checkRecovery)
     window.addEventListener('huiyu:profile-sync-complete', checkRecovery)
@@ -28,5 +23,5 @@ export function useLocalSetupPanelLoading() {
     window.removeEventListener('huiyu:profile-sync-complete', checkRecovery)
     window.removeEventListener('storage', onStorage)
   })
-  return { localSetupRequested, onLocalSetupToggle }
+  return { localSetupRequested }
 }

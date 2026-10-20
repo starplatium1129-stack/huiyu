@@ -1,78 +1,68 @@
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, reactive, watch, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useMediaQuery } from '@vueuse/core'
+import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 
-export function useControlNavigation(ids: string[]) {
+export const controlSections: Array<{ id: string; group: string; label: string; icon: ArchiveIconName; description: string }> = [
+  { id: 'control-overview', group: '开始使用', label: '总览与入门', icon: 'eye', description: '从第一张画开始，按自己的需要准备画室。' },
+  { id: 'control-setup', group: '开始使用', label: '绘图与模型', icon: 'download', description: '推荐模型、下载清单和一键配置都在这里，也可以按需添加本地聊天。' },
+  { id: 'control-interrogate', group: '按需扩展', label: '图片反推', icon: 'search', description: '从参考图片提取描述，想使用这项功能时再准备。' },
+  { id: 'control-library', group: '按需扩展', label: '离线资源库', icon: 'image', description: '把角色参考与素材保存到本机，便于离线浏览。' },
+  { id: 'control-personalization', group: '偏好与管理', label: '外观与桌面', icon: 'palette', description: '调整画室外观、动态效果与桌面启动偏好。' },
+  { id: 'control-services', group: '偏好与管理', label: '服务与连接', icon: 'gear', description: '检查连接、释放显存，或修改已有服务的地址与角色声线。' },
+  { id: 'control-share', group: '偏好与管理', label: '分享与访问', icon: 'upload', description: '需要让朋友访问时，再开启临时分享链接。' },
+  { id: 'control-logs', group: '偏好与管理', label: '日志与排查', icon: 'book', description: '遇到问题时查看运行日志，或导出脱敏诊断信息。' },
+]
+const aliases: Record<string, string> = {
+  'control-inference': 'control-setup', 'control-image-resources': 'control-setup',
+  'control-comfy': 'control-setup', 'setup-chat-options': 'control-setup',
+  'control-resources': 'control-services', 'control-service-status': 'control-services',
+  'control-connection-settings': 'control-services', 'control-service-webui': 'control-services',
+  'control-service-comfy': 'control-services', 'control-service-llama': 'control-services',
+  'control-service-voice': 'control-services', 'control-service-ollama': 'control-services',
+}
+export function useControlNavigation(imageProvider: Ref<'native' | 'comfy' | null | undefined>) {
   const route = useRoute()
-  const activeSection = ref(ids[0] || '')
-  let frame = 0
-  let requested = ''
-  let arrived = false
-  function update() {
-    frame = 0
-    const target = document.getElementById(requested)
-    if (target) {
-      const bounds = target.getBoundingClientRect()
-      if (bounds.top < innerHeight && bounds.bottom > 140) { arrived = true; activeSection.value = requested; return }
-      if (!arrived) { activeSection.value = requested; return }
-      requested = ''
-    }
-    // Short trailing sections cannot reach the reading line before scrolling ends.
-    if (window.scrollY > 0 && Math.ceil(window.scrollY + innerHeight) >= document.documentElement.scrollHeight) {
-      for (let index = ids.length - 1; index >= 0; index--) {
-        const id = ids[index]!
-        const bounds = document.getElementById(id)?.getBoundingClientRect()
-        if (bounds && bounds.height > 0 && bounds.top < innerHeight && bounds.bottom > 0) {
-          activeSection.value = id
-          return
-        }
-      }
-    }
-    let current = ids[0] || ''
-    let closestTop = -Infinity
-    for (const id of ids) {
-      const section = document.getElementById(id)
-      const top = section?.getBoundingClientRect().top
-      if (top !== undefined && top <= 140 && top > closestTop) { current = id; closestTop = top }
-    }
-    activeSection.value = current
-  }
-  function schedule() { if (!frame) frame = requestAnimationFrame(update) }
-  function openSection(id: string, event?: MouseEvent) {
-    if (event && (event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey)) return
-    const section = document.getElementById(id)
-    if (section instanceof HTMLDetailsElement) section.open = true
-    const content = section?.querySelector(':scope > details')
-    if (content instanceof HTMLDetailsElement) content.open = true
-    requested = id
-    arrived = false
-    activeSection.value = id
-    const origin = event?.currentTarget
-    if (event?.detail === 0 && origin instanceof HTMLElement && document.activeElement === origin) {
-      void nextTick(() => {
-        if (!origin.isConnected || document.activeElement !== origin || !section?.isConnected) return
-        const target = section.querySelector<HTMLElement>(section instanceof HTMLDetailsElement ? ':scope > summary' : 'h2,h3') || section
-        if (!target.matches('a[href],button,input,select,textarea,summary,[tabindex]')) target.tabIndex = -1
-        target.focus({ preventScroll: true })
-      })
-    }
-  }
-  onMounted(() => {
-    window.addEventListener('scroll', schedule, { passive: true })
-    window.addEventListener('resize', schedule, { passive: true })
-    const initial = route.hash.slice(1)
-    if (ids.includes(initial)) openSection(initial)
-    else if (initial === 'control-inference' && ids.includes('control-setup')) openSection('control-setup')
-    schedule()
+  const activeSection = computed(() => {
+    const id = route.hash.slice(1)
+    if (controlSections.some(section => section.id === id)) return id
+    if (aliases[id]) return aliases[id]
+    if (route.query.model || route.query.resource) return 'control-setup'
+    if (route.query.engine === 'native') return 'control-setup'
+    if (route.query.engine) return ['sd', 'video'].includes(String(route.query.engine)) || imageProvider.value === 'comfy' ? 'control-services' : 'control-setup'
+    return 'control-overview'
   })
-  watch(() => route.hash, hash => {
-    const id = hash.slice(1)
-    if (ids.includes(id)) openSection(id)
-    else if (id === 'control-inference' && ids.includes('control-setup')) openSection('control-setup')
-  }, { flush: 'post' })
-  onUnmounted(() => {
-    window.removeEventListener('scroll', schedule)
-    window.removeEventListener('resize', schedule)
-    cancelAnimationFrame(frame)
+  const visited = reactive(new Set<string>([activeSection.value]))
+  const currentSection = computed(() => controlSections.find(section => section.id === activeSection.value)!)
+  const groups = [...new Set(controlSections.map(section => section.group))].map(label => ({
+    label, sections: controlSections.filter(section => section.group === label),
+  }))
+  let navigation = 0
+  async function reveal(focus: boolean) {
+    const ticket = ++navigation
+    visited.add(activeSection.value)
+    await nextTick()
+    if (ticket !== navigation) return
+    // Nested setup panels resolve their own async resource links when ready.
+    const hash = route.hash.slice(1)
+    const target = controlSections.some(section => section.id === hash) ? null : document.getElementById(hash)
+    if (target instanceof HTMLDetailsElement) target.open = true
+    const visibleTarget = target?.getClientRects().length ? target : document.getElementById('control-section-intro')
+    visibleTarget?.scrollIntoView({ block: 'start', behavior: 'instant' })
+    if (focus) document.getElementById('control-section-heading')?.focus({ preventScroll: true })
+  }
+  watch([() => route.fullPath, activeSection], () => { if (route.path === '/control') void reveal(true) })
+  const compact = useMediaQuery('(max-width: 1000px)')
+  function focusNavigation() {
+    document.querySelector<HTMLElement>(compact.value ? '.control-compact-nav [role="combobox"]' : '.control-rail-link[aria-current]')?.focus({ preventScroll: true })
+  }
+  watch(compact, async () => {
+    const origin = document.activeElement
+    if (!(origin instanceof HTMLElement) || !origin.closest('.control-rail, .control-compact-nav')) return
+    await nextTick()
+    if (origin.getClientRects().length || document.activeElement !== origin && document.activeElement !== document.body) return
+    focusNavigation()
   })
-  return { activeSection, openSection }
+  onMounted(() => { void reveal(false) })
+  return { activeSection, currentSection, groups, visited, focusNavigation }
 }

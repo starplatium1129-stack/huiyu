@@ -22,7 +22,6 @@ export function useInterrogateSetup() {
     && !workspacePending.value && !ready.value && !busy.value && !checking.value && !otherBusy.value && !operationUncertain.value)
   const canCancel = computed(() => running.value && operation.value?.cancelAllowed === true
     && cancelState.value !== 'pending' && cancelState.value !== 'accepted')
-  const progress = computed(() => operation.value?.totalBytes ? Math.min(100, Math.round(operation.value.downloadedBytes / operation.value.totalBytes * 100)) : null)
   const desktop = getDesktopCapabilities(), life = new AbortController()
   let disposed = false, polling = false, planVersion = 0, operationVersion = 0, settledId = '', readFailure = ''
   let pending: { input: InterrogateSetupInput; previousId: string | null } | null = null
@@ -196,5 +195,5 @@ export function useInterrogateSetup() {
     // Detach HTTP/polling only. The accepted installation belongs to the runtime.
   })
   return { plan, operation, readiness, checking, submitting, running, busy, ready, enoughSpace, canPrepare, canCancel,
-    otherBusy, workspacePending, operationUncertain, progress, cancelState, error, message, initialize, refresh, reconcile, prepare, cancel }
+    otherBusy, workspacePending, operationUncertain, cancelState, error, message, initialize, refresh, reconcile, prepare, cancel }
 }

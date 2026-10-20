@@ -1,452 +1,95 @@
 <template>
   <div class="control-page">
     <RouteAtmosphere />
-    <!-- /control 挂在 AppLayout 之外，所以跳转链接与 main 地标要在这里自备 -->
-    <RouterLink class="skip-link" :to="{ query: route.query, hash: '#control-main' }" @click="focusMain">跳到主要内容</RouterLink>
-    <nav class="nav control-mobile-nav">
-      <div class="nav-inner nav-local">
-        <RouterLink to="/" class="nav-local-brand">
-          <BrandLogo class="nav-logo" />
-          <span><strong>本机控制室</strong><small>Local control room</small></span>
-        </RouterLink>
-        <div class="nav-local-actions">
-          <AppearanceButton />
-          <TaskCenterButton />
-          <RouterLink class="nav-local-home tw:inline-flex tw:items-center tw:gap-s-2" to="/"><ArchiveIcon name="chevron-down" class="tw:rotate-90" />回绘遇</RouterLink>
-          <AppThemeToggle /><AppSoundToggle />
-        </div>
-      </div>
-      <div class="control-section-jump" role="group" aria-label="控制室分区">
-        <RouterLink v-for="item in sections" :key="item.id" :to="{ query: route.query, hash: '#' + item.id }" :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id, $event)">{{ item.label }}</RouterLink>
-      </div>
-    </nav>
-
+    <a class="skip-link" href="#control-main" @click.prevent="focusMain">跳到主要内容</a>
     <div class="control-layout">
-      <aside class="control-rail" data-fluid-glass="sidebar" aria-label="控制室导航">
-        <RouterLink to="/" class="control-rail-brand">
-          <BrandLogo class="nav-logo" />
-          <span><strong>本机控制室</strong><small>Local control room</small></span>
-        </RouterLink>
-        <TaskCenterButton />
-        <span class="control-nav-label">工作台管理</span>
-        <AppearancePreferences launcher-only />
-        <nav class="control-rail-nav tw:grid tw:gap-s-2" aria-label="控制区">
-          <RouterLink v-for="item in sections" :key="item.id" class="control-rail-link" :to="{ query: route.query, hash: '#' + item.id }"
-            :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id, $event)">
-            <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
-          </RouterLink>
+      <aside class="control-rail" aria-label="控制面板导航">
+        <RouterLink to="/" class="control-rail-brand"><BrandLogo class="nav-logo" /><span>控制面板</span></RouterLink>
+        <nav class="control-rail-nav" aria-label="设置分区">
+          <div v-for="group in groups" :key="group.label" class="control-nav-group">
+            <p class="control-nav-label">{{ group.label }}</p>
+            <RouterLink v-for="item in group.sections" :key="item.id" class="control-rail-link"
+              :to="{ path: '/control', hash: '#' + item.id }" :aria-current="activeSection === item.id ? 'page' : undefined">
+              <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span><span v-if="activeSection === item.id" class="control-nav-dot" aria-hidden="true" />
+            </RouterLink>
+          </div>
         </nav>
         <div class="control-rail-foot">
-          <RouterLink class="nav-local-home tw:inline-flex tw:items-center tw:gap-s-2" to="/"><ArchiveIcon name="chevron-down" class="tw:rotate-90" />回绘遇</RouterLink>
-          <AppThemeToggle /><AppSoundToggle />
+          <RouterLink class="control-home-link nav-local-home" to="/"><ArchiveIcon name="chevron-down" class="control-back-icon" />返回画室</RouterLink>
+          <div class="control-utility-row"><TaskCenterButton /><AppThemeToggle /><AppSoundToggle /></div>
         </div>
       </aside>
-
-      <div class="control-content tw:min-w-0">
-    <main id="control-main" class="control-shell" tabindex="-1">
-      <ControlIntro :ready-label="readyLabel">
-        <template #actions>
-          <button class="btn btn-ghost" type="button" :disabled="serviceChecking || opBusy" :aria-busy="serviceChecking" @click="recheckStatus">
-            <ArchiveIcon name="refresh" /> {{ serviceChecking ? '检测中…' : '检测所有服务' }}
-          </button>
-          <RouterLink class="btn btn-primary" to="/prompt-builder" data-route-focus><ArchiveIcon name="spark" /> 回到创作</RouterLink>
-        </template>
-      </ControlIntro>
-
-      <section id="control-setup" aria-label="原生绘图配置"><InferenceSettingsPanel /></section>
-
-      <section ref="overviewRegion" id="control-overview" class="control-overview tw:mb-s-5" aria-label="连接状态" tabindex="-1" :aria-busy="serviceChecking || (!statusLoaded && !statusError)">
-        <div class="overview-heading"><div><span class="panel-kicker">运行概览</span><h2>{{ overviewFeedback.title }}</h2><p>{{ overviewFeedback.note }}</p></div><span class="overview-local"><ArchiveIcon name="eye" /> 本机工作台</span></div>
-        <div v-if="statusError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ serviceChecking ? '正在重新检测本机控制服务…' : `${statusError}，服务状态待确认，请重新检测。` }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="serviceChecking || opBusy" :aria-busy="serviceChecking" @click="recheckStatus">{{ serviceChecking ? '检测中…' : '重试检测' }}</button></div>
-        <p v-if="requestedService" class="service-context">{{ requestedEngineLabel }}需要 {{ requestedService === 'webui' ? 'SD WebUI' : 'ComfyUI' }}，先检查高亮的服务。</p>
-        <div class="status-wall service-rows">
-          <article v-for="service in serviceCards" :key="service.key" :id="`control-service-${service.key}`" class="status-tile service-row"
-            :class="{ 'service-required': requestedService === service.key }" :data-state="!statusUsable ? 'checking' : service.online ? 'on' : 'off'">
-            <h3 class="status-tile-head service-row-name"><ArchiveIcon :name="service.icon" />{{ service.name }}<span class="status-dot"></span></h3>
-            <strong>{{ !statusUsable ? (statusError ? '待检测' : '检测中…') : service.online ? '已连接' : '未连接' }}</strong>
-            <p class="status-tile-detail">{{ !statusUsable ? (statusError ? '重新检测后确认连接状态' : '正在确认本机连接') : serviceChecking ? '正在刷新连接状态' : service.detail }}</p>
-            <div class="service-row-actions">
-              <template v-if="service.key === 'llama'">
-                <RouterLink :to="{ query: route.query, hash: '#control-comfy' }" class="btn btn-ghost btn-sm" @click="openSection('control-comfy', $event)">准备模型</RouterLink>
-                <button class="btn btn-danger btn-sm" type="button" :disabled="!llamaManaged || opBusy" @click="serviceAction('llama','stop')">释放显存</button>
-              </template>
-              <template v-else-if="service.key !== 'ollama'">
-                <StudioTooltip anchor :content="service.online ? '已在运行' : '启动受控服务'">
-                  <button class="btn btn-sm" :class="requestedService === service.key ? 'btn-primary' : 'btn-ghost'" type="button"
-                    :disabled="!statusUsable || opBusy || service.online" @click="serviceAction(service.key, 'start')">启动</button>
-                </StudioTooltip>
-                <StudioTooltip anchor :content="!service.online ? '未在运行' : '停止服务'">
-                  <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !service.online"
-                    @click="confirmServiceAction(service.key, 'stop')">停止</button>
-                </StudioTooltip>
-              </template>
-              <button v-else class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ollamaModels.length"
-                @click="serviceAction('ollama', 'unload')">释放显存</button>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <details id="control-comfy" class="panel-card" @toggle="onLocalSetupToggle">
-        <StudioDisclosureSummary>本地聊天与 ComfyUI 兼容配置</StudioDisclosureSummary>
-        <div data-disclosure-content><AsyncPanel v-if="localSetupRequested" :loader="loadLocalSetup" label="聊天与兼容配置" v-slot="{ component }"><component :is="component" /></AsyncPanel></div>
-      </details>
-      <div id="control-interrogate" tabindex="-1" aria-label="PixAI 图片反推配置"><AsyncPanel :loader="loadInterrogateSetup" label="图片反推配置" v-slot="{ component }"><component :is="component" /></AsyncPanel></div>
-
-      <!-- 操作进度 -->
-      <div v-if="operation" class="panel-card operation-panel" :class="operation.status">
-        <div class="operation-head">
-          <div>
-            <div class="panel-kicker">操作进度</div>
-            <strong class="panel-heading">{{ operation.label }}</strong>
+      <div class="control-content">
+        <header class="control-compact-nav">
+          <RouterLink to="/" aria-label="返回绘遇"><BrandLogo class="nav-logo" /></RouterLink>
+          <div class="control-utility-row"><TaskCenterButton /><AppThemeToggle /><AppSoundToggle /></div>
+          <StudioSelect :model-value="activeSection" label="控制面板分区" :groups="compactOptions" @update:model-value="selectSection" @trigger-hidden="focusNavigation" />
+        </header>
+        <main id="control-main" class="control-shell" tabindex="-1">
+          <ControlIntro :title="currentSection.label" :description="currentSection.description" :group="currentSection.group">
+            <template #actions><RouterLink class="btn btn-ghost btn-sm" to="/guide"><ArchiveIcon name="book" />使用指南</RouterLink></template>
+          </ControlIntro>
+          <div v-if="statusError" class="control-alert" role="alert">
+            <ArchiveIcon name="warning" /><span>{{ statusError }}。设置与服务状态待确认。</span>
+            <button class="btn btn-ghost btn-sm" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">{{ serviceChecking ? '检测中…' : '重新连接' }}</button>
           </div>
-          <span class="op-state tw:inline-flex tw:items-center tw:gap-s-2"><StudioOrbitSpinner v-if="operation.status === 'running'" />{{ opStatusLabel }}</span>
-        </div>
-        <div v-if="operation.stages?.length" class="meter" role="progressbar" aria-label="已完成步骤" :aria-valuemin="0" :aria-valuemax="operation.stages.length" :aria-valuenow="opCompletedStages"><span class="meter-fill" :style="{ '--fill': opProgress + '%' }"></span></div>
-        <p v-if="operation.stages?.length" class="tw:text-label-sm tw:text-secondary">已完成 {{ opCompletedStages }} / {{ operation.stages.length }} 步</p>
-        <p class="operation-msg">{{ operation.message }}</p>
-        <div v-if="operation.stages?.length" class="operation-stages">
-          <span
-            v-for="(stage, i) in operation.stages" :key="stage"
-            class="op-stage"
-            :class="{ done: operation.status === 'completed' || i < opCompletedStages, current: i === operation.stageIndex && operation.status === 'running' }"
-          >{{ stage }}</span>
-        </div>
-      </div>
-
-      <!-- 显存调度 -->
-      <section id="control-resources" class="panel-card resource-panel">
-        <div class="panel-kicker">常用操作</div>
-        <h2 class="panel-heading">显存与运行偏好</h2>
-        <div class="mode-grid">
-          <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
-            <span class="mode-title"><ArchiveIcon name="spark" /> 绘图优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
-            <span class="mode-desc">{{ imageProvider === 'native' ? '释放本地聊天与语音显存，独立模型在生成时按需加载。' : '释放本地聊天与语音显存，启动 ComfyUI。' }}</span>
-          </button>
-          <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('chat')">
-            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天与语音优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
-            <span class="mode-desc">释放空闲绘图模型，启动语音；发送消息时加载本地聊天。</span>
-          </button>
-        </div>
-
-        <ToggleSwitch v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
-          <span>打开控制室时自动启动语音<span class="autostart-hint">显存紧张时建议关闭</span></span>
-        </ToggleSwitch>
-        <p v-if="(imageProvider !== 'native' && !scripts.comfy) || !scripts.voiceStart" class="script-hint">
-          未检测到部分快捷启停脚本（仅影响一键启动，若服务已手动运行仍可正常连接）：
-          <span v-if="imageProvider !== 'native' && !scripts.comfy">ComfyUI 脚本 </span>
-          <span v-if="!scripts.voiceStart">语音启动脚本 </span>
-          <span v-if="!scripts.voiceStop">语音停止脚本 </span>
-        </p>
-      </section>
-
-      <div class="control-work-grid">
-      <div class="control-settings-stack">
-      <ResourceLibraryPanel />
-      <DesktopPreferences />
-      </div>
-      <div class="control-settings-stack">
-      <!-- 本机生成服务配置 -->
-      <section id="control-services" class="panel-card service-config-panel">
-        <div class="panel-kicker">连接设置</div>
-        <h2 class="panel-heading">服务地址与声线</h2>
-
-
-        <label class="field-label" for="comfy-host">ComfyUI 地址</label>
-        <div class="field-row tw:flex tw:gap-s-2">
-          <StudioTooltip :content="comfyHost">
-            <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" aria-describedby="comfy-host-help" spellcheck="false" @keydown.enter="saveConfig" />
-          </StudioTooltip>
-        </div>
-        <p id="comfy-host-help" class="field-help">供 ComfyUI 兼容绘图与视频使用；原生绘图无需连接此地址。</p>
-
-        <label class="field-label" for="tts-engine">角色语音引擎</label>
-        <StudioSelect id="tts-engine" v-model="ttsEngine" label="角色语音引擎" aria-describedby="tts-engine-help"
-          :options="[{ value: 'voxcpm2', label: 'VoxCPM2' }, { value: 'gpt-sovits', label: 'GPT-SoVITS' }]" />
-        <p id="tts-engine-help" class="field-help">保存后重启应用生效；切换前先停止原语音服务。</p>
-        <label class="field-label" for="tts-host">语音 API 地址</label>
-        <div class="field-row tw:flex tw:gap-s-2">
-          <StudioTooltip :content="ttsHost">
-            <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" aria-describedby="tts-host-help" spellcheck="false" @keydown.enter="saveConfig" />
-          </StudioTooltip>
-        </div>
-        <p id="tts-host-help" class="field-help">语音服务默认按需启动。</p>
-
-        <details class="voice-config">
-          <StudioDisclosureSummary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></StudioDisclosureSummary>
-          <div data-disclosure-content class="voice-grid">
-            <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
-              <div class="voice-card-title">宁宁</div>
-              <template v-if="ttsEngine === 'voxcpm2'">
-                <label for="v-nene-lora">宁宁 LoRA 权重路径</label>
-                <input id="v-nene-lora" v-model="voiceNeneLora" class="input" placeholder="lora_weights.safetensors 路径" />
-              </template>
-              <label for="v-nene-ref">宁宁参考音频路径</label>
-            <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
-              <label for="v-nene-prompt">宁宁提示文本（日文）</label>
-            <input id="v-nene-prompt" v-model="voiceNenePrompt" class="input" placeholder="提示文本（日文）" />
-            </div>
-            <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
-              <div class="voice-card-title">夏目</div>
-              <template v-if="ttsEngine === 'voxcpm2'">
-                <label for="v-nat-lora">夏目 LoRA 权重路径</label>
-                <input id="v-nat-lora" v-model="voiceNatsumeLora" class="input" placeholder="lora_weights.safetensors 路径" />
-              </template>
-              <label for="v-nat-ref">夏目参考音频路径</label>
-            <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
-              <label for="v-nat-prompt">夏目提示文本（日文）</label>
-            <input id="v-nat-prompt" v-model="voiceNatsumePrompt" class="input" placeholder="提示文本（日文）" />
-            </div>
+          <ControlOperation :active-section="activeSection" />
+          <!-- Retain opened panels so switching never discards downloads, recovery or unsaved drafts. -->
+          <div v-for="item in controlSections" :key="item.id" v-show="activeSection === item.id"
+            class="control-section" :data-control-section="item.id" v-content-motion:right="activeSection === item.id">
+            <template v-if="visited.has(item.id) || item.id === 'control-setup' && localSetupRequested">
+              <ControlWelcome v-if="item.id === 'control-overview'" />
+              <ControlSetupPanel v-else-if="item.id === 'control-setup'" />
+              <AsyncPanel v-else-if="item.id === 'control-interrogate'" :loader="loadInterrogateSetup" label="图片反推" v-slot="{ component }"><component :is="component" /></AsyncPanel>
+              <ResourceLibraryPanel v-else-if="item.id === 'control-library'" />
+              <div v-else-if="item.id === 'control-personalization'" class="control-panel-stack">
+                <section class="panel-card"><div class="panel-kicker">随时调整 · 自动保存</div><h2 class="panel-heading">让画室更合你心意</h2><p class="control-section-note">主题、字号和动态效果可在外观面板中调整。</p><AppearancePreferences launcher-only /></section>
+                <DesktopPreferences />
+              </div>
+              <ControlServicesPanel v-else-if="item.id === 'control-services'" />
+              <ControlSharePanel v-else-if="item.id === 'control-share'" />
+              <ControlLogsPanel v-else-if="item.id === 'control-logs'" :active="activeSection === item.id" />
+            </template>
           </div>
-        </details>
-        <div class="config-save-row" :aria-busy="savingConfig"><StudioLiquidButton label="保存全部并检测" :busy="savingConfig" :complete="configSaved" :disabled="opBusy || !statusLoaded" @click="saveConfig" /></div>
-      </section>
-      </div>
-
-      <!-- 公网分享 -->
-      <details id="control-share" class="panel-card share-panel">
-        <StudioDisclosureSummary class="panel-summary"><span><span class="panel-kicker">低频管理</span><span class="panel-heading" role="heading" aria-level="2">分享与访问</span></span><span class="summary-state">{{ !statusLoaded || statusError ? '状态待确认' : tunnelActive ? '分享中' : '仅本机' }}</span></StudioDisclosureSummary>
-        <div data-disclosure-content class="share-content">
-
-        <div class="tunnel-toggle-row">
-          <div class="tunnel-toggle-label">
-            <span id="tunnel-switch-label" class="tunnel-toggle-text">开启公网分享通道</span>
-            <span class="tunnel-toggle-hint">{{ tunnelEnabled ? '朋友可通过临时链接访问' : tunnelActive ? '分享仍在运行，点击下方停止后仅本机可访问' : '当前仅本机可访问' }}</span>
-          </div>
-          <ToggleSwitch
-            class="tunnel-switch-control"
-            :model-value="tunnelEnabled"
-            :disabled="actionBusy || opBusy"
-            aria-labelledby="tunnel-switch-label"
-            @update:model-value="toggleTunnel"
-          />
-        </div>
-
-        <button
-          class="btn btn-primary share-start"
-          type="button"
-          :disabled="actionBusy || opBusy || (!tunnelActive && (savingConfig || !tunnelEnabled || !statusUsable))"
-          @click="tunnelActive ? doStop() : doStart()"
-        >{{ !tunnelActive && !tunnelEnabled ? '仅本机访问' : mainBtnLabel }}</button>
-
-        <div class="access-grid tw:grid tw:gap-s-3">
-          <div class="access-card">
-            <div class="access-title">本机地址</div>
-            <div class="link-value">{{ localLink }}</div>
-            <div class="inline-actions tw:flex tw:gap-s-2">
-              <StudioCopyButton class="btn btn-ghost btn-sm" label="复制地址" :content-key="localLink" :action="() => copyWithFeedback(localLink)" />
-              <a class="btn btn-ghost btn-sm" :href="localLink" target="_blank" rel="noreferrer">打开</a>
-            </div>
-          </div>
-          <div class="access-card">
-            <div class="access-title">分享链接</div>
-            <div class="link-value" :class="{ waiting: !shareLink }">{{ shareLink || (tunnelStatus === 'disabled' ? '未生成公网链接' : '等待分享链接…') }}</div>
-            <div class="inline-actions tw:flex tw:gap-s-2">
-              <StudioCopyButton class="btn btn-ghost btn-sm" label="复制链接" :content-key="shareLink" :disabled="!shareLink" :action="() => copyWithFeedback(shareLink)" />
-            </div>
-          </div>
-        </div>
-        <div class="uptime">{{ uptime }}</div>
-        <p class="security-note">分享链接可以使用你电脑上的创作服务，请只发给信任的人。</p>
-
-        <!-- 前端构建：分享伺服 dist/，源码改动后需重建 -->
-        <div class="build-card" :data-stale="webBuildStale ? 'true' : 'false'">
-          <div class="build-head">
-            <span class="build-kicker">Web build</span>
-            <strong>{{ buildLabel }}</strong>
-          </div>
-          <p class="build-desc">{{ buildDesc }}</p>
-          <button class="btn btn-ghost btn-sm" type="button" :disabled="buildingWeb || opBusy" @click="buildWeb">
-            {{ buildingWeb ? '构建中…' : '重新构建前端' }}
-          </button>
-        </div>
-        </div>
-      </details>
-
-      </div>
-
-      <!-- 日志 -->
-      <details id="control-logs" class="log-panel" @toggle="logsOpen = ($event.target as HTMLDetailsElement).open">
-        <StudioDisclosureSummary>
-          <span class="log-summary-title"><ArchiveIcon name="book" /> 运行日志</span>
-          <span class="summary-state">{{ logsSummary }}</span>
-        </StudioDisclosureSummary>
-        <div data-disclosure-content class="log-wrap" :aria-busy="logsLoading">
-          <div class="log-toolbar" role="group" aria-label="日志操作">
-            <StudioTooltip anchor content="仅保存版本与运行状态，不包含密钥、聊天正文或图片">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="exportingDiag" @click="exportDiag">{{ exportingDiag ? '正在整理…' : '导出诊断包' }}</button>
-            </StudioTooltip>
-            <button class="btn btn-ghost btn-sm" type="button" :disabled="logsLoading" :aria-busy="logsLoading" @click="retryLogs">{{ logsLoading ? '读取中…' : '重新读取' }}</button>
-            <button class="btn btn-ghost btn-sm" type="button" :disabled="!logs.length" @click="clearLogs">清空显示</button>
-          </div>
-          <div v-if="logsError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ logsError }}</span></div>
-          <div v-memo="[logs, logs.length, logsLoading, logsLoaded, logsError]" class="log-box" ref="logBoxEl" role="region" aria-label="运行日志输出" tabindex="-1">
-            <div v-if="!logs.length && !logsError" class="log-empty" role="status">{{ logsLoading ? '正在读取日志…' : logsLoaded ? '暂无日志。' : '尚未读取日志。' }}</div>
-            <div v-for="(line, i) in logs" :key="i" :class="lineClass(line)">
-              <span class="time">{{ line.slice(0, 10) }}</span> {{ line.slice(11) }}
-            </div>
-          </div>
-        </div>
-      </details>
-    </main>
+        </main>
       </div>
     </div>
-
   </div>
 </template>
-
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
-import AppearanceButton from '@/components/AppearanceButton.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
-import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
-import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import StudioSelect from '@/components/ui/StudioSelect.vue'
-import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
-import { copyWithFeedback } from '@/composables/useCopyFeedback'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
-import StudioLiquidButton from '@/components/ui/StudioLiquidButton.vue'
-import StudioOrbitSpinner from '@/components/ui/StudioOrbitSpinner.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
-import { useLocalSetupPanelLoading } from '@/composables/useLocalSetupPanelLoading'
-import InferenceSettingsPanel from '@/components/InferenceSettingsPanel.vue'
 import ResourceLibraryPanel from '@/components/ResourceLibraryPanel.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
-const loadLocalSetup = () => import('@/components/LocalSetupPanel.vue')
-const { localSetupRequested, onLocalSetupToggle } = useLocalSetupPanelLoading()
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import ControlWelcome from '@/components/control/ControlWelcome.vue'
+import ControlSetupPanel from '@/components/control/ControlSetupPanel.vue'
+import ControlServicesPanel from '@/components/control/ControlServicesPanel.vue'
+import ControlSharePanel from '@/components/control/ControlSharePanel.vue'
+import ControlLogsPanel from '@/components/control/ControlLogsPanel.vue'
+import ControlOperation from '@/components/control/ControlOperation.vue'
+import { controlSections, useControlNavigation } from '@/composables/useControlNavigation'
+import { provideControlContext } from '@/composables/useControlContext'
+import { useLocalSetupPanelLoading } from '@/composables/useLocalSetupPanelLoading'
+const router = useRouter()
+const { status } = provideControlContext()
+const { statusError, serviceChecking, opBusy, pollStatus } = status
+const { activeSection, currentSection, groups, visited, focusNavigation } = useControlNavigation(status.imageProvider)
+const { localSetupRequested } = useLocalSetupPanelLoading()
+const compactOptions = groups.map(group => ({ label: group.label, options: group.sections.map(section => ({ value: section.id, label: section.label })) }))
 const loadInterrogateSetup = () => import('@/components/InterrogateSetupPanel.vue')
-import { useControlNavigation } from '@/composables/useControlNavigation'
-import { useToast } from '@/composables/useToast'
-// 桌面端更新横幅已收敛到全局 DesktopUpdateBanner（2026-08-31，任何页面可见）。
-// /api/status 与 /api/logs 的契约类型。原先整体当 any —— 字段拼错、后端改名
-// 都要等运行时才炸，而这个视图正好在破坏性路径上（改上游 host、启停服务、
-// 开关公网隧道）。
-import { useControlStatus } from '@/composables/useControlStatus'
-import { confirmAction } from '@/composables/useConfirm'
-import { useControlActions } from '@/composables/useControlActions'
-import type { ControlService, ControlServiceAction } from '@/api/controlApi'
-
-/**
- * 全站唯一那套 toast（App.vue 里的 AppToast + useToast）。
- * 这里原先自建了第四套：一个 .toast div + 自管计时器，
- * 既没有 live region 也没有可聚焦的关闭动作。
- */
-const toastApi = useToast()
-function showToast(msg: string, isError = false) {
-  if (isError) toastApi.error(msg)
-  else toastApi.info(msg)
-}
-
-const status = useControlStatus({ showToast })
-const actions = useControlActions(status, { showToast })
-
-// 模板引用解构：状态域
-const {
-  tunnelActive, comfyOnline, ttsOnline, ollamaOnline, comfyManaged, ollamaModels,
-  modeBusy, operation, selfHealing, serviceChecking, statusLoaded, statusError, scripts,
-  comfyHost, ttsHost, ttsEngine, activeVoiceEngine, llamaOnline,llamaManaged,llamaLabel,voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
-  tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-  overviewFeedback, imageProvider, logs, logBoxEl,
-  logsOpen, logsLoading, logsLoaded, logsError, logsSummary,
-  opBusy, opStatusLabel, opProgress, opCompletedStages, ollamaMeta, voiceConfiguredCount,
-  readyLabel,
-  pollStatus, pollLogs, clearLogs,
-} = status
-const overviewRegion = ref<HTMLElement | null>(null)
-function recheckStatus() {
-  if (serviceChecking.value || opBusy.value) return
-  const region = overviewRegion.value
-  const bounds = region?.querySelector('h2')?.getBoundingClientRect()
-  region?.focus({ preventScroll: true })
-  if (bounds && (bounds.top < 0 || bounds.bottom > innerHeight)) region?.scrollIntoView({ block: 'start', behavior: 'instant' })
-  void pollStatus(true)
-}
-function retryLogs() {
-  if (logsLoading.value) return
-  logBoxEl.value?.focus()
-  void pollLogs()
-}
-
-// 模板引用解构：操作域
-const {
-  tunnelEnabled, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice,
-  serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag, buildWeb, buildingWeb,
-} = actions
-
-const webBuildStale = computed(() => !!webBuild.value && webBuild.value.stale && webBuild.value.distReady)
-const ttsSelfHealing = computed(() => {
-  const service = selfHealing.value?.services?.tts
-  return Boolean(service && (service.restarting || service.attempt > 0))
-})
-const buildLabel = computed(() => {
-  if (!webBuild.value) return '构建状态未知'
-  if (!webBuild.value.distReady) return '尚未构建'
-  if (webBuild.value.stale) return '构建已过期'
-  return '构建已是最新'
-})
-const buildDesc = computed(() => {
-  if (!webBuild.value || !webBuild.value.distReady) return '公网分享伺服的是构建产物；尚未构建时分享可能无法显示最新页面。'
-  const built = webBuild.value.builtAt ? '于 ' + new Date(webBuild.value.builtAt).toLocaleString('zh-CN') + ' 构建' : ''
-  if (webBuild.value.stale) return built + '，但源码此后有修改——分享出去的是旧版页面，请重新构建。'
-  return built + '，与当前源码一致。'
-})
-
-function lineClass(line: string) { return status.lineClass(line) }
-
-const SERVICE_STOP_LABELS: Record<string, string> = {
-  webui: 'SD WebUI 绘图服务',
-  comfy: 'ComfyUI 绘图服务',
-  voice: '角色语音服务',
-}
-
-async function confirmServiceAction(service: ControlService, action: ControlServiceAction): Promise<void> {
-  if (action !== 'stop') { serviceAction(service, action); return }
-  const label = SERVICE_STOP_LABELS[service] || service
-  const confirmed = await confirmAction({
-    title: `停止${label}？`,
-    message: '停止服务后，正在进行的绘图或语音合成任务将会中断。',
-    confirmLabel: '停止服务',
-    danger: true,
-  })
-  if (!confirmed) return
-  serviceAction(service, action)
-}
-
-const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
-  { id: 'control-setup', label: '原生绘图', icon: 'download' },
-  { id: 'control-overview', label: '运行概览', icon: 'eye' },
-  { id: 'control-comfy', label: '聊天与兼容配置', icon: 'model' },
-  { id: 'control-interrogate', label: '图片反推', icon: 'search' },
-  { id: 'control-resources', label: '服务与显存', icon: 'model' },
-  { id: 'control-library', label: '离线资源库', icon: 'image' },
-  { id: 'control-services', label: '连接与声线', icon: 'gear' },
-  { id: 'control-share', label: '分享与访问', icon: 'upload' },
-  { id: 'control-logs', label: '运行日志', icon: 'book' },
-]
-const { activeSection, openSection } = useControlNavigation(sections.map(section => section.id))
-const statusUsable = computed(() => statusLoaded.value && !statusError.value)
-const route = useRoute()
+function selectSection(id: string | number) { void router.push({ path: '/control', hash: '#' + id }) }
 function focusMain() { document.getElementById('control-main')?.focus({ preventScroll: true }) }
-const requestedService = computed(() => route.query.engine === 'sd' ? 'webui'
-  : route.query.engine === 'video' || imageProvider.value === 'comfy' && ['anima', 'krea2'].includes(String(route.query.engine)) ? 'comfy' : '')
-const requestedEngineLabel = computed(() => ({ sd: 'SD 绘图', anima: 'Anima 绘图', krea2: 'Krea 2 绘图', video: '故事短片' } as Record<string, string>)[String(route.query.engine)] || '当前创作')
-const serviceCards = computed<Array<{ key: ControlService; name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
-  { key: 'llama', name: 'llama.cpp 本地聊天', icon: 'chat', online: llamaOnline.value, detail: llamaLabel.value || '按需加载；显存较少可使用 API' },
-  { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `${imageProvider.value === 'native' ? '兼容引擎 · 视频' : 'Anima · Krea 2 · 视频'}${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
-  { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `${voiceConfiguredCount.value} / 2 角色声线已配置` },
-  { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载聊天模型' },
-])
-
-onMounted(() => { status.startPolling() })
-onUnmounted(() => { status.stopPolling() })
+onMounted(status.startPolling)
+onUnmounted(status.stopPolling)
 </script>
-
-<style scoped src="@/assets/css/control-view.css"></style>
+<style src="@/assets/css/control-view.css"></style>

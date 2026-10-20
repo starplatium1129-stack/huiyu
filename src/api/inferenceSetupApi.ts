@@ -49,6 +49,8 @@ export interface InferenceSetupOperation extends ControlOperationView {
   targetDir?: string
   planId?: string
   stage?: string
+  phase?: string
+  currentFile?: string
   downloadedBytes?: number
   totalBytes?: number
   cancelAllowed?: boolean
@@ -138,6 +140,8 @@ export function isInferenceSetupOperation(value: unknown): value is InferenceSet
     && (value.downloadedBytes === undefined || bytes(value.downloadedBytes))
     && (value.totalBytes === undefined || bytes(value.totalBytes))
     && (value.cancelAllowed === undefined || typeof value.cancelAllowed === 'boolean')
+    && (value.phase === undefined || typeof value.phase === 'string')
+    && (value.currentFile === undefined || typeof value.currentFile === 'string')
 }
 function localOnly() { if (!isLocalStudioHost()) throw new Error('独立引擎准备仅限本机访问') }
 function knownModel(modelId: string) { if (!modelIds.has(modelId)) throw new Error('请选择已登记的 Anima 模型') }

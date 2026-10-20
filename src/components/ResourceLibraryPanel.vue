@@ -24,10 +24,13 @@
       </div>
       <div v-if="status?.task" class="resource-task" :data-state="status.task.state" :aria-busy="status.busy">
         <span class="resource-label">本次任务</span>
-        <strong role="status" aria-live="polite">{{ taskMessage }}</strong>
-        <p v-if="taskDetail" class="resource-description">{{ taskDetail }}</p>
+        <SetupTransferProgress v-if="status.busy" :title="taskMessage" :phase="status.task.phase"
+          :received="status.task.bytes" :total="status.task.total" :message="taskDetail" scope="file" />
+        <template v-else>
+          <strong role="status" aria-live="polite">{{ taskMessage }}</strong>
+          <p v-if="taskDetail" class="resource-description">{{ taskDetail }}</p>
+        </template>
         <p v-if="status.task.error" class="resource-task-error" role="alert">{{ status.task.error.message }}</p>
-        <progress v-if="status.busy" :value="status.task.total ? status.task.bytes : undefined" :max="status.task.total || 1" aria-label="当前资源文件处理进度" />
       </div>
       <div class="resource-actions">
         <div class="resource-primary-actions">
@@ -48,6 +51,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import SetupTransferProgress from '@/components/control/SetupTransferProgress.vue'
 import { useResourceLibrary } from '../composables/useResourceLibrary'
 const library = useResourceLibrary()
 const { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,
@@ -78,22 +82,12 @@ onUnmounted(library.stop)
 .resource-selection .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
 .resource-notice, .resource-task { border: 1px solid var(--border-strong); @apply tw:rounded-md tw:p-s-3 tw:leading-body tw:text-label; overflow-wrap: anywhere; }
 .resource-task p { @apply tw:mb-0; }
-.resource-task strong { display:block; margin-top:var(--s-2); }
+.resource-task > strong { display:block; margin-top:var(--s-2); }
+.resource-task > .transfer-progress { margin-top:var(--s-2); }
 .resource-notice { color:var(--warning-text); }
 .resource-task[data-state="completed"] { border-color:var(--success-text); }
 .resource-task[data-state="failed"] { border-color:var(--danger-text); }
 .resource-task-error { color:var(--danger-text); }
-.resource-task progress {
-  @apply tw:block tw:w-full tw:h-[8px] tw:mt-s-3 tw:overflow-hidden;
-  border: 0;
-  @apply tw:rounded-pill;
-  background: var(--bg-deep);
-  -webkit-appearance: none;
-  appearance: none;
-}
-.resource-task progress::-webkit-progress-bar { background: var(--bg-deep); }
-.resource-task progress::-webkit-progress-value { @apply tw:rounded-pill; background: var(--accent); }
-.resource-task progress::-moz-progress-bar { @apply tw:rounded-pill; background: var(--accent); }
 .resource-actions, .resource-primary-actions { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); }
 .resource-actions { justify-content:space-between; margin-top:var(--s-4); }
 .resource-actions .btn:not(.btn-sm) { min-height:40px; }
