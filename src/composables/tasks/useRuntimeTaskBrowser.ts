@@ -5,12 +5,23 @@ import { getDesktopRuntime, onDesktopRuntime } from '@/platform/desktop/runtime'
 import type { TaskPage, TaskSummary } from '../../../types/tasks'
 
 const PAGE_SIZE = 30
+export interface TaskBrowseVisit {
+  signal: AbortSignal
+  current(): boolean
+  reveal(task: TaskSummary): Promise<boolean>
+}
 export function useRuntimeTaskBrowser(active: () => boolean) {
-  const selected = ref<'all' | 'active' | 'attention' | 'inbox'>('all')
+  const filter = ref<'all' | 'active' | 'attention' | 'inbox'>('all')
   const page = shallowRef<TaskPage | null>(null), cursors = ref<number[]>([]), activePage = ref(0)
   const loading = ref(false), error = ref('')
   const located = shallowRef<TaskSummary | null>(null)
   let controller: AbortController | undefined
+  let visit = new AbortController()
+  function leaveVisit() { visit.abort(); visit = new AbortController() }
+  const selected = computed({ get: () => filter.value, set(value) { leaveVisit(); filter.value = value } })
+  // Presentation ownership is separate from accepted task commands. Only
+  // explicit browsing changes supersede a pending reveal, not live page data.
+  watch(active, leaveVisit, { flush: 'sync' })
   const live = computed(() => new Map(runtimeTasks.value.map(task => [task.taskId, task])))
   const matches = (task: TaskSummary) => selected.value === 'all' || (selected.value === 'active' ? !task.upstreamSettled
     : selected.value === 'inbox' ? task.resultRefs.length && !['saved', 'discarded'].includes(task.deliveryState)
@@ -70,24 +81,33 @@ export function useRuntimeTaskBrowser(active: () => boolean) {
     attemptedMembership = change
     void load([], true, true)
   })
-  function refresh() { located.value = null; return load([], true) }
-  async function reveal(task: TaskSummary) {
-    const expected = identity()
-    if (task.runtimeEpoch !== expected) return
-    selected.value = 'all'
-    await nextTick()
-    if (identity() !== expected) return
-    // Related tasks can be older than the current bounded history page.
-    located.value = structuredClone(toRaw(task))
+  function refresh() { leaveVisit(); located.value = null; return load([], true) }
+  function beginReveal(): TaskBrowseVisit {
+    leaveVisit()
+    const owned = visit, expected = identity()
+    const current = () => active() && !owned.signal.aborted && identity() === expected
+    return { signal: owned.signal, current, async reveal(task) {
+      if (!current() || task.runtimeEpoch !== expected) return false
+      // The reveal's own filter transition belongs to this intent; a later
+      // close, page, filter or refresh still invalidates it before publication.
+      filter.value = 'all'
+      await nextTick()
+      if (!current()) return false
+      // Related tasks can be older than the current bounded history page.
+      located.value = structuredClone(toRaw(task))
+      return true
+    } }
   }
   function next() {
     if (loading.value || !hasNext.value) return
+    leaveVisit()
     located.value = null
     if (selected.value === 'active') activePage.value++
     else if (page.value?.nextCursor != null) void load([...cursors.value, page.value.nextCursor])
   }
   function previous() {
     if (loading.value || !hasPrevious.value) return
+    leaveVisit()
     located.value = null
     if (selected.value === 'active') activePage.value--
     else void load(cursors.value.slice(0, -1))
@@ -103,9 +123,9 @@ export function useRuntimeTaskBrowser(active: () => boolean) {
   const stopRuntime = onDesktopRuntime(() => {
     const nextEpoch = identity()
     if (!nextEpoch || nextEpoch === currentEpoch) return
-    currentEpoch = nextEpoch; attemptedMembership = ''; controller?.abort(); located.value = null; page.value = null; cursors.value = []; activePage.value = 0
+    currentEpoch = nextEpoch; leaveVisit(); attemptedMembership = ''; controller?.abort(); located.value = null; page.value = null; cursors.value = []; activePage.value = 0
     if (active()) void refresh()
   })
-  onScopeDispose(() => { controller?.abort(); stopRuntime() })
-  return { selected, visible, locatedId, pageCount, loading, error, pageNumber, hasPrevious, hasNext, refresh, next, previous, reveal }
+  onScopeDispose(() => { controller?.abort(); visit.abort(); stopRuntime() })
+  return { selected, visible, locatedId, pageCount, loading, error, pageNumber, hasPrevious, hasNext, refresh, next, previous, beginReveal }
 }

@@ -285,24 +285,26 @@ impl TaskRuntime {
             let binding = jobs
                 .entry(identity(&storage, &id))
                 .or_insert_with(|| JobBinding::new(String::new()));
-            if changed && binding.watching {
-                binding.changed.notify_one();
-            }
-            if binding.dispatching || binding.watching {
-                binding.watch_requested = true;
-                return true;
-            }
-            binding.watching = true;
-            binding.watch_requested = false;
-            binding.changed.clone()
+            binding.request_monitor(changed)
         };
+        if let Some(notification) = notification {
+            self.spawn_monitor(storage, principal, id, notification);
+        }
+        true
+    }
+    pub(super) fn spawn_monitor(
+        self: &Arc<Self>,
+        storage: Storage,
+        principal: String,
+        id: String,
+        notification: Arc<tokio::sync::Notify>,
+    ) {
         let runtime = self.clone();
         self.tracker.spawn(async move {
             runtime
                 .follow(&storage, &principal, &id, notification)
                 .await;
         });
-        true
     }
     async fn follow(
         self: &Arc<Self>,

@@ -58,8 +58,8 @@ const refreshing = ref(false), operations = ref(new Map<string, string>())
 const cancellingKeys = ref(new Set<string>())
 const canCancelKey = (key: string) => !cancellingKeys.value.has(key)
 const { selected, visible, locatedId, pageCount, loading: historyLoading, error: historyError, pageNumber, hasPrevious, hasNext,
-  refresh: refreshHistory, next, previous, reveal } = useRuntimeTaskBrowser(() => props.active)
-const { canRetry, pendingRetry, retry, openRelated, locating } = useMangaTaskRetry({ operations, feedback, active: () => props.active, reveal, cardId })
+  refresh: refreshHistory, next, previous, beginReveal } = useRuntimeTaskBrowser(() => props.active)
+const { canRetry, pendingRetry, retry, openRelated, locating } = useMangaTaskRetry({ operations, feedback, beginReveal, cardId })
 const operationLabels = { cancel: '正在请求取消', reconcile: '正在核对结果', resume: '正在恢复任务', continue: '正在继续剩余分镜', concat: '拼接中', discard: '正在移出收件箱', 'confirm-webui': '等待确认 WebUI 已停止', 'resolve-webui': '正在解除 WebUI 占用', retry: '正在准备重试' }
 function operationLabel(task: TaskSummary) {
   for (const [action, label] of Object.entries(operationLabels)) if (operations.value.get(task.taskId) === action) return label
@@ -83,8 +83,8 @@ async function refresh() {
   refreshing.value = true; feedback.value = ''
   try {
     // Explicit queries also find accepted retries outside the overview window.
-    await Promise.all(pendingTaskRequests.value.map(request => getRuntimeTaskByKey(request.key)))
-    await Promise.all([refreshRuntimeTasks(), refreshHistory()])
+    const history = refreshHistory()
+    await Promise.all([...pendingTaskRequests.value.map(request => getRuntimeTaskByKey(request.key)), refreshRuntimeTasks(), history])
   } catch (error) { feedback.value = error instanceof Error ? error.message : '任务状态暂时无法读取。' }
   finally { refreshing.value = false }
 }

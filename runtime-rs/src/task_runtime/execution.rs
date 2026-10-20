@@ -94,15 +94,23 @@ impl TaskRuntime {
         {
             self.jobs.lock().unwrap().remove(&identity(&storage, &id));
         }
-        let requested = {
+        let notification = {
             let mut jobs = self.jobs.lock().unwrap();
-            jobs.get_mut(&identity(&storage, &id)).is_some_and(|job| {
+            jobs.get_mut(&identity(&storage, &id)).and_then(|job| {
                 job.dispatching = false;
-                job.watch_requested || matches!(execution, Ok(true))
+                // Readers must see the watcher reservation in the same lock
+                // transition that releases the dispatcher, never an owner gap.
+                if (job.watch_requested || matches!(execution, Ok(true)))
+                    && self.check_running().is_ok()
+                {
+                    job.request_monitor(false)
+                } else {
+                    None
+                }
             })
         };
-        if requested {
-            self.monitor(storage, principal, id);
+        if let Some(notification) = notification {
+            self.spawn_monitor(storage, principal, id, notification);
         }
     }
     pub async fn reconcile(
