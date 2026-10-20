@@ -57,7 +57,7 @@ export function usePromptWorkspace() {
     const hiresPreparing = ref(false);
     const compositionPreparing = ref(false), cancelCompositionPreparation = ref<(() => void) | null>(null);
     let hiresVersion = 0, disposed = false;
-    let interrogateVersion = 0, interrogateActive = true;
+    let interrogateActive = true;
     let restoreVisit = new AbortController();
     let restoreMediaSession = imageMediaSession();
     function renewRestoreVisit() { restoreVisit.abort(); restoreVisit = new AbortController(); }
@@ -69,7 +69,7 @@ export function usePromptWorkspace() {
     watch(runtimeResourceIdentity, refreshRestoreMedia, { flush: 'sync' });
     watch(() => JSON.stringify([route.path, route.query]), renewRestoreVisit, { flush: 'sync' });
     onActivated(() => { interrogateActive = true; if (restoreVisit.signal.aborted) restoreVisit = new AbortController(); });
-    onDeactivated(() => { interrogateActive = false; interrogateVersion++; restoreVisit.abort(); });
+    onDeactivated(() => { interrogateActive = false; restoreVisit.abort(); });
     onScopeDispose(() => { disposed = true; hiresVersion++; hiresPreparing.value = false; restoreVisit.abort(); stopRestoreRuntime(); }, true);
     function getRestoreOwner(): ResultRestoreOwner {
         const visit = restoreVisit, session = imageMediaSession();
@@ -207,10 +207,9 @@ export function usePromptWorkspace() {
     /** 克隆 URL 前冻结当前成片元数据，异步期间的表单变化不影响快照。 */
     function buildResultSnapshot(persistentUrl: string): ResultSnapshot { return snapshotResult({ animaState, drawEngine, displayResultSeed, pb, sdSize, sd }, persistentUrl); }
     // ── Actions ───────────────────────────────────────────────────────────────
-    async function handleInterrogateResult(result: unknown) {
-        if (disposed || !interrogateActive) return;
-        const version = ++interrogateVersion;
-        const current = () => !disposed && interrogateActive && version === interrogateVersion;
+    async function handleInterrogateResult(result: unknown, requestCurrent: () => boolean) {
+        const current = () => !disposed && interrogateActive && requestCurrent();
+        if (!current()) return;
         const { applyInterrogateResult } = await import('@/composables/prompt/applyInterrogateResult');
         if (current()) await applyInterrogateResult(pb, result, current);
     }

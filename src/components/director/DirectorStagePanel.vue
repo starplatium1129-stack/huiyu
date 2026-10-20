@@ -160,6 +160,7 @@ import type { InterrogateResult } from '@/composables/useInterrogate'
 
 const props = defineProps<{
   sceneTitle?: string
+  applyInterrogateResult: (result: InterrogateResult, current: () => boolean) => Promise<void>
   displayResultUrl: string
   resultRevealUrl?: string
   canvasSize?: string
@@ -251,17 +252,18 @@ const emit = defineEmits<{
   clearResult: []
   openCompare: []
   restoreStashed: []
-  interrogateResult: [result: InterrogateResult]
   interrogateError: [message: string]
 }>()
 
 const interrogateInputRef = ref<HTMLInputElement | null>(null)
-const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate, cancel } = useInterrogate()
+const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate, cancel } = useInterrogate((result, current) => props.applyInterrogateResult(result, current))
 const interrogateError = computed(() => interrogateErrorRaw.value)
 const interrogateMode = computed(() => props.drawEngine === 'krea2' ? 'caption' as const : 'tag' as const)
-let readingCurrentResult: symbol | null = null
-watch(interrogateMode, () => cancel(), { flush: 'sync' })
-watch(() => props.displayResultUrl, () => { if (readingCurrentResult) cancel() }, { flush: 'sync' })
+// Keep the source identity after success so delayed notices also retire when
+// the current picture changes. File/clipboard requests do not own the canvas.
+let interrogatedResultUrl: string | null = null
+watch(() => props.drawEngine, () => cancel(), { flush: 'sync' })
+watch(() => props.displayResultUrl, url => { if (interrogatedResultUrl !== null && url !== interrogatedResultUrl) cancel() }, { flush: 'sync' })
 
 function triggerInterrogatePick() {
   interrogateInputRef.value?.click()
@@ -306,9 +308,10 @@ async function interrogateClipboardImage() {
 
 /** 文件选择、粘贴事件与点击剪贴板共用同一请求及取消机制。 */
 async function runInterrogateFile(file: File | (() => Promise<File>)) {
+  if (interrogateBusy.value) return
+  interrogatedResultUrl = null
   try {
-    const result = await interrogate(file, interrogateMode.value)
-    if (result) emit('interrogateResult', result)
+    await interrogate(file, interrogateMode.value)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     emit('interrogateError', msg)
@@ -322,17 +325,13 @@ async function interrogateCurrentImage() {
     return
   }
   if (interrogateBusy.value) return
-  const request = Symbol()
-  readingCurrentResult = request
+  interrogatedResultUrl = props.displayResultUrl
   try {
-    const result = await interrogate(props.displayResultUrl, interrogateMode.value)
-    if (result) emit('interrogateResult', result)
+    await interrogate(interrogatedResultUrl, interrogateMode.value)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     emit('interrogateError', msg)
     console.warn('[interrogate]', msg)
-  } finally {
-    if (readingCurrentResult === request) readingCurrentResult = null
   }
 }
 defineExpose({ playClear, resultAspect, interrogateBusy, interrogateError, cancelInterrogate: cancel, interrogateCurrentImage, interrogateClipboardImage, triggerInterrogatePick, onInterrogatePaste })
