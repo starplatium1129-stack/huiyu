@@ -10,6 +10,7 @@
   - 复杂业务逻辑与状态机下沉至专属 composable（如 `usePromptSdQueue`、`useAnimaInpaint`、`usePopularPromptAssembly`），保持 View 纯粹。
   - `src/application/` 编排用例与端口，不依赖具体存储、API、Pinia、Vue 或 Node 平台实现；`src/platform/web/` 与 `src/platform/desktop/` 提供适配，`src/api/` 处理传输和响应解码。跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；runtime 不反向依赖 `src/`，包括纯类型与间接导入。
   - 新页面复用 `fluid-workspaces.css` 的共享布局表面、Studio 控件及 `ArtworkViewerStage`/`ZoomableImageViewer`；页面只排列内容和持有业务状态。原生弹窗由 `useFluidDialog` 开关，观画信息由 `useArtworkInfoDrawer` 管理，Reka portal 由 `useModalPortalHost` 归入所属模态。审查须沿原生 dialog、自定义焦点容器和普通页面的已有调用方核对键鼠、返焦、KeepAlive、双主题与动效偏好；迁移全部消费者后删除被替代的手写开关、定位和焦点路径，保留圆形扩散主题切换。
+  - 全局确认结果必须匹配原请求编号；替换请求先拒绝旧等待方，并重建实际交互按钮，事件携带原节点身份。旧指针/按键尾部或按键重复不能批准新内容，辅助技术独立点击仍可用；保留稳定焦点陷阱、原生模态内 portal 与 AbortSignal 清理。
   - 离散动作菜单复用 `StudioDropdownMenu` 的 Reka 语义、portal、键鼠动效和生命周期；业务只提供触发器与条目，通过其 `run` 先关闭返焦再执行动作，避免新确认框被迟到返焦覆盖。房间与消息菜单共用该路径，导航 popover 和桌宠径向菜单保留各自语义。审查须核对外部点击、Escape、动作打开新弹层和页面停用，不能复制一套开关/返焦状态到新页面。
   - 手动按住说话复用 `useManualSpeechHold` 管理唯一指针或按键及指针捕获，`useVoiceInput` 继续拥有权限、录音与识别资源。房间、陪伴页和桌宠聊天窗保留各自准入、自动监听、唤醒会话及发送规则；按钮和全局 Space 共用同一手势 owner。审查须核对主指针、匹配释放、丢失捕获、失焦、IME 与外部取消；清除手势后再释放捕获，启动中松开取消，录音中松开结束，识别中的按钮失焦不能误取消已交接的识别。
   - 原图查看与未入册成片恢复复用 `imageReadSlot` 的实际读取槽和最新候选；取消等待不释放尚未结束的存储/桥接读取，原图实例独立占槽，绘图恢复在同一窗口跨重建共用槽。`useOriginalImage` 继续拥有 35 秒时限、预览 URL 和页面生命周期，图库、批量作品、聊天与视频首尾槽各自解析来源和回退；恢复后舞台 URL 交现有 Anima/SD 会话持有。缩略图及比较图沿自己的预算，图库墙的两个预览 worker 须等已发存储读取、解码与编码真正结算后归还；滚出视口或离页只阻止迟到结果发布，不能用提前结束等待突破并发数。审查须覆盖切图、重试、关闭过渡、首尾独立读取及完整媒体会话；停止读取与最终释放图片是不同交接，借入 URL 不可回收。

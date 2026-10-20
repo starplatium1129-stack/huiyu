@@ -18,6 +18,7 @@ export interface ConfirmOptions {
 }
 
 export interface ConfirmDialogState {
+  requestId: number
   visible: boolean
   title: string
   message: string
@@ -27,6 +28,7 @@ export interface ConfirmDialogState {
 }
 
 const state = ref<ConfirmDialogState>({
+  requestId: 0,
   visible: false,
   title: '',
   message: '',
@@ -36,6 +38,7 @@ const state = ref<ConfirmDialogState>({
 })
 
 let resolver: ((ok: boolean) => void) | null = null
+let nextRequestId = 0
 
 /**
  * 替代原生 confirm()。同一时刻只保留一个弹窗：新调用会让前一等待方收到 false
@@ -49,6 +52,7 @@ export function confirmAction(options: ConfirmOptions | string): Promise<boolean
   if (opts.signal?.aborted) return Promise.resolve(false)
   if (resolver) resolver(false)
   state.value = {
+    requestId: ++nextRequestId,
     visible: true,
     title: opts.title,
     message: opts.message ?? '',
@@ -69,10 +73,9 @@ export function confirmAction(options: ConfirmOptions | string): Promise<boolean
 }
 
 /** 仅供 ConfirmDialog 宿主组件调用 */
-export function resolveConfirm(ok: boolean) {
-  if (state.value.visible) state.value.visible = false
+export function resolveConfirm(requestId: number, ok: boolean) {
+  if (!state.value.visible || state.value.requestId !== requestId) return
   resolver?.(ok)
-  resolver = null
 }
 
 /** 仅供 ConfirmDialog 宿主组件读取 */
