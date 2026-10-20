@@ -16,6 +16,9 @@ import { artworkRepository } from '@/storage/artworkRepository'
 import { safeImageUrl } from '@/composables/gallery/galleryHelpers'
 import { sameArtworkMedia } from '@/composables/gallery/artworkMediaIdentity'
 import { prefersReducedMotion } from '@/utils/motionPreference'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { ArtworkRecord } from '@/types/artwork'
 
 const props = defineProps<{ items: ArtworkRecord[]; index: number }>()
@@ -23,6 +26,7 @@ const emit = defineEmits<{ change: [index: number]; error: [] }>()
 const host = ref<HTMLElement | null>(null)
 let viewer: PhotoSwipe | null = null
 let revision = 0
+let mediaSession = imageMediaSession()
 let resize: ResizeObserver | null = null
 const urls = new Map<number, string>()
 // Only URLs created here may be revoked; image_url can be borrowed from Gallery.
@@ -58,11 +62,21 @@ function dispose() {
   for (const url of ownedUrls) releaseUrl(url)
   urls.clear(); pending.clear()
 }
+function refreshMediaSession() {
+  const next = imageMediaSession()
+  if (next === mediaSession) return
+  mediaSession = next
+  // Reconnection with identical source fields must not revive an old decode.
+  dispose()
+}
+const stopRuntime = onDesktopRuntime(refreshMediaSession)
+watch(runtimeResourceIdentity, refreshMediaSession, { flush: 'sync' })
 function start() {
   dispose()
   const element = host.value
   if (!element || !props.items.length || props.index < 0) return
   const token = revision
+  const repository = artworkRepository, session = imageMediaSession()
   const items = props.items.map(item => ({ ...item }))
   const data = items.map(item => ({ type: 'image', src: '', width: Number(item.width) || 832, height: Number(item.height) || 1216, alt: item.sceneTitle || '作品' }))
   const reduced = prefersReducedMotion()
@@ -111,13 +125,24 @@ function start() {
     if (pending.has(index)) return
     const request = new AbortController()
     pending.set(index, request)
+    const item = items[index]
+    const current = () => revision === token && !request.signal.aborted && pending.get(index) === request
+      && repository === artworkRepository && session === imageMediaSession()
+      && sameArtworkMedia(item, props.items[index]) && item._galleryRevision === props.items[index]?._galleryRevision
     void (async () => {
       let url = ''
       try {
-        const item = items[index]
-        const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal).catch(() => null) : null
-        if (revision !== token || request.signal.aborted || !sameArtworkMedia(item, props.items[index])) return
-        url = blob ? URL.createObjectURL(blob) : safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
+        const blob = item.image_id ? await repository.getImage(item.image_id, request.signal).catch(() => null) : null
+        if (!current()) return
+        let fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
+        // Gallery summaries omit legacy embedded originals. Resolve only this
+        // missing neighboring fallback, not already available blobs or URLs.
+        if (!blob && !fallback && item._gallerySummary) {
+          const source = await repository.readArtwork(item.id, request.signal)
+          if (!current()) return
+          fallback = safeImageUrl(source?.image_url) || (source?.image_data?.startsWith('data:image/') ? source.image_data : '')
+        }
+        url = blob ? URL.createObjectURL(blob) : fallback
         if (blob) ownedUrls.add(url)
         if (!url) throw new Error('missing image')
         urls.set(index, url)
@@ -131,7 +156,7 @@ function start() {
           request.signal.removeEventListener('abort', cancelDecode)
           decoding.delete(image)
         }
-        if (revision !== token || request.signal.aborted || !sameArtworkMedia(item, props.items[index]) || Math.abs(index - instance.currIndex) > 2) {
+        if (!current() || Math.abs(index - instance.currIndex) > 2) {
           releaseUrl(url)
           if (revision === token && urls.get(index) === url) urls.delete(index)
           return
@@ -142,7 +167,7 @@ function start() {
       } catch {
         releaseUrl(url)
         if (revision === token && urls.get(index) === url) urls.delete(index)
-        if (revision === token && !request.signal.aborted) event.content.onError()
+        if (current()) event.content.onError()
       } finally { if (pending.get(index) === request) pending.delete(index) }
     })()
   })
@@ -166,8 +191,8 @@ function start() {
 }
 // goTo's external-selection path is instant, including the dialog's arrow keys.
 watch(() => props.index, index => { if (index >= 0 && viewer && viewer.currIndex !== index) viewer.goTo(index) })
-watch(() => props.items.map(({ id, image_id, image_url, image_data }) => ({ id, image_id, image_url, image_data })), (items, previous) => {
-  if (items.length !== previous.length || items.some((item, index) => !sameArtworkMedia(item, previous[index]))) start()
+watch(() => props.items.map(({ id, image_id, image_url, image_data, _galleryRevision }) => ({ id, image_id, image_url, image_data, _galleryRevision })), (items, previous) => {
+  if (items.length !== previous.length || items.some((item, index) => !sameArtworkMedia(item, previous[index]) || item._galleryRevision !== previous[index]._galleryRevision)) start()
 })
 onMounted(() => {
   motionMedia.addEventListener('change', syncMotionPreference)
@@ -175,6 +200,7 @@ onMounted(() => {
   start()
 })
 onBeforeUnmount(() => {
+  stopRuntime()
   motionMedia.removeEventListener('change', syncMotionPreference)
   window.removeEventListener('atelier:motion-preference', syncMotionPreference)
   dispose()
