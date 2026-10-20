@@ -15,14 +15,6 @@ export interface ArtworkLibrarySnapshot {
   projects: ArtworkProjectRecord[]
 }
 
-export interface ArtworkDeleteResult {
-  deleted: boolean
-  historyChanged: boolean
-  removedImageIds: string[]
-  removedThumbnailIds: string[]
-  removedProjectReferences: number
-}
-
 export const ARTWORK_DELETE_BATCH_SIZE = 200
 export const ARTWORK_RESTORE_BATCH_SIZE = 200
 export interface ArtworkSoftDeleteResult { id: string | number; deleted: boolean }
@@ -75,7 +67,6 @@ export interface ArtworkRepository {
   undoArtworkOrganization(receipt: ArtworkOrganizationReceipt): Promise<ArtworkOrganizationUndoResult>
   patchArtwork(id: string | number, patch: Record<string, unknown>): Promise<{ updated: boolean }>
   patchArtworks(patches: Array<{ id: string | number; patch: Record<string, unknown> }>): Promise<void>
-  deleteArtwork(id: string | number): Promise<ArtworkDeleteResult>
   softDeleteArtwork(id: string | number): Promise<{ deleted: boolean }>
   /** One bounded batch; missing records are reported without discarding successful deletions. */
   softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]>

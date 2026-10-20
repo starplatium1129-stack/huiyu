@@ -195,10 +195,8 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     if (!current) { invalidateSnapshots(); return null }
     return writeArtworkCommand({ ...snapshot, kind, id, operationId: crypto.randomUUID(), expectedRevision: current.revision }, value => {
       if (typeof value.changed !== 'boolean') throw new Error('作品操作回执无效')
-      if (kind !== 'hardDeleteArtwork') {
-        const artwork = parseArtworkRow(value.artwork, id)
-        if (!artwork || (value.changed && artwork.revision !== value.revision)) throw new Error('作品操作回执无效')
-      }
+      const artwork = parseArtworkRow(value.artwork, id)
+      if (!artwork || (value.changed && artwork.revision !== value.revision)) throw new Error('作品操作回执无效')
       return structuredClone(value) as Receipt
     })
   }
@@ -339,10 +337,6 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     },
     async patchArtwork(id, patch) { return { updated: Boolean((await mutate('patchArtwork', id, { patch }))?.changed) } },
     async patchArtworks(patches) { for (const item of patches) await mutate('patchArtwork', item.id, { patch: item.patch }) },
-    async deleteArtwork(id) {
-      const current = await row(id), result = current ? await mutate('hardDeleteArtwork', id) : null
-      return { deleted: Boolean(result?.changed), historyChanged: Boolean(result?.changed), removedImageIds: [], removedThumbnailIds: [], removedProjectReferences: result?.removed ?? 0 }
-    },
     async softDeleteArtwork(id) { return { deleted: Boolean((await mutate('softDeleteArtwork', id))?.changed) } },
     softDeleteArtworks,
     async restoreArtwork(id) { return { restored: Boolean((await mutate('restoreArtwork', id))?.changed) } },
@@ -377,7 +371,6 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     undoArtworkOrganization: receipt => trackMaintenanceWrite(() => repository.undoArtworkOrganization(receipt)),
     patchArtwork: (id, patch) => trackMaintenanceWrite(() => repository.patchArtwork(id, patch)),
     patchArtworks: patches => trackMaintenanceWrite(() => repository.patchArtworks(patches)),
-    deleteArtwork: id => trackMaintenanceWrite(() => repository.deleteArtwork(id)),
     softDeleteArtwork: id => trackMaintenanceWrite(() => repository.softDeleteArtwork(id)),
     softDeleteArtworks: ids => trackMaintenanceWrite(() => repository.softDeleteArtworks(ids)),
     restoreArtwork: id => trackMaintenanceWrite(() => repository.restoreArtwork(id)),

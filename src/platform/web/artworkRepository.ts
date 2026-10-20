@@ -4,13 +4,12 @@ import { assertArtworkCleanupCurrent, withArtworkCleanup, withArtworkStaging } f
 import { readBrowserImageReferences } from '../../utils/storageReferences.ts'
 import { imgDeleteMany, imgGetRecord, imgPutRecord } from '../../composables/useImageStore.ts'
 import { parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
-import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type ArtworkRestoreResult, type TrashEntry, type ArtworkTrashSelection } from '../../application/artwork/artworkRepository.ts'
+import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE, type ArtworkRepository, type ArtworkSoftDeleteResult, type ArtworkRestoreResult, type TrashEntry, type ArtworkTrashSelection } from '../../application/artwork/artworkRepository.ts'
 import { type ArtworkKvAdapter, type ArtworkImageAdapter, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, record, comparableId, recordId, imageId, unique, arrayValue, callSafely } from './artworkStorage.ts'
-import { createArtworkHardDelete } from './artworkHardDelete.ts'
 import { createArtworkReads } from './artworkReads.ts'
 import { createArtworkMedia } from './artworkMedia.ts'
 import type { createArtworkOrganization } from './artworkOrganization.ts'
-import { createArtworkProjects } from './artworkProjects.ts'
+import type { createArtworkProjects } from './artworkProjects.ts'
 import { ArtworkTrashConflictError } from '../../application/artwork/artworkMutationOutcome.ts'
 
 
@@ -33,11 +32,6 @@ export function createWebArtworkRepository(): ArtworkRepository {
     const operation = mutationTail.then(() => cleanup ? withArtworkCleanup(work) : withArtworkMutation(work))
     mutationTail = operation.then(() => undefined, () => undefined)
     return operation
-  }
-
-  const deleteArtworkNow = createArtworkHardDelete(kv, images)
-  function deleteArtwork(id: string | number): Promise<ArtworkDeleteResult> {
-    return enqueue(() => deleteArtworkNow(id))
   }
 
   // ── 软删回收站（2026-08-30 UX 审计 P0-8：作品硬删不可恢复）─────────────
@@ -303,8 +297,23 @@ export function createWebArtworkRepository(): ArtworkRepository {
       .then(({ createArtworkOrganization }) => createArtworkOrganization({ kv, enqueue: work => work() }))
       .catch(error => { organization = undefined; throw error })
   }
-  const projects = createArtworkProjects(kv, enqueue)
-  return { ...reads, ...media, ...projects, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork,
+  let projects: Promise<ReturnType<typeof createArtworkProjects>> | undefined
+  function loadProjects() {
+    // Admission precedes loading; the caller already owns the same library lock.
+    return projects ??= import('./artworkProjects.ts')
+      .then(({ createArtworkProjects }) => createArtworkProjects(kv, work => work()))
+      .catch(error => { projects = undefined; throw error })
+  }
+  return { ...reads, ...media, withStaging: withArtworkStaging, patchArtwork, patchArtworks, appendArtwork,
+    createProject: async input => {
+      const snapshot = structuredClone(input)
+      return enqueue(async () => (await loadProjects()).createProject(snapshot))
+    },
+    saveSmartAlbum: async input => {
+      const snapshot = structuredClone(input)
+      return enqueue(async () => (await loadProjects()).saveSmartAlbum(snapshot))
+    },
+    deleteSmartAlbum: id => enqueue(async () => (await loadProjects()).deleteSmartAlbum(id)),
     organizeArtworks: async input => {
       const snapshot = structuredClone(input)
       return enqueue(async () => (await loadOrganization()).organizeArtworks(snapshot))
