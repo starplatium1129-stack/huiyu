@@ -35,7 +35,7 @@ Windows 原生前置按[模型指南](setup-and-models.md#windows-原生前置vc
 | 素材发行 | `release.json` 原始字节审批指纹 |
 | --- | --- |
 | [huiyu-resources-20261006-r1](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1)（当前） | `99391f8584c3cfeaf747977815f19b77b2c33aa73b7193f4da8befb87ea7e94d` |
-| [huiyu-resources-20261002-r1](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261002-r1)（旧版） | `fac5c408266d55721bf2888791f01d7d6cc70605227efdcd218e78d53548f2bf` |
+| `huiyu-resources-20261002-r1`（已停止分发，仍可导入已下载的旧包） | `fac5c408266d55721bf2888791f01d7d6cc70605227efdcd218e78d53548f2bf` |
 
 未知包拒绝安装，需维护者依据独立发布来源审核并更新助手；不得把新包自带的哈希、旁边的校验文件或本地可编辑配置自动加入信任清单。必须独立取得官方助手，不能信任不明 ZIP 附赠的可执行脚本。`.zip.sha256` 仅用于下载完整性，与审批指纹不同。
 

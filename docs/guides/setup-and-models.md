@@ -2,7 +2,7 @@
 
 新机器先安装桌面程序和完整素材包，随后按需要准备本地 AI 服务。**素材包提供角色、场景样张和浏览所需图片；生图、视频、对话、反推和 AI 配音需要各自的模型及运行环境。** 当前 Anima 生图从控制室的“原生生图”一键准备开始，支持设备、完整模型与许可见[独立推理指南](independent-inference.md)。文件存在或下载校验通过，不能代替真实功能验收。
 
-> 整理日期：2026-10-14。公开 1.9.2 的能力以[发行说明](../releases/v1.9.2.md)为准；当前源码与实际安装身份分别核对。宁宁、夏目 Anima v21 绘图 LoRA 仍使用 [1.9.0 独立附件](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.0)；声线与参考库是独立资源。安装见[离线资源指南](offline-resources.md)，启动见[STARTUP](../../STARTUP.md)。
+> 整理日期：2026-10-20。公开 1.9.2 的能力以[发行说明](../releases/v1.9.2.md)为准；当前源码与实际安装身份分别核对。宁宁、夏目 Anima v21 绘图 LoRA 已迁至[最新资源发行](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1)的独立附件；声线与参考库是独立资源。安装见[离线资源指南](offline-resources.md)，启动见[STARTUP](../../STARTUP.md)。
 
 ## 1. 一台新机器需要哪些交付物
 
@@ -202,7 +202,7 @@ MiaoMiao 发布附件中的 `*_txt.safetensors` 与此 Qwen 0.6B 文件 SHA-256 
 
 ### WAI、角色 LoRA 和超分
 
-[WAI-illustrious-SDXL v17.0](https://civitai.com/models/827184?modelVersionId=2883731) 的 `waiIllustriousSDXL_v170.safetensors` 约 **6.94 GB**。ComfyUI 放 `models/checkpoints/`；WebUI 放其真正使用的 Stable-diffusion 模型目录。宁宁/夏目的 WAI 路径还需要 `ayachi_nene_v18_wd14.safetensors` / `shiki_natsume_v18_wd14.safetensors`；Anima 角色路径需要 v21 对应文件。**Anima v21 两份绘图 LoRA 已公开，均由绘遇作者亲自训练：** [宁宁](https://github.com/starplatium1129-stack/huiyu/releases/download/v1.9.0/ayachi_nene_v21_anima.safetensors)、[夏目](https://github.com/starplatium1129-stack/huiyu/releases/download/v1.9.0/shiki_natsume_v21_anima.safetensors)，各约 92 MB；[清单](https://github.com/starplatium1129-stack/huiyu/releases/download/v1.9.0/huiyu-anima-v21-loras.json)提供精确大小和摘要。下载时保留随附许可与来源通知。旧 WAI 角色权重不作为新用户准备项，AI 配音是独立资源。 未选择角色 LoRA 的公共 Anima 创作与素材浏览仍可单独验收。
+[WAI-illustrious-SDXL v17.0](https://civitai.com/models/827184?modelVersionId=2883731) 的 `waiIllustriousSDXL_v170.safetensors` 约 **6.94 GB**。ComfyUI 放 `models/checkpoints/`；WebUI 放其真正使用的 Stable-diffusion 模型目录。宁宁/夏目的 WAI 路径还需要 `ayachi_nene_v18_wd14.safetensors` / `shiki_natsume_v18_wd14.safetensors`；Anima 角色路径需要 v21 对应文件。**Anima v21 两份绘图 LoRA 已公开，均由绘遇作者亲自训练：** [宁宁](https://github.com/starplatium1129-stack/huiyu/releases/download/huiyu-resources-20261006-r1/ayachi_nene_v21_anima.safetensors)、[夏目](https://github.com/starplatium1129-stack/huiyu/releases/download/huiyu-resources-20261006-r1/shiki_natsume_v21_anima.safetensors)，各约 92 MB；[清单](https://github.com/starplatium1129-stack/huiyu/releases/download/huiyu-resources-20261006-r1/huiyu-anima-v21-loras.json)提供精确大小和摘要。下载时保留随附许可与来源通知。旧 WAI 角色权重不作为新用户准备项，AI 配音是独立资源。 未选择角色 LoRA 的公共 Anima 创作与素材浏览仍可单独验收。
 
 超分、CLIPSeg 自动遮罩、ControlNet/ADetailer/Regional Prompter 属于按需扩展，需要对应权重、代码和预处理组件。对支持的基础生图先验一张；选择这些操作后再核对完整依赖，不把可选功能列为普通素材浏览的前置条件。
 
