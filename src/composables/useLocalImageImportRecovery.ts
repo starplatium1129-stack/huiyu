@@ -29,6 +29,7 @@ export function useLocalImageImportRecovery(onSaved: () => void) {
       const outcome = await (kind === 'save' ? retryLocalImageImport(id, file) : endLocalImageImport(id))
       if (!alive || controller.signal.aborted) return
       if (outcome === 'saved') { feedback.value = '原图片已确认存入作品册，没有重复创建作品。'; onSaved() }
+      else if (outcome === 'superseded') feedback.value = '原导入已确认结束；该编号当前对应的图片已变化。本次仅结束恢复记录，未覆盖或删除当前作品及图片，也未重复入册。'
       else feedback.value = outcome === 'not-live' ? '原作品已删除或在回收站中，未重新创建；恢复记录已结束。' : '原导入已终止，恢复记录已结束。'
     } catch (error) {
       if (alive) feedback.value = error instanceof Error ? error.message : '导入尚未确认，原图片和编号已保留。'

@@ -21,11 +21,19 @@ export async function importWebArtwork(input: ArtworkImportInput, command: Artwo
   const existing = records.find(item => recordId(item) === String(input.artwork.id))
   const expectedReceipt = { operationId: input.operationId, id: input.artwork.id, imageId: input.media.alias, inputHash }
   const savedReceipt = record(receipt)
-  if (receipt !== null && receipt !== undefined && (!savedReceipt || !['committed', 'aborted'].includes(String(savedReceipt.state))
+  if (receipt !== null && receipt !== undefined && (!savedReceipt || (savedReceipt.state !== 'committed' && savedReceipt.state !== 'aborted')
     || Object.entries(expectedReceipt).some(([key, value]) => savedReceipt[key] !== value)))
     throw new Error('图片导入回执身份无效，原记录已保留')
   if (existing) {
-    if (imageId(existing) !== input.media.alias) throw new Error('原作品编号已对应另一张图片，已停止恢复')
+    if (imageId(existing) !== input.media.alias) {
+      // Restore can remap aliases while retaining artwork IDs. Only an explicit
+      // end may settle the verified original terminal receipt, without adopting
+      // or changing the newer artwork. A normal save remains an identity conflict.
+      if (command.kind === 'abort' && savedReceipt) return 'superseded'
+      throw new Error(savedReceipt
+        ? '原作品编号对应的图片已变化，未覆盖当前作品；可选择“结束待办”仅结束原导入恢复记录'
+        : '原作品编号已对应另一张图片，已停止恢复')
+    }
     // Preserve replay knowledge if a recovered publication predates its handoff.
     if (!receipt) { await kvSetMany([{ key: receiptKey, value: { ...expectedReceipt, state: 'committed' } }], check); check() }
     return 'saved'

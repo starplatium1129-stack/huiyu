@@ -16,7 +16,7 @@ export interface LocalImageImport {
   name: string
   input: ArtworkImportInput
 }
-export type ArtworkImportOutcome = 'saved' | 'not-live' | 'aborted'
+export type ArtworkImportOutcome = 'saved' | 'not-live' | 'aborted' | 'superseded'
 export type ArtworkImportCommand = { kind: 'save'; blob?: Blob } | { kind: 'abort' }
 export interface ArtworkImportAccess { check(): void }
 
@@ -42,7 +42,7 @@ export function parseLocalImageImport(value: unknown): LocalImageImport {
     || !text(artwork.id) || !artworkId.test(artwork.id) || !text(media.alias) || !imageId.test(media.alias)
     || artwork.image_id !== media.alias || !text(media.sha256) || !/^[a-f0-9]{64}$/.test(media.sha256)
     || typeof media.bytes !== 'number' || !Number.isSafeInteger(media.bytes) || media.bytes <= 0 || media.bytes > 24 * 1024 * 1024
-    || !['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/bmp', 'image/avif'].includes(String(media.mime))
+    || !text(media.mime) || !['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/bmp', 'image/avif'].includes(media.mime)
     || typeof artwork.prompt !== 'string' || artwork.prompt.length > 2048 || artwork.image_url !== ''
     || 'image_data' in artwork || 'blob' in artwork || typeof artwork.timestamp !== 'number' || !Number.isFinite(artwork.timestamp)) return invalid()
   return structuredClone(value) as unknown as LocalImageImport
