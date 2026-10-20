@@ -115,6 +115,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       const controller = new AbortController()
       exportController = controller
       if (desktopActive.value) {
+        exportProgress.value = { completed: 0, total: 0 }
+        workspaceProgress.value = '正在准备工作区备份…'
         let resumed = false
         const receipt = await createWorkspaceBackup(controller.signal, (value, retrying) => {
           controller.signal.throwIfAborted()
@@ -123,9 +125,11 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
         }, updateWorkspaceProgress)
         controller.signal.throwIfAborted()
         lastBackupAt.value = Date.parse(receipt.createdAt)
-        localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value))
+        let reminderWarning = ''
+        try { localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value)) }
+        catch { reminderWarning = '备份提醒时间未能更新；已完成的备份不受影响。' }
         onFlash(`${resumed ? '已续取或续做上次备份' : '工作区备份完成'}，包含 ${receipt.mediaCount} 个原始媒体；恢复凭证已开始下载。`
-          + (resumed ? '提醒沿用原操作发起时间，不能据此确认快照时刻；如需包含最新修改，请再次新建备份。' : ''))
+          + (resumed ? '提醒沿用原操作发起时间，不能据此确认快照时刻；如需包含最新修改，请再次新建备份。' : '') + reminderWarning)
         return
       }
       source = captureBackupSource(controller, false)

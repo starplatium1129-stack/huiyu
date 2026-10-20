@@ -29,6 +29,7 @@ export function usePortableBackup(busy: Ref<boolean>, flash: (message: string) =
     const signal = controller.signal
     let settled = false
     try {
+      progress.value = '正在准备完整备份操作…'
       await flushProfileWrites()
       signal.throwIfAborted()
       const pending = JSON.parse(globalThis.localStorage.getItem(pendingKey) || 'null') as { id?: string; action?: string } | null
