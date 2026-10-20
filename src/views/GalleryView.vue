@@ -132,7 +132,7 @@
                 :confirming-delete="pendingDeleteId === item.id" :deleting="pendingDeleteId === item.id && deleting"
                 @select="toggleSelect(item.id, $event)" @open="openFromCard(indexOf(item), $event)"
                 @favorite="toggleFavorite(item)" @request-delete="pendingDeleteId = item.id" @cancel-delete="pendingDeleteId = null"
-                @delete="confirmDelete(item)" @measure="measure(item, $event)" @load="onHdLoad(item, $event)"
+                @delete="confirmDelete(item)" @measure="measure(item, $event)" @load="onHdLoad(item, $event)" @retry="retryCardImage(item)"
               />
               </template>
             </GalleryVirtualColumn>
@@ -379,7 +379,7 @@ galleryError,
 history,
 resetGalleryFilters,
 masonryGroups,
-scheduleWallScan,
+scheduleWallScan, retryCardImage,
 columnCount,
 pendingDeleteId,
 ratioOf,

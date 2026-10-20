@@ -192,12 +192,16 @@ export function useGalleryWorkspace() {
     }
     /* ---------- 可见缩略图与按显示像素生成的预览 ---------- */
     const THUMB_CONCURRENCY = 8;
-    const { returnThumbIds, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan } = useGalleryCardPreviews({
+    const { returnThumbIds, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan, retryCardImage } = useGalleryCardPreviews({
         shell: shellEl, items: () => pagedVisible.value,
         active: () => !unmounted && viewActive, wallActive: () => !trashMode.value && collectionPreviewItems.value === null,
-        epoch: () => imageEpoch, signal: () => imageReads.signal, current: item => isMediaCurrent(item),
+        epoch: () => imageEpoch, signal: () => imageReads.signal, current: item => {
+            const index = visibleIndices.value.get(item.id), live = index === undefined ? undefined : visible.value[index];
+            return index !== undefined && index < pagedVisible.value.length && sameArtworkMedia(item, live) && item._galleryRevision === live?._galleryRevision;
+        },
         urls: cardUrls, thumbnails: thumbUrls, rememberThumbnail, forgetThumbnail, markMissing: markImageMissing,
         missing: id => missingImageIds.value.has(id), hydrateThumbnails: hydrateThumbs, trimThumbnails,
+        clearMissing: id => { if (missingImageIds.value.delete(id)) missingImageIds.value = new Set(missingImageIds.value); },
     });
     let thumbHydration: Promise<void> | null = null;
     let thumbsDirty = false;
@@ -406,7 +410,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, closeComparison, loadGalleryStorage, trashBusy,
         restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryIndexLoading, galleryError, history, resetGalleryFilters,
-        masonryGroups, scheduleWallScan, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
+        masonryGroups, scheduleWallScan, retryCardImage, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
         hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed,

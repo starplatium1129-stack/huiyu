@@ -97,8 +97,10 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
   }
   async function save() {
     if (saveDisabled.value) return
-    const output = selected.value === 'output'
+    const selection = selected.value, output = selection === 'output'
     const current = expected.value, input = inputResult.value
+    const isCurrent = () => output ? expected.value?.id === current!.id : inputResult.value === input
+    const isSelected = () => selected.value === selection && isCurrent()
     options.exporting.value = true; error.value = ''; notice.value = ''
     try {
       options.check()
@@ -106,26 +108,30 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
       if (output) await archiveTaskResult(current!.id, mangaLineIndex(current!))
       else await input!.save()
       options.check()
-      if (output) outputSaved.value = true; else inputSaved.value = true
-      notice.value = '线稿已存入我的作品，带有「线稿」标签与来源信息'
+      if (isCurrent()) { if (output) outputSaved.value = true; else inputSaved.value = true }
+      if (isSelected()) notice.value = '线稿已存入我的作品，带有「线稿」标签与来源信息'
       options.onSaved()
-    } catch (e) { if (!options.signal.aborted) error.value = `${message(e)}；可重试保存同一张线稿，或先导出 PNG` }
+    } catch (e) { if (!options.signal.aborted && isSelected()) error.value = `${message(e)}；可重试保存同一张线稿，或先导出 PNG` }
     finally { options.exporting.value = false }
   }
   async function download() {
     if (options.locked()) return
-    const blob = selected.value === 'input' ? inputReady.value ? inputBlob.value : null : outputBlob.value
+    const selection = selected.value, output = selection === 'output'
+    const current = expected.value, input = inputResult.value
+    const blob = output ? outputBlob.value : inputReady.value ? inputBlob.value : null
     if (!blob) return
+    const isCurrent = () => output ? expected.value?.id === current!.id : inputResult.value === input
+    const isSelected = () => selected.value === selection && isCurrent()
     options.exporting.value = true; error.value = ''; notice.value = ''
     try {
       options.check()
-      const output = selected.value === 'output'
-      const id = output ? expected.value!.id.slice(0, 8) : '导入副本'
+      const id = output ? current!.id.slice(0, 8) : '导入副本'
       if (await downloadMangaPng(blob, `绘遇-线稿-${id}.png`)) {
-        if (output) downloaded.value = true
-        notice.value = '已发起线稿 PNG 保存（黑线白底）'
+        options.check()
+        if (output && isCurrent()) downloaded.value = true
+        if (isSelected()) notice.value = '已发起线稿 PNG 保存（黑线白底）'
       }
-    } catch (e) { if (!options.signal.aborted) error.value = message(e) }
+    } catch (e) { if (!options.signal.aborted && isSelected()) error.value = message(e) }
     finally { options.exporting.value = false }
   }
   function reset() {
