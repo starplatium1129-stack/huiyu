@@ -522,12 +522,12 @@
     "visual_dna": {
       "hair": "黑色长直发",
       "hair_color": "黑",
-      "eyes": "棕色",
+      "eyes": "蓝紫色",
       "hairstyle": "中分长直发",
       "uniform": "峰岸高中制服 / 黑色兔女郎装",
       "expression": "冷静沉稳 · 成熟御姐",
       "style": "composed actress senpai",
-      "signature": "黑长直、棕瞳与兔女郎名场面"
+      "signature": "黑长直、蓝紫瞳与兔女郎名场面"
     },
     "personality": [
       "冷静沉稳",
@@ -554,7 +554,7 @@
     },
     "tags": [
       "黑长直",
-      "棕瞳",
+      "蓝紫瞳",
       "兔女郎装",
       "女演员",
       "成熟气质"
@@ -579,12 +579,10 @@
       "long_black_hair",
       "straight_hair",
       "purple_eyes",
-      "brown_eyes",
       "bangs",
       "ahoge",
       "rabbit_hair_ornament",
-      "hair_clip",
-      "beauty_mark"
+      "hair_clip"
     ],
     "accent_color": "#38bdf8",
     "bg_color": "#0f172a"
@@ -742,10 +740,11 @@
       "frieren",
       "1girl",
       "solo",
-      "long_white_hair",
+      "long_hair",
+      "white_hair",
       "very_long_hair",
-      "twin_braids",
-      "purple_eyes",
+      "twintails",
+      "green_eyes",
       "elf",
       "pointy_ears",
       "gold_earrings"
@@ -933,14 +932,14 @@
       "alt": "楪祈 样张立绘"
     },
     "visual_dna": {
-      "hair": "粉色长发 · 下双马尾",
-      "hair_color": "粉",
+      "hair": "粉橘渐变长发，脸侧细发束由红色发筒固定",
+      "hair_color": "粉色渐变至橘色",
       "eyes": "红",
-      "hairstyle": "下双马尾 · 红色发夹",
+      "hairstyle": "长发与两侧束发 · 红色发筒及发夹",
       "uniform": "红色歌姬战斗服 / 白裙",
       "expression": "三无歌姬 · 空灵",
       "style": "ethereal void singer",
-      "signature": "粉发下双马尾、红瞳与红发夹"
+      "signature": "粉橘渐变长发、赤红眼眸与红色发筒"
     },
     "personality": [
       "三无",
@@ -1100,7 +1099,7 @@
       "hair": "灰银长发",
       "hair_color": "灰银",
       "eyes": "紫",
-      "hairstyle": "中长直发 · 齐刘海",
+      "hairstyle": "灰银长直发 · 齐刘海",
       "uniform": "黑色魔女装 · 尖顶魔女帽",
       "expression": "聪慧自信 · 略带自恋",
       "style": "elegant traveling witch",
@@ -1327,14 +1326,14 @@
       "alt": "玛奇玛 样张立绘"
     },
     "visual_dna": {
-      "hair": "淡粉长发（日常）/ 红发麻花辫（真身）",
-      "hair_color": "淡粉（日常）/ 红（真身）",
-      "eyes": "红（日常正常瞳孔）/ 金圈圈眼（真身）",
-      "hairstyle": "长发 · 红色发饰（日常）",
-      "uniform": "白色西装 / 黑裤",
+      "hair": "鲑粉色长发，编成松整的低麻花辫。",
+      "hair_color": "鲑粉色",
+      "eyes": "金色同心圆眼睛",
+      "hairstyle": "长发低辫与自然侧刘海",
+      "uniform": "白衬衫、黑领带与黑色裙装；正式场合可搭精裁黑西装。",
       "expression": "冷静掌控 · 高深莫测",
       "style": "calm unnerving dominator",
-      "signature": "淡粉长发、红瞳与白西装；真身为红发圈圈眼"
+      "signature": "鲑粉色长辫、金色同心圆眼睛与从容难测的神态"
     },
     "personality": [
       "冷静掌控",
@@ -1407,14 +1406,14 @@
       "alt": "远坂凛 样张立绘"
     },
     "visual_dna": {
-      "hair": "黑色双马尾",
-      "hair_color": "黑",
+      "hair": "深棕色长发与双马尾",
+      "hair_color": "深棕",
       "eyes": "蓝",
-      "hairstyle": "高双马尾 · 红色蝴蝶结发带",
+      "hairstyle": "双马尾 · 黑色蝴蝶结发带",
       "uniform": "红黑配色制服 / 红色外套",
       "expression": "傲娇自信 · 外冷内热",
       "style": "proud tsundere mage",
-      "signature": "黑发双马尾、红丝带与蓝瞳"
+      "signature": "深棕双马尾、黑发带与碧蓝眼睛"
     },
     "personality": [
       "傲娇",
@@ -1440,13 +1439,13 @@
       "faction": "冬木市远坂家"
     },
     "tags": [
-      "黑发双马尾",
-      "红丝带",
+      "深棕双马尾",
+      "黑发带",
       "蓝瞳",
       "宝石魔术",
       "傲娇"
     ],
-    "bg_story": "远坂凛是《Fate/stay night》的女主角之一，冬木市魔术世家远坂家的当主。黑发双马尾与红丝带是标志，宝石魔术与傲娇性格深入人心。场景应偏现代校园、都市与魔术工坊。",
+    "bg_story": "远坂凛是《Fate/stay night》的女主角之一，冬木市魔术世家远坂家的当主。深棕双马尾与黑发带是标志，宝石魔术与傲娇性格深入人心。场景应偏现代校园、都市与魔术工坊。",
     "palette": [
       "红",
       "黑",
@@ -1573,10 +1572,10 @@
       "hair_color": "银",
       "eyes": "淡紫",
       "hairstyle": "长直发 · 两侧卷发 · 呆毛",
-      "uniform": "白裙红饰（王选礼服）",
+      "uniform": "白紫绣边王选礼裙",
       "expression": "纯洁善良 · 天然认真",
       "style": "pure silver half-elf",
-      "signature": "银发紫瞳、独角与白裙"
+      "signature": "银发紫瞳、尖耳与白花发饰"
     },
     "personality": [
       "纯洁善良",
@@ -1604,7 +1603,7 @@
     "tags": [
       "银发",
       "紫瞳",
-      "独角",
+      "尖耳",
       "半精灵",
       "白裙"
     ],
@@ -1655,10 +1654,10 @@
       "hair_color": "浅蓝",
       "eyes": "浅蓝",
       "hairstyle": "长双辫 · 长刘海",
-      "uniform": "蓝袍白围裙 + 尖顶魔女帽",
+      "uniform": "蓝色魔女帽、白色褶边上衣与蓝裙",
       "expression": "内向认真 · 努力型",
       "style": "earnest migurd mage",
-      "signature": "浅蓝发双辫、浅蓝肤与尖顶魔女帽"
+      "signature": "浅蓝长发双辫、蓝眼与尖顶魔女帽"
     },
     "personality": [
       "内向认真",
@@ -1675,22 +1674,22 @@
     ],
     "classic_cg": {
       "title": "学院图书馆",
-      "description": "魔法学院的图书馆，她在书架间查找典籍，尖顶魔女帽与蓝袍是熟悉的风景。"
+      "description": "魔法学院的图书馆，她在书架间查找典籍，蓝色魔女帽、白色褶边上衣与蓝裙是熟悉的风景。"
     },
     "identity": {
       "role": "魔导师（水圣级）",
-      "age": "米格路德族（数百岁，外貌年轻）",
+      "age": "长寿的米格路德族，已成年",
       "occupation": "魔导师 / 教师",
-      "faction": "米里斯魔法学院"
+      "faction": "米格路德族；与格雷拉特家关系密切"
     },
     "tags": [
       "浅蓝发",
       "双辫",
-      "蓝肤",
+      "蓝眼",
       "魔女帽",
-      "蓝袍"
+      "白色褶边上衣与蓝裙"
     ],
-    "bg_story": "洛琪希是《无职转生》中主角的魔法启蒙导师，米格路德族（蓝发蓝肤、矮个）。蓝袍白围裙与尖顶魔女帽是标志。场景应偏魔法学院、荒野旅行与故乡村落。",
+    "bg_story": "洛琪希是《无职转生》中主角的魔法启蒙导师，来自米格路德族。浅蓝长发双辫、蓝眼、蓝色魔女帽与白色褶边上衣配蓝裙是她的标志。场景应偏魔法学院、荒野旅行与故乡村落。",
     "palette": [
       "水蓝",
       "魔女深蓝",
@@ -1815,12 +1814,12 @@
     "visual_dna": {
       "hair": "金色长发（高马尾/双马尾）",
       "hair_color": "金",
-      "eyes": "蓝",
+      "eyes": "粉色眼眸；角色扮演场景可按明确选择佩戴彩色隐形眼镜。",
       "hairstyle": "长发 · 常扎高马尾",
       "uniform": "西装校服 / 辣妹私服",
       "expression": "元气辣妹 · 下垂眼",
       "style": "energetic gyaru cosplayer",
-      "signature": "金发蓝眼与辣妹妆"
+      "signature": "金色长发、粉色发梢、粉瞳与辣妹妆"
     },
     "personality": [
       "开朗外向",
@@ -1847,12 +1846,12 @@
     },
     "tags": [
       "金发",
-      "蓝眼",
+      "粉瞳",
       "辣妹",
       "cosplayer",
       "制衣"
     ],
-    "bg_story": "喜多川海梦是《更衣人偶坠入爱河》的女主角，元气辣妹 cosplayer。金发蓝眼与下垂眼妆是标志。场景应偏制衣工房、漫展、游乐园等明亮日常。",
+    "bg_story": "喜多川海梦是《更衣人偶坠入爱河》的女主角，元气辣妹 cosplayer。金发粉瞳与下垂眼妆是标志。场景应偏制衣工房、漫展、游乐园等明亮日常。",
     "palette": [
       "亮金",
       "海梦粉",
@@ -2499,11 +2498,11 @@
     "type": "popular",
     "icon": "🗡️",
     "visual_dna": {
-      "hair": "鲜亮炽烈的洋红/绯红长发，及腰微卷，发丝层次分明且具有自然垂坠感，前额有碎发刘海，两侧修长鬓发垂于胸前（Long magenta/scarlet red hair, slightly wavy, bangs, long side strands）",
-      "hair_color": "炽红色 / 绯红（Scarlet Red / Magenta，已确认深红至洋红色系）",
-      "eyes": "深邃而锐利的赤红瞳孔（Red eyes），眼眸明亮，眼角微扬，眼神沉静冷峻且带有萨卡兹族特有的强大气场",
-      "hairstyle": "微卷披肩红发（Long slightly wavy hair），发尾微散卷曲，前额为自然分束的修饰刘海与垂肩侧鬓",
-      "uniform": "基础立绘服装：近未来工业机能风（Techwear）战术特勤服。内搭贴身高领露脐黑色无袖作战背心与黑色紧身皮质短裤，外披一件深灰拼接工业白色、点缀黄色警示条纹的短款硬质战术风衣；腰间配备多功能战术织带、金属插扣与多联装储物腰包；下身着不对称战术腿环绑带、硬质防护护膝及黑色高筒机能厚底战术皮靴；双手佩戴战术露指手套与护腕装置，领口配有战术颈环",
+      "hair": "红色层次发型，颈侧有较短分束，两侧与后方保留较长发束。",
+      "hair_color": "红色 / 绯红（Red / scarlet hair）",
+      "eyes": "锐利的蓝紫至紫色眼眸（Purple eyes）",
+      "hairstyle": "层次分明的红发，侧面和后方的长发束与颈侧短束并存。",
+      "uniform": "黑色无袖短层次战裙，破边裙摆与粉色内衬；白色领饰与金属坠件、黑色长手套、胸前绑带、松披外套、粉色腰包、腿部绑带和深色长靴。",
       "expression": "冷艳孤高、内敛沉稳、自信从容。战斗中目光炽烈果决、杀气逼人；非战斗状态下神色冷淡疏离、喜怒不形于色，但在享用冷饮甜品时会浮现极罕见的放松与温和",
       "style": "近未来工业机能风（Techwear）、科幻末世前线、萨卡兹恶魔、炽炎重剑士、冷艳干练",
       "signature": "头顶生有一对线条优雅、微微向后上方弯曲的深黑质感恶魔角（Black curved horns）；身后拖有一根修长带箭尖形尾梢的黑色恶魔细长尾（Black spade devil tail）；手持散发金红高温火光与熔岩裂纹的巨大工业双手重剑（Molten Greatsword）；战斗中周身伴随金红色高温熔岩余烬与烈焰波纹（Molten heat / Fire sparks）"
@@ -2532,8 +2531,9 @@
       "faction": "终末地工业（Endfield Industries）"
     },
     "tags": [
-      "炽红色 / 绯红（Scarlet Red / Magenta，已确认深红至洋红色系）",
-      "深邃而锐利的赤红瞳孔（Red eyes），眼眸明亮，眼角微扬，眼神沉静冷峻且带有萨卡兹族特有的强大气场"
+      "红色层次发束",
+      "紫色眼睛",
+      "黑色弯角"
     ],
     "bg_story": "莱万汀是活跃于塔罗斯-II开拓一线的终末地工业精锐特勤干员，以其无与伦比的重剑技巧与掌控高温熔岩源石技艺的能力著称。她的记忆深处埋藏着与古老源石文明及萨卡兹族历史紧密相连的纷乱碎片，始终在战斗中追寻自我存在的源头与真谛。在环境严苛且侵蚀泛滥的荒原前线，她手握熔岩大剑跨越险境，为终末地开拓队劈开前行道路，并在每一次烈火挥击中寻找属于自己的答案。",
     "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
@@ -2542,18 +2542,15 @@
       "1girl",
       "solo",
       "red_hair",
-      "long_hair",
-      "red_eyes",
-      "horns",
+      "layered_hair",
+      "purple_eyes",
+      "black_horns",
       "devil_tail",
-      "black_clothes",
-      "white_clothes",
-      "tactical",
-      "jacket",
-      "crop_top",
-      "shorts",
+      "black_dress",
+      "pink_lining",
+      "long_gloves",
       "greatsword",
-      "arknights"
+      "arknights_endfield"
     ],
     "portrait": {
       "image": "../assets/characters/popular-laevatain_arknights.png?v=6684ff1025c4",
@@ -2585,9 +2582,9 @@
     "type": "popular",
     "icon": "🕊️",
     "visual_dna": {
-      "hair": "温婉柔顺的暖橙棕色/姜红褐色微卷长发（Warm ginger-brown / light amber-brown wavy hair），发质细腻蓬松，两侧梳理有精致的细麻花辫与低垂的侧马尾散发，头顶有自然分叉的灵动发丝，额前配有轻薄自然的空气感斜刘海",
-      "hair_color": "暖橙棕色/姜褐色（Ginger-brown / warm amber hair；与亲妹妹能天使鲜亮活泼的亮红发相比，色调更加温润柔雅，呈现柔和的暖栗橙棕色调，绝非白发或纯金发，AI绘图提示词需明确指定 ginger-brown hair / warm amber hair）",
-      "eyes": "澄澈深邃的琥珀金/暖橙色眼眸（Warm amber / golden-orange eyes），眼眸明亮温和，常含有一抹沉着从容、兼具敏锐洞察与若隐若现幽默感的笑意",
+      "hair": "柔顺的粉色长发，发束自然垂落于肩侧。",
+      "hair_color": "粉色（Pink hair）",
+      "eyes": "明亮而沉着的眼神，日常温和，瞄准时锐利专注。",
       "hairstyle": "优雅半扎低垂微卷发配侧编发（Half-up wavy long hair with delicate side braids and low ponytail），发梢自然垂散于胸前与肩膀，既具圣职人员的端庄典雅，又显居家闲适的温柔感",
       "uniform": "拉特兰教廷公证所兼教宗枢机处高级顾问风纪正装：外穿深深灰黑色高定质感长款风衣外套（Slate dark tailored overcoat），内搭洁白挺括的修身翻领衬衫与纯黑细领带，衣领和胸前饰有精致的拉特兰金色圣徽金属徽章与流线暗纹；下身穿深色修身西裤与黑色短靴，腿部及膝盖常覆有保暖典雅的深色毛呢盖毯或战术护套；端坐于极具工业科技感的拉特兰专属定制机械轮椅上",
       "expression": "温和恬静、优雅从容、唇角常带一丝若有若无的玩味与腹黑微笑（Gentle, serene, subtle playful and confident smile）；在举枪瞄准与战场指挥时转为绝对冷静、波澜不惊的锐利专注神情",
@@ -2618,8 +2615,9 @@
       "faction": "拉特兰（Laterano） / 罗德岛（Rhodes Island）"
     },
     "tags": [
-      "暖橙棕色/姜褐色（Ginger-brown / warm amber hair；与亲妹妹能天使鲜亮活泼的亮红发相比，色调更加温润柔雅，呈现柔和的暖栗橙棕色调，绝非白发或纯金发，AI绘图提示词需明确指定 ginger-brown hair / warm amber hair）",
-      "澄澈深邃的琥珀金/暖橙色眼眸（Warm amber / golden-orange eyes），眼眸明亮温和，常含有一抹沉着从容、兼具敏锐洞察与若隐若现幽默感的笑意"
+      "粉色长发",
+      "萨科塔光环",
+      "轮椅神射手"
     ],
     "bg_story": "蕾缪安是拉特兰公证所声名赫赫的顶尖神射手，亦是能天使（蕾缪尔）敬爱的亲生姐姐。早年她曾与莫斯提马、菲亚梅塔、安多恩组成备受瞩目的拉特兰精英小队，但在八年前的意外变故中遭受重创并陷入长达五年的昏迷。苏醒后因下肢神经受损不得不依靠特制轮椅代步，然而身体的创伤从未磨灭她强大的内心与炉火纯青的铳术。在‘吾导先路’与‘空想花庭’等关乎拉特兰局势的关键事件中，她作为教宗万国峰会与第七厅的核心智囊，凭借惊人的远距狙击视野和超凡定力多次扭转危局。随后她以合作干员身份登上罗德岛，在接受神经康复治疗的同时，以无懈可击的战略视野为罗德岛提供绝对信赖的超远距狙击支援。",
     "source": "Hypergryph《明日方舟 / Arknights》",
@@ -2627,9 +2625,8 @@
       "lemuen (arknights)",
       "1girl",
       "solo",
-      "ginger_hair",
+      "pink_hair",
       "long_hair",
-      "amber_eyes",
       "halo",
       "wings",
       "dark_clothes",
@@ -2732,14 +2729,14 @@
     "type": "popular",
     "icon": "📋",
     "visual_dna": {
-      "hair": "白银微泛浅蓝的长发（medium to long layered platinum hair），发尾带有淡天蓝色/青蓝色微渐变挑染，头顶竖立一对毛茸茸的菲林猫耳，耳尖与内侧绒毛细腻，头部两侧佩戴有科技感强烈的机械发夹/通讯发饰，前额有轻薄修颜刘海，两侧留有较长的垂鬓微卷发束。",
-      "hair_color": "铂金银白偏浅天蓝渐变（platinum blonde / pale silver with soft cyan-blue gradient tips），发尾及猫耳尖端带有淡淡的科技天蓝晕染挑染。",
-      "eyes": "清澈透亮的天蓝色/灰蓝色眼眸（clear light cyan / sky blue eyes），神情清澈敏锐、沉稳温和，透出上位指挥官的专注与坚定。",
-      "hairstyle": "中长微卷分层披肩发（layered shoulder-length to long hair），头顶微蓬松自然垂落，刘海规整自然，两侧长鬓角自然贴面，发型兼具现代科技感与少女的柔顺感。",
-      "uniform": "终末地工业监督标准制服（Endfield Supervisor Uniform），以纯白色、深炭灰色与终末地工业标志性的高亮科技青蓝（Endfield Cyan）拼接为主色调。上身为修身立领工装战术夹克，左胸及肩部点缀有终末地工业 Logo、等级标识与肩章，内衬高领深色打底衫；下身为黑色高腰修身百褶战术短裙，搭配黑色过膝高筒袜/战术长袜与灰色/黑色机能战术短靴；腰间配有多功能战术挂带、工装小包、合金卡扣与通讯终端，整体呈现利落帅气的现代机能科技风（Techwear）。",
+      "hair": "柔顺的银灰色长发，轻薄刘海与较长侧发束自然垂落。",
+      "hair_color": "银灰 / 银白",
+      "eyes": "清澈浅蓝至青蓝色眼眸，神情专注而沉稳。",
+      "hairstyle": "分层长发，耳侧具有羽毛状结构与通讯发饰。",
+      "uniform": "白色短夹克搭白色高领无袖长上衣，窄领带与机能腰带；黑色连裤袜、左腿黄色束带、黑色手套与高跟鞋。",
       "expression": "沉着冷静、严谨专注而又不失温和体贴（calm, composed, gentle, professional supervisor），在工作中神情专注果断，与同伴相处时流露出亲切而略带思虑的浅笑。",
       "style": "现代机能工业风（Techwear）、科幻废土与开拓美学（Sci-Fi Exploration / Industrial Aesthetic）、干练制服战术少女（Tactical Anime Girl）。",
-      "signature": "头顶直立的毛茸茸菲林猫耳（feline animal ears）、细长猫尾（cat tail）、头部两侧独特的终末地机械发饰/发夹（mechanical hair clips / headset hair ornament）、黑白青撞色工业战术制服（Endfield techwear uniform）、手持多功能工业源石战术法杖（tactical staff / Originium Arts unit）。"
+      "signature": "银灰长发、浅青蓝眼睛、黎博利羽毛状耳部与终末地通讯发饰。"
     },
     "personality": [
       "沉着冷静",
@@ -2763,8 +2760,9 @@
       "faction": "终末地工业（Endfield Industries）"
     },
     "tags": [
-      "铂金银白偏浅天蓝渐变（platinum blonde / pale silver with soft cyan-blue gradient tips），发尾及猫耳尖端带有淡淡的科技天蓝晕染挑染。",
-      "清澈透亮的天蓝色/灰蓝色眼眸（clear light cyan / sky blue eyes），神情清澈敏锐、沉稳温和，透出上位指挥官的专注与坚定。"
+      "银灰长发",
+      "浅青蓝眼睛",
+      "黎博利羽毛状耳部"
     ],
     "bg_story": "佩丽卡担任终末地工业的「监督」，在环境严酷、充满未知危机的开拓前线行星「塔罗斯-II」（Talos-II）上主持大局，负责统筹基础设施建设、协议回收及前线干员的调度。在「管理员」长期沉睡的岁月里，她作为中流砥柱守护着基地的平稳运转，亲手招募并带领团队在荒凉大地上开荒前行。随着管理员的苏醒，佩丽卡不仅是其最得力的引路人与副手，更与其携手直面侵蚀浪潮的威胁，共同拓展文明在荒野中的边界。",
     "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
@@ -2772,19 +2770,11 @@
       "perlica (arknights)",
       "1girl",
       "solo",
-      "white_hair",
-      "short_hair",
-      "blue_eyes",
-      "hair_highlights",
-      "cat_ears",
-      "cat_tail",
-      "white_clothes",
-      "teal_jacket",
-      "tactical",
-      "jacket",
-      "pleated_skirt",
-      "thighhighs",
-      "arknights"
+      "silver_hair",
+      "long_hair",
+      "feather_ears",
+      "cyan_eyes",
+      "arknights_endfield"
     ],
     "portrait": {
       "image": "../assets/characters/popular-perlica_arknights.png?v=5",
@@ -2815,14 +2805,14 @@
     "type": "popular",
     "icon": "🍸",
     "visual_dna": {
-      "hair": "银白色至浅灰色为主色、发尾与内层渐变至珊瑚粉/橙红色的蓬松层次感中短发；头顶高高竖起一束醒目的红腿叫鹤羽冠呆毛（羽毛状呆毛），两鬓垂下较长的修饰脸型发缕，后颈发尾微翘且富有轻盈空气感。",
-      "hair_color": "银白色至浅灰配发尾珊瑚粉红/橙红渐变（silver white with coral pink / red gradient tips）",
-      "eyes": "鲜艳的朱红色/珊瑚橙红双瞳，眼型呈现天然的半睁垂眼/睡眼惺忪状（droopy / sleepy eyes），睫毛纤长，眼神常态下朦胧微困，流露慵懒与天然呆萌态。",
-      "hairstyle": "蓬松层次感渐变中短发，带羽毛状高耸呆毛与两鬓垂发（layered short hair with feather ahoge and side locks）",
+      "hair": "黑色为主的蓬松层次感短发；头顶竖起一束醒目的呆毛，两鬓垂下较长的修饰脸型发缕，后颈发尾微翘且富有轻盈空气感。",
+      "hair_color": "黑色 / 深灰黑（black / dark charcoal hair）",
+      "eyes": "眼型呈现天然的半睁垂眼/睡眼惺忪状（droopy / sleepy eyes），睫毛纤长，眼神常态下朦胧微困，流露慵懒与天然呆萌态。",
+      "hairstyle": "蓬松层次感短发，带呆毛与两鬓垂发（layered short hair with ahoge and side locks）",
       "uniform": "多索雷斯热带机能风格调酒战斗服。深灰/黑底短款露肩连帽外披夹克（半搭半穿），内搭黑色抹胸短背心（露脐 crop top），露出平坦腰腹；下身着高腰黑色工装热裤/短裤，系多功能机能战术腰带与调酒工具挂包、单侧大腿皮质绑带；脚穿黑色厚底机能短靴配不对称脚踝短袜；颈戴黑色细项圈（choker），右手戴黑色半指战术防滑手套。",
       "expression": "常态下神情慵懒困倦、微张嘴唇、反应慢半拍的迷糊乖巧神态；进入战斗时眼神骤变，展现出高度专注、冷冽而凌厉的斩杀者气场（强烈的反差萌）。",
       "style": "热带机能风（Tropical Techwear）、反差萌（Gap Moe）、慵懒少女与重型杀戮兵器的暴力美学（Heavy Weapon Cute Girl）。",
-      "signature": "比人还高的重型单刃黑色机械斩首大镰刀（Giant Scythe，由义兄龙舌兰亲手打造调整）、头顶叫鹤羽冠呆毛、银白染珊瑚红的发丝与朱红睡眼、随身调酒雪克壶配件（非信使/邮差，武器绝非羽毛笔）。"
+      "signature": "比人还高的重型单刃黑色机械斩首大镰刀（Giant Scythe，由义兄龙舌兰亲手打造调整）、头顶呆毛、黑色短发与慵懒睡眼、随身调酒雪克壶配件（非信使/邮差，武器绝非羽毛笔）。"
     },
     "personality": [
       "嗜睡迷糊",
@@ -2849,8 +2839,8 @@
       "faction": "玻利瓦尔 / 罗德岛"
     },
     "tags": [
-      "银白色至浅灰配发尾珊瑚粉红/橙红渐变（silver white with coral pink / red gradient tips）",
-      "鲜艳的朱红色/珊瑚橙红双瞳，眼型呈现天然的半睁垂眼/睡眼惺忪状（droopy / sleepy eyes），睫毛纤长，眼神常态下朦胧微困，流露慵懒与天然呆萌态。"
+      "黑色 / 深灰黑短发（short black / dark charcoal hair）",
+      "眼型呈现天然的半睁垂眼/睡眼惺忪状（droopy / sleepy eyes），睫毛纤长，眼神常态下朦胧微困，流露慵懒与天然呆萌态。"
     ],
     "bg_story": "羽毛笔本名拉菲艾拉·席尔瓦，是玻利瓦尔军官之女，父亲阵亡后被潘乔·萨拉斯收养，与义兄龙舌兰（埃内斯托）一同在多索雷斯长大，并在其经营的酒吧中担任调酒师与服务生。多索雷斯事件落幕后，她跟随龙舌兰一同加入罗德岛，成为近卫收割者干员。尽管平时总是一副睡不醒、反应迟钝的迷糊模样，但手握哥哥为她特制的巨大斩首镰刀时，能在战场上以惊人的敏捷与力量精准收割敌人。",
     "source": "Hypergryph《明日方舟 / Arknights》",
@@ -2858,12 +2848,10 @@
       "la pluma (arknights)",
       "1girl",
       "solo",
-      "white_hair",
-      "medium_hair",
-      "hair_gradient",
+      "black_hair",
+      "short_hair",
       "ahoge",
       "winged_ears",
-      "red_eyes",
       "sleepy",
       "black_clothes",
       "grey_clothes",
@@ -3204,17 +3192,17 @@
       "alt": "希露菲叶特 样张立绘"
     },
     "visual_dna": {
-      "hair": "幼年绿发 → 青年银白短发（米格路德族长耳族 1/4 混血）",
+      "hair": "幼年绿发 → 青年银白短发（长耳族血统）",
       "hair_color": "绿（幼年）/ 银白（青年）",
       "eyes": "红（Ruby Red）",
       "hairstyle": "短发 · 齐刘海 · 又长又尖的双耳（高兴时会扑腾）",
-      "uniform": "学徒法师长袍 / 夏亚魔法学院执事装（菲兹）",
+      "uniform": "学徒法师长袍 / 拉诺亚魔法大学执事装（菲兹）",
       "expression": "温柔羞怯 · 小天使",
       "style": "gentle white-haired elf girl",
       "signature": "尖耳、红瞳与绿发变白发的成长线"
     },
     "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
-    "bg_story": "希露菲叶特是《无职转生》的女主角之一，鲁迪的青梅竹马。拥有 1/4 长耳族（米格路德族）血统，又长又尖的双耳是她的个人标志。幼年因斯佩路德族般的绿发被欺负，被鲁迪所救后成为朋友并一同学习魔术。青年时期以「菲兹」之名在夏亚魔法学院活跃，最终与鲁迪重逢并结为夫妻。",
+    "bg_story": "希露菲叶特是《无职转生》的女主角之一，鲁迪的青梅竹马。拥有长耳族血统，又长又尖的双耳是她的个人标志。幼年因斯佩路德族般的绿发被欺负，被鲁迪所救后成为朋友并一同学习魔术。青年时期以「菲兹」之名在拉诺亚魔法大学活跃，最终与鲁迪重逢并结为夫妻。",
     "personality": [
       "温柔体贴",
       "害羞内向",
@@ -3252,7 +3240,7 @@
       "role": "鲁迪的青梅竹马 / 妻子",
       "age": "幼年 → 青年（作品时间跨度）",
       "occupation": "魔术师（后任阿斯拉王国宫廷魔术师）",
-      "faction": "格雷拉特家 / 夏亚魔法大学"
+      "faction": "格雷拉特家 / 拉诺亚魔法大学"
     },
     "tags": [
       "尖耳",
@@ -3713,7 +3701,7 @@
       "signature": "紫色长发、紫瞳与冷静神情"
     },
     "source": "山田钟人《葬送的芙莉莲 / Sousou no Frieren》",
-    "bg_story": "菲伦是《葬送的芙莉莲》的女主角之一，芙莉莲收留并养育的人类少女，成长为第一阶魔法使。紫色长发束成低侧马尾，紫色眼眸冷静而敏锐。她性格沉稳、偶尔毒舌，最爱睡懒觉，与芙莉莲、修塔尔克一同踏上漫长旅途。",
+    "bg_story": "菲伦是《葬送的芙莉莲》的女主角之一，芙莉莲收留并养育的人类少女，成长为第一阶魔法使。紫色长发以半束发整理，紫色眼眸冷静而敏锐。她性格沉稳、偶尔毒舌，最爱睡懒觉，与芙莉莲、修塔尔克一同踏上漫长旅途。",
     "personality": [
       "冷静",
       "毒舌",
@@ -3734,7 +3722,7 @@
       "solo",
       "long_hair",
       "purple_hair",
-      "side_ponytail",
+      "half_updo",
       "purple_eyes",
       "large_breasts"
     ],
@@ -3787,7 +3775,7 @@
       "hair_color": "银白（Silver White）",
       "eyes": "蓝（Gradient Blue）",
       "hairstyle": "双螺旋角发包（twin horn buns）· 长鬓发",
-      "uniform": "维多利亚蕾丝白洋装 / 打工围裙 / 旧运动外套",
+      "uniform": "粉白荷叶边魔法战裙 / 打工围裙 / 旧运动外套",
       "expression": "天然呆 · 面无表情的可爱",
       "style": "delicate poor magical girl",
       "signature": "螺旋角发包、蓝瞳与不幸体质"
@@ -4270,7 +4258,7 @@
       "hair": "金色长发",
       "hair_color": "金",
       "eyes": "蓝",
-      "hairstyle": "盘发/公主辫 · 挑染 · 耳麦",
+      "hairstyle": "金色侧马尾 · 耳麦",
       "uniform": "C&C高叉紧身衣 / 兔女郎装 / 夏日泳装",
       "expression": "冷静脱线，冷娇",
       "style": "cool maid agent",
@@ -4475,8 +4463,8 @@
       "faction": "大炎 / 岁兽一脉"
     },
     "tags": [
-      "极长的白色长发带淡青/水蓝渐变（very long white hair with pale aqua-blue streaks）",
-      "金色/琥珀金双瞳，眼型细长慵懒（golden-yellow eyes, long lazy eye shape）"
+      "极长蓝色长发与浅青挑染",
+      "蓝色眼眸、慵懒神态"
     ],
     "bg_story": "令是大炎岁相十二子之一——龙的化身，与夕、年、重岳等为兄弟姐妹。她于万年前沉睡，苏醒后游历人间，以诗人自居，喜饮酒吟诗，说话常带三分醉意与禅机。她应罗德岛之邀成为合作干员，看似慵懒随性，实则洞明世事、举重若轻，战斗时召出龙影，威能莫测。",
     "source": "Hypergryph《明日方舟 / Arknights》",
@@ -5045,7 +5033,7 @@
     "visual_dna": {
       "hair": "银白及颈短发 · 层次碎发",
       "hair_color": "银白 / 铂银",
-      "eyes": "幽冷淡紫 / 丁香紫眼眸",
+      "eyes": "琥珀黄 / 金黄色眼眸",
       "hairstyle": "清冷层次短发 · 额前自然碎刘海",
       "uniform": "无裙下摆特殊黑白祭服 · 抹大拉圣骸布",
       "expression": "面无表情 · 毒舌嘲弄 · 圣痕发作时的脆弱依偎",
@@ -5208,7 +5196,7 @@
     ],
     "classic_cg": {
       "title": "奥尔良的圣旗不倒",
-      "description": "战云裂开的一瞬，白银胸铠的圣女高举露·普赛尔迎向狂风的圣辉。"
+      "description": "战云裂开的一瞬，白银胸铠的圣女高举圣旗吾主在此，迎向狂风中的圣辉。"
     },
     "identity": "Fate 女主角 · Ruler-class 从者 · 奥尔良圣女",
     "tags": [
@@ -6487,7 +6475,7 @@
     "visual_dna": {
       "hair": "波浪金发及腰 · 贵族卷发",
       "hair_color": "耀眼金黄",
-      "eyes": "温润琥珀金瞳",
+      "eyes": "温润的蓝宝石色眼眸",
       "hairstyle": "优雅波浪长发 · 华丽金角埃拉菲亚鹿角与鹿耳",
       "uniform": "卡西米尔象牙白金铠甲礼装 / 莱塔尼亚贵族晚礼裙",
       "expression": "高贵优雅 · 温柔清澈 · 诗意斐然",
@@ -6656,14 +6644,14 @@
       "alt": "星见雅 样张立绘"
     },
     "visual_dna": {
-      "hair": "乌黑丝缎高马尾 · 灵动白狐耳",
+      "hair": "黑色长发 · 齐刘海与侧编发 · 深色狐耳",
       "hair_color": "墨黑",
-      "eyes": "锐利澄澈金黄狐瞳",
-      "hairstyle": "高束单马尾 · 纯白毛茸狐耳 · 黑尖白狐尾",
-      "uniform": "对空六课课长军官制服 / 传统御守巫女服",
+      "eyes": "红色瞳孔",
+      "hairstyle": "长直发与侧编发 · 高耸深色狐耳与浅色内耳绒",
+      "uniform": "蓝灰宽袖外套、白衬衫与深色内搭、黑色长袴及红色编绳",
       "expression": "清冷肃穆 · 一丝不苟 · 偶尔天然呆",
       "style": "stoic fox swordmaster",
-      "signature": "雪白狐耳、黑发高马尾、锐利金瞳与佩刀居合"
+      "signature": "深色狐耳、黑色长发、红瞳与佩刀居合"
     },
     "personality": [
       "极度自律且坚守法度",
@@ -6680,22 +6668,21 @@
     ],
     "classic_cg": {
       "title": "月夜竹林的虚空居合",
-      "description": "苍白冷月下，雅拇指推刀出鞘，极寒剑气撕裂竹林残叶，狐尾迎风招展，宛若画中剑仙。"
+      "description": "苍白冷月下，雅拇指推刀出鞘，极寒剑气撕裂竹林残叶，宽袖随风扬起，宛若画中剑仙。"
     },
     "identity": {
-      "role": "新艾利都治安局对空六课课长 / 星见流宗家之女",
+      "role": "对空六课课长 / 星见流宗家之女",
       "age": "青年",
       "occupation": "对空六课课长 / 武学宗师",
-      "faction": "新艾利都 · 治安局对空六课"
+      "faction": "新艾利都 · 对空六课"
     },
     "tags": [
       "狐耳",
-      "狐尾",
-      "黑发高马尾",
-      "金瞳",
+      "黑色长发",
+      "红瞳",
       "太刀",
       "居合斩",
-      "军服制服"
+      "对空六课制服"
     ],
     "bg_story": "星见雅是《绝区零》中对空事务六课的课长，出身于武学名门星见流，是新艾利都公认的顶尖太刀居合斩名手。她性格冷峻严肃、恪尽职守，面对再凶险的以太灾害也面不改色，但在日常生活上偶尔有着不谙世故的纯真天然反差。",
     "palette": [
@@ -6715,12 +6702,13 @@
       "1girl",
       "solo",
       "black_hair",
-      "high_ponytail",
       "fox_ears",
-      "fox_tail",
-      "amber_eyes",
-      "katana",
-      "zenless_zone_zero"
+      "zenless_zone_zero",
+      "long_hair",
+      "blunt_bangs",
+      "side_braid",
+      "red_eyes",
+      "katana"
     ],
     "accent_color": "#38bdf8",
     "bg_color": "#070b14"
@@ -6949,7 +6937,6 @@
     "tags": [
       "兔女郎",
       "金发及踝",
-      "犬耳",
       "女仆装",
       "高挑身段",
       "开朗甜美",
@@ -8211,7 +8198,7 @@
       "straight_hair",
       "hairband",
       "white_hairband",
-      "yellow_eyes",
+      "brown_eyes",
       "large_breasts",
       "cleavage",
       "to_love-ru"
@@ -8236,7 +8223,7 @@
       "alt": "娜娜 样张立绘"
     },
     "visual_dna": {
-      "hair": "粉色长双马尾 · 齐刘海 · 娇小萝莉身姿",
+      "hair": "粉色长双马尾 · 齐刘海",
       "hair_color": "粉色",
       "eyes": "深邃紫粉色眼眸 · 傲娇虎牙",
       "hairstyle": "双马尾 · 黑色爱心恶魔尾巴 · 贫乳平胸",
@@ -9191,7 +9178,7 @@
       "hair_color": "墨黑 / 夜黑",
       "eyes": "红色凤眼 · 讥诮里藏温柔",
       "hairstyle": "长直发齐刘海",
-      "uniform": "丰桥学园制服 · 黑丝裤袜",
+      "uniform": "丰之崎学园制服 · 黑色裤袜",
       "expression": "毒舌从容 · 撒娇时成熟妖艳 · 认真时灼热",
       "style": "sharp-tongued novelist senpai",
       "signature": "白発箍、黑丝长腿与毒舌作家的红瞳"
@@ -9211,7 +9198,7 @@
       "title": "深夜阳台的黑裙取材",
       "description": "开衩黑裙倚着栏杆，下一章的恶役角色正对你微笑宣判。"
     },
-    "identity": "路人女主的养成方法 女主角之一 · 丰桥学园三年级 · 恋爱小说家霞诗子",
+    "identity": "路人女主的养成方法 女主角之一 · 丰之崎学园三年级 · 恋爱小说家霞诗子",
     "tags": [
       "路人女主",
       "毒舌学姐",
@@ -9220,7 +9207,7 @@
       "黑丝",
       "小说家"
     ],
-    "bg_story": "笔名霞诗子的天才小说家，丰桥学园的三年级学姐。她的毒舌能把人扎得体无完肤，笔下情话却让百万读者落泪——因为那些说不出口的话，全都写进了书里。遇到你之后，她终于决定：这一次的结局，由她亲自执笔，不再胆怯。",
+    "bg_story": "笔名霞诗子的天才小说家，丰之崎学园的三年级学姐。她的毒舌能把人扎得体无完肤，笔下情话却让百万读者落泪——因为那些说不出口的话，全都写进了书里。遇到你之后，她终于决定：这一次的结局，由她亲自执笔，不再胆怯。",
     "palette": [
       "#ef4444",
       "#f8fafc",
@@ -9261,9 +9248,9 @@
       "eyes": "紫色眼眸 · 微笑时弯成月牙",
       "hairstyle": "波浪渐变发 · 后发髻",
       "uniform": "鬼杀队队服 · 蝶翼羽织",
-      "expression": "永远温柔的微笑 · 笑容之下是向死而行的觉悟",
+      "expression": "日常温柔克制，微笑下藏着坚定；场景中的悲伤、疲惫与认真也可自然流露。",
       "style": "gentle insect hashira smile",
-      "signature": "蝶翼羽织、渐变紫发与不灭的微笑"
+      "signature": "蝶翼羽织、渐变紫发与克制温柔的神态"
     },
     "personality": [
       "杀鬼的刀与治愈的手并存",
@@ -9303,7 +9290,7 @@
       "insect_hashira",
       "butterfly_mansion",
       "wisteria_poison",
-      "eternal_smile"
+      "gentle_smile"
     ],
     "accent_color": "#a78bfa",
     "bg_color": "#4c1d95"
@@ -9417,7 +9404,7 @@
     ],
     "classic_cg": {
       "title": "细雨中的透明雨伞",
-      "description": "雨水打湿金发与制服，清冷的少女将透明雨伞默默递给浑身湿透的少年。"
+      "description": "雨水打湿金发与制服，周把雨伞递向坐在秋千边的真昼；她抬头望向他，迟疑地伸手接住伞柄。"
     },
     "identity": "关于邻家的天使大人不知不觉把我惯成了废人这档子事 女主角 · 容貌成绩运动全能的‘天使’",
     "tags": [
@@ -9429,7 +9416,7 @@
       "围裙",
       "被惯成废人"
     ],
-    "bg_story": "外人眼里的天使大人，其实只是个从小被父母忽视、习惯了独自一人生存的坚强少女。直到那场暴雨里把雨伞借给隔壁的邋遢邻居，两张相隔咫尺的阳台终于被一碗热气腾腾的味噌汤相连。她把周的生活照顾得井井有条，却在不知不觉中，被周那毫无杂质的温柔彻底融化了冰封的内心。",
+    "bg_story": "外人眼里的天使大人，其实只是个从小被父母忽视、习惯了独自一人生存的坚强少女。直到那场暴雨里接受隔壁邻居借来的雨伞，两张相隔咫尺的阳台终于被一碗热气腾腾的味噌汤相连。她把周的生活照顾得井井有条，却在不知不觉中，被周那毫无杂质的温柔彻底融化了冰封的内心。",
     "palette": [
       "#f59e0b",
       "#fef3c7",
@@ -9536,10 +9523,10 @@
       "alt": "一色彩羽 样张立绘"
     },
     "visual_dna": {
-      "hair": "及肩的蜜糖微卷波浪发 · 低束双马尾",
+      "hair": "及肩的蜜糖棕微卷发，侧分刘海自然贴在脸侧。",
       "hair_color": "蜜糖棕 / 浅栗金",
       "eyes": "闪烁着戏谑狡黠光芒的浅褐榛色双眸",
-      "hairstyle": "微卷侧分发 · 俏皮低双马尾",
+      "hairstyle": "及肩微卷侧分发。",
       "uniform": "总武高制服西装与米白针织开衫 · 黑色超薄连裤袜",
       "expression": "托腮坏笑 · 摆手假意发好人卡 · 动情时害羞咬下唇",
       "style": "mischievous adorable devil kouhai",
@@ -9678,12 +9665,12 @@
     "visual_dna": {
       "hair": "光泽柔顺如黑丝缎般的极长黑发 · 标志性高马尾",
       "hair_color": "夜黑 / 蓝黑",
-      "eyes": "明澈动人的深黑眼眸 · 左眼角下带有一颗极其性感的泪痣",
+      "eyes": "温暖棕色眼眸",
       "hairstyle": "高束单马尾 · 散落前额碎刘海",
       "uniform": "圣立学园制服配宽大开衫 · 杂志街拍超模大号卫衣短裤",
       "expression": "杂志封面上的冷艳超模 · 市川面前鼓起腮帮子偷吃零食的黏人可爱",
       "style": "towering 172cm model beauty with food-loving innocence",
-      "signature": "172cm 惊天大长腿、左眼泪痣、图书室死角偷吃薯片与鼓鼓腮帮子"
+      "signature": "高挑模特、颈部小痣与分享零食时的自然表情"
     },
     "personality": [
       "现役青少杂志专属平面模特，拥有全校仰望的 172cm 完美超模身材",
@@ -9705,7 +9692,7 @@
       "我心危",
       "山田杏奈",
       "172cm超模",
-      "泪痣",
+      "颈部小痣",
       "大胃王",
       "高马尾",
       "反差萌"
@@ -9724,7 +9711,7 @@
       "bokuyaba_heroine",
       "tall_model_172cm",
       "food_lover",
-      "eye_mole"
+      "mole_on_neck"
     ],
     "accent_color": "#3b82f6",
     "bg_color": "#172554"
@@ -10721,7 +10708,7 @@
       "alt": "美杜莎 Rider · 书店文库本的站立阅读场景样张"
     },
     "visual_dna": {
-      "signature": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression remain recognizable without a blindfold, weapon or glasses permanently attached to her identity.",
+      "signature": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression convey a steady, thoughtful presence.",
       "hair": "purple_hair, very_long_hair",
       "eyes": "purple_eyes",
       "uniform": "书店与采购针织便装",
@@ -10894,7 +10881,7 @@
       "alt": "迦摩 · 金莲宫殿的粉色花嫁场景样张"
     },
     "visual_dna": {
-      "signature": "Kama from Fate/Grand Order, the Hindu god of love manifested through the shadow half of Sakura Matou, in her adult divine form with long silver-white hair and vivid red eyes. Her skeptical expression often shifts into reluctant enjoyment of ordinary amusements; decorative jewelry and hair ornaments belong to the selected outfit.",
+      "signature": "Kama from Fate/Grand Order in her adult divine form, with long silver-white hair, vivid red eyes and a skeptical expression that softens into a reluctant smile.",
       "hair": "white_hair, long_hair（银白长发 · 第三再临成年形态）",
       "hair_color": "银白（silver white）",
       "eyes": "red_eyes",
@@ -11125,7 +11112,7 @@
       "alt": "八重神子 · 鸣神大社的晨间洒扫场景样张"
     },
     "visual_dna": {
-      "signature": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief; no permanent fox tail is added to the everyday form.",
+      "signature": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief.",
       "hair": "pink_hair, long_hair, low-tied_long_hair",
       "eyes": "purple_eyes",
       "uniform": "鸣神大社端庄宫司和装",
