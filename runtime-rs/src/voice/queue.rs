@@ -19,7 +19,7 @@ pub(super) struct Reservation {
 }
 pub(super) struct Permit {
     _reservation: Reservation,
-    _serial: OwnedSemaphorePermit,
+    pub serial: Arc<OwnedSemaphorePermit>,
     pub wait_ms: u128,
 }
 impl Queue {
@@ -60,7 +60,7 @@ impl Queue {
         Ok(Permit {
             wait_ms: reservation.entered.elapsed().as_millis(),
             _reservation: reservation,
-            _serial: serial,
+            serial: Arc::new(serial),
         })
     }
     pub fn status(&self) -> Value {
