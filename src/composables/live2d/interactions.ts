@@ -50,6 +50,7 @@ export function createInteractionController(
   },
 ) {
   let pendingMotion: { model: Live2DCtx['model']; session: Live2DCtx['session'] } | null = null
+  let audioRevision = 0
   function worldPoint(event: MouseEvent) {
     const canvas = ctx.session?.canvasElement?.() as HTMLCanvasElement | null
     const rect = canvas?.getBoundingClientRect() ?? ctx.stageEl?.getBoundingClientRect()
@@ -90,6 +91,8 @@ export function createInteractionController(
   }
 
   function stopAudio() {
+    // Also revoke sounds waiting for motion startup, even before an audio exists.
+    audioRevision += 1
     if (ctx.interactionAudio) {
       try {
         ctx.interactionAudio.pause()
@@ -223,7 +226,7 @@ export function createInteractionController(
       ? `“${dispatched.entry.text}”${dispatched.bonusAwarded ? ` (好感度+${dispatched.bonusAwarded})` : ''}`
       : interaction.hint
 
-    const soundUrl = dispatched?.entry?.sound
+    const soundUrl = dispatched?.entry?.sound, soundRevision = audioRevision
     const targetIndex = typeof motionIndex === 'number' ? motionIndex : undefined
     const model = ctx.model, session = ctx.session, character = ctx.character.value
     const current = () => ctx.model === model && ctx.session === session && ctx.character.value === character && ctx.ready.value && !ctx.destroyed.value
@@ -237,7 +240,7 @@ export function createInteractionController(
         new Promise<never>((_, reject) => { timeout = window.setTimeout(() => reject(new Error('动作启动超时')), 10_000) }),
       ])
       if (!current()) return
-      if (started === true) markInteractionStarted(interaction, customText, soundUrl)
+      if (started === true) markInteractionStarted(interaction, customText, soundRevision === audioRevision ? soundUrl : undefined)
       else interactionFailed(interaction)
     } catch (error) {
       if (!current()) return
