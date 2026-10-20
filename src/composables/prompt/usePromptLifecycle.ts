@@ -20,7 +20,7 @@ export interface PromptLifecycleDeps extends
     Pick<ReturnType<typeof useDirectorPopular>, 'applyPreparedModel' | 'applyManagedRoute' | 'refreshManagedRoute' | 'restorePopularDraft' | 'syncManagedRoute' | 'popularBlueprintPool' | 'blueprintCategories' | 'popularCategory'>,
     Pick<ReturnType<typeof useDirectorEngine>, 'displayResultUrl' | 'engineOnline' | 'updateAnimaPromptState'>,
     Pick<ReturnType<typeof usePromptMaterials>, 'sceneCollection' | 'sceneLimit'>,
-    Pick<ReturnType<typeof usePromptDeepLink>, 'applyDeepLink'>,
+    Pick<ReturnType<typeof usePromptDeepLink>, 'applyDeepLink' | 'hasFailedDeepLink'>,
     Pick<ReturnType<typeof useTempResult>, 'restoreTempResult'>,
     Pick<ReturnType<typeof usePromptVideoBridge>, 'refreshShotsPending'> {
     route: RouteLocationNormalizedLoaded;
@@ -36,7 +36,7 @@ export interface PromptLifecycleDeps extends
 }
 
 /** Installed once by the workspace owner, independent of how its view exposes panels. */
-export function usePromptLifecycle({ draftRecovery, router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession, getRestoreOwner }: PromptLifecycleDeps): () => Promise<void> {
+export function usePromptLifecycle({ draftRecovery, router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, hasFailedDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession, getRestoreOwner }: PromptLifecycleDeps): () => Promise<void> {
     // A newer visit owns setup; KeepAlive deactivation only retains jobs already started.
     let disposed = false;
     let viewActive = true;
@@ -86,13 +86,20 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         try { await pb.loadData(); return true; }
         catch (error) { console.warn('读取创作资料失败', error); return false; }
     }
+    async function loadOptionalBlueprints() {
+        if (pb.subject.kind !== 'popular') return true;
+        // The scene panel owns the error and retry. Suggestions must not leave
+        // an adopted draft permanently outside the autosave lifecycle.
+        try { await pb.loadPopularCharacter(pb.subject.characterId); return pb.popularBlueprintReady; }
+        catch { return false; }
+    }
     async function resumeWorkspace() {
         const request = initializationRequest;
         const current = () => !disposed && viewActive && request === initializationRequest;
         if (!pb.dataReady || !useSceneStore().loaded) {
             if (!await loadWorkspaceData()) return;
             if (!current()) return;
-            if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
+            await loadOptionalBlueprints();
             if (!current()) return;
         }
         if (draftRecovery.initialized) await applyPreparedLink();
@@ -157,6 +164,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
             if (generationBusy.value) { draftRecovery.initialized = true; saveWorkspaceDraft(); return; }
         }
         const handledDeepLink = await applyDeepLink(query, current);
+        const failedDeepLink = hasFailedDeepLink(query);
         if (!current()) return;
         if (!handledDeepLink) {
             await draftRecovery.restoreDraft(restoreCurrent);
@@ -164,7 +172,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
             if (generationBusy.value) { draftRecovery.initialized = true; saveWorkspaceDraft(); return; }
         }
         const recoveryRevision = handledDeepLink ? draftRecovery.textRevision : draftRecovery.restoredRevision;
-        if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
+        const popularCatalogReady = await loadOptionalBlueprints();
         if (!current()) return;
         // F2：画布为空时找回上次未入册的临时成片（深链出图优先，不抢新任务）。
         if ((!handledDeepLink || query.resume === '1') && !displayResultUrl.value) {
@@ -176,20 +184,22 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         if (!restoredRecipe && drawEngine.value === 'sd' && (!handledDeepLink || query.resume === '1')
             && pb.sdParamsTouched.has('size') && /^\d+x\d+$/.test(pb.sdParams.size))
             sdSize.value = pb.sdParams.size;
-        else if (!restoredRecipe && pb.lastRecommendedSize)
+        else if (!restoredRecipe && popularCatalogReady && pb.lastRecommendedSize)
             sdSize.value = pb.lastRecommendedSize;
-        if (!restoredRecipe && pb.directorMode === 'basic')
+        if (!restoredRecipe && popularCatalogReady && pb.directorMode === 'basic')
             await applyManagedRoute({ silent: true });
         else
             await refreshManagedRoute();
         if (!current()) return;
         // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
-        if (!restoredRecipe && typeof query.companionDraft !== 'string'
+        if (!restoredRecipe && popularCatalogReady && typeof query.companionDraft !== 'string'
             && recoveryRevision !== null && recoveryRevision === draftRecovery.textRevision) restorePopularDraft();
-        await applyPreparedLink();
+        if (!failedDeepLink) await applyPreparedLink();
         if (!current()) return;
         draftRecovery.initialized = true;
         saveWorkspaceDraft();
+        // Failed navigation must never generate the fallback draft or apply quick settings.
+        if (failedDeepLink || typeof query.popular === 'string' && !handledDeepLink) return;
         if (query.quick === '1' && typeof query.companionDraft !== 'string') {
             const [{ quickCreateSummary, readQuickCreate }, { useQuickCreateApply }] = await Promise.all([import('@/utils/quickCreate'), import('./useQuickCreateApply')]);
             if (!current()) return;

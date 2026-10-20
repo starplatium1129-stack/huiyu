@@ -105,25 +105,6 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const seenLogLines = new Set<string>()
   const logBoxEl = ref<HTMLElement | null>(null)
   const logIndex = ref(0)
-  // 驱动 opProgress 时间微增的响应式时钟，避免“冻住”观感（仅在操作进行时滴答）
-  const now = ref(Date.now())
-  let tickerEnabled = false
-  let nowTimer: ReturnType<typeof setInterval> | null = null
-  function ensureNowTicker() {
-    if (nowTimer) return
-    nowTimer = setInterval(() => { now.value = Date.now() }, 500)
-    // Node 侧不阻止退出
-    const maybeUnref = nowTimer as unknown as { unref?: () => void }
-    if (typeof maybeUnref.unref === 'function') maybeUnref.unref()
-  }
-  function clearNowTicker() {
-    if (nowTimer) clearInterval(nowTimer)
-    nowTimer = null
-  }
-  function syncNowTicker() {
-    if (tickerEnabled && (typeof document === 'undefined' || !document.hidden) && operation.value?.status === 'running') ensureNowTicker()
-    else clearNowTicker()
-  }
   let disposed = false
   if (getCurrentScope()) onScopeDispose(() => { disposed = true; stopPolling() })
   let statusRevision = 0
@@ -134,30 +115,21 @@ export function useControlStatus({ showToast }: StatusHooks) {
 
   watch(operationSubmitting, submitting => { if (submitting) statusRevision++ }, { flush: 'sync' })
 
-  // 操作变化时自动启停时钟
-  watch(operation, () => syncNowTicker(), { immediate: true })
   const opBusy = computed(() => operationSubmitting.value || !!(operation.value && operation.value.status === 'running') || modeBusy.value)
   const opStatusLabel = computed(() => {
     const s = operation.value?.status
     return s === 'running' ? '进行中' : s === 'completed' ? '完成' : s === 'failed' ? '失败' : ''
   })
-  const opProgress = computed(() => {
-    // 订阅 now 以驱动时间微增
-    const _tick = now.value
+  const opCompletedStages = computed(() => {
     const op = operation.value
-    if (!op?.stages?.length) return op?.status === 'completed' ? 100 : op?.status === 'running' ? 35 : 0
-    if (op.status === 'completed') return 100
-    if (op.status === 'failed') return Math.min(100, ((op.stageIndex + 1) / op.stages.length) * 100)
-    const base = ((op.stageIndex + 0.35) / op.stages.length) * 100
-    // 若服务已在线但操作仍在 running（用户手动已启动 ComfyUI 后又点“启动”），
-    // 进度不应卡在 17.5%。根据 kind 与在线状态直接抬升，并加入时间微增避免“冻住”观感。
-    const isComfyStart = op.kind === 'comfy-start' && comfyOnline.value
-    const isWebuiStart = op.kind === 'webui-start' && sdOnline.value
-    const isVoiceStart = op.kind === 'voice-start' && ttsOnline.value
-    const onlineBump = (isComfyStart || isWebuiStart || isVoiceStart) ? 40 : 0
-    const elapsedSec = Math.max(0, (_tick - op.startedAt) / 1000)
-    const timeNudge = Math.min(12, elapsedSec * 1.2)
-    return Math.min(95, base + onlineBump + timeNudge)
+    const count = op?.stages?.length || 0
+    if (!op || !count) return 0
+    // stageIndex names the current/last attempted stage, not a finished one.
+    return op.status === 'completed' ? count : Math.max(0, Math.min(count, op.stageIndex))
+  })
+  const opProgress = computed(() => {
+    const count = operation.value?.stages?.length || 0
+    return count ? opCompletedStages.value / count * 100 : 0
   })
   const ollamaMeta = computed(() => {
     if (!ollamaOnline.value) return '未连接'
@@ -218,7 +190,6 @@ export function useControlStatus({ showToast }: StatusHooks) {
       operation.value = data.operation ?? null
       statusRevision++
     }
-    syncNowTicker()
     selfHealing.value = data.selfHealing && typeof data.selfHealing === 'object' ? data.selfHealing : null
     tunnelStatus.value = data.tunnelStatus || ''
     // 分享链接含原始 token，已从 /api/status 拆到仅本机可读的 /api/share-link
@@ -343,7 +314,6 @@ export function useControlStatus({ showToast }: StatusHooks) {
       if (logsRequest !== controller || controller.signal.aborted) return
       if (data.operation && revision === statusRevision && !operationSubmitting.value) {
         operation.value = data.operation
-        syncNowTicker()
       }
       let followingTail = false
       if (data.logs.length) {
@@ -404,7 +374,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     paused: () => typeof document !== 'undefined' && document.hidden,
     immediate: true,
   })
-  function handleVisibilityChange() { polling.sync(); syncNowTicker() }
+  function handleVisibilityChange() { polling.sync() }
   function bindPollingVisibility() {
     if (visibilityBound || typeof document === 'undefined') return
     document.addEventListener('visibilitychange', handleVisibilityChange)
@@ -417,18 +387,12 @@ export function useControlStatus({ showToast }: StatusHooks) {
   }
   function startPolling() {
     if (disposed || polling.isActive()) return
-    tickerEnabled = true
-    now.value = Date.now()
     bindPollingVisibility()
     polling.start()
-    syncNowTicker()
   }
   function stopPolling() {
-    // A queued operation watcher must not recreate the clock after its owner leaves.
-    tickerEnabled = false
     unbindPollingVisibility()
     polling.stop()
-    clearNowTicker()
     statusRequest?.abort()
     cancelLogRead()
     shareRequest?.abort()
@@ -444,7 +408,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
     feedbackText, actionNote, overviewFeedback, imageProvider, logs, logBoxEl,
     logsOpen, logsLoading, logsLoaded, logsError, logsSummary,
-    opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
+    opBusy, opStatusLabel, opProgress, opCompletedStages, ollamaMeta, voiceConfiguredCount,
     readyLabel,
     lastStatus: () => lastStatus,
     captureConfigEdits, acknowledgeConfigEdits,

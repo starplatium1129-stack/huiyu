@@ -57,7 +57,12 @@
             <label for="setup-comfy-runtime">绘图运行环境</label>
             <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图运行环境" placeholder="选择适合显卡的运行包" :options="[{ value: 'comfy-nvidia', label: 'NVIDIA 显卡 · CUDA 13.0（默认）' }, { value: 'comfy-cu126', label: '较旧 NVIDIA 显卡 · CUDA 12.6' }]" />
           </div>
-          <div v-if="automation.chatId.value" class="setup-runtime"><label for="setup-llama-runtime">聊天运行环境</label><StudioSelect id="setup-llama-runtime" v-model="automation.llamaEnvironment.value" label="聊天运行环境" :options="[{ value: 'llama-cuda', label: 'NVIDIA 显卡 · CUDA（默认）' }, { value: 'llama-vulkan', label: 'Vulkan · 进阶选项' }]" /></div>
+          <div v-if="automation.chatId.value && snapshot.chat?.runtimePresent" class="setup-existing" role="status">
+            <ArchiveIcon name="info" /><strong>沿用已有聊天运行环境</strong>
+            <small>已找到 Chat/runtime/llama-server.exe，尚未识别其 CUDA / Vulkan 类型。本次只准备所选聊天模型，不会替换或切换运行环境。</small>
+            <small>若当前环境与显卡不兼容，请先停止聊天服务并核对运行目录；当前自动准备不支持切换已有聊天运行包。</small>
+          </div>
+          <div v-else-if="automation.chatId.value" class="setup-runtime"><label for="setup-llama-runtime">首次安装的聊天运行环境</label><StudioSelect id="setup-llama-runtime" v-model="automation.llamaEnvironment.value" label="首次安装的聊天运行环境" :options="[{ value: 'llama-cuda', label: 'NVIDIA 显卡 · CUDA（默认）' }, { value: 'llama-vulkan', label: 'Vulkan · 进阶选项' }]" /></div>
         </div>
         <div class="setup-manifest">
           <div class="setup-manifest-heading"><h3>本次下载</h3><strong>{{ formatBytes(automation.downloadBytes.value) }}</strong></div>

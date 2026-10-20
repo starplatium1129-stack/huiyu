@@ -28,7 +28,7 @@
               <StudioCheckbox class="smart-album-favorite" :checked="rule.favoriteOnly" :disabled="busy" label="仅收录收藏的作品" @update:checked="rule.favoriteOnly = $event">仅收录收藏的作品</StudioCheckbox>
             </div>
             <section class="smart-album-preview" aria-label="符合条件的作品预览">
-              <div class="smart-album-preview-copy"><strong role="status">当前匹配 {{ count }} 幅作品</strong><p v-if="!count" class="smart-album-note">后续匹配作品自动加入</p></div>
+              <div class="smart-album-preview-copy"><strong role="status">{{ previewError ? '匹配数量待确认' : previewLoading ? '正在整理匹配作品…' : `当前匹配 ${count} 幅作品` }}</strong><p v-if="previewError" class="smart-album-note">作品读取未完成，请返回展墙重新读取。</p><p v-if="!previewLoading && !previewError && !count" class="smart-album-note">后续匹配作品自动加入</p></div>
               <div v-if="covers.length" class="smart-album-preview-images" aria-hidden="true"><span v-for="cover in covers" :key="cover.id"><img v-if="resolveRuntimeUrl(cover.src)" :src="resolveRuntimeUrl(cover.src)" :crossorigin="runtimeResourceCors()" alt="" /><ArchiveIcon v-else name="image" /></span></div>
             </section>
             <p v-if="error" class="smart-album-error" role="alert">{{ error }}</p>
@@ -55,7 +55,7 @@ import type { SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import type { GalleryProject } from '@/composables/gallery/galleryStorage'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-const props = defineProps<{ open: boolean; editing: boolean; busy: boolean; error: string; count: number;
+const props = defineProps<{ open: boolean; editing: boolean; busy: boolean; error: string; count: number; previewLoading: boolean; previewError: string;
   characters: { value: string; label: string }[]; tags: { value: string; label: string }[]; projects: GalleryProject[];
   covers: { id: string | number; src: string }[] }>()
 const emit = defineEmits<{ 'update:open': [value: boolean]; save: [] }>()

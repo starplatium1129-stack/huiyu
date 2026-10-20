@@ -285,7 +285,10 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     const route = await refreshManagedRoute()
     if (!options.silent) preparedSelection = ''
     if (generationBusy.value || selection !== JSON.stringify([pb.subject, pb.char, pb.sceneId, pb.directorMode])
-      || (options.silent && currentGeneratedRecipe())) return
+      // An unloaded selected blueprint may own a generated recipe. Do not
+      // replace its saved settings while its catalog is loading or failed.
+      || (options.silent && (currentGeneratedRecipe()
+        || pb.subject.kind === 'popular' && pb.subject.blueprintId && !pb.popularBlueprintReady))) return
     const preservePreparedModel = options.silent && preparedSelection === modelSelection() && route.engine === drawEngine.value
       && pb.modelProfiles.some(profile => profile.engine === 'anima' && profile.model_id === animaState.value.modelId)
       && animaState.value.models.some(model => model.id === animaState.value.modelId && model.family === 'anima' && model.available === true)

@@ -87,7 +87,7 @@ export function useChatApiEditor(props: ChatApiEditorProps, emit: EditorEmit) {
     ? isOpenRouterFreeModel(props.model.trim()) ? '免费模型，有使用额度限制。' : '当前模型按 OpenRouter 价格计费。'
     : preset.value.freeTier ? '免费账户可用；已开通付费的账户按其方案计费。'
       : props.vendor === 'openai' ? 'API 单独计费。' : '按服务商规则计费。')
-  const statusText = computed(() => props.credentialsLoading ? '正在读取密钥…' : message.value || props.hint || '')
+  const statusText = computed(() => props.credentialsLoading ? '正在读取密钥…' : message.value || '')
   const providerGroups = [
     { label: '免费模型与额度', options: CHAT_API_PRESETS.filter(item => item.freeTier) },
     { label: '本机服务', options: CHAT_API_PRESETS.filter(item => item.local) },

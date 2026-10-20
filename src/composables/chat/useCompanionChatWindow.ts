@@ -22,7 +22,7 @@ import { CHAT_RESET_KEY, COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from 
 import { useConversationReading } from './useConversationReading.ts'
 import { relayChatCommand, relayChatTurn } from '../../utils/chatRelayReceipt.ts'
 import type { ChatStoryAction } from '@/types/companionDrawing'
-import { canRegenerateChatMessage } from '@/utils/chatMessageStorage'
+import { useChatRegenerationEligibility } from './useChatRegenerationEligibility'
 import { useCompanionChatAttachments } from './useCompanionChatAttachments'
 
 export function useCompanionChatWindow() {
@@ -93,7 +93,7 @@ const quietClock = usePolling({ intervalMs: 30_000, immediate: false, tick: () =
 const visibleMessages = computed(() => storage.messages(activeChar.value).slice(-40))
 const branchId = computed(() => storage.branchId(activeChar.value))
 const storyBranches = computed(() => storage.branches(activeChar.value))
-const canRegenerateMessage = (mid: string) => canRegenerateChatMessage(storage.messages(activeChar.value), mid)
+const canRegenerateMessage = useChatRegenerationEligibility(() => storage.messages(activeChar.value))
 const storyBusy = ref(false)
 async function handleStoryAction(action: ChatStoryAction) {
   if (!alive || !bridge || storyBusy.value || liveState.busy || sending.value || attachments.sendingImage.value || !storage.canWrite()) return
@@ -383,7 +383,7 @@ function resizeComposer() {
 }
 watch(inputText, () => { void nextTick(resizeComposer) })
 
-const { hasNew, latest } = useConversationReading(listRef, () => visibleMessages.value, computed(() => `${activeChar.value}:${branchId.value}`))
+const { showLatest: hasNew, latest } = useConversationReading(listRef, () => visibleMessages.value, computed(() => `${activeChar.value}:${branchId.value}`))
 const docked = ref(true), docking = ref(false)
 let dockRevision = 0
 async function startWindowDrag(event: MouseEvent) {

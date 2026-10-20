@@ -1,6 +1,6 @@
 import { computed, onScopeDispose, ref, type Ref } from 'vue'
 import { withChatTurn } from '@/utils/chatTurnOwnership'
-import { canRegenerateChatMessage } from '@/utils/chatMessageStorage'
+import { useChatRegenerationEligibility } from './useChatRegenerationEligibility'
 import { abortableTask } from '@/utils/abortableTask'
 import type { ChatStoryAction } from '@/types/companionDrawing'
 import type { useChatStorage } from './useChatStorage'
@@ -22,7 +22,7 @@ export function useChatStoryActions(options: StoryActionOptions) {
   const storyBusy = ref(false)
   const branchId = computed(() => storage.branchId(activeChar.value))
   const storyBranches = computed(() => storage.branches(activeChar.value))
-  const canRegenerateMessage = (mid: string) => canRegenerateChatMessage(storage.messages(activeChar.value), mid)
+  const canRegenerateMessage = useChatRegenerationEligibility(() => storage.messages(activeChar.value))
   let alive = true
   let actionRevision = 0
   let actionController: AbortController | undefined

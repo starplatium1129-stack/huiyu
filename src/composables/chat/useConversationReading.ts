@@ -1,4 +1,4 @@
-import { nextTick, onBeforeUnmount, ref, watch, type Ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch, type Ref } from 'vue'
 
 /** Keep a reader's position while replies stream; only follow when already at the end. */
 export function useConversationReading(element: Ref<HTMLElement | undefined | null>, revision: () => unknown, character: Ref<string>) {
@@ -24,6 +24,7 @@ export function useConversationReading(element: Ref<HTMLElement | undefined | nu
     if (following.value) hasNew.value = false
     else cancelFollow()
   }
+  function pause() { following.value = false; cancelFollow() }
   async function latest() {
     following.value = true
     hasNew.value = false
@@ -48,5 +49,5 @@ export function useConversationReading(element: Ref<HTMLElement | undefined | nu
   }, { deep: true })
   watch(character, latest)
   onBeforeUnmount(() => { element.value?.removeEventListener('scroll', onScroll); changes.disconnect(); cancelFollow() })
-  return { hasNew, latest }
+  return { hasNew, showLatest: computed(() => !following.value || hasNew.value), following, pause, latest }
 }

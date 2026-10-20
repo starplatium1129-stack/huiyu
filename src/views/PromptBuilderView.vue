@@ -30,7 +30,7 @@
             <RouterLink v-if="!engineOnline" class="api-recovery-link" :to="{ path: '/control', query: { engine: drawEngine } }">控制面板</RouterLink>
           </div>
         </div>
-        <div class="pb-header-meta"><PromptDraftNotice :get-blueprint="getBlueprint" /></div>
+        <div class="pb-header-meta"><PromptDraftNotice :get-blueprint="getBlueprint" :link-error="deepLinkError" :link-retrying="retryingDeepLink" :generation-busy="generationBusy" @retry-link="retryDeepLink" /></div>
       </div>
       <div class="pb-top-actions">
         <div class="pb-mode-actions">
@@ -273,7 +273,7 @@ const layoutRoot = ref<HTMLElement | null>(null)
 const directorLayout = useDirectorLayout(layoutRoot)
 const {
 capturedScene, capturingScene, captureScene, closeSceneCapture,
-pb,
+deepLinkError, retryingDeepLink, retryDeepLink, pb,
 displayResultUrl,
 resultRevealUrl,
 currentCharacterThemeStyle,

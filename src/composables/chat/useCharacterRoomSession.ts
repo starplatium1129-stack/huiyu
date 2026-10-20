@@ -39,7 +39,7 @@ interface CharacterStageHandle {
   releasePointerFocus?: () => void
 }
 
-export function useCharacterRoomSession() {
+export function useCharacterRoomSession(reading?: { latest: () => void; nearBottom: () => boolean }) {
   const route = useRoute()
   const chatListRef = ref<HTMLElement>()
   const characterStageRef = ref<CharacterStageHandle>()
@@ -205,15 +205,15 @@ export function useCharacterRoomSession() {
   })
 
   function nearBottom() {
+    if (reading) return reading.nearBottom()
     const element = chatListRef.value
-    if (!element) return true
-    return element.scrollHeight - element.scrollTop - element.clientHeight < 100
+    return !element || element.scrollHeight - element.scrollTop - element.clientHeight < 100
   }
 
   function scrollBottom() {
     nextTick(() => {
-      const element = chatListRef.value
-      if (element) element.scrollTop = element.scrollHeight
+      if (reading) { reading.latest(); return }
+      if (chatListRef.value) chatListRef.value.scrollTop = chatListRef.value.scrollHeight
     })
   }
 

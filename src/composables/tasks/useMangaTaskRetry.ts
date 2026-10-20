@@ -36,10 +36,10 @@ function retryMessage(error: unknown): string {
 }
 
 export function useMangaTaskRetry(options: {
-  busy: Ref<string>; feedback: Ref<string>; active: () => boolean
+  operations: Ref<Map<string, string>>; feedback: Ref<string>; active: () => boolean
   reveal: (task: TaskSummary) => Promise<void>; cardId: (id: string) => string
 }) {
-  const { busy, feedback } = options
+  const { operations, feedback } = options
   const locating = ref('')
   const epoch = () => getDesktopRuntime().bootstrap?.runtime?.workspace?.runtimeEpoch || ''
   let disposed = false
@@ -55,9 +55,9 @@ export function useMangaTaskRetry(options: {
     if (!disposed && options.active() && task.runtimeEpoch === epoch()) document.getElementById(options.cardId(task.taskId))?.focus()
   }
   async function retry(task: TaskSummary) {
-    if (busy.value || pendingRetry(task) || !canRetry(task)) return
+    if (operations.value.has(task.taskId) || pendingRetry(task) || !canRetry(task)) return
     const expected = epoch()
-    busy.value = `retry:${task.taskId}`; feedback.value = ''
+    operations.value.set(task.taskId, 'retry'); feedback.value = ''
     try {
       const child = await retryRuntimeMangaTask(task, reads.signal)
       if (disposed || epoch() !== expected) return
@@ -67,7 +67,7 @@ export function useMangaTaskRetry(options: {
       if (!disposed && epoch() === expected) void getRuntimeTaskSummary(task.taskId, reads.signal).catch(() => {})
     } catch (error) {
       if (!disposed && epoch() === expected) feedback.value = retryMessage(error)
-    } finally { busy.value = '' }
+    } finally { operations.value.delete(task.taskId) }
   }
   async function openRelated(id: string) {
     if (locating.value) return

@@ -48,6 +48,7 @@ export interface ReferenceCardsDeps {
 
 const MAX_CARDS = 4
 const MAX_IMAGES_PER_CARD = 4
+type ProfileFailure = { outfitId?: string; label: string; identity: string; restoreLabel: boolean; restoreIdentity: boolean }
 type CardProfile = { displayName: string; identityProse: string; outfits: PopularOutfit[] }
 
 export function removeCastSlot(cast: string, removedIndex: number): string {
@@ -63,6 +64,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   const referenceInputs = ref<HTMLInputElement[]>([])
   const loadingRefAssets = ref(false)
   const loadingRefCardIndex = ref<number | null>(null)
+  const profileFailures = ref(new Map<ReferenceCard, ProfileFailure>())
   const profiles = shallowRef<Record<string, CardProfile>>({})
   const operations = new Map<ReferenceCard, Set<AbortController>>()
   const imageRequests = new Map<ReferenceImage, AbortController>()
@@ -145,6 +147,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     const card = referenceCards.value[index]
     if (card) {
       cancelCard(card)
+      profileFailures.value.delete(card)
       clearImages(card)
     }
     referenceCards.value.splice(index, 1)
@@ -156,15 +159,17 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   async function switchCardOutfit(cardIndex: number, outfitId: string) {
     const card = referenceCards.value[cardIndex]
     if (!card || !card.characterId) return
+    if (card.outfitId === outfitId && profiles.value[card.characterId]?.outfits.some(outfit => outfit.id === outfitId)
+      && !profileFailures.value.has(card)) return
     await selectCardCharacter(card.characterId, cardIndex, outfitId)
   }
 
   /** 读取目录文字资料，不请求或上传参考图片。 */
-  async function selectCardCharacter(charId: string, cardIndex = 0, outfitId?: string, signal?: AbortSignal, options: { preserveIdentity?: boolean } = {}): Promise<boolean> {
+  async function selectCardCharacter(charId: string, cardIndex = 0, outfitId?: string, signal?: AbortSignal, options: { preserveIdentity?: boolean; preserveImages?: boolean } = {}): Promise<boolean> {
     if (signal?.aborted || !referenceCards.value[cardIndex]) return false
     const card = referenceCards.value[cardIndex]
     cancelCard(card)
-    clearImages(card)
+    if (!options.preserveImages) { clearImages(card); profileFailures.value.delete(card) }
     const controller = start(card)
     const abort = () => controller.abort()
     signal?.addEventListener('abort', abort, { once: true })
@@ -215,17 +220,37 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       }
       // Profile reads may finish after typing, or another card's automatic merge.
       if (!options.preserveIdentity && (deps.identityCard.value === identityAtRead || deps.identityCard.value === lastAutoIdentity)) updateMultiCharacterIdentity()
-      if (outfitId && !outfit) { deps.batchError.value = '该服装不存在，请重新选择'; return false }
+      if (outfitId && !outfit) { profileFailures.value.delete(card); deps.batchError.value = '该服装不存在，请重新选择'; return false }
+      profileFailures.value.delete(card)
       deps.batchError.value = ''
       return true
     } catch {
-      if (current(card, controller)) deps.batchError.value = '角色资料读取失败，请重新选择重试'
+      if (current(card, controller)) {
+        if (!profileFailures.value.has(card)) profileFailures.value.set(card, {
+          outfitId, label: card.label, identity: identityAtRead,
+          restoreLabel: !options.preserveIdentity && !labelEdited, restoreIdentity: !options.preserveIdentity,
+        })
+        deps.batchError.value = '角色资料读取失败，可在对应角色卡重试'
+      }
       return false
     } finally {
       stopLabelWatch?.()
       signal?.removeEventListener('abort', abort)
       finish(card, controller)
     }
+  }
+
+  function profileFailed(card: ReferenceCard) { return profileFailures.value.has(card) }
+  async function retryCardProfile(cardIndex: number) {
+    const card = referenceCards.value[cardIndex]
+    const failure = card && profileFailures.value.get(card)
+    if (!card?.characterId || !failure || operations.has(card) || !available()) return
+    const ready = await selectCardCharacter(card.characterId, cardIndex, failure.outfitId, undefined, { preserveIdentity: true, preserveImages: true })
+    if (!ready || !referenceCards.value.includes(card)) return
+    const profile = profiles.value[card.characterId]
+    const outfit = profile?.outfits.find(item => item.id === card.outfitId)
+    if (failure.restoreLabel && card.label === failure.label) card.label = profile.displayName + (outfit && !outfit.default ? ` · ${outfit.name}` : '')
+    if (failure.restoreIdentity && (deps.identityCard.value === failure.identity || deps.identityCard.value === lastAutoIdentity)) updateMultiCharacterIdentity()
   }
 
   /**
@@ -268,7 +293,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     if (!charId) {
       const card = referenceCards.value[cardIndex]
       if (!card) return
-      cancelCard(card); clearImages(card)
+      cancelCard(card); clearImages(card); profileFailures.value.delete(card)
       card.characterId = undefined; card.outfitId = undefined; card.label = ''
       updateMultiCharacterIdentity()
       return
@@ -375,7 +400,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   }
 
   return {
-    referenceCards,
+    referenceCards, profileFailed, retryCardProfile,
     loadingRefAssets,
     loadingRefCardIndex,
     getCharOutfits,

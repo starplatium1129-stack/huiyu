@@ -250,14 +250,20 @@ export function useQwenStudio() {
     finally { busy.value = false }
   }
   async function exportResult(kind: 'save' | 'download') {
-    const output = result.value
+    const output = result.value, blob = resultBlob.value
     if (!output || saving.value || busy.value || importing.value || kind === 'save' && saved.value) return
+    const isCurrent = () => result.value?.taskId === output.taskId
     saving.value = true; error.value = ''
     try {
       check()
-      if (kind === 'save') { await archiveTaskResult(output.taskId); check(); saved.value = true; notice.value = '已存入我的作品' }
-      else if (resultBlob.value) { const downloaded = await downloadMangaPng(resultBlob.value, `绘遇-Qwen-${output.taskId}.png`); check(); if (downloaded) notice.value = 'PNG 已导出' }
-    } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
+      if (kind === 'save') {
+        await archiveTaskResult(output.taskId); check()
+        if (isCurrent()) { saved.value = true; notice.value = '已存入我的作品' }
+      } else if (blob) {
+        const downloaded = await downloadMangaPng(blob, `绘遇-Qwen-${output.taskId}.png`); check()
+        if (downloaded && isCurrent()) notice.value = 'PNG 已导出'
+      }
+    } catch (cause) { if (!lifetime.signal.aborted && isCurrent()) error.value = message(cause) }
     finally { saving.value = false }
   }
   function applyDraft(draft: QwenDraftState) {

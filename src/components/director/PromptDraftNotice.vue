@@ -3,13 +3,19 @@ import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import { exportDirectorBlueprint } from '@/utils/directorBlueprintFile'
 
-defineProps<{ getBlueprint: () => Record<string, unknown> }>()
+defineProps<{ getBlueprint: () => Record<string, unknown>; linkError: string; linkRetrying: boolean; generationBusy: boolean }>()
+defineEmits<{ retryLink: [] }>()
 const pb = usePromptBuilderStore()
 const desktop = Boolean(getDesktopCapabilities())
 </script>
 
 <template>
-  <section v-if="!desktop && pb.draftSaveState !== 'idle'" class="draft-save-notice" :data-state="pb.draftSaveState" aria-label="草稿保存状态">
+  <section v-if="linkError" class="draft-save-notice" data-state="failed" aria-label="链接场景载入状态">
+    <p role="alert">{{ linkError }}</p>
+    <button class="btn btn-ghost btn-sm" type="button" :disabled="linkRetrying || generationBusy" :aria-busy="linkRetrying" @click="$emit('retryLink')">{{ linkRetrying ? '正在重新载入…' : '重新载入链接场景' }}</button>
+    <span>可继续编辑当前草稿；重试前会确认是否替换。</span>
+  </section>
+  <section v-if="pb.draftSaveState === 'failed' || !desktop && pb.draftSaveState !== 'idle'" class="draft-save-notice" :data-state="pb.draftSaveState" aria-label="草稿保存状态">
     <p role="status" aria-live="polite">{{ pb.draftSaveState === 'failed' ? pb.draftSaveError : pb.draftSaveState === 'pending' ? '正在保存草稿…' : '草稿已保存到此浏览器' }}</p>
     <template v-if="pb.draftSaveState === 'failed'">
       <button class="btn btn-ghost btn-sm" type="button" @click="pb.retryDraftSave()">重试保存</button>

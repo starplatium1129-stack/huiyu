@@ -34,7 +34,7 @@ export function useRuntimeTaskBrowser(active: () => boolean) {
   const hasPrevious = computed(() => pageNumber.value > 1)
   const hasNext = computed(() => selected.value === 'active'
     ? activeItems.value.length > (activePage.value + 1) * PAGE_SIZE : page.value?.nextCursor != null)
-  async function load(nextCursors = cursors.value, reset = false) {
+  async function load(nextCursors = cursors.value, reset = false, keepOrder = false) {
     controller?.abort()
     if (!active() || selected.value === 'active') { loading.value = false; return }
     const request = new AbortController(); controller = request
@@ -43,11 +43,33 @@ export function useRuntimeTaskBrowser(active: () => boolean) {
       const result = await readRuntimeTaskPage(selected.value, { before: nextCursors.at(-1),
         through: reset ? undefined : page.value?.throughRevision, limit: PAGE_SIZE, signal: request.signal })
       if (request.signal.aborted) return
+      if (keepOrder) {
+        // Keep surviving keyed cards in reading order; the server still owns
+        // the bounded membership and cursor, so no displaced rows get skipped.
+        const order = new Map(page.value?.items.map((task, index) => [task.taskId, index]))
+        result.items.sort((a, b) => (order.get(a.taskId) ?? -1) - (order.get(b.taskId) ?? -1))
+      }
       page.value = result; cursors.value = [...nextCursors]
     } catch (reason) {
       if (!request.signal.aborted) error.value = reason instanceof Error ? reason.message : '任务历史读取失败，请重试'
     } finally { if (controller === request) loading.value = false }
   }
+  const membershipChange = computed(() => {
+    const snapshot = page.value
+    if (!snapshot || cursors.value.length || selected.value === 'active') return ''
+    const ids = new Set(snapshot.items.map(task => task.taskId))
+    const revision = runtimeTasks.value.reduce((latest, task) => task.revision > snapshot.throughRevision
+      && (ids.has(task.taskId) ? !matches(task) : matches(task)) ? Math.max(latest, task.revision) : latest, 0)
+    return revision ? `${selected.value}:${snapshot.throughRevision}:${revision}` : ''
+  })
+  let attemptedMembership = ''
+  watch([membershipChange, loading, active], ([change, busy, opened]) => {
+    if (!opened || busy || !change || change === attemptedMembership) return
+    // One bounded read per membership change. Do not reset a history page or
+    // repeatedly retry a failed read; the existing refresh action can retry it.
+    attemptedMembership = change
+    void load([], true, true)
+  })
   function refresh() { located.value = null; return load([], true) }
   async function reveal(task: TaskSummary) {
     const expected = identity()
@@ -72,7 +94,7 @@ export function useRuntimeTaskBrowser(active: () => boolean) {
   }
   watch([active, selected], ([opened, filter], previous) => {
     controller?.abort(); loading.value = false
-    if (filter !== previous?.[1]) { located.value = null; page.value = null; cursors.value = []; activePage.value = 0; error.value = '' }
+    if (filter !== previous?.[1]) { attemptedMembership = ''; located.value = null; page.value = null; cursors.value = []; activePage.value = 0; error.value = '' }
     if (opened) void load()
   }, { immediate: true })
   watch(() => activeItems.value.length, count => { activePage.value = Math.min(activePage.value, Math.max(0, Math.ceil(count / PAGE_SIZE) - 1)) })
@@ -81,7 +103,7 @@ export function useRuntimeTaskBrowser(active: () => boolean) {
   const stopRuntime = onDesktopRuntime(() => {
     const nextEpoch = identity()
     if (!nextEpoch || nextEpoch === currentEpoch) return
-    currentEpoch = nextEpoch; controller?.abort(); located.value = null; page.value = null; cursors.value = []; activePage.value = 0
+    currentEpoch = nextEpoch; attemptedMembership = ''; controller?.abort(); located.value = null; page.value = null; cursors.value = []; activePage.value = 0
     if (active()) void refresh()
   })
   onScopeDispose(() => { controller?.abort(); stopRuntime() })

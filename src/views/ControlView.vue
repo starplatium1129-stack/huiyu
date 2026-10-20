@@ -87,9 +87,9 @@
         </div>
       </section>
 
-      <details id="control-comfy" class="panel-card">
+      <details id="control-comfy" class="panel-card" @toggle="onLocalSetupToggle">
         <StudioDisclosureSummary>本地聊天与 ComfyUI 兼容配置</StudioDisclosureSummary>
-        <div data-disclosure-content><LocalSetupPanel /></div>
+        <div data-disclosure-content><AsyncPanel v-if="localSetupRequested" :loader="loadLocalSetup" label="聊天与兼容配置" v-slot="{ component }"><component :is="component" /></AsyncPanel></div>
       </details>
       <div id="control-interrogate" tabindex="-1" aria-label="PixAI 图片反推配置"><AsyncPanel :loader="loadInterrogateSetup" label="图片反推配置" v-slot="{ component }"><component :is="component" /></AsyncPanel></div>
 
@@ -97,18 +97,19 @@
       <div v-if="operation" class="panel-card operation-panel" :class="operation.status">
         <div class="operation-head">
           <div>
-            <div class="panel-kicker">In progress</div>
+            <div class="panel-kicker">操作进度</div>
             <strong class="panel-heading">{{ operation.label }}</strong>
           </div>
-          <span class="op-state">{{ opStatusLabel }}</span>
+          <span class="op-state tw:inline-flex tw:items-center tw:gap-s-2"><StudioOrbitSpinner v-if="operation.status === 'running'" />{{ opStatusLabel }}</span>
         </div>
-        <div class="meter"><span class="meter-fill" :style="{ '--fill': opProgress + '%' }"></span></div>
+        <div v-if="operation.stages?.length" class="meter" role="progressbar" aria-label="已完成步骤" :aria-valuemin="0" :aria-valuemax="operation.stages.length" :aria-valuenow="opCompletedStages"><span class="meter-fill" :style="{ '--fill': opProgress + '%' }"></span></div>
+        <p v-if="operation.stages?.length" class="tw:text-label-sm tw:text-secondary">已完成 {{ opCompletedStages }} / {{ operation.stages.length }} 步</p>
         <p class="operation-msg">{{ operation.message }}</p>
         <div v-if="operation.stages?.length" class="operation-stages">
           <span
             v-for="(stage, i) in operation.stages" :key="stage"
             class="op-stage"
-            :class="{ done: i < operation.stageIndex, current: i === operation.stageIndex && operation.status === 'running' }"
+            :class="{ done: operation.status === 'completed' || i < opCompletedStages, current: i === operation.stageIndex && operation.status === 'running' }"
           >{{ stage }}</span>
         </div>
       </div>
@@ -311,13 +312,16 @@ import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import StudioLiquidButton from '@/components/ui/StudioLiquidButton.vue'
+import StudioOrbitSpinner from '@/components/ui/StudioOrbitSpinner.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
-import LocalSetupPanel from '@/components/LocalSetupPanel.vue'
+import { useLocalSetupPanelLoading } from '@/composables/useLocalSetupPanelLoading'
 import InferenceSettingsPanel from '@/components/InferenceSettingsPanel.vue'
 import ResourceLibraryPanel from '@/components/ResourceLibraryPanel.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+const loadLocalSetup = () => import('@/components/LocalSetupPanel.vue')
+const { localSetupRequested, onLocalSetupToggle } = useLocalSetupPanelLoading()
 const loadInterrogateSetup = () => import('@/components/InterrogateSetupPanel.vue')
 import { useControlNavigation } from '@/composables/useControlNavigation'
 import { useToast } from '@/composables/useToast'
@@ -352,7 +356,7 @@ const {
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
   overviewFeedback, imageProvider, logs, logBoxEl,
   logsOpen, logsLoading, logsLoaded, logsError, logsSummary,
-  opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
+  opBusy, opStatusLabel, opProgress, opCompletedStages, ollamaMeta, voiceConfiguredCount,
   readyLabel,
   pollStatus, pollLogs, clearLogs,
 } = status
