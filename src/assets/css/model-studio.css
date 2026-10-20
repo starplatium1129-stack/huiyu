@@ -11,17 +11,7 @@
 .model-studio-scroll { @apply tw:overflow-auto; overscroll-behavior: contain; @apply tw:min-h-0 tw:p-s-4; }
 .model-studio-grid { @apply tw:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); @apply tw:gap-s-5; }
 .model-studio label { @apply tw:grid tw:gap-s-2; margin: var(--s-2) 0; @apply tw:text-primary tw:text-body; }
-.model-studio input:not([type=range]):not([type=file]), .model-studio textarea { @apply tw:box-border tw:w-full tw:min-w-0 tw:min-h-[44px]; padding: var(--s-2) var(--s-3); @apply tw:text-primary; background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-md; font: inherit; transition: border-color var(--motion-hover) var(--ease-out); }
-.model-studio input:not([type=range]):not([type=file]):focus, .model-studio textarea:focus { @apply tw:border-strong; }
-/* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；布局（宽度/最小高度）落在 wrapper。 */
-.model-studio .studio-select-wrapper { @apply tw:box-border tw:w-full tw:min-w-0 tw:min-h-[44px]; }
-.model-studio input[type=range] { @apply tw:w-full; background: linear-gradient(to bottom, transparent 11px, var(--border-strong) 11px 17px, transparent 17px); }
-.model-studio input[type=range]::-webkit-slider-thumb { @apply tw:w-[16px] tw:h-[16px]; }
-.model-studio input[type=range]::-moz-range-thumb { @apply tw:w-[10px] tw:h-[10px]; }
-.model-studio input[type=file] { @apply tw:w-full tw:min-h-[44px] tw:p-s-1 tw:text-secondary; font: inherit; @apply tw:cursor-pointer; }
-.model-studio input[type=file]::file-selector-button { @apply tw:min-h-[36px]; margin-inline-end: var(--s-3); padding: var(--s-2) var(--s-3); border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-surface); @apply tw:text-primary; font: 600 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; transition: border-color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out); }
-.model-studio input[type=file]:not(:disabled)::file-selector-button:hover { @apply tw:border-strong; background: transparent; @apply tw:text-primary; }
-.model-studio input[type=file]:disabled::file-selector-button { color:var(--text-disabled); border-color:var(--border-soft); background:var(--bg-surface); cursor:not-allowed; }
+.model-studio input[type=file] { width:100%; }
 .model-studio :disabled { @apply tw:text-disabled; opacity: 1; @apply tw:cursor-not-allowed; }
 .model-studio fieldset { @apply tw:min-w-0; margin: 0 0 var(--s-3); @apply tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; }
 .model-studio legend { padding: 0 var(--s-2); @apply tw:text-body; }

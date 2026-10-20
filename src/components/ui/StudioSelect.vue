@@ -147,7 +147,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
           @keydown="pointerOpened = false"
           @keydown.esc="onEscape"
         >
-          <SelectValue class="studio-select-value" :placeholder="placeholder">{{ selectedLabel || placeholder }}</SelectValue>
+          <SelectValue class="studio-select-value" :placeholder="placeholder"><slot name="value" :label="selectedLabel" :option="optionByKey.get(currentKey)">{{ selectedLabel || placeholder }}</slot></SelectValue>
           <StudioToggleIcon :active="open" class="studio-select-icon" />
         </SelectTrigger>
       </StudioTooltip>
@@ -155,6 +155,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
       <SelectPortal :to="portalTarget">
         <FluidTransition small panel=".studio-select-content">
         <SelectContent v-if="open" force-mount :body-lock="false" data-fluid-glass position="popper" :reference="selectTrigger?.$el" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @escape-key-down="onDismissEscape" @close-auto-focus="onCloseAutoFocus">
+          <slot name="header" />
           <SelectViewport class="studio-select-viewport">
             <template v-if="groups">
               <SelectGroup v-for="group in groups" :key="group.label" class="studio-select-group">
@@ -164,12 +165,13 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
                   :key="keyOf(option.value)"
                   :value="keyOf(option.value)"
                   :disabled="option.disabled"
+                  :text-value="option.label"
                   class="studio-select-item"
                 >
                   <!-- data-value 与原生 option 的 value 语义一致，e2e 按值选择靠它定位。
                        SelectItem 外面还包着 CollectionItem，属性透传不保证，所以挂在
                        SelectItemText 上（该组件显式透传 $attrs）。 -->
-                  <SelectItemText class="studio-select-item-text" :data-value="String(option.value)">{{ option.label }}</SelectItemText>
+                  <SelectItemText class="studio-select-item-text" :data-value="String(option.value)"><slot name="option" :option="option">{{ option.label }}</slot></SelectItemText>
                   <SelectItemIndicator class="studio-select-check">
                     <ArchiveIcon name="success" />
                   </SelectItemIndicator>
@@ -182,9 +184,10 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
                 :key="keyOf(option.value)"
                 :value="keyOf(option.value)"
                 :disabled="option.disabled"
+                :text-value="option.label"
                 class="studio-select-item"
               >
-                <SelectItemText class="studio-select-item-text" :data-value="String(option.value)">{{ option.label }}</SelectItemText>
+                <SelectItemText class="studio-select-item-text" :data-value="String(option.value)"><slot name="option" :option="option">{{ option.label }}</slot></SelectItemText>
                 <SelectItemIndicator class="studio-select-check">
                   <ArchiveIcon name="success" />
                 </SelectItemIndicator>

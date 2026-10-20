@@ -493,10 +493,10 @@ html.companion-desktop .companion-toolbar {
 
 html.companion-desktop .companion-toolbar-actions,
 html.companion-desktop .companion-toolbar-actions *,
+html.companion-desktop .companion-picker-host,
+html.companion-desktop .companion-picker-host *,
 html.companion-desktop .companion-picker,
-html.companion-desktop .companion-picker *,
-html.companion-desktop .companion-picker-content,
-html.companion-desktop .companion-picker-content * {
+html.companion-desktop .companion-picker * {
   -webkit-app-region: no-drag !important;
 }
 

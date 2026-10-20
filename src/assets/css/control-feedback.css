@@ -23,7 +23,7 @@
   .companion-dialogue-attachment button,.companion-dialogue-latest,.companion-dialogue-preference-actions > button,.companion-dialogue-send,.companion-dialogue-microphone,
   :is(button,a).companion-pop-item,.companion-settings-btn,.companion-setup-action,.companion-vision-btn,.companion-stop,.companion-send,
   .companion-reminder-action,.companion-reminder-dismiss,.companion-exit-immersive,.companion-chat-chip,
-  .companion-picker-trigger,.companion-picker-option,.preferences-heading button,.reply-actions button,.companion-chat-image-open,.companion-chat-image-retry,
+  .preferences-heading button,.reply-actions button,.companion-chat-image-open,.companion-chat-image-retry,
   .orbit-option,.orbit-option-list button,.orbit-manage,.orbit-selection > header button
 ) {
   position:relative; isolation:isolate; border-radius:var(--r-md); --control-press-transform:none; --control-feedback-press:.98; --control-feedback-enter:.985;

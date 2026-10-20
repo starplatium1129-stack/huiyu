@@ -47,4 +47,4 @@
 
 原研究项目包括 [PhotoSwipe](https://github.com/dimsemenov/PhotoSwipe)、[tagcomplete](https://github.com/DominikDoom/a1111-sd-webui-tagcomplete)、[Dynamic Prompts](https://github.com/adieyal/sd-dynamic-prompts)、[SwarmUI](https://github.com/mcmonkeyprojects/SwarmUI)、[InvokeAI](https://github.com/invoke-ai/InvokeAI)、[AIRI](https://github.com/moeru-ai/airi)、[Open-LLM-VTuber](https://github.com/Open-LLM-VTuber/Open-LLM-VTuber)、[Reka](https://github.com/unovue/reka-ui)、[TanStack Virtual](https://github.com/TanStack/virtual)和[fflate](https://github.com/101arrowz/fflate)。链接为历史来源，非本次选型推荐。
 
-当前保留 Vue/TypeScript、Rust/Axum、Tauri；Reka 已用，PhotoSwipe 为显式试验，TanStack/fflate 待实际需求。统一词条、随机快照、任务阶段、配方恢复和语音生命周期已落地，不重新列为待开发。触屏/Tauri/大图集、GPU 长时、真实模型/TTS/口型见[统一规划](../roadmap.md)。
+当前保留 Vue/TypeScript、Rust/Axum、Tauri；Reka 与图库的 TanStack Virtual 已用，PhotoSwipe 为显式试验，fflate 待实际需求。统一词条、随机快照、任务阶段、配方恢复和语音生命周期已落地，不重新列为待开发。触屏/Tauri/大图集、GPU 长时、真实模型/TTS/口型见[统一规划](../roadmap.md)。

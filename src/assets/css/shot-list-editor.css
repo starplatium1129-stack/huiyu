@@ -51,8 +51,6 @@
 .shot-reference-head { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; }
 .shot-reference-head strong { @apply tw:text-body-sm tw:whitespace-nowrap; }
 .shot-card-quick-select { flex: 1 1 140px; }
-/* 原有「一键预设」始终使用强调色边框，迁到 StudioSelect 后保留在 trigger 上 */
-.shot-card-quick-select .studio-select-trigger { @apply tw:border-accent; }
 .input-tight { @apply tw:min-h-[28px]; padding: 2px var(--s-2); @apply tw:text-label-xs; }
 .shot-card-outfit-pills { @apply tw:flex tw:flex-wrap tw:gap-[4px]; padding: 2px 0; }
 .shot-card-outfit-pill {

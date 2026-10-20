@@ -1,44 +1,45 @@
+import { cancelFrame, frame, spring, type FrameData } from 'motion'
 import { listenMotionChanges, prefersReducedMotion } from './motionPreference'
 
-/** Analytic damped spring. Retargeting preserves position and velocity. */
+/** Adapt Motion's generator to the mutable presentation captured by WAAPI owners. */
 export class FluidSpring {
   velocity = 0
   target: number
+  private trajectory?: { generator: ReturnType<typeof spring>; elapsed: number; value: number; velocity: number; target: number }
   constructor(public value: number, readonly frequency = 5, readonly damping = 1) { this.target = value }
   to(target: number) { this.target = target }
-  snap(target = this.target) { this.value = this.target = target; this.velocity = 0 }
+  snap(target = this.target) { this.value = this.target = target; this.velocity = 0; this.trajectory = undefined }
   step(seconds: number) {
-    const w = 2 * Math.PI * this.frequency
-    const displacement = this.value - this.target
-    if (this.damping < 1) {
-      const decayRate = w * this.damping, oscillation = w * Math.sqrt(1 - this.damping ** 2)
-      const c = (this.velocity + decayRate * displacement) / oscillation
-      const decay = Math.exp(-decayRate * seconds), cos = Math.cos(oscillation * seconds), sin = Math.sin(oscillation * seconds)
-      this.value = this.target + decay * (displacement * cos + c * sin)
-      this.velocity = decay * ((c * oscillation - decayRate * displacement) * cos - (displacement * oscillation + decayRate * c) * sin)
-      if (Math.abs(this.value - this.target) < .001 && Math.abs(this.velocity) < .01) this.snap()
-      return this.value
+    if (this.settled) return this.value
+    let trajectory = this.trajectory
+    if (!trajectory || trajectory.value !== this.value || trajectory.velocity !== this.velocity || trajectory.target !== this.target) {
+      const frequency = 2 * Math.PI * this.frequency
+      trajectory = this.trajectory = {
+        generator: spring({ keyframes: [this.value, this.target], velocity: this.velocity,
+          stiffness: frequency ** 2, damping: 2 * this.damping * frequency, mass: 1, restDelta: .001, restSpeed: .01 }),
+        elapsed: 0, value: this.value, velocity: this.velocity, target: this.target,
+      }
     }
-    const c = this.velocity + w * displacement
-    const decay = Math.exp(-w * seconds)
-    this.value = this.target + (displacement + c * seconds) * decay
-    this.velocity = (this.velocity - w * c * seconds) * decay
-    if (Math.abs(this.value - this.target) < .001 && Math.abs(this.velocity) < .01) this.snap()
+    trajectory.elapsed += Math.max(0, seconds) * 1000
+    const sample = trajectory.generator.next(trajectory.elapsed)
+    this.value = trajectory.value = sample.value
+    this.velocity = trajectory.velocity = trajectory.generator.velocity?.(trajectory.elapsed) ?? 0
+    if (sample.done) this.snap()
     return this.value
   }
   get settled() { return this.value === this.target && this.velocity === 0 }
 }
 
-/** One frame loop per surface; hidden/reduced motion settles, disposal is terminal. */
+/** Use Motion's shared frame loop; hidden/reduced motion settles, disposal is terminal. */
 export function createFluidMotion(values: number[], write: (values: number[]) => void, frequency = 5, damping = 1) {
   const springs = values.map(value => new FluidSpring(value, frequency, damping))
-  let frame: number | null = null, last: number | null = null
+  let scheduled = false, last: number | null = null
   let active = false, disposed = false, revision = 0
   let complete: (() => void) | undefined
   const render = () => write(springs.map(spring => spring.value))
   function stop() {
-    if (frame !== null) cancelAnimationFrame(frame)
-    frame = null; last = null
+    cancelFrame(tick)
+    scheduled = false; last = null
   }
   function finish() {
     if (disposed || !active) return
@@ -48,11 +49,11 @@ export function createFluidMotion(values: number[], write: (values: number[]) =>
     render(); done?.()
   }
   function schedule() {
-    if (disposed || !active || frame !== null) return
-    try { frame = requestAnimationFrame(tick) } catch { finish() }
+    if (disposed || !active || scheduled) return
+    scheduled = true
+    frame.update(tick, true)
   }
-  function tick(now: number) {
-    frame = null
+  function tick({ timestamp: now }: FrameData) {
     if (disposed || !active) return
     const current = revision
     const dt = last === null ? 1 / 60 : Math.max(0, (now - last) / 1000)

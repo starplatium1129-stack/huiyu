@@ -39,11 +39,11 @@
             </div></details>
             <fieldset v-if="!studio.saved.value" :disabled="studio.busy.value">
               <legend>角色与来源</legend>
-              <label>角色 ID<input v-model.trim="studio.identity.id" maxlength="80" placeholder="my_character" /></label>
-              <label>角色名称<input v-model.trim="studio.identity.name" maxlength="80" /></label>
-              <label>独立角色设定<textarea v-model="studio.identity.persona" rows="3" maxlength="8000" /></label>
-              <label>作者或来源<input v-model.trim="studio.identity.author" maxlength="500" /></label>
-              <label>许可与使用范围<textarea v-model="studio.identity.terms" rows="2" maxlength="2000" placeholder="记录来源及获准的使用、修改、展示或分发范围" /></label>
+              <label>角色 ID<input class="input" v-model.trim="studio.identity.id" maxlength="80" placeholder="my_character" /></label>
+              <label>角色名称<input class="input" v-model.trim="studio.identity.name" maxlength="80" /></label>
+              <label>独立角色设定<textarea class="input" v-model="studio.identity.persona" rows="3" maxlength="8000" /></label>
+              <label>作者或来源<input class="input" v-model.trim="studio.identity.author" maxlength="500" /></label>
+              <label>许可与使用范围<textarea class="input" v-model="studio.identity.terms" rows="2" maxlength="2000" placeholder="记录来源及获准的使用、修改、展示或分发范围" /></label>
             </fieldset>
             <details :open="studio.ready.value">
               <StudioDisclosureSummary>口型与眨眼</StudioDisclosureSummary><div data-disclosure-content>

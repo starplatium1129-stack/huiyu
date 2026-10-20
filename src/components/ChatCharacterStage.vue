@@ -151,7 +151,10 @@
     <dialog ref="modelStudioDialog" class="model-studio stage-model-studio" aria-label="模型导入与校准"
       @cancel.prevent.stop="closeModelStudio" @close="!modelStudioDialog?.open && closeModelStudio()" @click="isBackdropClick($event, modelStudioDialog) && closeModelStudio()">
       <header class="model-studio-heading"><div><small>LIVE2D</small><h2>模型导入与校准</h2></div><button class="btn btn-ghost" type="button" aria-label="关闭模型工作室" autofocus @click="closeModelStudio"><ArchiveIcon name="close" /></button></header>
-      <AsyncPanel v-if="modelStudioOpen" class="stage-model-studio-panel" :loader="loadModelStudio" label="模型工作室" v-slot="{ component }"><component :is="component" /></AsyncPanel>
+      <!-- Keep the conditional body separate from its Reka portals in this dialog. -->
+      <div class="stage-model-studio-body">
+        <AsyncPanel v-if="modelStudioOpen" class="stage-model-studio-panel" :loader="loadModelStudio" label="模型工作室" v-slot="{ component }"><component :is="component" /></AsyncPanel>
+      </div>
     </dialog>
   </Teleport>
 </template>

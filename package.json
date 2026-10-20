@@ -71,11 +71,13 @@
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.3.0",
     "@fontsource/noto-sans-sc": "^5.3.0",
-    "@soullink-emotion/engine": "^0.1.0-beta.1",
+    "@soullink-emotion/engine": "0.1.0-beta.1",
+    "@tanstack/vue-virtual": "3.13.39",
     "@vueuse/core": "^14.4.0",
     "motion": "^12.43.0",
     "photoswipe": "5.4.4",
     "pinia": "^4.0.2",
+    "pixi-live2d-display": "file:vendor/pixi-live2d-display",
     "reka-ui": "2.10.4",
     "vue": "3.5.43",
     "vue-router": "^4.5.0",
@@ -102,9 +104,7 @@
     "vue-tsc": "3.3.8"
   },
   "overrides": {
-    "pixi-live2d-display": {
-      "gh-pages": "^6.3.0"
-    }
+    "pixi-live2d-display": "$pixi-live2d-display"
   },
   "browserslist": [
     "chrome >= 111",

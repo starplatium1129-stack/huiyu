@@ -1,3 +1,4 @@
+// MIT source and build config: https://github.com/nanlingyin/soullink-emotion-sdk/tree/af51fe19331f6aa1e339122a70688d7fdd5879e5/packages/engine
 import type {
   AudioLevelAnalyzer,
   ModelProfile,

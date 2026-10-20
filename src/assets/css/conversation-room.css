@@ -117,7 +117,6 @@
 .room-chat-avatar { flex:none; width:36px; height:36px; object-fit:cover; border-radius:50%; }
 .room-chat-avatar[data-chibi='true'] { object-fit:contain; border-radius:0; }
 .room-surface .companion-picker { min-width:0; max-width:240px; }
-.room-surface .companion-picker-trigger { min-height:var(--control-height); padding:var(--s-1) var(--s-2); border:0; background:transparent; box-shadow:none; }
 .room-surface .companion-picker-copy strong { font:600 var(--fs-body-sm)/var(--lh-label) var(--font-sans); }
 .room-surface .companion-picker-copy small,.room-surface .companion-picker-mark { display:none; }
 .room-chat-actions { display:flex; align-items:center; gap:var(--s-1); flex:none; }

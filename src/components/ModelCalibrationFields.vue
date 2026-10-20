@@ -9,8 +9,8 @@
     <template v-if="binding.id">
       <p v-if="range">实际范围 {{ range.min }} ～ {{ range.max }} · 默认 {{ range.default }}</p>
       <div class="model-endpoints">
-        <label>闭合值 <input :value="binding.closed" type="number" step="any" :min="range?.min" :max="range?.max" :aria-label="`${title}闭合值`" @input="$emit('update', { ...binding, closed: ($event.target as HTMLInputElement).valueAsNumber }, false)" /></label>
-        <label>张开值 <input :value="binding.open" type="number" step="any" :min="range?.min" :max="range?.max" :aria-label="`${title}张开值`" @input="$emit('update', { ...binding, open: ($event.target as HTMLInputElement).valueAsNumber }, false)" /></label>
+        <label>闭合值 <input class="input" :value="binding.closed" type="number" step="any" :min="range?.min" :max="range?.max" :aria-label="`${title}闭合值`" @input="$emit('update', { ...binding, closed: ($event.target as HTMLInputElement).valueAsNumber }, false)" /></label>
+        <label>张开值 <input class="input" :value="binding.open" type="number" step="any" :min="range?.min" :max="range?.max" :aria-label="`${title}张开值`" @input="$emit('update', { ...binding, open: ($event.target as HTMLInputElement).valueAsNumber }, false)" /></label>
       </div>
     </template>
   </fieldset>

@@ -10,7 +10,7 @@ html.companion-desktop dialog[data-fluid-dialog]::backdrop { background:transpar
 .companion-redesign .companion-toolbar .companion-identity > span { @apply tw:text-secondary; text-shadow: none; }
 .companion-redesign .companion-toolbar .companion-identity h1 { @apply tw:text-primary; text-shadow: none; }
 .companion-redesign .companion-identity { flex-shrink:0; }
-.companion-redesign .companion-toolbar .companion-picker { flex:0 1 220px; min-width:0; }
+.companion-redesign .companion-toolbar :is(.companion-picker,.companion-picker-host) { flex:0 1 220px; min-width:0; }
 .companion-redesign .companion-settings-btn { @apply tw:text-primary; background: var(--bg-elevated); @apply tw:border-soft; }
 .companion-redesign .companion-toolbar-actions { @apply tw:shrink-0; }
 .companion-redesign .companion-settings-popover { top: calc(100% + 8px); max-height: calc(100dvh - 100px); @apply tw:text-primary; background: var(--bg-elevated); @apply tw:border-soft; backdrop-filter: none; }
@@ -72,8 +72,7 @@ html.companion-desktop .companion-redesign .live2d-enable-cta-kicker,
 html.companion-desktop .companion-redesign .live2d-enable-cta small { @apply tw:hidden; }
 html.companion-desktop .companion-page.companion-redesign .companion-toolbar { @apply tw:absolute; inset:var(--s-2) var(--s-2) auto; width:fit-content; max-width:calc(100% - 16px); margin-inline:auto; @apply tw:min-h-[44px]; padding:var(--s-1) var(--s-2); @apply tw:gap-s-2; border:0; @apply tw:rounded-md; background:var(--bg-surface); box-shadow:none; backdrop-filter:none; }
 html.companion-desktop .companion-redesign .companion-identity { @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden; clip:rect(0,0,0,0); @apply tw:whitespace-nowrap; border:0; }
-html.companion-desktop .companion-redesign .companion-picker { flex:1; @apply tw:min-w-0 tw:max-w-[160px]; }
-html.companion-desktop .companion-redesign .companion-picker-trigger { @apply tw:min-h-[36px]; }
+html.companion-desktop .companion-redesign :is(.companion-picker,.companion-picker-host) { flex:1; @apply tw:min-w-0 tw:max-w-[160px]; }
 html.companion-desktop .companion-redesign .companion-toolbar-actions { @apply tw:gap-s-1; }
 html.companion-desktop .companion-redesign .companion-chat-chip { @apply tw:min-h-[32px]; box-shadow:none; }
 

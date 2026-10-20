@@ -17,7 +17,10 @@
         <span>陪伴模式</span>
         <h1>与{{ currentCharacter.name }}相伴</h1>
       </div>
-      <CompanionCharacterPicker :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchPetCharacter" />
+      <AsyncPanel class="companion-picker-host" :loader="loadCharacterPicker" label="角色选择">
+        <template #default="{ component }"><component :is="component" :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchPetCharacter" /></template>
+        <template #feedback="{ failed, retry }"><button v-if="failed" class="btn btn-ghost btn-sm" type="button" @click="retry">重读角色选择</button><span v-else role="status">正在读取角色选择…</span></template>
+      </AsyncPanel>
       <div class="companion-toolbar-actions">
         <CompanionPreferences v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar" :character-name="currentCharacter.name">
         <template #trigger><button
@@ -324,7 +327,7 @@ import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
 const AppearancePreferences = defineAsyncComponent(() => import('@/components/AppearancePreferences.vue'))
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
-import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
+const loadCharacterPicker = () => import('@/components/CompanionCharacterPicker.vue')
 import CompanionDesktopFloat from '@/components/CompanionDesktopFloat.vue'
 import CompanionWorkspaceSettings from '@/components/CompanionWorkspaceSettings.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
@@ -336,7 +339,7 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
 const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
-const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel.vue'))
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 const loadSpeechInputSettings = () => import('@/components/SpeechInputSettings.vue')
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"
 const {

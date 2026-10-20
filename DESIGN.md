@@ -518,9 +518,43 @@ Page styles control placement and wrapping without replacing this shape with
 square corners. Borderless reading regions and full-screen viewers may remain
 flush. Coarse-pointer controls provide a 44px minimum touch target.
 
+## Component and dependency policy
+
+Frontend reuse is mandatory. Apply these rules to new work and changes within
+the affected flow:
+
+- **Mature implementations first.** Reuse existing shared components and installed
+  libraries first, extending their shared integration where needed. For a real
+  gap, evaluate maintained, mature Vue-compatible libraries or source-distributed
+  components before custom code. Handwritten general-purpose behavior requires a
+  concrete explanation of why those options cannot meet the requirement.
+- **Controllable source.** Keep HUIYU components and adaptations in the repository.
+  External components must provide readable, modifiable source, an identifiable
+  upstream version and a compatible license; preserve required attribution.
+  Adapt source-distributed components locally. Package-based primitives may stay
+  dependencies when their source and build are available and their resolved
+  versions are recorded in the lockfile. Do not rely on opaque components or
+  untracked edits in `node_modules`.
+- **One design language.** Integrate adopted components through existing shared
+  owners, Studio controls and theme tokens. Match HUIYU typography, geometry,
+  surfaces, icons, interaction states and motion in both themes, retaining keyboard
+  and focus semantics. Upstream examples supply implementation ideas; their
+  default appearance does not establish a second design system.
+- **No redundant dependency stacks.** Before adding or replacing a package,
+  inspect `package.json`, the lockfile and actual consumers for direct and
+  transitive overlap, duplicate versions, peer compatibility and bundle cost.
+  Keep one implementation per capability by default; do not add another UI kit,
+  interaction primitive stack, animation runtime or utility library for behavior
+  already covered. A necessary exception must state the concrete gap, limited
+  scope and exit condition. Migrations must identify consumers and remove the
+  superseded implementation and unused dependencies when migration completes.
+
 ## Vue interaction components
 
 Reusable interaction primitives live in `src/components/ui/` and use Reka UI.
+Rich character labels reuse `StudioSelect` through its `value`, `option` and
+`header` slots; the shared component retains keyboard, focus, portal and motion
+ownership. Slots supply content without replacing control geometry or states.
 `StudioSelect` provides single selection and replaces every native `<select>`;
 it accepts flat or grouped options, disabled entries, string or numeric values,
 and treats an empty-string value as a real choice ("all / auto / none") rather

@@ -18,3 +18,7 @@ runtime-rs/native-licenses/** -text
 runtime-rs/native-licenses/README.md text eol=lf
 runtime-rs/native-licenses/.gitignore text eol=lf
 runtime-rs/native-licenses/collect-sources.ps1 text eol=crlf
+
+# Keep the dependency fork's published artifacts identical to the pinned package.
+vendor/pixi-live2d-display/dist/** -text
+vendor/pixi-live2d-display/types/** -text

@@ -1,0 +1,58 @@
+{
+  "name": "pixi-live2d-display",
+  "version": "0.4.0-huiyu.1",
+  "description": "Live2D plugin for PixiJS",
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.js"
+    },
+    "./cubism2": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/cubism2.es.js",
+      "require": "./dist/cubism2.js"
+    },
+    "./cubism4": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/cubism4.es.js",
+      "require": "./dist/cubism4.js"
+    },
+    "./extra": {
+      "types": "./types/extra.d.ts",
+      "import": "./dist/extra.es.js",
+      "require": "./dist/extra.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guansss/pixi-live2d-display.git"
+  },
+  "author": "guansss <821143943@qq.com>",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "types",
+    "src",
+    "LICENSE"
+  ],
+  "types": "types/index.d.ts",
+  "peerDependencies": {
+    "@pixi/core": "^6",
+    "@pixi/display": "^6",
+    "@pixi/loaders": "^6",
+    "@pixi/math": "^6",
+    "@pixi/sprite": "^6",
+    "@pixi/utils": "^6"
+  },
+  "private": true,
+  "huiyuSource": {
+    "upstreamVersion": "0.4.0",
+    "commit": "12148332b8838ca00ad76764e0e7521abf980e3b",
+    "archive": "https://github.com/guansss/pixi-live2d-display/tree/12148332b8838ca00ad76764e0e7521abf980e3b",
+    "changes": "Remove the upstream documentation deployment dependency and scripts. Published dist/types files are unchanged; upstream TypeScript is retained for review. Rebuild with the pinned upstream build configuration and its Cubism submodule.",
+    "build": "https://github.com/guansss/pixi-live2d-display/blob/12148332b8838ca00ad76764e0e7521abf980e3b/scripts/build.js",
+    "publishedIntegrity": "sha512-xeYC6y4Y0Bxe9ksWNlGFZC1rII/MPrzPQK7t1c3ubA8RhkOISIqHJl38fNumXqhGEs+yItmgDOkFT+9dsyGDjA=="
+  }
+}

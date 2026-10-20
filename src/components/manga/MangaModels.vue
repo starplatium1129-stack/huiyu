@@ -9,14 +9,14 @@
       <p class="manga-hint">显存策略沿用控制室：{{ status?.memoryPolicy === 'offload' ? '模型卸载' : '常驻' }}。重绘结束后释放模型。</p>
       <p class="manga-hint">Qwen 权重采用研究许可，商用需另获授权。<a v-if="selected" :href="selected.licenseUrl" target="_blank" rel="noopener noreferrer">查看模型许可</a></p>
       <div class="manga-dimensions">
-        <label class="manga-field"><span>重绘宽度</span><input v-model.number="rewrite.width" type="number" min="512" max="2816" step="32" :disabled="disabled" /></label>
-        <label class="manga-field"><span>重绘高度</span><input v-model.number="rewrite.height" type="number" min="512" max="2816" step="32" :disabled="disabled" /></label>
+        <label class="manga-field"><span>重绘宽度</span><input class="input" v-model.number="rewrite.width" type="number" min="512" max="2816" step="32" :disabled="disabled" /></label>
+        <label class="manga-field"><span>重绘高度</span><input class="input" v-model.number="rewrite.height" type="number" min="512" max="2816" step="32" :disabled="disabled" /></label>
       </div>
       <p class="manga-hint">按原图比例建议尺寸，按 32 像素对齐；可手动调整。总像素不超过约 200 万，极端长图可能改变比例。</p>
       <details><StudioDisclosureSummary>重绘指令与种子</StudioDisclosureSummary>
         <div class="manga-fields" data-disclosure-content>
-          <label class="manga-field"><span>重绘指令</span><textarea v-model="rewrite.prompt" rows="6" maxlength="12000" :disabled="disabled" /></label>
-          <label class="manga-field"><span>随机种子</span><input v-model.number="rewrite.seed" type="number" min="0" max="2147483647" step="1" :disabled="disabled" /></label>
+          <label class="manga-field"><span>重绘指令</span><textarea class="input" v-model="rewrite.prompt" rows="6" maxlength="12000" :disabled="disabled" /></label>
+          <label class="manga-field"><span>随机种子</span><input class="input" v-model.number="rewrite.seed" type="number" min="0" max="2147483647" step="1" :disabled="disabled" /></label>
           <p class="manga-hint">使用模型官方步数与 CFG；此入口暂不提供负向提示词或重绘强度。</p>
         </div>
       </details>

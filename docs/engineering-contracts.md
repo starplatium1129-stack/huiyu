@@ -5,6 +5,7 @@
 ## 模块边界
 
 - **前端架构**：Vue 3 + Vite + TypeScript + Pinia（`src/stores/` + `src/views/` 路由全懒加载）。
+- **前端库源码**：`@soullink-emotion/engine` 固定为 `0.1.0-beta.1`，对应 [MIT 源码提交 af51fe1](https://github.com/nanlingyin/soullink-emotion-sdk/tree/af51fe19331f6aa1e339122a70688d7fdd5879e5/packages/engine)，构建入口为该版本 `packages/engine/tsup.config.ts`；已逐一比对发行包源码映射中的 55 个源文件，不随上游 main 升级。`pixi-live2d-display` 使用 [受控源码包](../vendor/pixi-live2d-display/package.json) 固定的 0.4.0 上游源码与未修改发行产物，仅剔除文档发布脚本和误列的 `gh-pages` 生产依赖；重建沿其记录的上游配置与 Cubism 子模块。`wl-live2d` 的内嵌渲染器不变；上游修正依赖声明且保持 Pixi 6 兼容后可撤回此包。
 - **组件与逻辑分层**：
   - 复杂业务逻辑与状态机下沉至专属 composable（如 `usePromptSdQueue`、`useAnimaInpaint`、`usePopularPromptAssembly`），保持 View 纯粹。
   - `src/application/` 编排用例与端口，不依赖具体存储、API、Pinia、Vue 或 Node 平台实现；`src/platform/web/` 与 `src/platform/desktop/` 提供适配，`src/api/` 处理传输和响应解码。跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；runtime 不反向依赖 `src/`，包括纯类型与间接导入。
@@ -113,7 +114,7 @@ destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capabili
 
 桌面工作台不进行全库缩略图预热；桌面 repository 缩略图缓存受 96 项、8 MiB 双上限约束，Web 持久缓存预热独立保留。图库按视口及可见画册封面读取缩略图，后台缓存也采用 96 项、8 MiB 预算；当前画面必需的预览单独保留，离开可见范围后参与裁剪，不累积整个浏览历史。图库 KeepAlive 只保留页面状态与缩略图，停用时撤销高清原图和查看器 Blob URL，重入后按可见范围读取；迟到异步结果不得填回旧激活代次。
 
-图库首批作品可先显示，但画册和智能画册预览须传播索引未完成状态；保留已知手动画册并将计数标为待完成，不把部分结果显示为确定的空库。虚拟列使用累计位置索引构建可见区间、焦点保留项与占位，不能因每次滚动窗口变化扫描整列；排序游标使用与 SQLite 二进制顺序一致的既有比较器。
+图库首批作品可先显示，但画册和智能画册预览须传播索引未完成状态；保留已知手动画册并将计数标为待完成，不把部分结果显示为确定的空库。虚拟列由 TanStack Virtual 管理测量、可见区间与总高度，项目仅补充作品尺寸估计、焦点保留项和 KeepAlive 启停；不能因每次滚动窗口变化扫描整列。排序游标使用与 SQLite 二进制顺序一致的既有比较器。
 
 ## 角色接入
 

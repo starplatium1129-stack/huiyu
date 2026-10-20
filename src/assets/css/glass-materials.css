@@ -40,7 +40,7 @@
   -webkit-backdrop-filter:blur(4px) saturate(145%);
   backdrop-filter:blur(4px) saturate(145%);
 }
-:root[data-glass-material='liquid'] body .fluid-glass-chrome:is(.studio-popover,.studio-select-content,.chat-more-menu,.wardrobe-menu,.companion-picker-content) {
+:root[data-glass-material='liquid'] body .fluid-glass-chrome:is(.studio-popover,.studio-select-content,.chat-more-menu,.wardrobe-menu) {
   --material-fill:color-mix(in srgb,var(--bg-surface) calc(78% + var(--glass-tint,.35) * 12%),transparent);
 }
 :root[data-glass-material='liquid'] body .fluid-glass-chrome.fluid-glass-refractive {
