@@ -18,14 +18,14 @@
           <button class="btn btn-ghost" type="button" @click="showParticles = !showParticles">{{ showParticles ? '收起粒子预览' : '查看当前粒子形象' }}</button>
         </section>
         <section class="character-art-card">
-          <h3 ref="replacementHeading" tabindex="-1">替换预览 <span v-if="file">尚未应用</span></h3>
+          <h3 ref="replacementHeading" tabindex="-1">替换预览 <span v-if="file">{{ fileReady ? '本窗口候选' : '原来源待核对' }}</span></h3>
           <RuntimeImage v-if="previewUrl" class="character-art-image" :src="previewUrl" alt="准备替换的新立绘" />
           <ArchiveStatePanel v-else compact kind="empty" title="尚未选择图片" />
           <p class="character-art-note">PNG / JPEG / WebP · ≤15 MB · 边长 ≤8192 px · ≤3200 万像素</p>
           <p class="character-art-note">建议透明背景 · 仅替换展示立绘</p>
           <input ref="fileInput" hidden type="file" accept="image/png,image/jpeg,image/webp" @change="onFile" />
           <div class="character-art-actions">
-            <button class="btn btn-ghost" type="button" :disabled="!ready || saving || reading || !local" @click="fileInput?.click()"><ArchiveIcon name="image" />{{ reading ? '正在检查图片…' : '选择图片' }}</button>
+            <button class="btn btn-ghost" type="button" :disabled="!ready || saving || reading || !local" @click="chooseFile"><ArchiveIcon name="image" />{{ reading ? '正在检查图片…' : '选择图片' }}</button>
             <button v-if="file" class="btn btn-ghost" type="button" :disabled="saving" @click="cancelReplacement">取消替换</button>
           </div>
         </section>
@@ -34,7 +34,7 @@
         <AsyncPanel :loader="loadParticleField" label="粒子形象预览" v-slot="{ component }"><component :is="component" :shape="particleTheme.shape" :portrait-id="selectedId" :label="`${current?.name || ''}已保存的粒子形象`" density="ambient" /></AsyncPanel>
       </div>
       <footer class="character-art-actions">
-        <button class="btn btn-primary" type="button" :disabled="!file || !ready || saving || reading" @click="save">{{ saving ? '正在同步形象…' : '应用立绘并同步粒子' }}</button>
+        <button class="btn btn-primary" type="button" :disabled="!fileReady || !ready || saving || reading" @click="save">{{ saving ? '正在同步形象…' : '应用立绘并同步粒子' }}</button>
         <button class="btn btn-ghost" type="button" :disabled="!custom || !ready || saving || reading" @click="reset">恢复内置形象</button>
       </footer>
     </template>
@@ -51,13 +51,14 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { useCharacterArtManager } from '@/composables/scene/useCharacterArtManager'
 const props = defineProps<{ initialCharacterId?: string }>()
-const { selectedId, previewUrl, feedback, error, loading, saving, reading, ready, file,
-  profiles, current, custom, originalUrl, local, load, selectCharacter, pick, discard, save, reset, canLeave } = useCharacterArtManager(() => props.initialCharacterId)
+const { selectedId, previewUrl, feedback, error, loading, saving, reading, ready, file, fileReady,
+  profiles, current, custom, originalUrl, local, load, selectCharacter, beginPick, pick, discard, save, reset, canLeave } = useCharacterArtManager(() => props.initialCharacterId)
 defineExpose({ canLeave })
 const loadParticleField = () => import('@/components/visual/SemanticParticleField.vue')
 const fileInput = ref<HTMLInputElement | null>(null), showParticles = ref(false)
 const replacementHeading = ref<HTMLElement | null>(null)
 const particleTheme = computed(() => characterParticleTheme(selectedId.value))
+function chooseFile() { if (fileInput.value && beginPick()) fileInput.value.click() }
 function cancelReplacement(event: MouseEvent) {
   if (document.activeElement === event.currentTarget) replacementHeading.value?.focus({ preventScroll: true })
   discard()
