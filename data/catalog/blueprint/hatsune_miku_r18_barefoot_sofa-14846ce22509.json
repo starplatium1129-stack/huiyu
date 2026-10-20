@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_barefoot_sofa",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 327,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "hatsune_miku_r18_barefoot_sofa",
     "title": "初音未来 · 赤足沙发",
@@ -15,7 +15,7 @@
     "action": "光脚踩在沙发上伸懒腰",
     "timeOfDay": "午后",
     "lighting": "明媚午后阳光",
-    "camera": "intimate medium shot, side view",
+    "camera": "full body, side view",
     "mood": "午后慵懒俏皮",
     "sceneTags": [
       "living_room",

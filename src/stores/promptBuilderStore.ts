@@ -2,6 +2,9 @@ import { usePromptDraft } from '@/composables/prompt/usePromptDraft'
 import { usePromptSceneFilters } from '@/composables/prompt/usePromptSceneFilters'
 import { usePromptArtworkHistory } from '@/composables/prompt/usePromptArtworkHistory'
 import { sceneStyleBaseline } from '@/utils/randomVariationContext'
+import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
+import { DIRECTOR_CONTROL_KEYS, normalizeDirectorSources, restoreDirectorSources, sceneDirectorSources } from '@/utils/promptDirector'
+import type { DirectorControlSource, DirectorControlSources, DirectorControlValues } from '@/types/promptDirector'
 import type { Scene } from '../types/scene'
 export type { Scene } from '../types/scene'
 
@@ -53,6 +56,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const sceneId   = ref<string | null>(null)
   const sceneBaseStory = ref('')
   const selections = reactive<Selections>({ emotion: [], shot: null, lighting: null, composition: null })
+  const directorSources = ref<DirectorControlSources>(sceneDirectorSources())
   /**
    * 反推顶替的服装（2026-08-29）。非空时，热门角色用参考图服装**整体替换**
    * 角色默认服装（outfit.tokens + outfit.prose 一起换；只换 tag 不换散文无效）。
@@ -179,6 +183,14 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const activeScene = computed(() =>
     sceneId.value ? scenes.value.find(s => s.id === sceneId.value) ?? null : null
   )
+  const inheritedDirectorValues = computed<DirectorControlValues>(() => {
+    const current = subject.value
+    if (current.kind === 'popular') {
+      const blueprint = sceneBlueprints.value.find(item => item.id === current.blueprintId)
+      return blueprint ? inferBlueprintDecisions(blueprint) : {}
+    }
+    return activeScene.value ? sceneStyleBaseline(activeScene.value) : {}
+  })
 
   const charPrompt = computed(() => CHAR_PROMPT[char.value] ?? '')
 
@@ -222,11 +234,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (!isPopular.value && scene && !sceneSupportsCharacter(scene, c)) {
       clearInheritedStory()
       sceneId.value = null; sceneBaseStory.value = ''
-      const baseline = sceneStyleBaseline(scene)
-      for (const key of ['shot', 'lighting', 'composition'] as const) {
-        if (selections[key] === baseline[key]) selections[key] = null
-      }
-      if (colorMood.value === baseline.colorMood) colorMood.value = null
+      clearInheritedDirectorValues()
     }
     char.value = c
   }
@@ -247,6 +255,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     outfitOverride.value = null
     selections.emotion = []; selections.shot = null; selections.lighting = null; selections.composition = null
     colorMood.value = null; artistStyleIds.value = []
+    directorSources.value = sceneDirectorSources()
   }
   function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null,
     options: { preserveReference?: boolean; preserveOutfitOverride?: boolean; outfitExplicit?: boolean } = {}) {
@@ -263,10 +272,22 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     subject.value = { ...subject.value, blueprintId }
   }
   function setStory(t: string) { story.value = t }
-  function setShot(id: string | null)        { selections.shot = id }
-  function setLighting(id: string | null)    { selections.lighting = id }
-  function setComposition(id: string | null) { selections.composition = id }
-  function setColorMood(id: string | null)   { colorMood.value = id }
+  function setShot(id: string | null, source: DirectorControlSource = 'manual') { selections.shot = id; directorSources.value.shot = source }
+  function setLighting(id: string | null, source: DirectorControlSource = 'manual') { selections.lighting = id; directorSources.value.lighting = source }
+  function setComposition(id: string | null, source: DirectorControlSource = 'manual') { selections.composition = id; directorSources.value.composition = source }
+  function setColorMood(id: string | null, source: DirectorControlSource = 'manual') { colorMood.value = id; directorSources.value.colorMood = source }
+  function restoreDirectorState(values: DirectorControlValues, sources: unknown, inherited = inheritedDirectorValues.value) {
+    selections.shot = values.shot ?? null; selections.lighting = values.lighting ?? null
+    selections.composition = values.composition ?? null; colorMood.value = values.colorMood ?? null
+    directorSources.value = restoreDirectorSources(sources, values, inherited)
+  }
+  function clearInheritedDirectorValues() {
+    for (const key of DIRECTOR_CONTROL_KEYS) {
+      if (directorSources.value[key] !== 'scene') continue
+      if (key === 'colorMood') colorMood.value = null
+      else selections[key] = null
+    }
+  }
 
   function setArtistStyleIds(ids: string[]) { artistStyleIds.value = normalizeArtistStyleIds(ids) }
 
@@ -307,6 +328,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     selections.lighting = sceneLighting(scene)
     selections.composition = sceneComposition(scene)
     colorMood.value = sceneColorMood(scene)
+    directorSources.value = sceneDirectorSources()
     manualTags.value = new Set()
     referenceInput.value = null
     outfitOverride.value = null
@@ -323,6 +345,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     referenceInput.value = null
     selections.emotion = []; selections.shot = null; selections.lighting = null
     selections.composition = null; colorMood.value = null
+    directorSources.value = sceneDirectorSources()
     if (!opts.keepStory) story.value = ''
   }
 
@@ -334,6 +357,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       lighting: selections.lighting,
       composition: selections.composition,
       colorMood: colorMood.value,
+      directorSources: normalizeDirectorSources(directorSources.value),
       manualTags: [...manualTags.value],
       randomVariation: randomVariation.value ? JSON.parse(JSON.stringify(randomVariation.value)) as DraftRandomVariation : null,
       referenceInput: cloneReferenceInput(referenceInput.value),
@@ -345,10 +369,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function restoreStyleLayers(snapshot: ReturnType<typeof snapshotStyleLayers>) {
     randomVariation.value = snapshot.randomVariation ? JSON.parse(JSON.stringify(snapshot.randomVariation)) : null
     selections.emotion = [...(snapshot.emotions ?? [])]
-    selections.shot = snapshot.shot ?? null
-    selections.lighting = snapshot.lighting ?? null
-    selections.composition = snapshot.composition ?? null
-    colorMood.value = snapshot.colorMood ?? null
+    restoreDirectorState(snapshot, snapshot.directorSources)
     manualTags.value = new Set(snapshot.manualTags ?? [])
     referenceInput.value = cloneReferenceInput(snapshot.referenceInput)
     artistStyleIds.value = normalizeArtistStyleIds(snapshot.artistStyleIds)
@@ -400,7 +421,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
   }
 
-  const { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
+  const { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, directorSources, inheritedDirectorValues, sceneBlueprints, loadPopularCharacter, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
 
   /** Compatibility adapter for incomplete old inputs; the use case captures it before waiting. */
   function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {
@@ -421,6 +442,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       seed: lastSeed.value ?? -1,
       emotion: selections.emotion, shot: selections.shot, lighting: selections.lighting,
       composition: selections.composition, colorMood: colorMood.value, manual_tags: manualTags.value,
+      directorSources: normalizeDirectorSources(directorSources.value),
       lora: loraLine.value || null, model: sdModelName.value, size: lastRecommendedSize.value,
       cfg: sdParams.cfg, steps: sdParams.steps, sampler: sdParams.sampler, scheduler: sdParams.scheduler,
       hiresFix: sdParams.hiresFix, hiresScale: sdParams.hiresScale, hiresUpscaler: sdParams.hiresUpscaler,
@@ -431,7 +453,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   return {
     story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
-    selections, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
+    selections, directorSources, inheritedDirectorValues, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
     subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
     scenes, curation, loraMeta, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady, dataLoading, dataError, loadPopularCharacter,
@@ -444,6 +466,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     setColorMood, toggleManualTag, addManualTag, setArtistStyleIds, loadScene, clearScene, flash,
     setOutfitOverride, clearOutfitOverride, clearReferenceInput, clearRandomVariation,
     snapshotStyleLayers, restoreStyleLayers,
+    restoreDirectorState, clearInheritedDirectorValues,
     setStudioSubject, setUnboundSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory,
     saveDraft, restoreDraft, snapshotDraft, draftSaveState, draftSaveError, retryDraftSave,

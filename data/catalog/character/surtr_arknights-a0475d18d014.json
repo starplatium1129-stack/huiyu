@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "surtr_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 34,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "surtr_arknights",
     "profile": {
@@ -93,7 +93,7 @@
       "animeStudio": "arknights, hypergryph, official anime art",
       "canon": {
         "era": "近未来奇幻",
-        "formNotes": "白发红瞳；大剑莱瓦汀；气质慵懒忧郁",
+        "formNotes": "红发琥珀瞳；大剑莱瓦汀；气质慵懒忧郁",
         "research": "2026-08-15 调研（Danbooru surtr_(arknights) 5266 posts）",
         "world": "泰拉（罗德岛）"
       },

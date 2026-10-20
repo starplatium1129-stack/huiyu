@@ -34,6 +34,9 @@ export interface PromptPlan {
   artists: string[]
   preserveTokens: string[]
   sceneVisualFragments: string[]; emotion: string[]; camera: string[]; lighting: string[]; palette: string[]
+  /** Explicit selection origin; absent only for callers using the legacy value-based fallback. */
+  cameraSource?: 'scene' | 'manual'
+  lightingSource?: 'scene' | 'manual'
   /** Source lighting metadata distinguishes unchanged defaults from a director override. */
   authoredLighting?: string
   composition: string[]; manual: string[]; negative: string[]; visualDescription: string

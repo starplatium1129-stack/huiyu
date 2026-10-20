@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc109",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 107,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "animaCaption": "She rests on the closed cafe's lounge sofa, looking toward the viewer in the room's dim warm light.",
     "auditRevision": "round2-2026-07-22",
-    "camera": "平视近景俯瞰",
+    "camera": "平视近景",
     "category": "日常/同人/After_Story",
     "char": "nene",
     "character": [

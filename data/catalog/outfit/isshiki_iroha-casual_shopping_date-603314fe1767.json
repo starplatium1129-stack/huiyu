@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/casual_shopping_date",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 206,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
@@ -16,7 +16,7 @@
         "mohair",
         "oversized clothes",
         "off shoulder",
-        "brown plaid skirt",
+        "brown plaid miniskirt",
         "black thighhighs",
         "leather shoulder bag"
       ]

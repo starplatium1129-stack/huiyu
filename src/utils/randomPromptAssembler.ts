@@ -2,6 +2,7 @@ import { hasVariableCamera, hasVariableLight } from './randomVariationProse.ts'
 import { isStableIdentityToken } from './interrogateReference.ts'
 import { canVarySceneOutfit, sceneAllowsAction, sceneAllowsLight, sceneVariationOverlay, type RandomSceneContext } from './randomSceneVariation.ts'
 import type { DraftRandomVariation } from './promptBuilderPersistence.ts'
+import type { DirectorControlSources } from '../types/promptDirector.ts'
 import pools from '../config/randomInspirationPools.json' with { type: 'json' }
 import type { ArtistStyleOption } from '../config/artistStyles.ts'
 import { normalizeArtistStyleIds, ARTIST_STYLE_CANDIDATES } from '../config/artistStyles.ts'
@@ -50,6 +51,7 @@ export interface RandomInspirationOptions {
 }
 
 export interface RandomDraw {
+  directorSources: DirectorControlSources
   variation: DraftRandomVariation
   kept: string[]
   /** EMOTION id 列表（1~2 个，进入 store.selections.emotion）。 */
@@ -222,8 +224,10 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
 
   // ── 镜头（100% 抽 1） + 构图（50%） ──────────────────────────────────
   const shotPool = options.scene ? ALL_SHOT_IDS.filter(id => !['turn', 'over', 'detail'].includes(id)) : ALL_SHOT_IDS
-  const shot = options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableCamera(options.scene.prose))) ? options.scene.shot
+  const inheritedShot = options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableCamera(options.scene.prose)))
+  const shot = inheritedShot ? options.scene!.shot
     : draw(shotPool, 1, rng)[0] ?? null
+  const directorSources: DirectorControlSources = { shot: inheritedShot ? 'scene' : 'manual', lighting: 'manual', composition: 'manual', colorMood: 'manual' }
   const composition = chance(options.rich ? 1 : 0.5, rng) ? (draw(options.scene ? ALL_COMPOSITION_IDS.filter(id => id !== 'bywindow') : ALL_COMPOSITION_IDS, 1, rng)[0] ?? null) : null
   const visible = (token: string) => visibleInRandomShot(token, shot)
   const add = (token: string) => {
@@ -236,7 +240,10 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   let lighting: string | null = null
   if (chance(options.rich ? 1 : 0.9, rng)) {
     lighting = draw(options.scene ? LIGHTING.map(item => item.id).filter(id => sceneAllowsLight(options.scene!, id)) : LIGHT_MAIN, 1, rng)[0] ?? null
-    if (options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableLight(options.scene.prose, options.scene.lighting)))) lighting = options.scene.lighting
+    if (options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableLight(options.scene.prose, options.scene.lighting)))) {
+      lighting = options.scene.lighting
+      directorSources.lighting = 'scene'
+    }
     if (lighting && chance(0.4, rng)) {
       // back 逆光作为可叠加标签进入 manualTags（与主光源不互斥）
       add('backlighting')
@@ -356,6 +363,7 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   }
 
   return {
+    directorSources,
     kept: options.scene ? [
       '地点与时段', ...(options.scene.prose || options.scene.action ? ['核心动作'] : []),
       ...(!(options.allowClothing ?? !explicitIdentity) || !canVarySceneOutfit(options.scene) ? ['服装'] : []),

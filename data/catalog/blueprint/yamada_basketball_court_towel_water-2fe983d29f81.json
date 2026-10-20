@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_basketball_court_towel_water",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1495,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yamada_basketball_court_towel_water",
     "title": "山田杏奈 · 篮球场边拧开的水瓶",
@@ -35,6 +35,7 @@
       "water bottle",
       "basketball",
       "bench",
+      "white towel around neck",
       "full body"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_armpit",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_armpit",
     "title": "时崎狂三 · 月夜的慵懒",
@@ -26,10 +26,10 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Adult Kurumi crosses her wrists under a loose ribbon and bends sideways on the bed, black sheer bodice slipped below her breasts.",
+    "promptProse": "Adult Kurumi crosses her wrists under a loose ribbon and bends sideways on the bed, black sheer bodice slipped below her breasts. Cold moonlight meets a soft candle glow across the bedding.",
     "promptTokens": [
       "black sheer bodice",
-      "ribbon",
+      "black ribbon around wrists",
       "kneeling",
       "arms up",
       "bed",

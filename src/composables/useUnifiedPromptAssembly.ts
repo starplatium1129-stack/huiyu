@@ -32,8 +32,9 @@ export function useUnifiedPromptAssembly(
   const promptReport = computed(() => active.value.promptReport.value)
   const artViolations = computed(() => active.value.artViolations.value)
   const modelProfile = computed(() => pb.isPopular ? popular.profile.value : studio.modelProfile.value)
+  const structuredPlan = computed(() => active.value.structuredPlan.value)
   const previewContext = computed<PromptPreviewContext>(() => {
-    const plan = pb.isPopular ? popular.structuredPlan.value : pb.char === 'none' ? null : studio.structuredPlan.value
+    const plan = structuredPlan.value
     const subjects = pb.char === 'none' ? [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters] : []
     return {
       format:resolveDrawCapabilities(engine.value, modelProfile.value).promptFormat,
@@ -54,6 +55,7 @@ export function useUnifiedPromptAssembly(
     promptReport,
     artViolations,
     modelProfile,
+    structuredPlan,
     // 兼容旧视图的三元分发，逐步迁移后可移除
     studio,
     popular,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_base_after_mission",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 877,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "坐在装甲旁检查模块，空出的手按着大腿上的淤伤。",
     "adult": true,
@@ -34,7 +34,7 @@
       "open clothes",
       "topless",
       "sitting",
-      "armor",
+      "discarded armor beside her",
       "blue light"
     ],
     "recommendedSize": "1152x1536",

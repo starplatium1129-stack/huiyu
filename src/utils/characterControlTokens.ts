@@ -1,73 +1,8 @@
 import type { PromptScene } from './sceneFraming.ts'
 import { normalizeKey, sceneRating } from './promptPrimitives.ts'
 
-/**
- * v18 训练 caption 中实际出现的服装词组。
- *
- * 主控制词负责选择服装身份，后续词负责锁定官方配色、剪裁和腿部细节。
- * 这里故意不使用近义词或自然语言改写，避免网站提示词与训练语汇脱节。
- */
-export const TRAINED_OUTFIT_BUNDLES = {
-  neneWitch: [
-    'nene_witch_canonical', 'witch_hat', 'black_cape', 'criss-cross_halter',
-    'crop_top', 'strap_between_breasts', 'pink_bow', 'pink_ribbon',
-    'black_skirt', 'asymmetrical_legwear', 'striped_thighhighs',
-    'single_thighhigh', 'single_sock', 'frilled_socks', 'midriff',
-  ],
-  neneSchool: [
-    'nene_school_uniform', 'school_uniform', 'blazer', 'yellow_bowtie',
-    'plaid_skirt', 'pleated_skirt', 'grey_skirt', 'black_thighhighs',
-    'zettai_ryouiki',
-  ],
-  neneSailor: [
-    'nene_sailor_uniform', 'school_uniform', 'grey_sailor_collar',
-    'black_shirt', 'sailor_shirt', 'serafuku',
-  ],
-  neneRedCardigan: [
-    'nene_red_cardigan_uniform', 'cardigan', 'white_shirt', 'pleated_skirt',
-    'black_skirt', 'white_socks',
-  ],
-  neneBluePajamas: [
-    'nene_blue_pajamas', 'pajamas', 'animal_print', 'cat_print',
-    'long_sleeves',
-  ],
-  neneGreenSleepwear: [
-    'nene_green_sleepwear', 'sleepwear', 'nightgown', 'polka_dot',
-    'short_sleeves', 'twin_braids',
-  ],
-  neneBatDress: [
-    'nene_bat_dress', 'black_dress', 'asymmetrical_clothes',
-    'bat_hair_ornament', 'black_thighhighs', 'garter_straps',
-  ],
-  neneBlackDress: [
-    'nene_black_dress', 'black_dress', 'skirt', 'garter_straps',
-    'thighhighs',
-  ],
-  natsumeQipao: [
-    'natsume_official_qipao', 'chinese_clothes', 'china_dress', 'red_dress',
-    'floral_print', 'side_slit', 'long_sleeves', 'black_thighhighs',
-    'hair_bun', 'double_bun', 'hair_flower', 'red_flower',
-  ],
-  natsumeCafe: [
-    'natsume_cafe_uniform', 'white_shirt', 'suspenders', 'suspender_skirt',
-    'brown_skirt', 'long_sleeves', 'collared_shirt', 'purple_ribbon',
-    'hair_flower',
-  ],
-  natsumePinkCafe: [
-    'natsume_pink_cafe_uniform', 'pink_shirt', 'pink_skirt', 'waist_apron',
-    'white_apron', 'frills', 'striped',
-  ],
-  natsumeMaid: [
-    'natsume_maid_uniform', 'maid', 'maid_apron', 'white_apron',
-    'maid_headdress', 'long_sleeves', 'frills',
-  ],
-  natsumeWinter: [
-    'natsume_winter_coat', 'coat', 'fur_trim', 'hair_ribbon', 'hair_flower',
-  ],
-  natsumeSleepwear: [
-    'natsume_sleepwear', 'shirt', 'blue_shirt', 'pillow', 'on_bed',
-  ],
-} as const
+import { TRAINED_OUTFIT_BUNDLES } from './canonicalOutfits.ts'
+export { TRAINED_OUTFIT_BUNDLES } from './canonicalOutfits.ts'
 
 function appendOutfitBundle(controls: string[], bundle: readonly string[]): void {
   controls.push(...bundle)

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_shower_steam_wet_hair",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 813,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yor_r18_shower_steam_wet_hair",
     "characterId": "yor_forger",
@@ -28,8 +28,7 @@
       "wet hair",
       "looking back",
       "drawer",
-      "towel",
-      "golden needle"
+      "golden needle at towel edge"
     ],
     "negativeTokens": [],
     "adult": true,

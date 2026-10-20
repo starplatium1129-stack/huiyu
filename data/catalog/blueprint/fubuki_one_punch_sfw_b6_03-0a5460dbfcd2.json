@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1591,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_03",
     "title": "吹雪 · 夜色车窗的霓虹",
@@ -30,11 +30,11 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Her fur coat lies across her lap beside the darkened phone as she looks through the rear-seat window; passing neon moves over her thoughtful face.",
+    "promptProse": "Her fur-collared coat lies across her lap beside the darkened phone as she looks through the rear-seat window; passing neon moves over her thoughtful face.",
     "promptTokens": [
       "1girl",
       "solo",
-      "fur coat",
+      "fur-collared coat on lap",
       "phone",
       "backseat",
       "car interior",

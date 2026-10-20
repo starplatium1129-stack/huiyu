@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_r18_b8_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 66,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "makinohara_shouko_r18_b8_03",
     "title": "牧之原翔子 · 教堂试衣间花嫁白纱的滑落事故 ·「咲太君……新娘的拉链卡住了，能来帮帮我吗」",
@@ -34,6 +34,7 @@
     "promptTokens": [
       "pearl trim",
       "white mermaid wedding dress",
+      "plunging V-neckline",
       "veil",
       "stuck zipper",
       "breast slip",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ellen_joe/black_silk_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1285,
-  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "createdAt": "2026-10-15T14:37:48.939637+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "characterId": "ellen_joe",
     "outfit": {
@@ -16,7 +16,7 @@
         "sheer fabric",
         "red trim"
       ],
-      "prose": "A light black silk camisole with narrow red edging.",
+      "prose": "A light sheer black silk camisole with narrow red edging.",
       "default": false,
       "isDefault": false
     }

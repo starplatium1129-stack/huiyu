@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_desk_uniform_skirt_lift",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1362,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "俯身倚桌，一手够背后卡住的拉链，另一手留在裙内",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "official_republic_military_uniform",
-    "promptProse": "Adult Lena leans over the map desk with one hand reaching for the jammed back zipper and the other beneath her skirt; her uniform collar has loosened around her chest.",
+    "promptProse": "Adult Lena leans over the map desk with one hand reaching for the jammed back zipper and the other beneath her skirt; her uniform collar has loosened around her chest. The warm desk lamp lights the map and her loose silver hair.",
     "promptTokens": [
       "blue military uniform",
       "stuck zipper",

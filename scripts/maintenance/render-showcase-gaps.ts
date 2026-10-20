@@ -7,8 +7,7 @@
  * 只读活跃 manifest，缺口生成到 --output 待审核候选，人工审核后另行发布。
  * 装配层与生图台 UI 完全同参（usePopularPromptAssembly 对齐）：
  *   - resolveModelProfile 解析引擎模型 profile（quality_prefix / negative_prefix 契约）
- *   - inferBlueprintDecisions 推断导演三件套（shot / lighting / composition）注入编译产物
- *   - resolveStyleRecipe 按蓝图 hint 解析风格配方（成人配方 fail-closed）
+ *   - compilePromptRecipe 统一解析蓝图导演默认值、风格配方与完整正负提示词
  *   - matureTokens 池（tags.json Mature 分类）与 UI 同源
  *   - TeaCache 加速（thresh 0.10）、按蓝图 recommendedSize 出图（画幅轴向契约）
  *   - 明确失败自动换 seed 重试一轮；中断保留 job ID，重跑继续查询原任务
@@ -63,10 +62,8 @@ function loadInputs(opts: Options) {
 
 function collectTasks(opts: Options, input: ReturnType<typeof loadInputs>) {
   const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
-  const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
-  const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
+  const { compilePromptRecipe }: typeof import('../../src/utils/promptRecipe.ts') = require('../../src/utils/promptRecipe.ts');
   const { parsePresetCatalog }: typeof import('../../src/utils/modelProfileDefaults.ts') = require('../../src/utils/modelProfileDefaults.ts');
-  const { KREA_STYLE_RECIPES, resolveStyleRecipe }: typeof import('../../src/config/kreaStyleRecipes.ts') = require('../../src/config/kreaStyleRecipes.ts');
   const characters = popular.parsePopularCharacters(input.data['data/popular-characters.json']);
   const blueprints = popular.parseSceneBlueprints(input.data['data/scene-blueprints.json']);
   const catalog = parsePresetCatalog(input.data['data/presets.json']);
@@ -78,25 +75,16 @@ function collectTasks(opts: Options, input: ReturnType<typeof loadInputs>) {
   const matureTokenSet = new Set<string>(tagsData.filter(t => t.cat === 'Mature').map(t => String(t.en).trim().toLowerCase().replace(/\s+/g, '_')));
   const have = new Set(input.entries.filter(e => e.type === 'popular').map(e => e.id));
   const only = opts.only ? opts.only.split(',').map(s => s.trim()).filter(Boolean) : null;
-  const decisionCache = new Map<string, ReturnType<typeof blueprintDecisions.inferBlueprintDecisions>>();
-  function decisionsOf(bp: SceneBlueprint) {
-    if (!decisionCache.has(bp.id)) decisionCache.set(bp.id, blueprintDecisions.inferBlueprintDecisions(bp));
-    return decisionCache.get(bp.id)!;
-  }
   /** 与 UI 一致的装配参数（usePopularPromptAssembly 对齐）。 */
   function buildPlan(character: PopularCharacter, bp: SceneBlueprint) {
-    const d = decisionsOf(bp);
-    return popularPrompt.buildPopularPromptPlan({
+    return compilePromptRecipe({
+      kind: 'popular',
       character,
       outfit: character.outfits.find(o => o.id === bp.outfitId) || character.outfits[0],
       blueprint: bp,
       engine: ENGINE,
       profile,
       matureTokens: matureTokenSet,
-      shot: d.shot,
-      lighting: d.lighting,
-      composition: d.composition,
-      style: resolveStyleRecipe(KREA_STYLE_RECIPES, 'anima', bp, null),
       artistTags: ['@rella'],
     });
   }

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc302",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 297,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "sc302",
     "title": "深夜镜前的完整坦诚",
@@ -37,7 +37,7 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "nene_r18, adult, visual novel event CG, 1girl, solo, ayachi_nene, ahoge, nude, pussy, standing, front view, mirror reflection, bare breasts, nipples, navel, heavy blush, shy, open mouth, night, lamp, soft lighting, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "nene_r18, adult, visual novel event CG, 1girl, solo, ayachi_nene, ahoge, nude, pussy, standing, mirror reflection, bare breasts, nipples, navel, heavy blush, shy, open mouth, night, lamp, soft lighting, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
     "negative": "extreme close-up, duplicate reflection, day, school uniform, gym uniform",
     "storyJa": "【大人のAfter Story・寧々・深夜の鏡の前の素直さ】更衣室には、暖かなランプが一つだけ灯っていた。寧々は鏡の前に立ち、最後の一枚を脱ぎ捨てると、正面から鏡に向き直った。白い胸も、腰の線も、脚の付け根の一番秘かな場所も、鏡の中にはっきりと映っている。彼女は唇を結び、小さく柔らかな声で言った。「大人になった寧々は、ここもちゃんと成長してるの……よく見てね。寧々はあなたにだけ見せるんだから。」",
     "animaCaption": "Standing before the dressing mirror at night, she faces the glass; the full-length view includes her body and one corresponding reflection. The warm lamp lights her face and the mirror frame.",

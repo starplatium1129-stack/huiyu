@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_abyss_shore",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 607,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "单膝跪地，剑尖抵着沙滩",
     "camera": "cowboy shot, low angle, kneeling pose and hand on the sword visible",
@@ -20,7 +20,7 @@
     "mood": "肃杀孤绝",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Skadi holds her greatsword planted in wet black sand with one hand, wiping salt spray from her cheek with the other; grey-violet dusk lights the breaking waves.",
+    "promptProse": "Kneeling on one knee, Skadi holds her greatsword planted in wet black sand with one hand, wiping salt spray from her cheek with the other; grey-violet dusk lights the breaking waves.",
     "promptTokens": [
       "Skadi",
       "greatsword",

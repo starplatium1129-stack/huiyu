@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 135,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_03",
     "title": "尤贝尔 · 斩击魔法割裂黑色斗篷的走光事故 ·「手滑把衣服切开了呢……怎么，想趁机偷袭我吗？」",
@@ -30,7 +30,7 @@
       "open_clothes",
       "bare_breasts"
     ],
-    "promptProse": "Ubel braces one hand on the broken stone table and holds her staff in the other, looking back as sunlight falls through the cut seam of her dress.",
+    "promptProse": "Ubel braces one hand on the broken stone table and holds her staff in the other, looking back as sunlight falls through the cut seam of her dress. Afternoon light enters through the ruined window opening, leaving the space beneath the stone table in shadow.",
     "promptTokens": [
       "torn black dress",
       "staff",

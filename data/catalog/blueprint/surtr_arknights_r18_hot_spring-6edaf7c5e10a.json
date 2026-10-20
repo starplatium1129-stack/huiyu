@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_hot_spring",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 523,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "泡在温泉中仰头望雪",
     "adult": true,
@@ -45,6 +45,20 @@
       "steam"
     ],
     "timeOfDay": "夜晚",
-    "title": "史尔特尔 · 北境温泉"
+    "title": "史尔特尔 · 北境温泉",
+    "identityProseOverride": "Surtr from Arknights, with long wine-red hair worn loose, a black headband, amber-orange eyes and curved black-red horns.",
+    "identityTokensOverride": [
+      "surtr (arknights)",
+      "1girl",
+      "solo",
+      "red hair",
+      "long hair",
+      "hair down",
+      "black headband",
+      "amber eyes",
+      "horns",
+      "curved black-red horns",
+      "arknights"
+    ]
   }
 }

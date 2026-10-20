@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_footbath",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 347,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_footbath",
     "title": "雪之下雪乃 · 足浴时分",
@@ -18,7 +18,7 @@
     "camera": "full body, seated pose and both feet in the footbath visible",
     "mood": "冰融的慵懒",
     "sceneTags": [
-      "bathroom",
+      "veranda",
       "foot_bath",
       "steam",
       "warm_light",

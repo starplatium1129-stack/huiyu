@@ -86,7 +86,7 @@
           <section ref="editorPane" v-content-motion:fade="detailLoading ? false : `${selected?.kind}:${selected?.id}`" class="catalog-editor-pane" tabindex="-1" aria-label="内容编辑" :aria-busy="detailLoading">
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
             <template v-else-if="selected">
-              <CatalogRecordEditor v-model:record="selected" :disabled="busy" :character-names="characterNames" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
+              <CatalogRecordEditor v-model:record="selected" :disabled="busy" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
               <details v-if="selected.revision" class="catalog-history" :aria-busy="historyLoading">
                 <StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary>
                 <p v-if="historyLoading" role="status">正在读取版本…</p>

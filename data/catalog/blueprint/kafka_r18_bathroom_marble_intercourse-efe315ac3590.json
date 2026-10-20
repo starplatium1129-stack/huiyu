@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_bathroom_marble_intercourse",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1045,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "kafka_r18_bathroom_marble_intercourse",
     "title": "卡芙卡 · 大理石浴池的水下独处",
@@ -31,7 +31,7 @@
       "one_leg_up",
       "leg_lift"
     ],
-    "promptProse": "Adult Kafka reclines against the marble bath with one leg on the rim. One hand grips the stone while the other fingers herself beneath the water.",
+    "promptProse": "Adult Kafka reclines against the marble bath with one leg on the rim. One hand grips the stone while the other fingers herself beneath the water. Warm bathroom light diffuses through the mist and reflects from the wet marble.",
     "promptTokens": [
       "1girl",
       "solo",

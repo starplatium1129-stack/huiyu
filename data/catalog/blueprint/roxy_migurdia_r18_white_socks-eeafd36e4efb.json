@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_white_socks",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 462,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "反坐高木椅，一只脚跟抬到椅面，手指卷住袜口，身体轻靠椅背",
     "adult": true,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_thighhighs_only",
-    "promptProse": "Adult Roxy sits backward on the chair with one heel raised onto the seat, rolling down the stocking welt while resting against the backrest.",
+    "promptProse": "Adult Roxy sits backward on the chair with one heel raised onto the seat, rolling down the stocking welt while resting against the backrest. Her raised foot and the stocking welt remain the focus of the frame.",
     "promptTokens": [
       "topless",
       "bottomless",

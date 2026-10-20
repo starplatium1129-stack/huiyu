@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "komine_sachi",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "komine_sachi",
     "profile": {
@@ -110,7 +110,7 @@
         "灰色的果实",
         "grisaia"
       ],
-      "identityProse": "Komine Sachi from Grisaia, with short pastel-pink hair in two low side braids, swept bangs and blue eyes.",
+      "identityProse": "Komine Sachi from Grisaia, with short pastel-pink hair partially tied up on both sides, swept bangs and blue eyes.",
       "identityTokens": [
         "komine_sachi",
         "1girl",

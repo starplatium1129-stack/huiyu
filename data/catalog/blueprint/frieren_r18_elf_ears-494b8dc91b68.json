@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_elf_ears",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 115,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "frieren_r18_elf_ears",
     "title": "芙莉莲 · 耳尖的触碰",
@@ -26,7 +26,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "She draws a feather along one ear while her other hand follows the resulting magic tremor between her thighs.",
+    "promptProse": "She draws a feather along one ear while her other hand follows the resulting magic tremor between her thighs. Warm fireplace light and softer candlelight fall over the bedding.",
     "promptTokens": [
       "1girl",
       "solo",

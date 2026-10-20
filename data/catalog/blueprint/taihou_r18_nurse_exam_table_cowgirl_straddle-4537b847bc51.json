@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1088,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
     "title": "大凤 · 诊疗台护士服半解跨坐主动骑乘",
@@ -43,7 +43,7 @@
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
-    "kreaStyleHint": "r18_sensual_bedroom",
+    "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [
       "topless",

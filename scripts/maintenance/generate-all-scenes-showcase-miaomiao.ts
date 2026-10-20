@@ -7,8 +7,8 @@
  * 全库场景样张待审核候选生成（MiaoMiao Harem v1.6 专属正规编译版）：
  *
  * 核心特性：
- * - 提示词编译：通过 buildPopularPromptPlan 完整绑定【角色核心DNA + 专属服装 + 场景蓝图 + @rella 画风 + 防分身/Solo守护】
- * - 专属女主角：宁宁/夏目 强制绑定官方 v21 LoRA (0.85 强度) 保证 100% 角色神韵
+ * - 提示词编译：通过 compilePromptRecipe 解析角色、当前衣装、场景和 @rella 画风
+ * - 专属女主角：宁宁/夏目单人场景绑定官方 v21 LoRA (0.85 强度)
  * - 底模：MiaoMiao Harem Anima v1.6 (anima-miaomiao-v1.6)
  * - 极速画幅：832x1216 (竖版) / 1216x832 (横版)
  * - 加速机制：TeaCache（本机对照阈值 0.10，实际收益依输入而定）
@@ -39,12 +39,9 @@ function resolveProfile(presets: unknown) {
 
 function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.snapshot>) {
   const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
-  const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
-  const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
+  const { compilePromptRecipe }: typeof import('../../src/utils/promptRecipe.ts') = require('../../src/utils/promptRecipe.ts');
   const { showcaseSubjectGuards }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
   const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
-  const { createPromptPlan, renderPromptPlan }: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
-  const { CHAR_PROMPT, STUDIO_PROMPT_SUBJECTS }: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
   const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
   const { parsePromptScenes }: typeof import('../../src/utils/promptCatalog.ts') = require('../../src/utils/promptCatalog.ts');
   const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
@@ -55,7 +52,7 @@ function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.sna
   const blueprints = popularContent.parseSceneBlueprints(blueprintsRaw);
   const profile = resolveProfile(input.data['data/presets.json']);
 
-  // 1. 热门角色场景蓝图（必须走 buildPopularPromptPlan 保证角色DNA）
+  // 1. 热门角色场景蓝图，沿共享入口解析绑定与导演默认值。
   for (const character of characters) {
     if (opts.character && character.id !== opts.character) continue;
     const owned = blueprints.filter(bp => bp.characterId === character.id);
@@ -66,18 +63,15 @@ function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.sna
       const height = isHorizontal ? 832 : 1216;
 
       const outfit = (bp.outfitId && popularContent.findOutfit(character, bp.outfitId)) || popularContent.defaultOutfit(character);
-      const decisions = blueprintDecisions.inferBlueprintDecisions(bp);
       const guards = showcaseSubjectGuards(bp);
 
-      const plan = popularPrompt.buildPopularPromptPlan({
+      const plan = compilePromptRecipe({
+        kind: 'popular',
         character,
         outfit,
         blueprint: bp,
         engine: 'anima',
         profile,
-        shot: decisions.shot,
-        lighting: decisions.lighting,
-        composition: decisions.composition,
         artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
         manual: promptPolicy.tokenize(guards.prompt),
       });
@@ -114,35 +108,25 @@ function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.sna
       const height = isHorizontal ? 832 : 1216;
 
       const characterId = sc.char === 'both' ? 'triad' : sc.char || '';
-      const loraIds = characterId === 'nene' ? ['L_NENE_V21_ANIMA']
-        : characterId === 'natsume' ? ['L_NAT_V21_ANIMA'] : [];
-      const contracts = loraData.filter(item => loraIds.includes(item.id)).map(item => item.prompt_contract);
-      const sceneProfile = {
-        ...profile,
-        exact_tokens: [...new Set([...(profile.exact_tokens || []), ...contracts.flatMap(contract => contract?.exact_tokens || [])])],
-        exact_prefixes: [...new Set([...(profile.exact_prefixes || []), ...contracts.flatMap(contract => contract?.exact_prefixes || [])])],
-      };
-      const scenePrompt = promptPolicy.sceneTemplateText(sc, { char: characterId, engine: 'anima', profile: sceneProfile });
-      const prompt = renderPromptPlan(createPromptPlan({
-        profile: sceneProfile,
-        identity: CHAR_PROMPT[characterId],
-        ...STUDIO_PROMPT_SUBJECTS[characterId],
-        controls: promptPolicy.characterControlTokens(sc, characterId, {
-          nene: 'L_NENE_V21_ANIMA', natsume: 'L_NAT_V21_ANIMA',
-        }),
-        scenePrompt,
+      const activeLoras: Record<string, string> = characterId === 'nene' ? { nene: 'L_NENE_V21_ANIMA' }
+        : characterId === 'natsume' ? { natsume: 'L_NAT_V21_ANIMA' } : {};
+      const plan = compilePromptRecipe({
+        kind: 'studio',
+        character: characterId,
         scene: sc,
-        artists: artistTagsForEngine([ARTIST_TAG], 'anima'),
-        rating: promptPolicy.profileRatingTag(sceneProfile, sc),
-      }), 'anima', sceneProfile).prompt;
-      const negative = promptPolicy.assembleNegative(sceneProfile, sc, 'anima', { character: characterId });
+        engine: 'anima',
+        profile,
+        activeLoras,
+        loraMeta: loraData,
+        artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
+      });
 
       tasks.push({
         id: sc.id,
         title: sc.title,
         characterId: sc.char || 'generic',
-        prompt,
-        negative,
+        prompt: plan.prompt,
+        negative: plan.negative,
         width,
         height,
         seed: Math.floor(Math.random() * 1000000000) + 100000000

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_rhodes_training_room_duel",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 671,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "穿宽松白T恤蜷缩在沙发上求摸头顺毛，白狼耳舒适微耷，双眼微眯神态满足放松",
     "camera": "medium shot, seated eye level, first-person view",
@@ -41,6 +41,20 @@
     ],
     "timeOfDay": "午后",
     "title": "拉普兰德 · 罗德岛休息室被顺毛的居家日常",
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "identityTokensOverride": [
+      "lappland (arknights)",
+      "1girl",
+      "solo",
+      "silver_hair",
+      "long hair",
+      "hair down",
+      "wolf_ears",
+      "wolf_tail",
+      "grey_eyes",
+      "sharp_teeth",
+      "arknights"
+    ],
+    "identityProseOverride": "Lappland from Arknights, a Lupo with long smooth silver-white hair worn loose, wolf ears, a bushy tail, grey eyes and sharp teeth."
   }
 }

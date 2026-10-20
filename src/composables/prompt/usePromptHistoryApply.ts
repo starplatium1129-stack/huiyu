@@ -5,7 +5,6 @@ import type { Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import { restoreHistorySceneStory } from '@/utils/promptBuilderPersistence'
-import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import {
   findBlueprint as findPopularBlueprint,
   findCharacter as findPopularCharacter,
@@ -144,13 +143,6 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         if (entry.blueprintId && !blueprint) restoreNotes.push('原蓝图不可用或角色绑定已变化，未恢复蓝图')
         pb.setPopularSubject(character.id, outfit.id, blueprint?.id ?? null, { outfitExplicit: entry.outfitExplicit })
         if (entry.outfitOverride) pb.setOutfitOverride(entry.outfitOverride.tokens, entry.outfitOverride.replaced)
-        if (blueprint) {
-          const decision = inferBlueprintDecisions(blueprint)
-          if (decision.shot) pb.setShot(decision.shot)
-          if (decision.lighting) pb.setLighting(decision.lighting)
-          pb.setComposition(decision.composition)
-          pb.setColorMood(decision.colorMood)
-        }
         resetBlueprintRotation()
         const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
         clearAnimaResult()
@@ -215,10 +207,6 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       // loadScene seeds the scene story; restore the historical user story last.
       pb.setStory(restoredContext.story)
       pb.selections.emotion.splice(0, pb.selections.emotion.length, ...(entry.emotion || []))
-      pb.setShot(entry.shot || null)
-      pb.setLighting(entry.lighting || null)
-      pb.setComposition(entry.composition || null)
-      pb.setColorMood(entry.colorMood || null)
       pb.manualTags = new Set(entry.manual_tags || [])
     } else {
       pb.setStory(entry.story || '')
@@ -228,15 +216,12 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     pb.visualDescription = entry.visualDescription || ''
     // Saved decisions override today's blueprint defaults for both subject kinds.
     pb.selections.emotion = [...(entry.emotion || [])]
-    pb.setShot(entry.shot ?? null)
-    pb.setLighting(entry.lighting ?? null)
-    pb.setComposition(entry.composition ?? null)
-    pb.setColorMood(entry.colorMood ?? null)
+    pb.restoreDirectorState(entry, entry.directorSources)
     pb.projectId = entry.project || ''
     pb.setArtistStyleIds(entry.artistStyleIds || [])
     // New unbound recipes store the custom layer separately; legacy unbound
     // negatives contain only user input. Never restore model defaults as custom.
-    pb.sdParams.negativeCustom = pb.isUnbound ? entry.negativeCustom ?? entry.negative ?? '' : ''
+    pb.sdParams.negativeCustom = entry.negativeCustom ?? (pb.isUnbound ? entry.negative ?? '' : '')
     if (!popularEntry || pb.isPopular) {
       const before = { ...animaState.value }
       const checked = await refreshAnimaBackend()

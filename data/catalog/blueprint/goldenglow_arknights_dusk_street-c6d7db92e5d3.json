@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_dusk_street",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 600,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "提着理发工具包，在夕阳逆光中漫步",
     "camera": "medium tracking shot",
@@ -26,7 +26,8 @@
       "looking back",
       "cobblestone street",
       "dusk",
-      "medium shot"
+      "medium shot",
+      "long hair"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

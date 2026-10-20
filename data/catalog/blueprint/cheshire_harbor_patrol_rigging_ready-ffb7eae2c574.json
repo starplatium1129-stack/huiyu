@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_harbor_patrol_rigging_ready",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1092,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "cheshire_harbor_patrol_rigging_ready",
     "title": "柴郡 · 碧海港湾的重巡护航",
@@ -19,7 +19,7 @@
     "action": "站在要塞栈桥上展开巨大舰装火炮，海风卷起荷叶边裙摆，神情认真护短",
     "timeOfDay": "下午",
     "lighting": "海面辽阔日光与舰装金属炮管冷硬的高光对比",
-    "camera": "wide dramatic angle, low perspective, epic naval warship scale",
+    "camera": "wide shot, low angle, epic naval warship scale",
     "mood": "英勇威武",
     "sceneTags": [
       "harbor",

@@ -1,5 +1,6 @@
 import type { ArtworkRecord } from '@/types/artwork'
 import type { HistoryEntry } from '@/types/promptHistory'
+import { normalizeDirectorSources } from '@/utils/promptDirector'
 const text = (value: unknown) => typeof value === 'string' ? value : ''
 const number = (value: unknown) => typeof value === 'number' && Number.isFinite(value) ? value : 0
 const nullable = (value: unknown) => typeof value === 'string' && value ? value : null
@@ -11,6 +12,7 @@ export function taskResultHistory(record: ArtworkRecord): HistoryEntry & Artwork
     character: text(record.character), scene: nullable(record.scene), sceneTitle: nullable(record.sceneTitle),
     story: text(record.story), prompt: text(record.prompt), negative: text(record.negative), seed: number(record.seed),
     emotion: strings(record.emotion), shot: nullable(record.shot), lighting: nullable(record.lighting), composition: nullable(record.composition), colorMood: nullable(record.colorMood),
+    directorSources: record.directorSources === undefined ? undefined : normalizeDirectorSources(record.directorSources),
     manual_tags: strings(record.manual_tags), lora: nullable(record.lora), cfg: typeof record.cfg === 'string' ? record.cfg : number(record.cfg),
     steps: typeof record.steps === 'string' ? record.steps : number(record.steps), sampler: text(record.sampler), scheduler: text(record.scheduler),
     checkpoint: text(record.checkpoint), size: text(record.size), width: number(record.width) || null, height: number(record.height) || null,

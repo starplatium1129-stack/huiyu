@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_shrine_steps_sunset_patrol",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1256,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "手按红色风纪袖章伫立石阶顶端迎风侧立，黑长直发丝飞舞，眼神清澈而坚定",
-    "camera": "full body, 3/4 low angle majestic perspective, sweeping town view",
+    "camera": "full body, low angle, three-quarter view, sweeping town view",
     "category": "黄昏巡礼",
     "characterId": "kotegawa_yui",
     "coverageTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ikaros",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "ikaros",
     "profile": {
@@ -121,10 +121,12 @@
         "twintails",
         "green_eyes",
         "metal_collar",
-        "chain",
+        "broken chain",
         "white_wings",
         "robot_ears",
-        "sora_no_otoshimono"
+        "sora_no_otoshimono",
+        "long_hair",
+        "ahoge"
       ],
       "exactTokens": [
         "ikaros"

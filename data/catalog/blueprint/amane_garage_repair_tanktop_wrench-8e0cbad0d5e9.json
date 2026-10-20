@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_garage_repair_tanktop_wrench",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1179,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "amane_garage_repair_tanktop_wrench",
     "title": "周防天音 · 铁工车库的机油与汗水",
@@ -32,7 +32,7 @@
       "hair_rings",
       "large_breasts"
     ],
-    "promptProse": "Jacket set aside, she kneels beside the motorcycle, wrench seated on a carburetor bolt; warm work lights catch engine fins and the oil mark on her nose against dark toolboxes.",
+    "promptProse": "Jacket set aside, she kneels on one knee beside the motorcycle, wrench seated on a carburetor bolt; warm work lights catch engine fins and the oil mark on her nose against dark toolboxes.",
     "promptTokens": [
       "garage",
       "motorcycle",

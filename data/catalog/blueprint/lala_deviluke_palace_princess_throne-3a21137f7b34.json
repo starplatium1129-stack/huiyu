@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lala_deviluke_palace_princess_throne",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1232,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "端坐悬浮王座单手托腮，露肩战服勾勒出完美曲线，长粉发铺展于台阶，神态优雅尊贵",
-    "camera": "full body, 3/4 low angle majestic perspective, grand palace scale",
+    "camera": "full body, three-quarter view, low angle, grand palace scale",
     "category": "银河王族",
     "characterId": "lala_satalin_deviluke",
     "coverageTags": [

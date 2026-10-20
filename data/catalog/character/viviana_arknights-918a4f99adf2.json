@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "viviana_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "viviana_arknights",
     "profile": {
@@ -134,8 +134,8 @@
         "solo",
         "blonde hair",
         "wavy hair",
-        "antlers",
-        "animal ears",
+        "golden antlers",
+        "deer ears",
         "blue eyes",
         "arknights"
       ],

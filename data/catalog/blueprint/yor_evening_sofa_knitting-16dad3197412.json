@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_evening_sofa_knitting",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yor_evening_sofa_knitting",
     "title": "约尔·福杰 · 终于织平整的一段围巾",
@@ -33,10 +33,10 @@
       "sitting",
       "indoors"
     ],
-    "promptProse": "Yor holds the scarf's corners over her lap and checks the stitches beneath the reading lamp.",
+    "promptProse": "With knees together, Yor holds the pale-green scarf's upper corners over her lap and checks the stitches beneath the reading lamp.",
     "promptTokens": [
       "Yor",
-      "scarf",
+      "holding pale-green scarf",
       "sofa",
       "knitting basket",
       "medium shot"

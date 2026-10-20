@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "laevatain_arknights",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 28,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "laevatain_arknights",
     "profile": {
@@ -115,18 +115,18 @@
       ],
       "franchise": "Arknights: Endfield",
       "id": "laevatain_arknights",
-      "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz with layered red hair, longer side and back locks, black curved horns, a long tail and purple eyes with slit pupils.",
+      "identityProse": "Laevatain from Arknights: Endfield, a Sarkaz with layered red hair, longer side and back locks, short black curved horns, a long demon tail and purple eyes with slit pupils.",
       "identityTokens": [
         "laevatain (arknights)",
         "arknights_endfield",
         "1girl",
         "solo",
         "red_hair",
-        "black_horns",
+        "short curved black horns",
         "purple_eyes",
         "slit_pupils",
         "layered hair",
-        "tail"
+        "long demon tail"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_r18_b8_01",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1674,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yanami_anna_r18_b8_01",
     "title": "八奈见杏菜 · 暴饮暴食后的居家大号卫衣跨坐 ·「温水……吃太饱了动不了，你来动嘛♪」",
@@ -29,13 +29,13 @@
       "no_pants",
       "bottomless"
     ],
-    "promptProse": "Yanami rocks astride the viewer's lap after the takeout meal, wearing only a light blue hoodie and holding half a butter cookie with her cheeks still puffed.",
+    "promptProse": "Yanami rocks astride the viewer's lap after the takeout meal in a light blue oversized hoodie, with her loosened short skirt around her knees. She holds half a butter cookie with her cheeks still puffed.",
     "promptTokens": [
       "adult",
       "1girl",
       "pov",
-      "light blue hoodie",
-      "bottomless",
+      "light blue oversized hoodie",
+      "skirt down",
       "cowgirl position",
       "on lap",
       "cookie",

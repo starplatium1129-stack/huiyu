@@ -28,6 +28,8 @@ export function standaloneIdentityTokens(tokens: readonly string[]): string[] {
 export function standaloneIdentityProse(character: PopularCharacter): string {
   const name = character.identityProse.match(/^(.+?)(?:\s+from\s+|,)/i)?.[1]
     || character.originalName
+  const introduction = character.identityProse.match(/^(.+?\s+from\s+[^,]+),/i)?.[1]
+    || `${name} from ${character.franchise}`
   const names = new Set([
     character.id, character.originalName, name, character.franchise,
     ...character.aliases, ...character.exactTokens, ...(character.copyrightTokens || []), ...(character.characterTokens || []),
@@ -39,5 +41,5 @@ export function standaloneIdentityProse(character: PopularCharacter): string {
       return !names.has(key) && !avoided.has(key) && !/^(?:\d+girls?|\d+boys?|solo)$/.test(key)
     })
     .map(proseToken).filter(Boolean)
-  return `${name} from ${character.franchise}, the only character in the image${traits.length ? `, with ${[...new Set(traits)].join(', ')}` : ''}`
+  return `${introduction}, the only character in the image${traits.length ? `, with ${[...new Set(traits)].join(', ')}` : ''}`
 }

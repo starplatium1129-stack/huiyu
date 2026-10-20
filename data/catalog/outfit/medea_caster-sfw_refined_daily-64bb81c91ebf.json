@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "medea_caster/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 175,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "characterId": "medea_caster",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "梅紫针织缝纫装",
-      "prose": "A long-sleeved plum knit dress, ivory shawl and hand-stitched linen waist apron.",
+      "prose": "A long plum knit dress with long sleeves, ivory shawl and hand-stitched linen waist apron.",
       "tokens": [
-        "plum knit dress",
+        "long plum knit dress",
         "long sleeves",
         "ivory shawl",
         "linen waist apron"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_bedroom_soles_leather_boots",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 173,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "jalter_r18_bedroom_soles_leather_boots",
     "characterId": "jeanne_alter",
@@ -20,7 +20,7 @@
       "wet_hair",
       "leather_jacket"
     ],
-    "promptProse": "Adult Jeanne Alter sits at the bed edge with one boot on the mattress, unzipping it with both hands. Neon rainlight outlines her open leather jacket and silver hair.",
+    "promptProse": "Adult Jeanne Alter sits at the bed edge with one boot on the mattress, unzipping it with both hands. Neon rainlight outlines her open leather jacket and silver hair. Dim warm apartment light mixes with the blue and magenta city reflections.",
     "promptTokens": [
       "1girl",
       "solo",

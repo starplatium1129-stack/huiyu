@@ -74,8 +74,8 @@ export const KREA_STYLE_RECIPES: readonly KreaStyleRecipe[] = Object.freeze([
   { id: 'madhouse_style', name: 'Madhouse 都市青年', lead: 'A Madhouse-inspired urban noir aesthetic with restrained linework, cold blue-green colors, sodium-yellow accents, hard cel shadows, wet asphalt and grounded city detail', sd: 'Madhouse style, urban noir, cold blue-green colors, sodium-yellow accents, hard cel shadows', medium: 'urban noir anime aesthetic', adult: false },
   { id: 'sunrise_1990s_ova', name: '1990s Sunrise 机甲 OVA', lead: 'A hand-painted 1990s Sunrise mecha OVA aesthetic with bold ink contours, hard-edged cel shadows, muted industrial colors, painted backgrounds, analog grain and convincing mechanical weight', sd: '1990s Sunrise mecha OVA, bold ink contours, hard cel shadows, painted backgrounds, analog grain', medium: '1990s Sunrise mecha OVA aesthetic', adult: false },
   // ── 成人配方（动漫平涂词族同样适用，避免厚涂写实）───────────────────────
-  { id: 'r18_sensual_cg', name: '成人·私密光影', lead: 'An explicit nude illustration: a completely naked mature woman with her bare breasts and nipples clearly visible, clean cel shading and flat colors, intimate warm lighting and a soft-focus finish', medium: 'sophisticated mature illustration', adult: true },
-  { id: 'r18_elegant_boudoir', name: '成人·典雅闺阁', lead: 'An explicit nude boudoir scene: a fully naked mature woman, bare breasts fully exposed, rendered with clean cel shading, flat colors, tasteful restraint and warm candlelight', medium: 'refined adult illustration', adult: true },
+  { id: 'r18_sensual_cg', name: '成人·私密光影', lead: 'A mature anime illustration with clean cel shading, flat colors and a soft-focus finish', medium: 'sophisticated mature illustration', adult: true },
+  { id: 'r18_elegant_boudoir', name: '成人·典雅闺阁', lead: 'A refined mature anime illustration with clean cel shading, flat colors and restrained rendering', medium: 'refined adult illustration', adult: true },
 ])
 
 /** Anima leaves rendering style to authored hints and selected artists. */

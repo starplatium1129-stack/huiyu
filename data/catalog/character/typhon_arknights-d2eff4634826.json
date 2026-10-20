@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "typhon_arknights",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 165,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "typhon_arknights",
     "profile": {
@@ -106,7 +106,10 @@
         "low twintails",
         "twin drills",
         "pink eyes",
-        "horns"
+        "horns",
+        "very long hair",
+        "dark horns",
+        "metal horn ornaments"
       ],
       "negativeTokens": [
         "bad anatomy",

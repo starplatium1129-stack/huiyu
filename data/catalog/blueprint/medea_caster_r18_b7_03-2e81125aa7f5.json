@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_03",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 311,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "medea_caster_r18_b7_03",
     "title": "美狄亚 · 宅房间拼装手办时法袍系带脱落事故 ·「呀！……围裙带子松开了，宗一郎大人不准看！」",
@@ -30,7 +30,7 @@
       "elf_ears",
       "pointed_ears"
     ],
-    "promptProse": "Medea looks back from the modeling desk as a broken apron tie catches on her loosened plum dress beside the unfinished Saber kit.",
+    "promptProse": "Medea braces a hand on the modeling desk and looks back as a broken apron tie catches on her loosened plum dress beside the unfinished Saber kit.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -41,7 +41,7 @@
       "looking back",
       "model kit",
       "workbench",
-      "plum knit dress",
+      "long plum knit dress",
       "linen apron"
     ],
     "negativeTokens": [],

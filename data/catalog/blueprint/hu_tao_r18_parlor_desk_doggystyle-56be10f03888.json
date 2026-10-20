@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_parlor_desk_doggystyle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 30,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "hu_tao_r18_parlor_desk_doggystyle",
     "title": "胡桃 · 红木书案边缘绯红黑蕾丝情趣内衣半解与梅花瞳动情深抚",
@@ -31,10 +31,9 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "Hu Tao sits at the mahogany desk's edge with one leg on a chair, holding the loosened lace bodice with one hand and touching herself through the lace with the other.",
+    "promptProse": "Hu Tao sits at the mahogany desk's edge with one leg on a chair, holding the loosened lace bodice with one hand and touching herself through the lace with the other. Warm red candlelight on the desk contrasts with the moonlit bamboo shadows beyond the window.",
     "promptTokens": [
-      "lace lingerie",
-      "red lingerie",
+      "red and black lace lingerie",
       "see-through clothes",
       "garter straps",
       "sitting",
@@ -48,7 +47,7 @@
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
-    "kreaStyleHint": "r18_sensual_bedroom",
+    "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
     "nsfwProse": "",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1640,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_02",
     "title": "守岸人 · 观测记录的书写",
@@ -30,7 +30,7 @@
       "screen_light",
       "medium_shot"
     ],
-    "promptProse": "Shorekeeper pauses with a fingertip beside the tide chart as someone familiar enters; its blue display lights her hand and emerging smile.",
+    "promptProse": "Shorekeeper pauses with a fingertip beside the tide chart at an entry about someone familiar; its blue display lights her hand and emerging smile.",
     "promptTokens": [
       "hologram",
       "observation station",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_bedroom_missionary_sweet",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1374,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "asuna_nsfw_bedroom_missionary_sweet",
     "title": "结城明日奈 · 毛衣褪半与开档蕾丝战袍床褥仰卧·「请永远……都这样注视着我……」",
@@ -57,6 +57,15 @@
       "h_cg",
       "pure_love"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "identityTokensOverride": [
+      "yuuki_asuna",
+      "sword_art_online",
+      "chestnut_hair",
+      "very_long_hair",
+      "hair_down",
+      "brown_eyes"
+    ],
+    "identityProseOverride": "Asuna Yuuki from Sword Art Online, with waist-length chestnut hair worn loose and hazel-brown eyes."
   }
 }

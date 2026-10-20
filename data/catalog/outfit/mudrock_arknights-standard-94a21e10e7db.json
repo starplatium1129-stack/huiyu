@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/standard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 327,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
@@ -17,7 +17,14 @@
         "olive power armor",
         "heavy armor",
         "sealed hazmat helmet"
-      ]
+      ],
+      "identityTokensOverride": [
+        "mudrock (arknights)",
+        "1girl",
+        "solo",
+        "arknights"
+      ],
+      "identityProseOverride": "Mudrock from Arknights, enclosed in her sealed heavy armor and helmet."
     }
   }
 }

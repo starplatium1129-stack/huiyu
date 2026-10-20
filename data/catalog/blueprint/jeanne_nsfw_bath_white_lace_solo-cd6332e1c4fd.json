@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_bath_white_lace_solo",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 241,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "jeanne_nsfw_bath_white_lace_solo",
     "title": "圣女贞德 · 圣泉湿身的白蕾丝独奏·「这里……只有神与我在注视」",
@@ -27,7 +27,7 @@
       "masturbation",
       "moonlight"
     ],
-    "promptProse": "Jeanne reclines against the moonlit stone spring behind the chapel, touching herself beneath the water. Her wet white lace clings to her body and golden hair floats on the surface.",
+    "promptProse": "Jeanne reclines against the moonlit stone spring behind the chapel, touching herself beneath the water. Her wet white lace clings to her body and golden hair floats on the surface, where candle reflections mingle with the moonlight.",
     "nsfwProse": "",
     "promptTokens": [
       "1girl",

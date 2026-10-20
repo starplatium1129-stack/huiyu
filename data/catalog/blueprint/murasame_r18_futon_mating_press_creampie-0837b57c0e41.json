@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_r18_futon_mating_press_creampie",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1131,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "侧卧在纯白棉被中半透薄纱若隐若现，小脚微蜷，单手在被底深层自抚，双眸含泪依恋娇喘",
     "adult": true,
@@ -25,9 +25,9 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_gauze_wrap",
-    "promptProse": "Adult Murasame curls on the futon beneath a sheer white silk veil, touching her chest with one hand and herself beneath the covering with the other.",
+    "promptProse": "Adult Murasame curls on the futon beneath a sheer white silk-gauze wrap, touching her chest with one hand and herself beneath the covering with the other.",
     "promptTokens": [
-      "sheer cloth",
+      "sheer white gauze wrap",
       "see-through",
       "on side",
       "curled up",

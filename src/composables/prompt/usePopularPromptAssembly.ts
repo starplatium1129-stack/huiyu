@@ -1,18 +1,13 @@
 import { activeRandomVariation, variedPopularScene } from '@/utils/randomVariationContext'
 import { computed, type Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import { buildPopularPromptPlan } from '@/utils/popularPromptBuilder.ts'
+import { compilePromptRecipe } from '@/utils/promptRecipe.ts'
 import {
   defaultOutfit,
   findBlueprint,
   findCharacter,
   findOutfit,
 } from '@/utils/popularContent.ts'
-import {
-  KREA_STYLE_RECIPES,
-  resolveStyleRecipe,
-  type ResolvedStyle,
-} from '@/config/kreaStyleRecipes.ts'
 import {
   analyzeParts,
   checkArtDirection,
@@ -27,7 +22,7 @@ import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles.ts'
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PopularPromptAssemblyState = Pick<PromptBuilderStore, 'artistStyleIds' | 'colorMood' | 'directorMode' | 'emotionPrompt'
   | 'manualTags' | 'modelProfiles' | 'outfitOverride' | 'popularCharacters' | 'randomVariation' | 'sceneBlueprints' | 'selections'
-  | 'subject' | 'tags' | 'visualDescription' | 'char' | 'sceneId'>
+  | 'directorSources' | 'subject' | 'tags' | 'visualDescription' | 'char' | 'sceneId' | 'sdParams'>
 
 /**
  * 热门角色无 LoRA 模式的 Prompt 组装。
@@ -86,24 +81,12 @@ export function usePopularPromptAssembly(
     new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => tag.en.trim().toLowerCase().replace(/\s+/g, '_'))),
   )
 
-  /** A blueprint may select a style; choosing only a character supplies no visual defaults. */
-  const resolvedStyle = computed<ResolvedStyle | null>(() => {
-    const subject = pb.subject
-    if (subject.kind !== 'popular' || !character.value || !blueprint.value) return null
-    const targetEngine = engine.value === 'krea2' ? 'krea2' : 'anima'
-    return resolveStyleRecipe(
-      KREA_STYLE_RECIPES,
-      targetEngine,
-      blueprint.value,
-      null,
-    )
-  })
-
   const result = computed(() => {
     const subject = pb.subject
     if (subject.kind !== 'popular' || !character.value || !outfit.value) return null
     if (engine.value !== 'anima' && engine.value !== 'krea2') return null
-    return buildPopularPromptPlan({
+    return compilePromptRecipe({
+      kind: 'popular',
       character: character.value,
       outfit: outfit.value,
       blueprint: blueprint.value,
@@ -112,12 +95,13 @@ export function usePopularPromptAssembly(
       manual: [...pb.manualTags],
       emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot,
+      directorSources: pb.directorSources,
       lighting: pb.selections.lighting,
       palette: colorMoodTokens.value,
       composition: pb.selections.composition,
       matureTokens: matureTokenSet.value,
       visualDescription: pb.visualDescription,
-      style: resolvedStyle.value,
+      negativeCustom: pb.sdParams.negativeCustom,
       artistTags: artistTagsForEngine(activeArtistStyleIds.value, engine.value),
       artistProse: artistStyleProse(activeArtistStyleIds.value, engine.value),
       outfitOverride: pb.outfitOverride?.tokens ?? (randomVariation.value?.outfit.length ? randomVariation.value.outfit : null),

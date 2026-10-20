@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_convenience",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 5,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "raiden_shogun_convenience",
     "title": "成年雷电将军 · 团子甜点与紫电私语",
@@ -15,7 +15,7 @@
     "action": "独自斜坐窗边软垫，毛衣卷至乳下，一手持三彩团子、一手拨开细带内裤自抚",
     "timeOfDay": "午后",
     "lighting": "温暖午后窗光与柔和紫电",
-    "camera": "vertical cowboy shot, seated three-quarter angle",
+    "camera": "vertical cowboy shot, three-quarter view",
     "mood": "神明认真研究甜味的反差私密感",
     "sceneTags": [
       "tenshukaku",

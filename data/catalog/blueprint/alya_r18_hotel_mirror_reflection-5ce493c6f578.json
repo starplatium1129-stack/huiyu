@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_hotel_mirror_reflection",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "对镜练习俄语情话，说完瞬间捂脸",
     "adult": true,
@@ -28,7 +28,7 @@
       "bathhouse",
       "dressing room",
       "mirror",
-      "towel",
+      "towel held over face",
       "holding towel",
       "blush",
       "night",

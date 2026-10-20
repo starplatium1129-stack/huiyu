@@ -1,6 +1,7 @@
 import { PendingMediaUploadError } from './mediaUpload.ts'
 import { ArtworkSaveSupersededError } from './artworkSaveInput'
 import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
+import { DIRECTOR_CONTROL_KEYS, normalizeDirectorSources } from '@/utils/promptDirector'
 import type { HistoryEntry } from '@/types/promptHistory'
 import type { ArtworkCommitIdentity, ArtworkSaveSnapshot, GeneratedArtworkInput, LegacyArtworkDefaults, SaveGeneratedArtworkDependencies, SaveGeneratedArtworkResult } from './artworkSaveInput'
 
@@ -36,6 +37,8 @@ function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDef
     lighting: entry.lighting !== undefined ? entry.lighting : defaults.lighting,
     composition: entry.composition !== undefined ? entry.composition : defaults.composition,
     colorMood: entry.colorMood !== undefined ? entry.colorMood : defaults.colorMood,
+    directorSources: entry.directorSources !== undefined ? normalizeDirectorSources(entry.directorSources)
+      : DIRECTOR_CONTROL_KEYS.every(key => entry[key] === undefined) ? normalizeDirectorSources(defaults.directorSources) : undefined,
     manual_tags: [...(entry.manual_tags ?? defaults.manual_tags)],
     lora: (entry.lora !== undefined ? entry.lora : isPopular ? entry.loraId : defaults.lora) || null,
     cfg: entry.cfg ?? defaults.cfg, steps: entry.steps ?? defaults.steps,

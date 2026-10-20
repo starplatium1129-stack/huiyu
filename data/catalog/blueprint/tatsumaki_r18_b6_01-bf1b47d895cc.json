@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1599,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_01",
     "title": "战栗的龙卷 · 英雄协会高层公寓念动力浮空主控跨坐 ·「秃头……不对，你！今晚要是敢说我像小孩子，就把你撕成碎片！」",
@@ -33,7 +33,8 @@
     "promptProse": "Tatsumaki rides astride her companion using telekinesis, arms folded at her chest, her dress lifted beneath green psychic light and the cold storm light entering from outside.",
     "promptTokens": [
       "Tatsumaki",
-      "black dress",
+      "black long dress",
+      "high side slits",
       "floating",
       "green aura",
       "straddling",

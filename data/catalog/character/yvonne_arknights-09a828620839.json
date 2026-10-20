@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yvonne_arknights",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yvonne_arknights",
     "profile": {
@@ -114,7 +114,7 @@
       "animeStudio": "arknights endfield, official game art, Hypergryph style",
       "canon": {
         "era": "近未来科幻",
-        "formNotes": "龙族=Vaivai 亚种；双枪天才工程师；粉发粉瞳；强调色 #FF8FB1（辅 #7FB3FF 蓝瞳对比）",
+        "formNotes": "龙族=Vaivai 亚种；双枪天才工程师；粉发蓝瞳；强调色 #FF8FB1（辅 #7FB3FF 蓝瞳对比）",
         "research": "2026-08-31 调研",
         "world": "科幻末世（塔拉工业废墟与终末地）"
       },
@@ -130,7 +130,7 @@
       ],
       "franchise": "Arknights: Endfield",
       "id": "yvonne_arknights",
-      "identityProse": "Yvonne from Arknights: Endfield, a Vaivai with pink twin tails and streaked tips, blue eyes, small horns, pointed ears and a tail.",
+      "identityProse": "Yvonne from Arknights: Endfield, a Vaivai with pink twin tails and streaked tips, blue eyes, small horns, pointed ears and a dragon tail.",
       "identityTokens": [
         "yvonne (arknights)",
         "1girl",
@@ -139,7 +139,8 @@
         "twintails",
         "blue eyes",
         "horns",
-        "tail",
+        "pointy ears",
+        "dragon tail",
         "arknights endfield"
       ],
       "negativeTokens": [

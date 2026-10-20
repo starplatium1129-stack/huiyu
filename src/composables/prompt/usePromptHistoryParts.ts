@@ -41,6 +41,7 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
     if (!sameSubject || pb.outfitOverride) {
       notes.push('原角色或服装与当前条件不同，提示词未沿用；可选择完整配方后再调整')
     } else if ([entry.story, entry.visualDescription, entry.emotion, entry.manual_tags, entry.scene, entry.blueprintId].some(value => value !== undefined)) {
+      const previousScene = pb.subject.kind === 'popular' ? pb.subject.blueprintId : pb.sceneId
       // Retire the old scene overlay even when the saved scene ID is unchanged.
       // Do this before adopting historical tags so their clothing is not removed.
       if (popular ? entry.blueprintId !== undefined : entry.scene !== undefined) pb.clearRandomVariation()
@@ -56,6 +57,13 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
           pb.sceneId = scene?.id ?? null
           pb.sceneBaseStory = scene?.story ?? ''
         } else { pb.sceneId = null; pb.sceneBaseStory = ''; notes.push('原场景不可用或角色不匹配，已清除场景；请核对提示词') }
+      }
+      const nextScene = pb.subject.kind === 'popular' ? pb.subject.blueprintId : pb.sceneId
+      if (nextScene !== previousScene) {
+        // Selective prompt reuse deliberately keeps unselected director values,
+        // rather than letting a different scene take ownership of them.
+        if (!parts.camera) { pb.setShot(pb.selections.shot); pb.setComposition(pb.selections.composition) }
+        if (!parts.style) { pb.setLighting(pb.selections.lighting); pb.setColorMood(pb.colorMood) }
       }
       if (pb.subject.kind === 'popular') {
         const current = pb.subject

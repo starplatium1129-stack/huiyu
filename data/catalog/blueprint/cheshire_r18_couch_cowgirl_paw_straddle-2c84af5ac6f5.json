@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_r18_couch_cowgirl_paw_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1099,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "cheshire_r18_couch_cowgirl_paw_straddle",
     "title": "柴郡 · 沙发戴爪跨坐骑乘与娇憨起伏",
@@ -49,7 +49,7 @@
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
-    "kreaStyleHint": "r18_sensual_bedroom",
+    "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
     "nsfwProse": ""

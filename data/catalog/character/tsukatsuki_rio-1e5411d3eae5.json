@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tsukatsuki_rio",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "tsukatsuki_rio",
     "profile": {
@@ -138,6 +138,7 @@
         "very long hair",
         "red eyes",
         "halo",
+        "red geometric halo",
         "blue archive"
       ],
       "negativeTokens": [

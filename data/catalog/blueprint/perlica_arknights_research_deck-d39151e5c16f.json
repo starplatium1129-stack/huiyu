@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_research_deck",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 714,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "扶着栏杆仰望巨型天体",
     "camera": "wide shot",
@@ -17,7 +17,7 @@
     "mood": "宇宙辽阔",
     "negativeTokens": [],
     "outfitId": "research_deck_uniform",
-    "promptProse": "Perlica grips the alloy rail with both hands and looks up at the immense planet and its luminous rings.",
+    "promptProse": "On the research ship's deck under starlight and planetary glow, Perlica grips the alloy rail with both hands and looks up at the immense planet and its luminous rings.",
     "promptTokens": [
       "railing",
       "looking up",

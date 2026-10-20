@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_r18_hot_spring_wet",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 766,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_r18_hot_spring_wet",
     "characterId": "zhuang_fangyi_arknights",
@@ -38,7 +38,7 @@
       "steam",
       "morning"
     ],
-    "promptProse": "Zhuang Fangyi sits on the smooth stone rim with her lower legs in the water, glancing shyly aside as the soaked linen clings to her body.",
+    "promptProse": "Zhuang Fangyi sits on the smooth stone rim with her lower legs in the water, glancing shyly aside as the soaked linen clings to her body. Morning light through the steam meets the lamps on the stone wall.",
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,

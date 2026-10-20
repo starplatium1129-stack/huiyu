@@ -1,5 +1,6 @@
 import type { AnimaPromptRegion, AnimaSketchControl } from './animaComposition'
 import type { DraftOutfitOverride } from '@/utils/promptBuilderPersistence'
+import type { DirectorControlSources } from './promptDirector'
 
 export type CharKey = 'nene' | 'natsume' | 'triad' | 'none'
 export type DrawEngine = 'sd' | 'anima' | 'krea2'
@@ -16,6 +17,7 @@ export type HistoryEntry = {
   negativeCustom?: string
   emotion: string[]; shot: string | null; lighting: string | null
   composition: string | null; colorMood: string | null
+  directorSources?: DirectorControlSources
   manual_tags: string[]; lora: string | null
   cfg: number | string; steps: number | string; sampler: string
   scheduler: string; checkpoint: string; size: string

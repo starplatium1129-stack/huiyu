@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_rainy_shared_umbrella_crouch",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1493,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yamada_rainy_shared_umbrella_crouch",
     "title": "山田杏奈 · 雨停前的小小收获",
@@ -30,11 +30,12 @@
       "happy",
       "medium_shot"
     ],
-    "promptProse": "Crouching under the shop eaves, she holds the recovered apple in one hand and wipes it with her other sleeve, the folded umbrella leaning against the wall beside her.",
+    "promptProse": "Crouching under the shop eaves, she holds the recovered apple in one hand and wipes it with her other sleeve, the folded umbrella leaning against the wall beside her. Diffuse rainy daylight reaches her beneath the eaves.",
     "promptTokens": [
       "crouching",
       "apple",
       "shop eaves",
+      "rain",
       "cowboy shot"
     ],
     "negativeTokens": [],

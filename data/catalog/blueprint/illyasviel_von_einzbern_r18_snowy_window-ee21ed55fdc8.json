@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_snowy_window",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 166,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_snowy_window",
     "title": "伊莉雅丝菲尔 · 雪夜窗边",
@@ -25,7 +25,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Illyasviel kneels with mature adult proportions on the velvet cushion, one palm on the cold window and the other drawing the blanket between her thighs.",
+    "promptProse": "The age-twenty-plus Illyasviel kneels with mature adult proportions on the velvet cushion, one palm on the cold window and the other drawing the blanket between her thighs. Cold moonlight from the window meets warm firelight on the cushion and blanket.",
     "promptTokens": [
       "adult",
       "mature female",

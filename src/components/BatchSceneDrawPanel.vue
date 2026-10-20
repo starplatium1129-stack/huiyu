@@ -15,6 +15,7 @@
         <template v-if="phase === 'config'">
           <div v-content-motion="contentMotionKey" class="batch-body">
           <p class="batch-description">{{ batchDescription }}</p>
+          <p v-if="startError" class="batch-card-error" role="alert">{{ startError }}</p>
           <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">计划尚未保存或读取失败：{{ batchDraw.storageError.value }}。恢复资料连接后再继续。</p>
           <div class="batch-config-row">
             <div class="batch-field">
@@ -84,13 +85,19 @@
             <div class="batch-prompt-preview-card">
               <div class="batch-prompt-preview-head">
                 <span class="batch-prompt-preview-title">
-                  <ArchiveIcon name="spark" /> 当前应用于各角色的提示词基底
+                  <ArchiveIcon name="spark" /> 工作台当前画面参考
                 </span>
-                <span class="batch-prompt-preview-badge">自动剔除原角色特征，动态注入选中角色 DNA</span>
+                <span class="batch-prompt-preview-badge">跨角色前请核对画面描述</span>
               </div>
-              <p class="batch-prompt-preview-text">
-                {{ currentPromptPreview || '（当前提示词为空，请先在工作台输入故事、选择场景或添加标签）' }}
+              <p class="batch-prompt-preview-text" tabindex="0" role="region" aria-label="工作台当前画面参考">
+                {{ currentPromptPreview || '（尚未载入画面描述，可在下方填写通用画面描述）' }}
               </p>
+            </div>
+            <div class="batch-field">
+              <label class="field-label" :for="descriptionId">通用画面描述（英文，可选）</label>
+              <textarea :id="descriptionId" v-model="universalDescription" class="input" rows="4" lang="en"
+                :aria-describedby="`${descriptionId}-hint`" placeholder="Describe the shared action, composition and lighting…"></textarea>
+              <p :id="`${descriptionId}-hint`" class="batch-description">填写后将替代原场景正文，留空则沿用原文。请保留需要的动作、构图与光影，把原角色的姓名和专属特征改成适用于各角色的通用描述。</p>
             </div>
 
             <div class="batch-scene-toolbar">
@@ -236,7 +243,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
-import { computed, reactive, ref, shallowRef, watch, onDeactivated, onUnmounted, type DeepReadonly } from 'vue'
+import { computed, reactive, ref, shallowRef, useId, watch, onDeactivated, onUnmounted, type DeepReadonly } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
@@ -265,10 +272,11 @@ const panel = ref<HTMLElement | null>(null)
 const closeButton = ref<HTMLButtonElement | null>(null)
 const batchMode = ref<'scene' | 'character'>('scene')
 const count = ref<1 | 3>(1)
+const universalDescription = ref(''), descriptionId = useId()
 const phase = ref<'config' | 'results'>('config')
 const contentMotionKey = ref<string | false>(false)
 const batchDescription = computed(() => phase.value === 'config'
-  ? batchMode.value === 'scene' ? '按蓝图绑定的角色、服装、镜头与尺寸逐张出图；成功成片自动入册。' : '使用当前词条，一次性勾选多位角色批量出图，成片自动归入各角色画廊。'
+  ? batchMode.value === 'scene' ? '按蓝图绑定的角色、服装、镜头与尺寸逐张出图；成功成片自动入册。' : '沿用当前构图与光影，为选中的角色逐张生成，成片自动归入各角色画廊。'
   : '逐张串行生成；离页或重开后保留计划，点击继续核对原任务并执行剩余项。')
 const previewJob = shallowRef<DeepReadonly<BatchDrawJob> | null>(null)
 const previewSource = ref<HTMLImageElement | null>(null)
@@ -285,7 +293,7 @@ const charFilter = ref('')
 const franchiseFilter = ref('')
 const selectedCharSet = reactive(new Set<string>())
 
-const { batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed, pendingImage } = usePromptBatchRunners(props.deps)
+const { batchDraw, startError, onBatchStart, onBatchStartCharacters, onRetryFailed, pendingImage } = usePromptBatchRunners(props.deps)
 
 const currentPromptPreview = computed(() => {
   return props.deps.currentLivePrompt?.() || props.deps.currentBasePrompt?.() || props.deps.pb.story || props.deps.pb.visualDescription || ''
@@ -415,16 +423,17 @@ function clearCharSelection() {
 
 async function submit() {
   if (isRunning.value || !engineReady.value) return
+  let started = false
   if (batchMode.value === 'scene') {
     const sceneIds = props.scenes.map(s => s.id).filter(id => selectedSceneSet.has(id))
     if (!sceneIds.length) return
-    await onBatchStart({ sceneIds, count: count.value })
+    started = await onBatchStart({ sceneIds, count: count.value }) === true
   } else {
     const characterIds = allCharacters.value.map(c => c.id).filter(id => selectedCharSet.has(id))
     if (!characterIds.length) return
-    await onBatchStartCharacters({ characterIds, count: count.value })
+    started = await onBatchStartCharacters({ characterIds, count: count.value, basePrompt: universalDescription.value.trim() || undefined }) === true
   }
-  if (jobs.value.length) phase.value = 'results'
+  if (started && jobs.value.length) phase.value = 'results'
 }
 
 async function resetToConfig() {

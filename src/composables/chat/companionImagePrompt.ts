@@ -11,6 +11,7 @@ import { collectInterrogateContext, mergeInterrogatedTags } from '@/utils/interr
 import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { splitReferenceTags } from '@/utils/interrogateReference'
 import { animaArtistTag } from '@/config/artistStyles'
+import { sceneDirectorSources } from '@/utils/promptDirector'
 
 export interface CompanionImageArgs {
   character: string; description: string; visualDescription?: string; outfit?: string; mature?: boolean
@@ -59,6 +60,7 @@ export function companionPromptDraft(pb: ReturnType<typeof usePromptBuilderStore
     isPopular: Boolean(character), sceneId: null, activeScene: null, story: args.description.trim(), visualDescription: visual,
     artistStyleIds: [...pb.artistStyleIds], directorMode: pb.directorMode, colorMood: null, concise: pb.concise, emotionPrompt: '',
     manualTags: manual, randomVariation: null, referenceInput: null, selections: { emotion: [], shot: null, lighting: null, composition: null },
+    directorSources: sceneDirectorSources(),
     characters: copy(pb.characters), loraMeta: copy(pb.loraMeta), modelProfiles: copy(pb.modelProfiles), tags: copy(pb.tags),
     popularCharacters: copy(pb.popularCharacters), sceneBlueprints: [], outfitOverride: null,
     sdModelName: pb.sdModelName, sdParams: copy(pb.sdParams), projectId: pb.projectId,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_desert_dunes_greatsword_stride",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1111,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yorha_2b_desert_dunes_greatsword_stride",
     "title": "2B · 苍茫沙丘的风沙斗篷与大剑独行",
@@ -33,7 +33,7 @@
       "boots",
       "mole_under_mouth"
     ],
-    "promptProse": "2B turns on the dune and offers a gloved hand toward the viewer, her greatsword secured across her back. The advancing sandstorm lifts her grey cloak above the half-buried machine remains.",
+    "promptProse": "2B turns on the dune and offers a gloved hand toward the viewer, her greatsword secured across her back. The advancing sandstorm lifts her grey cloak above the half-buried machine remains. Harsh sunlight casts distinct shadows across the rippled dunes.",
     "promptTokens": [
       "greatsword",
       "reaching out",

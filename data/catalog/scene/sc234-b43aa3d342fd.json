@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc234",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 229,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "sc234",
     "recommendedSize": "1216×832",
@@ -36,7 +36,7 @@
     ],
     "mature": true,
     "location": "公寓主卧温热双人床榻中央",
-    "weather": "雨夜暖灯",
+    "weather": "雨后月夜",
     "camera": "近景主观仰视特写",
     "lighting": "落地窗洒进来的清冷月光与面部红晕逆光折射",
     "usage": [

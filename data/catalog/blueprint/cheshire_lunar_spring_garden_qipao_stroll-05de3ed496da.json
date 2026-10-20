@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_lunar_spring_garden_qipao_stroll",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1088,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "cheshire_lunar_spring_garden_qipao_stroll",
     "title": "柴郡 · 冰雪仙子新春旗袍漫步",
@@ -19,7 +19,7 @@
     "action": "身穿高叉旗袍单脚轻盈转身，手提毛绒暖手筒，双马尾与猫耳发箍相映",
     "timeOfDay": "下午",
     "lighting": "红灯笼暖光与庭院白雪漫射的明丽冷暖交织",
-    "camera": "full body, 3/4 dynamic angle, flowing fabric",
+    "camera": "full body, three-quarter view, flowing fabric",
     "mood": "明媚喜庆",
     "sceneTags": [
       "cheongsam",

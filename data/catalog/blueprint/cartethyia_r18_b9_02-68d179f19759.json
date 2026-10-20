@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_02",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1664,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "cartethyia_r18_b9_02",
     "title": "卡提希娅 · 圣泉洗礼池水雾中的圣洁水光湿身 ·「洗去战火的硝烟……洗不掉对你的思念」",
@@ -30,11 +30,11 @@
       "steam",
       "water_droplets"
     ],
-    "promptProse": "She sits leaning against the underground spring's edge with one hand beneath the glowing water between her thighs. Mana lights drift across the surface. A thin white veil rests against her in the water.",
+    "promptProse": "She sits leaning against the underground spring's edge with one hand beneath the glowing water between her thighs. Mana lights drift across the surface. Thin white gauze rests against her in the water.",
     "promptTokens": [
       "nude",
       "sacred spring",
-      "white veil",
+      "thin white gauze",
       "wet fabric",
       "see-through",
       "bathing",

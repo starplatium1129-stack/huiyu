@@ -5,8 +5,6 @@ import { cloneReferenceInput } from '@/utils/promptBuilderPersistence'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
-import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
-import { sceneStyleBaseline } from '@/utils/randomVariationContext'
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true) {
   if (!current() || !result || typeof result !== 'object') return
@@ -79,9 +77,8 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   // The new picture replaces the previous reference layer, never unrelated
   // explicit user edits. The target's identity is supplied only by its own data.
   const identityOnly = standaloneIdentityTokens(context.identityTokens)
-  const decision = blueprint ? inferBlueprintDecisions(blueprint) : studioScene ? sceneStyleBaseline(studioScene) : null
-  const inheritedShot = decision && pb.selections.shot === decision.shot
-  const inheritedLighting = decision && pb.selections.lighting === decision.lighting
+  const inheritedShot = pb.directorSources.shot === 'scene'
+  const inheritedLighting = pb.directorSources.lighting === 'scene'
   // Explicit director choices participate in the same conflict rules as manual
   // edits. Inherited scene defaults will be cleared below, so cannot veto the reference.
   const protectedTags = new Set([
@@ -123,12 +120,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     pb.visualDescription = description
   }
   if (blueprint) pb.setPopularBlueprint(null)
-  if (decision) {
-    if (inheritedShot) pb.setShot(null)
-    if (inheritedLighting) pb.setLighting(null)
-    if (pb.selections.composition === decision.composition) pb.setComposition(null)
-    if (pb.colorMood === decision.colorMood) pb.setColorMood(null)
-  }
+  pb.clearInheritedDirectorValues()
   if (subject.kind === 'popular') {
     if (referenceOutfit.length) pb.setOutfitOverride(referenceOutfit, merged.replacedOutfitGroup)
     else pb.clearOutfitOverride()

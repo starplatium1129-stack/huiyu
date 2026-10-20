@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_spell_notes",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 485,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "aisha_greyrat_spell_notes",
     "title": "爱夏·页边的术式修订",
@@ -14,7 +14,7 @@
     "timeOfDay": "午后",
     "lighting": "柔和的斜射日光",
     "mood": "机敏好学",
-    "camera": "three-quarter medium shot",
+    "camera": "medium shot, three-quarter view",
     "category": "奇幻",
     "recommendedSize": "1152x1536",
     "sceneTags": [

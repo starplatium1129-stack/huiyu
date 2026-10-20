@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "elaina",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 10,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "elaina",
     "profile": {
@@ -24,7 +24,7 @@
         "hair": "灰银长发",
         "hair_color": "灰银",
         "eyes": "紫",
-        "hairstyle": "中长直发 · 齐刘海",
+        "hairstyle": "灰银长直发 · 齐刘海",
         "uniform": "黑色魔女装 · 尖顶魔女帽",
         "expression": "聪慧自信 · 略带自恋",
         "style": "elegant traveling witch",

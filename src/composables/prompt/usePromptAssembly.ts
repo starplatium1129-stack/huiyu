@@ -20,7 +20,6 @@ import {
   resolveLoraSpecs,
   resolveModelProfile,
   sceneRating,
-  profileRatingTag,
   sanitizePrompt,
   sceneSupportsCharacter,
   sceneTemplateText,
@@ -29,50 +28,18 @@ import {
   type PromptEngine,
   type PromptPart,
 } from '@/utils/promptPolicy'
-import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION, STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
-import { createPromptPlan, plainEnglish, renderPromptPlan } from '@/utils/promptCompiler'
+import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION } from '@/config/promptConstants'
+import { plainEnglish } from '@/utils/promptCompiler'
+import { compilePromptRecipe } from '@/utils/promptRecipe'
+import { studioPromptProfile } from '@/utils/studioPromptBuilder'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
-import { studioDualSubject } from '@/utils/studioDualSubject'
 import { compositionTokens } from '@/utils/blueprintComposition'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PromptAssemblyState = Pick<PromptBuilderStore, 'activeScene' | 'artistStyleIds' | 'char' | 'characters' | 'charPrompt'
   | 'colorMood' | 'concise' | 'directorMode' | 'emotionPrompt' | 'loraMeta' | 'manualTags' | 'modelProfiles' | 'randomVariation'
-  | 'sdModelName' | 'sdParams' | 'selections' | 'tags' | 'visualDescription' | 'sceneId' | 'subject' | 'referenceInput'>
-
-function studioSubjectProse(character: string): string {
-  if (character === 'nene') {
-    return 'Ayachi Nene is the only prominent character, a young adult woman with white hair, purple eyes, an ahoge, and pink hair ribbons'
-  }
-  if (character === 'natsume') {
-    return 'Shiki Natsume is the only prominent character, a young adult woman with black hair, golden-yellow eyes, two red hairclips, and a small mole beneath one eye'
-  }
-  return ''
-}
-
-function sceneContext(scene: PromptBuilderStore['activeScene']) {
-  if (!scene) return null
-  return {
-    title: scene.title,
-    category: scene.category,
-    tags: scene.tags,
-    location: typeof scene.location === 'string' ? scene.location : undefined,
-    time: typeof scene.time === 'string' ? scene.time : undefined,
-    timeOfDay: scene.timeOfDay,
-    weather: typeof scene.weather === 'string' ? scene.weather : undefined,
-    camera: scene.camera,
-    lighting: scene.lighting,
-    emotion: typeof scene.emotion === 'string' ? scene.emotion : undefined,
-    rating: scene.rating,
-    recommendedSize: typeof scene.recommendedSize === 'string' ? scene.recommendedSize : undefined,
-    usage: Array.isArray(scene.usage) ? scene.usage.filter((item): item is string => typeof item === 'string') : undefined,
-    animaCaption: typeof scene.animaCaption === 'string' ? scene.animaCaption : undefined,
-    compositionIntent: scene.compositionIntent,
-    identityTokensOverride: Array.isArray(scene.identityTokensOverride) ? [...scene.identityTokensOverride] : undefined,
-    identityProseOverride: typeof scene.identityProseOverride === 'string' ? scene.identityProseOverride : undefined,
-  }
-}
+  | 'sdModelName' | 'sdParams' | 'directorSources' | 'selections' | 'tags' | 'visualDescription' | 'sceneId' | 'subject' | 'referenceInput'>
 
 /**
  * Director prompt composition has no UI or SD lifecycle ownership. Keeping it
@@ -98,24 +65,7 @@ export function usePromptAssembly(
     )
     if (!base || engine.value !== 'anima') return base
     const selected = pb.char === 'triad' || pb.char === 'none' ? '' : String(selectedLoraId.value || '')
-    const contract = selected ? pb.loraMeta.flatMap(meta => {
-      const name = String(meta.name || '')
-      const metaId = String(meta.id || '')
-      const selectedMeta = metaId === selected || name === selected
-        || metaId.includes(selected) || name.includes(selected)
-      if (!selectedMeta) return []
-      const promptContract = meta.prompt_contract
-      if (!promptContract || typeof promptContract !== 'object') return []
-      const value = promptContract as { exact_tokens?: unknown; exact_prefixes?: unknown }
-      const tokens = Array.isArray(value.exact_tokens) ? value.exact_tokens.filter((token): token is string => typeof token === 'string') : []
-      const prefixes = Array.isArray(value.exact_prefixes) ? value.exact_prefixes.filter((token): token is string => typeof token === 'string') : []
-      return [{ tokens, prefixes }]
-    }) : []
-    const exactTokens = contract.flatMap(item => item.tokens)
-    const exactPrefixes = contract.flatMap(item => item.prefixes)
-    return contract.length
-      ? { ...base, exact_tokens: [...new Set([...(base.exact_tokens || []), ...exactTokens])], exact_prefixes: [...new Set([...(base.exact_prefixes || []), ...exactPrefixes])] }
-      : base
+    return studioPromptProfile(base, engine.value, selected ? { [pb.char]: selected } : {}, pb.loraMeta)
   })
 
   /** 当前引擎 + profile 的能力表（驱动 LoRA/negative/promptFormat 等判断）。 */
@@ -309,33 +259,18 @@ export function usePromptAssembly(
     return dedupeParts(applyFraming(parts, selections.shot))
   })
 
-  const structuredScene = computed(() => {
-    const scenePrompt = sceneTemplateText(effectiveScene.value, { char: pb.char, manualTags: pb.manualTags, shot: pb.selections.shot, engine: engine.value, profile: modelProfile.value })
-    return pb.char === 'triad' && engine.value === 'krea2'
-      ? studioDualSubject(scenePrompt)
-      : { scenePrompt, subjectProse: studioSubjectProse(pb.char) }
-  })
-
-  const structuredPlan = computed(() => createPromptPlan({
-    profile: modelProfile.value,
-    identity: pb.charPrompt,
-    ...STUDIO_PROMPT_SUBJECTS[pb.char],
-    controls: characterControlTokens(effectiveScene.value, pb.char, controlLoraIds.value),
-    artists: artistTags.value,
-    artistProse: artistProse.value,
-    scenePrompt: structuredScene.value.scenePrompt,
+  const structuredResult = computed(() => engine.value === 'sd' ? null : compilePromptRecipe({
+    kind: 'studio', character: pb.char, scene: effectiveScene.value,
+    engine: engine.value, profile: modelProfile.value, identity: pb.charPrompt,
+    activeLoras: controlLoraIds.value, loraMeta: pb.loraMeta,
+    artistTags: artistTags.value, artistProse: artistProse.value,
     emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
-    camera: pb.selections.shot ? [SHOT.find(item => item.id === pb.selections.shot)?.prompt || ''] : [],
-    lighting: pb.selections.lighting ? [LIGHTING.find(item => item.id === pb.selections.lighting)?.prompt || ''] : [],
-    palette: colorMoodTokens.value,
-    composition: pb.selections.composition ? [COMPOSITION.find(item => item.id === pb.selections.composition)?.prompt || ''] : [],
-    manual: [...pb.manualTags],
-    negative: effectiveScene.value?.negative || NEGATIVE_DEFAULT,
-    rating: profileRatingTag(modelProfile.value, effectiveScene.value) || sceneRating(effectiveScene.value).toLowerCase(),
-    visualDescription: pb.visualDescription,
-    subjectProse: structuredScene.value.subjectProse,
-    scene: sceneContext(effectiveScene.value),
+    shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
+    directorSources: pb.directorSources, palette: colorMoodTokens.value,
+    manual: [...pb.manualTags], visualDescription: pb.visualDescription,
+    negativeCustom: pb.sdParams.negativeCustom, matureTokens: matureTokenSet.value,
   }))
+  const structuredPlan = computed(() => structuredResult.value?.plan ?? null)
 
   /**
    * WAI（SD）：质量前缀官方空格原样保留一次，rating 一次，单一标签流。
@@ -343,7 +278,7 @@ export function usePromptAssembly(
    */
   const positivePrompt = computed(() => {
     if (capabilities.value.promptFormat !== 'danbooru') {
-      return renderPromptPlan(structuredPlan.value, engine.value, modelProfile.value).prompt
+      return structuredResult.value?.prompt ?? ''
     }
     return sanitizePrompt(
       promptParts.value.filter(part => part.cls !== 'n').map(part => part.text).join(', '),
@@ -352,7 +287,7 @@ export function usePromptAssembly(
 
   /** 模型原生负面统一装配：官方前缀 + 手/解剖/文字保护 + 场景排除 + rating 安全。 */
   const negativePrompt = computed(() =>
-    assembleNegative(modelProfile.value, effectiveScene.value, engine.value, {
+    engine.value !== 'sd' ? structuredResult.value?.negative ?? '' : assembleNegative(modelProfile.value, effectiveScene.value, engine.value, {
       shot: pb.selections.shot,
       character: pb.char,
       custom: pb.sdParams.negativeCustom,

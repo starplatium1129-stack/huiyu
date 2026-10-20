@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1564,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_02",
     "title": "拉芙塔莉雅 · 市集里的围巾试色",
@@ -31,7 +31,7 @@
     ],
     "promptProse": "She holds the ochre scarf against her shoulder, rubbing its edge beside her ear with her free hand under the stall awning.",
     "promptTokens": [
-      "scarf",
+      "holding scarf",
       "fabric",
       "market stall"
     ],

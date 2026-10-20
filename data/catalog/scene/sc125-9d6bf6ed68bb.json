@@ -1,13 +1,13 @@
 {
   "kind": "scene",
   "id": "sc125",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 123,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "animaCaption": "She lifts a white sleeve toward her face from the futon; the paper lantern lights her sleeve and the tatami, leaving the shrine guest room dim beyond.",
-    "camera": "平视俯瞰近景",
+    "camera": "平视近景",
     "category": "恋爱/After_Story",
     "char": "nene",
     "character": [

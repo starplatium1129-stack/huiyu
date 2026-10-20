@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zhuang_fangyi_arknights",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 162,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights",
     "profile": {
@@ -119,9 +119,11 @@
         "red streaks",
         "green eyes",
         "eastern dragon horns",
-        "red horns",
+        "branching dark red horns",
         "eastern dragon tail",
-        "arknights: endfield"
+        "arknights: endfield",
+        "long hair",
+        "pointy ears"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eyjafjalla_arknights",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "eyjafjalla_arknights",
     "profile": {
@@ -106,7 +106,7 @@
       ],
       "franchise": "Arknights",
       "id": "eyjafjalla_arknights",
-      "identityProse": "Eyjafjalla from Arknights, with light-brown twintails, curved sheep horns and crimson eyes.",
+      "identityProse": "Eyjafjalla from Arknights, with light-brown twintails, curved sheep horns, sheep ears and crimson eyes.",
       "identityTokens": [
         "eyjafjalla (arknights)",
         "1girl",

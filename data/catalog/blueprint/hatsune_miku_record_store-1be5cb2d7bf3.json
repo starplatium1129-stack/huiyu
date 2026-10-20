@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_record_store",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 322,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "hatsune_miku_record_store",
     "title": "初音未来 · 唱片店",
@@ -36,7 +36,7 @@
     "promptProse": "Miku steadies the headphone band with her left hand and turns an earcup toward the listener on her right with her right hand; the upper-left shop lamp catches the earcup and foreground turntable while soft storefront light reaches both faces. Wooden record bins behind the pair lead back toward the distant wall shelves.",
     "promptTokens": [
       "2people",
-      "headphones",
+      "holding headphones",
       "vinyl record",
       "turntable",
       "record shop",
@@ -44,7 +44,7 @@
       "medium shot"
     ],
     "negativeTokens": [
-      "text"
+      "readable background text"
     ],
     "recommendedSize": "1536x1152",
     "kreaStyleHint": "anime_key_visual",

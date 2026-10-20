@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc107",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 105,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "animaCaption": "She lies on the workbench with both hands holding the viewer's shoulders beneath the red safelight, with hanging prints, the lens-column enlarger and shallow developing trays behind her.",
     "auditRevision": "round3-2026-07-22",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "bedroom, hospital, kitchen, blue lighting, daylight",
-    "prompt": "1girl, ayachi_nene, ahoge, unbuttoned_shirt, black lace lingerie, lying_on_table, bare_shoulders, cleavage, bare_legs, heavy_blush, tears_in_eyes, open_mouth, sweat, messy_hair, (traditional photographic darkroom under saturated red safelight:1.7), (photography darkroom:1.55), hanging photographic prints, photo enlarger, developing trays, sensor cable, night, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, ayachi_nene, ahoge, no_hair_ribbon, unbuttoned_shirt, black lace lingerie, lying_on_table, bare_shoulders, cleavage, bare_legs, heavy_blush, tears_in_eyes, open_mouth, sweat, messy_hair, (traditional photographic darkroom under saturated red safelight:1.7), (photography darkroom:1.55), hanging photographic prints, photo enlarger, developing trays, sensor cable, night, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
     "rating": "R18",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 居家衬衫半脱高能】社办暗房深处，冲洗照片的微弱红光映照着彼此。因为环境闷热，宁宁解开了衬衫大半纽扣，里面精致的黑色蕾丝内衣若隐若现。她有些脱力地仰躺在宽大的工作台上，粉色的发带掉在一边，头顶的呆毛疯狂卷曲成完美的爱心螺旋。她双手死死抓着你的肩膀，满脸泪痕与香汗交织，小嘴微张发出令人意乱情迷的娇喘——「呜...柊史...魔法已经不管用了...宁宁的身体...快要被你彻底融化了...」",

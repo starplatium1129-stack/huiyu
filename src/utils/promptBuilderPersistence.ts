@@ -1,4 +1,5 @@
 import { normalizeKey } from './promptPrimitives.ts'
+import type { DirectorControlSources, DirectorControlValues } from '../types/promptDirector.ts'
 
 export type DraftCharKey = 'nene' | 'natsume' | 'triad' | 'none'
 
@@ -72,7 +73,8 @@ export interface DraftRandomVariation {
 
 export interface PromptBuilderDraft {
   randomVariation?: DraftRandomVariation | null
-  sceneStyleBaseline?: { shot: string | null; lighting: string | null; composition: string | null; colorMood: string | null }
+  sceneStyleBaseline?: DirectorControlValues
+  directorSources?: DirectorControlSources
   updatedAt: number
   story?: string
   visualDescription?: string

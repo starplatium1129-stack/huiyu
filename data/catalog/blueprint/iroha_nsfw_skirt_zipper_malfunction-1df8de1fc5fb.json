@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_skirt_zipper_malfunction",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 367,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "iroha_nsfw_skirt_zipper_malfunction",
     "title": "一色彩羽 · 活动室百褶裙拉链卡壳事故 ·「别装君子啦……前辈明明想看很久了吧」",
@@ -30,7 +30,7 @@
       "adult",
       "private studio",
       "windowsill",
-      "skirt",
+      "pleated plaid skirt",
       "stuck zipper",
       "skirt lift",
       "black pantyhose",

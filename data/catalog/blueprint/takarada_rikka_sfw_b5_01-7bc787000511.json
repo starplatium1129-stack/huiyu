@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1533,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_01",
     "title": "宝多六花 · 绚 JUNK SHOP 的柜台",
@@ -40,7 +40,7 @@
     ],
     "promptProse": "She writes with her right hand and steadies the page with her left, headphones around her neck; golden-hour light through the shelves catches dust above the old radios.",
     "promptTokens": [
-      "headphones",
+      "headphones around neck",
       "homework",
       "shop counter",
       "sunset",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc105",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 103,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "animaCaption": "She sits astride the viewer's lap with her costume partially loosened and her hands resting against their chest, looking toward them with flushed, teary eyes in the clubroom's dim candlelight.",
     "camera": "主观正面近景",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "generic witch dress, plain black dress, full-length gown",
-    "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, pink_striped_hat_ribbon, vivid_pink_lining, striped_bow, cleavage, sideboob, underboob, no bra, black_pleated_mini_skirt, black_boots, bare_shoulders, undressing, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, ahoge, witch_hat, black_cape, criss_cross_halter, crop_top, strap_between_breasts, midriff, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, very_long_hair, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, nene_r18, pink_striped_hat_ribbon, vivid_pink_lining, striped_bow, cleavage, sideboob, underboob, no bra, black_pleated_mini_skirt, black_boots, bare_shoulders, undressing, straddling_viewer, heavy_blush, tears_in_eyes, heavy_breathing, clubroom, night, dim_lighting, sensual, warm_lighting, ahoge, no_hair_ribbon, witch_hat, black_cape, criss_cross_halter, crop_top, strap_between_breasts, midriff, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, very_long_hair, <lora:ayachi_nene_v18_wd14:0.85>",
     "rating": "R18",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 密室魔女服极致高能】深夜反锁的超自然社办深处，空气里弥漫着神秘学书页与微热的荷尔蒙。宁宁换上了那件华丽却被你半拆解的魔女制服，香肩半露，黑色布料与雪白肌肤形成了极具张力的对比。她软软地跨坐在你膝盖上，发带凌乱地散在一边，头顶的呆毛早已因为极度动情软瘫成完美的心形螺旋。她无力地抵住你的胸口，急促地喘息着——「呜...柊史...把灯关掉啦...魔女的身体...今晚全凭你支配了...」",

@@ -162,14 +162,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
 
   function selectPopularCharacter(character: PopularCharacter) {
     if (pb.subject.kind !== 'popular' || pb.subject.characterId === character.id) return
-    const previous = pb.subject.blueprintId ? findPopularBlueprint(pb.sceneBlueprints, pb.subject.blueprintId) : null
-    if (previous) {
-      const decision = inferBlueprintDecisions(previous)
-      if (pb.selections.shot === decision.shot) pb.setShot(null)
-      if (pb.selections.lighting === decision.lighting) pb.setLighting(null)
-      if (pb.selections.composition === decision.composition) pb.setComposition(null)
-      if (pb.colorMood === decision.colorMood) pb.setColorMood(null)
-    }
+    pb.clearInheritedDirectorValues()
     const outfitId = character.outfits.find(o => o.default)?.id ?? character.outfits[0].id
     // Changing identity keeps the reference scene and clothing across successive characters.
     pb.setPopularSubject(character.id, outfitId, null, { preserveReference: true, preserveOutfitOverride: true })
@@ -201,10 +194,10 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     const targetOutfitId = blueprint.outfitId || pb.subject.outfitId
     pb.setPopularSubject(pb.subject.characterId, targetOutfitId, blueprint.id)
     const decision = inferBlueprintDecisions(blueprint)
-    pb.setShot(decision.shot)
-    pb.setLighting(decision.lighting)
-    pb.setComposition(decision.composition)
-    pb.setColorMood(decision.colorMood)
+    pb.setShot(decision.shot, 'scene')
+    pb.setLighting(decision.lighting, 'scene')
+    pb.setComposition(decision.composition, 'scene')
+    pb.setColorMood(decision.colorMood, 'scene')
     // 蓝图推荐尺寸必须收敛到当前底模白名单：Krea 已激活时 832x1216 会让
     // 服务端 400 INVALID_PARAMETER。
     applyRecommendedSize(decision.size)
@@ -332,7 +325,12 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     if (savedRecipe) {
       // The draft may contain a newer reference than the saved generation recipe.
       if (!pb.referenceInput && !pb.outfitOverride) {
-        try { flash(applyGeneratedSceneSettings(savedRecipe, input).join('；')) }
+        const director = pb.snapshotStyleLayers()
+        try {
+          flash(applyGeneratedSceneSettings(savedRecipe, input).join('；'))
+          // Draft choices may also be newer than the source scene's saved recipe.
+          pb.restoreDirectorState(director, director.directorSources)
+        }
         catch (error) { flash(error instanceof Error ? error.message : '生成配方无法载入') }
       }
       void refreshAnimaBackend()

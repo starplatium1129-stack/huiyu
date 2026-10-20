@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ling_arknights",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "ling_arknights",
     "profile": {
@@ -111,7 +111,7 @@
       ],
       "franchise": "Arknights",
       "id": "ling_arknights",
-      "identityProse": "Ling from Arknights, a dragon poet with very long blue hair streaked white, blue eyes, translucent dragon horns and a dragon tail.",
+      "identityProse": "Ling from Arknights, a dragon poet with very long blue hair streaked white, blue eyes, pointed ears, translucent dragon horns and a dragon tail.",
       "identityTokens": [
         "ling (arknights)",
         "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_rehearsal_sweat",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 866,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "排练后靠着低音音箱喘气，黑色衬衫领口纽扣松开，抬眼向画面外同伴要水。",
     "adult": true,
@@ -32,6 +32,7 @@
       "solo",
       "adult Kazusa",
       "black cropped shirt",
+      "black pleated skirt",
       "open collar",
       "sweat",
       "leaning",

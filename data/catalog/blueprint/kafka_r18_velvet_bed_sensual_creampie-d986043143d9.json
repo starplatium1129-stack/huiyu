@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_velvet_bed_sensual_creampie",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1044,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "kafka_r18_velvet_bed_sensual_creampie",
     "title": "卡芙卡 · 绒床上的紫色丝线",
@@ -27,7 +27,7 @@
       "bent_knees",
       "heavy_blush"
     ],
-    "promptProse": "Adult Kafka lies alone on the velvet bed with both knees raised, one hand on her breast and the other touching herself. Violet threads gather across the bedding.",
+    "promptProse": "Adult Kafka lies alone on the velvet bed with both knees raised, one hand on her breast and the other touching herself. Violet threads gather across the bedding. Warm yellow bedside wall light falls softly across the dark silk bedding.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -39,7 +39,8 @@
       "hand between legs",
       "masturbation",
       "bed",
-      "from above"
+      "from above",
+      "foreshortening"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

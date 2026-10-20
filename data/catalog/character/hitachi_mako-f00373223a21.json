@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hitachi_mako",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "hitachi_mako",
     "profile": {
@@ -125,7 +125,7 @@
       "exactTokens": [
         "hitachi_mako"
       ],
-      "franchise": "YUZUSOFT",
+      "franchise": "Senren Banka",
       "id": "hitachi_mako",
       "identityProse": "Hitachi Mako from Senren Banka, with short black hair, long sidelocks, an ahoge, green eyes and a cat-like mouth.",
       "identityTokens": [

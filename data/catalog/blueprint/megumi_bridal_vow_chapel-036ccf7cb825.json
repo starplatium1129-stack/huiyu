@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_bridal_vow_chapel",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1442,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "megumi_bridal_vow_chapel",
     "title": "加藤惠 · 礼堂里系好的花束缎带",
@@ -32,7 +32,7 @@
     "promptProse": "With the bouquet resting against her waist, she draws its ribbon ends snug and lifts a small, sincere smile toward the viewer in the colored window light.",
     "promptTokens": [
       "bouquet",
-      "ribbon",
+      "ribbon on bouquet",
       "chapel window",
       "bob cut"
     ],

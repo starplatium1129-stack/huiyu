@@ -1,6 +1,8 @@
 import type { CharKey, HistoryEntry } from '@/types/promptHistory'
 import type { AnimaResultContext } from '@/types/anima'
 import { parseOutfitOverride } from './promptBuilderPersistence'
+import type { DirectorControlSources } from '../types/promptDirector'
+import { normalizeDirectorSources } from './promptDirector'
 
 /** 页面适配传入当前需要的创作字段；普通对象即可，不要求 Store/Pinia。 */
 export interface ResultContextInput {
@@ -17,6 +19,7 @@ export interface ResultContextInput {
     lighting: string | null; composition: string | null
   }>
   readonly colorMood: string | null
+  readonly directorSources?: Readonly<DirectorControlSources>
   readonly manualTags: ReadonlySet<string> | readonly string[]
   readonly artistStyleIds: readonly string[]
   readonly directorMode: 'basic' | 'pro'
@@ -49,6 +52,7 @@ export function captureResultContext(pb: ResultContextInput): AnimaResultContext
       emotion: [...pb.selections.emotion], shot: pb.selections.shot,
       lighting: pb.selections.lighting, composition: pb.selections.composition,
       colorMood: pb.colorMood, manual_tags: [...pb.manualTags],
+      directorSources: pb.directorSources === undefined ? undefined : normalizeDirectorSources(pb.directorSources),
       artistStyleIds: pb.directorMode === 'pro' ? [...pb.artistStyleIds] : [],
       project: pb.projectId,
       negativeCustom: pb.sdParams.negativeCustom,

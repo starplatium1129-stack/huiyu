@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1553,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_01",
     "title": "堀京子 · 放学到主妇的十分钟切换",
@@ -38,7 +38,7 @@
     "promptTokens": [
       "ponytail",
       "school bag",
-      "apron",
+      "holding folded apron",
       "reaching",
       "entrance",
       "medium shot"

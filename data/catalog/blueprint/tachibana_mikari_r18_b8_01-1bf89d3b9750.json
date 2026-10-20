@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_r18_b8_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1685,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "tachibana_mikari_r18_b8_01",
     "title": "橘美花莉 · 漫展后酒店更衣室Cos服主控跨坐 ·「奥村君……美花莉只当属于你的米莉艾拉哦♪」",
@@ -77,7 +77,8 @@
       "wig",
       "two-tone hair",
       "purple and pink wig",
-      "twintails"
+      "twintails",
+      "long hair"
     ],
     "identityProseOverride": "Adult Mikari Tachibana from 2.5 Dimensional Seduction, with pink eyes and a purple-and-pink long twintail wig for her Miriella cosplay."
   }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suzuran_arknights",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 35,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "suzuran_arknights",
     "profile": {
@@ -90,7 +90,7 @@
       "animeStudio": "arknights, hypergryph, official anime art",
       "canon": {
         "era": "近未来奇幻",
-        "formNotes": "白发金瞳狐耳九尾；白金色和服；治愈系",
+        "formNotes": "浅金长发与蓝瞳，狐耳和九条金色尾巴；白色羽织配墨绿细节与深色百褶裙；治愈系。",
         "research": "2026-08-15 调研（Danbooru suzuran_(arknights) 6749 posts）",
         "world": "泰拉（罗德岛）"
       },

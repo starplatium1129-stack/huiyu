@@ -333,10 +333,10 @@ export function assembleNegative(
   if (!capabilities.negative) return ''
   if (engine === 'sd' && context.sdNegativeEnabled === false) return ''
   const profileNegative = modelNegativePrompt(profile, scene?.negative || '', engine)
-  const custom = engine === 'sd' ? String(context.custom || '').trim() : ''
+  const custom = String(context.custom || '').trim()
   const merged = engine === 'sd'
     ? mergeTokenText(custom, NEGATIVE_PROTECTION, profileNegative)
-    : profileNegative
+    : custom ? mergeTokenText(profileNegative, custom) : profileNegative
   const adapted = compositionNegative(adaptNegative(merged, scene, { shot: context.shot, character: context.character, ratingMode: profile?.rating_mode }), scene)
   const formatted = engine === 'anima' ? formatPromptForProfile(adapted, profile, engine) : adapted
   if (profile?.strip_quality_tokens === true) {

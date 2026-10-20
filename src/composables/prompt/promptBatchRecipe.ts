@@ -1,19 +1,27 @@
 import type { AnimaGenerationState } from '@/types/anima'
 import type { CharKey, HistoryEntry, Selections } from '@/types/promptHistory'
 import type { Scene } from '@/types/scene'
+import type { PromptPlan } from '@/types/prompt'
+import { isGarmentToken } from '@/utils/popularIdentity'
+import { authoredSceneCaption } from '@/utils/promptCaption'
+import { isStableIdentityToken } from '@/utils/interrogateReference'
+import { roamingIdentityReferences } from '@/utils/promptRoaming'
+import type { DirectorControlSources } from '@/types/promptDirector'
+import type { PromptLoraMetadata } from '@/utils/studioPromptBuilder'
 import type { DraftOutfitOverride } from '@/utils/promptBuilderPersistence'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import { identityDomainOf } from '@/utils/interrogateMerge'
 import { sceneStyleBaseline } from '@/utils/randomVariationContext'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { buildPopularPromptPlan } from '@/utils/popularPromptBuilder'
+import { compilePromptRecipe } from '@/utils/promptRecipe'
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import { findCharacter as findPopularCharacter, defaultOutfit, findOutfit, type DrawSubject, type SceneBlueprint, type PopularCharacter } from '@/utils/popularContent'
 import { CHAR_PROMPT, COLOR_MOODS, STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
 import { mutualGroupWithCategory, normalizeKey, tokenize, type ModelProfile } from '@/utils/promptPolicy'
-import { createPromptPlan, renderPromptPlan } from '@/utils/promptCompiler'
-import { ANIMA_LORA_BY_CHARACTER } from '../generation/animaSessionContract'
+import { isManualDirectorValue, sceneDirectorSources } from '@/utils/promptDirector'
+import { sceneShot, sceneLighting, sceneComposition, sceneColorMood, sceneRecommendedSize } from '@/utils/sceneInference'
+import { ANIMA_LORA_BY_CHARACTER, closestSupportedSize } from '../generation/animaSessionContract'
 import { buildAnimaRequest } from '../generation/buildAnimaRequest'
 import type { BatchDrawRunnerInput, BatchTargetItem } from '../generation/useBatchDraw'
 import type { PreparedBatchImage } from './batchGenerationPlan'
@@ -22,6 +30,8 @@ interface PromptBatchSource {
   subject: DrawSubject
   char: CharKey
   selections: Selections
+  directorSources?: DirectorControlSources
+  loraMeta?: PromptLoraMetadata[]
   manualTags: string[]
   outfitOverride: DraftOutfitOverride | null
   activeScene: Scene | null
@@ -31,6 +41,7 @@ interface PromptBatchSource {
   artistStyleIds: string[]
   colorMood: string | null
   visualDescription: string
+  negativeCustom?: string
   projectId: string
 }
 
@@ -38,6 +49,8 @@ export interface PromptBatchRecipeInput {
   source: PromptBatchSource
   characters: PopularCharacter[]
   blueprints: SceneBlueprint[]
+  scenes?: Scene[]
+  sourcePlan?: PromptPlan | null
   state: AnimaGenerationState
   profile: ModelProfile | null
   negativePrompt: string
@@ -45,83 +58,47 @@ export interface PromptBatchRecipeInput {
 
 /** One detached recipe owns new-batch inputs; it never reads the live editor. */
 export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
-  const { source: pb, characters, blueprints, state, profile, negativePrompt } = JSON.parse(JSON.stringify(input)) as PromptBatchRecipeInput
+  const { source: pb, characters, blueprints, scenes = [], sourcePlan, state, profile, negativePrompt } = JSON.parse(JSON.stringify(input)) as PromptBatchRecipeInput
   const blueprintList = () => blueprints
   const getPopularList = () => characters
-  type StyleSnapshot = Pick<HistoryEntry, 'emotion' | 'shot' | 'lighting' | 'composition' | 'colorMood'>
-  const plans = new Map<string, { negative?: string; outfitId?: string; outfitExplicit?: boolean; outfitOverride?: DraftOutfitOverride | null; size?: string; style: StyleSnapshot }>()
+  type StyleSnapshot = Pick<HistoryEntry, 'emotion' | 'shot' | 'lighting' | 'composition' | 'colorMood' | 'directorSources'>
+  const plans = new Map<string, { negative?: string; profile?: ModelProfile | null; adult?: boolean; outfitId?: string; outfitExplicit?: boolean; outfitOverride?: DraftOutfitOverride | null; size?: string; manual: string[]; visualDescription: string; style: StyleSnapshot }>()
 
-  /**
-   * 从当前完整提示词中剥离原角色的特征、专属服装与 LoRA 标签，
-   * 提炼出干净的「环境、构图、光影、画面指令」通用基底。
-   */
-  function extractUniversalPrompt(rawPrompt: string): string {
-    let text = String(rawPrompt || '').trim()
-    if (!text) return ''
+  let roamingContent = { tags: [] as string[], caption: '' }
 
-    // 1. 去除原 studio 角色的锚点
-    Object.values(CHAR_PROMPT).forEach(anchor => {
-      if (anchor) text = text.replace(anchor, '')
-    })
-
-    // 2. 去除热门角色的 identityProse 与 identityTokens
-    const popularChars = pb.subject.kind === 'popular' ? getPopularList().filter(item => item.id === (pb.subject.kind === 'popular' ? pb.subject.characterId : '')) : []
-    popularChars.forEach((pop: PopularCharacter) => {
-      if (pop.identityProse) text = text.replace(pop.identityProse, '')
-      if (pop.outfits) {
-        pop.outfits.forEach(o => {
-          if (o.prose) text = text.replace(o.prose, '')
-          if (o.identityProseOverride) text = text.replace(o.identityProseOverride, '')
-          if (o.tokens) {
-            [...o.tokens, ...(o.identityTokensOverride || [])].forEach(tok => {
-              text = text.split(',').filter(part => normalizeKey(part) !== normalizeKey(tok)).join(',')
-            })
-          }
-        })
-      }
-      if (pop.identityTokens) {
-        [...pop.identityTokens, ...pop.exactTokens, ...(pop.copyrightTokens || []), ...(pop.characterTokens || []), ...pop.aliases].forEach(tok => {
-              text = text.split(',').filter(part => normalizeKey(part.replace(/\\([()])/g, '$1')) !== normalizeKey(tok)).join(',')
-        })
-      }
-    })
-
-    // 3. 去除通用角色前缀、LoRA 标签与衣物类描述
-    text = text.replace(/<lora:[^>]+>/gi, '')
-    text = text.replace(/\b(1girl|2girls|solo)\b/gi, '')
-    text = text.replace(/\b(?:She wears|wearing|dressed in|outfit)\b[^,.;]*/gi, '')
-
-    const newline = state.family === 'anima' ? text.indexOf('\n') : -1
-    const caption = newline < 0 ? '' : text.slice(newline + 1)
-    if (newline >= 0) text = text.slice(0, newline)
-
-    // 4. 互斥服装族与通用衣物 Tag 清洗（彻底剥离旧服装，避免串入新角色）
-    const studioKeys = new Set([
+  /** Transfer authored content before rendering; never parse a model's final prose back into tags. */
+  function captureRoamingContent(captionOverride: string): string {
+    const source = pb.subject.kind === 'popular' ? findPopularCharacter(characters, pb.subject.characterId) : null
+    const keys = new Set([
+      ...(source?.identityTokens || []), ...(source?.exactTokens || []), ...(source?.characterTokens || []),
+      ...(source?.copyrightTokens || []),
       ...Object.values(CHAR_PROMPT).flatMap(tokenize),
       ...Object.values(STUDIO_PROMPT_SUBJECTS).flatMap(subject => subject.copyrightTokens),
-    ].map(normalizeKey))
-    const parts = text.split(',').map(p => p.trim()).filter(part => part && !studioKeys.has(normalizeKey(part)))
-    const cleanParts = parts.filter(part => {
-      if (identityDomainOf(part) || mutualGroupWithCategory(part)?.category === 'outfit') return false
-      const lower = part.toLowerCase()
-      // 匹配明确的衣物/鞋袜/制服类 tag
-      if (/^(?:[a-z0-9]+_)*(?:clothes|clothing|outfit|costume|coat|overcoat|trench_coat|jacket|dress|sundress|skirt|miniskirt|shirt|blouse|pants|trousers|jeans|shorts|hotpants|crop_top|tank_top|bodysuit|leotard|corset|bra|panties|underwear|boots|shoes|heels|sneakers|sandals|socks|tights|pantyhose|stockings|leggings|thighhighs|thigh_highs|over_knee_socks|knee_socks|uniform|serafuku|suit|robe|cloak|cape|capelet|hoodie|sweater|cardigan|vest|apron|kimono|yukata|qipao|cheongsam|swimsuit|swimwear|bikini|pajamas|sleepwear|nightgown|lingerie|gloves|scarf|necktie|belt|hat|helmet|armor|footwear|headdress)$/.test(lower)) {
-        return false
-      }
-      return true
-    })
-
-    return state.family === 'anima' ? `${cleanParts.join(', ')}\n${caption}` : cleanParts.join(', ')
+    ].filter(token => !isGarmentToken(token) && mutualGroupWithCategory(token)?.category !== 'outfit').map(normalizeKey))
+    if (sourcePlan) {
+      const tags = [...sourcePlan.rating, ...sourcePlan.sceneVisualFragments, ...sourcePlan.exactControls, ...sourcePlan.emotion, ...sourcePlan.camera,
+        ...sourcePlan.lighting, ...sourcePlan.palette, ...sourcePlan.composition, ...sourcePlan.manual]
+        .filter(tag => !keys.has(normalizeKey(tag)) && !identityDomainOf(tag) && !/^(?:nene|natsume)_/i.test(tag))
+      const caption = sourcePlan.scene?.animaCaption || sourcePlan.sceneProse || ''
+      const sceneCaption = captionOverride.trim() || (caption || sourcePlan.visualDescription ? authoredSceneCaption(sourcePlan, caption).trim().replace(/^\.\s*/, '') : '')
+      roamingContent = { tags: [...new Set(tags.filter(tag => !isStableIdentityToken(tag)))],
+        caption: [sourcePlan.outfitProse ? `She wears ${sourcePlan.outfitProse.replace(/[.!?]+$/, '')}.` : '', sceneCaption].filter(Boolean).join(' ') }
+    } else {
+      roamingContent = { tags: pb.manualTags.filter(tag => !keys.has(normalizeKey(tag)) && !isStableIdentityToken(tag)),
+        caption: captionOverride.trim() || pb.visualDescription.trim() }
+    }
+    return [roamingContent.tags.join(', '), roamingContent.caption].filter(Boolean).join('\n')
   }
 
   function resolveTargetCharacter(target: BatchTargetItem) {
-    const charId = target.kind === 'character' ? target.characterId || target.id : blueprintList().find(item => item.id === target.id)?.characterId
+    const charId = target.kind === 'character' ? target.characterId || target.id
+      : blueprintList().find(item => item.id === target.id)?.characterId || scenes.find(item => item.id === target.id)?.char
     if (!charId) return null
     const popularChars = getPopularList()
     const popChar = findPopularCharacter(popularChars, charId)
     if (popChar) return { kind: 'popular' as const, char: popChar }
-    if (charId === 'nene' || charId === 'natsume') {
-      return { kind: 'studio' as const, charKey: charId as 'nene' | 'natsume' }
+    if (charId === 'nene' || charId === 'natsume' || charId === 'triad') {
+      return { kind: 'studio' as const, charKey: charId as 'nene' | 'natsume' | 'triad' }
     }
     return null
   }
@@ -173,49 +150,87 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       sourceBlueprint?.identityTokensOverride?.forEach(token => sourceKeys.add(normalizeKey(token)))
       const inherited = !blueprint ? null : sourceBlueprint ? inferBlueprintDecisions(sourceBlueprint)
         : currentSubject.kind === 'studio' && pb.activeScene ? sceneStyleBaseline(pb.activeScene) : null
-      const shot = pb.selections.shot === inherited?.shot ? null : pb.selections.shot
-      const lighting = pb.selections.lighting === inherited?.lighting ? null : pb.selections.lighting
-      const composition = pb.selections.composition === inherited?.composition ? null : pb.selections.composition
-      const colorMood = pb.colorMood === inherited?.colorMood ? null : pb.colorMood
+      const directorSources: DirectorControlSources = {}
+      const pick = (key: 'shot' | 'lighting' | 'composition') => {
+        const manual = isManualDirectorValue(pb.directorSources, key, pb.selections[key], inherited?.[key])
+        directorSources[key] = manual ? 'manual' : 'scene'
+        return manual ? pb.selections[key] : decisions?.[key] ?? null
+      }
+      const shot = pick('shot'), lighting = pick('lighting'), composition = pick('composition')
+      const colorMood = isManualDirectorValue(pb.directorSources, 'colorMood', pb.colorMood, inherited?.colorMood) ? pb.colorMood : null
+      directorSources.colorMood = isManualDirectorValue(pb.directorSources, 'colorMood', pb.colorMood, inherited?.colorMood) ? 'manual' : 'scene'
       const mood = COLOR_MOODS.find(option => option.id === (colorMood ?? decisions?.colorMood))
-      const inheritedNewline = target.kind === 'character' && engine === 'anima' ? baseText.indexOf('\n') : -1
-      const inheritedTags = inheritedNewline < 0 ? [] : tokenize(baseText.slice(0, inheritedNewline))
-      const planResult = buildPopularPromptPlan({
-        character: pop, outfit, blueprint, engine, profile,
-        manual: [...pb.manualTags, ...inheritedTags].filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag))),
+      const inheritedTags = target.kind === 'character' ? roamingContent.tags : []
+      const manual = (target.kind === 'character' ? inheritedTags : pb.manualTags)
+        .filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag)))
+      const visualDescription = target.kind === 'character' ? roamingContent.caption : pb.visualDescription
+      const planResult = compilePromptRecipe({
+        kind: 'popular', character: pop, outfit, blueprint, engine, profile, directorSources,
+        manual,
         emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
-        shot: shot ?? decisions?.shot,
-        lighting: lighting ?? decisions?.lighting,
-        composition: composition ?? decisions?.composition,
+        shot, lighting, composition,
         palette: mood ? tokenize(mood.prompt) : [],
-        visualDescription: target.kind === 'character'
-          ? (inheritedNewline < 0 ? baseText : baseText.slice(inheritedNewline + 1).replace(/\s+/g, ' ')) : pb.visualDescription,
+        visualDescription,
+        negativeCustom: pb.negativeCustom,
         outfitOverride, outfitExplicit,
         matureTokens: new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en))),
         artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
       })
-      plans.set(target.id, { negative: planResult.negative, outfitId: outfit.id, outfitExplicit,
+      plans.set(target.id, { negative: planResult.negative, profile: planResult.profile, adult: planResult.adult, outfitId: outfit.id, outfitExplicit, manual, visualDescription,
         outfitOverride: outfitOverride ? { tokens: [...outfitOverride], replaced: pb.outfitOverride?.replaced ?? null } : null, size: blueprint?.recommendedSize,
-        style: { emotion: pb.emotionPrompt ? [...pb.selections.emotion] : [], shot: shot ?? decisions?.shot ?? null,
-          lighting: lighting ?? decisions?.lighting ?? null, composition: composition ?? decisions?.composition ?? null, colorMood: mood?.id ?? null } })
+        style: { emotion: pb.emotionPrompt ? [...pb.selections.emotion] : [], shot,
+          lighting, composition, colorMood: mood?.id ?? null, directorSources } })
       return planResult.prompt
     }
     if (charInfo?.kind === 'studio') {
-      // 角色漫游继承已捕获的完整词条；独立蓝图只使用自己的描述。
-      plans.set(target.id, { style: target.kind === 'character'
-        ? { ...pb.selections, emotion: [...pb.selections.emotion], colorMood: pb.colorMood }
-        : { emotion: [], shot: null, lighting: null, composition: null, colorMood: null } })
-      const controls = detectOutfitOverrideFromContext() || []
-      if (state.family !== 'anima') return [CHAR_PROMPT[charInfo.charKey], controls.join(', '), baseText].filter(Boolean).join(', ')
-      const newline = baseText.indexOf('\n')
-      const plan = createPromptPlan({
-        profile, identity: CHAR_PROMPT[charInfo.charKey], ...STUDIO_PROMPT_SUBJECTS[charInfo.charKey], controls,
-        artists: artistTagsForEngine(pb.artistStyleIds, 'anima'),
-        scenePrompt: target.kind === 'scene' ? '' : newline < 0 ? baseText : baseText.slice(0, newline),
-        sceneProse: target.kind === 'scene' ? baseText : newline < 0 ? '' : baseText.slice(newline + 1),
-        exactTokens: profile?.exact_tokens,
+      const engine = state.family === 'krea2' ? 'krea2' : 'anima'
+      const blueprint = target.kind === 'scene' ? blueprintList().find(item => item.id === target.id) : null
+      const scene: Scene = target.kind === 'scene'
+        ? scenes.find(item => item.id === target.id) || {
+            ...blueprint, id: target.id, title: target.title, char: charInfo.charKey,
+            prompt: blueprint?.promptTokens.join(', ') || '',
+            animaCaption: blueprint?.promptProse || baseText,
+            negative: blueprint?.negativeTokens.join(', ') || '',
+            rating: blueprint?.adult ? 'R18' : 'All',
+          }
+        : {
+            id: 'batch-roaming', title: target.title, char: charInfo.charKey,
+            character: [charInfo.charKey],
+            prompt: roamingContent.tags.join(', '),
+            animaCaption: roamingContent.caption,
+          }
+      const inherited = pb.activeScene ? sceneStyleBaseline(pb.activeScene) : null
+      const defaults = { shot: sceneShot(scene), lighting: sceneLighting(scene), composition: sceneComposition(scene) }
+      const directorSources: DirectorControlSources = target.kind === 'character' ? { ...pb.directorSources } : sceneDirectorSources()
+      const selection = (key: 'shot' | 'lighting' | 'composition') => {
+        const manual = isManualDirectorValue(pb.directorSources, key, pb.selections[key], inherited?.[key])
+        directorSources[key] = manual ? 'manual' : 'scene'
+        return manual ? pb.selections[key] : defaults[key]
+      }
+      const shot = selection('shot'), lighting = selection('lighting'), composition = selection('composition')
+      const manualColor = isManualDirectorValue(pb.directorSources, 'colorMood', pb.colorMood, inherited?.colorMood)
+      const colorMood = manualColor ? pb.colorMood : sceneColorMood(scene)
+      directorSources.colorMood = manualColor ? 'manual' : 'scene'
+      const activeLora = charInfo.charKey === 'triad' ? null
+        : pb.subject.kind === 'studio' && pb.char === charInfo.charKey ? state.loraId : ANIMA_LORA_BY_CHARACTER[charInfo.charKey]
+      const controls = detectOutfitOverrideFromContext()
+      const result = compilePromptRecipe({
+        kind: 'studio', character: charInfo.charKey, scene, engine, profile,
+        activeLoras: activeLora ? { [charInfo.charKey]: activeLora } : {}, loraMeta: pb.loraMeta,
+        shot, lighting, composition, directorSources,
+        palette: tokenize(COLOR_MOODS.find(mood => mood.id === colorMood)?.prompt || ''),
+        negativeCustom: pb.negativeCustom,
+        controls: controls || (target.kind === 'character' ? [] : undefined),
+        manual: target.kind === 'character' ? roamingContent.tags : [...pb.manualTags], emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
+        visualDescription: target.kind === 'scene' ? pb.visualDescription : '',
+        artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
       })
-      return renderPromptPlan(plan, 'anima', profile).prompt
+      plans.set(target.id, { negative: result.negative, profile: result.profile, adult: result.adult,
+        manual: target.kind === 'character' ? [...roamingContent.tags] : [...pb.manualTags],
+        visualDescription: target.kind === 'character' ? roamingContent.caption : pb.visualDescription,
+        size: target.kind === 'scene' ? sceneRecommendedSize(scene) : undefined,
+        style: { emotion: [...pb.selections.emotion], shot, lighting, composition, colorMood, directorSources } })
+      return result.prompt
     }
     if (target.kind === 'character') throw new Error('目标角色已不可用')
     throw new Error('场景蓝图缺少有效的角色绑定')
@@ -235,7 +250,9 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
 
     const endfield = endfieldAnimaBinding(isTargetPopular ? charInfo.char.id : null, state.family, state.modelId)
     const targetChar = charInfo?.kind === 'studio' ? charInfo.charKey : pb.char
-    const dimensions = /^(\d+)\s*[x×]\s*(\d+)$/.exec(plans.get(target.id)?.size || '')
+    const recommendedSize = plans.get(target.id)?.size
+    const dimensions = /^(\d+)\s*[x×]\s*(\d+)$/.exec(recommendedSize
+      ? closestSupportedSize(state.models.find(model => model.id === state.modelId), recommendedSize.replace('×', 'x')) : '')
     const targetState = {
       ...state,
       width: dimensions ? Number(dimensions[1]) : state.width,
@@ -244,7 +261,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       // Cross-character roaming selects the target's installed binding; the source
       // character keeps its captured selection for the shared admission check.
       loraId: charInfo?.kind === 'studio' && (pb.subject.kind !== 'studio' || targetChar !== pb.char)
-        ? ANIMA_LORA_BY_CHARACTER[charInfo.charKey] : state.loraId,
+        ? charInfo.charKey === 'triad' ? '' : ANIMA_LORA_BY_CHARACTER[charInfo.charKey] : state.loraId,
       // Batch Endfield recipes retain the collection's default strength.
       loraStrength: endfield?.loraStrength ?? state.loraStrength,
     }
@@ -252,7 +269,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       subject: isTargetPopular
         ? { kind: 'popular', characterId: charInfo.char.id, outfitId: plans.get(target.id)?.outfitId || '', blueprintId: target.kind === 'scene' ? target.id : null }
         : { kind: 'studio' },
-      char: targetChar, state: targetState, profile, prompt,
+      char: targetChar, state: targetState, profile: plans.get(target.id)?.profile ?? profile, prompt,
       negative: plans.get(target.id)?.negative ?? (state.family === 'krea2' ? '' : negativePrompt),
     })
     const history: PreparedBatchImage['history'] = {
@@ -262,7 +279,8 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         model: request.modelId, profile: request.profileId, loraId: request.loraId, loraStrength: request.loraStrength,
         lora: request.loraId, noLora: !request.loraId, styleLoraId: request.styleLoraId ?? null,
         cfg: request.cfg, steps: request.steps, sampler: state.sampler, scheduler: state.scheduler,
-        visualDescription: pb.visualDescription, manual_tags: [...pb.manualTags], artistStyleIds: [...pb.artistStyleIds], project: pb.projectId,
+        visualDescription: plans.get(target.id)!.visualDescription, manual_tags: plans.get(target.id)!.manual,
+        negativeCustom: pb.negativeCustom, artistStyleIds: [...pb.artistStyleIds], project: pb.projectId,
         // 精准覆盖角色元数据
         ...(isTargetPopular ? {
           subject: 'popular' as const,
@@ -285,7 +303,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         hiresUpscaler: request.hiresUpscaler,
     }
     return { engine: state.family === 'krea2' ? 'krea2' : 'anima', request, history,
-      adult: blueprintList().find(item => item.id === target.id)?.adult === true,
+      adult: plans.get(target.id)?.adult === true,
       context: { history, char: history.character, characterId: history.characterId, sceneId: history.scene,
         outfitId: history.outfitId, blueprintId: history.blueprintId, story: history.story } }
   }
@@ -298,19 +316,36 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
   function sceneTargets(ids: string[]): BatchTargetItem[] {
     return ids.map(id => {
       const blueprint = blueprintList().find(item => item.id === id)
+      const scene = scenes.find(item => item.id === id)
       return {
         id,
-        title: blueprint?.title || id,
-        prose: batchSceneProse(blueprint),
-        subtitle: blueprint?.location || blueprint?.category,
+        title: blueprint?.title || scene?.title || id,
+        prose: blueprint ? batchSceneProse(blueprint) : scene?.animaCaption || scene?.prompt || '',
+        subtitle: blueprint?.location || blueprint?.category || scene?.location || scene?.category,
         kind: 'scene' as const,
       }
     }).filter(item => item.prose)
   }
 
-  function characterTargets(ids: string[], rawPrompt: string): BatchTargetItem[] {
-    const basePrompt = extractUniversalPrompt(rawPrompt)
+  function characterTargets(ids: string[], captionOverride = ''): BatchTargetItem[] {
+    const basePrompt = captureRoamingContent(captionOverride)
     const popularChars = getPopularList()
+    const sourceId = pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char
+    const source = findPopularCharacter(popularChars, sourceId)
+    const names = source ? [...source.aliases, source.originalName, ...(source.characterTokens || [])]
+      : sourceId === 'nene' ? ['Ayachi Nene', 'Nene'] : sourceId === 'natsume' ? ['Shiki Natsume', 'Natsume'] : []
+    const sourceBlueprint = pb.subject.kind === 'popular'
+      ? blueprints.find(item => item.id === (pb.subject.kind === 'popular' ? pb.subject.blueprintId : null)) : null
+    const intent = sourcePlan?.scene?.compositionIntent || sourceBlueprint?.compositionIntent
+    if (intent && intent !== 'single')
+      throw new Error('这个场景包含多人或分镜关系，请使用「按场景蓝图」保留原构图。')
+    for (const id of ids) {
+      if (id === sourceId) continue
+      const target = findPopularCharacter(popularChars, id)
+      const traits = target ? [...target.identityTokens, ...target.exactTokens] : tokenize(CHAR_PROMPT[id] || '')
+      const references = roamingIdentityReferences(roamingContent.caption, names, traits)
+      if (references.length) throw new Error(`画面描述中的 ${references.slice(0, 3).join('、')} 仍指向原角色。请填写适用于所选角色的通用画面描述后重试。`)
+    }
 
     return ids.map(id => {
       const pop = findPopularCharacter(popularChars, id)

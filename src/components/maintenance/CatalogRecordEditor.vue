@@ -19,6 +19,7 @@
       </details>
     </template>
     <CatalogDocumentEditor v-else v-model:record="record" :disabled="disabled" />
+    <CatalogPromptPreview v-if="record.kind !== 'document'" :record="record" :pending="pending" :dirty="dirty" />
     <details class="catalog-advanced catalog-management-info" :open="!record.revision">
       <StudioDisclosureSummary>管理信息</StudioDisclosureSummary>
       <div data-disclosure-content class="form-grid">
@@ -51,10 +52,11 @@ import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIc
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import CatalogDocumentEditor from './CatalogDocumentEditor.vue'
-import type { CatalogRecord } from '@/api/catalogApi'
+import CatalogPromptPreview from './CatalogPromptPreview.vue'
+import type { CatalogChange, CatalogRecord } from '@/api/catalogApi'
 import { CATALOG_FIELDS, fieldValue, setField, type CatalogField } from '@/composables/scene/catalogFields'
 import { CATALOG_LABELS, recordTitle } from '@/composables/scene/catalogPresentation'
-const props = defineProps<{ disabled: boolean; characterNames: Record<string, string> }>()
+const props = defineProps<{ disabled: boolean; characterNames: Record<string, string>; pending: CatalogChange[]; dirty: boolean }>()
 const record = defineModel<CatalogRecord>('record', { required: true })
 defineEmits<{ stage: []; duplicate: []; remove: [] }>()
 const fields = computed(() => CATALOG_FIELDS[record.value.kind]), sections = computed(() => [...new Set(fields.value.map(f => f.section))])

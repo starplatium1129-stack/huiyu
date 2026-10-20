@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asuma_toki",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 49,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "asuma_toki",
     "profile": {
@@ -26,7 +26,7 @@
         "hair": "金色长发",
         "hair_color": "金",
         "eyes": "蓝",
-        "hairstyle": "盘发/公主辫 · 挑染 · 耳麦",
+        "hairstyle": "金色侧马尾 · 耳麦",
         "uniform": "C&C高叉紧身衣 / 兔女郎装 / 夏日泳装",
         "expression": "冷静脱线，冷娇",
         "style": "cool maid agent",

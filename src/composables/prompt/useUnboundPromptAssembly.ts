@@ -3,69 +3,47 @@ import type { PromptAssemblyState } from './usePromptAssembly'
 import type { PopularPromptAssemblyState } from './usePopularPromptAssembly'
 import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION, STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
-import { analyzeParts, checkArtDirection, mergeTokenText, normalizeKey, tokenize, type PromptEngine } from '@/utils/promptPolicy'
-import { escapeKnownLiteralTags } from '@/utils/promptLiteralTags'
-import { createPromptPlan, renderPromptPlan } from '@/utils/promptCompiler'
+import { analyzeParts, checkArtDirection, mergeTokenText, type PromptEngine, type ModelProfile } from '@/utils/promptPolicy'
+import { compilePromptRecipe } from '@/utils/promptRecipe'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
-import type { ModelProfile } from '@/utils/promptPolicy'
 
-/** Free subjects use model prompt defaults without inferring character or scene metadata. */
+/** The workspace supplies selections; the shared recipe owns native prompt rendering. */
 export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularPromptAssemblyState, 'popularCharacters'>, engine: Readonly<Ref<PromptEngine>>, profile: Readonly<Ref<ModelProfile | null>>) {
+  const artists = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
+  const result = computed(() => {
+    if (engine.value === 'sd') return null
+    const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
+    return compilePromptRecipe({
+      kind: 'free', engine: engine.value, profile: profile.value,
+      manual: [...pb.manualTags], emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
+      shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
+      palette: [COLOR_MOODS.find(item => item.id === pb.colorMood)?.prompt || ''],
+      artistTags: artistTagsForEngine(artists.value, engine.value), artistProse: artistStyleProse(artists.value, engine.value),
+      visualDescription: pb.visualDescription, negativeCustom: pb.sdParams.negativeCustom,
+      characterTokens: [...subjects.flatMap(subject => subject.characterTokens || []), ...(pb.referenceInput?.characterTokens || [])],
+      copyrightTokens: [...subjects.flatMap(subject => subject.copyrightTokens || []), ...(pb.referenceInput?.copyrightTokens || [])],
+    })
+  })
+  const structuredPlan = computed(() => result.value?.plan ?? null)
   const positivePrompt = computed(() => {
-    const family = engine.value
-    const artists = pb.directorMode === 'pro' ? pb.artistStyleIds : []
+    if (engine.value !== 'sd') return result.value?.prompt ?? ''
     const description = pb.visualDescription.trim()
     const directions = [
       [SHOT, pb.selections.shot], [LIGHTING, pb.selections.lighting],
       [COMPOSITION, pb.selections.composition], [COLOR_MOODS, pb.colorMood],
     ] as const
-    let tags = [...pb.manualTags, pb.emotionPrompt,
-      ...directions.map(([options, id]) => options.find(item => item.id === id)?.prompt),
-    ].filter(Boolean).join(', ')
-    if (family === 'krea2') {
-      const plan = createPromptPlan({
-        freeSubject: true, scenePrompt: [...pb.manualTags].join(', '), sceneProse: description,
-        emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
-        camera: [SHOT.find(item => item.id === pb.selections.shot)?.prompt || ''],
-        lighting: [LIGHTING.find(item => item.id === pb.selections.lighting)?.prompt || ''],
-        composition: [COMPOSITION.find(item => item.id === pb.selections.composition)?.prompt || ''],
-        palette: [COLOR_MOODS.find(item => item.id === pb.colorMood)?.prompt || ''],
-        manual: [...pb.manualTags], artistProse: artistStyleProse(artists, family),
-      })
-      return renderPromptPlan(plan, family, profile.value).prompt
-    } else {
-      const styleTags = artistTagsForEngine(artists, family)
-      // Model defaults alone must not turn an empty draft into a drawable scene.
-      if (!tags && !description && !styleTags.length) return ''
-      // User tokens come first so explicit weights survive deduplication.
-      tags = mergeTokenText(tags, ...styleTags)
-      if (family === 'anima') {
-        const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
-        const tagKeys = new Set(tokenize(tags).map(tag => normalizeKey(tag.replace(/\\([()])/g, '$1'))))
-        const plan = createPromptPlan({
-          profile: profile.value, scenePrompt: tags, sceneProse: description, artists: styleTags,
-          manual: [...pb.manualTags], camera: [SHOT.find(item => item.id === pb.selections.shot)?.prompt || ''],
-          lighting: [LIGHTING.find(item => item.id === pb.selections.lighting)?.prompt || ''],
-          characterTokens: [...subjects.flatMap(subject => subject.characterTokens || []), ...(pb.referenceInput?.characterTokens ?? [])],
-          // Free subjects only order explicitly entered works; never add catalogue defaults.
-          copyrightTokens: [...subjects.flatMap(subject => subject.copyrightTokens || []), ...(pb.referenceInput?.copyrightTokens ?? [])]
-            .filter(tag => tagKeys.has(normalizeKey(tag.replace(/\\([()])/g, '$1')))),
-        })
-        const qualityKeys = new Set(plan.quality.map(normalizeKey))
-        plan.quality = tokenize(mergeTokenText(tags, plan.quality.join(', '))).filter(tag => qualityKeys.has(normalizeKey(tag)))
-        const [tagLine, ...caption] = renderPromptPlan(plan, 'anima', profile.value).prompt.split('\n')
-        return [escapeKnownLiteralTags(tagLine, [...pb.manualTags]), ...caption].join('\n')
-      }
-      tags = mergeTokenText(tags, profile.value?.quality_prefix || '')
-    }
-    return [tags, description].filter(Boolean).join('\n')
+    const tags = [...pb.manualTags, pb.emotionPrompt, ...directions.map(([options, id]) => options.find(item => item.id === id)?.prompt)]
+      .filter(Boolean).join(', ')
+    const styles = artistTagsForEngine(artists.value, 'sd')
+    if (!tags && !description && !styles.length) return ''
+    return [mergeTokenText(tags, ...styles, profile.value?.quality_prefix || ''), description].filter(Boolean).join('\n')
   })
-  const negativePrompt = computed(() => resolveDrawCapabilities(engine.value, profile.value).negative
-    ? mergeTokenText(pb.sdParams.negativeCustom, profile.value?.negative_prefix || '') : '')
+  const negativePrompt = computed(() => engine.value !== 'sd' ? result.value?.negative ?? ''
+    : resolveDrawCapabilities('sd', profile.value).negative ? mergeTokenText(pb.sdParams.negativeCustom, profile.value?.negative_prefix || '') : '')
   const previewPrompt = computed(() => negativePrompt.value ? `${positivePrompt.value}\n[NEG]\n${negativePrompt.value}` : positivePrompt.value)
   const promptReport = computed(() => analyzeParts([
     { text: positivePrompt.value }, { cls: 'n', text: negativePrompt.value },
   ], engine.value, profile.value))
   const artViolations = computed(() => checkArtDirection(positivePrompt.value, profile.value))
-  return { positivePrompt, negativePrompt, previewPrompt, promptReport, artViolations }
+  return { structuredPlan, positivePrompt, negativePrompt, previewPrompt, promptReport, artViolations }
 }

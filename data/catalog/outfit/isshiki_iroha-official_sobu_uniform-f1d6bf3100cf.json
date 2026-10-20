@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/official_sobu_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 204,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
@@ -17,8 +17,9 @@
         "cream cardigan",
         "white shirt",
         "red ribbon",
-        "plaid skirt",
-        "black pantyhose"
+        "short pleated plaid skirt",
+        "black pantyhose",
+        "loafers"
       ],
       "default": true,
       "isDefault": true

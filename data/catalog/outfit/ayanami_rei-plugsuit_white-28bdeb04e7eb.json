@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ayanami_rei/plugsuit_white",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 556,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "characterId": "ayanami_rei",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "plugsuit_white",
       "isDefault": true,
       "name": "初代白色战斗服（Plugsuit）",
-      "prose": "her white pilot plugsuit with orange and black technical panels and red neural interface clips",
+      "prose": "her white pilot plugsuit with orange and black technical panels, a 00 marking, gloves and red neural interface clips",
       "styleHint": "",
       "tokens": [
         "white plugsuit",

@@ -101,7 +101,7 @@ async function runPipeline(charId: any, opts: any = {}) {
   console.log(`========================================================\n`);
 
   const popular = require(path.join(ROOT, 'src', 'utils', 'popularContent.ts'));
-  const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require(path.join(ROOT, 'src', 'utils', 'popularPromptBuilder.ts'));
+  const { compilePromptRecipe }: typeof import('../../src/utils/promptRecipe.ts') = require(path.join(ROOT, 'src', 'utils', 'promptRecipe.ts'));
   const popularChars = popular.parsePopularCharacters(JSON.parse(fs.readFileSync(POPULAR_FILE, 'utf8')));
   const blueprints = popular.parseSceneBlueprints(JSON.parse(fs.readFileSync(BLUEPRINTS_FILE, 'utf8')));
   const presets = opts.skipRender ? null : JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'presets.json'), 'utf8'));
@@ -151,7 +151,8 @@ async function runPipeline(charId: any, opts: any = {}) {
       }
 
       console.log(`  [渲染样张 ${i + 1}/${charBlueprints.length}] ${bp.title} (adult: ${Boolean(bp.adult)})...`);
-      const plan = popularPrompt.buildPopularPromptPlan({
+      const plan = compilePromptRecipe({
+        kind: 'popular',
         character,
         outfit: character.outfits.find((o: any) => o.id === bp.outfitId) || character.outfits[0],
         blueprint: bp,

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "elfaria_alvis_serfort/sfw_refined_daily",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 973,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "characterId": "elfaria_alvis_serfort",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "冰蓝羊毛针织裙与月白短披肩",
-      "prose": "An opaque ice-blue fine-ribbed maxi dress under a white wool capelet fastened with one clear crystal clasp, paired with soft flat shoes.",
+      "prose": "An opaque ice-blue fine-ribbed turtleneck maxi dress under a white wool capelet fastened with one clear crystal clasp, paired with soft flat shoes.",
       "tokens": [
         "light blue knit dress",
         "turtleneck",

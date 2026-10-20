@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_nsfw_bed_missionary_tenderness",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1395,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "薄纱前襟敞开大开双腿仰卧展示私密处，机械手指轻抚雪胸与平坦小腹，晨光下含泪微笑",
     "adult": true,
@@ -26,7 +26,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "charming_nightgown_slip",
-    "promptProse": "Violet rests her mechanical fingers over her chest to feel her heartbeat, lying on white sheets with her lace negligee open and legs gently parted.",
+    "promptProse": "Violet rests her mechanical fingers over her chest to feel her heartbeat, lying on white sheets with her lace negligee open and legs gently parted. Soft morning light passes through the white sheer curtains onto the sheets.",
     "promptTokens": [
       "lace trim",
       "adult",
@@ -59,6 +59,16 @@
     ],
     "timeOfDay": "清晨",
     "title": "薇尔莉特 · 纯白蕾丝开档战袍与晨曦帷幔柔情仰卧·「这就是被渴望的感觉吗……整个身体都好温暖……」",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "identityTokensOverride": [
+      "violet_evergarden",
+      "blonde hair",
+      "long hair",
+      "hair_down",
+      "red hair ribbon",
+      "blue eyes",
+      "mechanical hands"
+    ],
+    "identityProseOverride": "Violet Evergarden from Violet Evergarden, an Auto Memories Doll with loose golden-blonde hair, red hair ribbons, blue eyes and articulated silver prosthetic hands."
   }
 }

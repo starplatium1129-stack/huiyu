@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_shrine_rooftop_cloud_watching",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1124,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "侧卧在青黑屋脊瓦片上望天，手伸向云朵，草绿长发披散在瓦片间，赤足微翘",
     "camera": "wide cinematic shot, side-lying on curved roof tiles with one hand reaching toward the clouds",
@@ -44,6 +44,20 @@
     "timeOfDay": "下午",
     "title": "丛雨 · 飞檐之上的天高云淡",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "identityProseOverride": "Murasame from Senren Banka, with long pale-green hair worn loose, blunt bangs, red hair ribbons, a prominent ahoge and ruby-red eyes.",
+    "identityTokensOverride": [
+      "murasame (senren)",
+      "1girl",
+      "solo",
+      "light green hair",
+      "very long hair",
+      "hair down",
+      "blunt bangs",
+      "ahoge",
+      "red eyes",
+      "red hair ribbon",
+      "senren banka"
+    ]
   }
 }

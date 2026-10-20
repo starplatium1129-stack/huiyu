@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_hot_spring",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 387,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "elaina_r18_hot_spring",
     "title": "伊雷娜 · 露天温泉",
@@ -25,7 +25,7 @@
       "dusk",
       "intimate"
     ],
-    "promptProse": "She gathers her wet hair over one shoulder and looks back with a playful wink from the stone-edged spring's milky mineral water. Warm lantern light meets the cool mountain dusk through rising steam, reflecting on her wet white camisole.",
+    "promptProse": "Seen at water level, she gathers her wet hair over one shoulder and looks back with a playful wink from the stone-edged spring's milky mineral water. Warm lantern light meets the cool mountain dusk through rising steam, reflecting on her wet white camisole.",
     "promptTokens": [
       "white camisole",
       "wet clothes",

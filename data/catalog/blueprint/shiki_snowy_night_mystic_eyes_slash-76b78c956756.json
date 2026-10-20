@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_snowy_night_mystic_eyes_slash",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1340,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "反手持短刀侧身踏雪，双眸闪烁湛蓝赤红直死魔眼光芒，风雪中金戈冷冽回眸",
     "camera": "cowboy shot, low angle",
@@ -44,6 +44,7 @@
       "cold_gaze"
     ],
     "timeOfDay": "暴风雪夜",
-    "title": "两仪式 · 踏雪折梅直死断线"
+    "title": "两仪式 · 踏雪折梅直死断线",
+    "identityProseOverride": "Ryougi Shiki from Kara no Kyoukai, with chin-length layered black hair and blue-and-red glowing Mystic Eyes."
   }
 }

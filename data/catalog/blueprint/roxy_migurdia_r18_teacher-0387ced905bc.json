@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_teacher",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 456,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "侧卧在床上，头枕摊开的魔导书，望向成年同伴",
     "adult": true,
@@ -23,7 +23,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "unclothed",
-    "promptProse": "Roxy rests her head on the open grimoire and looks toward her companion from the study bed. A small water spell trembles beside the warm oil lamp.",
+    "promptProse": "Roxy rests her head on the open grimoire and looks toward her companion from the study bed. A small water spell trembles beside the warm oil lamp, its light joined by a soft fireplace glow.",
     "promptTokens": [
       "nude",
       "on side",

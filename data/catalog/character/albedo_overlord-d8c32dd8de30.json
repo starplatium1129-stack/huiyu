@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "albedo_overlord",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "albedo_overlord",
     "profile": {
@@ -97,7 +97,9 @@
         "white_horns",
         "yellow_eyes",
         "slit_pupils",
-        "black_wings"
+        "black_wings",
+        "feathered wings",
+        "wings at waist"
       ],
       "exactTokens": [
         "albedo_(overlord)"

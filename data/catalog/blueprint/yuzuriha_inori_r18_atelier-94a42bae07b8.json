@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_atelier",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 331,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_atelier",
     "title": "楪祈 · 虚空晶簇间的独奏",
@@ -24,7 +24,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Inori presses the small Void crystal to her chest, brightening the surrounding cyan shards as the demo loops.",
+    "promptProse": "Inori presses her fingertips around the small Void crystal glowing at her chest as the demo loops. Cyan light mingles with the recording console's amber indicators and moonlight.",
     "promptTokens": [
       "chiffon",
       "layered skirt",

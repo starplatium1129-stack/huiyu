@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/home_lavender_kimono",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 806,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
@@ -12,12 +12,13 @@
       "id": "home_lavender_kimono",
       "isDefault": false,
       "name": "淡紫细绢居家着物",
-      "prose": "a soft lavender silk home kimono with a simple ivory obi and a small butterfly stitched near one cuff, paired with her butterfly hair ornament",
+      "prose": "a soft lavender silk home kimono with a simple ivory obi and a small butterfly stitched near one cuff, her butterfly hair ornament holding her rear bun",
       "tokens": [
         "lavender silk kimono",
         "ivory obi",
         "butterfly embroidery",
-        "butterfly hair ornament"
+        "butterfly hair ornament",
+        "hair bun"
       ]
     }
   }

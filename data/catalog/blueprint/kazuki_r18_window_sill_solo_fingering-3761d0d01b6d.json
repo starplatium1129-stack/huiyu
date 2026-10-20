@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_window_sill_solo_fingering",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1178,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "kazuki_r18_window_sill_solo_fingering",
     "title": "风见一姬 · 月夜窗台的私密情愫自抚",
@@ -35,7 +35,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "white dress",
+      "long white dress",
       "skirt lift",
       "hand on own chest",
       "sitting",

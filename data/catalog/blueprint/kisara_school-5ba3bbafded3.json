@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_school",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 508,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "kisara_school",
     "title": "木更 · 学校日常",
@@ -25,7 +25,7 @@
       "hair_ornament",
       "indoor"
     ],
-    "promptProse": "She turns toward the viewer with both hands behind her back and a playful smile in the sunlit corridor.",
+    "promptProse": "She turns toward the viewer with both hands behind her back and a playful smile in the sunlit corridor. Other students pass farther down the corridor behind her.",
     "promptTokens": [
       "turning",
       "hands behind back",
@@ -34,6 +34,7 @@
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "school_uniform"
+    "outfitId": "school_uniform",
+    "compositionIntent": "group"
   }
 }

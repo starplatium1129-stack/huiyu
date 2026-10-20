@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_r18_apartment",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 509,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "kisara_r18_apartment",
     "title": "木更 · 契约者的深夜",
@@ -15,7 +15,7 @@
     "action": "白衬衫半褪坐在床边",
     "timeOfDay": "深夜",
     "lighting": "faint city neon through the window, a subdued glow from the contract mark",
-    "camera": "intimate medium shot, front angle",
+    "camera": "medium shot, front view",
     "mood": "恶魔契约与炽热独占欲",
     "sceneTags": [
       "apartment_bedroom",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_r18_cat_costume_cowgirl_straddle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1265,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "跪坐软垫猫娘皮革连体服抹胸拉链半崩溢乳，双手戴猫爪护胸，猫尾扫过腿间自抚娇喘",
     "adult": true,
@@ -17,7 +17,7 @@
     ],
     "description": "【古手川唯 · 更衣室软垫猫娘紧身抹胸拉链半崩与猫尾抚弄破防】私密更衣室厚厚的体操软垫上，唯被迫穿上了那件极度羞耻的猫娘紧身皮革连体服。由于身材过于丰满，胸前的抹胸拉链被沉甸甸的巨乳撑得险些崩开，雪白软肉被紧紧勒出迷人的弧度（flesh squeeze），呼之欲出。头上戴着毛茸茸的黑猫耳发箍，身后一条细长的黑猫尾轻轻扫动。她单膝跪坐在软垫上，双手戴着可爱的猫爪手套捧住胸口，猫尾尖端不经意间拂过自己大腿内侧与湿热秘处。强烈的异样敏感让这位平时严厉的风纪委员整个人瘫软颤抖，小虎牙轻咬红唇，金褐色的双眸泛着动情泪花发出甜软求饶的猫咪娇喘——「呜喵……才没有叫出来……这种衣服……不知羞耻……可是身体停不下来了……哈啊……！」",
     "id": "kotegawa_r18_cat_costume_cowgirl_straddle",
-    "kreaStyleHint": "r18_sensual_bedroom",
+    "kreaStyleHint": "r18_sensual_cg",
     "lighting": "更衣室头顶暖黄柔光打在紧身黑皮革高光与雪白软肉上的强烈视觉反差",
     "location": "更衣室地毯厚体操软垫上",
     "mood": "极乐沉沦",
@@ -28,8 +28,8 @@
     "promptProse": "Adult Yui kneels on the mat with the leotard zipper strained open, pressing her paw mittens to her chest while the tail brushes between her thighs. Warm overhead light catches the black leather against the soft mat.",
     "promptTokens": [
       "cat costume",
-      "cat ears",
-      "cat tail",
+      "cat ear headband",
+      "fake cat tail",
       "paw gloves",
       "black leather strapless leotard",
       "cleavage",

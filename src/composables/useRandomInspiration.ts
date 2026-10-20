@@ -176,10 +176,7 @@ export function useRandomInspiration() {
     try {
       pb.randomVariation = JSON.parse(JSON.stringify(draw.variation))
       pb.selections.emotion = [...draw.emotions]
-      pb.selections.shot = draw.shot
-      pb.selections.lighting = draw.lighting
-      pb.selections.composition = draw.composition
-      pb.setColorMood(draw.colorMood)
+      pb.restoreDirectorState(draw, draw.directorSources)
       // The replacement draw owns these tags, even if a reference used the same values.
       pb.referenceInput = null
       pb.manualTags = new Set(draw.manualTags)

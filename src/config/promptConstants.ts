@@ -5,7 +5,7 @@ import type { ArchiveIconName } from '../components/visual/icons/types.ts'
 /** 工作台与场景维护共用身份锚点，其余外貌细节交给模型补全。 */
 export const CHAR_PROMPT: Record<string, string> = {
   nene: '1girl, solo, ayachi_nene, white_hair, low_twintails, purple_eyes, pink_hair_ribbons',
-  natsume: '1girl, solo, shiki_natsume, black_hair, yellow_eyes, mole_under_eye, hairclip',
+  natsume: '1girl, solo, shiki_natsume, black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip',
   triad: '2girls',
 }
 

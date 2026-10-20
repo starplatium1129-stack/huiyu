@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kaltsit_arknights",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 27,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "kaltsit_arknights",
     "profile": {
@@ -92,7 +92,7 @@
       "animeStudio": "arknights, hypergryph, official anime art",
       "canon": {
         "era": "近未来奇幻",
-        "formNotes": "银白短发绿瞳；绿白医师袍；Mon3tr 召唤物；Danbooru 本体 tag 缺失（仅衍生变体），以视觉词为主",
+        "formNotes": "浅薄荷绿短发绿瞳；绿白医师袍；Mon3tr 召唤物；Danbooru 本体 tag 缺失（仅衍生变体），以视觉词为主",
         "research": "2026-08-15 调研（Danbooru 本体 tag 缺失，衍生 kal'tsit_esperanta 407 posts）",
         "world": "泰拉（罗德岛）"
       },

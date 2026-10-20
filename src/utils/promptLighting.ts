@@ -28,7 +28,8 @@ function authoredLightingId(plan: Pick<PromptPlan, 'scene' | 'authoredLighting'>
   return plan.scene ? sceneLighting(plan.scene) : inferBlueprintLighting({ lighting: plan.authoredLighting })
 }
 
-export function lightingOverride(plan: Pick<PromptPlan, 'scene' | 'authoredLighting' | 'lighting'>) {
+export function lightingOverride(plan: Pick<PromptPlan, 'scene' | 'authoredLighting' | 'lighting' | 'lightingSource'>) {
+  if (plan.lightingSource === 'scene') return null
   const source = authoredLightingId(plan)
   const selected = LIGHTING.find(option => plan.lighting.some(token => normalizeKey(token) === normalizeKey(option.prompt || '')))
   return source && selected?.prompt && source !== selected.id ? { source, target: selected.id } : null

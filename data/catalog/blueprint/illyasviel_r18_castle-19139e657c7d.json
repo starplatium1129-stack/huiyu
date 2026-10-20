@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_r18_castle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 161,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "illyasviel_r18_castle",
     "title": "伊莉雅丝菲尔 · 城堡冬夜",
@@ -26,7 +26,7 @@
       "intimate",
       "night"
     ],
-    "promptProse": "The age-twenty-plus Illyasviel, with mature adult proportions, warms one foot by the hearth while holding her slipped coat collar, her other hand beneath its hem.",
+    "promptProse": "The age-twenty-plus Illyasviel, with mature adult proportions, warms one foot by the hearth while holding her slipped coat collar, her other hand beneath its hem. Warm firelight meets cold moonbeams from the snowy window on the fur rug.",
     "promptTokens": [
       "adult",
       "mature female",

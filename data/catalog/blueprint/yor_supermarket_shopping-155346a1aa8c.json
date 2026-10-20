@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_supermarket_shopping",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yor_supermarket_shopping",
     "title": "约尔·福杰 · 蔬菜摊前的认真挑选",
@@ -34,7 +34,7 @@
       "belted_coat",
       "knee_boots"
     ],
-    "promptProse": "Yor examines a carrot beside the low vegetable crates while holding the basket handle under the store lights.",
+    "promptProse": "Yor examines a carrot beside the low vegetable crates with one hand while her other hand steadies the handle of the basket resting by her feet under the store lights.",
     "promptTokens": [
       "Yor",
       "carrot",

@@ -2,6 +2,7 @@ import type { UseDirectorPopularInput } from './useDirectorPopular'
 import { parseGeneratedRecipe } from '@/utils/generatedSceneDraft'
 import type { AnimaGenerationState } from '@/types/anima'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
+import { sceneDirectorSources } from '@/utils/promptDirector'
 
 /** Apply the recorded engine before its settings; unsupported resources are reported explicitly. */
 export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPopularInput): string[] {
@@ -20,10 +21,8 @@ export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPo
   pb.outfitOverride = null
   pb.visualDescription = ''
   pb.selections.emotion = [...(parameters.emotion || [])]
-  pb.setShot(parameters.shot || null)
-  pb.setLighting(parameters.lighting || null)
-  pb.setComposition(parameters.composition || null)
-  pb.setColorMood(parameters.colorMood || null)
+  // These recorded controls now belong to the selected generated scene.
+  pb.restoreDirectorState(parameters, sceneDirectorSources())
   pb.sdParams.negativeCustom = ''
   pb.sdParams.negative = !!recipe.negative
   pb.markParamTouched('negative')

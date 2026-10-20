@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_behemoth_hunt_bow",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 696,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "typhon_arknights_behemoth_hunt_bow",
     "characterId": "typhon_arknights",
@@ -32,7 +32,7 @@
     ],
     "promptTokens": [
       "cup",
-      "bow",
+      "bow beside the door",
       "entryway",
       "evening",
       "medium shot"

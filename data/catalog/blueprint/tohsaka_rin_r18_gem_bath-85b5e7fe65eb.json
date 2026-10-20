@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_gem_bath",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "tohsaka_rin_r18_gem_bath",
     "title": "远坂凛 · 宝石汤浴",
@@ -40,7 +40,6 @@
     "kreaStyleHint": "r18_elegant_boudoir",
     "animaStyleHint": "r18_elegant_boudoir",
     "nsfwTokens": [
-      "see-through",
       "topless"
     ],
     "nsfwProse": "",

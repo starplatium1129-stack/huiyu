@@ -1,7 +1,8 @@
 // ── Krea 散文短语改写表（自 promptCompiler.ts 拆出，2026-09-05 单体门禁收编）──
 // 纯数据 + 纯函数：把 Danbooru tag 改写成 Krea 2 自然语言短语。
 export function proseToken(value: string): string {
-  const token = value.replace(/^\(+|\)+$/g, '').replace(/<lora:[^>]+>/gi, '').replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '').trim()
+  const token = value.trim().replace(/^\((.*):\s*-?\d+(?:\.\d+)?\s*\)$/g, '$1')
+    .replace(/^\(([^()]*)\)$/g, '$1').replace(/<lora:[^>]+>/gi, '').replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '').trim()
   if (!token || /^(?:score_\d+|best_quality|amazing_quality|masterpiece|very_aesthetic|absurdres|newest|highres|highly_detailed|safe|sensitive|nsfw|nene_r18|natsume_r18)$/i.test(token)) return ''
   // 官方服装触发词在 Krea 散文流中映射为自然英文词组（规则见 .agents/skills/studio-prompt-craft/references/krea.md），
   // 而非直接擦除——服装细节必须保留进散文。
@@ -144,8 +145,9 @@ const CAMERA_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   from_below: 'a view from below', side_view: 'a side view', dutch_angle: 'a Dutch angle',
   cinematic_16_9_clockwise_dutch_angle: 'a cinematic 16:9 clockwise Dutch angle',
   portrait_shot: 'a portrait shot', establishing_shot: 'an establishing shot', face_focus: 'tight facial focus',
-  three_quarter_view: 'a three-quarter view', over_the_shoulder: 'an over-the-shoulder view', selfie: 'a selfie composition',
+  three_quarter_view: 'a three-quarter view', over_the_shoulder: 'an over-the-shoulder view', over_shoulder: 'an over-the-shoulder view', selfie: 'a selfie composition',
   eye_level: 'an eye-level viewpoint', front_view: 'a front view', back_view: 'a back view', from_behind: 'a back view', from_side: 'a side view',
+  medium_close_up: 'a medium close-up', overhead_shot: 'a directly overhead view', bird_s_eye_view: "a bird's-eye view",
 })
 
 export function cameraPhrase(value: string): string {
@@ -196,7 +198,7 @@ const ENVIRONMENT_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   morning: 'in the morning', afternoon: 'in the afternoon', evening: 'in the evening',
   night: 'at night', late_night: 'late at night', dawn: 'at dawn', sunset: 'at sunset',
   clear_sky: 'beneath a clear sky', starry_sky: 'beneath a starry sky', rain: 'in the rain',
-  snow: 'in falling snow', snowfall: 'in falling snow', indoors: 'indoors', outdoors: 'outdoors',
+  snow: 'with snow', snowfall: 'in falling snow', snowing: 'in falling snow', indoors: 'indoors', outdoors: 'outdoors',
   dark_interior: 'in a dim interior', warm_wooden_cafe: 'inside a warm wooden cafe',
   wall_racks_filled_with_white_cups: 'with wall racks filled with white cups',
 })
@@ -206,6 +208,7 @@ export function environmentPhrase(value: string): string {
   if (ENVIRONMENT_REWRITES[key]) return ENVIRONMENT_REWRITES[key]
   const phrase = proseToken(value)
   if (!phrase) return ''
+  if (/(?:^|_)(?:outdoor|open_air)(?:_|$)/.test(key)) return `outdoors at ${phrase}`
   if (/(?:^|_)(?:interior|room|classroom|bedroom|bathroom|kitchen|library|cafe|theater|studio|office)$/.test(key)) return `inside ${phrase}`
   return `with ${phrase}`
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_sfw_b8_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1544,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "shinjou_akane_sfw_b8_06",
     "title": "新条茜 · 文化祭的忙碌身影",
@@ -31,7 +31,7 @@
       "stall_light",
       "medium_shot"
     ],
-    "promptProse": "Akane rests behind the equipment-room wall after serving at the festival, stall light spilling through the doorway.",
+    "promptProse": "Akane sits against the equipment-room wall after serving at the festival, stall light spilling through the doorway.",
     "promptTokens": [
       "shinjou_akane",
       "sitting",

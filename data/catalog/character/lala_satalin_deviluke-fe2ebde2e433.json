@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lala_satalin_deviluke",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "lala_satalin_deviluke",
     "profile": {
@@ -137,7 +137,9 @@
         "ahoge",
         "green_eyes",
         "demon_tail",
-        "to_love-ru"
+        "to_love-ru",
+        "ankle-length hair",
+        "black spade-heart tail"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "jeanne_d_arc",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "jeanne_d_arc",
     "profile": {
@@ -47,7 +47,7 @@
       ],
       "classic_cg": {
         "title": "奥尔良的圣旗不倒",
-        "description": "战云裂开的一瞬，白银胸铠的圣女高举露·普赛尔迎向狂风的圣辉。"
+        "description": "战云裂开的一瞬，白银胸铠的圣女高举圣旗吾主在此，迎向狂风中的圣辉。"
       },
       "identity": "Fate 女主角 · Ruler-class 从者 · 奥尔良圣女",
       "tags": [

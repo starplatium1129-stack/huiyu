@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_bed_supine_devotion",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1363,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "身着开档蕾丝睡袍柔情仰卧，双腿大开展示私密花瓣，双手抚胸轻揉乳晕，银眸迷离泛水光",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "white_lace_babydoll",
-    "promptProse": "Adult Lena reclines on the dark military blanket in her sheer babydoll and crotchless underwear, cupping one breast where the lace bodice has been pushed aside.",
+    "promptProse": "Adult Lena reclines on the dark military blanket in her sheer babydoll and crotchless underwear, cupping one breast where the lace bodice has been pushed aside. A small warm-yellow bedside lamp lights the dark blanket.",
     "promptTokens": [
       "white babydoll",
       "see-through",

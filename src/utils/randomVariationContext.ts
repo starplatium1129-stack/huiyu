@@ -4,9 +4,12 @@ import type { DraftRandomVariation, PromptBuilderDraft } from './promptBuilderPe
 import { sceneShot, sceneLighting, sceneComposition, sceneColorMood } from './sceneInference.ts'
 import { renderRandomVariationProse } from './randomVariationProse.ts'
 import { inferBlueprintLighting } from './blueprintLighting.ts'
+import { DIRECTOR_CONTROL_KEYS, isManualDirectorValue } from './promptDirector.ts'
+import type { DirectorControlSources } from '../types/promptDirector.ts'
+import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
 
 type Context = { char: string; sceneId: string | null; subject: unknown }
-type Controls = { selections: { shot: string | null; lighting: string | null }; visualDescription: string }
+type Controls = { selections: { shot: string | null; lighting: string | null }; directorSources?: DirectorControlSources; visualDescription: string }
 type Source = {
   id: string; char?: string; characterId?: string; prompt?: string; promptTokens?: string[];
   animaCaption?: string; promptProse?: string; tags?: string[]; sceneTags?: string[];
@@ -27,14 +30,19 @@ export function activeRandomVariation(variation: DraftRandomVariation | null, co
 // The compiler's existing ASCII gate remains authoritative for user descriptions.
 const userDescription = (text: string) => /^[\x20-\x7e]+$/.test(text.trim()) ? text.trim() : ''
 export function variedStudioScene(source: Scene, variation: DraftRandomVariation, controls: Controls): Scene {
+  const shot = isManualDirectorValue(controls.directorSources, 'shot', controls.selections.shot, sceneShot(source)) ? controls.selections.shot : null
+  const lighting = isManualDirectorValue(controls.directorSources, 'lighting', controls.selections.lighting, sceneLighting(source)) ? controls.selections.lighting : null
   return { ...source, prompt: [variation.prompt, ...variation.outfit].filter(Boolean).join(', '), tags: variation.tags,
-    animaCaption: userDescription(controls.visualDescription) || renderRandomVariationProse(variation.prose, controls.selections.shot, controls.selections.lighting, sceneLighting(source)),
-    camera: controls.selections.shot ? '' : source.camera, lighting: source.lighting || sceneLighting(source) || '', emotion: '' }
+    animaCaption: userDescription(controls.visualDescription) || renderRandomVariationProse(variation.prose, shot, lighting, sceneLighting(source)),
+    camera: shot ? '' : source.camera, lighting: source.lighting || sceneLighting(source) || '', emotion: '' }
 }
 export function variedPopularScene(source: SceneBlueprint, variation: DraftRandomVariation, controls: Controls): SceneBlueprint {
+  const inherited = inferBlueprintDecisions(source)
+  const shot = isManualDirectorValue(controls.directorSources, 'shot', controls.selections.shot, inherited.shot) ? controls.selections.shot : null
+  const lighting = isManualDirectorValue(controls.directorSources, 'lighting', controls.selections.lighting, inherited.lighting) ? controls.selections.lighting : null
   return { ...source, promptTokens: variation.prompt.split(',').map(token => token.trim()).filter(Boolean),
-    promptProse: userDescription(controls.visualDescription) ? '' : renderRandomVariationProse(variation.prose, controls.selections.shot, controls.selections.lighting, inferBlueprintLighting(source)),
-    sceneTags: variation.tags, camera: controls.selections.shot ? '' : source.camera,
+    promptProse: userDescription(controls.visualDescription) ? '' : renderRandomVariationProse(variation.prose, shot, lighting, inherited.lighting),
+    sceneTags: variation.tags, camera: shot ? '' : source.camera,
     lighting: source.lighting || inferBlueprintLighting(source) || '', mood: '' }
 }
 
@@ -42,9 +50,7 @@ export function sceneStyleBaseline(scene: Scene) {
   return { shot: sceneShot(scene), lighting: sceneLighting(scene), composition: sceneComposition(scene), colorMood: sceneColorMood(scene) }
 }
 export function hasEditedSceneStyle(draft: PromptBuilderDraft): boolean {
-  const baseline = draft.sceneStyleBaseline
-  return Boolean(draft.randomVariation) || Boolean(baseline && (
-    draft.selections?.emotion?.length || draft.selections?.shot !== baseline.shot
-    || draft.selections?.lighting !== baseline.lighting || draft.selections?.composition !== baseline.composition
-    || draft.colorMood !== baseline.colorMood))
+  const values = { ...draft.selections, colorMood: draft.colorMood }
+  return Boolean(draft.randomVariation || draft.selections?.emotion?.length)
+    || DIRECTOR_CONTROL_KEYS.some(key => isManualDirectorValue(draft.directorSources, key, values[key], draft.sceneStyleBaseline?.[key]))
 }

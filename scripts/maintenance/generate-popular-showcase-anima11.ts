@@ -11,7 +11,7 @@ import { writeJsonAtomic } from '../lib/atomic-files';
  * blueprint (SFW + R18), unified contract:
  *
  *   - engine : MiaoMiao v1.6 by default; --model selects an explicit Anima profile
- *   - prompt : buildPopularPromptPlan (identity + outfit + blueprint scene +
+ *   - prompt : compilePromptRecipe (identity + outfit + blueprint scene +
  *              inferred shot/lighting/composition) with artist tag @rella
  *   - params : 30 steps / CFG 4.5 (global Anima default since 2026-08-14)
  *   - R18 blueprints retain their rating; there is no adult access gate.
@@ -24,9 +24,9 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
 const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
-const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
+const { compilePromptRecipe }: typeof import('../../src/utils/promptRecipe.ts') = require('../../src/utils/promptRecipe.ts');
 const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
-const { showcaseSubjectGuards, compositionNegative }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
+const { showcaseSubjectGuards }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
 const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
 const { tokenize }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
@@ -114,22 +114,20 @@ function buildCandidate(character: PopularCharacter, blueprint: SceneBlueprint, 
   const decisions = blueprintDecisions.inferBlueprintDecisions(blueprint);
   const adult = Boolean(blueprint.adult);
   const guards = showcaseSubjectGuards(blueprint);
-  const result = popularPrompt.buildPopularPromptPlan({
+  const result = compilePromptRecipe({
+    kind: 'popular',
     character,
     outfit,
     blueprint,
     engine: 'anima',
     profile,
-    shot: decisions.shot,
-    lighting: decisions.lighting,
-    composition: decisions.composition,
-    // artistTags 需传入 Anima 引擎格式（前导 @），renderPromptPlan 不做转换。
+    // Artist selections enter the recipe in the engine's native format.
     artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
     manual: tokenize(guards.prompt),
   });
   const prompt = result.prompt;
   const [width, height] = nearestAnimaSize(blueprint).split('x').map(Number);
-  const negative = compositionNegative(result.negative, blueprint);
+  const negative = result.negative;
   return {
     batch: 'popular', key: `popular:${character.id}:${blueprint.id}`,
     recordId: `popular:${character.id}:${blueprint.id}@attempt-${attempt}`,

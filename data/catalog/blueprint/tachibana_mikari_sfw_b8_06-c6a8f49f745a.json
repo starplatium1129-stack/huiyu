@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1680,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_06",
     "title": "橘美花莉 · 巧克力盒上的蝴蝶结",
@@ -36,7 +36,7 @@
     "promptProse": "Seated at the dining table, Mikari reties the chocolate box ribbon when its ends fall unevenly, afternoon light crossing the spare boxes.",
     "promptTokens": [
       "Mikari Tachibana",
-      "ribbon",
+      "ribbon on chocolate box",
       "chocolate box",
       "table",
       "medium shot"

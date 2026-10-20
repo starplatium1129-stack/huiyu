@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_winter_snowy_shrine_stairs",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1147,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "单手撑红油纸伞伫立雪地回眸，木屐踩在雪中，哈出一缕白汽，眼神脉脉",
     "camera": "full body, three-quarter view",
@@ -20,7 +20,7 @@
     "mood": "空灵唯美",
     "negativeTokens": [],
     "outfitId": "shrine_maiden",
-    "promptProse": "Yoshino pauses sideways on the snowy steps beneath her red umbrella, a small breath cloud escaping into the cold.",
+    "promptProse": "Yoshino pauses sideways on the snowy steps beneath her red umbrella, a small breath cloud escaping into the cold. Cool snow-reflected light contrasts with the warm red tint beneath the canopy.",
     "promptTokens": [
       "red umbrella",
       "visible breath",

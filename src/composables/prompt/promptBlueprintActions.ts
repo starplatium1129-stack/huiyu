@@ -1,6 +1,8 @@
 import type { Ref } from 'vue'
 import type { PromptDraftState } from './usePromptDraft'
-import { hasEditedSceneStyle } from '@/utils/randomVariationContext'
+import { hasEditedSceneStyle, sceneStyleBaseline } from '@/utils/randomVariationContext'
+import { normalizeDirectorSources, restoreDirectorSources } from '@/utils/promptDirector'
+import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '@/config/promptConstants'
@@ -141,11 +143,13 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
     const validEmotions = draft.selections.emotion?.filter(id => EMOTION_IDS.has(id)) ?? []
     if (validEmotions.length !== (draft.selections.emotion?.length ?? 0)) warnings.push('部分未知情绪选项已跳过')
     pb.selections.emotion = validEmotions
-    pb.setShot(selection(draft.selections.shot, SHOT_IDS))
-    pb.setLighting(selection(draft.selections.lighting, LIGHTING_IDS))
-    pb.setComposition(selection(draft.selections.composition, COMPOSITION_IDS))
   }
-  pb.setColorMood(selection(draft.colorMood, COLOR_MOOD_IDS))
+  pb.restoreDirectorState({
+    shot: draft.selections ? selection(draft.selections.shot, SHOT_IDS) : pb.selections.shot,
+    lighting: draft.selections ? selection(draft.selections.lighting, LIGHTING_IDS) : pb.selections.lighting,
+    composition: draft.selections ? selection(draft.selections.composition, COMPOSITION_IDS) : pb.selections.composition,
+    colorMood: selection(draft.colorMood, COLOR_MOOD_IDS),
+  }, draft.directorSources, draft.sceneStyleBaseline ?? pb.inheritedDirectorValues)
   pb.manualTags = new Set(stringList(draft.manualTags))
   pb.referenceInput = cloneReferenceInput(draft.referenceInput)
   pb.setArtistStyleIds(draft.artistStyleIds || [])
@@ -282,7 +286,7 @@ function parseSDParams(value: unknown): Partial<SDParams> {
   return result
 }
 
-function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | null {
+export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | null {
   if (!draftRecord(value)) return null
   const updatedAt = draftNumber(value.updatedAt)
   const story = draftText(value.story)
@@ -310,6 +314,7 @@ function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | null {
   return {
     updatedAt,
     randomVariation: parseRandomVariation(value.randomVariation),
+    directorSources: normalizeDirectorSources(value.directorSources),
     sceneStyleBaseline: draftRecord(value.sceneStyleBaseline) ? {
       shot: draftNullableText(value.sceneStyleBaseline.shot) ?? null,
       lighting: draftNullableText(value.sceneStyleBaseline.lighting) ?? null,
@@ -346,10 +351,14 @@ function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | null {
 export function restorePromptDraft(state: PromptDraftState, raw: string): boolean {
   const draft = parsePromptBuilderDraft(JSON.parse(raw))
   if (!draft) return false
-  const { subject, story, visualDescription, char, sceneId, selections, colorMood, manualTags,
+  const { subject, story, visualDescription, char, sceneId, selections, colorMood, directorSources, manualTags,
     outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode,
     sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize } = state
   function applyDraft(d: PromptBuilderDraft) {
+    const scene = d.subject !== 'popular' ? scenes.value.find(item => item.id === d.sceneId) : null
+    const blueprint = d.subject === 'popular' ? state.sceneBlueprints.value.find(item => item.id === d.blueprintId) : null
+    const inherited = d.sceneStyleBaseline ?? (blueprint ? inferBlueprintDecisions(blueprint) : scene ? sceneStyleBaseline(scene) : {})
+    d.directorSources = restoreDirectorSources(d.directorSources, { ...d.selections, colorMood: d.colorMood }, inherited)
     // Context watchers must not retire the previous overlay against restored tags.
     // The saved overlay is adopted last, after all subject/outfit changes.
     randomVariation.value = null
@@ -387,6 +396,7 @@ export function restorePromptDraft(state: PromptDraftState, raw: string): boolea
   }
 
   function applySharedDraft(d: PromptBuilderDraft) {
+    directorSources.value = normalizeDirectorSources(d.directorSources)
     if (d.manualTags) manualTags.value = new Set(d.manualTags)
     referenceInput.value = cloneReferenceInput(d.referenceInput)
     artistStyleIds.value = normalizeArtistStyleIds(d.artistStyleIds)

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "akizuki_kanna",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-20T15:00:52.016906500+00:00",
   "data": {
     "id": "akizuki_kanna",
     "profile": {
@@ -77,7 +77,7 @@
       "exactTokens": [
         "akizuki_kanna"
       ],
-      "franchise": "YUZUSOFT",
+      "franchise": "Cafe Stella and the Reapers' Butterflies",
       "id": "akizuki_kanna",
       "identityProse": "Kanna Akizuki from Cafe Stella and the Reapers' Butterflies, with very long white hair in a side ponytail, a hair ribbon, ahoge and pink eyes.",
       "identityTokens": [

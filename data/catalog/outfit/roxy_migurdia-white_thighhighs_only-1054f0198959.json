@@ -1,19 +1,20 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/white_thighhighs_only",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1430,
-  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "createdAt": "2026-10-15T14:37:48.939637+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "white_thighhighs_only",
       "name": "纯白过膝袜",
       "tokens": [
+        "nude",
         "white thighhighs"
       ],
-      "prose": "Plain white thigh-high stockings.",
+      "prose": "Plain white thigh-high stockings, with no other clothing.",
       "default": false,
       "isDefault": false
     }

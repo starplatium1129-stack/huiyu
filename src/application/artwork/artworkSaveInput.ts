@@ -4,6 +4,8 @@ import type { AnimaResultContext } from '@/types/anima'
 import type { ArtworkRecord } from '@/types/artwork'
 import { historyFromResultContext } from '@/utils/resultContext'
 import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
+import { normalizeDirectorSources } from '@/utils/promptDirector'
+import type { DirectorControlSources } from '@/types/promptDirector'
 
 /** Existing commit input; callers can keep their snapshots and parent identity unchanged. */
 export type GeneratedArtworkInput = Partial<HistoryEntry> & {
@@ -28,6 +30,7 @@ export type LegacyArtworkDefaults = Readonly<Required<Pick<HistoryEntry,
   emotion: readonly string[]
   manual_tags: ReadonlySet<string> | readonly string[]
   artistStyleIds: readonly string[]
+  directorSources: Readonly<DirectorControlSources>
 }>
 
 export interface SaveGeneratedArtworkDependencies {
@@ -73,6 +76,7 @@ export function prepareGeneratedArtwork(input: GeneratedArtworkInput, resolveDef
     emotion: merged.emotion ? [...merged.emotion] : merged.emotion,
     manual_tags: merged.manual_tags ? [...merged.manual_tags] : merged.manual_tags,
     artistStyleIds: merged.artistStyleIds ? [...merged.artistStyleIds] : merged.artistStyleIds,
+    directorSources: merged.directorSources === undefined ? undefined : normalizeDirectorSources(merged.directorSources),
     outfitOverride: merged.outfitOverride === undefined ? undefined : parseOutfitOverride(merged.outfitOverride),
     loras: merged.loras?.map(lora => ({ ...lora })),
     sketchControl: merged.sketchControl ? { ...merged.sketchControl } : undefined,
@@ -81,7 +85,7 @@ export function prepareGeneratedArtwork(input: GeneratedArtworkInput, resolveDef
     pendingCommit: merged.pendingCommit ? JSON.parse(JSON.stringify(merged.pendingCommit)) as ArtworkCommitIdentity : undefined,
   }
   const resolved = resolveDefaults(entry)
-  const defaults: LegacyArtworkDefaults = { ...resolved, subject: { ...resolved.subject },
+  const defaults: LegacyArtworkDefaults = { ...resolved, subject: { ...resolved.subject }, directorSources: normalizeDirectorSources(resolved.directorSources),
     emotion: [...resolved.emotion], manual_tags: [...resolved.manual_tags], artistStyleIds: [...resolved.artistStyleIds] }
   const snapshot = { entry, defaults }
   snapshots.set(input, snapshot)

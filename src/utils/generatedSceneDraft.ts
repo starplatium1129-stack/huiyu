@@ -3,6 +3,7 @@ import type { BlueprintCompositionIntent, SceneBlueprint } from '@/types/sceneBl
 import type { GeneratedRecipe } from '@/types/generatedRecipe'
 import type { HistorySnapshot } from '@/types/promptHistory'
 import { parseOutfitOverride } from './promptBuilderPersistence.ts'
+import { normalizeDirectorSources } from './promptDirector.ts'
 
 export interface GeneratedSceneSource {
   recipe: HistorySnapshot
@@ -37,6 +38,7 @@ function parameters(value: Record<string, unknown>): HistorySnapshot {
   for (const key of booleanKeys) if (typeof value[key] === 'boolean') output[key] = value[key]
   for (const key of listKeys) if (Array.isArray(value[key]) && value[key].every(item => typeof item === 'string')) output[key] = [...value[key]]
   if (value.outfitOverride !== undefined) output.outfitOverride = parseOutfitOverride(value.outfitOverride)
+  if (value.directorSources !== undefined) output.directorSources = normalizeDirectorSources(value.directorSources)
   if (Array.isArray(value.loras) && value.loras.every(item => record(item) && typeof item.id === 'string'
     && typeof item.strength === 'number' && Number.isFinite(item.strength))) {
     output.loras = value.loras.map(item => ({ id: item.id, strength: item.strength }))

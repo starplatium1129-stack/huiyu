@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_maid_cafe_tea_service_deadpan",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1057,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "单手端托盘奉茶，面无表情俯视客人，女仆围裙与鲨鱼尾相得益彰",
     "camera": "medium shot, slightly low angle from the guest's seat",
@@ -22,7 +22,7 @@
       "weapon"
     ],
     "outfitId": "maid_service_uniform",
-    "promptProse": "She approaches the seated viewer with Earl Grey balanced on a silver tray in one hand, her gaze professionally deadpan. Chandelier light catches the steam against the warm cafe interior.",
+    "promptProse": "She approaches the seated viewer with Earl Grey balanced on a silver tray in one hand, her gaze professionally deadpan. Chandelier light catches the steam as fireplace glow warms the cafe interior.",
     "promptTokens": [
       "tray",
       "teacup",

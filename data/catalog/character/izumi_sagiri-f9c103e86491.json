@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "izumi_sagiri",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "izumi_sagiri",
     "profile": {
@@ -81,7 +81,8 @@
         "long_hair",
         "gradient_hair",
         "blue_eyes",
-        "hair_bow"
+        "hair_bow",
+        "pink-violet hair tips"
       ],
       "exactTokens": [
         "izumi_sagiri"

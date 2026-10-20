@@ -3,7 +3,7 @@ import { normalizeKey, splitBreaks, tokenize } from './promptPrimitives.ts'
 type CameraAxis = 'framing' | 'elevation' | 'direction'
 
 const axes: Record<CameraAxis, ReadonlySet<string>> = {
-  framing: new Set(['extreme_close_up', 'close_up', 'close_up_detail', 'portrait_shot',
+  framing: new Set(['extreme_close_up', 'medium_close_up', 'close_up', 'close_up_detail', 'portrait_shot',
     'face_focus', 'upper_face', 'medium_shot', 'upper_body', 'cowboy_shot', 'waist_up',
     'half_body', 'bust', 'full_body', 'wide_shot', 'long_shot', 'establishing_shot']),
   elevation: new Set(['low_angle', 'from_below', 'high_angle', 'from_above',
@@ -19,7 +19,7 @@ function cameraAxis(token: string): CameraAxis | undefined {
 }
 
 // Replace photographic phrases only, never turn actions such as "looking back" into camera directions.
-const cameraPhrase = /\b(?:extreme[ _-]close[ _-]up|close[ _-]up|(?:medium|cowboy|wide|long|establishing)[ _-]shot|(?:wide[ _-])?full[ _-]body(?:[ _-](?:view|shot))?|waist[ _-]up(?:[ _-]view)?|(?:low|high|dutch)[ _-]angle|(?:(?:front|rear|back|side)[ _-])?three[ _-]quarter[ _-]view|(?:side|front|back)[ _-]view|eye[ _-]level)\b/gi
+const cameraPhrase = /\b(?:(?:extreme|medium)[ _-]close[ _-]up|close[ _-]up|(?:medium|cowboy|wide|long|establishing)[ _-]shot|(?:wide[ _-])?full[ _-]body(?:[ _-](?:view|shot))?|waist[ _-]up(?:[ _-]view)?|(?:low|high|dutch)[ _-]angle|overhead[ _-]shot|bird's[ _-]eye[ _-]view|(?:(?:front|rear|back|side)[ _-])?three[ _-]quarter[ _-]view|(?:side|front|back)[ _-]view|eye[ _-]level)\b/gi
 const multipleFrames = /\b(?:triptych|diptych|(?:two|three|multiple)[ _-](?:horizontal[ _-])?panels)\b/i
 
 export function hasCameraPhrase(prose: string): boolean { return new RegExp(cameraPhrase).test(prose) }
@@ -27,28 +27,32 @@ export function hasCameraPhrase(prose: string): boolean { return new RegExp(came
 /** Read only the camera field: descriptive body poses elsewhere are not camera controls. */
 export function cameraTokensFromText(text = ''): string[] {
   const normalized = text.toLowerCase().replace(/[_-]+/g, ' ')
-    .replace(/medium close up/g, 'close up')
+    .replace(/medium closeup/g, 'medium close up')
+    .replace(/\b(cowboy|medium|wide) (?:two|group) shot\b/g, '$1 shot')
     .replace(/medium full( frontal)? shot/g, (_, front: string) => `cowboy shot${front ? ', front view' : ''}`)
     .replace(/\bfrontal(?: (?:shot|view))?\b/g, 'front view')
     .replace(/upper body to knees/g, 'cowboy shot').replace(/\b(?:upper|half) body\b/g, 'medium shot')
     .replace(/\b(front|rear|back|side) 3\/4(?: view)?/g, '$1 three quarter view')
-    .replace(/\bthree quarter (front|rear|back|side) view/g, '$1 three quarter view')
+    .replace(/\bthree quarter (front|rear|back|side)(?: view)?\b/g, '$1 three quarter view')
     .replace(/\b(front|rear|back|side) three quarter(?: view)?\b/g, '$1 three quarter view')
     .replace(/\b3\/4(?: dynamic)? perspective/g, 'three quarter view')
+    .replace(/\b(low|high) three quarter angle/g, '$1 angle, three quarter view')
+    .replace(/\b(low|high) dynamic angle/g, '$1 angle').replace(/\bside perspective\b/g, 'side view')
     .replace(/\bfrom below\b/g, 'low angle').replace(/\bfrom above\b/g, 'high angle')
     .replace(/\bfrom (?:the )?side\b/g, 'side view').replace(/\bfrom (?:the )?(?:back|behind)\b/g, 'back view')
-    .replace(/\b(?:overhead|top down)\b/g, 'high angle').replace(/\bside profile\b/g, 'side view')
+    .replace(/\b(?:directly )?(?:overhead|top down)(?: (?:shot|view))?\b/g, 'overhead shot').replace(/\bside profile\b/g, 'side view')
     .replace(/全身(?:远景)?/g, ' full body ').replace(/七分身/g, ' cowboy shot ')
-    .replace(/半身(?:近景|特写)/g, ' close up ')
+    .replace(/半身近景|中近景/g, ' medium close up ').replace(/半身特写/g, ' close up ')
     .replace(/半身(?:中景)?|中景/g, ' medium shot ').replace(/平视/g, ' eye level ')
-    .replace(/局部特写/g, ' extreme close up ').replace(/近景|特写/g, ' close up ')
-    .replace(/俯视|俯拍/g, ' high angle ').replace(/仰视|仰拍/g, ' low angle ')
-    .replace(/侧后方/g, ' rear three quarter view ').replace(/侧面|侧方/g, ' side view ')
+    .replace(/局部特写|细节特写/g, ' extreme close up ').replace(/近景|特写/g, ' close up ')
+    .replace(/俯视|俯拍|俯看/g, ' high angle ').replace(/仰视|仰拍|仰看/g, ' low angle ')
+    .replace(/侧后方|后侧方/g, ' rear three quarter view ').replace(/侧面|侧方|侧向/g, ' side view ')
     .replace(/正面/g, ' front view ')
   const phrases: string[] = normalized.match(cameraPhrase) || []
   if (/\bpov\b|\bfirst person\b|主观/.test(normalized)) phrases.push('pov')
-  return [...new Set(phrases.map(phrase => /full[ _-]body/i.test(phrase) ? 'full body'
+  const tokens = [...new Set(phrases.map(phrase => /full[ _-]body/i.test(phrase) ? 'full body'
     : /waist[ _-]up/i.test(phrase) ? 'waist up' : phrase))]
+  return tokens.includes('overhead shot') ? tokens.filter(token => token !== 'high angle') : tokens
 }
 
 /** Inherited dropdown categories must not broaden authored full-body/cowboy framing. */

@@ -1,5 +1,6 @@
 import type { ArtworkRecord } from '@/types/artwork'
 import { parseOutfitOverride } from './promptBuilderPersistence'
+import { normalizeDirectorSources } from './promptDirector'
 
 /** Read-only projection for recipe restoration. Never fills or rewrites the stored record. */
 export function parseHistoryRecipe(record: ArtworkRecord) {
@@ -57,6 +58,7 @@ export function parseHistoryRecipe(record: ArtworkRecord) {
     scene: nullableText('scene'), sceneTitle: text('sceneTitle'), story: text('story'), visualDescription: text('visualDescription'),
     emotion: strings('emotion'), manual_tags: strings('manual_tags'), artistStyleIds: strings('artistStyleIds'),
     shot: nullableText('shot'), lighting: nullableText('lighting'), composition: nullableText('composition'), colorMood: nullableText('colorMood'), project: text('project'),
+    directorSources: normalizeDirectorSources(record.directorSources),
   }
   return { ok: true as const, recipe, notes }
 }

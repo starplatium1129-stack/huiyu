@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_interrogation",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 880,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "交腿坐在椅上，一手按录音机开关，另一手留在大腿处的破损衣料下。",
     "adult": true,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_white_combat_suit",
-    "promptProse": "She sits cross-legged beneath the cold overhead lamp with wrists unbound. One hand rests on the recorder switch at the chair arm; the other stays beneath the torn fabric at her thigh.",
+    "promptProse": "She sits with her legs crossed beneath the cold overhead lamp with wrists unbound. One hand rests on the recorder switch at the chair arm; the other stays beneath the torn fabric at her thigh.",
     "promptTokens": [
       "debriefing room",
       "chair",

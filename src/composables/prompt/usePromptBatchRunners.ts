@@ -5,7 +5,6 @@ import { readPreparedBatch, recoverBatchTask, batchFailure, batchHistoryFromMeta
 import { pendingBatchSaves, pendingBatchImage, persistBatchArtwork, batchSaveAuthority, ownsPendingSave, updateArtworkSource, type BatchArtworkSource } from './batchArtworkSave'
 import { createPromptBatchRecipe } from './promptBatchRecipe'
 import { useTrackedTask } from '../useTaskCenter.ts'
-import type { Ref } from 'vue'
 import type { usePromptBuilderStore } from '../../stores/promptBuilderStore.ts'
 import { createBatchAnimaTransport } from './batchAnimaJob.ts'
 import { nativeAnimaRequestBlocker } from '../generation/nativeAnimaCapabilities'
@@ -17,6 +16,10 @@ import { useBatchDraw } from '../generation/useBatchDraw.ts'
 import type { SDQueueJob } from '../generation/useSDQueue.ts'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
+import type { Scene } from '@/types/scene'
+import type { PromptPlan } from '@/types/prompt'
+import { resolveModelProfile } from '@/utils/promptPolicy'
+import { ref } from 'vue'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -25,14 +28,13 @@ type PromptAssembly = ReturnType<typeof usePromptAssembly>
 export interface PromptBatchRunnersDeps {
   pb: PromptBuilderStore
   sd: ReturnType<typeof useLegacySdTasks>
-  sdSize: Ref<string>
   negativePrompt: PromptAssembly['negativePrompt']
-  loraSpecs: PromptAssembly['loraSpecs']
-  modelProfile: PromptAssembly['modelProfile']
   animaState: AnimaSession['state']
   /** 历史 SD 批次仅通过原任务查询与收集结果。 */
   runJob: (job: Omit<SDQueueJob, 'id'>, opts?: LegacySdObserveOptions & { disableLora?: boolean }) => Promise<string | null>
   sceneBlueprints: () => SceneBlueprint[]
+  scenes?: () => Scene[]
+  currentPlan?: () => PromptPlan | null
   popularCharacters?: () => PopularCharacter[]
   currentBasePrompt?: () => string
   /** 绘图台当前完整编译出的实时提示词（含所有标签、镜头、光影、画面指令） */
@@ -48,19 +50,24 @@ export interface PromptBatchRunnersDeps {
 export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   const { pb, sd, runJob } = deps
   const animaTransport = createBatchAnimaTransport()
+  const startError = ref('')
+  const rejectStart = (message: string) => { startError.value = message; return false }
   let recipe: ReturnType<typeof createPromptBatchRecipe> | undefined
   const clone = <T,>(value: T): T => value == null ? value : JSON.parse(JSON.stringify(value)) as T
   function captureBatch() {
     recipe = createPromptBatchRecipe({
       source: {
         subject: pb.subject, char: pb.char, selections: pb.selections, manualTags: [...pb.manualTags],
+        directorSources: pb.directorSources, loraMeta: pb.loraMeta,
         outfitOverride: pb.outfitOverride, activeScene: pb.activeScene, sceneBlueprints: pb.sceneBlueprints,
-        emotionPrompt: pb.emotionPrompt, tags: pb.tags, artistStyleIds: pb.artistStyleIds,
+        emotionPrompt: pb.emotionPrompt, tags: pb.tags, artistStyleIds: pb.directorMode === 'pro' ? pb.artistStyleIds : [],
         colorMood: pb.colorMood, visualDescription: pb.visualDescription, projectId: pb.projectId,
+        negativeCustom: pb.sdParams.negativeCustom,
       },
       characters: deps.popularCharacters?.() || pb.popularCharacters,
-      blueprints: deps.sceneBlueprints(), state: deps.animaState.value,
-      profile: deps.modelProfile.value, negativePrompt: deps.negativePrompt.value,
+      blueprints: deps.sceneBlueprints(), scenes: deps.scenes?.(), sourcePlan: deps.currentPlan?.(), state: deps.animaState.value,
+      profile: resolveModelProfile(pb.modelProfiles, deps.animaState.value.modelId, deps.animaState.value.family),
+      negativePrompt: deps.negativePrompt.value,
     })
     return recipe
   }
@@ -151,30 +158,35 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
 
   /** 按场景蓝图启动批量出图 */
   async function onBatchStart(payload: { sceneIds: string[]; count: number }) {
+    startError.value = ''
     if (batchDraw.running.value || batchDraw.resetting.value) return
-    if (batchDraw.progress.value.unresolved) { pb.flash('请先核对本批已接收任务，再开启新计划。'); return }
+    if (batchDraw.progress.value.unresolved) return rejectStart('请先核对本批已接收任务，再开启新计划。')
     const captured = captureBatch()
     const scenes = captured.sceneTargets(payload.sceneIds)
-    if (!scenes.length) { pb.flash('所选场景没有可用的描述'); return }
+    if (!scenes.length) return rejectStart('所选场景没有可用的描述')
     const baseSeed = captured.selectedSeed()
     planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
     // The persisted transport lane is Anima; each prepared recipe retains its Anima/Krea family.
+    const previousJobs = batchDraw.jobs.value
     await batchDraw.start(scenes, payload.count, baseSeed, '个场景', { engine: 'anima', runtimeOwned: hasRuntimeTasks() })
+    return batchDraw.jobs.value !== previousJobs
   }
 
   /** 按多角色启动批量漫游出图（相同词条，不同角色） */
   async function onBatchStartCharacters(payload: { characterIds: string[]; count: number; basePrompt?: string }) {
+    startError.value = ''
     if (batchDraw.running.value || batchDraw.resetting.value) return
-    if (batchDraw.progress.value.unresolved) { pb.flash('请先核对本批已接收任务，再开启新计划。'); return }
+    if (batchDraw.progress.value.unresolved) return rejectStart('请先核对本批已接收任务，再开启新计划。')
     const captured = captureBatch()
-    // Read the compiled prompt before the first asynchronous step.
-    const liveRaw = deps.currentLivePrompt?.() || ''
-    const fallbackRaw = payload.basePrompt || deps.currentBasePrompt?.() || pb.story || pb.visualDescription || ''
-    const targets = captured.characterTargets(payload.characterIds, liveRaw || fallbackRaw)
-    if (!targets.length) { pb.flash('所选角色无效'); return }
+    let targets: ReturnType<typeof captured.characterTargets>
+    try { targets = captured.characterTargets(payload.characterIds, payload.basePrompt) }
+    catch (error) { return rejectStart(error instanceof Error ? error.message : String(error)) }
+    if (!targets.length) return rejectStart('所选角色无效')
     const baseSeed = captured.selectedSeed()
     planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
+    const previousJobs = batchDraw.jobs.value
     await batchDraw.start(targets, payload.count, baseSeed, '位角色', { engine: 'anima', runtimeOwned: hasRuntimeTasks() })
+    return batchDraw.jobs.value !== previousJobs
   }
 
   /** 只重跑失败/已取消的张：自适应从场景蓝图或角色表恢复 */
@@ -188,5 +200,5 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   }
 
   useTrackedTask(() => ({ kind: 'batch', title: `批量出图 · ${batchDraw.progress.value.total} 张`, route: '/prompt-builder?taskCenter=batch', resultRoute: batchDraw.progress.value.succeeded ? '/gallery?batch=' + encodeURIComponent(String(batchDraw.jobs.value.filter(job => job.historyId != null).at(-1)?.historyId || '')) : undefined, status: batchDraw.running.value ? 'running' : !batchDraw.jobs.value.length ? 'idle' : batchDraw.progress.value.unresolved || batchDraw.progress.value.remaining ? 'interrupted' : batchDraw.progress.value.failed ? 'failed' : batchDraw.progress.value.cancelled ? 'cancelled' : 'succeeded', progress: batchDraw.progress.value.total ? batchDraw.progress.value.done / batchDraw.progress.value.total * 100 : null, message: `${batchDraw.jobs.value.find(job => job.status === 'running' || job.status === 'accepted')?.message || ''} ${batchDraw.progress.value.succeeded} 张成功 · ${batchDraw.progress.value.failed} 张失败 · ${batchDraw.progress.value.remaining} 张未执行 · ${batchDraw.progress.value.unresolved} 张待核对` }), { cancel: batchDraw.cancel, retry: () => batchDraw.progress.value.unresolved || batchDraw.progress.value.remaining ? batchDraw.resume() : onRetryFailed() })
-  return { batchDraw, onBatchStart, onBatchStartCharacters, onRetryFailed, pendingImage: pendingBatchImage }
+  return { batchDraw, startError, onBatchStart, onBatchStartCharacters, onRetryFailed, pendingImage: pendingBatchImage }
 }

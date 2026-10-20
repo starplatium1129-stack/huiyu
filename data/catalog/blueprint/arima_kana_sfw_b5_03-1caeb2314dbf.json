@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_sfw_b5_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 970,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "手指抵着下巴默读剧本，帽子放在荧光笔与便签旁。",
     "adult": false,
@@ -29,7 +29,7 @@
       "script",
       "highlighter",
       "sticky notes",
-      "beret",
+      "beret on table",
       "hand on chin",
       "reading",
       "medium shot"

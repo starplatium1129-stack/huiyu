@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_moonlit_rooftop_stiletto",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 804,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yor_moonlit_rooftop_stiletto",
     "characterId": "yor_forger",
@@ -32,7 +32,7 @@
     "negativeTokens": [],
     "adult": false,
     "recommendedEngine": "anima-miaomiao-v1.2",
-    "category": "日常羁绊",
+    "category": "战斗高光",
     "location": "月光下的屋顶",
     "action": "荆棘公主装束立于月下，杀气凛然",
     "timeOfDay": "night",
@@ -42,7 +42,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic",
-      "daily"
+      "combat"
     ]
   }
 }

@@ -8,7 +8,7 @@ import { writeJsonAtomic } from '../lib/atomic-files';
  * Generate a fresh candidate for EVERY current scene with the unified contract:
  *
  *   - prompt : the scene's element tags and authored animaCaption, rendered by
- *              the shared Anima compiler with the selected model profile.
+ *              compilePromptRecipe with the selected model profile and LoRA metadata.
  *              Exact tokens are preserved; artist tags are only kept when authored.
  *   - model  : anima-miaomiao-v1.6 (MiaoMiao Harem Anima v1.6) by default;
  *              --model selects an explicit Anima profile.
@@ -16,7 +16,7 @@ import { writeJsonAtomic } from '../lib/atomic-files';
  *              the strength written in the scene prompt tag (fallback 0.85);
  *              dual (triad) scenes run in the route's no-LoRA mode with both
  *              identities anchored by prompt tokens.
- *   - negative: project `assembleNegative(anima)` plus explicit per-run additions.
+ *   - negative: the complete recipe result, including explicit per-run additions.
  *
  * Output goes to AI/Reviews/SceneShowcaseRefresh/<round>/ and is never written
  * into the public SceneShowcase dir.
@@ -27,8 +27,7 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
 const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
-const { createPromptPlan, renderPromptPlan }: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
-const { CHAR_PROMPT, STUDIO_PROMPT_SUBJECTS }: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
+const { compilePromptRecipe }: typeof import('../../src/utils/promptRecipe.ts') = require('../../src/utils/promptRecipe.ts');
 const sceneInference: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
 const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = require('../../src/utils/dataRecords.ts');
 const { parsePromptScenes }: typeof import('../../src/utils/promptCatalog.ts') = require('../../src/utils/promptCatalog.ts');
@@ -128,15 +127,11 @@ function nearestAnimaSize(scene: Scene, modelId = ANIMA_MODEL_ID) {
     return Math.abs(lw / lh - ratio) - Math.abs(rw / rh - ratio);
   })[0];
 }
-function animaProfileFor(loraIds: string[], modelId = ANIMA_MODEL_ID) {
+function animaProfileFor(modelId = ANIMA_MODEL_ID) {
   const base = modelId === ANIMA_MODEL_ID ? profileById(ANIMA_PROFILE_ID)
     : profiles.find(profile => profile.model_id === modelId && profile.engine === 'anima');
   if (!base || base.model_id !== modelId || base.engine !== 'anima' || !animaConstants.MODELS[modelId]) throw new Error(`unsupported Anima model: ${modelId}`);
-  const contract = loraIds.map(id => loraById(id).prompt_contract);
-  return Object.assign({}, base, {
-    exact_tokens: [...new Set([...(base.exact_tokens || []), ...contract.flatMap(c => c?.exact_tokens || [])])],
-    exact_prefixes: [...new Set([...(base.exact_prefixes || []), ...contract.flatMap(c => c?.exact_prefixes || [])])],
-  });
+  return base;
 }
 function originalPrompt(scene: Scene) {
   return String(scene.prompt || '').replace(/<lora:[^>]+>/gi, '').trim();
@@ -151,29 +146,22 @@ function buildAnimaCandidate(scene: Scene, attempt: number, seedAttempt = attemp
   const characterId = scene.char;
   if (typeof characterId !== 'string') throw new Error(`scene ${scene.id} has unsupported Anima character ${characterId}`);
   const isTriad = characterId === 'triad';
-  const loraIds = isTriad ? ['L_NENE_V21_ANIMA', 'L_NAT_V21_ANIMA'] : [ANIMA_LORA_BY_CHARACTER[characterId]];
+  const loraIds = isTriad ? [] : [ANIMA_LORA_BY_CHARACTER[characterId]];
   if (!isTriad && !loraIds[0]) throw new Error(`scene ${scene.id} has unsupported Anima character ${characterId}`);
   const modelId = overrides.modelId || ANIMA_MODEL_ID;
-  const profile = animaProfileFor(loraIds, modelId);
-  const shot = sceneInference.sceneShot(scene);
-  const scenePrompt = promptPolicy.sceneTemplateText(scene, { char: characterId, shot, engine: 'anima', profile });
+  const profile = animaProfileFor(modelId);
   const artistTag = promptPolicy.tokenize(originalPrompt(scene)).find(tag => tag.startsWith('@')) || null;
-  const prompt = renderPromptPlan(createPromptPlan({
-    profile, scenePrompt, scene, identity: CHAR_PROMPT[characterId],
-    ...STUDIO_PROMPT_SUBJECTS[characterId],
-    controls: promptPolicy.characterControlTokens(scene, characterId, ANIMA_LORA_BY_CHARACTER),
-    exactTokens: profile.exact_tokens,
-    rating: promptPolicy.profileRatingTag(profile, scene),
+  const result = compilePromptRecipe({
+    kind: 'studio', character: characterId, scene, engine: 'anima', profile,
+    activeLoras: isTriad ? {} : { [characterId]: loraIds[0] },
+    loraMeta: loraData,
     manual: promptPolicy.tokenize(String(overrides.promptAppend || '')),
-  }), 'anima', profile).prompt;
+    negativeCustom: overrides.negativeAppend,
+  });
+  const { prompt, negative } = result;
+  const shot = result.selections.shot;
   const loraId = isTriad ? '' : loraIds[0];
   const loraStrength = isTriad ? null : sceneLoraStrength(scene, loraId);
-  let negative = promptPolicy.assembleNegative(profile, scene, 'anima', {
-    shot,
-    character: characterId,
-  });
-  const negativeAppend = String(overrides.negativeAppend || '').trim();
-  if (negativeAppend) negative = negative ? `${negative}, ${negativeAppend}` : negativeAppend;
   const [width, height] = nearestAnimaSize(scene, modelId).split('x').map(Number);
   const steps = Number(overrides.steps) || animaConstants.MODELS[modelId].steps;
   const cfg = Number(overrides.cfg) || animaConstants.MODELS[modelId].cfg;

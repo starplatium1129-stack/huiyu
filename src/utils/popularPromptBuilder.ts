@@ -1,6 +1,7 @@
 import type { PopularCharacter, PopularOutfit } from '../types/character'
 import type { SceneBlueprint } from '../types/sceneBlueprint'
-import { createPromptPlan, renderPromptPlan, type PromptPlan } from './promptCompiler.ts'
+import type { DirectorControlSources } from '../types/promptDirector'
+import { createPromptPlan, renderPromptPlan, type PromptCompilerInput, type PromptPlan } from './promptCompiler.ts'
 import {
   assembleNegative,
   isManualR18Tags,
@@ -8,12 +9,13 @@ import {
   profileRatingTag,
   type ModelProfile,
 } from './promptPolicy.ts'
-import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
+import { KREA_STYLE_RECIPES, resolveStyleRecipe, type ResolvedStyle } from '../config/kreaStyleRecipes.ts'
 import { normalizeProseKey } from './promptPhraseTables.ts'
 import { compositionNegative, compositionTokens } from './blueprintComposition.ts'
 import { cameraTokensFromText, mergeCameraControls } from './promptCamera.ts'
 import { inferBlueprintLighting } from './blueprintLighting.ts'
 import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
+import { isManualDirectorValue } from './promptDirector.ts'
 import { SHOT, LIGHTING, COMPOSITION } from '../config/promptConstants.ts'
 import { isGarmentToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
 
@@ -31,9 +33,11 @@ export interface PopularPromptOptions {
   lighting?: string | null
   palette?: string[]
   composition?: string | null
+  directorSources?: DirectorControlSources
   /** 用户补充的画面描述；只追加，不得替换角色服装。 */
   visualDescription?: string
-  /** Krea 风格配方（已按资格解析）；成人配方在此再 fail-closed 一次。 */
+  negativeCustom?: string
+  /** Model-specific style recipe; omitted values inherit the blueprint's recipe. */
   style?: ResolvedStyle | null
   artistTags?: string[]
   artistProse?: string
@@ -144,12 +148,17 @@ function identityWithoutOutfit(prose: string): string {
 /** Keep one adult identity anchor without repeating the existing adult wording. */
 function adultIdentityProse(prose: string): string {
   const identity = identityWithoutOutfit(prose)
+  // The authored prefix names the character and work; "Bunny Girl" is a title, not an age.
+  const separator = identity.indexOf(',')
+  const heading = separator < 0 ? identity : identity.slice(0, separator + 1)
+  const description = (separator < 0 ? '' : identity.slice(separator + 1))
     .replace(/\b(?:young\s+)?girl\b/gi, 'adult woman')
     .replace(/\bschoolgirl\b/gi, 'adult woman')
     .replace(/\b(?:middle|junior high|high)[- ]school student\b/gi, 'adult alumna')
     .replace(/\bstudent\b/gi, 'adult alumna')
     .replace(/\bteen(?:age|aged)?\b/gi, 'adult')
-  return /\badult\b/i.test(identity) ? identity : `Adult ${identity}`
+  const resolved = heading + description
+  return /\badult\b/i.test(resolved) ? resolved : `Adult ${resolved}`
 }
 
 const ADULT_IDENTITY_EXCLUDE_RE =
@@ -196,7 +205,9 @@ function proseWithoutOutfit(prose: string): string {
 export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult {
   const { character, outfit, blueprint, engine } = options
   const profile = options.profile ?? null
-  const adult = Boolean(blueprint?.adult || options.style?.adult)
+  const style = options.style === undefined && blueprint
+    ? resolveStyleRecipe(KREA_STYLE_RECIPES, engine, blueprint, null) : options.style
+  const adult = Boolean(blueprint?.adult || style?.adult)
 
   const manual = sanitizePopularManual(options.manual || [])
   // 反推顶替的服装（非空即整体替换 outfit.tokens 与 outfit.prose）
@@ -214,11 +225,14 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     : outfitAppearance?.identityTokensOverride?.length ? outfitAppearance.identityTokensOverride : character.identityTokens
   const identityProse = blueprint?.identityProseOverride || outfitAppearance?.identityProseOverride || character.identityProse
   const ratingLevel = (adult || manualR18) ? 'R18' : 'ALL'
+  const inherited = inferBlueprintDecisions(blueprint)
+  const cameraSource = isManualDirectorValue(options.directorSources, 'shot', options.shot, inherited.shot) ? 'manual' : 'scene'
+  const lightingSource = isManualDirectorValue(options.directorSources, 'lighting', options.lighting, inherited.lighting) ? 'manual' : 'scene'
   const shotToken = SHOT.find(item => item.id === options.shot)?.prompt || ''
   const cameraTokens = mergeCameraControls(
     shotToken ? [shotToken] : [],
     cameraTokensFromText(blueprint?.camera),
-    !options.shot || options.shot === inferBlueprintDecisions(blueprint).shot,
+    cameraSource === 'scene',
   )
   const lightingToken = LIGHTING.find(item => item.id === options.lighting)?.prompt || ''
   const lightingTokens = lightingToken ? [lightingToken] : []
@@ -227,7 +241,6 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // Character DNA 锁 avoid（v2）：从常驻身份锚定流过滤易失真元素（如 C.C. 印记、
   // 花火面具、式和服类死绑回归）。只过滤 identity 标签流；场景蓝图按需使用不受限。
   const dnaAvoid = new Set((character.dnaLock?.avoid || []).map(key => normalizeProseKey(key)))
-  const style = options.style
 
   // 用户描述是额外画面指令，服装由独立字段稳定保留。
   const userVisual = String(options.visualDescription || '').trim()
@@ -247,6 +260,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       : (outfitActive
           ? (overridden ? proseWithoutOutfit(identityProse) : identityWithoutOutfit(identityProse))
           : proseWithoutOutfit(identityProse))
+  // Both renderers share the resolved outfit. Adult blueprints retain their authored
+  // clothing state in scene tokens/prose; the bound outfit must not dress them again.
+  const outfitProse = (adult || !outfitActive)
+    ? ''
+    : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose))
 
   const manualPose = manual.map(mutualGroupWithCategory).find(h => h?.category === 'pose')
   const manualViewpoint = manual.map(mutualGroupWithCategory).find(h => h?.category === 'viewpoint')
@@ -266,41 +284,6 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     if (manualViewpoint && hit?.category === 'viewpoint' && hit.group !== manualViewpoint.group) return false
     return true
   })
-
-  if (engine === 'krea2') {
-    // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
-    // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
-    // 反推顶替：Krea 只有散文流，必须换成参考图服装，否则 "wearing 校服..." 压制参考图。
-    const outfitProse = (adult || !outfitActive)
-      ? ''
-      : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose))
-    // Krea 是自然语言模型：手动画师散文由 artistStyleProse 负责还原空格/去括号
-    // 注释（如 @hiten (hitenkei) → hiten），这里直接透传用户手动选择。
-    // 2026-08-29 需求变更：热门角色画师默认不注入（保持角色原滋原味）。
-    // 蓝图 adultArtistHint 不再作为无手动画师时的自动回退——画师完全由用户
-    // 手动选择（artistProse/artistTags），未选即不带画师。
-    const effectiveArtistProse = options.artistProse
-    const plan = createPromptPlan({
-      subjectProse,
-      outfitProse,
-      sceneProse,
-      scenePrompt: compositionTokens([...sceneTokensFiltered, ...nsfwTokens], blueprint).join(', '),
-      emotion: emotionTokens,
-      camera: cameraTokens,
-      lighting: lightingTokens,
-      authoredLighting,
-      palette: options.palette,
-      composition: compositionToken ? [compositionToken] : [],
-      manual,
-      negative: '',
-      visualDescription: userVisual,
-      style: style ? [style.lead] : [],
-      medium: style?.medium ?? '',
-      artistProse: effectiveArtistProse,
-    })
-    const rendered = renderPromptPlan(plan, 'krea2', profile)
-    return { plan, prompt: rendered.prompt, negative: '', adult }
-  }
 
   // 不选场景时，身份词里混入的服装一并去掉（数据遗留：不少角色把 pleated_skirt /
   // qipao / green_clothes / coat 等写进了 identityTokens，而它是无条件注入的，
@@ -322,39 +305,45 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     ...(adult ? ['adult'] : []),
     ...nsfwTokens,
   ])]
-  // 2026-08-29 需求变更：画师仅来自用户手动选择（artistTags），
-  // 蓝图 adultArtistHint 不再自动兜底注入（保持角色原滋原味）。
-  const effectiveArtists = (options.artistTags && options.artistTags.length) ? options.artistTags : undefined
-  const rating = profileRatingTag(profile, { rating: ratingLevel })
-  const plan = createPromptPlan({
-    profile,
-    identity: compositionTokens(identityTokens, blueprint).join(', '),
-    characterTokens: [...(character.characterTokens || []), ...(blueprint?.characterTokens || []), ...exactIdentity],
+  // Resolve shared content once. Model projections below choose tags or prose;
+  // Krea must not acquire every Anima identity/outfit token as a second description.
+  const commonInput: PromptCompilerInput = {
+    subjectProse, outfitProse, sceneProse,
+    characterTokens: [...(character.characterTokens || []), ...(blueprint?.characterTokens || [])],
     copyrightTokens: character.copyrightTokens,
-    controls: compositionTokens(exactControls, blueprint),
-    artists: effectiveArtists,
-    exactTokens: compositionTokens(exactIdentity, blueprint),
-    scenePrompt: compositionTokens(sceneTokensFiltered, blueprint).join(', '),
     emotion: emotionTokens,
     camera: cameraTokens,
+    cameraSource,
     lighting: lightingTokens,
+    lightingSource,
     authoredLighting,
     palette: options.palette,
     composition: compositionToken ? [compositionToken] : [],
     manual,
-    negative: (blueprint?.negativeTokens || []).join(', '),
-    rating: rating || (ratingLevel === 'R18' ? 'nsfw' : ''),
     visualDescription: userVisual,
-    subjectProse,
-    // 计划保留当前衣装语义供检查；Anima 输出使用 controls 标签，不重复注入服装散文。
-    outfitProse: (adult || !outfitActive)
-      ? ''
-      : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose)),
-    sceneProse,
-    // Anima 只接收模型原生短标签；Krea 的自然语言 lead 不进入标签流。
-    style: style?.sd ? style.sd.split(',').map(token => token.trim()).filter(Boolean) : [],
-  })
-  const rendered = renderPromptPlan(plan, 'anima', profile)
+  }
+  const modelInput: PromptCompilerInput = engine === 'krea2'
+    ? {
+        scenePrompt: compositionTokens([...sceneTokensFiltered, ...nsfwTokens], blueprint).join(', '),
+        style: style ? [style.lead] : [],
+        medium: style?.medium ?? '',
+        artistProse: options.artistProse,
+      }
+    : {
+        profile,
+        identity: compositionTokens(identityTokens, blueprint).join(', '),
+        characterTokens: [...commonInput.characterTokens!, ...exactIdentity],
+        controls: compositionTokens(exactControls, blueprint),
+        artists: options.artistTags?.length ? options.artistTags : undefined,
+        exactTokens: compositionTokens(exactIdentity, blueprint),
+        scenePrompt: compositionTokens(sceneTokensFiltered, blueprint).join(', '),
+        negative: (blueprint?.negativeTokens || []).join(', '),
+        rating: profileRatingTag(profile, { rating: ratingLevel }) || (ratingLevel === 'R18' ? 'nsfw' : ''),
+        style: style?.sd ? style.sd.split(',').map(token => token.trim()).filter(Boolean) : [],
+      }
+  const plan = createPromptPlan({ ...commonInput, ...modelInput })
+  const rendered = renderPromptPlan(plan, engine, profile)
+  if (engine === 'krea2') return { plan, prompt: rendered.prompt, negative: '', adult }
   // renderPromptPlan 对 anima 恒返回空 negative，但无 LoRA 工作流含负向 encode 节点，
   // 因此负向词由调用方下发：合并 profile 基础与本条明确排除项。
   const negative = assembleNegative(
@@ -364,7 +353,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       rating: ratingLevel,
     },
     'anima',
-    { shot: options.shot, character: character.id },
+    { shot: options.shot, character: character.id, custom: options.negativeCustom },
   )
   const finalNegative = compositionNegative(negative, blueprint)
   return { plan, prompt: rendered.prompt, negative: finalNegative, adult }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tomotake_yoshino",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 86,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "tomotake_yoshino",
     "profile": {
@@ -124,14 +124,15 @@
       "exactTokens": [
         "tomotake_yoshino"
       ],
-      "franchise": "YUZUSOFT",
+      "franchise": "Senren Banka",
       "id": "tomotake_yoshino",
-      "identityProse": "Tomotake Yoshino from Senren Banka, with silver-white twintails, center-parted bangs, deep blue eyes and cherry-blossom hair ornaments.",
+      "identityProse": "Tomotake Yoshino from Senren Banka, with long silver-white twintails, center-parted bangs, deep blue eyes and cherry-blossom hair ornaments.",
       "identityTokens": [
         "tomotake_yoshino",
         "1girl",
         "solo",
         "white hair",
+        "long hair",
         "twintails",
         "blue eyes",
         "hair flower",

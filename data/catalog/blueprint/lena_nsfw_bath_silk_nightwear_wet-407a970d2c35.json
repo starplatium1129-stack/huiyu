@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_bath_silk_nightwear_wet",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1365,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "action": "斜倚缸沿湿身半透真丝睡裙，水下手指自我抚慰，仰头失神轻喘泛潮红",
     "adult": true,
@@ -26,7 +26,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "sensual_silk_nightwear",
-    "promptProse": "Adult Lena reclines against the tub rim in her soaked nightgown, touching herself beneath the water as her hair trails into the bath.",
+    "promptProse": "Adult Lena reclines against the tub rim in her soaked nightgown, touching herself beneath the water as her hair trails into the bath. Warm light from the bathroom wall lamp diffuses through the steam.",
     "promptTokens": [
       "lace trim",
       "blue silk nightgown",

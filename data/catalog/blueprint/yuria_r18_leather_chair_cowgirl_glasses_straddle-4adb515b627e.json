@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_r18_leather_chair_cowgirl_glasses_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1210,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "yuria_r18_leather_chair_cowgirl_glasses_straddle",
     "title": "春寺由梨亚 · 办公转椅西装半褪与摘镜单人深层自抚",
@@ -52,7 +52,7 @@
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
-    "kreaStyleHint": "r18_sensual_bedroom",
+    "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
     "nsfwProse": ""

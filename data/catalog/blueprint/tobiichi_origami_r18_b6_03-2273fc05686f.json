@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_r18_b6_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "tobiichi_origami_r18_b6_03",
     "title": "鸢一折纸 · 婚纱反转灵装束缚带卡壳事故 ·「士道……拘束带解不开了，你可以随意处置我」",
@@ -33,7 +33,7 @@
     "promptProse": "Origami lies forward on the bed, arms accidentally caught behind her in the bridal straps, looking back as her veil trails across the sheets.",
     "promptTokens": [
       "adult",
-      "wedding dress",
+      "short wedding dress",
       "veil",
       "harness",
       "bound arms",

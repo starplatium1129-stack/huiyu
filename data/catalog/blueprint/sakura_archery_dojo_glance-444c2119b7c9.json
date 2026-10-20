@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_archery_dojo_glance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
   "data": {
     "id": "sakura_archery_dojo_glance",
     "characterId": "matou_sakura",
@@ -28,7 +28,7 @@
     "promptTokens": [
       "Sakura",
       "archery",
-      "bow",
+      "bow beside leg",
       "gloves",
       "dojo",
       "sunset",

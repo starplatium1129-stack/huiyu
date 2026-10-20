@@ -1,4 +1,6 @@
-import { sceneStyleBaseline } from '@/utils/randomVariationContext'
+import { DIRECTOR_CONTROL_KEYS, normalizeDirectorSources } from '@/utils/promptDirector'
+import type { DirectorControlSources, DirectorControlValues } from '@/types/promptDirector'
+import type { SceneBlueprint } from '@/types/sceneBlueprint'
 import { profileLocalStorage as localStorage, profileRuntimeActive } from '../../platform/web/profileStorage.ts'
 import { onScopeDispose, ref, watch, type Ref, type ComputedRef } from 'vue'
 import { cloneReferenceInput, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
@@ -18,6 +20,10 @@ export interface PromptDraftState {
   activeScene: ComputedRef<Scene | null>
   selections: Selections
   colorMood: Ref<string | null>
+  directorSources: Ref<DirectorControlSources>
+  inheritedDirectorValues: ComputedRef<DirectorControlValues>
+  sceneBlueprints: ComputedRef<SceneBlueprint[]>
+  loadPopularCharacter: (id: string) => Promise<void>
   manualTags: Ref<Set<string>>
   outfitOverride: Ref<DraftOutfitOverride | null>
   referenceInput: Ref<DraftReferenceInput | null>
@@ -84,7 +90,8 @@ export function usePromptDraft(state: PromptDraftState) {
     return {
       updatedAt: Date.now(),
       randomVariation: randomVariation.value ? JSON.parse(JSON.stringify(randomVariation.value)) : null,
-      sceneStyleBaseline: activeScene.value ? sceneStyleBaseline(activeScene.value) : undefined,
+      sceneStyleBaseline: { ...state.inheritedDirectorValues.value },
+      directorSources: normalizeDirectorSources(state.directorSources.value),
       story: story.value,
       visualDescription: visualDescription.value,
       char: char.value,
@@ -141,7 +148,13 @@ export function usePromptDraft(state: PromptDraftState) {
       const before = fingerprint()
       release = registerMaintenanceParticipant(() => { throw new Error('DRAFT_RESTORE_BUSY') })
       restoreParticipants.add(release)
-      const { restorePromptDraft } = await import('./promptBlueprintActions')
+      const { parsePromptBuilderDraft, restorePromptDraft } = await import('./promptBlueprintActions')
+      const draft = parsePromptBuilderDraft(JSON.parse(raw))
+      // Old popular drafts have no saved baseline. Read it before inferring ownership once.
+      if (draft?.subject === 'popular' && draft.characterId && draft.blueprintId && !draft.sceneStyleBaseline
+        && DIRECTOR_CONTROL_KEYS.some(key => !draft.directorSources?.[key])) {
+        await state.loadPopularCharacter(draft.characterId)
+      }
       if (disposed || revision !== restoreRevision || !isCurrent() || !sameTempResultOwner(owner)
         || localStorage.getItem(DRAFT_KEY) !== raw || fingerprint() !== before) return false
       const restored = restorePromptDraft(state, raw)
@@ -159,7 +172,7 @@ export function usePromptDraft(state: PromptDraftState) {
   }
 
   // Clearing or editing only the reference outfit does not touch manualTags.
-  watch([outfitOverride, referenceInput], saveDraft, { deep: true })
+  watch([outfitOverride, referenceInput, state.directorSources], saveDraft, { deep: true })
 
   onScopeDispose(() => {
     disposed = true; restoreRevision++; releaseMaintenance()
