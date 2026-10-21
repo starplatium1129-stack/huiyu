@@ -1,6 +1,6 @@
 ﻿# AI-CG-Studio 桌面端部署 —— 唯一入口
 #
-# 默认以 desktop-local 快速档位构建并安装本机轻量升级包；不携带 WebView2/保留素材。
+# 默认核验后复用升级包/原生构建，必要时以 desktop-local 重建；不携带 WebView2/保留素材。
 # -ResourcesOnly 仅同步已绑定静态资源，要求安装 EXE/DLL 与候选一致。
 # -UseInstaller 复用已绑定升级包；首次安装/修复须显式 -InstallerPath 指向发行完整包。
 #
@@ -19,6 +19,7 @@
 param(
   [switch]$SyncLocalModels,
   [switch]$SkipBuild,
+  [switch]$ForceBuild,
   [switch]$Cleanup,
   [switch]$UseInstaller,
   [switch]$ResourcesOnly,
@@ -31,6 +32,8 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = New-Object Text.UTF8Encoding($false)
+$OutputEncoding = [Console]::OutputEncoding
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 if (-not $InstallDir) {
   $locations = @('HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio',
@@ -46,6 +49,7 @@ $gatewayDir = Join-Path $installDir 'gateway'
 if ($StartupRepair -and $UseInstaller) { throw '-StartupRepair 与 -UseInstaller 不能同时使用' }
 if ($ResourcesOnly -and $UseInstaller) { throw '-ResourcesOnly 与 -UseInstaller 不能同时使用' }
 $buildUpgrade = -not ($UseInstaller -or $ResourcesOnly -or $StartupRepair)
+if ($ForceBuild -and (-not $buildUpgrade -or $SkipBuild)) { throw '-ForceBuild 仅用于默认部署，不能与显式复用/修复模式组合' }
 $installWithPackage = $UseInstaller -or $buildUpgrade
 if ($QuietInstall -and -not $installWithPackage) { throw '-QuietInstall 仅用于安装包部署' }
 if ($InstallerPath -and -not $UseInstaller) { throw '-InstallerPath 仅可与 -UseInstaller 一起使用' }
@@ -95,7 +99,7 @@ $configRoot = Join-Path $env:APPDATA 'com.aics.studio'
 # Read-only preflight: UAC denial, missing payload or build failure must leave
 # the user's running application untouched. Actual drain occurs before writes.
 if (@(Get-DesktopInstallationProcesses -InstallDir $installDir).Count -gt 0) {
-  Get-DesktopMaintenanceIdentity -InstallDir $installDir -ConfigRoot $configRoot | Out-Null
+  Assert-DesktopMaintenanceAvailable -InstallDir $installDir -ConfigRoot $configRoot
 } else { Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot }
 
 # 源端已删除、但增量部署（Copy-Item 只合并不删除）会在安装目录永久堆积的历史目录。
@@ -118,6 +122,7 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   Write-Host '需要管理员权限，正在弹出 UAC 授权窗口，请点击"是"' -ForegroundColor Yellow
   $argList = @('-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
   if ($SkipBuild)    { $argList += '-SkipBuild' }
+  if ($ForceBuild)   { $argList += '-ForceBuild' }
   if ($Cleanup)      { $argList += '-Cleanup' }
   if ($UseInstaller) { $argList += '-UseInstaller' }
   if ($ResourcesOnly) { $argList += '-ResourcesOnly' }
@@ -130,23 +135,65 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   $argList += @('-InstallDir', "`"$installDir`"")
   # Start-Process -Wait includes descendants, so the restarted client would
   # keep this wrapper alive. Wait only for the elevated deployment process.
-  $elevatedProcess = Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ') -PassThru
+  $logReader = $null
+  $elevatedProcess = $null
   try {
+    $logPath = Join-Path $root 'runtime\desktop-deploy-last.log'
+    if (Test-Path -LiteralPath $logPath) {
+      $logStream = [IO.File]::Open($logPath, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
+      $logReader = New-Object IO.StreamReader($logStream, [Text.Encoding]::UTF8, $true)
+      $null = $logReader.ReadToEnd()
+    }
+    $elevatedProcess = Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ') -PassThru
     # Retain the handle before exit so Windows PowerShell 5.1 can read ExitCode.
     $null = $elevatedProcess.Handle
-    $elevatedProcess.WaitForExit()
+    do {
+      $finished = $elevatedProcess.WaitForExit(750)
+      if (-not $logReader -and (Test-Path -LiteralPath $logPath)) {
+        $logStream = [IO.File]::Open($logPath, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
+        $logReader = New-Object IO.StreamReader($logStream, [Text.Encoding]::UTF8, $true)
+      }
+      if ($logReader) { $chunk = $logReader.ReadToEnd(); if ($chunk) { Write-Host -NoNewline $chunk } }
+    } while (-not $finished)
     $deploymentExitCode = $elevatedProcess.ExitCode
     if ($null -eq $deploymentExitCode) { throw 'DESKTOP_DEPLOY_EXITCODE: 无法读取提权部署进程的退出码。' }
-  } finally { $elevatedProcess.Dispose() }
+    if ($deploymentExitCode -eq 73) { Write-Host '另一个部署正在执行，请等待它完成后再同步。' -ForegroundColor Yellow }
+  } finally { if ($logReader) { $logReader.Dispose() }; if ($elevatedProcess) { $elevatedProcess.Dispose() } }
   exit $deploymentExitCode
 }
 
+$deploymentLock = $null
+try {
+  $lockPath = Resolve-DesktopChildPath -Root $root -Relative 'runtime\desktop-deploy.lock'
+  New-Item -ItemType Directory -Force -Path (Split-Path -Parent $lockPath) | Out-Null
+  $deploymentLock = [IO.File]::Open($lockPath, [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
+} catch [IO.IOException] {
+  if (($_.Exception.GetBaseException().HResult -band 0xffff) -notin @(32,33)) { throw }
+  Write-Host 'DESKTOP_DEPLOY_BUSY: 当前工作区已有部署。' -ForegroundColor Yellow
+  exit 73
+}
+$transcriptStarted = $false
+try {
 Start-Transcript -Path (Join-Path $root 'runtime\desktop-deploy-last.log') -Append | Out-Null
+$transcriptStarted = $true
 $deployTimer = [Diagnostics.Stopwatch]::StartNew()
 $phaseTimer = [Diagnostics.Stopwatch]::StartNew()
 function Write-DesktopDuration([string]$Phase) {
   Write-Host ('[desktop:timing] {0}: {1:F2}s' -f $Phase, $phaseTimer.Elapsed.TotalSeconds)
   $phaseTimer.Restart()
+}
+function Invoke-DesktopNpm {
+  param([string[]]$Arguments)
+  # Windows PowerShell turns native stderr into ErrorRecord objects. Stream it
+  # as progress text and judge success only by the native process exit code.
+  $previousPreference = $ErrorActionPreference
+  $npmCommand = Get-Command npm.cmd -CommandType Application -ErrorAction Stop
+  try {
+    $ErrorActionPreference = 'Continue'
+    & $npmCommand.Source @Arguments 2>&1 | ForEach-Object { Write-Host $_.ToString() }
+    $buildExitCode = $LASTEXITCODE
+  } finally { $ErrorActionPreference = $previousPreference }
+  if ($buildExitCode -ne 0) { throw "桌面构建/封装失败（退出码 $buildExitCode）；未关闭应用。" }
 }
 $stageGateway = Join-Path $root 'desktop-tauri\src-tauri\resources\gateway'
 $hostExecutable = $null
@@ -162,24 +209,42 @@ function Assert-CurrentBuildBinding {
 }
 if ($buildUpgrade) {
   Write-Host '[1/6] 准备本机快速构建与轻量升级包 ...' -ForegroundColor Cyan
-  Push-Location $root
-  try {
-    $upgradeArgs = @('run', 'release:desktop', '--', '--manual', '--upgrade-only', '--install-dir', $installDir)
-    if ($SkipBuild) { $upgradeArgs += '--skip-build' }
-    & npm @upgradeArgs
-    if ($LASTEXITCODE -ne 0) { throw '本机升级包准备失败；未关闭应用，不自动回退完整打包。' }
-    $version = (Get-Content -LiteralPath (Join-Path $root 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
-    $setup = Get-Item -LiteralPath (Join-Path $root "runtime\desktop-updates\AI-CG-Studio_${version}_x64-local-upgrade-setup.exe")
-    $InstallerPath = $setup.FullName
-    $selectedInstaller = Freeze-FixedInstaller -Candidate $InstallerPath
-    $InstallerPath = $selectedInstaller.installer
-    $InstallerManifestSha256 = $selectedInstaller.manifestSha256
-    $setup = Get-Item -LiteralPath $InstallerPath
-  } finally { Pop-Location }
+  $candidate = $null
+  if (-not $SkipBuild -and -not $ForceBuild) {
+    if (-not (Test-Path -LiteralPath (Join-Path $root 'scripts\lib\desktop-build-binding.js'))) {
+      Push-Location $root
+      try { Invoke-DesktopNpm -Arguments @('run','build:runtime') } finally { Pop-Location }
+    }
+    $selection = & node (Join-Path $root 'scripts\lib\desktop-build-binding.js') --deployment-plan $root
+    if ($LASTEXITCODE -ne 0) { throw '无法判断构建复用状态；部署已停止。' }
+    $plan = $selection | ConvertFrom-Json
+    Write-Host "[desktop:auto] $($plan.reason)" -ForegroundColor Cyan
+    switch ($plan.mode) {
+      'installer' { $candidate = $plan.installer }
+      'package' { $SkipBuild = $true }
+      'build' { }
+      default { throw '未知的部署选择，部署已停止。' }
+    }
+  } else { Write-Host $(if ($ForceBuild) { '[desktop:auto] 按 -ForceBuild 重建' } else { '[desktop:auto] 按 -SkipBuild 复用原生构建并重新封装' }) }
+  if (-not $candidate) {
+    Push-Location $root
+    try {
+      $upgradeArgs = @('run', 'release:desktop', '--', '--manual', '--upgrade-only', '--install-dir', $installDir)
+      if ($SkipBuild) { $upgradeArgs += '--skip-build' }
+      Invoke-DesktopNpm -Arguments $upgradeArgs
+      $version = (Get-Content -LiteralPath (Join-Path $root 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
+      $candidate = Join-Path $root "runtime\desktop-updates\AI-CG-Studio_${version}_x64-local-upgrade-setup.exe"
+    } finally { Pop-Location }
+  }
+  $InstallerPath = (Get-Item -LiteralPath $candidate).FullName
+  $selectedInstaller = Freeze-FixedInstaller -Candidate $InstallerPath
+  $InstallerPath = $selectedInstaller.installer
+  $InstallerManifestSha256 = $selectedInstaller.manifestSha256
+  $setup = Get-Item -LiteralPath $InstallerPath
 } elseif (-not $installWithPackage -and -not $SkipBuild) {
   Write-Host '[1/6] 构建并绑定 Rust 桌面候选 ...' -ForegroundColor Cyan
   Push-Location $root
-  try { npm run build:tauri -- --local; if ($LASTEXITCODE -ne 0) { throw 'Desktop candidate build failed' } }
+  try { Invoke-DesktopNpm -Arguments @('run','build:tauri','--','--local') }
   finally { Pop-Location }
 } else { Write-Host $(if ($UseInstaller) { '[1/6] 复用本次固定安装包' } else { '[1/6] 复用当前已绑定构建' }) -ForegroundColor DarkGray }
 Assert-CurrentBuildBinding
@@ -266,4 +331,14 @@ if (-not $NoRestart) {
 } else { Write-Host '[6/6] 按 -NoRestart 保持退出' -ForegroundColor DarkGray }
 Write-DesktopDuration '缓存与启动确认'
 Write-Host ('[desktop:timing] 部署总耗时: {0:F2}s' -f $deployTimer.Elapsed.TotalSeconds)
-Stop-Transcript | Out-Null
+} catch {
+  Write-Host "[desktop:failed] $($_.Exception.Message)" -ForegroundColor Red
+  if ($installWithPackage -and $InstallerManifestSha256) {
+    Write-Host "已固定的安装包仍可复用：$InstallerPath"
+    Write-Host '修正上述原因后，可用 -UseInstaller -InstallerPath 指定此包继续，无需重复构建。'
+  }
+  throw
+} finally {
+  try { if ($transcriptStarted) { Stop-Transcript | Out-Null } }
+  finally { if ($deploymentLock) { $deploymentLock.Dispose() } }
+}

@@ -161,8 +161,6 @@ fn main() {
     let maintenance_single_instance = ui_entry::isolated_profile().is_none() || maintenance_namespace.is_some();
     if let Some(namespace) = maintenance_namespace { context.config_mut().identifier = namespace; }
     let app = tauri::Builder::default()
-        .plugin(tauri_plugin_notification::init())
-        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .plugin(if !maintenance_single_instance {
             tauri::plugin::Builder::new("isolated-instance").build()
         } else { tauri_plugin_single_instance::init(|app, argv, _cwd| {
@@ -180,6 +178,8 @@ fn main() {
             }
             main_shared::show_companion(app, true);
         }) })
+        .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .plugin(tauri_plugin_autostart::init(
             tauri_plugin_autostart::MacosLauncher::LaunchAgent,
             Some(vec!["--hidden"]),
@@ -258,12 +258,13 @@ fn main() {
             // No existing single-instance host consumed this request. Do not
             // launch a gateway, open user data, or create windows as a fallback.
             if maintenance::is_client() { std::process::exit(3); }
-            let state = AppState::new(paths::resolve_paths(app.handle()));
+            let paths = paths::resolve_paths(app.handle());
+            let host = maintenance::MaintenanceHost::new(paths.config_root.clone(), app.config().identifier.clone(), ui_entry::isolated_profile().is_none()).map_err(std::io::Error::other)?;
+            let state = AppState::new(paths);
             app.manage(state);
             app.manage(window_persistence::WindowStateWriter::new());
             let state = app.state::<AppState>();
-            let publish = ui_entry::isolated_profile().is_none();
-            app.manage(maintenance::MaintenanceHost::new(state.paths.config_root.clone(), app.config().identifier.clone(), publish).map_err(std::io::Error::other)?);
+            app.manage(host);
 
             state.info("Companion starting (tauri shell)");
 

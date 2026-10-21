@@ -1,5 +1,5 @@
 ﻿# Controlled host maintenance plus read-only verification. The host owns flush,
-# drain and child teardown; this script never kills processes or removes locks.
+# drain and child teardown; this script never kills hosts/gateways or removes locks.
 function Get-DesktopInstallationProcesses {
   param([string]$InstallDir)
   $executables = @((Join-Path $InstallDir 'ai-cg-studio-desktop.exe'), (Join-Path $InstallDir 'gateway\huiyu-runtime.exe'))
@@ -9,6 +9,10 @@ function Get-DesktopInstallationProcesses {
 
 function Get-DesktopMaintenanceIdentity {
   param([string]$InstallDir, [string]$ConfigRoot)
+  $hosts = @(Get-DesktopInstallationProcesses -InstallDir $InstallDir | Where-Object { $_.ProcessName -eq 'ai-cg-studio-desktop' })
+  if ($hosts.Count -gt 1) {
+    throw "DESKTOP_DUPLICATE_HOSTS: 同一安装有多个宿主（PID $($hosts.Id -join ', ')）；请从托盘退出全部实例后重试。未向任何宿主发送请求。"
+  }
   $capability = Join-Path $ConfigRoot 'desktop-maintenance.json'
   if (-not (Test-Path -LiteralPath $capability)) {
     throw 'DESKTOP_MAINTENANCE_UNSUPPORTED: 此运行版本未提供受控维护退出；请从托盘正常退出后重试。未调用未知CLI或停止任何进程。'
@@ -44,6 +48,7 @@ function Invoke-DesktopMaintenance {
   $responsePath = Join-Path $directory "$requestId.response.json"
   $request = @{requestId=$requestId;instanceId=$identity.instanceId;hostPid=$identity.hostPid;command=$Command} | ConvertTo-Json -Compress
   [IO.File]::WriteAllText($requestPath, $request, (New-Object Text.UTF8Encoding($false)))
+  $client = $null
   try {
     $client = Start-Process -FilePath $identity.executable -ArgumentList @('--desktop-maintenance',$Command,'--maintenance-request',$requestId,'--maintenance-namespace',$identity.instanceNamespace) -WindowStyle Hidden -PassThru
     $deadline = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds)
@@ -63,9 +68,23 @@ function Invoke-DesktopMaintenance {
     }
     throw 'DESKTOP_MAINTENANCE_TIMEOUT: 无法确认受控退出；安装未开始，进程与锁均未强制清理。'
   } finally {
+    # Old single-instance clients may block in SendMessageW. Reap only the
+    # transient CLI we started, never the verified host or its gateway.
+    if ($client) {
+      try { if (-not $client.WaitForExit(1000)) { $client.Kill() } }
+      finally { $client.Dispose() }
+    }
     foreach ($ownedRequestFile in @($requestPath, $responsePath)) {
       if (Test-Path -LiteralPath $ownedRequestFile) { Remove-Item -LiteralPath $ownedRequestFile -Force }
     }
+  }
+}
+
+function Assert-DesktopMaintenanceAvailable {
+  param([string]$InstallDir, [string]$ConfigRoot)
+  $receipt = Invoke-DesktopMaintenance -InstallDir $InstallDir -ConfigRoot $ConfigRoot -Command status -TimeoutSeconds 15
+  if ($receipt.state -notin @('ready', 'starting')) {
+    throw "DESKTOP_MAINTENANCE_UNAVAILABLE: $($receipt.state) / $($receipt.reason)。未开始构建或安装，请先完成现有维护或从托盘退出。"
   }
 }
 

@@ -210,8 +210,21 @@ function verifyDeployment(root:string,payload?:string){
   }
   return receipt;
 }
+function deploymentPlan(root: string) {
+  let receipt: ReturnType<typeof verifyBuild>;
+  try { receipt = verifyBuild(root); }
+  catch (error) { return { mode:'build', reason:error instanceof Error ? error.message : String(error) }; }
+  const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
+  const installer = path.join(root, 'runtime/desktop-updates', `AI-CG-Studio_${version}_x64-local-upgrade-setup.exe`);
+  try {
+    verifyBoundDistribution(root, receipt, installer);
+    return { mode:'installer', installer, reason:'源码、SDK、原生构建和升级包绑定均匹配，复用现有升级包' };
+  } catch (error) {
+    return { mode:'package', reason:`原生构建匹配，仅重新封装升级包：${error instanceof Error ? error.message : String(error)}` };
+  }
+}
 if(require.main===module){
-  try{const args=process.argv.slice(2);if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}
+  try{const args=process.argv.slice(2);if(args[0]==='--deployment-plan'&&args.length===2)console.log(JSON.stringify(deploymentPlan(path.resolve(args[1]))));else{if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}}
   catch(error){console.error(error instanceof Error?error.message:String(error));process.exitCode=1;}
 }
 export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDerivedPayloads, bindDistribution, verifyDistribution };

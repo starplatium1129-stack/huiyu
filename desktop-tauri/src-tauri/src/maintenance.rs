@@ -8,7 +8,11 @@ use tauri::{AppHandle, Emitter, Manager, WebviewWindow};
 use crate::maintenance_protocol::{self as protocol, Identity};
 
 struct Handoff { id: String, phase: &'static str, acknowledgements: BTreeMap<String, Option<Result<(), String>>> }
-pub struct MaintenanceHost { root: PathBuf, identity: Identity, handoff: Mutex<Option<Handoff>> }
+pub struct MaintenanceHost {
+    root: PathBuf, identity: Identity, handoff: Mutex<Option<Handoff>>,
+    // Keep the OS lock for the entire host lifetime, including gateway teardown.
+    _owner: std::fs::File,
+}
 fn milliseconds() -> u64 { SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_millis() as u64 }
 fn started_at() -> Result<String, String> {
     use windows_sys::Win32::{Foundation::FILETIME, System::Threading::{GetCurrentProcess, GetProcessTimes}};
@@ -19,13 +23,20 @@ fn started_at() -> Result<String, String> {
 }
 impl MaintenanceHost {
     pub fn new(root: PathBuf, namespace: String, publish: bool) -> Result<Self, String> {
+        std::fs::create_dir_all(&root).map_err(|error| format!("MAINTENANCE_DIRECTORY: {error}"))?;
+        let owner = std::fs::OpenOptions::new().read(true).write(true).create(true).truncate(false)
+            .open(root.join("desktop-host.lock")).map_err(|error| format!("DESKTOP_HOST_LOCK: {error}"))?;
+        owner.try_lock().map_err(|error| match error {
+            std::fs::TryLockError::WouldBlock => "DESKTOP_HOST_ALREADY_RUNNING".to_string(),
+            std::fs::TryLockError::Error(error) => format!("DESKTOP_HOST_LOCK: {error}"),
+        })?;
         let mut nonce = [0u8; 32]; SystemRandom::new().fill(&mut nonce).map_err(|_| "MAINTENANCE_RANDOM")?;
         let executable = std::env::current_exe().map_err(|_| "MAINTENANCE_EXECUTABLE")?.to_string_lossy().trim_start_matches(r"\\?\").to_string();
         let identity = Identity { protocol_version:1, instance_id:nonce.iter().map(|b| format!("{b:02x}")).collect(),
             host_pid:std::process::id(), started_at_filetime:started_at()?, executable, instance_namespace:namespace };
         protocol::directory(&root)?;
         if publish { protocol::write_json(&root.join(protocol::CAPABILITY_FILE), &identity)?; }
-        Ok(Self { root, identity, handoff:Mutex::new(None) })
+        Ok(Self { root, identity, handoff:Mutex::new(None), _owner:owner })
     }
     fn respond(&self, request_id: &str, state: &str, reason: Option<&str>) {
         let value = serde_json::json!({ "protocolVersion":1, "requestId":request_id,

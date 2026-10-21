@@ -2,10 +2,11 @@
 chcp 65001 >nul
 echo === HUIYU desktop deployment ===
 echo.
-echo Default: fast desktop-local build, install a local upgrade, then restart.
+echo Default: verify and reuse matching package/build; rebuild only when needed.
 echo.
 echo Options:
 echo   -SkipBuild Reuse native build    -Cleanup Remove obsolete resources
+echo   -ForceBuild Rebuild instead of automatic reuse
 echo   -UseInstaller Reuse existing upgrade    -NoRestart Leave app closed
 echo   -ResourcesOnly Sync static resources with matching EXE/DLL only
 echo   -QuietInstall Silent installer after Windows UAC consent
