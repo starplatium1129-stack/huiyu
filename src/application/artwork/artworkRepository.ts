@@ -1,7 +1,8 @@
 import type { ArtworkRecord, ArtworkSearchSummary } from '../../types/artwork.ts'
 import type { ArtworkOrganizationRequest, ArtworkOrganizationReceipt, ArtworkOrganizationUndoResult } from './organization.ts'
 import type { ArtworkProjectDraft } from './projects.ts'
-import type { SmartAlbumDraft } from './smartAlbums.ts'
+import type { SmartAlbumDraft, SmartAlbumRemoval } from './smartAlbums.ts'
+import type { ArtworkImportAccess, ArtworkImportCommand, ArtworkImportInput, ArtworkImportOutcome } from './localImageImport.ts'
 
 /** Original project identity and unknown fields survive the storage boundary. */
 export interface ArtworkProjectRecord {
@@ -12,14 +13,6 @@ export interface ArtworkProjectRecord {
 export interface ArtworkLibrarySnapshot {
   history: ArtworkRecord[]
   projects: ArtworkProjectRecord[]
-}
-
-export interface ArtworkDeleteResult {
-  deleted: boolean
-  historyChanged: boolean
-  removedImageIds: string[]
-  removedThumbnailIds: string[]
-  removedProjectReferences: number
 }
 
 export const ARTWORK_DELETE_BATCH_SIZE = 200
@@ -46,7 +39,7 @@ export interface ArtworkRepository {
   createProject(input: ArtworkProjectDraft): Promise<ArtworkProjectRecord>
   saveSmartAlbum(input: SmartAlbumDraft): Promise<ArtworkProjectRecord>
   /** Removes only the saved rule; artwork and media remain in the library. */
-  deleteSmartAlbum(id: string): Promise<{ deleted: boolean }>
+  deleteSmartAlbum(input: SmartAlbumRemoval): Promise<{ deleted: boolean }>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
   /** Publish the first browsing page before reading the remaining metadata. */
   readGallerySnapshot?(publish: (snapshot: ArtworkLibrarySnapshot) => void, signal: AbortSignal): Promise<ArtworkLibrarySnapshot>
@@ -68,11 +61,12 @@ export interface ArtworkRepository {
   withStaging<T>(work: () => Promise<T>): Promise<T>
   /** Commit only. Consumers update their own display without rereading the library. */
   appendArtwork(entry: ArtworkRecord): Promise<void>
+  /** Explicit file-import retry using its persisted record, alias and operation. */
+  resolveArtworkImport(input: ArtworkImportInput, command: ArtworkImportCommand, access: ArtworkImportAccess): Promise<ArtworkImportOutcome>
   organizeArtworks(input: ArtworkOrganizationRequest): Promise<ArtworkOrganizationReceipt>
   undoArtworkOrganization(receipt: ArtworkOrganizationReceipt): Promise<ArtworkOrganizationUndoResult>
   patchArtwork(id: string | number, patch: Record<string, unknown>): Promise<{ updated: boolean }>
   patchArtworks(patches: Array<{ id: string | number; patch: Record<string, unknown> }>): Promise<void>
-  deleteArtwork(id: string | number): Promise<ArtworkDeleteResult>
   softDeleteArtwork(id: string | number): Promise<{ deleted: boolean }>
   /** One bounded batch; missing records are reported without discarding successful deletions. */
   softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]>

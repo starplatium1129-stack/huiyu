@@ -63,6 +63,10 @@ export const BACKUP_AT_KEY = 'aics_backup_last_at'
 export const WORKSPACE_BACKUP_PENDING_PREFIX = 'aics_workspace_backup_pending_v1:'
 /** Unresolved upload identities, never image bytes; not portable settings. */
 export const WORKSPACE_MEDIA_PENDING_PREFIX = 'aics_workspace_media_pending_v1:'
+/** Local import retry identities, not portable settings or library facts. */
+export const LOCAL_IMAGE_IMPORT_PENDING_PREFIX = 'aics_local_image_import_pending_v1:'
+/** Web-only immutable publication receipts in the existing artwork KV store. */
+export const LOCAL_IMAGE_IMPORT_RECEIPT_PREFIX = 'aics_local_image_import_receipt_v1:'
 
 // ── IndexedDB / sessionStorage 键登记 ──
 // 这两类不参与 localStorage 备份白名单（见文件头规则），但常量化在这里统一出处，

@@ -6,6 +6,7 @@ import { newTaskRequestDraft, readTaskRequestDraft, type TaskRequestDraft } from
 import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
 import { QWEN_REQUEST_DRAFT_KEY as slot } from '@/utils/storageKeys'
 import { imageMediaSession } from '@/platform/imageMediaSession'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
 import { inspectMangaImage, mangaInputSize, prepareMangaImage, type MangaImage } from '@/composables/manga/mangaImage'
 import { downloadMangaPng } from '@/composables/manga/mangaResult'
@@ -45,7 +46,10 @@ export function useQwenStudio() {
   const error = ref(''), notice = ref(''), sourceChanged = ref(false)
   const lifetime = new AbortController(), owner = imageMediaSession()
   let cancelled = false
-  watch(imageMediaSession, value => { if (value !== owner) sourceChanged.value = true }, { flush: 'sync' })
+  const invalidateSource = () => { if (imageMediaSession() !== owner) sourceChanged.value = true }
+  // Workspace and connection publications are not Vue refs; reconnect cannot revive this visit.
+  const stopRuntime = onDesktopRuntime(invalidateSource)
+  watch(imageMediaSession, invalidateSource, { flush: 'sync' })
   const check = () => {
     lifetime.signal.throwIfAborted()
     if (sourceChanged.value || imageMediaSession() !== owner) throw new Error('工作区或运行时连接已变化，请重新打开页面；原任务仍保留在任务中心')
@@ -371,7 +375,7 @@ export function useQwenStudio() {
     } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
     finally { initializing.value = false }
   }
-  onScopeDispose(() => { clearTimeout(draftTimer); void persistDraft(); lifetime.abort(); setUrl(sourceUrl, null); setUrl(resultUrl, null); for (const value of references.value) URL.revokeObjectURL(value.url) })
+  onScopeDispose(() => { stopRuntime(); clearTimeout(draftTimer); void persistDraft(); lifetime.abort(); setUrl(sourceUrl, null); setUrl(resultUrl, null); for (const value of references.value) URL.revokeObjectURL(value.url) })
   return { form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
     busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, inputSize, progress, taskText,
     ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize }

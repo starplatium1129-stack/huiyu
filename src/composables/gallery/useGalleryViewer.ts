@@ -17,7 +17,7 @@ export function useGalleryViewer(options: {
   const original = useOriginalImage()
   const viewerUrl = original.url
   const viewerLoadFailed = computed(() => Boolean(original.error.value))
-  const neighborPreviews = ref<Record<string, string>>({})
+  const neighborPreviews = shallowRef<Record<string, string>>(Object.create(null))
   const details = shallowRef<ArtworkRecord | null>(null)
   const current = computed(() => {
     const index = artworkIndexById(options.history.value, viewerItemId.value)
@@ -33,7 +33,7 @@ export function useGalleryViewer(options: {
     const revision = ++previewRevision
     const repository = artworkRepository, session = original.session.value
     const center = artworkIndexById(options.visible.value, viewerItemId.value)
-    neighborPreviews.value = {}
+    neighborPreviews.value = Object.create(null)
     if (viewerIndex.value < 0 || center < 0) return
     for (const source of options.visible.value.slice(Math.max(0, center - 2), center + 3)) {
       if (options.previewSource?.(source)) continue
@@ -48,7 +48,7 @@ export function useGalleryViewer(options: {
           || session !== original.session.value || !url) return
         const live = options.visible.value.find(candidate => String(candidate.id) === String(item.id))
         if (sameArtworkMedia(live, item))
-          neighborPreviews.value = { ...neighborPreviews.value, [item.id]: url }
+          neighborPreviews.value = Object.assign(Object.create(null), neighborPreviews.value, { [item.id]: url })
       })()
     }
   }
@@ -108,7 +108,7 @@ export function useGalleryViewer(options: {
     // A reversed leave must never clear the image of the reopened viewer.
     if (viewerIndex.value >= 0) return
     viewerItemId.value = null
-    neighborPreviews.value = {}
+    neighborPreviews.value = Object.create(null)
     releaseImage()
     options.resetControls()
   }

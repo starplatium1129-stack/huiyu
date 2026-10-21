@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<{
   cardUrls?: Record<string, string>; thumbUrls?: Record<string, string>; neighborUrls?: Record<string, string>;
   title: (item: T) => string;
   loadFailed?: boolean; reload?: () => Promise<void>;
-}>(), { previewSrc: '', cardUrls: () => ({}), thumbUrls: () => ({}), neighborUrls: () => ({}) })
+}>(), { previewSrc: '', cardUrls: () => Object.create(null), thumbUrls: () => Object.create(null), neighborUrls: () => Object.create(null) })
 const currentPreview = computed(() => {
   const id = props.items[props.index]?.id
   return props.previewSrc || (id === undefined ? '' : props.cardUrls[id] || props.neighborUrls[id] || props.thumbUrls[id] || '')

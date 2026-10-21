@@ -20,7 +20,7 @@
       <div class="archive-actions" role="group" aria-label="归档备份与整理">
         <button class="btn btn-ghost btn-sm" type="button" :aria-disabled="exporting || undefined" :aria-busy="exporting" @click="exportJson">导出 JSON</button>
         <button class="btn btn-ghost btn-sm" type="button" :aria-disabled="exporting || undefined" :aria-busy="exporting" @click="exportMarkdown">导出 Markdown</button>
-        <button class="btn btn-ghost btn-sm" type="button" @click="fileEl?.click()">导入归档</button>
+        <button class="btn btn-ghost btn-sm" type="button" @click="pickArchive">导入归档</button>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="!storage.archiveCount(activeChar)" :aria-disabled="restoring || undefined" :aria-busy="restoring" @click="restoreCurrent">
           归档并入当前剧情
         </button>
@@ -57,6 +57,8 @@ const emit = defineEmits<{
 const fileEl = ref<HTMLInputElement>()
 let fileRequest = 0, disposed = false
 let context = new AbortController()
+type ArchivePicker = { input: HTMLInputElement; owner: AbortController; storage: ChatStorage; revision: string; request: number; release: () => void }
+let picker: ArchivePicker | undefined
 const exporting = ref(false), restoring = ref(false), clearing = ref(false)
 function invalidate() {
   ++fileRequest
@@ -66,7 +68,7 @@ function invalidate() {
 }
 function close() { invalidate(); emit('close') }
 watch(() => [props.storage, props.activeChar, props.storage.branchId(props.activeChar)], invalidate, { flush: 'sync' })
-onScopeDispose(() => { disposed = true; invalidate() })
+onScopeDispose(() => { disposed = true; invalidate(); picker?.release() })
 const characterIds = computed(() => Object.keys(counts.value))
 
 function characterName(id: string) {
@@ -99,23 +101,50 @@ async function exportArchive(format: 'json' | 'markdown') {
 const exportJson = () => exportArchive('json')
 const exportMarkdown = () => exportArchive('markdown')
 
+function pickArchive() {
+  const input = fileEl.value
+  if (disposed || !input) return
+  // Native change has no request ID; never reuse an unsettled chooser's input.
+  if (picker) { emit('notice', '请先完成或取消上一次文件选择，再重新选择归档。', 'info'); return }
+  try {
+    const selected: ArchivePicker = { input, owner: context, storage: props.storage,
+      revision: chatResetRevision(), request: ++fileRequest,
+      release() {
+        input.removeEventListener('cancel', selected.release)
+        if (picker === selected) picker = undefined
+      },
+    }
+    picker = selected
+    input.value = ''
+    input.addEventListener('cancel', selected.release, { once: true })
+    input.click()
+  } catch {
+    picker?.release()
+    emit('notice', '文件选择未能打开，请重试。', 'error')
+  }
+}
+
 async function onFile(event: Event) {
   const input = event.target as HTMLInputElement
+  const selected = picker?.input === input ? picker : undefined
   const file = input.files?.[0]
   input.value = ''
-  const request = ++fileRequest, storage = props.storage
-  const current = () => !disposed && request === fileRequest && storage === props.storage
-  if (!file) return
+  selected?.release()
+  if (!file || !selected) return
+  const { request, storage, revision, owner } = selected
+  const current = () => !disposed && !owner.signal.aborted && input === fileEl.value
+    && request === fileRequest && storage === props.storage
+  if (!current()) return
+  if (revision !== chatResetRevision()) { emit('notice', '聊天内容已清空，请重新选择归档文件后导入。', 'warning'); return }
   if (file.size > 8 * 1024 * 1024) {
     emit('notice', '归档文件超过 8 MB，请确认来源后重试。', 'error')
     return
   }
   try {
-    const revision = chatResetRevision()
     const text = await file.text()
     if (!current()) return
     if (revision !== chatResetRevision()) { emit('notice', '聊天内容已清空，请重新选择归档文件后导入。', 'warning'); return }
-    const added = await storage.importArchiveJson(text, current)
+    const added = await storage.importArchiveJson(text, () => current() && revision === chatResetRevision())
     if (!current()) return
     if (revision !== chatResetRevision()) { emit('notice', '聊天内容已清空，请重新选择归档文件后导入。', 'warning'); return }
     emit('notice', added ? `导入完成，新增 ${added} 条归档消息。` : '导入完成，没有新增消息（可能已存在）。', 'info')

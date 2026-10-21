@@ -24,7 +24,7 @@ export function mangaTaskArtwork(task: TaskRecord, index: number): ArtworkRecord
     id:taskArtworkId(task.taskId, index), taskId:task.taskId, outputIndex:index, timestamp:task.createdAt,
     image_id:output.alias, image_url:'', engine:'manga-screen', provider:'native', artifactKind:lineart ? 'lineart' : 'manga',
     sceneTitle:`${typeof source?.sceneTitle === 'string' ? source.sceneTitle : '图片'} · ${lineart ? '线稿' : '漫画版'}`,
-    parent_id:typeof source?.id === 'string' ? source.id : null, character:typeof source?.character === 'string' ? source.character : '',
+    parent_id:typeof source?.id === 'string' || typeof source?.id === 'number' && Number.isFinite(source.id) ? source.id : null, character:typeof source?.character === 'string' ? source.character : '',
     characterId:source?.characterId, subject:source?.subject, outfitId:source?.outfitId, blueprintId:source?.blueprintId,
     project:typeof source?.project === 'string' ? source.project : '', width, height, size:`${width} × ${height}`,
     favorite:false, version:1, prompt:'', manual_tags:[lineart ? '线稿' : '漫画'],

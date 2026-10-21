@@ -3,7 +3,7 @@ import { useVoiceInput } from '@/composables/useVoiceInput'
 import { useManualSpeechHold } from '@/composables/useManualSpeechHold'
 import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '@/utils/speechInputConfig'
 import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
-import { useSpeechConversation } from '@/composables/useSpeechConversation'
+import { useSpeechConversation, type SubmitSpeechText } from '@/composables/useSpeechConversation'
 import type { CharacterConfig } from '@/config/characters'
 
 interface UseChatSpeechInteractionOptions {
@@ -12,7 +12,7 @@ interface UseChatSpeechInteractionOptions {
   busy: Ref<boolean>
   inputText: Ref<string>
   onInputChange: () => void
-  handleSend: () => void
+  handleSend: SubmitSpeechText
 }
 
 export function useChatSpeechInteraction({

@@ -269,13 +269,17 @@ const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创作' })
 const continueHint = ref('')
 
-const { recentWorks, loading: recentWorksLoading, error: recentWorksError, coverUrl, load: loadRecentWorks } = useHomeRecentWorks()
+const { recentWorks, loading: recentWorksLoading, error: recentWorksError, sourceRevision: recentSourceRevision, coverUrl, load: loadRecentWorks } = useHomeRecentWorks()
+watch(recentSourceRevision, () => {
+  // Also retire the click while the async preview component is still loading.
+  recentPreview.value = null; recentPreviewSource.value = null; recentPreviewRequest.value++
+}, { flush: 'sync' })
 async function retryRecentWorks(event: MouseEvent) {
-  const origin = event.currentTarget
+  const origin = event.currentTarget, revision = recentSourceRevision.value
   const page = origin instanceof HTMLElement && document.activeElement === origin ? origin.closest('.home-page') : null
   await loadRecentWorks()
   await nextTick()
-  if (page?.isConnected && document.activeElement === document.body) {
+  if (revision === recentSourceRevision.value && page?.isConnected && document.activeElement === document.body) {
     page.querySelector<HTMLElement>('.home-resume .recent-card, .recent-empty-state .btn')?.focus({ preventScroll: true })
   }
 }
@@ -385,12 +389,12 @@ function initContinueDraft() {
 }
 
 watch(recentWorks, works => {
-    if (!initContinueDraft() && works[0]) {
-      const h = works[0]
-      continueLink.value = artworkContinueTarget(h)
-      continueHint.value = `最近保存「${h.sceneTitle || h.scene || '未命名'}」`
-    }
-})
+  if (initContinueDraft()) return
+  continueIconName.value = 'spark'
+  const h = works[0]
+  continueLink.value = h ? artworkContinueTarget(h) : { to: '/scene-explorer', label: '选场景，开始创作' }
+  continueHint.value = h ? `最近保存「${h.sceneTitle || h.scene || '未命名'}」` : ''
+}, { flush: 'sync' })
 
 onMounted(async () => {
   initContinueDraft()

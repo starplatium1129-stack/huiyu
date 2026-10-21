@@ -6,6 +6,7 @@ import type { MediaSource } from '@/platform/desktop/workspaceMediaSource'
 import { readWorkspaceMediaSource } from '@/platform/desktop/workspaceMediaRead'
 import type { ChatSearchConnection } from '@/config/chatSearch'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { chatResetRevision } from '@/utils/chatReset'
 import { loadCompanionToolPermissions, companionToolAllowed } from './useCompanionToolPermissions'
 
 /** Loaded only when a tool reads the reference already selected by its turn. */
@@ -42,10 +43,17 @@ export async function readCompanionImage(image: CompanionChatImage, repository: 
 
 /** Both image consumers hand off only after their chat message is durable. */
 export async function retainCompanionImageMessage(storage: { save(): boolean | undefined }, taskId?: string) {
+  const reset = chatResetRevision()
+  const checkReset = () => {
+    if (reset !== chatResetRevision()) throw new DOMException('聊天内容已清空，原图片请求身份已保留', 'AbortError')
+  }
   if (!storage.save()) throw new Error('图片对话尚未保存，原请求身份已保留')
   await flushProfileWrites()
+  // A reset can retire the queued chat write without rejecting its flush.
+  checkReset()
   if (taskId) {
     const { acknowledgeCompanionImage } = await import('./companionImageGeneration')
+    checkReset()
     await acknowledgeCompanionImage(taskId)
   }
 }

@@ -2,6 +2,14 @@ import { desktopRuntimeFetch, getDesktopRuntime } from '@/platform/desktop/runti
 import type { WorkspaceJobProgress } from './workspaceJobs'
 export type { WorkspaceJobProgress } from './workspaceJobs'
 
+/** A parsed HTTP rejection, distinct from a lost response or invalid envelope. */
+export class WorkspaceRequestError extends Error {
+  constructor(message: string, readonly code: unknown, readonly operationId: unknown, readonly status: number) {
+    super(message)
+    this.name = 'WorkspaceRequestError'
+  }
+}
+
 const encode = (value: unknown) => encodeURIComponent(String(value))
 function resource(command: Record<string, unknown>): [string, string] {
   const id = encode(command.id), operation = encode(command.operationId)
@@ -82,7 +90,7 @@ async function requestOnce<T>(command: Record<string, unknown>, signal?: AbortSi
     headers: { 'Content-Type': 'application/json' }, ...(method === 'GET' ? {} : { body: JSON.stringify({ ...command,
       ...(command.data instanceof Uint8Array ? { data: base64(command.data) } : {}), protocolVersion: 1, workspaceId: session.workspaceId }) }) })
   const payload = await response.json()
-  if (!response.ok) throw Object.assign(new Error(payload.error || payload.message || '工作区操作未完成'), { code: payload.code, operationId: command.operationId })
+  if (!response.ok) throw new WorkspaceRequestError(payload.error || payload.message || '工作区操作未完成', payload.code, command.operationId, response.status)
   if (payload.workspaceId !== session.workspaceId || payload.runtimeEpoch !== session.runtimeEpoch) throw new Error('工作区连接已变化，请重新读取')
   return payload.result as T
 }

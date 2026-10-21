@@ -51,6 +51,7 @@ export function useModelStudio(hostId: string) {
   let session: Live2DStageSession | null = null, model: Live2DModelHandle | null = null
   let generation = 0, abort: AbortController | null = null, releaseUrls: (() => void) | null = null
   let request: AbortController | null = null
+  let inspectionRequest: AbortController | null = null, disposed = false
   let baseline = new Map<string, number>()
   let loadTimer: ReturnType<typeof setTimeout> | undefined
   let playbackTimer: ReturnType<typeof setTimeout> | undefined
@@ -71,6 +72,7 @@ export function useModelStudio(hostId: string) {
   }
   function stopPreview() {
     generation++; clearTimeout(loadTimer); abort?.abort(); abort = null
+    inspectionRequest?.abort(); inspectionRequest = null
     stopTest()
     const previous = session; session = null; model = null; baseline.clear()
     try { previous?.destroy() } catch { /* Continue cleanup even when a renderer has already failed. */ } finally {
@@ -86,7 +88,7 @@ export function useModelStudio(hostId: string) {
     if (token !== generation) return
     stopPreview(); previewFailed.value = true; message.value = errorText(error)
   }
-  function dispose() { request?.abort(); request = null; stopPreview() }
+  function dispose() { disposed = true; request?.abort(); request = null; stopPreview() }
   const releaseMaintenance = registerMaintenanceParticipant(() => {
     if (busy.value || request) throw new Error('MODEL_BUSY')
     if (inspection.value && !saved.value) throw new Error('UNSAVED_MODEL_IMPORT')
@@ -138,18 +140,19 @@ export function useModelStudio(hostId: string) {
     for (const [index, binding] of [mouth, leftEye, rightEye].entries()) Object.assign(binding, bindings[index])
   }
   async function selectFiles(files: readonly File[]) {
+    if (disposed) return
     request?.abort(); request = null
     stopPreview(); saved.value = null; needsReload.value = false; inspection.value = null; restoreBindings()
-    const token = generation; busy.value = true
+    const token = generation, controller = new AbortController(); inspectionRequest = controller; busy.value = true
     try {
-      const result = await inspectModelFiles(files)
-      if (token !== generation) return
+      const result = await inspectModelFiles(files, controller.signal)
+      if (token !== generation || controller.signal.aborted) return
       inspection.value = result
       expressions.value = result.candidates.expressions.map(item => item.name)
       motions.value = result.candidates.motions
       message.value = result.valid ? '文件检查通过。加载预览后才能读取真实参数并校准。' : '文件检查未通过，请补齐或修正下列文件。'
-    } catch (error) { if (token === generation) message.value = errorText(error) }
-    finally { if (token === generation) busy.value = false }
+    } catch (error) { if (token === generation && !controller.signal.aborted) message.value = errorText(error) }
+    finally { if (token === generation) busy.value = false; if (inspectionRequest === controller) inspectionRequest = null }
   }
   async function openExisting(id: string) {
     request?.abort(); request = null

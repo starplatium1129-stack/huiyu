@@ -4,6 +4,7 @@ import { ApiClientError } from '@/api/client'
 import { pendingTaskRequests } from '@/stores/runtimeTaskState'
 import { getDesktopRuntime } from '@/platform/desktop/runtime'
 import { summarizeTask } from '@/utils/runtimeTaskSummary'
+import type { TaskBrowseVisit } from './useRuntimeTaskBrowser'
 
 // Task HTTP deliberately redacts internal errors. Explain known retry failures
 // locally instead of displaying private filesystem paths or a generic failure.
@@ -36,49 +37,50 @@ function retryMessage(error: unknown): string {
 }
 
 export function useMangaTaskRetry(options: {
-  operations: Ref<Map<string, string>>; feedback: Ref<string>; active: () => boolean
-  reveal: (task: TaskSummary) => Promise<void>; cardId: (id: string) => string
+  operations: Ref<Map<string, string>>; feedback: Ref<string>
+  beginReveal(): TaskBrowseVisit; cardId: (id: string) => string
 }) {
   const { operations, feedback } = options
   const locating = ref('')
   const epoch = () => getDesktopRuntime().bootstrap?.runtime?.workspace?.runtimeEpoch || ''
   let disposed = false
-  const reads = new AbortController()
-  onScopeDispose(() => { disposed = true; reads.abort() })
+  const lifetime = new AbortController()
+  onScopeDispose(() => { disposed = true; lifetime.abort() })
   const canRetry = (task: TaskSummary) => (task.kind === 'manga' || task.kind === 'lineart')
     && task.provider === 'native' && task.status === 'failed' && task.upstreamSettled
     && task.recoveryState === 'normal' && !task.cancelRequestedAt
   const pendingRetry = (task: TaskSummary) => pendingTaskRequests.value.some(request => request.key === `manga-retry:${task.taskId}`)
-  async function locate(task: TaskSummary) {
-    await options.reveal(task)
+  async function locate(task: TaskSummary, visit: TaskBrowseVisit) {
+    if (!await visit.reveal(task)) return
     await nextTick()
-    if (!disposed && options.active() && task.runtimeEpoch === epoch()) document.getElementById(options.cardId(task.taskId))?.focus()
+    if (!disposed && visit.current()) document.getElementById(options.cardId(task.taskId))?.focus()
   }
   async function retry(task: TaskSummary) {
     if (operations.value.has(task.taskId) || pendingRetry(task) || !canRetry(task)) return
-    const expected = epoch()
+    const expected = epoch(), visit = options.beginReveal()
     operations.value.set(task.taskId, 'retry'); feedback.value = ''
     try {
-      const child = await retryRuntimeMangaTask(task, reads.signal)
+      // Browsing away drops only presentation intent, never retry acceptance.
+      const child = await retryRuntimeMangaTask(task, lifetime.signal)
       if (disposed || epoch() !== expected) return
-      feedback.value = '已找到这条记录对应的重试任务，沿用已保存的原图和参数。原记录及结果保留。待主力机验证。'
-      await locate(summarizeTask(child))
+      if (visit.current()) feedback.value = '已找到这条记录对应的重试任务，沿用已保存的原图和参数。原记录及结果保留。待主力机验证。'
+      await locate(summarizeTask(child), visit)
       // Do not delay the accepted task's controls while updating its source link.
-      if (!disposed && epoch() === expected) void getRuntimeTaskSummary(task.taskId, reads.signal).catch(() => {})
+      if (!disposed && epoch() === expected) void getRuntimeTaskSummary(task.taskId, lifetime.signal).catch(() => {})
     } catch (error) {
-      if (!disposed && epoch() === expected) feedback.value = retryMessage(error)
+      if (!disposed && visit.current()) feedback.value = retryMessage(error)
     } finally { operations.value.delete(task.taskId) }
   }
   async function openRelated(id: string) {
     if (locating.value) return
-    const expected = epoch()
+    const visit = options.beginReveal()
     locating.value = id; feedback.value = ''
     try {
-      const task = await getRuntimeTaskSummary(id, reads.signal)
-      if (disposed || epoch() !== expected) return
-      await locate(task)
+      const task = await getRuntimeTaskSummary(id, AbortSignal.any([lifetime.signal, visit.signal]))
+      if (disposed || !visit.current()) return
+      await locate(task, visit)
     } catch (error) {
-      if (!disposed && epoch() === expected) feedback.value = retryMessage(error)
+      if (!disposed && visit.current()) feedback.value = retryMessage(error)
     } finally { locating.value = '' }
   }
   return { canRetry, pendingRetry, retry, openRelated, locating }

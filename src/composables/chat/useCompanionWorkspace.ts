@@ -69,7 +69,7 @@ export function useCompanionWorkspace() {
         desktopWindowVisible,
         dnd,
         inQuietHours,
-        handleSend,
+        handleSend: accepted => handleSend(undefined, undefined, accepted),
         isEditableTarget,
     });
     useCompanionPerformance({ activeChar, reminders: pendingReminders, stage: characterStageRef, voice, autoVoice, voiceActive,
@@ -80,7 +80,7 @@ export function useCompanionWorkspace() {
     });
     // ── 剪贴板浮卡 / 本地导入 / 看屏检视（已下沉 useCompanionClipboardImport）──
     // 剪贴板订阅、拖拽监听与浮卡 20s 计时器生命周期由 composable 自持。
-    const { importInputRef, clipboardCard, capturingScreen, onImportInputChange, dismissClipboardCard, acceptClipboardCard, onCaptureAndInspectScreen, inspectClipboardImage } = useCompanionClipboardImport({
+    const { importInputRef, importRecovery, openImportPicker, clipboardCard, capturingScreen, onImportInputChange, dismissClipboardCard, acceptClipboardCard, onCaptureAndInspectScreen, inspectClipboardImage } = useCompanionClipboardImport({
         activeChar,
         desktopBridge,
         listenClipboard: !desktopBridge,
@@ -484,7 +484,7 @@ chatListRef,
 characterStageRef,
         activeChar, desktopBridge, onBatteryPower, uiHidden, presence, immersive, presentationSuspended,
         currentCharacter, affectionScore, affectionInfo, switchCharacter, settingsOpen,
-        autoVoice, onAutoVoiceChange, behaviorEnabled, dnd, toggleDnd, importInputRef,
+        autoVoice, onAutoVoiceChange, behaviorEnabled, dnd, toggleDnd, importInputRef, importRecovery, openImportPicker,
         onImportInputChange, alwaysOnTop, togglePin, ignoreMouseEvents, toggleMouseEvents, enterImmersive,
         workspaceExists, workspaceRestartRequired, workspaceTooltip, workspaceOpen, volume, onVolumeChange, exitImmersive,
         isSpeaking, chatStatusText, statusKind, companionAutoLoad, desktopWindowBounds, storage,

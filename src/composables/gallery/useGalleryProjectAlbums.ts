@@ -25,8 +25,8 @@ export function useGalleryProjectAlbums(options: {
   projects: Readonly<Ref<readonly GalleryProject[]>>
   history: Readonly<Ref<readonly ArtworkRecord[]>>
   indexComplete: Readonly<Ref<boolean>>
-  thumbUrls: Readonly<Record<string, string>>
-  cardUrls: Readonly<Record<string, string>>
+  thumbUrls: Readonly<Ref<Readonly<Record<string, string>>>>
+  cardUrls: Readonly<Ref<Readonly<Record<string, string>>>>
   characterName?: (id: string) => string
 }) {
   const records = computed(() => new Map(options.history.value.map(item => [artworkIdKey(item.id), item])))
@@ -96,7 +96,7 @@ export function useGalleryProjectAlbums(options: {
     const covers = computed(() => {
       const result: GalleryProjectAlbum['covers'] = []
       for (const item of items) {
-        const cached = options.thumbUrls[item.id] || options.cardUrls[item.id] || ''
+        const cached = options.thumbUrls.value[item.id] || options.cardUrls.value[item.id] || ''
         const src = /^(blob:|data:image\/)/.test(cached) ? cached : safeImageUrl(cached)
         if (src) result.push({ id: item.id, src })
         if (result.length === 3) break

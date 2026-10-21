@@ -17,6 +17,7 @@ import { useToast } from '@/composables/useToast'
 import { snapshotHistoricalRecipe } from '@/utils/recipeComparison'
 import type { HistoryReuseSelection } from '@/types/historyReuse'
 import { applyHistoryParts } from './usePromptHistoryParts'
+import { ArtworkMutationUnconfirmedError, ArtworkTrashConflictError } from '@/application/artwork/artworkMutationOutcome'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -256,11 +257,15 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         onClick: () => {
           void pb.restoreHistoryEntry(entry.id).then(ok => {
             showToast(ok ? '已恢复' : '这条记录已不在回收站，无法恢复', ok ? 'success' : 'warning')
+          }).catch(error => {
+            showToast(error instanceof ArtworkTrashConflictError ? error.message
+              : error instanceof ArtworkMutationUnconfirmedError ? '恢复结果尚未确认，请重新读取作品册和回收站后核对'
+                : '恢复失败，请重试', 'warning')
           })
         },
       })
-    } catch {
-      pb.flash('删除失败，请重试')
+    } catch (error) {
+      pb.flash(error instanceof ArtworkTrashConflictError ? error.message : '删除失败，请重试')
     }
   }
 

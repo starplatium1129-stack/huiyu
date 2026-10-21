@@ -124,16 +124,13 @@ interface AnimaAutomaticInput {
   result: AnimaResult
   context: AnimaResultContext | null
   current: () => boolean
-  history: Partial<HistoryEntry>
-  story: string
-  scene: TempResultDeps['pb']['sceneId']
+  artwork: GeneratedArtworkInput
   autoSave: boolean
-  runtimeTaskId?: string
 }
 
 /** Automatic completion actions load only after a result arrives. */
 export async function handleAnimaResultAction(input: AnimaAutomaticInput, owner: ResultActionOwner) {
-  const { result, current, context: frozen, history, story, scene, autoSave, runtimeTaskId } = input
+  const { result, current, context: frozen, autoSave } = input
   const { pb, displayedResultHistoryId, captureTemp, releaseTemp } = owner
   if (!autoSave) {
     if (current()) displayedResultHistoryId.value = null
@@ -150,28 +147,7 @@ export async function handleAnimaResultAction(input: AnimaAutomaticInput, owner:
   }
   try {
     if (!result.blob.size) throw new Error('成片数据为空')
-    // initImage 非空即 inpaint 重绘：parent_id 回指来源条目，作品册对比才有
-    // 「重绘前 vs 重绘后」的真实语义（P1-14）。
-    const isInpaint = Boolean(result.metadata.initImage)
-    const saved = await owner.commitResult({
-      taskId: runtimeTaskId,
-      context: frozen,
-      blob: result.blob,
-      seed: result.metadata.seed,
-      negative: result.metadata.negative ?? '',
-      prompt: result.metadata.prompt,
-      ...history,
-      // F3：入册字段跟随出图时的冻结上下文，不随生成期间的表单改动漂移。
-      story: frozen?.story ?? story,
-      scene: frozen ? (frozen.sceneId ?? null) : scene,
-      hiresFix: result.metadata.hiresFix === true,
-      hiresScale: typeof result.metadata.hiresScale === 'number' ? result.metadata.hiresScale : undefined,
-      hiresDenoise: typeof result.metadata.hiresDenoise === 'number' ? result.metadata.hiresDenoise : undefined,
-      sketchControl: result.metadata.sketchControl,
-      sketchControlModel: result.metadata.sketchControlModel,
-      regions: result.metadata.regions,
-      parentId: isInpaint ? frozen?.parentId : undefined,
-    })
+    const saved = await owner.commitResult(input.artwork)
     if (!saved) throw new Error('作品册写入失败')
     if (current()) {
       displayedResultHistoryId.value = saved.id

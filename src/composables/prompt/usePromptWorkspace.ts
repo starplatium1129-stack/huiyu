@@ -10,6 +10,7 @@ import { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
 import { usePromptDraftRecovery } from './usePromptDraftRecovery';
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue';
+import { legacySdHistoryFields } from '@/utils/legacySdResult';
 
 import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge';
 import { useTempResult } from '@/composables/prompt/useTempResult';
@@ -56,7 +57,7 @@ export function usePromptWorkspace() {
     const hiresPreparing = ref(false);
     const compositionPreparing = ref(false), cancelCompositionPreparation = ref<(() => void) | null>(null);
     let hiresVersion = 0, disposed = false;
-    let interrogateVersion = 0, interrogateActive = true;
+    let interrogateActive = true;
     let restoreVisit = new AbortController();
     let restoreMediaSession = imageMediaSession();
     function renewRestoreVisit() { restoreVisit.abort(); restoreVisit = new AbortController(); }
@@ -68,7 +69,7 @@ export function usePromptWorkspace() {
     watch(runtimeResourceIdentity, refreshRestoreMedia, { flush: 'sync' });
     watch(() => JSON.stringify([route.path, route.query]), renewRestoreVisit, { flush: 'sync' });
     onActivated(() => { interrogateActive = true; if (restoreVisit.signal.aborted) restoreVisit = new AbortController(); });
-    onDeactivated(() => { interrogateActive = false; interrogateVersion++; restoreVisit.abort(); });
+    onDeactivated(() => { interrogateActive = false; restoreVisit.abort(); });
     onScopeDispose(() => { disposed = true; hiresVersion++; hiresPreparing.value = false; restoreVisit.abort(); stopRestoreRuntime(); }, true);
     function getRestoreOwner(): ResultRestoreOwner {
         const visit = restoreVisit, session = imageMediaSession();
@@ -206,10 +207,9 @@ export function usePromptWorkspace() {
     /** 克隆 URL 前冻结当前成片元数据，异步期间的表单变化不影响快照。 */
     function buildResultSnapshot(persistentUrl: string): ResultSnapshot { return snapshotResult({ animaState, drawEngine, displayResultSeed, pb, sdSize, sd }, persistentUrl); }
     // ── Actions ───────────────────────────────────────────────────────────────
-    async function handleInterrogateResult(result: unknown) {
-        if (disposed || !interrogateActive) return;
-        const version = ++interrogateVersion;
-        const current = () => !disposed && interrogateActive && version === interrogateVersion;
+    async function handleInterrogateResult(result: unknown, requestCurrent: () => boolean) {
+        const current = () => !disposed && interrogateActive && requestCurrent();
+        if (!current()) return;
         const { applyInterrogateResult } = await import('@/composables/prompt/applyInterrogateResult');
         if (current()) await applyInterrogateResult(pb, result, current);
     }
@@ -230,13 +230,9 @@ export function usePromptWorkspace() {
      */
     // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
     // 已接收的 SD 任务由队列与历史批次共用观察路径，不再发起新生成。
-    const { sdErrorReport, historyGenerationFields, runJob, sdQueue, restoredCount } = usePromptSdQueue({
+    const { sdErrorReport, runJob, sdQueue, restoredCount } = usePromptSdQueue({
         pb,
         sd,
-        sdSize,
-        drawEngine,
-        modelProfile,
-        animaState,
         setResultContext: (ctx) => { resultContext.value = ctx; },
         onGenerated: url => { resultRevealUrl.value = url; },
     });
@@ -254,7 +250,10 @@ export function usePromptWorkspace() {
         generationBusy,
         livePrompt,
         negativePrompt: effectiveNegative,
-        historyGenerationFields,
+        legacyResultFields: () => legacySdHistoryFields({
+            params: pb.sdParams, model: pb.sdModelName || sd.checkpoint.value || '', profile: modelProfile.value?.id || '',
+            size: sdSize.value, provider: sd.provider.value || 'webui', loras: sd.lastLoras.value,
+        }),
         resultContext,
         autoSaveToGallery,
         setDrawEngine,

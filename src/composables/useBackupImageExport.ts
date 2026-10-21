@@ -1,6 +1,7 @@
 import { onScopeDispose, ref, type Ref } from 'vue'
 import type { BackupExportProgress } from '@/utils/backupExport'
 import { buildArtworkFileName } from '@/utils/artworkFileName'
+import { artworkTimestamp } from '@/types/artwork'
 import { readWebBackupImages, readWebBackupImage } from '../platform/web/profileBackupSource'
 import { captureBackupSource } from './backupSource'
 
@@ -46,7 +47,7 @@ export function useBackupImageExport({ busy, desktopActive, onFlash }: BackupIma
       check()
       const records = desktop
         ? (await repository.readHistory()).filter(item => item.image_id).map(item => ({ id: item.image_id!, blob: null,
-          name: String(item.title || ''), created_at: Number(item.timestamp) || Date.now() }))
+          name: String(item.title || ''), created_at: artworkTimestamp(item) }))
         : await readWebBackupImages()
       check()
       imageExportProgress.value = { completed: 0, total: records.length }

@@ -1,18 +1,23 @@
-import { reactive } from 'vue'
+import { shallowRef } from 'vue'
 
 const CACHE_LIMIT = 96
 const CACHE_BYTES = 8 * 1024 * 1024
 
 /** Derived DataURLs only. Originals and viewer URLs keep their existing owners. */
 export function useGalleryThumbnails(protectedIds: () => ReadonlySet<string>) {
-  const urls = reactive<Record<string, string>>({})
+  // Raw null-prototype snapshots support even Vue-reserved legacy IDs and
+  // publish a new identity to child stages receiving the whole URL dictionary.
+  const urls = shallowRef<Record<string, string>>(Object.create(null))
   const order = new Map<string, number>()
   let bytes = 0
   function forget(id: string | number) {
     const key = String(id)
     bytes -= order.get(key) ?? 0
     order.delete(key)
-    delete urls[key]
+    if (Object.hasOwn(urls.value, key)) {
+      const next = Object.assign(Object.create(null), urls.value)
+      delete next[key]; urls.value = next
+    }
   }
   function trim() {
     const protectedKeys = protectedIds()
@@ -27,7 +32,8 @@ export function useGalleryThumbnails(protectedIds: () => ReadonlySet<string>) {
     const key = String(id), size = (key.length + dataUrl.length) * 2
     forget(key)
     if (size > CACHE_BYTES) return
-    urls[key] = dataUrl; order.set(key, size); bytes += size
+    urls.value = Object.assign(Object.create(null), urls.value, { [key]: dataUrl })
+    order.set(key, size); bytes += size
     trim()
   }
   function retain(ids: ReadonlySet<string>) {

@@ -59,6 +59,10 @@ export function useShotWorkspace(props: {
     const sceneFillId = ref('');
     const shots = ref<ShotDraft[]>([]);
     const frameInputs = ref<HTMLInputElement[]>([]);
+    type FramePicker = { shot: ShotDraft; visit: number; revision: number; repository: typeof artworkRepository; mediaSession: string;
+        previous: Array<string | undefined>; invalid: boolean; release: () => void };
+    const framePickers = new Map<HTMLInputElement, FramePicker>();
+    function invalidateFramePickers() { for (const selected of framePickers.values()) selected.invalid = true; }
     const frameRequests = new Map<ShotDraft, AbortController>();
     const frameUploads = ref(0);
     function cancelFrameRequests() { for (const request of frameRequests.values()) request.abort(); }
@@ -67,7 +71,7 @@ export function useShotWorkspace(props: {
     function refreshFramesSession() {
         const next = imageMediaSession();
         if (framesSession === next) return;
-        framesSession = next; frameRevision.value++; cancelFrameRequests();
+        framesSession = next; frameRevision.value++; invalidateFramePickers(); cancelFrameRequests();
         shots.value.forEach(shot => {
             if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl);
             shot.imageUrl = ''; shot.imageName = '';
@@ -75,7 +79,7 @@ export function useShotWorkspace(props: {
     }
     const stopFramesRuntime = onDesktopRuntime(refreshFramesSession);
     watch(imageMediaSession, refreshFramesSession, { flush: 'sync' });
-    onDeactivated(cancelFrameRequests);
+    onDeactivated(() => { invalidateFramePickers(); cancelFrameRequests(); });
     watch(() => [...shots.value], next => {
         for (const [shot, request] of frameRequests) if (!next.includes(shot)) request.abort();
     });
@@ -355,21 +359,34 @@ export function useShotWorkspace(props: {
         sceneFillId.value = '';
     });
     function pickFrame(index: number) {
-        frameInputs.value[index]?.click();
+        const shot = shots.value[index], input = frameInputs.value[index];
+        if (!shot || !input || !workspaceCurrent(workspaceVisit) || batchActive.value || submitting.value) return;
+        // A native change has no request ID: do not reuse its input before change/cancel settles.
+        if (framePickers.has(input)) { batchError.value = '请先完成或取消上一次文件选择，再重新选择首帧'; return; }
+        invalidateFramePickers();
+        let stopWatch = () => {};
+        const selected: FramePicker = { shot, visit: workspaceVisit, revision: frameRevision.value, repository: artworkRepository, mediaSession: imageMediaSession(),
+            previous: [shot.imageId, shot.imageName, shot.imageUrl], invalid: false,
+            release() { stopWatch(); input.removeEventListener('cancel', selected.release); if (framePickers.get(input) === selected) framePickers.delete(input); } };
+        stopWatch = watch(() => [shots.value.includes(shot), shot.imageId, shot.imageName, shot.imageUrl, batchActive.value, submitting.value],
+            () => { selected.invalid = true; }, { flush: 'sync' });
+        framePickers.set(input, selected);
+        input.value = ''; input.addEventListener('cancel', selected.release, { once: true });
+        try { input.click(); } catch { selected.release(); batchError.value = '文件选择未能打开，请重试'; }
     }
     async function onFramePicked(index: number, event: Event) {
-        const input = event.target as HTMLInputElement;
-        const file = input.files?.[0], shot = shots.value[index];
-        input.value = '';
-        if (!file || !shot || !workspaceCurrent(workspaceVisit)) return;
+        const input = event.target as HTMLInputElement, selected = framePickers.get(input);
+        const file = input.files?.[0]; input.value = ''; selected?.release();
+        if (!file || !selected || !workspaceCurrent(selected.visit)) return;
+        const { shot, repository, mediaSession, revision, visit, previous } = selected;
+        const sameSource = () => revision === frameRevision.value && repository === artworkRepository && mediaSession === imageMediaSession();
+        if (selected.invalid || shots.value[index] !== shot || batchActive.value || submitting.value || !sameSource()
+            || ![shot.imageId, shot.imageName, shot.imageUrl].every((value, i) => value === previous[i])) { batchError.value = '镜头、首帧或连接已变化，请重新选择首帧'; return; }
         if (file.size > 20 * 1024 * 1024) { batchError.value = '首帧图片需 ≤20MB'; return; }
         frameRequests.get(shot)?.abort();
         const controller = new AbortController();
         frameRequests.set(shot, controller);
-        const repository = artworkRepository, mediaSession = imageMediaSession(), revision = frameRevision.value, visit = workspaceVisit;
-        const sameSource = () => revision === frameRevision.value && repository === artworkRepository && mediaSession === imageMediaSession();
-        const previous = [shot.imageId, shot.imageName, shot.imageUrl];
-        const current = () => workspaceCurrent(visit) && !controller.signal.aborted && sameSource() && frameRequests.get(shot) === controller
+        const current = () => workspaceCurrent(visit) && !batchActive.value && !submitting.value && !controller.signal.aborted && sameSource() && frameRequests.get(shot) === controller
             && shots.value.includes(shot) && [shot.imageId, shot.imageName, shot.imageUrl].every((value, i) => value === previous[i]);
         frameUploads.value++;
         try {
@@ -479,6 +496,7 @@ export function useShotWorkspace(props: {
     });
     onBeforeUnmount(() => {
         workspaceDisposed = true; workspaceVisit++; workspaceAbort.abort(); stopFramesRuntime();
+        for (const selected of framePickers.values()) selected.release();
         cancelFrameRequests(); stopStoryboard();
         routeLoad?.abort(); routeActive.value = false;
         // 批量轮询与 disposed 标记归 useShotBatchMachine；这里只释镜头首帧 blob URL。

@@ -14,11 +14,11 @@
             <p class="generated-scene-note">保留这张成片的生成记录。以后选择场景时仍会按当前规则编译，画面可能有所不同。</p>
             <p class="generated-scene-note">角色：{{ characterName }}<span v-if="source.recipe.outfitId"> · 服装：{{ outfitName }}</span> · {{ engineName }}</p>
             <template v-if="!savedId">
-              <label class="form-group"><span class="field-label">场景名称</span><input v-model="title" class="input" maxlength="120" :disabled="saving" placeholder="例如：窗边的午后" /></label>
-              <label class="form-group"><span class="field-label">画面说明</span><textarea v-model="story" class="input" rows="3" :disabled="saving" placeholder="用自己的话说说这张图的场景，不需要写代码或日文。" /></label>
-              <div class="form-group"><StudioSelect v-model="rating" label="确认画面分级" :disabled="saving" :options="ratingOptions" /></div>
-              <div v-if="popular" class="form-group"><StudioSelect v-model="composition" label="画面构图" :disabled="saving" :options="compositionOptions" /></div>
-              <label class="generated-scene-check"><input v-model="attachImage" type="checkbox" :disabled="saving" />同时把这张图保存为场景样张</label>
+              <label class="form-group"><span class="field-label">场景名称</span><input v-model="title" class="input" maxlength="120" :disabled="saving || !!pendingId" placeholder="例如：窗边的午后" /></label>
+              <label class="form-group"><span class="field-label">画面说明</span><textarea v-model="story" class="input" rows="3" :disabled="saving || !!pendingId" placeholder="用自己的话说说这张图的场景，不需要写代码或日文。" /></label>
+              <div class="form-group"><StudioSelect v-model="rating" label="确认画面分级" :disabled="saving || !!pendingId" :options="ratingOptions" /></div>
+              <div v-if="popular" class="form-group"><StudioSelect v-model="composition" label="画面构图" :disabled="saving || !!pendingId" :options="compositionOptions" /></div>
+              <label class="generated-scene-check"><input v-model="attachImage" type="checkbox" :disabled="saving || !!pendingId" />同时把这张图保存为场景样张</label>
             </template>
             <p v-else class="generated-scene-success" role="status">「{{ title }}」已保存。可在内容维护中继续编辑，也可回到创作页选择它。</p>
           </div>
@@ -32,16 +32,18 @@
         </details>
         <p v-if="loading" class="generated-scene-note" role="status">正在读取场景库…</p>
         <p v-if="error" class="generated-scene-error" role="alert">{{ error }}</p>
+        <p v-if="pendingId && !saving" class="generated-scene-note" role="status">保存结果待核对，原编号：{{ pendingId }}。本窗口保留原提交内容，只核对，不重新提交。</p>
         <p v-if="imageError" class="generated-scene-error" role="alert">{{ imageError }}</p>
-        <div v-if="preview && !savedId" class="generated-scene-review" role="status">检查完成：新增 1 个{{ popular ? '角色场景' : '场景' }}，不会修改已有场景。保存后可在内容维护中找到。结构检查不代表已验证再次出图效果。</div>
+        <div v-if="preview && !savedId && !pendingId" class="generated-scene-review" role="status">检查完成：新增 1 个{{ popular ? '角色场景' : '场景' }}，不会修改已有场景。保存后可在内容维护中找到。结构检查不代表已验证再次出图效果。</div>
         </div>
         <footer class="modal-actions">
           <button v-if="!baseline && !loading && !savedId" class="btn btn-ghost" type="button" @click="load">重新读取</button>
-          <button v-if="imageError" class="btn btn-ghost" type="button" :disabled="saving" @click="saveImage">重试保存样张</button>
+          <button v-if="imageError" class="btn btn-ghost" type="button" :disabled="saving" @click="saveImage">重新提交样张</button>
           <button v-if="savedId" class="btn btn-primary" type="button" :disabled="saving" @click="openMaintenance">去内容维护</button>
+          <button v-else-if="pendingId" class="btn btn-primary" type="button" :disabled="saving" @click="reconcile">{{ saving ? '正在处理…' : '核对原保存结果' }}</button>
           <button v-else-if="preview" class="btn btn-primary" type="button" :disabled="saving" @click="save">{{ saving ? '正在保存…' : '确认保存场景' }}</button>
           <button v-else class="btn btn-primary" type="button" :disabled="!canReview" @click="review">{{ previewing ? '正在检查…' : '检查并继续' }}</button>
-          <button class="btn btn-ghost" type="button" :disabled="saving" @click="close">{{ savedId ? '完成' : '取消' }}</button>
+          <button class="btn btn-ghost" type="button" :disabled="saving" @click="close">{{ savedId ? '完成' : pendingId ? '关闭' : '取消' }}</button>
         </footer>
       </section>
     </div>
@@ -65,19 +67,25 @@ import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipan
 const props = defineProps<{ source: GeneratedSceneCapture }>()
 const emit = defineEmits<{ close: [] }>()
 const { title, story, rating, composition, compositionEdited, attachImage, popular, loading, saving, previewing, error,
-  imageError, savedId, baseline, preview, canReview, load, review, save, saveImage } = useGeneratedSceneSave(props.source)
+  imageError, savedId, baseline, preview, pendingId, canReview, load, review, save, reconcile, saveImage } = useGeneratedSceneSave(props.source)
 const dialog = ref<HTMLElement | null>(null)
 const router = useRouter(), store = useSceneStore()
 const original = JSON.stringify([title.value, story.value, rating.value])
 const dirty = () => !savedId.value && (JSON.stringify([title.value, story.value, rating.value]) !== original
   || compositionEdited.value || !attachImage.value)
 const releaseMaintenance = registerMaintenanceParticipant(() => {
-  if (saving.value || dirty()) throw new Error('UNSAVED_SCENE_FORM')
+  if (saving.value || pendingId.value || dirty()) throw new Error('UNSAVED_SCENE_FORM')
 })
 onBeforeUnmount(releaseMaintenance)
 async function canClose() {
   if (saving.value) return false
-  return !dirty() || await confirmAction({ title: '放弃这次新增场景？', message: '已填写的信息尚未保存，原来的成片不受影响。', confirmLabel: '放弃新增' })
+  const unresolvedId = pendingId.value
+  if (unresolvedId) {
+    const accepted = await confirmAction({ title: '关闭尚未确认的保存？', message: `原编号：${unresolvedId}。关闭不会撤销可能已经完成的保存，并会丢失本窗口的核对信息。请记下编号，到原内容库确认；重新打开再保存可能产生重复场景。`, confirmLabel: '仍然关闭' })
+    return accepted && !saving.value && pendingId.value === unresolvedId
+  }
+  const accepted = !dirty() || await confirmAction({ title: '放弃这次新增场景？', message: '已填写的信息尚未保存，原来的成片不受影响。', confirmLabel: '放弃新增' })
+  return accepted && !saving.value && !pendingId.value
 }
 async function close() {
   if (await canClose()) emit('close')

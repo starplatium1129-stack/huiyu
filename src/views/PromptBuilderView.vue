@@ -119,7 +119,7 @@
           @saveScene="captureScene"
           @openCompare="compareOpen = true"
           @restoreStashed="onRestoreStashed"
-          @interrogateResult="handleInterrogateResult"
+          :apply-interrogate-result="handleInterrogateResult"
           @interrogateError="handleInterrogateError"
         /><template #fallback>
           <section class="stage-slot" aria-label="绘制画布" aria-busy="true">

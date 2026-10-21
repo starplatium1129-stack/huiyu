@@ -6,6 +6,7 @@
       <header class="companion-dialogue-heading" @mousedown="startWindowDrag">
         <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
         <div class="companion-dialogue-controls">
+          <CompanionImportRecoveryDialog :recovery="attachments.importRecovery" :character-id="activeChar" compact />
           <StudioTooltip :content="historyOpen ? '回到最近消息' : '回看对话'">
             <button type="button" :aria-label="historyOpen ? '回到最近消息' : '回看对话'"
               :aria-expanded="historyOpen" aria-controls="companion-dialogue-history"
@@ -134,6 +135,7 @@ import ChatMessageActions from '@/components/ChatMessageActions.vue'
 import ChatReplyVariants from '@/components/ChatReplyVariants.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
+import CompanionImportRecoveryDialog from '@/components/CompanionImportRecoveryDialog.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import { useCompanionDialogueSurface } from '@/composables/chat/useCompanionDialogueSurface'

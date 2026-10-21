@@ -67,10 +67,10 @@
     <GalleryOrganization v-if="visitedPanels.organization" :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
     </div>
 
-    <AsyncPanel v-if="visitedPanels.comparison" v-show="compareOpen" :loader="loadCandidateCompare" label="作品对比" v-slot="{ component }"><component :is="component" :open="compareOpen" :items="compareItems" @close="closeComparison" @changed="loadGalleryStorage" /></AsyncPanel>
+    <AsyncPanel v-if="visitedPanels.comparison" v-show="compareOpen" :loader="loadCandidateCompare" label="作品对比" v-slot="{ component }"><component :is="component" :open="compareOpen" :items="compareItems" :can-mark="canMarkComparison" :mark="saveComparisonMarks" :retry-marks="retryComparisonMarks" :marks-message="comparisonMarksMessage" :marks-reading="comparisonMarksReading" @close="closeComparison" /></AsyncPanel>
     <section aria-live="polite">
-      <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
-      <GalleryTrashWall
+      <!-- Keep the trash read slots through close/reopen; deactivation releases queued reads and previews. -->
+      <KeepAlive><GalleryTrashWall
         v-if="trashMode"
         :column-count="columnCount"
         :trash-items="trashItems"
@@ -79,8 +79,8 @@
         :trash-loading="trashLoading" :trash-error="trashError" @reload="loadTrash"
         @clear="clearTrash"
         @restore="restoreTrashItem"
-      />
-      <template v-else>
+      /></KeepAlive>
+      <template v-if="!trashMode">
       <ArchiveStatePanel
         v-if="galleryLoading"
         class="gallery-loading-wall"
@@ -132,7 +132,7 @@
                 :confirming-delete="pendingDeleteId === item.id" :deleting="pendingDeleteId === item.id && deleting"
                 @select="toggleSelect(item.id, $event)" @open="openFromCard(indexOf(item), $event)"
                 @favorite="toggleFavorite(item)" @request-delete="pendingDeleteId = item.id" @cancel-delete="pendingDeleteId = null"
-                @delete="confirmDelete(item)" @measure="measure(item, $event)" @load="onHdLoad(item, $event)"
+                @delete="confirmDelete(item)" @measure="measure(item, $event)" @load="onHdLoad(item, $event)" @retry="retryCardImage(item)"
               />
               </template>
             </GalleryVirtualColumn>
@@ -375,11 +375,11 @@ restoreTrashItem,
 clearTrash, trashClearing, trashLoading, trashError, loadTrash,
 galleryLoading,
 galleryIndexLoading,
-galleryError,
+galleryError, canMarkComparison, saveComparisonMarks, retryComparisonMarks, comparisonMarksMessage, comparisonMarksReading,
 history,
 resetGalleryFilters,
 masonryGroups,
-scheduleWallScan,
+scheduleWallScan, retryCardImage,
 columnCount,
 pendingDeleteId,
 ratioOf,

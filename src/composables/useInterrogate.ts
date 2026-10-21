@@ -6,11 +6,11 @@ import { getCurrentScope, getCurrentInstance, onActivated, onDeactivated, onScop
 import type { InterrogateMode, InterrogateResult } from '../api/interrogateResult.ts'
 export type { InterrogateResult } from '../api/interrogateResult.ts';
 
-// Both mounted entry points write the same reference draft. The latest request
-// owns that draft, while separate application roots remain independent.
+// Requests write the same reference draft within an application. The latest
+// request owns it, while separate application roots remain independent.
 const activeRequests = new WeakMap<object, () => void>()
 
-export function useInterrogate() {
+export function useInterrogate(applyResult: (result: InterrogateResult, current: () => boolean) => Promise<void>) {
   const readiness = useInterrogateReadiness()
   const appContext = getCurrentInstance()?.appContext
   const busy = ref(false)
@@ -19,8 +19,9 @@ export function useInterrogate() {
 
   const cancelled = ref(false)
   let activeController: AbortController | null = null
-  let disposed = false, viewActive = true
+  let disposed = false, viewActive = true, generation = 0
   function cancel() {
+    generation++
     if (!activeController) return
     const controller = activeController
     activeController = null
@@ -43,6 +44,11 @@ export function useInterrogate() {
     error.value = null
     lastResult.value = null
     const controller = new AbortController()
+    const token = ++generation
+    // Successful applications retain their identity for delayed notices; the
+    // next request or cancellation retires it even after controller cleanup.
+    const current = () => !disposed && viewActive && token === generation && !controller.signal.aborted
+    let applying = false
     activeController = controller
     if (appContext) activeRequests.set(appContext, cancel)
     const timeout = setTimeout(() => controller.abort(), 120_000)
@@ -83,6 +89,9 @@ export function useInterrogate() {
       const data = await interrogateImageFile(file, controller.signal, mode, threshold)
       if (activeController !== controller) return null
       controller.signal.throwIfAborted()
+      applying = true
+      await abortableTask(() => applyResult(data, current), controller.signal)
+      if (!current()) return null
       lastResult.value = data
       return data
     } catch (e: unknown) {
@@ -91,7 +100,9 @@ export function useInterrogate() {
       // "Failed to fetch"，同样属于「看不懂」，在这里一并换成可读文案。
       const isNetwork = e instanceof TypeError
       const message = controller.signal.aborted
-        ? '反推超时，请重试'
+        ? applying ? '反推结果写回超时，请重试' : '反推超时，请重试'
+        : applying
+        ? '反推结果未能写回工作台，请重试'
         : isNetwork
         ? '无法连接反推服务，请重试'
         : (e instanceof Error ? e.message : String(e))

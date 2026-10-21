@@ -1,6 +1,6 @@
 use super::{
     config::Settings,
-    queue::{Queue, cancelled, remaining, translation_timeout},
+    queue::{Permit, Queue, cancelled, remaining, translation_timeout},
 };
 use crate::{
     error::{ApiError, Result},
@@ -222,15 +222,16 @@ impl Translation {
         if let Some(value) = self.cached(&text) {
             return Ok(value);
         }
-        let _permit = self
-            .queue
-            .enter(
-                self.queue.reserve()?,
-                &self.cancel,
-                deadline,
-                translation_timeout,
-            )
-            .await?;
+        let permit = Arc::new(
+            self.queue
+                .enter(
+                    self.queue.reserve()?,
+                    &self.cancel,
+                    deadline,
+                    translation_timeout,
+                )
+                .await?,
+        );
         // A queued duplicate can use work completed while it waited.
         if let Some(value) = self.cached(&text) {
             return Ok(value);
@@ -270,13 +271,15 @@ impl Translation {
                 if self.cancel.is_cancelled() {
                     return Err(cancelled());
                 }
-                self.legacy(&text, deadline).await.map_err(|_| {
-                    if deadline <= Deadline::now() {
-                        translation_timeout()
-                    } else {
-                        error
-                    }
-                })?
+                self.legacy(&text, deadline, permit.clone())
+                    .await
+                    .map_err(|_| {
+                        if deadline <= Deadline::now() {
+                            translation_timeout()
+                        } else {
+                            error
+                        }
+                    })?
             }
         };
         let result = Arc::new(result);
@@ -300,7 +303,7 @@ impl Translation {
             .find(|(key, _)| key == text)
             .map(|(_, value)| value.clone())
     }
-    async fn legacy(&self, text: &str, deadline: Deadline) -> Result<Value> {
+    async fn legacy(&self, text: &str, deadline: Deadline, permit: Arc<Permit>) -> Result<Value> {
         let deadline =
             Deadline::now() + remaining(deadline, Duration::from_secs(180), translation_timeout)?;
         let mut command = Command::new(&self.settings.python);
@@ -310,9 +313,11 @@ impl Translation {
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
+        // Keep serial admission and its queue slot until the child is reaped,
+        // even when the caller's deadline drops this future during cleanup.
         let child = self
             .processes
-            .spawn(&mut command)
+            .spawn_with_permit(&mut command, permit.serial.clone(), Some(permit))
             .map_err(translation_process_error)?;
         let (stdout, stderr) = child.take_output();
         let mut input = child

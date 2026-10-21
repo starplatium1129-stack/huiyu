@@ -11,6 +11,9 @@ import type { HomeHeroCharacter } from '@/types/api'
 import { confirmAction } from '@/composables/useConfirm'
 import { useHomeHeroes, type HeroEntry } from '@/composables/useHomeHeroes'
 import { useShowcaseAssets } from './useShowcaseAssets'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
 export interface ShowcaseSceneItem {
   id: string
@@ -82,20 +85,45 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
   const { heroes, reload: loadHomeHeroes } = useHomeHeroes(() => mode() === 'covers')
   const homeHeroes = computed(() => Object.values(heroes.value))
   let alive = true, feedbackRevision = 0
+  let selection = new AbortController()
+  const newSource = (): { session: string; controller: AbortController; retiredFeedback?: number } =>
+    ({ session: imageMediaSession(), controller: new AbortController() })
+  let source = newSource()
+  const ownsSource = (expected: typeof source) => alive && source === expected && !expected.controller.signal.aborted
+    && expected.session === imageMediaSession()
+  let samplePicker: ReturnType<typeof captureIntent> | undefined, heroPicker: ReturnType<typeof captureIntent> | undefined
   watch(() => [mode(), mode() === 'samples' ? selectedImageId.value : selectedHeroId.value], () => {
+    selection.abort(); selection = new AbortController()
+    samplePicker = undefined; heroPicker = undefined
     feedbackRevision++
     showcaseError.value = false
     showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
   }, { flush: 'sync' })
-  function feedbackOwner(targetMode: 'samples' | 'covers', id: string) {
-    const revision = feedbackRevision
-    return () => alive && revision === feedbackRevision && mode() === targetMode
+  function captureIntent(targetMode: 'samples' | 'covers') {
+    const expected = source, revision = feedbackRevision
+    const id = targetMode === 'samples' ? selectedImageId.value : selectedHeroId.value
+    const current = () => ownsSource(expected) && revision === feedbackRevision && mode() === targetMode
       && (targetMode === 'samples' ? selectedImageId.value : selectedHeroId.value) === id
+    return { source: expected, id, current, signal: AbortSignal.any([expected.controller.signal, selection.signal]) }
   }
+  function syncSource() {
+    if (source.session === imageMediaSession()) return
+    const previous = source
+    previous.controller.abort(); source = newSource()
+    samplePicker = undefined; heroPicker = undefined
+    selectedImageId.value = ''; selectedImageTitle.value = ''
+    selectedHeroId.value = ''; selectedHeroTitle.value = ''
+    previous.retiredFeedback = feedbackRevision
+    showcaseError.value = true
+    showcaseFeedback.value = '连接已变化，请重新选择目标和图片；已发出的保存需回到原来源核对'
+  }
+  const stopRuntime = onDesktopRuntime(syncSource)
+  const stopResource = watch(runtimeResourceIdentity, syncSource, { flush: 'sync' })
   let heroRequest: AbortController | undefined
   let uploadRequest: AbortController | undefined
   onScopeDispose(() => {
     alive = false
+    stopRuntime(); stopResource(); source.controller.abort(); selection.abort()
     heroRequest?.abort()
     uploadRequest?.abort()
   })
@@ -115,13 +143,21 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
     showcaseError.value = true
     showcaseFeedback.value = '该场景还没有样张，可直接上传一张。'
   }
-  function pickShowcase() { showcaseFileEl.value?.click() }
+  function pickShowcase() {
+    if (!alive || mode() !== 'samples' || !selectedImageId.value || uploadBusy.value || !showcaseFileEl.value) return
+    samplePicker = captureIntent('samples')
+    showcaseFileEl.value.click()
+  }
 
   function previewHero(hero: HeroEntry) {
     selectedHeroId.value = hero.id
     selectedHeroTitle.value = hero.title
   }
-  function pickHero() { heroFileEl.value?.click() }
+  function pickHero() {
+    if (!alive || mode() !== 'covers' || !selectedHeroId.value || uploadBusy.value || !heroFileEl.value) return
+    heroPicker = captureIntent('covers')
+    heroFileEl.value.click()
+  }
 
   function uploadErrorMessage(error: unknown, fallback: string): string {
     const failure = maintenanceFailure(error)
@@ -131,11 +167,30 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
       : message
   }
 
-  async function refreshSavedHero(message: string, current: () => boolean) {
-    if (!alive) return
-    if (current()) showcaseFeedback.value = message
+  function savedFeedback(message: string, intent: ReturnType<typeof captureIntent>) {
+    if (!alive) return false
+    if (!ownsSource(intent.source)) {
+      if (intent.source.retiredFeedback === feedbackRevision) {
+        showcaseError.value = false
+        showcaseFeedback.value = `${message}（原来源）；连接已变化，请回到原来源核对`
+      }
+      return false
+    }
+    if (intent.current()) showcaseFeedback.value = message
+    return true
+  }
+  function failedFeedback(cause: unknown, fallback: string, intent: ReturnType<typeof captureIntent>, posted: boolean) {
+    if (intent.current()) {
+      showcaseError.value = true; showcaseFeedback.value = fallback + uploadErrorMessage(cause, '请确认通过本机控制面板打开网站')
+    } else if (alive && posted && !ownsSource(intent.source) && intent.source.retiredFeedback === feedbackRevision) {
+      showcaseError.value = true
+      showcaseFeedback.value = '原来源的图片保存结果尚未确认，请回到原来源核对；不会自动重试'
+    }
+  }
+  async function refreshSavedHero(message: string, intent: ReturnType<typeof captureIntent>) {
+    if (!savedFeedback(message, intent)) return
     try { await loadHomeHeroes() } catch (error) {
-      if (!current()) return
+      if (!intent.current()) return
       showcaseError.value = true
       showcaseFeedback.value = `${message}，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
     }
@@ -143,27 +198,27 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
 
   async function resetHero() {
     if (!alive || mode() !== 'covers' || !selectedHeroId.value || uploadBusy.value) return
-    const character = selectedHeroId.value, current = feedbackOwner('covers', character)
-    if (!(await confirmAction({ title: `恢复${selectedHeroTitle.value}的内置首页图？`, danger: false }))) return
-    if (!current() || uploadBusy.value) return
+    const intent = captureIntent('covers'), character = selectedHeroId.value
+    if (!(await confirmAction({ title: `恢复${selectedHeroTitle.value}的内置首页图？`, danger: false, signal: intent.signal }))) return
+    if (!intent.current() || uploadBusy.value) return
     uploadBusy.value = true
     showcaseError.value = false
     heroRequest = new AbortController()
     try {
       const data = await maintenanceApi.resetHomeHero(character, { signal: heroRequest.signal })
-      await refreshSavedHero(data.message || '已恢复内置图', current)
+      await refreshSavedHero(data.message || '已恢复内置图', intent)
     } catch (err) {
-      if (!current()) return
-      showcaseError.value = true
-      showcaseFeedback.value = '未能恢复：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
+      failedFeedback(err, '未能恢复：', intent, true)
     } finally { uploadBusy.value = false; heroRequest = undefined }
   }
 
   async function onShowcasePicked(e: Event) {
     const input = e.target as HTMLInputElement
-    const file = input.files?.[0]
-    if (!alive || mode() !== 'samples' || !file || !selectedImageId.value || uploadBusy.value) return
-    const id = selectedImageId.value, current = feedbackOwner('samples', id)
+    const file = input.files?.[0], intent = samplePicker
+    samplePicker = undefined; input.value = ''
+    if (!file || !intent?.current() || uploadBusy.value) return
+    const id = intent.id
+    let posted = false
     showcaseError.value = false
     if (file.size > 15 * 1024 * 1024) {
       showcaseError.value = true
@@ -175,34 +230,35 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
     uploadRequest = new AbortController()
     showcaseFeedback.value = '正在保存样张…'
     try {
-      const image = await readFileAsImage(file, uploadRequest.signal)
+      const image = await readFileAsImage(file, AbortSignal.any([intent.signal, uploadRequest.signal]))
       let normalized: string, thumbnail: string
       try {
-        if (!alive) return
+        if (!intent.current()) return
         if (image.naturalWidth * image.naturalHeight > 60_000_000) {
           throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
         }
         normalized = jpegAtWidth(image, 4096, 0.94)
         thumbnail = jpegAtWidth(image, 560, 0.86)
       } finally { image.removeAttribute('src') }
+      if (!intent.current()) return
+      // The request owns a separate lifetime once handed off. Retiring a
+      // selection/source must not be described as undoing an accepted save.
+      posted = true
       const data = await maintenanceApi.saveShowcase({
         id,
         image: normalized,
         thumbnail,
       }, { signal: uploadRequest.signal })
-      if (!alive) return
       const message = data.message || '样张已保存'
-      if (current()) showcaseFeedback.value = message
+      if (!savedFeedback(message, intent)) return
       invalidateAsset(id)
       try { await loadShowcaseManifest(true) } catch (error) {
-        if (!current()) return
+        if (!intent.current()) return
         showcaseError.value = true
         showcaseFeedback.value = `${message}，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
       }
     } catch (err) {
-      if (!current()) return
-      showcaseError.value = true
-      showcaseFeedback.value = '未能保存：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
+      failedFeedback(err, '未能保存：', intent, posted)
     } finally {
       uploadBusy.value = false
       uploadRequest = undefined
@@ -212,28 +268,30 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
 
   async function onHeroPicked(e: Event) {
     const input = e.target as HTMLInputElement
-    const file = input.files?.[0]
-    if (!alive || mode() !== 'covers' || !file || !selectedHeroId.value || uploadBusy.value) return
-    const character = selectedHeroId.value, current = feedbackOwner('covers', character)
+    const file = input.files?.[0], intent = heroPicker
+    heroPicker = undefined; input.value = ''
+    if (!file || !intent?.current() || uploadBusy.value) return
+    const character = intent.id as HomeHeroCharacter
+    let posted = false
     showcaseError.value = false
     uploadBusy.value = true
     heroRequest = new AbortController()
     showcaseFeedback.value = '正在保存首页主视觉…'
     try {
       if (file.size > 15 * 1024 * 1024) throw new Error('图片超过 15MB，请先压缩')
-      const image = await readFileAsImage(file, heroRequest.signal)
+      const image = await readFileAsImage(file, AbortSignal.any([intent.signal, heroRequest.signal]))
       let normalized: string
       try {
-        if (!alive) return
+        if (!intent.current()) return
         if (image.naturalWidth * image.naturalHeight > 60_000_000) throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
         normalized = jpegAtWidth(image, 4096, 0.94)
       } finally { image.removeAttribute('src') }
+      if (!intent.current()) return
+      posted = true
       const data = await maintenanceApi.saveHomeHero(character, normalized, { signal: heroRequest.signal })
-      await refreshSavedHero(data.message || '首页主视觉已保存', current)
+      await refreshSavedHero(data.message || '首页主视觉已保存', intent)
     } catch (err) {
-      if (!current()) return
-      showcaseError.value = true
-      showcaseFeedback.value = '未能保存：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
+      failedFeedback(err, '未能保存：', intent, posted)
     } finally { uploadBusy.value = false; heroRequest = undefined; input.value = '' }
   }
 

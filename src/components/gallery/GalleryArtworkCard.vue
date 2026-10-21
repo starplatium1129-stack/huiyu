@@ -99,7 +99,7 @@
   <div v-if="previewFailed || (!imageUrl && !thumbUrl && missing)" class="artwork-recovery" role="status">
     <ArchiveIcon name="image" />
     <span>作品图片暂时无法读取</span>
-    <button v-if="previewFailed" class="artwork-retry" type="button" :aria-label="`重新读取图片：${title}`" @click="retryPreview">重新读取</button>
+    <button class="artwork-retry" type="button" :aria-label="`重新读取图片：${title}`" @click="retryPreview">重新读取</button>
   </div>
 </article>
 </template>
@@ -170,6 +170,7 @@ function onImageError(event: Event, kind: ImageKind) {
   else { imageLoaded.value = false; imageFailed.value = true }
 }
 function retryPreview() {
+  if (props.missing && !props.imageUrl && !props.thumbUrl) emit('retry')
   thumbFailed.value = false; imageFailed.value = false
   thumbLoaded.value = false; imageLoaded.value = false
   thumbAttempt.value++; imageAttempt.value++
@@ -177,7 +178,7 @@ function retryPreview() {
 }
 const emit = defineEmits<{
   select: [extend: boolean]; open: [event: MouseEvent]; favorite: []; requestDelete: []; cancelDelete: []; delete: [];
-  measure: [event: Event]; load: [event: Event];
+  measure: [event: Event]; load: [event: Event]; retry: [];
 }>()
 </script>
 

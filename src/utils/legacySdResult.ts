@@ -1,3 +1,6 @@
+import type { HistoryEntry } from '@/types/promptHistory'
+import type { SDParams } from './promptBuilderPersistence'
+
 /** Only the frozen facts needed to observe and archive a retired SD job. */
 export interface LegacySdResultInput {
   prompt: string
@@ -37,4 +40,19 @@ export function legacySdResultFacts(input: LegacySdResultInput) {
     return id ? { id, strength: typeof strength === 'number' && Number.isFinite(strength) ? strength : 0.8 } : null
   }).filter((value): value is { id: string; strength: number } => Boolean(value))
   return { prompt, loras }
+}
+/** Compatibility defaults only; an observed job's frozen context takes precedence. */
+export function legacySdHistoryFields(input: {
+  params: Readonly<SDParams>; model: string; profile: string; size: string;
+  provider: 'comfy' | 'webui'; loras: readonly { id: string; strength: number }[]
+}): Partial<HistoryEntry> {
+  const { params, loras } = input
+  return {
+    engine: 'sd', provider: input.provider, profile: input.profile, model: input.model,
+    loraId: loras[0]?.id || null, loraStrength: loras[0]?.strength ?? null,
+    loras: loras.map(lora => ({ ...lora })),
+    cfg: params.cfg, steps: params.steps, sampler: params.sampler, scheduler: params.scheduler, size: input.size,
+    hiresFix: params.hiresFix, hiresScale: params.hiresScale, hiresUpscaler: params.hiresUpscaler,
+    hiresSteps: params.hiresSteps, hiresDenoise: params.hiresDenoise, faceDetailer: params.faceDetailer,
+  }
 }

@@ -64,28 +64,6 @@ export function arrayValue(value: unknown): unknown[] | null {
   return Array.isArray(value) ? value.slice() : null
 }
 
-export function removeProjectReferences(value: unknown, targetId: string): {
-  value: unknown
-  changed: boolean
-  removed: number
-} {
-  const projects = arrayValue(value)
-  if (!projects) return { value, changed: false, removed: 0 }
-  let changed = false
-  let removed = 0
-  const next = projects.map(project => {
-    const source = record(project)
-    if (!source || !Array.isArray(source.history_ids)) return project
-    const historyIds = source.history_ids
-    const filtered = historyIds.filter(id => comparableId(id) !== targetId)
-    if (filtered.length === historyIds.length) return project
-    changed = true
-    removed += historyIds.length - filtered.length
-    return { ...source, history_ids: filtered }
-  })
-  return { value: next, changed, removed }
-}
-
 export function imageRecordInput(record: StoredImageRecord): ImageRecordInput {
   return {
     id: record.id,

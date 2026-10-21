@@ -5,7 +5,7 @@
         v-show="state.visible"
         :inert="!state.visible"
         class="confirm-overlay"
-        @pointerdown.self="cancel"
+        @pointerdown.self="rejectCurrent"
       >
         <div
           ref="panel"
@@ -23,6 +23,8 @@
           <p v-if="state.message" :id="messageId" class="confirm-message" tabindex="0">{{ state.message }}</p>
           <div class="confirm-actions">
             <button
+              :key="`cancel:${state.requestId}`"
+              :data-confirm-request="state.requestId"
               ref="cancelBtn"
               class="btn confirm-btn"
               type="button"
@@ -30,13 +32,18 @@
             >{{ state.cancelLabel }}</button>
             <!-- Keep the safe choice first among actions and confirmation last in keyboard order.
                  The alternate close action stays reachable at its visual corner. -->
-            <button class="btn btn-ghost btn-icon confirm-close" type="button" aria-label="关闭确认框" @click="cancel"><ArchiveIcon name="close" /></button>
+            <button :key="`close:${state.requestId}`" :data-confirm-request="state.requestId" class="btn btn-ghost btn-icon confirm-close" type="button" aria-label="关闭确认框" @click="cancel"><ArchiveIcon name="close" /></button>
             <button
+              :key="`confirm:${state.requestId}`"
+              :data-confirm-request="state.requestId"
               ref="confirmBtn"
               class="btn confirm-btn"
               :class="state.danger ? 'btn-danger' : 'btn-primary'"
               type="button"
               @click="ok"
+              @keydown="onConfirmKeyDown"
+              @keyup="onConfirmKeyUp"
+              @blur="clearConfirmationKey"
             >{{ state.confirmLabel }}</button>
           </div>
         </div>
@@ -67,13 +74,35 @@ const confirmBtn = ref<HTMLButtonElement | null>(null)
 const messageId = useId()
 const initialFocus = computed(() => state.value.danger ? cancelBtn.value : confirmBtn.value)
 
-function cancel() { resolveConfirm(false) }
-function ok() { resolveConfirm(true) }
+// Keep the focus-trap root stable, but never lend an old button's gesture to its successor.
+function requestFromEvent(event: Event) {
+  return event.currentTarget instanceof HTMLElement
+    ? Number(event.currentTarget.dataset.confirmRequest) : NaN
+}
+function cancel(event: Event) { resolveConfirm(requestFromEvent(event), false) }
+function ok(event: Event) { resolveConfirm(requestFromEvent(event), true) }
+function rejectCurrent() { resolveConfirm(state.value.requestId, false) }
+let confirmationKey: { requestId: number; key: string } | null = null
+function clearConfirmationKey() { confirmationKey = null }
+watch(state, clearConfirmationKey, { flush: 'sync' })
+function onConfirmKeyDown(event: KeyboardEvent) {
+  if (event.key !== 'Enter' && event.key !== ' ') return
+  const requestId = requestFromEvent(event)
+  if (event.repeat || requestId !== state.value.requestId) { event.preventDefault(); return }
+  confirmationKey = { requestId, key: event.key }
+}
+function onConfirmKeyUp(event: KeyboardEvent) {
+  if (event.key !== 'Enter' && event.key !== ' ') return
+  // Space clicks on release; a new focused button did not receive the old keydown.
+  if (event.key === ' ' && (confirmationKey?.requestId !== requestFromEvent(event)
+    || confirmationKey.key !== event.key)) event.preventDefault()
+  clearConfirmationKey()
+}
 
 // 与下层弹窗共用焦点栈和滚动锁；破坏性操作默认聚焦取消。
-const { returnFocus } = useFocusTrap(panel, () => state.value.visible, { onEscape: cancel, initialFocus })
+const { returnFocus } = useFocusTrap(panel, () => state.value.visible, { onEscape: rejectCurrent, initialFocus })
 // Only a committed page change cancels intent; leave guards keep their own confirmation.
-watch(() => route.path, () => { returnFocus.value = null; cancel() }, { flush: 'sync' })
+watch(() => route.path, () => { returnFocus.value = null; rejectCurrent() }, { flush: 'sync' })
 
 // 新请求可替换仍显示的确认框；每次都重新选择安全默认项。
 watch(state, (current) => {
@@ -81,7 +110,7 @@ watch(state, (current) => {
 }, { flush: 'post' })
 
 // Enter 交给浏览器激活当前焦点按钮；卸载则安全取消未完成的请求。
-onUnmounted(cancel)
+onUnmounted(rejectCurrent)
 </script>
 
 <style scoped>

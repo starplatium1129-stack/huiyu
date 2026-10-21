@@ -141,10 +141,9 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         if (!current()) return;
         await refreshAnimaBackend();
         if (!current()) return;
-        await sd.checkStatus();
-        if (!current()) return;
-        // 拿到 WebUI 真实 checkpoint 后，再按对应 model profile 填参数
-        pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value);
+        // Legacy SD observation uses saved task identities and frozen recipes.
+        // Its explicit connection check must not gate Anima/Krea draft recovery.
+        pb.applyModelProfile(pb.sdModelName);
         // 历史载入（IndexedDB）
         await pb.loadHistory();
         if (!current()) return;

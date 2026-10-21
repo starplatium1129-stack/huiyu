@@ -1,17 +1,16 @@
 import { kvGet, kvSet, kvSetMany } from '../../composables/useKVStore.ts'
 import { withArtworkMutation } from '../../storage/artworkMutation.ts'
-import { withArtworkCleanup, withArtworkStaging } from '../../storage/artworkSession.ts'
-import { readLocalImageReferences, readSessionImageReferences } from '../../utils/storageReferences.ts'
+import { assertArtworkCleanupCurrent, withArtworkCleanup, withArtworkStaging } from '../../storage/artworkSession.ts'
+import { readBrowserImageReferences } from '../../utils/storageReferences.ts'
 import { imgDeleteMany, imgGetRecord, imgPutRecord } from '../../composables/useImageStore.ts'
 import { parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
-import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type ArtworkRestoreResult, type TrashEntry, type ArtworkTrashSelection } from '../../application/artwork/artworkRepository.ts'
+import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE, type ArtworkRepository, type ArtworkSoftDeleteResult, type ArtworkRestoreResult, type TrashEntry, type ArtworkTrashSelection } from '../../application/artwork/artworkRepository.ts'
 import { type ArtworkKvAdapter, type ArtworkImageAdapter, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, record, comparableId, recordId, imageId, unique, arrayValue, callSafely } from './artworkStorage.ts'
-import { createArtworkHardDelete } from './artworkHardDelete.ts'
 import { createArtworkReads } from './artworkReads.ts'
 import { createArtworkMedia } from './artworkMedia.ts'
-import { createArtworkOrganization } from './artworkOrganization.ts'
-import { createArtworkProjects } from './artworkProjects.ts'
-import { purgeWebTrash } from './artworkTrashPurge.ts'
+import type { createArtworkOrganization } from './artworkOrganization.ts'
+import type { createArtworkProjects } from './artworkProjects.ts'
+import { ArtworkTrashConflictError } from '../../application/artwork/artworkMutationOutcome.ts'
 
 
 export function createWebArtworkRepository(): ArtworkRepository {
@@ -33,11 +32,6 @@ export function createWebArtworkRepository(): ArtworkRepository {
     const operation = mutationTail.then(() => cleanup ? withArtworkCleanup(work) : withArtworkMutation(work))
     mutationTail = operation.then(() => undefined, () => undefined)
     return operation
-  }
-
-  const deleteArtworkNow = createArtworkHardDelete(kv, images)
-  function deleteArtwork(id: string | number): Promise<ArtworkDeleteResult> {
-    return enqueue(() => deleteArtworkNow(id))
   }
 
   // ── 软删回收站（2026-08-30 UX 审计 P0-8：作品硬删不可恢复）─────────────
@@ -74,6 +68,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
     }
     const results = ids.map(id => ({ id, deleted: removed.has(comparableId(id)!) }))
     if (!removed.size) return results
+    if (trash.some(entry => removed.has(comparableId(entry.id)!))) throw new ArtworkTrashConflictError()
     const projectRefs = new Map<string, TrashEntry['projectRefs']>()
     let projectsChanged = false
     const nextProjects = (arrayValue(projectsSnapshot) ?? []).map(project => {
@@ -94,7 +89,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
       return { ...source, history_ids: kept }
     })
     const remainingImageIds = new Set(unique(nextHistory.map(imageId)))
-    const nextTrash = trash.filter(entry => !removed.has(entry.id))
+    const nextTrash = trash.slice()
     const deletedAt = Date.now()
     for (const [id, historyEntries] of removed) nextTrash.push({
       id, deletedAt, historyEntries, projectRefs: projectRefs.get(id) ?? [],
@@ -121,6 +116,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
       kv.get(ARTWORK_PROJECTS_KEY),
     ])
     const history = arrayValue(historySnapshot) ?? []
+    if (history.some(item => recordId(item) === targetId)) throw new ArtworkTrashConflictError()
     const requiredImageIds = unique([
       ...(Array.isArray(entry.imageIds) ? entry.imageIds : []),
       ...(Array.isArray(entry.historyEntries) ? entry.historyEntries.map(imageId) : []),
@@ -130,10 +126,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
       if (!(await images.get(image))) missingImageIds.push(image)
     }
     if (missingImageIds.length) return { restored: false, missingImageIds }
-    // 同 id 已存在（恢复过一次的重复点击）：幂等成功
-    const existing = history.find(item => recordId(item) === targetId)
-    const restoredId = record(existing
-      ?? entry.historyEntries.find(item => recordId(item) === targetId))?.id
+    const restoredId = record(entry.historyEntries.find(item => recordId(item) === targetId))?.id
     if (typeof restoredId !== 'string' && typeof restoredId !== 'number') throw new Error('回收站快照缺少有效作品编号，无法恢复')
 
     // 项目引用增量补回：只把「快照里有引用、现在没有」的 project 加回该 id，
@@ -150,33 +143,37 @@ export function createWebArtworkRepository(): ArtworkRepository {
       return { ...source, history_ids: [...source.history_ids, restoredId] }
     })
     await kv.setMany([
-      ...(!existing ? [{ key: ARTWORK_HISTORY_KEY, value: [...entry.historyEntries, ...history] }] : []),
+      { key: ARTWORK_HISTORY_KEY, value: [...entry.historyEntries, ...history] },
       ...(refsRestored > 0 ? [{ key: ARTWORK_PROJECTS_KEY, value: nextProjects }] : []),
       { key: ARTWORK_TRASH_KEY, value: trash.filter(item => item.id !== targetId) },
     ])
     return { restored: true }
   }
 
-  function trashDrafts(): unknown[] {
-    return [...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)]
+  async function trashDrafts(): Promise<unknown[]> {
+    return readBrowserImageReferences(localStorage, sessionStorage, assertArtworkCleanupCurrent)
   }
   async function purgeExpiredTrashNow(): Promise<{ purged: number }> {
+    const { purgeWebTrash } = await import('./artworkTrashPurge.ts')
+    assertArtworkCleanupCurrent()
     const trash = await readTrash()
     const deadline = Date.now() - ARTWORK_TRASH_RETENTION_DAYS * 24 * 60 * 60 * 1000
     // 刚好到保留期限仍可恢复；非法时间戳保守地保留，避免清理误删快照。
     return purgeWebTrash(kv, images, trash, entry => {
       const deletedAt = Number(entry.deletedAt)
       return Number.isFinite(deletedAt) && deletedAt < deadline
-    }, trashDrafts())
+    }, await trashDrafts())
   }
   function purgeTrash(entries: ArtworkTrashSelection[]): Promise<{ purged: number }> {
     const snapshot = structuredClone(entries)
     return enqueue(async () => {
+      const { purgeWebTrash } = await import('./artworkTrashPurge.ts')
+      assertArtworkCleanupCurrent()
       let purged = 0
       for (let offset = 0; offset < snapshot.length; offset += ARTWORK_DELETE_BATCH_SIZE) {
         const selected = new Map(snapshot.slice(offset, offset + ARTWORK_DELETE_BATCH_SIZE).map(entry => [entry.id, entry.deletedAt]))
         const result = await purgeWebTrash(kv, images, await readTrash(), entry =>
-          selected.has(entry.id) && selected.get(entry.id) === entry.deletedAt, trashDrafts())
+          selected.has(entry.id) && selected.get(entry.id) === entry.deletedAt, await trashDrafts())
         purged += result.purged
       }
       return { purged }
@@ -208,7 +205,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
         let result = outcomes.get(key)
         if (!result) {
           try { result = await restoreArtworkNow(id) }
-          catch { result = { restored: false, code: 'RESTORE_UNCONFIRMED' } }
+          catch (error) { result = { restored: false, code: error instanceof ArtworkTrashConflictError ? ArtworkTrashConflictError.code : 'RESTORE_UNCONFIRMED' } }
           outcomes.set(key, result)
         }
         results.push(structuredClone({ id, ...result }))
@@ -292,7 +289,48 @@ export function createWebArtworkRepository(): ArtworkRepository {
 
   const reads = createArtworkReads(kv, withArtworkMutation)
   const media = createArtworkMedia(kv, images)
-  const organization = createArtworkOrganization({ kv, enqueue })
-  const projects = createArtworkProjects(kv, enqueue)
-  return { ...reads, ...media, ...organization, ...projects, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, restoreArtworks, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
+  let organization: Promise<ReturnType<typeof createArtworkOrganization>> | undefined
+  function loadOrganization() {
+    // Both public methods already own enqueue below; keep one undo authority,
+    // and do not recursively acquire its library lock after loading.
+    return organization ??= import('./artworkOrganization.ts')
+      .then(({ createArtworkOrganization }) => createArtworkOrganization({ kv, enqueue: work => work() }))
+      .catch(error => { organization = undefined; throw error })
+  }
+  let projects: Promise<ReturnType<typeof createArtworkProjects>> | undefined
+  function loadProjects() {
+    // Admission precedes loading; the caller already owns the same library lock.
+    return projects ??= import('./artworkProjects.ts')
+      .then(({ createArtworkProjects }) => createArtworkProjects(kv, work => work()))
+      .catch(error => { projects = undefined; throw error })
+  }
+  return { ...reads, ...media, withStaging: withArtworkStaging, patchArtwork, patchArtworks, appendArtwork,
+    createProject: async input => {
+      const snapshot = structuredClone(input)
+      return enqueue(async () => (await loadProjects()).createProject(snapshot))
+    },
+    saveSmartAlbum: async input => {
+      const snapshot = structuredClone(input)
+      return enqueue(async () => (await loadProjects()).saveSmartAlbum(snapshot))
+    },
+    deleteSmartAlbum: async input => {
+      const snapshot = structuredClone(input)
+      return enqueue(async () => (await loadProjects()).deleteSmartAlbum(snapshot))
+    },
+    organizeArtworks: async input => {
+      const snapshot = structuredClone(input)
+      return enqueue(async () => (await loadOrganization()).organizeArtworks(snapshot))
+    },
+    undoArtworkOrganization: async receipt => {
+      const snapshot = structuredClone(receipt)
+      return enqueue(async () => (await loadOrganization()).undoArtworkOrganization(snapshot))
+    },
+    resolveArtworkImport: (input, command, access) => {
+      const snapshot = structuredClone(input), action = { ...command }
+      return import('./artworkImport.ts').then(({ importWebArtwork }) => {
+        access.check()
+        return enqueue(() => importWebArtwork(snapshot, action, access))
+      })
+    },
+    softDeleteArtwork, softDeleteArtworks, restoreArtwork, restoreArtworks, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
 }

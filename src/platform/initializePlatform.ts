@@ -95,5 +95,6 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
     if (hasPendingProfileWrites() || hasProfileRecoveryData() || hasPendingArtworkSource() && !approved) { event.preventDefault(); event.returnValue = '' }
   }
   window.addEventListener('beforeunload', preventLoss)
-  return () => { alive = false; stopArtworkCleanup(); stopMaintenance(); stopConnection(); stopRuntime(); window.removeEventListener('beforeunload', preventLoss) }
+  const stopImports = (await import('../utils/desktopImport')).initializeLocalImageImports()
+  return () => { alive = false; stopImports(); stopArtworkCleanup(); stopMaintenance(); stopConnection(); stopRuntime(); window.removeEventListener('beforeunload', preventLoss) }
 }

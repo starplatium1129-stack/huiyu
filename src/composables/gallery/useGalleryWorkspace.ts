@@ -7,10 +7,13 @@ import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer';
 import { useScrollReveal } from '@/composables/useScrollReveal';
 import { useToast } from '@/composables/useToast';
 import { artworkRepository,type TrashEntry } from '@/storage/artworkRepository';
+import { onDesktopRuntime } from '@/platform/desktop/runtime';
+import { imageMediaSession } from '@/platform/imageMediaSession';
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
 import type { LoraMeta,Scene } from '@/stores/sceneStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
-import { computed,onActivated,onDeactivated,onMounted,onUnmounted,reactive,ref,watch } from 'vue';
+import { computed,onActivated,onDeactivated,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import { bulkDeleteAction,confirmDeleteAction,toggleFavoriteAction } from './galleryMutations';
 import { cancelGalleryStorageLoad, loadGalleryStorageAction,type GalleryProject } from './galleryStorage';
@@ -34,7 +37,8 @@ export function useGalleryWorkspace() {
     const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]), scenes = ref<Scene[]>([]), loras = ref<LoraMeta[]>([]);
     const galleryLoading = ref(true), galleryIndexLoading = ref(false), galleryError = ref('');
     const infoOpen = ref(false);
-    const cardUrls = reactive<Record<string, string>>({});
+    // Legacy/imported artwork IDs may also be Object prototype property names.
+    const cardUrls = shallowRef<Record<string, string>>(Object.create(null));
     const collectionPreviewItems = ref<ArtworkRecord[] | null>(null);
     const { urls: thumbUrls, remember: rememberThumbnail, forget: forgetThumbnail, trim: trimThumbnails, retain: retainThumbnails, clear: clearThumbnails } = useGalleryThumbnails(() =>
         collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds);
@@ -43,7 +47,7 @@ export function useGalleryWorkspace() {
     const thumbPending = new Set<string>();
     const { ratioOf, measure, forgetRatio } = useArtworkRatios({
         pending: thumbPending,
-        hasThumb: item => Boolean(thumbUrls[item.id]),
+        hasThumb: item => Boolean(thumbUrls.value[item.id]),
         signal: () => imageReads.signal,
         current: item => !unmounted && viewActive && isMediaCurrent(item),
         saveThumb: async (item, dataUrl, imageId) => {
@@ -121,7 +125,7 @@ export function useGalleryWorkspace() {
     } = useGallerySelection(visible);
 
     const { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step, getViewerRevision } = useGalleryViewer({
-        history, visible, previewSource: item => cardUrls[item.id] || thumbUrls[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
+        history, visible, previewSource: item => cardUrls.value[item.id] || thumbUrls.value[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
     function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
 
@@ -150,10 +154,14 @@ export function useGalleryWorkspace() {
     }
     function closeComparison() {
         if (!compareOpen.value) return;
+        retireComparisonIntent();
+    }
+    function retireComparisonIntent() {
         const owner = comparisonOwner;
         comparisonRevision++; comparisonOwner = ''; compareOpen.value = false;
+        // Retire a route intent even while its refresh or lazy panel is pending.
+        dismissedComparison = requestedComparison.value || owner;
         if (!owner || unmounted || !viewActive || requestedComparison.value !== owner) return;
-        dismissedComparison = owner;
         const query = { ...route.query };
         delete query.compare;
         void router.replace({ query, hash: route.hash });
@@ -166,6 +174,50 @@ export function useGalleryWorkspace() {
         openRouteComparison();
         comparisonOwner = compareOpen.value ? request : '';
     }
+    let comparisonSession = imageMediaSession(), comparisonRepository = artworkRepository, comparisonSourceRevision = 0;
+    let comparisonWriteRevision = 0, galleryReadRevision = 0;
+    const comparisonMarkPending = ref(false), comparisonNeedsRead = ref(false);
+    const comparisonMarkOutcome = ref<'saved' | 'unconfirmed' | ''>('');
+    const comparisonMarksReading = computed(() => galleryLoading.value || galleryIndexLoading.value);
+    function comparisonMetadataReady() {
+        return !unmounted && viewActive && !comparisonMarkPending.value && !comparisonNeedsRead.value
+            && !comparisonMarksReading.value && !galleryError.value;
+    }
+    function canMarkComparison() { return compareOpen.value && comparisonMetadataReady(); }
+    const comparisonMarksMessage = computed(() => {
+        if (comparisonMarkPending.value) return '';
+        if (comparisonMetadataReady()) return comparisonMarkOutcome.value === 'unconfirmed' ? '已重新读取作品册，请核对当前标记；此前操作未全部确认。' : '';
+        if (comparisonMarkOutcome.value === 'saved') return '标记已保存，但作品信息尚未重新读取。请先重新读取，不要重复保存。';
+        if (comparisonMarkOutcome.value === 'unconfirmed') return '标记结果未全部确认，请先重新读取作品册后核对，不要重复提交。';
+        return '作品信息尚未就绪，请重新读取后再标记。';
+    });
+    async function retryComparisonMarks() {
+        if (!unmounted && viewActive && compareOpen.value && !comparisonMarkPending.value && !comparisonMarksReading.value) await loadGalleryStorage();
+    }
+    async function saveComparisonMarks(write: () => Promise<void>) {
+        if (!canMarkComparison()) return;
+        const sourceRevision = comparisonSourceRevision, source = artworkRepository, session = imageMediaSession();
+        const currentSource = () => sourceRevision === comparisonSourceRevision && source === artworkRepository && session === imageMediaSession();
+        comparisonMarkPending.value = true; comparisonNeedsRead.value = true; comparisonMarkOutcome.value = ''; comparisonWriteRevision++;
+        let saved = false;
+        try { await write(); saved = true; }
+        catch { /* Sequential desktop patches may have committed a prefix. Re-read, never replay. */ }
+        finally { comparisonMarkPending.value = false; comparisonWriteRevision++; }
+        // Modal close does not cancel an admitted write or lose its refresh
+        // requirement. Source invalidation, however, cannot refresh a new owner.
+        if (unmounted || !currentSource()) return;
+        comparisonMarkOutcome.value = saved ? 'saved' : 'unconfirmed';
+        if (viewActive) await loadGalleryStorage();
+    }
+    function refreshComparisonSession() {
+        const next = imageMediaSession();
+        if (next === comparisonSession && comparisonRepository === artworkRepository) return;
+        comparisonSession = next; comparisonRepository = artworkRepository;
+        comparisonSourceRevision++; comparisonNeedsRead.value = true; comparisonMarkOutcome.value = '';
+        retireComparisonIntent();
+    }
+    const stopComparisonRuntime = onDesktopRuntime(refreshComparisonSession);
+    const stopComparisonResources = watch(runtimeResourceIdentity, refreshComparisonSession, { flush: 'sync' });
 
     const facts = computed(() => artworkFacts(current.value, loras.value));
     /* ---------- 工具函数 ---------- */
@@ -192,12 +244,16 @@ export function useGalleryWorkspace() {
     }
     /* ---------- 可见缩略图与按显示像素生成的预览 ---------- */
     const THUMB_CONCURRENCY = 8;
-    const { returnThumbIds, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan } = useGalleryCardPreviews({
+    const { returnThumbIds, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan, retryCardImage } = useGalleryCardPreviews({
         shell: shellEl, items: () => pagedVisible.value,
         active: () => !unmounted && viewActive, wallActive: () => !trashMode.value && collectionPreviewItems.value === null,
-        epoch: () => imageEpoch, signal: () => imageReads.signal, current: item => isMediaCurrent(item),
+        epoch: () => imageEpoch, signal: () => imageReads.signal, current: item => {
+            const index = visibleIndices.value.get(item.id), live = index === undefined ? undefined : visible.value[index];
+            return index !== undefined && index < pagedVisible.value.length && sameArtworkMedia(item, live) && item._galleryRevision === live?._galleryRevision;
+        },
         urls: cardUrls, thumbnails: thumbUrls, rememberThumbnail, forgetThumbnail, markMissing: markImageMissing,
         missing: id => missingImageIds.value.has(id), hydrateThumbnails: hydrateThumbs, trimThumbnails,
+        clearMissing: id => { if (missingImageIds.value.delete(id)) missingImageIds.value = new Set(missingImageIds.value); },
     });
     let thumbHydration: Promise<void> | null = null;
     let thumbsDirty = false;
@@ -212,7 +268,7 @@ export function useGalleryWorkspace() {
                 // its remaining reads without fetching the same missing preview twice.
                 const demanded = trashMode.value ? [] : collectionPreviewItems.value ?? (returnThumbIds.size
                     ? pagedVisible.value.filter(item => returnThumbIds.has(String(item.id))) : pagedVisible.value.slice(0, 12));
-                const pending = demanded.filter(item => item.image_id && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls[item.id] && !thumbUrls[item.id]).map(item => ({ ...item }));
+                const pending = demanded.filter(item => item.image_id && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls.value[item.id] && !thumbUrls.value[item.id]).map(item => ({ ...item }));
                 let index = 0;
                 async function worker() {
                     while (index < pending.length) {
@@ -305,7 +361,14 @@ export function useGalleryWorkspace() {
         }
     }
     /* ---------- 初始化 ---------- */
-    function loadGalleryStorage(): Promise<void> { return loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects }) }
+    async function loadGalleryStorage(): Promise<void> {
+        const read = ++galleryReadRevision, write = comparisonWriteRevision, sourceRevision = comparisonSourceRevision;
+        const source = artworkRepository, session = imageMediaSession();
+        await loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects });
+        if (!unmounted && viewActive && read === galleryReadRevision && write === comparisonWriteRevision
+            && sourceRevision === comparisonSourceRevision && source === artworkRepository && session === imageMediaSession()
+            && !comparisonMarkPending.value && !comparisonMarksReading.value && !galleryError.value) comparisonNeedsRead.value = false;
+    }
     onMounted(async () => {
         unmounted = false;
         document.addEventListener('keydown', onKeydown);
@@ -348,6 +411,7 @@ export function useGalleryWorkspace() {
     onUnmounted(() => {
         cancelGalleryStorageLoad(history);
         unmounted = true; comparisonRevision++;
+        stopComparisonRuntime(); stopComparisonResources();
         cleanupFilterSync();
         stopCardObservation();
         document.removeEventListener('keydown', onKeydown);
@@ -390,7 +454,7 @@ export function useGalleryWorkspace() {
     const { clearTrash, trashClearing, trashLoading, trashError } = trashActions;
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
-    function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, history.value.find(entry => entry.id === item.id) ?? item); }
+    function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast, loadGalleryStorage }, history.value.find(entry => entry.id === item.id) ?? item); }
     const deleteMotion = useGalleryListMotion(shellEl, () => pagedVisible.value, () => galleryLoading.value,
         () => !trashMode.value && collectionPreviewItems.value === null);
     function confirmDelete(item: ArtworkRecord): Promise<void> {
@@ -405,8 +469,9 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, closeComparison, loadGalleryStorage, trashBusy,
+        canMarkComparison, saveComparisonMarks, retryComparisonMarks, comparisonMarksMessage, comparisonMarksReading,
         restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryIndexLoading, galleryError, history, resetGalleryFilters,
-        masonryGroups, scheduleWallScan, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
+        masonryGroups, scheduleWallScan, retryCardImage, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
         hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed,

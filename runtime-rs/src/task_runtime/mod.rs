@@ -70,6 +70,18 @@ impl JobBinding {
             operation: Arc::new(tokio::sync::Mutex::new(RecoveryState::default())),
         }
     }
+    fn request_monitor(&mut self, changed: bool) -> Option<Arc<tokio::sync::Notify>> {
+        if changed && self.watching {
+            self.changed.notify_one();
+        }
+        if self.dispatching || self.watching {
+            self.watch_requested = true;
+            return None;
+        }
+        self.watching = true;
+        self.watch_requested = false;
+        Some(self.changed.clone())
+    }
 }
 impl TaskRuntime {
     pub fn new(

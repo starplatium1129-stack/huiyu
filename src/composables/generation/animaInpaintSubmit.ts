@@ -120,6 +120,9 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
   signal.throwIfAborted()
   if (source) assertWorkspaceMediaAuthority(source.authority)
   if (!context.current()) return
+  // Archive the resolved studio identity, not the panel captured before an override.
+  // Popular characters retain their own identity even when the binding uses a LoRA.
+  if (!snapshot.isPopular) context.submission.context = { ...context.submission.context, char: binding.character ?? 'none' }
   context.begin(URL.createObjectURL(snapshot.payload.imageBlob))
   flash(wholeImage ? '正在执行整图重绘，人物与背景均可能变化…' : snapshot.provider === 'native' ? (maskImage ? '正在执行手绘局部重绘（实验性）…' : '正在执行本地自动识别与局部重绘（实验性）…') : maskImage ? '正在执行手绘局部换装…' : '正在执行自动识别与局部换装，节点的模型加载仍需验证…')
   let pending: Promise<void>

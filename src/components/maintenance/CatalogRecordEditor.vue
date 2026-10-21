@@ -8,45 +8,48 @@
           <template v-if="defaultOpen(section) || revealedSections.has(section)">
           <label v-for="field in fields.filter(f => f.section === section && !technicalPaths.has(f.path))" :key="field.path" class="form-group" :class="{ 'form-group-full': field.type === 'long' || field.type === 'list' }">
             <span class="field-label">{{ field.label }}</span>
-            <ToggleSwitch v-if="field.type === 'boolean'" :model-value="Boolean(fieldValue(record.data, field.path))" :label="field.label" :disabled="disabled || locked(field.path)" @update:model-value="update(field, $event)" />
-            <StudioSelect v-else-if="fieldOptions.get(field.path)?.length" :model-value="String(fieldValue(record.data, field.path) ?? '')" :label="field.label" :disabled="disabled || locked(field.path)" :options="fieldOptions.get(field.path)" @update:model-value="update(field, String($event))" />
-            <textarea v-else-if="field.type === 'long' || field.type === 'list'" class="input" :value="text(field)" :rows="field.path === 'story' || field.path === 'profile.bg_story' ? 7 : 4" :disabled="disabled || locked(field.path)" :placeholder="placeholder(field)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea>
-            <input v-else class="input" :value="text(field)" :disabled="disabled || locked(field.path)" :placeholder="placeholder(field)" @input="update(field, ($event.target as HTMLInputElement).value)" />
+            <ToggleSwitch v-if="field.type === 'boolean'" :model-value="Boolean(fieldValue(record.data, field.path))" :label="field.label" :disabled="fieldsDisabled || locked(field.path)" @update:model-value="update(field, $event)" />
+            <StudioSelect v-else-if="fieldOptions.get(field.path)?.length" :model-value="String(fieldValue(record.data, field.path) ?? '')" :label="field.label" :disabled="fieldsDisabled || locked(field.path)" :options="fieldOptions.get(field.path)" @update:model-value="update(field, String($event))" />
+            <textarea v-else-if="field.type === 'long' || field.type === 'list'" class="input" :value="text(field)" :rows="field.path === 'story' || field.path === 'profile.bg_story' ? 7 : 4" :disabled="fieldsDisabled || locked(field.path)" :placeholder="placeholder(field)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea>
+            <input v-else class="input" :value="text(field)" :disabled="fieldsDisabled || locked(field.path)" :placeholder="placeholder(field)" @input="update(field, ($event.target as HTMLInputElement).value)" />
             <span v-if="field.type === 'list'" class="catalog-field-note">每行一项</span>
           </label>
           </template>
         </div>
       </details>
     </template>
-    <CatalogDocumentEditor v-else v-model:record="record" :disabled="disabled" />
-    <CatalogPromptPreview v-if="record.kind !== 'document'" :record="record" :pending="pending" :dirty="dirty" />
+    <CatalogDocumentEditor v-else v-model:record="record" :disabled="fieldsDisabled" />
+    <CatalogPromptPreview v-if="record.kind !== 'document' && advanced === null" :record="record" :pending="pending" :dirty="dirty" />
     <details class="catalog-advanced catalog-management-info" :open="!record.revision">
       <StudioDisclosureSummary>管理信息</StudioDisclosureSummary>
       <div data-disclosure-content class="form-grid">
-        <label class="form-group"><span class="field-label">内部编号</span><input v-model="record.id" class="input" :disabled="!!record.revision || disabled || record.kind === 'outfit'" /></label>
-        <label class="form-group"><span class="field-label">排序（小值优先）</span><input v-model.number="record.sortOrder" class="input" type="number" step="1" :disabled="disabled" /></label>
-        <label v-for="field in fields.filter(f => technicalPaths.has(f.path))" :key="field.path" class="form-group"><span class="field-label">{{ field.label }}</span><textarea v-if="field.type === 'list'" class="input" rows="2" :value="text(field)" :disabled="disabled || locked(field.path)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea><input v-else class="input" :value="text(field)" :disabled="disabled || locked(field.path)" @input="update(field, ($event.target as HTMLInputElement).value)" /></label>
+        <label class="form-group"><span class="field-label">内部编号</span><input v-model="record.id" class="input" :disabled="!!record.revision || fieldsDisabled || record.kind === 'outfit'" /></label>
+        <label class="form-group"><span class="field-label">排序（小值优先）</span><input v-model.number="record.sortOrder" class="input" type="number" step="1" :disabled="fieldsDisabled" /></label>
+        <label v-for="field in fields.filter(f => technicalPaths.has(f.path))" :key="field.path" class="form-group"><span class="field-label">{{ field.label }}</span><textarea v-if="field.type === 'list'" class="input" rows="2" :value="text(field)" :disabled="fieldsDisabled || locked(field.path)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea><input v-else class="input" :value="text(field)" :disabled="fieldsDisabled || locked(field.path)" @input="update(field, ($event.target as HTMLInputElement).value)" /></label>
       </div>
     </details>
-    <details v-if="!systemDocument" class="catalog-advanced" @toggle="($event.target as HTMLDetailsElement).open && (advancedRevealed = true)">
+    <details v-if="!systemDocument" class="catalog-advanced" :open="advancedOpen" @toggle="toggleAdvanced">
       <StudioDisclosureSummary>完整数据与扩展设置</StudioDisclosureSummary><div data-disclosure-content>
-      <textarea v-if="advancedRevealed" v-model="advanced" class="input" rows="12" aria-label="完整内容数据" :disabled="disabled"></textarea>
-      <button v-if="advancedRevealed" class="btn btn-ghost btn-sm" type="button" :disabled="disabled" @click="applyAdvanced">应用这些设置</button></div>
+      <p v-if="advanced !== null" class="catalog-note" role="status">完整数据尚未应用。请应用或放弃这部分修改后继续填写普通字段；暂存和保存也会先检查这些数据。</p>
+      <textarea v-if="advancedRevealed" :value="advancedText" class="input" rows="12" aria-label="完整内容数据" :aria-invalid="!!advancedError" :aria-describedby="advancedError ? 'catalog-advanced-error' : undefined" :disabled="disabled" @input="updateAdvanced"></textarea>
+      <button v-if="advancedRevealed" class="btn btn-ghost btn-sm" type="button" :disabled="disabled || advanced === null" @click="emit('applyAdvanced', owner)">应用这些设置</button>
+      <button v-if="advanced !== null" class="btn btn-quiet btn-sm" type="button" :disabled="disabled" @click="emit('discardAdvanced', owner)">放弃完整数据修改</button>
+      <p v-if="advancedError" id="catalog-advanced-error" role="alert" class="catalog-error">{{ advancedError }}</p></div>
     </details>
     <p v-if="error" role="alert" class="catalog-error">{{ error }}</p>
     <p v-if="generated" class="catalog-note">这份内容来自已有画面。名称和说明可以修改，原来的生成描述会保留。</p>
     <footer class="catalog-editor-footer">
       <span v-if="systemDocument">系统资料 · 只读</span>
       <div class="catalog-actions">
-        <button v-if="record.revision && record.kind !== 'document'" class="catalog-text-button" type="button" :disabled="disabled" @click="$emit('remove')">归档</button>
-        <button v-if="record.kind !== 'document'" class="btn btn-ghost" type="button" :disabled="disabled" @click="$emit('duplicate')">复制一份</button>
-        <button class="btn btn-primary" type="button" :disabled="disabled || systemDocument || !!error" @click="$emit('stage')">暂存修改</button>
+        <button v-if="record.revision && record.kind !== 'document'" class="catalog-text-button" type="button" :disabled="fieldsDisabled" @click="$emit('remove')">归档</button>
+        <button v-if="record.kind !== 'document'" class="btn btn-ghost" type="button" :disabled="fieldsDisabled" @click="$emit('duplicate')">复制一份</button>
+        <button class="btn btn-primary" type="button" :disabled="disabled || systemDocument || (!!error && advanced === null)" @click="$emit('stage')">暂存修改</button>
       </div>
     </footer>
   </section>
 </template>
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -56,14 +59,29 @@ import CatalogPromptPreview from './CatalogPromptPreview.vue'
 import type { CatalogChange, CatalogRecord } from '@/api/catalogApi'
 import { CATALOG_FIELDS, fieldValue, setField, type CatalogField } from '@/composables/scene/catalogFields'
 import { CATALOG_LABELS, recordTitle } from '@/composables/scene/catalogPresentation'
-const props = defineProps<{ disabled: boolean; characterNames: Record<string, string>; pending: CatalogChange[]; dirty: boolean }>()
+const props = defineProps<{ disabled: boolean; characterNames: Record<string, string>; pending: CatalogChange[]; dirty: boolean; advanced: string | null; advancedError: string; editorSession: number }>()
 const record = defineModel<CatalogRecord>('record', { required: true })
-defineEmits<{ stage: []; duplicate: []; remove: [] }>()
+const emit = defineEmits<{ stage: []; duplicate: []; remove: []; advanced: [text: string, owner: number]; applyAdvanced: [owner: number]; discardAdvanced: [owner: number] }>()
 const fields = computed(() => CATALOG_FIELDS[record.value.kind]), sections = computed(() => [...new Set(fields.value.map(f => f.section))])
 const title = computed(() => recordTitle(record.value) === '未命名内容' ? '从这里开始写' : recordTitle(record.value))
 const icon = computed<ArchiveIconName>(() => ({ character: 'character', outfit: 'image', scene: 'scene', blueprint: 'spark', document: 'manager' } as const)[record.value.kind])
 const technicalPaths = new Set(['outfit.id', 'popular.exactTokens', 'popular.exactPrefixes', 'popular.supportedEngines', 'profile.portrait', 'compositionIntent', 'coverageTags'])
-const advanced = ref(''), error = ref(''), advancedRevealed = ref(false)
+const error = ref(''), advancedRevealed = ref(props.advanced !== null), advancedOpen = ref(props.advanced !== null)
+const owner = props.editorSession
+let disposed = false
+onBeforeUnmount(() => { disposed = true })
+const fieldsDisabled = computed(() => props.disabled || props.advanced !== null)
+const advancedText = computed(() => props.advanced ?? JSON.stringify(record.value.data, null, 2))
+function toggleAdvanced(event: Event) {
+  advancedOpen.value = (event.target as HTMLDetailsElement).open
+  if (advancedOpen.value) advancedRevealed.value = true
+}
+watch(() => [props.advanced, props.advancedError], () => {
+  if (props.advanced !== null) { advancedOpen.value = true; advancedRevealed.value = true }
+})
+function updateAdvanced(event: Event) {
+  if (!disposed && !props.disabled) emit('advanced', (event.target as HTMLTextAreaElement).value, owner)
+}
 const revealedSections = ref(new Set<string>())
 const generated = computed(() => !!fieldValue(record.value.data, 'generatedRecipe'))
 const systemDocument = computed(() => record.value.kind === 'document' && !['curation', 'tags', 'tag-dictionary-policy'].includes(record.value.id))
@@ -93,6 +111,7 @@ function placeholder(field: CatalogField) {
   return ({ title: '为这一刻起个名字', story: '发生了什么？人物此刻在想什么？', description: '写下这份画面方案的想法', 'profile.bg_story': '她从哪里来，又经历过什么？', 'profile.name': '这个角色叫什么？', 'outfit.name': '给这套服装一个好记的名字', location: '故事发生在哪里？', action: '人物正在做什么？' } as Record<string, string>)[field.path] || ''
 }
 function update(field: CatalogField, input: string | boolean) {
+  if (disposed || fieldsDisabled.value) return
   error.value = ''
   try {
     const before = fieldValue(record.value.data, field.path)
@@ -106,13 +125,6 @@ function update(field: CatalogField, input: string | boolean) {
     if (record.value.kind === 'outfit' && !record.value.revision) record.value.id = String(fieldValue(record.value.data, 'characterId') ?? '') + '/' + String(fieldValue(record.value.data, 'outfit.id') ?? '')
   } catch (e) { error.value = (e as Error).message }
 }
-function applyAdvanced() {
-  try { const value: unknown = JSON.parse(advanced.value); if (!value || typeof value !== 'object' || (Array.isArray(value) && record.value.kind !== 'document')) throw new Error('请填写有效的内容数据'); record.value.data = value as Record<string, unknown> | unknown[]; error.value = '' }
-  catch (e) { error.value = (e as Error).message }
-}
-// Copy/new/reset replaces the record; a parser error belongs to the previous editor session.
-watch(record, () => { error.value = '' })
-watch(() => advancedRevealed.value && !systemDocument.value ? record.value.data : undefined, value => {
-  if (value !== undefined) advanced.value = JSON.stringify(value, null, 2)
-}, { immediate: true, deep: true })
+// Staging or applying complete data supersedes this session's structured-field error.
+watch([record, () => record.value.data], () => { error.value = '' })
 </script>
