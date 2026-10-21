@@ -2,10 +2,9 @@ import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE, type ArtworkRepo
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord, type ArtworkSearchSummary } from '../../types/artwork.ts'
 import { artworkSearchTerms, searchArtworkRecords } from '../../application/artwork/searchIndex.ts'
 import { createDesktopArtworkMedia } from './artworkMedia.ts'
-import { putDesktopArtworkImage } from './artworkUpload.ts'
 import { workspaceRequest as request, WorkspaceRequestError } from '../../api/workspace.ts'
 import { getDesktopRuntime, onDesktopRuntime } from './runtime.ts'
-import { workspaceMediaAuthority } from './workspaceMediaSource.ts'
+import { assertWorkspaceMediaAuthority, workspaceMediaAuthority } from './workspaceMediaSource.ts'
 import { trackMaintenanceWrite } from '../maintenanceParticipants.ts'
 import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
 import { compareArtworkKeys, parseArtworkSearchPage, parseArtworkRow } from './artworkReadModel.ts'
@@ -32,7 +31,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   let historyArtworkRevision: number | undefined
   let galleryRead: Promise<ReturnType<typeof import('./artworkGalleryReads.ts')['createDesktopGalleryReads']>> | undefined
   const galleryReads = () => galleryRead ??= import('./artworkGalleryReads.ts').then(module => module.createDesktopGalleryReads(
-    workspaceRequest, readProjects, readSession, () => historyLoaded ? loadedHistory : null, () => mutationVersion))
+    workspaceRequest, readSession, () => historyLoaded ? loadedHistory : null, () => mutationVersion))
     .catch(error => { galleryRead = undefined; throw error })
   let loadedPreferences: unknown[] | undefined
   let preferenceArtworkRevision: number | undefined
@@ -332,14 +331,21 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     readRecentHistory: (...args) => galleryReads().then(reader => reader.readRecentHistory(...args)),
     organizeArtworks, undoArtworkOrganization, createProject, saveSmartAlbum, deleteSmartAlbum,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
-    readGallerySnapshot: (...args) => galleryReads().then(reader => reader.readGallerySnapshot(...args)),
+    readGalleryPage: (...args) => galleryReads().then(reader => reader.readGalleryPage(...args)),
+    readGalleryCatalog: (...args) => galleryReads().then(reader => reader.readGalleryCatalog(...args)),
     getPreview: (...args) => galleryReads().then(reader => reader.getPreview(...args)),
     ...media,
     getWorkspaceMediaReference(alias) {
       requireAuthority()
       return { alias, authority: workspaceMediaAuthority() }
     },
-    putImage: blob => putDesktopArtworkImage(blob, workspaceRequest),
+    async putImage(blob) {
+      requireAuthority()
+      const authority = workspaceMediaAuthority()
+      const { putDesktopArtworkImage } = await import('./artworkUpload.ts')
+      assertWorkspaceMediaAuthority(authority)
+      return putDesktopArtworkImage(blob, workspaceRequest)
+    },
     async resolveArtworkImport(input, command, access) {
       const snapshot = structuredClone(input), action = { ...command }
       try {

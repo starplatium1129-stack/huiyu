@@ -20,46 +20,25 @@ impl ControlService {
             .map(|(status, body)| (status, body.ok()))
     }
     pub(super) async fn online(&self, index: usize, settings: &Value) -> bool {
-        if index == 0 {
-            return false;
-        }
-        if index == 3 {
-            return self.voice.translation_status().await["ready"] == true;
-        }
+        self.online_observed(index, settings, true).await
+    }
+    async fn online_observed(&self, index: usize, settings: &Value, fresh: bool) -> bool {
+        if index == 0 { return false; }
+        if index == 3 { return self.voice.translation_status(fresh).await["ready"] == true; }
+        let probes = self.voice.health_probes();
+        let host = settings[if index == 1 { "comfyHost" } else { "ttsHost" }].as_str().unwrap_or("");
         if index == 2 && settings["ttsEngine"] == "voxcpm2" {
-            return self
-                .request(
-                    settings["ttsHost"].as_str().unwrap_or(""),
-                    "/health",
-                    None,
-                    3,
-                )
-                .await
-                .is_ok_and(|(status, data)| {
-                    (200..300).contains(&status)
-                        && data.is_some_and(|v| v["online"] == true && v["engine"] == "VoxCPM2")
-                });
+            return probes.read(host, "/health", Duration::from_secs(3), 8 * 1024 * 1024, fresh).await
+                .is_some_and(|probe| (200..300).contains(&probe.status)
+                    && probe.json.as_ref().is_some_and(|v| v["online"] == true && v["engine"] == "VoxCPM2"));
         }
-        let (key, path, strict) = match index {
-            1 => ("comfyHost", "/system_stats", true),
-            _ => ("ttsHost", "/docs", false),
-        };
-        let host = settings[key].as_str().unwrap_or("");
-        match self.request(host, path, None, 3).await {
-            Ok((status, _)) => {
-                let online = (200..if strict { 300 } else { 500 }).contains(&status);
-                online
-                    && (index != 2
-                        || !self
-                            .request(host, "/health", None, 2)
-                            .await
-                            .is_ok_and(|(_, data)| data.is_some_and(|v| v["engine"] == "VoxCPM2")))
-            }
-            Err(_) if index == 2 => self
-                .request(host, "/", None, 3)
-                .await
-                .is_ok_and(|(status, _)| (200..500).contains(&status)),
-            Err(_) => false,
+        match probes.read(host, if index == 1 { "/system_stats" } else { "/docs" }, Duration::from_secs(3), 8 * 1024 * 1024, fresh).await {
+            Some(probe) => (200..if index == 1 { 300 } else { 500 }).contains(&probe.status)
+                && (index != 2 || !probes.read(host, "/health", Duration::from_secs(2), 8 * 1024 * 1024, fresh).await
+                    .is_some_and(|probe| probe.json.as_ref().is_some_and(|v| v["engine"] == "VoxCPM2"))),
+            None if index == 2 => probes.read(host, "/", Duration::from_secs(3), 8 * 1024 * 1024, fresh).await
+                .is_some_and(|probe| (200..500).contains(&probe.status)),
+            None => false,
         }
     }
     async fn ollama(&self, settings: &Value) -> Value {
@@ -115,10 +94,10 @@ impl ControlService {
         }
         let settings = self.runtime_settings();
         let (sd, comfy, tts, translation, mut result, llama) = tokio::join!(
-            self.online(0, &settings),
-            self.online(1, &settings),
-            self.online(2, &settings),
-            self.online(3, &settings),
+            self.online_observed(0, &settings, fresh),
+            self.online_observed(1, &settings, fresh),
+            self.online_observed(2, &settings, fresh),
+            self.online_observed(3, &settings, fresh),
             self.ollama(&settings),
             self.llama_status()
         );

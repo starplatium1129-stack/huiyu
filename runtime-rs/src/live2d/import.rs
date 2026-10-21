@@ -1,5 +1,5 @@
 use super::{
-    editor::{self, EditorLock},
+    editor,
     manifest::{self, identity, invalid, model_file, no_links, relative},
     profile, upload_checks,
 };
@@ -143,7 +143,7 @@ pub(super) fn publish(
     mut upload: Upload,
     cancel: &CancellationToken,
 ) -> Result<Value> {
-    let _lock = EditorLock::acquire(root)?;
+    let _lock = editor::lock(root)?;
     let meta = &upload.metadata;
     let id = meta["id"]
         .as_str()

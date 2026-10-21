@@ -17,6 +17,7 @@ pub(super) fn initialize(db: &Connection) -> Result<()> {
         )?;
     }
     super::artwork_search::initialize(db)?;
+    super::gallery_index::initialize(db)?;
     transaction.commit()?;
     Ok(())
 }
@@ -98,7 +99,8 @@ pub(super) fn refresh_chunk(c: &Context) -> Result<bool> {
              CASE WHEN json_type(body,'$.characterId')='text' THEN json_extract(body,'$.characterId') END,
              CASE WHEN json_type(body,'$.story')='text' THEN json_extract(body,'$.story') END,
              CASE WHEN json_type(body,'$.project')='text' THEN json_extract(body,'$.project') END,
-             CASE WHEN json_type(body,'$.prompt')='text' THEN json_extract(body,'$.prompt') END
+             CASE WHEN json_type(body,'$.prompt')='text' THEN json_extract(body,'$.prompt') END,
+             json_remove(body,'$.image_data','$.image_url','$.prompt','$.negative','$.negativePrompt','$.negative_prompt','$.generationSnapshot','$.snapshot')
              FROM artworks WHERE id_key=? AND deleted_at IS NULL",
         )?;
     let mut insert = c.db.prepare_cached(
@@ -131,6 +133,15 @@ pub(super) fn refresh_chunk(c: &Context) -> Result<bool> {
                 .collect::<Vec<_>>()
                 .join(" ")
                 .to_lowercase();
+            let body: Value = serde_json::from_str(text_column(row, 12)?)?;
+            c.db.execute(
+                "INSERT OR REPLACE INTO artwork_gallery_index VALUES(?1,?2,?3)",
+                params![
+                    key,
+                    serde_json::to_string(&super::gallery_index::facets(&body))?,
+                    super::gallery_index::time(&body)
+                ],
+            )?;
             insert.execute(params![
                 key,
                 text_column(row, 0)?,
@@ -142,6 +153,7 @@ pub(super) fn refresh_chunk(c: &Context) -> Result<bool> {
             ])?;
         } else {
             c.db.execute("DELETE FROM artwork_read_index WHERE id_key=?", [&key])?;
+            c.db.execute("DELETE FROM artwork_gallery_index WHERE id_key=?", [&key])?;
         }
         drop(rows);
         c.db.execute("DELETE FROM artwork_read_dirty WHERE id_key=?", [&key])?;

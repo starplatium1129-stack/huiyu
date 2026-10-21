@@ -188,7 +188,7 @@ function removeKey(key: string): void {
 export const useVideoStore = defineStore('videoStudio', () => {
   const drafts = createVideoDraftStorage()
   const videoReloadVersion = ref(0), shotsReloadVersion = ref(0)
-  const draftIssue = computed(() => Object.values(drafts.issues.value).join('；'))
+  const draftIssue = computed(() => [...Object.values(drafts.issues.value), ...Object.values(drafts.writeErrors.value)].join('；'))
   // ── 状态（初始化时从 sessionStorage 水合，刷新不丢） ──
   const pendingImageCtx = ref<VideoCtxPayload | null>(drafts.read(IMAGE_CTX_KEY, codec.context))
   const pendingShotCtxs = ref<VideoCtxPayload[]>(drafts.read(SHOTS_CTX_KEY, codec.contexts) || [])
@@ -254,7 +254,7 @@ export const useVideoStore = defineStore('videoStudio', () => {
   const shotsBatch = ref<ShotsBatchRecord | null>(legacyBatch.record)
   const shotsBatchIssue = ref(legacyBatch.issue)
 
-  /** 草稿写入失败必须可感知（F1 验收）：返回 false 由调用方提示。 */
+  /** Enqueue a detached draft; confirmDrafts acknowledges persistence before handoff/submission. */
   function saveVideoDraft(draft: VideoDraftPayload): boolean {
     const saved = drafts.write(VIDEO_DRAFT_KEY, draft, codec.video)
     if (!saved) return false
@@ -288,7 +288,7 @@ export const useVideoStore = defineStore('videoStudio', () => {
     if (keys.has(VIDEO_SHOTS_DRAFT_KEY)) { shotsDraft.value = drafts.read(VIDEO_SHOTS_DRAFT_KEY, codec.shots); if (shotsDraft.value) shotsReloadVersion.value++ }
   }
   return {
-    draftIssue, videoReloadVersion, shotsReloadVersion, reloadDamagedDrafts, exportDamagedDrafts: drafts.exportOriginals, discardDamagedDrafts: drafts.discard,
+    confirmDrafts: drafts.confirm, draftIssue, videoReloadVersion, shotsReloadVersion, reloadDamagedDrafts, exportDamagedDrafts: drafts.exportOriginals, discardDamagedDrafts: drafts.discard,
     pendingImageCtx,
     pendingShotCtxs,
     stageImageCtx,

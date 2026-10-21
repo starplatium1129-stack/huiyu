@@ -8,6 +8,7 @@ static WORKERS: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::
 pub(super) enum Request {
     Capability(Value),
     Command(Value),
+    Chunk(Value, Bytes),
 }
 
 pub(super) async fn prepare(
@@ -17,7 +18,21 @@ pub(super) async fn prepare(
     query: Query,
     capability: bool,
     workspace_id: String,
+    content_type: &str,
 ) -> Result<Request> {
+    if method == Method::PUT
+        && path.len() == 3
+        && path[2] == "chunks"
+        && matches!(path[0].as_str(), "artwork-saves" | "media-uploads")
+    {
+        if content_type != "application/octet-stream"
+            || body.is_empty()
+            || body.len() > 1024 * 1024
+        {
+            return Err(ApiError::invalid("Expected a nonempty binary chunk of at most 1 MiB"));
+        }
+        return Ok(Request::Chunk(commands::binary_chunk(&path, &query, &workspace_id)?, body));
+    }
     let size = body.len();
     let build = move || {
         let mut input: Value = if body.is_empty() {

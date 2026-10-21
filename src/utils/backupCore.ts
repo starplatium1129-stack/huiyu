@@ -1,3 +1,4 @@
+import { parseChatPreferences } from './chatPreferencesCore'
 const BACKUP_APP = 'ai-cg-studio'
 const BACKUP_TYPE = 'aics-personal-backup'
 const BACKUP_SCHEMA_VERSION = 2
@@ -182,6 +183,10 @@ export function createBackup(payload: {
 /** Recovery sources may still contain an un-migrated key; never export it. */
 function backupSafeSettings(settings: Record<string, string>): Record<string, string> {
   const safe = { ...settings }
+  if (safe.aics_chat_preferences_v1) {
+    try { safe.aics_chat_preferences_v1 = JSON.stringify(parseChatPreferences(JSON.parse(safe.aics_chat_preferences_v1))) }
+    catch { delete safe.aics_chat_preferences_v1 }
+  }
   if (safe.aics_chat_v1) {
     try {
       const chat = object(JSON.parse(safe.aics_chat_v1))

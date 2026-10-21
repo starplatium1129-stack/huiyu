@@ -154,7 +154,7 @@
         </template>
         <template #history="{ active }">
         <AsyncPanel :loader="loadHistoryPanel" label="作品历史" v-slot="{ component }"><component :is="component" class="advanced-decision"
-          :history="pb.history" :active="active" :transfer-busy="transferBusy"
+          :history="pb.history" :active="active" :transfer-busy="transferBusy" :loading="pb.historyLoading" :error="pb.historyError" @retry="pb.loadHistory()"
           @resume="resumeHistory"
           @duplicate="duplicateHistory"
           @delete="deleteHistory"

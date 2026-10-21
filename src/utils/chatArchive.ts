@@ -133,24 +133,3 @@ export function mergeChatArchives(current: ChatArchive, incoming: ChatArchive): 
 }
 
 /** 生成人类可读的 Markdown 归档文件。 */
-export function chatArchiveToMarkdown(
-  archive: ChatArchive,
-  characterNames: Record<string, string>,
-): string {
-  const lines: string[] = ['# 角色聊天归档', '', '> 由 绘遇 导出 · 对话文本、回复备选与停止标记', '']
-  for (const [characterId, messages] of Object.entries(archive.archived)) {
-    const name = characterNames[characterId] || characterId
-    lines.push(`## ${name}（${messages.length} 条）`, '')
-    if (!messages.length) {
-      lines.push('*暂无归档*', '')
-      continue
-    }
-    for (const message of messages) {
-      const speaker = message.role === 'user' ? '你' : name
-      const suffix = message.stopped ? ' *(中断)*' : ''
-      lines.push(`**${speaker}**${suffix}：${message.content}`, '')
-      for (const variant of message.variants || []) if (variant.mid !== message.mid) lines.push(`> 备选${variant.stopped ? '（中断）' : ''}：${variant.content}`, '')
-    }
-  }
-  return lines.join('\n').trimEnd() + '\n'
-}

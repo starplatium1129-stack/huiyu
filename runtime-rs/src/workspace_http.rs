@@ -193,20 +193,22 @@ async fn perform(
     } else {
         None
     };
-    let command = match json::prepare(
+    let (command, chunk) = match json::prepare(
         body,
         method.clone(),
         path,
         query,
         capability,
         session.workspace_id.clone(),
+        headers.get("content-type").and_then(|value| value.to_str().ok()).unwrap_or(""),
     )
     .await?
     {
         json::Request::Capability(input) => {
             return media::grant(state, &storage, session, &input).await;
         }
-        json::Request::Command(command) => command,
+        json::Request::Command(command) => (command, None),
+        json::Request::Chunk(command, bytes) => (command, Some(bytes)),
     };
     let long_request = matches!(
         command["kind"].as_str(),
@@ -228,7 +230,12 @@ async fn perform(
     } else {
     let result = tokio::time::timeout(
         Duration::from_secs(if command["kind"] == "restoreArtworks" { 120 } else { 30 }),
-        storage.request(command, &session.principal_id),
+        async {
+            match chunk {
+                Some(bytes) => storage.upload_chunk(command, bytes, &session.principal_id).await,
+                None => storage.request(command, &session.principal_id).await,
+            }
+        },
     )
     .await;
     result.unwrap_or_else(|_| Err(ApiError::new(504, if operation_id.is_some() { "COMMIT_UNKNOWN" } else { "WORKSPACE_TIMEOUT" }, "Workspace request timed out")))

@@ -1,8 +1,13 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { usePolling } from './usePolling'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { controlApi } from '@/api/controlApi'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { readCompanionTasks } from './companionTaskSnapshot'
 import { pickCompanionLine } from '@/config/characters'
 import { pickEnvironmentGreeting } from '@/utils/environmentContext'
 import { createCompanionBehavior, normalizeCompanionConfig, type CompanionReminder } from '@/utils/companionBehavior'
@@ -12,7 +17,7 @@ import {
   EVENT_ROUTE,
   type CompanionDetectedEvent,
 } from '@/utils/companionEvents'
-import { COMPANION_BEHAVIOR_KEY, COMPANION_IMAGE_IMPORT_KEY } from '@/utils/storageKeys'
+import { COMPANION_BEHAVIOR_KEY } from '@/utils/storageKeys'
 
 export interface CompanionBehaviorRuntimeDeps {
   activeChar: Ref<string>
@@ -28,13 +33,14 @@ export interface CompanionBehaviorRuntimeDeps {
  *
  * 两只 30s 心跳：behavior.tick 驱动待办提醒与时间片环境问候
  * （同一时间片只问候一次，周日/周末视为不同片）；pollCompanionEvents
- * 聚合 SD/TTS/Ollama/训练任务/图片计数喂给事件检测器，产出事件提醒
- * 并同步任务栏进度环。勿扰/安静时段 gating、提醒入队（noteReturn 族）
+ * 聚合真实任务结果、ComfyUI/语音/聊天状态与原生入口文件状态，产出事件提醒。
+ * 勿扰/安静时段 gating、提醒入队（noteReturn 族）
  * 与事件路由跳转同归此处；两个定时器与轮询 AbortController 的
  * 生命周期由本 composable 自持。
  */
 export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) {
   const { activeChar, desktopBridge, desktopWindowVisible, reconcileAutoListen } = deps
+  const router = useRouter()
 
   const config = ref(readBehaviorConfig())
   const behavior = createCompanionBehavior(config.value)
@@ -157,23 +163,25 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     if (eventPolling || !alive) return
     if (!desktopWindowVisible() || !behaviorEnabled.value || dnd.value || behavior.inQuietHours()) { eventDetector.reset(); return }
     const character = activeChar.value
-    const revision = importRevision
+    const revision = eventRevision
+    const source = imageMediaSession()
     eventPolling = true
     const controller = new AbortController()
+    const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(30_000)])
     eventPollController = controller
     try {
-      const [status, imageCount] = await Promise.all([
-        controlApi.getStatus({ signal: controller.signal }).catch(() => null),
-        import('@/storage/artworkRepository').then(({ artworkRepository }) => artworkRepository.countImages()).catch(() => -1),
+      const [status, tasks] = await Promise.all([
+        controlApi.getStatus({ signal }).catch(() => null),
+        readCompanionTasks(signal).catch(() => null),
       ])
-      if (!alive || controller.signal.aborted || revision !== importRevision || !status || status.ok === false || character !== activeChar.value || !desktopWindowVisible()) return
+      if (!alive || signal.aborted || revision !== eventRevision || source !== imageMediaSession() || character !== activeChar.value || !desktopWindowVisible()
+        || !behaviorEnabled.value || dnd.value || behavior.inQuietHours()) return
+      const available = status?.ok === true
       const events = eventDetector.ingest({
-        imageCount: imageCount >= 0 ? imageCount : null,
-        services: {
-          sdOnline: status.sdOnline,
-          ttsOnline: status.ttsOnline,
-          ollamaOnline: status.ollamaOnline,
-        },
+        observedAt: Date.now(), tasks,
+        services: available ? { comfy: status.comfyOnline, tts: status.ttsOnline, ollama: status.ollamaOnline,
+          ...(status.llama ? { llama: status.llama.online } : {}) } : null,
+        nativeFiles: available ? status.imageProvider === 'native' ? status.nativeRuntimeFilesReady ?? null : null : undefined,
       })
       for (const event of events) {
         eventLineOffset += 1
@@ -199,18 +207,24 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     if (desktopBridge) {
       dismissReminder(reminder.id)
       desktopBridge.openAtelier(route)
-    }
+    } else { dismissReminder(reminder.id); void router.push(route) }
   }
 
-  /** 导入/剪贴板入册后图片计数增加：重置检测器基线避免误报 sd-done。 */
-  let importRevision = 0
+  let eventRevision = 0
   function resetEventDetector() {
-    importRevision++
+    eventRevision++
+    eventPollController?.abort()
     eventDetector.reset()
   }
+  watch(runtimeResourceIdentity, resetEventDetector, { flush: 'sync' })
+  let source = imageMediaSession()
+  const stopSource = onDesktopRuntime(() => {
+    const next = imageMediaSession()
+    if (source !== next) { source = next; resetEventDetector() }
+  })
+  watch(() => behaviorEnabled.value && !dnd.value && !inQuietHours.value && desktopWindowVisible(), resetEventDetector, { flush: 'sync' })
 
   function onBehaviorStorage(event: StorageEvent) {
-    if (event.key === COMPANION_IMAGE_IMPORT_KEY && event.newValue) { resetEventDetector(); return }
     if (event.key !== null && event.key !== COMPANION_BEHAVIOR_KEY) return
     config.value = readBehaviorConfig()
     behavior.setConfig(config.value)
@@ -219,8 +233,8 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     reconcileAutoListen()
   }
   watch(activeChar, () => {
-    eventPollController?.abort()
-    behavior.clear(); eventDetector.reset(); greetedSlotKey = ''
+    resetEventDetector()
+    behavior.clear(); greetedSlotKey = ''
     syncReminders(); maybeGreetByTime()
   })
 
@@ -236,6 +250,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
 
   onUnmounted(() => {
     alive = false
+    stopSource()
     eventPollController?.abort()
     window.removeEventListener('storage', onBehaviorStorage)
     eventPollController = null
@@ -258,6 +273,5 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     dismissReminder,
     maybeGreetByTime,
     openReminderRoute,
-    resetEventDetector,
   }
 }

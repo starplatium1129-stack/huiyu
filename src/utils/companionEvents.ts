@@ -1,24 +1,28 @@
 /**
  * 陪伴事件检测器（纯 TS，无 DOM）。
  *
- * 职责：把网关状态轮询快照（服务在线、训练任务、出图入库计数）的差异
+ * 职责：把已确认任务结果与服务状态快照的差异
  * 翻译成 Companion 可播报的事件。只做确定性对比，不发起任何请求、
  * 不调用 LLM；轮询与入队由调用方负责。
  */
 
-export interface CompanionServicesSnapshot {
-  sdOnline: boolean
-  ttsOnline: boolean
-  ollamaOnline: boolean
+export interface CompanionTaskSnapshot {
+  id: string
+  createdAt: number
+  ready: boolean
 }
+export type CompanionServicesSnapshot = Partial<Record<'comfy' | 'tts' | 'ollama' | 'llama', boolean>>
 
 export interface CompanionEventSnapshot {
-  /** 作品库图片总数（IndexedDB 计数），增加视为出图完成 */
-  imageCount: number | null
-  services: CompanionServicesSnapshot
+  observedAt: number
+  /** null means the read failed, so retain the previous successful baseline. */
+  tasks: readonly CompanionTaskSnapshot[] | null
+  services: CompanionServicesSnapshot | null
+  /** Native status checks entry files only, never a successful model load. */
+  nativeFiles?: boolean | null
 }
 
-export type CompanionDetectedEvent = 'sd-done' | 'service-back' | 'service-down'
+export type CompanionDetectedEvent = 'image-ready' | 'service-back' | 'service-down' | 'image-files-ready' | 'image-files-missing'
 
 export interface CompanionEventDetector {
   /**
@@ -31,26 +35,45 @@ export interface CompanionEventDetector {
 }
 
 export function createCompanionEventDetector(): CompanionEventDetector {
-  let baseline: CompanionEventSnapshot | null = null
+  let tasks: Map<string, CompanionTaskSnapshot> | null = null
+  let services: CompanionServicesSnapshot = {}
+  let since = 0, nativeFiles: boolean | null = null
+  const notified = new Set<string>()
 
   function ingest(snapshot: CompanionEventSnapshot): CompanionDetectedEvent[] {
     const events: CompanionDetectedEvent[] = []
-    if (baseline) {
-      if (snapshot.imageCount != null && baseline.imageCount != null && snapshot.imageCount > baseline.imageCount) events.push('sd-done')
-
-      for (const key of ['sdOnline', 'ttsOnline', 'ollamaOnline'] as const) {
-        const was = baseline.services[key]
-        const now = snapshot.services[key]
-        if (!was && now) events.push('service-back')
-        else if (was && !now) events.push('service-down')
+    if (snapshot.tasks !== null) {
+      if (tasks === null) since = snapshot.observedAt
+      for (const task of snapshot.tasks) {
+        const prior = tasks?.get(task.id)
+        if (task.ready && !notified.has(task.id)) {
+          // Historical reads can reintroduce old IDs; only transitions or tasks
+          // created after the first snapshot can announce a new result.
+          if (tasks !== null && (prior ? !prior.ready : task.createdAt > since)) events.push('image-ready')
+          notified.add(task.id)
+        }
       }
+      tasks = new Map(snapshot.tasks.map(task => [task.id, { ...task }]))
+      while (notified.size > 256) notified.delete(notified.values().next().value!)
     }
-    baseline = { ...snapshot, imageCount: snapshot.imageCount ?? baseline?.imageCount ?? null, services: { ...snapshot.services } }
+    if (snapshot.services !== null) {
+      for (const key of Object.keys(snapshot.services) as Array<keyof CompanionServicesSnapshot>) {
+        const was = services[key], now = snapshot.services[key]
+        if (was === false && now === true) events.push('service-back')
+        else if (was === true && now === false) events.push('service-down')
+      }
+      services = { ...snapshot.services }
+    }
+    if (snapshot.nativeFiles !== undefined) {
+      if (nativeFiles !== null && snapshot.nativeFiles !== null && nativeFiles !== snapshot.nativeFiles)
+        events.push(snapshot.nativeFiles ? 'image-files-ready' : 'image-files-missing')
+      nativeFiles = snapshot.nativeFiles
+    }
     return [...new Set(events)]
   }
 
   function reset(): void {
-    baseline = null
+    tasks = null; services = {}; since = 0; nativeFiles = null; notified.clear()
   }
 
   return { ingest, reset }
@@ -58,14 +81,18 @@ export function createCompanionEventDetector(): CompanionEventDetector {
 
 /** 事件 → 跳转的 Atelier 路由（供 UI 点击气泡时使用）。 */
 export const EVENT_ROUTE: Record<CompanionDetectedEvent, string> = {
-  'sd-done': '/gallery',
+  'image-ready': '/gallery?tasks=inbox',
   'service-back': '/control',
   'service-down': '/control',
+  'image-files-ready': '/control',
+  'image-files-missing': '/control',
 }
 
 /** 事件 → 系统通知标题（供 desktopBridge.notify 使用）。 */
 export const EVENT_NOTIFY_TITLE: Record<CompanionDetectedEvent, string> = {
-  'sd-done': '新图入库',
+  'image-ready': '图片生成完成',
   'service-back': '服务恢复',
   'service-down': '服务掉线',
+  'image-files-ready': '原生绘图入口文件已准备',
+  'image-files-missing': '原生绘图入口文件待检查',
 }

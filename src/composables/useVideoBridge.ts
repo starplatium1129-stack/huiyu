@@ -2,7 +2,7 @@ import { readStoryOrigin } from '@/types/storyOrigin'
 import { withArtworkStaging } from '@/storage/artworkSession'
 import { useVideoStore, type VideoCtxPayload } from '@/stores/videoStore'
 import type { ArtworkRepository } from '@/storage/artworkRepository'
-import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { VIDEO_CONTEXT_KEY, VIDEO_SHOTS_CONTEXT_KEY } from '@/utils/storageKeys'
 import { sameTempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 
 export type VideoTransferImage = Readonly<Omit<VideoCtxPayload, 'imageId'> & { blob: Blob }>
@@ -26,7 +26,7 @@ export function createVideoTransfer() {
 
   async function confirm(owner: VideoTransferOwner) {
     checkVideoTransfer(owner)
-    try { await flushProfileWrites() }
+    try { await useVideoStore().confirmDrafts([pending?.destination === 'shots' ? VIDEO_SHOTS_CONTEXT_KEY : VIDEO_CONTEXT_KEY]) }
     catch (error) { throw new Error('图片交接尚未写稳，原待办与图片已保留；重试只确认原交接。', { cause: error }) }
     checkVideoTransfer(owner)
   }

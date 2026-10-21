@@ -13,41 +13,27 @@ use std::{
 };
 use tokio_util::sync::CancellationToken;
 
-pub(super) struct EditorLock {
-    path: PathBuf,
-    file: Option<File>,
+pub(super) fn lock(root: &Path) -> Result<File> {
+    no_links(root)?;
+    fs::create_dir_all(root)?;
+    let path = root.join(".editor-lock");
+    // Also accepts the empty marker left by a crashed older runtime. Never
+    // unlink the file: another process may already be waiting on this inode.
+    crate::maintenance::fs::safe(&path, false, true).map_err(|_| busy())?;
+    crate::file_lock::try_lock(&path).map_err(|error| {
+        if error.kind() == std::io::ErrorKind::WouldBlock {
+            busy()
+        } else {
+            error.into()
+        }
+    })
 }
-impl EditorLock {
-    pub fn acquire(root: &Path) -> Result<Self> {
-        no_links(root)?;
-        fs::create_dir_all(root)?;
-        let path = root.join(".editor-lock");
-        let file = OpenOptions::new()
-            .create_new(true)
-            .write(true)
-            .open(&path)
-            .map_err(|error| {
-                if error.kind() == std::io::ErrorKind::AlreadyExists {
-                    ApiError::new(
-                        409,
-                        "LIVE2D_BUSY",
-                        "Import editor busy; retry after the other operation completes",
-                    )
-                } else {
-                    error.into()
-                }
-            })?;
-        Ok(Self {
-            path,
-            file: Some(file),
-        })
-    }
-}
-impl Drop for EditorLock {
-    fn drop(&mut self) {
-        self.file.take();
-        let _ = fs::remove_file(&self.path);
-    }
+fn busy() -> ApiError {
+    ApiError::new(
+        409,
+        "LIVE2D_BUSY",
+        "Import editor busy; retry after the other operation completes",
+    )
 }
 pub(super) fn check_cancel(cancel: &CancellationToken) -> Result<()> {
     if cancel.is_cancelled() {
@@ -175,7 +161,7 @@ pub(super) fn edit(
     action: &str,
     cancel: &CancellationToken,
 ) -> Result<Value> {
-    let _lock = EditorLock::acquire(root)?;
+    let _lock = lock(root)?;
     let (directory, mut receipt, revision, fingerprint) = current(root, id, cancel)?;
     if input["revision"] != revision || input["fingerprint"] != fingerprint {
         return Err(ApiError::new(

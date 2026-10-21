@@ -18,6 +18,7 @@
             </div>
             <p role="status" class="model-status">{{ studio.message.value }}</p>
             <p v-if="studio.needsReload.value">配置已落盘。完成当前对话后，重新载入页面即可生效。</p>
+            <p v-if="studio.saved.value">{{ studio.dirty.value ? '有未保存的校准修改；保存草稿可保留进度，保存配置后才会应用。' : '当前校准与已保存配置一致。' }}</p>
           </section>
           <section class="model-config-panel" aria-label="模型配置">
             <fieldset :disabled="studio.busy.value">
@@ -66,7 +67,7 @@
             <details>
               <StudioDisclosureSummary>草稿、配置与诊断</StudioDisclosureSummary><div data-disclosure-content>
               <div class="model-actions">
-                <button class="btn btn-ghost" type="button" :disabled="studio.busy.value" @click="studio.saveDraft">保存校准草稿</button>
+                <button class="btn btn-ghost" type="button" :disabled="studio.busy.value || studio.draftSaving.value" @click="studio.saveDraft">{{ studio.draftSaving.value ? '正在保存草稿…' : '保存校准草稿' }}</button>
                 <button class="btn btn-ghost" type="button" :disabled="studio.busy.value" @click="studio.restoreDraft">恢复草稿</button>
                 <button class="btn btn-ghost" type="button" :disabled="studio.busy.value" @click="studio.undo">撤销未保存修改</button>
                 <button class="btn btn-ghost" type="button" :disabled="studio.busy.value" @click="studio.exportProfile">导出配置</button>
@@ -85,7 +86,7 @@
         </div>
       </div>
       <footer class="model-studio-footer">
-        <button class="btn btn-primary" type="button" :disabled="studio.busy.value || !studio.ready.value || studio.needsReload.value" @click="studio.save">{{ studio.saved.value ? '保存校准配置' : '保存并加入角色列表' }}</button>
+        <button class="btn btn-primary" type="button" :disabled="studio.busy.value || !studio.ready.value || studio.needsReload.value || Boolean(studio.saved.value) && !studio.dirty.value" @click="studio.save">{{ studio.saved.value ? '保存校准配置' : '保存并加入角色列表' }}</button>
       </footer>
   </div>
 </template>

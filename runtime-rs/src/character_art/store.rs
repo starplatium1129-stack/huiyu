@@ -80,31 +80,13 @@ pub(super) fn lock(root: &Path) -> Result<std::fs::File> {
     // Never unlink this inode: the OS-held lock is released on process exit.
     // An exclusively opened Windows lock may also block identity inspection.
     fs::safe(&path, false, true).map_err(|_| busy())?;
-    let mut options = std::fs::OpenOptions::new();
-    options.write(true).create(true).truncate(false);
-    #[cfg(windows)]
-    {
-        use std::os::windows::fs::OpenOptionsExt;
-        options.share_mode(0);
-    }
-    let file = options.open(&path).map_err(|error| {
-        if matches!(error.raw_os_error(), Some(32 | 33))
-            || error.kind() == std::io::ErrorKind::WouldBlock
-        {
+    crate::file_lock::try_lock(&path).map_err(|error| {
+        if error.kind() == std::io::ErrorKind::WouldBlock {
             busy()
         } else {
             corrupt()
         }
-    })?;
-    #[cfg(unix)]
-    {
-        use std::os::fd::AsRawFd;
-        // SAFETY: the descriptor is owned by file and remains live for this call.
-        if unsafe { libc::flock(file.as_raw_fd(), libc::LOCK_EX | libc::LOCK_NB) } != 0 {
-            return Err(busy());
-        }
-    }
-    Ok(file)
+    })
 }
 pub(super) fn save(config: &Config, mut body: Value, cancel: &CancellationToken) -> Result<Value> {
     let started = Instant::now();

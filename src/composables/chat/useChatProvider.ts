@@ -3,6 +3,7 @@ import { computed, getCurrentScope, onScopeDispose, ref, watch, type Ref } from 
 import { useChatStorage, type ChatState } from './useChatStorage.ts'
 import { parseChatStatus, type ChatModel } from '../../utils/chatStatus.ts'
 import { DEFAULT_CHAT_API_BASE_URL, DEFAULT_CHAT_API_MODEL, chatApiPreset, chatApiVendorFor, chatApiAddressError, type ApiVendor } from '../../config/chatApi.ts'
+import { CHAT_PREFERENCES_KEY } from '@/utils/storageKeys'
 import { STORAGE_KEY } from '../../config/characters.ts'
 import { chatApi } from '../../api/chatApi.ts'
 import { ApiClientError } from '../../api/client.ts'
@@ -260,7 +261,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   // 只读不写，不会循环。
   async function syncApiSettingsFromStorage(event: StorageEvent) {
     if (event.storageArea !== null && event.storageArea !== globalThis.localStorage) return
-    if (event.key !== null && event.key !== STORAGE_KEY && event.key !== 'aics_chat_model') return
+    if (event.key !== null && event.key !== STORAGE_KEY && event.key !== CHAT_PREFERENCES_KEY && event.key !== 'aics_chat_model') return
     try {
       if (!await storage.reloadConnectionSettings() || disposed) return
       if (!isBusy.value) setBusyStatus(false)

@@ -48,6 +48,19 @@ fn integer(value: &Value, min: u64) -> Result<Value> {
         .map(Value::from)
         .ok_or_else(|| ApiError::invalid("Invalid integer field"))
 }
+pub(super) fn binary_chunk(path: &[String], query: &Query, workspace_id: &str) -> Result<Value> {
+    if query.get("protocolVersion").map(String::as_str) != Some("1") {
+        return Err(ApiError::new(409, "PROTOCOL_VERSION", "Workspace protocol version does not match"));
+    }
+    if query.get("workspaceId").map(String::as_str) != Some(workspace_id) {
+        return Err(ApiError::new(409, "WORKSPACE_IDENTITY", "Workspace identity does not match"));
+    }
+    let offset = query.get("offset").and_then(|value| value.parse::<u64>().ok())
+        .ok_or_else(|| ApiError::invalid("Invalid chunk offset"))?;
+    let id = json!(path[1]); text(&id)?;
+    Ok(json!({"kind":if path[0]=="media-uploads" {"uploadMediaChunk"}else{"uploadChunk"},
+        "operationId":id,"offset":integer(&json!(offset),0)?}))
+}
 fn entity_id(value: &Value) -> Result<Value> {
     if !value.is_number() {
         text(value)?;
@@ -156,18 +169,6 @@ pub(super) fn command(
             command
         }
         (
-            "PUT",
-            [
-                collection @ ("media-uploads" | "artwork-saves"),
-                id,
-                "chunks",
-            ],
-        ) => {
-            let mut command = json!({"kind": if *collection == "media-uploads" { "uploadMediaChunk" } else { "uploadChunk" }, "operationId": route_op(id)?, "offset": integer(&input["offset"], 0)?, "data": chunk(&input["data"]).map(|_| Value::Null)?});
-            command["data"] = input["data"].take();
-            command
-        }
-        (
             "POST",
             [
                 collection @ ("media-uploads" | "artwork-saves"),
@@ -227,6 +228,13 @@ pub(super) fn command(
             }
             command
         }
+        ("POST", ["gallery", "query"]) => {
+            let mut command = json!({"kind":"readGalleryPage","query":record(&input["query"])?.clone()});
+            if let Some(cursor) = input.get("cursor") { command["cursor"] = cursor.clone(); }
+            if let Some(limit) = input.get("limit") { command["limit"] = integer(limit,1)?; }
+            command
+        }
+        ("GET", ["gallery", "catalog"]) => json!({"kind":"readGalleryCatalog"}),
         ("GET", ["artworks", id]) => json!({"kind": "getArtwork", "id": route_id(id, query)?}),
         ("POST", ["artworks", "lookup"]) => {
             let mut command = json!({"kind": "getArtworks", "ids": array(&input["ids"], true)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?});

@@ -10,7 +10,6 @@ import { artworkRepository,type TrashEntry } from '@/storage/artworkRepository';
 import { onDesktopRuntime } from '@/platform/desktop/runtime';
 import { imageMediaSession } from '@/platform/imageMediaSession';
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
-import type { LoraMeta,Scene } from '@/stores/sceneStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
 import { computed,onActivated,onDeactivated,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
@@ -34,7 +33,8 @@ export function useGalleryWorkspace() {
     const route = useRoute();
     const router = useRouter();
 
-    const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]), scenes = ref<Scene[]>([]), loras = ref<LoraMeta[]>([]);
+    const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]);
+    const scenes = computed(() => sceneStore.scenes), loras = computed(() => sceneStore.loras);
     const galleryLoading = ref(true), galleryIndexLoading = ref(false), galleryError = ref('');
     const infoOpen = ref(false);
     // Legacy/imported artwork IDs may also be Object prototype property names.
@@ -86,7 +86,7 @@ export function useGalleryWorkspace() {
     let imageReads = new AbortController();
 
     const {
-        favoriteOnly,
+        favoriteOnly, query: galleryQuery, visibleTotal,
         tagFilter, tagOptions, characterFilter,
         generationOptions, filterSnapshot, applyFilterSnapshot, projectOptions, projectUnavailable,
         projectFilter,
@@ -104,7 +104,7 @@ export function useGalleryWorkspace() {
         sentinelEl,
     } = useGalleryFilters({
         history,
-        indexLoading: galleryIndexLoading, loadError: galleryError,
+        loading: galleryLoading, indexLoading: galleryIndexLoading, loadError: galleryError,
         projects,
         ratioOf,
         columnCount,
@@ -119,13 +119,18 @@ export function useGalleryWorkspace() {
         selectedIds,
         toggleSelectMode,
         toggleSelect,
-        allVisibleSelected,
-        selectAllVisible,
+        allVisibleSelected: allLoadedSelected,
+        selectAllVisible: selectLoaded,
         clearSelection,
     } = useGallerySelection(visible);
 
+    const galleryCatalog = galleryQuery.catalog;
+    const libraryTotal = computed(() => galleryCatalog.value?.total ?? history.value.length);
+    const allVisibleSelected = computed(() => allLoadedSelected.value && visible.value.length === visibleTotal.value);
+    let selectingAll = false;
+    async function selectAllVisible() { if (selectingAll) return; selectingAll = true; try { if (!galleryQuery.enabled.value || await galleryQuery.all()) selectLoaded(); } finally { selectingAll = false; } }
     const { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step, getViewerRevision } = useGalleryViewer({
-        history, visible, previewSource: item => cardUrls.value[item.id] || thumbUrls.value[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
+        history, visible, hasMore: galleryQuery.hasMore, loadMore: galleryQuery.more, previewSource: item => cardUrls.value[item.id] || thumbUrls.value[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
     function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
 
@@ -171,7 +176,8 @@ export function useGalleryWorkspace() {
         await loadGalleryStorage();
         if (unmounted || !viewActive || revision !== comparisonRevision || !request
             || request !== requestedComparison.value || request === dismissedComparison) return;
-        openRouteComparison();
+        await openRouteComparison();
+        if (unmounted || !viewActive || revision !== comparisonRevision) return;
         comparisonOwner = compareOpen.value ? request : '';
     }
     let comparisonSession = imageMediaSession(), comparisonRepository = artworkRepository, comparisonSourceRevision = 0;
@@ -364,7 +370,8 @@ export function useGalleryWorkspace() {
     async function loadGalleryStorage(): Promise<void> {
         const read = ++galleryReadRevision, write = comparisonWriteRevision, sourceRevision = comparisonSourceRevision;
         const source = artworkRepository, session = imageMediaSession();
-        await loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects });
+        if (galleryQuery.enabled.value) await galleryQuery.refresh();
+        else await loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects });
         if (!unmounted && viewActive && read === galleryReadRevision && write === comparisonWriteRevision
             && sourceRevision === comparisonSourceRevision && source === artworkRepository && session === imageMediaSession()
             && !comparisonMarkPending.value && !comparisonMarksReading.value && !galleryError.value) comparisonNeedsRead.value = false;
@@ -374,9 +381,9 @@ export function useGalleryWorkspace() {
         document.addEventListener('keydown', onKeydown);
         // Labels are supplemental: library browsing and saved filters do not
         // depend on the studio's character/tag/preset/blueprint catalogs.
-        void sceneStore.loadHome().then(() => { scenes.value = sceneStore.scenes; })
+        void sceneStore.loadHome()
             .catch(e => console.warn('gallery scene labels load failed', e));
-        void sceneStore.loadLoraCatalog().then(() => { loras.value = sceneStore.loras; })
+        void sceneStore.loadLoraCatalog()
             .catch(e => console.warn('gallery LoRA labels load failed', e));
         restoreFiltersFromQuery();
         await refreshComparison();
@@ -418,7 +425,8 @@ export function useGalleryWorkspace() {
         releaseImages();
         clearThumbnails();
     });
-    const isMediaCurrent = watchArtworkMedia(history, id => {
+    const mediaRecords = computed(() => [...(collectionPreviewItems.value || []), ...history.value]);
+    const isMediaCurrent = watchArtworkMedia(mediaRecords, id => {
         releaseCardImage(id); forgetThumbnail(id); forgetRatio(id);
         cancelCardHydration(id);
         if (missingImageIds.value.has(id)) missingImageIds.value = new Set([...missingImageIds.value].filter(value => value !== id));
@@ -454,12 +462,13 @@ export function useGalleryWorkspace() {
     const { clearTrash, trashClearing, trashLoading, trashError } = trashActions;
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
-    function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast, loadGalleryStorage }, history.value.find(entry => entry.id === item.id) ?? item); }
+    async function toggleFavorite(item: ArtworkRecord): Promise<void> { await toggleFavoriteAction({ history, showToast, loadGalleryStorage }, history.value.find(entry => entry.id === item.id) ?? item); if (galleryQuery.enabled.value) await loadGalleryStorage(); }
     const deleteMotion = useGalleryListMotion(shellEl, () => pagedVisible.value, () => galleryLoading.value,
         () => !trashMode.value && collectionPreviewItems.value === null);
     function confirmDelete(item: ArtworkRecord): Promise<void> {
         const epoch = imageEpoch, viewerRevision = getViewerRevision();
-        return confirmDeleteAction({ isCurrentView: () => !unmounted && viewActive && epoch === imageEpoch && viewerRevision === getViewerRevision(), showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }, item);
+        const action = confirmDeleteAction({ isCurrentView: () => !unmounted && viewActive && epoch === imageEpoch && viewerRevision === getViewerRevision(), showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }, item);
+        return action.then(async () => { if (galleryQuery.enabled.value) await loadGalleryStorage(); });
     }
     function bulkDelete(): Promise<void> { const epoch = imageEpoch; return bulkDeleteAction({ isCurrentView: () => !unmounted && viewActive && epoch === imageEpoch, showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }); }
     return {
@@ -467,7 +476,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects, tagFilter, tagOptions, characterFilter, collectionPreviewItems,
         generationOptions, filterSnapshot, applyFilterSnapshot, projectOptions, projectUnavailable,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
-        visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
+        visible, visibleTotal, libraryTotal, galleryCatalog, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, closeComparison, loadGalleryStorage, trashBusy,
         canMarkComparison, saveComparisonMarks, retryComparisonMarks, comparisonMarksMessage, comparisonMarksReading,
         restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryIndexLoading, galleryError, history, resetGalleryFilters,

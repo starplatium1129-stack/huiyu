@@ -1,4 +1,5 @@
 import { desktopRuntimeFetch, getDesktopRuntime } from '@/platform/desktop/runtime'
+import { abortableTask } from '@/utils/abortableTask'
 import type { WorkspaceJobProgress } from './workspaceJobs'
 export type { WorkspaceJobProgress } from './workspaceJobs'
 
@@ -20,6 +21,8 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'listArtworks': return ['GET', '/artworks?' + new URLSearchParams(Object.entries(command).filter(([key, value]) => key !== 'kind' && value !== undefined).map(([key, value]) => [key, String(value)]))]
     case 'searchArtworks': return ['GET', '/artwork-search?' + new URLSearchParams({ terms: JSON.stringify(command.terms), ...(command.cursor === undefined ? {} : { cursor: String(command.cursor) }) })]
     case 'readArtworkRecentIndex': return ['GET', '/artwork-recent-index' + (command.candidateLimit === undefined ? '' : `?candidateLimit=${encode(command.candidateLimit)}`)]
+    case 'readGalleryPage': return ['POST', '/gallery/query']
+    case 'readGalleryCatalog': return ['GET', '/gallery/catalog']
     case 'getArtwork': return ['GET', entity]
     case 'getArtworks': return ['POST', '/artworks/lookup']
     case 'listProjects': return ['GET', '/projects']
@@ -76,23 +79,22 @@ function resource(command: Record<string, unknown>): [string, string] {
     default: throw new Error('不支持的工作区操作')
   }
 }
-function base64(data: Uint8Array): string {
-  let value = ''
-  for (let offset = 0; offset < data.length; offset += 32768) value += String.fromCharCode(...data.subarray(offset, offset + 32768))
-  return btoa(value)
-}
 async function requestOnce<T>(command: Record<string, unknown>, signal?: AbortSignal): Promise<T> {
   const session = getDesktopRuntime().bootstrap?.runtime?.workspace
   if (!session) throw new Error('私人工作区尚未连接')
   const [method, path] = resource(command)
   const deadline = AbortSignal.timeout(command.kind === 'restoreArtworks' ? 125_000 : 35_000)
-  const response = await desktopRuntimeFetch('/api/workspace' + path, { method, signal: signal ? AbortSignal.any([signal, deadline]) : deadline,
-    headers: { 'Content-Type': 'application/json' }, ...(method === 'GET' ? {} : { body: JSON.stringify({ ...command,
-      ...(command.data instanceof Uint8Array ? { data: base64(command.data) } : {}), protocolVersion: 1, workspaceId: session.workspaceId }) }) })
-  const payload = await response.json()
-  if (!response.ok) throw new WorkspaceRequestError(payload.error || payload.message || '工作区操作未完成', payload.code, command.operationId, response.status)
-  if (payload.workspaceId !== session.workspaceId || payload.runtimeEpoch !== session.runtimeEpoch) throw new Error('工作区连接已变化，请重新读取')
-  return payload.result as T
+  const requestSignal = signal ? AbortSignal.any([signal, deadline]) : deadline
+  requestSignal.throwIfAborted()
+  if (method !== 'GET') command = structuredClone(command)
+  const { path: target, ...payload } = method === 'GET' ? { path }
+    : (await abortableTask(() => import('./workspacePayload'), requestSignal)).workspacePayload(command, session.workspaceId, path)
+  const response = await desktopRuntimeFetch('/api/workspace' + target, { method, signal: requestSignal,
+    ...payload })
+  const result = await response.json()
+  if (!response.ok) throw new WorkspaceRequestError(result.error || result.message || '工作区操作未完成', result.code, command.operationId, response.status)
+  if (result.workspaceId !== session.workspaceId || result.runtimeEpoch !== session.runtimeEpoch) throw new Error('工作区连接已变化，请重新读取')
+  return result.result as T
 }
 
 export async function workspaceRequest<T>(command: Record<string, unknown>, signal?: AbortSignal, onProgress?: (value: WorkspaceJobProgress) => void): Promise<T> {

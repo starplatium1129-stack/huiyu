@@ -1,3 +1,5 @@
+import type { CompanionDetectedEvent } from '@/utils/companionEvents'
+
 export interface CharacterConfig {
   id: string
   name: string
@@ -111,11 +113,7 @@ export function createMessageId(): string {
 }
 
 /** 陪伴模式确定性台词：无操作提醒、归来欢迎与事件播报（不调用 LLM，离线可用）。 */
-export interface CompanionEventLines {
-  'sd-done': string[]
-  'service-back': string[]
-  'service-down': string[]
-}
+export type CompanionEventLines = Record<CompanionDetectedEvent, string[]>
 
 const COMPANION_LINES: Record<string, { idle: string[]; return: string[]; events: CompanionEventLines }> = {
   nene: {
@@ -129,9 +127,11 @@ const COMPANION_LINES: Record<string, { idle: string[]; return: string[]; events
       '你回来啦。刚才，有好好休息吗？',
     ],
     events: {
-      'sd-done': ['新图做好啦！要和我一起去看看吗？', '出图完成了哦。这次画得怎么样？'],
+      'image-ready': ['新图做好啦！要去任务中心看看吗？', '出图完成了哦，任务中心里可以查看成片。'],
       'service-back': ['服务恢复啦，一切又回到正轨了。', '刚才是有点手忙脚乱……现在没事了哦。'],
       'service-down': ['呜……有服务好像掉线了，要不要去控制面板看看？', '好像有哪里断开了……我来提醒你一下。'],
+      'image-files-ready': ['原生绘图的入口文件准备好了，模型会在生成时继续检查。'],
+      'image-files-missing': ['原生绘图的入口文件需要检查，要去控制面板看看吗？'],
     },
   },
   natsume: {
@@ -145,9 +145,11 @@ const COMPANION_LINES: Record<string, { idle: string[]; return: string[]; events
       '哦，回来了。……也不是特别在等你。',
     ],
     events: {
-      'sd-done': ['图出好了。这次的可别翻车。', '新图入库了。验收一下？'],
+      'image-ready': ['图出好了。去任务中心看看？', '新图做好了。任务中心里验收一下？'],
       'service-back': ['服务回来了。刚才是虚惊一场？', '后端恢复了。早该如此。'],
       'service-down': ['有服务掉线了。控制面板去看看？', '连接断了。……要我盯着恢复吗？'],
+      'image-files-ready': ['原生绘图入口文件齐了。模型等生成时再检查。'],
+      'image-files-missing': ['原生绘图入口文件有缺失。控制面板去检查一下。'],
     },
   },
 }
@@ -156,7 +158,7 @@ export function pickCompanionLine(
   characterId: string,
   kind: 'idle' | 'return' | 'event',
   offset = 0,
-  eventKind?: 'sd-done' | 'service-back' | 'service-down',
+  eventKind?: CompanionDetectedEvent,
 ): string {
   const character = COMPANION_LINES[characterId]
   let lines: string[] | undefined

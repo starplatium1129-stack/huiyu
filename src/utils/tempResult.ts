@@ -1,4 +1,4 @@
-import { profileDraftStorage as sessionStorage, profileRuntimeActive, flushProfileWrites } from '../platform/web/profileStorage.ts'
+import { profileDraftStorage as sessionStorage, profileRuntimeActive, writeProfileDraft, confirmProfileKeys } from '../platform/web/profileStorage.ts'
 import { TEMP_RESULT_KEY } from '@/utils/storageKeys'
 import type { AnimaJobMetadata, AnimaResultContext } from '@/types/anima'
 import type { DrawEngine } from '@/storage/settingsRepository'
@@ -99,7 +99,7 @@ function writeTempResult(record: TempResultRecord): boolean {
         protocolVersion: 1, workspaceId: bootstrap?.runtime?.workspace?.workspaceId }
       if (new TextEncoder().encode(JSON.stringify(envelope)).byteLength + 4096 > 2 * 1024 * 1024) return false
     }
-    sessionStorage.setItem(TEMP_RESULT_KEY, value)
+    writeProfileDraft(TEMP_RESULT_KEY, value)
     return true
   } catch {
     return false
@@ -108,9 +108,9 @@ function writeTempResult(record: TempResultRecord): boolean {
 
 export async function writeTempResultDurable(record: TempResultRecord): Promise<void> {
   if (!writeTempResult(record)) throw new Error('临时成片身份未写入，入册尚未提交；请检查空间与2MiB工作区正文限制后重试')
-  await flushProfileWrites()
+  await confirmProfileKeys([TEMP_RESULT_KEY], true)
 }
 
 export function clearTempResult(): boolean {
-  try { sessionStorage.removeItem(TEMP_RESULT_KEY); return true } catch { return false }
+  try { writeProfileDraft(TEMP_RESULT_KEY, null); return true } catch { return false }
 }

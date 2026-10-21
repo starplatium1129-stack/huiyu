@@ -1,6 +1,6 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { downloadBlob } from '../utils/downloadBlob'
-import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
+import { writeProfileLocal, type ProfileWriteReceipt, profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { computed, onUnmounted, reactive, ref, shallowRef } from 'vue'
 import { apiClient } from '../api/client.ts'
 import { inspectModelFiles, type ModelInspection } from '../live2d/modelInspector.ts'
@@ -35,6 +35,10 @@ export function useModelStudio(hostId: string) {
   const needsReload = ref(false)
   const identity = reactive({ id: '', name: '', persona: '', author: '', terms: '' })
   const mouth = reactive(emptyBinding()), leftEye = reactive(emptyBinding()), rightEye = reactive(emptyBinding())
+  const formSnapshot = () => JSON.stringify({ identity, mouth, leftEye, rightEye })
+  const savedForm = ref(formSnapshot())
+  const dirty = computed(() => formSnapshot() !== savedForm.value)
+  const draftSaving = ref(false)
   // Parameter ranges and endpoints change independently of the frame's level.
   const previewMouth = computed(() => {
     if (mouth.id) calibratedBinding(mouth, parameters.value)
@@ -89,11 +93,19 @@ export function useModelStudio(hostId: string) {
     stopPreview(); previewFailed.value = true; message.value = errorText(error)
   }
   function dispose() { disposed = true; request?.abort(); request = null; stopPreview() }
-  const releaseMaintenance = registerMaintenanceParticipant(() => {
+  function checkMaintenance() {
     if (busy.value || request) throw new Error('MODEL_BUSY')
     if (inspection.value && !saved.value) throw new Error('UNSAVED_MODEL_IMPORT')
-    if (!fingerprint.value && Object.values(identity).some(Boolean)) throw new Error('UNSAVED_MODEL_FORM')
-    if (fingerprint.value && localStorage.getItem(draftKey()) !== JSON.stringify({ identity, mouth, leftEye, rightEye })) throw new Error('UNSAVED_MODEL_FORM')
+    if (!fingerprint.value && dirty.value) throw new Error('UNSAVED_MODEL_FORM')
+  }
+  let draftReceipt: ProfileWriteReceipt | null = null
+  const releaseMaintenance = registerMaintenanceParticipant(async () => {
+    checkMaintenance()
+    if (!dirty.value && !draftSaving.value) return
+    // A draft can recover edits, but never replaces the saved configuration baseline.
+    await draftReceipt?.confirm()
+    checkMaintenance()
+    if (dirty.value && localStorage.getItem(draftKey()) !== formSnapshot()) throw new Error('UNSAVED_MODEL_FORM')
   })
   onUnmounted(() => { releaseMaintenance(); dispose() })
 
@@ -163,8 +175,9 @@ export function useModelStudio(hostId: string) {
       if (token !== generation || controller.signal.aborted) return
       const character = getCompanionCharacter(id)
       if (value.id !== id || !validateAdapterProfile(value.profile).valid || !value.fingerprint) throw new Error('已保存的模型配置无效')
-      saved.value = value; identity.id = id; identity.name = character?.name || id
-      identity.persona = character?.personaPrompt || ''; restoreBindings(value.profile)
+      saved.value = value
+      Object.assign(identity, { id, name: character?.name || id, persona: character?.personaPrompt || '', author: '', terms: '' })
+      restoreBindings(value.profile); savedForm.value = formSnapshot()
       const avatar = resolveCompanionAvatar(id)?.avatar
       expressions.value = avatar?.expressions?.map(item => item.id) || []
       motions.value = Object.values(value.profile.interactions || {}).map(item => ({ group: item.group, index: 0 }))
@@ -218,11 +231,19 @@ export function useModelStudio(hostId: string) {
     } catch (error) { if (token === generation && playbackToken === playbackVersion) { stopTest(); message.value = errorText(error) } }
   }
   function draftKey() { if (!fingerprint.value) throw new Error('请先选择模型'); return `aics-model-draft-${fingerprint.value}` }
-  function saveDraft() {
+  async function saveDraft() {
+    if (draftSaving.value || busy.value || disposed) return
+    const token = generation
+    draftSaving.value = true
     try {
-      localStorage.setItem(draftKey(), JSON.stringify({ identity, mouth, leftEye, rightEye }))
-      message.value = '草稿已保存在本机，尚未覆盖角色配置'
-    } catch (error) { message.value = `草稿保存失败：${errorText(error)}` }
+      const key = draftKey(), snapshot = formSnapshot()
+      draftReceipt = writeProfileLocal(key, snapshot)
+      await draftReceipt.confirm()
+      if (token === generation && !disposed) message.value = snapshot === formSnapshot()
+        ? '校准草稿已保存，角色配置仍需单独保存；新导入的模型文件不包含在草稿中。'
+        : '上一份校准草稿已保存，当前还有更新的修改。'
+    } catch (error) { if (token === generation && !disposed) message.value = `草稿保存失败：${errorText(error)}` }
+    finally { draftSaving.value = false }
   }
   function restoreDraft() {
     try {
@@ -278,6 +299,7 @@ export function useModelStudio(hostId: string) {
         saved.value = { ...result, profile, fingerprint: result.fingerprint || fingerprint.value }
       }
       needsReload.value = true; message.value = '已保存。结束当前对话后重新载入页面，即可在角色列表使用。'
+      savedForm.value = formSnapshot()
     } catch (error) { if (token === generation) message.value = `${error instanceof Error && error.name === 'TimeoutError' ? '模型导入等待超时' : errorText(error)}。请先重新读取配置确认结果，勿直接重复导入。` }
     finally { if (token === generation) busy.value = false; if (request === controller) request = null }
   }
@@ -289,7 +311,7 @@ export function useModelStudio(hostId: string) {
       const value = await apiClient.request<SavedModel>(`${endpoint()}/rollback`, { method: 'POST', signal: controller.signal, body: { revision: previous.revision, fingerprint: previous.fingerprint } })
       if (token !== generation || controller.signal.aborted) return
       if (!validateAdapterProfile(value.profile).valid) throw new Error('返回的历史配置无效')
-      stopTest(); saved.value = { ...previous, ...value }; restoreBindings(saved.value.profile); needsReload.value = true
+      stopTest(); saved.value = { ...previous, ...value }; restoreBindings(saved.value.profile); savedForm.value = formSnapshot(); needsReload.value = true
       message.value = '已恢复上一份配置；重新载入页面后生效'
     } catch (error) { if (token === generation) message.value = errorText(error) }
     finally { if (token === generation) busy.value = false; if (request === controller) request = null }
@@ -332,7 +354,7 @@ export function useModelStudio(hostId: string) {
     } catch (error) { if (token === generation) message.value = errorText(error) }
     finally { if (token === generation) busy.value = false }
   }
-  return { inspection, parameters, busy, ready, previewLoading, previewFailed, message, identity, saved, needsReload, mouth, leftEye, rightEye,
+  return { inspection, parameters, busy, ready, previewLoading, previewFailed, message, identity, saved, needsReload, dirty, draftSaving, mouth, leftEye, rightEye,
     level, blinkLevel, focusX, focusY, expressions, motions, fingerprint, selectFiles, openExisting, preview, test,
     selectBinding, stopTest, releasePreview, dispose, play, saveDraft, restoreDraft, undo, save, rollback, deactivate, exportProfile, importProfile }
 }

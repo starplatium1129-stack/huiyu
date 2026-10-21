@@ -6,6 +6,7 @@ import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipan
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { useAlbumNavigation } from './useAlbumNavigation'
 import { beginGalleryProjectRead, captureGallerySource, galleryProjects, publishGalleryProjectChange, type GalleryProject } from './galleryStorage'
+import { useGalleryRulePreview } from './useGalleryRulePreview'
 import { useGalleryProjectAlbums } from './useGalleryProjectAlbums'
 import { createSmartAlbumMatcher, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
 import { safeImageUrl, searchHaystack } from './galleryHelpers'
@@ -14,11 +15,11 @@ import type { useGalleryWorkspace } from './useGalleryWorkspace'
 type Workspace = ReturnType<typeof useGalleryWorkspace>
 type Options = Pick<Workspace, 'history' | 'projects' | 'thumbUrls' | 'cardUrls' | 'characterName' | 'characterFilter' | 'projectFilter'
   | 'galleryLoading' | 'galleryIndexLoading' | 'galleryError' | 'tagFilter' | 'searchQuery' | 'favoriteOnly' | 'resetGalleryFilters' | 'collectionPreviewItems' | 'showToast'
-  | 'trashMode' | 'selectMode' | 'toggleSelectMode'>
+  | 'trashMode' | 'selectMode' | 'toggleSelectMode' | 'galleryCatalog'>
 
 export function useGalleryCollections(options: Options) {
   const indexComplete = computed(() => !options.galleryLoading.value && !options.galleryIndexLoading.value && !options.galleryError.value)
-  const { albums, characterAlbums, resolvePreviewItems } = useGalleryProjectAlbums({ ...options, indexComplete })
+  const { albums, characterAlbums, resolvePreviewItems } = useGalleryProjectAlbums({ ...options, catalog: options.galleryCatalog, indexComplete })
   const albumSection = ref<'characters' | 'albums'>('albums')
   const visibleAlbumIds = ref<string[]>([])
   const selection = computed({
@@ -83,7 +84,12 @@ export function useGalleryCollections(options: Options) {
   const previewSearchIndex = computed(() => previewSearching.value
     ? new Map(options.history.value.map(item => [item, searchHaystack(item)])) : null)
   watch(previewSearching, searching => { if (!searching) void previewSearchIndex.value }, { flush: 'sync' })
+  const remotePreview = useGalleryRulePreview(() => !!options.galleryCatalog.value, editorOpen, editorRule, () => [options.galleryCatalog.value, options.projects.value]);
+  const previewCount = computed(() => options.galleryCatalog.value ? remotePreview.total.value : previewItems.value.length);
+  const previewLoading = computed(() => options.galleryCatalog.value ? remotePreview.loading.value : options.galleryLoading.value || options.galleryIndexLoading.value);
+  const previewError = computed(() => options.galleryCatalog.value ? remotePreview.error.value : options.galleryError.value);
   const previewItems = computed(() => {
+    if (options.galleryCatalog.value) return remotePreview.items.value
     if (!editorOpen.value) return []
     const matches = createSmartAlbumMatcher(editorRule.value, options.projects.value)
     const index = previewSearchIndex.value
@@ -184,6 +190,6 @@ export function useGalleryCollections(options: Options) {
   onDeactivated(() => { viewRevision++; editorOpen.value = false })
   onScopeDispose(() => { disposed = true; releaseEditorSource(); releaseMaintenance() })
   return { ...navigation, selection, albums, characterAlbums, albumSection, visibleAlbumIds, collectionTitle, manualProjects, characterOptions,
-    currentSmartRule, editorOpen, editorTitle, editorRule, editing, saving, error, previewItems, previewCovers, syncPreviews,
+    currentSmartRule, previewCount, previewLoading, previewError, editorOpen, editorTitle, editorRule, editing, saving, error, previewItems, previewCovers, syncPreviews,
     newSmartAlbum, editSmartAlbum, removeSmartAlbum, save, openCollection, showOverview, showAllWorks }
 }

@@ -1,4 +1,5 @@
 import type { AnimaGenerationState } from '@/types/anima'
+import { saveSettingValue } from './settingWrites'
 import { profileLocalStorage } from '@/platform/web/profileStorage'
 
 // Registered model-draft prefix: shared by every desktop window and stored by the profile runtime.
@@ -32,10 +33,10 @@ export function readDrawingSettings(family: 'anima' | 'krea2'): DrawingSettings 
   return Object.fromEntries(fields.filter(key => value[key] !== undefined).map(key => [key, value[key]])) as DrawingSettings
 }
 
-export function saveDrawingSettings(state: AnimaGenerationState): void {
+export async function saveDrawingSettings(state: AnimaGenerationState): Promise<void> {
   if (!state.models.some(model => model.id === state.modelId && model.available !== false)) return
   const next = Object.fromEntries(fields.filter(key => state[key] !== undefined).map(key => [key, state[key]])) as DrawingSettings
   const all = readAll()
   if (JSON.stringify(all[state.family]) === JSON.stringify(next)) return
-  profileLocalStorage.setItem(KEY, JSON.stringify({ ...all, [state.family]: next }))
+  if (!await saveSettingValue(KEY, JSON.stringify({ ...all, [state.family]: next }))) throw new Error('绘图参数尚未保存')
 }

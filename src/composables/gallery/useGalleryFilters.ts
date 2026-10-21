@@ -7,6 +7,7 @@ import type { GalleryProject } from './galleryStorage';
 import { artworkTags } from './artworkTags';
 import { artworkGenerationConditions, emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionOptions, generationConditionLabel, matchesGenerationConditions, normalizeGalleryFilterSnapshot, normalizeGenerationConditions, type GalleryFilterSnapshot } from './galleryGenerationConditions';
 import { artworkCharacterIds, createSmartAlbumMatcher, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules';
+import { useGalleryQuery } from './useGalleryQuery';
 import { useBrowseSearch } from '@/composables/useBrowseSearch';
 
 const generationQueryKeys = { engine: 'gEngine', model: 'gModel', outfit: 'gOutfit', seed: 'gSeed', size: 'gSize', reviewState: 'gState' } as const;
@@ -14,6 +15,7 @@ const generationQueryKeys = { engine: 'gEngine', model: 'gModel', outfit: 'gOutf
 export interface UseGalleryFiltersOptions {
   history: Ref<ArtworkRecord[]>;
   indexLoading: Ref<boolean>;
+  loading: Ref<boolean>;
   loadError: Ref<string>;
   projects: Ref<GalleryProject[]>;
   ratioOf: (item: ArtworkRecord) => number;
@@ -43,10 +45,14 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   const { query: searchQuery, settledQuery, restoreQuery } = useBrowseSearch();
   const tagFilter = ref('');
   const generationConditions = ref(emptyGenerationConditions());
+  const query = useGalleryQuery({ history, projects, loading: options.loading, reading: options.indexLoading, error: options.loadError,
+    query: () => ({ favoriteOnly: favoriteOnly.value, projectId: projectFilter.value, characterId: characterFilter.value,
+      search: settledQuery.value, tag: tagFilter.value, generation: { ...generationConditions.value } }), active: () => isViewActive?.() !== false });
   const generationIndex = computed(() => new Map(history.value.map(item => [item, artworkGenerationConditions(item)])));
   const recordedGenerationOptions = computed(() => generationConditionOptions(generationIndex.value.values(), emptyGenerationConditions()));
   const generationOptions = computed(() => Object.fromEntries(GENERATION_FILTER_FIELDS.map(field => {
-    const options = recordedGenerationOptions.value[field], selected = generationConditions.value[field];
+    const options = query.enabled.value ? [...(query.catalog.value?.generation[field] || [])].sort((a, b) => b.count - a.count || a.value.localeCompare(b.value)).map(item => ({ value: item.value, label: `${generationConditionLabel(field, item.value)} · ${item.count}` }))
+      : recordedGenerationOptions.value[field], selected = generationConditions.value[field];
     // Recorded counts are positive; the only zero entry is "missing", which
     // sorts before all "v:" values. An unknown selection therefore appends.
     return [field, !selected || options.some(option => option.value === selected) ? options
@@ -59,7 +65,8 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   }));
   const tagOptions = computed(() => {
     const counts = new Map<string, number>();
-    for (const item of history.value) for (const tag of artworkTags(item)) counts.set(tag, (counts.get(tag) || 0) + 1);
+    if (query.enabled.value) for (const item of query.catalog.value?.tags || []) counts.set(item.value, item.count);
+    else for (const item of history.value) for (const tag of artworkTags(item)) counts.set(tag, (counts.get(tag) || 0) + 1);
     if (tagFilter.value && !counts.has(tagFilter.value)) counts.set(tagFilter.value, 0);
     return [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([value, count]) => ({ value, label: `${value} · ${count}` }));
   });
@@ -86,6 +93,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     return project && !project.smartRule ? new Set(project.history_ids.map(artworkIdKey)) : null;
   });
   const visible = computed(() => {
+    if (query.enabled.value) return history.value;
     const favorites = favoriteOnly.value, tag = tagFilter.value;
     const ids = projectFilter.value ? projectIds.value : null;
     const terms = settledQuery.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
@@ -107,17 +115,17 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     });
   });
 
-  const favoriteCount = computed(() => history.value.filter(i => i.favorite).length);
-  const countLabel = computed(() => options.indexLoading.value ? `已载入 ${visible.value.length} 幅 · 正在读取其余作品…`
-    : options.loadError.value ? `已载入 ${visible.value.length} 幅 · 数量待确认` : `${visible.value.length} 幅作品`);
+  const favoriteCount = computed(() => query.enabled.value ? query.catalog.value?.favoriteCount || 0 : history.value.filter(i => i.favorite).length);
+  const visibleTotal = computed(() => query.enabled.value ? query.total.value : visible.value.length);
+  const countLabel = computed(() => options.indexLoading.value ? `已载入 ${visible.value.length} 幅 · 正在读取…`
+    : options.loadError.value ? `已载入 ${visible.value.length} 幅 · 数量待确认` : `${visibleTotal.value} 幅作品`);
 
-  /* ---------- 分页渲染：滚动触底递增，避免数百作品全量铺 DOM ----------
-     查看器导航仍走完整 visible；分页只约束「展墙渲染多少张」。 */
+  /* Rendering and storage pages grow only when the wall or viewer requests more. */
   // Each card owns several interactive controls; bound synchronous mount work.
   const PAGE_SIZE = 12;
   const renderLimit = ref(PAGE_SIZE);
   const pagedVisible = computed(() => visible.value.slice(0, renderLimit.value));
-  const hasMoreToRender = computed(() => visible.value.length > pagedVisible.value.length);
+  const hasMoreToRender = computed(() => visible.value.length > pagedVisible.value.length || query.enabled.value && query.hasMore.value);
 
   /* ---------- 时间分组与多列瀑布流 ---------- */
   const groups = computed(() => {
@@ -235,16 +243,19 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   function cancelPageFill() { cancelAnimationFrame(pageFrame); pageFrame = 0; }
   onScopeDispose(() => { pageDisposed = true; cancelPageFill(); });
   function loadMoreIfNeeded(sentinelEl: HTMLElement | null) {
-    if (pageDisposed || pageFrame || (isViewActive && !isViewActive()) || !hasMoreToRender.value) return;
+    if (!sentinelEl || pageDisposed || pageFrame || (isViewActive && !isViewActive()) || !hasMoreToRender.value) return;
     if (sentinelEl && !sentinelEl.getClientRects().length) return;
     // A wide viewport may need several batches. Give each one a rendering
     // opportunity instead of joining all mounts into one nextTick chain.
-    pageFrame = requestAnimationFrame(() => {
+    pageFrame = requestAnimationFrame(async () => {
       pageFrame = 0;
       if (pageDisposed || (isViewActive && !isViewActive()) || !hasMoreToRender.value) return;
       if (sentinelEl && !sentinelEl.getClientRects().length) return;
       // Filters/scroll can change before this frame; no old rows are captured.
       if (sentinelEl && sentinelEl.getBoundingClientRect().top > window.innerHeight + 800) return;
+      if (query.enabled.value && renderLimit.value >= visible.value.length && query.hasMore.value) {
+        if (!await query.more() || pageDisposed || isViewActive?.() === false) return;
+      }
       renderLimit.value = Math.min(renderLimit.value + PAGE_SIZE, visible.value.length);
       void nextTick(() => {
         if (!sentinelEl || !sentinelEl.getClientRects().length) return;
@@ -274,6 +285,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     }, { rootMargin: '800px 0px' });
     observeSentinel();
   });
+  watch(() => [visible.value.length, options.indexLoading.value], () => { if (!options.indexLoading.value && !options.loadError.value) loadMoreIfNeeded(sentinelEl.value); });
   watch(sentinelEl, () => { moreObserver?.disconnect(); observeSentinel(); });
   onActivated(() => { void nextTick(observeSentinel); });
   onDeactivated(() => { moreObserver?.disconnect(); });
@@ -283,7 +295,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     ...GENERATION_FILTER_FIELDS.map(field => route.query[generationQueryKeys[field]])]), restoreFiltersFromQuery);
 
   return {
-    tagFilter, tagOptions, characterFilter,
+    tagFilter, tagOptions, characterFilter, query, visibleTotal,
     generationOptions, filterSnapshot, applyFilterSnapshot, projectOptions, projectUnavailable,
     favoriteOnly,
     projectFilter,

@@ -1,5 +1,7 @@
 import type { ProfileDomain, ProfileRecord, ProfileSnapshot } from '../../../types/profile'
-import { CHAT_DRAFT_PREFIX, SD_PENDING_QUEUE_KEY } from '../../utils/storageKeys.ts'
+import { createProfileWriteReceipt, type ProfileWriteReceipt } from './profileWriteReceipt.ts'
+export type { ProfileWriteReceipt } from './profileWriteReceipt.ts'
+import { CHAT_DRAFT_PREFIX, CHAT_PREFERENCES_KEY, SD_PENDING_QUEUE_KEY } from '../../utils/storageKeys.ts'
 import { assertChatJsonVersion } from '../../utils/chatVersion.ts'
 import { classifyMigrationKey } from './migrationClassification.ts'
 const profileDomainForKey = (key: string): ProfileDomain | null => {
@@ -33,7 +35,8 @@ const optimisticRecords = new WeakSet<ProfileRecord>()
 const checkedChatVersions = new WeakMap<ProfileRecord, number>()
 let pending = Promise.resolve()
 let failure: unknown = null
-const outbox: Array<() => Promise<void>> = []
+const outbox: Array<{ run: () => Promise<'confirmed' | 'recovered'>; delivery: ReturnType<typeof createProfileWriteReceipt> }> = []
+const latestWrites = new Map<string, ProfileWriteReceipt>()
 let draining = false
 let connectionBlocked = false
 const recovery = new Map<string, { key: string; value: unknown; reason: string }>()
@@ -55,7 +58,7 @@ async function installProfilePort(next: ProfilePort, id: string): Promise<void> 
   for (const record of drafts.records) values.set(cacheKey(record.key, !record.key.startsWith('aics_chat_draft_v1:') && !record.key.startsWith('aics-model-draft-') && record.key !== 'aics_pb_last_draft'), structuredClone(record))
   resetRevision = chat.resetRevision
   snapshotVersions = { settings: settings.version, chat: chat.version, draft: drafts.version }
-  port = next; windowId = id; failure = null
+  port = next; windowId = id; failure = null; latestWrites.clear()
 }
 export function profileRuntimeActive(): boolean { return port !== null }
 /** Confirmed chat records are private clones. Cache only a successful check,
@@ -83,15 +86,24 @@ function assertProfileWritable() {
 }
 export async function flushProfileWrites(): Promise<void> {
   if (connectionBlocked && outbox.length) throw new Error('本机资料连接尚未确认，待保存资料已保留。')
-  if (!draining && outbox.length) { failure = null; drain() }
+  resumeWrites()
   await pending
   if (failure) throw failure
+}
+function resumeWrites() {
+  if (failure && draining) { for (const entry of outbox) entry.delivery.block(failure); return }
+  if (connectionBlocked) {
+    const error = new Error('本机资料连接尚未确认，待保存资料已保留。')
+    for (const entry of outbox) entry.delivery.block(error)
+    return
+  }
+  if (!draining && outbox.length) { failure = null; outbox[0].delivery.queued(); drain() }
 }
 function publishError(error: unknown) {
   failure = error
   window.dispatchEvent(new CustomEvent('huiyu:profile-write-error', { detail: '本机资料尚未保存，请保持窗口打开并重新连接。' }))
 }
-function queueWrite(domain: ProfileDomain, key: string, value: unknown, session: boolean): void {
+function queueWrite(domain: ProfileDomain, key: string, value: unknown, session: boolean): ProfileWriteReceipt {
   assertMaintenanceWritable()
   // Confirmed runtime authority can retain offline edits in memory. Unknown
   // startup authority still cannot write to the old browser source.
@@ -100,7 +112,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   let operationId = crypto.randomUUID()
   const previous = values.get(identity)
   const queuedPredecessor = previous && optimisticRecords.has(previous)
-  const sceneIdSet = domain === 'settings' && (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes')
+  const mergedSetting = domain === 'settings' && (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes' || key === CHAT_PREFERENCES_KEY)
   const optimistic = { key, value, revision: previous?.revision ?? 0 }
   optimisticRecords.add(optimistic)
   writeVersion++
@@ -114,7 +126,9 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
     ? previous.value ?? null : structuredClone(previous?.value ?? null)
   // Strings/null already have JSON value semantics and cannot share mutable state.
   let sendValue: unknown = typeof value === 'string' || value === null ? value : JSON.parse(JSON.stringify(value))
-  outbox.push(async () => {
+  const delivery = createProfileWriteReceipt(key, resumeWrites)
+  latestWrites.set(identity, delivery.receipt)
+  outbox.push({ delivery, run: async () => {
     if (epoch !== generation) throw new Error('Profile authority changed')
     if (expectedRevision === undefined) {
       // A queued predecessor may have merged another window's IDs. Carry only
@@ -123,7 +137,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
         const { mergeProfileChatConflict } = await import('./profileConflict.ts')
         sendValue = await mergeProfileChatConflict(key, baseValue, sendValue, previous.value)
         baseValue = structuredClone(previous.value)
-      } else if (sceneIdSet && previous) {
+      } else if (mergedSetting && previous) {
         const { mergeProfileSettingConflict } = await import('./profileConflict.ts')
         sendValue = mergeProfileSettingConflict(key, baseValue, sendValue, previous.value)
         baseValue = structuredClone(previous.value)
@@ -140,9 +154,9 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
         // Successors retain this exact node. Publish the merged body along with
         // its revision before the queue advances, so their original delta is
         // rebased onto the committed predecessor rather than an old snapshot.
-        if (sceneIdSet || domain === 'chat') Object.assign(optimistic, structuredClone(saved))
+        if (mergedSetting || domain === 'chat') Object.assign(optimistic, structuredClone(saved))
         if (values.get(identity) === optimistic) values.set(identity, structuredClone(saved))
-        return
+        return 'confirmed'
       } catch (error) {
         const code = error && typeof error === 'object' && 'code' in error ? error.code : ''
         if (code !== 'REVISION_CONFLICT' && code !== 'PROFILE_RESET_CONFLICT') throw error
@@ -171,7 +185,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
           for (const record of chat.records) revisions.set(cacheKey(record.key, false), record.revision)
           window.dispatchEvent(new StorageEvent('storage', { key: 'aics_chat_v1' }))
           window.dispatchEvent(new CustomEvent('huiyu:profile-write-error', { detail: '另一窗口已清空聊天，旧内容未重新写入；可导出本页未保存草稿。' }))
-          return
+          return 'recovered'
         }
         const { mergeProfileChatConflict, mergeProfileSettingConflict } = await import('./profileConflict.ts')
         if (domain === 'chat') sendValue = await mergeProfileChatConflict(key, baseValue, sendValue, remote?.value ?? null)
@@ -184,15 +198,28 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
       }
     }
     throw new Error('其他窗口正在修改同一资料，请稍后重试；当前编辑已保留。')
-  })
+  } })
   drain()
+  return delivery.receipt
 }
 function drain() {
   if (draining || failure || connectionBlocked) return
   draining = true
   pending = (async () => {
-    try { while (outbox.length) { assertProfileWritable(); await outbox[0](); outbox.shift() } }
-    catch (error) { publishError(error) }
+    try {
+      while (outbox.length) {
+        assertProfileWritable()
+        const entry = outbox[0], outcome = await entry.run()
+        outbox.shift()
+        if (outcome === 'confirmed') entry.delivery.confirmed()
+        else entry.delivery.failed(new Error('另一窗口已清空聊天；本次内容保留在恢复草稿中，未重新写入。'), true)
+      }
+    }
+    catch (error) {
+      outbox[0]?.delivery.failed(error)
+      for (const entry of outbox) entry.delivery.block(error)
+      publishError(error)
+    }
     finally { draining = false }
   })()
 }
@@ -284,6 +311,25 @@ function createStorage(session: boolean): Storage {
 export const profileLocalStorage = createStorage(false)
 export const profileDraftStorage = createStorage(true)
 
+/** Explicit mutations for new consumers. Storage setters above remain optimistic compatibility reads/writes. */
+export function writeProfileValue(key: string, value: string | null, session = false): ProfileWriteReceipt {
+  const domain = profileDomainForKey(key)
+  if (port && domain) return queueWrite(domain, key, value, session)
+  assertProfileWritable()
+  const storage = session ? globalThis.sessionStorage : globalThis.localStorage
+  if (value === null) storage.removeItem(key)
+  else storage.setItem(key, value)
+  const delivery = createProfileWriteReceipt(key, () => {})
+  delivery.confirmed()
+  return delivery.receipt
+}
+export const writeProfileLocal = (key: string, value: string | null) => writeProfileValue(key, value)
+export const writeProfileDraft = (key: string, value: string | null) => writeProfileValue(key, value, true)
+/** Capture the current operations for these keys; preserve FIFO without waiting for unrelated successors. */
+export async function confirmProfileKeys(keys: readonly string[], session = false): Promise<void> {
+  await Promise.all(keys.map(key => latestWrites.get(cacheKey(key, session))?.confirm()))
+}
+
 export async function readProfileChatArchive(): Promise<unknown> {
   if (!port) throw new Error('Profile runtime is not active')
   await flushProfileWrites()
@@ -310,8 +356,7 @@ export async function readProfileChatArchive(): Promise<unknown> {
 export async function writeProfileChatArchive(value: unknown): Promise<void> {
   if (!port) throw new Error('Profile runtime is not active')
   await flushProfileWrites()
-  queueWrite('chat', 'aics_chat_archive_v1', value, false)
-  await flushProfileWrites()
+  await queueWrite('chat', 'aics_chat_archive_v1', value, false).confirm()
 }
 export async function resetProfileChat(): Promise<void> {
   assertProfileWritable()

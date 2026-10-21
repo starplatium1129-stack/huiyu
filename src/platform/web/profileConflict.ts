@@ -4,6 +4,7 @@ import { createChatNormalizeOptions } from '../../composables/chat/chatStorageSt
 import { STORAGE_VERSION } from '../../config/characters'
 import { mergeChatArchives, normalizeChatArchive } from '../../utils/chatArchive.ts'
 import { assertChatVersion } from '../../utils/chatVersion.ts'
+import { CHAT_PREFERENCES_KEY } from '../../utils/storageKeys.ts'
 
 type RecordBody = Record<string, unknown>
 const object = (value: unknown): RecordBody => value && typeof value === 'object' && !Array.isArray(value) ? value as RecordBody : {}
@@ -36,6 +37,7 @@ export function mergeProfileSettingConflict(key: string, baseValue: unknown, loc
     }
     if (!local || typeof local !== 'object' || Array.isArray(local)) return localValue
     const value = changedFields(object(base), object(local), object(remote))
+    if (key === CHAT_PREFERENCES_KEY) value.live2dOutfits = changedFields(object(object(base).live2dOutfits), object(object(local).live2dOutfits), object(object(remote).live2dOutfits))
     return typeof localValue === 'string' ? JSON.stringify(value) : value
   } catch { return localValue }
 }

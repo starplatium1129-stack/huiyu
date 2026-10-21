@@ -210,7 +210,7 @@ pub(super) fn run(
                 }
                 let _ = reply.send(result);
             }
-            Work::Request(command, principal, cancel, reply, permit, job) => {
+            Work::Request(command, principal, cancel, reply, permit, job, bytes) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
                     continue;
@@ -222,7 +222,7 @@ pub(super) fn run(
                 }
                 if upload::is_chunk(&command) {
                     if let Some(permit) = permit {
-                        upload::start(&mut context, command, principal, reply, permit, &sender);
+                        upload::start(&mut context, command, principal, reply, permit, bytes, &sender);
                     } else {
                         let _ = reply.send(Err(unavailable()));
                     }

@@ -485,5 +485,5 @@ function focusSpeechSettings() {
     panel?.querySelector<HTMLElement>('button:not(:disabled), input:not(:disabled)')?.focus({ preventScroll:true })
 }
 
-function reminderActionLabel(reminder: { eventKind?: string }) { return reminder.eventKind === 'sd-done' ? '查看作品册' : '查看服务状态' }
+function reminderActionLabel(reminder: { eventKind?: string }) { return reminder.eventKind === 'image-ready' ? '打开任务中心' : '查看控制面板' }
 </script>

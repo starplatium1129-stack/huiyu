@@ -9,23 +9,12 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 .filter(|limit| (1..=200).contains(limit))
                 .ok_or_else(|| invalid("Recent candidate limit must be 1–200"))
         })
-        .transpose()?;
+        .transpose()?.unwrap_or(3);
     artwork_index::refresh(c)?;
-    let sql = if limit.is_some() {
-        "SELECT id_json,timestamp_json,revision FROM (
-            SELECT * FROM (SELECT id_key,id_json,timestamp_json,revision FROM artwork_read_index WHERE numeric_time IS NOT NULL
-                ORDER BY numeric_time DESC,id_key LIMIT ?1)
-            UNION ALL SELECT id_key,id_json,timestamp_json,revision FROM artwork_read_index WHERE numeric_time IS NULL
-        ) ORDER BY id_key"
-    } else {
-        "SELECT id_json,timestamp_json,revision FROM artwork_read_index ORDER BY id_key"
-    };
+    let sql = "SELECT r.id_json,r.timestamp_json,r.revision FROM artwork_gallery_index g
+            JOIN artwork_read_index r ON r.id_key=g.id_key ORDER BY g.time DESC,g.id_key LIMIT ?1";
     let mut statement = c.db.prepare_cached(sql)?;
-    let mut rows = if let Some(limit) = limit {
-        statement.query([limit])?
-    } else {
-        statement.query([])?
-    };
+    let mut rows = statement.query([limit])?;
     let mut items = Vec::new();
     while let Some(row) = rows.next()? {
         c.check_cancel()?;

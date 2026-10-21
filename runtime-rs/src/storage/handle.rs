@@ -56,6 +56,12 @@ impl Storage {
         self.request_job(command, principal, None).await
     }
     pub(crate) async fn request_job(&self, command: Value, principal: &str, job: Option<Arc<crate::workspace_jobs::Job>>) -> Result<Value> {
+        self.request_payload(command, principal, job, None).await
+    }
+    pub(crate) async fn upload_chunk(&self, command: Value, bytes: Bytes, principal: &str) -> Result<Value> {
+        self.request_payload(command, principal, None, Some(bytes)).await
+    }
+    async fn request_payload(&self, command: Value, principal: &str, job: Option<Arc<crate::workspace_jobs::Job>>, bytes: Option<Bytes>) -> Result<Value> {
         if principal.is_empty() {
             return Err(ApiError::new(
                 401,
@@ -68,7 +74,7 @@ impl Storage {
         }
         if matches!(
             command["kind"].as_str(),
-            Some("searchArtworks" | "readArtworkRecentIndex")
+            Some("searchArtworks" | "readArtworkRecentIndex" | "readGalleryPage" | "readGalleryCatalog")
         ) {
             return artwork_index::request(self, command, principal).await;
         }
@@ -81,7 +87,7 @@ impl Storage {
         } else {
             None
         };
-        let work = Work::Request(command, principal.into(), cancellation, reply, permit, job);
+        let work = Work::Request(command, principal.into(), cancellation, reply, permit, job, bytes);
         self.sender.send(work).await.map_err(|_| unavailable())?;
         result.await.map_err(|_| {
             if mutation {

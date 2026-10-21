@@ -214,6 +214,7 @@ impl ControlService {
             m.owned = owned;
             m.desired = owned;
             state.health_at = None;
+            self.voice.health_probes().invalidate();
         }
         self.save_managed().await?;
         self.log(if start {

@@ -144,9 +144,9 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         // Legacy SD observation uses saved task identities and frozen recipes.
         // Its explicit connection check must not gate Anima/Krea draft recovery.
         pb.applyModelProfile(pb.sdModelName);
-        // 历史载入（IndexedDB）
-        await pb.loadHistory();
-        if (!current()) return;
+        // Recent works are optional display data; draft/deep-link recovery owns
+        // no dependency on the library read or its retry.
+        void pb.loadHistory();
         const pendingImage = animaSession.restorePending();
         if (pendingImage) {
             await draftRecovery.restoreDraft(() => current() && !generationBusy.value);

@@ -11,7 +11,7 @@ export type { Scene } from '../types/scene'
 
 import { defineStore } from 'pinia'
 import type { GeneratedArtworkInput, LegacyArtworkDefaults } from '@/application/artwork/artworkSaveInput'
-import { ref, reactive, computed, watch, onScopeDispose } from 'vue'
+import { ref, reactive, computed, watch, onScopeDispose, nextTick } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 import { normalizeKey, sceneSupportsCharacter, type ModelProfile } from '@/utils/promptPolicy'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -73,7 +73,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   // ── Loaded data (proxy to sceneStore, single source, no drift) ───────
   const sceneStore = useSceneStore()
-  const { history, commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry, loadHistory } = usePromptArtworkHistory(resolveLegacyArtworkDefaults)
+  const { history, historyLoading, historyError, readHistoryEntry, commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry, loadHistory } = usePromptArtworkHistory(resolveLegacyArtworkDefaults)
   const scenes = computed(() => parsePromptScenes(sceneStore.scenes))
   const curation = computed(() => sceneStore.curation)
   const loraMeta = computed(() => parsePromptLoras(sceneStore.loras))
@@ -120,6 +120,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const dataReady = ref(false)
   const dataLoading = ref(false), dataError = ref('')
   let dataRequest: Promise<void> | null = null
+  let dataRequestVersion = -1
+  watch(() => sceneStore.version, () => {
+    const requested = dataReady.value || dataLoading.value
+    dataReady.value = false; modelProfiles.value = []
+    if (requested) void nextTick().then(() => loadData()).catch(() => {})
+  }, { flush: 'sync' })
   const historyRestoreReport = ref<RecipeRestoreReport | null>(null)
   const popularBlueprintCharacter = computed(() => subject.value.kind === 'popular' ? subject.value.characterId : '')
   const popularBlueprintReady = computed(() => !popularBlueprintCharacter.value || sceneStore.hasBlueprintCharacter(popularBlueprintCharacter.value))
@@ -391,25 +397,33 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   // ── Data loading (single source via sceneStore) ───────────────────────
   function loadData(): Promise<void> {
-    if (dataRequest) return dataRequest
+    const version = sceneStore.version
+    if (dataRequest && dataRequestVersion === version) return dataRequest
+    dataRequestVersion = version
+    const current = () => version === sceneStore.version
+    const check = () => { if (!current()) throw new Error('创作资料来源已更新，请重新读取。') }
     // Retain an earlier error during retry so its action and focus owner stay mounted.
     dataReady.value = false; dataLoading.value = true
     dataRequest = (async () => {
       try {
         await sceneStore.load()
+        check()
         if (!sceneStore.loaded) throw new Error(sceneStore.error || '场景库暂时无法读取')
         // Required profiles and scenes must both settle before applying defaults.
         await sceneStore.loadPresetCatalog()
+        check()
         const { parsePresetCatalog, fillMissingModelProfiles } = await import('@/utils/modelProfileDefaults')
         const catalog = parsePresetCatalog(sceneStore.presets)
         // Fill missing software profiles without replacing personal content.
-        modelProfiles.value = await fillMissingModelProfiles(catalog.modelProfiles)
+        const profiles = await fillMissingModelProfiles(catalog.modelProfiles)
+        check()
+        modelProfiles.value = profiles
         applyModelProfile()
         dataError.value = ''; dataReady.value = true
       } catch (cause) {
-        dataError.value = '创作资料暂时无法读取，请检查连接后重试。'
+        if (current()) dataError.value = '创作资料暂时无法读取，请检查连接后重试。'
         throw cause
-      } finally { dataLoading.value = false; dataRequest = null }
+      } finally { if (current()) { dataLoading.value = false; dataRequest = null } }
     })()
     return dataRequest
   }
@@ -467,7 +481,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     scenes, curation, loraMeta, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady, dataLoading, dataError, loadPopularCharacter,
     popularBlueprintReady, popularBlueprintLoading, popularBlueprintError,
-    history,
+    history, historyLoading, historyError, readHistoryEntry,
     sdModelName, lastSeed, sdParams,
     focusMode, directorMode, sceneSearch, sceneTheme, lastRecommendedSize,
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes, currentCuratedArtistStyles,

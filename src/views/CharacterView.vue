@@ -184,7 +184,7 @@ import {
 } from '@/utils/characterProfiles'
 
 const sceneStore = useSceneStore()
-const characters = ref<CharacterProfile[]>(parseCharacterProfiles(sceneStore.characters))
+const characters = computed(() => parseCharacterProfiles(sceneStore.characters))
 const scenes = ref<CharacterScene[]>([])
 const loading = ref(!characters.value.length)
 const profileAnchor = ref<HTMLElement | null>(null)
@@ -329,29 +329,31 @@ function retryProfiles() {
 }
 
 async function loadProfiles() {
+  const version = sceneStore.version
   loading.value = !characters.value.length
   loadError.value = ''
   try {
     // 角色档案首屏只需要目录壳；场景/蓝图画布随后后台补齐，不能阻塞粒子展台挂载。
     await sceneStore.loadCharacterShell()
-    characters.value = parseCharacterProfiles(sceneStore.characters)
   } catch (e) {
+    if (version !== sceneStore.version) return
     console.warn('character data load failed', e)
     loadError.value = String(e instanceof Error ? e.message : e)
   }
-  loading.value = false
+  if (version === sceneStore.version) loading.value = false
 }
 
 watch(() => current.value?.id, () => {
   bgExpanded.value = false
   recommendationStoryDialog.close()
 })
-watch([() => current.value?.id, recommendationReload], async (_current, _previous, onCleanup) => {
+watch([() => current.value?.id, recommendationReload, () => sceneStore.version], async (_current, _previous, onCleanup) => {
   const profile = current.value
   let active = true
   onCleanup(() => { active = false })
   recommendationsLoading.value = Boolean(profile)
   recommendationsError.value = false
+  scenes.value = []
   if (!profile) return
   try {
     // Metadata alone does not load blueprints; each profile owns its scene request.
@@ -367,6 +369,7 @@ watch([() => current.value?.id, recommendationReload], async (_current, _previou
     if (active) recommendationsLoading.value = false
   }
 }, { immediate: true })
+watch(() => sceneStore.version, () => { void loadProfiles() })
 onMounted(() => {
   void loadProfiles()
 })

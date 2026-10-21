@@ -24,7 +24,7 @@
     </div>
     <div class="gallery-orbit-caption">
       <p class="gallery-orbit-title">{{ currentTitle }}</p>
-      <div class="gallery-orbit-navigation" data-fluid-glass><span>{{ index + 1 }} / {{ items.length }}</span><input type="range" aria-label="选择作品" min="0" :max="Math.max(0, items.length - 1)" step="1" :value="index" :disabled="items.length < 2" :aria-valuetext="`第 ${index + 1} 幅，共 ${items.length} 幅：${currentTitle}`" @input="select(Number(($event.target as HTMLInputElement).value))" /></div>
+      <div class="gallery-orbit-navigation" data-fluid-glass><span>{{ index + 1 }} / {{ total ?? items.length }}</span><input type="range" aria-label="选择作品" min="0" :max="Math.max(0, items.length - 1)" step="1" :value="index" :disabled="items.length < 2" :aria-valuetext="`第 ${index + 1} 幅，共 ${total ?? items.length} 幅：${currentTitle}`" @input="select(Number(($event.target as HTMLInputElement).value))" /></div>
       <small>{{ dragging ? '松开选定作品' : '图上滚轮缩放 · 图外滚轮切换 · 方向键逐幅浏览' }}</small>
     </div>
   </div>
@@ -40,7 +40,7 @@ import type { ArtworkRecord } from '@/types/artwork'
 import '@/assets/css/gallery-orbit.css'
 
 const props = defineProps<{
-  items: T[]; index: number; active: boolean; currentSrc: string; previewSrc: string
+  total?: number; items: T[]; index: number; active: boolean; currentSrc: string; previewSrc: string
   cardUrls: Record<string, string>; thumbUrls: Record<string, string>; neighborUrls: Record<string, string>
   title: (item: T) => string
   loadFailed?: boolean; reload?: () => Promise<void>
@@ -148,5 +148,5 @@ watch(travel, async motion => {
 }, { flush:'sync' })
 onUpdated(() => { refreshCards(); paint(travel.value?.to ?? getPosition()) })
 onBeforeUnmount(() => { focusRevision++; cancelTravel(); cardNodes = [] })
-watch(() => props.items.map(item => item.id).join('\u0000'), () => { failed.value.clear(); imageRatios.clear(); reset() })
+watch(() => props.items.map(item => item.id), (items, previous) => { if (items.length > previous.length && previous.every((id, index) => id === items[index])) return; failed.value.clear(); imageRatios.clear(); reset() })
 </script>

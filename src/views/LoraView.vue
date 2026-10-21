@@ -130,7 +130,7 @@ const sceneStore = useSceneStore()
 const route = useRoute()
 const router = useRouter()
 function routeFilter(key: 'q' | 'engine') { const value = route.query[key]; return typeof value === 'string' ? value : '' }
-const loras = ref<LoraCatalogEntry[]>(parseLoraCatalog(sceneStore.loras))
+const loras = computed(() => parseLoraCatalog(sceneStore.loras))
 const modelQuery = ref(routeFilter('q'))
 const engine = ref(routeFilter('engine'))
 let restoringFilters = false
@@ -195,18 +195,20 @@ function modelGuide(model: LoraCatalogEntry) {
 useListTransition(listRoot, () => visibleLoras.value.map(model => model.id))
 
 async function loadCatalog() {
+  const version = sceneStore.version
   loading.value = !loras.value.length
   loadError.value = ''
   try {
     await sceneStore.loadLoraCatalog()
-    loras.value = parseLoraCatalog(sceneStore.loras)
   } catch (e) {
+    if (version !== sceneStore.version) return
     console.warn('lora load failed', e)
     loadError.value = String(e instanceof Error ? e.message : e)
   }
-  loading.value = false
+  if (version === sceneStore.version) loading.value = false
 }
 
+watch(() => sceneStore.version, () => { void loadCatalog() })
 onMounted(() => { void loadCatalog() })
 </script>
 

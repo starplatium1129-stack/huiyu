@@ -109,6 +109,11 @@ impl LocalUpstream {
         max_bytes: usize,
         cancel: &CancellationToken,
     ) -> Result<(u16, std::result::Result<Value, String>)> {
+        self.probe_json(base, path, body, timeout, max_bytes, cancel).await.map(|(status, body, _)| (status, body))
+    }
+    pub(crate) async fn probe_json(
+        &self, base: &str, path: &str, body: Option<&Value>, timeout: Duration, max_bytes: usize, cancel: &CancellationToken,
+    ) -> Result<(u16, std::result::Result<Value, String>, usize)> {
         let base = local_url(base)?;
         if !path.starts_with('/') || path.starts_with("//") {
             return Err(ApiError::invalid("Invalid upstream path"));
@@ -141,7 +146,8 @@ impl LocalUpstream {
                 ReadError::Network(error) => upstream_error(error),
                 ReadError::TooLarge => too_large(),
             })?;
-            Ok((status, decode_body(data, cancel).await?))
+            let bytes = data.as_ref().len();
+            Ok((status, decode_body(data, cancel).await?, bytes))
         };
         tokio::select! {
             biased;

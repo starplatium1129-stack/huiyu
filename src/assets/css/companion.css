@@ -940,7 +940,7 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page .companion-reminder-bubble.companion-reminder-link { @apply tw:cursor-default; }
 
-.companion-page .companion-reminder-bubble[data-event-kind="sd-done"] {
+.companion-page .companion-reminder-bubble[data-event-kind="image-ready"] {
   border-color: color-mix(in srgb, var(--character-accent) 70%, var(--border-strong));
 }
 

@@ -333,6 +333,10 @@ export function useSceneExplorerWorkspace() {
     }
     // Query changes only fetch when crossing core/full coverage, never per key.
     watch(browseTarget, target => { if (dataReady) void refreshScenes(target); });
+    watch(() => sceneStore.version, () => {
+        loadRevision++; scenes.value = []; curation.value = {}; drawerScene.value = null; handledScene = '';
+        if (dataReady) void refreshScenes(browseTarget.value);
+    });
     watch([requestedScene, loading], ([id, pending]) => {
         if (!id) {
             handledScene = '';

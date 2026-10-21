@@ -19,8 +19,6 @@ export interface CompanionClipboardImportDeps {
   noteReturn: (pickLine: (offset: number) => string) => void
   /** 固定话术入队（不轮转台词序号）。 */
   noteReturnPlain: (line: string) => void
-  /** 入册后图片计数增加，重置事件检测器基线避免误报 sd-done。 */
-  resetEventDetector: () => void
   inputText: Ref<string>
   /** 文本卡片「发给角色」落草稿（storage.setDraft）。 */
   persistDraft: (text: string) => void
@@ -70,7 +68,6 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   const importRecovery = useLocalImageImportRecovery(() => {
     if (!alive) return
     deps.noteReturnPlain('原图片已经确认放进作品册啦，没有重复导入。')
-    deps.resetEventDetector()
   })
   const active = () => alive && (deps.isActive?.() ?? true)
   function importFeedbackAccess() {
@@ -151,7 +148,6 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
           if (clipboardCard.value === card) dismissClipboardCard()
           deps.noteReturnPlain('收到剪贴板里的图片，已经放进作品册啦。')
           if (desktopBridge) desktopBridge.notify(deps.currentCharacterName(), '图片已存入作品册')
-          deps.resetEventDetector()
         } else if (clipboardCard.value === card) card.error = card.importId ? '原导入编号已保留，可从图片导入恢复入口继续；不会重复创建作品。' : '图片未导入，请检查图片格式与大小后重试。'
       } catch (error) {
         if (alive && clipboardCard.value === card) card.error = error instanceof Error ? error.message : '图片尚未确认入册，请使用图片导入恢复入口继续原导入。'
@@ -178,8 +174,6 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
         const line = `收到 ${imported} 张图片，已经放进作品册啦${skipped > 0 ? `（${skipped} 张未导入）` : ''}。${pending.length ? `还有 ${pending.length} 张待确认，请从图片导入恢复入口继续。` : ''}`
         deps.noteReturn(() => line)
         if (desktopBridge) desktopBridge.notify(deps.currentCharacterName(), line)
-        // 导入也会让图片计数增加；重置检测器基线避免误报 sd-done
-        deps.resetEventDetector()
       } else if (pending.length) deps.noteReturnPlain(`${pending.length} 张图片待确认，原编号已保留；请从图片导入恢复入口继续。`)
       else if (skipped > 0) deps.noteReturnPlain('这些文件未导入，请检查图片格式与大小；每批最多 8 张，每张不超过 24 MB。')
     } catch (error) {

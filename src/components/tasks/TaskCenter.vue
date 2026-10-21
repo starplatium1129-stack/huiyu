@@ -20,6 +20,7 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { useTaskCenter, hydrateTasks, consumeTaskReloadApproval, type TaskStatus } from '@/composables/useTaskCenter'
 import { startRuntimeTaskPolling } from '@/api/runtimeTasks'
+import { useRoute, useRouter } from 'vue-router'
 import { runtimeTasksEnabled } from '@/stores/runtimeTaskState'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 const loadRuntimeTaskList = () => import('./RuntimeTaskList.vue')
@@ -27,7 +28,8 @@ import { useTaskRecovery } from '@/composables/tasks/useTaskRecovery'
 import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
 const recovery = useTaskRecovery()
 const { refreshing, error: recoveryError, refresh } = recovery
-const { tasks, opened, activeCount, pageActiveCount, controls, storageError, clearCompleted } = useTaskCenter()
+const { tasks, opened, activeCount, pageActiveCount, controls, storageError, clearCompleted, openRuntimeTasks } = useTaskCenter()
+const route = useRoute(), router = useRouter()
 // Keep recovery/polling active from startup; load the inbox UI on first inspection
 // and retain its filters and pagination when the dialog is closed again.
 const inspected = ref(opened.value)
@@ -47,6 +49,12 @@ watch(opened, async value => {
   if (value) motion.open(source)
   else if (el.open) motion.close()
 })
+watch(() => route.query.tasks, async intent => {
+  if (intent !== 'inbox') return
+  selected.value = 'succeeded'
+  openRuntimeTasks()
+  await router.replace({ path: route.path, query: { ...route.query, tasks: undefined }, hash: route.hash })
+}, { immediate: true, flush: 'post' })
 const beforeUnload = (event: BeforeUnloadEvent) => { if (pageActiveCount.value && !consumeTaskReloadApproval(event)) { event.preventDefault(); event.returnValue = '' } }
 let stopRuntime = () => {}
 onMounted(() => { stopRuntime = startRuntimeTaskPolling(); if (runtimeTasksEnabled.value) void hydrateTasks().catch(() => {}); else void refresh(); window.addEventListener('beforeunload', beforeUnload) })

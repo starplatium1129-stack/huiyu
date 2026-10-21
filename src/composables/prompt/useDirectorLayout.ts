@@ -1,6 +1,7 @@
 import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { cancelFrame, frame } from 'motion'
+import { saveSettingValue } from '@/storage/settingWrites'
 import { profileLocalStorage } from '@/platform/web/profileStorage'
 import { DIRECTOR_LAYOUT_KEY } from '@/utils/storageKeys'
 
@@ -70,7 +71,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   const style = computed(() => ({ '--director-material-width': `${materialsWidth.value}px`, '--director-inspector-width': `${inspectorWidth.value}px` }))
   const collapsed = computed(() => ({ materials: compact.value ? !compactMaterialsOpen.value : preferences.value.hideMaterials, inspector: preferences.value.hideInspector }))
   function save() {
-    try { profileLocalStorage.setItem(DIRECTOR_LAYOUT_KEY, JSON.stringify(preferences.value)) } catch { /* The current layout remains usable if storage is unavailable. */ }
+    void saveSettingValue(DIRECTOR_LAYOUT_KEY, JSON.stringify(preferences.value))
   }
   function measure() {
     if (!observing || !root.value?.isConnected) return

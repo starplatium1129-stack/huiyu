@@ -90,8 +90,13 @@ export function usePromptHistoryReuse(deps: HistoryReuseDeps) {
     }
   }
   async function reuseSuccessfulRecipe(id: string | number) {
-    const entry = deps.pb.history.find(item => item.id === id)
-    if (entry) await applyHistory(entry, true)
+    if (disposed || !attached || state.busy.value || deps.generationBusy.value) return
+    const expected = ++state.revision
+    try {
+      const entry = await deps.pb.readHistoryEntry(id)
+      if (current(expected) && entry) await applyHistory(entry, true)
+      else if (current(expected)) deps.pb.flash('这条作品已不在作品册，请重新选择作品')
+    } catch { if (current(expected)) deps.pb.flash('作品暂时无法读取，请重试', 5000, 'warning') }
   }
   return { reuseRequest: state.request, reuseBusy: state.busy, reuseLoading, reuseError, retryReuse, cancelReuse, applyReuse, applyHistory,
     resumeHistory: (entry: ArtworkRecord) => applyHistory(entry, false, true),

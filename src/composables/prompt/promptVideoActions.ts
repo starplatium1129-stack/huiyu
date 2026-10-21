@@ -1,7 +1,8 @@
 import type { Ref } from 'vue'
 import { createVideoTransfer, checkVideoTransfer, readShotsCount, type VideoTransferOwner } from '@/composables/useVideoBridge'
 import { tagsToVideoProse } from '@/utils/videoPromptProse'
-import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { confirmProfileKeys } from '@/platform/web/profileStorage'
+import { VIDEO_SHOTS_CONTEXT_KEY } from '@/utils/storageKeys'
 import type { PromptVideoBridgeDeps, PromptVideoSnapshot, HistoryVideoSnapshot } from './usePromptVideoBridge'
 
 // Only loaded when a finished image is sent to a video or shot list.
@@ -30,7 +31,7 @@ export function createPromptVideoActions(flash: PromptVideoBridgeDeps['flash'], 
   async function goToShots(push: (path: string) => Promise<unknown> | void, owner: VideoTransferOwner) {
     checkVideoTransfer(owner)
     if (!readShotsCount()) { flash('还没有加入任何镜头：先出图，再点「加入分镜」'); return }
-    await flushProfileWrites()
+    await confirmProfileKeys([VIDEO_SHOTS_CONTEXT_KEY], true)
     checkVideoTransfer(owner)
     await push('/video-studio?mode=shots')
   }

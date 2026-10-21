@@ -350,7 +350,7 @@ async function init() {
   }
 }
 
-watch(selectedId, () => { if (route.path === '/popular-scenes') void init() }, { immediate: true })
+watch([selectedId, () => sceneStore.version], () => { if (route.path === '/popular-scenes') void init() }, { immediate: true })
 onUnmounted(() => { loadRevision++ })
 </script>
 

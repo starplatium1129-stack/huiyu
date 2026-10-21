@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { profileDraftStorage, flushProfileWrites } from '@/platform/web/profileStorage'
+import { profileDraftStorage, writeProfileDraft, confirmProfileKeys, type ProfileWriteReceipt } from '@/platform/web/profileStorage'
 import { decodeVideoDraft } from './videoDraftCodec'
 import { getDesktopRuntime } from '@/platform/desktop/runtime'
 
@@ -13,7 +13,9 @@ export function createVideoDraftStorage() {
   const issues = ref<Record<string, string>>({})
   const originals = new Map<string, string>()
   const owners = new Map<string, string>()
-  const deletions = new Set<string>()
+  const deletions = new Map<string, ProfileWriteReceipt>()
+  const writeErrors = ref<Record<string, string>>({})
+  const writes = new Map<string, ProfileWriteReceipt>()
   function read<T>(key: string, decode: (value: unknown) => T): T | null {
     let raw: string | null = null
     try {
@@ -32,7 +34,10 @@ export function createVideoDraftStorage() {
     if (issues.value[key]) return null
     try {
       const snapshot = decode(value)
-      profileDraftStorage.setItem(key, JSON.stringify(Array.isArray(snapshot) ? snapshot : { ...snapshot, _videoDraftVersion: 1 }))
+      const receipt = writeProfileDraft(key, JSON.stringify(Array.isArray(snapshot) ? snapshot : { ...snapshot, _videoDraftVersion: 1 }))
+      writes.set(key, receipt)
+      void receipt.confirm().then(() => { if (writes.get(key) === receipt) delete writeErrors.value[key] })
+        .catch(error => { if (writes.get(key) === receipt) writeErrors.value[key] = error instanceof Error ? error.message : '草稿尚未保存' })
       return snapshot
     } catch { return null }
   }
@@ -46,10 +51,9 @@ export function createVideoDraftStorage() {
     }
     for (const key of keys) {
       if (deletions.has(key)) continue
-      profileDraftStorage.removeItem(key)
-      deletions.add(key)
+      deletions.set(key, writeProfileDraft(key, null))
     }
-    await flushProfileWrites()
+    await Promise.all(keys.map(key => deletions.get(key)!.confirm()))
     for (const key of keys) {
       if (owners.get(key) !== owner()) throw new Error('工作区已变化，请回到原工作区确认清除')
       delete issues.value[key]; originals.delete(key); owners.delete(key); deletions.delete(key)
@@ -58,5 +62,9 @@ export function createVideoDraftStorage() {
   function exportOriginals() {
     return new Blob([JSON.stringify({ format: 'huiyu-video-draft-recovery', records: Object.fromEntries(originals) }, null, 2)], { type: 'application/json' })
   }
-  return { issues, read, write, discard, exportOriginals }
+  async function confirm(keys: readonly string[] = [...writes.keys()]) {
+    await confirmProfileKeys(keys, true)
+    for (const key of keys) delete writeErrors.value[key]
+  }
+  return { issues, writeErrors, read, write, confirm, discard, exportOriginals }
 }

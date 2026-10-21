@@ -159,6 +159,12 @@ export function hydrateTasks(): Promise<void> {
   }).catch(error => { loading = undefined; storageError.value = '暂时无法读取之前的任务摘要，可重新尝试。'; throw error })
 }
 
+/** Detached, validated browser receipts; reading them never alters another view's tasks. */
+export async function readBrowserTaskRecords(): Promise<TaskRecord[]> {
+  const snapshot = decodeSnapshot(await readTaskHistory())
+  return snapshot.records.filter(task => !snapshot.deleted.has(task.id))
+}
+
 /** Reattach an owner to its persisted backend identity instead of creating a duplicate. */
 function findBackendTask(summary: TaskSummary) {
   return summary.backend && tasks.value.find(task => task.backend?.kind === summary.backend?.kind && task.backend?.id === summary.backend?.id)

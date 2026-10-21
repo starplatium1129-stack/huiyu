@@ -1,6 +1,36 @@
 use super::*;
-use tokio::io::{AsyncSeekExt, AsyncWriteExt};
+use crate::download_transport::{self as transfer, CopyError, CopyEvent, Error};
+use tokio::io::AsyncSeekExt;
 
+fn error(error: Error) -> ApiError {
+    match error {
+        Error::Cancelled => ApiError::new(409, "CANCELLED", "下载已取消"),
+        Error::Timeout => ApiError::new(504, "DOWNLOAD_TIMEOUT", "下载响应超时，请检查网络后重试"),
+        Error::Network => ApiError::new(502, "DOWNLOAD_FAILED", "模型下载中断，请检查网络后重试"),
+        Error::Status(status) => ApiError::new(
+            502,
+            "DOWNLOAD_HTTP",
+            format!("固定来源返回 HTTP {status}，请检查来源访问权限后重试"),
+        ),
+        Error::Range => ApiError::new(
+            502,
+            "RANGE_MISMATCH",
+            "来源续传范围不匹配，未发布；请核对来源后重试",
+        ),
+        Error::Size => ApiError::new(
+            502,
+            "SIZE_MISMATCH",
+            "来源文件大小与固定清单不符，已停止下载",
+        ),
+        Error::Incomplete => {
+            ApiError::new(502, "DOWNLOAD_FAILED", "下载不完整，未发布模型文件；请重试")
+        }
+        Error::Encoding | Error::Redirect => {
+            ApiError::new(502, "DOWNLOAD_HTTP", "来源响应编码或重定向不符合下载策略")
+        }
+        Error::Io(error) => io_error(error),
+    }
+}
 pub(super) async fn write(
     plan: &DownloadPlan,
     client: &reqwest::Client,
@@ -18,87 +48,51 @@ pub(super) async fn write(
         .await
         .map_err(io_error)?;
     progress(plan, send, "downloading", count);
-    if count < plan.spec.bytes {
-        let mut request = client.get(&plan.url).header("accept-encoding", "identity");
-        if count > 0 {
-            request = request.header("range", format!("bytes={count}-"));
-        }
-        let response = tokio::select! {
-            _ = cancel.cancelled() => return Err(ApiError::new(409,"CANCELLED","下载已取消")),
-            response = tokio::time::timeout(Duration::from_secs(60), request.send()) =>
-                response.map_err(|_| ApiError::new(504,"DOWNLOAD_TIMEOUT","来源响应超时，请重试"))?.map_err(|_| ApiError::new(502,"DOWNLOAD_FAILED","无法连接固定模型来源，请检查网络后重试"))?,
-        };
-        if response.status() == reqwest::StatusCode::PARTIAL_CONTENT && count > 0 {
-            let expected = format!("bytes {count}-{}/{}", plan.spec.bytes - 1, plan.spec.bytes);
-            if response
-                .headers()
-                .get("content-range")
-                .and_then(|v| v.to_str().ok())
-                != Some(expected.as_str())
-            {
-                return Err(ApiError::new(
-                    502,
-                    "RANGE_MISMATCH",
-                    "来源续传范围不匹配，未发布；请核对来源后重试",
-                ));
-            }
-        } else if response.status() == reqwest::StatusCode::OK {
-            if count > 0 {
-                output.get_ref().set_len(0).await.map_err(io_error)?;
-                output
-                    .seek(std::io::SeekFrom::Start(0))
-                    .await
-                    .map_err(io_error)?;
-                count = 0;
-            }
-        } else {
-            return Err(ApiError::new(
-                502,
-                "DOWNLOAD_HTTP",
-                format!(
-                    "固定来源返回 HTTP {}，请检查来源访问权限后重试",
-                    response.status().as_u16()
-                ),
-            ));
-        }
-        if response
-            .content_length()
-            .is_some_and(|size| size != plan.spec.bytes - count)
-        {
-            return Err(ApiError::new(
-                502,
-                "SIZE_MISMATCH",
-                "来源文件大小与固定清单不符，已停止下载",
-            ));
-        }
-        let mut stream = response.bytes_stream();
-        let mut last = Instant::now();
-        loop {
-            let next = tokio::select! {
-                _ = cancel.cancelled() => return Err(ApiError::new(409,"CANCELLED","下载已取消")),
-                next = tokio::time::timeout(Duration::from_secs(60), stream.next()) => next.map_err(|_| ApiError::new(504,"DOWNLOAD_TIMEOUT","下载响应中断超过 60 秒，请重试"))?,
-            };
-            let Some(chunk) = next else {
-                break;
-            };
-            let chunk = chunk.map_err(|_| {
-                ApiError::new(502, "DOWNLOAD_FAILED", "模型下载中断，请检查网络后重试")
-            })?;
-            stopped(cancel, send)?;
-            count += chunk.len() as u64;
-            if count > plan.spec.bytes {
-                return Err(ApiError::new(
-                    502,
-                    "SIZE_MISMATCH",
-                    "下载字节超过固定大小，已停止",
-                ));
-            }
-            output.write_all(&chunk).await.map_err(io_error)?;
-            if last.elapsed() >= Duration::from_millis(250) || count == plan.spec.bytes {
-                progress(plan, send, "downloading", count);
-                last = Instant::now();
-            }
-        }
+    if count == plan.spec.bytes {
+        return Ok(count);
     }
-    Ok(count)
+    let mut headers = reqwest::header::HeaderMap::new();
+    if count > 0 {
+        headers.insert("range", format!("bytes={count}-").parse().unwrap());
+    }
+    let url = url::Url::parse(&plan.url).map_err(|_| ApiError::invalid("模型来源地址无效"))?;
+    let response = transfer::response(client, url, headers, Duration::from_secs(60), cancel, false)
+        .await
+        .map_err(error)?;
+    // A full-file request keeps the model installer's existing HTTP status contract.
+    if count == 0 && response.status() == reqwest::StatusCode::PARTIAL_CONTENT {
+        return Err(error(Error::Status(206)));
+    }
+    let start = transfer::range(&response, count, plan.spec.bytes, None).map_err(error)?;
+    if start == 0 && count > 0 {
+        output.get_ref().set_len(0).await.map_err(io_error)?;
+        output
+            .seek(std::io::SeekFrom::Start(0))
+            .await
+            .map_err(io_error)?;
+    }
+    transfer::copy(
+        response,
+        output,
+        start,
+        plan.spec.bytes,
+        Duration::from_secs(60),
+        cancel,
+        |event| {
+            stopped(cancel, send)?;
+            if let CopyEvent::AfterWrite {
+                received,
+                report: true,
+            } = event
+            {
+                progress(plan, send, "downloading", received);
+            }
+            Ok(())
+        },
+    )
+    .await
+    .map_err(|failure| match failure {
+        CopyError::Transfer(cause) => error(cause),
+        CopyError::Observer(cause) => cause,
+    })
 }

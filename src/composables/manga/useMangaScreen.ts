@@ -10,15 +10,13 @@ import { downloadMangaPng } from './mangaResult'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
 import { useMangaLines } from './useMangaLines'
 import type { ArtworkRecord } from '@/types/artwork'
-import { cancelRuntimeTaskKey, getRuntimeTaskByKey, hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
+import { hasRuntimeTasks } from '@/api/runtimeTasks'
 import { fetchMangaTaskResult, mangaTaskView } from '@/api/mangaTasks'
 import { MANGA_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
-import { readTaskRequestDraft, newTaskRequestDraft, type TaskRequestDraft } from '@/storage/taskRequestDraft'
-import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
+import { useAcceptedTaskSession } from '@/composables/tasks/useAcceptedTaskSession'
 import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
 import { mangaTaskContext } from '@/application/artwork/mangaTaskResult'
 
-const terminal = (job: MangaJob | null) => !!job && job.task.upstreamSettled && job.task.recoveryState === 'normal' && ['succeeded', 'failed', 'cancelled'].includes(job.status)
 const message = (error: unknown) => error instanceof Error ? error.message : '操作失败，请稍后重试'
 export function useMangaScreen(onSaved: () => void) {
   const parameters = reactive(defaultMangaParameters()), operation = ref<MangaOperation>('lite')
@@ -29,10 +27,9 @@ export function useMangaScreen(onSaved: () => void) {
   const status = shallowRef<MangaStatus | null>(null), statusError = ref(''), checking = ref(false)
   const error = ref(''), notice = ref(''), loading = ref(false), submitting = ref(false), observing = ref(false), cancelling = ref(false)
   const exporting = ref(false), saved = ref(false), downloaded = ref(false), acceptanceUnknown = ref(false)
-  const job = shallowRef<MangaJob | null>(null), preview = ref<'original' | 'lineart' | 'result' | 'compare'>('original')
+  const preview = ref<'original' | 'lineart' | 'result' | 'compare'>('original')
   const lineLoading = ref(false)
-  const request = shallowRef<TaskRequestDraft | null>(null), taskIssue = ref('')
-  const requestKey = computed(() => request.value?.key || '')
+  const taskIssue = ref('')
   const lifetime = new AbortController()
   const inputOwner = imageMediaSession()
   let owner = inputOwner, inputCurrent = true
@@ -40,17 +37,19 @@ export function useMangaScreen(onSaved: () => void) {
   const stopRuntime = onDesktopRuntime(() => { if (inputOwner !== imageMediaSession()) inputCurrent = false })
   watch(imageMediaSession, session => { if (session !== inputOwner) inputCurrent = false }, { flush:'sync' })
   let sourceRead: AbortController | null = null, parent: ArtworkRecord | undefined, cancelRequested = false, resultRecipe = '', submittedRecipe = '', lineRecipe = ''
-  const pending = computed(() => !!job.value && !terminal(job.value))
-  const requestSettled = computed(() => !!request.value && job.value?.task.requestKey === request.value.key && terminal(job.value))
   const awaitingResult = computed<boolean>(() => job.value?.status === 'succeeded' && (job.value.operation === 'lineart'
     ? lines.expected.value?.id !== job.value.id : result.value?.id !== job.value.id))
   const locked = computed(() => loading.value || lineLoading.value || submitting.value || pending.value || observing.value || cancelling.value || exporting.value || acceptanceUnknown.value || awaitingResult.value)
   const saveLocked = computed(() => loading.value || submitting.value || pending.value || cancelling.value || exporting.value || acceptanceUnknown.value)
   const check = () => {
     lifetime.signal.throwIfAborted()
-    if (request.value) assertRequestOwner(request.value, hasRuntimeTasks())
     if (owner !== imageMediaSession()) throw new Error('运行时或作品库连接已变化，请关闭窗口后重新打开')
   }
+  const session = useAcceptedTaskSession({ slot: MANGA_REQUEST_DRAFT_KEY, kinds: ['manga', 'lineart'], signal: lifetime.signal, check,
+    validate: task => { mangaTaskView(task) }, onAccepted: () => { acceptanceUnknown.value = false } })
+  const { request, task, settled: requestSettled } = session
+  const job = computed(() => task.value ? mangaTaskView(task.value) : null)
+  const pending = session.unresolved
   const checkInput = () => {
     check()
     if (!inputCurrent || inputOwner !== imageMediaSession()) throw new Error('原图所属会话已变化，请关闭窗口后重新导入；原任务可继续查询')
@@ -130,12 +129,12 @@ export function useMangaScreen(onSaved: () => void) {
       const blob = input instanceof File ? input : await readMangaSource(input.url, artwork, signal)
       const image = await inspectMangaImage(blob, input instanceof File ? input.name : artwork?.sceneTitle || '当前作品')
       signal.throwIfAborted(); checkInput()
-      if (request.value) { await clearRequestDraft(MANGA_REQUEST_DRAFT_KEY, request.value); checkInput(); request.value = null }
+      await session.release(); checkInput()
       source.value = image; parent = artwork ? structuredClone(artwork) : undefined; resize.value = false
       const scale = Math.sqrt(1024 * 1024 / (image.width * image.height))
       rewrite.width = Math.max(512, Math.min(2016, Math.round(image.width * scale / 32) * 32))
       rewrite.height = Math.max(512, Math.min(2016, Math.round(image.height * scale / 32) * 32))
-      setUrl(sourceUrl, blob); setUrl(resultUrl, null); result.value = null; resultBlob.value = null; job.value = null
+      setUrl(sourceUrl, blob); setUrl(resultUrl, null); result.value = null; resultBlob.value = null; task.value = null
       lines.reset()
       preview.value = 'original'; saved.value = false; downloaded.value = false
     } catch (e) { if (!signal.aborted) error.value = message(e) }
@@ -167,47 +166,22 @@ export function useMangaScreen(onSaved: () => void) {
       if (Number(parameters.finish.dark_tone) < Number(parameters.finish.light_tone)) throw new Error('暗部网点浓度不能小于亮部')
     }
   }
-  function acceptJob(task: TaskRecord) {
-    if (request.value && (task.requestKey !== request.value.key || request.value.taskId && task.taskId !== request.value.taskId))
-      throw new Error('任务回执与原请求不符，请在任务中心核对')
-    const next = mangaTaskView(task)
-    // Reads, submission and cancellation may finish in a different order.
-    if (job.value?.id === next.id && task.revision < job.value.task.revision) return false
-    job.value = next; acceptanceUnknown.value = false
-    return true
-  }
   async function observe() {
-    if (loading.value || observing.value || !job.value && !requestKey.value) return
+    if (loading.value || observing.value || !job.value && !request.value) return
     observing.value = true; error.value = ''
     let terminalIssue = ''
     try {
-      const owned = request.value
-      if (owned) {
-        assertRequestOwner(owned, hasRuntimeTasks())
-        owner = imageMediaSession()
-        const accepted = await getRuntimeTaskByKey(owned.key, lifetime.signal); check()
-        if (request.value?.key !== owned.key) return
-        if (!accepted) throw new Error('接收状态仍待确认，请在任务中心查询原操作，勿重复提交')
-        if (accepted.kind !== owned.kind) throw new Error('原请求与任务类型不符，请在任务中心核对')
-        acceptJob(accepted)
-        owned.taskId = accepted.taskId
-        await writeRequestDraft(MANGA_REQUEST_DRAFT_KEY, owned); check()
-        if (request.value?.key !== owned.key) return
-      }
-      if (!job.value) throw new Error('原任务身份尚未找到，请核对任务中心')
-      const id = job.value.id
+      if (request.value) owner = imageMediaSession()
       try {
-        await waitForRuntimeTask(id, lifetime.signal, check, { timeoutMs: 11 * 60_000, onDetail: task => {
-          check()
-          acceptJob(task)
-        } })
+        await session.observe()
       } catch (e) {
         check()
-        if (!(e instanceof AcceptedTaskTerminalError) || e.taskId !== job.value.id || !job.value.resultAvailable) throw e
+        if (!(e instanceof AcceptedTaskTerminalError) || e.taskId !== job.value?.id || !job.value?.resultAvailable) throw e
         terminalIssue = message(e)
       }
       check()
       const current = job.value
+      if (!current) throw new Error('原任务身份尚未找到，请核对任务中心')
       const mainReceived = current.operation !== 'lineart' && current.task.resultRefs.some(output => output.index === 0 && output.mime === 'image/png')
       if (mainReceived) {
         const width = current.metadata.width, height = current.metadata.height
@@ -245,17 +219,11 @@ export function useMangaScreen(onSaved: () => void) {
     const current = () => !lifetime.signal.aborted && request.value?.key === owned.key
     cancelling.value = true; error.value = ''
     try {
-      assertRequestOwner(owned, hasRuntimeTasks())
       owner = imageMediaSession()
-      check(); const receipt = await cancelRuntimeTaskKey(owned.key); check()
-      if (!current()) return
+      const receipt = await session.cancel()
       if (!receipt) {
-        await clearRequestDraft(MANGA_REQUEST_DRAFT_KEY, owned); check()
-        if (!current()) return
-        request.value = null; acceptanceUnknown.value = false
-        notice.value = '取消意图已写稳，原请求尚未接收且不会再执行'; return
+        acceptanceUnknown.value = false; notice.value = '取消意图已写稳，原请求尚未接收且不会再执行'; return
       }
-      if (!acceptJob(receipt)) return
       if (requestSettled.value) {
         if (job.value?.status === 'cancelled') notice.value = '后端已确认取消'
         if (!observing.value && (job.value?.status !== 'cancelled' || job.value.resultAvailable)) void observe()
@@ -274,7 +242,7 @@ export function useMangaScreen(onSaved: () => void) {
       const sourceOwner = tempResultOwner()
       if (request.value) {
         if (!requestSettled.value) throw new Error('请先查询原任务，确认结束后再处理')
-        await clearRequestDraft(MANGA_REQUEST_DRAFT_KEY, request.value); checkInput(); request.value = null
+        await session.release(); checkInput()
       }
       if (!hasRuntimeTasks()) throw new Error('请先启用本机私人工作区，漫画与线稿任务需要持久化保存')
       if (kind === 'lineart') { if (extractionIssue.value) throw new Error(extractionIssue.value) }
@@ -291,22 +259,10 @@ export function useMangaScreen(onSaved: () => void) {
         payload.penLines = await uploadMangaImage(lines.imported.value.blob, lifetime.signal); checkInput()
         if (cancelRequested) { notice.value = '已取消，尚未提交任务'; return }
       }
-      submittedRecipe = signature; job.value = null
+      submittedRecipe = signature; task.value = null
       const input = {...payload}
       if (!sameTempResultOwner(sourceOwner)) throw new Error('漫画输入所属工作区已改变，尚未提交')
-      const owned = newTaskRequestDraft(kind, input, true, mangaTaskContext(parent), { recipe: signature })
-      request.value = owned
-      // After this durable marker, refresh/reconnect can only query this key.
-      request.value.submitted = true
-      await writeRequestDraft(MANGA_REQUEST_DRAFT_KEY, request.value); checkInput()
-      if (cancelRequested) { await cancel(); return }
-      const value = await submitRuntimeTask(kind, input, requestKey.value, mangaTaskContext(parent),
-        {signal:lifetime.signal, onSubmitting:checkInput})
-      checkInput(); assertRequestOwner(owned, hasRuntimeTasks())
-      if (request.value?.key !== owned.key) return
-      acceptJob(value)
-      owned.taskId = value.taskId
-      await writeRequestDraft(MANGA_REQUEST_DRAFT_KEY, owned); check()
+      await session.submit(kind, input, mangaTaskContext(parent), { recipe: signature }, () => cancelRequested)
       if (cancelRequested) await cancel()
       void observe()
     } catch (e) {
@@ -348,9 +304,8 @@ export function useMangaScreen(onSaved: () => void) {
   async function importLine(file: File) { if (await lines.prepare(file)) preview.value = 'lineart' }
   function restoreRequest(): boolean {
     try {
-      request.value = readTaskRequestDraft(MANGA_REQUEST_DRAFT_KEY)
+      session.restore()
       if (!request.value) return false
-      if (request.value.transport !== 'runtime' || !['manga', 'lineart'].includes(request.value.kind)) throw new Error('原漫画请求类型无效，已保留记录')
       submittedRecipe = typeof request.value.details?.recipe === 'string' ? request.value.details.recipe : ''
       acceptanceUnknown.value = true
       notice.value = '正在恢复原漫画或线稿任务；不会重新上传或提交'
@@ -361,8 +316,8 @@ export function useMangaScreen(onSaved: () => void) {
   async function startNew() {
     if (!canStartNew.value || !request.value) return
     try {
-      check(); await clearRequestDraft(MANGA_REQUEST_DRAFT_KEY, request.value); check()
-      request.value = null; job.value = null; acceptanceUnknown.value = false
+      await session.release(); check()
+      request.value = null; task.value = null; acceptanceUnknown.value = false
       result.value = null; resultBlob.value = null; setUrl(resultUrl, null); lines.reset(); preview.value = 'original'
       notice.value = '原任务和结果仍保留在任务中心，可导入图片开始新的处理'
     } catch (e) { error.value = message(e) }

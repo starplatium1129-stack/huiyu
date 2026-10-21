@@ -1,9 +1,8 @@
 import { computed, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { qwenModels, qwenStatus, uploadQwenImage, readQwenTaskInput, type QwenModelStatus } from '@/api/qwenApi'
-import { cancelRuntimeTaskKey, fetchRuntimeResult, getRuntimeTask, getRuntimeTaskByKey, hasRuntimeTasks,
-  runtimeResultPath, submitRuntimeTask, taskMessage, waitForRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
-import { newTaskRequestDraft, readTaskRequestDraft, type TaskRequestDraft } from '@/storage/taskRequestDraft'
-import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
+import { fetchRuntimeResult, getRuntimeTask, hasRuntimeTasks,
+  runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
+import { useAcceptedTaskSession, taskSettled as terminal } from '@/composables/tasks/useAcceptedTaskSession'
 import { QWEN_REQUEST_DRAFT_KEY as slot } from '@/utils/storageKeys'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
@@ -15,8 +14,6 @@ import { taskArtworkId } from '@/application/artwork/taskResultIdentity'
 import { artworkRepository } from '@/storage/artworkRepository'
 
 const message = (cause: unknown) => cause instanceof Error ? cause.message : '操作未完成，请重试'
-const terminal = (task: TaskRecord | null) => !!task && task.upstreamSettled && task.recoveryState === 'normal'
-  && ['succeeded', 'failed', 'cancelled'].includes(task.status)
 export function useQwenStudio() {
   const form = reactive({ modelId: 'qwen-image-2.1-turbo', prompt: '', negative: '', width: 1024, height: 1024, steps: 40, cfg: 4, seed: 0 })
   const randomSeed = ref(true), resize = ref(false), source = shallowRef<MangaImage | null>(null), sourceUrl = ref('')
@@ -40,7 +37,6 @@ export function useQwenStudio() {
     }
   }
   const models = shallowRef<QwenModelStatus[]>([]), checking = ref(false), ready = ref(false), initializing = ref(false), statusError = ref('')
-  const task = shallowRef<TaskRecord | null>(null), request = shallowRef<TaskRequestDraft | null>(null)
   const result = shallowRef<TaskRecord | null>(null), resultBlob = shallowRef<Blob | null>(null), resultUrl = ref('')
   const busy = ref(false), importing = ref(false), observing = ref(false), cancelling = ref(false), saving = ref(false), saved = ref(false)
   const error = ref(''), notice = ref(''), sourceChanged = ref(false)
@@ -53,8 +49,9 @@ export function useQwenStudio() {
   const check = () => {
     lifetime.signal.throwIfAborted()
     if (sourceChanged.value || imageMediaSession() !== owner) throw new Error('工作区或运行时连接已变化，请重新打开页面；原任务仍保留在任务中心')
-    if (request.value) assertRequestOwner(request.value, hasRuntimeTasks())
   }
+  const session = useAcceptedTaskSession({ slot, kinds: ['qwen'], signal: lifetime.signal, check, validate: validateTask })
+  const { task, request, unresolved, accept, release: releaseRequest } = session
   watch([form, randomSeed, resize, source, references, parentId, result], () => {
     if (!draftActive) return
     clearTimeout(draftTimer); draftVersion++; draftStatus.value = '草稿待保存…'
@@ -62,7 +59,6 @@ export function useQwenStudio() {
   }, { deep: true, flush: 'sync' })
   const selected = computed(() => models.value.find(model => model.id === form.modelId))
   const turbo = computed(() => form.modelId === 'qwen-image-2.1-turbo')
-  const unresolved = computed(() => !!request.value && !terminal(task.value) || !!task.value && !terminal(task.value))
   const locked = computed(() => !ready.value || busy.value || importing.value || observing.value || saving.value || cancelling.value || unresolved.value)
   const inputSize = computed(() => source.value ? mangaInputSize(source.value) : null)
   const needsResize = computed(() => inputSize.value?.resized || references.value.some(value => mangaInputSize(value.image).resized))
@@ -77,13 +73,12 @@ export function useQwenStudio() {
     if (target.value) URL.revokeObjectURL(target.value)
     target.value = blob ? URL.createObjectURL(blob) : ''
   }
-  function accept(value: TaskRecord) {
+  function validateTask(value: TaskRecord) {
     if (value.kind !== 'qwen' || value.provider !== 'native' || value.input.family !== 'qwen-image') throw new Error('任务类型与 Qwen 创作不符')
     const context = value.metadata.context
     if (context !== undefined && context !== null && (typeof context !== 'object' || Array.isArray(context))) throw new Error('Qwen 任务来源信息无效')
     const parent = (context as Record<string, unknown> | null | undefined)?.parentId
     if (parent !== undefined && parent !== null && !qwenParentId(parent)) throw new Error('Qwen 来源作品身份无效')
-    if (!task.value || value.taskId !== task.value.taskId || value.revision >= task.value.revision) task.value = structuredClone(value)
   }
   async function refresh() {
     if (checking.value) return
@@ -175,16 +170,7 @@ export function useQwenStudio() {
     observing.value = true; error.value = ''
     try {
       check()
-      if (request.value) {
-        const found = await getRuntimeTaskByKey(request.value.key, lifetime.signal); check()
-        if (!found) throw new Error('尚未找到原请求，请在任务中心核对，或请求取消后开始新的创作')
-        accept(found); request.value.taskId = found.taskId
-        await writeRequestDraft(slot, request.value); check()
-      }
-      if (!task.value) return
-      const completed = await waitForRuntimeTask(task.value.taskId, lifetime.signal, check,
-        { timeoutMs: 11 * 60_000, onDetail: value => { check(); accept(value) } })
-      check(); accept(completed)
+      const completed = await session.observe()
       if (!completed.resultRefs.some(output => output.index === 0 && output.mime === 'image/png')) throw new Error('任务尚无完整 PNG 结果')
       if (result.value?.taskId !== completed.taskId) { saved.value = false; setUrl(resultUrl, null); resultBlob.value = null }
       result.value = structuredClone(completed)
@@ -200,17 +186,11 @@ export function useQwenStudio() {
     if (!key || cancelling.value || terminal(task.value)) return
     cancelling.value = true; error.value = ''
     try {
-      check(); const value = await cancelRuntimeTaskKey(key, lifetime.signal); check()
-      if (value) { accept(value); notice.value = '取消请求已记录，等待后端确认'; if (!observing.value) void observe() }
-      else if (request.value) {
-        await clearRequestDraft(slot, request.value); check(); request.value = null
-        notice.value = '取消意图已保存，原请求不会再执行'
-      }
+      const value = await session.cancel()
+      if (value) { notice.value = '取消请求已记录，等待后端确认'; if (!observing.value) void observe() }
+      else notice.value = '取消意图已保存，原请求不会再执行'
     } catch (cause) { if (!lifetime.signal.aborted) error.value = '取消尚未确认：' + message(cause) }
     finally { cancelling.value = false }
-  }
-  async function releaseRequest() {
-    if (request.value) { await clearRequestDraft(slot, request.value); check(); request.value = null }
   }
   async function run() {
     if (!canRun.value) return
@@ -241,13 +221,7 @@ export function useQwenStudio() {
         if (names.length) input.referenceImages = names
       }
       if (cancelled) { notice.value = '已取消，尚未提交任务'; return }
-      request.value = newTaskRequestDraft('qwen', input, true, { parentId: parentId.value })
-      request.value.submitted = true
-      await writeRequestDraft(slot, request.value); check()
-      if (cancelled) { await cancel(); return }
-      const value = await submitRuntimeTask('qwen', input, request.value.key, request.value.context, { signal: lifetime.signal, onSubmitting: check })
-      check(); accept(value); request.value.taskId = value.taskId
-      await writeRequestDraft(slot, request.value); check()
+      await session.submit('qwen', input, { parentId: parentId.value }, undefined, () => cancelled)
       if (cancelled) await cancel()
       void observe()
     } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
@@ -318,12 +292,9 @@ export function useQwenStudio() {
       }
       if (draft) applyDraft(draft)
       if (qwenModels.some(model => model.value === modelId)) form.modelId = modelId!
-      request.value = readTaskRequestDraft(slot)
+      session.restore()
       if (request.value) {
-        if (request.value.kind !== 'qwen') throw new Error('保存的请求不是 Qwen 创作，请核对任务中心')
-        check()
-        const found = await getRuntimeTaskByKey(request.value.key, lifetime.signal); check()
-        if (found) accept(found)
+        await session.resolve()
         if (terminal(task.value)) await releaseRequest()
       }
       if (!taskId && !artworkId && !task.value && !request.value && draft?.resultTaskId) {

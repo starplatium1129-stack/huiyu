@@ -20,7 +20,6 @@ export const CHAT_ARCHIVE_CHANGED_KEY = 'aics_chat_archive_changed'
 export const CHAT_ARCHIVE_KV_KEY = 'chat_archive_v1'
 export const CHAT_TURN_KEY = 'aics_chat_turn_v1'
 export const CHAT_RELAY_RECEIPT_KEY = 'aics_chat_relay_receipt_v1'
-export const COMPANION_IMAGE_IMPORT_KEY = 'aics_companion_image_imported'
 export const ROOM_PRESENTATION_KEY = 'aics_room_presentation_v1'
 /** Per-character, per-surface presentation preferences, safe to restore. */
 export const STAGE_FRAMING_KEY = 'aics_stage_framing_v1'
@@ -43,6 +42,7 @@ export const CHAT_USER_PROFILE_KEY = 'aics_user_profile_v1'
 export const CHAT_MEMORY_KEY = 'aics_chat_memories_v1'
 /** 高频偏好单独保存，避免每次输入或调音量重写聊天历史。 */
 export const CHAT_VOLUME_KEY = 'aics_chat_volume_v1'
+export const CHAT_PREFERENCES_KEY = 'aics_chat_preferences_v1'
 export const CHAT_DRAFT_PREFIX = 'aics_chat_draft_v1:'
 /** Local deletion tombstone; never exported/restored from an older backup. */
 export const CHAT_RESET_KEY = 'aics_chat_reset_v1'
@@ -147,6 +147,7 @@ const LIVE_LOCAL_KEYS = [
   CHAT_USER_PROFILE_KEY,
   CHAT_MEMORY_KEY,
   CHAT_VOLUME_KEY,
+  CHAT_PREFERENCES_KEY,
   COMPANION_LIVE2D_KEY,
   LIVE2D_QUALITY_KEY,
   STAGE_FRAMING_KEY,

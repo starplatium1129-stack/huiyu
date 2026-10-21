@@ -4,7 +4,7 @@ import { type VideoDefaults, type VideoMode } from '@/api/videoApi'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
 import { getDesktopRuntime } from '@/platform/desktop/runtime'
-import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { VIDEO_DRAFT_KEY } from '@/utils/storageKeys'
 
 /** Editable frame references and parameters; admission belongs to useVideoRequest. */
 export interface VideoStudioDraftDeps {
@@ -85,16 +85,17 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   async function persistImportedCtx(sourceImageId: string) {
     checkOwner()
     if (!persistDraft(sourceImageId)) throw new Error('视频草稿保存失败')
-    await flushProfileWrites()
+    await videoStore.confirmDrafts([VIDEO_DRAFT_KEY])
     checkOwner()
   }
 
   /** 监听草稿字段（防抖 350ms）；返回停止函数由调用方挂到卸载钩子。 */
   function startDraftWatch(): () => void {
-    const releaseMaintenance = registerMaintenanceParticipant(() => {
+    const releaseMaintenance = registerMaintenanceParticipant(async () => {
       if (restoring) throw new Error('DRAFT_RESTORING')
       if (draftTimer || saveFailed) persistDraft()
       if (saveFailed) throw new Error('DRAFT_SAVE_FAILED')
+      await videoStore.confirmDrafts([VIDEO_DRAFT_KEY])
     })
     const stop = watch(
       [deps.selectedMode, deps.prompt, deps.negative, deps.selectedModelId, deps.aspectRatio,

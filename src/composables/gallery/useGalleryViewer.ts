@@ -10,6 +10,8 @@ export function useGalleryViewer(options: {
   history: Ref<ArtworkRecord[]>
   visible: Ref<ArtworkRecord[]>
   previewSource?: (item: ArtworkRecord) => string
+  hasMore?: Readonly<Ref<boolean>>
+  loadMore?: () => Promise<boolean>
   resetControls: () => void
 }) {
   const viewerIndex = ref(-1)
@@ -27,7 +29,7 @@ export function useGalleryViewer(options: {
   })
   let loadedMedia: ArtworkRecord | null = null
   let disposed = false
-  let previewRevision = 0
+  let previewRevision = 0, navigationRevision = 0
 
   function hydratePreviews() {
     const revision = ++previewRevision
@@ -83,7 +85,11 @@ export function useGalleryViewer(options: {
     if (!disposed && viewerIndex.value >= 0 && current.value) await hydrate(current.value, true)
   }
 
-  function openViewer(index: number) {
+  async function openViewer(index: number) {
+    const revision = ++navigationRevision
+    if (index >= options.visible.value.length && options.hasMore?.value) {
+      if (!await options.loadMore?.() || revision !== navigationRevision || disposed || viewerIndex.value < 0) return
+    }
     const item = options.visible.value[index]
     if (disposed || !item) return
     // Double clicks and gesture-viewer change events can select the same image
@@ -95,10 +101,11 @@ export function useGalleryViewer(options: {
     options.resetControls()
     if (!reuseImage) void hydrate(item)
     hydratePreviews()
+    if (index >= options.visible.value.length - 5 && options.hasMore?.value) void options.loadMore?.()
   }
 
   function closeViewer() {
-    original.stop()
+    navigationRevision++; original.stop()
     previewRevision++
     viewerIndex.value = -1
     // Keep image, comparison and metadata intact while the surface leaves.
@@ -115,7 +122,7 @@ export function useGalleryViewer(options: {
 
   function step(delta: number) {
     const next = artworkIndexById(options.visible.value, viewerItemId.value) + delta
-    if (viewerIndex.value >= 0 && next >= 0 && next < options.visible.value.length) openViewer(next)
+    if (viewerIndex.value >= 0 && next >= 0 && (next < options.visible.value.length || options.hasMore?.value)) void openViewer(next)
   }
 
   watch(options.visible, () => {

@@ -1,6 +1,10 @@
 use super::*;
 use verified_media::Identity;
 pub(super) mod file;
+pub(super) enum Data {
+    Encoded(String),
+    Binary(Bytes),
+}
 
 #[derive(Clone, PartialEq)]
 pub(super) struct Chunk {
@@ -113,6 +117,7 @@ pub(super) fn start(
     principal: String,
     reply: oneshot::Sender<Result<Value>>,
     permit: OwnedSemaphorePermit,
+    bytes: Option<Bytes>,
     sender: &mpsc::WeakSender<Work>,
 ) {
     let chunk = match prepare(c, &principal, &command) {
@@ -126,14 +131,15 @@ pub(super) fn start(
             return;
         }
     };
-    let encoded = match command
-        .as_object_mut()
-        .and_then(|object| object.remove("data"))
-    {
-        Some(Value::String(encoded)) => encoded,
-        _ => {
-            let _ = reply.send(Err(invalid("data must be a string")));
-            return;
+    let data = if let Some(bytes) = bytes {
+        Data::Binary(bytes)
+    } else {
+        match command.as_object_mut().and_then(|object| object.remove("data")) {
+            Some(Value::String(encoded)) => Data::Encoded(encoded),
+            _ => {
+                let _ = reply.send(Err(invalid("data must be a string")));
+                return;
+            }
         }
     };
     let identity = match Identity::new(c) {
@@ -166,7 +172,7 @@ pub(super) fn start(
         .name("workspace-upload".into())
         .spawn(move || {
             let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                file::write(&job_identity, &job_chunk, offset, encoded)
+                file::write(&job_identity, &job_chunk, offset, data)
             }))
             .unwrap_or_else(|_| Err(unavailable()));
             let _ = sender.blocking_send(Work::UploadFinished(job_id, result));

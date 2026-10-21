@@ -25,10 +25,8 @@ export interface CompanionBehaviorConfig {
   eventCooldownMinutes: number
 }
 
-export type CompanionEventKind =
-  | 'sd-done'
-  | 'service-back'
-  | 'service-down'
+export type { CompanionDetectedEvent as CompanionEventKind } from './companionEvents'
+import type { CompanionDetectedEvent as CompanionEventKind } from './companionEvents'
 
 export interface CompanionReminder {
   /** 提醒标识（入队时分配） */

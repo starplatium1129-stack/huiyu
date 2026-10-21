@@ -48,8 +48,8 @@ export function useCompanionWorkspace() {
     );
     // ── 角色行为运行时（提醒/问候/事件轮询/勿扰）已下沉 useCompanionBehaviorRuntime ──
     // 两只 30s 心跳与轮询 AbortController 生命周期由 composable 自持；
-    // 导入/剪贴板入册走 noteReturn 族 + resetEventDetector 重置检测基线。
-    const { behaviorEnabled, dnd, pendingReminders, inQuietHours, quietHoursText, noteActivity, getLastActivityAt, getIdleMinutes, noteReturn, noteReturnPlain, toggleDnd, dismissReminder, maybeGreetByTime, openReminderRoute, resetEventDetector } = useCompanionBehaviorRuntime({
+    // 导入/剪贴板入册走 noteReturn 族；生成通知由真实任务结果独立驱动。
+    const { behaviorEnabled, dnd, pendingReminders, inQuietHours, quietHoursText, noteActivity, getLastActivityAt, getIdleMinutes, noteReturn, noteReturnPlain, toggleDnd, dismissReminder, maybeGreetByTime, openReminderRoute } = useCompanionBehaviorRuntime({
         activeChar,
         desktopBridge,
         desktopWindowVisible: () => desktopWindowVisible.value,
@@ -88,7 +88,6 @@ export function useCompanionWorkspace() {
         currentCharacterName: () => currentCharacter.value.name,
         noteReturn,
         noteReturnPlain,
-        resetEventDetector,
         inputText,
         persistDraft: text => storage.setDraft(activeChar.value, text),
         scrollChatToBottom: () => chatListRef.value?.scrollTo({ top: chatListRef.value.scrollHeight, behavior: scrollBehavior() }),

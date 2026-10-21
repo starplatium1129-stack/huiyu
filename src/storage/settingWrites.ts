@@ -1,9 +1,9 @@
 import { shallowRef } from 'vue'
-import { flushProfileWrites, profileLocalStorage } from '@/platform/web/profileStorage'
+import { writeProfileLocal, type ProfileWriteReceipt } from '@/platform/web/profileStorage'
 import { getDesktopRuntime } from '@/platform/desktop/runtime'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
-interface Write { key: string; value: string; owner: string; queued: boolean; error: string; flight?: Promise<boolean> }
+interface Write { key: string; value: string; owner: string; receipt?: ProfileWriteReceipt; error: string; flight?: Promise<boolean> }
 const writes = new Map<string, Write>()
 export const settingWriteState = shallowRef({ pending: false, error: '' })
 function owner() {
@@ -18,8 +18,8 @@ function attempt(write: Write): Promise<boolean> {
   write.flight = (async () => {
     try {
       if (owner() !== write.owner) throw new Error('设置属于原工作区，请恢复原连接后重试保存。')
-      if (!write.queued) { profileLocalStorage.setItem(write.key, write.value); write.queued = true }
-      await flushProfileWrites()
+      write.receipt ??= writeProfileLocal(write.key, write.value)
+      await write.receipt.confirm()
       if (owner() !== write.owner) throw new Error('设置保存期间工作区已变化，请核对原工作区。')
       if (writes.get(write.key) === write) writes.delete(write.key)
       return true
@@ -33,7 +33,7 @@ function attempt(write: Write): Promise<boolean> {
 }
 /** Preferences update immediately; the returned result confirms durable storage. */
 export function saveSettingValue(key: string, value: string): Promise<boolean> {
-  const write: Write = { key, value, owner: owner(), queued: false, error: '' }
+  const write: Write = { key, value, owner: owner(), error: '' }
   writes.set(key, write); publish()
   return attempt(write)
 }

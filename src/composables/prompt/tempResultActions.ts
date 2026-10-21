@@ -7,7 +7,8 @@ import type { GeneratedArtworkInput } from '@/application/artwork/artworkSaveInp
 import { ArtworkSaveSupersededError, type ArtworkCommitIdentity } from '@/application/artwork/artworkSaveInput'
 import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
 import { withArtworkStaging } from '@/storage/artworkSession'
-import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { TEMP_RESULT_KEY } from '@/utils/storageKeys'
+import { confirmProfileKeys } from '@/platform/web/profileStorage'
 import { clearTempResult, readTempResult, sameTempResultOwner, writeTempResultDurable, type TempResultOwner } from '@/utils/tempResult'
 
 /** Media I/O belongs to the already requested completion, not route setup. */
@@ -57,7 +58,7 @@ export async function releaseTempResult(input: {
     || latest?.imageId !== record?.imageId || latest?.pendingCommit?.operationId !== record?.pendingCommit?.operationId) return
   const mutation = state.claim()
   if (!clearTempResult()) throw new Error('临时成片清除尚未写入，恢复指针已保留')
-  await flushProfileWrites()
+  await confirmProfileKeys([TEMP_RESULT_KEY], true)
   if (repository !== artworkRepository || !sameTempResultOwner(owner)) return
   if (mutation === state.mutation() && !readTempResult()) state.cleared()
   // Absence cannot prove that an admitted append worker has stopped. Normal

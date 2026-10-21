@@ -26,6 +26,7 @@ const emit = defineEmits<{ change: [index: number]; error: [] }>()
 const host = ref<HTMLElement | null>(null)
 let viewer: PhotoSwipe | null = null
 let revision = 0
+let appendItems: (() => void) | null = null
 let mediaSession = imageMediaSession()
 let resize: ResizeObserver | null = null
 const urls = new Map<number, string>()
@@ -52,7 +53,7 @@ function releaseUrl(url: string) {
   if (ownedUrls.delete(url)) URL.revokeObjectURL(url)
 }
 function dispose() {
-  revision++
+  revision++; appendItems = null
   for (const request of pending.values()) request.abort()
   resize?.disconnect(); resize = null
   const previous = viewer; viewer = null
@@ -94,6 +95,12 @@ function start() {
     errorMsg: '图片暂时无法读取，可返回原查看器重试',
   }) } catch { dispose(); emit('error'); return }
   viewer = instance
+  appendItems = () => {
+    const first = items.length, additions = props.items.slice(first).map(item => ({ ...item }))
+    items.push(...additions)
+    data.push(...additions.map(item => ({ type: 'image', src: '', width: Number(item.width) || 832, height: Number(item.height) || 1216, alt: item.sceneTitle || '作品' })))
+    if (instance.currIndex + 1 === first) instance.refreshSlideContent(first)
+  }
   instance.on('keydown', event => event.preventDefault())
   instance.on('change', () => {
     if (revision !== token) return
@@ -192,6 +199,7 @@ function start() {
 // goTo's external-selection path is instant, including the dialog's arrow keys.
 watch(() => props.index, index => { if (index >= 0 && viewer && viewer.currIndex !== index) viewer.goTo(index) })
 watch(() => props.items.map(({ id, image_id, image_url, image_data, _galleryRevision }) => ({ id, image_id, image_url, image_data, _galleryRevision })), (items, previous) => {
+  if (appendItems && items.length > previous.length && previous.every((item, index) => sameArtworkMedia(item, items[index]) && item._galleryRevision === items[index]._galleryRevision)) { appendItems(); return }
   if (items.length !== previous.length || items.some((item, index) => !sameArtworkMedia(item, previous[index]) || item._galleryRevision !== previous[index]._galleryRevision)) start()
 })
 onMounted(() => {

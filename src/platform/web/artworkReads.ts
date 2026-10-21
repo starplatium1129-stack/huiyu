@@ -1,7 +1,7 @@
 import { kvInit } from '../../composables/useKVStore.ts'
 import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
 import { searchArtworkRecords } from '../../application/artwork/searchIndex.ts'
-import { parseArtworkRecords } from '../../types/artwork.ts'
+import { artworkTimestamp, parseArtworkRecords } from '../../types/artwork.ts'
 import type { ArtworkProjectRecord } from '../../application/artwork/artworkRepository.ts'
 import { type ArtworkKvAdapter, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, record } from './artworkStorage.ts'
 
@@ -81,20 +81,22 @@ export function createArtworkReads(kv: ArtworkKvAdapter,
     })
   }
 
-  async function readRecentHistory(signal?: AbortSignal) {
+  async function readRecentHistory(signal?: AbortSignal, limit = 3) {
+    if (!Number.isSafeInteger(limit) || limit < 1 || limit > 200) throw new Error('最近作品数量无效')
+    const recent = (raw: unknown) => structuredClone(parseArtworkRecords(raw).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, limit))
     signal?.throwIfAborted()
     return withMutation(async () => {
       signal?.throwIfAborted()
       const raw = await kv.get(ARTWORK_HISTORY_KEY)
       signal?.throwIfAborted()
-      if (raw !== null) return structuredClone(parseArtworkRecords(raw))
+      if (raw !== null) return recent(raw)
       const legacy = readLocal(ARTWORK_HISTORY_KEY)
       if (Array.isArray(legacy) && legacy.length) {
         await kv.set(ARTWORK_HISTORY_KEY, legacy)
         globalThis.localStorage.removeItem(ARTWORK_HISTORY_KEY)
       }
       signal?.throwIfAborted()
-      return structuredClone(parseArtworkRecords(legacy))
+      return recent(legacy)
     })
   }
 

@@ -5,7 +5,7 @@ import { normalizeChatMessages } from './chatMessageStorage'
 import { normalizeChatConversations } from './chatConversationStorage'
 export type { ChatMessage as PersistedChatMessage } from '@/composables/chat/chatStorageTypes'
 
-interface ChatStorageOptions {
+export interface ChatStorageOptions {
   characterIds: string[]
   maxMessages: number
   version: number

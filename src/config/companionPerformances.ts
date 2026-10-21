@@ -6,7 +6,9 @@ interface PerformanceRule { emotion: ChatEmotion; closeEmotion?: ChatEmotion; mi
 const COMPANION_PERFORMANCES: Readonly<Record<string, Readonly<PerformanceRule>>> = {
   return: { emotion: 'gentle', closeEmotion: 'happy', minimumAffection: 50, expiresMs: 90_000 },
   idle: { emotion: 'gentle', expiresMs: 90_000 },
-  'sd-done': { emotion: 'happy', expiresMs: 90_000 },
+  'image-ready': { emotion: 'happy', expiresMs: 90_000 },
+  'image-files-ready': { emotion: 'gentle', expiresMs: 60_000 },
+  'image-files-missing': { emotion: 'serious', expiresMs: 60_000 },
   'service-back': { emotion: 'gentle', expiresMs: 60_000 },
   'service-down': { emotion: 'serious', expiresMs: 60_000 },
 }

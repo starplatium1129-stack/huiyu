@@ -2,10 +2,11 @@ import { readStoryOrigin, type StoryOrigin } from '@/types/storyOrigin'
 import { DIRECTOR_CONTROL_KEYS, normalizeDirectorSources } from '@/utils/promptDirector'
 import type { DirectorControlSources, DirectorControlValues } from '@/types/promptDirector'
 import type { SceneBlueprint } from '@/types/sceneBlueprint'
-import { profileLocalStorage as localStorage, profileRuntimeActive } from '../../platform/web/profileStorage.ts'
+import { profileLocalStorage as localStorage, writeProfileLocal } from '../../platform/web/profileStorage.ts'
+import type { ProfileWriteReceipt } from '@/platform/web/profileWriteReceipt'
 import { onScopeDispose, ref, watch, type Ref, type ComputedRef } from 'vue'
 import { cloneReferenceInput, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
-import { tempResultOwner, sameTempResultOwner } from '@/utils/tempResult'
+import { tempResultOwner, sameTempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import type { DrawSubject } from '@/utils/popularContent'
@@ -50,33 +51,62 @@ export function usePromptDraft(state: PromptDraftState) {
   let draftTimer: ReturnType<typeof setTimeout> | null = null
   let restoreRevision = 0, disposed = false
   let restoreFailed = false
+  let editRevision = 0
+  let draftOwner: TempResultOwner | undefined
+  let latestWrite: { revision: number; receipt: ProfileWriteReceipt } | undefined
   const restoreParticipants = new Set<() => void>()
   const draftSaveState = ref<'idle' | 'pending' | 'saved' | 'failed'>('idle')
   const draftSaveError = ref('')
-  function persistDraft() {
+  function failed(error: unknown) {
+    draftSaveState.value = 'failed'; draftSaveError.value = storageWriteMessage(error, '草稿')
+    if (!disposed) flash(draftSaveError.value)
+  }
+  function persistDraft(): Promise<void> {
     if (draftTimer) clearTimeout(draftTimer)
     draftTimer = null
     try {
       if (restoreFailed) throw new Error('原草稿尚未恢复，请先重新打开页面，或明确重试保存当前输入')
-      localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshotDraft()))
-      draftSaveState.value = 'saved'; draftSaveError.value = ''
+      draftOwner ??= tempResultOwner()
+      if (!sameTempResultOwner(draftOwner)) throw new Error('草稿资料来源已变化，请回到原工作区保存或导出当前输入')
+      // A failed/unknown write keeps its original operation. New edits alone
+      // admit a successor; an older acknowledgement cannot mark them saved.
+      if (!latestWrite || latestWrite.revision !== editRevision) {
+        latestWrite = { revision: editRevision, receipt: writeProfileLocal(DRAFT_KEY, JSON.stringify(snapshotDraft())) }
+      }
+      const write = latestWrite, owner = draftOwner
+      const current = () => !disposed && latestWrite === write && editRevision === write.revision && !draftTimer && sameTempResultOwner(owner)
+      draftSaveState.value = write.receipt.state === 'confirmed' ? 'saved' : 'pending'
+      draftSaveError.value = ''
+      return write.receipt.confirm().then(() => {
+        if (current()) { draftSaveState.value = 'saved'; draftSaveError.value = '' }
+      }, error => { if (current()) failed(error); throw error })
     } catch (error) {
-      draftSaveState.value = 'failed'; draftSaveError.value = storageWriteMessage(error, '草稿')
-      throw error
+      failed(error)
+      return Promise.reject(error)
     }
   }
-  const releaseMaintenance = registerMaintenanceParticipant(() => { if (draftTimer || draftSaveState.value === 'failed') persistDraft() })
-  function retryDraftSave() {
+  const releaseMaintenance = registerMaintenanceParticipant(() => {
+    if (draftTimer || draftSaveState.value === 'failed' || draftSaveState.value === 'pending') return persistDraft()
+  })
+  async function retryDraftSave() {
     if (!dataReady.value) return false
+    if (restoreFailed) { editRevision++; latestWrite = undefined }
     restoreFailed = false
-    try { persistDraft(); return true } catch { return false }
+    try { await persistDraft(); return true } catch { return false }
   }
   function beforeUnload(event: BeforeUnloadEvent) {
-    // Desktop profiles own asynchronous write/close protection.
-    if (profileRuntimeActive() || (!draftTimer && draftSaveState.value !== 'failed')) return
-    if (restoreFailed || !retryDraftSave()) { event.preventDefault(); event.returnValue = '' }
+    if (!draftTimer && draftSaveState.value !== 'failed' && draftSaveState.value !== 'pending') return
+    // Admit the debounce before the global outbox guard. Native storage can
+    // finish synchronously; a desktop receipt must settle before closing.
+    if (!restoreFailed) void persistDraft().catch(() => {})
+    if (restoreFailed || draftSaveState.value !== 'saved') { event.preventDefault(); event.returnValue = '' }
   }
   window.addEventListener('beforeunload', beforeUnload)
+  function refreshConfirmedDraft() {
+    if (!restoreFailed && !draftTimer && latestWrite?.revision === editRevision && latestWrite.receipt.state === 'confirmed')
+      void persistDraft().catch(() => {})
+  }
+  window.addEventListener('huiyu:profile-sync-complete', refreshConfirmedDraft)
 
   function snapshotDraft(): PromptBuilderDraft {
     const subjectSnapshot = subject.value.kind === 'popular'
@@ -120,18 +150,11 @@ export function usePromptDraft(state: PromptDraftState) {
 
   function saveDraft() {
     if (!dataReady.value || restoreFailed) return
+    editRevision++
+    try { draftOwner ??= tempResultOwner() } catch (error) { failed(error); return }
     if (draftSaveState.value !== 'failed') draftSaveState.value = 'pending'
     if (draftTimer) clearTimeout(draftTimer)
-    draftTimer = setTimeout(() => {
-      try {
-        persistDraft()
-      } catch (e) {
-        // 2026-08-30 UX 审计：原先 catch {} 静默吞掉。配额写满时界面一切正常、
-        // 用户以为草稿已存，刷新即丢——必须让失败可感知并给出补救动作。
-        console.warn('[draft] 草稿写入失败', e)
-        flash(draftSaveError.value)
-      }
-    }, 280)
+    draftTimer = setTimeout(() => { void persistDraft().catch(() => {}) }, 280)
   }
 
   async function restoreDraft(isCurrent = () => true): Promise<boolean> {
@@ -140,9 +163,10 @@ export function usePromptDraft(state: PromptDraftState) {
     let raw: string | null = null
     try {
       if (disposed || !isCurrent()) return false
-      raw = localStorage.getItem(DRAFT_KEY)
-      if (!raw) { restoreFailed = false; return false }
       const owner = tempResultOwner()
+      if (draftOwner && !sameTempResultOwner(draftOwner) && (draftTimer || draftSaveState.value === 'pending' || draftSaveState.value === 'failed')) return false
+      raw = localStorage.getItem(DRAFT_KEY)
+      if (!raw) { draftOwner = owner; restoreFailed = false; return false }
       const fingerprint = () => {
         const { updatedAt: _updatedAt, ...draft } = snapshotDraft()
         return JSON.stringify({ ...draft, lastRecommendedSize: state.lastRecommendedSize.value })
@@ -162,6 +186,7 @@ export function usePromptDraft(state: PromptDraftState) {
         || localStorage.getItem(DRAFT_KEY) !== raw || fingerprint() !== before) return false
       const restored = restorePromptDraft(state, raw)
       if (!restored) throw new Error('已有草稿的结构无法恢复')
+      draftOwner = owner; editRevision++; latestWrite = undefined
       restoreFailed = false; draftSaveState.value = 'idle'; draftSaveError.value = ''
       return true
     } catch {
@@ -178,11 +203,13 @@ export function usePromptDraft(state: PromptDraftState) {
   watch([outfitOverride, referenceInput, state.directorSources, state.storyOrigin], saveDraft, { deep: true })
 
   onScopeDispose(() => {
+    if (draftTimer) void persistDraft().catch(() => {})
     disposed = true; restoreRevision++; releaseMaintenance()
     for (const release of restoreParticipants) release()
     restoreParticipants.clear()
     if (draftTimer) clearTimeout(draftTimer)
     window.removeEventListener('beforeunload', beforeUnload)
+    window.removeEventListener('huiyu:profile-sync-complete', refreshConfirmedDraft)
   })
   return { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave }
 }

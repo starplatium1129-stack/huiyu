@@ -37,16 +37,22 @@ pub(super) fn write(
     identity: &Identity,
     chunk: &Chunk,
     offset: Option<u64>,
-    encoded: String,
+    data: Data,
 ) -> Result<Written> {
     let (key, media, committed, record) = (&chunk.key, &chunk.media, chunk.committed, chunk.record);
     identity.check_paths()?;
-    if encoded.len() > media::CHUNK.div_ceil(3) * 4 {
-        return Err(conflict("MEDIA_INVALID", "Invalid media chunk"));
-    }
-    let bytes = STANDARD
-        .decode(encoded)
-        .map_err(|_| conflict("MEDIA_INVALID", "Invalid media chunk encoding"))?;
+    let bytes = match data {
+        Data::Binary(bytes) => bytes,
+        Data::Encoded(encoded) => {
+            if encoded.len() > media::CHUNK.div_ceil(3) * 4 {
+                return Err(conflict("MEDIA_INVALID", "Invalid media chunk"));
+            }
+            Bytes::from(
+                STANDARD.decode(encoded)
+                    .map_err(|_| conflict("MEDIA_INVALID", "Invalid media chunk encoding"))?,
+            )
+        }
+    };
     let offset = offset.ok_or_else(|| conflict("MEDIA_INVALID", "Invalid media chunk"))?;
     let total = media["bytes"].as_u64().unwrap();
     if bytes.is_empty()
@@ -95,7 +101,7 @@ pub(super) fn write(
         let mut existing = vec![0; bytes.len()];
         input.seek(SeekFrom::Start(offset))?;
         input.read_exact(&mut existing)?;
-        if bytes != existing {
+        if bytes.as_ref() != existing.as_slice() {
             return Err(conflict(
                 "OPERATION_CONFLICT",
                 "Retried chunk differs from stored bytes",

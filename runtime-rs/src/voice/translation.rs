@@ -5,7 +5,7 @@ use super::{
 use crate::{
     error::{ApiError, Result},
     processes::{OwnedProcess, Processes},
-    upstream::LocalUpstream,
+    upstream::{LocalUpstream, HealthProbes},
 };
 use serde_json::{Value, json};
 use std::{
@@ -43,12 +43,14 @@ pub(super) struct Translation {
     starting: Mutex<Option<Startup>>,
     managed: Mutex<Option<OwnedProcess>>,
     processes: Arc<Processes>,
+    probes: Arc<HealthProbes>,
 }
 impl Translation {
     pub fn new(
         settings: Arc<Settings>,
         transport: LocalUpstream,
         cancel: CancellationToken,
+        probes: Arc<HealthProbes>,
     ) -> Arc<Self> {
         Arc::new(Self {
             settings,
@@ -60,23 +62,16 @@ impl Translation {
             starting: Mutex::new(None),
             managed: Mutex::new(None),
             processes: Arc::new(Processes::default()),
+            probes,
         })
     }
-    async fn ping(&self) -> bool {
-        self.transport
-            .json(
-                &self.settings.translation_url,
-                "/health",
-                None,
-                Duration::from_millis(800),
-                64 * 1024,
-                &self.cancel,
-            )
-            .await
-            .is_ok_and(|(status, _)| status == 200)
+    async fn ping(&self) -> bool { self.ping_observed(true).await }
+    async fn ping_observed(&self, fresh: bool) -> bool {
+        self.probes.read(&self.settings.translation_url, "/health", Duration::from_millis(800), 64 * 1024, fresh).await
+            .is_some_and(|probe| probe.status == 200)
     }
-    pub async fn status(&self) -> Value {
-        let ready = self.ping().await;
+    pub async fn status(&self, fresh: bool) -> Value {
+        let ready = self.ping_observed(fresh).await;
         self.ready.store(ready, Ordering::Relaxed);
         let managed = self
             .managed

@@ -40,7 +40,7 @@
         @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" />
     </div>
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen && albumSection" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
-      <AsyncPanel v-if="visitedPanels.albums" :loader="loadAlbumOverview" label="画册概览" v-slot="{ component }"><component :is="component" :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :index-loading="galleryIndexLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" /></AsyncPanel>
+      <AsyncPanel v-if="visitedPanels.albums" :loader="loadAlbumOverview" label="画册概览" v-slot="{ component }"><component :is="component" :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :index-loading="galleryIndexLoading" :error="galleryError" :busy="saving" :has-history="!!libraryTotal" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" /></AsyncPanel>
     </div>
     <div v-show="!albumsOpen" v-content-motion:fade.defer="!albumsOpen && (trashMode ? 'trash' : 'works')" class="gallery-image-browse">
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
@@ -57,7 +57,7 @@
       <span class="gallery-bulk-actions">
         <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
         <StudioCheckbox :checked="allVisibleSelected" :indeterminate="!allVisibleSelected && visible.some(item => selectedIds.has(item.id))"
-          :disabled="!visible.length || galleryIndexLoading || !!galleryError" label="全选当前作品" @update:checked="selectAllVisible">{{ galleryIndexLoading ? '正在读取全部作品…' : '全选当前' }}</StudioCheckbox>
+          :disabled="!visible.length || galleryIndexLoading || !!galleryError" label="全选当前作品" @update:checked="selectAllVisible">{{ galleryIndexLoading ? '正在读取作品…' : '全选当前' }}</StudioCheckbox>
         <!-- Keep the confirmation opener focusable while busy; bulkDelete guards re-entry. -->
         <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size" :aria-disabled="bulkDeleting || undefined"
           @click="bulkDelete">{{ bulkDeleting ? '处理中…' : `移入回收站（${selectedIds.size}）` }}</button>
@@ -97,7 +97,7 @@
         <button class="btn btn-primary" type="button" @click="loadGalleryStorage">重新读取</button>
       </ArchiveStatePanel>
       <ArchiveStatePanel
-        v-if="!galleryLoading && !galleryError && !history.length"
+        v-if="!galleryLoading && !galleryError && !libraryTotal"
         kind="empty"
         title="展墙还在等你的第一幅作品"
       >
@@ -105,7 +105,7 @@
         <RouterLink class="btn btn-primary" to="/prompt-builder">开始绘制</RouterLink>
       </ArchiveStatePanel>
       <ArchiveStatePanel
-        v-else-if="!galleryLoading && history.length && !visible.length"
+        v-else-if="!galleryLoading && libraryTotal && !visible.length"
         kind="filtered"
         :title="galleryIndexLoading ? '正在查找其余作品…' : '当前筛选下没有作品'"
       >
@@ -140,14 +140,14 @@
         </template>
         <!-- 分页哨兵：进入视口即追加下一页（作品很多时避免一次性铺满 DOM） -->
         <div v-if="hasMoreToRender" ref="sentinelEl" class="gallery-more" role="status">
-          已显示 {{ pagedVisible.length }} / {{ visible.length }} 幅 · 滚动继续加载
+          已显示 {{ pagedVisible.length }} / {{ visibleTotal }} 幅 · 滚动继续加载
         </div>
       </div>
       </template>
     </section>
 
     </div>
-    <AsyncPanel v-if="visitedPanels.editor" v-show="editorOpen" :loader="loadAlbumEditor" label="智能画册编辑" v-slot="{ component }"><component :is="component" v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewItems.length" :preview-loading="galleryLoading || galleryIndexLoading" :preview-error="galleryError" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" /></AsyncPanel>
+    <AsyncPanel v-if="visitedPanels.editor" v-show="editorOpen" :loader="loadAlbumEditor" label="智能画册编辑" v-slot="{ component }"><component :is="component" v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewCount" :preview-loading="previewLoading" :preview-error="previewError" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" /></AsyncPanel>
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
@@ -165,7 +165,7 @@
           @load.capture="imageOrigin.loaded"
           @error.capture="imageOrigin.failed"
         >
-      <ArtworkViewerStage :items="visible" :index="displayedIndex" :active="viewerIndex >= 0" :original="originalViewer"
+      <ArtworkViewerStage :total="visibleTotal" :items="visible" :index="displayedIndex" :active="viewerIndex >= 0" :original="originalViewer"
         :src="viewerUrl" :preview-src="imageOrigin.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborPreviews" :load-failed="viewerLoadFailed" :reload="retryViewerImage"
         :title="item => sceneTitle(item.scene, item)" @select="openViewer" @close="closeViewer" @close-button="closeBtn = $event"
         @toggle-original="toggleOriginalViewer" @dismiss-info="closeInfoDrawer" @interact="imageOrigin.cancel">
@@ -361,7 +361,7 @@ trashMode,
 toggleTrashMode,
 trashItems,
 selectedIds,
-visible,
+visible, visibleTotal, libraryTotal,
 compareSelected,
 selectAllVisible,
 allVisibleSelected,
@@ -440,7 +440,7 @@ function openFromCard(index: number, event: MouseEvent) {
 }
 const { albums, characterAlbums, albumSection, visibleAlbumIds, selection, characterOptions, manualProjects, collectionTitle, currentSmartRule,
   albumsOpen, albumRoot, imageHeading, showImages, showOverview, showAllWorks, openCollection, editorOpen, editorTitle, editorRule,
-  editing, saving, error: albumError, previewItems, previewCovers, syncPreviews, newSmartAlbum, editSmartAlbum, removeSmartAlbum, save: saveSmartAlbum } = useGalleryCollections(workspace)
+  editing, saving, error: albumError, previewCount, previewLoading, previewError, previewCovers, syncPreviews, newSmartAlbum, editSmartAlbum, removeSmartAlbum, save: saveSmartAlbum } = useGalleryCollections(workspace)
 // Keep visited panels alive so closing selection or a dialog retains undo and exit state.
 const visitedPanels = reactive({ albums: false, organization: false, editor: false, comparison: false })
 watch([albumsOpen, selectMode, editorOpen, compareOpen], ([albums, organization, editor, comparison]) => {

@@ -1,11 +1,11 @@
-import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { runtimeFetch, runtimeResourceIdentity } from '../platform/runtimeUrl.ts'
 import { catalogApi } from '../api/catalogApi'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 import type { SceneRecord as Scene } from '../types/scene.ts'
 export type { SceneRecord as Scene } from '../types/scene.ts'
 
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { DATA_VERSION } from 'virtual:data-version'
 import { requireDataRecords, requireDataCollection } from '../utils/dataRecords.ts'
 import {
@@ -173,6 +173,7 @@ export const useSceneStore = defineStore('scenes', () => {
   const metaInflight = new Map<string, MetaInflightEntry>()
   const metaFailuresByEpoch = new Map<number, Set<string>>()
   let metaLoadedEpoch: number | null = null
+  const requestedMetadata = new Set<MetaSpec>()
 
   function publishMetaResult(epoch: number, result: MetaLoadResult) {
     if (epoch !== loadEpoch) return
@@ -189,9 +190,9 @@ export const useSceneStore = defineStore('scenes', () => {
     requestVersion: number,
     force: boolean,
   ): Promise<MetaLoadResult> {
+    requestedMetadata.add(spec)
     const cached = metaOk.get(spec.file)
     if (!force && cached?.epoch === epoch) {
-      if (epoch === loadEpoch) spec.apply(cached.data)
       const result = { file: spec.file, required: spec.required, ok: true }
       publishMetaResult(epoch, result)
       return Promise.resolve(result)
@@ -208,7 +209,7 @@ export const useSceneStore = defineStore('scenes', () => {
         // finish, but never publish its data into the current store.
         if (epoch === loadEpoch) {
           metaOk.set(spec.file, { epoch, data: parsed })
-          spec.apply(parsed)
+          spec.apply(structuredClone(parsed))
         }
         const result = { file: spec.file, required: spec.required, ok: true }
         publishMetaResult(epoch, result)
@@ -324,24 +325,25 @@ export const useSceneStore = defineStore('scenes', () => {
     entry.promise = (async () => {
       try {
         const list = await work(isCurrent, epoch, requestVersion)
-        if (epoch === loadEpoch && isCurrent()) scenes.value = list
+        if (epoch === loadEpoch && isCurrent()) scenes.value = structuredClone(list)
       } catch (e) {
         if (epoch === loadEpoch && isCurrent()) {
           error.value = String((e as Error)?.message ?? e)
         }
       } finally {
         if (inflightByKey.get(key) === entry) inflightByKey.delete(key)
-        endLoad()
+        if (epoch === loadEpoch) endLoad()
       }
     })()
     inflightByKey.set(key, entry)
     return entry.promise
   }
 
-  function invalidate() {
+  function invalidate(sourceChanged = false) {
     loadEpoch += 1
-    version.value += 1
     loaded.value = false
+    activeLoads = 0
+    loading.value = false
     shardCache = {}
     metaOk.clear()
     metaLoadedEpoch = null
@@ -350,9 +352,32 @@ export const useSceneStore = defineStore('scenes', () => {
     blueprintRequests.clear()
     blueprintCharacters.value = new Set()
     sceneBlueprints.value = []
+    if (sourceChanged) {
+      scenes.value = []; curation.value = {}; characters.value = []; loras.value = []
+      tags.value = []; presets.value = []; popularCharacters.value = []
+      error.value = null
+    }
     // Do not cancel or clear old transports here. Their completion handlers
     // still run, but their epoch guards make the result harmless.
+    version.value += 1
   }
+
+  watch(runtimeResourceIdentity, () => {
+    const target = viewTarget
+    invalidate(true)
+    const epoch = loadEpoch
+    // Runtime publication finishes installing the transport after publishing
+    // its resource identity. Reload only catalogs already requested by this UI.
+    void nextTick().then(async () => {
+      if (epoch !== loadEpoch) return
+      const reads: Promise<unknown>[] = [...requestedMetadata].map(spec => loadMetaSpec(spec, epoch, version.value, false))
+      if (target === viewTarget) {
+        if (target === 'full') reads.push(load())
+        else if (target === 'home') reads.push(loadHome())
+      }
+      await Promise.all(reads)
+    }).catch(cause => { if (epoch === loadEpoch) error.value = String(cause instanceof Error ? cause.message : cause) })
+  }, { flush: 'sync' })
 
   function resolveShard(char: string): ShardChar {
     return char === 'natsume' ? 'natsume' : char === 'triad' || char === 'shared' ? 'shared' : 'nene'

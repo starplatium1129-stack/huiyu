@@ -1,4 +1,6 @@
 mod artwork_index;
+mod gallery;
+mod gallery_index;
 mod artwork_search;
 mod backup;
 mod canonical;
@@ -40,6 +42,7 @@ use std::{
     },
 };
 use tokio::sync::{OwnedSemaphorePermit, mpsc, oneshot};
+use axum::body::Bytes;
 
 pub(crate) use canonical::{digest_object as json_object_digest, stringify, stringify_equal, stringify_object};
 pub use media::Media;
@@ -114,6 +117,7 @@ enum Work {
         oneshot::Sender<Result<Value>>,
         Option<OwnedSemaphorePermit>,
         Option<Arc<crate::workspace_jobs::Job>>,
+        Option<Bytes>,
     ),
     ArtworkRead(
         Arc<Value>,
@@ -201,6 +205,8 @@ impl Context {
                 | "listArtworks"
                 | "searchArtworks"
                 | "readArtworkRecentIndex"
+                | "readGalleryPage"
+                | "readGalleryCatalog"
                 | "getArtwork"
                 | "getArtworks"
                 | "listProjects"
@@ -261,6 +267,8 @@ impl Context {
             ),
             "listArtworks"
             | "readArtworkRecentIndex"
+                | "readGalleryPage"
+                | "readGalleryCatalog"
             | "getArtwork"
             | "getArtworks"
             | "listProjects" => records::read(self, command),
@@ -366,6 +374,8 @@ fn is_read(kind: &str) -> bool {
             | "listArtworks"
             | "searchArtworks"
             | "readArtworkRecentIndex"
+                | "readGalleryPage"
+                | "readGalleryCatalog"
             | "getArtwork"
             | "getArtworks"
             | "listProjects"

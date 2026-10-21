@@ -1,5 +1,5 @@
 import { SD_PENDING_QUEUE_KEY } from '@/utils/storageKeys'
-import { profileDraftStorage, profileRuntimeActive, flushProfileWrites } from '@/platform/web/profileStorage'
+import { profileDraftStorage, profileRuntimeActive, writeProfileDraft } from '@/platform/web/profileStorage'
 import type { SDQueueJob } from '@/composables/generation/useSDQueue'
 
 function authority() {
@@ -25,9 +25,9 @@ export function createPendingSdQueueStorage() {
       // page. Do not borrow that revision to overwrite a changed queue body.
       if (profileDraftStorage.getItem(SD_PENDING_QUEUE_KEY) !== observed) throw new Error('待处理队列已更新，请刷新窗口后重试')
       const next = JSON.stringify({ version: 1, jobs })
-      profileDraftStorage.setItem(SD_PENDING_QUEUE_KEY, next)
+      const receipt = writeProfileDraft(SD_PENDING_QUEUE_KEY, next)
       observed = next
-      await flushProfileWrites()
+      await receipt.confirm()
     },
   }
 }

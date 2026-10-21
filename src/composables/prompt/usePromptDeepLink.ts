@@ -89,12 +89,20 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
       deepLinkError.value = '读取期间当前输入已改变，链接场景尚未载入。请确认当前草稿后重试。'
       return false
     }
-    const result = await applyPromptDeepLink(query, deps, isCurrent)
-    if (!isCurrent()) return false
-    clearFailure()
-    if (result.historyApplied) lastHistoryLink = historyKey(query)
-    if (result.handled && !historyKey(query)) lastContextLink = contextKey(query)
-    return result.handled
+    try {
+      const result = await applyPromptDeepLink(query, deps, isCurrent, inputsCurrent)
+      if (!isCurrent()) return false
+      clearFailure()
+      if (result.historyApplied) lastHistoryLink = historyKey(query)
+      if (result.handled && !historyKey(query)) lastContextLink = contextKey(query)
+      return result.handled
+    } catch (error) {
+      if (isCurrent()) {
+        failedQuery = query
+        deepLinkError.value = error instanceof Error ? error.message : '作品暂时无法读取，请重试。'
+      }
+      return false
+    }
   }
 
   async function retryDeepLink() {

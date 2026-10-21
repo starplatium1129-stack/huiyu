@@ -3,7 +3,7 @@
     <button :ref="element => emit('close-button', element as HTMLButtonElement | null)" class="viewer-close" data-fluid-glass type="button" aria-label="关闭" @click="emit('close')"><ArchiveIcon name="close" /></button>
     <button class="viewer-nav viewer-prev" data-fluid-glass type="button" aria-label="上一幅" :disabled="index <= 0" @click="emit('select', index - 1)"><ArchiveIcon name="chevron-down" /></button>
     <slot name="image">
-      <GalleryOrbitStage v-if="!original && items[index]" :items="items" :index="index" :active="active"
+      <GalleryOrbitStage v-if="!original && items[index]" :total="total" :items="items" :index="index" :active="active"
         :current-src="src" :preview-src="currentPreview" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborUrls" :load-failed="loadFailed" :reload="reload"
         :title="title" @select="emit('select', $event)" @load="emit('load')" @error="emit('error')"
         @pointerdown.capture="emit('interact')" @wheel.capture="emit('interact')" />
@@ -13,10 +13,10 @@
       </ZoomableImageViewer>
       <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
     </slot>
-    <button class="viewer-nav viewer-next" data-fluid-glass type="button" aria-label="下一幅" :disabled="index >= items.length - 1" @click="emit('select', index + 1)"><ArchiveIcon name="chevron-down" /></button>
+    <button class="viewer-nav viewer-next" data-fluid-glass type="button" aria-label="下一幅" :disabled="index >= (total ?? items.length) - 1" @click="emit('select', index + 1)"><ArchiveIcon name="chevron-down" /></button>
     <button class="viewer-mode-switch" data-fluid-glass type="button" :aria-pressed="original" @click="emit('toggle-original')"><ArchiveIcon name="image" />{{ original ? '立体观画' : '原图 / 缩放' }}</button>
     <slot name="tools" />
-    <div class="viewer-position">{{ index + 1 }} / {{ items.length }}</div>
+    <div class="viewer-position">{{ index + 1 }} / {{ total ?? items.length }}</div>
   </section>
 </template>
 
@@ -30,7 +30,7 @@ import '@/assets/css/viewer.css'
 import '@/assets/css/gallery-viewer.css'
 
 const props = withDefaults(defineProps<{
-  items: T[]; index: number; active: boolean; original: boolean; src: string; previewSrc?: string;
+  total?: number; items: T[]; index: number; active: boolean; original: boolean; src: string; previewSrc?: string;
   cardUrls?: Record<string, string>; thumbUrls?: Record<string, string>; neighborUrls?: Record<string, string>;
   title: (item: T) => string;
   loadFailed?: boolean; reload?: () => Promise<void>;

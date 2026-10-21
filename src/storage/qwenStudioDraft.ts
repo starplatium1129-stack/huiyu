@@ -1,4 +1,4 @@
-import { profileLocalStorage, flushProfileWrites } from '@/platform/web/profileStorage'
+import { profileLocalStorage, writeProfileLocal } from '@/platform/web/profileStorage'
 import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { artworkRepository } from './artworkRepository'
 import { inspectMangaImage, type MangaImage } from '@/composables/manga/mangaImage'
@@ -92,11 +92,11 @@ export function createQwenDraftStorage() {
       check()
       const draft: StoredDraft = { version: 1, owner: owner!, form: snapshot.form, randomSeed: snapshot.randomSeed,
         resize: snapshot.resize, parentId: snapshot.parentId, resultTaskId: snapshot.resultTaskId, source, references }
-      profileLocalStorage.setItem(destination, JSON.stringify(draft)); await flushProfileWrites(); check()
+      await writeProfileLocal(destination, JSON.stringify(draft)).confirm(); check()
       if (preservePrevious) {
         // Publish the new pointer only after the new draft is durable. The old
         // record and its media refs stay intact, including unreadable originals.
-        profileLocalStorage.setItem(selectionKey, destination); await flushProfileWrites(); check()
+        await writeProfileLocal(selectionKey, destination).confirm(); check()
         selectedKey = destination
       }
       const old = previous; previous = draft

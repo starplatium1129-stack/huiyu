@@ -233,7 +233,8 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     if (index !== requestedIndex) { clearWheel(); releasePointer(); moveTo(index); requestedIndex = index }
     else if (wheelPosition === null && !dragging.value) moveTo(index)
   })
-  watch([options.active, options.count], reset)
+  watch(options.active, reset)
+  watch(options.count, (count, previous) => { if (count < previous) reset() })
   function preference() { reduced.value = prefersReducedMotion(); if (reduced.value || document.hidden) reset() }
   function activate() { reduced.value = prefersReducedMotion(); stopPreference ??= listenMotionChanges(preference); reset() }
   function deactivate() { stop(); stopPreference?.(); stopPreference = undefined }

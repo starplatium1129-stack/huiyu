@@ -1,4 +1,4 @@
-import { profileLocalStorage as localStorage, flushProfileWrites } from '../../platform/web/profileStorage.ts'
+import { profileLocalStorage as localStorage, flushProfileWrites, profileRuntimeActive } from '../../platform/web/profileStorage.ts'
 import { reactive, ref, getCurrentScope, onScopeDispose } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { useChatArchiveStorage } from './useChatArchiveStorage'
@@ -6,29 +6,28 @@ import { createChatCredentials } from '@/utils/chatCredentials'
 import { assertChatVersion } from '@/utils/chatVersion'
 import { assertStoredChatVersion } from '@/storage/chatVersionStorage'
 import { chatResetRevision } from '@/utils/chatReset'
-import { CHAT_ARCHIVE_CHANGED_KEY, CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY, CHAT_MEMORY_KEY } from '@/utils/storageKeys'
+import { CHAT_ARCHIVE_CHANGED_KEY, CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY, CHAT_MEMORY_KEY, CHAT_PREFERENCES_KEY } from '@/utils/storageKeys'
 import { preserveRetiredCompanionChat } from '@/utils/retiredCompanionChat'
 import { STORAGE_KEY, STORAGE_VERSION, MAX_LOCAL_MESSAGES } from '@/config/characters'
 import {
-  getCompanionCharacter,
   getCompanionDefaultOutfit,
   listCompanionCharacterIds,
   normalizeCompanionOutfit,
 } from '@/utils/companionRegistry'
 import {
-  normalizeChatStorage, normalizeChatConnection, sameChatApiBinding, serializeChatStorage, type PersistedChatState,
+  normalizeChatStorage, sameChatApiBinding, serializeChatStorage, type PersistedChatState,
 } from '@/utils/chatStorageCore'
 import {
   CHAT_ARCHIVE_KEY,
   archiveCounts,
-  chatArchiveToMarkdown,
   forkChatArchiveMessages,
   normalizeChatArchive,
   serializeChatArchive,
 } from '@/utils/chatArchive'
 import { captureChatConversations, chatBranchArchiveKey, emptyChatConversation, mergeChatConversationStates, rememberChatConversations, registerArchivedChatBranches } from '@/utils/chatConversationStorage'
 import { useChatBranches } from './useChatBranches'
-import { restoreChatArchive } from './restoreChatArchive'
+import { createChatPreferences, readChatPreferences, type ChatPreferences } from '@/storage/chatPreferences'
+import { chatHistorySnapshot } from './chatHistorySnapshot'
 import { createChatNormalizeOptions, createChatStorageState } from './chatStorageState'
 import type { ChatMessage, ChatState } from './chatStorageTypes'
 export type { ChatMessage, ChatState } from './chatStorageTypes'
@@ -40,7 +39,7 @@ export type { ChatMessage, ChatState } from './chatStorageTypes'
  * （可接受）；clear() 不合并（清除意图优先，跨窗口清除为已知边界）。
  */
 let chatStorageSyncInstalled = false
-let chatStorageSyncHandler: (() => void) | null = null
+let chatStorageSyncHandler: ((key?: string | null) => void) | null = null
 
 export function useChatStorage(onError: (msg: string) => void = () => {}) {
   let resetRevision = ''
@@ -54,6 +53,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   const characterIds = listCompanionCharacterIds()
   const state = reactive<ChatState>(createChatStorageState(characterIds))
   const normalizeOptions = createChatNormalizeOptions(characterIds)
+  const preferences = createChatPreferences(state, normalizeOptions, message => { if (!disposed) onError(message) })
 
   /** 用户从未配置过 API（当前是开箱即用兜底值）；站主配置优先于此标记 */
   const neverConfigured = ref(true)
@@ -68,6 +68,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         onError('另一窗口已清空聊天内容；旧操作已停止，请重新输入。')
         return false
       }
+      readChatPreferences()
       assertStoredChatVersion(STORAGE_KEY, STORAGE_VERSION)
       assertStoredChatVersion(CHAT_ARCHIVE_KEY, 1)
       assertStoredChatVersion(CHAT_MEMORY_KEY, 1)
@@ -85,8 +86,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   let saveFailed = false
   if (getCurrentScope()) onScopeDispose(registerMaintenanceParticipant(async () => {
     if (!canWrite()) throw new Error('CHAT_WRITE_BLOCKED')
+    await preferences.confirm()
     for (const [key, value] of pendingPreferences) savePreference(key, value)
-    if (pendingPreferences.size || saveFailed && !save(true, false, false) || !await saveArchive()) throw new Error('CHAT_SAVE_FAILED')
+    if (pendingPreferences.size || saveFailed && !save(true, false) || !await saveArchive()) throw new Error('CHAT_SAVE_FAILED')
   }))
   const messageSnapshots = new Map<string, string>()
   function rememberMessages() { rememberChatConversations(state, messageSnapshots) }
@@ -112,12 +114,14 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   if (!chatStorageSyncInstalled) {
     chatStorageSyncInstalled = true
     window.addEventListener('storage', (event) => {
-      if (event.key !== STORAGE_KEY && event.key !== CHAT_ARCHIVE_KEY && event.key !== CHAT_ARCHIVE_CHANGED_KEY) return
-      chatStorageSyncHandler?.()
+      if (event.key !== STORAGE_KEY && event.key !== CHAT_ARCHIVE_KEY && event.key !== CHAT_ARCHIVE_CHANGED_KEY && event.key !== CHAT_PREFERENCES_KEY) return
+      chatStorageSyncHandler?.(event.key)
     })
   }
-  const syncStorage = () => {
+  const syncStorage = (key?: string | null) => {
     if (disposed) return
+    // Connection sync belongs to useChatProvider; display switches keep their visit-local state.
+    if (key === CHAT_PREFERENCES_KEY) return
     mergeRemoteIntoState()
     void archiveStorage.refresh().catch(() => {
       if (!disposed) onError('无法同步另一窗口的聊天归档，现有内容已保留，请稍后重试。')
@@ -142,7 +146,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
     for (const [char, trim] of trims) if (pendingTrims.get(char) === trim) pendingTrims.delete(char)
     // Publish the smaller history only after its archive is durable.
-    if (!save(false, false, false)) {
+    if (!save(false, false)) {
       for (const [char, trim] of trims) if (!pendingTrims.has(char)) pendingTrims.set(char, trim)
       return false
     }
@@ -172,48 +176,12 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     Object.assign(state.settings, settings)
   }
 
-  function persistedState(scrubCredential: boolean | 'model' = false): PersistedChatState {
-    let existingKey = '', existingRevision = ''
-    let existingEndpoint = state.settings.apiBaseUrl
-    let existingModel = state.settings.apiModel
-    let existingConfigured = !neverConfigured.value
-    try {
-      const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
-      const key = current?.settings?.apiKey || current?.apiKey || current?.api?.apiKey
-      const endpoint = current?.settings?.apiBaseUrl || current?.settings?.baseUrl || current?.api?.baseUrl
-      const model = current?.settings?.apiModel || current?.api?.model
-      existingRevision = typeof current?.settings?.apiSettingsRevision === 'string' ? current.settings.apiSettingsRevision : ''
-      existingKey = typeof key === 'string' ? key.trim().slice(0, 1000) : ''
-      if (typeof endpoint === 'string') existingEndpoint = endpoint.trim().slice(0, 500)
-      if (typeof model === 'string') existingModel = model.trim().slice(0, 200)
-      if (typeof current?.settings?.apiConfiguredByUser === 'boolean') existingConfigured = current.settings.apiConfiguredByUser
-    } catch { /* Malformed legacy records have no recoverable credential. */ }
-    return {
-      version: STORAGE_VERSION,
-      historiesRevision: state.historiesRevision,
-      historiesRevisions: state.historiesRevisions,
-      active: state.active,
-      histories: state.histories,
-      conversations: captureChatConversations(state),
-      settings: {
-        model: state.settings.model,
-        provider: state.settings.provider,
-        apiBaseUrl: scrubCredential ? state.settings.apiBaseUrl : existingEndpoint,
-        apiModel: scrubCredential ? state.settings.apiModel : existingModel,
-        // Keep only an existing migration source until secure write/read succeeds.
-        // New keys are never written to browser storage.
-        apiKey: scrubCredential === true ? '' : existingKey,
-        apiConfiguredByUser: scrubCredential === true ? !neverConfigured.value : existingConfigured,
-        apiSettingsRevision: scrubCredential === true ? crypto.randomUUID() : existingRevision,
-        webSearchEnabled: state.settings.webSearchEnabled,
-        live2dEnabled: state.settings.live2dEnabled,
-        live2dOutfit: state.settings.live2dOutfit,
-        live2dOutfits: state.settings.live2dOutfits,
-        autoVoice: state.settings.autoVoice,
-        volume: state.settings.volume,
-        drafts: state.settings.drafts,
-      },
-    }
+  const persistedState = () => chatHistorySnapshot(state, localStorage.getItem(STORAGE_KEY), normalizeOptions)
+  const readConnection = () => preferences.connection(() => JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'))
+  function savePreferences(patch: Partial<ChatPreferences>) {
+    if (writeBlocked.value || resetRevision !== chatResetRevision() && !canWrite()) return null
+    try { return preferences.save(patch, !neverConfigured.value, JSON.parse(connectionSnapshot || '{}').apiSettingsRevision || '') }
+    catch (error) { onError(error instanceof Error ? error.message : '聊天偏好尚未保存'); return null }
   }
 
   async function load() {
@@ -238,18 +206,18 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       assertChatVersion(raw, STORAGE_VERSION)
       preserveRetiredCompanionChat(raw)
       const normalized = normalizeChatStorage(
-        raw,
+        preferences.overlay(raw),
         localStorage.getItem('aics_chat_model') || '',
         normalizeOptions,
       )
-      connectionSnapshot = JSON.stringify(normalizeChatConnection(raw, localStorage.getItem('aics_chat_model'), normalizeOptions))
+      connectionSnapshot = JSON.stringify(readConnection())
       applyPersisted(normalized.state)
       loadFrequentPreferences()
       neverConfigured.value = normalized.neverConfigured
 
       const legacy = raw as { settings?: { apiKey?: unknown }; apiKey?: unknown; api?: { apiKey?: unknown } } | null
       const legacyValue = legacy?.settings?.apiKey || legacy?.apiKey || legacy?.api?.apiKey
-      pendingLegacyKey = typeof legacyValue === 'string' ? legacyValue.trim().slice(0, 1000) : ''
+      pendingLegacyKey = normalized.state.settings.apiKey && typeof legacyValue === 'string' ? legacyValue.trim().slice(0, 1000) : ''
       rememberMessages()
 
       // Rewriting existing records through the allowlist removes unsupported
@@ -338,16 +306,15 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
   }
 
-  function save(mergeRemote = true, scrubCredential: boolean | 'model' = false, flushArchive = true) {
+  function save(mergeRemote = true, flushArchive = true) {
     if (!canWrite()) { saveFailed = true; return false }
     for (const [key, value] of pendingPreferences) savePreference(key, value)
     try {
       // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
       // 覆盖掉另一窗口的新消息。clear() 传 false 跳过（清除意图优先）。
       if (mergeRemote && !mergeRemoteIntoState()) return false
-      localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState(scrubCredential)))
+      localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
       rememberMessages()
-      localStorage.setItem('aics_chat_model', state.settings.model || '')
       if (flushArchive) void saveArchive()
       saveFailed = false; return true
     } catch {
@@ -371,11 +338,10 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     if (!characterIds.includes(char)) return
     state.active = char
     state.settings.live2dOutfit = state.settings.live2dOutfits[state.active] || getCompanionDefaultOutfit(char)
-    save()
+    savePreferences({ active: char })
   }
-  function setModel(model: string) { if (state.settings.model === String(model || '')) return; state.settings.model = String(model || ''); save() }
-  function setProvider(provider: 'local' | 'api') { state.settings.provider = provider === 'api' ? 'api' : 'local'; save() }
-  const readConnection = () => normalizeChatConnection(JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'), localStorage.getItem('aics_chat_model'), normalizeOptions)
+  function setModel(model: string) { if (state.settings.model === String(model || '')) return; state.settings.model = String(model || ''); savePreferences({ model: state.settings.model }) }
+  function setProvider(provider: 'local' | 'api') { state.settings.provider = provider === 'api' ? 'api' : 'local'; savePreferences({ provider: state.settings.provider }) }
   async function reloadConnectionSettings(): Promise<boolean> {
     if (credentialWrites) { connectionReloadPending = true; return false }
     if (disposed || !canWrite()) return false
@@ -401,6 +367,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     credentialWrites++
     if (intent === 'model') state.settings.apiModel = String(settings.model || '').trim().slice(0, 200)
     try {
+      let written: ReturnType<typeof savePreferences> = null
       const commit = () => {
         if (revision !== credentialRevision) return
         if (intent === 'model' && (endpoint !== state.settings.apiBaseUrl || secret !== state.settings.apiKey
@@ -408,18 +375,20 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         if (intent === 'user') { pendingLegacyKey = ''; state.settings.apiKey = secret; neverConfigured.value = false }
         state.settings.apiBaseUrl = endpoint
         state.settings.apiModel = String(settings.model || '').trim().slice(0, 200)
-        if (!save(true, intent === 'model' ? 'model' : true)) throw new Error('聊天配置保存失败，请重试。')
+        written = savePreferences({ apiBaseUrl: endpoint, apiModel: state.settings.apiModel, apiConfiguredByUser: !neverConfigured.value,
+          apiSettingsRevision: intent === 'user' ? crypto.randomUUID() : readConnection().apiSettingsRevision })
+        if (!written) throw new Error('聊天配置保存失败，请重试。')
         connectionSnapshot = JSON.stringify(readConnection())
       }
       if (intent === 'model') await credentials.load(endpoint, '', { isCurrent: () => false, commit })
       else await credentials.save(endpoint, secret, commit)
-      await flushProfileWrites()
+      await (written as ReturnType<typeof savePreferences>)?.confirm()
     } finally {
       if (--credentialWrites === 0 && connectionReloadPending) { connectionReloadPending = false; await reloadConnectionSettings() }
     }
   }
-  function setWebSearchEnabled(value: boolean) { state.settings.webSearchEnabled = Boolean(value); save() }
-  function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); save() }
+  function setWebSearchEnabled(value: boolean) { state.settings.webSearchEnabled = Boolean(value); savePreferences({ webSearchEnabled: state.settings.webSearchEnabled }) }
+  function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); savePreferences({ live2dEnabled: state.settings.live2dEnabled }) }
   function live2dOutfit(char = state.active) {
     return state.settings.live2dOutfits[char] || getCompanionDefaultOutfit(char)
   }
@@ -428,9 +397,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     const next = normalizeCompanionOutfit(char, value)
     state.settings.live2dOutfits = { ...state.settings.live2dOutfits, [char]: next }
     if (char === state.active) state.settings.live2dOutfit = next
-    save()
+    savePreferences({ live2dOutfits: { [char]: next } })
   }
-  function setAutoVoice(v: boolean) { state.settings.autoVoice = Boolean(v); save() }
+  function setAutoVoice(v: boolean) { state.settings.autoVoice = Boolean(v); savePreferences({ autoVoice: state.settings.autoVoice }) }
   function setVolume(v: number) {
     state.settings.volume = Math.max(0, Math.min(100, Number.isFinite(Number(v)) ? Math.round(Number(v)) : 80))
     savePreference(CHAT_VOLUME_KEY, String(state.settings.volume))
@@ -460,10 +429,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     return serializeChatArchive(archive.value)
   }
   async function exportArchiveMarkdown(): Promise<string> {
-    await archiveStorage.refresh(true)
-    const names = Object.fromEntries(characterIds.map(id => [id, getCompanionCharacter(id)?.name || id]))
-    for (const char of characterIds) for (const branch of branchStorage.branches(char)) names[chatBranchArchiveKey(char, branch.id)] = `${getCompanionCharacter(char)?.name || char} · ${branch.name}`
-    return chatArchiveToMarkdown(archive.value, names)
+    const [formatter] = await Promise.all([import('@/utils/chatArchiveMarkdown'), archiveStorage.refresh(true)])
+    return formatter.exportChatArchiveMarkdown(archive.value, characterIds, branchStorage.branches)
   }
   /** 导入归档 JSON：合并去重后落盘，返回导入条数。 */
   async function importArchiveJson(textValue: string, isCurrent: () => boolean = () => true): Promise<number> {
@@ -487,10 +454,14 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     const branch = branchStorage.branchId(char), selection = state.conversations[char].selectionRevision
     const revision = state.historiesRevisions[char] ?? state.historiesRevision
     const key = chatBranchArchiveKey(char, branch)
+    const reset = chatResetRevision(), runtime = profileRuntimeActive()
+    const current = () => !disposed && isCurrent() && reset === chatResetRevision() && runtime === profileRuntimeActive()
+      && branch === branchStorage.branchId(char) && selection === state.conversations[char].selectionRevision
+      && revision === (state.historiesRevisions[char] ?? state.historiesRevision)
+    const { restoreChatArchive } = await import('./restoreChatArchive')
+    if (!current() || !canWrite()) throw new Error('当前剧情或聊天资料已变化，请重新并入归档。')
     return restoreChatArchive({
-      current: () => !disposed && isCurrent() && branch === branchStorage.branchId(char)
-        && selection === state.conversations[char].selectionRevision
-        && revision === (state.historiesRevisions[char] ?? state.historiesRevision),
+      current,
       refresh: mergeRemoteIntoState,
       readArchive: async () => { await archiveStorage.refresh(true); return archive.value.archived[key] || [] },
       history: () => messages(char), replaceHistory: history => { state.histories[char] = history }, save,

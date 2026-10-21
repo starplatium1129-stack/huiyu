@@ -3,6 +3,7 @@ import type { ArtworkOrganizationRequest, ArtworkOrganizationReceipt, ArtworkOrg
 import type { ArtworkProjectDraft } from './projects.ts'
 import type { SmartAlbumDraft, SmartAlbumRemoval } from './smartAlbums.ts'
 import type { ArtworkImportAccess, ArtworkImportCommand, ArtworkImportInput, ArtworkImportOutcome } from './localImageImport.ts'
+import type { GalleryCatalog, GalleryCursor, GalleryPage, GalleryQuery } from './galleryQuery.ts'
 
 /** Original project identity and unknown fields survive the storage boundary. */
 export interface ArtworkProjectRecord {
@@ -41,9 +42,10 @@ export interface ArtworkRepository {
   /** Removes only the saved rule; artwork and media remain in the library. */
   deleteSmartAlbum(input: SmartAlbumRemoval): Promise<{ deleted: boolean }>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
-  /** Publish the first browsing page before reading the remaining metadata. */
-  readGallerySnapshot?(publish: (snapshot: ArtworkLibrarySnapshot) => void, signal: AbortSignal): Promise<ArtworkLibrarySnapshot>
-  readRecentHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
+  /** Desktop authority filters/counts without transferring the complete library. */
+  readGalleryPage?(query: GalleryQuery, cursor: GalleryCursor | null, signal: AbortSignal, limit?: number): Promise<GalleryPage>
+  readGalleryCatalog?(signal: AbortSignal): Promise<GalleryCatalog>
+  readRecentHistory(signal?: AbortSignal, limit?: number): Promise<ArtworkRecord[]>
   /** Detached id/scene/character/favorite/timestamp only; legacy rows may predate artwork IDs. */
   readPreferenceHistory(): Promise<unknown[]>
   getImage(id: string, signal?: AbortSignal): Promise<Blob | null>

@@ -1,4 +1,4 @@
-import { profileLocalStorage, flushProfileWrites } from '@/platform/web/profileStorage'
+import { profileLocalStorage, writeProfileLocal } from '@/platform/web/profileStorage'
 import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
 
 const key = (workspace: string) => 'aics-model-draft-inference-setup-' + encodeURIComponent(workspace)
@@ -17,8 +17,6 @@ export function readSetupRecovery(workspace: string): SetupRecovery | null {
 /** Store only identity and workspace; never store request payloads or credentials. */
 export async function saveSetupRecovery(workspace: string, value: SetupRecovery | null) {
   const owner = tempResultOwner()
-  if (value) profileLocalStorage.setItem(key(workspace), JSON.stringify(value))
-  else profileLocalStorage.removeItem(key(workspace))
-  await flushProfileWrites()
+  await writeProfileLocal(key(workspace), value ? JSON.stringify(value) : null).confirm()
   if (!sameTempResultOwner(owner)) throw new Error('保存恢复编号期间资料来源已变化，请回到原工作区检查')
 }

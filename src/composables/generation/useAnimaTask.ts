@@ -1,5 +1,5 @@
 import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
-import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { confirmProfileKeys } from '@/platform/web/profileStorage'
 import { computed, ref, toRaw, type Ref } from 'vue'
 import { type ApiClient } from '@/api/client'
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
@@ -177,7 +177,7 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
           assertRequestOwner(draft, hasRuntimeTasks())
           // A prior failed removal may look absent in the optimistic cache.
           // Confirm that same queued write before treating absence as retired.
-          await flushProfileWrites()
+          await confirmProfileKeys([IMAGE_REQUEST_DRAFT_KEY], true)
           assertRequestOwner(draft, hasRuntimeTasks())
           const stored = readImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY)
           if (stored && stored.key !== draft.key) {

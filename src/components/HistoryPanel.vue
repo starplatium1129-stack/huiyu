@@ -9,11 +9,18 @@
         <button class="btn btn-quiet btn-sm" type="button" @click="clearSelection">取消选择</button>
       </span>
     </div>
-    <div v-if="!items.length" class="history-empty" role="status">
+    <div v-if="loading && !items.length" class="history-empty" role="status">正在读取最近作品…</div>
+    <div v-else-if="error && !items.length" class="history-empty" role="status">
+      <span>{{ error }}</span><button class="btn btn-ghost btn-sm" type="button" @click="$emit('retry')">重新读取</button>
+    </div>
+    <div v-else-if="!items.length" class="history-empty" role="status">
       <ArchiveIcon name="image" class="history-empty-icon" />
       <span>还没有保存的作品。生成后点“存入作品册”，把喜欢的这一刻留在这里。</span>
     </div>
-    <div v-else ref="historyList" class="history-list">
+    <div v-if="error && items.length" class="history-empty" role="status">
+      <span>{{ error }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="$emit('retry')">{{ loading ? '正在读取…' : '重新读取' }}</button>
+    </div>
+    <div v-if="items.length" ref="historyList" class="history-list">
       <article v-for="item in items" :key="item.id" class="history-item" :data-selected="selectedSet.has(item.id) || undefined">
         <div class="history-thumb">
           <button class="history-preview" type="button" :aria-label="'查看完整作品：' + (item.sceneTitle || item.story || '未命名作品')" @click="openPreview(item, $event)">
@@ -70,8 +77,9 @@ import { useSceneStore } from '@/stores/sceneStore'
 
 const sceneStore = useSceneStore()
 
-const props = defineProps<{ history: ArtworkRecord[]; active: boolean; transferBusy: boolean }>()
+const props = defineProps<{ history: ArtworkRecord[]; active: boolean; transferBusy: boolean; loading: boolean; error: string }>()
 defineEmits<{
+  retry: []
   resume: [entry: ArtworkRecord]
   duplicate: [entry: ArtworkRecord]
   delete: [entry: ArtworkRecord]
@@ -80,6 +88,10 @@ defineEmits<{
 }>()
 
 const selectedSet = ref(new Set<string | number>())
+watch(() => props.history, history => {
+  const ids = new Set(history.map(item => item.id))
+  selectedSet.value = new Set([...selectedSet.value].filter(id => ids.has(id)))
+}, { flush: 'sync' })
 const historyList = ref<HTMLElement | null>(null)
 const previewItem = shallowRef<ArtworkRecord | null>(null), previewSource = shallowRef<HTMLImageElement | null>(null)
 const previewRequest = ref(0)

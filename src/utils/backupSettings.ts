@@ -1,4 +1,5 @@
-import { CHAT_DRAFT_PREFIX, CHAT_MEMORY_KEY, CHAT_VOLUME_KEY, isLiveLocalKey } from './storageKeys'
+import { CHAT_DRAFT_PREFIX, CHAT_MEMORY_KEY, CHAT_VOLUME_KEY, CHAT_PREFERENCES_KEY, isLiveLocalKey } from './storageKeys'
+import { chatPreferencesFromState, parseChatPreferences } from './chatPreferencesCore'
 import { CHAT_ARCHIVE_KEY, mergeChatArchives, normalizeChatArchive, serializeChatArchive } from './chatArchive'
 import { mergeChatMemoryStates, normalizeChatMemoryState } from './chatMemory'
 import { normalizeChatStorage } from './chatStorageCore'
@@ -15,6 +16,7 @@ export function prepareBackupSettings(current: Record<string, string>, incoming:
   // companion preferences it must promote). Returning the whole current snapshot
   // would make a later restore write stale values from before an async image stage.
   const result = {} as Record<string, string>
+  if (replace && current[CHAT_PREFERENCES_KEY]) parseChatPreferences(JSON.parse(current[CHAT_PREFERENCES_KEY]))
   if (replace) for (const [key, version] of [['aics_chat_v1', STORAGE_VERSION], [CHAT_MEMORY_KEY, 1], [CHAT_ARCHIVE_KEY, 1]] as const) {
     assertChatVersion(JSON.parse(current[key] || 'null'), version)
   }
@@ -25,7 +27,10 @@ export function prepareBackupSettings(current: Record<string, string>, incoming:
       assertChatVersion(JSON.parse(current[key] || 'null'), version)
       assertChatVersion(JSON.parse(value), version)
     }
-    if (!replace && key === CHAT_MEMORY_KEY) {
+    if (key === CHAT_PREFERENCES_KEY) {
+      if (current[key]) parseChatPreferences(JSON.parse(current[key]))
+      result[key] = JSON.stringify(parseChatPreferences(JSON.parse(value)))
+    } else if (!replace && key === CHAT_MEMORY_KEY) {
       result[key] = JSON.stringify(mergeChatMemoryStates(
         normalizeChatMemoryState(JSON.parse(current[key] || 'null')),
         normalizeChatMemoryState(JSON.parse(value)),
@@ -45,6 +50,7 @@ export function prepareBackupSettings(current: Record<string, string>, incoming:
       }
       const old = normalizeChatStorage(JSON.parse(current[key] || 'null'), '', options).state
       const next = normalizeChatStorage(JSON.parse(value), '', options).state
+      if (!(CHAT_PREFERENCES_KEY in incoming)) result[CHAT_PREFERENCES_KEY] = JSON.stringify(chatPreferencesFromState(next, next.settings.apiConfiguredByUser === true, next.settings.apiSettingsRevision))
       // Older backups keep these values inside the chat record. Promote them
       // so existing separate preferences cannot mask the restored settings.
       if (!(CHAT_VOLUME_KEY in incoming)) result[CHAT_VOLUME_KEY] = String(next.settings.volume)

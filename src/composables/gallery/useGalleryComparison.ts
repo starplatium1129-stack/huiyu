@@ -1,7 +1,10 @@
-import { computed, onActivated, onDeactivated, onUnmounted, ref, watch, type ComputedRef, type Ref } from 'vue';
+import { computed, onActivated, onDeactivated, onUnmounted, ref, shallowRef, watch, type ComputedRef, type Ref } from 'vue';
+import { imageMediaSession } from '@/platform/imageMediaSession';
+import { onDesktopRuntime } from '@/platform/desktop/runtime';
 import { artworkRepository } from '@/storage/artworkRepository';
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl';
 import { sameArtworkMedia } from './artworkMediaIdentity';
+import { captureGallerySource } from './galleryStorage';
 import { safeImageUrl } from './galleryHelpers';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import type { ArtworkRecord } from '@/types/artwork';
@@ -23,29 +26,53 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
   const compareOpen = ref(false);
   const compareIds = ref<string[]>([]);
 
-  const compareItems = computed(() =>
-    history.value.filter(item => compareIds.value.includes(String(item.id)))
-  );
+  const linkedRecords = shallowRef<ArtworkRecord[]>([]);
+  const linkedParent = shallowRef<ArtworkRecord | null>(null);
+  let linkRead: AbortController | null = null, parentLookup: AbortController | null = null;
+  const compareItems = computed(() => compareIds.value.flatMap(id => {
+    const item = history.value.find(item => String(item.id) === id) || linkedRecords.value.find(item => String(item.id) === id);
+    return item ? [item] : [];
+  }));
 
   function compareSelected() {
     compareIds.value = [...selectedIds.value].map(String).slice(0, 4);
     compareOpen.value = compareIds.value.length >= 2;
   }
 
-  function compareFromRoute() {
+  async function compareFromRoute() {
     if (route.path !== '/gallery' || typeof route.query.compare !== 'string')
       return;
-    compareIds.value = route.query.compare.split(',').slice(0, 4);
-    compareOpen.value = compareItems.value.length >= 2;
+    linkRead?.abort(); const abort = new AbortController(); linkRead = abort;
+    const source = captureGallerySource(), ids = route.query.compare.split(',').slice(0, 4);
+    try {
+      const records = await Promise.all(ids.map(id => source.repository.readArtwork(id, abort.signal)));
+      if (abort.signal.aborted || !source.isCurrent() || route.query.compare !== ids.join(',')) return;
+      linkedRecords.value = records.filter((item): item is ArtworkRecord => !!item);
+      compareIds.value = ids; compareOpen.value = compareItems.value.length >= 2;
+    } catch { if (!abort.signal.aborted) compareOpen.value = false; }
+    finally { source.release(); if (linkRead === abort) linkRead = null; }
   }
 
   const parentArtwork = computed(() => {
     const pId = current.value?.parent_id;
     if (pId === null || pId === undefined || pId === '')
       return null;
-    return history.value.find(h => String(h.id) === String(pId)) || null;
+    return history.value.find(h => String(h.id) === String(pId)) || (String(linkedParent.value?.id) === String(pId) ? linkedParent.value : null);
   });
 
+  watch(() => current.value?.parent_id, id => {
+    parentLookup?.abort(); linkedParent.value = null;
+    if (id === undefined || id === null || id === '' || history.value.some(item => String(item.id) === String(id))) return;
+    const abort = new AbortController(), source = captureGallerySource(); parentLookup = abort;
+    void source.repository.readArtwork(id as string | number, abort.signal).then(item => {
+      if (!abort.signal.aborted && source.isCurrent() && current.value?.parent_id === id) linkedParent.value = item;
+    }).catch(() => {}).finally(() => { source.release(); if (parentLookup === abort) parentLookup = null; });
+  });
+  let linkSession = imageMediaSession();
+  function invalidateLinks() { if (linkSession !== imageMediaSession()) { linkSession = imageMediaSession(); releaseParent(); releaseLinks(); } }
+  const stopRuntime = onDesktopRuntime(invalidateLinks);
+  watch(imageMediaSession, invalidateLinks, { flush: 'sync' });
+  function releaseLinks() { linkRead?.abort(); parentLookup?.abort(); linkedRecords.value = []; linkedParent.value = null; }
   // A filtered/off-page parent must not depend on having visited its wall card.
   // Own one preview separately: wall LRU eviction must never revoke our Blob URL.
   const parentPreview = ref(''), parentLoading = ref(false), parentError = ref(''), parentOriginal = ref(false);
@@ -161,9 +188,9 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
   watch(compareMode, () => { void loadParent(); });
   // current remains set through the viewer leave transition; its final close
   // clears it. Deactivation/unmount must release immediately, including reads.
-  onDeactivated(() => { active = false; releaseParent(); });
+  onDeactivated(() => { active = false; releaseParent(); releaseLinks(); });
   onActivated(() => { const returning = !active; active = true; if (returning && current.value) void loadParent(); });
-  onUnmounted(() => { disposed = true; releaseParent(); });
+  onUnmounted(() => { disposed = true; stopRuntime(); releaseParent(); releaseLinks(); });
 
   const parentImageUrl = computed(() => {
     if (!parentArtwork.value)

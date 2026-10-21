@@ -15,7 +15,8 @@ import { useShotDraft } from './useShotDraft';
 import { useShotFirstFrames } from './useShotFirstFrames';
 import { inferShotParams,useShotImport } from './useShotImport';
 import { useScenarioShotImport } from './useScenarioShotImport';
-import { flushProfileWrites } from '@/platform/web/profileStorage';
+import { VIDEO_SHOTS_DRAFT_KEY } from '@/utils/storageKeys';
+import { confirmProfileKeys } from '@/platform/web/profileStorage';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useShotWorkspace(props: {
     status: VideoStatusResponse | null;
@@ -132,7 +133,7 @@ export function useShotWorkspace(props: {
     // ── 一键首帧（2026-08-23）：逐镜 Krea2 增强链路出图 → 上传受控文件 → 回填 ──
     const { firstFrameBusy, firstFrameProgress, generateFirstFrames } = useShotFirstFrames({
         shots, frameRequests,
-        persist: async () => { if (!persistShotsDraft()) throw new Error('首帧请求尚未保存，未提交生成。'); await flushProfileWrites(); },
+        persist: async () => { if (!persistShotsDraft()) throw new Error('首帧请求尚未保存，未提交生成。'); await confirmProfileKeys([VIDEO_SHOTS_DRAFT_KEY], true); },
         onError: (message) => { batchError.value = message; },
     });
     // ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
@@ -406,7 +407,7 @@ export function useShotWorkspace(props: {
                     if (shot.firstFrameRequest?.state !== 'pending') shot.firstFrameRequest = undefined;
                     attached = true;
                     if (!persistShotsDraft()) throw new Error('首帧已挂载，草稿尚未保存；请保留当前页面并重试保存。');
-                    await flushProfileWrites();
+                    await confirmProfileKeys([VIDEO_SHOTS_DRAFT_KEY], true);
                     if (sameSource() && workspaceCurrent(visit) && frameRequests.get(shot) === controller) batchError.value = '';
                 } finally {
                     // Page changes may release our unpublished image; a changed media session may not.

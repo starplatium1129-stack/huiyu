@@ -1,4 +1,6 @@
 mod client;
+mod health;
+pub(crate) use health::HealthProbes;
 pub mod progress;
 mod proxy;
 

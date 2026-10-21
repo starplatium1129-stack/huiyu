@@ -3,7 +3,7 @@ import { useVideoStore } from '@/stores/videoStore'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
 import { readStoryOrigin } from '@/types/storyOrigin'
-import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { VIDEO_SHOTS_DRAFT_KEY, VIDEO_SCENARIO_CONTEXT_KEY } from '@/utils/storageKeys'
 
 /** Persist imported text and receipts before acknowledging the pending script. */
 export function useScenarioShotImport(deps: {
@@ -45,7 +45,7 @@ export function useScenarioShotImport(deps: {
         deps.batchError.value = '剧本导入确认保存失败，待办已保留；恢复存储后请重试'
         return
       }
-      await flushProfileWrites()
+      await videoStore.confirmDrafts([VIDEO_SHOTS_DRAFT_KEY, VIDEO_SCENARIO_CONTEXT_KEY])
       if (!deps.active.value || videoStore.pendingScenarioActs !== pending) return
       if (!videoStore.stageScenarioActs(remaining)) {
         deps.batchError.value = pendingError
@@ -96,14 +96,14 @@ export function useScenarioShotImport(deps: {
       deps.batchError.value = '分镜草稿保存失败，剧本导入待办已保留；恢复存储后可重试导入'
       return
     }
-    await flushProfileWrites()
+    await videoStore.confirmDrafts([VIDEO_SHOTS_DRAFT_KEY, VIDEO_SCENARIO_CONTEXT_KEY])
     if (!deps.active.value || acts.length !== videoStore.pendingScenarioActs.length
       || acts.some((act, index) => videoStore.pendingScenarioActs[index]?.importId !== act.importId)) return
     if (!videoStore.stageScenarioActs([])) {
       deps.batchError.value = pendingError
       return
     }
-    await flushProfileWrites()
+    await videoStore.confirmDrafts([VIDEO_SHOTS_DRAFT_KEY, VIDEO_SCENARIO_CONTEXT_KEY])
     deps.batchError.value = `已载入剧本 ${acts.length} 幕及对应角色。可按需上传参考图或继续编辑镜头。`
   }
 

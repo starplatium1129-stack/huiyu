@@ -47,8 +47,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   const savedSettings = readDrawingSettings(options.getFamily())
   const state = ref<AnimaGenerationState>(initialAnimaState(options.getFamily()))
   let settingsRevision = 0, reconcilingSettings = false, teaCacheSettingsTouched = Boolean(savedSettings), loraStrengthTouched = Boolean(savedSettings)
-  function persistSettings() {
-    try { saveDrawingSettings(state.value) }
+  async function persistSettings() {
+    try { await saveDrawingSettings(state.value) }
     catch { options.flash('绘图参数尚未保存，桌宠暂时无法同步这次设置，请检查本机资料连接') }
   }
   const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',

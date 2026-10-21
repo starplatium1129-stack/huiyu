@@ -5,7 +5,7 @@ use std::collections::{BTreeSet, HashSet};
 pub(super) const RETENTION: i64 = 30 * 24 * 60 * 60 * 1000;
 // Search/filter fields stay in the summary; large embedded media and recipes
 // are fetched by identity only when the viewer needs the complete record.
-const GALLERY_BODY: &str = "json_set(json_remove(body,'$.image_data','$.negative','$.negativePrompt','$.negative_prompt','$.generationSnapshot','$.snapshot'),'$._gallerySummary',json('true'))";
+pub(super) const GALLERY_BODY: &str = "json_set(json_remove(body,'$.image_data','$.negative','$.negativePrompt','$.negative_prompt','$.generationSnapshot','$.snapshot'),'$._gallerySummary',json('true'))";
 
 pub(super) fn json_column(row: &Row<'_>, column: usize) -> rusqlite::Result<Value> {
     serde_json::from_str(text_column(row, column)?).map_err(|e| {
@@ -59,6 +59,8 @@ pub(super) fn project_header(c: &Context, key: &str) -> Result<Option<ProjectHea
 }
 pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     match string(command, "kind")? {
+        "readGalleryPage" => super::gallery::read(c, command),
+        "readGalleryCatalog" => super::gallery::catalog(c),
         "readArtworkRecentIndex" => super::recent::read(c, command),
         "getArtwork" => Ok(artwork(c, &entity_key(&command["id"])?)?.unwrap_or(Value::Null)),
         "getArtworks" => {

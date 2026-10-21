@@ -1,5 +1,5 @@
 import { BATCH_DRAW_PLAN_KEY } from '@/utils/storageKeys'
-import { profileDraftStorage, flushProfileWrites } from '@/platform/web/profileStorage'
+import { profileDraftStorage, writeProfileDraft } from '@/platform/web/profileStorage'
 import type { BatchDrawJob, BatchTargetItem } from './useBatchDraw'
 import { sameTempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { isArtworkCommitIdentity } from '@/application/artwork/artworkSaveInput'
@@ -69,10 +69,9 @@ export function createBatchDrawPlanStorage(): BatchDrawPlanStorage {
     async write(plan) {
       if (plan.owner && !sameTempResultOwner(plan.owner)) throw new Error('批次所属资料来源已变化，原计划已保留')
       const jobs = plan.jobs.map(({ pendingImage: _pending, message: _message, ...job }) => job)
-      profileDraftStorage.setItem(BATCH_DRAW_PLAN_KEY, JSON.stringify({ ...plan, jobs }))
       // The stable identity must be durable before admitting a model request.
-      await flushProfileWrites()
+      await writeProfileDraft(BATCH_DRAW_PLAN_KEY, JSON.stringify({ ...plan, jobs })).confirm()
     },
-    async clear() { profileDraftStorage.removeItem(BATCH_DRAW_PLAN_KEY); await flushProfileWrites() },
+    async clear() { await writeProfileDraft(BATCH_DRAW_PLAN_KEY, null).confirm() },
   }
 }

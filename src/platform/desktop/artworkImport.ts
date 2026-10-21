@@ -58,15 +58,13 @@ export async function importDesktopArtwork(input: ArtworkImportInput, command: A
       if (ended.state === 'aborted') return 'aborted'
       throw new Error('原导入尚未确认终止，恢复记录已保留')
     }
-    let bytes: Uint8Array | undefined
     if (blob) {
       const digest = await imageBlobDigest(blob, check)
       if (digest.sha256 !== input.media.sha256 || blob.size !== input.media.bytes || blob.type !== input.media.mime)
         throw new Error('所选文件不是原导入图片，请选择原文件；不会另建作品')
-      bytes = digest.bytes
       verifiedBlob = true
     }
-    if (bytes) await uploadArtworkChunks(bytes, state.media.writtenBytes, input.operationId, 'uploadChunk', send, check)
+    if (blob) await uploadArtworkChunks(blob, state.media.writtenBytes, input.operationId, 'uploadChunk', send, check)
     // Even zero staging bytes may have a complete object after an interrupted
     // publication. The server verifies that object before authorizing the commit.
     await send({ kind: 'commitSave', operationId: input.operationId })

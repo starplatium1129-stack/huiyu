@@ -9,7 +9,7 @@ use super::{
 use crate::{
     byte_buffer::Buffer,
     error::{ApiError, Result},
-    upstream::LocalUpstream,
+    upstream::{LocalUpstream, HealthProbes},
 };
 use axum::{body::Bytes, response::Response};
 use futures_util::StreamExt;
@@ -77,12 +77,14 @@ pub(super) struct Speech {
     cancel: CancellationToken,
     active: Mutex<Active>,
     cache: Arc<Mutex<AudioCache>>,
+    probes: Arc<HealthProbes>,
 }
 impl Speech {
     pub fn new(
         settings: Arc<Settings>,
         transport: LocalUpstream,
         cancel: CancellationToken,
+        probes: Arc<HealthProbes>,
     ) -> Arc<Self> {
         let queue = Queue::new(settings.engine.id());
         Arc::new(Self {
@@ -92,42 +94,20 @@ impl Speech {
             queue,
             active: Mutex::new(Active::default()),
             cache: Arc::new(Mutex::new(AudioCache::default())),
+            probes,
         })
     }
-    pub async fn status(&self) -> Value {
+    pub async fn status(&self) -> Value { self.status_observed(true).await }
+    pub async fn status_observed(&self, fresh: bool) -> Value {
         let vox = self.settings.engine == Engine::VoxCpm2;
-        let mut online = self
-            .transport
-            .json(
-                &self.settings.tts_host,
-                if vox { "/health" } else { "/docs" },
-                None,
-                Duration::from_millis(1500),
-                1024 * 1024,
-                &self.cancel,
-            )
-            .await
-            .is_ok_and(|(status, data)| {
-                if vox {
-                    (200..300).contains(&status)
-                        && data.is_ok_and(|v| v["online"] == true && v["engine"] == "VoxCPM2")
-                } else {
-                    (200..500).contains(&status)
-                }
+        let mut online = self.probes.read(&self.settings.tts_host, if vox { "/health" } else { "/docs" },
+            Duration::from_millis(1500), 1024 * 1024, fresh).await.is_some_and(|probe| {
+                if vox { (200..300).contains(&probe.status) && probe.json.as_ref().is_some_and(|v| v["online"] == true && v["engine"] == "VoxCPM2") }
+                else { (200..500).contains(&probe.status) }
             });
         if online && !vox {
-            online = !self
-                .transport
-                .json(
-                    &self.settings.tts_host,
-                    "/health",
-                    None,
-                    Duration::from_millis(1500),
-                    64 * 1024,
-                    &self.cancel,
-                )
-                .await
-                .is_ok_and(|(_, data)| data.is_ok_and(|v| v["engine"] == "VoxCPM2"));
+            online = !self.probes.read(&self.settings.tts_host, "/health", Duration::from_millis(1500), 64 * 1024, fresh).await
+                .is_some_and(|probe| probe.json.as_ref().is_some_and(|v| v["engine"] == "VoxCPM2"));
         }
         let voice = self.active.lock().unwrap().voice.clone();
         let configured = |id: &str| {

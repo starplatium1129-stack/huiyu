@@ -4,9 +4,11 @@ import type { ScenarioCharacter } from '@/config/scenarios'
 import { findBlueprint as findPopularBlueprint, findCharacter as findPopularCharacter } from '@/utils/popularContent'
 import type { PromptDeepLinkDeps } from './usePromptDeepLink'
 import { scenarioCastPrompt } from '@/utils/scenarioCasting'
+import { watch } from 'vue'
+import type { ArtworkRecord } from '@/types/artwork'
 
 /** Applies explicit URL actions; the mounted owner retains request and disposal state. */
-export async function applyPromptDeepLink(q: Record<string, unknown>, deps: PromptDeepLinkDeps, isCurrent: () => boolean) {
+export async function applyPromptDeepLink(q: Record<string, unknown>, deps: PromptDeepLinkDeps, isCurrent: () => boolean, inputsCurrent: () => boolean) {
   if (typeof q.companionDraft === 'string') {
     const { applyCompanionDraft } = await import('./companionDraftActions')
     if (isCurrent()) await applyCompanionDraft(q.companionDraft, deps, isCurrent)
@@ -14,6 +16,18 @@ export async function applyPromptDeepLink(q: Record<string, unknown>, deps: Prom
   }
   const { pb, sdSize, patchAnimaState, showAllBlueprints } = deps
   const historyLink = ['remix', 'regen', 'variant'].some(key => typeof q[key] === 'string')
+  let historyEntry: ArtworkRecord | null = null
+  if (historyLink) {
+    const targetId = String(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
+    let edited = false
+    const stop = watch(() => JSON.stringify({ ...pb.snapshotDraft(), updatedAt: undefined, size: sdSize.value }),
+      () => { edited = true }, { flush: 'sync' })
+    try { historyEntry = targetId ? await pb.readHistoryEntry(targetId) : null }
+    finally { stop() }
+    if (!isCurrent()) return { handled: false, historyApplied: false }
+    if (edited || !inputsCurrent()) throw new Error('读取期间当前输入已改变，作品配方尚未载入。请确认当前草稿后重试。')
+    if (!historyEntry) throw new Error('这条作品已不在作品册，请重新选择作品。')
+  }
   let handled = false, historyApplied = false
   const scenarioId = typeof q.scenario === 'string' ? q.scenario : ''
   if (scenarioId) {
@@ -82,13 +96,7 @@ export async function applyPromptDeepLink(q: Record<string, unknown>, deps: Prom
     handled = true
   }
   if (typeof q.remix === 'string' || typeof q.regen === 'string' || typeof q.variant === 'string') {
-    const targetId = String(typeof q.remix === 'string' ? q.remix : (typeof q.regen === 'string' ? q.regen : q.variant))
-    let entry = targetId ? pb.history.find(h => String(h.id) === targetId) : null
-    if (!entry && targetId) {
-      await pb.loadHistory()
-      if (!isCurrent()) return { handled: false, historyApplied: false }
-      entry = pb.history.find(h => String(h.id) === targetId)
-    }
+    const entry = historyEntry
     if (entry) {
       const applied = await deps.applyHistory(entry, typeof q.variant === 'string' || typeof q.remix === 'string')
       if (applied === false) return { handled, historyApplied }

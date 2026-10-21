@@ -56,6 +56,6 @@ const emit = defineEmits<{
 }>()
 
 function reminderActionLabel(reminder: CompanionReminder): string {
-  return reminder.eventKind === 'sd-done' ? '查看作品册' : '查看服务状态'
+  return reminder.eventKind === 'image-ready' ? '打开任务中心' : '查看控制面板'
 }
 </script>

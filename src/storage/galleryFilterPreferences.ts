@@ -1,5 +1,5 @@
 import { GENERATION_FILTER_FIELDS, normalizeGalleryFilterSnapshot, type GalleryFilterSnapshot } from '@/composables/gallery/galleryGenerationConditions'
-import { flushProfileWrites, profileLocalStorage } from '@/platform/web/profileStorage'
+import { writeProfileLocal, profileLocalStorage, type ProfileWriteReceipt } from '@/platform/web/profileStorage'
 import { GALLERY_FILTER_PRESETS_KEY } from '@/utils/storageKeys'
 import type { SettingDefinition } from './settingsRepository'
 
@@ -51,11 +51,12 @@ function createGalleryFilterPreferences() {
     if (!presets) throw new Error('已保存的筛选组合格式无法读取，请先核对本机资料。')
     return presets
   }
+  let receipt: ProfileWriteReceipt | null = null
   async function commit(change: (presets: GalleryFilterPreset[]) => GalleryFilterPreset[]) {
-    await flushProfileWrites()
+    await receipt?.confirm()
     const next = change(read())
-    profileLocalStorage.setItem(GALLERY_FILTER_PRESETS_KEY, GALLERY_FILTER_PRESETS_SETTING.serialize(next))
-    await flushProfileWrites()
+    receipt = writeProfileLocal(GALLERY_FILTER_PRESETS_KEY, GALLERY_FILTER_PRESETS_SETTING.serialize(next))
+    await receipt.confirm()
     return read()
   }
   return {

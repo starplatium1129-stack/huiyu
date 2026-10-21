@@ -140,9 +140,7 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryIndexLoa
   }
   try {
     const repository = source.repository
-    const snapshot = repository.readGallerySnapshot
-      ? await repository.readGallerySnapshot(first => { if (!history.value.length) publish(first) }, controller.signal)
-      : await repository.readLibrarySnapshot()
+    const snapshot = await repository.readLibrarySnapshot()
     publish(snapshot)
   } catch (error) {
     if (isCurrent()) galleryError.value = error instanceof Error ? error.message : String(error)

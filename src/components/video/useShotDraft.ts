@@ -3,7 +3,7 @@ import type { VideoBatch, VideoQuality } from '@/api/videoApi'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard, useReferenceCards } from './useReferenceCards'
 import { useVideoStore, type ShotSubmissionRecord } from '@/stores/videoStore'
-import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { VIDEO_SHOTS_DRAFT_KEY } from '@/utils/storageKeys'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { readStoryOrigin } from '@/types/storyOrigin'
 
@@ -86,7 +86,7 @@ function persistShotsDraft(sourceActIds: readonly string[] = []): boolean {
 async function beginShotSubmission(targets: ShotDraft[]): Promise<string[]> {
   targets.forEach(shot => submissionTokens.set(shot, crypto.randomUUID()))
   if (!persistShotsDraft()) throw new Error('镜头来源尚未保存，未提交生成')
-  await flushProfileWrites()
+  await videoStore.confirmDrafts([VIDEO_SHOTS_DRAFT_KEY])
   return targets.map(shot => submissionTokens.get(shot)!)
 }
 async function recoverShotSubmission(tokens: string[], batchId?: string) {
@@ -99,7 +99,7 @@ async function recoverShotSubmission(tokens: string[], batchId?: string) {
       return batchId ? { ...shot, submission: { batchId, shotIndex } } : { ...shot, submissionToken: undefined }
     }) })
     if (!ok) throw new Error('分镜来源保存失败，原接收凭据已保留，请重新读取')
-    await flushProfileWrites()
+    await videoStore.confirmDrafts([VIDEO_SHOTS_DRAFT_KEY])
   }
 }
 async function finishShotSubmission(targets: ShotDraft[]) {
@@ -120,10 +120,11 @@ watch(() => videoStore.shotsDraft, (saved, previous) => {
     if (token && accepted.has(token)) deps.restoreShotSubmission(shot, accepted.get(token))
   })
 }, { flush: 'sync' })
-const releaseMaintenance = registerMaintenanceParticipant(() => {
+const releaseMaintenance = registerMaintenanceParticipant(async () => {
   if (restoringDraft) throw new Error('DRAFT_RESTORING')
   if (shotsDraftTimer || saveFailed) persistShotsDraft()
   if (saveFailed) throw new Error('DRAFT_SAVE_FAILED')
+  await videoStore.confirmDrafts([VIDEO_SHOTS_DRAFT_KEY])
 })
 
 watch(
