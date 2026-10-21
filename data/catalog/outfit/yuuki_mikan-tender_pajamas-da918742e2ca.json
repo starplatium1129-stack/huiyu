@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "yuuki_mikan/tender_pajamas",
+  "revision": 1,
+  "sortOrder": 1505,
+  "createdAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "data": {
+    "characterId": "yuuki_mikan",
+    "outfit": {
+      "default": false,
+      "id": "tender_pajamas",
+      "isDefault": false,
+      "name": "居家粉白条纹纯棉睡衣",
+      "prose": "wearing soft pink-and-white striped cotton pajama shirt and matching shorts, relaxed and comfortably loose for lounging around the home futon",
+      "tokens": [
+        "striped_pajamas",
+        "short_sleeved_pajamas",
+        "pajama_shorts",
+        "loose_clothes",
+        "bare_legs",
+        "bare_arms",
+        "barefoot"
+      ]
+    }
+  }
+}

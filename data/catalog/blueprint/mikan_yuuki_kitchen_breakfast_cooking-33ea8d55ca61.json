@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "mikan_yuuki_kitchen_breakfast_cooking",
+  "revision": 1,
+  "sortOrder": 1776,
+  "createdAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "data": {
+    "id": "mikan_yuuki_kitchen_breakfast_cooking",
+    "title": "结城美柑 · 结城家厨房的元气早餐料理",
+    "characterId": "yuuki_mikan",
+    "outfitId": "casual_home_apron",
+    "adult": false,
+    "category": "日常生活",
+    "action": "在晨光厨房的料理台前单手握着平底锅熟练煎蛋，回头展颜微笑唤哥哥吃早餐",
+    "camera": "medium shot, slightly low angle, warm domestic composition",
+    "lighting": "明净晨光穿过厨房百叶窗，灶台与发梢泛起柔和金芒",
+    "location": "洒满金色朝阳的结城家开放式厨房",
+    "mood": "温馨能干",
+    "timeOfDay": "早晨",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "kitchen",
+      "cooking",
+      "frying_pan",
+      "standing",
+      "turning_around",
+      "gentle_smile",
+      "morning_light",
+      "indoor",
+      "sunbeam"
+    ],
+    "coverageTags": [
+      "character_featured"
+    ],
+    "description": "【结城美柑 · 结城家厨房的元气早餐料理】清晨的结城家厨房里飘出烤面包与煎蛋的香气。美柑穿着暖黄色围裙熟练地翻动平底锅，听到楼梯上传来哥哥迷迷糊糊的脚步声，她微微侧头露出甜美又带着一丝小恶魔调侃的笑容——「再慢吞吞的话，早餐可就要被菈菈吃光了哦，哥哥？」",
+    "promptTokens": [
+      "kitchen",
+      "counter",
+      "cooking",
+      "holding_frying_pan",
+      "standing",
+      "turning_around",
+      "brown_hair",
+      "short_hair",
+      "single_side_bun",
+      "brown_eyes",
+      "gentle_smile",
+      "morning_light",
+      "sunbeam",
+      "warm_tones"
+    ],
+    "promptProse": "Standing by the sunlit kitchen counter in the Yuuki residence, Mikan holds a frying pan with an easy, practiced grip while turning to look back with a warm, mildly mischievous smile. Bright morning light streams across her chestnut bangs and the kitchen tiles.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

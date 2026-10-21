@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "mikan_boyfriend_shirt_morning_glance",
+  "revision": 1,
+  "sortOrder": 1778,
+  "createdAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "data": {
+    "id": "mikan_boyfriend_shirt_morning_glance",
+    "title": "结城美柑 · 展会纪念宽大白衬衫与晨光回眸",
+    "characterId": "yuuki_mikan",
+    "outfitId": "boyfriend_shirt_lingerie",
+    "adult": false,
+    "category": "展会纪念",
+    "action": "卧室窗边偷偷套上宽大白衬衫，两手缩在长袖内轻扯下摆，被撞见时侧头娇嗔脸红",
+    "camera": "three-quarter view, eye-level, intimate soft focus",
+    "lighting": "百叶窗透入的金色斜射晨光，衬衫薄纱轮廓与发丝泛起柔光",
+    "location": "洒满柔美晨光的卧室窗台木地板",
+    "mood": "傲娇娇羞",
+    "timeOfDay": "早晨",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bedroom",
+      "window",
+      "blinds",
+      "standing",
+      "side_view",
+      "hands_in_sleeves",
+      "heavy_blush",
+      "pout",
+      "morning_light",
+      "soft_lighting"
+    ],
+    "coverageTags": [
+      "character_featured"
+    ],
+    "description": "【结城美柑 · 展会纪念宽大白衬衫与晨光回眸】晨风拂动百叶窗，金色朝阳在地板上映出横向光斑。美柑偷偷套上哥哥那件宽大松垮的男士白衬衫，双手缩在长长的袖口里，正打量镜中的自己，忽然听到开门声，立刻像触电般侧身回眸，小脸红得像番茄，气鼓鼓娇嗔抗议——「进门前要先敲门啦，笨蛋哥哥！」",
+    "promptTokens": [
+      "bedroom",
+      "window",
+      "blinds",
+      "standing",
+      "side_view",
+      "hands_in_sleeves",
+      "brown_hair",
+      "short_hair",
+      "single_side_bun",
+      "brown_eyes",
+      "heavy_blush",
+      "pout",
+      "embarrassed",
+      "morning_light",
+      "sunbeam",
+      "soft_shadows"
+    ],
+    "promptProse": "Standing beside the sunlit bedroom window with her hands tucked inside the long cuffs of an oversized white shirt, Mikan turns in surprise to glare back at the viewer. Golden morning light filters across her flushed cheeks and chestnut hair as she pouts in adorable bashfulness.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "kind": "character",
+  "id": "yuuki_mikan",
+  "revision": 1,
+  "sortOrder": 168,
+  "createdAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "data": {
+    "id": "yuuki_mikan",
+    "profile": {
+      "id": "yuuki_mikan",
+      "name": "结城美柑",
+      "alias": [
+        "Yuuki Mikan",
+        "结城美柑",
+        "美柑",
+        "出包王女",
+        "小恶魔妹妹"
+      ],
+      "type": "popular",
+      "icon": "🍊",
+      "portrait": {
+        "image": "../assets/characters/popular-yuuki_mikan.png?v=1",
+        "alt": "结城美柑 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "栗色及肩柔顺短发 · 左侧标志性侧扎小发辫/团子",
+        "hair_color": "茶色/栗色",
+        "eyes": "灵动琥珀金棕眸",
+        "hairstyle": "及肩短碎发 · 单侧发束用发圈束起",
+        "uniform": "结城家日常便服系暖黄围裙 / 彩南中学初中部深蓝水手制服",
+        "expression": "小恶魔戏谑微笑 · 认真能干 · 偶显娇嗔害羞",
+        "style": "capable sweet little sister with playful teasing charm",
+        "signature": "栗色单侧小束发、围裙料理姿态、琥珀眼眸与对哥哥又爱又气的小恶魔调侃"
+      },
+      "personality": [
+        "结城梨斗的亲妹妹，虽然年纪较小却远比哥哥更懂事沉稳",
+        "家务料理全能，独自一人包揽了结城家全家人的伙食与起居",
+        "性格聪明伶俐，略带小恶魔属性，最喜欢看梨斗陷入尴尬时的慌乱模样",
+        "内心其实极度依赖且深爱着哥哥梨斗，非常关心哥哥的感情与日常生活",
+        "深得菈菈、小暗、梦梦等全员女主角的信赖与喜爱，是结城家的核心支柱"
+      ],
+      "likes": [
+        "在厨房精心烹饪美味的家庭料理与烘焙甜点",
+        "捉弄并调侃陷入神摔尴尬中的笨蛋哥哥",
+        "一家人围坐在餐桌前热热闹闹吃晚饭",
+        "和小暗一起在房间里吃鲷鱼烧和安静看书"
+      ],
+      "classic_cg": {
+        "title": "厨房元气早餐与微风回眸",
+        "description": "晨光洒满结城家厨房，身穿黄色围裙的栗发少女一手托平底锅回头甜甜浅笑；或在缘侧清爽吃西瓜。"
+      },
+      "identity": {
+        "role": "结城家掌管家务的能干妹妹 / 彩南中学初中生",
+        "age": "初中生",
+        "occupation": "初中生",
+        "faction": "结城家"
+      },
+      "tags": [
+        "妹妹",
+        "单侧发辫",
+        "围裙",
+        "小恶魔",
+        "家务万能",
+        "傲娇",
+        "出包王女"
+      ],
+      "bg_story": "结城美柑是矢吹健太朗笔下《出包王女》的灵魂角色之一。作为结城梨斗的妹妹，自幼因父母长期不在家而独立掌管结城家的全部家务与伙食，料理水平出神入化。外表可爱乖巧，内心却早熟且敏锐，带着恰到好处的小恶魔戏谑感。虽然总是叹息哥哥那不可思议的超自然神摔体质，却比任何人都更理解并守护着哥哥温柔单纯的内心。",
+      "palette": [
+        "暖橙",
+        "栗茶",
+        "嫩黄"
+      ],
+      "weather": [
+        "晨曦厨房",
+        "夏日缘侧微风",
+        "温馨夕照"
+      ],
+      "speech": "真拿你没办法呢……早餐我已经做好了，再赖床的话，我就要把菈菈叫醒咯，哥哥？",
+      "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+      "traits": [
+        "yuuki_mikan",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "short_hair",
+        "single_side_bun",
+        "brown_eyes",
+        "soft_blush",
+        "to_love-ru"
+      ],
+      "accent_color": "#f59e0b",
+      "bg_color": "#1c1409"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "yuuki_mikan",
+        "mikan",
+        "mikan_(to_love-ru)",
+        "结城美柑",
+        "美柑",
+        "出包王女",
+        "to love-ru"
+      ],
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "canon": {
+        "era": "近现代科幻日常世界",
+        "formNotes": "结城梨斗的亲妹妹，彩南中学学生。掌管结城家全盘家务与料理的顶级全能妹妹，聪明敏锐，性格略带小恶魔调侃属性，但内心极其依赖和在乎哥哥。深得菈菈、春菜、小暗等全员信任。",
+        "research": "2026-10-21 调研（Danbooru yuuki_mikan 2000+ posts）",
+        "world": "彩南町 · 结城家"
+      },
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "displayName": "结城美柑",
+      "exactPrefixes": [
+        "mikan_"
+      ],
+      "exactTokens": [
+        "yuuki_mikan"
+      ],
+      "franchise": "To LOVE-Ru",
+      "id": "yuuki_mikan",
+      "identityProse": "Yuuki Mikan from To LOVE-Ru by Kentaro Yabuki, a clever and capable young sister with chestnut-brown short hair tied in a single side ponytail bun, expressive amber-brown eyes, and a sweet, subtly mischievous smile.",
+      "identityTokens": [
+        "yuuki_mikan",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "short_hair",
+        "single_side_bun",
+        "brown_eyes",
+        "soft_blush",
+        "to_love-ru"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "結城 美柑 (Yuuki Mikan)",
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "characterTokens": [
+        "yuuki_mikan",
+        "Mikan Yuuki"
+      ],
+      "copyrightTokens": [
+        "to_love-ru"
+      ]
+    }
+  }
+}

@@ -1142,6 +1142,161 @@
       "copyrightTokens": [
         "to_love-ru"
       ]
+    },
+    {
+      "adultEligibility": "adult",
+      "aliases": [
+        "yuuki_mikan",
+        "mikan",
+        "mikan_(to_love-ru)",
+        "结城美柑",
+        "美柑",
+        "出包王女",
+        "to love-ru"
+      ],
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "canon": {
+        "era": "近现代科幻日常世界",
+        "formNotes": "结城梨斗的亲妹妹，彩南中学学生。掌管结城家全盘家务与料理的顶级全能妹妹，聪明敏锐，性格略带小恶魔调侃属性，但内心极其依赖和在乎哥哥。深得菈菈、春菜、小暗等全员信任。",
+        "research": "2026-10-21 调研（Danbooru yuuki_mikan 2000+ posts）",
+        "world": "彩南町 · 结城家"
+      },
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "displayName": "结城美柑",
+      "exactPrefixes": [
+        "mikan_"
+      ],
+      "exactTokens": [
+        "yuuki_mikan"
+      ],
+      "franchise": "To LOVE-Ru",
+      "id": "yuuki_mikan",
+      "identityProse": "Yuuki Mikan from To LOVE-Ru by Kentaro Yabuki, a clever and capable young sister with chestnut-brown short hair tied in a single side ponytail bun, expressive amber-brown eyes, and a sweet, subtly mischievous smile.",
+      "identityTokens": [
+        "yuuki_mikan",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "short_hair",
+        "single_side_bun",
+        "brown_eyes",
+        "soft_blush",
+        "to_love-ru"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "結城 美柑 (Yuuki Mikan)",
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "characterTokens": [
+        "yuuki_mikan",
+        "Mikan Yuuki"
+      ],
+      "copyrightTokens": [
+        "to_love-ru"
+      ],
+      "outfits": [
+        {
+          "id": "casual_home_apron",
+          "name": "结城家日常便服与暖黄围裙",
+          "prose": "wearing a warm sunny yellow cooking apron over a casual short-sleeved t-shirt and comfortable shorts, slippers, looking tidy and capable",
+          "tokens": [
+            "yellow_apron",
+            "t-shirt",
+            "shorts",
+            "casual_clothes",
+            "bare_legs",
+            "slippers"
+          ]
+        },
+        {
+          "id": "sainan_junior_uniform",
+          "name": "彩南中学初中部水手制服",
+          "prose": "wearing the neat Sainan junior high school uniform featuring a white sailor blouse with navy trim, vibrant red neckerchief, pleated navy skirt, knee-high black socks and brown loafers",
+          "tokens": [
+            "sailor_uniform",
+            "sailor_collar",
+            "pleated_skirt",
+            "red_neckerchief",
+            "black_socks",
+            "loafers"
+          ]
+        },
+        {
+          "id": "summer_sunflower_onepiece",
+          "name": "盛夏向日葵明黄吊带无袖洋装",
+          "prose": "wearing a breezy cheerful yellow sundress with slender shoulder straps and a delicate waist ribbon, white sandals, radiating refreshing summer radiance",
+          "tokens": [
+            "yellow_dress",
+            "sundress",
+            "sleeveless_dress",
+            "ribbon_bow",
+            "sandals",
+            "bare_shoulders",
+            "bare_legs"
+          ]
+        },
+        {
+          "id": "school_swimsuit_sukumizu",
+          "name": "初中部标准深蓝连体死库水",
+          "prose": "wearing the classic Japanese school navy one-piece swimsuit with a white fabric chest name tag, bare limbs, holding a white towel with a modest, composed posture",
+          "tokens": [
+            "school_swimsuit",
+            "one-piece_swimsuit",
+            "navy_swimsuit",
+            "name_tag",
+            "bare_legs",
+            "bare_arms",
+            "barefoot"
+          ]
+        },
+        {
+          "id": "tender_pajamas",
+          "name": "居家粉白条纹纯棉睡衣",
+          "prose": "wearing soft pink-and-white striped cotton pajama shirt and matching shorts, relaxed and comfortably loose for lounging around the home futon",
+          "tokens": [
+            "striped_pajamas",
+            "short_sleeved_pajamas",
+            "pajama_shorts",
+            "loose_clothes",
+            "bare_legs",
+            "bare_arms",
+            "barefoot"
+          ]
+        },
+        {
+          "id": "boyfriend_shirt_lingerie",
+          "name": "女友白衬衫与浅淡素雅内衣",
+          "prose": "wearing an oversized white collared dress shirt draped loosely over a delicate pastel lingerie set, holding the shirt edges across her front with bare feet and a bashful flustered blush",
+          "tokens": [
+            "white_shirt",
+            "open_shirt",
+            "unbuttoned_shirt",
+            "bra",
+            "panties",
+            "bare_shoulders",
+            "bare_legs",
+            "barefoot",
+            "holding_shirt",
+            "heavy_blush"
+          ]
+        }
+      ]
     }
   ],
   "franchise": "To LOVE-Ru",

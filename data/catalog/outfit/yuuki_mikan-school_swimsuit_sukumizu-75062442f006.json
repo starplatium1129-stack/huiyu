@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "yuuki_mikan/school_swimsuit_sukumizu",
+  "revision": 1,
+  "sortOrder": 1504,
+  "createdAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "data": {
+    "characterId": "yuuki_mikan",
+    "outfit": {
+      "default": false,
+      "id": "school_swimsuit_sukumizu",
+      "isDefault": false,
+      "name": "初中部标准深蓝连体死库水",
+      "prose": "wearing the classic Japanese school navy one-piece swimsuit with a white fabric chest name tag, bare limbs, holding a white towel with a modest, composed posture",
+      "tokens": [
+        "school_swimsuit",
+        "one-piece_swimsuit",
+        "navy_swimsuit",
+        "name_tag",
+        "bare_legs",
+        "bare_arms",
+        "barefoot"
+      ]
+    }
+  }
+}
