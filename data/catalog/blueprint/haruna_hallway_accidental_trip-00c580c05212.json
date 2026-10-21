@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_hallway_accidental_trip",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1764,
   "createdAt": null,
-  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "updatedAt": "2026-10-21T13:03:34.995576600+00:00",
   "data": {
     "id": "haruna_hallway_accidental_trip",
     "title": "西连寺春菜 · 学园楼梯转角的神摔失重跌坐",
@@ -26,14 +26,13 @@
       "sitting_on_floor",
       "hands_on_floor",
       "scattered_books",
-      "sainan_high_school_uniform",
       "heavy_blush",
       "teary_eyes"
     ],
     "coverageTags": [
       "iconic"
     ],
-    "description": "【西连寺春菜 · 学园楼梯转角的神摔失重跌坐】彩南高校转角楼梯口，出包王女最经典的命运事故再次上演。春菜不慎踩空跌坐在明亮的光滑地板上，手中的讲义与书本散落得到处都是。她双手撑在身前勉强稳住重心，水手百褶裙稍稍卷起，整张脸瞬间涨得通红，泪汪汪的双眸望向前方的梨斗——「结、结城君……？！什、什么都没有看到对吧……？！」",
+    "description": "【西连寺春菜 · 学园楼梯转角的神摔失重跌坐】彩南高校转角楼梯口，春菜不慎踩空，跌坐在明亮的木地板上。她双手撑住身前地面稳住身体，课本和讲义散落在身旁。午后的阳光从高窗洒进走廊，她抬头望向画外赶来的梨斗，脸颊通红，眼里还带着慌乱的泪光。",
     "promptTokens": [
       "school_hallway",
       "wooden_floor",
@@ -42,8 +41,6 @@
       "hands_on_ground",
       "scattered_books",
       "scattered_papers",
-      "sainan_high_school_uniform",
-      "pleated_skirt",
       "purple_hair",
       "short_hair",
       "two_hair_clips",
@@ -52,19 +49,8 @@
       "embarrassed",
       "window_light"
     ],
-    "promptProse": "Tumbled onto the polished wooden floor of the school staircase landing, Haruna braces both palms against the boards as papers scatter around her. Flushed with bashful tears in her disheveled sailor uniform, she looks up with overwhelming embarrassment beneath the bright corridor windows.",
+    "promptProse": "Having stumbled at the school staircase landing, Haruna sits on the polished wooden floor with both palms planted in front of her to steady herself. Textbooks and loose worksheets lie scattered beside her. Flushed and teary-eyed from the mishap, she looks up toward Rito just outside the frame, while afternoon light from the corridor windows falls across the boards.",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
       "nsfw",
       "nude"
     ],

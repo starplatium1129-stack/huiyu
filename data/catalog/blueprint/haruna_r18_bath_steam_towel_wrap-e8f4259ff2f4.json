@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "haruna_r18_bath_steam_towel_wrap",
+  "revision": 2,
+  "sortOrder": 1768,
+  "createdAt": null,
+  "updatedAt": "2026-10-21T13:14:34.296Z",
+  "data": {
+    "id": "haruna_r18_bath_steam_towel_wrap",
+    "title": "西连寺春菜 · 雾气浴室的毛巾轻挽",
+    "characterId": "sairenji_haruna",
+    "outfitId": "bath_towel",
+    "adult": true,
+    "category": "水汽氤氲",
+    "action": "坐在木质更衣长凳上，一手拢住身上的纯白大毛巾，另一手用干毛巾擦拭微湿短发",
+    "camera": "medium shot, eye-level, soft misty atmosphere",
+    "lighting": "透过磨砂玻璃的暖黄壁灯在腾起的水雾中漫射",
+    "location": "沐浴后暖雾缭绕的日式浴室更衣间木质长凳",
+    "mood": "温存羞涩",
+    "timeOfDay": "夜晚",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bathroom",
+      "wooden_bench",
+      "steam",
+      "towel_wrap",
+      "drying_hair",
+      "wet_hair",
+      "bare_shoulders",
+      "blush"
+    ],
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "description": "【西连寺春菜 · 雾气浴室的毛巾轻挽】刚沐浴完的更衣间里暖汽氤氲。春菜坐在光滑的杉木长凳上，身上紧紧裹着洁白的纯棉大毛巾。她一手稳稳拢住胸前的毛巾折口，一手拿着小干毛巾细细擦拭微湿的发梢，水汽模糊了四周镜面，双颊因热气泛起动人的红晕。",
+    "promptTokens": [
+      "bathroom",
+      "wooden_bench",
+      "steam",
+      "towel_wrap",
+      "white_towel",
+      "drying_hair",
+      "wet_hair",
+      "bare_shoulders",
+      "purple_hair",
+      "short_hair",
+      "two_hair_clips",
+      "soft_blush",
+      "misty_lighting",
+      "warm_glow"
+    ],
+    "promptProse": "Seated on a polished cedar bench in the steamy dressing room, Haruna steadies the folded white bath towel around her chest with one hand while drying her damp purple bangs with a small hand towel. Warm diffused light through frosted glass creates a soft glow in the rising steam.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

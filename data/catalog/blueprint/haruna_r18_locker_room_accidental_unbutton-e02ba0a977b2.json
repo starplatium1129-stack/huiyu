@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "haruna_r18_locker_room_accidental_unbutton",
+  "revision": 2,
+  "sortOrder": 1766,
+  "createdAt": null,
+  "updatedAt": "2026-10-21T13:14:34.295Z",
+  "data": {
+    "id": "haruna_r18_locker_room_accidental_unbutton",
+    "title": "西连寺春菜 · 夕阳更衣室的慌乱心跳",
+    "characterId": "sairenji_haruna",
+    "outfitId": "sainan_uniform",
+    "adult": true,
+    "category": "私密心跳",
+    "action": "背靠金属更衣柜，双前臂护在身前挡住衬衫衣襟，满面通红惊慌抬眼",
+    "camera": "intimate medium shot, front eye-level, focus on blushing expression",
+    "lighting": "高处百叶窗透入的暖红夕阳余晖在身上投下横向光栅",
+    "location": "彩南高校女子更衣室金属储物柜旁",
+    "mood": "慌乱羞涩",
+    "timeOfDay": "黄昏",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "locker_room",
+      "metal_lockers",
+      "open_shirt",
+      "bare_shoulders",
+      "hands_over_chest",
+      "heavy_blush",
+      "teary_eyes",
+      "sunset_light"
+    ],
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "description": "【西连寺春菜 · 夕阳更衣室的慌乱心跳】放学后安静的更衣室内，夕阳透过高处百叶窗在地板与柜门上映出长长的光栅。春菜换衣中途被意外推门声惊吓，后背紧贴着储物柜，双臂慌乱护在胸前，整张脸通红，眼中满是无措的泪花。",
+    "promptTokens": [
+      "locker_room",
+      "metal_lockers",
+      "unbuttoned_shirt",
+      "open_shirt",
+      "bare_shoulders",
+      "hands_over_chest",
+      "purple_hair",
+      "short_hair",
+      "two_hair_clips",
+      "heavy_blush",
+      "tears_in_eyes",
+      "sunset_light",
+      "shadows"
+    ],
+    "promptProse": "Backed against a tall metal locker with its door slightly open, Haruna presses both arms across her front in panicked modesty over her opened shirt. Slatted blinds cast horizontal sunset stripes across her collarbone and neck as she looks up toward the viewer standing by the door.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

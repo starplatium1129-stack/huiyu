@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "haruna_r18_bedroom_pajamas_slip",
+  "revision": 2,
+  "sortOrder": 1767,
+  "createdAt": null,
+  "updatedAt": "2026-10-21T13:14:34.296Z",
+  "data": {
+    "id": "haruna_r18_bedroom_pajamas_slip",
+    "title": "西连寺春菜 · 暖光卧室的拘谨凝视",
+    "characterId": "sairenji_haruna",
+    "outfitId": "soft_pajamas",
+    "adult": true,
+    "category": "闺房私语",
+    "action": "并膝端坐在松软床铺中央，双手平按在大腿上，上衣领口微偏，含羞仰望",
+    "camera": "intimate close-up to medium shot, warm bedside framing",
+    "lighting": "床头暖橙色小夜灯在柔顺棉被上投下的温暖对角线阴影",
+    "location": "春菜温馨私密的少女卧室浅粉色床铺中央",
+    "mood": "柔情缱绻",
+    "timeOfDay": "深夜",
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "kneeling_on_bed",
+      "soft_sheets",
+      "off_shoulder",
+      "bare_shoulder",
+      "collarbone",
+      "heavy_blush",
+      "bedside_lamp",
+      "purple_hair"
+    ],
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "description": "【西连寺春菜 · 暖光卧室的拘谨凝视】深夜闺房内，床头暖灯洒下一圈柔和温热的橙黄光晕。春菜并膝拘谨地坐在整洁床铺上，双掌按在膝前，领口微偏露出小巧锁骨。她眼中泛着温柔的羞涩水光，静静仰望着走近的心上人。",
+    "promptTokens": [
+      "bedroom",
+      "bed",
+      "sitting_on_bed",
+      "soft_sheets",
+      "off_shoulder",
+      "bare_shoulder",
+      "collarbone",
+      "purple_hair",
+      "short_hair",
+      "two_hair_clips",
+      "heavy_blush",
+      "tender_expression",
+      "bedside_lamp",
+      "warm_lighting",
+      "soft_glow"
+    ],
+    "promptProse": "Sitting with knees together on the soft bedsheets, Haruna rests both palms on her lap as her loose collar rests off one shoulder. Warm amber light from the bedside lamp on her left casts a soft diagonal shadow across the sheets while she gazes up with shy purple eyes.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}
