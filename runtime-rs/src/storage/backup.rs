@@ -241,7 +241,7 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
             "Backup source no longer matches the workspace",
         ));
     }
-    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":5,"revision":revision});
+    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":schema::VERSION,"revision":revision});
     Ok(CopyKind::Backup {
         directory,
         manifest,

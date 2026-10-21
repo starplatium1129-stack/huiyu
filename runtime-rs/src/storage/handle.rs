@@ -122,6 +122,12 @@ impl Storage {
             }
         })?
     }
+    pub(crate) async fn patch_task(&self, id: &str, revision: i64, patch: crate::task_contract::TaskPatch, principal: &str) -> Result<crate::task_contract::TaskRecord> {
+        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+        let (reply,result) = oneshot::channel();
+        self.sender.send(Work::TaskPatch(id.into(),revision,patch,principal.into(),cancel.0.clone(),reply)).await.map_err(|_|unavailable())?;
+        result.await.map_err(|_|commit_unknown())?
+    }
     pub(crate) async fn task_record(
         &self,
         task_id: &str,
@@ -256,6 +262,10 @@ impl Storage {
         )
         .await?;
         Ok(())
+    }
+    pub(crate) async fn stage_task_file(&self, path: PathBuf, bytes: u64) -> Result<(TaskMediaSource,String)> {
+        let (staged,hash) = self.verification.stage(self.root.clone(),path,bytes,self.sender.clone()).await?;
+        Ok((TaskMediaSource::Staged(staged),hash))
     }
     pub(crate) async fn task_media_copy(
         &self,

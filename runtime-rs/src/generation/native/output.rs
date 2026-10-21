@@ -140,11 +140,7 @@ pub(super) async fn validate(path: &Path, video: bool, cancel: &CancellationToke
         }
         Ok(())
     } else {
-        let bytes = tokio::fs::read(path).await?;
-        if !bytes.starts_with(b"\x89PNG\r\n\x1a\n") {
-            return Err(protocol_error());
-        }
-        crate::image_decode::validate(Arc::new(bytes), cancel).await
+        crate::image_decode::validate_png_file(path.to_owned(), cancel).await
     }
 }
 

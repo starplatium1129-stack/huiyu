@@ -1,4 +1,4 @@
-import { profileLocalStorage as localStorage, flushProfileWrites, profileRuntimeActive } from '../../platform/web/profileStorage.ts'
+import { profileLocalStorage as localStorage, profileRuntimeActive, writeProfileChatHistory, ensureProfileChatHistory } from '../../platform/web/profileStorage.ts'
 import { reactive, ref, getCurrentScope, onScopeDispose } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { useChatArchiveStorage } from './useChatArchiveStorage'
@@ -21,10 +21,9 @@ import {
   CHAT_ARCHIVE_KEY,
   archiveCounts,
   forkChatArchiveMessages,
-  normalizeChatArchive,
   serializeChatArchive,
 } from '@/utils/chatArchive'
-import { captureChatConversations, chatBranchArchiveKey, emptyChatConversation, mergeChatConversationStates, rememberChatConversations, registerArchivedChatBranches } from '@/utils/chatConversationStorage'
+import { captureChatConversations, chatBranchArchiveKey, emptyChatConversation, mergeChatConversationStates, rememberChatConversations } from '@/utils/chatConversationStorage'
 import { useChatBranches } from './useChatBranches'
 import { createChatPreferences, readChatPreferences, type ChatPreferences } from '@/storage/chatPreferences'
 import { chatHistorySnapshot } from './chatHistorySnapshot'
@@ -91,18 +90,27 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     if (pendingPreferences.size || saveFailed && !save(true, false) || !await saveArchive()) throw new Error('CHAT_SAVE_FAILED')
   }))
   const messageSnapshots = new Map<string, string>()
-  function rememberMessages() { rememberChatConversations(state, messageSnapshots) }
+  let synchronizedText: string | null | undefined
+  function rememberMessages(characters?: string[]) { rememberChatConversations(state, messageSnapshots, characters) }
+  function writeHistory(characters?: string[]) {
+    const text = serializeChatStorage(chatHistorySnapshot(state, localStorage.getItem(STORAGE_KEY), normalizeOptions, characters))
+    writeProfileChatHistory(text, characters)
+    synchronizedText = text
+  }
 
   /** 把 localStorage 中其他窗口更新的历史合并进内存（按 mid 去重，零丢失）。 */
   function mergeRemoteIntoState(): boolean {
     if (!canWrite()) return false
     try {
-      const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
+      const text = localStorage.getItem(STORAGE_KEY)
+      if (text === synchronizedText) return true
+      const raw = JSON.parse(text || 'null')
       assertChatVersion(raw, STORAGE_VERSION)
       if (!raw || typeof raw !== 'object') return true
       preserveRetiredCompanionChat(raw)
       const remote = normalizeChatStorage(raw, '', { ...normalizeOptions, maxMessages: Number.MAX_SAFE_INTEGER }).state
       mergeChatConversationStates(state, remote, messageSnapshots)
+      synchronizedText = text
       return true
     } catch {
       /* 解析失败保持现状，下次保存仍会重试. */
@@ -146,7 +154,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
     for (const [char, trim] of trims) if (pendingTrims.get(char) === trim) pendingTrims.delete(char)
     // Publish the smaller history only after its archive is durable.
-    if (!save(false, false)) {
+    if (!save(false, false, [...trims.keys()])) {
       for (const [char, trim] of trims) if (!pendingTrims.has(char)) pendingTrims.set(char, trim)
       return false
     }
@@ -176,7 +184,6 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     Object.assign(state.settings, settings)
   }
 
-  const persistedState = () => chatHistorySnapshot(state, localStorage.getItem(STORAGE_KEY), normalizeOptions)
   const readConnection = () => preferences.connection(() => JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'))
   function savePreferences(patch: Partial<ChatPreferences>) {
     if (writeBlocked.value || resetRevision !== chatResetRevision() && !canWrite()) return null
@@ -185,6 +192,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   async function load() {
+    try { await ensureProfileChatHistory() }
+    catch (error) { if (!disposed) onError(error instanceof Error ? error.message : '聊天记录尚未加载，请重试。'); return }
     if (disposed || !canWrite()) return
     const revision = ++credentialRevision
     let stored = '', raw: unknown
@@ -212,6 +221,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       )
       connectionSnapshot = JSON.stringify(readConnection())
       applyPersisted(normalized.state)
+      synchronizedText = stored || null
       loadFrequentPreferences()
       neverConfigured.value = normalized.neverConfigured
 
@@ -224,7 +234,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       // authorization headers, tokens and unknown fields from localStorage.
       const rawHistoryLists = (raw as { histories?: Record<string, unknown> })?.histories
       const hasOverflow = characterIds.some(char => Array.isArray(rawHistoryLists?.[char]) && (rawHistoryLists[char] as unknown[]).length > MAX_LOCAL_MESSAGES)
-      if (stored && !hasOverflow) localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
+      if (stored && !hasOverflow) writeHistory()
       try {
         await archiveStorage.ready
       // 先把持久化里的超限消息归档，再走白名单归一化，保证旧消息不丢。
@@ -239,7 +249,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         }
       }
         if (!await saveArchive()) throw new Error('Archive commit failed')
-        if (stored && hasOverflow) localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
+        if (stored && hasOverflow) writeHistory()
       } catch { onError('无法读取聊天归档，请检查浏览器存储权限。') }
       const endpoint = state.settings.apiBaseUrl
       try {
@@ -306,15 +316,15 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
   }
 
-  function save(mergeRemote = true, flushArchive = true) {
+  function save(mergeRemote = true, flushArchive = true, characters?: string[]) {
     if (!canWrite()) { saveFailed = true; return false }
     for (const [key, value] of pendingPreferences) savePreference(key, value)
     try {
       // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
       // 覆盖掉另一窗口的新消息。clear() 传 false 跳过（清除意图优先）。
       if (mergeRemote && !mergeRemoteIntoState()) return false
-      localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState()))
-      rememberMessages()
+      writeHistory(characters)
+      rememberMessages(characters)
       if (flushArchive) void saveArchive()
       saveFailed = false; return true
     } catch {
@@ -324,7 +334,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
   }
 
-  const branchStorage = useChatBranches(state, canWrite, mergeRemoteIntoState, save, (source, target, forkMessageId, followingMessageIds) => {
+  const branchStorage = useChatBranches(state, canWrite, mergeRemoteIntoState, (merge, char) => save(merge, true, [char]), (source, target, forkMessageId, followingMessageIds) => {
     archiveStorage.add(target, forkChatArchiveMessages(archive.value.archived[source] || [], forkMessageId, followingMessageIds))
     void saveArchive()
   })
@@ -435,17 +445,9 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   /** 导入归档 JSON：合并去重后落盘，返回导入条数。 */
   async function importArchiveJson(textValue: string, isCurrent: () => boolean = () => true): Promise<number> {
     if (!isCurrent() || !canWrite()) throw new Error('聊天归档受版本保护，无法安全修改。')
-    const revision = resetRevision, current = () => isCurrent() && revision === chatResetRevision()
-    const incoming = normalizeChatArchive(JSON.parse(textValue), characterIds)
-    await archiveStorage.refresh()
-    if (!current() || !canWrite()) throw new Error('聊天状态已变化，请重新选择归档文件。')
-    const before = archiveCounts(archive.value, characterIds)
-    for (const [char, messages] of Object.entries(incoming.archived)) archiveStorage.add(char, messages, true)
-    if (!await saveArchive() || !current()) throw new Error('归档尚未保存，请重新选择文件后重试。')
-    if (registerArchivedChatBranches(state, Object.keys(incoming.archived)) && !save()) throw new Error('归档已保存，但剧情目录尚未保存，请重试导入。')
-    await flushProfileWrites()
-    const after = archiveCounts(archive.value, characterIds)
-    return Object.keys(after).reduce((sum, id) => sum + Math.max(0, after[id] - (before[id] || 0)), 0)
+    const revision = resetRevision, current = () => !disposed && isCurrent() && revision === chatResetRevision()
+    const { importChatArchive } = await import('./restoreChatArchive')
+    return importChatArchive(textValue, characterIds, state, { current, canWrite, archiveStorage, saveArchive, save })
   }
   /** 把该角色归档并回当前对话；返回并入条数。 */
   async function restoreFromArchive(char = state.active, isCurrent: () => boolean = () => true): Promise<number> {
@@ -486,7 +488,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
     state.conversations = { ...state.conversations }
     for (const id of char ? [char] : characterIds) {
-      const conversation = captureChatConversations(state)[id]
+      const conversation = captureChatConversations(state, [id])[id]
       conversation.branches.find(branch => branch.id === conversation.activeId)!.messages = []
       state.histories[id] = []; state.conversations[id] = conversation
     }
@@ -496,7 +498,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     state.historiesRevision = nextRevision
     if (char) state.historiesRevisions[char] = Math.max((state.historiesRevisions[char] || 0) + 1, nextRevision)
     else for (const key of characterIds) state.historiesRevisions[key] = nextRevision
-    if (save(false)) return true
+    if (save(false, true, char ? [char] : undefined)) return true
     // A failed localStorage write must not make the current tab look cleared.
     state.conversations = previous.conversations
     state.histories = previous.histories

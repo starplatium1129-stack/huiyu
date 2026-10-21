@@ -1,4 +1,6 @@
 use super::{Media, invalid, media, schema, unavailable};
+mod stage;
+pub(crate) use stage::Staged;
 use crate::error::{ApiError, Result};
 use std::{
     collections::HashMap,

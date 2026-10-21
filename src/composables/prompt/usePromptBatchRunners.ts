@@ -85,7 +85,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       if (planOwner.repository !== artworkRepository || planOwner.authority !== batchSaveAuthority()) throw new Error('批次资料来源已更换，请回到原工作区读取计划')
       const plan = batchStorage.read()
       planOwner.owner = plan?.owner
-      plan?.jobs.forEach(job => { if (pendingSaves.has(job.requestKey)) { job.pendingImage = true; job.status = 'unknown' } })
+      if (plan?.version === 1) plan.jobs.forEach(job => { if (pendingSaves.has(job.requestKey)) { job.pendingImage = true; job.status = 'unknown' } })
       return plan
     } },
     prepare: input => {

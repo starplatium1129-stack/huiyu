@@ -104,7 +104,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     cleanupController?.abort()
     exportController?.abort()
   })
-  const { imageExportProgress, exportImages, cancelExport: cancelImageExport } = useBackupImageExport({ busy, desktopActive, onFlash })
+  const { imageExportProgress, exportImages, nativeImageExport, cancelExport: cancelImageExport } = useBackupImageExport({ busy, desktopActive, onFlash })
 
   async function exportBackup(): Promise<void> {
     if (busy.value || disposed) return
@@ -385,5 +385,5 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  return { portable, busy, desktopActive, exportProgress, workspaceProgress, imageExportProgress, cancelExport, pending, pendingWorkspace, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
+  return { portable, busy, desktopActive, exportProgress, workspaceProgress, imageExportProgress, nativeImageExport, cancelExport, pending, pendingWorkspace, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
 }

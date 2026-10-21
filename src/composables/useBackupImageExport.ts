@@ -1,9 +1,9 @@
 import { onScopeDispose, ref, type Ref } from 'vue'
 import type { BackupExportProgress } from '@/utils/backupExport'
 import { buildArtworkFileName } from '@/utils/artworkFileName'
-import { artworkTimestamp } from '@/types/artwork'
-import { readWebBackupImages, readWebBackupImage } from '../platform/web/profileBackupSource'
+import { readWebBackupImage } from '../platform/web/profileBackupSource'
 import { captureBackupSource } from './backupSource'
+import { hostApi } from '@/platform/desktop/hostApi'
 
 interface BackupImageExportOptions {
   busy: Ref<boolean>
@@ -16,9 +16,13 @@ export function useBackupImageExport({ busy, desktopActive, onFlash }: BackupIma
   const imageExportProgress = ref<BackupExportProgress | null>(null)
   let imageExportController: AbortController | null = null
   let disposed = false
-  const imageDownloadUrls = new Map<string, number>()
+  const nativeImageExport = Boolean(hostApi())
+  const imageDownloadUrls = new Map<string, { timer: number; bytes: number }>()
+  let downloadBytes = 0
   function releaseImageUrl(url: string) {
-    window.clearTimeout(imageDownloadUrls.get(url))
+    const pending = imageDownloadUrls.get(url)
+    window.clearTimeout(pending?.timer)
+    downloadBytes -= pending?.bytes ?? 0
     imageDownloadUrls.delete(url)
     URL.revokeObjectURL(url)
   }
@@ -39,19 +43,28 @@ export function useBackupImageExport({ busy, desktopActive, onFlash }: BackupIma
     imageExportProgress.value = { completed: 0, total: 0 }
     const desktop = desktopActive.value
     const source = captureBackupSource(controller, desktop), { repository, check } = source
+    const pause = (milliseconds: number) => new Promise<void>(resolve => {
+      const finish = () => { window.clearTimeout(timer); controller.signal.removeEventListener('abort',finish); resolve() }
+      const timer = window.setTimeout(finish,milliseconds)
+      controller.signal.addEventListener('abort',finish,{ once:true })
+      if (controller.signal.aborted) finish()
+    })
     let saved = 0
     let failed = 0
     let completed = 0
     onFlash('正在整理作品图片…')
     try {
       check()
-      const records = desktop
-        ? (await repository.readHistory()).filter(item => item.image_id).map(item => ({ id: item.image_id!, blob: null,
-          name: String(item.title || ''), created_at: artworkTimestamp(item) }))
-        : await readWebBackupImages()
+      if (desktop && nativeImageExport) {
+        const { exportArtworkImages } = await import('@/platform/desktop/artworkImageExport')
+        const message = await exportArtworkImages(controller.signal, value => { if (!disposed) imageExportProgress.value = value })
+        if (!disposed) onFlash(message)
+        return
+      }
+      const { backupImagePages } = await import('./backupImagePages')
       check()
-      imageExportProgress.value = { completed: 0, total: records.length }
-      for (const record of records) {
+      for await (const { entries, total } of backupImagePages(desktop,controller.signal)) for (const record of entries) {
+        imageExportProgress.value = { completed, total }
         check()
         try {
           const blob = record.blob instanceof Blob ? record.blob : (record.id ? await (desktop ? repository.getImage(record.id, controller.signal) : readWebBackupImage(record.id)) : null)
@@ -59,6 +72,13 @@ export function useBackupImageExport({ busy, desktopActive, onFlash }: BackupIma
           check()
           if (!blob) failed++
           else {
+            // A download URL retains its bytes until the browser grace period
+            // expires. Apply backpressure instead of revoking a live download.
+            while (imageDownloadUrls.size && (downloadBytes + blob.size > 64 * 1024 * 1024 || imageDownloadUrls.size >= 8)) {
+              check()
+              await pause(250)
+            }
+            check()
             const url = URL.createObjectURL(blob)
             let anchor: HTMLAnchorElement | undefined
             let started = false
@@ -76,24 +96,16 @@ export function useBackupImageExport({ busy, desktopActive, onFlash }: BackupIma
             } finally {
               try { anchor?.remove() } finally {
                 // Failed setup releases immediately; successful downloads retain their existing grace period.
-                if (started && !disposed) imageDownloadUrls.set(url, window.setTimeout(() => releaseImageUrl(url), 60_000))
+                if (started && !disposed) { downloadBytes += blob.size; imageDownloadUrls.set(url, { timer: window.setTimeout(() => releaseImageUrl(url), 60_000), bytes: blob.size }) }
                 else URL.revokeObjectURL(url)
               }
             }
           }
         } catch { if (!controller.signal.aborted) failed++ }
         if (controller.signal.aborted) break
-        imageExportProgress.value = { completed: ++completed, total: records.length }
+        imageExportProgress.value = { completed: ++completed, total }
         // Inline blobs and cached reads must yield to the Cancel button between downloads.
-        if (completed < records.length) await new Promise<void>(resolve => {
-          const finish = () => {
-            window.clearTimeout(timer)
-            controller.signal.removeEventListener('abort', finish)
-            resolve()
-          }
-          const timer = window.setTimeout(finish, 0)
-          controller.signal.addEventListener('abort', finish, { once: true })
-        })
+        if (completed < total) await pause(0)
       }
       if (!disposed) {
         if (controller.signal.aborted) onFlash(`已停止后续导出；已开始下载 ${saved} 张，浏览器中已开始的下载无法撤销`)
@@ -119,5 +131,5 @@ export function useBackupImageExport({ busy, desktopActive, onFlash }: BackupIma
     }
   }
 
-  return { imageExportProgress, exportImages, cancelExport }
+  return { imageExportProgress, exportImages, cancelExport, nativeImageExport }
 }

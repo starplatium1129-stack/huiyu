@@ -7,7 +7,7 @@ const SUMMARY_BODY: &str = "json_set(json_remove(record_json,'$.input','$.inputM
          '$.retryOfTaskId', json_extract(record_json,'$.metadata.retryOfTaskId'),
          '$.retryTaskId', json_extract(record_json,'$.metadata.retryTaskId'),
          '$.sourceBatchId', CASE WHEN json_type(record_json,'$.metadata.context.retriedTaskId')='text' AND ((json_type(record_json,'$.metadata.context.stepIndex')='integer' AND json_extract(record_json,'$.metadata.context.stepIndex')>=0) OR (json_type(record_json,'$.metadata.context.stepIndices')='array' AND json_array_length(record_json,'$.metadata.context.stepIndices')>0 AND NOT EXISTS (SELECT 1 FROM json_each(record_json,'$.metadata.context.stepIndices') WHERE type!='integer' OR value<0))) THEN json_extract(record_json,'$.metadata.context.retriedTaskId') ELSE NULL END,
-         '$.canConcat', json(CASE WHEN json_extract(record_json,'$.kind')='batch' AND json_extract(record_json,'$.status')='succeeded' AND json_array_length(record_json,'$.resultRefs')>1 AND json_type(record_json,'$.checkpoint.shots')='array' AND NOT EXISTS (SELECT 1 FROM json_each(record_json,'$.resultRefs') WHERE json_extract(value,'$.index')=json_array_length(record_json,'$.checkpoint.shots')) THEN 'true' ELSE 'false' END))";
+         '$.canConcat', json(CASE WHEN json_extract(record_json,'$.kind')='batch' AND json_extract(record_json,'$.status')='succeeded' AND json_array_length(record_json,'$.resultRefs')>1 AND (SELECT checkpoint_shots FROM task_payloads p WHERE p.task_id=tasks.task_id) IS NOT NULL AND NOT EXISTS (SELECT 1 FROM json_each(record_json,'$.resultRefs') WHERE json_extract(value,'$.index')=(SELECT checkpoint_shots FROM task_payloads p WHERE p.task_id=tasks.task_id)) THEN 'true' ELSE 'false' END))";
 
 pub(super) fn read_summary(c: &Context, principal: &str, id: &str) -> Result<Value> {
     static SQL: OnceLock<String> = OnceLock::new();
@@ -108,7 +108,7 @@ fn page<T>(
     let body = if query.summary {
         SUMMARY_BODY
     } else {
-        "record_json"
+        payload::BODY
     };
     // Startup recovery runs once: use immutable rowids, so concurrent task
     // updates cannot move a still-unvisited recovery candidate out of its page.

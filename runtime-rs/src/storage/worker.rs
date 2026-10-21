@@ -108,6 +108,17 @@ pub(super) fn run(
                     let _ = reply.send(result);
                 }
             }
+            Work::TaskPatch(id, revision, patch, principal, cancel, reply) => {
+                if !closing.is_empty() {
+                    let _ = reply.send(Err(unavailable()));
+                    continue;
+                }
+                context.cancel = cancel;
+                if !reply.is_closed() {
+                    let result = tasks::patch_record(&mut context,&principal,&id,revision,patch);
+                    let _ = reply.send(result);
+                }
+            }
             Work::TaskRecord(key, principal, cancel, reply) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));

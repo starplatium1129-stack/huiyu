@@ -44,7 +44,7 @@ impl TaskRuntime {
                 TaskKind::Generation => runtime
                     .provider
                     .resume_prepared(
-                        Value::Object(task.input.clone()),
+                        Value::Object(task.input.as_ref().clone()),
                         &task.provider,
                         runtime.shutdown.child_token(),
                     )
@@ -54,7 +54,7 @@ impl TaskRuntime {
                     runtime
                         .images
                         .resume_prepared(
-                            Value::Object(task.input.clone()),
+                            Value::Object(task.input.as_ref().clone()),
                             &hooks,
                             runtime.shutdown.child_token(),
                         )
@@ -64,7 +64,7 @@ impl TaskRuntime {
                 TaskKind::Video => runtime
                     .video
                     .resume_prepared(
-                        Value::Object(task.input.clone()),
+                        Value::Object(task.input.as_ref().clone()),
                         &hooks,
                         runtime.shutdown.child_token(),
                     )
@@ -73,7 +73,7 @@ impl TaskRuntime {
                 TaskKind::Batch => runtime
                     .video
                     .prepare_batch_resumed(
-                        Value::Object(task.input.clone()),
+                        Value::Object(task.input.as_ref().clone()),
                         &hooks,
                         runtime.shutdown.child_token(),
                     )

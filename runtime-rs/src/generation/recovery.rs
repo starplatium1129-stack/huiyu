@@ -35,7 +35,7 @@ impl<'a> From<&'a TaskRecord> for RecoveryTask<'a> {
             cancel_requested: task.cancel_requested_at.is_some(),
             result_available: task.result_state == ResultState::Available,
             metadata: &task.metadata,
-            checkpoint: task.checkpoint.as_ref(),
+            checkpoint: task.checkpoint.as_deref(),
         }
     }
 }

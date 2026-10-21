@@ -35,12 +35,17 @@ export function useGalleryQuery(options: {
     options.reading.value = true; options.loading.value = !options.history.value.length; options.error.value = ''
     const operation = (async () => {
       try {
-        const [page, directory, projects] = await Promise.all([
+        const [page, initialDirectory, initialProjects] = await Promise.all([
           source.repository.readGalleryPage!(query, firstCursor, abort.signal),
           refreshCatalog ? source.repository.readGalleryCatalog!(abort.signal) : null,
           refreshCatalog ? source.repository.readProjects() : null,
         ])
+        let directory = initialDirectory, projects = initialProjects
         if (!current()) return false
+        if (!refreshCatalog && (!catalog.value || catalog.value.revision !== page.revision || catalog.value.projectsVersion !== page.projectsVersion)) {
+          [directory, projects] = await Promise.all([source.repository.readGalleryCatalog!(abort.signal), source.repository.readProjects()])
+          if (!current()) return false
+        }
         if (directory && (directory.revision !== page.revision || directory.projectsVersion !== page.projectsVersion))
           throw new Error('作品库在读取期间发生变更，请重新读取')
         while (reset && page.items.length < retain && page.nextCursor) {
@@ -81,7 +86,7 @@ export function useGalleryQuery(options: {
   watch(() => JSON.stringify(options.query()), () => {
     if (!started || !enabled.value || requestedQuery === JSON.stringify(options.query())) return
     cancel(); options.history.value = []; cursor.value = null; total.value = 0
-    void read(true, true)
+    void read(true, false)
   })
   watch(options.projects, () => { if (started && enabled.value && !publishingProjects) void read(true, true) }, { deep: true, flush: 'sync' })
   onDeactivated(cancel)

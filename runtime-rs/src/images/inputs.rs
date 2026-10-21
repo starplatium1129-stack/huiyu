@@ -1,5 +1,6 @@
 use super::*;
 use regex::Regex;
+use generation::native::InputFile;
 use std::sync::LazyLock;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 const MAX_BYTES: usize = 16 * 1024 * 1024;
@@ -10,7 +11,7 @@ static NAME: LazyLock<Regex> = LazyLock::new(|| {
 pub(super) struct Original {
     pub name: String,
     native: bool,
-    pub bytes: Arc<Vec<u8>>,
+    pub input: InputFile,
     pub mime: String,
 }
 pub(super) fn cancelled() -> ApiError {
@@ -77,27 +78,7 @@ async fn matches_original(
         _ = cancel.cancelled() => return Err(cancelled()),
         file = open(config, &original.name, original.native) => file?,
     };
-    let mut file = file.take(MAX_BYTES as u64 + 1);
-    let mut buffer = vec![0; 256 * 1024];
-    let mut length = 0;
-    let mut equal = true;
-    loop {
-        let count = tokio::select! { biased;
-            _ = cancel.cancelled() => return Err(cancelled()),
-            count = file.read(&mut buffer) => count?,
-        };
-        if count == 0 {
-            break;
-        }
-        equal &= original.bytes.get(length..length + count) == Some(&buffer[..count]);
-        length += count;
-    }
-    // Read even after a mismatch so I/O and size errors retain priority over
-    // TASK_INPUT_CHANGED, without allocating a second full-size image.
-    if length == 0 || length > MAX_BYTES {
-        return Err(error("TASK_INPUT_INVALID", "输入图像超过 16 MiB"));
-    }
-    Ok(equal && length == original.bytes.len())
+    original.input.matches(file.into_std().await, MAX_BYTES as u64, cancel).await
 }
 pub(super) async fn capture(
     config: &Config,
@@ -134,11 +115,13 @@ pub(super) async fn capture(
                 ));
             }
         }
+        let mime = mime.to_owned();
+        let input = InputFile::capture(config.runtime_root.join("inputs/image-snapshots"), bytes, cancel).await?;
         originals.push(Original {
             name: name.into(),
             native,
-            bytes,
-            mime: mime.into(),
+            input,
+            mime,
         });
     }
     Ok(originals)
@@ -153,12 +136,14 @@ pub(super) async fn protect_and_restore(
         if cancel.is_cancelled() {
             return Err(cancelled());
         }
+        original.input.check()?;
         if let Some(hooks) = hooks {
             hooks
                 .protect_input(
                     original.name.clone(),
-                    Output::Bytes {
-                        bytes: original.bytes.clone(),
+                    Output::File {
+                        path: original.input.path().to_owned(),
+                        bytes: original.input.bytes,
                         mime: original.mime.clone(),
                     },
                 )
@@ -179,7 +164,12 @@ pub(super) async fn protect_and_restore(
                 let (output, pending) =
                     tempfile::NamedTempFile::new_in(file.parent().unwrap())?.into_parts();
                 let mut output = tokio::fs::File::from_std(output);
-                output.write_all(original.bytes.as_slice()).await?;
+                let mut source = tokio::io::BufReader::with_capacity(256 * 1024, tokio::fs::File::open(original.input.path()).await?);
+                let copied = tokio::select! {
+                    _ = cancel.cancelled() => return Err(cancelled()),
+                    copied = tokio::io::copy_buf(&mut source, &mut output) => copied?,
+                };
+                if copied != original.input.bytes { return Err(error("TASK_INPUT_CHANGED", "受保护输入的长度已改变")); }
                 output.flush().await?;
                 output.sync_all().await?;
                 drop(output);

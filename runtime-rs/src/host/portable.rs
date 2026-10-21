@@ -34,13 +34,20 @@ pub(super) async fn handle(state: &AppState, input: &Value, principal: &str) -> 
         return Ok(json!({"workspaceId":id,"activated":true}));
     }
     let path = input["path"].as_str().filter(|path| !path.is_empty()).ok_or_else(|| ApiError::invalid("Choose a backup file"))?;
-    let command = json!({"kind":action,"operationId":id,"path":path,"backupId":input["backupId"]});
+    let storage = state.host.storage();
+    if action == "artwork-export" && state.host.active().is_none_or(|active| active["workspaceId"] != input["workspaceId"]) {
+        return Err(ApiError::invalid("作品库连接已变化，请回到原工作区重新导出"));
+    }
+    let command = json!({"kind":action,"operationId":id,"path":path,"backupId":input["backupId"],"workspaceId":input["workspaceId"]});
     let owned = state.clone(); let principal_owned = principal.to_owned();
     let snapshot = state.host.jobs.start(principal,command.clone(),state.shutdown.clone(),move |job| async move {
         let path = std::path::PathBuf::from(command["path"].as_str().unwrap());
         if !path.is_absolute() { return Err(ApiError::invalid("Backup path must be absolute")); }
-        if command["kind"] == "portable-export" {
-            let storage = owned.host.storage().ok_or_else(|| ApiError::invalid("Workspace unavailable"))?;
+        if command["kind"] == "artwork-export" {
+            let storage = storage.ok_or_else(||ApiError::invalid("Workspace unavailable"))?;
+            storage.export_artwork_images(path,principal_owned,command["operationId"].as_str().unwrap().into(),job).await
+        } else if command["kind"] == "portable-export" {
+            let storage = storage.ok_or_else(||ApiError::invalid("Workspace unavailable"))?;
             storage.export_portable_backup(command["backupId"].as_str().unwrap_or("").into(),path,job).await
         } else {
             let id = uuid::Uuid::new_v4().to_string();

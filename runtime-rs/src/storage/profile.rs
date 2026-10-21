@@ -177,12 +177,18 @@ fn clear_chat(c: &Context) -> Result<()> {
     c.db.execute("DELETE FROM chat_message_records", [])?;
     Ok(())
 }
-fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>, known_archive: Option<&str>) -> Result<Value> {
+fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>, known_archive: Option<&str>, projection: &str) -> Result<Value> {
     c.check_cancel()?;
     let prefix = format!("{}:", window.unwrap_or("undefined"));
     // Filter window-owned drafts before copying their bodies out of SQLite.
     // Match registered global keys, including the hyphenated model namespace.
     // substr preserves literal window IDs, including Unicode and SQL wildcards.
+    let excluded = match projection {
+        "bootstrap" => "'aics_chat_v1','aics_chat_archive_v1','aics_retired_companion_chat_v1'",
+        "history" => "'aics_chat_archive_v1'",
+        "full" => "''",
+        _ => return Err(invalid("Invalid chat projection")),
+    };
     let scope = format!(
         "FROM profile_records WHERE domain=?1
          AND (?1!='draft' OR record_key GLOB 'aics_chat_draft_v1:*'
@@ -213,7 +219,7 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
             entries.push((key, revision));
         }
         canonical::digest(serde_json::to_vec(&(
-            &c.workspace_id, &c.epoch, domain, window, &reset_revision, entries,
+            &c.workspace_id, &c.epoch, domain, window, &reset_revision, projection, entries,
         ))?)
     };
     if known == Some(version.as_str()) {
@@ -230,7 +236,7 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
     // whose exact record token the caller already holds, within this same read.
     let skip_archive = if unchanged_archive.is_some() { CHAT_ARCHIVE } else { "" };
     let parameter = DRAFT.len() + 3;
-    let mut statement = c.db.prepare_cached(&format!("SELECT record_key,body,revision {scope} AND (?{parameter}='' OR record_key!=?{parameter}) ORDER BY record_key"))?;
+    let mut statement = c.db.prepare_cached(&format!("SELECT record_key,body,revision {scope} AND (?1!='chat' OR record_key NOT IN ({excluded})) AND (?{parameter}='' OR record_key!=?{parameter}) ORDER BY record_key"))?;
     let mut rows = statement.query(rusqlite::params_from_iter(parameters.chain(std::iter::once(skip_archive))))?;
     let mut records = Vec::new();
     while let Some(row) = rows.next().transpose() {
@@ -255,6 +261,7 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
     }
     let mut snapshot = json!({"records":null,"revision":c.revision()?,"resetRevision":reset_revision,"version":version});
     snapshot["records"] = Value::Array(records);
+    if domain == "chat" && projection != "full" { snapshot["archiveVersion"] = json!(archive_version(c,archive_revision,&reset_revision)?); }
     if let Some(version) = unchanged_archive { snapshot["unchangedArchive"] = json!(version); }
     Ok(snapshot)
 }
@@ -275,7 +282,8 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         let window = if domain == "draft" { Some(string(command, "windowId")?) } else { None };
         let known = command.get("ifVersion").map(|_| string(command, "ifVersion")).transpose()?;
         let archive = if domain == "chat" { command.get("ifArchiveVersion").map(|_| string(command, "ifArchiveVersion")).transpose()? } else { None };
-        return snapshot(c, domain, window, known, archive);
+        let projection = command.get("projection").map(|_| string(command,"projection")).transpose()?.unwrap_or("full");
+        return snapshot(c, domain, window, known, archive, projection);
     }
     match kind {
         "profile.saveSetting"
@@ -313,7 +321,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
                 media_refs::replace_decoded(c,"chat","aics_chat_v1",&record)?;
             }
             c.db.execute("INSERT INTO profile_records VALUES('chat','aics_chat_reset_v1',?,?)",params![stringify(&command["operationId"]),revision])?;
-            snapshot(c,"chat",None,None,None)?
+            snapshot(c,"chat",None,None,None,"full")?
         } else {
             let selected=match kind {"profile.saveSetting"=>"settings","profile.saveChatRecord"=>"chat",_=>"draft"};
             let key=string(command,"key")?;

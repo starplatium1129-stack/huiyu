@@ -37,7 +37,11 @@ impl Target {
     }
 }
 
-async fn hashed_source(output: Output) -> Result<(TaskMediaSource, String)> {
+async fn hashed_source(storage: &Storage, output: Output) -> Result<(TaskMediaSource, String)> {
+    let bytes = match output {
+        Output::File { path, bytes, .. } => return storage.stage_task_file(path, bytes).await,
+        Output::Bytes { bytes, .. } => bytes,
+    };
     let permit =
         HASHERS.clone().acquire_owned().await.map_err(|_| {
             ApiError::new(503, "TASK_MEDIA_UNAVAILABLE", "Media worker unavailable")
@@ -57,29 +61,11 @@ async fn hashed_source(output: Output) -> Result<(TaskMediaSource, String)> {
         };
         check()?;
         let mut hash = Sha256::new();
-        let source = match output {
-            Output::Bytes { bytes, .. } => {
-                for chunk in bytes.chunks(1024 * 1024) {
-                    check()?;
-                    hash.update(chunk);
-                }
-                TaskMediaSource::Bytes(bytes)
-            }
-            Output::File { path, .. } => {
-                let mut file = std::fs::File::open(path)?;
-                let mut buffer = vec![0; 1024 * 1024];
-                loop {
-                    check()?;
-                    let read = file.read(&mut buffer)?;
-                    if read == 0 {
-                        break;
-                    }
-                    hash.update(&buffer[..read]);
-                }
-                file.rewind()?;
-                TaskMediaSource::File(file)
-            }
-        };
+        for chunk in bytes.chunks(1024 * 1024) {
+            check()?;
+            hash.update(chunk);
+        }
+        let source = TaskMediaSource::Bytes(bytes);
         check()?;
         Ok((source, hex::encode(hash.finalize())))
     })
@@ -96,7 +82,7 @@ pub(super) async fn persist(
 ) -> Result<()> {
     let bytes = output.len();
     let mime = output.mime().to_owned();
-    let (source, hash) = hashed_source(output).await?;
+    let (source, hash) = hashed_source(storage, output).await?;
     let mut media = json!({"alias":target.alias(id),"sha256":hash,"bytes":bytes,"mime":mime});
     if let Target::Result(index) = &target {
         media["index"] = json!(index);

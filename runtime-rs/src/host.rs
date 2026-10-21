@@ -80,6 +80,7 @@ async fn perform(
         "operation-status",
         "operation-cancel",
         "portable-export",
+        "artwork-export",
         "portable-import",
         "portable-activate",
     ]
@@ -110,7 +111,7 @@ async fn perform(
     }
     state.host.check_running()?;
     let principal = format!("desktop:{}",state.config.source_profile_id.as_deref().unwrap_or(""));
-    if matches!(action,"portable-export"|"portable-import"|"portable-activate") {
+    if matches!(action,"portable-export"|"portable-import"|"portable-activate"|"artwork-export") {
         return Ok(Json(portable::handle(state,&input,&principal).await?));
     }
     if matches!(action,"operation-status"|"operation-cancel") {

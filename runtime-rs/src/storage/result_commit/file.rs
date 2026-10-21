@@ -33,12 +33,10 @@ pub(super) fn copy(
     }
     let total = media["bytes"].as_u64().unwrap();
     match source {
-        TaskMediaSource::File(file) => {
-            let stat = file.metadata()?;
-            if !stat.is_file() || stat.len() != total {
-                return Err(conflict("MEDIA_INVALID", "Task file length changed"));
-            }
-            copy_from(identity, path, total, file)
+        TaskMediaSource::Staged(staged) => {
+            identity.check_paths()?;
+            staged.install(&identity.root,path)?;
+            identity.check_paths()
         }
         TaskMediaSource::Bytes(bytes) => {
             if bytes.len() as u64 != total {

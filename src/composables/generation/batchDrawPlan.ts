@@ -15,15 +15,32 @@ export interface BatchDrawPlan {
   jobs: BatchDrawJob[]
 }
 export interface BatchDrawPlanStorage {
-  read(): BatchDrawPlan | null
-  write(plan: BatchDrawPlan): Promise<void>
+  read(): BatchDrawPlan | BatchDrawReference | null
+  write(plan: BatchDrawPlan | BatchDrawReference): Promise<void>
   clear(): Promise<void>
+}
+/** Written only after the authority acknowledged the complete original plan. */
+export interface BatchDrawReference {
+  version: 2
+  createdAt: number
+  engine: 'anima'
+  runtimeOwned: true
+  backendId: string
+  owner: TempResultOwner
 }
 const statuses = new Set(['pending', 'running', 'accepted', 'unknown', 'succeeded', 'failed', 'cancelled'])
 const record = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 
 /** Planning snapshots hold frozen input and request identities, never runtime task records or Blob URLs. */
-function parseBatchDrawPlan(value: unknown): BatchDrawPlan | null {
+function parseBatchDrawPlan(value: unknown): BatchDrawPlan | BatchDrawReference | null {
+  if (record(value) && value.version === 2) {
+    if (value.runtimeOwned !== true || value.engine !== 'anima' || !Number.isFinite(value.createdAt)
+      || typeof value.backendId !== 'string' || !/^[0-9a-f-]{36}$/.test(value.backendId)
+      || !record(value.owner) || value.owner.kind !== 'workspace'
+      || typeof value.owner.workspaceId !== 'string' || typeof value.owner.principalId !== 'string') return null
+    return { version: 2, createdAt: value.createdAt as number, engine: 'anima', runtimeOwned: true, backendId: value.backendId,
+      owner: { kind: 'workspace', workspaceId: value.owner.workspaceId, principalId: value.owner.principalId } }
+  }
   if (!record(value) || value.version !== 1 || !['sd', 'anima'].includes(String(value.engine))
     || typeof value.runtimeOwned !== 'boolean' || typeof value.createdAt !== 'number' || !Number.isFinite(value.createdAt)
     || !Array.isArray(value.targets) || !Array.isArray(value.jobs) || !value.jobs.length) return null
@@ -68,9 +85,9 @@ export function createBatchDrawPlanStorage(): BatchDrawPlanStorage {
     },
     async write(plan) {
       if (plan.owner && !sameTempResultOwner(plan.owner)) throw new Error('批次所属资料来源已变化，原计划已保留')
-      const jobs = plan.jobs.map(({ pendingImage: _pending, message: _message, ...job }) => job)
+      const saved = plan.version === 2 ? plan : { ...plan, jobs: plan.jobs.map(({ pendingImage: _pending, message: _message, ...job }) => job) }
       // The stable identity must be durable before admitting a model request.
-      await writeProfileDraft(BATCH_DRAW_PLAN_KEY, JSON.stringify({ ...plan, jobs })).confirm()
+      await writeProfileDraft(BATCH_DRAW_PLAN_KEY, JSON.stringify(saved)).confirm()
     },
     async clear() { await writeProfileDraft(BATCH_DRAW_PLAN_KEY, null).confirm() },
   }

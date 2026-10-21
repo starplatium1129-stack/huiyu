@@ -128,7 +128,10 @@ const router = createRouter({
 // Track navigation before loading local characters; room setup still waits for them.
 router.beforeResolve(async to => {
   if (['/chat', '/companion', '/companion-chat'].includes(to.path)) {
-    await (await import('@/utils/localCompanions')).loadLocalCompanions()
+    await Promise.all([
+      (await import('@/utils/localCompanions')).loadLocalCompanions(),
+      (await import('@/platform/web/profileStorage')).ensureProfileChatHistory(),
+    ])
   }
 })
 

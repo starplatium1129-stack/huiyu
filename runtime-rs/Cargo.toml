@@ -10,7 +10,7 @@ axum = { version = "0.8", features = ["multipart"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "fs", "io-util", "sync", "time", "process"] }
 tokio-util = { version = "0.7", features = ["io", "rt"] }
 tower-http = { version = "0.6", features = ["fs", "timeout"] }
-serde = { version = "1", features = ["derive"] }
+serde = { version = "1", features = ["derive", "rc"] }
 serde_json = { version = "1", features = ["preserve_order"] }
 rusqlite = { version = "0.40", features = ["bundled", "backup", "hooks"] }
 sha2 = "0.10"

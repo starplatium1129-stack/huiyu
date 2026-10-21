@@ -35,13 +35,16 @@ export function normalizeChatConversations(value: unknown, histories: Record<str
   return conversations
 }
 type ConversationState = Pick<ChatState, 'conversations' | 'histories' | 'historiesRevision' | 'historiesRevisions'>
-export function captureChatConversations(state: Pick<ChatState, 'conversations' | 'histories'>): Record<string, ChatConversation> {
-  const result = JSON.parse(JSON.stringify(state.conversations)) as Record<string, ChatConversation>
-  for (const [char, history] of Object.entries(state.histories)) {
-    const conversation = result[char] ||= emptyChatConversation()
-    conversation.branches.find(branch => branch.id === conversation.activeId)!.messages = cloneChatMessages(history)
-  }
-  return result
+/** Borrow messages only for synchronous encoding; never publish this projection as mutable state. */
+export function projectChatConversations(state: Pick<ChatState, 'conversations' | 'histories'>, characters = Object.keys(state.histories)): Record<string, ChatConversation> {
+  return Object.fromEntries(characters.map(char => {
+    const conversation = state.conversations[char] || emptyChatConversation()
+    return [char, { ...conversation, branches: conversation.branches.map(branch => ({ ...branch,
+      messages: branch.id === conversation.activeId ? state.histories[char] || [] : branch.messages })) }]
+  }))
+}
+export function captureChatConversations(state: Pick<ChatState, 'conversations' | 'histories'>, characters?: string[]): Record<string, ChatConversation> {
+  return JSON.parse(JSON.stringify(projectChatConversations(state, characters))) as Record<string, ChatConversation>
 }
 /** Every branch merges independently. A switch never mixes its old continuation into the new branch. */
 export function mergeChatConversationStates(local: ConversationState, remote: ConversationState, snapshots = new Map<string, string>()) {
@@ -85,9 +88,10 @@ export function mergeChatConversationStates(local: ConversationState, remote: Co
     local.historiesRevision = Math.max(local.historiesRevision, remoteRevision)
   }
 }
-export function rememberChatConversations(state: ConversationState, snapshots: Map<string, string>) {
-  snapshots.clear()
-  for (const [char, conversation] of Object.entries(captureChatConversations(state))) for (const branch of conversation.branches) {
+export function rememberChatConversations(state: ConversationState, snapshots: Map<string, string>, characters?: string[]) {
+  if (!characters) snapshots.clear()
+  else for (const key of snapshots.keys()) if (characters.some(char => key.startsWith(`${char}::`))) snapshots.delete(key)
+  for (const [char, conversation] of Object.entries(projectChatConversations(state, characters))) for (const branch of conversation.branches) {
     for (const message of branch.messages) snapshots.set(`${char}::${branch.id}::${chatMessageKey(message)}`, JSON.stringify(message))
   }
 }

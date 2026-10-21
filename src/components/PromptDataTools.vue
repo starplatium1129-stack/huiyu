@@ -35,13 +35,13 @@
           {{ backup.workspaceProgress.value || `正在备份图片：${backup.exportProgress.value.completed} / ${backup.exportProgress.value.total}` }}
         </div>
         <button v-if="backup.exportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">取消当前备份操作</button>
-        <StudioTooltip anchor :content="backup.desktopActive.value ? '将当前作品记录引用的本机原图逐张下载为独立图片文件' : '逐张下载此浏览器保存的全部原图，包含未入册、回收站及旧库图片，不只限于当前作品册'">
+        <StudioTooltip anchor :content="backup.desktopActive.value ? backup.nativeImageExport ? '选择目录，将作品原图保存到新的独立文件夹' : '将当前作品记录引用的本机原图逐张下载为独立图片文件' : '逐张下载此浏览器保存的全部原图，包含未入册、回收站及旧库图片，不只限于当前作品册'">
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportImages()">
             <ArchiveIcon name="image" /> 导出作品图片
           </button>
         </StudioTooltip>
         <div v-if="backup.imageExportProgress.value" class="utility-note wide" role="status" aria-live="polite">
-          正在导出原图：{{ backup.imageExportProgress.value.completed }} / {{ backup.imageExportProgress.value.total }}（已开始的下载无法撤销）
+          正在导出原图：{{ backup.imageExportProgress.value.completed }} / {{ backup.imageExportProgress.value.total }}{{ backup.desktopActive.value && backup.nativeImageExport ? '（已完成文件会保留）' : '（已开始的下载无法撤销）' }}
         </div>
         <button v-if="backup.imageExportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">停止后续图片导出</button>
         <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">

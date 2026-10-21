@@ -199,7 +199,7 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
         input["family"].as_str().unwrap_or(""),
     )
 }
-pub(super) async fn plan(settings: &generation::native::Settings, input: Value, image: Option<Arc<Vec<u8>>>) -> Result<generation::native::Plan> {
+pub(super) async fn plan(settings: &generation::native::Settings, input: Value, image: Option<generation::native::InputFile>) -> Result<generation::native::Plan> {
     let style = input["styleLoraId"].as_str().map(str::to_owned);
     let root = settings.loras_root.clone();
     let loras = tokio::task::spawn_blocking(move || -> Result<Vec<Value>> {

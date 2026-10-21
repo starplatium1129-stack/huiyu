@@ -1,4 +1,5 @@
 mod artwork_index;
+mod artwork_export;
 mod gallery;
 mod gallery_index;
 mod artwork_search;
@@ -49,7 +50,7 @@ pub use media::Media;
 pub(crate) use verification::OpenedMedia;
 
 pub(crate) enum TaskMediaSource {
-    File(std::fs::File),
+    Staged(verification::Staged),
     Bytes(Arc<Vec<u8>>),
 }
 
@@ -85,6 +86,7 @@ enum Work {
         Arc<AtomicBool>,
         oneshot::Sender<Result<Value>>,
     ),
+    TaskPatch(String, i64, crate::task_contract::TaskPatch, String, Arc<AtomicBool>, oneshot::Sender<Result<crate::task_contract::TaskRecord>>),
     TaskRecord(
         tasks::RecordKey,
         String,
@@ -153,6 +155,8 @@ impl Drop for CancelOnDrop {
 
 pub(super) struct Context {
     db: Connection,
+    gallery_catalog: std::cell::RefCell<Option<gallery::CatalogCache>>,
+    task_payloads: std::cell::RefCell<tasks::PayloadCache>,
     root: PathBuf,
     workspace_id: String,
     epoch: String,
@@ -202,6 +206,7 @@ impl Context {
         if !matches!(
             kind,
             "status"
+                | "readArtworkExportPage"
                 | "listArtworks"
                 | "searchArtworks"
                 | "readArtworkRecentIndex"
@@ -263,9 +268,10 @@ impl Context {
         }
         match kind {
             "status" => Ok(
-                json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":5,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
+                json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":schema::VERSION,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
             ),
             "listArtworks"
+            | "readArtworkExportPage"
             | "readArtworkRecentIndex"
                 | "readGalleryPage"
                 | "readGalleryCatalog"
@@ -369,7 +375,9 @@ fn is_read(kind: &str) -> bool {
     matches!(
         kind,
         "status"
+            | "readArtworkExportPage"
             | "imageBatch.get"
+            | "imageBatch.input"
             | "imageBatch.list"
             | "listArtworks"
             | "searchArtworks"

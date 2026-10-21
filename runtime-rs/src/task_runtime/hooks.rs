@@ -25,8 +25,8 @@ impl ExecutionHooks for Hooks {
             let input = value["effectiveInput"].as_object().cloned();
             let revision = revision(&self.storage, &self.principal, &self.id).await?;
             let change = TaskPatch {
-                checkpoint: Some(Some(value)),
-                input,
+                checkpoint: Some(Some(Arc::new(value))),
+                input: input.map(Arc::new),
                 ..Default::default()
             };
             let task = patch_at(&self.storage, &self.principal, &self.id, revision, change).await?;

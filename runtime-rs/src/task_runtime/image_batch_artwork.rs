@@ -15,7 +15,7 @@ pub(super) async fn save(storage: &Storage, principal: &str, task: &TaskRecord) 
     }
     let context = &task.metadata["context"];
     let mut record = context["history"].as_object().cloned().unwrap_or_default();
-    let mut actual = task.input.clone();
+    let mut actual = task.input.as_ref().clone();
     actual.extend(task.metadata.clone());
     for key in ["engine","provider","profile","model","checkpoint","seed","size","prompt","negative","cfg","steps","sampler","scheduler","lora","loraId","loraStrength","loras","styleLoraId","preview","hiresFix","hiresScale","hiresUpscaler","hiresSteps","hiresDenoise","faceDetailer"] { record.remove(key); }
     for key in ["prompt","negative","seed","cfg","steps","sampler","scheduler","loraId","loraStrength","loras","styleLoraId","preview","hiresFix","hiresScale","hiresUpscaler","hiresSteps","hiresDenoise","faceDetailer","sketchControl","sketchControlModel","regions"] {

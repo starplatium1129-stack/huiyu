@@ -142,9 +142,9 @@ pub(super) async fn plan(
     if generation::native::adapters::model(input["modelId"].as_str().unwrap_or("")).is_some() {
         let input = native_adapters::normalize(&input, input.clone())?;
         let image = input["initImage"].as_str().map(|name| originals.iter().find(|o| o.name == name)
-            .map(|o| o.bytes.clone()).ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的编辑原图"))).transpose()?;
+            .map(|o| o.input.clone()).ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的编辑原图"))).transpose()?;
         let references = input["referenceImages"].as_array().into_iter().flatten().map(|value| {
-            originals.iter().find(|original| Some(original.name.as_str()) == value.as_str()).map(|original| original.bytes.clone())
+            originals.iter().find(|original| Some(original.name.as_str()) == value.as_str()).map(|original| original.input.clone())
                 .ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的参考图"))
         }).collect::<Result<Vec<_>>>()?;
         let plan = native_adapters::plan(settings, input, image).await?;
@@ -306,7 +306,7 @@ fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Origin
                     "denoisingStrength 必须大于 0 且不超过 1",
                 )
             })?;
-        Some(original.bytes.clone())
+        Some(original.input.clone())
     } else {
         None
     };
@@ -315,13 +315,13 @@ fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Origin
             .iter()
             .find(|item| item.name == name)
             .ok_or_else(|| error("TASK_INPUT_INVALID", "独立推理遮罩图像未保护"))?;
-        Some(original.bytes.clone())
+        Some(original.input.clone())
     } else {
         None
     };
     let sketch_model_path = composition::prepare(settings, &mut input, &model_dir)?;
     let sketch_image = input["sketchControl"]["image"].as_str().map(|name| originals.iter()
-        .find(|original| original.name == name).map(|original| original.bytes.clone())
+        .find(|original| original.name == name).map(|original| original.input.clone())
         .ok_or_else(|| error("TASK_INPUT_INVALID", "草图输入尚未保护"))).transpose()?;
     Ok(Plan {
         input: input.into(),

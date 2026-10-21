@@ -7,7 +7,7 @@ pub(super) struct Worker {
     pub process: OwnedProcess,
     pub input: ChildStdin,
     pub output: BufReader<ChildStdout>,
-    pub(super) current_temp: Arc<std::sync::Mutex<Option<Arc<tempfile::TempDir>>>>,
+    pub(super) current_temp: Arc<std::sync::Mutex<Option<Arc<RunFiles>>>>,
     event_line: Vec<u8>,
     stderr: JoinHandle<()>,
     pub idle: CancellationToken,

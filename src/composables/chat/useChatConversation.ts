@@ -136,7 +136,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     options.storage.trim(characterId)
     const assistant = createAssistant()
     messages.push(assistant)
-    options.storage.save()
+    options.storage.save(true, true, [characterId])
     if (customText === undefined) {
       draft.clear()
       inputText.value = ''
@@ -203,7 +203,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     if (!assistant) return
     if (!regeneration) {
       history.push(assistant)
-      if (!options.storage.save()) { history.pop(); options.onError('对话未能保存，请重试。'); return }
+      if (!options.storage.save(true, true, [characterId])) { history.pop(); options.onError('对话未能保存，请重试。'); return }
     }
     const turn = captureTurn(characterId, user, assistant, true, regeneration)
     turn.messages = [...history.slice(0, userIndex + 1), assistant]
@@ -458,7 +458,7 @@ export function useChatConversation(options: ChatConversationOptions) {
           if (!ownsHistory()) options.voice.stop({ preserveMessageAudio: true, silent: true })
           if (turn.regeneration) options.storage.finishRegeneration(turn.characterId, turn.regeneration.replyId, turn.regeneration.previousMid)
           options.storage.trim(turn.characterId)
-          options.storage.save()
+          options.storage.save(true, true, [turn.characterId])
         } finally {
           resetEmotion()
           if (!disposed) { options.onToolActivity?.(null); options.onThinking?.(null) }

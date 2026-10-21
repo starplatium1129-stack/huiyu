@@ -259,20 +259,13 @@ pub(super) async fn patch_at(
 ) -> Result<TaskRecord> {
     for attempt in 0..5 {
         let result = storage
-            .task(
-                TaskCommand::Patch {
-                    task_id: id.into(),
-                    expected_revision: revision,
-                    patch: Box::new(value.clone()),
-                },
-                principal,
-            )
+            .patch_task(id,revision,value.clone(),principal)
             .await;
         match result {
             Err(error) if error.code == "REVISION_CONFLICT" && attempt < 4 => {
                 revision = self::revision(storage, principal, id).await?;
             }
-            result => return Ok(serde_json::from_value(result?)?),
+            result => return result,
         }
     }
     unreachable!()

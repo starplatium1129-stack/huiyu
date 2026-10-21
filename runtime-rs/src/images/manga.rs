@@ -208,14 +208,14 @@ pub(super) async fn plan(
     let input = normalize(&input)?;
     let settings = settings(runtime)?;
     validate_runtime(&settings).await?;
-    let source = |key: &str| -> Result<Option<Arc<Vec<u8>>>> {
+    let source = |key: &str| -> Result<Option<generation::native::InputFile>> {
         input[key]
             .as_str()
             .map(|name| {
                 originals
                     .iter()
                     .find(|o| o.name == name)
-                    .map(|o| o.bytes.clone())
+                    .map(|o| o.input.clone())
                     .ok_or_else(|| error("TASK_INPUT_MISSING", "缺少受保护的漫画输入图像"))
             })
             .transpose()

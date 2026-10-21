@@ -105,7 +105,7 @@ impl TaskRuntime {
         let prepared = tokio::time::timeout(
             std::time::Duration::from_secs(120),
             self.images.resume_prepared(
-                Value::Object(source.input.clone()),
+                Value::Object(source.input.as_ref().clone()),
                 &hooks,
                 cancel.clone(),
             ),
@@ -128,7 +128,7 @@ impl TaskRuntime {
                 error
             }
         })?;
-        if prepared.input().as_object() != Some(&source.input) {
+        if prepared.input().as_object() != Some(source.input.as_ref()) {
             return Err(ApiError::new(
                 409,
                 "TASK_RESUME_UNSAFE",
@@ -138,7 +138,7 @@ impl TaskRuntime {
         // Restoration identity is checked above; the consumed source recipe can
         // now move into the fingerprint envelope instead of being copied again.
         let mut frozen = json!({"kind":source.kind,"input":null,"context":null,"retryOfTaskId":id});
-        frozen["input"] = Value::Object(source.input);
+        frozen["input"] = Value::Object(Arc::unwrap_or_clone(source.input));
         frozen["context"] = source.metadata.remove("context").unwrap_or(json!({}));
         let fingerprint = self.fingerprint.hash(&frozen);
         let context = frozen["context"].take();

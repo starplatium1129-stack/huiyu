@@ -6,7 +6,7 @@ impl TaskRuntime {
         self.check_running()?;
         let result = storage.request(command, &principal).await?;
         if needs_work(&result) && let Some(id) = result["id"].as_str() { self.start_image_batch(storage, principal, id.to_owned()); }
-        Ok(project(result))
+        Ok(result)
     }
     pub(crate) async fn recover_image_batches(self: &Arc<Self>, storage: &Storage, principal: &str) -> Result<()> {
         let plans = storage.request(json!({"kind":"imageBatch.list"}), principal).await?;
@@ -59,8 +59,9 @@ impl TaskRuntime {
             let existing = storage.task_record_by_request(key, principal).await?;
             let task = if let Some(task) = existing { task } else {
                 if plan["state"] != "running" { return Ok(()); }
-                let request = json!({"kind":if job["snapshot"]["engine"]=="krea2" {"creative"}else{"anima"},
-                    "requestKey":key,"input":job["taskInput"],"context":job["snapshot"]["context"]});
+                let input = storage.request(json!({"kind":"imageBatch.input","id":id,"index":index}),principal).await?;
+                let request = json!({"kind":if input["snapshot"]["engine"]=="krea2" {"creative"}else{"anima"},
+                    "requestKey":key,"input":input["taskInput"],"context":input["snapshot"]["context"]});
                 match self.submit(storage.clone(), principal.into(), request).await {
                     Ok(value) => serde_json::from_value::<TaskRecord>(value)?,
                     Err(error) if error.code == "TASK_PROVIDER_BUSY" => { self.batch_pause().await?; continue; }
@@ -106,8 +107,4 @@ impl TaskRuntime {
 }
 fn needs_work(plan: &Value) -> bool {
     plan["state"] == "running" || plan["jobs"].as_array().is_some_and(|jobs| jobs.iter().any(|job| matches!(job["status"].as_str(), Some("accepted" | "running"))))
-}
-pub(super) fn project(mut plan: Value) -> Value {
-    if let Some(object) = plan.as_object_mut() { object.remove("source"); }
-    plan
 }

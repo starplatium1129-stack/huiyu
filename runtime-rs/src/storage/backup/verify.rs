@@ -11,7 +11,7 @@ pub(super) fn validate_manifest(c: &Files,value: Value,id: &str) -> Result<Value
         || value["workspaceId"] != c.workspace_id
         || value["schemaVersion"]
             .as_i64()
-            .is_none_or(|v| !(1..=5).contains(&v))
+            .is_none_or(|v| !(1..=schema::VERSION).contains(&v))
         || value["revision"].as_u64().is_none()
         || value["database"]["bytes"].as_u64().is_none()
         || !value["database"]["sha256"]
@@ -130,6 +130,7 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
 }
 fn verify_records(c: &Files, db: &Connection) -> Result<()> {
     let version: i64 = db.query_row("PRAGMA user_version",[],|row|row.get(0))?;
+    if version >= 6 { verify_payloads(c,db)?; }
     if version >= 5 {
         let chat: Option<String> = db.query_row("SELECT body FROM profile_records WHERE domain='chat' AND record_key='aics_chat_v1'",[],|row|row.get(0)).optional()?;
         if let Some(chat) = chat { profile::messages::decode(db,serde_json::from_str(&chat)?)?; }
@@ -198,5 +199,19 @@ fn verify_records(c: &Files, db: &Connection) -> Result<()> {
             return Err(invalid_backup("Backup trash snapshot is invalid"));
         }
     }
+    Ok(())
+}
+
+fn verify_payloads(c: &Files, db: &Connection) -> Result<()> {
+    let mut statement = db.prepare(&format!("SELECT {} FROM tasks",tasks::TASK_BODY))?;
+    let mut rows = statement.query([])?;
+    while let Some(row) = rows.next()? {
+        c.check_cancel()?;
+        let _: crate::task_contract::TaskRecord = serde_json::from_str(text_column(row,0)?)?;
+    }
+    let invalid = db.prepare("SELECT 1 FROM image_batch_plans p WHERE NOT EXISTS(SELECT 1 FROM image_batch_sources s WHERE s.id=p.id)
+        OR (SELECT count(*) FROM image_batch_inputs i WHERE i.batch_id=p.id)!=json_array_length(p.body,'$.jobs')
+        OR EXISTS(SELECT 1 FROM image_batch_inputs i WHERE i.batch_id=p.id AND (i.job_index<0 OR i.job_index>=json_array_length(p.body,'$.jobs') OR json_type(i.body,'$.taskInput') IS NOT 'object' OR json_type(i.body,'$.snapshot') IS NOT 'object')) LIMIT 1")?.exists([])?;
+    if invalid { return Err(invalid_backup("Backup image batch inputs are incomplete")); }
     Ok(())
 }

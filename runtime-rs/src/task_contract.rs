@@ -2,6 +2,7 @@
 //! lifecycle decisions use these types, independently of any engine or database.
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::{json, Map, Value};
+use std::sync::Arc;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -109,14 +110,15 @@ pub struct TaskRecord {
     pub cancel_requested_at: Option<u64>,
     pub upstream_settled: bool,
     pub execution_deadline: u64,
-    pub input: Map<String, Value>,
+    // Shared payloads are immutable across the runtime/worker boundary.
+    pub input: Arc<Map<String, Value>>,
     pub input_media_refs: Vec<String>,
     pub result_state: ResultState,
     pub result_refs: Vec<ResultRef>,
     pub delivery_state: DeliveryState,
     pub error_code: Option<String>,
     pub metadata: Map<String, Value>,
-    pub checkpoint: Option<Value>,
+    pub checkpoint: Option<Arc<Value>>,
     pub parent_batch_id: Option<String>,
     pub step_index: Option<u64>,
 }
@@ -145,18 +147,18 @@ impl TaskRecord {
     }
 
     pub(crate) fn into_value(mut self) -> serde_json::Result<Value> {
-        // Transfer owned trees and references instead of copying their strings.
+        // Move unique trees; shared payloads detach only at the JSON boundary.
         let input = std::mem::take(&mut self.input);
         let input_media_refs = std::mem::take(&mut self.input_media_refs);
         let result_refs = std::mem::take(&mut self.result_refs);
         let metadata = std::mem::take(&mut self.metadata);
         let checkpoint = self.checkpoint.take();
         let mut value = serde_json::to_value(self)?;
-        value["input"] = Value::Object(input);
+        value["input"] = Value::Object(Arc::unwrap_or_clone(input));
         value["inputMediaRefs"] = Value::Array(input_media_refs.into_iter().map(Value::String).collect());
         value["resultRefs"] = Value::Array(result_refs.into_iter().map(ResultRef::into_value).collect());
         value["metadata"] = Value::Object(metadata);
-        value["checkpoint"] = checkpoint.unwrap_or(Value::Null);
+        value["checkpoint"] = checkpoint.map(Arc::unwrap_or_clone).unwrap_or(Value::Null);
         Ok(value)
     }
 }
@@ -298,13 +300,13 @@ pub struct TaskPatch {
         skip_serializing_if = "Option::is_none",
         deserialize_with = "present"
     )]
-    pub checkpoint: Option<Option<Value>>,
+    pub checkpoint: Option<Option<Arc<Value>>>,
     #[serde(
         default,
         skip_serializing_if = "Option::is_none",
         deserialize_with = "nonnull"
     )]
-    pub input: Option<Map<String, Value>>,
+    pub input: Option<Arc<Map<String, Value>>>,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]

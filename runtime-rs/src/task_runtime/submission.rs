@@ -131,7 +131,7 @@ impl TaskRuntime {
                 .input()
                 .as_object()
                 .cloned()
-                .ok_or_else(|| ApiError::invalid("Invalid prepared task input").not_accepted())?,
+                .ok_or_else(|| ApiError::invalid("Invalid prepared task input").not_accepted())?.into(),
             input_media_refs: vec![],
             result_state: ResultState::None,
             result_refs: vec![],

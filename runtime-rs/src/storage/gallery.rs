@@ -1,3 +1,6 @@
+mod catalog;
+pub(super) use catalog::{CatalogCache, read as catalog};
+
 use super::*;
 use gallery_index::FIELDS;
 use rusqlite::{params_from_iter, types::Value as SqlValue};
@@ -39,7 +42,11 @@ impl Filter {
         if id.is_empty() {
             return;
         }
-        self.and("EXISTS(SELECT 1 FROM projects p,json_each(p.body,'$.history_ids') m WHERE p.id_key=? AND json_type(p.body,'$.smartRule') IS NULL AND CAST(m.value AS TEXT)=g.id_key)");
+        // Both subqueries are independent of the gallery row. Read the indexed
+        // membership once; never parse a large history_ids array per candidate.
+        self.and("g.id_key IN (SELECT artwork_key FROM project_artworks WHERE project_key=?)");
+        self.bind(id);
+        self.and("EXISTS(SELECT 1 FROM projects WHERE id_key=? AND json_type(body,'$.smartRule') IS NULL)");
         self.bind(id);
     }
     fn search(&mut self, search: &str) {
@@ -99,9 +106,10 @@ fn filter(c: &Context, query: &Value) -> Result<Filter> {
     }
     let project = text("projectId")?;
     if !project.is_empty() {
-        match records::project(c, project)? {
-            Some(p) if p["body"].get("smartRule").is_some() => {
-                if f.rule(&p["body"]["smartRule"]).is_err() {
+        match records::project_header(c, project)? {
+            Some(p) if p.smart => {
+                let record = records::project(c, project)?;
+                if record.is_none_or(|p| f.rule(&p["body"]["smartRule"]).is_err()) {
                     f.and("0");
                 }
             }
@@ -199,76 +207,5 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     };
     Ok(
         json!({"items":page.into_iter().map(|mut item| item["record"].take()).collect::<Vec<_>>(),"total":total,"nextCursor":next,"revision":revision,"projectsVersion":projects}),
-    )
-}
-fn buckets(c: &Context, path: &str) -> Result<Value> {
-    let mut stmt = c.db.prepare(&format!("SELECT value,count(*) FROM artwork_gallery_index,json_each(facets,'$.{path}') GROUP BY value ORDER BY count(*) DESC,value"))?;
-    let values = stmt
-        .query_map([], |r| {
-            Ok(json!({"value":r.get::<_,String>(0)?,"count":r.get::<_,i64>(1)?}))
-        })?
-        .collect::<rusqlite::Result<Vec<_>>>()?;
-    Ok(values.into())
-}
-fn album(c: &Context, id: Value, f: &Filter, covers: &mut HashMap<String, Value>) -> Result<Value> {
-    let page = items(c, f, 3)?;
-    let mut ids = Vec::new();
-    for item in page {
-        let record = &item["record"];
-        ids.push(record["id"].clone());
-        covers.insert(item["key"].as_str().unwrap().into(), record.clone());
-    }
-    Ok(json!({"id":id,"count":count(c,f)?,"coverIds":ids}))
-}
-pub(super) fn catalog(c: &Context) -> Result<Value> {
-    let mut generation = json!({});
-    for field in FIELDS {
-        let mut values = buckets(c, &format!("generation.{field}"))?
-            .as_array()
-            .unwrap()
-            .clone();
-        for value in &mut values {
-            value["value"] = format!("v:{}", value["value"].as_str().unwrap()).into();
-        }
-        let missing: i64 = c.db.query_row(&format!("SELECT count(*) FROM artwork_gallery_index WHERE json_array_length(facets,'$.generation.{field}')=0"),[],|r| r.get(0))?;
-        values.push(json!({"value":"missing","count":missing}));
-        generation[field] = values.into();
-    }
-    let mut covers = HashMap::new();
-    let mut albums = Vec::new();
-    let mut stmt =
-        c.db.prepare_cached("SELECT id_key FROM projects ORDER BY id_key")?;
-    let ids = stmt
-        .query_map([], |r| r.get::<_, String>(0))?
-        .collect::<rusqlite::Result<Vec<_>>>()?;
-    for id in ids {
-        c.check_cancel()?;
-        albums.push(album(
-            c,
-            json!(id),
-            &filter(c, &json!({"projectId":id}))?,
-            &mut covers,
-        )?);
-    }
-    let mut characters = Vec::new();
-    let mut character_ids = buckets(c, "characters")?
-        .as_array()
-        .unwrap()
-        .iter()
-        .map(|v| v["value"].as_str().unwrap().to_owned())
-        .collect::<Vec<_>>();
-    character_ids.push("__unassigned__".into());
-    for id in character_ids {
-        c.check_cancel()?;
-        let f = filter(c, &json!({"characterId":id}))?;
-        let a = album(c, json!(id), &f, &mut covers)?;
-        if a["count"].as_i64().unwrap() > 0 {
-            characters.push(a);
-        }
-    }
-    Ok(
-        json!({"revision":artwork_index::revision(c)?,"projectsVersion":project_version(c)?,"total":count(c,&Filter::default())?,
-        "favoriteCount":count(c,&filter(c,&json!({"favoriteOnly":true}))?)?,"tags":buckets(c,"tags")?,"generation":generation,
-        "albums":albums,"characters":characters,"covers":covers.into_values().collect::<Vec<_>>() }),
     )
 }

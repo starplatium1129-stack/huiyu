@@ -4,6 +4,9 @@ pub(crate) mod manga;
 mod output;
 use output::stage_text;
 mod model_layout;
+mod input;
+pub(crate) use input::InputFile;
+use input::RunFiles;
 pub(crate) use model_layout::model_issue;
 pub(crate) mod resources;
 mod observations;
@@ -23,11 +26,11 @@ pub(crate) struct Plan {
     pub model_dir: PathBuf,
     pub mask_model_dir: Option<PathBuf>,
     pub upscale_model_path: Option<PathBuf>,
-    pub init_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
-    pub reference_images: std::sync::Mutex<Vec<Arc<Vec<u8>>>>,
-    pub mask_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
-    pub pen_lines: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
-    pub sketch_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
+    pub init_image: std::sync::Mutex<Option<InputFile>>,
+    pub reference_images: std::sync::Mutex<Vec<InputFile>>,
+    pub mask_image: std::sync::Mutex<Option<InputFile>>,
+    pub pen_lines: std::sync::Mutex<Option<InputFile>>,
+    pub sketch_image: std::sync::Mutex<Option<InputFile>>,
     pub sketch_model_path: Option<PathBuf>,
     pub loras: Vec<Value>,
 }
@@ -280,55 +283,25 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     let output = temp
         .path()
         .join(if video { "result.mp4" } else { "result.png" });
-    // Pass only accepted original bytes, never a mutable upload path. The request
-    // and owned process retain this directory until ready or confirmed retirement.
-    let init_image = plan.init_image.lock().unwrap().take();
-    let input_image_path = if let Some(bytes) = init_image {
-        let path = temp.path().join("input-image");
-        let mut file = tokio::fs::File::create(&path).await?;
-        file.write_all(bytes.as_slice()).await?;
-        file.flush().await?;
-        Some(path)
-    } else {
-        None
+    // Already accepted files are private snapshots, never mutable upload paths.
+    let mut inputs = Vec::new();
+    let mut accepted = |input: Option<InputFile>| -> Result<Option<PathBuf>> {
+        input.map(|input| {
+            input.check()?;
+            let path = input.path().to_owned();
+            inputs.push(input);
+            Ok(path)
+        }).transpose()
     };
-    let mask_image = plan.mask_image.lock().unwrap().take();
-    let mask_image_path = if let Some(bytes) = mask_image {
-        let path = temp.path().join("mask-image");
-        let mut file = tokio::fs::File::create(&path).await?;
-        file.write_all(bytes.as_slice()).await?;
-        file.flush().await?;
-        Some(path)
-    } else {
-        None
-    };
-    let pen_lines = plan.pen_lines.lock().unwrap().take();
-    let pen_lines_path = if let Some(bytes) = pen_lines {
-        let path = temp.path().join("pen-lines");
-        let mut file = tokio::fs::File::create(&path).await?;
-        file.write_all(bytes.as_slice()).await?;
-        file.flush().await?;
-        Some(path)
-    } else {
-        None
-    };
-    let sketch_image = plan.sketch_image.lock().unwrap().take();
-    let sketch_image_path = if let Some(bytes) = sketch_image {
-        let path = temp.path().join("sketch-image");
-        let mut file = tokio::fs::File::create(&path).await?;
-        file.write_all(bytes.as_slice()).await?;
-        file.flush().await?;
-        Some(path)
-    } else { None };
+    let input_image_path = accepted(plan.init_image.lock().unwrap().take())?;
+    let mask_image_path = accepted(plan.mask_image.lock().unwrap().take())?;
+    let pen_lines_path = accepted(plan.pen_lines.lock().unwrap().take())?;
+    let sketch_image_path = accepted(plan.sketch_image.lock().unwrap().take())?;
     let references = std::mem::take(&mut *plan.reference_images.lock().unwrap());
     let mut reference_paths = Vec::new();
-    for (index, bytes) in references.into_iter().enumerate() {
+    for input in references {
         if token.is_cancelled() { return Err(ApiError::new(499, "ABORT_ERR", "参考图准备已取消")); }
-        let path = temp.path().join(format!("reference-{index}"));
-        let mut file = tokio::fs::File::create(&path).await?;
-        file.write_all(bytes.as_slice()).await?;
-        file.flush().await?;
-        reference_paths.push(path);
+        reference_paths.push(accepted(Some(input))?.unwrap());
     }
     let mut request = if plan.input["family"] == "manga-screen" {
         output::manga_request(job, plan, &output, input_image_path, pen_lines_path)
@@ -339,7 +312,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     };
     if !reference_paths.is_empty() { request["referenceImagePaths"] = json!(reference_paths); }
     let mut worker = inner.native.take_worker(&plan.settings).await?;
-    *worker.current_temp.lock().unwrap() = Some(temp.clone());
+    *worker.current_temp.lock().unwrap() = Some(Arc::new(RunFiles { _output: temp.clone(), _inputs: inputs }));
     // Do not interrupt a partially written JSONL request with another command.
     // The stdin reader operates independently of loading and CUDA execution.
     let sent = tokio::time::timeout(Duration::from_secs(10), async {

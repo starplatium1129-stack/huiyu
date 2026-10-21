@@ -107,8 +107,9 @@ pub(in crate::storage) fn import(source: PathBuf, destination: PathBuf, id: Stri
 
 fn rebind_batches(db: &Connection, workspace: &str, principal: &str) -> Result<()> {
     fn rebind(plan: &mut Value, workspace: &str, principal: &str) -> Result<()> {
-        if !plan.is_object() || !plan["jobs"].is_array() { return Err(invalid_backup("Invalid saved image batch")); }
+        if !plan.is_object() || (plan["version"] != 2 && !plan["jobs"].is_array()) { return Err(invalid_backup("Invalid saved image batch")); }
         plan["owner"] = json!({"kind":"workspace","workspaceId":workspace,"principalId":principal});
+        if plan["version"] == 2 { return Ok(()); }
         for job in plan["jobs"].as_array_mut().unwrap() {
             if matches!(job["status"].as_str(),Some("running"|"accepted"|"unknown")) {
                 job["status"] = json!("failed");

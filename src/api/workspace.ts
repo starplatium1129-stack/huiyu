@@ -23,6 +23,7 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'readArtworkRecentIndex': return ['GET', '/artwork-recent-index' + (command.candidateLimit === undefined ? '' : `?candidateLimit=${encode(command.candidateLimit)}`)]
     case 'readGalleryPage': return ['POST', '/gallery/query']
     case 'readGalleryCatalog': return ['GET', '/gallery/catalog']
+    case 'readArtworkExportPage': return ['GET', '/artwork-export?' + new URLSearchParams(Object.entries(command).filter(([key,value]) => key !== 'kind' && value !== undefined).map(([key,value]) => [key,String(value)]))]
     case 'getArtwork': return ['GET', entity]
     case 'getArtworks': return ['POST', '/artworks/lookup']
     case 'listProjects': return ['GET', '/projects']
@@ -67,6 +68,7 @@ function resource(command: Record<string, unknown>): [string, string] {
       const query = new URLSearchParams()
       if (command.ifVersion !== undefined) query.set('ifVersion', String(command.ifVersion))
       if (command.ifArchiveVersion !== undefined) query.set('ifArchiveVersion', String(command.ifArchiveVersion))
+      if (command.projection !== undefined) query.set('projection', String(command.projection))
       return ['GET', '/profile/chat' + (query.size ? `?${query}` : '')]
     }
     case 'profile.readChatArchive': return ['GET', '/profile/chat/archive' + (command.ifVersion === undefined ? '' : `?ifVersion=${encode(command.ifVersion)}`)]

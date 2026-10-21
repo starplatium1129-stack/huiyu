@@ -117,7 +117,7 @@ fn request_once(base: &str, secret: &str, mut payload: serde_json::Value) -> Res
     let response = String::from_utf8(bytes).map_err(|_| "HOST_RESPONSE")?;
     let (header, body) = response.split_once("\r\n\r\n").ok_or("HOST_RESPONSE")?;
     if !header.starts_with("HTTP/1.1 200 ") {
-        if matches!(payload["action"].as_str(), Some("prepare-candidate" | "portable-activate" | "portable-import" | "portable-export" | "operation-status" | "operation-cancel")) {
+        if matches!(payload["action"].as_str(), Some("prepare-candidate" | "portable-activate" | "portable-import" | "portable-export" | "artwork-export" | "operation-status" | "operation-cancel")) {
             if let Ok(error) = serde_json::from_str::<serde_json::Value>(body) {
                 if let (Some(code), Some(message)) = (error["code"].as_str(), error["error"].as_str()) {
                     return Err(format!("{code}: {message}"));

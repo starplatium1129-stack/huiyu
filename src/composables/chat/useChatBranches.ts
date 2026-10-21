@@ -3,7 +3,7 @@ import { captureChatConversations, chatBranchArchiveKey, emptyChatConversation }
 import { applyReplyVariant, chatMessageKey, cloneChatMessages, mergeReplyVariants, replySnapshot } from '@/utils/chatMessageStorage'
 import type { ChatMessage, ChatState } from './chatStorageTypes'
 
-export function useChatBranches(state: ChatState, canWrite: () => boolean, refresh: () => boolean, save: (merge?: boolean) => boolean | undefined,
+export function useChatBranches(state: ChatState, canWrite: () => boolean, refresh: () => boolean, save: (merge: boolean, char: string) => boolean | undefined,
   copyArchive: (source: string, target: string, forkMessageId: string, followingMessageIds: string[]) => void) {
   const regenerations = new Map<string, { branch: string; history: ChatMessage[] }>()
   const conversation = (char: string) => state.conversations[char] ||= emptyChatConversation(state.histories[char] || [])
@@ -12,7 +12,7 @@ export function useChatBranches(state: ChatState, canWrite: () => boolean, refre
     return conversation(char).branches.map(({ messages: _messages, ...metadata }) => ({ ...metadata }))
   }
   function snapshot(char: string) {
-    return { conversation: captureChatConversations(state)[char], history: state.histories[char] }
+    return { conversation: captureChatConversations(state, [char])[char], history: state.histories[char] }
   }
   function rollback(char: string, before: ReturnType<typeof snapshot>) {
     state.conversations[char] = before.conversation; state.histories[char] = before.history
@@ -27,7 +27,7 @@ export function useChatBranches(state: ChatState, canWrite: () => boolean, refre
     const next = conversation(char)
     next.activeId = id; next.selectionRevision = Math.max(current.selectionRevision + 1, Date.now())
     state.histories[char] = cloneChatMessages(target.messages)
-    if (save(false)) return true
+    if (save(false, char)) return true
     rollback(char, before); return false
   }
   function forkBranch(char: string, mid: string): string | null {
@@ -42,7 +42,7 @@ export function useChatBranches(state: ChatState, canWrite: () => boolean, refre
     current.branches.push({ id, name, createdAt: Date.now(), parentId, forkMessageId, messages: cloneChatMessages(messages) })
     current.activeId = id; current.selectionRevision = Math.max(current.selectionRevision + 1, Date.now())
     state.histories[char] = messages
-    if (!save(false)) { rollback(char, before); return null }
+    if (!save(false, char)) { rollback(char, before); return null }
     copyArchive(chatBranchArchiveKey(char, parentId), chatBranchArchiveKey(char, id), forkMessageId, history.slice(index + 1).map(chatMessageKey))
     return id
   }
@@ -54,7 +54,7 @@ export function useChatBranches(state: ChatState, canWrite: () => boolean, refre
     if (!variant) return message.mid === variantMid
     const previous = replySnapshot(message)
     applyReplyVariant(message, variant)
-    if (save(false)) return true
+    if (save(false, char)) return true
     applyReplyVariant(message, previous); return false
   }
   function prepareRegeneration(char: string, mid: string): ChatMessage | null {
@@ -83,7 +83,7 @@ export function useChatBranches(state: ChatState, canWrite: () => boolean, refre
       if (!branch) return
       branch.messages = cloneChatMessages(active.history)
     }
-    save()
+    save(true, char)
   }
   return { branchId, branches, forkBranch, switchBranch, selectVariant, prepareRegeneration, finishRegeneration }
 }

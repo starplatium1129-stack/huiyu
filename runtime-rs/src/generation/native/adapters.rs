@@ -80,7 +80,7 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
 pub(crate) async fn plan(
     settings: &Settings,
     input: Value,
-    image: Option<Arc<Vec<u8>>>,
+    image: Option<super::InputFile>,
 ) -> Result<Plan> {
     let id = input["modelId"]
         .as_str()

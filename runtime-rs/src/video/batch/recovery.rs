@@ -50,7 +50,7 @@ impl Service {
         let checkpoint = if let Some(batch) = &existing {
             Cow::Owned(batch.checkpoint().await)
         } else {
-            Cow::Borrowed(task.checkpoint.as_ref().unwrap())
+            Cow::Borrowed(task.checkpoint.as_deref().unwrap())
         };
         let rows = checkpoint["shots"]
             .as_array()

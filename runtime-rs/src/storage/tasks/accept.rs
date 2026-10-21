@@ -50,8 +50,9 @@ pub(super) fn accept(
         let (id, request_key, provider, settled) = (
             task.task_id.clone(), task.request_key.clone(), task.provider.clone(), task.upstream_settled,
         );
+        c.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?)", params![id, principal, request_key, provider, settled, payload::hot(&mut task)?])?;
+        payload::persist(c,&task)?;
         let mut value = task.into_value()?;
-        c.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?)", params![id, principal, request_key, provider, settled, stringify(&value)])?;
         // INSERT still precedes alias lookup so identity conflicts keep their
         // original priority; missing inputs roll back this entire transaction.
         for alias in value["inputMediaRefs"].as_array().unwrap() {

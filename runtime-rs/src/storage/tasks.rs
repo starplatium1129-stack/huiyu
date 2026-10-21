@@ -5,6 +5,9 @@ mod listing;
 mod result_reference;
 mod retry;
 mod scopes;
+mod payload;
+pub(super) use payload::{Cache as PayloadCache, migrate as migrate_payloads};
+pub(super) use payload::BODY as TASK_BODY;
 
 pub(super) use result_reference::{ResultReference, read as read_result_reference};
 pub(super) use listing::{RecoveryPage, recovery as read_recovery_page};
@@ -28,20 +31,21 @@ fn read(
 ) -> Result<Option<TaskRecord>> {
     // Decode borrowed text while the row is alive. Keep JSON failures separate
     // from SQLite errors so malformed task JSON retains its request error.
-    let decode = |row: &rusqlite::Row<'_>| -> rusqlite::Result<serde_json::Result<TaskRecord>> {
-        Ok(serde_json::from_str(text_column(row, 0)?))
+    let decode = |row: &rusqlite::Row<'_>| -> rusqlite::Result<(serde_json::Result<TaskRecord>, String)> {
+        Ok((serde_json::from_str(text_column(row, 0)?),row.get(1)?))
     };
     let row = if let Some(id) = task_id {
-        c.db.prepare_cached("SELECT record_json FROM tasks WHERE principal_id=? AND task_id=?")?
+        c.db.prepare_cached("SELECT record_json,(SELECT token FROM task_payloads p WHERE p.task_id=tasks.task_id) FROM tasks WHERE principal_id=? AND task_id=?")?
             .query_row(params![principal, id], decode)
             .optional()?
     } else {
-        c.db.prepare_cached("SELECT record_json FROM tasks WHERE principal_id=? AND request_key=?")?
+        c.db.prepare_cached("SELECT record_json,(SELECT token FROM task_payloads p WHERE p.task_id=tasks.task_id) FROM tasks WHERE principal_id=? AND request_key=?")?
             .query_row(params![principal, request_key.unwrap_or("")], decode)
             .optional()?
     };
-    row.map(|decoded| {
+    row.map(|(decoded,token)| {
         let mut task = decoded?;
+        payload::hydrate(c,&mut task,&token)?;
         task.runtime_epoch = c.epoch.clone();
         Ok(task)
     })
@@ -74,19 +78,22 @@ pub(super) fn read_record(
         RecordKey::Request(key) => read(c, principal, None, Some(key)),
     }
 }
-fn write(c: &Context, mut task: TaskRecord) -> Result<Value> {
+fn write(c: &Context, task: TaskRecord) -> Result<Value> {
+    Ok(write_record(c,task)?.into_value()?)
+}
+fn write_record(c: &Context, mut task: TaskRecord) -> Result<TaskRecord> {
     task.revision = c.next_revision()?;
     task.updated_at = now() as u64;
     task.runtime_epoch = c.epoch.clone();
     let provider = task.provider.clone();
     let settled = task.upstream_settled;
     let id = task.task_id.clone();
-    let value = task.into_value()?;
+    payload::persist(c,&task)?;
     c.db.prepare_cached(
         "UPDATE tasks SET provider=?,upstream_settled=?,record_json=? WHERE task_id=?",
     )?
-    .execute(params![provider, settled, stringify(&value), id])?;
-    Ok(value)
+    .execute(params![provider, settled, payload::hot(&mut task)?, id])?;
+    Ok(task)
 }
 
 pub(super) fn read_revision(c: &Context, principal: &str, task_id: &str) -> Result<Option<i64>> {
@@ -177,7 +184,7 @@ pub(super) fn execute_command(
             task_id,
             expected_revision,
             patch: change,
-        } => patch(c, principal, &task_id, expected_revision, *change),
+        } => Ok(patch_record(c, principal, &task_id, expected_revision, *change)?.into_value()?),
         TaskCommand::Cancel { request_key } => cancel(c, principal, &request_key),
         TaskCommand::ResolveWebui {
             task_id,
@@ -186,13 +193,16 @@ pub(super) fn execute_command(
         } => resolve_webui(c, principal, &task_id, expected_revision, upstream_stopped),
     }
 }
-fn patch(
+pub(super) fn patch_record(
     c: &mut Context,
     principal: &str,
     id: &str,
     expected_revision: i64,
     mut patch: TaskPatch,
-) -> Result<Value> {
+) -> Result<TaskRecord> {
+    c.check_cancel()?;
+    if principal.is_empty() { return Err(ApiError::new(401,"UNAUTHORIZED","Desktop principal is required")); }
+    c.writer()?;
     c.transaction(|c| {
         let mut task = require(c, principal, id)?;
         let mut changed = false;
@@ -307,9 +317,9 @@ fn patch(
         // Compare only supplied fields after normalization; polling must not clone
         // frozen inputs or checkpoints just to discover that nothing changed.
         if !changed {
-            return Ok(task.into_value()?);
+            return Ok(task);
         }
-        write(c, task)
+        write_record(c, task)
     })
 }
 fn replace<T: PartialEq>(current: &mut T, change: Option<T>) -> bool {

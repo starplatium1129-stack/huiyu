@@ -188,8 +188,9 @@ impl Drop for Owner {
     }
 }
 
+pub(super) const VERSION: i64 = 6;
 fn supported(version: i64) -> bool {
-    (1..=5).contains(&version)
+    (1..=VERSION).contains(&version)
 }
 pub(super) fn open(
     root: PathBuf,
@@ -315,19 +316,19 @@ pub(super) fn open(
             "Workspace identity and database versions differ",
         ));
     }
-    if version < 5 {
+    if version < VERSION {
         atomic_json(
             &root,
             "schema-upgrade.json",
-            &json!({"workspaceId":workspace_id,"from":version,"to":5}),
+            &json!({"workspaceId":workspace_id,"from":version,"to":VERSION}),
         )?;
-        upgrade(&db, version, 5)?;
-        identity["schemaVersion"] = json!(5);
+        upgrade(&db, version, VERSION)?;
+        identity["schemaVersion"] = json!(VERSION);
         atomic_json(&root, "workspace.json", &identity)?;
         fs::remove_file(intent_file)?;
         sync_dir(&root)?;
     }
-    verify_identity(&db, &workspace_id, 5)?;
+    verify_identity(&db, &workspace_id, VERSION)?;
     // Reapply access paths on open so upgraded workspaces and restored older snapshots
     // receive live/deleted artwork, reverse deletion/FK and unsettled task access paths.
     db.execute_batch(
@@ -345,6 +346,8 @@ pub(super) fn open(
     super::artwork_index::initialize(&db)?;
     let mut context = Context {
         db,
+        gallery_catalog: Default::default(),
+        task_payloads: Default::default(),
         root,
         workspace_id,
         epoch,
@@ -418,8 +421,13 @@ fn upgrade(db: &Connection, from: i64, to: i64) -> Result<()> {
             3 => include_str!("task-schema.sql"),
             4 => include_str!("archive-schema.sql"),
             5 => include_str!("workflow-schema.sql"),
+            6 => include_str!("payload-schema.sql"),
             _ => unreachable!(),
         })?;
+        if version == 6 {
+            super::image_batches::migrate(db)?;
+            super::tasks::migrate_payloads(db)?;
+        }
         db.execute(
             "INSERT INTO schema_migrations VALUES(?,?)",
             params![version, now()],

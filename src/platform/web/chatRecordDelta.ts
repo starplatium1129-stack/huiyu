@@ -1,21 +1,26 @@
 type Body = Record<string, unknown>
 const object = (value: unknown): value is Body => !!value && typeof value === 'object' && !Array.isArray(value)
 const decode = (value: unknown): Body => {
-  const result: unknown = typeof value === 'string' ? JSON.parse(value) : value
-  return object(result) ? structuredClone(result) : {}
+  if (typeof value === 'string') {
+    const result: unknown = JSON.parse(value)
+    return object(result) ? result : {}
+  }
+  return object(value) ? structuredClone(value) : {}
 }
 
 /** Messages have stable identities; changing preferences never uploads their bodies. */
-function split(value: unknown) {
+function split(value: unknown, characters?: Set<string>) {
   const header = decode(value), records = new Map<string, unknown>()
+  const seen = new Set<string>()
   function messages(owner: Body, field: string, path: string[]) {
     const list = owner[field]
     if (!Array.isArray(list)) return
     const ids = list.map(message => {
       if (!object(message) || typeof message.mid !== 'string' || !message.mid) throw new Error('聊天消息缺少稳定编号，原记录已保留。')
       const id = JSON.stringify([...path, message.mid])
-      if (records.has(id)) throw new Error('聊天消息编号重复，原记录已保留。')
-      records.set(id, message)
+      if (seen.has(id)) throw new Error('聊天消息编号重复，原记录已保留。')
+      seen.add(id)
+      if (!characters || characters.has(path[1])) records.set(id, message)
       return id
     })
     owner[field] = { $messages: ids }
@@ -31,10 +36,11 @@ function split(value: unknown) {
   return { header, records }
 }
 
-export function chatRecordDelta(before: unknown, value: unknown) {
-  const next = split(value)
+export function chatRecordDelta(before: unknown, value: unknown, changedCharacters?: readonly string[]) {
+  const characters = changedCharacters && new Set(changedCharacters)
+  const next = split(value, characters)
   let previous: ReturnType<typeof split>
-  try { previous = split(before) }
+  try { previous = split(before, characters) }
   catch {
     // Older profiles have messages without mid. The domain normalizer assigns
     // IDs; replace that legacy envelope once under the same revision fence.

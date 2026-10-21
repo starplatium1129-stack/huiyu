@@ -221,6 +221,12 @@ pub(super) fn command(
             }
             command
         }
+        ("GET", ["artwork-export"]) => {
+            let mut command = json!({"kind":"readArtworkExportPage"});
+            if let Some(cursor) = query.get("cursor") { command["cursor"] = json!(cursor); }
+            if query.contains_key("revision") { command["revision"] = query_int(query,"revision",0,0)?; }
+            command
+        }
         ("GET", ["artwork-recent-index"]) => {
             let mut command = json!({"kind": "readArtworkRecentIndex"});
             if query.contains_key("candidateLimit") {
@@ -336,6 +342,10 @@ pub(super) fn command(
             if *domain == "drafts" {
                 command["windowId"] =
                     json!(query.get("windowId").map(String::as_str).unwrap_or(""));
+            }
+            if let Some(projection) = query.get("projection") {
+                if kind != "profile.readChat" || !matches!(projection.as_str(),"bootstrap"|"history") { return Err(ApiError::invalid("Invalid profile projection")); }
+                command["projection"] = json!(projection);
             }
             command
         }

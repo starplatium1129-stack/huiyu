@@ -39,7 +39,7 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
     }
     return base
   }
-  let ready: Promise<void>
+  let ready: Promise<void> | undefined
   function refresh(synchronized = false) {
     const started = generation
     const loading = Promise.resolve().then(async () => {
@@ -50,7 +50,6 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
     void loading.catch(() => {})
     return loading
   }
-  refresh()
   function reset() {
     generation++
     pending = []
@@ -81,7 +80,7 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
     const started = generation
     running = Promise.resolve().then(async () => {
       try {
-        await ready
+        await (ready ?? refresh())
         return await withChatArchiveMutation(async () => {
           if (started !== generation || !canWrite()) return false
           const batch = pending.slice()
@@ -101,5 +100,5 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
     }).finally(() => { running = undefined })
     return running
   }
-  return { archive, get ready() { return ready }, refresh, reset, add, clear, clearCharacter, save }
+  return { archive, get ready() { return ready ?? refresh() }, refresh, reset, add, clear, clearCharacter, save }
 }

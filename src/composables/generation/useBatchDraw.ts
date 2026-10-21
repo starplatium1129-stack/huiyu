@@ -1,6 +1,6 @@
 import { computed, readonly, ref } from 'vue'
 import { TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
-import type { BatchDrawPlan, BatchDrawPlanStorage } from './batchDrawPlan'
+import type { BatchDrawPlan, BatchDrawPlanStorage, BatchDrawReference } from './batchDrawPlan'
 import { ArtworkSaveSupersededError, type ArtworkCommitIdentity } from '@/application/artwork/artworkSaveInput'
 import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { imageBatchRequest, type RuntimeImageBatch } from '@/api/imageBatches'
@@ -81,14 +81,16 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   let backendId: string | undefined, remoteTimer: ReturnType<typeof setTimeout> | undefined
   let remoteRead: AbortController | null = null
   let remoteRevision = 0
+  let backendAccepted = false, referenceSaved = false
   function applyRemote(plan: RuntimeImageBatch) {
     if (disposed || plan.id !== backendId || plan.revision <= remoteRevision) return
     remoteRevision = plan.revision
+    backendAccepted = true
     jobs.value = structuredClone(plan.jobs)
     running.value = plan.state === 'running' || plan.jobs.some(job => ['running','accepted'].includes(job.status))
     cancelRequested.value = plan.state === 'paused'
     storageError.value = plan.error || ''
-    void persist().then(saved => { if (saved && plan.revision === remoteRevision && !disposed) storageError.value = plan.error || '' })
+    if (!referenceSaved) void persist().then(saved => { if (saved && plan.revision === remoteRevision && !disposed) storageError.value = plan.error || '' })
   }
   async function observeRemote() {
     if (!backendId || disposed || remoteRead) return
@@ -106,6 +108,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     try {
       checkOwner()
       const existing = await imageBatchRequest(backendId)
+      if (!existing && backendAccepted) throw new Error('后台已确认的批次暂不可读取，请恢复原工作区或备份后重试')
       if (!existing && action === 'pause') { storageError.value = '批次尚未接收，请先核对原计划'; return }
       const plan = await imageBatchRequest(backendId, existing ? action : 'create', existing ? undefined : snapshot())
       if (plan) applyRemote(plan)
@@ -125,16 +128,20 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   }
   async function persist(): Promise<boolean> {
     if (!storage) return true
-    const plan = snapshot(), write = persistenceTail.then(() => storage.write(plan))
+    const plan: BatchDrawPlan | BatchDrawReference = backendAccepted && backendId && owner
+      ? { version: 2, createdAt, engine: 'anima', runtimeOwned: true, backendId, owner: { ...owner } }
+      : snapshot()
+    const write = persistenceTail.then(() => storage.write(plan))
     persistenceTail = write.then(() => {}, () => {})
-    try { await write; storageError.value = ''; return true }
+    try { await write; if (plan.version === 2 && backendId === plan.backendId) referenceSaved = true; storageError.value = ''; return true }
     catch (error) { storageError.value = error instanceof Error ? error.message : '批次计划尚未保存'; onFlash(storageError.value); return false }
   }
   function restorePlan() {
     try {
       const plan = storage?.read()
       if (plan) {
-        jobs.value = plan.jobs; targets = new Map(plan.targets.map(target => [target.id, target]))
+        if (plan.version === 1) { jobs.value = plan.jobs; targets = new Map(plan.targets.map(target => [target.id, target])) }
+        else { backendAccepted = true; referenceSaved = true }
         engine.value = plan.engine; createdAt = plan.createdAt; runtimeOwned = plan.runtimeOwned; backendId = plan.backendId; owner = plan.owner; restored.value = true
       }
       unreadable = false; storageError.value = ''
@@ -229,7 +236,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     if (unreadable) { restorePlan(); if (unreadable) { onFlash(storageError.value); return } }
     if (planOptions.engine && planOptions.engine !== 'anima') { onFlash('SD 新生成已退役，请使用当前 Anima/Krea 2 配方'); return }
     if (progress.value.unresolved) { onFlash('请先核对本批已接收任务，再开启新计划。'); return }
-    backendId = undefined; remoteRevision = 0; remoteRead?.abort()
+    backendId = undefined; backendAccepted = false; referenceSaved = false; remoteRevision = 0; remoteRead?.abort()
     if (remoteTimer) clearTimeout(remoteTimer)
     targets = new Map(items.map(item => [item.id, { ...item }]))
     try { owner = tempResultOwner() } catch (error) { onFlash(error instanceof Error ? error.message : String(error)); return }
@@ -296,7 +303,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
       if (storage) { await persistenceTail; await storage.clear() }
       if (disposed) return
       storageError.value = ''
-      backendId = undefined; remoteRevision = 0; remoteRead?.abort(); if (remoteTimer) clearTimeout(remoteTimer)
+      backendId = undefined; backendAccepted = false; referenceSaved = false; remoteRevision = 0; remoteRead?.abort(); if (remoteTimer) clearTimeout(remoteTimer)
       targets.clear(); jobs.value = []; restored.value = false; cancelRequested.value = false
     }
     catch (error) { storageError.value = error instanceof Error ? error.message : '旧批次计划暂时无法清除'; return }

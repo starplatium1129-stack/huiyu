@@ -9,18 +9,19 @@ pub async fn workspace_portable_backup(window: WebviewWindow, action: String, op
     let app = window.app_handle().clone();
     let url = window.url().map_err(|error|error.to_string())?;
     if !crate::main_shared::is_gateway_origin(&app,&url) { return Err("备份来源未授权".into()); }
-    if !matches!(action.as_str(),"export"|"import"|"status"|"cancel"|"activate") { return Err("不支持的备份操作".into()); }
+    if !matches!(action.as_str(),"export"|"import"|"status"|"cancel"|"activate"|"export-images") { return Err("不支持的文件操作".into()); }
     tauri::async_runtime::spawn_blocking(move || {
         let path = match action.as_str() {
             "export" => app.dialog().file().set_title("保存完整工作区备份").add_filter("绘遇备份",&["huiyu"]).set_file_name("绘遇工作区.huiyu").blocking_save_file(),
             "import" => app.dialog().file().set_title("选择完整工作区备份").add_filter("绘遇备份",&["huiyu"]).blocking_pick_file(),
+            "export-images" => app.dialog().file().set_title("选择作品原图导出目录").blocking_pick_folder(),
             _ => None,
         };
-        if matches!(action.as_str(),"export"|"import") && path.is_none() { return Ok(json!({"cancelled":true})); }
+        if matches!(action.as_str(),"export"|"import"|"export-images") && path.is_none() { return Ok(json!({"cancelled":true})); }
         let path = path.map(|path|path.into_path().map_err(|error|error.to_string())).transpose()?;
         let source = app.state::<crate::state::AppState>().paths.source_profile_id.clone();
         let response = app.state::<crate::gateway::GatewaySupervisor>().host_request(json!({
-            "action":match action.as_str() {"export"=>"portable-export","import"=>"portable-import","activate"=>"portable-activate","status"=>"operation-status",_=>"operation-cancel"},
+            "action":match action.as_str() {"export"=>"portable-export","export-images"=>"artwork-export","import"=>"portable-import","activate"=>"portable-activate","status"=>"operation-status",_=>"operation-cancel"},
             "windowId":"atelier","origin":url.origin().ascii_serialization(),"sourceProfileId":source,
             "operationId":operation_id,"backupId":backup_id,"workspaceId":workspace_id,"path":path,
         }))?.ok_or_else(||"本机运行时不可用".to_string())?;
