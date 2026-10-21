@@ -271,6 +271,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         turn.assistant.content = result.output
         if (result.image) turn.assistant.images = [{ ...result.image }]
         if (result.image) await retainCompanionImageMessage(options.storage, result.image.taskId)
+        checkCurrent()
         replyAnnouncement.value = result.output
         options.voice.append(result.output)
         options.voice.finishTurn()
@@ -392,6 +393,7 @@ export function useChatConversation(options: ChatConversationOptions) {
               if (!turn.assistant.content.trim()) turn.assistant.content = result.output
             }
             if (image) await retainCompanionImageMessage(options.storage, image.taskId)
+            checkCurrent()
           }
           roundMessages.push({ role: 'tool', tool_call_id: call.id, content: result.output.slice(0, 60000) })
           // 图片结果继续使用本次选定的 API 进行视觉理解。
