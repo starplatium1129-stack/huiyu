@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "momo_boyfriend_shirt_sly_tease",
+  "revision": 1,
+  "sortOrder": 1773,
+  "createdAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "data": {
+    "id": "momo_boyfriend_shirt_sly_tease",
+    "title": "梦梦 · 闺房软榻的滑肩白衬衫与狡黠轻语",
+    "characterId": "momo_velia_deviluke",
+    "outfitId": "boyfriend_shirt_lingerie",
+    "adult": false,
+    "category": "展会纪念",
+    "action": "倚坐在松软卧室榻旁，双手轻提微敞的白衬衫衣领，衬衫顺着圆润双肩滑落，小恶魔尾巴在身后勾起，嘴角浮现狡黠浅笑",
+    "camera": "medium shot, slightly low angle, intimate framing",
+    "lighting": "室内透过百叶软帘的暖白漫射柔光，局部带有朦胧空气感",
+    "location": "摆放着松软大靠垫的静谧卧房软榻边",
+    "mood": "小恶魔戏谑",
+    "timeOfDay": "早晨",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bedroom",
+      "lounge_couch",
+      "cushion",
+      "sitting",
+      "off_shoulder",
+      "bare_shoulders",
+      "smirk",
+      "seductive_smile",
+      "soft_lighting"
+    ],
+    "coverageTags": [
+      "special_character_art"
+    ],
+    "description": "【梦梦 · 闺房软榻的滑肩白衬衫与狡黠轻语】清晨柔和的光线下，梦梦倚在软榻上的大靠垫旁。宽大的白衬衫领口两端顺势滑落至上臂，露出光洁优美的香肩与锁骨。她双手提着领角微偏头凝视，心形尾巴尖在身后轻俏勾起，紫眸里泛着小恶魔专属的狡黠笑意——「早上好呀，穿成这样……您心动了吗？」",
+    "promptTokens": [
+      "bedroom",
+      "lounge",
+      "cushions",
+      "sitting",
+      "off_shoulder",
+      "bare_shoulders",
+      "short_hair",
+      "pink_hair",
+      "curled_hair_strands",
+      "purple_eyes",
+      "sly_smile",
+      "demon_tail",
+      "heart_tail",
+      "soft_ambient_light"
+    ],
+    "promptProse": "Resting against a plush lounge cushion in the softly lit room, Momo lightly holds the lapels of her oversized white shirt as it slips off her shoulders. With her black spade-heart tail curling up behind her, she tilts her head with a demure, mischievously seductive smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "nana_boyfriend_shirt_pantyhose_adjust",
+  "revision": 1,
+  "sortOrder": 1775,
+  "createdAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "data": {
+    "id": "nana_boyfriend_shirt_pantyhose_adjust",
+    "title": "娜娜 · 穿衣镜旁的提袜白衬衫与羞恼抗议",
+    "characterId": "nana_asta_deviluke",
+    "outfitId": "boyfriend_shirt_lingerie",
+    "adult": false,
+    "category": "展会纪念",
+    "action": "单脚立在长凳旁一手弯腰提拉黑色连裤袜袜口，另一手向前推掌制止视线，白衬衫单侧滑落，气鼓鼓咬牙脸红",
+    "camera": "full body shot, eye-level, dynamic balance pose",
+    "lighting": "柔和明亮的室内晨光，长凳与镜框投下淡雅阴影",
+    "location": "卧房更衣角木质长凳与落地穿衣镜旁",
+    "mood": "傲娇羞恼",
+    "timeOfDay": "早晨",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bedroom",
+      "wooden_bench",
+      "mirror",
+      "standing",
+      "one_leg_up",
+      "adjusting_legwear",
+      "pushing_hand",
+      "blush",
+      "pout",
+      "tsundere",
+      "morning_light"
+    ],
+    "coverageTags": [
+      "special_character_art"
+    ],
+    "description": "【娜娜 · 穿衣镜旁的提袜白衬衫与羞恼抗议】更衣镜旁，娜娜正手忙脚乱地整理行装。宽松的白衬衫从一侧肩头滑落，她金鸡独立般单脚踩着长凳提拉黑色连裤袜，见你突然走近，慌得立刻伸出另一只手挡在面前大声抗议，粉色双马尾一甩一甩，露出两颗小虎牙气鼓鼓地涨红了脸。",
+    "promptTokens": [
+      "bedroom",
+      "wooden_bench",
+      "mirror",
+      "standing",
+      "balancing",
+      "one_arm_raised",
+      "pushing_hand",
+      "pink_hair",
+      "twintails",
+      "purple_eyes",
+      "blush",
+      "pout",
+      "demon_tail",
+      "heart_tail",
+      "tsundere",
+      "morning_light"
+    ],
+    "promptProse": "Balancing on one foot by the dressing bench, Nana leans down with one hand to adjust her sheer black pantyhose while thrusting out her other palm to block the viewer's gaze. Her loose white shirt slips off one shoulder as she glares back with a flustered, tsundere pout.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

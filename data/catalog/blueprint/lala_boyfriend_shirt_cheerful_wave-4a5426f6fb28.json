@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "lala_boyfriend_shirt_cheerful_wave",
+  "revision": 1,
+  "sortOrder": 1772,
+  "createdAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "data": {
+    "id": "lala_boyfriend_shirt_cheerful_wave",
+    "title": "菈菈 · 阳台微风中的敞怀衬衫与活力挥手",
+    "characterId": "lala_satalin_deviluke",
+    "outfitId": "boyfriend_shirt_lingerie",
+    "adult": false,
+    "category": "展会纪念",
+    "action": "站在明亮露台上，白衬衫随风大敞，一手高高举起欢快打招呼，爱心细尾巴在身侧轻快摇曳",
+    "camera": "medium full shot, eye-level, dynamic airy composition",
+    "lighting": "明朗开阔的晴空自然光，微风吹拂下呈现轻快的高调光影",
+    "location": "天清气朗的住宅开阔露台护栏旁",
+    "mood": "明朗元气",
+    "timeOfDay": "早晨",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "balcony",
+      "outdoors",
+      "railing",
+      "standing",
+      "waving",
+      "smile",
+      "cheerful",
+      "breeze",
+      "blue_sky",
+      "day"
+    ],
+    "coverageTags": [
+      "special_character_art"
+    ],
+    "description": "【菈菈 · 阳台微风中的敞怀衬衫与活力挥手】早晨清爽的微风拂过阳台，菈菈披着完全敞开的长袖白衬衫，衣摆与长长粉发在风中欢快扬起。细长的心形小恶魔尾巴在身后灵巧摆动，她举起一只手笑眼弯弯地向你元气大喊打招呼，纯真烂漫的笑容如同晴空般毫无阴霾。",
+    "promptTokens": [
+      "balcony",
+      "railing",
+      "standing",
+      "one_arm_raised",
+      "waving",
+      "bright_smile",
+      "pink_hair",
+      "very_long_hair",
+      "ahoge",
+      "green_eyes",
+      "wind",
+      "flying_hair",
+      "demon_tail",
+      "heart_tail",
+      "daylight",
+      "blue_sky"
+    ],
+    "promptProse": "Standing on the sunlit veranda with a gentle breeze catching her wide-open white collared shirt, Lala waves one hand high in a cheerful greeting. Her long pink hair and slender spade-heart tail flutter playfully against the airy sky as she smiles with radiant energy.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

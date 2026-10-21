@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "kotegawa_boyfriend_shirt_flustered_lean",
+  "revision": 1,
+  "sortOrder": 1774,
+  "createdAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "data": {
+    "id": "kotegawa_boyfriend_shirt_flustered_lean",
+    "title": "古手川唯 · 更衣室前的敞怀白衬衫与拘谨微倾",
+    "characterId": "kotegawa_yui",
+    "outfitId": "boyfriend_shirt_lingerie",
+    "adult": false,
+    "category": "展会纪念",
+    "action": "更衣镜前解开纽扣的白衬衫自然敞开，双手按在黑色连裤袜大腿上，身子微前倾，咬唇满面通红不敢直视",
+    "camera": "medium shot, front three-quarter view, focus on blushing expression",
+    "lighting": "更衣室内高亮柔光灯与窗外透入的晨曦交织",
+    "location": "学园部室旁带有落地穿衣镜的木地板更衣室",
+    "mood": "傲娇娇羞",
+    "timeOfDay": "早晨",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "dressing_room",
+      "mirror",
+      "standing",
+      "leaning_forward",
+      "hands_on_thighs",
+      "heavy_blush",
+      "embarrassed",
+      "biting_lip",
+      "aversion_of_eyes",
+      "bright_lighting"
+    ],
+    "coverageTags": [
+      "special_character_art"
+    ],
+    "description": "【古手川唯 · 更衣室前的敞怀白衬衫与拘谨微倾】穿衣镜前，换衣中途的唯套着敞怀的大码白衬衫。黑发白发箍衬托下，整张清丽面庞早已红透至耳根。双手无措地按在透肉黑丝大腿上，身子略微拘谨前倾，咬着下唇偏过头不敢正视你，结结巴巴斥责却全无平日风纪委员的威严。",
+    "promptTokens": [
+      "dressing_room",
+      "mirror",
+      "standing",
+      "leaning_forward",
+      "hands_on_thighs",
+      "long_hair",
+      "straight_hair",
+      "black_hair",
+      "white_headband",
+      "amber_eyes",
+      "heavy_blush",
+      "biting_lip",
+      "looking_away",
+      "indoor_lighting"
+    ],
+    "promptProse": "Leaning forward with both palms pressed shyly against her sheer-black-pantyhose-clad thighs before the mirror, Yui blushes deeply as her unbuttoned white dress shirt hangs open, averting her golden-brown eyes in bashful, flustered mortification.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

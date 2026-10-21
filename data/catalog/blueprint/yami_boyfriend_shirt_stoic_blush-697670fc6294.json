@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "yami_boyfriend_shirt_stoic_blush",
+  "revision": 1,
+  "sortOrder": 1771,
+  "createdAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "data": {
+    "id": "yami_boyfriend_shirt_stoic_blush",
+    "title": "金色暗影 · 晨光窗台的白衬衫与微红面颊",
+    "characterId": "golden_darkness",
+    "outfitId": "boyfriend_shirt_lingerie",
+    "adult": false,
+    "category": "展会纪念",
+    "action": "双手抱膝坐在窗台阳光下，宽大白衬衫半裹在前身，金发化拳垂在身侧，面无表情却耳尖泛红",
+    "camera": "medium shot, eye-level, soft depth of field",
+    "lighting": "明净晨光穿过透明玻璃窗倾泻在窗台，金发与衬衫泛起清澈高光",
+    "location": "洒满温暖晨曦的起居室木质凸窗台",
+    "mood": "清冷娇羞",
+    "timeOfDay": "早晨",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "living_room",
+      "window_sill",
+      "sitting",
+      "knees_to_chest",
+      "bare_shoulders",
+      "barefoot",
+      "blush",
+      "stoic",
+      "morning_light",
+      "sunlight"
+    ],
+    "coverageTags": [
+      "special_character_art"
+    ],
+    "description": "【金色暗影 · 晨光窗台的白衬衫与微红面颊】清晨安静的客厅里，小暗双膝微蜷坐在宽阔的木质窗台上。宽大松垮的男士白衬衫被她紧紧护在胸前，露出一侧白皙精巧的肩头。身旁一缕金发化作拳头微微垂下，赤足踩在窗台软垫上，迎着晨光望向你，虽维持着冷淡神情，两颊却透出难以掩饰的淡粉红晕。",
+    "promptTokens": [
+      "living_room",
+      "window_sill",
+      "sitting",
+      "knees_to_chest",
+      "bare_shoulders",
+      "barefoot",
+      "blonde_hair",
+      "floor_length_hair",
+      "hair_intakes",
+      "red_eyes",
+      "soft_blush",
+      "kuudere",
+      "morning_light",
+      "lens_flare",
+      "soft_shadows"
+    ],
+    "promptProse": "Seated on the sunny wooden windowsill with her knees drawn up, Yami holds an oversized white dress shirt closely across her chest. While her long golden hair partially shapes into a protective fist beside her, her ruby-red eyes gaze forward with a faintly blushing, stoic expression.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}
