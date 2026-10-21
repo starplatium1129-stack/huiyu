@@ -1,5 +1,114 @@
 ﻿# Controlled host maintenance plus read-only verification. The host owns flush,
 # drain and child teardown; this script never kills hosts/gateways or removes locks.
+if (-not ([System.Management.Automation.PSTypeName]'DesktopMaintenanceLauncher').Type) {
+  Add-Type @"
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
+public class DesktopMaintenanceClient : IDisposable {
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern uint WaitForSingleObject(IntPtr h, uint ms);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool GetExitCodeProcess(IntPtr h, out uint code);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool CloseHandle(IntPtr h);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool TerminateProcess(IntPtr h, uint code);
+
+    private IntPtr _hProcess;
+    public int Id { get; private set; }
+    public DesktopMaintenanceClient(IntPtr hProcess, int pid) {
+        _hProcess = hProcess;
+        Id = pid;
+    }
+    public bool HasExited {
+        get {
+            if (_hProcess == IntPtr.Zero) return true;
+            uint code;
+            if (GetExitCodeProcess(_hProcess, out code)) {
+                return code != 259;
+            }
+            return true;
+        }
+    }
+    public int ExitCode {
+        get {
+            if (_hProcess == IntPtr.Zero) return 0;
+            uint code;
+            if (GetExitCodeProcess(_hProcess, out code)) return (int)code;
+            return -1;
+        }
+    }
+    public bool WaitForExit(int ms) {
+        if (_hProcess == IntPtr.Zero) return true;
+        return WaitForSingleObject(_hProcess, (uint)ms) == 0;
+    }
+    public void Kill() {
+        if (_hProcess != IntPtr.Zero) {
+            TerminateProcess(_hProcess, 1);
+        }
+    }
+    public void Dispose() {
+        if (_hProcess != IntPtr.Zero) {
+            CloseHandle(_hProcess);
+            _hProcess = IntPtr.Zero;
+        }
+    }
+}
+
+public static class DesktopMaintenanceLauncher {
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+    private struct STARTUPINFO {
+        public int cb;
+        public string lpReserved;
+        public string lpDesktop;
+        public string lpTitle;
+        public int dwX, dwY, dwXSize, dwYSize, dwXCountChars, dwYCountChars, dwFillAttribute, dwFlags;
+        public short wShowWindow, cbReserved2;
+        public IntPtr lpReserved2, hStdInput, hStdOutput, hStdError;
+    }
+    [StructLayout(LayoutKind.Sequential)]
+    private struct PROCESS_INFORMATION {
+        public IntPtr hProcess, hThread;
+        public int dwProcessId, dwThreadId;
+    }
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern bool CreateProcess(
+        string appName, string cmdLine, IntPtr pAttr, IntPtr tAttr,
+        bool inherit, uint flags, IntPtr env, string dir,
+        ref STARTUPINFO si, out PROCESS_INFORMATION pi);
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern bool CloseHandle(IntPtr h);
+
+    public static DesktopMaintenanceClient Start(string exePath, string arguments) {
+        STARTUPINFO si = new STARTUPINFO();
+        si.cb = Marshal.SizeOf(si);
+        si.lpDesktop = @"WinSta0\Default";
+        si.dwFlags = 0x00000001;
+        si.wShowWindow = 0;
+        PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
+        string cmd = "\"" + exePath + "\" " + arguments;
+        if (!CreateProcess(null, cmd, IntPtr.Zero, IntPtr.Zero, false, 0, IntPtr.Zero, null, ref si, out pi)) {
+            Process p = Process.Start(new ProcessStartInfo(exePath, arguments) { WindowStyle = ProcessWindowStyle.Hidden });
+            return new DesktopMaintenanceClient(p.Handle, p.Id);
+        }
+        CloseHandle(pi.hThread);
+        return new DesktopMaintenanceClient(pi.hProcess, pi.dwProcessId);
+    }
+}
+"@
+}
+
+function Start-DesktopMaintenanceProcess {
+  param([string]$Executable, [string[]]$Arguments)
+  $argStr = ($Arguments | ForEach-Object { if ($_ -match '\s') { "`"$_`"" } else { $_ } }) -join ' '
+  try {
+    [DesktopMaintenanceLauncher]::Start($Executable, $argStr)
+  } catch {
+    Start-Process -FilePath $Executable -ArgumentList $Arguments -WindowStyle Hidden -PassThru
+  }
+}
 function Get-DesktopInstallationProcesses {
   param([string]$InstallDir)
   $executables = @((Join-Path $InstallDir 'ai-cg-studio-desktop.exe'), (Join-Path $InstallDir 'gateway\huiyu-runtime.exe'))
@@ -50,7 +159,7 @@ function Invoke-DesktopMaintenance {
   [IO.File]::WriteAllText($requestPath, $request, (New-Object Text.UTF8Encoding($false)))
   $client = $null
   try {
-    $client = Start-Process -FilePath $identity.executable -ArgumentList @('--desktop-maintenance',$Command,'--maintenance-request',$requestId,'--maintenance-namespace',$identity.instanceNamespace) -WindowStyle Hidden -PassThru
+    $client = Start-DesktopMaintenanceProcess -Executable $identity.executable -Arguments @('--desktop-maintenance',$Command,'--maintenance-request',$requestId,'--maintenance-namespace',$identity.instanceNamespace)
     $deadline = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds)
     while ([DateTime]::UtcNow -lt $deadline) {
       if (Test-Path -LiteralPath $responsePath) {
