@@ -100,4 +100,16 @@ export const ARTIST_STYLE_OFFICIAL_OPTIONS: readonly ArtistStyleOption[] = Objec
     verification: 'curated',
     keywords: ['明日方舟', '终末地', '唯@W', '主美', '机能风', '佩丽卡', '伊冯', '概念设计'],
   },
+  {
+    id: 'yabuki_kentarou',
+    name: 'Yabuki Kentaro',
+    cnName: '矢吹健太朗',
+    waiTag: 'yabuki_kentarou',
+    animaTag: '@yabuki kentarou',
+    description: '《出包王女》《妖幻三重奏》原案、唯美通透赛璐珞与极清甜细腻线条',
+    masterpiece: '《出包王女》、《出包王女 Darkness》、《妖幻三重奏》、《黑猫》',
+    category: 'pure',
+    verification: 'curated',
+    keywords: ['出包王女', '妖幻三重奏', '黑猫', '透肉黑丝', '通透肌肤', '清透少女', '娇羞'],
+  },
 ])

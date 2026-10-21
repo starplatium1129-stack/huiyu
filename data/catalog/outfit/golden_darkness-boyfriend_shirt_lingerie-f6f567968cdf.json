@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "golden_darkness/boyfriend_shirt_lingerie",
+  "revision": 1,
+  "sortOrder": 1495,
+  "createdAt": "2026-10-21T13:30:00+00:00",
+  "updatedAt": "2026-10-21T13:34:05.994132+00:00",
+  "data": {
+    "characterId": "golden_darkness",
+    "outfit": {
+      "default": false,
+      "id": "boyfriend_shirt_lingerie",
+      "isDefault": false,
+      "name": "女友白衬衫与淡粉内衣",
+      "prose": "wearing an oversized white dress shirt wrapped closely across her chest and bare shoulders, soft pink panties, bare feet, looking forward with a subtle stoic blush while holding the shirt hem",
+      "tokens": [
+        "white_shirt",
+        "collared_shirt",
+        "loose_shirt",
+        "holding_shirt",
+        "bare_shoulders",
+        "pink_panties",
+        "barefoot",
+        "blush"
+      ]
+    }
+  }
+}

@@ -49,7 +49,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac asano_kyoji isayama_hajime yokoyari_mengo wei_at_w hidulume'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac asano_kyoji isayama_hajime yokoyari_mengo wei_at_w hidulume yabuki_kentarou'.split(' '),
 )
 
 /** Lightweight sampling candidates derived from the same whitelist as normalization. */
@@ -98,6 +98,12 @@ const ARTIST_STYLE_ALIASES: Record<string, string> = {
   'hidulme': 'hidulume',
   'hidzz': 'hidulume',
   'ひづるめ': 'hidulume',
+  // 出包王女 / 矢吹健太朗
+  yabuki: 'yabuki_kentarou',
+  'yabuki kentaro': 'yabuki_kentarou',
+  'yabuki kentarou': 'yabuki_kentarou',
+  '矢吹健太朗': 'yabuki_kentarou',
+  '矢吹': 'yabuki_kentarou',
 }
 
 function artistDisplayName(id: string): string {
@@ -192,6 +198,7 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
   isayama_hajime: 'intense gritty manga illustration with raw emotional tension, deep shadowed eyes, and powerful resolute expression',
   yokoyari_mengo: 'expressive anime manga style with luminous starry eyes, delicate emotional linework, and radiant idol highlights',
   wei_at_w: 'sleek futuristic concept art with tactical techwear design, sharp clean lines, and atmospheric cool lighting',
+  yabuki_kentarou: 'clean delicate anime illustration with translucent skin, glossy expressive eyes, soft blush, and refined soft-cel coloring in classic romantic comedy manga style',
 }
 
 export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngine = 'sd'): string {

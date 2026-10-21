@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "momo_velia_deviluke/boyfriend_shirt_lingerie",
+  "revision": 1,
+  "sortOrder": 1497,
+  "createdAt": "2026-10-21T13:30:00+00:00",
+  "updatedAt": "2026-10-21T13:34:05.994132+00:00",
+  "data": {
+    "characterId": "momo_velia_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "boyfriend_shirt_lingerie",
+      "isDefault": false,
+      "name": "小恶魔滑肩白衬衫与粉色蕾丝胸衣",
+      "prose": "wearing an oversized white collared shirt sliding enticingly off both shoulders over delicate pale-pink lace lingerie, paired with sheer black pantyhose and her slender devil tail curved behind her with a demure sly smile",
+      "tokens": [
+        "white_shirt",
+        "open_shirt",
+        "unbuttoned_shirt",
+        "off-shoulder_shirt",
+        "pink_bra",
+        "lace_bra",
+        "black_pantyhose",
+        "sheer_pantyhose",
+        "demon_tail",
+        "heart_tail",
+        "seductive_smile"
+      ]
+    }
+  }
+}

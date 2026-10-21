@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "lala_satalin_deviluke/boyfriend_shirt_lingerie",
+  "revision": 1,
+  "sortOrder": 1496,
+  "createdAt": "2026-10-21T13:30:00+00:00",
+  "updatedAt": "2026-10-21T13:34:05.994132+00:00",
+  "data": {
+    "characterId": "lala_satalin_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "boyfriend_shirt_lingerie",
+      "isDefault": false,
+      "name": "活力敞怀衬衫与柠檬黄比基尼",
+      "prose": "wearing a breezy wide-open white collared shirt over a vibrant ruffled yellow bikini top and panties, paired with sheer black pantyhose and her slender spade-heart devil tail swishing playfully",
+      "tokens": [
+        "white_shirt",
+        "open_shirt",
+        "unbuttoned_shirt",
+        "yellow_bra",
+        "yellow_bikini",
+        "black_pantyhose",
+        "sheer_pantyhose",
+        "demon_tail",
+        "heart_tail",
+        "cheerful"
+      ]
+    }
+  }
+}

@@ -170,6 +170,21 @@
             "thighhighs",
             "boots"
           ]
+        },
+        {
+          "id": "boyfriend_shirt_lingerie",
+          "name": "女友白衬衫与淡粉内衣",
+          "prose": "wearing an oversized white dress shirt wrapped closely across her chest and bare shoulders, soft pink panties, bare feet, looking forward with a subtle stoic blush while holding the shirt hem",
+          "tokens": [
+            "white_shirt",
+            "collared_shirt",
+            "loose_shirt",
+            "holding_shirt",
+            "bare_shoulders",
+            "pink_panties",
+            "barefoot",
+            "blush"
+          ]
         }
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -336,6 +351,23 @@
             "ahoge",
             "bare_legs",
             "bare_feet"
+          ]
+        },
+        {
+          "id": "boyfriend_shirt_lingerie",
+          "name": "活力敞怀衬衫与柠檬黄比基尼",
+          "prose": "wearing a breezy wide-open white collared shirt over a vibrant ruffled yellow bikini top and panties, paired with sheer black pantyhose and her slender spade-heart devil tail swishing playfully",
+          "tokens": [
+            "white_shirt",
+            "open_shirt",
+            "unbuttoned_shirt",
+            "yellow_bra",
+            "yellow_bikini",
+            "black_pantyhose",
+            "sheer_pantyhose",
+            "demon_tail",
+            "heart_tail",
+            "cheerful"
           ]
         }
       ],
@@ -509,6 +541,24 @@
             "bare_legs",
             "bare_feet"
           ]
+        },
+        {
+          "id": "boyfriend_shirt_lingerie",
+          "name": "小恶魔滑肩白衬衫与粉色蕾丝胸衣",
+          "prose": "wearing an oversized white collared shirt sliding enticingly off both shoulders over delicate pale-pink lace lingerie, paired with sheer black pantyhose and her slender devil tail curved behind her with a demure sly smile",
+          "tokens": [
+            "white_shirt",
+            "open_shirt",
+            "unbuttoned_shirt",
+            "off-shoulder_shirt",
+            "pink_bra",
+            "lace_bra",
+            "black_pantyhose",
+            "sheer_pantyhose",
+            "demon_tail",
+            "heart_tail",
+            "seductive_smile"
+          ]
         }
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -678,6 +728,23 @@
             "very_long_hair",
             "bare_legs",
             "bare_feet"
+          ]
+        },
+        {
+          "id": "boyfriend_shirt_lingerie",
+          "name": "风纪委员的拘谨白衬衫与粉色荷叶边胸衣",
+          "prose": "wearing an unbuttoned white dress shirt hanging open over a sweet pastel-pink frilled lace bra and matching panties, paired with glossy sheer black pantyhose, leaning forward with hands on her thighs in bashful flustered modesty",
+          "tokens": [
+            "white_shirt",
+            "open_shirt",
+            "unbuttoned_shirt",
+            "pink_bra",
+            "frilled_bra",
+            "lace_trim",
+            "black_pantyhose",
+            "sheer_pantyhose",
+            "heavy_blush",
+            "embarrassed"
           ]
         }
       ],
@@ -856,6 +923,24 @@
             "sneakers",
             "demon_tail"
           ]
+        },
+        {
+          "id": "boyfriend_shirt_lingerie",
+          "name": "傲娇白衬衫与提袜黑色连裤袜",
+          "prose": "wearing a loose unbuttoned white shirt slipping off one shoulder over a light-blue bra and panties, adjusting sheer black pantyhose up her leg with one hand while holding out the other in flustered protest",
+          "tokens": [
+            "white_shirt",
+            "open_shirt",
+            "unbuttoned_shirt",
+            "light_blue_bra",
+            "striped_panties",
+            "black_pantyhose",
+            "adjusting_legwear",
+            "demon_tail",
+            "heart_tail",
+            "tsundere",
+            "blush"
+          ]
         }
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -1022,6 +1107,24 @@
             "blush",
             "embarrassed",
             "barefoot"
+          ]
+        },
+        {
+          "id": "boyfriend_shirt_lingerie",
+          "name": "温婉回眸白衬衫与素雅水蓝蕾丝内衣",
+          "prose": "standing in a soft 3/4 back view holding a loose unbuttoned white shirt around her arms, revealing a graceful pale-blue lace bra and matching panties, bare feet, glancing back over her shoulder with an endearing bashful blush",
+          "tokens": [
+            "white_shirt",
+            "open_shirt",
+            "unbuttoned_shirt",
+            "light_blue_bra",
+            "lace_bra",
+            "light_blue_panties",
+            "bare_shoulders",
+            "barefoot",
+            "holding_shirt",
+            "shy_blush",
+            "looking_back"
           ]
         }
       ],

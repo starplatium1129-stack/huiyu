@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "sairenji_haruna/boyfriend_shirt_lingerie",
+  "revision": 1,
+  "sortOrder": 1500,
+  "createdAt": "2026-10-21T13:30:00+00:00",
+  "updatedAt": "2026-10-21T13:34:05.994132+00:00",
+  "data": {
+    "characterId": "sairenji_haruna",
+    "outfit": {
+      "default": false,
+      "id": "boyfriend_shirt_lingerie",
+      "isDefault": false,
+      "name": "温婉回眸白衬衫与素雅水蓝蕾丝内衣",
+      "prose": "standing in a soft 3/4 back view holding a loose unbuttoned white shirt around her arms, revealing a graceful pale-blue lace bra and matching panties, bare feet, glancing back over her shoulder with an endearing bashful blush",
+      "tokens": [
+        "white_shirt",
+        "open_shirt",
+        "unbuttoned_shirt",
+        "light_blue_bra",
+        "lace_bra",
+        "light_blue_panties",
+        "bare_shoulders",
+        "barefoot",
+        "holding_shirt",
+        "shy_blush",
+        "looking_back"
+      ]
+    }
+  }
+}

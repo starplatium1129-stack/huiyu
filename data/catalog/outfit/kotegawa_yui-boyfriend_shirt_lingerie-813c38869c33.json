@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "kotegawa_yui/boyfriend_shirt_lingerie",
+  "revision": 1,
+  "sortOrder": 1498,
+  "createdAt": "2026-10-21T13:30:00+00:00",
+  "updatedAt": "2026-10-21T13:34:05.994132+00:00",
+  "data": {
+    "characterId": "kotegawa_yui",
+    "outfit": {
+      "default": false,
+      "id": "boyfriend_shirt_lingerie",
+      "isDefault": false,
+      "name": "风纪委员的拘谨白衬衫与粉色荷叶边胸衣",
+      "prose": "wearing an unbuttoned white dress shirt hanging open over a sweet pastel-pink frilled lace bra and matching panties, paired with glossy sheer black pantyhose, leaning forward with hands on her thighs in bashful flustered modesty",
+      "tokens": [
+        "white_shirt",
+        "open_shirt",
+        "unbuttoned_shirt",
+        "pink_bra",
+        "frilled_bra",
+        "lace_trim",
+        "black_pantyhose",
+        "sheer_pantyhose",
+        "heavy_blush",
+        "embarrassed"
+      ]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "nana_asta_deviluke/boyfriend_shirt_lingerie",
+  "revision": 1,
+  "sortOrder": 1499,
+  "createdAt": "2026-10-21T13:30:00+00:00",
+  "updatedAt": "2026-10-21T13:34:05.994132+00:00",
+  "data": {
+    "characterId": "nana_asta_deviluke",
+    "outfit": {
+      "default": false,
+      "id": "boyfriend_shirt_lingerie",
+      "isDefault": false,
+      "name": "傲娇白衬衫与提袜黑色连裤袜",
+      "prose": "wearing a loose unbuttoned white shirt slipping off one shoulder over a light-blue bra and panties, adjusting sheer black pantyhose up her leg with one hand while holding out the other in flustered protest",
+      "tokens": [
+        "white_shirt",
+        "open_shirt",
+        "unbuttoned_shirt",
+        "light_blue_bra",
+        "striped_panties",
+        "black_pantyhose",
+        "adjusting_legwear",
+        "demon_tail",
+        "heart_tail",
+        "tsundere",
+        "blush"
+      ]
+    }
+  }
+}
