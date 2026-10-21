@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "sakaki_yumiko/mihama_uniform",
+  "revision": 1,
+  "sortOrder": 1507,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "sakaki_yumiko",
+    "outfit": {
+      "id": "mihama_uniform",
+      "name": "美浜学园正统千金制服",
+      "prose": "Mihama Private Academy uniform: lavender-purple button-up blouse with wide sailor collar, royal blue plaid necktie tied pristinely, high-waisted white pleated skirt, sheer black thigh-high socks, and polished dark brown leather loafers",
+      "tokens": [
+        "mihama_private_academy_school_uniform",
+        "school_uniform",
+        "purple_shirt",
+        "sailor_collar",
+        "plaid_necktie",
+        "blue_necktie",
+        "white_skirt",
+        "pleated_skirt",
+        "thighhighs",
+        "black_thighhighs",
+        "loafers"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

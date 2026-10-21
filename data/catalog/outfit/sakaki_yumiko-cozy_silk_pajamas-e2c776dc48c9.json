@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "sakaki_yumiko/cozy_silk_pajamas",
+  "revision": 1,
+  "sortOrder": 1509,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "sakaki_yumiko",
+    "outfit": {
+      "id": "cozy_silk_pajamas",
+      "name": "幽兰纯棉居家乐宽松睡衣",
+      "prose": "comfortable private dormitory loungewear: loose-fitting pastel mist-blue cotton pajama set with dark piping trim, collared button-up long-sleeved top draped softly over her shoulders, matching lounge pants, bare feet, and relaxed candid posture",
+      "tokens": [
+        "pajamas",
+        "sleepwear",
+        "light_blue_pajamas",
+        "button_up",
+        "long_sleeves",
+        "collared_shirt",
+        "pants",
+        "barefoot",
+        "loose_clothes",
+        "casual"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

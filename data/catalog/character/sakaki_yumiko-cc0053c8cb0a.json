@@ -1,0 +1,170 @@
+{
+  "kind": "character",
+  "id": "sakaki_yumiko",
+  "revision": 1,
+  "sortOrder": 169,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "sakaki_yumiko",
+    "profile": {
+      "id": "sakaki_yumiko",
+      "name": "榊由美子",
+      "alias": [
+        "Sakaki Yumiko",
+        "榊 由美子",
+        "由美子",
+        "美工刀大小姐",
+        "大小姐",
+        "灰色的果实"
+      ],
+      "type": "popular",
+      "icon": "🗡️",
+      "portrait": {
+        "image": "../assets/characters/popular-sakaki_yumiko.png?v=1",
+        "alt": "榊由美子 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及膝如墨漆黑超长发 · 传统姬发式 · 齐刘海 · 优雅侧发束",
+        "hair_color": "黑发/漆黑",
+        "eyes": "清冷锐利深紫眼眸",
+        "hairstyle": "及膝直发 · 传统整齐姬发式 · 齐刘海 · 名门千金高贵气质",
+        "uniform": "美浜学园紫衫白裙制服 / 绯红暗夜千金束腰洋装",
+        "expression": "孤高冷艳 · 警戒戒备 · 傲娇娇羞反差",
+        "style": "noble tsundere black-haired hime-cut mistress",
+        "signature": "如瀑及膝姬发黑长直、冷冽紫眸、随身美工刀与傲娇千金神态"
+      },
+      "personality": [
+        "美浜学园最初的学生，大财阀东滨急行电铁社长的千金",
+        "自我保护意识极强，对任何主动靠近的人怀有高度警戒与攻击性",
+        "表面孤高冷艳、言辞犀利（傲娇毒舌），内心其实极度渴望关爱与陪伴",
+        "私下喜欢窝在图书馆或房间看书，极度偏爱炒面面包，有着笨拙可爱的少女心",
+        "一旦彻底敞开心扉，便展现出近乎奉献般的专一与深情"
+      ],
+      "likes": [
+        "炒面面包（焼きそばパン）",
+        "在安静的角落专心阅读名著与哲学典籍",
+        "整理随身携带的美工刀",
+        "与信任之人独处的温存时光"
+      ],
+      "classic_cg": {
+        "title": "暮色长廊的美工刀戒备",
+        "description": "夕阳斜照的学园走廊上，黑发姬发式大小姐手持寒芒毕露的美工刀冷然侧立，眼神防备孤傲，开启命运纠葛。"
+      },
+      "identity": {
+        "role": "美浜学园最初的学生 / 榊财阀千金大小姐",
+        "age": "青年",
+        "occupation": "学生 / 名门继承人",
+        "faction": "美浜学园 · 榊财阀"
+      },
+      "tags": [
+        "黑发",
+        "紫瞳",
+        "姬发式",
+        "美工刀",
+        "大小姐",
+        "傲娇",
+        "及膝长发",
+        "灰色的果实"
+      ],
+      "bg_story": "榊由美子是《灰色的果实》及灰色系列中象征性的核心第一女主角，美浜学园最初唯一的学生。身为关东大财阀东滨急行电铁社长榊道昭的独生女，因童年家庭悲剧与父亲的冷血排斥而深陷自闭与防备，随身携带美工刀作为防御武器。与风见雄二相遇并在多次交锋后逐渐被救赎，最终打破心之壁垒，成长为外刚内柔、全心倾慕的挚爱伴侣。",
+      "palette": [
+        "玄黑色",
+        "紫罗兰",
+        "绯红色"
+      ],
+      "weather": [
+        "晚霞残照",
+        "海风烈阳",
+        "琴房幽月"
+      ],
+      "speech": "不要用那种熟络的语气跟我说话。再靠近一步，我的美工刀可不认人……还有，看什么看，我吃炒面面包有什么奇怪的！",
+      "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "traits": [
+        "sakaki_yumiko",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "hime_cut",
+        "blunt_bangs",
+        "sidelocks",
+        "purple_eyes",
+        "grisaia_(series)"
+      ],
+      "accent_color": "#a855f7",
+      "bg_color": "#150d1e"
+    },
+    "popular": {
+      "id": "sakaki_yumiko",
+      "displayName": "榊由美子",
+      "originalName": "榊 由美子 (Sakaki Yumiko)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "sakaki_yumiko",
+        "yumiko",
+        "yumiko_(grisaia)",
+        "榊由美子",
+        "由美子",
+        "美工刀大小姐",
+        "大小姐",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Sakaki Yumiko from Grisaia by Frontwing, the aloof and dignified first heroine of Mihama Academy with flowing knee-length raven-black hair cut in immaculate hime-cut bangs and sidelocks, sharp cold purple-violet eyes, slender graceful aristocrat figure, concealed retractable box-cutter knife, and a guarded tsundere aura hiding a vulnerable heart.",
+      "identityTokens": [
+        "sakaki_yumiko",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "hime_cut",
+        "blunt_bangs",
+        "sidelocks",
+        "purple_eyes",
+        "slender",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "sakaki_yumiko"
+      ],
+      "exactPrefixes": [
+        "yumiko_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "美浜学园 · 最初的学生",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园的第一个在校学生，大财阀东滨急行电铁社长榊道昭的独生女。因童年家庭破碎与冷酷对待对外界怀有强烈戒备与攻击性，随身携带锋利美工刀；平日孤高冷峻、言辞犀利，但在私底下喜欢窝在宿舍看书、极度偏爱炒面面包，有着笨拙可爱的少女反差",
+        "research": "2026-10-22 调研（Danbooru sakaki_yumiko 330+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "rella",
+        "kappe"
+      ],
+      "characterTokens": [
+        "sakaki_yumiko"
+      ],
+      "copyrightTokens": [
+        "grisaia_(series)"
+      ]
+    }
+  }
+}

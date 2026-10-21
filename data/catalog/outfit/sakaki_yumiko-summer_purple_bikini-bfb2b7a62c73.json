@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "sakaki_yumiko/summer_purple_bikini",
+  "revision": 1,
+  "sortOrder": 1510,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "sakaki_yumiko",
+    "outfit": {
+      "id": "summer_purple_bikini",
+      "name": "幽紫魅影分体系带比基尼",
+      "prose": "sleek and alluring summer resort swimwear: a minimalist deep-violet string triangle bikini with halterneck ties accentuating her fair collarbones and slender waistline, side-tie bottoms, water droplets glistening on pale skin, and cool seaside breeze",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "purple_bikini",
+        "string_bikini",
+        "halterneck",
+        "side-tie_bikini_bottom",
+        "collarbone",
+        "bare_shoulders",
+        "bare_legs",
+        "wet_skin"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

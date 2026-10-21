@@ -674,6 +674,197 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "sakaki_yumiko",
+      "displayName": "榊由美子",
+      "originalName": "榊 由美子 (Sakaki Yumiko)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "sakaki_yumiko",
+        "yumiko",
+        "yumiko_(grisaia)",
+        "榊由美子",
+        "由美子",
+        "美工刀大小姐",
+        "大小姐",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Sakaki Yumiko from Grisaia by Frontwing, the aloof and dignified first heroine of Mihama Academy with flowing knee-length raven-black hair cut in immaculate hime-cut bangs and sidelocks, sharp cold purple-violet eyes, slender graceful aristocrat figure, concealed retractable box-cutter knife, and a guarded tsundere aura hiding a vulnerable heart.",
+      "identityTokens": [
+        "sakaki_yumiko",
+        "1girl",
+        "solo",
+        "black_hair",
+        "very_long_hair",
+        "hime_cut",
+        "blunt_bangs",
+        "sidelocks",
+        "purple_eyes",
+        "slender",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "sakaki_yumiko"
+      ],
+      "exactPrefixes": [
+        "yumiko_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "mihama_uniform",
+          "name": "美浜学园正统千金制服",
+          "prose": "Mihama Private Academy uniform: lavender-purple button-up blouse with wide sailor collar, royal blue plaid necktie tied pristinely, high-waisted white pleated skirt, sheer black thigh-high socks, and polished dark brown leather loafers",
+          "tokens": [
+            "mihama_private_academy_school_uniform",
+            "school_uniform",
+            "purple_shirt",
+            "sailor_collar",
+            "plaid_necktie",
+            "blue_necktie",
+            "white_skirt",
+            "pleated_skirt",
+            "thighhighs",
+            "black_thighhighs",
+            "loafers"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_black_red_dress",
+          "name": "绯红暗夜千金束腰连身裙",
+          "prose": "refined noble young mistress casual attire: a tailored sleeveless little black dress with subtle deep-crimson velvet piping along the sweetheart neckline, black ribbon choker at the throat, thin cropped knit shrug cardigan, bare arms, and sleek leather ankle booties",
+          "tokens": [
+            "dress",
+            "black_dress",
+            "sleeveless_dress",
+            "red_trim",
+            "ribbon_choker",
+            "black_choker",
+            "cardigan",
+            "bare_arms",
+            "boots",
+            "ankle_boots",
+            "elegant",
+            "formal"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "cozy_silk_pajamas",
+          "name": "幽兰纯棉居家乐宽松睡衣",
+          "prose": "comfortable private dormitory loungewear: loose-fitting pastel mist-blue cotton pajama set with dark piping trim, collared button-up long-sleeved top draped softly over her shoulders, matching lounge pants, bare feet, and relaxed candid posture",
+          "tokens": [
+            "pajamas",
+            "sleepwear",
+            "light_blue_pajamas",
+            "button_up",
+            "long_sleeves",
+            "collared_shirt",
+            "pants",
+            "barefoot",
+            "loose_clothes",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_purple_bikini",
+          "name": "幽紫魅影分体系带比基尼",
+          "prose": "sleek and alluring summer resort swimwear: a minimalist deep-violet string triangle bikini with halterneck ties accentuating her fair collarbones and slender waistline, side-tie bottoms, water droplets glistening on pale skin, and cool seaside breeze",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "purple_bikini",
+            "string_bikini",
+            "halterneck",
+            "side-tie_bikini_bottom",
+            "collarbone",
+            "bare_shoulders",
+            "bare_legs",
+            "wet_skin"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "medium_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "hime_cut",
+            "very_long_hair",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, pristine alabaster porcelain skin, gracefully curved firm breasts with tender blush-pink nipples, slender toned midriff, exposed pussy, cascading floor-length hime-cut jet black hair spread across white satin sheets, intense yet vulnerable purple eyes, bare feet, dim romantic bedroom glow",
+          "styleHint": "tender romantic candlelight",
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "gala_backless_crimson_gown",
+          "name": "名门夜宴露背绯红晚礼服",
+          "prose": "high-society banquet gala gown: an exquisite crimson velvet backless evening gown plunging gracefully along her bare spine, daring thigh-high side slit revealing slender legs, elbow-length black opera gloves, sapphire drop earrings, and sleek black stilettos",
+          "tokens": [
+            "evening_gown",
+            "dress",
+            "red_dress",
+            "backless",
+            "open_back",
+            "plunging_neckline",
+            "high_slit",
+            "opera_gloves",
+            "black_gloves",
+            "earrings",
+            "high_heels",
+            "formal",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "美浜学园 · 最初的学生",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园的第一个在校学生，大财阀东滨急行电铁社长榊道昭的独生女。因童年家庭破碎与冷酷对待对外界怀有强烈戒备与攻击性，随身携带锋利美工刀；平日孤高冷峻、言辞犀利，但在私底下喜欢窝在宿舍看书、极度偏爱炒面面包，有着笨拙可爱的少女反差",
+        "research": "2026-10-22 调研（Danbooru sakaki_yumiko 330+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "rella",
+        "kappe"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

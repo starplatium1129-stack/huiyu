@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "sakaki_yumiko/casual_black_red_dress",
+  "revision": 1,
+  "sortOrder": 1508,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "sakaki_yumiko",
+    "outfit": {
+      "id": "casual_black_red_dress",
+      "name": "绯红暗夜千金束腰连身裙",
+      "prose": "refined noble young mistress casual attire: a tailored sleeveless little black dress with subtle deep-crimson velvet piping along the sweetheart neckline, black ribbon choker at the throat, thin cropped knit shrug cardigan, bare arms, and sleek leather ankle booties",
+      "tokens": [
+        "dress",
+        "black_dress",
+        "sleeveless_dress",
+        "red_trim",
+        "ribbon_choker",
+        "black_choker",
+        "cardigan",
+        "bare_arms",
+        "boots",
+        "ankle_boots",
+        "elegant",
+        "formal"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}
