@@ -140,6 +140,7 @@ export function useGalleryWorkspace() {
         compareItems,
         compareSelected: openSelectedComparison,
         compareFromRoute: openRouteComparison,
+        refreshComparisonRecords, comparisonReading,
         parentImageUrl,
         parentImageLabel, parentImageStatus, retryParentImage,
         hasComparableImage,
@@ -184,7 +185,7 @@ export function useGalleryWorkspace() {
     let comparisonWriteRevision = 0, galleryReadRevision = 0;
     const comparisonMarkPending = ref(false), comparisonNeedsRead = ref(false);
     const comparisonMarkOutcome = ref<'saved' | 'unconfirmed' | ''>('');
-    const comparisonMarksReading = computed(() => galleryLoading.value || galleryIndexLoading.value);
+    const comparisonMarksReading = computed(() => galleryLoading.value || galleryIndexLoading.value || comparisonReading.value);
     function comparisonMetadataReady() {
         return !unmounted && viewActive && !comparisonMarkPending.value && !comparisonNeedsRead.value
             && !comparisonMarksReading.value && !galleryError.value;
@@ -369,12 +370,15 @@ export function useGalleryWorkspace() {
     /* ---------- 初始化 ---------- */
     async function loadGalleryStorage(): Promise<void> {
         const read = ++galleryReadRevision, write = comparisonWriteRevision, sourceRevision = comparisonSourceRevision;
-        const source = artworkRepository, session = imageMediaSession();
+        const source = artworkRepository, session = imageMediaSession(), comparison = comparisonRevision;
+        const isCurrent = () => !unmounted && viewActive && read === galleryReadRevision && write === comparisonWriteRevision
+            && sourceRevision === comparisonSourceRevision && source === artworkRepository && session === imageMediaSession()
+            && comparison === comparisonRevision && !comparisonMarkPending.value;
         if (galleryQuery.enabled.value) await galleryQuery.refresh();
         else await loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects });
-        if (!unmounted && viewActive && read === galleryReadRevision && write === comparisonWriteRevision
-            && sourceRevision === comparisonSourceRevision && source === artworkRepository && session === imageMediaSession()
-            && !comparisonMarkPending.value && !comparisonMarksReading.value && !galleryError.value) comparisonNeedsRead.value = false;
+        if (!isCurrent() || galleryLoading.value || galleryIndexLoading.value || galleryError.value) return;
+        comparisonNeedsRead.value = true;
+        if (await refreshComparisonRecords(isCurrent) && isCurrent()) comparisonNeedsRead.value = false;
     }
     onMounted(async () => {
         unmounted = false;

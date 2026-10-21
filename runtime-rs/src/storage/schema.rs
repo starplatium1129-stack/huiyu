@@ -361,6 +361,7 @@ pub(super) fn open(
         job: None,
     };
     migration::repair_activated(&mut context)?;
+    super::verification::recover_staging(&context)?;
     Ok(context)
 }
 fn normalize_root(root: PathBuf) -> Result<PathBuf> {

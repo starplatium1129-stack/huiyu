@@ -162,14 +162,19 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     if (batchDraw.running.value || batchDraw.resetting.value) return
     if (batchDraw.progress.value.unresolved) return rejectStart('请先核对本批已接收任务，再开启新计划。')
     const captured = captureBatch()
-    const scenes = captured.sceneTargets(payload.sceneIds)
-    if (!scenes.length) return rejectStart('所选场景没有可用的描述')
-    const baseSeed = captured.selectedSeed()
-    planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
-    // The persisted transport lane is Anima; each prepared recipe retains its Anima/Krea family.
-    const previousJobs = batchDraw.jobs.value
-    await batchDraw.start(scenes, payload.count, baseSeed, '个场景', { engine: 'anima', runtimeOwned: hasRuntimeTasks() })
-    return batchDraw.jobs.value !== previousJobs
+    try {
+      const scenes = captured.sceneTargets(payload.sceneIds)
+      if (!scenes.length) return rejectStart('所选场景没有可用的描述')
+      const baseSeed = captured.selectedSeed()
+      planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
+      // The persisted transport lane is Anima; each prepared recipe retains its Anima/Krea family.
+      const previousJobs = batchDraw.jobs.value
+      await batchDraw.start(scenes, payload.count, baseSeed, '个场景', { engine: 'anima', runtimeOwned: hasRuntimeTasks() })
+      return batchDraw.jobs.value !== previousJobs
+    } finally {
+      // Resume/retry use prepared job snapshots, not the captured catalog/editor graph.
+      if (recipe === captured) recipe = undefined
+    }
   }
 
   /** 按多角色启动批量漫游出图（相同词条，不同角色） */
@@ -178,15 +183,19 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     if (batchDraw.running.value || batchDraw.resetting.value) return
     if (batchDraw.progress.value.unresolved) return rejectStart('请先核对本批已接收任务，再开启新计划。')
     const captured = captureBatch()
-    let targets: ReturnType<typeof captured.characterTargets>
-    try { targets = captured.characterTargets(payload.characterIds, payload.basePrompt) }
-    catch (error) { return rejectStart(error instanceof Error ? error.message : String(error)) }
-    if (!targets.length) return rejectStart('所选角色无效')
-    const baseSeed = captured.selectedSeed()
-    planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
-    const previousJobs = batchDraw.jobs.value
-    await batchDraw.start(targets, payload.count, baseSeed, '位角色', { engine: 'anima', runtimeOwned: hasRuntimeTasks() })
-    return batchDraw.jobs.value !== previousJobs
+    try {
+      let targets: ReturnType<typeof captured.characterTargets>
+      try { targets = captured.characterTargets(payload.characterIds, payload.basePrompt) }
+      catch (error) { return rejectStart(error instanceof Error ? error.message : String(error)) }
+      if (!targets.length) return rejectStart('所选角色无效')
+      const baseSeed = captured.selectedSeed()
+      planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
+      const previousJobs = batchDraw.jobs.value
+      await batchDraw.start(targets, payload.count, baseSeed, '位角色', { engine: 'anima', runtimeOwned: hasRuntimeTasks() })
+      return batchDraw.jobs.value !== previousJobs
+    } finally {
+      if (recipe === captured) recipe = undefined
+    }
   }
 
   /** 只重跑失败/已取消的张：自适应从场景蓝图或角色表恢复 */

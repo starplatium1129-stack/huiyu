@@ -2,6 +2,73 @@ use super::*;
 use sha2::{Digest, Sha256};
 use std::io::{Read, Write};
 
+const PREFIX: &str = "internal-task-";
+const RANDOM_CHARS: usize = 6;
+
+// Only called while opening the exclusively owned workspace, before admission.
+// Live verifiers retain the owner sender; explicit close drains their permits.
+// These private copies have no durable task reference until install moves them.
+pub(in crate::storage) fn recover_staging(c: &super::super::Context) -> Result<()> {
+    use crate::file_identity;
+    use std::fs;
+
+    let identity = super::super::verified_media::Identity::new(c)?;
+    identity.check(c)?;
+    let directory = schema::safe(&c.root, "media/staging")?;
+    if !directory.try_exists()? {
+        return Ok(());
+    }
+    let directory_id = file_identity::path(&directory, true)?;
+    let mut removed = false;
+    for entry in fs::read_dir(&directory)? {
+        let entry = entry?;
+        let name = entry.file_name();
+        let Some(suffix) = name.to_str().and_then(|name| name.strip_prefix(PREFIX)) else {
+            continue;
+        };
+        if suffix.len() != RANDOM_CHARS
+            || !suffix.bytes().all(|byte| byte.is_ascii_alphanumeric())
+            || !entry.file_type()?.is_file()
+        {
+            continue;
+        }
+        let path = schema::safe(&directory, &name)?;
+        let file = File::open(&path)?;
+        let native = file_identity::opened(&file)?;
+        if !file.metadata()?.is_file() || native.links != 1 {
+            continue;
+        }
+        let version = media::FileIdentity::of(&file)?;
+        identity.check(c)?;
+        schema::safe(&c.root, "media/staging")?;
+        schema::safe(&directory, &name)?;
+        if file_identity::path(&directory, true)? != directory_id
+            || file_identity::path(&path, false)? != native
+            || file_identity::opened(&file)? != native
+            || media::FileIdentity::of(&file)? != version
+        {
+            return Err(super::super::conflict(
+                "MEDIA_INVALID",
+                "Private task snapshot changed during startup recovery",
+            ));
+        }
+        fs::remove_file(path)?;
+        removed = true;
+    }
+    identity.check(c)?;
+    if removed {
+        schema::safe(&c.root, "media/staging")?;
+        if file_identity::path(&directory, true)? != directory_id {
+            return Err(super::super::conflict(
+                "MEDIA_INVALID",
+                "Task staging directory changed during startup recovery",
+            ));
+        }
+        schema::sync_dir(&directory)?;
+    }
+    Ok(())
+}
+
 pub(crate) struct Staged {
     file: tempfile::NamedTempFile,
     native: crate::file_identity::Identity,
@@ -66,7 +133,8 @@ impl Verifier {
             std::fs::create_dir_all(&directory)?;
             schema::safe(&root, "media/staging")?;
             let mut staged = tempfile::Builder::new()
-                .prefix("internal-task-")
+                .prefix(PREFIX)
+                .rand_bytes(RANDOM_CHARS)
                 .tempfile_in(directory)?;
             let mut input = File::open(path)?;
             if !input.metadata()?.is_file() || input.metadata()?.len() != bytes {
