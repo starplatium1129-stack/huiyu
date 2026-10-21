@@ -16,6 +16,7 @@ import {
 } from '@/utils/chatMemory'
 import { characterSettingCards, loadCharacterSettingCards, recallCharacterSetting } from '@/utils/characterSettingMemory'
 import { packChatMemoryContext } from '@/utils/chatMemoryContext'
+import { chatResetRevision } from '@/utils/chatReset'
 import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
 import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY, CHAT_TURN_KEY, CHAT_RESET_KEY } from '@/utils/storageKeys'
 import type { ChatMessage, useChatStorage } from '@/composables/chat/useChatStorage'
@@ -62,14 +63,18 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
 
   async function updateUserProfile(profile: ChatUserProfile): Promise<boolean> {
     if (!storage.canWrite()) { userProfile.value = loadChatUserProfile(); return false }
+    const reset = chatResetRevision()
     try {
       saveChatUserProfile(profile)
       await flushProfileWrites()
+      // Reset conflicts can resolve the flush after retiring the old write.
+      if (reset !== chatResetRevision()) { resetMemoryState(); return false }
       userProfile.value = loadChatUserProfile(true)
       if (!storage.canWrite()) return false
       setError('用户档案已保存', 'info', 3000)
       return true
     } catch {
+      if (reset !== chatResetRevision()) { resetMemoryState(); return false }
       setError('用户档案保存尚未确认，请保留当前修改并重试。', 'warning')
       return false
     }
@@ -77,15 +82,18 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
 
   async function changeMemory(change: (state: ChatMemoryState) => boolean, message: string): Promise<boolean> {
     if (!storage.canWrite()) return false
+    const reset = chatResetRevision()
     try {
       const next = changeStoredChatMemory(change)
       if (!next) return false
       await flushProfileWrites()
+      if (reset !== chatResetRevision()) { resetMemoryState(); return false }
       if (!storage.canWrite()) return false
       chatMemory.value = loadChatMemoryState()
       setError(message, 'info', 2500)
       return true
     } catch (error) {
+      if (reset !== chatResetRevision()) { resetMemoryState(); return false }
       setError(error instanceof Error ? error.message : '长期记忆保存尚未确认，请保留修改并重试。', 'warning')
       return false
     }
