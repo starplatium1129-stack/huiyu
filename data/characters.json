@@ -7751,7 +7751,6 @@
       "red-framed_eyewear",
       "mole_under_eye",
       "large_breasts",
-      "mature_female",
       "grisaia_(series)"
     ],
     "accent_color": "#f59e0b",
@@ -12266,7 +12265,6 @@
     "traits": [
       "aisha_greyrat",
       "solo",
-      "adult_woman",
       "red_hair",
       "short_hair",
       "ponytail",
@@ -12671,5 +12669,91 @@
     "speech": "先歇一会儿，饭还热着。（创作台词）",
     "accent_color": "#A89D45",
     "bg_color": "#0f172a"
+  },
+  {
+    "id": "sairenji_haruna",
+    "name": "西连寺春菜",
+    "alias": [
+      "Sairenji Haruna",
+      "西连寺春菜",
+      "西连寺",
+      "春菜",
+      "出包王女"
+    ],
+    "type": "popular",
+    "icon": "🌸",
+    "portrait": {
+      "image": "../assets/characters/popular-sairenji_haruna.png?v=1",
+      "alt": "西连寺春菜 样张立绘"
+    },
+    "visual_dna": {
+      "hair": "蓝紫色柔顺短发 · 标志性右刘海双发夹",
+      "hair_color": "蓝紫/深紫",
+      "eyes": "温柔纯情紫眸",
+      "hairstyle": "及颈层次短发 · 两枚细长发夹",
+      "uniform": "彩南高校女生水手制服 / 夏日温婉粉白长裙",
+      "expression": "温柔文静 · 极度容易害羞脸红 · 纯情关切",
+      "style": "tender gentle schoolgirl with bashful purity",
+      "signature": "蓝紫色短发、两枚发夹、水手服百褶裙与经典神摔害羞脸红"
+    },
+    "personality": [
+      "温柔体贴、善良内敛的彩南高中学生",
+      "结城梨斗从初中一直暗恋的同班女神，本人也深深暗恋着梨斗",
+      "性格极其容易害羞脸红，遇到尴尬场面容易慌乱失语",
+      "家里养了一只可爱的波士顿梗犬马隆（Marron），非常疼爱小动物",
+      "出包王女三大神摔意外受害者之一，经常卷入脸红心跳的事故"
+    ],
+    "likes": [
+      "与结城梨斗在天台分享便当和聊天",
+      "傍晚在河堤边牵着爱犬马隆悠闲散步",
+      "制作美味的便当料理与家庭烘焙",
+      "安静的校园午后与微风"
+    ],
+    "classic_cg": {
+      "title": "天台心意便当与黄昏回眸",
+      "description": "微风吹拂的彩南高校天台，短发少女双手捧着自制便当，脸颊微红展颜浅笑；或在黄昏河堤旁牵着小狗温存回眸。"
+    },
+    "identity": {
+      "role": "彩南高中二年级学生 / 结城梨斗同班同学",
+      "age": "高中生",
+      "occupation": "学生",
+      "faction": "彩南高中"
+    },
+    "tags": [
+      "短发",
+      "发夹",
+      "水手服",
+      "纯情",
+      "害羞",
+      "神摔事故",
+      "出包王女"
+    ],
+    "bg_story": "西连寺春菜是矢吹健太朗笔下《出包王女》的核心女主角之一。性格温婉大方、善解人意，不仅深得全班同学的喜爱，更是一直深爱着结城梨斗。虽然经常被菈菈的奇妙发明和梨斗不可思议的超自然神摔卷入各种极其害羞的走光意外中，但从不会真正生气，内心深处始终怀揣着对梨斗纯洁而真挚的恋心。",
+    "palette": [
+      "蓝紫",
+      "青水手领",
+      "纯白"
+    ],
+    "weather": [
+      "夏日天台微风",
+      "黄昏河堤暖光",
+      "明媚校园"
+    ],
+    "speech": "结、结城君……！如果可以的话……今天中午要不要一起尝尝我做的便当呢……？",
+    "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
+    "traits": [
+      "sairenji_haruna",
+      "1girl",
+      "solo",
+      "purple_hair",
+      "short_hair",
+      "purple_eyes",
+      "hair_clip",
+      "two_hair_clips",
+      "soft_blush",
+      "to_love-ru"
+    ],
+    "accent_color": "#8b5cf6",
+    "bg_color": "#170f2b"
   }
 ]
