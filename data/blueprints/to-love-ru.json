@@ -4196,6 +4196,58 @@
       "negativeTokens": [],
       "nsfwTokens": [],
       "nsfwProse": ""
+    },
+    {
+      "id": "haruna_morning_boyfriend_shirt_blush",
+      "title": "西连寺春菜 · 晨光窗边的白衬衫与羞涩回眸",
+      "characterId": "sairenji_haruna",
+      "outfitId": "boyfriend_shirt_lingerie",
+      "adult": false,
+      "category": "展会纪念",
+      "action": "立在晨光洒满的窗边，双手轻拢宽大的白衬衫衣襟，侧身回眸，双颊晕红",
+      "camera": "three-quarter view, eye-level, intimate composition, soft depth of field",
+      "lighting": "百叶窗透入的温暖晨曦形成柔美斜射逆光，发丝与肩颈泛起金色微芒",
+      "location": "洒满明亮晨光的卧室窗边木地板",
+      "mood": "温存羞涩",
+      "timeOfDay": "早晨",
+      "recommendedSize": "1152x1536",
+      "sceneTags": [
+        "bedroom",
+        "window",
+        "blinds",
+        "standing",
+        "side_view",
+        "from_behind",
+        "holding_clothes",
+        "blush",
+        "morning_light",
+        "soft_lighting"
+      ],
+      "coverageTags": [
+        "special_character_art"
+      ],
+      "description": "【西连寺春菜 · 晨光窗边的白衬衫与羞涩回眸】清晨微风轻拂窗纱，百叶窗的金色晨光在地板上映出一道道暖影。春菜套着略显宽松的白衬衫，两只长袖垂在手边，侧身站在窗前。察觉到视线，她双手护在身前轻拢衣襟，回头望来，整张清秀面庞泛起动人的羞涩红晕。",
+      "promptTokens": [
+        "bedroom",
+        "window",
+        "blinds",
+        "standing",
+        "side_view",
+        "from_behind",
+        "purple_hair",
+        "short_hair",
+        "two_hair_clips",
+        "heavy_blush",
+        "shy_smile",
+        "looking_at_viewer",
+        "morning_light",
+        "sunbeam",
+        "soft_shadows"
+      ],
+      "promptProse": "Standing in profile beside the sunlit bedroom window with sheer white curtains stirring in the morning breeze, Haruna clutches the draped white shirt close to her chest with both hands. Warm diagonal sunbeams rim her shoulder and hair as she turns to glance back at the viewer with an endearing, flushed blush.",
+      "negativeTokens": [],
+      "nsfwTokens": [],
+      "nsfwProse": ""
     }
   ],
   "franchise": "To LOVE-Ru",
