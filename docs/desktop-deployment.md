@@ -5,7 +5,9 @@
 统一入口只有一个：**`deploy-desktop.bat`**（项目根）。实现脚本也只有一个：
 `scripts/maintenance/deploy-desktop-quick.ps1`。不要再新建部署脚本。
 
-本机已启用 bundled UI，当前安装身份以[项目状态](project-status.md)为准；不同机器与日期的安装记录不互相替代。**日常开发默认构建并安装无压缩升级包，只有发行流程构建完整 LZMA 包。** 前端、宿主、Rust 后端或 DLL 变化都可通过升级包更新，无需为了更新 EXE 先构建完整包。纯数据和动态资源同步显式使用 `-ResourcesOnly`；后续源码改动需另行核对安装身份。
+本机已启用 bundled UI，当前安装身份以[项目状态](project-status.md)为准；不同机器与日期的安装记录不互相替代。**日常桌面同步默认用 `desktop-local` 快速档位构建并安装无压缩升级包，正式发行保持原 release 配置及完整 LZMA 包。** 前端、宿主、Rust 后端或 DLL 变化都可通过升级包更新，无需为了更新 EXE 先构建完整包。纯数据和动态资源同步显式使用 `-ResourcesOnly`；后续源码改动需另行核对安装身份。
+
+构建预压缩会逐项解压核对已有 `.br/.gz` 与当前源字节，复用一致的完整副本并输出复用数量；缺失、损坏或陈旧项仍重建。升级包封装在同一检查点合并校验 payload 与资源检查器，共用一次完整源码、SDK 和构建扫描；安装前后各检查点继续独立核验。
 
 2026-09-28 源码已将后端载荷改为 `gateway/huiyu-runtime.exe` 与锁定的原生 DLL，旧 Node 源码不随产品作为回退服务。本次 Rust 构建/安装与上述旧安装分开验收；目前原生发行材料未完成，`releaseReady=false`。按 2026-10-06 的发行规则，该标记与 pending 如实记录，不阻断经用户明确授权的发布；材料索引完整性及源码/产物字节核验仍须通过，发布不代表待项已验收。后端 EXE、DLL 或桌面 EXE 变化必须通过安装器更新，日常优先升级包；`-SkipBuild` 只能复用匹配源码的构建。只有可复制资源发生变化且安装程序字节匹配时才用 `-ResourcesOnly`。
 
@@ -49,7 +51,9 @@ Tauri 2.12 在 NSIS 内把宿主唯一的 `__TAURI_BUNDLE_TYPE_VAR_UNK` 标记�
 
 仅调试构建支持显式开发附着：桌面 `AICS_DESKTOP_ATTACH_TOKEN` 与开发网关 `AICS_DESKTOP_GATEWAY_TOKEN` 设置为同一随机 32 字节的小写十六进制值（恰好 64 字符）。非法格式拒绝启动；发行版忽略开发附着模式。这不提供对同账户恶意程序读取进程内存/环境的隔离保证。身份与个人凭据功能均涉及 Rust/exe 变化，必须通过安装包更新，不能只同步前端。
 
-本机开发使用 `desktop:package-local --install-dir <已有安装目录>`：先构建前端、暂存资源和原生程序（`--no-bundle`），再用独立打包目录直接生成升级包。`desktop-tauri/tauri.local.json` 关闭压缩和自动更新签名产物，并跳过 WebView2；安装模板只省略可复用素材的写入，保留完整卸载清单。不会先生成完整 NSIS 包，也不会覆盖已有发行包。输出 `runtime/desktop-updates/AI-CG-Studio_<版本>_x64-local-upgrade-setup.exe`，不用于公开发布。
+本机开发使用 `desktop:package-local --install-dir <已有安装目录>`：先构建前端、暂存资源和原生程序（`--no-bundle`），再用独立打包目录直接生成升级包。后端与宿主的 `desktop-local` 均继承 release，使用 `opt-level=2`、`lto="off"`、`codegen-units=16`、`incremental=true`，保留 release 的安全检查及 panic 语义。缓存分别位于两个项目的 `target/desktop-local`，首次需要预热；后端回执使用 `runtime/rust-evidence/build-desktop-local.json`，桌面回执记录实际档位、宿主路径与暂存后端身份。`-SkipBuild` 可复用匹配源码的快速或 release 构建，正式发行复用入口只接受 release。`-ResourcesOnly` 新构建也使用快速档位，仍须安装 EXE/DLL 字节相同。
+
+`desktop-tauri/tauri.local.json` 关闭压缩和自动更新签名产物，并跳过 WebView2；安装模板只省略可复用素材的写入，保留完整卸载清单。不会先生成完整 NSIS 包，也不会覆盖已有发行包。输出 `runtime/desktop-updates/AI-CG-Studio_<版本>_x64-local-upgrade-setup.exe`，不用于公开发布。
 
 已有匹配当前源码的原生构建时，只封装升级包可运行（不需要已有 NSIS 包）：
 

@@ -4,11 +4,11 @@ import { createHash, randomUUID } from 'node:crypto';
 import identity = require('./delivery-identity');
 import safe = require('./delivery-paths');
 import type { FileIdentity as SnapshotFile } from './delivery-types';
+import { desktopBuildProfile, desktopHostExecutable } from './desktop-build-profile';
 
 type FileIdentity = Pick<SnapshotFile, 'path' | 'bytes' | 'sha256'>;
 type DeploymentManifest = { schemaVersion: 1; kind: 'desktop-installer-deployment'; sourceSha256: string; installer: FileIdentity; files: FileIdentity[] };
 const RESOURCE_PREFIX = 'desktop-tauri/src-tauri/resources/';
-const HOST = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe';
 const REQUIRED = ['ai-cg-studio-desktop.exe', 'gateway/huiyu-runtime.exe', 'gateway/native/libvips-42.dll', 'gateway/data/catalog/manifest.json'];
 const digest = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 const manifestPath = (installer: string) => `${path.resolve(installer)}.deployment.json`;
@@ -40,7 +40,8 @@ export function writeInstallerManifest(root: string, receipt: unknown, installer
   const packaged = distribution.entries.find(entry => entry.path === relative);
   if (!packaged || packaged.status !== 'file') throw Error('指定安装包未登记在构建回执中');
   checkedFile(root, packaged);
-  const host = build.entries.find(entry => entry.path === HOST);
+  const hostPath = desktopHostExecutable(desktopBuildProfile(receipt.buildProfile));
+  const host = build.entries.find(entry => entry.path === hostPath);
   if (!host || host.status !== 'file') throw Error('原构建回执缺少宿主身份，无法准备旧包的安装校验清单');
   const files: FileIdentity[] = build.entries.filter((entry): entry is SnapshotFile => entry.status === 'file' && entry.path.startsWith(RESOURCE_PREFIX))
     .map(entry => ({ path: entry.path.slice(RESOURCE_PREFIX.length), bytes: entry.bytes, sha256: entry.sha256 }));

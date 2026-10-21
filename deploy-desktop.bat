@@ -2,7 +2,7 @@
 chcp 65001 >nul
 echo === HUIYU desktop deployment ===
 echo.
-echo Default: build and install a local upgrade package, then restart.
+echo Default: fast desktop-local build, install a local upgrade, then restart.
 echo.
 echo Options:
 echo   -SkipBuild Reuse native build    -Cleanup Remove obsolete resources

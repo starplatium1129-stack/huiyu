@@ -6,10 +6,9 @@ import identity = require('./delivery-identity');
 import deliveryPaths = require('./delivery-paths');
 import installerBinding = require('./desktop-installer-binding');
 import type { Selection } from './delivery-types';
+import { desktopBuildProfile, desktopHostExecutable, desktopRuntimeExecutable, type DesktopBuildProfile } from './desktop-build-profile';
 
 const receiptPath = 'runtime/delivery-evidence/desktop-build-binding.json';
-const exe = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe';
-const bundle = 'desktop-tauri/src-tauri/target/release/bundle/nsis';
 function problemDetails(snapshot: ReturnType<typeof identity.snapshot>) {
   const problems = snapshot.entries.filter(entry => entry.status !== 'file' && entry.status !== 'directory');
   return problems.slice(0, 5).map(entry =>
@@ -23,11 +22,11 @@ function completeSnapshot(root: string, selected: Selection[], failure: string) 
   return snapshot;
 }
 
-/** Cargo links this published executable to target/release/deps. Materialize only
+/** Cargo links this published executable to target/<profile>/deps. Materialize only
  * this known output after the CLI exits, retaining the verifier's blanket link
  * rejection for source/resources/bundles. Remove when Cargo emits an independent
  * release image; a single-link output already takes the no-write path. */
-function materializeNativeExecutable(root: string) {
+function materializeNativeExecutable(root: string, exe: string) {
   const target = deliveryPaths.resolveSafe(root, exe);
   const before = fs.lstatSync(target, { bigint:true });
   if (!before.isFile()) throw Error(`原生 EXE 不是普通文件: ${exe}`);
@@ -101,38 +100,43 @@ function sdkIdentity(root: string, env: NodeJS.ProcessEnv = process.env) {
   if (!sdkRoot) throw Error('缺少实际 Cubism SDK 输入，不能绑定桌面构建');
   return { root:sdkRoot, inputs:sdkInputSnapshot(sdkRoot) };
 }
-function buildSelection(root: string, includeBundle = true): Selection[] {
+function buildSelection(root: string, includeBundle = true, profile: DesktopBuildProfile = 'release'): Selection[] {
   const selected: Selection[] = [
     { kind:'tree', path:'dist' },
     { kind:'tree', path:'desktop-tauri/src-tauri/resources' },
     { kind:'tree', path:'desktop-tauri/web' },
-    { kind:'file', path:exe },
+    { kind:'file', path:desktopHostExecutable(profile) },
   ];
   if (includeBundle) {
+    const bundle = `desktop-tauri/src-tauri/target/${profile}/bundle/nsis`;
     const config = JSON.parse(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/tauri.conf.json'), 'utf8'));
     const installer = deliveryPaths.relative(`${bundle}/${config.productName}_${config.version}_x64-setup.exe`);
     // Historical packages may remain in the output directory, but are not
     // inputs to this candidate. Keep the exact current package and signature.
     selected.push({ kind:'file', path:installer });
     if (fs.existsSync(path.join(root, `${installer}.sig`))) selected.push({ kind:'file', path:`${installer}.sig` });
-    selected.push({ kind:'tree', path:'desktop-tauri/src-tauri/target/release/nsis/x64' });
+    selected.push({ kind:'tree', path:`desktop-tauri/src-tauri/target/${profile}/nsis/x64` });
   }
   return selected;
 }
-function recordBuild(root: string, before: ReturnType<typeof sourceIdentity>, includeBundle = true, sdkBefore = sdkIdentity(root)) {
+function recordBuild(root: string, before: ReturnType<typeof sourceIdentity>, includeBundle = true, sdkBefore = sdkIdentity(root), profile: DesktopBuildProfile = 'release') {
   if (sourceIdentity(root).sha256 !== before.sha256) throw Error('构建期间源码发生变化，请重新完整构建');
   const { sdkInputSnapshot }: typeof import('./desktop-build-environment') = require('./desktop-build-environment');
   const sdk = {root:sdkBefore.root,inputs:sdkInputSnapshot(sdkBefore.root)};
   if (sdk.inputs.sha256 !== sdkBefore.inputs.sha256) throw Error('构建期间 Cubism SDK 输入发生变化，请重新完整构建');
-  materializeNativeExecutable(root);
-  const build = completeSnapshot(root, buildSelection(root, includeBundle), '桌面产物不完整，不能生成发行绑定回执');
-  writeReceipt(root, { schemaVersion:1, kind:'desktop-build-binding', includeBundle, source:before, sdk, build, buildCommit:identity.repository(root).commit }, '构建绑定');
+  const runtime = JSON.parse(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/resources/gateway/rust-runtime-build.json'), 'utf8'));
+  if (desktopBuildProfile(runtime.buildProfile) !== profile || runtime.runtime?.path !== desktopRuntimeExecutable(profile)) throw Error('宿主与暂存后端的构建档位不一致，请完整重建');
+  materializeNativeExecutable(root, desktopHostExecutable(profile));
+  const build = completeSnapshot(root, buildSelection(root, includeBundle, profile), '桌面产物不完整，不能生成发行绑定回执');
+  writeReceipt(root, { schemaVersion:1, kind:'desktop-build-binding', buildProfile:profile, includeBundle, source:before, sdk, build, buildCommit:identity.repository(root).commit }, '构建绑定');
 }
-function verifyBuild(root: string, payload?: string) {
+function verifyBuild(root: string, payload?: string | readonly string[], expectedProfile?: DesktopBuildProfile) {
   let receipt;
   try { receipt = JSON.parse(fs.readFileSync(path.join(root, receiptPath), 'utf8')); }
   catch { throw Error('缺少桌面构建绑定回执；请从当前源码完整构建，不可复用同版本旧包'); }
   if (receipt.schemaVersion !== 1 || receipt.kind !== 'desktop-build-binding') throw Error('发行回执格式无效');
+  const profile = desktopBuildProfile(receipt.buildProfile);
+  if (expectedProfile && profile !== expectedProfile) throw Error(`需要 ${expectedProfile} 构建，当前回执为 ${profile}；正式发行不可复用本机快速构建`);
   try { identity.validateSnapshot(receipt.source); identity.validateSnapshot(receipt.build); }
   catch (error) { throw Error(`发行源码/产物回执格式无效: ${error instanceof Error ? error.message : String(error)}`, { cause:error }); }
   if (sourceIdentity(root).sha256 !== receipt.source.sha256) throw Error('发行源码与构建不匹配，请完整重建；版本号相同不能复用旧包');
@@ -140,12 +144,14 @@ function verifyBuild(root: string, payload?: string) {
   catch (error) { throw Error('缺少或无效的 Cubism SDK 构建绑定，请完整重建', {cause:error}); }
   if (sdkIdentity(root).inputs.sha256 !== receipt.sdk.inputs.sha256) throw Error('Cubism SDK 与构建绑定不匹配，请完整重建');
   if (typeof receipt.includeBundle !== 'boolean') throw Error('发行回执缺少产物模式');
-  const build = completeSnapshot(root, buildSelection(root, receipt.includeBundle), '桌面产物缺失或已改写，请从匹配源码完整重建');
+  const build = completeSnapshot(root, buildSelection(root, receipt.includeBundle, profile), '桌面产物缺失或已改写，请从匹配源码完整重建');
   if (build.sha256 !== receipt.build.sha256) throw Error('桌面产物缺失或已改写，请从匹配源码完整重建');
-  if (payload) {
-    const relative = path.relative(root, payload).replace(/\\/g, '/');
+  // Payload and its upgrade verifier share this checkpoint's complete source,
+  // SDK and build scan. Each selected file still proves its own binding.
+  for (const selected of typeof payload === 'string' ? [payload] : payload || []) {
+    const relative = path.relative(root, selected).replace(/\\/g, '/');
     if (!receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === relative && entry.status === 'file')) {
-      verifyBoundFile(root, receipt.derivedPayloads, payload, '安装 payload 未绑定本次构建');
+      verifyBoundFile(root, receipt.derivedPayloads, selected, '安装 payload 未绑定本次构建');
     }
   }
   return receipt;
@@ -154,7 +160,7 @@ function verifyBuild(root: string, payload?: string) {
 function extendBuild(root: string, receipt: ReturnType<typeof verifyBuild>) {
   const original = completeSnapshot(root, receipt.build.selectors, '打包原构建产物不完整，拒绝绑定');
   if (original.sha256 !== receipt.build.sha256) throw Error('打包修改了原构建产物，拒绝绑定');
-  recordBuild(root, receipt.source, true, { ...sdkIdentity(root), inputs:receipt.sdk.inputs });
+  recordBuild(root, receipt.source, true, { ...sdkIdentity(root), inputs:receipt.sdk.inputs }, desktopBuildProfile(receipt.buildProfile));
 }
 function addBoundFiles(root: string, previous: unknown, outputs: string[]) {
   const names = outputs.map(output => path.relative(root, output).replaceAll('\\', '/'));
@@ -192,8 +198,8 @@ function verifyBoundDistribution(root: string, receipt: ReturnType<typeof verify
   catch (error) { throw Error('缺少或无效的发行封装绑定回执，请重新封装', { cause:error }); }
   verifyBoundFile(root, receipt.distribution, output, '发行封装产物已变化，拒绝签名或上传');
 }
-function verifyDistribution(root: string, output: string) {
-  verifyBoundDistribution(root, verifyBuild(root), output);
+function verifyDistribution(root: string, output: string, expectedProfile?: DesktopBuildProfile) {
+  verifyBoundDistribution(root, verifyBuild(root, undefined, expectedProfile), output);
 }
 function verifyDeployment(root:string,payload?:string){
   const receipt=verifyBuild(root);

@@ -7,8 +7,9 @@ import { execFileSync } from 'node:child_process';
 const { withWorkspaceLock }: typeof import('../lib/workspace-lock') = require('../lib/workspace-lock');
 const { copyRustPayload, runtimeBuild }: typeof import('./desktop-rust-inputs') = require('./desktop-rust-inputs');
 import safe = require('../lib/delivery-paths');
+import type { DesktopBuildProfile } from '../lib/desktop-build-profile';
 type Logger = (message: string) => void;
-interface StageOptions { root?: string; stage?: string; resourceProfile?: string; logger?: Logger }
+interface StageOptions { root?: string; stage?: string; resourceProfile?: string; buildProfile?: DesktopBuildProfile; logger?: Logger }
 const ROOT = path.resolve(__dirname, '../..');
 const ENTRIES = ['docs', 'data', 'dist', 'assets', 'tools'];
 const DATA_ROOTS=new Set(['character-reference-standards.json','character-reference-view.json','characters.json','curation.json','loras.json','popular-characters.json','popular-onboarding.json','presets.json','prompt-pinned-scenes.json','retired-scenes.json','scene-blueprints.json','scenes-core.json','scenes-index.json','scenes-natsume.json','scenes-nene.json','scenes-shared.json','scenes.json','tags-dictionary.json','tags.json']);
@@ -64,7 +65,8 @@ function stageResources(options: StageOptions = {}) {
   safe.resolveSafe(root, rel, true);
   const logger = options.logger || console.log, profile = options.resourceProfile || process.env.AICS_DESKTOP_RESOURCE_PROFILE || 'full';
   if (!['full', 'base'].includes(profile)) throw Error('Resource profile must be full or base');
-  runtimeBuild(root); // Fail before replacing or copying anything if source/executable binding is stale.
+  const buildProfile = options.buildProfile || 'release';
+  runtimeBuild(root, buildProfile); // Fail before replacing or copying anything if source/executable binding is stale.
   for (const name of OFFLINE_TOOLS) {
     const file = safe.resolveSafe(root, `tools/${name}`);
     if (!fs.statSync(file).isFile() || fs.statSync(file).size === 0) throw Error(`Missing offline resource assistant: ${name}`);
@@ -73,7 +75,7 @@ function stageResources(options: StageOptions = {}) {
   const temporary = fs.mkdtempSync(`${stage}.tmp-${process.pid}-`), gateway = path.join(temporary, 'gateway');
   fs.mkdirSync(gateway);
   try {
-    const report = copyRustPayload(root, gateway);
+    const report = copyRustPayload(root, gateway, buildProfile);
     for (const source of ENTRIES) {
       const from = safe.resolveSafe(root, source);
       copyDir(from, path.join(gateway, source), file => {
@@ -90,7 +92,7 @@ function stageResources(options: StageOptions = {}) {
     const inferencePrep = path.join(gateway, 'scripts/maintenance'); fs.mkdirSync(inferencePrep, { recursive: true });
     for (const name of ['prepare-inference.py', 'inspect-anima-checkpoint.py', 'convert-anima-checkpoint.py', 'calibrate-anima-teacache.py', 'import-anima-directory.py']) fs.copyFileSync(safe.resolveSafe(root, `scripts/maintenance/${name}`), path.join(inferencePrep, name));
     execFileSync(process.execPath, [path.join(__dirname, 'desktop-resource-profile.js'), root, gateway, profile], { windowsHide: true, stdio: 'pipe' });
-    const after = runtimeBuild(root);
+    const after = runtimeBuild(root, buildProfile);
     if (after.receipt.source.sha256 !== report.source || after.receipt.binary.sha256 !== report.runtime.sha256) throw Error('Rust build changed during staging');
     publishStage(temporary, stage, logger);
     logger(`[stage] Rust payload staged; releaseReady=${report.releaseReady}`);

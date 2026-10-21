@@ -145,7 +145,7 @@ function publishRelease(version: any, head: any, files: any) {
   const workspaceRoot = ROOT;
   const installers = files.filter((file: string) => file.endsWith('.exe'));
   if (installers.length !== 2 || new Set(installers.map((file: string) => path.basename(file))).size !== 2) throw Error('公开发布必须同时提供完整包与升级包');
-  for (const installer of installers) binding.verifyDistribution(workspaceRoot, installer);
+  for (const installer of installers) binding.verifyDistribution(workspaceRoot, installer, 'release');
   assertNativeReleaseIntegrity(path.join(workspaceRoot, 'desktop-tauri/src-tauri/resources/gateway'));
   const expectedNames = Object.values(installerNames(version));
   if (installers.some((file: string) => !expectedNames.includes(path.basename(file)))) throw Error('安装包名称或版本不匹配');
@@ -199,7 +199,7 @@ async function main() {
   if (INSTALL_DIR_INDEX >= 0 && !UPGRADE_ONLY) fail('--install-dir 仅用于 --upgrade-only 本机升级封装');
   if (UPGRADE_ONLY) {
     if (!SKIP_BUILD) {
-      const status = await (require('./run-tauri') as typeof import('./run-tauri')).runTauri(['build', '--no-bundle', '--ci', '--no-sign']);
+      const status = await (require('./run-tauri') as typeof import('./run-tauri')).runTauri(['build', '--local', '--no-bundle', '--ci', '--no-sign']);
       if (status !== 0) throw Error('Local desktop build failed');
     }
     const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT, { installDir: INSTALL_DIR, local: true });
@@ -217,7 +217,7 @@ async function main() {
   }
   if (BUMP_KIND) bumpVersion(BUMP_KIND);
   const version = require(path.join(ROOT, 'package.json')).version;
-  const previousBuild = SKIP_BUILD || BUNDLE_ONLY ? binding.verifyBuild(ROOT) : null;
+  const previousBuild = SKIP_BUILD || BUNDLE_ONLY ? binding.verifyBuild(ROOT, undefined, 'release') : null;
 
   if (!SKIP_BUILD) {
     if (BUNDLE_ONLY) {
@@ -256,7 +256,7 @@ async function main() {
     .filter((a: any) => MANUAL || fs.existsSync(path.join(BUNDLE_DIR, a.sig)));
   if (!artifacts.length) fail(`${BUNDLE_DIR} 下没有 updater 安装包（*-setup.exe + .sig）`);
   const artifact = artifacts[artifacts.length - 1];
-  binding.verifyBuild(ROOT, path.join(BUNDLE_DIR, artifact.exe));
+  binding.verifyBuild(ROOT, path.join(BUNDLE_DIR, artifact.exe), 'release');
   const installerScript = fs.readFileSync(path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi'), 'utf8');
   if (!installerScript.includes('SetCompressor /SOLID "lzma"') || !installerScript.includes('!define INSTALLWEBVIEW2MODE "offlineInstaller"') || installerScript.includes('Function GameCheckUpgradeResources')) {
     fail('发行需要带 WebView2 的 LZMA 完整包；本机升级包或旧无压缩包不可复用，请重新运行 release:desktop');

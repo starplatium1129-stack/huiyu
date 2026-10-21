@@ -344,7 +344,9 @@ Windows x64 MSVC 后端保留原链接器；桌面 dev 默认使用当前活动 
 
 `npm run dev:tauri` 构建开发后端，宿主显式使用本次 Cargo 返回的 EXE 和开发原生 DLL 环境；跳过 release 后端、安装器、资源暂存与预压缩。默认复用 `dist` 和 `desktop-tauri/web`，缺失时准备两种路由入口；修改 UI 或内容后运行 `npm run dev:tauri -- --refresh-ui`。CLI 只监视桌面 Rust，后端改动需退出并重新执行桌面开发命令；后端持续开发使用 `dev:server`。开发窗口沿用认证网关或 native bundled 来源，不引入新的可信来源。
 
-`npm start` / `start:run`、`rust:build`、`prepare:tauri`、桌面 build/package、部署及 `maintenance:recover` 保持 release 流程和回执绑定。`dev:tauri -- --release` 也保留原发行准备。开发提速不优化依赖运行等级，不替换发布工具链；Cranelift 在 Windows 上缺少所需 panic unwinding，当前不提供该入口。
+`npm start` / `start:run`、`rust:build`、`prepare:tauri`、普通桌面 build/package 及 `maintenance:recover` 默认保持 release 流程和回执绑定。`dev:tauri -- --release` 也保留原发行准备。`rust:build --profile desktop-local` 可单独构建本机优化档位的后端；`npm run build:tauri -- --local` 同时构建两个本机原生程序及资源，不生成安装包。Cranelift 在 Windows 上缺少所需 panic unwinding，当前不提供该入口。
+
+`deploy-desktop.bat` 和 `desktop:package-local` 默认选择独立的 `desktop-local` 档位：继承 release，设置 `opt-level=2`、`lto="off"`、`codegen-units=16`、`incremental=true`。后端与宿主各自复用 `target/desktop-local` 缓存，首次须预热；后端回执为 `runtime/rust-evidence/build-desktop-local.json`，不替换 release 的后端回执。暂存、桌面绑定和安装清单使用实际档位对应的 EXE。正式 `release:desktop` 继续使用原 release 配置，`--skip-build`、`--bundle-only` 和发布入口拒绝本机快速构建。同步方式见[部署指南](desktop-deployment.md)。
 
 ## 服务与桌面部署
 

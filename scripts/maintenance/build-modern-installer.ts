@@ -18,12 +18,10 @@ function run(command: string, args: readonly string[], options: any = {}) {
 }
 
 function buildModernInstaller({ payload, output, upgradeVerifier, nsisFile = path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi'), upgrade = Boolean(upgradeVerifier), preview = false, capture = false, theme = 'dark', state = 'ready', dpi = 96 }: any = {}) {
-  if (!preview) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding')).verifyBuild(ROOT, payload);
-  if (!preview && upgrade) {
-    if (!upgradeVerifier) throw Error('An upgrade requires its bound resource verifier');
-    (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding')).verifyBuild(ROOT, upgradeVerifier);
-  }
   if (!preview && (!payload || !fs.existsSync(payload))) throw new Error('A verified NSIS payload is required');
+  if (!preview && upgrade && !upgradeVerifier) throw Error('An upgrade requires its bound resource verifier');
+  if (!preview) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding'))
+    .verifyBuild(ROOT, upgrade ? [payload, upgradeVerifier] : payload);
   if (!['dark', 'light'].includes(theme) || !['ready', 'installing', 'done', 'error'].includes(state)) throw new Error('Unknown preview theme or state');
   fs.mkdirSync(GENERATED, { recursive: true });
   const version = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;

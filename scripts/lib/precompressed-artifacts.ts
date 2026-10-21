@@ -16,9 +16,24 @@ function brotliOptions(size: number): zlib.BrotliOptions {
 }
 const GZIP_OPTIONS: zlib.ZlibOptions = { level: 9 };
 
+/** Existing sidecars are reusable only when both decode to the current bytes.
+ * Bound decompression by the source size; missing/corrupt/stale output rebuilds. */
+function reuseArtifacts(file: string, raw: Buffer) {
+  try {
+    const brotli = fs.readFileSync(file + '.br'), gzip = fs.readFileSync(file + '.gz');
+    if (brotli.length >= raw.length || gzip.length >= raw.length) return null;
+    const options = { maxOutputLength: raw.length };
+    if (!zlib.brotliDecompressSync(brotli, options).equals(raw)
+      || !zlib.gunzipSync(gzip, options).equals(raw)) return null;
+    return { raw: raw.length, brotli: brotli.length, gzip: gzip.length, reused: true };
+  } catch { return null; }
+}
+
 export function compress(file: string) {
   const raw = fs.readFileSync(file);
   if (raw.length < MIN_BYTES) return null;
+  const reused = reuseArtifacts(file, raw);
+  if (reused) return reused;
 
   const brotli = zlib.brotliCompressSync(raw, brotliOptions(raw.length));
   const gzip = zlib.gzipSync(raw, GZIP_OPTIONS);
@@ -33,13 +48,15 @@ function writeArtifacts(file: string, raw: Buffer, brotli: Buffer, gzip: Buffer)
   if (gzip.length < raw.length) fs.writeFileSync(file + '.gz', gzip);
   else if (fs.existsSync(file + '.gz')) fs.unlinkSync(file + '.gz');
 
-  return { raw: raw.length, brotli: brotli.length, gzip: gzip.length };
+  return { raw: raw.length, brotli: brotli.length, gzip: gzip.length, reused: false };
 }
 
 /** The async path uses the same quality/options and bytes as the synchronous API. */
 export async function compressAsync(file: string) {
   const raw = fs.readFileSync(file);
   if (raw.length < MIN_BYTES) return null;
+  const reused = reuseArtifacts(file, raw);
+  if (reused) return reused;
   const [brotli, gzip] = await Promise.all([
     brotliCompress(raw, brotliOptions(raw.length)),
     gzipCompress(raw, GZIP_OPTIONS),

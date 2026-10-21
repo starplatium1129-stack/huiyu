@@ -1,6 +1,6 @@
 ﻿# AI-CG-Studio 桌面端部署 —— 唯一入口
 #
-# 默认构建并安装本机轻量升级包；不先构建完整包，不携带 WebView2/保留素材。
+# 默认以 desktop-local 快速档位构建并安装本机轻量升级包；不携带 WebView2/保留素材。
 # -ResourcesOnly 仅同步已绑定静态资源，要求安装 EXE/DLL 与候选一致。
 # -UseInstaller 复用已绑定升级包；首次安装/修复须显式 -InstallerPath 指向发行完整包。
 #
@@ -149,15 +149,19 @@ function Write-DesktopDuration([string]$Phase) {
   $phaseTimer.Restart()
 }
 $stageGateway = Join-Path $root 'desktop-tauri\src-tauri\resources\gateway'
-$hostExecutable = Join-Path $root 'desktop-tauri\src-tauri\target\release\ai-cg-studio-desktop.exe'
+$hostExecutable = $null
 # Validate selected source/build/distribution before drain and before restart.
 function Assert-CurrentBuildBinding {
   if ($installWithPackage) { Assert-FixedInstaller; return }
   & node (Join-Path $root 'scripts\lib\desktop-build-binding.js') $root $InstallerPath
   if ($LASTEXITCODE -ne 0) { throw 'DESKTOP_BUILD_BINDING: 源码/资源/安装包与构建回执不匹配；请重新完整构建。' }
+  $buildReceipt = Get-Content -LiteralPath (Join-Path $root 'runtime\delivery-evidence\desktop-build-binding.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  $buildProfile = if ($buildReceipt.buildProfile) { $buildReceipt.buildProfile } else { 'release' }
+  if ($buildProfile -notin @('release', 'desktop-local')) { throw 'DESKTOP_BUILD_BINDING: 未知构建档位。' }
+  $script:hostExecutable = Join-Path $root "desktop-tauri\src-tauri\target\$buildProfile\ai-cg-studio-desktop.exe"
 }
 if ($buildUpgrade) {
-  Write-Host '[1/6] 准备本机轻量升级包（不构建完整包） ...' -ForegroundColor Cyan
+  Write-Host '[1/6] 准备本机快速构建与轻量升级包 ...' -ForegroundColor Cyan
   Push-Location $root
   try {
     $upgradeArgs = @('run', 'release:desktop', '--', '--manual', '--upgrade-only', '--install-dir', $installDir)
@@ -175,7 +179,7 @@ if ($buildUpgrade) {
 } elseif (-not $installWithPackage -and -not $SkipBuild) {
   Write-Host '[1/6] 构建并绑定 Rust 桌面候选 ...' -ForegroundColor Cyan
   Push-Location $root
-  try { npm run build:tauri; if ($LASTEXITCODE -ne 0) { throw 'Desktop candidate build failed' } }
+  try { npm run build:tauri -- --local; if ($LASTEXITCODE -ne 0) { throw 'Desktop candidate build failed' } }
   finally { Pop-Location }
 } else { Write-Host $(if ($UseInstaller) { '[1/6] 复用本次固定安装包' } else { '[1/6] 复用当前已绑定构建' }) -ForegroundColor DarkGray }
 Assert-CurrentBuildBinding

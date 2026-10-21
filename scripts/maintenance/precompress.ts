@@ -108,6 +108,7 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
   const jobs = Number(configured);
   if (!checkOnly) purgeWoffFonts(root);
   let files = 0;
+  let reused = 0;
   let rawTotal = 0;
   let brTotal = 0;
   let gzTotal = 0;
@@ -167,6 +168,7 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
       try {
         const result = await compressAsync(pending[cursor++]);
         if (!result) continue;
+        if (result.reused) reused++;
         files++; rawTotal += result.raw; brTotal += result.brotli; gzTotal += result.gzip;
       } catch (error) { failed = true; throw error; }
     }
@@ -179,6 +181,7 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
   console.log('Precompressed ' + files + ' files: ' +
     kb(rawTotal) + ' raw → ' + kb(gzTotal) + ' gzip → ' + kb(brTotal) + ' brotli' +
     ' (brotli 比 gzip 再省 ' + (100 - (brTotal / gzTotal) * 100).toFixed(0) + '%)');
+  console.log(`Precompression reused ${reused} verified pairs; encoded ${files - reused} files.`);
   return 0;
 }
 

@@ -6,6 +6,7 @@ import binding = require('./desktop-build-binding');
 import safe = require('./delivery-paths');
 import lock = require('./workspace-lock');
 import { timeDesktopBuild } from './desktop-build-timing';
+import { desktopBuildProfile, desktopHostExecutable } from './desktop-build-profile';
 
 type Asset = { path: string; bytes: number; sha256: string };
 // Character pictures and particle grids change with content updates and ship in the upgrade.
@@ -125,7 +126,9 @@ function localUpgradeTemplate(root: string, receipt: ReturnType<typeof binding.v
 export async function buildUpgradeInstaller(root: string, options: { installDir?: string; local?: boolean } = {}) {
   return lock.withWorkspaceLock({ workspaceRoot: root }, async () => {
     if (options.local && !options.installDir) throw Error('Local upgrades require an existing installation directory');
-    const receipt = await timeDesktopBuild('upgrade source verification', () => binding.verifyBuild(root));
+    const receipt = await timeDesktopBuild('upgrade source verification', () => binding.verifyBuild(root, undefined, options.local ? undefined : 'release'));
+    const profile = desktopBuildProfile(receipt.buildProfile);
+    const hostExecutable = path.join(root, desktopHostExecutable(profile));
     const renderedPath = 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi';
     if (!options.local && !receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === renderedPath && entry.status === 'file'))
       throw Error('Rendered NSIS inputs are not bound; perform a fresh desktop build');
@@ -158,7 +161,7 @@ export async function buildUpgradeInstaller(root: string, options: { installDir?
       // full installer nor the bound host/NSIS inputs are overwritten.
       const target = path.join(directory, 'target');
       fs.mkdirSync(path.join(target, 'release'), { recursive: true });
-      fs.copyFileSync(path.join(root, 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'), path.join(target, 'release/ai-cg-studio-desktop.exe'));
+      fs.copyFileSync(hostExecutable, path.join(target, 'release/ai-cg-studio-desktop.exe'));
       const env: NodeJS.ProcessEnv = { ...(require('./desktop-build-environment') as typeof import('./desktop-build-environment')).desktopBuildEnvironment(root), CARGO_TARGET_DIR: target };
       delete env.TAURI_SIGNING_PRIVATE_KEY; delete env.TAURI_SIGNING_PRIVATE_KEY_PATH; delete env.TAURI_SIGNING_PRIVATE_KEY_PASSWORD;
       await timeDesktopBuild('local upgrade NSIS bundle', () => command(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), 'bundle', '--bundles', 'nsis', '--ci', '--no-sign',
@@ -168,7 +171,7 @@ export async function buildUpgradeInstaller(root: string, options: { installDir?
       nsisFile = path.join(target, 'release/nsis/x64/installer.nsi');
     } else {
       const host = path.join(directory, 'nsis-host.exe');
-      fs.writeFileSync(host, nsisHost(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'))));
+      fs.writeFileSync(host, nsisHost(fs.readFileSync(hostExecutable)));
       fs.writeFileSync(script, upgradeScript(fs.readFileSync(nsisFile, 'utf8'), assets, verifier, host, output));
       await timeDesktopBuild('upgrade NSIS compression', () => command(path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe'), ['/NOCD', '/INPUTCHARSET', 'UTF8', '/V2', script], path.dirname(nsisFile)));
     }

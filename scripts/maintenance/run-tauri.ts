@@ -4,6 +4,7 @@ import { errorStack } from '../lib/runtime-errors';
 import fs = require('node:fs');
 import development = require('../lib/rust-development');
 import nativeInputs = require('./desktop-rust-inputs');
+import type { DesktopBuildProfile } from '../lib/desktop-build-profile';
 
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const path: typeof import('node:path') = require('node:path');
@@ -50,12 +51,22 @@ async function runTauri(argv: string[]): Promise<number> {
   const cliArgs = separator < 0 ? args : args.slice(0, separator);
   if (cliArgs.some(arg => arg === '--help' || arg === '-h')) {
     if (mode === 'dev') console.log('[tauri dev] --refresh-ui rebuilds both UI entries; Rust-only development reuses them.');
-    return runCommand(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), mode, ...args], { cwd: path.join(workspaceRoot, 'desktop-tauri') });
+    else console.log('[tauri build] --local selects the desktop-local profile; requires --no-bundle. Default: release.');
+    return runCommand(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), mode, ...args.filter(arg => arg !== '--local')], { cwd: path.join(workspaceRoot, 'desktop-tauri') });
   }
   const forwarded = separator < 0 ? [] : args.slice(separator + 1);
   const applicationSeparator = forwarded.indexOf('--');
   const cargoArgs = applicationSeparator < 0 ? forwarded : forwarded.slice(0, applicationSeparator);
   const customProfile = cargoArgs.some(arg => arg === '--release' || arg === '--profile' || arg.startsWith('--profile='));
+  const localBuild = cliArgs.includes('--local');
+  const buildProfile: DesktopBuildProfile = localBuild ? 'desktop-local' : 'release';
+  if (localBuild && (mode !== 'build' || !cliArgs.includes('--no-bundle'))) throw Error('--local requires build --no-bundle; use desktop:package-local for a local installer.');
+  if (mode === 'build' && (customProfile || cliArgs.includes('--debug') || cliArgs.includes('-d'))) throw Error('Bound desktop builds require the default release profile or --local; do not override the Cargo profile.');
+  if (localBuild) {
+    args.splice(args.indexOf('--local'), 1);
+    if (!args.includes('--')) args.push('--');
+    args.push('--profile', buildProfile);
+  }
   const fastDevelopment = mode === 'dev' && !cliArgs.includes('--release') && !customProfile;
   const refreshUi = fastDevelopment && cliArgs.includes('--refresh-ui');
   if (refreshUi) args.splice(args.indexOf('--refresh-ui'), 1);
@@ -70,6 +81,10 @@ async function runTauri(argv: string[]): Promise<number> {
     }
     const source = mode === 'build' ? await timeDesktopBuild('source identity', () => binding.sourceIdentity(workspaceRoot)) : null;
     let env = { ...desktopBuildEnvironment(workspaceRoot) };
+    if (mode === 'build') {
+      env.CARGO_TARGET_DIR = path.join(workspaceRoot, 'desktop-tauri/src-tauri/target');
+      console.log(`[tauri] Build profile: ${buildProfile}`);
+    }
     const sdk = mode === 'build' ? binding.sdkIdentity(workspaceRoot, env) : null;
     if (sdk) { env.LIVE2D_CUBISM_SDK_DIR = sdk.root; env.LIVE2D_CUBISM_SDK_SHA256 = sdk.inputs.sha256; }
     if (fastDevelopment) {
@@ -108,7 +123,7 @@ async function runTauri(argv: string[]): Promise<number> {
       const status = await timeDesktopBuild('web build and precompression', () => runCommand(npm.command, [...npm.args, 'run', 'build'], { cwd: workspaceRoot }));
       if (status !== 0) return status;
 
-      await prepareTauri({ root: workspaceRoot });
+      await prepareTauri({ root: workspaceRoot, buildProfile });
     }
 
     const cli = require.resolve('@tauri-apps/cli/tauri.js');
@@ -119,7 +134,7 @@ async function runTauri(argv: string[]): Promise<number> {
       windowsHide: false,
     }));
     if (result === 0 && source) {
-      try { await timeDesktopBuild('build binding', () => binding.recordBuild(workspaceRoot, source, !args.includes('--no-bundle'), sdk!)); }
+      try { await timeDesktopBuild('build binding', () => binding.recordBuild(workspaceRoot, source, !args.includes('--no-bundle'), sdk!, buildProfile)); }
       catch (error) {
         throw Error(`Tauri CLI 已成功，但构建产物/回执校验失败；本次构建不可发行: ${error instanceof Error ? error.message : String(error)}`, { cause:error });
       }

@@ -3,6 +3,7 @@ import path = require('node:path');
 import crypto = require('node:crypto');
 import identity = require('../lib/delivery-identity');
 import safe = require('../lib/delivery-paths');
+import { desktopBuildProfile, desktopRuntimeExecutable, desktopRuntimeReceipt, type DesktopBuildProfile } from '../lib/desktop-build-profile';
 import { loadNativeLicenseMaterials, readNativeMaterialFromWorktree, verifyNativeLicenseMaterial } from '../lib/native-license-materials';
 
 const SOURCES = [{ kind: 'tree', path: 'runtime-rs/src' }, { kind: 'file', path: 'runtime-rs/Cargo.toml' }, { kind: 'file', path: 'runtime-rs/Cargo.lock' },
@@ -14,7 +15,6 @@ const SOURCES = [{ kind: 'tree', path: 'runtime-rs/src' }, { kind: 'file', path:
   { kind: 'file', path: 'tools/inference/managed-auxiliary-models.json' },
   { kind: 'file', path: 'tools/interrogate/pixai-manifest.json' }];
 const NATIVE_MANIFEST = 'runtime-rs/native-dependencies.windows-x64.json';
-const EXECUTABLE = 'runtime-rs/target/release/huiyu-runtime.exe';
 function digest(bytes: Buffer) { return crypto.createHash('sha256').update(bytes).digest('hex'); }
 function nativeManifest(bytes: Buffer) {
   const manifest = JSON.parse(bytes.toString('utf8'));
@@ -34,13 +34,14 @@ function checkedBytes(root: string, file: string, expected: { bytes: number; sha
   if (bytes.length !== expected.bytes || digest(bytes) !== expected.sha256) throw Error(`Native/build bytes mismatch: ${file}`);
   return bytes;
 }
-function runtimeBuild(root: string) {
-  const receipt = JSON.parse(fs.readFileSync(safe.resolveSafe(root, 'runtime/rust-evidence/build.json'), 'utf8'));
-  if (receipt.formatVersion !== 1 || receipt.binary?.path !== EXECUTABLE) throw Error('Missing Windows release Rust build binding');
+function runtimeBuild(root: string, profile: DesktopBuildProfile = 'release') {
+  const executable = desktopRuntimeExecutable(profile);
+  const receipt = JSON.parse(fs.readFileSync(safe.resolveSafe(root, desktopRuntimeReceipt(profile)), 'utf8'));
+  if (receipt.formatVersion !== 1 || desktopBuildProfile(receipt.buildProfile) !== profile || receipt.binary?.path !== executable) throw Error(`Missing ${profile} Rust build binding`);
   identity.validateSnapshot(receipt.source);
   const current = identity.snapshot(root, SOURCES);
-  if (current.status !== 'complete' || current.sha256 !== receipt.source.sha256) throw Error('Rust source/build binding is stale; run rust:build');
-  const bytes = checkedBytes(root, EXECUTABLE, receipt.binary);
+  if (current.status !== 'complete' || current.sha256 !== receipt.source.sha256) throw Error(`Rust source/build binding is stale; run rust:build --profile ${profile}`);
+  const bytes = checkedBytes(root, executable, receipt.binary);
   return { receipt, bytes };
 }
 function developmentNativeEnvironment(root:string, supplied:NodeJS.ProcessEnv=process.env):NodeJS.ProcessEnv {
@@ -51,8 +52,8 @@ function developmentNativeEnvironment(root:string, supplied:NodeJS.ProcessEnv=pr
   checkedBytes(root,entry.source,entry);env.AICS_VIPS_DYLIB_PATH=safe.resolveSafe(root,entry.source);
   return env;
 }
-function copyRustPayload(root: string, gateway: string) {
-  const { receipt, bytes } = runtimeBuild(root);
+function copyRustPayload(root: string, gateway: string, profile: DesktopBuildProfile = 'release') {
+  const { receipt, bytes } = runtimeBuild(root, profile);
   fs.writeFileSync(path.join(gateway, 'huiyu-runtime.exe'), bytes);
   const manifestBytes=fs.readFileSync(safe.resolveSafe(root,NATIVE_MANIFEST));
   const manifest = nativeManifest(manifestBytes);
@@ -68,7 +69,7 @@ function copyRustPayload(root: string, gateway: string) {
     fs.writeFileSync(destination, content!);
   }
   fs.writeFileSync(path.join(gateway, 'native-dependencies.windows-x64.json'),manifestBytes);
-  const report = { schemaVersion: 1, runtime: receipt.binary, source: receipt.source.sha256,
+  const report = { schemaVersion: 1, buildProfile: profile, runtime: receipt.binary, source: receipt.source.sha256,
     nativeManifestSha256: digest(manifestBytes), nativeMaterialCount: materials.size,
     ...nativeReleaseState(manifest) };
   fs.writeFileSync(path.join(gateway, 'rust-runtime-build.json'), JSON.stringify(report, null, 2) + '\n');
