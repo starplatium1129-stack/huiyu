@@ -1,7 +1,8 @@
 use super::{Media, invalid, media, schema, unavailable};
 mod stage;
-pub(crate) use stage::Staged;
 use crate::error::{ApiError, Result};
+pub(crate) use stage::Staged;
+pub(super) use stage::recover_staging;
 use std::{
     collections::HashMap,
     fs::File,

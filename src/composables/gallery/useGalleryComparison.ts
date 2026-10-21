@@ -26,17 +26,41 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
   const compareOpen = ref(false);
   const compareIds = ref<string[]>([]);
 
-  const linkedRecords = shallowRef<ArtworkRecord[]>([]);
+  // Once read, this complete pair snapshot outranks the independently paged wall.
+  const linkedRecords = shallowRef<ArtworkRecord[] | null>(null);
   const linkedParent = shallowRef<ArtworkRecord | null>(null);
+  const comparisonReading = ref(false);
+  let comparisonRead: AbortController | null = null;
   let linkRead: AbortController | null = null, parentLookup: AbortController | null = null;
   const compareItems = computed(() => compareIds.value.flatMap(id => {
-    const item = history.value.find(item => String(item.id) === id) || linkedRecords.value.find(item => String(item.id) === id);
+    const item = (linkedRecords.value ?? history.value).find(item => String(item.id) === id);
     return item ? [item] : [];
   }));
 
   function compareSelected() {
+    linkedRecords.value = null;
     compareIds.value = [...selectedIds.value].map(String).slice(0, 4);
     compareOpen.value = compareIds.value.length >= 2;
+  }
+
+  async function refreshComparisonRecords(isCurrent: () => boolean): Promise<boolean> {
+    linkRead?.abort();
+    comparisonRead?.abort();
+    const abort = new AbortController(), source = captureGallerySource(), ids = [...compareIds.value];
+    comparisonRead = abort; comparisonReading.value = true;
+    try {
+      // The refreshed wall can omit this entire pair. Read every comparison ID,
+      // including selected items, and retain confirmed deletions as absent.
+      const records = await Promise.all(ids.map(id => source.repository.readArtwork(id, abort.signal)));
+      if (abort.signal.aborted || !source.isCurrent() || !isCurrent()
+        || ids.length !== compareIds.value.length || ids.some((id, index) => id !== compareIds.value[index])) return false;
+      linkedRecords.value = records.filter((item): item is ArtworkRecord => !!item);
+      return true;
+    } catch { return false; }
+    finally {
+      source.release();
+      if (comparisonRead === abort) { comparisonRead = null; comparisonReading.value = false; }
+    }
   }
 
   async function compareFromRoute() {
@@ -72,7 +96,7 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
   function invalidateLinks() { if (linkSession !== imageMediaSession()) { linkSession = imageMediaSession(); releaseParent(); releaseLinks(); } }
   const stopRuntime = onDesktopRuntime(invalidateLinks);
   watch(imageMediaSession, invalidateLinks, { flush: 'sync' });
-  function releaseLinks() { linkRead?.abort(); parentLookup?.abort(); linkedRecords.value = []; linkedParent.value = null; }
+  function releaseLinks() { linkRead?.abort(); comparisonRead?.abort(); parentLookup?.abort(); linkedRecords.value = null; linkedParent.value = null; }
   // A filtered/off-page parent must not depend on having visited its wall card.
   // Own one preview separately: wall LRU eviction must never revoke our Blob URL.
   const parentPreview = ref(''), parentLoading = ref(false), parentError = ref(''), parentOriginal = ref(false);
@@ -218,6 +242,7 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
     compareItems,
     compareSelected,
     compareFromRoute,
+    refreshComparisonRecords, comparisonReading,
     parentImageUrl,
     parentImageLabel, parentImageStatus, retryParentImage,
     hasComparableImage,
