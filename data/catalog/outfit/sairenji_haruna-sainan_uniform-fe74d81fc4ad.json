@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "sairenji_haruna/sainan_uniform",
+  "revision": 1,
+  "sortOrder": 1489,
+  "createdAt": null,
+  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "data": {
+    "characterId": "sairenji_haruna",
+    "outfit": {
+      "default": true,
+      "id": "sainan_uniform",
+      "isDefault": true,
+      "name": "彩南高校女生水手制服",
+      "prose": "the Sainan High School uniform: a crisp short-sleeved white sailor blouse with a teal collar, a small neat bow, a teal pleated skirt, dark knee socks and brown loafers",
+      "tokens": [
+        "sainan_high_school_uniform",
+        "school_uniform",
+        "sailor_suit",
+        "white_shirt",
+        "teal_sailor_collar",
+        "teal_skirt",
+        "pleated_skirt",
+        "miniskirt",
+        "knee_socks",
+        "loafers",
+        "hair_clip"
+      ]
+    }
+  }
+}

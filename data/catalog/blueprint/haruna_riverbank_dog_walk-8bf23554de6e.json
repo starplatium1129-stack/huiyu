@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "haruna_riverbank_dog_walk",
+  "revision": 1,
+  "sortOrder": 1763,
+  "createdAt": null,
+  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "data": {
+    "id": "haruna_riverbank_dog_walk",
+    "title": "西连寺春菜 · 黄昏河堤与爱犬马隆的悠闲散步",
+    "characterId": "sairenji_haruna",
+    "outfitId": "casual_summer",
+    "category": "温情日常",
+    "action": "手牵小狗牵引绳漫步河堤草坡，微风吹起白裙，回眸展露温柔浅笑",
+    "camera": "medium shot, slightly low angle, warm sunset framing",
+    "lighting": "夕阳黄金时刻柔和漫射光与河面金色波光倒影",
+    "location": "彩南町平缓的河堤青草斜坡",
+    "mood": "恬静治愈",
+    "timeOfDay": "傍晚",
+    "recommendedSize": "1536x1152",
+    "sceneTags": [
+      "riverbank",
+      "grass",
+      "walking_dog",
+      "small_dog",
+      "leash",
+      "casual_blouse",
+      "long_skirt",
+      "sunset",
+      "golden_hour"
+    ],
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【西连寺春菜 · 黄昏河堤与爱犬马隆的悠闲散步】落日熔金的彩南町河堤上，春菜穿着清爽的浅粉短袖上衣与洁白长裙。她一手牵着欢快小跑的波士顿梗犬马隆，一手轻挽被晚风吹乱的耳边短发。夕阳将她温柔的侧颜与眼眸染上一层暖橙色光晕，转过身来展颜微笑，画面充满了宁静而惬意的生活气息。",
+    "promptTokens": [
+      "riverbank",
+      "grassy_hill",
+      "walking_dog",
+      "small_dog",
+      "dog_leash",
+      "holding_leash",
+      "pale_pink_blouse",
+      "white_skirt",
+      "purple_hair",
+      "short_hair",
+      "two_hair_clips",
+      "gentle_smile",
+      "sunset",
+      "golden_hour",
+      "water_reflection",
+      "detailed_background"
+    ],
+    "promptProse": "Strolling along the grassy river embankment during golden hour in her pale-pink blouse and white skirt, Haruna holds the leash of her spirited little Boston terrier. Warm sunset light gleams on the river and highlights her gentle smile and soft purple hair.",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "nsfw",
+      "nude"
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

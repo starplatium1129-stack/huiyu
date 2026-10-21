@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "sairenji_haruna/school_swimsuit",
+  "revision": 1,
+  "sortOrder": 1491,
+  "createdAt": null,
+  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "data": {
+    "characterId": "sairenji_haruna",
+    "outfit": {
+      "default": false,
+      "id": "school_swimsuit",
+      "isDefault": false,
+      "name": "彩南高中深蓝死库水",
+      "prose": "a classic navy-blue one-piece Japanese school competition swimsuit with a white fabric chest patch reading Sairenji, clinging softly with water droplets, worn barefoot",
+      "tokens": [
+        "swimsuit",
+        "school_swimsuit",
+        "one-piece_swimsuit",
+        "navy_blue_swimsuit",
+        "white_name_patch",
+        "wet_skin",
+        "hair_clip",
+        "barefoot"
+      ]
+    }
+  }
+}

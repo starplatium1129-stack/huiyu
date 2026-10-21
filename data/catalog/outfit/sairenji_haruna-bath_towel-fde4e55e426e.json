@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "sairenji_haruna/bath_towel",
+  "revision": 1,
+  "sortOrder": 1493,
+  "createdAt": null,
+  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "data": {
+    "characterId": "sairenji_haruna",
+    "outfit": {
+      "default": false,
+      "id": "bath_towel",
+      "isDefault": false,
+      "name": "沐浴后纯白浴巾裹身",
+      "prose": "wrapped securely in a fluffy pure-white bath towel tucked across her chest, leaving her smooth shoulders and legs bare, with slight dampness on her short purple hair and flushed cheeks",
+      "tokens": [
+        "towel",
+        "bath_towel",
+        "white_towel",
+        "covering_breasts",
+        "bare_shoulders",
+        "wet_hair",
+        "blush",
+        "barefoot"
+      ]
+    }
+  }
+}

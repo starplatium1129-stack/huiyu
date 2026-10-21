@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tachibana_mikari",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-21T12:26:04.914Z",
   "data": {
     "id": "tachibana_mikari",
     "profile": {
@@ -93,8 +93,7 @@
         "long hair",
         "two side up",
         "pink ribbon",
-        "pink eyes",
-        "adult"
+        "pink eyes"
       ],
       "exactTokens": [
         "tachibana_mikari"

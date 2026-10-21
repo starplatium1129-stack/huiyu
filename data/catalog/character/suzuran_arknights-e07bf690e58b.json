@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suzuran_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 35,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-21T12:26:04.913Z",
   "data": {
     "id": "suzuran_arknights",
     "profile": {
@@ -118,8 +118,7 @@
         "nine_tails",
         "golden tails",
         "fluffy tails",
-        "arknights",
-        "adult"
+        "arknights"
       ],
       "negativeTokens": [
         "bad anatomy",

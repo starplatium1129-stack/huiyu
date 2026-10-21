@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "harudera_yuria",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-21T12:26:04.914Z",
   "data": {
     "id": "harudera_yuria",
     "profile": {
@@ -91,7 +91,6 @@
         "red-framed_eyewear",
         "mole_under_eye",
         "large_breasts",
-        "mature_female",
         "grisaia_(series)"
       ],
       "accent_color": "#f59e0b",
@@ -123,7 +122,6 @@
         "blue_eyes",
         "mole_under_eye",
         "mole beneath right eye",
-        "mature_female",
         "grisaia_(series)"
       ],
       "exactTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_morning_plush",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 168,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-21T12:28:13.194Z",
   "data": {
     "id": "illyasviel_von_einzbern_r18_morning_plush",
     "title": "伊莉雅丝菲尔 · 晨光与玩偶",
@@ -25,10 +25,8 @@
       "frosty_window",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Illyasviel sits with mature adult proportions against a bear-shaped cushion, rubbing one sleepy eye while her other hand rests beneath the shirt hem.",
+    "promptProse": "The age-twenty-plus Illyasviel sits against a bear-shaped cushion, rubbing one sleepy eye while her other hand rests beneath the shirt hem.",
     "promptTokens": [
-      "adult",
-      "mature female",
       "red nightshirt",
       "open shirt",
       "topless",

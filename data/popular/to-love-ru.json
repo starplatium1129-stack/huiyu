@@ -864,6 +864,181 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ]
+    },
+    {
+      "adultEligibility": "adult",
+      "aliases": [
+        "sairenji_haruna",
+        "haruna",
+        "haruna_(to_love-ru)",
+        "西连寺春菜",
+        "西连寺",
+        "春菜",
+        "出包王女",
+        "to love-ru"
+      ],
+      "animeStudio": "XEBEC / To LOVE-Ru official anime art, Yabuki Kentaro style",
+      "canon": {
+        "era": "近现代科幻日常世界",
+        "formNotes": "彩南高校一年级/二年级学生，结城梨斗从初中暗恋至今的同班同学，本人其实也一直深深暗恋着梨斗。性格极度温柔、体贴文静且害羞内向，容易脸红；家里养了一只名为马隆（Marron）的波士顿梗犬。经常由于意外神摔或菈菈的发明卷入极其脸红心跳的事故中。",
+        "research": "2026-10-21 调研（Danbooru sairenji_haruna 600+ posts）",
+        "world": "彩南町 · 彩南高校"
+      },
+      "curatedArtistStyles": [
+        "yabuki_kentarou",
+        "kappe",
+        "mika_pikazo"
+      ],
+      "displayName": "西连寺春菜",
+      "exactPrefixes": [
+        "haruna_"
+      ],
+      "exactTokens": [
+        "sairenji_haruna"
+      ],
+      "franchise": "To LOVE-Ru",
+      "id": "sairenji_haruna",
+      "identityProse": "Sairenji Haruna from To LOVE-Ru by Kentaro Yabuki, a gentle and easily embarrassed young woman with soft purple short hair, two small hair clips on her right bangs, tender purple eyes, and a sweet, modest blush.",
+      "identityTokens": [
+        "sairenji_haruna",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "short_hair",
+        "purple_eyes",
+        "hair_clip",
+        "two_hair_clips",
+        "soft_blush",
+        "to_love-ru"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "西連寺 春菜 (Sairenji Haruna)",
+      "outfits": [
+        {
+          "default": true,
+          "id": "sainan_uniform",
+          "isDefault": true,
+          "name": "彩南高校女生水手制服",
+          "prose": "the Sainan High School uniform: a crisp short-sleeved white sailor blouse with a teal collar, a small neat bow, a teal pleated skirt, dark knee socks and brown loafers",
+          "tokens": [
+            "sainan_high_school_uniform",
+            "school_uniform",
+            "sailor_suit",
+            "white_shirt",
+            "teal_sailor_collar",
+            "teal_skirt",
+            "pleated_skirt",
+            "miniskirt",
+            "knee_socks",
+            "loafers",
+            "hair_clip"
+          ]
+        },
+        {
+          "default": false,
+          "id": "casual_summer",
+          "isDefault": false,
+          "name": "夏日温婉粉白衬衫长裙",
+          "prose": "a soft and ladylike weekend summer outfit: a gentle pale-pink short-sleeved blouse with delicate buttons, an airy white pleated A-line skirt, and light leather sandals",
+          "tokens": [
+            "casual",
+            "short_sleeves",
+            "pale_pink_blouse",
+            "white_long_skirt",
+            "pleated_skirt",
+            "sandals",
+            "hair_clip"
+          ]
+        },
+        {
+          "default": false,
+          "id": "school_swimsuit",
+          "isDefault": false,
+          "name": "彩南高中深蓝死库水",
+          "prose": "a classic navy-blue one-piece Japanese school competition swimsuit with a white fabric chest patch reading Sairenji, clinging softly with water droplets, worn barefoot",
+          "tokens": [
+            "swimsuit",
+            "school_swimsuit",
+            "one-piece_swimsuit",
+            "navy_blue_swimsuit",
+            "white_name_patch",
+            "wet_skin",
+            "hair_clip",
+            "barefoot"
+          ]
+        },
+        {
+          "default": false,
+          "id": "soft_pajamas",
+          "isDefault": false,
+          "name": "居家嫩黄棉质短袖睡衣",
+          "prose": "cozy homewear pajamas: a relaxed light-yellow short-sleeved cotton shirt with matching pajama shorts, soft fabric, and a comfortable warm feel",
+          "tokens": [
+            "pajamas",
+            "yellow_shirt",
+            "short_sleeves",
+            "shorts",
+            "drawstring",
+            "hair_clip",
+            "barefoot"
+          ]
+        },
+        {
+          "default": false,
+          "id": "bath_towel",
+          "isDefault": false,
+          "name": "沐浴后纯白浴巾裹身",
+          "prose": "wrapped securely in a fluffy pure-white bath towel tucked across her chest, leaving her smooth shoulders and legs bare, with slight dampness on her short purple hair and flushed cheeks",
+          "tokens": [
+            "towel",
+            "bath_towel",
+            "white_towel",
+            "covering_breasts",
+            "bare_shoulders",
+            "wet_hair",
+            "blush",
+            "barefoot"
+          ]
+        },
+        {
+          "default": false,
+          "id": "tender_lingerie",
+          "isDefault": false,
+          "name": "浅蓝缎带纯情蕾丝内衣",
+          "prose": "delicate pale-blue cotton and lace lingerie with small ribbon bows, modest yet charming, accentuating her graceful figure beneath warm bedroom lighting",
+          "tokens": [
+            "light_blue_bra",
+            "lace_bra",
+            "panties",
+            "ribbon_bow",
+            "blush",
+            "embarrassed",
+            "barefoot"
+          ]
+        }
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "characterTokens": [
+        "sairenji_haruna",
+        "adult Haruna",
+        "Haruna Sairenji"
+      ],
+      "copyrightTokens": [
+        "to_love-ru"
+      ]
     }
   ],
   "franchise": "To LOVE-Ru",

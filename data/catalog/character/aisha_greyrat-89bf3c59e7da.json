@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aisha_greyrat",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-21T12:22:10.061Z",
   "data": {
     "id": "aisha_greyrat",
     "profile": {
@@ -82,7 +82,6 @@
       "traits": [
         "aisha_greyrat",
         "solo",
-        "adult_woman",
         "red_hair",
         "short_hair",
         "ponytail",
@@ -133,7 +132,6 @@
       "identityTokens": [
         "aisha_greyrat",
         "solo",
-        "adult_woman",
         "red_hair",
         "short_hair",
         "ponytail",

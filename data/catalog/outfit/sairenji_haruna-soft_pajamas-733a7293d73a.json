@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "sairenji_haruna/soft_pajamas",
+  "revision": 1,
+  "sortOrder": 1492,
+  "createdAt": null,
+  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "data": {
+    "characterId": "sairenji_haruna",
+    "outfit": {
+      "default": false,
+      "id": "soft_pajamas",
+      "isDefault": false,
+      "name": "居家嫩黄棉质短袖睡衣",
+      "prose": "cozy homewear pajamas: a relaxed light-yellow short-sleeved cotton shirt with matching pajama shorts, soft fabric, and a comfortable warm feel",
+      "tokens": [
+        "pajamas",
+        "yellow_shirt",
+        "short_sleeves",
+        "shorts",
+        "drawstring",
+        "hair_clip",
+        "barefoot"
+      ]
+    }
+  }
+}

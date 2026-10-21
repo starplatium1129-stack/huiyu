@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "haruna_sainan_rooftop_bento",
+  "revision": 1,
+  "sortOrder": 1762,
+  "createdAt": null,
+  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "data": {
+    "id": "haruna_sainan_rooftop_bento",
+    "title": "西连寺春菜 · 彩南高校天台的心意便当",
+    "characterId": "sairenji_haruna",
+    "outfitId": "sainan_uniform",
+    "category": "日常萌趣",
+    "action": "坐在长凳上双手托着便当盒膝头轻放，掀开盒盖羞怯递送，微风吹拂短发与领巾",
+    "camera": "medium shot, seated eye-level, intimate charming framing",
+    "lighting": "天台明朗的夏日日光与铁丝网投下的几何微影",
+    "location": "彩南高校教学楼天台防护铁丝网旁的绿色长凳",
+    "mood": "纯情心动",
+    "timeOfDay": "午间",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "rooftop",
+      "bench",
+      "holding_bento",
+      "lunchbox",
+      "chopsticks",
+      "school_uniform",
+      "purple_hair",
+      "short_hair",
+      "two_hair_clips"
+    ],
+    "coverageTags": [
+      "iconic"
+    ],
+    "description": "【西连寺春菜 · 彩南高校天台的心意便当】微风拂过的彩南高校天台，晴空万里。春菜坐在铁丝网旁的绿色长凳上，短发与青色水手领在风中轻轻摇曳。她膝头放着精心准备的自制双层便当，双手微微颤抖着掀开盒盖，满脸羞红地抬起头望向走近的梨斗，声音细若蚊蚋——「那个……结城君如果不介意的话……要尝尝看我做的厚蛋烧吗？」",
+    "promptTokens": [
+      "school_rooftop",
+      "chainlink_fence",
+      "bench",
+      "sitting",
+      "holding_bento",
+      "bento_box",
+      "chopsticks",
+      "sainan_high_school_uniform",
+      "purple_hair",
+      "short_hair",
+      "two_hair_clips",
+      "soft_blush",
+      "wind",
+      "blue_sky",
+      "cinematic_lighting"
+    ],
+    "promptProse": "Sitting gracefully on the green rooftop bench in her Sainan sailor uniform, Haruna holds a neat homemade bento box across her lap, shyly offering it with blushing cheeks. Gentle summer breezes sway her short purple hair and teal collar beneath the open sky.",
+    "negativeTokens": [
+      "worst quality",
+      "low quality",
+      "lowres",
+      "blurry",
+      "jpeg artifacts",
+      "watermark",
+      "text",
+      "extra fingers",
+      "mutated hands",
+      "bad anatomy",
+      "extra limbs",
+      "nsfw",
+      "nude"
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}
