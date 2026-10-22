@@ -87,9 +87,7 @@
       "exactTokens": [
         "izumi_sagiri"
       ],
-      "exactPrefixes": [
-        "1girl, solo, izumi_sagiri"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

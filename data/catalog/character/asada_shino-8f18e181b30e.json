@@ -84,9 +84,7 @@
       "exactTokens": [
         "asada_shino"
       ],
-      "exactPrefixes": [
-        "1girl, solo, asada_shino"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

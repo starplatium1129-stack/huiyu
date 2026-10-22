@@ -85,9 +85,7 @@
       "exactTokens": [
         "shiranui_mai"
       ],
-      "exactPrefixes": [
-        "1girl, solo, shiranui_mai"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

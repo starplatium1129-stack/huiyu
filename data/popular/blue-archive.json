@@ -351,17 +351,15 @@
         "tiv"
       ],
       "displayName": "杏山和纱",
-      "exactPrefixes": [
-        "kyouyama_"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
-        "kyouyama_kazusa"
+        "kazusa_(blue_archive)"
       ],
       "franchise": "Blue Archive",
       "id": "kyouyama_kazusa",
       "identityProse": "Kyouyama Kazusa from Blue Archive, a cool cat-eared student with short black hair, feline ears and tail, a sleek halo, and a sweet, slightly tsundere gaze.",
       "identityTokens": [
-        "kazusa (blue archive)",
+        "kazusa_(blue_archive)",
         "1girl",
         "solo",
         "black_hair",
@@ -485,17 +483,15 @@
         "yoneyama_mai"
       ],
       "displayName": "飞鸟马时",
-      "exactPrefixes": [
-        "asuma_"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
-        "asuma_toki"
+        "toki_(blue_archive)"
       ],
       "franchise": "Blue Archive",
       "id": "asuma_toki",
       "identityProse": "Asuma Toki from Blue Archive, a deadpan C&C maid with sleek blonde hair in a side ponytail, cool blue eyes, a minimalist halo, and an expressionless demeanor.",
       "identityTokens": [
-        "toki (blue archive)",
+        "toki_(blue_archive)",
         "1girl",
         "solo",
         "blonde_hair",
@@ -611,17 +607,15 @@
         "hxxg"
       ],
       "displayName": "调月莉音",
-      "exactPrefixes": [
-        "tsukatsuki_"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
-        "tsukatsuki_rio"
+        "rio_(blue_archive)"
       ],
       "franchise": "Blue Archive",
       "id": "tsukatsuki_rio",
       "identityProse": "Tsukatsuki Rio from Blue Archive, the cool calculating Millennium student council president with flowing raven-black hair, piercing ruby eyes, a red geometric halo, and a mature voluptuous figure.",
       "identityTokens": [
-        "rio (blue archive)",
+        "rio_(blue_archive)",
         "1girl",
         "solo",
         "black_hair",

@@ -106,16 +106,16 @@
       ],
       "identityProse": "Morgan le Fay from Fate/Grand Order, with long straight silver-white hair, ice-blue eyes and pale skin.",
       "identityTokens": [
-        "morgan (fate/grand order)",
+        "morgan_le_fay_(fate)",
         "1girl",
         "solo",
         "white hair",
         "long hair",
         "blue eyes",
-        "fgo"
+        "fate/grand_order"
       ],
       "exactTokens": [
-        "morgan (fate/grand order)"
+        "morgan_le_fay_(fate)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -147,15 +147,10 @@
         "rella"
       ],
       "characterTokens": [
-        "morgan (fate/grand order)",
-        "aesc (fate)",
-        "Aesc",
-        "adult Morgan",
-        "adult Aesc",
-        "morgan (water princess) (fate)"
+        "morgan_le_fay_(fate)"
       ],
       "copyrightTokens": [
-        "fgo"
+        "fate/grand_order"
       ]
     }
   }

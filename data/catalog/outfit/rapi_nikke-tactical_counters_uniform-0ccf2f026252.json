@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "rapi_nikke/tactical_counters_uniform",
+  "revision": 1,
+  "sortOrder": 1525,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "rapi_nikke",
+    "outfit": {
+      "id": "tactical_counters_uniform",
+      "name": "极限制空反击小队正统军礼服",
+      "prose": "Counters squad leader tactical military uniform: a tailored red, black and white cropped military officer jacket worn over an opaque tight black bodice emphasizing her ample cleavage, red necktie, pleated white and black mini skirt, tactical gun holster on thigh, black thigh-high combat socks, peaked officer cap, and knee-high leather military boots",
+      "tokens": [
+        "military_uniform",
+        "officer_uniform",
+        "jacket",
+        "military_jacket",
+        "peaked_cap",
+        "military_hat",
+        "necktie",
+        "red_necktie",
+        "skirt",
+        "miniskirt",
+        "pleated_skirt",
+        "thighhighs",
+        "holster",
+        "boots",
+        "combat_boots"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

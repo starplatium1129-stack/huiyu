@@ -24,9 +24,7 @@
       "exactTokens": [
         "dorothy_(nikke)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, dorothy_(nikke)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -147,6 +145,387 @@
           "isDefault": false,
           "isNsfw": false
         }
+      ]
+    },
+    {
+      "id": "rapi_nikke",
+      "displayName": "拉毗",
+      "originalName": "Rapi (ラピ)",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "rapi_nikke",
+        "rapi",
+        "rapi_(nikke)",
+        "拉毗",
+        "拉比",
+        "反击小队队长",
+        "小红帽",
+        "胜利女神：妮姬",
+        "nikke"
+      ],
+      "identityProse": "Rapi from Goddess of Victory: NIKKE, the steadfast and composed leader of the Counters squad with waist-length dark reddish-brown hair, sharp resolute crimson-red eyes, striking peaked military officer cap, voluptuous athletic hourglass figure, cool disciplined soldier demeanor, and an unyielding loyalty to the Commander.",
+      "identityTokens": [
+        "rapi_(nikke)",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "long_hair",
+        "red_eyes",
+        "military_hat",
+        "peaked_cap",
+        "large_breasts",
+        "curvy",
+        "goddess_of_victory:_nikke"
+      ],
+      "exactTokens": [
+        "rapi_(nikke)"
+      ],
+      "exactPrefixes": [
+        "rapi_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "tactical_counters_uniform",
+          "name": "极限制空反击小队正统军礼服",
+          "prose": "Counters squad leader tactical military uniform: a tailored red, black and white cropped military officer jacket worn over an opaque tight black bodice emphasizing her ample cleavage, red necktie, pleated white and black mini skirt, tactical gun holster on thigh, black thigh-high combat socks, peaked officer cap, and knee-high leather military boots",
+          "tokens": [
+            "military_uniform",
+            "officer_uniform",
+            "jacket",
+            "military_jacket",
+            "peaked_cap",
+            "military_hat",
+            "necktie",
+            "red_necktie",
+            "skirt",
+            "miniskirt",
+            "pleated_skirt",
+            "thighhighs",
+            "holster",
+            "boots",
+            "combat_boots"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "classic_shooting_stance_combat",
+          "name": "地表交火战术作战背心与热裤",
+          "prose": "frontline surface engagement combat attire: a snug black tactical compression crop top with red trim, load-bearing harness with ammunition clips, high-waisted distressed denim tactical shorts, wide gun belt, radio headset, fingerless tactical gloves, and scuffed combat boots",
+          "tokens": [
+            "crop_top",
+            "tank_top",
+            "black_top",
+            "harness",
+            "tactical_harness",
+            "shorts",
+            "booty_shorts",
+            "belt",
+            "ammunition_belt",
+            "gloves",
+            "fingerless_gloves",
+            "boots"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "commander_private_office_shirt",
+          "name": "指挥官办公室私服男友衬衫",
+          "prose": "Commander's private office casual wear: an oversized crisp white button-up dress shirt loosely buttoned, open collar revealing delicate collarbones and deep cleavage, sleeves rolled to elbows, hem falling to upper thighs, bare legs, and indoor black slippers",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "collared_shirt",
+            "unbuttoned",
+            "cleavage",
+            "bare_legs",
+            "slippers",
+            "candid"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "crimson_resort_bikini",
+          "name": "绯红余晖海滨度假比基尼",
+          "prose": "alluring summer resort beachwear: a bold crimson-red halterneck string bikini with sleek black accents, underwire triangle top accentuating her bountiful cleavage, side-tie bikini bottoms hugging shapely hips, sheer crimson pareo sarong tied loosely at the waist, and sunlit bare feet",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "red_bikini",
+            "string_bikini",
+            "halterneck",
+            "sarong",
+            "cleavage",
+            "bare_shoulders",
+            "bare_legs",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "red_hood_resonating_overcoat",
+          "name": "红色阴影小红帽共鸣战术风衣",
+          "prose": "legendary Red Hood resonant combat mode: a weathered crimson-scarlet military trench coat draped over black leather battle suit, gold shoulder epaulets, open chest armor revealing burning wolf sigil, red bandana headband, and heavy steel-toed combat greaves",
+          "tokens": [
+            "trench_coat",
+            "red_coat",
+            "open_coat",
+            "bodysuit",
+            "leather_suit",
+            "bandana",
+            "gloves",
+            "boots",
+            "epaulets",
+            "badass"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "fair_skin",
+            "large_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "wide_hips",
+            "navel",
+            "pussy",
+            "brown_hair",
+            "long_hair",
+            "red_eyes",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, flawless silky honey-fair skin flushed with heavy rosy arousal, magnificent full firm breasts tipped with erect rosy-pink nipples, narrow waist leading into wide rounded childbearing hips, drenched gleaming pussy, floor-sweeping dark auburn hair cascading across crumpled dark satin sheets, intense devoted ruby-red eyes, dim romantic room light",
+          "styleHint": "intimate command quarters warm amber glow",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "方舟 · 反击小队队长",
+        "era": "末世机械灾变后废土",
+        "formNotes": "方舟核心部队「反击小队（Counters）」的队长，原极乐净土所属精英妮姬。外表沉着冷静、不苟言笑，恪守军人职责，但对所认定的指挥官怀有至死不渝的绝对忠诚与深沉依恋。体内封印着传说中朝圣者「小红帽」的意识核心，拥有在绝境中唤醒超限火力的极强战斗潜能",
+        "research": "2026-10-22 调研（Danbooru rapi_(nikke) 2100+ posts）"
+      },
+      "animeStudio": "Shift Up official Goddess of Victory: NIKKE art, Kim Hyung Tae style",
+      "curatedArtistStyles": [
+        "kim_hyung_tae",
+        "rella",
+        "dSmile"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "alice_nikke",
+      "displayName": "爱丽丝",
+      "originalName": "Alice (アリス)",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "alice_nikke",
+        "alice",
+        "alice_(nikke)",
+        "爱丽丝",
+        "兔子爱丽丝",
+        "无限轨道",
+        "胡萝卜狙击枪",
+        "胜利女神：妮姬",
+        "nikke"
+      ],
+      "identityProse": "Alice from Goddess of Victory: NIKKE, the dreamy and innocent sniper heroine of Unlimited squad with long wavy pastel-pink twintails, luminous sapphire blue eyes, mechanical rabbit-ear headphones, a body-hugging pink-and-white cooling bodysuit accentuating an astonishing hourglass figure, carrying her carrot-themed anti-materiel sniper rifle, calling the Commander her 'Mr. Rabbit'.",
+      "identityTokens": [
+        "alice_(nikke)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "blue_eyes",
+        "rabbit_ears",
+        "headphones",
+        "large_breasts",
+        "curvy",
+        "bodysuit",
+        "latex",
+        "goddess_of_victory:_nikke"
+      ],
+      "exactTokens": [
+        "alice_(nikke)"
+      ],
+      "exactPrefixes": [
+        "alice_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "pink_cooling_bodysuit",
+          "name": "标志性粉白恒温降温紧身衣",
+          "prose": "Unlimited squad signature cooling thermal outfit: an ultra-glossy skintight pink and white latex bodysuit contouring every curve of her massive bosom and voluptuous hips, metallic rabbit-ear communications headset, open zip collar, white padded winter gloves, and high-tech thermal snow boots",
+          "tokens": [
+            "bodysuit",
+            "latex_bodysuit",
+            "tight_bodysuit",
+            "rabbit_ears",
+            "headphones",
+            "gloves",
+            "boots",
+            "cleavage",
+            "curvy",
+            "shiny_clothes"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "wonderland_puffy_down_jacket",
+          "name": "极地探险雪国粉色羽绒服",
+          "prose": "freezing surface wonderland exploration gear: an oversized puffy bubblegum-pink padded winter down parka with white faux-fur trim hood worn open over her signature glossy bodysuit, cute pompom ties, warm thermal leggings, and fur-lined winter boots",
+          "tokens": [
+            "parka",
+            "down_jacket",
+            "puffy_jacket",
+            "pink_jacket",
+            "fur_trim",
+            "hood",
+            "bodysuit",
+            "gloves",
+            "winter_clothes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sweet_rabbit_maid",
+          "name": "奇境梦游甜心粉白女仆装",
+          "prose": "dreamy Wonderland maid ensemble: a ruffled pastel-pink French maid dress with a crisp white heart-apron, sheer white thigh-high stockings with pink ribbon bows, lace wrist cuffs, frilly white maid headband with bunny ear accents, and shiny patent pink Mary Janes",
+          "tokens": [
+            "maid",
+            "maid_uniform",
+            "apron",
+            "white_apron",
+            "pink_dress",
+            "ruffles",
+            "thighhighs",
+            "white_thighhighs",
+            "headband",
+            "bow"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "pastel_strawberry_swimsuit",
+          "name": "梦幻冰淇淋荷叶边露背泳装",
+          "prose": "whimsical sunny resort swimwear: a pastel-pink one-piece monokini featuring sweet strawberry motifs, delicate frilled ruffles along the plunge neckline, daring side cutouts accentuating her voluptuous hourglass hips, open back, and floating inflatable carrot pool floatie",
+          "tokens": [
+            "swimsuit",
+            "monokini",
+            "pink_swimsuit",
+            "frills",
+            "ruffles",
+            "cutout",
+            "bare_back",
+            "cleavage",
+            "bare_legs",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "cozy_rabbit_fleece_pajamas",
+          "name": "宿舍慵懒垂耳兔连帽绒睡袍",
+          "prose": "dreamy dormitory loungewear: an ultra-soft pastel pink and cream sherpa fleece hooded bathrobe with long floppy bunny ears on the hood, fluffy bunny tail on the back, soft sash belt tied loosely at the waist revealing smooth cleavage, bare thighs, and fluffy bunny slippers",
+          "tokens": [
+            "bathrobe",
+            "pajamas",
+            "fluffy",
+            "hood",
+            "bunny_ears",
+            "rabbit_tail",
+            "cleavage",
+            "bare_legs",
+            "slippers"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "fair_skin",
+            "huge_breasts",
+            "pink_nipples",
+            "narrow_waist",
+            "wide_hips",
+            "plump_butt",
+            "navel",
+            "pussy",
+            "pink_hair",
+            "twintails",
+            "blue_eyes",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, pristine milky-white porcelain skin radiating feverish body heat, astonishingly voluptuous heavy spherical breasts tipped with sensitive swollen rose-pink nipples, tiny doll waist curving into jaw-dropping plush hips and rounded buttocks, glistening soaking pink pussy, cascading long wavy pink twintails pooled around her, wide innocent sky-blue eyes glazed with sweet dizzy euphoria, bare feet, soft glowing wonderland fairy lights",
+          "styleHint": "dreamy wonderland soft pink fairy light glow",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "方舟 · 无限轨道部队",
+        "era": "末世机械灾变后废土",
+        "formNotes": "驻守在极寒地表的特战部队「无限轨道」所属妮姬。因机体散热缺陷常年处于高热状态，必须时刻穿着特制恒温降温紧身服。精神状态保持在纯真梦幻的童话世界中，将残酷的地表战场视作《爱丽丝梦游仙境》，称呼救助自己的指挥官为「兔子先生」，手持高破坏力胡萝卜重型反器材狙击步枪，以惊人的天真与极致破坏力形成极具魅力的强烈反差",
+        "research": "2026-10-22 调研（Danbooru alice_(nikke) 1800+ posts）"
+      },
+      "animeStudio": "Shift Up official Goddess of Victory: NIKKE art, Kim Hyung Tae style",
+      "curatedArtistStyles": [
+        "kim_hyung_tae",
+        "rella",
+        "dSmile"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
       ]
     }
   ]

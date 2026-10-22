@@ -101,9 +101,7 @@
       "exactTokens": [
         "rias_gremory"
       ],
-      "exactPrefixes": [
-        "1girl, solo, rias_gremory"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

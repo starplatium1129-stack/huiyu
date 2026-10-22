@@ -118,20 +118,20 @@
       "displayName": "希露菲叶特",
       "exactPrefixes": [],
       "exactTokens": [
-        "sylphiette (mushoku tensei)"
+        "sylphiette_(mushoku_tensei)"
       ],
       "franchise": "Mushoku Tensei",
       "id": "sylphiette",
       "identityProse": "Sylphiette from Mushoku Tensei, with feathery short white hair, long pointed elf ears and ruby-red eyes.",
       "identityTokens": [
-        "sylphiette",
+        "sylphiette_(mushoku_tensei)",
         "1girl",
         "solo",
         "short hair",
         "white hair",
         "red eyes",
         "elf ears",
-        "mushoku tensei"
+        "mushoku_tensei"
       ],
       "negativeTokens": [
         "bad anatomy",
@@ -150,15 +150,10 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "sylphiette",
-        "sylphiette (mushoku tensei)",
-        "sylphie",
-        "young Sylphiette",
-        "adult Sylphiette",
-        "Silent Fitz"
+        "sylphiette_(mushoku_tensei)"
       ],
       "copyrightTokens": [
-        "mushoku tensei"
+        "mushoku_tensei"
       ]
     }
   }

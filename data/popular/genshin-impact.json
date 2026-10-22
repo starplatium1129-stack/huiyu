@@ -477,9 +477,7 @@
       "exactTokens": [
         "yae_miko"
       ],
-      "exactPrefixes": [
-        "1girl, solo, yae_miko"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

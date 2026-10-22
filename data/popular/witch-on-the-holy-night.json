@@ -23,9 +23,7 @@
       "exactTokens": [
         "kuonji_alice"
       ],
-      "exactPrefixes": [
-        "1girl, solo, kuonji_alice"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "rapi_nikke/red_hood_resonating_overcoat",
+  "revision": 1,
+  "sortOrder": 1529,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "rapi_nikke",
+    "outfit": {
+      "id": "red_hood_resonating_overcoat",
+      "name": "红色阴影小红帽共鸣战术风衣",
+      "prose": "legendary Red Hood resonant combat mode: a weathered crimson-scarlet military trench coat draped over black leather battle suit, gold shoulder epaulets, open chest armor revealing burning wolf sigil, red bandana headband, and heavy steel-toed combat greaves",
+      "tokens": [
+        "trench_coat",
+        "red_coat",
+        "open_coat",
+        "bodysuit",
+        "leather_suit",
+        "bandana",
+        "gloves",
+        "boots",
+        "epaulets",
+        "badass"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

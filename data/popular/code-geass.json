@@ -24,9 +24,7 @@
         "flexible": [],
         "must": []
       },
-      "exactPrefixes": [
-        "1girl, solo, c.c."
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
         "c.c."
       ],
@@ -35,7 +33,6 @@
       "identityProse": "C.C. from Code Geass, the immortal witch of code, an alluring and enigmatic woman with knee-length silky lime-green hair, piercing golden-amber eyes, and a serene, detached yet intimately teasing smile",
       "identityTokens": [
         "c.c.",
-        "c.c._(code_geass)",
         "green_hair",
         "very_long_hair",
         "yellow_eyes",

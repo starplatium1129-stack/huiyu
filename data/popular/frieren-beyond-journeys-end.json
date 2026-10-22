@@ -276,9 +276,7 @@
       "exactTokens": [
         "ubel_(sousou_no_frieren)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, ubel_(sousou_no_frieren)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

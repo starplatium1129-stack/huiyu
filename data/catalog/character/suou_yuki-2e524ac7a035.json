@@ -86,9 +86,7 @@
       "exactTokens": [
         "suou_yuki"
       ],
-      "exactPrefixes": [
-        "1girl, solo, suou_yuki"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

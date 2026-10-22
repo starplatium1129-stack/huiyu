@@ -103,7 +103,7 @@
       ],
       "identityProse": "Emilia from Re:Zero, with long silver-white hair, pointed half-elf ears, amethyst eyes and a white flower hair clip.",
       "identityTokens": [
-        "emilia (re:zero)",
+        "emilia_(re:zero)",
         "1girl",
         "solo",
         "silver_hair",
@@ -114,7 +114,7 @@
         "re:zero"
       ],
       "exactTokens": [
-        "emilia (re zero)"
+        "emilia_(re:zero)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -146,8 +146,7 @@
         "anmi"
       ],
       "characterTokens": [
-        "emilia (re:zero)",
-        "emilia (re zero)"
+        "emilia_(re:zero)"
       ],
       "copyrightTokens": [
         "re:zero"

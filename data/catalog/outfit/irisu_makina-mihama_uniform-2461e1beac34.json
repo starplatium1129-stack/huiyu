@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "irisu_makina/mihama_uniform",
+  "revision": 1,
+  "sortOrder": 1519,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "irisu_makina",
+    "outfit": {
+      "id": "mihama_uniform",
+      "name": "美浜学园超长双马尾制服",
+      "prose": "Mihama Private Academy uniform: lavender-purple button-up shirt with sailor collar worn comfortably loose, royal blue plaid necktie tied with a slight tilt, high-waisted white pleated skirt, knee-high white socks, black rounded-toe leather shoes, and red ribbons securing her low pink twintails",
+      "tokens": [
+        "mihama_private_academy_school_uniform",
+        "school_uniform",
+        "purple_shirt",
+        "sailor_collar",
+        "plaid_necktie",
+        "blue_necktie",
+        "white_skirt",
+        "pleated_skirt",
+        "white_socks",
+        "knee_socks",
+        "shoes",
+        "hair_ribbon",
+        "ahoge"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

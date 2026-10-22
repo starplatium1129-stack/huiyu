@@ -405,13 +405,13 @@
       "displayName": "伊冯",
       "exactPrefixes": [],
       "exactTokens": [
-        "yvonne_arknights"
+        "yvonne_(arknights)"
       ],
       "franchise": "Arknights: Endfield",
       "id": "yvonne_arknights",
       "identityProse": "Yvonne from Arknights: Endfield, a Vaivai dragon-kin girl with pink hair in twin tails with color-streaked tips, blue eyes, small horns, a tail and pointed ears, a gyaru-punk genius engineer who dual-wields handguns",
       "identityTokens": [
-        "yvonne_arknights",
+        "yvonne_(arknights)",
         "1girl",
         "solo",
         "pink_hair",
@@ -421,7 +421,7 @@
         "tail",
         "pointed_ears",
         "engineer",
-        "arknights_endfield"
+        "arknights:_endfield"
       ],
       "negativeTokens": [
         "bad anatomy",
@@ -686,11 +686,7 @@
       "displayName": "管理员",
       "exactPrefixes": [],
       "exactTokens": [
-        "female_endministrator_(arknights)",
-        "endministrator_(arknights)",
-        "administrator_(arknights)",
-        "administrator (arknights)",
-        "endministrator"
+        "female_endministrator_(arknights)"
       ],
       "franchise": "Arknights: Endfield",
       "id": "administrator_arknights",

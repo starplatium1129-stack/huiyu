@@ -161,9 +161,7 @@
       "exactTokens": [
         "suou_yuki"
       ],
-      "exactPrefixes": [
-        "1girl, solo, suou_yuki"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -293,7 +291,7 @@
       ],
       "identityProse": "Mariya Mikhailovna Kujou, Masha from Alya Sometimes Hides Her Feelings in Russian, with long softly wavy light-brown hair, an ahoge and warm brown eyes. Her gentle smile and attentive posture suggest a considerate senior student.",
       "identityTokens": [
-        "maria_mikhailovna_kujou",
+        "mariya_mikhailovna_kujou",
         "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
         "brown_hair",
         "long_hair",
@@ -302,11 +300,9 @@
         "brown_eyes"
       ],
       "exactTokens": [
-        "maria_mikhailovna_kujou"
+        "mariya_mikhailovna_kujou"
       ],
-      "exactPrefixes": [
-        "1girl, solo, maria_mikhailovna_kujou"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

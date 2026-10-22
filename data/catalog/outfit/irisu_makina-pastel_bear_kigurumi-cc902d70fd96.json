@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "irisu_makina/pastel_bear_kigurumi",
+  "revision": 1,
+  "sortOrder": 1523,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "irisu_makina",
+    "outfit": {
+      "id": "pastel_bear_kigurumi",
+      "name": "粉绒小熊连体毛绒睡衣",
+      "prose": "adorable winter dormitory sleepwear: a fluffy pastel dust-pink and cream fleece bear kigurumi onesie with rounded bear ears on the hood, roomy zipper front, cute plush bear paw mittens attached to cuffs, and a little round puffy tail on the rear",
+      "tokens": [
+        "kigurumi",
+        "pajamas",
+        "bear_hood",
+        "animal_ears",
+        "bear_ears",
+        "onesie",
+        "loose_clothes",
+        "cute",
+        "fluffy",
+        "kawaii"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

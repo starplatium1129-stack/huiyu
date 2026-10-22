@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "rapi_nikke/crimson_resort_bikini",
+  "revision": 1,
+  "sortOrder": 1528,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "rapi_nikke",
+    "outfit": {
+      "id": "crimson_resort_bikini",
+      "name": "绯红余晖海滨度假比基尼",
+      "prose": "alluring summer resort beachwear: a bold crimson-red halterneck string bikini with sleek black accents, underwire triangle top accentuating her bountiful cleavage, side-tie bikini bottoms hugging shapely hips, sheer crimson pareo sarong tied loosely at the waist, and sunlit bare feet",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "red_bikini",
+        "string_bikini",
+        "halterneck",
+        "sarong",
+        "cleavage",
+        "bare_shoulders",
+        "bare_legs",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -113,7 +113,7 @@
         "hair over one eye",
         "right eye covered",
         "purple eyes",
-        "fgo"
+        "fate/grand_order"
       ],
       "exactTokens": [
         "mash_kyrielight"
@@ -148,11 +148,10 @@
         "rella"
       ],
       "characterTokens": [
-        "mash_kyrielight",
-        "adult Mash"
+        "mash_kyrielight"
       ],
       "copyrightTokens": [
-        "fgo"
+        "fate/grand_order"
       ]
     }
   }

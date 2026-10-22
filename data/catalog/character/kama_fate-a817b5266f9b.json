@@ -92,9 +92,7 @@
       "exactTokens": [
         "kama_(fate)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, kama_(fate)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

@@ -24,9 +24,7 @@
       "exactTokens": [
         "elfaria_alvis_serfort"
       ],
-      "exactPrefixes": [
-        "1girl, solo, elfaria_alvis_serfort"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

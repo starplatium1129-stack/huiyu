@@ -102,7 +102,7 @@
       ],
       "identityProse": "Rem from Re:Zero, with short blue hair covering one eye and light-blue eyes.",
       "identityTokens": [
-        "rem (re:zero)",
+        "rem_(re:zero)",
         "1girl",
         "solo",
         "short_hair",
@@ -112,7 +112,7 @@
         "re:zero"
       ],
       "exactTokens": [
-        "rem (re zero)"
+        "rem_(re:zero)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -144,8 +144,7 @@
         "anmi"
       ],
       "characterTokens": [
-        "rem (re:zero)",
-        "rem (re zero)"
+        "rem_(re:zero)"
       ],
       "copyrightTokens": [
         "re:zero"

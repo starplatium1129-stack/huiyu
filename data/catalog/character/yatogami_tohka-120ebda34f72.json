@@ -86,9 +86,7 @@
       "exactTokens": [
         "yatogami_tohka"
       ],
-      "exactPrefixes": [
-        "1girl, solo, yatogami_tohka"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

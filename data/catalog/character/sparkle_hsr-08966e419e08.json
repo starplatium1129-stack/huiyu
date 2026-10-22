@@ -113,9 +113,7 @@
       "exactTokens": [
         "sparkle_(honkai:_star_rail)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, sparkle_(honkai:_star_rail)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

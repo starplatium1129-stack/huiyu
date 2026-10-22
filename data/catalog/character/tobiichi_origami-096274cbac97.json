@@ -84,9 +84,7 @@
       "exactTokens": [
         "tobiichi_origami"
       ],
-      "exactPrefixes": [
-        "1girl, solo, tobiichi_origami"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

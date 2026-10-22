@@ -121,17 +121,15 @@
         "hxxg"
       ],
       "displayName": "调月莉音",
-      "exactPrefixes": [
-        "tsukatsuki_"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
-        "tsukatsuki_rio"
+        "rio_(blue_archive)"
       ],
       "franchise": "Blue Archive",
       "id": "tsukatsuki_rio",
       "identityProse": "Tsukatsuki Rio from Blue Archive, with very long black hair, ruby-red eyes and a red geometric halo.",
       "identityTokens": [
-        "rio (blue archive)",
+        "rio_(blue_archive)",
         "1girl",
         "solo",
         "black hair",
@@ -139,7 +137,7 @@
         "red eyes",
         "halo",
         "red geometric halo",
-        "blue archive"
+        "blue_archive"
       ],
       "negativeTokens": [
         "bad anatomy",
@@ -158,12 +156,10 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "rio (blue archive)",
-        "tsukatsuki_rio",
-        "Rio"
+        "rio_(blue_archive)"
       ],
       "copyrightTokens": [
-        "blue archive"
+        "blue_archive"
       ]
     }
   }

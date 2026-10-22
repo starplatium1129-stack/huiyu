@@ -126,13 +126,13 @@
       "displayName": "伊冯",
       "exactPrefixes": [],
       "exactTokens": [
-        "yvonne (arknights)"
+        "yvonne_(arknights)"
       ],
       "franchise": "Arknights: Endfield",
       "id": "yvonne_arknights",
       "identityProse": "Yvonne from Arknights: Endfield, a Vaivai with pink twin tails and streaked tips, blue eyes, small horns, pointed ears and a dragon tail.",
       "identityTokens": [
-        "yvonne (arknights)",
+        "yvonne_(arknights)",
         "1girl",
         "solo",
         "pink hair",
@@ -141,7 +141,7 @@
         "horns",
         "pointy ears",
         "dragon tail",
-        "arknights endfield"
+        "arknights:_endfield"
       ],
       "negativeTokens": [
         "bad anatomy",
@@ -160,10 +160,10 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "yvonne (arknights)"
+        "yvonne_(arknights)"
       ],
       "copyrightTokens": [
-        "arknights endfield"
+        "arknights:_endfield"
       ]
     }
   }

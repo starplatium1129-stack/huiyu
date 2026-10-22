@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "alice_nikke/cozy_rabbit_fleece_pajamas",
+  "revision": 1,
+  "sortOrder": 1535,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "alice_nikke",
+    "outfit": {
+      "id": "cozy_rabbit_fleece_pajamas",
+      "name": "宿舍慵懒垂耳兔连帽绒睡袍",
+      "prose": "dreamy dormitory loungewear: an ultra-soft pastel pink and cream sherpa fleece hooded bathrobe with long floppy bunny ears on the hood, fluffy bunny tail on the back, soft sash belt tied loosely at the waist revealing smooth cleavage, bare thighs, and fluffy bunny slippers",
+      "tokens": [
+        "bathrobe",
+        "pajamas",
+        "fluffy",
+        "hood",
+        "bunny_ears",
+        "rabbit_tail",
+        "cleavage",
+        "bare_legs",
+        "slippers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -122,14 +122,14 @@
       "displayName": "塞西莉亚",
       "exactPrefixes": [],
       "exactTokens": [
-        "cecilia (shiro seijo to kuro bokushi)"
+        "cecilia_(shiro_seijo_to_kuro_bokushi)"
       ],
       "franchise": "Saint Cecilia and Pastor Lawrence",
       "id": "saint_cecilia",
       "identityProse": "Cecilia from Shiro Seijo to Kuro Bokushi, with mint-green hair in a low braided bun and emerald eyes.",
       "identityTokens": [
-        "cecilia (pastor lawrence)",
-        "shiro seijo to kuro bokushi",
+        "cecilia_(shiro_seijo_to_kuro_bokushi)",
+        "shiro_seijo_to_kuro_bokushi",
         "1girl",
         "solo",
         "mint green hair",
@@ -153,11 +153,10 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "cecilia (pastor lawrence)",
-        "cecilia (shiro seijo to kuro bokushi)"
+        "cecilia_(shiro_seijo_to_kuro_bokushi)"
       ],
       "copyrightTokens": [
-        "shiro seijo to kuro bokushi"
+        "shiro_seijo_to_kuro_bokushi"
       ]
     }
   }

@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "alice_nikke/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 1536,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "alice_nikke",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "fair_skin",
+        "huge_breasts",
+        "pink_nipples",
+        "narrow_waist",
+        "wide_hips",
+        "plump_butt",
+        "navel",
+        "pussy",
+        "pink_hair",
+        "twintails",
+        "blue_eyes",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, pristine milky-white porcelain skin radiating feverish body heat, astonishingly voluptuous heavy spherical breasts tipped with sensitive swollen rose-pink nipples, tiny doll waist curving into jaw-dropping plush hips and rounded buttocks, glistening soaking pink pussy, cascading long wavy pink twintails pooled around her, wide innocent sky-blue eyes glazed with sweet dizzy euphoria, bare feet, soft glowing wonderland fairy lights",
+      "styleHint": "dreamy wonderland soft pink fairy light glow",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

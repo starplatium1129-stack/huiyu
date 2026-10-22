@@ -104,9 +104,7 @@
       "exactTokens": [
         "chitanda_eru"
       ],
-      "exactPrefixes": [
-        "1girl, solo, chitanda_eru"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

@@ -14,9 +14,7 @@
         "Aka Akasaka"
       ],
       "displayName": "四宫辉夜",
-      "exactPrefixes": [
-        "1girl, solo, shinomiya_kaguya"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
         "shinomiya_kaguya"
       ],
@@ -172,9 +170,7 @@
         "Ai Hayasaka"
       ],
       "displayName": "早坂爱",
-      "exactPrefixes": [
-        "1girl, solo, hayasaka_ai"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
         "hayasaka_ai"
       ],
@@ -318,9 +314,7 @@
         "Kei Shirogane"
       ],
       "displayName": "白银圭",
-      "exactPrefixes": [
-        "1girl, solo, shirogane_kei"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
         "shirogane_kei"
       ],

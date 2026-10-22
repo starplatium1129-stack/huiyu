@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "alice_nikke/pink_cooling_bodysuit",
+  "revision": 1,
+  "sortOrder": 1531,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "alice_nikke",
+    "outfit": {
+      "id": "pink_cooling_bodysuit",
+      "name": "标志性粉白恒温降温紧身衣",
+      "prose": "Unlimited squad signature cooling thermal outfit: an ultra-glossy skintight pink and white latex bodysuit contouring every curve of her massive bosom and voluptuous hips, metallic rabbit-ear communications headset, open zip collar, white padded winter gloves, and high-tech thermal snow boots",
+      "tokens": [
+        "bodysuit",
+        "latex_bodysuit",
+        "tight_bodysuit",
+        "rabbit_ears",
+        "headphones",
+        "gloves",
+        "boots",
+        "cleavage",
+        "curvy",
+        "shiny_clothes"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

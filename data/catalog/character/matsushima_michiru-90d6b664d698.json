@@ -1,0 +1,174 @@
+{
+  "kind": "character",
+  "id": "matsushima_michiru",
+  "revision": 1,
+  "sortOrder": 170,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "matsushima_michiru",
+    "profile": {
+      "id": "matsushima_michiru",
+      "name": "松岛满",
+      "alias": [
+        "Matsushima Michiru",
+        "松島 みちる",
+        "松岛 满",
+        "满妹",
+        "傲娇双马尾",
+        "假傲娇",
+        "柠檬糖",
+        "灰色的果实"
+      ],
+      "type": "popular",
+      "icon": "🍋",
+      "portrait": {
+        "image": "../assets/characters/popular-matsushima_michiru.png?v=1",
+        "alt": "松岛满 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及腰飘逸漂白金发 · 活力双马尾 · 齐刘海 · 黑色缎带蝴蝶结",
+        "hair_color": "金发/漂白金发",
+        "eyes": "澄澈明亮湛蓝眼眸",
+        "hairstyle": "及腰双马尾 · 黑色缎带发饰 · 齐刘海 · 元气活泼",
+        "uniform": "美浜学园紫衫白裙制服 / 柠檬连帽衫背带短裤",
+        "expression": "假装傲娇 · 鼓腮嘟嘴 · 爽朗大笑 · 笨蛋元气",
+        "style": "energetic bleach-blonde twintails fake-tsundere heroine",
+        "signature": "亮丽漂白金发双马尾、黑色发带、嘴里含着酸柠檬糖与故作姿态的假傲娇神态"
+      },
+      "personality": [
+        "美浜学园二年级学生，努力装作理想中典型傲娇角色的活宝少女",
+        "天性纯朴善良、乐天开朗，无论遇到什么挫折都能以灿烂笑容示人",
+        "为了扮演傲娇特意染了金发双马尾并含柠檬糖，却因为缺乏狠劲和毒舌天赋经常破功出糗",
+        "年幼时曾接受心脏移植手术，体内宿有心脏原主人的深沉知性人格",
+        "在欢脱逗趣的外表之下，深藏着对他人痛苦极度敏锐、甘愿自我牺牲的无私大爱"
+      ],
+      "likes": [
+        "酸柠檬糖（レモンキャンディ）",
+        "练习各种动漫经典傲娇台词与哼声",
+        "在学园天台吹海风吃零食",
+        "和美滨学园的大家热闹地嬉笑打闹"
+      ],
+      "classic_cg": {
+        "title": "天台黄昏的柠檬糖与傲娇逞强",
+        "description": "晚霞染红的美浜学园天台上，金发双马尾少女嘴里咬着柠檬棒棒糖双手叉腰，鼓着通红的腮帮子逞强别过头，满含少女情愫。"
+      },
+      "identity": {
+        "role": "美浜学园二年级学生 / 努力装傲娇的元气开心果",
+        "age": "青年",
+        "occupation": "学生 / 气氛活跃者",
+        "faction": "美浜学园"
+      },
+      "tags": [
+        "金发",
+        "蓝瞳",
+        "双马尾",
+        "傲娇",
+        "假傲娇",
+        "柠檬糖",
+        "元气",
+        "灰色的果实"
+      ],
+      "bg_story": "松岛满是《灰色的果实》及灰色系列中极具反差魅力的核心女主角之一。因年幼时患有严重先天性心脏病而常年与孤独病榻为伴，后接受了一位意外身亡的优秀少女的心脏移植手术而奇迹生还。为了不辜负重获新生的生命，并憧憬着动漫中被众人宠爱的「傲娇角色」，她将黑发漂白为耀眼金发并扎起双马尾，含着酸柠檬糖努力扮演傲娇。然而她天生善良开朗、不善伪装，常常在雄二面前出糗成为学园团宠。在风见雄二的引导与守护下，她逐渐正视体内残留的心脏记忆与真正的自我，迎来了灵魂的彻底解脱与灿烂蜕变。",
+      "palette": [
+        "明艳金黄",
+        "柠檬淡黄",
+        "晴空湛蓝"
+      ],
+      "weather": [
+        "落日天台",
+        "碧海晴空",
+        "温润细雨"
+      ],
+      "speech": "哼！我、我才不是特意买柠檬汽水给你喝的呢！只是刚好买多了不得不施舍给你而已，给我感恩戴德地喝下去啊笨蛋雄二！",
+      "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "traits": [
+        "matsushima_michiru",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "bleached_hair",
+        "twintails",
+        "very_long_hair",
+        "hair_ribbon",
+        "hair_bow",
+        "blue_eyes",
+        "grisaia_(series)"
+      ],
+      "accent_color": "#eab308",
+      "bg_color": "#1a1608"
+    },
+    "popular": {
+      "id": "matsushima_michiru",
+      "displayName": "松岛满",
+      "originalName": "松島 みちる (Matsushima Michiru)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "matsushima_michiru",
+        "michiru",
+        "michiru_(grisaia)",
+        "松岛满",
+        "满妹",
+        "傲娇双马尾",
+        "假傲娇",
+        "柠檬糖",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Matsushima Michiru from Grisaia by Frontwing, the energetic and comical bleach-blonde heroine of Mihama Academy with iconic waist-length bleached blonde twintails tied with black ribbons, bright clear sapphire blue eyes, charming lively smile, a lemon hard candy often tucked in her cheek, and an earnest yet hopelessly clumsy fake tsundere persona harboring a profoundly selfless and empathetic heart.",
+      "identityTokens": [
+        "matsushima_michiru",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "bleached_hair",
+        "twintails",
+        "very_long_hair",
+        "hair_ribbon",
+        "hair_bow",
+        "blue_eyes",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "matsushima_michiru"
+      ],
+      "exactPrefixes": [
+        "michiru_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "canon": {
+        "world": "美浜学园 · 傲娇的元气开心果",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园二年级学生。为了成为理想中备受喜爱的「典型傲娇角色」，故意将黑发漂白成金发并扎成双马尾、含着酸柠檬糖并苦练傲娇语气，但因天生开朗善良且少根筋而频繁破功成为全校的活宝。幼年曾接受心脏移植手术，体内宿有心脏原主人的深沉人格，在欢脱的外表下隐藏着为了他人幸福甘愿自我牺牲的崇高与温柔",
+        "research": "2026-10-22 调研（Danbooru matsushima_michiru 410+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "rella",
+        "kappe"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "characterTokens": [
+        "matsushima_michiru"
+      ],
+      "copyrightTokens": [
+        "grisaia_(series)"
+      ]
+    }
+  }
+}

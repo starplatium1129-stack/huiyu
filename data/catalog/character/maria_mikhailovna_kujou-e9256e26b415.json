@@ -75,8 +75,8 @@
       ],
       "identityProse": "Mariya Mikhailovna Kujou from Alya Sometimes Hides Her Feelings in Russian, with long wavy light-brown hair, an ahoge and brown eyes.",
       "identityTokens": [
-        "maria_mikhailovna_kujou",
-        "tokidoki bosotto roshia-go de dereru tonari no alya-san",
+        "mariya_mikhailovna_kujou",
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
         "light brown hair",
         "long hair",
         "wavy hair",
@@ -84,11 +84,9 @@
         "brown eyes"
       ],
       "exactTokens": [
-        "maria_mikhailovna_kujou"
+        "mariya_mikhailovna_kujou"
       ],
-      "exactPrefixes": [
-        "1girl, solo, maria_mikhailovna_kujou"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -115,10 +113,10 @@
         "see-through"
       ],
       "characterTokens": [
-        "maria_mikhailovna_kujou"
+        "mariya_mikhailovna_kujou"
       ],
       "copyrightTokens": [
-        "tokidoki bosotto roshia-go de dereru tonari no alya-san"
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san"
       ]
     }
   }

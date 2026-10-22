@@ -1,0 +1,172 @@
+{
+  "kind": "character",
+  "id": "irisu_makina",
+  "revision": 1,
+  "sortOrder": 171,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "irisu_makina",
+    "profile": {
+      "id": "irisu_makina",
+      "name": "入巢莳菜",
+      "alias": [
+        "Irisu Makina",
+        "入巣 蒔菜",
+        "入巢 莳菜",
+        "莳菜",
+        "狙击手少女",
+        "爸爸雄二",
+        "灰色的果实"
+      ],
+      "type": "popular",
+      "icon": "🎯",
+      "portrait": {
+        "image": "../assets/characters/popular-irisu_makina.png?v=1",
+        "alt": "入巢莳菜 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及膝柔嫩粉色长发 · 侧系低双马尾 · 标志性灵动呆毛 · 红色发带",
+        "hair_color": "粉发/蜜桃粉",
+        "eyes": "清澈明润琥珀棕褐眼眸",
+        "hairstyle": "低双马尾 · 俏皮头顶呆毛 · 齐刘海 · 娇小萝莉神韵",
+        "uniform": "美浜学园紫衫白裙制服 / 战术狙击背心迷彩工装",
+        "expression": "纯真烂漫 · 调皮吐舌 · 冷酷瞄准 · 依赖依恋",
+        "style": "cherubic pink-haired pigtails deadly sniper prodigy",
+        "signature": "及膝粉色低双马尾、头顶呆毛、比身形还庞大的巴雷特重型狙击枪与喊雄二“爸爸”的反差萌"
+      },
+      "personality": [
+        "美浜学园一年级学生，入巢财阀暗黑权力斗争中的受害幸存者",
+        "童年因目睹亲人血腥惨剧造成心理创伤失语，在美滨学园重新找到归宿",
+        "极度黏人依恋风见雄二，称呼雄二为「爸爸」兼师父，视雄二为无可替代的精神支柱",
+        "言谈经常天真无邪地脱口而出从雄二处学来的大叔粗俗黑话与危险词汇，令人哭笑不得",
+        "具有超凡入圣的动态视力与远程狙击天赋，在战场上拥有百步穿杨的绝对杀伤力"
+      ],
+      "likes": [
+        "大块多汁的烤肉（肉肉！）",
+        "被雄二摸头称赞和搂在怀里午睡",
+        "重型巴雷特M82反器材狙击步枪的保养与射击",
+        "画各种歪歪扭扭但生动有趣的涂鸦插画"
+      ],
+      "classic_cg": {
+        "title": "夕阳天台的巨型反器材狙击戒备",
+        "description": "血色残阳笼罩的天台掩体后，粉色长双马尾娇小少女匍匐于庞大的黑色巴雷特狙击枪后，眼神冰冷森严，展现顶尖狙击手的致命压迫感。"
+      },
+      "identity": {
+        "role": "美浜学园一年级学生 / 入巢家千金 / 天才远程狙击手",
+        "age": "青年",
+        "occupation": "学生 / 特等射手",
+        "faction": "美浜学园 · CIRS特工支援"
+      },
+      "tags": [
+        "粉发",
+        "棕瞳",
+        "低双马尾",
+        "呆毛",
+        "反器材狙击枪",
+        "反差萌",
+        "娇小",
+        "灰色的果实"
+      ],
+      "bg_story": "入巢莳菜是《灰色的果实》及灰色系列中深受玩家怜爱与震撼的核心女主角之一。身为关东实权大家族入巢家的嫡系后代，童年因成为家族政治勒索与继承权争夺的牺牲品而遭遇绑架与残酷虐待，心灵遭受重创并被家族视为弃子抹杀存在。被安排进入美浜学园后，她在风见雄二的悉心照料与温柔庇护下逐渐解开心结，并展现出骇人听闻的战术狙击才能。在雄二的教导下，她化身为能熟练掌控大口径重型狙击枪的致命天使。当过去家族的魔爪再度伸向她时，她与雄二并肩打破阴谋，彻底赢得了属于自己的自由人生。",
+      "palette": [
+        "草莓樱粉",
+        "战术墨绿",
+        "琥珀暖褐"
+      ],
+      "weather": [
+        "残阳如血",
+        "晨光曦微",
+        "硝烟密林"
+      ],
+      "speech": "爸爸！莳菜今天在靶场把十个靶子全都轰碎成渣渣了哦！快点摸摸莳菜的头，今晚还要吃三斤特大号烤肉！",
+      "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
+      "traits": [
+        "irisu_makina",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "low_twintails",
+        "very_long_hair",
+        "ahoge",
+        "hair_ribbon",
+        "brown_eyes",
+        "slender",
+        "grisaia_(series)"
+      ],
+      "accent_color": "#ec4899",
+      "bg_color": "#1c0d16"
+    },
+    "popular": {
+      "id": "irisu_makina",
+      "displayName": "入巢莳菜",
+      "originalName": "入巣 蒔菜 (Irisu Makina)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "irisu_makina",
+        "makina",
+        "makina_(grisaia)",
+        "入巢莳菜",
+        "莳菜",
+        "狙击手少女",
+        "爸爸雄二",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Irisu Makina from Grisaia by Frontwing, the cherubic yet deadly sniper heroine of Mihama Academy with knee-length candy-pink hair styled in loose low pigtails, a prominent quirky ahoge bouncing on her crown, expressive amber-brown eyes, petite and slender feminine frame, endearing childlike innocence masking ruthless precision marksmanship, calling Yuuji her 'Papa' with unfiltered eccentric vocabulary.",
+      "identityTokens": [
+        "irisu_makina",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "low_twintails",
+        "very_long_hair",
+        "ahoge",
+        "hair_ribbon",
+        "brown_eyes",
+        "slender",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "irisu_makina"
+      ],
+      "exactPrefixes": [
+        "makina_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "canon": {
+        "world": "美浜学园 · 天才狙击手少女",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园一年级学生，关东实权财阀入巢家的千金。童年因目睹家族继承权阴谋与残酷绑架案导致精神受创失语并被家族除名抹杀。被送入美浜学园后逐渐恢复语言能力，对风见雄二极其信赖依恋并认作「爸爸」兼师父。受雄二指导激发出惊世骇俗的远程射击天赋，能熟练操作大口径反器材狙击步枪，言谈在极度纯真与从雄二处学来的危险俚语间自由切换",
+        "research": "2026-10-22 调研（Danbooru irisu_makina 360+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "rella",
+        "kappe"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "characterTokens": [
+        "irisu_makina"
+      ],
+      "copyrightTokens": [
+        "grisaia_(series)"
+      ]
+    }
+  }
+}

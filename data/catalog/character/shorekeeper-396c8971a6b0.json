@@ -75,7 +75,7 @@
       ],
       "identityProse": "The Shorekeeper from Wuthering Waves, with long blue jellyfish-cut hair and violet eyes.",
       "identityTokens": [
-        "the_shorekeeper_(wuthering_waves)",
+        "shorekeeper_(wuthering_waves)",
         "wuthering_waves",
         "blue_hair",
         "long_hair",
@@ -83,11 +83,9 @@
         "jellyfish_cut"
       ],
       "exactTokens": [
-        "the_shorekeeper_(wuthering_waves)"
+        "shorekeeper_(wuthering_waves)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, the_shorekeeper_(wuthering_waves)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -114,8 +112,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "the_shorekeeper_(wuthering_waves)",
-        "Shorekeeper"
+        "shorekeeper_(wuthering_waves)"
       ],
       "copyrightTokens": [
         "wuthering_waves"

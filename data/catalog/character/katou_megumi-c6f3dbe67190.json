@@ -102,9 +102,7 @@
       "exactTokens": [
         "katou_megumi"
       ],
-      "exactPrefixes": [
-        "1girl, solo, katou_megumi"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

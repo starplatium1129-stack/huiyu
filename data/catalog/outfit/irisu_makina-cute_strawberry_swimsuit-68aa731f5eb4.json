@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "irisu_makina/cute_strawberry_swimsuit",
+  "revision": 1,
+  "sortOrder": 1522,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "irisu_makina",
+    "outfit": {
+      "id": "cute_strawberry_swimsuit",
+      "name": "草莓印花荷叶边少女比基尼",
+      "prose": "sweet summer resort swimwear: a pastel white and baby-pink two-piece bikini adorned with tiny red strawberry prints and delicate ruffled frills along the scoop neckline and hip hems, petite red ribbon bow at the center, bare midriff, and sunlit bare feet",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "frilled_bikini",
+        "strawberry_print",
+        "ruffles",
+        "bow",
+        "bare_shoulders",
+        "bare_arms",
+        "bare_legs",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

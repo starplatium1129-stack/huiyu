@@ -89,7 +89,7 @@
       ],
       "identityProse": "Asuna Yuuki from Sword Art Online, with waist-length chestnut hair in a half-up side braid and hazel-brown eyes.",
       "identityTokens": [
-        "yuuki_asuna",
+        "asuna_(sao)",
         "sword_art_online",
         "chestnut_hair",
         "very_long_hair",
@@ -98,11 +98,9 @@
         "brown_eyes"
       ],
       "exactTokens": [
-        "yuuki_asuna"
+        "asuna_(sao)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, yuuki_asuna"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -129,7 +127,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "yuuki_asuna"
+        "asuna_(sao)"
       ],
       "copyrightTokens": [
         "sword_art_online"

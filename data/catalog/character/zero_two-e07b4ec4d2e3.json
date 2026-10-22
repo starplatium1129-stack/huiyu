@@ -86,9 +86,7 @@
       "exactTokens": [
         "zero_two_(darling_in_the_franxx)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, zero_two_(darling_in_the_franxx)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

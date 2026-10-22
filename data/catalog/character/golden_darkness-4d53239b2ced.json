@@ -120,17 +120,15 @@
         "mika_pikazo"
       ],
       "displayName": "金色暗影",
-      "exactPrefixes": [
-        "yami_"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
-        "golden_darkness"
+        "konjiki_no_yami"
       ],
       "franchise": "To LOVE-Ru",
       "id": "golden_darkness",
       "identityProse": "Adult Golden Darkness (Yami) from To LOVE-Ru, with floor-length golden-blonde hair, hair intakes and ruby-red eyes.",
       "identityTokens": [
-        "golden_darkness",
+        "konjiki_no_yami",
         "1girl",
         "solo",
         "blonde_hair",
@@ -156,8 +154,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "golden_darkness",
-        "Yami"
+        "konjiki_no_yami"
       ],
       "copyrightTokens": [
         "to_love-ru"

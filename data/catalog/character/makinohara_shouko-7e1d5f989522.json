@@ -85,9 +85,7 @@
       "exactTokens": [
         "makinohara_shouko"
       ],
-      "exactPrefixes": [
-        "1girl, solo, makinohara_shouko"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

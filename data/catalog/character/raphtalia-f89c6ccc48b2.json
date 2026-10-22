@@ -88,9 +88,7 @@
       "exactTokens": [
         "raphtalia"
       ],
-      "exactPrefixes": [
-        "1girl, solo, raphtalia"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

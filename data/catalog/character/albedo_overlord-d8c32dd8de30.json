@@ -104,9 +104,7 @@
       "exactTokens": [
         "albedo_(overlord)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, albedo_(overlord)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

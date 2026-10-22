@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "matsushima_michiru/mihama_uniform",
+  "revision": 1,
+  "sortOrder": 1513,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "matsushima_michiru",
+    "outfit": {
+      "id": "mihama_uniform",
+      "name": "美浜学园元气双马尾制服",
+      "prose": "Mihama Private Academy uniform: lavender-purple button-up shirt with sailor collar, royal blue plaid necktie tied energetically, high-waisted white pleated skirt, black over-knee socks, brown leather school loafers, and black satin ribbons securing her twin tails",
+      "tokens": [
+        "mihama_private_academy_school_uniform",
+        "school_uniform",
+        "purple_shirt",
+        "sailor_collar",
+        "plaid_necktie",
+        "blue_necktie",
+        "white_skirt",
+        "pleated_skirt",
+        "over-knee_socks",
+        "black_socks",
+        "loafers",
+        "hair_ribbon"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "kind": "character",
+  "id": "alice_nikke",
+  "revision": 1,
+  "sortOrder": 173,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "alice_nikke",
+    "profile": {
+      "id": "alice_nikke",
+      "name": "爱丽丝",
+      "alias": [
+        "Alice",
+        "アリス",
+        "爱丽丝",
+        "兔子爱丽丝",
+        "无限轨道",
+        "胡萝卜狙击枪",
+        "胜利女神：妮姬"
+      ],
+      "type": "popular",
+      "icon": "🐰",
+      "portrait": {
+        "image": "../assets/characters/popular-alice_nikke.png?v=1",
+        "alt": "爱丽丝 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及膝微卷波浪粉色长双马尾 · 机械兔耳耳机 · 灵动童话少女",
+        "hair_color": "粉发/蜜桃粉",
+        "eyes": "澄澈璀璨宝石天蓝眼眸",
+        "hairstyle": "波浪双马尾 · 兔耳机械发饰 · 齐刘海 · 梦幻甜美",
+        "uniform": "粉白高光恒温紧身胶衣 / 雪国粉色羽绒服",
+        "expression": "纯真天真 · 梦幻浅笑 · 依赖撒娇 · 专注狙击",
+        "style": "dreamy wonderland latex bodysuit sniper rabbit heroine",
+        "signature": "亮面粉白恒温紧身服、机械兔耳耳机、巨型胡萝卜反器材狙击枪与称呼指挥官为“兔子先生”"
+      },
+      "personality": [
+        "极寒特战部队「无限轨道」所属妮姬，活在不可思议之国童话中的天真少女",
+        "因机体存在严重的高热散热缺陷，常年维持极高体温，必须身穿高科技恒温紧身服",
+        "把残酷恐怖的地表废土幻视成《爱丽丝梦游仙境》，将指挥官视作拯救自己的「兔子先生」",
+        "性格极度纯真善良、不谙世事，对兔子先生怀有毫无保留的信赖与亲昵依恋",
+        "手持威力骇人的胡萝卜重型反器材狙击枪，在超远距离能精准抹杀任何庞大机械敌人"
+      ],
+      "likes": [
+        "和兔子先生（指挥官）待在一起",
+        "粉红色的草莓味甜点与马卡龙",
+        "胡萝卜图案的一切可爱玩偶与重装狙击枪",
+        "在极寒雪地里被兔子先生紧紧拥抱取暖"
+      ],
+      "classic_cg": {
+        "title": "极地雪原胡萝卜狙击枪经典战姿",
+        "description": "漫天风雪的极地冰原上，粉白紧身衣与兔耳耳机少女怀抱巨型胡萝卜反器材狙击枪俏皮眨眼，极致身段与致命反差璀璨动人。"
+      },
+      "identity": {
+        "role": "无限轨道部队所属 / 梦幻神射手妮姬",
+        "age": "青年",
+        "occupation": "狙击手 / 奇境漫游者",
+        "faction": "方舟 · 无限轨道部队（Unlimited）"
+      },
+      "tags": [
+        "粉发",
+        "蓝瞳",
+        "兔耳",
+        "紧身衣",
+        "胶衣",
+        "巨乳",
+        "狙击手",
+        "反差萌",
+        "胜利女神：妮姬"
+      ],
+      "bg_story": "爱丽丝是《胜利女神：妮姬》中人气极高的标志性角色之一。曾是患有重病不得不接受妮姬改造的人类少女，改造后因大脑对残酷现实的防御机制与机体异常高热，形成了将整个世界认知为童话奇境的奇特心智。她被编入驻守极寒地表的特战部队「无限轨道」，与同伴鲁德米拉一同守护地表幸存者。在偶遇指挥官后，她坚信指挥官就是童话中带领自己寻找幸福的「兔子先生」。在梦幻天真而充满爱意的目光注视下，她用那支能轰碎一切绝望的胡萝卜重型狙击枪，一次次为兔子先生扫清前进道路上的所有阴霾。",
+      "palette": [
+        "樱花嫩粉",
+        "冰晶霜白",
+        "胡萝卜橙"
+      ],
+      "weather": [
+        "极地暴雪",
+        "奇境花房",
+        "梦幻暖夜"
+      ],
+      "speech": "兔子先生！今天爱丽丝也有乖乖听话哦！快看，爱丽丝用胡萝卜把那些大铁块怪物全都变成小红心了呢，快来抱抱爱丽丝吧！",
+      "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+      "traits": [
+        "alice_(nikke)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "blue_eyes",
+        "rabbit_ears",
+        "headphones",
+        "large_breasts",
+        "curvy",
+        "bodysuit",
+        "latex",
+        "goddess_of_victory:_nikke"
+      ],
+      "accent_color": "#f472b6",
+      "bg_color": "#1c0e15"
+    },
+    "popular": {
+      "id": "alice_nikke",
+      "displayName": "爱丽丝",
+      "originalName": "Alice (アリス)",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "alice_nikke",
+        "alice",
+        "alice_(nikke)",
+        "爱丽丝",
+        "兔子爱丽丝",
+        "无限轨道",
+        "胡萝卜狙击枪",
+        "胜利女神：妮姬",
+        "nikke"
+      ],
+      "identityProse": "Alice from Goddess of Victory: NIKKE, the dreamy and innocent sniper heroine of Unlimited squad with long wavy pastel-pink twintails, luminous sapphire blue eyes, mechanical rabbit-ear headphones, a body-hugging pink-and-white cooling bodysuit accentuating an astonishing hourglass figure, carrying her carrot-themed anti-materiel sniper rifle, calling the Commander her 'Mr. Rabbit'.",
+      "identityTokens": [
+        "alice_(nikke)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "twintails",
+        "blue_eyes",
+        "rabbit_ears",
+        "headphones",
+        "large_breasts",
+        "curvy",
+        "bodysuit",
+        "latex",
+        "goddess_of_victory:_nikke"
+      ],
+      "exactTokens": [
+        "alice_(nikke)"
+      ],
+      "exactPrefixes": [
+        "alice_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "canon": {
+        "world": "方舟 · 无限轨道部队",
+        "era": "末世机械灾变后废土",
+        "formNotes": "驻守在极寒地表的特战部队「无限轨道」所属妮姬。因机体散热缺陷常年处于高热状态，必须时刻穿着特制恒温降温紧身服。精神状态保持在纯真梦幻的童话世界中，将残酷的地表战场视作《爱丽丝梦游仙境》，称呼救助自己的指挥官为「兔子先生」，手持高破坏力胡萝卜重型反器材狙击步枪，以惊人的天真与极致破坏力形成极具魅力的强烈反差",
+        "research": "2026-10-22 调研（Danbooru alice_(nikke) 1800+ posts）"
+      },
+      "animeStudio": "Shift Up official Goddess of Victory: NIKKE art, Kim Hyung Tae style",
+      "curatedArtistStyles": [
+        "kim_hyung_tae",
+        "rella",
+        "dSmile"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "characterTokens": [
+        "alice_(nikke)"
+      ],
+      "copyrightTokens": [
+        "goddess_of_victory:_nikke"
+      ]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "outfit",
+  "id": "irisu_makina/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 1524,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "irisu_makina",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "small_breasts",
+        "petite",
+        "pink_nipples",
+        "slender_waist",
+        "navel",
+        "pussy",
+        "pink_hair",
+        "low_twintails",
+        "brown_eyes",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, silky flawless porcelain-pale skin blushed with crimson heat, delicate budding breasts with tender rose-pink nipples, slender fragile waistline and dimpled navel, moist gleaming virgin-pink pussy glistening with sweet moisture, knee-length pastel pink pigtails fanned across white satin sheets, wide innocent brown eyes misty with intense arousal, bare feet, soft moonlight glow",
+      "styleHint": "intimate moonlit canopy",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

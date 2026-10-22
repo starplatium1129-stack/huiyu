@@ -85,9 +85,7 @@
       "exactTokens": [
         "yanami_anna"
       ],
-      "exactPrefixes": [
-        "1girl, solo, yanami_anna"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

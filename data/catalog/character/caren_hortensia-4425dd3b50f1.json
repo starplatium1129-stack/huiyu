@@ -105,10 +105,7 @@
         "caren_hortensia",
         "caren_ortensia"
       ],
-      "exactPrefixes": [
-        "1girl, solo, caren_hortensia",
-        "1girl, solo, caren_ortensia"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

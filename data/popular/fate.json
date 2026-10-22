@@ -732,7 +732,7 @@
       ],
       "identityProse": "Morgan le Fay from Fate/Grand Order, the Winter Queen of Faerie Britain, a tall fairy queen with long straight silver-white hair, icy blue eyes and pale skin",
       "identityTokens": [
-        "morgan (fate/grand order)",
+        "morgan_le_fay_(fate)",
         "1girl",
         "solo",
         "white_hair",
@@ -740,10 +740,10 @@
         "straight_hair",
         "blue_eyes",
         "pale_skin",
-        "fgo"
+        "fate/grand_order"
       ],
       "exactTokens": [
-        "morgan (fate/grand order)"
+        "morgan_le_fay_(fate)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -806,7 +806,7 @@
           "name": "水妃摩根（泳装）",
           "prose": "her summer Water Princess swimsuit, a stylish white halter swimsuit with bare shoulders and loose silver hair",
           "tokens": [
-            "morgan (water princess) (fate)",
+            "morgan_le_fay_(water_princess)_(fate)",
             "swimsuit",
             "white_swimsuit",
             "halterneck",
@@ -877,7 +877,7 @@
         "hair_over_one_eye",
         "purple_eyes",
         "demi_servant",
-        "fgo"
+        "fate/grand_order"
       ],
       "exactTokens": [
         "mash_kyrielight"
@@ -1032,10 +1032,7 @@
         "caren_hortensia",
         "caren_ortensia"
       ],
-      "exactPrefixes": [
-        "1girl, solo, caren_hortensia",
-        "1girl, solo, caren_ortensia"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -1191,9 +1188,7 @@
       "exactTokens": [
         "saber_alter"
       ],
-      "exactPrefixes": [
-        "1girl, solo, saber_alter"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -1356,9 +1351,7 @@
       "exactTokens": [
         "jeanne d'arc (fate)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, jeanne d'arc (fate)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -1548,9 +1541,7 @@
       "exactTokens": [
         "scathach (fate)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, scathach (fate)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -1725,9 +1716,7 @@
       "exactTokens": [
         "ishtar (fate)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, ishtar (fate)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -1897,9 +1886,7 @@
       "exactTokens": [
         "ereshkigal (fate)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, ereshkigal (fate)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -2042,9 +2029,7 @@
       "exactTokens": [
         "medusa_(fate)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, medusa_(fate)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -2187,9 +2172,7 @@
       "exactTokens": [
         "chloe_von_einzbern"
       ],
-      "exactPrefixes": [
-        "1girl, solo, chloe_von_einzbern"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -2334,9 +2317,7 @@
       "exactTokens": [
         "medea_(caster)_(fate)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, medea_(caster)_(fate)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -2481,9 +2462,7 @@
       "exactTokens": [
         "kama_(fate)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, kama_(fate)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

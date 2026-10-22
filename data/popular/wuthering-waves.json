@@ -25,9 +25,7 @@
       "exactTokens": [
         "changli_(wuthering_waves)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, changli_(wuthering_waves)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -157,7 +155,7 @@
       ],
       "identityProse": "The Shorekeeper from Wuthering Waves, with long layered blue hair and quiet violet eyes. Her precise, gentle gestures suggest someone learning to appreciate small experiences; the veil is part of her selected coastal attire.",
       "identityTokens": [
-        "the_shorekeeper_(wuthering_waves)",
+        "shorekeeper_(wuthering_waves)",
         "wuthering_waves",
         "blue_hair",
         "long_hair",
@@ -165,11 +163,9 @@
         "jellyfish_cut"
       ],
       "exactTokens": [
-        "the_shorekeeper_(wuthering_waves)"
+        "shorekeeper_(wuthering_waves)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, the_shorekeeper_(wuthering_waves)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -301,7 +297,7 @@
       ],
       "identityProse": "Cartethyia from Wuthering Waves, a wandering knight with long blonde braided hair, clear blue eyes, pointed ears and a delicate halo. Her attentive posture softens in familiar town surroundings.",
       "identityTokens": [
-        "cartethyia",
+        "cartethyia_(wuthering_waves)",
         "wuthering_waves",
         "blonde_hair",
         "long_hair",
@@ -311,11 +307,9 @@
         "halo"
       ],
       "exactTokens": [
-        "cartethyia"
+        "cartethyia_(wuthering_waves)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, cartethyia"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

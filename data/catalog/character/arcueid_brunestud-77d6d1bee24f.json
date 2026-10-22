@@ -102,9 +102,7 @@
       "exactTokens": [
         "arcueid_brunestud"
       ],
-      "exactPrefixes": [
-        "1girl, solo, arcueid_brunestud"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

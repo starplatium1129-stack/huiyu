@@ -85,9 +85,7 @@
       "exactTokens": [
         "maomao_(kusuriya_no_hitorigoto)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, maomao_(kusuriya_no_hitorigoto)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

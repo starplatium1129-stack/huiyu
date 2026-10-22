@@ -22,23 +22,12 @@ export interface ArtistStyleOption {
   keywords?: string[]
 }
 
-export interface ArtistComboPreset {
+export interface ParsedArtistStyle {
   id: string
-  label: string
-  icon?: ArchiveIconName
-  artistIds: [string, string] | [string]
-  tagline: string
-  mood: string
+  weight: number
 }
 
-export const ARTIST_COMBO_PRESETS: readonly ArtistComboPreset[] = Object.freeze([
-  { id: 'cinematic_pure', label: '电影通透感', icon: 'wideshot', artistIds: ['yoneyama_mai', 'kantoku'], tagline: '米山舞 × 监督', mood: '电影级流动光影与清透甜美五官' },
-  { id: 'witch_journey', label: '空灵魔女旅行', icon: 'wand', artistIds: ['azuuru', 'rella'], tagline: 'Azure × Rella', mood: '清澈透明感、水润发丝与星夜旅行氛围' },
-  { id: 'pure_galgame', label: '极致水灵少女', icon: 'flower', artistIds: ['hiten_(hitenkei)', 'tiv'], tagline: 'Hiten × Tiv', mood: '柔光日系空气感与微风发丝' },
-  { id: 'starry_dream', label: '梦幻星夜微光', icon: 'moonlight', artistIds: ['rella', 'anmi'], tagline: 'Rella × Anmi', mood: '夜景星斑与清甜水润粉彩折射' },
-  { id: 'noble_lady', label: '清冷贵气千金', icon: 'detail', artistIds: ['ask_(askzy)', 'kantoku'], tagline: 'ASK × 监督', mood: '丝滑上色与克制的高级质感' },
-  { id: 'trend_cyber', label: '潮流先锋霓虹', icon: 'lightning', artistIds: ['lam_(ramdayo)', 'mika_pikazo'], tagline: 'LAM × Mika Pikazo', mood: '极高饱和前卫撞色与锐利图形' },
-])
+export type { ArtistComboPreset } from './artistComboPresets.ts'
 
 export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; label: string; icon: ArchiveIconName }> = [
   { id: 'all', label: '全部', icon: 'palette' },
@@ -111,14 +100,39 @@ function artistDisplayName(id: string): string {
   return id.replace(/_\(.+$/, '').replace(/_/g, ' ').replace(/\b[a-z]/g, letter => letter.toUpperCase())
 }
 
-export function normalizeArtistStyleIds(value: unknown, limit = 2): string[] {
+export const DEFAULT_ARTIST_STYLE_LIMIT = 3
+
+export function parseArtistStyleItem(item: unknown): ParsedArtistStyle | null {
+  const trimmed = String(item || '').trim()
+  if (!trimmed) return null
+  const colonIdx = trimmed.indexOf(':')
+  let id = colonIdx >= 0 ? trimmed.slice(0, colonIdx).trim() : trimmed
+  if (ARTIST_STYLE_ALIASES[id]) id = ARTIST_STYLE_ALIASES[id]
+  if (!ARTIST_STYLE_IDS.has(id)) return null
+  let weight = 1
+  if (colonIdx >= 0) {
+    const parsed = parseFloat(trimmed.slice(colonIdx + 1).trim())
+    if (!Number.isNaN(parsed) && parsed > 0 && parsed <= 2) {
+      weight = Math.round(parsed * 100) / 100
+    }
+  }
+  return { id, weight }
+}
+
+export function serializeArtistStyleItem(id: string, weight = 1): string {
+  const rounded = Math.round(weight * 100) / 100
+  return rounded !== 1 ? `${id}:${rounded}` : id
+}
+
+export function normalizeArtistStyleIds(value: unknown, limit = DEFAULT_ARTIST_STYLE_LIMIT): string[] {
   if (!Array.isArray(value)) return []
   const result: string[] = []
+  const seenIds = new Set<string>()
   for (const raw of value) {
-    let id = String(raw || '').trim()
-    if (ARTIST_STYLE_ALIASES[id]) id = ARTIST_STYLE_ALIASES[id]
-    if (!ARTIST_STYLE_IDS.has(id) || result.includes(id)) continue
-    result.push(id)
+    const parsed = parseArtistStyleItem(raw)
+    if (!parsed || seenIds.has(parsed.id)) continue
+    seenIds.add(parsed.id)
+    result.push(serializeArtistStyleItem(parsed.id, parsed.weight))
     if (result.length >= limit) break
   }
   return result
@@ -132,11 +146,15 @@ export function animaArtistTag(name: string): string {
 export function artistTagsForEngine(ids: readonly string[], engine: ArtistStyleEngine): string[] {
   const capabilities = resolveDrawCapabilities(engine)
   if (capabilities.promptFormat === 'natural-language') return []
-  return normalizeArtistStyleIds(ids).map(id => capabilities.promptFormat === 'anima-tags'
-    // Anima 使用 @ 与空格；名称中的字面括号须转义，避免 ComfyUI 将其解析为权重。
-    // 此入口仅处理目录画师 ID，保留提示词中用户显式设置的 (tag:weight) 语法。
-    ? animaArtistTag(id)
-    : id)
+  return normalizeArtistStyleIds(ids).map(item => {
+    const parsed = parseArtistStyleItem(item)
+    if (!parsed) return ''
+    if (capabilities.promptFormat === 'anima-tags') {
+      const tag = animaArtistTag(parsed.id)
+      return parsed.weight !== 1 ? `(${tag}:${parsed.weight})` : tag
+    }
+    return parsed.weight !== 1 ? `(${parsed.id}:${parsed.weight})` : parsed.id
+  }).filter(Boolean)
 }
 
 /**
@@ -204,10 +222,23 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
 export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngine = 'sd'): string {
   const normalized = normalizeArtistStyleIds(ids)
   if (!normalized.length) return ''
+  const parsedList = normalized.map(parseArtistStyleItem).filter((item): item is ParsedArtistStyle => Boolean(item))
+  if (!parsedList.length) return ''
   if (engine === 'krea2') {
-    return normalized.map(id => KREA_ARTIST_PROSE[id] || `in the style of ${artistDisplayName(id)}`).join(', ')
+    return parsedList.map(item => {
+      const base = KREA_ARTIST_PROSE[item.id] || `in the style of ${artistDisplayName(item.id)}`
+      if (item.weight >= 1.1) return `strongly featuring ${base}`
+      if (item.weight <= 0.8) return `with subtle hints of ${base}`
+      return base
+    }).join(', ')
   }
-  const names = normalized.map(artistDisplayName)
-  const joined = names.length === 1 ? names[0] : `${names[0]} and ${names[1]}`
-  return `with visual styling inspired by ${joined}`
+  const names = parsedList.map(item => {
+    const name = artistDisplayName(item.id)
+    if (item.weight >= 1.1) return `${name} (dominant)`
+    if (item.weight <= 0.8) return `${name} (subtle)`
+    return name
+  })
+  if (names.length === 1) return `with visual styling inspired by ${names[0]}`
+  if (names.length === 2) return `with visual styling inspired by ${names[0]} and ${names[1]}`
+  return `with visual styling inspired by ${names.slice(0, -1).join(', ')}, and ${names[names.length - 1]}`
 }

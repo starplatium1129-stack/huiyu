@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "irisu_makina/oversized_dad_shirt",
+  "revision": 1,
+  "sortOrder": 1521,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "irisu_makina",
+    "outfit": {
+      "id": "oversized_dad_shirt",
+      "name": "雄二的宽大白衬衫居家私服",
+      "prose": "intimate and cozy morning loungewear: an oversized crisp white men's button-up collared dress shirt borrowed from Yuuji draped loosely over her petite frame, sleeves rolled up in messy folds, wide open collar revealing delicate collarbones and shoulders, hemline reaching mid-thigh, bare legs, and bare feet",
+      "tokens": [
+        "oversized_shirt",
+        "white_shirt",
+        "collared_shirt",
+        "rolled_up_sleeves",
+        "collarbone",
+        "bare_shoulders",
+        "bare_legs",
+        "barefoot",
+        "casual"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

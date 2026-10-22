@@ -102,9 +102,7 @@
       "exactTokens": [
         "yukinoshita_haruno"
       ],
-      "exactPrefixes": [
-        "1girl, solo, yukinoshita_haruno"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

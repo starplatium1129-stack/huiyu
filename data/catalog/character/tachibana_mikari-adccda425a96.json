@@ -88,7 +88,7 @@
       "identityProse": "Adult Mikari Tachibana from 2.5 Dimensional Seduction, with long light-brown hair in two side-up bunches, pink ribbons and pink eyes.",
       "identityTokens": [
         "tachibana_mikari",
-        "2.5 jigen no ririsa",
+        "2.5_jigen_no_ririsa",
         "brown hair",
         "long hair",
         "two side up",
@@ -98,9 +98,7 @@
       "exactTokens": [
         "tachibana_mikari"
       ],
-      "exactPrefixes": [
-        "1girl, solo, tachibana_mikari"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -124,12 +122,10 @@
         "1boy"
       ],
       "characterTokens": [
-        "tachibana_mikari",
-        "Mikari Tachibana",
-        "miriella_(2.5_jigen_no_ririsa)"
+        "tachibana_mikari"
       ],
       "copyrightTokens": [
-        "2.5 jigen no ririsa"
+        "2.5_jigen_no_ririsa"
       ]
     }
   }

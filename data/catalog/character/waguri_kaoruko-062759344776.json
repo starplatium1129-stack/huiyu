@@ -103,9 +103,7 @@
       "exactTokens": [
         "waguri_kaoruko"
       ],
-      "exactPrefixes": [
-        "1girl, solo, waguri_kaoruko"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

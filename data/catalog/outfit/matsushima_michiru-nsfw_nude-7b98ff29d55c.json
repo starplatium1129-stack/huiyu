@@ -1,0 +1,36 @@
+{
+  "kind": "outfit",
+  "id": "matsushima_michiru/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 1518,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "matsushima_michiru",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "fair_skin",
+        "medium_breasts",
+        "perky_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "navel",
+        "pussy",
+        "twintails",
+        "blonde_hair",
+        "blue_eyes",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, soft glowing fair skin flushed with tender rosiness, beautifully proportioned natural firm breasts tipped with blush-pink erect nipples, toned slender waistline, wet glistened pussy, radiant waist-length golden twintails spread across tousled bed linen, affectionate sapphire blue eyes brimming with sweet vulnerability, bare feet, warm golden lamp glow",
+      "styleHint": "warm bedroom golden ambiance",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

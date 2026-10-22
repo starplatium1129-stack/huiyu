@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "rapi_nikke/classic_shooting_stance_combat",
+  "revision": 1,
+  "sortOrder": 1526,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "rapi_nikke",
+    "outfit": {
+      "id": "classic_shooting_stance_combat",
+      "name": "地表交火战术作战背心与热裤",
+      "prose": "frontline surface engagement combat attire: a snug black tactical compression crop top with red trim, load-bearing harness with ammunition clips, high-waisted distressed denim tactical shorts, wide gun belt, radio headset, fingerless tactical gloves, and scuffed combat boots",
+      "tokens": [
+        "crop_top",
+        "tank_top",
+        "black_top",
+        "harness",
+        "tactical_harness",
+        "shorts",
+        "booty_shorts",
+        "belt",
+        "ammunition_belt",
+        "gloves",
+        "fingerless_gloves",
+        "boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

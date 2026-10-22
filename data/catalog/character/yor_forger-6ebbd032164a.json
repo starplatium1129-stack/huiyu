@@ -107,7 +107,7 @@
         "hair bun",
         "red eyes",
         "flower earrings",
-        "spy x family"
+        "spy_x_family"
       ],
       "identityProse": "Yor Forger from SPY x FAMILY, with black hair in an updo, red eyes and gold rose earrings.",
       "animeStudio": "WIT STUDIO, CloverWorks, official anime screencap, anime coloring",
@@ -150,13 +150,10 @@
         "research": "2026-08-18 调研"
       },
       "characterTokens": [
-        "yor_briar",
-        "Yor",
-        "Yor Forger",
-        "thorn_princess"
+        "yor_briar"
       ],
       "copyrightTokens": [
-        "spy x family"
+        "spy_x_family"
       ]
     }
   }

@@ -15,7 +15,7 @@
       ],
       "identityProse": "Asuna Yuuki from Sword Art Online, the famed Lightning Flash and sub-leader of the Knights of the Blood, a beautiful warrior with waist-length chestnut-honey hair styled with a half-up side braid, warm hazel-amber eyes, an earnest confident smile, and an athletic yet feminine hourglass figure",
       "identityTokens": [
-        "yuuki_asuna",
+        "asuna_(sao)",
         "sword_art_online",
         "chestnut_hair",
         "long_hair",
@@ -27,11 +27,9 @@
         "confident_smile"
       ],
       "exactTokens": [
-        "yuuki_asuna"
+        "asuna_(sao)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, yuuki_asuna"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -178,9 +176,7 @@
       "exactTokens": [
         "asada_shino"
       ],
-      "exactPrefixes": [
-        "1girl, solo, asada_shino"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

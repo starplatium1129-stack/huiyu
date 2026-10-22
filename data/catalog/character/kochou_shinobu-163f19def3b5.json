@@ -90,9 +90,7 @@
         "ufotable"
       ],
       "displayName": "蝴蝶忍",
-      "exactPrefixes": [
-        "1girl, solo, kochou_shinobu"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
         "kochou_shinobu"
       ],

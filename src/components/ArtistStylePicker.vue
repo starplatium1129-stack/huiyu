@@ -3,7 +3,7 @@
     <button type="button" class="artist-picker-trigger" data-control-motion aria-haspopup="dialog" :aria-expanded="dialogOpen" @click="openPicker">
       <div class="artist-summary-title">
         <span>画师风格</span>
-        <small v-if="selected.length" class="artist-active-pill">已启用 {{ selected.length }}/2</small>
+        <small v-if="selectedItems.length" class="artist-active-pill">已启用 {{ selectedItems.length }}/{{ ARTIST_STYLE_LIMIT }}</small>
       </div>
       <div class="artist-summary-right">
         <strong :class="{ active: selected.length }">{{ selectionSummary }}</strong>
@@ -84,8 +84,8 @@
           type="button"
           :data-artist-style-id="option.id"
           data-control-motion
-          :aria-pressed="selected.includes(option.id)"
-          :disabled="!selected.includes(option.id) && selected.length >= 2"
+          :aria-pressed="isOptionSelected(option.id)"
+          :disabled="!isOptionSelected(option.id) && selectedBaseIds.length >= ARTIST_STYLE_LIMIT"
           @click="toggle(option.id)"
         >
           <span class="artist-style-name">
@@ -107,7 +107,7 @@
             </StudioTooltip>
             <small v-else class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
           </span>
-          <ArchiveIcon v-if="selected.includes(option.id)" class="artist-selected-check" name="success" />
+          <ArchiveIcon v-if="isOptionSelected(option.id)" class="artist-selected-check" name="success" />
           <small class="artist-desc">{{ option.description }}</small>
           <StudioTooltip v-if="option.masterpiece" :content="option.masterpiece">
             <small class="artist-masterpiece">
@@ -126,7 +126,36 @@
         <code>{{ modelTokens }}</code>
       </div>
     </div>
-    <footer v-if="revealed" class="artist-dialog-selected"><div><span>已选 {{ selected.length }}/2</span><div class="artist-selected-chips"><button v-for="option in selectedOptions" :key="option.id" type="button" class="btn btn-ghost btn-sm" :aria-label="`移除${option.cnName || option.name}`" @click="removeSelected(option.id, $event)">{{ option.cnName || option.name }}<ArchiveIcon name="close" /></button><span v-if="!selected.length" class="artist-selection-empty">自然画风</span></div></div><button ref="doneButton" class="btn btn-primary" type="button" @click="closePicker">完成</button></footer>
+    <footer v-if="revealed" class="artist-dialog-selected">
+      <div>
+        <span>已选 {{ selectedItems.length }}/{{ ARTIST_STYLE_LIMIT }}</span>
+        <div class="artist-selected-chips">
+          <div v-for="item in selectedItems" :key="item.id" class="artist-chip-group">
+            <button
+              type="button"
+              class="btn btn-ghost btn-sm artist-chip-label"
+              :aria-label="`移除${item.option.cnName || item.option.name}`"
+              @click="removeSelected(item.id, $event)"
+            >
+              {{ item.option.cnName || item.option.name }}
+              <ArchiveIcon name="close" />
+            </button>
+            <button
+              type="button"
+              class="artist-weight-pill"
+              :class="weightClass(item.weight)"
+              :title="`当前权重 ${item.weight}，点击切换档位：0.7(辅) → 1.0(标) → 1.15(主)`"
+              :aria-label="`${item.option.cnName || item.option.name} 权重 ${item.weight}，点击切换`"
+              @click="cycleWeight(item.id)"
+            >
+              {{ weightLabel(item.weight) }}
+            </button>
+          </div>
+          <span v-if="!selectedItems.length" class="artist-selection-empty">自然画风</span>
+        </div>
+      </div>
+      <button ref="doneButton" class="btn btn-primary" type="button" @click="closePicker">完成</button>
+    </footer>
     </dialog>
     </Teleport>
   </div>
@@ -143,10 +172,16 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import {
   type ArtistStyleEngine,
   type ArtistStyleVerification,
-  ARTIST_COMBO_PRESETS,
+  type ArtistStyleOption,
   ARTIST_CATEGORIES,
+  DEFAULT_ARTIST_STYLE_LIMIT,
+  parseArtistStyleItem,
+  serializeArtistStyleItem,
+  normalizeArtistStyleIds,
+  artistTagsForEngine,
   artistStyleProse,
 } from '@/config/artistStyles'
+import { ARTIST_COMBO_PRESETS } from '@/config/artistComboPresets'
 import { ARTIST_STYLE_OPTIONS } from '@/config/artistStyleCatalog'
 import { sortByStyleFunnel, useArtistStyleFunnel } from '@/composables/useArtistStyleFunnel'
 
@@ -163,8 +198,33 @@ const emit = defineEmits<{
   'limit-reached': [max: number]
 }>()
 
-/** 画师最多同时选两位：再多画风会互相打架，出图反而四不像。 */
-const ARTIST_STYLE_LIMIT = 2
+const ARTIST_STYLE_LIMIT = DEFAULT_ARTIST_STYLE_LIMIT
+
+interface SelectedArtistItem {
+  id: string
+  weight: number
+  option: ArtistStyleOption
+}
+
+const selectedItems = computed<SelectedArtistItem[]>(() => {
+  const optionsMap = new Map(ARTIST_STYLE_OPTIONS.map(opt => [opt.id, opt]))
+  const items: SelectedArtistItem[] = []
+  for (const raw of props.selected) {
+    const parsed = parseArtistStyleItem(raw)
+    if (!parsed) continue
+    const opt = optionsMap.get(parsed.id)
+    if (opt) {
+      items.push({ id: parsed.id, weight: parsed.weight, option: opt })
+    }
+  }
+  return items
+})
+
+const selectedBaseIds = computed(() => selectedItems.value.map(item => item.id))
+
+function isOptionSelected(id: string): boolean {
+  return selectedBaseIds.value.includes(id)
+}
 
 const query = ref('')
 const currentCategory = ref<string>('all')
@@ -190,14 +250,13 @@ function onPickerKeydown(event: KeyboardEvent) {
   if (event.defaultPrevented || event.key !== 'Escape' || event.isComposing || event.keyCode === 229) return
   event.preventDefault(); event.stopPropagation(); closePicker()
 }
-/** 达上限时的就地提示；选满第三位时给出，取消或换选后清除。 */
+/** 达上限时的就地提示；选满时给出，取消或换选后清除。 */
 const limitHint = ref('')
 
 // 三级漏斗排序逻辑（Top3 常用 + 角色专属 + 目录）已收敛至
 // @/composables/useArtistStyleFunnel（2026-09-05 单体拆分）。
 const { recordUsage, frequentTop3Ids, recentIds } = useArtistStyleFunnel(ARTIST_STYLE_OPTIONS)
 
-const selectedOptions = computed(() => ARTIST_STYLE_OPTIONS.filter(option => props.selected.includes(option.id)))
 const searchDocuments = computed(() => new Map(ARTIST_STYLE_OPTIONS.map(option => [option.id, [
   option.name, option.id, option.cnName || '', option.description, option.masterpiece || '', ...(option.keywords || []),
 ].join(' ').toLocaleLowerCase()])))
@@ -222,17 +281,20 @@ const filteredOptions = computed(() => {
 })
 
 const selectionSummary = computed(() => {
-  if (!selectedOptions.value.length) return '未启用'
-  return selectedOptions.value.map(option => option.cnName ? `${option.cnName}` : option.name).join(' + ')
+  if (!selectedItems.value.length) return '未启用'
+  return selectedItems.value.map(item => {
+    const name = item.option.cnName || item.option.name
+    return item.weight !== 1 ? `${name}(${item.weight})` : name
+  }).join(' + ')
 })
 
 const engineLabel = computed(() => props.engine === 'sd' ? 'WAI / Illustrious' : props.engine === 'anima' ? 'Anima' : 'Krea 2')
 const modelTokens = computed(() => {
-  if (!selectedOptions.value.length) return ''
+  if (!selectedItems.value.length) return ''
   if (props.engine === 'krea2') {
     return artistStyleProse(props.selected, 'krea2')
   }
-  return selectedOptions.value.map(option => props.engine === 'anima' ? option.animaTag : option.waiTag).join(', ')
+  return artistTagsForEngine(props.selected, props.engine).join(', ')
 })
 
 function verificationLabel(verification: ArtistStyleVerification): string {
@@ -246,18 +308,37 @@ function removeSelected(id: string, event: MouseEvent) {
   toggle(id)
 }
 
-/**
- * 点选一位画师（2026-08-30 UX 审计）。
- *
- * 原先超上限时只是 `.slice(0,2)` 静默丢弃——用户点了第三位毫无反应，会判定
- * 「按钮坏了」反复点击。现在如实告知已达上限，并说明要先取消一位。
- */
+function cycleWeight(id: string) {
+  const current = [...selectedItems.value]
+  const item = current.find(x => x.id === id)
+  if (!item) return
+  let nextWeight = 1
+  if (item.weight === 1) nextWeight = 1.15
+  else if (item.weight >= 1.1) nextWeight = 0.7
+  else nextWeight = 1
+  const next = current.map(x => x.id === id ? serializeArtistStyleItem(x.id, nextWeight) : serializeArtistStyleItem(x.id, x.weight))
+  emit('update:selected', next)
+}
+
+function weightClass(weight: number): string {
+  if (weight >= 1.1) return 'dominant'
+  if (weight <= 0.8) return 'subtle'
+  return 'standard'
+}
+
+function weightLabel(weight: number): string {
+  if (weight >= 1.1) return `${weight} 主`
+  if (weight <= 0.8) return `${weight} 辅`
+  return `${weight} 标`
+}
+
 function toggle(id: string) {
-  const validIds = new Set(ARTIST_STYLE_OPTIONS.map(option => option.id))
-  const current = [...new Set(props.selected.filter(value => validIds.has(value)))].slice(0, ARTIST_STYLE_LIMIT)
-  if (current.includes(id)) {
+  const current = [...selectedItems.value]
+  const existingIdx = current.findIndex(item => item.id === id)
+  if (existingIdx >= 0) {
     limitHint.value = ''
-    emit('update:selected', current.filter(value => value !== id))
+    const next = current.filter((_, idx) => idx !== existingIdx)
+    emit('update:selected', next.map(item => serializeArtistStyleItem(item.id, item.weight)))
     return
   }
   if (current.length >= ARTIST_STYLE_LIMIT) {
@@ -267,7 +348,10 @@ function toggle(id: string) {
   }
   recordUsage([id])
   limitHint.value = ''
-  emit('update:selected', [...current, id])
+  const opt = ARTIST_STYLE_OPTIONS.find(o => o.id === id)
+  if (!opt) return
+  const next = [...current, { id, weight: 1, option: opt }]
+  emit('update:selected', next.map(item => serializeArtistStyleItem(item.id, item.weight)))
 }
 
 function clearSelected() {
@@ -276,15 +360,18 @@ function clearSelected() {
 }
 
 function isComboActive(artistIds: readonly string[]): boolean {
-  if (props.selected.length !== artistIds.length) return false
-  return artistIds.every(id => props.selected.includes(id))
+  const currentNorm = normalizeArtistStyleIds(props.selected).sort()
+  const targetNorm = normalizeArtistStyleIds(artistIds).sort()
+  if (currentNorm.length !== targetNorm.length) return false
+  return currentNorm.every((val, idx) => val === targetNorm[idx])
 }
 
 function applyCombo(artistIds: readonly string[]) {
   if (isComboActive(artistIds)) {
     clearSelected()
   } else {
-    recordUsage([...artistIds])
+    const baseIds = artistIds.map(parseArtistStyleItem).filter(Boolean).map(x => x!.id)
+    recordUsage(baseIds)
     limitHint.value = ''
     emit('update:selected', [...artistIds])
   }

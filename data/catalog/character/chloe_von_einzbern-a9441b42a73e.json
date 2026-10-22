@@ -86,9 +86,7 @@
       "exactTokens": [
         "chloe_von_einzbern"
       ],
-      "exactPrefixes": [
-        "1girl, solo, chloe_von_einzbern"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

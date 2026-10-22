@@ -29,9 +29,7 @@
       "exactTokens": [
         "tachibana_mikari"
       ],
-      "exactPrefixes": [
-        "1girl, solo, tachibana_mikari"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

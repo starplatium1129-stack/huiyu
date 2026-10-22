@@ -112,9 +112,7 @@
         "flexible": [],
         "must": []
       },
-      "exactPrefixes": [
-        "1girl, solo, ryougi_shiki"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
         "ryougi_shiki"
       ],

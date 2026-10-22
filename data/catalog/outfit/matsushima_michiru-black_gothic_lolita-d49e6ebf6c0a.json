@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "matsushima_michiru/black_gothic_lolita",
+  "revision": 1,
+  "sortOrder": 1516,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "matsushima_michiru",
+    "outfit": {
+      "id": "black_gothic_lolita",
+      "name": "反差魅影哥特萝莉束腰洋装",
+      "prose": "dramatic contrasting gothic lolita fashion: an ornate midnight-black frilled lolita dress with tiered ruffled skirt, delicate crimson cross-laced velvet corset bodice, white lace collar, black velvet choker, sheer lace-patterned thigh-high stockings, and buckled platform Mary Janes",
+      "tokens": [
+        "gothic_lolita",
+        "dress",
+        "black_dress",
+        "ruffled_dress",
+        "corset",
+        "choker",
+        "black_choker",
+        "lace_trim",
+        "thighhighs",
+        "mary_janes",
+        "ribbon"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

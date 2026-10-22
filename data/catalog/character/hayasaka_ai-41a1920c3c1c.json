@@ -70,9 +70,7 @@
         "Ai Hayasaka"
       ],
       "displayName": "早坂爱",
-      "exactPrefixes": [
-        "1girl, solo, hayasaka_ai"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
         "hayasaka_ai"
       ],

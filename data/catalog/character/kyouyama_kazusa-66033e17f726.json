@@ -127,17 +127,15 @@
         "tiv"
       ],
       "displayName": "杏山和纱",
-      "exactPrefixes": [
-        "kyouyama_"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
-        "kyouyama_kazusa"
+        "kazusa_(blue_archive)"
       ],
       "franchise": "Blue Archive",
       "id": "kyouyama_kazusa",
       "identityProse": "Kyouyama Kazusa from Blue Archive, with short black hair, pink eyes, feline ears and tail, and a halo.",
       "identityTokens": [
-        "kazusa (blue archive)",
+        "kazusa_(blue_archive)",
         "1girl",
         "solo",
         "black_hair",
@@ -165,9 +163,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "kazusa (blue archive)",
-        "kyouyama_kazusa",
-        "adult Kazusa"
+        "kazusa_(blue_archive)"
       ],
       "copyrightTokens": [
         "blue_archive"

@@ -316,9 +316,7 @@
       "exactTokens": [
         "isshiki_iroha"
       ],
-      "exactPrefixes": [
-        "1girl, solo, isshiki_iroha"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -497,9 +495,7 @@
       "exactTokens": [
         "yukinoshita_haruno"
       ],
-      "exactPrefixes": [
-        "1girl, solo, yukinoshita_haruno"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

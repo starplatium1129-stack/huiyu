@@ -102,9 +102,7 @@
       "exactTokens": [
         "kasumigaoka_utaha"
       ],
-      "exactPrefixes": [
-        "1girl, solo, kasumigaoka_utaha"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

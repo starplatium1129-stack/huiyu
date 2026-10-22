@@ -87,9 +87,7 @@
       "exactTokens": [
         "changli_(wuthering_waves)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, changli_(wuthering_waves)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

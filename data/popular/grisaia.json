@@ -865,6 +865,387 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "matsushima_michiru",
+      "displayName": "松岛满",
+      "originalName": "松島 みちる (Matsushima Michiru)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "matsushima_michiru",
+        "michiru",
+        "michiru_(grisaia)",
+        "松岛满",
+        "满妹",
+        "傲娇双马尾",
+        "假傲娇",
+        "柠檬糖",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Matsushima Michiru from Grisaia by Frontwing, the energetic and comical bleach-blonde heroine of Mihama Academy with iconic waist-length bleached blonde twintails tied with black ribbons, bright clear sapphire blue eyes, charming lively smile, a lemon hard candy often tucked in her cheek, and an earnest yet hopelessly clumsy fake tsundere persona harboring a profoundly selfless and empathetic heart.",
+      "identityTokens": [
+        "matsushima_michiru",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "bleached_hair",
+        "twintails",
+        "very_long_hair",
+        "hair_ribbon",
+        "hair_bow",
+        "blue_eyes",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "matsushima_michiru"
+      ],
+      "exactPrefixes": [
+        "michiru_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "mihama_uniform",
+          "name": "美浜学园元气双马尾制服",
+          "prose": "Mihama Private Academy uniform: lavender-purple button-up shirt with sailor collar, royal blue plaid necktie tied energetically, high-waisted white pleated skirt, black over-knee socks, brown leather school loafers, and black satin ribbons securing her twin tails",
+          "tokens": [
+            "mihama_private_academy_school_uniform",
+            "school_uniform",
+            "purple_shirt",
+            "sailor_collar",
+            "plaid_necktie",
+            "blue_necktie",
+            "white_skirt",
+            "pleated_skirt",
+            "over-knee_socks",
+            "black_socks",
+            "loafers",
+            "hair_ribbon"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "casual_summer_denim",
+          "name": "柠檬假日连帽衫与背带短裤",
+          "prose": "lively casual summer weekend attire: bright lemon-yellow short-sleeved cropped hoodie worn over a snug white scoop-neck tank top, washed denim overall shorts with one shoulder strap nonchalantly undone, waist belt, white canvas high-top sneakers, and colorful plastic wristbands",
+          "tokens": [
+            "casual",
+            "yellow_hoodie",
+            "short_sleeves",
+            "cropped_hoodie",
+            "tank_top",
+            "white_tank_top",
+            "overalls",
+            "denim_overalls",
+            "shorts",
+            "short_shorts",
+            "sneakers",
+            "wristband"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "beach_lemon_bikini",
+          "name": "盛夏日光亮黄分体比基尼",
+          "prose": "vibrant sun-drenched beach swimwear: an eye-catching bright lemon-yellow triangle string bikini with crisp white contrast trim, halterneck ties, side-tie bikini bottoms accentuating her athletic flat tummy, sun-kissed fair skin, and matching yellow scrunchies in her twintails",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "yellow_bikini",
+            "string_bikini",
+            "halterneck",
+            "side-tie_bikini_bottom",
+            "bare_shoulders",
+            "bare_arms",
+            "navel",
+            "bare_legs"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "black_gothic_lolita",
+          "name": "反差魅影哥特萝莉束腰洋装",
+          "prose": "dramatic contrasting gothic lolita fashion: an ornate midnight-black frilled lolita dress with tiered ruffled skirt, delicate crimson cross-laced velvet corset bodice, white lace collar, black velvet choker, sheer lace-patterned thigh-high stockings, and buckled platform Mary Janes",
+          "tokens": [
+            "gothic_lolita",
+            "dress",
+            "black_dress",
+            "ruffled_dress",
+            "corset",
+            "choker",
+            "black_choker",
+            "lace_trim",
+            "thighhighs",
+            "mary_janes",
+            "ribbon"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "cozy_oversized_hoodie",
+          "name": "宿舍闲适大号柠檬印花卫衣",
+          "prose": "comfy private dormitory loungewear: an oversized pastel cream-white fleece pullover hoodie featuring a whimsical cartoon lemon print across the chest, hemlines reaching mid-thigh, soft grey lounge boy-shorts peeking underneath, bare legs, cute mismatched fluffy house slippers, and twintails bundled casually",
+          "tokens": [
+            "hoodie",
+            "oversized_hoodie",
+            "white_hoodie",
+            "print_hoodie",
+            "shorts",
+            "bare_legs",
+            "slippers",
+            "casual",
+            "loungewear"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "fair_skin",
+            "medium_breasts",
+            "perky_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "twintails",
+            "blonde_hair",
+            "blue_eyes",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, soft glowing fair skin flushed with tender rosiness, beautifully proportioned natural firm breasts tipped with blush-pink erect nipples, toned slender waistline, wet glistened pussy, radiant waist-length golden twintails spread across tousled bed linen, affectionate sapphire blue eyes brimming with sweet vulnerability, bare feet, warm golden lamp glow",
+          "styleHint": "warm bedroom golden ambiance",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "美浜学园 · 傲娇的元气开心果",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园二年级学生。为了成为理想中备受喜爱的「典型傲娇角色」，故意将黑发漂白成金发并扎成双马尾、含着酸柠檬糖并苦练傲娇语气，但因天生开朗善良且少根筋而频繁破功成为全校的活宝。幼年曾接受心脏移植手术，体内宿有心脏原主人的深沉人格，在欢脱的外表下隐藏着为了他人幸福甘愿自我牺牲的崇高与温柔",
+        "research": "2026-10-22 调研（Danbooru matsushima_michiru 410+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "rella",
+        "kappe"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "irisu_makina",
+      "displayName": "入巢莳菜",
+      "originalName": "入巣 蒔菜 (Irisu Makina)",
+      "franchise": "Grisaia",
+      "aliases": [
+        "irisu_makina",
+        "makina",
+        "makina_(grisaia)",
+        "入巢莳菜",
+        "莳菜",
+        "狙击手少女",
+        "爸爸雄二",
+        "灰色的果实",
+        "grisaia"
+      ],
+      "identityProse": "Irisu Makina from Grisaia by Frontwing, the cherubic yet deadly sniper heroine of Mihama Academy with knee-length candy-pink hair styled in loose low pigtails, a prominent quirky ahoge bouncing on her crown, expressive amber-brown eyes, petite and slender feminine frame, endearing childlike innocence masking ruthless precision marksmanship, calling Yuuji her 'Papa' with unfiltered eccentric vocabulary.",
+      "identityTokens": [
+        "irisu_makina",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "low_twintails",
+        "very_long_hair",
+        "ahoge",
+        "hair_ribbon",
+        "brown_eyes",
+        "slender",
+        "grisaia_(series)"
+      ],
+      "exactTokens": [
+        "irisu_makina"
+      ],
+      "exactPrefixes": [
+        "makina_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "mihama_uniform",
+          "name": "美浜学园超长双马尾制服",
+          "prose": "Mihama Private Academy uniform: lavender-purple button-up shirt with sailor collar worn comfortably loose, royal blue plaid necktie tied with a slight tilt, high-waisted white pleated skirt, knee-high white socks, black rounded-toe leather shoes, and red ribbons securing her low pink twintails",
+          "tokens": [
+            "mihama_private_academy_school_uniform",
+            "school_uniform",
+            "purple_shirt",
+            "sailor_collar",
+            "plaid_necktie",
+            "blue_necktie",
+            "white_skirt",
+            "pleated_skirt",
+            "white_socks",
+            "knee_socks",
+            "shoes",
+            "hair_ribbon",
+            "ahoge"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "tactical_sniper_gear",
+          "name": "极限制高战术狙击背心与工装",
+          "prose": "heavy tactical reconnaissance sniper outfit: a form-fitting black ribbed racerback tank top, lightweight military olive-green load-bearing tactical chest rig vest with magazine pouches, camouflage utility cargo pants tucked into lace-up combat boots, black fingerless shooting gloves, and radio earpiece",
+          "tokens": [
+            "tank_top",
+            "black_tank_top",
+            "tactical_vest",
+            "cargo_pants",
+            "camouflage_pants",
+            "boots",
+            "combat_boots",
+            "fingerless_gloves",
+            "military",
+            "tactical"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "oversized_dad_shirt",
+          "name": "雄二的宽大白衬衫居家私服",
+          "prose": "intimate and cozy morning loungewear: an oversized crisp white men's button-up collared dress shirt borrowed from Yuuji draped loosely over her petite frame, sleeves rolled up in messy folds, wide open collar revealing delicate collarbones and shoulders, hemline reaching mid-thigh, bare legs, and bare feet",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "collared_shirt",
+            "rolled_up_sleeves",
+            "collarbone",
+            "bare_shoulders",
+            "bare_legs",
+            "barefoot",
+            "casual"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "cute_strawberry_swimsuit",
+          "name": "草莓印花荷叶边少女比基尼",
+          "prose": "sweet summer resort swimwear: a pastel white and baby-pink two-piece bikini adorned with tiny red strawberry prints and delicate ruffled frills along the scoop neckline and hip hems, petite red ribbon bow at the center, bare midriff, and sunlit bare feet",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "frilled_bikini",
+            "strawberry_print",
+            "ruffles",
+            "bow",
+            "bare_shoulders",
+            "bare_arms",
+            "bare_legs",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "pastel_bear_kigurumi",
+          "name": "粉绒小熊连体毛绒睡衣",
+          "prose": "adorable winter dormitory sleepwear: a fluffy pastel dust-pink and cream fleece bear kigurumi onesie with rounded bear ears on the hood, roomy zipper front, cute plush bear paw mittens attached to cuffs, and a little round puffy tail on the rear",
+          "tokens": [
+            "kigurumi",
+            "pajamas",
+            "bear_hood",
+            "animal_ears",
+            "bear_ears",
+            "onesie",
+            "loose_clothes",
+            "cute",
+            "fluffy",
+            "kawaii"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "small_breasts",
+            "petite",
+            "pink_nipples",
+            "slender_waist",
+            "navel",
+            "pussy",
+            "pink_hair",
+            "low_twintails",
+            "brown_eyes",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, silky flawless porcelain-pale skin blushed with crimson heat, delicate budding breasts with tender rose-pink nipples, slender fragile waistline and dimpled navel, moist gleaming virgin-pink pussy glistening with sweet moisture, knee-length pastel pink pigtails fanned across white satin sheets, wide innocent brown eyes misty with intense arousal, bare feet, soft moonlight glow",
+          "styleHint": "intimate moonlit canopy",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "美浜学园 · 天才狙击手少女",
+        "era": "近现代悬疑特工世界",
+        "formNotes": "美浜学园一年级学生，关东实权财阀入巢家的千金。童年因目睹家族继承权阴谋与残酷绑架案导致精神受创失语并被家族除名抹杀。被送入美浜学园后逐渐恢复语言能力，对风见雄二极其信赖依恋并认作「爸爸」兼师父。受雄二指导激发出惊世骇俗的远程射击天赋，能熟练操作大口径反器材狙击步枪，言谈在极度纯真与从雄二处学来的危险俚语间自由切换",
+        "research": "2026-10-22 调研（Danbooru irisu_makina 360+ posts）"
+      },
+      "animeStudio": "Frontwing official visual novel art, Watanabe Akio style",
+      "curatedArtistStyles": [
+        "watanabe_akio",
+        "rella",
+        "kappe"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

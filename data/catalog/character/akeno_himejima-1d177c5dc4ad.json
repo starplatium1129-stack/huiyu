@@ -105,9 +105,7 @@
       "exactTokens": [
         "himejima_akeno"
       ],
-      "exactPrefixes": [
-        "1girl, solo, himejima_akeno"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

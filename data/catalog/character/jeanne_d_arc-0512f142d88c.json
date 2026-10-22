@@ -104,9 +104,7 @@
       "exactTokens": [
         "jeanne d'arc (fate)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, jeanne d'arc (fate)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

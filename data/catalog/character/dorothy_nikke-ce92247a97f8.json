@@ -85,9 +85,7 @@
       "exactTokens": [
         "dorothy_(nikke)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, dorothy_(nikke)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

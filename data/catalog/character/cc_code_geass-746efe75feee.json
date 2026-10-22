@@ -108,9 +108,7 @@
         "flexible": [],
         "must": []
       },
-      "exactPrefixes": [
-        "1girl, solo, c.c."
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
         "c.c."
       ],
@@ -118,7 +116,7 @@
       "id": "cc_code_geass",
       "identityProse": "C.C. from Code Geass, with knee-length lime-green hair and golden-amber eyes.",
       "identityTokens": [
-        "c.c._(code_geass)",
+        "c.c.",
         "green_hair",
         "very_long_hair",
         "yellow_eyes",
@@ -145,7 +143,6 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "c.c._(code_geass)",
         "c.c."
       ],
       "copyrightTokens": [

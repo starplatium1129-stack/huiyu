@@ -23,9 +23,7 @@
       "exactTokens": [
         "mouri_ran"
       ],
-      "exactPrefixes": [
-        "1girl, solo, mouri_ran"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

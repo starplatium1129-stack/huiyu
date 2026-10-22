@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "matsushima_michiru/casual_summer_denim",
+  "revision": 1,
+  "sortOrder": 1514,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "matsushima_michiru",
+    "outfit": {
+      "id": "casual_summer_denim",
+      "name": "柠檬假日连帽衫与背带短裤",
+      "prose": "lively casual summer weekend attire: bright lemon-yellow short-sleeved cropped hoodie worn over a snug white scoop-neck tank top, washed denim overall shorts with one shoulder strap nonchalantly undone, waist belt, white canvas high-top sneakers, and colorful plastic wristbands",
+      "tokens": [
+        "casual",
+        "yellow_hoodie",
+        "short_sleeves",
+        "cropped_hoodie",
+        "tank_top",
+        "white_tank_top",
+        "overalls",
+        "denim_overalls",
+        "shorts",
+        "short_shorts",
+        "sneakers",
+        "wristband"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

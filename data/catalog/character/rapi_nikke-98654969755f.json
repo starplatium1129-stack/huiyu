@@ -1,0 +1,171 @@
+{
+  "kind": "character",
+  "id": "rapi_nikke",
+  "revision": 1,
+  "sortOrder": 172,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "rapi_nikke",
+    "profile": {
+      "id": "rapi_nikke",
+      "name": "拉毗",
+      "alias": [
+        "Rapi",
+        "ラピ",
+        "拉毗",
+        "反击小队队长",
+        "小红帽",
+        "胜利女神：妮姬"
+      ],
+      "type": "popular",
+      "icon": "🎖️",
+      "portrait": {
+        "image": "../assets/characters/popular-rapi_nikke.png?v=1",
+        "alt": "拉毗 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及腰飘逸深红栗棕发 · 军官大檐帽 · 沉着坚毅",
+        "hair_color": "深红棕/栗色",
+        "eyes": "冷艳坚毅赤红眼眸",
+        "hairstyle": "及腰直发 · 黑色军帽 · 成熟干练军人风采",
+        "uniform": "反击小队正统军礼服 / 战术作战背心短裤",
+        "expression": "冷静肃穆 · 坚毅沉着 · 私下温柔依恋",
+        "style": "cool disciplined counters squad leader military heroine",
+        "signature": "黑色军帽、及腰深棕长发、赤红眼眸、突击步枪与经典妮姬战斗后背身姿"
+      },
+      "personality": [
+        "反击小队（Counters）的队长兼绝对战术核心，极乐净土所属精英妮姬",
+        "言行极其沉稳内敛、严格遵守军纪与指挥序列，是战场上最值得信赖的坚盾",
+        "看似冷静理性宛如兵器，内心却对指挥官怀有极其纯粹深沉的至死忠诚",
+        "体内寄宿着传奇朝圣者「小红帽（Red Hood）」的核心意识，背负着沉重的宿命与潜在觉醒力量",
+        "在极少数与指挥官独处的私密时刻，会流露出罕见的女性娇羞与全心全意的依赖"
+      ],
+      "likes": [
+        "与指挥官并肩作战的战术演练",
+        "擦拭保养自己的制式突击步枪",
+        "在指挥官办公室安静地协助处理战报",
+        "照料反击小队的活宝同伴们（阿尼斯、尼恩）"
+      ],
+      "classic_cg": {
+        "title": "硝烟废墟的经典背影射击战姿",
+        "description": "战火连天的破败地表瓦砾上，深棕长发军帽少女以经典战姿半蹲据枪射击，后臀曲线迷人，火舌喷涌，坚毅守护身后之人。"
+      },
+      "identity": {
+        "role": "反击小队队长 / 极乐净土精英妮姬",
+        "age": "青年",
+        "occupation": "军人 / 特战部队指挥代行",
+        "faction": "方舟 · 反击小队（Counters）"
+      },
+      "tags": [
+        "棕发",
+        "红瞳",
+        "军帽",
+        "巨乳",
+        "军服",
+        "反击小队",
+        "小红帽",
+        "胜利女神：妮姬"
+      ],
+      "bg_story": "拉毗是《胜利女神：妮姬》中最具代表性的看板与核心女主角之一，反击小队的灵魂支柱。曾隶属于极乐净土最精锐部队，在遭遇残酷的同伴背叛与创伤后选择封闭情感，成为一台严格服从命令的冷静战争兵器。在与新任指挥官相遇后，指挥官将妮姬视作真正人类平等待之的温柔重新唤醒了她的心。她体内封印着百年前击退莱彻的朝圣者「小红帽」的狂暴核心，在数次绝境中为保护指挥官而超限共鸣，成长为甘愿为指挥官奉献生命与灵魂的至高守护之剑。",
+      "palette": [
+        "绯红烈火",
+        "深邃纯黑",
+        "纯洁雪白"
+      ],
+      "weather": [
+        "残阳硝烟",
+        "深夜静谧",
+        "雷暴极光"
+      ],
+      "speech": "指挥官，无论战场多么凶险，我都会一直在您身前。反击小队，即刻出击。",
+      "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+      "traits": [
+        "rapi_(nikke)",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "long_hair",
+        "red_eyes",
+        "military_hat",
+        "peaked_cap",
+        "large_breasts",
+        "curvy",
+        "goddess_of_victory:_nikke"
+      ],
+      "accent_color": "#ef4444",
+      "bg_color": "#180d0d"
+    },
+    "popular": {
+      "id": "rapi_nikke",
+      "displayName": "拉毗",
+      "originalName": "Rapi (ラピ)",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "rapi_nikke",
+        "rapi",
+        "rapi_(nikke)",
+        "拉毗",
+        "拉比",
+        "反击小队队长",
+        "小红帽",
+        "胜利女神：妮姬",
+        "nikke"
+      ],
+      "identityProse": "Rapi from Goddess of Victory: NIKKE, the steadfast and composed leader of the Counters squad with waist-length dark reddish-brown hair, sharp resolute crimson-red eyes, striking peaked military officer cap, voluptuous athletic hourglass figure, cool disciplined soldier demeanor, and an unyielding loyalty to the Commander.",
+      "identityTokens": [
+        "rapi_(nikke)",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "long_hair",
+        "red_eyes",
+        "military_hat",
+        "peaked_cap",
+        "large_breasts",
+        "curvy",
+        "goddess_of_victory:_nikke"
+      ],
+      "exactTokens": [
+        "rapi_(nikke)"
+      ],
+      "exactPrefixes": [
+        "rapi_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "canon": {
+        "world": "方舟 · 反击小队队长",
+        "era": "末世机械灾变后废土",
+        "formNotes": "方舟核心部队「反击小队（Counters）」的队长，原极乐净土所属精英妮姬。外表沉着冷静、不苟言笑，恪守军人职责，但对所认定的指挥官怀有至死不渝的绝对忠诚与深沉依恋。体内封印着传说中朝圣者「小红帽」的意识核心，拥有在绝境中唤醒超限火力的极强战斗潜能",
+        "research": "2026-10-22 调研（Danbooru rapi_(nikke) 2100+ posts）"
+      },
+      "animeStudio": "Shift Up official Goddess of Victory: NIKKE art, Kim Hyung Tae style",
+      "curatedArtistStyles": [
+        "kim_hyung_tae",
+        "rella",
+        "dSmile"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "characterTokens": [
+        "rapi_(nikke)"
+      ],
+      "copyrightTokens": [
+        "goddess_of_victory:_nikke"
+      ]
+    }
+  }
+}

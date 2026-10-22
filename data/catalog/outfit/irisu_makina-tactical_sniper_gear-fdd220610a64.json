@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "irisu_makina/tactical_sniper_gear",
+  "revision": 1,
+  "sortOrder": 1520,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "irisu_makina",
+    "outfit": {
+      "id": "tactical_sniper_gear",
+      "name": "极限制高战术狙击背心与工装",
+      "prose": "heavy tactical reconnaissance sniper outfit: a form-fitting black ribbed racerback tank top, lightweight military olive-green load-bearing tactical chest rig vest with magazine pouches, camouflage utility cargo pants tucked into lace-up combat boots, black fingerless shooting gloves, and radio earpiece",
+      "tokens": [
+        "tank_top",
+        "black_tank_top",
+        "tactical_vest",
+        "cargo_pants",
+        "camouflage_pants",
+        "boots",
+        "combat_boots",
+        "fingerless_gloves",
+        "military",
+        "tactical"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -121,17 +121,15 @@
         "yoneyama_mai"
       ],
       "displayName": "飞鸟马时",
-      "exactPrefixes": [
-        "asuma_"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
-        "asuma_toki"
+        "toki_(blue_archive)"
       ],
       "franchise": "Blue Archive",
       "id": "asuma_toki",
       "identityProse": "Asuma Toki from Blue Archive, with a blonde side ponytail, blue eyes and a minimalist halo.",
       "identityTokens": [
-        "toki (blue archive)",
+        "toki_(blue_archive)",
         "1girl",
         "solo",
         "blonde_hair",
@@ -157,8 +155,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "toki (blue archive)",
-        "asuma_toki"
+        "toki_(blue_archive)"
       ],
       "copyrightTokens": [
         "blue_archive"

@@ -25,9 +25,7 @@
       "exactTokens": [
         "marcille_donato"
       ],
-      "exactPrefixes": [
-        "1girl, solo, marcille_donato"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

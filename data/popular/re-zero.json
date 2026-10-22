@@ -15,7 +15,7 @@
       ],
       "identityProse": "Rem from Re:Zero, a devoted oni maid with short cerulean blue hair covering one eye, sweet light blue eyes, and a white lace maid headdress.",
       "identityTokens": [
-        "rem (re:zero)",
+        "rem_(re:zero)",
         "1girl",
         "solo",
         "short_hair",
@@ -26,7 +26,7 @@
         "re:zero"
       ],
       "exactTokens": [
-        "rem (re zero)"
+        "rem_(re:zero)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -135,7 +135,7 @@
       ],
       "identityProse": "Emilia from Re:Zero, a half-elf maiden with flowing silver-white hair, soft pointed elf ears, amethyst purple eyes, and a white flower hair clip.",
       "identityTokens": [
-        "emilia (re:zero)",
+        "emilia_(re:zero)",
         "1girl",
         "solo",
         "silver_hair",
@@ -146,7 +146,7 @@
         "re:zero"
       ],
       "exactTokens": [
-        "emilia (re zero)"
+        "emilia_(re:zero)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

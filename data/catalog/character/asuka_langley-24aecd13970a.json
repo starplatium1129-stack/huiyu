@@ -128,13 +128,13 @@
       "displayName": "惣流·明日香·兰格雷",
       "exactPrefixes": [],
       "exactTokens": [
-        "asuka_langley"
+        "souryuu_asuka_langley"
       ],
       "franchise": "Neon Genesis Evangelion",
       "id": "asuka_langley",
       "identityProse": "Asuka Langley from Neon Genesis Evangelion, with long orange hair in twintails, red A10 interface clips and blue eyes.",
       "identityTokens": [
-        "asuka_langley",
+        "souryuu_asuka_langley",
         "1girl",
         "solo",
         "orange_hair",
@@ -161,7 +161,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "asuka_langley"
+        "souryuu_asuka_langley"
       ],
       "copyrightTokens": [
         "neon_genesis_evangelion"

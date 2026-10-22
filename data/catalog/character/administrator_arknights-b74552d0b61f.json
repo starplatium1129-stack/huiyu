@@ -95,13 +95,13 @@
       "displayName": "管理员",
       "exactPrefixes": [],
       "exactTokens": [
-        "female endministrator (arknights)"
+        "female_endministrator_(arknights)"
       ],
       "franchise": "Arknights: Endfield",
       "id": "administrator_arknights",
       "identityProse": "Female Endministrator from Arknights: Endfield, with short black hair in a layered bob.",
       "identityTokens": [
-        "female endministrator (arknights)",
+        "female_endministrator_(arknights)",
         "1girl",
         "solo",
         "black_hair",
@@ -125,7 +125,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "female endministrator (arknights)"
+        "female_endministrator_(arknights)"
       ],
       "copyrightTokens": [
         "arknights:_endfield"

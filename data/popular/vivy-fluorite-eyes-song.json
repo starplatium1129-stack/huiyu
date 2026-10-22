@@ -24,9 +24,7 @@
       "exactTokens": [
         "vivy"
       ],
-      "exactPrefixes": [
-        "1girl, solo, vivy"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

@@ -83,9 +83,7 @@
       "exactTokens": [
         "takarada_rikka"
       ],
-      "exactPrefixes": [
-        "1girl, solo, takarada_rikka"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

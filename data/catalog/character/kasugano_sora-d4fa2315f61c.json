@@ -87,9 +87,7 @@
       "exactTokens": [
         "kasugano_sora"
       ],
-      "exactPrefixes": [
-        "1girl, solo, kasugano_sora"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

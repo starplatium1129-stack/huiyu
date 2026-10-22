@@ -85,9 +85,7 @@
       "exactTokens": [
         "futaba_rio"
       ],
-      "exactPrefixes": [
-        "1girl, solo, futaba_rio"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

@@ -108,9 +108,7 @@
       "exactTokens": [
         "ciel_(tsukihime)"
       ],
-      "exactPrefixes": [
-        "1girl, solo, ciel_(tsukihime)"
-      ],
+      "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [
         "anima-miaomiao-v1.6",

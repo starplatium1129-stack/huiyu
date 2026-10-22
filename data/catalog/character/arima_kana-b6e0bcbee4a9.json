@@ -71,9 +71,7 @@
         "Kana Arima"
       ],
       "displayName": "有马加奈",
-      "exactPrefixes": [
-        "1girl, solo, arima_kana"
-      ],
+      "exactPrefixes": [],
       "exactTokens": [
         "arima_kana"
       ],
