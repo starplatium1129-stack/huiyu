@@ -32,7 +32,7 @@
         <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}{{ galleryIndexLoading ? '+' : '' }}
       </button>
       </div>
-      <StudioSearch v-show="!albumsOpen && !trashMode" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜场景、角色或关键词…" />
+      <StudioSearch v-show="!albumsOpen && !trashMode" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜索场景、角色、风格或标签…" />
       <GalleryRefinement v-if="!trashMode" v-show="!albumsOpen" ref="refinement"
         :filters="filterSnapshot" :projects="projectOptions" :characters="characterOptions" :tags="tagOptions"
         :generation-options="generationOptions" :smart-rule="currentSmartRule" :character-name="characterName"
@@ -57,7 +57,7 @@
       <span class="gallery-bulk-actions">
         <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
         <StudioCheckbox :checked="allVisibleSelected" :indeterminate="!allVisibleSelected && visible.some(item => selectedIds.has(item.id))"
-          :disabled="!visible.length || galleryIndexLoading || !!galleryError" label="全选当前作品" @update:checked="selectAllVisible">{{ galleryIndexLoading ? '正在读取作品…' : '全选当前' }}</StudioCheckbox>
+          :disabled="!visible.length || galleryIndexLoading || !!galleryError" label="全选当前作品" @update:checked="selectAllVisible">{{ galleryIndexLoading ? '正在加载作品…' : '全选当前' }}</StudioCheckbox>
         <!-- Keep the confirmation opener focusable while busy; bulkDelete guards re-entry. -->
         <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size" :aria-disabled="bulkDeleting || undefined"
           @click="bulkDelete">{{ bulkDeleting ? '处理中…' : `移入回收站（${selectedIds.size}）` }}</button>

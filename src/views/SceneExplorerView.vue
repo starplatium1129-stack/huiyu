@@ -115,20 +115,20 @@
     <ArchiveStatePanel
       v-if="(loading && !scenes.length) || samplesPending"
       kind="loading"
-      title="正在读取场景档案"
+      title="正在加载场景档案…"
     />
     <ArchiveStatePanel
       v-else-if="loadError"
       kind="error"
-      title="场景档案读取失败"
+      title="场景档案加载失败"
       :message="loadError"
     >
-      <button class="btn btn-primary" type="button" @click="init">重新读取</button>
+      <button class="btn btn-primary" type="button" @click="init">重新加载</button>
     </ArchiveStatePanel>
     <ArchiveStatePanel
       v-else-if="scenes.length === 0"
       kind="empty"
-      title="场景档案目前为空"
+      title="暂无收录的场景"
     />
     <ArchiveStatePanel
       v-else-if="!loading && paged.length === 0"

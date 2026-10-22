@@ -50,9 +50,9 @@
       class="empty empty-block"
       kind="error"
       title="展示素材暂未连接"
-      message="请确认展示素材已连接后重新读取，也可以先逛灵感场景。"
+      message="请确认离线素材包已正确导入，或先浏览灵感场景。"
     >
-      <button class="btn btn-primary" type="button" @click="loadManifest(true)">重新读取样张</button>
+      <button class="btn btn-primary" type="button" @click="loadManifest(true)">重新加载画册</button>
       <RouterLink class="btn btn-ghost" to="/scene-explorer">先逛灵感场景</RouterLink>
     </ArchiveStatePanel>
 

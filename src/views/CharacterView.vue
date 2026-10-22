@@ -5,20 +5,20 @@
     <ArchiveStatePanel
       v-if="loading"
       kind="loading"
-      title="正在读取角色档案"
+      title="正在加载角色档案…"
     />
     <ArchiveStatePanel
       v-else-if="loadError"
       kind="error"
-      title="角色档案读取失败"
-      message="本地角色资料暂时无法读取，请稍后重试。"
+      title="角色档案加载失败"
+      message="本地角色档案暂时无法加载，请检查后重试。"
     >
-      <button class="btn btn-primary" type="button" @click="retryProfiles">重新读取</button>
+      <button class="btn btn-primary" type="button" @click="retryProfiles">重新加载</button>
     </ArchiveStatePanel>
     <ArchiveStatePanel
       v-else-if="!characters.length"
       kind="empty"
-      title="角色档案暂未收录"
+      title="暂未收录角色档案"
     />
     <template v-else>
         <CharacterBookshelf v-if="showShelf || shelfVisited" v-show="showShelf" v-content-motion:up="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @vue:mounted="shelfVisited = true" @select="selectCharacter" />
@@ -33,7 +33,7 @@
             :alt="frame.token === paintedPortrait?.token ? (portraitPending || portraitError ? current.name + '的原画（上次已读取）' : current.portrait?.alt || current.name) : ''" :aria-hidden="frame.token !== paintedPortrait?.token ? 'true' : undefined"
             loading="eager" decoding="async" @load="measurePortrait"
             @error="onPortraitError" />
-          <span v-if="!paintedPortrait && portraitPending" class="portrait-loading" role="status"><ArchiveIcon name="image" />正在读取人物原画</span>
+          <span v-if="!paintedPortrait && portraitPending" class="portrait-loading" role="status"><ArchiveIcon name="image" />正在加载人物立绘…</span>
           <div v-if="!paintedPortrait && portraitView.state === 'missing'" class="portrait-missing" role="status">
             <ArchiveIcon name="image" class="portrait-missing-icon" />
             <strong class="portrait-missing-title">{{ portraitView.reason === 'empty' ? '立绘未登记' : '立绘缺失' }}</strong>
@@ -42,7 +42,7 @@
           <div class="portrait-footer" role="group" :aria-label="current.name + '的原画读取状态'" tabindex="-1">
             <div v-if="portraitFeedback || portraitError" class="portrait-feedback">
               <p v-if="portraitFeedback" role="status">{{ portraitFeedback }}</p>
-              <button v-if="portraitError" class="btn btn-ghost btn-sm" type="button" @click="retryPortrait"><ArchiveIcon name="refresh" />重新读取原画</button>
+              <button v-if="portraitError" class="btn btn-ghost btn-sm" type="button" @click="retryPortrait"><ArchiveIcon name="refresh" />重新加载立绘</button>
             </div>
             <RouterLink v-if="isLocalStudioHost()" class="btn btn-ghost btn-sm" :to="{ path: '/scene-manager', query: { tab: 'portraits', character: current.id } }"><ArchiveIcon name="image" />更换立绘</RouterLink>
             <span class="portrait-badge"><ArchiveIcon name="image" /> {{ paintedPortrait && (portraitPending || portraitError) ? '上次已读取原画' : characterArtEntry(current.id) ? '自定义立绘' : isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>

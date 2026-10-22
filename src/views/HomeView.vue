@@ -17,10 +17,10 @@
           </div>
           <div class="hero-links">
           <RouterLink class="hero-particle-link" :to="`/character?character=${homeMuse}`"
-            :aria-label="`欣赏${homeMuse === 'nene' ? '绫地宁宁' : '四季夏目'}的粒子形象`">
-            <ArchiveIcon name="spark" /><span>欣赏粒子形象</span><ArchiveIcon name="chevron-down" class="particle-link-arrow" />
+            :aria-label="`进入${homeMuse === 'nene' ? '绫地宁宁' : '四季夏目'}的动态立绘`">
+            <ArchiveIcon name="spark" /><span>互动动态立绘</span><ArchiveIcon name="chevron-down" class="particle-link-arrow" />
           </RouterLink>
-          <RouterLink to="/showcase" class="hero-particle-link hero-reference-link"><ArchiveIcon name="image" />先看参考样张</RouterLink>
+          <RouterLink to="/showcase" class="hero-particle-link hero-reference-link"><ArchiveIcon name="image" />翻阅精选画册</RouterLink>
           </div>
         </div>
         <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] && !displayedMuse }" :aria-label="`${portraitName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
@@ -30,10 +30,10 @@
           <img :src="paintedHeroes.natsume?.src" :crossorigin="paintedHeroes.natsume?.crossorigin" class="hero-character natsume" :class="{ 'is-current': displayedMuse === 'natsume' }" :alt="displayedMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="displayedMuse !== 'natsume'" width="1024" height="1497" decoding="sync" />
           <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="[homeMuse, { 'over-art': displayedMuse }]">
             <ArchiveIcon name="image" />
-            <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的画页暂时无法读取。</p></div>
-            <button type="button" class="btn btn-ghost btn-sm" @click="retryHero"><ArchiveIcon name="refresh" />重试画页</button>
+            <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的主视觉暂时无法加载。</p></div>
+            <button type="button" class="btn btn-ghost btn-sm" @click="retryHero"><ArchiveIcon name="refresh" />重新加载</button>
           </div>
-          <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" :class="{ 'over-art': displayedMuse }" role="status">正在载入{{ heroName }}的画页…</p>
+          <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" :class="{ 'over-art': displayedMuse }" role="status">正在加载{{ heroName }}的主视觉…</p>
           <div class="orbit-label" aria-live="polite"><span>{{ (displayedMuse || homeMuse) === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ (displayedMuse || homeMuse) === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
         </aside>
         <span class="hero-jp" aria-hidden="true">ときめきの一瞬を、一枚に。</span>
@@ -48,7 +48,7 @@
       </div>
       <div class="recent-grid stagger-container">
         <ArchiveStatePanel v-if="recentWorksLoading || recentWorksError" class="recent-empty-state" compact :kind="recentWorksLoading ? 'loading' : 'error'" :title="recentWorksLoading ? '正在更新最近创作…' : '最近创作暂未更新'" :message="recentWorksError">
-          <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新读取</button>
+          <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新加载</button>
         </ArchiveStatePanel>
         <button
           v-for="h in recentWorks"
@@ -157,7 +157,7 @@
           :title="recentWorksLoading ? '正在读取最近创作…' : '最近创作暂未读取'"
           :message="recentWorksError"
         >
-          <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新读取</button>
+          <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新加载</button>
         </ArchiveStatePanel>
         <div v-else class="recent-empty-state home-start-card">
           <span class="recent-empty-art"><img v-if="artworkReady.tools" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>

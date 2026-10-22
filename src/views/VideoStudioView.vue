@@ -56,7 +56,7 @@
             </div>
             <button v-if="hasFirstFrame" class="btn btn-ghost" type="button" @click="removeFrame($event, 'first')">移除</button>
           </div>
-          <RuntimeImage v-if="videoImageUrl" :src="videoImageUrl" v-slot="{ image, loaded, failed }"><div class="video-frame-preview"><img v-if="image.src && !failed" v-bind="image" class="video-first-frame" :class="{ 'is-ready': loaded }" alt="视频首帧" /><span v-if="!loaded" role="status">{{ failed ? '首帧暂时无法展开，请移除后重新选择' : '正在展开首帧…' }}</span></div></RuntimeImage>
+          <RuntimeImage v-if="videoImageUrl" :src="videoImageUrl" v-slot="{ image, loaded, failed }"><div class="video-frame-preview"><img v-if="image.src && !failed" v-bind="image" class="video-first-frame" :class="{ 'is-ready': loaded }" alt="视频首帧" /><span v-if="!loaded" role="status">{{ failed ? '首帧图片加载失败，请移除后重新选择' : '正在加载首帧图片…' }}</span></div></RuntimeImage>
           <label v-else class="video-upload-drop video-upload-drop--single" tabindex="-1" :data-busy="uploadingImage || undefined">
             <input ref="firstFrameInput" type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
             <span class="video-upload-icon" aria-hidden="true"><ArchiveIcon name="image" /></span>
@@ -76,7 +76,7 @@
           <div class="video-dual-frame-grid">
             <div class="video-frame-slot tw:grid tw:gap-s-2 tw:content-start">
               <span class="field-label">A · 故事开始 / 输入首帧</span>
-              <RuntimeImage v-if="videoImageUrl" :src="videoImageUrl" v-slot="{ image, loaded, failed }"><div class="video-frame-preview"><img v-if="image.src && !failed" v-bind="image" class="video-first-frame" :class="{ 'is-ready': loaded }" alt="视频首帧" /><span v-if="!loaded" role="status">{{ failed ? '首帧暂时无法展开，请移除后重新选择' : '正在展开首帧…' }}</span></div></RuntimeImage>
+              <RuntimeImage v-if="videoImageUrl" :src="videoImageUrl" v-slot="{ image, loaded, failed }"><div class="video-frame-preview"><img v-if="image.src && !failed" v-bind="image" class="video-first-frame" :class="{ 'is-ready': loaded }" alt="视频首帧" /><span v-if="!loaded" role="status">{{ failed ? '首帧图片加载失败，请移除后重新选择' : '正在加载首帧图片…' }}</span></div></RuntimeImage>
               <label v-else class="video-upload-drop" tabindex="-1" :data-busy="uploadingImage || undefined">
                 <input ref="firstFrameInput" type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
                 <span class="video-upload-icon" aria-hidden="true"><ArchiveIcon name="image" /></span>

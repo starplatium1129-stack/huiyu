@@ -12,7 +12,7 @@
         </div><span v-if="result && preview === 'result'">{{ result.input.width }} × {{ result.input.height }}</span></div>
         <div class="qwen-stage">
           <ZoomableImageViewer v-if="preview === 'source' ? previewInputUrl : resultUrl" :src="preview === 'source' ? previewInputUrl : resultUrl" :alt="preview === 'source' ? '编辑输入图片' : 'Qwen 生成结果'" />
-          <div v-else class="qwen-empty"><ArchiveIcon name="image" /><h2>{{ result ? '结果已保存在任务中' : '从一句描述开始' }}</h2><p>{{ result ? '可直接入册，或重新读取预览。' : '填写画面描述，再点击生成。编辑已有图片时，先导入原图。' }}</p></div>
+          <div v-else class="qwen-empty"><ArchiveIcon name="image" /><h2>{{ result ? '结果已保存在任务中' : '从一句描述开始' }}</h2><p>{{ result ? '可直接存入作品册，或刷新预览。' : '填写画面描述，再点击生成。编辑已有图片时，先导入原图。' }}</p></div>
         </div>
         <p v-if="result && task?.taskId !== result.taskId">这里保留的是上一次结果，新任务不会覆盖已保存的图片。</p>
         <div class="qwen-toolbar"><button class="btn btn-primary" type="button" :disabled="!resultBlob || locked" @click="editResult"><ArchiveIcon name="inpaint" />用当前结果继续编辑</button><button class="btn btn-ghost" type="button" :disabled="!result || saving || busy || importing || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '存入我的作品' }}</button><button class="btn btn-ghost" type="button" :disabled="!resultBlob || saving || busy || importing" @click="exportResult('download')"><ArchiveIcon name="download" />导出 PNG</button></div>

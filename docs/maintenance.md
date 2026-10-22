@@ -1,97 +1,80 @@
-# 项目内容维护
+# 项目内容维护手册
 
-整理日期：2026-10-09。现行维护版本；历史验收不作为本次通过。
+人物、服装、场景和蓝图均采用记录化管理：
+- **工作权威**：运行时个人目录下的 `content/catalog.sqlite`。
+- **项目快照**：Git 跟踪的 `data/catalog/`（用于审查、版本控制与发布打包）。
 
-人物、服装、场景和蓝图现在以记录维护，工作数据保存在运行目录的 content/catalog.sqlite。data/catalog/ 是逐条导出的项目快照，用于 Git 审查与发行初始化。详细边界见 [内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
+---
 
-## 日常编写
+## 1. 界面日常维护
 
-进入“更多 → 内容维护”，选择人物、服装、场景或蓝图。目录提供搜索、角色/分类/分级筛选和分页；点选记录后才读取完整内容。
+打开桌面端进入 **“更多” $\to$ “内容维护”**：
+1. **浏览与筛选**：选择人物、服装、场景或蓝图，支持关键词搜索、角色/分类/分级筛选。
+2. **编辑与暂存**：修改表单内容后可单条“保存更改”，或多项合批暂存后批量保存。
+3. **标签与推荐**：提供标签重命名、词典映射（Gelbooru 优先标签标准与别名映射）和推荐顺序配置。
+4. **样张与封面**：按标题、角色和分级筛选，直接上传或替换样张原图与缩略图，系统会自动备份旧图片。
 
-1. 编辑表单，点击“保存更改”直接保存当前内容。未展示的扩展字段原样保留，需要时展开“完整数据与扩展设置”。
-2. 可以继续编辑其他记录；关联人物、默认服装和蓝图可以合批保存。
-3. 需要合批时点击“暂存修改”；“查看修改”展示前后内容和标签/归档的连带修改。
-4. 点击“保存更改”写入工作内容库，修订历史与记录一起提交。
+---
 
-保存失败或冲突会保留草稿。不同记录的修改可独立合并；同一记录发生冲突时比较当前内容，合并后明确采用当前修订号，再加入修改。重新打开草稿不会自动把旧内容绑定到新的修订号。
+## 2. 命令行维护与批量补丁
 
-服装记录键由角色 ID 与服装 ID 组成，已有 ID 不改名；原角色的固定 LoRA 控制配方仍属于程序配置。工作室场景使用 scNNN，新增时提供未预留的候选编号；并发占用会被拒绝。下架保留历史和身份，不能复用编号。
+通过工作流命令直接查询或操作 SQLite 内容库，无需手动操作数据库：
 
-## 标签、推荐和图片
+### 查询记录
+```powershell
+# 查询某角色的全部数据（人物、服装、场景、蓝图）
+npm run wf -- content:catalog character --runtime-root <运行目录> --character <角色ID>
 
-“标签与推荐”提供分页标签编辑和推荐顺序；标签重命名/删除同步调整场景标签。已有重复词与别名通过明确的字典策略消歧，新冲突不能静默选边。
+# 查询特定记录
+npm run wf -- content:catalog record --runtime-root <运行目录> --kind outfit --id <角色ID/服装ID>
 
-词库由 `content/catalog.sqlite` 中的 `tags` 和 `tag-dictionary-policy` 记录维护；`data/catalog`、`data/tags.json` 与 `data/tags-dictionary.json` 是显式导出和构建产物。普通词条采用有官方记录的 Gelbooru 名称和别名，记录来源、核验时间及标签类别；画师继续沿用 Danbooru，注册 LoRA 控制词保留训练定义。迁移后的旧记录标记 `retired`，保留既有场景引用及修订历史，词典和输入建议仅使用启用条目。修改已核验的名称后，应重新核验来源，不能沿用旧名称的核验标记。
+# 查看历史修订版本
+npm run wf -- content:catalog history --runtime-root <运行目录> --kind outfit --id <角色ID/服装ID>
+```
 
-“角色立绘”和“样张与封面”使用本机图片维护与资源事务。“样张与封面”可直接进入，按标题、类型、角色和分级筛选，每页读取 24 条摘要；选中缩略图后即可上传或替换，不需要先打开内容编辑。蓝图按角色与蓝图 ID 组合绑定样张，图片路径以当前样张清单为准。选择新图片后自动保存原图和缩略图，旧图片自动备份。
-
-“首页封面”显示宁宁、夏目的实际封面和来源，可分别替换或恢复内置图。成人样张默认模糊，仅本机可主动开启查看。选图保留其他缩略图的缓存地址，替换只更新目标图片；图片工具按需加载。角色档案不再展示固定参考图库与完整度检查；新增角色/服装无需补图。分镜读取内容目录的身份与服装文字，参考图片按需手动上传；既有参考素材的审核、发布、pending 与资源访问限制沿用原流程。
-
-“文件与备份”检查数据库结构和内容关联，也可以查看图片事务备份。记录详情的修订历史可恢复到编辑表单，保存后生成新的修订。检查通过不代表真实画面或设备验收。
-
-## 批量修改与快照
-
-批量页面可导入带修订号的变更文件，也可预览和导入完整内容快照。导入比较原始种子、本地修改和新内容；冲突拒绝写入，缺失记录不隐式删除。
-
-快照中的 retired 可登记目标库尚未出现的归档身份，预览单独显示类型与编号，保留编号避免复用；已有活跃记录的下架仍显示原记录差异。普通变更不能删除不存在的记录，系统文档不能下架，已归档身份不能重新启用。
-
-桌面升级使用显式 `catalog import --preserve-local`：完整保留已修改的本地记录（含修订与元数据），仅以原始随包记录更新对比基线，回执列出 `preservedLocal`；同包再次导入仍保留本地内容。默认 CLI 与页面手动导入继续严格拒绝冲突。保留记录会在写入事务内复核；若关联变更会修改它们，整次导入拒绝并回滚，不静默覆盖。部署先完整导出备份，再预览、应用并核对剩余差异；不要把本地记录伪装成随包基线。
-
-开发维护入口：
-
-    npm run wf -- content:catalog query --root E:/code/2/lora/AI-CG-Studio --runtime-root E:/code/2/lora/AI-CG-Studio/runtime --kind blueprint --character typhon_arknights
-    npm run wf -- content:catalog patch --root E:/code/2/lora/AI-CG-Studio --runtime-root E:/code/2/lora/AI-CG-Studio/runtime --file patch.json
-
-`--root` 默认当前项目目录，`--runtime-root` 始终显式指定实际工作库。读取完整内容无需直接查询 SQLite：
-
-    npm run wf -- content:catalog character --runtime-root <实际运行目录> --character typhon_arknights
-    npm run wf -- content:catalog record --runtime-root <实际运行目录> --kind outfit --id typhon_arknights/standard
-    npm run wf -- content:catalog history --runtime-root <实际运行目录> --kind outfit --id typhon_arknights/standard
-
-`character` 返回人物、服装与关联场景/蓝图的完整记录快照，包含各自修订号；可保存为编写前基线。`record --revision 2` 读取具体历史内容。`query` 支持 `--sort newest`、`--page`、`--page-size` 及 `--created-from` / `--created-to`；创建时间范围使用带时区的 RFC3339，起点包含、终点不包含，未知时间不混入日期筛选。
-
-字段补丁只需写本次修改：
-
+### 批量 Patch 更新
+编写 JSON 补丁文件 `patch.json`：
+```json
+{
+  "changes": [
     {
-      "changes": [
-        {
-          "kind": "blueprint",
-          "id": "existing_blueprint_id",
-          "expectedRevision": 1,
-          "patch": { "title": "新标题", "location": "已确认的地点" }
-        }
-      ]
+      "kind": "blueprint",
+      "id": "blueprint_id",
+      "expectedRevision": 1,
+      "patch": { "title": "新标题", "location": "新地点" }
     }
+  ]
+}
+```
+预览并应用更新：
+```powershell
+# 1. 预览补丁（只读）
+npm run wf -- content:catalog patch --runtime-root <运行目录> --file patch.json
 
-patch 可递归更新对象，数组完整替换，显式 null 保留为 null；不得同时提交 patch 与完整 data。新增记录使用 expectedRevision 0 和完整 data，下架使用 remove true。预览后在同一命令加 --apply 写入。
+# 2. 实际应用
+npm run wf -- content:catalog patch --runtime-root <运行目录> --file patch.json --apply
+```
 
-已迁移记录的未知创建时间，可用 `{ "kind": "character", "id": "角色ID", "expectedRevision": 2, "createdAt": "有证据的RFC3339时间" }` 单独补录，仍经过预览、修订冲突及历史记录；已有时间不能重写。禁止用本次导入或编辑时间冒充新增时间。
+---
 
-项目内容发布前显式导出：
+## 3. 导出与快照同步
 
-    npm run wf -- content:catalog export --root E:/code/2/lora/AI-CG-Studio --runtime-root E:/code/2/lora/AI-CG-Studio/runtime --out E:/code/2/lora/AI-CG-Studio/data/catalog
+在提交 Git 或打包发布前，将 SQLite 工作库中的修改显式导出为 `data/catalog` 快照：
 
-审查逐条快照后再提交和构建。导出文件不包含其他机器完整的本机修订历史。升级包不会自动覆盖个人工作库；导入新快照须明确执行。
+### 全量导出
+```powershell
+npm run wf -- content:catalog export --runtime-root <运行目录> --out data/catalog
+```
 
-局部交付使用选择器，避免把其他个人内容带入项目快照：
+### 定向导出特定角色（推荐）
+避免把本地无关的个人修改混入公共提交：
+```powershell
+npm run wf -- content:catalog export --runtime-root <运行目录> --out data/catalog --character firefly_hsr
+```
 
-    npm run wf -- content:catalog export --runtime-root <实际运行目录> --out data/catalog --character typhon_arknights --character shu_arknights
-    npm run wf -- content:catalog export --runtime-root <实际运行目录> --out data/catalog --record blueprint:typhon_arknights_behemoth_hunt_bow --record outfit:typhon_arknights/standard
+---
 
-存在目标快照时只合并选中记录，范围外记录保持目标原值，选中下架记录转入 retired。新目录只保存所选范围，适合作为编写基线或导入包，不能代替完整备份。没有选择器时沿用全库导出。
+## 4. 数据保护红线
 
-改写审查直接读取工作库记录或显式导出的快照，保留原修订号和候选差异。通过工作台的生产编译器核对当前 Anima/Krea profile、实际服装绑定与导演参数生成的文本；独立场景模板复用 `scripts/lib/scene-render-contract.js`。编译内容与词条、官方衣装及真实画面分别核对，文本编译不代表模型调用或画质验收。一次性处理工具与原始编译输出遵循仓库的归档目录约定。
-
-## 迁移与保护
-
-首次启动优先读取项目快照；旧安装没有快照时从现有个人数据分片导入。原始 ID、提示词、分级、服装绑定和扩展字段保持原值，未知创建时间保留为空。启用标记存在而数据库缺失时停止读取，不能用内置内容静默覆盖。
-
-旧分片和聚合回写入口不再用于已经迁移的项目。构建工具读取 data/catalog/，不能把手改旧 JSON 当作新内容交付。
-
-未迁移旧来源的修复统一放在 `legacy:*`：场景补丁/导入/规范化、热门角色/蓝图/标签拆分与导入。用 `npm run wf -- legacy --help` 查看入口。保留原写入守卫、定稿保护和隔离回滚；只用于受支持的旧来源升级准备，待对应升级来源退出后再移除。它们不会导入或修改现行 `content/catalog.sqlite`，日常维护使用 `content:catalog`。
-
-data/prompt-pinned-scenes.json 继续受保护。批量修改跳过保护字段；单条定稿调整仍先真实出图，再用 scenes:pin-capture 维护基线。普通记录保存只能保持保护字段原值，或与已验证的新基线完全一致。模型调用数量、费用与安装均服从用户授权。
-
-记录式定稿使用 `npm run scenes:pin-capture -- --id=sc033 --candidate=runtime/sc033-candidate.json`；候选为包含 `kind: "scene"`、`id` 和完整 `data` 的单条记录。省略 `--candidate` 时读取项目快照的该条内容。命令只更新已存在的目标基线，保留其他条目与原来源，并记录候选字节摘要；它不写工作库、不生成图片，也不证明画质。随后使用同一内容来源根，分别预览 `prompt-pinned-scenes` 文档的单记录快照 `import` 和场景的修订号 `patch`，确认后保存并定向导出。系统文档不接受普通 patch；其导入内容必须等于刚维护的基线，仍执行本地冲突保护。当前用户明确调整验收要求时按其授权执行，仍如实区分编译与画面证据。
-
-所有内容管理接口仅供本机访问。远程共享继续要求独立审核、分级和字节绑定；内容变化不会继承旧发布的可服务资格。
+1. **定稿场景保护**：`data/prompt-pinned-scenes.json` 为字节级基线保护文件。批量修改一律跳过；单条修改必须先真实出图验证，再执行 `npm run scenes:pin-capture -- --id=<场景ID>` 更新基线。
+2. **用户数据保留**：桌面升级与素材导入始终采用 `--preserve-local`，绝不静默覆盖用户的自定义修改。

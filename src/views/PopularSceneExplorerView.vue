@@ -19,9 +19,9 @@
       <p class="pop-hero-stat" aria-label="场景统计"><strong v-if="!loading && !loadError">{{ totalScenes }}</strong><span>{{ loading ? '正在整理场景' : loadError ? '场景暂不可用' : '幕可选场景' }}</span></p>
     </section>
 
-    <ArchiveStatePanel v-if="loading || samplesPending" kind="loading" title="正在读取角色场景" />
-    <ArchiveStatePanel v-else-if="loadError" kind="error" title="角色场景读取失败" :message="loadError">
-      <button class="btn btn-primary" type="button" @click="retryScenes">重新读取</button>
+    <ArchiveStatePanel v-if="loading || samplesPending" kind="loading" title="正在加载角色场景…" />
+    <ArchiveStatePanel v-else-if="loadError" kind="error" title="角色场景加载失败" :message="loadError">
+      <button class="btn btn-primary" type="button" @click="retryScenes">重新加载</button>
     </ArchiveStatePanel>
 
     <div v-else class="pop-content" data-route-arrive v-content-motion:up="true">
@@ -51,12 +51,12 @@
       </div>
 
       <ArchiveStatePanel v-if="filtered.length === 0" compact :kind="pool.length ? 'filtered' : 'empty'"
-        :title="pool.length ? '没有符合当前条件的场景' : '这个角色暂未收录场景'">
+        :title="pool.length ? '没有符合当前条件的场景' : '该角色暂未收录场景'">
         <button v-if="pool.length" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
       </ArchiveStatePanel>
 
       <ArchiveStatePanel v-if="assetsError" compact kind="error" title="样张清单暂不可用" :message="assetsError">
-        <button class="btn btn-ghost btn-sm" type="button" :disabled="assetsLoading" @click="retryAssets">重新读取样张</button>
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="assetsLoading" @click="retryAssets">重新加载样张</button>
       </ArchiveStatePanel>
       <!-- 场景卡片网格 -->
       <div ref="listRoot" class="pop-grid">

@@ -19,7 +19,7 @@
       </div>
       <AsyncPanel class="companion-picker-host" :loader="loadCharacterPicker" label="角色选择">
         <template #default="{ component }"><component :is="component" :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchPetCharacter" /></template>
-        <template #feedback="{ failed, retry }"><button v-if="failed" class="btn btn-ghost btn-sm" type="button" @click="retry">重读角色选择</button><span v-else role="status">正在读取角色选择…</span></template>
+        <template #feedback="{ failed, retry }"><button v-if="failed" class="btn btn-ghost btn-sm" type="button" @click="retry">重新加载</button><span v-else role="status">正在加载角色列表…</span></template>
       </AsyncPanel>
       <div class="companion-toolbar-actions">
         <CompanionPreferences v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar" :character-name="currentCharacter.name">
@@ -69,11 +69,11 @@
           </div>
           <div class="companion-pop-group" data-preference-pane="more">
             <strong>工作台</strong>
-            <StudioTooltip content="打开完整工作台（Ctrl+Shift+A）">
-              <button type="button" class="companion-pop-item" @click="desktopBridge ? desktopBridge.openAtelier() : $router.push('/prompt-builder')"><ArchiveIcon name="palette" /><span>打开完整工作台</span></button>
+            <StudioTooltip content="打开绘图画室（Ctrl+Shift+A）">
+              <button type="button" class="companion-pop-item" @click="desktopBridge ? desktopBridge.openAtelier() : $router.push('/prompt-builder')"><ArchiveIcon name="palette" /><span>打开绘图画室</span></button>
             </StudioTooltip>
-            <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier(`/chat?character=${encodeURIComponent(activeChar)}`)"><ArchiveIcon name="chat" /><span>完整房间（聊天）</span></button>
-            <RouterLink v-else class="companion-pop-item" :to="{ path: '/chat', query: { character: activeChar } }">完整房间（聊天）</RouterLink>
+            <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier(`/chat?character=${encodeURIComponent(activeChar)}`)"><ArchiveIcon name="chat" /><span>进入角色房间</span></button>
+            <RouterLink v-else class="companion-pop-item" :to="{ path: '/chat', query: { character: activeChar } }">进入角色房间</RouterLink>
             <button type="button" class="companion-pop-item" @click="openImportPicker"><ArchiveIcon name="image" /><span>导入图片到作品册</span></button>
           </div>
           <div v-if="desktopBridge" class="companion-pop-group" data-preference-pane="more">

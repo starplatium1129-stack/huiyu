@@ -4,7 +4,7 @@
       <div class="control-start-copy">
         <span class="panel-kicker">第一次使用，从这里开始</span>
         <h2 id="control-start-title">为第一张画，准备好画室</h2>
-        <p>选一个绘图模型，剩下的交给自动配置。聊天、语音和其他工具，可以以后慢慢添加。</p>
+        <p>一键自动配置推荐底模；聊天、语音与扩展工具可随创作需求随时按需添加。</p>
         <div class="control-start-actions">
           <RouterLink class="btn btn-primary" :to="{ path: '/control', hash: '#control-setup' }"><ArchiveIcon name="download" />准备绘图模型</RouterLink>
           <RouterLink class="btn btn-quiet" to="/scene-explorer">先逛逛灵感场景<ArchiveIcon name="chevron-down" class="control-forward-icon" /></RouterLink>
@@ -12,7 +12,7 @@
       </div>
       <img :src="modelArt" width="512" height="512" class="control-start-art" alt="" />
       <ol class="control-start-steps" aria-label="入门流程">
-        <li><span>1</span><div><strong>选存放位置</strong><small>先确认磁盘可用空间</small></div></li>
+        <li><span>1</span><div><strong>选择模型目录</strong><small>先确认磁盘可用空间</small></div></li>
         <li><span>2</span><div><strong>下载并自动配置</strong><small>推荐模型起步，中断可续传</small></div></li>
         <li><span>3</span><div><strong>开始创作</strong><small>选角色与场景，画出第一幕</small></div></li>
       </ol>
@@ -49,8 +49,8 @@ const { status } = useControlContext()
 const { overviewFeedback, serviceChecking, statusError, opBusy, pollStatus } = status
 const modelArt = useThemeIllustration(modelOriginal, 'model')
 const features: Array<{ id: string; icon: ArchiveIconName; title: string; description: string; action: string }> = [
-  { id: 'setup-chat-options', icon: 'chat', title: '和角色聊聊天', description: '使用本机模型聊天，也可在角色房间配置 API。', action: '准备本地聊天' },
-  { id: 'control-interrogate', icon: 'search', title: '从图片找灵感', description: '读懂参考图，提取可以继续创作的画面描述。', action: '准备图片反推' },
-  { id: 'control-library', icon: 'image', title: '收藏离线素材', description: '把角色参考和素材留在本机，随时翻阅。', action: '管理资源库' },
+  { id: 'setup-chat-options', icon: 'chat', title: '与角色互动聊天', description: '接入本地大模型或云端 API，与喜欢的角色开启自由对话。', action: '配置本地聊天' },
+  { id: 'control-interrogate', icon: 'search', title: '图片提示词反推', description: '智能分析参考图片，提炼出可用于二次创作的风格与标签描述。', action: '配置图片反推' },
+  { id: 'control-library', icon: 'image', title: '离线素材画册', description: '导入并管理官方素材包与参考画册，无需联网随时翻阅。', action: '管理资源库' },
 ]
 </script>

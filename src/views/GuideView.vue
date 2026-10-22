@@ -7,10 +7,41 @@ import { useThemeIllustration } from '@/composables/useThemeIllustration'
 const createArt = useThemeIllustration(createOriginal, 'draw')
 
 const steps = [
-  { title: '浏览灵感场景', icon: 'spark' as const, paragraphs: ['在「灵感」中浏览故事、角色与画面设定，也可以按关键词搜索。想先了解构图与风格，可以翻看「参考画册」。'], links: [{ to: '/scene-explorer', label: '浏览灵感' }, { to: '/showcase', label: '参考画册' }] },
-  { title: '选择喜欢的场景', icon: 'image' as const, paragraphs: ['打开场景查看设定，再进入绘制台。场景设定会随之带入；生成前确认角色、服装、画面描述和画幅，按需要调整。'], links: [{ to: '/popular-scenes', label: '按角色找场景' }] },
-  { title: '确认后生成图片', icon: 'wand' as const, paragraphs: ['连接就绪后，使用绘制台的生成按钮提交任务。打开「任务」查看进度；遇到失败先阅读提示并检查服务，再重试。', '先用一张图确认效果，再考虑批量创作。模型、参数和随机种子都会影响最终画面。'], links: [{ to: '/prompt-builder', label: '打开绘制台' }], primary: true },
-  { title: '保存与回看作品', icon: 'gallery' as const, paragraphs: ['生成后将图片加入作品册，在「我的作品」回看、搜索或筛选。常用筛选组合可以命名保存，方便下次沿用。', '重要作品请下载备份，清理应用或浏览器数据前，先确认原图已保存。'], links: [{ to: '/gallery', label: '打开我的作品' }] },
+  {
+    title: '浏览灵感场景',
+    icon: 'spark' as const,
+    paragraphs: [
+      '在「灵感场景」中探索故事剧情、角色心境与构图设定，也可直接输入关键词检索；或翻阅「参考画册」感受不同光影与画风。',
+    ],
+    links: [{ to: '/scene-explorer', label: '浏览灵感' }, { to: '/showcase', label: '参考画册' }],
+  },
+  {
+    title: '选择心仪的场景',
+    icon: 'image' as const,
+    paragraphs: [
+      '点选心仪场景后一键载入绘制台，角色、服装与叙事描述会自动就绪。生成前可自由微调服装细节、画面叙事或出图画幅。',
+    ],
+    links: [{ to: '/popular-scenes', label: '按角色找场景' }],
+  },
+  {
+    title: '确认并生成画面',
+    icon: 'wand' as const,
+    paragraphs: [
+      '服务连接就绪后，点击「生成图片」即可开始绘制，任务中心实时呈现生成进度。',
+      '建议先单张出图确认效果，再进行多张批创。模型、采样参数与随机种子均会影响画面细节。',
+    ],
+    links: [{ to: '/prompt-builder', label: '打开绘制台' }],
+    primary: true,
+  },
+  {
+    title: '收藏与回看作品',
+    icon: 'gallery' as const,
+    paragraphs: [
+      '满意的成片可一键收纳进「我的作品」，支持按角色、画册或标签分类整理，随时回看与对比。',
+      '重要画作建议及时导出至本地妥善备份；清理应用或浏览器缓存前，请确认重要原图已保存。',
+    ],
+    links: [{ to: '/gallery', label: '打开我的作品' }],
+  },
 ]
 </script>
 
@@ -29,8 +60,8 @@ const steps = [
     <section class="guide-preparation" data-route-arrive aria-labelledby="guide-preparation-title">
       <span class="guide-preparation-icon" aria-hidden="true"><ArchiveIcon name="gear" /></span>
       <div>
-        <h2 id="guide-preparation-title">先确认绘图服务可用</h2>
-        <p>浏览参考画册与场景不需要启动绘图模型。生成图片前，请在绘制台选择引擎，确认模型和连接状态。</p>
+        <h2 id="guide-preparation-title">确认绘图服务状态</h2>
+        <p>浏览灵感场景与参考画册无需启动本地模型。开始生成图片前，请先在控制面板确认模型与运行环境就绪。</p>
         <RouterLink class="btn btn-ghost" to="/control#control-setup"><span class="studio-control-label">配置模型与服务</span><ArchiveIcon name="chevron-down" class="guide-link-arrow" /></RouterLink>
       </div>
     </section>
