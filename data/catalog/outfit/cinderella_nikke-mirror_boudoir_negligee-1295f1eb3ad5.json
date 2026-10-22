@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/mirror_boudoir_negligee",
+  "revision": 1,
+  "sortOrder": 1545,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "mirror_boudoir_negligee",
+      "name": "水晶镜廊幽蓝丝绸睡袍",
+      "prose": "an exquisite boudoir look: a sheer mist-blue translucent silk negligee with white lace trim along the plunge sweetheart neckline, bare shoulders, matching satin robe draped off her elbows, bare legs, and bare feet.",
+      "tokens": [
+        "negligee",
+        "nightgown",
+        "silk_robe",
+        "plunge_neckline",
+        "lace_trim",
+        "translucent",
+        "bare_shoulders",
+        "cleavage",
+        "bare_legs",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

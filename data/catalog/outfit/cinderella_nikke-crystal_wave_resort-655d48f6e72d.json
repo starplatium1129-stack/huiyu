@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/crystal_wave_resort",
+  "revision": 1,
+  "sortOrder": 1539,
+  "createdAt": "2026-10-22T00:00:00+00:00",
+  "updatedAt": "2026-10-22T04:47:50.049788100+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "crystal_wave_resort",
+      "name": "水晶浪潮珍珠蓝度假泳装",
+      "prose": "A pearl-white one-piece resort swimsuit traced with pale crystal-blue edging, a light translucent wrap tied at the hip, simple glass-bead earrings, and flat sandals for a calm shoreline walk.",
+      "tokens": [
+        "one_piece_swimsuit",
+        "white_swimsuit",
+        "crystal_blue_trim",
+        "translucent_wrap",
+        "bead_earrings",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/glass_curtsy_maid",
+  "revision": 1,
+  "sortOrder": 1538,
+  "createdAt": "2026-10-22T00:00:00+00:00",
+  "updatedAt": "2026-10-22T04:47:50.049788100+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "glass_curtsy_maid",
+      "name": "玻璃礼步黑白女仆装",
+      "prose": "A poised black-and-white maid dress with a fitted bodice, crisp white apron, short puff sleeves, silver piping, a modest lace headband, and polished low-heeled shoes; elegant and practical for learning formal service.",
+      "tokens": [
+        "maid_uniform",
+        "black_dress",
+        "white_apron",
+        "puff_sleeves",
+        "silver_trim",
+        "lace_headband",
+        "low_heels"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

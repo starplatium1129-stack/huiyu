@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/regal_crystal_bunny",
+  "revision": 1,
+  "sortOrder": 1549,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "regal_crystal_bunny",
+      "name": "冰晶银雪高贵兔女郎",
+      "prose": "an aristocratic winter bunny style: an ice-silver velvet strapless corset leotard edged with glittering diamond frost trim, sheer crystal-beaded opera gloves, translucent silver pantyhose, crystalline stiletto pumps, and slender crystal bunny ears perched on her long silver waves.",
+      "tokens": [
+        "bunny_suit",
+        "silver_leotard",
+        "corset",
+        "strapless",
+        "crystal_trim",
+        "opera_gloves",
+        "pantyhose",
+        "high_heels",
+        "bunny_ears",
+        "frost_crystal",
+        "elegant"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

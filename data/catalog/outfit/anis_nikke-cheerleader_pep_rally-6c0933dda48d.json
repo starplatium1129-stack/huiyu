@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "anis_nikke/cheerleader_pep_rally",
+  "revision": 1,
+  "sortOrder": 1553,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "anis_nikke",
+    "outfit": {
+      "id": "cheerleader_pep_rally",
+      "name": "活力应援闪亮拉拉队服",
+      "prose": "a spirited cheerleader outfit: an orange-and-yellow cropped sleeveless top with 'COUNTERS' lettering, a matching pleated mini skirt, white wristbands, two fluffy gold pom-poms, striped knee socks, and athletic cheer sneakers.",
+      "tokens": [
+        "cheerleader",
+        "crop_top",
+        "sleeveless",
+        "pleated_skirt",
+        "miniskirt",
+        "wristbands",
+        "pom_poms",
+        "striped_socks",
+        "kneehighs",
+        "sneakers",
+        "midriff",
+        "energetic"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

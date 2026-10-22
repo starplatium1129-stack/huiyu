@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/glass_slippers_combat_form",
+  "revision": 1,
+  "sortOrder": 1537,
+  "createdAt": "2026-10-22T00:00:00+00:00",
+  "updatedAt": "2026-10-22T04:47:50.049788100+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "glass_slippers_combat_form",
+      "name": "珍珠白玻璃鞋战斗礼装",
+      "prose": "Cinderella's signature combat look: a fitted pearl-white high-neck bodysuit with brushed-silver armor panels, translucent glass-like insets, fine violet seams, articulated forearm guards, and mirror-polished thigh armor.",
+      "tokens": [
+        "bodysuit",
+        "white_bodysuit",
+        "silver_armor",
+        "high_collar",
+        "translucent_clothes",
+        "arm_guards",
+        "thigh_armor"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

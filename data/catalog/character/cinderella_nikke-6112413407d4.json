@@ -1,0 +1,153 @@
+{
+  "kind": "character",
+  "id": "cinderella_nikke",
+  "revision": 2,
+  "sortOrder": 174,
+  "createdAt": "2026-10-22T00:00:00+00:00",
+  "updatedAt": "2026-10-22T04:49:17.590885800+00:00",
+  "data": {
+    "id": "cinderella_nikke",
+    "profile": {
+      "id": "cinderella_nikke",
+      "name": "灰姑娘",
+      "type": "popular",
+      "icon": "👠",
+      "portrait": {
+        "image": "../assets/characters/popular-cinderella_nikke.png?v=1",
+        "alt": "灰姑娘 样张立绘"
+      },
+      "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+      "alias": [
+        "Cinderella",
+        "シンデレラ",
+        "灰姑娘",
+        "玻璃鞋",
+        "胜利女神：妮姬"
+      ],
+      "visual_dna": {
+        "hair": "及腰银白长发 · 柔和大波浪 · 轻盈侧发束",
+        "hair_color": "冷调银白",
+        "eyes": "清亮的红宝石色眼眸",
+        "hairstyle": "长波浪发 · 轻薄刘海 · 两侧自然垂落",
+        "uniform": "珍珠白与银色交织的玻璃鞋战斗礼装",
+        "expression": "优雅克制 · 认真注视镜面 · 偶尔流露对美的执着",
+        "style": "refined crystalline sci-fi fairytale heroine",
+        "signature": "银白长卷发、红瞳、如镜面般冷冽的玻璃意象与优雅仪态"
+      },
+      "personality": [
+        "第二代童话型号中的朝圣者，曾以女神部队为憧憬并努力争取并肩作战的资格",
+        "举止优雅且自尊心强，对自身美感有近乎严苛的追求",
+        "在外表的完美执念之下，保留着敏感、真诚且渴望被理解的一面",
+        "与玻璃鞋兵装相连，能以冷静精准的方式投入地表战斗"
+      ],
+      "likes": [
+        "整理仪容与检查镜面反射",
+        "精致的水晶饰物与典雅礼服",
+        "听人认真评价她的美",
+        "与能够理解她的人安静交谈"
+      ],
+      "classic_cg": {
+        "title": "镜廊中的玻璃鞋回望",
+        "description": "静谧的镜面回廊里，银白长发的灰姑娘侧身回望，身旁的玻璃鞋兵装映出她克制而坚定的红瞳。"
+      },
+      "identity": {
+        "role": "第二代童话型号朝圣者",
+        "age": "青年",
+        "occupation": "妮姬 / 朝圣者",
+        "faction": "朝圣者 · 童话型号"
+      },
+      "tags": [
+        "银白长发",
+        "红瞳",
+        "朝圣者",
+        "童话型号",
+        "玻璃鞋",
+        "镜面",
+        "优雅",
+        "胜利女神：妮姬"
+      ],
+      "bg_story": "灰姑娘是《胜利女神：妮姬》中第二代童话型号的朝圣者。她曾将女神部队视为理想，并以站上同一战场为目标。她的故事围绕玻璃鞋兵装、美与自我认同展开：优雅坚定的外表下，藏着对完美的执着以及渴望被真正看见的心。她在战斗中保持冷静，也逐渐学会不再只用外界的目光定义自己。",
+      "palette": [
+        "珍珠白",
+        "冷银",
+        "镜面蓝",
+        "红宝石"
+      ],
+      "weather": [
+        "镜廊微光",
+        "清澈夜空",
+        "雪原晨雾"
+      ],
+      "speech": "请看清楚再回答我：此刻映在镜中的我，是否仍然足够美丽？",
+      "accent_color": "#8b8df5",
+      "bg_color": "#111222",
+      "traits": [
+        "cinderella_nikke",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "wavy_hair",
+        "red_eyes",
+        "goddess_of_victory:_nikke"
+      ]
+    },
+    "popular": {
+      "id": "cinderella_nikke",
+      "displayName": "灰姑娘",
+      "originalName": "Cinderella (シンデレラ)",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "cinderella_nikke",
+        "cinderella",
+        "cinderella_(nikke)",
+        "灰姑娘",
+        "シンデレラ",
+        "胜利女神：妮姬",
+        "nikke"
+      ],
+      "identityProse": "Cinderella from Goddess of Victory: NIKKE, a proud and graceful second-generation Fairy Tale Model Pilgrim with long silver-white wavy hair, clear ruby-red eyes, and a serene mirror-like presence; she holds a sincere wish to stand beside the Goddess squad.",
+      "identityTokens": [
+        "cinderella_(nikke)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "wavy_hair",
+        "red_eyes",
+        "goddess_of_victory:_nikke"
+      ],
+      "characterTokens": [
+        "cinderella_(nikke)"
+      ],
+      "copyrightTokens": [
+        "goddess_of_victory:_nikke"
+      ],
+      "exactTokens": [
+        "cinderella_(nikke)"
+      ],
+      "exactPrefixes": [
+        "cinderella_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "canon": {
+        "world": "地表 · 朝圣者 · 第二代童话型号",
+        "era": "第一次莱彻侵袭时期及其后的地表夺还时代",
+        "formNotes": "第二代童话型号中的朝圣者。银白长发与红瞳是主要外貌锚点，玻璃鞋是其专属高科技兵装。角色叙事涉及对女神部队的憧憬、美与自我认同；蓝图按所选场景决定是否出现玻璃鞋兵装。",
+        "research": "查阅官方 NIKKE 角色与活动资料，2026-10-22"
+      },
+      "animeStudio": "Shift Up official Goddess of Victory: NIKKE art",
+      "curatedArtistStyles": [
+        "kim_hyung_tae",
+        "rella",
+        "dSmile"
+      ]
+    }
+  }
+}

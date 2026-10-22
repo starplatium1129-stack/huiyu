@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "anis_nikke/maid_special_service",
+  "revision": 1,
+  "sortOrder": 1556,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "anis_nikke",
+    "outfit": {
+      "id": "maid_special_service",
+      "name": "反击女仆特勤女仆装",
+      "prose": "a playful and frilly cafe maid uniform: a short black dress with puffed shoulders, crisp white ruffled apron tied in a generous bow at the back, low-cut neckline showing ample bosom, yellow ribbon brooch, frilled white maid headband, and thigh-high lace-trimmed stockings.",
+      "tokens": [
+        "maid",
+        "maid_uniform",
+        "black_dress",
+        "white_apron",
+        "frills",
+        "maid_headdress",
+        "cleavage",
+        "yellow_ribbon",
+        "thighhighs",
+        "serving"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

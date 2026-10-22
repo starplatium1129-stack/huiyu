@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/moonlit_ballroom_gown",
+  "revision": 1,
+  "sortOrder": 1540,
+  "createdAt": "2026-10-22T00:00:00+00:00",
+  "updatedAt": "2026-10-22T04:47:50.049788100+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "moonlit_ballroom_gown",
+      "name": "镜月银蓝舞会长裙",
+      "prose": "A silver-blue ballroom gown with a sculpted satin bodice, layered translucent skirt panels, understated crystal embroidery, long opera gloves, and a narrow matching choker.",
+      "tokens": [
+        "ball_gown",
+        "silver_dress",
+        "blue_skirt",
+        "layered_skirt",
+        "crystal_embroidery",
+        "opera_gloves",
+        "choker"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

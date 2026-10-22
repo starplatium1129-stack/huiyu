@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "anis_nikke/summer_sunflower_sundress",
+  "revision": 1,
+  "sortOrder": 1557,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "anis_nikke",
+    "outfit": {
+      "id": "summer_sunflower_sundress",
+      "name": "阳光微风向日葵度假吊带裙",
+      "prose": "a bright sunny vacation look: a light cotton sundress in cheerful yellow with subtle white daisy prints, deep scoop back, delicate thin spaghetti straps, straw sunhat decorated with a sky-blue ribbon, bare shoulders, and woven wedge sandals.",
+      "tokens": [
+        "sundress",
+        "yellow_dress",
+        "floral_print",
+        "spaghetti_straps",
+        "bare_shoulders",
+        "straw_hat",
+        "sandals",
+        "backless",
+        "ribbon"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/corrupted_anachiro_abyss",
+  "revision": 1,
+  "sortOrder": 1548,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "corrupted_anachiro_abyss",
+      "name": "漆黑异端·侵蚀灰姑娘战斗装",
+      "prose": "Anachiro the Corrupted Heretic combat attire: sharp angular obsidian-black and blood-crimson crystal armor plating clinging to her graceful silhouette, ragged shadowy translucent cape trailing behind her, jagged dark crystal high-heels, and glowing crimson crystalline shards hovering at her back.",
+      "tokens": [
+        "black_armor",
+        "dark_crystal",
+        "crimson_accents",
+        "sharp_armor",
+        "corrupted",
+        "tattered_cape",
+        "dark_aura",
+        "high_heels",
+        "ominous",
+        "evil_smile"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

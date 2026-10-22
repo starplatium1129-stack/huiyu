@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "anis_nikke/sensual_lace_bodysuit",
+  "revision": 1,
+  "sortOrder": 1554,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "anis_nikke",
+    "outfit": {
+      "id": "sensual_lace_bodysuit",
+      "name": "🔞 魅惑透视黑蕾丝情趣连体衣",
+      "prose": "a provocative boudoir look: a sheer plunging black floral lace teddy bodysuit hugging her voluptuous curves, revealing deep cleavage and soft hips, sheer garter straps with matching black lace stockings, bare feet, and a sly affectionate smile.",
+      "tokens": [
+        "lingerie",
+        "teddy",
+        "bodysuit",
+        "black_lace",
+        "sheer",
+        "translucent",
+        "plunging_neckline",
+        "cleavage",
+        "garter_straps",
+        "stockings",
+        "black_thighhighs",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

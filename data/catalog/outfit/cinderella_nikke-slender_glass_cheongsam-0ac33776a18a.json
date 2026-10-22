@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/slender_glass_cheongsam",
+  "revision": 1,
+  "sortOrder": 1550,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "slender_glass_cheongsam",
+      "name": "月映琉璃高开叉丝绸旗袍",
+      "prose": "an alluring oriental evening style: a sleeveless midnight-sapphire silk cheongsam embroidered with translucent glass camellias, an ultra-high thigh slit revealing slender alabaster legs, keyhole neckline framing soft cleavage, delicate pearl frog closures, and silver ankle-strap heels.",
+      "tokens": [
+        "cheongsam",
+        "china_dress",
+        "blue_dress",
+        "high_slit",
+        "keyhole_neckline",
+        "cleavage",
+        "sleeveless",
+        "embroidered",
+        "bare_legs",
+        "high_heels",
+        "elegant"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

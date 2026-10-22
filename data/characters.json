@@ -13292,5 +13292,174 @@
     ],
     "accent_color": "#f472b6",
     "bg_color": "#1c0e15"
+  },
+  {
+    "id": "cinderella_nikke",
+    "name": "灰姑娘",
+    "type": "popular",
+    "icon": "👠",
+    "portrait": {
+      "image": "../assets/characters/popular-cinderella_nikke.png?v=1",
+      "alt": "灰姑娘 样张立绘"
+    },
+    "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+    "alias": [
+      "Cinderella",
+      "シンデレラ",
+      "灰姑娘",
+      "玻璃鞋",
+      "胜利女神：妮姬"
+    ],
+    "visual_dna": {
+      "hair": "及腰银白长发 · 柔和大波浪 · 轻盈侧发束",
+      "hair_color": "冷调银白",
+      "eyes": "清亮的红宝石色眼眸",
+      "hairstyle": "长波浪发 · 轻薄刘海 · 两侧自然垂落",
+      "uniform": "珍珠白与银色交织的玻璃鞋战斗礼装",
+      "expression": "优雅克制 · 认真注视镜面 · 偶尔流露对美的执着",
+      "style": "refined crystalline sci-fi fairytale heroine",
+      "signature": "银白长卷发、红瞳、如镜面般冷冽的玻璃意象与优雅仪态"
+    },
+    "personality": [
+      "第二代童话型号中的朝圣者，曾以女神部队为憧憬并努力争取并肩作战的资格",
+      "举止优雅且自尊心强，对自身美感有近乎严苛的追求",
+      "在外表的完美执念之下，保留着敏感、真诚且渴望被理解的一面",
+      "与玻璃鞋兵装相连，能以冷静精准的方式投入地表战斗"
+    ],
+    "likes": [
+      "整理仪容与检查镜面反射",
+      "精致的水晶饰物与典雅礼服",
+      "听人认真评价她的美",
+      "与能够理解她的人安静交谈"
+    ],
+    "classic_cg": {
+      "title": "镜廊中的玻璃鞋回望",
+      "description": "静谧的镜面回廊里，银白长发的灰姑娘侧身回望，身旁的玻璃鞋兵装映出她克制而坚定的红瞳。"
+    },
+    "identity": {
+      "role": "第二代童话型号朝圣者",
+      "age": "青年",
+      "occupation": "妮姬 / 朝圣者",
+      "faction": "朝圣者 · 童话型号"
+    },
+    "tags": [
+      "银白长发",
+      "红瞳",
+      "朝圣者",
+      "童话型号",
+      "玻璃鞋",
+      "镜面",
+      "优雅",
+      "胜利女神：妮姬"
+    ],
+    "bg_story": "灰姑娘是《胜利女神：妮姬》中第二代童话型号的朝圣者。她曾将女神部队视为理想，并以站上同一战场为目标。她的故事围绕玻璃鞋兵装、美与自我认同展开：优雅坚定的外表下，藏着对完美的执着以及渴望被真正看见的心。她在战斗中保持冷静，也逐渐学会不再只用外界的目光定义自己。",
+    "palette": [
+      "珍珠白",
+      "冷银",
+      "镜面蓝",
+      "红宝石"
+    ],
+    "weather": [
+      "镜廊微光",
+      "清澈夜空",
+      "雪原晨雾"
+    ],
+    "speech": "请看清楚再回答我：此刻映在镜中的我，是否仍然足够美丽？",
+    "accent_color": "#8b8df5",
+    "bg_color": "#111222",
+    "traits": [
+      "cinderella_nikke",
+      "1girl",
+      "solo",
+      "white_hair",
+      "long_hair",
+      "wavy_hair",
+      "red_eyes",
+      "goddess_of_victory:_nikke"
+    ]
+  },
+  {
+    "id": "anis_nikke",
+    "name": "阿尼斯",
+    "type": "popular",
+    "icon": "🥤",
+    "portrait": {
+      "image": "../assets/characters/popular-anis_nikke.png?v=1",
+      "alt": "阿尼斯 样张立绘"
+    },
+    "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+    "alias": [
+      "Anis",
+      "アニス",
+      "阿尼斯",
+      "妮姬阿尼斯",
+      "胜利女神：妮姬"
+    ],
+    "visual_dna": {
+      "hair": "及肩浅金发 · 发尾略显蓬松 · 轻柔侧分刘海",
+      "hair_color": "蜂蜜浅金",
+      "eyes": "明亮的蓝色眼眸",
+      "hairstyle": "中短发 · 侧分刘海 · 自然外翘发尾",
+      "uniform": "灰黄拼色反击小队战术夹克与轻型弹药装备",
+      "expression": "爽朗直率 · 擅长吐槽 · 偶尔露出疲惫但柔软的神情",
+      "style": "warm tactical sci-fi with expressive comic energy",
+      "signature": "灰色贝雷帽、黄灰战术外套、弹药腰带、爽朗笑容与手边的汽水"
+    },
+    "personality": [
+      "反击小队成员，性格活泼有能量，常在紧张任务中调节气氛",
+      "情绪表达直接坦率，喜欢就会明确表示，不喜欢也不掩饰",
+      "待人亲切好相处，但会给自己的私人感受留出界线",
+      "喜欢汽水与轻松的玩笑，关键时刻仍会认真保护队友"
+    ],
+    "likes": [
+      "冰镇汽水与短暂休息",
+      "能让队友笑出来的吐槽",
+      "与拉毗、霓虹一起完成任务",
+      "在前哨基地享受没有警报的安静时光"
+    ],
+    "classic_cg": {
+      "title": "前哨基地汽水休息时刻",
+      "description": "任务间隙的前哨基地休息区里，阿尼斯举着一罐汽水对指挥官露出得意笑容，灰色贝雷帽与黄灰夹克仍带着行动后的褶痕。"
+    },
+    "identity": {
+      "role": "反击小队成员 / 气氛调节者",
+      "age": "青年",
+      "occupation": "妮姬 / 反击小队队员",
+      "faction": "方舟 · 反击小队"
+    },
+    "tags": [
+      "浅金发",
+      "蓝瞳",
+      "贝雷帽",
+      "战术夹克",
+      "反击小队",
+      "汽水",
+      "直率",
+      "胜利女神：妮姬"
+    ],
+    "bg_story": "阿尼斯是《胜利女神：妮姬》反击小队的成员，与拉毗和霓虹一同执行地表任务。她爽朗健谈、表达直接，常用玩笑和吐槽让队伍不至于被紧张气氛压垮。她并非对所有人都毫无保留，熟悉的轻松外表下仍有谨慎的一面；遇到危险时，她会坚定地站在队友身边。汽水是她日常休息时最熟悉的陪伴。",
+    "palette": [
+      "蜂蜜浅金",
+      "战术灰",
+      "信号黄",
+      "汽水蓝"
+    ],
+    "weather": [
+      "地表晴昼",
+      "前哨基地午后",
+      "警报后的夜风"
+    ],
+    "speech": "任务结束先让我喝口汽水。别担心，我会把吐槽留到你安全回来之后。",
+    "accent_color": "#e9a52b",
+    "bg_color": "#1b160e",
+    "traits": [
+      "anis_nikke",
+      "1girl",
+      "solo",
+      "blonde_hair",
+      "medium_hair",
+      "blue_eyes",
+      "goddess_of_victory:_nikke"
+    ]
   }
 ]

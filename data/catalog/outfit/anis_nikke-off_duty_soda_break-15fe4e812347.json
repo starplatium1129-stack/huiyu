@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "anis_nikke/off_duty_soda_break",
+  "revision": 1,
+  "sortOrder": 1543,
+  "createdAt": "2026-10-22T00:00:00+00:00",
+  "updatedAt": "2026-10-22T04:47:50.049788100+00:00",
+  "data": {
+    "characterId": "anis_nikke",
+    "outfit": {
+      "id": "off_duty_soda_break",
+      "name": "休息区宽松卫衣与工装短裤",
+      "prose": "Relaxed outpost loungewear: a loose mustard-yellow pullover hoodie over a charcoal tee, soft black utility shorts, crew socks, and worn low-top sneakers.",
+      "tokens": [
+        "hoodie",
+        "yellow_hoodie",
+        "charcoal_shirt",
+        "utility_shorts",
+        "crew_socks",
+        "sneakers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

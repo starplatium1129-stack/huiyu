@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "anis_nikke/surface_supply_jacket",
+  "revision": 1,
+  "sortOrder": 1544,
+  "createdAt": "2026-10-22T00:00:00+00:00",
+  "updatedAt": "2026-10-22T04:47:50.049788100+00:00",
+  "data": {
+    "characterId": "anis_nikke",
+    "outfit": {
+      "id": "surface_supply_jacket",
+      "name": "地表补给行动轻型夹克",
+      "prose": "A weather-resistant sand-gray field jacket with yellow rescue markings, a compact radio harness, cargo trousers, reinforced knee patches, fingerless gloves, and dustproof lace-up boots.",
+      "tokens": [
+        "field_jacket",
+        "gray_jacket",
+        "yellow_markings",
+        "radio_harness",
+        "cargo_pants",
+        "knee_pads",
+        "fingerless_gloves",
+        "lace_up_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

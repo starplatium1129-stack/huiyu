@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "anis_nikke/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 1558,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "anis_nikke",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "fair_skin",
+        "huge_breasts",
+        "pink_nipples",
+        "narrow_waist",
+        "wide_hips",
+        "plump_thighs",
+        "navel",
+        "pussy",
+        "blonde_hair",
+        "medium_hair",
+        "blue_eyes",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, soft honey-fair skin flushed with heavy rosy arousal, immensely bountiful bouncy breasts with sensitive blush-pink nipples, narrow waist flowing into plush wide childbearing hips, soaking wet pink pussy, tousled honey-blonde medium hair, luminous blue eyes sparkling with playful yet passionate affection, bare feet, warm bedroom lighting.",
+      "styleHint": "warm outpost quarters ambient glow",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

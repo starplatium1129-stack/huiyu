@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/translucent_crystal_babydoll",
+  "revision": 1,
+  "sortOrder": 1547,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "translucent_crystal_babydoll",
+      "name": "🔞 水晶微光幽紫透视吊带短裙",
+      "prose": "a captivating sensual boudoir style: an ultra-sheer pale-lavender silk babydoll nightie with a crystal-accented plunging neckline, sheer chiffon revealing the tender curves of her breasts and hips, matching lace thong, bare thighs, and delicate silver anklets.",
+      "tokens": [
+        "babydoll",
+        "nightie",
+        "negligee",
+        "lavender_lingerie",
+        "sheer",
+        "translucent",
+        "cleavage",
+        "plunge_neckline",
+        "thong",
+        "bare_legs",
+        "anklet",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

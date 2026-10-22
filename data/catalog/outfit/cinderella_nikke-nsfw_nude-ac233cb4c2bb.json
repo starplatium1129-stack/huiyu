@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "cinderella_nikke/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 1551,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "cinderella_nikke",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "🔞 私密全裸 / 纯粹形态",
+      "tokens": [
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "pale_skin",
+        "large_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "shapely_hips",
+        "navel",
+        "pussy",
+        "white_hair",
+        "long_hair",
+        "wavy_hair",
+        "red_eyes",
+        "bare_legs",
+        "bare_feet"
+      ],
+      "prose": "completely naked, full nudity, pristine alabaster-white skin gleaming like polished porcelain, breathtakingly firm spherical breasts tipped with tender rose-pink nipples, slender graceful waist curving into shapely elegant hips, drenched glistening pussy, cascading long wavy silver-white hair pooling across dark velvet sheets, clear ruby-red eyes shimmering with vulnerable longing and haughty devotion, bare feet, moonlit silver crystal reflections.",
+      "styleHint": "ethereal moonlight crystal room ambiance",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

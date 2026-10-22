@@ -527,6 +527,552 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "anis_nikke",
+      "displayName": "阿尼斯",
+      "originalName": "Anis (アニス)",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "anis_nikke",
+        "anis",
+        "anis_(nikke)",
+        "阿尼斯",
+        "阿妮斯",
+        "アニス",
+        "胜利女神：妮姬",
+        "nikke"
+      ],
+      "identityProse": "Anis from Goddess of Victory: NIKKE, an energetic Counters squad member with medium honey-blonde hair, clear blue eyes, a gray beret, voluptuous curves, candid and quick-witted humor, and an unshakeable bond with the Commander and her squadmates.",
+      "identityTokens": [
+        "anis_(nikke)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "medium_hair",
+        "blue_eyes",
+        "goddess_of_victory:_nikke"
+      ],
+      "exactTokens": [
+        "anis_(nikke)"
+      ],
+      "exactPrefixes": [
+        "anis_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "counters_tactical_uniform",
+          "name": "反击小队灰黄战术制服",
+          "prose": "Anis's Counters field uniform: a cropped slate-gray tactical jacket with mustard-yellow panels and a high collar, a fitted dark base layer, utility shorts, a compact ammunition belt, opaque thigh-high stockings, sturdy combat boots, and her gray beret.",
+          "tokens": [
+            "tactical_jacket",
+            "gray_jacket",
+            "yellow_panels",
+            "high_collar",
+            "dark_bodysuit",
+            "shorts",
+            "ammunition_belt",
+            "thighhighs",
+            "combat_boots",
+            "beret"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "off_duty_soda_break",
+          "name": "休息区宽松卫衣与工装短裤",
+          "prose": "a relaxed off-duty outfit: an oversized golden-yellow hoodie with casual gray rolled-cuff shorts, low socks, indoor sneakers, and a chilled soda can in hand.",
+          "tokens": [
+            "oversized_hoodie",
+            "yellow_hoodie",
+            "shorts",
+            "sneakers",
+            "holding_can",
+            "soda_can",
+            "candid"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sparkling_summer_swimwear",
+          "name": "海风汽水运动泳装",
+          "prose": "a bright two-piece sporty resort swimsuit in vivid yellow and deep ocean-blue, with a sheer mesh cropped cover-up, visor cap, and sand-dusted bare legs.",
+          "tokens": [
+            "swimsuit",
+            "two-piece_swimsuit",
+            "yellow_swimsuit",
+            "crop_top",
+            "visor_cap",
+            "bare_shoulders",
+            "bare_legs",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "surface_supply_jacket",
+          "name": "地表补给行动轻型夹克",
+          "prose": "a functional field kit: a lightweight hooded windbreaker over a stretch knit tank top, reinforced cargo shorts, modular leg pouches, and tactical runner shoes.",
+          "tokens": [
+            "windbreaker",
+            "tank_top",
+            "cargo_shorts",
+            "leg_pouch",
+            "tactical_shoes"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "cozy_boyfriend_shirt",
+          "name": "前哨基地闲散男友白衬衫",
+          "prose": "an oversized crisp white collared men's shirt draped loosely over her voluptuous curves, unbuttoned top revealing ample cleavage and soft collarbones, bare thighs, and fuzzy slippers.",
+          "tokens": [
+            "oversized_shirt",
+            "white_shirt",
+            "collared_shirt",
+            "unbuttoned",
+            "cleavage",
+            "bare_legs",
+            "slippers",
+            "candid"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "cheerleader_pep_rally",
+          "name": "活力应援闪亮拉拉队服",
+          "prose": "a spirited cheerleader outfit: an orange-and-yellow cropped sleeveless top with 'COUNTERS' lettering, a matching pleated mini skirt, white wristbands, two fluffy gold pom-poms, striped knee socks, and athletic cheer sneakers.",
+          "tokens": [
+            "cheerleader",
+            "crop_top",
+            "sleeveless",
+            "pleated_skirt",
+            "miniskirt",
+            "wristbands",
+            "pom_poms",
+            "striped_socks",
+            "kneehighs",
+            "sneakers",
+            "midriff",
+            "energetic"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "sensual_lace_bodysuit",
+          "name": "🔞 魅惑透视黑蕾丝情趣连体衣",
+          "prose": "a provocative boudoir look: a sheer plunging black floral lace teddy bodysuit hugging her voluptuous curves, revealing deep cleavage and soft hips, sheer garter straps with matching black lace stockings, bare feet, and a sly affectionate smile.",
+          "tokens": [
+            "lingerie",
+            "teddy",
+            "bodysuit",
+            "black_lace",
+            "sheer",
+            "translucent",
+            "plunging_neckline",
+            "cleavage",
+            "garter_straps",
+            "stockings",
+            "black_thighhighs",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "glamour_bunny_suit",
+          "name": "金耀兔女郎连体礼服",
+          "prose": "a glamorous high-roller casino bunny suit: a glossy amber-gold satin strapless leotard accentuating her immense cleavage and voluptuous hips, white satin cuffs, oversized black bow tie, sheer black fishnet stockings, shiny stiletto pumps, and playful matching golden bunny ears.",
+          "tokens": [
+            "bunny_suit",
+            "leotard",
+            "gold_leotard",
+            "strapless",
+            "cleavage",
+            "collar",
+            "bow_tie",
+            "cuffs",
+            "fishnets",
+            "high_heels",
+            "bunny_ears",
+            "playful"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "maid_special_service",
+          "name": "反击女仆特勤女仆装",
+          "prose": "a playful and frilly cafe maid uniform: a short black dress with puffed shoulders, crisp white ruffled apron tied in a generous bow at the back, low-cut neckline showing ample bosom, yellow ribbon brooch, frilled white maid headband, and thigh-high lace-trimmed stockings.",
+          "tokens": [
+            "maid",
+            "maid_uniform",
+            "black_dress",
+            "white_apron",
+            "frills",
+            "maid_headdress",
+            "cleavage",
+            "yellow_ribbon",
+            "thighhighs",
+            "serving"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "summer_sunflower_sundress",
+          "name": "阳光微风向日葵度假吊带裙",
+          "prose": "a bright sunny vacation look: a light cotton sundress in cheerful yellow with subtle white daisy prints, deep scoop back, delicate thin spaghetti straps, straw sunhat decorated with a sky-blue ribbon, bare shoulders, and woven wedge sandals.",
+          "tokens": [
+            "sundress",
+            "yellow_dress",
+            "floral_print",
+            "spaghetti_straps",
+            "bare_shoulders",
+            "straw_hat",
+            "sandals",
+            "backless",
+            "ribbon"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "fair_skin",
+            "huge_breasts",
+            "pink_nipples",
+            "narrow_waist",
+            "wide_hips",
+            "plump_thighs",
+            "navel",
+            "pussy",
+            "blonde_hair",
+            "medium_hair",
+            "blue_eyes",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, soft honey-fair skin flushed with heavy rosy arousal, immensely bountiful bouncy breasts with sensitive blush-pink nipples, narrow waist flowing into plush wide childbearing hips, soaking wet pink pussy, tousled honey-blonde medium hair, luminous blue eyes sparkling with playful yet passionate affection, bare feet, warm bedroom lighting.",
+          "styleHint": "warm outpost quarters ambient glow",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "方舟 · 反击小队",
+        "era": "地表夺还时代",
+        "formNotes": "反击小队成员，与拉毗、霓虹共同执行任务。浅金中短发、蓝眼与直率爽朗的表情是主要辨识点；贝雷帽和黄灰战术装备属于常见作战形象，汽水是日常偏好。蓝图按场景决定服装与道具，不把作战装备锁进所有身份提示词",
+        "research": "查阅官方 NIKKE 角色资料，2026-10-22"
+      },
+      "animeStudio": "Shift Up official Goddess of Victory: NIKKE art, Kim Hyung Tae style",
+      "curatedArtistStyles": [
+        "kim_hyung_tae",
+        "rella",
+        "dSmile"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "cinderella_nikke",
+      "displayName": "灰姑娘",
+      "originalName": "Cinderella (シンデレラ)",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "cinderella_nikke",
+        "cinderella",
+        "cinderella_(nikke)",
+        "灰姑娘",
+        "シンデレラ",
+        "玻璃鞋",
+        "胜利女神：妮姬",
+        "nikke"
+      ],
+      "identityProse": "Cinderella from Goddess of Victory: NIKKE, a proud and graceful second-generation Fairy Tale Model Pilgrim with long silver-white wavy hair, clear ruby-red eyes, and a serene mirror-like presence; she holds a sincere wish to stand beside the Goddess squad.",
+      "identityTokens": [
+        "cinderella_(nikke)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "wavy_hair",
+        "red_eyes",
+        "goddess_of_victory:_nikke"
+      ],
+      "exactTokens": [
+        "cinderella_(nikke)"
+      ],
+      "exactPrefixes": [
+        "cinderella_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "outfits": [
+        {
+          "id": "glass_slippers_combat_form",
+          "name": "珍珠白玻璃鞋战斗礼装",
+          "prose": "Cinderella's signature combat look: a fitted pearl-white high-neck bodysuit with brushed-silver armor panels, translucent glass-like insets, fine violet seams, articulated forearm guards, and mirror-polished thigh armor.",
+          "tokens": [
+            "bodysuit",
+            "white_bodysuit",
+            "silver_armor",
+            "high_collar",
+            "translucent_clothes",
+            "arm_guards",
+            "thigh_armor"
+          ],
+          "default": true,
+          "isDefault": true
+        },
+        {
+          "id": "crystal_wave_resort",
+          "name": "水晶浪潮珍珠蓝度假泳装",
+          "prose": "an elegant poolside ensemble: a pearl-blue one-piece swimsuit with crystalline cutouts, a delicate sheer chiffon wrap, silver hair clasp, and glass-like sandals.",
+          "tokens": [
+            "swimsuit",
+            "one-piece_swimsuit",
+            "blue_swimsuit",
+            "cutout",
+            "sheer_wrap",
+            "hair_ornament",
+            "sandals",
+            "bare_legs"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "glass_curtsy_maid",
+          "name": "玻璃礼步黑白女仆装",
+          "prose": "a refined maid uniform: a tailored charcoal-and-ivory dress with a high-waisted pleated apron, delicate lace wrist cuffs, polished low heels, and a silver headband.",
+          "tokens": [
+            "maid",
+            "maid_uniform",
+            "apron",
+            "white_apron",
+            "charcoal_dress",
+            "lace_trim",
+            "headband",
+            "low_heels"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "moonlit_ballroom_gown",
+          "name": "镜月银蓝舞会长裙",
+          "prose": "a grand evening gown: layered silver-blue silk with a corset bodice, crystalline off-shoulder straps, a sweeping train, long satin opera gloves, and sapphire ear drops.",
+          "tokens": [
+            "evening_gown",
+            "silver_dress",
+            "blue_dress",
+            "corset",
+            "off-shoulder",
+            "opera_gloves",
+            "earrings",
+            "long_dress"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "mirror_boudoir_negligee",
+          "name": "水晶镜廊幽蓝丝绸睡袍",
+          "prose": "an exquisite boudoir look: a sheer mist-blue translucent silk negligee with white lace trim along the plunge sweetheart neckline, bare shoulders, matching satin robe draped off her elbows, bare legs, and bare feet.",
+          "tokens": [
+            "negligee",
+            "nightgown",
+            "silk_robe",
+            "plunge_neckline",
+            "lace_trim",
+            "translucent",
+            "bare_shoulders",
+            "cleavage",
+            "bare_legs",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "pure_white_bridal_veil",
+          "name": "镜之誓约纯白花嫁婚纱",
+          "prose": "an immaculate bridal gown: an off-shoulder corset wedding dress of luminous white silk, embroidered with delicate crystalline frost patterns, a long translucent cathedral veil flowing over her silver waves, pearl choker, and white lace opera gloves.",
+          "tokens": [
+            "wedding_dress",
+            "bridal_veil",
+            "white_dress",
+            "off-shoulder",
+            "corset",
+            "long_veil",
+            "crystal_embroidery",
+            "choker",
+            "opera_gloves",
+            "lace_gloves",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "translucent_crystal_babydoll",
+          "name": "🔞 水晶微光幽紫透视吊带短裙",
+          "prose": "a captivating sensual boudoir style: an ultra-sheer pale-lavender silk babydoll nightie with a crystal-accented plunging neckline, sheer chiffon revealing the tender curves of her breasts and hips, matching lace thong, bare thighs, and delicate silver anklets.",
+          "tokens": [
+            "babydoll",
+            "nightie",
+            "negligee",
+            "lavender_lingerie",
+            "sheer",
+            "translucent",
+            "cleavage",
+            "plunge_neckline",
+            "thong",
+            "bare_legs",
+            "anklet",
+            "barefoot"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "corrupted_anachiro_abyss",
+          "name": "漆黑异端·侵蚀灰姑娘战斗装",
+          "prose": "Anachiro the Corrupted Heretic combat attire: sharp angular obsidian-black and blood-crimson crystal armor plating clinging to her graceful silhouette, ragged shadowy translucent cape trailing behind her, jagged dark crystal high-heels, and glowing crimson crystalline shards hovering at her back.",
+          "tokens": [
+            "black_armor",
+            "dark_crystal",
+            "crimson_accents",
+            "sharp_armor",
+            "corrupted",
+            "tattered_cape",
+            "dark_aura",
+            "high_heels",
+            "ominous",
+            "evil_smile"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "regal_crystal_bunny",
+          "name": "冰晶银雪高贵兔女郎",
+          "prose": "an aristocratic winter bunny style: an ice-silver velvet strapless corset leotard edged with glittering diamond frost trim, sheer crystal-beaded opera gloves, translucent silver pantyhose, crystalline stiletto pumps, and slender crystal bunny ears perched on her long silver waves.",
+          "tokens": [
+            "bunny_suit",
+            "silver_leotard",
+            "corset",
+            "strapless",
+            "crystal_trim",
+            "opera_gloves",
+            "pantyhose",
+            "high_heels",
+            "bunny_ears",
+            "frost_crystal",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "slender_glass_cheongsam",
+          "name": "月映琉璃高开叉丝绸旗袍",
+          "prose": "an alluring oriental evening style: a sleeveless midnight-sapphire silk cheongsam embroidered with translucent glass camellias, an ultra-high thigh slit revealing slender alabaster legs, keyhole neckline framing soft cleavage, delicate pearl frog closures, and silver ankle-strap heels.",
+          "tokens": [
+            "cheongsam",
+            "china_dress",
+            "blue_dress",
+            "high_slit",
+            "keyhole_neckline",
+            "cleavage",
+            "sleeveless",
+            "embroidered",
+            "bare_legs",
+            "high_heels",
+            "elegant"
+          ],
+          "default": false,
+          "isDefault": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "pale_skin",
+            "large_breasts",
+            "pink_nipples",
+            "slender_waist",
+            "shapely_hips",
+            "navel",
+            "pussy",
+            "white_hair",
+            "long_hair",
+            "wavy_hair",
+            "red_eyes",
+            "bare_legs",
+            "bare_feet"
+          ],
+          "prose": "completely naked, full nudity, pristine alabaster-white skin gleaming like polished porcelain, breathtakingly firm spherical breasts tipped with tender rose-pink nipples, slender graceful waist curving into shapely elegant hips, drenched glistening pussy, cascading long wavy silver-white hair pooling across dark velvet sheets, clear ruby-red eyes shimmering with vulnerable longing and haughty devotion, bare feet, moonlit silver crystal reflections.",
+          "styleHint": "ethereal moonlight crystal room ambiance",
+          "default": false,
+          "isDefault": false
+        }
+      ],
+      "canon": {
+        "world": "地表 · 朝圣者 · 第二代童话型号",
+        "era": "第一次莱彻侵袭时期及其后的地表夺还时代",
+        "formNotes": "第二代童话型号中的朝圣者。银白长发与红瞳是主要外貌锚点，玻璃鞋是其专属高科技兵装。角色叙事涉及对女神部队的憧憬、美与自我认同；蓝图按所选场景决定是否出现玻璃鞋兵装",
+        "research": "查阅官方 NIKKE 角色与活动资料，2026-10-22"
+      },
+      "animeStudio": "Shift Up official Goddess of Victory: NIKKE art, Kim Hyung Tae style",
+      "curatedArtistStyles": [
+        "kim_hyung_tae",
+        "rella",
+        "dSmile"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

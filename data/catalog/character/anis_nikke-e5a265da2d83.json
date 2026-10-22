@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "anis_nikke",
+  "revision": 2,
+  "sortOrder": 175,
+  "createdAt": "2026-10-22T00:00:00+00:00",
+  "updatedAt": "2026-10-22T04:49:17.590885800+00:00",
+  "data": {
+    "id": "anis_nikke",
+    "profile": {
+      "id": "anis_nikke",
+      "name": "阿尼斯",
+      "type": "popular",
+      "icon": "🥤",
+      "portrait": {
+        "image": "../assets/characters/popular-anis_nikke.png?v=1",
+        "alt": "阿尼斯 样张立绘"
+      },
+      "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+      "alias": [
+        "Anis",
+        "アニス",
+        "阿尼斯",
+        "妮姬阿尼斯",
+        "胜利女神：妮姬"
+      ],
+      "visual_dna": {
+        "hair": "及肩浅金发 · 发尾略显蓬松 · 轻柔侧分刘海",
+        "hair_color": "蜂蜜浅金",
+        "eyes": "明亮的蓝色眼眸",
+        "hairstyle": "中短发 · 侧分刘海 · 自然外翘发尾",
+        "uniform": "灰黄拼色反击小队战术夹克与轻型弹药装备",
+        "expression": "爽朗直率 · 擅长吐槽 · 偶尔露出疲惫但柔软的神情",
+        "style": "warm tactical sci-fi with expressive comic energy",
+        "signature": "灰色贝雷帽、黄灰战术外套、弹药腰带、爽朗笑容与手边的汽水"
+      },
+      "personality": [
+        "反击小队成员，性格活泼有能量，常在紧张任务中调节气氛",
+        "情绪表达直接坦率，喜欢就会明确表示，不喜欢也不掩饰",
+        "待人亲切好相处，但会给自己的私人感受留出界线",
+        "喜欢汽水与轻松的玩笑，关键时刻仍会认真保护队友"
+      ],
+      "likes": [
+        "冰镇汽水与短暂休息",
+        "能让队友笑出来的吐槽",
+        "与拉毗、霓虹一起完成任务",
+        "在前哨基地享受没有警报的安静时光"
+      ],
+      "classic_cg": {
+        "title": "前哨基地汽水休息时刻",
+        "description": "任务间隙的前哨基地休息区里，阿尼斯举着一罐汽水对指挥官露出得意笑容，灰色贝雷帽与黄灰夹克仍带着行动后的褶痕。"
+      },
+      "identity": {
+        "role": "反击小队成员 / 气氛调节者",
+        "age": "青年",
+        "occupation": "妮姬 / 反击小队队员",
+        "faction": "方舟 · 反击小队"
+      },
+      "tags": [
+        "浅金发",
+        "蓝瞳",
+        "贝雷帽",
+        "战术夹克",
+        "反击小队",
+        "汽水",
+        "直率",
+        "胜利女神：妮姬"
+      ],
+      "bg_story": "阿尼斯是《胜利女神：妮姬》反击小队的成员，与拉毗和霓虹一同执行地表任务。她爽朗健谈、表达直接，常用玩笑和吐槽让队伍不至于被紧张气氛压垮。她并非对所有人都毫无保留，熟悉的轻松外表下仍有谨慎的一面；遇到危险时，她会坚定地站在队友身边。汽水是她日常休息时最熟悉的陪伴。",
+      "palette": [
+        "蜂蜜浅金",
+        "战术灰",
+        "信号黄",
+        "汽水蓝"
+      ],
+      "weather": [
+        "地表晴昼",
+        "前哨基地午后",
+        "警报后的夜风"
+      ],
+      "speech": "任务结束先让我喝口汽水。别担心，我会把吐槽留到你安全回来之后。",
+      "accent_color": "#e9a52b",
+      "bg_color": "#1b160e",
+      "traits": [
+        "anis_nikke",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "medium_hair",
+        "blue_eyes",
+        "goddess_of_victory:_nikke"
+      ]
+    },
+    "popular": {
+      "id": "anis_nikke",
+      "displayName": "阿尼斯",
+      "originalName": "Anis (アニス)",
+      "franchise": "Goddess of Victory: NIKKE",
+      "aliases": [
+        "anis_nikke",
+        "anis",
+        "anis_(nikke)",
+        "阿尼斯",
+        "阿妮斯",
+        "アニス",
+        "胜利女神：妮姬",
+        "nikke"
+      ],
+      "identityProse": "Anis from Goddess of Victory: NIKKE, an energetic Counters squad member with medium honey-blonde hair and clear blue eyes. She is candid and quick-witted, affectionate toward her teammates, and keeps a guarded private side beneath her easygoing humor.",
+      "identityTokens": [
+        "anis_(nikke)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "medium_hair",
+        "blue_eyes",
+        "goddess_of_victory:_nikke"
+      ],
+      "characterTokens": [
+        "anis_(nikke)"
+      ],
+      "copyrightTokens": [
+        "goddess_of_victory:_nikke"
+      ],
+      "exactTokens": [
+        "anis_(nikke)"
+      ],
+      "exactPrefixes": [
+        "anis_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "canon": {
+        "world": "方舟 · 反击小队",
+        "era": "地表夺还时代",
+        "formNotes": "反击小队成员，与拉毗、霓虹共同执行任务。浅金中短发、蓝眼与直率爽朗的表情是主要辨识点；贝雷帽和黄灰战术装备属于常见作战形象，汽水是日常偏好。蓝图按场景决定服装与道具，不把作战装备锁进所有身份提示词。",
+        "research": "查阅官方 NIKKE 角色资料，2026-10-22"
+      },
+      "animeStudio": "Shift Up official Goddess of Victory: NIKKE art",
+      "curatedArtistStyles": [
+        "kim_hyung_tae",
+        "rella",
+        "dSmile"
+      ]
+    }
+  }
+}
