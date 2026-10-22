@@ -5,11 +5,11 @@
 统一入口只有一个：**`deploy-desktop.bat`**（项目根）。实现脚本也只有一个：
 `scripts/maintenance/deploy-desktop-quick.ps1`。不要再新建部署脚本。
 
-默认先完整核验当前源码、SDK 和构建身份：匹配的本机升级包直接复用；仅原生构建匹配时重新封装；身份不匹配或产物缺失时才按 `desktop-local` 重建。每次会显示选择及原因，不按版本号或文件日期猜测。`-ForceBuild` 显式跳过自动复用，不能与 `-SkipBuild` 或其它部署模式组合；`-UseInstaller`、`-SkipBuild`、`-ResourcesOnly`、`-StartupRepair` 仍按显式选择执行。自动模式不切换纯资源同步或发行完整包。
+默认在 UAC 前先检测安装登记、已安装文件、桌面进程、源码/SDK/构建和升级包绑定，再自动选择：已安装文件与当前构建完全一致时不重复安装（仅确认或启动）；只有静态资源不同时同步资源；否则复用升级包、重新封装或按 `desktop-local` 重建。每次会显示安装状态、选择及原因，不按版本号或文件日期猜测。`-ForceBuild` 显式跳过自动复用，不能与 `-SkipBuild` 或其它部署模式组合；`-UseInstaller`、`-SkipBuild`、`-ResourcesOnly`、`-StartupRepair` 仍按显式选择执行。首次安装/修复会使用 `runtime\desktop-updates`、项目根、`Downloads` 或桌面中当前版本的完整包（必须带同名 `.deployment.json`）；找不到时在 UAC 前停止并给出下载或显式指定命令。
 
-提权父进程实时转发本次新增的部署日志，构建 stdout/stderr 按实际输出显示；失败保留真实退出码和已固定安装包路径，修正原因后可通过 `-UseInstaller -InstallerPath` 继续，不自动重试安装。`runtime/desktop-deploy.lock` 使用系统文件共享锁，防止同一工作区并行部署，正常结束或失败均释放；文件保留无需手删。
+安装状态、已安装文件与构建/升级包绑定在 UAC 前完成只读检测；已是最新时不弹 UAC，仅确认或启动。需要写入时，非提权父进程实时转发提权子进程新增的部署日志，构建 stdout/stderr 按实际输出显示；失败保留真实退出码和已固定安装包路径，修正原因后可通过 `-UseInstaller -InstallerPath` 继续，不自动重试安装。提权子进程只负责构建、安装和安装后校验，成功退出后由原非提权父进程启动桌面端并确认维护通道，避免 UAC 进程与交互桌面不一致时出现“安装成功但启动未确认”。`runtime/desktop-deploy.lock` 使用系统文件共享锁，防止同一工作区并行部署，正常结束或失败均释放；文件保留无需手删。
 
-本机已启用 bundled UI，当前安装身份以[项目状态](project-status.md)为准；不同机器与日期的安装记录不互相替代。**日常桌面同步默认用 `desktop-local` 快速档位构建并安装无压缩升级包，正式发行保持原 release 配置及完整 LZMA 包。** 前端、宿主、Rust 后端或 DLL 变化都可通过升级包更新，无需为了更新 EXE 先构建完整包。纯数据和动态资源同步显式使用 `-ResourcesOnly`；后续源码改动需另行核对安装身份。
+本机已启用 bundled UI，当前安装身份以[项目状态](project-status.md)为准；不同机器与日期的安装记录不互相替代。**日常桌面同步默认用 `desktop-local` 快速档位构建并安装无压缩升级包，正式发行保持原 release 配置及完整 LZMA 包。** 前端、宿主、Rust 后端或 DLL 变化都可通过升级包更新，无需为了更新 EXE 先构建完整包。自动检测到仅静态资源差异时会走资源同步；也可显式使用 `-ResourcesOnly`；后续源码改动需另行核对安装身份。
 
 构建预压缩会逐项解压核对已有 `.br/.gz` 与当前源字节，复用一致的完整副本并输出复用数量；缺失、损坏或陈旧项仍重建。升级包封装在同一检查点合并校验 payload 与资源检查器，共用一次完整源码、SDK 和构建扫描；安装前后各检查点继续独立核验。
 
@@ -25,7 +25,7 @@
 
 Windows 桌面自有网关及它新建的模型进程纳入宿主持有的 Job Object；启动时先完成 `--desktop-owned` 管道握手，再初始化网关服务。显式退出先关闭自动重启入口，沿用认证排空后回收整个进程组；启动脚本已退出的语音子进程也受约束，外部独立启动的服务不纳入。此握手要求桌面 EXE 与 runtime EXE 通过同一安装包配套更新。正常使用中 PixAI 与独立生图保留热缓存，最后一次任务完成后连续空闲 10 分钟回收；隐藏到托盘继续按空闲规则运行。
 
-旧安装版没有维护能力描述时，仍须先从托盘“退出 Companion”再执行首次升级；脚本不会试探未知 CLI、强杀进程或按 PID 猜测删锁。维护在封闭写入前取消会恢复界面；进入排空后失败则保持冻结，用户可从托盘正常退出后检查，不能把该退出当作升级成功。active/candidate 的未知残留锁始终要求维修。提权父进程只等待部署进程本身并返回真实退出码，不等待其启动的客户端及后代进程；部署成功返回 0，客户端继续运行。UAC 取消或安装失败不会显示成功；UAC、缺包或构建失败也不会提前关掉用户应用。
+旧安装版没有维护能力描述时，仍须先从托盘“退出 Companion”再执行首次升级；脚本不会试探未知 CLI、强杀进程或按 PID 猜测删锁。维护在封闭写入前取消会恢复界面；进入排空后失败则保持冻结，用户可从托盘正常退出后检查，不能把该退出当作升级成功。active/candidate 的未知残留锁始终要求维修。非提权父进程只等待提权部署进程本身并返回真实退出码，不等待其启动的客户端及后代进程；部署子进程成功退出后，父进程再启动客户端并确认维护通道，客户端继续运行。UAC 取消或安装失败不会显示成功；UAC、缺包或构建失败也不会提前关掉用户应用。
 
 不运行临时安装目录、进程夹具或安装器自测。部署保留针对实际安装的前置资源核验、受控维护退出和启动确认；页面、图片和安装弹窗由用户在目标设备人工验收。`-NoRestart` 不执行启动确认，不能据此记录启动成功。
 
@@ -45,7 +45,7 @@ Rust 使用[官方 rustup 安装器](https://rust-lang.org/tools/install/)的 x6
 
 **公开发行与源码构建分别核对**：2026-10-07 已发布的 [1.9.2](releases/v1.9.2.md)绑定 `f221bd4c`，包含 `AI-CG-Studio_1.9.2_x64-full-setup.exe`（662,912,512 字节）与 `AI-CG-Studio_1.9.2_x64-upgrade-setup.exe`（391,980,544 字节），公开自动更新指向升级包。发行身份及核验范围见[项目状态](project-status.md)；本次公开发行不代表已安装到本机，后续源码能力不能据此算入既有安装包。
 
-发行入口 `npm run release:desktop` 生成 **full 完整包**与 **upgrade 轻量升级包**，使用 LZMA 并分别绑定/签名；已有发行构建可用 `--skip-build`，无签名发行显式加 `--manual`。发行入口拒绝把本机升级包或无压缩包当作完整包。完整包带基础素材和 WebView2；升级包在写入前核对已有安装及保留资源字节。样张 ZIP 继续独立提供。`deploy-desktop.bat -UseInstaller` 仅自动选择当前版本的升级包；首次安装/修复必须显式传入 `-InstallerPath <发行完整包>`。
+发行入口 `npm run release:desktop` 生成 **full 完整包**与 **upgrade 轻量升级包**，使用 LZMA 并分别绑定/签名；已有发行构建可用 `--skip-build`，无签名发行显式加 `--manual`。发行入口拒绝把本机升级包或无压缩包当作完整包。完整包带基础素材和 WebView2；升级包在写入前核对已有安装及保留资源字节。样张 ZIP 继续独立提供。每个安装包同目录生成 `.deployment.json`，记录安装包及安装后文件身份；发布时与 EXE、签名、SHA-256 一并上传。默认部署会自动使用当前版本的完整包完成首次安装/修复；找不到或需要指定其他包时，必须用 `-UseInstaller -InstallerPath <发行完整包>` 显式传入，且下载时必须保留同名 `.deployment.json` 在同一目录。
 
 正式构建会在 Tauri CLI 完成后将 Cargo 创建的固定 release EXE 硬链接核对字节并原子替换为独立文件，再执行原来的源码/产物绑定检查；其它位置的硬链接仍拒绝。CLI 成功不等于可发行：绑定失败返回非零并指出具体产物，回执原子更新失败保留旧回执，不再依赖一次性打包脚本修补。
 
@@ -67,7 +67,7 @@ Tauri 2.12 在 NSIS 内把宿主唯一的 `__TAURI_BUNDLE_TYPE_VAR_UNK` 标记�
 npm run wf -- desktop:upgrade-local --install-dir "C:\Program Files\AI-CG-Studio"
 ```
 
-它等价于 `desktop:package-local --skip-build`，先用安装器内同一个只读检查器核对安装登记、宿主版本、WebView2 与保留素材，再封装无压缩升级包；不修改自动更新清单、不安装或发布。前置不匹配直接停止，保持应用运行，不自动回退完整打包。安装使用 `deploy-desktop.bat -UseInstaller -InstallerPath "<本次绑定的升级包>" -QuietInstall`；新装或修复显式选用发行完整包。每份封装包生成相邻的 `.deployment.json`，固定包 SHA-256 和安装后文件身份；已有包部署只依赖包与此清单，不读取当前源码、构建 SDK 或暂存目录。旧包首次使用可从其原构建回执和已绑定宿主字节准备清单，不重新编译或改写原回执。
+它等价于 `desktop:package-local --skip-build`，先用安装器内同一个只读检查器核对安装登记、宿主版本、WebView2 与保留素材，再封装无压缩升级包；不修改自动更新清单、不安装或发布。前置不匹配直接停止，保持应用运行，不自动回退完整打包。安装使用 `deploy-desktop.bat -UseInstaller -InstallerPath "<本次绑定的升级包>" -QuietInstall`；新装或修复默认自动查找当前版本完整包，找不到时显式选用发行完整包。每份封装包生成相邻的 `.deployment.json`，固定包 SHA-256 和安装后文件身份；已有包部署只依赖包与此清单，不读取当前源码、构建 SDK 或暂存目录。旧包首次使用可从其原构建回执和已绑定宿主字节准备清单，不重新编译或改写原回执。
 
 构建绑定现在只选择当前产品/版本的 x64 安装包、存在的签名及 NSIS 输入，历史版本包可以保留在输出目录，不参与本次校验。部署的三个检查点均保留，每个检查点只扫描一次完整构建。旧回执不会被自动改写，工具源码变化后须正常重建一次才能复用新规则。构建日志新增 `[desktop:timing]`，分别记录前端/预压、Rust 后端、桌面 UI、资源暂存、Tauri 原生/打包及绑定；部署日志记录校验、维护退出、安装/同步和启动耗时，实际收益以同机下一次更新为准。
 
@@ -76,7 +76,7 @@ npm run wf -- desktop:upgrade-local --install-dir "C:\Program Files\AI-CG-Studio
 同日 21:16 已实际安装优化后的玻璃体验构建：三个完整性检查点为 20.35/20.60/21.41 秒，总部署 69.34 秒，安装器实际 3.08 秒。使用本机无压缩包直接安装，源码/产物绑定及启动确认通过；源码仍基于 b19574dc 加本轮改动，没有公开发布。成功构建自身耗时 8 分 54 秒，未完全命中的 Rust 编译缓存使原生重编占用约 7 分半，不能据安装耗时推断整轮构建只需 5 分钟。测试构建目录保留以复用新缓存，材料见 `runtime/local-glass-upgrade-20261006/`。
 
 ```bat
-deploy-desktop.bat                  :: 构建并安装本机无压缩升级包
+deploy-desktop.bat                  :: 检测安装与构建状态，自动选择最合适的部署方式
 deploy-desktop.bat -UseInstaller    :: 复用当前版本的已绑定升级包
 deploy-desktop.bat -UseInstaller -InstallerPath "D:\path\verified-setup.exe" :: 指定本次已验收安装包
 deploy-desktop.bat -SkipBuild       :: 复用匹配原生构建，仅封装并安装升级包
@@ -90,7 +90,7 @@ deploy-desktop.bat -UseInstaller -QuietInstall -SyncLocalModels :: 同步本机�
 
 `-SyncLocalModels` 仅用于个人部署：核验并复制 `runtime/live2d-imports` 已登记文件至用户数据目录，保留旧模型版本；不会把候选 LPK/ZIP 或模型塞进可分发安装包。增量复制也排除 `assets/live2d-candidates`。
 `-QuietInstall` 用于默认升级或 `-UseInstaller` 包部署，仍需要用户确认 UAC；不适用于 `-ResourcesOnly` / `-StartupRepair`。部署日志追加到 `runtime/desktop-deploy-last.log`。
-`-InstallerPath` 随 `-UseInstaller` 显式选择包；未指定时仅在当前版本升级包中选最新一份。既有包的路径与安装清单摘要在 UAC 前固定并透传；默认构建模式在构建成功后固定本次产物。安装前后重核同一固定包与清单，安装后逐项核对声明文件，不删除额外用户文件。源码构建和纯资源同步仍要求源码、SDK、暂存产物一致。
+`-InstallerPath` 随 `-UseInstaller` 显式选择包；未指定时仅在当前版本升级包中选最新一份。既有包的路径与安装清单摘要在 UAC 前固定并透传；默认构建模式在构建成功后固定本次产物。安装前后重核同一固定包与清单，安装后逐项核对声明文件，不删除额外用户文件。缺少同名 `.deployment.json` 且当前工作区没有匹配构建回执时，入口会停止并提示补回发行附件中的清单，不会仅凭 EXE 文件名放行。源码构建和纯资源同步仍要求源码、SDK、暂存产物一致。
 `-Cleanup` 仅在显式指定时清理登记的历史应用残留，默认保留。
 
 ---
@@ -160,15 +160,15 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
 | `package.json` / 构建工具变化 | 重建受影响产物后判断 | bundled UI、EXE 或 DLL 变化通过升级包安装 |
 | Rust 代码（`desktop-tauri/src-tauri/src/`） | **默认升级包** | 纯资源同步不替换 exe |
 | `tauri.conf.json`（版本号、CSP、资源清单等） | **默认升级包** | 同上，保留素材仍须匹配 |
-| 首次安装 / 换机器 / 保留素材缺失或改变 | **显式选择发行完整包** | 升级前置不满足，不能自动回退完整构建 |
+| 首次安装 / 换机器 / 保留素材缺失或改变 | **自动使用当前版本完整包；找不到时显式选择** | 升级前置不满足，不能自动回退完整构建 |
 
-判断依据：**开发默认升级包；纯资源变化可显式 `-ResourcesOnly`；首次安装/修复使用发行完整包。**
+判断依据：**默认自动检测；开发改动走升级包；仅资源差异走资源同步；首次安装/修复使用当前版本完整包。**
 
 ---
 
-## 二、两种模式做了什么
+## 二、各模式做了什么
 
-### 纯资源同步（显式 `-ResourcesOnly`）
+### 纯资源同步（自动检测或显式 `-ResourcesOnly`）
 1. 准备当前构建并核验绑定及安装 EXE/DLL 一致性；已有相同构建可用 `-SkipBuild`
 2. 请求已核验宿主维护退出，排空写入并确认自有网关退出、owner 锁释放
 3. 清理 `-Cleanup` 登记的残留目录
@@ -180,8 +180,8 @@ npm run wf -- desktop:content-sync --apply --clear-webview-cache     # 再清 We
 > 若新 dist（新版本号）曾对着旧 data 提供过一次，WebView2 会把旧内容以 immutable
 > 一年缓存写进新 URL，之后再也不刷新。
 
-### 安装包部署（默认构建升级包，`-UseInstaller` 复用已有包）
-默认直接生成并固定本次升级包；`-UseInstaller` 使用 `-InstallerPath` 指定的已绑定安装包，未指定时仅选择当前版本的升级包。完整包用于首次安装或修复，必须明确指定。NSIS 是安装核心，由现代安装展示层封装。
+### 安装包部署（自动复用/封装，或 `-UseInstaller` 指定）
+自动模式在源码、SDK、构建和升级包绑定均匹配时复用现有包；仅原生构建匹配时重新封装；身份不匹配时按 `desktop-local` 重建。`-UseInstaller` 使用 `-InstallerPath` 指定的已绑定安装包，未指定时仅选择当前版本的升级包。完整包用于首次安装或修复，自动查找当前版本，找不到时必须明确指定。NSIS 是安装核心，由现代安装展示层封装。
 它替换当前 `gateway/` 载荷、后端/桌面 EXE与原生库；旧布局残留按部署清单核验，不手工删除用户资料。
 
 ---

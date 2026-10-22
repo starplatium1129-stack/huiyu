@@ -100,7 +100,7 @@ function Stop-DesktopForDeployment {
 }
 
 function Wait-DesktopDeploymentReady {
-  param([string]$InstallDir, [string]$ConfigRoot, [int]$TimeoutSeconds = 60)
+  param([string]$InstallDir, [string]$ConfigRoot, [int]$TimeoutSeconds = 120)
   $deadline = [DateTime]::UtcNow.AddSeconds($TimeoutSeconds)
   $lastFailure = 'DESKTOP_STARTING'
   while ([DateTime]::UtcNow -lt $deadline) {

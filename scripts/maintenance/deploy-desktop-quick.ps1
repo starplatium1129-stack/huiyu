@@ -1,11 +1,12 @@
 ﻿# AI-CG-Studio 桌面端部署 —— 唯一入口
 #
-# 默认核验后复用升级包/原生构建，必要时以 desktop-local 重建；不携带 WebView2/保留素材。
+# 默认启动后先检测安装状态、已安装文件和源码/构建/升级包绑定，再自动选择：
+# 无需部署、仅同步资源、复用升级包、重新封装或重新构建；首次安装/修复使用当前版本完整包。
 # -ResourcesOnly 仅同步已绑定静态资源，要求安装 EXE/DLL 与候选一致。
-# -UseInstaller 复用已绑定升级包；首次安装/修复须显式 -InstallerPath 指向发行完整包。
+# -UseInstaller 复用已绑定安装包；显式指定 -InstallerPath 可覆盖自动选择。
 #
 # 常用组合：
-#   双击 deploy-desktop.bat                 构建并安装本机升级包
+#   双击 deploy-desktop.bat                 自动检测并选择最合适的部署方式
 #   deploy-desktop.bat -SkipBuild           复用绑定构建，只封装并安装升级包
 #   deploy-desktop.bat -UseInstaller        安装已有升级包
 #   deploy-desktop.bat -NoRestart           部署后不自动启动
@@ -26,6 +27,10 @@ param(
   [switch]$QuietInstall,
   [switch]$NoRestart,
   [switch]$StartupRepair,
+  # 内部使用：提权子进程完成安装后交由非提权父进程启动，避免跨桌面维护握手。
+  [switch]$DeferRestart,
+  # 内部使用：父进程已在 UAC 前完成检测并选定模式，子进程不再重复检测。
+  [switch]$DeploymentPlanApplied,
   [string]$InstallDir,
   [string]$InstallerPath,
   [string]$InstallerManifestSha256
@@ -35,17 +40,206 @@ $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = New-Object Text.UTF8Encoding($false)
 $OutputEncoding = [Console]::OutputEncoding
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+function Write-DeploymentLog([string]$Message) {
+  try { Add-Content -LiteralPath (Join-Path $root 'runtime\desktop-deploy-last.log') -Value $Message -Encoding UTF8 } catch { }
+}
+function Resolve-DesktopInstallDirectory([string]$Path) {
+  $expanded = [Environment]::ExpandEnvironmentVariables($Path.Trim().Trim('"'))
+  if (-not $expanded) { throw '安装目录不能为空。' }
+  if ($expanded -match '^[A-Za-z]:$') { throw '安装目录不能是驱动器根目录，请指定子目录。' }
+  if (-not [IO.Path]::IsPathRooted($expanded)) { $expanded = Join-Path $root $expanded }
+  $full = [IO.Path]::GetFullPath($expanded).TrimEnd([char[]]@('\','/'))
+  # 去掉尾部分隔符，避免 UAC 子进程参数中的 \ 转义收尾引号。
+  if ($full -match '^[A-Za-z]:$') { throw '安装目录不能是驱动器根目录，请指定子目录。' }
+  return $full
+}
+$installRegistered = $false
 if (-not $InstallDir) {
   $locations = @('HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio',
     'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio',
     'HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio') |
     ForEach-Object { (Get-ItemProperty -LiteralPath $_ -ErrorAction SilentlyContinue).InstallLocation } |
-    Where-Object { $_ } | ForEach-Object { $_.Trim('"') } | Select-Object -Unique
-  if (@($locations).Count -gt 1) { throw '发现多个安装目录，请用 -InstallDir 指定要修复的安装。' }
+    Where-Object { $_ -and $_.Trim() } |
+    ForEach-Object {
+      try { Resolve-DesktopInstallDirectory $_ }
+      catch { Write-Host "[desktop:auto] 忽略无效的安装登记：$_" -ForegroundColor Yellow }
+    } | Sort-Object -Unique
+  if (@($locations).Count -gt 1) { throw "发现多个安装目录：$(($locations | ForEach-Object { "`n  $_" }) -join '')`n请用 -InstallDir 指定要修复的安装。" }
+  $installRegistered = @($locations).Count -gt 0
   $InstallDir = if ($locations) { @($locations)[0] } else { 'C:\Program Files\AI-CG-Studio' }
 }
-$installDir = [IO.Path]::GetFullPath($InstallDir)
+$installDir = Resolve-DesktopInstallDirectory $InstallDir
 $gatewayDir = Join-Path $installDir 'gateway'
+$configRoot = Join-Path $env:APPDATA 'com.aics.studio'
+. (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
+function Invoke-DesktopNpm {
+  param([string[]]$Arguments)
+  # Windows PowerShell turns native stderr into ErrorRecord objects. Stream it
+  # as progress text and judge success only by the native process exit code.
+  $previousPreference = $ErrorActionPreference
+  $npmCommand = Get-Command npm.cmd -CommandType Application -ErrorAction Stop
+  try {
+    $ErrorActionPreference = 'Continue'
+    & $npmCommand.Source @Arguments 2>&1 | ForEach-Object { Write-Host $_.ToString() }
+    $buildExitCode = $LASTEXITCODE
+  } finally { $ErrorActionPreference = $previousPreference }
+  if ($buildExitCode -ne 0) { throw "桌面构建/封装失败（退出码 $buildExitCode）；未关闭应用。" }
+}
+$principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+$isElevated = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+function Start-DesktopClientAndWait {
+  param([string]$Prefix = '[6/6]')
+  $appPath = Join-Path $installDir 'ai-cg-studio-desktop.exe'
+  if (-not (Test-Path -LiteralPath $appPath -PathType Leaf)) { throw "未找到已安装的桌面端：$appPath" }
+  Write-Host "$Prefix 启动桌面端 ..." -ForegroundColor Cyan
+  Write-DeploymentLog "$Prefix 启动桌面端 ..."
+  if ($isElevated) {
+    # An elevated terminal cannot safely host the client; ask the interactive shell.
+    Start-Process explorer.exe -ArgumentList "`"$appPath`""
+  } else {
+    Start-Process -FilePath $appPath -WorkingDirectory $installDir | Out-Null
+  }
+  $startup = Wait-DesktopDeploymentReady -InstallDir $installDir -ConfigRoot $configRoot -TimeoutSeconds 120
+  Write-Host "宿主与所属 Rust 网关已就绪（PID $($startup.hostPid)）" -ForegroundColor Green
+  Write-DeploymentLog "宿主与所属 Rust 网关已就绪（PID $($startup.hostPid)）"
+  return $startup
+}
+function Get-DesktopProductVersion {
+  (Get-Content -LiteralPath (Join-Path $root 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
+}
+function Find-CurrentFullInstaller {
+  $version = Get-DesktopProductVersion
+  $name = "AI-CG-Studio_${version}_x64-full-setup.exe"
+  $searchRoots = @((Join-Path $root 'runtime\desktop-updates'), $root)
+  if ($env:USERPROFILE) { $searchRoots += (Join-Path $env:USERPROFILE 'Downloads') }
+  $desktop = [Environment]::GetFolderPath('Desktop')
+  if ($desktop) { $searchRoots += $desktop }
+  foreach ($directory in ($searchRoots | Where-Object { $_ -and (Test-Path -LiteralPath $_ -PathType Container) } | Select-Object -Unique)) {
+    $candidate = Join-Path $directory $name
+    if (Test-Path -LiteralPath $candidate -PathType Leaf) { return Get-Item -LiteralPath $candidate }
+  }
+  return $null
+}
+function Select-CurrentFullInstaller {
+  param([string]$State)
+  $version = Get-DesktopProductVersion
+  $full = Find-CurrentFullInstaller
+  if (-not $full) {
+    throw "检测到$State，但未找到当前版本 $version 的完整安装包。`n请下载 AI-CG-Studio_${version}_x64-full-setup.exe 及同名 .deployment.json，放到 runtime\desktop-updates 或 Downloads；也可运行 deploy-desktop.bat -UseInstaller -InstallerPath <完整包>。"
+  }
+  $manifest = "$($full.FullName).deployment.json"
+  if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) {
+    throw "完整包缺少同名部署清单：$manifest。请从发行附件保留 .deployment.json 后再部署。"
+  }
+  $verification = & node (Join-Path $root 'scripts\lib\desktop-installer-binding.js') verify $full.FullName 2>&1
+  if ($LASTEXITCODE -ne 0) { throw "完整安装包校验失败：$($verification -join ' ')" }
+  Write-Host "[desktop:auto] 使用当前版本完整包：$($full.FullName)" -ForegroundColor Cyan
+  Write-DeploymentLog "[desktop:auto] 使用当前版本完整包：$($full.FullName)"
+  return $full.FullName
+}
+function Complete-CurrentDeployment {
+  $allProcesses = @(Get-DesktopInstallationProcesses -InstallDir $installDir)
+  $hosts = @($allProcesses | Where-Object { $_.ProcessName -eq 'ai-cg-studio-desktop' })
+  if ($hosts.Count -gt 1) {
+    throw "DESKTOP_DUPLICATE_HOSTS: 同一安装有多个宿主（PID $($hosts.Id -join ', ')）；请从托盘退出全部实例后重试。"
+  }
+  if ($hosts.Count -eq 0 -and $allProcesses.Count -gt 0) {
+    throw "DESKTOP_HOST_MISSING: 检测到网关仍在运行但宿主不存在（PID $($allProcesses.Id -join ', ')）；请先完成退出或重新部署。"
+  }
+  if ($NoRestart) {
+    Write-Host '[desktop:auto] 已是最新，按 -NoRestart 不启动桌面端。' -ForegroundColor DarkGray
+    Write-DeploymentLog '[desktop:auto] 已是最新，按 -NoRestart 不启动桌面端。'
+    return 0
+  }
+  if ($hosts.Count -eq 1) {
+    $status = Wait-DesktopDeploymentReady -InstallDir $installDir -ConfigRoot $configRoot -TimeoutSeconds 30
+    Write-Host "[desktop:auto] 已是最新；桌面端正在运行（PID $($status.hostPid)），未重新部署。" -ForegroundColor Green
+    Write-DeploymentLog "[desktop:auto] 已是最新；桌面端正在运行（PID $($status.hostPid)），未重新部署。"
+    return 0
+  }
+  Write-Host '[desktop:auto] 已是最新，无需重复安装；启动桌面端确认就绪。' -ForegroundColor Cyan
+  Write-DeploymentLog '[desktop:auto] 已是最新，无需重复安装；启动桌面端确认就绪。'
+  $null = Start-DesktopClientAndWait -Prefix '[desktop:auto]'
+  return 0
+}
+
+# Detect before UAC: an already-current install or a missing full installer must
+# not require elevation, and the selected mode is passed to the child unchanged.
+if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or $ForceBuild -or $DeploymentPlanApplied -or $InstallerPath)) {
+  $installHost = Join-Path $installDir 'ai-cg-studio-desktop.exe'
+  $installationState = if (Test-Path -LiteralPath $installHost -PathType Leaf) { 'installed' } elseif ($installRegistered) { 'repair' } else { 'fresh' }
+  $stateText = switch ($installationState) {
+    'installed' { '已安装' }
+    'repair' { '安装登记存在但宿主缺失' }
+    default { '未安装' }
+  }
+  $running = @(Get-DesktopInstallationProcesses -InstallDir $installDir)
+  $hosts = @($running | Where-Object { $_.ProcessName -eq 'ai-cg-studio-desktop' })
+  $runningText = if ($hosts.Count) { "运行中（宿主 PID $($hosts.Id -join ', ')）" } elseif ($running.Count) { '网关运行中但宿主未运行' } else { '未运行' }
+  Write-Host "[desktop:detect] 安装目录：$installDir（$stateText；桌面端$runningText）" -ForegroundColor Cyan
+  Write-DeploymentLog "[desktop:detect] 安装目录：$installDir（$stateText；桌面端$runningText）"
+  $bindingScripts = @('desktop-build-binding.js', 'desktop-installer-binding.js')
+  if ($bindingScripts | Where-Object { -not (Test-Path -LiteralPath (Join-Path $root "scripts\lib\$_")) }) {
+    Write-Host '[desktop:detect] 生成部署检测运行时 ...' -ForegroundColor DarkGray
+    Push-Location $root
+    try { Invoke-DesktopNpm -Arguments @('run','build:runtime') } finally { Pop-Location }
+  }
+  if ($installationState -eq 'fresh' -or $installationState -eq 'repair') {
+    $InstallerPath = Select-CurrentFullInstaller -State $stateText
+    $UseInstaller = $true
+    Write-Host '[desktop:auto] 选择：发行完整包安装/修复' -ForegroundColor Cyan
+    Write-DeploymentLog '[desktop:auto] 选择：发行完整包安装/修复'
+  } else {
+    $planJson = & node (Join-Path $root 'scripts\lib\desktop-build-binding.js') --deployment-plan $root $installDir 1 2>&1
+    if ($LASTEXITCODE -ne 0) { throw "部署检测失败：$($planJson -join ' ')" }
+    $plan = ($planJson | Out-String) | ConvertFrom-Json
+    $modeText = switch ($plan.mode) {
+      'current' { '无需部署，仅确认运行状态' }
+      'resources' { '仅同步已绑定静态资源' }
+      'installer' { '复用已绑定升级包' }
+      'package' { '复用原生构建，重新封装升级包' }
+      'build' { '重新构建并安装升级包' }
+      default { $plan.mode }
+    }
+    Write-Host "[desktop:auto] 选择：$modeText" -ForegroundColor Cyan
+    Write-Host "[desktop:auto] 原因：$($plan.reason)" -ForegroundColor DarkGray
+    Write-DeploymentLog "[desktop:auto] 选择：$modeText；原因：$($plan.reason)"
+    switch ($plan.mode) {
+      'current' {
+        if ($Cleanup -or $SyncLocalModels) {
+          Write-Host '[desktop:auto] 已是最新，但请求了 -Cleanup 或 -SyncLocalModels；改为资源同步执行附加操作。' -ForegroundColor Yellow
+          $ResourcesOnly = $true
+          $SkipBuild = $true
+          if ($QuietInstall) {
+            Write-Host '[desktop:auto] 资源同步不使用安装器，已忽略 -QuietInstall。' -ForegroundColor Yellow
+            $QuietInstall = $false
+          }
+        } else {
+          $null = Complete-CurrentDeployment
+          exit 0
+        }
+      }
+      'resources' {
+        $ResourcesOnly = $true
+        $SkipBuild = $true
+        if ($QuietInstall) {
+          Write-Host '[desktop:auto] 资源同步不使用安装器，已忽略 -QuietInstall。' -ForegroundColor Yellow
+          $QuietInstall = $false
+        }
+      }
+      'installer' {
+        if (-not $plan.installer) { throw '部署检测选择了升级包，但没有返回安装包路径。' }
+        $UseInstaller = $true
+        $InstallerPath = $plan.installer
+      }
+      'package' { $SkipBuild = $true }
+      'build' { }
+      default { throw "未知的部署选择：$($plan.mode)" }
+    }
+  }
+  $DeploymentPlanApplied = $true
+}
+
 if ($StartupRepair -and $UseInstaller) { throw '-StartupRepair 与 -UseInstaller 不能同时使用' }
 if ($ResourcesOnly -and $UseInstaller) { throw '-ResourcesOnly 与 -UseInstaller 不能同时使用' }
 $buildUpgrade = -not ($UseInstaller -or $ResourcesOnly -or $StartupRepair)
@@ -56,7 +250,7 @@ if ($InstallerPath -and -not $UseInstaller) { throw '-InstallerPath 仅可与 -U
 $setup = $null
 if ($UseInstaller) {
   $setup = if ($InstallerPath) { Get-Item -LiteralPath $InstallerPath -ErrorAction Stop } else {
-    $version = (Get-Content -LiteralPath (Join-Path $root 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
+    $version = Get-DesktopProductVersion
     Get-ChildItem -Path (Join-Path $root 'runtime\desktop-updates') -Filter "*_${version}_x64*-upgrade-setup.exe" -ErrorAction SilentlyContinue |
       Sort-Object LastWriteTime -Descending | Select-Object -First 1
   }
@@ -65,8 +259,6 @@ if ($UseInstaller) {
   # Keep the exact candidate across UAC, even if another build finishes meanwhile.
   $InstallerPath = $setup.FullName
 }
-
-. (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
 function Assert-FixedInstaller {
   param([switch]$Installed)
   $bindingArgs = @((Join-Path $root 'scripts\lib\desktop-installer-binding.js'), 'verify', $InstallerPath, $InstallerManifestSha256)
@@ -95,7 +287,6 @@ if ($UseInstaller) {
   }
   Assert-FixedInstaller
 }
-$configRoot = Join-Path $env:APPDATA 'com.aics.studio'
 # Read-only preflight: UAC denial, missing payload or build failure must leave
 # the user's running application untouched. Actual drain occurs before writes.
 if (@(Get-DesktopInstallationProcesses -InstallDir $installDir).Count -gt 0) {
@@ -117,10 +308,9 @@ $STALE_ASSETS = @(
 
 # 提权：注意要把已传入的参数一起带过去，否则 UAC 后的新进程会丢掉它们
 # （旧版这里只传脚本路径，导致 -SkipBuild 静默失效、白白重跑一次 build）。
-$principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+if (-not $isElevated) {
   Write-Host '需要管理员权限，正在弹出 UAC 授权窗口，请点击"是"' -ForegroundColor Yellow
-  $argList = @('-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
+  $argList = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$PSCommandPath`"")
   if ($SkipBuild)    { $argList += '-SkipBuild' }
   if ($ForceBuild)   { $argList += '-ForceBuild' }
   if ($Cleanup)      { $argList += '-Cleanup' }
@@ -132,6 +322,11 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   if ($NoRestart)    { $argList += '-NoRestart' }
   if ($StartupRepair) { $argList += '-StartupRepair' }
   if ($SyncLocalModels) { $argList += '-SyncLocalModels' }
+  if ($DeploymentPlanApplied) { $argList += '-DeploymentPlanApplied' }
+  # The elevated process must not launch the desktop client: its window station
+  # may differ from the interactive one, making the maintenance handshake fail.
+  # It installs and exits; this non-elevated parent starts the client afterwards.
+  $argList += '-DeferRestart'
   $argList += @('-InstallDir', "`"$installDir`"")
   # Start-Process -Wait includes descendants, so the restarted client would
   # keep this wrapper alive. Wait only for the elevated deployment process.
@@ -144,7 +339,14 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
       $logReader = New-Object IO.StreamReader($logStream, [Text.Encoding]::UTF8, $true)
       $null = $logReader.ReadToEnd()
     }
-    $elevatedProcess = Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ') -PassThru
+    try {
+      $elevatedProcess = Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ') -PassThru
+    } catch {
+      $canceled = $_.Exception.Message -match 'cancel|canceled|cancelled|取消' -or
+        ($_.Exception.PSObject.Properties.Name -contains 'NativeErrorCode' -and $_.Exception.NativeErrorCode -eq 1223)
+      if ($canceled) { Write-Host '已取消 UAC 授权，部署未开始。' -ForegroundColor Yellow; exit 1223 }
+      throw
+    }
     # Retain the handle before exit so Windows PowerShell 5.1 can read ExitCode.
     $null = $elevatedProcess.Handle
     do {
@@ -159,6 +361,15 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
     if ($null -eq $deploymentExitCode) { throw 'DESKTOP_DEPLOY_EXITCODE: 无法读取提权部署进程的退出码。' }
     if ($deploymentExitCode -eq 73) { Write-Host '另一个部署正在执行，请等待它完成后再同步。' -ForegroundColor Yellow }
   } finally { if ($logReader) { $logReader.Dispose() }; if ($elevatedProcess) { $elevatedProcess.Dispose() } }
+  if ($deploymentExitCode -eq 0 -and -not $NoRestart) {
+    try {
+      $null = Start-DesktopClientAndWait
+    } catch {
+      Write-Host "[desktop:failed] $($_.Exception.Message)" -ForegroundColor Red
+      Write-DeploymentLog "[desktop:failed] $($_.Exception.Message)"
+      $deploymentExitCode = 1
+    }
+  }
   exit $deploymentExitCode
 }
 
@@ -182,19 +393,6 @@ function Write-DesktopDuration([string]$Phase) {
   Write-Host ('[desktop:timing] {0}: {1:F2}s' -f $Phase, $phaseTimer.Elapsed.TotalSeconds)
   $phaseTimer.Restart()
 }
-function Invoke-DesktopNpm {
-  param([string[]]$Arguments)
-  # Windows PowerShell turns native stderr into ErrorRecord objects. Stream it
-  # as progress text and judge success only by the native process exit code.
-  $previousPreference = $ErrorActionPreference
-  $npmCommand = Get-Command npm.cmd -CommandType Application -ErrorAction Stop
-  try {
-    $ErrorActionPreference = 'Continue'
-    & $npmCommand.Source @Arguments 2>&1 | ForEach-Object { Write-Host $_.ToString() }
-    $buildExitCode = $LASTEXITCODE
-  } finally { $ErrorActionPreference = $previousPreference }
-  if ($buildExitCode -ne 0) { throw "桌面构建/封装失败（退出码 $buildExitCode）；未关闭应用。" }
-}
 $stageGateway = Join-Path $root 'desktop-tauri\src-tauri\resources\gateway'
 $hostExecutable = $null
 # Validate selected source/build/distribution before drain and before restart.
@@ -210,7 +408,7 @@ function Assert-CurrentBuildBinding {
 if ($buildUpgrade) {
   Write-Host '[1/6] 准备本机快速构建与轻量升级包 ...' -ForegroundColor Cyan
   $candidate = $null
-  if (-not $SkipBuild -and -not $ForceBuild) {
+  if (-not $SkipBuild -and -not $ForceBuild -and -not $DeploymentPlanApplied) {
     if (-not (Test-Path -LiteralPath (Join-Path $root 'scripts\lib\desktop-build-binding.js'))) {
       Push-Location $root
       try { Invoke-DesktopNpm -Arguments @('run','build:runtime') } finally { Pop-Location }
@@ -225,7 +423,7 @@ if ($buildUpgrade) {
       'build' { }
       default { throw '未知的部署选择，部署已停止。' }
     }
-  } else { Write-Host $(if ($ForceBuild) { '[desktop:auto] 按 -ForceBuild 重建' } else { '[desktop:auto] 按 -SkipBuild 复用原生构建并重新封装' }) }
+  } else { Write-Host $(if ($ForceBuild) { '[desktop:auto] 按 -ForceBuild 重建' } elseif ($SkipBuild) { '[desktop:auto] 按 -SkipBuild 复用原生构建并重新封装' } else { '[desktop:auto] 按检测结果重新构建桌面端' }) }
   if (-not $candidate) {
     Push-Location $root
     try {
@@ -265,9 +463,12 @@ if ($Cleanup) {
 Write-Host '[3/6] 安装边界核验完成' -ForegroundColor DarkGray
 if ($installWithPackage) {
   Write-Host '[4/6] 运行本次已绑定的安装包 ...' -ForegroundColor Cyan
+  # NSIS requires /D= last and unquoted; the modern wrapper forwards it and
+  # also uses it as the default directory for the interactive installer.
+  $installerArgs = @("/D=$installDir")
   $setupProcess = if ($QuietInstall) {
-    Start-Process -FilePath $setup.FullName -ArgumentList "/S /D=$installDir" -WindowStyle Hidden -Wait -PassThru
-  } else { Start-Process -FilePath $setup.FullName -Wait -PassThru }
+    Start-Process -FilePath $setup.FullName -ArgumentList (@('/S') + $installerArgs) -WindowStyle Hidden -Wait -PassThru
+  } else { Start-Process -FilePath $setup.FullName -ArgumentList $installerArgs -Wait -PassThru }
   if ($setupProcess.ExitCode -ne 0) { throw "安装程序失败，退出码 $($setupProcess.ExitCode)" }
 } else {
   Write-Host '[4/6] 同步已绑定的 Rust 静态资源 ...' -ForegroundColor Cyan
@@ -323,12 +524,13 @@ foreach ($name in @('Cache','Code Cache','GPUCache')) {
   $target = Resolve-DesktopChildPath -Root $webviewBase -Relative $name
   if (Test-Path -LiteralPath $target) { Remove-Item -LiteralPath $target -Recurse -Force -ErrorAction SilentlyContinue }
 }
-if (-not $NoRestart) {
-  Write-Host '[6/6] 启动桌面端 ...' -ForegroundColor Cyan
-  Start-Process explorer.exe -ArgumentList "`"$installDir\ai-cg-studio-desktop.exe`""
-  $startup = Wait-DesktopDeploymentReady -InstallDir $installDir -ConfigRoot $configRoot
-  Write-Host "宿主与所属 Rust 网关已就绪（PID $($startup.hostPid)）" -ForegroundColor Green
-} else { Write-Host '[6/6] 按 -NoRestart 保持退出' -ForegroundColor DarkGray }
+if ($NoRestart) {
+  Write-Host '[6/6] 按 -NoRestart 保持退出' -ForegroundColor DarkGray
+} elseif ($DeferRestart) {
+  Write-Host '[6/6] 部署完成；由非提权父进程启动桌面端 ...' -ForegroundColor DarkGray
+} else {
+  $null = Start-DesktopClientAndWait
+}
 Write-DesktopDuration '缓存与启动确认'
 Write-Host ('[desktop:timing] 部署总耗时: {0:F2}s' -f $deployTimer.Elapsed.TotalSeconds)
 } catch {

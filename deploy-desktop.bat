@@ -2,7 +2,7 @@
 chcp 65001 >nul
 echo === HUIYU desktop deployment ===
 echo.
-echo Default: verify and reuse matching package/build; rebuild only when needed.
+echo Default: inspect installed state, then choose no-op/resources/upgrade/package/rebuild.
 echo.
 echo Options:
 echo   -SkipBuild Reuse native build    -Cleanup Remove obsolete resources
@@ -13,7 +13,8 @@ echo   -QuietInstall Silent installer after Windows UAC consent
 echo   -StartupRepair Repair startup resources and shortcuts
 echo   -InstallDir Select the installed application directory
 echo   -InstallerPath Select an exact bound EXE with -UseInstaller
-echo                  Required for a full release installer / fresh install
+echo                  Fresh/repair auto-uses the current full package if present;
+echo                  keep its .deployment.json beside runtime\desktop-updates or Downloads.
 echo.
 echo Example: deploy-desktop.bat -QuietInstall -NoRestart
 echo.

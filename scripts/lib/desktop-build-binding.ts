@@ -210,7 +210,11 @@ function verifyDeployment(root:string,payload?:string){
   }
   return receipt;
 }
-function deploymentPlan(root: string) {
+function deploymentPlan(root: string, options: { installDir?: string; installed?: boolean } = {}) {
+  const installed = options.installed ?? (options.installDir
+    ? fs.existsSync(path.join(options.installDir, 'ai-cg-studio-desktop.exe'))
+    : undefined);
+  if (installed === false) return { mode:'fresh', reason:'未检测到现有安装，需要发行完整包' };
   let receipt: ReturnType<typeof verifyBuild>;
   try { receipt = verifyBuild(root); }
   catch (error) { return { mode:'build', reason:error instanceof Error ? error.message : String(error) }; }
@@ -218,13 +222,43 @@ function deploymentPlan(root: string) {
   const installer = path.join(root, 'runtime/desktop-updates', `AI-CG-Studio_${version}_x64-local-upgrade-setup.exe`);
   try {
     verifyBoundDistribution(root, receipt, installer);
-    return { mode:'installer', installer, reason:'源码、SDK、原生构建和升级包绑定均匹配，复用现有升级包' };
   } catch (error) {
     return { mode:'package', reason:`原生构建匹配，仅重新封装升级包：${error instanceof Error ? error.message : String(error)}` };
   }
+  if (options.installDir && installed) {
+    try {
+      const installedState = installerBinding.inspectInstalled(installer, options.installDir);
+      const detail = {
+        fileCount: installedState.fileCount,
+        mismatchCount: installedState.mismatchCount,
+        runtimeMismatchCount: installedState.runtimeMismatchCount,
+        mismatches: installedState.mismatches,
+      };
+      if (installedState.mismatchCount === 0) {
+        return { mode:'current', installer, ...detail,
+          reason:`已安装文件与当前源码、构建和升级包完全一致（${installedState.fileCount} 项），无需重复部署` };
+      }
+      if (installedState.runtimeMismatchCount === 0) {
+        return { mode:'resources', installer, ...detail,
+          reason:`已安装程序、后端和原生库与当前构建一致，仅 ${installedState.mismatchCount} 项静态资源不同；自动改为资源同步` };
+      }
+      return { mode:'installer', installer, ...detail,
+        reason:`已安装程序、后端或原生库有 ${installedState.runtimeMismatchCount} 项不同，需要使用升级包` };
+    } catch (error) {
+      return { mode:'installer', installer,
+        reason:`升级包已绑定，但无法核对已安装文件，按升级安装处理：${error instanceof Error ? error.message : String(error)}` };
+    }
+  }
+  return { mode:'installer', installer, reason:'源码、SDK、原生构建和升级包绑定均匹配，复用现有升级包' };
 }
 if(require.main===module){
-  try{const args=process.argv.slice(2);if(args[0]==='--deployment-plan'&&args.length===2)console.log(JSON.stringify(deploymentPlan(path.resolve(args[1]))));else{if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}}
+  try{const args=process.argv.slice(2);if(args[0]==='--deployment-plan'){
+    if(args.length<2||args.length>4)throw Error('Expected source root, optional installation directory and installed flag (0|1)');
+    if(args[3]!==undefined&&args[3]!=='0'&&args[3]!=='1')throw Error('Installed flag must be 0 or 1');
+    const installDir=args[2]?path.resolve(args[2]):undefined;
+    const installed=args[3]===undefined?undefined:args[3]==='1';
+    console.log(JSON.stringify(deploymentPlan(path.resolve(args[1]),{installDir,installed})));
+  }else{if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}}
   catch(error){console.error(error instanceof Error?error.message:String(error));process.exitCode=1;}
 }
 export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDerivedPayloads, bindDistribution, verifyDistribution };

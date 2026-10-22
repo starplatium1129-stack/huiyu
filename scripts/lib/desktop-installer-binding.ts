@@ -59,7 +59,7 @@ export function writeInstallerManifest(root: string, receipt: unknown, installer
 
 function validateManifest(manifest: DeploymentManifest, installer: string) {
   if (manifest.schemaVersion !== 1 || manifest.kind !== 'desktop-installer-deployment' || !identity.HASH.test(manifest.sourceSha256)
-    || manifest.installer?.path !== path.basename(installer) || !Array.isArray(manifest.files) || !manifest.files.length) throw Error('安装校验清单格式无效');
+    || manifest.installer?.path?.toLowerCase() !== path.basename(installer).toLowerCase() || !Array.isArray(manifest.files) || !manifest.files.length) throw Error('安装校验清单格式无效');
   const names = new Set<string>();
   for (const file of [manifest.installer, ...manifest.files]) {
     safe.relative(file.path);
@@ -75,6 +75,9 @@ function verifyInstaller(installer: string, expectedManifestSha256?: string, ins
   const record = safe.readJson(directory, path.basename(manifestPath(installer)));
   if (expectedManifestSha256 && record.entry.sha256 !== expectedManifestSha256) throw Error('本次安装校验清单已变化，部署停止');
   const manifest = record.value as DeploymentManifest;
+  if (manifest?.installer?.path && manifest.installer.path.toLowerCase() !== path.basename(installer).toLowerCase()) {
+    throw Error(`安装包文件名与部署清单不一致：清单为 ${manifest.installer.path}；请保持发行附件原名（浏览器重复下载可能追加 (1)）。`);
+  }
   validateManifest(manifest, installer);
   checkedFile(directory, manifest.installer);
   if (installedRoot) {
@@ -84,6 +87,33 @@ function verifyInstaller(installer: string, expectedManifestSha256?: string, ins
     for (const file of manifest.files) checkedFile(root, file);
   }
   return { installer, manifestSha256: record.entry.sha256, installerSha256: manifest.installer.sha256, fileCount: manifest.files.length };
+}
+
+/** Read-only comparison used to choose between a no-op, resource sync and a
+ * full installer run. Executable/runtime mismatches require the installer;
+ * everything else can be refreshed from the bound staged resources. */
+export function inspectInstalled(installer: string, installedRoot: string) {
+  installer = path.resolve(installer);
+  const verified = verifyInstaller(installer);
+  const directory = safe.rootPath(path.dirname(installer));
+  const manifest = safe.readJson(directory, path.basename(manifestPath(installer))).value as DeploymentManifest;
+  const root = safe.rootPath(installedRoot);
+  const mismatches = manifest.files.filter(file => {
+    try {
+      const actual = safe.fileEntry(root, file.path);
+      return actual.status !== 'file' || actual.bytes !== file.bytes || actual.sha256 !== file.sha256;
+    } catch { return true; }
+  }).map(file => file.path);
+  const isRuntime = (file: string) => file === 'ai-cg-studio-desktop.exe' || file === 'gateway/huiyu-runtime.exe' || file.startsWith('gateway/native/');
+  const runtimeMismatches = mismatches.filter(isRuntime);
+  return {
+    installer: verified.installer,
+    manifestSha256: verified.manifestSha256,
+    fileCount: verified.fileCount,
+    mismatchCount: mismatches.length,
+    runtimeMismatchCount: runtimeMismatches.length,
+    mismatches: mismatches.slice(0, 8),
+  };
 }
 
 function freezeInstaller(installer: string, directory: string, manifestSha256: string) {
@@ -105,12 +135,22 @@ if (require.main === module) {
       const root = args[0];
       if (!root || args.length !== 1) throw Error('旧包准备需要原构建回执所在目录');
       if (!fs.existsSync(manifestPath(installer))) {
-        const receipt = safe.readJson(root, 'runtime/delivery-evidence/desktop-build-binding.json', true).value;
-        writeInstallerManifest(root, receipt, path.resolve(installer));
+        let receipt: any;
+        try {
+          receipt = safe.readJson(root, 'runtime/delivery-evidence/desktop-build-binding.json', true).value;
+        } catch (error) {
+          throw Error(`安装包缺少同名 .deployment.json，当前工作区也没有可用的构建回执；请从发行附件同时保留该清单，或在本机构建后使用。`, { cause: error });
+        }
+        try {
+          writeInstallerManifest(root, receipt, path.resolve(installer));
+        } catch (error) {
+          throw Error(`安装包未登记在当前构建回执中，无法生成部署清单；请使用与当前源码匹配的构建产物。`, { cause: error });
+        }
       }
       console.log(JSON.stringify(verifyInstaller(installer)));
     } else if (action === 'freeze' && args.length === 2) console.log(JSON.stringify(freezeInstaller(installer, args[0], args[1])));
     else if (action === 'verify' && args.length <= 2) console.log(JSON.stringify(verifyInstaller(installer, args[0] || undefined, args[1] || undefined)));
-    else throw Error('仅支持固定安装包 prepare / freeze / verify');
+    else if (action === 'inspect' && args.length === 1) console.log(JSON.stringify(inspectInstalled(installer, args[0])));
+    else throw Error('仅支持固定安装包 prepare / freeze / verify / inspect');
   } catch (error) { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; }
 }

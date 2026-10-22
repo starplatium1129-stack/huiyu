@@ -155,7 +155,7 @@ function publishRelease(version: any, head: any, files: any) {
   const tag = releaseTag(version);
   const baseNotes = path.join(ROOT, 'docs/releases', `${tag}.md`);
   if (!fs.existsSync(baseNotes)) throw new Error(`缺少版本说明：${baseNotes}`);
-  const packageHelp = `> 新用户或资源修复请选择 **full 完整包**；已有完整安装请选择 **upgrade 轻量升级包**。样张素材继续独立提供。\n\n`;
+  const packageHelp = `> 新用户或资源修复请选择 **full 完整包**；已有完整安装请选择 **upgrade 轻量升级包**。样张素材继续独立提供。\n> 使用部署脚本修复时，请保留安装包旁的同名 \`.deployment.json\`；它记录安装包及安装后文件身份。\n\n`;
   const notes = (manual ? `${MANUAL_MARKER}\n> 本次为手动安装版：自动更新通道继续保留上一份已签名版本，待原签名主机补签后启用。安装包未签名，SHA-256 用于文件完整性校验。\n\n` : '') + packageHelp + fs.readFileSync(baseNotes, 'utf8');
   const outputDir = OUT_DIR;
   fs.mkdirSync(outputDir, { recursive: true });
@@ -281,9 +281,13 @@ async function main() {
     const executable = path.join(OUT_DIR, exeName);
     await timeDesktopBuild(`${variant.kind} installer wrapper`, () => modern.buildModernInstaller({ payload:variant.payload, output:executable, upgradeVerifier:variant.verifier }));
     const shaPath = `${executable}.sha256`;
+    const deploymentPath = `${executable}.deployment.json`;
     fs.writeFileSync(shaPath, `${hashInstallerFile(executable, 'sha256').toString('hex').toUpperCase()}  ${exeName}\n`);
     await timeDesktopBuild(`${variant.kind} distribution verification`, () => binding.verifyDistribution(ROOT, executable));
-    files.push(executable, shaPath);
+    if (!fs.existsSync(deploymentPath)) fail(`安装包缺少部署清单：${path.basename(deploymentPath)}`);
+    // Keep the manifest beside the downloaded EXE so fresh machines can use
+    // -UseInstaller without the original build receipt.
+    files.push(executable, shaPath, deploymentPath);
     if (!MANUAL) {
       execFileSync(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), 'signer', 'sign', executable], {
         cwd:ROOT, stdio:'inherit', windowsHide:true, env:signerEnv,
