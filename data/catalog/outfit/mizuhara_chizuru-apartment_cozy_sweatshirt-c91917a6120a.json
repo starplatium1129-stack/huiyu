@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mizuhara_chizuru/apartment_cozy_sweatshirt",
+  "revision": 1,
+  "sortOrder": 1594,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "mizuhara_chizuru",
+    "outfit": {
+      "id": "apartment_cozy_sweatshirt",
+      "name": "公寓居家乐宽松卫衣与运动短裤",
+      "tokens": [
+        "sweatshirt",
+        "oversized_sweatshirt",
+        "grey_sweatshirt",
+        "shorts",
+        "bare_legs",
+        "slippers"
+      ],
+      "prose": "A relaxed heather-grey oversized pullover sweatshirt draped loosely over sporty black lounge shorts, bare legs, and indoor slippers in her private apartment",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

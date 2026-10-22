@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "firefly_hsr/sam_pilot_plugsuit",
+  "revision": 1,
+  "sortOrder": 1586,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "firefly_hsr",
+    "outfit": {
+      "id": "sam_pilot_plugsuit",
+      "name": "萨姆驾驶员特制机械紧身服",
+      "tokens": [
+        "bodysuit",
+        "plugsuit",
+        "sci-fi",
+        "latex",
+        "black_bodysuit",
+        "green_trim",
+        "glowing_trim",
+        "gloves",
+        "collarbone"
+      ],
+      "prose": "A sleek high-tech pilot plugsuit sculpted in black and silver composite plating with glowing emerald telemetry lines tracing along her slender waist and collarbones",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

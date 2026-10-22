@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "ichinose_honami/cozy_winter_duffle_coat",
+  "revision": 1,
+  "sortOrder": 1597,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "ichinose_honami",
+    "outfit": {
+      "id": "cozy_winter_duffle_coat",
+      "name": "冬日暖棕牛角扣大衣与红围巾",
+      "tokens": [
+        "duffel_coat",
+        "coat",
+        "brown_coat",
+        "turtleneck",
+        "scarf",
+        "red_scarf",
+        "tights",
+        "black_tights",
+        "boots"
+      ],
+      "prose": "A warm camel-brown duffle coat with horn toggle buttons over a soft knit turtleneck sweater, fluffy crimson wool scarf, dark tights, and leather winter boots",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

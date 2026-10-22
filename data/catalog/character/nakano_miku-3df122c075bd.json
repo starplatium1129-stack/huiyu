@@ -1,0 +1,169 @@
+{
+  "kind": "character",
+  "id": "nakano_miku",
+  "revision": 1,
+  "sortOrder": 178,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_miku",
+    "profile": {
+      "id": "nakano_miku",
+      "name": "中野三玖",
+      "alias": [
+        "Nakano Miku",
+        "三玖",
+        "Miku",
+        "三玖天下第一"
+      ],
+      "type": "popular",
+      "icon": "🎧",
+      "portrait": {
+        "image": "../assets/characters/popular-nakano_miku.png?v=1",
+        "alt": "中野三玖 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "栗棕微卷中长发 · 遮眼斜刘海",
+        "hair_color": "栗棕色 / 浅棕",
+        "eyes": "澄澈群青蓝瞳",
+        "hairstyle": "披肩中长发 · 遮盖右侧眼睛的斜长刘海 · 颈间挂蓝黑色大耳机",
+        "uniform": "浅绿针织开衫 · 黑色连裤袜制服",
+        "expression": "文静害羞 · 略带内向 · 赌气时鼓起可爱的包子脸",
+        "style": "gentle historic-loving shy quintuplet heroine",
+        "signature": "栗棕发遮眼刘海、颈间蓝黑大耳机、黑丝连裤袜与鼓嘴包子脸"
+      },
+      "personality": [
+        "内向文静不善表达",
+        "热爱日本战国武将（历女）",
+        "为了喜欢的人拼命苦练料理",
+        "情感专一坚定勇于表白",
+        "容易吃醋害羞鼓起包子脸"
+      ],
+      "likes": [
+        "日本战国历史与武将名鉴",
+        "制作抹茶面包与点心",
+        "用耳机听历史广播",
+        "与风太郎在一起的安静时光"
+      ],
+      "classic_cg": {
+        "title": "天台微风中的心意传达",
+        "description": "放学后的旭高校天台，黄昏微风轻轻吹起栗色发丝与水蓝领结。少女微红着脸颊，将双手背在身后鼓起全部勇气注视着眼前的少年——「我……喜欢你。」"
+      },
+      "identity": {
+        "role": "中野家五胞胎三女",
+        "age": "17岁（高中生）",
+        "occupation": "高中生 / 抹茶烘焙师学徒",
+        "faction": "旭高校 / 中野五胞胎"
+      },
+      "tags": [
+        "栗发",
+        "遮眼刘海",
+        "蓝瞳",
+        "耳机娘",
+        "黑丝连裤袜",
+        "历女",
+        "包子脸"
+      ],
+      "bg_story": "中野三玖是《五等分的新娘》的女主角之一，中野家五胞胎中的三女。平时性格沉默寡言且对自己的体能和学习缺乏自信，却有着狂热喜爱战国武将的「历女」反差一面。在与家庭教师上杉风太郎相处中逐渐打开心扉，为了成为配得上心上人的优秀女性而努力自学烘焙面包。是五姐妹中最早确认心意并付出全部真心的坚强女孩，在读者群体中拥有极高的人气与「三玖天下第一」的美誉。",
+      "palette": [
+        "抹茶绿",
+        "深海蓝",
+        "栗色棕"
+      ],
+      "weather": [
+        "天台夕照",
+        "冬日细雪",
+        "夏夜花火"
+      ],
+      "speech": "不管别人怎么看……战国武将就是很帅气啊。还有……做面包，我也一直在努力练习哦。",
+      "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
+      "traits": [
+        "nakano_miku",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "medium_hair",
+        "hair_over_one_eye",
+        "blue_eyes",
+        "headphones",
+        "around_neck",
+        "5-toubun_no_hanayome"
+      ],
+      "accent_color": "#3b82f6",
+      "bg_color": "#1e1b4b"
+    },
+    "popular": {
+      "id": "nakano_miku",
+      "displayName": "中野三玖",
+      "originalName": "中野 三玖 (Nakano Miku)",
+      "franchise": "The Quintessential Quintuplets",
+      "aliases": [
+        "nakano_miku",
+        "miku_nakano",
+        "miku",
+        "nakano",
+        "中野三玖",
+        "三玖",
+        "三玖天下第一",
+        "the quintessential quintuplets",
+        "5-toubun no hanayome"
+      ],
+      "identityProse": "Adult Nakano Miku from The Quintessential Quintuplets, a quiet, bashful, and devoted girl with medium chestnut-brown hair parted over one eye, serene deep-blue eyes, signature over-ear blue-and-black wireless headphones rested around her slender neck, and a subtle sweet pout.",
+      "identityTokens": [
+        "nakano_miku",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "medium_hair",
+        "hair_over_one_eye",
+        "blue_eyes",
+        "headphones",
+        "around_neck",
+        "slender",
+        "5-toubun_no_hanayome"
+      ],
+      "exactTokens": [
+        "nakano_miku"
+      ],
+      "exactPrefixes": [
+        "miku_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "asahi_high_school_uniform",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代日常+校园恋爱（五等分的新娘）",
+        "era": "当代",
+        "formNotes": "栗棕色中发+单侧遮眼斜刘海+深蓝瞳+颈间蓝黑头戴式耳机；内向文静战国武将迷（历女）；旭高校五胞胎三女；黑丝连裤袜/浅绿毛衣制服/烘焙围裙/战国羽织/日式浴衣；标志性害羞鼓腮包子脸",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "Bibury Animation Studios, Tezuka Productions, official anime screencap",
+      "curatedArtistStyles": [
+        "haruba_negi",
+        "kantoku",
+        "rella",
+        "tiv"
+      ],
+      "characterTokens": [
+        "nakano_miku"
+      ],
+      "copyrightTokens": [
+        "5-toubun_no_hanayome"
+      ]
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "yamada_ryo_bass_groove",
+  "revision": 1,
+  "sortOrder": 1829,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "yamada_ryo_bass_groove",
+    "characterId": "yamada_ryo",
+    "title": "山田凉 · 地下律动的冷调低音",
+    "category": "舞台演出",
+    "outfitId": "live_grunge_black",
+    "description": "【山田凉 · 地下律动的冷调低音】在STARRY昏暗狂热的现场，冷青色的侧逆光勾勒出凉修长的手臂与侧颜。她微微闭上双眼，怀中白色Fender贝斯爆发出一波波震撼心房的深沉低音，嘴角浮现出一抹自信而从容的微弧——「尽情沉醉在低音里吧，这就是我们的节奏。」",
+    "action": "微闭双眼全神贯注拨动贝斯琴弦，身姿修长律动",
+    "location": "Livehouse STARRY 演出舞台",
+    "timeOfDay": "夜晚",
+    "mood": "沉静酷帅",
+    "lighting": "冷青色侧射灯与深蓝逆光剪影",
+    "camera": "medium shot, low angle, cinematic framing",
+    "promptTokens": [
+      "playing bass",
+      "bass guitar",
+      "fender precision bass",
+      "closed eyes",
+      "stage",
+      "blue lighting",
+      "rim light",
+      "medium shot",
+      "from below"
+    ],
+    "sceneTags": [
+      "stage",
+      "bass_guitar",
+      "fender",
+      "instrument",
+      "wristband",
+      "chain",
+      "blue_light",
+      "cool_expression"
+    ],
+    "promptProse": "She leans into her white Fender bass guitar with eyes half-closed beneath the cold blue stage rims, plucking the thick strings with confident effortless precision.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

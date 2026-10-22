@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nakano_nino/yukata_summer_fireworks",
+  "revision": 1,
+  "sortOrder": 1582,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "nakano_nino",
+    "outfit": {
+      "id": "yukata_summer_fireworks",
+      "name": "夏夜祭典深绛紫金鱼日式浴衣",
+      "tokens": [
+        "yukata",
+        "japanese_clothes",
+        "purple_yukata",
+        "goldfish_print",
+        "obi",
+        "yellow_obi",
+        "geta",
+        "folding_fan"
+      ],
+      "prose": "A rich deep-purple cotton summer yukata patterned with swimming red goldfish and morning glory blossoms, a vibrant golden-yellow tied obi sash, wooden geta, and holding an elegant folding paper fan",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

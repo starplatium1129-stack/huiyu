@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "franchise": "Classroom of the Elite",
+  "characters": [
+    {
+      "id": "ichinose_honami",
+      "displayName": "一之濑帆波",
+      "originalName": "一之瀬 帆波 (Ichinose Honami)",
+      "franchise": "Classroom of the Elite",
+      "aliases": [
+        "ichinose_honami",
+        "honami_ichinose",
+        "ichinose",
+        "honami",
+        "一之濑帆波",
+        "一之濑",
+        "帆波",
+        "classroom of the elite",
+        "youkoso jitsuryoku"
+      ],
+      "identityProse": "Ichinose Honami from Classroom of the Elite, an exceptionally radiant, gentle, and curvaceous girl with voluminous strawberry-blonde hair reaching her shoulders, warm sky-blue eyes, a generously feminine figure, and a caring, heart-melting smile.",
+      "identityTokens": [
+        "ichinose_honami",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "medium_hair",
+        "blue_eyes",
+        "large_breasts",
+        "curvy",
+        "youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e"
+      ],
+      "exactTokens": [
+        "ichinose_honami"
+      ],
+      "exactPrefixes": [
+        "ichinose_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "an_advanced_high_uniform",
+      "outfits": [
+        {
+          "id": "an_advanced_high_uniform",
+          "name": "高度育成高中正统红西装百褶裙制服",
+          "tokens": [
+            "school_uniform",
+            "red_jacket",
+            "blazer",
+            "collared_shirt",
+            "white_shirt",
+            "blue_necktie",
+            "pleated_skirt",
+            "white_skirt",
+            "thighhighs",
+            "black_thighhighs",
+            "loafers"
+          ],
+          "prose": "The Advanced Nurturing High School uniform with a tailored crimson-red blazer over a crisp white collared blouse, blue necktie, white pleated mini skirt, black thigh-high socks, and polished loafers",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "cozy_winter_duffle_coat",
+          "name": "冬日暖棕牛角扣大衣与红围巾",
+          "tokens": [
+            "duffel_coat",
+            "coat",
+            "brown_coat",
+            "turtleneck",
+            "scarf",
+            "red_scarf",
+            "tights",
+            "black_tights",
+            "boots"
+          ],
+          "prose": "A warm camel-brown duffle coat with horn toggle buttons over a soft knit turtleneck sweater, fluffy crimson wool scarf, dark tights, and leather winter boots",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "summer_resort_white_bikini",
+          "name": "豪华游轮纯白分体系带比基尼",
+          "tokens": [
+            "swimsuit",
+            "bikini",
+            "white_bikini",
+            "string_bikini",
+            "halterneck",
+            "cleavage",
+            "bare_shoulders",
+            "bare_legs"
+          ],
+          "prose": "A pure white string halterneck triangle bikini that showcases her voluptuous cleavage and feminine hourglass hips under the tropical sun",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "gym_tracksuit_athletic",
+          "name": "校内运动会深蓝体操服与短裤",
+          "tokens": [
+            "gym_uniform",
+            "t-shirt",
+            "white_shirt",
+            "buruma",
+            "shorts",
+            "blue_shorts",
+            "socks",
+            "sneakers"
+          ],
+          "prose": "A fitted white school gym t-shirt with navy trim tucked into dark navy athletic shorts, white sports socks, and running sneakers",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "private_dorm_pink_camisole",
+          "name": "私人宿舍粉色纯棉吊带背心短裤",
+          "tokens": [
+            "camisole",
+            "pink_shirt",
+            "spaghetti_straps",
+            "shorts",
+            "bare_shoulders",
+            "bare_legs",
+            "cleavage"
+          ],
+          "prose": "A soft pastel-pink ribbed cotton camisole with thin straps accentuating her generous bust, matching lounge shorts, and bare legs in her private dorm room",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "large_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "detailed_vulva",
+            "slender_waist",
+            "wide_hips",
+            "blushing",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, gorgeous voluptuous feminine body with lush heavy breasts, tender pink nipples, soft curvaceous hips, neat shaved pussy, blushing with wholehearted devotion",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代校园+心理博弈（欢迎来到实力至上主义的教室）",
+        "era": "当代",
+        "formNotes": "粉金蓬松中发+水蓝瞳+丰满肉感极品身材；高度育成高中B班领袖；包容温柔、奉献治愈型女友天花板；红西装制服/牛角扣大衣/纯白比基尼/体操服/粉吊带；对认定之人极度黏人依恋",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "Lerche, official anime screencap",
+      "curatedArtistStyles": [
+        "tomose_shunsaku",
+        "kantoku",
+        "rella",
+        "tiv"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

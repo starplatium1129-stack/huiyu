@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "kita_ikuyo_summer_sunflower",
+  "revision": 1,
+  "sortOrder": 1827,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "kita_ikuyo_summer_sunflower",
+    "characterId": "kita_ikuyo",
+    "title": "喜多郁代 · 盛夏向日葵之约",
+    "category": "假期出行",
+    "outfitId": "summer_sunflower_dress",
+    "description": "【喜多郁代 · 盛夏向日葵之约】蔚蓝晴空下的向日葵花田小径上，喜多单手轻按草帽边缘，轻柔的夏风拂起黄色碎花裙摆与额前碎发。少女回眸向身后的你伸出手，笑容比阳光更加明媚耀眼。",
+    "action": "一手按住草帽，侧身回头伸出另一只手相邀",
+    "location": "向日葵花海小径",
+    "timeOfDay": "正午",
+    "mood": "明朗浪漫",
+    "lighting": "明澈夏日日光与金黄向日葵漫反射",
+    "camera": "full-body shot, slightly low angle",
+    "promptTokens": [
+      "sunflower field",
+      "holding hat",
+      "outstretched hand",
+      "turning back",
+      "wind",
+      "blue sky",
+      "sunny",
+      "full body"
+    ],
+    "sceneTags": [
+      "sunflower",
+      "field",
+      "sunshine",
+      "clear_sky",
+      "holding_hat",
+      "reaching_towards_viewer",
+      "dress_lift"
+    ],
+    "promptProse": "Walking along the sunflower trail under the vibrant blue sky, she presses one hand against her straw hat and reaches the other backward toward the viewer with an affectionate beaming smile.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

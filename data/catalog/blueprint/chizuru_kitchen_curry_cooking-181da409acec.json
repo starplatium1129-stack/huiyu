@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "chizuru_kitchen_curry_cooking",
+  "revision": 1,
+  "sortOrder": 1878,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "chizuru_kitchen_curry_cooking",
+    "characterId": "mizuhara_chizuru",
+    "title": "水原千鹤 · 厨房煮咖喱的贤惠回眸",
+    "category": "现代日常",
+    "outfitId": "apartment_cozy_sweatshirt",
+    "description": "【水原千鹤 · 厨房煮咖喱的贤惠回眸】飘着浓郁香气的公寓小厨房里，千鹤将长发随意挽在脑后，胸前系着简约围裙。她单手用木勺盛起一点滚烫的咖喱汁，另一手轻轻托在下方吹着热气递来——「来尝尝看味道怎么样？可别烫到了哦。」",
+    "action": "在灶台前一手端勺吹气试味，侧头露出居家的贤惠微笑",
+    "location": "温馨公寓厨房灶台前",
+    "timeOfDay": "傍晚",
+    "mood": "贤惠温馨",
+    "lighting": "厨房上方明亮温暖的吸顶日光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "kitchen",
+      "cooking",
+      "apron",
+      "holding spoon",
+      "tasting food",
+      "blowing on food",
+      "steam",
+      "domestic",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "kitchen",
+      "cooking",
+      "apron",
+      "spoon",
+      "steam",
+      "domestic",
+      "warm_smile",
+      "casual"
+    ],
+    "promptProse": "Standing at the kitchen stove in a simple apron, she blows gently on a spoonful of hot stew with a supportive, domestic smile, inviting the viewer for a taste.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

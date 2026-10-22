@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "yamada_ryo/starry_barista_apron",
+  "revision": 1,
+  "sortOrder": 1567,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "yamada_ryo",
+    "outfit": {
+      "id": "starry_barista_apron",
+      "name": "STARRY深夜吧台调饮围裙装",
+      "tokens": [
+        "collared_shirt",
+        "grey_shirt",
+        "rolled_sleeves",
+        "necktie",
+        "black_necktie",
+        "apron",
+        "black_apron",
+        "holding_cup"
+      ],
+      "prose": "A clean rolled-sleeve dark charcoal dress shirt, a tailored black bistro apron, and a thin black necktie, holding a cocktail shaker with an aloof expression behind the dimly lit counter",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

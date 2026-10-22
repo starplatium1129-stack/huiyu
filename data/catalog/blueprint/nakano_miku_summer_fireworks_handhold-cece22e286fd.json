@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_miku_summer_fireworks_handhold",
+  "revision": 1,
+  "sortOrder": 1849,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_miku_summer_fireworks_handhold",
+    "characterId": "nakano_miku",
+    "title": "中野三玖 · 夏夜花火的牵手回眸",
+    "category": "假期出行",
+    "outfitId": "yukata_summer_fireworks",
+    "description": "【中野三玖 · 夏夜花火的牵手回眸】神社石阶之上，漫天绚烂璀璨的花火将夏夜天幕染成金紫两色。身着天青色雏菊浴衣的三玖在人群微末处停下脚步，纤细白皙的手指鼓起全部勇气悄悄勾住你的手掌。少女回头望来，眼眸中倒映着漫天流光，嘴角浮起一抹罕见温柔的浅笑——「看……好漂亮的烟花。能和你一起来，真的太好了。」",
+    "action": "在神社台阶上侧身回眸牵住对方的手，身后夜空花火绽放",
+    "location": "神社山顶观景石阶",
+    "timeOfDay": "夜晚",
+    "mood": "浪漫心动",
+    "lighting": "夜空巨幅花火炸开的五彩光斑与石灯笼火光",
+    "camera": "full-body shot, dynamic framing",
+    "promptTokens": [
+      "fireworks",
+      "night sky",
+      "shrine stairs",
+      "holding hands",
+      "turning back",
+      "yukata",
+      "gentle smile",
+      "colorful light",
+      "full body"
+    ],
+    "sceneTags": [
+      "fireworks",
+      "night",
+      "shrine",
+      "stone_steps",
+      "yukata",
+      "holding_hands",
+      "romantic",
+      "soft_smile",
+      "lanterns"
+    ],
+    "promptProse": "Pausing on the stone shrine steps beneath a sky illuminated by bursts of vibrant fireworks, she gently clasps the viewer's hand and glances back over her shoulder with an affectionate tender smile.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

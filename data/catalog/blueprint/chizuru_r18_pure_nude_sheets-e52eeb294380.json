@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "chizuru_r18_pure_nude_sheets",
+  "revision": 1,
+  "sortOrder": 1884,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "chizuru_r18_pure_nude_sheets",
+    "characterId": "mizuhara_chizuru",
+    "title": "水原千鹤 · 纯白床单上的倾心绝顶",
+    "category": "私密情欲",
+    "outfitId": "nsfw_nude",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@tony taka",
+    "description": "【成年水原千鹤 · 纯白床单上的倾心绝顶】纯白大床上，全裸的千鹤秀发凌乱散落在枕畔。修长完美的双腿被高高举起分开，腰肢弓起痉挛，双手紧抓着爱人的手背。在最深切的撞击中，千鹤双眼泛起幸福的绝顶泪花，失神地将心扉彻底敞开——「啊……太舒服了……我爱你……和也……！」",
+    "action": "全裸仰卧床单，双腿高抬大张，腰肢弓起迎来强烈的高潮痉挛",
+    "location": "深夜主卧纯白大床",
+    "timeOfDay": "深夜",
+    "mood": "极致高潮",
+    "lighting": "床头台灯洒在雪白肌肤上的暖光",
+    "camera": "full-body shot, from above, intimate framing",
+    "promptTokens": [
+      "adult",
+      "nude",
+      "on back",
+      "legs up",
+      "spread legs",
+      "white sheets",
+      "holding hands",
+      "arching back",
+      "blush",
+      "tears",
+      "climax",
+      "full body"
+    ],
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "white_sheets",
+      "completely_nude",
+      "legs_up",
+      "spread_legs",
+      "climax",
+      "arching_back",
+      "heavy_blush",
+      "teary_eyes"
+    ],
+    "promptProse": "Sprawled naked on pristine white sheets with her dark wavy hair tangled, her slender legs held high and hips arched in breathless, weeping climactic ecstasy while gripping his hand.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

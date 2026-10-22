@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "firefly_r18_warm_bath_petals",
+  "revision": 1,
+  "sortOrder": 1873,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "firefly_r18_warm_bath_petals",
+    "characterId": "firefly_hsr",
+    "title": "流萤 · 芳香私汤中的水雾娇吟",
+    "category": "私密情欲",
+    "outfitId": "nsfw_nude",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@tony taka",
+    "description": "【成年流萤 · 芳香私汤中的水雾娇吟】水汽氤氲的热水私汤中，晶莹剔透的水珠顺着流萤纤细的脖颈与白皙小腹滑落。少女全裸仰靠在浴池边缘，银灰湿发黏在胸口与玉肩上，双手轻挡在柔嫩胸前却欲迎还拒，满眼潮红地唤着恋人的名字——「水温……让身体变得好烫……请靠近我一点……」",
+    "action": "全裸泡在水汽氤氲的浴池中，湿发贴身，双手微遮胸前娇羞仰视",
+    "location": "私密豪华浴室暖水浴池",
+    "timeOfDay": "夜晚",
+    "mood": "温润迷醉",
+    "lighting": "暖黄壁灯穿透水雾的柔和漫射",
+    "camera": "cowboy shot, slightly high angle, intimate framing",
+    "promptTokens": [
+      "adult",
+      "nude",
+      "in bathtub",
+      "wet body",
+      "wet hair",
+      "steam",
+      "water droplets",
+      "covering breasts",
+      "blush",
+      "intimate",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "bath",
+      "water",
+      "steam",
+      "completely_nude",
+      "wet_skin",
+      "wet_hair",
+      "covering_breasts",
+      "heavy_blush"
+    ],
+    "promptProse": "Immersed in steamy, fragrant warm waters with glistening droplets running down her porcelain skin, her silvery hair clings to bare shoulders as she looks upward with tender, flushed longing.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

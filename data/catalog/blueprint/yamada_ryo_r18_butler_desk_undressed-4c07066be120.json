@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "yamada_ryo_r18_butler_desk_undressed",
+  "revision": 1,
+  "sortOrder": 1842,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "yamada_ryo_r18_butler_desk_undressed",
+    "characterId": "yamada_ryo",
+    "title": "山田凉 · 文化祭后的执事台前放纵",
+    "category": "私密情欲",
+    "outfitId": "cultural_festival_butler",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@hisasi",
+    "description": "【成年山田凉 · 文化祭后的执事台前放纵】文化祭闭门后黄昏的讲台上，黑白执事西装外套被随意扔在一旁，修身白衬衫扣子完全解开，露出冷白纤瘦的胸膛与粉嫩乳头。黑色西裤褪至大腿根，凉散漫地倚在讲桌边缘分腿而坐，琥珀色眼眸带着微醺的挑逗——「执事的服务还没结束哦……现在才是VIP特别专场。」",
+    "action": "坐在讲桌边缘，衬衫敞开露出胸部，西裤半褪，双腿大张神情挑逗",
+    "location": "秀华高中黄昏封闭教室讲台",
+    "timeOfDay": "黄昏",
+    "mood": "不羁诱惑",
+    "lighting": "斜照在讲台上的金红落日余晖",
+    "camera": "cowboy shot, eye level, intimate framing",
+    "promptTokens": [
+      "adult",
+      "butler suit",
+      "open shirt",
+      "bare breasts",
+      "pink nipples",
+      "pants pulled down",
+      "sitting on desk",
+      "spread legs",
+      "blush",
+      "mole under eye",
+      "sunset",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "empty_classroom",
+      "podium",
+      "sunset",
+      "suit_unbuttoned",
+      "bare_breasts",
+      "pink_nipples",
+      "pants_down",
+      "spread_legs",
+      "mole_under_eye",
+      "smug_smile"
+    ],
+    "promptProse": "Lounging across the wooden classroom podium with her formal butler shirt unbuttoned to reveal modest bare breasts and trousers shoved down her thighs, she gazes outward with a lazy, teasing smirk in the red sunset.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

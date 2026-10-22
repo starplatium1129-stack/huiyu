@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "yamada_ryo_r18_vintage_shirt_open",
+  "revision": 1,
+  "sortOrder": 1843,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "yamada_ryo_r18_vintage_shirt_open",
+    "characterId": "yamada_ryo",
+    "title": "山田凉 · 宽大古着衬衫下的真空诱惑",
+    "category": "私密情欲",
+    "outfitId": "shimokitazawa_vintage",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@hisasi",
+    "description": "【成年山田凉 · 宽大古着衬衫下的真空诱惑】下北泽昏暗合租公寓的旧榻榻米上，凉仅穿着一件宽大的橄榄绿古着纽扣衬衫，扣子敞开露出锁骨、平坦微凹的小腹和白皙挺立的胸尖。修长双腿懒散交叠，一手撑着地板一手随意揉抚湿润的腿间，三白眼眸透着难以抗拒的禁欲与反差色气——「看傻了吗？今天被你看到了，那借我的钱就一笔勾销吧。」",
+    "action": "仅穿宽大衬衫半卧榻榻米，扣子全敞，一手撑地一手抚弄腿心",
+    "location": "下北泽昏暗复古公寓单间",
+    "timeOfDay": "夜晚",
+    "mood": "散漫妖娆",
+    "lighting": "复古暖色落地纸灯与阴影边缘",
+    "camera": "cowboy shot, slightly high angle, intimate framing",
+    "promptTokens": [
+      "adult",
+      "open oversized shirt",
+      "green shirt",
+      "topless",
+      "bare breasts",
+      "pink nipples",
+      "exposed pussy",
+      "female masturbation",
+      "tatami floor",
+      "blush",
+      "mole under eye",
+      "night",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "apartment",
+      "tatami",
+      "oversized_shirt",
+      "open_shirt",
+      "completely_bare_underneath",
+      "bare_breasts",
+      "pink_nipples",
+      "fingering",
+      "mole_under_eye",
+      "flushed"
+    ],
+    "promptProse": "Sprawled lazily on the apartment floor wearing only an open oversized vintage shirt that parts over bare breasts and porcelain skin, she slips one hand between her parted thighs with an aloof, captivating gaze.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

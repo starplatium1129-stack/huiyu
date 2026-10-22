@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "firefly_r18_balcony_moonlight_whisper",
+  "revision": 1,
+  "sortOrder": 1872,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "firefly_r18_balcony_moonlight_whisper",
+    "characterId": "firefly_hsr",
+    "title": "流萤 · 月下露台的深情相拥",
+    "category": "私密情欲",
+    "outfitId": "glamoth_canonical_dress",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@hisasi",
+    "description": "【成年流萤 · 月下露台的深情相拥】夜色静谧的私人露台白纱后，流萤的浅绿礼服扣带微解，雪白光滑的美背与锁骨在皎洁月光下一览无遗。少女仰起泛红的面容紧贴在爱人怀里，双手环住脖颈轻颤娇喘——「不管是现实还是梦境……这一刻我的心跳，只属于你一个人。」",
+    "action": "在月光露台纱帘后依偎在怀中，礼服半解露出美背与锁骨，仰头深吻迎合",
+    "location": "夜晚静谧私密露台落地窗前",
+    "timeOfDay": "深夜",
+    "mood": "深情沉溺",
+    "lighting": "如水般澄澈的银白月光与室内微暗暖灯",
+    "camera": "cowboy shot, eye level, intimate framing",
+    "promptTokens": [
+      "adult",
+      "balcony",
+      "curtains",
+      "open dress",
+      "bare shoulders",
+      "bare back",
+      "clinging to partner",
+      "blush",
+      "moonlight",
+      "intimate",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "balcony",
+      "moonlight",
+      "curtains",
+      "bare_back",
+      "bare_shoulders",
+      "embracing",
+      "heavy_blush",
+      "night"
+    ],
+    "promptProse": "Embracing tightly behind sheer fluttering balcony curtains beneath pure silver moonlight, her dress loosened over pale shoulders as her flushed face lifts toward his in breathless surrender.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

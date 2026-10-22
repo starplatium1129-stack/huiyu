@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_nino_bakery_afternoon_tea",
+  "revision": 1,
+  "sortOrder": 1856,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_nino_bakery_afternoon_tea",
+    "characterId": "nakano_nino",
+    "title": "中野二乃 · REVIVAL甜点屋的午后特供",
+    "category": "现代日常",
+    "outfitId": "short_hair_revival_bakery",
+    "description": "【中野二乃 · REVIVAL甜点屋的午后特供】精致典雅的法式西点店内，身着糕点师围裙的二乃双手端着盛有特制草莓千层蛋糕的瓷盘，优雅地走到桌旁。她嘴角挑起一抹略带骄傲与挑逗的弧度——「这可是本小姐亲手改良的独家配方，快尝尝看。敢说不好吃的话，今晚就别想睡觉了哦。」",
+    "action": "双手托着精致蛋糕瓷盘递来，嘴角勾起自信迷人的微笑",
+    "location": "REVIVAL法式糕点店窗边座",
+    "timeOfDay": "午后",
+    "mood": "自信骄傲",
+    "lighting": "法式拱窗洒下的透亮白昼日光与水晶吊灯暖光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "cafe",
+      "bakery",
+      "holding plate",
+      "strawberry cake",
+      "shortcake",
+      "short hair",
+      "smug",
+      "confident smile",
+      "daylight",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "bakery",
+      "patisserie",
+      "strawberry_cake",
+      "holding_plate",
+      "short_hair",
+      "smug_smile",
+      "confident",
+      "sunlight"
+    ],
+    "promptProse": "Holding a porcelain plate with a flawless slice of strawberry cake in both hands, she leans gracefully toward the table with an alluring confident smile in the bright afternoon daylight.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

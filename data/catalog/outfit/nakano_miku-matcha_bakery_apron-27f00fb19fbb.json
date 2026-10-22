@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nakano_miku/matcha_bakery_apron",
+  "revision": 1,
+  "sortOrder": 1573,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "nakano_miku",
+    "outfit": {
+      "id": "matcha_bakery_apron",
+      "name": "抹茶烘焙坊学徒半身围裙装",
+      "tokens": [
+        "short_sleeves",
+        "collared_shirt",
+        "white_shirt",
+        "apron",
+        "green_apron",
+        "bandana",
+        "slacks",
+        "holding_tray"
+      ],
+      "prose": "A crisp short-sleeved baker shirt under a forest-green half apron tied around her waist with a matching hair bandana, a dusting of white flour on her cheek, holding a baking tray with fresh bread",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "kind": "character",
+  "id": "kita_ikuyo",
+  "revision": 1,
+  "sortOrder": 176,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "kita_ikuyo",
+    "profile": {
+      "id": "kita_ikuyo",
+      "name": "喜多郁代",
+      "alias": [
+        "Kita Ikuyo",
+        "喜多",
+        "喜多喜多",
+        "Kita-chan"
+      ],
+      "type": "popular",
+      "icon": "✨",
+      "portrait": {
+        "image": "../assets/characters/popular-kita_ikuyo.png?v=1",
+        "alt": "喜多郁代 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "红发披肩 · 呆毛",
+        "hair_color": "草莓红 / 暖橙红",
+        "eyes": "明亮黄瞳 / 琥珀金",
+        "hairstyle": "及肩碎发 · 头顶翘起呆毛 · 活泼灵动",
+        "uniform": "秀华高中水手服 / 结束乐队演出服",
+        "expression": "元气灿烂 · 自带喜多华光（Kitaura） · 对朋友关切温柔",
+        "style": "radiant energetic pop-rock vocalist",
+        "signature": "红发呆毛、琥珀黄瞳、极具感染力的灿烂笑容与电吉他"
+      },
+      "personality": [
+        "社交能力天花板",
+        "元气开朗善解人意",
+        "练习吉他刻苦坚韧",
+        "极度憧憬山田凉",
+        "温柔体贴照顾波奇酱"
+      ],
+      "likes": [
+        "Live演唱与吉他练习",
+        "和朋友拍照逛街",
+        "可爱的服饰与甜品",
+        "结束乐队的大家"
+      ],
+      "classic_cg": {
+        "title": "舞台中央的耀眼华光",
+        "description": "聚光灯下，红发少女握紧麦克风展露毫无保留的灿烂笑容，伴着清脆奔放的吉他和弦，将满溢的活力传遍整座Livehouse。"
+      },
+      "identity": {
+        "role": "结束乐队主唱兼吉他手",
+        "age": "16岁（高中生）",
+        "occupation": "高中生 / Livehouse STARRY店员",
+        "faction": "秀华高中 / 结束乐队"
+      },
+      "tags": [
+        "红发",
+        "呆毛",
+        "黄瞳",
+        "元气现充",
+        "主唱吉他手",
+        "喜多华光"
+      ],
+      "bg_story": "喜多郁代是《孤独摇滚！》的核心角色之一，结束乐队的主唱兼节奏吉他手。性格极其外向且善解人意，自带耀眼的「喜多华光（Kitaura）」。起初因憧憬山田凉而谎称会弹吉他加入乐队，临近演出因心虚逃跑；后在与后藤一里的相遇中被其琴技深深震撼，下定决心重新归队并苦练吉他。在乐队中不仅是门面担当，更是把大家紧紧凝聚在一起的太阳。",
+      "palette": [
+        "活力红",
+        "琥珀金",
+        "暖洋黄"
+      ],
+      "weather": [
+        "晴空正午",
+        "Livehouse炫光",
+        "放学午后"
+      ],
+      "speech": "大家～！今天也一起全力以赴享受摇滚吧！一里酱，加油哦♪",
+      "source": "CloverWorks《孤独摇滚！ / Bocchi the Rock!》",
+      "traits": [
+        "kita_ikuyo",
+        "1girl",
+        "solo",
+        "red_hair",
+        "medium_hair",
+        "ahoge",
+        "yellow_eyes",
+        "smile",
+        "bocchi_the_rock!"
+      ],
+      "accent_color": "#ef4444",
+      "bg_color": "#1e1b4b"
+    },
+    "popular": {
+      "id": "kita_ikuyo",
+      "displayName": "喜多郁代",
+      "originalName": "喜多 郁代 (Kita Ikuyo)",
+      "franchise": "Bocchi the Rock!",
+      "aliases": [
+        "kita_ikuyo",
+        "ikuyo_kita",
+        "kita-san",
+        "kitawn",
+        "kita ikuyo",
+        "喜多郁代",
+        "喜多",
+        "喜多喜多",
+        "喜多酱",
+        "bocchi the rock",
+        "bocchi the rock!"
+      ],
+      "identityProse": "Adult Kita Ikuyo from Bocchi the Rock!, an energetic and sociable high school girl with bright shoulder-length strawberry-red hair, an ahoge cowlick, cheerful yellow-amber eyes, and a radiant beaming smile.",
+      "identityTokens": [
+        "kita_ikuyo",
+        "1girl",
+        "solo",
+        "red_hair",
+        "medium_hair",
+        "ahoge",
+        "yellow_eyes",
+        "smile",
+        "bocchi_the_rock!"
+      ],
+      "exactTokens": [
+        "kita_ikuyo"
+      ],
+      "exactPrefixes": [
+        "kita_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "shuka_sailor_uniform",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代日常+摇滚音乐（孤独摇滚！）",
+        "era": "当代",
+        "formNotes": "红发中长发+呆毛+明亮金黄瞳；极度开朗外向社交天花板；结束乐队主唱兼吉他手；崇拜山田凉，善解人意元气少女；常态秀华水手服/Live演出服/STARRY围裙/夏日连衣裙",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "CloverWorks, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kerorira",
+        "hamazi_aki",
+        "rella",
+        "kantoku"
+      ],
+      "characterTokens": [
+        "kita_ikuyo"
+      ],
+      "copyrightTokens": [
+        "bocchi_the_rock!"
+      ]
+    }
+  }
+}

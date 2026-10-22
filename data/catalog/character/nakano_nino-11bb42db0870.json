@@ -1,0 +1,166 @@
+{
+  "kind": "character",
+  "id": "nakano_nino",
+  "revision": 1,
+  "sortOrder": 179,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_nino",
+    "profile": {
+      "id": "nakano_nino",
+      "name": "中野二乃",
+      "alias": [
+        "Nakano Nino",
+        "二乃",
+        "Nino",
+        "恋爱暴走机车"
+      ],
+      "type": "popular",
+      "icon": "🦋",
+      "portrait": {
+        "image": "../assets/characters/popular-nakano_nino.png?v=1",
+        "alt": "中野二乃 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "粉红长发双马尾 / 齐肩短发 · 双侧蝴蝶发饰",
+        "hair_color": "珊瑚粉 / 艳粉红",
+        "eyes": "澄澈群青蓝瞳",
+        "hairstyle": "及腰长直发扎双马尾（后期齐肩波浪短发） · 两侧标志性黑紫蝴蝶发饰",
+        "uniform": "宽松白针织大毛衣 · 黑色过膝袜制服",
+        "expression": "自信娇蛮 · 傲娇微挑嘴角 · 直球示爱时坚定炽热",
+        "style": "fashionable confident assertive quintuplet tsundere",
+        "signature": "粉红双马尾蝴蝶发饰、白毛衣盖手背、过膝黑丝袜与直球告白"
+      },
+      "personality": [
+        "敢爱敢恨直球猛烈",
+        "傲娇毒舌但极度护短",
+        "女子力与烘焙厨艺顶尖",
+        "重视姐妹亲情与回忆",
+        "决断果敢毫不拖泥带水"
+      ],
+      "likes": [
+        "制作法式甜品与曲奇蛋糕",
+        "时尚服饰搭配与美妆",
+        "骑重型摩托机车",
+        "对喜欢的人展开猛烈恋爱攻势"
+      ],
+      "classic_cg": {
+        "title": "黄昏坡道上的恋爱暴走告白",
+        "description": "夕阳熔金的下坡道上，剪短长发后的二乃双手叉腰站在机车旁，眼眸闪烁着毫无保留的炽热光芒，直率地打破一切暧昧——「听好了，我喜欢你！给我牢牢记住了！」"
+      },
+      "identity": {
+        "role": "中野家五胞胎次女",
+        "age": "17岁（高中生）",
+        "occupation": "高中生 / REVIVAL法式烘焙甜点师",
+        "faction": "旭高校 / 中野五胞胎"
+      },
+      "tags": [
+        "粉发",
+        "双马尾",
+        "蝴蝶发饰",
+        "过膝袜",
+        "傲娇",
+        "厨艺高手",
+        "恋爱直球"
+      ],
+      "bg_story": "中野二乃是《五等分的新娘》的女主角之一，中野家五胞胎中的次女。外表时尚早熟，言辞犀利傲娇，起初为了守护姐妹间的平静生活而对家庭教师风太郎极度排斥；但在经历了一系列事件后，不仅展现出五姐妹中最强大的料理厨艺与温柔细腻的内心，更是在确认心意后剪去象征执念的长发，化身无所畏惧的「恋爱暴走列车」，以绝不退缩的直球进攻震撼所有人。",
+      "palette": [
+        "魅惑紫",
+        "珊瑚粉",
+        "纯净白"
+      ],
+      "weather": [
+        "黄昏坡道",
+        "午后暖阳",
+        "祭典夏夜"
+      ],
+      "speech": "别误会了，我可不是为了你才做这些的！……不过，你要是敢剩下一口，我可绝对不会原谅你哦♪",
+      "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
+      "traits": [
+        "nakano_nino",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "twintails",
+        "butterfly_hair_ornament",
+        "blue_eyes",
+        "slender",
+        "5-toubun_no_hanayome"
+      ],
+      "accent_color": "#ec4899",
+      "bg_color": "#1e1b4b"
+    },
+    "popular": {
+      "id": "nakano_nino",
+      "displayName": "中野二乃",
+      "originalName": "中野 二乃 (Nakano Nino)",
+      "franchise": "The Quintessential Quintuplets",
+      "aliases": [
+        "nakano_nino",
+        "nino_nakano",
+        "nino",
+        "nakano",
+        "中野二乃",
+        "二乃",
+        "二乃天下第一",
+        "the quintessential quintuplets",
+        "5-toubun no hanayome"
+      ],
+      "identityProse": "Adult Nakano Nino from The Quintessential Quintuplets, a confident, stylish, and passionately assertive girl with waist-length vibrant pink hair tied in distinctive twin tails with black-and-purple butterfly ribbons, sharp captivating aqua-blue eyes, and a charming tsundere aura.",
+      "identityTokens": [
+        "nakano_nino",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "twintails",
+        "butterfly_hair_ornament",
+        "blue_eyes",
+        "slender",
+        "5-toubun_no_hanayome"
+      ],
+      "exactTokens": [
+        "nakano_nino"
+      ],
+      "exactPrefixes": [
+        "nino_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "asahi_high_school_uniform",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代日常+校园恋爱（五等分的新娘）",
+        "era": "当代",
+        "formNotes": "粉红长发双马尾（或后期齐肩短发）+黑紫双侧蝴蝶发饰+澄澈青蓝瞳；毒舌傲娇但女子力与厨艺极高；旭高校五胞胎次女；白毛衣黑过膝袜制服/法式烘焙装/紫黑吊带私服/金鱼浴衣；恋爱暴走机车直球告白",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "Bibury Animation Studios, Tezuka Productions, official anime screencap",
+      "curatedArtistStyles": [
+        "haruba_negi",
+        "kantoku",
+        "rella",
+        "tiv"
+      ],
+      "characterTokens": [
+        "nakano_nino"
+      ],
+      "copyrightTokens": [
+        "5-toubun_no_hanayome"
+      ]
+    }
+  }
+}

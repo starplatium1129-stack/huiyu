@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "kita_ikuyo_cultural_maid_serving",
+  "revision": 1,
+  "sortOrder": 1836,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "kita_ikuyo_cultural_maid_serving",
+    "characterId": "kita_ikuyo",
+    "title": "喜多郁代 · 文化祭女仆的美味魔法",
+    "category": "校园日常",
+    "outfitId": "cultural_festival_maid",
+    "description": "【喜多郁代 · 文化祭女仆的美味魔法】秀华高中热闹非凡的文化祭班级咖啡厅里，穿上黑白蕾丝女仆装的喜多郁代一手端着画有番茄酱爱心的蛋包饭，另一手俏皮地在脸颊边比出半颗心形，对桌前的客人送上元气爆棚的灿烂微笑——「萌え萌えキュン～！愿主人的每一天都像阳光一样闪闪发亮哦♪」",
+    "action": "单手端着托盘蛋包饭，一手在颊边比爱心手势开朗微笑",
+    "location": "秀华高中文化祭女仆咖啡厅",
+    "timeOfDay": "午后",
+    "mood": "甜美元气",
+    "lighting": "教室窗户透入的明亮白昼日光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "maid uniform",
+      "holding tray",
+      "omelet rice",
+      "heart gesture",
+      "smile",
+      "beaming",
+      "classroom",
+      "school festival",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "classroom",
+      "school_festival",
+      "maid_dress",
+      "apron",
+      "holding_tray",
+      "omelet_rice",
+      "heart_hands",
+      "cheerful",
+      "sunlight"
+    ],
+    "promptProse": "Holding a silver tray with heart-decorated omurice in one hand and flashing a playful cheek-heart gesture with the other, she beams cheerfully at the cafe guests in the bright classroom light.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

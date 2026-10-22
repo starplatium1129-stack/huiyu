@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_nino_summer_festival_fan",
+  "revision": 1,
+  "sortOrder": 1859,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_nino_summer_festival_fan",
+    "characterId": "nakano_nino",
+    "title": "中野二乃 · 夏夜祭典的团扇掩笑",
+    "category": "假期出行",
+    "outfitId": "yukata_summer_fireworks",
+    "description": "【中野二乃 · 夏夜祭典的团扇掩笑】夏夜神社红灯笼高挂的石板路上，深绛紫色的金鱼浴衣勾勒出二乃曼妙诱人的身段。少女单手轻摇折扇半掩住娇艳欲滴的唇瓣，眼波流转中透着平时少见的妖娆风韵——「怎么看呆了？哼……算你还有点眼光，这套浴衣可是特意为你选的呢。」",
+    "action": "手持折扇半遮嘴唇，双马尾侧挽，眼眸含情浅笑",
+    "location": "神社夏日祭典红灯笼长廊",
+    "timeOfDay": "夜晚",
+    "mood": "妖娆妩媚",
+    "lighting": "红色纸灯笼暖红光影与夜空祭典彩光",
+    "camera": "cowboy shot, eye level",
+    "promptTokens": [
+      "festival",
+      "lanterns",
+      "holding folding fan",
+      "fan covering mouth",
+      "yukata",
+      "purple yukata",
+      "seductive smile",
+      "night",
+      "warm glow",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "festival",
+      "lanterns",
+      "shrine",
+      "yukata",
+      "folding_fan",
+      "covering_mouth",
+      "alluring_gaze",
+      "night",
+      "romantic"
+    ],
+    "promptProse": "Standing beneath rows of glowing red festival lanterns in her purple goldfish yukata, she covers her mouth playfully with a decorated paper fan, giving an alluring, knowing look.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

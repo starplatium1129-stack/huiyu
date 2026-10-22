@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_miku_library_headphone_share",
+  "revision": 1,
+  "sortOrder": 1850,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_miku_library_headphone_share",
+    "characterId": "nakano_miku",
+    "title": "中野三玖 · 图书馆的书香耳机私语",
+    "category": "校园日常",
+    "outfitId": "asahi_high_school_uniform",
+    "description": "【中野三玖 · 图书馆的书香耳机私语】午后静谧的图书馆靠窗长桌前，阳光穿透绿色树荫在地板洒下斑驳光斑。三玖合上面前的历史考据书，轻轻摘下自己脖子上一侧的蓝黑色大耳机，微侧身躯递到你的耳边。两人的距离近得能闻到发丝清甜的香气——「要听听看吗？我最近一直在听的这首民谣……」",
+    "action": "坐在图书馆木桌前，摘下一侧耳机温柔递向镜头，神态亲昵微红",
+    "location": "旭高校静谧图书馆靠窗座",
+    "timeOfDay": "午后",
+    "mood": "安谧亲近",
+    "lighting": "窗外树荫过滤后的明净柔和白昼光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "library",
+      "bookshelf",
+      "wooden table",
+      "sharing headphones",
+      "holding headphone",
+      "leaning close",
+      "gentle smile",
+      "blush",
+      "afternoon light",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "library",
+      "books",
+      "table",
+      "headphones",
+      "sharing",
+      "intimacy",
+      "blushing",
+      "gentle_gaze",
+      "peaceful"
+    ],
+    "promptProse": "Sitting at a sunlit wooden library table beside towering bookshelves, she unhooks one side of her over-ear headphones and holds it tenderly toward the viewer with an inviting warm blush.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

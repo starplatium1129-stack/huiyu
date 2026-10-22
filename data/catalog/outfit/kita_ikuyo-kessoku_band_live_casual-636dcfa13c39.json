@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "kita_ikuyo/kessoku_band_live_casual",
+  "revision": 1,
+  "sortOrder": 1560,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "kita_ikuyo",
+    "outfit": {
+      "id": "kessoku_band_live_casual",
+      "name": "结束乐队Live主唱活力演出服",
+      "tokens": [
+        "t-shirt",
+        "print_t-shirt",
+        "crop_top",
+        "denim_skirt",
+        "miniskirt",
+        "belt",
+        "wristband",
+        "electric_guitar",
+        "guitar_strap",
+        "sneakers"
+      ],
+      "prose": "A layered stylish cropped graphic t-shirt over a casual short-sleeved inner shirt, denim mini skirt with belt, red wristband, and slinging her Pelham Blue Gibson Les Paul Junior DC electric guitar across her torso",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

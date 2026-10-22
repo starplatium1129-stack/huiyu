@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "firefly_hsr/cozy_dorm_loungewear",
+  "revision": 1,
+  "sortOrder": 1588,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "firefly_hsr",
+    "outfit": {
+      "id": "cozy_dorm_loungewear",
+      "name": "暖绒居家乐浅青长款卫衣",
+      "tokens": [
+        "hoodie",
+        "oversized_hoodie",
+        "green_hoodie",
+        "long_sleeves",
+        "bare_legs",
+        "slippers"
+      ],
+      "prose": "An oversized pastel mint-green zip hoodie extending down to mid-thigh over soft lounge shorts, bare legs, and cozy bedroom slippers",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

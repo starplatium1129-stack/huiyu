@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "chizuru_aquarium_turning_smile",
+  "revision": 1,
+  "sortOrder": 1875,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "chizuru_aquarium_turning_smile",
+    "characterId": "mizuhara_chizuru",
+    "title": "水原千鹤 · 水族馆水幕下的回眸牵手",
+    "category": "假期出行",
+    "outfitId": "summer_aquarium_offshoulder",
+    "description": "【水原千鹤 · 水族馆水幕下的回眸牵手】巨大静谧的深海水族箱前，幽蓝的水波光纹映照在千鹤白皙的侧颜上。身穿落肩雪纺衫的少女回过身来，伸出纤细的手指轻勾住你的掌心，嘴角浮现出一抹动人至极的浅笑——「看，好多鱼在身边游过去呢。抓紧我，别走散了哦。」",
+    "action": "在幽蓝水族箱前侧身回头伸出手牵引，长发微扬眼神温柔",
+    "location": "水族馆深海水幕展厅",
+    "timeOfDay": "午后",
+    "mood": "浪漫依恋",
+    "lighting": "深海水箱透出的幽蓝环境光与顶部射灯波纹",
+    "camera": "cowboy shot, eye level",
+    "promptTokens": [
+      "aquarium",
+      "water tank",
+      "blue lighting",
+      "reaching toward viewer",
+      "holding hands",
+      "turning back",
+      "tender smile",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "aquarium",
+      "underwater_light",
+      "blue_glow",
+      "holding_hands",
+      "turning_back",
+      "tender_smile",
+      "date",
+      "romantic"
+    ],
+    "promptProse": "Standing before a luminous deep-blue aquarium tank with gentle water refractions dancing across her off-shoulder top, she extends her hand backward with a warm affectionate gaze.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

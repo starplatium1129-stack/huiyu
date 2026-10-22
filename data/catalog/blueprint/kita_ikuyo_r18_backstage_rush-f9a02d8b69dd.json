@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "kita_ikuyo_r18_backstage_rush",
+  "revision": 1,
+  "sortOrder": 1837,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "kita_ikuyo_r18_backstage_rush",
+    "characterId": "kita_ikuyo",
+    "title": "喜多郁代 · 演出后台器材室的禁断心跳",
+    "category": "私密情欲",
+    "outfitId": "shuka_sailor_uniform",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@hisasi",
+    "description": "【成年喜多郁代 · 演出后台器材室的禁断心跳】散场后昏暗安静的后台乐器室，背靠着巨大黑色音箱的喜多水手服短裙被掀至腰际，纯白胖次褪下一侧挂在纤细腿弯。双手捂住剧烈喘息的小嘴，满面潮红、泛着泪光的琥珀金瞳看着靠近的你——「等、等等……隔壁还在收拾乐器……要是发出声音会被听到的……唔……！」",
+    "action": "背靠音箱站立，水手裙掀起，双手捂嘴忍住娇喘，眼神羞怯迷离",
+    "location": "Livehouse 昏暗密闭后台器材室",
+    "timeOfDay": "夜晚",
+    "mood": "紧张娇羞",
+    "lighting": "器材室门缝透入的狭长冷光与昏暗顶灯",
+    "camera": "cowboy shot, eye level, intimate framing",
+    "promptTokens": [
+      "adult",
+      "school uniform",
+      "sailor uniform",
+      "skirt lift",
+      "panties aside",
+      "covering mouth",
+      "blush",
+      "tears",
+      "standing",
+      "against amplifier",
+      "dim lighting",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "backstage",
+      "amplifier",
+      "cables",
+      "sailor_uniform",
+      "skirt_lift",
+      "panties_around_one_leg",
+      "exposed_pussy",
+      "heavy_blush",
+      "teary_eyes",
+      "covering_mouth"
+    ],
+    "promptProse": "Backed against a black stage amplifier in the dim backstage storage room, she lifts her pleated school skirt with one trembling hand and covers her blushing lips with the other, her eyes brimming with anxious pleasure.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

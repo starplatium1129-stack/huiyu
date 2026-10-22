@@ -1,0 +1,170 @@
+{
+  "kind": "character",
+  "id": "firefly_hsr",
+  "revision": 1,
+  "sortOrder": 180,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "firefly_hsr",
+    "profile": {
+      "id": "firefly_hsr",
+      "name": "流萤",
+      "alias": [
+        "Firefly",
+        "流萤",
+        "萤宝",
+        "AR-267",
+        "萨姆"
+      ],
+      "type": "popular",
+      "icon": "✨",
+      "portrait": {
+        "image": "../assets/characters/popular-firefly_hsr.png?v=1",
+        "alt": "流萤 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "银灰长发渐变青绿 · 发箍",
+        "hair_color": "银灰色 / 浅青绿发梢",
+        "eyes": "澄澈群青蓝瞳 / 星芒微光",
+        "hairstyle": "披肩柔顺银灰长发 · 浅绿羽毛发饰配深色发箍",
+        "uniform": "格拉默浅绿薄纱礼服 · 黑色领结",
+        "expression": "温柔治愈 · 坚定勇敢 · 眼神满含依恋与光彩",
+        "style": "sweet and devoted sci-fi maiden",
+        "signature": "银灰渐变青绿长发、发箍、清澈水蓝瞳、甜美治愈的国民女友感"
+      },
+      "personality": [
+        "温柔体贴治愈人心",
+        "为了守护珍视之人无比勇敢",
+        "渴望体验普通人平凡幸福的生活",
+        "情感专一深沉甘愿为爱献身",
+        "面对恋人时容易害羞娇柔"
+      ],
+      "likes": [
+        "匹诺康尼橡木蛋糕卷",
+        "天台微风与星空自拍",
+        "和开拓者并肩漫步",
+        "普通的约会与陪伴"
+      ],
+      "classic_cg": {
+        "title": "天台夕阳下的秘密基地",
+        "description": "天台残阳将漫天云海染成耀金。银发少女双手背在身后转过身来，发丝随风飘散，群青水眸盛着无尽温柔，将自己唯一的秘密坦诚托付——「我的名字叫流萤，这里是我一个人的秘密基地……但现在，也是我们的了。」"
+      },
+      "identity": {
+        "role": "格拉默铁骑遗孤 / 星核猎手萨姆",
+        "age": "青年（外表少女）",
+        "occupation": "星核猎手 / 匹诺康尼向导",
+        "faction": "星核猎手 / 匹诺康尼"
+      },
+      "tags": [
+        "银发",
+        "发箍",
+        "水蓝瞳",
+        "国民女友",
+        "星核猎手",
+        "萨姆",
+        "纯爱"
+      ],
+      "bg_story": "流萤是《崩坏：星穹铁道》中登场的核心女主角之一。作为古格拉默共和国基因改造的铁骑战士「AR-267」，患有不可逆的失熵症；但她在梦境匹诺康尼中化名流萤，以真诚、纯洁与炽热的心陪伴在开拓者身侧。带着开拓者逛街、分享平价却甜美的橡木蛋糕卷、在天台秘密基地吐露心声，以不可撼动的深情与勇气成为了玩家心中不可替代的「国民女友」。",
+      "palette": [
+        "薄荷青",
+        "晨曦银",
+        "璀璨金"
+      ],
+      "weather": [
+        "天台熔金夕照",
+        "漫天盛大焰火",
+        "清澈星海晨光"
+      ],
+      "speech": "即使梦境终会醒来……只要与你在一起的这份温度是真实的，我就绝不会后悔。",
+      "source": "miHoYo《崩坏：星穹铁道 / Honkai: Star Rail》",
+      "traits": [
+        "firefly_(honkai:_star_rail)",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "long_hair",
+        "hairband",
+        "hair_ornament",
+        "blue_eyes",
+        "smile",
+        "honkai:_star_rail"
+      ],
+      "accent_color": "#10b981",
+      "bg_color": "#064e3b"
+    },
+    "popular": {
+      "id": "firefly_hsr",
+      "displayName": "流萤",
+      "originalName": "流萤 (Firefly)",
+      "franchise": "Honkai: Star Rail",
+      "aliases": [
+        "firefly_hsr",
+        "firefly",
+        "firefly_(honkai:_star_rail)",
+        "流萤",
+        "萤宝",
+        "ar-267",
+        "sam",
+        "honkai: star rail",
+        "honkai star rail"
+      ],
+      "identityProse": "Adult Firefly from Honkai: Star Rail, a sweet, gentle, and resolute young woman with flowing silvery-grey hair fading into pale teal at the tips, bright aqua-blue eyes with a starry gleam, a pale-green feather hairpin and dark headband, and an affectionate, heartwarming smile.",
+      "identityTokens": [
+        "firefly_(honkai:_star_rail)",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "long_hair",
+        "hairband",
+        "hair_ornament",
+        "blue_eyes",
+        "smile",
+        "honkai:_star_rail"
+      ],
+      "exactTokens": [
+        "firefly_(honkai:_star_rail)"
+      ],
+      "exactPrefixes": [
+        "firefly_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "glamoth_canonical_dress",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "星际科幻+现代奇幻（崩坏：星穹铁道）",
+        "era": "星历年代",
+        "formNotes": "银灰长发发尾渐变青绿+浅绿羽毛发箍+群青水蓝星芒瞳；格拉默铁骑遗孤兼星核猎手萨姆机甲操作者；极具陪伴感与初恋氛围的国民女友；浅绿礼服/白开衫/机械驾驶服/夏日吊带裙；天台夕阳与橡木蛋糕卷名场面",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "miHoYo, HoYoverse, official anime cutscene",
+      "curatedArtistStyles": [
+        "rella",
+        "mika_pikazo",
+        "tiv",
+        "ask_(gemini)"
+      ],
+      "characterTokens": [
+        "firefly_hsr"
+      ],
+      "copyrightTokens": [
+        "firefly_(honkai:_star_rail)",
+        "honkai:_star_rail"
+      ]
+    }
+  }
+}

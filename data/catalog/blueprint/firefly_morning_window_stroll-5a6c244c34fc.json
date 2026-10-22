@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "firefly_morning_window_stroll",
+  "revision": 1,
+  "sortOrder": 1868,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "firefly_morning_window_stroll",
+    "characterId": "firefly_hsr",
+    "title": "流萤 · 晨曦窗边的治愈轻语",
+    "category": "现代日常",
+    "outfitId": "cozy_dorm_loungewear",
+    "description": "【流萤 · 晨曦窗边的治愈轻语】清晨柔和纯净的晨曦穿透白纱窗帘，穿着宽松卫衣的流萤站在窗边，伸开双手轻轻迎接着朝阳。她侧过头来，眼角带着初醒时慵懒又甜美的笑意——「早上好！今天也是崭新的一天呢，一起去散散步吧。」",
+    "action": "在晨光窗边张开双手伸展腰肢，侧头回眸轻语",
+    "location": "阳光透射的舒适客房窗前",
+    "timeOfDay": "早晨",
+    "mood": "明朗温暖",
+    "lighting": "窗帘过滤后的通透晨曦白光",
+    "camera": "cowboy shot, eye level",
+    "promptTokens": [
+      "window",
+      "curtains",
+      "morning light",
+      "stretching arms",
+      "turning back",
+      "warm smile",
+      "peaceful",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "window",
+      "sunlight",
+      "morning",
+      "stretching",
+      "relaxed",
+      "hoodie",
+      "gentle_smile"
+    ],
+    "promptProse": "Standing beside flowing white window drapes as clear morning sunlight bathes the room, she stretches her arms with a lighthearted, waking smile.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

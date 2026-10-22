@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "mizuhara_chizuru/summer_aquarium_offshoulder",
+  "revision": 1,
+  "sortOrder": 1592,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "mizuhara_chizuru",
+    "outfit": {
+      "id": "summer_aquarium_offshoulder",
+      "name": "水族馆约会落肩浅粉雪纺衫与牛仔短裙",
+      "tokens": [
+        "off-shoulder_shirt",
+        "pink_shirt",
+        "chiffon",
+        "bare_shoulders",
+        "collarbone",
+        "denim_skirt",
+        "miniskirt",
+        "sandals"
+      ],
+      "prose": "A breezy pastel-pink off-the-shoulder chiffon blouse revealing her elegant collarbones, high-waisted light-blue denim mini skirt, and strappy summer heeled sandals",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

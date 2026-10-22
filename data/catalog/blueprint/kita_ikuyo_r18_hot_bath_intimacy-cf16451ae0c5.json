@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "kita_ikuyo_r18_hot_bath_intimacy",
+  "revision": 1,
+  "sortOrder": 1839,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "kita_ikuyo_r18_hot_bath_intimacy",
+    "characterId": "kita_ikuyo",
+    "title": "喜多郁代 · 温泉私汤的湿润娇吟",
+    "category": "私密情欲",
+    "outfitId": "nsfw_nude",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@tony taka",
+    "description": "【成年喜多郁代 · 温泉私汤的湿润娇吟】合宿旅馆热气腾腾的露天桧木私汤里，湿漉漉的红发黏在白皙细腻的双肩与锁骨上。喜多完全赤裸地仰靠在木桶边缘，修长双腿在澄澈的温水中微启，水珠顺着挺拔的胸尖与平坦小腹滑落，失神的琥珀金瞳在月光下泛着迷醉春意——「水温……好舒服……身体都要融化了……」",
+    "action": "赤裸仰靠在温泉木桶内，双腿在温水中微启，满身水珠微红娇喘",
+    "location": "日式旅馆露天桧木温泉私汤",
+    "timeOfDay": "夜晚",
+    "mood": "湿润迷醉",
+    "lighting": "竹林石灯笼暖光与银白月光穿透温泉水汽",
+    "camera": "full-body shot, eye level, intimate framing",
+    "promptTokens": [
+      "adult",
+      "nude",
+      "hot spring",
+      "wooden tub",
+      "onsen",
+      "wet hair",
+      "wet body",
+      "water droplets",
+      "spread legs",
+      "steam",
+      "moonlight",
+      "blush",
+      "full body"
+    ],
+    "sceneTags": [
+      "onsen",
+      "hot_spring",
+      "wooden_tub",
+      "steam",
+      "water_drops",
+      "completely_nude",
+      "wet_skin",
+      "spread_legs",
+      "heavy_blush",
+      "night"
+    ],
+    "promptProse": "Reclining backward inside a steamy cedar hot spring bath under soft moonlight, glistening water beads run down her slender bare skin and rosy breasts as she rests her head against the wooden rim with flushed cheeks and half-closed eyes in warm steam.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

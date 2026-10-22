@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "firefly_r18_hotel_bed_embrace",
+  "revision": 1,
+  "sortOrder": 1871,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "firefly_r18_hotel_bed_embrace",
+    "characterId": "firefly_hsr",
+    "title": "流萤 · 梦境套房的晨间温存",
+    "category": "私密情欲",
+    "outfitId": "cozy_dorm_loungewear",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@tony taka",
+    "description": "【成年流萤 · 梦境套房的晨间温存】晨光流淌的高级套房大床上，纯白薄被半掩在腰间，宽大的睡衣前襟滑落，露出柔滑白皙的香肩与若隐若现的胸线。流萤侧卧在枕边，满颊潮红、眼波含羞地轻抱住对方的手臂——「早上醒来第一眼就能看见你……真的像梦一样呢……」",
+    "action": "侧卧在大床上，薄被半掩，睡衣滑落露出香肩，双手依恋抱住对方手臂",
+    "location": "梦境豪华套房柔软大床",
+    "timeOfDay": "清晨",
+    "mood": "羞怯温存",
+    "lighting": "晨曦微暖的柔和侧照白光",
+    "camera": "cowboy shot, eye level, intimate framing",
+    "promptTokens": [
+      "adult",
+      "lying on bed",
+      "partially covered by blanket",
+      "off-shoulder",
+      "bare shoulders",
+      "holding arm",
+      "blush",
+      "tender look",
+      "morning light",
+      "intimate",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "bed",
+      "white_sheets",
+      "blanket",
+      "bare_shoulders",
+      "holding_arm",
+      "heavy_blush",
+      "tender",
+      "morning_sun"
+    ],
+    "promptProse": "Resting on plush white bedsheets in the soft morning daylight, she nestles close to his side with blankets draped over her waist, looking up with flushed cheeks and starry affectionate devotion.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

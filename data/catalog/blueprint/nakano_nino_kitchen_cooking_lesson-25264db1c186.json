@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_nino_kitchen_cooking_lesson",
+  "revision": 1,
+  "sortOrder": 1857,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_nino_kitchen_cooking_lesson",
+    "characterId": "nakano_nino",
+    "title": "中野二乃 · 厨房私教的傲娇便当",
+    "category": "现代日常",
+    "outfitId": "asahi_high_school_uniform",
+    "description": "【中野二乃 · 厨房私教的傲娇便当】温馨的公寓厨房案台前，二乃将宽大的毛衣袖子挽至手肘。她手里拿着木质料理筷，嘴上虽然抱怨着「真拿你没办法」，却细心地将金黄松软的厚蛋烧整齐装进便当盒里，眼角藏着掩饰不住的关切。",
+    "action": "在厨房案台前用筷子夹着厚蛋烧装盒，转头带着轻微傲娇神情",
+    "location": "温馨公寓明亮厨房内",
+    "timeOfDay": "早晨",
+    "mood": "温馨傲娇",
+    "lighting": "厨房清晨通透明澈的柔和日光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "kitchen",
+      "cooking",
+      "holding chopsticks",
+      "bento",
+      "tamagoyaki",
+      "rolled omelet",
+      "tsundere",
+      "slight blush",
+      "morning light",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "kitchen",
+      "counter",
+      "bento_box",
+      "chopsticks",
+      "cooking",
+      "tsundere",
+      "blushing",
+      "morning_sun"
+    ],
+    "promptProse": "Standing by the clean kitchen counter, she carefully arranges golden rolled omelet into a bento box with wooden chopsticks, glancing to the side with an endearing tsundere pout in the fresh morning sun.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "kind": "character",
+  "id": "ichinose_honami",
+  "revision": 1,
+  "sortOrder": 182,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "ichinose_honami",
+    "profile": {
+      "id": "ichinose_honami",
+      "name": "一之濑帆波",
+      "alias": [
+        "Ichinose Honami",
+        "一之濑",
+        "帆波",
+        "Honami",
+        "小帆波"
+      ],
+      "type": "popular",
+      "icon": "🌸",
+      "portrait": {
+        "image": "../assets/characters/popular-ichinose_honami.png?v=1",
+        "alt": "一之濑帆波 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "粉金色丰盈蓬松中长发",
+        "hair_color": "草莓金 / 粉金",
+        "eyes": "温柔纯澈天蓝瞳",
+        "hairstyle": "及肩蓬松微卷发 · 柔顺垂肩 · 极富空气感",
+        "uniform": "高度育成高中红西装外套 · 白色百褶裙",
+        "expression": "温柔治愈 · 温暖包容 · 动情时满眼娇羞依恋",
+        "style": "gentle, devoted, and curvaceous angel heroine",
+        "signature": "粉金蓬松发、天蓝瞳、丰满身姿与治愈人心的天使微笑"
+      },
+      "personality": [
+        "温柔善良具有极强的包容心",
+        "善于凝聚他人却偶尔过于牺牲自己",
+        "面对认定的心上人会极度主动黏人",
+        "情感深切真挚甘愿倾其所有",
+        "拥有令人安心放松的治愈气场"
+      ],
+      "likes": [
+        "帮助伙伴与班级日常交流",
+        "给心上人泡热可可与做便当",
+        "雨天漫步与近距离牵手",
+        "被温柔摸头与深情拥抱"
+      ],
+      "classic_cg": {
+        "title": "雨中红伞下的贴身依偎",
+        "description": "细雨朦胧的校园林荫道上，一之濑帆波与你合撑一把红色雨伞。少女紧紧贴在你的臂弯旁，肩膀微湿却浑然不觉，仰起泛红的面颊，眼波满溢着无法言说的依赖与爱意——「只要像现在这样呆在你的身边……我就什么都不怕了。」"
+      },
+      "identity": {
+        "role": "高度育成高中B班领袖 / 核心学生代表",
+        "age": "17岁（高中生）",
+        "occupation": "高中生 / 学生会成员",
+        "faction": "高度育成高中 / B班"
+      },
+      "tags": [
+        "粉金发",
+        "蓝瞳",
+        "巨乳",
+        "女友天花板",
+        "治愈系",
+        "黏人依恋",
+        "实力至上"
+      ],
+      "bg_story": "一之濑帆波是《欢迎来到实力至上主义的教室》的核心女主角之一，B班的领导者。拥有出类拔萃的容貌、丰满迷人的身材与无与伦比的人望。性格纯真善良、全心全意为他人着想；在经历心理危机被绫小路清隆拯救后，彻底向其敞开心扉。卸下坚强领袖的外壳后，展现出极度专一、温柔黏人、甘愿为所爱之人奉献一切的极致女友力。",
+      "palette": [
+        "樱粉金",
+        "学院红",
+        "天青蓝"
+      ],
+      "weather": [
+        "微雨林荫道",
+        "雪夜街灯",
+        "晴空游轮甲板"
+      ],
+      "speech": "清隆君……只要是你的愿望，我全部都会为你实现哦。所以……请多依赖我一点吧？",
+      "source": "衣笠彰梧《欢迎来到实力至上主义的教室 / Classroom of the Elite》",
+      "traits": [
+        "ichinose_honami",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "medium_hair",
+        "blue_eyes",
+        "large_breasts",
+        "curvy",
+        "youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e"
+      ],
+      "accent_color": "#fb7185",
+      "bg_color": "#1e1b4b"
+    },
+    "popular": {
+      "id": "ichinose_honami",
+      "displayName": "一之濑帆波",
+      "originalName": "一之瀬 帆波 (Ichinose Honami)",
+      "franchise": "Classroom of the Elite",
+      "aliases": [
+        "ichinose_honami",
+        "honami_ichinose",
+        "ichinose",
+        "honami",
+        "一之濑帆波",
+        "一之濑",
+        "帆波",
+        "classroom of the elite",
+        "youkoso jitsuryoku"
+      ],
+      "identityProse": "Adult Ichinose Honami from Classroom of the Elite, an exceptionally radiant, gentle, and curvaceous young woman with voluminous strawberry-blonde hair reaching her shoulders, warm sky-blue eyes, a generously feminine figure, and a caring, heart-melting smile.",
+      "identityTokens": [
+        "ichinose_honami",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "medium_hair",
+        "blue_eyes",
+        "large_breasts",
+        "curvy",
+        "youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e"
+      ],
+      "exactTokens": [
+        "ichinose_honami"
+      ],
+      "exactPrefixes": [
+        "ichinose_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "an_advanced_high_uniform",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代校园+心理博弈（欢迎来到实力至上主义的教室）",
+        "era": "当代",
+        "formNotes": "粉金蓬松中发+水蓝瞳+丰满肉感极品身材；高度育成高中B班领袖；包容温柔、奉献治愈型女友天花板；红西装制服/牛角扣大衣/纯白比基尼/体操服/粉吊带；对认定之人极度黏人依恋",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "Lerche, official anime screencap",
+      "curatedArtistStyles": [
+        "tomose_shunsaku",
+        "kantoku",
+        "rella",
+        "tiv"
+      ],
+      "characterTokens": [
+        "ichinose_honami"
+      ],
+      "copyrightTokens": [
+        "youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e"
+      ]
+    }
+  }
+}

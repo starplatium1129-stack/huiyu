@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "firefly_starry_fireworks_handhold",
+  "revision": 1,
+  "sortOrder": 1867,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "firefly_starry_fireworks_handhold",
+    "characterId": "firefly_hsr",
+    "title": "流萤 · 盛大烟花下的紧握相依",
+    "category": "假期出行",
+    "outfitId": "glamoth_canonical_dress",
+    "description": "【流萤 · 盛大烟花下的紧握相依】漫天盛大焰火在夜空中轰然绽放，五彩光斑照亮了流萤满含泪光的双眸。少女十指紧扣住你的手掌，倚靠在你的肩膀旁，轻声吐露心声——「请看着我……把流萤真正的模样，烙印在你的记忆里。」",
+    "action": "与对方十指相扣依偎在身侧，抬头仰望夜空绚烂烟花",
+    "location": "梦境城市钟表广场观景台",
+    "timeOfDay": "夜晚",
+    "mood": "浪漫震撼",
+    "lighting": "巨大烟花照亮夜空的绚丽彩光与侧逆光",
+    "camera": "cowboy shot, dynamic framing",
+    "promptTokens": [
+      "fireworks",
+      "night sky",
+      "holding hands",
+      "interlocked fingers",
+      "leaning on shoulder",
+      "gazing up",
+      "teary eyes",
+      "sparkles",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "fireworks",
+      "night",
+      "holding_hands",
+      "interlocked_fingers",
+      "intimacy",
+      "sparkling_eyes",
+      "romantic"
+    ],
+    "promptProse": "Standing together under a sky bursting with dazzling multicolored fireworks, her fingers remain tightly interlocked with his, leaning gently toward his side with glistening eyes.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

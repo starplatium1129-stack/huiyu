@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "yamada_ryo_park_grass_break",
+  "revision": 1,
+  "sortOrder": 1831,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "yamada_ryo_park_grass_break",
+    "characterId": "yamada_ryo",
+    "title": "山田凉 · 公园长椅的吃草哲学",
+    "category": "现代日常",
+    "outfitId": "shuka_school_uniform",
+    "description": "【山田凉 · 公园长椅的吃草哲学】放学后的街心公园树荫下，凉穿着秀华校服懒洋洋地斜靠在木长椅上，掏出空空如也的零钱包叹了口气，随后若无其事地将一根草叶叼在嘴角——「为了买那把70年代的电贝斯……今天就靠光合作用活着好了。波奇什么时候来呢？」",
+    "action": "斜倚在木椅上翻开空钱包，嘴角叼着一根草叶",
+    "location": "下北泽绿荫公园木长椅",
+    "timeOfDay": "黄昏",
+    "mood": "幽默散漫",
+    "lighting": "树叶缝隙漏下的金黄斑驳光影",
+    "camera": "cowboy shot, eye level",
+    "promptTokens": [
+      "park bench",
+      "leaning back",
+      "empty wallet",
+      "holding blade of grass",
+      "grass in mouth",
+      "dappled sunlight",
+      "trees",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "park",
+      "bench",
+      "dappled_sunlight",
+      "trees",
+      "empty_wallet",
+      "deadpan",
+      "relaxed_posture"
+    ],
+    "promptProse": "Slumped casually across a wooden park bench beneath tree shadows, she glances into an open empty leather wallet with a dry, deadpan stare and a blade of grass playfully perched at her lips.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

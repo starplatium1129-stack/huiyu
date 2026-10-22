@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "kita_ikuyo/shuka_sailor_uniform",
+  "revision": 1,
+  "sortOrder": 1559,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "kita_ikuyo",
+    "outfit": {
+      "id": "shuka_sailor_uniform",
+      "name": "秀华高中经典夏季水手服",
+      "tokens": [
+        "school_uniform",
+        "sailor_uniform",
+        "white_shirt",
+        "short_sleeves",
+        "sailor_collar",
+        "blue_collar",
+        "red_necktie",
+        "pleated_skirt",
+        "black_skirt",
+        "socks",
+        "loafers"
+      ],
+      "prose": "The official Shuka High School summer uniform featuring a short-sleeved white sailor shirt with a crisp navy-blue collar, red necktie, neat dark pleated skirt, mid-calf socks, and brown leather loafers",
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

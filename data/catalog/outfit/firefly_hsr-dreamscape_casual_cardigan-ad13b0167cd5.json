@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "firefly_hsr/dreamscape_casual_cardigan",
+  "revision": 1,
+  "sortOrder": 1585,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "firefly_hsr",
+    "outfit": {
+      "id": "dreamscape_casual_cardigan",
+      "name": "梦境漫步暖白针织开衫与百褶裙",
+      "tokens": [
+        "cardigan",
+        "white_cardigan",
+        "knit_sweater",
+        "camisole",
+        "pleated_skirt",
+        "green_skirt",
+        "socks",
+        "loafers",
+        "shoulder_bag"
+      ],
+      "prose": "A cozy oversized cream-white cable-knit cardigan slung softly over a pastel camisole top, sage-green pleated skirt, ankle socks, and a small leather crossbody bag",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "chizuru_cafe_dessert_tease",
+  "revision": 1,
+  "sortOrder": 1880,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "chizuru_cafe_dessert_tease",
+    "characterId": "mizuhara_chizuru",
+    "title": "水原千鹤 · 咖啡甜品前的俏皮小叉",
+    "category": "现代日常",
+    "outfitId": "rental_date_red_knit_skirt",
+    "description": "【水原千鹤 · 咖啡甜品前的俏皮小叉】格调典雅的甜品店靠窗座，千鹤用小银叉切下一小块精致草莓挞举到你面前。少女眼眸中闪烁着罕见的促狭与俏皮——「张嘴～啊——骗你的，第一口当然是我的啦♪」",
+    "action": "坐在咖啡桌前举着装有草莓蛋糕的银叉往前递，俏皮轻笑眨眼",
+    "location": "精品法式咖啡厅窗边双人座",
+    "timeOfDay": "午后",
+    "mood": "甜美俏皮",
+    "lighting": "窗外洒下的柔美暖色白昼日光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "cafe",
+      "table",
+      "holding fork",
+      "strawberry tart",
+      "feeding",
+      "playful smile",
+      "winking",
+      "afternoon light",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "cafe",
+      "table",
+      "dessert",
+      "fork",
+      "feeding",
+      "winking",
+      "playful",
+      "cheerful"
+    ],
+    "promptProse": "Seated across the cafe table, she holds a silver fork bearing a piece of fresh strawberry cake, teasing with a playful wink and a bright, charming laugh.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

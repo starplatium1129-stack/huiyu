@@ -1,0 +1,46 @@
+{
+  "kind": "blueprint",
+  "id": "yamada_ryo_record_store",
+  "revision": 1,
+  "sortOrder": 1830,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "yamada_ryo_record_store",
+    "characterId": "yamada_ryo",
+    "title": "山田凉 · 下北泽黑胶寻宝",
+    "category": "现代日常",
+    "outfitId": "shimokitazawa_vintage",
+    "description": "【山田凉 · 下北泽黑胶寻宝】充斥着旧纸与树脂香气的下北泽二手唱片行里，凉穿着松垮的古着衬衫，一手翻阅着木箱里的罕见黑胶封套，嘴里咬着冰咖啡吸管。眼神在瞥见经典摇滚名盘的瞬间闪烁起难得的兴奋微光。",
+    "action": "俯身在木制黑胶唱片箱前翻找唱片，嘴里叼着吸管",
+    "location": "下北泽复古二手黑胶唱片店",
+    "timeOfDay": "午后",
+    "mood": "惬意从容",
+    "lighting": "唱片店内暖色钨丝灯与窗边斜射光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "record store",
+      "browsing records",
+      "vinyl record",
+      "album cover",
+      "drinking through straw",
+      "vintage shop",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "record_store",
+      "vinyl",
+      "browsing",
+      "iced_coffee",
+      "straw",
+      "vintage",
+      "cool_look"
+    ],
+    "promptProse": "Browsing through stacked wooden crates of vinyl albums in a vintage indie record shop, she holds a classic record sleeve with one hand while sipping iced coffee through a straw.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

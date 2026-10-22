@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "ichinose_honami/private_dorm_pink_camisole",
+  "revision": 1,
+  "sortOrder": 1600,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "ichinose_honami",
+    "outfit": {
+      "id": "private_dorm_pink_camisole",
+      "name": "私人宿舍粉色纯棉吊带背心短裤",
+      "tokens": [
+        "camisole",
+        "pink_shirt",
+        "spaghetti_straps",
+        "shorts",
+        "bare_shoulders",
+        "bare_legs",
+        "cleavage"
+      ],
+      "prose": "A soft pastel-pink ribbed cotton camisole with thin straps accentuating her generous bust, matching lounge shorts, and bare legs in her private dorm room",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

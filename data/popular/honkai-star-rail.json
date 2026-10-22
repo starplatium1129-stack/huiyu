@@ -311,6 +311,181 @@
           "kitsune_mask"
         ]
       }
+    },
+    {
+      "id": "firefly_hsr",
+      "displayName": "流萤",
+      "originalName": "流萤 (Firefly)",
+      "franchise": "Honkai: Star Rail",
+      "aliases": [
+        "firefly_hsr",
+        "firefly",
+        "firefly_(honkai:_star_rail)",
+        "流萤",
+        "萤宝",
+        "ar-267",
+        "sam",
+        "honkai: star rail",
+        "honkai star rail"
+      ],
+      "identityProse": "Firefly from Honkai: Star Rail, a sweet, gentle, and resolute girl with flowing silvery-grey hair fading into pale teal at the tips, bright aqua-blue eyes with a starry gleam, a pale-green feather hairpin and dark headband, and an affectionate, heartwarming smile.",
+      "identityTokens": [
+        "firefly_(honkai:_star_rail)",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "long_hair",
+        "hairband",
+        "hair_ornament",
+        "blue_eyes",
+        "smile",
+        "honkai:_star_rail"
+      ],
+      "exactTokens": [
+        "firefly_(honkai:_star_rail)"
+      ],
+      "exactPrefixes": [
+        "firefly_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "glamoth_canonical_dress",
+      "outfits": [
+        {
+          "id": "glamoth_canonical_dress",
+          "name": "格拉默浅绿薄纱礼服裙",
+          "tokens": [
+            "dress",
+            "sleeveless_dress",
+            "white_dress",
+            "green_dress",
+            "collared_shirt",
+            "black_ribbon",
+            "necktie",
+            "pleated_skirt",
+            "thighhighs",
+            "white_thighhighs",
+            "boots"
+          ],
+          "prose": "Her iconic light-green layered dress with a crisp white collared blouse, black chest ribbon tie, frilled pleats along the hem, pure white thigh-high stockings, and buckled ankle boots",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "dreamscape_casual_cardigan",
+          "name": "梦境漫步暖白针织开衫与百褶裙",
+          "tokens": [
+            "cardigan",
+            "white_cardigan",
+            "knit_sweater",
+            "camisole",
+            "pleated_skirt",
+            "green_skirt",
+            "socks",
+            "loafers",
+            "shoulder_bag"
+          ],
+          "prose": "A cozy oversized cream-white cable-knit cardigan slung softly over a pastel camisole top, sage-green pleated skirt, ankle socks, and a small leather crossbody bag",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sam_pilot_plugsuit",
+          "name": "萨姆驾驶员特制机械紧身服",
+          "tokens": [
+            "bodysuit",
+            "plugsuit",
+            "sci-fi",
+            "latex",
+            "black_bodysuit",
+            "green_trim",
+            "glowing_trim",
+            "gloves",
+            "collarbone"
+          ],
+          "prose": "A sleek high-tech pilot plugsuit sculpted in black and silver composite plating with glowing emerald telemetry lines tracing along her slender waist and collarbones",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "summer_breeze_sundress",
+          "name": "盛夏清风水绿吊带轻盈沙滩裙",
+          "tokens": [
+            "sundress",
+            "spaghetti_straps",
+            "sleeveless",
+            "green_dress",
+            "bare_shoulders",
+            "sandals",
+            "straw_hat"
+          ],
+          "prose": "An airy seafoam-green summer sundress with delicate spaghetti shoulder straps baring her smooth shoulders, straw sun hat, and strappy flat sandals",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cozy_dorm_loungewear",
+          "name": "暖绒居家乐浅青长款卫衣",
+          "tokens": [
+            "hoodie",
+            "oversized_hoodie",
+            "green_hoodie",
+            "long_sleeves",
+            "bare_legs",
+            "slippers"
+          ],
+          "prose": "An oversized pastel mint-green zip hoodie extending down to mid-thigh over soft lounge shorts, bare legs, and cozy bedroom slippers",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "medium_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "detailed_vulva",
+            "slender_waist",
+            "blushing",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes while keeping her delicate green hairband in her silvery-teal hair, soft lovely feminine silhouette with tender pink nipples, neat shaved pussy, blushing gently with deep devoted warmth",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "星际科幻+现代奇幻（崩坏：星穹铁道）",
+        "era": "星历年代",
+        "formNotes": "银灰长发发尾渐变青绿+浅绿羽毛发箍+群青水蓝星芒瞳；格拉默铁骑遗孤兼星核猎手萨姆机甲操作者；极具陪伴感与初恋氛围的国民女友；浅绿礼服/白开衫/机械驾驶服/夏日吊带裙；天台夕阳与橡木蛋糕卷名场面",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "miHoYo, HoYoverse, official anime cutscene",
+      "curatedArtistStyles": [
+        "rella",
+        "mika_pikazo",
+        "tiv",
+        "ask_(gemini)"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

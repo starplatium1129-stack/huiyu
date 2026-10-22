@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ichinose_honami/summer_resort_white_bikini",
+  "revision": 1,
+  "sortOrder": 1598,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "ichinose_honami",
+    "outfit": {
+      "id": "summer_resort_white_bikini",
+      "name": "豪华游轮纯白分体系带比基尼",
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "white_bikini",
+        "string_bikini",
+        "halterneck",
+        "cleavage",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "prose": "A pure white string halterneck triangle bikini that showcases her voluptuous cleavage and feminine hourglass hips under the tropical sun",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

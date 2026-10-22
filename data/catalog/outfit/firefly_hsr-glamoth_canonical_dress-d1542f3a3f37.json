@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "firefly_hsr/glamoth_canonical_dress",
+  "revision": 1,
+  "sortOrder": 1584,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "firefly_hsr",
+    "outfit": {
+      "id": "glamoth_canonical_dress",
+      "name": "格拉默浅绿薄纱礼服裙",
+      "tokens": [
+        "dress",
+        "sleeveless_dress",
+        "white_dress",
+        "green_dress",
+        "collared_shirt",
+        "black_ribbon",
+        "necktie",
+        "pleated_skirt",
+        "thighhighs",
+        "white_thighhighs",
+        "boots"
+      ],
+      "prose": "Her iconic light-green layered dress with a crisp white collared blouse, black chest ribbon tie, frilled pleats along the hem, pure white thigh-high stockings, and buckled ankle boots",
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

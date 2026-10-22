@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "firefly_sweet_oak_cake_share",
+  "revision": 1,
+  "sortOrder": 1866,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "firefly_sweet_oak_cake_share",
+    "characterId": "firefly_hsr",
+    "title": "流萤 · 梦境街角的橡木蛋糕卷",
+    "category": "现代日常",
+    "outfitId": "dreamscape_casual_cardigan",
+    "description": "【流萤 · 梦境街角的橡木蛋糕卷】充满梦幻霓虹光芒的街边长椅前，穿上开衫私服的流萤双手捧着包装精美的橡木蛋糕卷，小心翼翼地递到你嘴边。少女脸颊带着微微的红晕，眼神期待又满足——「这个蛋糕卷真的超级好吃！来，咬一口尝尝看嘛♪」",
+    "action": "双手捧着切块蛋糕卷凑到近前轻柔喂食，眼神甜蜜害羞",
+    "location": "匹诺康尼黄金时刻街边长椅",
+    "timeOfDay": "午后",
+    "mood": "甜蜜依恋",
+    "lighting": "柔和明亮日光与梦境街景流光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "holding pastry",
+      "cake roll",
+      "feeding",
+      "blush",
+      "sweet smile",
+      "street",
+      "daylight",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "street",
+      "bench",
+      "cake",
+      "feeding",
+      "blushing",
+      "sweet_smile",
+      "cardigan",
+      "gentle"
+    ],
+    "promptProse": "Holding a fresh slice of rolled cake forward with both hands, she leans in close with an adorable blushing smile, offering a sweet bite under the bright golden day.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

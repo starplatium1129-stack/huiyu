@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "chizuru_r18_balcony_moonlight_clasp",
+  "revision": 1,
+  "sortOrder": 1882,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "chizuru_r18_balcony_moonlight_clasp",
+    "characterId": "mizuhara_chizuru",
+    "title": "水原千鹤 · 落地窗边的依偎温存",
+    "category": "私密情欲",
+    "outfitId": "acting_stage_formal_dress",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@hisasi",
+    "description": "【成年水原千鹤 · 落地窗边的依偎温存】露台落地窗帘半遮半掩的暗影中，千鹤的黑色露背晚礼服拉链滑落，整片如玉雕般的无瑕美背与雪白腰肢完全袒露。双手反撑在玻璃窗上，在爱人从身后的深情贴近下仰起修长脖颈，咬住下唇战栗娇啼——「窗外……能看到夜景……别在这里……唔……！」",
+    "action": "背靠落地窗玻璃，晚礼服半褪袒露美背，双手反撑窗台仰头娇吟",
+    "location": "高层套房落地窗前暗处",
+    "timeOfDay": "深夜",
+    "mood": "紧张情动",
+    "lighting": "窗外繁华城市霓虹夜景与月华冷光",
+    "camera": "cowboy shot, eye level, intimate framing",
+    "promptTokens": [
+      "adult",
+      "window",
+      "open dress",
+      "bare back",
+      "bare shoulders",
+      "hands on glass",
+      "blush",
+      "night city view",
+      "intimate",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "window",
+      "city_lights",
+      "night",
+      "bare_back",
+      "bare_shoulders",
+      "dress_unzipped",
+      "hands_on_window",
+      "heavy_blush"
+    ],
+    "promptProse": "Pressing her palms against the high-rise window overlooking the sparkling city night, her elegant evening gown unzipped to reveal an ivory spine as she arches her head in shuddering pleasure.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

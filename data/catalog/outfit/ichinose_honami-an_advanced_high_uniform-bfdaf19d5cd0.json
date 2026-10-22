@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "ichinose_honami/an_advanced_high_uniform",
+  "revision": 1,
+  "sortOrder": 1596,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "ichinose_honami",
+    "outfit": {
+      "id": "an_advanced_high_uniform",
+      "name": "高度育成高中正统红西装百褶裙制服",
+      "tokens": [
+        "school_uniform",
+        "red_jacket",
+        "blazer",
+        "collared_shirt",
+        "white_shirt",
+        "blue_necktie",
+        "pleated_skirt",
+        "white_skirt",
+        "thighhighs",
+        "black_thighhighs",
+        "loafers"
+      ],
+      "prose": "The Advanced Nurturing High School uniform with a tailored crimson-red blazer over a crisp white collared blouse, blue necktie, white pleated mini skirt, black thigh-high socks, and polished loafers",
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

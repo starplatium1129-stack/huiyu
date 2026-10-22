@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "nakano_nino/stylish_purple_camisole",
+  "revision": 1,
+  "sortOrder": 1580,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "nakano_nino",
+    "outfit": {
+      "id": "stylish_purple_camisole",
+      "name": "时尚辣妹系紫黑镂空吊带私服",
+      "tokens": [
+        "camisole",
+        "purple_shirt",
+        "lace_trim",
+        "cardigan",
+        "white_cardigan",
+        "denim_shorts",
+        "short_shorts",
+        "belt",
+        "boots",
+        "ankle_boots"
+      ],
+      "prose": "A chic deep-purple lace-trimmed camisole top under an off-shoulder sheer white knit cardigan, high-waisted distressed denim shorts, a sleek black belt, and fashionable leather ankle booties",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

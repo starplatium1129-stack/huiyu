@@ -1,0 +1,362 @@
+{
+  "version": 1,
+  "franchise": "The Quintessential Quintuplets",
+  "characters": [
+    {
+      "id": "nakano_miku",
+      "displayName": "中野三玖",
+      "originalName": "中野 三玖 (Nakano Miku)",
+      "franchise": "The Quintessential Quintuplets",
+      "aliases": [
+        "nakano_miku",
+        "miku_nakano",
+        "miku",
+        "nakano",
+        "中野三玖",
+        "三玖",
+        "三玖天下第一",
+        "the quintessential quintuplets",
+        "5-toubun no hanayome"
+      ],
+      "identityProse": "Nakano Miku from The Quintessential Quintuplets, a quiet, bashful, and devoted girl with medium chestnut-brown hair parted over one eye, serene deep-blue eyes, signature over-ear blue-and-black wireless headphones rested around her slender neck, and a subtle sweet pout.",
+      "identityTokens": [
+        "nakano_miku",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "medium_hair",
+        "hair_over_one_eye",
+        "blue_eyes",
+        "headphones",
+        "around_neck",
+        "slender",
+        "5-toubun_no_hanayome"
+      ],
+      "exactTokens": [
+        "nakano_miku"
+      ],
+      "exactPrefixes": [
+        "miku_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "asahi_high_school_uniform",
+      "outfits": [
+        {
+          "id": "asahi_high_school_uniform",
+          "name": "旭高校正统针织衫黑丝制服",
+          "tokens": [
+            "school_uniform",
+            "cardigan",
+            "green_cardigan",
+            "collared_shirt",
+            "white_shirt",
+            "red_necktie",
+            "pleated_skirt",
+            "black_skirt",
+            "pantyhose",
+            "black_pantyhose",
+            "loafers"
+          ],
+          "prose": "The Asahi High School uniform featuring an oversized mint-green knit button cardigan over a collared white shirt with a red ribbon tie, dark pleated skirt, opaque black pantyhose stockings, and dark leather loafers",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "matcha_bakery_apron",
+          "name": "抹茶烘焙坊学徒半身围裙装",
+          "tokens": [
+            "short_sleeves",
+            "collared_shirt",
+            "white_shirt",
+            "apron",
+            "green_apron",
+            "bandana",
+            "slacks",
+            "holding_tray"
+          ],
+          "prose": "A crisp short-sleeved baker shirt under a forest-green half apron tied around her waist with a matching hair bandana, a dusting of white flour on her cheek, holding a baking tray with fresh bread",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "sengoku_warlord_haori",
+          "name": "战国风雅日式深蓝羽织私服",
+          "tokens": [
+            "haori",
+            "japanese_clothes",
+            "blue_haori",
+            "turtleneck",
+            "white_sweater",
+            "pleated_skirt",
+            "folding_fan",
+            "boots"
+          ],
+          "prose": "A dark navy Japanese haori overcoat with subtle samurai crest patterns over a white ribbed turtleneck sweater, pleated midi skirt, holding a folded traditional paper fan",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cozy_winter_turtleneck",
+          "name": "冬日约会粗针高领大毛衣与格纹裙",
+          "tokens": [
+            "sweater",
+            "turtleneck",
+            "white_sweater",
+            "oversized_sweater",
+            "plaid_skirt",
+            "tights",
+            "black_tights",
+            "scarf",
+            "holding_can"
+          ],
+          "prose": "A chunky cream-white oversized cable-knit turtleneck sweater with cuffs covering her hands, red-and-navy plaid mini skirt, thick black tights, and holding a warm canned tea",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "yukata_summer_fireworks",
+          "name": "夏夜花火天青碎花日式浴衣",
+          "tokens": [
+            "yukata",
+            "japanese_clothes",
+            "blue_yukata",
+            "floral_print",
+            "obi",
+            "blue_obi",
+            "geta",
+            "hair_flower"
+          ],
+          "prose": "A soft sky-blue cotton summer yukata with delicate white daisy flower patterns, a deep-indigo tied obi sash, wooden geta sandals, and a small blue blossom pinned above her ear",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "medium_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "detailed_vulva",
+            "slender_waist",
+            "blushing",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes except for her signature blue-and-black headphones around her neck, beautifully shaped soft breasts with tender pink nipples, neat shaved pussy, blushing head to toe with tender quivering vulnerability",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代日常+校园恋爱（五等分的新娘）",
+        "era": "当代",
+        "formNotes": "栗棕色中发+单侧遮眼斜刘海+深蓝瞳+颈间蓝黑头戴式耳机；内向文静战国武将迷（历女）；旭高校五胞胎三女；黑丝连裤袜/浅绿毛衣制服/烘焙围裙/战国羽织/日式浴衣；标志性害羞鼓腮包子脸",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "Bibury Animation Studios, Tezuka Productions, official anime screencap",
+      "curatedArtistStyles": [
+        "haruba_negi",
+        "kantoku",
+        "rella",
+        "tiv"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "nakano_nino",
+      "displayName": "中野二乃",
+      "originalName": "中野 二乃 (Nakano Nino)",
+      "franchise": "The Quintessential Quintuplets",
+      "aliases": [
+        "nakano_nino",
+        "nino_nakano",
+        "nino",
+        "nakano",
+        "中野二乃",
+        "二乃",
+        "二乃天下第一",
+        "the quintessential quintuplets",
+        "5-toubun no hanayome"
+      ],
+      "identityProse": "Nakano Nino from The Quintessential Quintuplets, a confident, stylish, and passionately assertive girl with waist-length vibrant pink hair tied in distinctive twin tails with black-and-purple butterfly ribbons, sharp captivating aqua-blue eyes, and a charming tsundere aura.",
+      "identityTokens": [
+        "nakano_nino",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "twintails",
+        "butterfly_hair_ornament",
+        "blue_eyes",
+        "slender",
+        "5-toubun_no_hanayome"
+      ],
+      "exactTokens": [
+        "nakano_nino"
+      ],
+      "exactPrefixes": [
+        "nino_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "asahi_high_school_uniform",
+      "outfits": [
+        {
+          "id": "asahi_high_school_uniform",
+          "name": "旭高校正统白毛衣过膝袜制服",
+          "tokens": [
+            "school_uniform",
+            "sweater",
+            "white_sweater",
+            "oversized_sweater",
+            "sleeves_past_fingers",
+            "collared_shirt",
+            "red_necktie",
+            "pleated_skirt",
+            "black_skirt",
+            "thighhighs",
+            "black_thighhighs",
+            "loafers"
+          ],
+          "prose": "The Asahi High School uniform featuring an oversized cream-white knit sweater with sleeves extending past her hands, white collared shirt with red ribbon necktie, dark pleated mini skirt, over-the-knee black thigh-high socks, and polished brown loafers",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "short_hair_revival_bakery",
+          "name": "蛋糕店REVIVAL法式糕点师装",
+          "tokens": [
+            "short_hair",
+            "double-breasted",
+            "white_shirt",
+            "chef_uniform",
+            "apron",
+            "red_apron",
+            "slacks",
+            "holding_tray"
+          ],
+          "prose": "showing her stylish bob-cut short hair with small butterfly hairclips, wearing a professional double-breasted white patisserie chef shirt under a tailored wine-red half apron, holding a plate of gourmet strawberry shortcake",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "stylish_purple_camisole",
+          "name": "时尚辣妹系紫黑镂空吊带私服",
+          "tokens": [
+            "camisole",
+            "purple_shirt",
+            "lace_trim",
+            "cardigan",
+            "white_cardigan",
+            "denim_shorts",
+            "short_shorts",
+            "belt",
+            "boots",
+            "ankle_boots"
+          ],
+          "prose": "A chic deep-purple lace-trimmed camisole top under an off-shoulder sheer white knit cardigan, high-waisted distressed denim shorts, a sleek black belt, and fashionable leather ankle booties",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cozy_night_negligee",
+          "name": "二乃私享丝绸粉紫吊带短睡裙",
+          "tokens": [
+            "negligee",
+            "nightgown",
+            "purple_dress",
+            "silk",
+            "spaghetti_straps",
+            "low_chest",
+            "bare_shoulders",
+            "barefoot"
+          ],
+          "prose": "A silky smooth lilac-purple short negligee slip with slender spaghetti straps and delicate lace trimming along the plunging neckline, highlighting her soft collarbones and bare legs",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "yukata_summer_fireworks",
+          "name": "夏夜祭典深绛紫金鱼日式浴衣",
+          "tokens": [
+            "yukata",
+            "japanese_clothes",
+            "purple_yukata",
+            "goldfish_print",
+            "obi",
+            "yellow_obi",
+            "geta",
+            "folding_fan"
+          ],
+          "prose": "A rich deep-purple cotton summer yukata patterned with swimming red goldfish and morning glory blossoms, a vibrant golden-yellow tied obi sash, wooden geta, and holding an elegant folding paper fan",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "medium_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "detailed_vulva",
+            "slender_waist",
+            "blushing",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes while keeping her signature butterfly ribbons in her hair, beautifully contoured soft feminine curves, firm perky breasts with rosy pink nipples, smooth neatly groomed pussy, and an intense blushing gaze brimming with possessive passion",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代日常+校园恋爱（五等分的新娘）",
+        "era": "当代",
+        "formNotes": "粉红长发双马尾（或后期齐肩短发）+黑紫双侧蝴蝶发饰+澄澈青蓝瞳；毒舌傲娇但女子力与厨艺极高；旭高校五胞胎次女；白毛衣黑过膝袜制服/法式烘焙装/紫黑吊带私服/金鱼浴衣；恋爱暴走机车直球告白",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "Bibury Animation Studios, Tezuka Productions, official anime screencap",
+      "curatedArtistStyles": [
+        "haruba_negi",
+        "kantoku",
+        "rella",
+        "tiv"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

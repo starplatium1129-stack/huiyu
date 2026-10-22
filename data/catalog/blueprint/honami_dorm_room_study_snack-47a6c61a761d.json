@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "honami_dorm_room_study_snack",
+  "revision": 1,
+  "sortOrder": 1888,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "honami_dorm_room_study_snack",
+    "characterId": "ichinose_honami",
+    "title": "一之濑帆波 · 宿舍自习时的暖心热可可",
+    "category": "现代日常",
+    "outfitId": "private_dorm_pink_camisole",
+    "description": "【一之濑帆波 · 宿舍自习时的暖心热可可】温馨私密的单人宿舍书桌前，穿着粉色吊带便服的帆波双手端着一杯冒着热气的浓郁热可可递到你面前。少女微微倾身，眼底带着满满的关怀——「学了这么久累了吧？喝点甜的暖暖身子，要我帮你揉揉肩膀吗？」",
+    "action": "在书桌前双手递上热可可马克杯，身体微倾展露关切笑容",
+    "location": "一之濑私人温馨宿舍书桌旁",
+    "timeOfDay": "夜晚",
+    "mood": "体贴关爱",
+    "lighting": "书桌护眼台灯柔和暖光与室内温馨光芒",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "dormitory",
+      "desk",
+      "holding mug",
+      "hot chocolate",
+      "steam",
+      "leaning forward",
+      "gentle smile",
+      "camisole",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "dorm",
+      "room",
+      "holding_mug",
+      "steam",
+      "leaning_forward",
+      "camisole",
+      "cleavage",
+      "kind_smile"
+    ],
+    "promptProse": "Leaning forward across the dorm room study table in a soft pink camisole, she presents a steaming ceramic mug of hot cocoa with warm affectionate eyes.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

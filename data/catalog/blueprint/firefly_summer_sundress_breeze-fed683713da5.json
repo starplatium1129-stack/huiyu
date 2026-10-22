@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "firefly_summer_sundress_breeze",
+  "revision": 1,
+  "sortOrder": 1870,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "firefly_summer_sundress_breeze",
+    "characterId": "firefly_hsr",
+    "title": "流萤 · 盛夏海风中的清爽漫步",
+    "category": "假期出行",
+    "outfitId": "summer_breeze_sundress",
+    "description": "【流萤 · 盛夏海风中的清爽漫步】蓝天白云倒映的水岸边，换上海蓝色清爽吊带裙的流萤单手轻按草帽，赤足踏着微波粼粼的细浪。回眸展颜相视，笑颜如盛夏清风般拂去所有疲惫。",
+    "action": "单手按住草帽在浅水边回眸，另一手轻提裙摆展露欢颜",
+    "location": "明媚水岸沙滩浅水处",
+    "timeOfDay": "正午",
+    "mood": "明澈欢快",
+    "lighting": "明净透亮的盛夏日光与水波反光",
+    "camera": "full-body shot, eye level",
+    "promptTokens": [
+      "shallow water",
+      "holding hat",
+      "barefoot",
+      "summer dress",
+      "turning back",
+      "radiant smile",
+      "clear sky",
+      "full body"
+    ],
+    "sceneTags": [
+      "water",
+      "beach",
+      "holding_hat",
+      "barefoot",
+      "dress_lift",
+      "cheerful",
+      "sunshine"
+    ],
+    "promptProse": "Strolling along the glistening shallow shoreline under the open blue sky, she steadies her straw hat with one hand and turns back with a radiant carefree laugh.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "honami_rainy_umbrella_walk",
+  "revision": 1,
+  "sortOrder": 1885,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "honami_rainy_umbrella_walk",
+    "characterId": "ichinose_honami",
+    "title": "一之濑帆波 · 雨中红伞下的贴身依偎",
+    "category": "校园日常",
+    "outfitId": "an_advanced_high_uniform",
+    "description": "【一之濑帆波 · 雨中红伞下的贴身依偎】细雨蒙蒙的校园林荫小道上，两人合撑着一把红色雨伞。帆波紧紧贴在你的身侧，丰满柔软的手臂贴着你的袖口。少女仰起粉润的面庞，水蓝色的眼眸里满是动人的依恋——「伞稍微有点小呢……不过，能靠得这么近，我反而更开心了。」",
+    "action": "在红雨伞下紧贴对方手臂漫步，转头温柔仰视微笑",
+    "location": "细雨飘落的校园林荫道",
+    "timeOfDay": "午后",
+    "mood": "甜蜜依恋",
+    "lighting": "雨天柔和漫射的冷调光线与伞下暖色氛围",
+    "camera": "cowboy shot, eye level",
+    "promptTokens": [
+      "holding umbrella",
+      "red umbrella",
+      "rain",
+      "walking together",
+      "clinging to arm",
+      "gentle smile",
+      "blush",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "rain",
+      "umbrella",
+      "holding_umbrella",
+      "clinging",
+      "walking",
+      "gentle_smile",
+      "blushing",
+      "romantic"
+    ],
+    "promptProse": "Sharing a bright red umbrella along the rain-swept campus avenue, she clings softly to his arm with an affectionate blushing gaze, rain mist shimmering around them.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "firefly_hsr/summer_breeze_sundress",
+  "revision": 1,
+  "sortOrder": 1587,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "firefly_hsr",
+    "outfit": {
+      "id": "summer_breeze_sundress",
+      "name": "盛夏清风水绿吊带轻盈沙滩裙",
+      "tokens": [
+        "sundress",
+        "spaghetti_straps",
+        "sleeveless",
+        "green_dress",
+        "bare_shoulders",
+        "sandals",
+        "straw_hat"
+      ],
+      "prose": "An airy seafoam-green summer sundress with delicate spaghetti shoulder straps baring her smooth shoulders, straw sun hat, and strappy flat sandals",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

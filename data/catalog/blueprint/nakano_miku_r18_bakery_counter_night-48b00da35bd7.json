@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_miku_r18_bakery_counter_night",
+  "revision": 1,
+  "sortOrder": 1852,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_miku_r18_bakery_counter_night",
+    "characterId": "nakano_miku",
+    "title": "中野三玖 · 打烊烘焙坊案板上的深夜贪欢",
+    "category": "私密情欲",
+    "outfitId": "matcha_bakery_apron",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@hisasi",
+    "description": "【成年中野三玖 · 打烊烘焙坊案板上的深夜贪欢】闭店打烊后面包工坊昏暗的操作间里，三玖工作衬衫的前襟全被解开，抹茶绿围裙松松垮垮地堆在平坦小腹下。饱满柔软的乳房上粉嫩的乳尖挺立轻颤，少女仰躺在洒有少量面粉的面案板上，双腿微蜷大开，泛着水光的手指在泥泞腿心深处自抚，眼眸含春娇吟连连——「打烊了……今晚这里只有我们……想要你……更多的夸奖我……」",
+    "action": "仰躺在面包案板上，衬衫敞开露出胸部，双腿大开自抚娇喘",
+    "location": "打烊后的面包工坊操作间",
+    "timeOfDay": "深夜",
+    "mood": "浓烈诱惑",
+    "lighting": "操作间侧方微弱暖黄壁灯与操作台反光",
+    "camera": "cowboy shot, from above, intimate framing",
+    "promptTokens": [
+      "adult",
+      "open shirt",
+      "bare breasts",
+      "pink nipples",
+      "apron around waist",
+      "lying on counter",
+      "spread legs",
+      "female masturbation",
+      "flour on skin",
+      "blush",
+      "night",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "bakery",
+      "counter",
+      "open_shirt",
+      "bare_breasts",
+      "pink_nipples",
+      "apron",
+      "spread_legs",
+      "fingering",
+      "heavy_blush",
+      "flushed"
+    ],
+    "promptProse": "Lying back across the smooth wooden bakery table beneath moody ambient lamplight, her work shirt pushed open to bare supple rosy breasts while she strokes her wet thighs in tender breathless abandon.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

@@ -185,6 +185,373 @@
         "signature",
         "watermark"
       ]
+    },
+    {
+      "id": "kita_ikuyo",
+      "displayName": "喜多郁代",
+      "originalName": "喜多 郁代 (Kita Ikuyo)",
+      "franchise": "Bocchi the Rock!",
+      "aliases": [
+        "kita_ikuyo",
+        "ikuyo_kita",
+        "kita-san",
+        "kitawn",
+        "kita ikuyo",
+        "喜多郁代",
+        "喜多",
+        "喜多喜多",
+        "喜多酱",
+        "bocchi the rock",
+        "bocchi the rock!"
+      ],
+      "identityProse": "Kita Ikuyo from Bocchi the Rock!, an energetic and sociable girl with bright shoulder-length strawberry-red hair, an ahoge cowlick, cheerful yellow-amber eyes, and a radiant beaming smile.",
+      "identityTokens": [
+        "kita_ikuyo",
+        "1girl",
+        "solo",
+        "red_hair",
+        "medium_hair",
+        "ahoge",
+        "yellow_eyes",
+        "smile",
+        "bocchi_the_rock!"
+      ],
+      "exactTokens": [
+        "kita_ikuyo"
+      ],
+      "exactPrefixes": [
+        "kita_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "shuka_sailor_uniform",
+      "outfits": [
+        {
+          "id": "shuka_sailor_uniform",
+          "name": "秀华高中经典夏季水手服",
+          "tokens": [
+            "school_uniform",
+            "sailor_uniform",
+            "white_shirt",
+            "short_sleeves",
+            "sailor_collar",
+            "blue_collar",
+            "red_necktie",
+            "pleated_skirt",
+            "black_skirt",
+            "socks",
+            "loafers"
+          ],
+          "prose": "The official Shuka High School summer uniform featuring a short-sleeved white sailor shirt with a crisp navy-blue collar, red necktie, neat dark pleated skirt, mid-calf socks, and brown leather loafers",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "kessoku_band_live_casual",
+          "name": "结束乐队Live主唱活力演出服",
+          "tokens": [
+            "t-shirt",
+            "print_t-shirt",
+            "crop_top",
+            "denim_skirt",
+            "miniskirt",
+            "belt",
+            "wristband",
+            "electric_guitar",
+            "guitar_strap",
+            "sneakers"
+          ],
+          "prose": "A layered stylish cropped graphic t-shirt over a casual short-sleeved inner shirt, denim mini skirt with belt, red wristband, and slinging her Pelham Blue Gibson Les Paul Junior DC electric guitar across her torso",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "starry_staff_apron",
+          "name": "STARRY打工元气店员黑围裙",
+          "tokens": [
+            "polo_shirt",
+            "black_shirt",
+            "apron",
+            "black_apron",
+            "slacks",
+            "black_pants",
+            "holding_tray"
+          ],
+          "prose": "A fitted dark polo shirt under a neat black half-length cafe apron tied snugly around her slender waist, carrying a small notepad and silver service tray",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "summer_sunflower_dress",
+          "name": "向阳假日碎花吊带轻盈夏裙",
+          "tokens": [
+            "sundress",
+            "yellow_dress",
+            "floral_print",
+            "spaghetti_straps",
+            "sleeveless",
+            "straw_hat",
+            "sandals",
+            "bare_shoulders"
+          ],
+          "prose": "A lovely pastel yellow sundress adorned with delicate floral patterns, thin spaghetti straps revealing bare shoulders and collarbones, straw sun hat, and woven espadrille sandals",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "small_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "detailed_vulva",
+            "slender_waist",
+            "blushing",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, lovely slender yet feminine silhouette with smooth porcelain skin, delicate natural perky breasts, pink nipples, neat shaved pussy, blushing head to toe in bashful sweet surrender",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cultural_festival_maid",
+          "name": "秀华文化祭复古黑白女仆装",
+          "tokens": [
+            "maid_uniform",
+            "maid_dress",
+            "black_dress",
+            "white_apron",
+            "maid_apron",
+            "maid_headdress",
+            "frills",
+            "frilled_apron",
+            "thighhighs",
+            "black_thighhighs"
+          ],
+          "prose": "A classic ruffled black maid dress with a crisp white frilled apron, frilly lace maid headdress, and black thigh-high stockings for the high school cultural festival cafe",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代日常+摇滚音乐（孤独摇滚！）",
+        "era": "当代",
+        "formNotes": "红发中长发+呆毛+明亮金黄瞳；极度开朗外向社交天花板；结束乐队主唱兼吉他手；崇拜山田凉，善解人意元气少女；常态秀华水手服/Live演出服/STARRY围裙/夏日连衣裙",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "CloverWorks, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kerorira",
+        "hamazi_aki",
+        "rella",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    },
+    {
+      "id": "yamada_ryo",
+      "displayName": "山田凉",
+      "originalName": "山田 リョウ (Yamada Ryo)",
+      "franchise": "Bocchi the Rock!",
+      "aliases": [
+        "yamada_ryo",
+        "ryo_yamada",
+        "yamada",
+        "ryo",
+        "山田凉",
+        "山田",
+        "凉",
+        "凉学姐",
+        "吃草贝斯手",
+        "bocchi the rock",
+        "bocchi the rock!"
+      ],
+      "identityProse": "Yamada Ryo from Bocchi the Rock!, an aloof, eccentric, and effortlessly cool girl and bassist with layered indigo-blue shaggy hair, a beauty mark under her left eye, cool amber-yellow eyes, a subtle hair clip on the side, and a languid androgynous charm.",
+      "identityTokens": [
+        "yamada_ryo",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "short_hair",
+        "mole_under_eye",
+        "yellow_eyes",
+        "hairclip",
+        "slender",
+        "bocchi_the_rock!"
+      ],
+      "exactTokens": [
+        "yamada_ryo"
+      ],
+      "exactPrefixes": [
+        "ryo_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "shimokitazawa_vintage",
+      "outfits": [
+        {
+          "id": "shimokitazawa_vintage",
+          "name": "下北泽古着中性宽松私服",
+          "tokens": [
+            "oversized_shirt",
+            "button_up",
+            "green_shirt",
+            "undershirt",
+            "wide-leg_pants",
+            "trousers",
+            "suspenders",
+            "bass_guitar",
+            "guitar_strap",
+            "sneakers"
+          ],
+          "prose": "An oversized olive-green vintage button-up shirt draped loosely over a white undershirt, baggy high-waisted beige trousers with suspenders, black canvas sneakers, and slinging her Olympic White Fender Precision Bass across her back",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "shuka_school_uniform",
+          "name": "秀华高中高年级整洁制服",
+          "tokens": [
+            "school_uniform",
+            "jacket",
+            "blazer",
+            "navy_jacket",
+            "white_shirt",
+            "collared_shirt",
+            "pleated_skirt",
+            "black_skirt",
+            "pantyhose",
+            "black_pantyhose",
+            "loafers"
+          ],
+          "prose": "The neat Shuka High School uniform with a dark navy blazer over a crisp collared white blouse, dark pleated skirt, sheer black tights, and polished dark loafers with her signature small hairclip",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "live_grunge_black",
+          "name": "Live演出无袖暗黑摇滚装",
+          "tokens": [
+            "tank_top",
+            "sleeveless",
+            "black_shirt",
+            "bare_shoulders",
+            "collarbone",
+            "necklace",
+            "chain",
+            "ripped_jeans",
+            "skinny_jeans",
+            "wristband",
+            "boots"
+          ],
+          "prose": "An asymmetrical distressed sleeveless black graphic tank top revealing pale shoulders and sharp collarbones, layered silver chains, dark ripped skinny jeans, studded leather wristband, and chunky rock boots",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "starry_barista_apron",
+          "name": "STARRY深夜吧台调饮围裙装",
+          "tokens": [
+            "collared_shirt",
+            "grey_shirt",
+            "rolled_sleeves",
+            "necktie",
+            "black_necktie",
+            "apron",
+            "black_apron",
+            "holding_cup"
+          ],
+          "prose": "A clean rolled-sleeve dark charcoal dress shirt, a tailored black bistro apron, and a thin black necktie, holding a cocktail shaker with an aloof expression behind the dimly lit counter",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "small_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "detailed_vulva",
+            "slender",
+            "flat_chest",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, slender and pale androgynous beauty with elegant collarbones and flat stomach, modest petite breasts with soft pink nipples, smooth neat pussy, and a captivating half-lidded aloof gaze",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "cultural_festival_butler",
+          "name": "秀华文化祭冷峻执事西装",
+          "tokens": [
+            "butler",
+            "suit",
+            "black_suit",
+            "tuxedo",
+            "white_shirt",
+            "collared_shirt",
+            "bowtie",
+            "white_bowtie",
+            "vest",
+            "suit_vest",
+            "black_pants",
+            "formal"
+          ],
+          "prose": "A sharp tailored black butler tuxedo suit with a crisp white dress shirt, neat white bowtie, fitted vest, and pressed formal trousers conveying an effortlessly handsome aristocratic aura",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代日常+摇滚音乐（孤独摇滚！）",
+        "era": "当代",
+        "formNotes": "深蓝短发+左眼下泪痣+琥珀黄瞳+右侧发夹；特立独行散漫文青贝斯手；结束乐队贝斯兼作曲；沉迷买复古乐器导致没钱吃草；常态下北泽古着私服/秀华校服/无袖暗黑摇滚服/STARRY调饮装",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "CloverWorks, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kerorira",
+        "hamazi_aki",
+        "rella",
+        "kantoku"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
     }
   ]
 }

@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "chizuru_r18_hotel_negligee_unlaced",
+  "revision": 1,
+  "sortOrder": 1883,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "chizuru_r18_hotel_negligee_unlaced",
+    "characterId": "mizuhara_chizuru",
+    "title": "水原千鹤 · 温泉旅馆丝绸吊带的释怀",
+    "category": "私密情欲",
+    "outfitId": "nsfw_nude",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@tony taka",
+    "description": "【成年水原千鹤 · 温泉旅馆丝绸吊带的释怀】温泉旅馆和室榻榻米上，真丝吊带滑落至腰际，千鹤全裸半坐，修长结实的美腿大张。平日里不可接近的顶尖女演员，此刻满面酡红地伸手自抚在湿热的腿心，眼眸带着迷醉的湿润春水——「从一开始……我就已经无法自拔了……」",
+    "action": "在榻榻米上衣衫尽褪，修长美腿大张，伸手自抚腿心迷醉喘息",
+    "location": "日式温泉旅馆和室榻榻米",
+    "timeOfDay": "深夜",
+    "mood": "迷离释怀",
+    "lighting": "障子纸门透过的温润昏黄和室纸灯",
+    "camera": "cowboy shot, from above, intimate framing",
+    "promptTokens": [
+      "adult",
+      "nude",
+      "tatami",
+      "spread legs",
+      "female masturbation",
+      "slender legs",
+      "bare breasts",
+      "pink nipples",
+      "blush",
+      "intimate",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "japanese_room",
+      "tatami",
+      "completely_nude",
+      "bare_breasts",
+      "pink_nipples",
+      "spread_legs",
+      "fingering",
+      "heavy_blush",
+      "night"
+    ],
+    "promptProse": "Sitting on woven tatami mats with silky garments tossed aside, her long legs spread wide as her trembling hand caresses her flushed inner thighs under warm lantern light.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

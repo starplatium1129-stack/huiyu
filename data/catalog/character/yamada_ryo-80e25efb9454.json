@@ -1,0 +1,170 @@
+{
+  "kind": "character",
+  "id": "yamada_ryo",
+  "revision": 1,
+  "sortOrder": 177,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "yamada_ryo",
+    "profile": {
+      "id": "yamada_ryo",
+      "name": "山田凉",
+      "alias": [
+        "Yamada Ryo",
+        "山田",
+        "凉",
+        "Ryo",
+        "吃草贝斯手"
+      ],
+      "type": "popular",
+      "icon": "🎸",
+      "portrait": {
+        "image": "../assets/characters/popular-yamada_ryo.png?v=1",
+        "alt": "山田凉 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "层次感深蓝短发 · 发夹",
+        "hair_color": "靛青色 / 墨蓝",
+        "eyes": "琥珀金 / 浅金瞳",
+        "hairstyle": "散漫层次狼尾短发 · 右侧淡黄色单枚发夹",
+        "uniform": "秀华高中制服 / 下北泽复古古着私服",
+        "expression": "慵懒散漫 · 略带厌世三白眼 · 偶露狡黠微扬嘴角",
+        "style": "androgynous indie-rock bassist aesthetic",
+        "signature": "深蓝碎短发、左眼下泪痣、琥珀金瞳、复古贝斯与散漫气质"
+      },
+      "personality": [
+        "特立独行不随波逐流",
+        "沉迷复古乐器买到破产",
+        "表面冷淡实则极有主见",
+        "经常理直气壮借钱和吃草",
+        "绝对信任认可伙伴的才华"
+      ],
+      "likes": [
+        "买古董贝斯与效果器",
+        "下北泽中古黑胶唱片",
+        "安静作曲与试听",
+        "被波奇酱请客吃饭"
+      ],
+      "classic_cg": {
+        "title": "地下室的深沉低音律动",
+        "description": "昏暗沉静的Livehouse地下排练室，蓝发少女闭着双眼微倾上身，手指在复古白护板贝斯弦上沉稳拨动，流淌出沉厚扣人心弦的低音波线。"
+      },
+      "identity": {
+        "role": "结束乐队贝斯手兼作曲担当",
+        "age": "17岁（高中二年级）",
+        "occupation": "高中生 / Livehouse STARRY店员",
+        "faction": "秀华高中 / 结束乐队"
+      },
+      "tags": [
+        "蓝发短发",
+        "泪痣",
+        "金瞳",
+        "贝斯手",
+        "中性酷感",
+        "古着风"
+      ],
+      "bg_story": "山田凉是《孤独摇滚！》的核心角色之一，结束乐队的贝斯手与作曲担当。家境优渥的大小姐，却对物质享受毫无兴趣，将所有零用钱与打工收入全部投入收集中古二手乐器中，因此经常穷得吃路边的野草充饥。性格特立独行、散漫从容，拥有出众的音乐才华与敏锐的鉴赏眼光。第一眼就看穿了后藤一里「guitarhero」的潜力并给予坚定支持，是结束乐队不可动摇的音乐灵魂。",
+      "palette": [
+        "深海蓝",
+        "复古青",
+        "琥珀金"
+      ],
+      "weather": [
+        "阴雨午后",
+        "地下室昏灯",
+        "下北泽夜色"
+      ],
+      "speech": "与其迎合大多数人，不如做只有自己才能做出来的音乐……波奇，下次再借我一点钱买效果器吧。",
+      "source": "CloverWorks《孤独摇滚！ / Bocchi the Rock!》",
+      "traits": [
+        "yamada_ryo",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "short_hair",
+        "mole_under_eye",
+        "yellow_eyes",
+        "hairclip",
+        "slender",
+        "bocchi_the_rock!"
+      ],
+      "accent_color": "#0284c7",
+      "bg_color": "#0f172a"
+    },
+    "popular": {
+      "id": "yamada_ryo",
+      "displayName": "山田凉",
+      "originalName": "山田 リョウ (Yamada Ryo)",
+      "franchise": "Bocchi the Rock!",
+      "aliases": [
+        "yamada_ryo",
+        "ryo_yamada",
+        "yamada",
+        "ryo",
+        "山田凉",
+        "山田",
+        "凉",
+        "凉学姐",
+        "吃草贝斯手",
+        "bocchi the rock",
+        "bocchi the rock!"
+      ],
+      "identityProse": "Adult Yamada Ryo from Bocchi the Rock!, an aloof, eccentric, and effortlessly cool high school bassist with layered indigo-blue shaggy hair, a beauty mark under her left eye, cool amber-yellow eyes, a subtle hair clip on the side, and a languid androgynous charm.",
+      "identityTokens": [
+        "yamada_ryo",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "short_hair",
+        "mole_under_eye",
+        "yellow_eyes",
+        "hairclip",
+        "slender",
+        "bocchi_the_rock!"
+      ],
+      "exactTokens": [
+        "yamada_ryo"
+      ],
+      "exactPrefixes": [
+        "ryo_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "shimokitazawa_vintage",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代日常+摇滚音乐（孤独摇滚！）",
+        "era": "当代",
+        "formNotes": "深蓝短发+左眼下泪痣+琥珀黄瞳+右侧发夹；特立独行散漫文青贝斯手；结束乐队贝斯兼作曲；沉迷买复古乐器导致没钱吃草；常态下北泽古着私服/秀华校服/无袖暗黑摇滚服/STARRY调饮装",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "CloverWorks, official anime screencap, anime coloring",
+      "curatedArtistStyles": [
+        "kerorira",
+        "hamazi_aki",
+        "rella",
+        "kantoku"
+      ],
+      "characterTokens": [
+        "yamada_ryo"
+      ],
+      "copyrightTokens": [
+        "bocchi_the_rock!"
+      ]
+    }
+  }
+}

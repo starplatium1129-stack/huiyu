@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kita_ikuyo/summer_sunflower_dress",
+  "revision": 1,
+  "sortOrder": 1562,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "kita_ikuyo",
+    "outfit": {
+      "id": "summer_sunflower_dress",
+      "name": "向阳假日碎花吊带轻盈夏裙",
+      "tokens": [
+        "sundress",
+        "yellow_dress",
+        "floral_print",
+        "spaghetti_straps",
+        "sleeveless",
+        "straw_hat",
+        "sandals",
+        "bare_shoulders"
+      ],
+      "prose": "A lovely pastel yellow sundress adorned with delicate floral patterns, thin spaghetti straps revealing bare shoulders and collarbones, straw sun hat, and woven espadrille sandals",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

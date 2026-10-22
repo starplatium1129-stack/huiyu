@@ -1,0 +1,169 @@
+{
+  "kind": "character",
+  "id": "mizuhara_chizuru",
+  "revision": 1,
+  "sortOrder": 181,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "mizuhara_chizuru",
+    "profile": {
+      "id": "mizuhara_chizuru",
+      "name": "水原千鹤",
+      "alias": [
+        "Mizuhara Chizuru",
+        "一之濑千鹤",
+        "水原",
+        "千鹤",
+        "出租女友"
+      ],
+      "type": "popular",
+      "icon": "👠",
+      "portrait": {
+        "image": "../assets/characters/popular-mizuhara_chizuru.png?v=1",
+        "alt": "水原千鹤 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "栗褐长直微卷发 · 侧单编发",
+        "hair_color": "深栗棕 / 咖啡褐",
+        "eyes": "明亮榛色蓝栗瞳",
+        "hairstyle": "自然垂落长发 · 左侧微编发小发束 · 优雅知性",
+        "uniform": "红色短袖针织衫 · 白色蕾丝百褶裙",
+        "expression": "职业温柔笑颜 · 动情时害羞咬唇 · 傲娇娇嗔",
+        "style": "flawless glamorous romantic girlfriend",
+        "signature": "深栗长发侧编发、修身红针织衫、完美长腿与动人女友感"
+      },
+      "personality": [
+        "对待工作与梦想极其认真拼搏",
+        "女子力与时尚穿搭品味拉满",
+        "表面理性独立实则重情内热",
+        "面对真心情感容易害羞嘴硬",
+        "深情专一且极具包容心"
+      ],
+      "likes": [
+        "舞台戏剧与电影表演",
+        "水族馆与浪漫约会地点",
+        "挑选时尚服饰与化妆品",
+        "被真正理解与坚定选择"
+      ],
+      "classic_cg": {
+        "title": "水族馆水幕下的回眸牵手",
+        "description": "幽蓝澄澈的巨型水族箱前，深海微光映照着少女窈窕的身姿。水原千鹤停下脚步回眸伸出手，长发在水波流光中摇曳，眼波温柔如水——「发什么呆呢？接下来的海豚表演，再不快点可就占不到好位置了哦。」"
+      },
+      "identity": {
+        "role": "事务所顶尖租借女友 / 新人女演员",
+        "age": "20岁（大学生）",
+        "occupation": "大学生 / 演员 / 租借女友",
+        "faction": "Diamond租借女友事务所 / 练马公寓"
+      },
+      "tags": [
+        "棕发",
+        "侧编发",
+        "女友天花板",
+        "时尚穿搭",
+        "傲娇御姐",
+        "黑丝长腿",
+        "纯爱"
+      ],
+      "bg_story": "水原千鹤（本名一之濑千鹤）是《租借女友》的绝对女主角。为了实现让病重祖母看到自己登上银幕的梦想，她在Diamond事务所兼职租借女友攒钱读表演。工作上拥有毫无瑕疵的「神级女友」表现与超高职业素养，私下里则是住在隔壁、戴着眼镜认真勤勉的普通大学生。在与和也漫长的羁绊中，逐渐卸下防备，展现出真挚、深情而动人的真实自我。",
+      "palette": [
+        "玫瑰绯红",
+        "水幕纯白",
+        "深海群青"
+      ],
+      "weather": [
+        "水族馆蓝光",
+        "摩天轮夕阳",
+        "阳台静谧夜色"
+      ],
+      "speech": "别误会了，我只是以职业租借女友的身份陪你而已……不过，今天就特别允许你牵手吧。",
+      "source": "宫岛礼吏《租借女友 / Kanojo, Okarishimasu》",
+      "traits": [
+        "mizuhara_chizuru",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "long_hair",
+        "side_braid",
+        "brown_eyes",
+        "slender",
+        "kanojo_okarishimasu"
+      ],
+      "accent_color": "#f43f5e",
+      "bg_color": "#1e1b4b"
+    },
+    "popular": {
+      "id": "mizuhara_chizuru",
+      "displayName": "水原千鹤",
+      "originalName": "水原 千鶴 (Mizuhara Chizuru / Ichinose Chizuru)",
+      "franchise": "Rent-a-Girlfriend",
+      "aliases": [
+        "mizuhara_chizuru",
+        "chizuru_mizuhara",
+        "ichinose_chizuru",
+        "chizuru_ichinose",
+        "mizuhara",
+        "chizuru",
+        "水原千鹤",
+        "一之濑千鹤",
+        "千鹤",
+        "rent-a-girlfriend",
+        "kanojo okarishimasu"
+      ],
+      "identityProse": "Adult Mizuhara Chizuru from Rent-a-Girlfriend, a stunning, graceful, and professional young woman with long wavy chestnut-brown hair tied in a subtle side braid, radiant hazel-brown eyes, slender and elegant posture, and an enchanting charming smile.",
+      "identityTokens": [
+        "mizuhara_chizuru",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "long_hair",
+        "side_braid",
+        "brown_eyes",
+        "slender",
+        "kanojo_okarishimasu"
+      ],
+      "exactTokens": [
+        "mizuhara_chizuru"
+      ],
+      "exactPrefixes": [
+        "mizuhara_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "rental_date_red_knit_skirt",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代都市+恋爱喜剧（租借女友）",
+        "era": "当代",
+        "formNotes": "长直微卷栗褐发+侧编发小发辫+明亮榛色瞳；顶级租借女友兼怀抱梦想的新人女演员；极致女子力与约会时尚感；红针织白裙/大学便服/水族馆落肩衫/黑色礼服/居家乐；外表职业完美内心傲娇深情",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "TMS Entertainment, official anime screencap",
+      "curatedArtistStyles": [
+        "miyajima_reiji",
+        "kantoku",
+        "rella",
+        "kappe"
+      ],
+      "characterTokens": [
+        "mizuhara_chizuru"
+      ],
+      "copyrightTokens": [
+        "kanojo_okarishimasu"
+      ]
+    }
+  }
+}

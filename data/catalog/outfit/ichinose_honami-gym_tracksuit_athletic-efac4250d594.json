@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ichinose_honami/gym_tracksuit_athletic",
+  "revision": 1,
+  "sortOrder": 1599,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "ichinose_honami",
+    "outfit": {
+      "id": "gym_tracksuit_athletic",
+      "name": "校内运动会深蓝体操服与短裤",
+      "tokens": [
+        "gym_uniform",
+        "t-shirt",
+        "white_shirt",
+        "buruma",
+        "shorts",
+        "blue_shorts",
+        "socks",
+        "sneakers"
+      ],
+      "prose": "A fitted white school gym t-shirt with navy trim tucked into dark navy athletic shorts, white sports socks, and running sneakers",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_miku_sengoku_museum_date",
+  "revision": 1,
+  "sortOrder": 1847,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_miku_sengoku_museum_date",
+    "characterId": "nakano_miku",
+    "title": "中野三玖 · 战国展馆的历女光彩",
+    "category": "现代日常",
+    "outfitId": "sengoku_warlord_haori",
+    "description": "【中野三玖 · 战国展馆的历女光彩】历史博物馆古朴庄严的战国武将展柜前，三玖穿着深蓝武将纹羽织，手握战国图鉴折纸，平日里低垂沉默的眼眸此刻闪烁着罕见的耀目光芒。她指着展柜中的名刀与战甲，兴奋地为你细述川中岛合战的风云传奇——「看！这就是武田信玄的风林火山印记……真的很帅气吧！」",
+    "action": "在展柜玻璃前手持折扇指着展品，双眼放光滔滔不绝讲解",
+    "location": "战国历史博物馆展厅",
+    "timeOfDay": "午后",
+    "mood": "兴奋从容",
+    "lighting": "展柜内部专业射灯与展厅沉静暗调",
+    "camera": "medium shot, slightly low angle",
+    "promptTokens": [
+      "museum",
+      "display case",
+      "samurai armor",
+      "holding folding fan",
+      "pointing",
+      "bright eyes",
+      "enthusiastic",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "museum",
+      "exhibit",
+      "spotlight",
+      "haori",
+      "folding_fan",
+      "sparkling_eyes",
+      "excited",
+      "cultural"
+    ],
+    "promptProse": "Inside the dimly lit samurai museum gallery, she leans excitedly near a glass display of ancient armor, gesturing with a folded paper fan as her eyes light up with spirited historical enthusiasm.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

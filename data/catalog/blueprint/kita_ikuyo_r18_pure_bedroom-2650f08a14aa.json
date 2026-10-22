@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "kita_ikuyo_r18_pure_bedroom",
+  "revision": 1,
+  "sortOrder": 1828,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "kita_ikuyo_r18_pure_bedroom",
+    "characterId": "kita_ikuyo",
+    "title": "喜多郁代 · 白床单上的红晕倾心",
+    "category": "私密情欲",
+    "outfitId": "nsfw_nude",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@tony taka",
+    "description": "【成年喜多郁代 · 白床单上的红晕倾心】纯白柔软的床铺上，褪去一切拘束的成年喜多侧卧分腿，红发散落在白枕头上。平日阳光开朗的少女此刻满面潮红、眼角噙着害羞的泪光，双手抓紧被角欲迎还拒——「一、一直被这样看着……太羞人了啦……但如果是你的话……」",
+    "action": "侧卧在白色床铺上，双手拉着被单遮挡，满脸羞涩娇喘",
+    "location": "明亮私密主卧室床铺",
+    "timeOfDay": "午后",
+    "mood": "羞涩娇柔",
+    "lighting": "窗帘透过的柔和白光与漫射微光",
+    "camera": "cowboy shot, from above, intimate framing",
+    "promptTokens": [
+      "adult",
+      "nude",
+      "lying on bed",
+      "white sheets",
+      "holding blanket",
+      "blush",
+      "teary eyes",
+      "spread legs",
+      "from above",
+      "intimate"
+    ],
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "white_sheets",
+      "completely_nude",
+      "heavy_blush",
+      "teary_eyes",
+      "shy",
+      "covering_breasts"
+    ],
+    "promptProse": "She lies on crisp white bedsheets in the soft daylight, clutching the edge of the blanket in front of her bare chest with trembling fingers, her flushed face glowing with sweet bashful desire.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

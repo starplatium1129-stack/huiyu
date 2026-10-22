@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "chizuru_r18_apartment_bed_surrender",
+  "revision": 1,
+  "sortOrder": 1881,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "chizuru_r18_apartment_bed_surrender",
+    "characterId": "mizuhara_chizuru",
+    "title": "水原千鹤 · 隔壁单间的真情沦陷",
+    "category": "私密情欲",
+    "outfitId": "apartment_cozy_sweatshirt",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@hisasi",
+    "description": "【成年水原千鹤 · 隔壁单间的真情沦陷】深夜合租公寓私密卧室内，宽松的卫衣被推至胸上，露出雪白饱满的柔软双峰与粉嫩乳尖。千鹤侧躺在柔软的床垫上，修长笔直的黑丝长腿微曲分开，眼眶泛红噙着动情泪水——「别用租借女友的眼神看着我……现在的我……只是属于你的千鹤……」",
+    "action": "侧卧在公寓床上，卫衣掀起露出胸部，修长美腿微曲分开，含泪娇喘求欢",
+    "location": "千鹤私人单人公寓卧室内",
+    "timeOfDay": "深夜",
+    "mood": "真情沦陷",
+    "lighting": "昏黄床头台灯洒在肌肤上的温软侧光",
+    "camera": "cowboy shot, slightly high angle, intimate framing",
+    "promptTokens": [
+      "adult",
+      "sweatshirt lift",
+      "bare breasts",
+      "pink nipples",
+      "lying on bed",
+      "spread legs",
+      "blush",
+      "tears",
+      "bedroom",
+      "intimate",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "sweatshirt_lift",
+      "bare_breasts",
+      "pink_nipples",
+      "spread_legs",
+      "heavy_blush",
+      "teary_eyes",
+      "surrender"
+    ],
+    "promptProse": "Reclining across her private apartment bed with her loose pullover gathered above firm, rosy-tipped breasts, parting her slender thighs with tearful, passionate vulnerability.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

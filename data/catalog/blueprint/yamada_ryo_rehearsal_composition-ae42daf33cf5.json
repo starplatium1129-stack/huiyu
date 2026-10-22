@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "yamada_ryo_rehearsal_composition",
+  "revision": 1,
+  "sortOrder": 1840,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "yamada_ryo_rehearsal_composition",
+    "characterId": "yamada_ryo",
+    "title": "山田凉 · 隔音室深夜的作曲随想",
+    "category": "现代日常",
+    "outfitId": "shimokitazawa_vintage",
+    "description": "【山田凉 · 隔音室深夜的作曲随想】深夜静悄悄的排练室地毯上，四周散落着空白五线谱、和弦指引书和黑胶唱片。凉戴着黑色监听耳机，一只手臂环抱着贝斯琴身，另一手用铅笔托着下巴若有所思，琥珀色的双眸在谱纸上游移——「旋律已经有了……接下来需要后藤的吉他，让它真正活过来。」",
+    "action": "坐在地毯上抱着贝斯咬着铅笔头思考，身前铺满五线谱",
+    "location": "STARRY 深夜隔音排练室角落",
+    "timeOfDay": "深夜",
+    "mood": "沉静专注",
+    "lighting": "排练室暖黄台灯与乐谱反射的柔光",
+    "camera": "cowboy shot, slightly high angle",
+    "promptTokens": [
+      "sitting on floor",
+      "headphones",
+      "holding bass",
+      "pencil in mouth",
+      "sheet music",
+      "studio",
+      "thoughtful",
+      "night",
+      "warm lighting",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "rehearsal_room",
+      "floor",
+      "sheet_music",
+      "headphones",
+      "bass_guitar",
+      "pencil",
+      "thinking",
+      "night",
+      "dim_light"
+    ],
+    "promptProse": "Sitting cross-legged on the studio floor surrounded by scattered sheet music, she cradles her bass guitar with one arm and rests a pencil thoughtfully at her lips under the warm floor lamp.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

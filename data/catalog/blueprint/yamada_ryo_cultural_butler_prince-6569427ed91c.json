@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "yamada_ryo_cultural_butler_prince",
+  "revision": 1,
+  "sortOrder": 1841,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "yamada_ryo_cultural_butler_prince",
+    "characterId": "yamada_ryo",
+    "title": "山田凉 · 执事咖啡厅的冷峻王子",
+    "category": "校园日常",
+    "outfitId": "cultural_festival_butler",
+    "description": "【山田凉 · 执事咖啡厅的冷峻王子】秀华高中文化祭班级举办的执事红茶馆内，身穿修身黑白燕尾西装的凉单手端着纯白骨瓷红茶杯，单手优雅抚胸微微躬身，左眼下的泪痣在碎短发下若隐若现。冷峻而高贵的气质瞬间迷倒了整间教室的顾客——「欢迎光临，小姐。今日的精选大吉岭，合您的心意吗？」",
+    "action": "单手托红茶杯碟，一手抚胸优雅欠身递茶，神情冷淡俊美",
+    "location": "秀华高中文化祭执事咖啡厅",
+    "timeOfDay": "午后",
+    "mood": "帅气优雅",
+    "lighting": "复古教室暖色烛台光芒与明亮窗光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "tuxedo",
+      "butler",
+      "holding teacup",
+      "saucer",
+      "bowing",
+      "hand on chest",
+      "handsome",
+      "classroom",
+      "school festival",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "classroom",
+      "school_festival",
+      "suit",
+      "tuxedo",
+      "bowtie",
+      "teacup",
+      "serving",
+      "elegant",
+      "androgynous"
+    ],
+    "promptProse": "Dressed in an immaculate black butler suit and white bowtie, she bows with one hand across her vest and presents a porcelain teacup on a saucer with cool, effortless aristocratic grace.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

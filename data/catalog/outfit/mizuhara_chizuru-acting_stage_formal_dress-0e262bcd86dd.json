@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "mizuhara_chizuru/acting_stage_formal_dress",
+  "revision": 1,
+  "sortOrder": 1593,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "mizuhara_chizuru",
+    "outfit": {
+      "id": "acting_stage_formal_dress",
+      "name": "剧团演出典雅墨黑露背晚礼服",
+      "tokens": [
+        "evening_gown",
+        "black_dress",
+        "sleeveless_dress",
+        "backless",
+        "backless_dress",
+        "necklace",
+        "bare_shoulders",
+        "high_heels"
+      ],
+      "prose": "An exquisite tailored black evening gown with a daring plunging backline revealing her pale spine, fine silver pendant necklace, and glossy stiletto pumps",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

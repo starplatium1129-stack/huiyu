@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nakano_nino/short_hair_revival_bakery",
+  "revision": 1,
+  "sortOrder": 1579,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "nakano_nino",
+    "outfit": {
+      "id": "short_hair_revival_bakery",
+      "name": "蛋糕店REVIVAL法式糕点师装",
+      "tokens": [
+        "short_hair",
+        "double-breasted",
+        "white_shirt",
+        "chef_uniform",
+        "apron",
+        "red_apron",
+        "slacks",
+        "holding_tray"
+      ],
+      "prose": "showing her stylish bob-cut short hair with small butterfly hairclips, wearing a professional double-breasted white patisserie chef shirt under a tailored wine-red half apron, holding a plate of gourmet strawberry shortcake",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

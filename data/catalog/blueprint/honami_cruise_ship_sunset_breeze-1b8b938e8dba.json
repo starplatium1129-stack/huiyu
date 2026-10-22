@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "honami_cruise_ship_sunset_breeze",
+  "revision": 1,
+  "sortOrder": 1887,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "honami_cruise_ship_sunset_breeze",
+    "characterId": "ichinose_honami",
+    "title": "一之濑帆波 · 豪华游轮甲板的海风回眸",
+    "category": "假期出行",
+    "outfitId": "summer_resort_white_bikini",
+    "description": "【一之濑帆波 · 豪华游轮甲板的海风回眸】海风吹拂的豪华游轮甲板上，身着纯白比基尼的帆波一手按着被海风吹散的粉金长发，另一手轻扶着栏杆回眸。夕阳镀在饱满诱人的雪白身姿上，笑容明朗纯净如海风拂面。",
+    "action": "在游轮栏杆前单手按住被风吹起的长发，侧身回眸展露甜美微笑",
+    "location": "豪华游轮开阔露天甲板",
+    "timeOfDay": "傍晚",
+    "mood": "明朗浪漫",
+    "lighting": "海平面落日晚霞映照的金红霞光与反光",
+    "camera": "cowboy shot, eye level",
+    "promptTokens": [
+      "cruise ship",
+      "deck",
+      "railing",
+      "sunset",
+      "bikini",
+      "white bikini",
+      "holding hair",
+      "turning back",
+      "radiant smile",
+      "wind",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "ship",
+      "deck",
+      "sunset",
+      "bikini",
+      "white_bikini",
+      "wind",
+      "turning_back",
+      "cheerful",
+      "cleavage"
+    ],
+    "promptProse": "Leaning on the ship deck railing under radiant evening twilight, the coastal breeze flutters her strawberry-blonde hair as she looks back over her shoulder with an enchanting smile.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

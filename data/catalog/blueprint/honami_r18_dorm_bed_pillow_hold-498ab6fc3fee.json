@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "honami_r18_dorm_bed_pillow_hold",
+  "revision": 1,
+  "sortOrder": 1891,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "honami_r18_dorm_bed_pillow_hold",
+    "characterId": "ichinose_honami",
+    "title": "一之濑帆波 · 宿舍单人床上的丰腴温存",
+    "category": "私密情欲",
+    "outfitId": "private_dorm_pink_camisole",
+    "adult": true,
+    "sampleRating": "R18",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@hisasi",
+    "description": "【成年一之濑帆波 · 宿舍单人床上的丰腴温存】深夜反锁的宿舍卧室内，粉色吊带睡衣被推至胸口上方，丰满白嫩的胸部在暖光下随呼吸起伏，粉嫩乳尖轻颤。帆波怀抱着枕头侧卧在床上，丰腴迷人的双腿微张，眼含秋水娇喘微张樱唇——「只要是清隆君想要的……帆波的一切……都可以全都给你……」",
+    "action": "抱着枕头侧卧在床上，吊带半褪露出饱满双胸，双腿微张深情求欢",
+    "location": "一之濑私人温馨宿舍单人床",
+    "timeOfDay": "深夜",
+    "mood": "温润顺从",
+    "lighting": "床头台灯洒在丰润肌肤上的柔和暖黄色调",
+    "camera": "cowboy shot, from above, intimate framing",
+    "promptTokens": [
+      "adult",
+      "camisole lift",
+      "large breasts",
+      "bare breasts",
+      "pink nipples",
+      "hugging pillow",
+      "lying on bed",
+      "spread legs",
+      "blush",
+      "bedroom",
+      "intimate",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "camisole_lift",
+      "large_breasts",
+      "bare_breasts",
+      "pink_nipples",
+      "hugging_pillow",
+      "spread_legs",
+      "heavy_blush"
+    ],
+    "promptProse": "Hugging a plush pillow while reclining on her private dorm bed, her soft pink camisole pushed up to reveal lush bare breasts and curvaceous hips in warm, devoted surrender.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "special_nsfw"
+    ]
+  }
+}

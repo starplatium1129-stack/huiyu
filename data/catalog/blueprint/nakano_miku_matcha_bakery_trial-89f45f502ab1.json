@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_miku_matcha_bakery_trial",
+  "revision": 1,
+  "sortOrder": 1846,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_miku_matcha_bakery_trial",
+    "characterId": "nakano_miku",
+    "title": "中野三玖 · 烘焙工坊的抹茶试吃",
+    "category": "现代日常",
+    "outfitId": "matcha_bakery_apron",
+    "description": "【中野三玖 · 烘焙工坊的抹茶试吃】温馨明亮的烘焙工坊操作台前，系着抹茶绿围裙的三玖脸颊上沾着些许雪白的面粉。她小心翼翼地捧起刚刚出炉的翠绿抹茶面包凑到你嘴边，眼神里交织着期待与一丝难为情——「这是照着新配方烤的……能、能帮我试吃一口吗？难吃的话……也可以直说的。」",
+    "action": "脸颊沾着面粉，双手捧着抹茶面包往前递，眼神羞涩期待",
+    "location": "阳光烘焙工坊操作间",
+    "timeOfDay": "午后",
+    "mood": "温馨羞涩",
+    "lighting": "操作台上方暖黄吊灯与柔和窗光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "bakery",
+      "flour on cheek",
+      "holding bread",
+      "green bread",
+      "feeding",
+      "blush",
+      "shy",
+      "warm lighting",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "bakery",
+      "counter",
+      "bread",
+      "matcha",
+      "flour_on_face",
+      "apron",
+      "shy_blush",
+      "warm_ambience"
+    ],
+    "promptProse": "Standing by the wooden bakery counter with a speck of white flour on her cheek, she offers a freshly baked matcha bread forward with both hands, watching anxiously with a soft blushing gaze.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "nakano_miku/cozy_winter_turtleneck",
+  "revision": 1,
+  "sortOrder": 1575,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "nakano_miku",
+    "outfit": {
+      "id": "cozy_winter_turtleneck",
+      "name": "冬日约会粗针高领大毛衣与格纹裙",
+      "tokens": [
+        "sweater",
+        "turtleneck",
+        "white_sweater",
+        "oversized_sweater",
+        "plaid_skirt",
+        "tights",
+        "black_tights",
+        "scarf",
+        "holding_can"
+      ],
+      "prose": "A chunky cream-white oversized cable-knit turtleneck sweater with cuffs covering her hands, red-and-navy plaid mini skirt, thick black tights, and holding a warm canned tea",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

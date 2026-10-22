@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nakano_miku/yukata_summer_fireworks",
+  "revision": 1,
+  "sortOrder": 1576,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "nakano_miku",
+    "outfit": {
+      "id": "yukata_summer_fireworks",
+      "name": "夏夜花火天青碎花日式浴衣",
+      "tokens": [
+        "yukata",
+        "japanese_clothes",
+        "blue_yukata",
+        "floral_print",
+        "obi",
+        "blue_obi",
+        "geta",
+        "hair_flower"
+      ],
+      "prose": "A soft sky-blue cotton summer yukata with delicate white daisy flower patterns, a deep-indigo tied obi sash, wooden geta sandals, and a small blue blossom pinned above her ear",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "franchise": "Rent-a-Girlfriend",
+  "characters": [
+    {
+      "id": "mizuhara_chizuru",
+      "displayName": "水原千鹤",
+      "originalName": "水原 千鶴 (Mizuhara Chizuru / Ichinose Chizuru)",
+      "franchise": "Rent-a-Girlfriend",
+      "aliases": [
+        "mizuhara_chizuru",
+        "chizuru_mizuhara",
+        "ichinose_chizuru",
+        "chizuru_ichinose",
+        "mizuhara",
+        "chizuru",
+        "水原千鹤",
+        "一之濑千鹤",
+        "千鹤",
+        "rent-a-girlfriend",
+        "kanojo okarishimasu"
+      ],
+      "identityProse": "Mizuhara Chizuru from Rent-a-Girlfriend, a stunning, graceful, and fashionable girl with long wavy chestnut-brown hair tied in a subtle side braid, radiant hazel-brown eyes, slender and elegant posture, and an enchanting charming smile.",
+      "identityTokens": [
+        "mizuhara_chizuru",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "long_hair",
+        "side_braid",
+        "brown_eyes",
+        "slender",
+        "kanojo_okarishimasu"
+      ],
+      "exactTokens": [
+        "mizuhara_chizuru"
+      ],
+      "exactPrefixes": [
+        "mizuhara_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "rental_date_red_knit_skirt",
+      "outfits": [
+        {
+          "id": "rental_date_red_knit_skirt",
+          "name": "正统约会修身大红针织衫与白蕾丝短裙",
+          "tokens": [
+            "sweater",
+            "red_sweater",
+            "fitted_sweater",
+            "short_sleeves",
+            "skirt",
+            "white_skirt",
+            "lace_skirt",
+            "high_heels",
+            "shoulder_bag"
+          ],
+          "prose": "Her classic rental date attire featuring a form-fitting short-sleeved crimson-red knit top accentuating her feminine waistline, crisp white lace mini skirt, and elegant beige high heels",
+          "isDefault": true,
+          "default": true
+        },
+        {
+          "id": "college_casual_turtleneck",
+          "name": "大学校园浅卡其高领衫配开衩长裙",
+          "tokens": [
+            "turtleneck",
+            "beige_sweater",
+            "long_skirt",
+            "slit_skirt",
+            "glasses",
+            "tote_bag",
+            "ankle_boots"
+          ],
+          "prose": "Her studious Ichinose college persona with a chic cream-beige ribbed turtleneck sweater, high-waisted olive midi skirt with a subtle side slit, stylish eyeglasses, and leather ankle boots",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "summer_aquarium_offshoulder",
+          "name": "水族馆约会落肩浅粉雪纺衫与牛仔短裙",
+          "tokens": [
+            "off-shoulder_shirt",
+            "pink_shirt",
+            "chiffon",
+            "bare_shoulders",
+            "collarbone",
+            "denim_skirt",
+            "miniskirt",
+            "sandals"
+          ],
+          "prose": "A breezy pastel-pink off-the-shoulder chiffon blouse revealing her elegant collarbones, high-waisted light-blue denim mini skirt, and strappy summer heeled sandals",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "acting_stage_formal_dress",
+          "name": "剧团演出典雅墨黑露背晚礼服",
+          "tokens": [
+            "evening_gown",
+            "black_dress",
+            "sleeveless_dress",
+            "backless",
+            "backless_dress",
+            "necklace",
+            "bare_shoulders",
+            "high_heels"
+          ],
+          "prose": "An exquisite tailored black evening gown with a daring plunging backline revealing her pale spine, fine silver pendant necklace, and glossy stiletto pumps",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "apartment_cozy_sweatshirt",
+          "name": "公寓居家乐宽松卫衣与运动短裤",
+          "tokens": [
+            "sweatshirt",
+            "oversized_sweatshirt",
+            "grey_sweatshirt",
+            "shorts",
+            "bare_legs",
+            "slippers"
+          ],
+          "prose": "A relaxed heather-grey oversized pullover sweatshirt draped loosely over sporty black lounge shorts, bare legs, and indoor slippers in her private apartment",
+          "isDefault": false,
+          "default": false
+        },
+        {
+          "id": "nsfw_nude",
+          "name": "🔞 私密全裸 / 纯粹形态",
+          "tokens": [
+            "nude",
+            "completely_naked",
+            "uncensored",
+            "full_body_bare",
+            "medium_breasts",
+            "pink_nipples",
+            "exposed_pussy",
+            "detailed_vulva",
+            "slender_waist",
+            "blushing",
+            "bare_feet"
+          ],
+          "prose": "completely naked with zero clothes, stunningly slender and statuesque figure with soft fair skin, perfectly proportioned perky breasts with delicate rosy nipples, neat shaved pussy, blushing head to toe in bashful true romantic surrender",
+          "isDefault": false,
+          "default": false
+        }
+      ],
+      "canon": {
+        "world": "现代都市+恋爱喜剧（租借女友）",
+        "era": "当代",
+        "formNotes": "长直微卷栗褐发+侧编发小发辫+明亮榛色瞳；顶级租借女友兼怀抱梦想的新人女演员；极致女子力与约会时尚感；红针织白裙/大学便服/水族馆落肩衫/黑色礼服/居家乐；外表职业完美内心傲娇深情",
+        "research": "2026-10-22 调研"
+      },
+      "animeStudio": "TMS Entertainment, official anime screencap",
+      "curatedArtistStyles": [
+        "miyajima_reiji",
+        "kantoku",
+        "rella",
+        "kappe"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ]
+    }
+  ]
+}

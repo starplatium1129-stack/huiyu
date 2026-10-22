@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_miku_rooftop_confession",
+  "revision": 1,
+  "sortOrder": 1845,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_miku_rooftop_confession",
+    "characterId": "nakano_miku",
+    "title": "中野三玖 · 天台微风中的心意传达",
+    "category": "校园日常",
+    "outfitId": "asahi_high_school_uniform",
+    "description": "【中野三玖 · 天台微风中的心意传达】放学后的旭高校天台铁丝网前，金色黄昏夕阳洒满地砖。微风拂起三玖的栗棕发丝与绿色开衫衣角，少女双手背在身后，微红着脸颊抬起澄澈的群青水眸，认真而坚定地注视着你——「因为是你相信了我……所以这一次，轮到我走到你身边了。」",
+    "action": "双手背在身后站在天台围网旁，微红着脸注视前方",
+    "location": "旭高校放学后的开阔天台",
+    "timeOfDay": "黄昏",
+    "mood": "深情真挚",
+    "lighting": "天际铺展的金橙色落日暖光",
+    "camera": "cowboy shot, eye level",
+    "promptTokens": [
+      "rooftop",
+      "chainlink fence",
+      "hands behind back",
+      "blush",
+      "wind",
+      "sunset",
+      "golden hour",
+      "serene",
+      "cowboy shot"
+    ],
+    "sceneTags": [
+      "rooftop",
+      "fence",
+      "sunset",
+      "golden_hour",
+      "wind",
+      "blushing",
+      "gentle_expression",
+      "school_uniform"
+    ],
+    "promptProse": "Standing against the rooftop chainlink fence in the glowing golden sunset, she keeps her hands tucked behind her back, her cheeks faintly pink as her deep blue eyes look forward with heartfelt sincerity.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "iconic"
+    ]
+  }
+}

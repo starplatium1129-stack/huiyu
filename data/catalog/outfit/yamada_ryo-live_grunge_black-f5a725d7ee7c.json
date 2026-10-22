@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "yamada_ryo/live_grunge_black",
+  "revision": 1,
+  "sortOrder": 1566,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "characterId": "yamada_ryo",
+    "outfit": {
+      "id": "live_grunge_black",
+      "name": "Live演出无袖暗黑摇滚装",
+      "tokens": [
+        "tank_top",
+        "sleeveless",
+        "black_shirt",
+        "bare_shoulders",
+        "collarbone",
+        "necklace",
+        "chain",
+        "ripped_jeans",
+        "skinny_jeans",
+        "wristband",
+        "boots"
+      ],
+      "prose": "An asymmetrical distressed sleeveless black graphic tank top revealing pale shoulders and sharp collarbones, layered silver chains, dark ripped skinny jeans, studded leather wristband, and chunky rock boots",
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -135,7 +135,7 @@
     {
       "file": "honkai-star-rail.json",
       "franchise": "Honkai: Star Rail",
-      "count": 2
+      "count": 3
     },
     {
       "file": "zenless-zone-zero.json",
@@ -350,6 +350,21 @@
     {
       "file": "bang-dream.json",
       "franchise": "BanG Dream!",
+      "count": 1
+    },
+    {
+      "file": "the-quintessential-quintuplets.json",
+      "franchise": "The Quintessential Quintuplets",
+      "count": 2
+    },
+    {
+      "file": "rent-a-girlfriend.json",
+      "franchise": "Rent-a-Girlfriend",
+      "count": 1
+    },
+    {
+      "file": "classroom-of-the-elite.json",
+      "franchise": "Classroom of the Elite",
       "count": 1
     }
   ]

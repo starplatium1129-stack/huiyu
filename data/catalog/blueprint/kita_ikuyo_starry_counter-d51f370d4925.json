@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "kita_ikuyo_starry_counter",
+  "revision": 1,
+  "sortOrder": 1826,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "kita_ikuyo_starry_counter",
+    "characterId": "kita_ikuyo",
+    "title": "喜多郁代 · STARRY的元气看板娘",
+    "category": "现代日常",
+    "outfitId": "starry_staff_apron",
+    "description": "【喜多郁代 · STARRY的元气看板娘】演出前的静谧傍晚，喜多穿上店员围裙，双手拿着干净的玻璃杯与擦拭布，站在吧台后对刚进店的常客展露出招牌式的温暖微笑——「欢迎光临STARRY！今天的演出一定会超级精彩的，请敬请期待哦♪」",
+    "action": "在木吧台后擦拭玻璃杯，抬头投来亲切温柔的笑意",
+    "location": "Livehouse STARRY 酒吧吧台",
+    "timeOfDay": "黄昏",
+    "mood": "亲切温暖",
+    "lighting": "酒吧吧台暖黄射灯与微暗酒柜反光",
+    "camera": "medium shot, eye level",
+    "promptTokens": [
+      "behind counter",
+      "bar",
+      "wiping glass",
+      "cloth",
+      "smile",
+      "warm lighting",
+      "evening",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "bar",
+      "counter",
+      "bottles",
+      "drinking_glass",
+      "wiping",
+      "gentle_smile",
+      "warm_light"
+    ],
+    "promptProse": "Standing behind the polished wooden bar counter, she gently polishes a drinking glass with a soft white cloth under the warm pendant lamps, looking up with a welcoming gentle smile.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_nino_classroom_study_pout",
+  "revision": 1,
+  "sortOrder": 1860,
+  "createdAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "data": {
+    "id": "nakano_nino_classroom_study_pout",
+    "characterId": "nakano_nino",
+    "title": "中野二乃 · 课后补习的恼火包子脸",
+    "category": "校园日常",
+    "outfitId": "asahi_high_school_uniform",
+    "description": "【中野二乃 · 课后补习的恼火包子脸】放学后空无一人的教室里，面对密密麻麻的考卷习题，二乃恼火地咬着自动铅笔头，双腮气鼓鼓地鼓起，长长的毛衣袖口揉成一团砸在课桌上，恶狠狠地瞪着你——「真是的！为什么这种题目会这么难啊！喂，风太郎，快点给我讲一遍啦！」",
+    "action": "双手趴在试卷课桌上，咬着铅笔头鼓起包子脸瞪视前方",
+    "location": "旭高校放学后的教室课桌",
+    "timeOfDay": "傍晚",
+    "mood": "娇蛮可爱",
+    "lighting": "窗外斜照入教室的温暖夕阳余晖",
+    "camera": "medium shot, slightly high angle",
+    "promptTokens": [
+      "classroom",
+      "desk",
+      "exam paper",
+      "pencil in mouth",
+      "pout",
+      "puffed cheeks",
+      "annoyed",
+      "oversized sweater",
+      "sunset",
+      "medium shot"
+    ],
+    "sceneTags": [
+      "classroom",
+      "desk",
+      "test_paper",
+      "pouting",
+      "puffed_cheeks",
+      "oversized_sweater",
+      "sunset",
+      "cute_glare"
+    ],
+    "promptProse": "Slumped over an exam paper at the classroom desk, she nibbles on a pencil eraser while puffing her cheeks into an adorable furious pout under the orange sunset rays.",
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}
