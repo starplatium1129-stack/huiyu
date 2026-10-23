@@ -1,9 +1,11 @@
 import { computed, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { qwenModels, qwenStatus, uploadQwenImage, readQwenTaskInput, type QwenModelStatus } from '@/api/qwenApi'
+import { MOSS_MODEL_ID, mossModels, mossStatus } from '@/api/mossApi'
+import { compileMossPrompt, MOSS_NEGATIVE } from '@/utils/mossPrompt'
 import { fetchRuntimeResult, getRuntimeTask, hasRuntimeTasks,
   runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
 import { useAcceptedTaskSession, taskSettled as terminal } from '@/composables/tasks/useAcceptedTaskSession'
-import { QWEN_REQUEST_DRAFT_KEY as slot } from '@/utils/storageKeys'
+import { MOSS_REQUEST_DRAFT_KEY, QWEN_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
@@ -14,13 +16,18 @@ import { taskArtworkId } from '@/application/artwork/taskResultIdentity'
 import { artworkRepository } from '@/storage/artworkRepository'
 
 const message = (cause: unknown) => cause instanceof Error ? cause.message : '操作未完成，请重试'
-export function useQwenStudio() {
-  const form = reactive({ modelId: 'qwen-image-2.1-turbo', prompt: '', negative: '', width: 1024, height: 1024, steps: 40, cfg: 4, seed: 0 })
+export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
+  const moss = mode === 'moss', family = moss ? 'moss-image' : 'qwen-image'
+  const modelOptions = moss ? mossModels : qwenModels, label = moss ? 'MOSS' : 'Qwen'
+  const slot = moss ? MOSS_REQUEST_DRAFT_KEY : QWEN_REQUEST_DRAFT_KEY
+  const alignment = moss ? 16 : 32, maxSize = moss ? 1536 : 2816
+  const form = reactive({ modelId: moss ? MOSS_MODEL_ID : 'qwen-image-2.1-turbo', prompt: '', negative: moss ? MOSS_NEGATIVE : '',
+    width: moss ? 768 : 1024, height: moss ? 1280 : 1024, steps: moss ? 50 : 40, cfg: moss ? 3.5 : 4, seed: 0 })
   const randomSeed = ref(true), resize = ref(false), source = shallowRef<MangaImage | null>(null), sourceUrl = ref('')
   const references = shallowRef<{ id: string; image: MangaImage; url: string }[]>([])
   const restoredInputMissing = ref(false), parentId = ref<string | number | null>(null)
   const draftStatus = ref(''), draftFailed = ref(false), draftRecoveryNeeded = ref(false), draftRecoveryError = ref('')
-  const draftStorage = createQwenDraftStorage()
+  const draftStorage = createQwenDraftStorage(mode)
   let draftTimer: ReturnType<typeof setTimeout> | undefined, draftActive = false, draftVersion = 0
   const persistDraft = async () => {
     if (!draftActive || sourceChanged.value) return false
@@ -50,7 +57,7 @@ export function useQwenStudio() {
     lifetime.signal.throwIfAborted()
     if (sourceChanged.value || imageMediaSession() !== owner) throw new Error('工作区或运行时连接已变化，请重新打开页面；原任务仍保留在任务中心')
   }
-  const session = useAcceptedTaskSession({ slot, kinds: ['qwen'], signal: lifetime.signal, check, validate: validateTask })
+  const session = useAcceptedTaskSession({ slot, kinds: [mode], signal: lifetime.signal, check, validate: validateTask })
   const { task, request, unresolved, accept, release: releaseRequest } = session
   watch([form, randomSeed, resize, source, references, parentId, result], () => {
     if (!draftActive) return
@@ -63,7 +70,7 @@ export function useQwenStudio() {
   const inputSize = computed(() => source.value ? mangaInputSize(source.value) : null)
   const needsResize = computed(() => inputSize.value?.resized || references.value.some(value => mangaInputSize(value.image).resized))
   const issue = computed(() => sourceChanged.value ? '请重新打开页面以连接当前工作区' : !hasRuntimeTasks() ? '请先启用本机私人工作区'
-    : !selected.value?.available ? selected.value?.unavailableReason || statusError.value || '请先准备所选 Qwen 模型'
+    : !selected.value?.available ? selected.value?.unavailableReason || statusError.value || `请先准备所选 ${label} 模型`
       : restoredInputMissing.value ? '原任务输入未恢复，请重新读取输入，或移除输入改为文生图'
         : !form.prompt.trim() ? '填写画面描述或编辑指令' : needsResize.value && !resize.value ? '请勾选缩小输入图片副本' : '')
   const canRun = computed(() => !locked.value && !issue.value)
@@ -74,21 +81,21 @@ export function useQwenStudio() {
     target.value = blob ? URL.createObjectURL(blob) : ''
   }
   function validateTask(value: TaskRecord) {
-    if (value.kind !== 'qwen' || value.provider !== 'native' || value.input.family !== 'qwen-image') throw new Error('任务类型与 Qwen 创作不符')
+    if (value.kind !== mode || value.provider !== 'native' || value.input.family !== family) throw new Error(`任务类型与 ${label} 创作不符`)
     const context = value.metadata.context
-    if (context !== undefined && context !== null && (typeof context !== 'object' || Array.isArray(context))) throw new Error('Qwen 任务来源信息无效')
+    if (context !== undefined && context !== null && (typeof context !== 'object' || Array.isArray(context))) throw new Error('图像任务来源信息无效')
     const parent = (context as Record<string, unknown> | null | undefined)?.parentId
-    if (parent !== undefined && parent !== null && !qwenParentId(parent)) throw new Error('Qwen 来源作品身份无效')
+    if (parent !== undefined && parent !== null && !qwenParentId(parent)) throw new Error('来源作品身份无效')
   }
   async function refresh() {
     if (checking.value) return
     checking.value = true; statusError.value = ''
-    try { check(); const values = await qwenStatus(lifetime.signal); check(); models.value = values }
+    try { check(); const values = await (moss ? mossStatus : qwenStatus)(lifetime.signal); check(); models.value = values }
     catch (cause) { if (!lifetime.signal.aborted) { models.value = []; statusError.value = message(cause) } }
     finally { checking.value = false }
   }
   async function loadSource(file: File) {
-    if (locked.value) return
+    if (moss || locked.value) return
     importing.value = true; error.value = ''
     try { check(); const image = await inspectMangaImage(file, file.name); check(); source.value = image; parentId.value = null; draftActive = !draftRecoveryNeeded.value; restoredInputMissing.value = false; resize.value = false; setUrl(sourceUrl, image.blob) }
     catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
@@ -140,7 +147,7 @@ export function useQwenStudio() {
     finally { importing.value = false }
   }
   async function continueResult() {
-    if (locked.value || !result.value || !resultBlob.value) return
+    if (moss || locked.value || !result.value || !resultBlob.value) return
     importing.value = true; error.value = ''
     try {
       check(); const output = result.value, image = await inspectMangaImage(resultBlob.value, '上一轮编辑结果'); check()
@@ -197,14 +204,18 @@ export function useQwenStudio() {
     busy.value = true; cancelled = false; error.value = ''; notice.value = ''
     try {
       check()
-      if (!qwenModels.some(model => model.value === form.modelId) || form.prompt.trim().length > 12000 || form.negative.length > 8000) throw new Error('模型或提示词参数无效')
-      if (![form.width, form.height].every(n => Number.isInteger(n) && n >= 512 && n <= 2816 && n % 32 === 0)) throw new Error('宽高需为 512—2816 内的 32 倍数')
+      if (!modelOptions.some(model => model.value === form.modelId) || form.prompt.trim().length > 12000 || form.negative.length > 8000) throw new Error('模型或提示词参数无效')
+      if (![form.width, form.height].every(n => Number.isInteger(n) && n >= 512 && n <= maxSize && n % alignment === 0)) throw new Error(`宽高需为 512—${maxSize} 内的 ${alignment} 倍数`)
       if (!randomSeed.value && (!Number.isInteger(form.seed) || form.seed < 0 || form.seed > 2147483647)) throw new Error('种子需为 0—2147483647 的整数')
       const negative = turbo.value ? '' : form.negative.trim()
       if (!turbo.value && (!Number.isInteger(form.steps) || form.steps < 1 || form.steps > 100
-        || negative && (!Number.isFinite(form.cfg) || form.cfg <= 1 || form.cfg > 20))) throw new Error('步数需为 1—100；有负向描述时 CFG 需大于 1 且不超过 20')
-      const input: Record<string, unknown> = { modelId: form.modelId, prompt: form.prompt.trim(), negative,
-        width: form.width, height: form.height, steps: turbo.value ? 8 : form.steps, cfg: negative ? form.cfg : 1,
+        || !moss && negative && (!Number.isFinite(form.cfg) || form.cfg <= 1 || form.cfg > 20))) throw new Error('步数需为 1—100；有负向描述时 CFG 需大于 1 且不超过 20')
+      if (moss && (!Number.isFinite(form.cfg) || form.cfg < 0 || form.cfg > 20)) throw new Error('CFG 需为 0—20 内的数值')
+      const compiled = moss ? compileMossPrompt(form.prompt, negative) : { prompt: form.prompt.trim(), negative }
+      if (compiled.prompt.length > 12000) throw new Error('加入模型质量词后的提示词超过 12000 字符，请精简描述')
+      if (moss && (source.value || references.value.length)) throw new Error('MOSS 当前仅支持文生图，请移除编辑输入')
+      const input: Record<string, unknown> = { modelId: form.modelId, ...compiled,
+        width: form.width, height: form.height, steps: turbo.value ? 8 : form.steps, cfg: moss || negative ? form.cfg : 1,
         ...(randomSeed.value ? {} : { seed: form.seed }) }
       await releaseRequest(); task.value = null
       if (source.value) {
@@ -221,7 +232,7 @@ export function useQwenStudio() {
         if (names.length) input.referenceImages = names
       }
       if (cancelled) { notice.value = '已取消，尚未提交任务'; return }
-      await session.submit('qwen', input, { parentId: parentId.value }, undefined, () => cancelled)
+      await session.submit(mode, input, { parentId: parentId.value }, undefined, () => cancelled)
       if (cancelled) await cancel()
       void observe()
     } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
@@ -238,7 +249,7 @@ export function useQwenStudio() {
         await archiveTaskResult(output.taskId); check()
         if (isCurrent()) { saved.value = true; notice.value = '已存入我的作品' }
       } else if (blob) {
-        const downloaded = await downloadMangaPng(blob, `绘遇-Qwen-${output.taskId}.png`); check()
+        const downloaded = await downloadMangaPng(blob, `绘遇-${label}-${output.taskId}.png`); check()
         if (downloaded && isCurrent()) notice.value = 'PNG 已导出'
       }
     } catch (cause) { if (!lifetime.signal.aborted && isCurrent()) error.value = message(cause) }
@@ -291,7 +302,7 @@ export function useQwenStudio() {
         draftStatus.value = '旧草稿仍保留，当前创作尚未自动保存'
       }
       if (draft) applyDraft(draft)
-      if (qwenModels.some(model => model.value === modelId)) form.modelId = modelId!
+      if (modelOptions.some(model => model.value === modelId)) form.modelId = modelId!
       session.restore()
       if (request.value) {
         await session.resolve()
@@ -321,7 +332,7 @@ export function useQwenStudio() {
           catch (cause) { check(); restoredInputMissing.value = !!input.initImage; error.value = message(cause) }
         } else if (input.initImage && !source.value) restoredInputMissing.value = true
       }
-      if (artworkId) {
+      if (artworkId && !moss) {
         if (unresolved.value) notice.value = '上次操作尚未确认，已恢复原请求；结束后可从作品册再次打开编辑'
         else {
           try {
@@ -347,7 +358,7 @@ export function useQwenStudio() {
     finally { initializing.value = false }
   }
   onScopeDispose(() => { stopRuntime(); clearTimeout(draftTimer); void persistDraft(); lifetime.abort(); setUrl(sourceUrl, null); setUrl(resultUrl, null); for (const value of references.value) URL.revokeObjectURL(value.url) })
-  return { form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
+  return { modelOptions, alignment, maxSize, form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
     busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, inputSize, progress, taskText,
     ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize }
 }

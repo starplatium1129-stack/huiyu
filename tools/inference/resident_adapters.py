@@ -68,7 +68,7 @@ class PipelineCache:
                         or (protection is None and fingerprint(root, control) != identity)):
                     raise error("MODEL_CHANGED", "Model assets changed during loading; generation rejected")
                 self.components = dict(template.components)
-                self.parameters = ({} if spec["pipeline"] == "MiniMaxH3ModularPipeline"
+                self.parameters = ({} if spec["pipeline"] in ("MiniMaxH3ModularPipeline", "MOSSImagePipeline")
                                    else copy.deepcopy(template.parameters))
                 self.pipeline_class = type(template)
                 self.configs = {name: copy.deepcopy(dict(value.config)) for name, value in self.components.items()

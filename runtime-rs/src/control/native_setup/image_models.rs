@@ -4,7 +4,7 @@ use crate::generation::native::{Settings, adapters, resources};
 use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION};
 
 pub(super) fn is_adapter_runtime(runtime: &RuntimeBundle) -> bool {
-    runtime.runtime_id == "cpython3119-torch280-cu128-images-v1"
+    runtime.runtime_id == "cpython3119-torch290-cu128-images-v2"
 }
 pub(super) fn runtime_for(model: Option<&str>) -> Result<Arc<RuntimeBundle>> {
     if !model.is_some_and(|id| adapters::model(id).is_some_and(|spec| spec["media"] == "image")) {

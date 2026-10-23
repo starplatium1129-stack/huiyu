@@ -23,7 +23,8 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: {
   if (manga && task.resultState !== 'available') throw new Error('漫画结果仍在保存，请稍后入册')
   const output = task.resultRefs.find(value => value.index === index)
   if (!output?.mime.startsWith('image/')) throw new Error('请选择图片结果入册')
-  const context = task.kind === 'qwen' ? {} : runtimeTaskResultContext(task) as Record<string, unknown>
+  const nativeImage = task.kind === 'qwen' || task.kind === 'moss'
+  const context = nativeImage ? {} : runtimeTaskResultContext(task) as Record<string, unknown>
   const history = context.history as Record<string, unknown>
   const id = taskArtworkId(task.taskId, index)
   const existing = await readArtwork(id)
@@ -31,8 +32,8 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: {
   let saved = existing
   if (!existing) {
     const input = task.input
-    const recipe = task.kind === 'qwen' ? {} : runtimeTaskRecipe(task)
-    const record: ArtworkRecord = task.kind === 'qwen' ? qwenTaskArtwork(task, index) : manga ? mangaTaskArtwork(task, index) : {
+    const recipe = nativeImage ? {} : runtimeTaskRecipe(task)
+    const record: ArtworkRecord = nativeImage ? qwenTaskArtwork(task, index) : manga ? mangaTaskArtwork(task, index) : {
       sceneTitle: null, emotion: [], shot: null, lighting: null,
       composition: null, colorMood: null, manual_tags: [], lora: typeof input.loraId === 'string' ? input.loraId : null, notes: '',
       parent_id: context.parentId ?? null, project: '', image_url: '',

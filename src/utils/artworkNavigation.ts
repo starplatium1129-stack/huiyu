@@ -1,6 +1,8 @@
 import type { ArtworkRecord } from '@/types/artwork'
 
 export function artworkContinueTarget(item: ArtworkRecord, mode: 'regen' | 'remix' = 'regen') {
+  if (item.engine === 'moss-image' && typeof item.taskId === 'string' && item.taskId.trim())
+    return { to: `/moss-studio?job=${encodeURIComponent(item.taskId)}`, label: '查看 MOSS 原任务' }
   if (item.engine === 'qwen-image') {
     if (typeof item.taskId === 'string' && item.taskId.trim())
       return { to: `/qwen-studio?job=${encodeURIComponent(item.taskId)}`, label: '查看 Qwen 原任务' }

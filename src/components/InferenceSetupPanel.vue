@@ -28,6 +28,11 @@
         <button v-if="plan.supported" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="recheck">重新检查</button>
       </div>
       <template v-if="plan.supported && selectedModel && !nativeEnabled && !pendingRestart">
+        <div v-if="selectedModel.family === 'moss-image' && !selectedModel.installed && !running" class="setup-field">
+          <label for="moss-checkpoint-path">已下载的 MOSS FP16 权重</label>
+          <input id="moss-checkpoint-path" v-model="checkpointPath" class="input" :disabled="locked" placeholder="例如 D:\Models\miaomiaoHaremMOSS_baseV10_fp16.safetensors" spellcheck="false" aria-describedby="moss-checkpoint-hint" />
+          <small id="moss-checkpoint-hint">先登录<a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">作者发布页</a>下载 FP16 版，填写完整文件路径。校验后复制该文件，再下载配套组件；原文件保留。INT8 版暂不支持。</small>
+        </div>
         <div class="setup-model">
           <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">绘图模型</span><strong>{{ modelName }}</strong><small>{{ selectedModel.preparation === 'checkpoint-conversion' ? '下载原始权重，自动转换为原生模型' : '完整原生模型 · 无需转换' }}</small></div></div>
           <div class="setup-budget"><span>最多下载<strong>{{ formatSetupBytes(downloadBytes) }}</strong></span><span>所需空间<strong>{{ formatSetupBytes(setupRequiredBytes) }}</strong></span></div>
@@ -52,7 +57,7 @@
     <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
     <p v-else-if="message && !running && !pendingRestart && !nativeEnabled" role="status">{{ message }}</p>
     <div ref="actions" class="setup-primary" tabindex="-1" role="group" aria-label="原生引擎操作">
-      <RouterLink v-if="nativeEnabled && !operationUncertain" class="btn btn-primary" :to="selectedModel?.family === 'qwen-image' ? { path: '/qwen-studio', query: { preparedModel: modelId } } : { path: '/prompt-builder', query: { preparedModel: modelId } }"><ArchiveIcon name="spark" />{{ selectedModel?.family === 'qwen-image' ? '打开 Qwen 创作' : '开始创作' }}</RouterLink>
+      <RouterLink v-if="nativeEnabled && !operationUncertain" class="btn btn-primary" :to="selectedModel?.family === 'moss-image' ? { path: '/moss-studio', query: { preparedModel: modelId } } : selectedModel?.family === 'qwen-image' ? { path: '/qwen-studio', query: { preparedModel: modelId } } : { path: '/prompt-builder', query: { preparedModel: modelId } }"><ArchiveIcon name="spark" />{{ selectedModel?.family === 'qwen-image' ? '打开 Qwen 创作' : '开始创作' }}</RouterLink>
       <button v-else-if="desktop?.restartForSetup && !operationUncertain && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" :aria-busy="restarting" @click="restart">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
       <button v-else-if="operationUncertain" class="btn btn-primary" type="button" :disabled="checking" @click="reconcile">{{ checking ? '核对中…' : '继续核对进度' }}</button>
       <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续下载与配置' : '下载并自动配置' }}</button>
@@ -122,7 +127,7 @@ import type { InferenceSettings } from '@/api/inferenceSettingsApi'
 import { formatSetupBytes } from '@/utils/localSetupPreparation'
 const props = defineProps<{ configured: InferenceSettings; blocked: boolean }>()
 const emit = defineEmits<{ prepared: [paths: PreparedInferencePaths]; busy: [value: boolean]; working: [value: boolean]; activated: [] }>()
-const { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
+const { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, checkpointPath, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
   basePython, wheelhouse, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
   operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, message, error, cancelState, operationUncertain,
   workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
@@ -158,7 +163,7 @@ watch([() => route.query.resource, locked], ([value, isLocked]) => {
   if (typeof value !== 'string') { appliedResourceQuery = null; return }
   if (!isLocked && value !== appliedResourceQuery) { resourceId.value = value; appliedResourceQuery = value }
 }, { immediate: true })
-const linkedModels = ['anima-miaomiao-v1.6', 'anima-base-v1.0', 'krea2-raw', 'krea2-turbo', 'qwen-image-2.1', 'qwen-image-2.1-turbo']
+const linkedModels = ['anima-miaomiao-v1.6', 'anima-base-v1.0', 'krea2-raw', 'krea2-turbo', 'qwen-image-2.1', 'qwen-image-2.1-turbo', 'moss-miaomiao-base-v1.0']
 let appliedModelQuery: string | null = null
 if (typeof route.query.model === 'string' && linkedModels.includes(route.query.model)) {
   modelId.value = route.query.model

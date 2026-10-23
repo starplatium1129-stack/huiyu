@@ -210,7 +210,7 @@ impl ControlService {
                 json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
                     "preparation":if model.conversion_profile.is_some(){"checkpoint-conversion"}else{"complete-model"},
                     "licenseUrl":model.license_url,"sourceUrl":model.source_url,
-                    "requiresAccess":model.requires_access,"family":if model.id.starts_with("krea2-"){"krea2"}else if model.id.starts_with("qwen-"){"qwen-image"}else{"anima"},
+                    "requiresAccess":model.requires_access,"family":if model.id.starts_with("krea2-"){"krea2"}else if model.id.starts_with("qwen-"){"qwen-image"}else if model.id.starts_with("moss-"){"moss-image"}else{"anima"},
                     "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":model_needed(&root, model),
                     "installed":receipt_matches(&model_root, model),"path":model_root})
             }).collect();
@@ -220,7 +220,7 @@ impl ControlService {
                 "paths":{"runtimeRoot":receipt.as_ref().and_then(|(path, _)|path.parent()).map(Path::to_path_buf).unwrap_or_else(||root.join(&runtime.runtime_id)),"modelsRoot":root.join("models"),
                     "lorasRoot":discovered.loras_root,"cacheRoot":root.join(".downloads"),"tempRoot":root.join(".staging")},
                 "hardware":hardware,"network":network,"supported":reasons.is_empty(),"reasons":reasons,"freeBytes":free,
-                "runtime":{"id":runtime.runtime_id,"label":if image_models::is_adapter_runtime(&runtime){"Krea/Qwen · 独立 Python 3.11 · CUDA 12.8"}else{"Anima · Python 3.11 · CUDA 12.8"},
+                "runtime":{"id":runtime.runtime_id,"label":if image_models::is_adapter_runtime(&runtime){"原生图像 · Python 3.11 · PyTorch 2.9 · CUDA 12.8"}else{"Anima · Python 3.11 · CUDA 12.8"},
                     "downloadBytes":runtime.download_bytes,"requiredBytes":required,"recoverableBytes":recoverable,"recoveryReady":recovery_ready,"sources":runtime.sources,
                     "installed":runtime_ready,"python":runtime_python},"models":model_views,
                 "resources":image_resources::views(&root, &configured, &service.config.app_root)?,

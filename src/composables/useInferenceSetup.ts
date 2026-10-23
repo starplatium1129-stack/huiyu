@@ -18,6 +18,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const plan = shallowRef<NativeSetupPlan | null>(null)
   const basePython = ref(''), wheelhouse = ref(''), workspacePath = ref(''), runtimeReviewed = ref(false), reviewed = ref(false)
   const hfToken = ref('')
+  const checkpointPath = ref('')
   const resourceId = ref(''), resourceReviewed = ref(false)
   const selectedResource = computed(() => plan.value?.resources.find(value => value.id === resourceId.value))
   const modelId = ref(''), sourceDir = ref(''), importModelId = ref('anima-miaomiao-v1.6'), importReviewed = ref(false)
@@ -38,12 +39,13 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const runtimeSpaceEnough = computed(() => !!plan.value && plan.value.freeBytes !== null && plan.value.freeBytes >= plan.value.runtime.requiredBytes)
   const modelSpaceEnough = computed(() => !!plan.value && !!selectedModel.value && plan.value.freeBytes !== null && plan.value.freeBytes >= selectedModel.value.requiredBytes)
   const canInstall = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && !plan.value.runtime.installed && runtimeSpaceEnough.value)
-  const canDownload = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && plan.value.runtime.installed && selectedModel.value && !selectedModel.value.installed && modelSpaceEnough.value)
+  const checkpointReady = computed(() => modelId.value !== 'moss-miaomiao-base-v1.0' || selectedModel.value?.installed || !!checkpointPath.value.trim())
+  const canDownload = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && plan.value.runtime.installed && selectedModel.value && !selectedModel.value.installed && modelSpaceEnough.value && checkpointReady.value)
   const canActivate = computed(() => !locked.value && currentPlan.value && plan.value?.supported && plan.value.runtime.installed && selectedModel.value?.installed)
   const nativeEnabled = computed(() => currentPlan.value && plan.value?.supported && plan.value.workspaceMatches && plan.value.activeEngine === 'native' && !plan.value.restartRequired && plan.value.runtime.installed && selectedModel.value?.installed)
   const setupRequiredBytes = computed(() => (plan.value?.runtime.installed ? 0 : plan.value?.runtime.requiredBytes ?? 0) + (selectedModel.value?.requiredBytes ?? 0))
   const setupSpaceEnough = computed(() => plan.value?.freeBytes !== null && plan.value?.freeBytes !== undefined && plan.value.freeBytes >= setupRequiredBytes.value)
-  const canSetup = computed(() => !locked.value && currentPlan.value && plan.value?.supported && selectedModel.value && reviewed.value && setupSpaceEnough.value && !nativeEnabled.value)
+  const canSetup = computed(() => !locked.value && currentPlan.value && plan.value?.supported && selectedModel.value && reviewed.value && setupSpaceEnough.value && !nativeEnabled.value && checkpointReady.value)
   const canPrepare = computed(() => !locked.value && currentPlan.value && !preparedPaths.value && runtimeReviewed.value && !!basePython.value.trim() && !!wheelhouse.value.trim())
   const canInspect = computed(() => !locked.value && currentPlan.value && !!sourceDir.value.trim() && !!configured.value.modelsRoot)
   const canImport = computed(() => !locked.value && currentPlan.value && !!inspection.value && importReviewed.value)
@@ -243,7 +245,9 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       }
     } finally { if ('hfToken' in next.input) delete next.input.hfToken; if (!disposed) busy.value = hasRunningOperation.value || operationUncertain.value }
   }
-  function managedInput(): ManagedInferenceInput { return { workspacePath: workspacePath.value, planId: plan.value!.planId, reviewed: true, modelId: modelId.value, ...(hfToken.value.trim() ? { hfToken: hfToken.value.trim() } : {}) } }
+  function managedInput(): ManagedInferenceInput { return { workspacePath: workspacePath.value, planId: plan.value!.planId, reviewed: true, modelId: modelId.value,
+    ...(modelId.value === 'moss-miaomiao-base-v1.0' && checkpointPath.value.trim() ? { checkpointPath: checkpointPath.value.trim() } : {}),
+    ...(hfToken.value.trim() ? { hfToken: hfToken.value.trim() } : {}) } }
   async function prepareEngine() { if (local() && canSetup.value) await start({ kind: 'prepare-native-engine', input: { ...managedInput(), modelId: modelId.value } }) }
   async function installRuntime() { if (local() && canInstall.value) await start({ kind: 'install-native-runtime', input: managedInput() }) }
   async function downloadModel() { if (local() && canDownload.value) await start({ kind: 'download-native-model', input: { ...managedInput(), modelId: modelId.value } }) }
@@ -351,7 +355,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     disposed = true; workspaceOpenVersion++; planVersion++; inspectionVersion++; planController?.abort(); inspectionController?.abort(); activationController?.abort()
     window.removeEventListener('huiyu:ai-workspace-changed', workspaceChanged); window.removeEventListener('focus', focused)
   })
-  return { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
+  return { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, checkpointPath, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
     basePython, wheelhouse, workspacePath, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
     operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, message, error, cancelState, operationUncertain,
     workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,

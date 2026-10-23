@@ -105,7 +105,7 @@ impl ControlService {
                 let work = async {
                     if let Some(model) = model {
                         service
-                            .install_native_model(&model, &operation, &cancel, &permit, body.hf_token.as_deref())
+                            .install_native_model(&model, &operation, &cancel, &permit, body.hf_token.as_deref(), body.checkpoint_path.as_deref())
                             .await
                     } else {
                         service
@@ -221,7 +221,9 @@ impl ControlService {
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,
         hf_token: Option<&str>,
+        checkpoint_path: Option<&Path>,
     ) -> Result<()> {
+        moss_models::stage_checkpoint(self, model, checkpoint_path, cancel).await?;
         let workspace = &self.config.ai_workspace_root;
         let target = workspace.join("inference/models").join(&model.id);
         if model.conversion_profile.is_some() {

@@ -7,6 +7,7 @@ mod image_models;
 mod activation;
 mod image_resources;
 mod anima_models;
+mod moss_models;
 
 use super::*;
 use axum::{
@@ -67,6 +68,7 @@ struct Request {
     model_id: Option<String>,
     // Request-local credential: never put it in operation snapshots or config.
     hf_token: Option<String>,
+    checkpoint_path: Option<PathBuf>,
     resource_root: Option<PathBuf>,
 }
 pub(super) fn routes() -> Router<crate::AppState> {

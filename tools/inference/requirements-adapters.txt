@@ -1,8 +1,9 @@
 # Separate Python 3.11 environment; never upgrade the managed Anima environment.
 # Source pin includes QwenImage21Pipeline sample_sigmas and Krea2Pipeline.
 # Diffusers implementation: Apache-2.0. Weight licenses are in adapter-models.json.
-torch==2.8.0
-torchvision==0.23.0
+# OpenMOSS's pipeline requires torch>=2.9; this remains separate from Anima.
+torch==2.9.0
+torchvision==0.24.0
 diffusers @ git+https://github.com/huggingface/diffusers.git@b800f828f3951c4d206e154411bcbfa693cd322e
 transformers==5.17.0
 accelerate==1.12.0

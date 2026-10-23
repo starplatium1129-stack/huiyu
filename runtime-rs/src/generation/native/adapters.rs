@@ -5,7 +5,7 @@ use super::resources::{self, within};
 const FILES: &[&str] = &[
     "adapter_worker.py", "adapter_contract.py", "adapter_media.py", "adapter_video.py",
     "adapter-models.json", "worker_lifecycle.py", "native_memory.py",
-    "resident_adapters.py", "locked_identity.py", "krea_style.py",
+    "resident_adapters.py", "locked_identity.py", "krea_style.py", "moss_adapter.py", "moss_pipeline.py",
 ];
 static MANIFEST: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
@@ -31,7 +31,7 @@ pub(crate) fn settings(settings: &Settings) -> Result<Settings> {
         ApiError::new(
             503,
             "NATIVE_ADAPTER_RUNTIME_MISSING",
-            "请在控制室选择 Krea / Qwen 模型并准备原生运行库，或在高级设置中复用已有独立 Python",
+            "请在控制室选择所需图像模型并准备原生运行库，或在高级设置中复用已有独立 Python",
         )
     })?;
     adapter.worker = settings.worker.with_file_name("adapter_worker.py");

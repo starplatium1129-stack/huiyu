@@ -8,6 +8,13 @@
     "transformers": "5.17.0"
   },
   "layouts": {
+    "MOSSImagePipeline": {
+      "text_encoder": ["transformers", "Qwen3_5Model"],
+      "tokenizer": ["transformers", "Qwen2Tokenizer", "Qwen2TokenizerFast"],
+      "transformer": ["pipeline_moss_image", "MOSSImageTransformer"],
+      "vae": ["diffusers", "AutoencoderKLFlux2"],
+      "scheduler": ["pipeline_moss_image", "MOSSImageScheduler"]
+    },
     "Krea2Pipeline": {
       "text_encoder": ["transformers", "Qwen3VLModel"],
       "tokenizer": ["transformers", "Qwen2Tokenizer", "Qwen2TokenizerFast"],
@@ -69,6 +76,20 @@
     }
   },
   "models": {
+    "moss-miaomiao-base-v1.0": {
+      "label": "MiaoMiao Harem MOSS · BASE v1.0",
+      "family": "moss-image", "media": "image", "pipeline": "MOSSImagePipeline",
+      "repository": "OpenMOSS-Team/MOSS-Image-Base",
+      "revision": "85975793d8b3d432f1b6e27f352abaa4c2a4c0d3",
+      "source": "https://civitai.com/models/3015023?modelVersionId=3422319",
+      "license": "OpenMOSS Apache-2.0; MIAOKA checkpoint terms also apply",
+      "licenseUrl": "https://civitai.com/models/3015023?modelVersionId=3422319",
+      "layoutNote": "MIAOKA FP16 transformer with pinned official Qwen3.5-9B encoder, tokenizer and FLUX.2 VAE. Bundled reviewed MOSS code only; INT8/ConvRot is unsupported. Weight loading and image quality await the author's checkpoint.",
+      "sizes": ["768x1280", "1280x768", "1280x1280", "960x1536", "1536x960", "1536x1536"],
+      "steps": 50, "cfg": 3.5, "maxSize": 1536, "alignment": 16,
+      "shift": 5, "uncondSkipLayers": [22],
+      "edit": false, "negative": true, "distilled": false
+    },
     "krea2-raw": {
       "label": "Krea 2 RAW · 原生 BF16",
       "profileId": "krea2_raw",

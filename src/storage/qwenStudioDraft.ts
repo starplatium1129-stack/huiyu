@@ -3,15 +3,13 @@ import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/ut
 import { artworkRepository } from './artworkRepository'
 import { inspectMangaImage, type MangaImage } from '@/composables/manga/mangaImage'
 import { qwenModels } from '@/api/qwenApi'
+import { mossModels } from '@/api/mossApi'
 
 // Registered model-draft namespace: profile media_refs recursively retains imageId.
-const key = 'aics-model-draft-qwen-studio-v1'
-const recoveryKey = 'aics-model-draft-qwen-studio-recovery-v1'
-const selectionKey = 'aics-model-draft-qwen-studio-active-v1'
 // All mounted instances hand off through one queue. A fullPath remount must
 // restore after the previous instance's disposal save, never overtake it.
 let pendingWrites = Promise.resolve()
-function activeKey() {
+function activeKey(key: string, selectionKey: string, recoveryKey: string) {
   const selected = profileLocalStorage.getItem(selectionKey)
   if (selected === null) return key
   if (selected !== key && selected !== recoveryKey) throw new Error('Qwen 草稿入口无法读取，原记录已保留')
@@ -32,18 +30,18 @@ const imageRef = (value: unknown): value is ImageRef => object(value) && typeof 
   && typeof value.name === 'string' && value.name.length <= 500 && typeof value.id === 'string' && /^[\w-]{1,160}$/.test(value.id)
 export const qwenParentId = (value: unknown): value is string | number => typeof value === 'string' && value.length > 0 && value.length <= 240
   || typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
-const validForm = (form: unknown): form is QwenForm => object(form)
-  && qwenModels.some(model => model.value === form.modelId)
+const validForm = (form: unknown, models: readonly { value: string }[]): form is QwenForm => object(form)
+  && models.some(model => model.value === form.modelId)
   && typeof form.prompt === 'string' && form.prompt.length <= 12000 && typeof form.negative === 'string' && form.negative.length <= 8000
   && ['width', 'height', 'steps', 'cfg', 'seed'].every(key => typeof form[key] === 'number' && Number.isFinite(form[key]))
 const copyForm = (form: QwenForm): QwenForm => ({ modelId: form.modelId, prompt: form.prompt, negative: form.negative,
   width: form.width, height: form.height, steps: form.steps, cfg: form.cfg, seed: form.seed })
-function read(selectedKey: string): StoredDraft | null {
+function read(selectedKey: string, models: readonly { value: string }[]): StoredDraft | null {
   const raw = profileLocalStorage.getItem(selectedKey)
   if (!raw) return null
   const value: unknown = JSON.parse(raw)
   if (!object(value) || value.version !== 1 || !object(value.owner) || !sameTempResultOwner(value.owner as TempResultOwner)
-    || !validForm(value.form)
+    || !validForm(value.form, models)
     || value.resultTaskId !== null && (typeof value.resultTaskId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f-]{27}$/i.test(value.resultTaskId))
     || typeof value.randomSeed !== 'boolean' || typeof value.resize !== 'boolean' || value.parentId !== null && !qwenParentId(value.parentId)
     || value.source !== null && !imageRef(value.source) || !Array.isArray(value.references) || value.references.length > 3
@@ -51,7 +49,11 @@ function read(selectedKey: string): StoredDraft | null {
   return value as unknown as StoredDraft
 }
 
-export function createQwenDraftStorage() {
+export function createQwenDraftStorage(mode: 'qwen' | 'moss' = 'qwen') {
+  const key = `aics-model-draft-${mode}-studio-v1`
+  const recoveryKey = `aics-model-draft-${mode}-studio-recovery-v1`
+  const selectionKey = `aics-model-draft-${mode}-studio-active-v1`
+  const models = mode === 'moss' ? mossModels : qwenModels
   let owner: TempResultOwner | null = null
   const repository = artworkRepository, aliases = new WeakMap<Blob, string>()
   const releasedTemporary = new Set<string>()
@@ -63,8 +65,9 @@ export function createQwenDraftStorage() {
   async function restore(signal: AbortSignal): Promise<QwenDraftState | null> {
     let pending: Promise<void>
     do { pending = pendingWrites; await pending.catch(() => {}); check(); signal.throwIfAborted() } while (pending !== pendingWrites)
-    selectedKey = activeKey()
-    const draft = read(selectedKey); previous = draft; if (!draft) return null
+    selectedKey = activeKey(key, selectionKey, recoveryKey)
+    const draft = read(selectedKey, models); previous = draft; if (!draft) return null
+    if (mode === 'moss' && (draft.source || draft.references.length)) throw new Error('MOSS 草稿只支持文生图，原草稿已保留')
     const load = async (ref: ImageRef) => {
       const blob = await repository.getImage(ref.imageId, signal); check(); signal.throwIfAborted()
       if (!blob) throw new Error('草稿图片不可用，原草稿已保留；请恢复工作区后重试')
@@ -81,7 +84,7 @@ export function createQwenDraftStorage() {
     const work = pendingWrites.catch(() => {}).then(async () => {
       check()
       const destination = preservePrevious ? selectedKey === key ? recoveryKey : key : selectedKey
-      if (!validForm(snapshot.form)) throw new Error('请补全数值参数后保存草稿；上一份草稿仍保留')
+      if (!validForm(snapshot.form, models)) throw new Error('请补全数值参数后保存草稿；上一份草稿仍保留')
       const store = async (image: MangaImage, id: string): Promise<ImageRef> => {
         let imageId = aliases.get(image.blob)
         if (!imageId) { imageId = await repository.putImage(image.blob); check(); aliases.set(image.blob, imageId) }

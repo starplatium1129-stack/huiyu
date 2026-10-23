@@ -8,7 +8,7 @@ export type PreparedInferencePaths = Pick<InferenceSettings, 'python' | 'worker'
 export interface RuntimePreparationInput { operationId?: string; basePython: string; wheelhouse: string; workspacePath: string; reviewed: true }
 export interface ModelInspectionInput { modelId: string; sourceDir: string }
 export interface ModelImportInput extends ModelInspectionInput { operationId?: string; modelsRoot: string; reviewed: true }
-export interface ManagedInferenceInput { operationId?: string; workspacePath: string; planId: string; reviewed: true; modelId?: string; hfToken?: string; resourceRoot?: string }
+export interface ManagedInferenceInput { operationId?: string; workspacePath: string; planId: string; reviewed: true; modelId?: string; hfToken?: string; checkpointPath?: string; resourceRoot?: string }
 export interface NativeImageResource {
   id: string; label: string; family: string; description: string; directory: 'models' | 'loras'; root: string
   licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; present: boolean; path: string

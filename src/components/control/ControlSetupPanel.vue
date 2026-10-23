@@ -33,7 +33,7 @@ const nativeReady = ref(false), localReady = ref(false)
 const nativeLink = computed(() => ['#control-inference', '#control-image-resources'].includes(route.hash)
   || ['', '#control-setup'].includes(route.hash) && (route.query.resource || route.query.engine === 'native'
     || ['anima', 'krea2'].includes(String(route.query.engine)) && status.imageProvider.value === 'native'
-    || /^(anima-miaomiao-v1\.6|anima-base-v1\.0|krea2|qwen-image)/.test(String(route.query.model ?? ''))))
+    || /^(anima-miaomiao-v1\.6|anima-base-v1\.0|krea2|qwen-image|moss-miaomiao)/.test(String(route.query.model ?? ''))))
 function openNative() { nativeVisited.value = true; nativeOpen.value = true }
 function toggleNative(event: Event) {
   nativeOpen.value = (event.target as HTMLDetailsElement).open

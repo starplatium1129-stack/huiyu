@@ -206,7 +206,7 @@ impl Service {
             .await
     }
     pub async fn get_status(&self, family: &str) -> Result<Value> {
-        if matches!(family, "qwen-image" | "manga-screen") && !self.native {
+        if matches!(family, "qwen-image" | "moss-image" | "manga-screen") && !self.native {
             return Err(ApiError::new(
                 409,
                 "NATIVE_ENGINE_REQUIRED",

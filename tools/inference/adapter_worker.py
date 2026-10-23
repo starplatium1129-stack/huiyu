@@ -55,7 +55,7 @@ def dependencies():
     sibling("native_memory")
     sibling("locked_identity")
     versions = {}
-    for name, expected in {"torch": "2.8.0", "torchvision": "0.23.0", "transformers": "5.17.0",
+    for name, expected in {"torch": "2.9.0", "torchvision": "0.24.0", "transformers": "5.17.0",
                            "accelerate": "1.12.0", "safetensors": "0.8.0", "Pillow": "11.3.0", "ftfy": "6.3.1"}.items():
         try:
             value = importlib.metadata.version(name)
@@ -75,6 +75,10 @@ def dependencies():
         from PIL import Image
         from transformers import Qwen3VLModel, Qwen3VLForConditionalGeneration, Qwen3VLProcessor, UMT5EncoderModel
         for name in {model["pipeline"] for model in contract.MANIFEST["models"].values()}:
+            if name == "MOSSImagePipeline":
+                sibling("moss_adapter").pipeline_class()
+                from transformers import Qwen3_5Model
+                continue  # MOSS uses the existing task-local scheduler observer.
             pipeline = getattr(diffusers, name)
             if name in ("HunyuanVideo15Pipeline", "MiniMaxH3ModularPipeline"):
                 continue  # These use the task-local scheduler observer, not pipeline callbacks.
@@ -141,7 +145,8 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
     try:
         kwargs = {"local_files_only": True, "use_safetensors": True, "torch_dtype": torch.bfloat16}
         pipeline, identity, reused = cache.acquire(root, spec, data, policy, control, fingerprint,
-            lambda: (video.load(root, spec, data, control, contract) if spec["media"] == "video"
+            lambda: (sibling("moss_adapter").load(root, control, contract) if spec["family"] == "moss-image"
+                     else video.load(root, spec, data, control, contract) if spec["media"] == "video"
                      else getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)), Error, style_path=style_path)
         observation = {"adapter": data["modelId"], "validation": "待主力机验证", "modelSha256": identity,
                        "memoryPolicy": policy, "weightReuse": reused,
@@ -185,7 +190,8 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
                 args["negative_prompt"] = data["negativePrompt"]
         control.stage("encoding")
         with torch.inference_mode():
-            output = pipeline(**args)
+            output = (sibling("moss_adapter").generate(pipeline, data, control)
+                      if spec["family"] == "moss-image" else pipeline(**args))
         control.stage("saving")
         media.png(output.images[0], job["outputPath"], data, Error)
         control.check()

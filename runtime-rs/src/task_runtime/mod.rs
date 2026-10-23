@@ -218,7 +218,7 @@ impl TaskRuntime {
         self.tracker.wait().await;
     }
     fn binding_for(&self, kind: TaskKind) -> String {
-        let provider = if matches!(kind, TaskKind::Anima | TaskKind::Creative | TaskKind::Qwen) || kind.is_manga() {
+        let provider = if matches!(kind, TaskKind::Anima | TaskKind::Creative | TaskKind::Qwen | TaskKind::Moss) || kind.is_manga() {
             self.images.provider_identity(&self.unbound_epoch)
         } else if matches!(kind, TaskKind::Video | TaskKind::Batch) {
             self.video.provider_identity(&self.unbound_epoch)

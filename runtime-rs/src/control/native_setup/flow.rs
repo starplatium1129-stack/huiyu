@@ -102,6 +102,10 @@ impl ControlService {
         stopped(cancel)?;
         let current = self.native_setup_plan(body.model_id.as_deref()).await?;
         require_supported(&current)?;
+        if model.id == "moss-miaomiao-base-v1.0" {
+            self.native_progress(operation, json!({"message":"校验并准备本机 MOSS FP16 权重"}));
+            moss_models::stage_checkpoint(self, &model, body.checkpoint_path.as_deref(), cancel).await?;
+        }
         if model.requires_access {
             self.native_progress(operation, json!({"message":"检查模型访问权与固定文件清单"}));
             let root = self.config.ai_workspace_root.join("inference/models").join(&model.id);
@@ -149,7 +153,7 @@ impl ControlService {
             .join("inference/models")
             .join(&model.id);
         if !receipt_matches(&model_root, &model) {
-            self.install_native_model(&model, &model_operation, cancel, permit, body.hf_token.as_deref())
+            self.install_native_model(&model, &model_operation, cancel, permit, body.hf_token.as_deref(), body.checkpoint_path.as_deref())
                 .await?;
         }
         self.stage(operation, 6);

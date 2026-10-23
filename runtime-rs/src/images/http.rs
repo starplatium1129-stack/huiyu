@@ -17,7 +17,7 @@ struct Http {
 }
 pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
     let mut router = Router::new();
-    for family in ["anima", "creative", "qwen", "manga"] {
+    for family in ["anima", "creative", "qwen", "moss", "manga"] {
         router = router
             .route(&format!("/api/{family}/status"), get(status))
             .route(
@@ -48,6 +48,8 @@ fn family(uri: &axum::http::Uri) -> &'static str {
         "anima"
     } else if uri.path().starts_with("/api/qwen/") {
         "qwen-image"
+    } else if uri.path().starts_with("/api/moss/") {
+        "moss-image"
     } else if uri.path().starts_with("/api/manga/") {
         "manga-screen"
     } else {

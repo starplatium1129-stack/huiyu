@@ -1,7 +1,7 @@
 <template>
   <article class="qwen-studio">
     <header class="qwen-heading">
-      <div><h1>Qwen 图像创作</h1><p>用文字生成画面，或结合原图与参考图，描述想做的修改。</p></div>
+      <div><h1>{{ title }}</h1><p>{{ introduction }}</p></div>
       <nav aria-label="图像创作导航"><RouterLink class="btn btn-ghost" to="/prompt-builder">绘图画室</RouterLink><RouterLink class="btn btn-ghost" to="/gallery">我的作品</RouterLink><button class="btn btn-ghost" type="button" @click="openTasks">任务中心</button></nav>
     </header>
     <div class="qwen-layout">
@@ -11,21 +11,22 @@
           <button type="button" :class="{ active: preview === 'source' }" :aria-pressed="preview === 'source'" :disabled="!sourceUrl" @click="referencePreview = ''; preview = 'source'">输入图片</button>
         </div><span v-if="result && preview === 'result'">{{ result.input.width }} × {{ result.input.height }}</span></div>
         <div class="qwen-stage">
-          <ZoomableImageViewer v-if="preview === 'source' ? previewInputUrl : resultUrl" :src="preview === 'source' ? previewInputUrl : resultUrl" :alt="preview === 'source' ? '编辑输入图片' : 'Qwen 生成结果'" />
+          <ZoomableImageViewer v-if="preview === 'source' ? previewInputUrl : resultUrl" :src="preview === 'source' ? previewInputUrl : resultUrl" :alt="preview === 'source' ? '编辑输入图片' : title + '生成结果'" />
           <div v-else class="qwen-empty"><ArchiveIcon name="image" /><h2>{{ result ? '结果已保存在任务中' : '从一句描述开始' }}</h2><p>{{ result ? '可直接存入作品册，或刷新预览。' : '填写画面描述，再点击生成。编辑已有图片时，先导入原图。' }}</p></div>
         </div>
         <p v-if="result && task?.taskId !== result.taskId">这里保留的是上一次结果，新任务不会覆盖已保存的图片。</p>
-        <div class="qwen-toolbar"><button class="btn btn-primary" type="button" :disabled="!resultBlob || locked" @click="editResult"><ArchiveIcon name="inpaint" />用当前结果继续编辑</button><button class="btn btn-ghost" type="button" :disabled="!result || saving || busy || importing || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '存入我的作品' }}</button><button class="btn btn-ghost" type="button" :disabled="!resultBlob || saving || busy || importing" @click="exportResult('download')"><ArchiveIcon name="download" />导出 PNG</button></div>
+        <div class="qwen-toolbar"><button v-if="!moss" class="btn btn-primary" type="button" :disabled="!resultBlob || locked" @click="editResult"><ArchiveIcon name="inpaint" />用当前结果继续编辑</button><button class="btn btn-ghost" type="button" :disabled="!result || saving || busy || importing || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '存入我的作品' }}</button><button class="btn btn-ghost" type="button" :disabled="!resultBlob || saving || busy || importing" @click="exportResult('download')"><ArchiveIcon name="download" />导出 PNG</button></div>
       </section>
       <form class="qwen-controls" @submit.prevent="run">
         <section class="qwen-readiness" aria-label="模型准备状态">
-          <div class="qwen-toolbar"><strong>{{ selected?.available ? '模型文件已就绪' : '准备 Qwen 模型' }}</strong><button class="btn btn-quiet btn-sm" type="button" :disabled="checking || busy" @click="refresh">{{ checking ? '检查中…' : '重新检查' }}</button></div>
-          <p>{{ statusError || selected?.unavailableReason || '填写画面描述即可开始，也可以导入原图及最多三张参考图进行编辑。' }}</p>
+          <div class="qwen-toolbar"><strong>{{ selected?.available ? '模型文件已就绪' : '准备 ' + (moss ? 'MOSS' : 'Qwen') + ' 模型' }}</strong><button class="btn btn-quiet btn-sm" type="button" :disabled="checking || busy" @click="refresh">{{ checking ? '检查中…' : '重新检查' }}</button></div>
+          <p>{{ statusError || selected?.unavailableReason || (moss ? '作者建议 30–50 步、CFG 3.5；默认采用 50 步。首次准备需下载约 27.2 GB 模型组件。' : '填写画面描述即可开始，也可以导入原图及最多三张参考图进行编辑。') }}</p>
           <RouterLink v-if="!selected?.available" class="btn btn-ghost btn-sm" :to="{ path: '/control', query: { engine: 'native', model: form.modelId } }">前往控制室准备</RouterLink>
         </section>
-        <div class="qwen-field"><label for="qwen-model">模型</label><StudioSelect id="qwen-model" v-model="form.modelId" label="Qwen 模型" :options="qwenModels" :disabled="locked" /></div>
+        <div class="qwen-field"><label for="qwen-model">模型</label><StudioSelect id="qwen-model" v-model="form.modelId" :label="title + '模型'" :options="modelOptions" :disabled="locked" /></div>
         <div class="qwen-field"><label for="qwen-prompt">{{ source ? '编辑指令' : '画面描述' }}</label><textarea class="textarea" id="qwen-prompt" v-model="form.prompt" rows="5" maxlength="12000" :disabled="locked" :placeholder="source ? '描述要改变的部分，以及需要保留的内容' : '描述主体、构图、环境与光线'" /></div>
-        <section class="qwen-source" aria-label="可选编辑原图">
+        <p v-if="moss" class="qwen-hint">布局 JSON 按原文提交，坐标需匹配当前宽高；带字画面请移除负向中的 text、english text。当前支持 FP16 权重的文生图。</p>
+        <section v-if="!moss" class="qwen-source" aria-label="可选编辑原图">
           <div class="qwen-toolbar"><button ref="sourceButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="picker?.click()"><ArchiveIcon name="upload" />{{ source ? '更换原图' : '导入编辑原图' }}</button><button v-if="source || restoredInputMissing" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="clearSources">移除输入，改为文生图</button></div>
           <input ref="picker" type="file" hidden accept="image/png,image/jpeg,image/webp" @change="pick" />
           <p v-if="source">图 1 · {{ source.name }} · {{ source.width }} × {{ source.height }}</p><p v-else>可选 · PNG、JPEG、WebP · 每张最大 16 MB</p>
@@ -39,11 +40,11 @@
           </template>
           <StudioCheckbox v-if="needsResize" v-model:checked="resize" :disabled="locked" label="缩小超限输入图片副本">按处理上限缩小超限图片的副本，保留本地原文件</StudioCheckbox>
         </section>
-        <div class="qwen-pair"><div class="qwen-field"><label for="qwen-width">宽度</label><input class="input" id="qwen-width" v-model.number="form.width" type="number" min="512" max="2816" step="32" :disabled="locked" /></div><div class="qwen-field"><label for="qwen-height">高度</label><input class="input" id="qwen-height" v-model.number="form.height" type="number" min="512" max="2816" step="32" :disabled="locked" /></div></div>
-        <p class="qwen-hint">宽高为 32 的倍数。大画幅会增加显存与内存占用。</p>
+        <div class="qwen-pair"><div class="qwen-field"><label for="qwen-width">宽度</label><input class="input" id="qwen-width" v-model.number="form.width" type="number" min="512" :max="maxSize" :step="alignment" :disabled="locked" /></div><div class="qwen-field"><label for="qwen-height">高度</label><input class="input" id="qwen-height" v-model.number="form.height" type="number" min="512" :max="maxSize" :step="alignment" :disabled="locked" /></div></div>
+        <p class="qwen-hint">宽高为 {{ alignment }} 的倍数。大画幅会增加显存与内存占用。</p>
         <details class="qwen-advanced"><StudioDisclosureSummary>高级参数 · {{ turbo ? '8 步 · CFG 1' : `${form.steps} 步` }} · {{ randomSeed ? '随机种子' : '固定种子' }}</StudioDisclosureSummary><div class="qwen-advanced-body"><template v-if="!turbo">
           <div class="qwen-field"><label for="qwen-negative">负向描述（可选）</label><textarea class="textarea" id="qwen-negative" v-model="form.negative" rows="2" maxlength="8000" :disabled="locked" /></div>
-          <div class="qwen-pair"><div class="qwen-field"><label for="qwen-steps">步数</label><input class="input" id="qwen-steps" v-model.number="form.steps" type="number" min="1" max="100" :disabled="locked" /></div><div v-if="form.negative.trim()" class="qwen-field"><label for="qwen-cfg">CFG</label><input class="input" id="qwen-cfg" v-model.number="form.cfg" type="number" min="1.1" max="20" step="0.1" :disabled="locked" /></div></div>
+          <div class="qwen-pair"><div class="qwen-field"><label for="qwen-steps">步数</label><input class="input" id="qwen-steps" v-model.number="form.steps" type="number" min="1" max="100" :disabled="locked" /></div><div v-if="moss || form.negative.trim()" class="qwen-field"><label for="qwen-cfg">CFG</label><input class="input" id="qwen-cfg" v-model.number="form.cfg" type="number" :min="moss ? 0 : 1.1" max="20" step="0.1" :disabled="locked" /></div></div>
         </template>
         <p v-else class="qwen-hint">Turbo 使用固定 8 步、CFG 1，无负向描述。</p>
         <StudioCheckbox v-model:checked="randomSeed" :disabled="locked" label="每次随机种子">每次随机种子</StudioCheckbox>
@@ -65,12 +66,15 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
-import { qwenModels } from '@/api/qwenApi'
 import { useQwenStudio } from '@/composables/generation/useQwenStudio'
 import { useTaskCenter } from '@/composables/useTaskCenter'
-const { form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
+const props = defineProps<{ mode?: 'qwen' | 'moss' }>()
+const moss = props.mode === 'moss'
+const title = moss ? 'MiaoMiao MOSS 创作' : 'Qwen 图像创作'
+const introduction = moss ? '用中文、自然语言或标签描绘画面，也可以直接输入布局 JSON。' : '用文字生成画面，或结合原图与参考图，描述想做的修改。'
+const { modelOptions, alignment, maxSize, form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
   busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, progress, taskText,
-  ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize } = useQwenStudio()
+  ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize } = useQwenStudio(props.mode)
 const route = useRoute(), router = useRouter(), picker = ref<HTMLInputElement | null>(null), preview = ref<'result' | 'source'>('result')
 const referencePicker = ref<HTMLInputElement | null>(null), referenceButton = ref<HTMLButtonElement | null>(null), sourceButton = ref<HTMLButtonElement | null>(null), referencePreview = ref('')
 const previewInputUrl = computed(() => references.value.find(value => value.id === referencePreview.value)?.url || sourceUrl.value)

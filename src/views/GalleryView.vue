@@ -14,6 +14,7 @@
       <div class="tw:flex tw:items-center tw:flex-wrap tw:gap-s-2">
         <GalleryBackupTools />
         <MangaScreenLauncher @saved="loadGalleryStorage" />
+        <RouterLink class="btn btn-ghost" to="/moss-studio"><ArchiveIcon name="image" />MiaoMiao MOSS 创作</RouterLink>
         <RouterLink class="btn btn-ghost" to="/qwen-studio"><ArchiveIcon name="image" />Qwen 生图与编辑</RouterLink>
         <RouterLink class="btn btn-primary gallery-create" to="/prompt-builder">
           <ArchiveIcon name="spark" />新建创作

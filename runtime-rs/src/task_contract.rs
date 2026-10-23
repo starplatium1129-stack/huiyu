@@ -11,6 +11,7 @@ pub enum TaskKind {
     Anima,
     Creative,
     Qwen,
+    Moss,
     Manga,
     Lineart,
     Video,
