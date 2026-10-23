@@ -103,20 +103,30 @@ namespace Ayaki.Installer {
         string payload = Path.Combine(temporary, "setup.exe");
         try {
           if (PayloadInfo.UpgradeOnly) {
+            if (progress != null) progress.Report(new InstallProgress("prerequisites", 0));
             VerifyUpgrade(directory, temporary, cancellation);
             options.Update = true;
           }
           using (Stream source = Assembly.GetExecutingAssembly().GetManifestResourceStream("Payload.exe")) {
             if (source == null || source.Length != PayloadInfo.Length) throw new IOException("安装资源不完整，请重新下载。");
-            using (var output = new FileStream(payload, FileMode.CreateNew, FileAccess.Write, FileShare.None)) {
+            using (SHA256 hash = SHA256.Create())
+            using (var output = new FileStream(payload, FileMode.CreateNew, FileAccess.Write, FileShare.None, 1024 * 1024, FileOptions.SequentialScan)) {
               byte[] buffer = new byte[1024 * 1024]; int count; long written = 0;
+              var clock = Stopwatch.StartNew(); long lastReport = -100;
               while ((count = source.Read(buffer, 0, buffer.Length)) > 0) {
-                cancellation.ThrowIfCancellationRequested(); output.Write(buffer, 0, count); written += count;
-                if (progress != null) progress.Report(new InstallProgress("prepare", (double)written / source.Length));
+                cancellation.ThrowIfCancellationRequested();
+                hash.TransformBlock(buffer, 0, count, buffer, 0);
+                output.Write(buffer, 0, count); written += count;
+                if (progress != null && (clock.ElapsedMilliseconds - lastReport >= 100 || written == source.Length)) {
+                  progress.Report(new InstallProgress("prepare", (double)written / source.Length));
+                  lastReport = clock.ElapsedMilliseconds;
+                }
               }
+              hash.TransformFinalBlock(new byte[0], 0, 0);
+              if (written != PayloadInfo.Length || BitConverter.ToString(hash.Hash).Replace("-", "").ToLowerInvariant() != PayloadInfo.Sha256)
+                throw new IOException("安装包校验失败，请重新下载。");
             }
           }
-          using (Stream check = File.OpenRead(payload)) if (Hash(check) != PayloadInfo.Sha256) throw new IOException("安装包校验失败，请重新下载。");
           cancellation.ThrowIfCancellationRequested();
           if (progress != null) progress.Report(new InstallProgress("install", 0));
           string arguments = "/S" + (options.Update ? " /UPDATE" : "") + (options.NoNativeShortcuts || !options.Shortcut ? " /NS" : "") + (options.Launch ? " /R" : "") + " /D=" + directory;
@@ -125,6 +135,7 @@ namespace Ayaki.Installer {
             process.WaitForExit();
             if (process.ExitCode != 0) return process.ExitCode;
           }
+          if (progress != null) progress.Report(new InstallProgress("verify", 0));
           string app = Path.Combine(directory, "ai-cg-studio-desktop.exe");
           if (!File.Exists(app) || FileVersionInfo.GetVersionInfo(app).ProductVersion != PayloadInfo.Version) throw new IOException("安装结果未能确认，请重试或检查安装位置。");
           return 0;

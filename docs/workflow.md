@@ -445,7 +445,7 @@ skip-build、bundle-only、manual、complete-manual 均要求匹配回执；同�
 
 控制室首次配置由 `runtime-rs/src/control/setup-models.json` 统一驱动模型、角色 LoRA、聊天权重与受管运行包。桌面选择数据目录后重启；一次确认组合即可顺序下载、校验、准备环境与启动。ComfyUI 的受管 Portable 发布在 AI 工作区 `.runtimes/comfy/`，模型继续放 `ComfyUI/models/`；llama.cpp 在 `Chat/runtime/`、GGUF 在 `Chat/models/`。部分下载在同目录保留并续传；原模型不被异内容替换。
 
-`prepare-ai-environment.ps1` 是本机产品准备器，由 Rust 限定环境 ID、验证运行包后调用；没有新增通用命令权限或维护 CLI。当前选包支持 Windows x64 NVIDIA，Vulkan 为聊天进阶候选；驱动／系统许可与重启由用户完成。应用内文件准备完成不证明模型或设备验收。
+`prepare-ai-environment.ps1` 是本机产品准备器，由 Rust 限定环境 ID、验证运行包后调用；没有新增通用命令权限或维护 CLI。Windows x64 绘图提供 NVIDIA 包及实验性官方 AMD Portable v0.39.0 包（固定大小与 SHA-256）；Radeon 880M/890M 首装推荐 AMD，安装前确认 ROCm 可识别设备，启动采用分块注意力与低显存模式，避开 880M 上会停住的上游 AOTriton flash 能力探测。核显共享内存不按 WMI 专用显存大小判断；AMD 的模型出图、Tea 加速与性能仍需本机验收，原生运行库继续仅支持 NVIDIA。AMD 本地聊天首装选择现有 Vulkan 路线；驱动／系统许可与重启由用户完成。文件准备完成不证明模型或设备验收。
 
 源码已退出 SD 新生成与 WebUI 受管启动；旧任务查询、结果收集、取消、作品与原配方继续保留。没有原引擎的旧作品不推断为新模型的可复现配方。上述自动准备能力已进入当前发行，见 [1.9.2](releases/v1.9.2.md)，后续源码改动仍需对应构建与安装；公开 LoRA 附件独立有效。
 

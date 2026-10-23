@@ -12,13 +12,21 @@ import { modelPreparationState, drawingSetupReadiness } from '../utils/localSetu
 import { useChatStorage } from './chat/useChatStorage'
 import { settingsRepository, DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING } from '../storage/settingsRepository'
 
+function suggestedComfy(snapshot: LocalSetupResponse): SetupDraft['environment'] {
+  if (snapshot.comfy.installation !== 'missing') return ''
+  if (snapshot.hardware.devices.some(device => /Radeon.*(?:880M|890M)/i.test(device.name))) return 'comfy-amd'
+  return snapshot.hardware.devices.some(device => /nvidia/i.test(device.name)) ? 'comfy-nvidia' : ''
+}
+const suggestedChat = (snapshot: LocalSetupResponse): SetupDraft['llamaEnvironment'] =>
+  snapshot.hardware.devices.some(device => /Radeon/i.test(device.name)) ? 'llama-vulkan' : 'llama-cuda'
+
 export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, blocked: Ref<boolean>, onResult:(result:LocalSetupDownloadResult)=>void, refresh:()=>void, statusConfirmed:Ref<boolean>, onConfigured:()=>void) {
   const draft=readSetupDraft(snapshot.value.workspace.path)
   const savedModel=draft&&snapshot.value.models.some(model=>model.id===draft.modelId&&model.id.startsWith('anima-')&&model.preparation)?draft.modelId:undefined
   const modelId=ref(savedModel??snapshot.value.recommendedModel??snapshot.value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'),chatId=ref(draft&&snapshot.value.models.some(model=>model.id===draft.chatId&&model.kind==='chat')?draft.chatId:''), drawing=ref(draft?.drawing??true), loras=ref(draft?.loras??true), reviewed=ref(false)
   const installed=snapshot.value.comfy.managedEnvironment
   // Initialize from verified installation evidence once; later refreshes must preserve the user's choice.
-  const environment=ref(installed?.state==='verified'?installed.environment:draft?.environment??(snapshot.value.comfy.installation==='missing'?'comfy-nvidia':'')),llamaEnvironment=ref(draft?.llamaEnvironment??'llama-cuda')
+  const environment=ref(installed?.state==='verified'?installed.environment:draft?.environment??suggestedComfy(snapshot.value)),llamaEnvironment=ref(draft?.llamaEnvironment??suggestedChat(snapshot.value))
   const recoveryPending=ref(!!draft?.operation)
   const busy=ref(!!draft?.operation),message=ref(''),error=ref(''),completed=ref(false)
   const engineRestartRequired=ref(false)
@@ -56,8 +64,8 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     modelId.value=saved&&value.models.some(model=>model.id===saved.modelId&&model.id.startsWith('anima-')&&model.preparation)?saved.modelId:value.recommendedModel??value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'
     chatId.value=saved&&value.models.some(model=>model.id===saved.chatId&&model.kind==='chat')?saved.chatId:''
     drawing.value=saved?.drawing??true;loras.value=saved?.loras??true
-    environment.value=receipt?.state==='verified'?receipt.environment:saved?.environment??(value.comfy.installation==='missing'?'comfy-nvidia':'')
-    llamaEnvironment.value=saved?.llamaEnvironment??'llama-cuda';restoringDraft=false
+    environment.value=receipt?.state==='verified'?receipt.environment:saved?.environment??suggestedComfy(value)
+    llamaEnvironment.value=saved?.llamaEnvironment??suggestedChat(value);restoringDraft=false
   },{flush:'sync'})
   const needsComfyPreparation=computed(()=>!externalEnvironment.value&&(rebuildComfy.value||!hasComfy.value))
   const serviceMustStop=computed(()=>drawing.value&&needsComfyPreparation.value&&snapshot.value.comfy.connection==='online')

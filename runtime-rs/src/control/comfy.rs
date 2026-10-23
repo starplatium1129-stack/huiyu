@@ -234,6 +234,13 @@ impl ControlService {
             .stdin(Stdio::null())
             .stdout(Stdio::from(output.try_clone()?))
             .stderr(Stdio::from(output));
+        if super::setup_environment::managed_comfy_environment(&root)["environment"] == "comfy-amd" {
+            // Split attention bypasses the upstream AOTriton flash capability
+            // probe, which stalls startup on the accepted 880M/ROCm 7.2.1 host.
+            // Keep model offload conservative for shared-memory APUs.
+            command.args(["--use-split-cross-attention", "--lowvram"]);
+            self.log("AMD 实验性绘图环境：分块注意力 / 低显存模式，真实出图与速度需在本机确认");
+        }
         if cancel.is_cancelled() {
             return Err(ApiError::new(499, "CANCELLED", "启动已取消"));
         }

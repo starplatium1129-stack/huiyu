@@ -41,6 +41,11 @@ impl ControlService {
                 "runtime-kjnodes",
                 "runtime-anima-teacache",
             ],
+            "comfy-amd" => vec![
+                "runtime-comfy-amd",
+                "runtime-kjnodes",
+                "runtime-anima-teacache",
+            ],
             _ => return Err(ApiError::invalid("未知受管环境")),
         };
         let permit = self.setup_permit()?;
@@ -358,7 +363,7 @@ pub(super) fn managed_comfy_environment(root: &std::path::Path) -> Value {
     let Some(receipt) = receipt.filter(|value| value["schemaVersion"] == 1) else {
         return unknown();
     };
-    let Some(environment @ ("comfy-nvidia" | "comfy-cu126")) = receipt["environment"].as_str()
+    let Some(environment @ ("comfy-nvidia" | "comfy-cu126" | "comfy-amd")) = receipt["environment"].as_str()
     else {
         return unknown();
     };

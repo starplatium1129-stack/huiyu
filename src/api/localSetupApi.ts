@@ -24,7 +24,7 @@ const preparation = (value: unknown) => value === null || (object(value)
 const strings = (value: unknown): value is string[] => Array.isArray(value) && value.every(item => typeof item === 'string')
 
 const managedEnvironment = (value: unknown) => value === undefined || (object(value)
-  && (value.state === 'verified' ? value.environment === 'comfy-nvidia' || value.environment === 'comfy-cu126'
+  && (value.state === 'verified' ? value.environment === 'comfy-nvidia' || value.environment === 'comfy-cu126' || value.environment === 'comfy-amd'
     : (value.state === 'unknown' || value.state === 'mismatch') && value.environment === null))
 
 function validSetup(value: ApiResponseObject): boolean {

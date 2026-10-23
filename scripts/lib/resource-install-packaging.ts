@@ -32,6 +32,10 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: { r
   }
   walk(source);
   const optional = [];
+  const pngCache = path.join(root, 'runtime/desktop-png-cache');
+  noLinks(fs, pngCache, { missing: true });
+  fs.mkdirSync(pngCache, { recursive: true });
+  noLinks(fs, pngCache);
   let sourceBytes = 0;
   let baseBytes = 0;
   for (const entry of entries) {
@@ -57,6 +61,31 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: { r
         if (!check.width || !check.height || check.format !== meta.format) throw new Error('Preview readback failed');
         optional.push({ path: 'assets/' + entry.rel, bytes: original.length, sha256: digest(original),
           baseBytes: staged.length, baseSha256: digest(staged), width: check.width, height: check.height });
+      }
+    }
+    // Re-encode large static portraits losslessly. Keep original dimensions,
+    // pixels, format and URLs; cache by input bytes to avoid repeat build work.
+    if (portrait && /\.png$/i.test(entry.rel) && staged.length > 256 * 1024) {
+      const cache = child(pngCache, digest(staged) + '-png9-v1.png');
+      let packed: Buffer | null = null;
+      if (fs.existsSync(cache) && fs.existsSync(cache + '.sha256')) {
+        const bytes = readBytes(fs, cache);
+        if (digest(bytes) === readBytes(fs, cache + '.sha256').toString('utf8')) packed = bytes;
+      }
+      if (!packed) {
+        const input = sharp(staged, { limitInputPixels: 100_000_000 });
+        const metadata = await input.metadata();
+        if ((!metadata.pages || metadata.pages === 1) && metadata.depth === 'uchar' && metadata.space === 'srgb' && !metadata.icc) {
+          packed = await input.keepMetadata().png({ compressionLevel: 9, effort: 10 }).toBuffer();
+          writeAtomic(fs, cache, packed);
+          writeAtomic(fs, cache + '.sha256', Buffer.from(digest(packed)));
+        }
+      }
+      if (packed && packed.length < staged.length) {
+        staged = packed;
+        writeAtomic(fs, targetFile, staged);
+        const layer = optional.find(item => item.path === 'assets/' + entry.rel);
+        if (layer) { layer.baseBytes = staged.length; layer.baseSha256 = digest(staged); }
       }
     }
     sourceBytes += original.length; baseBytes += staged.length;

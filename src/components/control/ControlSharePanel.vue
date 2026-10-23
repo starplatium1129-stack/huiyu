@@ -18,7 +18,8 @@
         </div>
 
         <button
-          class="btn btn-primary share-start"
+          class="btn share-start"
+          :class="tunnelActive ? 'btn-danger' : 'btn-primary'"
           type="button"
           :disabled="actionBusy || opBusy || (!tunnelActive && (savingConfig || !tunnelEnabled || !statusUsable))"
           @click="tunnelActive ? doStop() : doStart()"

@@ -42,7 +42,7 @@
 .control-page .control-start-steps li > span { display:grid; place-items:center; width:32px; height:32px; flex:none; border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-elevated); font:500 var(--fs-label)/1 var(--font-mono); }
 .control-page .control-start-steps strong { display:block; font-size:var(--fs-label); font-weight:600; }
 .control-page .control-start-steps small { display:block; margin-top:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
-.control-page .control-health { display:flex; align-items:center; gap:var(--s-4); padding:var(--s-4) var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-lg); }
+.control-page .control-health { display:flex; align-items:center; gap:var(--s-4); padding:var(--s-4) var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
 .control-page .control-health > div { flex:1; min-width:0; }
 .control-page .control-health-mark { color:var(--text-secondary); }
 .control-page .control-health h2 { margin:0; font-size:var(--fs-label); font-weight:600; }
@@ -88,7 +88,7 @@
 .control-page .field-label { display:block; margin:var(--s-4) 0 var(--s-2); color:var(--text-primary); font-size:var(--fs-label); }
 .control-page .field-help { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
 .control-page .voice-config { margin-top:var(--s-5); border-top:1px solid var(--border-soft); }
-.control-page .voice-count { margin-left:auto; color:var(--text-secondary); font-size:var(--fs-label-xs); }
+.control-page .voice-count { margin-left:auto; margin-right:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:400; }
 .control-page .voice-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-5); }
 .control-page .voice-card-title { font-weight:600; font-size:var(--fs-label); }
 .control-page .voice-card label { color:var(--text-secondary); font-size:var(--fs-label); }
@@ -99,7 +99,7 @@
 .control-page .tunnel-toggle-text { display:block; font-size:var(--fs-label); }
 .control-page .tunnel-toggle-hint { display:block; margin-top:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .control-page .access-grid { grid-template-columns:repeat(2,minmax(0,1fr)); margin-block:var(--s-5); }
-.control-page .access-card { min-width:0; padding:var(--s-4); background:var(--bg-base); border-radius:var(--r-md); }
+.control-page .access-card { min-width:0; padding:var(--s-4); background:var(--bg-base); border:1px solid var(--border-soft); border-radius:var(--r-md); }
 .control-page .access-title { font-size:var(--fs-label); font-weight:600; }
 .control-page .link-value { margin-block:var(--s-3); font:400 var(--fs-label)/var(--lh-body) var(--font-mono); color:var(--text-secondary); overflow-wrap:anywhere; }
 .control-page .link-value.waiting { font-family:var(--font-sans); }
@@ -115,24 +115,27 @@
 .control-page .operation-panel.cancelled { border-left-color:var(--border-strong); }
 .control-page .operation-head { display:flex; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-3); }
 .control-page .operation-controls { display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; }
+.control-page .op-state .studio-orbit-spinner { width:18px; height:18px; }
 .control-page .operation-detail { margin-block:var(--s-3); color:var(--text-secondary); font-size:var(--fs-label); }
-.control-page .operation-detail summary { cursor:pointer; }
+.control-page .operation-current-stage { display:flex; align-items:center; gap:var(--s-2); font-weight:600; color:var(--text-primary); }
+.control-page .operation-work-count { font-weight:400; font-variant-numeric:tabular-nums; color:var(--text-secondary); }
 .control-page .op-state, .control-page .operation-msg { color:var(--text-secondary); font-size:var(--fs-label); }
 .control-page .operation-stages { display:flex; flex-wrap:wrap; gap:var(--s-2); }
 .control-page .operation-panel > .transfer-progress { margin-block:var(--s-3); }
 .control-page .op-stage { padding:var(--s-1) var(--s-2); background:var(--bg-base); border-radius:var(--r-pill); font-size:var(--fs-label-xs); color:var(--text-secondary); }
 .control-page .op-stage.done { color:var(--success-text); }
-.control-page .op-stage.current { color:var(--accent); }
+.control-page .op-stage.current { color:var(--accent); font-weight:600; box-shadow:0 0 0 1px var(--accent-soft); }
 .control-page .log-summary-title { display:flex; align-items:center; gap:var(--s-2); font-size:var(--fs-title-xs); }
 .control-page .log-toolbar { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:var(--s-2); margin-block:var(--s-4); }
-.control-page .log-box { min-height:200px; max-height:60dvh; overflow:auto; padding:var(--s-4); background:var(--bg-base); border-radius:var(--r-md); font:400 var(--fs-label-xs)/var(--lh-loose) var(--font-mono); color:var(--text-secondary); overflow-wrap:anywhere; }
+.control-page .log-box { min-height:200px; max-height:60dvh; overflow:auto; padding:var(--s-4); background:var(--bg-base); border:1px solid var(--border-soft); border-radius:var(--r-md); font:400 var(--fs-label-xs)/var(--lh-loose) var(--font-mono); color:var(--text-secondary); overflow-wrap:anywhere; }
 .control-page .log-box .err { color:var(--danger-text); }
 .control-page .log-box .info { color:var(--info-text); }
 .control-page .log-box .time, .control-page .log-empty { color:var(--text-muted); }
-.control-page :is(.control-rail-link,.control-home-link,.control-feature,.control-bottom-links a,#control-section-heading,.log-box):focus-visible { outline:2px solid var(--text-secondary); outline-offset:3px; }
+.control-page :is(.control-rail-link,.control-home-link,.control-feature,.control-bottom-links a,.mode-card,#control-section-heading,.log-box):focus-visible { outline:2px solid var(--text-secondary); outline-offset:3px; }
 @media (hover:hover) and (pointer:fine) {
   .control-page :is(.control-rail-link:not([aria-current]),.control-home-link):hover { background:var(--bg-surface); color:var(--text-primary); }
   .control-page .control-feature:hover { border-color:var(--border-strong); }
+  .control-page .mode-card:hover:not(:disabled) { border-color:var(--border-strong); background:var(--bg-elevated); }
   .control-page .control-bottom-links a:hover { color:var(--text-primary); }
 }
 /* The 1000px navigation switch leaves enough room for the desktop reading column. */

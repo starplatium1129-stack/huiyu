@@ -32,7 +32,7 @@ export interface LocalSetupResponse {
   comfy: {
     path: string
     installation: LocalSetupFileState
-    managedEnvironment?: { state: 'verified'; environment: 'comfy-nvidia' | 'comfy-cu126' }
+    managedEnvironment?: { state: 'verified'; environment: 'comfy-nvidia' | 'comfy-cu126' | 'comfy-amd' }
       | { state: 'unknown' | 'mismatch'; environment: null }
     layout: 'venv' | 'external-venv' | 'portable' | 'unrecognized'
     host: string

@@ -8,7 +8,7 @@ export interface SetupDraft {
   chatId: string
   drawing: boolean
   loras: boolean
-  environment: '' | 'comfy-nvidia' | 'comfy-cu126'
+  environment: '' | 'comfy-nvidia' | 'comfy-cu126' | 'comfy-amd'
   llamaEnvironment: 'llama-cuda' | 'llama-vulkan'
   operation?: { id: string; kind: SetupOperationKind }
 }
@@ -23,7 +23,7 @@ export const LOCAL_SETUP_DRAFT_SETTING: SettingDefinition<SetupDraft> = {
     const draft = value as Record<string, unknown>
     if (typeof draft.workspace !== 'string' || typeof draft.modelId !== 'string' || typeof draft.chatId !== 'string'
       || typeof draft.drawing !== 'boolean' || typeof draft.loras !== 'boolean'
-      || !['', 'comfy-nvidia', 'comfy-cu126'].includes(String(draft.environment))
+      || !['', 'comfy-nvidia', 'comfy-cu126', 'comfy-amd'].includes(String(draft.environment))
       || !['llama-cuda', 'llama-vulkan'].includes(String(draft.llamaEnvironment))) return null
     const operation = draft.operation as Record<string, unknown> | undefined
     if (operation !== undefined && (!operation || typeof operation.id !== 'string' || !operation.id || !setupOperationKind(operation.kind))) return null

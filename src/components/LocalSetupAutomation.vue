@@ -53,9 +53,10 @@
             <div class="setup-buttons"><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">重新检查连接</button><button v-if="canChooseWorkspace" class="btn btn-quiet btn-sm" type="button" @click="emit('workspace')">换新文件夹自动安装</button></div>
           </div>
           <div v-else-if="automation.drawing.value && (snapshot.comfy.installation !== 'present' || automation.rebuildComfy.value)" class="setup-runtime">
-            <strong>Windows · NVIDIA 显卡</strong>
-            <small>AMD / Intel 暂不支持自动安装</small>
-            <details><StudioDisclosureSummary>显卡运行包选项</StudioDisclosureSummary><div data-disclosure-content><StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图运行环境" placeholder="选择适合显卡的运行包" :options="[{ value: 'comfy-nvidia', label: 'NVIDIA 显卡 · CUDA 13.0（默认）' }, { value: 'comfy-cu126', label: '较旧 NVIDIA 显卡 · CUDA 12.6' }]" /></div></details>
+            <strong>Windows · 绘图运行环境</strong>
+            <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图运行环境" placeholder="选择适合显卡的运行包" :options="[{ value: 'comfy-nvidia', label: 'NVIDIA 显卡 · CUDA 13.0' }, { value: 'comfy-cu126', label: '较旧 NVIDIA 显卡 · CUDA 12.6' }, { value: 'comfy-amd', label: 'AMD 显卡 / Radeon 880M 核显 · 实验性' }]" />
+            <small v-if="automation.environment.value === 'comfy-amd'">使用官方 AMD 运行包；需要兼容的 AMD 驱动。核显与系统共享内存，速度、画幅及 Tea 加速需在本机确认。原生生图仍需 NVIDIA。</small>
+            <small v-else>按显卡选择运行包；Intel 暂未接入自动安装。</small>
           </div>
           <div v-if="automation.chatId.value && snapshot.chat?.runtimePresent" class="setup-existing" role="status">
             <ArchiveIcon name="info" /><strong>沿用已有聊天运行环境</strong>

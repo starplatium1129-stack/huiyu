@@ -212,6 +212,11 @@ impl ControlService {
             }
             if devices.is_empty() {
                 devices = local["devices"].as_array().cloned().unwrap_or_default();
+                if devices.is_empty() {
+                    devices = local["otherDevices"].as_array().into_iter().flatten()
+                        .map(|device| json!({"name":device["name"],"type":"display",
+                            "vramBytes":null,"driverVersion":device["driverVersion"]})).collect();
+                }
             }
         }
         let mut value = json!({"ok":true,"checkedAt":now(),"recommendedModel":recommended,

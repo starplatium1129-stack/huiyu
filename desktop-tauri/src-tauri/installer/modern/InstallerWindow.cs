@@ -30,6 +30,8 @@ namespace Ayaki.Installer {
     private readonly ScaleTransform scale;
     private readonly TranslateTransform sweep;
     private readonly System.Windows.Shapes.Rectangle sweepBar;
+    private readonly Stopwatch elapsed = new Stopwatch();
+    private readonly System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
 
     public InstallerWindow(InstallOptions settings) {
       options = settings; installed = InstallEngine.Existing();
@@ -39,7 +41,7 @@ namespace Ayaki.Installer {
       space = Get<TextBlock>("SpaceText"); action = Get<TextBlock>("MainAction"); progressHost = Get<Grid>("ProgressHost");
       scale = Get<ScaleTransform>("ProgressScale"); sweep = Get<TranslateTransform>("ProgressTranslate");
       sweepBar = Get<System.Windows.Shapes.Rectangle>("ProgressSweep");
-      using (Stream art = Assembly.GetExecutingAssembly().GetManifestResourceStream("Keyart.png")) {
+      using (Stream art = Assembly.GetExecutingAssembly().GetManifestResourceStream("Mascot.png")) {
         var image = new BitmapImage(); image.BeginInit(); image.CacheOption = BitmapCacheOption.OnLoad; image.StreamSource = art; image.EndInit(); image.Freeze(); Get<Image>("HeroImage").Source = image;
       }
       directory.Text = String.IsNullOrEmpty(options.Directory) ? installed.Directory : options.Directory;
@@ -56,10 +58,10 @@ namespace Ayaki.Installer {
         directory.IsReadOnly = true;
         browse.Visibility = Visibility.Collapsed;
         Get<TextBlock>("HeroTitle").Text = "升级绘遇";
-        Get<TextBlock>("HeroSubtitle").Text = "复用已安装的基础素材与运行环境，保留个人内容。";
+        Get<TextBlock>("HeroSubtitle").Text = "沿用已有素材，让画室保持最新。";
         SetAction("升级绘遇");
       } else {
-        Get<TextBlock>("HeroSubtitle").Text = "完整安装包包含基础素材与运行环境；样张图片可另行导入。";
+        Get<TextBlock>("HeroSubtitle").Text = "一次安装，打开你的私人画室。生成模型在应用内按需准备。";
       }
       if (options.Preview) Get<TextBlock>("Footnote").Text = "界面预览 · 不会安装或修改现有软件";
       ApplyTheme(options.Theme == "light");
@@ -73,15 +75,22 @@ namespace Ayaki.Installer {
       Get<Button>("ThemeButton").Click += delegate { ApplyTheme(!light); };
       Get<Button>("MinimizeButton").Click += delegate { View.WindowState = WindowState.Minimized; };
       Get<Button>("CloseButton").Click += delegate { View.Close(); };
+      Get<Button>("CancelButton").Click += delegate {
+        if (cancellation == null || installing) return;
+        cancellation.Cancel(); Get<Button>("CancelButton").IsEnabled = false; status.Text = "正在取消准备…";
+      };
+      timer.Interval = TimeSpan.FromSeconds(1);
+      timer.Tick += delegate { Get<TextBlock>("ElapsedText").Text = "已用时 " + elapsed.Elapsed.ToString(@"mm\:ss"); };
       View.Closing += Closing;
+      View.Closed += delegate { timer.Stop(); sweep.BeginAnimation(TranslateTransform.XProperty, null); };
       View.Loaded += async delegate {
         if (options.Passive && !options.Preview) await BeginInstall();
         else if (options.Preview) SetPreview(options.State);
       };
       View.MinWidth = Math.Min(720, SystemParameters.WorkArea.Width - 24);
       View.MinHeight = Math.Min(460, SystemParameters.WorkArea.Height - 24);
-      View.Width = Math.Min(1040, SystemParameters.WorkArea.Width - 24);
-      View.Height = Math.Min(650, SystemParameters.WorkArea.Height - 24);
+      View.Width = Math.Min(900, SystemParameters.WorkArea.Width - 24);
+      View.Height = Math.Min(570, SystemParameters.WorkArea.Height - 24);
     }
     private T Get<T>(string name) where T : class { return (T)View.FindName(name); }
     private static Brush Color(string hex) { var brush = (SolidColorBrush)new BrushConverter().ConvertFromString(hex); brush.Freeze(); return brush; }
@@ -90,7 +99,7 @@ namespace Ayaki.Installer {
       string[] names = { "Surface", "Card", "Line", "Text", "Muted", "Disabled", "DisabledText", "Error", "Success" };
       string[] colors = value
         ? new [] { "#FFF8F4", "#FFFFFF", "#B7BEC7", "#211C30", "#536173", "#E5E7EA", "#526173", "#A32642", "#236A50" }
-        : new [] { "#211C30", "#272135", "#334354", "#FFF8F4", "#ADB9C9", "#27374A", "#B0BECE", "#FFBBC9", "#A8D8C6" };
+        : new [] { "#151C24", "#1E2935", "#334354", "#EDF3FA", "#BDCBD8", "#27374A", "#A6B3C0", "#FFBBC9", "#A8D8C6" };
       for (int i = 0; i < names.Length; i++) View.Resources[names[i]] = Color(colors[i]);
       View.Resources["ProgressColor"] = Color(value ? "#92365F" : "#F2A8BE");
       View.Resources["ControlLine"] = Color(value ? "#7B899A" : "#657D96");
@@ -115,18 +124,42 @@ namespace Ayaki.Installer {
       message.Text = text; message.Visibility = Visibility.Visible;
     }
     private void Progress(InstallProgress value) {
+      Get<TextBlock>("ExistingText").Visibility = Visibility.Collapsed;
+      Get<StackPanel>("ConfigurationPanel").Visibility = Visibility.Collapsed;
+      Get<StackPanel>("StagePanel").Visibility = Visibility.Visible;
+      Get<TextBlock>("HeroTitle").Text = "正在准备你的画室";
+      Get<TextBlock>("HeroSubtitle").Text = "作品与个人设置会保留，完成后即可进入绘遇。";
       progressHost.Visibility = Visibility.Visible;
-      if (value.Stage == "prepare") {
-        Get<TextBlock>("StepText").Text = "02  安装 / 正在准备资源";
-        status.Text = "正在准备安装资源  " + Math.Round(value.Fraction * 100) + "%";
+      int active = value.Stage == "verify" ? 2 : value.Stage == "install" ? 1 : 0;
+      string[] stages = { "PrepareStage", "InstallStage", "VerifyStage" };
+      string[] labels = { "准备并校验安装资源", "安装应用与运行环境", "确认安装结果" };
+      for (int i = 0; i < stages.Length; i++) {
+        TextBlock item = Get<TextBlock>(stages[i]);
+        item.Text = (i < active ? "已完成   " : (i + 1) + "   ") + labels[i];
+        item.FontWeight = i == active ? FontWeights.SemiBold : FontWeights.Normal;
+        item.SetResourceReference(TextBlock.ForegroundProperty, i < active ? "Success" : i == active ? "Text" : "Muted");
+      }
+      Get<TextBlock>("StepText").Text = "安装中";
+      Get<Button>("CancelButton").Visibility = active == 0 ? Visibility.Visible : Visibility.Collapsed;
+      if (value.Stage == "prerequisites") {
+        status.Text = "正在核对已有素材";
+        space.Text = "检查完成后，将自动开始准备升级资源。";
+        Indeterminate();
+      } else if (value.Stage == "prepare") {
+        sweep.BeginAnimation(TranslateTransform.XProperty, null); sweepBar.Visibility = Visibility.Collapsed;
+        status.Text = "准备并校验资源  " + Math.Round(value.Fraction * 100) + "%";
+        space.Text = InstallEngine.Size((long)(PayloadInfo.Length * value.Fraction)) + " / " + InstallEngine.Size(PayloadInfo.Length);
         scale.ScaleX = value.Fraction;
       } else {
-        Get<TextBlock>("StepText").Text = "02  安装 / 正在写入应用";
-        installing = true; status.Text = "正在安装应用，请稍候"; space.Text = "正在写入应用与运行环境，个人创作记录将被保留。";
-        scale.ScaleX = 0; sweepBar.Visibility = Visibility.Visible;
-        if (SystemParameters.ClientAreaAnimation) sweep.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(-220, 1100, TimeSpan.FromSeconds(1.8)) { RepeatBehavior = RepeatBehavior.Forever });
-        else { sweepBar.Visibility = Visibility.Collapsed; scale.ScaleX = 1; }
+        installing = true; status.Text = active == 2 ? "正在确认安装结果" : "正在安装应用";
+        space.Text = active == 2 ? "核对应用文件与版本。" : "请在 Windows 提示时允许安装。安装期间可以最小化窗口。";
+        Indeterminate();
       }
+    }
+    private void Indeterminate() {
+      scale.ScaleX = 0; sweepBar.Visibility = Visibility.Visible;
+      if (SystemParameters.ClientAreaAnimation) sweep.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(-180, progressHost.ActualWidth + 180, TimeSpan.FromSeconds(1.8)) { RepeatBehavior = RepeatBehavior.Forever });
+      else sweepBar.Visibility = Visibility.Collapsed;
     }
     private async Task BeginInstall() {
       if (busy) return;
@@ -137,6 +170,10 @@ namespace Ayaki.Installer {
       closeRequested = false;
       busy = true; main.IsEnabled = false; browse.IsEnabled = false; directory.IsReadOnly = true; shortcut.IsEnabled = false;
       SetAction("正在安装…"); message.Visibility = Visibility.Collapsed;
+      status.SetResourceReference(TextBlock.ForegroundProperty, "Text");
+      elapsed.Restart(); timer.Start();
+      Get<TextBlock>("ElapsedText").Text = "已用时 00:00"; Get<TextBlock>("ElapsedText").Visibility = Visibility.Visible;
+      Get<Button>("CancelButton").IsEnabled = true;
       cancellation = new CancellationTokenSource();
       try {
         int code = await InstallEngine.Run(options, new System.Progress<InstallProgress>(Progress), cancellation.Token);
@@ -153,23 +190,36 @@ namespace Ayaki.Installer {
     }
     private void SetComplete() {
       busy = false; installing = false; complete = true; ExitCode = 0;
+      timer.Stop(); elapsed.Stop();
+      Get<StackPanel>("ConfigurationPanel").Visibility = Visibility.Collapsed;
+      Get<StackPanel>("StagePanel").Visibility = Visibility.Collapsed;
+      Get<Button>("CancelButton").Visibility = Visibility.Collapsed;
+      progressHost.Visibility = Visibility.Visible;
       sweep.BeginAnimation(TranslateTransform.XProperty, null); sweepBar.Visibility = Visibility.Collapsed; scale.ScaleX = 1;
       Get<TextBlock>("ExistingText").Text = "已安装 " + PayloadInfo.Version;
-      Get<TextBlock>("StepText").Text = "03  完成 / 已安装绘遇";
+      Get<TextBlock>("ExistingText").Visibility = Visibility.Visible;
+      Get<TextBlock>("StepText").Text = "一切就绪";
       status.Text = "安装完成"; status.SetResourceReference(TextBlock.ForegroundProperty, "Success");
       Get<TextBlock>("HeroTitle").Text = "绘遇已就绪";
-      Get<TextBlock>("HeroSubtitle").Text = "个人内容已保留。资源安装助手随程序交付，可安装已下载的资源 ZIP。";
+      Get<TextBlock>("HeroSubtitle").Text = "打开画室，继续你的故事。首次使用可在应用内准备绘图和聊天环境。";
       space.Text = "已安装至 " + directory.Text;
-      if (!options.Preview) Get<TextBlock>("Footnote").Text = "也可在安装位置的 gateway\\tools 文件夹中双击 Install-OfflineResources.cmd";
+      if (!options.Preview) Get<TextBlock>("Footnote").Text = "作品与个人设置已保留";
       SetAction("进入绘遇"); main.IsEnabled = true;
       directory.IsReadOnly = true; browse.IsEnabled = false; shortcut.IsEnabled = false;
     }
     private void Reset(string error) {
       busy = false; installing = false;
+      timer.Stop(); elapsed.Stop();
+      Get<StackPanel>("ConfigurationPanel").Visibility = Visibility.Visible;
+      Get<TextBlock>("ExistingText").Visibility = Visibility.Visible;
+      Get<StackPanel>("StagePanel").Visibility = Visibility.Collapsed;
+      Get<Button>("CancelButton").Visibility = Visibility.Collapsed;
       sweep.BeginAnimation(TranslateTransform.XProperty, null); sweepBar.Visibility = Visibility.Collapsed; progressHost.Visibility = Visibility.Collapsed;
       Get<TextBlock>("StepText").Text = "02  安装 / 需要处理";
+      Get<TextBlock>("HeroTitle").Text = "再试一次，即可继续";
+      Get<TextBlock>("HeroSubtitle").Text = "处理下方提示后继续，安装位置与个人内容会保留。";
       status.Text = "安装尚未完成"; SetAction("重新尝试");
-      main.IsEnabled = true; browse.IsEnabled = true; directory.IsReadOnly = false; shortcut.IsEnabled = true;
+      main.IsEnabled = true; browse.IsEnabled = !PayloadInfo.UpgradeOnly; directory.IsReadOnly = PayloadInfo.UpgradeOnly; shortcut.IsEnabled = true;
       ShowMessage(error, true);
     }
     private void Launch() {
@@ -194,7 +244,7 @@ namespace Ayaki.Installer {
     public void Capture(string path, int dpi) {
       SetPreview(options.State);
       FrameworkElement content = (FrameworkElement)View.Content;
-      var size = new Size(1040, 650); content.Measure(size); content.Arrange(new Rect(size)); content.UpdateLayout();
+      var size = new Size(View.Width, View.Height); content.Measure(size); content.Arrange(new Rect(size)); content.UpdateLayout();
       var image = new RenderTargetBitmap((int)(size.Width * dpi / 96), (int)(size.Height * dpi / 96), dpi, dpi, PixelFormats.Pbgra32);
       image.Render(content);
       Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));

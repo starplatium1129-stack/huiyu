@@ -2,6 +2,9 @@ import type { LocalSetupResponse } from '../../types/local-setup'
 
 /** Product recommendations are candidates; total VRAM is not a measured runtime peak. */
 export function localChatRecommendation(hardware: LocalSetupResponse['hardware']) {
+  if (hardware.devices.some(device => /Radeon.*(?:880M|890M)/i.test(device.name)) && (hardware.ramBytes ?? 0) >= 24 * 1024 ** 3) {
+    return {modelId:'chat-qwen-4b',label:'核显轻量 · Qwen3.5 4B',note:'Vulkan 候选；核显共享系统内存，先使用较短上下文，绘图时释放聊天模型。'}
+  }
   const device = hardware.devices.filter(device=>device.type==='cuda').sort((a,b)=>(b.vramBytes??0)-(a.vramBytes??0))[0]
   const gib=(device?.vramBytes??0)/1024**3
   if (gib<6) return {modelId:'',label:'优先使用 API',note:'显存较少或设备尚未确认，填写服务商密钥即可聊天。'}

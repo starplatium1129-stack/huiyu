@@ -1,7 +1,7 @@
 ﻿[CmdletBinding()]
 param(
   [Parameter(Mandatory=$true)][string]$Workspace,
-  [ValidateSet('llama-cuda','llama-vulkan','comfy-nvidia','comfy-cu126')][string]$Environment,
+  [ValidateSet('llama-cuda','llama-vulkan','comfy-nvidia','comfy-cu126','comfy-amd')][string]$Environment,
   [Parameter(Mandatory=$true)][string]$Archive,
   [string]$CudaArchive='',
   [string]$KjArchive='',
@@ -127,6 +127,18 @@ try {
     Assert-InWorkspace $comfy
     Assert-InWorkspace $python
     if (-not (Test-Path -LiteralPath $python -PathType Leaf)) { throw 'ComfyUI Portable 目录布局无效' }
+    if ($Environment -eq 'comfy-amd') {
+      Write-EnvironmentProgress '正在确认 AMD ROCm 与显卡驱动'
+      $capability=& $python -I -B -c 'import json,torch; ready=torch.cuda.is_available(); print(json.dumps(dict(huiyuAmdDevice=True,hip=torch.version.hip,available=ready,name=torch.cuda.get_device_name(0) if ready else None)))'
+      if ($LASTEXITCODE -ne 0) { throw 'AMD 运行库无法加载，请核对官方 AMD 驱动要求后重试；旧环境已保留' }
+      # ROCm may write startup warnings to stdout before our device document.
+      # Select only the explicitly identified record, not the combined output.
+      $deviceLines=@($capability | Where-Object { $_ -match '^\{"huiyuAmdDevice": true,' })
+      if ($deviceLines.Count -ne 1) { throw 'AMD 运行库没有返回有效的设备信息；请查看驱动与依赖日志，旧环境已保留' }
+      $device=$deviceLines[0] | ConvertFrom-Json
+      if (-not $device.hip -or -not $device.available) { throw '未找到可用的 AMD ROCm 设备，请通过 AMD 官网更新兼容驱动后重试；不会回退到 CPU，旧环境已保留' }
+      Write-EnvironmentProgress ('已识别 AMD 设备：'+$device.name+'；真实模型出图仍需确认')
+    }
     # Only freshly extracted code is ever run or used to establish a baseline.
     Install-Node $KjArchive 'ComfyUI-KJNodes' $comfy $python
     Install-Node $TeaArchive 'ComfyUI-Anima-TeaCache' $comfy $python

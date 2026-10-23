@@ -257,6 +257,19 @@
       "licenseUrl": "https://github.com/Comfy-Org/ComfyUI/blob/v0.39.0/LICENSE"
     },
     {
+      "id": "runtime-comfy-amd",
+      "kind": "runtime",
+      "path": "ComfyUI_windows_portable_amd.7z",
+      "bytes": 1621312076,
+      "sha256": "19be1e3c8690c4f9eeefb0f2ee8f835a98e2fbf33cd9b80d0ca309f4c86d37c1",
+      "sourceUrl": "https://github.com/Comfy-Org/ComfyUI/releases/download/v0.39.0/ComfyUI_windows_portable_amd.7z",
+      "revision": "v0.39.0",
+      "label": "ComfyUI Portable AMD · 实验性",
+      "purpose": "AMD ROCm 绘图环境 · Radeon 880M 适配候选，需兼容驱动及实机验收",
+      "modelCardUrl": "https://github.com/Comfy-Org/ComfyUI/tree/v0.39.0#installing",
+      "licenseUrl": "https://github.com/Comfy-Org/ComfyUI/blob/v0.39.0/LICENSE"
+    },
+    {
       "id": "runtime-comfy-cu126",
       "kind": "runtime",
       "path": "ComfyUI_windows_portable_nvidia_cu126.7z",

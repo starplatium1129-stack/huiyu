@@ -63,7 +63,7 @@ namespace Ayaki.Installer { internal static class PayloadInfo {
   const references = ['System.dll', 'System.Core.dll', 'System.Xaml.dll', 'System.Windows.Forms.dll'].map((file: any) => path.join(framework, file));
   references.push(...['WindowsBase.dll', 'PresentationCore.dll', 'PresentationFramework.dll', 'UIAutomationTypes.dll'].map((file: any) => path.join(framework, 'WPF', file)));
   const args = ['/nologo', '/utf8output', '/codepage:65001', '/target:winexe', '/platform:x64', '/optimize+', `/out:${executable}`, `/win32manifest:${path.join(SOURCE, 'app.manifest')}`, `/win32icon:${path.join(BASE, '../icons/icon.ico')}`,
-    ...references.map((file: any) => `/reference:${file}`), `/resource:${xamlFile},Installer.xaml`, `/resource:${path.join(BASE, 'atelier-keyart.png')},Keyart.png`, metaFile,
+    ...references.map((file: any) => `/reference:${file}`), `/resource:${xamlFile},Installer.xaml`, `/resource:${path.join(BASE, 'atelier-chibi.png')},Mascot.png`, metaFile,
     ...['Program.cs', 'InstallEngine.cs', 'FolderPicker.cs', 'InstallerWindow.cs'].map((file: any) => path.join(SOURCE, file))];
   if (!preview) args.push(`/resource:${path.resolve(payload)},Payload.exe`);
   if (!preview && upgrade) args.push(`/resource:${path.resolve(upgradeVerifier)},UpgradeVerifier.exe`);

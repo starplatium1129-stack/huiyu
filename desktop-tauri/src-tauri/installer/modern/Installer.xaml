@@ -1,7 +1,7 @@
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
-        Title="绘遇 · 安装" Width="1040" Height="650" MinWidth="720" MinHeight="460"
+        Title="绘遇 · 安装" Width="900" Height="570" MinWidth="720" MinHeight="460"
         WindowStyle="None" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
         Background="#0D141E" FontFamily="Microsoft YaHei UI" FontSize="13"
         TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType">
@@ -29,7 +29,7 @@
       <Setter Property="BorderThickness" Value="1"/>
       <Setter Property="Padding" Value="16,8"/>
       <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button">
-        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5" RenderTransformOrigin=".5,.5">
+        <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10" RenderTransformOrigin=".5,.5">
           <Border.RenderTransform><ScaleTransform x:Name="PressScale"/></Border.RenderTransform>
           <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
         </Border>
@@ -62,18 +62,19 @@
   </Window.Resources>
   <Border x:Name="RootFrame" BorderBrush="{DynamicResource Line}" BorderThickness="1" Background="{DynamicResource Surface}" KeyboardNavigation.TabNavigation="Cycle">
     <Grid>
-      <Grid.ColumnDefinitions><ColumnDefinition Width="40*"/><ColumnDefinition Width="60*"/></Grid.ColumnDefinitions>
-      <Grid ClipToBounds="True">
-        <Image x:Name="HeroImage" Stretch="UniformToFill" HorizontalAlignment="Left" Width="880" Margin="-60,0,0,0"/>
-        <Border Background="#C914192D" VerticalAlignment="Bottom" Padding="30,24,30,30">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="32*"/><ColumnDefinition Width="68*"/></Grid.ColumnDefinitions>
+      <Grid ClipToBounds="True" Background="{DynamicResource Card}">
+        <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+        <Image x:Name="HeroImage" Grid.Row="1" Stretch="Uniform" Margin="18,8" AutomationProperties.Name="绘遇 Q 版创作助手"/>
+        <Border Grid.Row="2" Padding="24,14,20,28">
           <StackPanel>
-            <TextBlock Text="让想象成形，" Foreground="#FFF8F4" FontSize="25" FontWeight="SemiBold"/>
-            <TextBlock Text="让故事相遇。" Foreground="#FFF8F4" FontSize="25" FontWeight="SemiBold" Margin="0,6,0,16"/>
-            <TextBlock Text="角色陪伴 / 图像创作 / 剧情短片" Foreground="#E7D8E5" FontSize="11"/>
+            <TextBlock Text="让想象成形，" Foreground="{DynamicResource Text}" FontSize="22" FontWeight="SemiBold"/>
+            <TextBlock Text="让故事相遇。" Foreground="{DynamicResource Text}" FontSize="22" FontWeight="SemiBold" Margin="0,6,0,12"/>
+            <TextBlock Text="你的私人创作画室" Foreground="{DynamicResource Muted}" FontSize="12"/>
           </StackPanel>
         </Border>
-        <Border Background="#E614192D" VerticalAlignment="Top" Padding="30,22">
-          <StackPanel Orientation="Horizontal"><Path Data="@ICON_ATELIER@" Width="25" Height="25" Stretch="Uniform" Stroke="#F2A8BE" StrokeThickness="1.5" Margin="0,0,12,0"/><TextBlock Text="绘遇" Foreground="#FFF8F4" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="HUIYU" Foreground="#E7D8E5" FontSize="11" VerticalAlignment="Center" Margin="12,3,0,0"/></StackPanel>
+        <Border Grid.Row="0" Padding="24,22">
+          <StackPanel Orientation="Horizontal"><Path Data="@ICON_ATELIER@" Width="25" Height="25" Stretch="Uniform" Stroke="{DynamicResource ProgressColor}" StrokeThickness="1.5" Margin="0,0,12,0"/><TextBlock Text="绘遇" Foreground="{DynamicResource Text}" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="HUIYU" Foreground="{DynamicResource Muted}" FontSize="11" VerticalAlignment="Center" Margin="12,3,0,0"/></StackPanel>
         </Border>
       </Grid>
       <Grid Grid.Column="1">
@@ -85,37 +86,43 @@
         </StackPanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="34,12,34,12">
           <StackPanel>
-            <TextBlock x:Name="StepText" Text="01  安装位置    /    02  安装    /    03  完成" Foreground="{DynamicResource Muted}" FontSize="11" Margin="0,0,0,26"/>
-            <TextBlock x:Name="HeroTitle" Text="安装绘遇" FontSize="30" FontWeight="SemiBold" Foreground="{DynamicResource Text}" TextWrapping="Wrap"/>
+            <TextBlock x:Name="StepText" Text="开始你的创作" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,0,0,14"/>
+            <TextBlock x:Name="HeroTitle" Text="安装绘遇" FontSize="28" FontWeight="SemiBold" Foreground="{DynamicResource Text}" TextWrapping="Wrap"/>
             <TextBlock x:Name="HeroSubtitle" Text="为你的下一次创作，准备一个专属空间。" FontSize="13" Foreground="{DynamicResource Muted}" Margin="0,10,0,24" TextWrapping="Wrap" LineHeight="22"/>
             <DockPanel Margin="0,0,0,10"><TextBlock x:Name="VersionText" DockPanel.Dock="Right" Foreground="{DynamicResource Muted}" FontSize="11" Text="Windows x64"/><TextBlock x:Name="StatusText" Text="选择安装位置" FontWeight="SemiBold" Foreground="{DynamicResource Text}" FontSize="13" AutomationProperties.LiveSetting="Polite"/></DockPanel>
-            <Border x:Name="PathBorder" Background="{DynamicResource Card}" BorderBrush="{DynamicResource ControlLine}" BorderThickness="1" CornerRadius="6" Padding="10,7">
+            <StackPanel x:Name="ConfigurationPanel">
+            <Border x:Name="PathBorder" Background="{DynamicResource Card}" BorderBrush="{DynamicResource ControlLine}" BorderThickness="1" CornerRadius="10" Padding="10,7">
               <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="24"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
                 <Path Data="@ICON_FOLDER@" Width="17" Height="17" Stretch="Uniform" Stroke="{DynamicResource Muted}" StrokeThickness="1.4" VerticalAlignment="Center"/>
                 <TextBox x:Name="PathBox" Grid.Column="1" AutomationProperties.Name="安装位置" BorderThickness="0" Background="Transparent" Foreground="{DynamicResource Text}" CaretBrush="{DynamicResource Text}" VerticalContentAlignment="Center" Padding="2,4" FontSize="12"/>
                 <Button x:Name="BrowseButton" Grid.Column="2" Content="浏览…" AutomationProperties.Name="更改安装位置" FontSize="11" Padding="10,6" Margin="8,0,0,0"/>
               </Grid>
             </Border>
-            <TextBlock x:Name="SpaceText" Foreground="{DynamicResource Muted}" FontSize="11" Text="正在读取磁盘空间…" TextWrapping="Wrap" Margin="0,10,0,8"/>
-            <TextBlock x:Name="ExistingText" Foreground="{DynamicResource Success}" FontSize="11" Margin="0,0,0,12"/>
-            <Border Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="6" Padding="14,12" Margin="0,0,0,18">
-              <StackPanel><TextBlock Text="个人内容会被保留" Foreground="{DynamicResource Text}" FontSize="12" FontWeight="SemiBold"/><TextBlock Text="重新安装与更新不会清理作品、个人设置和已导入资源。生成模型需要另行配置。" Foreground="{DynamicResource Muted}" FontSize="11" TextWrapping="Wrap" LineHeight="19" Margin="0,6,0,0"/></StackPanel>
-            </Border>
-            <CheckBox x:Name="ShortcutCheck" IsChecked="True" Content="创建桌面与开始菜单快捷方式" FontSize="12"/>
-            <Grid x:Name="ProgressHost" Height="5" Margin="0,18,0,12" Background="{DynamicResource Card}" ClipToBounds="True" Visibility="Collapsed">
+            <CheckBox x:Name="ShortcutCheck" IsChecked="True" Content="创建桌面与开始菜单快捷方式" FontSize="12" Margin="0,16,0,4"/>
+            </StackPanel>
+            <TextBlock x:Name="ExistingText" Foreground="{DynamicResource Success}" FontSize="12" Margin="0,10,0,0"/>
+            <StackPanel x:Name="StagePanel" Visibility="Collapsed" Margin="0,14,0,8" AutomationProperties.Name="安装阶段">
+              <TextBlock x:Name="PrepareStage" Text="1   准备并校验安装资源" Foreground="{DynamicResource Muted}" Margin="0,0,0,12"/>
+              <TextBlock x:Name="InstallStage" Text="2   安装应用与运行环境" Foreground="{DynamicResource Muted}" Margin="0,0,0,12"/>
+              <TextBlock x:Name="VerifyStage" Text="3   确认安装结果" Foreground="{DynamicResource Muted}"/>
+            </StackPanel>
+            <Grid x:Name="ProgressHost" Height="6" Margin="0,14,0,12" Background="{DynamicResource Card}" ClipToBounds="True" Visibility="Collapsed" AutomationProperties.Name="安装资源准备进度">
               <Rectangle x:Name="ProgressFill" Fill="{DynamicResource ProgressColor}" RenderTransformOrigin="0,0"><Rectangle.RenderTransform><ScaleTransform x:Name="ProgressScale" ScaleX="0"/></Rectangle.RenderTransform></Rectangle>
               <Rectangle x:Name="ProgressSweep" Width="160" HorizontalAlignment="Left" Fill="{DynamicResource ProgressColor}" Visibility="Collapsed"><Rectangle.RenderTransform><TranslateTransform x:Name="ProgressTranslate" X="-160"/></Rectangle.RenderTransform></Rectangle>
             </Grid>
+            <TextBlock x:Name="SpaceText" Foreground="{DynamicResource Muted}" FontSize="12" Text="正在读取磁盘空间…" TextWrapping="Wrap" Margin="0,10,0,0"/>
+            <TextBlock x:Name="ElapsedText" Foreground="{DynamicResource Muted}" FontSize="12" Visibility="Collapsed" Margin="0,8,0,0"/>
             <TextBlock x:Name="MessageText" Foreground="{DynamicResource Error}" FontSize="12" TextWrapping="Wrap" LineHeight="21" Margin="0,14,0,0" Visibility="Collapsed" AutomationProperties.LiveSetting="Polite"/>
           </StackPanel>
         </ScrollViewer>
         <Border Grid.Row="2" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="34,18,34,20">
           <StackPanel>
-            <Button x:Name="MainButton" Height="48" BorderBrush="{DynamicResource Accent}" AutomationProperties.Name="安装绘遇">
+            <Button x:Name="MainButton" Height="46" BorderBrush="{DynamicResource Accent}" AutomationProperties.Name="安装绘遇" IsDefault="True">
               <Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Setter Property="Foreground" Value="{DynamicResource AccentText}"/><Setter Property="Background" Value="{DynamicResource Accent}"/><Style.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="{DynamicResource AccentHover}"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter Property="Foreground" Value="{DynamicResource DisabledText}"/></Trigger></Style.Triggers></Style></Button.Style>
               <StackPanel Orientation="Horizontal"><TextBlock x:Name="MainAction" Text="安装绘遇" FontSize="15" FontWeight="SemiBold"/><Path Data="@ICON_ARROW@" Stroke="{Binding Foreground,RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" Width="18" Height="18" Stretch="Uniform" Margin="14,1,0,0"/></StackPanel>
             </Button>
-            <TextBlock x:Name="Footnote" Text="安装需要 Windows 管理员授权。请先保存工作，并从托盘菜单完全退出绘遇。" Foreground="{DynamicResource Muted}" FontSize="10" Margin="0,12,0,0" TextAlignment="Center" TextWrapping="Wrap"/>
+            <Button x:Name="CancelButton" Content="取消准备" Visibility="Collapsed" Margin="0,10,0,0" Background="Transparent" BorderThickness="0"/>
+            <TextBlock x:Name="Footnote" Text="保留作品与个人设置 · 开始后需管理员授权" Foreground="{DynamicResource Muted}" FontSize="12" Margin="0,12,0,0" TextAlignment="Center" TextWrapping="Wrap"/>
           </StackPanel>
         </Border>
       </Grid>
