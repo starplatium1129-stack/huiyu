@@ -137,7 +137,7 @@ impl ControlService {
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
-        let value = self.run_setup_helper(&mut command, cancel, 600, permit.clone(), Some(admission.clone())).await?;
+        let value = self.run_setup_helper(&mut command, cancel, 600, permit.clone(), Some(admission.clone()), None).await?;
         if value["schemaVersion"] != 1
             || value["engine"] != "pixai"
             || value["environment"]["cudaAvailable"] != true

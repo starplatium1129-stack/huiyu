@@ -118,6 +118,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const opBusy = computed(() => operationSubmitting.value || !!(operation.value && operation.value.status === 'running') || modeBusy.value)
   const opStatusLabel = computed(() => {
     const s = operation.value?.status
+    if (s === 'failed' && operation.value?.cancelled) return '已取消'
     return s === 'running' ? '进行中' : s === 'completed' ? '完成' : s === 'failed' ? '失败' : ''
   })
   const opCompletedStages = computed(() => {
@@ -128,8 +129,10 @@ export function useControlStatus({ showToast }: StatusHooks) {
     return op.status === 'completed' ? count : Math.max(0, Math.min(count, op.stageIndex))
   })
   const opProgress = computed(() => {
-    const count = operation.value?.stages?.length || 0
-    return count ? opCompletedStages.value / count * 100 : 0
+    const op = operation.value, count = op?.stages?.length || 0
+    const fraction = op?.status === 'running' && (op.workTotal ?? 0) > 0
+      ? Math.min(1, (op.workDone ?? 0) / op.workTotal!) : 0
+    return count ? (opCompletedStages.value + fraction) / count * 100 : 0
   })
   const ollamaMeta = computed(() => {
     if (!ollamaOnline.value) return '未连接'
@@ -225,10 +228,10 @@ export function useControlStatus({ showToast }: StatusHooks) {
     const imageOnline = data.sdOnline || data.comfyOnline
     imageProvider.value = data.imageProvider === undefined ? 'comfy' : data.imageProvider
     if (imageProvider.value === 'native') {
-      feedbackText.value = data.nativeRuntimeFilesReady ? '原生绘图入口已准备' : '原生绘图入口待准备'
+      feedbackText.value = data.nativeRuntimeFilesReady ? '原生运行库已就绪' : '原生运行库待准备'
       actionNote.value = data.nativeRuntimeFilesReady
-        ? '模型会在生成时按需加载。'
-        : '在原生首次配置中检查设备，一键准备运行库和模型。'
+        ? '生成时按需加载模型'
+        : '前往绘图与模型完成配置'
     } else if (imageProvider.value === null) {
       feedbackText.value = '绘图引擎配置待确认'
       actionNote.value = '请在原生首次配置中检查引擎设置。'

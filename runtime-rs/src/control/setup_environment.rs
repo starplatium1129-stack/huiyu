@@ -112,7 +112,10 @@ impl ControlService {
     }
 
     #[cfg(windows)]
-    pub(super) async fn require_stopped_comfy_for_preparation(&self) -> Result<()> {
+    pub(super) async fn require_stopped_comfy_for_preparation(
+        &self,
+        cancel: &CancellationToken,
+    ) -> Result<()> {
         let running = || {
             ApiError::new(
                 409,
@@ -131,20 +134,27 @@ impl ControlService {
             .unwrap_or("127.0.0.1")
             .trim_matches(&['[', ']'][..]);
         let port = endpoint.port_or_known_default().unwrap_or(8188);
-        match tokio::time::timeout(
-            Duration::from_secs(2),
-            tokio::net::TcpStream::connect((host, port)),
-        )
-        .await
-        {
+        // Allow the same connection deadline as local-service HTTP requests.
+        // A short deadline cannot prove that a host is stopped; only an
+        // explicit refusal allows changes to the environment.
+        let timeout = Duration::from_secs(15);
+        let checked = tokio::select! {
+            biased;
+            _ = cancel.cancelled() => return Err(ApiError::new(499, "CANCELLED", "环境准备已取消，尚未修改环境")),
+            result = tokio::time::timeout(timeout, tokio::net::TcpStream::connect((host, port))) => result,
+        };
+        let detail = match checked {
             Ok(Ok(_)) => Err(running()),
             Ok(Err(error)) if error.kind() == std::io::ErrorKind::ConnectionRefused => Ok(()),
-            _ => Err(ApiError::new(
-                503,
-                "COMFY_STOP_UNCONFIRMED",
-                "无法确认绘图服务已经停止，尚未修改环境；请核对配置地址与当前任务后重试。",
-            )),
+            Ok(Err(error)) => Err(ApiError::new(503, "COMFY_STOP_UNCONFIRMED", format!(
+                "无法确认绘图服务已经停止，尚未修改环境。检查地址 {} 时连接失败：{error}；请检查本机防火墙和服务地址后重试。", endpoint))),
+            Err(_) => Err(ApiError::new(503, "COMFY_STOP_UNCONFIRMED", format!(
+                "无法确认绘图服务已经停止，尚未修改环境。检查地址 {} 超过 {} 秒，系统未返回端口状态；请检查本机防火墙和服务地址后重试。", endpoint, timeout.as_secs()))),
+        };
+        if let Err(error) = &detail {
+            self.log(&error.message);
         }
+        detail
     }
 
     async fn install_environment(
@@ -167,7 +177,7 @@ impl ControlService {
         #[cfg(windows)]
         {
             if environment.starts_with("comfy-") {
-                self.require_stopped_comfy_for_preparation().await?;
+                self.require_stopped_comfy_for_preparation(cancel).await?;
                 // Repair establishes code from verified packages in a new
                 // directory. An absent or damaged old baseline must not block it.
             }
@@ -208,30 +218,30 @@ impl ControlService {
                     "-File",
                 ])
                 .arg(
-                    self.config
+                    crate::file_paths::absolute(&self.config
                         .app_root
-                        .join("scripts/lib/prepare-ai-environment.ps1"),
+                        .join("scripts/lib/prepare-ai-environment.ps1"))?,
                 )
                 .arg("-Workspace")
-                .arg(&self.config.ai_workspace_root)
+                .arg(crate::file_paths::absolute(&self.config.ai_workspace_root)?)
                 .arg("-Environment")
                 .arg(environment)
                 .arg("-Archive")
-                .arg(path_for(&format!("runtime-{environment}"))?)
+                .arg(crate::file_paths::absolute(&path_for(&format!("runtime-{environment}"))?)?)
                 .stdin(Stdio::null())
                 .stdout(Stdio::piped())
                 .stderr(Stdio::piped());
             if environment == "llama-cuda" {
                 command
                     .arg("-CudaArchive")
-                    .arg(path_for("runtime-llama-cudart")?);
+                    .arg(crate::file_paths::absolute(&path_for("runtime-llama-cudart")?)?);
             }
             if environment.starts_with("comfy-") {
                 command
                     .arg("-KjArchive")
-                    .arg(path_for("runtime-kjnodes")?)
+                    .arg(crate::file_paths::absolute(&path_for("runtime-kjnodes")?)?)
                     .arg("-TeaArchive")
-                    .arg(path_for("runtime-anima-teacache")?)
+                    .arg(crate::file_paths::absolute(&path_for("runtime-anima-teacache")?)?)
                     .arg("-ArchiveSha256")
                     .arg(model_file(&format!("runtime-{environment}"))?.sha256);
             }
@@ -243,7 +253,7 @@ impl ControlService {
             let (out, err) = match tokio::time::timeout(Duration::from_secs(3600), async {
                 tokio::join!(
                     actions::output(stdout, output_token.clone()),
-                    actions::output(stderr, output_token)
+                    self.environment_output(stderr, output_token, operation)
                 )
             })
             .await
@@ -281,15 +291,56 @@ impl ControlService {
                     self.redact(
                         &String::from_utf8_lossy(&err)
                             .chars()
-                            .take(1000)
+                            .rev()
+                            .take(2000)
+                            .collect::<String>()
+                            .chars()
+                            .rev()
                             .collect::<String>(),
                     ),
                 ));
             }
             self.log(&String::from_utf8_lossy(&out));
             self.stage(operation, 2);
+            if environment.starts_with("comfy-") {
+                comfy::integrity::establish(&self.config.ai_workspace_root.join(".runtimes/comfy/ComfyUI"),
+                    &model_file(&format!("runtime-{environment}"))?.sha256, cancel,
+                    &self.config.runtime_root.join("comfy-code-verified.json"),
+                    |done, total, file| self.work_progress(operation, done, total,
+                        &format!("正在校验环境文件（{done}/{total}）：{file}"))).await?;
+            }
             Ok(())
         }
+    }
+}
+
+impl ControlService {
+    #[cfg(windows)]
+    async fn environment_output(&self, output: Option<tokio::process::ChildStderr>, cancel: CancellationToken, operation: &Value) -> Vec<u8> {
+        use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
+        let Some(output) = output else { return Vec::new(); };
+        let mut reader = BufReader::new(output);
+        let mut tail = Vec::new();
+        loop {
+            let mut line = Vec::new();
+            let mut limited = (&mut reader).take(8193);
+            let read = tokio::select! {
+                _ = cancel.cancelled() => break,
+                result = limited.read_until(b'\n', &mut line) => result,
+            };
+            if !matches!(read, Ok(1..)) { break; }
+            let text = String::from_utf8_lossy(&line);
+            let mut fields = text.trim().splitn(4, '|');
+            if fields.next() == Some("HUIYU:ENV")
+                && let (Some(done), Some(total), Some(message)) = (fields.next(), fields.next(), fields.next())
+                && let (Ok(done), Ok(total)) = (done.parse::<u64>(), total.parse::<u64>()) {
+                self.work_progress(operation, done, total, message);
+            } else {
+                tail.extend_from_slice(&line);
+                if tail.len() > 16384 { tail.drain(..tail.len() - 16384); }
+            }
+        }
+        tail
     }
 }
 

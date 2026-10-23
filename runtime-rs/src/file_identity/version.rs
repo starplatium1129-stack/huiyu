@@ -1,6 +1,6 @@
 use std::{fs::File, io::Result, time::SystemTime};
 
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub(crate) struct Version {
     len: u64,
     modified: Option<SystemTime>,

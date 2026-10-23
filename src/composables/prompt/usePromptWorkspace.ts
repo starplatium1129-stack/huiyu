@@ -329,7 +329,11 @@ export function usePromptWorkspace() {
         if (!livePrompt.value)
             return '先选择场景或填写故事';
         if (!engineOnline.value)
-            return '绘图服务未连接，请先在控制面板启动并检查连接。';
+            return engineStatusText.value;
+        if (drawEngine.value === 'anima' && !pb.isPopular && !pb.isUnbound) {
+            if (pb.char === 'triad' && !currentCapabilities.value.dualCharacter) return '当前模型不支持双角色，请选择单个角色';
+            if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && !animaState.value.loraId) return '缺少角色 LoRA，请准备角色包，或选择自由画面';
+        }
         return '';
     });
     /** 分类恢复：对应旧版 runSDRecovery */

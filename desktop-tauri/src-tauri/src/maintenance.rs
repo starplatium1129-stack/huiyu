@@ -26,10 +26,19 @@ impl MaintenanceHost {
         std::fs::create_dir_all(&root).map_err(|error| format!("MAINTENANCE_DIRECTORY: {error}"))?;
         let owner = std::fs::OpenOptions::new().read(true).write(true).create(true).truncate(false)
             .open(root.join("desktop-host.lock")).map_err(|error| format!("DESKTOP_HOST_LOCK: {error}"))?;
-        owner.try_lock().map_err(|error| match error {
-            std::fs::TryLockError::WouldBlock => "DESKTOP_HOST_ALREADY_RUNNING".to_string(),
-            std::fs::TryLockError::Error(error) => format!("DESKTOP_HOST_LOCK: {error}"),
-        })?;
+        // Tauri spawns its replacement before exiting the old process. The
+        // single-instance mutex is already released at that point, but this
+        // durable owner remains locked until the old host has actually exited.
+        let deadline = std::time::Instant::now() + Duration::from_secs(10);
+        loop {
+            match owner.try_lock() {
+                Ok(()) => break,
+                Err(std::fs::TryLockError::WouldBlock) if std::time::Instant::now() < deadline =>
+                    std::thread::sleep(Duration::from_millis(25)),
+                Err(std::fs::TryLockError::WouldBlock) => return Err("DESKTOP_HOST_ALREADY_RUNNING".into()),
+                Err(std::fs::TryLockError::Error(error)) => return Err(format!("DESKTOP_HOST_LOCK: {error}")),
+            }
+        }
         let mut nonce = [0u8; 32]; SystemRandom::new().fill(&mut nonce).map_err(|_| "MAINTENANCE_RANDOM")?;
         let executable = std::env::current_exe().map_err(|_| "MAINTENANCE_EXECUTABLE")?.to_string_lossy().trim_start_matches(r"\\?\").to_string();
         let identity = Identity { protocol_version:1, instance_id:nonce.iter().map(|b| format!("{b:02x}")).collect(),

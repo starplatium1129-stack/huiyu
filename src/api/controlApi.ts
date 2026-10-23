@@ -56,6 +56,10 @@ function isControlOperation(value: unknown): boolean {
     && typeof value.startedAt === 'number'
     && typeof value.finishedAt === 'number'
     && typeof value.error === 'string'
+    && (value.cancelAllowed === undefined || typeof value.cancelAllowed === 'boolean')
+    && (value.cancelled === undefined || typeof value.cancelled === 'boolean')
+    && (value.workDone === undefined || (Number.isSafeInteger(value.workDone) && Number(value.workDone) >= 0))
+    && (value.workTotal === undefined || (Number.isSafeInteger(value.workTotal) && Number(value.workTotal) >= 0))
 }
 
 function isControlScripts(value: unknown): boolean {

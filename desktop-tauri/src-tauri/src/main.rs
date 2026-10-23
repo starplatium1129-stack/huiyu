@@ -355,7 +355,11 @@ fn main() {
                         *s.gateway_url.lock().unwrap() = url.clone();
                         window_state::save_desktop_gateway_port(&s.paths.gateway_port_file, supervisor.port());
                         s.info(&format!("Gateway {} at {url}", if supervisor.owns_gateway() { "started" } else { "attached" }));
-                        let _ = handle.emit("aics:gateway-ready", url);
+                        let _ = handle.emit("aics:gateway-ready", &url);
+                        let resume = s.paths.config_root.join("setup-restart.json");
+                        if std::fs::read(&resume).ok().as_deref() == Some(b"true") {
+                            main_shared::open_atelier(&handle, &url, Some("/control?section=control-setup"));
+                        }
                     }
                     Err(e) => {
                         s.error(&format!("Gateway start failed: {e}"));

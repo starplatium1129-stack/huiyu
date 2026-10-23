@@ -17,6 +17,8 @@ export function useInterrogateSetup() {
   const running = computed(() => operation.value?.status === 'running')
   const ready = computed(() => !!plan.value?.ready && readiness.available.value)
   const busy = computed(() => submitting.value || running.value)
+  const retryAvailable = computed(() => !ready.value && !running.value && !operationUncertain.value
+    && (!!error.value || operation.value?.status === 'failed'))
   const enoughSpace = computed(() => plan.value?.freeBytes !== null && plan.value?.freeBytes !== undefined && plan.value.freeBytes >= plan.value.requiredBytes)
   const canPrepare = computed(() => !!plan.value?.supported && enoughSpace.value && operationChecked.value
     && !workspacePending.value && !ready.value && !busy.value && !checking.value && !otherBusy.value && !operationUncertain.value)
@@ -72,7 +74,7 @@ export function useInterrogateSetup() {
         }
         throw new Error('尚未确认本次准备的后台状态，请继续核对进度；不会重复提交。')
       }
-    } else if (!own || own.status !== 'running') {
+    } else if (!own) {
       otherBusy.value = value?.status === 'running'
       operationChecked.value = true
       return false
@@ -85,13 +87,18 @@ export function useInterrogateSetup() {
     settledId = own.id; pending = null
     if (own.status === 'failed') {
       error.value = own.error || own.message
-      message.value = '准备已结束，已完成文件保留。核对原因后可继续准备。'
+      message.value = '已完成文件与下载进度保留，点击重试可继续准备。'
     } else { error.value = ''; message.value = '准备完成，正在检查反推是否就绪。' }
     return true
   }
 
   async function reconcile() {
     if (disposed || submitting.value || !isLocalStudioHost()) return
+    if (!plan.value) {
+      if (checking.value) return
+      await refreshPlan()
+      if (disposed || !plan.value) return
+    }
     const version = ++operationVersion
     try {
       const result = await interrogateSetupApi.getOperation(life.signal)
@@ -120,7 +127,7 @@ export function useInterrogateSetup() {
       while (!disposed) {
         await new Promise<void>(resolve => { wake = resolve; timer = setTimeout(resolve, 1500) })
         timer = undefined; wake = undefined
-        if (!disposed && !submitting.value) await reconcile()
+        if (!disposed && !submitting.value && plan.value) await reconcile()
       }
     } finally { polling = false }
   }
@@ -134,6 +141,12 @@ export function useInterrogateSetup() {
     if (!isLocalStudioHost()) { error.value = '请在本机控制室准备图片反推。'; return }
     await refresh()
     if (!disposed) void poll()
+  }
+  async function retry() {
+    if (!retryAvailable.value || busy.value || checking.value || otherBusy.value || workspacePending.value || disposed) return
+    // Refresh the plan and recover any accepted operation before a new POST.
+    await refresh()
+    if (!disposed && canPrepare.value) await prepare()
   }
   async function prepare() {
     if (!canPrepare.value || !plan.value || disposed) return
@@ -194,6 +207,6 @@ export function useInterrogateSetup() {
     window.removeEventListener('focus', focused)
     // Detach HTTP/polling only. The accepted installation belongs to the runtime.
   })
-  return { plan, operation, readiness, checking, submitting, running, busy, ready, enoughSpace, canPrepare, canCancel,
+  return { plan, operation, readiness, checking, submitting, running, busy, ready, enoughSpace, canPrepare, canCancel, retryAvailable, retry,
     otherBusy, workspacePending, operationUncertain, cancelState, error, message, initialize, refresh, reconcile, prepare, cancel }
 }

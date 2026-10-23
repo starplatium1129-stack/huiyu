@@ -158,7 +158,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     const ready = animaState.value.online || animaState.value.managedStartAvailable === true
     if (drawEngine.value === 'anima') {
       if (pb.isPopular || pb.isUnbound) return ready && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false && (!pb.isUnbound || m.capabilities?.noLora === true))
-      return (currentCapabilities.value.dualCharacter || pb.char !== 'triad') && Boolean(animaState.value.loraId) && ready
+      return ready
     }
     if (drawEngine.value === 'krea2') return ready
     return sd.online.value

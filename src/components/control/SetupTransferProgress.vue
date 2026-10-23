@@ -12,6 +12,8 @@ const props = withDefaults(defineProps<{
   total?: number
   currentFile?: string
   message?: string
+  completedFiles?: number
+  totalFiles?: number
   scope?: 'file' | 'manifest'
 }>(), { scope: 'manifest' })
 const headingId = useId()
@@ -27,8 +29,9 @@ const phaseLabel = computed(() => phases[props.phase ?? ''] || '正在处理')
 const bytePhase = computed(() => !props.phase || ['checking', 'downloading', 'verifying', 'download-progress', 'copy-progress'].includes(props.phase))
 const totalBytes = computed(() => props.total && Number.isFinite(props.total) && props.total > 0 ? props.total : null)
 const receivedBytes = computed(() => Number.isFinite(props.received) ? Math.max(0, props.received ?? 0) : 0)
-const percent = computed(() => bytePhase.value && totalBytes.value !== null
-  ? Math.min(100, Math.floor(receivedBytes.value / totalBytes.value * 100)) : null)
+const fileProgress = computed(() => !bytePhase.value && (props.totalFiles ?? 0) > 0)
+const percent = computed(() => fileProgress.value ? Math.min(100, Math.floor((props.completedFiles ?? 0) / props.totalFiles! * 100))
+  : bytePhase.value && totalBytes.value !== null ? Math.min(100, Math.floor(receivedBytes.value / totalBytes.value * 100)) : null)
 const progressLabel = computed(() => props.scope === 'file' ? '当前文件进度' : '文件处理进度')
 </script>
 
@@ -39,18 +42,18 @@ const progressLabel = computed(() => props.scope === 'file' ? '当前文件进�
       <div role="status" aria-live="polite" aria-atomic="true"><strong :id="headingId">{{ title }}</strong><span>{{ phaseLabel }}</span></div>
       <div v-if="percent !== null" class="transfer-percent" aria-hidden="true">{{ percent }}<small>%</small></div>
     </div>
-    <div v-if="bytePhase" class="transfer-track" role="progressbar" :aria-label="progressLabel"
+    <div v-if="bytePhase || fileProgress" class="transfer-track" role="progressbar" :aria-label="fileProgress ? '环境文件检查进度' : progressLabel"
       :aria-valuemin="0" :aria-valuemax="100" :aria-valuenow="percent ?? undefined"
       :aria-valuetext="percent === null ? '正在确认文件大小' : `${percent}%`">
       <span v-if="percent !== null" :style="{ transform: `scaleX(${percent / 100})` }" />
     </div>
+    <div v-if="fileProgress" class="transfer-volume"><span>环境文件</span><strong>{{ completedFiles ?? 0 }} / {{ totalFiles }}</strong></div>
     <div v-if="bytePhase" class="transfer-volume">
       <span>{{ scope === 'file' ? '当前文件' : '文件处理量' }}</span>
       <strong>{{ formatSetupBytes(receivedBytes) }} <span>/ {{ totalBytes === null ? '总量待确认' : formatSetupBytes(totalBytes) }}</span></strong>
     </div>
     <p v-if="message" class="transfer-message">{{ message }}</p>
     <div v-if="currentFile && bytePhase" class="transfer-file"><span>当前文件</span><code>{{ currentFile }}</code></div>
-    <p class="transfer-note">{{ scope === 'file' ? '进度对应当前文件；完成后继续后续步骤。' : '文件进度包含下载和校验，请等待全部准备步骤完成。' }}</p>
     <div v-if="$slots.default" class="transfer-actions"><slot /></div>
   </section>
 </template>
@@ -69,9 +72,8 @@ const progressLabel = computed(() => props.scope === 'file' ? '当前文件进�
 .transfer-volume { display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--s-2); font-size:var(--fs-label-sm); color:var(--text-secondary); }
 .transfer-volume strong { color:var(--text-primary); font-weight:500; font-variant-numeric:tabular-nums; }
 .transfer-volume strong span { color:var(--text-secondary); }
-.transfer-progress .transfer-message, .transfer-progress .transfer-note { margin:0; line-height:var(--lh-loose); color:var(--text-secondary); overflow-wrap:anywhere; }
+.transfer-progress .transfer-message { margin:0; line-height:var(--lh-loose); color:var(--text-secondary); overflow-wrap:anywhere; }
 .transfer-message { font-size:var(--fs-label); }
-.transfer-progress .transfer-note { font-size:var(--fs-label-sm); }
 .transfer-file { display:grid; gap:var(--s-1); font-size:var(--fs-label-sm); color:var(--text-secondary); }
 .transfer-file code { font-family:var(--font-mono); overflow-wrap:anywhere; }
 .transfer-actions { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); }

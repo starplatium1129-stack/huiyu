@@ -4,10 +4,11 @@
     <GenerationSizePicker v-if="showSize" class="gen-bar-size" compact v-bind="{ engine, size, animaSizes, busy }" @update:size="$emit('update:size', $event)" />
     <div class="gen-bar-meta">
       <div class="gen-bar-status">
-        <span role="status"><ArchiveIcon :name="busy ? 'spark' : error || !online || presentation.needsReview ? 'warning' : 'success'" />{{ statusSummary }}</span>
+        <span role="status"><ArchiveIcon :name="busy ? 'spark' : error || !online || blockedReason || presentation.needsReview ? 'warning' : 'success'" />{{ statusSummary }}</span>
         <button v-if="presentation.phase === 'cancelling'" class="btn btn-quiet gen-bar-recovery" type="button" @click="openGenerationTasks">查看任务</button>
         <button v-if="presentation.needsReview" class="btn btn-quiet gen-bar-recovery" type="button" @click="$emit('cancel')">取消原请求</button>
-        <RouterLink v-if="!online && !busy" class="gen-bar-recovery" :to="{ path: '/control', query: { engine } }" aria-label="打开控制面板，启动并检查绘图服务">打开控制面板</RouterLink>
+        <RouterLink v-if="!online && !busy" class="gen-bar-recovery" :to="{ path: '/control', query: { engine } }" aria-label="检查绘图配置">检查配置</RouterLink>
+        <RouterLink v-else-if="missingCharacter && !busy" class="gen-bar-recovery" :to="{ path: '/control', hash: '#control-image-resources' }">准备角色包</RouterLink>
       </div>
       <small v-if="!showSize">{{ size.replace('x', ' × ') }}</small>
     </div>
@@ -62,6 +63,8 @@ const props = defineProps<{
   busy: boolean
   presentation: GenerationPresentation
   online: boolean
+  provider?: 'native' | 'comfy'
+  readinessText?: string
   /** 当前生效尺寸：SD 取 sdSize，Anima/Krea2 取 width×height（宿主统一收敛）。 */
   size: string
   /** Anima/Krea2 候选尺寸（当前底模白名单，含当前值兜底）。 */
@@ -89,11 +92,12 @@ const actionText = computed(() => props.busy && props.presentation.phase === 'ca
   : props.busy && props.presentation.phase === 'preparing' ? '取消准备' : ({ idle: '生成图片', loading: '停止绘制', success: '完成 · 再生成', error: '重试生成', review: '重新查询原请求' })[status.value])
 const actionLabel = computed(() => status.value === 'success' ? '生成完成，再生成图片' : actionText.value)
 const actionIcon = computed(() => ({ idle: 'spark', loading: 'close', success: 'success', error: 'refresh', review: 'info' } as const)[status.value])
-const statusSummary = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : !props.online ? '服务未连接'
+const missingCharacter = computed(() => props.blockedReason?.startsWith('缺少角色 LoRA'))
+const statusSummary = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : !props.online ? props.provider === 'native' ? '原生配置待检查' : '服务未连接'
   : props.error ? '绘制未完成' : props.stopped ? '已停止' : props.blockedReason ? '待补充设置' : '准备就绪')
 const announcement = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : props.stopped ? '绘制已停止。'
   : status.value === 'error' ? `生成失败：${props.error}` : status.value === 'success' ? '生成完成，可以查看画布或再次生成。' : '')
-const unavailableReason = computed(() => !props.online ? '绘图服务未连接，请先在控制面板启动并检查连接。' : props.blockedReason || '')
+const unavailableReason = computed(() => !props.online ? props.readinessText || '绘图配置待检查' : props.blockedReason || '')
 const progressValue = computed(() => props.presentation.progress === null ? null : Math.round(props.presentation.progress * 100))
 function activate() {
   if (cancellationPending.value) return

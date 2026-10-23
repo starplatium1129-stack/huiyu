@@ -32,10 +32,19 @@ pub(super) fn safe_directory(path: &Path) -> Result<()> {
     let mut current = PathBuf::new();
     for part in path.components() {
         current.push(part);
+        // A Windows prefix alone (for example \\?\D:) is not a filesystem
+        // entry. Inspect it only after RootDir forms the complete volume root.
+        if matches!(part, std::path::Component::Prefix(_)) {
+            continue;
+        }
         let meta = match std::fs::symlink_metadata(&current) {
             Ok(meta) => meta,
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => continue,
-            Err(e) => return Err(e.into()),
+            Err(e) => {
+                eprintln!("native setup directory {}: {e}", current.display());
+                return Err(ApiError::new(409, "AI_DIRECTORY_UNAVAILABLE",
+                    format!("无法检查 AI 资源目录 {}：{e}；请核对目录和访问权限后重试", current.display())));
+            }
         };
         let mut linked = meta.file_type().is_symlink();
         #[cfg(windows)]
@@ -54,17 +63,25 @@ pub(super) fn safe_directory(path: &Path) -> Result<()> {
     Ok(())
 }
 pub(super) fn support(hardware: &Value, runtime: &RuntimeBundle) -> Vec<String> {
-    let mut reasons = runtime_support(hardware, runtime, 12, "12 GB 或更多显存");
+    // Managed image setup uses budgeted block/leaf offload. Capacity is a
+    // workload recommendation, not proof that a CUDA device cannot run it.
+    runtime_support(hardware, runtime, 0, "")
+}
+fn capacity_warnings(hardware: &Value) -> Vec<String> {
+    let mut warnings = vec!["默认启用分层卸载，按空闲显存安排模型；大模型或大画幅仍可能内存不足，可先用 Anima 和较小画幅。".into()];
     if hardware["ramBytes"]
         .as_u64()
-        .is_none_or(|bytes| bytes < 24 * 1024 * 1024 * 1024)
+        .is_none_or(|bytes| bytes < 32 * 1024 * 1024 * 1024)
     {
-        reasons.push(
-            "分阶段加载至少需要 24 GiB 系统内存，建议 32 GiB；显存和复杂画面的实际效果仍需设备验收"
-                .into(),
-        );
+        warnings.push("建议 32 GiB 系统内存；较小内存可继续准备，加载、转换或生成可能更慢或内存不足。".into());
     }
-    reasons
+    warnings
+}
+async fn source_accessible(client: &reqwest::Client, source: &str, allow_mirror: bool) -> bool {
+    if allow_mirror && let Some(mirror) = crate::download_transport::public_mirror(source)
+        && client.head(mirror).send().await.is_ok_and(|r| r.status().is_success()) { return true; }
+    let response = client.head(source).send().await;
+    response.is_ok_and(|r| r.status().is_success())
 }
 pub(super) fn runtime_support(
     hardware: &Value,
@@ -92,7 +109,7 @@ pub(super) fn runtime_support(
     {
         reasons.push("此首次准备流程目前要求单张 NVIDIA 显卡且没有 CUDA 设备覆盖；多卡或自定义 CUDA 映射请使用高级运行库配置".into());
     }
-    let compatible = devices.first().is_some_and(|device| {
+    if let Some(device) = devices.first() {
         let driver = device["driverVersion"]
             .as_str()
             .unwrap_or("")
@@ -108,12 +125,19 @@ pub(super) fn runtime_support(
         let capability = device["computeCapability"]
             .as_str()
             .and_then(|s| s.parse::<f64>().ok());
-        driver_ok
-            && capability.is_some_and(|n| (8.0..=12.0).contains(&n))
-            && device["vramBytes"]
+        if !driver_ok {
+            reasons.push(format!("检测到 NVIDIA 驱动 {}，此运行包需要 {} 或更新，请更新驱动", device["driverVersion"].as_str().unwrap_or("未知"), runtime.minimum_nvidia_driver));
+        }
+        if !capability.is_some_and(|n| (8.0..=12.0).contains(&n)) {
+            reasons.push(format!("检测到 CUDA 计算能力 {}，此运行包支持 Ampere 至 Blackwell（8.0–12.0）；无法读取时请检查 NVIDIA 驱动", device["computeCapability"].as_str().unwrap_or("未知")));
+        }
+        if vram_gib > 0 && !device["vramBytes"]
                 .as_u64()
                 .is_some_and(|bytes| bytes >= vram_gib * 1024 * 1024 * 1024 - 256 * 1024 * 1024)
-    });
+        {
+            reasons.push(format!("此功能需要{vram_label}；请核对检测到的显存容量"));
+        }
+    }
     let other_names = hardware["otherDevices"]
         .as_array()
         .map(|devices| {
@@ -130,8 +154,8 @@ pub(super) fn runtime_support(
             .any(|name| name.to_ascii_lowercase().contains("nvidia"))
     {
         reasons.push(format!("已检测到 {}。此原生运行库支持 NVIDIA CUDA，尚未提供 AMD、Intel 或 CPU 推理；当前显卡不能运行此包",other_names.join("、")));
-    } else if !compatible {
-        reasons.push(format!("需要 NVIDIA Ampere 至 Blackwell（计算能力 8.0–12.0）、{vram_label}及 Windows 驱动 {} 或更新；请从 NVIDIA 更新驱动。未检测到设备时也请检查驱动中的 nvidia-smi。AMD、Intel、旧架构及较小显存尚不支持此运行包",runtime.minimum_nvidia_driver));
+    } else if devices.is_empty() {
+        reasons.push("未能通过 nvidia-smi 读取 NVIDIA 设备；请检查驱动和 nvidia-smi 是否可用，再刷新。此状态不代表显卡性能不足".into());
     }
     reasons
 }
@@ -149,17 +173,13 @@ impl ControlService {
         {
             Ok(client) => {
                 let (python, model) = tokio::join!(
-                    client.head(&runtime.files[0].url).send(),
-                    client.head(&selected_model.files[0].url).send()
+                    source_accessible(&client, &runtime.files[0].url, true),
+                    source_accessible(&client, &selected_model.files[0].url, !selected_model.requires_access)
                 );
-                let accessible =
-                    |result: std::result::Result<reqwest::Response, reqwest::Error>| {
-                        result.is_ok_and(|response| response.status().is_success())
-                    };
-                let runtime_source = accessible(python);
-                let model_source = accessible(model);
+                let runtime_source = python;
+                let model_source = model;
                 json!({"runtimeSource":runtime_source,"modelSource":model_source,
-                    "message":if runtime_source && model_source {"固定下载来源可连接；文件下载仍会重新校验"} else {"部分固定来源暂不可连接，请检查网络后重试；已有完整缓存可离线继续。受限或要求登录的来源不会绕过授权"}})
+                    "message":if runtime_source && model_source {"下载来源可连接；公开模型与 Python 依赖优先尝试国内镜像，失败切换原始来源并有限重试，固定版本与 SHA-256 校验保持一致"} else {"部分下载来源不可连接。公开模型与 Python 依赖会优先尝试国内镜像；Civitai 权重可在来源页面下载后填写已有权重路径。运行库来源受限时可使用高级选项中的离线运行库；完整缓存可离线继续"}})
             }
             Err(_) => {
                 json!({"runtimeSource":false,"modelSource":false,"message":"网络检查未完成，请检查连接后重试"})
@@ -210,7 +230,7 @@ impl ControlService {
                 json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
                     "preparation":if model.conversion_profile.is_some(){"checkpoint-conversion"}else{"complete-model"},
                     "licenseUrl":model.license_url,"sourceUrl":model.source_url,
-                    "checkpointFilename":model.checkpoint_filename,
+                    "checkpointFilename":model.checkpoint_filename,"checkpointOptional":model.conversion_profile.as_deref()==Some("anima-cosmos2b-v041"),
                     "requiresAccess":model.requires_access,"family":if model.id.starts_with("krea2-"){"krea2"}else if model.id.starts_with("qwen-"){"qwen-image"}else if model.id.starts_with("moss-"){"moss-image"}else{"anima"},
                     "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":model_needed(&root, model),
                     "installed":receipt_matches(&model_root, model),"path":model_root})
@@ -220,7 +240,7 @@ impl ControlService {
                 json!({"ok":true,"selectedModelId":selected,"planId":plan_id(&service.config.ai_workspace_root),"workspacePath":service.config.ai_workspace_root,
                 "paths":{"runtimeRoot":receipt.as_ref().and_then(|(path, _)|path.parent()).map(Path::to_path_buf).unwrap_or_else(||root.join(&runtime.runtime_id)),"modelsRoot":root.join("models"),
                     "lorasRoot":discovered.loras_root,"cacheRoot":root.join(".downloads"),"tempRoot":root.join(".staging")},
-                "hardware":hardware,"network":network,"supported":reasons.is_empty(),"reasons":reasons,"freeBytes":free,
+                "warnings":capacity_warnings(&hardware),"hardware":hardware,"network":network,"supported":reasons.is_empty(),"reasons":reasons,"freeBytes":free,
                 "runtime":{"id":runtime.runtime_id,"label":if image_models::is_adapter_runtime(&runtime){"原生图像 · Python 3.11 · PyTorch 2.9 · CUDA 12.8"}else{"Anima · Python 3.11 · CUDA 12.8"},
                     "downloadBytes":runtime.download_bytes,"requiredBytes":required,"recoverableBytes":recoverable,"recoveryReady":recovery_ready,"sources":runtime.sources,
                     "installed":runtime_ready,"python":runtime_python},"models":model_views,

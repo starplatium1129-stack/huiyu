@@ -41,7 +41,7 @@ impl ControlService {
             .stdin(std::process::Stdio::null())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped());
-        let diagnostic = self.run_setup_helper(&mut command, cancel, 120, permit.clone(), None).await?;
+        let diagnostic = self.run_setup_helper(&mut command, cancel, 120, permit.clone(), None, None).await?;
         if diagnostic["event"] != "diagnostic" || diagnostic["cudaAvailable"] != true {
             return Err(ApiError::new(
                 409,

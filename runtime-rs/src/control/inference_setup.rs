@@ -54,7 +54,7 @@ async fn inspect(
 ) -> Result<Json<Value>> {
     let permit = s.setup_permit()?;
     let (mut command, target) = s.model_import_command(&body.model_id, &body.source_dir, None)?;
-    let value = s.run_setup_helper(&mut command, &s.shutdown, 120, permit.clone(), None).await?;
+    let value = s.run_setup_helper(&mut command, &s.shutdown, 120, permit.clone(), None, None).await?;
     validate_import_result(&value, true, &body.source_dir, &target)?;
     Ok(Json(value))
 }
@@ -190,7 +190,7 @@ impl ControlService {
                     return Err(cancelled());
                 }
                 let value = service
-                    .run_setup_helper(&mut command, &cancel, 3600, permit.clone(), None)
+                    .run_setup_helper(&mut command, &cancel, 3600, permit.clone(), None, None)
                     .await?;
                 if task_operation["kind"] == "import-inference-model" {
                     validate_import_result(
@@ -227,6 +227,7 @@ impl ControlService {
         seconds: u64,
         permit: Arc<OwnedSemaphorePermit>,
         keep_alive: Option<Arc<dyn Send + Sync>>,
+        operation: Option<&Value>,
     ) -> Result<Value> {
         if cancel.is_cancelled() {
             return Err(cancelled());
@@ -236,7 +237,9 @@ impl ControlService {
         let work = async {
             let (out, err) = tokio::try_join!(
                 bounded_output(stdout, 131072),
-                bounded_output(stderr, 32768)
+                helper_stderr(stderr, |message| {
+                    if let Some(operation) = operation { self.work_progress(operation, 0, 0, message); }
+                })
             )?;
             let success = loop {
                 if let Some(success) = process.exited()? {
@@ -305,11 +308,30 @@ async fn bounded_output<R: AsyncRead + Unpin>(stream: Option<R>, limit: u64) -> 
         .ok_or_else(protocol_error)?
         .take(limit + 1)
         .read_to_end(&mut bytes)
-        .await?;
+        .await.map_err(|error| ApiError::new(503, "NATIVE_HELPER_IO", format!("原生准备进程输出读取失败：{error}")))?;
     if bytes.len() as u64 > limit {
         return Err(protocol_error());
     }
     Ok(bytes)
+}
+async fn helper_stderr<R: AsyncRead + Unpin>(stream: Option<R>, progress: impl Fn(&str)) -> Result<Vec<u8>> {
+    use tokio::io::{AsyncBufReadExt, BufReader};
+    let mut reader = BufReader::new(stream.ok_or_else(protocol_error)?);
+    let mut output = Vec::new();
+    loop {
+        let mut line = Vec::new();
+        let count = (&mut reader).take(8193).read_until(b'\n', &mut line).await
+            .map_err(|error| ApiError::new(503, "NATIVE_HELPER_IO", format!("原生准备进程日志读取失败：{error}")))?;
+        if count == 0 { return Ok(output); }
+        if line.len() > 8192 { return Err(protocol_error()); }
+        let text = String::from_utf8_lossy(&line);
+        if let Some(message) = text.trim().strip_prefix("HUIYU:CONVERT|") {
+            progress(message);
+        } else {
+            output.extend_from_slice(&line);
+            if output.len() > 32768 { return Err(protocol_error()); }
+        }
+    }
 }
 fn matches_path(value: &Value, expected: &Path) -> bool {
     value

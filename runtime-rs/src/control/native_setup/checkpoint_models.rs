@@ -17,6 +17,11 @@ pub(super) async fn stage_checkpoint(service: &ControlService, model: &ModelBund
         jobs::verify_files(&root, &[artifact], cancel).await?;
         return Ok(());
     }
+    // 2B checkpoints support either automatic download or an existing file.
+    // The 2.9B author flow still requires a locally downloaded checkpoint.
+    if source.is_none() && model.conversion_profile.as_deref() == Some("anima-cosmos2b-v041") {
+        return Ok(());
+    }
     let source = source.filter(|path| path.is_absolute()).ok_or_else(|| ApiError::invalid(&format!(
         "请先登录作者发布页下载 {filename}，再填写本机文件路径；尚未下载其他模型组件")))?.to_owned();
     let filename = filename.clone();

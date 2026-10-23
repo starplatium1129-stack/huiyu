@@ -7,7 +7,8 @@ import { downloadBlob } from '../utils/downloadBlob.ts'
  * 公网隧道启停与诊断导出。所有 HTTP 都走统一错误信封。
  */
 
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { localSetupApi } from '@/api/localSetupApi'
 import {
   controlApi,
   type ControlService,
@@ -28,6 +29,26 @@ export function useControlActions(
   { showToast }: ActionHooks,
 ) {
   const tunnelEnabled = ref(settingsRepository.get(TUNNEL_ENABLED_SETTING) ?? true)
+  const cancellingOperation = ref('')
+  const cancellationRequested = ref('')
+  const canCancelOperation = computed(() => {
+    const op = status.operation.value
+    return op?.status === 'running' && op.cancelAllowed !== false
+      && ['comfy-start', 'llama-start', 'prepare-environment'].includes(op.kind)
+  })
+  const operationCancelling = computed(() => !!status.operation.value?.id
+    && [cancellingOperation.value, cancellationRequested.value].includes(status.operation.value.id))
+  async function cancelOperation() {
+    const op = status.operation.value
+    if (!op || !canCancelOperation.value || operationCancelling.value) return
+    cancellingOperation.value = op.id
+    try {
+      await localSetupApi.cancelEnvironment(op.id)
+      cancellationRequested.value = op.id
+      showToast('正在取消，已下载文件保留')
+    } catch (cause) { showToast(errorMessage(cause, '取消未确认，请重试'), true) }
+    finally { cancellingOperation.value = ''; await status.pollStatus(true) }
+  }
 
   /** catch 里取消息：替代 `catch (e: any) { e.message }` —— unknown 才是 catch 的真实类型 */
   function errorMessage(error: unknown, fallback: string): string {
@@ -219,6 +240,6 @@ export function useControlActions(
   return {
     tunnelEnabled, errorMessage, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice,
     serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag,
-    buildWeb, buildingWeb,
+    buildWeb, buildingWeb, canCancelOperation, operationCancelling, cancelOperation,
   }
 }

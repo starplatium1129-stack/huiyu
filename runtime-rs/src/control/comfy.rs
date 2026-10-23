@@ -196,7 +196,14 @@ impl ControlService {
                 "请先一键准备 Portable 环境；外部环境可从原入口启动后连接",
             ));
         }
-        integrity::verify(&root, &cancel).await?;
+        let operation = self.state.lock().unwrap().operation.clone().unwrap_or(Value::Null);
+        let started = Instant::now();
+        integrity::verify(&root, &cancel, &self.config.runtime_root.join("comfy-code-verified.json"),
+            |done, total, file| self.work_progress(&operation, done, total,
+                &format!("正在检查启动文件（{done}/{total}）：{file}"))).await?;
+        self.log(&format!("ComfyUI 启动文件校验完成：{:.2} 秒", started.elapsed().as_secs_f64()));
+        if operation["kind"] == "comfy-start" { self.stage(&operation, 1); }
+        self.work_progress(&operation, 0, 0, "正在启动 Python 并加载绘图节点…");
         let settings = self.runtime_settings();
         let host = settings["comfyHost"]
             .as_str()
@@ -234,7 +241,12 @@ impl ControlService {
         let process = self.processes.spawn(&mut command)?;
         let deadline = Instant::now() + Duration::from_secs(120);
         loop {
-            if cancel.is_cancelled() || Instant::now() >= deadline {
+            if cancel.is_cancelled() {
+                process.stop().await?;
+                self.comfy_cancel.lock().unwrap().take();
+                return Err(ApiError::new(499, "CANCELLED", "启动已取消"));
+            }
+            if Instant::now() >= deadline {
                 process.stop().await?;
                 self.comfy_cancel.lock().unwrap().take();
                 return Err(ApiError::new(
@@ -251,7 +263,12 @@ impl ControlService {
                     "ComfyUI 已退出，请查看 comfyui.log 与驱动条件",
                 ));
             }
-            if self.online(1, &settings).await {
+            let online = tokio::select! {
+                biased;
+                _ = cancel.cancelled() => continue,
+                online = self.online(1, &settings) => online,
+            };
+            if online {
                 break;
             }
             tokio::time::sleep(Duration::from_millis(500)).await;

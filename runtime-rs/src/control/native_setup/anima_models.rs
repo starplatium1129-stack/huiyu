@@ -28,8 +28,8 @@ pub(super) fn bundle(base: &ModelBundle, model_id: &str, profile: &str) -> Resul
         source_url: source["modelCardUrl"].as_str().unwrap().into(),
         required_bytes: download_bytes.saturating_mul(2), files,
         requires_access: false, conversion_profile: Some(profile.into()),
-        checkpoint_filename: (profile == "anima-cosmos29b-v041").then(||
-            Path::new(source["path"].as_str().unwrap()).file_name().unwrap().to_string_lossy().into_owned()),
+        checkpoint_filename: Some(Path::new(source["path"].as_str().unwrap())
+            .file_name().unwrap().to_string_lossy().into_owned()),
     })
 }
 
@@ -76,7 +76,7 @@ impl ControlService {
         plan::safe_directory(&inputs)?;
         self.native_stage(operation, 1);
         self.download_native_files(&inputs, &model.files, operation, cancel).await?;
-        jobs::verify_files(&inputs, &model.files, cancel).await?;
+        // managed_file has already verified every downloaded or reused input.
         stopped(cancel)?;
         self.native_stage(operation, 2);
         self.native_progress(operation, json!({"phase":"converting","stage":"converting",
@@ -109,7 +109,7 @@ impl ControlService {
             .arg("--t5-tokenizer").arg(inputs.join("t5_tokenizer"))
             .arg("--output-dir").arg(&output).arg("--apply")
             .stdin(Stdio::null()).stdout(Stdio::piped()).stderr(Stdio::piped());
-        let value = self.run_setup_helper(&mut command, cancel, 3600, permit.clone(), Some(temporary.clone())).await?;
+        let value = self.run_setup_helper(&mut command, cancel, 3600, permit.clone(), Some(temporary.clone()), Some(operation)).await?;
         if value["mode"] != "converted" || value["weightsStrictlyLoaded"] != true
             || value["savedKeyShapeDtypeVerified"] != true
             || value["profile"].as_str() != model.conversion_profile.as_deref()
@@ -117,11 +117,14 @@ impl ControlService {
             return Err(ApiError::new(502, "NATIVE_CONVERSION_INCOMPLETE", "MiaoMiao 原生转换未完成，请查看准备日志"));
         }
         let outputs = parse_outputs(value["outputs"].clone())?;
+        self.native_progress(operation, json!({"stage":"validating","phase":"verifying",
+            "message":"模型转换已完成，正在复核输入与转换文件；不再重复转换"}));
         jobs::verify_files(&inputs, &model.files, cancel).await?;
         jobs::verify_model_files(&output, outputs, cancel).await?;
         self.validate_native_model(&settings, &output, &model.id, cancel, permit).await?;
         stopped(cancel)?;
-        std::fs::copy(inputs.join("LICENSE.md"), output.join("LICENSE.md"))?;
+        std::fs::copy(inputs.join("LICENSE.md"), output.join("LICENSE.md"))
+            .map_err(|error| ApiError::new(503, "NATIVE_MODEL_PUBLISH_FAILED", format!("转换已完成，但复制模型许可失败：{error}")))?;
         let receipt = json!({"schemaVersion":1,"modelId":model.id,"revision":model.revision,
             "scope":"fixed-inputs-sha256-strict-conversion-and-output-sha256","readyForGeneration":false,
             "sourceUrl":model.source_url,"conversionProfile":model.conversion_profile,"outputs":value["outputs"]});
@@ -140,7 +143,9 @@ impl ControlService {
                 return Err(ApiError::new(409, "MODEL_CONFLICT", "目标模型目录已出现，未覆盖；请重新检查"));
             }
             stopped(&token)?;
-            std::fs::rename(output, target)?;
+            drop(file);
+            std::fs::rename(output, target)
+                .map_err(|error| ApiError::new(503, "NATIVE_MODEL_PUBLISH_FAILED", format!("转换已完成，但发布模型目录失败：{error}；请检查磁盘和目录访问权限")))?;
             Ok(())
         }).await.map_err(|_| ApiError::new(503, "MODEL_PUBLISH_FAILED", "模型发布未完成，请重试"))??;
         self.native_stage(operation, 3);

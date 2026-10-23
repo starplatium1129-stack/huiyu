@@ -166,16 +166,16 @@ impl ControlService {
                 "-File",
             ])
             .arg(
-                self.config
+                crate::file_paths::absolute(&self.config
                     .app_root
-                    .join("scripts/lib/prepare-native-runtime.ps1"),
+                    .join("scripts/lib/prepare-native-runtime.ps1"))?,
             )
             .arg("-Workspace")
-            .arg(workspace)
+            .arg(crate::file_paths::absolute(workspace)?)
             .arg("-RuntimeId")
             .arg(&runtime.runtime_id)
             .arg("-CacheDir")
-            .arg(&cache)
+            .arg(crate::file_paths::absolute(&cache)?)
             .arg("-ManagedProtocol")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
@@ -239,7 +239,7 @@ impl ControlService {
         // Reuses matching files and downloads only missing components; a corrupt
         // user-owned file is a conflict, never silently replaced.
         let files = image_models::resolve_files(self, model, root, hf_token, cancel).await?;
-        self.download_native_files_authorized(root, &files, operation, cancel, hf_token).await?;
+        self.download_native_files_authorized(root, &files, operation, cancel, hf_token, !model.requires_access).await?;
         self.native_stage(operation, 2);
         verify_files(root, &files, cancel).await?;
         let runtime = image_models::runtime_for(Some(&model.id))?;
@@ -309,7 +309,7 @@ impl ControlService {
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
         if crate::generation::native::adapters::model(model_id).is_some() { command.arg("--model-id").arg(model_id); }
-        let value = self.run_setup_helper(&mut command, cancel, 120, permit.clone(), None).await?;
+        let value = self.run_setup_helper(&mut command, cancel, 120, permit.clone(), None, None).await?;
         if value["event"] != "validation" || value["valid"] != true {
             return Err(ApiError::new(
                 502,
@@ -381,10 +381,10 @@ impl ControlService {
         operation: &Value,
         cancel: &CancellationToken,
     ) -> Result<()> {
-        self.download_native_files_authorized(root, files, operation, cancel, None).await
+        self.download_native_files_authorized(root, files, operation, cancel, None, true).await
     }
     async fn download_native_files_authorized(&self, root: &Path, files: &[Artifact], operation: &Value,
-        cancel: &CancellationToken, token: Option<&str>) -> Result<()> {
+        cancel: &CancellationToken, token: Option<&str>, allow_mirror: bool) -> Result<()> {
         let mut completed = 0;
         let mut client = None;
         for file in files {
@@ -418,6 +418,7 @@ impl ControlService {
                 client,
                 &send,
                 cancel,
+                allow_mirror && token.is_none(),
             );
             tokio::pin!(work);
             loop {
@@ -426,7 +427,7 @@ impl ControlService {
                     Some(progress) = receive.recv() => self.native_progress(operation, json!({
                         "phase":progress["phase"],"currentFile":file.path,
                         "downloadedBytes":completed + progress["bytesRead"].as_u64().unwrap_or(0),
-                        "message":format!("{}：{}",if progress["phase"] == "downloading" {"下载中"} else {"校验中"},file.path)})),
+                        "message":progress["message"].as_str().map(str::to_owned).unwrap_or_else(|| format!("{}：{}",if progress["phase"] == "downloading" {"下载中"} else {"校验中"},file.path))})),
                 }
             }
             completed += file.bytes;

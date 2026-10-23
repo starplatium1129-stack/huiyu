@@ -175,6 +175,11 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
         {
             Ok(win) => {
                 state.info("open atelier: window built");
+                if pathname == "/control?section=control-setup" {
+                    // Consume only after a window exists. Failed startup keeps
+                    // the destination available for the next application start.
+                    let _ = std::fs::remove_file(state.paths.config_root.join("setup-restart.json"));
+                }
                 if let Err(error) = apply_window_placement(&win, &placement) { state.warn(&format!("restore atelier bounds failed: {error}")); }
                 #[cfg(windows)]
                 if let Err(error) = crate::window_icon::set_window_icons(&win) { state.warn(&format!("set atelier icons failed: {error}")); }

@@ -15,6 +15,7 @@ import shutil
 import struct
 import sys
 import tempfile
+import time
 
 sys.dont_write_bytecode = True
 for _key in ("HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE", "HF_HUB_DISABLE_TELEMETRY"):
@@ -34,6 +35,10 @@ profile = sibling("huiyu_anima_profile", HERE / "anima_conversion_profile.py")
 header_tools = sibling("huiyu_anima_header", HERE.parents[1] / "scripts/maintenance/inspect-anima-checkpoint.py")
 WEIGHTS = ("transformer", "text_conditioner", "text_encoder", "vae")
 PROBES = ["", "A small blue bird.", "动漫，水彩画。"]
+
+
+def progress(message):
+    print("HUIYU:CONVERT|" + message, file=sys.stderr, flush=True)
 
 
 def safe_config(value):
@@ -201,6 +206,8 @@ def save_weights(runtime_info, models, paths, headers, mapping, destination):
     torch = runtime_info["torch"]
     dtype_map = {"F16": torch.float16, "BF16": torch.bfloat16, "F32": torch.float32}
     for component in WEIGHTS:
+        progress(f"读取并转换 {component} 参数")
+        reported = 0.0
         source = source_name(component)
         # Re-check bounded headers immediately before reading CPU tensor payloads.
         if header_tools.read_header(paths[source]) != headers[source]:
@@ -209,7 +216,10 @@ def save_weights(runtime_info, models, paths, headers, mapping, destination):
         with runtime_info["safe_open"](str(paths[source]), framework="pt", device="cpu") as file:
             if set(file.keys()) != set(headers[source]):
                 raise ValueError(f"Input keys changed during conversion: {source}")
-            for new, old in mapping[component].items():
+            for index, (new, old) in enumerate(mapping[component].items()):
+                if time.monotonic() - reported >= 0.5:
+                    progress(f"读取 {component} 参数：{index}/{len(mapping[component])}")
+                    reported = time.monotonic()
                 tensor = file.get_tensor(old)
                 expected = headers[source][old]
                 if (list(tensor.shape) != expected["shape"] or tensor.dtype != dtype_map[expected["dtype"]] or
@@ -218,6 +228,7 @@ def save_weights(runtime_info, models, paths, headers, mapping, destination):
                 state[new] = tensor
         model = models.pop(component)
         model.load_state_dict(state, strict=True, assign=True)
+        progress(f"保存 {component} 原生权重分片")
         model.save_pretrained(str(destination / component), safe_serialization=True, max_shard_size="2GB")
         del model, state
 
@@ -258,6 +269,7 @@ def apply(runtime_info, models, loaded_tokenizers, paths, headers, mapping, repo
         staged = Path(temporary)
         save_weights(runtime_info, models, paths, headers, mapping, staged)
         for name, tokenizer in loaded_tokenizers.items():
+            progress(f"保存并核对 {name} 分词文件")
             folder = staged / name
             tokenizer.save_pretrained(str(folder))
             if name == "tokenizer":
@@ -276,16 +288,21 @@ def apply(runtime_info, models, loaded_tokenizers, paths, headers, mapping, repo
                           "t5_tokenizer": "T5TokenizerFast", "scheduler": "FlowMatchEulerDiscreteScheduler"}.items():
             index[name] = ["transformers" if name in {"text_encoder", "tokenizer", "t5_tokenizer"} else "diffusers", cls]
         write_json(staged / "model_index.json", index)
+        progress("核对已保存权重的名称、形状与精度")
         verify_saved_weights(staged, headers, mapping)
         sibling("huiyu_anima_worker_layout", HERE / "worker.py").validate_model(str(staged))
         completed = {**report, "mode": "converted", "tensorDataRead": True, "outputWritten": True,
                      "weightTensorDataRead": True,
                      "weightsStrictlyLoaded": True, "savedKeyShapeDtypeVerified": True}
         hashing = sibling("huiyu_conversion_hash", HERE / "native_hash.py")
-        completed["outputs"] = [{"path": path.relative_to(staged).as_posix(), "bytes": path.stat().st_size,
-                                 "sha256": hashing.file_sha256(path)}
-                                for path in sorted(staged.rglob("*")) if path.is_file()]
+        completed["outputs"] = []
+        for path in sorted(staged.rglob("*")):
+            if path.is_file():
+                progress(f"校验转换结果：{path.relative_to(staged).as_posix()}")
+                completed["outputs"].append({"path": path.relative_to(staged).as_posix(), "bytes": path.stat().st_size,
+                                             "sha256": hashing.file_sha256(path)})
         write_json(staged / "conversion.json", completed)
+        progress("保存已校验的转换结果")
         publish(staged, output)
     return completed
 
@@ -307,7 +324,9 @@ def convert(args):
               "license": "Conversion mappings: Apache-2.0; source model/tokenizer licenses remain separate."}
     if not args.check and not args.apply:
         return report
+    progress("加载原生转换依赖，尚未读取完整权重")
     info = runtime()
+    progress("核对模型结构与本地分词器")
     models = schemas_and_models(info, headers, mapping, args.profile)
     derived = verify_derived_rope(info, paths, headers, args.profile)
     loaded_tokenizers = tokenizers(info, paths)

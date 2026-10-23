@@ -156,12 +156,22 @@ pub async fn set_workspace(
 }
 
 #[tauri::command]
-pub fn restart_for_setup(app: AppHandle, state: State<AppState>) {
-    state.quitting.store(true, std::sync::atomic::Ordering::Relaxed);
+pub fn restart_for_setup(app: AppHandle, state: State<AppState>) -> Result<(), String> {
+    if state.quitting.swap(true, Ordering::SeqCst) { return Ok(()); }
+    // Preserve the user's destination across the process boundary, including a
+    // launch inherited from Windows autostart with --hidden.
+    if let Err(error) = crate::maintenance_protocol::write_json(
+        &state.paths.config_root.join("setup-restart.json"), &true,
+    ) {
+        state.quitting.store(false, Ordering::SeqCst);
+        return Err(format!("无法保存重启位置，应用尚未退出：{error}"));
+    }
+    state.info("Restart requested after setup; the next host will reopen configuration");
     // This synchronous command runs on the main thread. restart() skips
     // ExitRequested there, leaving our gateway alive; queue the normal exit
     // events so the existing cleanup releases the port before relaunch.
     app.request_restart();
+    Ok(())
 }
 
 #[tauri::command]

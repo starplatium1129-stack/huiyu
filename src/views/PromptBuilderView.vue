@@ -72,6 +72,7 @@
           :busy="generationBusy"
           :presentation="generationPresentation"
           :online="engineOnline"
+          :provider="animaState.provider" :readiness-text="engineStatusText"
           :size="genBarSize"
           :anima-sizes="animaBarSizes"
           :show-size="!actionBarDocked" :docked="actionBarDocked"

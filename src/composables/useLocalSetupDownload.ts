@@ -5,20 +5,21 @@ import { localSetupApi } from '../api/localSetupApi.ts'
 export function useLocalSetupDownload(workspace: Ref<string>, ready: Ref<boolean>, onResult: (result: LocalSetupDownloadResult) => void) {
   const activeId = ref(''), bytesRead = ref(0), expectedBytes = ref(0), phase = ref('downloading')
   const notices = ref<Record<string, string>>({}), failed = ref<Record<string, boolean>>({})
+  const progressMessage = ref('')
   let controller: AbortController | null = null, disposed = false
   function cancel() {
     const id = activeId.value
-    controller?.abort(); controller = null; activeId.value = ''
+    controller?.abort(); controller = null; activeId.value = ''; progressMessage.value = ''
     if (id) { notices.value = { ...notices.value, [id]: '已取消下载，已有模型保留；已接收的部分可在重试时续传' }; failed.value = { ...failed.value, [id]: true } }
   }
   async function download(model: LocalSetupModel) {
     if (disposed || activeId.value || !ready.value || !model.preparation) return
     const request = new AbortController(), confirmedWorkspace = workspace.value
-    controller = request; activeId.value = model.id; bytesRead.value = 0; expectedBytes.value = model.preparation.expectedBytes; phase.value = 'checking'
+    controller = request; activeId.value = model.id; bytesRead.value = 0; expectedBytes.value = model.preparation.expectedBytes; phase.value = 'checking'; progressMessage.value = ''
     notices.value = { ...notices.value, [model.id]: '' }
     try {
       const result = await localSetupApi.downloadModel(model.id, { workspacePath: confirmedWorkspace, signal: request.signal, onProgress(event) {
-        if (!disposed && controller === request && !request.signal.aborted) { bytesRead.value = event.bytesRead; expectedBytes.value = event.expectedBytes; phase.value = event.phase }
+        if (!disposed && controller === request && !request.signal.aborted) { bytesRead.value = event.bytesRead; expectedBytes.value = event.expectedBytes; phase.value = event.phase; progressMessage.value = event.message ?? '' }
       } })
       if (disposed || controller !== request || request.signal.aborted) return
       if (result.path !== model.path || workspace.value !== confirmedWorkspace) throw new Error('下载结果与当前工作区清单不一致，请重新检查')
@@ -37,5 +38,5 @@ export function useLocalSetupDownload(workspace: Ref<string>, ready: Ref<boolean
   watch(workspace, () => { cancel(); notices.value = {}; failed.value = {} })
   watch(ready, value => { if (!value) cancel() })
   onUnmounted(() => { disposed = true; cancel() })
-  return { activeId, bytesRead, expectedBytes, phase, notices, failed, download, cancel }
+  return { activeId, bytesRead, expectedBytes, phase, progressMessage, notices, failed, download, cancel }
 }

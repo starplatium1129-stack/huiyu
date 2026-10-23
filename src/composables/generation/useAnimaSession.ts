@@ -202,7 +202,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
           && (!options.isPopular() || !endfieldAnimaBinding(options.getPopularCharacterId?.(), family)
             || endfieldAnimaBinding(options.getPopularCharacterId?.(), family, model.id)))
         : familyModels
-      const modelIdCurrent = visibleModels.some(model => model.id === state.value.modelId)
+      const providerChanged = state.value.provider !== (data.provider === 'native' ? 'native' : 'comfy')
+      const modelIdCurrent = visibleModels.some(model => model.id === state.value.modelId && (!providerChanged || model.available))
         ? state.value.modelId
         : (visibleModels.find(model => model.available)?.id || visibleModels[0]?.id || '')
       const endfield = endfieldAnimaBinding(options.getPopularCharacterId?.(), family, modelIdCurrent)
@@ -254,7 +255,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     } catch (error) {
       if (statusRequest !== controller || controller.signal.aborted) return latest()
       if (error instanceof ApiClientError && error.kind === 'aborted') return false
-      patchState({ online: false, managedStartAvailable: false, automaticMaskAvailable: false, automaticMaskStatus: undefined, autoHiresModel: undefined, checkMsg: `${options.getFamily() === 'krea2' ? 'Krea 2' : 'Anima'} 离线（网关状态接口不可用）` })
+      patchState({ online: false, managedStartAvailable: false, automaticMaskAvailable: false, automaticMaskStatus: undefined, autoHiresModel: undefined, checkMsg: error instanceof Error ? `绘图状态未确认：${error.message}` : '绘图状态未确认，请重新检测' })
       return true
     } finally {
       if (statusRequest === controller) statusRequest = null

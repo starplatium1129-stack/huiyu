@@ -24,9 +24,10 @@ export interface NativeSetupPlan {
   network?: { runtimeSource: boolean; modelSource: boolean; message: string }
   supported: boolean
   reasons: string[]
+  warnings?: string[]
   freeBytes: number | null
   runtime: { id: string; label: string; downloadBytes: number; requiredBytes: number; recoverableBytes?: number; recoveryReady?: boolean; sources: { label: string; url: string; licenseUrl: string }[]; installed: boolean }
-  models: { preparation?: 'checkpoint-conversion' | 'complete-model'; checkpointFilename?: string | null; requiresAccess: boolean; family: string; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
+  models: { preparation?: 'checkpoint-conversion' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; requiresAccess: boolean; family: string; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
   resources: NativeImageResource[]
   activeEngine: string
   configuredEngine: string
@@ -107,6 +108,7 @@ function validPlan(value: ApiResponseObject): boolean {
     && (hardware.otherDevices === undefined || Array.isArray(hardware.otherDevices) && hardware.otherDevices.every(device => object(device)
       && nonempty(device.name) && (device.driverVersion === null || typeof device.driverVersion === 'string')))
     && typeof value.supported === 'boolean' && Array.isArray(value.reasons) && value.reasons.every(reason => typeof reason === 'string')
+    && (value.warnings === undefined || Array.isArray(value.warnings) && value.warnings.every(warning => typeof warning === 'string'))
     && (value.freeBytes === null || bytes(value.freeBytes))
     && object(runtime) && nonempty(runtime.id) && nonempty(runtime.label) && bytes(runtime.downloadBytes) && bytes(runtime.requiredBytes)
     && (runtime.recoverableBytes === undefined || bytes(runtime.recoverableBytes))
@@ -114,6 +116,7 @@ function validPlan(value: ApiResponseObject): boolean {
     && typeof runtime.installed === 'boolean' && Array.isArray(runtime.sources) && runtime.sources.every(source => object(source)
       && nonempty(source.label) && secureUrl(source.url) && secureUrl(source.licenseUrl))
     && Array.isArray(models) && models.length > 0 && models.every(model => object(model) && nonempty(model.id) && nonempty(model.label)
+      && (model.checkpointOptional === undefined || typeof model.checkpointOptional === 'boolean')
       && (model.preparation === undefined || ['checkpoint-conversion', 'complete-model'].includes(String(model.preparation)))
       && (model.checkpointFilename === undefined || model.checkpointFilename === null || nonempty(model.checkpointFilename))
       && typeof model.requiresAccess === 'boolean' && ['anima', 'krea2', 'qwen-image', 'moss-image'].includes(String(model.family))

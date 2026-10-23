@@ -260,10 +260,22 @@ impl ControlService {
         if let Some(op) = state.operation.as_mut().filter(|op| op["id"] == id["id"]) {
             op["stageIndex"] = json!(index);
             op["message"] = op["stages"][index].clone();
+            op["workDone"] = json!(0);
+            op["workTotal"] = json!(0);
         }
         self.checkpoint_operation(&mut state, true);
     }
+    fn work_progress(&self, id: &Value, done: u64, total: u64, message: &str) {
+        let mut state = self.state.lock().unwrap();
+        if let Some(op) = state.operation.as_mut().filter(|op| op["id"] == id["id"] && op["status"] == "running") {
+            op["workDone"] = json!(done.min(total));
+            op["workTotal"] = json!(total);
+            op["message"] = json!(self.redact(message));
+        }
+        self.checkpoint_operation(&mut state, false);
+    }
     fn finish(&self, id: &Value, result: Result<()>) {
+        let cancelled = result.as_ref().err().is_some_and(|error| error.status == 499);
         let error = result.err().map(|e| self.redact(&e.message));
         if let Some(error) = &error {
             self.log(error);
@@ -276,6 +288,7 @@ impl ControlService {
                 "completed"
             });
             op["finishedAt"] = json!(now());
+            op["cancelled"] = json!(cancelled);
             op["error"] = json!(error.clone().unwrap_or_default());
             op["message"] = json!(error.unwrap_or("操作完成".into()));
         }

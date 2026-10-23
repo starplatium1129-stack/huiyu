@@ -66,6 +66,7 @@ export interface LocalSetupVerificationResult {
 
 export interface LocalSetupDownloadProgress extends LocalSetupVerificationProgress {
   phase: 'checking' | 'downloading' | 'verifying'
+  message?: string
 }
 export interface LocalSetupDownloadResult {
   type: 'result'

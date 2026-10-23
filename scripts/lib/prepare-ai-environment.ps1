@@ -15,6 +15,18 @@ $setupRoot=Join-Path $workspacePath '.setup'
 $stageRoot=Join-Path $setupRoot 'staging'
 $stagePath=Join-Path $stageRoot 'environment'
 if (-not (Test-Path -LiteralPath $workspacePath -PathType Container)) { throw 'AI 工作区尚未建立' }
+function Write-EnvironmentProgress([string]$message,[long]$done=0,[long]$total=0) {
+  [Console]::Error.WriteLine(('HUIYU:ENV|'+$done+'|'+$total+'|'+$message))
+  [Console]::Error.Flush()
+}
+function Get-EnvironmentSha256([string]$path) {
+  $stream=[IO.File]::OpenRead($path)
+  try {
+    $hash=[Security.Cryptography.SHA256CryptoServiceProvider]::new()
+    try { return [BitConverter]::ToString($hash.ComputeHash($stream)).Replace('-','').ToLowerInvariant() }
+    finally { $hash.Dispose() }
+  } finally { $stream.Dispose() }
+}
 $resolvedWorkspace=(Get-Item -LiteralPath $workspacePath).FullName
 function Assert-InWorkspace([string]$path) {
   $resolved=[IO.Path]::GetFullPath($path)
@@ -35,6 +47,7 @@ New-Item -ItemType Directory -Path $stagePath | Out-Null
 function Expand-Package([string]$source,[string]$destination) {
   if (-not (Test-Path -LiteralPath $source -PathType Leaf)) { throw '缺少已经校验的运行包' }
   New-Item -ItemType Directory -Force -Path $destination | Out-Null
+  Write-EnvironmentProgress ('正在解压：'+[IO.Path]::GetFileName($source))
   & "$env:SystemRoot\System32\tar.exe" -xf $source -C $destination
   if ($LASTEXITCODE -ne 0) { throw '运行包解压失败；请查看日志与 Windows tar 支持情况' }
 }
@@ -57,35 +70,30 @@ function Install-Node([string]$source,[string]$name,[string]$comfy,[string]$pyth
   if (Test-Path -LiteralPath $requirements) {
     $pipCache=Join-Path $setupRoot 'pip-cache'
     Assert-InWorkspace $pipCache
-    & $python -I -B -m pip install --disable-pip-version-check --cache-dir $pipCache -r $requirements
-    if ($LASTEXITCODE -ne 0) { throw ('节点依赖安装失败：'+$name) }
+    $pipSources=@('https://pypi.tuna.tsinghua.edu.cn/simple','https://pypi.org/simple')
+    $pipExit=-1
+    foreach ($pipSource in $pipSources) {
+      Write-EnvironmentProgress ('正在安装节点依赖：'+$name+'，来源：'+$pipSource)
+      Write-Output ('安装节点依赖：'+$name+'，来源：'+$pipSource)
+      # Native stderr carries retry warnings too. Let pip finish and use its
+      # exit code, rather than terminating on PowerShell 5.1 ErrorRecord output.
+      $previousPreference=$ErrorActionPreference
+      try {
+        $ErrorActionPreference='Continue'
+        & $python -I -B -m pip install --disable-pip-version-check --cache-dir $pipCache --index-url $pipSource --retries 2 --timeout 30 -r $requirements
+        $pipExit=$LASTEXITCODE
+      } finally { $ErrorActionPreference=$previousPreference }
+      if ($pipExit -eq 0) { break }
+      Write-Output ('节点依赖来源未完成，将尝试下一来源；缓存保留：'+$name)
+    }
+    if ($pipExit -ne 0) { throw ('节点依赖安装失败：'+$name+'；清华镜像和 PyPI 均未完成，请检查网络后重试，已下载缓存保留') }
   }
   New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
   Assert-InWorkspace $nodeRoot
   Assert-InWorkspace $target
   Move-Item -LiteralPath $nodeRoot -Destination $target
 }
-function Write-CodeBaseline([string]$portable) {
-  $files=[ordered]@{}
-  function Add-CodeFiles([string]$relative) {
-    $directory=Join-Path $portable $relative
-    Assert-InWorkspace $directory
-    foreach ($entry in Get-ChildItem -LiteralPath $directory -Force) {
-      if ($relative -eq 'ComfyUI' -and $entry.Name -in @('models','input','output','temp','user')) { continue }
-      if ($entry.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw '受管代码中不能包含目录或文件链接' }
-      $name=$relative+'/'+$entry.Name
-      if ($entry.PSIsContainer) { Add-CodeFiles $name }
-      else { $files[$name]=(Get-FileHash -LiteralPath $entry.FullName -Algorithm SHA256).Hash.ToLowerInvariant() }
-    }
-  }
-  Add-CodeFiles 'ComfyUI'
-  Add-CodeFiles 'python_embeded'
-  $baseline=[ordered]@{ schemaVersion=1; archiveSha256=$ArchiveSha256; files=$files }
-  $target=Join-Path $portable 'huiyu-code-integrity.json'
-  $pending=$target+'.pending'
-  [IO.File]::WriteAllText($pending,($baseline | ConvertTo-Json -Depth 5 -Compress),[Text.UTF8Encoding]::new($false))
-  Move-Item -LiteralPath $pending -Destination $target -Force
-}
+
 try {
   if ($Environment.StartsWith('llama-')) {
     $target=Join-Path $workspacePath 'Chat\runtime'
@@ -111,7 +119,7 @@ try {
     $managedRoot=Join-Path $workspacePath '.runtimes\comfy'
     Assert-InWorkspace $managedRoot
     if ($ArchiveSha256 -notmatch '^[0-9a-f]{64}$' -or
-        (Get-FileHash -LiteralPath $Archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $ArchiveSha256) { throw '运行包校验身份不匹配，请从绘遇控制室重新校验' }
+        (Get-EnvironmentSha256 $Archive) -ne $ArchiveSha256) { throw '运行包校验身份不匹配，请从绘遇控制室重新校验' }
     Expand-Package $Archive (Join-Path $stagePath 'comfy')
     $comfy=Find-Directory (Join-Path $stagePath 'comfy') 'main.py'
     $portableRoot=Split-Path -Parent $comfy
@@ -149,7 +157,8 @@ try {
     [IO.File]::WriteAllText((Join-Path $comfy 'extra_model_paths.yaml'),($modelConfig | ConvertTo-Json -Depth 4),[Text.UTF8Encoding]::new($false))
     $receipt=[ordered]@{ schemaVersion=1; environment=$Environment; archiveSha256=$ArchiveSha256 }
     [IO.File]::WriteAllText((Join-Path $portableRoot 'huiyu-environment.json'),($receipt | ConvertTo-Json -Compress),[Text.UTF8Encoding]::new($false))
-    Write-CodeBaseline $portableRoot
+    # The gateway hashes fresh code and records identities before installation completes.
+    Write-EnvironmentProgress '正在保存运行环境，保留已有模型与资源'
     # No user files enter staging. Cancellation at any publish boundary leaves
     # them intact in the old location or the preserved directory for the retry.
     Assert-InWorkspace $portableRoot

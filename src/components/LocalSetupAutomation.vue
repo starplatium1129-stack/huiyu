@@ -23,7 +23,8 @@
       <SetupTransferProgress :title="activePackage?.label || progressSteps[stageIndex]?.label || '正在核对准备进度'"
         :phase="(automation.download.activeId.value ? automation.download.phase.value : automation.stage.value) ?? 'preparing'"
         :received="automation.download.bytesRead.value" :total="automation.download.expectedBytes.value"
-        :message="automation.message.value" scope="file">
+        :completed-files="automation.workProgress.value?.done" :total-files="automation.workProgress.value?.total"
+        :message="automation.download.activeId.value && automation.download.progressMessage.value || automation.message.value" scope="file">
         <button class="btn btn-ghost" type="button" :disabled="automation.recoveryPending.value || ['pending', 'accepted'].includes(automation.cancelState.value)" @click="automation.cancel">{{ automation.cancelState.value === 'pending' ? '取消中…' : automation.cancelState.value === 'accepted' ? '等待步骤结束…' : automation.cancelState.value === 'failed' ? '重试取消' : '取消准备' }}</button>
       </SetupTransferProgress>
     </template>
@@ -35,8 +36,7 @@
             <div class="setup-choice-body">
               <label for="setup-image-model" class="setup-field-label">选择绘图模型</label>
               <StudioSelect id="setup-image-model" v-model="automation.modelId.value" label="绘图模型" :options="imageOptions" :disabled="!automation.drawing.value" />
-              <small v-if="selectedImage">模型文件 {{ formatBytes(selectedImage.preparation!.expectedBytes) }}。{{ selectedImage.id === snapshot.recommendedModel ? '首次使用可以保留这个推荐。' : '可随时切换推荐模型；已下载的文件会保留。' }}</small>
-              <small>一键配置会自动准备 ComfyUI 和绘图必需文件，无需手动填写路径。</small>
+              <small v-if="selectedImage">{{ formatBytes(selectedImage.preparation!.expectedBytes) }} · ComfyUI</small>
               <label v-if="automation.drawing.value" class="setup-addon"><input v-model="automation.loras.value" type="checkbox" /><span><strong>添加宁宁 / 夏目角色包</strong><small>用于绘制这两位角色，其他绘图可以不选。</small></span></label>
             </div>
           </article>
@@ -47,14 +47,14 @@
               <small>{{ automation.recommendation.value.label }} · 使用本机聊天</small>
             </div>
           </article>
-          <label v-if="automation.drawing.value && snapshot.comfy.installation === 'present'" class="setup-addon"><input v-model="automation.rebuildComfy.value" type="checkbox" /><span><strong>从校验运行包重建环境</strong><small>用于旧环境升级或修复；模型继续可用，旧环境和用户资源完整保留，不沿用旧代码。</small></span></label>
+          <details v-if="automation.drawing.value && snapshot.comfy.installation === 'present'"><StudioDisclosureSummary>修复环境</StudioDisclosureSummary><div data-disclosure-content><label class="setup-addon"><input v-model="automation.rebuildComfy.value" type="checkbox" /><span><strong>重新解压运行包</strong><small>旧环境与模型保留；仅在环境损坏时使用。</small></span></label></div></details>
           <div v-if="automation.drawing.value && automation.externalEnvironment.value" class="setup-existing">
             <ArchiveIcon name="info" /><strong>使用已有 ComfyUI</strong><small>从原入口启动，再回到这里检查。</small>
             <div class="setup-buttons"><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">重新检查连接</button><button v-if="canChooseWorkspace" class="btn btn-quiet btn-sm" type="button" @click="emit('workspace')">换新文件夹自动安装</button></div>
           </div>
           <div v-else-if="automation.drawing.value && (snapshot.comfy.installation !== 'present' || automation.rebuildComfy.value)" class="setup-runtime">
-            <strong>自动安装需要 Windows 和 NVIDIA 显卡</strong>
-            <small>AMD / Intel 显卡暂不支持此一键安装。下载文件不代表本机可以运行；已有可用的 ComfyUI 可在下方手动连接。</small>
+            <strong>Windows · NVIDIA 显卡</strong>
+            <small>AMD / Intel 暂不支持自动安装</small>
             <details><StudioDisclosureSummary>显卡运行包选项</StudioDisclosureSummary><div data-disclosure-content><StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图运行环境" placeholder="选择适合显卡的运行包" :options="[{ value: 'comfy-nvidia', label: 'NVIDIA 显卡 · CUDA 13.0（默认）' }, { value: 'comfy-cu126', label: '较旧 NVIDIA 显卡 · CUDA 12.6' }]" /></div></details>
           </div>
           <div v-if="automation.chatId.value && snapshot.chat?.runtimePresent" class="setup-existing" role="status">
@@ -66,8 +66,7 @@
         </div>
         <div class="setup-manifest">
           <div class="setup-manifest-heading"><h3>本次下载</h3><strong>{{ formatBytes(automation.downloadBytes.value) }}</strong></div>
-          <p v-if="automation.hasSelection.value" class="setup-manifest-intro">已自动加入所选功能需要的文件，不必逐项寻找。</p>
-          <p v-else class="setup-manifest-intro">勾选 AI 绘图或本地聊天后，这里会列出需要的文件与大小。</p>
+          <p v-if="!automation.hasSelection.value" class="setup-manifest-intro">请选择绘图或聊天</p>
           <ul class="setup-packages">
             <li v-for="model in automation.plan.value" :key="model.id"><ArchiveIcon :name="packagePresent(model) ? 'success' : model.kind === 'runtime' ? 'gear' : model.kind === 'chat' ? 'chat' : 'model'" /><div><strong>{{ packageName(model) }}</strong><span>{{ packagePresent(model) ? '已有文件 · 将校验' : formatBytes(model.preparation!.expectedBytes) }}</span></div><a :href="model.preparation!.licenseUrl" target="_blank" rel="noopener noreferrer" :aria-label="`${model.label}的使用许可，在新窗口打开`">许可</a></li>
           </ul>

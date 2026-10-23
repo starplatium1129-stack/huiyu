@@ -165,7 +165,7 @@ impl ControlService {
                 .as_str()
                 .is_some_and(|kind| kind.starts_with("mode-"))
             {
-                self.stage(op, 1);
+                self.stage(op, if op["kind"] == "comfy-start" { 2 } else { 1 });
             }
             return Ok(());
         }
@@ -187,6 +187,7 @@ impl ControlService {
         };
         if index == 1 {
             self.comfy_cancel.lock().unwrap().take();
+            if start && result.is_err() { return result.map(|_| ()); }
         }
         if self.shutdown.is_cancelled() {
             return Err(ApiError::new(499, "ABORTED", "服务操作已取消"));
@@ -195,7 +196,7 @@ impl ControlService {
             .as_str()
             .is_some_and(|kind| kind.starts_with("mode-"))
         {
-            self.stage(op, 1);
+            self.stage(op, if op["kind"] == "comfy-start" { 2 } else { 1 });
         }
         let online = self.online(index, &settings).await;
         if online != start {
@@ -298,6 +299,8 @@ impl ControlService {
                 "正在启动语音服务",
                 "正在验证聊天环境",
             ]
+        } else if kind == "comfy-start" {
+            vec!["检查环境文件", "启动 Python 与绘图节点", "确认服务连接"]
         } else {
             vec!["正在操作服务", "正在验证服务状态"]
         };

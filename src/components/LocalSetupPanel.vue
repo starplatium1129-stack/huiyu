@@ -1,10 +1,9 @@
 <template>
   <section ref="setupRoot" class="local-setup" aria-labelledby="local-setup-title">
     <div class="setup-heading">
-      <div><span class="panel-kicker">从推荐模型开始</span><h2 id="local-setup-title" ref="setupTitle" tabindex="-1">模型下载与自动配置</h2></div>
+      <div><h2 id="local-setup-title" ref="setupTitle" tabindex="-1">ComfyUI 绘图与本地聊天</h2></div>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="loading || setupBusy || workspaceSaving" @click="refresh"><ArchiveIcon name="refresh" />{{ loading ? '检查中…' : '重新检查' }}</button>
     </div>
-    <p class="setup-note">选好存放位置和模型，点击「下载并自动配置」。绘遇会下载文件、校验完整性，再安装并连接所选功能。</p>
     <p v-if="!isLocal" class="setup-note">请在运行绘遇的电脑上完成配置。</p>
     <template v-else>
       <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
@@ -16,7 +15,7 @@
       </div>
       <div class="setup-location-card">
         <span class="setup-folder"><ArchiveIcon name="folder" /></span>
-        <div><strong>存放位置</strong><code>{{ snapshot?.workspace.path || (loading ? '正在读取位置…' : '位置尚未确认') }}</code><span>模型和运行环境会放在这里。已有文件会先校验，无需重复下载。</span></div>
+        <div><strong>存放位置</strong><code>{{ snapshot?.workspace.path || (loading ? '正在读取位置…' : '位置尚未确认') }}</code></div>
         <button v-if="desktop" ref="workspaceButton" class="btn btn-ghost btn-sm" type="button" :disabled="blocked || loading || workspaceLoading || workspaceSaving || setupBusy || manualBusy" @click="chooseWorkspace">{{ workspaceLoading ? '选择中…' : '更换位置' }}</button>
       </div>
       <p v-if="!desktop" class="setup-note">需要更换存放位置时，请在绘遇桌面版中选择文件夹。</p>

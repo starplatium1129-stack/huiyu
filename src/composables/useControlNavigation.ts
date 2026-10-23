@@ -24,7 +24,7 @@ const aliases: Record<string, string> = {
 export function useControlNavigation(imageProvider: Ref<'native' | 'comfy' | null | undefined>) {
   const route = useRoute()
   const activeSection = computed(() => {
-    const id = route.hash.slice(1)
+    const id = route.hash.slice(1) || (typeof route.query.section === 'string' ? route.query.section : '')
     if (controlSections.some(section => section.id === id)) return id
     if (aliases[id]) return aliases[id]
     if (route.query.model || route.query.resource) return 'control-setup'

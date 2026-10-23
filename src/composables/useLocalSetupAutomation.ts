@@ -22,6 +22,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const recoveryPending=ref(!!draft?.operation)
   const busy=ref(!!draft?.operation),message=ref(''),error=ref(''),completed=ref(false)
   const engineRestartRequired=ref(false)
+  const workProgress=ref<{done:number;total:number}|null>(null)
   const cancelState=ref<'idle'|'pending'|'accepted'|'failed'>('idle'),operationUncertain=ref(false)
   const recommendation=computed(()=>localChatRecommendation(snapshot.value.hardware))
   const imageModels=computed(()=>snapshot.value.models.filter(model=>model.id.startsWith('anima-')&&model.preparation))
@@ -113,6 +114,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
       if(lateCancellation)void cancel()
       await waitLocalSetupOperation(result,{timeoutMs:60*60*1000,onOperation:operation=>{
         if(disposed)checkpoint()
+        workProgress.value=operation?.status==='running'?{done:operation.workDone??0,total:operation.workTotal??0}:null
         if(operation?.id!==id||operation.status==='failed'||operation.status==='completed'){
           activeOperation=null;clearSetupOperation(confirmedWorkspace,id)
         }
@@ -152,6 +154,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     onConfigured()
   }
   function beginRun(){
+    workProgress.value=null
     busy.value=true;cancelled=false;cancelState.value='idle';operationUncertain.value=false;completed.value=false;engineRestartRequired.value=false;error.value=''
   }
   async function startExisting(){
@@ -176,7 +179,10 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     try{
       stage.value='environment'
       for(const id of runtime)await fetchFile(id)
-      if(prepareComfy)await waitOperation(await localSetupApi.prepareEnvironment(selectedEnvironment,confirmedWorkspace),confirmedWorkspace)
+      if(prepareComfy){
+        await waitOperation(await localSetupApi.prepareEnvironment(selectedEnvironment,confirmedWorkspace),confirmedWorkspace)
+        rebuildComfy.value=false
+      }
       if(prepareLlama)await waitOperation(await localSetupApi.prepareEnvironment(llamaEnvironment.value,confirmedWorkspace),confirmedWorkspace)
       stage.value='models'
       for(const id of weights)await fetchFile(id)
@@ -205,7 +211,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
         : '聊天环境与文件已准备。进入角色房间发送一条短消息，确认本机实际效果。'
       refresh()
     }catch(cause){if(!disposed)error.value=cause instanceof Error?cause.message:'准备未完成，请重试'}
-    finally{if(!disposed)busy.value=!!activeOperation}
+    finally{if(!disposed){busy.value=!!activeOperation;if(!activeOperation)refresh()}}
   }
   async function cancel(){
     if(disposed||!busy.value||recoveryPending.value)return
@@ -264,5 +270,5 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   function recoverLateOperation(){if(!busy.value)void recoverOperation()}
   onMounted(()=>{window.addEventListener('huiyu:setup-operation',recoverLateOperation);void recoverOperation()})
   onUnmounted(()=>{disposed=true;download.cancel();window.removeEventListener('huiyu:setup-operation',recoverLateOperation)})
-  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,rebuildComfy,busy,message,error,completed,engineRestartRequired,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,externalEnvironment,canStartExisting,environmentRequired,serviceMustStop,stage,startExisting,run,cancel,cancelState,operationUncertain,recoveryPending,retryOperation}
+  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,rebuildComfy,busy,message,error,completed,engineRestartRequired,workProgress,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,externalEnvironment,canStartExisting,environmentRequired,serviceMustStop,stage,startExisting,run,cancel,cancelState,operationUncertain,recoveryPending,retryOperation}
 }

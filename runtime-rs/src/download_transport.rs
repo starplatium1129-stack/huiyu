@@ -32,6 +32,21 @@ pub(crate) enum CopyEvent {
     AfterWrite { received: u64, report: bool },
 }
 
+// Public files retain the original revision/path and are still verified by
+// the caller's fixed digest. Credential-bearing requests must not use this.
+pub(crate) fn public_mirror(url: &str) -> Option<String> {
+    if let Some(path) = url.strip_prefix("https://huggingface.co/") {
+        return path.contains("/resolve/").then(|| format!("https://hf-mirror.com/{path}"));
+    }
+    for origin in ["https://download.pytorch.org/whl/", "https://download-r2.pytorch.org/whl/"] {
+        if let Some(path) = url.strip_prefix(origin) {
+            return Some(format!("https://mirrors.nju.edu.cn/pytorch/whl/{path}"));
+        }
+    }
+    url.strip_prefix("https://files.pythonhosted.org/packages/")
+        .map(|path| format!("https://pypi.tuna.tsinghua.edu.cn/packages/{path}"))
+}
+
 /** The caller supplies its authorized URL/client policy. This layer never chooses destinations or publishes files. */
 pub(crate) async fn response(
     client: &reqwest::Client,

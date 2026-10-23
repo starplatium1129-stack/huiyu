@@ -36,6 +36,8 @@ export interface SDStatusResponse { online: boolean; checkpoint: string; models:
 type TunnelStatus = 'active' | 'waiting' | 'disabled'
 
 export interface ControlOperationView {
+  cancelAllowed?: boolean
+  cancelled?: boolean
   id: string
   kind: string
   label: string
@@ -46,6 +48,8 @@ export interface ControlOperationView {
   startedAt: number
   finishedAt: number
   error: string
+  workDone?: number
+  workTotal?: number
 }
 
 interface VoiceProfileView {

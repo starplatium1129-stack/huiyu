@@ -25,6 +25,7 @@ struct DownloadPlan {
     spec: ModelFile,
     url: String,
     id: String,
+    allow_mirror: bool,
 }
 
 // Both installation flows use the same resumable transport, fixed digest check
@@ -38,8 +39,9 @@ pub(super) async fn managed_file(
     client: &reqwest::Client,
     send: &Sender<Value>,
     cancel: &CancellationToken,
+    allow_mirror: bool,
 ) -> Result<Value> {
-    let plan = DownloadPlan { workspace, root, spec, url, id: "native-setup".into() };
+    let plan = DownloadPlan { workspace, root, spec, url, id: "native-setup".into(), allow_mirror };
     download(&plan, client, send, cancel).await
 }
 
@@ -91,6 +93,7 @@ impl ControlService {
             spec,
             url,
             id,
+            allow_mirror: true,
         };
         self.tasks.spawn(async move {
             let _permit = permit;
@@ -369,8 +372,8 @@ async fn download(
         // Tokio may have accepted bytes while its blocking write is still queued.
         // Drain that write before cancellation/error cleanup inspects and retains the file.
         let flushed = output.flush().await;
-        let count = transferred?;
         flushed.map_err(io_error)?;
+        let count = transferred?;
         if count != plan.spec.bytes {
             return Err(ApiError::new(
                 502,
@@ -455,7 +458,7 @@ async fn download(
     if outcome.as_ref().is_err_and(|error| {
         matches!(
             error.code.as_str(),
-            "CANCELLED" | "DOWNLOAD_TIMEOUT" | "DOWNLOAD_FAILED" | "ENOSPC" | "MODEL_IO"
+            "CANCELLED" | "DOWNLOAD_TIMEOUT" | "DOWNLOAD_FAILED" | "DOWNLOAD_RETRYABLE_HTTP" | "DOWNLOAD_HTTP" | "DOWNLOAD_ACCESS" | "ENOSPC" | "MODEL_IO"
         )
     }) && let Some(pending) = temporary.take()
         && pending

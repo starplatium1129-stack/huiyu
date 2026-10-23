@@ -39,7 +39,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const runtimeSpaceEnough = computed(() => !!plan.value && plan.value.freeBytes !== null && plan.value.freeBytes >= plan.value.runtime.requiredBytes)
   const modelSpaceEnough = computed(() => !!plan.value && !!selectedModel.value && plan.value.freeBytes !== null && plan.value.freeBytes >= selectedModel.value.requiredBytes)
   const canInstall = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && !plan.value.runtime.installed && runtimeSpaceEnough.value)
-  const checkpointReady = computed(() => !selectedModel.value?.checkpointFilename || selectedModel.value.installed || !!checkpointPath.value.trim())
+  const checkpointReady = computed(() => !selectedModel.value?.checkpointFilename || selectedModel.value.checkpointOptional || selectedModel.value.installed || !!checkpointPath.value.trim())
   const canDownload = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && plan.value.runtime.installed && selectedModel.value && !selectedModel.value.installed && modelSpaceEnough.value && checkpointReady.value)
   const canActivate = computed(() => !locked.value && currentPlan.value && plan.value?.supported && plan.value.runtime.installed && selectedModel.value?.installed)
   const nativeEnabled = computed(() => currentPlan.value && plan.value?.supported && plan.value.workspaceMatches && plan.value.activeEngine === 'native' && !plan.value.restartRequired && plan.value.runtime.installed && selectedModel.value?.installed)
@@ -160,7 +160,13 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       if (!disposed) {
         if (!hasRunningOperation.value && !operationUncertain.value) { await cancelRequest }
         busy.value = hasRunningOperation.value || operationUncertain.value
-        if (finished) await refreshPlan()
+        if (finished) {
+          if (recovery?.id === id) {
+            try { await saveSetupRecovery(recovery.workspace, null); recovery = null }
+            catch (cause) { operationUncertain.value = true; error.value = '操作已结束，但恢复记录未能清除：' + causeText(cause) }
+          }
+          await refreshPlan()
+        }
       }
     }
   }
@@ -177,6 +183,16 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
         operationUncertain.value = false; busy.value = false; error.value = ''; message.value = '上次请求未被后台接收，可以重新确认清单。'; return
       }
       const value = result.operation
+      if (recovery && isInferenceSetupOperation(value) && value.id === recovery.id
+        && belongsToWorkspace(value) && value.status !== 'running') {
+        await saveSetupRecovery(recovery.workspace, null); recovery = null
+        operation.value = null; operationUncertain.value = false; busy.value = false
+        error.value = ''
+        message.value = value.status === 'failed'
+          ? '上次准备未完成：' + (value.error || value.message) + '。请重新确认许可后继续；这条记录不代表本次检查失败。'
+          : '上次准备已结束，已重新读取当前安装状态。'
+        return
+      }
       // A completed historic receipt is not evidence for the current plan. The
       // plan reads installed resources; recover only an operation still in flight.
       if (!operation.value && !recovery && value?.status !== 'running') {
@@ -205,6 +221,9 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   }
   async function recheck() {
     if (!local() || checking.value || (busy.value && !operationUncertain.value) || observing) return
+    if (operation.value?.status !== 'running' && !operationUncertain.value) {
+      operation.value = null; error.value = ''; message.value = ''
+    }
     // Explicit checks also recover background work after a failed initial read.
     // Internal plan refreshes must not start another operation observer.
     if (await refreshPlan()) await reconcile()

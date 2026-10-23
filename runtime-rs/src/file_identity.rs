@@ -3,7 +3,7 @@ use std::{fs::File, path::Path};
 mod version;
 pub(crate) use version::Version;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub(crate) struct Identity {
     pub dev: u64,
     pub ino: u64,

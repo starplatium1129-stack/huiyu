@@ -28,7 +28,7 @@
           <p>{{ plan.runtime.label }}：{{ plan.runtime.installed ? '已有安装记录' : formatSetupBytes(plan.runtime.downloadBytes) }}<br />{{ plan.model.label }}：{{ plan.model.installed ? '已找到文件' : formatSetupBytes(plan.model.downloadBytes) }}</p>
           <dl class="interrogate-paths"><template v-for="item in paths" :key="item.label"><dt>{{ item.label }}</dt><dd><code>{{ item.path }}</code></dd></template></dl>
           <ul class="interrogate-sources"><li v-for="source in plan.sources" :key="source.url"><a :href="source.url" target="_blank" rel="noopener noreferrer" :aria-label="`${source.label}来源，在新窗口打开`">{{ source.label }}</a><a v-if="source.licenseUrl" :href="source.licenseUrl" target="_blank" rel="noopener noreferrer" :aria-label="`${source.label}许可，在新窗口打开`">许可</a></li></ul>
-          <p class="interrogate-hint">模型版本：<code>{{ plan.model.revision }}</code>。取消后保留已完成的文件，可继续准备。</p>
+          <p class="interrogate-hint">模型版本：<code>{{ plan.model.revision }}</code>。公开模型与 Python 依赖优先尝试国内镜像，失败后切换原始来源；断流自动重试两次。取消或失败会保留已下载部分，重试时续传并核验完整文件。</p>
         </div>
       </details>
     </template>
@@ -42,7 +42,8 @@
     <p v-if="message && !running" role="status">{{ message }}</p>
     <div ref="actions" class="interrogate-actions" tabindex="-1" role="group" aria-label="图片反推操作">
       <button v-if="operationUncertain" class="btn btn-primary" type="button" :disabled="submitting || checking" @click="reconcile">继续核对进度</button>
-      <button v-else-if="!ready && plan" class="btn btn-primary" type="button" :disabled="!canPrepare" @click="prepare"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续准备' : '一键准备' }}</button>
+      <button v-else-if="retryAvailable" class="btn btn-primary" type="button" :disabled="busy || checking || otherBusy || workspacePending" @click="retry"><ArchiveIcon name="download" />{{ checking || submitting ? '正在核对…' : '重试并继续下载' }}</button>
+      <button v-else-if="!ready && plan" class="btn btn-primary" type="button" :disabled="!canPrepare" @click="prepare"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : '一键准备' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
       <small v-if="running">可以离开此页，后台会继续准备。</small>
     </div>
@@ -60,7 +61,7 @@ import { useInterrogateSetup } from '@/composables/useInterrogateSetup'
 import { formatSetupBytes } from '@/utils/localSetupPreparation'
 
 const { plan, operation, readiness, checking, submitting, running, busy, ready, enoughSpace, canPrepare, canCancel,
-  otherBusy, workspacePending, operationUncertain, cancelState, error, message, initialize, refresh, reconcile, prepare, cancel } = useInterrogateSetup()
+  otherBusy, workspacePending, operationUncertain, cancelState, error, message, initialize, refresh, reconcile, prepare, cancel, retryAvailable, retry } = useInterrogateSetup()
 const paths = computed(() => plan.value ? [
   { label: '运行库', path: plan.value.paths.runtimeRoot }, { label: '反推模型', path: plan.value.paths.modelRoot },
   { label: '模型依赖', path: plan.value.paths.depsRoot }, { label: '下载缓存', path: plan.value.paths.cacheRoot },

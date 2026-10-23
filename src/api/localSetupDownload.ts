@@ -22,6 +22,7 @@ export async function downloadLocalSetupModel(modelId: string, options: Download
   return readLocalSetupStream<LocalSetupDownloadResult>(response, options.signal, event => {
     if (!object(event) || event.modelId !== modelId) throw new Error('模型下载返回了不匹配的数据')
     if (event.type === 'progress' && ['checking', 'downloading', 'verifying'].includes(String(event.phase))
+      && (event.message === undefined || typeof event.message === 'string')
       && integer(event.bytesRead) && integer(event.expectedBytes) && event.expectedBytes > 0 && event.bytesRead <= event.expectedBytes) {
       options.onProgress(event as unknown as LocalSetupDownloadProgress)
     } else if (event.type === 'result' && typeof event.path === 'string' && typeof event.message === 'string' && integer(event.checkedAt)

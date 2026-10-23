@@ -1,7 +1,7 @@
 <template>
   <section id="control-inference" class="panel-card inference-settings" aria-labelledby="inference-settings-title">
     <header class="inference-heading">
-      <div><span class="panel-kicker">其他绘图方式</span><h2 id="inference-settings-title" tabindex="-1">原生绘图</h2></div>
+      <div><h2 id="inference-settings-title" tabindex="-1">原生绘图</h2></div>
       <span v-if="snapshot" class="inference-active">当前使用 · {{ engineLabel(snapshot.active.engine) }}</span>
     </header>
     <p v-if="!isLocal">请在运行绘遇的电脑上修改引擎设置。</p>

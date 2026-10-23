@@ -163,9 +163,11 @@ impl ControlService {
         let manifest = setup_verify::model_manifest()?;
         let mut models = Vec::new();
         for (id, label, kind, name, required) in files {
-            let path = workspace.join("ComfyUI/models").join(kind).join(name);
-            let (state, size) = presence(&path, false).await;
             let relative = format!("{kind}/{name}");
+            // Keep the same lexical path as the manifest-backed download and
+            // verification endpoints (Windows preserves mixed separators).
+            let path = workspace.join("ComfyUI/models").join(&relative);
+            let (state, size) = presence(&path, false).await;
             let source = manifest["files"].as_array().unwrap().iter()
                 .find(|entry| entry["path"] == relative).map(|entry| {
                     json!({"url":entry["sourceUrl"].as_str().map(str::to_owned).unwrap_or_else(||format!("https://huggingface.co/{}/resolve/{}/{}",

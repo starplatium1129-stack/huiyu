@@ -1,31 +1,30 @@
 <template>
 <div class="control-panel-stack">
       <section id="control-service-status" class="control-overview" aria-label="连接状态" tabindex="-1" :aria-busy="serviceChecking || (!statusLoaded && !statusError)">
-        <div class="overview-heading"><div><span class="panel-kicker">运行概览</span><h2>{{ overviewFeedback.title }}</h2><p>{{ overviewFeedback.note }}</p></div><button class="btn btn-ghost btn-sm" type="button" :disabled="serviceChecking || opBusy" :aria-busy="serviceChecking" @click="recheckStatus"><ArchiveIcon name="refresh" />{{ serviceChecking ? '检测中…' : '重新检测' }}</button></div>
-        <p class="control-section-note">以下服务按需启动；未连接不影响已准备好的原生绘图。</p>
+        <div class="overview-heading"><div><h2>{{ overviewFeedback.title }}</h2><p>{{ overviewFeedback.note }}</p></div><button class="btn btn-ghost btn-sm" type="button" :disabled="serviceChecking || opBusy" :aria-busy="serviceChecking" @click="recheckStatus"><ArchiveIcon name="refresh" />{{ serviceChecking ? '检测中…' : '重新检测' }}</button></div>
         <p v-if="requestedService" class="service-context">{{ requestedEngineLabel }}需要 {{ requestedService === 'webui' ? 'SD WebUI' : 'ComfyUI' }}，先检查高亮的服务。</p>
         <div class="status-wall service-rows">
           <article v-for="service in serviceCards" :key="service.key" :id="`control-service-${service.key}`" class="status-tile service-row"
             :class="{ 'service-required': requestedService === service.key }" :data-state="!statusUsable ? 'checking' : service.online ? 'on' : 'off'">
-            <h3 class="status-tile-head service-row-name"><ArchiveIcon :name="service.icon" />{{ service.name }}<span class="status-dot"></span></h3>
-            <strong>{{ !statusUsable ? (statusError ? '待检测' : '检测中…') : service.online ? '已连接' : '未连接' }}</strong>
-            <p class="status-tile-detail">{{ !statusUsable ? (statusError ? '重新检测后确认连接状态' : '正在确认本机连接') : serviceChecking ? '正在刷新连接状态' : service.detail }}</p>
+            <div class="service-row-copy"><h3 class="status-tile-head service-row-name"><ArchiveIcon :name="service.icon" />{{ service.name }}</h3><p class="status-tile-detail">{{ service.detail }}</p></div>
+            <strong>{{ startingService === service.key ? operationCancelling ? '取消中…' : '启动中…' : !statusUsable ? (statusError ? '待检测' : '检测中…') : service.online ? '已连接' : '未连接' }}</strong>
             <div class="service-row-actions">
+              <button v-if="startingService === service.key && canCancelOperation" class="btn btn-ghost btn-sm" type="button" :disabled="operationCancelling" @click="cancelOperation">{{ operationCancelling ? '正在取消…' : '取消启动' }}</button>
               <template v-if="service.key === 'llama'">
                 <RouterLink :to="{ query: route.query, hash: '#setup-chat-options' }" class="btn btn-ghost btn-sm">准备模型</RouterLink>
-                <button class="btn btn-danger btn-sm" type="button" :disabled="!llamaManaged || opBusy" @click="serviceAction('llama','stop')">释放显存</button>
+                <button v-if="llamaManaged" class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="serviceAction('llama','stop')">释放显存</button>
               </template>
-              <template v-else-if="service.key !== 'ollama'">
-                <StudioTooltip anchor :content="service.online ? '已在运行' : '启动受控服务'">
+              <template v-else-if="service.key !== 'ollama' && startingService !== service.key">
+                <StudioTooltip v-if="!service.online" anchor content="启动服务">
                   <button class="btn btn-sm" :class="requestedService === service.key ? 'btn-primary' : 'btn-ghost'" type="button"
                     :disabled="!statusUsable || opBusy || service.online" @click="serviceAction(service.key, 'start')">启动</button>
                 </StudioTooltip>
-                <StudioTooltip anchor :content="!service.online ? '未在运行' : '停止服务'">
+                <StudioTooltip v-else anchor content="停止服务">
                   <button class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !service.online"
                     @click="confirmServiceAction(service.key, 'stop')">停止</button>
                 </StudioTooltip>
               </template>
-              <button v-else class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy || !ollamaModels.length"
+              <button v-else-if="service.key === 'ollama' && ollamaModels.length" class="btn btn-danger btn-sm" type="button" :disabled="!statusUsable || opBusy"
                 @click="serviceAction('ollama', 'unload')">释放显存</button>
             </div>
           </article>
@@ -38,11 +37,11 @@
         <div class="mode-grid">
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
             <span class="mode-title"><ArchiveIcon name="spark" /> 绘图优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
-            <span class="mode-desc">{{ imageProvider === 'native' ? '释放本地聊天与语音显存，独立模型在生成时按需加载。' : '释放本地聊天与语音显存，启动 ComfyUI。' }}</span>
+            <span class="mode-desc">{{ imageProvider === 'native' ? '释放聊天与语音显存' : '释放显存，启动 ComfyUI' }}</span>
           </button>
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('chat')">
             <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天与语音优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
-            <span class="mode-desc">释放空闲绘图模型，启动语音；发送消息时加载本地聊天。</span>
+            <span class="mode-desc">释放绘图显存，启动语音</span>
           </button>
         </div>
 
@@ -133,8 +132,9 @@ const { comfyOnline, sdOnline, ttsOnline, ollamaOnline, comfyManaged, ollamaMode
   selfHealing, serviceChecking, statusLoaded, statusError, scripts, comfyHost, ttsHost, ttsEngine, activeVoiceEngine,
   llamaOnline, llamaManaged, llamaLabel, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt,
   voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice, overviewFeedback, imageProvider,
-  opBusy, ollamaMeta, voiceConfiguredCount, pollStatus } = status
-const { serviceAction, switchMode, saveAutoStartVoice, saveConfig, savingConfig, configSaved } = actions
+  opBusy, operation, ollamaMeta, voiceConfiguredCount, pollStatus } = status
+const { serviceAction, switchMode, saveAutoStartVoice, saveConfig, savingConfig, configSaved, canCancelOperation, operationCancelling, cancelOperation } = actions
+const startingService = computed(() => operation.value?.status === 'running' && operation.value.kind.endsWith('-start') ? operation.value.kind.slice(0, -6) : '')
 function recheckStatus() { if (!serviceChecking.value && !opBusy.value) void pollStatus(true) }
 const ttsSelfHealing = computed(() => {
   const service = selfHealing.value?.services?.tts
@@ -164,7 +164,7 @@ const requestedService = computed(() => route.query.engine === 'sd' ? 'webui'
 const requestedEngineLabel = computed(() => ({ sd: 'SD 绘图', anima: 'Anima 绘图', krea2: 'Krea 2 绘图', video: '故事短片' } as Record<string, string>)[String(route.query.engine)] || '当前创作')
 const serviceCards = computed<Array<{ key: ControlService; name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
   ...(requestedService.value === 'webui' || sdOnline.value ? [{ key: 'webui' as const, name: 'SD WebUI', icon: 'model' as const, online: sdOnline.value, detail: '兼容已有 SD 绘图环境' }] : []),
-  { key: 'llama', name: 'llama.cpp 本地聊天', icon: 'chat', online: llamaOnline.value, detail: llamaLabel.value || '按需加载；显存较少可使用 API' },
+  { key: 'llama', name: 'llama.cpp 本地聊天', icon: 'chat', online: llamaOnline.value, detail: llamaLabel.value || '按需加载' },
   { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `${imageProvider.value === 'native' ? '兼容引擎 · 视频' : 'Anima · Krea 2 · 视频'}${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
   { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `${voiceConfiguredCount.value} / 2 角色声线已配置` },
   { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载聊天模型' },

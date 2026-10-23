@@ -104,8 +104,10 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         }
         if (draftRecovery.initialized) await applyPreparedLink();
         if (!current()) return;
-        if (drawEngine.value !== 'sd')
+        if (drawEngine.value !== 'sd') {
             animaSession.startStatusPolling();
+            await refreshAnimaBackend();
+        }
     }
     async function retryInitialization() {
         if (disposed || !viewActive || route.path !== '/prompt-builder') return;

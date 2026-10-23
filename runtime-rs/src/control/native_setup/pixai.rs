@@ -250,6 +250,9 @@ impl ControlService {
         let mut sources = runtime.sources.as_array().cloned().unwrap_or_default();
         sources.push(json!({"label":"PixAI Tagger v1.0", "url":format!("https://huggingface.co/{}",manifest.repo)}));
         sources.push(json!({"label":"timm 1.0.30", "url":manifest.timm.file.url}));
+        sources.push(json!({"label":"公开模型镜像 · HF-Mirror", "url":"https://hf-mirror.com"}));
+        sources.push(json!({"label":"Python 依赖镜像 · 清华 TUNA", "url":"https://mirrors.tuna.tsinghua.edu.cn/help/pypi/"}));
+        sources.push(json!({"label":"PyTorch 镜像 · 南京大学", "url":"https://mirrors.nju.edu.cn/pytorch/whl/"}));
         Ok(
             json!({"ok":true,"planId":fingerprint(self),"workspacePath":self.config.ai_workspace_root,
             "supported":reasons.is_empty(),"reasons":reasons,"hardware":hardware,

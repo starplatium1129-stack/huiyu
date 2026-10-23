@@ -200,8 +200,8 @@ def main() -> None:
     if args.check:
         saved = json.loads((root / "runtime-config.json").read_text(encoding="utf-8"))
         if (saved.get("managedRuntimeId") != manifest["runtimeId"] or saved.get("manifestSha256") != manifest_hash
-                or saved.get("requirementsSha256") != requirements_hash or saved.get("root") != str(target)
-                or saved.get("python") != str(target / "venv/Scripts/python.exe")):
+                or saved.get("requirementsSha256") != requirements_hash or Path(saved.get("root", "")).resolve() != target
+                or Path(saved.get("python", "")).resolve() != (target / "venv/Scripts/python.exe").resolve()):
             raise ValueError("Existing runtime record is incompatible; existing files have been preserved")
     else:
         remaining = manifest["requiredFreeBytes"] - manifest["downloadBytes"]

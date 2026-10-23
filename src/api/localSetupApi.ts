@@ -9,6 +9,7 @@ const requiredModelIds = ['qwen-encoder', 'qwen-vae'] as const
 const object = (value: unknown): value is ApiResponseObject => typeof value === 'object' && value !== null && !Array.isArray(value)
 const fileState = (value: unknown) => value === 'present' || value === 'missing' || value === 'unknown'
 const bytes = (value: unknown) => value === null || (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0)
+const workProgress = (value: ApiResponseObject) => ['workDone', 'workTotal'].every(key => value[key] === undefined || (Number.isSafeInteger(value[key]) && Number(value[key]) >= 0))
 const publisherUrl = (value: unknown) => {
   if (typeof value !== 'string') return false
   try { const url = new URL(value); return url.protocol === 'https:' && ['huggingface.co', 'civitai.com', 'github.com', 'docs.comfy.org','docs.nvidia.com'].includes(url.hostname) && !url.username && !url.password }
@@ -48,7 +49,7 @@ function validSetup(value: ApiResponseObject): boolean {
 }
 
 export const localSetupApi = {
-  getOperation: (signal?:AbortSignal, id?:string) => apiClient.request<ControlActionResult & { runtimeId: string }>('/api/local-setup/operation'+(id ? '?id='+encodeURIComponent(id) : ''),{signal,cache:'no-store',cachePolicy:'bypass',timeoutMs:10_000,validate:value=>value.ok===true&&typeof value.runtimeId==='string'&&!!value.runtimeId&&(value.operation===null||object(value.operation))}),
+  getOperation: (signal?:AbortSignal, id?:string) => apiClient.request<ControlActionResult & { runtimeId: string }>('/api/local-setup/operation'+(id ? '?id='+encodeURIComponent(id) : ''),{signal,cache:'no-store',cachePolicy:'bypass',timeoutMs:10_000,validate:value=>value.ok===true&&typeof value.runtimeId==='string'&&!!value.runtimeId&&(value.operation===null||(object(value.operation)&&workProgress(value.operation)))}),
   ensureLlama: (baseUrl:string,signal?:AbortSignal) => apiClient.request<ControlActionResult & {ready?:boolean}>('/api/local-setup/llama-ensure',{method:'POST',body:{baseUrl},signal,timeoutMs:10_000,validate:value=>value.ok===true&&(value.ready===true||object(value.operation))}),
   prepareEnvironment: (environment: string, workspacePath: string, signal?: AbortSignal) => apiClient.request<ControlActionResult>(`/api/local-setup/environment/${encodeURIComponent(environment)}`, {
     method:'POST', body:{workspacePath,reviewed:true}, signal, timeoutMs:15_000, validate:value=>value.ok===true&&object(value.operation),

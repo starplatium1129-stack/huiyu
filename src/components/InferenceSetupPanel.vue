@@ -2,7 +2,7 @@
   <section ref="panel" class="inference-setup" aria-labelledby="native-setup-title">
     <div class="setup-intro">
       <span class="setup-mark"><ArchiveIcon name="spark" /></span>
-      <div><h3 id="native-setup-title" ref="title" tabindex="-1">准备原生引擎</h3><p>使用独立运行库绘图。先确认设备支持，再选择模型下载并启用。</p></div>
+      <div><h3 id="native-setup-title" ref="title" tabindex="-1">模型与环境</h3></div>
     </div>
     <ol class="setup-route" aria-label="配置流程">
       <li><span>1</span>确认存放位置</li>
@@ -11,7 +11,7 @@
     </ol>
     <div class="setup-location">
       <ArchiveIcon name="folder" />
-      <div><span class="setup-label">模型存放位置</span><code>{{ workspaceDraft || plan?.workspacePath || '正在读取…' }}</code><small v-if="!workspacePending && plan?.freeBytes !== null && plan?.freeBytes !== undefined">磁盘剩余 {{ formatSetupBytes(plan.freeBytes) }}</small><small>运行库、模型和下载缓存统一存放。</small></div>
+      <div><span class="setup-label">存放位置</span><code>{{ workspaceDraft || plan?.workspacePath || '正在读取…' }}</code><small v-if="!workspacePending && plan?.freeBytes !== null && plan?.freeBytes !== undefined">可用 {{ formatSetupBytes(plan.freeBytes) }}</small></div>
       <div class="setup-actions"><button v-if="desktop" ref="workspaceButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="openWorkspace">更换位置</button><button v-if="desktop && plan && !workspacePending" class="btn btn-quiet btn-sm" type="button" @click="openFolder">打开文件夹</button></div>
     </div>
     <p v-if="workspaceError" class="setup-error" role="alert">{{ workspaceError }}</p>
@@ -20,19 +20,21 @@
       <div class="setup-field setup-model-choice">
         <label for="native-model-download">绘图模型</label>
         <StudioSelect id="native-model-download" :model-value="modelId" label="绘图模型" :options="modelOptions" :disabled="locked" @update:model-value="chooseModel" />
-        <small>这里列出当前版本可准备的原生模型；可逐个添加，已下载的文件会保留。</small>
       </div>
       <div class="setup-status" :data-state="nativeEnabled ? 'ready' : plan.supported ? 'available' : 'unavailable'" role="status">
         <ArchiveIcon :name="plan.supported ? 'success' : 'info'" />
-        <div><strong>{{ nativeEnabled ? '原生引擎已就绪' : plan.supported ? '这台电脑可以准备原生生图' : unavailableTitle }}</strong><p>{{ deviceName }}<span v-if="plan.supported && !nativeEnabled"> · 设备检查通过</span></p><p v-if="!plan.supported">{{ unavailableHint }}</p></div>
+        <div><strong>{{ nativeEnabled ? '原生引擎已就绪' : plan.supported ? '设备可用' : unavailableTitle }}</strong><p>{{ deviceName }}</p><p v-if="!plan.supported">{{ unavailableHint }}</p></div>
         <button v-if="plan.supported" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="recheck">重新检查</button>
       </div>
       <template v-if="plan.supported && selectedModel && !nativeEnabled && !pendingRestart">
-        <div v-if="selectedModel.checkpointFilename && !selectedModel.installed && !running" class="setup-field">
-          <label for="author-checkpoint-path">已下载的作者权重</label>
+        <details v-if="selectedModel.checkpointFilename && !selectedModel.installed && !running" class="setup-details" :open="!selectedModel.checkpointOptional">
+          <StudioDisclosureSummary>使用已下载的权重{{ selectedModel.checkpointOptional ? '（可选）' : '' }}</StudioDisclosureSummary>
+          <div class="setup-field" data-disclosure-content>
+          <label for="author-checkpoint-path">已下载的作者权重{{ selectedModel.checkpointOptional ? '（可选）' : '' }}</label>
           <input id="author-checkpoint-path" v-model="checkpointPath" class="input" :disabled="locked" :placeholder="`例如 D:\\Models\\${selectedModel.checkpointFilename}`" spellcheck="false" aria-describedby="author-checkpoint-hint" />
-          <small id="author-checkpoint-hint">先登录<a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">作者发布页</a>下载 {{ selectedModel.checkpointFilename }}，填写完整文件路径。校验后复制该文件，再准备配套组件；原文件保留。量化版暂不支持。</small>
-        </div>
+          <small id="author-checkpoint-hint"><a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">作者发布页</a> · {{ selectedModel.checkpointFilename }} · 非量化版，原文件保留</small>
+          </div>
+        </details>
         <div class="setup-model">
           <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">绘图模型</span><strong>{{ modelName }}</strong><small>{{ selectedModel.preparation === 'checkpoint-conversion' ? '下载原始权重，自动转换为原生模型' : '完整原生模型 · 无需转换' }}</small></div></div>
           <div class="setup-budget"><span>最多下载<strong>{{ formatSetupBytes(downloadBytes) }}</strong></span><span>所需空间<strong>{{ formatSetupBytes(setupRequiredBytes) }}</strong></span></div>
@@ -43,8 +45,8 @@
           <input id="native-hf-token" v-model="hfToken" class="input" type="password" :disabled="locked" autocomplete="off" spellcheck="false" maxlength="512" aria-describedby="native-hf-token-hint" />
           <small id="native-hf-token-hint">先在 <a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">模型页面</a>接受许可并取得访问权，再填写该模型的只读令牌。仅用于本次 Hugging Face 下载，不保存到配置；完整缓存可离线继续。</small>
         </div>
-        <label v-if="!running" class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !currentPlan" /><span>同意下载、安装并启用原生绘图，已阅读并接受 <a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="所选模型许可，在新窗口打开">所选模型许可</a>。</span></label>
-        <small v-if="!running" class="setup-hint">{{ selectedModel.license }}。安装时可能需要 Windows 授权；已有模型和环境会保留。</small>
+        <label v-if="!running" class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !currentPlan" /><span>同意安装并接受<a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="所选模型许可，在新窗口打开">模型许可</a></span></label>
+        <small v-if="!running" class="setup-hint">{{ selectedModel.license }} · 已有文件保留</small>
       </template>
       <p v-if="pendingRestart" role="status">准备完成。重启后即可使用原生引擎。</p>
     </template>
@@ -63,8 +65,7 @@
       <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续下载与配置' : '下载并自动配置' }}</button>
       <button v-else class="btn btn-primary" type="button" :disabled="locked" @click="recheck">{{ checking ? '检查中…' : '重新检查' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
-      <RouterLink v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" :to="{ path: '/control', hash: '#control-setup' }">返回推荐模型下载</RouterLink>
-      <small v-if="running">可以离开此页，后台会继续准备。</small>
+      <RouterLink v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" :to="{ path: '/control', hash: '#control-comfy' }">ComfyUI 配置</RouterLink>
     </div>
     <details v-if="plan && !workspacePending" id="control-image-resources" class="setup-details" :open="typeof route.query.resource === 'string' || route.hash === '#control-image-resources'">
       <StudioDisclosureSummary><span>添加更多绘图能力<small class="setup-disclosure-hint">自动蒙版、高清放大、草图与角色 LoRA · 按需下载</small></span></StudioDisclosureSummary>
@@ -92,7 +93,8 @@
     <details v-if="plan && !workspacePending" class="setup-details">
       <StudioDisclosureSummary>设备与下载详情</StudioDisclosureSummary>
       <div class="setup-detail-content">
-        <section><h4>设备要求</h4><p>Windows x64 · NVIDIA Ampere 至 Blackwell · 12 GB 显存 · 驱动 572.61 以上 · 24 GiB 内存。</p><p>本机内存：{{ plan.hardware.ramBytes === null ? '未知' : formatSetupBytes(plan.hardware.ramBytes) }}。显卡驱动请通过厂商更新。</p><ul v-if="plan.reasons.length"><li v-for="reason in plan.reasons" :key="reason">{{ reason }}</li></ul><p v-if="plan.network">{{ plan.network.message }}</p></section>
+        <p v-for="warning in plan.warnings" :key="warning" class="setup-hint">{{ warning }}</p>
+        <section><h4>设备要求</h4><p>Windows x64 · NVIDIA Ampere 至 Blackwell · 驱动 572.61 以上。默认分层卸载，显存与系统内存容量作为提醒，实际可用画幅和模型需在设备上确认。</p><p>本机内存：{{ plan.hardware.ramBytes === null ? '未知' : formatSetupBytes(plan.hardware.ramBytes) }}。显卡驱动请通过厂商更新。</p><ul v-if="plan.reasons.length"><li v-for="reason in plan.reasons" :key="reason">{{ reason }}</li></ul><p v-if="plan.network">{{ plan.network.message }}</p></section>
         <section><h4>下载内容</h4><div class="setup-package"><strong>原生运行库</strong><span>{{ plan.runtime.installed ? '已就绪' : formatSetupBytes(plan.runtime.downloadBytes) }}</span><small>{{ plan.runtime.label }}</small></div><div v-if="selectedModel" class="setup-package"><strong>{{ modelName }}</strong><span>{{ selectedModel.installed ? '已就绪' : formatSetupBytes(selectedModel.downloadBytes) }}</span><small>transformer、编码器、VAE、tokenizer 与配置</small></div><p v-if="!plan.supported">首次下载最多 {{ formatSetupBytes(downloadBytes) }}，本次准备需 {{ formatSetupBytes(setupRequiredBytes) }} 可用空间。</p></section>
         <section><h4>来源与许可</h4><ul class="setup-sources"><li v-for="source in plan.runtime.sources" :key="source.url"><a :href="source.url" target="_blank" rel="noopener noreferrer" :aria-label="`${source.label}来源，在新窗口打开`">{{ sourceName(source.label) }}</a><a :href="source.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="运行库许可，在新窗口打开">许可</a></li></ul><p v-if="selectedModel"><a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer" aria-label="模型来源，在新窗口打开">模型来源</a> · <a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="模型许可，在新窗口打开">模型许可</a></p><p v-if="selectedModel">固定版本：<code>{{ selectedModel.revision }}</code></p><p>官方文件逐项核对固定版本与 SHA-256。Krea 需先授权取得文件清单。缺少 VC++ 运行库时，由你确认 Windows 授权。</p></section>
         <section><h4>存放位置</h4><dl class="setup-paths"><template v-for="item in resourcePaths" :key="item.label"><dt>{{ item.label }}</dt><dd><code>{{ item.value }}</code></dd></template></dl></section>
@@ -143,7 +145,7 @@ const modelName = computed(() => selectedModel.value?.label.split(' · ')[0] ?? 
 const running = computed(() => operation.value?.status === 'running')
 const pendingRestart = computed(() => plan.value?.supported && plan.value.workspaceMatches && plan.value.configuredEngine === 'native' && plan.value.restartRequired && plan.value.runtime.installed && selectedModel.value?.installed)
 const deviceName = computed(() => [...(plan.value?.hardware.devices ?? []), ...(plan.value?.hardware.otherDevices ?? [])].map(device => device.name).join('、') || '未检测到可用显卡')
-const unavailableTitle = computed(() => plan.value?.freeBytes === null ? '先选择可用的存放位置' : '这台电脑暂不支持原生生图')
+const unavailableTitle = computed(() => plan.value?.freeBytes === null ? '先选择可用的存放位置' : '设备检查尚未通过')
 const unavailableHint = computed(() => {
   if (plan.value?.freeBytes === null) return '请选择可写且空间充足的文件夹。'
   if (/AMD|Intel/i.test(deviceName.value) && !plan.value?.hardware.devices.length) return '当前版本需要受支持的 NVIDIA 显卡。其他设备支持尚未接入。'
