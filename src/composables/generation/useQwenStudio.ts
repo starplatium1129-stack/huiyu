@@ -22,7 +22,8 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
   const slot = moss ? MOSS_REQUEST_DRAFT_KEY : QWEN_REQUEST_DRAFT_KEY
   const alignment = moss ? 16 : 32, maxSize = moss ? 1536 : 2816
   const form = reactive({ modelId: moss ? MOSS_MODEL_ID : 'qwen-image-2.1-turbo', prompt: '', negative: moss ? MOSS_NEGATIVE : '',
-    width: moss ? 768 : 1024, height: moss ? 1280 : 1024, steps: moss ? 50 : 40, cfg: moss ? 3.5 : 4, seed: 0 })
+    width: moss ? 768 : 1024, height: moss ? 1280 : 1024, steps: moss ? 50 : 40, cfg: moss ? 3.5 : 4, seed: 0,
+    mossAcceleration: 'off' as 'off' | 'spectrum' })
   const randomSeed = ref(true), resize = ref(false), source = shallowRef<MangaImage | null>(null), sourceUrl = ref('')
   const references = shallowRef<{ id: string; image: MangaImage; url: string }[]>([])
   const restoredInputMissing = ref(false), parentId = ref<string | number | null>(null)
@@ -211,10 +212,13 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
       if (!turbo.value && (!Number.isInteger(form.steps) || form.steps < 1 || form.steps > 100
         || !moss && negative && (!Number.isFinite(form.cfg) || form.cfg <= 1 || form.cfg > 20))) throw new Error('步数需为 1—100；有负向描述时 CFG 需大于 1 且不超过 20')
       if (moss && (!Number.isFinite(form.cfg) || form.cfg < 0 || form.cfg > 20)) throw new Error('CFG 需为 0—20 内的数值')
+      if (moss && (form.mossAcceleration !== 'off' && form.mossAcceleration !== 'spectrum'
+        || form.mossAcceleration === 'spectrum' && !selected.value?.mossSpectrum)) throw new Error('当前后端尚未提供 MOSS Spectrum，请更新并重启或关闭缓存加速')
       const compiled = moss ? compileMossPrompt(form.prompt, negative) : { prompt: form.prompt.trim(), negative }
       if (compiled.prompt.length > 12000) throw new Error('加入模型质量词后的提示词超过 12000 字符，请精简描述')
       if (moss && (source.value || references.value.length)) throw new Error('MOSS 当前仅支持文生图，请移除编辑输入')
       const input: Record<string, unknown> = { modelId: form.modelId, ...compiled,
+        ...(moss ? { mossAcceleration: form.mossAcceleration } : {}),
         width: form.width, height: form.height, steps: turbo.value ? 8 : form.steps, cfg: moss || negative ? form.cfg : 1,
         ...(randomSeed.value ? {} : { seed: form.seed }) }
       await releaseRequest(); task.value = null
@@ -324,6 +328,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
           if (typeof value === typeof form[key]) Object.assign(form, { [key]: value })
         }
         randomSeed.value = typeof input.seed !== 'number'
+        if (moss) form.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
         const context = request.value?.context || task.value?.metadata.context
         parentId.value = context && typeof context === 'object' && qwenParentId((context as Record<string, unknown>).parentId)
           ? (context as Record<string, unknown>).parentId as string | number : null

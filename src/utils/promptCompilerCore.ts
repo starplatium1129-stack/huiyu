@@ -118,7 +118,7 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
       || input.profile?.exact_prefixes?.some(prefix => token.toLowerCase().startsWith(prefix.toLowerCase()))
       || lightingTokenId(token) !== light.source)
   }
-  if (input.profile?.model_id === 'anima-miaomiao-v1.6') {
+  if (['anima-miaomiao-v1.6', 'anima-miaomiao-realskin-2.9b-v1.0'].includes(input.profile?.model_id || '')) {
     const authored = [...plan.identity, ...plan.exactControls, ...plan.sceneVisualFragments, ...plan.manual]
     // Inspect only authored positive content, including the caption actually sent to Anima.
     if ([...authored, buildAnimaVisualDirection(plan)].some(conflictsWithFairSkin)) {

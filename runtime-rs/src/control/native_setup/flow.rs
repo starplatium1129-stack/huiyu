@@ -102,9 +102,9 @@ impl ControlService {
         stopped(cancel)?;
         let current = self.native_setup_plan(body.model_id.as_deref()).await?;
         require_supported(&current)?;
-        if model.id == "moss-miaomiao-base-v1.0" {
-            self.native_progress(operation, json!({"message":"校验并准备本机 MOSS FP16 权重"}));
-            moss_models::stage_checkpoint(self, &model, body.checkpoint_path.as_deref(), cancel).await?;
+        if model.checkpoint_filename.is_some() {
+            self.native_progress(operation, json!({"message":"校验并准备本机作者权重"}));
+            checkpoint_models::stage_checkpoint(self, &model, body.checkpoint_path.as_deref(), cancel).await?;
         }
         if model.requires_access {
             self.native_progress(operation, json!({"message":"检查模型访问权与固定文件清单"}));

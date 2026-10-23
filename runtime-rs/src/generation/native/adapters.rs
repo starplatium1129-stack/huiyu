@@ -5,7 +5,7 @@ use super::resources::{self, within};
 const FILES: &[&str] = &[
     "adapter_worker.py", "adapter_contract.py", "adapter_media.py", "adapter_video.py",
     "adapter-models.json", "worker_lifecycle.py", "native_memory.py",
-    "resident_adapters.py", "locked_identity.py", "krea_style.py", "moss_adapter.py", "moss_pipeline.py",
+    "resident_adapters.py", "locked_identity.py", "krea_style.py", "moss_adapter.py", "moss_pipeline.py", "moss_spectrum.py",
 ];
 static MANIFEST: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
@@ -71,6 +71,7 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
         "validation":"待主力机验证","generationVerified":false,"performanceVerified":false,
         "repository":model["repository"],"sourceRevision":model["revision"],"license":model["license"],"licenseUrl":model["licenseUrl"],
         "defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"].as_str().unwrap_or("euler"),"scheduler":"model-config","teaCache":false},
+        "mossAcceleration":model["mossAcceleration"],
         "durationFrames":model["durationFrames"],"canvases":model["canvases"],"fps":model["fps"],"audio":model["audio"],
         "capabilities":{"txt2img":model["media"]=="image","img2img":model["edit"],"negative":model["negative"],
             "lora":false,"noLora":true,"characterIdentity":false,"mask":false,"hires":false,"rcas":false,"teaCache":false,"weightSyntax":false,"fixedSampling":model["distilled"]==true,"experimental":true,

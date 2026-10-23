@@ -8,7 +8,7 @@ export const qwenModels = [
   { value: 'qwen-image-2.1-turbo', label: 'Qwen-Image 2.1 Turbo · 8 步' },
   { value: 'qwen-image-2.1', label: 'Qwen-Image 2.1 · 40 步' },
 ] as const
-export interface QwenModelStatus { id: string; available: boolean; unavailableReason: string | null; licenseUrl: string }
+export interface QwenModelStatus { id: string; available: boolean; unavailableReason: string | null; licenseUrl: string; mossSpectrum?: boolean }
 const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v)
 export async function qwenStatus(signal: AbortSignal): Promise<QwenModelStatus[]> {
   const value = await apiClient.request<Record<string, unknown>>('/api/qwen/status', { signal, timeoutMs: 15_000, cachePolicy: 'bypass' })

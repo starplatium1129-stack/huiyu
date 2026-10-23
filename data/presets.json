@@ -149,6 +149,38 @@
       "size": "832×1216"
     },
     {
+      "id": "anima_miaomiao_realskin_29b_v10",
+      "engine": "anima",
+      "model_id": "anima-miaomiao-realskin-2.9b-v1.0",
+      "name": "MiaoMiao RealSkin Anima 2.9B 1.0",
+      "match": ["anima-miaomiao-realskin-2.9b-v1.0"],
+      "tag_style": "space",
+      "lora_in_prompt": false,
+      "exact_tokens": [],
+      "quality_prefix": "best quality, score_7, score_9, sensitive, very aesthetic, ultra detailed, fair skin, high contrast",
+      "negative_prefix": "worst quality, low quality, score_1, score_2, score_3, artist name, shiny skin, simple background, extra toes, lowres, (bad), text, error, fewer, extra, missing, jpeg artifacts, watermark, unfinished, displeasing, oldest, early, signature, artistic error, username, bad feet, scan, [abstract], english text, shiny hair",
+      "rating_mode": "prompt",
+      "negative_mode": "replace",
+      "negative_replace_scope": "boilerplate",
+      "capabilities": {
+        "negative": true,
+        "lora": false,
+        "noLora": true,
+        "characterIdentity": true,
+        "dualCharacter": false,
+        "hires": true,
+        "teaCache": true,
+        "weightSyntax": true,
+        "promptFormat": "anima-tags",
+        "experimental": true
+      },
+      "sampler": "euler",
+      "scheduler": "sgm_uniform",
+      "steps": 30,
+      "cfg": 4,
+      "size": "928×1536"
+    },
+    {
       "id": "anima_yume_v10",
       "engine": "anima",
       "model_id": "anima-yume-v1.0",

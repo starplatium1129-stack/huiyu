@@ -101,6 +101,19 @@
       "licenseUrl": "https://civitai.com/models/934764?modelVersionId=3360028"
     },
     {
+      "id": "anima-miaomiao-realskin-2.9b-v1.0",
+      "kind": "image",
+      "path": "diffusion_models/miaomiaoRealskin_anima29B10.safetensors",
+      "bytes": 5843203272,
+      "sha256": "1e0ad19711045540570dffd5ecc4a39aeeb5810ac2e4641c1d060d47167f4c46",
+      "sourceUrl": "https://civitai.com/api/download/models/3415563?fileId=3308442",
+      "revision": "3415563",
+      "label": "MiaoMiao RealSkin Anima 2.9B 1.0",
+      "purpose": "真实皮肤质感 · 40 层 Anima；无角色 LoRA，待实机出图验收",
+      "modelCardUrl": "https://civitai.com/models/2026594?modelVersionId=3415563",
+      "licenseUrl": "https://civitai.com/models/2026594?modelVersionId=3415563"
+    },
+    {
       "id": "L_NENE_V21_ANIMA",
       "kind": "lora",
       "path": "loras/ayachi_nene_v21_anima.safetensors",

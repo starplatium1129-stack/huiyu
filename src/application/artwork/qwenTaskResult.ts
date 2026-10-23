@@ -21,6 +21,7 @@ export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord 
   }
   for (const key of ['prompt', 'negative', 'sampler', 'scheduler']) if (typeof input[key] === 'string') record[key] = input[key]
   for (const key of ['seed', 'steps', 'cfg', 'width', 'height']) if (typeof input[key] === 'number' && Number.isFinite(input[key])) record[key] = input[key]
+  if (moss) record.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
   if (record.width && record.height) record.size = `${record.width}x${record.height}`
   return record
 }

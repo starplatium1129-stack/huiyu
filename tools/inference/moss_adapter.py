@@ -49,7 +49,7 @@ def load(root, control, contract):
         text_encoder=encoder, tokenizer=tokenizer, vae=vae)
 
 
-def generate(pipeline, data, control):
+def generate(pipeline, data, control, observation):
     import torch
     observer = load_sibling("adapter_video").observe_scheduler
     # The upstream MOSS pipeline exposes scheduler.step rather than callbacks.
@@ -61,8 +61,20 @@ def generate(pipeline, data, control):
             tokenize=False, add_generation_prompt=True, enable_thinking=True)
         if len(pipeline.tokenizer(formatted, truncation=False)["input_ids"]) > 4096:
             raise load_sibling("adapter_contract").AdapterError("PROMPT_TOO_LONG", f"MOSS {name}提示词超过 4096 tokens，请精简内容；未截断提交")
-    with observer(pipeline.scheduler, control), torch.inference_mode():
-        return pipeline(prompt=data["prompt"], negative_prompt=data["negativePrompt"],
-            width=data["width"], height=data["height"], num_inference_steps=data["steps"],
-            guidance_scale=data["cfg"], uncond_skip_layers=[22], output_type="np",
-            generator=torch.Generator("cpu").manual_seed(data["seed"]))
+    cache = (load_sibling("moss_spectrum").SpectrumCache(control, pipeline.scheduler, 2 if data["cfg"] != 1 else 1)
+             if data["mossAcceleration"] == "spectrum" else None)
+    pipeline.transformer._huiyu_spectrum = cache
+    try:
+        with observer(pipeline.scheduler, control), torch.inference_mode():
+            return pipeline(prompt=data["prompt"], negative_prompt=data["negativePrompt"],
+                width=data["width"], height=data["height"], num_inference_steps=data["steps"],
+                guidance_scale=data["cfg"], uncond_skip_layers=[22], output_type="np",
+                generator=torch.Generator("cpu").manual_seed(data["seed"]))
+    finally:
+        pipeline.transformer._huiyu_spectrum = None
+        if cache is not None:
+            observation["mossAcceleration"] = dict(cache.stats,
+                effective="spectrum" if cache.stats["forecastForwards"] else "full-compute")
+            cache.clear()
+        else:
+            observation["mossAcceleration"] = {"algorithm": "off", "requested": False}

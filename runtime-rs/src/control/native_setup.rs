@@ -7,7 +7,7 @@ mod image_models;
 mod activation;
 mod image_resources;
 mod anima_models;
-mod moss_models;
+mod checkpoint_models;
 
 use super::*;
 use axum::{
@@ -57,6 +57,8 @@ struct ModelBundle {
     requires_access: bool,
     #[serde(default)]
     conversion_profile: Option<String>,
+    #[serde(default)]
+    checkpoint_filename: Option<String>,
 }
 #[derive(Clone, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -87,8 +89,10 @@ fn bundles() -> Result<(Arc<RuntimeBundle>, Vec<Arc<ModelBundle>>)> {
         let models: Value =
             serde_json::from_str(include_str!("../../../tools/inference/managed-models.json"))?;
         let mut models = Vec::<ModelBundle>::deserialize(&models["models"])?;
-        let miaomiao = anima_models::bundle(&models[0])?;
+        let miaomiao = anima_models::bundle(&models[0], setup::RECOMMENDED_MODEL, "anima-cosmos2b-v041")?;
+        let realskin = anima_models::bundle(&models[0], "anima-miaomiao-realskin-2.9b-v1.0", "anima-cosmos29b-v041")?;
         models.insert(0, miaomiao);
+        models.insert(1, realskin);
         let adapters: Value = serde_json::from_str(include_str!("../../../tools/inference/managed-adapter-models.json"))?;
         models.extend(Vec::<ModelBundle>::deserialize(&adapters["models"])?);
         for model in &models {

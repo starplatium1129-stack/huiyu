@@ -124,7 +124,7 @@ def validate(job):
     if not isinstance(job, dict) or set(job) - allowed or job.get("op") != "generate" or not isinstance(job.get("id"), str) or not job["id"]:
         raise AdapterError("INVALID_REQUEST", "Expected a native adapter generation request")
     data = job.get("input")
-    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps"}:
+    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "mossAcceleration"}:
         raise AdapterError("UNSUPPORTED_OPTION", "Unsupported adapter input; no silent option fallback")
     spec = model(data.get("modelId"))
     loras = job.get("loras", [])
@@ -144,6 +144,13 @@ def validate(job):
     if not isinstance(negative, str) or len(negative) > 8000 or (negative and not spec["negative"]):
         raise AdapterError("UNSUPPORTED_OPTION", "Negative prompt is unsupported or invalid for this model")
     result = dict(data, negativePrompt=negative)
+    if spec["family"] == "moss-image":
+        acceleration = data.get("mossAcceleration", "off")
+        if type(acceleration) is not str or acceleration not in ("off", "spectrum"):
+            raise AdapterError("INVALID_PARAMETER", "MOSS acceleration must be off or spectrum")
+        result["mossAcceleration"] = acceleration
+    elif "mossAcceleration" in data:
+        raise AdapterError("UNSUPPORTED_OPTION", "Only MOSS supports mossAcceleration")
     for key in ("width", "height"):
         result[key] = number(data, key, 1024, spec.get("minSize", 512), spec["maxSize"], True)
         if result[key] % spec["alignment"]:

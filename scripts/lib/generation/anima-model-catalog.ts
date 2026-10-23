@@ -13,6 +13,7 @@ interface ModelDefinition {
   teaCacheThresh?: number;
   sizes: string[];
   noLora?: boolean;
+  lora?: boolean;
   rebalance?: { preset: string; multiplier: number; normalizeTaps: boolean };
 }
 interface LoraDefinition {
@@ -30,6 +31,8 @@ let MODELS: Readonly<Record<string, ModelDefinition>> = Object.freeze({
   // MIAOKA 2.9B Beta 1.1；按该版本作者设置使用 Euler/sgm_uniform，不继承 1.6 配方。
   // 现有角色 LoRA 未在这个扩层微调上验收，暂不声明兼容。
   'anima-miaomiao-2.9b-beta1.1': { file:'miaomiaoHarem_29BBETA11.safetensors', label:'MiaoMiao Harem Anima 2.9B Beta 1.1', family:'anima', profileId:'anima_miaomiao_29b_beta11', steps:30, cfg:4.5, sampler:'euler', scheduler:'sgm_uniform', sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
+  // RealSkin Anima2.9B 1.0 作者版本 3415563；920px 按原生 16px 网格调整为 928px。
+  'anima-miaomiao-realskin-2.9b-v1.0': { file:'miaomiaoRealskin_anima29B10.safetensors', label:'MiaoMiao RealSkin Anima 2.9B 1.0', family:'anima', profileId:'anima_miaomiao_realskin_29b_v10', steps:30, cfg:4, sampler:'euler', scheduler:'sgm_uniform', sizes:['928x1536','1536x928','1024x1024','832x1216','1216x832'], noLora:true, lora:false },
   // 2026-08-15 用户决策接入：AnimaYume v1.0（circlestone 社区基座微调，Civitai 2385278）。
   // noLora:true = 无 LoRA 创作模式可用；若显式传 loraId，仍走 LORAS 兼容表校验
   // （宁宁/夏目 v21 已声明兼容，用户实测自担效果）。

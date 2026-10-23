@@ -111,6 +111,10 @@ pub(super) fn capture(value: &Value) -> Value {
                 result["memoryScheduling"] = memory_observation(memory)
                     .unwrap_or_else(|| json!({"status":"unverified","reason":"invalid-memory-scheduling"}));
             }
+            if id.starts_with("moss-") {
+                result["mossAcceleration"] = moss_acceleration(&value["mossAcceleration"])
+                    .unwrap_or_else(|| json!({"status":"unverified","reason":"invalid-moss-acceleration"}));
+            }
             return result;
         }
     }
@@ -431,4 +435,29 @@ pub(super) fn capture(value: &Value) -> Value {
         Some(result)
     })();
     parsed.unwrap_or_else(|| json!({"status":"unverified","reason":if value.is_null(){"worker-metrics-missing"}else{"invalid-worker-metrics"}}))
+}
+
+fn moss_acceleration(value: &Value) -> Option<Value> {
+    if value["algorithm"] == "off" && value["requested"] == false {
+        return Some(json!({"algorithm":"off","requested":false}));
+    }
+    if value["algorithm"] != "moss-spectrum-v1" || value["requested"] != true
+        || value["historySize"] != 6 || value["warmupSteps"] != 6 || value["tailSteps"] != 3
+        || value["maxConsecutiveForecasts"] != 1 { return None; }
+    let actual = value["actualForwards"].as_u64()?;
+    let forecast = value["forecastForwards"].as_u64()?;
+    let nonfinite = value["nonfiniteFallbacks"].as_u64()?;
+    if actual > 200 || forecast > 200 || actual + forecast > 200 || nonfinite > 200 { return None; }
+    let effective = if forecast > 0 { "spectrum" } else { "full-compute" };
+    if value["effective"] != effective { return None; }
+    let reason = match &value["fallbackReason"] {
+        Value::Null => Value::Null,
+        Value::String(reason) if matches!(reason.as_str(), "insufficient-vram-headroom"
+            | "forecast-fit-failed" | "nonfinite-forecast" | "nonfinite-actual-features") => json!(reason),
+        _ => return None,
+    };
+    Some(json!({"algorithm":"moss-spectrum-v1","requested":true,"effective":effective,
+        "actualForwards":actual,"forecastForwards":forecast,"nonfiniteFallbacks":nonfinite,
+        "historySize":6,"warmupSteps":6,"tailSteps":3,"maxConsecutiveForecasts":1,
+        "fallbackReason":reason,"performanceVerified":false,"qualityVerified":false}))
 }

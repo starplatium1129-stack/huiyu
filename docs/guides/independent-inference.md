@@ -133,3 +133,13 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 提示词支持中文、自然语言、标签和布局 JSON。普通描述补作者质量词；布局 JSON 原文提交，不在外面拼接标签，不改坐标。明确带文字的布局项使用原始默认负面时，去掉默认 `text`、`english text`；用户自定义负面保持原样。尺寸须与布局坐标一致。任务支持取消、恢复、结果导出和入册；当前只开放文生图。
 
 MOSS 官方管线代码固定到 `OpenMOSS-Team/MOSS-Image-Base@85975793d8b3d432f1b6e27f352abaa4c2a4c0d3`，随产品附 Apache-2.0 许可，不执行模型目录提供的 Python。独立图像适配运行库更新为 PyTorch 2.9.0 / torchvision 0.24.0；现有旧版适配运行库需在控制室重新准备。此版本尚未取得作者权重做加载、出图或设备验收，文件就绪不代表已验证画质、耗时或显存。
+
+MOSS 创作的高级参数可选择「Spectrum · 实验」缓存加速，默认关闭。实现基于 [Spectrum 原始 MIT 代码](https://github.com/hanjq17/Spectrum/tree/4e41f91c93ff66b045332530dd7bcb4c60eafbab)的 Chebyshev 与一阶 Taylor 混合预测，随包保留 `SPECTRUM-LICENSE`；不引入 ComfyUI 插件。当前只缓存图像隐藏状态，正负分支及跳层组合各自隔离，固定前 6 步、末 3 步与每次预测后的刷新步完整计算；短采样会减少或不进行预测。每个任务独立清理，保留取消及进度。显存余量不足、拟合失败或预测出现非有限值时使用完整计算，并在任务 `nativeRuntime.mossAcceleration` 记录实际计算/预测次数及原因。请求、草稿和作品保留 `mossAcceleration: off | spectrum`，不使用 Anima TeaCache 阈值。该 MIAOKA 微调尚未完成真实权重和画质/性能验收，不能据社区其他模型数据宣称本机提速倍数。
+
+## 9. MiaoMiao RealSkin Anima 2.9B 1.0
+
+模型 ID 为 `anima-miaomiao-realskin-2.9b-v1.0`，对应[作者 Anima2.9B 1.0 版本](https://civitai.com/models/2026594?modelVersionId=3415563)。同一发布页还保留旧版 Anima、Illustrious 和 NoobAI，准备时须下载 `miaomiaoRealskin_anima29B10.safetensors`（5,843,203,272 字节，SHA-256 `1e0ad19711045540570dffd5ecc4a39aeeb5810ac2e4641c1d060d47167f4c46`）。该版本需要 Civitai 登录，绘遇不保存该站凭据。
+
+在「控制室 → 原生引擎」选择 RealSkin 并填写权重完整路径。准备先核对作者摘要并复制到工作区，再下载固定版本的 Qwen3-0.6B 编码器、Qwen-Image VAE 和 tokenizer，使用现有 `anima-cosmos29b-v041` 严格转换。转换配置仅将已固定的 Base 配置深度改为 40，全部张量名称、形状和类型仍逐项校验，不将 40 层权重载入 28 层模型；输入和转换后的权重共约 14.6 GB，另需运行库和临时空间。作者原文件保留。
+
+绘制工作台的模型选择与提示词配方独立登记。按该作者版本默认 Euler / SGM Uniform、30 步、CFG 4.0；作者 920×1536 按引擎 16 像素网格调整为 928×1536。质量词使用该版本配方，负面保留作者含义、去重并统一普通标签空格；显式深色或有色皮肤会移除默认 `fair skin`。不声明现有角色 LoRA 兼容，不套用 Harem 1.6、MOSS 或旧版 RealSkin 的参数。当前尚无作者权重的真实加载、编译 Token 与出图证据，保留实验标记，需权重及设备验收。

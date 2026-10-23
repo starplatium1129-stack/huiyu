@@ -108,6 +108,9 @@ pub(super) fn adapter_request(
     image: Option<PathBuf>,
 ) -> Value {
     let mut input = json!({"negativePrompt":plan.input["negative"]});
+    if plan.input["family"] == "moss-image" {
+        input["mossAcceleration"] = plan.input["mossAcceleration"].clone();
+    }
     for key in [
         "modelId", "prompt", "width", "height", "steps", "cfg", "seed",
     ] {

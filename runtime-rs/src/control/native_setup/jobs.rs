@@ -223,7 +223,7 @@ impl ControlService {
         hf_token: Option<&str>,
         checkpoint_path: Option<&Path>,
     ) -> Result<()> {
-        moss_models::stage_checkpoint(self, model, checkpoint_path, cancel).await?;
+        checkpoint_models::stage_checkpoint(self, model, checkpoint_path, cancel).await?;
         let workspace = &self.config.ai_workspace_root;
         let target = workspace.join("inference/models").join(&model.id);
         if model.conversion_profile.is_some() {

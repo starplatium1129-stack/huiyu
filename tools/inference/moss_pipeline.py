@@ -1,6 +1,7 @@
 # Copyright 2026 OpenMOSS. Apache-2.0; see MOSS-LICENSE.
 # Source: OpenMOSS-Team/MOSS-Image-Base@85975793d8b3d432f1b6e27f352abaa4c2a4c0d3/pipeline_moss_image.py
-# Unmodified upstream implementation; local loading/progress live in moss_adapter.py.
+# Changes: optional task-local Spectrum image-feature forecasting in the DiT;
+# loading, cache lifecycle and progress live in moss_adapter.py.
 """MOSSImage modeling and text-to-image pipeline (no Motor/TorchTitan imports).
 
 Dependencies: torch>=2.9, diffusers>=0.38, transformers>=5.3, safetensors,
@@ -253,9 +254,19 @@ class MOSSImageTransformer(ModelMixin, ConfigMixin):
             rope = self.rope(height, width, context.shape[1], hidden_states.device).to(video.dtype)
             text = self.text_embedder(context, rope[:, height * width:])
             x = torch.cat((video, text), 1)
-            for layer_index, layer in enumerate(self.layers):
-                if layer_index not in skip_layers:
-                    x = layer(x, rope, mod[index:index + 1])
+            cache = getattr(self, "_huiyu_spectrum", None)
+            key = (index, tuple(sorted(skip_layers)))
+            predicted = cache.predict(key, video) if cache is not None else None
+            if predicted is None:
+                for layer_index, layer in enumerate(self.layers):
+                    if cache is not None:
+                        cache.control.check()
+                    if layer_index not in skip_layers:
+                        x = layer(x, rope, mod[index:index + 1])
+                if cache is not None:
+                    cache.update(key, x[:, :height * width])
+            else:
+                x = predicted
             x = self.final_norm_video(x[:, :height * width].to(self.final_norm_video.weight.dtype))
             x = x * (1 + head[index:index + 1, 1, None]) + head[index:index + 1, 0, None]
             x = self.final_linear_video(x.to(self.final_linear_video.weight.dtype))

@@ -210,6 +210,7 @@ impl ControlService {
                 json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
                     "preparation":if model.conversion_profile.is_some(){"checkpoint-conversion"}else{"complete-model"},
                     "licenseUrl":model.license_url,"sourceUrl":model.source_url,
+                    "checkpointFilename":model.checkpoint_filename,
                     "requiresAccess":model.requires_access,"family":if model.id.starts_with("krea2-"){"krea2"}else if model.id.starts_with("qwen-"){"qwen-image"}else if model.id.starts_with("moss-"){"moss-image"}else{"anima"},
                     "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":model_needed(&root, model),
                     "installed":receipt_matches(&model_root, model),"path":model_root})

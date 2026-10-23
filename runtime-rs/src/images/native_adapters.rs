@@ -2,6 +2,7 @@
 use super::*;
 use generation::native::adapters;
 const KEYS: &[&str] = &[
+    "mossAcceleration",
     "modelId",
     "prompt",
     "negative",
@@ -65,6 +66,11 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
     if !family.is_empty() && spec["family"] != family {
         return Err(error("WRONG_ROUTE_FAMILY", "请求路径与模型 family 不匹配"));
     }
+    let moss_acceleration = match raw.get("mossAcceleration") {
+        None => "off",
+        Some(Value::String(value)) if spec["family"] == "moss-image" && matches!(value.as_str(), "off" | "spectrum") => value,
+        _ => return Err(error("INVALID_PARAMETER", "MOSS 缓存加速仅支持 off 或 spectrum；其他模型不接受此参数")),
+    };
     let style = match raw.get("styleLoraId") {
         None | Some(Value::Null) => None,
         Some(Value::String(id)) if spec["family"] == "krea2" && catalog::styles().get(id).is_some() => Some(id.as_str()),
@@ -180,6 +186,7 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
     Ok(
         json!({"modelId":id,"family":spec["family"],"prompt":prompt.trim(),"negative":negative,
         "width":width,"height":height,"steps":steps,"cfg":cfg,"seed":seed,"initImage":image,
+        "mossAcceleration":if spec["family"] == "moss-image" {Some(moss_acceleration)}else{None},
         "referenceImages":if spec["family"] == "qwen-image" {Some(references)}else{None},
         "profileId":spec["profileId"],"styleLoraId":style,"styleLoraTrigger":style.map(|id| &catalog::styles()[id]["trigger"]),
         "inferenceEngine":"native","nativeAdapterVersion":1,"validation":"待主力机验证",

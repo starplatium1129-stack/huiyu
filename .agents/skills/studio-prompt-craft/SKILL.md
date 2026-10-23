@@ -12,6 +12,7 @@ description: 编写或审查 AI-CG-Studio 图像提示词及编译一致性；An
 - MiaoMiao 1.6：读 [版本规则与作者依据](references/miaomiao-v16.md)及 [Anima 输入与编译](references/anima.md)。其他 Anima checkpoint 只读后者，不能套用 1.6 的配方。
 - Krea 2 提示词或编辑描述：读 [Krea 规则](references/krea.md)。
 - MiaoMiao Harem MOSS BASE v1.0：读[原生推理指南的 MOSS 章节](../../../docs/guides/independent-inference.md#8-miaomiao-harem-moss-base-v10)及其中作者版本页。它是独立 MOSS 架构；支持中文和布局 JSON，不套用 Anima 六段编译、编码器或 LoRA 规则。
+- MiaoMiao RealSkin Anima 2.9B 1.0：读[原生推理指南的 RealSkin 章节](../../../docs/guides/independent-inference.md#9-miaomiao-realskin-anima-29b-10)及该作者版本页，使用独立配方与 40 层转换，不套用 Harem 或 RealSkin 旧版本。
 - 叙事 CG 或单人物立绘／特写壁纸的构图与完成度：再读 [构图参考](references/narrative-composition.md)，按目标进入叙事或壁纸规范。
 - 手机竖屏壁纸：读 [手机规范](../../../docs/guides/prompts/mobile-wallpaper-prompt-standard.md)。
 - 成年角色成人向／NSFW 场景与蓝图规范：读 [NSFW 规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md)；项目内角色按成年创作设定，界面展示遵循 AGENTS.md 的目录与作品册边界。

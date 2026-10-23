@@ -52,6 +52,19 @@
       ],
       "noLora": true
     },
+    "anima-miaomiao-realskin-2.9b-v1.0": {
+      "file": "miaomiaoRealskin_anima29B10.safetensors",
+      "label": "MiaoMiao RealSkin Anima 2.9B 1.0",
+      "family": "anima",
+      "profileId": "anima_miaomiao_realskin_29b_v10",
+      "lora": false,
+      "steps": 30,
+      "cfg": 4,
+      "sampler": "euler",
+      "scheduler": "sgm_uniform",
+      "sizes": ["928x1536", "1536x928", "1024x1024", "832x1216", "1216x832"],
+      "noLora": true
+    },
     "anima-yume-v1.0": {
       "file": "AnimaYume_v10_final_base.safetensors",
       "label": "Anima Yume v1.0",
@@ -137,6 +150,7 @@
     "anima-aesthetic-v1.1": "anima_aesthetic_v11",
     "anima-yume-v1.0": "anima_yume_v10",
     "anima-miaomiao-2.9b-beta1.1": "anima_miaomiao_29b_beta11",
+    "anima-miaomiao-realskin-2.9b-v1.0": "anima_miaomiao_realskin_29b_v10",
     "anima-miaomiao-v1.2": "anima_miaomiao_v12",
     "anima-miaomiao-v1.6": "anima_miaomiao_v16",
     "krea2-turbo-fp8": "krea2_turbo_fp8"

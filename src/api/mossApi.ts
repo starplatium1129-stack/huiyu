@@ -11,5 +11,9 @@ export async function mossStatus(signal: AbortSignal): Promise<QwenModelStatus[]
   if (!model || model.family !== 'moss-image' || typeof model.available !== 'boolean'
     || !(model.unavailableReason === null || typeof model.unavailableReason === 'string')
     || model.licenseUrl !== 'https://civitai.com/models/3015023?modelVersionId=3422319') throw new Error('MOSS 模型信息无效，请更新并重启后端')
-  return [{ id: MOSS_MODEL_ID, available: model.available, unavailableReason: model.unavailableReason, licenseUrl: model.licenseUrl }]
+  const acceleration = model.mossAcceleration
+  if (acceleration !== undefined && acceleration !== null && (!Array.isArray(acceleration)
+    || acceleration.length !== 2 || acceleration[0] !== 'off' || acceleration[1] !== 'spectrum')) throw new Error('MOSS 加速选项无效，请更新并重启后端')
+  return [{ id: MOSS_MODEL_ID, available: model.available, unavailableReason: model.unavailableReason,
+    licenseUrl: model.licenseUrl, mossSpectrum: Array.isArray(acceleration) && acceleration.includes('spectrum') }]
 }

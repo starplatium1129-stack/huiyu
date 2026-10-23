@@ -15,7 +15,7 @@ function activeKey(key: string, selectionKey: string, recoveryKey: string) {
   if (selected !== key && selected !== recoveryKey) throw new Error('Qwen 草稿入口无法读取，原记录已保留')
   return selected
 }
-export interface QwenForm { modelId: string; prompt: string; negative: string; width: number; height: number; steps: number; cfg: number; seed: number }
+export interface QwenForm { modelId: string; prompt: string; negative: string; width: number; height: number; steps: number; cfg: number; seed: number; mossAcceleration?: 'off' | 'spectrum' }
 export interface QwenDraftState {
   form: QwenForm; randomSeed: boolean; resize: boolean; parentId: string | number | null
   resultTaskId: string | null; source: MangaImage | null; references: Array<{ id: string; image: MangaImage }>
@@ -33,9 +33,12 @@ export const qwenParentId = (value: unknown): value is string | number => typeof
 const validForm = (form: unknown, models: readonly { value: string }[]): form is QwenForm => object(form)
   && models.some(model => model.value === form.modelId)
   && typeof form.prompt === 'string' && form.prompt.length <= 12000 && typeof form.negative === 'string' && form.negative.length <= 8000
+  && (form.mossAcceleration === undefined || form.mossAcceleration === 'off'
+    || form.mossAcceleration === 'spectrum' && mossModels.some(model => model.value === form.modelId))
   && ['width', 'height', 'steps', 'cfg', 'seed'].every(key => typeof form[key] === 'number' && Number.isFinite(form[key]))
 const copyForm = (form: QwenForm): QwenForm => ({ modelId: form.modelId, prompt: form.prompt, negative: form.negative,
-  width: form.width, height: form.height, steps: form.steps, cfg: form.cfg, seed: form.seed })
+  width: form.width, height: form.height, steps: form.steps, cfg: form.cfg, seed: form.seed,
+  ...(mossModels.some(model => model.value === form.modelId) ? { mossAcceleration: form.mossAcceleration ?? 'off' } : {}) })
 function read(selectedKey: string, models: readonly { value: string }[]): StoredDraft | null {
   const raw = profileLocalStorage.getItem(selectedKey)
   if (!raw) return null

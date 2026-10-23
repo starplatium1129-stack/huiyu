@@ -190,7 +190,7 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
                 args["negative_prompt"] = data["negativePrompt"]
         control.stage("encoding")
         with torch.inference_mode():
-            output = (sibling("moss_adapter").generate(pipeline, data, control)
+            output = (sibling("moss_adapter").generate(pipeline, data, control, observation)
                       if spec["family"] == "moss-image" else pipeline(**args))
         control.stage("saving")
         media.png(output.images[0], job["outputPath"], data, Error)

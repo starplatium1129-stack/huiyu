@@ -39,6 +39,12 @@ const steps = computed({ get: () => props.state.steps, set: value => patch({ ste
 const cfg = computed({ get: () => props.state.cfg, set: value => patch({ cfg: value }) })
 const teaCache = computed({ get: () => props.state.teaCache !== false,
   set: value => patch({ teaCache: value }) })
+const cacheThreshold = computed(() => props.state.teaCacheThresh ?? 0.10)
+function updateCacheThreshold(event: Event) {
+  const input = event.target as HTMLInputElement
+  if (input.validity.valid && Number.isFinite(input.valueAsNumber)) patch({ teaCacheThresh: input.valueAsNumber })
+  else input.value = String(cacheThreshold.value)
+}
 const hiresFix = computed({ get: () => Boolean(props.state.hiresFix), set: value => patch({ hiresFix: value }) })
 const hiresScale = computed({ get: () => props.state.hiresScale || 2.0, set: value => patch({ hiresScale: value }) })
 const hiresDenoise = computed({ get: () => props.state.hiresDenoise || 0.35, set: value => patch({ hiresDenoise: value }) })
@@ -133,6 +139,14 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           <ArchiveIcon name="lightning" class="anima-hires-icon" />
           <span>特征缓存加速 · TeaCache</span>
         </ToggleSwitch>
+        <div v-if="(nativeAnima || capabilities.teaCache) && teaCache" class="anima-field anima-field--slider">
+          <div class="anima-field-heading">
+            <label :for="idOf('cache-threshold')">缓存阈值</label>
+            <input :id="idOf('cache-threshold')" type="number" min="0" max="0.15" step="0.01" :value="cacheThreshold" class="anima-num" :disabled="busy" :aria-describedby="idOf('cache-threshold-hint')" @change="updateCacheThreshold" />
+          </div>
+          <input type="range" min="0" max="0.15" step="0.01" :value="cacheThreshold" class="anima-slider" aria-label="TeaCache 缓存阈值滑块" :aria-describedby="idOf('cache-threshold-hint')" :disabled="busy" @input="updateCacheThreshold" />
+          <span :id="idOf('cache-threshold-hint')" class="tw:text-label-xs tw:text-secondary">范围 0–0.15 · 默认 0.10 · 数值越低越保守，0 为完整计算</span>
+        </div>
         <ToggleSwitch v-model="hiresFix" :disabled="busy || (!(native ? selectedModel?.capabilities?.hires === true : capabilities.hires) && !hiresFix)" label="高清放大修复" class="anima-hires-toggle">
           <ArchiveIcon name="spark" class="anima-hires-icon" />
           <span>高清放大</span>
@@ -166,11 +180,6 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
       <p v-if="nativeAnima" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
         已内置 Anima TeaCache，换角色、尺寸或高清倍率无需校准。缓存会改变部分采样结果，可关闭以使用完整计算。
       </p>
-      <div v-if="nativeAnima && teaCache" class="anima-field">
-        <label :for="idOf('cache-threshold')">缓存阈值</label>
-        <input :id="idOf('cache-threshold')" type="number" min="0" max="1" step="0.01" :value="state.teaCacheThresh ?? 0.10" class="anima-num" :disabled="busy" @change="patch({ teaCacheThresh: Number(($event.target as HTMLInputElement).value) })" />
-        <span class="tw:text-label-xs tw:text-secondary">默认 0.10 · 数值越低越保守，0 为完整计算</span>
-      </div>
 
       <details class="anima-prompt-details"><StudioDisclosureSummary>查看引擎接收的提示词</StudioDisclosureSummary><div data-disclosure-content>
       <label :for="idOf('prompt')" class="anima-label">正向提示词</label>

@@ -28,10 +28,10 @@
         <button v-if="plan.supported" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="recheck">重新检查</button>
       </div>
       <template v-if="plan.supported && selectedModel && !nativeEnabled && !pendingRestart">
-        <div v-if="selectedModel.family === 'moss-image' && !selectedModel.installed && !running" class="setup-field">
-          <label for="moss-checkpoint-path">已下载的 MOSS FP16 权重</label>
-          <input id="moss-checkpoint-path" v-model="checkpointPath" class="input" :disabled="locked" placeholder="例如 D:\Models\miaomiaoHaremMOSS_baseV10_fp16.safetensors" spellcheck="false" aria-describedby="moss-checkpoint-hint" />
-          <small id="moss-checkpoint-hint">先登录<a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">作者发布页</a>下载 FP16 版，填写完整文件路径。校验后复制该文件，再下载配套组件；原文件保留。INT8 版暂不支持。</small>
+        <div v-if="selectedModel.checkpointFilename && !selectedModel.installed && !running" class="setup-field">
+          <label for="author-checkpoint-path">已下载的作者权重</label>
+          <input id="author-checkpoint-path" v-model="checkpointPath" class="input" :disabled="locked" :placeholder="`例如 D:\\Models\\${selectedModel.checkpointFilename}`" spellcheck="false" aria-describedby="author-checkpoint-hint" />
+          <small id="author-checkpoint-hint">先登录<a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">作者发布页</a>下载 {{ selectedModel.checkpointFilename }}，填写完整文件路径。校验后复制该文件，再准备配套组件；原文件保留。量化版暂不支持。</small>
         </div>
         <div class="setup-model">
           <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">绘图模型</span><strong>{{ modelName }}</strong><small>{{ selectedModel.preparation === 'checkpoint-conversion' ? '下载原始权重，自动转换为原生模型' : '完整原生模型 · 无需转换' }}</small></div></div>
@@ -163,7 +163,7 @@ watch([() => route.query.resource, locked], ([value, isLocked]) => {
   if (typeof value !== 'string') { appliedResourceQuery = null; return }
   if (!isLocked && value !== appliedResourceQuery) { resourceId.value = value; appliedResourceQuery = value }
 }, { immediate: true })
-const linkedModels = ['anima-miaomiao-v1.6', 'anima-base-v1.0', 'krea2-raw', 'krea2-turbo', 'qwen-image-2.1', 'qwen-image-2.1-turbo', 'moss-miaomiao-base-v1.0']
+const linkedModels = ['anima-miaomiao-v1.6', 'anima-miaomiao-realskin-2.9b-v1.0', 'anima-base-v1.0', 'krea2-raw', 'krea2-turbo', 'qwen-image-2.1', 'qwen-image-2.1-turbo', 'moss-miaomiao-base-v1.0']
 let appliedModelQuery: string | null = null
 if (typeof route.query.model === 'string' && linkedModels.includes(route.query.model)) {
   modelId.value = route.query.model

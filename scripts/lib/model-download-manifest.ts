@@ -81,7 +81,7 @@ const COMMUNITY_ANIMA_FILES: readonly ModelFile[] = [
     '6bbb6b6785b4eb0df467658ce47f5f52f1d11fe992b1375b3c67ff02becf193b'), sourceUrl: 'https://civitai.com/api/download/models/3248362?fileId=3131298' },
   { ...file('', '3065644', 'diffusion_models/AnimaYume_v10_final_base.safetensors', 4182219230,
     '5d2a1a1f8488cb2ce6f3647859ac4c6ff1f4a81c84d147100898fc3c2847fb88', 'animayume_v10BaseFinal.safetensors'), sourceUrl: 'https://civitai.com/api/download/models/3065644?fileId=2944325' },
-  ...setupModels.files.filter(entry => entry.id === 'anima-miaomiao-2.9b-beta1.1')
+  ...setupModels.files.filter(entry => ['anima-miaomiao-2.9b-beta1.1', 'anima-miaomiao-realskin-2.9b-v1.0'].includes(entry.id))
     .map(entry => ({ ...entry, repo: '', remotePath: entry.path })),
 ]
 

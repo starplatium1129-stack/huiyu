@@ -1,12 +1,12 @@
-//! The recommended checkpoint uses the existing, strict local Anima converter.
+//! Fixed author checkpoints use the existing, strict local Anima converter.
 use super::*;
 use super::super::{setup::RECOMMENDED_MODEL, setup_verify::{self, ModelFile}};
 use std::process::Stdio;
 
-pub(super) fn bundle(base: &ModelBundle) -> Result<ModelBundle> {
-    let source = setup_verify::model_source(RECOMMENDED_MODEL)?;
+pub(super) fn bundle(base: &ModelBundle, model_id: &str, profile: &str) -> Result<ModelBundle> {
+    let source = setup_verify::model_source(model_id)?;
     let mut files = Vec::<Artifact>::new();
-    for (id, path) in [(RECOMMENDED_MODEL, "checkpoint.safetensors"),
+    for (id, path) in [(model_id, "checkpoint.safetensors"),
         ("qwen-encoder", "text_encoder.safetensors"), ("qwen-vae", "vae.safetensors")] {
         let value = setup_verify::model_source(id)?;
         let url = value["sourceUrl"].as_str().map(str::to_owned).unwrap_or_else(|| format!(
@@ -21,12 +21,15 @@ pub(super) fn bundle(base: &ModelBundle) -> Result<ModelBundle> {
     }).cloned());
     let download_bytes = files.iter().map(|file| file.bytes).sum::<u64>();
     Ok(ModelBundle {
-        id: RECOMMENDED_MODEL.into(), label: format!("{} · 推荐", source["label"].as_str().unwrap()),
+        id: model_id.into(), label: format!("{}{}", source["label"].as_str().unwrap(),
+            if model_id == RECOMMENDED_MODEL { " · 推荐" } else { "" }),
         revision: format!("{}-{}-convert-v1", source["revision"].as_str().unwrap(), base.revision),
         license: base.license.clone(), license_url: source["licenseUrl"].as_str().unwrap().into(),
         source_url: source["modelCardUrl"].as_str().unwrap().into(),
-        required_bytes: download_bytes.saturating_add(base.required_bytes), files,
-        requires_access: false, conversion_profile: Some("anima-cosmos2b-v041".into()),
+        required_bytes: download_bytes.saturating_mul(2), files,
+        requires_access: false, conversion_profile: Some(profile.into()),
+        checkpoint_filename: (profile == "anima-cosmos29b-v041").then(||
+            Path::new(source["path"].as_str().unwrap()).file_name().unwrap().to_string_lossy().into_owned()),
     })
 }
 
@@ -77,20 +80,29 @@ impl ControlService {
         stopped(cancel)?;
         self.native_stage(operation, 2);
         self.native_progress(operation, json!({"phase":"converting","stage":"converting",
-            "message":"正在将 MiaoMiao 1.6 转换为原生模型；仅使用 CPU，完成前不会启用"}));
+            "message":format!("正在将 {} 转换为原生模型；仅使用 CPU，完成前不会启用", model.label)}));
         let staging = self.config.ai_workspace_root.join("inference/.staging");
         plan::safe_directory(&staging)?;
         std::fs::create_dir_all(&staging)?;
         // The process owner retains this directory if child termination is unconfirmed.
         let temporary = Arc::new(tempfile::Builder::new().prefix("miaomiao-convert-").tempdir_in(staging)?);
         let output = temporary.path().join("model");
+        // Keep the fixed, hashed 28-layer base config as an input. The explicit
+        // 40-layer conversion profile validates every other field unchanged.
+        let transformer_config = if model.conversion_profile.as_deref() == Some("anima-cosmos29b-v041") {
+            let mut config: Value = serde_json::from_slice(&std::fs::read(inputs.join("transformer/config.json"))?)?;
+            config["num_layers"] = json!(40);
+            let path = temporary.path().join("transformer-config.json");
+            std::fs::write(&path, serde_json::to_vec_pretty(&config)?)?;
+            path
+        } else { inputs.join("transformer/config.json") };
         let runtime = image_models::runtime_for(Some(&model.id))?;
         let settings = image_models::settings(self, &runtime)?;
         let script = self.config.app_root.join("scripts/maintenance/convert-anima-checkpoint.py");
         let mut command = crate::native_python::command(&settings.python, &script);
         command.arg("--profile").arg(model.conversion_profile.as_deref().unwrap())
             .arg("--checkpoint").arg(inputs.join("checkpoint.safetensors"))
-            .arg("--transformer-config").arg(inputs.join("transformer/config.json"))
+            .arg("--transformer-config").arg(transformer_config)
             .arg("--text-encoder").arg(inputs.join("text_encoder.safetensors"))
             .arg("--vae").arg(inputs.join("vae.safetensors"))
             .arg("--qwen-tokenizer").arg(inputs.join("tokenizer"))

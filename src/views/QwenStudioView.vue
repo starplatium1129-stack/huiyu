@@ -44,6 +44,11 @@
         <p class="qwen-hint">宽高为 {{ alignment }} 的倍数。大画幅会增加显存与内存占用。</p>
         <details class="qwen-advanced"><StudioDisclosureSummary>高级参数 · {{ turbo ? '8 步 · CFG 1' : `${form.steps} 步` }} · {{ randomSeed ? '随机种子' : '固定种子' }}</StudioDisclosureSummary><div class="qwen-advanced-body"><template v-if="!turbo">
           <div class="qwen-field"><label for="qwen-negative">负向描述（可选）</label><textarea class="textarea" id="qwen-negative" v-model="form.negative" rows="2" maxlength="8000" :disabled="locked" /></div>
+          <div v-if="moss" class="qwen-field">
+            <label for="moss-acceleration">缓存加速</label>
+            <StudioSelect id="moss-acceleration" v-model="form.mossAcceleration" label="MOSS 缓存加速" :disabled="locked" :options="[{ value: 'off', label: '关闭 · 完整计算' }, { value: 'spectrum', label: 'Spectrum · 实验', disabled: !selected?.mossSpectrum }]" />
+            <p class="qwen-hint">Spectrum 可跳过部分计算，可能改变画面细节并额外占用显存。当前尚未实机验证；显存余量不足时使用完整计算。</p>
+          </div>
           <div class="qwen-pair"><div class="qwen-field"><label for="qwen-steps">步数</label><input class="input" id="qwen-steps" v-model.number="form.steps" type="number" min="1" max="100" :disabled="locked" /></div><div v-if="moss || form.negative.trim()" class="qwen-field"><label for="qwen-cfg">CFG</label><input class="input" id="qwen-cfg" v-model.number="form.cfg" type="number" :min="moss ? 0 : 1.1" max="20" step="0.1" :disabled="locked" /></div></div>
         </template>
         <p v-else class="qwen-hint">Turbo 使用固定 8 步、CFG 1，无负向描述。</p>

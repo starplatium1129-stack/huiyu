@@ -402,6 +402,7 @@ fn local_status(
             defaults["loraStrength"] = json!(0.8);
         }
         let mut entry = json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"readiness":if available {"files-ready"} else {"unavailable"},"unavailableReason":issue,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"builtin-anima","readiness":"builtin","policy":"builtin-anima","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}});
+        entry["capabilities"]["lora"] = json!(model["lora"] != false);
         let sketch = composition::status(runtime, model_dir.as_deref(), available && model["family"] == "anima");
         entry["capabilities"]["sketchControl"] = sketch["available"].clone();
         entry["capabilities"]["sketchControlStatus"] = sketch;

@@ -651,6 +651,7 @@
     },
     {
       "id": "moss-miaomiao-base-v1.0",
+      "checkpointFilename": "miaomiaoHaremMOSS_baseV10_fp16.safetensors",
       "label": "MiaoMiao Harem MOSS · BASE v1.0 · FP16",
       "revision": "3422319-85975793d8b3d432f1b6e27f352abaa4c2a4c0d3",
       "license": "OpenMOSS Apache-2.0；MIAOKA 微调权重另遵循作者页面许可",

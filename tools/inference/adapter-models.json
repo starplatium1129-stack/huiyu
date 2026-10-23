@@ -88,6 +88,7 @@
       "sizes": ["768x1280", "1280x768", "1280x1280", "960x1536", "1536x960", "1536x1536"],
       "steps": 50, "cfg": 3.5, "maxSize": 1536, "alignment": 16,
       "shift": 5, "uncondSkipLayers": [22],
+      "mossAcceleration": ["off", "spectrum"],
       "edit": false, "negative": true, "distilled": false
     },
     "krea2-raw": {
