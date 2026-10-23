@@ -1,0 +1,332 @@
+@reference "../tailwind.css";
+/* ============================================================
+   chat.css —— 聊天页样式（ChatView / ChatCharacterStage）
+   ------------------------------------------------------------
+   由 ChatView.vue 懒加载引入，仅服务 /chat 路由，不进首屏包。
+   分区：主布局 → 会话卡片 → 立绘舞台 → 换装 →
+   API 设置 → 房间设置 → 消息流 → 语音交互 → 响应式与降级。
+  ============================================================ */
+.chat-page {
+  @apply tw:relative tw:w-full tw:max-w-[1280px];
+  margin: 0 auto;
+  @apply tw:p-s-5;
+}
+
+.chat-page .chat-layout {
+  @apply tw:grid;
+  /* Portrait models need a tall stage; width follows the column, never stretches the model. */
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  @apply tw:gap-s-4;
+  /* Q 版小剧场移除后立绘是唯一主角：上限放宽，让 Live2D 更大 */
+  height: min(920px, calc(100dvh - 150px));
+  @apply tw:min-h-[560px];
+}
+
+.chat-page [hidden] {
+  @apply tw:hidden!;
+}
+
+.chat-page .character-card,
+
+/*   ============================================================
+   会话卡片
+  ============================================================ */
+.chat-page .conversation-card {
+  @apply tw:relative tw:min-w-0;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-terminal) var(--r-xl) var(--r-terminal) var(--r-xl);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-glass-sm);
+}
+
+.chat-page .character-card::before,
+.chat-page .conversation-card::before {
+  @apply tw:absolute tw:top-[-1px] tw:left-s-4 tw:w-[34px] tw:h-[1px];
+  content: "";
+  opacity: .8;
+  @apply tw:pointer-events-none;
+}
+
+.chat-page .character-card::before { background: linear-gradient(90deg, var(--character-accent), var(--editorial-gold)); }
+.chat-page .conversation-card::before { background: linear-gradient(90deg, var(--editorial-gold), var(--archive-blue)); }
+
+.chat-page .character-card,
+.chat-page .conversation-card {
+  @apply tw:flex tw:flex-col tw:overflow-hidden;
+}
+
+/*   ============================================================
+   立绘舞台：角色立绘 / Live2D 宿主 / 房间信号 / 语音光环
+  ============================================================ */
+.chat-page .portrait-stage {
+  @apply tw:relative tw:isolate tw:flex;
+  flex: 1;
+  @apply tw:items-end tw:justify-center tw:min-h-[390px] tw:overflow-hidden;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--on-art-line) 22%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(color-mix(in srgb, var(--on-art-line) 22%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(circle at 22% 68%, color-mix(in srgb, var(--character-accent) 14%, transparent), transparent 42%),
+    radial-gradient(circle at 78% 30%, color-mix(in srgb, var(--character-accent) 10%, transparent), transparent 38%),
+    radial-gradient(circle at 50% 25%, color-mix(in srgb, var(--character-accent) 18%, transparent), transparent 55%),
+    var(--stage-violet);
+}
+
+.chat-page .character-card { animation: chatRailIn .48s var(--ease-out) .06s both; }
+.chat-page .conversation-card { animation: chatRailIn .52s var(--ease-out) .12s both; }
+@keyframes chatRailIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.chat-page .portrait-stage::before {
+  @apply tw:absolute;
+  z-index: var(--z-below);
+  inset: 12% 12% 0;
+  border-radius: 50% 50% 0 0;
+  background: radial-gradient(ellipse at center bottom, color-mix(in srgb, var(--character-accent) 18%, transparent), transparent 67%);
+  content: "";
+  filter: blur(12px);
+  opacity: .9;
+}
+
+.chat-page .portrait-stage::after {
+  @apply tw:absolute;
+  z-index: 0;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0 11%, color-mix(in srgb, var(--character-accent) 10%, transparent) 11% 11.3%, transparent 11.3% 88%, color-mix(in srgb, var(--character-accent) 10%, transparent) 88% 88.3%, transparent 88.3%),
+    linear-gradient(180deg, transparent 0 23%, color-mix(in srgb, var(--character-accent) 8%, transparent) 23% 23.2%, transparent 23.2%);
+  content: "";
+  opacity: .7;
+  @apply tw:pointer-events-none;
+}
+
+.chat-page .portrait-stage[data-character="natsume"] {
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--on-art-line) 18%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(color-mix(in srgb, var(--on-art-line) 18%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(circle at 26% 66%, color-mix(in srgb, var(--natsume-amber) 15%, transparent), transparent 44%),
+    radial-gradient(circle at 74% 28%, color-mix(in srgb, var(--natsume-amber) 10%, transparent), transparent 38%),
+    radial-gradient(circle at 50% 23%, color-mix(in srgb, var(--natsume-amber) 18%, transparent), transparent 54%),
+    var(--stage-amber);
+}
+
+.chat-page .portrait-stage[data-character="natsume"]::after {
+  background:
+    linear-gradient(90deg, transparent 0 24%, color-mix(in srgb, var(--natsume-amber) 12%, transparent) 24% 24.4%, transparent 24.4% 75.6%, color-mix(in srgb, var(--natsume-amber) 12%, transparent) 75.6% 76%, transparent 76%),
+    linear-gradient(180deg, transparent 0 27%, color-mix(in srgb, var(--natsume-amber) 10%, transparent) 27% 27.3%, transparent 27.3% 63%, color-mix(in srgb, var(--natsume-amber) 8%, transparent) 63% 63.3%, transparent 63.3%);
+  opacity: .85;
+}
+
+.chat-page .room-signal {
+  @apply tw:absolute;
+  z-index: var(--z-raised);
+  @apply tw:top-s-4 tw:left-s-4 tw:max-w-[58%];
+  padding: 8px 10px 8px 8px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 22%, transparent);
+  border-radius: var(--r-terminal) var(--r-sm) var(--r-sm) var(--r-terminal);
+  background: color-mix(in srgb, var(--bg-deep) 70%, transparent);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--bg-deep) 34%, transparent);
+  @apply tw:text-muted;
+  backdrop-filter: blur(9px);
+  @apply tw:pointer-events-none;
+}
+
+.chat-page .room-signal::after {
+  @apply tw:absolute tw:top-[-4px] tw:right-[8px] tw:w-[18px] tw:h-[7px];
+  background: color-mix(in srgb, var(--character-accent) 30%, transparent);
+  content: "";
+  transform: rotate(2deg);
+}
+
+.chat-page .room-signal span,
+.chat-page .room-signal small {
+  @apply tw:block;
+}
+
+.chat-page .portrait-stage.live2d-ready .room-signal small {
+  @apply tw:hidden;
+}
+
+.chat-page .room-signal span {
+  @apply tw:pl-[7px];
+  border-left: 2px solid var(--character-accent);
+  color: var(--character-ink, var(--character-accent));
+  font: 800 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: .12em;
+}
+
+.chat-page .room-signal small {
+  @apply tw:mt-[4px] tw:pl-[10px];
+  color: color-mix(in srgb, var(--text-primary) 72%, var(--character-accent));
+  @apply tw:text-mono-sm tw:leading-label;
+  text-shadow: 0 1px 10px var(--bg-deep);
+}
+
+.chat-page .portrait-main {
+  @apply tw:absolute;
+  z-index: var(--z-base);
+  @apply tw:bottom-[-2%] tw:left-[50%];
+  width: min(94%, 560px);
+  @apply tw:max-h-[94%] tw:object-contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 22px 26px color-mix(in srgb, var(--bg-deep) 16%, transparent));
+  transform: translateX(-50%);
+  transition: opacity var(--motion-surface) ease;
+}
+
+.chat-page .live2d-host {
+  @apply tw:absolute;
+  z-index: var(--z-raised);
+  inset: 0;
+  opacity: 0;
+  @apply tw:pointer-events-none;
+  transition: opacity var(--motion-route) ease;
+}
+
+.chat-page .live2d-host > * {
+  @apply tw:absolute! tw:right-auto! tw:bottom-0! tw:left-[50%]! tw:top-auto!;
+  transform-origin: 50% 100% !important;
+}
+
+.chat-page .live2d-host canvas {
+  @apply tw:block;
+}
+
+.chat-page .live2d-host .live2d-tips,
+.chat-page .live2d-host .live2d-menus,
+.chat-page .live2d-host .live2d-other {
+  @apply tw:hidden!;
+}
+
+.chat-page .portrait-stage.live2d-ready .live2d-host {
+  opacity: 1;
+}
+
+.chat-page .portrait-stage.live2d-ready {
+  @apply tw:cursor-pointer;
+}
+
+/* Paint the decorative glow once; animate its opacity without filtering the live canvas. */
+.chat-page .live2d-host::before {
+  content: "";
+  position: absolute;
+  inset: 15% 8%;
+  z-index: -1;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--character-accent) 18%, transparent), transparent 70%);
+  opacity: 0;
+}
+.chat-page .portrait-stage.live2d-reacting .live2d-host::before {
+  animation: live2d-response .55s var(--ease-out);
+}
+
+.chat-page .portrait-stage.live2d-ready .portrait-main {
+  opacity: 0;
+}
+
+.chat-page .portrait-stage.speaking .portrait-main {
+  filter: drop-shadow(0 22px 30px color-mix(in srgb, var(--character-accent) 28%, transparent));
+}
+
+.chat-page .avatar-status {
+  @apply tw:absolute;
+  z-index: var(--z-raised);
+  @apply tw:top-s-3 tw:right-s-3 tw:inline-flex tw:items-center tw:gap-[6px] tw:max-w-[150px];
+  padding: 5px 9px;
+  @apply tw:overflow-hidden;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--r-terminal);
+  background: var(--glass-fill-strong);
+  @apply tw:text-muted tw:cursor-default;
+  font: 650 var(--fs-mono-sm) var(--font-sans);
+  @apply tw:text-ellipsis tw:whitespace-nowrap;
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--shadow-glass-sm);
+}
+
+.chat-page .avatar-status[data-state="idle"] {
+  border-color: color-mix(in srgb, var(--character-accent) 38%, var(--glass-edge));
+  background: color-mix(in srgb, var(--bg-deep) 88%, var(--character-accent));
+  color: color-mix(in srgb, var(--text-primary) 82%, var(--character-accent));
+}
+
+.chat-page .avatar-status::before {
+  @apply tw:w-[5px] tw:h-[5px];
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  content: "";
+}
+
+.chat-page .avatar-status[data-state="ready"] {
+  @apply tw:text-success-text;
+}
+
+.chat-page .avatar-status[data-state="fallback"] {
+  @apply tw:text-warning-text tw:cursor-pointer;
+}
+
+.chat-page .avatar-status[data-state="static"] {
+  @apply tw:text-muted;
+}
+
+.chat-page .live2d-enable-cta {
+  @apply tw:absolute;
+  z-index: var(--z-raised);
+  @apply tw:bottom-s-4 tw:left-[50%] tw:grid tw:gap-[3px];
+  min-width: min(240px, calc(100% - 40px));
+  padding: 10px 14px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 44%, var(--glass-edge));
+  @apply tw:rounded-lg;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--character-accent) 24%, transparent), transparent 72%),
+    var(--glass-fill-strong);
+  @apply tw:text-primary tw:cursor-pointer tw:text-left;
+  transform: translateX(-50%);
+  box-shadow: var(--shadow-glass-md);
+  backdrop-filter: blur(18px) saturate(145%);
+  transition: border-color var(--motion-hover) ease, transform var(--motion-hover) var(--ease-out), background var(--motion-hover) ease;
+}
+
+.chat-page .live2d-enable-cta:hover {
+  border-color: var(--character-ink, var(--character-accent));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--character-accent) 28%, transparent), transparent 72%),
+    color-mix(in srgb, var(--bg-deep) 82%, transparent);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.chat-page .live2d-enable-cta-kicker {
+  color: var(--character-ink, var(--character-accent));
+  font: 750 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: .1em;
+}
+
+.chat-page .live2d-enable-cta strong {
+  @apply tw:text-label;
+}
+
+.chat-page .live2d-enable-cta small {
+  @apply tw:text-muted tw:text-mono-xs;
+}
+
+.chat-page .live2d-interaction-hint {
+  @apply tw:absolute;
+  z-index: var(--z-float);
+  @apply tw:left-[50%] tw:bottom-s-3;
+  translate: -50% 0;
+  @apply tw:inline-flex tw:items-center;
+  width: fit-content;
+  @apply tw:max-w-full tw:m-0;
+  padding: 5px 10px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 20%, var(--glass-edge));
+  @apply tw:rounded-pill;
+  background: color-mix(in srgb, var(--bg-deep) 74%, transparent);
+  @apply tw:text-secondary;
+  font: 600 var(--fs-mono-xs) var(--font-mono);
+  @apply tw:leading-label tw:pointer-events-none;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-md);
+}
+@keyframes live2d-response {
+  0%, 100% { opacity: 0; }
+  45% { opacity: 1; }
+}

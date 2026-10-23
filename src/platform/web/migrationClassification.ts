@@ -12,6 +12,9 @@ const chats = new Set<string>(['aics_chat_v1', keys.CHAT_ARCHIVE_KV_KEY, 'aics_c
 
 /** All physical keys are inventoried, including intentionally non-backup keys. */
 export function classifyMigrationKey(source: MigrationSource, key: string): MigrationDomain {
+  // Gallery JPEG caches are rebuildable. Keep their bytes in the migration
+  // backup without treating them as unknown business data or active settings.
+  if (source === 'kv' && key.startsWith('thumb:')) return 'quarantine'
   // wl-live2d 1.0.8 caches array indices under these two keys (dist/es/index.js).
   // browserBackend supplies one explicit model, so the indices are derivative;
   // preserve their bytes as legacy records instead of replaying model selection.

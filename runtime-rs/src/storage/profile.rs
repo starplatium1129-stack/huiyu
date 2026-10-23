@@ -45,6 +45,7 @@ const SETTINGS: &[&str] = &[
     "aics_gallery_filter_presets_v1",
     "aics_backup_last_at",
     "aics-artist-usage",
+    "aics-artist-recent",
     "aics-voice-studio-collapsed",
     "aics_managed_route_collapsed_v1",
     "aics_managed_route_dismissed_v1",

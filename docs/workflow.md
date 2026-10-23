@@ -330,6 +330,8 @@ npm run wf -- voice:service -AIWorkspaceRoot <AI目录> -RuntimeRoot <运行目�
 
 产品后端为 runtime-rs，Node 用于前端、维护工具及构建编排。源码服务使用 npm start / npm run start:run；直接入口为 runtime-rs/target/release/huiyu-runtime.exe --app-root <项目目录> --bind 127.0.0.1:3210。工作区须显式私有路径/身份或受控桌面激活。
 
+`npm start` 会先执行 `prestart` 生成维护工具，`npm run start:run` 则直接使用现有生成产物；相同的脚本正文不代表相同的 npm 生命周期。`legacy:*` 仍由 `workflow-legacy.ts` 登记为旧格式升级入口，不能仅因名称或当前内容已入库就批量删除。
+
 rust:build 需要已有 Rust/MSVC 工具链，首次可能下载锁定 crate，不替换桌面安装。rust:licenses:collect 按 components.json 的固定配方下载公开源码并提取许可材料，不安装或执行源码；材料变化后更新摘要绑定，见[原生材料说明](../runtime-rs/native-licenses/README.md)。
 
 ### Rust 快速开发

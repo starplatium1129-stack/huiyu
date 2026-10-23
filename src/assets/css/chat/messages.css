@@ -1,0 +1,182 @@
+@reference "../tailwind.css";
+
+/*   ============================================================
+   消息流：气泡排版 / 头像 / 语音与记忆操作按钮
+  ============================================================ */
+.chat-page .message {
+  @apply tw:flex tw:items-end tw:gap-s-2 tw:max-w-[78%];
+  animation: message-in .22s ease both;
+}
+
+.chat-page .message.user {
+  @apply tw:self-end tw:flex-row-reverse;
+}
+
+.chat-page .message-avatar {
+  @apply tw:grid;
+  flex: none;
+  @apply tw:w-[30px] tw:h-[30px];
+  border-radius: 50%;
+  background: var(--accent-soft);
+  @apply tw:text-accent tw:text-body-sm;
+  place-items: center;
+}
+
+.chat-page .message.user .message-avatar {
+  background: var(--bg-elevated);
+  @apply tw:text-secondary;
+}
+
+.chat-page .message-body {
+  @apply tw:flex tw:flex-col tw:gap-[4px] tw:min-w-0;
+}
+
+.chat-page .message.user .message-body {
+  @apply tw:items-end;
+}
+
+/*   ============================================================
+   气泡细节：尾巴圆角 / 角色渐变条 / 说话与播放高亮
+  ============================================================ */
+.chat-page .message-bubble {
+  @apply tw:relative;
+  padding: 10px 13px;
+  border: 1px solid var(--border-soft);
+  /* bubble tail: tighten corner toward avatar */
+  border-radius: var(--r-terminal) var(--r-lg) var(--r-lg) var(--r-lg);
+  background: linear-gradient(145deg, var(--editorial-gold-soft), transparent 32%), var(--bg-surface);
+  @apply tw:text-primary tw:text-body-sm tw:leading-loose tw:whitespace-pre-wrap;
+  word-break: break-word;
+}
+/* 角色消息：左侧角色色渐变条（::before 独立于 speaking 边框，不冲突） */
+.chat-page .message:not(.user) .message-bubble::before {
+  content: "";
+  @apply tw:absolute tw:left-[-1px] tw:top-[14px] tw:bottom-[14px] tw:w-[3px] tw:rounded-pill;
+  background: linear-gradient(180deg, var(--character-accent), color-mix(in srgb, var(--character-accent) 38%, var(--accent)));
+  opacity: .8;
+}
+
+.chat-page .message.user .message-bubble {
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--border-soft));
+  border-radius: var(--r-lg) 2px var(--r-lg) var(--r-lg);
+  background: var(--accent-soft);
+}
+
+.chat-page .message.streaming .message-bubble::after {
+  @apply tw:inline-block tw:w-[5px] tw:h-[1em] tw:ml-[3px];
+  animation: cursor-blink .8s steps(2, end) infinite;
+  background: var(--accent);
+  content: "";
+  vertical-align: -2px;
+}
+
+.chat-page .message-note { color:var(--text-secondary); font-size:var(--fs-label-xs); }
+
+/*   ============================================================
+   输入区：撰写器 / 发送与停止 / 模型思考档位
+  ============================================================ */
+.chat-page .chat-composer {
+  @apply tw:p-s-3;
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-surface);
+}
+
+.chat-page .composer-row {
+  @apply tw:flex tw:items-end tw:gap-s-2;
+}
+
+.chat-page .chat-input {
+  flex: 1;
+  @apply tw:min-h-[50px] tw:max-h-[150px];
+  padding: 11px 13px;
+  @apply tw:resize-y;
+  border: 1px solid var(--border-soft);
+  @apply tw:rounded-md;
+  outline: none;
+  background: var(--bg-deep);
+  @apply tw:text-primary;
+  font: inherit;
+  @apply tw:text-body-sm;
+}
+
+.chat-page .chat-input:focus {
+  @apply tw:border-strong;
+  box-shadow: var(--focus-shadow);
+}
+
+.chat-page .thinking-group {
+  @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:whitespace-nowrap;
+}
+
+.chat-page .thinking-title {
+  @apply tw:text-secondary tw:text-label-sm;
+}
+
+/*   ============================================================
+   语音交互：按住说话
+  ============================================================ */
+.chat-page .hold-talk-btn {
+  @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:min-h-[28px];
+  padding: 4px 12px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 38%, var(--border-soft));
+  @apply tw:rounded-pill;
+  background: color-mix(in srgb, var(--character-accent) 10%, var(--bg-surface));
+  color: var(--character-accent, var(--accent));
+  @apply tw:cursor-pointer;
+  font: 650 var(--fs-mono-sm) var(--font-sans);
+  @apply tw:whitespace-nowrap;
+  touch-action: none;
+  @apply tw:select-none;
+  -webkit-user-select: none;
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
+}
+
+.chat-page .hold-talk-btn:hover {
+  border-color: var(--border-strong);
+}
+
+.chat-page .hold-talk-btn[data-state="capturing"] {
+  background: color-mix(in srgb, var(--character-accent) 22%, var(--bg-surface));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--character-accent) 18%, transparent);
+}
+
+.chat-page .hold-talk-btn[data-state="recognizing"] {
+  @apply tw:border-accent tw:text-accent;
+}
+
+.chat-page .hold-talk-btn[data-state="error"] {
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--border-soft));
+  @apply tw:text-danger-text;
+}
+
+.chat-page .hold-talk-btn:disabled {
+  @apply tw:cursor-default;
+  /* 审计修复：不用 opacity 压字（压后低于 AA），改用禁用令牌 */
+  @apply tw:text-disabled tw:border-soft;
+  background: var(--bg-surface);
+}
+
+.chat-page .chat-error {
+  @apply tw:min-h-[1.25em] tw:mt-s-2 tw:text-danger-text tw:text-label-xs;
+}
+
+.chat-page .chat-error[data-kind="warning"] {
+  @apply tw:text-warning-text;
+}
+
+.chat-page .chat-error[data-kind="info"] {
+  @apply tw:text-secondary;
+}
+
+@keyframes cursor-blink {
+  50% { opacity: 0; }
+}
+
+@keyframes status-blink {
+  50% { opacity: .35; }
+}
+
+@keyframes message-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}

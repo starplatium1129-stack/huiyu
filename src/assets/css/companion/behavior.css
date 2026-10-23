@@ -1,0 +1,252 @@
+@reference "../tailwind.css";
+
+/* Companion behavior: DND toggle + proactive reminder bubbles */
+
+.companion-reminders {
+  @apply tw:grid tw:gap-[6px] tw:mb-[8px];
+}
+
+.companion-page .companion-reminder-bubble {
+  @apply tw:relative;
+  width: fit-content;
+  @apply tw:max-w-[92%];
+  padding: 8px 40px 8px 11px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 55%, var(--border-soft));
+  border-radius: var(--r-lg) var(--r-lg) var(--r-lg) var(--r-terminal);
+  background: color-mix(in srgb, var(--character-accent) 12%, var(--bg-surface));
+  animation: companionReminderIn .34s var(--ease-out) both;
+}
+
+@keyframes companionReminderIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/*
+/*   ============================================================
+   提醒气泡与剪贴卡（进出场动画）
+  ============================================================ */
+
+/*   ============================================================
+   提醒气泡与剪贴卡（进出场动画）
+  ============================================================ */
+/* 2026-08-22 动效审计 LOW：提醒气泡/剪贴卡补退场（原只有入场，关闭时瞬移消失）。
+   列表容器用 <TransitionGroup name="reminder-pop">，剪贴卡复用全局 layer-fade。
+   2026-08-31 plans/003：退场曲线同步收敛为 --ease-out（与 layer-pop 一致）。 */
+.reminder-pop-leave-active {
+  transition: opacity var(--motion-hover) var(--ease-out),
+              transform var(--motion-hover) var(--ease-out);
+}
+.reminder-pop-leave-to { opacity: 0; transform: translateY(4px) scale(.97); }
+.reminder-pop-move { transition: transform var(--motion-surface) var(--ease-out); }
+
+.companion-page .companion-reminder-bubble > span {
+  @apply tw:block tw:mb-[2px] tw:text-accent;
+  font: 700 var(--fs-mono-xs) var(--font-mono);
+}
+
+.companion-page .companion-reminder-bubble p {
+  @apply tw:m-0 tw:text-body-sm tw:leading-body tw:whitespace-pre-wrap;
+}
+
+.companion-page .companion-reminder-dismiss {
+  @apply tw:absolute tw:top-[4px] tw:right-[4px] tw:w-[32px] tw:h-[32px] tw:grid tw:place-items-center;
+  border: 0;
+  @apply tw:rounded-sm;
+  background: transparent;
+  @apply tw:text-muted tw:cursor-pointer tw:text-body tw:leading-flush;
+}
+.companion-reminder-dismiss .archive-icon { @apply tw:w-[14px] tw:h-[14px]; }
+
+.companion-page .companion-reminder-dismiss:hover,
+.companion-page .companion-reminder-dismiss:focus-visible {
+  @apply tw:text-primary;
+  background: var(--bg-elevated);
+}
+
+.companion-reminder-actions {
+  @apply tw:flex tw:mt-[6px] tw:pr-[20px];
+}
+
+.companion-reminder-action {
+  @apply tw:min-h-[26px];
+  padding: 3px 9px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 50%, var(--border-soft));
+  @apply tw:rounded-sm;
+  background: color-mix(in srgb, var(--character-accent) 10%, transparent);
+  @apply tw:text-primary tw:cursor-pointer;
+  font: 600 var(--fs-label-xs) var(--font-sans);
+}
+
+.companion-reminder-action:hover,
+.companion-reminder-action:focus-visible {
+  border-color: var(--border-strong);
+  background: var(--bg-elevated);
+}
+
+.companion-page .companion-quiet-hours-hint {
+  @apply tw:text-muted tw:text-label-xs;
+}
+
+/* Companion event bubbles: clickable, kind-tinted */
+.companion-page .companion-reminder-bubble[data-kind="event"] {
+  border-style: dashed;
+  @apply tw:cursor-default;
+}
+
+.companion-page .companion-reminder-bubble.companion-reminder-link { @apply tw:cursor-default; }
+
+.companion-page .companion-reminder-bubble[data-event-kind="image-ready"] {
+  border-color: color-mix(in srgb, var(--character-accent) 70%, var(--border-strong));
+}
+
+.companion-page .companion-reminder-bubble[data-event-kind="service-back"] {
+  border-color: color-mix(in srgb, var(--success) 55%, var(--border-soft));
+  background: color-mix(in srgb, var(--success) 9%, var(--bg-surface));
+}
+
+.companion-page .companion-reminder-bubble[data-event-kind="service-down"] {
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border-soft));
+  background: color-mix(in srgb, var(--danger) 9%, var(--bg-surface));
+}
+
+/* Companion local image import button */
+
+/* Companion clipboard capture card */
+.companion-page .companion-clipboard-card {
+  @apply tw:grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 10px;
+  @apply tw:items-center;
+  padding: 8px 10px;
+  border: 1px solid var(--border-soft);
+  @apply tw:rounded-md;
+  background: var(--bg-surface);
+  animation: companionReminderIn .3s var(--ease-out) both;
+}
+
+.companion-page .companion-clipboard-card img {
+  @apply tw:w-[44px] tw:h-[44px] tw:object-cover tw:rounded-sm;
+  grid-row: span 2;
+}
+
+.companion-page .companion-clipboard-card strong {
+  @apply tw:text-primary tw:text-body-sm;
+}
+
+.companion-page .companion-clipboard-preview {
+  margin: 2px 0 0;
+  @apply tw:text-muted tw:text-label-xs tw:leading-label tw:max-h-[34px] tw:overflow-hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.companion-page .companion-clipboard-actions {
+  grid-column: 2;
+  @apply tw:flex tw:gap-[6px] tw:justify-end;
+}
+
+/* Immersive mode: UI fades away while idle, glass surfaces, stage shadow */
+html.companion-desktop .companion-toolbar,
+html.companion-desktop .companion-conversation {
+  visibility: visible;
+  transition: opacity var(--motion-route-cut) var(--ease-out), transform var(--motion-route-cut) var(--ease-out), visibility 0s;
+}
+
+/* 2026-08-22 动效审计 #15：原 display:none 短路了上面的 .45s 淡出过渡（从未生效过）；
+   改 visibility 延迟翻转——淡出完成后才真正隐藏，恢复浮现即渐显。 */
+html.companion-desktop.companion-ui-hidden .companion-toolbar,
+html.companion-desktop.companion-ui-hidden .companion-conversation {
+  opacity: 0;
+  visibility: hidden;
+  @apply tw:pointer-events-none;
+  transition: opacity var(--motion-route-cut) var(--ease-out), transform var(--motion-route-cut) var(--ease-out), visibility 0s linear var(--motion-route-cut);
+}
+
+html.companion-desktop.companion-ui-hidden .companion-presence-cue {
+  opacity: .32;
+  transform: translateX(-50%) translateY(-3px) scale(.96);
+}
+
+html.companion-desktop .companion-toolbar,
+html.companion-desktop .companion-conversation,
+html.companion-desktop .companion-clipboard-card,
+html.companion-desktop .companion-reminder-bubble {
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  backdrop-filter: blur(14px) saturate(1.25);
+}
+
+html.companion-desktop .companion-conversation {
+  background: color-mix(in srgb, var(--bg-deep) 42%, transparent);
+}
+
+html.companion-desktop .companion-bubbles {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 18%, #000 92%, transparent 100%);
+}
+
+/* Stage floor shadow grounds the character on the desktop */
+html.companion-desktop .companion-stage::after {
+  @apply tw:absolute tw:right-[18%] tw:bottom-[4px] tw:left-[18%] tw:h-[46px];
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--character-accent) 24%, transparent), transparent 68%);
+  content: "";
+  filter: blur(10px);
+  opacity: .8;
+  @apply tw:pointer-events-none;
+}
+
+html.companion-desktop.companion-ui-hidden .companion-stage::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion='full']).companion-desktop .companion-toolbar, html:not([data-motion='full']).companion-desktop .companion-conversation {
+    transition: none;
+  }
+}
+
+/* Immersive mode: only the character and the dialog remain */
+
+.companion-page .companion-exit-immersive {
+  @apply tw:fixed tw:top-[10px] tw:right-[10px];
+  z-index: calc(var(--z-overlay) + 1);
+  @apply tw:min-h-[28px];
+  padding: 4px 12px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 50%, var(--border-soft));
+  @apply tw:rounded-md;
+  background: var(--bg-surface);
+  @apply tw:text-primary tw:cursor-pointer tw:text-label-xs;
+}
+
+/* Immersive mode hides everything except the character and the dialog */
+html.companion-immersive .companion-toolbar,
+html.companion-immersive .companion-workspace-settings,
+html.companion-immersive .companion-clipboard-card,
+html.companion-immersive .companion-reminders,
+html.companion-immersive .companion-setup-inline,
+html.companion-immersive .companion-tool-indicator,
+html.companion-immersive .companion-errors {
+  @apply tw:hidden;
+}
+
+html.companion-immersive .companion-conversation {
+  background: transparent;
+  border-color: transparent;
+  @apply tw:pb-s-2;
+}
+
+/* Immersive mode: fully transparent background (desktop window is transparent) */
+html.companion-immersive body {
+  background: transparent;
+}
+
+html.companion-immersive .companion-page::before,
+html.companion-immersive .companion-page::after {
+  @apply tw:hidden;
+}
+
+html.companion-immersive .companion-page {
+  background: transparent;
+}

@@ -31,6 +31,7 @@ ChatCharacterStage / useLive2D
 
 - `types.ts` 定义 stage/session/model/capability 契约；`createBackend.ts` 在 Native bridge 缺失时回退 browser，并标记 `data-backend="browser-fallback"`。
 - Browser 路径保留 wl-live2d 的参数级眨眼、口型和情绪运行时；Native 路径只发送意图，不复制浏览器参数 hack。
+- `browserBackend.ts` 的 Web 入口仅动态导入 `wl-live2d`；其 1.0.8 发布文件已内联 Pixi/Cubism 渲染代码。npm 的 `pixi-live2d-display` 直接依赖、vendored override 和上游传递依赖不构成额外后端，也不能证明该内联代码采用了 vendored 补丁；依赖清理须分别核对发布文件、实际 import 与许可来源。
 - Native renderer 由官方 Cubism SDK for Native 5-r.5、C++ glue、Rust FFI、`model.rs`、`renderer.rs` 和 WGSL shader 组成，负责动作、物理、pose、眨眼、hit-test、mask、混合和透明目标。
 - overlay 为独立线程的透明 Win32 窗口；壳负责窗口生命周期、命令队列、事件和布局，renderer 负责模型和 GPU 资源。
 

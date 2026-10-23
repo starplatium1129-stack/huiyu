@@ -14,7 +14,7 @@
  * 现在正常模式成对清理孤儿/陈旧产物；--check 校验存在性 + 解压内容与源一致。
  *
  * 用法: node scripts/maintenance/precompress.js [--check]
- * 已挂在 npm run build:all 之后。
+ * 由 npm run build:web:run 在 Vite 构建和包体校验后执行。
  */
 
 const fs: typeof import('fs') = require('fs');

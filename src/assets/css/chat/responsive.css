@@ -1,0 +1,100 @@
+@reference "../tailwind.css";
+
+/*   ============================================================
+   响应式与无障碍降级
+   reduced-motion 短路 / 窄栏布局 / 高度受限兜底
+  ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .chat-page *, :root:not([data-motion='full']) .chat-page *::before, :root:not([data-motion='full']) .chat-page *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .chat-page {
+    @apply tw:p-s-3;
+  }
+
+  .chat-page .chat-layout {
+    grid-template-columns: 1fr;
+    @apply tw:h-auto tw:min-h-0;
+  }
+
+  .chat-page .character-card {
+    @apply tw:min-h-[500px];
+  }
+
+  .chat-page .character-info {
+    padding-bottom: calc(var(--s-3) + 8px);
+  }
+
+  .chat-page .portrait-stage {
+    @apply tw:min-h-[390px];
+  }
+
+  .chat-page .conversation-card {
+    min-height: min(680px, 78dvh);
+  }
+}
+
+/* 矮屏：角色舞台让出底部信息区，避免名字/描述被裁切 */
+@media (max-height: 780px) {
+  .chat-page .portrait-stage {
+    @apply tw:min-h-[300px];
+  }
+
+  /* 舞台压缩后心情文案会碰立绘头部，只保留房间代号 */
+  .chat-page .room-signal small {
+    @apply tw:hidden;
+  }
+}
+
+@media (max-width: 600px) {
+  .chat-page .room-setup { @apply tw:items-stretch tw:flex-col; }
+  .chat-page .conversation-head {
+    @apply tw:items-stretch tw:flex-col;
+  }
+
+  .chat-page .model-select {
+    @apply tw:w-full;
+    max-width: none;
+  }
+
+  .chat-page .model-controls {
+    @apply tw:items-stretch tw:flex-col tw:w-full;
+  }
+
+  .chat-page .message {
+    @apply tw:max-w-[91%];
+  }
+
+  .chat-page .composer-row {
+    @apply tw:items-stretch tw:flex-wrap;
+  }
+
+  .chat-page .chat-input {
+    flex-basis: 100%;
+  }
+
+}
+
+/* Desktop room keeps the composer in the viewport; only the conversation scrolls. */
+@media (min-width: 1000px) {
+  .chat-page { height: calc(100dvh - 72px); @apply tw:flex tw:flex-col tw:mb-0; padding-block: var(--s-4); }
+  .chat-page > .chat-layout { flex: 1; @apply tw:min-h-0 tw:h-auto; }
+  .chat-page .portrait-stage { @apply tw:min-h-0; }
+  .chat-page:where(.aics-desktop-shell *) { height: calc(100dvh - 110px); }
+}
+
+/* Keep biography and wardrobe expansion from taking height away from the stage. */
+.chat-page .character-info { @apply tw:relative; }
+.chat-page .room-signal { @apply tw:max-w-[55%] tw:p-s-2; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-surface); box-shadow: none; backdrop-filter: none; }
+.chat-page .room-signal small { @apply tw:text-secondary; text-shadow: none; }
+.chat-page .room-signal::after { @apply tw:hidden; }
+.chat-page .portrait-stage.live2d-ready .room-signal small { @apply tw:hidden; }
+@media (min-width: 1000px) {
+  .chat-page { @apply tw:max-w-[1600px]; }
+  .chat-page .chat-layout { grid-template-columns: clamp(290px, 27vw, 390px) minmax(0, 1fr); }
+}

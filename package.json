@@ -18,7 +18,6 @@
     "build:web:run": "vite build && node scripts/maintenance/check-bundle-budget.js && node scripts/maintenance/precompress.js",
     "build": "npm run build:web:run",
     "build:analyze": "vite build --mode analyze && node scripts/maintenance/check-bundle-budget.js",
-    "build:all": "npm run build",
     "prod": "npm run build && npm run start:run",
     "dev:server": "node scripts/dev-server.mts",
     "rust:build:dev": "node scripts/maintenance/run-rust-runtime.js build-dev",

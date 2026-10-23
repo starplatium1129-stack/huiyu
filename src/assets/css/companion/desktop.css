@@ -1,0 +1,275 @@
+@reference "../tailwind.css";
+
+/* ============================================================
+ * 2026-08-16 桌宠主角化布局（用户照片反馈修复）
+ * 现象：正常模式下顶栏下方的角色切换标签/状态胶囊/立绘状态按钮压在
+ *       角色头部上，底部对话面板（气泡+语音提示条+输入栏）盖住膝盖
+ *       以下；夏目（accent #fbb040）的舞台背景光晕呈现为一大块黄色。
+ * 修复：
+ *  1) 桌面窗口改 flex 纵向三段（顶栏 / 立绘 / 对话面板），立绘占剩余
+ *     高度并自适应缩放，UI 永不与角色重叠；
+ *  2) 舞台悬浮件收敛：角色切换并入顶栏分段控件，状态胶囊与立绘状态
+ *     按钮在桌面模式隐藏（状态已并入输入面板状态行）；
+ *  3) 桌面模式背景光晕全部改中性暗色（art-scrim/黑），去掉 accent
+ *     色大色块，夏目不再出现黄色块，角色在任何桌面壁纸上都干净；
+ *  4) 空闲自动隐藏改为真正收起顶栏+对话面板（display:none），立绘
+ *     随之放大到整窗，最大化"角色为主"的桌面宠体验。
+ * ============================================================ */
+
+/* —— 1) flex 三段布局：顶栏 / 立绘 / 对话 —— */
+html.companion-desktop .companion-page {
+  @apply tw:flex tw:flex-col tw:gap-s-2 tw:p-s-2;
+}
+
+html.companion-desktop .companion-page .companion-toolbar {
+  @apply tw:static tw:top-auto tw:right-auto tw:left-auto;
+  flex: none;
+  @apply tw:min-h-[52px];
+  background: color-mix(in srgb, var(--bg-surface) 94%, transparent);
+  @apply tw:border-soft;
+  --companion-ink: var(--text-primary);
+  --companion-ink-soft: var(--text-secondary);
+}
+html.companion-desktop .companion-page .companion-toolbar-actions { flex: 0 0 auto; }
+html.companion-desktop .companion-page .companion-identity > span {
+  @apply tw:overflow-hidden tw:whitespace-nowrap tw:text-ellipsis;
+  text-shadow: none;
+  @apply tw:text-secondary;
+}
+
+html.companion-desktop .companion-page .companion-identity {
+  flex: 1 1 auto;
+  @apply tw:min-w-0 tw:overflow-hidden;
+}
+
+html.companion-desktop .companion-page .companion-identity h1 {
+  text-shadow: none;
+  @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap;
+}
+
+html.companion-desktop .companion-page .companion-stage {
+  @apply tw:flex tw:flex-col tw:gap-s-2 tw:h-auto;
+  flex: 1 1 auto;
+  @apply tw:min-h-0;
+}
+
+html.companion-desktop .companion-page .character-card {
+  @apply tw:relative;
+  inset: auto;
+  flex: 1 1 auto;
+  @apply tw:min-h-0;
+}
+
+/* 对话面板脱离立绘：静态块排在立绘下方，气泡再多也不遮挡角色 */
+html.companion-desktop .companion-page .companion-conversation {
+  @apply tw:static;
+  inset: auto;
+  @apply tw:w-full;
+  margin: 0 0 6px;
+  @apply tw:p-0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* —— 2) 舞台悬浮件收敛（角色切换进顶栏，状态进输入面板） —— */
+html.companion-desktop .companion-page .companion-presence-cue,
+html.companion-desktop .companion-page .avatar-status {
+  @apply tw:hidden;
+}
+
+/* —— 3) 桌面模式背景：窗口保持透明，只留中性暗角 + 角色柔和背光 ——
+   教训（2026-08-16 二轮）：深色"舞台卡"把窗口变成黑色矩形贴片，
+   用户反馈角色淹没。改为：窗口背景完全不绘制（全透明，壁纸可见），
+   只在角色身后放一轮冷白柔光把角色"托"出来——不加色相（无黄色）、
+   不形成贴片、角色轮廓清晰。 */
+html.companion-desktop .companion-page::before,
+html.companion-desktop .companion-page::after {
+  @apply tw:hidden;
+}
+
+/* 舞台网格"框"（--companion-wash 亮色四边线在角色四周围出的透明框）：
+   桌面超透明窗上没有底色可依托，光线条反而在壁纸上显成一道可见的
+   浅色框边，用户判为"透明框"。桌面模式一律不绘制。 */
+html.companion-desktop .portrait-stage::after {
+  @apply tw:hidden;
+}
+
+/* 角色背光已移除（2026-08-16 三轮）：前两轮先后试过"深色舞台卡"
+   （整窗变黑贴片）与"冷白径向羽化光晕"（Alpha 归零前仍有肉眼可见的
+   亮度，用户判定为透明框并投诉）。竞相在壁纸上加光源只会留下"框"的
+   观感，现在彻底不绘制任何背景层：角色直接落在壁纸上，只保留下方
+   暗色地面投影与立绘自身的深影（均在角色脚部附近，不构成框）。 */
+html.companion-desktop .portrait-stage::before {
+  @apply tw:hidden;
+}
+
+/* 地面投影：柔和中性，稳定角色站位感 */
+html.companion-desktop .companion-stage::after {
+  background: radial-gradient(ellipse at center, rgba(5, 3, 10, 0.35), transparent 68%);
+}
+
+/* 立绘投影去主题色（关键）：presence 态原规则给 live2d-host 加
+   accent 色 drop-shadow（夏目 accent=#fbb040 → 角色下半身一圈黄色
+   光晕，就是用户一直看到的"黄色块"）。桌面模式一律改中性深影。 */
+html.companion-desktop .companion-page .live2d-host,
+html.companion-desktop .companion-page .portrait-stage[data-presence="attentive"] .live2d-host,
+html.companion-desktop .companion-page .portrait-stage[data-presence="listening"] .live2d-host,
+html.companion-desktop .companion-page .portrait-stage[data-presence="thinking"] .live2d-host,
+html.companion-desktop .companion-page .portrait-stage[data-presence="speaking"] .live2d-host {
+  filter: drop-shadow(0 18px 26px rgba(5, 3, 10, 0.4));
+}
+html.companion-desktop .companion-page .portrait-main {
+  filter: drop-shadow(0 18px 26px rgba(5, 3, 10, 0.4));
+}
+
+/* 互动提示：桌面模式上移到浮层（聊天胶囊+陪伴中+问候）上方，避免与
+   底部浮层在窗口最下缘挤成多层重叠（2026-08-20 用户反馈"底部多 UI
+   重叠"）；空闲隐藏时一并收起。 */
+html.companion-desktop .companion-page .live2d-interaction-hint {
+  @apply tw:bottom-[120px];
+}
+html.companion-desktop.companion-ui-hidden .companion-page .live2d-interaction-hint {
+  @apply tw:hidden;
+}
+
+
+/* ============================================================
+ * 2026-08-18 真双窗口：角色窗去掉内嵌聊天面板 → 浮层（聊天胶囊+
+ * 状态点+瞬态问候）；聊天在独立窗（companion-chat）。
+ * 角色窗 = 只装角色 + 轻量入口，永不显示对话面板。
+ * ============================================================ */
+html.companion-desktop .companion-page .companion-conversation {
+  @apply tw:hidden;
+}
+
+html.companion-desktop .companion-page .companion-stage {
+  @apply tw:relative tw:overflow-hidden;
+}
+
+.companion-desktop-float {
+  @apply tw:absolute;
+  z-index: var(--z-overlay);
+  @apply tw:bottom-[12px] tw:left-[50%];
+  transform: translateX(-50%);
+  @apply tw:flex tw:flex-col tw:items-center tw:gap-[8px] tw:pointer-events-none;
+  transition: opacity var(--motion-route) var(--ease-out), transform var(--motion-route) var(--ease-out);
+}
+html.companion-desktop.companion-ui-hidden .companion-desktop-float,
+html.companion-desktop.companion-immersive .companion-desktop-float {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+  @apply tw:pointer-events-none;
+}
+
+.companion-chat-chip {
+  @apply tw:pointer-events-auto tw:inline-flex tw:items-center tw:gap-[6px] tw:min-h-[34px];
+  padding: 0 16px;
+  border: 1px solid var(--companion-edge);
+  @apply tw:rounded-md;
+  background: color-mix(in srgb, var(--art-scrim) 68%, transparent);
+  color: var(--companion-ink);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 var(--companion-highlight);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  backdrop-filter: blur(14px) saturate(1.25);
+  @apply tw:cursor-pointer;
+  font: 700 var(--fs-label) var(--font-sans);
+  transition: transform var(--motion-hover) var(--ease-out), background var(--motion-hover) ease, border-color var(--motion-hover) ease;
+}
+.companion-chat-chip .archive-icon {
+  @apply tw:w-[15px] tw:h-[15px];
+  color: color-mix(in srgb, var(--character-accent) 82%, var(--companion-ink));
+}
+.companion-chat-chip:hover,
+.companion-chat-chip:focus-visible {
+  border-color: var(--border-strong);
+  background: var(--art-scrim);
+  transform: translateY(-2px);
+}
+
+.companion-live-dot {
+  @apply tw:pointer-events-auto tw:inline-flex tw:items-center tw:gap-[6px] tw:min-h-[24px];
+  padding: 3px 12px;
+  border: 1px solid var(--companion-edge);
+  @apply tw:rounded-pill;
+  background: color-mix(in srgb, var(--art-scrim) 88%, transparent);
+  color: var(--companion-ink);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  @apply tw:text-label-xs;
+  text-shadow: var(--companion-text-shadow);
+}
+.companion-live-dot i {
+  @apply tw:w-[6px] tw:h-[6px];
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+.companion-live-dot[data-state="idle"] i { background: var(--success); box-shadow: 0 0 8px color-mix(in srgb, var(--success) 60%, transparent); }
+.companion-live-dot[data-state="busy"] i { background: var(--warning); box-shadow: 0 0 8px color-mix(in srgb, var(--warning) 60%, transparent); }
+.companion-live-dot[data-state="speaking"] i {
+  background: var(--character-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--character-accent) 65%, transparent);
+  animation: companionLivePulse 1s ease-in-out infinite;
+}
+@keyframes companionLivePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .4; }
+}
+html.companion-desktop.companion-ui-hidden .companion-live-dot {
+  @apply tw:hidden;
+}
+
+/* 瞬态问候气泡：贴角色窗底部，自动随徽章区排列（事件类仍走原生 notify） */
+.companion-float-reminders {
+  @apply tw:flex tw:flex-col tw:gap-[6px] tw:items-center tw:pointer-events-auto;
+}
+
+/*   ============================================================
+   浮层提醒：提醒气泡 / 剪贴卡（列表容器走 TransitionGroup）
+  ============================================================ */
+.companion-float-reminder {
+  @apply tw:relative;
+  width: fit-content;
+  max-width: min(86%, 420px);
+  padding: 8px 40px 8px 12px;
+  border: 1px solid color-mix(in srgb, var(--character-accent) 55%, var(--companion-edge));
+  border-radius: var(--r-lg) var(--r-lg) var(--r-lg) var(--r-terminal);
+  background: color-mix(in srgb, var(--art-scrim) 92%, transparent);
+  color: var(--companion-ink);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 var(--companion-highlight);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  backdrop-filter: blur(16px) saturate(1.25);
+  animation: companionReminderIn .34s var(--ease-out) both;
+}
+.companion-float-reminder > span {
+  @apply tw:block tw:mb-[2px];
+  color: var(--companion-ink);
+  font: 700 var(--fs-mono-xs) var(--font-mono);
+}
+.companion-float-reminder p {
+  color: var(--companion-ink);
+  @apply tw:m-0 tw:text-body-sm tw:leading-body tw:whitespace-pre-wrap;
+}
+.companion-float-reminder > .companion-reminder-dismiss {
+  @apply tw:absolute tw:top-[4px] tw:right-[4px] tw:w-[32px] tw:h-[32px] tw:grid tw:place-items-center;
+  border: 0;
+  @apply tw:rounded-sm;
+  background: transparent;
+  color: var(--companion-ink-soft);
+  @apply tw:cursor-pointer tw:text-body tw:leading-flush;
+}
+
+.companion-float-reminder .companion-reminder-actions {
+  @apply tw:pr-[20px];
+}
+
+.companion-float-reminder > .companion-reminder-dismiss:hover,
+.companion-float-reminder > .companion-reminder-dismiss:focus-visible {
+  color: var(--companion-ink);
+  background: var(--companion-wash);
+}
+.companion-float-reminder[data-kind="event"] { border-style: dashed; @apply tw:cursor-default; }
+.companion-float-reminder.companion-reminder-link { @apply tw:cursor-default; }

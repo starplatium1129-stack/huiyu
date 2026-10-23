@@ -162,6 +162,7 @@ const LIVE_LOCAL_KEYS = [
   AUTO_SAVE_TO_GALLERY_KEY,
   GALLERY_FILTER_PRESETS_KEY,
   'aics-artist-usage',
+  'aics-artist-recent',
   'aics-voice-studio-collapsed',
   'aics_managed_route_collapsed_v1',
   'aics_managed_route_dismissed_v1',

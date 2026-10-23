@@ -84,6 +84,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   const pendingPreferences = new Map<string, string>()
   let saveFailed = false
   if (getCurrentScope()) onScopeDispose(registerMaintenanceParticipant(async () => {
+    await ensureProfileChatHistory()
     if (!canWrite()) throw new Error('CHAT_WRITE_BLOCKED')
     await preferences.confirm()
     for (const [key, value] of pendingPreferences) savePreference(key, value)

@@ -2,7 +2,7 @@
 
 > 已落地的实施契约；对应修订版 R1–R4 与 R9。入口：[现行架构契约](../engineering-contracts.md#重构期间的任务与持久化边界)。
 
-> 主线已接入；本机 `3002` 来源迁移、SQLite authority 激活及 bundled UI 切换见 [当前实现与安装边界](../project-status.md#源码与本机安装)，当前安装身份以[项目状态](../project-status.md)为准。激活由持久 workspace 指针决定，不自动迁移其他来源；Web 继续使用独立 IndexedDB。其他来源不因当前来源已激活而自动迁移。
+> 主线已接入；本机来源身份、SQLite authority 激活及当前安装边界见[项目状态](../project-status.md#源码与本机安装)。激活由持久 workspace 指针决定，bundled UI 单独启用，不自动迁移其他来源；Web 继续使用独立 IndexedDB。其他来源不因当前来源已激活而自动迁移。
 
 ## 1. 已定方案与所有权
 
@@ -26,7 +26,7 @@
   backups/<backupId>/
 ```
 
-“Workspace v2”指产品架构版本，不代表第一份生产数据库必须叫 schema v2。当前 schema 为 v5，按 v1 → v2（迁移/profile）→ v3（任务）→ v4（聊天归档分块）→ v5（逐消息记录与图像批次计划）顺序升级；上面的 v1 是初始建库版本。旧运行时不能打开较新的库。私人库不得放进安装目录、dist、AI_WORKSPACE_ROOT 或可自动清空的 runtime cache。
+“Workspace v2”指产品架构版本，不代表第一份生产数据库必须叫 schema v2。当前 schema 为 v6，按 v1 → v2（迁移/profile）→ v3（任务）→ v4（聊天归档分块）→ v5（逐消息记录与图像批次计划）→ v6（任务载荷与批次输入分表）顺序升级；上面的 v1 是初始建库版本。旧运行时不能打开较新的库。私人库不得放进安装目录、dist、AI_WORKSPACE_ROOT 或可自动清空的 runtime cache。
 
 根路径不可写、磁盘断开、身份不匹配、schema 较新时，显示诊断并拒绝写入；禁止自动改用另一个路径创建空库。
 
@@ -116,6 +116,7 @@
 | session 草稿、临时成片、视频/批次指针 | 从仍打开的所属窗口导出；媒体纳入保留；不能从关闭的旧 session 凭空恢复 |
 | 任务中心摘要/SD 队列快照 | 历史/待确认数据，不当作可执行任务或真实运行状态 |
 | storage 事件信号、relay receipt、在途回调 | 不重放、不恢复；新窗口重新订阅 |
+| KV 的 `thumb:<imageId>` 缩略缓存 | 已知可重建资料，原字节作为 quarantine 记录保存在独立备份和迁移账本，不重放为活设置，也不阻塞来源分类 |
 | 凭据 | 通过现有 credentials 能力迁移为引用并验证；不写普通 SQL 表、迁移清单或日志 |
 
 普通备份白名单有意省略部分上述数据，所以必须建立版本化 MigrationEnvelope，不能直接把普通 backup 当作全量迁移包。未知仍在使用的键、未识别凭据字段、无法分类的会话引用是来源切换阻塞项。源配置保留，不静默删除或导入为公开字段。

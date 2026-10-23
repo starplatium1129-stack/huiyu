@@ -38,6 +38,8 @@ npm run wf -- models:import-anima-directory --source-dir "D:\models\source-anima
 
 ---
 
+固定版本模型下载中的 SHA-1 用于重建并核对 Git blob ID，包括绑定 SHA-256 与大小的 Git LFS 指针；实际 LFS 模型字节仍按 SHA-256 校验。它与文件完整性摘要承担不同职责，不因项目同时使用两种摘要就替换 Git 对象算法。
+
 ## 3. 架构核验与单文件离线转换
 
 ### 检查单文件 Checkpoint 结构
