@@ -95,13 +95,14 @@ function Start-DesktopClientAndWait {
   Write-DeploymentLog "$Prefix 启动桌面端 ..."
   if ($isElevated) {
     # An elevated terminal cannot safely host the client; ask the interactive shell.
-    Start-Process explorer.exe -ArgumentList "`"$appPath`""
+    Start-Process explorer.exe -ArgumentList "`"$appPath`"" -WindowStyle Normal
   } else {
-    Start-Process -FilePath $appPath -WorkingDirectory $installDir | Out-Null
+    Start-Process -FilePath $appPath -WorkingDirectory $installDir -WindowStyle Normal | Out-Null
   }
   $startup = Wait-DesktopDeploymentReady -InstallDir $installDir -ConfigRoot $configRoot -TimeoutSeconds 120
-  Write-Host "宿主与所属 Rust 网关已就绪（PID $($startup.hostPid)）" -ForegroundColor Green
-  Write-DeploymentLog "宿主与所属 Rust 网关已就绪（PID $($startup.hostPid)）"
+  Show-DesktopDeploymentWindow -InstallDir $installDir -ConfigRoot $configRoot -HostPid $startup.hostPid
+  Write-Host "宿主与所属 Rust 网关已就绪，Companion 窗口已显示（PID $($startup.hostPid)）" -ForegroundColor Green
+  Write-DeploymentLog "宿主与所属 Rust 网关已就绪，Companion 窗口已显示（PID $($startup.hostPid)）"
   return $startup
 }
 function Get-DesktopProductVersion {
@@ -151,14 +152,8 @@ function Complete-CurrentDeployment {
     Write-DeploymentLog '[desktop:auto] 已是最新，按 -NoRestart 不启动桌面端。'
     return 0
   }
-  if ($hosts.Count -eq 1) {
-    $status = Wait-DesktopDeploymentReady -InstallDir $installDir -ConfigRoot $configRoot -TimeoutSeconds 30
-    Write-Host "[desktop:auto] 已是最新；桌面端正在运行（PID $($status.hostPid)），未重新部署。" -ForegroundColor Green
-    Write-DeploymentLog "[desktop:auto] 已是最新；桌面端正在运行（PID $($status.hostPid)），未重新部署。"
-    return 0
-  }
-  Write-Host '[desktop:auto] 已是最新，无需重复安装；启动桌面端确认就绪。' -ForegroundColor Cyan
-  Write-DeploymentLog '[desktop:auto] 已是最新，无需重复安装；启动桌面端确认就绪。'
+  Write-Host '[desktop:auto] 已是最新，无需重复安装；启动或唤起桌面端并确认窗口显示。' -ForegroundColor Cyan
+  Write-DeploymentLog '[desktop:auto] 已是最新，无需重复安装；启动或唤起桌面端并确认窗口显示。'
   $null = Start-DesktopClientAndWait -Prefix '[desktop:auto]'
   return 0
 }

@@ -115,6 +115,65 @@ function Wait-DesktopDeploymentReady {
   throw "DESKTOP_STARTUP_UNCONFIRMED: $lastFailure。安装已完成，但启动未获身份验证；未停止应用或删除资料。"
 }
 
+function Show-DesktopDeploymentWindow {
+  param([string]$InstallDir, [string]$ConfigRoot, [int]$HostPid)
+  $identity = Get-DesktopMaintenanceIdentity -InstallDir $InstallDir -ConfigRoot $ConfigRoot
+  if ($identity.hostPid -ne $HostPid) { throw 'DESKTOP_MAINTENANCE_IDENTITY: 启动确认后运行实例已变化，未操作未知窗口。' }
+  if (-not ('HuiyuDesktopDeploymentWindow' -as [type])) {
+    Add-Type -TypeDefinition @'
+using System;
+using System.Text;
+using System.Runtime.InteropServices;
+public static class HuiyuDesktopDeploymentWindow {
+  private delegate bool EnumWindowProc(IntPtr window, IntPtr data);
+  [DllImport("user32.dll")] private static extern bool EnumWindows(EnumWindowProc callback, IntPtr data);
+  [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr window, out uint processId);
+  [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetWindowText(IntPtr window, StringBuilder text, int count);
+  [DllImport("user32.dll")] private static extern bool IsWindowVisible(IntPtr window);
+  [DllImport("user32.dll")] private static extern bool IsIconic(IntPtr window);
+  [DllImport("user32.dll")] private static extern bool ShowWindowAsync(IntPtr window, int command);
+  [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr window);
+  public static IntPtr Find(uint hostPid) {
+    IntPtr found = IntPtr.Zero;
+    EnumWindows(delegate(IntPtr window, IntPtr data) {
+      uint owner;
+      GetWindowThreadProcessId(window, out owner);
+      if (owner != hostPid) return true;
+      var title = new StringBuilder(256);
+      GetWindowText(window, title, title.Capacity);
+      if (title.ToString() != "绘遇 Companion") return true;
+      found = window;
+      return false;
+    }, IntPtr.Zero);
+    return found;
+  }
+  public static void Show(IntPtr window) {
+    // A hidden launcher can override the app's first ShowWindow call. Repeat
+    // after authenticated readiness; restore only minimized windows.
+    ShowWindowAsync(window, IsIconic(window) ? 9 : 5);
+    SetForegroundWindow(window);
+  }
+  public static bool IsShown(IntPtr window) {
+    return IsWindowVisible(window) && !IsIconic(window);
+  }
+}
+'@
+  }
+  $deadline = [DateTime]::UtcNow.AddSeconds(10)
+  $requestedWindow = [IntPtr]::Zero
+  while ([DateTime]::UtcNow -lt $deadline) {
+    $window = [HuiyuDesktopDeploymentWindow]::Find([uint32]$HostPid)
+    if ($window -ne [IntPtr]::Zero) {
+      if ($window -ne $requestedWindow) {
+        [HuiyuDesktopDeploymentWindow]::Show($window)
+        $requestedWindow = $window
+      } elseif ([HuiyuDesktopDeploymentWindow]::IsShown($window)) { return }
+    }
+    Start-Sleep -Milliseconds 100
+  }
+  throw 'DESKTOP_WINDOW_UNCONFIRMED: 宿主与网关已就绪，但未确认 Companion 窗口可见。请在当前用户桌面检查应用；未停止应用或删除资料。'
+}
+
 function Assert-DesktopDeploymentStopped {
   param([Parameter(Mandatory=$true)][string]$InstallDir,
         [Parameter(Mandatory=$true)][string]$ConfigRoot)
