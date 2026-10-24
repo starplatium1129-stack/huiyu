@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_forest_cabin_hearth_warmth",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1168,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kazuki_forest_cabin_hearth_warmth",
     "title": "风见一姬 · 避难木屋的炉火温存",
@@ -39,9 +39,13 @@
       "cabin",
       "storm",
       "night",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "looking at fire",
+      "firelight"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "animaCaption": "She holds her knees close on the blanket and watches the fireplace against the dark rainy window."
   }
 }

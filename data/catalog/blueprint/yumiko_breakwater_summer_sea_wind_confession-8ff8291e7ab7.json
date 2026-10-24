@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yumiko_breakwater_summer_sea_wind_confession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1784,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yumiko_breakwater_summer_sea_wind_confession",
     "title": "榊由美子 · 防波堤海风中的别扭袒露",
@@ -63,11 +63,13 @@
       "purple_eyes",
       "wind_blown_hair",
       "detailed_background",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "wide shot"
     ],
     "promptProse": "Standing gracefully along the coastal breakwater above sparkling azure waves under the bright summer sky, Yumiko clasps her hands behind her back while looking aside with a subtle, affectionate blush. Warm sea winds billow her knee-length hime-cut black hair as the ocean horizon stretches behind her.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands clasp behind her back as she looks aside above the wind-bright breakwater."
   }
 }

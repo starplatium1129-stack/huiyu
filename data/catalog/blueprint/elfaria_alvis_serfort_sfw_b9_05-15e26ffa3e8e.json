@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_sfw_b9_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1689,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_sfw_b9_05",
     "title": "艾尔菲利亚 · 冰海浮台的夏日魔法",
@@ -40,7 +40,12 @@
       "bird",
       "ocean",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "holding drink",
+      "raised finger",
+      "ice bird",
+      "floating platform",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -52,6 +57,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "One hand holds the juice while a tiny ice bird balances on the opposite fingertip."
   }
 }

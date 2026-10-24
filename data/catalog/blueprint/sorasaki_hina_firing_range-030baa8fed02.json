@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_firing_range",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 847,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "打完最后一发后双手稳住机枪，枪口沿靶道放低，回头看向老师",
     "adult": false,
@@ -32,7 +32,13 @@
       "machine gun",
       "firing range",
       "from below",
-      "upper body"
+      "upper body",
+      "holding machine gun",
+      "both hands",
+      "lowered barrel",
+      "sweat",
+      "looking back",
+      "overhead lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -44,6 +50,7 @@
       "disciplinary_committee"
     ],
     "timeOfDay": "白天",
-    "title": "空崎日奈 · 射击训练场的专注姿态"
+    "title": "空崎日奈 · 射击训练场的专注姿态",
+    "animaCaption": "Both hands steady the lowered machine gun after the last shot as she looks toward her companion."
   }
 }

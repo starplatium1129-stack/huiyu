@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_lungmen_patrol",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 536,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手按剑，缓步而行",
     "camera": "medium tracking shot",
@@ -27,7 +27,10 @@
       "walking",
       "neon",
       "night",
-      "medium shot"
+      "medium shot",
+      "hand on sword hilt",
+      "wet pavement",
+      "red neon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +42,7 @@
       "night"
     ],
     "timeOfDay": "夜晚",
-    "title": "陈 · 龙门巡街"
+    "title": "陈 · 龙门巡街",
+    "animaCaption": "Her hand rests on Chi Xiao as she scans the lane ahead."
   }
 }

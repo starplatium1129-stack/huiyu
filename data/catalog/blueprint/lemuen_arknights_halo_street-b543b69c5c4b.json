@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_halo_street",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 557,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "操控轮椅穿行街角，膝上放着装满点心的纸袋",
     "camera": "medium tracking shot",
@@ -24,7 +24,12 @@
       "wheelchair",
       "joystick",
       "pastry bag",
-      "street"
+      "street",
+      "hand on joystick",
+      "holding bag",
+      "smile",
+      "sunlight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -35,6 +40,7 @@
       "paper_bag"
     ],
     "timeOfDay": "午后",
-    "title": "蕾缪安 · 拉特兰街角"
+    "title": "蕾缪安 · 拉特兰街角",
+    "animaCaption": "One hand guides the joystick while the other steadies the pastry bag on her lap."
   }
 }

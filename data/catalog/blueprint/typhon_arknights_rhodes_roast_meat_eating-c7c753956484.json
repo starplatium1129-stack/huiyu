@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_rhodes_roast_meat_eating",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 700,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "typhon_arknights_rhodes_roast_meat_eating",
     "characterId": "typhon_arknights",
@@ -36,12 +36,18 @@
       "mushrooms",
       "plate",
       "kitchen",
-      "medium shot"
+      "medium shot",
+      "offering food",
+      "head tilt",
+      "smile",
+      "spatula beside pan",
+      "warm lighting"
     ],
     "promptProse": "Typhon offers the small plate of sauteed mushrooms toward the viewer and tilts her head, waiting for their verdict. The spatula rests beside the pan under the warm kitchen pendant light.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She offers the mushroom plate toward the viewer, the spatula resting beside the pan as she waits for a verdict."
   }
 }

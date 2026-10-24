@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_r18_plugsuit_peel_intimacy",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1031,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "红色战斗服褪至腰间被按在金属舱壁上，双手被按在墙上，丰满双乳挺立被抚摸揉捏，面泛高潮潮红娇喘",
     "adult": true,
@@ -36,7 +36,12 @@
       "metal wall",
       "raised arms",
       "blush",
-      "cowboy shot"
+      "cowboy shot",
+      "hands against wall",
+      "sweat",
+      "heavy blush",
+      "warning light",
+      "looking at viewer"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,6 +58,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "夜晚",
-    "title": "惣流·明日香 · 红色胶衣剥落的炽热征服"
+    "title": "惣流·明日香 · 红色胶衣剥落的炽热征服",
+    "animaCaption": "Her raised hands rest against the wall as she turns toward her offscreen companion."
   }
 }

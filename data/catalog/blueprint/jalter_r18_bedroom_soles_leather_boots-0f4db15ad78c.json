@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_bedroom_soles_leather_boots",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 173,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jalter_r18_bedroom_soles_leather_boots",
     "characterId": "jeanne_alter",
@@ -32,7 +32,11 @@
       "unzipping",
       "rain",
       "neon lights",
-      "full body"
+      "full body",
+      "night",
+      "wet hair",
+      "warm lighting",
+      "low angle"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -53,6 +57,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands unzip the boot resting on the mattress beside the bed edge."
   }
 }

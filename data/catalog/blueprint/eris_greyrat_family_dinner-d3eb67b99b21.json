@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_family_dinner",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 479,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端坐于晚宴席间",
     "camera": "full body",
@@ -30,7 +30,10 @@
       "dining table",
       "crystal",
       "candlelight",
-      "full body"
+      "full body",
+      "hands in lap",
+      "looking away",
+      "window"
     ],
     "recommendedSize": "1216x832",
     "sceneTags": [
@@ -57,6 +60,7 @@
       "mushoku_tensei",
       "curly_hair"
     ],
-    "identityProseOverride": "Adult Eris Greyrat from Mushoku Tensei, with long wavy crimson hair, red eyes, thick eyebrows, a headband and a small ahoge."
+    "identityProseOverride": "Adult Eris Greyrat from Mushoku Tensei, with long wavy crimson hair, red eyes, thick eyebrows, a headband and a small ahoge.",
+    "animaCaption": "Her composed hands remain in her lap while her gaze wanders toward the window."
   }
 }

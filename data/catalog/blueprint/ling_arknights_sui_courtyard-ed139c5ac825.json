@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_sui_courtyard",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 650,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "半卧竹榻把玩酒葫芦听雨",
     "camera": "medium shot",
@@ -29,7 +29,10 @@
       "bamboo daybed",
       "rain",
       "jade gourd",
-      "hair down"
+      "hair down",
+      "eaves",
+      "daylight",
+      "warm lamp"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +45,7 @@
       "afternoon"
     ],
     "timeOfDay": "雨天",
-    "title": "令 · 岁府闲居听雨"
+    "title": "令 · 岁府闲居听雨",
+    "animaCaption": "One hand turns the jade gourd while the other keeps hold of the cup."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_flaming_ruins_flag",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 169,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jalter_flaming_ruins_flag",
     "characterId": "jeanne_alter",
@@ -32,7 +32,10 @@
       "ruins",
       "fire",
       "full body",
-      "from below"
+      "from below",
+      "holding flagpole",
+      "reverse grip",
+      "confident smile"
     ],
     "negativeTokens": [
       "cropped sword"
@@ -50,6 +53,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand steadies the planted banner; the other holds her sword low in reverse grip."
   }
 }

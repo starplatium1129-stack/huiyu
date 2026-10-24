@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_r18_b6_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1585,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zero_two_r18_b6_03",
     "title": "02 · 种植园军装制服后拉链卡死事故 ·「达令快点来帮忙！……不然这件烦人的制服就要被我撕碎了！」",
@@ -45,7 +45,10 @@
       "fangs",
       "bent over",
       "looking back",
-      "locker room"
+      "locker room",
+      "hands on locker",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -60,6 +63,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The rear zipper catches in her epaulet strap as both hands brace against the metal locker."
   }
 }

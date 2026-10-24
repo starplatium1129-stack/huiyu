@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_r18_b9_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1749,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shiranui_mai_r18_b9_03",
     "title": "不知火舞 · 忍装背部注连绳结卡死崩裂的更衣事故 ·「呀！后背的粗绳死结解不开了……快来帮舞姐姐一把！」",
@@ -43,7 +43,9 @@
       "cowboy shot",
       "sleeveless",
       "white trim",
-      "thick white rope"
+      "thick white rope",
+      "hands on bench",
+      "dusk light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -58,6 +60,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The knotted back ropes pull her tunic tight as she looks toward the offscreen companion for help."
   }
 }

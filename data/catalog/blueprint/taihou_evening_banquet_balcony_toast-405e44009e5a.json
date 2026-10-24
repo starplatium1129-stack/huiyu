@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_evening_banquet_balcony_toast",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1079,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "taihou_evening_banquet_balcony_toast",
     "title": "大凤 · 盛宴露台的月下独酌",
@@ -37,9 +37,14 @@
       "looking back",
       "terrace",
       "moonlight",
-      "cowboy shot"
+      "cowboy shot",
+      "hand on railing",
+      "holding glass",
+      "harbor lights",
+      "candlelight"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "One hand rests on the railing while the other raises champagne over her shoulder toward the viewer."
   }
 }

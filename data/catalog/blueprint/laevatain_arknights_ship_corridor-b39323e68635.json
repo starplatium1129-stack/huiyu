@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_ship_corridor",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 726,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手抱胸倚靠在合金舱壁旁，尾巴轻摆，挑眉看向迎面走来的人",
     "camera": "medium shot",
@@ -21,7 +21,11 @@
     "promptTokens": [
       "crossed arms",
       "leaning",
-      "spacecraft interior"
+      "spacecraft interior",
+      "raised eyebrow",
+      "swaying tail",
+      "overhead lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -32,6 +36,7 @@
       "endfield"
     ],
     "timeOfDay": "白天",
-    "title": "莱万汀 · 舰内走廊"
+    "title": "莱万汀 · 舰内走廊",
+    "animaCaption": "She raises an eyebrow toward the approaching viewer from her place against the corridor wall."
   }
 }

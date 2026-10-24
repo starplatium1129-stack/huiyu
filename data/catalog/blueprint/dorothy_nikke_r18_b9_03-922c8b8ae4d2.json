@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_r18_b9_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1739,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "dorothy_nikke_r18_b9_03",
     "title": "桃乐丝 · 晚礼服背后羽翼铰链锁死的更衣事故 ·「指挥官！……羽翼支架卡在束腰上了，快帮我弄开！」",
@@ -42,7 +42,11 @@
       "bent over",
       "looking back",
       "pink panels",
-      "pearl buttons"
+      "pearl buttons",
+      "hand on locker",
+      "reaching behind",
+      "fluorescent lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -57,6 +61,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand steadies against the locker while the other reaches for the caught wing mount."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_dawn_altar_shroud_bridal_vow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 215,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_dawn_altar_shroud_bridal_vow",
     "title": "卡莲 · 破晓圣坛的圣骸之誓",
@@ -37,7 +37,13 @@
       "marble dome",
       "walking",
       "dawn",
-      "full body"
+      "full body",
+      "holding bouquet",
+      "both hands",
+      "smile",
+      "looking at viewer",
+      "dawn light",
+      "train"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +52,7 @@
       "bridal",
       "vow",
       "redemption"
-    ]
+    ],
+    "animaCaption": "She carries the lilies with both hands and steps toward the viewer, the golden train trailing behind."
   }
 }

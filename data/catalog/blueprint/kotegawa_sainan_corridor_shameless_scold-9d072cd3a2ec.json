@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_sainan_corridor_shameless_scold",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1252,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手抱胸端立微倾身躯，红色臂章醒目，面红耳赤含羞娇叱，黑长直发丝飞扬",
     "camera": "medium shot, eye-level, classic tsundere confrontation framing",
@@ -26,7 +26,12 @@
       "crossed arms",
       "blush",
       "school hallway",
-      "window light"
+      "window light",
+      "standing",
+      "leaning forward",
+      "heavy blush",
+      "tsundere glare",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +46,7 @@
     ],
     "timeOfDay": "上午",
     "title": "古手川唯 · 学园走廊的“不知羞耻”斥责",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She scolds Rito as he rises from the corridor floor beside her."
   }
 }

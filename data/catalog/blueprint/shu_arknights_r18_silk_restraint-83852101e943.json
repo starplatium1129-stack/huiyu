@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_silk_restraint",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 715,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shu_arknights_r18_silk_restraint",
     "characterId": "shu_arknights",
@@ -38,7 +38,10 @@
       "nude",
       "spread legs",
       "bondage",
-      "full body"
+      "full body",
+      "hands bound",
+      "warm lighting",
+      "rear three-quarter view"
     ],
     "promptProse": "Shu kneels with her wrists loosely tied to the headboard by silk ribbons in a consensual pose, looking back under silver-blue moonlight and a warm bedside lamp; her tail coils beside the bed.",
     "negativeTokens": [],
@@ -50,6 +53,7 @@
     "kreaStyleHint": "r18_elegant_boudoir",
     "animaStyleHint": "r18_elegant_boudoir",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The silk ribbons loosely tie her wrists to the headboard in a consensual pose."
   }
 }

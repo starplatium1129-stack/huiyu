@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_seaside_dusk",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 448,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "emilia_rezero_seaside_dusk",
     "title": "爱蜜莉雅 · 海边漫步",
@@ -37,13 +37,16 @@
       "beach",
       "waves",
       "sunset",
-      "full body"
+      "full body",
+      "skirt lift",
+      "affectionate smile"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She lifts the hem clear of the wave around her ankles."
   }
 }

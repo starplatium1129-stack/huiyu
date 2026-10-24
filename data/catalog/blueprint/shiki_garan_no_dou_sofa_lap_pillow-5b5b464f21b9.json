@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_garan_no_dou_sofa_lap_pillow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1344,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "穿白和服侧卧沙发，头枕视角膝上闭眼休息，双手自然放松。",
     "camera": "medium shot, high angle, pov",
@@ -28,7 +28,12 @@
       "sofa",
       "afternoon",
       "medium shot",
-      "pov"
+      "pov",
+      "on side",
+      "closed eyes",
+      "peaceful smile",
+      "window light",
+      "high angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -47,6 +52,7 @@
     ],
     "timeOfDay": "afternoon",
     "title": "两仪式 · 伽蓝之堂的膝枕休憩",
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Her head rests on the viewer's visible lap, one hand at her waist and one beside her face."
   }
 }

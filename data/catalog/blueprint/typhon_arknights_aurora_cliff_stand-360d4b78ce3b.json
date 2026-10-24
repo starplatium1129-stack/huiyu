@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_aurora_cliff_stand",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 699,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "typhon_arknights_aurora_cliff_stand",
     "characterId": "typhon_arknights",
@@ -36,13 +36,19 @@
       "cocoa",
       "rooftop",
       "blue hour",
-      "cowboy shot"
+      "cowboy shot",
+      "pointing up",
+      "looking back",
+      "smile",
+      "two cups",
+      "city lights"
     ],
     "promptProse": "Typhon points toward the first star and looks back to check that the viewer has seen it. Two cups of cocoa rest together on the rooftop rail as warm windows begin to glow below the blue evening sky.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "She points toward the first star and looks back, two cocoa cups resting together on the rail."
   }
 }

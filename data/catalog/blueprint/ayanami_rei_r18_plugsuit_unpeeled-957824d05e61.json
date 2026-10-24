@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_r18_plugsuit_unpeeled",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1021,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自斜倚检查台，驾驶服褪至腰际，一手按住绷带、一手探入腰间",
     "adult": true,
@@ -34,7 +34,12 @@
       "open clothes",
       "topless",
       "bandages",
-      "cowboy shot"
+      "cowboy shot",
+      "reclining",
+      "bent leg",
+      "cool lighting",
+      "screen light",
+      "from above"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +55,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "夜晚",
-    "title": "绫波丽 · 紧身胶衣剥落的私密触碰"
+    "title": "绫波丽 · 紧身胶衣剥落的私密触碰",
+    "animaCaption": "She holds the bandage to her chest with her suit lowered to her waist."
   }
 }

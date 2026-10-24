@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_01",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1553,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_01",
     "title": "宝多六花 · 旧电器店二楼长开衫主控跨坐 ·「裕太……今天怎么这么粘人啊」",
@@ -41,7 +41,9 @@
       "on lap",
       "junk shop",
       "afternoon",
-      "cowboy shot"
+      "cowboy shot",
+      "straddling",
+      "arms around neck"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +59,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Her hair brushes the off-frame viewer's cheek above their encircled neck."
   }
 }

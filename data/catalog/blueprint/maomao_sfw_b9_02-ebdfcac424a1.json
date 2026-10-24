@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1706,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "maomao_sfw_b9_02",
     "title": "猫猫 · 晒架上的最后一缕日光",
@@ -33,7 +33,12 @@
     "promptTokens": [
       "bamboo sieve",
       "ladybug",
-      "courtyard"
+      "courtyard",
+      "holding sieve",
+      "both hands",
+      "ladybird",
+      "focused",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands hold the empty sieve still beneath the ladybird."
   }
 }

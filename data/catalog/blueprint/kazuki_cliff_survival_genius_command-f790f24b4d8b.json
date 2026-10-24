@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_cliff_survival_genius_command",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1164,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kazuki_cliff_survival_genius_command",
     "title": "风见一姬 · 泷园断崖的天才决断",
@@ -39,9 +39,15 @@
       "bus wreck",
       "after rain",
       "full body",
-      "from below"
+      "from below",
+      "looking down",
+      "wet rocks",
+      "windblown hair",
+      "windblown clothes",
+      "sunlight"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "animaCaption": "One hand braces on the rock as she surveys the ravine with the damaged bus behind her."
   }
 }

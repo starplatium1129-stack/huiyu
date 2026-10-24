@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_ship_deck_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 608,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "站在船舷边，任海风吹动长发",
     "camera": "medium back shot",
@@ -27,7 +27,12 @@
       "ship railing",
       "night",
       "from behind",
-      "medium shot"
+      "medium shot",
+      "viewer hands",
+      "blanket on shoulders",
+      "looking back",
+      "deck lamps",
+      "wind"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +43,7 @@
       "wind"
     ],
     "timeOfDay": "夜晚",
-    "title": "斯卡蒂 · 夜航甲板"
+    "title": "斯卡蒂 · 夜航甲板",
+    "animaCaption": "The viewer's hands enter from behind to settle the blanket over her shoulders."
   }
 }

@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1383,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在晨曦微光中单膝微屈，银色机械手指轻托祖母绿胸针贴在胸前，金发在风中飞扬，湛蓝眼眸清澈凝视",
     "adult": false,
@@ -31,7 +31,11 @@
       "ruins",
       "dawn",
       "medium shot",
-      "low angle"
+      "low angle",
+      "holding brooch",
+      "looking up",
+      "mist",
+      "dawn light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +50,7 @@
       "emotional"
     ],
     "timeOfDay": "黎明破晓",
-    "title": "薇尔莉特 · 破晓废墟的祖母绿胸针·「我也想明白……『我爱你』的含义」"
+    "title": "薇尔莉特 · 破晓废墟的祖母绿胸针·「我也想明白……『我爱你』的含义」",
+    "animaCaption": "Her silver fingers cup beneath the brooch at her collar as she looks upward among the broken columns."
   }
 }

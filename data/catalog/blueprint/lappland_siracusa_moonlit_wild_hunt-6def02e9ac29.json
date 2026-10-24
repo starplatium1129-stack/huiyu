@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 670,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手持苍蓝电弧双刃凌空跃起斩击，白狼尾狂甩，狂气大笑露出尖牙",
     "camera": "wide shot, low angle",
@@ -28,7 +28,8 @@
       "jumping",
       "ruins",
       "blood moon",
-      "wide shot"
+      "wide shot",
+      "colosseum ruins"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -47,6 +48,7 @@
       "wolf_tail"
     ],
     "timeOfDay": "狂月之夜",
-    "title": "拉普兰德 · 狂月下的双刃猎杀"
+    "title": "拉普兰德 · 狂月下的双刃猎杀",
+    "animaCaption": "Blue lightning follows both blades through the ruined colosseum."
   }
 }

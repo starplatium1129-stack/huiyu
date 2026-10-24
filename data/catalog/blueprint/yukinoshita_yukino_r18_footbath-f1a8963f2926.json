@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_footbath",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 347,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_footbath",
     "title": "雪之下雪乃 · 足浴时分",
@@ -33,7 +33,11 @@
       "sitting",
       "foot bath",
       "veranda",
-      "moonlight"
+      "moonlight",
+      "feet in water",
+      "lowered stockings",
+      "looking away",
+      "lamp"
     ],
     "negativeTokens": [
       "school uniform"
@@ -49,6 +53,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her lowered stockings gather at her ankles beside the footbath."
   }
 }

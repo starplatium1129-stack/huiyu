@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_lunar_regolith_earthrise_walking",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1100,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "戴着透明面罩密闭头盔立于月球灰白岩原，仰望漆黑星空中的蔚蓝地球。",
     "camera": "wide shot, lunar landscape with the entire standing figure visible",
@@ -27,7 +27,12 @@
       "moon surface",
       "earthrise",
       "wide shot",
-      "standing"
+      "standing",
+      "looking up",
+      "emotional smile",
+      "sunlight",
+      "sharp shadow",
+      "visor reflection"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +46,7 @@
       "emotional_smile"
     ],
     "timeOfDay": "外太空",
-    "title": "露西 · 荒凉月表的蔚蓝地出漫步"
+    "title": "露西 · 荒凉月表的蔚蓝地出漫步",
+    "animaCaption": "Earth reflects in her clear visor above the sharp shadow beside her boots."
   }
 }

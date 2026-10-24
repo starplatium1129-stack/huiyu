@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1625,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_03",
     "title": "久远寺有珠 · 冬日毛皮帽的坡道",
@@ -38,7 +38,10 @@
       "hill",
       "winter",
       "morning",
-      "visible breath"
+      "visible breath",
+      "nodding",
+      "morning light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +52,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She gives a slight nod to a passerby as pale morning light catches her breath above the scarf."
   }
 }

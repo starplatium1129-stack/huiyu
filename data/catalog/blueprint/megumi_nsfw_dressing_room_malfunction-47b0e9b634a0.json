@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_dressing_room_malfunction",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1449,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_nsfw_dressing_room_malfunction",
     "title": "加藤惠 · 服装店试衣间的白裙拉链卡壳事故 ·「伦也君……能进来帮我拉一下吗」",
@@ -34,7 +34,11 @@
       "black pantyhose",
       "bent over",
       "hands behind back",
-      "fitting room"
+      "fitting room",
+      "adult",
+      "shoulder against mirror",
+      "looking back",
+      "curtain gap"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +51,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Both hands reach for the jammed zipper beside the fitting-room mirror."
   }
 }

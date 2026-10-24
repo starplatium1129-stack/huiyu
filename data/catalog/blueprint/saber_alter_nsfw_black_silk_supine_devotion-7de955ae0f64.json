@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_black_silk_supine_devotion",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 227,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "saber_alter_nsfw_black_silk_supine_devotion",
     "title": "黑呆 · 黑色丝绸大床的傲慢仰卧交付",
@@ -39,7 +39,11 @@
       "masturbation",
       "hand on breast",
       "black sheets",
-      "magic"
+      "magic",
+      "candlelight",
+      "purple glow",
+      "full body",
+      "high angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +58,7 @@
       "special_nsfw"
     ],
     "nsfwProse": "",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her gown and breastplate gather at her waist above mana spreading through the black silk."
   }
 }

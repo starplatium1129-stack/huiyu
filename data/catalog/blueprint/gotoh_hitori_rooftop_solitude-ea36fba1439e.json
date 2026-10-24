@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_rooftop_solitude",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1004,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在天台长椅上咬着筷子凝望天空",
     "camera": "medium shot, low angle",
@@ -30,7 +30,10 @@
       "rooftop",
       "clouds",
       "noon",
-      "from below"
+      "from below",
+      "looking away",
+      "blue sky",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +49,7 @@
     "timeOfDay": "白天",
     "title": "后藤一里 · 天台午休时光",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The open lunch rests on her lap, chopsticks lightly held between her lips."
   }
 }

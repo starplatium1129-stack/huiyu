@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_training_range",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 560,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端坐于战术展开的轮椅上，手抚长管重型狙击铳，目光沉着锐利",
     "camera": "medium shot, low angle, mounted rifle and wheelchair supports visible",
@@ -30,7 +30,13 @@
       "sniper rifle",
       "ballistic display",
       "firing range",
-      "from below"
+      "from below",
+      "hand on bolt",
+      "mounted rifle",
+      "stabilizing supports",
+      "focused",
+      "sunlight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +48,7 @@
       "wheelchair"
     ],
     "timeOfDay": "白天",
-    "title": "蕾缪安 · 靶场"
+    "title": "蕾缪安 · 靶场",
+    "animaCaption": "Her hand rests on the rifle bolt beside the wheelchair's unfolded stabilizing supports."
   }
 }

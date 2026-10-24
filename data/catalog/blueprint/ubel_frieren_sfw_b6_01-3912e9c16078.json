@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 127,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_01",
     "title": "尤贝尔 · 考试会场的缠人精",
@@ -36,7 +36,11 @@
       "bench",
       "hand gesture",
       "waiting room",
-      "medium shot"
+      "medium shot",
+      "leaning",
+      "questioning gesture",
+      "half-closed eyes",
+      "daylight"
     ],
     "negativeTokens": [
       "extra people"
@@ -49,6 +53,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "She raises one hand toward the off-frame companion beside the registration paper."
   }
 }

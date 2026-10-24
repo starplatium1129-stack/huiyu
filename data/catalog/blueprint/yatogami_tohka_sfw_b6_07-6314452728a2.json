@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_07",
     "title": "夜刀神十香 · 暖桌蜜柑的分享",
@@ -36,7 +36,10 @@
       "kotatsu",
       "mandarin",
       "snowy window",
-      "medium shot"
+      "medium shot",
+      "sharing food",
+      "warm lighting",
+      "cool lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand cups beneath the other as she offers the peeled mandarin segment toward the viewer."
   }
 }

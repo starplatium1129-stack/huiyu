@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_armor_off",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 208,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -42,7 +42,12 @@
       "sitting",
       "zipper",
       "sweat",
-      "locker bench"
+      "locker bench",
+      "adult",
+      "hand on zipper",
+      "wiping sweat",
+      "removed armor",
+      "overhead light"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "combat_undersuit",
@@ -50,6 +55,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "coverageTags": []
+    "coverageTags": [],
+    "animaCaption": "One hand grips the undersuit zipper beside the armor resting on the bench."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_shrine_steps_sunset_patrol",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1256,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手按红色风纪袖章伫立石阶顶端迎风侧立，黑长直发丝飞舞，眼神清澈而坚定",
     "camera": "full body, low angle, three-quarter view, sweeping town view",
@@ -27,7 +27,12 @@
       "stone stairs",
       "shrine",
       "wind",
-      "sunset"
+      "sunset",
+      "hand on armband",
+      "determined",
+      "rim light",
+      "full body",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +47,7 @@
       "hand_on_armband"
     ],
     "timeOfDay": "日落",
-    "title": "古手川唯 · 彩南神社黄昏的风纪巡查"
+    "title": "古手川唯 · 彩南神社黄昏的风纪巡查",
+    "animaCaption": "One hand rests on the discipline armband above the stone shrine steps."
   }
 }

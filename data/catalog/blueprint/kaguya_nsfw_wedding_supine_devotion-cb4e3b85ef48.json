@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_nsfw_wedding_supine_devotion",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1405,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "仰卧床榻双膝微屈，黑发铺散枕面，抬头望向近处，泪笑交织",
     "adult": true,
@@ -34,7 +34,12 @@
       "on back",
       "bent knees",
       "bed",
-      "from above"
+      "from above",
+      "hair down",
+      "tears",
+      "smile",
+      "lamplight",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -60,6 +65,7 @@
       "hair down",
       "red eyes"
     ],
-    "identityProseOverride": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with loose black hair, parted bangs, sidelocks, red eyes and gently downturned eye corners"
+    "identityProseOverride": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with loose black hair, parted bangs, sidelocks, red eyes and gently downturned eye corners",
+    "animaCaption": "Her removed bridal kimono lies beside the bed as she lifts a tearful smile."
   }
 }

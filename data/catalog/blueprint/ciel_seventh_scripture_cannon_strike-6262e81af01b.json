@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_seventh_scripture_cannon_strike",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1329,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单臂肩抗巨型重火器第七圣典，神圣光辉汇聚炮口，眼神冷冽推了推眼镜架",
     "camera": "cowboy shot, low angle, heavy artillery combat view",
@@ -30,7 +30,11 @@
       "braced stance",
       "night",
       "cowboy shot",
-      "from below"
+      "from below",
+      "holding weapon",
+      "resolute expression",
+      "muzzle glow",
+      "cool lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +49,7 @@
       "cold_gaze"
     ],
     "timeOfDay": "深夜月冷",
-    "title": "希耶尔 · 第七圣典月下重炮制裁"
+    "title": "希耶尔 · 第七圣典月下重炮制裁",
+    "animaCaption": "She braces the Seventh Scripture cannon against her shoulder."
   }
 }

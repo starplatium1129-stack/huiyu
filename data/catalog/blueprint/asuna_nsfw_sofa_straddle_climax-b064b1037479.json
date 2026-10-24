@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_sofa_straddle_climax",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1376,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asuna_nsfw_sofa_straddle_climax",
     "title": "结城明日奈 · 客厅沙发上的反客为主主控骑乘·「今晚的亚丝娜……只想完完全全地占有你」",
@@ -40,7 +40,9 @@
       "sweat",
       "blush",
       "moonlight",
-      "from below"
+      "from below",
+      "leaning forward",
+      "city lights"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +56,7 @@
       "h_cg",
       "cowgirl"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "She straddles the sofa with both hands resting on her knees."
   }
 }

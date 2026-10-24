@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_ice_cream",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 162,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_ice_cream",
     "title": "伊莉雅丝菲尔 · 冰淇淋店",
@@ -36,7 +36,10 @@
       "waffle cone",
       "smile",
       "pedestrian street",
-      "day"
+      "day",
+      "holding ice cream",
+      "open hand",
+      "excited expression"
     ],
     "negativeTokens": [
       "text"
@@ -49,6 +52,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She raises the vanilla scoop while opening her free hand toward the viewer."
   }
 }

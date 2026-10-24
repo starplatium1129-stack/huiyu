@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_dorm_late_night_snack",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 405,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "系好长睡袍盘坐地毯，一手递出甜点叉，另一手扶矮桌边，含笑邀请分享蛋糕。",
     "adult": false,
@@ -32,7 +32,13 @@
       "cross-legged",
       "dessert fork",
       "strawberry cake",
-      "low table"
+      "low table",
+      "offering fork",
+      "hand on table",
+      "night",
+      "small smile",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -54,6 +60,7 @@
       "small_smile"
     ],
     "timeOfDay": "night",
-    "title": "食蜂操祈 · 深夜宿舍的甜品共犯·「这是本小姐与你的秘密♪」"
+    "title": "食蜂操祈 · 深夜宿舍的甜品共犯·「这是本小姐与你的秘密♪」",
+    "animaCaption": "She offers the dessert fork while her other hand steadies her on the low table."
   }
 }

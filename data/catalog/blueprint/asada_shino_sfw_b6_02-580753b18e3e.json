@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_sfw_b6_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1374,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asada_shino_sfw_b6_02",
     "title": "朝田诗乃 · 眼镜店的调整",
@@ -36,7 +36,10 @@
       "holding glasses",
       "screwdriver",
       "cleaning cloth",
-      "medium shot"
+      "medium shot",
+      "examining glasses",
+      "glasses hinge",
+      "shop lighting"
     ],
     "negativeTokens": [
       "glasses worn",
@@ -50,6 +53,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She holds the repaired glasses away from her face to examine the hinge."
   }
 }

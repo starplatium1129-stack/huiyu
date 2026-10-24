@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_black_thighhighs",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 156,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tohsaka_rin_r18_black_thighhighs",
     "title": "远坂凛 · 月夜窗台的魔术师",
@@ -34,7 +34,11 @@
       "sitting",
       "windowsill",
       "moonlight",
-      "white cross print"
+      "white cross print",
+      "both hands on stocking",
+      "stocking at thigh",
+      "sweater lift",
+      "looking away"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +54,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands roll one stocking to mid-thigh while her gaze turns aside from the window seat."
   }
 }

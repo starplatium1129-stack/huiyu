@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_dorm_shower",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 743,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "浴室浴缸泡沫中撩水眨眼",
     "adult": true,
@@ -33,7 +33,10 @@
       "wink",
       "sunlight",
       "cowboy shot",
-      "splashing"
+      "splashing",
+      "water droplets",
+      "window blinds",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +52,7 @@
       "daylight"
     ],
     "timeOfDay": "清晨",
-    "title": "伊冯 · 晨间浴缸彩虹泡泡"
+    "title": "伊冯 · 晨间浴缸彩虹泡泡",
+    "animaCaption": "She lifts a small splash from the bubbles as foam rests around her wrap and tail."
   }
 }

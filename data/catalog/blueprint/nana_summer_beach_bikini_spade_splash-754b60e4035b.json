@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_summer_beach_bikini_spade_splash",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1266,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单脚踢起浪花水花嬉闹，珊瑚粉比基尼衬托紧致身材，小虎牙绽放灿烂笑容",
     "camera": "full body, three-quarter view, splashing water foreground",
@@ -28,7 +28,9 @@
       "shallow water",
       "beach",
       "summer",
-      "full body"
+      "full body",
+      "sunlight",
+      "water ripples"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +46,7 @@
     "timeOfDay": "正午",
     "title": "娜娜 · 蔚蓝浪花的珊瑚粉活力踢水",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One foot stays planted while the other kicks water toward the viewer, her tail leaving a ripple behind."
   }
 }

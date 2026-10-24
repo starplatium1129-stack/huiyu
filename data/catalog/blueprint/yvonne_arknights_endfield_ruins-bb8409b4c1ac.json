@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_endfield_ruins",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 733,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "断壁间跳跃探索",
     "camera": "wide shot",
@@ -25,7 +25,9 @@
       "jumping",
       "ruins",
       "daylight",
-      "wide shot"
+      "wide shot",
+      "spinning guns",
+      "dust"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -40,6 +42,7 @@
     "timeOfDay": "白天",
     "title": "伊冯 · 终末地遗迹",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She leaps from the broken wall with both handguns spinning above the clear landing space."
   }
 }

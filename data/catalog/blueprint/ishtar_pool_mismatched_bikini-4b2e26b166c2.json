@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_pool_mismatched_bikini",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 256,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ishtar_pool_mismatched_bikini",
     "title": "伊什塔尔 · 泳池女王的不对称裁定·「两边不对称……才显女神品味」",
@@ -38,7 +38,10 @@
       "black and gold bikini",
       "asymmetrical bikini",
       "red sarong",
-      "gold tiara"
+      "gold tiara",
+      "hand on armrest",
+      "open palm",
+      "water reflections"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -51,6 +54,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "One hand rests on the chair arm as the other opens toward the viewer."
   }
 }

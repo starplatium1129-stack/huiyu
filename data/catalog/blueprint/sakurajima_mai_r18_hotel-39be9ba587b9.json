@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_hotel",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakurajima_mai_r18_hotel",
     "title": "樱岛麻衣 · 酒店私密·兔女郎的半解时刻",
@@ -34,7 +34,9 @@
       "city lights",
       "breast slip",
       "cowboy shot",
-      "crossed legs"
+      "crossed legs",
+      "moonlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +50,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand supports her on the bed while she sits with crossed legs."
   }
 }

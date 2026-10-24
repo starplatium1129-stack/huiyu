@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_dominion_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 414,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makima_dominion_night",
     "title": "玛奇玛 · 暴雨神社的支配者",
@@ -32,13 +32,19 @@
       "black umbrella",
       "shrine stairs",
       "storm",
-      "from below"
+      "from below",
+      "standing",
+      "looking down",
+      "rain",
+      "overcast light",
+      "wet steps"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "work_suit",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She looks down from the shrine steps beneath the black umbrella."
   }
 }

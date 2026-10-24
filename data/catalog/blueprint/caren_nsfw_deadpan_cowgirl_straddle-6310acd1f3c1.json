@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_deadpan_cowgirl_straddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 218,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_nsfw_deadpan_cowgirl_straddle",
     "title": "卡莲 · 小恶魔修女的毒舌主控骑乘",
@@ -40,7 +40,12 @@
       "sweat",
       "blush",
       "smirk",
-      "from below"
+      "from below",
+      "hands on chest",
+      "looking down",
+      "white sheets",
+      "bedside lamp",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +60,7 @@
       "cowgirl"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands rest on the viewer's chest as she looks down from their lap."
   }
 }

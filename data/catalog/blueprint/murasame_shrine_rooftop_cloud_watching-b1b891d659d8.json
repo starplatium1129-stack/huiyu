@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_shrine_rooftop_cloud_watching",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1124,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "侧卧在青黑屋脊瓦片上望天，手伸向云朵，草绿长发披散在瓦片间，赤足微翘",
     "camera": "wide cinematic shot, side-lying on curved roof tiles with one hand reaching toward the clouds",
@@ -28,7 +28,11 @@
       "spirit fire",
       "roof tiles",
       "clouds",
-      "wide shot"
+      "wide shot",
+      "reclining",
+      "hand behind head",
+      "spirit flames",
+      "skylight"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -58,6 +62,7 @@
       "red eyes",
       "red hair ribbon",
       "senren banka"
-    ]
+    ],
+    "animaCaption": "One hand rests behind her head as the other reaches toward the clouds."
   }
 }

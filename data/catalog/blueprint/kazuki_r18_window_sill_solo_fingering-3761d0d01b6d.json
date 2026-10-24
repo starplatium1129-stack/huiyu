@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_window_sill_solo_fingering",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1178,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kazuki_r18_window_sill_solo_fingering",
     "title": "风见一姬 · 月夜窗台的私密情愫自抚",
@@ -41,7 +41,11 @@
       "sitting",
       "fingering",
       "windowsill",
-      "moonlight"
+      "moonlight",
+      "heavy blush",
+      "looking up",
+      "cushion",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -50,6 +54,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her skirt gathers at her knees as she looks toward the night sky from the cushioned sill."
   }
 }

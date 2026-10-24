@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_bath_foam_solo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1514,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kaoruko_nsfw_bath_foam_solo",
     "title": "和栗薰子 · 甜香泡泡浴池的水光湿身独奏 ·「把奶油洗掉了……可是身上的甜味还在」",
@@ -33,7 +33,10 @@
       "wooden bathtub",
       "soap bubbles",
       "steam",
-      "night"
+      "night",
+      "adult",
+      "wall lamps",
+      "warm light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her hand remains beneath the water as foam slips across the cedar tub."
   }
 }

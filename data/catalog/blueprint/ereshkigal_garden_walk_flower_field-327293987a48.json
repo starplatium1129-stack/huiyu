@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_garden_walk_flower_field",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 268,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_garden_walk_flower_field",
     "title": "埃列什基伽勒 · 冥界花田的散步·「在冥界种花……是我的任性」",
@@ -36,7 +36,10 @@
       "looking back",
       "beckoning",
       "flower field",
-      "full body"
+      "full body",
+      "white flowers",
+      "path",
+      "soft light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +51,7 @@
     "coverageTags": [
       "daily",
       "romance"
-    ]
+    ],
+    "animaCaption": "One hand lifts her hem above the flowers while the other beckons the viewer along the path."
   }
 }

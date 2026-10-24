@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc055",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "The tram's turn brings her against the viewer's shoulder; she keeps hold of their sleeve, with corresponding silhouettes reflected in the door glass.",
+    "animaCaption": "She keeps hold of the viewer's sleeve against their shoulder, their silhouettes corresponding in the door glass.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "车窗倒影侧面近景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, navy tailored blazer, single button, burgundy knit vest, white blouse, standing, sleeve grab, tram, window reflection, city lights, night, side view, close up",
+    "prompt": "1girl, shiki_natsume, navy tailored blazer, single button, burgundy knit vest, white blouse, standing, sleeve grab, tram, window reflection, city lights, night, side view, close up, leaning on person, reflection",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 末班电车的玻璃倒影】冬夜末班电车几乎空无一人，夏目站在门边看着玻璃里的倒影，身体随着转弯轻轻撞到你。你扶住她后，她没有离开，反而借着车厢晃动握住你的衣袖。倒影里两个人靠得很近——「下一站才下车，所以不用急着放开。还有，不准一直看玻璃……那里什么都没有。」",
@@ -47,6 +47,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "The tram's turn brings her against the viewer's shoulder; she keeps hold of their sleeve, with corresponding silhouettes reflected in the door glass."
   }
 }

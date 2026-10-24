@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_boyfriend_shirt_sly_tease",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1773,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "momo_boyfriend_shirt_sly_tease",
     "title": "梦梦 · 闺房软榻的滑肩白衬衫与狡黠轻语",
@@ -48,11 +48,16 @@
       "sly_smile",
       "demon_tail",
       "heart_tail",
-      "soft_ambient_light"
+      "soft_ambient_light",
+      "holding lapels",
+      "head tilt",
+      "medium shot",
+      "low angle"
     ],
     "promptProse": "Resting against a plush lounge cushion in the softly lit room, Momo lightly holds the lapels of her oversized white shirt as it slips off her shoulders. With her black spade-heart tail curling up behind her, she tilts her head with a demure, mischievously seductive smile.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands lightly hold the shirt lapels as the tail curls behind her."
   }
 }

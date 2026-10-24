@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1587,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_05",
     "title": "战栗的龙卷 · 海风也不能命令我",
@@ -37,7 +37,10 @@
       "floating",
       "parasol",
       "beach",
-      "medium shot"
+      "medium shot",
+      "annoyed",
+      "water splash",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +52,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "She glares at a wave splashing her wrap skirt beneath the turquoise parasol."
   }
 }

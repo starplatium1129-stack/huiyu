@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_07",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1468,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱粉色灯笼写下分享美食的愿望，将绘马举向镜头",
     "adult": false,
@@ -29,7 +29,11 @@
       "ema",
       "shrine",
       "festival",
-      "medium shot"
+      "medium shot",
+      "holding lantern",
+      "holding ema",
+      "evening",
+      "warm lighting"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -45,6 +49,7 @@
       "evening_light"
     ],
     "timeOfDay": "黄昏",
-    "title": "甘露寺蜜璃 · 祭典灯笼的愿望"
+    "title": "甘露寺蜜璃 · 祭典灯笼的愿望",
+    "animaCaption": "One hand holds the lantern; the other raises the finished ema toward the viewer."
   }
 }

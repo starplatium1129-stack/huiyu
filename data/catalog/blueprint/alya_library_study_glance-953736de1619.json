@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_library_study_glance",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 776,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "怀抱厚厚精装书倚在书架旁，透过书架空隙不经意回眸",
     "camera": "medium shot, standing beside library shelves and peeking between books",
@@ -27,7 +27,11 @@
       "peeking",
       "smile",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "bookshelf",
+      "looking at viewer",
+      "sunlight",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
     ],
     "timeOfDay": "午后",
     "title": "艾莉莎·米哈伊洛夫娜·九条 · 图书馆午后·书架后的凝视",
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "She peeks through a shelf gap toward the viewer, who remains outside the frame."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_r18_b6_01",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1383,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asada_shino_r18_b6_01",
     "title": "朝田诗乃 · GGO沙漠废墟狙击掩体紧身皮衣主控跨坐 ·「桐人……我的黑卡蒂狙击枪准星，现在只锁定你」",
@@ -41,7 +41,10 @@
       "straddling",
       "from below",
       "night",
-      "sandstorm"
+      "sandstorm",
+      "on lap",
+      "hands on shoulders",
+      "display light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -66,6 +69,7 @@
       "short_hair",
       "human ears"
     ],
-    "identityProseOverride": "Shino Asada (Sinon) in her Gun Gale Online form from Sword Art Online, with short pale-blue hair and human ears."
+    "identityProseOverride": "Shino Asada (Sinon) in her Gun Gale Online form from Sword Art Online, with short pale-blue hair and human ears.",
+    "animaCaption": "She grips the viewer's shoulders behind the ruined bunker."
   }
 }

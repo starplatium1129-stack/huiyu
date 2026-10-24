@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_04",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1606,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_04",
     "title": "吹雪 · 奢华天鹅绒大床上的女王臣服宣泄 ·「什么B级第一位……我现在只想做你的专属女人」",
@@ -43,7 +43,8 @@
       "blush",
       "tears",
       "green sheets",
-      "moonlight"
+      "moonlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,6 +59,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her back arches above the emerald velvet sheets while moonlight falls across her face."
   }
 }

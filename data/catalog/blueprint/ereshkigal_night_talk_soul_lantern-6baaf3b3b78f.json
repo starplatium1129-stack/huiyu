@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_night_talk_soul_lantern",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 269,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_night_talk_soul_lantern",
     "title": "埃列什基伽勒 · 魂灯夜话·「谢谢你……愿意来冥界看我」",
@@ -37,7 +37,11 @@
       "riverbank",
       "floating lanterns",
       "night",
-      "wide shot"
+      "wide shot",
+      "hugging knees",
+      "teary eyes",
+      "blue light",
+      "water reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -51,6 +55,7 @@
       "signature",
       "romance"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She sits beside her clothed companion as blue soul lanterns drift along the river below them."
   }
 }

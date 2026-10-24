@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_r18_b9_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1718,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "maomao_r18_b9_04",
     "title": "猫猫 · 药草堆床褥上试毒发情的理性崩塌独奏 ·「把毒性完全代谢掉的方法……果然只有这个……」",
@@ -55,6 +55,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her hand rests between her thighs on the herb-covered futon."
   }
 }

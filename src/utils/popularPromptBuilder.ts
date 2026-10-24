@@ -308,7 +308,8 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // Resolve shared content once. Model projections below choose tags or prose;
   // Krea must not acquire every Anima identity/outfit token as a second description.
   const commonInput: PromptCompilerInput = {
-    subjectProse, outfitProse, sceneProse,
+    subjectProse, outfitProse,
+    sceneProse: engine === 'anima' ? blueprint?.animaCaption ?? sceneProse : sceneProse,
     characterTokens: [...(character.characterTokens || []), ...(blueprint?.characterTokens || [])],
     copyrightTokens: character.copyrightTokens,
     emotion: emotionTokens,

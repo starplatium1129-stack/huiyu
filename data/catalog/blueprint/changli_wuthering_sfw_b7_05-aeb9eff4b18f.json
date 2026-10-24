@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1637,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_05",
     "title": "长离 · 荷池边的海滨茶席",
@@ -37,7 +37,12 @@
       "chilled tea",
       "lotus",
       "sitting",
-      "afternoon"
+      "afternoon",
+      "holding glass",
+      "wind",
+      "light smile",
+      "sunlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +54,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "She lifts the poured tea toward the viewer from the wooden platform."
   }
 }

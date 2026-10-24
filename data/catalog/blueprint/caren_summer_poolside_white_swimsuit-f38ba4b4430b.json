@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_summer_poolside_white_swimsuit",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 276,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_summer_poolside_white_swimsuit",
     "title": "卡莲 · 盛夏泳池白泳装的休日午后",
@@ -40,7 +40,13 @@
       "sitting",
       "feet in water",
       "looking back",
-      "summer"
+      "summer",
+      "hand on ground",
+      "teasing smile",
+      "water ripples",
+      "sunlight",
+      "water reflection",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +58,7 @@
       "iconic",
       "summer",
       "poolside"
-    ]
+    ],
+    "animaCaption": "One palm supports her from behind while both feet make small ripples in the pool."
   }
 }

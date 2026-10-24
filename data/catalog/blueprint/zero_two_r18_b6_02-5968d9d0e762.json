@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_r18_b6_02",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1584,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zero_two_r18_b6_02",
     "title": "02 · 森林秘密湖泊月下裸泳水光湿身 ·「达令在岸上偷看呢……那就游到你面前让你看个够」",
@@ -44,7 +44,9 @@
       "lake",
       "forest",
       "moonlight",
-      "fireflies"
+      "fireflies",
+      "floating hair",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +61,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She faces the viewer on shore with her pink hair floating across the waist-deep lake."
   }
 }

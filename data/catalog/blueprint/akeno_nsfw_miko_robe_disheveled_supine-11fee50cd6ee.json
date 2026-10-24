@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_miko_robe_disheveled_supine",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1298,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "akeno_nsfw_miko_robe_disheveled_supine",
     "title": "姬岛朱乃 · 巫女罗裳半褪的仰卧心意",
@@ -42,7 +42,13 @@
       "legs apart",
       "holding hands",
       "blush",
-      "from above"
+      "from above",
+      "red cloth",
+      "hair spread out",
+      "interlocked fingers",
+      "hand on cheek",
+      "bent knees",
+      "votive lamp"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,6 +64,7 @@
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "One hand interlocks with the viewer's; her other hand rests against her cheek."
   }
 }

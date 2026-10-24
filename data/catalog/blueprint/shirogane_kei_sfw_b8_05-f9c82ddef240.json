@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1415,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "海滨贩卖机前比较冷饮性价比，坐到海堤边贴脸降温并偷偷得意",
     "adult": false,
@@ -30,7 +30,10 @@
       "Kei Shirogane",
       "drink can",
       "seawall",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "drink against cheek",
+      "afternoon light"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -46,6 +49,7 @@
       "afternoon_light"
     ],
     "timeOfDay": "日间",
-    "title": "白银圭 · 海边自动贩卖机的冷饮选择"
+    "title": "白银圭 · 海边自动贩卖机的冷饮选择",
+    "animaCaption": "She holds the cold drink against her cheek on the seawall."
   }
 }

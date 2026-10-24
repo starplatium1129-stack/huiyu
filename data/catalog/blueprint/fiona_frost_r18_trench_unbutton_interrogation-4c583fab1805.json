@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_r18_trench_unbutton_interrogation",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 824,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fiona_frost_r18_trench_unbutton_interrogation",
     "characterId": "fiona_frost",
@@ -44,7 +44,9 @@
       "leaning",
       "lockers",
       "blush",
-      "cowboy shot"
+      "cowboy shot",
+      "spotlight",
+      "overhead lighting"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],
@@ -56,6 +58,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "coverageTags": [
       "intimate"
-    ]
+    ],
+    "animaCaption": "She leans against the lockers with her sweater raised and her leather trousers still fastened."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_starlight_terrace",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 601,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手合十，仰望星空",
     "camera": "medium shot",
@@ -29,7 +29,9 @@
       "stars",
       "terrace",
       "electricity",
-      "medium shot"
+      "medium shot",
+      "night",
+      "starlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +42,7 @@
       "wish"
     ],
     "timeOfDay": "夜晚",
-    "title": "澄闪 · 观景台"
+    "title": "澄闪 · 观景台",
+    "animaCaption": "Tiny sparks illuminate her joined hands as she lifts her face toward the stars."
   }
 }

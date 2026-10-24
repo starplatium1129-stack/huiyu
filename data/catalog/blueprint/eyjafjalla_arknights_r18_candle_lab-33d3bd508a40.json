@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_candle_lab",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 555,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "穿宽大白衬衫侧身坐在实验桌沿，烛火摇曳",
     "adult": true,
@@ -34,7 +34,10 @@
       "looking at viewer",
       "laboratory",
       "candlelight",
-      "blush"
+      "blush",
+      "hands on table",
+      "stone wall",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -46,6 +49,7 @@
       "warm_glow"
     ],
     "timeOfDay": "夜晚",
-    "title": "艾雅法拉 · 烛光实验"
+    "title": "艾雅法拉 · 烛光实验",
+    "animaCaption": "Both hands rest beside the notebook as she sits sideways on the laboratory table."
   }
 }

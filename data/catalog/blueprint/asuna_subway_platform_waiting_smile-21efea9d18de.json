@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_subway_platform_waiting_smile",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 939,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手背在身后微微倾身回眸甜笑，列车驶过的风吹动发丝与毛衣领口",
     "camera": "medium shot, eye-level, clear station portrait",
@@ -27,7 +27,12 @@
       "hands behind back",
       "smile",
       "night",
-      "medium shot"
+      "medium shot",
+      "leaning forward",
+      "safety line",
+      "passing train",
+      "windblown hair",
+      "cool lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +49,7 @@
       "night_lighting"
     ],
     "timeOfDay": "夜晚",
-    "title": "一之濑明日奈 · 都会站台的甜美回眸"
+    "title": "一之濑明日奈 · 都会站台的甜美回眸",
+    "animaCaption": "She smiles toward the arriving offscreen viewer while staying behind the platform safety line."
   }
 }

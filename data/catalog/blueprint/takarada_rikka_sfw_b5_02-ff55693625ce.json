@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1534,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_02",
     "title": "宝多六花 · 电车里的唱片纸袋",
@@ -32,7 +32,10 @@
     "promptTokens": [
       "record sleeve",
       "train",
-      "medium shot"
+      "medium shot",
+      "catching record sleeve",
+      "bag on knees",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -42,6 +45,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She catches the slipping sleeve above the bag on her knees."
   }
 }

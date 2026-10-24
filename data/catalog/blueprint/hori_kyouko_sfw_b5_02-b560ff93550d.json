@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1554,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_02",
     "title": "堀京子 · 超市晚市的特价攻略",
@@ -38,7 +38,12 @@
       "smile",
       "supermarket",
       "medium shot",
-      "ponytail"
+      "ponytail",
+      "vegetables",
+      "price tag",
+      "holding package",
+      "evening",
+      "store lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +55,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand lowers vegetables into the cart while the other holds its handle."
   }
 }

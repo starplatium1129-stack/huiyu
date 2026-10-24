@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc023",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 22,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Her fingers lightly gather the viewer's sleeve beside the observatory railing as she turns toward them; faint moonlight picks out her hopeful expression beneath the fading meteor trail.",
+    "animaCaption": "Her fingers gather the viewer's sleeve beside the railing as she turns toward them.",
     "auditRevision": "careful-batch06-2026-08-27",
     "camera": "观星台面部与抓袖动作中景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "day",
-    "prompt": "1girl, ayachi_nene, dusty pink shawl collar cardigan, patch pockets, ivory blouse, navy pleated midi skirt, sleeve grab, railing, observatory, shooting star, night, medium shot",
+    "prompt": "1girl, ayachi_nene, dusty pink shawl collar cardigan, patch pockets, ivory blouse, navy pleated midi skirt, sleeve grab, railing, observatory, shooting star, night, medium shot, looking at viewer, light smile, moonlight, starry sky",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "秋",
@@ -51,6 +51,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Her fingers lightly gather the viewer's sleeve beside the observatory railing as she turns toward them; faint moonlight picks out her hopeful expression beneath the fading meteor trail."
   }
 }

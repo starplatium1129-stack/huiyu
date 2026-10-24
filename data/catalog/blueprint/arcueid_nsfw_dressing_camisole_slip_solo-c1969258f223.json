@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_dressing_camisole_slip_solo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1332,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "黑吊带滑脱露胸，一手留在身前，另一手自抚腿心，咬唇羞耻眼角泛泪娇喘",
     "adult": true,
@@ -35,7 +35,12 @@
       "topless",
       "black panties",
       "masturbation",
-      "blush"
+      "blush",
+      "standing",
+      "legs together",
+      "looking toward doorway",
+      "bedside lamp",
+      "warm light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -52,6 +57,7 @@
       "sensual_solo"
     ],
     "timeOfDay": "深夜",
-    "title": "爱尔奎特 · 闺房黑丝睡衣半褪的自抚娇吟"
+    "title": "爱尔奎特 · 闺房黑丝睡衣半褪的自抚娇吟",
+    "animaCaption": "One hand stays beneath her panties as she glances toward the doorway."
   }
 }

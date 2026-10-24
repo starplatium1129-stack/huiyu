@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_gehenna_night_stealth_infiltration",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 928,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在钢架阴影中单膝蹲伏潜伏，单手扶夜视镜，细长尾巴贴近钢梁",
     "camera": "cowboy shot, high angle, stealth atmosphere",
@@ -29,7 +29,11 @@
       "industrial area",
       "midnight",
       "cowboy shot",
-      "from above"
+      "from above",
+      "hand on night vision device",
+      "moonlight",
+      "red lighting",
+      "rim light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +50,7 @@
     "timeOfDay": "深夜",
     "title": "银镜伊织 · 暗夜要塞潜行突防",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand touches the monocle while the other steadies her crouch on the high steel beam."
   }
 }

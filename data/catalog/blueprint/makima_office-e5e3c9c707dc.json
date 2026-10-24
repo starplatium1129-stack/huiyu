@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_office",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 413,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makima_office",
     "title": "玛奇玛 · 公安办公室",
@@ -32,10 +32,13 @@
       "documents",
       "desk",
       "office",
-      "daylight"
+      "daylight",
+      "looking at viewer",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "devil_true_form"
+    "outfitId": "devil_true_form",
+    "animaCaption": "Her interlocked fingers rest beneath her chin above the documents."
   }
 }

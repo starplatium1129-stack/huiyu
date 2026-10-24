@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_r18_engawa_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1143,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自跨坐缘侧坐垫，一手撑木边，另一手留在身下",
     "adult": true,
@@ -38,7 +38,12 @@
       "cushion",
       "fingering",
       "veranda",
-      "lantern"
+      "lantern",
+      "hand on wooden edge",
+      "heavy blush",
+      "moonlight",
+      "cowboy shot",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -52,6 +57,7 @@
       "ninja_clothes"
     ],
     "timeOfDay": "深夜",
-    "title": "常陆茉子 · 缘侧夜风跨坐骑乘与主动轻晃"
+    "title": "常陆茉子 · 缘侧夜风跨坐骑乘与主动轻晃",
+    "animaCaption": "She grips the veranda's wooden edge from the cushion while her other hand remains beneath her clothing."
   }
 }

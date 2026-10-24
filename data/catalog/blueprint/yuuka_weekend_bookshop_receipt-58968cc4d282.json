@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_weekend_bookshop_receipt",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 947,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "casual_date",
@@ -21,7 +21,12 @@
       "books",
       "receipt",
       "bookstore",
-      "afternoon"
+      "afternoon",
+      "standing",
+      "holding books",
+      "smile",
+      "daylight",
+      "medium shot"
     ],
     "camera": "medium shot at the bookstore entrance, books and receipt visible",
     "lighting": "书店橱窗前温和的午后日光",
@@ -48,6 +53,7 @@
     ],
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One arm holds two new books while her free hand checks their matching receipt total."
   }
 }

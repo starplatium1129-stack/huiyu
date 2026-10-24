@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_library_headphone_share",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1850,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_miku_library_headphone_share",
     "characterId": "nakano_miku",
@@ -28,7 +28,10 @@
       "gentle smile",
       "blush",
       "afternoon light",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "closed history book",
+      "dappled sunlight"
     ],
     "sceneTags": [
       "library",
@@ -58,6 +61,7 @@
       "slender",
       "5-toubun_no_hanayome"
     ],
-    "identityProseOverride": "Adult Nakano Miku from The Quintessential Quintuplets, a quiet woman with medium chestnut-brown hair falling over one eye, deep-blue eyes, and a shy expression."
+    "identityProseOverride": "Adult Nakano Miku from The Quintessential Quintuplets, a quiet woman with medium chestnut-brown hair falling over one eye, deep-blue eyes, and a shy expression.",
+    "animaCaption": "She holds the headphones clear of her neck and offers one earcup toward the viewer."
   }
 }

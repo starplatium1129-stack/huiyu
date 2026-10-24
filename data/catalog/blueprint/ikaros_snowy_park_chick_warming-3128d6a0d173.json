@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_snowy_park_chick_warming",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1214,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手捧着小黄鸡哈气取暖，巨大白羽翼向前环抱护风，长发落雪，神态极度温柔",
     "camera": "close-up, eye level",
@@ -29,7 +29,10 @@
       "snow",
       "bench",
       "winter",
-      "close-up"
+      "close-up",
+      "looking down",
+      "overcast",
+      "soft lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +49,7 @@
     "timeOfDay": "上午",
     "title": "伊卡洛斯 · 冬雪公园的暖心护雏",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her cupped hands and curved wings shelter the shivering chick from the wind."
   }
 }

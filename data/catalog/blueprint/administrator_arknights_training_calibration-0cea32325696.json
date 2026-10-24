@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_training_calibration",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 751,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "administrator_arknights_training_calibration",
     "characterId": "administrator_arknights",
@@ -37,7 +37,15 @@
       "cushion",
       "game controller",
       "night",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "hugging pillow",
+      "looking at viewer",
+      "head tilt",
+      "light smile",
+      "coffee table",
+      "warm lighting",
+      "screen light"
     ],
     "promptProse": "The controller rests on the coffee table as she hugs a cushion and shifts over, turning toward the viewer to offer the seat beside her. Warm lamplight mixes with the subdued screen light.",
     "negativeTokens": [
@@ -45,6 +53,7 @@
     ],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She shifts over to leave the seat beside her for the viewer."
   }
 }

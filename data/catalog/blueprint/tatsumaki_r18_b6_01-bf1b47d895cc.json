@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1599,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_01",
     "title": "战栗的龙卷 · 英雄协会高层公寓念动力浮空主控跨坐 ·「秃头……不对，你！今晚要是敢说我像小孩子，就把你撕成碎片！」",
@@ -40,7 +40,10 @@
       "straddling",
       "penthouse",
       "storm",
-      "low angle"
+      "low angle",
+      "crossed arms",
+      "cold lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,6 +61,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She rides astride her companion with folded arms under green psychic light and the storm window."
   }
 }

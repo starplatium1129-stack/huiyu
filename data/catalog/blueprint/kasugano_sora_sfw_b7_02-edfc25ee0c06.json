@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1614,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_02",
     "title": "春日野穹 · 缘侧的麦茶与零食",
@@ -39,7 +39,11 @@
       "snacks",
       "electric fan",
       "veranda",
-      "medium shot"
+      "medium shot",
+      "looking at laptop",
+      "barley tea",
+      "wind",
+      "shade"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +53,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The laptop balances on her crossed legs beside snacks and barley tea."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_lakeside_white_bikini_shading",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1301,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "albedo_lakeside_white_bikini_shading",
     "title": "雅儿贝德 · 湖畔水光的黑翼遮阳",
@@ -36,7 +36,10 @@
       "rock",
       "sitting",
       "smile",
-      "full body"
+      "full body",
+      "wing shade",
+      "toes in water",
+      "water reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
       "summer",
       "vacation"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Her raised wing shades the viewer while her toes touch the lake."
   }
 }

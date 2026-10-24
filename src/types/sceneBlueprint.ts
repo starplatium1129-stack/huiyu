@@ -25,6 +25,8 @@ export interface SceneBlueprint {
   mood: string
   sceneTags: string[]
   promptProse: string
+  /** Optional Anima-only supplement; an empty string explicitly omits the caption. */
+  animaCaption?: string
   promptTokens: string[]
   negativeTokens: string[]
   recommendedSize: string

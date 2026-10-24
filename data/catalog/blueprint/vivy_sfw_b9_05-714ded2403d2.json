@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1699,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "vivy_sfw_b9_05",
     "title": "Vivy · 海边录下第一首潮声",
@@ -34,7 +34,10 @@
     "promptTokens": [
       "Vivy",
       "seaside stage",
-      "medium shot"
+      "medium shot",
+      "holding recorder",
+      "offering earpiece",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -46,6 +49,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "One hand plays back the recorded tide while the other offers its earpiece to the viewer."
   }
 }

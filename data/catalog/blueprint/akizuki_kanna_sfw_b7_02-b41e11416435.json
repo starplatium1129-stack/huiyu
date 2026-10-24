@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1153,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在休息室沙发上双手捧着误触后的手机，低头微微鞠躬道歉",
     "adult": false,
@@ -29,7 +29,13 @@
       "sofa",
       "sitting",
       "smartphone",
-      "medium shot"
+      "medium shot",
+      "holding phone",
+      "both hands",
+      "bowed head",
+      "sheepish smile",
+      "screen light",
+      "soft lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +52,7 @@
       "medium_shot"
     ],
     "timeOfDay": "日间",
-    "title": "明月栞那 · 智能手机苦战中"
+    "title": "明月栞那 · 智能手机苦战中",
+    "animaCaption": "She gives the phone a small apologetic bow after an accidental tap."
   }
 }

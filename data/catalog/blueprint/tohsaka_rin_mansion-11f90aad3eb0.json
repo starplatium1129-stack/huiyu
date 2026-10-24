@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_mansion",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tohsaka_rin_mansion",
     "title": "远坂凛 · 远坂工坊·红宝石魔术充能",
@@ -36,7 +36,12 @@
       "floating ruby",
       "magic circle",
       "workshop",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "raised chin",
+      "confident smile",
+      "ruby glow",
+      "open books"
     ],
     "negativeTokens": [
       "ruby held in hand",
@@ -46,6 +51,7 @@
     "outfitId": "red_turtleneck",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She holds her chin high above folded arms while the ruby floats independently over the magic circle."
   }
 }

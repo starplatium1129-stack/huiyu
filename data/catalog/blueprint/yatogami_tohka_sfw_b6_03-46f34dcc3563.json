@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 86,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_03",
     "title": "夜刀神十香 · 雨后水洼的小跳跃",
@@ -33,7 +33,12 @@
     "promptProse": "Tohka lands beyond the puddle with both boots grounded and turns to admire the spreading ripples.",
     "promptTokens": [
       "puddle",
-      "full body"
+      "full body",
+      "landing",
+      "looking back",
+      "happy",
+      "ripples",
+      "daylight"
     ],
     "negativeTokens": [
       "duplicated figure"
@@ -45,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both boots land beyond the puddle as she turns to admire its spreading ripples."
   }
 }

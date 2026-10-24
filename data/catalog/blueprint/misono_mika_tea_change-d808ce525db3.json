@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_tea_change",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 898,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "礼裙肩带松开，双手伸向背后卡住的拉链，回头向画面外同伴求助。",
     "adult": true,
@@ -37,7 +37,9 @@
       "stuck zipper",
       "hands behind back",
       "looking back",
-      "changing room"
+      "changing room",
+      "slipped straps",
+      "warm light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +51,7 @@
       "intimate"
     ],
     "timeOfDay": "夜晚",
-    "title": "圣园未花 · 更衣室里的心跳瞬间"
+    "title": "圣园未花 · 更衣室里的心跳瞬间",
+    "animaCaption": "Both hands reach for the caught zipper as she looks toward the off-frame viewer."
   }
 }

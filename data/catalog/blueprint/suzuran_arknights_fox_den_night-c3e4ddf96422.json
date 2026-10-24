@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_fox_den_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 641,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蜷成一团，尾巴盖在身上",
     "camera": "medium shot, curled tails and face visible",
@@ -27,7 +27,9 @@
       "curled up",
       "bed",
       "lamplight",
-      "medium shot"
+      "medium shot",
+      "multiple tails",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +40,7 @@
       "cozy"
     ],
     "timeOfDay": "夜晚",
-    "title": "铃兰 · 窝里夜话"
+    "title": "铃兰 · 窝里夜话",
+    "animaCaption": "She peeks from nine curled tails while awaiting the next line of the bedtime story."
   }
 }

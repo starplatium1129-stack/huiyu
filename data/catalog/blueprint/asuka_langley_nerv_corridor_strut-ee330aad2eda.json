@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1026,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "身穿居家T恤系粉色围裙双手递出便当盒，脸颊泛红偏头傲娇娇嗔",
     "camera": "medium shot, eye level, domestic warmth",
@@ -28,7 +28,11 @@
       "blush",
       "looking away",
       "morning",
-      "medium shot"
+      "medium shot",
+      "holding bento",
+      "both hands",
+      "window light",
+      "steam"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +47,7 @@
       "blushing"
     ],
     "timeOfDay": "清晨",
-    "title": "惣流·明日香 · 居家围裙做便当的傲娇早晨"
+    "title": "惣流·明日香 · 居家围裙做便当的傲娇早晨",
+    "animaCaption": "She offers the two-tier bento with both hands while turning her flushed face aside."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_goddess_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 273,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_nsfw_goddess_straddle",
     "title": "埃列什基伽勒 · 女王的主动跨坐·「主动一点……也需要练习的」",
@@ -36,7 +36,12 @@
       "topless",
       "straddling",
       "blush",
-      "from below"
+      "from below",
+      "on lap",
+      "looking down",
+      "hair curtain",
+      "blue light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -61,6 +66,7 @@
       "very_long_hair",
       "hair_down",
       "red_eyes"
-    ]
+    ],
+    "animaCaption": "She studies the viewer's expression as her hair falls around their faces."
   }
 }

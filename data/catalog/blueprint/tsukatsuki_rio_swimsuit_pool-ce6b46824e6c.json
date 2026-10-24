@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 903,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "披薄纱外套站在池边",
     "adult": false,
@@ -31,7 +31,10 @@
       "Rio",
       "pool",
       "from below",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "water reflection",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -43,6 +46,7 @@
       "blue_archive"
     ],
     "timeOfDay": "白天",
-    "title": "调月莉音 · 私人泳池边的缜密思考"
+    "title": "调月莉音 · 私人泳池边的缜密思考",
+    "animaCaption": "She studies the pool water as reflections flicker across her cover-up."
   }
 }

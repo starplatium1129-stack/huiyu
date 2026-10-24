@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_06",
     "title": "牧之原翔子 · 毕业季的樱花坡道",
@@ -37,7 +37,11 @@
       "hands behind back",
       "leaning forward",
       "cherry blossoms",
-      "hill"
+      "hill",
+      "smile",
+      "petals",
+      "afternoon light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She leans toward the viewer with both hands behind her back on the spring slope."
   }
 }

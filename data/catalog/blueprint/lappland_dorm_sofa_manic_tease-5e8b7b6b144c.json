@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_dorm_sofa_manic_tease",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 675,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "横躺倒挂在天鹅绒沙发上，长发垂地，单手抛接小刀，神情玩味危险",
     "camera": "medium shot, dutch angle",
@@ -27,7 +27,11 @@
       "dagger",
       "lounge",
       "night",
-      "dutch angle"
+      "dutch angle",
+      "head over armrest",
+      "hair hanging",
+      "warm lamps",
+      "moonlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +46,7 @@
       "wolf_ears"
     ],
     "timeOfDay": "深夜",
-    "title": "拉普兰德 · 休息室沙发上的危险挑逗"
+    "title": "拉普兰德 · 休息室沙发上的危险挑逗",
+    "animaCaption": "The dagger turns above her open palm while she watches the viewer upside down."
   }
 }

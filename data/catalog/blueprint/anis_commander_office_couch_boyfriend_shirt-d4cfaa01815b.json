@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_commander_office_couch_boyfriend_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1821,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "anis_commander_office_couch_boyfriend_shirt",
     "title": "阿尼斯 · 指挥官室沙发上的宽大衬衫小憩",
@@ -60,11 +60,15 @@
       "blue_eyes",
       "teasing_smile",
       "morning_sunlight",
-      "cozy_atmosphere"
+      "cozy_atmosphere",
+      "looking at viewer",
+      "office",
+      "morning light"
     ],
     "promptProse": "Curled up comfortably on the plush leather couch in the Commander's private quarters, Anis lounges in an unbuttoned oversized white men's dress shirt. The crisp white fabric drapes softly over her colossal cleavage and bare porcelain thighs as she clutches a velvet pillow, her sparkling blue gaze locked onto the viewer with an affectionate, playful smirk in the morning sun.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She hugs the pillow against her while reclining on the leather couch."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_r18_b6_01",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1573,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "raphtalia_r18_b6_01",
     "title": "拉芙塔莉雅 · 旅行马车营地主控跨坐 ·「尚文大人……我不仅是您的剑，还是您的女人」",
@@ -39,7 +39,12 @@
       "forehead touching",
       "carriage",
       "night",
-      "red brown skirt"
+      "red brown skirt",
+      "straddling",
+      "tears",
+      "firelight",
+      "medium two-shot",
+      "side view"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +60,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Their foreheads meet inside the carriage, her tail curled around her companion's wrist."
   }
 }

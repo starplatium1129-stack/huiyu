@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_bunny_cafe",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 874,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端托盘站立",
     "adult": false,
@@ -32,7 +32,13 @@
       "lounge",
       "tray",
       "champagne glass",
-      "chandelier"
+      "chandelier",
+      "holding tray",
+      "both hands",
+      "velvet sofa",
+      "evening",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -44,6 +50,7 @@
       "evening"
     ],
     "timeOfDay": "傍晚",
-    "title": "飞鸟马时 · 兔女郎潜入伪装"
+    "title": "飞鸟马时 · 兔女郎潜入伪装",
+    "animaCaption": "Both hands support opposite edges of the tray at waist height."
   }
 }

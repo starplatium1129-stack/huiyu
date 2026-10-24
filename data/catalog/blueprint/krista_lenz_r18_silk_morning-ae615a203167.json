@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_silk_morning",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "金黄草垛旁抱膝褪去白裙娇羞微笑",
     "adult": true,
@@ -35,7 +35,10 @@
       "hugging knees",
       "hay",
       "barn",
-      "morning light"
+      "morning light",
+      "removed dress",
+      "hayloft",
+      "light through boards"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -52,6 +55,7 @@
       "daylight"
     ],
     "timeOfDay": "清晨",
-    "title": "希斯特里亚 · 农场阳光草垛纯欲"
+    "title": "希斯特里亚 · 农场阳光草垛纯欲",
+    "animaCaption": "Her removed white dress lies beside her on the hay."
   }
 }

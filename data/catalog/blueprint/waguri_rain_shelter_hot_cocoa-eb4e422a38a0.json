@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_rain_shelter_hot_cocoa",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1507,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "waguri_rain_shelter_hot_cocoa",
     "title": "和栗薰子 · 雨檐下慢慢变暖的双手",
@@ -38,7 +38,11 @@
       "closed umbrella",
       "rain",
       "bench",
-      "medium shot"
+      "medium shot",
+      "holding cup",
+      "both hands",
+      "folded umbrella",
+      "schoolbag"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The folded umbrella leans beside her schoolbag under the shop eaves."
   }
 }

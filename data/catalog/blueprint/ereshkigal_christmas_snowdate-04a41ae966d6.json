@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_christmas_snowdate",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 265,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_christmas_snowdate",
     "title": "埃列什基伽勒 · 冥界圣诞的初雪·「这份温暖……是给我的吗」",
@@ -34,7 +34,11 @@
       "open hand",
       "snow",
       "smile",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "catching snow",
+      "surprised",
+      "blue light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
       "daily",
       "signature",
       "story"
-    ]
+    ],
+    "animaCaption": "She watches the first flakes melt on her open palm beneath her disbelieving gaze."
   }
 }

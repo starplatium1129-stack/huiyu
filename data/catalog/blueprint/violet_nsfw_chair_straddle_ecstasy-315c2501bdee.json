@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_nsfw_chair_straddle_ecstasy",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1397,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自跨坐红丝绒扶手椅，机械双手握住两侧扶手，身体向前倾。",
     "adult": true,
@@ -39,7 +39,10 @@
       "looking at viewer",
       "velvet armchair",
       "fireplace",
-      "from below"
+      "from below",
+      "hands on armrests",
+      "firelight",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -66,6 +69,7 @@
       "red hair ribbon",
       "blue eyes",
       "mechanical hands"
-    ]
+    ],
+    "animaCaption": "Both mechanical hands grip the curved armrests as she leans forward from the crimson chair."
   }
 }

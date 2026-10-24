@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_bookstore_glasses",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 963,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "戴眼镜翻阅剧本研究",
     "camera": "medium shot, leaning against bookshelf",
@@ -23,7 +23,11 @@
       "book",
       "reading",
       "bookshelf",
-      "bookstore"
+      "bookstore",
+      "leaning",
+      "glasses",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +40,7 @@
       "casual"
     ],
     "timeOfDay": "白天",
-    "title": "黑川茜 · 书店眼镜"
+    "title": "黑川茜 · 书店眼镜",
+    "animaCaption": "She studies the open research book through thin glasses between the old shelves."
   }
 }

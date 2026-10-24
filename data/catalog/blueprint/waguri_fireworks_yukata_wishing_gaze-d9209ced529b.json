@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_fireworks_yukata_wishing_gaze",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1506,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "waguri_fireworks_yukata_wishing_gaze",
     "title": "和栗薰子 · 烟花下收好的金鱼袋",
@@ -37,7 +37,11 @@
       "goldfish bag",
       "fireworks",
       "riverbank",
-      "medium shot"
+      "medium shot",
+      "holding goldfish bag",
+      "both hands",
+      "looking up",
+      "lantern light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands hold the goldfish bag beneath the festival rail."
   }
 }

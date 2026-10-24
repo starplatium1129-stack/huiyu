@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_seminar_late_night_accounting",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 912,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端坐在现代办公桌前微俯身核对账目，单手持计算器，微蹙眉头看向镜头",
     "camera": "cowboy shot, slightly high angle",
@@ -28,7 +28,12 @@
       "office",
       "city lights",
       "midnight",
-      "lamplight"
+      "lamplight",
+      "sitting",
+      "leaning forward",
+      "frown",
+      "cowboy shot",
+      "high angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -47,6 +52,7 @@
     "timeOfDay": "深夜",
     "title": "早濑优香 · 研讨会深夜清算",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand enters calculator figures while the other holds the invoice flat."
   }
 }

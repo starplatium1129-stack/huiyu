@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_r18_desk_gothic_doggystyle_thrust",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1230,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "侧卧微蜷双手抱胸，金色发丝化作触手轻缠床柱，战裙半解露肩，红眸湿润咬唇轻颤",
     "adult": true,
@@ -40,7 +40,12 @@
       "prehensile hair",
       "bed",
       "window",
-      "moonlight"
+      "moonlight",
+      "hair around bedposts",
+      "teary eyes",
+      "parted lips",
+      "floor lamp",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -57,6 +62,7 @@
       "small_breasts"
     ],
     "timeOfDay": "深夜",
-    "title": "金色暗影 · 月下体细胞变形失控的意乱情迷"
+    "title": "金色暗影 · 月下体细胞变形失控的意乱情迷",
+    "animaCaption": "Both arms fold across her chest while transformed hair tendrils curl around the bedposts."
   }
 }

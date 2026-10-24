@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_r18_b8_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1686,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tachibana_mikari_r18_b8_02",
     "title": "橘美花莉 · 酒店顶楼无边泳池的水光湿身 ·「被汗水和池水打湿的样子……是独家专享哦」",
@@ -46,7 +46,12 @@
       "infinity pool",
       "rooftop",
       "city lights",
-      "night"
+      "night",
+      "reclining",
+      "wet hair",
+      "water reflection",
+      "neon lights",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -61,6 +66,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her chestnut hair trails over the infinity-pool rim beneath the city neon reflections."
   }
 }

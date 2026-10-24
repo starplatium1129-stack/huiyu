@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_rain_patrol",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 849,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "与你共撑黑伞在雨夜巡逻，微微仰头让伞面覆盖你们两人，制服下摆沾着雨水",
     "adult": false,
@@ -34,7 +34,12 @@
       "shared umbrella",
       "rain",
       "street",
-      "medium shot"
+      "medium shot",
+      "walking",
+      "looking up",
+      "streetlight",
+      "wet pavement",
+      "water reflection"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -49,6 +54,7 @@
       "companion"
     ],
     "timeOfDay": "雨夜",
-    "title": "空崎日奈 · 雨夜巡逻的伞下同行"
+    "title": "空崎日奈 · 雨夜巡逻的伞下同行",
+    "animaCaption": "Her companion holds the shared umbrella as she looks up at him while walking beside him."
   }
 }

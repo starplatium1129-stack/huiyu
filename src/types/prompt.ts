@@ -17,6 +17,8 @@ export interface PromptSceneContext {
   usage?: string[]
   /** Authored Anima caption for the visible moment, atmosphere and spatial/prop relationships. */
   animaCaption?: string
+  /** Original scene prose retained independently for Krea. */
+  promptProse?: string
   /** Explicit appearance variant for this scene; replaces the default identity anchors. */
   identityTokensOverride?: string[]
   identityProseOverride?: string

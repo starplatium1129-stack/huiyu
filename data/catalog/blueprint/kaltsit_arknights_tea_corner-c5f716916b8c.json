@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_tea_corner",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 529,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端起茶杯，眉眼微垂",
     "camera": "close-up",
@@ -26,7 +26,9 @@
       "looking down",
       "office",
       "window light",
-      "close-up"
+      "close-up",
+      "holding teacup",
+      "raising cup"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +39,7 @@
       "window"
     ],
     "timeOfDay": "午后",
-    "title": "凯尔希 · 茶叙"
+    "title": "凯尔希 · 茶叙",
+    "animaCaption": "She raises the black tea in the quiet office corner."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_dorm_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 622,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在床上，一手将封好的信封贴在胸前。",
     "adult": true,
@@ -34,7 +34,10 @@
       "envelope",
       "female masturbation",
       "bed",
-      "lamp"
+      "lamp",
+      "unopened letters",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -48,6 +51,7 @@
       "lamp"
     ],
     "timeOfDay": "深夜",
-    "title": "羽毛笔 · 深夜寝室"
+    "title": "羽毛笔 · 深夜寝室",
+    "animaCaption": "The sealed envelope rests against her chest amid unopened letters on the bed."
   }
 }

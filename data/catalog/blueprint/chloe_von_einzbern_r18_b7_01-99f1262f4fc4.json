@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_r18_b7_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 305,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chloe_von_einzbern_r18_b7_01",
     "title": "克洛伊 · 小黑小恶魔战袍的主控补魔跨坐 ·「士郎……补魔要由内到外、彻底吸收才行哦♪」",
@@ -39,7 +39,13 @@
       "straddling",
       "kiss",
       "magic circle",
-      "from below"
+      "from below",
+      "on lap",
+      "leaning forward",
+      "bed",
+      "dark skin",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +60,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She leans toward the viewer for a kiss, the crimson circle glowing beneath the bed."
   }
 }

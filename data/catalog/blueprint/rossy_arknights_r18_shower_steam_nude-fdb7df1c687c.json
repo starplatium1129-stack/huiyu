@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_r18_shower_steam_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 775,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rossy_arknights_r18_shower_steam_nude",
     "characterId": "rossy_arknights",
@@ -34,7 +34,11 @@
       "shower",
       "water droplets",
       "steam",
-      "full body"
+      "full body",
+      "adult",
+      "head tilted",
+      "rubbing soap",
+      "warm light"
     ],
     "promptProse": "Adult Rossi tilts her head beneath the shower and rubs gel across her collarbone in the compact engineering-dorm stall. Warm shower light diffuses through the steam.",
     "negativeTokens": [],
@@ -45,6 +49,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She rubs shower gel across her collarbone in the compact stall."
   }
 }

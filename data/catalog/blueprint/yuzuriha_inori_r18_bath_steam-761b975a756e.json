@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_bath_steam",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 335,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_bath_steam",
     "title": "楪祈 · 虚空花瓣的蒸汽浴",
@@ -36,7 +36,11 @@
       "female masturbation",
       "bathtub",
       "steam",
-      "glowing petals"
+      "glowing petals",
+      "sitting on rim",
+      "leg in water",
+      "hand underwater",
+      "wall lamps"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "red_gauze_wrap",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Her submerged hand makes ripples and cyan petals beneath the warm steam."
   }
 }

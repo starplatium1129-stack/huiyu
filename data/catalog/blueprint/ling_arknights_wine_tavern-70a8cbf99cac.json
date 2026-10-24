@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_wine_tavern",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 649,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚栏独坐举盏温酒轻啜",
     "camera": "medium shot, slightly high angle",
@@ -29,7 +29,10 @@
       "tavern",
       "lantern",
       "night",
-      "sitting"
+      "sitting",
+      "drinking",
+      "market visitors",
+      "moonlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +46,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "令 · 龙门酒肆独酌",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She drinks beside the upstairs railing above the passing market visitors."
   }
 }

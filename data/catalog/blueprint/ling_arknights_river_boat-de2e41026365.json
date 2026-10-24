@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 654,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚舫栏对月举盏吟诗",
     "camera": "wide shot",
@@ -26,7 +26,10 @@
       "railing",
       "boat",
       "river",
-      "moonlight"
+      "moonlight",
+      "forearm on railing",
+      "raising cup",
+      "lantern light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +42,7 @@
       "water"
     ],
     "timeOfDay": "月夜",
-    "title": "令 · 江上画舫夜航"
+    "title": "令 · 江上画舫夜航",
+    "animaCaption": "One forearm rests on the rail as she lifts the wine cup toward the moon."
   }
 }

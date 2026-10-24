@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1659,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_01",
     "title": "守岸人 · 黑石海岸流光礼服主控跨坐 ·「漂泊者……黑海岸的所有数据与情感，此刻全部同步于你」",
@@ -38,7 +38,11 @@
       "straddling",
       "altar",
       "starlight",
-      "low angle"
+      "low angle",
+      "open clothes",
+      "hands on jaw",
+      "glowing butterflies",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +60,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands frame her companion's jaw while luminous butterflies circle the opened dress."
   }
 }

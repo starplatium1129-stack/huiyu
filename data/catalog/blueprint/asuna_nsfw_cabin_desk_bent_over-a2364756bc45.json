@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_cabin_desk_bent_over",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1373,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asuna_nsfw_cabin_desk_bent_over",
     "title": "结城明日奈 · 湖畔木屋更衣拉链卡壳事故·「副团长的战袍……怎么会在这种时候卡死呀……」",
@@ -42,7 +42,10 @@
       "panties aside",
       "red cross",
       "red pleated skirt",
-      "white thighhighs"
+      "white thighhighs",
+      "leaning forward",
+      "zipper pull",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -55,6 +58,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "One hand reaches for the rear zipper while the other draws fabric aside."
   }
 }

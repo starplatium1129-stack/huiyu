@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1533,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_01",
     "title": "宝多六花 · 绚 JUNK SHOP 的柜台",
@@ -44,7 +44,11 @@
       "homework",
       "shop counter",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "writing",
+      "holding page",
+      "golden hour",
+      "dust"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -55,6 +59,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "Her right hand writes while her left steadies the page beside the old radios."
   }
 }

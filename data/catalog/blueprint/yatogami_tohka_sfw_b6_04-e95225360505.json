@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_04",
     "title": "夜刀神十香 · 紫晶穹顶下的花嫁",
@@ -34,7 +34,11 @@
       "bouquet",
       "crystal dome",
       "sunset",
-      "cowboy shot"
+      "cowboy shot",
+      "holding bouquet",
+      "both hands",
+      "bright smile",
+      "petals"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +50,7 @@
       "iconic",
       "bridal",
       "daily"
-    ]
+    ],
+    "animaCaption": "She holds the bouquet near her nose beneath floating petals and the violet-lit crystal dome."
   }
 }

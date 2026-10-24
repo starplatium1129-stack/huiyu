@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_cathedral_throne_bridal_veil",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1302,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "albedo_cathedral_throne_bridal_veil",
     "title": "雅儿贝德 · 纯白圣堂的魔后花嫁",
@@ -35,7 +35,14 @@
       "white roses",
       "cathedral",
       "walking",
-      "cowboy shot"
+      "cowboy shot",
+      "hands clasped",
+      "bridal veil",
+      "teary eyes",
+      "smile",
+      "altar",
+      "stained glass",
+      "colored light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +51,7 @@
       "bridal",
       "romantic",
       "vow"
-    ]
+    ],
+    "animaCaption": "Her veil rests over her horns as she approaches the viewer at the altar."
   }
 }

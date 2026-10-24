@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_dorm_night",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 205,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -46,7 +46,13 @@
       "spilled tea",
       "desk",
       "morning",
-      "glasses"
+      "glasses",
+      "adult",
+      "holding teacup",
+      "spilled droplets",
+      "slipped sweater",
+      "blinds light",
+      "morning light"
     ],
     "recommendedSize": "1536x1152",
     "outfitId": "loose_knit_sweater",
@@ -57,6 +63,7 @@
     "adultArtistHint": "@hiten (hitenkei)",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand steadies the tilted cup while the other wipes the spilled droplets."
   }
 }

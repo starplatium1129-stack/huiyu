@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_shopping_weekend_dress",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1439,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_shopping_weekend_dress",
     "title": "加藤惠 · 周末服装店的认真挑选·「这两件衣服……伦也君觉得哪一件更好看呢」",
@@ -34,7 +34,12 @@
       "holding dresses",
       "boutique",
       "long hair",
-      "ponytail"
+      "ponytail",
+      "holding hangers",
+      "comparing dresses",
+      "looking down",
+      "spotlight",
+      "mirror reflections"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +50,7 @@
     "coverageTags": [
       "daily",
       "date"
-    ]
+    ],
+    "animaCaption": "She holds one summer dress in each hand above the reflected boutique light."
   }
 }

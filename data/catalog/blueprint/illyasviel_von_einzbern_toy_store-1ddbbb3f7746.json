@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_toy_store",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 163,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_toy_store",
     "title": "伊莉雅丝菲尔 · 玩具店",
@@ -37,7 +37,12 @@
       "teddy bear",
       "toy shop",
       "full body",
-      "from side"
+      "from side",
+      "both feet on floor",
+      "window light",
+      "shop lights",
+      "toy shelves",
+      "paper stars"
     ],
     "negativeTokens": [
       "looking at viewer"
@@ -48,6 +53,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her face rests against the teddy's middle with both sets of feet on the floor."
   }
 }

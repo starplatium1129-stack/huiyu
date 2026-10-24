@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_clubroom",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 338,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yukinoshita_yukino_clubroom",
     "title": "雪之下雪乃 · 侍奉部教室",
@@ -36,7 +36,12 @@
       "black tea",
       "chair",
       "clubroom",
-      "afternoon"
+      "afternoon",
+      "sitting",
+      "open book",
+      "turning page",
+      "tea steam",
+      "window light"
     ],
     "negativeTokens": [
       "text"
@@ -48,6 +53,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand supports the book as the other turns a page toward the opening door."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_r18_b8_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "futaba_rio_r18_b8_02",
     "title": "双叶理央 · 实验楼淋浴间的水光湿身透肉 ·「冲凉水也没有用……体温一直在上升」",
@@ -43,7 +43,10 @@
       "masturbation",
       "shower",
       "steam",
-      "blush"
+      "blush",
+      "head tilted up",
+      "hand under skirt",
+      "water stream"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,6 +61,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand stays beneath her wet skirt under the shower."
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc193",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 190,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "At the sea-view railing, she turns back and catches the viewer's shirt hem with one hand; moonlight outlines her windblown hair and the thin white nightgown.",
+    "animaCaption": "One hand catches the viewer's shirt hem as she turns back from the sea-view railing.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "阳台回眸七分身中景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, fine burgundy edging, white silk nightgown, see-through, barefoot, looking back, holding clothes, balcony, railing, ocean, full moon, night, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, fine burgundy edging, white silk nightgown, see-through, barefoot, looking back, holding clothes, balcony, railing, ocean, full moon, night, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, holding hem, moonlight, wind, hair blowing",
     "rating": "R18",
     "season": "夏",
     "story": "【夏目 · 真丝半透明睡裙海滨月夜】寂静的海滨度假公寓高空阳台。夜空澄澈，一轮巨大的圆月将清冷皎洁的银辉泼洒在平静如镜的海面上。夏目此时只穿着一件极其薄软的半透明白色真丝睡裙伫立在围栏前，里面完全真空。海风徐徐吹过，不仅吹乱了她柔顺的黑色长发，更是将轻薄如纱的睡裙死死贴紧在她完美毫无瑕疵的娇躯线条上，前胸凸显的诱人傲然痕迹与饱满轮廓在月光的逆光勾勒下近乎全透明！她面红耳赤地回过头，眼角的泪痣闪烁着极致的妩媚与独占欲，主动扯住你的衣角——「大笨蛋...风有点凉...你还不打算从后面...把我抱进房间里去吗...」",
@@ -44,6 +44,7 @@
       "壁纸级",
       "成人向"
     ],
-    "weather": "澄澈月夜海风"
+    "weather": "澄澈月夜海风",
+    "promptProse": "At the sea-view railing, she turns back and catches the viewer's shirt hem with one hand; moonlight outlines her windblown hair and the thin white nightgown."
   }
 }

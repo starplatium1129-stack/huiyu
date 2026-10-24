@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_07",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_07",
     "title": "牧之原翔子 · 厨房里系好的围裙",
@@ -35,7 +35,11 @@
       "side braid",
       "lunch box",
       "fruit",
-      "kitchen"
+      "kitchen",
+      "handwritten note",
+      "calm smile",
+      "morning light",
+      "medium shot"
     ],
     "negativeTokens": [
       "readable note"
@@ -47,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She arranges fruit into a flower with a note tucked beneath the lunch-box lid."
   }
 }

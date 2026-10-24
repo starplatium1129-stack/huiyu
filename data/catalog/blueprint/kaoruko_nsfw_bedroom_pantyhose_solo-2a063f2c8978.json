@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_bedroom_pantyhose_solo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1516,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kaoruko_nsfw_bedroom_pantyhose_solo",
     "title": "和栗薰子 · 闺房床褥开档黑丝的柔情自持 ·「千鸟高的名门小姐……才不会做这种不知羞的事……可是……」",
@@ -34,7 +34,11 @@
       "on back",
       "legs together",
       "bed",
-      "fairy lights"
+      "fairy lights",
+      "adult",
+      "lying on back",
+      "pink comforter",
+      "bedside light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her hand stays at the torn tights above the floral comforter."
   }
 }

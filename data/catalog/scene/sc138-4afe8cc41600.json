@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc138",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "In the close mirror view, the viewer's arms circle her waist from behind as she turns her flushed face toward their shoulder; paper-lantern light softens the steam and the towel below her shoulders.",
+    "animaCaption": "In the mirror, she turns toward the viewer's shoulder as their arms encircle her from behind.",
     "auditRevision": "careful-batch10-2026-08-27",
     "camera": "镜面反射特写",
     "category": "恋爱/同人",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, wet white towel, bare shoulders, barefoot, back hug, mirror, dressing room, onsen, steam, blush, warm lighting",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, wet white towel, bare shoulders, barefoot, back hug, mirror, dressing room, onsen, steam, blush, warm lighting, arms around waist, paper lantern, close up",
     "rating": "R15",
     "season": "冬",
     "story": "【夏目 · 温泉浴巾滑落极致反差】古色古香的日式温泉旅馆，雾气氤氲。洗完澡后的夏目刚走到回廊，就被突然出现的你从身后拦腰抱住。她还带着泉水的水汽，眼角的泪痣挂着晶莹的水滴，面红耳赤地扭过头瞪着你——「哈？！你这家伙...绝对是算好了时间进来的吧？不准盯着镜子里看...变态笨蛋...」",
@@ -46,6 +46,7 @@
       "绝对独占",
       "R15"
     ],
-    "weather": "澄澈月夜"
+    "weather": "澄澈月夜",
+    "promptProse": "In the close mirror view, the viewer's arms circle her waist from behind as she turns her flushed face toward their shoulder; paper-lantern light softens the steam and the towel below her shoulders."
   }
 }

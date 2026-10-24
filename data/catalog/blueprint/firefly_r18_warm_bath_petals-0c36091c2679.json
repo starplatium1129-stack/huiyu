@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_r18_warm_bath_petals",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1873,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "firefly_r18_warm_bath_petals",
     "characterId": "firefly_hsr",
@@ -33,7 +33,10 @@
       "covering breasts",
       "blush",
       "intimate",
-      "cowboy shot"
+      "cowboy shot",
+      "looking up",
+      "warm lighting",
+      "high angle"
     ],
     "sceneTags": [
       "bath",
@@ -50,6 +53,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her wet hair clings to her shoulders above the steaming bath."
   }
 }

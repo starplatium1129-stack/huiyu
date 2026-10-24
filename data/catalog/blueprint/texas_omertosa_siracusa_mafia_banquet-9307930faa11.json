@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_omertosa_siracusa_mafia_banquet",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 661,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端坐在复古皮质高背椅上，双腿交叠，单手轻按金色佩剑，眼神深邃冷静",
     "camera": "cowboy shot, eye level, aristocratic elegance",
@@ -25,7 +25,13 @@
       "rapier",
       "chair",
       "mansion",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting",
+      "crossed legs",
+      "hand on hilt",
+      "chandelier light",
+      "firelight",
+      "rainy window"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +47,7 @@
       "crossed_legs"
     ],
     "timeOfDay": "夜晚",
-    "title": "德克萨斯 · 叙拉古雨夜的沉默家主"
+    "title": "德克萨斯 · 叙拉古雨夜的沉默家主",
+    "animaCaption": "One hand rests on the gold rapier hilt while her crossed legs settle in the high-backed chair."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makina_rooftop_sniper_rifle_aim_sunset",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1794,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makina_rooftop_sniper_rifle_aim_sunset",
     "title": "入巢莳菜 · 夕阳天台的巨型反器材狙击戒备",
@@ -63,11 +63,16 @@
       "brown_eyes",
       "cinematic_lighting",
       "dramatic_shadows",
-      "tactical_ambiance"
+      "tactical_ambiance",
+      "finger on trigger",
+      "rim light",
+      "wide shot",
+      "from below"
     ],
     "promptProse": "Lying prone behind sandbag fortifications on the concrete rooftop silhouetted against a dramatic blood-orange sunset, Makina aims a massive black Barrett anti-materiel sniper rifle that dwarfs her petite frame. Her knee-length pink pigtails splay across the ground and her prominent ahoge stands alert as she gazes through the high-powered rifle scope with chilling sniper precision.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her right eye meets the scope while her hair spreads across the rooftop behind the sandbags."
   }
 }

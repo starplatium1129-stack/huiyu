@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_shiromuku_bridal_vow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1399,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "白无垢端坐神前捧扇，闻誓词睫毛颤动落泪红瞳",
     "adult": false,
@@ -32,7 +32,12 @@
       "sitting",
       "shrine",
       "wedding",
-      "wide shot"
+      "wide shot",
+      "holding fan",
+      "both hands",
+      "tears",
+      "smile",
+      "soft lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -47,6 +52,7 @@
       "smile"
     ],
     "timeOfDay": "婚礼正午",
-    "title": "四宫辉夜 · 白无垢的花嫁誓言·「这次，换我先说」"
+    "title": "四宫辉夜 · 白无垢的花嫁誓言·「这次，换我先说」",
+    "animaCaption": "Both hands hold the ceremonial fan as she listens to vows before the shrine."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_r18_bath_steam_droplets",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 492,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "aisha_greyrat_r18_bath_steam_droplets",
     "title": "爱夏·雾气私汤凝脂",
@@ -39,7 +39,13 @@
       "sitting",
       "wet hair",
       "lantern",
-      "night"
+      "night",
+      "wet skin",
+      "water droplets",
+      "hair gathering",
+      "looking back",
+      "stone steps",
+      "warm lighting"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],
@@ -51,6 +57,7 @@
     "negativeTokens": [],
     "coverageTags": [
       "intimate"
-    ]
+    ],
+    "animaCaption": "She gathers her wet ponytail while seated on the submerged steps."
   }
 }

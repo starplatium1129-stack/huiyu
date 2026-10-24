@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_clubroom_computer_deadpan",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1437,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_clubroom_computer_deadpan",
     "title": "加藤惠 · 社团电脑前的无声吐槽·「伦也君……这个剧情是不是太奇怪了」",
@@ -34,7 +34,12 @@
       "hand on own cheek",
       "clubroom",
       "bob cut",
-      "sitting"
+      "sitting",
+      "chin in hand",
+      "using mouse",
+      "unimpressed",
+      "screen light",
+      "sunset"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -45,6 +50,7 @@
     "coverageTags": [
       "daily",
       "clubroom"
-    ]
+    ],
+    "animaCaption": "One hand supports her cheek as the other tries the game with the mouse."
   }
 }

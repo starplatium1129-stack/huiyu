@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_summer_festival_fireworks_yukata",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1067,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手持折扇侧身回眸，夜空烟花璀璨，浴衣下摆微扬，神情柔和含蓄",
     "camera": "medium shot, low angle looking up, dramatic sky view",
@@ -25,7 +25,12 @@
       "folding fan",
       "looking back",
       "fireworks",
-      "seaside shrine"
+      "seaside shrine",
+      "holding fan",
+      "gentle expression",
+      "shrine steps",
+      "rim light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +44,7 @@
       "gazing_at_viewer"
     ],
     "timeOfDay": "夜晚",
-    "title": "星见雅 · 夏夜花火与深蓝浴衣"
+    "title": "星见雅 · 夏夜花火与深蓝浴衣",
+    "animaCaption": "The folding fan rests at her side as she looks back from the shrine steps beneath the fireworks."
   }
 }

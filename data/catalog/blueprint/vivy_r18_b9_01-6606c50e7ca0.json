@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1705,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "vivy_r18_b9_01",
     "title": "Vivy · 歌姬主题公园钢琴台礼服主控跨坐 ·「伴奏者先生……请听这具机械身体为你唱出的心跳」",
@@ -39,7 +39,13 @@
       "piano",
       "stage",
       "low angle",
-      "geometric dress panels"
+      "geometric dress panels",
+      "cowgirl position",
+      "open clothes",
+      "topless",
+      "hands on another's chest",
+      "spotlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +63,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands rest on her companion's chest above the piano beneath the theater spotlights."
   }
 }

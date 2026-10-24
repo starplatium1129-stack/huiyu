@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_confessional",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 899,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "跪坐忏悔室木格窗旁，指尖贴着窗扉，含泪向画面外的老师倾诉。",
     "adult": true,
@@ -37,7 +37,9 @@
       "hand on partition",
       "tears",
       "confessional",
-      "candlelight"
+      "candlelight",
+      "hands on lattice",
+      "curtain shadows"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +52,7 @@
       "intimate"
     ],
     "timeOfDay": "深夜",
-    "title": "圣园未花 · 忏悔室里的真心话"
+    "title": "圣园未花 · 忏悔室里的真心话",
+    "animaCaption": "She speaks toward the listener outside the frame through the lattice."
   }
 }

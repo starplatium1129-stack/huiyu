@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_mountain_mist",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 568,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "立于崖畔，衣袂翻飞",
     "camera": "wide shot, standing on an ink-washed crag",
@@ -21,7 +21,12 @@
     "promptTokens": [
       "floating crag",
       "cloud sea",
-      "wide shot"
+      "wide shot",
+      "standing",
+      "looking back",
+      "wind",
+      "mist",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -33,6 +38,7 @@
       "dragon_tail"
     ],
     "timeOfDay": "清晨",
-    "title": "夕 · 云中山水"
+    "title": "夕 · 云中山水",
+    "animaCaption": "Wind moves her sleeves and tail above the layered ink-wash mountains."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_nsfw_kitchen_apron_malfunction",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1482,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mahiru_nsfw_kitchen_apron_malfunction",
     "title": "椎名真昼 · 厨房真空围裙的系带松脱事故 ·「做饭的时候……不可以乱碰啦」",
@@ -33,7 +33,13 @@
       "bent over",
       "looking back",
       "kitchen counter",
-      "sunset"
+      "sunset",
+      "hands on counter",
+      "biting lip",
+      "teary eyes",
+      "warm lighting",
+      "wide shot",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -46,6 +52,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "The apron ties come undone above the simmering stove as both palms brace on the counter."
   }
 }

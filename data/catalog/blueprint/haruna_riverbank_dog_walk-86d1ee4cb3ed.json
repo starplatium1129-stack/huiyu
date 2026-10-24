@@ -4,7 +4,7 @@
   "revision": 2,
   "sortOrder": 1763,
   "createdAt": null,
-  "updatedAt": "2026-10-21T13:03:34.995576600+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruna_riverbank_dog_walk",
     "title": "西连寺春菜 · 黄昏河堤与爱犬马隆的悠闲散步",
@@ -45,7 +45,10 @@
       "sunset",
       "golden_hour",
       "water_reflection",
-      "detailed_background"
+      "detailed_background",
+      "looking back",
+      "hair tuck",
+      "wind"
     ],
     "promptProse": "Walking along the grassy riverbank at sunset, Haruna holds a leash attached to the collar of her little Boston terrier Marron, who trots a short distance ahead. Her free hand tucks windblown hair behind her ear as she turns her head back toward the viewer with a gentle smile. Golden light warms her face and glimmers across the river beside the slope.",
     "negativeTokens": [
@@ -53,6 +56,7 @@
       "nude"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Marron trots ahead while her free hand tucks her hair behind her ear."
   }
 }

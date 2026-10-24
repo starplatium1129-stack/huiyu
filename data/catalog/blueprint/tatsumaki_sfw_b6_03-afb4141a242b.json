@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1585,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_03",
     "title": "战栗的龙卷 · 门口藏不住的礼物",
@@ -35,7 +35,11 @@
       "gift bag",
       "hovering",
       "hallway",
-      "medium shot"
+      "medium shot",
+      "hand behind back",
+      "knocking",
+      "stern",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand hides the gift bag behind her; the other rises toward her sister's door."
   }
 }

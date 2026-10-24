@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc292",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 287,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She looks up from the camera in her lap as the viewer straightens her cardigan at the shoulder, the opaque white top still covering her beneath it; the warm fill light catches her eyes.",
+    "animaCaption": "The viewer straightens her cardigan at the shoulder; the opaque white top still covers her beneath it.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "沙发上方的近景俯视",
     "category": "日常/同人",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through shirt",
-    "prompt": "1girl, ayachi_nene, blush pink cable knit cardigan, cream shell buttons, white cotton top, camera, sitting, couch, blush, looking up, indoors, from above, close-up",
+    "prompt": "1girl, ayachi_nene, blush pink cable knit cardigan, cream shell buttons, white cotton top, camera, sitting, couch, blush, looking up, indoors, from above, close-up, fill light",
     "rating": "R15",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 私服拍摄的界线】同人社团的室内私服摄影进行到后半段，其他成员已经先去了便利店。客厅只剩下你和宁宁，补光灯还亮着，她坐在沙发边缘，宽大的针织开衫从一侧肩膀滑落。银白色的长发被风吹散了几缕贴在脸颊边，她低头翻着相机里的成片，却没有调整滑落的衣襟。你走近帮她整理衣领时，她抬起眼，紫色瞳孔在补光灯的暖色里显得格外透亮——「拍了一个下午了……这张构图你觉得怎么样？」她问的是照片，声音却有轻微的颤抖。你的手指没有离开她的肩头，她也没有后退。开衫的纽扣不知何时已经松开大半，白色的棉质内衬边缘微微卷起，她轻轻咬住下唇，呼吸在安静的客厅里清晰可闻——「如果还有想拍的角度……现在只有我们两个人了。」",
@@ -43,6 +43,7 @@
       "壁纸级",
       "R15"
     ],
-    "weather": "室内"
+    "weather": "室内",
+    "promptProse": "She looks up from the camera in her lap as the viewer straightens her cardigan at the shoulder, the opaque white top still covering her beneath it; the warm fill light catches her eyes."
   }
 }

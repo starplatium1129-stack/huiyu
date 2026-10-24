@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_witch_robes",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 196,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -45,7 +45,13 @@
       "sash around thigh",
       "window bench",
       "magic",
-      "silver edging"
+      "silver edging",
+      "adult",
+      "sitting",
+      "foot on storage chest",
+      "both hands",
+      "glowing runes",
+      "canopy light"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "aesc_rain_witch",
@@ -53,6 +59,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "coverageTags": []
+    "coverageTags": [],
+    "animaCaption": "Both hands tighten the rune-marked sash above the spell chest."
   }
 }

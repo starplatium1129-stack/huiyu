@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_yuuki_kitchen_breakfast_cooking",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1776,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mikan_yuuki_kitchen_breakfast_cooking",
     "title": "结城美柑 · 结城家厨房的元气早餐料理",
@@ -48,11 +48,14 @@
       "gentle_smile",
       "morning_light",
       "sunbeam",
-      "warm_tones"
+      "warm_tones",
+      "medium shot",
+      "low angle"
     ],
     "promptProse": "Standing by the sunlit kitchen counter in the Yuuki residence, Mikan holds a frying pan with an easy, practiced grip while turning to look back with a warm, mildly mischievous smile. Bright morning light streams across her chestnut bangs and the kitchen tiles.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She turns back from the kitchen counter while keeping a practiced grip on the frying pan."
   }
 }

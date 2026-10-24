@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 288,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_06",
     "title": "克洛伊 · 雨天窗边的真话",
@@ -35,7 +35,12 @@
       "classroom",
       "window seat",
       "knees hugged",
-      "rain"
+      "rain",
+      "sitting",
+      "hugging knees",
+      "looking outside",
+      "overcast light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -45,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She hugs her knees on the window bench and watches the rain."
   }
 }

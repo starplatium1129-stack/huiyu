@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_sakurai_backyard_watermelon_garden",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1209,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "收拢羽翼蹲在菜畦边伸手指轻抚西瓜，白裙微拢，神情专注温柔，呆毛轻摆",
     "camera": "medium shot, crouching at eye level beside the garden bed",
@@ -28,7 +28,9 @@
       "smile",
       "garden",
       "fence",
-      "afternoon"
+      "afternoon",
+      "dappled sunlight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +46,7 @@
     "timeOfDay": "午后",
     "title": "伊卡洛斯 · 樱井家菜园的西瓜私语",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One fingertip gently touches the young watermelon while her wings stay folded."
   }
 }

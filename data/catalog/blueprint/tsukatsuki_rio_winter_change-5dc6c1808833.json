@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_winter_change",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 888,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "解开风衣腰带侧目",
     "adult": true,
@@ -37,7 +37,10 @@
       "chair",
       "fitting room",
       "black pantyhose",
-      "untying belt"
+      "untying belt",
+      "looking back",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +52,7 @@
       "intimate"
     ],
     "timeOfDay": "夜晚",
-    "title": "调月莉音 · 冬季更衣室风衣与黑丝"
+    "title": "调月莉音 · 冬季更衣室风衣与黑丝",
+    "animaCaption": "She loosens the coat belt while her stockinged legs stay crossed beside the fitting-room chair."
   }
 }

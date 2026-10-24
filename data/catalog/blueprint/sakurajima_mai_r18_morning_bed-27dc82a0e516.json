@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_morning_bed",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakurajima_mai_r18_morning_bed",
     "title": "樱岛麻衣 · 清晨被窝",
@@ -35,7 +35,10 @@
       "topless",
       "masturbation",
       "hand between legs",
-      "medium shot"
+      "medium shot",
+      "rubbing eye",
+      "pillow",
+      "high angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "white_sleep_shirt",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand rubs her sleepy eye above the raised knees and sunlit pillows."
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc042",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Keeping her face turned toward the pillow, she reaches back past the blanket edge to find the viewer's palm.",
+    "animaCaption": "Facing the pillow, she reaches back past the blanket edge to find the viewer's palm.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "枕边侧面与毯外牵手近景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "see-through blanket",
-    "prompt": "1girl, shiki_natsume, black ribbed camisole, burgundy piping, grey cotton pajama pants, on side, blanket, pillow, holding hands, bedside lamp, close up",
+    "prompt": "1girl, shiki_natsume, black ribbed camisole, burgundy piping, grey cotton pajama pants, on side, blanket, pillow, holding hands, bedside lamp, close up, lying on side, from behind, reaching, blush, warm lighting",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",
@@ -51,6 +51,7 @@
       "展示图",
       "头像"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Keeping her face turned toward the pillow, she reaches back past the blanket edge to find the viewer's palm."
   }
 }

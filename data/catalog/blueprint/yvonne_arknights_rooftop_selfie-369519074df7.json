@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 735,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "举手机自拍",
     "camera": "medium shot",
@@ -27,7 +27,10 @@
       "raised arm",
       "rooftop",
       "blue sky",
-      "medium shot"
+      "medium shot",
+      "holding phone",
+      "smile",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +45,7 @@
     "timeOfDay": "白天",
     "title": "伊冯 · 天台自拍",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She angles the raised phone to include the clear sky above her smiling face."
   }
 }

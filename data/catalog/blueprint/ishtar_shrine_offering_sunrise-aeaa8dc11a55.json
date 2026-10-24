@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_shrine_offering_sunrise",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 255,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ishtar_shrine_offering_sunrise",
     "title": "伊什塔尔 · 神殿供品的清晨·「今天的供品，本女神勉强收下了」",
@@ -36,7 +36,11 @@
       "breakfast",
       "temple",
       "sunrise",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "steam",
+      "formal expression",
+      "looking at food"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +53,7 @@
       "daily",
       "signature",
       "romance"
-    ]
+    ],
+    "animaCaption": "She watches the steaming breakfast while trying to maintain a formal expression."
   }
 }

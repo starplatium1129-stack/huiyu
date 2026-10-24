@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc239",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "With one overall strap hanging loose, she freezes as the viewer's hand wipes white paint from her collarbone; afternoon window light catches her reddening ear and the paint mark.",
+    "animaCaption": "She freezes while the viewer wipes white paint from her collarbone, one overall strap hanging loose.",
     "auditRevision": "fix-no-burn-ears-sc239-2026-09-05",
     "camera": "近景水平正面特写",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, shiki_natsume, dark indigo denim overalls, brass buckles, white sleeveless shirt, burgundy collar trim, strap slip, paint, surprised, art studio, afternoon, window light, close-up",
+    "prompt": "1girl, shiki_natsume, dark indigo denim overalls, brass buckles, white sleeveless shirt, burgundy collar trim, strap slip, paint, surprised, art studio, afternoon, window light, close-up, blush, paint on collarbone",
     "rating": "R15",
     "season": "春",
     "story": "【夏目 · 工装背带裤的手工时光】午后阳光洒满堆放木材与画板的手工工作室。为了修缮咖啡店的桌椅，夏目换上了利落帅气的深蓝丹宁工装背带裤与无袖白上衣，修长的脖颈与锁骨线条格外干净。搬运木料时背带扣不慎滑下一侧，白皙的锁骨处还沾上了一抹白色木工漆。你自然地上前抬手帮她擦拭，夏目身子猛地一僵，半垂着清冷的金瞳动弹不得。午后明亮的窗光把她红透的耳根照得无所遁形，她小声嘟囔着——「……别误会。我只是觉得让你顺手擦掉最省事而已。要是蹭在衣服上更难洗。……真是的，离得太近了啦。」",
@@ -48,6 +48,7 @@
       "壁纸级",
       "R15"
     ],
-    "weather": "春日晴空"
+    "weather": "春日晴空",
+    "promptProse": "With one overall strap hanging loose, she freezes as the viewer's hand wipes white paint from her collarbone; afternoon window light catches her reddening ear and the paint mark."
   }
 }

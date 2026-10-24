@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1665,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cartethyia_r18_b9_03",
     "title": "卡提希娅 · 骑士礼装锁扣卡死在佩剑绑带上的事故 ·「请不要误会……我绝不是故意在您面前衣冠不整」",
@@ -41,7 +41,13 @@
       "bare back",
       "bent over",
       "looking back",
-      "wide shot"
+      "wide shot",
+      "hand behind back",
+      "weapon rack",
+      "biting lip",
+      "blush",
+      "window light",
+      "afternoon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -56,6 +62,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her armor buckle is caught in the scabbard straps behind her."
   }
 }

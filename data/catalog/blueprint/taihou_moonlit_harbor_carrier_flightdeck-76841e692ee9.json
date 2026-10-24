@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_moonlit_harbor_carrier_flightdeck",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1081,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "taihou_moonlit_harbor_carrier_flightdeck",
     "title": "大凤 · 极夜港口的烈焰航母出击",
@@ -38,9 +38,14 @@
       "aircraft",
       "moonlight",
       "low angle",
-      "wide shot"
+      "wide shot",
+      "raised sleeve",
+      "signaling",
+      "aircraft launch",
+      "flight deck"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "animaCaption": "She raises a wide sleeve to signal the aircraft lifting from the armored flight deck behind her."
   }
 }

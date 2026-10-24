@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc078",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Turning from the angled mirror, she offers the hand warmer to the viewer with both hands. Winter window light reaches her kimono and the white tabi on the wooden floor.",
+    "animaCaption": "Turning from the angled mirror, she offers the hand warmer in both hands.",
     "auditRevision": "careful-batch04-2026-08-27",
     "camera": "镜前足袋可见的全身远景",
     "category": "祭典・节日",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "shoes",
-    "prompt": "1girl, ayachi_nene, pale blue kimono, snowflake print, ivory obi, pink obijime, white tabi, hand warmer, mirror, guest room, morning, full body",
+    "prompt": "1girl, ayachi_nene, pale blue kimono, snowflake print, ivory obi, pink obijime, white tabi, hand warmer, mirror, guest room, morning, full body, offering, outstretched arms, window light, wooden floor",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",
@@ -52,6 +52,7 @@
       "展示图",
       "CG"
     ],
-    "weather": "雪"
+    "weather": "雪",
+    "promptProse": "Turning from the angled mirror, she offers the hand warmer to the viewer with both hands. Winter window light reaches her kimono and the white tabi on the wooden floor."
   }
 }

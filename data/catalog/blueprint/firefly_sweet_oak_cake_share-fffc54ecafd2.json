@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_sweet_oak_cake_share",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1866,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "firefly_sweet_oak_cake_share",
     "characterId": "firefly_hsr",
@@ -26,7 +26,9 @@
       "sweet smile",
       "street",
       "daylight",
-      "medium shot"
+      "medium shot",
+      "both hands",
+      "leaning forward"
     ],
     "sceneTags": [
       "street",
@@ -43,6 +45,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She offers the rolled-cake slice toward the viewer with both hands."
   }
 }

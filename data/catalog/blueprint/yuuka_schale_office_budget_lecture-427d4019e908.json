@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_schale_office_budget_lecture",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 915,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "一手叉腰，另一手托着计算器平板与账单文件，鼓腮说教",
     "camera": "cowboy shot, eye level, tablet and receipts held together visible",
@@ -27,7 +27,10 @@
       "receipts",
       "puffed cheeks",
       "office",
-      "afternoon"
+      "afternoon",
+      "pout",
+      "sunlight",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +47,7 @@
     "timeOfDay": "下午",
     "title": "早濑优香 · 夏莱办公室的说教与陪伴",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the tablet and rejected receipts while her free hand rests on her hip."
   }
 }

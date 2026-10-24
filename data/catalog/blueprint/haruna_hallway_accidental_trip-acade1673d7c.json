@@ -4,7 +4,7 @@
   "revision": 2,
   "sortOrder": 1764,
   "createdAt": null,
-  "updatedAt": "2026-10-21T13:03:34.995576600+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruna_hallway_accidental_trip",
     "title": "西连寺春菜 · 学园楼梯转角的神摔失重跌坐",
@@ -47,7 +47,9 @@
       "heavy_blush",
       "tears_in_eyes",
       "embarrassed",
-      "window_light"
+      "window_light",
+      "looking up",
+      "afternoon light"
     ],
     "promptProse": "Having stumbled at the school staircase landing, Haruna sits on the polished wooden floor with both palms planted in front of her to steady herself. Textbooks and loose worksheets lie scattered beside her. Flushed and teary-eyed from the mishap, she looks up toward Rito just outside the frame, while afternoon light from the corridor windows falls across the boards.",
     "negativeTokens": [
@@ -55,6 +57,7 @@
       "nude"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both palms steady her on the floor as she looks toward Rito outside the frame."
   }
 }

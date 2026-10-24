@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_highway_monorail_riding_wind",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1101,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手抓车厢扶手探出身躯迎风狂驰，霓虹光芒倒退飞掠，发丝狂乱飞扬",
     "camera": "side view, dynamic angle, high speed motion blur background",
@@ -28,7 +28,13 @@
       "leaning out",
       "monorail",
       "wind",
-      "night"
+      "night",
+      "gripping rail",
+      "feet planted",
+      "exterior walkway",
+      "neon trails",
+      "motion blur",
+      "from side"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -42,6 +48,7 @@
       "hair_blowing"
     ],
     "timeOfDay": "夜晚",
-    "title": "露西 · 磁悬浮空轨的车厢迎风"
+    "title": "露西 · 磁悬浮空轨的车厢迎风",
+    "animaCaption": "One hand grips the carriage rail while both feet remain planted on the exterior walkway."
   }
 }

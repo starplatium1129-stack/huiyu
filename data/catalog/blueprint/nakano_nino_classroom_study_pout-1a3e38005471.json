@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_classroom_study_pout",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1860,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_nino_classroom_study_pout",
     "characterId": "nakano_nino",
@@ -29,7 +29,8 @@
       "oversized sweater",
       "sunset",
       "medium shot",
-      "sleeves past fingers"
+      "sleeves past fingers",
+      "high angle"
     ],
     "sceneTags": [
       "classroom",
@@ -46,6 +47,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her long cuffs cover both hands as she nibbles the pencil eraser above the exam paper."
   }
 }

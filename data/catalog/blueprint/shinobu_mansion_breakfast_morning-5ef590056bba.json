@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_mansion_breakfast_morning",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1450,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "和服跪坐盛汤合十，微笑督促吃饭",
     "adult": false,
@@ -31,7 +31,11 @@
       "hands together",
       "breakfast",
       "tatami",
-      "medium shot"
+      "medium shot",
+      "miso soup",
+      "steam",
+      "smile",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +50,7 @@
       "daily"
     ],
     "timeOfDay": "清晨",
-    "title": "蝴蝶忍 · 蝶屋敷的早餐时刻·「挑食的孩子，不可以哦」"
+    "title": "蝴蝶忍 · 蝶屋敷的早餐时刻·「挑食的孩子，不可以哦」",
+    "animaCaption": "Her joined palms rest above the served breakfast as steam rises between the bowls."
   }
 }

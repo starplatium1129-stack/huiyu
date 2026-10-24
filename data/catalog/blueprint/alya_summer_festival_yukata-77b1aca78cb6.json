@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_summer_festival_yukata",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 778,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手持红彤彤的苹果糖递向镜头，回眸浅笑",
     "camera": "medium shot",
@@ -24,7 +24,11 @@
       "offering",
       "lantern",
       "night",
-      "medium shot"
+      "medium shot",
+      "looking back",
+      "smile",
+      "holding candy",
+      "lantern light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -50,6 +54,7 @@
       "hair_bun",
       "blue_ribbon"
     ],
-    "identityProseOverride": "Alisa Mikhailovna Kujou from Alya Sometimes Hides Her Feelings in Russian, with silver hair pinned into a bun with blue ribbons and blue eyes."
+    "identityProseOverride": "Alisa Mikhailovna Kujou from Alya Sometimes Hides Her Feelings in Russian, with silver hair pinned into a bun with blue ribbons and blue eyes.",
+    "animaCaption": "She offers the candy apple toward the viewer beneath the festival lanterns."
   }
 }

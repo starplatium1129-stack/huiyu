@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_school_train_station_sunset_wait",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1058,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单肩背包靠在栏杆边听歌，列车进站风卷起发丝与百褶裙，尾尖微摆",
     "camera": "medium shot, from the side",
@@ -28,7 +28,10 @@
       "train station",
       "sunset",
       "profile",
-      "medium shot"
+      "medium shot",
+      "leaning on railing",
+      "wind",
+      "cool lighting"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +44,7 @@
       "shark_tail"
     ],
     "timeOfDay": "日落",
-    "title": "艾莲·乔 · 暮色站台的黄昏候车"
+    "title": "艾莲·乔 · 暮色站台的黄昏候车",
+    "animaCaption": "The arriving train lifts her hair and skirt beside the platform railing."
   }
 }

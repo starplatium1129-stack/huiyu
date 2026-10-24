@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_bunker_corridor_pod_inspection",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1109,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yorha_2b_bunker_corridor_pod_inspection",
     "title": "2B · 残破大教堂的纯白誓约花嫁",
@@ -38,7 +38,12 @@
     "promptTokens": [
       "bouquet",
       "cathedral",
-      "cowboy shot"
+      "cowboy shot",
+      "holding flowers",
+      "both hands",
+      "uncovered eyes",
+      "smile",
+      "backlighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +57,7 @@
       "mole_under_mouth",
       "nier:automata"
     ],
-    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips."
+    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips.",
+    "animaCaption": "Both hands hold the Lunar Tears beside the ruined altar."
   }
 }

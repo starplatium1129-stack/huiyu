@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_rainy_rooftop_neon",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 183,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jalter_rainy_rooftop_neon",
     "title": "贞德[Alter] · 雨夜天台",
@@ -39,7 +39,11 @@
       "rooftop",
       "rain",
       "neon lights",
-      "medium shot"
+      "medium shot",
+      "hand on railing",
+      "wet hair",
+      "looking down",
+      "night"
     ],
     "negativeTokens": [
       "umbrella"
@@ -47,6 +51,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand wipes rain from her eye while the other holds the rooftop railing."
   }
 }

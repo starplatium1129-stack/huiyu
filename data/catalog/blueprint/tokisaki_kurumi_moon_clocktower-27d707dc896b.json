@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_moon_clocktower",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 74,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tokisaki_kurumi_moon_clocktower",
     "title": "时崎狂三 · 月下钟楼",
@@ -35,7 +35,11 @@
       "clock tower",
       "red moon",
       "low angle",
-      "full body"
+      "full body",
+      "standing",
+      "head tilt",
+      "moonlight",
+      "golden clock"
     ],
     "negativeTokens": [
       "cropped feet",
@@ -45,6 +49,7 @@
     "outfitId": "gothic_dress",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She tilts her head toward the viewer above the stone ledge."
   }
 }

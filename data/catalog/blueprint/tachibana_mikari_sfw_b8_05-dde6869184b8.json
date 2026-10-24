@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1679,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_05",
     "title": "橘美花莉 · 海滨主题咖啡的限定造型",
@@ -37,7 +37,11 @@
       "Mikari Tachibana",
       "iced drink",
       "beach cafe",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "holding drink",
+      "hair touch",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +53,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "She brushes her hair back for the camera while holding the Miriella-printed iced drink."
   }
 }

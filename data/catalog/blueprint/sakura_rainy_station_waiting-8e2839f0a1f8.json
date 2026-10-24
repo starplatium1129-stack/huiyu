@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_rainy_station_waiting",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakura_rainy_station_waiting",
     "characterId": "matou_sakura",
@@ -29,7 +29,11 @@
       "rain",
       "station",
       "medium shot",
-      "pink umbrella"
+      "pink umbrella",
+      "holding umbrella",
+      "relieved smile",
+      "puddles",
+      "overcast light"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -44,6 +48,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She smiles toward the approaching viewer beneath her pink umbrella outside the station exit."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_jewelry_store",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 151,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tohsaka_rin_jewelry_store",
     "title": "远坂凛 · 珠宝店",
@@ -33,7 +33,11 @@
     "promptTokens": [
       "ruby",
       "jewelry shop",
-      "medium shot"
+      "medium shot",
+      "hands on counter",
+      "appraising",
+      "raised eyebrow",
+      "display lighting"
     ],
     "negativeTokens": [
       "readable price labels"
@@ -44,6 +48,7 @@
     "outfitId": "red_turtleneck",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both palms rest on the counter as she studies the uncut ruby under the display lamp."
   }
 }

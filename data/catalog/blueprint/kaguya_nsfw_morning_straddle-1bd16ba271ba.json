@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_nsfw_morning_straddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1407,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "跪坐床上略向前倾，散发垂落，神情含羞。",
     "adult": true,
@@ -34,7 +34,11 @@
       "leaning forward",
       "bed",
       "morning",
-      "from below"
+      "from below",
+      "hair down",
+      "blush",
+      "morning light",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -60,6 +64,7 @@
       "hair down",
       "red eyes"
     ],
-    "identityProseOverride": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with loose black hair, parted bangs, sidelocks, red eyes and gently downturned eye corners"
+    "identityProseOverride": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with loose black hair, parted bangs, sidelocks, red eyes and gently downturned eye corners",
+    "animaCaption": "She kneels forward on the silk bed beneath curtain-filtered morning light."
   }
 }

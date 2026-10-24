@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_04",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 304,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_04",
     "title": "美杜莎 Rider · 卫宫家和室床褥上的魔物情欲释放 ·「如果是被您彻底驯服……作为魔物死去也可以」",
@@ -41,7 +41,9 @@
       "fingering",
       "tears",
       "futon",
-      "moonlight"
+      "moonlight",
+      "hair spread",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +58,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her uncovered eyes hold tears as her long hair spreads across the floor beside the futon."
   }
 }

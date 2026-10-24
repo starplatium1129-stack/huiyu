@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_bathroom_marble_intercourse",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1045,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kafka_r18_bathroom_marble_intercourse",
     "title": "卡芙卡 · 大理石浴池的水下独处",
@@ -43,7 +43,10 @@
       "masturbation",
       "bathtub",
       "steam",
-      "medium shot"
+      "medium shot",
+      "hand on rim",
+      "water reflection",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -57,6 +60,7 @@
     "outfitId": "nsfw_nude",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand grips the marble rim beside her raised leg while the other remains underwater."
   }
 }

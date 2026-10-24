@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_apartment",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 542,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在沙发扶手边，解开领口",
     "adult": true,
@@ -36,7 +36,12 @@
       "beer can",
       "sitting",
       "blush",
-      "night"
+      "night",
+      "holding can",
+      "looking at viewer",
+      "unbuttoned shirt",
+      "lamp",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -48,6 +53,7 @@
       "casual"
     ],
     "timeOfDay": "夜晚",
-    "title": "陈 · 居所夜话"
+    "title": "陈 · 居所夜话",
+    "animaCaption": "She sits beside the sofa armrest with the beer can in hand."
   }
 }

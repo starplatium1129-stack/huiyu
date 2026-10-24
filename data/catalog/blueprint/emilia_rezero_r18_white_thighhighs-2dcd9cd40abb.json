@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_r18_white_thighhighs",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 451,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "emilia_rezero_r18_white_thighhighs",
     "title": "爱蜜莉雅 · 白丝与冰晶",
@@ -39,7 +39,9 @@
       "removing stockings",
       "blush",
       "canopy bed",
-      "moonlight"
+      "moonlight",
+      "both hands",
+      "bare toes"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +55,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands roll down one stocking while the other leg remains covered."
   }
 }

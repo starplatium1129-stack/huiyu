@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_rooftop_drinks",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 635,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐天台躺椅，一脚搭栏杆，一手开汽水罐，另一手留在衣料下。",
     "adult": true,
@@ -38,7 +38,11 @@
       "soda can",
       "hand between legs",
       "rooftop",
-      "night"
+      "night",
+      "city lights",
+      "railing",
+      "leg on railing",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -52,6 +56,7 @@
       "sitting"
     ],
     "timeOfDay": "深夜",
-    "title": "能天使 · 天台夜饮"
+    "title": "能天使 · 天台夜饮",
+    "animaCaption": "One booted leg rests on the rail as she opens the soda can with her free hand."
   }
 }

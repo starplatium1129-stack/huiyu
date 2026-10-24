@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_nsfw_throne_supine_devotion",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 260,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ishtar_nsfw_throne_supine_devotion",
     "title": "伊什塔尔 · 神座下的奉献夜·「神、神殿里……不可以太用力……」",
@@ -42,7 +42,10 @@
       "hand between legs",
       "hoop earrings",
       "tears",
-      "candlelight"
+      "candlelight",
+      "lying on back",
+      "hand on armrest",
+      "hand on thigh"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -66,6 +69,7 @@
       "hair_down",
       "red_eyes"
     ],
-    "identityProseOverride": "Ishtar from Fate/Grand Order, a goddess with loose black hair and red eyes."
+    "identityProseOverride": "Ishtar from Fate/Grand Order, a goddess with loose black hair and red eyes.",
+    "animaCaption": "One hand grips the throne armrest while the other rests at her inner thigh."
   }
 }

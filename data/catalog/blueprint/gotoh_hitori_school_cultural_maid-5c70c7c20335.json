@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_school_cultural_maid",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1000,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手端着托盘微躬身躯，满脸通红眼角带泪",
     "camera": "cowboy shot, eye level",
@@ -30,7 +30,14 @@
       "cafe",
       "school festival",
       "guests",
-      "cowboy shot"
+      "cowboy shot",
+      "holding tray",
+      "both hands",
+      "bowing",
+      "teary eyes",
+      "flustered",
+      "window light",
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -49,6 +56,7 @@
     "title": "后藤一里 · 文化祭女仆危机",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both trembling hands support the tray toward the seated festival guests."
   }
 }

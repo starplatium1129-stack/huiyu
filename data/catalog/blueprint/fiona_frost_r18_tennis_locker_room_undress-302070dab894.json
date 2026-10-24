@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_r18_tennis_locker_room_undress",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 825,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fiona_frost_r18_tennis_locker_room_undress",
     "characterId": "fiona_frost",
@@ -45,7 +45,10 @@
       "sitting",
       "bench",
       "locker room",
-      "blush"
+      "blush",
+      "warm lighting",
+      "wall lamp",
+      "medium shot"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],
@@ -57,6 +60,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "coverageTags": [
       "intimate"
-    ]
+    ],
+    "animaCaption": "Seated on the bench, she holds the tennis top below her chest with the skirt gathered above her thighs."
   }
 }

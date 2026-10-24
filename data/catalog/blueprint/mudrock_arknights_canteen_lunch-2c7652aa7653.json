@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_canteen_lunch",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 580,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端着餐盘，银发扎起",
     "camera": "medium shot",
@@ -27,7 +27,11 @@
       "potatoes",
       "sausage",
       "cafeteria",
-      "diners"
+      "diners",
+      "both hands",
+      "looking at viewer",
+      "bright lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +48,7 @@
     "title": "泥岩 · 食堂打饭",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands keep the full tray level between the occupied canteen tables."
   }
 }

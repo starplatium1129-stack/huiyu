@@ -4,9 +4,9 @@
   "revision": 5,
   "sortOrder": 20,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She hides the controller behind a cushion beside the kotatsu, her guilty pout lit by the paused television and floor lamp.",
+    "animaCaption": "She hides the controller behind the cushion beside the kotatsu.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "被炉旁半身中景",
     "category": "日常/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, blue pajamas, cat print, white piping, long pajama pants, sitting, cushion, kotatsu, game controller, television, night, medium shot",
+    "prompt": "1girl, ayachi_nene, blue pajamas, cat print, white piping, long pajama pants, sitting, cushion, kotatsu, game controller, television, night, medium shot, pout, embarrassed, screen light, floor lamp",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",
@@ -55,6 +55,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "She hides the controller behind a cushion beside the kotatsu, her guilty pout lit by the paused television and floor lamp."
   }
 }

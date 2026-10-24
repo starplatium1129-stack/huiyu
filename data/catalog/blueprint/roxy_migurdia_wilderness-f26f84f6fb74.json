@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_wilderness",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 454,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "握法杖独行于荒野",
     "camera": "wide shot",
@@ -24,7 +24,12 @@
       "Roxy Migurdia",
       "grassland",
       "sunset",
-      "wide shot"
+      "wide shot",
+      "holding staff",
+      "standing",
+      "looking at horizon",
+      "wind",
+      "long shadows"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -38,6 +43,7 @@
       "outdoors"
     ],
     "timeOfDay": "黄昏",
-    "title": "洛琪希 · 荒野旅行"
+    "title": "洛琪希 · 荒野旅行",
+    "animaCaption": "She plants the staff in the grass beside her and watches the horizon as wind lifts her hat and hem."
   }
 }

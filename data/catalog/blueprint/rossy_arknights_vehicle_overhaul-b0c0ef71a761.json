@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_vehicle_overhaul",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 755,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rossy_arknights_vehicle_overhaul",
     "characterId": "rossy_arknights",
@@ -34,13 +34,18 @@
     "promptTokens": [
       "daisies",
       "flower shop",
-      "cowboy shot"
+      "cowboy shot",
+      "offering bouquet",
+      "holding wrapping",
+      "delighted smile",
+      "daylight"
     ],
     "promptProse": "Rossi offers the daisies, one hand supporting the stems and the other pinching the wrapping; daylight catches the petals and her delighted smile.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand supports the daisy stems while the other pinches the wrapping."
   }
 }

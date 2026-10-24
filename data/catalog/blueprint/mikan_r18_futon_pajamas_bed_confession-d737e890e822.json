@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_futon_pajamas_bed_confession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1780,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mikan_r18_futon_pajamas_bed_confession",
     "title": "结城美柑 · 深夜被窝里的睡衣轻解与私密心事",
@@ -54,11 +54,13 @@
       "tender_look",
       "bedside_lamp",
       "dimly_lit",
-      "warm_light"
+      "warm_light",
+      "medium close up"
     ],
     "promptProse": "Curled up comfortably in the center of the soft futon bed with her knees bent, Mikan hugs a plush pillow against her lap as her loose pajama collar rests off one shoulder. The amber glow of the bedside lamp casts soft shadows across the sheets as she looks across with vulnerable, affectionate brown eyes.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The pillow rests against her bent knees beneath the slipped pajama collar."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_r18_b5_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1535,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "izumi_sagiri_r18_b5_03",
     "title": "和泉纱雾 · 埃罗芒阿面具卡壳的更衣受力事故 ·「面具系带打死结了！……哥哥不要从后面偷看啊！」",
@@ -44,7 +44,10 @@
       "bent over",
       "looking back",
       "tears",
-      "medium shot"
+      "medium shot",
+      "hands on desk",
+      "livestream countdown",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -59,6 +62,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The caught mask straps lift the nightgown hem as she braces on the desk beside the countdown screen."
   }
 }

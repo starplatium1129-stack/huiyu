@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc071",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She offers the thermos cup toward the viewer while using the unlit flashlight to indicate the meteor's direction; the camp lantern warms her face beneath the Milky Way.",
+    "animaCaption": "She offers the thermos cup while indicating the meteor's direction with the unlit flashlight.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "星空营地全身远景",
     "category": "旅行",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "flashlight beam, day",
-    "prompt": "1girl, shiki_natsume, olive parka, navy shoulder panels, cream ribbed scarf, charcoal hiking pants, sitting on rock, thermos cup, flashlight, tent, milky way, lantern, wide shot",
+    "prompt": "1girl, shiki_natsume, olive parka, navy shoulder panels, cream ribbed scarf, charcoal hiking pants, sitting on rock, thermos cup, flashlight, tent, milky way, lantern, wide shot, offering cup, holding flashlight, warm lighting, night",
     "rating": "All",
     "recommendedSize": "1216×832",
     "season": "夏",
@@ -53,6 +53,7 @@
       "头像",
       "CG"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "She offers the thermos cup toward the viewer while using the unlit flashlight to indicate the meteor's direction; the camp lantern warms her face beneath the Milky Way."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1624,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_02",
     "title": "久远寺有珠 · 药草调配的深夜",
@@ -36,7 +36,12 @@
       "mortar and pestle",
       "medicine bottles",
       "workshop",
-      "candlelight"
+      "candlelight",
+      "grinding herbs",
+      "focused",
+      "stone wall",
+      "cast shadow",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand steadies the mortar while the other grinds the remedy beside the small bottles."
   }
 }

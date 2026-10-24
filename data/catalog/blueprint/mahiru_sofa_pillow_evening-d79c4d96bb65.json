@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_sofa_pillow_evening",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1471,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mahiru_sofa_pillow_evening",
     "title": "椎名真昼 · 抱枕旁的读书便签",
@@ -37,7 +37,12 @@
       "bear cushion",
       "bookmark",
       "book",
-      "sofa"
+      "sofa",
+      "holding book",
+      "gentle smile",
+      "floor lamp",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The bear cushion rests in her lap as she turns the leaf bookmark with her free hand."
   }
 }

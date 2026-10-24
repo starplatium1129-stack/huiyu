@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_cat_cafe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 78,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tokisaki_kurumi_cat_cafe",
     "title": "时崎狂三 · 猫咪咖啡厅",
@@ -35,7 +35,11 @@
       "calico cat",
       "sofa",
       "cat cafe",
-      "medium shot"
+      "medium shot",
+      "holding cat",
+      "petting cat",
+      "looking up",
+      "smile"
     ],
     "negativeTokens": [
       "weapons",
@@ -47,6 +51,7 @@
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One arm supports the sleeping calico as she scratches its ear."
   }
 }

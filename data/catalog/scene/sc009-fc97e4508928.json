@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc009",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Seated across the cafe table from the viewer, she looks up from her open comic and slides the cake toward the center with her free hand; warm window light passes through the coffee steam.",
+    "animaCaption": "Across the table, she slides the cake toward the center with her free hand.",
     "auditRevision": "careful-batch04-2026-08-27",
     "camera": "半身中景",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, cream cable knit sweater, pink ribbon at collar, mauve pleated skirt, white tights, sitting, comic book, coffee cup, cake, table, cafe, window light, medium shot",
+    "prompt": "1girl, ayachi_nene, cream cable knit sweater, pink ribbon at collar, mauve pleated skirt, white tights, sitting, comic book, coffee cup, cake, table, cafe, window light, medium shot, reading, looking at viewer, light smile, steam",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 咖啡杯旁的偷看】秋日午后，宁宁坐在靠窗的位置翻一本轻松漫画，咖啡的热气不时遮住她的表情。她早就察觉你在对面看她，却故意多翻了两页才抬眼，呆毛不满地晃了晃。等你移开视线，她又把甜点推到桌子中央——「一直盯着很没礼貌哦。作为赔礼，这块蛋糕要和我一人一半。」",
@@ -45,6 +45,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Seated across the cafe table from the viewer, she looks up from her open comic and slides the cake toward the center with her free hand; warm window light passes through the coffee steam."
   }
 }

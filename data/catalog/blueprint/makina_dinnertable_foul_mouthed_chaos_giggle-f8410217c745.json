@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makina_dinnertable_foul_mouthed_chaos_giggle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1797,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makina_dinnertable_foul_mouthed_chaos_giggle",
     "title": "入巢莳菜 · 餐厅长桌双手抓肉的捣蛋欢笑",
@@ -57,11 +57,16 @@
       "ahoge",
       "brown_eyes",
       "warm_dining_lighting",
-      "cozy_atmosphere"
+      "cozy_atmosphere",
+      "sitting",
+      "both hands",
+      "pendant lighting",
+      "close up"
     ],
     "promptProse": "Sitting at a bustling academy dining hall table laden with food dishes under warm pendant lights, Makina wears an adorable pink fleece bear kigurumi onesie with hood ears. Grasping a giant roasted meat bone with both hands as cheeks puff out full of food and barbecue sauce smears her nose, her joyful amber eyes sparkle with mischievous laughter.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands hold the roasted meat bone while sauce marks her nose and her cheeks remain full."
   }
 }

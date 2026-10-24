@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_dangerous_beast",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 202,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [],
     "id": "mash_kyrielight_dangerous_beast",
@@ -41,7 +41,12 @@
       "masturbation",
       "velvet bench",
       "glasses",
-      "costume tail"
+      "costume tail",
+      "adult",
+      "sitting",
+      "hand on costume ear",
+      "lamplight",
+      "sunset"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "dangerous_beast",
@@ -51,6 +56,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "kreaStyleHint": "",
-    "animaStyleHint": "r18_elegant_boudoir"
+    "animaStyleHint": "r18_elegant_boudoir",
+    "animaCaption": "One hand touches the costume ear beside the plush tail."
   }
 }

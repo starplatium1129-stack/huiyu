@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_morning_hair_down_bedroom",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1396,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱枕坐在床中央，散发披肩红瞳惺忪，傲娇别脸又偷瞄",
     "adult": false,
@@ -32,7 +32,12 @@
       "hugging pillow",
       "sitting",
       "bed",
-      "medium shot"
+      "medium shot",
+      "sleepy",
+      "looking aside",
+      "blush",
+      "curtains",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -57,6 +62,7 @@
       "black hair",
       "hair down",
       "red eyes"
-    ]
+    ],
+    "animaCaption": "Her face turns aside while her sleepy eyes glance toward the viewer."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_r18_mirror_boudoir_mating_press_surrender",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1816,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cinderella_r18_mirror_boudoir_mating_press_surrender",
     "title": "灰姑娘 · 水晶镜殿床榻上的红瞳迷离承欢",
@@ -64,7 +64,10 @@
       "long_wavy_hair",
       "red_eyes",
       "ethereal_lighting",
-      "intense_passion"
+      "intense_passion",
+      "looking up",
+      "eye contact",
+      "mirror ceiling"
     ],
     "promptProse": "Reflected in the crystalline mirrored ceiling above a dark velvet mattress, Cinderella is held down in a deep mating press. Her alabaster curves gleam like wet porcelain against the midnight sheets, long silver waves pooling around her trembling shoulders as her tearful ruby gaze locks with the Commander's in pure ecstatic vulnerability.",
     "negativeTokens": [],
@@ -79,6 +82,7 @@
       "crying_in_pleasure",
       "blushing_neck"
     ],
-    "nsfwProse": "Burrowing past her tight, shuddering passage in a slow, suffocating mating press, the Commander watches her reflection in the mirrored ceiling cry out in helpless bliss. Cinderella arches her delicate spine as his pulsing seed floods her deepest depths, white semen seeping down between her quivering alabaster thighs as she whispers breathless adoration."
+    "nsfwProse": "Burrowing past her tight, shuddering passage in a slow, suffocating mating press, the Commander watches her reflection in the mirrored ceiling cry out in helpless bliss. Cinderella arches her delicate spine as his pulsing seed floods her deepest depths, white semen seeping down between her quivering alabaster thighs as she whispers breathless adoration.",
+    "animaCaption": "The ceiling reflection repeats her pose above the dark mattress."
   }
 }

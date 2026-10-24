@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc236",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 231,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "After catching her foot on the volleyball, she lands in the arms of the viewer seated on the gym mat; her gold pompoms lie beside the ball as sunlight through the blinds crosses her flushed face.",
+    "animaCaption": "She lands in the seated viewer's arms on the mat, her gold pompoms lying beside the volleyball.",
     "auditRevision": "careful-batch12-2026-08-27",
     "camera": "器材室软垫旁半身中景",
     "category": "校园",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, pink and white cheerleader uniform, navy chevron trim, sleeveless crop top, pleated skirt, cheerleader, sneakers, volleyball, pom pom, tripping, surprised, equipment room, gym mat, window light, medium shot",
+    "prompt": "1girl, ayachi_nene, pink and white cheerleader uniform, navy chevron trim, sleeveless crop top, pleated skirt, cheerleader, sneakers, volleyball, pom pom, tripping, surprised, equipment room, gym mat, window light, medium shot, blinds shadows, blush, on lap, dropped pom poms",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 啦啦队服青春自曝】体育祭当天的室外艳阳高照，反锁的学校旧体育馆备用器材室。为了给班级应援，宁宁在超自然研究会伙伴的怂恿下，破天荒地换上了一身极其热烈性感的露脐无袖啦啦队服，超短的百褶裙摆随风摇曳，双手还握着金色的手摇花。正当她羞耻地躲在器材室镜子前练习动作时，你突然推门进来。惊慌失措下她直接被地上的排球绊倒，整个人惊呼着跌进坐在软垫上的你怀里。宁宁瞬间满脸通红，高叉露脐的剪裁让盈盈一握的细腰毫无防备地贴紧你，头顶的呆毛慌乱卷成完美的爱心狂喊自曝——「呜啊！柊、柊史！为什么你会在这里啦！不准盯着人家露出来的肚子看！才、才没有为了让你觉得可爱故意穿成这样呢……呜，大色狼，快闭上眼睛！」",
@@ -46,6 +46,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "weather": "夏日晴朗"
+    "weather": "夏日晴朗",
+    "promptProse": "After catching her foot on the volleyball, she lands in the arms of the viewer seated on the gym mat; her gold pompoms lie beside the ball as sunlight through the blinds crosses her flushed face."
   }
 }

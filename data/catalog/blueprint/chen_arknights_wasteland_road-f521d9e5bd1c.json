@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_wasteland_road",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 647,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "背负双剑，逆风独行",
     "adult": false,
@@ -32,7 +32,9 @@
       "walking",
       "wind",
       "sunset",
-      "cowboy shot"
+      "cowboy shot",
+      "dust",
+      "backlighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +47,7 @@
       "dust"
     ],
     "timeOfDay": "黄昏",
-    "title": "陈 · 荒野古道独行"
+    "title": "陈 · 荒野古道独行",
+    "animaCaption": "The swords stay across her back as she walks into the wind."
   }
 }

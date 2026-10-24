@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_tokyo_blade_stage",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 958,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "拔刀出鞘立于布景光中",
     "camera": "cowboy shot, drawing katana",
@@ -26,7 +26,10 @@
       "unsheathing",
       "star-shaped pupils",
       "stage",
-      "spotlight"
+      "spotlight",
+      "holding katana",
+      "red lighting",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +45,7 @@
       "performance"
     ],
     "timeOfDay": "夜晚",
-    "title": "黑川茜 · 东京之刃"
+    "title": "黑川茜 · 东京之刃",
+    "animaCaption": "Her right hand draws the katana while her left steadies its sheath."
   }
 }

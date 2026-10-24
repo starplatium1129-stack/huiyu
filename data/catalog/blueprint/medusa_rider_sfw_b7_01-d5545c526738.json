@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 277,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_01",
     "title": "美杜莎 Rider · 书店文库本的站立阅读",
@@ -36,7 +36,12 @@
       "solo",
       "medusa_(fate)",
       "paperback",
-      "bookstore"
+      "bookstore",
+      "holding book",
+      "both hands",
+      "glasses",
+      "shop light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +52,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands hold the paperback beneath the curtain of her long hair."
   }
 }

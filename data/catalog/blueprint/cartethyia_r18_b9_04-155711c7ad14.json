@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_04",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1666,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cartethyia_r18_b9_04",
     "title": "卡提希娅 · 圣殿寝宫大床上的誓约臣服独奏 ·「只要能追随在您的身后……这具身躯全部任您驱使」",
@@ -40,7 +40,11 @@
       "masturbation",
       "sword",
       "stained glass",
-      "moonlight"
+      "moonlight",
+      "on bed",
+      "white silk",
+      "pillow",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -66,6 +70,7 @@
       "blue_eyes",
       "pointy_ears",
       "halo"
-    ]
+    ],
+    "animaCaption": "Her sword rests against the bedpost beneath the sanctuary glass."
   }
 }

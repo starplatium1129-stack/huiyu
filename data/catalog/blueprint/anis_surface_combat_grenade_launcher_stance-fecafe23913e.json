@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_surface_combat_grenade_launcher_stance",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1818,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "anis_surface_combat_grenade_launcher_stance",
     "title": "阿尼斯 · 瓦砾阵地的重炮轰击经典战姿",
@@ -65,11 +65,16 @@
       "curvy",
       "plump_thighs",
       "wide_hips",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "ruins",
+      "rubble",
+      "holding weapon",
+      "fortification"
     ],
     "promptProse": "In an iconic tactical combat stance among smoking concrete rubble, Anis crouches behind a fortification with her back to the viewer. Gripping a massive yellow grenade launcher, her voluptuous hips and plump thighs curve prominently in her slate-and-mustard uniform as she glances back with a bold, sunny grin amid orange explosive muzzle flashes.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She crouches behind the fortification and glances back over her shoulder."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1586,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_04",
     "title": "战栗的龙卷 · 浮空花廊的傲娇花嫁",
@@ -38,7 +38,11 @@
       "floating",
       "flower arch",
       "dusk",
-      "cowboy shot"
+      "cowboy shot",
+      "hand on hip",
+      "blushing ears",
+      "looking aside",
+      "rim light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +54,7 @@
       "iconic",
       "bridal",
       "daily"
-    ]
+    ],
+    "animaCaption": "One arm holds the bouquet while telekinesis lifts the veil and hem clear of the floor."
   }
 }

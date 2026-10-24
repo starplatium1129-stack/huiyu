@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_bath_moon",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 573,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜倚浴池，一手扶池沿画笔，另一手留在水下。",
     "adult": true,
@@ -33,7 +33,14 @@
       "knees up",
       "brush",
       "hand between legs",
-      "moonlight"
+      "moonlight",
+      "reclining",
+      "water",
+      "lotus petals",
+      "floating lantern",
+      "night",
+      "cowboy shot",
+      "from above"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -47,6 +54,7 @@
       "wet_skin"
     ],
     "timeOfDay": "夜晚",
-    "title": "夕 · 月下浴汤"
+    "title": "夕 · 月下浴汤",
+    "animaCaption": "One hand steadies the brush on the rim while the other stays beneath the water."
   }
 }

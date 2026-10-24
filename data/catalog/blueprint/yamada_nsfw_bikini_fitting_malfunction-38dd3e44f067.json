@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_bikini_fitting_malfunction",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1504,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_nsfw_bikini_fitting_malfunction",
     "title": "山田杏奈 · 摄影棚更衣室的超紧比基尼勒肉事故 ·「系带要断了……市川别光看着，快帮我系住！」",
@@ -37,7 +37,9 @@
       "blush",
       "vanity mirror",
       "dressing room",
-      "cowboy shot"
+      "cowboy shot",
+      "hand on vanity",
+      "holding bikini"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -50,6 +52,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "One hand braces on the vanity while the other secures the bikini front."
   }
 }

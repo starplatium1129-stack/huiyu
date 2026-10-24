@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_room",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 341,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_room",
     "title": "雪之下雪乃 · 冰山融化的和室",
@@ -36,7 +36,13 @@
       "futon",
       "tatami",
       "paper lantern",
-      "holding clothes"
+      "holding clothes",
+      "sitting sideways",
+      "bent knees",
+      "holding lapels",
+      "both hands",
+      "shy",
+      "andon lamp"
     ],
     "negativeTokens": [
       "school uniform"
@@ -49,6 +55,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "relax_yukata",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Both hands gather the loosened lapels above the tatami."
   }
 }

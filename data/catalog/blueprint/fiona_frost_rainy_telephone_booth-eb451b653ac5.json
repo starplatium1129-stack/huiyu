@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_rainy_telephone_booth",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 814,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fiona_frost_rainy_telephone_booth",
     "characterId": "fiona_frost",
@@ -35,7 +35,12 @@
       "phone booth",
       "rain",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "standing",
+      "holding phone",
+      "holding umbrella",
+      "wet glass",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +48,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the receiver to her ear while the other keeps the folded umbrella beside the door."
   }
 }

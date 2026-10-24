@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_basketball_court_towel_water",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1495,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_basketball_court_towel_water",
     "title": "山田杏奈 · 篮球场边拧开的水瓶",
@@ -36,7 +36,11 @@
       "basketball",
       "bench",
       "white towel around neck",
-      "full body"
+      "full body",
+      "sitting",
+      "holding bottle",
+      "holding cap",
+      "afternoon shade"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One shoe stops the ball while her hands hold the bottle and cap separately."
   }
 }

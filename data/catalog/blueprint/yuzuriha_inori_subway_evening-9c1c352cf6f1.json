@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_subway_evening",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 334,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yuzuriha_inori_subway_evening",
     "title": "楪祈 · 地铁通勤",
@@ -39,7 +39,11 @@
       "bag",
       "subway",
       "evening",
-      "medium shot"
+      "medium shot",
+      "holding overhead strap",
+      "holding bag strap",
+      "reflections",
+      "tunnel lights"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +56,7 @@
     "nsfwProse": "",
     "characterTokens": [
       "shu ouma"
-    ]
+    ],
+    "animaCaption": "One hand holds each strap as she balances beside Shu."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_06",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1409,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "看着镜中剪短的头发，膝上的手指慢慢松开。",
     "adult": false,
@@ -29,7 +29,10 @@
       "haircut",
       "mirror",
       "salon",
-      "medium shot"
+      "medium shot",
+      "hands on knees",
+      "relieved expression",
+      "falling hair"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -50,6 +53,7 @@
     "title": "早坂爱 · 美发沙龙的决断",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "allowRepeatedSubject": true
+    "allowRepeatedSubject": true,
+    "animaCaption": "She watches the last longer strands fall in the salon mirror."
   }
 }

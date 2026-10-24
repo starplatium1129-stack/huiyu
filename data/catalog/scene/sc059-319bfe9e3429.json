@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc059",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc059",
     "title": "白衬衫与两颗空扣",
@@ -38,11 +38,12 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, shiki_natsume, oversized white cotton shirt, fine blue pinstripes, indigo denim shorts, holding mug, adjusting collar, kitchen, morning light, medium shot",
+    "prompt": "1girl, shiki_natsume, oversized white cotton shirt, fine blue pinstripes, indigo denim shorts, holding mug, adjusting collar, kitchen, morning light, medium shot, blush, unbuttoned shirt, window light",
     "negative": "",
     "storyJa": "【夏目・空のボタンが2つ付いた白いシャツ】秋の朝、夏目はあなたの白いシャツを一時的なパジャマとして扱い、キッチンに立ってコーヒーが淹れるのを待ちます。上の２つのボタンは外されていました。あなたの視線に気づいた彼女は、まず襟を引っ張り、それからわざとカップをかざして顔の半分を覆いました。――「荷物に入れていたパジャマがまだ乾いてないから、借りただけ。これ以上見ていたら、今日のコーヒーはブラックだけにする。」",
     "rating": "All",
     "auditRevision": "careful-batch03-2026-08-27",
-    "animaCaption": "She raises the mug to hide her blushing lower face while straightening the collar of the viewer's oversized shirt with her free hand, its top two buttons undone; autumn window light falls across the mug handle and kitchen counter."
+    "animaCaption": "She hides her lower face behind the mug while her free hand straightens the borrowed shirt's collar.",
+    "promptProse": "She raises the mug to hide her blushing lower face while straightening the collar of the viewer's oversized shirt with her free hand, its top two buttons undone; autumn window light falls across the mug handle and kitchen counter."
   }
 }

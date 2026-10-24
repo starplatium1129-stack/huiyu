@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_kitchen_baking_cat_cookies",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1090,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cheshire_kitchen_baking_cat_cookies",
     "title": "柴郡 · 甜蜜厨房里的猫咪烘焙",
@@ -39,9 +39,16 @@
       "cookies",
       "flour on face",
       "smile",
-      "upper body"
+      "upper body",
+      "oven mitts",
+      "holding tray",
+      "both hands",
+      "proud",
+      "oven glow",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "Both oven-mitted hands hold the tray level as she presents the cookies toward the viewer."
   }
 }

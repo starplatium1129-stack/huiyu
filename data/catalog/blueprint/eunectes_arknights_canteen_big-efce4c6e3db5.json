@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_canteen_big",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 589,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "大口吃着大碗烤肉饭，腮帮鼓鼓",
     "camera": "medium shot",
@@ -28,7 +28,10 @@
       "rice",
       "meat",
       "cafeteria",
-      "medium shot"
+      "medium shot",
+      "puffed cheeks",
+      "bowls",
+      "table"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +43,7 @@
     ],
     "timeOfDay": "中午",
     "title": "森蚺 · 食堂干饭",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Three large bowls fill the table while other diners sit farther back."
   }
 }

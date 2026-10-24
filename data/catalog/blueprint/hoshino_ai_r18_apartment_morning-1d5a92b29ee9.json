@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_r18_apartment_morning",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 961,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "清晨阳光地毯上抱抱枕屈膝斜倚，单人独处微笑注视镜头",
     "adult": true,
@@ -35,7 +35,10 @@
       "knees up",
       "rug",
       "morning",
-      "sunlight"
+      "sunlight",
+      "white pillow",
+      "relaxed smile",
+      "window light"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -56,6 +59,7 @@
       "sunbeam"
     ],
     "timeOfDay": "清晨",
-    "title": "星野爱 · 客厅地毯抱枕纯欲"
+    "title": "星野爱 · 客厅地毯抱枕纯欲",
+    "animaCaption": "Both arms hug the pillow while her knees remain drawn up on the rug."
   }
 }

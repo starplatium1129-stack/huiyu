@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_sofa_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 336,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_sofa_night",
     "title": "楪祈 · 深夜回放的共鸣失控",
@@ -37,7 +37,12 @@
       "female masturbation",
       "sofa",
       "audio player",
-      "night"
+      "night",
+      "headphone against chest",
+      "hand under lace",
+      "cyan glow",
+      "amber lights",
+      "city light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@jazz_jack",
     "outfitId": "red_robe_black_lace",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand presses the headphone to her chest beside the glowing indicators."
   }
 }

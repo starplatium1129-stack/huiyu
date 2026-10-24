@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_mirror_lingerie_self_check",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1781,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mikan_r18_mirror_lingerie_self_check",
     "title": "结城美柑 · 穿衣镜前的侧影对视与慌乱遮挡",
@@ -54,11 +54,14 @@
       "heavy_blush",
       "biting_lip",
       "embarrassed",
-      "soft_indoor_light"
+      "soft_indoor_light",
+      "crossed arms",
+      "evening light"
     ],
     "promptProse": "Standing in profile before a tall oval dressing mirror, Mikan freezes in sudden bashful shock as she spots the viewer reflected in the glass. She instantly crosses both arms over her chest in panicked modesty, biting her lip with a vivid crimson blush spreading across her cheeks and neck.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She sees the viewer in the oval mirror and crosses both arms over her chest."
   }
 }

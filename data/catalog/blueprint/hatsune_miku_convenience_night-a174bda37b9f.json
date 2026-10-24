@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_convenience_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 323,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hatsune_miku_convenience_night",
     "title": "初音未来 · 深夜便利店",
@@ -37,7 +37,11 @@
       "ice cream",
       "convenience store",
       "night",
-      "medium shot"
+      "medium shot",
+      "hand on freezer handle",
+      "looking back",
+      "thinking",
+      "cool lighting"
     ],
     "negativeTokens": [
       "brand name"
@@ -48,6 +52,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the freezer handle; the other finger rests near her lower lip."
   }
 }

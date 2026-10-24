@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_bed_supine_devotion",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 239,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_nsfw_bed_supine_devotion",
     "title": "圣女贞德 · 纯白花嫁床褥与开档战袍柔情仰卧·「今夜起，我的身体与灵魂都归属于你」",
@@ -46,7 +46,10 @@
       "on back",
       "bed",
       "blush",
-      "candlelight"
+      "candlelight",
+      "lying on back",
+      "veil on pillows",
+      "happy tears"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,6 +61,7 @@
     "coverageTags": [
       "h_cg",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The loosened gown stays at her waist while the veil lies across the pillows."
   }
 }

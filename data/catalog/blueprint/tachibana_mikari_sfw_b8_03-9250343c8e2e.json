@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1677,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_03",
     "title": "橘美花莉 · 社团教室的摄影指导",
@@ -46,7 +46,9 @@
       "hair touch",
       "clubroom",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "hand on hip",
+      "blackboard"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +59,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "One hand rests on her hip while the other touches her hair to demonstrate the pose."
   }
 }

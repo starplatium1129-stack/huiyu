@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_penguin_office",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 626,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "把脚翘在桌上，比了个耶",
     "camera": "full body, eye level",
@@ -25,7 +25,13 @@
       "pie",
       "peace sign",
       "office",
-      "full body"
+      "full body",
+      "reclining",
+      "holding food",
+      "desk",
+      "parcels",
+      "paperwork",
+      "bright lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +42,7 @@
       "cheerful"
     ],
     "timeOfDay": "白天",
-    "title": "能天使 · 企鹅物流"
+    "title": "能天使 · 企鹅物流",
+    "animaCaption": "One hand holds the half-eaten pie while the other flashes a peace sign above her raised legs."
   }
 }

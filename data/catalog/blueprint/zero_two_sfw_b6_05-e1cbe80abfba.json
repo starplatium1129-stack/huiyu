@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1577,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zero_two_sfw_b6_05",
     "title": "02 · 海风里的彩色糖果",
@@ -37,7 +37,11 @@
       "pier",
       "splashing",
       "noon",
-      "full body"
+      "full body",
+      "hand on pier",
+      "grin",
+      "barefoot",
+      "water reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -51,6 +55,7 @@
       "beach"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand braces on the pier; the other holds sweets while her feet kick a small splash."
   }
 }

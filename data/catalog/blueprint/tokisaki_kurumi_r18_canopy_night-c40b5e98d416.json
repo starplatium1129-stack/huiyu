@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_canopy_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 81,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_canopy_night",
     "title": "时崎狂三 · 钟表陈列室·满月银辉与黑丝绒项圈",
@@ -52,10 +52,15 @@
       "grandfather clock",
       "moonlight",
       "nude",
-      "full body"
+      "full body",
+      "foot on step",
+      "finger on lips",
+      "window light",
+      "amber glow"
     ],
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One foot rests on the step beside the clock's faintly lit gears."
   }
 }

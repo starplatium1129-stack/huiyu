@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_high_heels_bondage",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 890,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在皮质扶手椅上，双手搭在扶手，穿红底黑色高跟鞋抬眼凝视",
     "adult": true,
@@ -37,7 +37,11 @@
       "sitting",
       "armchair",
       "smirk",
-      "lamplight"
+      "lamplight",
+      "hands on armrests",
+      "looking at viewer",
+      "overhead light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +53,7 @@
       "intimate"
     ],
     "timeOfDay": "深夜",
-    "title": "调月莉音 · 高跟鞋与红瞳凝视"
+    "title": "调月莉音 · 高跟鞋与红瞳凝视",
+    "animaCaption": "Both hands rest on the armrests and both red-soled heels stay on the floor."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_lunar_spring_garden_qipao_stroll",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1088,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cheshire_lunar_spring_garden_qipao_stroll",
     "title": "柴郡 · 冰雪仙子新春旗袍漫步",
@@ -38,9 +38,16 @@
       "twirling",
       "snow",
       "lantern",
-      "full body"
+      "full body",
+      "fur muff",
+      "holding muff",
+      "one foot raised",
+      "smile",
+      "lantern light",
+      "reflected light"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "She turns lightly on one foot, holding the fur muff near her waist."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_beach_resort_sunshade_drink",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1279,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_beach_resort_sunshade_drink",
     "title": "莉雅丝 · 碧海金沙的遮阳伞私语",
@@ -37,7 +37,11 @@
       "reclining",
       "beach chair",
       "parasol",
-      "coast"
+      "coast",
+      "smirk",
+      "sunlight",
+      "shade",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
       "swimsuit"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand lowers her sunglasses while the other offers the drink from beneath the parasol."
   }
 }

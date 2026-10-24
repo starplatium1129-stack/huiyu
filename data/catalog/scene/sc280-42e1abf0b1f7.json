@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc280",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Natsume offers the pastry toward the viewer in a folded kraft-paper pouch held between both hands; soft cafe light warms her smile in front of the wooden cup racks.",
+    "animaCaption": "The pastry rests in a folded kraft-paper pouch held between both hands toward the viewer.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs14-a1.png",
@@ -29,7 +29,7 @@
     "mature": false,
     "negative": "transparent bag",
     "officialCgCandidate": "ocs14",
-    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, apron, offering food, paper bag, smile, cup, shelf, cafe, night, upper body",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, apron, offering food, paper bag, smile, cup, shelf, cafe, night, upper body, holding food, both hands, wooden shelves, soft lighting",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",
@@ -50,6 +50,7 @@
       "实机审核通过",
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Natsume offers the pastry toward the viewer in a folded kraft-paper pouch held between both hands; soft cafe light warms her smile in front of the wooden cup racks."
   }
 }

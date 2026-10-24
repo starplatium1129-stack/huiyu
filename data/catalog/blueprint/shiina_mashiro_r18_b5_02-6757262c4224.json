@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_r18_b5_02",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1524,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shiina_mashiro_r18_b5_02",
     "title": "椎名真白 · 樱花庄木桶浴缸的懵懂水光湿身 ·「空太……身体好热，衣服自己脱不下来」",
@@ -42,7 +42,11 @@
       "masturbation",
       "wooden bath",
       "steam",
-      "blush"
+      "blush",
+      "hand between legs",
+      "looking up",
+      "water reflection",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +61,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She looks upward from the cedar bath while one hand remains beneath the water."
   }
 }

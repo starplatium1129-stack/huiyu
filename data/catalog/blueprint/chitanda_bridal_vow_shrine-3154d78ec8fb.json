@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_bridal_vow_shrine",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1486,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chitanda_bridal_vow_shrine",
     "title": "千反田爱瑠 · 白无垢与庭前落叶",
@@ -34,7 +34,10 @@
       "leaf",
       "bending down",
       "smile",
-      "cowboy shot"
+      "cowboy shot",
+      "sleeve hold",
+      "shy smile",
+      "daylight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +47,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand gathers her sleeve while the other removes the leaf from her bridal hem."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_street",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 392,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "站在售货机旁将一罐呱太椰奶递向画外，另一罐留在出口",
     "camera": "medium shot",
@@ -24,7 +24,11 @@
       "vending machine",
       "canned drink",
       "offering",
-      "sunny street"
+      "sunny street",
+      "holding can",
+      "blush",
+      "sunlight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +41,7 @@
       "urban"
     ],
     "timeOfDay": "白天",
-    "title": "御坂美琴 · 街头便利店"
+    "title": "御坂美琴 · 街头便利店",
+    "animaCaption": "She offers one coconut-milk can toward the viewer while the second remains in the machine outlet."
   }
 }

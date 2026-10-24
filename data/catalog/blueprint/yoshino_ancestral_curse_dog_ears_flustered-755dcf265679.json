@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_ancestral_curse_dog_ears_flustered",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1143,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手试图捂住头顶突然长出的白色犬耳，眼含泪花，满面通红娇嗔求饶",
     "camera": "medium shot",
@@ -28,7 +28,10 @@
       "teary eyes",
       "shrine",
       "lamplight",
-      "medium shot"
+      "medium shot",
+      "blush",
+      "flustered",
+      "side lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +47,7 @@
     "timeOfDay": "傍晚",
     "title": "朝武芳乃 · 犬耳初现的羞耻悸动",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands cup the newly appeared white ears beneath the paper lamp's warm side light."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_morning_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1447,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_nsfw_morning_straddle",
     "title": "加藤惠 · 假日晨光的大号衬衫柔情 ·「伦也君……这个节奏可以吗」",
@@ -34,7 +34,11 @@
       "leaning forward",
       "bed",
       "morning",
-      "from below"
+      "from below",
+      "adult",
+      "kneeling astride",
+      "shy smile",
+      "morning light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "The viewer stays outside the frame beneath her close-leaning pose."
   }
 }

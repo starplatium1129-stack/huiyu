@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_training_hall_bent",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 249,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "scathach_nsfw_training_hall_bent",
     "title": "斯卡哈 · 道场更衣紧身衣拉链崩开事故·「武艺上尚有从容……但这身紧身衣，可真是毫无防备呢」",
@@ -40,7 +40,11 @@
       "leaning forward",
       "looking back",
       "dojo",
-      "wide shot"
+      "wide shot",
+      "leaning",
+      "unzipped bodysuit",
+      "brazier light",
+      "masturbation"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -57,6 +61,7 @@
       "topless",
       "masturbation",
       "hand under clothes"
-    ]
+    ],
+    "animaCaption": "She looks back over the fallen practice pillar."
   }
 }

@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 382,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elaina_market_town",
     "title": "伊雷娜 · 异国小镇市集",
@@ -35,11 +35,15 @@
       "shoppers",
       "awnings",
       "daytime",
-      "medium shot"
+      "medium shot",
+      "surveying stalls",
+      "sunlight",
+      "shade"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_travel_witch_cape",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She looks across the stalls while tasting the pastry."
   }
 }

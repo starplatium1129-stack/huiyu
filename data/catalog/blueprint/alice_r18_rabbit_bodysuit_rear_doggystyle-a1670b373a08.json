@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_r18_rabbit_bodysuit_rear_doggystyle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1811,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "alice_r18_rabbit_bodysuit_rear_doggystyle",
     "title": "爱丽丝 · 紧身胶衣下半身褪落后入撞击",
@@ -61,7 +61,12 @@
       "pink_hair",
       "blue_eyes",
       "shiny_latex",
-      "dramatic_backlight"
+      "dramatic_backlight",
+      "laboratory",
+      "console light",
+      "cold lighting",
+      "headphones",
+      "unzipped"
     ],
     "promptProse": "Leaning over a metallic laboratory console in the surface outpost, Alice wears her glossy pink cooling bodysuit unzipped and pulled down past her voluptuous hips. Her bare, plump round rear is thrust back in the cool air, rabbit-ear headphones tilting as she glances back with a heavy blush and parted lips.",
     "negativeTokens": [],
@@ -76,6 +81,7 @@
       "dilated_pupils",
       "whimpering"
     ],
-    "nsfwProse": "Hammering into her soaking wet pussy from behind in a ravenous doggystyle thrust, the Commander grips her wide curvy hips tightly. Her plush buttocks clap against his thighs with wet lewd echoes, Alice whimpering in dizzy ecstasy until a volcanic rush of hot white semen pumps deep into her tight depths, leaking out over the latex suit."
+    "nsfwProse": "Hammering into her soaking wet pussy from behind in a ravenous doggystyle thrust, the Commander grips her wide curvy hips tightly. Her plush buttocks clap against his thighs with wet lewd echoes, Alice whimpering in dizzy ecstasy until a volcanic rush of hot white semen pumps deep into her tight depths, leaking out over the latex suit.",
+    "animaCaption": "Both hands brace against the metal console as she looks back over her shoulder."
   }
 }

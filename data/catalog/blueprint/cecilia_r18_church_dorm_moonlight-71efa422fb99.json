@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_r18_church_dorm_moonlight",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 848,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "睡梦中翻身，薄被滑落",
     "adult": true,
@@ -32,7 +32,13 @@
       "blanket slip",
       "dormitory",
       "bed",
-      "moonlight"
+      "moonlight",
+      "sleepy",
+      "reaching out",
+      "night",
+      "window light",
+      "cowboy shot",
+      "from above"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -47,6 +53,7 @@
       "soft_light"
     ],
     "timeOfDay": "night",
-    "title": "塞西莉亚 · 教堂寝室月光"
+    "title": "塞西莉亚 · 教堂寝室月光",
+    "animaCaption": "She turns toward her companion beside her as the light blanket slips away."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1523,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_01",
     "title": "和泉纱雾 · 被炉绘图舱",
@@ -38,7 +38,12 @@
       "headset",
       "computer",
       "screen light",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "drawing",
+      "blanket",
+      "dark room",
+      "focused"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +54,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "Her stylus hand remains above the kotatsu blanket as she concentrates on the drawing tablet."
   }
 }

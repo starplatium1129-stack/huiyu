@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc199",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 194,
   "createdAt": null,
-  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Perched on the desk's edge, she tilts her head and pushes up her glasses with one finger, her open blouse and torn tights lit from the side.",
+    "animaCaption": "She pushes her glasses up with one finger while tilting her head at the desk's edge.",
     "auditRevision": "skill-refine-sc199-2026-09-05",
     "camera": "办公桌前七分身平视中景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, shiki_natsume, black pinstripe pencil skirt, burgundy cuff piping, natsume_r18, gold-rimmed glasses, open white blouse, black lace bra, torn pantyhose, sitting on desk, adjusting glasses, head tilt, blush, office, night, desk lamp, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, black pinstripe pencil skirt, burgundy cuff piping, natsume_r18, gold-rimmed glasses, open white blouse, black lace bra, torn pantyhose, sitting on desk, adjusting glasses, head tilt, blush, office, night, desk lamp, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, side lighting",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 眼镜职场窄裙裂丝绝对沦陷】深夜空无一人的指挥官专属办公室。平时高冷霸道的职场特工夏目，今晚破天荒戴上了一副金丝眼镜，增添了无尽的知性禁欲感。此时她正面红耳赤地坐在微凉的办公桌边缘，身上的白衬衫纽扣已被你解开了大半，露出了极其诱人的饱满曲线。腿上性感的黑色丝袜已经被你大面积撕裂，露出了光洁细腻的大腿绝对领域。她微仰着头，修长手指推了推滑落的眼镜，眼角的泪痣在台灯强阴影下散发着极致动情的危险红晕，娇喘着呻吟——「哈啊...长官...今晚这场『秘密越界审讯』...你已经彻底赢了...随你把我坏掉吧...」",
@@ -53,6 +53,7 @@
       "新手推荐",
       "成人向"
     ],
-    "weather": "微热"
+    "weather": "微热",
+    "promptProse": "Perched on the desk's edge, she tilts her head and pushes up her glasses with one finger, her open blouse and torn tights lit from the side."
   }
 }

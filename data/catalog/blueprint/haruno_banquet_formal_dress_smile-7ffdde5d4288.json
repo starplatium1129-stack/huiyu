@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_banquet_formal_dress_smile",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 371,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruno_banquet_formal_dress_smile",
     "title": "雪之下阳乃 · 晚宴幕间的独处",
@@ -37,7 +37,12 @@
       "sitting",
       "alcove",
       "lamp",
-      "medium shot"
+      "medium shot",
+      "holding earring",
+      "tired",
+      "looking away",
+      "night",
+      "wall lamp"
     ],
     "negativeTokens": [
       "mirror",
@@ -52,6 +57,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The removed clip-on earring rests in her palm as she looks along the quiet corridor."
   }
 }

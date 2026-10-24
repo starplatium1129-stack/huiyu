@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 790,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "学生会室，她跪坐在矮柜前为大家沏茶，文件在膝边码得整整齐齐",
     "adult": false,
@@ -31,7 +31,11 @@
       "cup",
       "saucer",
       "documents",
-      "council room"
+      "council room",
+      "offering cup",
+      "gentle smile",
+      "afternoon light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -48,6 +52,7 @@
       "medium_shot"
     ],
     "timeOfDay": "日间",
-    "title": "玛夏 · 学生会书记的午后"
+    "title": "玛夏 · 学生会书记的午后",
+    "animaCaption": "She offers the cup and saucer toward the offscreen council member, documents stacked beside her knees."
   }
 }

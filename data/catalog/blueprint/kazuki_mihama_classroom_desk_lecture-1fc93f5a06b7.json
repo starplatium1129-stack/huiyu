@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_mihama_classroom_desk_lecture",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1166,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kazuki_mihama_classroom_desk_lecture",
     "title": "风见一姬 · 美浜讲台的天才教诲",
@@ -36,10 +36,16 @@
       "chalk",
       "classroom",
       "students",
-      "cowboy shot"
+      "cowboy shot",
+      "holding chalk",
+      "hand on lectern",
+      "blackboard",
+      "sunlight",
+      "dust motes"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "One hand braces behind her on the lectern while the other holds chalk before the formula-covered board."
   }
 }

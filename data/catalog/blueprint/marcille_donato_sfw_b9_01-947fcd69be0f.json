@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1716,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_01",
     "title": "玛露希尔 · 魔物料理的真香现场",
@@ -38,7 +38,11 @@
       "cooking pot",
       "bowl",
       "triptych",
-      "dungeon camp"
+      "dungeon camp",
+      "three panels",
+      "spoon",
+      "firelight",
+      "medium shot"
     ],
     "negativeTokens": [
       "speech balloons"
@@ -52,6 +56,7 @@
       "iconic",
       "daily"
     ],
-    "compositionIntent": "triptych"
+    "compositionIntent": "triptych",
+    "animaCaption": "Left to right: refusal, a cautious taste, then offering her bowl for seconds."
   }
 }

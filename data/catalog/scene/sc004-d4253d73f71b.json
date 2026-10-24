@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc004",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Peeking around the bookshelf toward the viewer, she draws the top book against her chest; window light catches her hair.",
+    "animaCaption": "She peeks around the shelf with the top book drawn against her chest.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "校园",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, peeking, holding books, bookshelf, library, window light, medium shot",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, peeking, holding books, bookshelf, library, window light, medium shot, looking at viewer, book hug",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 书架间的偶遇】午后的图书馆里只有翻页声。宁宁抱着几本神秘学资料从高书架后探出头，发现来人是你时明显松了口气，又慌忙把最上面那本藏进怀里。窗光落在她发梢，她故作自然地挪出半个位置——「你也来查资料吗？那就坐这里吧。不过，不准问我为什么借了这一本。」",
@@ -42,6 +42,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Peeking around the bookshelf toward the viewer, she draws the top book against her chest; window light catches her hair."
   }
 }

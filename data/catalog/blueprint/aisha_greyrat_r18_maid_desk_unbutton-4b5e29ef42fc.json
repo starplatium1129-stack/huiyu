@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_r18_maid_desk_unbutton",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 490,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "aisha_greyrat_r18_maid_desk_unbutton",
     "title": "爱夏·夜阑账房解衣",
@@ -40,7 +40,10 @@
       "garter straps",
       "desk",
       "oil lamp",
-      "moonlight"
+      "moonlight",
+      "sitting on desk",
+      "hand near neck",
+      "night"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],
@@ -52,6 +55,7 @@
     "negativeTokens": [],
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand stays near her throat while the other gathers the skirt hem."
   }
 }

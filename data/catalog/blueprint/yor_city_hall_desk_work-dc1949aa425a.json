@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_city_hall_desk_work",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 810,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yor_city_hall_desk_work",
     "title": "约尔·福杰 · 午后归档的小小成就",
@@ -38,12 +38,17 @@
       "Yor",
       "folders",
       "office",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "sorting papers",
+      "small smile",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the folder flat while the other aligns the final sheet with its stack."
   }
 }

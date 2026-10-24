@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_park_grass_break",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1831,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_ryo_park_grass_break",
     "characterId": "yamada_ryo",
@@ -26,7 +26,8 @@
       "grass in mouth",
       "dappled sunlight",
       "trees",
-      "cowboy shot"
+      "cowboy shot",
+      "deadpan"
     ],
     "sceneTags": [
       "park",
@@ -42,6 +43,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She glances into the empty open wallet with a blade of grass at her lips."
   }
 }

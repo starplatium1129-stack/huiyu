@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc067",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Outside the dressing room, with rejected outfits hanging beside her, she adjusts her hairclip and looks toward the viewer for approval; window light crosses her chosen cardigan and blouse.",
+    "animaCaption": "Rejected outfits hang beside her as she adjusts her hairclip, seeking the viewer's approval.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "multiple outfits worn together",
-    "prompt": "1girl, shiki_natsume, grey cropped cardigan, pearl buttons, white blouse, small neck bow, navy pleated midi skirt, clothes hangers, adjusting hairclip, mirror, dressing room, medium shot",
+    "prompt": "1girl, shiki_natsume, grey cropped cardigan, pearl buttons, white blouse, small neck bow, navy pleated midi skirt, clothes hangers, adjusting hairclip, mirror, dressing room, medium shot, looking at viewer, window light",
     "rating": "All",
     "season": "春",
     "story": "【夏目 · 约会前的第三套选择】春日下午，夏目在更衣室前连续换了三套衣服，每次都说只是确认尺寸，却会在出来后先观察你的反应。最终她选了最简洁的一套，又把与衣服相配的发夹别好——「不是为了迎合你的喜好，只是这套行动方便。……如果你觉得好看，可以再说一次，我刚才没听清。」",
@@ -47,6 +47,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Outside the dressing room, with rejected outfits hanging beside her, she adjusts her hairclip and looks toward the viewer for approval; window light crosses her chosen cardigan and blouse."
   }
 }

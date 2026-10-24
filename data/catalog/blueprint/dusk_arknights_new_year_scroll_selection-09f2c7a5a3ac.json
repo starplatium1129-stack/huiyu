@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_new_year_scroll_selection",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 693,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfitId": "dying_dust",
@@ -22,7 +22,11 @@
       "hanging scroll",
       "pipe",
       "paper lamp",
-      "night"
+      "night",
+      "standing",
+      "holding pipe",
+      "warm lighting",
+      "medium shot"
     ],
     "camera": "medium shot, one hanging scroll and both hands within the frame",
     "lighting": "室内纸灯映出画纸纹理的暖光",
@@ -46,6 +50,7 @@
       "night",
       "medium_shot"
     ],
-    "negativeTokens": []
+    "negativeTokens": [],
+    "animaCaption": "One hand steadies the scroll's lower edge; the other loosely holds the pipe."
   }
 }

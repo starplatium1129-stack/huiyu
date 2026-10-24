@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_quiet_cafe",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 981,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "窗边喝热饮",
     "camera": "medium shot, sitting at cafe table holding warm teacup",
@@ -24,7 +24,11 @@
     "promptTokens": [
       "red scarf on lap",
       "hot drink",
-      "cafe window"
+      "cafe window",
+      "holding teacup",
+      "both hands",
+      "looking through window",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +42,7 @@
     ],
     "timeOfDay": "白天",
     "title": "三笠 · 常服咖啡店",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Her scarf rests across her knees beneath the teacup."
   }
 }

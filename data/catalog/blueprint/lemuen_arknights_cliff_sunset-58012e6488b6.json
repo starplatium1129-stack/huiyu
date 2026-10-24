@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_cliff_sunset",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 558,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "停驻在崖边观景处，端坐于轮椅静赏晚霞",
     "camera": "wide shot, back three-quarter",
@@ -28,7 +28,12 @@
       "wings",
       "cliff",
       "sunset",
-      "from behind"
+      "from behind",
+      "turning head",
+      "looking back",
+      "railing",
+      "rim light",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +45,7 @@
       "wheelchair"
     ],
     "timeOfDay": "黄昏",
-    "title": "蕾缪安 · 拉特兰悬崖"
+    "title": "蕾缪安 · 拉特兰悬崖",
+    "animaCaption": "She turns her head toward the viewer behind the wheelchair while her hands remain folded on her lap."
   }
 }

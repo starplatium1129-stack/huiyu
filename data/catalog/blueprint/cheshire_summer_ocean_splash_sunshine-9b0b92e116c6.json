@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_summer_ocean_splash_sunshine",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1089,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cheshire_summer_ocean_splash_sunshine",
     "title": "柴郡 · 盛夏蔚蓝浪花的猫耳嬉水",
@@ -37,9 +37,17 @@
       "beach",
       "splashing",
       "grin",
-      "summer"
+      "summer",
+      "standing",
+      "ocean",
+      "both hands",
+      "water droplets",
+      "sunlight",
+      "caustics",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "Spray fills the foreground; her cat-ear headband fits through openings in the straw hat."
   }
 }

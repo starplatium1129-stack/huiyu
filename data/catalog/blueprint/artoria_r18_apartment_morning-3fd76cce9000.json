@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_apartment_morning",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 145,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "artoria_r18_apartment_morning",
     "title": "阿尔托莉雅 · 公寓晨光",
@@ -35,7 +35,13 @@
       "sitting",
       "stretching",
       "raised arms",
-      "morning"
+      "morning",
+      "bed",
+      "blush",
+      "sunlight",
+      "curtains",
+      "medium shot",
+      "front view"
     ],
     "negativeTokens": [
       "armor",
@@ -62,6 +68,7 @@
       "green_eyes",
       "ahoge",
       "fate/stay_night"
-    ]
+    ],
+    "animaCaption": "One leg folds onto the mattress; the other reaches toward the floor."
   }
 }

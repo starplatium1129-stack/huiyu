@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_bed_late",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 634,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "仰卧屈膝，一手掩嘴笑，另一手留在腿间。",
     "adult": true,
@@ -41,7 +41,12 @@
       "hand over mouth",
       "masturbation",
       "night",
-      "from above"
+      "from above",
+      "laughing",
+      "hand between legs",
+      "neon lights",
+      "red lighting",
+      "bedside lamp"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -52,6 +57,7 @@
       "lying"
     ],
     "timeOfDay": "深夜",
-    "title": "能天使 · 深夜卧室"
+    "title": "能天使 · 深夜卧室",
+    "animaCaption": "One hand covers her laughing mouth while the other rests between her thighs."
   }
 }

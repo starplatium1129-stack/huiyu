@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_royal_chamber",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "artoria_r18_royal_chamber",
     "title": "阿尔托莉雅 · 卡美洛沙龙·贵妃榻与誓约蓝宝石",
@@ -49,11 +49,21 @@
       "reclining",
       "on side",
       "smile",
-      "fireplace"
+      "fireplace",
+      "chin rest",
+      "table",
+      "sword",
+      "scabbard",
+      "night",
+      "firelight",
+      "rim light",
+      "medium shot",
+      "side view"
     ],
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "unclothed"
+    "outfitId": "unclothed",
+    "animaCaption": "The table beside the chaise holds Excalibur and Avalon's golden scabbard."
   }
 }

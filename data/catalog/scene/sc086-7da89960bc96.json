@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc086",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Holding the transparent umbrella in one hand, she tightens her other hand around the viewer's just before stepping into a puddle; clearing sunlight brightens the rainbow above the wet crossing.",
+    "animaCaption": "One hand holds the umbrella while the other tightens around the viewer's just before she steps into the puddle.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "全身远景",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "swimsuit",
-    "prompt": "1girl, ayachi_nene, light grey fine knit sweater, pink scalloped cuffs, navy A-line skirt, white tights, transparent umbrella, holding hands, laughing, crosswalk, puddles, rainbow, full body",
+    "prompt": "1girl, ayachi_nene, light grey fine knit sweater, pink scalloped cuffs, navy A-line skirt, white tights, transparent umbrella, holding hands, laughing, crosswalk, puddles, rainbow, full body, holding umbrella, sunlight, walking",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 雨停以后抬头】夏日阵雨刚停，宁宁撑着透明伞站在路口，忽然发现云层间出现完整彩虹。她兴奋地回头叫你，差点踩进积水，又被你及时拉住。她顺势握紧你的手，仰头笑起来——「还好没有急着回去。坏天气结束以后，真的会有值得等待的东西呢。」",
@@ -49,6 +49,7 @@
       "展示图",
       "CG"
     ],
-    "weather": "彩虹"
+    "weather": "彩虹",
+    "promptProse": "Holding the transparent umbrella in one hand, she tightens her other hand around the viewer's just before stepping into a puddle; clearing sunlight brightens the rainbow above the wet crossing."
   }
 }

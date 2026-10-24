@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_after_school_cafe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1825,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kita_ikuyo_after_school_cafe",
     "characterId": "kita_ikuyo",
@@ -25,7 +25,10 @@
       "parfait",
       "cafe",
       "sunset light",
-      "cowboy shot"
+      "cowboy shot",
+      "wink",
+      "blinds shadows",
+      "strawberry parfait"
     ],
     "sceneTags": [
       "cafe",
@@ -43,6 +46,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her right hand holds the phone; her left makes a peace sign beside her cheek."
   }
 }

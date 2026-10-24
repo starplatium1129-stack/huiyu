@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc139",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "From the bed's edge, she pulls the viewer down for a kiss as sea breeze lifts her hair and dawn light passes through her thin dress.",
+    "animaCaption": "She draws the viewer down for a kiss from the bed's edge as the sea breeze lifts her hair.",
     "auditRevision": "careful-batch13-2026-08-27",
     "camera": "主观逆光特写",
     "category": "日常/同人/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "pants, underwear, stockings",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pintucked bodice, pink waist ribbon, white sundress, see-through, sitting on bed, kissing, sweat, beach house, ocean view, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pintucked bodice, pink waist ribbon, white sundress, see-through, sitting on bed, kissing, sweat, beach house, ocean view, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>, wind, hair blowing",
     "rating": "R18",
     "season": "夏",
     "story": "【成年 After Story · 宁宁 · 连衣长裙逆光】黎明拂晓的海滨度假木屋，落地窗外是初升的金色朝阳与海浪翻滚。宁宁穿着一件极其轻薄的白色夏日无袖连衣裙，薄薄的布料被拂晓的逆光照得近乎透明，胸前迷人的傲然轮廓与凸显的饱满痕迹极其诱人地印刻出来。她大汗淋漓地坐在床边，任由海风吹乱她的银白长发，头顶的呆毛温顺且深情地弯成了完美的爱心形状。她主动伸手狠狠拉住你的脖子将你带入深吻——「大色狼...看傻了吗？既然天已经亮了...那就从现在开始...把昨天没做完的契约继续填满吧...」",
@@ -48,6 +48,7 @@
       "壁纸级",
       "成人向"
     ],
-    "weather": "破晓拂晓"
+    "weather": "破晓拂晓",
+    "promptProse": "From the bed's edge, she pulls the viewer down for a kiss as sea breeze lifts her hair and dawn light passes through her thin dress."
   }
 }

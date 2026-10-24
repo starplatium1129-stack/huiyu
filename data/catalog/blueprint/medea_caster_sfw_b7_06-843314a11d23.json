@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 294,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_06",
     "title": "美狄亚 · 灯下修好的衣袖",
@@ -37,7 +37,11 @@
       "cuff",
       "thread spool",
       "wooden box",
-      "lamplight"
+      "lamplight",
+      "mending clothes",
+      "smile",
+      "table lamp",
+      "medium shot"
     ],
     "negativeTokens": [
       "magic effects",
@@ -50,6 +54,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand smooths the repaired cuff while the other returns the spool to its wooden box."
   }
 }

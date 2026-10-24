@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_marble_bath_translucent_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1288,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_nsfw_marble_bath_translucent_solo",
     "title": "莉雅丝 · 玫瑰浴池的水光湿身私语",
@@ -39,7 +39,14 @@
       "bathtub",
       "rose petals",
       "steam",
-      "silk robe"
+      "silk robe",
+      "reclining",
+      "heavy blush",
+      "biting lip",
+      "water reflection",
+      "spotlight",
+      "cowboy shot",
+      "side view"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +62,7 @@
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She rests against the marble ledge above water scattered with rose petals."
   }
 }

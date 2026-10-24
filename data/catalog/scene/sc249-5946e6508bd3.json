@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc249",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 244,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc249",
     "title": "暴雨车内的心跳加速",
@@ -48,10 +48,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, concealed placket, burgundy cuff piping, natsume_r18, mole under eye, messy hair, white shirt, open collar, black lingerie, blush, looking away, car interior, rain, night, lightning, pov, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, concealed placket, burgundy cuff piping, natsume_r18, mole under eye, messy hair, white shirt, open collar, black lingerie, blush, looking away, car interior, rain, night, lightning, pov, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, head on chest, car backseat, dashboard light",
     "negative": "",
     "storyJa": "【夏目・豪雨の車内】深夜の豪雨で停車した任務車両。疲労の残る夏目は後部座席で息を整えていたが、車体の揺れであなたの腕の中へと滑り込んでしまう。狭い車内で密着し、あなたの鼓動が直に伝わる中、耳を赤くしながらも必死に平静を装う――「……勘違いしないで。ただの慣性よ。それに、くっついてた方が暖かいし。……でも、あなたの心臓の音、少しうるさすぎるわ」",
-    "animaCaption": "Natsume rests her head against the viewer's chest in the back seat, black lace visible at her loosened collar. Faint amber dashboard light reaches her face between the cold lightning flashes through the rain-streaked windows.",
-    "auditRevision": "skill-refine-sc249-2026-09-05"
+    "animaCaption": "Her head rests on the viewer's chest beneath the rain-streaked rear window.",
+    "auditRevision": "skill-refine-sc249-2026-09-05",
+    "promptProse": "Natsume rests her head against the viewer's chest in the back seat, black lace visible at her loosened collar. Faint amber dashboard light reaches her face between the cold lightning flashes through the rain-streaked windows."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_apron_tie_malfunction",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1515,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kaoruko_nsfw_apron_tie_malfunction",
     "title": "和栗薰子 · 后厨真空围裙系带松脱事故 ·「面粉蹭到身上了……凛太郎快帮我擦擦」",
@@ -34,7 +34,11 @@
       "bent over",
       "looking back",
       "bakery kitchen",
-      "wide shot"
+      "wide shot",
+      "adult",
+      "hand on table",
+      "holding apron",
+      "flustered"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +51,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "One hand braces on the prep table while the other secures the slipped apron."
   }
 }

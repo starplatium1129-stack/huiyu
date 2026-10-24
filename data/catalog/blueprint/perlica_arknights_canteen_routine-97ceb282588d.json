@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_canteen_routine",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 715,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端着餐盘，认真挑选菜色",
     "camera": "medium shot",
@@ -25,7 +25,11 @@
       "food tray",
       "standing",
       "cafeteria",
-      "noon"
+      "noon",
+      "holding tray",
+      "both hands",
+      "looking at viewer",
+      "serving window"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +42,7 @@
     "timeOfDay": "中午",
     "title": "佩丽卡 · 舰内食堂",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She looks toward the off-frame Administrator above the measured portions."
   }
 }

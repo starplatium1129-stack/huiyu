@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_corridor_instrument",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 859,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱贝斯盒匆匆赶路",
     "adult": false,
@@ -30,7 +30,10 @@
     "promptTokens": [
       "bass case",
       "hurrying",
-      "school hallway"
+      "school hallway",
+      "holding strap",
+      "looking ahead",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -42,6 +45,7 @@
       "walking"
     ],
     "timeOfDay": "午后",
-    "title": "杏山和纱 · 校园走廊里的偶遇"
+    "title": "杏山和纱 · 校园走廊里的偶遇",
+    "animaCaption": "She grips the case strap as she notices the viewer ahead."
   }
 }

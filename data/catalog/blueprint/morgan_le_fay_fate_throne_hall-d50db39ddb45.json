@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_throne_hall",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 189,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [],
     "id": "morgan_le_fay_fate_throne_hall",
@@ -35,12 +35,17 @@
       "1girl",
       "solo",
       "throne",
-      "palace"
+      "palace",
+      "sitting upright",
+      "hands on armrests",
+      "calm",
+      "cold daylight"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "winter_queen",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "Both hands rest on the armrests as she surveys the throne hall."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
     "title": "胡桃 · 秘境温泉落月幽欢",
@@ -41,7 +41,13 @@
       "butterfly",
       "hot spring",
       "rocks",
-      "moonlight"
+      "moonlight",
+      "wet skin",
+      "wet hair",
+      "hand between legs",
+      "blue glow",
+      "ghost lotus",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +61,7 @@
     "outfitId": "crimson_talisman_wrap",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One palm balances the ghost-flame lotus while her other hand remains underwater beside the rock shelf."
   }
 }

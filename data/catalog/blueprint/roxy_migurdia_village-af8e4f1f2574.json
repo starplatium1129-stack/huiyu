@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_village",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 455,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在村落草原间回望",
     "camera": "cowboy shot, standing in the village grassland",
@@ -24,7 +24,11 @@
       "village",
       "looking back",
       "smile",
-      "cowboy shot"
+      "cowboy shot",
+      "standing",
+      "windblown cape",
+      "sunlight",
+      "yurts"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +41,7 @@
       "home"
     ],
     "timeOfDay": "白天",
-    "title": "洛琪希 · 故乡村落"
+    "title": "洛琪希 · 故乡村落",
+    "animaCaption": "She looks back along the grassy village path, wind lifting her cape beside the yurts."
   }
 }

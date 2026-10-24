@@ -79,7 +79,9 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       const tags = [...sourcePlan.rating, ...sourcePlan.sceneVisualFragments, ...sourcePlan.exactControls, ...sourcePlan.emotion, ...sourcePlan.camera,
         ...sourcePlan.lighting, ...sourcePlan.palette, ...sourcePlan.composition, ...sourcePlan.manual]
         .filter(tag => !keys.has(normalizeKey(tag)) && !identityDomainOf(tag) && !/^(?:nene|natsume)_/i.test(tag))
-      const caption = sourcePlan.scene?.animaCaption || sourcePlan.sceneProse || ''
+      const caption = state.family === 'krea2'
+        ? sourcePlan.scene?.promptProse ?? sourcePlan.scene?.animaCaption ?? sourcePlan.sceneProse
+        : sourcePlan.scene?.animaCaption ?? sourcePlan.sceneProse
       const sceneCaption = captionOverride.trim() || (caption || sourcePlan.visualDescription ? authoredSceneCaption(sourcePlan, caption).trim().replace(/^\.\s*/, '') : '')
       roamingContent = { tags: [...new Set(tags.filter(tag => !isStableIdentityToken(tag)))],
         caption: [sourcePlan.outfitProse ? `She wears ${sourcePlan.outfitProse.replace(/[.!?]+$/, '')}.` : '', sceneCaption].filter(Boolean).join(' ') }
@@ -189,7 +191,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         ? scenes.find(item => item.id === target.id) || {
             ...blueprint, id: target.id, title: target.title, char: charInfo.charKey,
             prompt: blueprint?.promptTokens.join(', ') || '',
-            animaCaption: blueprint?.promptProse || baseText,
+            animaCaption: engine === 'anima' ? blueprint?.animaCaption ?? blueprint?.promptProse ?? baseText : blueprint?.promptProse || baseText,
             negative: blueprint?.negativeTokens.join(', ') || '',
             rating: blueprint?.adult ? 'R18' : 'All',
           }

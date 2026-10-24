@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_06",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 282,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_06",
     "title": "美杜莎 Rider · 天马的梦",
@@ -38,7 +38,12 @@
       "wildflowers",
       "meadow",
       "ethereal pegasus",
-      "dusk"
+      "dusk",
+      "standing",
+      "looking up",
+      "wind",
+      "dusk light",
+      "medium shot"
     ],
     "negativeTokens": [
       "physical summoned horse"
@@ -50,6 +55,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "A faint Pegasus silhouette stands beside her among the wind-bent flowers."
   }
 }

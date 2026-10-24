@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_cafe_dessert_tease",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1880,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chizuru_cafe_dessert_tease",
     "characterId": "mizuhara_chizuru",
@@ -27,7 +27,10 @@
       "playful smile",
       "winking",
       "afternoon light",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "cake on fork",
+      "laughing"
     ],
     "sceneTags": [
       "cafe",
@@ -44,6 +47,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The fork holds a piece of strawberry cake across the table."
   }
 }

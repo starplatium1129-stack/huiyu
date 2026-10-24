@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_summer_festival",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 396,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蹲在捞金鱼摊前",
     "camera": "medium shot",
@@ -27,7 +27,11 @@
       "crouching",
       "paper net",
       "goldfish",
-      "festival"
+      "festival",
+      "holding paper scoop",
+      "torn paper",
+      "lantern light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +43,7 @@
       "festival_stall"
     ],
     "timeOfDay": "夜晚",
-    "title": "御坂美琴 · 夏日祭摊位"
+    "title": "御坂美琴 · 夏日祭摊位",
+    "animaCaption": "A fresh paper net hovers above the red goldfish, with torn nets lying beside the pool rim."
   }
 }

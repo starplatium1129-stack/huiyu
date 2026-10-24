@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_dorm_pc",
-  "revision": 6,
+  "revision": 5,
   "sortOrder": 734,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "电竞椅里打游戏",
     "camera": "medium shot",
@@ -25,7 +25,13 @@
       "gaming chair",
       "computer",
       "midnight",
-      "medium shot"
+      "medium shot",
+      "curled up",
+      "hand on keyboard",
+      "hand on mouse",
+      "focused",
+      "blue light",
+      "pink light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +46,7 @@
     "timeOfDay": "夜晚",
     "title": "伊冯 · 宿舍打机",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand works the keyboard while the other controls the mouse from her curled position in the chair."
   }
 }

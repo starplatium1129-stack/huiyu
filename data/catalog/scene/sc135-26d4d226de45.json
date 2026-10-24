@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc135",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She kneels leaning forward on the sofa with her arms bound behind her, her flushed face turned toward the viewer in the candlelight.",
+    "animaCaption": "Her face turns toward the viewer while her bound arms remain behind her back.",
     "auditRevision": "careful-batch09-2026-08-27",
     "camera": "主观略微仰视近景",
     "category": "同人/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, black lace corset, fishnet stockings, kneeling, bent over, bound arms, arms behind back, blush, teary eyes, leather sofa, occult clubroom, candlelight, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, black lace corset, fishnet stockings, kneeling, bent over, bound arms, arms behind back, blush, teary eyes, leather sofa, occult clubroom, candlelight, <lora:ayachi_nene_v18_wd14:0.8>, looking at viewer",
     "rating": "R15",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 哥特束身衣极致羞耻】深夜彻底反锁的神秘学活动室大沙发上。宁宁在你的强势要求下，被迫换上了一套充满了禁忌哥特风的黑色蕾丝加厚束身衣与黑色网眼丝袜。束身衣极其夸张地将她纤细的腰肢勒紧，使得胸前本就宏伟的饱满呈现出近乎炸裂的震撼深渊。她双手被你缚在身后跪趴在皮革沙发中央，头顶的呆毛早已因为承受不住这股极致的羞耻感而瘫软成可怜的爱心螺旋，含泪大口喘息——「呜... 柊史... 这种衣服太奇怪了啦... 肚子被勒得好热... 今晚... 宁宁整个人都属于你了啦...」",
@@ -55,6 +55,7 @@
       "核心协议",
       "R15"
     ],
-    "weather": "静谧"
+    "weather": "静谧",
+    "promptProse": "She kneels leaning forward on the sofa with her arms bound behind her, her flushed face turned toward the viewer in the candlelight."
   }
 }

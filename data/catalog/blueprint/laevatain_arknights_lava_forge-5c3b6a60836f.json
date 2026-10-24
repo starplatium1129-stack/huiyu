@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_lava_forge",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 723,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠在铁砧旁，剑尖垂地",
     "camera": "medium shot",
@@ -25,7 +25,12 @@
       "greatsword",
       "anvil",
       "forge",
-      "sparks"
+      "sparks",
+      "leaning",
+      "holding hilt",
+      "wiping forehead",
+      "firelight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +42,7 @@
       "molten_metal"
     ],
     "timeOfDay": "白天",
-    "title": "莱万汀 · 熔岩工坊"
+    "title": "莱万汀 · 熔岩工坊",
+    "animaCaption": "One hand holds the sword hilt while the other wipes her forehead beside the anvil."
   }
 }

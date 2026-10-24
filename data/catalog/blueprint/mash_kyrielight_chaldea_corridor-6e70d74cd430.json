@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_chaldea_corridor",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 199,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [
       "tablet",
@@ -38,12 +38,17 @@
     "promptTokens": [
       "papers",
       "walking",
-      "corridor"
+      "corridor",
+      "holding reports",
+      "both arms",
+      "smile",
+      "glasses"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "chaldea_casual",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She walks toward the viewer with reports held in both arms."
   }
 }

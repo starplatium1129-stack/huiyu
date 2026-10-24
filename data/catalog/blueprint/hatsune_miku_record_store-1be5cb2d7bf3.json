@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_record_store",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 322,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hatsune_miku_record_store",
     "title": "初音未来 · 唱片店",
@@ -41,7 +41,11 @@
       "turntable",
       "record shop",
       "warm lighting",
-      "medium shot"
+      "medium shot",
+      "vinyl grooves",
+      "record bins",
+      "shelves",
+      "side lighting"
     ],
     "negativeTokens": [
       "readable background text"
@@ -55,6 +59,7 @@
     ],
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her left hand steadies the headband; her right turns an earcup toward the listener on her right."
   }
 }

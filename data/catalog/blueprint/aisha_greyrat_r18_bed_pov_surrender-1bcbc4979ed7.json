@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_r18_bed_pov_surrender",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 493,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "aisha_greyrat_r18_bed_pov_surrender",
     "title": "爱夏·锦衾微醺献媚",
@@ -42,7 +42,12 @@
       "on back",
       "knees up",
       "spread legs",
-      "night"
+      "night",
+      "lying on back",
+      "grabbing sheets",
+      "looking up",
+      "looking at viewer",
+      "bedside lamp"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],
@@ -54,6 +59,7 @@
     "negativeTokens": [],
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her hands grip the sheets while she looks up toward the viewer."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_maanna_sky_ride",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 253,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ishtar_maanna_sky_ride",
     "title": "伊什塔尔 · 天舟玛安娜的巡空·「看好了，这就是女神的领空」",
@@ -36,7 +36,9 @@
       "hand on hip",
       "clouds",
       "mountain",
-      "wide shot"
+      "wide shot",
+      "looking back",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +51,7 @@
       "official_default",
       "iconic",
       "signature"
-    ]
+    ],
+    "animaCaption": "Her free hand steadies her at Maanna's prow above the cloud sea."
   }
 }

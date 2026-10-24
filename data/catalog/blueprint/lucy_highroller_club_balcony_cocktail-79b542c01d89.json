@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_highroller_club_balcony_cocktail",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1102,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手执荧光鸡尾酒杯靠在琉璃吧台旁，高开叉长裙展现修长美腿，眼神敏锐侦查",
     "camera": "cowboy shot, eye level, bar and executives beyond the water curtain visible",
@@ -26,7 +26,12 @@
       "bar",
       "holographic fish",
       "nightclub",
-      "leaning on bar"
+      "leaning on bar",
+      "holding glass",
+      "water curtain",
+      "neon lights",
+      "water reflection",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +46,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "露西 · 云顶俱乐部的幻彩鸡尾酒",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She watches the executives beyond the water curtain with the glowing martini held at the bar."
   }
 }

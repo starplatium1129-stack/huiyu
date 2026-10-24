@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_r18_marley_hotel",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 990,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "落地窗边软椅上半解白衬衫斜倚",
     "adult": true,
@@ -35,7 +35,9 @@
       "red scarf on lap",
       "hotel window",
       "morning light",
-      "loose shirt"
+      "loose shirt",
+      "partly unbuttoned shirt",
+      "scarf on lap"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -53,6 +55,7 @@
       "daylight"
     ],
     "timeOfDay": "清晨",
-    "title": "三笠 · 马莱旅店落地窗晨光白衬衫"
+    "title": "三笠 · 马莱旅店落地窗晨光白衬衫",
+    "animaCaption": "Her red scarf lies on her lap beside the sheer curtain."
   }
 }

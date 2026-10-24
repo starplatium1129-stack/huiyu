@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_castle_bath",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "artoria_r18_castle_bath",
     "title": "阿尔托莉雅 · 城堡浴殿",
@@ -36,7 +36,11 @@
       "knees up",
       "hair up",
       "torchlight",
-      "cowboy shot"
+      "cowboy shot",
+      "night",
+      "side view",
+      "sword",
+      "gauntlets"
     ],
     "negativeTokens": [
       "modern bathroom"
@@ -49,6 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "linen_bath_wrap",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Both hands gather her hair; the sword and gauntlet rest on the rim."
   }
 }

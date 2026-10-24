@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_fireplace_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "frieren_r18_fireplace_night",
     "title": "芙莉莲 · 炉火夜话",
@@ -38,7 +38,9 @@
       "masturbation",
       "fireplace",
       "cabin",
-      "night"
+      "night",
+      "holding blanket",
+      "hand under blanket"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +51,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "nsfw_nude",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand grips the blanket at her waist beside the hearth."
   }
 }

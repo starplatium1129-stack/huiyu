@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_rainy_cabin_fireplace_warmth",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1388,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "裹着毛毯蜷缩在你的怀中，微凉的金属手掌贴在你的心口，仰起白净面容依恋地凝望你",
     "adult": false,
@@ -32,7 +32,11 @@
       "companion",
       "fireplace",
       "cabin",
-      "medium shot"
+      "medium shot",
+      "curled up",
+      "mechanical hand on clothed chest",
+      "rain",
+      "firelight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -47,6 +51,7 @@
       "mechanical_hands"
     ],
     "timeOfDay": "暴雨夜",
-    "title": "薇尔莉特 · 暴风雨木屋的壁炉依偎·「被您拥抱着的时候，身体会变得好暖」"
+    "title": "薇尔莉特 · 暴风雨木屋的壁炉依偎·「被您拥抱着的时候，身体会变得好暖」",
+    "animaCaption": "Her silver palm rests on her companion's clothed chest beneath their shared blanket."
   }
 }

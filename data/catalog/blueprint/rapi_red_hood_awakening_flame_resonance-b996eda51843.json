@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_red_hood_awakening_flame_resonance",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1802,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rapi_red_hood_awakening_flame_resonance",
     "title": "拉毗 · 绯红风暴中小红帽核心共鸣觉醒",
@@ -58,11 +58,15 @@
       "trench_coat",
       "flame_effects",
       "epic_composition",
-      "dynamic_angle"
+      "dynamic_angle",
+      "red lightning",
+      "debris",
+      "coat billowing"
     ],
     "promptProse": "Surrounded by raging red lightning and burning debris in the epicenter of a destroyed battlefield, Rapi's eyes blaze with the fiery crimson energy of Red Hood awakening. Her weathered scarlet military coat billows like wings as a spectral blazing wolf aura roars behind her, her grip on her heavy weapon unshakeable amidst the incandescent shockwave.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The blazing wolf aura rises behind her above the burning debris."
   }
 }

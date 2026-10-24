@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_r18_b6_03",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1385,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asada_shino_r18_b6_03",
     "title": "朝田诗乃 · 战术紧身衣背后散热阀卡壳事故 ·「散热阀锁死了……身体好热，快帮我拉开背后的拉链！」",
@@ -38,7 +38,12 @@
       "black reinforced panels",
       "stuck zipper",
       "bent over",
-      "looking back"
+      "looking back",
+      "leaning forward",
+      "hand on crate",
+      "zipper pull",
+      "green lighting",
+      "overhead light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -63,6 +68,7 @@
       "short_hair",
       "human ears"
     ],
-    "identityProseOverride": "Shino Asada (Sinon) in her Gun Gale Online form from Sword Art Online, with short pale-blue hair and human ears."
+    "identityProseOverride": "Shino Asada (Sinon) in her Gun Gale Online form from Sword Art Online, with short pale-blue hair and human ears.",
+    "animaCaption": "One hand braces on the crate as the other reaches for the rear zipper."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 129,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_03",
     "title": "尤贝尔 · 旅店里的皮带修补",
@@ -34,7 +34,10 @@
       "bag strap",
       "buckle",
       "inn",
-      "medium shot"
+      "medium shot",
+      "hands on strap",
+      "smile",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +47,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand presses the strap flat while the other threads the brass buckle."
   }
 }

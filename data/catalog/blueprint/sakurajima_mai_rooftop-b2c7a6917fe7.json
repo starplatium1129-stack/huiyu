@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_rooftop",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakurajima_mai_rooftop",
     "title": "樱岛麻衣 · 学校天台·海风与回眸",
@@ -34,13 +34,19 @@
       "rooftop",
       "fence",
       "sunset",
-      "cowboy shot"
+      "cowboy shot",
+      "hand on fence",
+      "looking at viewer",
+      "wind",
+      "quiet smile",
+      "rim light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "school_uniform",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She turns from the rooftop fence with one hand still resting on it."
   }
 }

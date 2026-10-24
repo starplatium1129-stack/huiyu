@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 973,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "举起装着金鱼的小袋开怀大笑，另一手仍拿着纸网。",
     "adult": false,
@@ -31,7 +31,13 @@
       "paper scoop",
       "grin",
       "lantern",
-      "night"
+      "night",
+      "goldfish scooping",
+      "holding bag",
+      "laughing",
+      "water reflection",
+      "lantern light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -49,6 +55,7 @@
       "medium_shot"
     ],
     "timeOfDay": "夜晚",
-    "title": "有马加奈 · 祭典捞金鱼的胜负欲"
+    "title": "有马加奈 · 祭典捞金鱼的胜负欲",
+    "animaCaption": "She lifts the goldfish bag in one hand, still holding the paper scoop in the other."
   }
 }

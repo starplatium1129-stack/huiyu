@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_r18_poolside_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1066,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自跨坐池阶，一手撑地、一手腿间自抚",
     "adult": true,
@@ -37,7 +37,13 @@
       "poolside",
       "wet",
       "blush",
-      "shark teeth print"
+      "shark teeth print",
+      "hand on ground",
+      "water",
+      "blue lighting",
+      "caustics",
+      "medium shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +56,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "夜间",
-    "title": "艾莲·乔 · 泳池台阶的湿身独处"
+    "title": "艾莲·乔 · 泳池台阶的湿身独处",
+    "animaCaption": "She straddles a broad pool step with her tail resting in the water behind her."
   }
 }

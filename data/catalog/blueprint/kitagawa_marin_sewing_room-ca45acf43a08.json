@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_sewing_room",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 494,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "身着高中辣妹制服（解开两颗扣子），双手微张配合量身，脸颊泛红，眼神中满是期待与娇羞",
     "camera": "medium shot, arms slightly spread for a fitting with a measuring tape",
@@ -28,7 +28,11 @@
       "measuring tape",
       "arms out",
       "doll workshop",
-      "afternoon"
+      "afternoon",
+      "blush",
+      "window light",
+      "fabric",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +48,7 @@
     "compositionIntent": "group",
     "characterTokens": [
       "Gojo"
-    ]
+    ],
+    "animaCaption": "Gojo stands beside her left arm and lays the tape along her sleeve as she holds her arms apart."
   }
 }

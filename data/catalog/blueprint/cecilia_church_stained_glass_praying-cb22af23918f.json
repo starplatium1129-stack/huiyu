@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_church_stained_glass_praying",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 835,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手合十闭目祈祷，薄荷绿发在圣光下熠熠生辉，白色修女袍以金边勾勒，神圣纯洁得令人屏息",
     "adult": false,
@@ -29,7 +29,12 @@
       "kneeling",
       "stained glass",
       "afternoon",
-      "cowboy shot"
+      "cowboy shot",
+      "hands together",
+      "closed eyes",
+      "altar",
+      "god rays",
+      "sunlight"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",
@@ -44,6 +49,7 @@
       "praying"
     ],
     "timeOfDay": "午后",
-    "title": "塞西莉亚 · 圣洁大教堂·彩绘玻璃下的祈祷"
+    "title": "塞西莉亚 · 圣洁大教堂·彩绘玻璃下的祈祷",
+    "animaCaption": "Colored sunlight from the rose window crosses her joined hands and the stone floor."
   }
 }

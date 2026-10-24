@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_white_socks",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 462,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "反坐高木椅，一只脚跟抬到椅面，手指卷住袜口，身体轻靠椅背",
     "adult": true,
@@ -35,7 +35,11 @@
       "stocking pull",
       "chair",
       "study",
-      "oil lamp"
+      "oil lamp",
+      "heel on seat",
+      "leaning on backrest",
+      "foot focus",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +53,7 @@
       "intimate"
     ],
     "timeOfDay": "夜晚",
-    "title": "洛琪希 · 白丝与油灯"
+    "title": "洛琪希 · 白丝与油灯",
+    "animaCaption": "One heel rests on the chair seat as her fingers roll down the stocking welt against the backrest."
   }
 }

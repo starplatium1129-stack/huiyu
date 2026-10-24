@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_forest_magic_practice",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 470,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手合拢凝聚柔和的治愈水流，晨光穿过树梢",
     "adult": false,
@@ -24,7 +24,10 @@
       "water magic",
       "forest",
       "brook",
-      "cowboy shot"
+      "cowboy shot",
+      "hands together",
+      "mist",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +41,7 @@
       "concentration"
     ],
     "timeOfDay": "morning",
-    "title": "希露菲叶特 · 森林魔法练习"
+    "title": "希露菲叶特 · 森林魔法练习",
+    "animaCaption": "Healing water gathers between her palms beside the brook."
   }
 }

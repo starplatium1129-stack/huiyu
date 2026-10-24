@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_tatami_bedroom_fan_dance",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1080,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "taihou_tatami_bedroom_fan_dance",
     "title": "大凤 · 和风寝殿的红扇雅舞",
@@ -37,9 +37,14 @@
       "dancing",
       "tatami",
       "phoenix screen",
-      "full body"
+      "full body",
+      "barefoot",
+      "open fans",
+      "windblown sleeves",
+      "lamplight"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "animaCaption": "An open fan rests in each hand as she turns barefoot before the phoenix screen."
   }
 }

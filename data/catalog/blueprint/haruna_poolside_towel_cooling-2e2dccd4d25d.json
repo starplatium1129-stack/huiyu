@@ -4,7 +4,7 @@
   "revision": 2,
   "sortOrder": 1765,
   "createdAt": null,
-  "updatedAt": "2026-10-21T13:03:34.995576600+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruna_poolside_towel_cooling",
     "title": "西连寺春菜 · 校园泳池畔的清凉微风与毛巾",
@@ -46,7 +46,11 @@
       "two_hair_clips",
       "water_reflections",
       "sunlight",
-      "soft_blush"
+      "soft_blush",
+      "kicking water",
+      "splash",
+      "hand on tiles",
+      "water droplets"
     ],
     "promptProse": "Seated on the tiled edge of the school swimming pool, Haruna gently kicks her feet through the water, sending small splashes out from her toes. A white towel rests across both shoulders, its ends hanging in front; her hands rest on the tiles beside her rather than holding the towel. Sunlight glitters on the blue water, and droplets cling to her damp short hair.",
     "negativeTokens": [
@@ -54,6 +58,7 @@
       "nude"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her hands rest on the tiles; the towel stays across her shoulders."
   }
 }

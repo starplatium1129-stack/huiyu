@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_home_dinner",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 418,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makima_home_dinner",
     "title": "玛奇玛 · 居家晚餐",
@@ -30,13 +30,17 @@
       "hand on own chin",
       "pouring wine",
       "dining table",
-      "pendant light"
+      "pendant light",
+      "wine bottle",
+      "prepared dishes",
+      "warm light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand supports her chin as the other pours toward the viewer's glass."
   }
 }

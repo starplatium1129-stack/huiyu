@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_bedroom_gaming_carpet_slouch",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1059,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "趴在地毯上翘起小腿打掌机，鲨鱼尾巴垫在身后，专注微咬唇",
     "camera": "full-body shot, from above",
@@ -28,7 +28,14 @@
       "bedroom",
       "night",
       "full body",
-      "from above"
+      "from above",
+      "playing games",
+      "both hands",
+      "feet up",
+      "crossed ankles",
+      "focused",
+      "screen light",
+      "warm lighting"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +48,7 @@
       "shark_tail"
     ],
     "timeOfDay": "夜晚",
-    "title": "艾莲·乔 · 宅室地毯上的掌机时光"
+    "title": "艾莲·乔 · 宅室地毯上的掌机时光",
+    "animaCaption": "Her shark tail lies flat behind her, separate from her raised lower legs."
   }
 }

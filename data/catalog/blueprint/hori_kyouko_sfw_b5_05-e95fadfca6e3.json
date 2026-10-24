@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1556,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_05",
     "title": "堀京子 · 把晴天夹上晾衣绳",
@@ -36,7 +36,11 @@
       "clothespin",
       "balcony",
       "morning",
-      "medium shot"
+      "medium shot",
+      "hanging laundry",
+      "wind",
+      "laughing",
+      "daylight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the lifted towel corner while the other clips it to the line."
   }
 }

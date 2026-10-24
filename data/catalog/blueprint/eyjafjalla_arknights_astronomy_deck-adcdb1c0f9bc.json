@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_astronomy_deck",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 551,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "仰头望着漫天星斗",
     "camera": "wide shot",
@@ -27,7 +27,12 @@
       "holding hands",
       "observation deck",
       "starry sky",
-      "wide shot"
+      "wide shot",
+      "looking up",
+      "night",
+      "railing",
+      "starlight",
+      "dim lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +43,7 @@
       "ship"
     ],
     "timeOfDay": "夜晚",
-    "title": "艾雅法拉 · 观星甲板"
+    "title": "艾雅法拉 · 观星甲板",
+    "animaCaption": "Their joined hands rest between them as they look up from the deck railing."
   }
 }

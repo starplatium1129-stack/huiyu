@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "礼堂花卡旁以淑女姿态整理缎带，确认无人后向镜头淘气眨眼",
     "adult": false,
@@ -29,7 +29,11 @@
     "promptTokens": [
       "wink",
       "flower cards",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting",
+      "arranging cards",
+      "half-up hair",
+      "afternoon light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -45,6 +49,7 @@
       "afternoon_light"
     ],
     "timeOfDay": "黄昏",
-    "title": "周防有希 · 学生会礼堂的双面花嫁"
+    "title": "周防有希 · 学生会礼堂的双面花嫁",
+    "animaCaption": "Flower cards lie beside the publicity board beneath her raised gaze."
   }
 }

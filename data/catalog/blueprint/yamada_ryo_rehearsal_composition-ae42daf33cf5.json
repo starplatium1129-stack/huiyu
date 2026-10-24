@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_rehearsal_composition",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1840,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_ryo_rehearsal_composition",
     "characterId": "yamada_ryo",
@@ -28,7 +28,9 @@
       "thoughtful",
       "night",
       "warm lighting",
-      "cowboy shot"
+      "cowboy shot",
+      "crossed legs",
+      "high angle"
     ],
     "sceneTags": [
       "rehearsal_room",
@@ -46,6 +48,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One arm cradles the bass while the pencil rests at her lips above the scattered score."
   }
 }

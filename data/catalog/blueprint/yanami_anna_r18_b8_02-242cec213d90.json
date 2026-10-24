@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_r18_b8_02",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 1675,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yanami_anna_r18_b8_02",
     "title": "八奈见杏菜 · 澡堂冰牛奶后的水光湿身 ·「喝完冰牛奶……浴池的水变得更烫了」",
@@ -42,7 +42,9 @@
       "smile",
       "milk bottle",
       "wooden bath",
-      "steam"
+      "steam",
+      "hand underwater",
+      "contented smile"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +59,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The soaked towel stays across her chest after the coffee milk."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_snowy_shrine_shiromuku_vow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1291,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "akeno_snowy_shrine_shiromuku_vow",
     "title": "姬岛朱乃 · 白雪神社的纯白无垢",
@@ -35,7 +35,13 @@
       "smile",
       "shrine",
       "snow",
-      "cowboy shot"
+      "cowboy shot",
+      "hands together",
+      "shy smile",
+      "blush",
+      "shrine courtyard",
+      "winter",
+      "reflected light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +50,7 @@
       "bridal",
       "vow",
       "snow"
-    ]
+    ],
+    "animaCaption": "She bows toward the viewer with her hands folded before her sleeves."
   }
 }

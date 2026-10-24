@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1458,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "午后缘侧，蜜璃抱着盛满樱饼的盘子，举起一块准备品尝，绿瞳里全是期待",
     "adult": false,
@@ -34,7 +34,11 @@
       "plate",
       "veranda",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "holding food",
+      "smile",
+      "daylight",
+      "tea"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -52,6 +56,7 @@
       "medium_shot"
     ],
     "timeOfDay": "日间",
-    "title": "甘露寺蜜璃 · 樱饼与发色的传说"
+    "title": "甘露寺蜜璃 · 樱饼与发色的传说",
+    "animaCaption": "One hand supports the plate while the other raises a sakura mochi."
   }
 }

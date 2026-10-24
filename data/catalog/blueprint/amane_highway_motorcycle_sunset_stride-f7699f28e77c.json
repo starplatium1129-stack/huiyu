@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_highway_motorcycle_sunset_stride",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1175,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "amane_highway_motorcycle_sunset_stride",
     "title": "周防天音 · 沿海公路的机车烈焰英姿",
@@ -37,9 +37,18 @@
       "motorcycle",
       "helmet",
       "leaning",
-      "sunset"
+      "sunset",
+      "holding helmet",
+      "wind",
+      "ocean",
+      "waves",
+      "guardrail",
+      "rim light",
+      "cowboy shot",
+      "low angle"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "animaCaption": "Her helmet rests at her hip beside the parked black motorcycle."
   }
 }

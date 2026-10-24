@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_chapel_morning_prayer",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_chapel_morning_prayer",
     "title": "圣女贞德 · 晨光小教堂的祈祷·「今日也请，赐予他们安宁」",
@@ -36,7 +36,10 @@
       "altar",
       "chapel",
       "sunrise",
-      "from side"
+      "from side",
+      "hands joined",
+      "forehead touch",
+      "window light"
     ],
     "negativeTokens": [
       "armor"
@@ -51,6 +54,7 @@
       "daily",
       "signature",
       "story"
-    ]
+    ],
+    "animaCaption": "Her joined hands rest against her forehead before the altar."
   }
 }

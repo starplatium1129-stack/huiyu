@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_rooftop_pigeon",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 618,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蜷在躺椅里扶着遮阳伞柄打盹，另一手轻抓观众的衣角。",
     "camera": "medium shot, eye level, chair and parasol visible",
@@ -24,7 +24,11 @@
       "parasol",
       "water park",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "curled up",
+      "holding sleeve",
+      "sunlight",
+      "shade"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
     "timeOfDay": "午后",
     "title": "羽毛笔 · 夏卉日光浴",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One arm holds the parasol shaft; the other hand catches the viewer's sleeve."
   }
 }

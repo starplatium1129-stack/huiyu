@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_greenhouse_facility",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 717,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蹲在苗圃边查看新芽",
     "camera": "medium shot",
@@ -23,7 +23,8 @@
       "sprout",
       "greenhouse",
       "smile",
-      "grow light"
+      "grow light",
+      "looking back"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +37,7 @@
     "timeOfDay": "白天",
     "title": "佩丽卡 · 生态舱",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She turns from the first sprout toward the off-frame Administrator."
   }
 }

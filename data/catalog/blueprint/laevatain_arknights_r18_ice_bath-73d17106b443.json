@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_ice_bath",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 733,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "仰靠在冰水边缘，水汽与寒气",
     "adult": true,
@@ -32,7 +32,10 @@
       "reclining",
       "ice bath",
       "ice cubes",
-      "steam"
+      "steam",
+      "arms on rim",
+      "blue light",
+      "close up"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -44,6 +47,7 @@
       "steam"
     ],
     "timeOfDay": "夜晚",
-    "title": "莱万汀 · 冰浴"
+    "title": "莱万汀 · 冰浴",
+    "animaCaption": "Both arms rest along the bath rim above the floating ice."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_evening_dress_piano",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 911,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "穿晚礼服弹钢琴",
     "adult": false,
@@ -32,7 +32,11 @@
       "piano",
       "banquet",
       "medium shot",
-      "updo"
+      "updo",
+      "playing piano",
+      "looking at viewer",
+      "piano lamp",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -58,6 +62,7 @@
       "purple eyes",
       "blue archive"
     ],
-    "identityProseOverride": "Sorasaki Hina from Blue Archive, with silver-purple hair pinned up, black demon horns, a purple halo, small bat wings and purple eyes."
+    "identityProseOverride": "Sorasaki Hina from Blue Archive, with silver-purple hair pinned up, black demon horns, a purple halo, small bat wings and purple eyes.",
+    "animaCaption": "She looks toward her companion beyond the grand piano while her hands remain on the keys."
   }
 }

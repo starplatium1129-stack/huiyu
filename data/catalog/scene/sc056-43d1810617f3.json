@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc056",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Stepping from the shallows, she turns toward the viewer and catches the cover-up hem in the wind. Sea reflections light her shy face and the waves around her visible feet.",
+    "animaCaption": "She catches the windblown cover-up hem while turning from the shallows toward the viewer.",
     "camera": "全身回眸远景",
     "category": "旅行",
     "char": "nene",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "cropped feet",
-    "prompt": "1girl, ayachi_nene, pale aqua one-piece swimsuit, ruffled neckline, pink cotton beach coverup, scalloped hem, walking, looking back, shallow water, beach, full body",
+    "prompt": "1girl, ayachi_nene, pale aqua one-piece swimsuit, ruffled neckline, pink cotton beach coverup, scalloped hem, walking, looking back, shallow water, beach, full body, holding hem, wind, wet hair, shy smile, reflected light",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 浪花边的泳装回眸】盛夏午后，宁宁穿着新泳装从浅水区走来，外罩被海风吹得不断扬起。她察觉你的视线后先是害羞地拉了拉衣摆，随后又鼓起勇气转身让你看清整体搭配——「选了很久才决定这一套。你可以说感想，但不准只盯着一个地方……要认真地全部看完。」",
@@ -51,6 +51,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Stepping from the shallows, she turns toward the viewer and catches the cover-up hem in the wind. Sea reflections light her shy face and the waves around her visible feet."
   }
 }

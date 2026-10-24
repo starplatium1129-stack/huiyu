@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_ink_garden",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 566,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "执笔立于池边，墨点晕开",
     "camera": "medium shot, painterly",
@@ -22,7 +22,14 @@
       "lotus pond",
       "large brush",
       "ink",
-      "dawn mist"
+      "dawn mist",
+      "standing",
+      "holding brush",
+      "both hands",
+      "looking down",
+      "lotus leaves",
+      "morning light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -33,6 +40,7 @@
       "calligraphy"
     ],
     "timeOfDay": "清晨",
-    "title": "夕 · 水墨庭院"
+    "title": "夕 · 水墨庭院",
+    "animaCaption": "She dips the brush tip into the pond as black ink rings expand."
   }
 }

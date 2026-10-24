@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_halo_street_evening",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 631,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠着灯柱，百无聊赖地踢石子",
     "camera": "full body, eye level",
@@ -26,7 +26,11 @@
       "neon lights",
       "street",
       "evening",
-      "full body"
+      "full body",
+      "looking at viewer",
+      "stone",
+      "lantern light",
+      "reflection"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +41,7 @@
       "waiting"
     ],
     "timeOfDay": "夜晚",
-    "title": "能天使 · 华灯初上"
+    "title": "能天使 · 华灯初上",
+    "animaCaption": "One boot nudges a roadside stone as she looks up toward the approaching viewer."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_bridal_vow_chapel",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1442,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_bridal_vow_chapel",
     "title": "加藤惠 · 礼堂里系好的花束缎带",
@@ -34,7 +34,11 @@
       "bouquet",
       "ribbon on bouquet",
       "chapel window",
-      "bob cut"
+      "bob cut",
+      "holding bouquet",
+      "ribbon pull",
+      "sincere smile",
+      "colored light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She draws the bouquet ribbons snug against her waist."
   }
 }

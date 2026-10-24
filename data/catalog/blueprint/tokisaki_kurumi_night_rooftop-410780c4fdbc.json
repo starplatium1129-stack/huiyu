@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_night_rooftop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 75,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tokisaki_kurumi_night_rooftop",
     "title": "时崎狂三 · 黑夜天台",
@@ -38,7 +38,9 @@
       "dual wielding",
       "rooftop",
       "night",
-      "full body"
+      "full body",
+      "reverse grip",
+      "violet energy"
     ],
     "negativeTokens": [
       "gunfire",
@@ -46,6 +48,7 @@
       "cropped weapons"
     ],
     "recommendedSize": "1536x1152",
-    "outfitId": "school_uniform"
+    "outfitId": "school_uniform",
+    "animaCaption": "Both weapons point down at the rooftop edge beneath the curling violet energy."
   }
 }

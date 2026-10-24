@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1591,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_03",
     "title": "吹雪 · 夜色车窗的霓虹",
@@ -39,7 +39,10 @@
       "backseat",
       "car interior",
       "neon lights",
-      "medium shot"
+      "medium shot",
+      "looking out window",
+      "thoughtful",
+      "night"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The darkened phone rests beside the coat on her lap as passing neon moves across her face."
   }
 }

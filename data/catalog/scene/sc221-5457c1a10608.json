@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc221",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 216,
   "createdAt": null,
-  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc221",
     "title": "密闭地下书库的重力平衡",
@@ -46,11 +46,12 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy piping, black silk camisole, low neckline, sideboob, no underwear, straddling lap, hands on shoulders, blush, underground library, wooden ladder, scattered books, green emergency light, pov, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy piping, black silk camisole, low neckline, sideboob, no underwear, straddling lap, hands on shoulders, blush, underground library, wooden ladder, scattered books, green emergency light, pov, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, clinging",
     "negative": "stockings, thighhighs",
     "storyJa": "【夏目】【ナツメ・密閉書庫の予期せぬ落下】深夜、システム障害で閉じ込められた大学図書館の地下書庫。換気が止まり、静かな本棚の間には微熱がこもっていた。暑さにカーディガンを脱いだナツメは、薄手のシルクキャミソール姿。高所の古書を取ろうとした瞬間、梯子がぐらつき、下で見守っていたあなたの腕の中へと落ちてきた。温かな温もりが胸元に飛び込み、普段は涼やかな金の瞳が動揺に揺れる。薄暗い非常灯の下で耳まで赤くしながら、彼女は視線を逸らして呟いた――「……勘違いしないで。怪我を防ぐための咄嗟の緩衝動作よ。……ちょっと、どこ触ってるの。変なこと考えたら秘密処刑にするからね」",
     "rating": "R15",
-    "animaCaption": "The wooden ladder sways and she lands astride the viewer's lap, clinging to their shoulders among the scattered books.",
-    "auditRevision": "fix-no-burn-ears-sc221-2026-09-05"
+    "animaCaption": "She clings to the viewer's shoulders from their lap as the ladder sways beside the scattered books.",
+    "auditRevision": "fix-no-burn-ears-sc221-2026-09-05",
+    "promptProse": "The wooden ladder sways and she lands astride the viewer's lap, clinging to their shoulders among the scattered books."
   }
 }

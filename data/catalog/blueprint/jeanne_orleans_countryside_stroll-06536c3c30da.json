@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_orleans_countryside_stroll",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 233,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_orleans_countryside_stroll",
     "title": "圣女贞德 · 奥尔良乡野的草帽散步·「今天不是圣女，只是贞德小姐」",
@@ -35,7 +35,10 @@
       "daisies",
       "wheat field",
       "afternoon",
-      "full body"
+      "full body",
+      "walking",
+      "hand brushing wheat",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +50,7 @@
     "coverageTags": [
       "daily",
       "girlfriend"
-    ]
+    ],
+    "animaCaption": "The basket rests on one arm as her free hand brushes the grain tips."
   }
 }

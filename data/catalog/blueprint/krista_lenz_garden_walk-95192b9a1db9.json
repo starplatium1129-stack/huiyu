@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_garden_walk",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 991,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "花丛间散步闻花",
     "camera": "cowboy shot",
@@ -25,7 +25,10 @@
       "hair down",
       "white rose",
       "garden",
-      "afternoon"
+      "afternoon",
+      "smelling flower",
+      "holding stem",
+      "palace flowers"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +41,7 @@
       "flowers"
     ],
     "timeOfDay": "白天",
-    "title": "希斯特里亚 · 王宫花园"
+    "title": "希斯特里亚 · 王宫花园",
+    "animaCaption": "Her fingertips support the white rose as she bends toward it."
   }
 }

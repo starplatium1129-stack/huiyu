@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_glasses_removed_flustered_tsundere",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1332,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "摘下的眼镜放在桌上，双手抓住视角衣袖，抬眼露出惊讶而害羞的浅笑。",
     "camera": "close-up, eye level",
@@ -30,7 +30,14 @@
       "holding sleeve",
       "blush",
       "pov",
-      "close-up"
+      "close-up",
+      "desk",
+      "no glasses",
+      "both hands",
+      "looking up",
+      "surprised",
+      "small smile",
+      "sunset"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -49,6 +56,7 @@
     ],
     "timeOfDay": "sunset",
     "title": "希耶尔 · 摘下眼镜的慌乱娇羞",
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Only the viewer's sleeve enters the foreground; her folded glasses rest behind her."
   }
 }

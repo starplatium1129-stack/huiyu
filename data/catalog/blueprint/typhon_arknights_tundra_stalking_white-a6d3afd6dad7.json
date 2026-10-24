@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_tundra_stalking_white",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 698,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "typhon_arknights_tundra_stalking_white",
     "characterId": "typhon_arknights",
@@ -36,12 +36,19 @@
       "cafe",
       "chair",
       "drinks",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting",
+      "pulling chair",
+      "looking up",
+      "smile",
+      "steam",
+      "window light"
     ],
     "promptProse": "Seated at the small cafe table, Typhon draws the empty chair across from her outward for the arriving viewer, looking up with a welcoming smile. Two hot drinks send thin steam into the soft window light.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She draws the opposite chair outward for the arriving viewer, two hot drinks steaming beside her."
   }
 }

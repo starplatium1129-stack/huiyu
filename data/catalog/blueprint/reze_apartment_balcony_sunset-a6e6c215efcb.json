@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_apartment_balcony_sunset",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 430,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "reze_apartment_balcony_sunset",
     "title": "蕾塞 · 公寓阳台黄昏",
@@ -35,7 +35,12 @@
       "railing",
       "laundry",
       "balcony",
-      "sunset"
+      "sunset",
+      "crossed forearms",
+      "city lights",
+      "wind",
+      "golden hour",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +48,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her crossed forearms rest on the railing as the white shirts move on the clothesline behind her."
   }
 }

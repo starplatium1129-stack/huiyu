@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_dominant_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 251,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "scathach_nsfw_dominant_straddle",
     "title": "斯卡哈 · 师匠的主控反客为主骑乘特训·「今晚的课业只有一项：撑住，不许昏过去」",
@@ -40,7 +40,11 @@
       "bedside light",
       "low angle",
       "crimson lace",
-      "garter belt"
+      "garter belt",
+      "straddling cushion",
+      "hands on knees",
+      "looking down",
+      "dim light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +60,7 @@
     ],
     "nsfwTokens": [
       "topless"
-    ]
+    ],
+    "animaCaption": "Both hands rest on her knees above the training cushion."
   }
 }

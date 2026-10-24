@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_church_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 562,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在轮椅上，衣衫半褪露出香肩，在烛光中沉静凝望",
     "adult": true,
@@ -35,7 +35,11 @@
       "sitting",
       "halo",
       "chapel",
-      "candlelight"
+      "candlelight",
+      "looking at viewer",
+      "gathered skirt",
+      "dark background",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -47,6 +51,7 @@
       "halo"
     ],
     "timeOfDay": "深夜",
-    "title": "蕾缪安 · 教堂夜祷"
+    "title": "蕾缪安 · 教堂夜祷",
+    "animaCaption": "She looks toward the viewer from her wheelchair, the skirt gathered beside her legs."
   }
 }

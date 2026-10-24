@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_velvet_bed_supine_devotion",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1307,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "albedo_nsfw_velvet_bed_supine_devotion",
     "title": "雅儿贝德 · 天鹅绒大床的深情仰卧",
@@ -42,7 +42,11 @@
       "masturbation",
       "candlelight",
       "gold necklace",
-      "green gemstone"
+      "green gemstone",
+      "lying on back",
+      "hand on chest",
+      "hand between legs",
+      "wings"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +61,7 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her wings rest along the mattress beside her lowered gown."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_02",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1664,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cartethyia_r18_b9_02",
     "title": "卡提希娅 · 圣泉洗礼池水雾中的圣洁水光湿身 ·「洗去战火的硝烟……洗不掉对你的思念」",
@@ -39,7 +39,13 @@
       "see-through",
       "bathing",
       "masturbation",
-      "glowing water"
+      "glowing water",
+      "sitting",
+      "leaning back",
+      "water",
+      "steam",
+      "teary eyes",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +60,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She rests against the spring edge beneath drifting mana lights."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_winter_street_snow_messenger",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 663,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "漫步在积雪街道旁驻足，单手端热咖啡，微吐白雾，目光温柔看向镜头",
     "camera": "medium shot, slightly low angle",
@@ -25,7 +25,12 @@
       "coffee",
       "snow",
       "street",
-      "medium shot"
+      "medium shot",
+      "holding bag",
+      "holding cup",
+      "looking at viewer",
+      "visible breath",
+      "streetlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +47,7 @@
       "boots"
     ],
     "timeOfDay": "傍晚黄昏",
-    "title": "德克萨斯 · 冬日落雪的街角信使"
+    "title": "德克萨斯 · 冬日落雪的街角信使",
+    "animaCaption": "One hand carries the messenger bag while the other holds hot coffee at the snowy brick corner."
   }
 }

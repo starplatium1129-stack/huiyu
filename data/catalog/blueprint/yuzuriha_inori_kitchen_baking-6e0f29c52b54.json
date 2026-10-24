@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_kitchen_baking",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 333,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yuzuriha_inori_kitchen_baking",
     "title": "楪祈 · 厨房烘焙",
@@ -35,7 +35,11 @@
       "cookie",
       "offering",
       "kitchen",
-      "warm lighting"
+      "warm lighting",
+      "holding tray",
+      "offering cookie",
+      "hopeful",
+      "kitchen light"
     ],
     "negativeTokens": [
       "oven mitts worn"
@@ -46,6 +50,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand steadies the cooled tray while the other offers the vanilla cookie."
   }
 }

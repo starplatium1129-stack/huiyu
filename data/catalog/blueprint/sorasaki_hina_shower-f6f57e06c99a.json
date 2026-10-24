@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_shower",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在长椅上，一手用布擦角，另一手留在毛巾下。",
     "adult": true,
@@ -41,7 +41,11 @@
       "steam",
       "morning",
       "white towel",
-      "purple edging"
+      "purple edging",
+      "holding cloth",
+      "drying horn",
+      "window light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -55,6 +59,7 @@
       "towel"
     ],
     "timeOfDay": "清晨",
-    "title": "空崎日奈 · 风纪委员长的晨浴"
+    "title": "空崎日奈 · 风纪委员长的晨浴",
+    "animaCaption": "One hand dries her horn with the cloth while the other remains beneath the towel."
   }
 }

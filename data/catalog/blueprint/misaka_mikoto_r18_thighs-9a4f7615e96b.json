@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_r18_thighs",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 400,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "侧坐窗边屈膝折叠双腿，一侧黑丝褪至膝弯，单手拨开蕾丝自抚，脚尖前景形成透视",
     "adult": true,
@@ -41,7 +41,12 @@
       "window bench",
       "sunset",
       "foreshortening",
-      "oversized shirt"
+      "oversized shirt",
+      "sitting sideways",
+      "bent knees",
+      "rolled stocking at knee",
+      "blue sparks",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -54,6 +59,7 @@
       "intimate"
     ],
     "timeOfDay": "傍晚",
-    "title": "御坂美琴 · 落地窗边的黑丝静电"
+    "title": "御坂美琴 · 落地窗边的黑丝静电",
+    "animaCaption": "Her raised toes enter the foreground while her face remains visible above the folded legs."
   }
 }

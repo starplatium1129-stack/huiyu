@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_bass_groove",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1829,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_ryo_bass_groove",
     "characterId": "yamada_ryo",
@@ -27,7 +27,8 @@
       "blue lighting",
       "rim light",
       "medium shot",
-      "from below"
+      "from below",
+      "leaning forward"
     ],
     "sceneTags": [
       "stage",
@@ -44,6 +45,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She plucks the thick bass strings beneath cold blue stage rim lights."
   }
 }

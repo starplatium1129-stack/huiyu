@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_fireworks_furisode_okawaii",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1394,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "穿深红振袖回眸浅笑，红瞳倒映金色烟花，广袖随风轻扬",
     "adult": false,
@@ -32,7 +32,10 @@
       "smile",
       "fireworks",
       "river",
-      "close-up"
+      "close-up",
+      "wind",
+      "night",
+      "water reflection"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -49,6 +52,7 @@
     ],
     "timeOfDay": "夏夜",
     "title": "四宫辉夜 · 烟花振袖的回眸宣告·「お可愛いこと……」",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Her wide sleeves move in the breeze above the river steps."
   }
 }

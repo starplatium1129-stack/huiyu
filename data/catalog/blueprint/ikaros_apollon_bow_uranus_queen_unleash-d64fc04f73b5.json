@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_apollon_bow_uranus_queen_unleash",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1210,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在空中完全拉满金色阿波罗光之巨弓，深红光子翼喷薄能量，眼神冷静凌厉如霜",
     "camera": "dynamic low angle, sweeping wide shot, epic warhead impact",
@@ -28,7 +28,10 @@
       "smoke",
       "night",
       "wide shot",
-      "from below"
+      "from below",
+      "spread wings",
+      "golden light",
+      "red lighting"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -61,6 +64,7 @@
       "long_hair",
       "ahoge"
     ],
-    "identityProseOverride": "Ikaros from Sora no Otoshimono, an angeloid with long pink twintails, an ahoge, green eyes, mechanical ear winglets, a metal collar with a broken chain and crimson photon wings."
+    "identityProseOverride": "Ikaros from Sora no Otoshimono, an angeloid with long pink twintails, an ahoge, green eyes, mechanical ear winglets, a metal collar with a broken chain and crimson photon wings.",
+    "animaCaption": "Her left hand holds Apollon while her right draws its string toward the unseen target."
   }
 }

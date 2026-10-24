@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_balcony_sunset_confession",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1389,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手轻柔捧起你的脸颊，金发在海风中纷飞，霞光染透湛蓝眼眸，探头微吻",
     "adult": false,
@@ -32,7 +32,11 @@
       "companion",
       "kiss",
       "seaside terrace",
-      "close-up"
+      "close-up",
+      "hands on face",
+      "windblown hair",
+      "sunset",
+      "water reflection"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -58,6 +62,7 @@
       "blue eyes",
       "mechanical hands"
     ],
-    "identityProseOverride": "Violet Evergarden, an Auto Memories Doll with loose golden-blonde hair, red hair ribbons, blue eyes and articulated silver prosthetic hands."
+    "identityProseOverride": "Violet Evergarden, an Auto Memories Doll with loose golden-blonde hair, red hair ribbons, blue eyes and articulated silver prosthetic hands.",
+    "animaCaption": "Both silver hands cup her companion's face as she pauses just before their kiss."
   }
 }

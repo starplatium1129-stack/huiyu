@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_hoori_fireworks_fan_pause",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1163,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "murasame",
     "outfitId": "summer_yukata",
@@ -22,7 +22,11 @@
       "railing",
       "river",
       "fireworks",
-      "evening"
+      "evening",
+      "holding fan",
+      "hand on railing",
+      "watching fireworks",
+      "lantern light"
     ],
     "camera": "medium shot, paper fan and resting hand visible against the river",
     "lighting": "河畔祭典灯笼暖光与远处花火",
@@ -49,6 +53,7 @@
     ],
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the fan while the other rests on the river rail."
   }
 }

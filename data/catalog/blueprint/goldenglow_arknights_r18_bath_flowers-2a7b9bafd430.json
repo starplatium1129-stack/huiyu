@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_bath_flowers",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 603,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠在浴缸里，指尖拨弄花瓣",
     "adult": true,
@@ -33,7 +33,11 @@
       "flower petals",
       "bath",
       "steam",
-      "candlelight"
+      "candlelight",
+      "blush",
+      "hand on tub rim",
+      "looking down",
+      "from above"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -45,6 +49,7 @@
       "candle"
     ],
     "timeOfDay": "夜晚",
-    "title": "澄闪 · 花瓣浴"
+    "title": "澄闪 · 花瓣浴",
+    "animaCaption": "One forearm rests on the rim while her free fingertips stir the floating rose petals."
   }
 }

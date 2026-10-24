@@ -4,7 +4,7 @@
   "revision": 6,
   "sortOrder": 349,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yui_fireworks_festival_glance",
     "characterId": "yuigahama_yui",
@@ -28,7 +28,10 @@
       "riverbank",
       "fireworks",
       "night",
-      "folding fan"
+      "folding fan",
+      "fan against chest",
+      "colorful light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -45,6 +48,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her left hand holds the fan at her chest while her right stays clasped with the viewer's on the steps."
   }
 }

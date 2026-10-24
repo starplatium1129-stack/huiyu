@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1643,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_05",
     "title": "守岸人 · 灯塔下的潮汐泳装",
@@ -37,7 +37,10 @@
       "rock",
       "bay",
       "evening",
-      "medium shot"
+      "medium shot",
+      "holding glowing shell",
+      "looking at viewer",
+      "evening light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +52,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "The luminous shell rests in her open palm as she looks toward the viewer from the bay rock."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_apartment_bath",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 419,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makima_r18_apartment_bath",
     "title": "玛奇玛 · 公寓浴缸",
@@ -32,7 +32,10 @@
       "reclining",
       "beckoning",
       "bubble bath",
-      "candlelight"
+      "candlelight",
+      "water level view",
+      "braid on rim",
+      "city lights"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +46,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "bath_unclothed",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She beckons toward the off-frame viewer from the bath rim."
   }
 }

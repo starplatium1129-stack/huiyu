@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_bath_house",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 483,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "露天温泉岩石台阶上全身坐姿回眸招手娇呼",
     "adult": true,
@@ -36,7 +36,12 @@
       "hot spring",
       "steam",
       "blush",
-      "cowboy shot"
+      "cowboy shot",
+      "stone steps",
+      "hand on ground",
+      "sunlight",
+      "water reflection",
+      "side view"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -55,6 +60,7 @@
       "daylight"
     ],
     "timeOfDay": "白天",
-    "title": "艾莉丝 · 晴林岩石温泉水汽"
+    "title": "艾莉丝 · 晴林岩石温泉水汽",
+    "animaCaption": "One hand braces on the stone step while the other beckons over her shoulder."
   }
 }

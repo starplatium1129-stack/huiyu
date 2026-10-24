@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_r18_seminar_desk_after_hours",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 923,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自横卧办公室宽桌，一手抓桌沿、一手在黑丝腿间自抚，职业装敞开",
     "adult": true,
@@ -42,7 +42,11 @@
       "desk",
       "documents",
       "calculator",
-      "night"
+      "night",
+      "grabbing desk",
+      "warm lighting",
+      "medium shot",
+      "from above"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -60,6 +64,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "早濑优香 · 研讨会深夜办公桌上的放纵"
+    "title": "早濑优香 · 研讨会深夜办公桌上的放纵",
+    "animaCaption": "One hand grips the desk edge while the calculator slides beside her folded legs."
   }
 }

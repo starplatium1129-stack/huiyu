@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_rooftop_kiss",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 545,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚着落地窗，回眸凝视",
     "adult": true,
@@ -33,7 +33,10 @@
       "embrace",
       "kiss",
       "neon",
-      "night"
+      "night",
+      "arms around neck",
+      "leaning against window",
+      "city lights"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -47,6 +50,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "陈 · 深夜窗畔",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Her arms encircle her companion's neck against the apartment window."
   }
 }

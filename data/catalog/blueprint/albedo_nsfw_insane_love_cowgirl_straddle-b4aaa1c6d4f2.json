@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_insane_love_cowgirl_straddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1309,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "albedo_nsfw_insane_love_cowgirl_straddle",
     "title": "雅儿贝德 · 狂乱独占的魅魔女皇骑乘",
@@ -38,7 +38,11 @@
       "sweat",
       "blush",
       "from below",
-      "cowgirl position"
+      "cowgirl position",
+      "hands on viewer chest",
+      "leaning forward",
+      "spread wings",
+      "firelight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +58,7 @@
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her hands brace against the viewer's chest as she leans forward."
   }
 }

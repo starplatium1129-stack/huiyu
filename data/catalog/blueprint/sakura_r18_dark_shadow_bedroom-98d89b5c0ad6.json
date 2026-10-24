@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_dark_shadow_bedroom",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 180,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakura_r18_dark_shadow_bedroom",
     "characterId": "matou_sakura",
@@ -30,7 +30,12 @@
       "shadow magic",
       "red glow",
       "medium shot",
-      "ragged hem"
+      "ragged hem",
+      "bent knees",
+      "shadow ribbons",
+      "hand gesture",
+      "masturbation",
+      "loose hair"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -64,6 +69,7 @@
       "red eyes",
       "fate/stay night"
     ],
-    "identityProseOverride": "Sakura Matou from Fate/stay night in her dark form, with long purple hair, a red ribbon on her left side and red eyes."
+    "identityProseOverride": "Sakura Matou from Fate/stay night in her dark form, with long purple hair, a red ribbon on her left side and red eyes.",
+    "animaCaption": "One hand directs the shadow ribbons supporting her thighs while the other rests between her legs."
   }
 }

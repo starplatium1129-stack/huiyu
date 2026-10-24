@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_r18_b5_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1565,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hori_kyouko_r18_b5_03",
     "title": "堀京子 · 试衣镜前耳钉勾住吊带裙的拉扯事故 ·「痛痛痛……耳钉挂在蕾丝上了……宫村快救我」",
@@ -45,7 +45,10 @@
       "looking back",
       "blush",
       "medium shot",
-      "lace trim"
+      "lace trim",
+      "hand on vanity",
+      "teary eyes",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -60,6 +63,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand braces on the vanity; the other holds the strap caught near her earring."
   }
 }

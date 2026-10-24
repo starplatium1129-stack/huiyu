@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_inn_room",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 383,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elaina_r18_inn_room",
     "title": "伊雷娜 · 灰之魔女的旅夜",
@@ -37,7 +37,12 @@
       "night",
       "lamplight",
       "ivory shirt",
-      "gray cuffs"
+      "gray cuffs",
+      "headboard",
+      "open journal",
+      "tracing map",
+      "moonlight",
+      "lantern"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "ivory_travel_shirt",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand supports the travel journal while the other traces a route."
   }
 }

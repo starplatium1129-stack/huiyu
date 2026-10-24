@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_rooftop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 330,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yuzuriha_inori_rooftop",
     "title": "楪祈 · 屋顶对话",
@@ -37,12 +37,18 @@
       "rooftop",
       "sea",
       "evening",
-      "full body"
+      "full body",
+      "holding tea can",
+      "both hands",
+      "looking at viewer",
+      "wind",
+      "dusk"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "outfitId": "school_uniform",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands cradle the tea while she turns toward the viewer beside her."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_beach_sunset_summer_confession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1803,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rapi_beach_sunset_summer_confession",
     "title": "拉毗 · 绯红余晖海滩的温柔并肩漫步",
@@ -58,11 +58,19 @@
       "wet_legs",
       "sunlit_skin",
       "lens_flare",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "walking",
+      "barefoot",
+      "looking at viewer",
+      "blush",
+      "wind",
+      "water droplets",
+      "sunset"
     ],
     "promptProse": "Strolling barefoot along the calm shoreline as a brilliant magenta-orange sunset shimmers across gentle waves, Rapi wears a vibrant crimson string bikini and sheer pareo fluttering in the breeze. Water droplets sparkle on her sunlit collarbones and toned midriff, her stoic military expression melting into a demure, blushing glance toward the viewer.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She turns a softened glance toward the viewer along the calm shoreline."
   }
 }

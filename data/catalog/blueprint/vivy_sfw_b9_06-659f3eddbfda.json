@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1700,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "vivy_sfw_b9_06",
     "title": "Vivy · 缝纫与服装保养",
@@ -37,7 +37,10 @@
       "thread",
       "costume",
       "rest room",
-      "medium shot"
+      "medium shot",
+      "sewing",
+      "humming",
+      "lamplight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She mends the performance cape across her lap while quietly humming."
   }
 }

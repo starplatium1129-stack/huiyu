@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_couch_letter",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 624,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜倚沙发阅读来信，一手持纸，另一手留在裙边。",
     "adult": true,
@@ -39,7 +39,11 @@
       "reclining",
       "letter",
       "female masturbation",
-      "couch"
+      "couch",
+      "reading",
+      "neon light",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -52,6 +56,7 @@
       "after_hours"
     ],
     "timeOfDay": "深夜",
-    "title": "羽毛笔 · 包厢微醺"
+    "title": "羽毛笔 · 包厢微醺",
+    "animaCaption": "One hand holds the private letter diagonally above the couch."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_commuter_train_shoulder_lean",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 360,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "iroha_commuter_train_shoulder_lean",
     "title": "一色彩羽 · 电车里的半张车票",
@@ -36,7 +36,9 @@
       "train interior",
       "ticket",
       "smile",
-      "medium shot"
+      "medium shot",
+      "hand on seat",
+      "carriage light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand smooths the ticket against her knee while the other braces on the swaying seat."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_morning_futon_tying_hair_ribbon",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1341,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在被褥边双手撩起发丝，嘴唇咬着发带准备束发，衣襟微敞眼神慵懒",
     "camera": "cowboy shot, eye level",
@@ -28,7 +28,11 @@
       "tying hair",
       "futon",
       "tatami",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting",
+      "both hands",
+      "lazy gaze",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +48,7 @@
       "lazy_gaze"
     ],
     "timeOfDay": "清晨",
-    "title": "两仪式 · 晨光微醒的咬发带束发"
+    "title": "两仪式 · 晨光微醒的咬发带束发",
+    "animaCaption": "Both hands gather her hair while the black ribbon stays between her lips."
   }
 }

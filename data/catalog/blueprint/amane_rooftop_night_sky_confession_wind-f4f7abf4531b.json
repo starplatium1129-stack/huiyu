@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_rooftop_night_sky_confession_wind",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1181,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "amane_rooftop_night_sky_confession_wind",
     "title": "周防天音 · 学园天台的夜风倾诉",
@@ -39,9 +39,14 @@
       "hands behind back",
       "tears",
       "wind",
-      "night"
+      "night",
+      "looking at another",
+      "city lights",
+      "rim light",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "She faces Yuuji just beyond the frame, hands behind her back."
   }
 }

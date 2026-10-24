@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_maid_cafe_shift",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 831,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端着托盘小心走过，差点绊倒",
     "adult": false,
@@ -29,7 +29,10 @@
       "cake",
       "bowing",
       "blush",
-      "medium shot"
+      "medium shot",
+      "holding tray",
+      "both hands",
+      "warm light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +51,7 @@
       "bowing"
     ],
     "timeOfDay": "afternoon",
-    "title": "深森白夜 · 女仆咖啡打工"
+    "title": "深森白夜 · 女仆咖啡打工",
+    "animaCaption": "She bows toward the customer outside the frame while holding the tray level."
   }
 }

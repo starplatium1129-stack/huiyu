@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_street_delivery",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 617,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手持巨型斩首机械镰刀警戒站立",
     "camera": "dynamic full-body shot, low angle",
@@ -26,7 +26,10 @@
       "neon lights",
       "midnight",
       "full body",
-      "low angle"
+      "low angle",
+      "holding scythe",
+      "alert",
+      "rim light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +44,7 @@
     "timeOfDay": "深夜",
     "title": "羽毛笔 · 镰刃夜巡",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The mechanical scythe rests at her shoulder above the wet neon alley."
   }
 }

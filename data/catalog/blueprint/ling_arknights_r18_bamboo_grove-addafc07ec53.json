@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_bamboo_grove",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 658,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "侧卧竹林石台锦垫，一手轻勾画面外同伴衣角，散落酒盏在身旁。",
     "adult": true,
@@ -37,7 +37,11 @@
       "stone platform",
       "cushion",
       "bamboo grove",
-      "moonlight"
+      "moonlight",
+      "lying on side",
+      "holding sleeve",
+      "leaf shadows",
+      "mist"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -51,6 +55,7 @@
       "mist"
     ],
     "timeOfDay": "月夜",
-    "title": "令 · 竹林微醺"
+    "title": "令 · 竹林微醺",
+    "animaCaption": "She catches her off-frame companion's sleeve beside the scattered wine cups."
   }
 }

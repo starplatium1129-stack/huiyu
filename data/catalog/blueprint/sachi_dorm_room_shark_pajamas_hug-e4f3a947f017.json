@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1188,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sachi_dorm_room_shark_pajamas_hug",
     "title": "小岭幸 · 睡前卧房的鲨鱼睡衣私语",
@@ -37,9 +37,15 @@
       "hugging",
       "sitting on floor",
       "bedroom",
-      "close-up"
+      "close-up",
+      "chin on plushie",
+      "hugging plushie",
+      "both arms",
+      "sleepy",
+      "bedside lamp"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "Both arms hold the shark plush beneath her resting chin."
   }
 }

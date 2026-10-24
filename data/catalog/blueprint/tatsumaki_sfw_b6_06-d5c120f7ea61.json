@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1588,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_06",
     "title": "战栗的龙卷 · 冬夜窗边的城市",
@@ -38,7 +38,10 @@
       "floating",
       "cocoa",
       "window",
-      "medium shot"
+      "medium shot",
+      "both hands",
+      "city lights",
+      "lamplight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands hold cocoa before the apartment window while she floats cross-legged."
   }
 }

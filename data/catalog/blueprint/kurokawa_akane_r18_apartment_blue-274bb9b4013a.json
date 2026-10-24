@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_apartment_blue",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 969,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在窗边弯起一腿，一手伸向背后拉链，另一手留在裙内",
     "adult": true,
@@ -34,7 +34,9 @@
       "bent leg",
       "fingering",
       "window seat",
-      "curtain"
+      "curtain",
+      "morning light",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -52,6 +54,7 @@
       "daylight"
     ],
     "timeOfDay": "清晨",
-    "title": "黑川茜 · 晴窗白纱长裙微敞"
+    "title": "黑川茜 · 晴窗白纱长裙微敞",
+    "animaCaption": "One hand reaches behind for the dress zipper beside the billowing curtain."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_bedroom_red_sweater_lift",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yor_r18_bedroom_red_sweater_lift",
     "characterId": "yor_forger",
@@ -30,7 +30,9 @@
       "sweater lift",
       "sitting",
       "bed",
-      "lamplight"
+      "lamplight",
+      "looking at viewer",
+      "blush"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -50,6 +52,7 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She holds the sweater hem between her teeth and glances toward the viewer from the bed edge."
   }
 }

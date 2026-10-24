@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_r18_skirt_desk_domination",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1861,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_nino_r18_skirt_desk_domination",
     "characterId": "nakano_nino",
@@ -36,7 +36,9 @@
       "blush",
       "tears",
       "sunset light",
-      "cowboy shot"
+      "cowboy shot",
+      "classroom",
+      "chair"
     ],
     "sceneTags": [
       "classroom",
@@ -55,6 +57,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She straddles the viewer's lap on the classroom chair, one hand on his chest."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_desk_bent_over_prone",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1286,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_nsfw_desk_bent_over_prone",
     "title": "莉雅丝 · 办公桌前的更衣自抚·「被你一直看着的话……身体会忍不住变热的」",
@@ -46,7 +46,13 @@
       "bent over",
       "looking back",
       "desk",
-      "moonlight"
+      "moonlight",
+      "hand on desk",
+      "heavy blush",
+      "blushing ears",
+      "warm lighting",
+      "pov",
+      "dutch angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -62,6 +68,7 @@
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "One palm braces on the desk while she looks back through moonlight from the tall window."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_nsfw_calm_witch_cowgirl_straddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1320,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "全裸正面跨坐缓慢起伏骑乘，双手按在膝头，俯身凝视低语，眼神充满深邃爱意",
     "adult": true,
@@ -37,7 +37,10 @@
       "blush",
       "from below",
       "cowgirl position",
-      "forehead mark"
+      "forehead mark",
+      "leaning forward",
+      "fireplace",
+      "red glow"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -54,6 +57,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "C.C. · 不老魔女的从容低语骑乘"
+    "title": "C.C. · 不老魔女的从容低语骑乘",
+    "animaCaption": "Her hands rest on her knees as she leans toward the viewer."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_bed_lamp",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 604,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠着床头软枕，一臂环住膝盖，另一手伸向视角，被角落在膝上",
     "adult": true,
@@ -38,7 +38,8 @@
       "bedside lamp",
       "electricity",
       "night",
-      "blush"
+      "blush",
+      "close up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -51,6 +52,7 @@
       "cozy"
     ],
     "timeOfDay": "夜晚",
-    "title": "澄闪 · 床头灯"
+    "title": "澄闪 · 床头灯",
+    "animaCaption": "One arm circles her knees while the other reaches toward the viewer above the blanket on her lap."
   }
 }

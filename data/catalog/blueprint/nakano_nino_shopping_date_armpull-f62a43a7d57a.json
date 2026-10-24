@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_shopping_date_armpull",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1858,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_nino_shopping_date_armpull",
     "characterId": "nakano_nino",
@@ -29,7 +29,9 @@
       "confident",
       "smile",
       "sunny day",
-      "cowboy shot"
+      "cowboy shot",
+      "leaning",
+      "looking up"
     ],
     "sceneTags": [
       "city",
@@ -47,6 +49,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She leans close to the viewer's arm while looking up along the shopping boulevard."
   }
 }

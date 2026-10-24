@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc005",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She walks ahead along the riverbank and turns toward the viewer as fireworks light her hair and lanterns warm her cheek.",
+    "animaCaption": "Fireworks rim her hair while nearby lanterns light the cheek turned toward the viewer.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "回眸半身中景",
     "category": "祭典・节日",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "day",
-    "prompt": "1girl, shiki_natsume, dusty pink yukata, camellia print, burgundy obi, gold obijime, looking back, riverbank, festival, lanterns, fireworks, night, medium shot",
+    "prompt": "1girl, shiki_natsume, dusty pink yukata, camellia print, burgundy obi, gold obijime, looking back, riverbank, festival, lanterns, fireworks, night, medium shot, walking, light smile, firelight, warm lighting",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 烟花亮起时的回眸】夏日祭的人潮在河岸缓慢移动，穿浴衣的夏目始终走在你半步之前。烟花升空时，她没有立刻抬头，反而先回身确认你还跟着；绚丽光影映亮她眼下的泪痣，也照出耳根的红色。被你发现后，她迅速移开视线——「我只是怕你在人群里走丢。烟花已经开始了，别再看我。」",
@@ -47,6 +47,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "She walks ahead along the riverbank and turns toward the viewer as fireworks light her hair and lanterns warm her cheek."
   }
 }

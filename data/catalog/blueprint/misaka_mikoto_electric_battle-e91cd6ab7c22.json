@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_electric_battle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 393,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "指尖弹出硬币，电光贯穿夜空",
     "camera": "full body, from below",
@@ -28,7 +28,11 @@
       "railgun",
       "lightning",
       "damaged overpass",
-      "night"
+      "night",
+      "blue lightning",
+      "orange beam",
+      "full body",
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -42,6 +46,7 @@
       "city"
     ],
     "timeOfDay": "夜晚",
-    "title": "御坂美琴 · 电光战场"
+    "title": "御坂美琴 · 电光战场",
+    "animaCaption": "The coin leaves her fingertips at the front of the railgun beam beneath the damaged overpass."
   }
 }

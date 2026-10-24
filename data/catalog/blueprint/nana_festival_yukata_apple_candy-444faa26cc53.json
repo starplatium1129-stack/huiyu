@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_festival_yukata_apple_candy",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1269,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手举着红亮苹果糖递向对方喂食，脸颊微红露出小虎牙，爱心尾巴欢快甩动",
     "camera": "medium shot, eye level, both companions visible",
@@ -29,7 +29,12 @@
       "blush",
       "festival",
       "lantern",
-      "medium shot"
+      "medium shot",
+      "holding candy",
+      "fang",
+      "shy smile",
+      "swaying tail",
+      "lantern light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -49,6 +54,7 @@
     "nsfwProse": "",
     "characterTokens": [
       "yuuki rito"
-    ]
+    ],
+    "animaCaption": "She offers the candy apple toward Rito beside her, a fang visible in her hesitant smile."
   }
 }

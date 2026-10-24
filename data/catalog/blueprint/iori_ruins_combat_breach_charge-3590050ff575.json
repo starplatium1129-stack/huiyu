@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_ruins_combat_breach_charge",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 924,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在硝烟与碎石中贴地滑铲突进，手持卡宾狙击枪射击",
     "camera": "full-body shot, Dutch angle",
@@ -29,7 +29,10 @@
       "hallway",
       "dawn",
       "full body",
-      "dutch angle"
+      "dutch angle",
+      "holding rifle with both hands",
+      "smoke",
+      "god rays"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +47,7 @@
       "garter_straps"
     ],
     "timeOfDay": "清晨破晓",
-    "title": "银镜伊织 · 突击队长的破晓突进"
+    "title": "银镜伊织 · 突击队长的破晓突进",
+    "animaCaption": "Both hands hold the firing rifle as she slides feet-first through the ruined corridor."
   }
 }

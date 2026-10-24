@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_swimsuit_sunset",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 904,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "刚从海里上岸回望",
     "adult": false,
@@ -35,7 +35,9 @@
       "wet hair",
       "leaning on shoulder",
       "beach",
-      "sunset"
+      "sunset",
+      "sitting",
+      "head on shoulder"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -48,6 +50,7 @@
     ],
     "timeOfDay": "黄昏",
     "title": "圣园未花 · 晚霞海滩的湿发私语",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "The teacher sits to her right beneath the pink-violet sky."
   }
 }

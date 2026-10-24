@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_coronation",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 988,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "加冕礼上接过王冠",
     "camera": "cowboy shot",
@@ -26,7 +26,11 @@
       "crown",
       "cathedral",
       "coronation",
-      "cowboy shot"
+      "cowboy shot",
+      "hands raised",
+      "looking up",
+      "throne",
+      "daylight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
     ],
     "timeOfDay": "白天",
     "title": "希斯特里亚 · 女王加冕",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "The attendant on her right lowers the crown toward her raised hands."
   }
 }

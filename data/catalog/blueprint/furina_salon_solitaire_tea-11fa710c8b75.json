@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_salon_solitaire_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "furina_salon_solitaire_tea",
     "title": "芙宁娜 · 独奏沙龙午后茶歇",
@@ -43,13 +43,20 @@
       "armchair",
       "gramophone",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "sitting sideways",
+      "holding teacup",
+      "holding saucer",
+      "looking at creature",
+      "smile",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_director",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She watches the water spirit above the cake, cup at her lips and saucer supported."
   }
 }

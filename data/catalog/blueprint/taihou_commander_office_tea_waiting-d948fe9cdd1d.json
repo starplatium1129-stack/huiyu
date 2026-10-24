@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_commander_office_tea_waiting",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1076,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "taihou_commander_office_tea_waiting",
     "title": "大凤 · 官邸深夜的温情侍奉",
@@ -37,10 +37,16 @@
       "cheek touch",
       "office",
       "medium shot",
-      "low angle"
+      "low angle",
+      "leaning forward",
+      "gloved hand on cheek",
+      "tea on saucer",
+      "lamplight",
+      "moonlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "One gloved hand touches the viewer's cheek while the tea rests on its saucer beside the desk."
   }
 }

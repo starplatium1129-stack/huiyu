@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_greenhouse_night",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 605,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在温室花丛间，指尖捻着花瓣",
     "adult": true,
@@ -38,7 +38,10 @@
       "greenhouse",
       "flowers",
       "moonlight",
-      "night"
+      "night",
+      "holding petal",
+      "head on shoulder",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +53,7 @@
       "petals"
     ],
     "timeOfDay": "夜晚",
-    "title": "澄闪 · 花房夜香"
+    "title": "澄闪 · 花房夜香",
+    "animaCaption": "She turns a petal between her fingertips and leans toward the clothed shoulder at the frame edge."
   }
 }

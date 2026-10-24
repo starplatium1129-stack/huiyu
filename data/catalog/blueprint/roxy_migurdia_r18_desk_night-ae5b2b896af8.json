@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_desk_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 461,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "深夜伏在书桌前，单薄睡衣滑落肩头",
     "adult": true,
@@ -31,7 +31,12 @@
       "rubbing eyes",
       "parchment",
       "scroll",
-      "oil lamp"
+      "oil lamp",
+      "hand on notes",
+      "tired",
+      "night",
+      "medium shot",
+      "from side"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -44,6 +49,7 @@
       "intimate"
     ],
     "timeOfDay": "深夜",
-    "title": "洛琪希 · 书桌夜读"
+    "title": "洛琪希 · 书桌夜读",
+    "animaCaption": "One hand rests on the finished notes while the other rubs a tired eye."
   }
 }

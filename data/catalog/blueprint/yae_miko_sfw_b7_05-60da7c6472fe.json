@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_sfw_b7_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yae_miko_sfw_b7_05",
     "title": "八重神子 · 海滨祭典的油豆腐冰饮",
@@ -36,7 +36,12 @@
       "drink",
       "fireworks",
       "seaside",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "looking back",
+      "open fan",
+      "glass reflection",
+      "lantern light"
     ],
     "negativeTokens": [
       "daylight"
@@ -50,6 +55,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "The open fan rests in one hand while the chilled drink sits beside her on the seaside platform."
   }
 }

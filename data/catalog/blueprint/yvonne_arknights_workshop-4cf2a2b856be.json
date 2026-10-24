@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_workshop",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 732,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "维修台前调试双枪",
     "camera": "medium shot",
@@ -27,7 +27,9 @@
       "oil stains",
       "workshop",
       "workbench",
-      "medium shot"
+      "medium shot",
+      "spinning handgun",
+      "spotlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +44,7 @@
     "timeOfDay": "白天",
     "title": "伊冯 · 废土工坊",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She spins the repaired handgun while the screwdriver remains between her teeth above the workbench."
   }
 }

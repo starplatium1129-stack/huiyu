@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_boyfriend_shirt_cheerful_wave",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1772,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "lala_boyfriend_shirt_cheerful_wave",
     "title": "菈菈 · 阳台微风中的敞怀衬衫与活力挥手",
@@ -51,11 +51,13 @@
       "demon_tail",
       "heart_tail",
       "daylight",
-      "blue_sky"
+      "blue_sky",
+      "cowboy shot"
     ],
     "promptProse": "Standing on the sunlit veranda with a gentle breeze catching her wide-open white collared shirt, Lala waves one hand high in a cheerful greeting. Her long pink hair and slender spade-heart tail flutter playfully against the airy sky as she smiles with radiant energy.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She waves high from the veranda while her long hair and heart-tipped tail catch the breeze."
   }
 }

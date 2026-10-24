@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_summer_beach_surf_patrol",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1056,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "踩在清澈浅水海浪中，手扶墨镜回眸，鲨鱼尾在海水中激起晶莹水花",
     "camera": "full body, 3/4 dynamic perspective",
@@ -26,7 +26,12 @@
       "beach",
       "shallow water",
       "summer",
-      "full body"
+      "full body",
+      "looking back",
+      "hand on visor",
+      "waves",
+      "splashing water",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +45,7 @@
       "summer"
     ],
     "timeOfDay": "上午",
-    "title": "艾莲·乔 · 碧海清波的鲨鱼泳姿"
+    "title": "艾莲·乔 · 碧海清波的鲨鱼泳姿",
+    "animaCaption": "She raises her red visor as her tail sweeps foam behind her."
   }
 }

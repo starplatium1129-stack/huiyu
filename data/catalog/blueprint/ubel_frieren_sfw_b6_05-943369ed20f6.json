@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_05",
     "title": "尤贝尔 · 海边捡到的有趣贝壳",
@@ -35,7 +35,12 @@
       "crouching",
       "shells",
       "black sand",
-      "full body"
+      "full body",
+      "holding shell",
+      "wet sand",
+      "ankle-deep water",
+      "afternoon light",
+      "mist"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +52,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "The tide reaches her ankles as she lifts the unusual shell."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_canteen_hotpot",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 727,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "两眼放光地盯着九宫格辣锅里翻滚的红油与辣椒，熟练地捞起一块爽脆毛肚塞入口中，辣得直哈气却大呼痛快",
     "camera": "medium shot",
@@ -25,7 +25,13 @@
       "chopsticks",
       "spicy food",
       "hot pot",
-      "cafeteria"
+      "cafeteria",
+      "holding chopsticks",
+      "offering food",
+      "grin",
+      "steam",
+      "bright lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +43,7 @@
       "friends"
     ],
     "timeOfDay": "中午",
-    "title": "莱万汀 · 火锅挑战"
+    "title": "莱万汀 · 火锅挑战",
+    "animaCaption": "She holds a hotpot morsel toward the viewer across the table with her chopsticks."
   }
 }

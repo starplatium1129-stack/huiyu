@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1155,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "咖啡馆开店前把咖啡豆与小白花放入捧花，闻到点心香后放松微笑",
     "adult": false,
@@ -33,7 +33,10 @@
       "white flower",
       "coffee beans",
       "morning",
-      "full body"
+      "full body",
+      "smile",
+      "morning light",
+      "bakery"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -49,6 +52,7 @@
       "morning_light"
     ],
     "timeOfDay": "清晨",
-    "title": "明月栞那 · 星光咖啡馆的白色花嫁"
+    "title": "明月栞那 · 星光咖啡馆的白色花嫁",
+    "animaCaption": "She tucks coffee beans and small white flowers into her bouquet."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_r18_shower",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 398,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "背靠雾湿玻璃单膝踩上浴凳，湿透背心贴肤半透，单手随水流在腿间自抚",
     "adult": true,
@@ -34,7 +34,12 @@
       "leg up",
       "hand between legs",
       "shower",
-      "static"
+      "static",
+      "foot on stool",
+      "back against glass",
+      "warm lighting",
+      "blue lightning",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +55,7 @@
       "intimate"
     ],
     "timeOfDay": "深夜",
-    "title": "御坂美琴 · 研究公寓的蒸汽电光"
+    "title": "御坂美琴 · 研究公寓的蒸汽电光",
+    "animaCaption": "One foot rests on the stool as her back meets the fogged glass beneath the shower stream."
   }
 }

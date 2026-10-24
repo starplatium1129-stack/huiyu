@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_biker_midnight_highway_drift",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 674,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜靠在黑色重型改装机车旁，手指转动车钥匙，皮衣敞开露出小蛮腰，狂野挑衅",
     "camera": "cowboy shot, low angle",
@@ -26,7 +26,12 @@
       "keys",
       "highway",
       "night",
-      "from below"
+      "from below",
+      "leaning",
+      "spinning keys",
+      "grin",
+      "headlight",
+      "neon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +47,7 @@
       "smirk"
     ],
     "timeOfDay": "午夜",
-    "title": "拉普兰德 · 午夜公路的狂放飞驰"
+    "title": "拉普兰德 · 午夜公路的狂放飞驰",
+    "animaCaption": "The motorcycle headlamp lights the nearby guardrail beneath the distant neon."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_bridal_vow_white_dress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1497,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_bridal_vow_white_dress",
     "title": "山田杏奈 · 白裙时装秀的谢幕",
@@ -37,7 +37,11 @@
       "white roses",
       "runway",
       "spotlight",
-      "full body"
+      "full body",
+      "holding bouquet",
+      "both hands",
+      "smile",
+      "white spotlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +54,7 @@
       "romance",
       "iconic"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "The long train spreads behind her at the runway tip."
   }
 }

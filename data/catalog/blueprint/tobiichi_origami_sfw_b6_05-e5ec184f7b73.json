@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_05",
     "title": "鸢一折纸 · AST 休假海滩的测风",
@@ -35,7 +35,11 @@
       "notebook",
       "buoy",
       "shallows",
-      "full body"
+      "full body",
+      "holding notebook",
+      "shallow water",
+      "composed expression",
+      "blue daylight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +51,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "She raises the recovered notebook beside the orange buoy."
   }
 }

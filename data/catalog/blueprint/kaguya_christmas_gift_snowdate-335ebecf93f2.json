@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_christmas_gift_snowdate",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1397,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "围白围巾递出礼物盒，雪光里红瞳亮晶晶，傲娇嘴硬",
     "adult": false,
@@ -31,7 +31,11 @@
       "gift box",
       "snow",
       "christmas lights",
-      "close-up"
+      "close-up",
+      "holding gift",
+      "both hands",
+      "blush",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -47,6 +51,7 @@
       "date"
     ],
     "timeOfDay": "圣诞夜",
-    "title": "四宫辉夜 · 圣诞雪夜的礼物·「这个……是给你的。有意见吗？」"
+    "title": "四宫辉夜 · 圣诞雪夜的礼物·「这个……是给你的。有意见吗？」",
+    "animaCaption": "Both hands offer the gift above her white scarf."
   }
 }

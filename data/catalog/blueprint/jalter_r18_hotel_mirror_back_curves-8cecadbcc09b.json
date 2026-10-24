@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_hotel_mirror_back_curves",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 174,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jalter_r18_hotel_mirror_back_curves",
     "characterId": "jeanne_alter",
@@ -29,7 +29,10 @@
       "condensation",
       "looking back",
       "candlelight",
-      "from behind"
+      "from behind",
+      "hand on frame",
+      "night",
+      "medium shot"
     ],
     "negativeTokens": [
       "reflected face"
@@ -49,6 +52,7 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "r18_elegant_boudoir",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One gloved finger traces the opaque mirror, which shows candlelight without another face."
   }
 }

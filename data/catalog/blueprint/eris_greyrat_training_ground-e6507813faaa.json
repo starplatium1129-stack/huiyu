@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_training_ground",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 477,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "反复挥剑训练",
     "camera": "cowboy shot, practicing sword drills on the training ground",
@@ -29,7 +29,10 @@
       "dirt",
       "sunset",
       "backlighting",
-      "cowboy shot"
+      "cowboy shot",
+      "both hands",
+      "determined",
+      "training post"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +45,7 @@
       "determined"
     ],
     "timeOfDay": "黄昏",
-    "title": "艾莉丝 · 挥剑千次"
+    "title": "艾莉丝 · 挥剑千次",
+    "animaCaption": "Both hands guide a deliberate sword arc between the training posts."
   }
 }

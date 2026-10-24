@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 303,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_03",
     "title": "美杜莎 Rider · 锁链缠绕紧身皮衣拉链卡死的受力事故 ·「锁链缠死在拉链上了……Master，请不要用奇怪的眼神看我」",
@@ -41,7 +41,11 @@
       "slipping blindfold",
       "leaning forward",
       "looking back",
-      "bookshelf"
+      "bookshelf",
+      "hands on bookshelf",
+      "one eye visible",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -56,6 +60,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her dagger chain catches the suit zipper beneath the slipping blindfold."
   }
 }

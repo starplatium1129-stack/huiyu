@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1742,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_06",
     "title": "不知火舞 · 练习扇上的新流苏",
@@ -36,7 +36,11 @@
       "tassel",
       "kneeling",
       "dojo",
-      "medium shot"
+      "medium shot",
+      "cushion",
+      "tying knot",
+      "satisfied smile",
+      "morning light"
     ],
     "negativeTokens": [
       "electric fan",
@@ -49,6 +53,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand steadies the bamboo fan while the other tightens its new tassel knot."
   }
 }

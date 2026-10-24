@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_bodysuit_unzipped",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 770,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "administrator_arknights_r18_bodysuit_unzipped",
     "characterId": "administrator_arknights",
@@ -36,7 +36,9 @@
       "sweat",
       "leaning back",
       "metal wall",
-      "cowboy shot"
+      "cowboy shot",
+      "spotlight",
+      "yellow lighting"
     ],
     "promptProse": "Leaning against the changing cabin's metal wall, she lowers the bodysuit's front zipper to her navel. Yellow warning lamps and a service spotlight illuminate the wall.",
     "negativeTokens": [],
@@ -47,6 +49,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@yoneyama_mai",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She lowers the front zipper to her navel against the metal wall."
   }
 }

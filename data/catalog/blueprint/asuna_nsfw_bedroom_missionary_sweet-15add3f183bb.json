@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_bedroom_missionary_sweet",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1374,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asuna_nsfw_bedroom_missionary_sweet",
     "title": "结城明日奈 · 毛衣褪半与开档蕾丝战袍床褥仰卧·「请永远……都这样注视着我……」",
@@ -43,7 +43,11 @@
       "knees up",
       "cream sweater",
       "cable knit",
-      "oversized sweater"
+      "oversized sweater",
+      "lying on back",
+      "hands on chest",
+      "bedside light",
+      "white sheets"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -66,6 +70,7 @@
       "hair_down",
       "brown_eyes"
     ],
-    "identityProseOverride": "Asuna Yuuki from Sword Art Online, with waist-length chestnut hair worn loose and hazel-brown eyes."
+    "identityProseOverride": "Asuna Yuuki from Sword Art Online, with waist-length chestnut hair worn loose and hazel-brown eyes.",
+    "animaCaption": "Her hands stay at her chest beneath the gathered sweater."
   }
 }

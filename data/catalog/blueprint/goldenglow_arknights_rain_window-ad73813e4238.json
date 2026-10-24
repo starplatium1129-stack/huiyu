@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_rain_window",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 599,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "趴在窗台上看雨滴滑落",
     "camera": "medium close-up",
@@ -28,7 +28,10 @@
       "window",
       "rain",
       "hair salon",
-      "close up"
+      "close up",
+      "daydreaming",
+      "swaying tail",
+      "grey lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +43,7 @@
       "daydream"
     ],
     "timeOfDay": "雨天",
-    "title": "澄闪 · 雨窗"
+    "title": "澄闪 · 雨窗",
+    "animaCaption": "Her chin rests in both hands as she follows a raindrop down the salon window."
   }
 }

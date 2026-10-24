@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_night_school_pool_summer",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 424,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "reze_night_school_pool_summer",
     "characterId": "reze_chainsaw",
@@ -26,7 +26,11 @@
       "poolside",
       "laughing",
       "night",
-      "moonlight"
+      "moonlight",
+      "stepping out of pool",
+      "wiping face",
+      "water droplets",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -43,6 +47,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She wipes her face while stepping out of the pool and laughing toward the viewer."
   }
 }

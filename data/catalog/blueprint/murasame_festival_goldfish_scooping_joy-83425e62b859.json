@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_festival_goldfish_scooping_joy",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1123,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蹲在水池前手握纸网小心捞金鱼，浴衣下摆微收，呆毛竖直，神情极度专注",
     "camera": "medium close-up, water-level angle, face and paper scoop visible",
@@ -27,7 +27,12 @@
       "paper scoop",
       "lantern",
       "festival",
-      "night"
+      "night",
+      "water level view",
+      "holding scoop",
+      "goldfish",
+      "focused",
+      "lantern reflections"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +49,7 @@
     "timeOfDay": "夜晚",
     "title": "丛雨 · 夏日祭捞金鱼的执着对决",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The torn scoop hovers above the basin as she watches the red goldfish."
   }
 }

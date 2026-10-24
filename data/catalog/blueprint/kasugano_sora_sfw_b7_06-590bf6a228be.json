@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1618,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_06",
     "title": "春日野穹 · 赫尔辛基的雪",
@@ -37,7 +37,9 @@
       "snow",
       "plaza",
       "visible breath",
-      "medium shot"
+      "medium shot",
+      "relieved expression",
+      "winter sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She looks toward the viewer across the snow-covered plaza."
   }
 }

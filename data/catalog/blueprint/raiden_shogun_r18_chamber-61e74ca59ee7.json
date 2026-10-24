@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_chamber",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "raiden_shogun_r18_chamber",
     "title": "雷电将军 · 天守深闺的紫纱微颤",
@@ -39,7 +39,10 @@
       "blush",
       "silk sheets",
       "candlelight",
-      "black lace trim"
+      "black lace trim",
+      "teary eyes",
+      "silk pillow",
+      "purple rim light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "sheer_babydoll",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She rests against the purple silk pillows with the open negligee gathered beside her."
   }
 }

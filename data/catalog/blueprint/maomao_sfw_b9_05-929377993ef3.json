@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1709,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "maomao_sfw_b9_05",
     "title": "猫猫 · 海滨药草茶的苦味研究",
@@ -34,7 +34,12 @@
     "promptTokens": [
       "herbal tea",
       "harbor",
-      "stall"
+      "stall",
+      "offering tea",
+      "citrus slice",
+      "herbs",
+      "satisfied",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -46,6 +51,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "She slides the tea toward the viewer across the harbor stall."
   }
 }

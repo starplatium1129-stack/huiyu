@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc089",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Across the picnic blanket, she offers a drink while steadying the lunchbox arranged for two; lakeside sunlight falls on the meal and her expectant face.",
+    "animaCaption": "She steadies the lunchbox arranged for two while offering the viewer a drink across the blanket.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "野餐盒与递饮料半身中景",
     "category": "旅行",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white sleeveless blouse, scalloped collar, khaki tailored shorts, brown woven belt, picnic blanket, lunchbox, sandwiches, fruit, offering drink, lake, medium shot",
+    "prompt": "1girl, shiki_natsume, white sleeveless blouse, scalloped collar, khaki tailored shorts, brown woven belt, picnic blanket, lunchbox, sandwiches, fruit, offering drink, lake, medium shot, holding lunchbox, sunlight, light smile",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -55,6 +55,7 @@
       "展示图",
       "CG"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Across the picnic blanket, she offers a drink while steadying the lunchbox arranged for two; lakeside sunlight falls on the meal and her expectant face."
   }
 }

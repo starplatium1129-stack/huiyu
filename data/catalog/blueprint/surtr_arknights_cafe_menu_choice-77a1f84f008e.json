@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_cafe_menu_choice",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 692,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfitId": "ice_cream_cafe_casual",
@@ -21,7 +21,11 @@
       "Surtr",
       "ice cream",
       "dessert shop",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "pointing",
+      "holding bag strap",
+      "window light"
     ],
     "camera": "medium shot, side view of the display case and the pointing hand",
     "lighting": "甜品店侧窗柔和日光",
@@ -44,6 +48,7 @@
       "afternoon",
       "medium_shot"
     ],
-    "negativeTokens": []
+    "negativeTokens": [],
+    "animaCaption": "One hand holds her bag strap while the other points toward vanilla at the display counter."
   }
 }

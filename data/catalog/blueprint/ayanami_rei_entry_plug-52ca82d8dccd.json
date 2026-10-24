@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_entry_plug",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1009,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端坐于驾驶舱操纵台前，神情安详宁静",
     "camera": "medium shot, eye level",
@@ -26,7 +26,11 @@
       "LCL",
       "control sticks",
       "sitting",
-      "medium shot"
+      "medium shot",
+      "hands on controls",
+      "calm expression",
+      "orange lighting",
+      "screen light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
       "calm_expression"
     ],
     "timeOfDay": "白天",
-    "title": "绫波丽 · 插入栓的静谧"
+    "title": "绫波丽 · 插入栓的静谧",
+    "animaCaption": "Orange LCL refraction meets the cool interface light around her hands."
   }
 }

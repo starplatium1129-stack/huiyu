@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_garden_bench",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 561,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "停驻在花丛树荫下的轮椅上，膝盖覆着薄毯翻看诗集",
     "camera": "medium shot",
@@ -27,7 +27,11 @@
       "lap blanket",
       "poetry book",
       "garden",
-      "morning"
+      "morning",
+      "holding book",
+      "looking at viewer",
+      "dappled sunlight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +42,7 @@
       "flowers"
     ],
     "timeOfDay": "清晨",
-    "title": "蕾缪安 · 花园小憩"
+    "title": "蕾缪安 · 花园小憩",
+    "animaCaption": "The open poetry book rests on her blanket-covered lap as she glances up beneath the trees."
   }
 }

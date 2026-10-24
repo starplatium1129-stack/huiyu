@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_r18_tatami_cowgirl_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1132,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自跨坐软垫，一手握发带、一手腿间自抚",
     "adult": true,
@@ -36,7 +36,11 @@
       "fingering",
       "holding hair ribbon",
       "futon cushion",
-      "lantern"
+      "lantern",
+      "adult",
+      "straddling cushion",
+      "holding ribbon",
+      "kimono at waist"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +54,7 @@
       "petite"
     ],
     "timeOfDay": "夜间",
-    "title": "丛雨 · 榻榻米跨坐骑乘与娇羞起伏"
+    "title": "丛雨 · 榻榻米跨坐骑乘与娇羞起伏",
+    "animaCaption": "One hand holds the hair ribbon above the futon cushion."
   }
 }

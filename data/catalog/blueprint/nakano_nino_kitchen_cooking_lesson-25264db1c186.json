@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_kitchen_cooking_lesson",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1857,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_nino_kitchen_cooking_lesson",
     "characterId": "nakano_nino",
@@ -29,7 +29,9 @@
       "slight blush",
       "morning light",
       "medium shot",
-      "rolled sleeves"
+      "rolled sleeves",
+      "looking aside",
+      "pout"
     ],
     "sceneTags": [
       "kitchen",
@@ -46,6 +48,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She places the rolled omelet into the bento with wooden chopsticks."
   }
 }

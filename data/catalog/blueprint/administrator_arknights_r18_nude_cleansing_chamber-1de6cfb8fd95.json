@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_nude_cleansing_chamber",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 772,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "administrator_arknights_r18_nude_cleansing_chamber",
     "characterId": "administrator_arknights",
@@ -33,7 +33,10 @@
       "nude",
       "standing",
       "looking at viewer",
-      "full body"
+      "full body",
+      "light beam",
+      "platform",
+      "low angle"
     ],
     "promptProse": "She stands on the central purification platform beneath a white beam descending from the dome.",
     "negativeTokens": [],
@@ -44,6 +47,7 @@
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@tsunako",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The white beam descends from the dome onto the central platform."
   }
 }

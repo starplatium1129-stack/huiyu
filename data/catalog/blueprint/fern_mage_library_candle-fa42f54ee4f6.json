@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_mage_library_candle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 123,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fern_mage_library_candle",
     "title": "菲伦 · 早期修行的烛光抄写",
@@ -43,9 +43,13 @@
       "rune",
       "library",
       "candlelight",
-      "medium shot"
+      "medium shot",
+      "open book",
+      "nodding",
+      "staff against wall"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "One hand holds the book open as she nods toward the offered tea."
   }
 }

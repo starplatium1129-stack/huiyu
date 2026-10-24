@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_sfw_b5_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 968,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "握着麦克风完成歌曲结尾定格，红瞳专注而额角带汗。",
     "adult": false,
@@ -29,7 +29,12 @@
       "stage",
       "microphone",
       "spotlight",
-      "medium shot"
+      "medium shot",
+      "holding microphone",
+      "singing",
+      "sweat",
+      "determined",
+      "dark background"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +51,7 @@
       "medium_shot"
     ],
     "timeOfDay": "日间",
-    "title": "有马加奈 · B小町舞台的定格"
+    "title": "有马加奈 · B小町舞台的定格",
+    "animaCaption": "She holds the final singing pose, sweat catching the spotlight at her temple."
   }
 }

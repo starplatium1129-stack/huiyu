@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_convenience",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 510,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kisara_engage_kiss_convenience",
     "title": "木更 · 便利店日常",
@@ -30,7 +30,10 @@
       "energy drink",
       "convenience store",
       "night",
-      "medium shot"
+      "medium shot",
+      "holding drink",
+      "shelves",
+      "bright lighting"
     ],
     "negativeTokens": [
       "readable brand labels"
@@ -39,6 +42,7 @@
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The basket rests on one forearm while her free hand raises an energy drink."
   }
 }

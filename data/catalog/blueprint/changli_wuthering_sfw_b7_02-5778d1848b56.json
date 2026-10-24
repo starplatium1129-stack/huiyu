@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_02",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1634,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_02",
     "title": "长离 · 庭院里的授课",
@@ -36,7 +36,12 @@
       "Jinhsi",
       "tea",
       "stone table",
-      "garden"
+      "garden",
+      "pouring tea",
+      "teapot",
+      "sitting",
+      "dappled sunlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +55,7 @@
     "compositionIntent": "group",
     "characterTokens": [
       "Jinhsi"
-    ]
+    ],
+    "animaCaption": "Changli sits left, pouring into Jinhsi's cup on the right; their hands remain separate."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_rooftop_lemon_candy_sunset_blush",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1788,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "michiru_rooftop_lemon_candy_sunset_blush",
     "title": "松岛满 · 天台黄昏的柠檬糖与傲娇逞强",
@@ -65,11 +65,17 @@
       "blue_eyes",
       "wind_blown_hair",
       "detailed_background",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "standing",
+      "leaning on fence",
+      "rim light",
+      "medium shot",
+      "dutch angle"
     ],
     "promptProse": "Standing proudly with hands on her hips against the chain-link fence on the Mihama Academy rooftop bathed in deep orange sunset glow, Michiru's waist-length bleached blonde twintails flutter in the evening sea breeze. A translucent lemon lollipop sticks out from her cheek as she turns her head in an exaggerated tsundere pout with bright red blushing cheeks.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She turns her flushed face aside with the lollipop at her cheek and both hands on her hips."
   }
 }

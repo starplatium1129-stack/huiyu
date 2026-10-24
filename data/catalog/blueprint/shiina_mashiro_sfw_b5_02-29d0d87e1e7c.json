@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1514,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_02",
     "title": "椎名真白 · 年轮蛋糕的仪式感",
@@ -36,7 +36,12 @@
       "baumkuchen",
       "plate",
       "low table",
-      "medium shot"
+      "medium shot",
+      "kneeling",
+      "hands on knees",
+      "looking at food",
+      "fork",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her hands rest on her knees as she studies the cake centered on the low table."
   }
 }

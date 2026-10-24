@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_ruins_shelter",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 578,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在断墙上，头盔搁在膝边",
     "camera": "medium shot",
@@ -22,7 +22,10 @@
       "helmet beside knee",
       "sitting",
       "ruined wall",
-      "dusk"
+      "dusk",
+      "wind",
+      "sunset",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +39,7 @@
     "timeOfDay": "黄昏",
     "title": "泥岩 · 废墟小憩",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her helmet rests beside one knee on the broken fortress wall."
   }
 }

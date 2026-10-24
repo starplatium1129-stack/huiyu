@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_10",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1528,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_10",
     "title": "和泉纱雾 · 新年参拜的许愿",
@@ -36,7 +36,13 @@
       "tiptoes",
       "shrine",
       "morning",
-      "medium shot"
+      "medium shot",
+      "both hands",
+      "raised arms",
+      "smile",
+      "visible breath",
+      "winter",
+      "morning light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands lift the ema cord over the hook as her breath clouds in the morning air."
   }
 }

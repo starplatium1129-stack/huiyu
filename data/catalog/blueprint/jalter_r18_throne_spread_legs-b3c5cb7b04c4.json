@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_throne_spread_legs",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 172,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jalter_r18_throne_spread_legs",
     "characterId": "jeanne_alter",
@@ -31,7 +31,10 @@
       "throne",
       "flagpole",
       "black fire",
-      "from below"
+      "from below",
+      "leg over armrest",
+      "haughty expression",
+      "full body"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -52,6 +55,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The short flagpole lies across her thighs as one booted leg rests over the armrest."
   }
 }

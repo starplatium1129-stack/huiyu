@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_sunset_rooftop_breeze_pause",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 929,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "背靠着铁丝网栏杆怀抱狙击枪，微仰头享受晚风吹拂，眼神柔和",
     "camera": "cowboy shot, medium angle",
@@ -28,7 +28,11 @@
       "rooftop",
       "wind",
       "sunset",
-      "cowboy shot"
+      "cowboy shot",
+      "holding rifle",
+      "gentle smile",
+      "windblown hair",
+      "rim light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +47,7 @@
       "gentle_smile"
     ],
     "timeOfDay": "黄昏日落",
-    "title": "银镜伊织 · 晚霞天台的片刻喘息"
+    "title": "银镜伊织 · 晚霞天台的片刻喘息",
+    "animaCaption": "She cradles the rifle against her chest while leaning against the fence and watching the horizon."
   }
 }

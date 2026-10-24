@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 653,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "立于山巅仰望银河伸臂虚握流星",
     "camera": "wide shot",
@@ -26,7 +26,9 @@
       "clouds",
       "milky way",
       "meteor",
-      "wide shot"
+      "wide shot",
+      "standing",
+      "wind"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +41,7 @@
       "dragon_girl"
     ],
     "timeOfDay": "深夜",
-    "title": "令 · 云海山巅观星"
+    "title": "令 · 云海山巅观星",
+    "animaCaption": "She reaches toward the meteor from the summit stone."
   }
 }

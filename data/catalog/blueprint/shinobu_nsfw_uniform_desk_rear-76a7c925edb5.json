@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_nsfw_uniform_desk_rear",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1459,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "撑诊疗桌塌腰翘臀更衣整理受力，队服微敞羽织滑落，咬唇回眸微嗔喘息",
     "adult": true,
@@ -36,7 +36,10 @@
       "table",
       "looking back",
       "candlelight",
-      "wide shot"
+      "wide shot",
+      "hands on table",
+      "loose belt",
+      "off shoulder"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -55,6 +58,7 @@
     "nsfwTokens": [
       "skirt lift",
       "crotchless panties"
-    ]
+    ],
+    "animaCaption": "Both hands brace on the treatment table as she glances back, her haori slipping from one shoulder."
   }
 }

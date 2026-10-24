@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_summer_poolside_slender_elegance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1167,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kazuki_summer_poolside_slender_elegance",
     "title": "风见一姬 · 碧蓝池畔的银月清波",
@@ -38,9 +38,13 @@
       "feet in water",
       "poolside",
       "daylight",
-      "full body"
+      "full body",
+      "water ripples",
+      "caustics",
+      "sunlight"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "One palm supports her from behind while her feet stir the pool water."
   }
 }

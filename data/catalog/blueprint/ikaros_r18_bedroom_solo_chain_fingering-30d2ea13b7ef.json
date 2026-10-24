@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_r18_bedroom_solo_chain_fingering",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1222,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠卧收腿，一手握松散断链，另一手留在腿间。",
     "adult": true,
@@ -40,7 +40,9 @@
       "moonlight",
       "white dress",
       "layered frills",
-      "red ribbon"
+      "red ribbon",
+      "folded wings",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -55,6 +57,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "伊卡洛斯 · 卧房独处探寻心跳私密自抚"
+    "title": "伊卡洛斯 · 卧房独处探寻心跳私密自抚",
+    "animaCaption": "She holds the loose chain around her raised thigh; her wings rest along the mattress."
   }
 }

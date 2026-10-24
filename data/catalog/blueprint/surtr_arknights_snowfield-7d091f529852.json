@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_snowfield",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 517,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "拄剑而立，风雪掠过发梢",
     "camera": "wide shot, low angle",
@@ -23,7 +23,11 @@
       "flaming sword",
       "snow",
       "from below",
-      "wide shot"
+      "wide shot",
+      "standing",
+      "steam",
+      "melted snow",
+      "dusk light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -35,6 +39,7 @@
       "sword"
     ],
     "timeOfDay": "黄昏",
-    "title": "史尔特尔 · 雪原独行"
+    "title": "史尔特尔 · 雪原独行",
+    "animaCaption": "She plants the burning sword in the snow above a steaming ring of melted ice."
   }
 }

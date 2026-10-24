@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_senpai_straddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1436,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "utaha_nsfw_senpai_straddle",
     "title": "霞之丘诗羽 · 深夜书房·半解黑蕾丝与踩椅褪袜",
@@ -51,12 +51,20 @@
       "black high heels",
       "chair",
       "study",
-      "night"
+      "night",
+      "reclining",
+      "breast slip",
+      "manuscripts",
+      "wine glass",
+      "warm lighting",
+      "full body",
+      "low angle"
     ],
     "negativeTokens": [],
     "nsfwTokens": [
       "topless"
     ],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands roll the pantyhose toward one raised ankle; the other foot half-slips from its heel."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_hot_spring_research",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 550,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蹲在温泉岸边，将温度计探入泉水测量水温",
     "camera": "medium shot",
@@ -25,7 +25,11 @@
       "hot spring",
       "steam",
       "dawn",
-      "medium shot"
+      "medium shot",
+      "holding thermometer",
+      "sleeve shake",
+      "morning light",
+      "rock"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +40,7 @@
       "nature"
     ],
     "timeOfDay": "清晨",
-    "title": "艾雅法拉 · 温泉考察"
+    "title": "艾雅法拉 · 温泉考察",
+    "animaCaption": "One hand lowers the thermometer by its cord; her notebook stays on a dry rock."
   }
 }

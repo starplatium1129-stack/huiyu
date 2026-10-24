@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_skyline_roof",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 628,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单膝蹲在天台边缘，手搭凉棚远眺龙门都市",
     "camera": "wide shot, eye level",
@@ -28,7 +28,10 @@
       "rooftop",
       "cityscape",
       "sunset",
-      "wide shot"
+      "wide shot",
+      "looking down",
+      "glowing wings",
+      "orange lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +42,7 @@
       "outlook"
     ],
     "timeOfDay": "黄昏",
-    "title": "能天使 · 天台速递"
+    "title": "能天使 · 天台速递",
+    "animaCaption": "She shades her eyes from one knee on the guardrail, guns and light wings arranged behind her."
   }
 }

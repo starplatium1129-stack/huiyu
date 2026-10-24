@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_r18_b9_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1760,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "togawa_sakiko_r18_b9_03",
     "title": "丰川祥子 · 打工更衣室白衬衫黑丝刮破的狼狈事故 ·「不许看！……就算我沦落到打工，也不是你能随意嘲笑的！」",
@@ -44,7 +44,10 @@
       "looking back",
       "biting lip",
       "locker room",
-      "navy pencil skirt"
+      "navy pencil skirt",
+      "hands on locker",
+      "dim lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -59,6 +62,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her tights catch on the jagged locker hinge as she asks the viewer to turn away."
   }
 }

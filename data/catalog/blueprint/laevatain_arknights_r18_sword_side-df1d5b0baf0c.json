@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_sword_side",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 734,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "赤身侧卧在床单上，指尖搭在床头大剑熔光剑柄上",
     "adult": true,
@@ -32,7 +32,10 @@
       "on side",
       "greatsword",
       "bed",
-      "ember glow"
+      "ember glow",
+      "hand on hilt",
+      "looking at viewer",
+      "close up"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -44,6 +47,7 @@
       "ember"
     ],
     "timeOfDay": "深夜",
-    "title": "莱万汀 · 剑侧夜话"
+    "title": "莱万汀 · 剑侧夜话",
+    "animaCaption": "Her hand rests on the glowing sword hilt beside the bed as she turns toward her offscreen companion."
   }
 }

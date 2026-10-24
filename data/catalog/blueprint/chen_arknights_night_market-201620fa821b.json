@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_night_market",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 537,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在龙门夜市摊位前品尝香辣鱼丸串",
     "camera": "medium shot",
@@ -24,7 +24,10 @@
       "eating",
       "shoppers",
       "red lantern",
-      "medium shot"
+      "medium shot",
+      "food stall",
+      "lantern light",
+      "neon reflections"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +39,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "陈 · 龙门夜市",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She tastes the skewer while shoppers pass behind her."
   }
 }

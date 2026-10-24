@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_royal_ball_waltz",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1387,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在舞池中与你共舞华尔兹，露肩墨绿礼服裙摆如波浪般旋转荡漾，湛蓝双眸顾盼生辉",
     "adult": false,
@@ -31,7 +31,11 @@
       "waltz",
       "ballroom",
       "chandelier",
-      "wide shot"
+      "wide shot",
+      "holding hand",
+      "hand on shoulder",
+      "dancing",
+      "rotating skirt"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +50,7 @@
       "chandelier"
     ],
     "timeOfDay": "夜晚",
-    "title": "薇尔莉特 · 宫廷华尔兹的翡翠裙摆·「请握紧我的手……我不会松开」"
+    "title": "薇尔莉特 · 宫廷华尔兹的翡翠裙摆·「请握紧我的手……我不会松开」",
+    "animaCaption": "One silver hand rests in her partner's palm while the other stays on their shoulder through the waltz turn."
   }
 }

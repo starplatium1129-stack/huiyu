@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_bunny_change",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 878,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "脚跟撑在凳上，双手伸到背后解开卡住的拉链。",
     "adult": true,
@@ -37,7 +37,12 @@
       "stuck zipper",
       "topless",
       "hands behind back",
-      "raised leg"
+      "raised leg",
+      "stool",
+      "night",
+      "warm lighting",
+      "full body",
+      "rear three-quarter view"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -48,6 +53,7 @@
       "intimate"
     ],
     "timeOfDay": "夜晚",
-    "title": "飞鸟马时 · 兔女郎更衣室拉链"
+    "title": "飞鸟马时 · 兔女郎更衣室拉链",
+    "animaCaption": "One heel braces on the stool as both hands free the jammed zipper."
   }
 }

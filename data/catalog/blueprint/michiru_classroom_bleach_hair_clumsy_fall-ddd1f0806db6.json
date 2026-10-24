@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_classroom_bleach_hair_clumsy_fall",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1789,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "michiru_classroom_bleach_hair_clumsy_fall",
     "title": "松岛满 · 空教室打翻柠檬汁的手忙脚乱",
@@ -60,11 +60,15 @@
       "very_long_hair",
       "dynamic_pose",
       "detailed_background",
-      "dramatic_lighting"
+      "dramatic_lighting",
+      "dust motes",
+      "from below",
+      "dutch angle"
     ],
     "promptProse": "In an empty sunset-lit classroom, Michiru trips forward clumsily with flailing arms as a crate of canned lemon sodas flies into the air around her. Her oversized cream hoodie slips sideways and her twin golden tails whip about dynamically, her expressive face caught in a wide-eyed panicked anime scream as she tumbles toward the viewer.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The soda cans fly around her as she tumbles forward between the desks with both arms flailing."
   }
 }

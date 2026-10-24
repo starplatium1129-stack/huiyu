@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc096",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Wearing the viewer's oversized T-shirt, she sits cross-legged by the refrigerator and steadies the ice-cream tub for their spoon, keeping her own in her right hand. Cold fridge light meets the warm kitchen lamp across her guilty smile.",
+    "animaCaption": "She steadies the ice-cream tub for the viewer's spoon while keeping her own spoon in her right hand.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "冰箱前坐姿与冰淇淋半身中景",
     "category": "日常/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, oversized white cotton t-shirt, navy ribbed collar, blue drawstring shorts, white piping, cross-legged, ice cream, spoon, open refrigerator, night, medium shot",
+    "prompt": "1girl, ayachi_nene, oversized white cotton t-shirt, navy ribbed collar, blue drawstring shorts, white piping, cross-legged, ice cream, spoon, open refrigerator, night, medium shot, sitting, holding spoon, refrigerator light, warm lighting, guilty smile",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -52,6 +52,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Wearing the viewer's oversized T-shirt, she sits cross-legged by the refrigerator and steadies the ice-cream tub for their spoon, keeping her own in her right hand. Cold fridge light meets the warm kitchen lamp across her guilty smile."
   }
 }

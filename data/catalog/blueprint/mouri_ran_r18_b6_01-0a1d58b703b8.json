@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_r18_b6_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1613,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mouri_ran_r18_b6_01",
     "title": "毛利兰 · 事务所道场空手道服主控跨坐 ·「新一……不许小看全国空手道冠军的腰力哦」",
@@ -38,7 +38,11 @@
       "face touching",
       "tatami",
       "dojo",
-      "night"
+      "night",
+      "straddling",
+      "loose belt",
+      "shoji light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +57,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She cups her offscreen companion's face, the loosened belt hanging before her knees on the tatami."
   }
 }

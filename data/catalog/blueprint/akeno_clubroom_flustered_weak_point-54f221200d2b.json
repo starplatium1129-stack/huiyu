@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_clubroom_flustered_weak_point",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1287,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "akeno_clubroom_flustered_weak_point",
     "title": "姬岛朱乃 · 触碰软肋的破防娇羞",
@@ -36,7 +36,16 @@
       "looking away",
       "hug from behind",
       "bookshelf",
-      "upper body"
+      "upper body",
+      "leaning back",
+      "heavy blush",
+      "blushing ears",
+      "teary eyes",
+      "parted lips",
+      "holding clothes",
+      "window light",
+      "golden hour",
+      "library"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +55,7 @@
       "flustered",
       "sweet"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "His arm encircles her waist; she catches his collar while his free hand brushes her ear."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_study_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 157,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tohsaka_rin_r18_study_night",
     "title": "远坂凛 · 魔术工坊的深红兔女郎试穿",
@@ -36,7 +36,11 @@
       "chair",
       "study",
       "night",
-      "medium shot"
+      "medium shot",
+      "pulling zipper",
+      "masturbation",
+      "lamplight",
+      "ruby glow"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -51,6 +55,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "bunny_suit",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand pulls the jammed back zipper while the other remains beneath the open lace panel."
   }
 }

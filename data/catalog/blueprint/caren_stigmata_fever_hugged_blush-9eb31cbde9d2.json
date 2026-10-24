@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_stigmata_fever_hugged_blush",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 212,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_stigmata_fever_hugged_blush",
     "title": "卡莲 · 圣痕发作的拥抱索温",
@@ -39,7 +39,13 @@
       "holding collar",
       "supporting shoulder",
       "candlelight",
-      "close-up"
+      "close-up",
+      "curled up",
+      "sitting",
+      "both hands",
+      "heavy blush",
+      "teary eyes",
+      "trembling"
     ],
     "negativeTokens": [
       "burning clothing",
@@ -53,6 +59,7 @@
       "sweet"
     ],
     "adult": true,
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Both hands clutch the viewer's coat collar while a clothed shoulder supports her on the bench."
   }
 }

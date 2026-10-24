@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_gala_banquet_balcony_wine_infiltrate",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1200,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yuria_gala_banquet_balcony_wine_infiltrate",
     "title": "春寺由梨亚 · 海滨露台餐厅的晚装烛光与浪漫小酌",
@@ -41,13 +41,18 @@
       "ocean",
       "terrace",
       "candlelight",
-      "cowboy shot"
+      "cowboy shot",
+      "holding glass",
+      "looking back",
+      "moonlight",
+      "water reflection"
     ],
     "negativeTokens": [
       "glasses worn"
     ],
     "recommendedSize": "1152x1536",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She turns toward her offscreen companion beside the marble rail, the wine glass at her side."
   }
 }

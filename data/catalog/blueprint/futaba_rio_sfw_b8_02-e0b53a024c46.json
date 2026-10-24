@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_02",
     "title": "双叶理央 · 图书馆最深处的高深书籍",
@@ -39,7 +39,11 @@
       "library",
       "afternoon",
       "profile",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "open book",
+      "finger on page",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +53,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her fingertip follows the argument in the top book."
   }
 }

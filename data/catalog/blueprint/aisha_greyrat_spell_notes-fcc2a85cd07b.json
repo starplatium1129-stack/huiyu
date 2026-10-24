@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_spell_notes",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 485,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "aisha_greyrat_spell_notes",
     "title": "爱夏·页边的术式修订",
@@ -30,12 +30,17 @@
       "library",
       "book",
       "notebook",
-      "quill"
+      "quill",
+      "pointing",
+      "writing",
+      "open book",
+      "afternoon light"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
     "negativeTokens": [
       "readable notes"
-    ]
+    ],
+    "animaCaption": "Her left finger marks the diagram as her right hand connects the notes."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_wine_bath_solo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 377,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruno_nsfw_wine_bath_solo",
     "title": "雪之下阳乃 · 豪华大理石浴缸的红酒水光独奏 ·「把醉意都发泄在水里……就不算失态了吧」",
@@ -35,7 +35,12 @@
       "female masturbation",
       "bathtub",
       "rose petals",
-      "chandelier"
+      "chandelier",
+      "reclining",
+      "marble bathtub",
+      "hand between legs",
+      "warm lighting",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +53,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "The wine glass rests on the tub rim while one hand remains beneath the water between her thighs."
   }
 }

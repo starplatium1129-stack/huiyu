@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_r18_b9_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1737,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "dorothy_nikke_r18_b9_01",
     "title": "桃乐丝 · 方舟地表废墟天使羽翼主控跨坐 ·「指挥官……请把我这具满是仇恨与泥垢的身体彻底洗净」",
@@ -42,7 +42,10 @@
       "tears",
       "moonlight",
       "velvet waist panel",
-      "pearl buttons"
+      "pearl buttons",
+      "on lap",
+      "hands on another's face",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +60,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands cup the viewer's face while her opened gown and wings catch the moonlight."
   }
 }

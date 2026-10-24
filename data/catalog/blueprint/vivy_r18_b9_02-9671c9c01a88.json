@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_02",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1706,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "vivy_r18_b9_02",
     "title": "Vivy · 维护休眠水舱排热蒸汽中的水光湿身 ·「机体核心过热……需要排解情感回路积累的冗余数据」",
@@ -37,7 +37,10 @@
       "floating",
       "maintenance pod",
       "coolant",
-      "blue light"
+      "blue light",
+      "masturbation",
+      "ripples",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +59,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Ripples move through the turquoise coolant around her floating hair."
   }
 }

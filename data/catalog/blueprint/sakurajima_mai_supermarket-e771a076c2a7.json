@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_supermarket",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakurajima_mai_supermarket",
     "title": "樱岛麻衣 · 超市采购",
@@ -33,7 +33,10 @@
     "promptTokens": [
       "shopping cart",
       "supermarket",
-      "medium shot"
+      "medium shot",
+      "holding package",
+      "both hands",
+      "store lighting"
     ],
     "negativeTokens": [
       "handheld basket",
@@ -45,6 +48,7 @@
     "outfitId": "sfw_grocery_disguise",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She compares one sealed ingredient tray in each hand beside her parked cart."
   }
 }

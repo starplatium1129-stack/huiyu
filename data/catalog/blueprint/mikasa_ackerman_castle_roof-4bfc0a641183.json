@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_castle_roof",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 983,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "屋顶上望向远方",
     "camera": "cowboy shot, standing on the royal capital castle roof and looking toward the horizon",
@@ -21,7 +21,11 @@
     "promptProse": "Mikasa watches beyond the walls from the castle roof, wind lifting her cape and red scarf; low sunlight rims her profile.",
     "promptTokens": [
       "castle roof",
-      "sunset"
+      "sunset",
+      "looking away",
+      "wind",
+      "red scarf",
+      "backlighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -34,6 +38,7 @@
       "wind"
     ],
     "timeOfDay": "黄昏",
-    "title": "三笠 · 自由之翼下"
+    "title": "三笠 · 自由之翼下",
+    "animaCaption": "Wind lifts her cape and scarf above the castle roof."
   }
 }

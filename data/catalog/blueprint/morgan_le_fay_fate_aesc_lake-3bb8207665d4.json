@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_aesc_lake",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 192,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [
       "readable spell text"
@@ -40,10 +40,13 @@
       "staff",
       "knee-deep water",
       "glowing fingertips",
-      "lake"
+      "lake",
+      "holding staff",
+      "water reflections"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "aesc_savior",
-    "coverageTags": []
+    "coverageTags": [],
+    "animaCaption": "Light gathers at her free fingertips beside the upright staff."
   }
 }

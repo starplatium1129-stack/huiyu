@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_moonlit_rooftop_stiletto",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 804,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yor_moonlit_rooftop_stiletto",
     "characterId": "yor_forger",
@@ -27,7 +27,10 @@
       "needles",
       "rooftop",
       "moonlight",
-      "medium shot"
+      "medium shot",
+      "holding weapons",
+      "both hands",
+      "reverse grip"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -43,6 +46,7 @@
     "coverageTags": [
       "iconic",
       "combat"
-    ]
+    ],
+    "animaCaption": "Both golden needle weapons rest in reverse grip above the clock-tower roof beneath the moon."
   }
 }

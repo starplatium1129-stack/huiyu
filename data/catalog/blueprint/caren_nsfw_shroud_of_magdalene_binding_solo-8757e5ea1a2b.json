@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 217,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
     "title": "卡莲 · 抹大拉圣骸布缠绕与圣痕发热自持",
@@ -47,7 +47,14 @@
       "red shroud",
       "kneeling",
       "masturbation",
-      "candlelight"
+      "candlelight",
+      "one knee",
+      "hand between legs",
+      "heavy blush",
+      "stained glass",
+      "moonlight",
+      "altar lamp",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -64,6 +71,7 @@
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "One hand holds the Shroud taut around her hips and thighs while the other reaches between her legs."
   }
 }

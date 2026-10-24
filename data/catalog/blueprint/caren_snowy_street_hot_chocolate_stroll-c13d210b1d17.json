@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_snowy_street_hot_chocolate_stroll",
     "title": "卡莲 · 冬日雪街的热可可小憩",
@@ -35,7 +35,14 @@
       "snowy street",
       "hot chocolate",
       "bench",
-      "evening"
+      "evening",
+      "holding cup",
+      "both hands",
+      "looking back",
+      "smile",
+      "streetlight",
+      "reflected light",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +51,7 @@
       "date",
       "winter",
       "romantic"
-    ]
+    ],
+    "animaCaption": "She pauses beside the bench with the hot-chocolate cup held beneath her chin."
   }
 }

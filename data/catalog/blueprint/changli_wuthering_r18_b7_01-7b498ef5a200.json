@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_r18_b7_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1655,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "changli_wuthering_r18_b7_01",
     "title": "长离 · 今州城观景阁红白华服羽衣主控跨坐 ·「执子之手……今晚这局棋，本座甘愿做你的俘虏」",
@@ -40,7 +40,11 @@
       "topless",
       "straddling",
       "embers",
-      "night"
+      "night",
+      "hands on board",
+      "warm lighting",
+      "water reflection",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +59,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands rest on the go board's wooden edge beside the viewer."
   }
 }

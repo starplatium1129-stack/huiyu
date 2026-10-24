@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1156,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "海滨咖啡车旁举起亲手打出的冰拿铁展示拉花，侧马尾迎风轻扬",
     "adult": false,
@@ -32,7 +32,13 @@
       "stool",
       "iced coffee",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "holding cup",
+      "wind",
+      "ponytail",
+      "smile",
+      "afternoon light"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -49,6 +55,7 @@
       "afternoon_light"
     ],
     "timeOfDay": "日间",
-    "title": "明月栞那 · 海边咖啡车的冰拿铁"
+    "title": "明月栞那 · 海边咖啡车的冰拿铁",
+    "animaCaption": "She tilts the iced latte toward the viewer to show its foam pattern."
   }
 }

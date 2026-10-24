@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_pantyhose",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakurajima_mai_r18_pantyhose",
     "title": "樱岛麻衣 · 黑丝微褪·足尖的大透视",
@@ -36,7 +36,12 @@
       "afternoon",
       "topless",
       "open clothes",
-      "full body"
+      "full body",
+      "both hands",
+      "barefoot",
+      "toes",
+      "warm lighting",
+      "low angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -50,6 +55,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands roll one tights leg to her ankle while the other leg remains covered."
   }
 }

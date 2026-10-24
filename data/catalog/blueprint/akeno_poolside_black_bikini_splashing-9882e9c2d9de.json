@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_poolside_black_bikini_splashing",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1290,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "akeno_poolside_black_bikini_splashing",
     "title": "姬岛朱乃 · 阳光池畔的水光嬉戏",
@@ -36,7 +36,12 @@
       "splashing",
       "smile",
       "daytime",
-      "full body"
+      "full body",
+      "wet skin",
+      "wet hair",
+      "water reflection",
+      "sunlight",
+      "tilted head"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +50,7 @@
       "swimsuit",
       "summer",
       "pool"
-    ]
+    ],
+    "animaCaption": "She kicks the water with both feet and scoops a splash toward the viewer."
   }
 }

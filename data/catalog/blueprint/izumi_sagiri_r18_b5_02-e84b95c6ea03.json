@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_r18_b5_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1534,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.122379600+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "izumi_sagiri_r18_b5_02",
     "title": "和泉纱雾 · 清晨洗衣间的小帮忙",
@@ -34,7 +34,9 @@
       "standing",
       "morning",
       "window light",
-      "medium shot"
+      "medium shot",
+      "wet shirt",
+      "water droplets"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +51,7 @@
       "daily",
       "home"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "One hand checks the machine controls while the other lifts the damp cuff clear of the door."
   }
 }

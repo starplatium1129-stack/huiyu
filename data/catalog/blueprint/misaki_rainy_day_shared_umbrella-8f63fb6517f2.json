@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_rainy_day_shared_umbrella",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 407,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "钻进你的伞下紧贴肩膀，星瞳别扭又满足",
     "adult": false,
@@ -32,7 +32,10 @@
       "shared umbrella",
       "shoulder contact",
       "rain",
-      "street"
+      "street",
+      "blush",
+      "streetlight",
+      "medium two-shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +49,7 @@
       "date"
     ],
     "timeOfDay": "雨天",
-    "title": "食蜂操祈 · 雨日共伞的小秘密·「伞下三厘米，是本小姐的领域」"
+    "title": "食蜂操祈 · 雨日共伞的小秘密·「伞下三厘米，是本小姐的领域」",
+    "animaCaption": "Misaki stands left, shoulder against her companion on the right, who holds the umbrella."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_06",
     "title": "夜刀神十香 · 樱花树下的命名纪念",
@@ -32,7 +32,10 @@
     "promptProse": "Tohka looks up at the falling cherry petals and quietly mouths her name.",
     "promptTokens": [
       "cherry blossoms",
-      "medium shot"
+      "medium shot",
+      "looking up",
+      "petals",
+      "afternoon light"
     ],
     "negativeTokens": [
       "extra people",
@@ -45,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She quietly mouths her name while watching cherry petals fall."
   }
 }

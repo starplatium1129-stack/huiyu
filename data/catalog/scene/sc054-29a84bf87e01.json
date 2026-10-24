@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc054",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 52,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She nestles against the viewer's shoulder beneath their shared wool blanket as the first dawn light reaches the sea.",
+    "animaCaption": "She nestles against the viewer's shoulder beneath their shared blanket.",
     "auditRevision": "careful-batch05-2026-08-27",
     "camera": "共毯肩侧面部近景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, pale blue cotton dress, smocked bodice, small pearl buttons, blanket, leaning on person, sitting, beach, dawn, close up",
+    "prompt": "1girl, ayachi_nene, pale blue cotton dress, smocked bodice, small pearl buttons, blanket, leaning on person, sitting, beach, dawn, close up, ocean, wool blanket, sleepy, light smile",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -52,6 +52,7 @@
       "展示图",
       "头像"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "She nestles against the viewer's shoulder beneath their shared wool blanket as the first dawn light reaches the sea."
   }
 }

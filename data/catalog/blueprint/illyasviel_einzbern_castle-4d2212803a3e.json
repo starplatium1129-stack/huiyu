@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_einzbern_castle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 158,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "illyasviel_einzbern_castle",
     "title": "伊莉雅丝菲尔 · 爱因兹贝伦城堡",
@@ -37,12 +37,15 @@
       "castle",
       "snow",
       "moonlight",
-      "candlelight"
+      "candlelight",
+      "turning toward visitor",
+      "closed coat"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "winter_coat",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her clasped hands stay behind her coat as she turns toward the off-frame visitor."
   }
 }

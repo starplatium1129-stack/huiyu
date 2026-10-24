@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1025,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "赤足坐在木栈桥边晃动双腿，侧颜温柔",
     "camera": "full-body shot, eye level",
@@ -26,7 +26,12 @@
       "pier",
       "sitting",
       "sunset",
-      "full body"
+      "full body",
+      "feet in water",
+      "sandals beside her",
+      "water ripples",
+      "relaxed",
+      "backlighting"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +46,7 @@
       "mountain_silhouette"
     ],
     "timeOfDay": "黄昏",
-    "title": "惣流·明日香 · 湖畔残阳的静谧"
+    "title": "惣流·明日香 · 湖畔残阳的静谧",
+    "animaCaption": "Her sandals rest beside her as both feet gently stir the water below the pier."
   }
 }

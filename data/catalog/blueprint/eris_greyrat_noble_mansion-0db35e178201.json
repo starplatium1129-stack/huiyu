@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_noble_mansion",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 476,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "花园中追逐蝴蝶",
     "camera": "full body, eye level",
@@ -27,7 +27,9 @@
       "butterfly",
       "rose garden",
       "mansion",
-      "full body"
+      "full body",
+      "both hands",
+      "daylight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -54,6 +56,7 @@
       "mushoku_tensei",
       "curly_hair"
     ],
-    "identityProseOverride": "Adult Eris Greyrat from Mushoku Tensei, with long wavy crimson hair, red eyes, thick eyebrows, a headband and a small ahoge."
+    "identityProseOverride": "Adult Eris Greyrat from Mushoku Tensei, with long wavy crimson hair, red eyes, thick eyebrows, a headband and a small ahoge.",
+    "animaCaption": "Both hands lift the skirt clear of the path between the roses."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_hallway_bath_steam_towel_trip",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1779,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mikan_r18_hallway_bath_steam_towel_trip",
     "title": "结城美柑 · 浴后走廊的意外跌坐心跳",
@@ -58,11 +58,16 @@
       "warm_indoor_light",
       "bath_towel",
       "towel_wrap",
-      "white_towel"
+      "white_towel",
+      "steam",
+      "water droplets",
+      "medium shot",
+      "high angle"
     ],
     "promptProse": "Seated on the wooden hallway floor beside the open bathroom door, Mikan braces her left hand on the floor and holds the upper edge of a large white bath towel closed at her chest with her right. The towel remains wrapped around her torso as steam drifts from the doorway and warm wall lamps catch the water droplets in her wet hair.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her left hand braces on the floor; her right keeps the towel wrapped closed at her chest."
   }
 }

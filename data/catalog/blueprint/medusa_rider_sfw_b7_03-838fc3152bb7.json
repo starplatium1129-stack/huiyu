@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 279,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_03",
     "title": "美杜莎 Rider · 厨房里的围裙反差",
@@ -37,7 +37,11 @@
       "medusa_(fate)",
       "tied hair",
       "cutting vegetables",
-      "kitchen"
+      "kitchen",
+      "chopping board",
+      "lunch box",
+      "morning light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her right hand cuts vegetables while curled left fingertips steady them."
   }
 }

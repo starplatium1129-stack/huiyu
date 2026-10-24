@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_hot_spring_peek_clumsy_log_switch",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1140,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "从冒烟的替身木桩后慌乱探身，手握苦无遮掩胸口，面红耳赤窘迫大喊",
     "camera": "medium shot, eye-level comedic framing, dense steam depth",
@@ -27,7 +27,12 @@
       "smoke",
       "embarrassed",
       "hot spring",
-      "steam"
+      "steam",
+      "holding kunai",
+      "hand on chest",
+      "blush",
+      "lantern light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +47,7 @@
       "ahoge"
     ],
     "timeOfDay": "傍晚",
-    "title": "常陆茉子 · 温泉雾气的替身术自爆"
+    "title": "常陆茉子 · 温泉雾气的替身术自爆",
+    "animaCaption": "Her left hand holds the kunai low while her right rests at her chest beside the smoking log."
   }
 }

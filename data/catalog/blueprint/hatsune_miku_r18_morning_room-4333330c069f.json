@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_morning_room",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 326,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hatsune_miku_r18_morning_room",
     "title": "初音未来 · 清晨的房间",
@@ -34,7 +34,11 @@
       "blush",
       "bed",
       "morning",
-      "sunlight"
+      "sunlight",
+      "curtains",
+      "pillow",
+      "medium close up",
+      "front view"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +49,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@jazz_jack",
     "outfitId": "nsfw_nude",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She stretches both arms behind her while kneeling on the bedding."
   }
 }

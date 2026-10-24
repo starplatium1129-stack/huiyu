@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_tenshukaku",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "raiden_shogun_tenshukaku",
     "title": "成年雷电将军 · 天守阁晨茶私享",
@@ -38,7 +38,12 @@
       "electricity",
       "tatami",
       "morning",
-      "sleeveless"
+      "sleeveless",
+      "holding teacup",
+      "steam",
+      "window blinds",
+      "purple sparks",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +56,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the steaming tea while purple arcs mingle with its vapor above the low table."
   }
 }

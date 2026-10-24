@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1665,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_02",
     "title": "八奈见杏菜 · 野餐盒里的最后一口",
@@ -35,7 +35,12 @@
       "bento",
       "picnic",
       "riverbank",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "hands together",
+      "looking up",
+      "wind",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The last chicken piece rests beside her rice ball on the picnic mat."
   }
 }

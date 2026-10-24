@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_r18_b8_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 66,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makinohara_shouko_r18_b8_03",
     "title": "牧之原翔子 · 教堂试衣间花嫁白纱的滑落事故 ·「咲太君……新娘的拉链卡住了，能来帮帮我吗」",
@@ -41,7 +41,10 @@
       "bent over",
       "looking back",
       "vanity",
-      "sunlight"
+      "sunlight",
+      "hands behind back",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -56,6 +59,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands reach for the caught back zipper as she looks back for help."
   }
 }

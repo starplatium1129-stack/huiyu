@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_shinjuku_fitting_room_solo",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 230,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "saber_alter_nsfw_shinjuku_fitting_room_solo",
     "title": "黑呆 · 新宿更衣室皮衣半褪的自抚微喘",
@@ -38,7 +38,13 @@
       "black pantyhose",
       "fingering",
       "mirror",
-      "fitting room"
+      "fitting room",
+      "looking aside",
+      "biting lip",
+      "teary eyes",
+      "spotlight",
+      "warm lighting",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +59,7 @@
       "sensual_solo"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She glances toward the curtain gap with the loosened jacket resting down her arms."
   }
 }

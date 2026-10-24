@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_refined_horrormare_gothic_waltz",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 672,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在旋转舞步中单手轻撩黑色蕾丝眼罩面具，黑红礼裙飞扬，优雅而危险地微笑",
     "camera": "full-body shot",
@@ -26,7 +26,10 @@
       "ballroom",
       "chandelier",
       "night",
-      "full body"
+      "full body",
+      "holding mask",
+      "smile",
+      "swirling dress"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +44,7 @@
       "wolf_ears"
     ],
     "timeOfDay": "夜晚",
-    "title": "拉普兰德 · 典雅噩兆的血色华尔兹"
+    "title": "拉普兰德 · 典雅噩兆的血色华尔兹",
+    "animaCaption": "One hand lifts the lace mask during the turning step."
   }
 }

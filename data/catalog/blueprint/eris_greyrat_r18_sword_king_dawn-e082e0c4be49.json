@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_sword_king_dawn",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 480,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "旅店木桌边解衣立姿回眸娇喘",
     "adult": true,
@@ -40,7 +40,10 @@
       "wooden table",
       "inn",
       "dawn",
-      "blush"
+      "blush",
+      "looking at viewer",
+      "window light",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -59,6 +62,7 @@
       "daylight"
     ],
     "timeOfDay": "清晨",
-    "title": "艾莉丝 · 旅店木桌前晨光解带"
+    "title": "艾莉丝 · 旅店木桌前晨光解带",
+    "animaCaption": "Her removed cream shirt hangs on the chair beside the inn table."
   }
 }

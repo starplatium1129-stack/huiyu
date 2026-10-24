@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_church_couch_supine_devotion",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 216,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_nsfw_church_couch_supine_devotion",
     "title": "卡莲 · 教会软榻的深情仰卧索吻",
@@ -36,7 +36,14 @@
       "topless",
       "red ribbons",
       "masturbation",
-      "candlelight"
+      "candlelight",
+      "reclining",
+      "raised leg",
+      "holding ribbon",
+      "heavy blush",
+      "wall lamp",
+      "cowboy shot",
+      "from above"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +58,7 @@
       "special_nsfw"
     ],
     "nsfwProse": "",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "One hand holds the loose silk around her wrist and thigh; the other rests between her legs."
   }
 }

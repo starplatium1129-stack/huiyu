@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_summer_beach_tanlines_patrol",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 926,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "站在海浪浅水区单手叉腰，另一手扛着特制水枪，微抬下巴傲娇侧视",
     "camera": "cowboy shot, low angle",
@@ -28,7 +28,11 @@
       "beach",
       "sunlight",
       "cowboy shot",
-      "from below"
+      "from below",
+      "standing in water",
+      "holding water gun",
+      "dark skin",
+      "water reflection"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +49,7 @@
       "demon_tail"
     ],
     "timeOfDay": "正午",
-    "title": "银镜伊织 · 灼热沙滩的风纪巡查"
+    "title": "银镜伊织 · 灼热沙滩的风纪巡查",
+    "animaCaption": "One hand rests on her hip while the water gun balances over the opposite shoulder."
   }
 }

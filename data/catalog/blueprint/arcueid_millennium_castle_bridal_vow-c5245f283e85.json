@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_millennium_castle_bridal_vow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1324,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "身着纯白王后花嫁大礼服与长头纱，头戴王冠，捧花步向视角，眼含热泪幸福微笑",
     "camera": "cowboy shot, slightly low angle, grand regal bridal view",
@@ -30,7 +30,13 @@
       "camellia",
       "tears",
       "walking",
-      "cowboy shot"
+      "cowboy shot",
+      "holding bouquet",
+      "hands together",
+      "teary smile",
+      "throne steps",
+      "dome",
+      "daylight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +52,7 @@
       "serene_smile"
     ],
     "timeOfDay": "破晓圣光",
-    "title": "爱尔奎特 · 千年王城的真祖花嫁"
+    "title": "爱尔奎特 · 千年王城的真祖花嫁",
+    "animaCaption": "She holds the camellias in both hands while approaching the viewer."
   }
 }

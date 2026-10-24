@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_para_raid_balcony_nightcall",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1357,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "披军装外套倚栏夜谈，指尖轻抵泛光耳机，侧头露出深夜限定柔笑",
     "adult": false,
@@ -33,7 +33,13 @@
       "leaning",
       "railing",
       "balcony",
-      "starry sky"
+      "starry sky",
+      "touching headset",
+      "wind",
+      "smile",
+      "blue lighting",
+      "night",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -48,6 +54,7 @@
       "romance"
     ],
     "timeOfDay": "深夜",
-    "title": "芙拉蒂蕾娜 · 深夜阳台的专属同调·「今夜也请，只听我的声音」"
+    "title": "芙拉蒂蕾娜 · 深夜阳台的专属同调·「今夜也请，只听我的声音」",
+    "animaCaption": "One forearm rests on the railing while her other hand touches the glowing Para-RAID."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_r18_b8_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1552,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shinjou_akane_r18_b8_04",
     "title": "新条茜 · 假想世界崩塌后的被单失声痛哭 ·「谁来救救我……我其实……只是个胆小鬼……」",
@@ -42,7 +42,9 @@
       "mattress",
       "broken figurines",
       "bedroom",
-      "dawn"
+      "dawn",
+      "shattered figures",
+      "dawn light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +59,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She curls among the shattered monster figures on the mattress."
   }
 }

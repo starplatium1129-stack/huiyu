@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1646,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_02",
     "title": "卡提希娅 · 街角风车的修补",
@@ -35,7 +35,11 @@
       "pinwheel",
       "sitting",
       "stone railing",
-      "medium shot"
+      "medium shot",
+      "holding pinwheel",
+      "wind",
+      "smile",
+      "daylight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She holds the repaired pinwheel into the breeze until its blades turn."
   }
 }

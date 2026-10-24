@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1617,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_05",
     "title": "春日野穹 · 海湾遮阳伞下的白色耳机",
@@ -36,7 +36,11 @@
       "deck chair",
       "beach",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "curled up",
+      "offering earbud",
+      "lavender sky",
+      "water reflections"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +52,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "She offers the wired earbud while keeping its partner in place."
   }
 }

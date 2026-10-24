@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_marble_throne_bridal_vow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 226,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "saber_alter_marble_throne_bridal_vow",
     "title": "黑呆 · 纯白圣座的暴君新娘誓约",
@@ -33,7 +33,12 @@
       "bouquet",
       "red rose",
       "throne",
-      "full body"
+      "full body",
+      "holding bouquet",
+      "both hands",
+      "proud smile",
+      "tears",
+      "daylight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -42,6 +47,7 @@
       "bridal",
       "vow",
       "tyrant"
-    ]
+    ],
+    "animaCaption": "She meets the viewer with a proud, tearful smile before the marble throne."
   }
 }

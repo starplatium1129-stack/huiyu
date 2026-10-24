@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_halo_festival_track_victory",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 913,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "微弯腰单手扶膝微喘，另一手拿白色运动毛巾擦汗，脸颊泛红娇羞微笑",
     "camera": "medium shot, dynamic low angle",
@@ -26,7 +26,12 @@
       "catching breath",
       "running track",
       "crowd",
-      "from below"
+      "from below",
+      "hand on knee",
+      "sweat",
+      "blush",
+      "sunlight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +49,7 @@
     "title": "早濑优香 · 晄轮大祭冲线时刻",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand braces on her knee while the other wipes her cheek with the towel beyond the finish line."
   }
 }

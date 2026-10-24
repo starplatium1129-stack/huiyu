@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_r18_garden_moon",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 440,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rem_rezero_r18_garden_moon",
     "title": "雷姆 · 月光花园",
@@ -34,7 +34,9 @@
       "sitting",
       "stone bench",
       "roses",
-      "moonlight"
+      "moonlight",
+      "holding robe",
+      "beckoning"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +47,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "lace_nightgown",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She holds one robe corner while turning toward the off-frame viewer."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_clocktower",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_clocktower",
     "title": "时崎狂三 · 刻刻帝的月夜",
@@ -34,7 +34,12 @@
       "red moon",
       "topless",
       "cowboy shot",
-      "antique gold clasps"
+      "antique gold clasps",
+      "adult",
+      "finger on lips",
+      "golden gears",
+      "red moonlight",
+      "amber glow"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +50,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tsunako",
     "outfitId": "clock_corset",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Her fingertip rests at her lips before the golden gears."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_little_oceanid_seashore",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "furina_little_oceanid_seashore",
     "title": "芙宁娜 · 澄澈水畔假日",
@@ -38,7 +38,9 @@
       "beach",
       "shallow water",
       "splashing",
-      "full body"
+      "full body",
+      "sunlight",
+      "water reflection"
     ],
     "negativeTokens": [
       "cropped feet"
@@ -47,6 +49,7 @@
     "outfitId": "opera_ballgown",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She lifts the ballgown clear of the shallow water while splashing barefoot."
   }
 }

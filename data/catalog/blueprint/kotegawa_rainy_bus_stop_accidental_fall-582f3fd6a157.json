@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_rainy_bus_stop_accidental_fall",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1262,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "滑坐在长椅旁，双掌撑湿地面，制服保持整齐，看向画面外的同行者。",
     "camera": "medium shot, eye-level side three-quarter view, bracing hands and bench legs visible",
@@ -29,7 +29,10 @@
       "bus stop",
       "bench",
       "rain",
-      "lamplight"
+      "lamplight",
+      "looking at another",
+      "wet pavement",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -58,6 +61,7 @@
       "golden_brown_eyes",
       "to_love-ru"
     ],
-    "identityProseOverride": "Kotegawa Yui from To LOVE-Ru, with very long straight black hair, a thin white hairband and golden-brown eyes."
+    "identityProseOverride": "Kotegawa Yui from To LOVE-Ru, with very long straight black hair, a thin white hairband and golden-brown eyes.",
+    "animaCaption": "Both palms brace on wet pavement beside the bench; her uniform remains neat."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_archive_reading",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 521,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "低头翻看一本旧书",
     "camera": "medium close-up, eye level, face and open book visible",
@@ -27,7 +27,11 @@
       "Surtr",
       "book",
       "skateboard",
-      "archive"
+      "archive",
+      "reading",
+      "turning pages",
+      "window light",
+      "close up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +42,7 @@
       "afternoon"
     ],
     "timeOfDay": "午后",
-    "title": "史尔特尔 · 档案室午读"
+    "title": "史尔特尔 · 档案室午读",
+    "animaCaption": "She turns the yellowed geography-book pages at the archive desk, her skateboard beside her."
   }
 }

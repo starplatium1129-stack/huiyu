@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_bath_rose",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 901,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠池壁浸泡于花瓣浴",
     "adult": true,
@@ -37,7 +37,11 @@
       "wings",
       "halo",
       "rose bath",
-      "steam"
+      "steam",
+      "reaching",
+      "rose petals",
+      "candlelight",
+      "wings on rim"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +53,7 @@
       "intimate"
     ],
     "timeOfDay": "夜晚",
-    "title": "圣园未花 · 蔷薇花瓣浴池"
+    "title": "圣园未花 · 蔷薇花瓣浴池",
+    "animaCaption": "Her wings rest along the rim as she reaches toward the off-frame viewer."
   }
 }

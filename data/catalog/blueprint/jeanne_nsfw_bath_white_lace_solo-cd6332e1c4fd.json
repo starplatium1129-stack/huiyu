@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_bath_white_lace_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 241,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_nsfw_bath_white_lace_solo",
     "title": "圣女贞德 · 圣泉湿身的白蕾丝独奏·「这里……只有神与我在注视」",
@@ -40,7 +40,9 @@
       "masturbation",
       "spring",
       "steam",
-      "moonlight"
+      "moonlight",
+      "floating hair",
+      "candle reflections"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +55,7 @@
       "nsfw",
       "solo",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her hair floats on the water beside the moonlit stone rim."
   }
 }

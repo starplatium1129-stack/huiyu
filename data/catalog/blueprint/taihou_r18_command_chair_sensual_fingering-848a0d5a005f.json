@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_r18_command_chair_sensual_fingering",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1089,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "taihou_r18_command_chair_sensual_fingering",
     "title": "大凤 · 指挥官专座上的私密情愫自抚",
@@ -41,7 +41,14 @@
       "chair",
       "holding jacket",
       "office",
-      "night"
+      "night",
+      "sitting",
+      "jacket against face",
+      "skirt lift",
+      "fingering",
+      "heavy blush",
+      "moonlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +61,7 @@
       "masturbation",
       "hand under clothes"
     ],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She presses the folded jacket to her face from the office chair, the gown gathered over her knees."
   }
 }

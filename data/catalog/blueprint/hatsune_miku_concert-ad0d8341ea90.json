@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_concert",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 318,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hatsune_miku_concert",
     "title": "初音未来 · 演唱会舞台",
@@ -37,7 +37,10 @@
       "stage",
       "spotlight",
       "glowstick",
-      "full body"
+      "full body",
+      "feet off ground",
+      "open arm",
+      "rim light"
     ],
     "negativeTokens": [
       "readable background text"
@@ -48,6 +51,7 @@
       "iconic"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The microphone stays at her mouth while her free arm opens toward the audience."
   }
 }

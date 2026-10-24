@@ -4,7 +4,7 @@
   "revision": 2,
   "sortOrder": 1769,
   "createdAt": null,
-  "updatedAt": "2026-10-21T13:14:34.297Z",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruna_r18_mirror_reflection_blush",
     "title": "西连寺春菜 · 落地穿衣镜前的侧影对视",
@@ -46,11 +46,16 @@
       "heavy_blush",
       "embarrassed",
       "soft_window_light",
-      "evening"
+      "evening",
+      "hair tuck",
+      "surprised",
+      "tense posture",
+      "eye contact"
     ],
     "promptProse": "Standing in profile before a tall oval dressing mirror, Haruna has one hand raised to tuck her short purple hair behind her ear. As her eyes meet the viewer reflected in the glass, her posture tenses in bashful surprise, with soft evening window light rimming her shoulder and cheek.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her eyes meet the viewer's reflection in the mirror."
   }
 }

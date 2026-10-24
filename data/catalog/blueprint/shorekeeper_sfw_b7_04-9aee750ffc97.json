@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1642,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_04",
     "title": "守岸人 · 黑海岸潮汐的白色花嫁",
@@ -35,7 +35,11 @@
       "lighthouse",
       "garden",
       "dusk",
-      "cowboy shot"
+      "cowboy shot",
+      "holding bouquet",
+      "both hands",
+      "gentle smile",
+      "rim light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
       "iconic",
       "bridal",
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands protect the coastal bouquet while warm lighthouse light outlines her veil."
   }
 }

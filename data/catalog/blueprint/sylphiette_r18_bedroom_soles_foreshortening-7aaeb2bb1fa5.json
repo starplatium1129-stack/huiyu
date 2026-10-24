@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_bedroom_soles_foreshortening",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 467,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "仰卧床褥，双膝屈起，双手紧抓枕头，足底朝向镜头",
     "adult": true,
@@ -39,7 +39,10 @@
       "spread legs",
       "full body",
       "high angle",
-      "holding pillow"
+      "holding pillow",
+      "lying on back",
+      "bent knees",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -56,6 +59,7 @@
       "blushing"
     ],
     "timeOfDay": "夜晚",
-    "title": "希露菲叶特 · 新婚私密·希露菲的透视足底与绯红尖耳"
+    "title": "希露菲叶特 · 新婚私密·希露菲的透视足底与绯红尖耳",
+    "animaCaption": "Her feet stay nearer the camera than her flushed ears and face."
   }
 }

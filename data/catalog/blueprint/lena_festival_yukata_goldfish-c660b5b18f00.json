@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_festival_yukata_goldfish",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1355,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蹲在金鱼摊边，举起托着红金鱼的纸网，回头向画外同伴微笑",
     "adult": false,
@@ -32,7 +32,12 @@
       "goldfish scooping",
       "festival",
       "smile",
-      "bokeh"
+      "bokeh",
+      "crouching",
+      "looking back",
+      "lantern",
+      "fireworks",
+      "medium close up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -47,6 +52,7 @@
       "daily"
     ],
     "timeOfDay": "夜晚",
-    "title": "芙拉蒂蕾娜 · 夏祭浴衣与金鱼·「军官的手，连捞金鱼都这么一板一眼」"
+    "title": "芙拉蒂蕾娜 · 夏祭浴衣与金鱼·「军官的手，连捞金鱼都这么一板一眼」",
+    "animaCaption": "She raises the paper net with its red goldfish toward the viewer."
   }
 }

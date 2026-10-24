@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc041",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She leans toward the viewer beneath their shared umbrella, holding its handle in one hand and clasping the viewer's hand with the other; streetlight reflected from the wet pavement brightens her smile.",
+    "animaCaption": "One hand holds their shared umbrella; the other clasps the viewer's beneath it.",
     "auditRevision": "careful-batch05-2026-08-27",
     "camera": "伞下交握双手半身近景",
     "category": "恋爱/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas",
-    "prompt": "1girl, ayachi_nene, navy long sleeve dress, white sailor collar, pink neck ribbon, flared skirt, umbrella, holding hands, rain, streetlamp, night, close up",
+    "prompt": "1girl, ayachi_nene, navy long sleeve dress, white sailor collar, pink neck ribbon, flared skirt, umbrella, holding hands, rain, streetlamp, night, close up, holding umbrella, leaning forward, smile, wet pavement, reflected light",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -53,6 +53,7 @@
       "展示图",
       "头像"
     ],
-    "weather": "雨"
+    "weather": "雨",
+    "promptProse": "She leans toward the viewer beneath their shared umbrella, holding its handle in one hand and clasping the viewer's hand with the other; streetlight reflected from the wet pavement brightens her smile."
   }
 }

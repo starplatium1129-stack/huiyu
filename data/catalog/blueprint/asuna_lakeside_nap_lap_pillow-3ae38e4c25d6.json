@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_lakeside_nap_lap_pillow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1364,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asuna_lakeside_nap_lap_pillow",
     "title": "结城明日奈 · 湖畔微风下的草地膝枕·「真是的……像小猫一样睡得这么香呢」",
@@ -40,7 +40,13 @@
       "willow",
       "pov",
       "from below",
-      "close-up"
+      "close-up",
+      "sitting",
+      "looking down",
+      "smile",
+      "stroking hair",
+      "dappled sunlight",
+      "lake"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +60,7 @@
       "lap_pillow",
       "healing"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "The viewer stays outside the frame, resting on her lap beneath the willow."
   }
 }

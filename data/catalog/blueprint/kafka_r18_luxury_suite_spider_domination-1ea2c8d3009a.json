@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_luxury_suite_spider_domination",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1042,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kafka_r18_luxury_suite_spider_domination",
     "title": "卡芙卡 · 奢华套房的蛛网支配",
@@ -35,7 +35,11 @@
       "chaise longue",
       "masturbation",
       "hand between legs",
-      "purple light"
+      "purple light",
+      "hand on backrest",
+      "glowing threads",
+      "candlelight",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +53,7 @@
     "outfitId": "nsfw_nude",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand grips the chaise backrest while spectral threads curve around her hips."
   }
 }

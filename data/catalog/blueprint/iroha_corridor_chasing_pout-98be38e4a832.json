@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_corridor_chasing_pout",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 363,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "iroha_corridor_chasing_pout",
     "title": "一色彩羽 · 走廊小跑追赶的娇嗔鼓腮·「八幡前辈！走太快了啦，等等我！」",
@@ -39,7 +39,9 @@
       "pout",
       "school hallway",
       "sunset",
-      "full body"
+      "full body",
+      "both arms",
+      "out of breath"
     ],
     "negativeTokens": [
       "extra people"
@@ -52,6 +54,7 @@
     "coverageTags": [
       "daily",
       "school"
-    ]
+    ],
+    "animaCaption": "Both arms hold the council papers firmly during her last hurried step toward the viewer."
   }
 }

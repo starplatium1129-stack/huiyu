@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_carousel",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 164,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_carousel",
     "title": "伊莉雅丝菲尔 · 旋转木马",
@@ -35,7 +35,10 @@
       "carousel",
       "holding pole",
       "waving",
-      "day"
+      "day",
+      "sitting",
+      "carousel horse",
+      "brass pole"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -44,6 +47,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand grips the pole while the other waves toward the viewer below."
   }
 }

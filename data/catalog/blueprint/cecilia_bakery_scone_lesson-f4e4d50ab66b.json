@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_bakery_scone_lesson",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 842,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "认真地揉面团，鼻尖沾着面粉",
     "adult": false,
@@ -27,7 +27,12 @@
       "kneading",
       "dough",
       "flour",
-      "medium shot"
+      "medium shot",
+      "hands in dough",
+      "flour on nose",
+      "smile",
+      "window light",
+      "workbench"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +46,7 @@
       "afternoon"
     ],
     "timeOfDay": "afternoon",
-    "title": "塞西莉亚 · 面包店学做司康"
+    "title": "塞西莉亚 · 面包店学做司康",
+    "animaCaption": "Flour marks her hands and nose as she kneads the scone dough."
   }
 }

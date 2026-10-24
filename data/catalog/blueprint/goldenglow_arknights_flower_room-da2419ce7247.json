@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_flower_room",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 597,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "提着水壶，弯腰浇花",
     "camera": "medium shot",
@@ -29,7 +29,11 @@
       "greenhouse",
       "electricity",
       "morning",
-      "medium shot"
+      "medium shot",
+      "bending forward",
+      "watering flowers",
+      "holding watering can",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
       "plants"
     ],
     "timeOfDay": "清晨",
-    "title": "澄闪 · 花房"
+    "title": "澄闪 · 花房",
+    "animaCaption": "She waters the marigold soil while faint static jumps from her free fingertips toward a petal."
   }
 }

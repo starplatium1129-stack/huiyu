@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_insect_breathing_butterfly_dance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1447,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "足尖点梁翻转腾挪，蝶翼羽织展开，毒针寒光，落地眨眼",
     "adult": false,
@@ -31,7 +31,11 @@
       "jumping",
       "ruins",
       "dusk",
-      "full body"
+      "full body",
+      "holding sword",
+      "spread haori",
+      "broken beam",
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -46,6 +50,7 @@
       "iconic"
     ],
     "timeOfDay": "黄昏",
-    "title": "蝴蝶忍 · 虫之呼吸的蝶舞·「虫之呼吸 · 蜈蚣之腹 ひらり」"
+    "title": "蝴蝶忍 · 虫之呼吸的蝶舞·「虫之呼吸 · 蜈蚣之腹 ひらり」",
+    "animaCaption": "She twists beyond the broken beam, the blade leading her airborne strike and the haori spread behind her."
   }
 }

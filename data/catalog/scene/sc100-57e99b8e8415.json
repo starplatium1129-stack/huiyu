@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc100",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 98,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "At the bed's edge, she extends the wrapped gift box toward the viewer in both hands, a sheet resting around her shoulders; pale Christmas morning light from the left casts the box's soft shadow onto the quilt.",
+    "animaCaption": "She offers the wrapped gift in both hands, the sheet resting around her shoulders.",
     "auditRevision": "careful-batch10-2026-08-27",
     "camera": "medium close-up, eye level from the bedside, gift box and both hands visible",
     "category": "恋爱/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, red velvet lingerie, white scalloped trim, small gold bow, sheet around shoulders, sitting on bed, gift box, shy smile, snowy window, christmas, morning, close up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, red velvet lingerie, white scalloped trim, small gold bow, sheet around shoulders, sitting on bed, gift box, shy smile, snowy window, christmas, morning, close up, <lora:ayachi_nene_v18_wd14:0.8>, holding gift, outstretched arms, window light, soft shadow",
     "rating": "R15",
     "season": "冬",
     "story": "【成年 After Story · 圣诞早晨的拆礼物顺序】婚后圣诞清晨，成年的宁宁换上精心挑选的节日内衣，披着被单坐在床边等你醒来。她原本准备了从容的台词，却在你睁眼的瞬间全忘了，只能红着脸把礼物盒塞进你怀里——「先拆盒子里的礼物，不准跳过顺序……至于我准备的这一份，要等你认真说喜欢以后。」",
@@ -51,6 +51,7 @@
       "R15"
     ],
     "weather": "雪",
-    "recommendedSize": "1152×1536"
+    "recommendedSize": "1152×1536",
+    "promptProse": "At the bed's edge, she extends the wrapped gift box toward the viewer in both hands, a sheet resting around her shoulders; pale Christmas morning light from the left casts the box's soft shadow onto the quilt."
   }
 }

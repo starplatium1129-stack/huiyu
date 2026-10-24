@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_morning_futon_cuddle_tease",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1246,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "侧卧被窝内手撑香腮贴近对方，半透薄纱睡裙露出深邃乳沟，爱心尾巴暗中缠腿调情",
     "camera": "close-up two-shot, side view",
@@ -28,7 +28,12 @@
       "under covers",
       "chin in hand",
       "bed",
-      "morning"
+      "morning",
+      "lying",
+      "morning light",
+      "warm lighting",
+      "close up two-shot",
+      "side view"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +50,7 @@
     "title": "梦梦 · 清晨被窝里的甜蜜偷袭",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Momo lies left, facing her partner on the right; her tail curls around his leg beneath the blanket."
   }
 }

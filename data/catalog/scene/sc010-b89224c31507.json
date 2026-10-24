@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc010",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:40:29.613535400+00:00",
   "data": {
-    "animaCaption": "She stops at the receding waterline and looks back toward the viewer, sandals hanging from one hand while the other gathers her cardigan; the low sun stretches their shadows across the wet sand.",
+    "animaCaption": "Sandals hang from one hand while the other gathers her cardigan at the receding waterline.",
     "camera": "全身远景",
     "category": "旅行",
     "char": "nene",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white sundress, scalloped hem, pale pink cropped cardigan, barefoot, holding shoes, looking back, beach, sunset, full body",
+    "prompt": "1girl, ayachi_nene, white sundress, scalloped hem, pale pink cropped cardigan, barefoot, holding shoes, looking back, beach, sunset, full body, standing, wet sand, long shadow, gentle smile",
     "rating": "All",
     "recommendedSize": "1216×832",
     "season": "夏",
@@ -52,6 +52,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "She stops at the receding waterline and looks back toward the viewer, sandals hanging from one hand while the other gathers her cardigan; the low sun stretches their shadows across the wet sand."
   }
 }

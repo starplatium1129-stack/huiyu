@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_closet_shelter",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 999,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蜷坐于壁橱软垫上，头戴耳机专注看吉他谱",
     "camera": "medium shot, eye level",
@@ -28,7 +28,13 @@
       "string lights",
       "night",
       "medium shot",
-      "headphones"
+      "headphones",
+      "sitting",
+      "curled up",
+      "playing guitar",
+      "sheet music",
+      "screen light",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +49,7 @@
       "curled_up"
     ],
     "timeOfDay": "夜晚",
-    "title": "后藤一里 · 壁橱秘密基地"
+    "title": "后藤一里 · 壁橱秘密基地",
+    "animaCaption": "One hand frets the strings while the other picks, her gaze following the score."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_jade_bath",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 656,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚在白玉池壁，一手稳住池沿酒杯，另一手轻拨水面桃花瓣。",
     "adult": true,
@@ -33,7 +33,12 @@
       "wine cup",
       "peach blossoms",
       "jade bath",
-      "steam"
+      "steam",
+      "holding cup",
+      "floating petal",
+      "candlelight",
+      "lattice shadows",
+      "incense burner"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -48,6 +53,7 @@
       "incense"
     ],
     "timeOfDay": "夜晚",
-    "title": "令 · 玉池汤沐"
+    "title": "令 · 玉池汤沐",
+    "animaCaption": "One hand steadies the cup on the rim while the other moves a floating petal."
   }
 }

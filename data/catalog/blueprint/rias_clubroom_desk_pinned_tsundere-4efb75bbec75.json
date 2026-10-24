@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_clubroom_desk_pinned_tsundere",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1277,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_clubroom_desk_pinned_tsundere",
     "title": "莉雅丝 · 部长室桌沿的越界反制",
@@ -37,7 +37,13 @@
       "blush",
       "desk",
       "clubroom",
-      "sunset"
+      "sunset",
+      "leaning against desk",
+      "shy",
+      "blushing ears",
+      "side lighting",
+      "backlighting",
+      "cowboy two-shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +55,7 @@
     ],
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Rias stands left, hands on her companion's clothed chest; he stands right, holding her waist."
   }
 }

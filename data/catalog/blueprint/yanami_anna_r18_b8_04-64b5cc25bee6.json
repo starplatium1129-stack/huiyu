@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_r18_b8_04",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1677,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yanami_anna_r18_b8_04",
     "title": "八奈见杏菜 · 假装不在意后的被单失恋独奏 ·「为什么……青梅竹马总是赢不过天降啊……」",
@@ -42,7 +42,8 @@
       "crying",
       "bed",
       "snack wrappers",
-      "moonlight"
+      "moonlight",
+      "lying"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +58,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Moonlight crosses the discarded snack wrappers beside the mattress."
   }
 }

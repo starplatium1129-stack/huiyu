@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_deviluke_palace_princess_throne",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1232,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端坐悬浮王座单手托腮，露肩战服勾勒出完美曲线，长粉发铺展于台阶，神态优雅尊贵",
     "camera": "full body, three-quarter view, low angle, grand palace scale",
@@ -28,7 +28,9 @@
       "throne",
       "crystal",
       "palace",
-      "full body"
+      "full body",
+      "colored lighting",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +47,7 @@
       "hair_on_steps"
     ],
     "timeOfDay": "白天",
-    "title": "菈菈 · 戴比路克星际圣殿的王女威仪"
+    "title": "菈菈 · 戴比路克星际圣殿的王女威仪",
+    "animaCaption": "Her tail curls beside the throne armrest, long hair spreading over the crystal steps."
   }
 }

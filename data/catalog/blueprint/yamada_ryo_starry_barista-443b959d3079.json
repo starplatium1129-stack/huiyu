@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_starry_barista",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1832,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_ryo_starry_barista",
     "characterId": "yamada_ryo",
@@ -26,7 +26,10 @@
       "drinking glass",
       "night",
       "dim lighting",
-      "medium shot"
+      "medium shot",
+      "blue lighting",
+      "spotlight",
+      "low angle"
     ],
     "sceneTags": [
       "bar",
@@ -42,6 +45,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She pours a clear drink from the stainless shaker into the tall glass."
   }
 }

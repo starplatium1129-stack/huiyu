@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_modern_city_arcade_date",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 244,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "scathach_modern_city_arcade_date",
     "title": "斯卡哈 · 都市电玩城的师匠·「这里的格斗游戏，判定倒是相当严谨」",
@@ -33,7 +33,11 @@
     "promptTokens": [
       "arcade",
       "joystick",
-      "medium shot"
+      "medium shot",
+      "hand on joystick",
+      "hand above buttons",
+      "challenging smile",
+      "screen light"
     ],
     "negativeTokens": [
       "readable scores"
@@ -48,6 +52,7 @@
       "daily",
       "date",
       "girlfriend"
-    ]
+    ],
+    "animaCaption": "One hand rests on the joystick while the other hovers above the buttons."
   }
 }

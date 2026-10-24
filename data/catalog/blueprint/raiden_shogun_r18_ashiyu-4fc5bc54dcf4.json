@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_ashiyu",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "raiden_shogun_r18_ashiyu",
     "title": "雷电将军 · 天守阁足汤",
@@ -36,7 +36,12 @@
       "sitting",
       "feet in water",
       "foot bath",
-      "lantern"
+      "lantern",
+      "holding kimono hem",
+      "looking back",
+      "blush",
+      "water ripples",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +55,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She holds the kimono clear of the bathwater while both feet stir small ripples beneath the lanterns."
   }
 }

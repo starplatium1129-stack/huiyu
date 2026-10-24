@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1535,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_03",
     "title": "宝多六花 · 天台午餐的耳机分享",
@@ -41,7 +41,10 @@
       "earphones",
       "bread",
       "rooftop",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "offering earbud",
+      "daylight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +55,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "She offers the second earbud to her off-frame companion beside the shared bread."
   }
 }

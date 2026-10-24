@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_sengoku_museum_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1847,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_miku_sengoku_museum_date",
     "characterId": "nakano_miku",
@@ -26,7 +26,11 @@
       "pointing",
       "bright eyes",
       "enthusiastic",
-      "medium shot"
+      "medium shot",
+      "leaning forward",
+      "spotlight",
+      "dark background",
+      "from below"
     ],
     "sceneTags": [
       "museum",
@@ -43,6 +47,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She gestures toward the armor display with her folded fan, leaning close to explain the exhibit."
   }
 }

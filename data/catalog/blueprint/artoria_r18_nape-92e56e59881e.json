@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_nape",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 146,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "artoria_r18_nape",
     "title": "阿尔托莉雅 · 解发时分",
@@ -35,7 +35,13 @@
       "raised arms",
       "looking back",
       "candlelight",
-      "cowboy shot"
+      "cowboy shot",
+      "hair down",
+      "nape",
+      "back focus",
+      "sitting",
+      "mirror",
+      "scabbard"
     ],
     "negativeTokens": [
       "reflected face"
@@ -63,6 +69,7 @@
       "green_eyes",
       "ahoge",
       "fate/stay_night"
-    ]
+    ],
+    "animaCaption": "The blue ribbon rests at her wrist; the mirror reflects only candlelight."
   }
 }

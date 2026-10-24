@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 777,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手捧着加满冰块的柠檬茶，微微偏头看向你，露出罕见的温柔浅笑",
     "camera": "medium shot, al fresco cafe framing, soft sunlit bokeh",
@@ -26,7 +26,14 @@
       "iced tea",
       "smile",
       "summer",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "holding cup",
+      "both hands",
+      "looking at viewer",
+      "gentle smile",
+      "dappled sunlight",
+      "lemon slice"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +46,7 @@
       "silver_hair"
     ],
     "timeOfDay": "午后",
-    "title": "艾莉莎·米哈伊洛夫娜·九条 · 街角咖啡厅·夏日露天约会"
+    "title": "艾莉莎·米哈伊洛夫娜·九条 · 街角咖啡厅·夏日露天约会",
+    "animaCaption": "She cups the iced lemon tea and smiles toward the viewer seated across from her."
   }
 }

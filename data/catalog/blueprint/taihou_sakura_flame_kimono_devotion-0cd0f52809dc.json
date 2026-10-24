@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_sakura_flame_kimono_devotion",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1075,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "taihou_sakura_flame_kimono_devotion",
     "title": "大凤 · 重樱绯焰华服的深情相迎",
@@ -37,9 +37,15 @@
       "cherry blossoms",
       "temple",
       "sunset",
-      "full body"
+      "full body",
+      "holding fan",
+      "fan over mouth",
+      "looking at viewer",
+      "windblown sleeves",
+      "dappled sunlight"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "The open fan rests before her smiling lips as her gaze follows the viewer beneath the temple corridor."
   }
 }

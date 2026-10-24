@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_r18_b7_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1656,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "changli_wuthering_r18_b7_02",
     "title": "长离 · 焚身离火温汤水光湿身独奏 ·「把体内的离火真气排解出来……才能保持神智清明」",
@@ -38,7 +38,14 @@
       "see-through",
       "masturbation",
       "steam",
-      "jade"
+      "jade",
+      "sitting",
+      "leaning back",
+      "water",
+      "floating hair",
+      "steps",
+      "teary eyes",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +60,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her long hair floats on the heated water beside the white-jade steps."
   }
 }

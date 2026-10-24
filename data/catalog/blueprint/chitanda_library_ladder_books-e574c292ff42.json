@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_library_ladder_books",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1483,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chitanda_library_ladder_books",
     "title": "千反田爱瑠 · 书架上层的意外发现",
@@ -37,7 +37,12 @@
       "reaching",
       "old book",
       "leaf",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "bookshelf",
+      "holding book",
+      "wide eyes",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand steadies her on the shelf as the other draws out the leaf-marked book."
   }
 }

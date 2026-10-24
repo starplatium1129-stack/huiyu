@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_snowy_surface_wonderland_sniper_pose",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1806,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "alice_snowy_surface_wonderland_sniper_pose",
     "title": "爱丽丝 · 极地雪原胡萝卜狙击枪经典战姿",
@@ -62,11 +62,19 @@
       "huge_breasts",
       "hourglass_figure",
       "crisp_winter_sunlight",
-      "detailed_background"
+      "detailed_background",
+      "standing",
+      "snow",
+      "holding gun",
+      "both hands",
+      "winter",
+      "sunlight",
+      "cowboy shot"
     ],
     "promptProse": "Standing proudly on a vast frozen snowfield under a pale winter sky, Alice hugs her massive orange-and-white carrot-painted anti-materiel sniper rifle. Her ultra-glossy skintight pink latex cooling bodysuit hugs her astonishing hourglass proportions, mechanical bunny-ear headset gleaming as she winks playfully with sparkling blue eyes.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She cradles the carrot-painted rifle in both arms and winks toward the viewer."
   }
 }

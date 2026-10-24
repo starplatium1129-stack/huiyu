@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_shrine_altar_doggystyle_thrust",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1152,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚在神乐案旁，白衣敞开，一手抚胸，另一手探入撩起的红袴下摆，含泪望向前方",
     "adult": true,
@@ -38,7 +38,9 @@
       "altar",
       "shrine",
       "candlelight",
-      "cowboy shot"
+      "cowboy shot",
+      "heavy blush",
+      "teary eyes"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -57,6 +59,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "朝武芳乃 · 内殿神乐案前巫女白衣半解露香肩酥胸与红袴自抚"
+    "title": "朝武芳乃 · 内殿神乐案前巫女白衣半解露香肩酥胸与红袴自抚",
+    "animaCaption": "One hand rests at her chest above the raised hakama beside the ceremonial altar."
   }
 }

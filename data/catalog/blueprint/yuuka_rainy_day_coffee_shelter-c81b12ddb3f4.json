@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 914,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手捧着热咖啡杯端坐在木椅上，微缩肩膀，羞怯抬眸注视对面",
     "camera": "medium close-up, eye level",
@@ -27,7 +27,11 @@
       "cafe",
       "rain",
       "window",
-      "medium close-up"
+      "medium close-up",
+      "both hands",
+      "blush",
+      "warm lighting",
+      "cool lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +50,7 @@
     "timeOfDay": "午后阴雨",
     "title": "早濑优香 · 雨幕咖啡馆约会",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands cup the latte across from the viewer, her beige coat hanging on the chair back."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_rainwashed_paddy_inspection",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 706,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shu_arknights_rainwashed_paddy_inspection",
     "characterId": "shu_arknights",
@@ -33,7 +33,12 @@
     "promptTokens": [
       "tomato",
       "balcony",
-      "cowboy shot"
+      "cowboy shot",
+      "open palm",
+      "pointing",
+      "looking at viewer",
+      "light smile",
+      "morning light"
     ],
     "promptProse": "She shows a cherry tomato in her palm to the offscreen viewer, pointing to its branch with her other hand. Morning light enters from the left; her tail curves outside the planter, clear of its leaves. Railing and leaf shadows break up the softly reflected balcony light.",
     "negativeTokens": [],
@@ -41,6 +46,7 @@
     "sampleRating": "All",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One palm shows the tomato; her free hand points to its branch, tail clear of the planter."
   }
 }

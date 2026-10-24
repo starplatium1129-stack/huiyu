@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_starry_tower",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 388,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elaina_r18_starry_tower",
     "title": "伊雷娜 · 星光塔顶",
@@ -40,7 +40,10 @@
       "star embroidery",
       "standing",
       "reaching",
-      "stone balustrade"
+      "stone balustrade",
+      "hand on railing",
+      "moonlight",
+      "candle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +54,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "star_edge_sleep_robe",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand rests on the balustrade as the other reaches toward the viewer."
   }
 }

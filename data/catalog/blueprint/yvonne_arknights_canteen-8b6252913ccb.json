@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_canteen",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 736,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端餐盘找座位",
     "camera": "cowboy shot",
@@ -26,7 +26,11 @@
       "canteen",
       "crowd",
       "noon",
-      "cowboy shot"
+      "cowboy shot",
+      "holding tray",
+      "both hands",
+      "swaying tail",
+      "daylight"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -42,6 +46,7 @@
     "title": "伊冯 · 基地食堂",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands keep the tray steady as she moves between the tables with her phone in her pocket."
   }
 }

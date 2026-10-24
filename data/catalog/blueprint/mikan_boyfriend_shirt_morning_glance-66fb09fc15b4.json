@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_boyfriend_shirt_morning_glance",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1778,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mikan_boyfriend_shirt_morning_glance",
     "title": "结城美柑 · 展会纪念宽大白衬衫与晨光回眸",
@@ -51,11 +51,14 @@
       "embarrassed",
       "morning_light",
       "sunbeam",
-      "soft_shadows"
+      "soft_shadows",
+      "looking back",
+      "surprised"
     ],
     "promptProse": "Standing beside the sunlit bedroom window with her hands tucked inside the long cuffs of an oversized white shirt, Mikan turns in surprise to glare back at the viewer. Golden morning light filters across her flushed cheeks and chestnut hair as she pouts in adorable bashfulness.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her hands remain inside the long cuffs as she glances back from the window."
   }
 }

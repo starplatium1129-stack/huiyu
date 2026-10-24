@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_astral_express_violin_prelude",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1031,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kafka_astral_express_violin_prelude",
     "title": "卡芙卡 · 空间站虚空小提琴",
@@ -36,7 +36,12 @@
       "space station",
       "hologram",
       "hallway",
-      "cowboy shot"
+      "cowboy shot",
+      "air violin",
+      "miming",
+      "lowered eyes",
+      "blue light",
+      "ring lights"
     ],
     "negativeTokens": [
       "visible violin"
@@ -45,6 +50,7 @@
     "outfitId": "official_hunter_coat",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "Her left forearm supports an imaginary violin while her right hand draws an invisible bow."
   }
 }

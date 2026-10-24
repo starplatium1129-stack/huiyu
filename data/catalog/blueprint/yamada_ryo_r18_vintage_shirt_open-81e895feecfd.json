@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_r18_vintage_shirt_open",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1843,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_ryo_r18_vintage_shirt_open",
     "characterId": "yamada_ryo",
@@ -35,7 +35,11 @@
       "blush",
       "mole under eye",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "reclining",
+      "hand on floor",
+      "warm lighting",
+      "high angle"
     ],
     "sceneTags": [
       "apartment",
@@ -54,6 +58,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand supports her on the tatami beneath the open vintage shirt."
   }
 }

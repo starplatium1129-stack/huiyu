@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_studio_scrolls",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 572,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "跪坐宣纸，一手运笔，另一手留在袍下。",
     "adult": true,
@@ -35,7 +35,15 @@
       "topless",
       "kneeling",
       "brush",
-      "masturbation"
+      "masturbation",
+      "rice paper",
+      "ink",
+      "holding brush",
+      "candelabrum",
+      "warm lighting",
+      "cool lighting",
+      "full body",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +58,7 @@
       "kneeling"
     ],
     "timeOfDay": "深夜",
-    "title": "夕 · 墨夜画卷"
+    "title": "夕 · 墨夜画卷",
+    "animaCaption": "Painted mountains rise from the paper beside her moving brush."
   }
 }

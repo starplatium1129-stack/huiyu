@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_backstage_cosplay",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 496,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "对着随身镜调整假发与饰品，回眸比出角色招牌姿势，元气满满",
     "camera": "medium shot, three-quarter view, portable mirror and adjusting hand visible",
@@ -29,7 +29,11 @@
       "mirror",
       "backstage",
       "ring light",
-      "medium shot"
+      "medium shot",
+      "holding mirror",
+      "adjusting wig",
+      "smile",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +46,7 @@
     ],
     "timeOfDay": "上午",
     "title": "喜多川海梦 · 漫展后台·开幕前的最后调整",
-    "allowRepeatedSubject": true
+    "allowRepeatedSubject": true,
+    "animaCaption": "Her left hand holds the portable mirror while her right adjusts the wig as she smiles toward the viewer."
   }
 }

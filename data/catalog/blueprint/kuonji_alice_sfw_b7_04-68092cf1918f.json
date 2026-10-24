@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1626,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_04",
     "title": "久远寺有珠 · 洋馆月桂的黑色花嫁",
@@ -35,7 +35,12 @@
       "sitting",
       "laurel",
       "courtyard",
-      "twilight"
+      "twilight",
+      "raised finger",
+      "bouquet on lap",
+      "looking at viewer",
+      "glowing runes",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +52,7 @@
       "iconic",
       "bridal",
       "daily"
-    ]
+    ],
+    "animaCaption": "The bluebird perches on her raised finger while the bouquet rests on her lap beneath the laurel tree."
   }
 }

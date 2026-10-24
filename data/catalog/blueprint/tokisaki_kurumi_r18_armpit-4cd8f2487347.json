@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_armpit",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_armpit",
     "title": "时崎狂三 · 月夜的慵懒",
@@ -36,7 +36,12 @@
       "moonlight",
       "topless",
       "full body",
-      "crimson ribbon edging"
+      "crimson ribbon edging",
+      "adult",
+      "crossed wrists",
+      "loose ribbon",
+      "side bend",
+      "candlelight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +55,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The ribbon stays loose around her crossed wrists above the bed."
   }
 }

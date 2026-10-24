@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_summer_festival_yukata_lantern",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1145,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手执折扇倚靠石栏杆侧身回眸，夜空烟花璀璨，浴衣下摆微扬，眼神温柔深情",
     "camera": "cowboy shot, low angle",
@@ -27,7 +27,9 @@
       "shrine stairs",
       "fireworks",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "lantern light",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +45,7 @@
     "timeOfDay": "夜晚",
     "title": "朝武芳乃 · 繁星花火下的幽紫浴衣",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She lowers her lace fan and looks back from the lantern-lined shrine steps."
   }
 }

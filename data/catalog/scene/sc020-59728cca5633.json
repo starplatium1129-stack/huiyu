@@ -4,9 +4,9 @@
   "revision": 6,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She holds the script against her chest while the viewer's hand enters from below to straighten her collar; warm backstage light catches her nervous glance toward them.",
+    "animaCaption": "The viewer's hand enters from below to straighten her collar while she holds the script against her chest.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "手持台本半身中景",
     "category": "校园",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, black ribbed turtleneck, brown plaid midi skirt, asymmetrical hem, thin gold belt, holding script, curtain, backstage, medium shot",
+    "prompt": "1girl, shiki_natsume, black ribbed turtleneck, brown plaid midi skirt, asymmetrical hem, thin gold belt, holding script, curtain, backstage, medium shot, standing, nervous smile, blush, warm lighting, book hug",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",
@@ -51,6 +51,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "She holds the script against her chest while the viewer's hand enters from below to straighten her collar; warm backstage light catches her nervous glance toward them."
   }
 }

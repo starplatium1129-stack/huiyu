@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_studio_oversized_hoodie",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1492,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_studio_oversized_hoodie",
     "title": "山田杏奈 · 拍摄休息室大号卫衣的大长腿瘫坐·「拍摄好累哦……市川，给我吃一口软糖嘛」",
@@ -37,7 +37,12 @@
       "sofa",
       "candy",
       "studio",
-      "medium shot"
+      "medium shot",
+      "looking up",
+      "pointing",
+      "gummy bag",
+      "hair tie",
+      "mirror lamps"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +54,7 @@
       "daily",
       "date"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "The hair tie rests on the cushion beneath her lifted head."
   }
 }

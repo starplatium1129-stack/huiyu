@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_mikan_kitchen_cooking_assist",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1225,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "右手握菜刀，左手蜷起指尖稳住胡萝卜，在砧板前认真切成细丝，美柑在旁指导",
     "camera": "medium shot, eye level, both characters and hands at the cutting board visible",
@@ -28,7 +28,13 @@
       "cooking",
       "carrots",
       "cutting board",
-      "kitchen"
+      "kitchen",
+      "holding knife",
+      "curled fingertips",
+      "focused",
+      "steam",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +54,7 @@
     "title": "小暗 · 结城家厨房的切菜修行",
     "characterTokens": [
       "Mikan Yuuki"
-    ]
+    ],
+    "animaCaption": "Her right hand holds the knife and curled left fingertips steady the carrot as Mikan guides her from beside the counter."
   }
 }

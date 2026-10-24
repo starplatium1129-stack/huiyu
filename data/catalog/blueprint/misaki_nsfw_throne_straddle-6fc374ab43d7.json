@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_nsfw_throne_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 408,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "提裙跨坐缓缓沉腰，遥控器抵胸如加冕，星瞳迷离",
     "adult": true,
@@ -36,7 +36,13 @@
       "armchair",
       "from below",
       "black wrap skirt",
-      "satin"
+      "satin",
+      "straddling",
+      "smirk",
+      "lamplight",
+      "pov",
+      "cowboy shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,6 +59,7 @@
     "timeOfDay": "深夜",
     "title": "食蜂操祈 · 女王的主控王座·「本小姐的膝上……是限量席位哦」",
     "nsfwTokens": [],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "One hand gathers her skirt; the other holds the remote against the offscreen viewer's chest."
   }
 }

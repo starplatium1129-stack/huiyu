@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_moon_garden",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 433,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rem_rezero_moon_garden",
     "title": "雷姆 · 月光庭院",
@@ -32,12 +32,16 @@
       "watering can",
       "looking back",
       "garden",
-      "moonlight"
+      "moonlight",
+      "looking at viewer",
+      "lowered watering can",
+      "wet path"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "formal_dress",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The watering can stays lowered beside the damp garden path."
   }
 }

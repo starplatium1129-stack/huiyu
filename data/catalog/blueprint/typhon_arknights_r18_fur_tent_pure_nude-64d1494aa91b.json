@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_r18_fur_tent_pure_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 704,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "typhon_arknights_r18_fur_tent_pure_nude",
     "characterId": "typhon_arknights",
@@ -37,7 +37,9 @@
       "fur rug",
       "yurt",
       "firelight",
-      "full body"
+      "full body",
+      "hair spread out",
+      "lantern light"
     ],
     "promptProse": "Typhon stretches on her side across white fur pelts inside the heated hunting yurt, her purple hair spread over the rug in hearth light.",
     "negativeTokens": [],
@@ -48,6 +50,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her hair spreads across the white pelts as she stretches on her side beside the yurt hearth."
   }
 }

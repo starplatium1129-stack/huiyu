@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_victoria_maid_shear_strike_ice",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1053,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手持巨型冰刃剪刀贴地突进，巨大鲨鱼尾巴甩动激起冰屑气旋，神情冷峻酷飒",
     "camera": "dynamic low angle, sweeping wide shot",
@@ -29,7 +29,12 @@
       "ruins",
       "sunset",
       "wide shot",
-      "from below"
+      "from below",
+      "holding scissors",
+      "dynamic pose",
+      "snow",
+      "cool lighting",
+      "side lighting"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -42,6 +47,7 @@
       "dynamic_pose"
     ],
     "timeOfDay": "黄昏",
-    "title": "艾莲·乔 · 维多利亚执事极寒剪击"
+    "title": "艾莲·乔 · 维多利亚执事极寒剪击",
+    "animaCaption": "The shear blades drag through ice while her tail sweeps snow behind her."
   }
 }

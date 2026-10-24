@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_r18_shower_steam_wall_press",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 669,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自靠住淋浴湿墙，一脚踩低凳，一手撑墙、一手随水流在腿间自抚，湿衬衫敞开",
     "adult": true,
@@ -39,7 +39,12 @@
       "foot up",
       "steam",
       "full body",
-      "concealed placket"
+      "concealed placket",
+      "open shirt",
+      "hand on wall",
+      "masturbation",
+      "tail behind legs",
+      "overhead lighting"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -55,6 +60,7 @@
       "leg_lift"
     ],
     "timeOfDay": "夜晚",
-    "title": "德克萨斯 · 浴室水汽中的炽热贴合"
+    "title": "德克萨斯 · 浴室水汽中的炽热贴合",
+    "animaCaption": "One hand braces on the tile while one foot rests on the low bench, her tail clear of both legs."
   }
 }

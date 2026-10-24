@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc150",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Facing the seated viewer, she braces the chair back on either side of their shoulders and leans close; the clubroom sunset outlines her hair beside their face.",
+    "animaCaption": "Facing the seated viewer, her hands brace the chair back on either side of their shoulders.",
     "auditRevision": "careful-batch10-2026-08-27",
     "camera": "椅背扶手与面部的近景特写",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "crowd",
-    "prompt": "1girl, shiki_natsume, navy school blazer, burgundy piping, grey box pleated skirt, hands on chair, leaning forward, looking away, blush, clubroom, desk, books, sunset, close up",
+    "prompt": "1girl, shiki_natsume, navy school blazer, burgundy piping, grey box pleated skirt, hands on chair, leaning forward, looking away, blush, clubroom, desk, books, sunset, close up, backlighting",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 强势壁咚反差萌】放学后空无一人的超自然社办，窗外落日熔金。夏目悄悄转动钥匙反锁了门，绕到你的办公椅前，双手撑在椅背两侧将你完全“壁咚”。她微微俯身，黑色发丝伴随着她标志性的傲娇呼吸拂过你的耳畔，眼角的泪痣在夕阳逆光中散发着危险而性感的魅惑——「哼，一下午都在盯着别的女孩子看，把我当空气吗？现在...是我的专属补偿时间了哦。」",
@@ -48,6 +48,7 @@
       "壁纸级"
     ],
     "weather": "夕阳暖风",
-    "recommendedSize": "832x1216"
+    "recommendedSize": "832x1216",
+    "promptProse": "Facing the seated viewer, she braces the chair back on either side of their shoulders and leans close; the clubroom sunset outlines her hair beside their face."
   }
 }

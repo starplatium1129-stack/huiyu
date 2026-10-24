@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_snowfield_march",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 577,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "扛着战锤稳步前行",
     "camera": "full-body shot",
@@ -23,7 +23,9 @@
       "walking",
       "looking back",
       "snowfield",
-      "wind"
+      "wind",
+      "carrying hammer",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +46,7 @@
       "solo",
       "arknights"
     ],
-    "identityProseOverride": "Mudrock from Arknights, enclosed in her sealed heavy armor and helmet."
+    "identityProseOverride": "Mudrock from Arknights, enclosed in her sealed heavy armor and helmet.",
+    "animaCaption": "She looks back toward off-frame companions while carrying the taller-than-herself warhammer."
   }
 }

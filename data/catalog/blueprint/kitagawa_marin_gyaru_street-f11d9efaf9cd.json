@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_gyaru_street",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 501,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "举着手机逛街聊天",
     "camera": "medium shot",
@@ -28,7 +28,11 @@
       "smartphone",
       "street",
       "shops",
-      "daylight"
+      "daylight",
+      "walking",
+      "holding phone",
+      "talking",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +45,7 @@
       "bright"
     ],
     "timeOfDay": "白天",
-    "title": "喜多川海梦 · 辣妹街头"
+    "title": "喜多川海梦 · 辣妹街头",
+    "animaCaption": "One arm links through her companion's while her free hand holds the phone as they walk."
   }
 }

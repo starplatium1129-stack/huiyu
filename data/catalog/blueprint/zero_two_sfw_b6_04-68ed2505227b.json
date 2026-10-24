@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1576,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zero_two_sfw_b6_04",
     "title": "02 · 红角与白誓约",
@@ -35,7 +35,10 @@
       "bouquet",
       "ruined greenhouse",
       "sunset",
-      "cowboy shot"
+      "cowboy shot",
+      "holding bouquet",
+      "looking back",
+      "soft smile"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +52,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She holds the bouquet over one shoulder beneath the shattered greenhouse dome."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1463,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "冬夜屋内，她捧着热茶与草莓大福，脸颊被热气熏得微红",
     "adult": false,
@@ -30,7 +30,12 @@
       "strawberry daifuku",
       "indoors",
       "winter",
-      "medium shot"
+      "medium shot",
+      "holding cup",
+      "blush",
+      "steam",
+      "shy smile",
+      "lamplight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -48,6 +53,7 @@
       "medium_shot"
     ],
     "timeOfDay": "傍晚或夜间",
-    "title": "甘露寺蜜璃 · 冬夜的草莓大福"
+    "title": "甘露寺蜜璃 · 冬夜的草莓大福",
+    "animaCaption": "Her free hand lifts toward her mouth while she keeps the teacup steady."
   }
 }

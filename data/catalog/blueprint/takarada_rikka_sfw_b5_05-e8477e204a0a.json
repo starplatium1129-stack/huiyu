@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1536,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_05",
     "title": "宝多六花 · 哥哥住处的漫画借阅",
@@ -36,7 +36,10 @@
       "cross-legged",
       "manga",
       "coffee can",
-      "cowboy shot"
+      "cowboy shot",
+      "holding manga",
+      "hair tuck",
+      "daylight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -46,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the manga while the other tucks her hair behind an ear."
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc062",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Half asleep, she holds the viewer's wrist in both hands against her cheek; morning light crosses the pillow and her closed eyes.",
+    "animaCaption": "Both her hands hold the viewer's wrist gently against her cheek.",
     "auditRevision": "careful-batch02-2026-08-27",
     "camera": "枕边面部与交握手腕近景",
     "category": "恋爱/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, blue pajamas, cat print, white piping, on side, closed eyes, pillow, holding wrist, alarm clock, morning light, close up",
+    "prompt": "1girl, ayachi_nene, blue pajamas, cat print, white piping, on side, closed eyes, pillow, holding wrist, alarm clock, morning light, close up, lying on side, holding hands, sleepy",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",
@@ -54,6 +54,7 @@
       "展示图",
       "头像"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Half asleep, she holds the viewer's wrist in both hands against her cheek; morning light crosses the pillow and her closed eyes."
   }
 }

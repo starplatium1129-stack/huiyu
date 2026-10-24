@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_marble_table_bent_over_prone",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1308,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "albedo_nsfw_marble_table_bent_over_prone",
     "title": "雅儿贝德 · 大理石案台的白裙更衣自抚·「只要一想到是您在看着……这里就会融化掉」",
@@ -45,7 +45,10 @@
       "masturbation",
       "looking back",
       "gold necklace",
-      "green gemstone"
+      "green gemstone",
+      "hand on table",
+      "moonlight",
+      "glass dome"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -60,6 +63,7 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand supports her against the marble; the other stays beneath her skirt."
   }
 }

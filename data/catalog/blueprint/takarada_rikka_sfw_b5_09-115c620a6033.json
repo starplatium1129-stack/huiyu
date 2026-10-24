@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_09",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1538,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_09",
     "title": "宝多六花 · 体育仓库后的喘息",
@@ -38,7 +38,11 @@
     "promptTokens": [
       "water bottle",
       "storehouse",
-      "medium shot"
+      "medium shot",
+      "drinking",
+      "holding bottle",
+      "hand on waist",
+      "doorway light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the bottle while the other rests at her waist."
   }
 }

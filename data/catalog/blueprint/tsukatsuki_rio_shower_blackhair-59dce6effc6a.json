@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_shower_blackhair",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 889,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "泡浴时举着平板查看数据",
     "adult": true,
@@ -37,7 +37,13 @@
       "bathtub",
       "night",
       "updo",
-      "glasses"
+      "glasses",
+      "holding tablet",
+      "adjusting glasses",
+      "steam",
+      "screen light",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -51,6 +57,7 @@
       "smart_device"
     ],
     "timeOfDay": "深夜",
-    "title": "调月莉音 · 研讨会深夜的数据浴"
+    "title": "调月莉音 · 研讨会深夜的数据浴",
+    "animaCaption": "One hand holds the waterproof tablet while the other adjusts her glasses above the bath."
   }
 }

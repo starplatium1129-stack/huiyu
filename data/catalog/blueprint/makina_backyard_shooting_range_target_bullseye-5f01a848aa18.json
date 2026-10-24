@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makina_backyard_shooting_range_target_bullseye",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1796,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makina_backyard_shooting_range_target_bullseye",
     "title": "入巢莳菜 · 密林靶场十环贯穿的傲然双V",
@@ -60,11 +60,16 @@
       "ahoge",
       "brown_eyes",
       "detailed_background",
-      "crisp_focus"
+      "crisp_focus",
+      "standing",
+      "looking at viewer",
+      "medium shot",
+      "from below"
     ],
     "promptProse": "Standing proudly on a shaded woodland shooting range with dappled sunbeams, Makina casually balances a smoking heavy sniper rifle on her shoulder while wearing her loose Mihama Academy school uniform. Turning to the camera with a playful wink and her tongue poking out, she flashes double V-signs in front of a shattered bullseye target downrange.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The rifle balances on her shoulder as she makes two V signs before the shattered target."
   }
 }

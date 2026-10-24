@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc126",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 124,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She straddles the viewer on the rear seat with both hands pressing their shoulders, leaning down to their collarbone; weak dashboard light catches her wet hair against the rain-fogged windows.",
+    "animaCaption": "Both hands press the viewer's shoulders as she leans toward their collarbone on the rear seat.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "窄空间主观特写",
     "category": "恋爱/同人",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "clothes",
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, nude, wet hair, straddling, hands on shoulders, blush, car backseat, fogged windows, rain, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, nude, wet hair, straddling, hands on shoulders, blush, car backseat, fogged windows, rain, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>, leaning forward, dashboard light",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 暴雨车载绝对占有】狂风暴雨的荒郊野外，特工撤离车辆的后座车厢。密闭的车窗上挂满了密密麻麻的雾气与水滴，车内昏暗炙热。平时高冷死板的夏目此时彻底撕下了伪装，一丝不挂地强行跨坐在你的腰间。她那一身湿透的黑色长发凌乱地贴在雪白的锁骨上，眼角的泪痣因为极度的亢奋和动情而被红晕彻底浸透。她双手死死按住你的肩膀，一边剧烈娇喘，一边俯身发狠地咬在你的锁骨上——「长官...这里的信号已经完全切断了...今晚...谁也别想把我们分开了...」",
@@ -44,6 +44,7 @@
       "核心协议",
       "成人向"
     ],
-    "weather": "车外暴雨如注"
+    "weather": "车外暴雨如注",
+    "promptProse": "She straddles the viewer on the rear seat with both hands pressing their shoulders, leaning down to their collarbone; weak dashboard light catches her wet hair against the rain-fogged windows."
   }
 }

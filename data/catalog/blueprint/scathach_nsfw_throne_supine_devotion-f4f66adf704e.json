@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_throne_supine_devotion",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 250,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "scathach_nsfw_throne_supine_devotion",
     "title": "斯卡哈 · 影之国石殿·幽蓝魔火与足踝系带红宝石",
@@ -58,12 +58,19 @@
       "blue fire",
       "spear",
       "anklet",
-      "wide shot"
+      "wide shot",
+      "reclining",
+      "supporting arm",
+      "ruby anklet",
+      "blue braziers",
+      "twin spears",
+      "nude"
     ],
     "negativeTokens": [],
     "nsfwTokens": [
       "nude"
     ],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The ruby anklet stays on her left ankle beside the blue-lit spears."
   }
 }

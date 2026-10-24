@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 789,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在玄关凳上系齐半扎发缎带，俏皮歪头检查。",
     "adult": false,
@@ -27,7 +27,11 @@
     "promptTokens": [
       "hair ribbon",
       "bench",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "hands behind head",
+      "ribbon adjustment",
+      "doorway light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -43,6 +47,7 @@
       "medium_shot"
     ],
     "timeOfDay": "morning",
-    "title": "周防有希 · 周末玄关的发带结"
+    "title": "周防有希 · 周末玄关的发带结",
+    "animaCaption": "Both hands level the ribbon ends behind her head."
   }
 }

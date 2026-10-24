@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc306",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 301,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc306",
     "title": "落雪窗边的温存回眸",
@@ -44,10 +44,11 @@
       "成人向"
     ],
     "recommendedSize": "832×1216",
-    "prompt": "1girl, adult, ayachi_nene, nene_r18, low twintails, @rella, towel, covering breasts, bare shoulders, sideboob, barefoot, wariza, on bed, looking back, blush, from behind, window, snow, warm lighting, <lora:ayachi_nene_v21_anima:0.85>",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, low twintails, @rella, towel, covering breasts, bare shoulders, sideboob, barefoot, wariza, on bed, looking back, blush, from behind, window, snow, warm lighting, <lora:ayachi_nene_v21_anima:0.85>, holding towel, cool lighting, white bed",
     "negative": "",
     "storyJa": "【大人のAfter Story・寧々・雪降る窓辺の温もり】窓の外は雪がしんしんと降り、部屋の中は暖かな空気に包まれていた。寧々は乱れたシーツの上に素足で座り、薄いバスタオルを胸元に寄せながら、振り返ってあなたを見つめた。雪明かりが白い背中と柔らかな横胸を優しく照らし、頬を朱に染める――「雪、すごく降ってきたね……今夜は、もっとそばにいてほしいな。」",
-    "animaCaption": "Seated on the white bed, she holds the towel across her chest and looks back over her shoulder toward the viewer; cool light from the snowy window meets the room's warm light along her shoulder.",
-    "auditRevision": "user-curated-2026-09-02"
+    "animaCaption": "She holds the towel across her chest and looks back over her shoulder toward the viewer.",
+    "auditRevision": "user-curated-2026-09-02",
+    "promptProse": "Seated on the white bed, she holds the towel across her chest and looks back over her shoulder toward the viewer; cool light from the snowy window meets the room's warm light along her shoulder."
   }
 }

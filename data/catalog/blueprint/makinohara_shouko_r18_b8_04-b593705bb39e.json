@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_r18_b8_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makinohara_shouko_r18_b8_04",
     "title": "牧之原翔子 · 宿命病房床褥的深情自持 ·「请记住……现在的我……是一个真正活着的成年女性」",
@@ -41,7 +41,9 @@
       "hand between legs",
       "masturbation",
       "tears",
-      "hospital bed"
+      "hospital bed",
+      "moonlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +58,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her tears reach her ears while she lies against the hospital bedding."
   }
 }

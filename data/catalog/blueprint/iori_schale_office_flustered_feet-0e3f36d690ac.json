@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_schale_office_flustered_feet",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 929,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在木椅上双手抱胸别过头，一只黑丝小腿向前伸出，满脸通红羞愤娇嗔",
     "camera": "medium shot, slightly high angle",
@@ -30,7 +30,10 @@
       "looking away",
       "office",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "heavy blush",
+      "hands supporting leg",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -47,6 +50,7 @@
       "fangs"
     ],
     "timeOfDay": "下午",
-    "title": "银镜伊织 · 夏莱办公室的羞愤惩戒"
+    "title": "银镜伊织 · 夏莱办公室的羞愤惩戒",
+    "animaCaption": "The viewer's hands support her extended stockinged leg as she turns her flushed face aside."
   }
 }

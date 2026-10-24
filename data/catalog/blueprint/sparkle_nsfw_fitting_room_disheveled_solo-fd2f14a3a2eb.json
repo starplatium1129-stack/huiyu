@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_nsfw_fitting_room_disheveled_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1056,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sparkle_nsfw_fitting_room_disheveled_solo",
     "title": "花火 · 试衣间和风短裙半褪的微喘自抚",
@@ -38,7 +38,12 @@
       "dressing room",
       "looking aside",
       "blush",
-      "cowboy shot"
+      "cowboy shot",
+      "open clothes",
+      "hand on face",
+      "biting lip",
+      "warm lighting",
+      "spotlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,6 +63,7 @@
       "topless",
       "masturbation",
       "panties aside"
-    ]
+    ],
+    "animaCaption": "She covers one flushed cheek while glancing toward the fitting-room curtain gap."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_white_bed_supine_devotion",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1329,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "全裸仰卧在纯白床榻上，双腿大开曲膝，双手拉着视角手掌十指紧扣，眼眸水润迷乱",
     "adult": true,
@@ -36,7 +36,9 @@
       "holding hands",
       "interlocked fingers",
       "moonlight",
-      "from above"
+      "from above",
+      "white sheets",
+      "bedside candle"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -54,6 +56,7 @@
       "parted_lips"
     ],
     "timeOfDay": "深夜",
-    "title": "爱尔奎特 · 纯白床榻的深情仰卧交付"
+    "title": "爱尔奎特 · 纯白床榻的深情仰卧交付",
+    "animaCaption": "Both of the viewer's hands enter the foreground with their fingers interlocked."
   }
 }

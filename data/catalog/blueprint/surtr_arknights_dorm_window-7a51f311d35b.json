@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_dorm_window",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 516,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱着膝盖坐在窗台上望向远方",
     "camera": "medium shot, eye level",
@@ -26,7 +26,10 @@
       "hugging knees",
       "windowsill",
       "wasteland",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "looking outside",
+      "dusk light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +40,7 @@
       "window_seat"
     ],
     "timeOfDay": "黄昏",
-    "title": "史尔特尔 · 宿舍窗边"
+    "title": "史尔特尔 · 宿舍窗边",
+    "animaCaption": "She watches the wasteland from the sill with her knees held close beneath her red hair."
   }
 }

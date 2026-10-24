@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_adventurer_campfire",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 481,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "跪在铺盖旁，双手拉动皮甲肩带。",
     "adult": true,
@@ -37,7 +37,11 @@
       "tent",
       "bedroll",
       "morning light",
-      "blush"
+      "blush",
+      "holding strap",
+      "both hands",
+      "forest",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -56,6 +60,7 @@
       "daylight"
     ],
     "timeOfDay": "日出",
-    "title": "艾莉丝 · 林间营地帐篷晨光解甲"
+    "title": "艾莉丝 · 林间营地帐篷晨光解甲",
+    "animaCaption": "Both hands pull the stubborn shoulder strap beside the bedroll."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_winter_bench_pout",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1848,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_miku_winter_bench_pout",
     "characterId": "nakano_miku",
@@ -29,7 +29,8 @@
       "blush",
       "winter clothes",
       "street lamp",
-      "cowboy shot"
+      "cowboy shot",
+      "warm lighting"
     ],
     "sceneTags": [
       "park",
@@ -47,6 +48,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She cups the warm drink within her long sleeves and puffs her cheeks beneath the street lamp."
   }
 }

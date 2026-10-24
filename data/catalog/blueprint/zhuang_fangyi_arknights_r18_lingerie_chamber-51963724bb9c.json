@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_r18_lingerie_chamber",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 765,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_r18_lingerie_chamber",
     "characterId": "zhuang_fangyi_arknights",
@@ -37,7 +37,9 @@
       "blush",
       "silk cushions",
       "carved couch",
-      "lantern light"
+      "lantern light",
+      "leaning",
+      "slipping robe"
     ],
     "promptProse": "Zhuang Fangyi leans into the vermilion silk cushions as the sheer robe slips from her shoulders and parts across her chest.",
     "negativeTokens": [],
@@ -50,6 +52,7 @@
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The sheer robe slips from her shoulders against the vermilion cushions."
   }
 }

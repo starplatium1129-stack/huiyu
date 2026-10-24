@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc099",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Her finger stays on the emergency-call button as the viewer braces a forearm against the wall beside her; overhead emergency light reveals her startled glance at their closeness.",
+    "animaCaption": "Her finger stays on the emergency-call button beside the viewer's forearm braced against the wall.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "主观狭窄空间近景",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, charcoal tailored blazer, burgundy lapel facing, matching tapered trousers, ivory blouse, pressing button, elevator, mirror, emergency light, close up",
+    "prompt": "1girl, shiki_natsume, charcoal tailored blazer, burgundy lapel facing, matching tapered trousers, ivory blouse, pressing button, elevator, mirror, emergency light, close up, surprised, looking at viewer, forearm",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 电梯暂停后的冷静方案】秋夜电梯突然停层，夏目被晃得退到角落，你下意识撑住墙面保护她。应急灯亮起后，她先冷静按下呼叫按钮，随后才意识到彼此距离过近，呼吸明显停顿了一拍——「救援已经联系了。你可以不用退得太远……只是保持这个姿势比较安全。」",
@@ -44,6 +44,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Her finger stays on the emergency-call button as the viewer braces a forearm against the wall beside her; overhead emergency light reveals her startled glance at their closeness."
   }
 }

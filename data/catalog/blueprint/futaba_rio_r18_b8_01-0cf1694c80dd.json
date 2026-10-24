@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_r18_b8_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 68,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "futaba_rio_r18_b8_01",
     "title": "双叶理央 · 物理实验室长桌的白大褂秘密探究 ·「梓川……这是量子力学无法解释的生理冲动」",
@@ -41,7 +41,9 @@
       "workbench",
       "laboratory",
       "night",
-      "from below"
+      "from below",
+      "moonlight",
+      "test tube rack"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +58,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her removed glasses rest beside the rack on the workbench."
   }
 }

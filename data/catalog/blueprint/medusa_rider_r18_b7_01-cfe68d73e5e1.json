@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 301,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_01",
     "title": "美杜莎 Rider · 鲜血神殿王座黑色乳胶紧身衣主控跨坐 ·「Master……被魔物吞噬的觉悟，准备好了吗」",
@@ -41,7 +41,9 @@
       "straddling",
       "cowgirl position",
       "throne",
-      "torches"
+      "torches",
+      "cowboy shot",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +59,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "She straddles her seated companion on the stone throne with her blindfold removed."
   }
 }

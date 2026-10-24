@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_cherry_blossom_katana_maintenance",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1070,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手捧着大拉面碗，腮帮仍鼓着，抬眼看向刚坐到身旁的人，双耳竖起",
     "camera": "medium shot, counter seating perspective, focus on puffed cheeks, steam, and blushing fox ears",
@@ -26,7 +26,15 @@
       "bowl",
       "eating",
       "food stall",
-      "night"
+      "night",
+      "holding bowl",
+      "both hands",
+      "puffed cheeks",
+      "raised ears",
+      "blush",
+      "steam",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +50,7 @@
       "blushing"
     ],
     "timeOfDay": "夜晚",
-    "title": "星见雅 · 巷角拉面摊吸溜骨汤的腮帮鼓鼓"
+    "title": "星见雅 · 巷角拉面摊吸溜骨汤的腮帮鼓鼓",
+    "animaCaption": "She holds the bowl in both hands and looks toward the viewer with her cheeks still full."
   }
 }

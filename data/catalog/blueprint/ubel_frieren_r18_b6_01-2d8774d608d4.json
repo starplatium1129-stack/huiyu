@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_01",
     "title": "尤贝尔 · 露营篝火旁黑色大开衩裙主控跨坐 ·「眼镜仔……让我看看你的内心到底被什么填满了」",
@@ -39,7 +39,10 @@
       "topless",
       "cowboy shot",
       "low angle",
-      "pov"
+      "pov",
+      "straddling",
+      "hands on chest",
+      "crooked smile"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +58,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Both hands rest on the off-frame companion's chest beside the fire."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_morning_bed_catlike_pounce_cuddle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1319,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手撑在视角胸膛两侧俯身凑近，双腿向后翘起，露出可爱小虎牙与灿烂笑脸",
     "camera": "medium shot, first-person view from below",
@@ -31,7 +31,11 @@
       "fang",
       "morning",
       "pov",
-      "from below"
+      "from below",
+      "looking down",
+      "feet raised",
+      "window light",
+      "sheer curtains"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +52,7 @@
     ],
     "timeOfDay": "清晨",
     "title": "爱尔奎特 · 晨曦床榻的白猫飞扑撒娇",
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Her palms stay beside the reclining viewer's chest, on the mattress."
   }
 }

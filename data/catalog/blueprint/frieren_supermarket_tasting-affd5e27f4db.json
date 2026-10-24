@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_supermarket_tasting",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "frieren_supermarket_tasting",
     "title": "芙莉莲 · 超市试吃",
@@ -38,13 +38,17 @@
       "toothpick",
       "food sample",
       "supermarket",
-      "medium shot"
+      "medium shot",
+      "holding toothpick",
+      "nodding",
+      "shop lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She holds the sausage sample above the tasting counter with a small nod."
   }
 }

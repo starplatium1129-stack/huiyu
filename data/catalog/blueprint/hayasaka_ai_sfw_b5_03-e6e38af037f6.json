@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1407,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "扣下工作手机，挖起第一勺布丁，放松肩膀。",
     "adult": false,
@@ -31,7 +31,11 @@
       "bench",
       "convenience store",
       "night",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "holding cup",
+      "storefront light",
+      "phone face down"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -50,6 +54,7 @@
     "timeOfDay": "night",
     "title": "早坂爱 · 下班后的最后一颗布丁",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her work phone lies face-down beside the bag on the bench."
   }
 }

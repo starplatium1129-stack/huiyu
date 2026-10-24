@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_amusement_park",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 497,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "将棉花糖纸托放在身旁野餐桌上，腾出双手朝画面外的同行者比心。",
     "camera": "medium shot, eye level, both heart-gesture hands and resting candy tray visible",
@@ -30,7 +30,13 @@
       "ferris wheel",
       "amusement park",
       "sunlight",
-      "medium shot"
+      "medium shot",
+      "smile",
+      "paper tray",
+      "roller coaster",
+      "railing",
+      "cumulus clouds",
+      "cast shadow"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +54,7 @@
       "medium_shot"
     ],
     "timeOfDay": "白天",
-    "title": "喜多川海梦 · 游乐园夏日"
+    "title": "喜多川海梦 · 游乐园夏日",
+    "animaCaption": "Both hands form a heart toward her offscreen companion, the cotton-candy tray resting beside her on the table."
   }
 }

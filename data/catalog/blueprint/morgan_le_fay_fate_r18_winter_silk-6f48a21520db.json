@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_winter_silk",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 198,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -45,7 +45,12 @@
       "throne",
       "winter light",
       "black dress",
-      "blue piping"
+      "blue piping",
+      "adult",
+      "holding crown",
+      "lowering strap",
+      "window light",
+      "warm fill light"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "black_backless_gown",
@@ -55,6 +60,7 @@
     "nsfwProse": "",
     "coverageTags": [
       "intimate"
-    ]
+    ],
+    "animaCaption": "One hand steadies the crown on the throne arm while the other lowers a strap."
   }
 }

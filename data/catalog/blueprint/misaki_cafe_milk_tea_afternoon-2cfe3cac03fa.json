@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_cafe_milk_tea_afternoon",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 402,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "右手用吸管轻搅放在桌上的奶茶，左手套指节碰对面同行者的蛋糕碟边，两人衣着完整。",
     "adult": false,
@@ -32,7 +32,10 @@
       "stirring straw",
       "strawberry cake",
       "booth",
-      "cafe"
+      "cafe",
+      "window light",
+      "warm lighting",
+      "medium two-shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -52,6 +55,7 @@
       "medium_two_shot"
     ],
     "timeOfDay": "午后",
-    "title": "食蜂操祈 · 奶茶店的午后加冕·「这块蛋糕，分你一口好了」"
+    "title": "食蜂操祈 · 奶茶店的午后加冕·「这块蛋糕，分你一口好了」",
+    "animaCaption": "Misaki sits left: right hand stirring tea, left gloved knuckles on her companion's cake plate."
   }
 }

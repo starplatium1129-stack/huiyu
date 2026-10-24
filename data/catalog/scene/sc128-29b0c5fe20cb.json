@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc128",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Seated cross-legged on the redwood daybed, she swirls the glass under antique lamplight, with city neon beyond the window.",
+    "animaCaption": "She swirls the glass while sitting cross-legged on the redwood daybed.",
     "camera": "主观略微仰视",
     "category": "日常/同人",
     "char": "natsume",
@@ -20,7 +20,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "day",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, natsume_official_qipao, dark red silk china dress, high slit, black thighhighs, cross-legged, wine glass, tipsy, blush, lounge, night, lamp light, low angle, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, natsume_official_qipao, dark red silk china dress, high slit, black thighhighs, cross-legged, wine glass, tipsy, blush, lounge, night, lamp light, low angle, <lora:shiki_natsume_v18_wd14:0.85>, sitting, holding wine glass, city lights, window",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 丝绸旗袍高开叉】执行完秘密卧底任务后的中式私人会所。平时不苟言笑的夏目换上了一件高档的暗红色丝绸高开叉旗袍，将她笔直丰满的绝美修长美腿衬托得淋漓尽致，腿上包裹着一双性感的薄款黑丝。她面带一丝高傲却有些满脸通红的微醺醉意，盘腿坐在微凉的红木罗汉床中央，修长的手指摇晃着一杯金黄色的烈酒。眼角的泪痣在古董灯具的侧光强影下显得极度明艳妖娆——「哼，长官。今晚这间会所已经被我包下了。既然进来了...你最好做足了被我彻底审讯的觉悟。」",
@@ -60,6 +60,7 @@
       "核心协议",
       "成人向"
     ],
-    "weather": "微醺微热"
+    "weather": "微醺微热",
+    "promptProse": "Seated cross-legged on the redwood daybed, she swirls the glass under antique lamplight, with city neon beyond the window."
   }
 }

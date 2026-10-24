@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_autumn_park",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "artoria_autumn_park",
     "title": "阿尔托莉雅 · 银杏长椅边的热茶",
@@ -41,7 +41,15 @@
       "tea",
       "fallen leaves",
       "golden hour",
-      "medium shot"
+      "medium shot",
+      "holding cup",
+      "both hands",
+      "steam",
+      "knees together",
+      "smile",
+      "path",
+      "railing",
+      "rim light"
     ],
     "negativeTokens": [
       "readable cup marking"
@@ -50,6 +58,7 @@
     "outfitId": "sfw_autumn_duffle",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She cups the tea beneath her face, sunlight behind her left shoulder."
   }
 }

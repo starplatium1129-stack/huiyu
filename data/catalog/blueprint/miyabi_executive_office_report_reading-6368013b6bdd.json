@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_executive_office_report_reading",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1068,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在皮椅上，一手按住卷宗，另一手执笔签字，长袴覆住交叠的双腿",
     "camera": "cowboy shot, three-quarter view",
@@ -27,7 +27,12 @@
       "files",
       "pen",
       "office",
-      "sunset"
+      "sunset",
+      "writing",
+      "signing",
+      "hand on report",
+      "screen glow",
+      "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +46,7 @@
       "fox_ears"
     ],
     "timeOfDay": "黄昏",
-    "title": "星见雅 · 对空六课课长的严谨案卷"
+    "title": "星见雅 · 对空六课课长的严谨案卷",
+    "animaCaption": "Her left hand steadies the report while her right signs with the fountain pen."
   }
 }

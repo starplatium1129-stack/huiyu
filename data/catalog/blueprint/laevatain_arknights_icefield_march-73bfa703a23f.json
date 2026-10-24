@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_icefield_march",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 722,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "扛着熔光大剑稳步前行",
     "camera": "full body",
@@ -23,7 +23,11 @@
       "walking",
       "snow",
       "icefield",
-      "full body"
+      "full body",
+      "sword over shoulder",
+      "looking back",
+      "glowing blade",
+      "reflected light"
     ],
     "recommendedSize": "1216x832",
     "sceneTags": [
@@ -35,6 +39,7 @@
       "frost"
     ],
     "timeOfDay": "白天",
-    "title": "莱瓦汀 · 冰原行军"
+    "title": "莱瓦汀 · 冰原行军",
+    "animaCaption": "The greatsword rests on one shoulder as she looks back while striding across the ice."
   }
 }

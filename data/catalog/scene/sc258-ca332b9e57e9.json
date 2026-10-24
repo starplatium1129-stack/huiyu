@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc258",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 253,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Her long hair tied back with a large red bow, she stumbles over her hakama hem with the props against her chest as the viewer steps up from the lower stair to support her waist; sunset through the red maples dapples her flushed face.",
+    "animaCaption": "The viewer supports her waist from the lower stair as she stumbles over her hakama, the props held against her chest.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "石阶下方略仰视半身中景",
     "category": "祭典・节日",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, red and white arrow print kimono, purple hakama, black boots, tripping, blush, shrine, stairs, maple leaf, sunset",
+    "prompt": "1girl, ayachi_nene, red and white arrow print kimono, purple hakama, black boots, tripping, blush, shrine, stairs, maple leaf, sunset, red hair bow, tied hair, dappled light, hands against chest",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 大正风袴裙古典反差】秋意浓郁、漫天红枫如火般飘落的学院古老神社后山石阶。为了参加民俗部的传统节日拍摄，宁宁换上了一整套极其优雅华丽的大正风格袴裙：上身是红白相间的正统箭羽纹和服，下身搭配深紫色的传统袴裙与一双秀气的黑色系带皮靴，银白色的长发用巨大的红色蝴蝶结发带优雅地束在脑后，显得格外的明艳端庄。然而由于袴裙摆过于繁复，她在抱着道具走下石阶时下摆不慎绊了一下，整个人惊呼着直接失去了平稳。你眼疾手快地跨上一步将她稳稳抱进怀里，宁宁在对视的瞬间瞬间面红耳赤，头顶那根心形呆毛在漫天飘落的红色枫叶中慌乱地打着卷，挂着眼泪当场语无伦次自曝——「呜啊！柊、柊史！为什么每次你都能接住人家啦！人家、人家绝对没有故意借助被裙子绊倒来让你抱住哦……呜，越解释越像在狡辩了，笨蛋快闭上眼睛不准看！」",
@@ -56,6 +56,7 @@
       "ahoge",
       "large red hair bow"
     ],
-    "identityProseOverride": "Adult Nene Ayachi, with very long white hair tied at the back with a large red bow, purple eyes and an ahoge."
+    "identityProseOverride": "Adult Nene Ayachi, with very long white hair tied at the back with a large red bow, purple eyes and an ahoge.",
+    "promptProse": "Her long hair tied back with a large red bow, she stumbles over her hakama hem with the props against her chest as the viewer steps up from the lower stair to support her waist; sunset through the red maples dapples her flushed face."
   }
 }

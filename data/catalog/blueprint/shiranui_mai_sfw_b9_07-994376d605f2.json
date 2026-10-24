@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_07",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1747,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_07",
     "title": "不知火舞 · 夏祭折扇与苹果糖",
@@ -36,7 +36,11 @@
       "folding fan",
       "festival",
       "lantern",
-      "medium shot"
+      "medium shot",
+      "offering food",
+      "bright smile",
+      "night",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +51,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She offers the candy apple while her fan shields the other sticky hand."
   }
 }

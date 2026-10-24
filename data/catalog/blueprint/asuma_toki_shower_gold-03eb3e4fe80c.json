@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_shower_gold",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 879,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "一脚放在石凳上，一手抬起湿发，另一手沿身前水流冲洗。",
     "adult": true,
@@ -34,7 +34,10 @@
       "raised leg",
       "hand between legs",
       "closed eyes",
-      "steam"
+      "steam",
+      "stone bench",
+      "cool lighting",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -48,6 +51,7 @@
       "evening"
     ],
     "timeOfDay": "黄昏",
-    "title": "飞鸟马时 · 任务归来的装甲清洗"
+    "title": "飞鸟马时 · 任务归来的装甲清洗",
+    "animaCaption": "One foot rests on the bench as one hand lifts her wet hair."
   }
 }

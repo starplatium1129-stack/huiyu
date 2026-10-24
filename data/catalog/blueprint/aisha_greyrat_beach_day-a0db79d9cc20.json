@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_beach_day",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 489,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "aisha_greyrat_beach_day",
     "title": "爱夏·潮线之外",
@@ -28,13 +28,20 @@
     "promptProse": "Beyond the tide line, she holds her hat with one hand and her windblown cover-up with the other, watching the wave to her right. Bright sand-reflected light softens her face; pale rocks line the far shore.",
     "promptTokens": [
       "beach",
-      "ocean"
+      "ocean",
+      "holding hat",
+      "wind",
+      "looking to the side",
+      "waves",
+      "sunlight",
+      "rocky shore"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She steadies her hat and cover-up while watching the wave to her right."
   }
 }

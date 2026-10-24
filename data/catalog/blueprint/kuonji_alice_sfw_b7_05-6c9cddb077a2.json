@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1627,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_05",
     "title": "久远寺有珠 · 潮池里的玻璃魔法",
@@ -35,7 +35,12 @@
       "tide pool",
       "afternoon",
       "glass jar",
-      "sitting"
+      "sitting",
+      "holding jar",
+      "smile",
+      "sunlight",
+      "water reflection",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +52,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "She raises the seaweed jar toward the afternoon sun and studies it beside the tide pool."
   }
 }

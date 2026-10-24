@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_r18_hot_bath_intimacy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1839,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kita_ikuyo_r18_hot_bath_intimacy",
     "characterId": "kita_ikuyo",
@@ -35,7 +35,10 @@
       "steam",
       "moonlight",
       "blush",
-      "full body"
+      "full body",
+      "reclining",
+      "head on rim",
+      "half-closed eyes"
     ],
     "sceneTags": [
       "onsen",
@@ -54,6 +57,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her head rests against the wooden rim beneath the moonlight."
   }
 }

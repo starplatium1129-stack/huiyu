@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_r18_tatami_fox_tail_lift_doggystyle",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1075,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "站在木凳旁，一腿踏凳，一手扶松开的衣襟，另一手留在袴内",
     "adult": true,
@@ -36,7 +36,13 @@
       "holding lapel",
       "masturbation",
       "bench",
-      "dojo"
+      "dojo",
+      "standing",
+      "foot on bench",
+      "heavy blush",
+      "moonlight",
+      "wall lamp",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,6 +59,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "星见雅 · 道场更衣长凳练功服系带松开"
+    "title": "星见雅 · 道场更衣长凳练功服系带松开",
+    "animaCaption": "One foot rests on the bench while one hand holds her loosened lapel and the other remains beneath the hakama."
   }
 }

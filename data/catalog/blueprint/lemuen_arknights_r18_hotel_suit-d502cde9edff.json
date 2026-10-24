@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_hotel_suit",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 565,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在落地窗前的轮椅上侧身回眸，夜色与微光交织",
     "adult": true,
@@ -34,7 +34,10 @@
       "sitting",
       "looking back",
       "hotel window",
-      "city lights"
+      "city lights",
+      "halo",
+      "rim light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -46,6 +49,7 @@
       "wheelchair"
     ],
     "timeOfDay": "夜晚",
-    "title": "蕾缪安 · 旅店夜装"
+    "title": "蕾缪安 · 旅店夜装",
+    "animaCaption": "She turns from the wheelchair by the window toward her offscreen companion, city lights outlining her profile."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_live_stage",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 948,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "舞台上高唱登场",
     "camera": "full-body shot, low angle",
@@ -29,7 +29,9 @@
       "glowstick",
       "spotlight",
       "night",
-      "full body"
+      "full body",
+      "raised platform",
+      "microphone at lips"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +47,7 @@
     "title": "星野爱 · B 小町演唱会",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She faces the sea of audience lights from the highest platform."
   }
 }

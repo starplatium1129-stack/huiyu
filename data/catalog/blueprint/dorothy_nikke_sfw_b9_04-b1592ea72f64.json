@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_sfw_b9_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1730,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "dorothy_nikke_sfw_b9_04",
     "title": "桃乐丝 · 伊甸园的白色迎宾花嫁",
@@ -35,7 +35,11 @@
       "curtsey",
       "dusk",
       "white wings",
-      "folded wings"
+      "folded wings",
+      "smile",
+      "stained glass",
+      "sunset light",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
       "iconic",
       "bridal",
       "daily"
-    ]
+    ],
+    "animaCaption": "Her wings fold behind the veil as she curtsies beneath the rose arch."
   }
 }

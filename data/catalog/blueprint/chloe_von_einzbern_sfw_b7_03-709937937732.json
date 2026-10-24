@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 285,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_03",
     "title": "克洛伊 · 游戏厅的连胜",
@@ -36,7 +36,13 @@
       "sitting",
       "crossed legs",
       "game controls",
-      "victory grin"
+      "victory grin",
+      "joystick",
+      "game cabinet",
+      "gaming",
+      "crowd",
+      "colored lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her left hand holds the joystick while her right rests over the buttons."
   }
 }

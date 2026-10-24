@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_family_restaurant",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 342,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yukinoshita_yukino_family_restaurant",
     "title": "雪之下雪乃 · 家庭餐厅",
@@ -38,7 +38,10 @@
       "hamburger steak",
       "restaurant booth",
       "evening",
-      "medium shot"
+      "medium shot",
+      "listening",
+      "pendant light",
+      "window reflections"
     ],
     "negativeTokens": [
       "text"
@@ -51,6 +54,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She pauses above the partly cut steak to listen to the unseen diner opposite."
   }
 }

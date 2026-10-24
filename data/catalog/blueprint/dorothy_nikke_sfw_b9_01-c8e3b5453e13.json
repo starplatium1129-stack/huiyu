@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_sfw_b9_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1727,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "dorothy_nikke_sfw_b9_01",
     "title": "桃乐丝 · 拱廊前的清晨迎接",
@@ -36,7 +36,12 @@
       "stone arcade",
       "folded hands",
       "nodding",
-      "morning"
+      "morning",
+      "bowing",
+      "polite smile",
+      "garden entrance",
+      "morning light",
+      "medium shot"
     ],
     "negativeTokens": [
       "arcade machine",
@@ -50,6 +55,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She inclines her head toward the entrance, repeated stone arches leading to the garden behind her."
   }
 }

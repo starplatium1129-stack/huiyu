@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_moonlit_smile",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1010,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "立于月光之下回眸展现罕见的温柔微笑",
     "camera": "medium shot, low angle",
@@ -27,7 +27,11 @@
       "boy",
       "full moon",
       "night",
-      "medium shot"
+      "medium shot",
+      "gentle smile",
+      "moonlight",
+      "rim light",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +47,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "绫波丽 · 月下神性微笑",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She smiles toward the watching boy among Tokyo-3's broken walls."
   }
 }

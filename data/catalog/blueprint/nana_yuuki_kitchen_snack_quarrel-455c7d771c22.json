@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_yuuki_kitchen_snack_quarrel",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1268,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "跪坐地毯怀抱零食袋护食，露出可爱小虎牙瞪眼示威，爱心尾巴竖直紧绷",
     "camera": "medium shot, eye-level seated framing, lively domestic interaction",
@@ -30,7 +30,12 @@
       "fang",
       "rug",
       "low table",
-      "television"
+      "television",
+      "hugging snack bag",
+      "raised tail",
+      "warm lighting",
+      "television glow",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -53,6 +58,7 @@
     "nsfwProse": "",
     "characterTokens": [
       "yuuki rito"
-    ]
+    ],
+    "animaCaption": "She hugs the chip bag beside the low table while her companion reaches toward it."
   }
 }

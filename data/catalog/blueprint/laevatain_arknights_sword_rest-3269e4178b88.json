@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_sword_rest",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 725,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在横放的巨剑上晃腿",
     "camera": "full body",
@@ -24,7 +24,11 @@
       "broken weapons",
       "training ground",
       "dusk",
-      "full body"
+      "full body",
+      "swinging legs",
+      "patting seat",
+      "boulder",
+      "ember glow"
     ],
     "recommendedSize": "1216x832",
     "sceneTags": [
@@ -35,6 +39,7 @@
       "endfield"
     ],
     "timeOfDay": "黄昏",
-    "title": "莱万汀 · 剑冢小憩"
+    "title": "莱万汀 · 剑冢小憩",
+    "animaCaption": "She sits on the sword across the boulder and pats the space beside her for the approaching viewer."
   }
 }

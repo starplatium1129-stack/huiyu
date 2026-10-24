@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_shinjuku_motorcycle_cool_date",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 222,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "saber_alter_shinjuku_motorcycle_cool_date",
     "title": "黑呆 · 新宿街头的机车酷感倚待",
@@ -35,7 +35,10 @@
       "motorcycle",
       "hair bun",
       "neon lights",
-      "full body"
+      "full body",
+      "hand on handlebar",
+      "holding helmet",
+      "boot on footpeg"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +47,7 @@
       "date",
       "cool",
       "motorcycle"
-    ]
+    ],
+    "animaCaption": "The motorcycle stays parked as she holds the helmet at her hip beside the handlebar."
   }
 }

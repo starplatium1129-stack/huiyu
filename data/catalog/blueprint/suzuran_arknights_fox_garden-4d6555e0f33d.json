@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_fox_garden",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 636,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "提着裙角，九尾轻摆",
     "camera": "medium shot",
@@ -24,7 +24,10 @@
       "walking",
       "flowers",
       "greenhouse",
-      "medium shot"
+      "medium shot",
+      "skirt hold",
+      "smile",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -35,6 +38,7 @@
       "gentle"
     ],
     "timeOfDay": "清晨",
-    "title": "铃兰 · 庭院晨曦"
+    "title": "铃兰 · 庭院晨曦",
+    "animaCaption": "She gathers her dress clear of the flower beds beside her swaying tails."
   }
 }

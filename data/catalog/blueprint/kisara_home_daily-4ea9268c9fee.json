@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_home_daily",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 507,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kisara_home_daily",
     "title": "木更 · 居家日常",
@@ -31,12 +31,16 @@
       "sofa",
       "apartment",
       "morning",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "both hands",
+      "bright lighting"
     ],
     "negativeTokens": [
       "readable bills"
     ],
     "recommendedSize": "1152x1536",
-    "outfitId": "sfw_home_white_shirt"
+    "outfitId": "sfw_home_white_shirt",
+    "animaCaption": "Both hands hold the monthly bills open on the apartment sofa."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_r18_steamy_fontaine_bath",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "furina_r18_steamy_fontaine_bath",
     "title": "芙宁娜 · 大理石玫瑰温汤半透白丝绸小衣与水波迷离自抚",
@@ -44,7 +44,10 @@
       "rose petals",
       "steam",
       "candlelight",
-      "long hair"
+      "long hair",
+      "water reflection",
+      "wide shot",
+      "side view"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -58,6 +61,7 @@
     "outfitId": "white_silk_camisole",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand supports her on submerged marble steps; her long hair floats on the water."
   }
 }

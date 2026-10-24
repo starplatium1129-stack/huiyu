@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_r18_hospital_bed_intimacy",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1022,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自仰卧病床，一手绕绷带、一手腿间自抚",
     "adult": true,
@@ -37,7 +37,13 @@
       "lying",
       "knees up",
       "masturbation",
-      "moonlight"
+      "moonlight",
+      "hospital bed",
+      "white sheets",
+      "curtains",
+      "heavy blush",
+      "high angle",
+      "top-down view"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -52,6 +58,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "绫波丽 · 病房月色下的深情缠绵"
+    "title": "绫波丽 · 病房月色下的深情缠绵",
+    "animaCaption": "One hand holds the loose bandage while the other rests between her thighs."
   }
 }

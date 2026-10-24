@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc053",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Seated beside the viewer on the laundromat bench, she rests her head on their shoulder and watches the turning dryer; pale winter window light crosses their adjoining sleeves.",
+    "animaCaption": "Her head rests on the viewer's shoulder as she watches the turning dryer beside them.",
     "auditRevision": "audit-v25-2026-08-26-batch3",
     "camera": "长椅肩侧相倚半身中景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white ringer t-shirt, charcoal ribbed collar, high waist denim shorts, black tights, sitting, bench, laundromat, window light, medium shot",
+    "prompt": "1girl, shiki_natsume, white ringer t-shirt, charcoal ribbed collar, high waist denim shorts, black tights, sitting, bench, laundromat, window light, medium shot, head on shoulder, dryer, winter",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 烘干结束前的十分钟】冬日下午的自助洗衣房只剩滚筒转动的低响。夏目坐在长椅上看着倒计时，困意上来时不自觉靠到你肩上。醒来发现姿势后，她没有立刻坐直，只把视线移向旋转的衣物——「还有十分钟，移动反而麻烦。你就暂时保持不动……如果肩膀酸了，可以提前说。」",
@@ -47,6 +47,7 @@
       "展示图",
       "头像"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Seated beside the viewer on the laundromat bench, she rests her head on their shoulder and watches the turning dryer; pale winter window light crosses their adjoining sleeves."
   }
 }

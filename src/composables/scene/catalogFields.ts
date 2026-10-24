@@ -14,12 +14,12 @@ export const CATALOG_FIELDS: Record<CatalogKind, CatalogField[]> = {
   scene: [
     ...fields('基础信息', [['title', '标题'], ['category', '分类'], ['char', '所属角色'], ['outfitId', '服装代号'], ['rating', '分级'], ['mature', '成人内容', 'boolean'], ['story', '故事', 'long'], ['storyJa', '日文故事', 'long']]),
     ...fields('场景事实', [['location', '地点'], ['timeOfDay', '时段'], ['weather', '天气'], ['lighting', '光照'], ['camera', '镜头'], ['emotion', '情绪'], ['tags', '标签', 'list'], ['recommendedSize', '尺寸']]),
-    ...fields('引擎提示词', [['prompt', '画面描述', 'long'], ['negative', '避免出现的内容', 'long'], ['animaCaption', '补充画面描述', 'long']]),
+    ...fields('引擎提示词', [['prompt', '画面关键词', 'long'], ['negative', '避免出现的内容', 'long'], ['animaCaption', 'Anima 补充描述', 'long'], ['promptProse', 'Krea 画面描述', 'long']]),
   ],
   blueprint: [
     ...fields('基础信息', [['title', '标题'], ['category', '分类'], ['characterId', '所属角色'], ['outfitId', '服装代号'], ['sampleRating', '样张分级'], ['adult', '成人蓝图', 'boolean'], ['description', '说明', 'long']]),
     ...fields('场景事实', [['location', '地点'], ['action', '动作', 'long'], ['timeOfDay', '时段'], ['lighting', '光照'], ['camera', '镜头'], ['mood', '情绪'], ['sceneTags', '场景标签', 'list'], ['recommendedSize', '尺寸'], ['compositionIntent', '构图']]),
-    ...fields('引擎提示词', [['promptProse', '画面描述', 'long'], ['promptTokens', '画面关键词', 'list'], ['negativeTokens', '避免出现的内容', 'list'], ['nsfwProse', '扩展描述', 'long'], ['nsfwTokens', '扩展词条', 'list'], ['coverageTags', '服装覆盖范围', 'list']]),
+    ...fields('引擎提示词', [['promptProse', 'Krea 画面描述', 'long'], ['animaCaption', 'Anima 补充描述', 'long'], ['promptTokens', '画面关键词', 'list'], ['negativeTokens', '避免出现的内容', 'list'], ['nsfwProse', '扩展描述', 'long'], ['nsfwTokens', '扩展词条', 'list'], ['coverageTags', '服装覆盖范围', 'list']]),
   ],
   document: [],
 }

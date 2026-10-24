@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_r18_b7_02",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 306,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chloe_von_einzbern_r18_b7_02",
     "title": "克洛伊 · 爱因兹贝伦大浴场的水光湿身补魔独奏 ·「水里的魔力……比不上直接接吻的十分之一」",
@@ -39,7 +39,13 @@
       "bathing",
       "masturbation",
       "steam",
-      "candlelight"
+      "candlelight",
+      "sitting",
+      "marble steps",
+      "hand between legs",
+      "wet skin",
+      "water reflection",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +60,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She sits on the submerged marble steps with one hand beneath the water between her thighs."
   }
 }

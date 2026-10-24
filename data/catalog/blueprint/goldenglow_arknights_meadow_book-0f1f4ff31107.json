@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_meadow_book",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 598,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在草地上，手捧家信与设计手记",
     "camera": "medium wide shot",
@@ -27,7 +27,11 @@
       "sketchbook",
       "meadow",
       "afternoon",
-      "wide shot"
+      "wide shot",
+      "holding hem",
+      "looking back",
+      "wind",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +43,7 @@
       "breeze"
     ],
     "timeOfDay": "午后",
-    "title": "澄闪 · 原野手记"
+    "title": "澄闪 · 原野手记",
+    "animaCaption": "She holds the letter and sketches against her lap while her free hand catches the viewer's hem."
   }
 }

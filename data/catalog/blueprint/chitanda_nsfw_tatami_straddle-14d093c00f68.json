@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_tatami_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1491,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chitanda_nsfw_tatami_straddle",
     "title": "千反田爱瑠 · 千反田家和室的主控跨坐 ·「奉太郎……我很好奇……男女之间的事」",
@@ -35,7 +35,11 @@
       "straddling",
       "moonlight",
       "from below",
-      "purple hydrangea print"
+      "purple hydrangea print",
+      "leaning forward",
+      "blush",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "She leans toward the viewer with her loosened yukata between the two light sources."
   }
 }

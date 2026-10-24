@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1748,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_01",
     "title": "丰川祥子 · 观众席上的乐团起点",
@@ -36,7 +36,11 @@
       "program",
       "sitting",
       "auditorium",
-      "medium shot"
+      "medium shot",
+      "hands on lap",
+      "looking up",
+      "inspired smile",
+      "soft spotlight"
     ],
     "negativeTokens": [
       "piano",
@@ -51,6 +55,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands rest on the program as she listens toward the offscreen stage from a front side seat."
   }
 }

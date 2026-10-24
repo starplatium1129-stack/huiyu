@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc082",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Her phone lies dark beneath her hand as she turns toward the viewer joining her on the veranda; moonlight catches her eyes and the edge of her sleeve.",
+    "animaCaption": "Her phone lies dark beneath her hand as she turns toward the viewer joining her on the veranda.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "缘侧手机与侧脸半身中景",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "readable screen text",
-    "prompt": "1girl, ayachi_nene, blush pink yukata, moonflower print, cream obi, lavender obijime, sitting, veranda, phone, looking at viewer, garden, moonlight, medium shot",
+    "prompt": "1girl, ayachi_nene, blush pink yukata, moonflower print, cream obi, lavender obijime, sitting, veranda, phone, looking at viewer, garden, moonlight, medium shot, hand on phone, night",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "秋",
@@ -51,6 +51,7 @@
       "展示图",
       "CG"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Her phone lies dark beneath her hand as she turns toward the viewer joining her on the veranda; moonlight catches her eyes and the edge of her sleeve."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_rooftop_sing",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 860,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在天台长椅边缘轻轻哼唱旋律",
     "adult": false,
@@ -32,7 +32,10 @@
       "bench",
       "humming",
       "rooftop",
-      "sunset"
+      "sunset",
+      "smile",
+      "looking at viewer",
+      "backlighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -44,6 +47,7 @@
       "wind"
     ],
     "timeOfDay": "黄昏",
-    "title": "杏山和纱 · 天台微风与专属旋律"
+    "title": "杏山和纱 · 天台微风与专属旋律",
+    "animaCaption": "She turns toward the arriving viewer while humming on the bench."
   }
 }

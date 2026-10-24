@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_bridal_vow_white_chapel",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1475,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mahiru_bridal_vow_white_chapel",
     "title": "椎名真昼 · 圣洁教堂纯白誓约·「真昼的全部……从此属于你一个人」",
@@ -34,7 +34,13 @@
       "shiina_mahiru",
       "calla lily",
       "bouquet",
-      "altar"
+      "altar",
+      "holding bouquet",
+      "both hands",
+      "happy tears",
+      "smile",
+      "light rays",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +52,7 @@
       "bridal",
       "romance",
       "iconic"
-    ]
+    ],
+    "animaCaption": "Both hands hold the calla-lily bouquet as she listens to the vows."
   }
 }

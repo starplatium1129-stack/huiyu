@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_village_inn",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 478,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "桌前用餐休整",
     "camera": "medium shot, eating roasted meat at tavern table",
@@ -30,7 +30,10 @@
       "table",
       "inn",
       "lamplight",
-      "medium shot"
+      "medium shot",
+      "sheathed sword",
+      "jacket on chair",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +46,7 @@
       "meat"
     ],
     "timeOfDay": "夜晚",
-    "title": "艾莉丝 · 边境旅店"
+    "title": "艾莉丝 · 边境旅店",
+    "animaCaption": "Her jacket hangs on the chair and the sheathed sword rests against the table."
   }
 }

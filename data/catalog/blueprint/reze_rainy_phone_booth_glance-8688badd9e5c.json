@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_rainy_phone_booth_glance",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 423,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "reze_rainy_phone_booth_glance",
     "characterId": "reze_chainsaw",
@@ -26,7 +26,10 @@
       "looking back",
       "telephone booth",
       "rain",
-      "close-up"
+      "close-up",
+      "hanging telephone receiver",
+      "streetlight",
+      "glass reflection"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -43,6 +46,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She turns toward the viewer with the receiver hanging beside her inside the cramped booth."
   }
 }

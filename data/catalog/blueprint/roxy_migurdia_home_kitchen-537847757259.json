@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_home_kitchen",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 458,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "踮脚伸手取高处橱柜里的调料罐",
     "camera": "medium shot",
@@ -27,7 +27,11 @@
       "tiptoes",
       "spice jar",
       "kitchen",
-      "medium shot"
+      "medium shot",
+      "reaching up",
+      "looking back",
+      "cooking pot",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +43,7 @@
       "indoor"
     ],
     "timeOfDay": "白天",
-    "title": "洛琪希 · 居家厨房"
+    "title": "洛琪希 · 居家厨房",
+    "animaCaption": "She reaches for the high spice jar and looks back for help above the simmering stew."
   }
 }

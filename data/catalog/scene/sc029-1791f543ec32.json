@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc029",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 27,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Beside the monitor's rising waveform, she holds her open notebook in one hand and presses the other over her heart; the blue-white laboratory light leaves her delighted blush visible.",
+    "animaCaption": "Her free hand rests over her heart beside the monitor's rising waveform.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "监测屏旁半身中景",
     "category": "Active_Sync_Scenes",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white fitted lab coat, pink A-line dress, peter pan collar, small bow at waist, heart rate sensor, monitor, notebook, laboratory, medium shot",
+    "prompt": "1girl, ayachi_nene, white fitted lab coat, pink A-line dress, peter pan collar, small bow at waist, heart rate sensor, monitor, notebook, laboratory, medium shot, holding notebook, open book, hand on own chest, smile, blush, cool lighting",
     "rating": "All",
     "season": "不限",
     "story": "【成年跨界 AU · 情绪同步校准】明亮实验室里，成年的宁宁戴着轻量心率感应器，呆毛随着屏幕上的情绪曲线轻轻晃动。你的快乐被设备放大后，她也忍不住跟着笑起来，却认真记录每一次波峰。发现同步率持续上升，她红着脸按住胸口——「原来安心也会有这么清楚的形状……这组数据，不可以交给别人看。」",
@@ -46,6 +46,7 @@
     "usage": [
       "实验CG"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Beside the monitor's rising waveform, she holds her open notebook in one hand and presses the other over her heart; the blue-white laboratory light leaves her delighted blush visible."
   }
 }

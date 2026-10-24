@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_backstage",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 952,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "镜前补妆",
     "camera": "medium shot, three-quarter rear view",
@@ -27,7 +27,10 @@
       "mirror",
       "vanity",
       "backstage",
-      "medium shot"
+      "medium shot",
+      "makeup brush",
+      "vanity bulbs",
+      "scattered cosmetics"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +46,7 @@
     "title": "星野爱 · 后台化妆间",
     "allowRepeatedSubject": true,
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The brush touches one eyelid as she watches her reflection."
   }
 }

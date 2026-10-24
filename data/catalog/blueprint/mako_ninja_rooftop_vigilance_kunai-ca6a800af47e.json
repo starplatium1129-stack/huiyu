@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_ninja_rooftop_vigilance_kunai",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1130,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单膝半跪在屋脊边缘，单手反握苦无，黑色短发与发束随风飘扬，猫嘴自信微笑",
     "camera": "dynamic low angle, cowboy shot, dramatic moonlit perspective",
@@ -25,7 +25,13 @@
       "kunai",
       "kneeling",
       "rooftop",
-      "moonlight"
+      "moonlight",
+      "holding kunai",
+      "reverse grip",
+      "looking down",
+      "wind",
+      "cowboy shot",
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -40,6 +46,7 @@
       "wind"
     ],
     "timeOfDay": "夜晚",
-    "title": "常陆茉子 · 月夜飞檐的苦无警备"
+    "title": "常陆茉子 · 月夜飞檐的苦无警备",
+    "animaCaption": "She holds the kunai in a reverse left-hand grip and watches the courtyard from one knee."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_cafe_crossroad_smile",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 422,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "reze_cafe_crossroad_smile",
     "characterId": "reze_chainsaw",
@@ -27,7 +27,11 @@
       "smile",
       "espresso machine",
       "cafe counter",
-      "afternoon"
+      "afternoon",
+      "looking at viewer",
+      "mischievous smile",
+      "window light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -44,6 +48,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She props her chin on one hand and smiles toward the viewer entering the cafe."
   }
 }

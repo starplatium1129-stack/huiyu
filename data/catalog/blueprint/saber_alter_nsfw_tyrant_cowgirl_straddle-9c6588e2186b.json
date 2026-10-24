@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_tyrant_cowgirl_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 229,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "saber_alter_nsfw_tyrant_cowgirl_straddle",
     "title": "黑呆 · 暴君骑士王的狂热主控骑乘",
@@ -38,7 +38,13 @@
       "kissing",
       "bed",
       "silk sheets",
-      "from below"
+      "from below",
+      "straddling",
+      "hands on another's shoulders",
+      "leaning forward",
+      "warm lighting",
+      "cowboy shot",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +60,7 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Both hands rest on the offscreen viewer's shoulders as she leans down to kiss them."
   }
 }

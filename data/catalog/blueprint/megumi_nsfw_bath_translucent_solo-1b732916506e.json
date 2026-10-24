@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_bath_translucent_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1448,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_nsfw_bath_translucent_solo",
     "title": "加藤惠 · 浴后薄纱毛巾的水光独奏 ·「在浴室里……脑子里却全是你的事」",
@@ -35,7 +35,10 @@
       "sitting on edge",
       "bathtub",
       "steam",
-      "night"
+      "night",
+      "adult",
+      "sitting",
+      "bath edge"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +51,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her hand remains beneath the soaked towel at the tiled bath edge."
   }
 }

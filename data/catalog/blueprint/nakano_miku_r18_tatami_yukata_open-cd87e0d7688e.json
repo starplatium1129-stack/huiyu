@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_r18_tatami_yukata_open",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1853,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_miku_r18_tatami_yukata_open",
     "characterId": "nakano_miku",
@@ -35,7 +35,9 @@
       "tears",
       "climax",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "paper lantern",
+      "moonlight"
     ],
     "sceneTags": [
       "japanese_room",
@@ -55,6 +57,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her open yukata spreads across the tatami between cool garden moonlight and the warm paper lamp."
   }
 }

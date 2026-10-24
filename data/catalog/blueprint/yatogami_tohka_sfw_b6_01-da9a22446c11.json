@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_01",
     "title": "夜刀神十香 · 面包店的黄豆粉面包",
@@ -34,7 +34,12 @@
     "promptTokens": [
       "kinako bread",
       "bakery",
-      "medium shot"
+      "medium shot",
+      "holding bread",
+      "both hands",
+      "eating",
+      "delighted",
+      "shop lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +50,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands hold the paper-sleeved bread as she takes the first bite beside the display."
   }
 }

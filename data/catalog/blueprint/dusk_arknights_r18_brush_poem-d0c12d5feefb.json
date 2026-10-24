@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_brush_poem",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 575,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "一手执笔写画卷末字，另一手留在袍下。",
     "adult": true,
@@ -33,7 +33,10 @@
       "reclining",
       "brush",
       "masturbation",
-      "candlelight"
+      "candlelight",
+      "writing",
+      "glowing vines",
+      "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -46,6 +49,7 @@
       "bare_shoulders"
     ],
     "timeOfDay": "深夜",
-    "title": "夕 · 笔落诗成"
+    "title": "夕 · 笔落诗成",
+    "animaCaption": "She writes the scroll's final character as spilled ink becomes glowing vines."
   }
 }

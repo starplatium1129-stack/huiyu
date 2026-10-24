@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_r18_butler_desk_undressed",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1842,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_ryo_r18_butler_desk_undressed",
     "characterId": "yamada_ryo",
@@ -34,7 +34,8 @@
       "blush",
       "mole under eye",
       "sunset",
-      "cowboy shot"
+      "cowboy shot",
+      "smirk"
     ],
     "sceneTags": [
       "empty_classroom",
@@ -53,6 +54,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She lounges on the wooden podium with her trousers resting at her thighs."
   }
 }

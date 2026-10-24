@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_rain_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 434,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rem_rezero_rain_night",
     "title": "雷姆 · 雨夜告白",
@@ -34,12 +34,15 @@
       "clock tower",
       "streetlight",
       "night",
-      "medium shot"
+      "medium shot",
+      "holding viewer hand",
+      "trembling smile"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The viewer's hand enters low in the foreground beneath the clock tower."
   }
 }

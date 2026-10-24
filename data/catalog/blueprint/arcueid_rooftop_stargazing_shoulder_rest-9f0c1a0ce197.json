@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_rooftop_stargazing_shoulder_rest",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1322,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "并肩坐着头靠在视角肩头，双手抱膝，侧首含情脉脉仰望夜空与视角",
     "camera": "cowboy shot, eye level",
@@ -33,7 +33,9 @@
       "stars",
       "city lights",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "hugging knees",
+      "night sky"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +50,7 @@
       "gentle_smile"
     ],
     "timeOfDay": "深夜",
-    "title": "爱尔奎特 · 天台夜风中的倚肩私语"
+    "title": "爱尔奎特 · 天台夜风中的倚肩私语",
+    "animaCaption": "Her head rests against her companion's shoulder above the city lights."
   }
 }

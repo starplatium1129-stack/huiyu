@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_flower_field",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "raiden_shogun_flower_field",
     "title": "雷电将军 · 花海逆光",
@@ -39,7 +39,13 @@
       "smile",
       "cosmos",
       "field",
-      "sunset"
+      "sunset",
+      "standing",
+      "open hand",
+      "windblown braid",
+      "windblown clothes",
+      "rim light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -52,6 +58,7 @@
     "adult": false,
     "sampleRating": "SFW",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She offers an open hand back along the flower path as her braid and skirt move in the breeze."
   }
 }

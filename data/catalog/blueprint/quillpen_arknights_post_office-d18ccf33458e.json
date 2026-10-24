@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_post_office",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 616,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "将调好的粉色鸡尾酒沿吧台推向观众，雪克壶放在另一只手旁，困倦地轻轻打哈欠。",
     "camera": "medium shot, slightly low angle",
@@ -27,7 +27,12 @@
       "sleepy",
       "bar",
       "neon lights",
-      "night"
+      "night",
+      "offering drink",
+      "yawning",
+      "warm lighting",
+      "medium shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +47,7 @@
     "timeOfDay": "夜晚",
     "title": "羽毛笔 · 多索雷斯调酒",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She slides the cocktail toward the viewer while her free hand stays beside the shaker."
   }
 }

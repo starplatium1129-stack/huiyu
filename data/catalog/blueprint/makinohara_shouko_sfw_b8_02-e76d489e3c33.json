@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_02",
     "title": "牧之原翔子 · 梓川家玄关与猫",
@@ -38,7 +38,11 @@
       "crouching",
       "orange cat",
       "schoolbag",
-      "entrance"
+      "entrance",
+      "outstretched finger",
+      "gentle laugh",
+      "sunset",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She offers a finger for the orange cat to sniff beside the schoolbag at the doorway."
   }
 }

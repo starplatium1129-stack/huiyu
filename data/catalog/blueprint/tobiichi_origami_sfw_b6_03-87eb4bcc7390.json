@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_03",
     "title": "鸢一折纸 · 练习后的完整午餐",
@@ -35,7 +35,11 @@
       "lunch box",
       "chopsticks",
       "gym bench",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "eating",
+      "water bottle",
+      "open shade"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The water bottle stands beside the lunch box on the outside bench."
   }
 }

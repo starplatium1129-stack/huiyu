@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_pipeline_welding",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 758,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rossy_arknights_pipeline_welding",
     "characterId": "rossy_arknights",
@@ -31,12 +31,17 @@
     "promptTokens": [
       "jigsaw puzzle",
       "living room",
-      "medium shot"
+      "medium shot",
+      "looking up",
+      "smile",
+      "puzzle piece",
+      "window light"
     ],
     "promptProse": "Rossi smiles up with the corner piece poised above the unfinished puzzle; window light crosses the pieces and her hands at the low table.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The corner piece hovers above the unfinished puzzle on the low table."
   }
 }

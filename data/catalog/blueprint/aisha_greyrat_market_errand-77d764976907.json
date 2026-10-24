@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_market_errand",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 487,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "aisha_greyrat_market_errand",
     "title": "爱夏·香料摊前的比较",
@@ -31,12 +31,18 @@
       "jar",
       "awning",
       "daytime",
-      "hood down"
+      "hood down",
+      "spice jar",
+      "shopping list",
+      "hand on counter",
+      "sunlight",
+      "shade"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
     "negativeTokens": [
       "readable shopping list"
-    ]
+    ],
+    "animaCaption": "Her left palm supports the jar beside the shopping slip under her right hand."
   }
 }

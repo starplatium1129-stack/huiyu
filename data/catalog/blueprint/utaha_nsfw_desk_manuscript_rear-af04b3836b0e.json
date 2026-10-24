@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_desk_manuscript_rear",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1437,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "utaha_nsfw_desk_manuscript_rear",
     "title": "霞之丘诗羽 · 稿纸桌上的截稿日·「这一段……要写进书里哦」",
@@ -37,7 +37,10 @@
       "manuscript",
       "desk",
       "looking back",
-      "lamplight"
+      "lamplight",
+      "hands on desk",
+      "skirt lift",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -53,6 +56,7 @@
     "nsfwTokens": [
       "skirt lift",
       "crotchless panties"
-    ]
+    ],
+    "animaCaption": "Both hands brace on the manuscript-covered desk as she looks back beneath the lamp."
   }
 }

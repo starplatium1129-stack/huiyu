@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_casino_bunny_vip_beaming_smile",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 938,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手端银质鸡尾酒托盘侧身展露完美曲线，灿烂招手甜笑，头顶兔耳发箍与金发流转",
     "camera": "full-body shot, three-quarter view",
@@ -29,7 +29,10 @@
       "waving",
       "smile",
       "chandelier",
-      "full body"
+      "full body",
+      "holding tray",
+      "chandelier lighting",
+      "roulette table"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +46,7 @@
       "beaming_smile"
     ],
     "timeOfDay": "夜晚",
-    "title": "一之濑明日奈 · 极奢赌场的兔女郎迎宾"
+    "title": "一之濑明日奈 · 极奢赌场的兔女郎迎宾",
+    "animaCaption": "She balances the cocktail tray in one hand and waves the viewer toward the tables with the other."
   }
 }

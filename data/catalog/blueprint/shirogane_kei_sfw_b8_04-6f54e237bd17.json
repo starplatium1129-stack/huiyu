@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1414,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "矮桌旁核对完花束预算合上家计簿，向镜头露出没有超支的满足笑",
     "adult": false,
@@ -30,7 +30,11 @@
       "Kei Shirogane",
       "bouquet",
       "ledger",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting",
+      "hand on ledger",
+      "smile",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +50,7 @@
       "morning_light"
     ],
     "timeOfDay": "清晨",
-    "title": "白银圭 · 预算表旁的银色花嫁"
+    "title": "白银圭 · 预算表旁的银色花嫁",
+    "animaCaption": "The fresh bouquet rests beside the closed household ledger."
   }
 }

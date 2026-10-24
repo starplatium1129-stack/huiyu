@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc220",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 215,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:40:29.613535400+00:00",
   "data": {
     "id": "sc220",
     "title": "琴键余韵间的私密协奏",
@@ -45,12 +45,13 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, white silk blouse, scalloped collar, ice blue pleated skirt, pink waist ribbon, sitting, piano bench, guiding hand, grand piano, smile, sunset, side view, medium shot",
+    "prompt": "1girl, ayachi_nene, white silk blouse, scalloped collar, ice blue pleated skirt, pink waist ribbon, sitting, piano bench, guiding hand, grand piano, smile, sunset, side view, medium shot, reflected light",
     "negative": "",
     "storyJa": "【成年 AU・寧々・プライベート音楽スタジオの夕暮れ】同居後の休日、大人になった寧々は予約した私設音楽スタジオで、あなたに連弾曲を教えていた。夕日が大きな窓を通り、ピアノの艶を砕けた金色に染める。彼女は準備ができたか笑顔で確かめてから、あなたの隣に腰を下ろし、その手を取って鍵盤へ導いた。絹のブラウスの襟元が動きに合わせて少し緩んでも、彼女は逃げず、赤くなった額をそっと寄せた――「この小節は二人で弾いてこそ完成するんです……わざと音を外すのは禁止。それから、続ける前には寧々に聞いてくださいね？」",
     "rating": "R15",
-    "animaCaption": "Seated on the viewer's right at the piano, she guides their right hand to a key with her left while her right rests on her own keys; sunset glows across their adjoining hands and the piano's polished surface.",
+    "animaCaption": "Seated to the viewer's right, her left hand guides their right to a key while her right rests on her own keys.",
     "auditRevision": "sfw-audit-2026-09-09-piano",
-    "recommendedSize": "832×1216"
+    "recommendedSize": "832×1216",
+    "promptProse": "Seated on the viewer's right at the piano, she guides their right hand to a key with her left while her right rests on her own keys; sunset glows across their adjoining hands and the piano's polished surface."
   }
 }

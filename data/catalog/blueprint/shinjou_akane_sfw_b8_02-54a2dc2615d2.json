@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_sfw_b8_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1540,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shinjou_akane_sfw_b8_02",
     "title": "新条茜 · 房间里的怪兽制作台",
@@ -36,7 +36,10 @@
       "monster figure",
       "sanding",
       "workbench",
-      "medium shot"
+      "medium shot",
+      "holding figure",
+      "clay dust",
+      "work light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand steadies the monster while the other sands its back fin."
   }
 }

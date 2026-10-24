@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_cafe",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "raiden_shogun_cafe",
     "title": "雷电将军 · 午后咖啡馆",
@@ -41,7 +41,12 @@
       "smile",
       "cafe",
       "window",
-      "afternoon"
+      "afternoon",
+      "holding cup",
+      "latte art",
+      "cup saucer",
+      "window light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +59,7 @@
     "adult": false,
     "sampleRating": "SFW",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her left hand steadies the mug while her right holds the glass straw at her lips."
   }
 }

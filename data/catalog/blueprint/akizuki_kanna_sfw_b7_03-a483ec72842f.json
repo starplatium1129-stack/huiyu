@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1154,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "擦亮最后一只杯子，检查杯沿后放回架上。",
     "adult": false,
@@ -30,7 +30,13 @@
       "cup",
       "cloth",
       "smile",
-      "medium shot"
+      "medium shot",
+      "holding cup",
+      "cleaning",
+      "dishcloth",
+      "night",
+      "warm lighting",
+      "drying rack"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -47,6 +53,7 @@
       "medium_shot"
     ],
     "timeOfDay": "night",
-    "title": "明月栞那 · 打烊后的杯碟轻响"
+    "title": "明月栞那 · 打烊后的杯碟轻响",
+    "animaCaption": "She checks the last cup's rim while polishing it beside the sink."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_fitting",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 498,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "cos 装半褪站在镜前",
     "adult": true,
@@ -36,7 +36,10 @@
       "standing",
       "looking back",
       "fitting room",
-      "mirror"
+      "mirror",
+      "hands behind back",
+      "mirror light",
+      "close up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +52,7 @@
       "intimate"
     ],
     "timeOfDay": "白天",
-    "title": "喜多川海梦 · 试衣间的换装"
+    "title": "喜多川海梦 · 试衣间的换装",
+    "animaCaption": "She looks back to show her offscreen companion the unreachable fastening at the costume's back."
   }
 }

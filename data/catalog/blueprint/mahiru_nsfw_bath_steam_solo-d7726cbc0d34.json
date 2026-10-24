@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_nsfw_bath_steam_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1481,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mahiru_nsfw_bath_steam_solo",
     "title": "椎名真昼 · 温泉白汽下的剔透水光独奏 ·「身体……在想念你的温度」",
@@ -33,7 +33,13 @@
       "hand between legs",
       "onsen",
       "steam",
-      "night"
+      "night",
+      "leaning",
+      "bent knee",
+      "floating hair",
+      "warm lighting",
+      "medium shot",
+      "from above"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +52,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her soaked towel clings around her as one bent knee rises beside the stone ledge."
   }
 }

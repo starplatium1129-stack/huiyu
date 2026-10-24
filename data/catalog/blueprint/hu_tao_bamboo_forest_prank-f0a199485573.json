@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_bamboo_forest_prank",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hu_tao_bamboo_forest_prank",
     "title": "胡桃 · 翠竹幽径捉迷藏",
@@ -37,7 +37,11 @@
       "smile",
       "bamboo forest",
       "morning",
-      "cowboy shot"
+      "cowboy shot",
+      "finger to lips",
+      "hand on bamboo",
+      "stone path",
+      "dappled sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +50,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One finger rests at her lips while her other hand braces against the bamboo stalk."
   }
 }

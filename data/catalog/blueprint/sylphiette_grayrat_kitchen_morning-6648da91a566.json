@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_grayrat_kitchen_morning",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 472,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "穿着宽松睡衣哼着歌准备早餐",
     "adult": false,
@@ -28,7 +28,12 @@
       "fried egg",
       "cooking",
       "kitchen",
-      "medium shot"
+      "medium shot",
+      "holding pan",
+      "turning food",
+      "smile",
+      "looking toward doorway",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +47,7 @@
       "bare_shoulders"
     ],
     "timeOfDay": "morning",
-    "title": "希露菲叶特 · 新婚宅邸晨间"
+    "title": "希露菲叶特 · 新婚宅邸晨间",
+    "animaCaption": "One hand holds the pan handle while the other turns the bacon and egg."
   }
 }

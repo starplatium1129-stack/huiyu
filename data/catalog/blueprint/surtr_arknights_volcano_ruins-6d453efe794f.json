@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_volcano_ruins",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 518,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手将炽热的莱瓦汀巨剑抗在肩头，身后熔岩火巨人拔地而起，暗红长发与炽热火星在狂风中疯狂飞扬",
     "camera": "wide shot, low angle, Surtr in the foreground with the fire giant rising behind",
@@ -26,7 +26,11 @@
       "sword over shoulder",
       "fire giant",
       "volcanic ruins",
-      "from below"
+      "from below",
+      "outstretched hand",
+      "smoke",
+      "fire particles",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
     ],
     "timeOfDay": "黄昏",
     "title": "史尔特尔 · 黄昏灭世·火山烈焰与莱瓦汀巨剑",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "One shoulder supports the greatsword while her free hand reaches toward the viewer before the fire giant."
   }
 }

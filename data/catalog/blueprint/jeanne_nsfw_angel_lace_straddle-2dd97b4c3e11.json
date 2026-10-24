@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_angel_lace_straddle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 240,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_nsfw_angel_lace_straddle",
     "title": "圣女贞德 · 白蕾丝的反客为主主控骑乘·「请把一切……都交给圣女吧」",
@@ -42,7 +42,11 @@
       "blush",
       "bed",
       "candlelight",
-      "from below"
+      "from below",
+      "hands on knees",
+      "looking down",
+      "smile",
+      "happy tears"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +60,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "The viewer remains outside the frame beneath her lowered gaze."
   }
 }

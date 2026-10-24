@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 795,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "踮起脚尖，双手将写好的绘马挂在神社木架上",
     "adult": false,
@@ -29,7 +29,13 @@
       "hanging",
       "tiptoes",
       "shrine",
-      "winter"
+      "winter",
+      "both hands",
+      "raised arms",
+      "visible breath",
+      "smile",
+      "sunlight",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +52,7 @@
       "medium_shot"
     ],
     "timeOfDay": "日间",
-    "title": "玛夏 · 新年参拜的为家人许愿"
+    "title": "玛夏 · 新年参拜的为家人许愿",
+    "animaCaption": "Both hands loop the ema onto the rack while she balances on tiptoe."
   }
 }

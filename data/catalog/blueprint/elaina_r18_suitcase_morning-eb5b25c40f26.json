@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_suitcase_morning",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 390,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elaina_r18_suitcase_morning",
     "title": "伊雷娜 · 晨光与旅行箱",
@@ -37,7 +37,11 @@
       "ivory shirt",
       "gray cuffs",
       "sitting",
-      "stretching"
+      "stretching",
+      "arms up",
+      "sleepy smile",
+      "window light",
+      "folded clothes"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +52,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@hiten (hitenkei)",
     "outfitId": "ivory_travel_shirt",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She stretches beside the open suitcase in the morning light."
   }
 }

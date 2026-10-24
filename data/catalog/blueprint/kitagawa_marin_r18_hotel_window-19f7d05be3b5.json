@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_hotel_window",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 502,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠在酒店窗座，一条腿沿着玻璃伸展，一手撑稳坐垫。",
     "adult": true,
@@ -33,7 +33,12 @@
       "reclining",
       "leg up",
       "window seat",
-      "neon lights"
+      "neon lights",
+      "hand on cushion",
+      "warm lighting",
+      "cityscape",
+      "backlighting",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -45,6 +50,7 @@
       "intimate"
     ],
     "timeOfDay": "夜晚",
-    "title": "喜多川海梦 · 夜景落地窗"
+    "title": "喜多川海梦 · 夜景落地窗",
+    "animaCaption": "One palm steadies her on the cushion while one leg extends along the window glass."
   }
 }

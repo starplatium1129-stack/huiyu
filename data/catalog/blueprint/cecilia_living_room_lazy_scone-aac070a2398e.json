@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_living_room_lazy_scone",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 836,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蜷在起居室沙发抱枕间，望向厨房等待司康饼出炉",
     "adult": false,
@@ -29,7 +29,11 @@
       "curled up",
       "waiting",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "looking away",
+      "doorway",
+      "window light",
+      "relaxed"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",
@@ -44,6 +48,7 @@
       "blonde_hair"
     ],
     "timeOfDay": "午后",
-    "title": "塞西莉亚 · 起居室沙发·抱枕打滚与司康饼"
+    "title": "塞西莉亚 · 起居室沙发·抱枕打滚与司康饼",
+    "animaCaption": "She watches the kitchen doorway from among the sofa cushions, waiting for the scones."
   }
 }

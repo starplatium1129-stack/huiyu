@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_convention",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 495,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "身着精致的黑紫哥特萝莉女仆装，手提洋伞，紫瞳中闪烁着对角色极致热爱的自信光芒",
     "camera": "cowboy shot, striking gothic lolita cosplay pose",
@@ -30,7 +30,12 @@
       "parasol",
       "photographers",
       "convention",
-      "spotlight"
+      "spotlight",
+      "holding parasol",
+      "waving",
+      "smile",
+      "flash photography",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -54,6 +59,7 @@
       "piercing",
       "sono_bisque_doll_wa_koi_wo_suru"
     ],
-    "identityProseOverride": "Kitagawa Marin from My Dress-Up Darling, a gyaru with long blonde hair fading to pink tips, purple contact lenses for her Shizuku cosplay and silver ear piercings."
+    "identityProseOverride": "Kitagawa Marin from My Dress-Up Darling, a gyaru with long blonde hair fading to pink tips, purple contact lenses for her Shizuku cosplay and silver ear piercings.",
+    "animaCaption": "One hand holds the parasol while the other waves toward the viewer beyond the photographers."
   }
 }

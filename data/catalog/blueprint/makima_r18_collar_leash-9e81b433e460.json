@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_collar_leash",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 421,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makima_r18_collar_leash",
     "title": "玛奇玛 · 支配者的游戏·项圈与温柔低语",
@@ -41,7 +41,9 @@
       "kneeling",
       "offering",
       "carpet",
-      "candlelight"
+      "candlelight",
+      "offering leash",
+      "smile"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +57,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She offers the collar leash toward the viewer outside the frame."
   }
 }

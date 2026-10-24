@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_r18_b7_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1623,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kasugano_sora_r18_b7_01",
     "title": "春日野穹 · 老家木质廊桥黑色吊带袜主控跨坐 ·「悠……不要看别的女人，只看着穹」",
@@ -38,7 +38,10 @@
       "stuffed rabbit",
       "cowgirl position",
       "porch",
-      "moonlight"
+      "moonlight",
+      "adult",
+      "hugging plushie",
+      "arm around neck"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +56,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One arm holds the plush rabbit; the other rests around her companion's neck."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_dawn_bedroom",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 905,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手背撑床沿微仰注视",
     "adult": false,
@@ -33,7 +33,12 @@
       "sitting",
       "hands behind back",
       "bed",
-      "morning"
+      "morning",
+      "hands on bed",
+      "leaning back",
+      "warm gaze",
+      "spread wings",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -49,6 +54,7 @@
       "cozy"
     ],
     "timeOfDay": "早晨",
-    "title": "圣园未花 · 晨曦私语白蔷薇寝所"
+    "title": "圣园未花 · 晨曦私语白蔷薇寝所",
+    "animaCaption": "Both palms brace behind her on the bed edge."
   }
 }

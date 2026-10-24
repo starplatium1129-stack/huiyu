@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_supermarket_shopping",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yor_supermarket_shopping",
     "title": "约尔·福杰 · 蔬菜摊前的认真挑选",
@@ -41,12 +41,17 @@
       "shopping basket",
       "crouching",
       "supermarket",
-      "medium shot"
+      "medium shot",
+      "holding carrot",
+      "hand on basket handle",
+      "focused",
+      "overhead lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand examines the carrot while the other steadies the handle of the basket beside her feet."
   }
 }

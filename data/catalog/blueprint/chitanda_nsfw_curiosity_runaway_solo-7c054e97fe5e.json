@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_curiosity_runaway_solo",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1494,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chitanda_nsfw_curiosity_runaway_solo",
     "title": "千反田爱瑠 · 藏书楼深夜的好奇心失控 ·「原来成年女性子的身体……会有这种感觉」",
@@ -38,7 +38,13 @@
       "crotchless panties",
       "lying",
       "on back",
-      "masturbation"
+      "masturbation",
+      "hand in hair",
+      "spread legs",
+      "moonlight",
+      "desk lamp",
+      "cowboy shot",
+      "from above"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +57,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her hair falls over the joined desk edges beneath the studio windows."
   }
 }

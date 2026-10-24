@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_home_morning_coffee_scene",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1432,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "utaha_home_morning_coffee_scene",
     "title": "霞之丘诗羽 · 居家的咖啡与睡袍·「学姐模式，今天关机」",
@@ -36,7 +36,9 @@
       "sofa",
       "morning",
       "medium shot",
-      "sitting"
+      "sitting",
+      "beckoning",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +51,7 @@
       "daily",
       "girlfriend",
       "morning"
-    ]
+    ],
+    "animaCaption": "One hand holds coffee while the open magazine rests across her lap as she beckons."
   }
 }

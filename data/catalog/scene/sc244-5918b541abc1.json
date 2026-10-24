@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc244",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 239,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Nene sleeps curled on the sofa with her head in the viewer's lap, research papers beside the cushion.",
+    "animaCaption": "Her head rests on the viewer's lap, with research papers beside the sofa cushion.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "俯瞰近景特写",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white cable knit sweater, pink scalloped cuffs, grey cotton shorts, sleeping, lap pillow, couch, papers, from above, afternoon, window light",
+    "prompt": "1girl, ayachi_nene, white cable knit sweater, pink scalloped cuffs, grey cotton shorts, sleeping, lap pillow, couch, papers, from above, afternoon, window light, curled up",
     "rating": "All",
     "season": "不限",
     "story": "【宁宁 · 慵懒午后】周末午后温暖的阳光洒进客厅。宁宁蜷缩在沙发上看着超自然研究会的资料，不知不觉就睡着了，银白色的长发散落在靠垫上，呼吸均匀而轻柔。你轻手轻脚地走过去，小心翼翼地把她的头搬到你的膝盖上。宁宁在睡梦中似乎感觉到了什么，嘴角微微上扬，头顶那根呆毛在阳光下轻轻晃动。她含糊地嘟囔了一句——「柊史的味道……安心……」然后又沉沉睡去，脸颊在你的膝盖上蹭了蹭，像一只餍足的猫咪。",
@@ -44,6 +44,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "weather": "温暖午后"
+    "weather": "温暖午后",
+    "promptProse": "Nene sleeps curled on the sofa with her head in the viewer's lap, research papers beside the cushion."
   }
 }

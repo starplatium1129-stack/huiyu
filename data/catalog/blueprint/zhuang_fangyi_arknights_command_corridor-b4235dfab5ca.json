@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_command_corridor",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_command_corridor",
     "characterId": "zhuang_fangyi_arknights",
@@ -37,7 +37,10 @@
       "offering",
       "looking back",
       "bookstore",
-      "afternoon"
+      "afternoon",
+      "offering bookmark",
+      "holding books",
+      "smile"
     ],
     "promptProse": "Zhuang Fangyi offers the leaf-shaped bookmark while holding two new books against her other arm, turning back with a restrained smile.",
     "negativeTokens": [],
@@ -46,6 +49,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One arm supports the two books while her free hand offers the leaf bookmark."
   }
 }

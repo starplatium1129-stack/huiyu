@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_crimson_moon_true_ancestor_slash",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1318,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "悬空迎风挥出金色月牙爪风，赤瞳闪烁神性杀意，金发翻飞嘴角微扬",
     "camera": "cowboy shot, low angle, majestic combat view",
@@ -29,7 +29,11 @@
       "red moon",
       "cityscape",
       "cowboy shot",
-      "from below"
+      "from below",
+      "magic blades",
+      "fingertips",
+      "moonlight",
+      "glowing magic"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +47,7 @@
       "dominant_smile"
     ],
     "timeOfDay": "血月深夜",
-    "title": "爱尔奎特 · 绯红真祖月下神威"
+    "title": "爱尔奎特 · 绯红真祖月下神威",
+    "animaCaption": "Golden magic flares from her fingertips above the skyline."
   }
 }

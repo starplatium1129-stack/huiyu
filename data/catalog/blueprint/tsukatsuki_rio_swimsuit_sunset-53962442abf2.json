@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_swimsuit_sunset",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 910,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐池边披薄纱外套",
     "adult": false,
@@ -32,7 +32,8 @@
       "sitting",
       "poolside",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "water reflection"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -45,6 +46,7 @@
     ],
     "timeOfDay": "黄昏",
     "title": "调月莉音 · 晚霞泳池边的独处时刻",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She watches their reflections beside her companion at the pool edge."
   }
 }

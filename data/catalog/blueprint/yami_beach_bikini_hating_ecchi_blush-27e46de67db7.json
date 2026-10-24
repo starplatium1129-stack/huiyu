@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_beach_bikini_hating_ecchi_blush",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1226,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手护在比基尼胸前，金发化作巨拳微颤，满面通红娇羞咬牙怒斥，水花四溅",
     "camera": "medium shot, eye-level, extreme blush and tsundere focus",
@@ -29,7 +29,10 @@
       "giant fist",
       "fallen boy",
       "surf",
-      "sunlight"
+      "sunlight",
+      "heavy blush",
+      "water reflection",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +51,7 @@
     "compositionIntent": "group",
     "characterTokens": [
       "Rito"
-    ]
+    ],
+    "animaCaption": "Her hair forms a raised fist behind her as she folds her arms while Rito lies in the shallow surf."
   }
 }

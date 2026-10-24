@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_wasteland_duster_vigil",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 673,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜躺沙滩椅穿黑色细带比基尼，墨镜推发顶，端冰饮咬吸管晃腿甩狼尾，爽朗坏笑",
     "camera": "full-body shot, eye level",
@@ -26,7 +26,11 @@
       "lemonade",
       "deck chair",
       "parasol",
-      "beach"
+      "beach",
+      "reclining",
+      "crossed legs",
+      "striped shadows",
+      "swords on sand"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +48,7 @@
       "sharp_teeth"
     ],
     "timeOfDay": "下午",
-    "title": "拉普兰德 · 汐斯塔海滩遮阳伞下的冰饮小憩"
+    "title": "拉普兰德 · 汐斯塔海滩遮阳伞下的冰饮小憩",
+    "animaCaption": "Her swords rest on the sand beside the shaded deck chair."
   }
 }

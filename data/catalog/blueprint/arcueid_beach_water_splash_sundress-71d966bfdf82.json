@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_beach_water_splash_sundress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1323,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "一手提起裙摆避开海水，另一手向岸边的镜头招手，赤足踏浪回眸大笑",
     "camera": "full-body shot, eye level",
@@ -28,7 +28,12 @@
       "splashing",
       "laughing",
       "looking back",
-      "full body"
+      "full body",
+      "skirt lift",
+      "beckoning",
+      "barefoot",
+      "waves",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +49,7 @@
       "windy"
     ],
     "timeOfDay": "正午晴日",
-    "title": "爱尔奎特 · 碧海清波的赤足踏浪"
+    "title": "爱尔奎特 · 碧海清波的赤足踏浪",
+    "animaCaption": "One hand gathers the hem; the other beckons the viewer on shore."
   }
 }

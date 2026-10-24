@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1644,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_06",
     "title": "守岸人 · 与贝壳的对话",
@@ -37,7 +37,11 @@
       "crouching",
       "shallows",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "shell to ear",
+      "hand on knee",
+      "slight smile",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She holds the shell to one ear while her free hand rests on her knee above the shallows."
   }
 }

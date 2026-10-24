@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_r18_tatami_room_unbuttoned_spread",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 831,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "旧水手服解扣，纤细身体发颤",
     "adult": true,
@@ -34,7 +34,9 @@
       "topless",
       "sitting",
       "blush",
-      "lamplight"
+      "lamplight",
+      "tense shoulders",
+      "biting lip"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -51,6 +53,7 @@
       "deadpan_blush"
     ],
     "timeOfDay": "night",
-    "title": "深森白夜 · 简陋出租屋·旧水手服解扣与纤细私密"
+    "title": "深森白夜 · 简陋出租屋·旧水手服解扣与纤细私密",
+    "animaCaption": "She sits upright with her shoulders tense in the dim room."
   }
 }

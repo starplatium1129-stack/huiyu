@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_sfw_b9_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1686,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_sfw_b9_02",
     "title": "艾尔菲利亚 · 冰之魔法的茶会",
@@ -38,7 +38,12 @@
       "ice magic",
       "courtyard",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "cup",
+      "saucer",
+      "frost flowers",
+      "raised finger",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +53,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her fingertip hovers above the chilled cup as frost flowers gather on its coaster."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_morning_boyfriend_shirt_coffee",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1275,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_morning_boyfriend_shirt_coffee",
     "title": "莉雅丝 · 晨光微熹的大号衬衫",
@@ -32,7 +32,13 @@
       "holding cup",
       "coffee",
       "kitchen",
-      "full body"
+      "full body",
+      "standing",
+      "barefoot",
+      "both hands",
+      "steam",
+      "gentle smile",
+      "morning light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -41,6 +47,7 @@
       "daily",
       "gap_moe",
       "romantic"
-    ]
+    ],
+    "animaCaption": "She turns toward her off-frame companion with the coffee mug held in both hands."
   }
 }

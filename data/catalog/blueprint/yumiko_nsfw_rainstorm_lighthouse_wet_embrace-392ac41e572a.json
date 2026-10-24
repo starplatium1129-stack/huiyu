@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yumiko_nsfw_rainstorm_lighthouse_wet_embrace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1786,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yumiko_nsfw_rainstorm_lighthouse_wet_embrace",
     "title": "榊由美子 · 暴风雨灯塔内的透湿温存",
@@ -73,11 +73,15 @@
       "purple_eyes",
       "crying_with_passion",
       "blush",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "lying",
+      "close up",
+      "high angle"
     ],
     "promptProse": "Sheltered inside a rugged coastal lighthouse as ferocious storms lash the dark sea outside, Yumiko lies completely naked upon a warm blanket with raindrops glistening across her trembling ivory skin. Wet strands of raven hime-cut hair cling to her flushed collarbones as lightning flashes through the window, illuminating her tearful, devoted purple gaze as she clings close in unconditional surrender.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both arms cling to her companion above the blanket inside the storm-bound lighthouse."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_bedroom_soles_black_socks",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 352,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yui_r18_bedroom_soles_black_socks",
     "characterId": "yuigahama_yui",
@@ -32,7 +32,11 @@
       "cookie box",
       "bed",
       "puppy motif",
-      "coral piping"
+      "coral piping",
+      "extended leg",
+      "hand on box",
+      "brushing crumbs",
+      "sunlight"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -53,6 +57,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand steadies the carton near her foot while the other brushes crumbs from her thigh beside the folded leg."
   }
 }

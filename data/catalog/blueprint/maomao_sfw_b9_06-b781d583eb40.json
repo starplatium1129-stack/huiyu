@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1710,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "maomao_sfw_b9_06",
     "title": "猫猫 · 雨廊下的药箱",
@@ -35,7 +35,10 @@
       "medicine case",
       "bottles",
       "corridor",
-      "rain"
+      "rain",
+      "holding medicine case",
+      "checking bottles",
+      "eaves"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One arm supports the open case while her free hand checks the upright bottles."
   }
 }

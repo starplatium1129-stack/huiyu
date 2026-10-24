@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_gehenna_sniper_rooftop_vanguard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 923,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单膝跪在黑石护栏边架狙瞄准，恶魔尾巴卷曲蓄力，眼神凌厉专注",
     "camera": "wide shot, low angle, dramatic perspective",
@@ -28,7 +28,12 @@
       "clock tower",
       "sunset",
       "wide shot",
-      "from below"
+      "from below",
+      "holding rifle",
+      "wind",
+      "focused",
+      "dark skin",
+      "sunlight"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -46,6 +51,7 @@
     "timeOfDay": "下午",
     "title": "银镜伊织 · 歌赫娜尖顶的冷冽狙击",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The rifle rests on the black-stone balustrade as she sights through its scope."
   }
 }

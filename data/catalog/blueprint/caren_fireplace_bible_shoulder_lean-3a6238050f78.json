@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_fireplace_bible_shoulder_lean",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 213,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_fireplace_bible_shoulder_lean",
     "title": "卡莲 · 壁炉圣经前的倚肩依偎",
@@ -38,7 +38,13 @@
       "hearth rug",
       "fireplace",
       "reading chair",
-      "night"
+      "night",
+      "sitting",
+      "holding book",
+      "both hands",
+      "gentle smile",
+      "firelight",
+      "cowboy shot"
     ],
     "negativeTokens": [
       "burning hair",
@@ -52,6 +58,7 @@
       "fireplace"
     ],
     "adult": true,
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "The closed Bible rests on her lap; her head touches the clothed shoulder at the frame edge."
   }
 }

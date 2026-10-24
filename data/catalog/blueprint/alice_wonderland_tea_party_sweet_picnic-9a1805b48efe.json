@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_wonderland_tea_party_sweet_picnic",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1807,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "alice_wonderland_tea_party_sweet_picnic",
     "title": "爱丽丝 · 废墟花园童话茶会的草莓点心分享",
@@ -58,11 +58,21 @@
       "frilly_maid_dress",
       "white_apron",
       "warm_golden_hour",
-      "fairy_tale_vibe"
+      "fairy_tale_vibe",
+      "kneeling",
+      "holding food",
+      "macaron",
+      "strawberry",
+      "both hands",
+      "dappled sunlight",
+      "greenhouse",
+      "ruins",
+      "close up"
     ],
     "promptProse": "Kneeling on a checkered picnic blanket inside an overgrown sun-dappled greenhouse ruin, Alice wears a frilly pastel-pink bunny maid dress with a white heart apron. Holding a pink strawberry macaron sweetly out toward the viewer with both hands, her long wavy pink pigtails and innocent smiling blue eyes radiate pure fairy-tale warmth.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She offers the strawberry macaron toward the viewer with both hands."
   }
 }

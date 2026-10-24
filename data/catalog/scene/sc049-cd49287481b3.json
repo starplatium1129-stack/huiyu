@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc049",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 47,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Still on tiptoe after the kiss, she cups the viewer's hand in both of hers and looks up in surprise.",
+    "animaCaption": "Still on tiptoe after the kiss, she cups the viewer's hand in both of hers.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "樱花道面部与交握双手近景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, tiptoes, holding hands, blush, cherry blossoms, morning, close up",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, tiptoes, holding hands, blush, cherry blossoms, morning, close up, looking up, surprised, shy smile, soft lighting",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",
@@ -51,6 +51,7 @@
       "展示图",
       "头像"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Still on tiptoe after the kiss, she cups the viewer's hand in both of hers and looks up in surprise."
   }
 }

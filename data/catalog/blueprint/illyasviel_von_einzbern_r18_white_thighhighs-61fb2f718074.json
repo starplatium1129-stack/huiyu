@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_white_thighhighs",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 167,
   "createdAt": null,
-  "updatedAt": "2026-10-21T12:28:13.195Z",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_white_thighhighs",
     "title": "伊莉雅丝菲尔 · 白丝与暖炉",
@@ -34,7 +34,10 @@
       "sitting",
       "feet",
       "chaise longue",
-      "fireplace"
+      "fireplace",
+      "adult",
+      "both hands",
+      "extended leg"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +51,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She rolls one stocking down while extending the opposite leg toward the hearth."
   }
 }

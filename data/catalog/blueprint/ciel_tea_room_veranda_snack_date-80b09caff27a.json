@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_tea_room_veranda_snack_date",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1331,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "跪坐在走廊上双手奉上热茶与和果子，隔着眼镜看向视角，神态温婉可靠",
     "camera": "cowboy shot, eye level, peaceful school view",
@@ -31,7 +31,12 @@
       "matcha",
       "wagashi",
       "afternoon",
-      "cowboy shot"
+      "cowboy shot",
+      "holding tray",
+      "both hands",
+      "gentle smile",
+      "dappled sunlight",
+      "leaf shadows"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -47,6 +52,7 @@
       "gentle_smile"
     ],
     "timeOfDay": "黄昏",
-    "title": "希耶尔 · 茶道室长廊的静谧茶点"
+    "title": "希耶尔 · 茶道室长廊的静谧茶点",
+    "animaCaption": "She slides the matcha and sweets toward the viewer with both hands."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_r18_b5_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1563,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hori_kyouko_r18_b5_01",
     "title": "堀京子 · 弟妹入睡后客厅的主控跨坐 ·「宫村……今天不许对我太温柔」",
@@ -42,7 +42,10 @@
       "bound wrists",
       "straddling",
       "from below",
-      "blue pocket"
+      "blue pocket",
+      "leaning forward",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +60,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She wraps the viewer's necktie around her own wrists while leaning toward their neck."
   }
 }

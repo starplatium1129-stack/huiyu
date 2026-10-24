@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_hoori_town_summer_sundress_stroll",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1121,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手压草帽回眸张望，吊带裙摆随风摇曳，脸上带着探索小镇的好奇神采",
     "camera": "cowboy shot, slight low angle, vibrant street depth",
@@ -25,7 +25,11 @@
       "walking",
       "willow",
       "hot spring town",
-      "summer"
+      "summer",
+      "holding hat",
+      "looking at stall",
+      "dappled sunlight",
+      "steam"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
     "timeOfDay": "上午",
     "title": "丛雨 · 穗织温泉街的薄荷洋装漫步",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She looks toward the stall beside the old inns while holding her hat."
   }
 }

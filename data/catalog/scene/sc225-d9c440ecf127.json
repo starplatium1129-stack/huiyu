@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc225",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:40:29.613535400+00:00",
   "data": {
-    "animaCaption": "On the shrine steps, her hair tied back with a red satin ribbon, she holds the bamboo broom in one hand and receives the warm tea from the viewer beside her with the other; filtered morning light reaches her cheek through the mist.",
+    "animaCaption": "One hand holds the broom while the other receives warm tea from the viewer beside her on the steps.",
     "auditRevision": "careful-batch07-2026-08-27",
     "camera": "神社石阶侧面中景",
     "category": "祭典・节日",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, miko, broom, canned tea, shrine, torii, morning, fog, dappled sunlight, from side",
+    "prompt": "1girl, shiki_natsume, miko, broom, canned tea, shrine, torii, morning, fog, dappled sunlight, from side, red hair ribbon, hair tied back, holding broom, receiving drink",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 晨雾神社的巫女服】清晨被淡淡薄雾笼罩的静谧古老神社，四周唯有清脆的鸟鸣。夏目今天作为神社帮工换上了一袭素雅端庄的红白巫女服，柔顺的黑发用朱红缎带束在脑后，正拿着竹扫帚安静地清扫着庭前落叶。朝阳透过古树的枝桠洒落在她清秀的侧颜上，显得格外空灵。当你悄悄走近递上一罐刚加热好的热红茶时，夏目手上的动作微微一滞，半垂着清澈的金色眼眸接过热饮，白皙的耳根却悄然浮起一抹浅浅的红晕——「……别误会。我只是觉得早起扫地手太冷了，需要热量维持动作而已。……还有，早安……真是个爱操心的大笨蛋。」",
@@ -46,6 +46,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "weather": "晨雾朝阳"
+    "weather": "晨雾朝阳",
+    "promptProse": "On the shrine steps, her hair tied back with a red satin ribbon, she holds the bamboo broom in one hand and receives the warm tea from the viewer beside her with the other; filtered morning light reaches her cheek through the mist."
   }
 }

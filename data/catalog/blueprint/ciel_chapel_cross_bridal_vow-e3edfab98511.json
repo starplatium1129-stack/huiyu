@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_chapel_cross_bridal_vow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1335,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "站在圣坛前，双手合握心口银十字架，摘下眼镜抬眼露出含泪的浅笑。",
     "camera": "medium shot, eye level, altar portrait",
@@ -32,7 +32,14 @@
       "clasped hands",
       "smile",
       "stained glass",
-      "medium shot"
+      "medium shot",
+      "altar",
+      "standing",
+      "looking up",
+      "tears",
+      "small smile",
+      "no glasses",
+      "daylight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -52,6 +59,7 @@
       "daylight"
     ],
     "timeOfDay": "day",
-    "title": "希耶尔 · 纯白圣堂的赎罪婚誓"
+    "title": "希耶尔 · 纯白圣堂的赎罪婚誓",
+    "animaCaption": "She clasps the silver cross at her heart, her glasses removed."
   }
 }

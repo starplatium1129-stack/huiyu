@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_creek_bamboo_forest_stream_splash",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1133,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "弯腰涉水双手泼洒晶莹溪水，比基尼勾勒曼妙身材，水珠飞溅，神采奕奕",
     "camera": "cowboy shot, dynamic water splashing foreground, action depth",
@@ -25,7 +25,13 @@
       "splashing",
       "stream",
       "bamboo",
-      "summer"
+      "summer",
+      "bending forward",
+      "both hands",
+      "wet skin",
+      "sunbeams",
+      "caustics",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +45,7 @@
       "large_breasts"
     ],
     "timeOfDay": "正午",
-    "title": "常陆茉子 · 幽谷清溪的碧波逐浪"
+    "title": "常陆茉子 · 幽谷清溪的碧波逐浪",
+    "animaCaption": "Both hands throw stream water toward the viewer, spray filling the foreground beneath the bamboo."
   }
 }

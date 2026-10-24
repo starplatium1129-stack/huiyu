@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_stage_musical_climax",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "furina_stage_musical_climax",
     "title": "芙宁娜 · 最终乐章舞台谢幕",
@@ -38,13 +38,17 @@
       "stage",
       "spotlight",
       "full body",
-      "from below"
+      "from below",
+      "skirt hold",
+      "bent knee",
+      "blue lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "opera_ballgown",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She holds both sides of her gown for the final curtsy toward the off-frame audience."
   }
 }

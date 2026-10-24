@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_summer_festival_apple_candy",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1288,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "akeno_summer_festival_apple_candy",
     "title": "姬岛朱乃 · 仲夏夜祭的紫阳花花火",
@@ -37,7 +37,12 @@
       "lantern",
       "fireworks",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "holding candy",
+      "gentle smile",
+      "exposed nape",
+      "festival",
+      "lantern light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +51,7 @@
       "date",
       "festival",
       "yukata"
-    ]
+    ],
+    "animaCaption": "She pauses on the shrine steps and turns back toward the viewer."
   }
 }

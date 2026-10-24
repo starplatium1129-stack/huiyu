@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_freezing_storm_open_parka_warmth",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1808,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "alice_freezing_storm_open_parka_warmth",
     "title": "爱丽丝 · 冰封雪洞中的羽绒服拥抱取暖",
@@ -54,11 +54,19 @@
       "pink_hair",
       "blue_eyes",
       "cozy_glow",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "hugging",
+      "blush",
+      "campfire",
+      "firelight",
+      "ice",
+      "snowstorm",
+      "close up"
     ],
     "promptProse": "Inside a crystalline ice cavern sheltered from a raging blizzard around a small crackling campfire, Alice wraps an open puffy pink down parka around the shivering Commander, pulling him into her soft embrace. Her thermal bodysuit radiates gentle heat as she nuzzles close with flushed cheeks and tender blue eyes.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She wraps her open parka around the viewer, their cheeks touching beside the campfire."
   }
 }

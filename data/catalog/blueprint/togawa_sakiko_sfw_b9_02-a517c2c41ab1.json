@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1749,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_02",
     "title": "丰川祥子 · 唱片店试听的午后",
@@ -38,7 +38,11 @@
       "headphones",
       "turntable",
       "record shop",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "hand on headphones",
+      "faint smile",
+      "shop light"
     ],
     "negativeTokens": [
       "piano",
@@ -52,6 +56,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds an earcup while the other pauses on her knee at the listening station."
   }
 }

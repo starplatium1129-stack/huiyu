@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1647,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_03",
     "title": "卡提希娅 · 雨廊下的躲雨与烤面包",
@@ -38,7 +38,11 @@
       "paper bag",
       "rain",
       "shelter",
-      "medium shot"
+      "medium shot",
+      "awning",
+      "receiving",
+      "warm lighting",
+      "wet pavement"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +53,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She receives the warm bag from the owner standing in the bakery doorway."
   }
 }

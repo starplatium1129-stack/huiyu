@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc124",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc124",
     "title": "晚宴落幕后的解封指令",
@@ -49,11 +49,12 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy satin lining, gold clasp at neckline, black silk evening gown, backless dress, unzipped, sideboob, sheer black thighhighs, on back, arms around neck, blush, hotel bed, neon lights, night, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy satin lining, gold clasp at neckline, black silk evening gown, backless dress, unzipped, sideboob, sheer black thighhighs, on back, arms around neck, blush, hotel bed, neon lights, night, <lora:shiki_natsume_v18_wd14:0.85>, lying on back, bedside lamp",
     "negative": "",
     "storyJa": "【夏目・イブニングドレスは究極の秋のロックを解除します】豪華な晩餐会を終えた五つ星ホテルのプレジデンシャルスイート。窓の外には都会の喧騒のネオンがいつまでも輝き、部屋はほんのり暖かい。普段は上品で飄々としていた夏目が、この時は力が抜けたあなたに大きなダブルベッドに押し倒されました。彼女の黒い背中の開いたハイスリットのシルクイブニングドレスの後ろにある細いジッパーがあなたによって完全に開かれ、ガウン全体が両側に弱々しくスライドし、官能的なラインの広い領域、感情的な紅潮を伴う美しい裸の背中と横の胸を明らかにします。脚に巻きついたセクシーな極薄の黒ストッキングが、暗い光の下で非常に眩しい光沢を放ちます。目尻の泣きぼくろが真っ赤に染まっている。彼女はあえぎ、うめき声​​を上げながらあなたの首を強く締め付けます。――「店長……今夜のこの服、あなたが好きだと言うなら……もう少しだけ着ていてあげてもいい。」",
     "rating": "R18",
-    "animaCaption": "She lies on the bed with her gown unzipped and slipping at the sides, arms around the viewer's neck beneath mixed bedside and city light.",
-    "auditRevision": "careful-batch04-2026-08-27"
+    "animaCaption": "Her arms circle the viewer's neck as she lies beneath the mixed bedside and city light.",
+    "auditRevision": "careful-batch04-2026-08-27",
+    "promptProse": "She lies on the bed with her gown unzipped and slipping at the sides, arms around the viewer's neck beneath mixed bedside and city light."
   }
 }

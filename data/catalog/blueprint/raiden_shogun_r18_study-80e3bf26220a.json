@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_study",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "raiden_shogun_r18_study",
     "title": "雷电将军 · 书斋墨夜",
@@ -39,7 +39,10 @@
       "scrolls",
       "cushions",
       "paper lantern",
-      "night"
+      "night",
+      "hand behind back",
+      "bent leg",
+      "purple sparks"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -50,6 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "purple_inner_robe",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand braces behind her on the cushions while a bent leg holds the scattered decrees in place."
   }
 }

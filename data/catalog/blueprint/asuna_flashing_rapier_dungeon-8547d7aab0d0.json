@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_flashing_rapier_dungeon",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1362,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asuna_flashing_rapier_dungeon",
     "title": "结城明日奈 · 闪光的细剑连击·「攻略就交给我吧，绝对不会输的！」",
@@ -35,7 +35,10 @@
       "lunging",
       "crystal",
       "magic",
-      "wide shot"
+      "wide shot",
+      "holding sword",
+      "sword trail",
+      "crystal glow"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +51,7 @@
       "official_default",
       "iconic",
       "signature"
-    ]
+    ],
+    "animaCaption": "Golden sword trails follow the rapier along the stone passage."
   }
 }

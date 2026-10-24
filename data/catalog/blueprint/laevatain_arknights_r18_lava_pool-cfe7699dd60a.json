@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_lava_pool",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 735,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "赤身伫立在沸腾熔池边，红光勾勒身姿",
     "adult": true,
@@ -33,7 +33,9 @@
       "open arms",
       "lava",
       "basalt",
-      "cavern"
+      "cavern",
+      "red glow",
+      "rim light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -45,6 +47,7 @@
       "standing"
     ],
     "timeOfDay": "夜晚",
-    "title": "莱万汀 · 熔池畔"
+    "title": "莱万汀 · 熔池畔",
+    "animaCaption": "She opens both arms toward the viewer from the basalt beside the molten pool."
   }
 }

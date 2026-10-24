@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_devil_wings_demonic_crest",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1274,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_devil_wings_demonic_crest",
     "title": "莉雅丝 · 纯血恶魔破灭之翼",
@@ -35,7 +35,9 @@
       "magic circle",
       "moon",
       "rooftop",
-      "from below"
+      "from below",
+      "red lighting",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +47,7 @@
       "combat"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The crimson Gremory crest gathers over her upturned palm above the old school roof."
   }
 }

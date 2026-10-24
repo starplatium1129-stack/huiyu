@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 135,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_03",
     "title": "尤贝尔 · 斩击魔法割裂黑色斗篷的走光事故 ·「手滑把衣服切开了呢……怎么，想趁机偷袭我吗？」",
@@ -40,7 +40,10 @@
       "sunlight",
       "topless",
       "bottomless",
-      "cowboy shot"
+      "cowboy shot",
+      "hand on table",
+      "holding staff",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -55,6 +58,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand braces on the stone table while the other holds her staff."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_sword_rain_battlefield_awakening",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 660,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手持剑凌空挥斩，周身金色源石剑阵万剑齐发从天而降",
     "camera": "wide shot, low angle, descending blades and distant enemy formation visible",
@@ -27,7 +27,11 @@
       "battlefield",
       "sunset",
       "wide shot",
-      "low angle"
+      "low angle",
+      "holding sword with both hands",
+      "descending blades",
+      "distant enemies",
+      "golden light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +47,7 @@
     ],
     "timeOfDay": "黄昏日落",
     "title": "德克萨斯 · 剑雨降临万物肃杀",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Both hands swing the sword down as golden blades descend around the distant enemy formation."
   }
 }

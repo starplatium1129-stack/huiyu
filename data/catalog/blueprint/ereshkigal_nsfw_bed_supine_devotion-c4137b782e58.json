@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_bed_supine_devotion",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 271,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_nsfw_bed_supine_devotion",
     "title": "埃列什基伽勒 · 冥府床褥的奉献夜·「灵魂也要……一起重叠」",
@@ -38,7 +38,13 @@
       "hand between legs",
       "blush",
       "tears",
-      "blue light"
+      "blue light",
+      "masturbation",
+      "hair spread out",
+      "bed curtains",
+      "pillow",
+      "cowboy shot",
+      "from above"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -63,6 +69,7 @@
       "very_long_hair",
       "hair_down",
       "red_eyes"
-    ]
+    ],
+    "animaCaption": "Her hair spreads over the pillows beneath the pale-blue bed curtains."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_r18_b7_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1658,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "changli_wuthering_r18_b7_04",
     "title": "长离 · 听涛别院云丝大床上的离火焚身自持 ·「这颗心……早在很多年前……就已经输给你了」",
@@ -39,7 +39,10 @@
       "on back",
       "masturbation",
       "tears",
-      "firelight"
+      "firelight",
+      "on bed",
+      "pillow",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -64,6 +67,7 @@
       "ahoge",
       "orange_eyes"
     ],
-    "identityProseOverride": "Changli from Wuthering Waves, with long pink hair worn loose, an ahoge and orange eyes."
+    "identityProseOverride": "Changli from Wuthering Waves, with long pink hair worn loose, an ahoge and orange eyes.",
+    "animaCaption": "Her long hair spreads over the pillows beneath the phoenix glow."
   }
 }

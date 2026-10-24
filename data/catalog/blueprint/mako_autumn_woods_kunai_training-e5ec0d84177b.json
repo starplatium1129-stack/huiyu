@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_autumn_woods_kunai_training",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1135,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "踩在岩石上舒展腰身投掷苦无，身体前倾发力，枫叶随劲风环绕飞舞",
     "camera": "full body, from below",
@@ -27,7 +27,12 @@
       "rock",
       "forest",
       "maple leaves",
-      "full body"
+      "full body",
+      "foot on rock",
+      "extended right arm",
+      "falling leaves",
+      "sunlight",
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +46,7 @@
       "large_breasts"
     ],
     "timeOfDay": "下午",
-    "title": "常陆茉子 · 红枫树下的忍道飞掷"
+    "title": "常陆茉子 · 红枫树下的忍道飞掷",
+    "animaCaption": "One foot braces on the mossy rock, her right arm extended just after releasing the kunai."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_cafeteria",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 204,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [
       "jacket worn"
@@ -38,12 +38,17 @@
     "promptTokens": [
       "lunch tray",
       "fork",
-      "cafeteria"
+      "cafeteria",
+      "holding tray",
+      "vegetables",
+      "cutlet",
+      "jacket on chair"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "chaldea_cafeteria_jacket_off",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand steadies the tray while the other guides the fork."
   }
 }

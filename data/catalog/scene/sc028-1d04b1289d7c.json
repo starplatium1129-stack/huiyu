@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc028",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Nene, in an ivory chiffon wedding dress with a pink waist ribbon, sits on the left, holding the folded agreement in one hand and the viewer's hand in the other; Natsume, in a pearl-white satin wedding dress with a boat neckline, sits on the right and reaches across to straighten Nene's hair ornament, their dresses softly lit by the candles.",
+    "animaCaption": "Nene, in ivory chiffon with a pink waist ribbon, sits left holding the agreement and the viewer's hand. Natsume, in pearl-white satin with a boat neckline, sits right and straightens Nene's hair ornament.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "Active_Sync_Scenes",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "",
-    "prompt": "2girls, ayachi_nene, shiki_natsume, wedding dresses, sitting, canopy bed, marriage contract, holding hands, hair ornament, candlelight, medium shot",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, wedding dresses, sitting, canopy bed, marriage contract, holding hands, hair ornament, candlelight, medium shot, ivory chiffon, pink waist ribbon, pearl white satin, boat neckline, reaching",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",
@@ -47,6 +47,7 @@
     "usage": [
       "核心CG"
     ],
-    "weather": "静谧"
+    "weather": "静谧",
+    "promptProse": "Nene, in an ivory chiffon wedding dress with a pink waist ribbon, sits on the left, holding the folded agreement in one hand and the viewer's hand in the other; Natsume, in a pearl-white satin wedding dress with a boat neckline, sits on the right and reaches across to straighten Nene's hair ornament, their dresses softly lit by the candles."
   }
 }

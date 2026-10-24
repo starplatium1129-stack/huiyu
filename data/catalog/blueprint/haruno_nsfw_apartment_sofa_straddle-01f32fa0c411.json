@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_apartment_sofa_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 376,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruno_nsfw_apartment_sofa_straddle",
     "title": "雪之下阳乃 · 深夜单身公寓的黑丝魅影 ·「真物什么的……比得上现在贴紧的温度吗」",
@@ -38,7 +38,11 @@
       "from below",
       "black stockings",
       "pov",
-      "on lap"
+      "on lap",
+      "straddling",
+      "hands on shoulders",
+      "warm lighting",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +55,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Both hands rest on her companion's shoulders while the chemise gathers at her hips."
   }
 }

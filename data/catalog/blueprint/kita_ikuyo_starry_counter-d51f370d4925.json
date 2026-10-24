@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_starry_counter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1826,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kita_ikuyo_starry_counter",
     "characterId": "kita_ikuyo",
@@ -26,7 +26,11 @@
       "smile",
       "warm lighting",
       "evening",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "looking up",
+      "welcome smile",
+      "pendant lamp"
     ],
     "sceneTags": [
       "bar",
@@ -42,6 +46,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She looks up while polishing the glass with the white cloth."
   }
 }

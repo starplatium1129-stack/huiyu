@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_r18_b6_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1470,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "一手撑住更衣长凳，另一手抬向脸侧掩饰羞意，回头寻找落在凳旁的纽扣。",
     "adult": true,
@@ -39,7 +39,11 @@
       "looking back",
       "blush",
       "dressing room",
-      "short pleated skirt"
+      "short pleated skirt",
+      "hand on bench",
+      "embarrassed",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -57,6 +61,7 @@
       "cleavage_spill"
     ],
     "timeOfDay": "afternoon",
-    "title": "甘露寺蜜璃 · 队服金扣崩飞的更衣溢乳事故 ·「呀啊！金纽扣又飞掉了……胸口根本遮不住啦！」"
+    "title": "甘露寺蜜璃 · 队服金扣崩飞的更衣溢乳事故 ·「呀啊！金纽扣又飞掉了……胸口根本遮不住啦！」",
+    "animaCaption": "One hand braces on the bench; the fallen button lies beside it."
   }
 }

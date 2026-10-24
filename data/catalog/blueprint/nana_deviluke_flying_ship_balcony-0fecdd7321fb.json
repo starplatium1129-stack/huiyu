@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_deviluke_flying_ship_balcony",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1265,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手扶着护盾栏杆眺望蔚蓝地球，微重力下长双马尾与爱心尾巴飘拂，神采飞扬",
     "camera": "cowboy shot, low angle, sweeping cosmic planetary backdrop",
@@ -28,7 +28,10 @@
       "earth",
       "stars",
       "cowboy shot",
-      "low angle"
+      "low angle",
+      "floating hair",
+      "floating tail",
+      "blue rim light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -47,6 +50,7 @@
     "timeOfDay": "外太空",
     "title": "娜娜 · 皇家战舰露台的星河眺望",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand rests on the energy rail as her twintails drift above Earth's blue arc."
   }
 }

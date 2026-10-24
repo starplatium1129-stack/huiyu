@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_inn_bath",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "frieren_r18_inn_bath",
     "title": "芙莉莲 · 旅店浴后·千年的精灵与炉火",
@@ -41,7 +41,9 @@
       "firelight",
       "cowboy shot",
       "white robe",
-      "gold trim"
+      "gold trim",
+      "looking at viewer",
+      "calm expression"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -65,6 +67,7 @@
       "green_eyes",
       "pointy_ears",
       "gold_earrings"
-    ]
+    ],
+    "animaCaption": "Her wet hair rests over her shoulders at the wooden bed edge."
   }
 }

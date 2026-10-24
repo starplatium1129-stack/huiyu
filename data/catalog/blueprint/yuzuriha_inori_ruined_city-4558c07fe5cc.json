@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_ruined_city",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 329,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yuzuriha_inori_ruined_city",
     "title": "楪祈 · 末世废都",
@@ -38,7 +38,11 @@
       "holding clothes",
       "crystals",
       "ruined street",
-      "wide shot"
+      "wide shot",
+      "holding jacket",
+      "turning",
+      "determined",
+      "daylight"
     ],
     "negativeTokens": [
       "leotard"
@@ -50,6 +54,7 @@
     "nsfwProse": "",
     "characterTokens": [
       "shu ouma"
-    ]
+    ],
+    "animaCaption": "She catches Shu's jacket hem as they share a determined look."
   }
 }

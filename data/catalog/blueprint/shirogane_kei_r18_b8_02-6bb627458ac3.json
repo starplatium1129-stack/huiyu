@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_r18_b8_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1422,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜坐浴池边银发盘团子头，湿透小毛巾半贴胸口，单手探入水下抚弄",
     "adult": true,
@@ -40,7 +40,8 @@
       "biting lip",
       "public bath",
       "steam",
-      "sunset"
+      "sunset",
+      "hand underwater"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -68,6 +69,7 @@
       "blue eyes",
       "black hairband"
     ],
-    "identityProseOverride": "Kei Shirogane from Kaguya-sama: Love Is War, with silver-grey hair tied into a small bun, blue eyes and a black headband."
+    "identityProseOverride": "Kei Shirogane from Kaguya-sama: Love Is War, with silver-grey hair tied into a small bun, blue eyes and a black headband.",
+    "animaCaption": "The wet towel stays across her chest above the ripples."
   }
 }

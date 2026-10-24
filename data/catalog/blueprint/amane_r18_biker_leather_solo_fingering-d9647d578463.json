@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_biker_leather_solo_fingering",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1189,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "amane_r18_biker_leather_solo_fingering",
     "title": "周防天音 · 车库独处机车旁私密自抚情愫",
@@ -39,7 +39,13 @@
       "unzipped",
       "topless",
       "raised leg",
-      "masturbation"
+      "masturbation",
+      "leaning",
+      "holding handlebar",
+      "heavy blush",
+      "teary eyes",
+      "work light",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +54,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One boot rests on the service stand beside the parked motorcycle."
   }
 }

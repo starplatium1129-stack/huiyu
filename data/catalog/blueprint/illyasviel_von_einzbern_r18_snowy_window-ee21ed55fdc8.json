@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_snowy_window",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 166,
   "createdAt": null,
-  "updatedAt": "2026-10-21T12:28:13.195Z",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_snowy_window",
     "title": "伊莉雅丝菲尔 · 雪夜窗边",
@@ -34,7 +34,10 @@
       "hand on glass",
       "window seat",
       "snow",
-      "moonlight"
+      "moonlight",
+      "adult",
+      "velvet cushion",
+      "firelight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +48,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "cozy_wool_blanket",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand rests on the glass while the other gathers the blanket."
   }
 }

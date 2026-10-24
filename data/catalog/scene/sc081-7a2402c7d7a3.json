@@ -4,9 +4,9 @@
   "revision": 6,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Lying on her side with her head on a cushion, she catches the blanket corner as the viewer draws it over her; a narrow strip of afternoon light through the shoji reaches the travel notes on the nearby low table.",
+    "animaCaption": "She catches the blanket corner as the viewer draws it over her beside the travel notes on the low table.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "和室午睡全身远景",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, beige waffle knit t-shirt, burgundy collar trim, charcoal cotton shorts, on side, cushion, blanket, travel notes, tatami, full body",
+    "prompt": "1girl, shiki_natsume, beige waffle knit t-shirt, burgundy collar trim, charcoal cotton shorts, on side, cushion, blanket, travel notes, tatami, full body, lying on side, holding blanket, sunlight, shoji, low table",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",
@@ -51,6 +51,7 @@
       "展示图",
       "CG"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Lying on her side with her head on a cushion, she catches the blanket corner as the viewer draws it over her; a narrow strip of afternoon light through the shoji reaches the travel notes on the nearby low table."
   }
 }

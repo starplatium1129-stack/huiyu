@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_04",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1708,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "vivy_r18_b9_04",
     "title": "Vivy · 百年使命终结后床单上的灵魂觉醒独奏 ·「这就是人类所说的……用歌声爱上一个人的心跳吗」",
@@ -37,7 +37,9 @@
       "on back",
       "bed",
       "crying",
-      "moonlight"
+      "moonlight",
+      "masturbation",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +58,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her blue hair spreads across the white pillow beneath the moonlight."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_rain_station",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 541,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "撑伞立于站台边缘",
     "camera": "medium shot",
@@ -23,7 +23,12 @@
       "transparent umbrella",
       "rain",
       "night",
-      "medium shot"
+      "medium shot",
+      "walking",
+      "train doors",
+      "tilting umbrella",
+      "platform light",
+      "wet pavement"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -34,6 +39,7 @@
       "platform"
     ],
     "timeOfDay": "雨夜",
-    "title": "陈 · 雨夜车站"
+    "title": "陈 · 雨夜车站",
+    "animaCaption": "She tilts the umbrella toward the arriving viewer outside the frame."
   }
 }

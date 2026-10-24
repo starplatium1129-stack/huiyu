@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_sfw_b9_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1687,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_sfw_b9_03",
     "title": "艾尔菲利亚 · 高塔里的绒线手套",
@@ -36,7 +36,10 @@
       "sitting",
       "window",
       "snow",
-      "medium shot"
+      "medium shot",
+      "looking down",
+      "hand on lap",
+      "reflected light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She flexes one gloved hand while the unworn glove rests on her lap."
   }
 }

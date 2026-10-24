@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_sky_wings_watermelon_hug",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1208,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "悬浮于云海天际展开巨大白羽翼，双手紧抱大西瓜，神情呆萌纯真，长双马尾飘扬",
     "camera": "full body, dynamic mid-air upward angle, wide cloudscape scale",
@@ -28,7 +28,10 @@
       "wind",
       "clouds",
       "full body",
-      "from below"
+      "from below",
+      "both arms",
+      "sunlight",
+      "transmitted light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +49,7 @@
     "timeOfDay": "上午",
     "title": "伊卡洛斯 · 碧空云海的西瓜守护",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both arms cradle the watermelon high above Sorami beneath the spread wings."
   }
 }

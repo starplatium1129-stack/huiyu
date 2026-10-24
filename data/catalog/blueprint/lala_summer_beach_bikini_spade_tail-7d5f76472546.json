@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_summer_beach_bikini_spade_tail",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1233,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "踩在清凉海水中向镜头开朗招手，鹅黄比基尼勾勒极品身段，爱心尾巴撩拨水花",
     "camera": "full body, three-quarter view, vibrant beach depth",
@@ -26,7 +26,10 @@
       "waving",
       "shallow water",
       "beach",
-      "full body"
+      "full body",
+      "smile",
+      "sunlight",
+      "water spray"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +43,7 @@
       "beaming_smile"
     ],
     "timeOfDay": "正午",
-    "title": "菈菈 · 耀阳金沙的鹅黄比基尼欢跃"
+    "title": "菈菈 · 耀阳金沙的鹅黄比基尼欢跃",
+    "animaCaption": "Her tail tip flicks a small spray above the incoming foam as she waves."
   }
 }

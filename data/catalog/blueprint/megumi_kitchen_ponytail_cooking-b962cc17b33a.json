@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_kitchen_ponytail_cooking",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1441,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_kitchen_ponytail_cooking",
     "title": "加藤惠 · 厨房里的第一次翻面",
@@ -36,7 +36,11 @@
       "fried egg",
       "spatula",
       "kitchen",
-      "ponytail"
+      "ponytail",
+      "holding pan",
+      "focused",
+      "smile",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand steadies the pan as the other slides the spatula under the egg."
   }
 }

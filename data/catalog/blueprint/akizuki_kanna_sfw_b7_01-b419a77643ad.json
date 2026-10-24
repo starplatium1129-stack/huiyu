@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1152,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "用木搅棒轻搅虹吸壶上层咖啡，另一手扶稳杯子。",
     "adult": false,
@@ -30,7 +30,12 @@
       "stirring",
       "cup",
       "morning",
-      "medium shot"
+      "medium shot",
+      "vacuum coffee brewer",
+      "wooden stick",
+      "counter",
+      "looking down",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -48,6 +53,7 @@
       "medium_shot"
     ],
     "timeOfDay": "morning",
-    "title": "明月栞那 · 虹吸壶里的晨光"
+    "title": "明月栞那 · 虹吸壶里的晨光",
+    "animaCaption": "One hand stirs the upper chamber while the other steadies the cup."
   }
 }

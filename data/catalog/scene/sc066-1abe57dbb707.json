@@ -4,9 +4,9 @@
   "revision": 6,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She pauses with one hand holding down the cover-up hem and turns back toward the viewer's camera, the sea visible beside her; sunset outlines her damp hair in gold.",
+    "animaCaption": "She holds the cover-up hem down while turning toward the viewer's camera.",
     "auditRevision": "careful-batch05-2026-08-27",
     "camera": "海岸回眸全身远景",
     "category": "旅行",
@@ -23,7 +23,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "cropped feet, see-through clothes",
-    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, white beach coverup, scalloped hem, holding hem, looking back, beach, sunset, full body",
+    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, white beach coverup, scalloped hem, holding hem, looking back, beach, sunset, full body, wet hair, backlighting, ocean",
     "rating": "All",
     "recommendedSize": "832×1216",
     "sampler": "res_multistep",
@@ -59,6 +59,7 @@
       "头像"
     ],
     "weather": "晴",
-    "width": 832
+    "width": 832,
+    "promptProse": "She pauses with one hand holding down the cover-up hem and turns back toward the viewer's camera, the sea visible beside her; sunset outlines her damp hair in gold."
   }
 }

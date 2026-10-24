@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc092",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "After straightening the collar of the viewer's borrowed shirt, she rests her forehead gently against theirs in a shy morning greeting.",
+    "animaCaption": "After straightening the borrowed shirt's collar, she rests her forehead against the viewer's.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "床边主观半身近景",
     "category": "恋爱/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, ayachi_nene, oversized white cotton shirt, button down collar, fine blue pinstripes, sitting on bed, adjusting collar, forehead touch, morning light, close up",
+    "prompt": "1girl, ayachi_nene, oversized white cotton shirt, button down collar, fine blue pinstripes, sitting on bed, adjusting collar, forehead touch, morning light, close up, blush, shy smile",
     "rating": "All",
     "season": "春",
     "story": "【成年 After Story · 起床后十分钟】成年同居后的春日清晨，宁宁披着你的衬衫坐在床边醒神，松开的领口不小心滑到肩侧。她发现你醒来后先慌忙拉好衣服，随后又坐回原处，把额头靠上你的额头——「早安。刚才什么都没看见，对吧？回答正确的话，今天可以多抱十分钟。」",
@@ -44,6 +44,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "After straightening the collar of the viewer's borrowed shirt, she rests her forehead gently against theirs in a shy morning greeting."
   }
 }

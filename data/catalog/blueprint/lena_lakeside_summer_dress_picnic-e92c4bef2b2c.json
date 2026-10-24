@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_lakeside_summer_dress_picnic",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1353,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱膝坐在野餐布上远眺湖面，裙摆长发随风轻扬，被偷看后红着脸嗔怒",
     "adult": false,
@@ -30,7 +30,13 @@
       "vladilena_millize",
       "hugging knees",
       "picnic blanket",
-      "lake"
+      "lake",
+      "sitting",
+      "blush",
+      "wind",
+      "sunlight",
+      "water reflection",
+      "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -46,6 +52,7 @@
     ],
     "timeOfDay": "午后",
     "title": "芙拉蒂蕾娜 · 湖畔野餐的紫色裙摆·「今天，请忘掉军衔陪我放空一午后」",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She turns shyly toward her companion while hugging her knees on the picnic blanket."
   }
 }

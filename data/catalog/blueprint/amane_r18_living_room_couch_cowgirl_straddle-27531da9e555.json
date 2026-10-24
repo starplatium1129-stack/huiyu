@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_living_room_couch_cowgirl_straddle",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1188,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "amane_r18_living_room_couch_cowgirl_straddle",
     "title": "周防天音 · 沙发跨坐主动骑乘与豪乳轻摇",
@@ -39,7 +39,13 @@
       "open clothes",
       "topless",
       "straddling",
-      "masturbation"
+      "masturbation",
+      "holding backrest",
+      "heavy blush",
+      "floor lamp",
+      "warm lighting",
+      "cowboy shot",
+      "from below"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +54,7 @@
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She straddles the sofa arm with one hand gripping the backrest."
   }
 }

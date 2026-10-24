@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_village_visit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 992,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "木栏上与孩子并坐",
     "camera": "medium shot",
@@ -26,7 +26,10 @@
       "children",
       "sitting",
       "wooden fence",
-      "village"
+      "village",
+      "looking at children",
+      "smile",
+      "daylight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +42,7 @@
       "children"
     ],
     "timeOfDay": "白天",
-    "title": "希斯特里亚 · 村落走访"
+    "title": "希斯特里亚 · 村落走访",
+    "animaCaption": "She sits at the fence center with the village children beside her."
   }
 }

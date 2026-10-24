@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_riverbank_sunset_chain_walk",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1213,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "落后半步跟随行走，手轻按胸前红领结，项圈铁链被牵引，白翼染上夕阳暖金",
     "camera": "medium two-shot, companion holding the broken chain as they walk along the sunset riverbank",
@@ -29,7 +29,10 @@
       "collar",
       "chain",
       "riverbank",
-      "sunset"
+      "sunset",
+      "wind",
+      "rim light",
+      "medium two-shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -49,6 +52,7 @@
     "nsfwProse": "",
     "characterTokens": [
       "sakurai tomoki"
-    ]
+    ],
+    "animaCaption": "She walks half a step behind Tomoki; the chain between them hangs without tension."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_dog_park",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 416,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makima_dog_park",
     "title": "玛奇玛 · 遛狗",
@@ -42,7 +42,13 @@
       "husky",
       "leash",
       "park",
-      "dappled sunlight"
+      "dappled sunlight",
+      "holding leashes",
+      "leaf shadows",
+      "grass",
+      "brick path",
+      "drinking fountain",
+      "bench"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -51,6 +57,7 @@
     "outfitId": "sfw_park_field_jacket",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her right hand pets the Akita; her left holds both leashes beside the husky."
   }
 }

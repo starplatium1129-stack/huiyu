@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_city_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakurajima_mai_city_night",
     "title": "樱岛麻衣 · 湘南街角·大衣与私服漫步",
@@ -35,12 +35,18 @@
       "reaching out",
       "clock tower",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "standing",
+      "hand on hat brim",
+      "small smile",
+      "streetlight",
+      "depth of field"
     ],
     "negativeTokens": [
       "readable signs"
     ],
     "recommendedSize": "1152x1536",
-    "outfitId": "sfw_clock_square_coat"
+    "outfitId": "sfw_clock_square_coat",
+    "animaCaption": "One hand holds her beret while the other reaches toward the off-frame viewer."
   }
 }

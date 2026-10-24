@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_r18_rooftop_moon",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 399,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "正面微侧站立，一手捏住胸前卡死的拉链、一手绷紧裙摆，领口与侧缝在相反受力下敞开",
     "adult": true,
@@ -34,7 +34,12 @@
       "partially exposed breast",
       "pulling hem",
       "lounge",
-      "moonlight"
+      "moonlight",
+      "standing",
+      "pulling zipper",
+      "neon lights",
+      "electric sparks",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +54,7 @@
       "intimate"
     ],
     "timeOfDay": "夜晚",
-    "title": "御坂美琴 · 城市观景层的礼裙拉链事故"
+    "title": "御坂美琴 · 城市观景层的礼裙拉链事故",
+    "animaCaption": "One hand pulls the stuck front zipper while the other stretches the dress hem in the opposite direction."
   }
 }

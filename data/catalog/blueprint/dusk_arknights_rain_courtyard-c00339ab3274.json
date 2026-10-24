@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_rain_courtyard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 570,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚着廊柱，看雨打芭蕉",
     "camera": "medium shot",
@@ -26,7 +26,12 @@
       "vermilion pillar",
       "cheek in hand",
       "banana leaves",
-      "rain"
+      "rain",
+      "leaning",
+      "looking away",
+      "overcast",
+      "daylight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +42,7 @@
       "grey"
     ],
     "timeOfDay": "雨天",
-    "title": "夕 · 檐下听雨"
+    "title": "夕 · 檐下听雨",
+    "animaCaption": "She watches rain strike the broad leaves beyond the shaded veranda."
   }
 }

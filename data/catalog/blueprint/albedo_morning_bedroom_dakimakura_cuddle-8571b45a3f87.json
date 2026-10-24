@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_morning_bedroom_dakimakura_cuddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1297,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "albedo_morning_bedroom_dakimakura_cuddle",
     "title": "雅儿贝德 · 大坟墓晨间的等身抱枕赖床",
@@ -36,7 +36,11 @@
       "hugging pillow",
       "dakimakura",
       "morning",
-      "from above"
+      "from above",
+      "lying on side",
+      "wings",
+      "patterned shadows",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +49,7 @@
       "daily",
       "gap_moe",
       "sweet"
-    ]
+    ],
+    "animaCaption": "Her wings rest over the sheets beside the Ainz body pillow."
   }
 }

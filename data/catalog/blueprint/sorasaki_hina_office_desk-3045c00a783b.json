@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_office_desk",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 854,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜卧办公桌，一手掩嘴，另一手留在裙下。",
     "adult": true,
@@ -43,7 +43,11 @@
       "night",
       "white shirt",
       "black pleated skirt",
-      "red armband"
+      "red armband",
+      "bent leg",
+      "desk lamp",
+      "medium shot",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -55,6 +59,7 @@
       "gehenna"
     ],
     "timeOfDay": "深夜",
-    "title": "空崎日奈 · 办公室深夜的疲惫卸防"
+    "title": "空崎日奈 · 办公室深夜的疲惫卸防",
+    "animaCaption": "One leg folds among the reports while the other extends toward the floor beside the dim desk lamp."
   }
 }

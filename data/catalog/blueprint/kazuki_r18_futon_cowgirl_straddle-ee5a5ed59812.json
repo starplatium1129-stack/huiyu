@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_futon_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1177,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kazuki_r18_futon_cowgirl_straddle",
     "title": "风见一姬 · 纯白棉被跨坐骑乘与娇羞起伏",
@@ -43,7 +43,12 @@
       "bolster",
       "masturbation",
       "futon",
-      "lamplight"
+      "lamplight",
+      "hand on thigh",
+      "heavy blush",
+      "floor lamp",
+      "cowboy shot",
+      "from below"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +57,7 @@
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She straddles the bolster with one hand resting on her thigh and the other beneath the gathered skirt."
   }
 }

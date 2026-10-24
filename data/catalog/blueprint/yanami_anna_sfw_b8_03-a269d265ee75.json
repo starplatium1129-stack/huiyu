@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1666,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_03",
     "title": "八奈见杏菜 · 家庭餐厅薯条作战会议",
@@ -36,7 +36,11 @@
       "fries",
       "drink",
       "restaurant",
-      "medium shot"
+      "medium shot",
+      "holding fry",
+      "surprised",
+      "widened eyes",
+      "warm lamps"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "The fry pauses halfway to her mouth above the shared platter."
   }
 }

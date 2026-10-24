@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_journey_field",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 107,
   "createdAt": null,
-  "updatedAt": "2026-10-20T12:15:05.333909100+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "frieren_journey_field",
     "title": "芙莉莲 · 旷野旅途·苍月草的花海",
@@ -46,7 +46,11 @@
       "depth of field",
       "cowboy shot",
       "from below",
-      "from behind"
+      "from behind",
+      "calm expression",
+      "backlighting",
+      "blue fill light",
+      "foreground flowers"
     ],
     "negativeTokens": [
       "barren landscape",
@@ -54,6 +58,7 @@
       "desert"
     ],
     "recommendedSize": "1536x1152",
-    "outfitId": "travel_clothes"
+    "outfitId": "travel_clothes",
+    "animaCaption": "Her staff crosses the lower frame while her hair and cape stream left."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_morning_shrine_bento_box",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1286,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "akeno_morning_shrine_bento_box",
     "title": "姬岛朱乃 · 神社晨间的特制便当",
@@ -36,7 +36,14 @@
       "shrine",
       "veranda",
       "morning",
-      "cowboy shot"
+      "cowboy shot",
+      "holding bento",
+      "both hands",
+      "gentle smile",
+      "blush",
+      "sunlight",
+      "dappled sunlight",
+      "wood floor"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +52,7 @@
       "daily",
       "sweet",
       "domestic"
-    ]
+    ],
+    "animaCaption": "She offers the wrapped bento toward the viewer with both hands."
   }
 }

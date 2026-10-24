@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_dreamscape_carnival_masks",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1042,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sparkle_dreamscape_carnival_masks",
     "title": "花火 · 匹诺康尼梦境的千面狂欢",
@@ -37,7 +37,10 @@
       "confetti",
       "night",
       "cowboy shot",
-      "low angle"
+      "low angle",
+      "holding mask",
+      "smirk",
+      "neon lights"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +50,7 @@
       "theatrical"
     ],
     "compositionIntent": "group",
-    "allowRepeatedSubject": true
+    "allowRepeatedSubject": true,
+    "animaCaption": "She holds the fox mask beside her forehead, translucent copies and dream goldfish behind her."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_mon3tr_shadow",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 527,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在沙发上双手捧着自己的茶杯，抬眼向观看者露出放松的浅笑，身旁留着空座，矮桌近侧已为观看者放好另一杯热茶",
     "camera": "wide shot, eye level, seated viewer perspective",
@@ -38,7 +38,12 @@
       "smile",
       "living room",
       "lamplight",
-      "wide shot"
+      "wide shot",
+      "both hands",
+      "second cup",
+      "empty seat",
+      "blue dusk",
+      "window"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -55,6 +60,7 @@
       "evening"
     ],
     "timeOfDay": "傍晚",
-    "title": "凯尔希 · 下班后，给你留的热茶"
+    "title": "凯尔希 · 下班后，给你留的热茶",
+    "animaCaption": "A second cup waits beside the empty seat as she smiles over her own."
   }
 }

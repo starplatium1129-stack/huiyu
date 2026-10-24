@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_starry_balcony_night_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1251,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "踮脚凑近对方耳边轻声耳语，薄纱睡裙微拂，爱心尾巴缠绕手腕，神情妩媚深情",
     "camera": "medium two-shot",
@@ -27,7 +27,10 @@
       "2people",
       "whispering",
       "balcony",
-      "starry sky"
+      "starry sky",
+      "warm lighting",
+      "cool lighting",
+      "medium two-shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +47,7 @@
     "title": "梦梦 · 繁星露台的乐园私语",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Momo leans from the left toward her companion's right-side ear, tail around his wrist."
   }
 }

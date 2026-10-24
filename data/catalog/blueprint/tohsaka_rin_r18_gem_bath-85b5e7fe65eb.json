@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_gem_bath",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tohsaka_rin_r18_gem_bath",
     "title": "远坂凛 · 宝石汤浴",
@@ -32,7 +32,13 @@
       "ruby",
       "bathtub",
       "steam",
-      "candlelight"
+      "candlelight",
+      "reclining",
+      "holding gem",
+      "looking at viewer",
+      "water reflection",
+      "medium shot",
+      "from side"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -45,6 +51,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "nsfw_nude",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She turns the ruby between her fingers from the marble tub rim and looks toward the viewer."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_night_stargazing_talk",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 259,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ishtar_night_stargazing_talk",
     "title": "伊什塔尔 · 星空下的真心话·「金星……是我最喜欢的一颗」",
@@ -37,7 +37,9 @@
       "rooftop",
       "temple",
       "twilight",
-      "wide shot"
+      "wide shot",
+      "temple lamps",
+      "warm light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -51,6 +53,7 @@
       "signature",
       "romance"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Ishtar reclines left of her companion and points toward Venus in the western twilight."
   }
 }

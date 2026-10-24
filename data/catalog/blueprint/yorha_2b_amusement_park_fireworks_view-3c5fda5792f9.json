@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_amusement_park_fireworks_view",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1110,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yorha_2b_amusement_park_fireworks_view",
     "title": "2B · 废弃游乐园城堡的机械烟火",
@@ -35,9 +35,13 @@
     "promptTokens": [
       "fireworks",
       "amusement park",
-      "medium shot"
+      "medium shot",
+      "hand on railing",
+      "looking up",
+      "colored light"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "She watches the mechanical fireworks above the ruined castle."
   }
 }

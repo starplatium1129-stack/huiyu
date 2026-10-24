@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_r18_b6_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1583,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zero_two_r18_b6_01",
     "title": "02 · 鹤望兰号驾驶舱红色紧身皮衣主控跨坐 ·「我的达令……想要和02一起融化在这架机体里吗」",
@@ -44,7 +44,10 @@
       "on lap",
       "cockpit",
       "red light",
-      "from below"
+      "from below",
+      "straddling",
+      "hands on another's chest",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +62,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands rest on the viewer's chest inside Strelizia, her suit unzipped to the hips."
   }
 }

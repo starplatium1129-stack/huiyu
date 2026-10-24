@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_ferris_wheel_fireworks",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 428,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "reze_ferris_wheel_fireworks",
     "title": "蕾塞 · 摩天轮烟花",
@@ -35,7 +35,10 @@
       "ferris wheel",
       "cabin",
       "fireworks",
-      "night"
+      "night",
+      "jacket over shoulders",
+      "colored lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +47,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She looks upward through the enclosed ferris-wheel cabin window as the fireworks change color across her face."
   }
 }

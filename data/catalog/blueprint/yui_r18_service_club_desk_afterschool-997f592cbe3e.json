@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_service_club_desk_afterschool",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 351,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yui_r18_service_club_desk_afterschool",
     "characterId": "yuigahama_yui",
@@ -35,7 +35,13 @@
       "meeting notes",
       "office",
       "rounded collar",
-      "cream buttons"
+      "cream buttons",
+      "sitting on table",
+      "stacked chairs",
+      "dog keychain",
+      "looking at viewer",
+      "golden hour",
+      "medium shot"
     ],
     "negativeTokens": [
       "school uniform"
@@ -55,6 +61,7 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Both palms brace behind her on the worktable, with stacked chairs and a dog keychain beside her."
   }
 }

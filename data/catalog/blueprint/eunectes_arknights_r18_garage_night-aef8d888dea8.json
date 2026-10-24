@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_r18_garage_night",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 592,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在机甲旁，工装半解",
     "adult": true,
@@ -36,7 +36,10 @@
       "mecha",
       "garage",
       "night",
-      "blush"
+      "blush",
+      "tail around leg",
+      "work lamp",
+      "long shadow"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -48,6 +51,7 @@
       "sitting"
     ],
     "timeOfDay": "深夜",
-    "title": "森蚺 · 工坊夜话"
+    "title": "森蚺 · 工坊夜话",
+    "animaCaption": "Her tail curls around the viewer's lower leg at the frame edge."
   }
 }

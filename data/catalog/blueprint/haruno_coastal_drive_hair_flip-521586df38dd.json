@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_coastal_drive_hair_flip",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 373,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruno_coastal_drive_hair_flip",
     "title": "雪之下阳乃 · 海滨停车点的短暂停留",
@@ -36,7 +36,12 @@
       "coast",
       "wind",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "sitting sideways",
+      "hand in hair",
+      "parked car",
+      "ocean",
+      "reflected light"
     ],
     "negativeTokens": [
       "driving"
@@ -50,6 +55,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She gathers a loose strand of hair in the parked convertible, its door open toward the coast."
   }
 }

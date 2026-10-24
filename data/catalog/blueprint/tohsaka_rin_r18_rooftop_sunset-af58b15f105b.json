@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_rooftop_sunset",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tohsaka_rin_r18_rooftop_sunset",
     "title": "远坂凛 · 天台夕照",
@@ -35,7 +35,11 @@
       "sunset",
       "cowboy shot",
       "faceted buttons",
-      "black cuff edging"
+      "black cuff edging",
+      "hand on fence",
+      "reaching behind",
+      "one breast exposed",
+      "backlighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@atdan",
     "outfitId": "red_blouse",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand holds the wire mesh while the other reaches behind to free the caught blouse above her raised knee."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_audition_room",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 960,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "白墙前入戏试镜",
     "camera": "medium shot, holding script",
@@ -23,7 +23,10 @@
       "script",
       "star-shaped pupils",
       "audition room",
-      "medium shot"
+      "medium shot",
+      "holding script",
+      "focused",
+      "white lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +39,7 @@
       "focus"
     ],
     "timeOfDay": "白天",
-    "title": "黑川茜 · 试镜间"
+    "title": "黑川茜 · 试镜间",
+    "animaCaption": "She holds the script just below her chest against the plain audition wall."
   }
 }

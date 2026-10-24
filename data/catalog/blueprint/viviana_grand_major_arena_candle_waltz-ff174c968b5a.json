@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_grand_major_arena_candle_waltz",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 681,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在金色聚光灯下轻盈旋身挥动细剑，金鹿巨角泛光，影蛾与烛火漫天飞舞",
     "camera": "wide shot, low angle",
@@ -26,7 +26,12 @@
       "moths",
       "arena",
       "low angle",
-      "wide shot"
+      "wide shot",
+      "turning",
+      "extended rapier",
+      "sparks",
+      "shadow moths",
+      "spotlights"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -46,6 +51,7 @@
     ],
     "timeOfDay": "夜晚盛典",
     "title": "薇薇安娜 · 卡西米尔大骑士领的烛火独舞",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She turns alone at the arena center beneath the golden spotlights."
   }
 }

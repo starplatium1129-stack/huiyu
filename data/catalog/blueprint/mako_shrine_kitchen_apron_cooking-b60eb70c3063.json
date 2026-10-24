@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_shrine_kitchen_apron_cooking",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1131,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "系着白围裙双手端汤碗托盘，露出可爱猫嘴笑意，丰满胸部在围裙下起伏",
     "camera": "medium shot, eye-level warmth, intimate household framing",
@@ -25,7 +25,13 @@
       "tray",
       "miso soup",
       "kitchen",
-      "morning"
+      "morning",
+      "holding tray",
+      "both hands",
+      "cat mouth",
+      "steam",
+      "window light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +45,7 @@
       "large_breasts"
     ],
     "timeOfDay": "早晨",
-    "title": "常陆茉子 · 晨炊香浓的围裙侍奉"
+    "title": "常陆茉子 · 晨炊香浓的围裙侍奉",
+    "animaCaption": "Both hands support the soup tray as she brings breakfast toward her offscreen companion at the table."
   }
 }

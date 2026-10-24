@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_private_spring_bath",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 712,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shu_arknights_r18_private_spring_bath",
     "characterId": "shu_arknights",
@@ -36,7 +36,11 @@
       "studio",
       "daylight",
       "nude",
-      "full body"
+      "full body",
+      "standing",
+      "looking toward window",
+      "morning light",
+      "side lighting"
     ],
     "promptProse": "Shu poses for a figure study with her weight on the right leg and left knee relaxed, arms at her sides as she turns toward the window. Her tail curves clear of both feet; curtain-filtered morning light from the side meets soft reflection from the pale wall across the low platform.",
     "negativeTokens": [],
@@ -48,6 +52,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her weight rests on the right leg; the relaxed left knee and tail stay clear of both feet."
   }
 }

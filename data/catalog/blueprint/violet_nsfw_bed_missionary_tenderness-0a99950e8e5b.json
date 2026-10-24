@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_nsfw_bed_missionary_tenderness",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1395,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "薄纱前襟敞开大开双腿仰卧展示私密处，机械手指轻抚雪胸与平坦小腹，晨光下含泪微笑",
     "adult": true,
@@ -41,7 +41,12 @@
       "spread legs",
       "hand on breast",
       "canopy bed",
-      "dawn"
+      "dawn",
+      "white sheets",
+      "morning light",
+      "tears",
+      "smile",
+      "from above"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -69,6 +74,7 @@
       "blue eyes",
       "mechanical hands"
     ],
-    "identityProseOverride": "Violet Evergarden from Violet Evergarden, an Auto Memories Doll with loose golden-blonde hair, red hair ribbons, blue eyes and articulated silver prosthetic hands."
+    "identityProseOverride": "Violet Evergarden from Violet Evergarden, an Auto Memories Doll with loose golden-blonde hair, red hair ribbons, blue eyes and articulated silver prosthetic hands.",
+    "animaCaption": "Her mechanical fingers rest over her heartbeat beneath the morning-lit sheer curtains."
   }
 }

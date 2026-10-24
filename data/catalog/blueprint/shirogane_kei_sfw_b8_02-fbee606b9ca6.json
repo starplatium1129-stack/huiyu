@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1412,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "家中矮桌，她盘腿坐着核对家计簿，计算器、超市传单和笔袋一字排开",
     "adult": false,
@@ -29,7 +29,10 @@
       "cross-legged",
       "ledger",
       "calculator",
-      "medium shot"
+      "medium shot",
+      "checking ledger",
+      "smile",
+      "afternoon light"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -46,6 +49,7 @@
       "horizontal_composition"
     ],
     "timeOfDay": "日间",
-    "title": "白银圭 · 白银家的家计簿"
+    "title": "白银圭 · 白银家的家计簿",
+    "animaCaption": "She studies the unexpected surplus at the low table."
   }
 }

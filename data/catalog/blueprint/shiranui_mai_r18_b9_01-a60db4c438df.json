@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_r18_b9_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1747,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shiranui_mai_r18_b9_01",
     "title": "不知火舞 · 不知火道场红白高叉忍服主控跨坐 ·「安迪……不知火流女忍者的秘传奥义，今晚全部传授给你♪」",
@@ -41,7 +41,9 @@
       "pov",
       "sleeveless",
       "white trim",
-      "thick white rope fastening"
+      "thick white rope fastening",
+      "straddling",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +59,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "She holds the fan beside the offscreen viewer's head on the dojo tatami."
   }
 }

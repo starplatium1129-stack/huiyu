@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_balcony_wine_night_city",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 370,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruno_balcony_wine_night_city",
     "title": "雪之下阳乃 · 深夜高层公寓阳台的红酒杯·「雪乃被你改变了呢……真让人不爽，又有点嫉妒」",
@@ -38,7 +38,12 @@
       "cityscape",
       "night",
       "moonlight",
-      "medium shot"
+      "medium shot",
+      "holding glass",
+      "melancholy",
+      "wind",
+      "windblown clothes",
+      "city lights"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +56,7 @@
       "city"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She holds the wine glass just above the rail and looks across the coastal city lights."
   }
 }

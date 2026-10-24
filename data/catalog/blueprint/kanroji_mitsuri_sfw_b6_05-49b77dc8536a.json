@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1462,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "遮阳伞下抱高高刨冰，浪花打湿沙滩巾后护住樱花糖浆大笑",
     "adult": false,
@@ -31,7 +31,12 @@
       "parasol",
       "beach",
       "medium shot",
-      "sitting"
+      "sitting",
+      "holding food",
+      "both hands",
+      "laughing",
+      "sunlight",
+      "waves"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -48,6 +53,7 @@
       "summer"
     ],
     "timeOfDay": "日间",
-    "title": "甘露寺蜜璃 · 海滨刨冰大作战"
+    "title": "甘露寺蜜璃 · 海滨刨冰大作战",
+    "animaCaption": "She lifts the shaved ice away from the wave crossing her towel."
   }
 }

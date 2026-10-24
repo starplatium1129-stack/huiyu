@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc074",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She hurries toward the viewer with the cotton candy held away from her cheek, extending the Ferris-wheel tickets in her free hand; sunset lights her eager face beneath the wheel.",
+    "animaCaption": "She holds the cotton candy away from her cheek while offering the Ferris-wheel tickets in her free hand.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "棉花糖与摩天轮票半身中景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white puff sleeve blouse, peter pan collar, ice blue box pleated skirt, pink waist ribbon, cotton candy, tickets, ferris wheel, amusement park, sunset, medium shot",
+    "prompt": "1girl, ayachi_nene, white puff sleeve blouse, peter pan collar, ice blue box pleated skirt, pink waist ribbon, cotton candy, tickets, ferris wheel, amusement park, sunset, medium shot, holding food, holding tickets, outstretched hand, light smile",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -52,6 +52,7 @@
       "头像",
       "CG"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "She hurries toward the viewer with the cotton candy held away from her cheek, extending the Ferris-wheel tickets in her free hand; sunset lights her eager face beneath the wheel."
   }
 }

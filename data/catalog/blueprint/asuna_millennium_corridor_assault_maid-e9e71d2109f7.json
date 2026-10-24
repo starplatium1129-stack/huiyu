@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_millennium_corridor_assault_maid",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 936,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手持突击步枪突进射击，女仆裙摆与金发在风中飞扬，神态轻松自信",
     "camera": "full-body shot, low angle",
@@ -27,7 +27,13 @@
       "running",
       "alarm light",
       "full body",
-      "from below"
+      "from below",
+      "holding gun",
+      "shooting",
+      "windblown hair",
+      "blue lighting",
+      "red lighting",
+      "confident"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +47,7 @@
       "blonde_hair"
     ],
     "timeOfDay": "傍晚",
-    "title": "一之濑明日奈 · 千年回廊的特勤突进"
+    "title": "一之濑明日奈 · 千年回廊的特勤突进",
+    "animaCaption": "She advances with the rifle level in one hand, her apron and hair trailing behind."
   }
 }

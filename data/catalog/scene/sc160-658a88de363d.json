@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc160",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 157,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "With the knife resting on the cutting board beside the fruit, she turns back toward the viewer from the kitchen counter; the warm light outlines the apron ties against her back.",
+    "animaCaption": "The knife rests beside the fruit on the board as she turns back from the counter.",
     "auditRevision": "careful-batch02-2026-08-27",
     "camera": "厨房后侧全身景",
     "category": "亲密/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, naked apron, pink frilled apron, barefoot, from behind, looking back, blush, kitchen, night, warm lighting, full body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, naked apron, pink frilled apron, barefoot, from behind, looking back, blush, kitchen, night, warm lighting, full body, <lora:ayachi_nene_v18_wd14:0.8>, cutting board, knife, fruit, standing",
     "rating": "R18",
     "season": "不限",
     "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 厨房绝对顺从梗】打烊后的安静厨房，成了完全属于你们的甜蜜私有领地。宁宁在你的惩罚要求下，被迫换上了仅有一件咖啡厅围裙的羞耻装束。她背对着你正在切水果，听到你的脚步声慌乱回头。围裙两侧大片的白皙侧乳与完全暴露的光洁后背在暖光下晃眼无比。她满脸滚烫的红晕连到耳根，头顶的呆毛直接害羞得疯狂颤动——「呜...柊史你这个大色狼！故意把厨房门反锁...今晚真的要把宁宁吃掉吗...」",
@@ -42,6 +42,7 @@
       "核心协议",
       "成人向"
     ],
-    "weather": "微热"
+    "weather": "微热",
+    "promptProse": "With the knife resting on the cutting board beside the fruit, she turns back toward the viewer from the kitchen counter; the warm light outlines the apron ties against her back."
   }
 }

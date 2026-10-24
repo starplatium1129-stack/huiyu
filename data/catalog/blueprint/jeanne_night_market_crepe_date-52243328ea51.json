@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_night_market_crepe_date",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 236,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_night_market_crepe_date",
     "title": "圣女贞德 · 夜市可丽饼的约会·「原来甜食……是这么幸福的东西啊」",
@@ -36,7 +36,11 @@
       "cream on face",
       "night market",
       "lantern",
-      "close-up"
+      "close-up",
+      "holding crepe",
+      "both hands",
+      "surprised",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +53,7 @@
       "daily",
       "date",
       "girlfriend"
-    ]
+    ],
+    "animaCaption": "She widens her eyes after a bite, unaware of the cream beside her mouth."
   }
 }

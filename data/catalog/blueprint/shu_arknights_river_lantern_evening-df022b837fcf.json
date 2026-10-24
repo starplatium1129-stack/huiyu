@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_river_lantern_evening",
-  "revision": 6,
+  "revision": 4,
   "sortOrder": 711,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shu_arknights_river_lantern_evening",
     "characterId": "shu_arknights",
@@ -34,7 +34,13 @@
     "promptTokens": [
       "cake",
       "cafe",
-      "medium shot"
+      "medium shot",
+      "fork",
+      "sitting",
+      "hands folded",
+      "smile",
+      "looking at viewer",
+      "window light"
     ],
     "promptProse": "Her dessert fork rests beside the shared cake as she folds her hands at the table edge, listening to the offscreen viewer with an amused smile in soft window light.",
     "negativeTokens": [],
@@ -42,6 +48,7 @@
     "sampleRating": "All",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her fork rests beside the shared cake as she listens with folded hands."
   }
 }

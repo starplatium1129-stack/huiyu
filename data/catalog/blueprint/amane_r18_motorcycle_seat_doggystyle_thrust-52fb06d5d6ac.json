@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_motorcycle_seat_doggystyle_thrust",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1186,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "amane_r18_motorcycle_seat_doggystyle_thrust",
     "title": "周防天音 · 海滨公路机车皮夹克拉链大敞露深邃巨乳与鞍座自抚",
@@ -46,7 +46,13 @@
       "straddling",
       "masturbation",
       "night",
-      "knee-high leather boots"
+      "knee-high leather boots",
+      "holding handlebar",
+      "open shorts",
+      "heavy blush",
+      "streetlight",
+      "moonlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +61,7 @@
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The motorcycle remains parked as one hand holds its handlebar."
   }
 }

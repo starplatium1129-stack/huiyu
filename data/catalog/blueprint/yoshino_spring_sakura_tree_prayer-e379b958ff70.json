@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_spring_sakura_tree_prayer",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1146,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在樱花树下双手合十微闭双眼祈祷，樱花如雨落下，巫女衣袖微扬，神圣纯洁",
     "camera": "medium shot, eye level",
@@ -29,7 +29,8 @@
       "petals",
       "wind",
       "morning",
-      "medium shot"
+      "medium shot",
+      "dappled sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +46,7 @@
     "timeOfDay": "清晨",
     "title": "朝武芳乃 · 百年古樱树下的静心祈祷",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "A petal catches on her hair ribbon while the breeze lifts her praying sleeves."
   }
 }

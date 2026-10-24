@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_r18_uniform_off",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 989,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "淋浴间百叶窗晨光下敞开军装衬衫擦发回眸",
     "adult": true,
@@ -36,7 +36,11 @@
       "red scarf on rail",
       "wooden partition",
       "washroom",
-      "morning"
+      "morning",
+      "open shirt",
+      "looking back",
+      "blinds light",
+      "steam"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -57,6 +61,7 @@
       "daylight"
     ],
     "timeOfDay": "清晨",
-    "title": "三笠 · 训练营阳光淋浴间热气擦拭"
+    "title": "三笠 · 训练营阳光淋浴间热气擦拭",
+    "animaCaption": "Her scarf rests on the rail beside the washroom partition."
   }
 }

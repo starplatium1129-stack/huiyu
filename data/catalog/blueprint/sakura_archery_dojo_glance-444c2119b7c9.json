@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_archery_dojo_glance",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakura_archery_dojo_glance",
     "characterId": "matou_sakura",
@@ -32,7 +32,12 @@
       "gloves",
       "dojo",
       "sunset",
-      "full body"
+      "full body",
+      "standing",
+      "looking back",
+      "shy smile",
+      "lowered bow",
+      "sunset light"
     ],
     "negativeTokens": [
       "nocked arrow"
@@ -49,6 +54,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She lowers the bow beside her leg and turns back with a shy smile after the shot."
   }
 }

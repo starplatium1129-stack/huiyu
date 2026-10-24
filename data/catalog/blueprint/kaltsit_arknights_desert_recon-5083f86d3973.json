@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_desert_recon",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 528,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "衣摆猎猎，遥望地平线",
     "camera": "medium shot",
@@ -24,7 +24,10 @@
       "desert",
       "ruins",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "looking at horizon",
+      "wind",
+      "dunes"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -35,6 +38,7 @@
       "sand"
     ],
     "timeOfDay": "黄昏",
-    "title": "凯尔希 · 荒漠考察"
+    "title": "凯尔希 · 荒漠考察",
+    "animaCaption": "Her cloak moves in the wind above the desert dunes."
   }
 }

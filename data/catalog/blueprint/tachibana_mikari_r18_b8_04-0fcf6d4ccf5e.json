@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_r18_b8_04",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 1688,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tachibana_mikari_r18_b8_04",
     "title": "橘美花莉 · 自家卧房的青梅竹马自持 ·「从小到大……心里装的人从来就只有你啊」",
@@ -41,7 +41,10 @@
       "pillow",
       "photo frame",
       "bedroom",
-      "bedside lamp"
+      "bedside lamp",
+      "looking aside",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +59,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her chestnut hair rests across the pillow as she watches the framed childhood photo."
   }
 }

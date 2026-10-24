@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_coronation_night",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 999,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "王宫阳光长廊微扶王冠展露露背白裙",
     "adult": true,
@@ -34,7 +34,9 @@
       "looking back",
       "standing",
       "colonnade",
-      "sunlight"
+      "sunlight",
+      "holding crown",
+      "reflected light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -51,6 +53,7 @@
       "daylight"
     ],
     "timeOfDay": "白天",
-    "title": "希斯特里亚 · 王宫阳光长廊白裙回眸"
+    "title": "希斯特里亚 · 王宫阳光长廊白裙回眸",
+    "animaCaption": "She steadies the crown while looking back between the marble columns."
   }
 }

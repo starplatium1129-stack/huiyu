@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_old_library",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱书差点绊倒扶住书架",
     "adult": false,
@@ -32,7 +32,11 @@
       "stumbling",
       "bookshelf",
       "library",
-      "full body"
+      "full body",
+      "books against chest",
+      "hand on shelf",
+      "foot up",
+      "skylight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -44,6 +48,7 @@
       "clumsy"
     ],
     "timeOfDay": "下午",
-    "title": "杏山和纱 · 古书馆的秘密角落"
+    "title": "杏山和纱 · 古书馆的秘密角落",
+    "animaCaption": "One arm traps the books as her free hand catches the shelf."
   }
 }

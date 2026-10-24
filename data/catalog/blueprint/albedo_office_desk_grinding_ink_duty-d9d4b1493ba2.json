@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_office_desk_grinding_ink_duty",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1298,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "albedo_office_desk_grinding_ink_duty",
     "title": "雅儿贝德 · 办公桌旁的墨水与公文批改",
@@ -36,7 +36,10 @@
       "desk",
       "standing",
       "window",
-      "cowboy shot"
+      "cowboy shot",
+      "documents",
+      "hand on desk",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
       "office",
       "devotion"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "One hand holds the quill while the other rests beside their shared documents."
   }
 }

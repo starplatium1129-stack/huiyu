@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_apple_pie_cooling_rack",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 694,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfitId": "apple_pie_bakery_patissiere",
@@ -24,7 +24,12 @@
       "pie",
       "bakery",
       "morning",
-      "medium shot"
+      "medium shot",
+      "holding tray",
+      "both hands",
+      "cooling rack",
+      "window light",
+      "oven glow"
     ],
     "camera": "medium shot, worktop at waist height with tray and gloved hands visible",
     "lighting": "清晨窗光与烤箱余光",
@@ -48,6 +53,7 @@
       "oven_glow",
       "medium_shot"
     ],
-    "negativeTokens": []
+    "negativeTokens": [],
+    "animaCaption": "Both oven-mitted hands keep the tray level as she lowers it onto the cooling rack."
   }
 }

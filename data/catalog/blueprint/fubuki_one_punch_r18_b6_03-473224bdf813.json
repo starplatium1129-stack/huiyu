@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1605,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_03",
     "title": "吹雪 · 晚宴修身绿礼服后背拉链崩坏的更衣事故 ·「衣服被撑破了……不准告诉组员，快帮我遮住！」",
@@ -43,7 +43,11 @@
       "blush",
       "vanity",
       "dressing room",
-      "medium shot"
+      "medium shot",
+      "hands on vanity",
+      "embarrassed",
+      "scowl",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -58,6 +62,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands brace on the vanity as she looks back over the gown's split rear zipper."
   }
 }

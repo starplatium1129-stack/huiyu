@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_r18_gothic_bedchamber_domination",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 678,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自跨坐木椅咬住腿带，一手抓椅背、一手腿间自抚，黑蕾丝褪至胸下",
     "adult": true,
@@ -39,7 +39,9 @@
       "masturbation",
       "red moon",
       "ragged hem",
-      "black lace top"
+      "black lace top",
+      "hand on chair",
+      "candlelight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -57,6 +59,7 @@
       "candlelight"
     ],
     "timeOfDay": "深夜",
-    "title": "拉普兰德 · 恶兆红帐中的反客为主"
+    "title": "拉普兰德 · 恶兆红帐中的反客为主",
+    "animaCaption": "The leg strap stays between her teeth as she grips the chair back."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_cyberpunk_alley_assassination",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1032,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kafka_cyberpunk_alley_assassination",
     "title": "卡芙卡 · 霓虹雨巷交锋",
@@ -40,13 +40,20 @@
       "rain",
       "neon lights",
       "cowboy shot",
-      "from below"
+      "from below",
+      "holding umbrella",
+      "holding gun",
+      "shooting",
+      "windblown coat",
+      "puddles",
+      "reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_hunter_coat",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "One hand holds the clear umbrella while the other fires the gun across the rain-soaked alley."
   }
 }

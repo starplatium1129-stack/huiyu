@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_r18_b9_01",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1726,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "marcille_donato_r18_b9_01",
     "title": "玛露希尔 · 迷宫营地帐篷魔法睡袍主控跨坐 ·「莱欧斯……为了生存……这也是没办法的对吧！」",
@@ -40,7 +40,11 @@
       "pointed ears",
       "tears",
       "tent",
-      "dungeon"
+      "dungeon",
+      "blush",
+      "camp stove",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -66,6 +70,7 @@
       "green eyes",
       "pointy ears"
     ],
-    "identityProseOverride": "Marcille Donato from Delicious in Dungeon, with long blonde twintails, a high forehead, pointed ears and green eyes."
+    "identityProseOverride": "Marcille Donato from Delicious in Dungeon, with long blonde twintails, a high forehead, pointed ears and green eyes.",
+    "animaCaption": "The camp stove lights her tearful face toward the off-frame viewer."
   }
 }

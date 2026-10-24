@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_bath_bubbles",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 633,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "趴在浴缸边，指尖戳着泡泡",
     "adult": true,
@@ -33,7 +33,13 @@
       "soap bubbles",
       "reaching",
       "smile",
-      "blush"
+      "blush",
+      "bathtub rim",
+      "raised finger",
+      "steam",
+      "warm lighting",
+      "medium shot",
+      "from side"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -45,6 +51,7 @@
       "playful"
     ],
     "timeOfDay": "夜晚",
-    "title": "能天使 · 泡泡浴"
+    "title": "能天使 · 泡泡浴",
+    "animaCaption": "One forearm rests on the rim while a fingertip of her other hand reaches for a floating bubble."
   }
 }

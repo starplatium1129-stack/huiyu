@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_bedroom_nightgown_tail_touch_giggle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1238,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "侧卧床上被触碰尾巴尖端，满面通红蜷缩娇笑，薄纱睡裙半透雪肌，身姿曼妙",
     "camera": "medium shot, bedside intimate framing, sensitive blush focus",
@@ -27,7 +27,10 @@
       "curled up",
       "bed",
       "moonlight",
-      "blush"
+      "blush",
+      "laughing",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +47,7 @@
     "timeOfDay": "深夜",
     "title": "菈菈 · 闺房薄纱睡裙的尾巴敏感小调",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her off-frame companion accidentally brushes the tail beside the bed."
   }
 }

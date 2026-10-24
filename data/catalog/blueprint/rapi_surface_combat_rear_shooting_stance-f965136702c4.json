@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_surface_combat_rear_shooting_stance",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1800,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rapi_surface_combat_rear_shooting_stance",
     "title": "拉毗 · 硝烟废墟的经典背影射击战姿",
@@ -68,11 +68,14 @@
       "shapely_hips",
       "curvy",
       "detailed_background",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "holding rifle",
+      "shell casings"
     ],
     "promptProse": "In the classic iconic NIKKE rear shooting stance amidst a smoking post-apocalyptic ruin, Rapi crouches with her back to the viewer, gripping her black-and-red assault rifle. Her short pleated officer skirt lifts slightly over firm rounded buttocks and thigh-high socks, muzzle flash lighting her intense crimson profile as spent brass bullet casings cascade through the air.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Spent casings fall beside the rifle as she aims through the ruins."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_infirmary_gentle_checkup_care",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1078,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "taihou_infirmary_gentle_checkup_care",
     "title": "大凤 · 私密保健室的贴身诊疗",
@@ -37,10 +37,15 @@
       "examination bed",
       "infirmary",
       "pov",
-      "medium shot"
+      "medium shot",
+      "listening",
+      "holding stethoscope",
+      "hand on bed",
+      "curtain light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "One hand holds the stethoscope to the viewer's chest while the other rests on the examination bed."
   }
 }

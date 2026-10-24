@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_magic_library",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "frieren_magic_library",
     "title": "芙莉莲 · 魔法书研究",
@@ -37,10 +37,14 @@
       "magic circle",
       "blue light",
       "library",
-      "medium shot"
+      "medium shot",
+      "open book",
+      "hair tuck",
+      "staff"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "wizard_robe"
+    "outfitId": "wizard_robe",
+    "animaCaption": "The blue magic circle hovers above the grimoire beside her reading place."
   }
 }

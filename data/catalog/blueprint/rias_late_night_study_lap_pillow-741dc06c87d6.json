@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_late_night_study_lap_pillow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1278,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_late_night_study_lap_pillow",
     "title": "莉雅丝 · 深夜书房的温软膝枕",
@@ -33,7 +33,13 @@
     "promptTokens": [
       "kneeling",
       "fireplace",
-      "cowboy shot"
+      "cowboy shot",
+      "rug",
+      "patting lap",
+      "both hands",
+      "gentle smile",
+      "firelight",
+      "table lamp"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -42,6 +48,7 @@
       "healing",
       "comfort",
       "romantic"
-    ]
+    ],
+    "animaCaption": "Both hands pat her lap toward the offscreen viewer beside the study fireplace."
   }
 }

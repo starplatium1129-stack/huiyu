@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_r18_b9_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1698,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_r18_b9_04",
     "title": "艾尔菲利亚 · 塔顶羽绒大床上的纯白融化独奏 ·「快点来到我的身边吧……把这千年的孤独全部打破」",
@@ -40,7 +40,12 @@
       "arched back",
       "tears",
       "snowflakes",
-      "aurora"
+      "aurora",
+      "hair spread out",
+      "white bedding",
+      "glowing snowflakes",
+      "skylight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +60,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her hair spreads over the white bedding as glowing magical snowflakes drift beneath the aurora skylight."
   }
 }

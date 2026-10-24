@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_r18_recording_desk_climax",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1844,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_ryo_r18_recording_desk_climax",
     "characterId": "yamada_ryo",
@@ -36,7 +36,10 @@
       "climax",
       "mole under eye",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "arching back",
+      "LED lights",
+      "warm lighting"
     ],
     "sceneTags": [
       "recording_studio",
@@ -55,6 +58,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands grip the mixing-console edge from the leather studio chair."
   }
 }

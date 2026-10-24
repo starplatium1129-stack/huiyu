@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc051",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 49,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Seen over the viewer's shoulder, she wraps her arms around their torso from behind and rests her chin on their shoulder; the kitchen light warms her cheek and the finished dinner on the counter.",
+    "animaCaption": "Seen over the viewer's shoulder, she embraces them from behind with her chin on their shoulder.",
     "auditRevision": "careful-batch06-2026-08-27",
     "camera": "肩侧回望的背后拥抱半身近景",
     "category": "恋爱/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white apron, scalloped edge, pink waffle knit shirt, cream wide leg pants, back hug, kitchen, plate, medium shot",
+    "prompt": "1girl, ayachi_nene, white apron, scalloped edge, pink waffle knit shirt, cream wide leg pants, back hug, kitchen, plate, medium shot, arms around waist, chin rest, smile, warm lighting, food, counter",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "秋",
@@ -51,6 +51,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Seen over the viewer's shoulder, she wraps her arms around their torso from behind and rests her chin on their shoulder; the kitchen light warms her cheek and the finished dinner on the counter."
   }
 }

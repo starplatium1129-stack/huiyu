@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_bed_supine_devotion",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1450,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_nsfw_bed_supine_devotion",
     "title": "加藤惠 · 创作合宿被单深处的柔情真心 ·「这一次……不许再把我当路人了哦」",
@@ -35,7 +35,11 @@
       "hand between legs",
       "futon",
       "tatami",
-      "night"
+      "night",
+      "adult",
+      "lying back",
+      "loose hair",
+      "looking at viewer"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her hair spreads across the futon as she looks toward the viewer."
   }
 }

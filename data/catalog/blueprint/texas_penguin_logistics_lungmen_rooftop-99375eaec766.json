@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_penguin_logistics_lungmen_rooftop",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 659,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "雨中伫立天台，一手扶刀柄，嘴叼巧克力棒，两柄光剑悬浮身后。",
     "camera": "wide shot, low angle, cinematic noir",
@@ -28,7 +28,12 @@
       "rain",
       "neon",
       "low angle",
-      "wide shot"
+      "wide shot",
+      "standing",
+      "hand on hilt",
+      "chocolate in mouth",
+      "golden blades",
+      "neon reflection"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -44,6 +49,7 @@
       "wet_clothes"
     ],
     "timeOfDay": "夜晚暴雨",
-    "title": "德克萨斯 · 龙门天台雨夜信使"
+    "title": "德克萨斯 · 龙门天台雨夜信使",
+    "animaCaption": "One hand rests on the sword hilt as two golden energy blades float behind her in the rain."
   }
 }

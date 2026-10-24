@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_home_tea_morning",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 245,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "scathach_home_tea_morning",
     "title": "斯卡哈 · 晨间茶室的师匠私语·「休息也是修行的一部分，坐下」",
@@ -34,7 +34,12 @@
       "seiza",
       "matcha",
       "tatami",
-      "medium shot"
+      "medium shot",
+      "offering tea",
+      "both hands",
+      "whisk",
+      "steam",
+      "morning light"
     ],
     "negativeTokens": [
       "whisk in hands"
@@ -49,6 +54,7 @@
       "daily",
       "girlfriend",
       "morning"
-    ]
+    ],
+    "animaCaption": "Both hands slide the matcha bowl toward the viewer beside the whisk."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_r18_carpet_cowgirl_maid_straddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1199,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sachi_r18_carpet_cowgirl_maid_straddle",
     "title": "小岭幸 · 地毯跨坐女仆装主动轻柔起伏",
@@ -42,7 +42,10 @@
       "bolster",
       "masturbation",
       "carpet",
-      "lamplight"
+      "lamplight",
+      "straddling bolster",
+      "hand on knee",
+      "cleaning tools"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +54,7 @@
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One gloved hand rests on her knee while her bare hand stays between her legs."
   }
 }

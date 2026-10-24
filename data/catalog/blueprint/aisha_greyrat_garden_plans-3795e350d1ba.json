@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_garden_plans",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 486,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "aisha_greyrat_garden_plans",
     "title": "爱夏·花宴之前",
@@ -31,10 +31,17 @@
       "clipboard",
       "pencil",
       "table",
-      "morning"
+      "morning",
+      "holding clipboard",
+      "writing",
+      "flowerbed",
+      "garden path",
+      "banquet table",
+      "morning light"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
-    "negativeTokens": []
+    "negativeTokens": [],
+    "animaCaption": "The board rests on her left forearm as her right hand marks the plan."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_02",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 310,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medea_caster_r18_b7_02",
     "title": "美狄亚 · 龙牙魔药温汤水光湿身独奏 ·「神代的魔药……也治不好想念您的相思之毒」",
@@ -41,7 +41,11 @@
       "masturbation",
       "hand between legs",
       "spring",
-      "steam"
+      "steam",
+      "leaning against stone wall",
+      "blushing ears",
+      "water reflection",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +60,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She rests against the carved stone wall, one hand beneath the pool water."
   }
 }

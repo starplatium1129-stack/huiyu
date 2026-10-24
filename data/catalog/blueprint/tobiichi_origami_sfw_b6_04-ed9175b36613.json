@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_04",
     "title": "鸢一折纸 · 白色花园的精确誓约",
@@ -32,7 +32,12 @@
     "promptProse": "Origami pins the last white rose to her gown and gives a small smile beneath the garden arch in cool morning light, silver dew highlights around her.",
     "promptTokens": [
       "flower arch",
-      "cowboy shot"
+      "cowboy shot",
+      "pinning flower",
+      "smile",
+      "garden arch",
+      "morning light",
+      "dew"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +49,7 @@
       "iconic",
       "bridal",
       "daily"
-    ]
+    ],
+    "animaCaption": "She pins the last white rose to her gown beneath the arch."
   }
 }

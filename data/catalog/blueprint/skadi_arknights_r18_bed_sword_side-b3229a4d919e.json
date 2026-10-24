@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_bed_sword_side",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 614,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "侧卧在大床上，手垂向床边的巨剑剑柄",
     "adult": true,
@@ -34,7 +34,9 @@
       "sheathed sword",
       "moonlight",
       "medium shot",
-      "red trim"
+      "red trim",
+      "lying on side",
+      "reaching"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -46,6 +48,7 @@
       "moonlight"
     ],
     "timeOfDay": "深夜",
-    "title": "斯卡蒂 · 剑侧长夜"
+    "title": "斯卡蒂 · 剑侧长夜",
+    "animaCaption": "She reaches toward the sheathed greatsword beside the bed."
   }
 }

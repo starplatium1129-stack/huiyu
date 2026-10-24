@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 786,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "她的房间，松垮卫衣、盘腿坐地毯，左手薯片右手漫画，头发乱翘",
     "adult": false,
@@ -29,7 +29,11 @@
       "manga",
       "chips",
       "bedroom",
-      "cowboy shot"
+      "cowboy shot",
+      "laughing",
+      "holding manga",
+      "holding chip",
+      "lamplight"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -46,6 +50,7 @@
       "horizontal_composition"
     ],
     "timeOfDay": "傍晚或夜间",
-    "title": "周防有希 · 房间里的「俺」模式"
+    "title": "周防有希 · 房间里的「俺」模式",
+    "animaCaption": "Her right hand holds the manga while her left holds a chip."
   }
 }

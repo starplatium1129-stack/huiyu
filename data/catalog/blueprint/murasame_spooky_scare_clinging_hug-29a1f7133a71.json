@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_spooky_scare_clinging_hug",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1125,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "吓得扑抱进对方怀中，双手紧抓胸口衣襟，眼含泪花脸埋肩膀，呆毛剧颤",
     "camera": "medium close-up, three-quarter side view, both people and the grip on Masaomi’s shirt visible",
@@ -31,7 +31,12 @@
       "teary eyes",
       "mountain path",
       "stone lantern",
-      "dusk"
+      "dusk",
+      "holding shirt",
+      "both hands",
+      "hiding face",
+      "startled",
+      "lantern light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -50,6 +55,7 @@
     "nsfwProse": "",
     "characterTokens": [
       "arichi masaomi"
-    ]
+    ],
+    "animaCaption": "She hides against Masaomi's shoulder while gripping his shirt."
   }
 }

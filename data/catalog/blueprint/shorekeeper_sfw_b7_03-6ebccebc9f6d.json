@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1641,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_03",
     "title": "守岸人 · 平台上的第一杯热茶",
@@ -35,7 +35,12 @@
       "butterfly",
       "railing",
       "morning",
-      "medium shot"
+      "medium shot",
+      "holding mug",
+      "both hands",
+      "steam",
+      "looking down",
+      "morning light"
     ],
     "negativeTokens": [
       "veil"
@@ -47,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands warm around the cup as she watches the glowing butterfly on the seaside railing."
   }
 }

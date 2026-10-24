@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_hotel_mirror_reflection",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "对镜练习俄语情话，说完瞬间捂脸",
     "adult": true,
@@ -32,7 +32,12 @@
       "holding towel",
       "blush",
       "night",
-      "medium shot"
+      "medium shot",
+      "blushing ears",
+      "mirror reflection",
+      "steam",
+      "lantern light",
+      "loose hair"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -57,6 +62,7 @@
       "long_hair",
       "hair_down"
     ],
-    "identityProseOverride": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, with loose long silver hair, blue eyes and no hair ribbons."
+    "identityProseOverride": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, with loose long silver hair, blue eyes and no hair ribbons.",
+    "animaCaption": "The towel hides her face while the mirror reveals her red ears and loose hair."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_medical_wing",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 526,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "翻阅病历，目光沉静",
     "camera": "medium shot, eye level",
@@ -26,7 +26,12 @@
     "promptTokens": [
       "tablet",
       "hospital",
-      "medium shot"
+      "medium shot",
+      "holding tablet",
+      "both hands",
+      "looking down",
+      "calm expression",
+      "bright corridor"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +42,7 @@
       "documents"
     ],
     "timeOfDay": "白天",
-    "title": "凯尔希 · 医疗部巡诊"
+    "title": "凯尔希 · 医疗部巡诊",
+    "animaCaption": "She pauses in the medical corridor to review the chart."
   }
 }

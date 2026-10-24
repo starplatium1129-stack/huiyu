@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_buena_village_tree",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 464,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手捧着晶莹水球，绿发在阳光与微风中扬起",
     "adult": false,
@@ -26,7 +26,10 @@
     "promptTokens": [
       "water magic",
       "oak tree",
-      "medium shot"
+      "medium shot",
+      "adult",
+      "holding water sphere",
+      "dappled light"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",
@@ -51,6 +54,7 @@
       "elf ears",
       "mushoku tensei"
     ],
-    "identityProseOverride": "Adult Sylphiette from Mushoku Tensei, with short green hair, red eyes and pointed elf ears."
+    "identityProseOverride": "Adult Sylphiette from Mushoku Tensei, with short green hair, red eyes and pointed elf ears.",
+    "animaCaption": "The floating water sphere casts filtered light onto her cupped hands."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_cafe_black",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 880,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端黑咖啡审视对方",
     "adult": false,
@@ -33,7 +33,10 @@
       "doughnut",
       "cafe",
       "close-up",
-      "shallow depth of field"
+      "shallow depth of field",
+      "holding cup",
+      "faint smile",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -44,6 +47,7 @@
       "cold_face"
     ],
     "timeOfDay": "下午",
-    "title": "调月莉音 · 黑咖啡与卸下防备"
+    "title": "调月莉音 · 黑咖啡与卸下防备",
+    "animaCaption": "She watches the viewer add sugar across the table, black coffee held near her lips."
   }
 }

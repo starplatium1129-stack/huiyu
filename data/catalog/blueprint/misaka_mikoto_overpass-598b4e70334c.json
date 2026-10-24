@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_overpass",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 391,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "站在天桥上俯瞰轨道",
     "camera": "cowboy shot, resting one hand on pedestrian overpass railing",
@@ -24,7 +24,11 @@
       "railing",
       "sparks",
       "overpass",
-      "sunset"
+      "sunset",
+      "hand on railing",
+      "looking down",
+      "city lights",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +41,7 @@
       "academy_city"
     ],
     "timeOfDay": "傍晚",
-    "title": "御坂美琴 · 学园都市天桥"
+    "title": "御坂美琴 · 学园都市天桥",
+    "animaCaption": "One hand rests on the rail while sparks flicker at her free fingertips above the monorail below."
   }
 }

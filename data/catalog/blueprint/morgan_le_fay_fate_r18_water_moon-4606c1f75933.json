@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_water_moon",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 197,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -46,7 +46,12 @@
       "knee up",
       "terrace",
       "sea",
-      "silver clasp"
+      "silver clasp",
+      "adult",
+      "both hands",
+      "loosening halter",
+      "morning light",
+      "sea reflections"
     ],
     "recommendedSize": "1536x1152",
     "outfitId": "white_halter_bikini",
@@ -54,6 +59,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "coverageTags": []
+    "coverageTags": [],
+    "animaCaption": "Both hands loosen the wet halter above the terrace daybed."
   }
 }

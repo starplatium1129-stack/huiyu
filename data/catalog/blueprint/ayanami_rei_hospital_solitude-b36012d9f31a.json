@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_hospital_solitude",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1012,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "赤足坐在白色病床边，双手静静捧着眼镜",
     "camera": "medium shot, eye level",
@@ -25,7 +25,13 @@
       "hospital",
       "holding broken glasses",
       "sitting",
-      "morning"
+      "morning",
+      "hospital bed",
+      "barefoot",
+      "both hands",
+      "curtains",
+      "morning light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +46,7 @@
       "white_curtains"
     ],
     "timeOfDay": "黎明",
-    "title": "绫波丽 · 晨曦病房与苍白绷带"
+    "title": "绫波丽 · 晨曦病房与苍白绷带",
+    "animaCaption": "She cradles the damaged glasses in both hands at the bed edge."
   }
 }

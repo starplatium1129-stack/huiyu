@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_dessert_cafe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 384,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elaina_dessert_cafe",
     "title": "伊雷娜 · 现代甜品店",
@@ -32,7 +32,9 @@
       "maple syrup",
       "pouring",
       "smile",
-      "medium shot"
+      "medium shot",
+      "window",
+      "warm light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -41,6 +43,7 @@
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She pours the syrup over the pancake stack beside the window."
   }
 }

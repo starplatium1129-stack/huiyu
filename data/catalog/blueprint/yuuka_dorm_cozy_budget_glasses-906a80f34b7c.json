@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_dorm_cozy_budget_glasses",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 916,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "戴着红框眼镜蜷坐在布艺沙发上，抱着抱枕与手账本，神情放松慵懒",
     "camera": "medium shot, slightly low angle",
@@ -28,7 +28,11 @@
       "sofa",
       "cocoa",
       "lamplight",
-      "low twintails"
+      "low twintails",
+      "red-framed glasses",
+      "warm lighting",
+      "medium shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +50,7 @@
     "timeOfDay": "夜晚",
     "title": "早濑优香 · 宿舍夜灯下的账簿与可可",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The finished ledger rests on her knees and cocoa on the side table beside the sofa."
   }
 }

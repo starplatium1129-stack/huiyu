@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makina_living_room_knee_hug_dad_whisper",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1795,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makina_living_room_knee_hug_dad_whisper",
     "title": "入巢莳菜 · 客厅沙发依偎雄二膝头的安详晨曦",
@@ -61,11 +61,14 @@
       "bare_legs",
       "bare_feet",
       "warm_atmosphere",
-      "tender_composition"
+      "tender_composition",
+      "arms around legs",
+      "medium shot"
     ],
     "promptProse": "Curled up peacefully on a cozy living room sofa in soft morning sunlight filtering through sheer curtains, Makina snuggles intimately against Yuuji's legs wearing only an oversized white collared dress shirt. Resting her chin softly on his knee with bare slender legs drawn close, her delicate pink twintails and ahoge look relaxed in blissful morning serenity.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her arms circle her companion's legs as her chin rests on his knee beside the sofa."
   }
 }

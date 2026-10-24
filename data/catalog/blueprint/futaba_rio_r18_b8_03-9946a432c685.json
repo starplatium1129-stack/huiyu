@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_r18_b8_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 70,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "futaba_rio_r18_b8_03",
     "title": "双叶理央 · 准备室百褶裙挂钩脱落的整理事故 ·「别看！……制服缝线老化而已……不准拍照！」",
@@ -42,7 +42,10 @@
       "looking back",
       "blush",
       "equipment cabinet",
-      "storage room"
+      "storage room",
+      "hand on cabinet",
+      "hand on chest",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -57,6 +60,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The skirt hook catches on a shelf bracket as she looks back."
   }
 }

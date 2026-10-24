@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_lava_glow",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 525,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "赤身倚靠光滑黑石壁，熔岩火光勾勒曼妙身段",
     "adult": true,
@@ -33,7 +33,9 @@
       "leaning",
       "black stone wall",
       "lava glow",
-      "medium shot"
+      "medium shot",
+      "looking at viewer",
+      "rim light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -45,6 +47,7 @@
       "red_glow"
     ],
     "timeOfDay": "夜晚",
-    "title": "史尔特尔 · 熔光之下"
+    "title": "史尔特尔 · 熔光之下",
+    "animaCaption": "She looks toward the viewer from the smooth stone wall, lava light outlining her near side."
   }
 }

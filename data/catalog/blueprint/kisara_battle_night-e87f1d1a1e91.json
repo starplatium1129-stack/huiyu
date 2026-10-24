@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_battle_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 506,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kisara_battle_night",
     "title": "木更 · 都市恶魔战斗",
@@ -37,13 +37,19 @@
       "skyscraper",
       "night",
       "full body",
-      "from below"
+      "from below",
+      "holding sword",
+      "spread wings",
+      "looking down",
+      "neon lights",
+      "firelight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "outfitId": "demon_dress",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "Her cursed blade draws back toward an unseen target, Shu beyond the frame below."
   }
 }

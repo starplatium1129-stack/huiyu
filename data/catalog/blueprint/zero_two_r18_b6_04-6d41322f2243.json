@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_r18_b6_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1586,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zero_two_r18_b6_04",
     "title": "02 · 绘本床单上叫龙本能觉醒的深情狂野独奏 ·「哪怕变成真正的怪物……达令也是我的翅膀」",
@@ -44,7 +44,9 @@
       "masturbation",
       "tears",
       "bed",
-      "night"
+      "night",
+      "holding book",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +61,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She clutches the beast-princess picture book to her chest beneath the red glow of her horns."
   }
 }

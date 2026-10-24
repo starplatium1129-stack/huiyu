@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_r18_b9_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1729,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "marcille_donato_r18_b9_04",
     "title": "玛露希尔 · 古代黑魔法反噬床单上的禁忌崩坏自持 ·「古代黑魔法的代价……不管是什么我都愿意承受」",
@@ -41,7 +41,9 @@
       "fingering",
       "tears",
       "stone altar",
-      "glowing runes"
+      "glowing runes",
+      "purple lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +58,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Purple rune light fades from the stone altar into the shadowed ruins."
   }
 }

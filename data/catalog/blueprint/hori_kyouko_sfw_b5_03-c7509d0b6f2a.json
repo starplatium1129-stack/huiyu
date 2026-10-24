@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1555,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_03",
     "title": "堀京子 · 厨房尝味的侧脸",
@@ -41,7 +41,11 @@
       "kitchen",
       "sunset",
       "medium shot",
-      "hair up"
+      "hair up",
+      "tasting",
+      "frown",
+      "steam",
+      "stove"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +57,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She holds the tasting spoon near her mouth and reaches for the stove control."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_r18_castle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 161,
   "createdAt": null,
-  "updatedAt": "2026-10-21T12:28:13.190Z",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "illyasviel_r18_castle",
     "title": "伊莉雅丝菲尔 · 城堡冬夜",
@@ -35,7 +35,10 @@
       "knee up",
       "hand between legs",
       "fur rug",
-      "fireplace"
+      "fireplace",
+      "holding collar",
+      "warming foot",
+      "moonlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "red_fur_winter_coat",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand holds the coat collar while the other stays beneath its hem."
   }
 }

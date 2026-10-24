@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_hospital_corridor_encounter",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 815,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fiona_frost_hospital_corridor_encounter",
     "characterId": "fiona_frost",
@@ -36,7 +36,11 @@
       "hospital",
       "corridor",
       "morning",
-      "medium shot"
+      "medium shot",
+      "holding files",
+      "looking ahead",
+      "window light",
+      "window shadow"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +48,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She walks on the left with files against her chest as the white-coated figure passes on her right."
   }
 }

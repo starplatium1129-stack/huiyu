@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_library_think",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 881,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠书架沉思",
     "adult": false,
@@ -32,7 +32,9 @@
       "data chip",
       "archive",
       "medium shot",
-      "shallow depth of field"
+      "shallow depth of field",
+      "looking down",
+      "ceiling light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -43,6 +45,7 @@
       "thinking"
     ],
     "timeOfDay": "下午",
-    "title": "调月莉音 · 绝密档案馆深思"
+    "title": "调月莉音 · 绝密档案馆深思",
+    "animaCaption": "She examines the old record chip beside the metal archive shelves."
   }
 }

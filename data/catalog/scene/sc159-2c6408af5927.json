@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc159",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 156,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Resting on the bench with her legs crossed, she wraps her hands around the viewer's neck and leans into the kiss, her wet shirt clinging in the steam.",
+    "animaCaption": "Her crossed legs stay on the bench as she draws the viewer into the kiss.",
     "auditRevision": "careful-batch09-2026-08-27",
     "camera": "近景特写",
     "category": "亲密",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "thighhighs",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, concealed placket, burgundy cuff piping, wet white shirt, see-through, no underwear, wet hair, crossed legs, arms around neck, kissing, bench, bathroom, steam, dim lighting",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, concealed placket, burgundy cuff piping, wet white shirt, see-through, no underwear, wet hair, crossed legs, arms around neck, kissing, bench, bathroom, steam, dim lighting, sitting",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 湿透衬衫彻底沦陷】特工任务结束后的秘密安全屋，浴室水汽弥漫。平时高冷毒舌的夏目此时彻底瘫软在长椅上，身上只穿着一件被温水完全浸透、死死贴紧饱满身躯的白色衬衫。她黑发湿漉漉地贴着锁骨，眼角的泪痣在氤氲的雾气下显得极度潮红。她双腿交叠，虽然嘴上依然虚弱地骂着「哈？你这个变态笨蛋...」，却主动伸出滚烫的双手紧紧勾住你的脖子，闭上含泪的眼睛迎向你的深吻——",
@@ -47,6 +47,7 @@
       "壁纸级",
       "成人向"
     ],
-    "weather": "水汽氤氲"
+    "weather": "水汽氤氲",
+    "promptProse": "Resting on the bench with her legs crossed, she wraps her hands around the viewer's neck and leans into the kiss, her wet shirt clinging in the steam."
   }
 }

@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "artoria_burger_shop",
     "title": "阿尔托莉雅 · 双手捧稳的双层汉堡",
@@ -37,7 +37,15 @@
       "cheeseburger",
       "eating",
       "drink",
-      "medium shot"
+      "medium shot",
+      "holding burger",
+      "both hands",
+      "leaning forward",
+      "puffed cheeks",
+      "looking at food",
+      "sitting at table",
+      "tray",
+      "window light"
     ],
     "negativeTokens": [
       "readable lettering"
@@ -48,6 +56,7 @@
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She supports both sides of the burger for a careful bite."
   }
 }

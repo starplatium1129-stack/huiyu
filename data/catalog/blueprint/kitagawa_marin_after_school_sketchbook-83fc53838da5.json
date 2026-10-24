@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_after_school_sketchbook",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 505,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfitId": "school_uniform",
@@ -26,7 +26,10 @@
       "classroom",
       "afternoon",
       "medium shot",
-      "sitting"
+      "sitting",
+      "holding pencil",
+      "pointing at page",
+      "window light"
     ],
     "camera": "medium shot, seated at a classroom desk with sketchbook and both hands visible",
     "lighting": "斜照在课桌上的午后窗光",
@@ -53,6 +56,7 @@
     ],
     "negativeTokens": [
       "readable notes"
-    ]
+    ],
+    "animaCaption": "Her left hand holds the design book open while her pencil points to the revised cuff detail."
   }
 }

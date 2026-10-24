@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1650,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_06",
     "title": "卡提希娅 · 铁匠铺的保养",
@@ -37,7 +37,11 @@
       "sword",
       "counter",
       "sparks",
-      "medium shot"
+      "medium shot",
+      "leaning on counter",
+      "looking at another",
+      "forge",
+      "firelight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She watches the smith work on her sword beyond the counter."
   }
 }

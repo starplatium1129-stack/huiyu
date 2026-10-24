@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_bathroom_warm_tub",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 357,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yui_r18_bathroom_warm_tub",
     "title": "由比滨结衣 · 结衣家浴缸的泡泡歌谣",
@@ -36,7 +36,10 @@
       "hand on own breast",
       "foam",
       "bathtub",
-      "warm lighting"
+      "warm lighting",
+      "speaker beside tub",
+      "towel",
+      "steam"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +48,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand shapes a bubble dog on her raised thigh while the other rests at her chest."
   }
 }

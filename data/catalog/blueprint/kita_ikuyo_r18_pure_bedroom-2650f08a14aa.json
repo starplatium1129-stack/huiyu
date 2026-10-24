@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_r18_pure_bedroom",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1828,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kita_ikuyo_r18_pure_bedroom",
     "characterId": "kita_ikuyo",
@@ -32,7 +32,9 @@
       "teary eyes",
       "spread legs",
       "from above",
-      "intimate"
+      "intimate",
+      "daylight",
+      "blanket at chest"
     ],
     "sceneTags": [
       "bedroom",
@@ -49,6 +51,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her fingers hold the blanket edge in front of her chest."
   }
 }

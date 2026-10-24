@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_garden_watering_flowers",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 841,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "提着水壶浇花，阳光洒落",
     "adult": false,
@@ -27,7 +27,12 @@
       "watering can",
       "white roses",
       "morning",
-      "medium shot"
+      "medium shot",
+      "watering plants",
+      "holding watering can",
+      "both hands",
+      "gentle smile",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +46,7 @@
       "gentle_smile"
     ],
     "timeOfDay": "morning",
-    "title": "塞西莉亚 · 教堂庭院浇花"
+    "title": "塞西莉亚 · 教堂庭院浇花",
+    "animaCaption": "Both hands support the brass can as she smiles toward her offscreen companion."
   }
 }

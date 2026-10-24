@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_abyss_shore",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 607,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单膝跪地，剑尖抵着沙滩",
     "camera": "cowboy shot, low angle, kneeling pose and hand on the sword visible",
@@ -26,7 +26,12 @@
       "greatsword",
       "kneeling",
       "shore",
-      "from below"
+      "from below",
+      "one knee down",
+      "planted sword",
+      "wiping cheek",
+      "salt spray",
+      "dusk"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +42,7 @@
       "black_sand"
     ],
     "timeOfDay": "黄昏",
-    "title": "斯卡蒂 · 深渊海岸"
+    "title": "斯卡蒂 · 深渊海岸",
+    "animaCaption": "One hand steadies the greatsword while the other wipes salt spray from her cheek."
   }
 }

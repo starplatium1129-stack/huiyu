@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_02",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1554,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_02",
     "title": "宝多六花 · 暴雨阳台湿身白衬衫的潮湿独奏 ·「空气好闷……身上黏糊糊的真讨厌」",
@@ -44,7 +44,10 @@
       "balcony",
       "rain",
       "cowboy shot",
-      "black lace lingerie"
+      "black lace lingerie",
+      "leaning",
+      "biting finger",
+      "wet hair"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +62,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand stays beneath her wet skirt beside the sliding balcony door."
   }
 }

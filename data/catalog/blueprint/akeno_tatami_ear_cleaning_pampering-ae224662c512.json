@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_tatami_ear_cleaning_pampering",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1289,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "akeno_tatami_ear_cleaning_pampering",
     "title": "姬岛朱乃 · 和室榻榻米的治愈耳语",
@@ -34,7 +34,12 @@
       "ear pick",
       "tatami",
       "bamboo blinds",
-      "cowboy shot"
+      "cowboy shot",
+      "holding ear pick",
+      "patting lap",
+      "gentle smile",
+      "dappled sunlight",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +48,7 @@
       "healing",
       "pampering",
       "domestic"
-    ]
+    ],
+    "animaCaption": "She holds the ear pick in one hand and pats her lap with the other."
   }
 }

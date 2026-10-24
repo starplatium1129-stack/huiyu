@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_r18_dorm",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 394,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜倚沙发屈起一腿，开衫滑肩，单手拨开蕾丝内衣自抚，静电沿靠垫跳动",
     "adult": true,
@@ -37,7 +37,12 @@
       "sofa",
       "static",
       "rainy window",
-      "night"
+      "night",
+      "reclining",
+      "floor lamp",
+      "blue glow",
+      "city lights",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -51,6 +56,7 @@
       "intimate"
     ],
     "timeOfDay": "深夜",
-    "title": "御坂美琴 · 公寓夜雨的静电失控"
+    "title": "御坂美琴 · 公寓夜雨的静电失控",
+    "animaCaption": "She draws one knee up while static crosses the cushion edges beneath the rainy window."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_library_study",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 548,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱着厚书坐在窗边",
     "camera": "medium shot",
@@ -28,7 +28,10 @@
       "library",
       "window",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "holding book",
+      "both hands",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +42,7 @@
       "reading"
     ],
     "timeOfDay": "午后",
-    "title": "艾雅法拉 · 图书馆研读"
+    "title": "艾雅法拉 · 图书馆研读",
+    "animaCaption": "The heavy open volcanology volume rests on her lap."
   }
 }

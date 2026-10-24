@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1640,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_02",
     "title": "守岸人 · 观测记录的书写",
@@ -34,7 +34,11 @@
     "promptTokens": [
       "hologram",
       "observation station",
-      "medium shot"
+      "medium shot",
+      "pointing",
+      "tide chart",
+      "smile",
+      "blue display light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +48,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her fingertip pauses beside the familiar entry on the tide chart as its display lights her emerging smile."
   }
 }

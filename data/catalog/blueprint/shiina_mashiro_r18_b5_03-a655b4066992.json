@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_r18_b5_03",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1525,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shiina_mashiro_r18_b5_03",
     "title": "椎名真白 · 卧室换衣穿反小裤裤的笨拙事故 ·「空太……胖次卡住了，教真白怎么穿」",
@@ -43,7 +43,10 @@
       "looking back",
       "blush",
       "desk",
-      "bedroom"
+      "bedroom",
+      "hands on desk",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -58,6 +61,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She braces on the study desk and looks back for help, the patterned underwear caught around one thigh."
   }
 }

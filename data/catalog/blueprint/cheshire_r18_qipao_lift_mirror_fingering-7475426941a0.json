@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_r18_qipao_lift_mirror_fingering",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1100,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cheshire_r18_qipao_lift_mirror_fingering",
     "title": "柴郡 · 落地镜前旗袍高撩私密自抚",
@@ -40,7 +40,13 @@
       "gold embroidery",
       "dress lift",
       "raised leg",
-      "masturbation"
+      "masturbation",
+      "foot on stool",
+      "holding skirt",
+      "looking down",
+      "heavy blush",
+      "wall lamp",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +55,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the qipao hem while she lowers her face toward her mirror reflection."
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc257",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 252,
   "createdAt": null,
-  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She holds the ice-cream cup in one hand and offers its spoon toward the viewer across the table, glancing away with a blush; bright summer light through the glass catches the melting ice cream.",
+    "animaCaption": "She holds the cup in one hand and offers its spoon across the table with the other.",
     "auditRevision": "skill-refine-sc257-2026-09-05",
     "camera": "圆桌旁七分身平视中景",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white off shoulder chiffon blouse, navy edging, high waisted denim shorts, brown woven belt, spoon, ice cream, looking away, blush, cafe, summer, afternoon, cowboy shot",
+    "prompt": "1girl, shiki_natsume, white off shoulder chiffon blouse, navy edging, high waisted denim shorts, brown woven belt, spoon, ice cream, looking away, blush, cafe, summer, afternoon, cowboy shot, holding ice cream, offering spoon, sunlight",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 盛夏甜品店的心动】盛夏午后阳光明媚的冷饮店。夏目身着轻盈的纯白一字领雪纺衫与牛仔短裤，修长的双肩与锁骨在冷气中透着清凉。她正握着小勺吃着手里的双色冰淇淋，看到你一直目不转睛地看着，便有些不解地将自己刚尝过一口的冰淇淋勺递到了你嘴边。间接接触的暧昧气氛瞬间蔓延，夏目手腕一顿，半垂着金瞳，耳根在明媚的夏日日光下迅速泛红，催促着移开视线——「……别误会。我只是看你一直盯着，怕冰淇淋融化太快才分你一口而已。……真是的，别愣着了，快点吃掉啦。」",
@@ -52,6 +52,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "weather": "夏日晴空"
+    "weather": "夏日晴空",
+    "promptProse": "She holds the ice-cream cup in one hand and offers its spoon toward the viewer across the table, glancing away with a blush; bright summer light through the glass catches the melting ice cream."
   }
 }

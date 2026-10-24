@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_night_shrine_lantern_talk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 247,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "scathach_night_shrine_lantern_talk",
     "title": "斯卡哈 · 灯笼夜祠的师匠嘱托·「把刀擦亮，明天……我要把一切都托付给你」",
@@ -36,7 +36,10 @@
       "sitting",
       "lantern",
       "from behind",
-      "wide shot"
+      "wide shot",
+      "shoulder to shoulder",
+      "lantern light",
+      "moonlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -50,6 +53,7 @@
       "signature",
       "romance"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Her removed coat covers her companion's knees above the town lights."
   }
 }

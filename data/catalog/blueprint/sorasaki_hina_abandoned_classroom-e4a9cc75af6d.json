@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_abandoned_classroom",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 858,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐桌沿抬起一条腿，用双手收紧大腿绷带。",
     "adult": true,
@@ -41,7 +41,11 @@
       "operations room",
       "sunset",
       "white shirt",
-      "black cuffs"
+      "black cuffs",
+      "both hands on bandage",
+      "broken window",
+      "side lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,6 +57,7 @@
       "intimate"
     ],
     "timeOfDay": "黄昏",
-    "title": "空崎日奈 · 废弃私人工作室里的包扎时刻"
+    "title": "空崎日奈 · 废弃私人工作室里的包扎时刻",
+    "animaCaption": "Both hands tighten the bandage around her raised thigh beside the medical kit on the reinforced desk."
   }
 }

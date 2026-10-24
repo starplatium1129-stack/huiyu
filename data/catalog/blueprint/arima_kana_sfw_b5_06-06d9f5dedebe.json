@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_sfw_b5_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 972,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手调好贝雷帽帽檐，露出满意的小笑容。",
     "adult": false,
@@ -27,7 +27,11 @@
     "promptTokens": [
       "hat shop",
       "adjusting headwear",
-      "medium shot"
+      "medium shot",
+      "both hands",
+      "smile",
+      "wooden shelf",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -42,6 +46,7 @@
       "medium_shot"
     ],
     "timeOfDay": "afternoon",
-    "title": "有马加奈 · 棕色贝雷帽的试戴"
+    "title": "有马加奈 · 棕色贝雷帽的试戴",
+    "animaCaption": "She adjusts the beret brim with both hands beside the wooden hat racks."
   }
 }

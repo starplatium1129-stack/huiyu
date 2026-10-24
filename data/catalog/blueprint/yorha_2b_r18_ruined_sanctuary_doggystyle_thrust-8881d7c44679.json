@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_ruined_sanctuary_doggystyle_thrust",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1119,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yorha_2b_r18_ruined_sanctuary_doggystyle_thrust",
     "title": "2B · 废墟微光·晨曦断壁与过膝高跟长靴",
@@ -56,10 +56,15 @@
       "concrete ledge",
       "white flowers",
       "ruined city",
-      "dawn"
+      "dawn",
+      "sitting",
+      "hand on katana",
+      "dawn light",
+      "flowers"
     ],
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The katana stays grounded beneath her resting hand on the crumbled ledge."
   }
 }

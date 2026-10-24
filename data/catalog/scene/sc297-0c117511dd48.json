@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc297",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 292,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc297",
     "title": "出差酒店的相邻房间",
@@ -45,10 +45,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, white waffle bathrobe, navy shawl collar, matching waist tie, beer can, sitting, balcony, cityscape, night, moonlight, medium shot",
+    "prompt": "1girl, shiki_natsume, white waffle bathrobe, navy shawl collar, matching waist tie, beer can, sitting, balcony, cityscape, night, moonlight, medium shot, holding can, offering drink, smirk, closed robe",
     "negative": "open robe",
     "storyJa": "【夏目・大人のAfter Story・出張ホテルの隣室】会社の年次パーティーが隣市で開催され、あなたと夏目は別々の部署の代表として同じホテルに宿泊していた。部屋は隣り合っており、バルコニーの間は腰ほどの高さの手すりしかなかった。深夜のパーティーが終わり、部屋に戻って間もなく、バルコニーのガラスドアが軽く二度叩かれた。夏目がホテルのバスローブを着て隣のバルコニーに立っていた。黒い髪からはシャンプーの香りが漂い、夜風がバスローブの裾を軽く持ち上げていた。彼女は自動販売機で買ったビールを二缶持っており、一つをあなたに差し出した——「パーティーであの部長がまた説教してたから、解毒剤が必要なんだよ。」彼女は手すりを越えてあなたのバルコニーに座り、冷えたビール缶をあなたの手の甲に当てた。月明かりが彼女の鎖骨の線と、バスローブの襟元の間にある夜風に撫でられた肌を照らしていた。彼女は顔を上げて一口飲み、喉がそっと動いた——「明日の報告が終われば自由だ……今夜は共謀計画を立てない？」",
-    "animaCaption": "Seated beside the viewer on the balcony, she presses one cold beer can into their hand while keeping the second for herself; moonlight catches her small smirk above the tied robe.",
-    "auditRevision": "careful-batch12-2026-08-27"
+    "animaCaption": "She presses one cold beer can into the viewer's hand while keeping the second for herself.",
+    "auditRevision": "careful-batch12-2026-08-27",
+    "promptProse": "Seated beside the viewer on the balcony, she presses one cold beer can into their hand while keeping the second for herself; moonlight catches her small smirk above the tied robe."
   }
 }

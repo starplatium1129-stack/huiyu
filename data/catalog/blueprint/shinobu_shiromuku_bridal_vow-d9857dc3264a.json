@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1453,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "白无垢十指相扣立神前，紫瞳认真含泪微笑",
     "adult": false,
@@ -31,7 +31,12 @@
       "companion",
       "holding hands",
       "shrine",
-      "wide shot"
+      "wide shot",
+      "standing",
+      "tears",
+      "smile",
+      "altar",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +51,7 @@
       "romance"
     ],
     "timeOfDay": "婚礼上午",
-    "title": "蝴蝶忍 · 白无垢的花嫁之誓·「如果是你，毒也会变成药」"
+    "title": "蝴蝶忍 · 白无垢的花嫁之誓·「如果是你，毒也会变成药」",
+    "animaCaption": "She lifts her eyes beneath the bridal hood while holding her companion's hand before the altar."
   }
 }

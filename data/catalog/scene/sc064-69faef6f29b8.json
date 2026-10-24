@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc064",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 62,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Her head rests on the viewer's lap; one hand steadies the open book face-down on her chest while the other loosely meets the viewer's hand.",
+    "animaCaption": "One hand steadies the book face-down on her chest; the other loosely meets the viewer's hand beside their lap.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "从膝上方俯看的面部与书本近景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, cream ribbed henley shirt, pink wide leg pajama pants, sleeping, lap pillow, sofa, book, holding hands, from above, close up",
+    "prompt": "1girl, ayachi_nene, cream ribbed henley shirt, pink wide leg pajama pants, sleeping, lap pillow, sofa, book, holding hands, from above, close up, lying, open book, hand on book",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "秋",
@@ -52,6 +52,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Her head rests on the viewer's lap; one hand steadies the open book face-down on her chest while the other loosely meets the viewer's hand."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_bath_halo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 563,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚着浴缸边沿，湿发贴在肩头",
     "adult": true,
@@ -33,7 +33,12 @@
       "reaching out",
       "bathtub",
       "steam",
-      "halo"
+      "halo",
+      "wet hair",
+      "water reflection",
+      "golden glow",
+      "medium shot",
+      "from side"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -45,6 +50,7 @@
       "wet_hair"
     ],
     "timeOfDay": "夜晚",
-    "title": "蕾缪安 · 浴室的微光"
+    "title": "蕾缪安 · 浴室的微光",
+    "animaCaption": "She reaches toward her offscreen companion for assistance from the shallow accessible bath rim."
   }
 }

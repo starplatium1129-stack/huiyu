@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_seaside_sunset_breeze_bikini",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1077,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "taihou_seaside_sunset_breeze_bikini",
     "title": "大凤 · 暮色海潮的细带红比基尼",
@@ -36,9 +36,15 @@
     "promptTokens": [
       "beach",
       "sunset",
-      "full body"
+      "full body",
+      "standing",
+      "holding wet hair",
+      "receding wave",
+      "windblown sarong",
+      "wet skin"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "She lifts wet hair from her shoulder as the retreating tide washes around her feet."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_bath_warm",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 345,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_bath_warm",
     "title": "雪之下雪乃 · 热汤浴后",
@@ -36,7 +36,11 @@
       "blush",
       "night",
       "hair up",
-      "submerged"
+      "submerged",
+      "holding towel",
+      "both hands",
+      "looking down",
+      "soft light"
     ],
     "negativeTokens": [
       "school uniform"
@@ -49,6 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@atdan",
     "outfitId": "white_bath_towel",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Both hands hold the wet towel across her chest above the bathwater."
   }
 }

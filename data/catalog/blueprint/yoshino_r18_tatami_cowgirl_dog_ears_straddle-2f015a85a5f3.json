@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_tatami_cowgirl_dog_ears_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1154,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "跨坐在近处同伴身上，双手按在对方胸前借力，犬耳轻颤",
     "adult": true,
@@ -38,7 +38,9 @@
       "paper lantern",
       "cowboy shot",
       "pov",
-      "on lap"
+      "on lap",
+      "hands on another's chest",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -52,6 +54,7 @@
       "blushing"
     ],
     "timeOfDay": "夜间",
-    "title": "朝武芳乃 · 犬耳轻颤跨坐骑乘与娇喘起伏"
+    "title": "朝武芳乃 · 犬耳轻颤跨坐骑乘与娇喘起伏",
+    "animaCaption": "Both hands rest on her companion's chest with the loosened sleeves falling at her elbows."
   }
 }

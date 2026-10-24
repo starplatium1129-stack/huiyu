@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_swimsuit_beach",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 901,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "拿冰淇淋站在海边",
     "adult": false,
@@ -31,7 +31,11 @@
       "mint chocolate ice cream",
       "beach",
       "summer",
-      "sunlight"
+      "sunlight",
+      "standing",
+      "eating ice cream",
+      "sea",
+      "cat-ear hood"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -43,6 +47,7 @@
       "blue_archive"
     ],
     "timeOfDay": "白天",
-    "title": "杏山和纱 · 夏日海滩·猫耳泳装与冰淇淋"
+    "title": "杏山和纱 · 夏日海滩·猫耳泳装与冰淇淋",
+    "animaCaption": "She enjoys the mint-chocolate ice cream beside the sea."
   }
 }

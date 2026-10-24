@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_r18_futon_morning",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 645,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在被褥中，一手揉眼，另一手拢住被角。",
     "adult": false,
@@ -29,7 +29,10 @@
       "rubbing eyes",
       "blanket",
       "futon",
-      "morning"
+      "morning",
+      "multiple tails",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -43,6 +46,7 @@
     "coverageTags": [
       "daily"
     ],
-    "styleHint": ""
+    "styleHint": "",
+    "animaCaption": "One hand rubs her eye while the other holds the blanket over her closed cream robe."
   }
 }

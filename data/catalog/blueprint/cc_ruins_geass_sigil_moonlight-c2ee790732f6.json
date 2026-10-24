@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_ruins_geass_sigil_moonlight",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1307,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "迎着夜风立于断壁残垣之上，纯白拘束带飘舞，额间Geass红光微闪，侧身回眸从容浅笑",
     "camera": "cowboy shot, low angle, dramatic wind perspective",
@@ -28,7 +28,9 @@
       "looking back",
       "smile",
       "wind",
-      "moonlight"
+      "moonlight",
+      "flowing straps",
+      "red glow"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +46,7 @@
       "enigmatic_smile"
     ],
     "timeOfDay": "月明深夜",
-    "title": "C.C. · 废墟月下的契约魔女"
+    "title": "C.C. · 废墟月下的契约魔女",
+    "animaCaption": "The Geass mark glows beneath her bangs as the loose straps stream behind her."
   }
 }

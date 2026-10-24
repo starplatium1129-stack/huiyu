@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_silk_bed_supine_devotion",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1285,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_nsfw_silk_bed_supine_devotion",
     "title": "莉雅丝 · 丝绸床榻的深情仰卧",
@@ -38,7 +38,12 @@
       "holding wrists",
       "red silk sheets",
       "bed",
-      "from above"
+      "from above",
+      "both hands",
+      "candlelight",
+      "moonlight",
+      "full body",
+      "high angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +59,7 @@
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Both hands draw her off-frame companion's wrists toward her heart above the crimson silk."
   }
 }

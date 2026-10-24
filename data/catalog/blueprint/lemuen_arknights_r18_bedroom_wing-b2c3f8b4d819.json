@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_bedroom_wing",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 564,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自侧卧宽床，一手支颐、一手在床单间自抚，旅行衬衫敞开，翼架置于远处椅上",
     "adult": true,
@@ -37,7 +37,12 @@
       "on side",
       "masturbation",
       "bed",
-      "halo"
+      "halo",
+      "head in hand",
+      "folded wing rig",
+      "chair",
+      "moonlight",
+      "from above"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -59,6 +64,7 @@
       "halo",
       "arknights"
     ],
-    "identityProseOverride": "Lemuen from Arknights, a Sankta sharpshooter with long pink hair and a luminous halo."
+    "identityProseOverride": "Lemuen from Arknights, a Sankta sharpshooter with long pink hair and a luminous halo.",
+    "animaCaption": "One hand supports her head while the folded wing rig rests on a distant chair."
   }
 }

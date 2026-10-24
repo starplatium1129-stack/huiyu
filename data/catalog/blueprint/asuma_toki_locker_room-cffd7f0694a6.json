@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_locker_room",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 876,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "一手拉开战斗紧身衣前襟拉链，另一手扶住长凳，转头看向视角",
     "adult": true,
@@ -32,9 +32,12 @@
       "black and white combat suit",
       "unzipped",
       "topless",
-      "bare back",
-      "looking back",
-      "bench"
+      "bench",
+      "looking at viewer",
+      "hand on bench",
+      "cool lighting",
+      "medium shot",
+      "front three-quarter view"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -57,6 +60,7 @@
       "blue_eyes",
       "halo",
       "blue_archive"
-    ]
+    ],
+    "animaCaption": "One hand lowers the front zipper while the other steadies her on the bench."
   }
 }

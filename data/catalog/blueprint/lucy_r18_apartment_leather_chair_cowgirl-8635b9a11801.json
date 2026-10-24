@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_r18_apartment_leather_chair_cowgirl",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1110,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自跨坐皮椅，一手抓椅背、一手腿间自抚",
     "adult": true,
@@ -36,7 +36,13 @@
       "straddling",
       "chair",
       "fingering",
-      "neon lights"
+      "neon lights",
+      "hand on backrest",
+      "disconnected cables",
+      "red lighting",
+      "blue lighting",
+      "medium shot",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +55,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "露西 · 公寓皮椅跨坐主动骑乘起伏"
+    "title": "露西 · 公寓皮椅跨坐主动骑乘起伏",
+    "animaCaption": "One hand grips the chair back while the other rests beneath the dress gathered at her waist."
   }
 }

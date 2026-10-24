@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_r18_rainy_bedroom_missionary",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 20,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "furina_r18_rainy_bedroom_missionary",
     "title": "芙宁娜 · 暴雨夜的水律失控",
@@ -46,7 +46,13 @@
       "water magic",
       "bed",
       "rain",
-      "from above"
+      "from above",
+      "heavy blush",
+      "lightning",
+      "blue lighting",
+      "warm lighting",
+      "full body",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -60,6 +66,7 @@
     "outfitId": "blue_white_chiffon_gown",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Transparent Hydro rings form above the sheets with her gown gathered at her waist."
   }
 }

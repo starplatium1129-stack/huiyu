@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_library_corner_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1505,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_nsfw_library_corner_solo",
     "title": "山田杏奈 · 图书馆死角长腿撩裙的私密自持 ·「市川躲在书架后面……偷看会变兴奋吗」",
@@ -39,7 +39,10 @@
       "library",
       "noon",
       "full body",
-      "pleated skirt"
+      "pleated skirt",
+      "leg on stool",
+      "torn tights",
+      "looking through shelf"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +55,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "She looks through the shelf gap with the lollipop between her lips."
   }
 }

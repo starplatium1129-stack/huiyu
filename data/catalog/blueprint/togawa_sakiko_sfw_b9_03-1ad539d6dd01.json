@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1750,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_03",
     "title": "丰川祥子 · 客服电话结束的一秒",
@@ -38,7 +38,10 @@
       "headset",
       "mouse",
       "call center",
-      "medium shot"
+      "medium shot",
+      "hand on mouse",
+      "tired",
+      "cool lighting"
     ],
     "negativeTokens": [
       "piano",
@@ -52,6 +55,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand moves the headset microphone aside while the other remains on the mouse after the call."
   }
 }

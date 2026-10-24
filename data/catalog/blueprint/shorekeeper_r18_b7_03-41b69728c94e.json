@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1661,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_03",
     "title": "守岸人 · 概念投影礼服流光锁链卡壳事故 ·「逻辑指令错误……流光纠缠无法解除，请协助我」",
@@ -39,7 +39,11 @@
       "hologram",
       "console",
       "looking back",
-      "wide shot"
+      "wide shot",
+      "hands on console",
+      "raised skirt",
+      "cyan light",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -57,6 +61,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both palms brace on the holographic console as the recalibrating data chains hold the skirt high."
   }
 }

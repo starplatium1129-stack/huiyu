@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_r18_b8_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 71,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "futaba_rio_r18_b8_04",
     "title": "双叶理央 · 深夜卧室休息",
@@ -38,7 +38,11 @@
       "loose ponytail",
       "tears",
       "night",
-      "lamplight"
+      "lamplight",
+      "lying on back",
+      "pillow",
+      "sheet cover",
+      "desk lamp"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +57,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her glasses stay set aside while she rests beneath the sheet."
   }
 }

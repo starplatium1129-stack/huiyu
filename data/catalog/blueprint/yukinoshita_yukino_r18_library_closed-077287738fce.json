@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_library_closed",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 346,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_library_closed",
     "title": "雪之下雪乃 · 闭馆后的图书馆",
@@ -35,7 +35,12 @@
       "female masturbation",
       "rolling ladder",
       "library",
-      "moonlight"
+      "moonlight",
+      "sitting",
+      "raised knee",
+      "hand on rail",
+      "hand under skirt",
+      "aisle light"
     ],
     "negativeTokens": [
       "school uniform"
@@ -48,6 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@hiten (hitenkei)",
     "outfitId": "navy_library_blouse",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand grips the ladder rail while the other stays beneath her skirt."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_bedroom_soles_choker_pull",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 426,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "reze_r18_bedroom_soles_choker_pull",
     "characterId": "reze_chainsaw",
@@ -30,7 +30,11 @@
       "beckoning",
       "window sill",
       "apartment",
-      "moonlight"
+      "moonlight",
+      "hand on sill",
+      "streetlight",
+      "long shadow",
+      "medium shot"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -51,6 +55,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand braces beside her on the sill while the other beckons toward the viewer."
   }
 }

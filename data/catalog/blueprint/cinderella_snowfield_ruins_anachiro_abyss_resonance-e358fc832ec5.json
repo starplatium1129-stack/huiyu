@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_snowfield_ruins_anachiro_abyss_resonance",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1813,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cinderella_snowfield_ruins_anachiro_abyss_resonance",
     "title": "灰姑娘 · 漆黑极夜暴风雪中的异端侵蚀共鸣",
@@ -58,11 +58,15 @@
       "melancholy_smile",
       "dramatic_shadows",
       "dark_fantasy",
-      "cinematic"
+      "cinematic",
+      "standing",
+      "hand on cheek",
+      "wind"
     ],
     "promptProse": "In the howling blizzard before a shattered gothic cathedral under a blood-red moon, Cinderella stands in her corrupted Anachiro form. Jagged obsidian armor pulses with ominous crimson veins across her slender silhouette, her ragged shadowy cloak whipping in the gale as she raises one armored hand to her cheek, ruby eyes burning with tragic, haughty defiance.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One armored hand rests beside her cheek in the blizzard."
   }
 }

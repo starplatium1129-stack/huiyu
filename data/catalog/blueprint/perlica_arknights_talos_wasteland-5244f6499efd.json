@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_talos_wasteland",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 713,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "按住耳侧通讯发饰遥望风沙",
     "camera": "wide shot",
@@ -23,7 +23,8 @@
       "cliff",
       "wasteland",
       "wind",
-      "dust"
+      "dust",
+      "looking away"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +37,7 @@
     "timeOfDay": "黄昏",
     "title": "佩丽卡 · 塔罗斯荒原",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She watches the distant hub through the amber dust."
   }
 }

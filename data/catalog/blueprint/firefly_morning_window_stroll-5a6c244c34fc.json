@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_morning_window_stroll",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1868,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "firefly_morning_window_stroll",
     "characterId": "firefly_hsr",
@@ -26,7 +26,8 @@
       "turning back",
       "warm smile",
       "peaceful",
-      "cowboy shot"
+      "cowboy shot",
+      "standing"
     ],
     "sceneTags": [
       "window",
@@ -42,6 +43,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She stretches beside the flowing window drapes with a waking smile."
   }
 }

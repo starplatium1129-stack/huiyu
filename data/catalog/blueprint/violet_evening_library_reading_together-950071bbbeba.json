@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evening_library_reading_together",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1386,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在深色长木椅上，身子微微倚靠在你的肩头，银色手指轻按泛黄书页，神色恬静安详",
     "adult": false,
@@ -31,7 +31,12 @@
       "poetry book",
       "leaning on shoulder",
       "library",
-      "medium shot"
+      "medium shot",
+      "reading",
+      "mechanical hands",
+      "hand on page",
+      "stained glass",
+      "sunset light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -56,6 +61,7 @@
       "red hair ribbon",
       "blue eyes",
       "mechanical hands"
-    ]
+    ],
+    "animaCaption": "Her head rests on her companion's shoulder while her silver fingertips hold the shared poetry book open."
   }
 }

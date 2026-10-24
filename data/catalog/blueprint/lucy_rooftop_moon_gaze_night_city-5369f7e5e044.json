@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1097,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚靠栏杆仰望夜空巨大月球，指间夹着泛紫光的电子烟，渐变短发随风飘散",
     "camera": "wide cinematic low angle, grand city and moon backdrop",
@@ -26,7 +26,13 @@
       "railing",
       "rooftop",
       "moon",
-      "wide shot"
+      "wide shot",
+      "leaning",
+      "smoking",
+      "windblown hair",
+      "neon lights",
+      "moonlight",
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +47,7 @@
       "skyscrapers"
     ],
     "timeOfDay": "夜晚",
-    "title": "露西 · 沃森天台的月球凝望与霓虹"
+    "title": "露西 · 沃森天台的月球凝望与霓虹",
+    "animaCaption": "The violet-lit cigarette rests between her fingers as she watches the moon from the railing."
   }
 }

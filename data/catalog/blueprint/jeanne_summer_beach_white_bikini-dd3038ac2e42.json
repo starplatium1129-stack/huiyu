@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_summer_beach_white_bikini",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 235,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_summer_beach_white_bikini",
     "title": "圣女贞德 · 夏海的白色圣光·「防晒霜……那、那就拜托你了吧，只准涂在背后！」",
@@ -36,7 +36,9 @@
       "sunscreen",
       "shading eyes",
       "beach",
-      "medium shot"
+      "medium shot",
+      "offering sunscreen",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +51,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "One hand shades her eyes while the other offers the closed sunscreen bottle."
   }
 }

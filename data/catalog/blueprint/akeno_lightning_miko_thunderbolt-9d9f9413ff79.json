@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_lightning_miko_thunderbolt",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1285,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "akeno_lightning_miko_thunderbolt",
     "title": "姬岛朱乃 · 降魔雷光神圣制裁",
@@ -37,7 +37,12 @@
       "shrine",
       "storm",
       "night",
-      "from below"
+      "from below",
+      "spread wings",
+      "thunderstorm",
+      "blue lightning",
+      "confident smile",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +50,7 @@
     "coverageTags": [
       "iconic",
       "combat"
-    ]
+    ],
+    "animaCaption": "Lightning from her raised hand illuminates her wings above the shrine roof."
   }
 }

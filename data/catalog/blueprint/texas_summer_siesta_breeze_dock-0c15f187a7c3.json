@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_summer_siesta_breeze_dock",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 664,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在木质栈桥边缘双腿悬空，推起墨镜凝望碧蓝大海，微风拂动狼尾",
     "camera": "full body, seated figure and feet above water visible",
@@ -24,7 +24,12 @@
     "promptTokens": [
       "pier",
       "sea",
-      "full body"
+      "full body",
+      "sitting",
+      "feet above water",
+      "sunglasses lift",
+      "wind",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +45,7 @@
       "wolf_tail"
     ],
     "timeOfDay": "午后",
-    "title": "德克萨斯 · 汐斯塔海港的微风小憩"
+    "title": "德克萨斯 · 汐斯塔海港的微风小憩",
+    "animaCaption": "She pushes up the sunglasses from the dock edge, both feet suspended above the water."
   }
 }

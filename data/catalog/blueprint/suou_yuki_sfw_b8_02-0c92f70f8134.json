@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "名流茶会，她穿着连衣裙执杯的姿势无可挑剔，与长辈应对得体",
     "adult": false,
@@ -27,7 +27,11 @@
     "promptTokens": [
       "teacup",
       "tea gathering",
-      "medium shot"
+      "medium shot",
+      "holding teacup",
+      "looking aside",
+      "elders",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -44,6 +48,7 @@
     ],
     "timeOfDay": "日间",
     "title": "周防有希 · 茶会上的淑女满分",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "The seated elders remain behind her as she turns aside with the cup."
   }
 }

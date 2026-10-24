@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_bath_blue_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 274,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_nsfw_bath_blue_solo",
     "title": "埃列什基伽勒 · 魂泉的幽蓝独奏·「今夜的日记……禁止归档」",
@@ -38,7 +38,13 @@
       "hot spring",
       "masturbation",
       "steam",
-      "blush"
+      "blush",
+      "hand between legs",
+      "floating hair",
+      "diary",
+      "blue fire",
+      "blue light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +58,7 @@
       "solo",
       "special_nsfw"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her hair floats on the water beside her, with the private diary resting nearby."
   }
 }

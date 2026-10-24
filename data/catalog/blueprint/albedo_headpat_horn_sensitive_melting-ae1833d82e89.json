@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_headpat_horn_sensitive_melting",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1299,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "albedo_headpat_horn_sensitive_melting",
     "title": "雅儿贝德 · 抚角摸头的融化娇羞",
@@ -35,7 +35,13 @@
       "headpat",
       "blush",
       "corridor",
-      "close-up"
+      "close-up",
+      "viewer hand",
+      "clasped hands",
+      "surprised",
+      "parted lips",
+      "wall lamp",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +51,7 @@
       "sensitive",
       "sweet"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Only the viewer's hand enters above her face and brushes one horn."
   }
 }

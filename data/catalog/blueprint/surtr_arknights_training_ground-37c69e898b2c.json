@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_training_ground",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 520,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手持剑，剑锋斜指地面",
     "camera": "cowboy shot, low angle, sword pointed toward the scorched floor visible",
@@ -26,7 +26,12 @@
       "chains",
       "sword",
       "training ground",
-      "from below"
+      "from below",
+      "lowered sword",
+      "smirk",
+      "scorched floor",
+      "morning light",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +42,7 @@
       "sparring"
     ],
     "timeOfDay": "清晨",
-    "title": "史尔特尔 · 演武场"
+    "title": "史尔特尔 · 演武场",
+    "animaCaption": "She lowers the sword toward the scorched floor and gives a small smirk."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_01",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1663,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cartethyia_r18_b9_01",
     "title": "卡提希娅 · 圣都王座殿白银铠甲主控跨坐 ·「漂泊者……圣洁的圣骑士，今夜只臣服于你的剑下」",
@@ -40,7 +40,10 @@
       "straddling",
       "gauntlets",
       "moonlight",
-      "from below"
+      "from below",
+      "hands on another's chest",
+      "stained glass",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -66,6 +69,7 @@
       "pointy_ears",
       "halo"
     ],
-    "identityProseOverride": "Cartethyia from Wuthering Waves, with loose long blonde hair, blue eyes, pointed ears and a halo."
+    "identityProseOverride": "Cartethyia from Wuthering Waves, with loose long blonde hair, blue eyes, pointed ears and a halo.",
+    "animaCaption": "Her gauntleted hands rest against the viewer's chest; thigh straps remain fastened."
   }
 }

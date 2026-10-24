@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_r18_b9_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1717,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "maomao_r18_b9_03",
     "title": "猫猫 · 宫女襦裙系带被药柜抽屉夹住的更衣事故 ·「痛痛痛……系带被抽屉咬死了，快帮我剪断！」",
@@ -41,7 +41,10 @@
       "medicine cabinet",
       "sunset",
       "cream long skirt",
-      "sleeve ties"
+      "sleeve ties",
+      "three-quarter rear view",
+      "hands on counter",
+      "sash caught"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -56,6 +59,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both palms brace on the counter as the sash catches in the drawer."
   }
 }

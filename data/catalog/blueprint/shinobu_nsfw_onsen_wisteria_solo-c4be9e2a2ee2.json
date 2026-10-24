@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_nsfw_onsen_wisteria_solo",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1461,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜倚池边湿身白浴衣，水下手指自抚，紫瞳失神望花影",
     "adult": true,
@@ -33,7 +33,13 @@
       "wet clothes",
       "onsen",
       "wisteria",
-      "steam"
+      "steam",
+      "reclining",
+      "hand between legs",
+      "masturbation",
+      "see through",
+      "flower shadow",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,6 +59,7 @@
       "masturbation",
       "hand between legs",
       "see-through"
-    ]
+    ],
+    "animaCaption": "She rests against the spring rim with one hand underwater, wisteria shadows crossing the soaked yukata."
   }
 }

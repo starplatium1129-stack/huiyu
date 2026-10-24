@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yumiko_library_afternoon_yakisoba_pan_blush",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1783,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yumiko_library_afternoon_yakisoba_pan_blush",
     "title": "榊由美子 · 图书室午后的炒面面包秘密",
@@ -61,11 +61,16 @@
       "purple_eyes",
       "embarrassed",
       "sunlight_through_window",
-      "detailed_background"
+      "detailed_background",
+      "both hands",
+      "wide eyes",
+      "medium close up",
+      "depth of field"
     ],
     "promptProse": "Sitting behind a tall stack of hardcover books in the secluded sun-dappled corner of the academy library, Yumiko is caught red-handed nibbling on her favorite yakisoba bread with puffed cheeks. An intense flustered blush floods her porcelain cheeks as her wide purple eyes register frantic embarrassment.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She hides behind the tall book stack with a bitten yakisoba bread held in both hands."
   }
 }

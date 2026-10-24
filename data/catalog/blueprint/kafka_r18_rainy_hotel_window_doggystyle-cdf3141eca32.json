@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_rainy_hotel_window_doggystyle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1043,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kafka_r18_rainy_hotel_window_doggystyle",
     "title": "卡芙卡 · 雨夜车厢·倾盆暴雨车窗与微透紫色蛛丝吊带",
@@ -58,10 +58,16 @@
       "reclining",
       "train interior",
       "rainy window",
-      "neon lights"
+      "neon lights",
+      "foot on seat",
+      "holding glass",
+      "amber light",
+      "full body",
+      "from side"
     ],
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One heeled foot rests on the seat edge as she holds her wine beside the rainy cabin window."
   }
 }

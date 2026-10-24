@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_nsfw_white_bed_supine_intertwined",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1318,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "全裸仰卧在纯白床榻上，双腿大开曲膝，双手与视角十指相扣，眼眸迷离泛着潮红",
     "adult": true,
@@ -36,7 +36,9 @@
       "knees up",
       "holding hands",
       "moonlight",
-      "from above"
+      "from above",
+      "interlocked fingers",
+      "looking up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -55,6 +57,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "C.C. · 纯白床榻的深情仰卧交付",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Both of the viewer's hands meet hers beside the pillow."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_pool_blue_frills",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 267,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_pool_blue_frills",
     "title": "埃列什基伽勒 · 泳池边的蓝色休暇·「冥界没有泳池……这是我偷偷造的」",
@@ -35,7 +35,12 @@
       "poolside",
       "cavern",
       "glowing",
-      "full body"
+      "full body",
+      "hands on rim",
+      "feet in water",
+      "looking at viewer",
+      "floating light orbs",
+      "blue light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +52,7 @@
     "coverageTags": [
       "daily",
       "summer"
-    ]
+    ],
+    "animaCaption": "Both hands rest on the pool rim while her lower legs remain beneath the water."
   }
 }

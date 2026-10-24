@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_moonlit_ballroom_glass_waltz_curtsy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1814,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cinderella_moonlit_ballroom_glass_waltz_curtsy",
     "title": "灰姑娘 · 月影舞池中央的冰晶礼步提裙",
@@ -62,11 +62,16 @@
       "subtle_smile",
       "regal",
       "luxurious",
-      "sparkling"
+      "sparkling",
+      "skirt hold",
+      "looking down",
+      "moonlight",
+      "glass dome"
     ],
     "promptProse": "At the center of an opulent ballroom beneath a vast moonlit glass rotunda, Cinderella executes an impeccable curtsy. Her layered silver-blue silk gown pools gracefully across the mirror-polished black marble floor, delicate crystal straps shimmering over bare alabaster shoulders as she lifts her hem with gloved hands, crimson gaze lowered in serene elegance.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her gloved hands lift the hem for a curtsy beneath the glass rotunda."
   }
 }

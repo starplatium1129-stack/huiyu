@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
     "title": "黑呆 · 冬木残垣的卑王铁槌",
@@ -35,7 +35,9 @@
       "raised arms",
       "ruins",
       "full body",
-      "low angle"
+      "low angle",
+      "standing",
+      "red lighting"
     ],
     "negativeTokens": [
       "cropped sword",
@@ -46,6 +48,7 @@
     "coverageTags": [
       "iconic",
       "combat"
-    ]
+    ],
+    "animaCaption": "Both hands raise Excalibur Morgan atop the broken pillar above the dark mud."
   }
 }

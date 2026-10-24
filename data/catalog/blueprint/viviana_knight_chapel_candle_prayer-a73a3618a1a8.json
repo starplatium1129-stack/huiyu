@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_knight_chapel_candle_prayer",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 687,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单膝跪在圣坛红毯前双手合十闭目祈祷，细剑横放膝前，千盏烛火环绕",
     "camera": "wide shot, low angle",
@@ -27,7 +27,12 @@
       "rapier",
       "cathedral",
       "low angle",
-      "wide shot"
+      "wide shot",
+      "hands joined",
+      "altar",
+      "rapier on floor",
+      "candlelight",
+      "morning light"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -44,6 +49,7 @@
       "sacred"
     ],
     "timeOfDay": "破晓黎明",
-    "title": "薇薇安娜 · 骑士圣堂中的烛光祷念"
+    "title": "薇薇安娜 · 骑士圣堂中的烛光祷念",
+    "animaCaption": "The rapier lies horizontally ahead of her joined hands."
   }
 }

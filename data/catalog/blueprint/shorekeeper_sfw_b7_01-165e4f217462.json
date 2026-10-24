@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1639,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_01",
     "title": "守岸人 · 黑海岸的潮起",
@@ -38,7 +38,12 @@
       "palm",
       "shoreline",
       "dawn",
-      "full body"
+      "full body",
+      "standing",
+      "glowing butterfly",
+      "veil lift",
+      "dawn light",
+      "water ripples"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +54,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "One palm holds the glowing butterfly while her other hand lifts the veil clear of her face."
   }
 }

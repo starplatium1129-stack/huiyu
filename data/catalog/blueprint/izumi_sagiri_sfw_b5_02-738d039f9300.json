@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1524,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_02",
     "title": "和泉纱雾 · 直播开场前的招呼练习",
@@ -37,7 +37,12 @@
       "camera",
       "stuffed bear",
       "desk",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "laughing",
+      "keyboard",
+      "drawing tablet",
+      "desk lamp"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She raises one hand toward the camera, laughing beside the bear plush and keyboard."
   }
 }

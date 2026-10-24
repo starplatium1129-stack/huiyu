@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_mansion",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 432,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rem_rezero_mansion",
     "title": "雷姆 · 宅邸女仆日常",
@@ -32,7 +32,9 @@
       "holding skirt",
       "hallway",
       "arched window",
-      "daylight"
+      "daylight",
+      "both hands",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -41,6 +43,7 @@
       "iconic"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands lift the skirt sides as she curtsies toward the approaching viewer."
   }
 }

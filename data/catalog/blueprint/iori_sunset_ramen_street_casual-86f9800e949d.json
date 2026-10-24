@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_sunset_ramen_street_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 927,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在红色路边铁栏杆上，慌张将丸子竹签藏在身后，尾巴绷直，脸颊绯红",
     "camera": "medium shot, eye level",
@@ -28,7 +28,11 @@
       "surprised",
       "street",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "holding food behind back",
+      "blush",
+      "raised tail",
+      "lantern light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +48,7 @@
       "demon_tail"
     ],
     "timeOfDay": "黄昏日落",
-    "title": "银镜伊织 · 黄昏拉面街的偶遇"
+    "title": "银镜伊织 · 黄昏拉面街的偶遇",
+    "animaCaption": "She hides the dumpling skewer behind her as her tail straightens above the railing."
   }
 }

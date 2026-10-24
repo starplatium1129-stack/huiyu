@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_train_window_earphones",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1440,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_train_window_earphones",
     "title": "加藤惠 · 傍晚通勤电车靠窗的晚霞·「耳机里……在放着我们游戏的主题曲哦」",
@@ -35,7 +35,10 @@
       "train window",
       "sunset",
       "bob cut",
-      "sitting"
+      "sitting",
+      "holding phone",
+      "looking out window",
+      "sunset light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
     "coverageTags": [
       "daily",
       "sunset"
-    ]
+    ],
+    "animaCaption": "The phone rests loosely in her hands below the train window."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_scholar_study",
-  "revision": 6,
+  "revision": 4,
   "sortOrder": 745,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_scholar_study",
     "characterId": "zhuang_fangyi_arknights",
@@ -35,7 +35,11 @@
       "route map",
       "pen",
       "desk",
-      "afternoon"
+      "afternoon",
+      "holding sketch",
+      "holding pen",
+      "looking up",
+      "afternoon light"
     ],
     "promptProse": "Zhuang Fangyi turns the simple route sketch toward the viewer, holding one paper corner flat and keeping the pen in her other hand. Afternoon light from beside the desk falls over the lines as she looks up to discuss the outing.",
     "negativeTokens": [
@@ -45,6 +49,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the paper corner flat while the other keeps the pen."
   }
 }

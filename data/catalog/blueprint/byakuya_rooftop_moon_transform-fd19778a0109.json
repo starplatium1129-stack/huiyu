@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_rooftop_moon_transform",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 832,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "变身光效环绕，星尘升起",
     "adult": false,
@@ -25,7 +25,12 @@
       "star wand",
       "magic circle",
       "full moon",
-      "wide shot"
+      "wide shot",
+      "looking at viewer",
+      "sparkles",
+      "glowing wand",
+      "moonlight",
+      "cityscape"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +45,7 @@
       "city_lights"
     ],
     "timeOfDay": "night",
-    "title": "深森白夜 · 月夜屋顶变身"
+    "title": "深森白夜 · 月夜屋顶变身",
+    "animaCaption": "Rings of stardust rise around her feet above the city skyline."
   }
 }

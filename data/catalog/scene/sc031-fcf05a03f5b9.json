@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc031",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Nene in a white chiffon gown with a blush-pink waist ribbon stands at the viewer's left and Natsume in a black satin gown with a burgundy sash at the right, each clasping the nearer hand extended into the foreground; three glowing heart-rate curves arch above them, and the rotating halo lights their faces and joined hands.",
+    "animaCaption": "Nene in white chiffon with a pink waist ribbon stands left; Natsume in black satin with a burgundy sash stands right. Each clasps the nearer foreground hand beneath three glowing heart-rate curves.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "全景",
     "category": "Active_Sync_Scenes",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "",
-    "prompt": "2girls, ayachi_nene, shiki_natsume, formal dresses, holding hands, ritual hall, dome, heart rate curves, halo, wide shot",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, formal dresses, holding hands, ritual hall, dome, heart rate curves, halo, wide shot, standing, white chiffon gown, pink waist ribbon, black satin gown, burgundy sash, tears of joy, glowing halo",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",
@@ -49,6 +49,7 @@
     "usage": [
       "协议核心"
     ],
-    "weather": "神圣"
+    "weather": "神圣",
+    "promptProse": "Nene in a white chiffon gown with a blush-pink waist ribbon stands at the viewer's left and Natsume in a black satin gown with a burgundy sash at the right, each clasping the nearer hand extended into the foreground; three glowing heart-rate curves arch above them, and the rotating halo lights their faces and joined hands."
   }
 }

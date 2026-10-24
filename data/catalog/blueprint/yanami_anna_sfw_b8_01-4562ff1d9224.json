@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1664,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_01",
     "title": "八奈见杏菜 · 食堂大份定食的满足感",
@@ -36,7 +36,11 @@
       "large meal",
       "hands together",
       "canteen",
-      "medium shot"
+      "medium shot",
+      "hands joined",
+      "bright eyes",
+      "midday light",
+      "classmates"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
       "iconic",
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "Classmates glance over from neighboring tables above the towering lunch tray."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_boyfriend_shirt_pantyhose_adjust",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1775,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nana_boyfriend_shirt_pantyhose_adjust",
     "title": "娜娜 · 穿衣镜旁的提袜白衬衫与羞恼抗议",
@@ -52,11 +52,16 @@
       "demon_tail",
       "heart_tail",
       "tsundere",
-      "morning_light"
+      "morning_light",
+      "adjusting legwear",
+      "one leg raised",
+      "off shoulder",
+      "full body"
     ],
     "promptProse": "Balancing on one foot by the dressing bench, Nana leans down with one hand to adjust her sheer black pantyhose while thrusting out her other palm to block the viewer's gaze. Her loose white shirt slips off one shoulder as she glares back with a flustered, tsundere pout.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand adjusts the pantyhose while her other palm blocks the viewer's gaze as she balances on one foot."
   }
 }

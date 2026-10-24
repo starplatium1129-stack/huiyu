@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_swimsuit_watermelon",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 908,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蹲在西瓜旁研究",
     "adult": false,
@@ -33,7 +33,9 @@
       "crouching",
       "poolside",
       "hair buns",
-      "sunlight"
+      "sunlight",
+      "holding watermelon",
+      "knife against rind"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -45,6 +47,7 @@
       "blue_archive"
     ],
     "timeOfDay": "白天",
-    "title": "杏山和纱 · 泳池边切西瓜的认真瞬间"
+    "title": "杏山和纱 · 泳池边切西瓜的认真瞬间",
+    "animaCaption": "One hand steadies the watermelon while the other aligns the plastic knife."
   }
 }

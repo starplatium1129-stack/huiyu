@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_bedroom_silk_robe",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yor_r18_bedroom_silk_robe",
     "title": "约尔·福杰 · 浴后睡袍",
@@ -36,7 +36,12 @@
       "off shoulder",
       "standing",
       "bedroom",
-      "candlelight"
+      "candlelight",
+      "wet hair",
+      "looking down",
+      "night",
+      "medium shot",
+      "from side"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +52,7 @@
     "kreaStyleHint": "r18_elegant_boudoir",
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@rella",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She lowers her gaze beside the bed as the robe slips from one shoulder after her bath."
   }
 }

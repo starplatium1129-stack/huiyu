@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_summer_beach_bikini_volleyball",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1178,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "amane_summer_beach_bikini_volleyball",
     "title": "周防天音 · 耀阳金滩的细带艳红惊艳",
@@ -37,9 +37,16 @@
       "volleyball",
       "looking back",
       "smile",
-      "full body"
+      "full body",
+      "holding ball",
+      "sweat",
+      "ocean",
+      "wind",
+      "volleyball net",
+      "sunlight"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "She balances the volleyball on one palm beside the court."
   }
 }

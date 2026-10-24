@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_apartment_couch",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 632,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "交腿靠坐，一手拿空道具弹匣，另一手留在衣料下。",
     "adult": true,
@@ -38,7 +38,11 @@
       "couch",
       "masturbation",
       "neon lights",
-      "night"
+      "night",
+      "holding magazine",
+      "television glow",
+      "window light",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -50,6 +54,7 @@
       "casual"
     ],
     "timeOfDay": "夜晚",
-    "title": "能天使 · 公寓沙发"
+    "title": "能天使 · 公寓沙发",
+    "animaCaption": "One hand balances an unloaded prop magazine while the other rests beneath her clothing."
   }
 }

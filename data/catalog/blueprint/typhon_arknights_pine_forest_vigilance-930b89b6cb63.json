@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_pine_forest_vigilance",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 697,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "typhon_arknights_pine_forest_vigilance",
     "characterId": "typhon_arknights",
@@ -36,13 +36,17 @@
       "open hand",
       "pine tree",
       "park",
-      "cowboy shot"
+      "cowboy shot",
+      "looking back",
+      "smile",
+      "dappled sunlight"
     ],
     "promptProse": "Typhon turns beside the pine tree and opens her palm to show the viewer the pinecone she found. Dappled afternoon light picks out its scales and the quiet pride in her smile.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "She opens her palm toward the viewer to display the pinecone beneath the tree."
   }
 }

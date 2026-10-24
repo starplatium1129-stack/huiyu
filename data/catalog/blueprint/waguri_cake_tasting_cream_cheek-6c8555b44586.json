@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_cake_tasting_cream_cheek",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1505,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "waguri_cake_tasting_cream_cheek",
     "title": "和栗薰子 · 蛋糕店里的第一小口",
@@ -35,7 +35,11 @@
       "cake",
       "fork",
       "cafe",
-      "medium shot"
+      "medium shot",
+      "eating cake",
+      "bright eyes",
+      "handbag",
+      "sunlight"
     ],
     "negativeTokens": [
       "shop apron"
@@ -48,6 +52,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "The cut cake slice rests beside her small handbag."
   }
 }

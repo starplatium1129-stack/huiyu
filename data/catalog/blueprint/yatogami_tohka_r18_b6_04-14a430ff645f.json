@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_04",
     "title": "夜刀神十香 · 精灵灵力逆流的床褥真情自持 ·「十香的世界……只要有士道一个人就足够了」",
@@ -42,7 +42,9 @@
       "futon",
       "tatami",
       "night",
-      "full body"
+      "full body",
+      "violet glow",
+      "high angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -66,6 +68,7 @@
       "hair_down",
       "purple_eyes"
     ],
-    "identityProseOverride": "Tohka Yatogami from Date A Live, with very long dark-purple hair worn loose and violet eyes."
+    "identityProseOverride": "Tohka Yatogami from Date A Live, with very long dark-purple hair worn loose and violet eyes.",
+    "animaCaption": "Violet spirit particles gather around the futon while her long hair spreads across the tatami."
   }
 }

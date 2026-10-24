@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_after_school_crepe_date",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1365,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asuna_after_school_crepe_date",
     "title": "结城明日奈 · 涩谷街角的可丽饼喂食·「啊——先说好，草莓最甜的部分是我的哦！」",
@@ -34,7 +34,11 @@
       "offering",
       "blush",
       "sunset",
-      "close-up"
+      "close-up",
+      "holding crepe",
+      "both hands",
+      "playful smile",
+      "shop windows"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
       "date",
       "school",
       "girlfriend"
-    ]
+    ],
+    "animaCaption": "Both hands bring the crepe toward the viewer's mouth."
   }
 }

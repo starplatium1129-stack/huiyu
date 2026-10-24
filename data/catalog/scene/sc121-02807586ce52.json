@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc121",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "On the beach-house veranda, she raises both hands to cover her chest as the wet dress clings to her, outlined by dawn light.",
+    "animaCaption": "Both hands cover her chest as she stands on the beach-house veranda.",
     "auditRevision": "careful-batch04-2026-08-27",
     "camera": "主观逆光近景特写",
     "category": "日常/同人/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, ayachi_nene, scalloped hem, small bow at waist, nene_r18, wet pink dress, see-through, no underwear, covering chest, wet hair, barefoot, blush, veranda, ocean, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, ayachi_nene, scalloped hem, small bow at waist, nene_r18, wet pink dress, see-through, no underwear, covering chest, wet hair, barefoot, blush, veranda, ocean, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>, raised arms, standing",
     "rating": "R18",
     "season": "夏",
     "story": "【成年 After Story · 宁宁 · 湿透连衣裙完全真空】黎明破晓的海滨度假木屋边缘。清晨温柔的海风徐徐吹过，宁宁只穿着一件极其轻薄的粉色夏日无袖连衣裙伫立在露天浴池旁。因为早晨在水边的嬉戏，裙子的布料被清泉完全打透，半透明死死贴紧在她完美毫无瑕疵的娇躯线条上，里面真空未着寸缕的傲然痕迹与饱满乳沟在朝阳的逆光勾勒下近乎全透明！她面红耳赤地用双手护在胸前，头顶的呆毛害羞得疯狂颤动卷曲——「啊啊啊！裙子怎么变透明了啦！大色狼不准看！再看我就用魔法把你变成章鱼！」",
@@ -47,6 +47,7 @@
       "壁纸级",
       "成人向"
     ],
-    "weather": "破晓海风徐徐"
+    "weather": "破晓海风徐徐",
+    "promptProse": "On the beach-house veranda, she raises both hands to cover her chest as the wet dress clings to her, outlined by dawn light."
   }
 }

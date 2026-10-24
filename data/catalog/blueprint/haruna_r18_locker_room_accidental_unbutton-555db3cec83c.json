@@ -4,7 +4,7 @@
   "revision": 2,
   "sortOrder": 1766,
   "createdAt": null,
-  "updatedAt": "2026-10-21T13:14:34.295Z",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruna_r18_locker_room_accidental_unbutton",
     "title": "西连寺春菜 · 夕阳更衣室的慌乱心跳",
@@ -46,11 +46,16 @@
       "heavy_blush",
       "tears_in_eyes",
       "sunset_light",
-      "shadows"
+      "shadows",
+      "arms across chest",
+      "open locker",
+      "looking up",
+      "blinds shadows"
     ],
     "promptProse": "Backed against a tall metal locker with its door slightly open, Haruna presses both arms across her front in panicked modesty over her opened shirt. Slatted blinds cast horizontal sunset stripes across her collarbone and neck as she looks up toward the viewer standing by the door.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She looks toward the doorway with both arms across her opened shirt."
   }
 }

@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 969,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在地板标记旁喝水，看着镜中自己重新鼓劲。",
     "adult": false,
@@ -29,7 +29,13 @@
       "mirror",
       "reflection",
       "sitting on floor",
-      "water bottle"
+      "water bottle",
+      "drinking",
+      "tired",
+      "determined",
+      "floor tape",
+      "studio lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -47,6 +53,7 @@
     ],
     "timeOfDay": "日间",
     "title": "有马加奈 · 排练室镜子前的独白",
-    "allowRepeatedSubject": true
+    "allowRepeatedSubject": true,
+    "animaCaption": "She drinks beside the floor markings and studies her single corresponding reflection."
   }
 }

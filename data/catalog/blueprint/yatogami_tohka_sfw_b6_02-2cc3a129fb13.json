@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_02",
     "title": "夜刀神十香 · 第一次的章鱼烧",
@@ -35,7 +35,13 @@
       "takoyaki",
       "bamboo pick",
       "festival",
-      "medium shot"
+      "medium shot",
+      "holding tray",
+      "blowing",
+      "steam",
+      "puffed cheeks",
+      "lantern light",
+      "night"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the tray while the other holds the pick as she blows on the hot bite."
   }
 }

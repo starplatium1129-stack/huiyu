@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_confessional_pew_bent",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 238,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_nsfw_confessional_pew_bent",
     "title": "圣女贞德 · 告解室长椅的更衣绑带卡死事故·「神父大人……这绝不是故意展现的放肆……」",
@@ -44,7 +44,8 @@
       "masturbation",
       "confessional",
       "bench",
-      "candlelight"
+      "candlelight",
+      "corset ties"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -56,6 +57,7 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
-    ]
+    ],
+    "animaCaption": "One hand reaches for the tangled corset ties while the other remains beneath her skirt."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_behemoth_hunt_bow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 696,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "typhon_arknights_behemoth_hunt_bow",
     "characterId": "typhon_arknights",
@@ -35,13 +35,19 @@
       "bow beside the door",
       "entryway",
       "evening",
-      "medium shot"
+      "medium shot",
+      "holding cup",
+      "both hands",
+      "steam",
+      "smile",
+      "warm lighting"
     ],
     "promptProse": "Typhon offers a steaming cup toward the viewer, one hand around the cup and the other supporting its base. Her bow rests by the door where the warm entryway light meets the last cool dusk.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the cup while the other supports its base as she offers it toward the viewer."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_office_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 845,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "深夜独自整理文件",
     "adult": false,
@@ -31,7 +31,12 @@
       "Hina",
       "documents",
       "office",
-      "medium shot"
+      "medium shot",
+      "looking up",
+      "relieved",
+      "tired",
+      "night",
+      "cool lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -44,6 +49,7 @@
       "disciplinary_committee"
     ],
     "timeOfDay": "深夜",
-    "title": "空崎日奈 · 风纪委员会深夜"
+    "title": "空崎日奈 · 风纪委员会深夜",
+    "animaCaption": "She looks up from the midnight paperwork with relief as her companion arrives."
   }
 }

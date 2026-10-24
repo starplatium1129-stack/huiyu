@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_gym_locker_room_flat_chest_pout",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1271,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "左手压住长凳上备用制服的袖口，右手把软尺拉到肩缝，低头鼓腮检查袖长。",
     "camera": "medium shot, eye level, closed sports outfit and measuring hands on the bench visible",
@@ -27,7 +27,12 @@
       "bench",
       "pout",
       "locker room",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "looking down",
+      "measuring sleeve",
+      "hands on tape",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -60,6 +65,7 @@
     ],
     "identityProseOverride": "Nana Asta Deviluke from To LOVE-Ru, with long pink twintails, purple-pink eyes and a black spade-heart tail.",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her left hand pins the blouse cuff to the bench while her right stretches the tape to its shoulder seam."
   }
 }

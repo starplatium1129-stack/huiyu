@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_r18_boudoir_lingerie",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 491,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "aisha_greyrat_r18_boudoir_lingerie",
     "title": "爱夏·闺房酒红薄绡",
@@ -40,7 +40,10 @@
       "topless",
       "panties aside",
       "candlelight",
-      "open crimson lace top"
+      "open crimson lace top",
+      "lying on side",
+      "bent knee",
+      "candelabra"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],
@@ -52,6 +55,7 @@
     "negativeTokens": [],
     "coverageTags": [
       "intimate"
-    ]
+    ],
+    "animaCaption": "Her right hand draws the fabric aside; the robe stays at her waist."
   }
 }

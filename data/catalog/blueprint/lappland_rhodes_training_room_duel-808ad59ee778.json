@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_rhodes_training_room_duel",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 671,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "穿宽松白T恤蜷缩在沙发上求摸头顺毛，白狼耳舒适微耷，双眼微眯神态满足放松",
     "camera": "medium shot, seated eye level, first-person view",
@@ -25,7 +25,10 @@
       "curled up",
       "sofa",
       "headpat",
-      "lounge"
+      "lounge",
+      "half-closed eyes",
+      "viewer hand",
+      "window shadows"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -55,6 +58,7 @@
       "sharp_teeth",
       "arknights"
     ],
-    "identityProseOverride": "Lappland from Arknights, a Lupo with long smooth silver-white hair worn loose, wolf ears, a bushy tail, grey eyes and sharp teeth."
+    "identityProseOverride": "Lappland from Arknights, a Lupo with long smooth silver-white hair worn loose, wolf ears, a bushy tail, grey eyes and sharp teeth.",
+    "animaCaption": "Only the viewer's hand enters to stroke the base of one wolf ear."
   }
 }

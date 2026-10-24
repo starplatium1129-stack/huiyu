@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1525,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_05",
     "title": "和泉纱雾 · 第一次自己出门买书",
@@ -36,7 +36,12 @@
       "shopping bag",
       "bookstore",
       "doorway",
-      "medium shot"
+      "medium shot",
+      "holding bag",
+      "walking",
+      "tense",
+      "daylight",
+      "street"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +52,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She grips the bag handles and takes a step out of the bookstore into daylight."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_rainy_storage_room_gaze",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 361,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "iroha_rainy_storage_room_gaze",
     "title": "一色彩羽 · 雨天收好的活动横幅",
@@ -37,7 +37,10 @@
       "banner",
       "storage room",
       "rain",
-      "medium shot"
+      "medium shot",
+      "hugging banner",
+      "concentrating",
+      "overhead lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The rolled damp banner rests across her knees beside the stacked equipment."
   }
 }

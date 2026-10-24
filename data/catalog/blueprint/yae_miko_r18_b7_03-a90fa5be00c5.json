@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_r18_b7_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yae_miko_r18_b7_03",
     "title": "八重神子 · 神社更衣室朱红礼袍系带被狐尾缠死的事故 ·「这笨尾巴……小家伙，还不快来帮本宫司解开」",
@@ -40,7 +40,11 @@
       "vanity",
       "looking back",
       "sunset",
-      "wide shot"
+      "wide shot",
+      "hands on vanity",
+      "open clothes",
+      "tangled cords",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -57,6 +61,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands brace on the vanity as her tails knot the robe cords and draw its bodice open."
   }
 }

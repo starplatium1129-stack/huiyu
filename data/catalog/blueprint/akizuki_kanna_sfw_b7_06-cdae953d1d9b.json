@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1157,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "微笑着擦拭吧台，打开的木门让清晨阳光照进咖啡馆",
     "adult": false,
@@ -30,7 +30,12 @@
       "counter",
       "open door",
       "morning",
-      "medium shot"
+      "medium shot",
+      "cleaning cloth",
+      "chair",
+      "vase",
+      "smile",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -47,6 +52,7 @@
       "medium_shot"
     ],
     "timeOfDay": "清晨",
-    "title": "明月栞那 · 晨间开店前的呼吸"
+    "title": "明月栞那 · 晨间开店前的呼吸",
+    "animaCaption": "Morning sunlight enters through the open cafe door."
   }
 }

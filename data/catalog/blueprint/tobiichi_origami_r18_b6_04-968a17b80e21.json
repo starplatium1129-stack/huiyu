@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_r18_b6_04",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 103,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tobiichi_origami_r18_b6_04",
     "title": "鸢一折纸 · 监听士道心跳床褥深处的极致狂热独奏 ·「听着士道的呼吸声……手指就完全停不下来」",
@@ -40,7 +40,9 @@
       "masturbation",
       "wooden floor",
       "surveillance monitors",
-      "cowboy shot"
+      "cowboy shot",
+      "holding headphones",
+      "green display light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +57,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand holds the headphone cup while green monitor light crosses the floor."
   }
 }

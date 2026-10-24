@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_veranda_rain",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 574,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独坐雨夜回廊，一手持墨碟、一手沿湿袍探向腿间，水墨游鱼环绕",
     "adult": true,
@@ -33,7 +33,12 @@
       "sitting",
       "ink dish",
       "hand between legs",
-      "rain"
+      "rain",
+      "bamboo mat",
+      "wooden pillar",
+      "night",
+      "lantern",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -45,6 +50,7 @@
       "sitting"
     ],
     "timeOfDay": "雨夜",
-    "title": "夕 · 雨夜廊下"
+    "title": "夕 · 雨夜廊下",
+    "animaCaption": "One hand holds the ink dish; painted black koi spread across the wet floorboards."
   }
 }

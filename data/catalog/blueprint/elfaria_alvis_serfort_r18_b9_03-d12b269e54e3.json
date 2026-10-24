@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_r18_b9_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1697,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_r18_b9_03",
     "title": "艾尔菲利亚 · 礼装被冰晶冻住拉链的更衣事故 ·「威尔快来……冰之精灵恶作剧把拉链冻结了」",
@@ -42,7 +42,13 @@
       "vanity",
       "looking back",
       "blush",
-      "ice"
+      "ice",
+      "frozen zipper",
+      "hand on vanity",
+      "reaching behind",
+      "frost",
+      "window light",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -57,6 +63,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand braces on the crystal vanity while the other reaches behind for the frozen zipper."
   }
 }

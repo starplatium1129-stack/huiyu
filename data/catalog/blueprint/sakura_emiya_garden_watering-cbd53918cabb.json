@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_emiya_garden_watering",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 185,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakura_emiya_garden_watering",
     "title": "间桐樱 · 卫宫家庭院",
@@ -37,12 +37,18 @@
       "Sakura",
       "watering can",
       "garden",
-      "medium shot"
+      "medium shot",
+      "watering flowers",
+      "both hands",
+      "gentle smile",
+      "water droplets",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands support the watering can as she smiles toward the viewer above the sunlit spray."
   }
 }

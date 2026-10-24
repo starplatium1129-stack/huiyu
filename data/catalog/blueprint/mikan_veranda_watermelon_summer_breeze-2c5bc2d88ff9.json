@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_veranda_watermelon_summer_breeze",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1777,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "mikan_veranda_watermelon_summer_breeze",
     "title": "结城美柑 · 休日午后的庭院清凉西瓜",
@@ -49,11 +49,14 @@
       "breeze",
       "summer_light",
       "dappled_sunlight",
-      "greenery"
+      "greenery",
+      "both hands",
+      "medium shot"
     ],
     "promptProse": "Seated on the wooden porch of the traditional garden veranda with her bare legs swinging leisurely, Mikan holds a fresh crescent slice of red watermelon in both hands. Summer breeze stirs her brown side bun as she smiles contentedly in the dappled garden sunshine.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands hold the crescent watermelon slice as her legs swing below the veranda."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_pistol_shadow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 882,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自握枪凝视窗外",
     "adult": false,
@@ -32,7 +32,10 @@
       "pistol",
       "window",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "holding pistol",
+      "backlighting",
+      "side lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -44,6 +47,7 @@
       "shadow"
     ],
     "timeOfDay": "黄昏",
-    "title": "调月莉音 · 夕阳下的决意"
+    "title": "调月莉音 · 夕阳下的决意",
+    "animaCaption": "She holds the pistol close at the window and reacts to the teacher's approach."
   }
 }

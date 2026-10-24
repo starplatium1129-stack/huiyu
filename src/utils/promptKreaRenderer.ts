@@ -191,7 +191,7 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   const outfit = outfitPhrases(plan)
   const consumedOutfitKey = !plan.outfitProse
     ? Object.values(CANONICAL_OUTFITS).find(outfit => outfitKeys.has(outfit.tags[0]))?.tags[0] : undefined
-  const authoredProse = plan.sceneProse || sanitizeKreaProse(plainEnglish(plan.scene?.animaCaption))
+  const authoredProse = plan.sceneProse || sanitizeKreaProse(plainEnglish(plan.scene?.promptProse ?? plan.scene?.animaCaption))
 
   const action: string[] = []
   const artists = [...plan.artists].map(token => proseToken(token.replace(/^@/, '')))

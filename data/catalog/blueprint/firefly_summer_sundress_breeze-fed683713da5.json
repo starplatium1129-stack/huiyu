@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_summer_sundress_breeze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1870,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "firefly_summer_sundress_breeze",
     "characterId": "firefly_hsr",
@@ -27,7 +27,10 @@
       "radiant smile",
       "clear sky",
       "full body",
-      "holding skirt"
+      "holding skirt",
+      "walking",
+      "sunlight",
+      "water reflection"
     ],
     "sceneTags": [
       "water",
@@ -43,6 +46,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her right hand steadies the hat; her left gathers the sundress hem."
   }
 }

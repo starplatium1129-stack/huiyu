@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_r18_b7_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 308,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chloe_von_einzbern_r18_b7_04",
     "title": "克洛伊 · 城堡天鹅绒床铺上的极乐补魔独奏 ·「把大哥哥的魔力……全都吸进小黑的最深处」",
@@ -42,7 +42,12 @@
       "arched back",
       "masturbation",
       "sweat",
-      "moonlight"
+      "moonlight",
+      "red velvet",
+      "dark skin",
+      "hand between legs",
+      "Gothic window",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +62,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her hair spreads across scarlet velvet beneath the Gothic window's moonlight."
   }
 }

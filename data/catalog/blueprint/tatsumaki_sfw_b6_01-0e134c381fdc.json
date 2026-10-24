@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1583,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_01",
     "title": "战栗的龙卷 · 英雄协会的蔑视",
@@ -35,7 +35,10 @@
       "Tatsumaki",
       "floating",
       "meeting room",
-      "medium shot"
+      "medium shot",
+      "crossed arms",
+      "unimpressed",
+      "office lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +50,7 @@
       "iconic",
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She hovers above the seated executives while reacting impatiently to their proposal."
   }
 }

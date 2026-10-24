@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_glasses_lounge",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 207,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -42,7 +42,10 @@
       "kneeling",
       "leaning forward",
       "cushion",
-      "sofa"
+      "sofa",
+      "adult",
+      "forearms on cushion",
+      "window light"
     ],
     "recommendedSize": "1536x1152",
     "outfitId": "lounge_cardigan",
@@ -52,6 +55,7 @@
     "nsfwProse": "",
     "coverageTags": [
       "intimate"
-    ]
+    ],
+    "animaCaption": "Both forearms brace on the cushion beneath the broad lounge windows."
   }
 }

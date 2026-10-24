@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_armor_workshop",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 576,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单膝跪地调试装甲关节",
     "camera": "medium shot",
@@ -27,7 +27,11 @@
       "wrench",
       "power armor",
       "toolbox",
-      "workshop"
+      "workshop",
+      "holding wrench",
+      "one knee",
+      "work light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
     "timeOfDay": "白天",
     "title": "泥岩 · 装甲整备",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand fits the wrench into the empty armor's knee joint while the other steadies it."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_apartment_morning_cigarette_couch",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1098,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "赤足抱膝蜷坐在旧皮沙发上抽烟，神情清冷疏离，烟圈在晨光中升腾",
     "camera": "medium shot, eye-level, intimate atmospheric realism",
@@ -25,7 +25,13 @@
       "hugging knees",
       "cigarette",
       "sofa",
-      "morning"
+      "morning",
+      "holding cigarette",
+      "barefoot",
+      "smoke",
+      "window blinds",
+      "striped light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +46,7 @@
       "sunlight_rays"
     ],
     "timeOfDay": "清晨",
-    "title": "露西 · 安全屋清晨的抱膝浅思"
+    "title": "露西 · 安全屋清晨的抱膝浅思",
+    "animaCaption": "One arm hugs her knees while her other hand holds the cigarette above the sofa."
   }
 }

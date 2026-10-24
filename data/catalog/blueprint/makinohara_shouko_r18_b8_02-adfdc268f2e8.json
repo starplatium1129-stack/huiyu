@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_r18_b8_02",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makinohara_shouko_r18_b8_02",
     "title": "牧之原翔子 · 露天海风汤池的水光湿身 ·「被海水与温水包围……心脏跳动得好真实」",
@@ -40,7 +40,12 @@
       "hand between legs",
       "onsen",
       "ocean",
-      "sunset"
+      "sunset",
+      "reclining",
+      "teary eyes",
+      "light smile",
+      "water reflection",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +60,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She rests against the seaside spring rim as sunset reflects from the ocean."
   }
 }

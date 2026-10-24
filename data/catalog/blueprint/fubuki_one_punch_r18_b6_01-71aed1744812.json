@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_01",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1603,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_01",
     "title": "吹雪 · 吹雪组总部沙发皮草大衣主控跨坐 ·「加入吹雪组的最高阶待遇……今晚只破例赋予你」",
@@ -43,7 +43,10 @@
       "couch",
       "office",
       "night",
-      "from below"
+      "from below",
+      "hands on shoulders",
+      "firelight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,6 +61,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands rest on the viewer's shoulders while the lowered dress gathers beneath her coat."
   }
 }

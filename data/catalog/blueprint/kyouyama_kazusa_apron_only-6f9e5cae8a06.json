@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_apron_only",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 865,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "只穿围裙慌乱遮掩",
     "adult": true,
@@ -33,9 +33,12 @@
       "solo",
       "adult Kazusa",
       "naked apron",
-      "holding clothes",
       "blush",
-      "changing room"
+      "changing room",
+      "hands on apron",
+      "looking at viewer",
+      "flustered",
+      "warm lamp"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -46,6 +49,7 @@
       "intimate"
     ],
     "timeOfDay": "放学后",
-    "title": "杏山和纱 · 甜点部更衣室·裸身围裙的害羞契约"
+    "title": "杏山和纱 · 甜点部更衣室·裸身围裙的害羞契约",
+    "animaCaption": "Both hands secure the apron edge as she turns toward the unexpected visitor."
   }
 }

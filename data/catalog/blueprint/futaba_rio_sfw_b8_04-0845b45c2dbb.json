@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 61,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_04",
     "title": "双叶理央 · 物理实验室的白色誓约",
@@ -36,7 +36,11 @@
       "blue flowers",
       "graduated cylinder",
       "laboratory",
-      "cowboy shot"
+      "cowboy shot",
+      "both hands",
+      "looking at viewer",
+      "daylight",
+      "task lamp"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
       "iconic",
       "bridal",
       "daily"
-    ]
+    ],
+    "animaCaption": "Her glasses and veil rest on the bench beside the flower-filled cylinder."
   }
 }

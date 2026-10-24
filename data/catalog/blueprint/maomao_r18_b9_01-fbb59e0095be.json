@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_r18_b9_01",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1715,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "maomao_r18_b9_01",
     "title": "猫猫 · 翡翠宫后宫药室长桌汉服主控跨坐 ·「壬氏大人……这是为了验证春药药效的必须步骤」",
@@ -41,7 +41,11 @@
       "desk",
       "from below",
       "cream long skirt",
-      "sleeve ties"
+      "sleeve ties",
+      "sitting astride",
+      "open hanfu",
+      "pharmacy lamp",
+      "jars"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +61,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Her companion remains outside the frame beside the medicine desk."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_graveyard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "frieren_graveyard",
     "title": "芙莉莲 · 墓地回忆",
@@ -37,7 +37,10 @@
       "wildflowers",
       "cemetery",
       "morning mist",
-      "medium shot"
+      "medium shot",
+      "hand on gravestone",
+      "holding cloak",
+      "morning light"
     ],
     "negativeTokens": [
       "bouquet"
@@ -46,6 +49,7 @@
     "outfitId": "travel_clothes",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "One hand rests on Himmel's memorial while the other holds her cloak."
   }
 }

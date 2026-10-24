@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_park_bench_script_reading",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1879,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chizuru_park_bench_script_reading",
     "characterId": "mizuhara_chizuru",
@@ -27,7 +27,9 @@
       "glasses",
       "dappled sunlight",
       "trees",
-      "cowboy shot"
+      "cowboy shot",
+      "looking up",
+      "earnest expression"
     ],
     "sceneTags": [
       "park",
@@ -44,6 +46,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She tucks her hair behind one ear while holding the script."
   }
 }

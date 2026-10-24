@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_autumn_park_falling_leaves_date",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1091,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cheshire_autumn_park_falling_leaves_date",
     "title": "柴郡 · 枫林小径的红叶暖意",
@@ -39,10 +39,17 @@
       "plaid scarf",
       "linked arms",
       "maple leaves",
-      "autumn"
+      "autumn",
+      "walking",
+      "leaning",
+      "falling leaves",
+      "sunset",
+      "dappled sunlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She holds her companion's arm and leans toward their shoulder while watching the falling leaves."
   }
 }

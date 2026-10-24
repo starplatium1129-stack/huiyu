@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_painting_studio",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 567,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "盘坐在宣纸中央，手持毛笔悬停沉思，墨龙与山峦从纸面逸出",
     "camera": "wide shot, eye level",
@@ -28,7 +28,12 @@
       "crossed legs",
       "brush",
       "rice paper",
-      "ink dragons"
+      "ink dragons",
+      "holding brush",
+      "mountains",
+      "cyan lighting",
+      "gold leaf",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +46,7 @@
       "black_hair"
     ],
     "timeOfDay": "夜晚",
-    "title": "夕 · 泼墨画卷·万千水墨腾空起"
+    "title": "夕 · 泼墨画卷·万千水墨腾空起",
+    "animaCaption": "Her brush hovers above the paper as ink dragons rise from its strokes."
   }
 }

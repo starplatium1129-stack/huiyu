@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_sweets_kitchen",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 855,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "系围裙搅拌面糊",
     "adult": false,
@@ -32,7 +32,11 @@
       "batter",
       "mixing bowl",
       "kitchen",
-      "afternoon"
+      "afternoon",
+      "whisking",
+      "viewer hand",
+      "flour on cheek",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -45,6 +49,7 @@
     ],
     "timeOfDay": "午后",
     "title": "杏山和纱 · 甜点部厨房",
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "The off-frame viewer's hand steadies the bowl as she whisks the batter."
   }
 }

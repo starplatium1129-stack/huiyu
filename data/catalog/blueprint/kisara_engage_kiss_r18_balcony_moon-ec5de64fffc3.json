@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_r18_balcony_moon",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 514,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kisara_engage_kiss_r18_balcony_moon",
     "title": "木更 · 阳台月色",
@@ -38,7 +38,10 @@
       "balcony",
       "moonlight",
       "warm light",
-      "thin straps"
+      "thin straps",
+      "night",
+      "medium shot",
+      "side view"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +52,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@xinzoruo",
     "outfitId": "sheer_lingerie",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She looks back from the railing, warm room light reaching her face from inside."
   }
 }

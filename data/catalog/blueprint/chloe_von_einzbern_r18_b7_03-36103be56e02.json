@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_r18_b7_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 307,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chloe_von_einzbern_r18_b7_03",
     "title": "克洛伊 · 成人研修院旧泳装拉伸崩裂的更衣事故 ·「呀！泳衣胸口崩线了……士郎快用嘴帮我挡住♪」",
@@ -38,7 +38,11 @@
       "topless",
       "bent over",
       "looking back",
-      "wink"
+      "wink",
+      "hands on bench",
+      "dark skin",
+      "fluorescent lighting",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -53,6 +57,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands brace on the locker bench as she looks back after the swimsuit seam splits."
   }
 }

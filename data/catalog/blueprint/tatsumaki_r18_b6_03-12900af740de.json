@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1601,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_03",
     "title": "战栗的龙卷 · 高叉黑裙被念动风压撕扯的走光事故 ·「看什么看！……再敢往这里盯一秒钟，直接把你扭成麻花！」",
@@ -37,7 +37,11 @@
       "bent over",
       "looking back",
       "observation deck",
-      "sunset"
+      "sunset",
+      "hands on window frame",
+      "angry",
+      "smoke",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -54,6 +58,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The gown splits at both sides to the underarms while its front still covers her chest."
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc069",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She holds the umbrella tilted toward the viewer with one hand and links her free arm through theirs; streetlight glints on the rain at her damp outer shoulder.",
+    "animaCaption": "She tilts the umbrella toward the viewer with one hand and links her free arm through theirs.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "伞下第一人称近景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas",
-    "prompt": "1girl, shiki_natsume, navy single button blazer, burgundy piping, ivory blouse, umbrella, arm in arm, looking away, blush, rain, street, night, close up",
+    "prompt": "1girl, shiki_natsume, navy single button blazer, burgundy piping, ivory blouse, umbrella, arm in arm, looking away, blush, rain, street, night, close up, holding umbrella, wet shoulder, streetlamp",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 共伞回家路的半步距离】夏夜雨势渐大，夏目把伞往你这边倾斜，自己一侧的肩膀却被打湿。你把她拉近，她先皱眉说走路不方便，手臂却自然挽得更紧。路灯在积水里拉出长长倒影——「靠近一点确实不会淋到。这个结论只在伞太小的时候成立……到家之前都别松开。」",
@@ -45,6 +45,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "雨"
+    "weather": "雨",
+    "promptProse": "She holds the umbrella tilted toward the viewer with one hand and links her free arm through theirs; streetlight glints on the rain at her damp outer shoulder."
   }
 }

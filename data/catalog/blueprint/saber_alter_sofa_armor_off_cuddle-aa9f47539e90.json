@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_sofa_armor_off_cuddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 224,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "saber_alter_sofa_armor_off_cuddle",
     "title": "黑呆 · 卸甲依偎的沉静温存",
@@ -36,7 +36,10 @@
       "cuddling",
       "sofa",
       "lamplight",
-      "medium shot"
+      "medium shot",
+      "closed eyes",
+      "hands on lap",
+      "side view"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
       "peaceful",
       "cuddle"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She rests against her clothed companion, hands folded over her abdomen, discarded armor against the wall."
   }
 }

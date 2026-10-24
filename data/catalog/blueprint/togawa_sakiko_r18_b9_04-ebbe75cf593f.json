@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_r18_b9_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1761,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "togawa_sakiko_r18_b9_04",
     "title": "丰川祥子 · 破旧公寓单薄床褥上的崩溃绝顶独奏 ·「把丰川祥子的一切彻底夺走吧……已经什么都无所谓了……」",
@@ -43,7 +43,8 @@
       "futon",
       "tatami",
       "streetlight",
-      "night"
+      "night",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,6 +59,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her indigo hair spreads over the tatami beside the worn futon and paper window."
   }
 }

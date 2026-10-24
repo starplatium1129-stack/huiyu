@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_school",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 508,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kisara_school",
     "title": "木更 · 学校日常",
@@ -30,11 +30,15 @@
       "turning",
       "hands behind back",
       "school hallway",
-      "medium shot"
+      "medium shot",
+      "playful smile",
+      "sunlight",
+      "students in background"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "school_uniform",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She turns toward the viewer with her hands behind her back."
   }
 }

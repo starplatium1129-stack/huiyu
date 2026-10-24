@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_blizzard_shroud_magdalene_exorcism",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 209,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_blizzard_shroud_magdalene_exorcism",
     "title": "卡莲 · 暴雪教会的抹大拉圣骸布",
@@ -41,7 +41,13 @@
       "Shroud of Magdalene",
       "raised hand",
       "blizzard",
-      "night"
+      "night",
+      "church steps",
+      "glowing cloth",
+      "red glow",
+      "wind",
+      "cowboy shot",
+      "from below"
     ],
     "negativeTokens": [
       "fire",
@@ -54,6 +60,7 @@
       "combat"
     ],
     "adult": true,
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "The Shroud crosses the foreground from her raised hand toward the creature below the steps."
   }
 }

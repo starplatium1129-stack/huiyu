@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_record_store",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1830,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_ryo_record_store",
     "characterId": "yamada_ryo",
@@ -25,7 +25,10 @@
       "album cover",
       "drinking through straw",
       "vintage shop",
-      "medium shot"
+      "medium shot",
+      "holding record",
+      "iced coffee",
+      "warm lighting"
     ],
     "sceneTags": [
       "record_store",
@@ -41,6 +44,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the record sleeve while she sips iced coffee through its straw."
   }
 }

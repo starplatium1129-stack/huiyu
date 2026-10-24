@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 63,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_06",
     "title": "双叶理央 · 书店科学区的新刊",
@@ -38,7 +38,11 @@
       "shopping basket",
       "bookstore",
       "profile",
-      "medium shot"
+      "medium shot",
+      "holding open book",
+      "finger on page",
+      "focused",
+      "shop light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One finger marks the chapter above the paperback waiting in her basket."
   }
 }

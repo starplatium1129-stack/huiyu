@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_moon_roof",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 625,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "跪在屋顶挎包旁，一手留住风中掀动的信纸。",
     "adult": true,
@@ -36,7 +36,11 @@
       "female masturbation",
       "feathers",
       "rooftop",
-      "moonlight"
+      "moonlight",
+      "satchel",
+      "wind",
+      "neon rim light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -51,6 +55,7 @@
       "wind"
     ],
     "timeOfDay": "深夜",
-    "title": "羽毛笔 · 屋顶月夜"
+    "title": "羽毛笔 · 屋顶月夜",
+    "animaCaption": "One hand catches the windblown letters beside her satchel on the roof."
   }
 }

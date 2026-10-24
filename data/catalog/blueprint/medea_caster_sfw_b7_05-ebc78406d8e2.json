@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 293,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_05",
     "title": "美狄亚 · 魔术师的海滨玻璃瓶",
@@ -37,7 +37,12 @@
       "bottle",
       "shells",
       "sea glass",
-      "tide pool"
+      "tide pool",
+      "holding bottle",
+      "magic circle",
+      "smile",
+      "sunlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +54,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "One hand holds the bottle while the other lowers sea glass into the faintly glowing seawater inside."
   }
 }

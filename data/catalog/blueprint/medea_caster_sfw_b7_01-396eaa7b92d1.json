@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 289,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_01",
     "title": "美狄亚 · 柳洞寺厨房的手作料理",
@@ -37,7 +37,14 @@
       "solo",
       "medea_(caster)_(fate)",
       "cooking spoon",
-      "temple kitchen"
+      "temple kitchen",
+      "tasting",
+      "holding spoon",
+      "pot",
+      "tied sleeves",
+      "focused",
+      "morning light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +55,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "She lifts the spoon to taste the dish, her tied sleeves held clear of the pot."
   }
 }

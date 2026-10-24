@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_nsfw_tatami_pinned_wrists_prone",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1054,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sparkle_nsfw_tatami_pinned_wrists_prone",
     "title": "花火 · 榻榻米和风短裙半褪的更衣自抚·「笨、笨蛋……才没有在想色色的事情呢」",
@@ -40,7 +40,9 @@
       "tatami",
       "moonlight",
       "wide shot",
-      "kneeling"
+      "kneeling",
+      "pov",
+      "dutch angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -60,6 +62,7 @@
       "masturbation",
       "panties aside",
       "hand between legs"
-    ]
+    ],
+    "animaCaption": "One hand and forearm support her on the tatami as she looks back through shoji moonlight."
   }
 }

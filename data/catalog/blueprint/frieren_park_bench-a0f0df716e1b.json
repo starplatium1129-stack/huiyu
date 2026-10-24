@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_park_bench",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 112,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "frieren_park_bench",
     "title": "芙莉莲 · 公园长椅",
@@ -39,13 +39,17 @@
       "park",
       "dappled sunlight",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "holding staff",
+      "sitting",
+      "leaf shadows"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her arms cradle the staff while she dozes on the bench."
   }
 }

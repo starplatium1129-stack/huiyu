@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_monowire_combat_alley_dash",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1103,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "极速滑铲突进甩出青蓝单分子线切裂敌机，火花在暴雨中炸裂，眼神凌厉绝杀",
     "camera": "full body, low angle, sliding legs and monowire strike visible",
@@ -28,7 +28,10 @@
       "sparks",
       "alley",
       "rain",
-      "from below"
+      "from below",
+      "puddles",
+      "cyan glow",
+      "full body"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -43,6 +46,7 @@
       "wet_concrete"
     ],
     "timeOfDay": "深夜",
-    "title": "露西 · 赛博暗巷的单分子线截杀"
+    "title": "露西 · 赛博暗巷的单分子线截杀",
+    "animaCaption": "The wire extends from her right wrist through the drone ahead as she slides across the wet alley."
   }
 }

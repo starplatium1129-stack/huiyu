@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_06",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1680,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_06",
     "title": "橘美花莉 · 巧克力盒上的蝴蝶结",
@@ -39,7 +39,10 @@
       "ribbon on chocolate box",
       "chocolate box",
       "table",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "concentrating",
+      "afternoon light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She reties the chocolate-box ribbon until its ends hang evenly."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_underworld_throne_lancer",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 264,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_underworld_throne_lancer",
     "title": "埃列什基伽勒 · 冥界王座的孤独女王·「这里……就是我的全部国土」",
@@ -35,7 +35,11 @@
       "throne",
       "spear",
       "blue fire",
-      "wide shot"
+      "wide shot",
+      "sitting upright",
+      "holding spear",
+      "hand on armrest",
+      "soul fire"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +52,7 @@
       "official_default",
       "iconic",
       "signature"
-    ]
+    ],
+    "animaCaption": "One hand steadies the spear on the floor while the other rests on the throne arm."
   }
 }

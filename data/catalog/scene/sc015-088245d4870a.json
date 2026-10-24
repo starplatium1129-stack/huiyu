@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc015",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She slides the exam sheet toward the viewer and points to one problem with a worried expression.",
+    "animaCaption": "She slides the exam sheet toward the viewer, pointing to one problem.",
     "camera": "半身中景",
     "category": "校园",
     "char": "nene",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, sitting, pointing, paper, desk, classroom, window light, medium shot",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, sitting, pointing, paper, desk, classroom, window light, medium shot, exam paper, worried, blush",
     "rating": "All",
     "season": "秋",
     "story": "【宁宁 · 考前一小时的求救】期中考试前的教室里，宁宁对着同一道题看了很久，草稿纸上已经画满凌乱的推导。见你经过，她先把卷子压住，几秒后又认命地推到你面前，呆毛也跟着垂下——「我知道平时应该早点复习……所以别说教了。教会这一题的话，放学后我请你喝东西。」",
@@ -51,6 +51,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "She slides the exam sheet toward the viewer and points to one problem with a worried expression."
   }
 }

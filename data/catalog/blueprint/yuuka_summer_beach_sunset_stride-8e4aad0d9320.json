@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_summer_beach_sunset_stride",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 917,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在白色海滩折叠椅上，单手扶着太阳伞遮阳帽，脸颊泛红娇羞侧望",
     "camera": "cowboy shot, golden hour",
@@ -26,7 +26,10 @@
       "beach chair",
       "parasol",
       "wind",
-      "sunset"
+      "sunset",
+      "hand on visor",
+      "blush",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +48,7 @@
     "timeOfDay": "黄昏日落",
     "title": "早濑优香 · 碧海落日下的海风微抚",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds her visor against the breeze beneath the parasol."
   }
 }

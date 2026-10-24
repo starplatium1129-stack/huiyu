@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_slope_white_beret",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1436,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_slope_white_beret",
     "title": "加藤惠 · 坡道上的白色贝雷帽·「那个……你刚才是在叫我吗」",
@@ -34,7 +34,12 @@
       "looking back",
       "cherry blossoms",
       "hill",
-      "bob cut"
+      "bob cut",
+      "holding beret",
+      "holding bag",
+      "smile",
+      "petals",
+      "backlighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +50,7 @@
     "coverageTags": [
       "iconic",
       "romance"
-    ]
+    ],
+    "animaCaption": "One hand steadies the beret while the other holds the paper bag."
   }
 }

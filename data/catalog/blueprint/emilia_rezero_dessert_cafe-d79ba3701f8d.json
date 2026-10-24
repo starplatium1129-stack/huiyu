@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_dessert_cafe",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 446,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "emilia_rezero_dessert_cafe",
     "title": "爱蜜莉雅 · 甜品店",
@@ -35,7 +35,10 @@
       "table",
       "curious",
       "smile",
-      "medium shot"
+      "medium shot",
+      "holding spoon",
+      "fruit parfait",
+      "warm light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +47,7 @@
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She studies the tall parfait with her spoon held ready."
   }
 }

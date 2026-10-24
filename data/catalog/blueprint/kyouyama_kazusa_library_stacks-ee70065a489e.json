@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_library_stacks",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 867,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠在橡木书架旁，裙摆提起，双手抓住画面外同行者的衣角，紧抿下唇。",
     "adult": true,
@@ -37,7 +37,10 @@
       "standing",
       "against bookshelf",
       "holding clothes",
-      "library"
+      "library",
+      "both hands",
+      "biting lip",
+      "dim light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,6 +52,7 @@
       "secret"
     ],
     "timeOfDay": "深夜",
-    "title": "杏山和纱 · 书架深处的禁断心跳"
+    "title": "杏山和纱 · 书架深处的禁断心跳",
+    "animaCaption": "Both hands hold her off-frame companion's clothing in the narrow aisle."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_r18_futon_collar_chain_mating_press",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1220,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "纯裸侧卧棉被半裹半透白纱若隐若现，巨大羽翼环护，手握断链另一手在下身深层自抚，含泪微笑娇喘",
     "adult": true,
@@ -37,7 +37,10 @@
       "female masturbation",
       "tears",
       "futon",
-      "lamp"
+      "lamp",
+      "warm lighting",
+      "side view",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -60,6 +63,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "伊卡洛斯 · 纯白棉被半裹半透白纱与断裂锁链奉献深情侧卧深抚"
+    "title": "伊卡洛斯 · 纯白棉被半裹半透白纱与断裂锁链奉献深情侧卧深抚",
+    "animaCaption": "She holds the broken chain to her chest with her wings curved around the bedding."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_morning_dining_double_burger_cheeks",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 221,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "saber_alter_morning_dining_double_burger_cheeks",
     "title": "黑呆 · 晨间餐桌的双层汉堡鼓腮帮",
@@ -34,7 +34,10 @@
       "cheeseburger",
       "puffed cheeks",
       "fries",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting",
+      "both hands",
+      "morning light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +46,7 @@
       "daily",
       "sweet",
       "burger"
-    ]
+    ],
+    "animaCaption": "She pauses mid-bite as the offscreen viewer slides a plate of fries toward her."
   }
 }

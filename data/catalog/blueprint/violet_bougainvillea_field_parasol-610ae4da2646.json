@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1385,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "漫步在花瀑下，手握蕾丝阳伞与你的手相牵，草帽随风轻扬，蓝眸羞涩而深情地仰望着你",
     "adult": false,
@@ -30,7 +30,11 @@
       "lace parasol",
       "holding hands",
       "bougainvillea",
-      "wide shot"
+      "wide shot",
+      "walking",
+      "looking at companion",
+      "blush",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +50,7 @@
     ],
     "timeOfDay": "午后",
     "title": "薇尔莉特 · 九重葛花海的草帽微风·「和您走在一起，心跳会变得很快」",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "One hand carries the parasol while the other lightly holds her companion's fingers along the flower-covered path."
   }
 }

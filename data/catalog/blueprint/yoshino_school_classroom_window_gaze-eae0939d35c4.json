@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_school_classroom_window_gaze",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1144,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端庄端坐课桌前侧头望向窗外远山，黑丝长腿并拢斜放，单手轻抚领口领带",
     "camera": "cowboy shot, eye level",
@@ -26,7 +26,12 @@
       "looking outside",
       "classroom",
       "noon",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting",
+      "knees together",
+      "hand on ribbon",
+      "contemplative",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +47,7 @@
     "timeOfDay": "午后",
     "title": "朝武芳乃 · 穗织学园的黑丝少女心",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand touches her ribbon as she looks toward the mountain shrine beyond the window."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_r18_b7_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yae_miko_r18_b7_01",
     "title": "八重神子 · 鸣神大社神樱树下巫女服主动诱惑 ·「小家伙……今晚想要本宫司怎么好好疼爱你呢」",
@@ -39,7 +39,11 @@
       "straddling",
       "sacred sakura",
       "night",
-      "low angle"
+      "low angle",
+      "open clothes",
+      "five tails",
+      "moonlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -67,6 +71,7 @@
       "fox ears",
       "upright ears"
     ],
-    "identityProseOverride": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and fox ears held upright."
+    "identityProseOverride": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and fox ears held upright.",
+    "animaCaption": "Five pink tails curl around their thighs while her robes gather at her hips beneath the sacred sakura."
   }
 }

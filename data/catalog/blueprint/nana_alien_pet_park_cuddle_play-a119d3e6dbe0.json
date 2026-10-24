@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_alien_pet_park_cuddle_play",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1264,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "盘膝坐在草地上怀抱毛茸茸外星小宠贴脸蹭蹭，眼神充满纯洁宠爱，尾巴轻摆",
     "camera": "medium shot, seated eye-level, intimate gentle depth of field",
@@ -26,7 +26,13 @@
       "holding animal",
       "picnic blanket",
       "park",
-      "summer"
+      "summer",
+      "holding pet",
+      "cheek to cheek",
+      "gentle smile",
+      "swaying tail",
+      "dappled sunlight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +48,7 @@
     "timeOfDay": "下午",
     "title": "娜娜 · 绿荫公园的异星小宠呢喃",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She holds the long-eared pet against her cheek while seated cross-legged on the picnic mat."
   }
 }

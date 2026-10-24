@@ -4,7 +4,7 @@
   "revision": 2,
   "sortOrder": 1767,
   "createdAt": null,
-  "updatedAt": "2026-10-21T13:14:34.296Z",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruna_r18_bedroom_pajamas_slip",
     "title": "西连寺春菜 · 暖光卧室的拘谨凝视",
@@ -50,11 +50,15 @@
       "tender_expression",
       "bedside_lamp",
       "warm_lighting",
-      "soft_glow"
+      "soft_glow",
+      "knees together",
+      "hands on lap",
+      "looking up"
     ],
     "promptProse": "Sitting with knees together on the soft bedsheets, Haruna rests both palms on her lap as her loose collar rests off one shoulder. Warm amber light from the bedside lamp on her left casts a soft diagonal shadow across the sheets while she gazes up with shy purple eyes.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both palms rest on her lap beneath the loose collar."
   }
 }

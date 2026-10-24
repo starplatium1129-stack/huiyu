@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_veranda_bent_over_prone",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1297,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "akeno_nsfw_veranda_bent_over_prone",
     "title": "姬岛朱乃 · 神社缘侧的罗裳半褪自抚·「在神明面前……不可以发出声音哦」",
@@ -45,7 +45,13 @@
       "panties aside",
       "masturbation",
       "looking back",
-      "moonlight"
+      "moonlight",
+      "hand on railing",
+      "heavy blush",
+      "blushing ears",
+      "paper lantern",
+      "cowboy shot",
+      "dutch angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -60,6 +66,7 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand grips the railing while the other reaches beneath the loosened fabric."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_r18_b6_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1386,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asada_shino_r18_b6_04",
     "title": "朝田诗乃 · 抱紧模型枪床褥深处的安全感宣泄 ·「只要你在身边……我就什么枪都不怕了」",
@@ -41,7 +41,10 @@
       "model gun",
       "masturbation",
       "tears",
-      "moonlight"
+      "moonlight",
+      "hand on chest",
+      "hand between legs",
+      "curtains"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +59,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She holds the model handgun against her chest with one hand."
   }
 }

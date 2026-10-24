@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_cafe_terrace_teasing_gaze",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 369,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruno_cafe_terrace_teasing_gaze",
     "title": "雪之下阳乃 · 露天咖啡馆的墨镜戏谑注视·「比企谷君，又在用那种腐烂的眼神看世界了呢」",
@@ -37,7 +37,13 @@
       "smirk",
       "cafe",
       "terrace",
-      "afternoon"
+      "afternoon",
+      "sitting",
+      "lowering sunglasses",
+      "looking at viewer",
+      "sunlight",
+      "shade",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +56,7 @@
       "mature"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She lowers the sunglasses with one finger and meets the viewer's gaze from the wicker chair."
   }
 }

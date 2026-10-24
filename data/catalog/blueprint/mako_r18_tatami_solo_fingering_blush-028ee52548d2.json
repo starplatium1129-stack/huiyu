@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_r18_tatami_solo_fingering_blush",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1144,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚着低矮木扶手，一手撑木边，另一手留在掀起的袍摆内",
     "adult": true,
@@ -37,7 +37,12 @@
       "fingering",
       "armrest",
       "tatami",
-      "moonlight"
+      "moonlight",
+      "hand on armrest",
+      "heavy blush",
+      "teary eyes",
+      "lamplight",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -51,6 +56,7 @@
       "teary_eyes"
     ],
     "timeOfDay": "深夜",
-    "title": "常陆茉子 · 闺房暗夜的私密情愫自抚"
+    "title": "常陆茉子 · 闺房暗夜的私密情愫自抚",
+    "animaCaption": "One hand braces on the low wooden armrest while her other hand rests beneath the lifted robe."
   }
 }

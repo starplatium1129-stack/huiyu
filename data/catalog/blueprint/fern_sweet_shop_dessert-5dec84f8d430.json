@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_sweet_shop_dessert",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fern_sweet_shop_dessert",
     "characterId": "fern_frieren",
@@ -32,7 +32,11 @@
       "strawberry",
       "puffed cheeks",
       "dessert shop",
-      "close up"
+      "close up",
+      "holding glass",
+      "both hands",
+      "afternoon light",
+      "warm lamp"
     ],
     "negativeTokens": [
       "spoon in hands"
@@ -49,6 +53,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The spoon rests on the saucer beside the glass in her hands."
   }
 }

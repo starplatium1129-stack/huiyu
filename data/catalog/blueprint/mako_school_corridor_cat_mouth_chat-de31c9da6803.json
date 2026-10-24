@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_school_corridor_cat_mouth_chat",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1132,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚靠窗台探身说笑，水手服领口随动作微倾，猫嘴笑意满满，呆毛灵动",
     "camera": "cowboy shot, eye-level",
@@ -24,7 +24,13 @@
     "promptTokens": [
       "hands in pockets",
       "school hallway",
-      "afternoon"
+      "afternoon",
+      "leaning forward",
+      "cat mouth",
+      "curtain",
+      "wind",
+      "sunlight",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +43,7 @@
       "ahoge"
     ],
     "timeOfDay": "午后",
-    "title": "常陆茉子 · 走廊窗边的猫嘴调侃"
+    "title": "常陆茉子 · 走廊窗边的猫嘴调侃",
+    "animaCaption": "Both hands stay in her pockets as she leans toward her offscreen companion beside the lifting curtain."
   }
 }

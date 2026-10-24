@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_corps_field",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 990,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "行军间歇回头微笑",
     "camera": "full body",
@@ -23,7 +23,10 @@
       "low ponytail",
       "looking back",
       "grassland",
-      "full body"
+      "full body",
+      "smile",
+      "wind",
+      "sunlight"
     ],
     "recommendedSize": "1216x832",
     "sceneTags": [
@@ -36,6 +39,7 @@
       "smile"
     ],
     "timeOfDay": "白天",
-    "title": "希斯特里亚 · 兵团野外"
+    "title": "希斯特里亚 · 兵团野外",
+    "animaCaption": "She pauses during the march and smiles toward the viewer across the grassland."
   }
 }

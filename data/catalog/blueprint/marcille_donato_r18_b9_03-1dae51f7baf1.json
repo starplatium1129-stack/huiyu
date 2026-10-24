@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_r18_b9_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1728,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "marcille_donato_r18_b9_03",
     "title": "玛露希尔 · 法杖缎带缠绕长袍的更衣事故 ·「法杖的挂带打结了！……莱欧斯不许看，快拿剪刀来！」",
@@ -41,7 +41,11 @@
       "leaning forward",
       "looking back",
       "crate",
-      "dungeon camp"
+      "dungeon camp",
+      "hands on crate",
+      "tears",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -56,6 +60,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her staff sling catches the robe ties as both palms brace on the crate."
   }
 }

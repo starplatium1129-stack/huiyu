@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_bedroom_soles_stockings",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fern_r18_bedroom_soles_stockings",
     "characterId": "fern_frieren",
@@ -35,7 +35,11 @@
       "soles",
       "pout",
       "fireplace",
-      "snow"
+      "snow",
+      "both hands",
+      "extended sole",
+      "firelight",
+      "snowlight"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -56,6 +60,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One bare sole extends toward the hearth while the other leg remains covered."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_boyfriend_shirt_flustered_lean",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1774,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kotegawa_boyfriend_shirt_flustered_lean",
     "title": "古手川唯 · 更衣室前的敞怀白衬衫与拘谨微倾",
@@ -49,11 +49,17 @@
       "heavy_blush",
       "biting_lip",
       "looking_away",
-      "indoor_lighting"
+      "indoor_lighting",
+      "embarrassed",
+      "bright lighting",
+      "morning light",
+      "medium shot",
+      "front three-quarter view"
     ],
     "promptProse": "Leaning forward with both palms pressed shyly against her sheer-black-pantyhose-clad thighs before the mirror, Yui blushes deeply as her unbuttoned white dress shirt hangs open, averting her golden-brown eyes in bashful, flustered mortification.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both palms rest on her pantyhose-clad thighs before the mirror."
   }
 }

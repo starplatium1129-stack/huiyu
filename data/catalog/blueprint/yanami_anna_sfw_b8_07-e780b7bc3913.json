@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_07",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1674,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_07",
     "title": "八奈见杏菜 · 厨房里的失败煎蛋",
@@ -36,7 +36,11 @@
       "plate",
       "kitchen",
       "morning",
-      "medium shot"
+      "medium shot",
+      "offering plate",
+      "confidence",
+      "broken yolk",
+      "morning light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The broken yolk stays visible on the plate while the pan remains on the stove."
   }
 }

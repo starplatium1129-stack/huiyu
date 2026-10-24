@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_vulnerable_bed_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 379,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruno_nsfw_vulnerable_bed_solo",
     "title": "雪之下阳乃 · 卸下伪装的床褥动情独奏 ·「哪怕是虚伪的温柔……今晚也给我吧」",
@@ -35,7 +35,13 @@
       "tears",
       "blush",
       "black sheets",
-      "dawn"
+      "dawn",
+      "on bed",
+      "disheveled sheets",
+      "blue light",
+      "window light",
+      "cowboy shot",
+      "from above"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +54,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Blue dawn light reaches her tearful face above the disheveled silk sheets."
   }
 }

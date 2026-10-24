@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_bridal_vow_white_chapel",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 406,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "捧白纱花束立于圣堂，星瞳湿润含笑",
     "adult": false,
@@ -31,7 +31,13 @@
     "promptTokens": [
       "bouquet",
       "chapel",
-      "stained glass"
+      "stained glass",
+      "holding bouquet",
+      "both hands",
+      "tears",
+      "smile",
+      "light rays",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +52,7 @@
       "romance"
     ],
     "timeOfDay": "婚礼正午",
-    "title": "食蜂操祈 · 星瞳花嫁的誓约·「心理掌握……对你永久失效才好」"
+    "title": "食蜂操祈 · 星瞳花嫁的誓约·「心理掌握……对你永久失效才好」",
+    "animaCaption": "Both hands hold the bouquet beneath colored light crossing her chapel veil."
   }
 }

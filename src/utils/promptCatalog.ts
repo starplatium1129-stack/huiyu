@@ -28,7 +28,7 @@ function scene(value: unknown): value is Scene {
   return record(value) && text(value.id) && text(value.title)
     && ['story', 'prompt', 'visualDescription', 'char', 'category', 'season', 'series', 'rating', 'lora',
       'time', 'timeOfDay', 'lighting', 'camera', 'negative', 'location', 'weather', 'emotion', 'recommendedSize',
-      'animaCaption'].every(key => optional(value[key], text))
+      'animaCaption', 'promptProse'].every(key => optional(value[key], text))
     && optional(value.tags, strings) && optional(value.usage, strings)
     && optional(value.mature, v => typeof v === 'boolean')
 }

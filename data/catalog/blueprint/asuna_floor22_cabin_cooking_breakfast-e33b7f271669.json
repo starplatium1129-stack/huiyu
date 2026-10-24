@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_floor22_cabin_cooking_breakfast",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1363,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asuna_floor22_cabin_cooking_breakfast",
     "title": "结城明日奈 · 22层木屋的暖心早餐·「快趁热吃吧，特制的三明治烤好了哦！」",
@@ -39,7 +39,12 @@
       "sandwich",
       "smile",
       "morning",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "holding tray",
+      "both hands",
+      "steam",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +58,7 @@
       "casual",
       "cooking",
       "girlfriend"
-    ]
+    ],
+    "animaCaption": "She offers the tray toward the viewer beside the dining table."
   }
 }

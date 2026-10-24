@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_r18_hotel_bed_embrace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1871,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "firefly_r18_hotel_bed_embrace",
     "characterId": "firefly_hsr",
@@ -33,7 +33,10 @@
       "tender look",
       "morning light",
       "intimate",
-      "cowboy shot"
+      "cowboy shot",
+      "white sheets",
+      "looking up",
+      "side lighting"
     ],
     "sceneTags": [
       "bed",
@@ -50,6 +53,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "The blanket rests at her waist as both hands hold her companion's arm."
   }
 }

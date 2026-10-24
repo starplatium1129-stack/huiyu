@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_flower_field",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 579,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "弯腰捡起一朵野花",
     "camera": "medium shot",
@@ -23,7 +23,11 @@
       "offering flower",
       "shy smile",
       "wildflower field",
-      "afternoon"
+      "afternoon",
+      "bending forward",
+      "open palm",
+      "bright lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +40,7 @@
     "timeOfDay": "午后",
     "title": "泥岩 · 花田拾花",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her open palm offers the freshly picked daisy toward the viewer."
   }
 }

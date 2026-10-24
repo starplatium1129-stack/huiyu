@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_workbench_bomb_defusal_tools",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1190,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sachi_workbench_bomb_defusal_tools",
     "title": "小岭幸 · 地下工坊的硬核防爆拆解",
@@ -38,9 +38,14 @@
       "screwdriver",
       "electronics",
       "desk lamp",
-      "medium shot"
+      "medium shot",
+      "leaning forward",
+      "wire cutters",
+      "focused",
+      "cold white lamp"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "animaCaption": "One gloved hand holds the screwdriver while the other holds the wire cutters."
   }
 }

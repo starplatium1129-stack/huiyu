@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1615,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_03",
     "title": "春日野穹 · 石阶上安稳的一小步",
@@ -36,7 +36,12 @@
       "sitting",
       "stone stairs",
       "shrine",
-      "medium shot"
+      "medium shot",
+      "bending forward",
+      "holding skirt",
+      "fallen leaf",
+      "bag",
+      "shade"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand keeps the skirt clear of the shoe clasp beside her plush rabbit."
   }
 }

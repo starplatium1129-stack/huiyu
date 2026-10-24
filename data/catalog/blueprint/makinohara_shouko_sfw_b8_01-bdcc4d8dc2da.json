@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 52,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_01",
     "title": "牧之原翔子 · 七里滨的白色连衣裙",
@@ -38,7 +38,14 @@
       "seishun_buta_yarou",
       "tucking hair",
       "wet sand",
-      "evening"
+      "evening",
+      "barefoot",
+      "walking",
+      "looking back",
+      "small smile",
+      "wind",
+      "evening light",
+      "medium shot"
     ],
     "negativeTokens": [
       "transparent dress"
@@ -51,6 +58,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "She gathers her windblown hair with one hand above the wet shoreline sand."
   }
 }

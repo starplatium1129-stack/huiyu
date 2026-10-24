@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_blade_spirit_awakening_shrine",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1119,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手背后微倾身从空中缓缓降下，青蓝鬼火环绕；将臣在下方握着发光断刀。",
     "camera": "full body, low angle, descending Murasame above Masaomi holding the broken sword",
@@ -29,7 +29,10 @@
       "spirit fire",
       "broken sword",
       "shrine",
-      "morning"
+      "morning",
+      "descending",
+      "blue spirit flames",
+      "golden light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -49,6 +52,7 @@
     "nsfwProse": "",
     "characterTokens": [
       "arichi masaomi"
-    ]
+    ],
+    "animaCaption": "Below her, Masaomi holds the glowing broken Murasamemaru."
   }
 }

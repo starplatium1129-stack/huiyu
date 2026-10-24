@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_morning_dining_soup_tsundere",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 210,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_morning_dining_soup_tsundere",
     "title": "卡莲 · 晨间餐桌的毒舌与暖汤",
@@ -34,7 +34,13 @@
       "dining room",
       "soup",
       "offering",
-      "morning"
+      "morning",
+      "holding bowl",
+      "both hands",
+      "steam",
+      "raised chin",
+      "window light",
+      "cowboy shot"
     ],
     "negativeTokens": [
       "hat adjustment"
@@ -45,6 +51,7 @@
       "daily",
       "sweet",
       "tsundere"
-    ]
+    ],
+    "animaCaption": "Both hands support the steaming soup bowl as she offers it above the dining table."
   }
 }

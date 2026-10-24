@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_supermarket",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 417,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makima_supermarket",
     "title": "玛奇玛 · 超市采购",
@@ -28,7 +28,10 @@
     "promptTokens": [
       "shopping cart",
       "meat aisle",
-      "supermarket"
+      "supermarket",
+      "hand on cart",
+      "holding meat tray",
+      "shop lighting"
     ],
     "negativeTokens": [
       "readable labels"
@@ -37,6 +40,7 @@
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand rests on the cart as the other examines the meat tray."
   }
 }

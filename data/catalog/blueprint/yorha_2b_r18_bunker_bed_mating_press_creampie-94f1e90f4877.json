@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_bunker_bed_mating_press_creampie",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1120,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yorha_2b_r18_bunker_bed_mating_press_creampie",
     "title": "2B · 水没都市清泉浅滩半透湿白衬衫与解下眼罩波光深抚",
@@ -48,7 +48,11 @@
       "moss",
       "shallow water",
       "flooded ruins",
-      "night"
+      "night",
+      "hand underwater",
+      "tears",
+      "moonlight",
+      "wet shirt"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -68,6 +72,7 @@
       "mole_under_mouth",
       "nier:automata"
     ],
-    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips."
+    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips.",
+    "animaCaption": "She rests on the mossy stone above the shallow water."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_pinafore_evening",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 971,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "丝绒更衣帘前侧身回眸整理挂脖礼服优雅微笑",
     "adult": true,
@@ -35,7 +35,11 @@
       "standing",
       "looking back",
       "velvet curtain",
-      "fitting room"
+      "fitting room",
+      "confident smile",
+      "soft lighting",
+      "cowboy shot",
+      "rear three-quarter view"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +54,7 @@
       "bright_room"
     ],
     "timeOfDay": "室内",
-    "title": "黑川茜 · 优雅试衣间挂脖露背"
+    "title": "黑川茜 · 优雅试衣间挂脖露背",
+    "animaCaption": "She adjusts the gown at her waist beside the velvet fitting-room curtain."
   }
 }

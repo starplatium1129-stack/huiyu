@@ -4,7 +4,7 @@
   "revision": 2,
   "sortOrder": 1768,
   "createdAt": null,
-  "updatedAt": "2026-10-21T13:14:34.296Z",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruna_r18_bath_steam_towel_wrap",
     "title": "西连寺春菜 · 雾气浴室的毛巾轻挽",
@@ -47,11 +47,16 @@
       "two_hair_clips",
       "soft_blush",
       "misty_lighting",
-      "warm_glow"
+      "warm_glow",
+      "sitting",
+      "holding towel",
+      "frosted glass",
+      "diffused light"
     ],
     "promptProse": "Seated on a polished cedar bench in the steamy dressing room, Haruna steadies the folded white bath towel around her chest with one hand while drying her damp purple bangs with a small hand towel. Warm diffused light through frosted glass creates a soft glow in the rising steam.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand secures the large towel while the small towel dries her bangs."
   }
 }

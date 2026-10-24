@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_clubroom_afternoon_gaze",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1481,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chitanda_clubroom_afternoon_gaze",
     "title": "千反田爱瑠 · 文集装订的最后一道线",
@@ -37,7 +37,10 @@
       "bookbinding",
       "thread",
       "book",
-      "medium shot"
+      "medium shot",
+      "sitting at table",
+      "wide eyes",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the spine flat while the other straightens the loose binding thread."
   }
 }

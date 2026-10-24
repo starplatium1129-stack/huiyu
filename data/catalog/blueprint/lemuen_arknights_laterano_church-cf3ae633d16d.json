@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_laterano_church",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 556,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在轮椅上双手合十，在圣光中垂眸祈祷",
     "camera": "medium shot, symmetrical",
@@ -29,7 +29,11 @@
       "praying",
       "cathedral",
       "stained glass",
-      "symmetrical composition"
+      "symmetrical composition",
+      "bowed head",
+      "hands together",
+      "stained glass light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +45,7 @@
       "wheelchair"
     ],
     "timeOfDay": "白天",
-    "title": "蕾缪安 · 拉特兰教堂"
+    "title": "蕾缪安 · 拉特兰教堂",
+    "animaCaption": "Colored light crosses her joined hands and the blanket on her lap."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 788,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "海边祭典摊位举起捞到的星星面具，半扎发在灯笼与海风里轻摇",
     "adult": false,
@@ -30,7 +30,11 @@
       "star mask",
       "festival",
       "seaside",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "holding mask",
+      "lantern light",
+      "blue dusk"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -47,6 +51,7 @@
       "evening"
     ],
     "timeOfDay": "日间",
-    "title": "周防有希 · 海滨捞面具的夏日约会"
+    "title": "周防有希 · 海滨捞面具的夏日约会",
+    "animaCaption": "She raises the chosen mask toward the camera beside the seaside stall."
   }
 }

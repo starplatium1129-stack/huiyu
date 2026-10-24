@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc084",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She turns from the fireworks and clasps the viewer's hand, her geta planted on the festival path; lanterns warm her face as the burst above is reflected in her eyes.",
+    "animaCaption": "She turns from the fireworks to clasp the viewer's hand, her geta planted on the festival path.",
     "auditRevision": "careful-batch09-2026-08-27",
     "camera": "全身远景",
     "category": "祭典・节日",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "cropped feet, day",
-    "prompt": "1girl, ayachi_nene, blue yukata, white bellflower print, pink obi, bow at back, geta, looking back, reaching, smile, summer festival, red lanterns, fireworks, full body",
+    "prompt": "1girl, ayachi_nene, blue yukata, white bellflower print, pink obi, bow at back, geta, looking back, reaching, smile, summer festival, red lanterns, fireworks, full body, holding hands, standing, warm lighting",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 花火大会的侧脸】夏夜祭典上，宁宁穿着浴衣站在灯笼与人群之间，仰头等待下一束烟花。绚烂光影在她紫色眼睛里一层层盛开，她却在最响亮的瞬间转向你，笑着抓住你的手——「烟花很漂亮，但一下就会消失。所以你要认真记住……今晚我站在你身边的样子。」",
@@ -50,6 +50,7 @@
       "展示图",
       "CG"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "She turns from the fireworks and clasps the viewer's hand, her geta planted on the festival path; lanterns warm her face as the burst above is reflected in her eyes."
   }
 }

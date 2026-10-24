@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc250",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 245,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Nene curls into the sofa corner and draws the shared blanket over the viewer as the film plays. Blue television light mingles with the heater's orange glow.",
+    "animaCaption": "She draws their shared blanket over the viewer from the sofa corner.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "近景侧面特写",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, pink fleece pajamas, cream rounded collar, small heart shaped buttons, blanket, couch, watching television, shy, night, winter, from side, close-up",
+    "prompt": "1girl, ayachi_nene, pink fleece pajamas, cream rounded collar, small heart shaped buttons, blanket, couch, watching television, shy, night, winter, from side, close-up, curled up, holding blanket, screen light, heater",
     "rating": "All",
     "season": "冬",
     "story": "【宁宁 · 冬夜的靠近】冬夜寒冷的公寓客厅，暖炉的温度不够。宁宁裹着毯子缩在沙发角落看电影，银白色的长发在昏暗的光线中泛着柔和的光泽。当你坐到她身边时，她犹豫了一下，然后悄悄把毯子分了一半给你。两人在毯子下的距离越来越近，她的体温带着沐浴后的淡淡香气，隔着薄薄的毯子传来。她微垂着眼睑，呆毛在暖黄的光线中轻轻颤动，声音小得几乎听不见——「……只是觉得两个人盖比较暖和而已。柊史……你身上好热。靠、靠太近了啦……不过，再近一点点……也是可以的。」",
@@ -45,6 +45,7 @@
     "usage": [
       "壁纸级"
     ],
-    "weather": "冬夜寒冷"
+    "weather": "冬夜寒冷",
+    "promptProse": "Nene curls into the sofa corner and draws the shared blanket over the viewer as the film plays. Blue television light mingles with the heater's orange glow."
   }
 }

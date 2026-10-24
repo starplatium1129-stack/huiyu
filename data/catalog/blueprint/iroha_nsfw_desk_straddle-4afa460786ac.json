@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_desk_straddle",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 365,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "iroha_nsfw_desk_straddle",
     "title": "一色彩羽 · 成年同事会室桌上的小恶魔诱惑 ·「前辈……是在向我求欢吗？真拿你没办法♪」",
@@ -40,7 +40,9 @@
       "leaning forward",
       "smirk",
       "sunset",
-      "from below"
+      "from below",
+      "finger to another's lips",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +55,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "She straddles the offscreen viewer's lap, one finger touching their lips by the table edge."
   }
 }

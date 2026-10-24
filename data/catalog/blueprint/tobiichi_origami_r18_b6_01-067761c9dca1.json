@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_r18_b6_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 100,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tobiichi_origami_r18_b6_01",
     "title": "鸢一折纸 · AST紧身战甲绝灭天使主控跨坐 ·「士道……根据我的计算，今晚的受孕概率是99.8%」",
@@ -43,7 +43,11 @@
       "bed",
       "cowboy shot",
       "from below",
-      "latex"
+      "latex",
+      "straddling lap",
+      "unzipped pilot suit",
+      "composed expression",
+      "room light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -68,6 +72,7 @@
       "blue_eyes",
       "hair_ornament"
     ],
-    "identityProseOverride": "Origami Tobiichi from Date A Live, with short snow-white hair, pale blue eyes and a hair ornament."
+    "identityProseOverride": "Origami Tobiichi from Date A Live, with short snow-white hair, pale blue eyes and a hair ornament.",
+    "animaCaption": "The opened suit rests at her hips above the viewer's lap."
   }
 }

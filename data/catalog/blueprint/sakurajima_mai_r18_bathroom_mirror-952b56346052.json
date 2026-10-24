@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_bathroom_mirror",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 49,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakurajima_mai_r18_bathroom_mirror",
     "title": "樱岛麻衣 · 镜前水汽",
@@ -34,7 +34,9 @@
       "wet hair",
       "sitting",
       "topless",
-      "cowboy shot"
+      "cowboy shot",
+      "warm lighting",
+      "side view"
     ],
     "negativeTokens": [
       "reflected person"
@@ -47,6 +49,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@atdan",
     "outfitId": "bath_towel",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She gathers wet hair and draws a circle on fogged glass reflecting only diffuse light."
   }
 }

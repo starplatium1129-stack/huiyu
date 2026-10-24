@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_frontline_breach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 752,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "administrator_arknights_frontline_breach",
     "characterId": "administrator_arknights",
@@ -30,13 +30,21 @@
     "promptTokens": [
       "doorway",
       "shopping bag",
-      "evening"
+      "evening",
+      "open door",
+      "outstretched hand",
+      "standing",
+      "light smile",
+      "cowboy shot",
+      "warm lighting",
+      "cool lighting"
     ],
     "promptProse": "Keeping one hand on the doorframe, she reaches for the shopping bag in the viewer's hand and steps aside. Warm entry light meets the cool dusk in the corridor.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the doorframe; the other reaches for the viewer's bag."
   }
 }

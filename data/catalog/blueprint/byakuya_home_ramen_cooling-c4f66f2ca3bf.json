@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_home_ramen_cooling",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 834,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfitId": "tattered_oversized_jersey",
@@ -23,7 +23,12 @@
       "chopsticks",
       "blowing",
       "evening",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "holding bowl",
+      "lifting noodles",
+      "steam",
+      "pendant lamp"
     ],
     "camera": "medium shot across the dining table, face, bowl and hands in frame",
     "lighting": "小厨房吊灯照亮面碗热气的暖光",
@@ -47,6 +52,7 @@
       "night",
       "medium_shot"
     ],
-    "negativeTokens": []
+    "negativeTokens": [],
+    "animaCaption": "One hand steadies the bowl while chopsticks lift the noodles in the other."
   }
 }

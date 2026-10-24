@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_eva09_ruins",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1013,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "立于钢铁残骸之上，神情清冷孤傲",
     "camera": "wide shot, dramatic low angle",
@@ -27,7 +27,11 @@
       "crystal",
       "sunset",
       "wide shot",
-      "from below"
+      "from below",
+      "standing",
+      "looking away",
+      "red sky",
+      "gloomy"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -41,6 +45,7 @@
       "gloomy"
     ],
     "timeOfDay": "黄昏",
-    "title": "绫波丽 · 漆黑作战服与赤红大地"
+    "title": "绫波丽 · 漆黑作战服与赤红大地",
+    "animaCaption": "She stands on the rusted framework above the red crystalline terrain."
   }
 }

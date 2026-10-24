@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_handler_one_moonlit_command",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1351,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手扶全息沙盘下达指令，指尖划过战线光点，颈侧耳机泛蓝光，银灰眼眸锐利坚定",
     "adult": false,
@@ -30,7 +30,12 @@
       "vladilena_millize",
       "Para-RAID",
       "holographic map",
-      "command room"
+      "command room",
+      "pointing",
+      "determined",
+      "blue lighting",
+      "medium shot",
+      "low angle"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -44,6 +49,7 @@
       "iconic"
     ],
     "timeOfDay": "深夜",
-    "title": "芙拉蒂蕾娜 · 月光指挥室的秘话同调·「这里是我的声音，也永远是你们的」"
+    "title": "芙拉蒂蕾娜 · 月光指挥室的秘话同调·「这里是我的声音，也永远是你们的」",
+    "animaCaption": "One fingertip traces a front-line marker while she speaks through Para-RAID."
   }
 }

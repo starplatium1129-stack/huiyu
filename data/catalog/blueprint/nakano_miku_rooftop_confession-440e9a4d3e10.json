@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_rooftop_confession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1845,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_miku_rooftop_confession",
     "characterId": "nakano_miku",
@@ -27,7 +27,8 @@
       "sunset",
       "golden hour",
       "serene",
-      "cowboy shot"
+      "cowboy shot",
+      "looking at viewer"
     ],
     "sceneTags": [
       "rooftop",
@@ -44,6 +45,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "Both hands remain behind her back as she looks forward beside the rooftop fence."
   }
 }

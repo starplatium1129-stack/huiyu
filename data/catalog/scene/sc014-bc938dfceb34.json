@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc014",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "A returning wave catches her as she grips the viewer's forearm; her feet remain planted in the shallows. Bright coastal sunlight glints across the splashes.",
+    "animaCaption": "She grips the viewer's forearm as the wave reaches her feet in the shallows.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "浅浪中全身远景",
     "category": "旅行",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, laughing, splashing, shallow water, beach, full body",
+    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, laughing, splashing, shallow water, beach, full body, holding arm, standing, sunlight, water splashes",
     "rating": "All",
     "recommendedSize": "1216×832",
     "season": "夏",
@@ -52,6 +52,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "A returning wave catches her as she grips the viewer's forearm; her feet remain planted in the shallows. Bright coastal sunlight glints across the splashes."
   }
 }

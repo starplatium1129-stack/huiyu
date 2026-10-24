@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_medical_bath",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 533,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠在浴池水下长凳，一手撑住瓷砖，另一手沿大腿内侧检查治疗线。",
     "adult": true,
@@ -33,7 +33,11 @@
       "knee up",
       "bathtub",
       "steam",
-      "blue light"
+      "blue light",
+      "adult",
+      "hand on tiles",
+      "hand on thigh",
+      "submerged bench"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -48,6 +52,7 @@
       "night"
     ],
     "timeOfDay": "夜晚",
-    "title": "凯尔希 · 医疗部浴间"
+    "title": "凯尔希 · 医疗部浴间",
+    "animaCaption": "She braces on the tile beside the submerged bath bench."
   }
 }

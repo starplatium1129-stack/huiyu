@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_nsfw_reversal_cowgirl_straddle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1053,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sparkle_nsfw_reversal_cowgirl_straddle",
     "title": "花火 · 反被客为主的小恶魔失控骑乘",
@@ -35,7 +35,10 @@
       "straddling",
       "bed",
       "purple light",
-      "low angle"
+      "low angle",
+      "cowgirl position",
+      "pov",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +57,7 @@
     "nsfwTokens": [
       "nude",
       "cowgirl position"
-    ]
+    ],
+    "animaCaption": "Her companion lightly holds her wrists against their chest above the silk sheets."
   }
 }

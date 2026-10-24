@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_record_player_melancholy",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 375,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruno_record_player_melancholy",
     "title": "雪之下阳乃 · 旧唱片机前的怀旧凝望·「雪乃能够遇到你……或许真的是一件好事吧」",
@@ -38,7 +38,12 @@
       "phonograph",
       "melancholy",
       "night",
-      "warm lighting"
+      "warm lighting",
+      "standing",
+      "looking back",
+      "gentle smile",
+      "wall lamp",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +57,7 @@
       "iconic"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand rests beside the tonearm lever as she turns back beneath the single brass wall lamp."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_dessert_cafe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 858,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "举叉子试吃蛋糕",
     "adult": false,
@@ -33,7 +33,11 @@
       "fork",
       "strawberry cake",
       "dessert shop",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "feeding",
+      "eye contact",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -45,6 +49,7 @@
       "happy"
     ],
     "timeOfDay": "傍晚",
-    "title": "杏山和纱 · 放学后甜品店巡礼"
+    "title": "杏山和纱 · 放学后甜品店巡礼",
+    "animaCaption": "Kazusa sits left and offers cake to the teacher seated on the right."
   }
 }

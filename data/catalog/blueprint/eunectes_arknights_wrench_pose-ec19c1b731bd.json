@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_wrench_pose",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 590,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "把扳手扛在肩上，比了个大拇指",
     "camera": "medium shot",
@@ -27,7 +27,10 @@
       "thumbs up",
       "smile",
       "workshop",
-      "medium shot"
+      "medium shot",
+      "wrench on shoulder",
+      "confident smile",
+      "warm light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +41,7 @@
       "thumbs_up"
     ],
     "timeOfDay": "黄昏",
-    "title": "森蚺 · 扳手英姿"
+    "title": "森蚺 · 扳手英姿",
+    "animaCaption": "One hand balances the pipe wrench while the other gives a thumbs-up."
   }
 }

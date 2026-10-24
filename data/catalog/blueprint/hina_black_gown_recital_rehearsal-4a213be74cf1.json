@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hina_black_gown_recital_rehearsal",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 945,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfitId": "evening_dress",
@@ -21,7 +21,14 @@
       "piano",
       "sheet music",
       "music hall",
-      "from side"
+      "from side",
+      "sitting",
+      "playing piano",
+      "both hands",
+      "looking at sheet music",
+      "piano lamp",
+      "spotlight",
+      "medium shot"
     ],
     "camera": "medium shot from the piano side, score and both hands on keys visible",
     "lighting": "琴灯与柔和舞台追光",
@@ -48,6 +55,7 @@
     ],
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands rest on the keys while her gaze stays on the score above them."
   }
 }

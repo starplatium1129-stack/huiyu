@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc076",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 74,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Among sunflowers taller than her on both sides of the path, she parts a broad leaf and turns back, pointing farther along the path toward their chosen photograph spot.",
+    "animaCaption": "She parts a broad leaf and points farther along the path, where sunflowers rise above her on both sides.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "花田路径全身远景",
     "category": "旅行",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through clothes, cropped feet",
-    "prompt": "1girl, ayachi_nene, white cotton sundress, square neckline, pink waist sash, straw hat, navy hat ribbon, sandals, pointing, sunflower field, path, afternoon, full body",
+    "prompt": "1girl, ayachi_nene, white cotton sundress, square neckline, pink waist sash, straw hat, navy hat ribbon, sandals, pointing, sunflower field, path, afternoon, full body, looking back, holding leaf, sunlight",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -57,6 +57,7 @@
       "头像",
       "CG"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Among sunflowers taller than her on both sides of the path, she parts a broad leaf and turns back, pointing farther along the path toward their chosen photograph spot."
   }
 }

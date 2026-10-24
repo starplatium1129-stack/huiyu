@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_wing_rest",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 630,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "仰靠在长椅上享受午后阳光，嘴角带着惬意微笑",
     "camera": "medium shot",
@@ -29,7 +29,9 @@
       "bench",
       "park",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "smile",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +43,7 @@
       "smile"
     ],
     "timeOfDay": "午后",
-    "title": "能天使 · 长椅小憩"
+    "title": "能天使 · 长椅小憩",
+    "animaCaption": "She rests both arms behind her head on the sun-warmed bench."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_park_bench_sunset",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "缩在长椅一侧抱膝沉思，吉他包靠在身旁",
     "camera": "medium shot, eye level",
@@ -27,7 +27,9 @@
       "guitar case",
       "autumn leaves",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "hugging knees",
+      "rim light"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -44,6 +46,7 @@
     "timeOfDay": "黄昏",
     "title": "后藤一里 · 黄昏公园长椅",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her chin tucks into her collar above the guitar bag resting beside the bench."
   }
 }

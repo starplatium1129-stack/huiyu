@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_sacred_kagura_sword_dance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1122,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "手持神刀丛雨丸旋转舞动，巫女宽袖与绯红袴裤翻飞，刀刃拖出神圣白芒",
     "camera": "full body, low three-quarter angle, sword arc and turning feet visible",
@@ -27,7 +27,11 @@
       "kagura",
       "shrine",
       "night",
-      "full body"
+      "full body",
+      "turning",
+      "both hands",
+      "sword arc",
+      "candlelight"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -43,6 +47,7 @@
     "timeOfDay": "夜晚",
     "title": "丛雨 · 神乐殿前的神刀奉纳舞",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands guide Murasamemaru through a white arc above the shrine stage."
   }
 }

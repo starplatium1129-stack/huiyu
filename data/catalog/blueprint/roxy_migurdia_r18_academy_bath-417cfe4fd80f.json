@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_academy_bath",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 460,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "泡在石砌浴池中",
     "adult": true,
@@ -33,7 +33,10 @@
       "wet hair",
       "waterline",
       "stone bath",
-      "steam"
+      "steam",
+      "floating hair",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -46,6 +49,7 @@
       "intimate"
     ],
     "timeOfDay": "夜晚",
-    "title": "洛琪希 · 成人研修院浴室"
+    "title": "洛琪希 · 成人研修院浴室",
+    "animaCaption": "She lowers the bottom half of her face into the bath as her hair floats around her."
   }
 }

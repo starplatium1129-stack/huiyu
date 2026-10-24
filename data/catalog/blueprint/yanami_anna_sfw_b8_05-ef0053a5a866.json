@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1668,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_05",
     "title": "八奈见杏菜 · 海边薯条防波堤",
@@ -35,7 +35,10 @@
       "fries",
       "iced tea",
       "breakwater",
-      "medium shot"
+      "medium shot",
+      "holding fries box",
+      "offering fry",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +50,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "One hand steadies the box while the other offers the largest fry."
   }
 }

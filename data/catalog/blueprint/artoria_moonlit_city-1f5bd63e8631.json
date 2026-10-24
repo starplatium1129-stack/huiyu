@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_moonlit_city",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "artoria_moonlit_city",
     "title": "阿尔托莉雅 · 月下誓约·「请问，你是我的御主吗？」",
@@ -35,13 +35,19 @@
       "magic circle",
       "wind",
       "full body",
-      "from below"
+      "from below",
+      "standing",
+      "holding sword",
+      "looking at viewer",
+      "moonlight",
+      "blue light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "knight_dress",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She grips the invisible sword hilt above the blue magic circle."
   }
 }

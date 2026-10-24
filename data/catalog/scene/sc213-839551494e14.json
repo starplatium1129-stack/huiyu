@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc213",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 208,
   "createdAt": null,
-  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc213",
     "title": "影音室巨幕晃动下的防线溃败",
@@ -40,11 +40,12 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pink hood lining, small star patch, oversized grey hoodie, no underwear, bare thighs, reaching, crying, scared, blush, sofa, dropped game controller, home theater, screen glow, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pink hood lining, small star patch, oversized grey hoodie, no underwear, bare thighs, reaching, crying, scared, blush, sofa, dropped game controller, home theater, screen glow, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>, trembling, leaning forward",
     "negative": "",
     "storyJa": "【寧々・ホームシアターの過負荷自爆】深夜、完全に遮音されたホームシアタールーム、巨大スクリーンの光だけが薄暗く揺れていた。強がって一緒にホラーゲームをクリアすると言っていた寧々は、今や画面上のショックシーンに防衛線が完全に崩壊していた。彼女は中には何も着ていない真空状態の、大きくてルーズなグレーのハイレグパーカー一枚だけを身に着けており、白く豊満な両脚が恐怖で激しく震えている。突然の恐怖に彼女は悲鳴を上げてコントローラーを放り出し、我を忘れてあなたの胸に飛び込み、大腿の上に跨ってきつくしがみついた。パーカーの襟元が大きくはだけ、豊かな胸元が荒い呼吸と共に激しく上下し、頭の上のアホ毛は極度の恥ずかしさと恐怖でハート型に丸まっていた――「うあぁ！柊、柊史！今の怪物、もう通り過ぎた？！うう……嘘つき、わざとこのゲームを選んだんでしょ……わ、私、別にどさくさに紛れて抱きついたわけじゃないんだからね！早くきつく抱きしめてよ、バカ！」",
     "rating": "R18",
-    "animaCaption": "Startled by the horror game, she drops the controller and lunges from the sofa toward the viewer, trembling in the flickering screen light.",
-    "auditRevision": "careful-batch12-2026-08-27"
+    "animaCaption": "Startled by the horror game, she lunges from the sofa toward the viewer, leaving the controller dropped beside her.",
+    "auditRevision": "careful-batch12-2026-08-27",
+    "promptProse": "Startled by the horror game, she drops the controller and lunges from the sofa toward the viewer, trembling in the flickering screen light."
   }
 }

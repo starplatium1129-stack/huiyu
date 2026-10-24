@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc200",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 195,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc200",
     "title": "终结的誓言：纯白床单下的永恒契约（第200纪元）",
@@ -41,11 +41,12 @@
       "终章大结局",
       "成人向"
     ],
-    "prompt": "adult, 1girl, nene_r18, ayachi_nene, nude, white sheet, on back, arms open, happy tears, blush, white bed, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, nene_r18, ayachi_nene, nude, white sheet, on back, arms open, happy tears, blush, white bed, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>, lying on back, smile, translucent sheet",
     "negative": "clothes, stockings",
     "storyJa": "【寧々・大人のAfter Story・旅の終わりと新しい朝】幾つもの困難を越えた先、二人だけの寝室に朝の光が差し込んでいた。寧々は真っ白な毛布にくるまり、銀色の髪を枕へ広げている。紫の瞳には幸せそうな涙が浮かび、アホ毛は小さなハートを描くように揺れていた。彼女はあなたへ両腕を伸ばし、決して解けない誓いを静かに口にする――「柊史……魔女の長い旅は、これでおしまいです。これから先の寧々の心も、人生も……ずっと、あなただけのものですよ。」",
     "rating": "R18",
-    "animaCaption": "She lies beneath the translucent white sheet with her arms open toward the viewer, smiling through happy tears in the dawn light.",
-    "auditRevision": "careful-batch11-2026-08-27"
+    "animaCaption": "Her open arms reach toward the viewer from beneath the white sheet.",
+    "auditRevision": "careful-batch11-2026-08-27",
+    "promptProse": "She lies beneath the translucent white sheet with her arms open toward the viewer, smiling through happy tears in the dawn light."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_r18_stage_room_alone",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 959,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "天窗日光下俯身扶台回眸",
     "adult": true,
@@ -37,7 +37,9 @@
       "wink",
       "stage",
       "skylight",
-      "daylight"
+      "daylight",
+      "hands on stage edge",
+      "side lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -55,6 +57,7 @@
       "daylight"
     ],
     "timeOfDay": "白天",
-    "title": "星野爱 · 剧场阳光舞台兔女郎"
+    "title": "星野爱 · 剧场阳光舞台兔女郎",
+    "animaCaption": "Both hands brace on the stage edge as she winks back."
   }
 }

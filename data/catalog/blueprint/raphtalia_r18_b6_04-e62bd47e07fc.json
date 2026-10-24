@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_r18_b6_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1576,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "raphtalia_r18_b6_04",
     "title": "拉芙塔莉雅 · 旅馆草席床褥上的忠诚自持独奏 ·「哪怕全天下都视您为恶魔……我也永远是您的奴隶」",
@@ -39,7 +39,9 @@
       "fingering",
       "straw mat",
       "inn",
-      "moonlight"
+      "moonlight",
+      "full body",
+      "from above"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +56,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She hugs her tail to her chest beneath the crest's faint red glow."
   }
 }

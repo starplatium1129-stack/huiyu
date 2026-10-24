@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_r18_b8_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1549,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shinjou_akane_r18_b8_01",
     "title": "新条茜 · 怪兽工作室粉紫长开衫主控跨坐 ·「你是为我而存在的吧？……那就全部交给我支配」",
@@ -44,7 +44,10 @@
       "workshop",
       "monitor glow",
       "from below",
-      "lavender cardigan"
+      "lavender cardigan",
+      "straddling lap",
+      "hand against throat",
+      "green monitor light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +62,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand rests against her companion's throat above the workshop floor."
   }
 }

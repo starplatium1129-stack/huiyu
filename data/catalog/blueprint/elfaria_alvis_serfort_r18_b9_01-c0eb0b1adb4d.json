@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_r18_b9_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1695,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_r18_b9_01",
     "title": "艾尔菲利亚 · 至高魔导塔冰晶王座主控跨坐 ·「威尔……这是至高之杖只对你一人的特例哦」",
@@ -39,7 +39,11 @@
       "ice throne",
       "magic",
       "blush",
-      "from below"
+      "from below",
+      "hands on another's face",
+      "frost",
+      "blue light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +58,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She cradles the viewer's face above the ice throne, glowing orbs floating around them."
   }
 }

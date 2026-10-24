@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_library_close",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 602,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在图书室窗边长椅上，将书放在膝上，开衫与衬衫衣襟松开。",
     "adult": true,
@@ -41,7 +41,12 @@
       "pink cardigan",
       "white blouse",
       "charcoal skirt",
-      "gold buttons"
+      "gold buttons",
+      "book on lap",
+      "electricity",
+      "static hair",
+      "lamplight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,6 +58,7 @@
       "lamp"
     ],
     "timeOfDay": "夜晚",
-    "title": "澄闪 · 图书室夜读"
+    "title": "澄闪 · 图书室夜读",
+    "animaCaption": "The book rests on her lap while her free hand remains beneath her skirt."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_silk_slip_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 769,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "administrator_arknights_r18_silk_slip_night",
     "characterId": "administrator_arknights",
@@ -36,7 +36,10 @@
       "strap slip",
       "topless",
       "looking at viewer",
-      "cowboy shot"
+      "cowboy shot",
+      "bedside lamp",
+      "moonlight",
+      "night"
     ],
     "promptProse": "Seated on the bed edge, she lets the left nightgown strap fall from her shoulder. The bedside lamp warms the bedding against cool moonlight from the cabin window.",
     "negativeTokens": [],
@@ -49,6 +52,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her left strap slips off her shoulder at the bed edge."
   }
 }

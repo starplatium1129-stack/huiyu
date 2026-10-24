@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_home_pajama",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 500,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱着玩偶趴在床上",
     "camera": "medium shot",
@@ -28,7 +28,11 @@
       "smartphone",
       "on stomach",
       "bed",
-      "lamplight"
+      "lamplight",
+      "hugging plush toy",
+      "laughing",
+      "pillow",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +45,7 @@
       "indoor"
     ],
     "timeOfDay": "夜晚",
-    "title": "喜多川海梦 · 居家睡衣趴"
+    "title": "喜多川海梦 · 居家睡衣趴",
+    "animaCaption": "The plush toy rests beneath one arm while her other hand holds the phone before her."
   }
 }

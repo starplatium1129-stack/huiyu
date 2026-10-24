@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_street_taiyaki_bench_eating",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1219,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在长凳上双手捧鲷鱼烧小口品尝，双腿并拢，金发如瀑垂落，眼神满足而矜持",
     "camera": "medium shot, seated eye-level, intimate charming framing",
@@ -26,7 +26,13 @@
       "sitting",
       "bench",
       "shopping street",
-      "medium shot"
+      "medium shot",
+      "holding taiyaki",
+      "both hands",
+      "eating",
+      "knees together",
+      "steam",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +48,7 @@
     ],
     "timeOfDay": "下午",
     "title": "金色暗影 · 商店街长凳的鲷鱼烧美味",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She takes a small bite from the taiyaki held in both hands above her joined knees."
   }
 }

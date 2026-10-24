@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_feather_shop",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 621,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端着装有碎冰的果味鸡尾酒，将吸管轻轻转向观众，邀请对方品尝。",
     "camera": "medium close-up shot",
@@ -28,7 +28,10 @@
       "smile",
       "bar",
       "dusk",
-      "close-up"
+      "close-up",
+      "offering drink",
+      "warm lighting",
+      "medium close up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +46,7 @@
     "timeOfDay": "黄昏",
     "title": "羽毛笔 · 特调品尝",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She turns the cocktail straw toward the viewer above the ice and lemon."
   }
 }

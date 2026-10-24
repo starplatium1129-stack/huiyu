@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_r18_bunk_spread_grease_stain",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 776,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rossy_arknights_r18_bunk_spread_grease_stain",
     "characterId": "rossy_arknights",
@@ -35,7 +35,14 @@
       "grease stain",
       "cot",
       "workshop",
-      "lamplight"
+      "lamplight",
+      "adult",
+      "stretching",
+      "knees apart",
+      "grease mark",
+      "looking up",
+      "smile",
+      "orange lamp"
     ],
     "promptProse": "Adult Rossi stretches on the workshop cot with her knees apart, a grease fingerprint on her inner thigh as she smiles upward. A small orange bedside lamp warms the cot against the dim workshop.",
     "negativeTokens": [],
@@ -46,6 +53,7 @@
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@tsunako",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She looks upward from the workshop cot beneath the small bedside lamp."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_live_shine",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1824,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kita_ikuyo_live_shine",
     "characterId": "kita_ikuyo",
@@ -29,7 +29,8 @@
       "sweat",
       "medium shot",
       "from below",
-      "microphone stand"
+      "microphone stand",
+      "golden lighting"
     ],
     "sceneTags": [
       "stage",
@@ -46,6 +47,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She frets with her left hand and strums with her right beneath the microphone."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_sfw_b7_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 299,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kama_fate_sfw_b7_05",
     "title": "迦摩 · 银河海滩的冰镇果汁",
@@ -39,7 +39,11 @@
       "deck chair",
       "beach",
       "dolphin",
-      "medium shot"
+      "medium shot",
+      "reclining",
+      "smile",
+      "sunlight",
+      "water reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -51,6 +55,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "The juice rests beside her chair as she smiles at the dolphin leaping beyond the shore."
   }
 }

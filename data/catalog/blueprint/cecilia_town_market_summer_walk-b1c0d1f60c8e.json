@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_town_market_summer_walk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 837,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "向日葵花摊前回眸一笑",
     "adult": false,
@@ -28,7 +28,10 @@
       "sunflowers",
       "smile",
       "summer",
-      "medium shot"
+      "medium shot",
+      "both hands",
+      "flower stall",
+      "sunlight"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",
@@ -42,6 +45,7 @@
       "sunny_day"
     ],
     "timeOfDay": "day",
-    "title": "塞西莉亚 · 小镇市集·向日葵花摊与明媚回眸"
+    "title": "塞西莉亚 · 小镇市集·向日葵花摊与明媚回眸",
+    "animaCaption": "She holds the hat with both hands and smiles toward her offscreen companion by the sunflower stall."
   }
 }

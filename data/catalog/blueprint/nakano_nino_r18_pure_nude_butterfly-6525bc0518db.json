@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_r18_pure_nude_butterfly",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1864,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_nino_r18_pure_nude_butterfly",
     "characterId": "nakano_nino",
@@ -35,7 +35,10 @@
       "blush",
       "tears",
       "climax",
-      "full body"
+      "full body",
+      "bed",
+      "warm lighting",
+      "from above"
     ],
     "sceneTags": [
       "bedroom",
@@ -55,6 +58,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She holds her companion's hands above the white sheets framed by dark butterfly ribbons."
   }
 }

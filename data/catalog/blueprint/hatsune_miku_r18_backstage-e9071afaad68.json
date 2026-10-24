@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_backstage",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 321,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hatsune_miku_r18_backstage",
     "title": "初音未来 · 演唱会后台",
@@ -39,7 +39,10 @@
       "warm lighting",
       "silver stage top",
       "teal panels",
-      "black pleated skirt"
+      "black pleated skirt",
+      "hand on clothes",
+      "holding collar",
+      "medium close up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@rella",
     "outfitId": "backstage_zip_top",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand holds her unzipped stage top; the other catches the viewer's collar."
   }
 }

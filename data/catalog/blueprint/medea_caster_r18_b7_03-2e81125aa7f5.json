@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 311,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medea_caster_r18_b7_03",
     "title": "美狄亚 · 宅房间拼装手办时法袍系带脱落事故 ·「呀！……围裙带子松开了，宗一郎大人不准看！」",
@@ -42,7 +42,10 @@
       "model kit",
       "workbench",
       "long plum knit dress",
-      "linen apron"
+      "linen apron",
+      "hand on desk",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -57,6 +60,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand braces on the modeling desk as the broken apron tie catches at her loosened dress."
   }
 }

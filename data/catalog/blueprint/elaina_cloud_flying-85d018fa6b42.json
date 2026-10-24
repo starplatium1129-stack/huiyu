@@ -4,7 +4,7 @@
   "revision": 6,
   "sortOrder": 380,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "elaina_cloud_flying",
     "title": "伊雷娜 · 云端飞行",
@@ -33,13 +33,19 @@
       "flying",
       "cloud sea",
       "blue sky",
-      "wide shot"
+      "wide shot",
+      "sitting astride broom",
+      "looking back",
+      "confident smile",
+      "wind",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "outfitId": "sfw_travel_witch_cape",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She sits astride the broom above the layered clouds."
   }
 }

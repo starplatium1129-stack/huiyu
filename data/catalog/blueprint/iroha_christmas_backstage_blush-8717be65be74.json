@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_christmas_backstage_blush",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 364,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "iroha_christmas_backstage_blush",
     "title": "一色彩羽 · 圣诞晚会后台的微醺红晕·「前辈……今晚可不可以只当我的圣诞老人呢」",
@@ -39,7 +39,12 @@
       "smile",
       "backstage",
       "christmas",
-      "medium shot"
+      "medium shot",
+      "holding gift",
+      "both hands",
+      "heavy blush",
+      "shy smile",
+      "colored lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +56,7 @@
       "festival",
       "romance",
       "iconic"
-    ]
+    ],
+    "animaCaption": "Both hands offer the wrapped gift toward the viewer from the auditorium wings."
   }
 }

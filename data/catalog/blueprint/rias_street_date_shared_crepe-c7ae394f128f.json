@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_street_date_shared_crepe",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1276,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_street_date_shared_crepe",
     "title": "莉雅丝 · 商业街午后的甜蜜可丽饼",
@@ -34,7 +34,15 @@
       "strawberry",
       "cafe",
       "cherry blossoms",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "holding food",
+      "both hands",
+      "feeding viewer",
+      "shy smile",
+      "blush",
+      "sunlight",
+      "high angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +51,7 @@
       "date",
       "sweet",
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands offer the crepe's top strawberry toward the off-frame viewer beneath the parasol."
   }
 }

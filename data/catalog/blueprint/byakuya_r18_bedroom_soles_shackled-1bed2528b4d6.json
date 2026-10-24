@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_r18_bedroom_soles_shackled",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 832,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "盘腿坐在旧床铺上，双手抱住硬币罐，低头看铺在被褥上的硬币；星尘与暖灯共同照明。",
     "adult": false,
@@ -36,7 +36,10 @@
       "coins",
       "coin jar",
       "stardust",
-      "night"
+      "night",
+      "hugging jar",
+      "tired smile",
+      "ceiling light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -50,6 +53,7 @@
       "lamp"
     ],
     "timeOfDay": "深夜",
-    "title": "深森白夜 · 出租屋的星光夜灯"
+    "title": "深森白夜 · 出租屋的星光夜灯",
+    "animaCaption": "She holds the coin jar against her while looking at the coins on the futon."
   }
 }

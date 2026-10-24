@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_rooftop_dusk",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 538,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "凭栏远眺城市灯火",
     "camera": "cowboy shot, front three-quarter view",
@@ -22,7 +22,11 @@
       "rooftop",
       "railing",
       "dusk",
-      "cowboy shot"
+      "cowboy shot",
+      "leaning on railing",
+      "tired expression",
+      "city lights",
+      "wind"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -33,6 +37,7 @@
       "lungmen"
     ],
     "timeOfDay": "黄昏",
-    "title": "陈 · 天台暮色"
+    "title": "陈 · 天台暮色",
+    "animaCaption": "Evening wind lifts her cape above the city lights."
   }
 }

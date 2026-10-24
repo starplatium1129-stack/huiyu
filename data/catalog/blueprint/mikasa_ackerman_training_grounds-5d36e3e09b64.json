@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_training_grounds",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 980,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "操场列队训练",
     "camera": "cowboy shot, stepping out from formation on dirt training field",
@@ -22,7 +22,10 @@
     "promptTokens": [
       "maneuver harness",
       "formation",
-      "training ground"
+      "training ground",
+      "walking",
+      "training formation",
+      "dirt field"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -35,6 +38,7 @@
     ],
     "timeOfDay": "白天",
     "title": "三笠 · 训练兵团操场",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "The other trainees remain in orderly rows behind her."
   }
 }

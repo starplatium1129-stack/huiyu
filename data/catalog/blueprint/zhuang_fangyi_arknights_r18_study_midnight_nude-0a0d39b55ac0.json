@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_r18_study_midnight_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 767,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_r18_study_midnight_nude",
     "characterId": "zhuang_fangyi_arknights",
@@ -37,7 +37,8 @@
       "study",
       "candlelight",
       "midnight",
-      "full body"
+      "full body",
+      "soft expression"
     ],
     "promptProse": "Zhuang Fangyi leans against the polished desk, her usual composure softened in the quiet candlelit study.",
     "negativeTokens": [],
@@ -48,6 +49,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@tsunako",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She rests against the polished desk in the quiet study."
   }
 }

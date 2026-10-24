@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_r18_workbench_tanktop_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 774,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rossy_arknights_r18_workbench_tanktop_blush",
     "characterId": "rossy_arknights",
@@ -35,7 +35,13 @@
       "workbench",
       "blush",
       "grey side panels",
-      "dark work shorts"
+      "dark work shorts",
+      "adult",
+      "sitting",
+      "lifting tank top",
+      "hand on mouth",
+      "grease stained glove",
+      "spotlight"
     ],
     "promptProse": "Adult Rossi lifts her tank top above her chest while sitting on the steel bench, covering her mouth with a grease-stained glove. A workbench spotlight isolates her against the dark workshop corners.",
     "negativeTokens": [],
@@ -46,6 +52,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@anmi",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her gloved hand covers her mouth above the steel bench."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_glamoth_determination",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1869,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "firefly_glamoth_determination",
     "characterId": "firefly_hsr",
@@ -27,7 +27,8 @@
       "dawn",
       "sci-fi",
       "dynamic angle",
-      "medium shot"
+      "medium shot",
+      "low angle"
     ],
     "sceneTags": [
       "sci-fi",
@@ -43,6 +44,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "She holds one hand over her heart while gazing toward the horizon."
   }
 }

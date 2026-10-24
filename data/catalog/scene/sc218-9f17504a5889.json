@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc218",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 213,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc218",
     "title": "温泉旅馆的绝对热量对流",
@@ -46,11 +46,12 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, white towel, towel slip, hands on shoulders, wet skin, straddling lap, blush, outdoor onsen, steam, night, moonlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, white towel, towel slip, hands on shoulders, wet skin, straddling lap, blush, outdoor onsen, steam, night, moonlight, <lora:shiki_natsume_v18_wd14:0.85>, wet stone",
     "negative": "",
     "storyJa": "【夏目】【ナツメ・客室露天の月下のぬくもり】深夜、静まり返った温泉旅館の客室露天風呂。湯上がりのナツメは白いバスタオルをまとい、全身にきらめく水滴を湛え、肌はほんのり桜色に上気していた。滑りやすい足元に足を取られ、彼女は思わず池の端に座るあなたの胸元へと倒れ込んでしまう。緩んだタオルが腰元まで滑り落ち、二人の距離は一瞬で零になった。ナツメは咄嗟にあなたの肩に手を置き、目尻の泣きぼくろを月光に震わせながら、真っ赤になった耳を隠すように呟く――「……勘違いしないで。ただ滑っただけ。……濡れたんだから、少しこのままでいなさい。……変なところ見ないでよね、聞こえた？」",
     "rating": "R18",
-    "animaCaption": "After slipping on the wet stone she lands astride the viewer's thighs, the towel fallen to her waist as she holds the viewer's shoulders with both hands.",
-    "auditRevision": "careful-batch13-2026-08-27"
+    "animaCaption": "After the slip, both hands steady her on the viewer's shoulders, the towel now at her waist.",
+    "auditRevision": "careful-batch13-2026-08-27",
+    "promptProse": "After slipping on the wet stone she lands astride the viewer's thighs, the towel fallen to her waist as she holds the viewer's shoulders with both hands."
   }
 }

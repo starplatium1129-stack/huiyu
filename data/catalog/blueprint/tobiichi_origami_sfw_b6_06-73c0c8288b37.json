@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 95,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_06",
     "title": "鸢一折纸 · 夏日祭的射击摊",
@@ -37,7 +37,11 @@
       "stuffed animal",
       "festival",
       "lantern",
-      "medium shot"
+      "medium shot",
+      "offering toy",
+      "both hands",
+      "composed expression",
+      "lantern light"
     ],
     "negativeTokens": [
       "rifle in hands"
@@ -49,6 +53,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The cork rifle stays on the stall counter below the offered toy."
   }
 }

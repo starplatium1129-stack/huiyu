@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_silk_curtain",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 657,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "立于窗边，一手举过头顶抓住丝帘，夜风拂动帘幕。",
     "adult": true,
@@ -32,7 +32,12 @@
       "arm up",
       "curtain",
       "lattice window",
-      "night"
+      "night",
+      "standing",
+      "holding curtain",
+      "looking back",
+      "moonlight",
+      "wind"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -46,6 +51,7 @@
       "moon"
     ],
     "timeOfDay": "月夜",
-    "title": "令 · 纱帐月夜"
+    "title": "令 · 纱帐月夜",
+    "animaCaption": "Her raised hand catches the silk curtain above the lattice window."
   }
 }

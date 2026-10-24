@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_convenience_store_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1438,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "megumi_convenience_store_night",
     "title": "加藤惠 · 赶工后的便利店热饮",
@@ -38,7 +38,11 @@
       "bench",
       "convenience store",
       "night",
-      "bob cut"
+      "bob cut",
+      "both hands",
+      "tired smile",
+      "rice ball bag",
+      "storefront light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The unopened rice-ball bag rests beside her on the bench."
   }
 }

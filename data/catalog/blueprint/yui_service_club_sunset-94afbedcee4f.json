@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_service_club_sunset",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 348,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yui_service_club_sunset",
     "characterId": "yuigahama_yui",
@@ -26,7 +26,12 @@
       "offering",
       "smile",
       "clubroom",
-      "sunset"
+      "sunset",
+      "sitting",
+      "holding teacup",
+      "both hands",
+      "window light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -44,6 +49,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands offer the red teacup toward the viewer beside the sunlit clubroom window."
   }
 }

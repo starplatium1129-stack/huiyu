@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1460,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "推过去缝好的软垫，收好双手期待猫咪试坐。",
     "adult": false,
@@ -29,7 +29,11 @@
       "tabby cat",
       "veranda",
       "garden",
-      "medium shot"
+      "medium shot",
+      "seiza",
+      "hands on lap",
+      "smile",
+      "soft lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +50,7 @@
       "medium_shot"
     ],
     "timeOfDay": "afternoon",
-    "title": "甘露寺蜜璃 · 给猫咪缝的小软垫"
+    "title": "甘露寺蜜璃 · 给猫咪缝的小软垫",
+    "animaCaption": "Both hands wait on her knees as the cat tests the new cushion with one paw."
   }
 }

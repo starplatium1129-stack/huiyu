@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_rainy_graveyard_another_self_resonance",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1790,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "michiru_rainy_graveyard_another_self_resonance",
     "title": "松岛满 · 阴雨墓园中另一个人格的温柔低语",
@@ -61,11 +61,15 @@
       "rain_drops",
       "water_droplets",
       "cinematic_composition",
-      "soft_diffused_light"
+      "soft_diffused_light",
+      "looking at tombstone",
+      "overcast light",
+      "close up"
     ],
     "promptProse": "Under a steady melancholy rainfall in an overgrown stone cemetery, Michiru holds a black umbrella tilted over her shoulder while dressed in an ornate black gothic lolita frilled dress. Clasping white camellias to her chest with a gentle, serene expression replacing her usual comical demeanor, soft translucent rain streaks shimmer around her in the dim ambient mist.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the tilted umbrella while the other keeps the white camellias against her chest."
   }
 }

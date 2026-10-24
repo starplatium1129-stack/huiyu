@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_winter_streets_novelist",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1430,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "utaha_winter_streets_novelist",
     "title": "霞之丘诗羽 · 冬街围巾的毒舌·「手冷的话……借你一次也没关系」",
@@ -34,7 +34,11 @@
       "reaching out",
       "winter street",
       "medium shot",
-      "2people"
+      "2people",
+      "walking",
+      "streetlight",
+      "night",
+      "medium two-shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +52,7 @@
       "date",
       "girlfriend"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She extends her cold hand toward her companion, fingertips slightly reddened."
   }
 }

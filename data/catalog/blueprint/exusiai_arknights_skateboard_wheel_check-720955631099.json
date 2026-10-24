@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_skateboard_wheel_check",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 695,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfitId": "lungmen_streetwear_skater",
@@ -26,7 +26,11 @@
       "bench",
       "plaza",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "holding skateboard",
+      "skate tool",
+      "looking at viewer",
+      "sunlight"
     ],
     "camera": "medium shot, bench and upright skateboard with wheel adjustment visible",
     "lighting": "街头广场清透的午后日光",
@@ -50,6 +54,7 @@
       "sunlight",
       "medium_shot"
     ],
-    "negativeTokens": []
+    "negativeTokens": [],
+    "animaCaption": "One hand steadies the upright board while the other seats the tool on its axle nut."
   }
 }

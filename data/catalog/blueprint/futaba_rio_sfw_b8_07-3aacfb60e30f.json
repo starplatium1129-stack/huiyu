@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_07",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 73,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_07",
     "title": "双叶理央 · 夜行列车上的星图",
@@ -40,7 +40,10 @@
       "window",
       "bay",
       "night",
-      "medium shot"
+      "medium shot",
+      "finger on chart",
+      "reading lamp",
+      "stars"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -50,6 +53,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She compares the chart with the bright star above the bay."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_dorm_morning_casual_domestic",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1354,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚着窗台单手捧红茶，宽松白衬衫下裸露小腿，睡眼惺忪地微笑",
     "adult": false,
@@ -31,7 +31,13 @@
       "tea",
       "leaning",
       "window",
-      "morning"
+      "morning",
+      "holding cup",
+      "holding hair",
+      "sleepy smile",
+      "curtains",
+      "backlighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +52,7 @@
       "daily"
     ],
     "timeOfDay": "清晨",
-    "title": "芙拉蒂蕾娜 · 军官宿舍的晨光白衬衫·「少校的休息日，从一杯红茶开始」"
+    "title": "芙拉蒂蕾娜 · 军官宿舍的晨光白衬衫·「少校的休息日，从一杯红茶开始」",
+    "animaCaption": "One hand holds warm tea while the other gathers her loose hair beside the windowsill."
   }
 }

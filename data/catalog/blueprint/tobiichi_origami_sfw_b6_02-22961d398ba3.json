@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_02",
     "title": "鸢一折纸 · 整备台上的检查记录",
@@ -36,7 +36,11 @@
       "diagnostic unit",
       "cable",
       "workbench",
-      "medium shot"
+      "medium shot",
+      "holding device",
+      "inspecting connector",
+      "rubber mat",
+      "work light"
     ],
     "negativeTokens": [
       "split panels"
@@ -48,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand steadies the inactive unit while the other checks its connector."
   }
 }

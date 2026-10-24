@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_bath_translucent_camisole_solo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_nsfw_bath_translucent_camisole_solo",
     "title": "卡莲 · 迷雾浴池的湿身黑丝自抚低吟",
@@ -39,7 +39,12 @@
       "see-through",
       "masturbation",
       "steam",
-      "cowboy shot"
+      "cowboy shot",
+      "reclining",
+      "head back",
+      "hand between legs",
+      "candlelight",
+      "water reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +59,7 @@
       "sensual_solo"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She reclines against the tub rim with one hand submerged between her thighs."
   }
 }

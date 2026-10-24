@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_mage_tower",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "frieren_r18_mage_tower",
     "title": "芙莉莲 · 魔导塔星夜",
@@ -41,7 +41,12 @@
       "tower",
       "night",
       "medium shot",
-      "gold trim"
+      "gold trim",
+      "holding chart",
+      "hand under robe",
+      "blue magic",
+      "starlight",
+      "candlelight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -52,6 +57,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@atdan",
     "outfitId": "wizard_robe",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand steadies the chart while the other stays beneath her robe."
   }
 }

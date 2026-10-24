@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_magical_combat_alley",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 825,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "魔法少女变身，星尘光阵展开",
     "adult": false,
@@ -29,7 +29,11 @@
       "star wand",
       "magic circle",
       "rain puddles",
-      "wide shot"
+      "wide shot",
+      "holding wand",
+      "raised wand",
+      "glowing magic",
+      "wet pavement"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",
@@ -44,6 +48,7 @@
     ],
     "timeOfDay": "night",
     "title": "深森白夜 · 雨中小巷·魔法少女变身与星尘阵",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She holds the wand between the approaching danger and the person behind her."
   }
 }

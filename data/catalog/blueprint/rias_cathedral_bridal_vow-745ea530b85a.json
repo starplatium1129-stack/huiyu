@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_cathedral_bridal_vow",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1280,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rias_cathedral_bridal_vow",
     "title": "莉雅丝 · 逆光圣殿的真红誓约",
@@ -34,7 +34,13 @@
       "bouquet",
       "tears",
       "cathedral",
-      "stained glass"
+      "stained glass",
+      "holding bouquet",
+      "both hands",
+      "gentle smile",
+      "light rays",
+      "cowboy shot",
+      "high angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +51,7 @@
       "vow"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "White roses and red camellias rest in both hands before the cathedral altar."
   }
 }

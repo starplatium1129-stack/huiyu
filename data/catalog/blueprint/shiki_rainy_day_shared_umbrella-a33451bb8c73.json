@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_rainy_day_shared_umbrella",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1345,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "并肩共撑黑伞，侧身紧贴视角手臂，抬头看着伞沿滴落的雨水，眼神柔和",
     "camera": "cowboy shot, eye level",
@@ -31,7 +31,10 @@
       "walking",
       "rain",
       "alley",
-      "cowboy shot"
+      "cowboy shot",
+      "shared umbrella",
+      "gentle gaze",
+      "overcast light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -47,6 +50,7 @@
       "gentle_gaze"
     ],
     "timeOfDay": "阴雨天",
-    "title": "两仪式 · 细雨霏霏的并肩黑伞"
+    "title": "两仪式 · 细雨霏霏的并肩黑伞",
+    "animaCaption": "Her shoulder rests against her companion's upper arm under their shared black umbrella."
   }
 }

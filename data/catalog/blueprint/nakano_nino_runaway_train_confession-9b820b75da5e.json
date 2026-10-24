@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_runaway_train_confession",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1855,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_nino_runaway_train_confession",
     "characterId": "nakano_nino",
@@ -28,7 +28,9 @@
       "determined look",
       "wind",
       "cowboy shot",
-      "hands in pockets"
+      "hands in pockets",
+      "standing",
+      "low angle"
     ],
     "sceneTags": [
       "slope",
@@ -46,6 +48,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "animaCaption": "Both hands remain in her apron pockets as she lifts her chin on the road slope."
   }
 }

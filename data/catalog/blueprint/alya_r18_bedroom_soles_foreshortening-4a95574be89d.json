@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_bedroom_soles_foreshortening",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 783,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "半坐床头用俄语低语，指尖绕着银色发梢",
     "adult": true,
@@ -35,7 +35,13 @@
       "blush",
       "moonlight",
       "night",
-      "medium shot"
+      "medium shot",
+      "headboard",
+      "hair twirling",
+      "looking at viewer",
+      "window blinds",
+      "striped light",
+      "bedside lamp"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -61,6 +67,7 @@
       "long_hair",
       "hair_down"
     ],
-    "identityProseOverride": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, with loose long silver hair, blue eyes and no hair ribbons."
+    "identityProseOverride": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, with loose long silver hair, blue eyes and no hair ribbons.",
+    "animaCaption": "Propped against the headboard, she winds a lock of hair around one finger."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1602,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_04",
     "title": "战栗的龙卷 · 顶层防核卧室床单上的绝顶崩坏自持 ·「姐姐才没有撒娇……只是稍微……想要被抱紧而已……」",
@@ -36,7 +36,9 @@
       "on back",
       "green aura",
       "bed",
-      "crying"
+      "crying",
+      "masturbation",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +57,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Green telekinesis presses the mattress while its glow stays close to the bed."
   }
 }

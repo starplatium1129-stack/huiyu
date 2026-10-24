@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_poisson_rain_reflection",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "furina_poisson_rain_reflection",
     "title": "芙宁娜 · 雨幕中的落寞独白",
@@ -38,13 +38,18 @@
       "rain",
       "terrace",
       "tired",
-      "medium shot"
+      "medium shot",
+      "hand on railing",
+      "looking down",
+      "streetlight",
+      "cool lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_archon",
     "coverageTags": [
       "story_climax"
-    ]
+    ],
+    "animaCaption": "Rain gathers in one upturned palm; her other hand rests on the wet balustrade."
   }
 }

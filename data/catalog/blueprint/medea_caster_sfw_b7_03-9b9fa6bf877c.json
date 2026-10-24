@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 291,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_03",
     "title": "美狄亚 · 连帽长袍的街市采购",
@@ -36,7 +36,13 @@
       "solo",
       "medea_(caster)_(fate)",
       "wicker basket",
-      "market"
+      "market",
+      "holding basket",
+      "walking",
+      "food stalls",
+      "sunlight",
+      "shaded face",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +52,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She carries the basket through the market with her hood low, sunlight catching its rim beneath her shaded face."
   }
 }

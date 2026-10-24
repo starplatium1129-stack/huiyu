@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_wasteland_survey",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 747,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_wasteland_survey",
     "characterId": "zhuang_fangyi_arknights",
@@ -34,7 +34,10 @@
       "shopping bag",
       "market",
       "awning",
-      "daylight"
+      "daylight",
+      "holding apples",
+      "holding bag",
+      "offering choice"
     ],
     "promptProse": "Zhuang Fangyi raises two differently colored apples on one palm for the viewer to choose, her shopping bag in the other hand.",
     "negativeTokens": [],
@@ -42,6 +45,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Two differently colored apples rest on one palm while her other hand holds the bag."
   }
 }

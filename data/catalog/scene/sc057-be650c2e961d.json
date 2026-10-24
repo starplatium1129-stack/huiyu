@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc057",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Seated beneath the parasol, she holds the warm drink in one hand and draws a corner of her shoulder towel over the viewer's knee beside her; reflected sea light softens the shade around her damp hair.",
+    "animaCaption": "She draws a corner of her shoulder towel over the viewer's knee while holding the drink in her other hand.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "遮阳伞下半身中景",
     "category": "旅行",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, navy one-piece swimsuit, diagonal white panel, small gold clasp, towel, holding cup, sitting, bench, parasol, beach, medium shot",
+    "prompt": "1girl, shiki_natsume, navy one-piece swimsuit, diagonal white panel, small gold clasp, towel, holding cup, sitting, bench, parasol, beach, medium shot, towel around shoulders, wet hair, shade, reflected light, light smile",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -53,6 +53,7 @@
       "展示图",
       "头像"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Seated beneath the parasol, she holds the warm drink in one hand and draws a corner of her shoulder towel over the viewer's knee beside her; reflected sea light softens the shade around her damp hair."
   }
 }

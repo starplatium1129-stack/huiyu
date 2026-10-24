@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_cafeteria",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 152,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tohsaka_rin_cafeteria",
     "title": "远坂凛 · 食堂午餐",
@@ -34,13 +34,19 @@
       "lunch tray",
       "tamagoyaki",
       "cafeteria",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "tucking hair",
+      "blush",
+      "offering dish",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "school_uniform",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand slides the tamagoyaki dish toward the viewer while the other tucks hair behind her ear."
   }
 }

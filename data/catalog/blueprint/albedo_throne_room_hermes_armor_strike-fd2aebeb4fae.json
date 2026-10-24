@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_throne_room_hermes_armor_strike",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1296,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "albedo_throne_room_hermes_armor_strike",
     "title": "雅儿贝德 · 赫尔墨斯三层黑铠之威",
@@ -34,7 +34,12 @@
       "cracked floor",
       "throne room",
       "full body",
-      "from below"
+      "from below",
+      "holding polearm",
+      "weapon planted",
+      "cracked marble",
+      "green lighting",
+      "chandelier"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -42,6 +47,7 @@
     "coverageTags": [
       "iconic",
       "combat"
-    ]
+    ],
+    "animaCaption": "Both hands grip the shaft with the blade planted in the cracked marble."
   }
 }

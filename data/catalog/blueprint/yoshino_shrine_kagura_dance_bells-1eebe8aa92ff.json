@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_shrine_kagura_dance_bells",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1141,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手执金铃神乐杖轻盈旋身起舞，巫女宽袖与银白双马尾飘飞，神态端庄肃穆",
     "camera": "full body, three-quarter view",
@@ -28,7 +28,8 @@
       "wooden stage",
       "firelight",
       "moonlight",
-      "full body"
+      "full body",
+      "both hands"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -45,6 +46,7 @@
     "timeOfDay": "夜晚",
     "title": "朝武芳乃 · 神乐殿前的金铃奉纳舞",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands hold the golden bell staff during the shrine-stage dance."
   }
 }

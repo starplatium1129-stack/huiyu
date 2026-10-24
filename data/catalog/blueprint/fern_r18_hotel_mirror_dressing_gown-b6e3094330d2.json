@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_hotel_mirror_dressing_gown",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fern_r18_hotel_mirror_dressing_gown",
     "characterId": "fern_frieren",
@@ -33,7 +33,10 @@
       "looking back",
       "blush",
       "fogged mirror",
-      "from behind"
+      "from behind",
+      "reaching back",
+      "holding robe",
+      "steam"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -51,6 +54,7 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Her sash catches on the mirror frame; steam obscures any distinct reflection."
   }
 }

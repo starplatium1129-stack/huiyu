@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_academy_fencing",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 646,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "一手握细剑刺向前方，另一手抬在身后保持平衡，呈标准刺击预备姿势",
     "adult": false,
@@ -29,7 +29,11 @@
       "rapier",
       "thrust stance",
       "morning",
-      "medium shot"
+      "medium shot",
+      "holding rapier",
+      "raised arm",
+      "wooden floor",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
       "wooden_floor"
     ],
     "timeOfDay": "上午",
-    "title": "陈 · 军校剑术课"
+    "title": "陈 · 军校剑术课",
+    "animaCaption": "Her free arm extends behind her for balance."
   }
 }

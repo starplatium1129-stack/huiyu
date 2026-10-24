@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 23,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hu_tao_liyue_harbor_rooftop_sunset",
     "title": "胡桃 · 飞檐屋顶夕阳赋诗",
@@ -39,7 +39,10 @@
       "harbor",
       "sunset",
       "full body",
-      "from above"
+      "from above",
+      "elbows on knees",
+      "lantern lights",
+      "playful expression"
     ],
     "negativeTokens": [
       "text"
@@ -50,6 +53,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both elbows rest on her knees while her hands support her cheeks above the harbor lights."
   }
 }

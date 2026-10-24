@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc146",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "On tiptoe before the viewer, she pinches their tie knot and straightens the tie with her free hand; morning light crosses her blouse and flushed face.",
+    "animaCaption": "She pinches the tie knot on tiptoe while her free hand straightens the viewer's tie.",
     "auditRevision": "fix-cowboy-framing-sc146-2026-09-05",
     "camera": "七分身亲密平视",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white pintuck blouse, stand collar, black pencil skirt, burgundy waistband, tiptoes, adjusting necktie, pout, apartment entrance, morning light, cowboy shot",
+    "prompt": "1girl, shiki_natsume, white pintuck blouse, stand collar, black pencil skirt, burgundy waistband, tiptoes, adjusting necktie, pout, apartment entrance, morning light, cowboy shot, blush",
     "rating": "All",
     "season": "春",
     "story": "【夏目 · 职场同居篇】清晨的阳光透过公寓的落地窗，柔和地洒在白衬衫上。已经步入社会的夏目正踮起脚尖，笨拙而认真地帮你整理上班的领带。因为你调侃她越来越有贤妻良母的样子，她手上的力道故意加重，气呼呼地揪了一下领带，歪着头瞪你，脸颊上的绯红和那颗温润的泪痣在晨光中可爱得无可救药——「哈？你是笨蛋吗？再乱说话，今天就把你绑在家里不准去上班！」",
@@ -48,6 +48,7 @@
       "新手推荐",
       "壁纸级"
     ],
-    "weather": "晴朗晨曦"
+    "weather": "晴朗晨曦",
+    "promptProse": "On tiptoe before the viewer, she pinches their tie knot and straightens the tie with her free hand; morning light crosses her blouse and flushed face."
   }
 }

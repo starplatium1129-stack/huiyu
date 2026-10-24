@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1515,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_04",
     "title": "椎名真白 · 便利店甜点柜前",
@@ -35,7 +35,11 @@
       "dessert",
       "display case",
       "convenience store",
-      "medium shot"
+      "medium shot",
+      "finger on glass",
+      "looking at food",
+      "display lighting",
+      "glass reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One fingertip touches the glass as she watches the baumkuchen under the display lights."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_locker_mirror",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 857,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在长椅上一手扶衣柜，另一手留在腿侧。",
     "adult": true,
@@ -40,7 +40,13 @@
       "bench",
       "opaque mirror",
       "locker room",
-      "halo"
+      "halo",
+      "hand on locker",
+      "hair over shoulder",
+      "diffuse reflection",
+      "fluorescent lighting",
+      "medium shot",
+      "from side"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -51,6 +57,7 @@
       "intimate"
     ],
     "timeOfDay": "放学后",
-    "title": "空崎日奈 · 更衣室镜前的娇羞对视"
+    "title": "空崎日奈 · 更衣室镜前的娇羞对视",
+    "animaCaption": "One hand braces on the locker while the opaque mirror holds only diffuse halo light behind her."
   }
 }

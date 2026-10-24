@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_morning_boyfriend_shirt_blush",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1770,
   "createdAt": "2026-10-21T13:40:00.000000000+00:00",
-  "updatedAt": "2026-10-21T13:40:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruna_morning_boyfriend_shirt_blush",
     "title": "西连寺春菜 · 晨光窗边的白衬衫与羞涩回眸",
@@ -50,11 +50,18 @@
       "looking_at_viewer",
       "morning_light",
       "sunbeam",
-      "soft_shadows"
+      "soft_shadows",
+      "holding shirt",
+      "both hands",
+      "looking back",
+      "wind",
+      "curtains",
+      "backlighting"
     ],
     "promptProse": "Standing in profile beside the sunlit bedroom window with sheer white curtains stirring in the morning breeze, Haruna clutches the draped white shirt close to her chest with both hands. Warm diagonal sunbeams rim her shoulder and hair as she turns to glance back at the viewer with an endearing, flushed blush.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands hold the draped shirt against her chest."
   }
 }

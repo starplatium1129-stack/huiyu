@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_rainy_garden_flower_care_smile",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1191,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sachi_rainy_garden_flower_care_smile",
     "title": "小岭幸 · 润物细雨的花圃静候",
@@ -39,13 +39,16 @@
       "rain",
       "garden",
       "smile",
-      "cowboy shot"
+      "cowboy shot",
+      "holding watering can",
+      "both hands"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "compositionIntent": "group",
     "characterTokens": [
       "kazami_yuuji"
-    ]
+    ],
+    "animaCaption": "Yuuji approaches under an umbrella beyond the rain-beaded hydrangeas."
   }
 }

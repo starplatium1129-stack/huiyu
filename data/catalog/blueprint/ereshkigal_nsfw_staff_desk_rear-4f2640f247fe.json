@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_staff_desk_rear",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 272,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_nsfw_staff_desk_rear",
     "title": "埃列什基伽勒 · 王座厅的深夜裁决·「判决是……与你永远羁绊」",
@@ -38,7 +38,12 @@
       "biting lip",
       "blush",
       "throne",
-      "wide shot"
+      "wide shot",
+      "hands on steps",
+      "marble steps",
+      "weapon set aside",
+      "blue light",
+      "from side"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -51,6 +56,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Both hands brace on the marble steps below the throne, her staff set aside."
   }
 }

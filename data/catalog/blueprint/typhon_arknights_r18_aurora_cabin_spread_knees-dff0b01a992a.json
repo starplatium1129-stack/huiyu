@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_r18_aurora_cabin_spread_knees",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 705,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "typhon_arknights_r18_aurora_cabin_spread_knees",
     "characterId": "typhon_arknights",
@@ -38,7 +38,11 @@
       "bunk bed",
       "skylight",
       "aurora",
-      "cabin"
+      "cabin",
+      "looking at viewer",
+      "green light",
+      "firelight",
+      "from above"
     ],
     "promptProse": "Typhon lies on the wooden bunk with her knees raised and legs apart beneath the skylight, looking toward the viewer as green aurora light mingles with the cabin's warm hearth glow.",
     "negativeTokens": [],
@@ -49,6 +53,7 @@
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@anmi",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She looks toward the viewer with knees raised beneath the skylight between green aurora and warm hearth light."
   }
 }

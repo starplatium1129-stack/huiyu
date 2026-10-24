@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc237",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc237",
     "title": "水光波纹间的死水熔断",
@@ -45,11 +45,12 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, adult, shiki_natsume, navy one piece swimsuit, diagonal white panel, small gold clasp, natsume_r18, mole under eye, wet hair, wet clothes, straddling, blush, indoor pool, poolside, lounge chair, night, moonlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, navy one piece swimsuit, diagonal white panel, small gold clasp, natsume_r18, mole under eye, wet hair, wet clothes, straddling, blush, indoor pool, poolside, lounge chair, night, moonlight, <lora:shiki_natsume_v18_wd14:0.85>, hands on shoulders, embarrassed, water reflections",
     "negative": "",
     "storyJa": "【夏目】【ナツメ・夜のプールサイド】深夜、静まり返った屋内プール。月明かりに濡れた紺のスク水姿のナツメは、プールサイドで足を滑らせ、デッキチェアのあなたの上へと倒れ込んでしまう。肌と肌が触れ合い、水滴が滴る中、目尻の泣きぼくろを揺らしながら耳を赤くして必死に平静を装う――「……勘違いしないで。足が滑っただけよ。……動かないで、少し息を整えるから。……バカ、どこ見てるの」",
     "rating": "R18",
-    "animaCaption": "On the poolside lounger, she steadies herself on the viewer's lap with both hands on their shoulders after slipping; moonlit water reflections move over her wet hair and embarrassed face.",
-    "auditRevision": "fix-no-burn-ears-sc237-2026-09-05"
+    "animaCaption": "Both hands steady her on the viewer's shoulders as she sits on their lap after slipping beside the lounger.",
+    "auditRevision": "fix-no-burn-ears-sc237-2026-09-05",
+    "promptProse": "On the poolside lounger, she steadies herself on the viewer's lap with both hands on their shoulders after slipping; moonlit water reflections move over her wet hair and embarrassed face."
   }
 }

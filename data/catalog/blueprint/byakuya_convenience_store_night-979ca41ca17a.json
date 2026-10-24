@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_convenience_store_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 826,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "打工下班数着硬币",
     "adult": false,
@@ -29,7 +29,11 @@
       "wallet",
       "sitting",
       "night",
-      "medium shot"
+      "medium shot",
+      "counting coins",
+      "holding wallet",
+      "store light",
+      "streetlamp"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
       "off_shift"
     ],
     "timeOfDay": "night",
-    "title": "深森白夜 · 深夜便利店·打工下班与数硬币"
+    "title": "深森白夜 · 深夜便利店·打工下班与数硬币",
+    "animaCaption": "Store light falls across the coins and wallet in her lap."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_student_council_afternoon",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1395,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端坐批阅文件偷看你，耳根泛红低头掩饰，钢笔游走纸面",
     "adult": false,
@@ -33,7 +33,11 @@
       "sitting",
       "office",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "writing",
+      "blushing ears",
+      "looking at viewer",
+      "teacup"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -48,6 +52,7 @@
       "daily"
     ],
     "timeOfDay": "午后",
-    "title": "四宫辉夜 · 学生会室的午后执务·「文件……就看不完了呢」"
+    "title": "四宫辉夜 · 学生会室的午后执务·「文件……就看不完了呢」",
+    "animaCaption": "Her pen pauses above the papers beside the tea left cooling on the table."
   }
 }

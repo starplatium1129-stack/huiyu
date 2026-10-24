@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_onsen_water_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1492,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chitanda_nsfw_onsen_water_solo",
     "title": "千反田爱瑠 · 神社古泉的水光湿身独奏 ·「水汽把身体变烫了……也是谜团之一吗」",
@@ -33,7 +33,14 @@
       "see-through",
       "masturbation",
       "bamboo",
-      "morning mist"
+      "morning mist",
+      "leaning",
+      "stone",
+      "water",
+      "steam",
+      "sunlight",
+      "medium shot",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +53,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "She rests against the mossy stone with one hand beneath the water."
   }
 }

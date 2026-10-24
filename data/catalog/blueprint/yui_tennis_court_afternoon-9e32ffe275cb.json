@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_tennis_court_afternoon",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 354,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yui_tennis_court_afternoon",
     "title": "由比滨结衣 · 网球训练场",
@@ -34,7 +34,10 @@
       "wiping sweat",
       "grin",
       "tennis court",
-      "afternoon"
+      "afternoon",
+      "holding racket",
+      "sunlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -42,6 +45,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the racket while the other wipes her forehead before the next game."
   }
 }

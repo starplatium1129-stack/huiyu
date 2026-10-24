@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_poolside_white_swimsuit_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "caren_nsfw_poolside_white_swimsuit_solo",
     "title": "卡莲 · 黄昏泳池白泳装的圣女卸防低吟",
@@ -42,7 +42,12 @@
       "swimsuit aside",
       "masturbation",
       "dusk",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting",
+      "leaning back",
+      "pool wall",
+      "hand between legs",
+      "water reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +61,7 @@
       "sensual_solo"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She leans against the shallow pool wall with one hand beneath the water between her thighs."
   }
 }

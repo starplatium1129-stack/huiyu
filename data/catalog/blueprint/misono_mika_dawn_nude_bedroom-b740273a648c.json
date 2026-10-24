@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_dawn_nude_bedroom",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 910,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在床沿身披半透白纱晨袍若隐若现，洁白羽翼微拢轻颤，单手托胸另一手在裙下自抚含泪动情",
     "adult": true,
@@ -38,7 +38,11 @@
       "dawn",
       "rose lace trim",
       "stained glass",
-      "sunbeams"
+      "sunbeams",
+      "adult",
+      "hand on chest",
+      "hand under robe",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -57,6 +61,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "早晨",
-    "title": "圣园未花 · 晨曦寝所半透白纱晨袍与纯欲羽翼轻颤自抚"
+    "title": "圣园未花 · 晨曦寝所半透白纱晨袍与纯欲羽翼轻颤自抚",
+    "animaCaption": "Her wings shelter her sides above the white bedding."
   }
 }

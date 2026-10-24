@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_siracusa_rain_alleyway_confrontation",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 665,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "在雨夜狭巷中持剑半出鞘踏步向前，眼神凌厉威严，风衣下摆飞扬",
     "camera": "cowboy shot, dramatic low angle",
@@ -26,7 +26,11 @@
       "alley",
       "rain",
       "low angle",
-      "cowboy shot"
+      "cowboy shot",
+      "drawing sword",
+      "hand on scabbard",
+      "puddle",
+      "wall lamp"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +47,7 @@
     ],
     "timeOfDay": "夜晚阴雨",
     "title": "德克萨斯 · 狭巷对峙与冷冽锋芒",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "One hand steadies the scabbard while the other draws the rapier a few inches above the puddle."
   }
 }

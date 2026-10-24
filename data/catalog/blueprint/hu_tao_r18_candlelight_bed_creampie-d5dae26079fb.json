@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_candlelight_bed_creampie",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 31,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hu_tao_r18_candlelight_bed_creampie",
     "title": "胡桃 · 暖烛房中的蝶火自戏",
@@ -43,7 +43,11 @@
       "butterfly",
       "red sheets",
       "candlelight",
-      "from above"
+      "from above",
+      "hand on chest",
+      "heavy blush",
+      "canopy bed",
+      "blue fire"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +61,7 @@
     "outfitId": "black_shirt_red_underwear",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand covers the plum mark at her chest while the other rests between her thighs."
   }
 }

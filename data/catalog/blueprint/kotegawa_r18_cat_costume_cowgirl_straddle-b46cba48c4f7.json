@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_r18_cat_costume_cowgirl_straddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1265,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "跪坐软垫猫娘皮革连体服抹胸拉链半崩溢乳，双手戴猫爪护胸，猫尾扫过腿间自抚娇喘",
     "adult": true,
@@ -35,7 +35,13 @@
       "cleavage",
       "kneeling",
       "spread legs",
-      "dressing room"
+      "dressing room",
+      "mat",
+      "open zipper",
+      "heavy blush",
+      "warm lighting",
+      "medium shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -55,6 +61,7 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "古手川唯 · 更衣室软垫猫娘紧身抹胸拉链半崩与猫尾抚弄破防"
+    "title": "古手川唯 · 更衣室软垫猫娘紧身抹胸拉链半崩与猫尾抚弄破防",
+    "animaCaption": "Her paw mittens press to her chest as the tail brushes between her thighs."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_locker_room_rain_solo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 366,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "iroha_nsfw_locker_room_rain_solo",
     "title": "一色彩羽 · 暴雨更衣室的湿身白衬衫独奏 ·「被雨淋湿成这样……前辈要负责擦干哦」",
@@ -39,7 +39,11 @@
       "sitting",
       "masturbation",
       "smirk",
-      "rain"
+      "rain",
+      "looking at viewer",
+      "window",
+      "overcast light",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +56,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "She looks toward the viewer from the bench beneath the rain-streaked window."
   }
 }

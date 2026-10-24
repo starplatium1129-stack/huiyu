@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_bathroom_steam_mirror",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 188,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakura_r18_bathroom_steam_mirror",
     "title": "间桐樱 · 卫宫家晨间雾气",
@@ -36,7 +36,11 @@
       "white towel",
       "wet hair",
       "sitting",
-      "morning light"
+      "morning light",
+      "wiping mirror",
+      "squeezing hair",
+      "mirror reflection",
+      "towel at waist"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One hand clears the mirror patch while the other squeezes her wet hair, her face reflected through the opening."
   }
 }

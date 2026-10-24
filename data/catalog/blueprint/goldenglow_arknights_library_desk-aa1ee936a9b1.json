@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_library_desk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 596,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "站在理发台前细心擦拭整理剪刀与梳子",
     "camera": "medium shot",
@@ -28,7 +28,13 @@
       "scissors",
       "comb",
       "hair salon",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "holding comb",
+      "cleaning cloth",
+      "smile",
+      "sunlight",
+      "looking at viewer"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +46,7 @@
       "afternoon"
     ],
     "timeOfDay": "午后",
-    "title": "澄闪 · 理发沙龙前台"
+    "title": "澄闪 · 理发沙龙前台",
+    "animaCaption": "She pauses with the comb in its cleaning cloth and looks up toward the viewer entering the salon."
   }
 }

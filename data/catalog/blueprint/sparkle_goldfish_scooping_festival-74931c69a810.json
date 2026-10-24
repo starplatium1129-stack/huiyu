@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_goldfish_scooping_festival",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1047,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sparkle_goldfish_scooping_festival",
     "title": "花火 · 和风游园的金鱼池笑靥",
@@ -35,7 +35,11 @@
       "fish bag",
       "festival",
       "full body",
-      "high angle"
+      "high angle",
+      "holding bag",
+      "grin",
+      "lantern light",
+      "water reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,6 +48,7 @@
       "date",
       "festival",
       "cute"
-    ]
+    ],
+    "animaCaption": "One hand raises the goldfish bag while the other lowers the torn paper net."
   }
 }

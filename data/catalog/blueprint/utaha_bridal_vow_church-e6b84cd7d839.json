@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_bridal_vow_church",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1431,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "utaha_bridal_vow_church",
     "title": "霞之丘诗羽 · 白纱下的作家誓言·「这次的结局，由我执笔」",
@@ -33,7 +33,9 @@
       "vow paper",
       "church",
       "wide shot",
-      "standing"
+      "standing",
+      "looking up",
+      "light rays"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +48,7 @@
       "bridal",
       "iconic",
       "romance"
-    ]
+    ],
+    "animaCaption": "She lifts her eyes from the vow paper before the altar."
   }
 }

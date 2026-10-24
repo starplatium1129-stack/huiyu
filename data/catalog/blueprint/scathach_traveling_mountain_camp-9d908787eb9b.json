@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_traveling_mountain_camp",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 243,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "scathach_traveling_mountain_camp",
     "title": "斯卡哈 · 山道旅装的篝火休憩·「在现代世界旅行……比想象中有趣」",
@@ -35,7 +35,12 @@
       "campfire",
       "log",
       "dusk",
-      "medium shot"
+      "medium shot",
+      "sitting on log",
+      "holding twig",
+      "hand on knee",
+      "firelight",
+      "blue dusk"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +52,7 @@
     "coverageTags": [
       "daily",
       "story"
-    ]
+    ],
+    "animaCaption": "One hand nudges kindling while the other rests on her knee."
   }
 }

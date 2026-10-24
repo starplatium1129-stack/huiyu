@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_evening_sofa_knitting",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yor_evening_sofa_knitting",
     "title": "约尔·福杰 · 终于织平整的一段围巾",
@@ -39,12 +39,17 @@
       "holding pale-green scarf",
       "sofa",
       "knitting basket",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "knees together",
+      "looking down",
+      "reading lamp"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Each hand holds an upper corner of the scarf as she checks the stitches above her lap."
   }
 }

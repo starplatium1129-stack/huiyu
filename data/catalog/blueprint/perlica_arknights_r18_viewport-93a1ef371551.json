@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_viewport",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 725,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚在舷窗旁侧身回眸，一手向画面外同伴伸出，拉链裙随站姿自然垂落。",
     "adult": true,
@@ -32,7 +32,10 @@
       "reaching out",
       "looking back",
       "viewport",
-      "stars"
+      "stars",
+      "reaching back",
+      "starlight",
+      "nebula"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -44,6 +47,7 @@
       "endfield"
     ],
     "timeOfDay": "夜晚",
-    "title": "佩丽卡 · 舷窗星海"
+    "title": "佩丽卡 · 舷窗星海",
+    "animaCaption": "She reaches back toward the off-frame Administrator beside the viewport."
   }
 }

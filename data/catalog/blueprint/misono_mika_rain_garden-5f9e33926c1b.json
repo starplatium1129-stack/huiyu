@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_rain_garden",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 892,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "撑着蕾丝洋伞漫步白蔷薇园，微笑回望",
     "adult": false,
@@ -32,7 +32,11 @@
       "hand offered",
       "white roses",
       "garden",
-      "rain"
+      "rain",
+      "three-quarter rear view",
+      "holding umbrella",
+      "outstretched hand",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -44,6 +48,7 @@
       "umbrella"
     ],
     "timeOfDay": "雨后",
-    "title": "圣园未花 · 雨中白蔷薇园的漫步"
+    "title": "圣园未花 · 雨中白蔷薇园的漫步",
+    "animaCaption": "Her right hand holds the umbrella while her left reaches toward the viewer behind."
   }
 }

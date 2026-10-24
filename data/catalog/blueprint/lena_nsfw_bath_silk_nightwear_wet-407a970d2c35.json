@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_bath_silk_nightwear_wet",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1365,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜倚缸沿湿身半透真丝睡裙，水下手指自我抚慰，仰头失神轻喘泛潮红",
     "adult": true,
@@ -35,7 +35,11 @@
       "masturbation",
       "hand between legs",
       "bathtub",
-      "steam"
+      "steam",
+      "reclining",
+      "floating hair",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -51,6 +55,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "芙拉蒂蕾娜 · 真丝睡裙的浴室湿身独奏·「军装之下，是只有深夜才承认的燥热」",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Her long hair trails into the bath as she rests against the tub rim."
   }
 }

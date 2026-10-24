@@ -146,6 +146,7 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
     mood: descriptive('mood'),
     sceneTags: stringList(value.sceneTags),
     promptProse: generatedRecipe ? value.promptProse as string : requiredString(value, 'promptProse'),
+    animaCaption: stringValue(value.animaCaption),
     promptTokens: generatedRecipe ? [...value.promptTokens as string[]] : requiredStringList(value, 'promptTokens'),
     negativeTokens: generatedRecipe ? [...value.negativeTokens as string[]] : negativeStringList(value.negativeTokens),
     recommendedSize: requiredString(value, 'recommendedSize'),

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 791,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在藤椅上，双手轻合夹着落花的笔记本，抬眼看向花枝",
     "adult": false,
@@ -28,7 +28,13 @@
       "wicker chair",
       "notebook",
       "flower",
-      "greenhouse"
+      "greenhouse",
+      "sitting",
+      "holding notebook",
+      "looking up",
+      "gentle smile",
+      "filtered sunlight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -45,6 +51,7 @@
       "medium_shot"
     ],
     "timeOfDay": "afternoon",
-    "title": "玛夏 · 花房里的压花书页"
+    "title": "玛夏 · 花房里的压花书页",
+    "animaCaption": "Both hands nearly close the notebook around the fallen blossom as she looks toward the flowering branch."
   }
 }

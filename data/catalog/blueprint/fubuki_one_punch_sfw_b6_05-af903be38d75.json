@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1593,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_05",
     "title": "吹雪 · 海滨俱乐部的冰镇提案",
@@ -40,7 +40,12 @@
       "canopy",
       "seaside",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "hand on papers",
+      "looking at viewer",
+      "smile",
+      "wind",
+      "filtered sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -52,6 +57,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "She pins the windblown proposal against the table beside the chilled drink and looks up."
   }
 }

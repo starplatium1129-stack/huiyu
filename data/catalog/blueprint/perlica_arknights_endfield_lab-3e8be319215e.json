@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_endfield_lab",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 712,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "站在全息投影前核对数据",
     "camera": "medium shot",
@@ -25,7 +25,10 @@
       "communication device",
       "hologram",
       "laboratory",
-      "day"
+      "day",
+      "hand on communicator",
+      "turning",
+      "cool light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +41,7 @@
     "timeOfDay": "白天",
     "title": "佩丽卡 · 终末地实验室",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand stays beside the communicator as she turns toward the Administrator."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1628,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_06",
     "title": "久远寺有珠 · 茶杯旁的第一声雨",
@@ -36,7 +36,12 @@
       "teapot",
       "breakfast",
       "rainy window",
-      "sitting"
+      "sitting",
+      "looking toward window",
+      "listening",
+      "window light",
+      "table lamp",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her spoon catches the last drop beneath the teapot spout as she looks toward the rainy window."
   }
 }

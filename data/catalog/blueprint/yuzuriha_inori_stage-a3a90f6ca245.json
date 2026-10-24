@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_stage",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 328,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yuzuriha_inori_stage",
     "title": "楪祈 · 歌姬舞台",
@@ -34,7 +34,10 @@
       "singing",
       "stage",
       "gold spotlights",
-      "red lighting"
+      "red lighting",
+      "relaxed hands",
+      "spotlight",
+      "glowing particles"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +46,7 @@
       "iconic"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She sings at the stage center with her hands relaxed."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_classroom_nap_afternoon",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 830,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "趴在课桌上睡着了",
     "adult": false,
@@ -30,7 +30,9 @@
       "sleeping",
       "head on arms",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "folded arms",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +46,7 @@
       "school"
     ],
     "timeOfDay": "afternoon",
-    "title": "深森白夜 · 教室午睡"
+    "title": "深森白夜 · 教室午睡",
+    "animaCaption": "Her head rests on folded arms beneath the coat."
   }
 }

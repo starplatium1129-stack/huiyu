@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_tavern_corner",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 610,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手撑着下颌，酒杯未动",
     "camera": "medium shot",
@@ -25,7 +25,11 @@
       "chin rest",
       "rum",
       "tavern",
-      "medium shot"
+      "medium shot",
+      "chin in hand",
+      "looking at viewer",
+      "untouched drink",
+      "lantern light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +40,7 @@
       "corner"
     ],
     "timeOfDay": "夜晚",
-    "title": "斯卡蒂 · 酒馆角落"
+    "title": "斯卡蒂 · 酒馆角落",
+    "animaCaption": "The rum stays untouched between her lowered gaze and the viewer."
   }
 }

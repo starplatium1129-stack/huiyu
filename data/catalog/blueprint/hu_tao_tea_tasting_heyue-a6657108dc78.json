@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hu_tao_tea_tasting_heyue",
     "title": "胡桃 · 和裕茶馆跨界听书",
@@ -40,7 +40,11 @@
       "teahouse",
       "window",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "holding cup",
+      "blowing on tea",
+      "listening",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +53,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand supports her cheek while the other raises the tea bowl toward her lips."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_winter_trenchcoat_snow_walk",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 372,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "haruno_winter_trenchcoat_snow_walk",
     "title": "雪之下阳乃 · 冬日长风衣手插口袋的雪街漫步·「手冷吗？……我才不会像高中生那样借手给你呢♪」",
@@ -37,7 +37,12 @@
       "smile",
       "snow",
       "footprints",
-      "christmas lights"
+      "christmas lights",
+      "walking",
+      "breath",
+      "falling snow",
+      "reflected light",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +55,7 @@
       "winter"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her boot tracks trail along the avenue as she turns back with both hands in her coat pockets."
   }
 }

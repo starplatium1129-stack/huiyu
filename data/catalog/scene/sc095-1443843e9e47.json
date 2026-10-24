@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc095",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc095",
     "title": "滑落前被接住的浴巾",
@@ -38,7 +38,7 @@
     "weather": "晴",
     "camera": "肩后回避视角中景",
     "lighting": "浴室柔光与蒸汽漫射",
-    "prompt": "1girl, shiki_natsume, bath towel, bathrobe, reaching, doorway, bathroom, steam, over shoulder, medium shot",
+    "prompt": "1girl, shiki_natsume, bath towel, bathrobe, reaching, doorway, bathroom, steam, over shoulder, medium shot, holding towel, receiving clothes, looking away",
     "negative": "open towel, nudity, see-through bathrobe",
     "usage": [
       "展示图",
@@ -46,7 +46,8 @@
     ],
     "storyJa": "【夏目・落ちる前にバスタオルを引っ掛けた】夏の夜のバスルームで、夏目が浴槽から出た瞬間、緩んだバスタオルが肩から滑り落ちた。あなたは時間内に引き返して、予備のバスローブを渡しました。彼女はあなたの後ろでしばらく沈黙していましたが、それでも温かい声で話しました。――「……少なくとも、反応は紳士的。浴衣を置いたら出ていって。準備ができたら呼ぶから。」",
     "rating": "R15",
-    "animaCaption": "She keeps her towel securely wrapped while accepting the spare robe; the averted shoulder view focuses on the exchange.",
-    "auditRevision": "careful-batch07-2026-08-27"
+    "animaCaption": "She accepts the spare robe while keeping her towel securely wrapped, viewed over her averted shoulder.",
+    "auditRevision": "careful-batch07-2026-08-27",
+    "promptProse": "She keeps her towel securely wrapped while accepting the spare robe; the averted shoulder view focuses on the exchange."
   }
 }

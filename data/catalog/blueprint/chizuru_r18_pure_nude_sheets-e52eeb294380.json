@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_r18_pure_nude_sheets",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1884,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chizuru_r18_pure_nude_sheets",
     "characterId": "mizuhara_chizuru",
@@ -34,7 +34,9 @@
       "blush",
       "tears",
       "climax",
-      "full body"
+      "full body",
+      "lying on back",
+      "messy hair"
     ],
     "sceneTags": [
       "bedroom",
@@ -53,6 +55,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She holds her companion's hand above the white sheets."
   }
 }

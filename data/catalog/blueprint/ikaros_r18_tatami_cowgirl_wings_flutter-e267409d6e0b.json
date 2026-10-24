@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_r18_tatami_cowgirl_wings_flutter",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1221,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自跨坐软垫，一手扶翼根，另一手留在腿间。",
     "adult": true,
@@ -37,7 +37,13 @@
       "blush",
       "shoji",
       "white dress",
-      "red ribbon"
+      "red ribbon",
+      "tatami",
+      "paper lantern",
+      "blue light",
+      "warm lighting",
+      "cowboy shot",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +56,7 @@
       "angel_wings"
     ],
     "timeOfDay": "深夜",
-    "title": "伊卡洛斯 · 白翼轻颤跨坐骑乘与主动摇曳"
+    "title": "伊卡洛斯 · 白翼轻颤跨坐骑乘与主动摇曳",
+    "animaCaption": "One hand steadies the wing root above the tatami cushion."
   }
 }

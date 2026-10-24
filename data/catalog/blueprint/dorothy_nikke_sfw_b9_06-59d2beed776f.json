@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_sfw_b9_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1732,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "dorothy_nikke_sfw_b9_06",
     "title": "桃乐丝 · 旧照片的指尖",
@@ -36,7 +36,11 @@
       "photograph",
       "open drawer",
       "sitting",
-      "lamplight"
+      "lamplight",
+      "holding photo",
+      "looking down",
+      "hand hovering",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +50,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the photograph while a fingertip of the other hovers above its surface."
   }
 }

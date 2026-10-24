@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1180,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "amane_rainy_bus_station_shared_umbrella",
     "title": "周防天音 · 雨夜站台的红伞依偎",
@@ -39,10 +39,15 @@
       "rain",
       "wet pavement",
       "night",
-      "medium shot"
+      "medium shot",
+      "leaning on another",
+      "wet hair",
+      "streetlight",
+      "reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She tips the shared umbrella toward Yuuji, leaving her own shoulder damp."
   }
 }

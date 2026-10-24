@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_adjusting_necktie_caught_blush",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1310,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手整理领带动作停滞，手腕被轻握，微微别开脸颊泛起淡淡红晕",
     "camera": "cowboy shot, intimate eye level, subtle blush focus",
@@ -30,7 +30,9 @@
       "held wrists",
       "blush",
       "looking away",
-      "preparation room"
+      "preparation room",
+      "window blinds",
+      "striped shadows"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +47,7 @@
       "yellow_eyes"
     ],
     "timeOfDay": "出征清晨",
-    "title": "C.C. · 整理领带的反差微怔"
+    "title": "C.C. · 整理领带的反差微怔",
+    "animaCaption": "Her companion lightly catches her wrists while she adjusts his tie."
   }
 }

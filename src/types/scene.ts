@@ -27,7 +27,7 @@ export interface Scene {
   rating?: string; mature?: boolean; lora?: string; time?: string; timeOfDay?: string
   lighting?: string; camera?: string; negative?: string
   location?: string; weather?: string; emotion?: string
-  recommendedSize?: string; animaCaption?: string
+  recommendedSize?: string; animaCaption?: string; promptProse?: string
   identityTokensOverride?: string[]; identityProseOverride?: string
   usage?: string[]; [k: string]: unknown
 }

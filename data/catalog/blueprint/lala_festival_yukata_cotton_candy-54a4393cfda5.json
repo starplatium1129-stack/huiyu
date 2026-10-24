@@ -4,7 +4,7 @@
   "revision": 6,
   "sortOrder": 1236,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "一手拿巨型棉花糖、另一手牵同伴沿祭典街前行，爱心尾巴欢快摇摆",
     "camera": "medium shot, eye-level, joyful festive atmosphere",
@@ -27,7 +27,11 @@
       "holding hands",
       "cotton candy",
       "festival",
-      "red lanterns"
+      "red lanterns",
+      "walking",
+      "night",
+      "warm lighting",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +49,7 @@
     "compositionIntent": "group",
     "characterTokens": [
       "Rito Yuuki"
-    ]
+    ],
+    "animaCaption": "Her left hand holds Rito's; her right carries the giant cotton candy."
   }
 }

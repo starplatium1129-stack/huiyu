@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_tavern_late",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 615,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在酒馆长椅上，一手端着未动的酒杯，另一手留在裙边。",
     "adult": true,
@@ -35,7 +35,10 @@
       "tavern",
       "lamplight",
       "cowboy shot",
-      "red lining"
+      "red lining",
+      "holding glass",
+      "hand beside skirt",
+      "amber lamps"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -47,6 +50,7 @@
       "wooden"
     ],
     "timeOfDay": "深夜",
-    "title": "斯卡蒂 · 酒馆深夜"
+    "title": "斯卡蒂 · 酒馆深夜",
+    "animaCaption": "The untouched glass stays in one hand on the tavern bench."
   }
 }

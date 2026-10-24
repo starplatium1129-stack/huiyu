@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1408,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双脚站稳反复练习广播体操，双臂平伸而神情认真。",
     "adult": false,
@@ -31,7 +31,9 @@
       "sweat",
       "courtyard",
       "sunrise",
-      "full body"
+      "full body",
+      "focused",
+      "empty courtyard"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -51,6 +53,7 @@
     "timeOfDay": "清晨",
     "title": "早坂爱 · 广播体操的秘密特训",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She holds both arms level to the sides in the courtyard."
   }
 }

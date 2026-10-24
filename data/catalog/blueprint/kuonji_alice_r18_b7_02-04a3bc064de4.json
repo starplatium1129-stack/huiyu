@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_02",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1634,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_02",
     "title": "久远寺有珠 · 古堡天鹅爪石缸的水光湿身独奏 ·「把魔术回路关闭……身体就会变得如此敏感吗」",
@@ -38,7 +38,12 @@
       "clawfoot bathtub",
       "steam",
       "stained glass",
-      "oil lamp"
+      "oil lamp",
+      "reclining",
+      "herbs",
+      "water reflection",
+      "blush",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +58,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She reclines in the herb-filled bath with one hand beneath the water near the dark stained-glass window."
   }
 }

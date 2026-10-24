@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_r18_mansion_bath",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 439,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "rem_rezero_r18_mansion_bath",
     "title": "雷姆 · 宅邸浴汤",
@@ -35,7 +35,10 @@
       "female masturbation",
       "marble bath",
       "steam",
-      "candlelight"
+      "candlelight",
+      "hand on bath rim",
+      "hand underwater",
+      "knee raised"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -46,6 +49,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "bath_towel",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One knee rises above the water while the other leg extends beneath it."
   }
 }

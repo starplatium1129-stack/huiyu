@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_rooftop_binocular_surveillance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fiona_frost_rooftop_binocular_surveillance",
     "characterId": "fiona_frost",
@@ -36,13 +36,18 @@
       "snow",
       "winter",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "holding binoculars",
+      "both hands",
+      "moonlight",
+      "city lights"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands steady the binoculars in the clock-tower shadow as she watches the distant windows."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_candle_balcony_night_whispers",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 686,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "身着丝绸睡裙赤足倚靠在露台栏杆上，手扶胸口仰望星空，烛火摇曳",
     "camera": "full body, slightly low angle",
@@ -27,7 +27,9 @@
       "terrace",
       "candlelight",
       "moonlight",
-      "full body"
+      "full body",
+      "leaning",
+      "stargazing"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +46,7 @@
       "melancholy"
     ],
     "timeOfDay": "深夜",
-    "title": "薇薇安娜 · 烛影露台的夜风私语"
+    "title": "薇薇安娜 · 烛影露台的夜风私语",
+    "animaCaption": "One hand rests at her chest beside the marble railing."
   }
 }

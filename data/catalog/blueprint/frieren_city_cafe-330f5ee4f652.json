@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_city_cafe",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "frieren_city_cafe",
     "title": "芙莉莲 · 现代咖啡馆",
@@ -42,7 +42,11 @@
       "cookie",
       "cafe terrace",
       "day",
-      "medium shot"
+      "medium shot",
+      "studying coffee",
+      "foam cat",
+      "bicycle",
+      "filtered sunlight"
     ],
     "negativeTokens": [
       "cup in hands"
@@ -53,6 +57,7 @@
     "outfitId": "sfw_sage_city_knit",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her right cheek rests in her palm while her left hand stays beside the saucer."
   }
 }

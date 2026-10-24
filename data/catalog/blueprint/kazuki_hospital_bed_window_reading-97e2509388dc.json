@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_hospital_bed_window_reading",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1165,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kazuki_hospital_bed_window_reading",
     "title": "风见一姬 · 白昼病房的书卷沉思",
@@ -39,9 +39,14 @@
       "reading",
       "hospital bed",
       "morning",
-      "medium shot"
+      "medium shot",
+      "turning page",
+      "window light",
+      "curtains",
+      "reflected light"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "The book rests against her raised knee as one hand supports her cheek and the other turns a page."
   }
 }

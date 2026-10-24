@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_hotspring_inn",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 459,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在木质檐廊喝茶",
     "camera": "medium shot",
@@ -27,7 +27,11 @@
       "tea",
       "veranda",
       "lantern",
-      "medium shot"
+      "medium shot",
+      "holding cup",
+      "both hands",
+      "pond",
+      "dusk"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +43,7 @@
       "indoor"
     ],
     "timeOfDay": "傍晚",
-    "title": "洛琪希 · 温泉旅馆"
+    "title": "洛琪希 · 温泉旅馆",
+    "animaCaption": "Both hands hold her tea above the veranda railing, with the twilight pond beyond."
   }
 }

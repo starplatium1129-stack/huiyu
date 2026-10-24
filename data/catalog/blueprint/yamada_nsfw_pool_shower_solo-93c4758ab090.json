@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_pool_shower_solo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1503,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_nsfw_pool_shower_solo",
     "title": "山田杏奈 · 泳池更衣室淋浴的水光湿身 ·「训练完好热……市川递一下浴巾好不好」",
@@ -36,7 +36,10 @@
       "steam",
       "cowboy shot",
       "white side panels",
-      "hand on stomach"
+      "hand on stomach",
+      "wet swimsuit",
+      "hand on abdomen",
+      "water stream"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +52,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "One hand rests over her lower abdomen beneath the shower."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_beach_summer_splash_double_peace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1791,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "michiru_beach_summer_splash_double_peace",
     "title": "松岛满 · 盛夏碧海浪花飞溅的双V跃动",
@@ -64,11 +64,15 @@
       "glistening_droplets",
       "summer_sunshine",
       "lens_flare",
-      "dynamic_angle"
+      "dynamic_angle",
+      "water reflection",
+      "barefoot",
+      "wide shot"
     ],
     "promptProse": "Leaping exuberantly into the air with a bright open-mouthed grin along the sun-drenched azure coastline, Michiru flashes double peace signs with both hands as turquoise ocean waves splash beneath her feet. Her lemon-yellow string bikini and sunlit bleached blonde twintails catch dazzling specular water reflections.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands form V signs beside her cheeks as waves splash beneath her airborne feet."
   }
 }

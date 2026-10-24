@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yumiko_nsfw_grand_piano_moonlit_surrender",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1785,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yumiko_nsfw_grand_piano_moonlit_surrender",
     "title": "榊由美子 · 幽夜琴房三角钢琴上的月光失守",
@@ -72,11 +72,15 @@
       "tears",
       "pant",
       "parted_lips",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "hand on sheet music",
+      "low angle",
+      "medium shot"
     ],
     "promptProse": "Bathed in crystalline silver moonlight filtering through arched gothic windows in the silent music room, Yumiko sits upon the edge of a glossy black grand piano, completely naked. Her floor-length hime-cut black hair cascades across scattered sheet music as her supple alabaster body arches in ecstasy, purple eyes glistening with helpless tears of surrender.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand braces on the scattered piano score beneath her long hair."
   }
 }

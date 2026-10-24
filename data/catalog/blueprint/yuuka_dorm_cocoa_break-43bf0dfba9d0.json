@@ -4,7 +4,7 @@
   "revision": 6,
   "sortOrder": 946,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "pajamas_loungewear",
@@ -23,7 +23,12 @@
       "table",
       "dorm room",
       "lamplight",
-      "low twintails"
+      "low twintails",
+      "sitting",
+      "holding mug",
+      "both hands",
+      "steam",
+      "medium shot"
     ],
     "camera": "medium shot, cocoa mug in both hands and closed ledger beside her",
     "lighting": "床头小灯照亮杯口热气的暖光",
@@ -50,6 +55,7 @@
     ],
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands raise the cocoa beside the closed budget ledger at the table corner."
   }
 }

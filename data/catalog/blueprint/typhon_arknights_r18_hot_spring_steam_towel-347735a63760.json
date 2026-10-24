@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_r18_hot_spring_steam_towel",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 702,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "typhon_arknights_r18_hot_spring_steam_towel",
     "characterId": "typhon_arknights",
@@ -38,7 +38,9 @@
       "hot spring",
       "snow",
       "steam",
-      "lantern"
+      "lantern",
+      "water reflection",
+      "medium shot"
     ],
     "promptProse": "Typhon rests in the geothermal spring with the wet white towel gathered at her waist. Lantern reflections move over the warm water while steam softens the surrounding snowbanks.",
     "negativeTokens": [],
@@ -51,6 +53,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@anmi",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The wet towel gathers at her waist while lantern reflections move over the spring water."
   }
 }

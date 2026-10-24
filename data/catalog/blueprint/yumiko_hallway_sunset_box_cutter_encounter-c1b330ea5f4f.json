@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yumiko_hallway_sunset_box_cutter_encounter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1782,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yumiko_hallway_sunset_box_cutter_encounter",
     "title": "榊由美子 · 暮色长廊的美工刀戒备",
@@ -57,11 +57,16 @@
       "intense_look",
       "wind_blown_hair",
       "detailed_background",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "standing",
+      "backlighting",
+      "dutch angle",
+      "cowboy shot"
     ],
     "promptProse": "Standing at the edge of the sun-drenched Mihama Academy school corridor as long golden-hour shadows stretch across the floorboards, Yumiko grips a sharp silver box cutter in her hand with the blade partially extended. Crimson sunset backlighting silhouettes her floor-sweeping hime-cut black hair as piercing purple eyes glare with guarded hostility.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The silver box-cutter blade remains partially extended against her guarded gaze."
   }
 }

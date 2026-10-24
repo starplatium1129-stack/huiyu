@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_kaine_lingerie_cowgirl_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1121,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yorha_2b_r18_kaine_lingerie_cowgirl_straddle",
     "title": "2B · 凯妮蕾丝战装跨坐骑乘与上下轻摇",
@@ -41,7 +41,11 @@
       "female masturbation",
       "sword",
       "android",
-      "tent"
+      "tent",
+      "straddling futon",
+      "supporting hand",
+      "powered-down Pod",
+      "firelight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +54,7 @@
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her sword and powered-down Pod rest behind the folded futon."
   }
 }

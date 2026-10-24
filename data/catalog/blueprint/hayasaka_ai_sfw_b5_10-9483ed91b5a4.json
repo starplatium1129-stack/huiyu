@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_10",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1410,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "散着头发靠栏杆喝黑咖啡，望向宅邸灯光放松下来。",
     "adult": false,
@@ -30,7 +30,11 @@
       "leaning",
       "balcony",
       "night",
-      "medium shot"
+      "medium shot",
+      "forearm on railing",
+      "holding coffee",
+      "tired expression",
+      "lit windows"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -52,6 +56,7 @@
     "timeOfDay": "夜晚",
     "title": "早坂爱 · 深夜阳台的黑咖啡",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She raises the coffee while looking toward the mansion's lit windows."
   }
 }

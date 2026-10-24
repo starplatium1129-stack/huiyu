@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_r18_apartment",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 509,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kisara_r18_apartment",
     "title": "木更 · 契约者的深夜",
@@ -38,7 +38,10 @@
       "kissing",
       "bed",
       "glowing mark",
-      "neon lights"
+      "neon lights",
+      "night",
+      "medium shot",
+      "front view"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +52,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tsunako",
     "outfitId": "oversized_white_shirt",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "She leans from the bed edge toward the offscreen viewer for a kiss."
   }
 }

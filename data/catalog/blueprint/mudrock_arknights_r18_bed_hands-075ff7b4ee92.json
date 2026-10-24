@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_bed_hands",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 584,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "侧卧床铺中央，双手握住画面外同伴伸来的手，将对方指尖贴在胸口。",
     "adult": true,
@@ -33,7 +33,11 @@
       "on side",
       "holding hand",
       "bed",
-      "night"
+      "night",
+      "both hands",
+      "dim lighting",
+      "medium shot",
+      "side view"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -47,6 +51,7 @@
       "lying_on_side"
     ],
     "timeOfDay": "深夜",
-    "title": "泥岩 · 掌心温热"
+    "title": "泥岩 · 掌心温热",
+    "animaCaption": "Both hands hold the off-frame viewer's offered hand against her chest."
   }
 }

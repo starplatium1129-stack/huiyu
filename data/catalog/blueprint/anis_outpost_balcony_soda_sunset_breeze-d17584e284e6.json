@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_outpost_balcony_soda_sunset_breeze",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1819,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "anis_outpost_balcony_soda_sunset_breeze",
     "title": "阿尼斯 · 前哨基地露台的傍晚汽水与微风",
@@ -57,11 +57,16 @@
       "gentle_smile",
       "warm_atmosphere",
       "golden_hour",
-      "detailed_background"
+      "detailed_background",
+      "balcony",
+      "railing",
+      "can against cheek",
+      "wind"
     ],
     "promptProse": "Leaning comfortably against the metallic railing of the outpost balcony during golden hour, Anis rests a chilled condensation-beaded soda can against her soft smiling cheek. Her oversized honey-yellow hoodie catches the gentle sunset breeze, her blue eyes gleaming with relaxed warmth as she shares a quiet candid moment.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "The cold soda can rests against her cheek beside the balcony railing."
   }
 }

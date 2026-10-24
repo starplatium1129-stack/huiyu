@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_winter_street",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 879,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "穿风衣走在雪中",
     "adult": false,
@@ -34,7 +34,9 @@
       "walking",
       "snow",
       "park",
-      "medium shot"
+      "medium shot",
+      "looking to side",
+      "soft lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -46,6 +48,7 @@
       "coat"
     ],
     "timeOfDay": "冬日傍晚",
-    "title": "调月莉音 · 冬季街道漫步"
+    "title": "调月莉音 · 冬季街道漫步",
+    "animaCaption": "She glances toward her companion along the park path as the first snow falls."
   }
 }

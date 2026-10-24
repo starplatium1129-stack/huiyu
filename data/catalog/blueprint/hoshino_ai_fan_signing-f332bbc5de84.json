@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_fan_signing",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 953,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "与粉丝握手交谈",
     "camera": "medium two-shot, eye level",
@@ -26,7 +26,9 @@
       "looking at another",
       "fan meeting",
       "table",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "eye contact"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +42,7 @@
     "timeOfDay": "白天",
     "title": "星野爱 · 握手会",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Ai sits left and clasps the fan's hand from the right; both faces remain visible."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_moonlit_courtyard",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 746,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_moonlit_courtyard",
     "characterId": "zhuang_fangyi_arknights",
@@ -40,7 +40,13 @@
       "sliced pears",
       "sofa",
       "rain",
-      "window"
+      "window",
+      "moving cushion",
+      "looking back",
+      "smile",
+      "blanket on knees",
+      "rainy window light",
+      "lamp"
     ],
     "promptProse": "Zhuang Fangyi moves the cushion aside to make room for the viewer, turning back with a smile above the folded blanket on her knees. Cool rainy-window light meets the warm lamp across the two cups of tea and sliced pears.",
     "negativeTokens": [],
@@ -48,6 +54,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She makes room for the viewer beside the two cups and sliced pears."
   }
 }

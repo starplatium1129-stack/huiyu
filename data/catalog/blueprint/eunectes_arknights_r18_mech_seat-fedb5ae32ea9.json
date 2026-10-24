@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_r18_mech_seat",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 595,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在机甲驾驶座，前襟拉链松开，一手握住头顶把手。",
     "adult": true,
@@ -40,7 +40,10 @@
       "cockpit",
       "masturbation",
       "blush",
-      "orange piping"
+      "orange piping",
+      "hand on handle",
+      "raised arm",
+      "instrument light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -52,6 +55,7 @@
       "glow"
     ],
     "timeOfDay": "夜晚",
-    "title": "森蚺 · 驾驶座"
+    "title": "森蚺 · 驾驶座",
+    "animaCaption": "Her legs rest around the narrow control column beneath the raised handle."
   }
 }

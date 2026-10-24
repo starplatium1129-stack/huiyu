@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc094",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Finishing a turn, she holds the gown hem with one hand and reaches toward the viewer with the other; window light spreads across the lined bodice and full skirt before the mirror.",
+    "animaCaption": "Finishing her turn, she keeps one hand on the gown hem and reaches toward the viewer with the other.",
     "auditRevision": "careful-batch14-2026-08-27",
     "camera": "婚纱裙摆完整可见的全身远景",
     "category": "恋爱/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through bodice, cropped dress",
-    "prompt": "1girl, ayachi_nene, white wedding dress, lined lace bodice, heart shaped neckline, full length chiffon skirt, pink waist ribbon, white shoes, twirling, holding skirt, reaching, mirror, fitting room, full body",
+    "prompt": "1girl, ayachi_nene, white wedding dress, lined lace bodice, heart shaped neckline, full length chiffon skirt, pink waist ribbon, white shoes, twirling, holding skirt, reaching, mirror, fitting room, full body, window light",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",
@@ -53,6 +53,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Finishing a turn, she holds the gown hem with one hand and reaches toward the viewer with the other; window light spreads across the lined bodice and full skirt before the mirror."
   }
 }

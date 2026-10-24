@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_bathrobe_morning",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 420,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "makima_r18_bathrobe_morning",
     "title": "玛奇玛 · 晨袍沙发",
@@ -35,7 +35,12 @@
       "sitting",
       "sofa",
       "cushions",
-      "morning"
+      "morning",
+      "reclining",
+      "leather sofa",
+      "smile",
+      "looking at viewer",
+      "morning light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +51,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@xinzoruo",
     "outfitId": "white_silk_robe",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Her silk robe rests off one shoulder against the leather cushions."
   }
 }

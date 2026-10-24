@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_lantern_festival",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 571,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "身着黑金旗袍执一盏纸灯，在融融暖光中回眸浅笑",
     "camera": "medium shot",
@@ -24,7 +24,11 @@
       "looking back",
       "smile",
       "river",
-      "night"
+      "night",
+      "holding lantern",
+      "warm lighting",
+      "water reflection",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +40,7 @@
       "chinese_clothes"
     ],
     "timeOfDay": "夜晚",
-    "title": "夕 · 岁节灯会"
+    "title": "夕 · 岁节灯会",
+    "animaCaption": "She looks back while carrying the rabbit lantern along the bridge."
   }
 }

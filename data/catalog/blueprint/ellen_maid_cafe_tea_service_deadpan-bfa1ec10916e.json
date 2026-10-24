@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_maid_cafe_tea_service_deadpan",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1057,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手端托盘奉茶，面无表情俯视客人，女仆围裙与鲨鱼尾相得益彰",
     "camera": "medium shot, slightly low angle from the guest's seat",
@@ -30,7 +30,12 @@
       "expressionless",
       "cafe",
       "medium shot",
-      "from below"
+      "from below",
+      "holding tray",
+      "one hand",
+      "chandelier",
+      "fireplace",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +51,7 @@
       "service"
     ],
     "timeOfDay": "下午",
-    "title": "艾莲·乔 · 营业微死感的端茶执事"
+    "title": "艾莲·乔 · 营业微死感的端茶执事",
+    "animaCaption": "She carries Earl Grey toward the seated viewer on a one-handed silver tray."
   }
 }

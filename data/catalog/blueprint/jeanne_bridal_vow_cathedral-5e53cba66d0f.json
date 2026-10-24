@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_bridal_vow_cathedral",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 237,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_bridal_vow_cathedral",
     "title": "圣女贞德 · 大教堂的纯白花嫁·「这份幸福……真的可以由我收下吗？」",
@@ -35,7 +35,12 @@
       "bouquet",
       "stained glass",
       "cathedral",
-      "wide shot"
+      "wide shot",
+      "holding bouquet",
+      "both hands",
+      "looking up",
+      "teary eyes",
+      "colored light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +53,7 @@
       "bridal",
       "iconic",
       "romance"
-    ]
+    ],
+    "animaCaption": "She raises her gaze toward the approaching viewer above the bouquet."
   }
 }

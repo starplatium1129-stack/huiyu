@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_yellow_sundress_train",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1021,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手背在身后回首傲娇娇嗔，夏裙微扬",
     "camera": "medium shot, eye level",
@@ -27,7 +27,13 @@
       "hands behind back",
       "looking back",
       "summer",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "pout",
+      "wind",
+      "windblown hair",
+      "sunlight",
+      "clear sky"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +49,7 @@
       "lens_flare"
     ],
     "timeOfDay": "白天",
-    "title": "惣流·明日香 · 夏日黄色连衣裙"
+    "title": "惣流·明日香 · 夏日黄色连衣裙",
+    "animaCaption": "She turns toward her offscreen companion as the breeze lifts her hair and skirt."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_throne_office",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 989,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "桌前批阅政务",
     "camera": "medium shot",
@@ -23,7 +23,10 @@
       "hair up",
       "paperwork",
       "desk",
-      "throne room"
+      "throne room",
+      "writing",
+      "holding papers",
+      "daylight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +39,7 @@
       "official"
     ],
     "timeOfDay": "白天",
-    "title": "希斯特里亚 · 王座理政"
+    "title": "希斯特里亚 · 王座理政",
+    "animaCaption": "One hand steadies the petitions while the other writes a marginal note."
   }
 }

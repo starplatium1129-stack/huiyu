@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 98,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_03",
     "title": "夜刀神十香 · 来禅毕业后制服拉链撑崩的更衣事故 ·「呜哇！成年礼服拉链崩飞了！士道救命……衣服要坏掉了！」",
@@ -44,7 +44,10 @@
       "looking back",
       "mirror",
       "bedroom",
-      "cowboy shot"
+      "cowboy shot",
+      "hands on mirror",
+      "pout",
+      "morning light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -59,6 +62,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands brace against the mirror, the broken zipper leaving her skirt caught at her thighs."
   }
 }

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc007",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Under their shared umbrella, her hand rests over the viewer's on the handle near her shoulder; rainy daylight softens her relieved smile.",
+    "animaCaption": "Her hand rests over the viewer's on their shared umbrella handle, near her shoulder.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "伞下主观面部与交握双手近景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, umbrella, holding hands, rain, wet pavement, close up",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, umbrella, holding hands, rain, wet pavement, close up, holding umbrella, smile, shy, daylight",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 雨声里的正式回答】骤雨困住了放学后的街道。宁宁原本想独自跑回去，却看见你带着伞从雨幕里赶来。两个人挤在不算宽的伞下，她沉默地听完你的心意，手指越攥越紧，最终主动握住伞柄旁的手——「让我想了这么久，太狡猾了……我的回答是愿意。所以，从今天开始不准把我落在雨里。」",
@@ -47,6 +47,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "雨"
+    "weather": "雨",
+    "promptProse": "Under their shared umbrella, her hand rests over the viewer's on the handle near her shoulder; rainy daylight softens her relieved smile."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_dojo_kendo_kata_discipline",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1066,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手持木刀摆出中段持剑姿态，赤足站立，眼神如刀锋般锐利清澈",
     "camera": "full body, front view, disciplined martial composition",
@@ -25,7 +25,12 @@
       "bokken",
       "sword stance",
       "dojo",
-      "full body"
+      "full body",
+      "barefoot",
+      "holding wooden sword",
+      "both hands",
+      "focused",
+      "morning light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +44,7 @@
       "discipline"
     ],
     "timeOfDay": "清晨",
-    "title": "星见雅 · 剑道场上的修心挥斩"
+    "title": "星见雅 · 剑道场上的修心挥斩",
+    "animaCaption": "Her right hand grips near the guard and her left at the pommel as she holds middle guard."
   }
 }

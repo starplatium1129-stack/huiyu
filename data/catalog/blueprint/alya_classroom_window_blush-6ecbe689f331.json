@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_classroom_window_blush",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 773,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "托腮望向窗外夕阳，银发如瀑，蓝眸微转用俄语低声呢喃着害羞的爱意，微风吹拂窗帘",
     "camera": "medium shot, seated at the window desk with one hand on her cheek",
@@ -28,7 +28,13 @@
       "cheek in hand",
       "blush",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "looking at viewer",
+      "window",
+      "desk",
+      "curtains",
+      "wind",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +47,7 @@
       "blushing"
     ],
     "timeOfDay": "黄昏",
-    "title": "艾莉莎·米哈伊洛夫娜·九条 · 窗边轻语·俄语遮羞与夕阳绯红"
+    "title": "艾莉莎·米哈伊洛夫娜·九条 · 窗边轻语·俄语遮羞与夕阳绯红",
+    "animaCaption": "Her cheek rests in one hand as she glances toward the viewer."
   }
 }

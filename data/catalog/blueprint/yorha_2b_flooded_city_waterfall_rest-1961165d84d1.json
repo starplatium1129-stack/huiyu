@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_flooded_city_waterfall_rest",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1112,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yorha_2b_flooded_city_waterfall_rest",
     "title": "2B · 废墟小屋清晨大号男友白衬衫",
@@ -37,7 +37,13 @@
       "coffee",
       "bed",
       "morning",
-      "medium shot"
+      "medium shot",
+      "holding coffee",
+      "both hands",
+      "looking at viewer",
+      "uncovered eyes",
+      "steam",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +57,7 @@
       "mole_under_mouth",
       "nier:automata"
     ],
-    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips."
+    "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips.",
+    "animaCaption": "She sits at the bed edge in the viewer's shirt above the steaming coffee."
   }
 }

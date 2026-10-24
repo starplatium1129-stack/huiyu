@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_bakery_afternoon_tea",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1856,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_nino_bakery_afternoon_tea",
     "characterId": "nakano_nino",
@@ -28,7 +28,10 @@
       "smug",
       "confident smile",
       "daylight",
-      "medium shot"
+      "medium shot",
+      "both hands",
+      "leaning forward",
+      "warm lighting"
     ],
     "sceneTags": [
       "bakery",
@@ -45,6 +48,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Both hands support the porcelain cake plate toward the table."
   }
 }

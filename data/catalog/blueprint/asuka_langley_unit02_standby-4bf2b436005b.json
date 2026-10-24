@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_unit02_standby",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1020,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手叉腰昂首挺胸，傲气十足指向上方",
     "camera": "cowboy shot, dynamic low angle",
@@ -27,7 +27,13 @@
       "hand on hip",
       "Unit-02",
       "cowboy shot",
-      "from below"
+      "from below",
+      "standing",
+      "pointing up",
+      "raised chin",
+      "red lighting",
+      "rim light",
+      "mecha hangar"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +49,7 @@
       "smoke_effects"
     ],
     "timeOfDay": "白天",
-    "title": "惣流·明日香 · 红色二号机出击"
+    "title": "惣流·明日香 · 红色二号机出击",
+    "animaCaption": "She points upward from the rising lift with Unit-02 towering behind her."
   }
 }

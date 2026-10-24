@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_training_hall",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 482,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "晨练后倚木柱解领立姿微嗔擦汗",
     "adult": true,
@@ -41,7 +41,10 @@
       "wooden pillar",
       "dojo",
       "morning light",
-      "blush"
+      "blush",
+      "frown",
+      "sunlight",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -60,6 +63,7 @@
       "daylight"
     ],
     "timeOfDay": "清晨",
-    "title": "艾莉丝 · 道馆木柱微汗傲娇"
+    "title": "艾莉丝 · 道馆木柱微汗傲娇",
+    "animaCaption": "She wipes her forehead against the wooden pillar after practice."
   }
 }

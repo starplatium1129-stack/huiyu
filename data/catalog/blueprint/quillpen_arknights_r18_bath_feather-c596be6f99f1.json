@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_bath_feather",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 623,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "倚在浴桶内的长凳上，一手持羽毛停在锁骨旁。",
     "adult": true,
@@ -34,7 +34,11 @@
       "feather",
       "female masturbation",
       "cedar bath",
-      "steam"
+      "steam",
+      "warm lighting",
+      "water reflection",
+      "medium shot",
+      "side view"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -47,6 +51,7 @@
       "night"
     ],
     "timeOfDay": "夜晚",
-    "title": "羽毛笔 · 氤氲私汤"
+    "title": "羽毛笔 · 氤氲私汤",
+    "animaCaption": "The feather traces her collarbone as she rests on the submerged cedar bench."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_library_snack_caught",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1491,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yamada_library_snack_caught",
     "title": "山田杏奈 · 图书馆书架死角偷吃薯片的受惊回眸·「市川……嘘！不许告诉图书委员！」",
@@ -38,7 +38,11 @@
       "finger to mouth",
       "puffed cheeks",
       "library",
-      "cowboy shot"
+      "cowboy shot",
+      "crouching",
+      "hiding snack bag",
+      "finger on lips",
+      "window light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +54,7 @@
       "iconic",
       "school"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She looks toward her companion waiting at the aisle entrance."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_sword_honing",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 540,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "以布擦拭剑身",
     "camera": "medium shot",
@@ -26,7 +26,13 @@
       "sword",
       "cloth",
       "morning",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "cross-legged",
+      "cleaning sword",
+      "holding hilt",
+      "focused",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +42,7 @@
       "focus"
     ],
     "timeOfDay": "清晨",
-    "title": "陈 · 磨剑"
+    "title": "陈 · 磨剑",
+    "animaCaption": "One hand supports the hilt as the other draws cloth along the blade."
   }
 }

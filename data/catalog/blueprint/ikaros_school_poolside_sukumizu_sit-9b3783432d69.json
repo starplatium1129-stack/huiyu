@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_school_poolside_sukumizu_sit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1212,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在池边双腿浸水紧抱大西瓜，死库水贴身水珠滚落，眼神好奇注视水面波纹",
     "camera": "medium shot, seated side 3/4 perspective, shimmering water depth",
@@ -27,7 +27,11 @@
       "folded wings",
       "poolside",
       "water",
-      "noon"
+      "noon",
+      "leaning forward",
+      "both hands",
+      "water reflection",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +47,7 @@
     "timeOfDay": "正午",
     "title": "伊卡洛斯 · 校园泳池边的西瓜浮力实验",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands lower the watermelon partly into the pool between her joined legs."
   }
 }

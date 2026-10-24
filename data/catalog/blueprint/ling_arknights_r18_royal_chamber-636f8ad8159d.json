@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_royal_chamber",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 655,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "斜倚锦被，一手举酒盏，另一手向画面外同伴招手，烟气绕过榻柱。",
     "adult": true,
@@ -36,7 +36,11 @@
       "beckoning",
       "wine cup",
       "daybed",
-      "dragon smoke"
+      "dragon smoke",
+      "raising cup",
+      "silk cushions",
+      "red candlelight",
+      "curtains"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,6 +54,7 @@
       "lamp"
     ],
     "timeOfDay": "深夜",
-    "title": "令 · 寝殿春宵"
+    "title": "令 · 寝殿春宵",
+    "animaCaption": "She raises the cup and beckons to her off-frame companion."
   }
 }

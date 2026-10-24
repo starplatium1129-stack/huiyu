@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_sweets_shop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 869,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "冷脸吃草莓圣代",
     "adult": false,
@@ -32,7 +32,11 @@
       "sundae",
       "spoon",
       "offering",
-      "close-up"
+      "close-up",
+      "strawberry",
+      "chocolate",
+      "warm lighting",
+      "depth of field"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -43,6 +47,7 @@
       "cold_face"
     ],
     "timeOfDay": "下午",
-    "title": "飞鸟马时 · 甜品店冷娇喂食"
+    "title": "飞鸟马时 · 甜品店冷娇喂食",
+    "animaCaption": "She extends the spoonful toward the viewer across the table."
   }
 }

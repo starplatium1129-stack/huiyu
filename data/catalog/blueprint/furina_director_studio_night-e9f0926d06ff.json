@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_director_studio_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 16,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "furina_director_studio_night",
     "title": "芙宁娜 · 深夜剧本案头创作",
@@ -42,7 +42,12 @@
       "studio",
       "night",
       "from above",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "holding quill",
+      "hand on paper",
+      "focused",
+      "warm lighting"
     ],
     "negativeTokens": [
       "quill nib in mouth"
@@ -51,6 +56,7 @@
     "outfitId": "casual_director",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "The blunt quill end touches her lips; its inked nib points toward the inkwell."
   }
 }

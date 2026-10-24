@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1660,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_02",
     "title": "守岸人 · 寂静之海黑石水镜水光湿身独奏 ·「把千万年的思念……化作波纹传递给你」",
@@ -37,7 +37,13 @@
       "crystals",
       "long hair",
       "night",
-      "glowing water"
+      "glowing water",
+      "nude",
+      "masturbation",
+      "hand between legs",
+      "floating hair",
+      "water ripples",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +62,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her hair fans out beneath the calm water while floating crystals illuminate the surrounding ripples."
   }
 }

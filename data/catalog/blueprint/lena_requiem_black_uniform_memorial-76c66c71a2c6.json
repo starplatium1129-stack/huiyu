@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_requiem_black_uniform_memorial",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1352,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单膝跪在纪念墙前，白花已放在墙脚，双手合拢垂首默祷",
     "adult": false,
@@ -31,7 +31,13 @@
       "red hair streak",
       "white flowers",
       "kneeling",
-      "memorial"
+      "memorial",
+      "hands together",
+      "head bowed",
+      "sunset",
+      "rim light",
+      "cowboy shot",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -46,6 +52,7 @@
       "solemn"
     ],
     "timeOfDay": "黄昏",
-    "title": "芙拉蒂蕾娜 · 黑色军装的追悼白花·「鲜血女王绝不会忘记任何一个名字」"
+    "title": "芙拉蒂蕾娜 · 黑色军装的追悼白花·「鲜血女王绝不会忘记任何一个名字」",
+    "animaCaption": "The white bouquet rests at the memorial wall's base below her joined hands."
   }
 }

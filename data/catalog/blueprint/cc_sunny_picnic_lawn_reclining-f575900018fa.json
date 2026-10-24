@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_sunny_picnic_lawn_reclining",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1312,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手支颐侧卧在草地野餐垫上，发丝铺散，神情慵懒戏弄地看着视角",
     "camera": "cowboy shot, diagonal angle, relaxing lawn view",
@@ -31,7 +31,14 @@
       "picnic blanket",
       "reclining",
       "grass",
-      "spring"
+      "spring",
+      "lying on side",
+      "chin in hand",
+      "grass stem",
+      "reading",
+      "sandwich",
+      "juice",
+      "dappled sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +55,7 @@
     ],
     "timeOfDay": "春日午后",
     "title": "C.C. · 阳光草坪的慵懒侧卧",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She watches her companion read with a grass stem between her lips."
   }
 }

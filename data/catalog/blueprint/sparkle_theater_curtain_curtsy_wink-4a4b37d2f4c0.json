@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_theater_curtain_curtsy_wink",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1048,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sparkle_theater_curtain_curtsy_wink",
     "title": "花火 · 帷幕之后的绝妙谢幕",
@@ -34,7 +34,9 @@
       "wink",
       "finger to mouth",
       "curtain",
-      "full body"
+      "full body",
+      "skirt hold",
+      "spotlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +45,7 @@
       "theatrical",
       "flirty",
       "stage"
-    ]
+    ],
+    "animaCaption": "One hand lifts the skirt; the other finger touches her lips between the closing curtains."
   }
 }

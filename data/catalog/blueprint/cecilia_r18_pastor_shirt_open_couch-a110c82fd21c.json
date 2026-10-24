@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_r18_pastor_shirt_open_couch",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 844,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "牧师黑衬衫敞开，双腿并拢微颤",
     "adult": true,
@@ -36,7 +36,12 @@
       "warm lamp light",
       "stand collar",
       "long sleeves",
-      "sleeves past wrists"
+      "sleeves past wrists",
+      "sitting",
+      "holding collar",
+      "looking at another",
+      "blush",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -53,6 +58,7 @@
       "legs_together"
     ],
     "timeOfDay": "evening",
-    "title": "塞西莉亚 · 起居室长椅·牧师黑衬衫敞开与私处显露"
+    "title": "塞西莉亚 · 起居室长椅·牧师黑衬衫敞开与私处显露",
+    "animaCaption": "She holds the borrowed shirt collar and looks toward her companion from the wooden bench."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_alien_greenhouse_plant_summon",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1243,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手抬起操控发光外星藤蔓环绕身姿，王女礼服勾勒曲线，爱心尾巴自如摇摆，神态优雅神秘",
     "camera": "cowboy shot",
@@ -26,7 +26,11 @@
       "D-Dial",
       "raised hand",
       "glowing vines",
-      "greenhouse"
+      "greenhouse",
+      "glowing flowers",
+      "daylight",
+      "violet glow",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +44,7 @@
       "purple_eyes"
     ],
     "timeOfDay": "下午",
-    "title": "梦梦 · 植物温室的幻彩异星藤蔓"
+    "title": "梦梦 · 植物温室的幻彩异星藤蔓",
+    "animaCaption": "One hand holds the D-Dial while the other guides vines around her wrist and waist."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_rooftop_sunset_hair_flowing_wind",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1224,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手轻扶铁丝网侧立，晚风将及踝金色长发大面积吹拂卷起，红眸凝望远方落日",
     "camera": "wide dramatic shot, low angle, sweeping sunset sky scale",
@@ -26,7 +26,10 @@
       "rooftop",
       "sunset",
       "from below",
-      "wide shot"
+      "wide shot",
+      "looking at horizon",
+      "windblown hair",
+      "rim light"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -43,6 +46,7 @@
       "distant_gaze"
     ],
     "timeOfDay": "日落",
-    "title": "金色暗影 · 暮色天台的金晖拂面"
+    "title": "金色暗影 · 暮色天台的金晖拂面",
+    "animaCaption": "Both hands rest on the fence while she watches the sunset through her windblown hair."
   }
 }

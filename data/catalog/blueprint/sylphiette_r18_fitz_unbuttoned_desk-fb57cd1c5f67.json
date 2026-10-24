@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_fitz_unbuttoned_desk",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 468,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "半解白色执事衬衫坐在书桌沿，墨镜滑落鼻梁",
     "adult": true,
@@ -33,7 +33,12 @@
       "sitting",
       "desk",
       "topless",
-      "medium shot"
+      "medium shot",
+      "sitting on desk",
+      "unbuttoned shirt",
+      "lowered sunglasses",
+      "looking at viewer",
+      "lamplight"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -48,6 +53,7 @@
       "sunglasses"
     ],
     "timeOfDay": "night",
-    "title": "希露菲叶特 · 书房课桌·半解执事衬衫与私密暴露"
+    "title": "希露菲叶特 · 书房课桌·半解执事衬衫与私密暴露",
+    "animaCaption": "Her sunglasses rest low on her nose above the partly unbuttoned shirt."
   }
 }

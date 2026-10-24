@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_sunlight_first_morning",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 266,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ereshkigal_sunlight_first_morning",
     "title": "埃列什基伽勒 · 初次朝阳的誓约·「原来阳光……这么烫啊」",
@@ -35,7 +35,12 @@
       "polearm",
       "mountain",
       "sunrise",
-      "wide shot"
+      "wide shot",
+      "standing",
+      "surprised",
+      "weapon on ground",
+      "golden light",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +53,7 @@
       "daily",
       "story",
       "emotional"
-    ]
+    ],
+    "animaCaption": "Her forgotten polearm lies beside her boots as she reaches toward her first sunrise."
   }
 }

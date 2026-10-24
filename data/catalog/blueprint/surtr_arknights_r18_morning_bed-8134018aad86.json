@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_morning_bed",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 524,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "裹着薄被侧卧回眸",
     "adult": true,
@@ -34,7 +34,11 @@
       "bed",
       "reaching",
       "dawn",
-      "red cuff piping"
+      "red cuff piping",
+      "holding wrist",
+      "looking back",
+      "morning light",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -46,6 +50,7 @@
       "soft_light"
     ],
     "timeOfDay": "清晨",
-    "title": "史尔特尔 · 晨光床榻"
+    "title": "史尔特尔 · 晨光床榻",
+    "animaCaption": "She reaches for the viewer's wrist from beneath the thin sheet and glances back from the bed."
   }
 }

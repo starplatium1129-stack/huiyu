@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_ruined_city_highway_blade_stance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1108,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yorha_2b_ruined_city_highway_blade_stance",
     "title": "2B · 废墟倾塌高架的白之契约持刃",
@@ -40,11 +40,14 @@
       "broken highway",
       "overgrown ruins",
       "low angle",
-      "full body"
+      "full body",
+      "floating sword",
+      "cold daylight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Virtuous Contract floats independently beside her at the broken highway edge."
   }
 }

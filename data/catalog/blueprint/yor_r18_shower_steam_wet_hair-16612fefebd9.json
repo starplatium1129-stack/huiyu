@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_shower_steam_wet_hair",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 813,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yor_r18_shower_steam_wet_hair",
     "characterId": "yor_forger",
@@ -28,7 +28,9 @@
       "wet hair",
       "looking back",
       "drawer",
-      "golden needle at towel edge"
+      "golden needle at towel edge",
+      "needle in drawer",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -60,6 +62,7 @@
       "flower earrings",
       "spy x family"
     ],
-    "identityProseOverride": "Adult Yor Forger from SPY x FAMILY, with long wet black hair resting against her back, red eyes and gold rose earrings."
+    "identityProseOverride": "Adult Yor Forger from SPY x FAMILY, with long wet black hair resting against her back, red eyes and gold rose earrings.",
+    "animaCaption": "She looks back while slipping the golden needle from the towel edge into the drawer."
   }
 }

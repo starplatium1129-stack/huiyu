@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_08",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1557,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_08",
     "title": "堀京子 · 冬夜被炉里的橘子",
@@ -43,7 +43,12 @@
       "kotatsu",
       "television light",
       "medium shot",
-      "hair down"
+      "hair down",
+      "sitting",
+      "plate",
+      "relaxed",
+      "winter",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -55,6 +60,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She peels the mandarin beneath the kotatsu blanket."
   }
 }

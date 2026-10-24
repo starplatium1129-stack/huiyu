@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_aesc_forest",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 191,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [],
     "id": "morgan_le_fay_fate_aesc_forest",
@@ -39,10 +39,16 @@
       "holding hem",
       "forest",
       "moss",
-      "after rain"
+      "after rain",
+      "walking",
+      "holding staff",
+      "wet path",
+      "rain",
+      "soft light"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "aesc_hooded_travel",
-    "coverageTags": []
+    "coverageTags": [],
+    "animaCaption": "One hand holds the staff while the other lifts the robe hem."
   }
 }

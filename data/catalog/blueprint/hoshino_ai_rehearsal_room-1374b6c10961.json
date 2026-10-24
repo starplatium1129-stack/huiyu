@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_rehearsal_room",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 949,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "镜前反复彩排",
     "camera": "full-body shot, three-quarter rear view",
@@ -27,7 +27,8 @@
       "reflection",
       "rehearsal",
       "window light",
-      "full body"
+      "full body",
+      "practiced smile"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +43,7 @@
     "title": "星野爱 · 彩排室镜前",
     "allowRepeatedSubject": true,
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She checks her feet in the mirror while holding the dance step."
   }
 }

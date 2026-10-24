@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_shopping_street",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 153,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tohsaka_rin_shopping_street",
     "title": "远坂凛 · 逛街战利品",
@@ -38,7 +38,13 @@
       "walking",
       "looking back",
       "street",
-      "cowboy shot"
+      "cowboy shot",
+      "holding bags",
+      "both hands",
+      "proud smile",
+      "rim light",
+      "shop light",
+      "long shadow"
     ],
     "negativeTokens": [
       "brand lettering"
@@ -47,6 +53,7 @@
     "outfitId": "sfw_city_red_cardigan",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "A bag hangs from each hand as she looks back, sunlight behind her left and shop light at her right."
   }
 }

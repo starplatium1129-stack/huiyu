@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc288",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 283,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Nene sits by the inn's open window, her obi loosening as she closes her eyes at the viewer's touch on her cheek. Water still beads along her exposed collarbone.",
+    "animaCaption": "Her eyes close at the viewer's touch on her cheek beside the open window; water beads remain on her collarbone.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "窗边近景平视",
     "category": "旅行",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, adult, ayachi_nene, white moonflower print, cream obi, nene_r18, low twintails, pink yukata, loose obi, white tabi, sitting, closed eyes, blush, wet skin, japanese room, open window, moonlight, lantern, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, adult, ayachi_nene, white moonflower print, cream obi, nene_r18, low twintails, pink yukata, loose obi, white tabi, sitting, closed eyes, blush, wet skin, japanese room, open window, moonlight, lantern, <lora:ayachi_nene_v18_wd14:0.8>, touching cheek, water droplets",
     "rating": "R15",
     "season": "秋",
     "story": "【成年 After Story · 宁宁 · 温泉旅馆的月下约定】古温泉街的最后一晚，宁宁泡完露天风吕回到房间，银白色的长发还带着水汽，身上是一件旅馆的轻薄浴衣。她坐在敞开的窗边，山间溪流的低语伴着月光淌进室内。你坐到她身旁时，她微微一颤，却没有躲开。浴衣的领口在低头时松散开来，露出湿润锁骨与大片雪白的肌肤。她双手捏着衣襟，紫色瞳孔在月光下泛着水光——「今晚的月亮好亮……亮到让人藏不住任何秘密。」她偏过头，呼吸变得急促，却没有移开视线。你伸手触碰她微凉的脸颊，她闭上眼睛，睫毛轻轻颤动，浴衣的腰带在月光滑落中悄然松开——「至少在离开这家温泉旅馆之前……我想把这一刻的样子，完整地留给你。」",
@@ -45,6 +45,7 @@
       "壁纸级",
       "R15"
     ],
-    "weather": "月夜晴朗"
+    "weather": "月夜晴朗",
+    "promptProse": "Nene sits by the inn's open window, her obi loosening as she closes her eyes at the viewer's touch on her cheek. Water still beads along her exposed collarbone."
   }
 }

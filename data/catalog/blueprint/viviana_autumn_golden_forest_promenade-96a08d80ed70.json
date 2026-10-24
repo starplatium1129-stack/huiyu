@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_autumn_golden_forest_promenade",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 684,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "漫步在枫林落叶小径上，单手伸手接住飘落的红枫，回眸温柔微笑",
     "camera": "cowboy shot",
@@ -24,7 +24,10 @@
     "promptTokens": [
       "maple leaf",
       "autumn",
-      "cowboy shot"
+      "cowboy shot",
+      "walking",
+      "leaf on palm",
+      "dappled light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +44,7 @@
       "antlers"
     ],
     "timeOfDay": "午后暖阳",
-    "title": "薇薇安娜 · 金秋枫林中的漫步沉思"
+    "title": "薇薇安娜 · 金秋枫林中的漫步沉思",
+    "animaCaption": "The red leaf rests on her palm above the maple path."
   }
 }

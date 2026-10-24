@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_package_run",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 629,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱着包裹全力奔跑，衣摆飞扬",
     "camera": "full body, from below",
@@ -29,7 +29,11 @@
       "street",
       "day",
       "full body",
-      "from below"
+      "from below",
+      "holding package",
+      "both arms",
+      "windblown clothes",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +45,7 @@
     ],
     "timeOfDay": "白天",
     "title": "能天使 · 极速派送",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She holds the sealed parcel firmly in both arms while running between pedestrians and obstacles."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc130",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
     "id": "sc130",
     "title": "安全屋的绝对支配盲区",
@@ -46,11 +46,12 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, charcoal side panels, burgundy seam piping, torn black bodysuit, exposed abdomen, on back, legs together, pinned down, sweat, glare, concrete floor, safehouse, rain, night, flashlight, pov, close up",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, charcoal side panels, burgundy seam piping, torn black bodysuit, exposed abdomen, on back, legs together, pinned down, sweat, glare, concrete floor, safehouse, rain, night, flashlight, pov, close up, lying on back, looking up, flashlight beam",
     "negative": "skirt, thighhighs",
     "storyJa": "【夏目・秘密諜報員のベストは破れ、完全に降伏している】真夜中に突然の大雨が降ったとき、セーフハウスの冷たく固い床の上で。いつもは冷酷で横暴なエージェントの女の子夏目が、今では大量の汗をかきながらあなたに押さえつけられて身動きが取れなくなっています。全身の黒っぽいタクティカルタイツが襟元から腹部まで引き裂かれ、血が騒ぐような誇らしいラインと繊細な肌が露わになっている。両脚はぴんと組み、目頭の泣きぼくろが巨大な感覚衝撃に震え、水蒸気を含んだ硬い瞳でこちらをえぐる。――「もう、この変態店長……体重をかけないで。自由になったら、絶対にお仕置きしてあげるんだから。」",
     "rating": "R15",
-    "animaCaption": "Pinned against the safehouse floor, she holds her legs tightly together and glares up at the viewer, the torn bodysuit opening from collar to abdomen in the flashlight beam.",
-    "auditRevision": "careful-batch09-2026-08-27"
+    "animaCaption": "Her legs stay tightly together as she glares up from the floor, the torn neckline opening to her abdomen.",
+    "auditRevision": "careful-batch09-2026-08-27",
+    "promptProse": "Pinned against the safehouse floor, she holds her legs tightly together and glares up at the viewer, the torn bodysuit opening from collar to abdomen in the flashlight beam."
   }
 }

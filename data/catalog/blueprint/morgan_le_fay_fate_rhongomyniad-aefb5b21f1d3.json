@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_rhongomyniad",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 190,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "negativeTokens": [
       "readable inscription"
@@ -40,10 +40,14 @@
       "standing",
       "terrace",
       "battlements",
-      "sunset"
+      "sunset",
+      "holding lance",
+      "looking away",
+      "wind"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "winter_queen",
-    "coverageTags": []
+    "coverageTags": [],
+    "animaCaption": "One hand steadies the upright lance while the other rests beside her skirt."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_navel",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 337,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_navel",
     "title": "楪祈 · 晨光中的虚空脐环",
@@ -37,7 +37,10 @@
       "navel",
       "glowing markings",
       "bed",
-      "morning"
+      "morning",
+      "supporting hand",
+      "finger on navel",
+      "cyan ring"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +54,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "One hand supports her while the other fingertip traces the glowing ring."
   }
 }

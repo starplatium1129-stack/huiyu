@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_r18_gym_locker_room_intimacy",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 924,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "靠坐跳箱汗湿白背心贴身透肉露大胸，体操短裤微褪勒大腿，咬运动毛巾单手自抚含泪破防",
     "adult": true,
@@ -44,7 +44,11 @@
       "gym storage room",
       "sunset",
       "navy track jacket",
-      "navy gym shorts"
+      "navy gym shorts",
+      "sitting",
+      "wooden bench",
+      "teary eyes",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -64,6 +68,7 @@
       "teary_eyes"
     ],
     "timeOfDay": "黄昏",
-    "title": "早濑优香 · 器材室汗湿体操服贴身透肉与咬毛巾破防自抚"
+    "title": "早濑优香 · 器材室汗湿体操服贴身透肉与咬毛巾破防自抚",
+    "animaCaption": "She leans from the bench against the vaulting horse, listening for adult colleagues outside."
   }
 }

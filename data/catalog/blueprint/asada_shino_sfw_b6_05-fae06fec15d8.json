@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_sfw_b6_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1377,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asada_shino_sfw_b6_05",
     "title": "朝田诗乃 · 玻璃海滩的耳机假日",
@@ -35,7 +35,12 @@
       "beach",
       "folding chair",
       "sitting",
-      "medium shot"
+      "medium shot",
+      "offering earphone",
+      "holding jacket",
+      "afternoon light",
+      "pebbles",
+      "water"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +52,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "One hand offers the earpiece while the other holds down her windbreaker."
   }
 }

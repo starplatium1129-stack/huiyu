@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_04",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_04",
     "title": "尤贝尔 · 迷宫毛毯上的狂气共鸣宣泄 ·「只要彻底理解了你……就能得到你的全部」",
@@ -40,7 +40,9 @@
       "nude",
       "masturbation",
       "spread legs",
-      "full body"
+      "full body",
+      "hand on blanket",
+      "lantern light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +57,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her free hand grips the blanket edge inside the campsite tent."
   }
 }

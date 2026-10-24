@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1707,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "vivy_r18_b9_03",
     "title": "Vivy · 舞台礼服后置散热接口卡壳的更衣事故 ·「后背动力管线被裙钩锁死……无法完成自我检修」",
@@ -39,7 +39,10 @@
       "bent over",
       "dressing room",
       "looking back",
-      "geometric dress panels"
+      "geometric dress panels",
+      "hands on table",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -56,6 +59,7 @@
       "nsfw",
       "dressing_malfunction",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her gown zipper catches in the cooling port while a faint red warning flickers in her eyes."
   }
 }

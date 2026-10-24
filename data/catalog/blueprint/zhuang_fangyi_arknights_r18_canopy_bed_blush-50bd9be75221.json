@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_r18_canopy_bed_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 768,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_r18_canopy_bed_blush",
     "characterId": "zhuang_fangyi_arknights",
@@ -36,7 +36,15 @@
       "teary eyes",
       "satin sheets",
       "canopy bed",
-      "warm lighting"
+      "warm lighting",
+      "lying",
+      "grabbing sheets",
+      "both hands",
+      "knees up",
+      "looking up",
+      "tears",
+      "moonlight",
+      "wall lamp"
     ],
     "promptProse": "Zhuang Fangyi lies on the satin sheets with both hands gripping their folds, knees drawn up and thighs slightly apart. She looks upward through tears beneath the canopy’s soft moonlight and warm wall lamp.",
     "negativeTokens": [],
@@ -47,6 +55,7 @@
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Both hands grip the satin folds beneath the canopy."
   }
 }

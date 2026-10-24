@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc177",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 174,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "She is held against the concrete wall with both arms behind her and legs together, her bodysuit opened to the abdomen in the flashlight beam.",
+    "animaCaption": "Her arms stay behind her and her legs together against the wall, the open zipper ending at her abdomen.",
     "auditRevision": "careful-batch10-2026-08-27",
     "camera": "近景特写",
     "category": "亲密",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "fully zipped",
-    "prompt": "adult, 1girl, solo, shiki_natsume, charcoal side panels, burgundy seam piping, natsume_r18, black tactical bodysuit, unzipped, cleavage, exposed abdomen, combat boots, against wall, arms behind back, legs together, biting lip, glare, safehouse, flashlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, charcoal side panels, burgundy seam piping, natsume_r18, black tactical bodysuit, unzipped, cleavage, exposed abdomen, combat boots, against wall, arms behind back, legs together, biting lip, glare, safehouse, flashlight, <lora:shiki_natsume_v18_wd14:0.85>, concrete wall, flashlight beam",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 战术紧身衣解开绝对沦陷】特工安全屋的潜行训练中，夏目试图对你进行“反向制服”，却被你敏锐地反扣双手，狠狠按在了冰凉的墙壁上。她身上那一身漆黑的紧身特工连体衣从领口被你一路拉开、剥离到了腹部，露出了里面让人血脉偾张的傲人线条与大片潮红的细腻肌肤。她双腿无力地并拢，眼角的泪痣因为极度的羞嗔与快感而剧烈颤动。她一边急促地娇喘，一边用充满水汽的死硬眼神狠狠剜着你，嘴唇却早已被啃咬得红肿——「哈啊...你这变态长官...竟然用体重压着我...快放开...唔嗯...不准再往下摸了...」",
@@ -45,6 +45,7 @@
       "核心协议",
       "成人向"
     ],
-    "weather": "微热"
+    "weather": "微热",
+    "promptProse": "She is held against the concrete wall with both arms behind her and legs together, her bodysuit opened to the abdomen in the flashlight beam."
   }
 }

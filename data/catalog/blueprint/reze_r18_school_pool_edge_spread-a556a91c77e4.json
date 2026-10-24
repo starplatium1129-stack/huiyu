@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_school_pool_edge_spread",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 425,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "reze_r18_school_pool_edge_spread",
     "characterId": "reze_chainsaw",
@@ -32,7 +32,13 @@
       "spread legs",
       "pool",
       "moonlight",
-      "navy one-piece swimsuit"
+      "navy one-piece swimsuit",
+      "hand on choker",
+      "wet skin",
+      "sly smile",
+      "water reflection",
+      "medium shot",
+      "from side"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -50,6 +56,7 @@
     "recommendedSize": "1536x1152",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "Her swimsuit rests at her waist as she touches her choker from the changing steps."
   }
 }

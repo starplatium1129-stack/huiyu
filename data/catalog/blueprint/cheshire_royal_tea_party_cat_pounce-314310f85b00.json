@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_royal_tea_party_cat_pounce",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1086,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cheshire_royal_tea_party_cat_pounce",
     "title": "柴郡 · 皇家红茶会的猫扑撒娇",
@@ -39,9 +39,17 @@
       "tea table",
       "scones",
       "white roses",
-      "leaning forward"
+      "leaning forward",
+      "hand on table",
+      "reaching out",
+      "smile",
+      "pastry stand",
+      "lace tablecloth",
+      "dappled sunlight",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "One hand braces on the table edge as she reaches toward her companion just outside the frame."
   }
 }

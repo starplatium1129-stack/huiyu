@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_old_library_manuscript",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1427,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "utaha_old_library_manuscript",
     "title": "霞之丘诗羽 · 旧书馆的稿纸晨光·「灵感这种东西，是偷懒者的借口」",
@@ -35,7 +35,10 @@
       "pen",
       "library",
       "medium shot",
-      "sitting"
+      "sitting",
+      "pen to lips",
+      "focused",
+      "morning light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,6 +50,7 @@
     "coverageTags": [
       "daily",
       "school"
-    ]
+    ],
+    "animaCaption": "The pen end rests against her lips above the manuscript beneath the high window."
   }
 }

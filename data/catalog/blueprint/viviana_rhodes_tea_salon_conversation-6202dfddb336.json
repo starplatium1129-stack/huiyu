@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 685,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端坐在复古木椅前，优雅执白瓷茶壶为对面斟茶，眉眼含笑温和",
     "camera": "medium shot, eye level",
@@ -25,7 +25,10 @@
       "teapot",
       "cup",
       "tea room",
-      "medium shot"
+      "medium shot",
+      "pouring tea",
+      "both hands",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +43,7 @@
       "elegant"
     ],
     "timeOfDay": "下午",
-    "title": "薇薇安娜 · 罗德岛茶室的温茶叙话"
+    "title": "薇薇安娜 · 罗德岛茶室的温茶叙话",
+    "animaCaption": "One hand holds the teapot handle while the other supports its body."
   }
 }

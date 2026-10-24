@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_r18_b9_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1758,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "togawa_sakiko_r18_b9_01",
     "title": "丰川祥子 · 舞台面具破裂黑色蕾丝礼服主控跨坐 ·「忘却一切烦恼……今晚就由我Oblivionis来赐予你安息」",
@@ -44,7 +44,11 @@
       "broken mask",
       "feathers",
       "backstage",
-      "indigo satin panels"
+      "indigo satin panels",
+      "straddling",
+      "hands on another's shoulders",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +63,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands grip the viewer's shoulders above pieces of the feather mask on the green-room floor."
   }
 }

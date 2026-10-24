@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_kimono_obi_malfunction",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1493,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chitanda_nsfw_kimono_obi_malfunction",
     "title": "千反田爱瑠 · 和服腰带松脱的更衣室事故 ·「带结解不开了……折木同学快帮帮我」",
@@ -35,7 +35,12 @@
       "bent over",
       "looking back",
       "wide shot",
-      "crane print"
+      "crane print",
+      "hands behind back",
+      "teary eyes",
+      "warm lighting",
+      "tatami",
+      "side view"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +53,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "Both hands reach behind to free the caught obi beside the cedar table."
   }
 }

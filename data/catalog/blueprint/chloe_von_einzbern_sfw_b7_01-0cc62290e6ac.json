@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 283,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_01",
     "title": "克洛伊 · 爱因兹贝伦家的早餐战争",
@@ -36,7 +36,13 @@
       "chopsticks",
       "fried egg",
       "bacon",
-      "breakfast"
+      "breakfast",
+      "holding chopsticks",
+      "sharing food",
+      "plate",
+      "mischievous smile",
+      "morning light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +53,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "She lifts the egg from her offscreen companion's plate, with the shared bacon on the opposite side."
   }
 }

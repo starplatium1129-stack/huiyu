@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_sfw_b6_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1373,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asada_shino_sfw_b6_01",
     "title": "朝田诗乃 · 图书馆的角落",
@@ -38,7 +38,11 @@
       "book",
       "window",
       "rain",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "hand over page",
+      "overcast light",
+      "rainy window"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +53,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "Her hand shades the page at the window seat."
   }
 }

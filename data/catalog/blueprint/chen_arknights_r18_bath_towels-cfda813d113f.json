@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_bath_towels",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 543,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "裹着浴巾擦拭墨绿湿发",
     "adult": true,
@@ -32,7 +32,10 @@
       "wet hair",
       "drying hair",
       "standing",
-      "steam"
+      "steam",
+      "both hands",
+      "looking at viewer",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -44,6 +47,7 @@
       "steam"
     ],
     "timeOfDay": "夜晚",
-    "title": "陈 · 浴后"
+    "title": "陈 · 浴后",
+    "animaCaption": "The large towel stays secured while both hands dry her hair."
   }
 }

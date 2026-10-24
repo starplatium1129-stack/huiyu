@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_queen_chamber",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 998,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "落地窗台前立姿伸手回眸微笑",
     "adult": true,
@@ -37,7 +37,9 @@
       "looking back",
       "arched window",
       "palace",
-      "morning light"
+      "morning light",
+      "smile",
+      "shaded floor"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -55,6 +57,7 @@
       "daylight"
     ],
     "timeOfDay": "清晨",
-    "title": "希斯特里亚 · 王宫落地窗晨曦"
+    "title": "希斯特里亚 · 王宫落地窗晨曦",
+    "animaCaption": "She offers her hand toward the viewer from the arched window."
   }
 }

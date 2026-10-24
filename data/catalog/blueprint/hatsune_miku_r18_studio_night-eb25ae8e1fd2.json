@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_studio_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 325,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hatsune_miku_r18_studio_night",
     "title": "初音未来 · 录音室深夜",
@@ -34,7 +34,11 @@
       "mixing console",
       "studio",
       "night",
-      "teal lighting"
+      "teal lighting",
+      "chair",
+      "hand on knee",
+      "medium shot",
+      "low angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -45,6 +49,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@rella",
     "outfitId": "nsfw_nude",
-    "sampleRating": "R18"
+    "sampleRating": "R18",
+    "animaCaption": "One foot rests on an empty chair and one hand braces on the console edge."
   }
 }

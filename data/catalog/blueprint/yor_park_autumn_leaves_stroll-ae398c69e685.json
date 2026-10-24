@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_park_autumn_leaves_stroll",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 806,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yor_park_autumn_leaves_stroll",
     "characterId": "yor_forger",
@@ -31,7 +31,13 @@
       "maple leaf",
       "bench",
       "autumn",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "knees together",
+      "hand on seat",
+      "holding leaf",
+      "smile",
+      "sunlight"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -46,6 +52,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the maple leaf toward the sun while her other palm braces on the bench."
   }
 }

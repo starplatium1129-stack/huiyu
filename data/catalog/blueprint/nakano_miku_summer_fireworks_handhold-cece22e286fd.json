@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_summer_fireworks_handhold",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1849,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "nakano_miku_summer_fireworks_handhold",
     "characterId": "nakano_miku",
@@ -27,7 +27,8 @@
       "yukata",
       "gentle smile",
       "colorful light",
-      "full body"
+      "full body",
+      "lantern light"
     ],
     "sceneTags": [
       "fireworks",
@@ -45,6 +46,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She pauses on the shrine steps and looks back while holding the viewer's hand."
   }
 }

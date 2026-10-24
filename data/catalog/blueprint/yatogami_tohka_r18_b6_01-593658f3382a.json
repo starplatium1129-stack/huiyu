@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_01",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_01",
     "title": "夜刀神十香 · 神威灵装紫水晶座主控跨坐 ·「士道……十香的身体……为什么会变得这么想要你呢」",
@@ -43,7 +43,9 @@
       "crystal throne",
       "magic",
       "cowboy shot",
-      "from below"
+      "from below",
+      "straddling",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +61,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Her armor rests at her hips as long hair floats around the viewer's lap and crystal throne."
   }
 }

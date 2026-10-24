@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_curious_eyes_close_up",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1480,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "chitanda_curious_eyes_close_up",
     "title": "千反田爱瑠 · 好奇心大盛的紫瞳迫近·「折木同学，我很好奇！」",
@@ -37,7 +37,9 @@
       "hands on desk",
       "curious expression",
       "pov",
-      "close-up"
+      "close-up",
+      "sunset",
+      "face focus"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +51,7 @@
       "iconic",
       "romance"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "animaCaption": "Her face and the palms on the near desk edge fill the viewer's frame."
   }
 }

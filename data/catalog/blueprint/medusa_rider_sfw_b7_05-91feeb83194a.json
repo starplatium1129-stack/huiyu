@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_05",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 281,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_05",
     "title": "美杜莎 Rider · 海边长椅的无声读书会",
@@ -36,7 +36,12 @@
       "solo",
       "book",
       "lemon drink",
-      "seawall bench"
+      "seawall bench",
+      "sitting",
+      "offering drink",
+      "wind",
+      "evening light",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +53,7 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "animaCaption": "Her left hand holds the book on her knee; her right offers the lemon drink."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_craters_edge",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 547,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "蹲在岩缘采集样本",
     "camera": "wide shot, dramatic scale",
@@ -27,7 +27,10 @@
       "rock sample",
       "volcano",
       "steam",
-      "wide shot"
+      "wide shot",
+      "looking back",
+      "safety line",
+      "harsh light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +41,7 @@
       "research"
     ],
     "timeOfDay": "白天",
-    "title": "艾雅法拉 · 火山口边缘"
+    "title": "艾雅法拉 · 火山口边缘",
+    "animaCaption": "She glances back toward the viewer beyond the safety line, scoop against cooled magma."
   }
 }

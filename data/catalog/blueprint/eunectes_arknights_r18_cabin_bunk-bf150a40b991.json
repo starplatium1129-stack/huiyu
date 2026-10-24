@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_r18_cabin_bunk",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 594,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "盘腿坐在床上裹着干毛巾擦头发，尾巴轻拍",
     "adult": true,
@@ -27,13 +27,14 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "nude",
       "towel",
       "cross-legged",
       "drying hair",
       "bunk bed",
       "cabin",
-      "night"
+      "night",
+      "tail",
+      "warm lamp"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -45,6 +46,7 @@
       "lamp"
     ],
     "timeOfDay": "夜晚",
-    "title": "森蚺 · 舱室床铺"
+    "title": "森蚺 · 舱室床铺",
+    "animaCaption": "The dry towel stays wrapped around her as she dries her hair."
   }
 }

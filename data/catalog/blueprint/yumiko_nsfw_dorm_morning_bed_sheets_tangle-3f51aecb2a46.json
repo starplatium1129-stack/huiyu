@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yumiko_nsfw_dorm_morning_bed_sheets_tangle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1787,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yumiko_nsfw_dorm_morning_bed_sheets_tangle",
     "title": "榊由美子 · 晨曦宿舍被褥缠绵的私密低语",
@@ -75,11 +75,15 @@
       "tender_smile",
       "soft_blush",
       "detailed_background",
-      "cinematic_lighting"
+      "cinematic_lighting",
+      "blanket",
+      "medium shot",
+      "depth of field"
     ],
     "promptProse": "Lounging leisurely on her side among rumpled snow-white bedsheets as golden morning sunbeams filter through window blinds, Yumiko rests naked with her hip and slender back lovingly bathed in amber light. Cascading raven hime-cut tresses sprawl across the pillows while her amethyst eyes shimmer with shy, gentle devotion.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand supports her cheek as long hair spreads across the morning-lit pillows."
   }
 }

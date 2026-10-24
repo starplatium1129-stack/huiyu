@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_street_festival",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 320,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "hatsune_miku_street_festival",
     "title": "初音未来 · 街头庆典",
@@ -38,7 +38,11 @@
       "lantern",
       "festival",
       "night",
-      "medium shot"
+      "medium shot",
+      "walking",
+      "holding candy",
+      "outstretched hand",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +51,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She holds the leek-shaped lollipop in one hand and reaches the other toward the viewer."
   }
 }

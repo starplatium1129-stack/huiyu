@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_section6_iaido_moonlit_slash",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1064,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "微微压低身形拇指推刀出鞘，红瞳凝视前方，刀刃寒芒迸射",
     "camera": "cowboy shot, low-angle front three-quarter view",
@@ -26,7 +26,12 @@
       "unsheathing",
       "crouching",
       "bamboo",
-      "moonlight"
+      "moonlight",
+      "holding sheath",
+      "hand on hilt",
+      "focused",
+      "cowboy shot",
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -39,6 +44,7 @@
       "drawing_sword"
     ],
     "timeOfDay": "夜晚",
-    "title": "星见雅 · 对空六课月夜居合斩决"
+    "title": "星见雅 · 对空六课月夜居合斩决",
+    "animaCaption": "Her left thumb presses against the guard from the sheath while her right hand closes around the hilt."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_bridal_vow_white_chapel",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1356,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手捧白花站在彩窗光柱中，抬头向走近的伴侣露出含泪浅笑",
     "adult": false,
@@ -32,7 +32,12 @@
       "bouquet",
       "chapel",
       "noon",
-      "wide shot"
+      "wide shot",
+      "holding bouquet",
+      "both hands",
+      "tears",
+      "smile",
+      "light rays"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -47,6 +52,7 @@
       "smile"
     ],
     "timeOfDay": "正午",
-    "title": "芙拉蒂蕾娜 · 纯白花嫁的军装誓约·「无论战区是否存在，我愿永远与你同调」"
+    "title": "芙拉蒂蕾娜 · 纯白花嫁的军装誓约·「无论战区是否存在，我愿永远与你同调」",
+    "animaCaption": "She lifts a tearful smile toward her companion approaching down the chapel aisle."
   }
 }

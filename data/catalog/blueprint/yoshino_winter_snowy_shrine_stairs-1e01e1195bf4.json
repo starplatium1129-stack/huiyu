@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_winter_snowy_shrine_stairs",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1147,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "单手撑红油纸伞伫立雪地回眸，木屐踩在雪中，哈出一缕白汽，眼神脉脉",
     "camera": "full body, three-quarter view",
@@ -26,7 +26,9 @@
       "visible breath",
       "shrine stairs",
       "snow",
-      "full body"
+      "full body",
+      "standing",
+      "holding umbrella"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +44,7 @@
     "timeOfDay": "上午",
     "title": "朝武芳乃 · 初雪初霁的红伞回眸",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She pauses sideways beneath the red umbrella as one breath cloud escapes into the cold."
   }
 }

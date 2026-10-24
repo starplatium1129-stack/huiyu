@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_04",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1616,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_04",
     "title": "春日野穹 · 乡间白屋的雪色花嫁",
@@ -37,7 +37,11 @@
       "veranda",
       "spring",
       "cowboy shot",
-      "sitting"
+      "sitting",
+      "hand on plushie",
+      "looking at viewer",
+      "petals",
+      "spring light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +53,7 @@
       "iconic",
       "bridal",
       "daily"
-    ]
+    ],
+    "animaCaption": "Her hand rests on the rabbit plush beside the bouquet."
   }
 }

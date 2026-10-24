@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_bedroom_soles_tights_peel",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 179,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakura_r18_bedroom_soles_tights_peel",
     "characterId": "matou_sakura",
@@ -27,7 +27,11 @@
       "black pantyhose",
       "sitting",
       "bed",
-      "moonlight"
+      "moonlight",
+      "both hands on tights",
+      "one bare foot",
+      "rolled tights",
+      "from below"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -51,6 +55,7 @@
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands roll one leg of her tights toward the ankle while the other leg stays covered."
   }
 }

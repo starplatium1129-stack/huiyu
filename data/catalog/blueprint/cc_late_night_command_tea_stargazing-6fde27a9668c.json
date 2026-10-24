@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_late_night_command_tea_stargazing",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1311,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在指挥桌沿双腿交叠，端来红茶后侧首与视角并肩凝望窗外星海",
     "camera": "cowboy shot, eye level, atmospheric sci-fi view",
@@ -30,7 +30,11 @@
       "desk",
       "sitting",
       "crossed legs",
-      "night"
+      "night",
+      "sitting on desk",
+      "looking back",
+      "starry sky",
+      "blue light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +49,7 @@
       "gentle_smile"
     ],
     "timeOfDay": "深夜航行",
-    "title": "C.C. · 深夜指挥室的热茶与星河"
+    "title": "C.C. · 深夜指挥室的热茶与星河",
+    "animaCaption": "Tea rests beside the viewer's terminal while she sits on the desk edge."
   }
 }

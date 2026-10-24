@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_r18_hotel_after_live",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 958,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "明亮化妆镜前转椅上解开偶像礼服回眸微笑",
     "adult": true,
@@ -40,7 +40,11 @@
       "blush",
       "swivel chair",
       "dressing room",
-      "vanity lighting"
+      "vanity lighting",
+      "hand on zipper",
+      "hand on armrest",
+      "embarrassed smile",
+      "ring light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -57,6 +61,7 @@
       "sitting"
     ],
     "timeOfDay": "夜晚",
-    "title": "星野爱 · 演出后后台化妆镜前"
+    "title": "星野爱 · 演出后后台化妆镜前",
+    "animaCaption": "The mirror faces away from the camera beside her swivel chair."
   }
 }

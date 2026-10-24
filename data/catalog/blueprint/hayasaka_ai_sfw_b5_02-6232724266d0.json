@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_02",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1406,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "对着手镜补好唇色，练习从职业表情切换成亲切笑容。",
     "adult": false,
@@ -30,7 +30,9 @@
       "lipstick",
       "smile",
       "classroom",
-      "medium shot"
+      "medium shot",
+      "loosened collar",
+      "mirror reflection"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -50,6 +52,7 @@
     "title": "早坂爱 · 放学后的辣妹切换",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "allowRepeatedSubject": true
+    "allowRepeatedSubject": true,
+    "animaCaption": "One hand holds the mirror as the other pauses with the lipstick."
   }
 }

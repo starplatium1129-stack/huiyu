@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_morning_grimoire",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 463,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "晨光里趴在床上翻看魔法书，双腿翘起",
     "adult": true,
@@ -32,7 +32,12 @@
       "grimoire",
       "reading",
       "bed",
-      "morning"
+      "morning",
+      "holding book",
+      "looking at viewer",
+      "morning light",
+      "medium shot",
+      "from side"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -45,6 +50,7 @@
       "intimate"
     ],
     "timeOfDay": "清晨",
-    "title": "洛琪希 · 晨光魔导书"
+    "title": "洛琪希 · 晨光魔导书",
+    "animaCaption": "One hand holds the grimoire open as she turns toward the viewer, both feet raised behind her."
   }
 }

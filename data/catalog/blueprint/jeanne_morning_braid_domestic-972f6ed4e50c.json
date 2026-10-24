@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_morning_braid_domestic",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "jeanne_morning_braid_domestic",
     "title": "圣女贞德 · 晨间梳辫的居家温存·「发辫……就交给你来编好不好？」",
@@ -35,7 +35,10 @@
       "comb",
       "window",
       "morning",
-      "from behind"
+      "from behind",
+      "sitting",
+      "offering comb",
+      "lowered gaze"
     ],
     "negativeTokens": [
       "braided hair"
@@ -50,6 +53,7 @@
       "daily",
       "girlfriend",
       "morning"
-    ]
+    ],
+    "animaCaption": "She offers the comb over her shoulder toward the off-frame viewer."
   }
 }

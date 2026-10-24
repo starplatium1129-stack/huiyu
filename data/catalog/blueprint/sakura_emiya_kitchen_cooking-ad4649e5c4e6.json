@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_emiya_kitchen_cooking",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 175,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "sakura_emiya_kitchen_cooking",
     "characterId": "matou_sakura",
@@ -30,7 +30,12 @@
       "miso soup",
       "kitchen",
       "medium shot",
-      "side ponytail"
+      "side ponytail",
+      "looking back",
+      "gentle smile",
+      "steam",
+      "ladle on holder",
+      "morning light"
     ],
     "negativeTokens": [
       "ladle in hand"
@@ -48,6 +53,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "She turns toward the doorway after setting the ladle on its holder beside the steaming dishes."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_sfw_b6_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1375,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asada_shino_sfw_b6_03",
     "title": "朝田诗乃 · 杂志页间的熟悉名字",
@@ -33,7 +33,13 @@
       "convenience store",
       "magazine",
       "shopping basket",
-      "medium shot"
+      "medium shot",
+      "adjusting glasses",
+      "hand on page",
+      "smile",
+      "store lighting",
+      "yogurt",
+      "bread"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,6 +49,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One finger marks the magazine page as her free hand adjusts her glasses."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_07",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1162,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "点心店门口检查怀旧糖果后递给镜头，外套和侧马尾迎风轻动",
     "adult": false,
@@ -30,7 +30,11 @@
       "candy",
       "offering",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "holding bag",
+      "playful smile",
+      "wind",
+      "warm lighting"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -46,6 +50,7 @@
       "afternoon_light"
     ],
     "timeOfDay": "日间",
-    "title": "明月栞那 · 粗点心店的纸袋"
+    "title": "明月栞那 · 粗点心店的纸袋",
+    "animaCaption": "One hand offers the candy; the other holds the paper bag against her."
   }
 }

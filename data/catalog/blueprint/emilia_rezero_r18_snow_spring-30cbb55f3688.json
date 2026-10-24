@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_r18_snow_spring",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 449,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "emilia_rezero_r18_snow_spring",
     "title": "爱蜜莉雅 · 雪中温泉",
@@ -39,7 +39,10 @@
       "snow",
       "steam",
       "hand between legs",
-      "cowboy shot"
+      "cowboy shot",
+      "hand on rock",
+      "ice crystals",
+      "winter light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -62,6 +65,7 @@
       "white_hair_flower",
       "re:zero"
     ],
-    "identityProseOverride": "Emilia from Re:Zero, with silver-white hair pinned in a bun, pointed half-elf ears, amethyst eyes and a white flower hair clip."
+    "identityProseOverride": "Emilia from Re:Zero, with silver-white hair pinned in a bun, pointed half-elf ears, amethyst eyes and a white flower hair clip.",
+    "animaCaption": "One hand grips the rock edge while the other remains beneath the ripples."
   }
 }

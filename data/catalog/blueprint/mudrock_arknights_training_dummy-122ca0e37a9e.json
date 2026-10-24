@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_training_dummy",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 581,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "拄锤而立，气定神闲",
     "camera": "wide shot, low angle",
@@ -27,7 +27,9 @@
       "golem",
       "training ground",
       "morning",
-      "from below"
+      "from below",
+      "cool lighting",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +43,7 @@
     "title": "泥岩 · 训练场",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her planted warhammer stands beside her inside the ring of stone guardians."
   }
 }

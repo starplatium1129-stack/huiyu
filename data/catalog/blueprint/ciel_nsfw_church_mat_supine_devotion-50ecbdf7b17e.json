@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_nsfw_church_mat_supine_devotion",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1340,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "全裸仰卧软榻上，双腿曲膝大开，单手与视角十指紧扣，眼眸水润迷乱娇喘",
     "adult": true,
@@ -35,7 +35,13 @@
       "on back",
       "knees up",
       "holding hands",
-      "candlelight"
+      "candlelight",
+      "no glasses",
+      "interlocked fingers",
+      "heavy blush",
+      "parted lips",
+      "cowboy shot",
+      "from above"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,6 +59,7 @@
       "parted_lips"
     ],
     "timeOfDay": "深夜",
-    "title": "希耶尔 · 圣堂软榻的深情仰卧交付"
+    "title": "希耶尔 · 圣堂软榻的深情仰卧交付",
+    "animaCaption": "One hand interlocks with the viewer's beside the cushion; the other rests near her lips."
   }
 }

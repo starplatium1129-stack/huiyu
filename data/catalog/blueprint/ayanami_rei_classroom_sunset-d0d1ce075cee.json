@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_classroom_sunset",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1011,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "侧坐在课桌旁单手托腮，凝视窗外夕阳",
     "camera": "cowboy shot, eye level",
@@ -27,7 +27,11 @@
       "sitting",
       "window",
       "sunset",
-      "cowboy shot"
+      "cowboy shot",
+      "sitting at desk",
+      "looking away",
+      "long shadows",
+      "empty classroom"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +46,7 @@
       "floating_dust_particles"
     ],
     "timeOfDay": "黄昏",
-    "title": "绫波丽 · 黄昏窗边的沉思"
+    "title": "绫波丽 · 黄昏窗边的沉思",
+    "animaCaption": "Her gaze rests on Tokyo-3's defense plates beyond the window."
   }
 }

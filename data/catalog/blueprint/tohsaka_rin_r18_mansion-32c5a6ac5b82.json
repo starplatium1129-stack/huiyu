@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_mansion",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 150,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tohsaka_rin_r18_mansion",
     "title": "远坂凛 · 魔术工房·暖炉夕照与红毛衣松垮过膝袜",
@@ -55,13 +55,22 @@
       "stool",
       "hair ribbons",
       "workshop",
-      "sunset"
+      "sunset",
+      "standing",
+      "foot on stool",
+      "adjusting ribbons",
+      "both hands",
+      "blush",
+      "firelight",
+      "full body",
+      "from below"
     ],
     "negativeTokens": [],
     "nsfwTokens": [
       "topless",
       "bare back"
     ],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One foot rests on the stool as both hands adjust her hair ribbons, its stocking slouched below her knee."
   }
 }

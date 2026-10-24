@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_school_hallway",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 959,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "抱课本走过走廊",
     "camera": "medium shot, walking through the school hallway with textbooks",
@@ -25,7 +25,11 @@
       "books",
       "walking",
       "school hallway",
-      "window light"
+      "window light",
+      "holding books",
+      "both arms",
+      "afternoon",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +42,7 @@
       "window"
     ],
     "timeOfDay": "白天",
-    "title": "黑川茜 · 阳东走廊"
+    "title": "黑川茜 · 阳东走廊",
+    "animaCaption": "Both arms hold the textbooks against her chest as she walks along the corridor."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_onsen_wet_elf_ears",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 469,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "泡在汤浴中，绯红的尖耳在水汽里若隐若现",
     "adult": true,
@@ -32,7 +32,10 @@
       "lantern",
       "submerged",
       "blush",
-      "close-up"
+      "close-up",
+      "sitting",
+      "flushed ears",
+      "lantern reflections"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -46,6 +49,7 @@
       "firelight"
     ],
     "timeOfDay": "夜晚",
-    "title": "希露菲叶特 · 格雷拉特家的初汤"
+    "title": "希露菲叶特 · 格雷拉特家的初汤",
+    "animaCaption": "Her face and pointed ears remain above the bathwater."
   }
 }

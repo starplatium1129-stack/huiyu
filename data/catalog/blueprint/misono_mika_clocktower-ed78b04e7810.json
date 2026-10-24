@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_clocktower",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 893,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "站在钟楼俯瞰学院",
     "adult": false,
@@ -31,7 +31,10 @@
       "looking back",
       "clocktower",
       "stone railing",
-      "sunset"
+      "sunset",
+      "smile",
+      "looking at viewer",
+      "long shadows"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -43,6 +46,7 @@
       "sunset"
     ],
     "timeOfDay": "黄昏",
-    "title": "圣园未花 · 钟楼顶端的清风"
+    "title": "圣园未花 · 钟楼顶端的清风",
+    "animaCaption": "The clock mechanism casts long shadows behind the balustrade."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_forest_staff_casting",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 117,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "fern_forest_staff_casting",
     "characterId": "fern_frieren",
@@ -32,7 +32,10 @@
       "magic",
       "forest path",
       "morning mist",
-      "full body"
+      "full body",
+      "both hands",
+      "focused",
+      "glowing sphere"
     ],
     "negativeTokens": [
       "cropped staff"
@@ -50,6 +53,7 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "animaCaption": "A compact white sphere forms at the staff tip above her planted boots."
   }
 }

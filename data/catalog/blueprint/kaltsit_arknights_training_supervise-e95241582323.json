@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_training_supervise",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 530,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双臂环抱立于场边",
     "camera": "medium shot, slight low angle",
@@ -26,7 +26,9 @@
       "crossed arms",
       "training ground",
       "from below",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "reinforced glass"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +39,7 @@
     ],
     "timeOfDay": "白天",
     "title": "凯尔希 · 训练督导",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "The operators practice beyond the reinforced glass behind her."
   }
 }

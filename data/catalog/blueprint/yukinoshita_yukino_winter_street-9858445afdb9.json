@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_winter_street",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 339,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yukinoshita_yukino_winter_street",
     "title": "雪之下雪乃 · 冬季街头",
@@ -33,7 +33,11 @@
     "promptTokens": [
       "hand in pocket",
       "snow",
-      "streetlights"
+      "streetlights",
+      "scarf over mouth",
+      "concerned",
+      "looking at viewer",
+      "streetlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -42,6 +46,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One hand holds the scarf over her face while the other stays in her pocket."
   }
 }

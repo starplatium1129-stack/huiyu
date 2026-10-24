@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_night_balcony_author_dress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1425,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "utaha_night_balcony_author_dress",
     "title": "霞之丘诗羽 · 深夜阳台的黑裙作家·「下一章的恶役，就用你来写」",
@@ -33,7 +33,10 @@
       "wine glass",
       "balcony",
       "city lights",
-      "medium shot"
+      "medium shot",
+      "leaning on railing",
+      "holding glass",
+      "moonlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +49,7 @@
       "official_default",
       "iconic",
       "signature"
-    ]
+    ],
+    "animaCaption": "She raises the wine glass toward the viewer from the balcony rail after finishing the manuscript."
   }
 }

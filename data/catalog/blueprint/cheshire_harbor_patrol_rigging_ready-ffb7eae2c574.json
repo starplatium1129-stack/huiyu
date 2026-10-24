@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_harbor_patrol_rigging_ready",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1092,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cheshire_harbor_patrol_rigging_ready",
     "title": "柴郡 · 碧海港湾的重巡护航",
@@ -38,9 +38,16 @@
       "cruiser rigging",
       "hand on hip",
       "ocean",
-      "wide shot"
+      "wide shot",
+      "standing",
+      "naval guns",
+      "wind",
+      "sea spray",
+      "sunlight",
+      "from below"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "animaCaption": "The paired barrels of her cruiser gun mounts turn behind her on the fortress jetty."
   }
 }

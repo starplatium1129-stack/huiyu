@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_r18_knit_sweater_lifted",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 703,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "typhon_arknights_r18_knit_sweater_lifted",
     "characterId": "typhon_arknights",
@@ -38,7 +38,11 @@
       "biting lip",
       "standing",
       "heater",
-      "bedroom"
+      "bedroom",
+      "looking up",
+      "blush",
+      "red glow",
+      "medium shot"
     ],
     "promptProse": "Typhon lifts her oversized sweater above her chest beside the electric heater, biting her lip and looking up with a blush. Its warm red glow lights the sweater folds.",
     "negativeTokens": [],
@@ -49,6 +53,7 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@tsunako",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She lifts the sweater above her chest and looks up beside the electric heater."
   }
 }

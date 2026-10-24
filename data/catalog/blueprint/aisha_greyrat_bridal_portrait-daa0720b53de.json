@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_bridal_portrait",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 488,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "aisha_greyrat_bridal_portrait",
     "title": "爱夏·花廊下的回眸",
@@ -29,12 +29,18 @@
     "promptTokens": [
       "flowers",
       "looking back",
-      "sunset"
+      "sunset",
+      "holding veil",
+      "garden",
+      "arbor",
+      "wind",
+      "backlighting"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",
     "negativeTokens": [
       "burgundy sash"
-    ]
+    ],
+    "animaCaption": "One hand catches the veil; the other rests at her waist."
   }
 }

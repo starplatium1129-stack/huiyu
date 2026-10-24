@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1635,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_03",
     "title": "长离 · 茶馆里听到的妙着",
@@ -36,7 +36,12 @@
       "chess piece",
       "laughing",
       "lantern",
-      "night"
+      "night",
+      "sitting",
+      "raised eyebrows",
+      "teacup",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +51,7 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her fan hides the laugh above the chess piece and untouched tea."
   }
 }

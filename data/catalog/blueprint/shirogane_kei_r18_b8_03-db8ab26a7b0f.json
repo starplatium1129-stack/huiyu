@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_r18_b8_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1423,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "一手撑壁橱回眸，另一手伸后扯拉链，水手服掀起露出条纹胖次，羞怒瞪视泛泪",
     "adult": true,
@@ -41,7 +41,9 @@
       "closet",
       "hallway",
       "white collar",
-      "pleated skirt"
+      "pleated skirt",
+      "hand on closet",
+      "hand behind back"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -59,6 +61,7 @@
       "stuck_zipper"
     ],
     "timeOfDay": "night",
-    "title": "白银圭 · 秀知院成年后部制服拉链卡壳事故 ·「衣服卡住了啦！……再看把你眼睛挖出来！」"
+    "title": "白银圭 · 秀知院成年后部制服拉链卡壳事故 ·「衣服卡住了啦！……再看把你眼睛挖出来！」",
+    "animaCaption": "One palm braces against the closet while the other reaches for the jammed zipper."
   }
 }

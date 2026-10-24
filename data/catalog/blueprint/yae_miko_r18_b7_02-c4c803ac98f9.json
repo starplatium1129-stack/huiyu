@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_r18_b7_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yae_miko_r18_b7_02",
     "title": "八重神子 · 影向山露天汤池神樱落花水光湿身 ·「偷看神明洗澡……可是要付出一辈子的代价呢」",
@@ -37,7 +37,12 @@
       "onsen",
       "cherry blossoms",
       "steam",
-      "night"
+      "night",
+      "reclining",
+      "hand between legs",
+      "masturbation",
+      "glowing petals",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +61,7 @@
       "nsfw",
       "wet",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She rests against the vermilion rail with one hand underwater as glowing cherry petals drift around her."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1411,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "清晨五点半的住宅区，她骑着自行车穿梭在还亮着路灯的街道，车筐里整齐码着卷好的报纸",
     "adult": false,
@@ -30,7 +30,10 @@
       "bicycle",
       "newspapers",
       "dawn",
-      "medium shot"
+      "medium shot",
+      "cycling",
+      "visible breath",
+      "streetlights"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -48,6 +51,7 @@
       "medium_shot"
     ],
     "timeOfDay": "清晨",
-    "title": "白银圭 · 清晨的报纸配送路线"
+    "title": "白银圭 · 清晨的报纸配送路线",
+    "animaCaption": "The newspapers ride in the front basket beneath the remaining streetlights."
   }
 }

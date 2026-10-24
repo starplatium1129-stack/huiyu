@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_headset_bond_riding",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1364,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "独自跨坐床褥，身体前倾，双手撑在自己的膝头",
     "adult": true,
@@ -36,7 +36,11 @@
       "hands on knees",
       "communication device",
       "bed",
-      "from below"
+      "from below",
+      "leaning forward",
+      "blue light",
+      "starlight",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -54,6 +58,7 @@
     ],
     "timeOfDay": "黎明前",
     "title": "芙拉蒂蕾娜 · 同调状态下的主控跨坐骑乘·「戴着它的话……就算闭上眼睛，也感受得到你的全部」",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "She holds a solitary straddling pose with both hands on her own knees."
   }
 }

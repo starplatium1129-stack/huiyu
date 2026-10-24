@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_night_sky_balcony_yuuji_thought",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1169,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kazuki_night_sky_balcony_yuuji_thought",
     "title": "风见一姬 · 繁星穹顶下的月下凝思",
@@ -39,9 +39,13 @@
       "balcony",
       "starry sky",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "moonlight",
+      "wind",
+      "windblown clothes"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "animaCaption": "She tucks a strand behind her ear and watches the stars from the glass balcony railing."
   }
 }

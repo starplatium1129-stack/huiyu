@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 1698,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "vivy_sfw_b9_04",
     "title": "Vivy · 无人舞台的白蓝花嫁",
@@ -37,7 +37,10 @@
       "piano",
       "empty theater",
       "dawn",
-      "cowboy shot"
+      "cowboy shot",
+      "looking at viewer",
+      "gentle smile",
+      "morning light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +52,7 @@
       "iconic",
       "bridal",
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand stays beside the white flowers placed on the piano for the opening phrase."
   }
 }

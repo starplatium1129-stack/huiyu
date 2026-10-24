@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_r18_b7_01",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 313,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "kama_fate_r18_b7_01",
     "title": "迦摩 · 宇宙爱欲神殿金莲花座主控跨坐 ·「Master……要被爱之神彻底堕落溺死吗」",
@@ -43,7 +43,10 @@
       "floating hair",
       "space",
       "from below",
-      "gold waist chain"
+      "gold waist chain",
+      "hands on chest",
+      "rim light",
+      "medium shot"
     ],
     "negativeTokens": [
       "horns"
@@ -60,6 +63,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Both hands rest on the offscreen viewer's chest as her white hair floats around the golden lotus."
   }
 }

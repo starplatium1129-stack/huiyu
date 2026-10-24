@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_04",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 312,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "medea_caster_r18_b7_04",
     "title": "美狄亚 · 榻榻米被单深处的誓约妻子独奏 ·「把这副曾沾满背叛的身躯……完全洗成您的颜色」",
@@ -41,7 +41,10 @@
       "holding jacket",
       "tears",
       "futon",
-      "moonlight"
+      "moonlight",
+      "hair spread out",
+      "tatami",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +59,7 @@
       "nsfw",
       "self_control",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "She holds the jacket against her chest with her hair spread over the tatami beside the futon."
   }
 }

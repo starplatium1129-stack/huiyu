@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_boyfriend_shirt_stoic_blush",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1771,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-21T13:45:00.000000000+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yami_boyfriend_shirt_stoic_blush",
     "title": "金色暗影 · 晨光窗台的白衬衫与微红面颊",
@@ -50,11 +50,16 @@
       "kuudere",
       "morning_light",
       "lens_flare",
-      "soft_shadows"
+      "soft_shadows",
+      "holding shirt",
+      "hair fist",
+      "blushing ears",
+      "medium shot"
     ],
     "promptProse": "Seated on the sunny wooden windowsill with her knees drawn up, Yami holds an oversized white dress shirt closely across her chest. While her long golden hair partially shapes into a protective fist beside her, her ruby-red eyes gaze forward with a faintly blushing, stoic expression.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "She draws her knees up and holds the shirt across her chest while a protective hair fist rests beside her."
   }
 }

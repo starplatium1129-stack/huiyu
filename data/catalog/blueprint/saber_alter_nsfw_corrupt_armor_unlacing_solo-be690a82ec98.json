@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 228,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
     "title": "黑呆 · 漆黑哥特战铠半褪与锁骨暗纹自持",
@@ -45,7 +45,10 @@
       "masturbation",
       "hand under clothes",
       "throne room",
-      "moonlight"
+      "moonlight",
+      "one knee",
+      "glowing magic circuits",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -62,6 +65,7 @@
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "One hand supports her on the sword beneath the unlatched breastplate."
   }
 }

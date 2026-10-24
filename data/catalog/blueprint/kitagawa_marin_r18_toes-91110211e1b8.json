@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_toes",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 504,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "坐在粉白柔软床垫上，双膝自然弯曲，手中拿着指甲油刷，晶莹粉嫩的十趾整齐舒展，微笑着向你展示",
     "adult": true,
@@ -37,7 +37,13 @@
       "nail polish",
       "painting toenails",
       "sitting",
-      "bed"
+      "bed",
+      "holding foot",
+      "bent knees",
+      "pink nail polish",
+      "bedside lamp",
+      "foot focus",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,6 +59,7 @@
       "nail_polish"
     ],
     "timeOfDay": "夜晚",
-    "title": "喜多川海梦 · 趾尖的粉色·床榻美甲涂抹"
+    "title": "喜多川海梦 · 趾尖的粉色·床榻美甲涂抹",
+    "animaCaption": "One hand steadies her raised foot while the other paints its toenails pink."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_old_bookstore",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tokisaki_kurumi_old_bookstore",
     "title": "时崎狂三 · 旧书店午后",
@@ -36,7 +36,12 @@
       "art book",
       "stained glass",
       "bookstore",
-      "medium shot"
+      "medium shot",
+      "open album",
+      "turning page",
+      "bookshelf",
+      "ladder",
+      "afternoon light"
     ],
     "negativeTokens": [
       "readable captions"
@@ -45,6 +50,7 @@
     "outfitId": "sfw_vintage_bookshop",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "Her left hand supports the spine while her right lifts one page."
   }
 }

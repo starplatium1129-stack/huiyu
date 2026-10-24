@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc085",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
   "data": {
-    "animaCaption": "Stroking the sleeping calico on her lap, she glances toward the viewer beside the empty seat; winter window light softens the cat's fur and her embarrassed face.",
+    "animaCaption": "She strokes the sleeping cat on her lap while glancing toward the viewer beside the empty seat.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "半身中景",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, grey mock neck sweater, burgundy suede elbow patches, black wool skirt, sitting, petting cat, calico cat, cat cafe, window light, medium shot",
+    "prompt": "1girl, shiki_natsume, grey mock neck sweater, burgundy suede elbow patches, black wool skirt, sitting, petting cat, calico cat, cat cafe, window light, medium shot, looking at viewer, embarrassed, blush, lap cat",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 猫咪替她说出的喜欢】冬日下午的猫咖里，一只猫蜷在夏目腿上睡得很熟。她表面嫌弃无法起身，手指却一直轻轻梳理猫毛。你说她其实很喜欢可爱的东西，她抬眼瞪你，又把旁边的位置让出来——「是它自己过来的。你如果也想坐，就安静一点……别把它吵醒。」",
@@ -46,6 +46,7 @@
       "展示图",
       "CG"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Stroking the sleeping calico on her lap, she glances toward the viewer beside the empty seat; winter window light softens the cat's fur and her embarrassed face."
   }
 }

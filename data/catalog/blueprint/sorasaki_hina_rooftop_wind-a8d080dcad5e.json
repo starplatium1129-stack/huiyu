@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_rooftop_wind",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 846,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "迎风站立警戒远方",
     "adult": false,
@@ -34,7 +34,12 @@
       "rooftop",
       "night",
       "from below",
-      "wide shot"
+      "wide shot",
+      "standing",
+      "holding cap",
+      "blanket around shoulders",
+      "moonlight",
+      "rim light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -47,6 +52,7 @@
     ],
     "timeOfDay": "傍晚",
     "title": "空崎日奈 · 旧校舍天台的极目远眺",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She holds her cap against the wind as her companion places the blanket around her shoulders."
   }
 }

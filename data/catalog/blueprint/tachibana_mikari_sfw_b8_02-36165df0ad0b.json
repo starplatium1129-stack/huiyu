@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1676,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_02",
     "title": "橘美花莉 · 放学天台的独占视线",
@@ -40,7 +40,11 @@
       "Okumura",
       "rooftop",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "holding can",
+      "puffed cheeks",
+      "pout",
+      "chain-link fence"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +58,7 @@
     "compositionIntent": "group",
     "characterTokens": [
       "Okumura"
-    ]
+    ],
+    "animaCaption": "She presses the cold tea can to Okumura's cheek beside the fence."
   }
 }

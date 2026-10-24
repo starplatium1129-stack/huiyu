@@ -10,8 +10,8 @@
 | --- | --- |
 | 角色 | `characterTokens` 标记名字/别名，`copyrightTokens` 独立提供作品；保留鲜明身份锚点与 exact tokens，不把 `identityProse` 全文重复灌入 Anima |
 | 服装 | 当前 `outfitId`、名称与 `outfits[].tokens/prose` 一致，避免身份字段泄漏旧衣装；Anima 服装进入画师后的普通标签段，用普通服饰词表达设计，不把自创套装名当模型触发词 |
-| 蓝图 | `description` / `action` 的可见核心进入 `promptTokens` / `promptProse`，同步核对会追加消费的 `nsfwTokens` / `nsfwProse`，避免旧动作重注入；场景已有同伴名字由蓝图 `characterTokens` 分类，不登记成主角别名 |
-| 背景与光影 | 决定本场景效果的空间/光照关系进入最终正文；逐条核对 camera / lighting / 展示描述中的必要关系是否在 promptTokens / promptProse 或 animaCaption 实际承载，不能因有宽泛镜头、光照标签就视为已保留；一般细节交给模型，不强制补齐所有背景与光影细节 |
+| 蓝图 | Anima 的动作、道具、神态等可见核心进入 `promptTokens`；可选补充句按六段规则精简，Krea 的共享 `promptProse` 仍保留连贯表达，不机械套用 Anima 短句限制。同步核对会追加消费的 `nsfwTokens` / `nsfwProse`，避免旧动作重注入；场景已有同伴名字由蓝图 `characterTokens` 分类，不登记成主角别名 |
+| 背景与光影 | Anima 的关键地点、光照与景别进入有效普通标签，末尾 `animaCaption` / `sceneProse` 只作可选补充，不能以长篇散文替代标签；Krea 按自然语言契约保留同一画面。具体接触与光影关系不得因精简丢失，其余细节交给模型 |
 | 导演 | 镜头、光照、构图、`recommendedSize` 和模型参数不互相覆盖冲突；实际人数不由分级强制改单人，显式 `1girl, 1boy` 等人数组合须保留 |
 | 最终请求 | Anima 六段顺序与自然语言末尾边界，完整 positive / negative、模型/LoRA、seed、尺寸、采样参数及参考输入；包含界面隐式选择的风格配方，批量/维护入口不能编译后另拼标签 |
 

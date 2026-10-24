@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_narukami_shrine",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "raiden_shogun_narukami_shrine",
     "title": "雷电将军 · 鸣神神社的落樱",
@@ -40,7 +40,11 @@
       "torii",
       "stairs",
       "shrine",
-      "sunset"
+      "sunset",
+      "petal on palm",
+      "hand on waist",
+      "quiet expression",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +55,7 @@
       "iconic"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "One petal rests on her open palm while her other hand remains at her waist as she turns back."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_bridge_overlook",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 750,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "administrator_arknights_bridge_overlook",
     "characterId": "administrator_arknights",
@@ -41,12 +41,20 @@
       "chair",
       "drink",
       "cake",
-      "cowboy shot"
+      "cowboy shot",
+      "round table",
+      "hand on chair",
+      "looking at viewer",
+      "soft lighting",
+      "afternoon",
+      "parasol",
+      "shade"
     ],
     "promptProse": "She draws back the empty chair for the viewer and turns with a small smile. Parasol-filtered afternoon light crosses the two drinks and shared cake on the terrace table.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "She pulls out the empty chair toward the viewer."
   }
 }

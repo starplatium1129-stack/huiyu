@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_living_room_family_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 805,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yor_living_room_family_tea",
     "characterId": "yor_forger",
@@ -32,7 +32,12 @@
       "cup",
       "cookies",
       "kitchen",
-      "medium shot"
+      "medium shot",
+      "sitting",
+      "pouring tea",
+      "hand on lid",
+      "relieved smile",
+      "window light"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -47,6 +52,7 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "animaCaption": "One hand holds the pot handle while the other steadies its lid as she pours without spilling."
   }
 }

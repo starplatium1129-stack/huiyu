@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_signing_event_author_line",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1426,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "utaha_signing_event_author_line",
     "title": "霞之丘诗羽 · 签售会的作家真身·「要签名？先把感想写满一页」",
@@ -34,7 +34,10 @@
       "book signing",
       "bookstore",
       "medium shot",
-      "sitting"
+      "sitting",
+      "pen twirl",
+      "smirk",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +50,7 @@
       "daily",
       "signature"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "animaCaption": "She recognizes the reader across the signing table while twirling the fountain pen."
   }
 }

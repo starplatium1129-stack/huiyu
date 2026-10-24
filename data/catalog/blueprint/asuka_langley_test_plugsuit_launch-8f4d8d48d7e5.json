@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_test_plugsuit_launch",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1027,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "双手微护胸口满脸通红，倔强瞪视镜头",
     "camera": "medium shot, eye level",
@@ -28,7 +28,12 @@
       "blush",
       "pout",
       "monitor",
-      "medium shot"
+      "medium shot",
+      "standing",
+      "raised chin",
+      "angry blush",
+      "industrial lighting",
+      "blue glow"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +48,7 @@
       "glowing_panels"
     ],
     "timeOfDay": "白天",
-    "title": "惣流·明日香 · 三号机测试服的羞赧"
+    "title": "惣流·明日香 · 三号机测试服的羞赧",
+    "animaCaption": "Her chin stays raised above her crossed arms, with blue monitor glow along the suit seams."
   }
 }

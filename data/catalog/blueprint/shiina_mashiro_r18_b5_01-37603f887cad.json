@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_r18_b5_01",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1523,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "shiina_mashiro_r18_b5_01",
     "title": "椎名真白 · 画室油画架前白衬衫主控跨坐 ·「空太……想看真白是什么颜色吗」",
@@ -42,7 +42,9 @@
       "on lap",
       "art studio",
       "night",
-      "from below"
+      "from below",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +59,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "animaCaption": "Her hair falls around their faces as she sits across the viewer's lap in the studio."
   }
 }

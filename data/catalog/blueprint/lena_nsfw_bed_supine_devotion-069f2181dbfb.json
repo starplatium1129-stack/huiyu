@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_bed_supine_devotion",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1363,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "身着开档蕾丝睡袍柔情仰卧，双腿大开展示私密花瓣，双手抚胸轻揉乳晕，银眸迷离泛水光",
     "adult": true,
@@ -35,7 +35,12 @@
       "spread legs",
       "hand on breast",
       "military blanket",
-      "bedroom"
+      "bedroom",
+      "bed",
+      "lamplight",
+      "warm lighting",
+      "full body",
+      "from above"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -53,6 +58,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "芙拉蒂蕾娜 · 纯白蕾丝开档战袍与床褥柔情仰卧·「今夜，请把女王变成只属于你的成年女性」",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "animaCaption": "The dark military blanket lies beneath her beside the small bedside lamp."
   }
 }

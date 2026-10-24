@@ -4,7 +4,7 @@
   "revision": 5,
   "sortOrder": 683,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "action": "端坐在复古花窗飘窗软垫上，膝上摊开羊皮纸诗集，轻抚书页，转头温柔微笑",
     "camera": "medium shot, eye level",
@@ -25,7 +25,12 @@
       "poetry book",
       "window seat",
       "library",
-      "medium shot"
+      "medium shot",
+      "open book",
+      "hand on page",
+      "smile",
+      "lamplight",
+      "moonlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +46,7 @@
       "gentle_smile"
     ],
     "timeOfDay": "夜晚月明",
-    "title": "薇薇安娜 · 莱塔尼亚书斋的月下长诗"
+    "title": "薇薇安娜 · 莱塔尼亚书斋的月下长诗",
+    "animaCaption": "The poetry book rests on her lap as she smiles toward the off-frame companion."
   }
 }

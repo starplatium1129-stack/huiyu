@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_summer_beach_splashing",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1366,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "asuna_summer_beach_splashing",
     "title": "结城明日奈 · 碧海晴空的细带比基尼戏水·「抓不到我吧？再发呆就要被泼水啦！」",
@@ -34,7 +34,10 @@
       "laughing",
       "ocean",
       "summer",
-      "wide shot"
+      "wide shot",
+      "both hands",
+      "water spray",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -48,6 +51,7 @@
       "beach",
       "summer",
       "swimsuit"
-    ]
+    ],
+    "animaCaption": "She splashes toward the viewer outside the frame."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_coffee_morning",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 343,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "yukinoshita_yukino_coffee_morning",
     "title": "雪之下雪乃 · 便利店热咖啡",
@@ -36,7 +36,12 @@
       "slight smile",
       "convenience store",
       "mist",
-      "morning"
+      "morning",
+      "offering latte",
+      "holding coffee",
+      "shy",
+      "steam",
+      "morning light"
     ],
     "negativeTokens": [
       "logo"
@@ -47,6 +52,7 @@
       "daily"
     ],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Her right hand offers the latte while her left keeps her own coffee upright."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_bedroom_morning_stretch_yawn",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1087,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
   "data": {
     "id": "cheshire_bedroom_morning_stretch_yawn",
     "title": "柴郡 · 晨光微熹的猫猫伸懒腰",
@@ -38,9 +38,16 @@
       "kneeling",
       "stretching",
       "yawning",
-      "morning"
+      "morning",
+      "rug",
+      "reaching forward",
+      "morning light",
+      "full body",
+      "from side",
+      "from below"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "animaCaption": "Her chest lowers toward the rug as both arms reach straight forward in a sleepy stretch."
   }
 }
