@@ -401,11 +401,11 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 参考/样张链路需要 ComfyUI 和网关在线。ComfyUI 默认 8188，接入脚本网关默认 3000，配置可覆盖；3123 是历史端点，不作为通用默认。使用前核对所选脚本与本机服务配置。`comfy:start` 为现成启动入口，只支持 AI 工作区下 `ComfyUI/main.py` 与 `ComfyUI/venv/Scripts/python.exe` 的 Windows venv 布局。两条启动入口在已安装 SageAttention 且 CUDA 可用时默认启用，缺依赖仍用 PyTorch，不自动安装；启动进程可设 `AICS_COMFY_USE_SAGE_ATTENTION=0` 关闭，也保留显式 `-UseSageAttention` 开关。已经运行的服务不被自动重启，默认值在下次启动时生效。其他布局需自行启动并配置服务地址，不自动迁移或安装依赖。
 
-桌面唯一入口是 `deploy-desktop.bat`，`deploy:desktop` 调用它并保留 Cleanup 默认行为；自动调用不等待按键且保留失败退出码。默认构建并安装本机无压缩升级包，适用于前端、宿主、Rust 后端和 DLL 改动；`-SkipBuild` 复用匹配原生构建，仍封装升级包。原先含义模糊的 `deploy:desktop:full` 已移除。纯资源同步显式 `-ResourcesOnly`，要求宿主 EXE、Rust EXE、libvips DLL 与安装版本一致。保留三个绑定检查点、受控退出、安装后校验、清缓存与启动确认。
+桌面唯一入口是 `deploy-desktop.bat`，`deploy:desktop` 调用它；日常无需任何参数。自动模式先检查安装及源码、SDK、构建身份，再直接比较已安装文件：一致则跳过，仅资源变化则同步，程序变化才复用升级包、重新封装或以 `desktop-local` 快速重建。无需保留升级包也能判断无需更新或资源同步；静态源码有改动而尚无匹配构建时仍先构建，不能跳过绑定。默认静默安装、清理登记的废弃资源并确认启动，UAC 由用户操作；自动调用不等待按键且保留失败退出码。资源同步要求宿主 EXE、Rust EXE、libvips DLL 与安装版本一致，保留三个绑定检查点、受控退出、安装后校验和清缓存。原先含义模糊的 `deploy:desktop:full` 已移除。
 
 安装器本身不替换个人 `content/catalog.sqlite`；部署入口在安装后先导出备份、预览项目快照，再以 `--preserve-local` 合并导入并复核，保留个人修改及修订冲突约束。手动内容修改仍通过内容维护或 `content:catalog`。参考索引等按文件维护的数据可用 `desktop:content-sync --apply --clear-webview-cache` 后重启；文件同步跳过已归记录库的目录和聚合，不读写或删除它们。旧安装目录中的场景单文件等残留按 bat 默认 `-Cleanup` 的 `$STALE_ASSETS` 处理。装机后 [5/6][6/6]（清缓存、启动确认）在 NSIS 安装后可能不再回写，需自行核对。详见 [部署指南](desktop-deployment.md#数据改动如何到达桌面端)。
 
-可附加开关（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已绑定EXE>` 需直接运行 bat）：`-UseInstaller` 跳过构建/封装，只选择当前版本升级包；完整发行包必须显式 `-UseInstaller -InstallerPath <完整包>`。既有包选择结果在 UAC 前固定并透传。`-QuietInstall` 用于默认升级或复用安装包，不适用于纯资源同步；`-NoRestart` 保持退出；`-StartupRepair` 仅同步文档、图标与快捷方式，与 `-UseInstaller` 互斥。UAC 由用户操作，升级条件不满足时不自动改做完整构建，见[部署指南](desktop-deployment.md)。
+可附加开关仅供排错或覆盖自动判断（工作流入口仅接受无值开关，`-InstallDir <路径>` / `-InstallerPath <已绑定EXE>` 需直接运行 bat）：`-ForceBuild` 强制重建；`-SkipBuild` 复用匹配原生构建、重新封装；`-UseInstaller` 复用已有包；`-ResourcesOnly` 强制资源同步并核对二进制。首次安装/宿主缺失时自动寻找当前版本 full 完整包及同名 `.deployment.json`；也可显式指定包路径。既有包选择结果在 UAC 前固定并透传。`-QuietInstall`、`-Cleanup` 保留兼容，自动模式已包含；`-NoRestart` 保持退出；`-StartupRepair` 仅同步文档、图标与快捷方式，与 `-UseInstaller` 互斥。缺少完整包或升级基础材料时提示所缺材料，不自动下载或转做全量发行构建，见[部署指南](desktop-deployment.md)。
 
 批处理入口和显式 `powershell/pwsh -File <脚本.ps1>` 入口的单杠字母参数可以登记于 run.switches，help/plan/audit 共用；Node 等其他入口仍要求双杠元数据键，参数名中的空格、运算符及赋值文本仍拒绝。该识别只影响描述性元数据校验，执行路径与授权边界不变。`--plan` 显示所传开关的行为标签而不启动执行器；具体互斥及跳过行为以部署实现为准。
 

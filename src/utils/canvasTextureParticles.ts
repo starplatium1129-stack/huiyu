@@ -1,15 +1,17 @@
 /** Original WebGL2 texture-particle implementation; Telegram-inspired dust motion,
- * independently written. One canvas owns breakup, waiting and decoded-result reveal. */
+ * independently written. Image particles meet the fine-line waiting surface at both ends. */
 import { registerParticleFrame } from './particleScheduler'
 import { sampleGenerationPalette, visibleGenerationPigment } from './generationPalette'
+import { generationOrbitPose, generationOrbitRadius, smoothGenerationPhase, type GenerationOrbitPose, type GenerationOrbitSurface } from './generationOrbit'
 
-export interface CanvasParticleReveal { stop: () => void; finished: Promise<void> }
+export interface CanvasParticleReveal { stop: () => void; finished: Promise<void>; resize?: () => void }
 export interface CanvasParticleMotion {
   stop: () => void
+  resize: () => void
   reveal: (image: HTMLImageElement, duration: number, palette: readonly string[]) => CanvasParticleReveal | null
 }
 interface Options {
-  generation?: { progress: () => number | null; palette: readonly string[] }
+  generation?: { progress: () => number | null; palette: readonly string[]; orbit: () => GenerationOrbitSurface | null }
   onComplete?: () => void
   onHandoff?: () => void
 }
@@ -17,14 +19,14 @@ const VERTEX = `#version 300 es
 precision highp float;
 uniform vec2 viewport;
 uniform vec4 imageRect;
-uniform vec3 orbitCenter;
-uniform float clock;
+uniform vec2 orbitCenter;
 uniform float dustTime;
 uniform float clearing;
 uniform float revealProgress;
 uniform vec4 departureRect;
 uniform float departureDust;
-uniform float departureClock;
+uniform vec4 orbitShape;
+uniform float orbitRotation;
 out vec2 uv;
 out vec2 local;
 out vec2 pixelPosition;
@@ -33,21 +35,22 @@ out float alpha;
 out float rounding;
 flat out int band;
 float hash(float n){return fract(sin(n*127.13+19.7)*43758.5453);}
-void waitingPose(vec4 rect,float dust,float time,out vec2 position,out vec2 dimensions,out float opacity,out float pigment,out float rounded){
+void waitingPose(vec4 rect,float dust,out vec2 position,out vec2 dimensions,out float opacity,out float pigment,out float rounded){
  vec2 grid=vec2(132,192);
  float id=float(gl_InstanceID),seed=hash(id),lane=mod(id,3.0);
  vec2 cell=vec2(mod(id,grid.x),floor(id/grid.x));
- vec2 normalized=(cell+.5)/grid-.5,source=rect.xy+(cell+.5)/grid*rect.zw;
- float distance=length(normalized)*1.414;
- float angle=atan(normalized.y,normalized.x)+distance*2.2+time*(lane==1.0?-.31:.28)+lane*1.4;
- float tilt=-.66+lane*.63+sin(time*.16+lane)*.06;
- float radius=orbitCenter.z*(.9+lane*.055)*(1.0+sin(angle*2.0+time*.3+lane)*.035);
- vec2 orbit=vec2(cos(angle)*radius,sin(angle)*radius*(.34+lane*.035));
+ vec2 source=rect.xy+(cell+.5)/grid*rect.zw;
+ // Same geometry as generationOrbitPoint: the visible fine lines own the wait.
+ float formed=orbitShape.y,finishing=orbitShape.z;
+ float angle=floor(id/3.0)/(132.0*192.0/3.0)*6.2831853+orbitRotation*(lane==1.0?-1.6:1.85)+lane*1.64;
+ float tilt=(-.64+lane*.61)*(1.0-finishing*.75)+sin(orbitShape.w*.17+lane)*.075*(1.0-finishing);
+ float radius=orbitShape.x*(.86+lane*.08);
+ vec2 orbit=vec2(cos(angle)*radius,sin(angle)*radius*(.31+lane*.035+formed*.1-finishing*.2)+sin(angle*2.0+orbitShape.w*.12)*2.5*(1.0-finishing));
  orbit=vec2(orbit.x*cos(tilt)-orbit.y*sin(tilt),orbit.x*sin(tilt)+orbit.y*cos(tilt));
- vec2 destination=orbitCenter.xy+orbit+vec2(cos(seed*6.283),sin(seed*6.283))*(.8+seed*2.6);
+ vec2 destination=orbitCenter.xy+orbit;
  position=destination;
  vec2 ringSize=vec2(.8+seed*.6);
- float ringAlpha=.24+seed*.17;
+ float ringAlpha=0.0;
  dimensions=ringSize; opacity=ringAlpha; pigment=1.0; rounded=1.0;
  if(dust>=0.0){
   float delay=(cell.x/grid.x)*.30+(cell.y/grid.y)*.07+seed*.11;
@@ -72,7 +75,7 @@ void main(){
  vec2 cell=vec2(mod(id,grid.x),floor(id/grid.x));uv=(cell+corner)/grid;local=corner*2.0-1.0;
  vec2 position,dimensions;
  if(revealProgress>=0.0){
-  waitingPose(departureRect,departureDust,departureClock,position,dimensions,alpha,mixColor,rounding);
+  waitingPose(departureRect,departureDust,position,dimensions,alpha,mixColor,rounding);
   float t=clamp(revealProgress,0.0,1.0);
   float delay=length((cell+.5)/grid-.5)*.113+seed*.04;
   float formation=clamp((t-delay)/(.88-delay),0.0,1.0);
@@ -84,7 +87,7 @@ void main(){
   alpha=mix(alpha,1.0,arrival);
   mixColor*=1.0-smoothstep(.08,.82,arrival);
   rounding*=1.0-smoothstep(.3,1.0,arrival);
- }else waitingPose(imageRect,dustTime,clock,position,dimensions,alpha,mixColor,rounding);
+ }else waitingPose(imageRect,dustTime,position,dimensions,alpha,mixColor,rounding);
  position+=(corner-.5)*dimensions;
  pixelPosition=position;
  gl_Position=vec4(position/viewport*vec2(2.0,-2.0)+vec2(-1.0,1.0),0,1);
@@ -129,13 +132,16 @@ void main(){
 /** Normal motion follows every display RAF, with bounded texture and backing sizes.
  * A null source starts the same orbit on an empty canvas. */
 export function startCanvasTextureParticles(image: HTMLImageElement | null, host: HTMLElement, options: Options): CanvasParticleMotion | null {
-  const bounds = host.getBoundingClientRect()
+  let bounds = host.getBoundingClientRect()
   if (!(bounds.width > 0 && bounds.height > 0)) return null
   if (image && (!image.complete || !image.naturalWidth || !image.naturalHeight)) return null
   if (!image && !options.generation) return null
   const canvas = document.createElement('canvas')
-  const scale = Math.min(window.devicePixelRatio || 1, 1.6, 1440 / Math.max(bounds.width, bounds.height), Math.sqrt(900_000 / (bounds.width * bounds.height)))
-  canvas.width = Math.max(1, Math.floor(bounds.width * scale)); canvas.height = Math.max(1, Math.floor(bounds.height * scale))
+  function sizeBacking() {
+    const scale = Math.min(window.devicePixelRatio || 1, 1.6, 1440 / Math.max(bounds.width, bounds.height), Math.sqrt(900_000 / (bounds.width * bounds.height)))
+    canvas.width = Math.max(1, Math.floor(bounds.width * scale)); canvas.height = Math.max(1, Math.floor(bounds.height * scale))
+  }
+  sizeBacking()
   let gl: WebGL2RenderingContext | null
   try { gl = canvas.getContext('webgl2', { alpha: true, antialias: false, depth: false, stencil: false, premultipliedAlpha: false, powerPreference: 'low-power' }) }
   catch { return null }
@@ -143,16 +149,20 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
   const shaders: WebGLShader[] = []
   let program: WebGLProgram | null = null, texture: WebGLTexture | null = null, resultTexture: WebGLTexture | null = null, vao: WebGLVertexArrayObject | null = null
   let stopFrames: (() => void) | null = null
-  let disposed = false, started = false, handedOff = false, elapsed = 0, clock = 1.5
-  let concentration = options.generation?.progress() ?? 0
+  let disposed = false, started = false, handedOff = false, elapsed = 0
   let revealElapsed: number | null = null
   let revealDuration = 0, revealStartedAt = 0, formedFrame = false
   let restoreImage: (() => void) | null = null, resolveReveal: (() => void) | null = null
   let revealEffect: CanvasParticleReveal | null = null
+  let departurePose: GenerationOrbitPose | null = null
+  let departureRect: number[] | null = null, departureOpacity = 1
+  let resultImage: HTMLImageElement | null = null
+  let waitingCleared = false
   const finish = () => {
     if (disposed) return
     disposed = true
     stopFrames?.(); stopFrames = null
+    options.generation?.orbit()?.setOpacity(1)
     restoreImage?.(); restoreImage = null
     resolveReveal?.(); resolveReveal = null
     canvas.removeEventListener('webglcontextlost', contextLost)
@@ -182,15 +192,23 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
     const uniform = (name: string) => gl.getUniformLocation(program!, name)
-    const imageUniform = uniform('imageRect'), clockUniform = uniform('clock'), revealUniform = uniform('revealProgress'), dustUniform = uniform('dustTime'), lightUniform = uniform('light')
+    const imageUniform = uniform('imageRect'), revealUniform = uniform('revealProgress'), dustUniform = uniform('dustTime'), lightUniform = uniform('light')
+    const orbitShapeUniform = uniform('orbitShape'), orbitRotationUniform = uniform('orbitRotation')
     const pigmentUniforms = [0, 1, 2].map(band => uniform(`pigments[${band}]`))
     const resultPigmentUniforms = [0, 1, 2].map(band => uniform(`resultPigments[${band}]`))
     let imageRect = [0, 0, bounds.width, bounds.height]
-    function capture(next: HTMLImageElement) {
+    function updateImageRect(next: HTMLImageElement) {
       const rect = next.getBoundingClientRect()
       if (!(rect.width > 0 && rect.height > 0)) throw new Error('Image bounds unavailable')
       const fit = Math.min(rect.width / next.naturalWidth, rect.height / next.naturalHeight)
       const width = next.naturalWidth * fit, height = next.naturalHeight * fit
+      imageRect = [rect.left - bounds.left - host.clientLeft + (rect.width - width) / 2,
+        rect.top - bounds.top - host.clientTop + (rect.height - height) / 2, width, height]
+      gl!.uniform4fv(imageUniform, imageRect)
+      // Match the final image's rounded frame before the DOM takes over.
+      gl!.uniform1f(uniform('imageRadius'), Math.min(Number.parseFloat(getComputedStyle(next).borderTopLeftRadius) || 0, width / 2, height / 2))
+    }
+    function capture(next: HTMLImageElement) {
       const snapshot = document.createElement('canvas')
       const ratio = Math.min(1, 1280 / Math.max(next.naturalWidth, next.naturalHeight), Math.sqrt(800_000 / (next.naturalWidth * next.naturalHeight)))
       snapshot.width = Math.max(1, Math.floor(next.naturalWidth * ratio)); snapshot.height = Math.max(1, Math.floor(next.naturalHeight * ratio))
@@ -200,11 +218,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
         paint.drawImage(next, 0, 0, snapshot.width, snapshot.height)
         gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, gl!.RGBA, gl!.UNSIGNED_BYTE, snapshot)
       } finally { snapshot.width = snapshot.height = 0 }
-      imageRect = [rect.left - bounds.left - host.clientLeft + (rect.width - width) / 2,
-        rect.top - bounds.top - host.clientTop + (rect.height - height) / 2, width, height]
-      gl!.uniform4fv(imageUniform, imageRect)
-      // Match the final image's rounded frame before the DOM takes over.
-      gl!.uniform1f(uniform('imageRadius'), Math.min(Number.parseFloat(getComputedStyle(next).borderTopLeftRadius) || 0, width / 2, height / 2))
+      updateImageRect(next)
     }
     if (image) capture(image)
     else {
@@ -228,7 +242,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
       gl.uniform1f(lightUniform, light ? 1 : 0)
     }
     gl.uniform2f(uniform('viewport'), bounds.width, bounds.height)
-    gl.uniform3f(uniform('orbitCenter'), bounds.width / 2, bounds.height * .43, Math.min(bounds.width * .23, bounds.height * .27, 136))
+    gl.uniform2f(uniform('orbitCenter'), bounds.width / 2, bounds.height * .43)
     gl.uniform1f(uniform('clearing'), options.generation ? 0 : 1)
     gl.uniform1i(uniform('artwork'), 0); gl.uniform1i(uniform('resultArtwork'), 0)
     gl.enable(gl.BLEND); gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
@@ -236,21 +250,62 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
     canvas.className = 'canvas-texture-particles'; canvas.dataset.mode = options.generation ? 'generation' : 'clear'; canvas.setAttribute('aria-hidden', 'true')
     Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none', zIndex: '4' })
     const dustTime = () => !options.generation || (image && elapsed < 2) ? elapsed : -1
+    const orbitPose = () => {
+      const pose = options.generation?.orbit()?.snapshot()
+      if (pose?.radius) return pose
+      const width = Math.min(bounds.width, 480), height = Math.min(width / 1.38, bounds.height * .86)
+      return generationOrbitPose(width, height, options.generation?.progress() ?? 0, 1.5, .27)
+    }
+    const waitingOpacity = () => image ? smoothGenerationPhase(.55, 2, elapsed) : 1
     const draw = () => {
+      const reveal = revealElapsed === null ? -1 : revealElapsed / revealDuration
+      options.generation?.orbit()?.setOpacity(reveal < 0 ? waitingOpacity() : departureOpacity * (1 - smoothGenerationPhase(0, .4, reveal)))
+      // No invisible particle field is painted during the wait: the original
+      // Canvas lines, pinpoints and local bloom remain the only waiting visual.
+      if (options.generation && reveal < 0 && dustTime() < 0) {
+        if (!waitingCleared) { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); waitingCleared = true }
+        return
+      }
       appearance(); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT)
-      gl.uniform1f(clockUniform, clock)
-      gl.uniform1f(revealUniform, revealElapsed === null ? -1 : revealElapsed / revealDuration)
+      const pose = departurePose ?? orbitPose()
+      gl.uniform4f(orbitShapeUniform, pose.radius, pose.formed, pose.finishing, pose.time)
+      gl.uniform1f(orbitRotationUniform, pose.rotation)
+      gl.uniform1f(revealUniform, reveal)
       gl.uniform1f(dustUniform, dustTime())
       gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, 132 * 192)
+    }
+    function resize() {
+      if (disposed) return
+      try {
+        const next = host.getBoundingClientRect(), previous = bounds
+        if (!(next.width > 0 && next.height > 0)) return
+        const changed = Math.abs(next.width - previous.width) >= .5 || Math.abs(next.height - previous.height) >= .5
+        bounds = next
+        if (changed) {
+          const scale = Math.min(next.width / previous.width, next.height / previous.height)
+          const fitRect = (rect: number[]) => [next.width / 2 + (rect[0] - previous.width / 2) * scale,
+            next.height / 2 + (rect[1] - previous.height / 2) * scale, rect[2] * scale, rect[3] * scale]
+          sizeBacking()
+          gl!.uniform2f(uniform('viewport'), next.width, next.height)
+          gl!.uniform2f(uniform('orbitCenter'), next.width / 2, next.height * .43)
+          if (!resultImage) { imageRect = fitRect(imageRect); gl!.uniform4fv(imageUniform, imageRect) }
+          if (departureRect) { departureRect = fitRect(departureRect); gl!.uniform4fv(uniform('departureRect'), departureRect) }
+          gl!.viewport(0, 0, canvas.width, canvas.height)
+        }
+        if (departurePose && changed) {
+          const width = Math.min(bounds.width, 480), height = Math.min(width / 1.38, bounds.height * .86)
+          departurePose = { ...departurePose, radius: generationOrbitRadius(width, height, departurePose.formed, departurePose.finishing) }
+        }
+        // The artwork frame can resize inside an unchanged viewport too.
+        if (resultImage) updateImageRect(resultImage)
+        draw()
+      } catch { finish() }
     }
     canvas.addEventListener('webglcontextlost', contextLost)
     draw(); host.append(canvas); started = true
     /* compositor-exempt: bounded instanced particles share the display RAF; no FPS cap, per-frame texture upload or CPU particle loop. */
     stopFrames = registerParticleFrame((now, deltaMs) => {
       elapsed += deltaMs / 1000
-      const progress = options.generation?.progress()
-      if (progress !== null && progress !== undefined) concentration += (progress - concentration) * (1 - Math.exp(-deltaMs / 420))
-      clock += deltaMs / 1000 * (.85 + concentration * .3)
       try {
         if (revealElapsed !== null) {
           revealElapsed = Math.max(0, now - revealStartedAt) / 1000
@@ -269,20 +324,22 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
     })
     return {
       stop: finish,
+      resize,
       reveal(next, duration, nextPalette) {
         if (disposed || !options.generation || !next.complete || !next.naturalWidth || !next.naturalHeight) return null
         if (revealEffect) return revealEffect
-        revealEffect = { stop: finish, finished: new Promise<void>(resolve => { resolveReveal = resolve }) }
+        revealEffect = { stop: finish, resize, finished: new Promise<void>(resolve => { resolveReveal = resolve }) }
         try {
           // Preserve the current dust/orbit pose, including a result arriving before 2s.
-          gl.uniform4fv(uniform('departureRect'), imageRect)
-          gl.uniform1f(uniform('departureDust'), dustTime()); gl.uniform1f(uniform('departureClock'), clock)
+          departureRect = [...imageRect]; departurePose = orbitPose(); departureOpacity = waitingOpacity()
+          gl.uniform4fv(uniform('departureRect'), departureRect)
+          gl.uniform1f(uniform('departureDust'), dustTime())
           resultTexture = gl.createTexture()
           if (!resultTexture) throw new Error('Result texture unavailable')
           gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, resultTexture)
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-          capture(next); gl.uniform1i(uniform('resultArtwork'), 1)
+          resultImage = next; capture(next); gl.uniform1i(uniform('resultArtwork'), 1)
           resultPalette = nextPalette.length === 3 ? [...nextPalette] : [...palette]; lastTheme = undefined
           revealDuration = duration / 1000; revealElapsed = 0; canvas.dataset.mode = 'reveal'
           const opacity = next.style.opacity

@@ -1,5 +1,5 @@
 <template>
-  <div class="generation-particles" aria-hidden="true">
+  <div ref="surface" class="generation-particles" aria-hidden="true">
     <div ref="host" class="generation-particle-surface">
     <GenerationBloomShader v-if="loadShader && !shaderFailed && !lowEffects" :progress="progress" :colors="colors"
       :present="canPresent" :animate="canAnimate" @unavailable="shaderFailed = true" />
@@ -15,9 +15,11 @@ import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 import { visibleGenerationPigment } from '@/utils/generationPalette'
+import { generationOrbitPoint, generationOrbitPose } from '@/utils/generationOrbit'
 
 const props = defineProps<{ progress: number | null; palette?: readonly string[] }>()
 const host = ref<HTMLElement | null>(null)
+const surface = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const { canPresent, canAnimate, lowEffects, appearanceRevision } = useVisualActivity(host)
 const loadShader = ref(false), shaderFailed = ref(false)
@@ -95,17 +97,10 @@ function draw() {
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
   ctx.clearRect(0, 0, width, height)
   const centerX = width / 2, centerY = height / 2
-  const smooth = (start: number, end: number) => {
-    const t = Math.max(0, Math.min(1, (concentration - start) / (end - start)))
-    return t * t * (3 - 2 * t)
-  }
-  const formed = smooth(.08, .66), finishing = smooth(.65, .98)
-  const radius = Math.min(width * .29, height * .3, 116) * (1 - formed * .1 - finishing * .28)
+  const pose = snapshot(), { finishing } = pose
   const orbit = (angle: number, band: number) => {
-    const tilt = (-.64 + band*.61) * (1 - finishing * .75) + Math.sin(time*.17+band)*.075 * (1 - finishing)
-    const x = Math.cos(angle)*radius*(.86+band*.08)
-    const y = Math.sin(angle)*radius*(.86+band*.08)*(.31+band*.035+formed*.1-finishing*.2)+Math.sin(angle*2+time*.12)*2.5*(1-finishing)
-    return { x:centerX+x*Math.cos(tilt)-y*Math.sin(tilt), y:centerY+x*Math.sin(tilt)+y*Math.cos(tilt) }
+    const point = generationOrbitPoint(angle, band, pose)
+    return { x: centerX + point.x, y: centerY + point.y }
   }
   for (let band=0; band<3; band++) {
     ctx.strokeStyle=pigments[band]; ctx.globalAlpha=.32+finishing*.08; ctx.lineWidth=1
@@ -151,6 +146,12 @@ function draw() {
   }
   ctx.globalAlpha = 1
 }
+
+function snapshot() { return generationOrbitPose(width, height, concentration, clock / 1000, rotation) }
+function setOpacity(opacity: number) {
+  if (surface.value && surface.value.style.opacity !== String(opacity)) surface.value.style.opacity = String(opacity)
+}
+defineExpose({ snapshot, setOpacity })
 
 function reconcile() {
   stop()

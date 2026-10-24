@@ -31,15 +31,10 @@ function installedHost(root: string, expected: FileIdentity): FileIdentity {
   return { path: 'ai-cg-studio-desktop.exe', bytes: bytes.length, sha256: digest(bytes) };
 }
 
-export function writeInstallerManifest(root: string, receipt: unknown, installer: string) {
+function installedBuildFiles(root: string, receipt: unknown) {
   if (!safe.object(receipt) || receipt.schemaVersion !== 1 || receipt.kind !== 'desktop-build-binding') throw Error('安装包构建回执无效');
   const source = identity.validateSnapshot(receipt.source);
   const build = identity.validateSnapshot(receipt.build);
-  const distribution = identity.validateSnapshot(receipt.distribution);
-  const relative = safe.relative(path.relative(root, installer).replaceAll('\\', '/'));
-  const packaged = distribution.entries.find(entry => entry.path === relative);
-  if (!packaged || packaged.status !== 'file') throw Error('指定安装包未登记在构建回执中');
-  checkedFile(root, packaged);
   const hostPath = desktopHostExecutable(desktopBuildProfile(receipt.buildProfile));
   const host = build.entries.find(entry => entry.path === hostPath);
   if (!host || host.status !== 'file') throw Error('原构建回执缺少宿主身份，无法准备旧包的安装校验清单');
@@ -48,8 +43,19 @@ export function writeInstallerManifest(root: string, receipt: unknown, installer
   files.push(installedHost(root, host));
   const icon = source.entries.find(entry => entry.path === 'desktop-tauri/src-tauri/icons/icon.ico');
   if (icon?.status === 'file') files.push({ path: 'huiyu-icon.ico', bytes: icon.bytes, sha256: icon.sha256 });
+  if (REQUIRED.some(file => !files.some(entry => entry.path === file))) throw Error('构建缺少宿主、后端、原生库或内容快照');
+  return { source, files: files.sort((a, b) => a.path.localeCompare(b.path, 'en')), receipt };
+}
+
+export function writeInstallerManifest(root: string, receipt: unknown, installer: string) {
+  const { source, files, receipt: buildReceipt } = installedBuildFiles(root, receipt);
+  const distribution = identity.validateSnapshot(buildReceipt.distribution);
+  const relative = safe.relative(path.relative(root, installer).replaceAll('\\', '/'));
+  const packaged = distribution.entries.find(entry => entry.path === relative);
+  if (!packaged || packaged.status !== 'file') throw Error('指定安装包未登记在构建回执中');
+  checkedFile(root, packaged);
   const manifest: DeploymentManifest = { schemaVersion: 1, kind: 'desktop-installer-deployment', sourceSha256: source.sha256,
-    installer: { path: path.basename(installer), bytes: packaged.bytes, sha256: packaged.sha256 }, files: files.sort((a, b) => a.path.localeCompare(b.path, 'en')) };
+    installer: { path: path.basename(installer), bytes: packaged.bytes, sha256: packaged.sha256 }, files };
   validateManifest(manifest, installer);
   const target = manifestPath(installer), temporary = `${target}.${randomUUID()}.tmp`;
   try { fs.writeFileSync(temporary, JSON.stringify(manifest), { flag: 'wx' }); fs.renameSync(temporary, target); }
@@ -97,8 +103,19 @@ export function inspectInstalled(installer: string, installedRoot: string) {
   const verified = verifyInstaller(installer);
   const directory = safe.rootPath(path.dirname(installer));
   const manifest = safe.readJson(directory, path.basename(manifestPath(installer))).value as DeploymentManifest;
+  return { installer: verified.installer, manifestSha256: verified.manifestSha256,
+    ...compareInstalledFiles(manifest.files, installedRoot) };
+}
+
+/** Caller verifies the current source/SDK/build before using these expected bytes.
+ * Static repair and no-op detection do not depend on keeping an installer EXE. */
+export function inspectInstalledBuild(root: string, receipt: unknown, installedRoot: string) {
+  return compareInstalledFiles(installedBuildFiles(root, receipt).files, installedRoot);
+}
+
+function compareInstalledFiles(files: FileIdentity[], installedRoot: string) {
   const root = safe.rootPath(installedRoot);
-  const mismatches = manifest.files.filter(file => {
+  const mismatches = files.filter(file => {
     try {
       const actual = safe.fileEntry(root, file.path);
       return actual.status !== 'file' || actual.bytes !== file.bytes || actual.sha256 !== file.sha256;
@@ -107,9 +124,7 @@ export function inspectInstalled(installer: string, installedRoot: string) {
   const isRuntime = (file: string) => file === 'ai-cg-studio-desktop.exe' || file === 'gateway/huiyu-runtime.exe' || file.startsWith('gateway/native/');
   const runtimeMismatches = mismatches.filter(isRuntime);
   return {
-    installer: verified.installer,
-    manifestSha256: verified.manifestSha256,
-    fileCount: verified.fileCount,
+    fileCount: files.length,
     mismatchCount: mismatches.length,
     runtimeMismatchCount: runtimeMismatches.length,
     mismatches: mismatches.slice(0, 8),

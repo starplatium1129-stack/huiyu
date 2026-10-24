@@ -2,12 +2,14 @@ import { onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from './useVisualActivity'
 import type { CanvasParticleMotion } from '@/utils/canvasTextureParticles'
+import type { GenerationOrbitSurface } from '@/utils/generationOrbit'
 
-/** One particle surface carries the old image through waiting into the decoded result.
+/** Image particles hand off to and from the same fine-line waiting surface.
  * Presentation never owns submission, task receipts, cancellation or results. */
 export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   source: () => string, busy: () => boolean, comparing: () => boolean,
   progress: () => number | null, palette: () => readonly string[], resultPalette: () => readonly string[],
+  orbit: () => GenerationOrbitSurface | null,
 ) {
   const { canAnimate, lowEffects } = useVisualActivity(host)
   const active = ref(false)
@@ -15,7 +17,6 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   let startParticles: typeof import('@/utils/canvasTextureParticles')['startCanvasTextureParticles'] | null = null
   let revision = 0
   let generationSource = ''
-  let size = { width:0, height:0 }
   function loadParticles() {
     return import('@/utils/canvasTextureParticles').then(module => { startParticles=module.startCanvasTextureParticles })
   }
@@ -42,9 +43,8 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
     const image=candidate?.complete && candidate.naturalWidth ? candidate : null
     function launch() {
       if (version!==revision || !root?.isConnected || !canAnimate.value || lowEffects.value || comparing() || !startParticles) return
-      const bounds=root.getBoundingClientRect(); size={width:bounds.width,height:bounds.height}
       effect=startParticles(image,root,{
-        generation:{progress,palette:palette()},
+        generation:{progress,palette:palette(),orbit},
         onComplete:() => { if(version===revision) { effect=null; active.value=false } },
       })
       active.value=Boolean(effect)
@@ -73,11 +73,7 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
     if (!canAnimate.value || lowEffects.value) stop()
     else if (busy() && !effect) start(source(),false)
   },{flush:'sync'})
-  useResizeObserver(host,() => {
-    if (!effect) return
-    const bounds=host.value?.getBoundingClientRect()
-    if (bounds && (Math.abs(bounds.width-size.width)>1 || Math.abs(bounds.height-size.height)>1)) stop()
-  })
+  useResizeObserver(host,() => { effect?.resize() })
   onMounted(() => { if (busy() && !effect) start() })
   onBeforeUnmount(stop)
   return { active, reveal, stop }

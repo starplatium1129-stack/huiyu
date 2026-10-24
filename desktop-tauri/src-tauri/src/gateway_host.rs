@@ -130,23 +130,77 @@ fn request_once(base: &str, secret: &str, mut payload: serde_json::Value) -> Res
 }
 
 pub struct OwnerSnapshot { file: std::path::PathBuf, bytes: Vec<u8> }
-pub fn owner_snapshot(config_root: &std::path::Path, pid: u32) -> Option<OwnerSnapshot> {
+fn owner_file(config_root: &std::path::Path) -> Option<(std::path::PathBuf, String)> {
     let pointer = ["workspace-active.json", "workspace-candidate.json"].iter()
         .find_map(|name| std::fs::read(config_root.join(name)).ok())?;
     let pointer: serde_json::Value = serde_json::from_slice(&pointer).ok()?;
     let id = pointer["workspaceId"].as_str()?;
-    if id.len() != 36 || !id.bytes().all(|byte| byte.is_ascii_hexdigit() || byte == b'-') { return None; }
+    if id.is_empty() || id.len() > 128 || !id.as_bytes()[0].is_ascii_alphanumeric()
+        || !id.bytes().all(|byte| byte.is_ascii_alphanumeric() || b"._-".contains(&byte)) { return None; }
     let directory = config_root.join("workspaces").join(id);
-    for path in [config_root.to_path_buf(), config_root.join("workspaces"), directory.clone()] {
-        if std::fs::symlink_metadata(path).ok()?.file_type().is_symlink() { return None; }
-    }
     let file = directory.join(".workspace-owner.json");
-    if std::fs::symlink_metadata(&file).ok()?.file_type().is_symlink() { return None; }
+    for path in [config_root.to_path_buf(), config_root.join("workspaces"), directory, file.clone()] {
+        let metadata = std::fs::symlink_metadata(path).ok()?;
+        #[cfg(windows)]
+        { use std::os::windows::fs::MetadataExt; if metadata.file_attributes() & 0x400 != 0 { return None; } }
+        if metadata.file_type().is_symlink() { return None; }
+    }
+    Some((file, id.to_string()))
+}
+pub fn owner_snapshot(config_root: &std::path::Path, pid: u32) -> Option<OwnerSnapshot> {
+    let (file, id) = owner_file(config_root)?;
     let bytes = std::fs::read(&file).ok()?;
     let owner: serde_json::Value = serde_json::from_slice(&bytes).ok()?;
     if owner["workspaceId"] != id || owner["pid"].as_u64()? != u64::from(pid)
         || owner["nonce"].as_str()?.is_empty() || !owner["startedAt"].is_number() { return None; }
     Some(OwnerSnapshot { file, bytes })
+}
+
+/// An OS-confirmed exited owner can survive forced host/job teardown. Hold the
+/// exact record against replacement while checking the process and unlinking it.
+#[cfg(windows)]
+pub fn recover_exited_owner(config_root: &std::path::Path) -> Result<bool, String> {
+    use std::os::windows::{fs::OpenOptionsExt, io::AsRawHandle};
+    use windows_sys::Win32::{
+        Foundation::{CloseHandle, ERROR_INVALID_PARAMETER, GENERIC_READ, STILL_ACTIVE},
+        Storage::FileSystem::{SetFileInformationByHandle, FileDispositionInfo, FILE_DISPOSITION_INFO, FILE_SHARE_READ, DELETE},
+        System::Threading::{OpenProcess, GetExitCodeProcess, PROCESS_QUERY_LIMITED_INFORMATION},
+    };
+    let Some((path, id)) = owner_file(config_root) else { return Ok(false); };
+    let failure = |error| format!("WORKSPACE_OWNER_RECOVERY: {error}");
+    // No write/delete sharing: an active record cannot be replaced between the
+    // identity read and the handle-specific delete. The database is untouched.
+    let mut file = std::fs::OpenOptions::new().access_mode(GENERIC_READ | DELETE)
+        .share_mode(FILE_SHARE_READ).open(&path).map_err(failure)?;
+    let mut bytes = Vec::new();
+    std::io::Read::by_ref(&mut file).take(4097).read_to_end(&mut bytes).map_err(failure)?;
+    if bytes.len() > 4096 { return Err("WORKSPACE_OWNER_RECOVERY: invalid owner size".into()); }
+    let owner: serde_json::Value = serde_json::from_slice(&bytes).map_err(|error| format!("WORKSPACE_OWNER_RECOVERY: {error}"))?;
+    let pid = owner["pid"].as_u64().filter(|pid| *pid > 0 && *pid <= u64::from(u32::MAX)).ok_or("WORKSPACE_OWNER_RECOVERY: invalid PID")? as u32;
+    if owner["workspaceId"] != id || !owner["nonce"].as_str().is_some_and(|nonce| !nonce.is_empty())
+        || !owner["startedAt"].as_u64().is_some_and(|time| time > 0) {
+        return Err("WORKSPACE_OWNER_RECOVERY: invalid owner identity".into());
+    }
+    let process = unsafe { OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, 0, pid) };
+    let exited = if process.is_null() {
+        let error = std::io::Error::last_os_error();
+        if error.raw_os_error() != Some(ERROR_INVALID_PARAMETER as i32) { return Err(failure(error)); }
+        true
+    } else {
+        let mut code = 0;
+        let ok = unsafe { GetExitCodeProcess(process, &mut code) };
+        let error = std::io::Error::last_os_error();
+        unsafe { CloseHandle(process); }
+        if ok == 0 { return Err(failure(error)); }
+        code != STILL_ACTIVE as u32
+    };
+    if !exited { return Ok(false); }
+    let disposition = FILE_DISPOSITION_INFO { DeleteFile: 1 };
+    if unsafe { SetFileInformationByHandle(file.as_raw_handle() as _, FileDispositionInfo,
+        &disposition as *const _ as _, std::mem::size_of_val(&disposition) as u32) } == 0 {
+        return Err(failure(std::io::Error::last_os_error()));
+    }
+    Ok(true)
 }
 pub fn release_exited_owner(snapshot: Option<OwnerSnapshot>, child: &mut std::process::Child) {
     // A retained OS child handle, not a PID probe or a heartbeat timeout, proves

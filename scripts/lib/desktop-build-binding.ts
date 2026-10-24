@@ -218,38 +218,32 @@ function deploymentPlan(root: string, options: { installDir?: string; installed?
   let receipt: ReturnType<typeof verifyBuild>;
   try { receipt = verifyBuild(root); }
   catch (error) { return { mode:'build', reason:error instanceof Error ? error.message : String(error) }; }
+  let installationReason = '';
+  if (options.installDir && installed) {
+    try {
+      const detail = installerBinding.inspectInstalledBuild(root, receipt, options.installDir);
+      if (detail.mismatchCount === 0) {
+        return { mode:'current', ...detail,
+          reason:`已安装文件与当前源码和构建完全一致（${detail.fileCount} 项），无需升级包或重复部署` };
+      }
+      if (detail.runtimeMismatchCount === 0) {
+        return { mode:'resources', ...detail,
+          reason:`已安装程序、后端和原生库与当前构建一致，仅 ${detail.mismatchCount} 项静态资源不同；无需升级包，自动同步资源` };
+      }
+    } catch (error) {
+      // A comparison failure never authorizes a static overwrite. Continue to
+      // the verified installer path, which retains installation prerequisites.
+      installationReason = `安装文件核对未完成：${error instanceof Error ? error.message : String(error)}；`;
+    }
+  }
   const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
   const installer = path.join(root, 'runtime/desktop-updates', `AI-CG-Studio_${version}_x64-local-upgrade-setup.exe`);
   try {
     verifyBoundDistribution(root, receipt, installer);
   } catch (error) {
-    return { mode:'package', reason:`原生构建匹配，仅重新封装升级包：${error instanceof Error ? error.message : String(error)}` };
+    return { mode:'package', reason:`${installationReason}原生构建匹配，仅重新封装升级包：${error instanceof Error ? error.message : String(error)}` };
   }
-  if (options.installDir && installed) {
-    try {
-      const installedState = installerBinding.inspectInstalled(installer, options.installDir);
-      const detail = {
-        fileCount: installedState.fileCount,
-        mismatchCount: installedState.mismatchCount,
-        runtimeMismatchCount: installedState.runtimeMismatchCount,
-        mismatches: installedState.mismatches,
-      };
-      if (installedState.mismatchCount === 0) {
-        return { mode:'current', installer, ...detail,
-          reason:`已安装文件与当前源码、构建和升级包完全一致（${installedState.fileCount} 项），无需重复部署` };
-      }
-      if (installedState.runtimeMismatchCount === 0) {
-        return { mode:'resources', installer, ...detail,
-          reason:`已安装程序、后端和原生库与当前构建一致，仅 ${installedState.mismatchCount} 项静态资源不同；自动改为资源同步` };
-      }
-      return { mode:'installer', installer, ...detail,
-        reason:`已安装程序、后端或原生库有 ${installedState.runtimeMismatchCount} 项不同，需要使用升级包` };
-    } catch (error) {
-      return { mode:'installer', installer,
-        reason:`升级包已绑定，但无法核对已安装文件，按升级安装处理：${error instanceof Error ? error.message : String(error)}` };
-    }
-  }
-  return { mode:'installer', installer, reason:'源码、SDK、原生构建和升级包绑定均匹配，复用现有升级包' };
+  return { mode:'installer', installer, reason:`${installationReason}源码、SDK、原生构建和升级包绑定均匹配，复用现有升级包` };
 }
 if(require.main===module){
   try{const args=process.argv.slice(2);if(args[0]==='--deployment-plan'){

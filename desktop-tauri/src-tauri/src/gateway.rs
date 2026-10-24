@@ -248,6 +248,12 @@ impl GatewaySupervisor {
         if self.owns_gateway() {
             self.reap_child();
         }
+        #[cfg(windows)]
+        if let Some((_, config)) = self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_CONFIG_ROOT") {
+            if host::recover_exited_owner(std::path::Path::new(config))? {
+                (self.on_output)("host", "Recovered workspace ownership after confirmed process exit");
+            }
+        }
         let current = *self.active_port.lock().unwrap();
         if !is_port_available(GATEWAY_HOST, current) {
             let bundled = self.env.iter().any(|(key, value)| key == "AICS_DESKTOP_BUNDLED_UI" && value == "1");

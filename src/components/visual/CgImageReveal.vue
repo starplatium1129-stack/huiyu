@@ -39,6 +39,7 @@ const { canAnimate, lowEffects } = useVisualActivity(containerRef)
 const isRevealing = ref(false)
 const isLoaded = ref(false)
 let stopEffect: (() => void) | null = null
+let resizeEffect: (() => void) | null = null
 let revealSize = { width: 0, height: 0 }
 let generation = 0
 let handledImage: HTMLImageElement | null = null
@@ -52,6 +53,7 @@ function stopAnimation() {
   generation += 1
   stopEffect?.()
   stopEffect = null
+  resizeEffect = null
   isRevealing.value = false
 }
 function finishReveal() {
@@ -99,9 +101,10 @@ async function triggerReveal() {
     // Preparation precedes fading. Any failure leaves the decoded work available.
     const bounds = containerRef.value?.getBoundingClientRect()
     if (bounds) revealSize = { width: bounds.width, height: bounds.height }
-    const effect = props.revealEffect?.(img, duration) ?? (containerRef.value ? startImageDevelopmentReveal(img, containerRef.value, duration) : null)
+    const effect: CanvasParticleReveal | null = props.revealEffect?.(img, duration) ?? (containerRef.value ? startImageDevelopmentReveal(img, containerRef.value, duration) : null)
     if (!effect) { emit('reveal-complete'); return }
     stopEffect = effect.stop
+    resizeEffect = effect.resize ?? null
     void effect.finished.then(() => {
       if (token === generation && isCurrentImage(img)) finishReveal()
     }).catch(() => { if (token === generation) finishReveal() })
@@ -153,7 +156,10 @@ watch([canAnimate, lowEffects], () => {
 useResizeObserver(containerRef, () => {
   if (!isRevealing.value) return
   const bounds = containerRef.value?.getBoundingClientRect()
-  if (bounds && (Math.abs(bounds.width - revealSize.width) > 1 || Math.abs(bounds.height - revealSize.height) > 1)) finishReveal()
+  if (bounds && (Math.abs(bounds.width - revealSize.width) > 1 || Math.abs(bounds.height - revealSize.height) > 1)) {
+    if (resizeEffect) { resizeEffect(); revealSize = { width: bounds.width, height: bounds.height } }
+    else finishReveal()
+  }
 })
 onMounted(handleReadyImage)
 onBeforeUnmount(() => { sourceRevision += 1; stopAnimation() })

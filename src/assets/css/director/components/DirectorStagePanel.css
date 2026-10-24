@@ -42,19 +42,12 @@
     transition:opacity var(--motion-control) var(--ease-out);
   }
   .pb .stage-swap-enter-from, .pb .stage-swap-leave-to { opacity:0; }
-  .pb .stage-swap-leave-active .generation-particles { transition:transform var(--motion-control) var(--ease-out),opacity var(--motion-control) var(--ease-out); }
-  .pb .stage-swap-leave-to .generation-particles { transform:scale(1.85); opacity:0; }
   .pb .stage-placeholder.is-awaiting-result { position:absolute; inset:0; z-index:var(--z-raised); min-height:0; max-height:none; animation:none; pointer-events:none; }
   /* Generation lives on a neutral canvas; only the particles carry the artwork's pigments. */
   .pb .stage-placeholder.is-generating { border-color:color-mix(in srgb,var(--archive-cyan) 36%,var(--border-soft)); }
   .pb .stage-placeholder.is-generating::before,
   .pb .stage-placeholder.is-generating::after {
     opacity:0;
-  }
-  .pb .stage-generating-copy {
-    @apply tw:relative; z-index:var(--z-raised);
-    @apply tw:grid tw:gap-s-3 tw:items-center tw:justify-items-center;
-    width:min(100%,480px); margin:0 auto; text-align:center;
   }
   .pb .stage-generation-feedback { display:flex; align-items:center; justify-content:center; gap:var(--s-3); min-width:0; width:max-content; position:absolute; left:50%; top:66%; transform:translateX(-50%); z-index:calc(var(--z-raised) + 2); padding:0; background:transparent; text-align:left; }
   .pb .stage-generating-title {
@@ -75,10 +68,7 @@
   :root:is([data-motion='reduce'],[data-motion='reduced']) .pb .stage-progress-ring > svg { animation:none; }
   @media (prefers-reduced-motion: reduce) {
      :root:not([data-motion='full']) .pb .stage-progress-ring > svg { animation:none !important; }
-    /* plans/002：换角扫光/缪斯浮起停掉（位移类），侧栏与令牌层的颜色过渡保留；
-       stage-swap 退出去掉 scale 只留淡出 */
     :root:not([data-motion='full']) .pb .stage-swap-leave-active { transition:opacity var(--motion-hover) var(--ease-out); }
-    :root:not([data-motion='full']) .pb .stage-swap-leave-to .generation-particles { transform:none; }
   }
 
 .pb .result-image-actions > .btn { @apply tw:min-h-[40px]; }
@@ -132,14 +122,12 @@
 .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport > :is(.stage-placeholder,.result-image-wrap) { position:absolute; inset:0; width:100%; height:100%; min-height:0; max-height:none; margin:0; }
 .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-message { width:100%; height:100%; min-height:0; overflow:hidden; align-items:center; }
 .pb.atelier-workspace .stage-content { position:relative; height:100%; min-height:0; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
-.pb.atelier-workspace .stage-generating-copy { position:absolute; inset:0; width:100%; height:100%; display:block; }
-.pb.atelier-workspace .stage-generation-orbit { position:absolute; left:50%; top:43%; width:min(100%,480px); max-height:86%; aspect-ratio:1.38; transform:translate(-50%,-50%); }
+.pb.atelier-workspace .stage-generation-orbit { position:absolute; left:50%; top:43%; z-index:var(--z-raised); width:min(100%,480px); max-height:86%; aspect-ratio:1.38; transform:translate(-50%,-50%); pointer-events:none; }
 .pb.atelier-workspace .stage-generation-feedback { position:absolute; top:min(72%,calc(43% + 120px)); left:50%; transform:translateX(-50%); max-width:calc(100% - 32px); }
 .pb.journal-workspace.atelier-workspace .stage-placeholder.is-generating { z-index:calc(var(--z-raised) - 1); background:var(--bg-base); border:0; border-radius:0; box-shadow:none; }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal { width:100%; height:100%; max-height:none; }
 .pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; width:100%; height:100%; max-height:none; }
 .pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-hover); pointer-events:none; }
-.pb.atelier-workspace .stage-swap-leave-active .generation-particles { transition-duration:var(--motion-hover); }
 .pb.atelier-workspace .stage-content .scene-reference { min-height:0; flex:1; }
 .pb.atelier-workspace .stage-content .stage-idle { flex:0 0 auto; }
 @container (max-height:400px) {

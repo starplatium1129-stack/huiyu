@@ -2,6 +2,7 @@
 #
 # 默认启动后先检测安装状态、已安装文件和源码/构建/升级包绑定，再自动选择：
 # 无需部署、仅同步资源、复用升级包、重新封装或重新构建；首次安装/修复使用当前版本完整包。
+# 自动模式默认静默安装并清理已登记的废弃资源，只需用户确认 UAC。
 # -ResourcesOnly 仅同步已绑定静态资源，要求安装 EXE/DLL 与候选一致。
 # -UseInstaller 复用已绑定安装包；显式指定 -InstallerPath 可覆盖自动选择。
 #
@@ -72,6 +73,13 @@ $installDir = Resolve-DesktopInstallDirectory $InstallDir
 $gatewayDir = Join-Path $installDir 'gateway'
 $configRoot = Join-Path $env:APPDATA 'com.aics.studio'
 . (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
+# Only known retired application resources are removed; personal content is outside this list.
+$STALE_ASSETS = @(
+  'assets\character-references',
+  'data\scenes\nene-core.json', 'data\scenes\nene-core.json.br', 'data\scenes\nene-core.json.gz',
+  'data\scenes\nene-after-story.json', 'data\scenes\nene-after-story.json.br', 'data\scenes\nene-after-story.json.gz',
+  'data\scenes\natsume-core.json', 'data\scenes\natsume-core.json.br', 'data\scenes\natsume-core.json.gz'
+)
 function Invoke-DesktopNpm {
   param([string[]]$Arguments)
   # Windows PowerShell turns native stderr into ErrorRecord objects. Stream it
@@ -161,6 +169,8 @@ function Complete-CurrentDeployment {
 # Detect before UAC: an already-current install or a missing full installer must
 # not require elevation, and the selected mode is passed to the child unchanged.
 if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or $ForceBuild -or $DeploymentPlanApplied -or $InstallerPath)) {
+  $QuietInstall = $true
+  $Cleanup = $true
   $installHost = Join-Path $installDir 'ai-cg-studio-desktop.exe'
   $installationState = if (Test-Path -LiteralPath $installHost -PathType Leaf) { 'installed' } elseif ($installRegistered) { 'repair' } else { 'fresh' }
   $stateText = switch ($installationState) {
@@ -201,14 +211,12 @@ if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or
     Write-DeploymentLog "[desktop:auto] 选择：$modeText；原因：$($plan.reason)"
     switch ($plan.mode) {
       'current' {
-        if ($Cleanup -or $SyncLocalModels) {
-          Write-Host '[desktop:auto] 已是最新，但请求了 -Cleanup 或 -SyncLocalModels；改为资源同步执行附加操作。' -ForegroundColor Yellow
+        $retiredResources = @($STALE_ASSETS | Where-Object { Test-Path -LiteralPath (Resolve-DesktopChildPath -Root $gatewayDir -Relative $_) })
+        if (($Cleanup -and $retiredResources.Count -gt 0) -or $SyncLocalModels) {
+          Write-Host '[desktop:auto] 程序已是最新；改为资源同步，完成废弃资源清理或本机模型同步。' -ForegroundColor Cyan
           $ResourcesOnly = $true
           $SkipBuild = $true
-          if ($QuietInstall) {
-            Write-Host '[desktop:auto] 资源同步不使用安装器，已忽略 -QuietInstall。' -ForegroundColor Yellow
-            $QuietInstall = $false
-          }
+          $QuietInstall = $false
         } else {
           $null = Complete-CurrentDeployment
           exit 0
@@ -217,10 +225,7 @@ if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or
       'resources' {
         $ResourcesOnly = $true
         $SkipBuild = $true
-        if ($QuietInstall) {
-          Write-Host '[desktop:auto] 资源同步不使用安装器，已忽略 -QuietInstall。' -ForegroundColor Yellow
-          $QuietInstall = $false
-        }
+        $QuietInstall = $false
       }
       'installer' {
         if (-not $plan.installer) { throw '部署检测选择了升级包，但没有返回安装包路径。' }
@@ -287,19 +292,6 @@ if ($UseInstaller) {
 if (@(Get-DesktopInstallationProcesses -InstallDir $installDir).Count -gt 0) {
   Assert-DesktopMaintenanceAvailable -InstallDir $installDir -ConfigRoot $configRoot
 } else { Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot }
-
-# 源端已删除、但增量部署（Copy-Item 只合并不删除）会在安装目录永久堆积的历史目录。
-# 2026-08-29：character-references（~1.2G）已迁出项目到 AI 工作区，安装目录那份成冗余副本。
-# 2026-09-30：旧场景单文件（nene-core / nene-after-story / natsume-core）在仓库中已被
-# 数字分片取代，但安装目录里的 2026-08-27 残留会随「安装目录 -> 个人内容目录」的复制
-# 回流，造成「单文件与批次文件并存」，使维护接口拒绝服务（见 docs/desktop-deployment.md）。
-# 凡是「源端删除型」的迁移，都必须在这里登记，否则增量部署永远清不掉。
-$STALE_ASSETS = @(
-  'assets\character-references',
-  'data\scenes\nene-core.json', 'data\scenes\nene-core.json.br', 'data\scenes\nene-core.json.gz',
-  'data\scenes\nene-after-story.json', 'data\scenes\nene-after-story.json.br', 'data\scenes\nene-after-story.json.gz',
-  'data\scenes\natsume-core.json', 'data\scenes\natsume-core.json.br', 'data\scenes\natsume-core.json.gz'
-)
 
 # 提权：注意要把已传入的参数一起带过去，否则 UAC 后的新进程会丢掉它们
 # （旧版这里只传脚本路径，导致 -SkipBuild 静默失效、白白重跑一次 build）。

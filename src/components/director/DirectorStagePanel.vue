@@ -22,13 +22,9 @@
     >
       <div class="stage-message">
         <div class="stage-content" :class="{ 'is-covered': coveringResult }">
-        <DirectorSceneReference v-if="!generationBusy && !waitingForResult" :size="canvasSize" />
-          <div v-if="generationBusy || waitingForResult" class="stage-generating-copy">
-            <div class="stage-generation-orbit">
-              <GenerationParticles v-if="!retryingResult && !coveringResult && !textureMotionActive" :progress="stageProgress" :palette="generationPalette" />
-            </div>
-          </div>
-        <div v-else-if="displayResultUrl && failedResultUrl === displayResultUrl" class="stage-idle" role="alert">
+        <template v-if="!generationBusy && !waitingForResult">
+        <DirectorSceneReference :size="canvasSize" />
+        <div v-if="displayResultUrl && failedResultUrl === displayResultUrl" class="stage-idle" role="alert">
           <div class="stage-placeholder-title">成片暂时无法显示</div>
           <div class="stage-placeholder-copy">生成结果已保留，可以重新读取当前图片。</div>
           <div class="stage-quick-actions"><button class="btn btn-primary" type="button" @click="retryResultImage">重新读取图片</button></div>
@@ -78,10 +74,16 @@
             <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
           </div>
         </div>
+        </template>
         </div>
       </div>
     </section>
     </Transition>
+
+    <!-- The same fine-line orbit stays mounted through breakup, waiting and formation. -->
+    <div v-if="(generationBusy || waitingForResult || textureMotionActive) && !retryingResult && !coveringResult" class="stage-generation-orbit">
+      <GenerationParticles ref="generationOrbit" :progress="stageProgress" :palette="generationPalette" />
+    </div>
 
     <!-- Keep readable task feedback above the texture canvas's own stacking layer. -->
     <div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
@@ -183,11 +185,12 @@ const props = defineProps<{
 }>()
 
 const canvasViewport = ref<HTMLElement | null>(null)
+const generationOrbit = ref<InstanceType<typeof GenerationParticles> | null>(null)
 const resultPalette = ref<string[]>([])
 const generationPalette = ref<string[]>([])
 // Capture before publication/clearing; the new image's load must not recolor an ongoing wait.
 watch(() => props.generationBusy, busy => { if (busy) { generationPalette.value = [...resultPalette.value]; retryingResult.value = false } }, { flush: 'sync' })
-const { active: textureMotionActive, reveal: revealTextureResult, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generation.progress, () => generationPalette.value, () => resultPalette.value)
+const { active: textureMotionActive, reveal: revealTextureResult, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generation.progress, () => generationPalette.value, () => resultPalette.value, () => generationOrbit.value)
 const { playClear, coveringResult, stop: stopClearMotion } = useCanvasClearMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 // A deliberate clear followed by Generate must not leave two GPU effects alive.

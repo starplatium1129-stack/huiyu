@@ -194,7 +194,21 @@ function Assert-DesktopDeploymentStopped {
     }
     $owner = Join-Path (Join-Path (Join-Path $ConfigRoot 'workspaces') $workspaceId) '.workspace-owner.json'
     if (Test-Path -LiteralPath $owner) {
-      throw "WORKSPACE_LOCK_REMAINS: 工作区 $workspaceId 仍有 owner 锁，请先完成退出或维修。锁和资料均未修改。"
+      $owner = Resolve-DesktopChildPath -Root $ConfigRoot -Relative "workspaces\$workspaceId\.workspace-owner.json"
+      $ownerFile = Get-Item -LiteralPath $owner
+      if ($ownerFile.Length -gt 4096) { throw 'WORKSPACE_OWNER_INVALID: 占用记录过大，保留记录并停止部署。' }
+      $record = Get-Content -LiteralPath $owner -Raw -Encoding UTF8 | ConvertFrom-Json
+      if ($record.workspaceId -ne $workspaceId -or $record.pid -isnot [int] -or $record.pid -le 0 -or
+          $record.nonce -isnot [string] -or -not $record.nonce -or $record.startedAt -isnot [long]) {
+        throw 'WORKSPACE_OWNER_INVALID: 占用记录身份无效，保留记录并停止部署。'
+      }
+      $ownerProcesses = @(Get-CimInstance Win32_Process -Filter "ProcessId=$($record.pid)" -ErrorAction Stop)
+      if ($ownerProcesses.Count -gt 0) {
+        throw "WORKSPACE_LOCK_REMAINS: 工作区 $workspaceId 的占用进程 $($record.pid) 仍在运行，请先正常退出。"
+      }
+      # Keep the record intact. The repaired host independently proves process
+      # exit and retires this exact file handle on its following normal startup.
+      Write-Host "[desktop:recovery] 旧工作区进程 $($record.pid) 已退出；保留占用记录，交由安装后的宿主恢复。" -ForegroundColor Yellow
     }
   }
 }
