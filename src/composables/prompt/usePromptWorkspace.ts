@@ -3,12 +3,12 @@ import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
 import { useAnimaSession } from '@/composables/generation/useAnimaSession';
-import type { ResultRestoreOwner } from '@/composables/generation/animaSessionContract';
 import type { AnimaCompositionBindings } from '@/composables/generation/useAnimaComposition';
 import { readDrawingSettings } from '@/storage/drawingSettings';
 import { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
 import { usePromptDraftRecovery } from './usePromptDraftRecovery';
+import { useResultRestoreOwner } from './useResultRestoreOwner';
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue';
 import { legacySdHistoryFields } from '@/utils/legacySdResult';
 
@@ -29,14 +29,11 @@ import { usePromptBuilderStore } from '@/stores/promptBuilderStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import type { AnimaResult,AnimaResultContext } from '@/types/anima';
 import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
-import { computed, onActivated, onDeactivated, onScopeDispose, reactive, ref, toRef, watch } from 'vue';
+import { computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,isActiveDrawEngine,type ActiveDrawEngine,type DrawEngine,} from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
 import { copyText } from '@/utils/clipboard';
-import { imageMediaSession } from '@/platform/imageMediaSession';
-import { onDesktopRuntime } from '@/platform/desktop/runtime';
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function usePromptWorkspace() {
     const router = useRouter();
@@ -56,25 +53,10 @@ export function usePromptWorkspace() {
     const inpaintPreparing = ref(false);
     const hiresPreparing = ref(false);
     const compositionPreparing = ref(false), cancelCompositionPreparation = ref<(() => void) | null>(null);
-    let hiresVersion = 0, disposed = false;
-    let interrogateActive = true;
-    let restoreVisit = new AbortController();
-    let restoreMediaSession = imageMediaSession();
-    function renewRestoreVisit() { restoreVisit.abort(); restoreVisit = new AbortController(); }
-    function refreshRestoreMedia() {
-        const next = imageMediaSession();
-        if (next !== restoreMediaSession) { restoreMediaSession = next; renewRestoreVisit(); }
-    }
-    const stopRestoreRuntime = onDesktopRuntime(refreshRestoreMedia);
-    watch(runtimeResourceIdentity, refreshRestoreMedia, { flush: 'sync' });
-    watch(() => JSON.stringify([route.path, route.query]), renewRestoreVisit, { flush: 'sync' });
-    onActivated(() => { interrogateActive = true; if (restoreVisit.signal.aborted) restoreVisit = new AbortController(); });
-    onDeactivated(() => { interrogateActive = false; restoreVisit.abort(); });
-    onScopeDispose(() => { disposed = true; hiresVersion++; hiresPreparing.value = false; restoreVisit.abort(); stopRestoreRuntime(); }, true);
-    function getRestoreOwner(): ResultRestoreOwner {
-        const visit = restoreVisit, session = imageMediaSession();
-        return { signal: visit.signal, current: () => !disposed && interrogateActive && route.path === '/prompt-builder' && restoreVisit === visit && session === imageMediaSession() };
-    }
+    let hiresVersion = 0;
+    const restore = useResultRestoreOwner(route);
+    const { getRestoreOwner } = restore;
+    onScopeDispose(() => { hiresVersion++; hiresPreparing.value = false; }, true);
     const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
     const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
     const drawEngine = ref<DrawEngine>(storedDrawEngine === 'krea2' ? 'krea2' : 'anima');
@@ -208,7 +190,7 @@ export function usePromptWorkspace() {
     function buildResultSnapshot(persistentUrl: string): ResultSnapshot { return snapshotResult({ animaState, drawEngine, displayResultSeed, pb, sdSize, sd }, persistentUrl); }
     // ── Actions ───────────────────────────────────────────────────────────────
     async function handleInterrogateResult(result: unknown, requestCurrent: () => boolean) {
-        const current = () => !disposed && interrogateActive && requestCurrent();
+        const current = () => !restore.isDisposed() && restore.isInterrogateActive() && requestCurrent();
         if (!current()) return;
         const { applyInterrogateResult } = await import('@/composables/prompt/applyInterrogateResult');
         if (current()) await applyInterrogateResult(pb, result, current);
@@ -488,7 +470,7 @@ export function usePromptWorkspace() {
         await callGenerateAction(generationContext(engine))
     }
     async function upscaleCurrentResult(): Promise<void> {
-        if (generationBusy.value || disposed) return;
+        if (generationBusy.value || restore.isDisposed()) return;
         const version = ++hiresVersion, sourceUrl = displayResultUrl.value;
         const engine = drawEngine.value;
         if (!isActiveDrawEngine(engine)) { pb.flash('历史 SD 成片不再执行新重绘，请保留原配方'); return; }
@@ -496,7 +478,7 @@ export function usePromptWorkspace() {
         hiresPreparing.value = true;
         try {
             const { upscaleCurrentResultAction } = await import('./promptGenerationActions');
-            if (disposed || version !== hiresVersion || source.engine !== drawEngine.value || sourceUrl !== displayResultUrl.value) return;
+            if (restore.isDisposed() || version !== hiresVersion || source.engine !== drawEngine.value || sourceUrl !== displayResultUrl.value) return;
             hiresPreparing.value = false;
             await upscaleCurrentResultAction(generationContext(source.engine), source);
         } finally { if (version === hiresVersion) hiresPreparing.value = false; }
