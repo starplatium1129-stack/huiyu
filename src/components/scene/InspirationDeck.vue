@@ -28,7 +28,7 @@
             <button class="btn btn-quiet btn-sm inspiration-deck-open" type="button" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
           </div>
         </div>
-        <button class="inspiration-deck-image" :class="{ 'inspiration-feature-image': depth === 0, 'inspiration-header-image': item.artwork }" type="button" :disabled="!item.artwork && !item.scene"
+        <button class="inspiration-deck-image" :class="{ 'inspiration-feature-image': depth === 0, 'inspiration-header-image': item.artwork }" type="button" :disabled="!item.artwork && !item.scene" :data-scene-id="item.scene?.id"
           :aria-label="item.artwork ? '探索题图灵感：' + item.rail.title : item.scene ? '查看完整场景：' + item.scene.title : '此灵感暂未提供场景图片'"
           @click="item.artwork ? emit('select', item.rail) : item.scene && emit('open', item.scene)">
           <InspirationArtwork :scene="item.scene" :artwork="item.artwork" :icon="railIconName(item.rail.icon)" :full="depth === 0" />

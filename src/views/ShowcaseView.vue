@@ -92,9 +92,9 @@
       <dialog ref="dialogEl" class="art-viewer showcase-viewer" :class="{ 'info-open': viewerInfoOpen }" data-image-transition aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="viewerInfoOpen ? closeViewerInfo() : closeViewer()">
         <template v-if="viewerMounted && currentEntry">
           <ArtworkViewerStage :items="filtered" :index="currentIdx" :active="viewerMounted && !viewerClosing" :original="originalViewer"
-            :src="imgSrc(currentEntry)" :preview-src="viewerPreviewSrc" :thumb-urls="viewerThumbs" :title="entry => entry.title"
+            :src="imgSrc(currentEntry)" :preview-src="viewerSurface.previewSrc.value" :thumb-urls="viewerThumbs" :title="entry => entry.title"
             @select="openViewer(filtered[$event].id)" @close="closeViewer" @toggle-original="toggleOriginalViewer" @dismiss-info="closeViewerInfo"
-            @interact="viewerHero.cancel" @error="viewerImageFailed = true" @close-button="viewerClose = $event">
+            @error="viewerImageFailed = true" @close-button="viewerClose = $event">
             <template #tools><button ref="viewerInfoToggle" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
           </ArtworkViewerStage>
           <aside id="showcase-viewer-info" ref="viewerInfoEl" class="viewer-info" :inert="narrowViewer && !viewerInfoOpen" :aria-hidden="narrowViewer && !viewerInfoOpen ? true : undefined" aria-labelledby="showcase-viewer-title">
@@ -134,7 +134,6 @@ import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
-import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRoute, useRouter } from 'vue-router'
@@ -202,14 +201,15 @@ const originalViewer = ref(false)
 const viewerInfoOpen = ref(false)
 const viewerInfoEl = ref<HTMLElement | null>(null), viewerInfoClose = ref<HTMLButtonElement | null>(null), viewerInfoToggle = ref<HTMLButtonElement | null>(null)
 const viewerClose = ref<HTMLElement | null>(null)
-const viewerPreviewSrc = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
 const { compact: narrowViewer, toggle: openViewerInfo, close: closeViewerInfo } = useArtworkInfoDrawer({
   viewer: dialogEl, panel: viewerInfoEl, trigger: viewerInfoToggle, closeButton: viewerInfoClose,
   viewerCloseButton: viewerClose, open: viewerInfoOpen, active: () => viewerMounted.value && !viewerClosing.value,
 })
-const viewerHero = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
-const viewerSurface = useArtworkViewerSurface(viewerHero, sourceImage)
+const viewerSurface = useArtworkViewerSurface({
+  active: () => viewerMounted.value && !viewerClosing.value, imageKey: () => currentId.value,
+  mode: () => originalViewer.value, source: id => sourceImage(String(id)),
+})
 function sourceImage(id = currentId.value) {
   return document.querySelector<HTMLImageElement>(`.sample[data-sample-id="${CSS.escape(id)}"] .sample-image`)
 }
@@ -313,10 +313,10 @@ const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(
 
 function openViewer(id: string) {
   if (!filtered.value.some(entry => entry.id === id)) return
-  if (!dialogEl.value?.open) { originalViewer.value = false; viewerInfoOpen.value = false }
-  const source = sourceImage(id)
-  viewerPreviewSrc.value = viewerHero.capture(source)
-  if (dialogEl.value?.open) viewerHero.capture(null)
+  if (!dialogEl.value?.open) {
+    originalViewer.value = false; viewerInfoOpen.value = false
+    viewerSurface.captureOrigin(sourceImage(id), id)
+  }
   // Normal reopen uses the same decoded resource. Only a failed image needs a retry key.
   if (viewerImageFailed.value) viewerVersion.value++
   viewerClosing.value = false
@@ -332,7 +332,6 @@ function openViewer(id: string) {
   })
 }
 function toggleOriginalViewer() {
-  viewerHero.cancel()
   originalViewer.value = !originalViewer.value
   void nextTick(() => dialogEl.value?.querySelector<HTMLElement>('.zoomable-image-viewer')?.focus({ preventScroll: true }))
 }

@@ -111,7 +111,7 @@
     </div>
       </div>
     </div>
-    <SceneArtworkViewer ref="previewViewer" v-model="previewId" :items="previewItems" @after-close="previewBlueprint = null">
+    <SceneArtworkViewer ref="previewViewer" v-model="previewId" :items="previewItems" :source-image="previewSource" @after-close="previewBlueprint = null">
       <template v-if="previewBlueprint" #info>
         <div class="viewer-meta">{{ selectedCharacter?.displayName }} · {{ previewBlueprint.category }} · {{ timeLabel(previewBlueprint.timeOfDay) }}</div>
         <section class="viewer-section"><h3>场景设定</h3><p class="viewer-story">{{ displayDescription(previewBlueprint) }}</p></section>
@@ -283,9 +283,12 @@ const previewItems = computed(() => filtered.value.map(blueprint => {
   return { id: blueprint.id, title: blueprint.title, width, height,
     src: imageUrl(showcaseId(blueprint)), previewSrc: thumbSrc(blueprint) }
 }))
+function previewSource(id: string) {
+  return listRoot.value?.querySelector<HTMLImageElement>(`.pop-card[data-blueprint-id="${CSS.escape(id)}"] img`) ?? null
+}
 function openPreview(blueprint: SceneBlueprint, event: MouseEvent) {
   const image = (event.currentTarget as HTMLElement).querySelector<HTMLImageElement>('img')
-  previewViewer.value?.capture(image)
+  previewViewer.value?.capture(image, blueprint.id)
   previewId.value = blueprint.id
 }
 const loadSentinel = ref<HTMLElement | null>(null)

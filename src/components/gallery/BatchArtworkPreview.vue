@@ -4,8 +4,8 @@
       @cancel.prevent="infoOpen ? closeInfo() : close()" @keydown="onKey">
       <ArtworkViewerStage :items="items" :index="index" :active="!closing" :original="original" :src="originalUrl"
         :load-failed="!!imageError" :reload="retryImage"
-        :preview-src="preview || thumbUrls[current?.id || ''] || ''" :thumb-urls="neighborThumbs" :title="job => job.sceneTitle" @select="select" @close="close"
-        @toggle-original="toggleOriginal" @dismiss-info="closeInfo" @interact="origin.cancel" @close-button="viewerClose = $event">
+        :preview-src="surface.previewSrc.value || thumbUrls[current?.id || ''] || ''" :thumb-urls="neighborThumbs" :title="job => job.sceneTitle" @select="select" @close="close"
+        @toggle-original="toggleOriginal" @dismiss-info="closeInfo" @close-button="viewerClose = $event">
         <template #tools><button ref="infoTrigger" class="viewer-info-toggle" type="button" aria-label="作品信息" :aria-controls="infoId" :aria-expanded="infoOpen" @click="openInfo"><ArchiveIcon name="info" /></button></template>
       </ArtworkViewerStage>
       <aside :id="infoId" ref="infoPanel" class="viewer-info" :inert="infoHidden" :aria-hidden="infoHidden ? true : undefined" :aria-labelledby="`${infoId}-title`">
@@ -25,7 +25,6 @@ import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
 import { hasBatchArtwork, useBatchArtworkOriginal, type BatchArtworkJob } from '@/composables/generation/useBatchArtworkMedia'
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
-import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArtworkViewerStage from './ArtworkViewerStage.vue'
@@ -46,21 +45,23 @@ const { compact, hidden: infoHidden, toggle: openInfo, close: closeInfo } = useA
   viewer: dialog, panel: infoPanel, trigger: infoTrigger, closeButton: infoClose,
   viewerCloseButton: viewerClose, open: infoOpen, active: () => !closing.value,
 })
-const origin = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
-const surface = useArtworkViewerSurface(origin, () => props.source?.closest('.batch-result-grid')
-  ?.querySelector<HTMLImageElement>(`.batch-thumb-btn[data-preview-id="${CSS.escape(selected.value)}"] .batch-thumb`) ?? null)
-const preview = ref(origin.capture(props.source))
+const surface = useArtworkViewerSurface({
+  active: () => !closing.value, imageKey: () => selected.value, mode: () => original.value,
+  source: id => props.source?.closest('.batch-result-grid')
+    ?.querySelector<HTMLImageElement>(`.batch-thumb-btn[data-preview-id="${CSS.escape(String(id))}"] .batch-thumb`) ?? null,
+})
+surface.captureOrigin(props.source, selected.value)
 const motion = useFluidDialog(dialog, surface)
 onMounted(() => motion.open(props.source?.closest('button') ?? undefined))
 function close() { if (!closing.value) { closing.value = true; motion.close(() => emit('close')) } }
 function select(value: number) {
   if (!items.value[value]) return
-  origin.cancel(); preview.value = ''; selected.value = items.value[value].id; emit('select', selected.value)
+  selected.value = items.value[value].id; emit('select', selected.value)
 }
 watch(() => props.selectedId, id => { selected.value = id })
 watch(selected, () => { dialog.value?.querySelector('.viewer-info-body')?.scrollTo(0, 0) }, { flush: 'post' })
 async function toggleOriginal() {
-  origin.cancel(); original.value = !original.value
+  original.value = !original.value
   await nextTick(); dialog.value?.querySelector<HTMLElement>('.zoomable-image-viewer')?.focus({ preventScroll: true })
 }
 function onKey(event: KeyboardEvent) {

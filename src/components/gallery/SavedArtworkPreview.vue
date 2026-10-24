@@ -2,10 +2,10 @@
   <Teleport to="body">
     <FluidTransition :surface="surface" @after-leave="finishClose">
     <div v-show="!closing" ref="dialog" class="art-viewer saved-artwork-preview" :class="{ open: !closing }" data-image-transition
-      role="dialog" aria-modal="true" aria-label="最近作品预览" :aria-hidden="closing" :inert="closing" @load.capture="enter">
+      role="dialog" aria-modal="true" aria-label="最近作品预览" :aria-hidden="closing" :inert="closing">
       <ArtworkViewerStage :items="items" :index="0" :active="!closing" :original="original" :src="viewerUrl"
-        :preview-src="preview" :load-failed="viewerLoadFailed" :reload="retryViewerImage" :title="title"
-        @close="close" @toggle-original="toggleOriginal" @interact="origin.cancel" @close-button="closeButton = $event">
+        :preview-src="surface.previewSrc.value || thumbnail" :load-failed="viewerLoadFailed" :reload="retryViewerImage" :title="title"
+        @close="close" @toggle-original="toggleOriginal" @close-button="closeButton = $event">
         <template #tools>
           <button class="btn btn-primary saved-preview-resume" data-viewer-chrome type="button" @click="resume"><ArchiveIcon name="spark" />{{ artworkContinueTarget(item).label }}</button>
         </template>
@@ -21,7 +21,6 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 import { artworkContinueTarget } from '@/utils/artworkNavigation'
 import { useGalleryViewer } from '@/composables/gallery/useGalleryViewer'
-import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
@@ -36,34 +35,26 @@ const original = ref(false), closing = ref(false), dialog = ref<HTMLElement | nu
 const { viewerUrl, viewerLoadFailed, retryViewerImage, openViewer, closeViewer, onViewerClosed } = useGalleryViewer({
   history: items, visible: items, previewSource: () => props.thumbnail, resetControls: () => {},
 })
-const origin = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
-const preview = ref(origin.capture(props.source) || props.thumbnail)
-const surface = useArtworkViewerSurface({ enter, leave, cancel: origin.cancel })
+const surface = useArtworkViewerSurface({
+  active: () => !closing.value, imageKey: () => props.item.id,
+  mode: () => original.value, source: () => props.source,
+})
+surface.captureOrigin(props.source, props.item.id)
 useFocusTrap(dialog, () => !closing.value, { onEscape: close, initialFocus: closeButton })
-let entered = false
-function enter() {
-  if (entered || closing.value) return
-  const image = dialog.value?.querySelector<HTMLImageElement>('.zoomable-img')
-  if (image?.complete && image.naturalWidth && dialog.value) { entered = true; void origin.enter(image, dialog.value) }
-}
-function leave() {
-  const image = dialog.value?.querySelector<HTMLImageElement>('.zoomable-img')
-  if (image && dialog.value) void origin.leave(image, dialog.value, props.source)
-}
-onMounted(() => { openViewer(0); void nextTick(enter) })
+onMounted(() => { openViewer(0) })
 watch(() => props.request, () => {
-  closing.value = false; entered = false; original.value = false
-  preview.value = origin.capture(props.source) || props.thumbnail
-  openViewer(0); void nextTick(enter)
+  closing.value = false; original.value = false
+  surface.captureOrigin(props.source, props.item.id)
+  openViewer(0)
 }, { flush: 'post' })
 function close() {
   if (closing.value) return
   closing.value = true; closeViewer()
 }
-function finishClose() { if (closing.value) { origin.cancel(); onViewerClosed(); emit('close') } }
+function finishClose() { if (closing.value) { onViewerClosed(); emit('close') } }
 function resume() { emit('resume', props.item); close() }
 async function toggleOriginal() {
-  origin.cancel(); original.value = !original.value
+  original.value = !original.value
   await nextTick(); dialog.value?.querySelector<HTMLElement>('.zoomable-image-viewer')?.focus({ preventScroll: true })
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <SceneArtworkViewer ref="viewer" v-model="selectedId" :items="previews" @after-close="releaseStory">
+  <SceneArtworkViewer ref="viewer" v-model="selectedId" :items="previews" :source-image="sourceImage" @after-close="releaseStory">
     <template v-if="displayedScene" #info>
       <div class="viewer-meta">{{ sceneCharacterName(displayedScene) }} · {{ sceneSeasonLabel(displayedScene.season) }} · {{ sceneTimeLabel(displayedScene.timeOfDay) }} · {{ displayedScene.emotion }}</div>
       <section class="viewer-section"><h3>场景故事</h3><p class="viewer-story scene-story">{{ displayedScene.story || '' }}</p></section>
@@ -51,9 +51,14 @@ function releaseStory() {
   displayedScene.value = null; openingScene.value = null
   emit('after-close')
 }
+function sourceImage(id: string) {
+  const key = CSS.escape(id)
+  return document.querySelector<HTMLImageElement>(`.sc[data-scene-id="${key}"] img,.inspiration-deck-image[data-scene-id="${key}"] img`)
+}
 function capture(event: MouseEvent) {
   const card = (event.target as HTMLElement).closest<HTMLElement>('.sc, .inspiration-deck-image')
-  viewer.value?.capture(card?.querySelector<HTMLImageElement>('img') ?? null)
+  const id = card?.dataset.sceneId
+  if (id) viewer.value?.capture(card?.querySelector<HTMLImageElement>('img') ?? null, id)
 }
 defineExpose({ capture })
 </script>

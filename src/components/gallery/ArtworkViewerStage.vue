@@ -5,8 +5,7 @@
     <slot name="image">
       <GalleryOrbitStage v-if="!original && items[index]" :total="total" :items="items" :index="index" :active="active"
         :current-src="src" :preview-src="currentPreview" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborUrls" :load-failed="loadFailed" :reload="reload"
-        :title="title" @select="emit('select', $event)" @load="emit('load')" @error="emit('error')"
-        @pointerdown.capture="emit('interact')" @wheel.capture="emit('interact')" />
+        :title="title" @select="emit('select', $event)" @load="emit('load')" @error="emit('error')" />
       <ZoomableImageViewer v-else-if="src || currentPreview || loadFailed" :src="src || currentPreview" :preview-src="currentPreview" :image-key="items[index]?.id" :load-failed="loadFailed" :reload="reload"
         :alt="items[index] ? title(items[index]) : ''" @load="emit('load', $event)" @error="emit('error')">
         <template #fallback><div class="viewer-fallback"><ArchiveIcon name="image" /><span>图片暂时无法读取</span></div></template>
@@ -40,7 +39,7 @@ const currentPreview = computed(() => {
   return props.previewSrc || (id === undefined ? '' : props.cardUrls[id] || props.neighborUrls[id] || props.thumbUrls[id] || '')
 })
 const emit = defineEmits<{
-  close: []; select: [index: number]; 'toggle-original': []; 'dismiss-info': []; interact: [];
+  close: []; select: [index: number]; 'toggle-original': []; 'dismiss-info': [];
   'close-button': [element: HTMLButtonElement | null]; load: [event?: Event]; error: [];
 }>()
 </script>

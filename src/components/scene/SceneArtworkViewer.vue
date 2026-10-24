@@ -4,13 +4,13 @@
       <div v-show="selectedId" ref="viewerEl" class="art-viewer scene-artwork-viewer"
         :class="{ 'info-open': infoOpen }" data-image-transition
         role="dialog" aria-modal="true" aria-label="场景观赏模式"
-        @keydown="navigate" @load.capture="enter">
+        @keydown="navigate">
         <template v-if="current">
           <ArtworkViewerStage :items="displayedItems" :index="displayedIndex" :active="!!selectedId" :original="original"
-            :src="current.src" :preview-src="openingPreview || current.previewSrc" :card-urls="previews"
+            :src="current.src" :preview-src="surface.previewSrc.value || current.previewSrc" :card-urls="previews"
             :title="item => item.title" @close="selectedId = null" @select="select"
             @close-button="closeButton = $event" @toggle-original="original = !original"
-            @dismiss-info="closeInfo" @interact="cancelFlight">
+            @dismiss-info="closeInfo">
             <template #tools>
               <button ref="infoToggle" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="场景信息"
                 :aria-controls="infoId" :aria-expanded="infoOpen" @click="toggleInfo"><ArchiveIcon name="info" /></button>
@@ -45,16 +45,15 @@ export interface SceneArtworkPreview {
 </script>
 
 <script setup lang="ts">
-import { computed, nextTick, onDeactivated, onUnmounted, ref, useId, watch } from 'vue'
+import { computed, onDeactivated, ref, useId, watch } from 'vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
-import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 
-const props = defineProps<{ items: SceneArtworkPreview[] }>()
+const props = defineProps<{ items: SceneArtworkPreview[]; sourceImage?: (id: string) => HTMLImageElement | null }>()
 const selectedId = defineModel<string | null>({ required: true })
 const emit = defineEmits<{ 'after-close': [] }>()
 const viewerEl = ref<HTMLElement | null>(null), closeButton = ref<HTMLElement | null>(null), infoEl = ref<HTMLElement | null>(null)
@@ -64,42 +63,20 @@ const infoOpen = ref(false), original = ref(false)
 const displayedItems = ref<SceneArtworkPreview[]>([]), displayedIndex = ref(0)
 const current = computed(() => displayedItems.value[displayedIndex.value] ?? null)
 const previews = computed(() => Object.fromEntries(displayedItems.value.map(item => [item.id, item.previewSrc])))
-const motion = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
-const surface = useArtworkViewerSurface({ enter, leave, cancel: cancelFlight })
-const openingPreview = ref('')
-let sourceImage: HTMLImageElement | null = null, opening = false, capturedAt = 0
-function capture(image: HTMLImageElement | null) {
-  cancelFlight()
-  sourceImage = image
-  openingPreview.value = motion.capture(image)
-  opening = !!openingPreview.value
-  capturedAt = performance.now()
-}
-async function enter() {
-  if (!opening || !selectedId.value) return
-  await nextTick()
-  if (!opening || !selectedId.value || performance.now() - capturedAt >= 180) { opening = false; return }
-  const target = viewerEl.value?.querySelector<HTMLImageElement>('.zoomable-img')
-  if (!target || !viewerEl.value || !target.complete || !target.naturalWidth) return
-  opening = false
-  void motion.enter(target, viewerEl.value)
-}
-function cancelFlight() { opening = false; motion.cancel(); openingPreview.value = '' }
-function leave() {
-  opening = false
-  const target = viewerEl.value?.querySelector<HTMLImageElement>('.zoomable-img')
-  if (target && viewerEl.value) void motion.leave(target, viewerEl.value, sourceImage)
-  else motion.cancel()
-}
+const surface = useArtworkViewerSurface({
+  active: () => !!selectedId.value, imageKey: () => selectedId.value, mode: () => original.value,
+  source: id => props.sourceImage?.(String(id)) ?? null,
+})
+function capture(image: HTMLImageElement | null, id: string) { surface.captureOrigin(image, id) }
 function finishClose() {
   if (selectedId.value) return
-  cancelFlight(); sourceImage = null; displayedItems.value = []; infoOpen.value = false
+  displayedItems.value = []; infoOpen.value = false
   emit('after-close')
 }
 function select(index: number) {
   const item = displayedItems.value[index]
   if (!item || item.id === selectedId.value) return
-  cancelFlight(); sourceImage = null; selectedId.value = item.id
+  selectedId.value = item.id
 }
 function navigate(event: KeyboardEvent) {
   if ((compact.value && infoOpen.value) || event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey
@@ -114,14 +91,12 @@ watch(() => [selectedId.value, props.items] as const, ([id, items], previous) =>
   if (!previous?.[0]) { original.value = false; infoOpen.value = false }
   displayedItems.value = items.slice(); displayedIndex.value = index
   if (id !== previous?.[0]) infoEl.value?.querySelector('.viewer-info-body')?.scrollTo(0, 0)
-  void enter()
 }, { immediate: true, flush: 'post' })
 useFocusTrap(viewerEl, () => !!selectedId.value, { initialFocus: closeButton, onEscape: () => { selectedId.value = null } })
 const { compact, toggle: toggleInfo, close: closeInfo } = useArtworkInfoDrawer({
   viewer: viewerEl, panel: infoEl, trigger: infoToggle, closeButton: infoClose,
   viewerCloseButton: closeButton, open: infoOpen, active: () => !!selectedId.value,
 })
-onDeactivated(() => { selectedId.value = null; cancelFlight() })
-onUnmounted(cancelFlight)
+onDeactivated(() => { selectedId.value = null })
 defineExpose({ capture })
 </script>

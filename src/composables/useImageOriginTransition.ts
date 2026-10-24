@@ -73,7 +73,6 @@ function visibleTarget(rect: ImageRect, image: HTMLImageElement, host: HTMLEleme
 export function useImageOriginTransition(options: { proxyPixelBudget: number }) {
   let origin: Origin | null = null
   let originImage: HTMLImageElement | null = null
-  let capturedAt = 0
   let flight: Flight | null = null
   let revision = 0
   let viewport = { width: innerWidth, height: innerHeight, scale: window.visualViewport?.scale ?? 1 }
@@ -98,14 +97,13 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
   }
   function capture(sourceImg: HTMLImageElement | null) {
     originImage = sourceImg
-    origin = safeOrigin(sourceImg); capturedAt = performance.now()
+    origin = safeOrigin(sourceImg)
     rememberGeometry(sourceImg)
     return origin?.src || ''
   }
 
   async function move(direction: 'enter' | 'leave', target: HTMLImageElement, host: HTMLElement, sourceImg?: HTMLImageElement | null) {
     const startedAt = performance.now()
-    const enterDeadline = capturedAt + 180
     const token = ++revision
     if (direction === 'leave' && sourceImg !== undefined) {
       originImage = sourceImg
@@ -114,12 +112,11 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
     const source = origin
     if (!source || prefersReducedMotion() || document.hidden || !target.isConnected || typeof target.animate !== 'function') { clearFlight(); return }
     if (direction === 'enter' && flight?.target !== target) {
-      const remaining = enterDeadline - performance.now()
       // The bounded canvas path copies a warm image synchronously, before
       // the owning dialog's enter hook yields. Never wait for decode here:
       // that can hide a viewer image which has already become visible.
       const warm = target.complete && target.naturalWidth > 0
-      if (remaining <= 0 || !warm) { clearFlight(); return }
+      if (!warm) { clearFlight(); return }
     }
     if (!target.isConnected || !host.isConnected) { clearFlight(); return }
     const destination = imageRect(target)
@@ -128,11 +125,15 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
     // and unrelated thumbnail crops must not stretch into a different aspect ratio.
     if (!visibleTarget(destination, target, host) || Math.abs((source.rect.width / source.rect.height) / (destination.width / destination.height) - 1) > .02) { clearFlight(); return }
     const copiedProxy = host.querySelector<HTMLCanvasElement>('[data-image-origin-proxy]')
-    if (direction === 'leave' && flight && flight.host !== host && copiedProxy
-      && (target.currentSrc || target.src) === (flight.target.currentSrc || flight.target.src)) {
-      // Native close leases a visual clone. Move the live flight into that lease
-      // so an early reversal retains its pixels, position and velocity exactly.
-      copiedProxy.remove(); copiedProxy.width = copiedProxy.height = 0
+    const resumingExit = direction === 'enter' && flight?.proxy.dataset.imageOriginDirection === 'leave'
+      && flight.host.closest('.fluid-dialog-exit')
+    if (flight && flight.host !== host && (resumingExit || direction === 'leave' && copiedProxy
+      && (target.currentSrc || target.src) === (flight.target.currentSrc || flight.target.src))) {
+      // Move the live flight into the native exit lease, or back into a reopened
+      // dialog. Its sampled trajectory survives even after the lease detaches.
+      // The viewer owner cancels a different artwork before capture; a same-work
+      // preview/original URL handoff must not discard its position and velocity.
+      if (copiedProxy) { copiedProxy.remove(); copiedProxy.width = copiedProxy.height = 0 }
       flight.restore()
       const opacity = target.style.opacity, transition = target.style.transition
       target.style.transition = 'none'; target.style.opacity = '0'
@@ -256,7 +257,7 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
         return Math.abs(next.left - rect.left) > .5 || Math.abs(next.top - rect.top) > .5
           || Math.abs(next.width - rect.width) > .5 || Math.abs(next.height - rect.height) > .5
       })
-    if (changed) { cancel(); origin = null; originImage = null; capturedAt = 0 }
+    if (changed) { cancel(); origin = null; originImage = null }
   }
   const preference = () => { if (prefersReducedMotion() || document.hidden) cancel() }
   const media = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null

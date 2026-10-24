@@ -158,13 +158,11 @@
           :aria-hidden="viewerIndex >= 0 ? 'false' : 'true'"
           aria-label="作品观赏模式"
           ref="viewerEl"
-          @load.capture="imageOrigin.loaded"
-          @error.capture="imageOrigin.failed"
         >
       <ArtworkViewerStage :total="visibleTotal" :items="visible" :index="displayedIndex" :active="viewerIndex >= 0" :original="originalViewer"
-        :src="viewerUrl" :preview-src="imageOrigin.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborPreviews" :load-failed="viewerLoadFailed" :reload="retryViewerImage"
+        :src="viewerUrl" :preview-src="viewerSurface.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborPreviews" :load-failed="viewerLoadFailed" :reload="retryViewerImage"
         :title="item => sceneTitle(item.scene, item)" @select="openViewer" @close="closeViewer" @close-button="closeBtn = $event"
-        @toggle-original="toggleOriginalViewer" @dismiss-info="closeInfoDrawer" @interact="imageOrigin.cancel">
+        @toggle-original="toggleOriginalViewer" @dismiss-info="closeInfoDrawer">
         <template v-if="(compareMode && hasComparableImage && viewerUrl) || (gestureViewer && current)" #image>
           <div v-if="compareMode && hasComparableImage && viewerUrl" class="viewer-compare-host">
             <ImageCompareSlider
@@ -335,7 +333,6 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
-import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 const selectionDock = ref<HTMLElement | null>(null), dockActive = ref(true)
 const selectionDockHeight = ref(140)
@@ -427,12 +424,21 @@ function toggleOriginalViewer() {
 watch(viewerIndex, (index, previous) => { if (index < 0 || previous < 0) cancelGesture(); if (index >= 0 && previous < 0) originalViewer.value = false }, { flush:'sync' })
 watch(() => current.value?.id, () => { if (gestureLoading.value || gestureError.value) cancelGesture() }, { flush:'sync' })
 watch(compareMode, value => { if (value) cancelGesture() }, { flush:'sync' })
-const imageOrigin = useGalleryImageOrigin({ viewerEl, shellEl, viewerIndex, viewerUrl, current })
-const viewerSurface = useArtworkViewerSurface(imageOrigin)
+const viewerSurface = useArtworkViewerSurface({
+  active: () => viewerIndex.value >= 0, imageKey: () => current.value?.id,
+  mode: () => `${originalViewer.value}/${compareMode.value}/${gestureViewer.value}`,
+  source: id => {
+    const card = shellEl.value?.querySelector<HTMLElement>(`.artwork[data-card-id="${CSS.escape(String(id))}"]`)
+    return card?.querySelector<HTMLImageElement>('.artwork-image-hd.is-loaded')
+      ?? card?.querySelector<HTMLImageElement>('.artwork-image:not(.artwork-image-hd)') ?? null
+  },
+})
 function openFromCard(index: number, event: MouseEvent) {
-  imageOrigin.capture(event)
+  const button = event.currentTarget as HTMLElement, item = visible.value[index]
+  if (!item) return
+  viewerSurface.captureOrigin(button.querySelector<HTMLImageElement>('.artwork-image-hd.is-loaded')
+    ?? button.querySelector<HTMLImageElement>('.artwork-image:not(.artwork-image-hd)'), item.id)
   openViewer(index)
-  void imageOrigin.enter()
 }
 const { albums, characterAlbums, albumSection, visibleAlbumIds, selection, characterOptions, manualProjects, collectionTitle, currentSmartRule,
   albumsOpen, albumRoot, imageHeading, showImages, showOverview, showAllWorks, openCollection, editorOpen, editorTitle, editorRule,
@@ -488,7 +494,6 @@ watch([current, viewerIndex], ([value, index]) => {
   }
 }, { flush: 'sync' })
 function finishViewerClose() {
-  imageOrigin.cancel()
   onViewerClosed()
   if (viewerIndex.value < 0) {
     displayedCurrent.value = null
