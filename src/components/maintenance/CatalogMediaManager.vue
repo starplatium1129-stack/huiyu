@@ -22,7 +22,7 @@
           <ArchiveStatePanel v-if="error || manifestError" compact kind="error" title="图片资料暂时没能读出来" :message="error || manifestError"><button class="btn btn-ghost btn-sm" type="button" @click="refresh">再试一次</button></ArchiveStatePanel>
           <ArchiveStatePanel v-if="!result && loading" compact kind="loading" class="catalog-media-loading" title="正在展开样张目录…" />
           <div v-if="result?.items.length" ref="sampleGrid" class="catalog-media-grid">
-            <button v-for="item in result.items" :key="item.kind + ':' + item.id" class="catalog-sample-card" type="button" :disabled="loading || !!error" :aria-pressed="selectedImageId === showcaseItem(item).id" :aria-label="'查看样张：' + item.title" @click="selectSample(item)">
+            <button v-for="item in result.items" :key="item.kind + ':' + item.id" class="catalog-sample-card" type="button" :disabled="loading || !!error" :aria-pressed="selectedImageId === showcaseItem(item).id" :aria-label="'查看样张：' + item.title" @click="selectSample(item, $event)">
               <span class="catalog-sample-image">
                 <RuntimeImage v-if="thumbUrl(showcaseItem(item).id)" :src="thumbUrl(showcaseItem(item).id)" v-slot="{ image, loaded, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" class="catalog-media-image" :class="{ 'is-ready': loaded, 'is-mature': item.rating === 'R18' && !showAdultImages }" /><span v-if="!loaded" class="catalog-sample-empty"><ArchiveIcon name="image" />{{ failed ? '图片暂不可用' : '读取图片…' }}</span></RuntimeImage>
                 <span v-else class="catalog-sample-empty"><ArchiveIcon name="image" />{{ manifestLoading ? '读取图片…' : '待补样张' }}</span>
@@ -30,10 +30,10 @@
               <span class="catalog-sample-copy"><strong>{{ item.title }}</strong><small>{{ characterNames[item.characterId] || '未命名角色' }} · {{ item.kind === 'blueprint' ? '蓝图' : '故事' }}</small></span>
             </button>
           </div>
-          <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="没有匹配的内容" />
+          <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact :kind="hasFilters ? 'filtered' : 'empty'" :title="hasFilters ? '没有匹配的内容' : '暂未收录场景与蓝图'"><button v-if="hasFilters" class="btn btn-ghost btn-sm" type="button" @click="resetFilters">清除搜索与筛选</button></ArchiveStatePanel>
           <StudioPagination v-model="page" :pages="totalPages" :disabled="loading" label="样张分页" />
         </section>
-        <section ref="previewPane" v-content-motion:fade="selectedImageId" class="catalog-media-detail" aria-label="当前样张">
+        <section ref="previewPane" v-content-motion:fade="selectedImageId" class="catalog-media-detail" tabindex="-1" aria-label="当前样张">
           <template v-if="selectedImageId">
             <p class="catalog-media-eyebrow">{{ selectedSample?.type === 'popular' ? '角色蓝图' : '场景故事' }} · {{ characterNames[selectedSample?.char ?? ''] || '未命名角色' }}</p>
             <h3>{{ selectedImageTitle }}</h3>
@@ -57,7 +57,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
@@ -76,13 +76,22 @@ const mode = ref<'samples' | 'covers'>('samples'), previewPane = ref<HTMLElement
 const mediaLibrary = ref<HTMLElement | null>(null), sampleGrid = ref<HTMLElement | null>(null)
 const showAdultImages = ref(false)
 const { kind, search, character, rating, page, result, listScope, loading, error, totalPages, load } = useCatalogMedia(() => mode.value === 'samples')
+const hasFilters = computed(() => Boolean(search.value || character.value || rating.value || kind.value !== 'media'))
+function resetFilters() {
+  mediaLibrary.value?.focus({ preventScroll: true })
+  search.value = ''; character.value = ''; rating.value = ''; kind.value = 'media'
+}
 watch(listScope, () => { if (sampleGrid.value) sampleGrid.value.scrollTop = 0 }, { flush: 'post' })
 const { showcaseUrl, onShowcaseMissing, uploadBusy, pickShowcase, showcaseFileEl, onShowcasePicked, homeHeroes, selectedHeroId, selectedHeroTitle, previewHero, heroUrl, pickHero, resetHero, heroFileEl, onHeroPicked, showcaseFeedback, showcaseError, previewImage, selectedImageId, selectedImageTitle, thumbUrl, hasShowcase, manifestLoading, manifestError, loadShowcaseManifest } = useSceneShowcaseUpload({ mode: () => mode.value, errorMessage: (e, fallback) => e instanceof Error ? e.message : fallback })
-async function selectSample(item: CatalogSummary) {
+async function selectSample(item: CatalogSummary, event: MouseEvent) {
+  const origin = event.currentTarget, keyboard = event.detail === 0 && document.activeElement === origin
   const selected = showcaseItem(item)
   selectedSample.value = selected; previewImage(selected)
   await nextTick()
-  if (window.innerWidth < 1100 && mode.value === 'samples' && selectedImageId.value === selected.id && previewPane.value?.isConnected) previewPane.value.scrollIntoView({ block: 'start', behavior: scrollBehavior() })
+  if (window.innerWidth < 1100 && mode.value === 'samples' && selectedImageId.value === selected.id && previewPane.value?.isConnected) {
+    if (keyboard && document.activeElement === origin) previewPane.value.focus({ preventScroll: true })
+    previewPane.value.scrollIntoView({ block: 'start', behavior: keyboard ? 'instant' : scrollBehavior() })
+  }
 }
 function refresh() {
   if (mediaLibrary.value?.contains(document.activeElement)) mediaLibrary.value.focus({ preventScroll: true })

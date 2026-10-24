@@ -45,6 +45,7 @@ export interface VideoDefaults {
 
 export interface VideoStatusResponse {
   ok: true
+  provider?: 'comfy' | 'native'
   online: boolean
   pending: number
   maxPending: number

@@ -12,14 +12,14 @@
       <div v-content-motion:fade="selectedId" class="character-art-grid">
         <section class="character-art-card">
           <h3>当前形象 <span>{{ custom ? '自定义' : '内置' }}</span></h3>
-          <RuntimeImage v-if="originalUrl" class="character-art-image" :src="originalUrl" :alt="`${current?.name || ''}当前立绘`" />
+          <RuntimeImage v-if="originalUrl" :src="originalUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" class="character-art-image" :alt="`${current?.name || ''}当前立绘`" /><ArchiveStatePanel v-else compact :kind="failed ? 'error' : 'loading'" :title="failed ? '当前立绘未能加载' : '正在读取当前立绘…'" :message="failed ? '可重新读取角色图片，或选择新图片替换。' : ''" /></RuntimeImage>
           <ArchiveStatePanel v-else compact kind="empty" title="尚未登记立绘" />
           <p class="character-art-note" v-if="custom">{{ custom.width }} × {{ custom.height }} · {{ custom.hasTransparency ? '透明背景' : '不透明背景' }}</p>
           <button class="btn btn-ghost" type="button" @click="showParticles = !showParticles">{{ showParticles ? '收起粒子预览' : '查看当前粒子形象' }}</button>
         </section>
         <section class="character-art-card">
           <h3 ref="replacementHeading" tabindex="-1">替换预览 <span v-if="file">{{ fileReady ? '本窗口候选' : '原来源待核对' }}</span></h3>
-          <RuntimeImage v-if="previewUrl" class="character-art-image" :src="previewUrl" alt="准备替换的新立绘" />
+          <RuntimeImage v-if="previewUrl" :src="previewUrl" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" class="character-art-image" alt="准备替换的新立绘" /><ArchiveStatePanel v-else compact :kind="failed ? 'error' : 'loading'" :title="failed ? '替换预览未能加载' : '正在读取替换预览…'" :message="failed ? '请重新选择图片，确认预览后再应用。' : ''" /></RuntimeImage>
           <ArchiveStatePanel v-else compact kind="empty" title="尚未选择图片" />
           <p class="character-art-note">PNG / JPEG / WebP · ≤15 MB · 边长 ≤8192 px · ≤3200 万像素</p>
           <p class="character-art-note">建议透明背景 · 仅替换展示立绘</p>

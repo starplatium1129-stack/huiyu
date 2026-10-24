@@ -56,6 +56,7 @@
 .room-volume input[type="range"]:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .room-surface .chat-list { @apply tw:p-s-4; gap:var(--s-4); scrollbar-gutter:stable; @apply tw:min-h-0; overscroll-behavior:contain; background:var(--bg-surface); }
 .room-surface .chat-empty { flex-shrink:0; width:100%; max-width:540px; margin:auto; padding:var(--s-4); color:var(--text-primary); font:400 var(--fs-body)/var(--lh-body) var(--font-sans); }
+.room-surface .chat-empty-greeting { text-align:start; }
 .room-surface .message { max-width:min(86%,720px); align-items:flex-end; flex-shrink:0; gap:var(--s-2); }
 .chat-page.room-surface .message-bubble { padding:var(--s-3); font:400 var(--fs-body)/var(--lh-body) var(--font-sans); border:1px solid var(--border-soft); border-radius:var(--r-lg) var(--r-lg) var(--r-lg) var(--r-sm); background:var(--bg-base); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .chat-page.room-surface .message.user .message-bubble { border-color:var(--border-soft); border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg); background:var(--accent-soft); color:var(--text-primary); }

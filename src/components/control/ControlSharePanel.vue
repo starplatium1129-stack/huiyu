@@ -5,8 +5,8 @@
 
         <div class="tunnel-toggle-row">
           <div class="tunnel-toggle-label">
-            <span id="tunnel-switch-label" class="tunnel-toggle-text">开启公网分享通道</span>
-            <span class="tunnel-toggle-hint">{{ tunnelEnabled ? '朋友可通过临时链接访问' : tunnelActive ? '分享仍在运行，点击下方停止后仅本机可访问' : '当前仅本机可访问' }}</span>
+            <span id="tunnel-switch-label" class="tunnel-toggle-text">允许创建公网分享链接</span>
+            <span class="tunnel-toggle-hint">{{ tunnelActive ? (tunnelEnabled ? '朋友可通过临时链接访问' : '分享仍在运行，点击下方停止后仅本机可访问') : tunnelEnabled ? '启动后生成临时链接，当前仅本机可访问' : '当前仅本机可访问' }}</span>
           </div>
           <ToggleSwitch
             class="tunnel-switch-control"

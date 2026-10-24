@@ -190,7 +190,7 @@ export function useShotWorkspace(props: {
         if (batchActive.value)
             return '整批正在生成中';
         if (!props.status?.online)
-            return '先启动 ComfyUI';
+            return props.status?.provider === 'native' ? '先准备视频模型与运行环境' : '先启动 ComfyUI';
         if (!h3Ready.value)
             return '先安装 MiniMax H3 权重';
         if (shots.value.length === 0)
@@ -213,7 +213,7 @@ export function useShotWorkspace(props: {
         if (batchActive.value)
             return '逐镜串行排队，可离开页面；失败镜头可单独重抽。';
         if (!props.status?.online)
-            return '控制面板启动 ComfyUI 后，回到这里重新检测即可。';
+            return props.status?.provider === 'native' ? '在控制面板准备原生运行环境后，回到这里重新检测。' : '控制面板启动 ComfyUI 后，回到这里重新检测即可。';
         return '';
     });
     const batchStatusLabel = computed(() => batch.value?.needsReview ? '状态待核对' : ({

@@ -1,5 +1,13 @@
 <template>
   <div v-if="operation" class="panel-card operation-panel" :class="opDisconnected ? 'disconnected' : operation.cancelled ? 'cancelled' : operation.status">
+    <details v-if="operation.status === 'completed' && !opDisconnected" class="operation-history">
+      <StudioDisclosureSummary><span>上次操作 · {{ transfer ? setupOperationLabels[transfer.kind] : operationTitle }}</span><span class="op-state">已完成</span></StudioDisclosureSummary>
+      <div class="operation-detail" data-disclosure-content>
+        <p v-if="operation.message" class="operation-msg">{{ operation.message }}</p>
+        <div v-if="operation.stages?.length" class="operation-stages"><span v-for="stage in operation.stages" :key="stage" class="op-stage done">{{ stage }}</span></div>
+      </div>
+    </details>
+    <template v-else>
     <div class="operation-head">
       <div>
         <strong class="panel-heading">{{ transfer ? setupOperationLabels[transfer.kind] : operationTitle }}</strong>
@@ -48,6 +56,7 @@
         }"
       >{{ stage }}</span>
     </div>
+    </template>
   </div>
 </template>
 
@@ -55,6 +64,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import StudioOrbitSpinner from '@/components/ui/StudioOrbitSpinner.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import SetupTransferProgress from './SetupTransferProgress.vue'
 import { isInferenceSetupOperation } from '@/api/inferenceSetupApi'
 import { isInterrogateSetupOperation } from '@/api/interrogateSetupApi'

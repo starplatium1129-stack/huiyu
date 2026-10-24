@@ -93,6 +93,7 @@ function isVideoDefaults(value: unknown): value is VideoDefaults {
 export function isVideoStatusResponse(value: unknown): boolean {
   if (!isRecord(value)) return false
   return value.ok === true
+    && (value.provider === undefined || value.provider === 'comfy' || value.provider === 'native')
     && typeof value.online === 'boolean'
     && isFiniteNumber(value.pending) && value.pending >= 0 && Number.isInteger(value.pending)
     && isFiniteNumber(value.maxPending) && value.maxPending > 0 && Number.isInteger(value.maxPending)

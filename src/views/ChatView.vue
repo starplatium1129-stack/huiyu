@@ -49,7 +49,7 @@
             <AsyncPanel v-if="chatProvider === 'api' && isLocalHost" :loader="loadChatSearchSettings" label="搜索设置" v-slot="{ component }"><component :is="component"
               :api-base-url="apiBaseUrl" :api-key="apiKey" :use-host-config="useHostConfig" :host-api-base-url="hostApiBaseUrl" :busy="busy" /></AsyncPanel>
             <div class="room-settings-voice">
-              <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control" @click="closeRoomPanel">启动语音<ArchiveIcon name="chevron-down" /></RouterLink>
+              <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control#control-services" @click="closeRoomPanel">启动语音<ArchiveIcon name="chevron-down" /></RouterLink>
               <AsyncPanel class="room-speech-popover-loader" :loader="loadSpeechPopover" label="语音输入设置" v-slot="{ component: popoverComponent }">
               <component :is="popoverComponent" v-model:open="speechSettingsOpen" label="语音输入设置" side="top" prioritize-position content-class="chat-speech-settings speech-settings-popover" @open-auto-focus="focusSpeechPopover" @close-auto-focus="returnSpeechFocus">
                 <template #trigger><button class="btn btn-ghost" type="button">语音输入设置</button></template>

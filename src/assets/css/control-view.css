@@ -114,6 +114,9 @@
 .control-page .operation-panel.completed { border-left-color:var(--success-text); }
 .control-page .operation-panel.cancelled { border-left-color:var(--border-strong); }
 .control-page .operation-panel.disconnected { border-left-color:var(--warning-text); }
+.control-page .operation-history > summary { min-height:var(--control-height-sm); font-size:var(--fs-label); }
+.control-page .operation-history > summary > span:first-child { min-width:0; overflow-wrap:anywhere; }
+.control-page .operation-history .operation-detail { margin-bottom:0; }
 .control-page .operation-head { display:flex; justify-content:space-between; gap:var(--s-4); margin-bottom:var(--s-3); }
 .control-page .operation-controls { display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; }
 .control-page .op-state .studio-orbit-spinner { width:18px; height:18px; }

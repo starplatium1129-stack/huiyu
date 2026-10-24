@@ -2,6 +2,7 @@ import { generationTask, canExecuteVideo } from '@/utils/generationTask'
 
 import { useTrackedTask } from '@/composables/useTaskCenter'
 import { useVideoJobObservation } from './useVideoJobObservation'
+import { useVideoEnvironment } from './useVideoEnvironment'
 
 import { computed,onBeforeUnmount,onMounted,ref,watch,onActivated,onDeactivated } from 'vue'
 
@@ -67,6 +68,7 @@ function modeBadge(mode: StudioMode): string {
   if (statusLoading.value) return '检测中'
   if (statusReadError.value) return '待重新检测 · 可编辑'
   if (!status.value) return '待检测'
+  if (mode !== 'shots' && !status.value.models.some(model => model.modes.includes(mode))) return '当前引擎暂不支持 · 可编辑'
   const modelReady = mode === 'shots' ? shotsModeReady.value
     : status.value.models.some(model => model.available && model.modes.includes(mode))
   if (!modelReady) return modeReady(mode) ? '待装权重 · 可编辑' : '待装权重'
@@ -183,13 +185,12 @@ const stopSubmitSessionWatch = watch(runtimeResourceIdentity, invalidateSubmissi
 /**
  * 视频任务失败的分类报告（2026-08-30 UX 审计）。
  *
- * 视频后端同样走 ComfyUI，失败时 job.error 是英文技术串。这里复用出图那套
- * 分类器（backend='comfy'）给出中文结论与下一步，原始串留给「技术细节」。
+ * 按原任务的执行引擎给出恢复建议，原始错误留在技术细节。
  */
 const jobErrorReport = computed(() => {
   const raw = job.value?.error
   if (!raw || job.value?.needsReview) return null
-  return classifySDError({ message: raw }, 'comfy')
+  return classifySDError({ message: raw }, job.value?.provider || 'comfy')
 })
 
 
@@ -201,34 +202,8 @@ const lastFrameImageId = ref('')
 
 
 const activeModel = computed(() => status.value?.models.find(model => model.id === selectedModelId.value) || null)
-
-const environmentState = computed(() => {
-  if (statusLoading.value) return 'checking'
-  if (statusReadError.value) return 'unconfirmed'
-  if (!status.value?.online) return 'offline'
-  if (activeModel.value && !activeModel.value.executable) return 'planned'
-  if (activeModel.value?.available) return 'ready'
-  return 'missing'
-})
-
-const environmentLabel = computed(() => ({
-  checking: '检测中', unconfirmed: '状态待确认',
-  offline: 'ComfyUI 离线',
-  ready: '可以生成',
-  missing: '权重待安装',
-  planned: '配方待适配',
-})[environmentState.value])
-
-const archiveStatus = computed(() => {
-  if (job.value?.status === 'running') return 'RENDERING'
-  if (job.value?.status === 'succeeded') return 'CLIP READY'
-  return environmentLabel.value.toUpperCase()
-})
-
-const archiveState = computed<'idle' | 'active' | 'success' | 'warning'>(() => {
-  if (job.value?.status === 'running' || statusLoading.value) return 'active'
-  if (job.value?.status === 'succeeded' || environmentState.value === 'ready') return 'success'
-  return environmentState.value === 'offline' || environmentState.value === 'missing' ? 'warning' : 'idle'
+const { nativeVideo, environmentState, environmentLabel, archiveStatus, archiveState } = useVideoEnvironment({
+  status, activeModel, statusLoading, statusReadError, job,
 })
 
 const parsedSeed = computed(() => {
@@ -260,13 +235,13 @@ const progressWarning = computed<{ level: 'warn' | 'danger'; text: string } | nu
   if (ratio >= 2.5) {
     return {
       level: 'danger',
-      text: `疑似卡死：已运行 ${formatSeconds(current.elapsedSeconds)}，超过预估 ${formatSeconds(current.estimatedSeconds)} 的 2.5 倍。请检查 ComfyUI（可能卡在模型加载/采样），必要时取消重试。`,
+      text: `运行时间异常：已运行 ${formatSeconds(current.elapsedSeconds)}，超过预估 ${formatSeconds(current.estimatedSeconds)} 的 2.5 倍。请查看任务日志，必要时取消任务。`,
     }
   }
   if (ratio >= 1.5) {
     return {
       level: 'warn',
-      text: `运行时间异常：已 ${formatSeconds(current.elapsedSeconds)}，预估 ${formatSeconds(current.estimatedSeconds)}。建议留意 ComfyUI 状态。`,
+      text: `运行时间异常：已 ${formatSeconds(current.elapsedSeconds)}，预估 ${formatSeconds(current.estimatedSeconds)}。可查看任务日志确认进度。`,
     }
   }
   return null
@@ -309,17 +284,15 @@ const submitTitle = computed(() => {
   if (jobActive.value) return '已有视频正在生成'
   if (statusLoading.value) return '正在检测视频环境'
   if (statusReadError.value) return '请重新检测视频环境'
-  if (!status.value?.online) return '先启动 ComfyUI'
+  if (activeModel.value && !activeModel.value.executable) return '当前模型暂不支持生成'
+  if (!status.value?.online) return nativeVideo.value ? '先准备视频模型与运行环境' : '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
+  if (selectedMode.value !== 'shots' && !activeModel.value.modes.includes(selectedMode.value)) return '当前模型不支持该创作方式'
   if (selectedMode.value === 'first-last-frame' && !firstFrameReady.value) {
     return hasFirstFrame.value ? '先上传一张尾帧图' : '先准备首帧与尾帧图'
   }
   if (selectedMode.value === 'image' && !hasFirstFrame.value) return '先带入一张首帧图'
   if (uploadingImage.value) return '正在准备帧图'
-  if (activeModel.value && selectedMode.value !== 'shots'
-    && !activeModel.value.modes?.includes(selectedMode.value as VideoMode)) {
-    return selectedMode.value === 'image' ? '当前模型不支持首帧，请在模型目录选择 MiniMax H3' : '当前模型不支持该创作方式'
-  }
   if (prompt.value.trim().length < 8) return '写下一个完整的镜头'
   if (parsedSeed.value === null) return 'Seed 格式不正确'
   return `${duration.value} 秒 · ${activeModel.value.label} · 本地生成`
@@ -330,7 +303,8 @@ const submitDescription = computed(() => {
   if (jobActive.value) return '请等待当前任务完成，或取消任务。'
   if (statusLoading.value) return '正在确认本机连接与可用模型，镜头内容可以继续编辑。'
   if (statusReadError.value) return '请重新检测服务状态。'
-  if (!status.value?.online) return '在控制面板启动 ComfyUI 后重新检测。'
+  if (activeModel.value && !activeModel.value.executable) return '请在下方更换已支持的模型，当前镜头描述会保留。'
+  if (!status.value?.online) return nativeVideo.value ? activeModel.value?.reason || '在控制面板准备原生运行环境后重新检测。' : '在控制面板启动 ComfyUI 后重新检测。'
   if (!activeModel.value?.available) return '请补齐右侧列出的模型文件。'
   return ''
 })
@@ -469,9 +443,8 @@ async function submitVideo() {
     job.value = accepted; pollError.value = ''; recoveryError.value = ''; reconnectState.value = 'idle'
   } catch (error) {
     if (disposed || !pageActive || selection !== selectionVersion) return
-    // 提交失败多半是 Comfy 侧（显存 / 模型 / 参数），走分类器给中文结论；
-    // 分类不出具体原因时仍退回原始消息，不丢信息。
-    const report = classifySDError(error, 'comfy')
+    // 按当前引擎给出中文恢复建议，未知错误保留原始消息。
+    const report = classifySDError(error, nativeVideo.value ? 'native' : 'comfy')
     const submissionError = report.kind === 'unknown'
       ? (error instanceof Error ? error.message : '视频任务提交失败')
       : `${report.title}：${report.message}`
@@ -619,7 +592,7 @@ onBeforeUnmount(() => {
   stopDraftWatch()
 })
 return {
- archiveStatus, archiveState, statusLoading, loadStatus, modes, selectedMode,
+ archiveStatus, archiveState, statusLoading, loadStatus, modes, selectedMode, nativeVideo,
 modeReady, modeBadge, t8State, status, videoImageUrl, clearFirstFrame, hasFirstFrame, hasLastFrame,
 uploadingImage, handleFrameFile, lastFrameUrl, clearLastFrame, prompt, aspectOptions,
 aspectRatio, aspectSize, camera, cameraOptions, motion, motionOptions,

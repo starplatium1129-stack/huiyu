@@ -13,7 +13,7 @@
             <button class="btn btn-ghost btn-sm" type="button" :disabled="!logs.length" @click="clearLogs">清空显示</button>
           </div>
           <div v-if="logsError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ logsError }}</span></div>
-          <div v-memo="[logs, logs.length, logsLoading, logsLoaded, logsError]" class="log-box" ref="logBoxEl" role="region" aria-label="运行日志输出" tabindex="-1">
+          <div v-memo="[logs, logs.length, logsLoading, logsLoaded, logsError]" class="log-box" ref="logBoxEl" role="region" aria-label="运行日志输出" tabindex="0">
             <div v-if="!logs.length && !logsError" class="log-empty" role="status">{{ logsLoading ? '正在读取日志…' : logsLoaded ? '暂无日志。' : '尚未读取日志。' }}</div>
             <div v-for="(line, i) in logs" :key="i" :class="lineClass(line)">
               <span class="time">{{ line.slice(0, 10) }}</span> {{ line.slice(11) }}

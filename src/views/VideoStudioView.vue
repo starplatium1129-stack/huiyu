@@ -290,7 +290,7 @@
               <ul class="video-missing-list"><li v-for="file in activeModel.missing" :key="file"><code>{{ file }}</code></li></ul>
             </details>
             <p v-if="activeModel.missing.length && activeModel.executable" class="video-install-note">
-              ComfyUI 节点已支持；安装所列资源后即可启用生成按钮。
+              {{ nativeVideo ? '请准备所列模型与运行环境，然后重新检测。' : 'ComfyUI 节点已支持；安装所列资源后即可启用生成按钮。' }}
             </p>
             <p v-else-if="activeModel.missing.length" class="video-install-note">
               此模型暂不支持生成，可选择其他模型。
@@ -300,8 +300,8 @@
               <span>Wan 5B 快速验证镜头，H3 再做带原生音效与音乐的最终成片。</span>
             </div>
           </template>
-          <RouterLink v-if="!status?.online" class="btn btn-ghost btn-block" to="/control">
-            打开控制面板
+          <RouterLink v-if="!status?.online" class="btn btn-ghost btn-block" :to="nativeVideo ? '/control#control-inference' : '/control#control-services'">
+            {{ nativeVideo ? '准备视频运行环境' : '打开服务与连接' }}
           </RouterLink>
         </section>
 
@@ -384,6 +384,7 @@ async function removeFrame(event: MouseEvent, slot: 'first' | 'last') {
 const {
 archiveStatus,
 archiveState,
+nativeVideo,
 statusLoading,
 loadStatus,
 modes,
