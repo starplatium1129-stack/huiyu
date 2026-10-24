@@ -190,13 +190,20 @@ export function createFluidSurface(panelSelector?: string, options: SurfaceOptio
     current.motion.dispose(); current.restore()
   }
   function clear() { for (const el of [...motions.keys()]) dispose(el) }
-  function finish() { for (const current of [...motions.values()]) current.motion.settle(); clear() }
+  function finish(preserveExitLeases = false) {
+    for (const [el, current] of [...motions]) {
+      // An inert native-dialog exit releases itself after its visual timeline;
+      // unmounting its business component must not remove that picture early.
+      if (preserveExitLeases && el.closest('.fluid-dialog-exit')?.isConnected) continue
+      current.motion.settle(); dispose(el)
+    }
+  }
   return { enter, leave, dispose, capture, adopt, clear, finish }
 }
 
 export function useFluidSurface(panelSelector?: string, options: SurfaceOptions = {}) {
   const surface = createFluidSurface(panelSelector, options)
   onDeactivated(surface.finish)
-  onUnmounted(surface.finish)
+  onUnmounted(() => surface.finish(true))
   return surface
 }

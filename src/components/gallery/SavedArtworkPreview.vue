@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <FluidTransition :surface="surface" @before-leave="leave" @after-leave="finishClose">
+    <FluidTransition :surface="surface" @after-leave="finishClose">
     <div v-show="!closing" ref="dialog" class="art-viewer saved-artwork-preview" :class="{ open: !closing }" data-image-transition
       role="dialog" aria-modal="true" aria-label="最近作品预览" :aria-hidden="closing" :inert="closing" @load.capture="enter">
       <ArtworkViewerStage :items="items" :index="0" :active="!closing" :original="original" :src="viewerUrl"
@@ -38,7 +38,7 @@ const { viewerUrl, viewerLoadFailed, retryViewerImage, openViewer, closeViewer, 
 })
 const origin = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
 const preview = ref(origin.capture(props.source) || props.thumbnail)
-const surface = useArtworkViewerSurface()
+const surface = useArtworkViewerSurface({ enter, leave, cancel: origin.cancel })
 useFocusTrap(dialog, () => !closing.value, { onEscape: close, initialFocus: closeButton })
 let entered = false
 function enter() {

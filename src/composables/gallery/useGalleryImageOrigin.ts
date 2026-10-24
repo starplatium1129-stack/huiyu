@@ -1,8 +1,7 @@
 import { nextTick, onDeactivated, onUnmounted, ref, watch, type Ref } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
-
-const PREVIEW_IMAGE = '.zoomable-img, .image-compare-slider .after-img, .pswp__item[aria-hidden="false"] .pswp__img:not(.pswp__img--placeholder)'
+import { VIEWER_IMAGE_SELECTOR } from '@/composables/useArtworkViewerSurface'
 
 /** Gallery-specific DOM selection; the shared flight owns only the transient image. */
 export function useGalleryImageOrigin(options: {
@@ -27,7 +26,8 @@ export function useGalleryImageOrigin(options: {
     const id = button.closest<HTMLElement>('.artwork')?.dataset.cardId || ''
     if (capturedId !== id) motion.cancel()
     capturedId = id
-    previewSrc.value = motion.capture(button.querySelector<HTMLImageElement>('.artwork-image-hd.is-loaded') ?? button.querySelector<HTMLImageElement>('.artwork-image:not(.artwork-image-hd)'))
+    const image = button.querySelector<HTMLImageElement>('.artwork-image-hd.is-loaded') ?? button.querySelector<HTMLImageElement>('.artwork-image:not(.artwork-image-hd)')
+    previewSrc.value = motion.capture(image)
     opening = true
     capturedAt = performance.now()
   }
@@ -36,7 +36,7 @@ export function useGalleryImageOrigin(options: {
     await nextTick()
     if (!opening || options.viewerIndex.value < 0) return
     if (performance.now() - capturedAt >= 180) { opening = false; return }
-    const host = options.viewerEl.value, image = host?.querySelector<HTMLImageElement>(PREVIEW_IMAGE)
+    const host = options.viewerEl.value, image = host?.querySelector<HTMLImageElement>(VIEWER_IMAGE_SELECTOR)
     if (!host || !image || options.viewerIndex.value < 0) return
     // The viewer mounts before a cached thumbnail's load event. Do not consume
     // the capture yet: the bounded flight needs warm pixels and can retry on
@@ -53,26 +53,23 @@ export function useGalleryImageOrigin(options: {
     cancel()
   }, { flush: 'sync' })
   function loaded(event: Event) {
-    if (event.target instanceof HTMLImageElement && event.target.matches(PREVIEW_IMAGE)) void enter()
+    if (event.target instanceof HTMLImageElement && event.target.matches(VIEWER_IMAGE_SELECTOR)) void enter()
   }
   function leave() {
     opening = false
-    const host = options.viewerEl.value, image = host?.querySelector<HTMLImageElement>(PREVIEW_IMAGE)
-    if (host && image) void motion.leave(image, host, sourceImage())
+    const host = options.viewerEl.value, image = host?.querySelector<HTMLImageElement>(VIEWER_IMAGE_SELECTOR)
+    if (host && image) {
+      const source = sourceImage()
+      void motion.leave(image, host, source)
+    }
     else motion.cancel()
   }
   function interrupt() { opening = false; motion.cancel() }
   function failed(event: Event) {
-    if (event.target instanceof HTMLImageElement && event.target.matches(PREVIEW_IMAGE)) interrupt()
+    if (event.target instanceof HTMLImageElement && event.target.matches(VIEWER_IMAGE_SELECTOR)) interrupt()
   }
   function cancel() { interrupt(); previewSrc.value = ''; capturedId = '' }
-  window.addEventListener('resize', interrupt)
-  window.visualViewport?.addEventListener('resize', interrupt)
   onDeactivated(cancel)
-  onUnmounted(() => {
-    cancel()
-    window.removeEventListener('resize', interrupt)
-    window.visualViewport?.removeEventListener('resize', interrupt)
-  })
+  onUnmounted(cancel)
   return { capture, enter, loaded, leave, cancel, failed, previewSrc }
 }

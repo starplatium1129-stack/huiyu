@@ -367,6 +367,10 @@ async fn perform(
     };
     if result.get("taskId").is_some() {
         project_task(&mut result, &session, state, &storage)?;
+        if let Some(runtime) = &state.tasks {
+            result["liveProgress"] = runtime.image_progress(&storage, &session.principal_id, &result)
+                .await.unwrap_or(Value::Null);
+        }
     }
     let mut envelope = json!({"ok":true,"result":null,"runtimeEpoch":storage.runtime_epoch(),"executionAvailable":state.tasks.is_some()});
     envelope["result"] = result;

@@ -115,12 +115,8 @@
       <div v-else-if="!galleryLoading && visible.length" class="gallery-wall stagger-container" data-route-arrive>
         <template v-for="group in masonryGroups" :key="group.key">
           <div class="gallery-section">{{ group.key }}</div>
-          <div class="gallery-columns" :style="{ '--wall-cols': columnCount }">
-            <GalleryVirtualColumn
-              v-for="(col, colIdx) in group.columns"
-              :key="`${group.key}-col-${colIdx}`"
-              class="gallery-col"
-              :items="col" :ratio-of="ratioOf" :enabled="visible.length >= 200" @rendered="scheduleWallScan"
+            <GalleryVirtualRows
+              :rows="group.rows" :ratio-of="ratioOf" :enabled="visible.length >= 200" @rendered="scheduleWallScan"
             >
               <template #default="{ item }">
               <GalleryArtworkCard
@@ -136,8 +132,7 @@
                 @delete="confirmDelete(item)" @measure="measure(item, $event)" @load="onHdLoad(item, $event)" @retry="retryCardImage(item)"
               />
               </template>
-            </GalleryVirtualColumn>
-          </div>
+            </GalleryVirtualRows>
         </template>
         <!-- 分页哨兵：进入视口即追加下一页（作品很多时避免一次性铺满 DOM） -->
         <div v-if="hasMoreToRender" ref="sentinelEl" class="gallery-more" role="status">
@@ -152,7 +147,7 @@
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
-      <FluidTransition :surface="viewerSurface" @before-leave="imageOrigin.leave" @after-leave="finishViewerClose">
+      <FluidTransition :surface="viewerSurface" @after-leave="finishViewerClose">
         <div
           v-show="viewerIndex >= 0"
           class="art-viewer"
@@ -290,7 +285,7 @@ import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
-import GalleryVirtualColumn from '@/components/gallery/GalleryVirtualColumn.vue'
+import GalleryVirtualRows from '@/components/gallery/GalleryVirtualRows.vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import { computed, defineAsyncComponent, nextTick, onActivated, onDeactivated, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
@@ -433,7 +428,7 @@ watch(viewerIndex, (index, previous) => { if (index < 0 || previous < 0) cancelG
 watch(() => current.value?.id, () => { if (gestureLoading.value || gestureError.value) cancelGesture() }, { flush:'sync' })
 watch(compareMode, value => { if (value) cancelGesture() }, { flush:'sync' })
 const imageOrigin = useGalleryImageOrigin({ viewerEl, shellEl, viewerIndex, viewerUrl, current })
-const viewerSurface = useArtworkViewerSurface()
+const viewerSurface = useArtworkViewerSurface(imageOrigin)
 function openFromCard(index: number, event: MouseEvent) {
   imageOrigin.capture(event)
   openViewer(index)

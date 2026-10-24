@@ -29,8 +29,13 @@ export async function runRuntimeAnima(options: {
 }) {
   const { task, blob } = await image(options.family === 'krea2' ? 'creative' : 'anima', options.input, options.key, options.signal, value => {
     if (!options.isCurrent()) return
+    const live = value.status === 'running' && value.recoveryState === 'normal' ? value.liveProgress : null
+    const progress = typeof live?.value === 'number' && Number.isFinite(live.value) ? Math.max(0, Math.min(1, live.value)) : null
+    const message = typeof live?.message === 'string' && live.message.trim() ? live.message : taskMessage(value)
     options.state.value = { ...options.state.value, phase: value.status === 'cancelling' ? 'cancelling' : 'running', backendStatus: value.recoveryState === 'normal' ? value.status : value.recoveryState,
-      progress: null, progressText: taskMessage(value), statusText: taskMessage(value) }
+      progress, progressText: message, statusText: message,
+      currentNode: typeof live?.currentNode === 'string' ? live.currentNode : null,
+      elapsedSeconds: typeof live?.elapsedSeconds === 'number' && Number.isFinite(live.elapsedSeconds) ? Math.max(0, live.elapsedSeconds) : options.state.value.elapsedSeconds }
   }, options.context as Record<string, unknown> | undefined, options.onSubmitting, options.resume)
   const { runtimeImageMetadata, runtimeTaskResultContext } = await import('@/utils/runtimeTaskResult')
   if (!options.isCurrent()) return

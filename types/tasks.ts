@@ -1,6 +1,10 @@
 type TaskStatus = 'queued' | 'submitting' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled';
 type TaskRecovery = 'normal' | 'reconciling' | 'unknown' | 'interrupted';
 interface TaskResultRef { alias: string; sha256: string; bytes: number; mime: string; index: number }
+/** Live provider feedback is attached to HTTP reads; it is not a durable task revision. */
+export interface TaskLiveProgress {
+  value: number | null; message: string; currentNode: string | null; elapsedSeconds: number;
+}
 export interface TaskRecord {
   taskId: string; workspaceId: string; principalId: string; requestKey: string; requestFingerprint: string;
   kind: 'generation' | 'anima' | 'creative' | 'qwen' | 'moss' | 'manga' | 'lineart' | 'video' | 'batch';
@@ -13,6 +17,7 @@ export interface TaskRecord {
   deliveryState: 'unseen' | 'seen' | 'saved' | 'discarded'; errorCode: string | null;
   metadata: Record<string, unknown>; checkpoint: Record<string, unknown> | null;
   parentBatchId: string | null; stepIndex: number | null;
+  liveProgress?: TaskLiveProgress | null;
 }
 export interface TaskSubmission { requestKey: string; kind: TaskRecord['kind']; input: Record<string, unknown>; context?: Record<string, unknown> }
 /** List rows omit recipes and checkpoints; fetch the task before displaying its result. */

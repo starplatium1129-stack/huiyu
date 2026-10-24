@@ -1,11 +1,15 @@
 <template>
-  <div ref="root" class="gallery-virtual-column" :style="enabled ? { height: `${virtualizer.getTotalSize()}px` } : undefined"
+  <div ref="root" class="gallery-virtual-rows" :style="enabled ? { height: `${virtualizer.getTotalSize()}px` } : undefined"
     @focusin="syncFocus" @focusout="queueFocus">
-    <div v-for="entry in entries" :key="entry.item.id" :ref="measureCard" class="virtual-card"
-      :data-index="entry.index" :data-virtual-id="String(entry.item.id)"
-      :style="{ paddingBottom: entry.index === items.length - 1 ? '0px' : `${gap}px`,
+    <div v-for="entry in entries" :key="entry.row.id" :ref="measureCard" class="virtual-row"
+      :data-index="entry.index" :data-virtual-id="String(entry.row.id)"
+      :style="{ paddingBottom: entry.index === rows.length - 1 ? '0px' : `${gap}px`,
         ...(enabled ? { position: 'absolute', top: '0', left: '0', width: '100%', transform: `translateY(${entry.start - scrollMargin}px)` } : {}) }">
-      <slot :item="entry.item" />
+      <div class="gallery-artwork-row" :style="{ width: `${entry.row.fill * 100}%` }">
+        <div v-for="item in entry.row.items" :key="item.id" class="gallery-row-card" :style="{ flexGrow: galleryRatio(ratioOf(item)) }">
+          <slot :item="item" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -14,12 +18,13 @@ import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMoun
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { defaultRangeExtractor, useWindowVirtualizer, type Range } from '@tanstack/vue-virtual'
 import type { ArtworkRecord } from '@/types/artwork'
+import { galleryRatio, type GalleryRow } from '@/composables/gallery/useMasonryWall'
 
-const props = defineProps<{ items: ArtworkRecord[]; ratioOf: (item: ArtworkRecord) => number; enabled: boolean }>()
+const props = defineProps<{ rows: GalleryRow[]; ratioOf: (item: ArtworkRecord) => number; enabled: boolean }>()
 const emit = defineEmits<{ rendered: [] }>()
 const root = ref<HTMLElement | null>(null), active = ref(false), width = ref(360), gap = ref(20), scrollMargin = ref(0)
 const focused = ref<string | null>(null)
-const itemIndex = computed(() => new Map(props.items.map((item, index) => [String(item.id), index])))
+const itemIndex = computed(() => new Map(props.rows.flatMap((row, index) => row.items.map(item => [String(item.id), index] as const))))
 const rangeExtractor = computed(() => {
   const index = focused.value === null ? undefined : itemIndex.value.get(focused.value)
   return (range: Range) => {
@@ -29,18 +34,18 @@ const rangeExtractor = computed(() => {
   }
 })
 const virtualizer = useWindowVirtualizer<HTMLElement>(computed(() => ({
-  count: props.enabled ? props.items.length : 0,
+  count: props.enabled ? props.rows.length : 0,
   enabled: active.value && props.enabled,
   scrollMargin: scrollMargin.value,
-  getItemKey: (index: number) => props.items[index]!.id,
-  estimateSize: (index: number) => width.value / (props.ratioOf(props.items[index]!) || .75) + 68 + (index < props.items.length - 1 ? gap.value : 0),
+  getItemKey: (index: number) => props.rows[index]!.id,
+  estimateSize: (index: number) => (width.value * props.rows[index]!.fill - gap.value * (props.rows[index]!.items.length - 1)) / props.rows[index]!.ratio + 68 + (index < props.rows.length - 1 ? gap.value : 0),
   overscan: 4,
   // Keep the focused artwork mounted while TanStack owns the visible range.
   rangeExtractor: rangeExtractor.value,
 })))
 const entries = computed(() => props.enabled
-  ? virtualizer.value.getVirtualItems().map(entry => ({ item: props.items[entry.index]!, index: entry.index, start: entry.start }))
-  : props.items.map((item, index) => ({ item, index, start: 0 })))
+  ? virtualizer.value.getVirtualItems().map(entry => ({ row: props.rows[entry.index]!, index: entry.index, start: entry.start }))
+  : props.rows.map((row, index) => ({ row, index, start: 0 })))
 function measureOffset() {
   const element = root.value
   if (active.value && element?.getClientRects().length) scrollMargin.value = element.getBoundingClientRect().top + window.scrollY
@@ -61,7 +66,7 @@ function measureCard(element: Element | ComponentPublicInstance | null) {
 function syncFocus() {
   const element = document.activeElement
   focused.value = element instanceof HTMLElement && root.value?.contains(element)
-    ? element.closest<HTMLElement>('[data-virtual-id]')?.dataset.virtualId ?? null : null
+    ? element.closest<HTMLElement>('[data-card-id]')?.dataset.cardId ?? null : null
 }
 function queueFocus() { queueMicrotask(() => { if (active.value) syncFocus() }) }
 watch(width, () => virtualizer.value.measure(), { flush: 'post' })
@@ -74,6 +79,9 @@ onDeactivated(deactivate)
 onBeforeUnmount(deactivate)
 </script>
 <style scoped>
-.gallery-col.gallery-virtual-column { position:relative; display:block; overflow-anchor:none; }
-.virtual-card { display:flow-root; }
+.gallery-virtual-rows { --wall-gap:var(--workspace-panel-gap,var(--s-4)); position:relative; display:block; min-width:0; row-gap:var(--wall-gap); overflow-anchor:none; }
+.virtual-row { display:flow-root; }
+.gallery-artwork-row { display:flex; align-items:start; gap:var(--wall-gap); min-width:0; }
+.gallery-row-card { flex:1 1 0; min-width:0; }
+@media (max-width:820px) { .gallery-virtual-rows { --wall-gap:var(--s-3); } }
 </style>

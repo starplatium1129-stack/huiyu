@@ -1,6 +1,7 @@
 @reference "../../tailwind.css";
 /* Internal allocation only; layout.css and useDirectorLayout own the canvas and rail widths. */
 .pb[data-director-mode] .inspector-workbench { display:flex; flex-direction:column; }
+.pb .inspector-workbench .inspector-heading { padding:var(--s-3) var(--s-4); }
 .pb .inspector-workbench .inspector-scroll:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb .inspector-count { font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
 .pb[data-director-mode] .inspector-workbench .inspector-scroll {
@@ -16,7 +17,7 @@
 .pb .inspector-actions { flex-shrink:0; border-top:1px solid var(--border-soft); }
 
 /* All inspector tabs share native disclosure geometry, independent of lazy panels. */
-.pb .inspector-workbench .inspector-route { padding:var(--s-4) 0; border-top:1px solid var(--border-soft); color:var(--text-secondary); font-size:var(--fs-label); }
+.pb .inspector-workbench .inspector-route { padding:var(--s-3) 0; border-top:1px solid var(--border-soft); color:var(--text-secondary); font-size:var(--fs-label); }
 .pb .inspector-workbench .inspector-route > summary { justify-content:space-between; min-height:var(--control-height); padding:0; border:0; border-radius:var(--r-sm); background:transparent; list-style:none; cursor:pointer; }
 .pb .inspector-workbench .inspector-route > summary::-webkit-details-marker { display:none; }
 .pb .inspector-workbench .inspector-route > summary .studio-button-feedback { border:0; background:transparent; }

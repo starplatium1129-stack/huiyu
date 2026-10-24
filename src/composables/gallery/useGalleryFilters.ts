@@ -127,7 +127,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   const pagedVisible = computed(() => visible.value.slice(0, renderLimit.value));
   const hasMoreToRender = computed(() => visible.value.length > pagedVisible.value.length || query.enabled.value && query.hasMore.value);
 
-  /* ---------- 时间分组与多列瀑布流 ---------- */
+  /* ---------- 时间分组与按比例展墙 ---------- */
   const groups = computed(() => {
     const order = ['今天', '本周', '更早'];
     const buckets: Record<string, ArtworkRecord[]> = {};
@@ -142,7 +142,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   const masonryGroups = computed<MasonryGroup[]>((previous) => {
     const input = groups.value, count = columnCount.value;
     // Decode corrections and appended pages must not destroy already painted
-    // cards. A different filter/order or column count starts a fresh layout.
+    // rows. A different filter/order or column count starts a fresh layout.
     const keepPlacement = count === previousColumnCount && previousOrder.every((group, index) =>
       input[index]?.key === group.key && group.ids.every((id, itemIndex) => input[index]?.items[itemIndex]?.id === id));
     previousOrder = input.map(group => ({ key: group.key, ids: group.items.map(item => item.id) }));

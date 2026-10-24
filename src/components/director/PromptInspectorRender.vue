@@ -11,7 +11,6 @@
       <StudioDisclosureSummary data-spring-button><span data-press-content>绘制详情</span></StudioDisclosureSummary>
       <div data-disclosure-content>
         <p role="status">{{ generationPresentation.message }}</p>
-        <p v-if="generationPresentation.phase === 'running' && animaState.currentNode">当前节点：{{ animaState.currentNode }}</p>
       </div>
     </details>
     <div class="inspector-engine-settings" role="group" aria-label="模型与引擎">
@@ -49,9 +48,6 @@
           <AsyncPanel v-else :loader="loadAnimaQuickPanel" label="引擎采样参数" v-slot="{ component }">
             <component :is="component" :state="animaState" :no-lora="animaNoLoraMode" @update:state="patchAnimaState" />
           </AsyncPanel>
-          <div v-if="generationPresetSummary" class="generation-auto-summary tw:flex tw:items-baseline tw:justify-between tw:gap-s-3 tw:mb-s-2 tw:rounded-md tw:text-muted tw:text-body tw:leading-body tw:flex-wrap">
-            <span>自动参数</span><strong>{{ generationPresetSummary }}</strong>
-          </div>
         </template>
       </div>
     </details>

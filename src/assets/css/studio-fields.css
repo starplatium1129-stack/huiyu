@@ -8,6 +8,7 @@
   font:400 var(--fs-body-sm)/var(--lh-label) var(--font-sans);
 }
 .input, .textarea { width:100%; }
+.input-sm { min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border-radius:var(--r-sm); font-size:var(--fs-label); }
 :where(textarea), textarea.input, .textarea { min-height:96px; resize:vertical; line-height:var(--lh-body); }
 .input-mono { font-family:var(--font-mono); }
 :where(input, textarea)::placeholder { color:var(--text-muted); }
@@ -15,7 +16,8 @@
   :is(.input,.textarea):hover:not(:disabled):not([readonly]):where(:not([aria-invalid='true'])) { border-color:var(--border-strong); }
 }
 :is(.input,.textarea):focus { outline:none; border-color:var(--border-strong); box-shadow:var(--focus-shadow); }
-:where(input, textarea):disabled,
+/* Selection controls keep their native-controls.css material when disabled. */
+:where(input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='color']):not([type='hidden']):not([type='button']):not([type='submit']), textarea):disabled,
 :is(.input,.textarea,.studio-select-trigger):is(:disabled,[data-disabled]) {
   color:var(--text-disabled); -webkit-text-fill-color:var(--text-disabled);
   border-color:var(--border-soft); background:var(--bg-base); cursor:not-allowed;

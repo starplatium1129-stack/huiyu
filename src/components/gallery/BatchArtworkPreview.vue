@@ -24,7 +24,7 @@
 import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
 import { hasBatchArtwork, useBatchArtworkOriginal, type BatchArtworkJob } from '@/composables/generation/useBatchArtworkMedia'
 import { useFluidDialog } from '@/composables/useFluidDialog'
-import { useFluidSurface } from '@/composables/useFluidSurface'
+import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -47,17 +47,10 @@ const { compact, hidden: infoHidden, toggle: openInfo, close: closeInfo } = useA
   viewerCloseButton: viewerClose, open: infoOpen, active: () => !closing.value,
 })
 const origin = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
-const surface = useFluidSurface('.art-viewer')
+const surface = useArtworkViewerSurface(origin, () => props.source?.closest('.batch-result-grid')
+  ?.querySelector<HTMLImageElement>(`.batch-thumb-btn[data-preview-id="${CSS.escape(selected.value)}"] .batch-thumb`) ?? null)
 const preview = ref(origin.capture(props.source))
-const motion = useFluidDialog(dialog, {
-  ...surface,
-  enter(el, done) {
-    surface.enter(el, done)
-    const image = el.querySelector<HTMLImageElement>('.zoomable-img')
-    if (image) void origin.enter(image, el as HTMLElement)
-  },
-  dispose(el) { origin.cancel(); surface.dispose(el) },
-})
+const motion = useFluidDialog(dialog, surface)
 onMounted(() => motion.open(props.source?.closest('button') ?? undefined))
 function close() { if (!closing.value) { closing.value = true; motion.close(() => emit('close')) } }
 function select(value: number) {

@@ -25,6 +25,30 @@ impl Preparation {
     }
 }
 impl TaskRuntime {
+    /// Read the bound image job only. Step updates never write task revisions or
+    /// change acceptance, recovery, cancellation or result collection state.
+    pub async fn image_progress(&self, storage: &Storage, principal: &str, task: &Value) -> Option<Value> {
+        if self.check_running().is_err() || task["status"] != "running"
+            || task["recoveryState"] != "normal" || task["upstreamSettled"] == true {
+            return None;
+        }
+        let family = match task["kind"].as_str()? {
+            "anima" => "anima", "creative" => "krea2", _ => return None,
+        };
+        let id = task["taskId"].as_str()?;
+        let binding = self.job(storage, id).filter(|job| !job.is_empty())?;
+        let snapshot = self.images.get_job(&binding, principal, family).await.ok()?;
+        if snapshot["status"] != "running" || snapshot["unknown"] == true {
+            return None;
+        }
+        Some(json!({
+            "value":snapshot["progress"].as_f64().filter(|value| value.is_finite()).map(|value| value.clamp(0.,1.)),
+            "message":snapshot["progressText"].as_str().unwrap_or(""),
+            "currentNode":snapshot["currentNode"].as_str(),
+            "elapsedSeconds":snapshot["elapsedSeconds"].as_u64().unwrap_or(0),
+        }))
+    }
+
     pub(super) async fn prepare(&self, kind: TaskKind, input: Value) -> Result<Preparation> {
         let cancel = self.shutdown.child_token();
         match kind {

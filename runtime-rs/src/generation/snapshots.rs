@@ -218,6 +218,8 @@ pub(super) async fn progress_event(
         }
         if lost {
             state.progress_live = false;
+            state.progress = None;
+            state.progress_text = "进度连接暂时中断，正在核对任务…".into();
             state.history_urgent = true;
             job.notify.notify_one();
         } else if let Some(event) = &event

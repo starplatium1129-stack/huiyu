@@ -1,5 +1,11 @@
 import { useFluidSurface, type SurfaceLayers } from './useFluidSurface'
-import type { useImageOriginTransition } from './useImageOriginTransition'
+export const VIEWER_IMAGE_SELECTOR = '.zoomable-img, .image-compare-slider .after-img, .pswp__item[aria-hidden="false"] .pswp__img:not(.pswp__img--placeholder)'
+
+interface ImageOrigin {
+  enter(image: HTMLImageElement, host: HTMLElement): void | Promise<void>
+  leave(image: HTMLImageElement, host: HTMLElement, source?: HTMLImageElement | null): void | Promise<void>
+  cancel(): void
+}
 
 /** Viewer-only choreography stays outside ordinary form/popover dependencies.
  * The surface owns every effect, including partial setup and interrupted exits. */
@@ -23,19 +29,18 @@ const animateLayers: SurfaceLayers = (el, opacity, timing, target, add) => {
   for (const part of el.querySelectorAll<HTMLElement>(pictures)) add(part.animate(opacity, timing))
 }
 
-export function useArtworkViewerSurface(imageOrigin?: ReturnType<typeof useImageOriginTransition>, source?: () => HTMLImageElement | null) {
+export function useArtworkViewerSurface(imageOrigin: ImageOrigin, source?: () => HTMLImageElement | null) {
   const surface = useFluidSurface(undefined, { layers: animateLayers })
-  if (!imageOrigin) return surface
   return {
     ...surface,
     enter(el: Element, done: () => void) {
       surface.enter(el, done)
-      const image = el.querySelector<HTMLImageElement>('.zoomable-img')
+      const image = el.querySelector<HTMLImageElement>(VIEWER_IMAGE_SELECTOR)
       if (image) void imageOrigin.enter(image, el as HTMLElement)
     },
     leave(el: Element, done: () => void) {
       // Native focus closes now; only the inert exit picture flies back.
-      const image = el.querySelector<HTMLImageElement>('.zoomable-img')
+      const image = el.querySelector<HTMLImageElement>(VIEWER_IMAGE_SELECTOR)
       if (image) void imageOrigin.leave(image, el as HTMLElement, source?.())
       surface.leave(el, () => { imageOrigin.cancel(); done() })
     },

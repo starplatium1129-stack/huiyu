@@ -72,12 +72,20 @@ function visibleTarget(rect: ImageRect, image: HTMLImageElement, host: HTMLEleme
 /** A bounded, reversible image flight; native/Fluid dialog keeps owning focus and opacity. */
 export function useImageOriginTransition(options: { proxyPixelBudget: number }) {
   let origin: Origin | null = null
+  let originImage: HTMLImageElement | null = null
   let capturedAt = 0
   let flight: Flight | null = null
   let revision = 0
+  let viewport = { width: innerWidth, height: innerHeight, scale: window.visualViewport?.scale ?? 1 }
+  let geometry: Array<{ element: HTMLElement; rect: DOMRect }> = []
+  function rememberGeometry(...elements: Array<HTMLElement | null>) {
+    viewport = { width: innerWidth, height: innerHeight, scale: window.visualViewport?.scale ?? 1 }
+    geometry = elements.flatMap(element => element ? [{ element, rect: element.getBoundingClientRect() }] : [])
+  }
   function clearFlight() {
     const old = flight; flight = null
     if (!old) return
+    geometry = []
     old.animation?.cancel()
     old.settle?.(); old.settle = null
     old.restore(); old.proxy.remove()
@@ -85,10 +93,13 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
   }
   function cancel() {
     revision++
+    geometry = []
     clearFlight()
   }
   function capture(sourceImg: HTMLImageElement | null) {
+    originImage = sourceImg
     origin = safeOrigin(sourceImg); capturedAt = performance.now()
+    rememberGeometry(sourceImg)
     return origin?.src || ''
   }
 
@@ -96,7 +107,10 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
     const startedAt = performance.now()
     const enterDeadline = capturedAt + 180
     const token = ++revision
-    if (direction === 'leave' && sourceImg !== undefined) origin = safeOrigin(sourceImg)
+    if (direction === 'leave' && sourceImg !== undefined) {
+      originImage = sourceImg
+      origin = safeOrigin(sourceImg)
+    }
     const source = origin
     if (!source || prefersReducedMotion() || document.hidden || !target.isConnected || typeof target.animate !== 'function') { clearFlight(); return }
     if (direction === 'enter' && flight?.target !== target) {
@@ -184,6 +198,7 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
       } }
     }
     const active = flight!
+    rememberGeometry(host, target, originImage)
     const to = direction === 'enter' ? destination : source.rect
     const width = Number.parseFloat(active.proxy.style.width), height = Number.parseFloat(active.proxy.style.height)
     const transform = (rect: ImageRect) => `translate(${rect.left}px, ${rect.top}px) scale(${rect.width / width}, ${rect.height / height})`
@@ -228,16 +243,40 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
     })
   }
 
+  function resized() {
+    if (!geometry.length) return
+    // Modal scroll-lock changes can notify visualViewport without moving either
+    // image frame. Every viewer shares this rule; only real geometry changes
+    // invalidate a flight or its pending source capture.
+    const changed = viewport.width !== innerWidth || viewport.height !== innerHeight
+      || viewport.scale !== (window.visualViewport?.scale ?? 1)
+      || geometry.some(({ element, rect }) => {
+        if (!element.isConnected) return true
+        const next = element.getBoundingClientRect()
+        return Math.abs(next.left - rect.left) > .5 || Math.abs(next.top - rect.top) > .5
+          || Math.abs(next.width - rect.width) > .5 || Math.abs(next.height - rect.height) > .5
+      })
+    if (changed) { cancel(); origin = null; originImage = null; capturedAt = 0 }
+  }
   const preference = () => { if (prefersReducedMotion() || document.hidden) cancel() }
   const media = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null
   media?.addEventListener?.('change', preference)
   document.addEventListener('visibilitychange', preference)
   window.addEventListener('atelier:motion-preference', preference)
+  window.addEventListener('resize', resized)
+  window.visualViewport?.addEventListener('resize', resized)
   const dispose = () => {
-    cancel(); origin = null
+    // A native dialog's inert exit lease outlives the component. Its surface
+    // still owns the bounded flight and cancels it when the exit finishes.
+    const leased = flight?.proxy.dataset.imageOriginDirection === 'leave'
+      && flight.host.closest('.fluid-dialog-exit')?.isConnected
+    if (!leased) cancel()
+    geometry = []; origin = null; originImage = null
     media?.removeEventListener?.('change', preference)
     document.removeEventListener('visibilitychange', preference)
     window.removeEventListener('atelier:motion-preference', preference)
+    window.removeEventListener('resize', resized)
+    window.visualViewport?.removeEventListener('resize', resized)
   }
   if (getCurrentInstance()) { onDeactivated(cancel); onUnmounted(dispose) }
   return {

@@ -22,10 +22,12 @@ export function useGenerationPresentation(engine: Pick<ReturnType<typeof useDire
     const preparing = preparation(), phase = preparing ? 'preparing' : engine.generationPhase.value
     const needsReview = !preparing && engine.generationNeedsReview.value
     const value = engine.generationProgress.value
+    // Provider node names remain diagnostic data, not workbench progress copy.
+    const runningMessage = phase === 'running' && !needsReview ? '正在绘制…' : ''
     return {
       phase, needsReview, review, completed: !preparing && phase === 'succeeded' && completed(),
       canRetryCancellation: phase === 'cancelling' && Boolean(engine.generationError.value),
-      message: preparing || engine.generationStatusText.value || ({ submitting: '正在提交生成…', running: '正在绘制…', cancelling: '正在停止，等待确认…' } as Partial<Record<AnimaPhase, string>>)[phase as AnimaPhase] || '',
+      message: preparing || runningMessage || engine.generationStatusText.value || ({ submitting: '正在提交生成…', cancelling: '正在停止，等待确认…' } as Partial<Record<AnimaPhase, string>>)[phase as AnimaPhase] || '',
       progress: phase === 'running' && typeof value === 'number' && Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : null,
     }
   })

@@ -103,7 +103,6 @@
           :generation-error="generationError"
           :generation-stopped="generationStopped"
           :generation="generationPresentation"
-          :anima-elapsed="animaState.elapsedSeconds"
           :draw-engine="drawEngine"
           :inpaint-original-url="inpaintOriginalUrl"
           :inpaint-compare-active="inpaintCompareActive"

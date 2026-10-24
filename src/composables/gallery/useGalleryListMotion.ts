@@ -73,8 +73,8 @@ export function useGalleryListMotion(
     if (!host || !active() || !canAnimate.value || lowEffects.value) return
     listChanged = true
     const deleted = new Set(ids.map(String))
-    // The wall uses greedy masonry columns, not a TransitionGroup. Capture only
-    // visible survivors and animate their transform after Vue settles the new columns.
+    // The wall uses virtual image rows, not a TransitionGroup. Capture only
+    // visible survivors and animate their transform after Vue settles the rows.
     capture(deleted)
     beginHandoff()
     previousIds = new Set(items().map(item => String(item.id)))

@@ -87,18 +87,9 @@
 
     <!-- Keep readable task feedback above the texture canvas's own stacking layer. -->
     <div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
-      <div class="stage-progress-ring" :class="{ 'is-indeterminate': stageProgress === null }" role="progressbar" :aria-label="waitingForResult ? '成片读取进度' : '生图进度'" :aria-valuenow="stageProgress === null ? undefined : Math.round(stageProgress * 100)" :aria-valuetext="stageStatus || undefined" :aria-valuemin="0" :aria-valuemax="100">
-        <svg viewBox="0 0 56 56" aria-hidden="true">
-          <circle class="stage-progress-track" cx="28" cy="28" r="24" />
-          <circle class="stage-progress-value" cx="28" cy="28" r="24" pathLength="100" :stroke-dasharray="`${stageProgress === null ? 24 : stageProgress * 100} 100`" />
-        </svg>
-        <strong v-if="stageProgress !== null">{{ Math.round(stageProgress * 100) }}%</strong>
-        <ArchiveIcon v-else name="spark" />
-      </div>
-      <div class="stage-generating-sub">
-        <span class="stage-generating-title" role="status">{{ stageStatus }}</span>
-        <span v-if="generation.phase === 'running' && drawEngine !== 'sd' && animaElapsed > 0" class="stage-generating-elapsed">已用时 {{ animaElapsed }} 秒</span>
-      </div>
+      <progress class="stage-progress" :value="stageProgress ?? undefined" max="1" :aria-label="waitingForResult ? '成片读取进度' : '生图进度'" />
+      <strong v-if="stageProgress !== null" class="stage-progress-percent" aria-hidden="true">{{ Math.round(stageProgress * 100) }}%</strong>
+      <span class="sr-only" role="status">{{ stageStatus }}</span>
     </div>
 
     <!-- Result image -->
@@ -170,7 +161,6 @@ const props = defineProps<{
   generationError: string | null
   generationStopped: boolean
   generation: GenerationPresentation
-  animaElapsed: number
   drawEngine: string
   inpaintOriginalUrl: string | null
   inpaintCompareActive: boolean

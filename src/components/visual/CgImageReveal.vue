@@ -101,7 +101,11 @@ async function triggerReveal() {
     // Preparation precedes fading. Any failure leaves the decoded work available.
     const bounds = containerRef.value?.getBoundingClientRect()
     if (bounds) revealSize = { width: bounds.width, height: bounds.height }
-    const effect: CanvasParticleReveal | null = props.revealEffect?.(img, duration) ?? (containerRef.value ? startImageDevelopmentReveal(img, containerRef.value, duration) : null)
+    // A custom formation owns its fallback too: an unavailable particle surface
+    // shows the decoded work directly instead of switching to a second style.
+    const effect: CanvasParticleReveal | null = props.revealEffect
+      ? props.revealEffect(img, duration)
+      : containerRef.value ? startImageDevelopmentReveal(img, containerRef.value, duration) : null
     if (!effect) { emit('reveal-complete'); return }
     stopEffect = effect.stop
     resizeEffect = effect.resize ?? null

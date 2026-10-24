@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <FluidTransition @before-leave="leave" @after-leave="finishClose">
+    <FluidTransition :surface="surface" @after-leave="finishClose">
       <div v-show="selectedId" ref="viewerEl" class="art-viewer scene-artwork-viewer"
         :class="{ 'info-open': infoOpen }" data-image-transition
         role="dialog" aria-modal="true" aria-label="场景观赏模式"
@@ -46,13 +46,13 @@ export interface SceneArtworkPreview {
 
 <script setup lang="ts">
 import { computed, nextTick, onDeactivated, onUnmounted, ref, useId, watch } from 'vue'
-import { useEventListener } from '@vueuse/core'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
+import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 
 const props = defineProps<{ items: SceneArtworkPreview[] }>()
 const selectedId = defineModel<string | null>({ required: true })
@@ -65,6 +65,7 @@ const displayedItems = ref<SceneArtworkPreview[]>([]), displayedIndex = ref(0)
 const current = computed(() => displayedItems.value[displayedIndex.value] ?? null)
 const previews = computed(() => Object.fromEntries(displayedItems.value.map(item => [item.id, item.previewSrc])))
 const motion = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
+const surface = useArtworkViewerSurface({ enter, leave, cancel: cancelFlight })
 const openingPreview = ref('')
 let sourceImage: HTMLImageElement | null = null, opening = false, capturedAt = 0
 function capture(image: HTMLImageElement | null) {
@@ -120,8 +121,6 @@ const { compact, toggle: toggleInfo, close: closeInfo } = useArtworkInfoDrawer({
   viewer: viewerEl, panel: infoEl, trigger: infoToggle, closeButton: infoClose,
   viewerCloseButton: closeButton, open: infoOpen, active: () => !!selectedId.value,
 })
-useEventListener(window, 'resize', cancelFlight)
-useEventListener(window.visualViewport, 'resize', cancelFlight)
 onDeactivated(() => { selectedId.value = null; cancelFlight() })
 onUnmounted(cancelFlight)
 defineExpose({ capture })

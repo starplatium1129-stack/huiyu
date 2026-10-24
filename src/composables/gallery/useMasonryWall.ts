@@ -1,49 +1,51 @@
 import { ref, onActivated, onDeactivated, onMounted, onUnmounted, computed, type Ref } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 
+export interface GalleryRow<T extends Pick<ArtworkRecord, 'id'> = ArtworkRecord> {
+  id: T['id']
+  items: T[]
+  ratio: number
+  fill: number
+}
 export interface MasonryGroup<T extends Pick<ArtworkRecord, 'id'> = ArtworkRecord> {
   key: string
-  columns: T[][]
+  rows: GalleryRow<T>[]
 }
 
-/**
- * 将时间分组内的作品按照最短列贪心分发到各列。
- * 当出现较矮的横图时，后续作品会自动填充到该列下方，保持各列高度平衡，图与图紧密咬合零空位。
- */
+export function galleryRatio(value: number) { return Number.isFinite(value) && value > 0 ? value : .75 }
+
+/** Equal-height image rows give landscapes proportional width without cropping.
+ * Previously painted rows stay together when dimensions resolve or pages append. */
 export function buildMasonryGroups<T extends Pick<ArtworkRecord, 'id'> = ArtworkRecord>(
   groups: Array<{ key: string; items: T[] }>,
   ratioOf: (item: T) => number,
   columnCount: number,
   previous: MasonryGroup<T>[] = []
 ): MasonryGroup<T>[] {
-  const cols = Math.max(1, columnCount)
+  const target = Math.max(1, columnCount) * .75
   return groups.map(group => {
-    const columns: T[][] = Array.from({ length: cols }, () => [])
-    const heights: number[] = new Array(cols).fill(0)
-    const placements = new Map<string | number, number>()
     const prior = previous.find(value => value.key === group.key)
-    if (prior?.columns.length === cols) prior.columns.forEach((column, index) => {
-      column.forEach(item => placements.set(item.id, index))
-    })
-
+    const current = new Map(group.items.map(item => [item.id, item]))
+    const row = (items: T[]): GalleryRow<T> => {
+      const ratio = items.reduce((sum, item) => sum + galleryRatio(ratioOf(item)), 0)
+      return { id: items[0]!.id, items, ratio, fill: ratio >= target * .75 ? 1 : ratio / target }
+    }
+    const rows = (prior?.rows ?? []).map(previousRow => row(previousRow.items.map(item => current.get(item.id)!)))
+    const placed = new Set(rows.flatMap(value => value.items.map(item => item.id)))
+    let pending: T[] = [], ratio = 0
+    const flush = () => {
+      if (pending.length) rows.push(row(pending))
+      pending = []; ratio = 0
+    }
     for (const item of group.items) {
-      // Keep painted cards in their column; only new cards choose the shortest.
-      let minCol = placements.get(item.id) ?? 0
-      if (!placements.has(item.id)) for (let i = 1; i < cols; i++) {
-        if (heights[i] < heights[minCol]) minCol = i
-      }
-
-      columns[minCol].push(item)
-      // 计算预估高度 (基准宽度 360 / 宽高比 + 卡片间距 20)
-      const ratio = ratioOf(item) || (3 / 4)
-      const safeRatio = Number.isFinite(ratio) && ratio > 0 ? ratio : (3 / 4)
-      heights[minCol] += (360 / safeRatio) + 20
+      if (placed.has(item.id)) continue
+      const next = galleryRatio(ratioOf(item))
+      if (pending.length && ratio + next > target && Math.abs(target - ratio) <= Math.abs(target - ratio - next)) flush()
+      pending.push(item); ratio += next
+      if (ratio >= target) flush()
     }
-
-    return {
-      key: group.key,
-      columns,
-    }
+    flush()
+    return { key: group.key, rows }
   })
 }
 

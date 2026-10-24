@@ -18,13 +18,6 @@
 .pb .inspector-generation-error code { display:block; margin-top:var(--s-2); max-height:140px; overflow:auto; white-space:pre-wrap; color:var(--text-secondary); }
 .pb .inspector-runtime p { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); overflow-wrap:anywhere; }
 
-.pb .inspector-advanced-body .generation-auto-summary {
-  padding:var(--s-2) var(--s-3);
-  font-size:var(--fs-label);
-  border: 1px solid var(--border-soft);
-  background: var(--bg-deep);
-}
-
 .pb .inspector-workbench #stepResult { gap:0; }
 .pb .inspector-field-label { font-size:var(--fs-label); color:var(--text-secondary); }
 .pb .base-model-picker { margin-top:var(--s-1); }

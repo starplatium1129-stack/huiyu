@@ -2,7 +2,7 @@
  * independently written. Image particles meet the fine-line waiting surface at both ends. */
 import { registerParticleFrame } from './particleScheduler'
 import { sampleGenerationPalette, visibleGenerationPigment } from './generationPalette'
-import { generationOrbitPose, generationOrbitRadius, smoothGenerationPhase, type GenerationOrbitPose, type GenerationOrbitSurface } from './generationOrbit'
+import { generationOrbitPose, smoothGenerationPhase, type GenerationOrbitSurface } from './generationOrbit'
 
 export interface CanvasParticleReveal { stop: () => void; finished: Promise<void>; resize?: () => void }
 export interface CanvasParticleMotion {
@@ -27,6 +27,7 @@ uniform vec4 departureRect;
 uniform float departureDust;
 uniform vec4 orbitShape;
 uniform float orbitRotation;
+uniform float orbitOpacity;
 out vec2 uv;
 out vec2 local;
 out vec2 pixelPosition;
@@ -35,7 +36,7 @@ out float alpha;
 out float rounding;
 flat out int band;
 float hash(float n){return fract(sin(n*127.13+19.7)*43758.5453);}
-void waitingPose(vec4 rect,float dust,out vec2 position,out vec2 dimensions,out float opacity,out float pigment,out float rounded){
+void waitingPose(vec4 rect,float dust,out vec2 position,out vec2 dimensions,out float opacity,out float pigment,out float rounded,out float orientation){
  vec2 grid=vec2(132,192);
  float id=float(gl_InstanceID),seed=hash(id),lane=mod(id,3.0);
  vec2 cell=vec2(mod(id,grid.x),floor(id/grid.x));
@@ -45,13 +46,18 @@ void waitingPose(vec4 rect,float dust,out vec2 position,out vec2 dimensions,out 
  float angle=floor(id/3.0)/(132.0*192.0/3.0)*6.2831853+orbitRotation*(lane==1.0?-1.6:1.85)+lane*1.64;
  float tilt=(-.64+lane*.61)*(1.0-finishing*.75)+sin(orbitShape.w*.17+lane)*.075*(1.0-finishing);
  float radius=orbitShape.x*(.86+lane*.08);
- vec2 orbit=vec2(cos(angle)*radius,sin(angle)*radius*(.31+lane*.035+formed*.1-finishing*.2)+sin(angle*2.0+orbitShape.w*.12)*2.5*(1.0-finishing));
+ float flatten=.31+lane*.035+formed*.1-finishing*.2;
+ vec2 orbit=vec2(cos(angle)*radius,sin(angle)*radius*flatten+sin(angle*2.0+orbitShape.w*.12)*2.5*(1.0-finishing));
  orbit=vec2(orbit.x*cos(tilt)-orbit.y*sin(tilt),orbit.x*sin(tilt)+orbit.y*cos(tilt));
  vec2 destination=orbitCenter.xy+orbit;
  position=destination;
- vec2 ringSize=vec2(.8+seed*.6);
- float ringAlpha=0.0;
- dimensions=ringSize; opacity=ringAlpha; pigment=1.0; rounded=1.0;
+ // Adjacent image cells meet edge-to-edge as a continuous one-pixel thread,
+ // matching the waiting canvas instead of fading into an invisible dust ring.
+ vec2 tangent=vec2(-sin(angle)*radius,cos(angle)*radius*flatten+cos(angle*2.0+orbitShape.w*.12)*5.0*(1.0-finishing));
+ float threadAngle=atan(tangent.y,tangent.x)+tilt;
+ vec2 ringSize=vec2(length(tangent)*6.2831853/(132.0*192.0/3.0)*1.08,1.0);
+ float ringAlpha=(.32+finishing*.08)*orbitOpacity;
+ dimensions=ringSize; opacity=ringAlpha; pigment=1.0; rounded=0.0; orientation=threadAngle;
  if(dust>=0.0){
   float delay=(cell.x/grid.x)*.30+(cell.y/grid.y)*.07+seed*.11;
   float age=max(0.0,dust-delay), grain=smoothstep(.015,.42,age);
@@ -65,7 +71,7 @@ void waitingPose(vec4 rect,float dust,out vec2 position,out vec2 dimensions,out 
   vec2 offset=blown-orbitCenter.xy;
   position=mix(blown,destination,join)+vec2(-offset.y,offset.x)*sin(join*3.14159)*.20;
   dimensions=mix(dustSize,ringSize,join);opacity=mix(dustAlpha,ringAlpha,join);
-  pigment=join*join;rounded=mix(grain,1.0,join);
+  pigment=join*join;rounded=grain*(1.0-join);orientation=threadAngle*join;
  }
 }
 void main(){
@@ -73,9 +79,9 @@ void main(){
  vec2 corner=corners[gl_VertexID],grid=vec2(132,192);
  float id=float(gl_InstanceID),seed=hash(id);band=int(mod(id,3.0));
  vec2 cell=vec2(mod(id,grid.x),floor(id/grid.x));uv=(cell+corner)/grid;local=corner*2.0-1.0;
- vec2 position,dimensions;
+ vec2 position,dimensions;float orientation;
  if(revealProgress>=0.0){
-  waitingPose(departureRect,departureDust,position,dimensions,alpha,mixColor,rounding);
+  waitingPose(departureRect,departureDust,position,dimensions,alpha,mixColor,rounding,orientation);
   float t=clamp(revealProgress,0.0,1.0);
   float delay=length((cell+.5)/grid-.5)*.113+seed*.04;
   float formation=clamp((t-delay)/(.88-delay),0.0,1.0);
@@ -86,9 +92,11 @@ void main(){
   dimensions=mix(dimensions,imageRect.zw/grid*1.003,arrival);
   alpha=mix(alpha,1.0,arrival);
   mixColor*=1.0-smoothstep(.08,.82,arrival);
-  rounding*=1.0-smoothstep(.3,1.0,arrival);
- }else waitingPose(imageRect,dustTime,position,dimensions,alpha,mixColor,rounding);
- position+=(corner-.5)*dimensions;
+  rounding=max(rounding*(1.0-smoothstep(.3,1.0,arrival)),sin(arrival*3.14159)*.9);
+  orientation*=1.0-arrival;
+ }else waitingPose(imageRect,dustTime,position,dimensions,alpha,mixColor,rounding,orientation);
+ vec2 offset=(corner-.5)*dimensions;
+ position+=vec2(offset.x*cos(orientation)-offset.y*sin(orientation),offset.x*sin(orientation)+offset.y*cos(orientation));
  pixelPosition=position;
  gl_Position=vec4(position/viewport*vec2(2.0,-2.0)+vec2(-1.0,1.0),0,1);
 }`
@@ -154,7 +162,6 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
   let revealDuration = 0, revealStartedAt = 0, formedFrame = false
   let restoreImage: (() => void) | null = null, resolveReveal: (() => void) | null = null
   let revealEffect: CanvasParticleReveal | null = null
-  let departurePose: GenerationOrbitPose | null = null
   let departureRect: number[] | null = null, departureOpacity = 1
   let resultImage: HTMLImageElement | null = null
   let waitingCleared = false
@@ -193,7 +200,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
     const uniform = (name: string) => gl.getUniformLocation(program!, name)
     const imageUniform = uniform('imageRect'), revealUniform = uniform('revealProgress'), dustUniform = uniform('dustTime'), lightUniform = uniform('light')
-    const orbitShapeUniform = uniform('orbitShape'), orbitRotationUniform = uniform('orbitRotation')
+    const orbitShapeUniform = uniform('orbitShape'), orbitRotationUniform = uniform('orbitRotation'), orbitOpacityUniform = uniform('orbitOpacity')
     const pigmentUniforms = [0, 1, 2].map(band => uniform(`pigments[${band}]`))
     const resultPigmentUniforms = [0, 1, 2].map(band => uniform(`resultPigments[${band}]`))
     let imageRect = [0, 0, bounds.width, bounds.height]
@@ -256,10 +263,11 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
       const width = Math.min(bounds.width, 480), height = Math.min(width / 1.38, bounds.height * .86)
       return generationOrbitPose(width, height, options.generation?.progress() ?? 0, 1.5, .27)
     }
-    const waitingOpacity = () => image ? smoothGenerationPhase(.55, 2, elapsed) : 1
+    const waitingOpacity = () => image ? smoothGenerationPhase(1.5, 2, elapsed) : 1
     const draw = () => {
       const reveal = revealElapsed === null ? -1 : revealElapsed / revealDuration
-      options.generation?.orbit()?.setOpacity(reveal < 0 ? waitingOpacity() : departureOpacity * (1 - smoothGenerationPhase(0, .4, reveal)))
+      const orbitOpacity = reveal < 0 ? waitingOpacity() : departureOpacity * (1 - smoothGenerationPhase(0, .4, reveal))
+      options.generation?.orbit()?.setOpacity(orbitOpacity)
       // No invisible particle field is painted during the wait: the original
       // Canvas lines, pinpoints and local bloom remain the only waiting visual.
       if (options.generation && reveal < 0 && dustTime() < 0) {
@@ -267,9 +275,12 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
         return
       }
       appearance(); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT)
-      const pose = departurePose ?? orbitPose()
+      // Both surfaces follow the live pose through departure and arrival;
+      // freezing only the texture field makes their overlapping curves diverge.
+      const pose = orbitPose()
       gl.uniform4f(orbitShapeUniform, pose.radius, pose.formed, pose.finishing, pose.time)
       gl.uniform1f(orbitRotationUniform, pose.rotation)
+      gl.uniform1f(orbitOpacityUniform, 1 - orbitOpacity)
       gl.uniform1f(revealUniform, reveal)
       gl.uniform1f(dustUniform, dustTime())
       gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, 132 * 192)
@@ -291,10 +302,6 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
           if (!resultImage) { imageRect = fitRect(imageRect); gl!.uniform4fv(imageUniform, imageRect) }
           if (departureRect) { departureRect = fitRect(departureRect); gl!.uniform4fv(uniform('departureRect'), departureRect) }
           gl!.viewport(0, 0, canvas.width, canvas.height)
-        }
-        if (departurePose && changed) {
-          const width = Math.min(bounds.width, 480), height = Math.min(width / 1.38, bounds.height * .86)
-          departurePose = { ...departurePose, radius: generationOrbitRadius(width, height, departurePose.formed, departurePose.finishing) }
         }
         // The artwork frame can resize inside an unchanged viewport too.
         if (resultImage) updateImageRect(resultImage)
@@ -331,7 +338,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
         revealEffect = { stop: finish, resize, finished: new Promise<void>(resolve => { resolveReveal = resolve }) }
         try {
           // Preserve the current dust/orbit pose, including a result arriving before 2s.
-          departureRect = [...imageRect]; departurePose = orbitPose(); departureOpacity = waitingOpacity()
+          departureRect = [...imageRect]; departureOpacity = waitingOpacity()
           gl.uniform4fv(uniform('departureRect'), departureRect)
           gl.uniform1f(uniform('departureDust'), dustTime())
           resultTexture = gl.createTexture()
