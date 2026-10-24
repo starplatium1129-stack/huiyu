@@ -15,12 +15,12 @@
     <!-- 输入校验原因仍常显；离线原因已与恢复入口合并，不重复占一行。 -->
     <span v-if="online && blockedReason && !busy" class="gen-bar-blocked" role="status">{{ blockedReason }}</span>
     <div class="gen-bar-actions">
-      <StudioTooltip :anchor="!busy" :content="presentation.needsReview ? '核对现有任务与已保存结果' : busy ? presentation.phase === 'cancelling' ? presentation.message : '停止当前绘制' : unavailableReason || '生成当前画面'">
+      <StudioTooltip :anchor="!busy" :content="presentation.needsReview ? '核对现有任务与已保存结果' : busy ? presentation.phase === 'cancelling' ? presentation.message : '停止当前绘制' : unavailableReason || (connected === false ? readinessText : '') || '生成当前画面'">
         <button
           ref="generationAction"
           :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
-          class="btn generation-action studio-press-ripple"
-          :class="[status === 'idle' ? 'btn-primary' : 'btn-ghost', { 'is-drawing': busy }]"
+          class="btn btn-ghost generation-action studio-press-ripple"
+          :class="{ 'is-drawing': busy }"
           :data-state="status"
           type="button"
           :aria-label="actionLabel"
@@ -63,6 +63,7 @@ const props = defineProps<{
   busy: boolean
   presentation: GenerationPresentation
   online: boolean
+  connected?: boolean
   provider?: 'native' | 'comfy'
   readinessText?: string
   /** 当前生效尺寸：SD 取 sdSize，Anima/Krea2 取 width×height（宿主统一收敛）。 */
@@ -94,7 +95,7 @@ const actionLabel = computed(() => status.value === 'success' ? '生成完成，
 const actionIcon = computed(() => ({ idle: 'spark', loading: 'close', success: 'success', error: 'refresh', review: 'info' } as const)[status.value])
 const missingCharacter = computed(() => props.blockedReason?.startsWith('缺少角色 LoRA'))
 const statusSummary = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : !props.online ? props.provider === 'native' ? '原生配置待检查' : '服务未连接'
-  : props.error ? '绘制未完成' : props.stopped ? '已停止' : props.blockedReason ? '待补充设置' : '准备就绪')
+  : props.error ? '绘制未完成' : props.stopped ? '已停止' : props.blockedReason ? '待补充设置' : props.connected === false ? '生成时启动服务' : '准备就绪')
 const announcement = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : props.stopped ? '绘制已停止。'
   : status.value === 'error' ? `生成失败：${props.error}` : status.value === 'success' ? '生成完成，可以查看画布或再次生成。' : '')
 const unavailableReason = computed(() => !props.online ? props.readinessText || '绘图配置待检查' : props.blockedReason || '')

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_mirror_hall_glass_slippers_refinement",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1812,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "cinderella_mirror_hall_glass_slippers_refinement",
     "title": "灰姑娘 · 水晶镜廊中的玻璃鞋高洁回眸",
@@ -66,6 +66,7 @@
     "promptProse": "Standing in a transcendent hall of infinite crystalline mirrors beneath the midnight sky, Cinderella gazes back with piercing ruby-red eyes. Her cascading silver-white wavy hair floats on the crisp air around her corseted white-and-silver combat garb, while her iconic high-tech glass slipper armament hovers beside her in an ethereal sapphire glow.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "allowRepeatedSubject": true
   }
 }

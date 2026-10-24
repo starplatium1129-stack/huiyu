@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_kitchen_cooking_lesson",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1857,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "nakano_nino_kitchen_cooking_lesson",
     "characterId": "nakano_nino",
@@ -28,7 +28,8 @@
       "tsundere",
       "slight blush",
       "morning light",
-      "medium shot"
+      "medium shot",
+      "rolled sleeves"
     ],
     "sceneTags": [
       "kitchen",
@@ -40,7 +41,7 @@
       "blushing",
       "morning_sun"
     ],
-    "promptProse": "Standing by the clean kitchen counter, she carefully arranges golden rolled omelet into a bento box with wooden chopsticks, glancing to the side with an endearing tsundere pout in the fresh morning sun.",
+    "promptProse": "With her sweater sleeves rolled to her elbows at the kitchen counter, she places a piece of golden rolled omelet into a bento box using wooden chopsticks, glancing aside with a slight tsundere pout in the morning sunlight.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [

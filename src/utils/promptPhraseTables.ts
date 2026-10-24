@@ -27,7 +27,7 @@ export function proseToken(value: string): string {
     .replace(/^natsume_fixing_nene_hair_ornament$/i, "Natsume is fixing Nene's hair ornament")
   if (!readable) return ''
   if (/^(?:nene|natsume)_/i.test(readable)) return ''
-  return readable.replace(/_/g, ' ').replace(/\b1girl\b/gi, 'one girl').replace(/\b2people\b/gi, 'two people').replace(/\bsolo\b/gi, 'alone')
+  return readable.replace(/_/g, ' ').replace(/\b1girl\b/gi, 'one girl').replace(/\b1boy\b/gi, 'one man').replace(/\b2people\b/gi, 'two people').replace(/\bsolo\b/gi, 'alone')
 }
 
 export function normalizeProseKey(value: string): string {

@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "anis_nikke/sparkling_summer_swimwear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1542,
   "createdAt": "2026-10-22T00:00:00+00:00",
-  "updatedAt": "2026-10-22T04:47:50.049788100+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "characterId": "anis_nikke",
     "outfit": {
       "id": "sparkling_summer_swimwear",
       "name": "海风汽水运动泳装",
-      "prose": "A sporty blue-and-yellow two-piece swimsuit with secure straps, a lightweight gray zip hoodie worn open, a simple sun visor, and flat beach sandals; practical for swimming and carrying a cold drink.",
+      "prose": "A sporty blue-and-yellow two-piece swimsuit with secure straps, a lightweight gray zip hoodie worn open, a simple sun visor, and bare feet",
       "tokens": [
         "two_piece_swimsuit",
         "blue_swimsuit",
         "yellow_trim",
         "zip_hoodie",
         "sun_visor",
-        "beach_sandals"
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

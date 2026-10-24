@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_guitar_practice_riverside",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1835,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "kita_ikuyo_guitar_practice_riverside",
     "characterId": "kita_ikuyo",
@@ -42,7 +42,7 @@
       "sweat",
       "focused_gaze"
     ],
-    "promptProse": "Sitting on the grassy riverbank under the glowing golden sunset, she presses firmly against the guitar frets with both hands, focusing intently on the sheet music before her.",
+    "promptProse": "Seated cross-legged on the grassy riverbank in the golden sunset, she presses the frets of her blue-green electric guitar with her left fingertips and picks the strings with her right hand, studying the sheet music beside a metronome on the grass.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yuuki_mikan/bath_towel",
+  "revision": 1,
+  "sortOrder": 1602,
+  "createdAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "data": {
+    "characterId": "yuuki_mikan",
+    "outfit": {
+      "id": "bath_towel",
+      "name": "浴后白色大浴巾",
+      "default": false,
+      "isDefault": false,
+      "tokens": [
+        "bath_towel",
+        "towel_wrap",
+        "white_towel",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "prose": "a large white bath towel wrapped around her torso, with its upper edge held at her chest, bare shoulders, and bare feet"
+    }
+  }
+}

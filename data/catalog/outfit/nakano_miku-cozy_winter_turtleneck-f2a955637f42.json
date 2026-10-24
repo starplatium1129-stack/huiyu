@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nakano_miku/cozy_winter_turtleneck",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1575,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "characterId": "nakano_miku",
     "outfit": {
@@ -18,10 +18,9 @@
         "plaid_skirt",
         "tights",
         "black_tights",
-        "scarf",
-        "holding_can"
+        "scarf"
       ],
-      "prose": "A chunky cream-white oversized cable-knit turtleneck sweater with cuffs covering her hands, red-and-navy plaid mini skirt, thick black tights, and holding a warm canned tea",
+      "prose": "A chunky cream-white oversized cable-knit turtleneck sweater with cuffs covering her hands, red-and-navy plaid mini skirt, thick black tights, and a scarf",
       "isDefault": false,
       "default": false
     }

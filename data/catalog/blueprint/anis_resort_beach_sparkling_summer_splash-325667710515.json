@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_resort_beach_sparkling_summer_splash",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1820,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "anis_resort_beach_sparkling_summer_splash",
     "title": "阿尼斯 · 阳光海滩的冰爽汽水水花飞溅",
@@ -53,7 +53,7 @@
       "holding_soda_bottle",
       "visor_cap",
       "sporty_swimsuit",
-      "yellow_bikini",
+      "blue_bikini",
       "wet_skin",
       "huge_breasts",
       "deep_cleavage",
@@ -65,7 +65,7 @@
       "bright_sunlight",
       "summer"
     ],
-    "promptProse": "Splashing playfully in the crystal-clear shallow ocean waves along a tropical sun-drenched beach, Anis holds a foaming soda bottle high overhead. Her sporty yellow-and-blue two-piece swimsuit hugs her astonishing voluptuous curves, sun-dappled water droplets glistening on her flushed golden skin as she laughs heartily into the salty summer breeze.",
+    "promptProse": "Standing barefoot in the shallow tropical surf, Anis raises a foaming soda bottle in her right hand and splashes water toward the viewer with her left, laughing in the bright midday sun. She wears her blue-and-yellow two-piece swimsuit, open gray hoodie, and sun visor as reflected sunlight glints on the water droplets.",
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": ""

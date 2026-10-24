@@ -116,7 +116,10 @@ export function useControlStatus({ showToast }: StatusHooks) {
   watch(operationSubmitting, submitting => { if (submitting) statusRevision++ }, { flush: 'sync' })
 
   const opBusy = computed(() => operationSubmitting.value || !!(operation.value && operation.value.status === 'running') || modeBusy.value)
+  const opDisconnected = computed(() => statusLoaded.value && !statusError.value
+    && operation.value?.kind === 'comfy-start' && operation.value.status === 'completed' && !comfyOnline.value)
   const opStatusLabel = computed(() => {
+    if (opDisconnected.value) return '当前未连接'
     const s = operation.value?.status
     if (s === 'failed' && operation.value?.cancelled) return '已取消'
     return s === 'running' ? '进行中' : s === 'completed' ? '完成' : s === 'failed' ? '失败' : ''
@@ -405,7 +408,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
     feedbackText, actionNote, overviewFeedback, imageProvider, logs, logBoxEl,
     logsOpen, logsLoading, logsLoaded, logsError, logsSummary,
-    opBusy, opStatusLabel, opProgress, opCompletedStages, ollamaMeta, voiceConfiguredCount,
+    opBusy, opDisconnected, opStatusLabel, opProgress, opCompletedStages, ollamaMeta, voiceConfiguredCount,
     lastStatus: () => lastStatus,
     captureConfigEdits, acknowledgeConfigEdits,
     pollStatus, pollLogs, clearLogs, startPolling, stopPolling,

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "alice_nikke/pastel_strawberry_swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1534,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "characterId": "alice_nikke",
     "outfit": {
       "id": "pastel_strawberry_swimsuit",
       "name": "梦幻冰淇淋荷叶边露背泳装",
-      "prose": "whimsical sunny resort swimwear: a pastel-pink one-piece monokini featuring sweet strawberry motifs, delicate frilled ruffles along the plunge neckline, daring side cutouts accentuating her voluptuous hourglass hips, open back, and floating inflatable carrot pool floatie",
+      "prose": "whimsical sunny resort swimwear: a pastel-pink one-piece monokini featuring sweet strawberry motifs, delicate frilled ruffles along the plunge neckline, daring side cutouts accentuating her voluptuous hourglass hips, open back",
       "tokens": [
         "swimsuit",
         "monokini",

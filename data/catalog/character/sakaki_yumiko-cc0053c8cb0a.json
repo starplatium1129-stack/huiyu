@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sakaki_yumiko",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 169,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "sakaki_yumiko",
     "profile": {
@@ -111,7 +111,7 @@
         "灰色的果实",
         "grisaia"
       ],
-      "identityProse": "Sakaki Yumiko from Grisaia by Frontwing, the aloof and dignified first heroine of Mihama Academy with flowing knee-length raven-black hair cut in immaculate hime-cut bangs and sidelocks, sharp cold purple-violet eyes, slender graceful aristocrat figure, concealed retractable box-cutter knife, and a guarded tsundere aura hiding a vulnerable heart.",
+      "identityProse": "Sakaki Yumiko from Grisaia by Frontwing, the aloof and dignified first heroine of Mihama Academy with flowing knee-length raven-black hair cut in immaculate hime-cut bangs and sidelocks, sharp cold purple-violet eyes, slender graceful aristocrat figure, and a guarded tsundere aura hiding a vulnerable heart.",
       "identityTokens": [
         "sakaki_yumiko",
         "1girl",

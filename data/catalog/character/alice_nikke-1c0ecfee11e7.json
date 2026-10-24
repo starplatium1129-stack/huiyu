@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alice_nikke",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 173,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "alice_nikke",
     "profile": {
@@ -117,7 +117,7 @@
         "胜利女神：妮姬",
         "nikke"
       ],
-      "identityProse": "Alice from Goddess of Victory: NIKKE, the dreamy and innocent sniper heroine of Unlimited squad with long wavy pastel-pink twintails, luminous sapphire blue eyes, mechanical rabbit-ear headphones, a body-hugging pink-and-white cooling bodysuit accentuating an astonishing hourglass figure, carrying her carrot-themed anti-materiel sniper rifle, calling the Commander her 'Mr. Rabbit'.",
+      "identityProse": "Alice from Goddess of Victory: NIKKE, the dreamy and innocent sniper heroine of Unlimited squad with long wavy pastel-pink twintails, luminous sapphire blue eyes, mechanical rabbit-ear headphones, an hourglass figure, calling the Commander her 'Mr. Rabbit'.",
       "identityTokens": [
         "alice_(nikke)",
         "1girl",
@@ -130,8 +130,6 @@
         "headphones",
         "large_breasts",
         "curvy",
-        "bodysuit",
-        "latex",
         "goddess_of_victory:_nikke"
       ],
       "exactTokens": [

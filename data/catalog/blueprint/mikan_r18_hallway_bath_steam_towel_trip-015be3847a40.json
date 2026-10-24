@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_hallway_bath_steam_towel_trip",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1779,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-21T15:20:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "mikan_r18_hallway_bath_steam_towel_trip",
     "title": "结城美柑 · 浴后走廊的意外跌坐心跳",
     "characterId": "yuuki_mikan",
-    "outfitId": "sainan_junior_uniform",
+    "outfitId": "bath_towel",
     "adult": true,
     "category": "意外神摔",
     "action": "刚沐浴走出浴室，单薄大浴巾松垮掩身，被意外神摔撞倒跌坐在走廊地板，一手撑地一手慌乱掩胸，满面通红嗔斥",
@@ -55,9 +55,12 @@
       "brown_eyes",
       "heavy_blush",
       "tears_in_eyes",
-      "warm_indoor_light"
+      "warm_indoor_light",
+      "bath_towel",
+      "towel_wrap",
+      "white_towel"
     ],
-    "promptProse": "Fallen onto the polished wooden hallway floor in disheveled surprise with steam drifting from the open bathroom door, Mikan braces one hand against the floor while pressing the other securely over her chest. Droplets glisten along her blushing neck and collarbone as she looks up with teary, bashful indignation.",
+    "promptProse": "Seated on the wooden hallway floor beside the open bathroom door, Mikan braces her left hand on the floor and holds the upper edge of a large white bath towel closed at her chest with her right. The towel remains wrapped around her torso as steam drifts from the doorway and warm wall lamps catch the water droplets in her wet hair.",
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": ""

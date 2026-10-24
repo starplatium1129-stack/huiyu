@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_after_school_cafe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1825,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "kita_ikuyo_after_school_cafe",
     "characterId": "kita_ikuyo",
     "title": "喜多郁代 · 放学后的甜品自拍",
     "category": "校园日常",
     "outfitId": "shuka_sailor_uniform",
-    "description": "【喜多郁代 · 放学后的甜品自拍】下北泽阳光温煦的咖啡馆靠窗座，换上水手服的喜多郁代双手捧着巨型草莓芭菲，对着手机镜头眨眼比出「V」手势。夕阳透过木质百叶窗洒在草莓发丝上，散发着现充JK无比甜美治愈的日常气息。",
-    "action": "坐在咖啡桌前一手扶着草莓芭菲一手举手机比V字自拍",
+    "description": "【喜多郁代 · 放学后的甜品自拍】下北泽咖啡馆的靠窗座位上，草莓芭菲放在木桌上。穿水手服的喜多右手举着手机自拍，左手在脸旁比出V字，俏皮地眨眼。黄昏阳光透过木质百叶窗洒在红发上。",
+    "action": "坐在咖啡桌前右手举手机自拍、左手在脸旁比V字，芭菲放在桌上",
     "location": "下北泽复古风格甜品咖啡馆",
     "timeOfDay": "傍晚",
     "mood": "甜美活泼",
@@ -24,7 +24,6 @@
       "holding smartphone",
       "parfait",
       "cafe",
-      "afternoon",
       "sunset light",
       "cowboy shot"
     ],
@@ -39,7 +38,7 @@
       "sunlight",
       "golden_hour"
     ],
-    "promptProse": "Sitting at the wooden cafe table beside a large parfait glass, she holds up her smartphone with one hand and flashes a cheerful peace sign in the warm afternoon sunlight filtering through blinds.",
+    "promptProse": "Seated beside the cafe window in warm sunset light filtering through wooden blinds, she holds her smartphone in her right hand and makes a peace sign beside her cheek with her left while winking at the phone. A large strawberry parfait rests on the wooden table.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [

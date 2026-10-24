@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "rapi_nikke/commander_private_office_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1527,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "characterId": "rapi_nikke",
     "outfit": {
       "id": "commander_private_office_shirt",
       "name": "指挥官办公室私服男友衬衫",
-      "prose": "Commander's private office casual wear: an oversized crisp white button-up dress shirt loosely buttoned, open collar revealing delicate collarbones and deep cleavage, sleeves rolled to elbows, hem falling to upper thighs, bare legs, and indoor black slippers",
+      "prose": "Commander's private office casual wear: an oversized crisp white button-up dress shirt loosely buttoned, open collar revealing delicate collarbones and deep cleavage, sleeves rolled to elbows, hem falling to upper thighs, bare legs, and bare feet",
       "tokens": [
         "oversized_shirt",
         "white_shirt",
@@ -18,8 +18,8 @@
         "unbuttoned",
         "cleavage",
         "bare_legs",
-        "slippers",
-        "candid"
+        "candid",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

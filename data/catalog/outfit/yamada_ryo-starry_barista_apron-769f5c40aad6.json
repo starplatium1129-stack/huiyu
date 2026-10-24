@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/starry_barista_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1567,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
@@ -17,10 +17,9 @@
         "necktie",
         "black_necktie",
         "apron",
-        "black_apron",
-        "holding_cup"
+        "black_apron"
       ],
-      "prose": "A clean rolled-sleeve dark charcoal dress shirt, a tailored black bistro apron, and a thin black necktie, holding a cocktail shaker with an aloof expression behind the dimly lit counter",
+      "prose": "A charcoal dress shirt with rolled sleeves, a tailored black bistro apron, and a thin black necktie",
       "isDefault": false,
       "default": false
     }

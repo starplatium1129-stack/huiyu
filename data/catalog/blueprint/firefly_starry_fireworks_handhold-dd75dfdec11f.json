@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_starry_fireworks_handhold",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1867,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "firefly_starry_fireworks_handhold",
     "characterId": "firefly_hsr",
@@ -12,7 +12,7 @@
     "category": "假期出行",
     "outfitId": "glamoth_canonical_dress",
     "description": "【流萤 · 盛大烟花下的紧握相依】漫天盛大焰火在夜空中轰然绽放，五彩光斑照亮了流萤满含泪光的双眸。少女十指紧扣住你的手掌，倚靠在你的肩膀旁，轻声吐露心声——「请看着我……把流萤真正的模样，烙印在你的记忆里。」",
-    "action": "与对方十指相扣依偎在身侧，抬头仰望夜空绚烂烟花",
+    "action": "轻靠在画外同伴的肩侧，十指相扣，抬眼仰望烟花；画内只出现同伴的手和一小段前臂",
     "location": "梦境城市钟表广场观景台",
     "timeOfDay": "夜晚",
     "mood": "浪漫震撼",
@@ -38,11 +38,12 @@
       "sparkling_eyes",
       "romantic"
     ],
-    "promptProse": "Standing together under a sky bursting with dazzling multicolored fireworks, her fingers remain tightly interlocked with his, leaning gently toward his side with glistening eyes.",
+    "promptProse": "Under the colorful fireworks above the night city, Firefly leans against the viewer's shoulder just outside the left edge of the frame and looks upward with glistening eyes. Her left hand interlocks with the viewer's right hand in the lower foreground; only his hand and a short forearm enter the image. Firework light and rim light illuminate her face and hair.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "compositionIntent": "single"
   }
 }

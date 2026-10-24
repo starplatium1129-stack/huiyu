@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/summer_breeze_sundress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1587,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
@@ -16,10 +16,10 @@
         "sleeveless",
         "green_dress",
         "bare_shoulders",
-        "sandals",
-        "straw_hat"
+        "straw_hat",
+        "barefoot"
       ],
-      "prose": "An airy seafoam-green summer sundress with delicate spaghetti shoulder straps baring her smooth shoulders, straw sun hat, and strappy flat sandals",
+      "prose": "An airy seafoam-green summer sundress with thin shoulder straps, a straw sun hat, and bare feet",
       "isDefault": false,
       "default": false
     }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rapi_nikke",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 172,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "rapi_nikke",
     "profile": {
@@ -112,7 +112,7 @@
         "胜利女神：妮姬",
         "nikke"
       ],
-      "identityProse": "Rapi from Goddess of Victory: NIKKE, the steadfast and composed leader of the Counters squad with waist-length dark reddish-brown hair, sharp resolute crimson-red eyes, striking peaked military officer cap, voluptuous athletic hourglass figure, cool disciplined soldier demeanor, and an unyielding loyalty to the Commander.",
+      "identityProse": "Rapi from Goddess of Victory: NIKKE, the steadfast and composed leader of the Counters squad with waist-length dark reddish-brown hair, sharp resolute crimson-red eyes, voluptuous athletic hourglass figure, cool disciplined soldier demeanor, and an unyielding loyalty to the Commander.",
       "identityTokens": [
         "rapi_(nikke)",
         "1girl",
@@ -120,8 +120,6 @@
         "brown_hair",
         "long_hair",
         "red_eyes",
-        "military_hat",
-        "peaked_cap",
         "large_breasts",
         "curvy",
         "goddess_of_victory:_nikke"

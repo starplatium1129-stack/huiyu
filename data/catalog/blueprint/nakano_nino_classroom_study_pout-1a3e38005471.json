@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_classroom_study_pout",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1860,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "nakano_nino_classroom_study_pout",
     "characterId": "nakano_nino",
@@ -28,7 +28,8 @@
       "annoyed",
       "oversized sweater",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "sleeves past fingers"
     ],
     "sceneTags": [
       "classroom",
@@ -40,7 +41,7 @@
       "sunset",
       "cute_glare"
     ],
-    "promptProse": "Slumped over an exam paper at the classroom desk, she nibbles on a pencil eraser while puffing her cheeks into an adorable furious pout under the orange sunset rays.",
+    "promptProse": "Slumped over an exam paper at the classroom desk with her long sweater cuffs covering her hands, she nibbles on a pencil eraser and puffs her cheeks in an annoyed pout under the orange sunset rays.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [

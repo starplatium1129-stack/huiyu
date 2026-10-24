@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_live_shine",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1824,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "kita_ikuyo_live_shine",
     "characterId": "kita_ikuyo",
@@ -12,7 +12,7 @@
     "category": "舞台演出",
     "outfitId": "kessoku_band_live_casual",
     "description": "【喜多郁代 · 舞台中央的喜多华光】在STARRY充满热气的舞台上，红发少女站在主唱麦克风前，抱紧蓝绿色的电吉他，展露出如太阳般灿烂夺目的笑容。汗珠在绚丽的聚光灯下闪闪发亮，饱含生命力的歌声回荡在整个Livehouse——「无论前方有什么，只要有大家在，就能把笑容传递给所有人！」",
-    "action": "单手握麦克风、单手扫弦吉他，露出元气耀眼的笑容",
+    "action": "面对支架上的麦克风演唱，左手按住吉他指板、右手扫弦，露出元气耀眼的笑容",
     "location": "Livehouse STARRY 演出舞台",
     "timeOfDay": "夜晚",
     "mood": "热情耀眼",
@@ -20,7 +20,6 @@
     "camera": "medium shot, low angle, dynamic framing",
     "promptTokens": [
       "singing",
-      "holding microphone",
       "electric guitar",
       "playing guitar",
       "smile",
@@ -29,7 +28,8 @@
       "spotlight",
       "sweat",
       "medium shot",
-      "from below"
+      "from below",
+      "microphone stand"
     ],
     "sceneTags": [
       "stage",
@@ -41,7 +41,7 @@
       "sweat",
       "wristband"
     ],
-    "promptProse": "She leans into the vocal microphone with one hand and sweeps across the electric guitar strings with the other under the golden stage spotlights, singing with a radiant wide smile.",
+    "promptProse": "Singing into a microphone on its stand under golden stage spotlights, she frets the neck of her blue-green electric guitar with her left hand and strums with her right, smiling radiantly.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [

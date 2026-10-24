@@ -1,12 +1,12 @@
-/* The recommendation owns one disclosure and one opaque reading surface. */
-.managed-route-card { min-width:0; max-width:100%; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
-.managed-route-summary { min-height:var(--control-height); padding:0; color:var(--text-secondary); list-style:none; cursor:pointer; }
+/* A compact disclosure within the existing parameter surface. */
+.managed-route-card { min-width:0; max-width:100%; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:transparent; }
+.managed-route-card > .managed-route-summary { min-height:var(--control-height-sm); padding:0; color:var(--text-secondary); list-style:none; cursor:pointer; }
 .managed-route-summary::-webkit-details-marker { display:none; }
 .managed-route-summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.managed-route-heading { display:grid; gap:var(--s-1); min-width:0; font:600 var(--fs-label)/var(--lh-label) var(--font-sans); overflow-wrap:anywhere; }
+.managed-route-heading { display:grid; gap:0; min-width:0; font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); overflow-wrap:anywhere; }
 .managed-route-heading > span { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); }
 .managed-route-heading small { color:var(--warning-text); font-size:var(--fs-label-xs); }
-.managed-route-heading strong { color:var(--text-primary); font-size:var(--fs-body); }
+.managed-route-heading strong { color:var(--text-primary); font-size:var(--fs-label); font-weight:600; }
 .managed-route-body { display:grid; gap:var(--s-3); min-width:0; padding-top:var(--s-3); color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); overflow-wrap:anywhere; }
 .managed-route-body p { margin:0; }
 .managed-route-body .managed-route-kicker { font-weight:600; }

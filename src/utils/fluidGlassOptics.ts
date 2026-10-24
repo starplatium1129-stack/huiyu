@@ -1,5 +1,5 @@
 const CHROME_SELECTOR = '.nav, .companion-toolbar, .studio-popover[data-fluid-glass], .studio-select-content[data-fluid-glass], .chat-more-menu[data-fluid-glass], .wardrobe-menu[data-fluid-glass], .gallery-selection-dock[data-fluid-glass], .gallery-orbit-navigation[data-fluid-glass]'
-const OPTICS_SELECTOR = `${CHROME_SELECTOR}, .generation-action-surface`
+const OPTICS_SELECTOR = CHROME_SELECTOR
 const SVG_NS = 'http://www.w3.org/2000/svg'
 let sequence = 0
 

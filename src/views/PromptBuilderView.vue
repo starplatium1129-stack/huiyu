@@ -20,11 +20,11 @@
         <div class="pb-heading-row">
           <h1 class="pb-title">绘图画室</h1>
           <div class="api-status">
-            <StudioTooltip :content="engineOnline ? '点击重新检测' : `${engineStatusText}；点击重新检测`">
-              <button class="badge" :class="engineOnline ? 'badge-online' : 'badge-offline'" type="button"
+            <StudioTooltip :content="`${engineStatusText}；点击重新检测`">
+              <button class="badge" :class="engineOnline && animaState.online ? 'badge-online' : 'badge-offline'" type="button"
                 @click="recheckEngineConnection">
-                <ArchiveIcon :name="engineOnline ? 'success' : 'warning'" />
-                <span>{{ drawEngineLabel }} {{ engineOnline ? '已连接' : '未连接' }}</span>
+                <ArchiveIcon :name="engineOnline && animaState.online ? 'success' : 'warning'" />
+                <span>{{ drawEngineLabel }} {{ engineOnline ? animaState.online ? '已连接' : '待启动' : '未连接' }}</span>
               </button>
             </StudioTooltip>
             <RouterLink v-if="!engineOnline" class="api-recovery-link" :to="{ path: '/control', query: { engine: drawEngine } }">控制面板</RouterLink>
@@ -72,6 +72,7 @@
           :busy="generationBusy"
           :presentation="generationPresentation"
           :online="engineOnline"
+          :connected="engineOnline && animaState.online"
           :provider="animaState.provider" :readiness-text="engineStatusText"
           :size="genBarSize"
           :anima-sizes="animaBarSizes"

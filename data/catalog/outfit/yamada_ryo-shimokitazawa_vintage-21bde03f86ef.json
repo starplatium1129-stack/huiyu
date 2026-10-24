@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/shimokitazawa_vintage",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1564,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
@@ -18,11 +18,9 @@
         "wide-leg_pants",
         "trousers",
         "suspenders",
-        "bass_guitar",
-        "guitar_strap",
         "sneakers"
       ],
-      "prose": "An oversized olive-green vintage button-up shirt draped loosely over a white undershirt, baggy high-waisted beige trousers with suspenders, black canvas sneakers, and slinging her Olympic White Fender Precision Bass across her back",
+      "prose": "An oversized olive-green vintage button-up shirt over a white undershirt, baggy high-waisted beige trousers with suspenders, and black canvas sneakers",
       "isDefault": true,
       "default": true
     }

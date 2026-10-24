@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "anis_nikke/cozy_boyfriend_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1552,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "characterId": "anis_nikke",
     "outfit": {
       "id": "cozy_boyfriend_shirt",
       "name": "前哨基地闲散男友白衬衫",
-      "prose": "an oversized crisp white collared men's shirt draped loosely over her voluptuous curves, unbuttoned top revealing ample cleavage and soft collarbones, bare thighs, and fuzzy slippers.",
+      "prose": "an oversized crisp white collared men's shirt draped loosely over her voluptuous curves, unbuttoned top revealing ample cleavage and soft collarbones, bare thighs, and bare feet.",
       "tokens": [
         "oversized_shirt",
         "white_shirt",
@@ -18,8 +18,8 @@
         "unbuttoned",
         "cleavage",
         "bare_legs",
-        "slippers",
-        "candid"
+        "candid",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

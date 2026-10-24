@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_runaway_train_confession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1855,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "nakano_nino_runaway_train_confession",
     "characterId": "nakano_nino",
@@ -12,7 +12,7 @@
     "category": "校园日常",
     "outfitId": "short_hair_revival_bakery",
     "description": "【中野二乃 · 暴走机车的无畏直球告白】夕阳熔金的坡道旁，微风吹拂二乃干净利落的齐肩短发。少女双手插在围裙口袋里，微微扬起下巴，明澈耀眼的群青眼眸直直迎向你的目光，脸颊带着娇艳红晕却毫不退缩——「听不懂吗？那我再说一遍好了。我喜欢你……听明白了吧，笨蛋！」",
-    "action": "在夕阳坡道上扬起下巴双手叉腰，微红着脸眼神炽热直视前方",
+    "action": "夕阳坡道上双手插在围裙口袋里，微抬下巴，红着脸直视前方",
     "location": "夕阳倾斜的下坡道树荫旁",
     "timeOfDay": "黄昏",
     "mood": "炽热坚决",
@@ -22,13 +22,13 @@
       "slope",
       "sunset",
       "golden hour",
-      "hands on hips",
       "short hair",
       "blush",
       "confident",
       "determined look",
       "wind",
-      "cowboy shot"
+      "cowboy shot",
+      "hands in pockets"
     ],
     "sceneTags": [
       "slope",
@@ -41,7 +41,7 @@
       "intense_eyes",
       "wind"
     ],
-    "promptProse": "Standing on the road slope in the blazing red sunset, she rests hands on her hips with her short bob hair fluttering, tilting her chin up proudly with a flushed face and intensely passionate blue eyes.",
+    "promptProse": "Standing on the road slope in the red sunset, she keeps both hands in her apron pockets and tilts her chin up with flushed cheeks and a resolute gaze, her short pink bob stirring in the breeze.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [

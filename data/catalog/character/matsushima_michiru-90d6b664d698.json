@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "matsushima_michiru",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 170,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "matsushima_michiru",
     "profile": {
@@ -115,7 +115,7 @@
         "灰色的果实",
         "grisaia"
       ],
-      "identityProse": "Matsushima Michiru from Grisaia by Frontwing, the energetic and comical bleach-blonde heroine of Mihama Academy with iconic waist-length bleached blonde twintails tied with black ribbons, bright clear sapphire blue eyes, charming lively smile, a lemon hard candy often tucked in her cheek, and an earnest yet hopelessly clumsy fake tsundere persona harboring a profoundly selfless and empathetic heart.",
+      "identityProse": "Matsushima Michiru from Grisaia by Frontwing, the energetic and comical bleach-blonde heroine of Mihama Academy with iconic waist-length bleached blonde twintails tied with black ribbons, bright clear sapphire blue eyes, charming lively smile, and an earnest yet hopelessly clumsy fake tsundere persona harboring a profoundly selfless and empathetic heart.",
       "identityTokens": [
         "matsushima_michiru",
         "1girl",

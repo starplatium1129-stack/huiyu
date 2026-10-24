@@ -27,17 +27,14 @@
 .pb .gen-bar .generation-action {
   position:relative; isolation:isolate; width:100%; min-width:0; min-height:44px;
   padding:var(--s-2) var(--s-3); border:0; border-radius:var(--r-md);
-  background:transparent; box-shadow:none; font-size:var(--fs-label); line-height:1.2;
+  background:transparent; color:var(--text-primary); box-shadow:none; font-size:var(--fs-label); line-height:1.2;
 }
-.pb .generation-action-surface { position:absolute; inset:0; z-index:-1; border:1px solid var(--accent); border-radius:inherit; background:var(--accent); transform-origin:top left; }
+.pb .generation-action-surface { position:absolute; inset:0; z-index:-1; border:1px solid var(--border-strong); border-radius:inherit; background:transparent; transform-origin:top left; }
 .pb .generation-action-content { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-2); }
 .pb .generation-action-label { display:flex; align-items:center; justify-content:center; gap:var(--s-2); white-space:nowrap; }
-.pb .generation-action[data-state="idle"]:hover:not(:disabled) .generation-action-surface { background:color-mix(in srgb,var(--accent) 90%,var(--text-primary)); }
 .pb .generation-action[data-state="success"]:not(:disabled) { color:var(--success-text); }
 .pb .generation-action[data-state="error"]:not(:disabled) { color:var(--danger-text); }
-.pb .generation-action:is([data-state="success"],[data-state="error"],[data-state="review"]) .generation-action-surface { background:var(--bg-surface); border-color:currentColor; }
-.pb .generation-action.is-drawing { color:var(--accent); }
-.pb .is-drawing .generation-action-surface { background:var(--accent-soft); }
+.pb .generation-action:is([data-state="success"],[data-state="error"]) .generation-action-surface { border-color:currentColor; }
 .pb .is-drawing .generation-action-content { padding-bottom:5px; }
 .pb .is-drawing .generation-action-label { justify-content:flex-start; }
 /* Progress lives inside the same 44px action; starting/stopping does not grow it. */
@@ -49,26 +46,7 @@
 .pb .generation-action:disabled .generation-action-surface { border-color:var(--border-soft); background:var(--bg-elevated); }
 .pb .generation-action[aria-disabled="true"] { color:var(--text-disabled); cursor:wait; }
 .pb .generation-action[aria-disabled="true"] .generation-action-surface { border-color:var(--border-soft); background:var(--bg-elevated); }
-/* Keep the existing morph target, click ripple, content handoff and progress.
-   Optical paint rides on the same surface, beneath the unchanged text layer. */
-html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action-surface {
-  box-shadow:inset 0 1px 0 var(--liquid-rim),inset 0 -1px 0 var(--liquid-depth),inset 1px 0 0 var(--liquid-rim-soft),0 4px 12px -8px var(--liquid-depth);
-}
-html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action-surface::after {
-  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-  background:linear-gradient(180deg,var(--liquid-rim-soft),transparent 38% 68%,var(--glass-highlight));
-}
-html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action-surface.fluid-glass-refractive {
-  -webkit-backdrop-filter:var(--fluid-glass-filter) saturate(145%);
-  backdrop-filter:var(--fluid-glass-filter) saturate(145%);
-}
-html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action[data-state='idle']:not(:disabled) .generation-action-surface {
-  background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 86%,transparent),var(--accent) 32% 72%,color-mix(in srgb,var(--accent) 88%,transparent));
-}
-html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action:is(:disabled,[aria-disabled='true']) .generation-action-surface { box-shadow:inset 0 1px 0 var(--glass-highlight); }
-html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action:is(:disabled,[aria-disabled='true']) .generation-action-surface::after { display:none; }
 .pb :is(.gen-bar-recovery,.generation-action):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.pb .generation-action[data-state="idle"]:focus-visible { --focus-shadow:inset 0 -2px 0 currentColor; }
 .pb .gen-bar[data-docked] { flex-direction:column; align-items:stretch; border:0; border-radius:0; }
 .pb .gen-bar[data-docked] :is(.gen-bar-meta,.gen-bar-blocked,.gen-bar-actions) { flex:0 0 auto; width:100%; margin:0; }
 @keyframes generation-traverse { from { transform:translateX(-110%); } to { transform:translateX(370%); } }

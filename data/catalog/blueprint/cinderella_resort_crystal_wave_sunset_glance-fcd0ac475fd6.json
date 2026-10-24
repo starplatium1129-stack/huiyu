@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_resort_crystal_wave_sunset_glance",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1815,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "id": "cinderella_resort_crystal_wave_sunset_glance",
     "title": "灰姑娘 · 暮色海滨晶莹浪潮的水晶倒影",
@@ -68,6 +68,7 @@
     "promptProse": "Strolling along the glistening wet tidal sands at twilight, Cinderella turns with a rare, tender expression against a violet-and-amber sunset horizon. Her pearl-blue resort swimwear and sheer breeze-swept wrap accentuate her statuesque, graceful form, the glassy ocean shallows mirroring her silver-haired beauty like polished crystal.",
     "negativeTokens": [],
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "allowRepeatedSubject": true
   }
 }

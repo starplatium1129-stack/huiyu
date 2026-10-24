@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nakano_miku/matcha_bakery_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1573,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
   "data": {
     "characterId": "nakano_miku",
     "outfit": {
@@ -17,10 +17,9 @@
         "apron",
         "green_apron",
         "bandana",
-        "slacks",
-        "holding_tray"
+        "slacks"
       ],
-      "prose": "A crisp short-sleeved baker shirt under a forest-green half apron tied around her waist with a matching hair bandana, a dusting of white flour on her cheek, holding a baking tray with fresh bread",
+      "prose": "A crisp short-sleeved white baker shirt under a forest-green half apron, a matching hair bandana, and straight trousers",
       "isDefault": false,
       "default": false
     }
