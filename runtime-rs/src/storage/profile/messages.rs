@@ -1,6 +1,7 @@
 use super::*;
 const FORMAT: &str = "huiyu-chat-records-v1";
 const DELTA: &str = "huiyu-chat-delta-v1";
+const UPSERT: &str = "INSERT INTO chat_message_records VALUES(?,?) ON CONFLICT(id) DO UPDATE SET body=excluded.body";
 
 fn parsed(value: Value) -> Result<(Value, bool)> {
     if let Some(text) = value.as_str() { Ok((serde_json::from_str(text)?, true)) }
@@ -24,15 +25,16 @@ fn lists(value: &mut Value, mut visit: impl FnMut(&mut Value, Vec<String>) -> Re
 }
 fn encode(c: &Context, value: Value) -> Result<Value> {
     let (mut header, string_encoded) = parsed(value)?;
+    let mut upsert = c.db.prepare_cached(UPSERT)?;
     lists(&mut header, |list, path| {
         let Some(items) = list.as_array() else { return Ok(()) };
         let mut ids = Vec::new();
         for item in items {
+            c.check_cancel()?;
             let mut key = path.clone();
             key.push(item["mid"].as_str().filter(|s| !s.is_empty()).ok_or_else(|| invalid("Message identity missing"))?.into());
             let id = stringify(&json!(key));
-            c.db.execute("INSERT INTO chat_message_records VALUES(?,?) ON CONFLICT(id) DO UPDATE SET body=excluded.body",
-                params![id, stringify(item)])?;
+            upsert.execute(params![id, stringify(item)])?;
             ids.push(id);
         }
         *list = json!({"$messages":ids});
@@ -40,9 +42,9 @@ fn encode(c: &Context, value: Value) -> Result<Value> {
     })?;
     Ok(json!({"storageFormat":FORMAT,"stringEncoded":string_encoded,"header":header}))
 }
-pub(in crate::storage) fn decode(db: &Connection, value: Value) -> Result<Value> {
+pub(in crate::storage) fn decode(db: &Connection, mut value: Value) -> Result<Value> {
     if value["storageFormat"] != FORMAT { return Ok(value); }
-    let mut header = value["header"].clone();
+    let mut header = value["header"].take();
     let mut lookup = db.prepare_cached("SELECT body FROM chat_message_records WHERE id=?")?;
     lists(&mut header, |list, _| {
         let ids = list["$messages"].as_array().ok_or_else(|| invalid("Invalid message index"))?;
@@ -74,12 +76,18 @@ pub(super) fn prepare(c: &Context, value: &Value) -> Result<Value> {
     if upsert.len() > 10000 || remove.len() > 10000 || !value["header"].is_object() || !value["stringEncoded"].is_boolean() {
         return Err(invalid("Invalid chat delta"));
     }
+    let mut write = c.db.prepare_cached(UPSERT)?;
     for record in upsert {
+        c.check_cancel()?;
         let id = record["id"].as_str().filter(|id| id.len() <= 1000).ok_or_else(|| invalid("Invalid message ID"))?;
         if !record["body"].is_object() || credential(&record["body"]) { return Err(invalid("Invalid message body")); }
-        c.db.execute("INSERT INTO chat_message_records VALUES(?,?) ON CONFLICT(id) DO UPDATE SET body=excluded.body", params![id,stringify(&record["body"])])?;
+        write.execute(params![id,stringify(&record["body"])])?;
     }
-    for id in remove { c.db.execute("DELETE FROM chat_message_records WHERE id=?", [id.as_str().ok_or_else(|| invalid("Invalid message ID"))?])?; }
+    let mut delete = c.db.prepare_cached("DELETE FROM chat_message_records WHERE id=?")?;
+    for id in remove {
+        c.check_cancel()?;
+        delete.execute([id.as_str().ok_or_else(|| invalid("Invalid message ID"))?])?;
+    }
     // The profile writer resolves this index once for credentials and media
     // references before committing; any missing body rolls back this transaction.
     Ok(json!({"storageFormat":FORMAT,"stringEncoded":value["stringEncoded"],"header":value["header"]}))

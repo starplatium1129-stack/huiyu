@@ -156,6 +156,7 @@ impl Drop for CancelOnDrop {
 pub(super) struct Context {
     db: Connection,
     gallery_catalog: std::cell::RefCell<Option<gallery::CatalogCache>>,
+    image_batch_recovery: Option<(String, Value)>,
     task_payloads: std::cell::RefCell<tasks::PayloadCache>,
     root: PathBuf,
     workspace_id: String,

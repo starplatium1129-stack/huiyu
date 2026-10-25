@@ -340,6 +340,7 @@ pub(super) fn open(
          CREATE INDEX IF NOT EXISTS leases_operation_key ON leases(operation_key);
          CREATE INDEX IF NOT EXISTS tasks_unsettled ON tasks(task_id) WHERE upstream_settled=0;
          CREATE INDEX IF NOT EXISTS tasks_revision ON tasks(principal_id,json_extract(record_json,'$.revision'));
+         CREATE INDEX IF NOT EXISTS image_batches_principal_revision ON image_batch_plans(principal,revision);
          CREATE INDEX IF NOT EXISTS tasks_recovery_scan ON tasks(principal_id) WHERE json_extract(record_json,'$.deliveryState') != 'discarded' AND (upstream_settled=0 OR (json_extract(record_json,'$.status')='succeeded' AND json_extract(record_json,'$.resultState')!='available'));",
     )?;
     super::tasks::initialize(&db)?;
@@ -347,6 +348,7 @@ pub(super) fn open(
     let mut context = Context {
         db,
         gallery_catalog: Default::default(),
+        image_batch_recovery: None,
         task_payloads: Default::default(),
         root,
         workspace_id,

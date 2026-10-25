@@ -4,10 +4,25 @@ use rusqlite::{OptionalExtension, params};
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;
     if kind == "imageBatch.list" {
-        let mut statement = c.db.prepare("SELECT body,revision FROM image_batch_plans WHERE principal=? AND (json_extract(body,'$.state')='running' OR EXISTS(SELECT 1 FROM json_each(body,'$.jobs') j WHERE json_extract(j.value,'$.status') IN ('accepted','running'))) ORDER BY revision LIMIT 100")?;
-        return Ok(Value::Array(statement.query_map([principal], |row| Ok((row.get::<_, String>(0)?, row.get::<_, i64>(1)?)))?
-            .map(|row| { let (body, revision) = row?; let mut value: Value = serde_json::from_str(&body)?; value["revision"] = json!(revision); Ok(value) })
-            .collect::<Result<Vec<_>>>()?));
+        if let Some((owner, plans)) = &c.image_batch_recovery
+            && owner == principal {
+            return Ok(plans.clone());
+        }
+        // Recovery needs IDs; portable activation additionally reads state.
+        // Keep complete job arrays inside SQLite and reuse this bounded list
+        // between batch writes, including empty task-center delta polls.
+        let plans = {
+            let mut statement = c.db.prepare_cached("SELECT json_object('id',id,'state',json_extract(body,'$.state')) FROM image_batch_plans WHERE principal=? AND (json_extract(body,'$.state')='running' OR EXISTS(SELECT 1 FROM json_each(body,'$.jobs') j WHERE json_extract(j.value,'$.status') IN ('accepted','running'))) ORDER BY revision LIMIT 100")?;
+            let mut rows = statement.query([principal])?;
+            let mut plans = Vec::new();
+            while let Some(row) = rows.next()? {
+                c.check_cancel()?;
+                plans.push(serde_json::from_str(text_column(row, 0)?)?);
+            }
+            Value::Array(plans)
+        };
+        c.image_batch_recovery = Some((principal.into(), plans.clone()));
+        return Ok(plans);
     }
     let id = string(command, "id")?;
     if uuid::Uuid::parse_str(id).is_err() { return Err(invalid("Invalid image batch identity")); }
@@ -99,6 +114,9 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         let written = c.db.execute("INSERT INTO image_batch_plans VALUES(?,?,?,?) ON CONFLICT(id) DO UPDATE SET body=excluded.body,revision=excluded.revision WHERE image_batch_plans.principal=excluded.principal",
             params![id, principal, stringify(&plan), revision])?;
         if written != 1 { return Err(conflict("BATCH_KEY_CONFLICT","Batch identity is already in use")); }
+        // The SQLite actor is the sole batch writer. Invalidate before any
+        // later fallible work: a rollback may cause a miss, never stale recovery.
+        c.image_batch_recovery = None;
         if let Some(frozen) = frozen {
             c.db.execute("INSERT INTO image_batch_sources VALUES(?,?)",params![id,canonical::fingerprint(&command["plan"])])?;
             save_inputs(&c.db,id,frozen)?;

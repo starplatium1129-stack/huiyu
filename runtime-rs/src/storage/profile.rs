@@ -345,6 +345,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             // Both writes share this transaction. Release the decoded tree
             // before encoding the original value and constructing its receipt.
             drop(parsed);
+            drop(expanded);
             c.db.execute("INSERT INTO profile_records VALUES(?,?,?,?) ON CONFLICT(domain,record_key) DO UPDATE SET body=excluded.body,revision=excluded.revision",params![selected,record_key,stringify(value),revision])?;
             if key==CHAT_ARCHIVE { archive::collect(c,value)?; }
             // Callers already retain the exact submitted value. Opt-in writes

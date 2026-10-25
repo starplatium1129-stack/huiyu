@@ -11,7 +11,8 @@ impl TaskRuntime {
     pub(crate) async fn recover_image_batches(self: &Arc<Self>, storage: &Storage, principal: &str) -> Result<()> {
         let plans = storage.request(json!({"kind":"imageBatch.list"}), principal).await?;
         for plan in plans.as_array().into_iter().flatten() {
-            if needs_work(plan) && let Some(id) = plan["id"].as_str() {
+            // Storage already selects running plans or accepted/running jobs.
+            if let Some(id) = plan["id"].as_str() {
                 self.start_image_batch(storage.clone(), principal.into(), id.into());
             }
         }

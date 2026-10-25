@@ -73,12 +73,13 @@ pub(super) fn execute(c: &mut Context, command: &Value) -> Result<Value> {
             let hashes = command["hashes"].as_array().ok_or_else(|| invalid("Invalid archive chunk list"))?;
             if hashes.len() > 1000 { return Err(invalid("Too many archive chunks")); }
             let mut missing = Vec::new();
+            let mut touch = c.db.prepare_cached("UPDATE profile_archive_chunks SET touched=? WHERE hash=?")?;
             for hash in hashes {
                 c.check_cancel()?;
                 let hash = hash.as_str().filter(|hash| media::valid_hash(hash)).ok_or_else(|| invalid("Invalid archive chunk digest"))?;
                 // Pin retained chunks during a multi-request save. Concurrent commits
                 // may collect only old, unreferenced uploads.
-                if c.db.execute("UPDATE profile_archive_chunks SET touched=? WHERE hash=?", params![now(),hash])? == 0 { missing.push(hash); }
+                if touch.execute(params![now(),hash])? == 0 { missing.push(hash); }
             }
             Ok(json!(missing))
         } else {
@@ -133,9 +134,11 @@ pub(super) fn collect(c: &Context, manifest: &Value) -> Result<()> {
         c.db.prepare("SELECT hash FROM profile_archive_chunks WHERE touched<?")?
             .query_map([now() - 24 * 60 * 60 * 1000], |row| row.get::<_, String>(0))?
             .collect::<rusqlite::Result<Vec<_>>>()?;
+    let mut delete = c.db.prepare_cached("DELETE FROM profile_archive_chunks WHERE hash=?")?;
     for hash in old {
+        c.check_cancel()?;
         if !retained.contains(&hash) {
-            c.db.execute("DELETE FROM profile_archive_chunks WHERE hash=?", [hash])?;
+            delete.execute([hash])?;
         }
     }
     Ok(())
