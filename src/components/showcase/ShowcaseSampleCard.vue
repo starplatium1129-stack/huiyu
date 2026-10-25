@@ -4,12 +4,12 @@
     <button class="sample-visual tw:block tw:w-full tw:p-0 tw:text-left tw:relative tw:overflow-hidden" type="button"
       :style="imageStyle"
       :aria-label="`${broken || !image.src ? '预览暂未连接，' : ''}查看 ${entry.title} 大图`" @click="emit('open', entry.id)">
-      <span v-if="image.src && !loaded && !broken" class="sample-loading" aria-hidden="true"><ArchiveIcon name="image" /></span>
+      <Transition name="sample-loading"><span v-if="image.src && !loaded && !broken" class="sample-loading" aria-hidden="true"></span></Transition>
       <img v-if="image.src && !broken" v-bind="{ ...image, onLoad: measureImage }" class="sample-image tw:w-full tw:h-auto tw:block" :class="{ 'sample-image-ready': loaded }"
-        :alt="entry.title" :width="dimensions.width" :height="dimensions.height" loading="lazy" decoding="async" />
+        :alt="entry.title" :width="dimensions.width" :height="dimensions.height" :loading="eager ? 'eager' : 'lazy'" :fetchpriority="eager ? 'high' : undefined" decoding="async" />
       <span v-else class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /><span>预览暂未连接 · 可查看大图</span></span>
       <SensitivePreviewVeil v-if="entry.rating === 'R18' && image.src && !broken" :src="image.src" :crossorigin="image.crossorigin" />
-      <span v-if="entry.rating === 'R18' && image.src && !broken" class="sample-sensitive tw:absolute tw:grid tw:gap-[2px] tw:min-w-[112px] tw:rounded-pill tw:pointer-events-none"><strong>R18</strong><span>悬停或聚焦预览</span></span>
+      <span v-if="entry.rating === 'R18' && loaded && !broken" class="sample-sensitive tw:absolute tw:grid tw:gap-[2px] tw:min-w-[112px] tw:rounded-pill tw:pointer-events-none"><strong>R18</strong><span>悬停或聚焦预览</span></span>
     </button>
     <div class="sample-caption">
       <div class="sample-kicker tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs tw:leading-body"><span>{{ characterLabel }}</span><span v-if="featured" class="sample-featured"><ArchiveIcon name="star" /><span class="sr-only">精选</span></span><span class="sample-rating tw:shrink-0 tw:text-muted">{{ ratingLabel }}</span></div>
@@ -29,7 +29,7 @@ import { cachedImageDimensions, rememberImageDimensions } from '@/utils/imageDim
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { computed, shallowRef, watch } from 'vue'
 
-const props = defineProps<{ entry: ShowcaseEntry; src: string; featured: boolean; characterLabel: string; ratingLabel: string }>()
+const props = defineProps<{ entry: ShowcaseEntry; src: string; featured: boolean; characterLabel: string; ratingLabel: string; eager?: boolean }>()
 const displayTitle = computed(() => {
   const name = props.characterLabel.trim(), original = props.entry.title.trim()
   let title = original
@@ -64,7 +64,7 @@ const emit = defineEmits<{ open: [id: string] }>()
 
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.sample { @apply tw:overflow-hidden tw:relative tw:min-w-0; flex:var(--sample-grow) 1 calc(var(--showcase-row-height,320px) * var(--sample-grow)); max-width:100%; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+.sample { @apply tw:overflow-hidden tw:relative tw:min-w-0; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
 :root body .showcase-page .sample { border-radius:var(--r-lg); box-shadow:none; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-route) var(--spring-soft); }
 :root body .showcase-page .sample { --card-focus-lift:-8px; --card-focus-scale:1.06; }
 :root body .showcase-page .sample:has(:focus-visible) { transform:none; transition:none; border-color:var(--border-strong); box-shadow:var(--shadow-md); }
@@ -75,8 +75,9 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-visual:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .sample:has(.sample-visual:focus-visible) .sample-caption { box-shadow:var(--focus-shadow); }
 /* The frame and caption arrive first; only decoded media fades onto the mat. */
-.sample-loading { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); background:var(--art-mat); }
-.sample-loading .archive-icon { width:28px; height:28px; }
+.sample-loading { position:absolute; inset:0; z-index:var(--z-raised); background:linear-gradient(135deg,var(--bg-elevated),var(--bg-base)); pointer-events:none; }
+.sample-loading-leave-active { transition:opacity var(--motion-surface) var(--ease-out); }
+.sample-loading-leave-to { opacity:0; }
 .sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); opacity:0; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-art-hover) var(--spring-soft); }
 .sample-image-ready { opacity:1; }
 /* Picture light stays below captions; rating masks retain their own layer. */
@@ -102,9 +103,10 @@ const emit = defineEmits<{ open: [id: string] }>()
 }
 .sample-r18:focus-within .sample-sensitive { opacity:0; }
 @media (max-width: 480px) { .sample-caption { @apply tw:p-s-3; } .sample-title { @apply tw:text-body-sm; } }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .sample-image, :root:not([data-motion='full']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .sample-image, :root:not([data-motion='full']) .sample-sensitive, :root:not([data-motion='full']) .sample-loading-leave-active { transition:opacity var(--motion-press) var(--ease-out); } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sample-image,
-:root:is([data-motion='reduce'],[data-motion='reduced']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .sample-sensitive,
+:root:is([data-motion='reduce'],[data-motion='reduced']) .sample-loading-leave-active { transition:opacity var(--motion-press) var(--ease-out); }
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) body .showcase-page .sample { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
   :root:not([data-motion='full']) .sample-visual::after { transition:none; }

@@ -93,9 +93,9 @@ function setTheme(value: Theme, origin?: HTMLElement) {
   const duration = cssTimeToMilliseconds(style.getPropertyValue('--motion-theme-reveal'))
   const easing = style.getPropertyValue('--ease-theme-reveal').trim()
   if (!Number.isFinite(duration) || duration <= 0) { commitPalette(value); return }
-  // A root capture is absent from pointer hit-testing. Leaving this stationary
-  // button releases it before the next workspace press. Repeated presses at the
-  // same point use only this button's own click path and reverse the same circle.
+  // Let pointer movement leave the button without cutting the reveal short.
+  // A new action elsewhere releases the capture; repeated presses on this
+  // stationary button reverse the same circle through its own click path.
   const interrupt = () => { if (reveal === current) { commitPalette(requestedTheme); stopReveal() } }
   let from = 0, to = radius
   const circle = (size: number) => `circle(${size}px at ${x}px ${y}px)`
@@ -115,7 +115,7 @@ function setTheme(value: Theme, origin?: HTMLElement) {
     } catch { interrupt() }
   }
   const insideOrigin = (event: MouseEvent) => event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom
-  const onPointer = (event: PointerEvent) => { if (event.pointerType !== 'mouse' || !insideOrigin(event)) interrupt() }
+  const onPointerDown = (event: PointerEvent) => { if (event.pointerType !== 'mouse' || !insideOrigin(event)) interrupt() }
   const onClick = (event: MouseEvent) => {
     if (event.target !== root || event.button !== 0 || !insideOrigin(event)) return
     event.preventDefault()
@@ -124,8 +124,7 @@ function setTheme(value: Theme, origin?: HTMLElement) {
   }
   const onMotion = () => { if (!canReveal()) interrupt() }
   const releaseMotion = listenMotionChanges(onMotion)
-  document.addEventListener('pointermove', onPointer, true)
-  document.addEventListener('pointerdown', onPointer, true)
+  document.addEventListener('pointerdown', onPointerDown, true)
   document.addEventListener('click', onClick, true)
   document.addEventListener('keydown', interrupt, true)
   document.addEventListener('scroll', interrupt, true)
@@ -134,8 +133,7 @@ function setTheme(value: Theme, origin?: HTMLElement) {
   window.addEventListener('popstate', interrupt)
   const current: ThemeReveal = { target:value, origin, retarget, release: () => {
     releaseMotion()
-    document.removeEventListener('pointermove', onPointer, true)
-    document.removeEventListener('pointerdown', onPointer, true)
+    document.removeEventListener('pointerdown', onPointerDown, true)
     document.removeEventListener('click', onClick, true)
     document.removeEventListener('keydown', interrupt, true)
     document.removeEventListener('scroll', interrupt, true)

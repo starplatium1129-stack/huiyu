@@ -16,7 +16,6 @@
           <span v-if="!album.covers.length" class="gallery-album-placeholder tw:flex tw:items-center tw:justify-center tw:flex-col tw:gap-s-2 tw:text-secondary"><ArchiveIcon name="gallery" /><span>{{ album.countPending ? '数量待确认' : album.count ? '打开画册' : '空画册' }}</span></span>
         </span>
         <span class="gallery-album-caption artwork-album-caption"><span><strong>{{ album.title }}</strong><small>{{ countLabel(album) }} · {{ album.kind === 'smart' ? '智能画册' : album.kind === 'character' ? '角色归集' : '精选画册' }}</small></span><span class="artwork-album-mark" aria-hidden="true"><ArchiveIcon name="chevron-down" /><ArchiveIcon name="success" /></span></span>
-        <CardEdgeLight />
       </button>
       <template v-if="album.kind === 'smart'"><p class="gallery-album-rule">{{ album.ruleSummary }}</p><div class="gallery-album-actions"><button type="button" :disabled="busy" :aria-label="`编辑智能画册：${album.title}`" @click="emit('edit',album.id)">编辑条件</button><button type="button" :disabled="busy" :aria-label="`移除智能画册：${album.title}`" @click="emit('remove',album.id)">移除画册</button></div></template>
       </div>
@@ -27,7 +26,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import { useListTransition } from '@/composables/useListTransition'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import type { GalleryProjectAlbum } from '@/composables/gallery/useGalleryProjectAlbums'

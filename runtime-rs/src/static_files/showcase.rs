@@ -26,8 +26,8 @@ fn header_dimensions(path: PathBuf) -> Option<(u32, u32)> {
     decode(&bytes)
 }
 
-// Editions also allow local image replacements. Recheck file metadata on each
-// catalogue read; only changed headers and changed JSON are read/encoded again.
+// Resolve image geometry on catalogue changes or an explicit refresh. Ordinary
+// revalidation must not stat every original and thumbnail before returning 304.
 fn image_state(root: &Path, path: &Path) -> (Option<PathBuf>, Option<Stamp>) {
     let resolved = fs::canonicalize(path).ok().filter(|path| path.starts_with(root));
     let metadata = resolved.as_ref().and_then(|path| fs::metadata(path).ok()).filter(|metadata| metadata.is_file());
@@ -45,16 +45,13 @@ fn dimensions(root: &Path, relative: &str, images: &mut HashMap<PathBuf, ImageSi
     size
 }
 
-fn read(root: PathBuf) -> io::Result<(Bytes, String)> {
+fn read(root: PathBuf, refresh: bool) -> io::Result<(Bytes, String)> {
     {
         let canonical = fs::canonicalize(&root)?;
         let file = canonical.join("manifest.json");
         let current = stamp(&fs::metadata(&file)?);
         let lock = CACHE.read().map_err(|_| io::Error::other("Showcase cache unavailable"))?;
-        if let Some(cache) = lock.as_ref().filter(|cache| {
-            cache.root == canonical && cache.stamp == current
-                && cache.images.iter().all(|(path, image)| image_state(&canonical, path).1 == image.stamp)
-        }) {
+        if let Some(cache) = lock.as_ref().filter(|cache| !refresh && cache.root == canonical && cache.stamp == current) {
             if stamp(&fs::metadata(&file)?) != current { return Err(io::Error::other("Showcase changed while reading")); }
             return Ok((cache.bytes.clone(), cache.tag.clone()));
         }
@@ -64,6 +61,9 @@ fn read(root: PathBuf) -> io::Result<(Bytes, String)> {
     let root = fs::canonicalize(root)?;
     let file = root.join("manifest.json");
     let current = stamp(&fs::metadata(&file)?);
+    if let Some(cache) = lock.as_ref().filter(|cache| !refresh && cache.root == root && cache.stamp == current) {
+        return Ok((cache.bytes.clone(), cache.tag.clone()));
+    }
     let previous = lock.take();
     let mut changed = previous.as_ref().is_none_or(|cache| cache.root != root || cache.stamp != current);
     let mut cache = if changed {
@@ -102,8 +102,8 @@ fn read(root: PathBuf) -> io::Result<(Bytes, String)> {
     Ok(result)
 }
 
-pub(super) async fn serve(root: PathBuf, head: bool, condition: Option<HeaderValue>) -> Response {
-    match tokio::task::spawn_blocking(move || read(root)).await {
+pub(super) async fn serve(root: PathBuf, head: bool, condition: Option<HeaderValue>, refresh: bool) -> Response {
+    match tokio::task::spawn_blocking(move || read(root, refresh)).await {
         Ok(Ok((bytes, tag))) => {
             let length = bytes.len();
             let mut response = ([("content-type", "application/json; charset=utf-8"), ("cache-control", "private, no-cache")], bytes).into_response();

@@ -46,6 +46,7 @@
 
 /* 按原始比例分配行宽：横图获得更多空间，同一行画面等高；DOM 与键盘顺序不变。 */
 .showcase-grid { --showcase-row-height:calc(340px * var(--desktop-layout-scale,1)); display:flex; flex-wrap:wrap; gap:var(--workspace-panel-gap,var(--s-4)); align-items:start; }
+.showcase-grid > :deep(.sample),.showcase-grid > :deep(.showcase-skeleton-card) { flex:var(--sample-grow,.75) 1 calc(var(--showcase-row-height,320px) * var(--sample-grow,.75)); max-width:100%; }
 /* 最后一行保留正常画幅，不把孤立样张拉成一整屏。 */
 .showcase-grid::after { content:''; flex:1000000 1 0; }
 .load-wrap { @apply tw:flex tw:justify-center; margin:var(--s-6) 0; }

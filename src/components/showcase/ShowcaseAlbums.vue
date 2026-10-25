@@ -18,7 +18,6 @@
           <span v-if="!album.covers.length" class="album-placeholder tw:flex tw:items-center tw:justify-center tw:flex-col tw:gap-s-2 tw:text-secondary tw:text-label"><ArchiveIcon name="gallery" /><span>翻开这本画册</span></span>
         </span>
         <span class="album-copy artwork-album-caption"><span><strong>{{ album.title }}</strong><small>{{ album.count }} 幅样张 · {{ album.description }}</small></span><span class="artwork-album-mark" aria-hidden="true"><ArchiveIcon name="chevron-down" /><ArchiveIcon name="success" /></span></span>
-        <CardEdgeLight />
       </button>
       </div>
     </section>
@@ -27,7 +26,6 @@
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import { computed } from 'vue'
 import type { ShowcaseAlbum } from '@/composables/showcase/useShowcaseAlbums'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'

@@ -38,10 +38,12 @@
       </details>
     </div>
 
-    <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册…' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="btn btn-quiet btn-sm" type="button" @click="loadManifest(true)">重试</button></div>
+    <!-- Cached entries stay in place during background revalidation. -->
+    <div v-if="entries.length && reloadError" class="showcase-load-status" role="status"><ArchiveIcon name="warning" /><span>{{ reloadError }}</span><button v-if="!manifestLoading" class="btn btn-quiet btn-sm" type="button" @click="loadManifest(true)">重试</button></div>
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
-      <ShowcaseAlbums v-if="albums.length && !unavailable" :albums="albums" :selected="albumSelection" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
-      <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
+      <ShowcaseAlbums v-if="albumsOpen && albums.length && !unavailable" :albums="albums" :selected="albumSelection" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
+      <ShowcaseLoadingGrid v-if="manifestLoading && !entries.length" albums />
+      <ArchiveStatePanel v-else-if="unavailable || (!manifestLoading && !albums.length)" compact :kind="unavailable ? 'error' : 'empty'" :title="unavailable ? '画册读取失败' : '暂未收录画册'"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
     </div>
     <div v-show="!albumsOpen" v-content-motion:up.defer="!albumsOpen" class="showcase-image-browse">
     <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="selectedAlbum || typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ selectedAlbum?.title || (typeFilter === 'all' ? '全部样张' : typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status"><strong>{{ paged.length }}</strong> / {{ filtered.length }} 幅 · R18 默认模糊</span></div>
@@ -56,14 +58,7 @@
       <RouterLink class="btn btn-ghost" to="/scene-explorer">先逛灵感场景</RouterLink>
     </ArchiveStatePanel>
 
-    <ArchiveStatePanel
-      v-else-if="manifestLoading && !entries.length"
-      class="empty empty-block"
-      kind="loading"
-      title="正在读取样张目录…"
-    >
-      <span class="btn btn-ghost" aria-disabled="true">加载中</span>
-    </ArchiveStatePanel>
+    <ShowcaseLoadingGrid v-else-if="manifestLoading && !entries.length" />
 
     <ArchiveStatePanel
       v-else-if="!filtered.length"
@@ -74,7 +69,7 @@
     </ArchiveStatePanel>
 
     <div v-else ref="listRoot" data-route-arrive class="showcase-grid" :aria-busy="manifestLoading">
-      <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)" :data-list-key="entry.id"
+      <ShowcaseSampleCard v-for="(entry, index) in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)" :data-list-key="entry.id" :eager="index < 6"
         :featured="featured.has(entry.id)"
         :character-label="charLabel(entry.char)" :rating-label="ratingLabel(entry.rating)"
         @open="openViewer" />
@@ -148,6 +143,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import ShowcaseAlbums from '@/components/showcase/ShowcaseAlbums.vue'
 import ShowcaseSampleCard from '@/components/showcase/ShowcaseSampleCard.vue'
+import ShowcaseLoadingGrid from '@/components/showcase/ShowcaseLoadingGrid.vue'
 import { useShowcaseAlbums } from '@/composables/showcase/useShowcaseAlbums'
 import { useAlbumNavigation } from '@/composables/gallery/useAlbumNavigation'
 import { useScrollReveal } from '@/composables/useScrollReveal'

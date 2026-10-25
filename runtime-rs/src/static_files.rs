@@ -165,8 +165,10 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         return StatusCode::NOT_FOUND.into_response();
     };
     if path == "/scene-showcase/manifest.json" {
+        let refresh = request.uri().query().is_some_and(|query|
+            url::form_urlencoded::parse(query.as_bytes()).any(|(key, value)| key == "refresh" && value == "1"));
         return showcase::serve(base, request.method() == Method::HEAD,
-            request.headers().get("if-none-match").cloned()).await;
+            request.headers().get("if-none-match").cloned(), refresh).await;
     }
     let modified = metadata
         .modified()

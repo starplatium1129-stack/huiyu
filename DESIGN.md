@@ -507,8 +507,9 @@ Light/dark switching follows the actual site control at
 a circular reveal from the button center, using `--motion-theme-reveal` (650ms).
 Keep HUIYU's hand-drawn line icons. A single native view-transition capture pair
 is the bounded clip-path exception; do not animate live layout or add blur.
-Moving away from the switch, keyboard input or resizing releases the capture;
-repeated switch presses reverse the current circle and retain the latest palette.
+Moving away from the switch lets the reveal finish. Pressing elsewhere, keyboard
+input, scrolling or resizing releases the capture; repeated switch presses
+reverse the current circle and retain the latest palette.
 Reduced motion, coarse pointers, forced colors, native companion windows,
 open modal dialogs and unsupported browsers commit directly.
 

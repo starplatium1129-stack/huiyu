@@ -36,7 +36,8 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
     try {
       // Share automatic reads without retaining a TTL cache. Uploads force a new
       // transport so they cannot join a manifest read that predates the write.
-      const raw = await apiClient.request<{ entries?: Array<{ id?: unknown } | null> }>('/scene-showcase/manifest.json', {
+      const path = `/scene-showcase/manifest.json${fresh ? '?refresh=1' : ''}`
+      const raw = await apiClient.request<{ entries?: Array<{ id?: unknown } | null> }>(path, {
         signal: controller.signal, cache: 'no-cache', cachePolicy: fresh ? 'refresh' : 'default', timeoutMs: 0,
       })
       const counts = new Map<unknown, number>()
