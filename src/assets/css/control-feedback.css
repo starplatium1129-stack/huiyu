@@ -62,7 +62,7 @@
 }
 .studio-control-label { display:inline-block; }
 /* Dot texture belongs to chapter furniture, never behind a label or artwork. */
-:root:not([data-theme-style='terraria']) :is(.pb .panel-title,.image-tools-group > h4,.nav-more-group-label)::after {
+:root:not([data-theme-style='terraria']) :is(.pb .panel-title,.nav-more-group-label)::after {
   content:''; display:inline-block; flex:0 0 22px; width:22px; height:6px; margin-inline-start:var(--s-2); vertical-align:middle;
   background:radial-gradient(circle,var(--text-secondary) .8px,transparent 1.2px) center / 7px 6px; opacity:.35; pointer-events:none;
 }

@@ -112,6 +112,7 @@ export const VIDEO_REQUEST_DRAFT_KEY = 'aics_video_request_v1'
 export const VIDEO_BATCH_REQUEST_DRAFT_KEY = 'aics_video_batch_request_v1'
 export const MANGA_REQUEST_DRAFT_KEY = 'aics_manga_request_v1'
 export const QWEN_REQUEST_DRAFT_KEY = 'aics_qwen_request_v1'
+export const QWEN_EDITOR_REQUEST_DRAFT_KEY = 'aics_qwen_editor_request_v1'
 export const MOSS_REQUEST_DRAFT_KEY = 'aics_moss_request_v1'
 
 /**

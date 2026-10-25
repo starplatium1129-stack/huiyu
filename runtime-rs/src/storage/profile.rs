@@ -64,6 +64,8 @@ const DRAFT: &[&str] = &[
     "aics_companion_image_request_v1",
     "aics_manga_request_v1",
     "aics_qwen_request_v1",
+    "aics_qwen_editor_request_v1",
+    "aics_moss_request_v1",
     "aics_video_request_v1",
     "aics_video_batch_request_v1",
     "aics_sd_pending_queue_v1",

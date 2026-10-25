@@ -2,11 +2,11 @@ import type { ArtworkRecord } from '@/types/artwork'
 
 export function artworkContinueTarget(item: ArtworkRecord, mode: 'regen' | 'remix' = 'regen') {
   if (item.engine === 'moss-image' && typeof item.taskId === 'string' && item.taskId.trim())
-    return { to: `/moss-studio?job=${encodeURIComponent(item.taskId)}`, label: '查看 MOSS 原任务' }
+    return { to: `/prompt-builder?engine=moss&job=${encodeURIComponent(item.taskId)}`, label: '查看 MOSS 原任务' }
   if (item.engine === 'qwen-image') {
     if (typeof item.taskId === 'string' && item.taskId.trim())
-      return { to: `/qwen-studio?job=${encodeURIComponent(item.taskId)}`, label: '查看 Qwen 原任务' }
-    if (item.image_id) return { to: `/qwen-studio?artwork=${encodeURIComponent(item.id)}`, label: '用 Qwen 编辑' }
+      return { to: `/prompt-builder?editor=qwen&job=${encodeURIComponent(item.taskId)}`, label: '查看 Qwen 原任务' }
+    if (item.image_id) return { to: `/prompt-builder?editor=qwen&artwork=${encodeURIComponent(item.id)}`, label: '用 Qwen 编辑' }
   } else if (!item.engine || ['sd', 'anima', 'krea2'].includes(item.engine)) {
     return { to: `/prompt-builder?${mode}=${encodeURIComponent(item.id)}`, label: mode === 'remix' ? '沿用配方' : '继续创作' }
   }

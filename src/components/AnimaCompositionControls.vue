@@ -39,8 +39,7 @@ onBeforeUnmount(() => { attached = false; close() })
 
 <template>
   <section class="anima-composition-controls" aria-label="构图控制">
-    <div class="composition-launcher-copy"><strong><ArchiveIcon name="rule3" />构图控制</strong><span>{{ summary }}</span></div>
-    <button ref="opener" class="btn btn-ghost" type="button" aria-haspopup="dialog" :aria-expanded="editorOpen" :disabled="locked" @click="session.openEditor()">编辑构图</button>
+    <button ref="opener" class="btn btn-quiet image-tool-action" type="button" aria-haspopup="dialog" :aria-expanded="editorOpen" :aria-label="'构图控制，' + summary" :disabled="locked" @click="session.openEditor()"><ArchiveIcon name="rule3" /><span>构图控制</span><small v-if="sketch || regions.length">已设置</small><ArchiveIcon name="chevron-down" class="image-tool-chevron" /></button>
     <p v-if="baseIssue" class="composition-help">{{ baseIssue }}</p>
     <Teleport to="body">
       <dialog ref="dialog" class="anima-composition-dialog" aria-labelledby="anima-composition-title" @cancel.prevent="close" @close="onNativeClose" @click="backdrop">
@@ -99,10 +98,8 @@ onBeforeUnmount(() => { attached = false; close() })
 
 <style scoped>
 .anima-composition-controls { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); }
-.composition-launcher-copy { display:flex; flex:1; flex-direction:column; gap:var(--s-1); min-width:0; }
-.composition-launcher-copy strong,.composition-dialog-heading h2 { display:flex; align-items:center; gap:var(--s-2); color:var(--text-primary); }
-.composition-launcher-copy strong { font-size:var(--fs-body-sm); }
-.composition-launcher-copy span,.composition-help { color:var(--text-secondary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
+.composition-dialog-heading h2 { display:flex; align-items:center; gap:var(--s-2); color:var(--text-primary); }
+.composition-help { color:var(--text-secondary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
 .composition-help { margin:0; }
 .composition-weight-path { overflow-wrap:anywhere; }
 .anima-composition-controls > p { flex-basis:100%; }

@@ -7,7 +7,7 @@
         <span role="status"><ArchiveIcon :name="busy ? 'spark' : error || !online || blockedReason || presentation.needsReview ? 'warning' : 'success'" />{{ statusSummary }}</span>
         <button v-if="presentation.phase === 'cancelling'" class="btn btn-quiet gen-bar-recovery" type="button" @click="openGenerationTasks">查看任务</button>
         <button v-if="presentation.needsReview" class="btn btn-quiet gen-bar-recovery" type="button" @click="$emit('cancel')">取消原请求</button>
-        <RouterLink v-if="!online && !busy" class="gen-bar-recovery" :to="{ path: '/control', query: { engine } }" aria-label="检查绘图配置">检查配置</RouterLink>
+        <RouterLink v-if="!online && !busy" class="gen-bar-recovery" :to="{ path: '/control', query: { engine: engine === 'moss' || engine === 'qwen' ? 'native' : engine } }" aria-label="检查绘图配置">检查配置</RouterLink>
         <RouterLink v-else-if="missingCharacter && !busy" class="gen-bar-recovery" :to="{ path: '/control', hash: '#control-image-resources' }">准备角色包</RouterLink>
       </div>
       <small v-if="!showSize">{{ size.replace('x', ' × ') }}</small>
@@ -53,13 +53,12 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import GenerationSizePicker from './GenerationSizePicker.vue'
 import { RouterLink } from 'vue-router'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import type { DrawEngine } from '@/storage/settingsRepository'
 import { openGenerationTasks, type GenerationPresentation } from '@/composables/prompt/useGenerationPresentation'
 // 主行动同步加载；组件统一管理停靠与独立两种内部布局。
 import '@/assets/css/director/components/GenerationActionBar.css'
 
 const props = defineProps<{
-  engine: DrawEngine
+  engine: string
   busy: boolean
   presentation: GenerationPresentation
   online: boolean

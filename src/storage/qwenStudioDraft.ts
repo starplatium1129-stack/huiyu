@@ -52,10 +52,11 @@ function read(selectedKey: string, models: readonly { value: string }[]): Stored
   return value as unknown as StoredDraft
 }
 
-export function createQwenDraftStorage(mode: 'qwen' | 'moss' = 'qwen') {
-  const key = `aics-model-draft-${mode}-studio-v1`
-  const recoveryKey = `aics-model-draft-${mode}-studio-recovery-v1`
-  const selectionKey = `aics-model-draft-${mode}-studio-active-v1`
+export function createQwenDraftStorage(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
+  const namespace = editor ? 'qwen-editor' : `${mode}-studio`
+  const key = `aics-model-draft-${namespace}-v1`
+  const recoveryKey = `aics-model-draft-${namespace}-recovery-v1`
+  const selectionKey = `aics-model-draft-${namespace}-active-v1`
   const models = mode === 'moss' ? mossModels : qwenModels
   let owner: TempResultOwner | null = null
   const repository = artworkRepository, aliases = new WeakMap<Blob, string>()

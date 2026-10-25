@@ -5,7 +5,7 @@ import { compileMossPrompt, MOSS_NEGATIVE } from '@/utils/mossPrompt'
 import { fetchRuntimeResult, getRuntimeTask, hasRuntimeTasks,
   runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
 import { useAcceptedTaskSession, taskSettled as terminal } from '@/composables/tasks/useAcceptedTaskSession'
-import { MOSS_REQUEST_DRAFT_KEY, QWEN_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
+import { MOSS_REQUEST_DRAFT_KEY, QWEN_REQUEST_DRAFT_KEY, QWEN_EDITOR_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
@@ -16,10 +16,10 @@ import { taskArtworkId } from '@/application/artwork/taskResultIdentity'
 import { artworkRepository } from '@/storage/artworkRepository'
 
 const message = (cause: unknown) => cause instanceof Error ? cause.message : '操作未完成，请重试'
-export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
+export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
   const moss = mode === 'moss', family = moss ? 'moss-image' : 'qwen-image'
   const modelOptions = moss ? mossModels : qwenModels, label = moss ? 'MOSS' : 'Qwen'
-  const slot = moss ? MOSS_REQUEST_DRAFT_KEY : QWEN_REQUEST_DRAFT_KEY
+  const slot = editor ? QWEN_EDITOR_REQUEST_DRAFT_KEY : moss ? MOSS_REQUEST_DRAFT_KEY : QWEN_REQUEST_DRAFT_KEY
   const alignment = moss ? 16 : 32, maxSize = moss ? 1536 : 2816
   const form = reactive({ modelId: moss ? MOSS_MODEL_ID : 'qwen-image-2.1-turbo', prompt: '', negative: moss ? MOSS_NEGATIVE : '',
     width: moss ? 768 : 1024, height: moss ? 1280 : 1024, steps: moss ? 50 : 40, cfg: moss ? 3.5 : 4, seed: 0,
@@ -28,7 +28,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
   const references = shallowRef<{ id: string; image: MangaImage; url: string }[]>([])
   const restoredInputMissing = ref(false), parentId = ref<string | number | null>(null)
   const draftStatus = ref(''), draftFailed = ref(false), draftRecoveryNeeded = ref(false), draftRecoveryError = ref('')
-  const draftStorage = createQwenDraftStorage(mode)
+  const draftStorage = createQwenDraftStorage(mode, editor)
   let draftTimer: ReturnType<typeof setTimeout> | undefined, draftActive = false, draftVersion = 0
   const persistDraft = async () => {
     if (!draftActive || sourceChanged.value) return false
@@ -200,15 +200,15 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
     } catch (cause) { if (!lifetime.signal.aborted) error.value = '取消尚未确认：' + message(cause) }
     finally { cancelling.value = false }
   }
-  async function run() {
+  async function run(recipe?: { negative: string; context: Record<string, unknown> }) {
     if (!canRun.value) return
     busy.value = true; cancelled = false; error.value = ''; notice.value = ''
     try {
       check()
-      if (!modelOptions.some(model => model.value === form.modelId) || form.prompt.trim().length > 12000 || form.negative.length > 8000) throw new Error('模型或提示词参数无效')
+      if (!modelOptions.some(model => model.value === form.modelId) || form.prompt.trim().length > 12000 || (recipe?.negative ?? form.negative).length > 8000) throw new Error('模型或提示词参数无效')
       if (![form.width, form.height].every(n => Number.isInteger(n) && n >= 512 && n <= maxSize && n % alignment === 0)) throw new Error(`宽高需为 512—${maxSize} 内的 ${alignment} 倍数`)
       if (!randomSeed.value && (!Number.isInteger(form.seed) || form.seed < 0 || form.seed > 2147483647)) throw new Error('种子需为 0—2147483647 的整数')
-      const negative = turbo.value ? '' : form.negative.trim()
+      const negative = turbo.value ? '' : (recipe?.negative ?? form.negative).trim()
       if (!turbo.value && (!Number.isInteger(form.steps) || form.steps < 1 || form.steps > 100
         || !moss && negative && (!Number.isFinite(form.cfg) || form.cfg <= 1 || form.cfg > 20))) throw new Error('步数需为 1—100；有负向描述时 CFG 需大于 1 且不超过 20')
       if (moss && (!Number.isFinite(form.cfg) || form.cfg < 0 || form.cfg > 20)) throw new Error('CFG 需为 0—20 内的数值')
@@ -236,7 +236,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
         if (names.length) input.referenceImages = names
       }
       if (cancelled) { notice.value = '已取消，尚未提交任务'; return }
-      await session.submit(mode, input, { parentId: parentId.value }, undefined, () => cancelled)
+      await session.submit(mode, input, { ...structuredClone(recipe?.context ?? {}), parentId: parentId.value, editor: !!source.value }, undefined, () => cancelled)
       if (cancelled) await cancel()
       void observe()
     } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
@@ -258,6 +258,13 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
       }
     } catch (cause) { if (!lifetime.signal.aborted && isCurrent()) error.value = message(cause) }
     finally { saving.value = false }
+  }
+  async function clearResult() {
+    if (locked.value) return
+    try {
+      await releaseRequest(); task.value = null; result.value = null; resultBlob.value = null; saved.value = false; setUrl(resultUrl, null)
+      void persistDraft()
+    } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
   }
   function applyDraft(draft: QwenDraftState) {
     Object.assign(form, draft.form); randomSeed.value = draft.randomSeed; resize.value = draft.resize; parentId.value = draft.parentId
@@ -365,5 +372,5 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen') {
   onScopeDispose(() => { stopRuntime(); clearTimeout(draftTimer); void persistDraft(); lifetime.abort(); setUrl(sourceUrl, null); setUrl(resultUrl, null); for (const value of references.value) URL.revokeObjectURL(value.url) })
   return { modelOptions, alignment, maxSize, form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
     busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, inputSize, progress, taskText,
-    ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize }
+    ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, clearResult, initialize }
 }

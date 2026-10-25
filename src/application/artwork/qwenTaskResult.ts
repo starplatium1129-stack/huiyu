@@ -21,6 +21,11 @@ export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord 
   }
   for (const key of ['prompt', 'negative', 'sampler', 'scheduler']) if (typeof input[key] === 'string') record[key] = input[key]
   for (const key of ['seed', 'steps', 'cfg', 'width', 'height']) if (typeof input[key] === 'number' && Number.isFinite(input[key])) record[key] = input[key]
+  for (const key of ['character', 'characterId', 'outfitId', 'blueprintId', 'story', 'visualDescription']) {
+    const value = context?.[key]
+    if (typeof value === 'string' && value.length <= 12000) record[key] = value
+  }
+  if (typeof context?.sceneTitle === 'string' && context.sceneTitle.trim() && context.sceneTitle.length <= 500) record.sceneTitle = context.sceneTitle
   if (moss) record.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
   if (record.width && record.height) record.size = `${record.width}x${record.height}`
   return record

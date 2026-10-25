@@ -2,8 +2,7 @@
 import { computed } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect, { type StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
-import type { DrawEngine } from '@/storage/settingsRepository'
-const props = defineProps<{ engine: DrawEngine; size: string; animaSizes: string[]; busy: boolean; compact?: boolean }>()
+const props = defineProps<{ engine: string; size: string; animaSizes: string[]; busy: boolean; compact?: boolean }>()
 const emit = defineEmits<{ 'update:size': [value: string] }>()
 const sizeGroups: StudioSelectGroup[] = [
   { label: '竖图 Portrait', options: [

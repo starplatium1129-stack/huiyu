@@ -124,6 +124,7 @@
     <DirectorResultTools
       v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
       :has-result="Boolean(displayResultUrl)"
+      :can-save-scene="canSaveScene"
       @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')"
       @clearResult="$emit('clearResult')"
     />
@@ -168,6 +169,7 @@ const props = defineProps<{
   /** 当前结果是否已入册（null = 画布无结果，不显示徽章）。 */
   resultArchived?: boolean | null
   capturingScene?: boolean
+  canSaveScene?: boolean
   savingResult?: boolean
   resultTemporary?: boolean
   /** Anima/Krea 暂存里还有上一张未入册成片（失败/取消后可找回）。 */

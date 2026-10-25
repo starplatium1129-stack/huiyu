@@ -4,7 +4,7 @@ import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIc
 import StudioOrbitSpinner from '@/components/ui/StudioOrbitSpinner.vue'
 import { useDeferredToolLauncher } from '@/composables/prompt/useDeferredToolLauncher'
 
-const props = defineProps<{ label: string; icon: ArchiveIconName; loader: () => Promise<{ default: Component }>; disabled?: boolean; migrationControl?: boolean }>()
+const props = defineProps<{ label: string; icon: ArchiveIconName; loader: () => Promise<{ default: Component }>; disabled?: boolean; migrationControl?: boolean; row?: boolean }>()
 const emit = defineEmits<{ error: [message: string] }>()
 defineSlots<{ default(props: { component: Component; open: boolean; update: (value: boolean) => void }): unknown }>()
 const { host, panel, loading, requested, open, toggle, update } = useDeferredToolLauncher(
@@ -15,10 +15,11 @@ const { host, panel, loading, requested, open, toggle, update } = useDeferredToo
 <template>
   <div ref="host" class="deferred-tool-launcher">
     <slot v-if="panel" :component="panel" :open="open" :update="update" />
-    <button v-else class="btn btn-ghost btn-sm" type="button" :data-migration-control="migrationControl ? '' : undefined" data-control-motion
+    <button v-else class="btn" :class="row ? 'btn-quiet image-tool-action' : 'btn-ghost btn-sm'" type="button" :data-migration-control="migrationControl ? '' : undefined" data-control-motion
       :aria-label="label" aria-haspopup="dialog" :aria-expanded="requested" :aria-busy="loading" :disabled="disabled" @click="toggle">
       <span v-if="loading && requested" class="tool-launcher-spinner"><StudioOrbitSpinner /></span><ArchiveIcon v-else :name="icon" />
       <span class="studio-control-label">{{ label }}</span>
+      <ArchiveIcon v-if="row" name="chevron-down" class="image-tool-chevron" />
     </button>
     <span v-if="loading && requested" class="sr-only" role="status">正在准备{{ label }}…</span>
   </div>

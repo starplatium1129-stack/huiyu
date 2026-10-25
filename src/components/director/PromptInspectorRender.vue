@@ -1,5 +1,5 @@
 <template>
-  <div class="result-frame step-panel" id="stepResult">
+  <div class="result-frame step-panel">
     <section v-if="drawEngine !== 'sd' && (animaState.errorReport || animaState.errorMsg)" class="inspector-generation-error" role="alert" aria-label="绘制恢复">
       <strong>{{ generationPresentation.needsReview ? '任务与结果待核对' : generationPresentation.phase === 'cancelling' ? '取消尚未确认' : animaState.errorReport?.title || '绘制未完成' }}</strong>
       <p>{{ generationPresentation.needsReview || generationPresentation.phase === 'cancelling' ? generationPresentation.message : animaState.errorReport?.message || animaState.errorMsg }}</p>
@@ -14,20 +14,6 @@
       </div>
     </details>
     <div class="inspector-engine-settings" role="group" aria-label="模型与引擎">
-    <span class="inspector-field-label">出图引擎</span>
-    <div class="engine-switch studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="出图引擎">
-      <AnimatedSelection />
-      <StudioTooltip anchor :content="engineTitle('anima')">
-        <button type="button" class="engine-btn" :aria-pressed="drawEngine === 'anima'"
-          :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('anima'))"
-          @click="setDrawEngine('anima')">Anima</button>
-      </StudioTooltip>
-      <StudioTooltip anchor :content="engineTitle('krea2')">
-        <button type="button" class="engine-btn" :aria-pressed="drawEngine === 'krea2'"
-          :disabled="generationBusy || (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter('krea2'))"
-          @click="setDrawEngine('krea2')">Krea 2</button>
-      </StudioTooltip>
-    </div>
     <div v-content-motion:fade="drawEngine" class="base-model-picker">
       <label for="baseModel">基础模型</label>
       <StudioSelect id="baseModel" size="sm" label="基础模型" :model-value="animaState.modelId"
@@ -60,9 +46,7 @@
 import { computed, defineAsyncComponent, ref } from 'vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
-import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 const loadCreativeSliders = () => import('@/components/director/CasualCreativeSliders.vue')
 const loadAnimaQuickPanel = () => import('@/components/AnimaQuickPanel.vue')
@@ -75,7 +59,7 @@ function onAdvancedToggle(event: Event) {
   if ((event.currentTarget as HTMLDetailsElement).open) advancedLoaded.value = true
 }
 const { pb, generationBusy, generationPresentation, animaState, drawEngine, generationPresetSummary, managedRoute, applyManagedRoute,
-  reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
+  reuseSuccessfulRecipe, BUSY_HINT, selectAnimaModel,
   animaNoLoraMode, patchAnimaState, retryAnima } = props.bindings
 const animaModelOptions = computed<StudioSelectOption[]>(() => animaState.value.models.map(model => ({
   value: model.id, label: (model.label || model.id) + (model.available === false ? ' · 模型未安装' : ''),

@@ -59,6 +59,7 @@ export interface PromptStyleBindings {
 }
 
 export interface PromptHealthBindings {
+  structuredPlan: Assembly['structuredPlan']
   pb: Pick<Store, 'directorMode' | 'isPopular' | 'manualTags'>
   previewPromptView: Assembly['previewPrompt']
   previewContext: Assembly['previewContext']

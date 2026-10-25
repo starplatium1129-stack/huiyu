@@ -47,7 +47,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
     const entryKey = () => JSON.stringify([route.path, { ...route.query, taskCenter: undefined }]);
     async function applyPreparedLink() {
         const q = route.query, request = initializationRequest;
-        if (route.path !== '/prompt-builder' || typeof q.preparedModel !== 'string' || q === consumedPreparedQuery) return;
+        if (route.path !== '/prompt-builder' || q.engine === 'moss' || q.engine === 'qwen' || typeof q.preparedModel !== 'string' || q === consumedPreparedQuery) return;
         consumedPreparedQuery = q;
         const modelId = q.preparedModel, wasBusy = generationBusy.value;
         const query = { ...q }; delete query.preparedModel;
