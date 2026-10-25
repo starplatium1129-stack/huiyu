@@ -51,6 +51,14 @@ let MODELS: Readonly<Record<string, ModelDefinition>> = Object.freeze({
 });
 
 let LORAS: Readonly<Record<string, LoraDefinition>> = Object.freeze({
+  L_SI_ANIMA_BASE_V1: {
+    file:'si_arknights_anima_base_r32_v1.safetensors',
+    name:'祀 · Anima Base LoRA v1',
+    character:'si_arknights',
+    compatibleModels:['anima-base-v1.0', 'anima-miaomiao-v1.6'],
+    minStrength:0.5,
+    maxStrength:1
+  },
   L_NENE_V21_ANIMA: {
     file:'ayachi_nene_v21_anima.safetensors',
     name:'ayachi_nene_v21_anima',

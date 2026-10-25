@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "si_arknights/white_bath_wrap",
+  "revision": 1,
+  "sortOrder": 1160,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "characterId": "si_arknights",
+    "outfit": {
+      "id": "white_bath_wrap",
+      "name": "轻柔白纯棉裹胸浴巾",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "场景衣装状态",
+      "prose": "a snug white terrycloth bath wrap tucked across the bust, leaving shoulders, collarbones and legs bare, damp from steaming water",
+      "tokens": [
+        "bath towel",
+        "towel wrap",
+        "bare shoulders",
+        "bare legs",
+        "wet skin",
+        "cleavage"
+      ]
+    }
+  }
+}

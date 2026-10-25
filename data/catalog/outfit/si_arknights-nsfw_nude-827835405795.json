@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "si_arknights/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 1162,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "characterId": "si_arknights",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "私密纯净状态（无衣装）",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "场景衣装状态",
+      "prose": "completely unclothed and bare, natural soft curves, slender dragon tail swaying gently behind",
+      "tokens": [
+        "completely nude",
+        "bare skin",
+        "breasts",
+        "nipples",
+        "slender waist",
+        "bare navel"
+      ]
+    }
+  }
+}

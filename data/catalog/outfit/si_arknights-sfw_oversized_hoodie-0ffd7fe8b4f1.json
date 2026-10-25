@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "si_arknights/sfw_oversized_hoodie",
+  "revision": 1,
+  "sortOrder": 1158,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "characterId": "si_arknights",
+    "outfit": {
+      "id": "sfw_oversized_hoodie",
+      "name": "基地漫步浅灰连帽卫衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "an oversized heather-grey zip hoodie over a black crop tank top, dark denim shorts, thigh-high socks, and canvas sneakers",
+      "tokens": [
+        "grey hoodie",
+        "oversized hoodie",
+        "black tank top",
+        "denim shorts",
+        "thighhighs",
+        "sneakers"
+      ]
+    }
+  }
+}

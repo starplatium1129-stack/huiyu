@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "si_arknights_balcony_stargazing",
+  "revision": 1,
+  "sortOrder": 1765,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "id": "si_arknights_balcony_stargazing",
+    "characterId": "si_arknights",
+    "title": "祀 · 夜风天台分享同一副耳机",
+    "category": "相伴日常",
+    "action": "并肩坐在长椅伸手递出单边耳机",
+    "location": "基地露天天台",
+    "timeOfDay": "夜晚",
+    "lighting": "清冷双月月光与天台暖调地灯",
+    "camera": "cowboy shot",
+    "mood": "浪漫静谧",
+    "description": "【祀 · 夜风天台分享同一副耳机】夜幕下的基地天台微风拂面，远处塔卫二的双月升起。祀裹着浅灰连帽卫衣并肩坐在长椅上，把其中一只白色耳机轻轻塞入你的耳中，青绿的发丝随夜风轻扬，侧脸透着难得的安宁柔情——「塔卫二的夜风很凉，但这首歌很暖和。」",
+    "outfitId": "sfw_oversized_hoodie",
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "daily",
+      "night",
+      "rooftop",
+      "earphones",
+      "stargazing",
+      "wind",
+      "gentle"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "sitting on bench",
+      "rooftop",
+      "sharing earphones",
+      "holding earphone",
+      "night sky",
+      "moons",
+      "wind",
+      "hair fluttering",
+      "soft smile",
+      "looking at viewer",
+      "cool moonlight"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Sitting on the breezy rooftop bench under the twin moons, Si holds out one white earbud toward the viewer, her green hair lifted by the night wind as she smiles softly.",
+    "animaCaption": "She offers one earphone toward the viewer while seated on the bench under the starry night sky.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

@@ -119,12 +119,12 @@
       "path": "loras/ayachi_nene_v21_anima.safetensors",
       "bytes": 91872920,
       "sha256": "3a5fe2e772f027f6248db865e67f38aee50e1bfcd633200ebb3f0818b774b6b4",
-      "sourceUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/huiyu-resources-20261006-r1/ayachi_nene_v21_anima.safetensors",
+      "sourceUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/v2.0.0/ayachi_nene_v21_anima.safetensors",
       "revision": "anima-v21",
       "label": "绫地宁宁 · Anima v21",
       "purpose": "由绘遇作者亲自训练 · 角色绘图 LoRA",
-      "modelCardUrl": "https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1",
-      "licenseUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/huiyu-resources-20261006-r1/HUIYU-Anima-LoRA-LICENSE.txt"
+      "modelCardUrl": "https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.0.0",
+      "licenseUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/v2.0.0/HUIYU-Anima-LoRA-LICENSE.txt"
     },
     {
       "id": "L_NAT_V21_ANIMA",
@@ -132,12 +132,12 @@
       "path": "loras/shiki_natsume_v21_anima.safetensors",
       "bytes": 91872960,
       "sha256": "212317188d97ca657f6681fafaae55587cd784c9c4615a73de2981b55e36c6ac",
-      "sourceUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/huiyu-resources-20261006-r1/shiki_natsume_v21_anima.safetensors",
+      "sourceUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/v2.0.0/shiki_natsume_v21_anima.safetensors",
       "revision": "anima-v21",
       "label": "四季夏目 · Anima v21",
       "purpose": "由绘遇作者亲自训练 · 角色绘图 LoRA",
-      "modelCardUrl": "https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1",
-      "licenseUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/huiyu-resources-20261006-r1/HUIYU-Anima-LoRA-LICENSE.txt"
+      "modelCardUrl": "https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.0.0",
+      "licenseUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/v2.0.0/HUIYU-Anima-LoRA-LICENSE.txt"
     },
     {
       "id": "L_ENDFIELD_ALL_V1_ANIMA",
@@ -307,6 +307,19 @@
       "purpose": "Anima 绘图所需节点",
       "modelCardUrl": "https://github.com/CocyNoric/ComfyUI-Anima-TeaCache",
       "licenseUrl": "https://github.com/CocyNoric/ComfyUI-Anima-TeaCache/blob/e7a73823c057b4884ca6b70778da803c1f60d557/LICENSE"
+    },
+    {
+      "id": "L_SI_ANIMA_BASE_V1",
+      "kind": "lora",
+      "path": "loras/si_arknights_anima_base_r32_v1.safetensors",
+      "bytes": 91867368,
+      "sha256": "1f786c42a7dfa686a95be7ef8d9d75671afe63385d922da7a0a177986d928c4f",
+      "sourceUrl": "https://github.com/starplatium1129-stack/huiyu/releases/download/v2.0.0/si_arknights_anima_base_r32_v1.safetensors",
+      "revision": "si-anima-base-v1",
+      "label": "祀 · Anima Base LoRA v1",
+      "purpose": "祀角色绘图 LoRA · 建议强度 0.8",
+      "modelCardUrl": "https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.0.0",
+      "licenseUrl": "https://huggingface.co/circlestone-labs/Anima#license"
     }
   ],
   "recommendedModel": "anima-miaomiao-v1.6"

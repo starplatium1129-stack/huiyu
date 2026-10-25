@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "si_arknights/sfw_tea_cardigan",
+  "revision": 1,
+  "sortOrder": 1157,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "characterId": "si_arknights",
+    "outfit": {
+      "id": "sfw_tea_cardigan",
+      "name": "青竹薄荷落肩针织常服",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "a soft mint-green oversized knit cardigan slipping off one shoulder over a white camisole, beige wide-leg pleated trousers, and comfortable house slippers",
+      "tokens": [
+        "mint cardigan",
+        "off-shoulder sweater",
+        "white camisole",
+        "beige wide-leg pants",
+        "slippers",
+        "relaxed fit"
+      ]
+    }
+  }
+}

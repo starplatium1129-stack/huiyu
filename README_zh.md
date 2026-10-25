@@ -4,7 +4,7 @@
 
 <p align="center">本地运行的 AI 角色创作工作室 · 绘图、灵感画册、作品收藏与桌面陪伴</p>
 
-<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.2">下载 Windows 桌面版 1.9.2</a> · <a href="docs/releases/v1.9.2.md">更新说明</a> · <a href="README.md">English</a></p>
+<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.0.0">下载 Windows 桌面版 2.0.0</a> · <a href="docs/releases/v2.0.0.md">更新说明</a> · <a href="README.md">English</a></p>
 
 绘遇从角色和场景出发：选一位主角，挑选衣装、镜头与光线，把想象整理成一张 CG，再把成片和生成配方一起留在自己的作品册里。可以直接创作，也可以先翻翻参考画册，寻找下一幕的灵感。
 
@@ -50,7 +50,7 @@ MiaoMiao 2.9B Beta 1.1 已完成一张本机全年龄样图和 TeaCache 0.08 的
 
 ## <img src="docs/images/icons/gallery.svg" width="24" height="24" alt=""> 安装与开始创作
 
-1. 在 [1.9.2 发布页](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.2)下载安装包。新用户或资源修复选 **full 完整包**；已有完整安装选 **upgrade 升级包**。
+1. 在 [2.0.0 发布页](https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.0.0)下载安装包。本版统一使用 **full 完整安装包**，支持首次安装、升级与资源修复。
 2. 按[离线素材指南](docs/guides/offline-resources.md)导入需要的素材。完整资源包与程序分开发行，已有素材不必因程序升级重复下载。
 3. 打开控制室，选择数据目录和 AI 工作目录，准备所需模型，或连接已有服务。
 4. 进入绘制工作台，选角色与场景，生成后保存到“我的作品”。

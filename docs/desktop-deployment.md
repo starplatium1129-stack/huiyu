@@ -76,6 +76,8 @@ npm run wf -- desktop:doctor --json
 
 日常开发**不需要**执行此流程，仅供发布正式版本使用：
 
+需要只提供一个完整安装包时，构建使用 `npm run release:desktop -- --full-only --bump major`，提交并推送后用 `npm run release:desktop -- --full-only --skip-build --publish` 发布。该模式保持 release/LZMA、部署清单和原更新签名，自动更新也下载完整包，不生成另一份升级包。
+
 ```powershell
 # 1. 自动递增版本号并构建全量 LZMA 完整包与升级包
 node scripts/maintenance/release-desktop-update.js --bump patch

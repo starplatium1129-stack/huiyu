@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "si_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1156,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "characterId": "si_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "玉中身·丹青素袍（默认）",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false,
+      "category": "官方衣装",
+      "prose": "a fitted white halter dress with bare shoulders and backless design, detached wide white sleeves, black choker, black gloves, white kneehigh socks and ankle boots",
+      "tokens": [
+        "white dress",
+        "backless dress",
+        "bare shoulders",
+        "detached sleeves",
+        "wide sleeves",
+        "black choker",
+        "black gloves",
+        "kneehighs",
+        "boots",
+        "hair ornament"
+      ]
+    }
+  }
+}

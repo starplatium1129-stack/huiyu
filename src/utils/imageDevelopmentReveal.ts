@@ -1,19 +1,11 @@
-const MAX_BACKING_PIXELS = 320_000
-const MAX_EDGE = 768
-
-/** One tonal study sampled from the decoded work, followed by color and a brief
- * frame glint. The image stays at its original fit; every animated property is
- * opacity or transform. No pixel readback, per-frame paint, or idle effect. */
+/** A brief original-image fade and frame glint. The artwork remains sharp
+ * throughout; no low-resolution image surface replaces the decoded original. */
 export function startImageDevelopmentReveal(image: HTMLImageElement, host: HTMLElement, duration: number): { finished: Promise<void>; stop: () => void } | null {
   if (!image.complete || !image.naturalWidth || !image.naturalHeight || typeof image.animate !== 'function') return null
   const rect = image.getBoundingClientRect(), parent = host.getBoundingClientRect()
   if (rect.width < 1 || rect.height < 1 || !Number.isFinite(rect.width * rect.height)) return null
   const fit = Math.min(rect.width / image.naturalWidth, rect.height / image.naturalHeight)
   const width = image.naturalWidth * fit, height = image.naturalHeight * fit
-  const scale = Math.min(1, MAX_EDGE / Math.max(width, height), Math.sqrt(MAX_BACKING_PIXELS / (width * height)))
-  const draft = document.createElement('canvas')
-  draft.width = Math.max(1, Math.floor(width * scale))
-  draft.height = Math.max(1, Math.floor(height * scale))
   const layer = document.createElement('div')
   layer.className = 'cg-development-reveal'
   layer.setAttribute('aria-hidden', 'true')
@@ -23,7 +15,6 @@ export function startImageDevelopmentReveal(image: HTMLImageElement, host: HTMLE
     top: `${rect.top - parent.top - host.clientTop + host.scrollTop + (rect.height - height) / 2}px`,
     width: `${width}px`, height: `${height}px`,
   })
-  Object.assign(draft.style, { position: 'absolute', inset: '0', width: '100%', height: '100%' })
   const frame = document.createElement('div'), glint = document.createElement('div')
   Object.assign(frame.style, {
     position: 'absolute', inset: '0',
@@ -34,7 +25,7 @@ export function startImageDevelopmentReveal(image: HTMLImageElement, host: HTMLE
     background: 'linear-gradient(90deg, transparent, #fff8f0, transparent)',
   })
   frame.append(glint)
-  layer.append(draft, frame)
+  layer.append(frame)
   const animations: Animation[] = []
   const completions: Promise<Animation>[] = []
   let disposed = false
@@ -43,7 +34,6 @@ export function startImageDevelopmentReveal(image: HTMLImageElement, host: HTMLE
     disposed = true
     animations.forEach(animation => animation.cancel())
     layer.remove()
-    draft.width = draft.height = 0
   }
   const own = (animation: Animation) => {
     animations.push(animation)
@@ -52,27 +42,12 @@ export function startImageDevelopmentReveal(image: HTMLImageElement, host: HTMLE
   }
   duration = Number.isFinite(duration) ? Math.max(450, Math.min(700, duration)) : 600
   try {
-    const context = draft.getContext('2d')
-    if (!context) { stop(); return null }
-    // Develop from the canvas's own tone, avoiding a white-paper flash in dark
-    // mode. The bounded tonal study is painted once, never blurred per frame.
-    context.fillStyle = getComputedStyle(host).getPropertyValue('--bg-deep').trim() || '#161d24'
-    context.fillRect(0, 0, draft.width, draft.height)
-    context.filter = 'grayscale(.55) contrast(.95) brightness(.9)'
-    context.globalAlpha = .82
-    context.drawImage(image, 0, 0, draft.width, draft.height)
-    context.filter = 'none'
     host.append(layer)
-    own(draft.animate([
-      { opacity: 1 }, { opacity: 1, offset: .12 },
-      { opacity: .64, offset: .4 }, { opacity: 0, offset: .84 }, { opacity: 0 },
-    ], { duration, easing: 'linear', fill: 'both' }))
     const originalOpacity = Number.parseFloat(getComputedStyle(image).opacity)
     own(image.animate([
-      { opacity: .04 }, { opacity: .12, offset: .12 },
-      { opacity: Number.isFinite(originalOpacity) ? originalOpacity : 1, offset: .84 },
+      { opacity: 0 },
       { opacity: Number.isFinite(originalOpacity) ? originalOpacity : 1 },
-    ], { duration, easing: 'cubic-bezier(.25,.1,.25,1)', fill: 'both' }))
+    ], { duration: Math.min(duration, 450), easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' }))
     own(frame.animate([
       { opacity: 0 }, { opacity: 0, offset: .7 },
       { opacity: .75, offset: .84 }, { opacity: 0 },

@@ -1,6 +1,6 @@
 [package]
 name = "ai-cg-studio-desktop"
-version = "1.9.2"
+version = "2.0.0"
 edition = "2021"
 description = "AI-CG-Studio desktop shell (Tauri 2)"
 

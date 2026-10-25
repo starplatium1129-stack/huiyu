@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "si_arknights/nsfw_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 1161,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "characterId": "si_arknights",
+    "outfit": {
+      "id": "nsfw_lace_lingerie",
+      "name": "月光薄纱翡翠缘蕾丝私密睡衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "场景衣装状态",
+      "prose": "a sheer jade-tinted lace babydoll nightie with delicate ribbons, translucent across the bust and midriff, revealing waist and slender curves",
+      "tokens": [
+        "sheer babydoll",
+        "jade lace lingerie",
+        "translucent nightie",
+        "thin straps",
+        "cleavage",
+        "panties"
+      ]
+    }
+  }
+}

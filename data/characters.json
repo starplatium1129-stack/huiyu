@@ -12757,6 +12757,86 @@
     "bg_color": "#170f2b"
   },
   {
+    "id": "si_arknights",
+    "name": "祀",
+    "alias": [
+      "Si",
+      "祀",
+      "小葱"
+    ],
+    "type": "popular",
+    "icon": "🐉",
+    "portrait": {
+      "image": "../assets/characters/popular-si_arknights.png?v=1",
+      "alt": "祀立绘"
+    },
+    "visual_dna": {
+      "hair": "青绿色超长发，扎成俏丽的双丸子包包头",
+      "hair_color": "葱绿（#52c488）",
+      "eyes": "澄净剔透的冰蓝双眸",
+      "hairstyle": "双丸子包包头 · 披散长发",
+      "uniform": "露肩露背白色短旗袍连身裙、分离式大阔袖、黑色颈圈、高筒袜与短靴",
+      "expression": "清冷灵动、好奇敏锐、唇角含笑",
+      "style": "东方典雅与近未来末世工装碰撞",
+      "signature": "青翠长发双丸子头、晶莹龙角、尖耳与修长龙尾"
+    },
+    "personality": [
+      "清冷温和",
+      "灵动随性",
+      "好奇敏锐",
+      "从容沉静"
+    ],
+    "likes": [
+      "书法笔墨",
+      "清茶小点",
+      "山川风景",
+      "观察塔卫二的日常",
+      "写生"
+    ],
+    "identity": {
+      "role": "塔卫二巨兽代理人 / 终末地协作干员",
+      "age": "官方未公开（巨兽代理人，创作设定按成年处理）",
+      "occupation": "巨兽代理人、勘探协作员",
+      "faction": "明日方舟：终末地"
+    },
+    "tags": [
+      "绿发包包头",
+      "蓝瞳",
+      "龙角",
+      "尖耳",
+      "龙尾",
+      "巨兽代理人",
+      "笔意墨魂"
+    ],
+    "bg_story": "祀是《明日方舟：终末地》在「丹青渡」版本登场的六星角色，为塔卫二上极其罕见的巨兽代理人，拥有操控笔意与墨魂、储伤爆发的玄妙能耐。外表是一位梳着青绿双包包头、生有龙角尖耳的灵动少女，常被同行者亲切称为“小葱”。平日里随性自适，喜爱静坐饮茶、挥毫写意，对开拓阵线各处的世俗烟火与生活细节充满好奇。在面对恶劣异象时，她亦能挥笔作画、凝霜化墨，以深不可测的巨兽伟力守护同行伙伴。日常场景与非默认衣装为创作设定。",
+    "speech": "「笔墨起落，皆为世间轨迹。随我去看看今天的天气吧。」",
+    "accent_color": "#52c488",
+    "bg_color": "#0a191e",
+    "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+    "traits": [
+      "si_(arknights)",
+      "1girl",
+      "solo",
+      "green_hair",
+      "long_hair",
+      "double_bun",
+      "blue_eyes",
+      "dragon_horns",
+      "pointy_ears",
+      "dragon_tail",
+      "arknights:_endfield"
+    ],
+    "lora": {
+      "name": "祀 · Anima Base LoRA v1",
+      "trigger_words": [
+        "si_(arknights)"
+      ],
+      "recommended_scene": [
+        "祀角色样张与日常场景"
+      ]
+    }
+  },
+  {
     "id": "yuuki_mikan",
     "name": "结城美柑",
     "alias": [

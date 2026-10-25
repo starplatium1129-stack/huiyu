@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "si_arknights/sfw_silk_apron",
+  "revision": 1,
+  "sortOrder": 1159,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "characterId": "si_arknights",
+    "outfit": {
+      "id": "sfw_silk_apron",
+      "name": "松绿条纹厨房亚麻围裙",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常衣装（创作）",
+      "prose": "a forest green striped linen apron worn over a plain cream crewneck sweater and navy straight jeans, with rolled-up sleeves",
+      "tokens": [
+        "green striped apron",
+        "cream sweater",
+        "rolled up sleeves",
+        "jeans",
+        "apron"
+      ]
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "kind": "blueprint",
+  "id": "si_arknights_morning_tea",
+  "revision": 1,
+  "sortOrder": 1762,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "id": "si_arknights_morning_tea",
+    "characterId": "si_arknights",
+    "title": "祀 · 晨光窗台沏一盏清茶",
+    "category": "相伴日常",
+    "action": "坐在窗边木桌前双手推递热茶",
+    "location": "基地生活区窗台",
+    "timeOfDay": "清晨",
+    "lighting": "温暖柔和的侧向晨曦",
+    "camera": "medium shot",
+    "mood": "温馨恬静",
+    "description": "【祀 · 晨光窗台沏一盏清茶】清晨基地生活区洒满金色晨光，祀拢了拢宽松的薄荷绿落肩开衫，纤细的手指轻捏白瓷茶夹，将刚沏好的清茶推到你面前。澄净的蓝眸含着温软的笑意，青翠的龙角在晨曦中泛着剔透的微光——「新采的茶芽，水温正好，趁热尝尝吧。」",
+    "outfitId": "sfw_tea_cardigan",
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "daily",
+      "morning",
+      "tea",
+      "window",
+      "sunlight",
+      "cozy",
+      "table"
+    ],
+    "promptTokens": [
+      "medium shot",
+      "sitting at table",
+      "holding teacup",
+      "offering tea",
+      "morning light",
+      "sunlight through window",
+      "wooden table",
+      "steaming teacup",
+      "gentle smile",
+      "looking at viewer",
+      "cozy atmosphere"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Si sits beside a sunlit window in a soft mint cardigan, leaning forward slightly as she slides a steaming ceramic teacup across the wooden table with a gentle, warm smile.",
+    "animaCaption": "She slides the steaming teacup forward across the wooden table with both hands as sunlight slants through the window.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

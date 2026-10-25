@@ -1,0 +1,53 @@
+{
+  "kind": "blueprint",
+  "id": "si_arknights_calligraphy_doodle",
+  "revision": 1,
+  "sortOrder": 1763,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "id": "si_arknights_calligraphy_doodle",
+    "characterId": "si_arknights",
+    "title": "祀 · 书桌前蘸墨为你画小葱",
+    "category": "相伴日常",
+    "action": "手握毛笔展示案头宣纸画作",
+    "location": "基地雅致书房",
+    "timeOfDay": "午后",
+    "lighting": "明亮温暖的室内漫射光",
+    "camera": "cowboy shot",
+    "mood": "灵动俏皮",
+    "description": "【祀 · 书桌前蘸墨为你画小葱】基地书房的午后，祀手执饱蘸浓墨的毛笔，在宣纸上灵巧地勾勒出一根圆滚滚的可爱小葱，抬起头狡黠地偏着脑袋望向你，龙尾在身后轻轻晃动——「他们总说我的发型像小葱……喏，画下来送给你，可不准笑我。」",
+    "outfitId": "standard",
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "daily",
+      "calligraphy",
+      "ink_brush",
+      "desk",
+      "playful",
+      "smile"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "standing by desk",
+      "holding calligraphy brush",
+      "ink brush",
+      "desk",
+      "rice paper",
+      "ink wash painting",
+      "head tilt",
+      "playful smile",
+      "looking at viewer",
+      "daylight",
+      "tail wagging"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Holding a traditional calligraphy brush above a desk covered in ink-wash sketches, Si tilts her head with a teasing grin, displaying a playful ink doodle on the paper.",
+    "animaCaption": "She holds the calligraphy brush poised above the paper and smiles playfully toward the viewer.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

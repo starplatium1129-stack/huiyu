@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "si_arknights_sofa_nap",
+  "revision": 1,
+  "sortOrder": 1767,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "id": "si_arknights_sofa_nap",
+    "characterId": "si_arknights",
+    "title": "祀 · 雨天窝在沙发抱枕间打盹",
+    "category": "相伴日常",
+    "action": "抱枕侧卧沙发伸手轻握指尖",
+    "location": "基地客厅布艺沙发",
+    "timeOfDay": "雨天午后",
+    "lighting": "雨幕灰调天光与暖色阅读落地灯",
+    "camera": "cowboy shot",
+    "mood": "慵懒依赖",
+    "description": "【祀 · 雨天窝在沙发抱枕间打盹】窗外淅淅沥沥下着雨，室内静谧安详。祀慵懒地侧躺在布艺沙发深处，怀里抱着软绵绵的抱枕，一头翠绿长发散落在羊毛毯上，修长的龙尾搭在沙发沿轻垂，睡眼朦胧间迷迷糊糊地握住你的手指——「唔……下雨天最适合睡觉了……别走，再陪我躺一会儿……」",
+    "outfitId": "sfw_tea_cardigan",
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "daily",
+      "rain",
+      "sofa",
+      "sleepy",
+      "cozy",
+      "blanket",
+      "pillow",
+      "holding_hands"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "lying on sofa",
+      "hugging pillow",
+      "blanket",
+      "rainy day",
+      "window with rain drops",
+      "sleepy",
+      "holding viewer's finger",
+      "messy hair",
+      "soft warm lamp light",
+      "cozy"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Curled sideways on the plush sofa with a pillow tucked against her chest, Si blinks sleepily in the dim rainy afternoon light, her hand reaching out to loosely hold the viewer's fingers.",
+    "animaCaption": "She lies curled on the couch holding a pillow, her fingers lightly catching the viewer's hand.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

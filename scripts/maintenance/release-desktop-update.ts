@@ -39,6 +39,7 @@ const PUBLISH = process.argv.includes('--publish');
 const MANUAL = process.argv.includes('--manual');
 const COMPLETE_MANUAL = process.argv.includes('--complete-manual');
 const UPGRADE_ONLY = process.argv.includes('--upgrade-only');
+const FULL_ONLY = process.argv.includes('--full-only');
 const INSTALL_DIR_INDEX = process.argv.indexOf('--install-dir');
 const INSTALL_DIR = INSTALL_DIR_INDEX < 0 ? undefined : process.argv[INSTALL_DIR_INDEX + 1];
 const RELEASE_REPOSITORY = 'starplatium1129-stack/huiyu';
@@ -105,7 +106,7 @@ function createManifest(version: any, signature: any, exeName: any, publishedAt:
   const tag = releaseTag(version);
   return {
     version,
-    notes: `绘遇 HUIYU ${version}。自动更新使用轻量升级包；如提示缺少运行环境或基础素材，请在本版本发布页下载完整安装包： https://github.com/${RELEASE_REPOSITORY}/releases/tag/${tag}`,
+    notes: `绘遇 HUIYU ${version}。${FULL_ONLY ? '本版统一使用完整安装包。' : '自动更新使用轻量升级包；资源修复请选择完整包。'}下载： https://github.com/${RELEASE_REPOSITORY}/releases/tag/${tag}`,
     pub_date: publishedAt.toISOString(),
     platforms: {
       'windows-x86_64': {
@@ -144,10 +145,11 @@ function publishRelease(version: any, head: any, files: any) {
   if (manual && files.some((file: any) => path.basename(file) === 'latest.json' || file.endsWith('.sig'))) throw new Error('手动安装版不能发布自动更新清单或签名');
   const workspaceRoot = ROOT;
   const installers = files.filter((file: string) => file.endsWith('.exe'));
-  if (installers.length !== 2 || new Set(installers.map((file: string) => path.basename(file))).size !== 2) throw Error('公开发布必须同时提供完整包与升级包');
+  const expectedCount = FULL_ONLY ? 1 : 2;
+  if (installers.length !== expectedCount || new Set(installers.map((file: string) => path.basename(file))).size !== expectedCount) throw Error('安装包数量与发行模式不匹配');
   for (const installer of installers) binding.verifyDistribution(workspaceRoot, installer, 'release');
   assertNativeReleaseIntegrity(path.join(workspaceRoot, 'desktop-tauri/src-tauri/resources/gateway'));
-  const expectedNames = Object.values(installerNames(version));
+  const expectedNames = FULL_ONLY ? [installerNames(version).full] : Object.values(installerNames(version));
   if (installers.some((file: string) => !expectedNames.includes(path.basename(file)))) throw Error('安装包名称或版本不匹配');
   for (const installer of installers) {
     if (!files.includes(`${installer}.sha256`) || (!manual && !files.includes(`${installer}.sig`))) throw Error('每种安装包都必须附带校验文件及对应签名');
@@ -155,7 +157,7 @@ function publishRelease(version: any, head: any, files: any) {
   const tag = releaseTag(version);
   const baseNotes = path.join(ROOT, 'docs/releases', `${tag}.md`);
   if (!fs.existsSync(baseNotes)) throw new Error(`缺少版本说明：${baseNotes}`);
-  const packageHelp = `> 新用户或资源修复请选择 **full 完整包**；已有完整安装请选择 **upgrade 轻量升级包**。样张素材继续独立提供。\n> 使用部署脚本修复时，请保留安装包旁的同名 \`.deployment.json\`；它记录安装包及安装后文件身份。\n\n`;
+  const packageHelp = `> ${FULL_ONLY ? '本版只提供一个 **full 完整安装包**，用于首次安装、升级与修复。' : '新用户或资源修复请选择 **full 完整包**；已有完整安装请选择 **upgrade 轻量升级包**。'}样张素材独立提供。\n> 使用部署脚本修复时，请保留安装包旁的同名 \`.deployment.json\`；它记录安装包及安装后文件身份。\n\n`;
   const notes = (manual ? `${MANUAL_MARKER}\n> 本次为手动安装版：自动更新通道继续保留上一份已签名版本，待原签名主机补签后启用。安装包未签名，SHA-256 用于文件完整性校验。\n\n` : '') + packageHelp + fs.readFileSync(baseNotes, 'utf8');
   const outputDir = OUT_DIR;
   fs.mkdirSync(outputDir, { recursive: true });
@@ -187,10 +189,11 @@ function publishRelease(version: any, head: any, files: any) {
 
 async function main() {
   if (process.argv.includes('--help')) {
-    console.log('Usage: node scripts/maintenance/release-desktop-update.js [--manual] [--skip-build | --bundle-only] [--bump patch|minor|major] [--publish]\nLocal development: --manual --upgrade-only --install-dir <existing installation> [--skip-build] (builds only an uncompressed upgrade; no full package, install or publish)');
+    console.log('Usage: node scripts/maintenance/release-desktop-update.js [--full-only] [--manual] [--skip-build | --bundle-only] [--bump patch|minor|major] [--publish]\nLocal development: --manual --upgrade-only --install-dir <existing installation> [--skip-build] (builds only an uncompressed upgrade; no full package, install or publish)');
     return;
   }
   if (MANUAL && COMPLETE_MANUAL) fail('--manual 与 --complete-manual 不能同时使用');
+  if (FULL_ONLY && UPGRADE_ONLY) fail('--full-only 与 --upgrade-only 不能同时使用');
   if (PUBLISH && BUMP_KIND) fail('--publish 不能与 --bump 同时使用，请先构建、提交并推送版本');
   if (UPGRADE_ONLY && (!MANUAL || BUNDLE_ONLY || BUMP_KIND || PUBLISH || COMPLETE_MANUAL)) {
     fail('--upgrade-only 仅用于 --manual 本机升级构建，不可改版本、补签或发布');
@@ -264,10 +267,10 @@ async function main() {
   if (PUBLISH) assertNativeReleaseIntegrity(path.join(ROOT, 'desktop-tauri/src-tauri/resources/gateway'));
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
-  const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT);
+  const upgrade = FULL_ONLY ? null : await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT);
   const variants = [
     { kind:'full', payload:path.join(BUNDLE_DIR, artifact.exe), verifier:undefined },
-    { kind:'upgrade', payload:upgrade.payload, verifier:upgrade.verifier },
+    ...(upgrade ? [{ kind:'upgrade', payload:upgrade.payload, verifier:upgrade.verifier }] : []),
   ];
   const files: string[] = [];
   let upgradeSignature = '', upgradeName = '';
@@ -295,13 +298,13 @@ async function main() {
       const signature = fs.readFileSync(`${executable}.sig`, 'utf8').trim();
       verifyUpdaterSignature(executable, signature, updater.pubkey);
       files.push(`${executable}.sig`);
-      if (variant.kind === 'upgrade') { upgradeSignature = signature; upgradeName = exeName; }
+      if (variant.kind === 'upgrade' || FULL_ONLY) { upgradeSignature = signature; upgradeName = exeName; }
     }
   }
-  console.log(`[release-desktop-update] 升级包复用 ${upgrade.retainedFiles} 个基础素材文件（${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB），完整包保留素材与 WebView2`);
+  console.log(upgrade ? `[release-desktop-update] 升级包复用 ${upgrade.retainedFiles} 个基础素材文件（${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB），完整包保留素材与 WebView2` : '[release-desktop-update] 仅生成完整安装包，保留素材、WebView2 与签名更新能力');
   if (MANUAL) {
     if (PUBLISH) publishRelease(version, assertPublishReady(version), files);
-    console.log(`[release-desktop-update] ${version} 两种手动安装包已生成，自动更新清单未修改`);
+    console.log(`[release-desktop-update] ${version} 手动安装包已生成，自动更新清单未修改`);
     return;
   }
 

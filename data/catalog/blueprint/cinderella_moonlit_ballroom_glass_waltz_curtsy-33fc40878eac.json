@@ -4,7 +4,7 @@
   "revision": 2,
   "sortOrder": 1814,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-25T11:03:42.570070600+00:00",
   "data": {
     "id": "cinderella_moonlit_ballroom_glass_waltz_curtsy",
     "title": "灰姑娘 · 月影舞池中央的冰晶礼步提裙",
@@ -16,7 +16,7 @@
     "location": "穹顶天窗映照月光的古典皇家大理石大舞厅",
     "action": "双手轻提银蓝舞裙裙摆优雅行屈膝礼，侧颈微倾展颜",
     "timeOfDay": "夜晚",
-    "lighting": "穹顶月光与舞池四周巨大水晶吊灯的银蓝交织冷暖辉光",
+    "lighting": "柔和中性主光照亮人物面部，冷蓝月光与晶体光保留在背景",
     "camera": "majestic wide anime shot, framing her flowing gown, reflective marble floor, and chandeliers",
     "mood": "高贵典雅",
     "recommendedSize": "1152x1536",
@@ -66,12 +66,19 @@
       "skirt hold",
       "looking down",
       "moonlight",
-      "glass dome"
+      "glass dome",
+      "soft neutral key light on face",
+      "natural skin tone",
+      "cool blue background"
     ],
     "promptProse": "At the center of an opulent ballroom beneath a vast moonlit glass rotunda, Cinderella executes an impeccable curtsy. Her layered silver-blue silk gown pools gracefully across the mirror-polished black marble floor, delicate crystal straps shimmering over bare alabaster shoulders as she lifts her hem with gloved hands, crimson gaze lowered in serene elegance.",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "blue skin",
+      "monochrome blue",
+      "blue color cast"
+    ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "Her gloved hands lift the hem for a curtsy beneath the glass rotunda."
+    "animaCaption": "She lifts the sides of her silver-blue gown in a graceful curtsy beneath the chandelier. A soft ivory spotlight keeps her face naturally colored, while blue moonlight falls across the ballroom floor behind her."
   }
 }

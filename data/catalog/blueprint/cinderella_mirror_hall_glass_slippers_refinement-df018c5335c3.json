@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_mirror_hall_glass_slippers_refinement",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 1812,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-25T11:03:42.570070600+00:00",
   "data": {
     "id": "cinderella_mirror_hall_glass_slippers_refinement",
     "title": "灰姑娘 · 水晶镜廊中的玻璃鞋高洁回眸",
@@ -16,7 +16,7 @@
     "location": "冰晶与镜面构成的极夜遗迹长廊",
     "action": "侧身站立回眸，玻璃鞋兵装如水晶飞刃在身侧悬浮泛光，银发飘逸",
     "timeOfDay": "极夜",
-    "lighting": "冰晶折射的清冷月光与玻璃鞋兵装散发的幽蓝科技光斑",
+    "lighting": "柔和中性主光照亮人物面部，冷蓝月光与晶体光保留在背景",
     "camera": "cinematic medium-full tracking shot, capturing her floating weapons and infinite mirror reflections",
     "mood": "高洁冷冽",
     "recommendedSize": "1152x1536",
@@ -59,18 +59,23 @@
       "looking_back",
       "composed_expression",
       "elegant_pose",
-      "crystalline_glow",
       "cinematic_lighting",
       "frost_crystals",
       "standing",
       "night",
-      "blue glow"
+      "soft neutral key light on face",
+      "natural skin tone",
+      "cool blue background"
     ],
     "promptProse": "Standing in a transcendent hall of infinite crystalline mirrors beneath the midnight sky, Cinderella gazes back with piercing ruby-red eyes. Her cascading silver-white wavy hair floats on the crisp air around her corseted white-and-silver combat garb, while her iconic high-tech glass slipper armament hovers beside her in an ethereal sapphire glow.",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "blue skin",
+      "monochrome blue",
+      "blue color cast"
+    ],
     "nsfwTokens": [],
     "nsfwProse": "",
     "allowRepeatedSubject": true,
-    "animaCaption": "Her floating glass-slipper armament hovers beside her in the mirrored hall."
+    "animaCaption": "She stands in the dry mirror hall among floating crystal weapons, looking back over her shoulder. A soft neutral-white spotlight lights her face and silver armor, while cool blue crystal reflections remain on the glass walls behind her."
   }
 }

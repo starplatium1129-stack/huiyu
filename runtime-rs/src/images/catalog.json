@@ -62,7 +62,13 @@
       "cfg": 4,
       "sampler": "euler",
       "scheduler": "sgm_uniform",
-      "sizes": ["928x1536", "1536x928", "1024x1024", "832x1216", "1216x832"],
+      "sizes": [
+        "928x1536",
+        "1536x928",
+        "1024x1024",
+        "832x1216",
+        "1216x832"
+      ],
       "noLora": true
     },
     "anima-yume-v1.0": {
@@ -183,6 +189,17 @@
       ],
       "minStrength": 0.65,
       "maxStrength": 1
+    },
+    "L_SI_ANIMA_BASE_V1": {
+      "file": "si_arknights_anima_base_r32_v1.safetensors",
+      "name": "祀 · Anima Base LoRA v1",
+      "character": "si_arknights",
+      "compatibleModels": [
+        "anima-base-v1.0",
+        "anima-miaomiao-v1.6"
+      ],
+      "minStrength": 0.5,
+      "maxStrength": 1
     }
   },
   "KREA_STYLE_LORAS": {
@@ -233,6 +250,11 @@
       "id": "natsume",
       "label": "四季夏目",
       "loraId": "L_NAT_V21_ANIMA"
+    },
+    "si_arknights": {
+      "id": "si_arknights",
+      "label": "祀",
+      "loraId": "L_SI_ANIMA_BASE_V1"
     }
   },
   "contract": {
@@ -325,7 +347,8 @@
     ],
     "CHARACTER_LORA_BINDINGS": {
       "nene": "L_NENE_V21_ANIMA",
-      "natsume": "L_NAT_V21_ANIMA"
+      "natsume": "L_NAT_V21_ANIMA",
+      "si_arknights": "L_SI_ANIMA_BASE_V1"
     }
   }
 }

@@ -16,7 +16,7 @@
 | [设计规范](../DESIGN.md) | 品牌、双主题与融合 Emil Kowalski 原则的交互和动效标准 |
 | [桌面部署](desktop-deployment.md) | 构建、安装、同步及 UAC |
 
-协作规则见 [AGENTS.md](../AGENTS.md)。普通用户从[浏览入口](index.html)、[上手教程](getting-started.html)、[模型配置](guides/setup-and-models.md)和[离线资源](guides/offline-resources.md)开始。当前保留的发行说明为 [1.9.2](releases/v1.9.2.md)，公开发行与本机安装分别核对。
+协作规则见 [AGENTS.md](../AGENTS.md)。普通用户从[浏览入口](index.html)、[上手教程](getting-started.html)、[模型配置](guides/setup-and-models.md)和[离线资源](guides/offline-resources.md)开始。当前发行说明为 [2.0.0](releases/v2.0.0.md)，公开发行与本机安装分别核对。
 
 ## 架构与验收
 

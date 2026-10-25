@@ -159,8 +159,9 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
   let stopFrames: (() => void) | null = null
   let disposed = false, started = false, handedOff = false, elapsed = 0
   let revealElapsed: number | null = null
-  let revealDuration = 0, revealStartedAt = 0, formedFrame = false
-  let restoreImage: (() => void) | null = null, resolveReveal: (() => void) | null = null
+  let revealDuration = 0, revealStartedAt = 0
+  let resolveReveal: (() => void) | null = null
+  let restoreImage: (() => void) | null = null, resultOpacity = 1
   let revealEffect: CanvasParticleReveal | null = null
   let departureRect: number[] | null = null, departureOpacity = 1
   let resultImage: HTMLImageElement | null = null
@@ -266,6 +267,13 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
     const waitingOpacity = () => image ? smoothGenerationPhase(1.5, 2, elapsed) : 1
     const draw = () => {
       const reveal = revealElapsed === null ? -1 : revealElapsed / revealDuration
+      // Keep the orbit-to-image formation, then crossfade to the decoded original
+      // before the sampled particles become a complete low-resolution surface.
+      if (reveal >= 0 && resultImage) {
+        const handoff = smoothGenerationPhase(.55, .8, reveal)
+        resultImage.style.opacity = String(resultOpacity * handoff)
+        canvas.style.opacity = String(1 - handoff)
+      }
       const orbitOpacity = reveal < 0 ? waitingOpacity() : departureOpacity * (1 - smoothGenerationPhase(0, .4, reveal))
       options.generation?.orbit()?.setOpacity(orbitOpacity)
       // No invisible particle field is painted during the wait: the original
@@ -316,11 +324,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
       try {
         if (revealElapsed !== null) {
           revealElapsed = Math.max(0, now - revealStartedAt) / 1000
-          if (revealElapsed >= revealDuration) {
-            // Present the complete, untinted texture before handing off to the same image.
-            if (formedFrame) { finish(); return }
-            revealElapsed = revealDuration; formedFrame = true
-          }
+          if (revealElapsed >= revealDuration) { finish(); return }
         }
         if (!options.generation) {
           if (elapsed >= 2.4) { finish(); return }
@@ -350,9 +354,9 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
           resultPalette = nextPalette.length === 3 ? [...nextPalette] : [...palette]; lastTheme = undefined
           revealDuration = duration / 1000; revealElapsed = 0; canvas.dataset.mode = 'reveal'
           const opacity = next.style.opacity
+          const computedOpacity = Number.parseFloat(getComputedStyle(next).opacity)
+          resultOpacity = Number.isFinite(computedOpacity) ? computedOpacity : 1
           restoreImage = () => { next.style.opacity = opacity }
-          next.style.opacity = '0'
-          // The particles grow into the work; an early whole-image fade would hide that formation.
           draw()
           revealStartedAt = performance.now()
         }

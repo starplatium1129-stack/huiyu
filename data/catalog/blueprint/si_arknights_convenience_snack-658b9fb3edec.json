@@ -1,0 +1,53 @@
+{
+  "kind": "blueprint",
+  "id": "si_arknights_convenience_snack",
+  "revision": 1,
+  "sortOrder": 1766,
+  "createdAt": "2026-10-25T10:00:00+00:00",
+  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "data": {
+    "id": "si_arknights_convenience_snack",
+    "characterId": "si_arknights",
+    "title": "祀 · 街边便利店捧着热关东煮",
+    "category": "相伴日常",
+    "action": "双手捧纸杯小口吃关东煮",
+    "location": "开拓站便利店窗前",
+    "timeOfDay": "夜晚",
+    "lighting": "便利店玻璃透出的明亮暖光与霓虹街灯",
+    "camera": "medium close-up",
+    "mood": "轻松可爱",
+    "description": "【祀 · 街边便利店捧着热关东煮】阵线补给站外的便利店玻璃窗前，街灯明亮。祀双手捧着冒着白气的纸杯，小口咬着热乎乎的萝卜，被热气熏得微微眯起双眼，双颊透着冻红与满足的红晕——「开拓站的关东煮比想象中好吃多了……喂，不准抢我的鱼饼！」",
+    "outfitId": "sfw_oversized_hoodie",
+    "recommendedSize": "1152x1536",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "daily",
+      "night",
+      "eating",
+      "convenience_store",
+      "cute",
+      "blush",
+      "winter"
+    ],
+    "promptTokens": [
+      "medium close-up",
+      "convenience store",
+      "holding paper cup",
+      "eating oden",
+      "steaming food",
+      "blush",
+      "satisfaction",
+      "window reflection",
+      "neon lights",
+      "night",
+      "city lights"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Clutching a steaming paper cup of warm oden outside the brightly lit shop window, Si takes a small bite with flushed cheeks, her blue eyes curved in blissful contentment.",
+    "animaCaption": "She holds the steaming paper cup close with both hands, taking a warm bite with rosy cheeks.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

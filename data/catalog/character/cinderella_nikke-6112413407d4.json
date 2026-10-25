@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cinderella_nikke",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 174,
   "createdAt": "2026-10-22T00:00:00+00:00",
-  "updatedAt": "2026-10-22T04:49:17.590885800+00:00",
+  "updatedAt": "2026-10-25T09:38:39.464881900+00:00",
   "data": {
     "id": "cinderella_nikke",
     "profile": {

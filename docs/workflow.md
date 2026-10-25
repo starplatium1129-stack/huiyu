@@ -394,6 +394,8 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 程序发行使用 `npm run release:desktop`：同一份应用构建生成 `*-full-setup.exe` 与 `*-upgrade-setup.exe`，分别绑定和签名，自动更新清单指向升级包。完整包面向新装/修复并带 WebView2 与基础素材；升级包携带角色图片、缩略图和粒子素材，复用字节一致的 Live2D、chibi 和双人姿势素材，缺失或变化时要求完整包。样张继续独立发布。`--skip-build` 仍须匹配完整回执；新增的 NSIS 输入绑定缺失时不能复用旧回执。两种包均核对原生发行材料完整性；审批状态仅作记录，不替代用户明确发布授权，也不代表设备验收。
 
+显式 `--full-only` 只封装并发布完整包，更新清单绑定同一个已签名完整包；不会生成或上传升级包。构建、提交推送和 `--skip-build --publish` 两步均保留该开关。图形资源仍经 `offline:pack` 独立打包并按发布指纹审批。
+
 日常开发使用 `desktop:package-local --install-dir <已有安装目录>`：构建原生程序和资源后，在独立目录直接生成无压缩升级包，不先生成完整 NSIS 包。已有匹配原生构建时，`desktop:upgrade-local --install-dir <目录>` 等价于加 `--skip-build`。两者均通过 npm 的工具生成入口启动；复用安装器检查器核对已有安装和保留素材，失败不安装、不停止应用、不回退完整打包。输出 `AI-CG-Studio_<版本>_x64-local-upgrade-setup.exe`；跳过 WebView2 和可复用素材，保留完整卸载清单，不覆盖发行包、不改 latest.json、不发布。发行路径明确要求带 WebView2 的 LZMA 完整包，不能复用本机无压缩包。
 
 底层游戏式安装器：`installer:build` 生成模板与素材，`installer:preview --capture --page=welcome` 安全预览；详情见 [安装界面维护](guides/desktop/game-installer.md)。`package:tauri` 已自动接入，无需手工修改生成的 NSIS 脚本。
