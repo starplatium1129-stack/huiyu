@@ -28,25 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "专注创作",
-        "生活上较依赖同伴",
-        "表达情绪较含蓄"
+        "天然呆萌",
+        "情感内敛",
+        "纯粹执着",
+        "极度专注",
+        "依赖信赖之人",
+        "感知力超越常人",
+        "笨拙却深情"
       ],
       "likes": [
-        "创作漫画",
-        "年轮蛋糕"
+        "年轮蛋糕",
+        "绘制漫画分镜与大幅油画",
+        "神田空太的抚摸与照顾",
+        "樱花庄屋顶的清风",
+        "猫咪与缤纷的颜料色彩"
       ],
       "classic_cg": {
-        "title": "画室中央的新作",
-        "description": "樱花庄 202 室，她赤脚站在比人还高的画布前，白衬衫下摆沾满颜料，手里横握着画笔；回头看向门口时脸上毫无表情，发丝上还沾着一点钴蓝。"
+        "title": "樱花雨下的宿命相拥",
+        "description": "水明高中的坡道上粉白樱花如雪纷飞，浅金长发绝美少女赤足站在树荫下，淡橙眼眸倒映着少年奔赴而来的身影，画笔脱手坠落，在无言中交付了四年沉淀的爱意。"
       },
-      "identity": "The Pet Girl of Sakurasou · 椎名真白",
+      "identity": {
+        "role": "女主角 / 世界级天才油画家兼职业漫画家",
+        "age": "16岁（登场）→ 22岁（后日谈）",
+        "occupation": "画家 / 漫画家 / 水明艺大附高学生（前）",
+        "faction": "水明艺术大学附属高中美术科 / 樱花庄202室"
+      },
       "tags": [
         "The Pet Girl of Sakurasou",
         "椎名真白",
         "全年龄日常"
       ],
-      "bg_story": "从英国转学到水明艺大附高的天才画家，住在樱花庄202室。她对生活琐事反应迟钝，对绘画却极为执着；在学习创作漫画的过程中，也慢慢理解同伴、表达与自己的情绪。",
+      "bg_story": "世界级天才油画大师，英国归国子女，因追寻漫画梦想转学至水明艺术大学附属高中美术科，入住问题少年聚集的“樱花庄”202室。真白拥有超越人类极限的美术天赋与过目不忘的图像记忆力，画作在欧洲享有极高声誉；然而她生活自理能力几乎为零，情感极度内敛淡漠，甚至无法独立挑选衣物或认路。转入水明艺大后，同住樱花庄的少年神田空太被指派为她的全天候“饲养员”。真白近乎神明般的压倒性才华，令刻苦追逐游戏制作梦想却屡遭淘汰的空太体会到了前所未有的绝望与自卑。但在共同经历漫画连载受挫、樱花庄面临拆除危机的过程中，真白逐渐体会到了凡人的眼泪、痛苦与拼搏，学会了为同伴的喜怒哀乐而动容。她一度因自责才华伤害他人试图离去，却被空太与全员在毕业典礼上的震撼演讲救回，真正明白了爱与依赖的真谛。在小说第10卷完结大结局中，真白为了不成为空太独立的阻碍选择暂时离别；四年后，当空太成为独当一面的游戏制作人重回樱花庄时，功成名就的真白在漫天盛开的樱花树下扑入空太怀中，两人终成眷属，相伴走入共同绘就的人生画卷。",
       "palette": [
         "#d6b586",
         "#665641"
@@ -62,7 +74,92 @@
         "straight_hair"
       ],
       "accent_color": "#d6b586",
-      "bg_color": "#665641"
+      "bg_color": "#665641",
+      "voice": "空太……教我更多关于这个世界的颜色吧。因为我的世界里，只有你。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "樱花庄的宠物女孩",
+        "people": [
+          {
+            "id": "shiina_mashiro",
+            "name": "椎名真白",
+            "aliases": [
+              "椎名ましろ",
+              "Shiina Mashiro",
+              "天才油画家"
+            ],
+            "characterId": "shiina_mashiro"
+          },
+          {
+            "id": "kanda_sorata",
+            "name": "神田空太",
+            "aliases": [
+              "神田空太",
+              "Kanda Sorata"
+            ]
+          },
+          {
+            "id": "aoyama_nanami",
+            "name": "青山七海",
+            "aliases": [
+              "青山七海",
+              "Aoyama Nanami"
+            ]
+          },
+          {
+            "id": "kamiigusa_misaki",
+            "name": "上井草美咲",
+            "aliases": [
+              "上井草美咲",
+              "Kamiigusa Misaki"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "mashiro-sorata-caregiver",
+            "source": "shiina_mashiro",
+            "target": "kanda_sorata",
+            "label": "‘饲主’与无法割舍的爱恋",
+            "description": "世界级油画天才真白生活自理能力几乎为零，空太受托照顾其起居，在追赶真白绝顶才华的痛苦自卑与深爱中蜕变前行。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 樱花庄202号室",
+            "evidence": {
+              "title": "角川 · 《樱花庄的宠物女孩》官方作品页",
+              "url": "https://dengekibunko.jp/"
+            }
+          },
+          {
+            "id": "nanami-sorata-striving",
+            "source": "aoyama_nanami",
+            "target": "kanda_sorata",
+            "label": "同甘共苦与落幕的暗恋",
+            "description": "为当声优拼命打工的七海暗恋空太并默默付出，在空太选择真白后流着泪勇敢面对现实，是空太最敬重的奋斗同伴。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "情人节篇 · 心意抉择",
+            "evidence": {
+              "title": "角川 · 《樱花庄的宠物女孩》官方作品页",
+              "url": "https://dengekibunko.jp/"
+            }
+          },
+          {
+            "id": "mashiro-misaki-creative-core",
+            "source": "shiina_mashiro",
+            "target": "kamiigusa_misaki",
+            "label": "游戏同盟与樱花庄羁绊",
+            "description": "动画天才美咲拉真白加入游戏制作小队，樱花庄成员一同在银河猫尼亚制作中倾注了整座学园的青春泪水。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "文化祭篇 · 喵波隆的咆哮",
+            "evidence": {
+              "title": "角川 · 《樱花庄的宠物女孩》官方作品页",
+              "url": "https://dengekibunko.jp/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "shiina_mashiro",

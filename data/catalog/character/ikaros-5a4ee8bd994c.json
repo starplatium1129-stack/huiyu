@@ -34,27 +34,29 @@
         "signature": "粉发双马尾、翡翠绿眸、金属项圈铁链、纯白天使羽翼与大西瓜"
       },
       "personality": [
-        "不谙世事、呆萌纯真的战略级人造天使",
-        "极度热爱圆滚滚的西瓜与毛茸茸的小鸡",
-        "对主人樱井智树抱有绝对的服从与深沉守护之心",
-        "在感知到人类的“爱”后逐渐拥有了真正的心跳与感情",
-        "战斗状态下化身空之女王，火力无匹却一心只为守护主人"
+        "呆萌纯真、不谙世事的三无少女",
+        "重度痴迷圆滚滚的大西瓜与毛茸茸的小鸡",
+        "对铭刻的主人樱井智树抱有绝对服从与近乎神圣的守护之心",
+        "随着与人类相处逐渐孕育出真正的心跳、情感与泪水",
+        "战斗模式下化身毁天灭地的空之女王，冷酷无匹却一心只为守护主人",
+        "害怕因自己是杀戮兵器而遭到智树的嫌弃与抛弃"
       ],
       "likes": [
-        "圆滚滚的大西瓜（在菜园里悉心培育）",
-        "毛茸茸的黄色小鸡",
-        "被智树牵着脖子上的铁链一起散步",
-        "蔚蓝晴空与温暖的微风"
+        "在菜园里悉心培育、抚摸和怀抱圆滚滚的大西瓜",
+        "用小竹篮盛放并温柔照料金黄色的小鸡雏鸟",
+        "被智树牵着脖颈上的金属铁链一同漫步在小镇河堤",
+        "仰望空美町澄澈无垠的夏日晴空与浩瀚积雨云",
+        "在智树怀中倾听人类温暖有力的心跳声"
       ],
       "classic_cg": {
-        "title": "空之女王的纯白天降",
-        "description": "蔚蓝晴空与浩瀚积雨云下，粉发天使展开展幅数米的纯白羽翼，双手紧抱大西瓜呆萌凝望。"
+        "title": "炽烈燃烧的苍穹升华",
+        "description": "穿透对流层的灼热极光中，伊卡洛斯奋力振翅护送智树飞向西纳普斯，机械羽翼在剧烈摩擦中化为飞灰火星，粉发少女眼角滑落真正的人性泪水，展露出超越神明的绝美笑容。"
       },
       "identity": {
-        "role": "型号 Alpha 战略用人造天使 / 空之女王",
-        "age": "外观少女",
-        "occupation": "人造天使 / 樱井家专属宠物仆从",
-        "faction": "空美町 · 西纳普斯"
+        "role": "型号 Alpha 战略用人造天使 / 西纳普斯“空之女王”",
+        "age": "诞生百余年（外表约15-16岁少女）",
+        "occupation": "战斗人造天使 / 樱井家专属宠物仆役 / 空美町居民",
+        "faction": "空美町 · 西纳普斯天空之城"
       },
       "tags": [
         "粉发",
@@ -66,7 +68,7 @@
         "西瓜",
         "天降之物"
       ],
-      "bg_story": "伊卡洛斯是《天降之物》的女主角，自称是“娱乐用人造天使”，真实身份却是西纳普斯历史上最强悍、令诸神战栗的最终决战兵器——型号 Alpha「空之女王（Uranus Queen）」。从高空坠落与樱井智树铭刻契约后，被智树当做普通家人温柔对待，由此逐渐萌发了人类的情感与笑容，一生最大的愿望就是永远陪伴在主人身边吃西瓜。",
+      "bg_story": "伊卡洛斯是水无月すう经典漫画《天降之物》的绝对女主角。她原本是由浮空天空之城西纳普斯的代达罗斯制造的型号 Alpha 战略用人造天使，背负着威震神界的称号“空之女王（Uranus Queen）”，曾凭借绝对防御“宙斯盾”、无限军火“阿波罗”与终极穿梭“阿尔忒弥斯”覆灭过古代地面文明。在被代达罗斯抹除杀戮指令流放地面后，她从天而降坠落于空美町，与平凡却至情至善的少年樱井智树完成了铭刻契约。因控制中枢受损，伊卡洛斯自称是“娱乐用人造天使”，在智树的悉心关怀与平淡乡村生活中，她学会了照料西瓜田、抚摸小鸡，原本冰冷的“可变心脏”在智树的人性光芒下逐渐生根发芽，生出了人类的情感与爱意。在原作漫画惨烈的大决战中，西纳普斯之主将全人类化为沙尘，伊卡洛斯在智树精神濒临崩溃之际，带着他冲破西纳普斯的防御结界；在超高空炽热的大气层摩擦中，她的可变羽翼逐渐燃烧殆尽，在弥留之际泪流满面地微笑着向智树告白真情后化作飞灰。智树抵达石板核心重置世界，所有同伴奇迹复苏。在最终后日谈中，伊卡洛斯再度伴随在智树身侧，在空美町明媚灿烂的夏日艳阳下，怀抱着心爱的西瓜享受着永恒的和平与挚爱。",
       "palette": [
         "纯洁粉",
         "苍穹蓝",
@@ -97,7 +99,293 @@
         "sora_no_otoshimono"
       ],
       "accent_color": "#f472b6",
-      "bg_color": "#0c1322"
+      "bg_color": "#0c1322",
+      "voice": "我的名字是伊卡洛斯。阿尔法型，战略用人造天使……主人，只要能在您身边抱着西瓜，伊卡洛斯的心脏，就会一直感到好幸福。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "天降之物",
+        "people": [
+          {
+            "id": "sakurai_tomoki",
+            "name": "樱井智树",
+            "aliases": [
+              "樱井智树",
+              "Sakurai Tomoki",
+              "智树",
+              "智神",
+              "和平主义者"
+            ]
+          },
+          {
+            "id": "ikaros",
+            "name": "伊卡洛斯",
+            "aliases": [
+              "伊卡洛斯",
+              "Ikaros",
+              "イカロス",
+              "空之女王",
+              "阿尔法"
+            ],
+            "characterId": "ikaros"
+          },
+          {
+            "id": "mitsuki_sohara",
+            "name": "见月楚原",
+            "aliases": [
+              "见月楚原",
+              "Mitsuki Sohara",
+              "楚原",
+              "手刀狂魔"
+            ]
+          },
+          {
+            "id": "nymph",
+            "name": "宁芙",
+            "aliases": [
+              "宁芙",
+              "Nymph",
+              "ニンフ",
+              "型号Beta",
+              "电子战天使"
+            ]
+          },
+          {
+            "id": "astraea",
+            "name": "阿斯特蕾亚",
+            "aliases": [
+              "阿斯特蕾亚",
+              "Astraea",
+              "アストレア",
+              "型号Delta",
+              "近战天使"
+            ]
+          },
+          {
+            "id": "sugata_eishirou",
+            "name": "守形英四郎",
+            "aliases": [
+              "守形英四郎",
+              "Sugata Eishirou",
+              "守形学长",
+              "新大陆发现部"
+            ]
+          },
+          {
+            "id": "satsukitane_mikako",
+            "name": "五月田根美香子",
+            "aliases": [
+              "五月田根美香子",
+              "Satsukitane Mikako",
+              "会长",
+              "极道大小姐"
+            ]
+          },
+          {
+            "id": "daedalus",
+            "name": "代达罗斯",
+            "aliases": [
+              "代达罗斯",
+              "Daedalus",
+              "ダイダロス",
+              "天使之母"
+            ]
+          },
+          {
+            "id": "master_of_synapse",
+            "name": "米诺斯",
+            "aliases": [
+              "米诺斯",
+              "Master of Synapse",
+              "西纳普斯之主",
+              "天空之主"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "tomoki-ikaros-imprint",
+            "source": "sakurai_tomoki",
+            "target": "ikaros",
+            "label": "铭刻契约与萌生真情",
+            "description": "伊卡洛斯坠落空美町与智树完成锁链铭刻，自称娱乐用天使；在智树充满人性关怀与西瓜田的平凡照料中，伊卡洛斯冰冷的心脏萌生出了真正的人类爱情。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通篇 · 天降之夜",
+            "evidence": {
+              "title": "角川书店 · 《天降之物》原作漫画官方专页",
+              "url": "https://www.kadokawa.co.jp/product/200906000216/"
+            }
+          },
+          {
+            "id": "ikaros-tomoki-sacrifice",
+            "source": "ikaros",
+            "target": "sakurai_tomoki",
+            "label": "燃烧双翼的生死告白",
+            "description": "为守护智树飞越西纳普斯防御层，伊卡洛斯的可变羽翼在大气层剧烈摩擦中焚毁殆尽，在泪流满面微笑着向智树告白真情后化作飞灰。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "终局决战 · 突破西纳普斯",
+            "evidence": {
+              "title": "少年Ace · 《天降之物》官方连载档案",
+              "url": "https://web-ace.jp/shonenace/contents/11/"
+            }
+          },
+          {
+            "id": "tomoki-sohara-childhood",
+            "source": "sakurai_tomoki",
+            "target": "mitsuki_sohara",
+            "label": "青梅竹马与手刀制裁",
+            "description": "楚原是智树的隔壁青梅竹马，对智树日常的好色恶作剧施展威力骇人的杀人手刀惩戒，但在心底对其怀有长达数年、毫无保留的纯真爱慕。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 空美町岁月",
+            "evidence": {
+              "title": "角川书店 · 《天降之物》原作漫画官方专页",
+              "url": "https://www.kadokawa.co.jp/product/200906000216/"
+            }
+          },
+          {
+            "id": "tomoki-nymph-tear_chain",
+            "source": "sakurai_tomoki",
+            "target": "nymph",
+            "label": "撕裂项圈重获自由",
+            "description": "宁芙奉命前来刺杀智树，智树不仅用温情接纳了她的脆弱，更不惜鲜血淋漓徒手替她扯断象征奴役的精神项圈，赋予了她真正的自由与尊严。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "宁芙篇 · 撕裂项圈",
+            "evidence": {
+              "title": "角川书店 · 《天降之物》原作漫画官方专页",
+              "url": "https://www.kadokawa.co.jp/product/200906000216/"
+            }
+          },
+          {
+            "id": "nymph-ikaros-sisters",
+            "source": "nymph",
+            "target": "ikaros",
+            "label": "同源姐妹与电子战支援",
+            "description": "同为第一代战斗用人造天使，起初相互敌对，在寄宿于智树家后建立起深厚如姐妹的情谊，在多次迎击西纳普斯敌机时并肩作战。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 樱井家日常",
+            "evidence": {
+              "title": "角川动画 · 《天降之物》动画官方档案",
+              "url": "https://www.nicovideo.jp/series/10001"
+            }
+          },
+          {
+            "id": "astraea-tomoki-protection",
+            "source": "astraea",
+            "target": "sakurai_tomoki",
+            "label": "刺杀者化作守护之剑",
+            "description": "受命前来消灭智树的天然呆近战天使阿斯特蕾亚，被智树的无私善良感化，毅然斩断奴役束缚，决意作为专属的守护之剑誓死捍卫智树。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "阿斯特蕾亚篇 · 觉醒守护",
+            "evidence": {
+              "title": "角川书店 · 《天降之物》原作漫画官方专页",
+              "url": "https://www.kadokawa.co.jp/product/200906000216/"
+            }
+          },
+          {
+            "id": "astraea-ikaros-training",
+            "source": "astraea",
+            "target": "ikaros",
+            "label": "前辈崇敬与日常抢食",
+            "description": "阿斯特蕾亚对传说中的“空之女王”伊卡洛斯抱有崇高敬仰，但在樱井家的平凡日常中，两人常常为了争抢智树身边的零食而打闹不断。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 樱井家日常",
+            "evidence": {
+              "title": "角川动画 · 《天降之物》动画官方档案",
+              "url": "https://www.nicovideo.jp/series/10001"
+            }
+          },
+          {
+            "id": "nymph-astraea-bickering",
+            "source": "nymph",
+            "target": "astraea",
+            "label": "傲娇参谋与单细胞近战",
+            "description": "宁芙经常被阿斯特蕾亚低下的计算能力气得跳脚，但在面对强敌入侵时，宁芙的雷达侦测与阿斯特蕾亚的近战超震动光剑互为最完美的搭档。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 欢乐日常",
+            "evidence": {
+              "title": "角川动画 · 《天降之物》动画官方档案",
+              "url": "https://www.nicovideo.jp/series/10001"
+            }
+          },
+          {
+            "id": "tomoki-sugata-exploration",
+            "source": "sakurai_tomoki",
+            "target": "sugata_eishirou",
+            "label": "新大陆发现部与真相探寻",
+            "description": "守形长年在河畔驻扎探寻天空之城的奥秘，借助智树身边的人造天使收集异常参数，是智树直面绝境时最值得信任的冷静智囊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线探索 · 调查西纳普斯",
+            "evidence": {
+              "title": "角川书店 · 《天降之物》原作漫画官方专页",
+              "url": "https://www.kadokawa.co.jp/product/200906000216/"
+            }
+          },
+          {
+            "id": "sugata-mikako-childhood",
+            "source": "sugata_eishirou",
+            "target": "satsukitane_mikako",
+            "label": "门当户对与极道支持",
+            "description": "守形与美香子自幼相识，美香子表面看似玩世不恭并喜欢戏弄守形，实则暗中动用极道家族五月田根家的庞大财力为守形的探险提供无底线庇护。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 学生会日常",
+            "evidence": {
+              "title": "角川书店 · 《天降之物》原作漫画官方专页",
+              "url": "https://www.kadokawa.co.jp/product/200906000216/"
+            }
+          },
+          {
+            "id": "mikako-tomoki-teasing",
+            "source": "satsukitane_mikako",
+            "target": "sakurai_tomoki",
+            "label": "腹黑会长的愉悦试炼",
+            "description": "学生会长美香子经常制定各种严苛荒诞的校规与比赛玩弄智树，但在智树遭遇性命威胁时，她会毫不犹豫展现出令人战栗的战术威慑力。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "日常篇 · 祭典闹剧",
+            "evidence": {
+              "title": "角川书店 · 《天降之物》原作漫画官方专页",
+              "url": "https://www.kadokawa.co.jp/product/200906000216/"
+            }
+          },
+          {
+            "id": "daedalus-tomoki-dream",
+            "source": "daedalus",
+            "target": "sakurai_tomoki",
+            "label": "梦境托付与创造者之爱",
+            "description": "身处西纳普斯的善良科学家代达罗斯屡屡托梦给智树，出于对人造天使的怜爱与对智树纯真人性的信任，将她们逐一送往智树身旁。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "主线剧情 · 梦境对话",
+            "evidence": {
+              "title": "少年Ace · 《天降之物》官方连载档案",
+              "url": "https://web-ace.jp/shonenace/contents/11/"
+            }
+          },
+          {
+            "id": "synapse_master-ikaros-enslavement",
+            "source": "master_of_synapse",
+            "target": "ikaros",
+            "label": "残暴奴役与觉醒反抗",
+            "description": "米诺斯曾将伊卡洛斯作为肆意践踏地面的屠戮兵器并抹杀其人性，最终被挣脱枷锁、因爱觉醒的伊卡洛斯与智树并肩终结了残暴统治。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "终局决战 · 覆灭西纳普斯",
+            "evidence": {
+              "title": "少年Ace · 《天降之物》官方连载档案",
+              "url": "https://web-ace.jp/shonenace/contents/11/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "ikaros",

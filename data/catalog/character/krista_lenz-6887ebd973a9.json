@@ -33,28 +33,29 @@
         "signature": "金色长发、蓝瞳与温柔微笑"
       },
       "personality": [
-        "温柔善良",
         "外柔内刚",
-        "为他人而活过",
-        "觉醒后勇敢",
-        "是墙内的光"
+        "坚韧决断",
+        "仁爱博大",
+        "追求真我",
+        "具备王者担当",
+        "珍视挚友真情"
       ],
       "likes": [
-        "孩子",
-        "田野",
-        "书",
-        "墙内的人们",
-        "苹果"
+        "孤儿院孩子们无忧无虑的笑声",
+        "尤弥尔留下的亲笔信件",
+        "阳光倾洒的牧场与果园",
+        "骑马巡视青翠麦田",
+        "亲手烘焙的苹果派"
       ],
       "classic_cg": {
-        "title": "加冕之光",
-        "description": "大教堂的光柱中，金发少女接过王冠抬起头，白礼裙与金发熠熠生辉。"
+        "title": "砸碎虚伪神明的觉醒加冕",
+        "description": "幽暗晶石闪烁的神殿祭坛之上，娇小的金发少女含泪将始祖药剂狠狠砸碎在石阶上，神情由顺从化为震撼人心的决然，向虚伪的宿命挥出反叛的第一拳。"
       },
       "identity": {
-        "role": "墙内女王",
-        "age": "少年期 15 岁（850 年）· 成年期 19 岁（854 年即位）",
-        "occupation": "帕拉迪岛女王",
-        "faction": "进击的巨人 · 帕拉迪岛"
+        "role": "帕拉迪岛正统第100任女王",
+        "age": "15岁（兵团时期）· 19岁（即位统治期）· 22岁及以后（和平谈判期）",
+        "occupation": "帕拉迪岛国家元首 / 孤儿院创办者",
+        "faction": "雷斯王室 / 帕拉迪岛政权"
       },
       "tags": [
         "金发",
@@ -63,7 +64,7 @@
         "王冠",
         "女王"
       ],
-      "bg_story": "希斯特里亚·雷斯（曾用名克里斯塔·连兹）是《进击的巨人》中帕拉迪岛真正的王族雷斯家血脉。曾以假名加入第104期训练兵团，因温柔治愈、舍己为人的善良举止被同期士兵奉为“女神”。在经历自我怀疑与尤弥尔的真情启示后，毅然砸碎虚假的顺从，以「即便全世界都要我当个好人，我也要选择自己的人生」的觉悟加冕为帕拉迪岛第100任墙内女王。即位后大举开办孤儿院救济贫民，在战争风云中以坚定柔韧的意志庇护臣民，成为高墙内外真正的希望之光。场景应突出由纯真少女向崇高女王蜕变的光芒——大教堂加冕礼、王宫阳光寝殿、田野孤儿院木栏与雪地城墙眺望，纯白与圣金色是她的主色。",
+      "bg_story": "帕拉迪岛真正统治家族雷斯王的私生女，原名克里斯塔·连兹。童年因不洁身世遭生母厌弃与王室宪兵追杀，被迫改名隐姓流放加入第104期训练兵团。在军队中长期戴着温柔纯洁的“好女孩”假面，渴望通过自我牺牲换取世人认可。在厄特加尔城遭遇绝境时，挚友尤弥尔以真情彻底撕破她的伪装，唤醒她为自己而活的意志。王政篇中，生父罗德·雷斯企图诱导她注射始祖针剂吞噬艾伦继承神力，希斯特里亚在关键时刻摔碎针剂痛击生父，怒斥虚伪神权宣告自己哪怕做“与人类为敌的最坏女孩”也绝不做任人操控的提线木偶。在奥尔福德区城墙防卫战中，她飞身跃起亲手斩杀化为超巨型畸形怪物的生父，在全城平民仰望下载誉加冕为帕拉迪岛第100任墙内女王。即位后大举开办孤儿院救济贫病孤儿，在地鸣之战爆发与乱局动荡中挺起坚韧脊梁稳定内政，诞下新生的子嗣，并在终战后力排众议庇护阿尔敏等同伴组成的联合国和平使节团，以非凡的仁慈与担当为饱经疮痍的世界架起和平的桥梁。",
       "palette": [
         "金",
         "白",
@@ -89,7 +90,193 @@
         "attack_on_titan"
       ],
       "accent_color": "#D4AF37",
-      "bg_color": "#151210"
+      "bg_color": "#151210",
+      "voice": "我才不要当什么听话的乖孩子，更不想做什么伟大的神！哪怕与全人类为敌，我也要做活得堂堂正正的自己！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "进击的巨人",
+        "people": [
+          {
+            "id": "mikasa_ackerman",
+            "name": "三笠",
+            "aliases": [
+              "Mikasa Ackerman",
+              "ミカサ・アッカーマン",
+              "阿克曼",
+              "三笠·阿克曼"
+            ],
+            "characterId": "mikasa_ackerman"
+          },
+          {
+            "id": "krista_lenz",
+            "name": "希斯特里亚",
+            "aliases": [
+              "Historia Reiss",
+              "ヒストリア・レイス",
+              "克里斯塔·连兹",
+              "墙内女王",
+              "希斯特里亚·雷斯"
+            ],
+            "characterId": "krista_lenz"
+          },
+          {
+            "id": "eren_yeager",
+            "name": "艾伦·耶格尔",
+            "aliases": [
+              "Eren Yeager",
+              "エレン・イェーガー",
+              "进击的巨人",
+              "始祖巨人",
+              "艾伦"
+            ]
+          },
+          {
+            "id": "armin_arlert",
+            "name": "阿尔敏·阿诺德",
+            "aliases": [
+              "Armin Arlert",
+              "アルミン・アルレルト",
+              "超大型巨人",
+              "调查兵团第15代团长",
+              "阿尔敏"
+            ]
+          },
+          {
+            "id": "levi_ackerman",
+            "name": "利威尔·阿克曼",
+            "aliases": [
+              "Levi Ackerman",
+              "リヴァイ・アッカーマン",
+              "利威尔",
+              "兵长",
+              "人类最强士兵"
+            ]
+          },
+          {
+            "id": "ymir",
+            "name": "尤弥尔",
+            "aliases": [
+              "Ymir",
+              "ユミル",
+              "颚之巨人"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "eren_yeager-mikasa_ackerman-scarf_of_fate",
+            "source": "eren_yeager",
+            "target": "mikasa_ackerman",
+            "label": "宿命誓约与红围巾之绊",
+            "description": "童年艾伦救下三笠并为她围上红色围巾，成为三笠毕生守护的信仰；艾伦至死深爱三笠却为彻底终结巨人之力而推开她，最终三笠在泪吻中亲手将艾伦斩首解放始祖尤弥尔。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "天与地之战 · 终局决战",
+            "evidence": {
+              "title": "《进击的巨人》讲谈社官方原作漫画",
+              "url": "https://shingeki.net/#/comic"
+            }
+          },
+          {
+            "id": "eren_yeager-armin_arlert-ocean_dream_and_divergence",
+            "source": "eren_yeager",
+            "target": "armin_arlert",
+            "label": "看海之约与终局分歧",
+            "description": "童年因一本记载墙外世界与大海的书结下生死挚友之谊；后期面对种族灭绝地鸣危机两人理念冲突，阿尔敏最终在坐标道路中与艾伦坦诚告别并承担和平使者之责。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "天与地之战 · 道路对话",
+            "evidence": {
+              "title": "讲谈社《别册少年Magazine》进击的巨人公式书",
+              "url": "https://shonenmagazine.com/special_page/shingeki"
+            }
+          },
+          {
+            "id": "mikasa_ackerman-armin_arlert-childhood_comrades",
+            "source": "mikasa_ackerman",
+            "target": "armin_arlert",
+            "label": "西甘锡纳青梅竹马与同袍",
+            "description": "幼年一同长大的发小，在残酷的墙内防卫与墙外调查战中互为后背与理智的锚点，在艾伦暴走与死亡的浩劫中始终相互支撑。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "调查兵团时期 · 共通线",
+            "evidence": {
+              "title": "《进击的巨人》电视动画官方网站",
+              "url": "https://shingeki.tv/final/"
+            }
+          },
+          {
+            "id": "krista_lenz-ymir-live_for_yourself",
+            "source": "krista_lenz",
+            "target": "ymir",
+            "label": "灵魂救赎与无悔之爱",
+            "description": "尤弥尔看穿克里斯塔以自我牺牲博取好感的心结，促使她撕碎假面以“希斯特里亚”之名做自己；两人彼此承诺为自己而活，尤弥尔为还莱纳人情远赴马莱赴死前留下深情遗书。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "厄特加尔城之战 / 王政篇",
+            "evidence": {
+              "title": "《进击的巨人》角色名鉴公式书",
+              "url": "https://kc.kodansha.co.jp/product?item=0000028882"
+            }
+          },
+          {
+            "id": "krista_lenz-eren_yeager-worst_girl_alliance",
+            "source": "krista_lenz",
+            "target": "eren_yeager",
+            "label": "最坏女孩的同盟与共谋",
+            "description": "在雷斯教堂地底希斯特里亚拒绝注射始祖针剂吞噬艾伦并救下他，自称‘与人类为敌的最坏女孩’；四年后艾伦发动地鸣前曾私下将计划告知她并达成默契。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "王政篇雷斯地下礼拜堂 / 地鸣前夕",
+            "evidence": {
+              "title": "讲谈社进击的巨人官方档案",
+              "url": "https://shonenmagazine.com/special_page/shingeki"
+            }
+          },
+          {
+            "id": "levi_ackerman-eren_yeager-strict_mentor_and_guardian",
+            "source": "levi_ackerman",
+            "target": "eren_yeager",
+            "label": "严格监护与生死寄托",
+            "description": "军事法庭上一顿痛踢将艾伦收编入特别作战班，既是防范艾伦暴走的铁血刽子手，也是在关键战役中屡次为艾伦撕开死局的坚实守护者与导师。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "托洛斯特区防卫战 / 玛利亚之墙夺还战",
+            "evidence": {
+              "title": "《进击的巨人》动画官方角色设定",
+              "url": "https://shingeki.tv/final/character/eren.php"
+            }
+          },
+          {
+            "id": "levi_ackerman-mikasa_ackerman-ackerman_clan_elite",
+            "source": "levi_ackerman",
+            "target": "mikasa_ackerman",
+            "label": "阿克曼末裔与最强战力搭档",
+            "description": "同为血脉觉醒的人类顶级战斗种族阿克曼末裔，最初因三笠急于救艾伦导致利威尔断腿而互有微词，后在女巨人捕获战与决战中成为调查兵团不可替代的双重尖刀。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "女巨人捕获战 / 雷枪强袭战",
+            "evidence": {
+              "title": "《进击的巨人》角色名鉴公式书",
+              "url": "https://kc.kodansha.co.jp/product?item=0000028882"
+            }
+          },
+          {
+            "id": "armin_arlert-krista_lenz-peace_negotiation",
+            "source": "armin_arlert",
+            "target": "krista_lenz",
+            "label": "战后政权斡旋与信赖使节",
+            "description": "地鸣平息后，加冕执政的希斯特里亚女王力排岛内耶格尔派激进狂潮，全力庇护阿尔敏等联合国和平使节团展开谈判，维系岛内外的脆弱和平。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "终局战后 · 和平交涉期",
+            "evidence": {
+              "title": "《进击的巨人》最终卷官方记录",
+              "url": "https://shingeki.net/#/comic"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

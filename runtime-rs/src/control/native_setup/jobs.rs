@@ -374,67 +374,6 @@ impl ControlService {
         }
         self.checkpoint_operation(&mut state, update.get("stage").is_some() || update.get("cancelAllowed").is_some());
     }
-    pub(super) async fn download_native_files(
-        &self,
-        root: &Path,
-        files: &[Artifact],
-        operation: &Value,
-        cancel: &CancellationToken,
-    ) -> Result<()> {
-        self.download_native_files_authorized(root, files, operation, cancel, None, true).await
-    }
-    async fn download_native_files_authorized(&self, root: &Path, files: &[Artifact], operation: &Value,
-        cancel: &CancellationToken, token: Option<&str>, allow_mirror: bool) -> Result<()> {
-        let mut completed = 0;
-        let mut client = None;
-        for file in files {
-            stopped(cancel)?;
-            plan::safe_directory(root)?;
-            if token.is_some() && !file.url.starts_with("https://huggingface.co/") {
-                return Err(ApiError::invalid("凭据只能用于固定 Hugging Face 模型来源"));
-            }
-            // Keep one pool for this batch, after cancellation and directory checks.
-            let client = match client {
-                Some(ref client) => client,
-                None => client.insert(
-                    reqwest::Client::builder()
-                        .https_only(true)
-                        .connect_timeout(Duration::from_secs(30))
-                        .default_headers(image_models::token_header(token)?)
-                        .build()
-                        .map_err(|_| ApiError::new(502, "DOWNLOAD_FAILED", "无法连接下载源，请检查网络后重试"))?,
-                ),
-            };
-            let (send, mut receive) = tokio::sync::mpsc::channel(16);
-            let work = setup_download::managed_file(
-                self.config.ai_workspace_root.clone(),
-                root.to_owned(),
-                ModelFile {
-                    path: file.path.clone(),
-                    bytes: file.bytes,
-                    sha256: file.sha256.clone(),
-                },
-                file.url.clone(),
-                client,
-                &send,
-                cancel,
-                allow_mirror && token.is_none(),
-            );
-            tokio::pin!(work);
-            loop {
-                tokio::select! {
-                    result = &mut work => { result?; break; }
-                    Some(progress) = receive.recv() => self.native_progress(operation, json!({
-                        "phase":progress["phase"],"currentFile":file.path,
-                        "downloadedBytes":completed + progress["bytesRead"].as_u64().unwrap_or(0),
-                        "message":progress["message"].as_str().map(str::to_owned).unwrap_or_else(|| format!("{}：{}",if progress["phase"] == "downloading" {"下载中"} else {"校验中"},file.path))})),
-                }
-            }
-            completed += file.bytes;
-            self.native_progress(operation, json!({"downloadedBytes":completed}));
-        }
-        Ok(())
-    }
 }
 pub(super) async fn verify_files(
     root: &Path,

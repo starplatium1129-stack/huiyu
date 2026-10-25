@@ -21,7 +21,7 @@
 | 持久化与任务 | Web 保留 IndexedDB；桌面激活后由 Rust/SQLite 持有权威；已接受任务独立于页面生命周期，失联不降级双写 | 历史来源、其他机器、大规模数据及真实故障场景按 [Workspace](architecture/WORKSPACE-MIGRATION-DESIGN.md) 与[任务契约](architecture/TASK-RUNTIME-DESIGN.md)分别验收 |
 | 创作 | Anima/Krea 2 新生成、换装、蓝图、入册与视频分镜；SD 新生成已退出，旧任务查询/取消/收集及历史作品保留 | 聊天绘画工具仍只准备草稿；真实模型、视频效果与成本按 [roadmap](roadmap.md) 验收 |
 | 首次配置与受管绘图 | 控制室一键准备独立运行库与完整模型，逐项下载/校验，保留续传和取消；已有完整模型可采用，离线导入保留；显式保存原生引擎，工作区变更后重启，不静默回退 ComfyUI | 源码、构建与目录核验不代表干净 Windows 安装或真实出图已验收；断网、空间/权限、系统组件、重启发现及设备效果按[独立推理指南](guides/independent-inference.md)验收 |
-| AMD 核显 ComfyUI | Windows 受管官方 AMD Portable v0.39.0，使用分块注意力和低显存模式；本机 Radeon 880M / Torch 2.9.1+ROCm 7.2.1 已启动，所需节点齐全 | 2026-10-23 独立 ComfyUI、MiaoMiao 1.6、512×768 / 30 步 / seed 20261023 的暖任务，TeaCache 关闭 85.380 秒、开启 41.564 秒；仅此配方的一组观测，姿势和画面位置有差异。该成图证据不冒充桌面网关完整出图验收、其他驱动或全部 AMD 设备通过；原生推理仍仅 NVIDIA |
+| AMD 核显 ComfyUI | Windows 受管官方 AMD Portable v0.39.0，使用分块注意力和低显存模式；本机 Radeon 880M / Torch 2.9.1+ROCm 7.2.1 可用。2026-10-25 已确认安装版网关接收 MiaoMiao 1.6＋宁宁 LoRA 请求并正常采样；任务 `e0bda69a323545a9bbacd60006914989` 最终 succeeded，结果可取；随后受管停止完成 | 连通性已确认，原始回执在 `runtime/diagnostics/notebook-generation-final-20261025.json`；网关 EXE SHA-256 `7cd06caa603e2a65098f7564ad485bc126d4b70b96d926e77ef83598d8b29095`。不要求等待出图确认基本可用；本次不评价画质或性能。其他驱动/AMD 设备及仅支持 NVIDIA 的原生推理分别核对 |
 | 独立 Anima 推理 | 内置 Anima TeaCache 无需逐组合校准；复用现成资源，合作取消保留模型，完成后释放闲置显存；支持 resident/offload | 10 月 13 日本机候选曾验证 MiaoMiao 1.6＋宁宁 LoRA 的普通图、Latent/Remacri 高清、取消恢复与显存；该历史证据不代替当前受管版本、其他模型、自动换装语义与更广硬件验收 |
 | 内容维护 | 记录 API、修订历史、字段补丁、批量预览/导入与项目快照导出；立绘/样张走图片事务 | 工作库与项目快照独立；pending、记录登记和结构校验不计为图片交付，见[维护手册](maintenance.md) |
 | 界面与陪伴 | Vue/Pinia、双主题、Reka 控件、路由按需加载、角色身份/Profile、独立聊天窗与浏览器/原生 Live2D | WebView2、DPI/多屏/休眠、真实语音与长期资源趋势保留设备验收范围 |

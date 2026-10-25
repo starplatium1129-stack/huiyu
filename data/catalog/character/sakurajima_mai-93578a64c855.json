@@ -31,27 +31,30 @@
         "signature": "黑长直、蓝紫瞳与兔女郎名场面"
       },
       "personality": [
-        "冷静沉稳",
-        "成熟御姐系",
-        "毒舌但温柔",
-        "自尊心强",
-        "重视重要的人"
+        "外冷内热",
+        "傲娇毒舌",
+        "成熟克制",
+        "极度深情",
+        "富有责任感",
+        "容易害羞",
+        "牺牲与担当"
       ],
       "likes": [
-        "图书馆的安静",
-        "天台的风",
-        "重要的约会",
-        "兔女郎装的自由"
+        "梓川咲太",
+        "演艺表演",
+        "奶油泡芙与甜食",
+        "江之岛海风",
+        "平稳安宁的两人独处时光"
       ],
       "classic_cg": {
-        "title": "图书馆的兔女郎",
-        "description": "她穿着兔女郎装在图书馆里安静阅读——全校只有你「看见」她的瞬间。"
+        "title": "图书馆的兔女郎与暴风雪中的车祸舍身",
+        "description": "在寂静午后的图书馆过道里，身着黑色蕾丝兔女郎装的少女投来清冷讶异的目光；而在风雪交加的致命路口，她义无反顾推开咲太、在刺目车灯中倒下的身影，镌刻了至死不渝的绝美深情。"
       },
       "identity": {
-        "role": "当红女演员（思春期症候群）",
-        "age": "高中三年级",
-        "occupation": "女演员 / 学生",
-        "faction": "峰岸高中"
+        "role": "国民级女演员 / 梓川咲太的人生挚爱与灵魂支柱",
+        "age": "17-18岁（高中）/ 20岁（大学篇）",
+        "occupation": "峰原高中学生 / 青年女演员 / 大学生",
+        "faction": "演艺界事务所 / 峰原高中"
       },
       "tags": [
         "黑长直",
@@ -60,7 +63,7 @@
         "女演员",
         "成熟气质"
       ],
-      "bg_story": "樱岛麻衣是《青春猪头少年》的女主角，知名女演员，因思春期症候群逐渐被人遗忘。她冷静成熟、略带毒舌却温柔体贴。兔女郎装是贯穿全作的名场面造型。场景应偏现代校园、城市夜景与图书馆。",
+      "bg_story": "童星出道的国民级知名女演员，峰原高中三年级学生。幼年时期由于母亲功利性的强硬安排被迫拍摄泳装写真，心灰意冷之下宣布暂别演艺界重返普通校园，却遭到全校同龄人的疏离孤立与空气化对待。极端的压抑与社会性忽视诱发了未知的“青春期综合征”，使得她的存在逐渐淡出周围人的视线与记忆。为了验证是否还有人能看见自己，麻衣换上大胆挑衅的兔女郎服装游走在江之岛图书馆，从而撞见了男主角梓川咲太。随着综合征全面恶化，全校师生乃至母亲都彻底遗忘了麻衣，唯有咲太拼死对抗睡意坚守记忆，并在全校操场当众用喇叭大声告白，硬生生将麻衣从虚无的边缘拽回现实，两人自此结下坚不可摧的恋情。在随后的剧场版危机中，为了替咲太挡下致命车祸，麻衣毫无保留地舍身被汽车撞飞身亡；咲太借助时间回溯奋不顾身拯救历史，两人终跨越生死死结。步入大学后，麻衣成熟端庄地重掌影视事业重回一线巅峰，公开与咲太的恋爱，两人互为支撑、相守白首，迎来了事业与爱情圆满的人生终章。",
       "palette": [
         "黑",
         "兔白",
@@ -86,7 +89,266 @@
         "hair_clip"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "咲太，我比你想象中还要喜欢你百倍千倍……所以，绝对不准忘记我，听到了吗？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "青春猪头少年不会梦到兔女郎学姐",
+        "people": [
+          {
+            "id": "sakurajima_mai",
+            "name": "樱岛麻衣",
+            "aliases": [
+              "桜島麻衣",
+              "Sakurajima Mai",
+              "麻衣学姐",
+              "兔女郎学姐"
+            ],
+            "characterId": "sakurajima_mai"
+          },
+          {
+            "id": "makinohara_shouko",
+            "name": "牧之原翔子",
+            "aliases": [
+              "牧之原翔子",
+              "Shouko Makinohara",
+              "翔子小姐",
+              "翔子酱"
+            ],
+            "characterId": "makinohara_shouko"
+          },
+          {
+            "id": "futaba_rio",
+            "name": "双叶理央",
+            "aliases": [
+              "双葉理央",
+              "Rio Futaba",
+              "理央",
+              "科学部部长"
+            ],
+            "characterId": "futaba_rio"
+          },
+          {
+            "id": "azusagawa_sakuta",
+            "name": "梓川咲太",
+            "aliases": [
+              "梓川咲太",
+              "Sakuta Azusagawa",
+              "师傅",
+              "大笨蛋咲太"
+            ]
+          },
+          {
+            "id": "azusagawa_kaede",
+            "name": "梓川枫 / 梓川花枫",
+            "aliases": [
+              "梓川かえで",
+              "梓川花枫",
+              "Kaede Azusagawa",
+              "枫酱"
+            ]
+          },
+          {
+            "id": "koga_tomoe",
+            "name": "古贺朋绘",
+            "aliases": [
+              "古賀朋絵",
+              "Tomoe Koga",
+              "朋绘",
+              "屁股对踢学妹"
+            ]
+          },
+          {
+            "id": "toyohama_nodoka",
+            "name": "丰滨和香",
+            "aliases": [
+              "豊浜のどか",
+              "Nodoka Toyohama",
+              "和香",
+              "小朵香"
+            ]
+          },
+          {
+            "id": "kunimi_yuuma",
+            "name": "国见佑真",
+            "aliases": [
+              "国見佑真",
+              "Yuuma Kunimi",
+              "国见"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "aobuta-sakuta-mai-lovers",
+            "source": "azusagawa_sakuta",
+            "target": "sakurajima_mai",
+            "label": "恋人与此生挚爱",
+            "description": "在江之岛图书馆邂逅身穿兔女郎装束的麻衣，咲太拼死对抗全校遗忘在操场高声告白；麻衣则甘愿在暴雪车祸中舍身推开咲太，两人跨越生死、互为彼此灵魂不可动摇的归宿。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "剧场版 · 怀梦美少女至大学篇",
+            "evidence": {
+              "title": "青春猪头少年系列动画官方网站 · 角色介绍",
+              "url": "https://ao-buta.com/tv/character/"
+            }
+          },
+          {
+            "id": "aobuta-sakuta-shouko-firstlove",
+            "source": "makinohara_shouko",
+            "target": "azusagawa_sakuta",
+            "label": "人生导师与宿命拯救",
+            "description": "在七里滨海滩以‘人生是为了变得更温柔而活着’拯救了崩溃边缘的咲太，实为未来时间线接受心脏移植的翔子；两人在死循环中互相奉献与拯救，最终在新世界线健康相遇。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "剧场版 · 怀梦美少女",
+            "evidence": {
+              "title": "青春猪头少年剧场版官方网站 · 角色档案",
+              "url": "https://ao-buta.com/themovie/character/"
+            }
+          },
+          {
+            "id": "aobuta-mai-shouko-donor_rival",
+            "source": "sakurajima_mai",
+            "target": "makinohara_shouko",
+            "label": "情敌与跨越时空的心脏赠予",
+            "description": "最初因翔子在咲太心中的特殊地位而暗中吃醋，但在得知车祸真相后，麻衣舍身车祸救下咲太并将心脏移植给翔子；在新世界线中麻衣通过公益电影促成合法捐献，帮助幼年翔子手术康复。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "剧场版 · 怀梦美少女终局",
+            "evidence": {
+              "title": "青春猪头少年剧场版官方网站 · 角色档案",
+              "url": "https://ao-buta.com/themovie/character/"
+            }
+          },
+          {
+            "id": "aobuta-sakuta-rio-confidant",
+            "source": "azusagawa_sakuta",
+            "target": "futaba_rio",
+            "label": "无话不谈的挚友与科学顾问",
+            "description": "理央经常在实验室用酒精灯煮咖啡并用量子力学假说为咲太剖析青春期综合征；当理央分裂出两个自我时，咲太骑车在大雨中飞奔救助开导，是彼此绝对信任的青春战友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "TV动画第7-8话 · 理智少女篇",
+            "evidence": {
+              "title": "电击文库《青春猪头少年》原作官方特设",
+              "url": "https://dengekibunko.jp/special/aobuta/"
+            }
+          },
+          {
+            "id": "aobuta-rio-kunimi-unrequited_love",
+            "source": "futaba_rio",
+            "target": "kunimi_yuuma",
+            "label": "苦涩暗恋与一生知己",
+            "description": "理央长期暗恋国见却因害怕破坏三人好友关系而默默压抑，甚至引发了自我厌恶分裂的综合征；在烟火大会得到释怀后，理央剪短头发，将爱慕化作纯粹深厚的挚友羁绊。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "TV动画第8话 · 理智少女篇",
+            "evidence": {
+              "title": "青春猪头少年系列动画官方网站 · 角色介绍",
+              "url": "https://ao-buta.com/tv/character/"
+            }
+          },
+          {
+            "id": "aobuta-sakuta-kunimi-best_friends",
+            "source": "azusagawa_sakuta",
+            "target": "kunimi_yuuma",
+            "label": "高中挚友死党",
+            "description": "在全校孤立咲太的流言蜚语中，国见是极少数毫无偏见与咲太交往的真正挚友，无论咲太有何困难总是不问缘由第一时间骑摩托赶来支援。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通篇 · 峰原高中日常",
+            "evidence": {
+              "title": "青春猪头少年系列动画官方网站 · 角色介绍",
+              "url": "https://ao-buta.com/tv/character/"
+            }
+          },
+          {
+            "id": "aobuta-sakuta-kaede-siblings",
+            "source": "azusagawa_sakuta",
+            "target": "azusagawa_kaede",
+            "label": "相依为命的兄妹守护",
+            "description": "妹妹因网络欺凌产生解离性创伤与失忆闭门不出，咲太辞去智能手机全力照料；在‘枫’的记忆消逝、‘花枫’重新苏醒之际，咲太痛哭崩溃后继续全力支持花枫重返校园。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "剧场版 · 娇怜少女与背包小妹",
+            "evidence": {
+              "title": "青春猪头少年《娇怜少女不会梦到出门妹》官网",
+              "url": "https://ao-buta.com/odekake/character/"
+            }
+          },
+          {
+            "id": "aobuta-mai-kaede-sisterly_care",
+            "source": "sakurajima_mai",
+            "target": "azusagawa_kaede",
+            "label": "温情守望与未来大嫂",
+            "description": "麻衣不仅悉心包容花枫的粘人依赖，更在花枫准备考高中时亲自为她补习辅导，被花枫从心底视作最敬爱美丽的姐姐。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "TV动画第11-13话至剧场版出门妹",
+            "evidence": {
+              "title": "青春猪头少年《娇怜少女不会梦到出门妹》官网",
+              "url": "https://ao-buta.com/odekake/character/"
+            }
+          },
+          {
+            "id": "aobuta-sakuta-tomoe-fake_lovers",
+            "source": "koga_tomoe",
+            "target": "azusagawa_sakuta",
+            "label": "假扮情侣与拉普拉斯之循环",
+            "description": "因误会与咲太在公园互踢屁股结识，为摆脱学长追求而与咲太假扮情侣；朋绘在相处中不可自拔地真爱上咲太，引发多次时空循环，最终在海滩得到咲太真挚告白拒绝后化为互相信赖的密友。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "TV动画第4-6话 · 迷惘少女篇",
+            "evidence": {
+              "title": "青春猪头少年系列动画官方网站 · 角色介绍",
+              "url": "https://ao-buta.com/tv/character/"
+            }
+          },
+          {
+            "id": "aobuta-mai-tomoe-senior_junior",
+            "source": "koga_tomoe",
+            "target": "sakurajima_mai",
+            "label": "后辈敬畏与前辈宽容",
+            "description": "朋绘对国民女演员麻衣前辈怀有极高的崇拜与畏惧，麻衣在看穿朋绘与咲太的假交往后大度包容，并在解开误会后以前辈姿态亲切照料朋绘。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "TV动画第6话",
+            "evidence": {
+              "title": "青春猪头少年系列动画官方网站 · 角色介绍",
+              "url": "https://ao-buta.com/tv/character/"
+            }
+          },
+          {
+            "id": "aobuta-mai-nodoka-half_sisters",
+            "source": "sakurajima_mai",
+            "target": "toyohama_nodoka",
+            "label": "同父异母姐妹与心结化解",
+            "description": "和香自幼活在耀眼姐姐的阴影下并产生严重自卑，导致两人身体互换；在亲身体验彼此工作压力与不易后，两人解开心结紧紧相拥，和香成为麻衣最亲密的迷妹兼妹妹。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "TV动画第9-10话 · 小恶魔少女篇",
+            "evidence": {
+              "title": "青春猪头少年系列动画官方网站 · 角色介绍",
+              "url": "https://ao-buta.com/tv/character/"
+            }
+          },
+          {
+            "id": "aobuta-sakuta-nodoka-brother_in_law",
+            "source": "toyohama_nodoka",
+            "target": "azusagawa_sakuta",
+            "label": "傲娇小姨子与信任托付",
+            "description": "起初将靠近姐姐的咲太视作大色狼严加防范，但在咲太全力帮助解开互换心结后，和香在心底彻底认可并信任咲太对姐姐的专一深情。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "TV动画第10话至大学篇",
+            "evidence": {
+              "title": "青春猪头少年系列动画官方网站 · 角色介绍",
+              "url": "https://ao-buta.com/tv/character/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "sakurajima_mai",

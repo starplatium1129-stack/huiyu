@@ -31,20 +31,31 @@
         "style": "anime"
       },
       "personality": [
-        "镜头前表现力惊人的现役人气模特，Cosplay 圈里的常识人",
-        "面对青梅竹马奥村正宗傲娇又极度专一深情",
-        "一牵扯到奥村就会失控，为了追回他的视线踏入 Cosplay 界"
+        "痴情专一",
+        "坚毅自律",
+        "占有欲极强",
+        "傲娇好胜",
+        "气场全开",
+        "极度护短正宗",
+        "敬业纯粹"
       ],
       "likes": [
         "奥村正宗",
-        "时尚穿搭与拍摄",
-        "被奥村注视与夸赞"
+        "成为正宗唯一的特别之人",
+        "高端时装走秀",
+        "极度还原的角色扮演",
+        "护肤与瑜伽"
       ],
       "classic_cg": {
-        "title": "橘美花莉 · 摄影棚收工的三秒",
-        "description": "摄影棚白色背景前，闪光灯刚停，她从完美表情切换到松一口气的真实脸只用三秒；工作人员围着看片，她独自拿起水杯，眼神飘向手机里的社团群消息。"
+        "title": "摄影棚聚光灯下的深情宣言",
+        "description": "展会中央的万人聚焦摄影区内，美花莉身披极致还原的米莉艾拉铠甲华服，在如雪的闪光灯海中傲然而立。她无视全场成百上千的狂热快门，目光笔直穿透重重人群牢牢锁定在正宗身上，眼神中燃烧着十年如一日的炽烈爱意。"
       },
-      "identity": "2.5 Dimensional Seduction · 橘美花莉",
+      "identity": {
+        "role": "顶级职业模特 / 奥村正宗的十年痴情青梅竹马 / 2.5次元狂热 Coser",
+        "age": "16岁（高一）",
+        "occupation": "高中学生、现役人气专属模特、Coser",
+        "faction": "漫画研究社 / 职业模特界"
+      },
       "tags": [
         "橘美花莉",
         "2.5次元的诱惑",
@@ -52,7 +63,7 @@
         "青梅竹马",
         "日常"
       ],
-      "bg_story": "现役人气模特（爱称：みかリン／Mikarin，上过电视），奥村正宗的青梅竹马。小时候因天生蓬松微卷的头发被欺负时被正宗解围，从此单恋他十余年。本体为浅栗棕色长发、斜分碎刘海与不对称长鬓发，头顶两侧以粉色缎带束起两束发，粉色双眸；校服是黑色开襟西装＋米色针织背心＋红领结＋灰百褶裙。为了追回正宗的视线踏入 Cosplay 界，在漫展上戴上紫粉双色长双马尾假发，出作中作《阿修福德战记》中莉莉艾露的亲友恶魔「米莉艾拉」，惊艳全场。",
+      "bg_story": "幼年时性格内向怯懦，在被同龄人欺负时被隔壁邻居奥村正宗温柔保护，并被正宗称赞为“可爱得就像天使”。从此美花莉将正宗视为自己此生唯一的英雄与神明，为了成为正宗眼中最完美耀眼的女孩，她耗费近十年时间进行严酷的节食、体态与护肤训练，一跃成为风靡全日本的顶级时尚杂志专属模特。然而升入高中后，她震惊地发现正宗不仅全然没有恋爱心思，反而彻底沦为将全身心献给二次元虚拟角色莉莉艾露的御宅族，身边更出现了因 Cosplay 莉莉艾露而与正宗走极近的天乃理理沙。面对近乎绝望的降维打击，美花莉毅然放下顶级超模的身段跨界杀入 Cosplay 领域，完美还原正宗挚爱的对手角色“诺诺亚（米莉艾拉）”，用压倒性的美貌、专业表现力与炽热如火的真情攻势向正宗展开求爱攻防战。在 Comiket、夏日展会以及漫画最新的职业模特界与御宅文化碰撞的高峰剧情中，美花莉从单纯的“为了争夺正宗”升华至真正理解并热爱 Cosplay 的艺术，在闪光灯与舞台巅峰绽放出令人屏息的绝美光彩，誓要以三次元的真实身躯战胜二次元的永恒壁垒。",
       "palette": [
         "#d8a4be",
         "#282532"
@@ -71,7 +82,95 @@
         "pink_eyes"
       ],
       "accent_color": "#d8a4be",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "正宗君，看着我！二次元再怎么美好也只是虚幻的，能够真真切切触碰你、拥抱你的人，只有我橘美花莉！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "2.5次元的诱惑",
+        "people": [
+          {
+            "id": "tachibana_mikari",
+            "name": "橘美花莉",
+            "aliases": [
+              "橘美花莉",
+              "Tachibana Mikari",
+              "美莉亚(Miria)"
+            ],
+            "characterId": "tachibana_mikari"
+          },
+          {
+            "id": "okumura_masamune",
+            "name": "奥村正宗",
+            "aliases": [
+              "奥村正宗",
+              "Okumura Masamune",
+              "漫画研究社长"
+            ]
+          },
+          {
+            "id": "amano_ririsa",
+            "name": "天乃理理沙",
+            "aliases": [
+              "天乃リリサ",
+              "Amano Ririsa",
+              "莉莉艾露(Liliel)"
+            ]
+          },
+          {
+            "id": "hazuki_mayuri",
+            "name": "羽生真由理",
+            "aliases": [
+              "羽生まゆり",
+              "Mayura",
+              "真由良"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "mikari-masamune-ten-year-love",
+            "source": "tachibana_mikari",
+            "target": "okumura_masamune",
+            "label": "十年如一日的狂热单恋",
+            "description": "美花莉十年前便深爱儿时玩伴正宗，为了吸引只爱二次元莉莉艾露的正宗而成为顶流现役模特，甚至投身Cosplay圈竭力倒追。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "开篇设定 · 顶流模特现身漫研社",
+            "evidence": {
+              "title": "集英社 · 《2.5次元的诱惑》官方动画主页",
+              "url": "https://ririsa-official.com/"
+            }
+          },
+          {
+            "id": "mikari-ririsa-cosplay-rivalry",
+            "source": "tachibana_mikari",
+            "target": "amano_ririsa",
+            "label": "Cosplay对手与爱恋竞争",
+            "description": "最初视理理沙为夺走正宗目光的情敌，在Cosplay漫展决斗与真诚合作中彻底认可彼此对角色极致的热爱与灵魂共鸣。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "夏コミ漫展篇 · 莉莉艾露对战米莉亚",
+            "evidence": {
+              "title": "集英社 · 《2.5次元的诱惑》官方动画主页",
+              "url": "https://ririsa-official.com/"
+            }
+          },
+          {
+            "id": "masamune-ririsa-creator-bond",
+            "source": "okumura_masamune",
+            "target": "amano_ririsa",
+            "label": "摄影师与理想化身",
+            "description": "奥村担任理理沙的专属摄影师兼漫研社长，共同克服种种偏见与拍摄难关将纸面梦想搬上现实舞台。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "漫研社重建篇",
+            "evidence": {
+              "title": "集英社 · 《2.5次元的诱惑》官方动画主页",
+              "url": "https://ririsa-official.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "tachibana_mikari",

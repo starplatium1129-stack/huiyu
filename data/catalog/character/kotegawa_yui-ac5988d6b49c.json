@@ -34,27 +34,29 @@
         "signature": "黑长直、白色发带、风纪袖章、水手服百褶裙与名台词“不知羞耻”"
       },
       "personality": [
-        "正义感极强、一丝不苟的彩南学园风纪委员",
-        "口头禅是愤怒而娇羞地大喊“不知羞耻！（破廉耻）”",
-        "极度反感公共场合的伤风败俗，但本人却因各种意外屡屡沦陷",
-        "深处是一个极度渴望纯爱、容易脑补浪漫少女漫画的小女孩",
-        "对结城梨斗由最开始的严厉防备，逐渐沦陷为最深沉的暗恋与依赖"
+        "风纪至上",
+        "纯情傲娇",
+        "极易害羞",
+        "责任心极强",
+        "认真执着",
+        "内心热烈深情"
       ],
       "likes": [
-        "维护彩南学园的校风与良好纪律",
-        "阅读纯情的少女恋爱漫画并偷偷幻想",
-        "收留和照顾无家可归的可爱流浪小猫",
-        "在无人的黄昏被梨斗温柔相待"
+        "巡视校规风纪",
+        "阅读少女漫画",
+        "猫咪相关物品",
+        "与梨斗安静独处",
+        "整洁的环境"
       ],
       "classic_cg": {
-        "title": "走廊拐角的破廉耻怒斥",
-        "description": "学园走廊上，黑长直的风纪委员双手抱胸满面通红，红色臂章分外醒目，羞怒娇嗔着“不知羞耻！”"
+        "title": "风纪委员的羞耻沦陷",
+        "description": "在校舍转角或保健室因意外绊倒与梨斗倒在同一张床垫上，满面绯红、双手紧抱胸口却在羞愤中忍不住心跳加速的名场面。"
       },
       "identity": {
-        "role": "彩南高中风纪委员 / 结城梨斗同班同学",
-        "age": "高中生",
-        "occupation": "风纪委员 / 学生",
-        "faction": "彩南高中风纪委员会"
+        "role": "彩南高中风纪委员 / 梨斗的重要爱慕者",
+        "age": "高三毕业 / 青春期少女",
+        "occupation": "高中生兼风纪委员",
+        "faction": "彩南高中学生会"
       },
       "tags": [
         "黑长直",
@@ -66,7 +68,7 @@
         "巨乳",
         "出包王女"
       ],
-      "bg_story": "古手川唯是《出包王女》的核心女主角之一，彩南高中的风纪委员。严谨自律、视整肃男女不良风气为己任，每天在校园各处巡逻捕捉违纪行为。然而命运多舛，每次结城梨斗发生神摔倒贴的超自然色情事故时，古手川几乎必定在场成为受害者。表面对梨斗严厉叱责，但其实是整个作品里对梨斗纯爱度最高、脑补能力最强的纯情傲娇少女。",
+      "bg_story": "彩南高中风纪委员，极度恪守风纪、口头禅为“太不知廉耻了！”，性格认真纯情却极易害羞。在多次不可抗力意外中与结城梨斗发生羞耻身体接触，起初极度反感并视其为大色狼，然而在被梨斗舍身相救数次、目睹其笨拙而赤诚的温柔后，不可救药地深深沦陷爱上梨斗。在《To LOVE-Ru Darkness》中，面对涅墨西斯的心灵试探与乐园计划的挑唆，唯曾因传统道德观念而陷入剧烈自我纠葛，最终在黑咲芽亚与同伴的鼓励下勇敢跨越矜持，正视自己甘愿成为梨斗后宫一员的心愿。在毕业典礼与番外篇章中，唯虽依然会为风纪脸红，但已彻底坦承爱意，成为默默守护在梨斗身边的核心伴侣之一。",
       "palette": [
         "校服深墨绿",
         "纯白",
@@ -95,7 +97,440 @@
         "to_love-ru"
       ],
       "accent_color": "#10b981",
-      "bg_color": "#071610"
+      "bg_color": "#071610",
+      "voice": "太、太不知廉耻了！结城同学，为什么每次遇到你都会变成这种局面啊……！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "出包王女",
+        "people": [
+          {
+            "id": "yuuki_rito",
+            "name": "结城梨斗",
+            "aliases": [
+              "结城梨斗",
+              "Yuuki Rito",
+              "梨斗",
+              "梨神",
+              "乐园之主"
+            ]
+          },
+          {
+            "id": "lala_satalin_deviluke",
+            "name": "菈菈·萨塔琳·戴比路克",
+            "aliases": [
+              "菈菈·萨塔琳·戴比路克",
+              "Lala Satalin Deviluke",
+              "ララ",
+              "第一王女"
+            ],
+            "characterId": "lala_satalin_deviluke"
+          },
+          {
+            "id": "golden_darkness",
+            "name": "金色暗影",
+            "aliases": [
+              "金色暗影",
+              "Golden Darkness",
+              "金色の闇",
+              "小暗",
+              "夏娃"
+            ],
+            "characterId": "golden_darkness"
+          },
+          {
+            "id": "momo_velia_deviluke",
+            "name": "梦梦·贝莉雅·戴比路克",
+            "aliases": [
+              "梦梦·贝莉雅·戴比路克",
+              "Momo Belia Deviluke",
+              "梦梦",
+              "第三王女",
+              "小恶魔"
+            ],
+            "characterId": "momo_velia_deviluke"
+          },
+          {
+            "id": "kotegawa_yui",
+            "name": "古手川唯",
+            "aliases": [
+              "古手川唯",
+              "Kotegawa Yui",
+              "唯",
+              "风纪委员",
+              "不知廉耻"
+            ],
+            "characterId": "kotegawa_yui"
+          },
+          {
+            "id": "nana_asta_deviluke",
+            "name": "娜娜·阿斯达·戴比路克",
+            "aliases": [
+              "娜娜·阿斯达·戴比路克",
+              "Nana Asta Deviluke",
+              "ナナ",
+              "第二王女"
+            ],
+            "characterId": "nana_asta_deviluke"
+          },
+          {
+            "id": "sairenji_haruna",
+            "name": "西连寺春菜",
+            "aliases": [
+              "西连寺春菜",
+              "Sairenji Haruna",
+              "春菜",
+              "美化委员"
+            ],
+            "characterId": "sairenji_haruna"
+          },
+          {
+            "id": "yuuki_mikan",
+            "name": "结城美柑",
+            "aliases": [
+              "结城美柑",
+              "Yuuki Mikan",
+              "美柑",
+              "持家妹妹"
+            ],
+            "characterId": "yuuki_mikan"
+          },
+          {
+            "id": "kurosaki_mea",
+            "name": "黑咲芽亚",
+            "aliases": [
+              "黑咲芽亚",
+              "Kurosaki Mea",
+              "芽亚",
+              "二代变身兵器"
+            ]
+          },
+          {
+            "id": "nemesis",
+            "name": "涅墨西斯",
+            "aliases": [
+              "涅墨西斯",
+              "Nemesis",
+              "涅墨西斯大人"
+            ]
+          },
+          {
+            "id": "gido_lucione_deviluke",
+            "name": "奇多·路西翁·戴比路克",
+            "aliases": [
+              "奇多·路西翁·戴比路克",
+              "Gido Lucione Deviluke",
+              "戴比路克王",
+              "幼态岳父"
+            ]
+          },
+          {
+            "id": "mikado_ryouko",
+            "name": "御门凉子",
+            "aliases": [
+              "御门凉子",
+              "Mikado Ryouko",
+              "御门医生",
+              "保健室校医"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "rito-lala-fiance",
+            "source": "yuuki_rito",
+            "target": "lala_satalin_deviluke",
+            "label": "天降未婚妻与纯真挚爱",
+            "description": "菈菈逃婚从天而降跌入梨斗浴室，将梨斗情急劝慰误认为求婚；两人历经多次星际危机，菈菈如太阳般纯净的爱成为了梨斗后宫不可动摇的核心。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 天降相遇",
+            "evidence": {
+              "title": "周刊少年Jump · 《出包王女》官方作品介绍",
+              "url": "https://www.shonenjump.com/j/rensai/list/toloveru.html"
+            }
+          },
+          {
+            "id": "rito-haruna-mutual_crush",
+            "source": "yuuki_rito",
+            "target": "sairenji_haruna",
+            "label": "长年青梅双向暗恋与告白",
+            "description": "梨斗与春菜从初中起便深爱彼此却因极度羞怯久未言明，历经无数出包意外后，春菜终于在试胆大会鼓起全身勇气向梨斗倾吐炽热恋心。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Darkness篇 · 试胆大会告白",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "rito-darkness-taiyaki_redemption",
+            "source": "yuuki_rito",
+            "target": "golden_darkness",
+            "label": "鲷鱼烧之绊与唤醒神智",
+            "description": "小暗原本作为刺客受雇前来暗杀梨斗，被梨斗的纯良无争与美味鲷鱼烧感化；在Darkness形态暴走时，梨斗拼死拥抱唤醒了小暗沉睡的心智。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Darkness篇 · 暴走决战",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "rito-momo-harem_plan",
+            "source": "momo_velia_deviluke",
+            "target": "yuuki_rito",
+            "label": "乐园计划与痴情小恶魔",
+            "description": "深爱姐夫的梦梦利用戴比路克王族多妻法案宏伟推行“乐园计划”，旨在联合所有倾心于梨斗的美少女建立后宫，自己则甘居正室身旁夜夜潜入梨斗被窝。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Darkness篇 · 乐园启程",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "rito-yui-indecent_discipline",
+            "source": "kotegawa_yui",
+            "target": "yuuki_rito",
+            "label": "从严苛风纪到彻底沦陷",
+            "description": "唯常因各种不可抗力出包摔跤斥责梨斗“太不知廉耻了！”，却在屡次被梨斗舍身相救后深深爱上梨斗，克服了道德纠葛自愿成为乐园一员。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Darkness篇 · 恋心坦承",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "rito-mikan-siblings_reliance",
+            "source": "yuuki_rito",
+            "target": "yuuki_mikan",
+            "label": "相依持家与超越亲情的依恋",
+            "description": "美柑一人包揽结城家全部起居生活，看似对哥哥的日常摔跤调侃不断，心底却深藏着对梨斗毫无保留、超越寻常兄妹的炽烈依恋与崇拜。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 结城家生活",
+            "evidence": {
+              "title": "周刊少年Jump · 《出包王女》官方作品介绍",
+              "url": "https://www.shonenjump.com/j/rensai/list/toloveru.html"
+            }
+          },
+          {
+            "id": "rito-nana-bickering",
+            "source": "nana_asta_deviluke",
+            "target": "yuuki_rito",
+            "label": "傲娇嘴硬与隐秘心动",
+            "description": "娜娜因身材娇小自卑常在口头上嫌弃梨斗，但在多次外星异变与日常相处中，逐渐被梨斗毫无杂质的宽厚包容打动而暗生情愫。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Darkness篇 · 傲娇松动",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "lala-haruna-best_friends",
+            "source": "lala_satalin_deviluke",
+            "target": "sairenji_haruna",
+            "label": "情敌兼最深挚友",
+            "description": "同为深爱梨斗的同班少女，两人毫无勾心斗角，春菜被菈菈的纯真包容彻底折服，菈菈也真心期盼春菜能与自己携手永远陪伴在梨斗身边。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 纯真同盟",
+            "evidence": {
+              "title": "周刊少年Jump · 《出包王女》官方作品介绍",
+              "url": "https://www.shonenjump.com/j/rensai/list/toloveru.html"
+            }
+          },
+          {
+            "id": "lala-momo_nana-sisters",
+            "source": "lala_satalin_deviluke",
+            "target": "momo_velia_deviluke",
+            "label": "戴比路克王室姐妹",
+            "description": "菈菈对妹妹们毫无长姐架子极尽宠溺，梦梦虽行事腹黑狡黠却由衷敬爱姐姐，精心策划乐园计划以保全姐姐的幸福。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 戴比路克王女",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "momo-nana-twins",
+            "source": "momo_velia_deviluke",
+            "target": "nana_asta_deviluke",
+            "label": "双子姐妹与羁绊相依",
+            "description": "两人幼年起在深宫相依为命，梦梦虽然常常捉弄傲娇冲动的娜娜，但在日常与危机中总是暗中周全保护二姐。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 姐妹羁绊",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "darkness-mikan-sisterly_bond",
+            "source": "golden_darkness",
+            "target": "yuuki_mikan",
+            "label": "情同姐妹与心灵归宿",
+            "description": "小暗在彩南定居后，美柑的温暖料理与温柔关怀彻底融化了刺客冰封的心，美柑是小暗在地球上最信赖的知己与精神依靠。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 结城家常客",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "darkness-mea-sisters_in_arms",
+            "source": "golden_darkness",
+            "target": "kurosaki_mea",
+            "label": "活体兵器姐妹与青春救赎",
+            "description": "芽亚作为二代变身武器来到彩南并亲切呼唤小暗为“姐姐”，在小暗与梨斗的感化下脱离组织摆脱了杀戮兵器的宿命，重获属于普通少女的青春。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Darkness篇 · 兵器姐妹",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "mea-nemesis-minion",
+            "source": "nemesis",
+            "target": "kurosaki_mea",
+            "label": "主使操纵与叛离控制",
+            "description": "涅墨西斯作为幕后操盘者曾命令芽亚激活小暗体内的Darkness杀戮形态，最终芽亚选择站在人类同伴与小暗这一边抗拒指令。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "Darkness篇 · 背叛指令",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "nemesis-rito-fondness",
+            "source": "nemesis",
+            "target": "yuuki_rito",
+            "label": "败北折服与寄宿争宠",
+            "description": "在策划灭世危机被梨斗与全员化解后，失去力量的涅墨西斯化身寄宿于结城家，彻底被梨斗无底线的包容征服，以娇蛮姿态加入后宫争宠。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "Darkness篇 · 决战终章",
+            "evidence": {
+              "title": "Jump SQ · 《出包王女Darkness》连载专页",
+              "url": "https://jumpsq.shueisha.co.jp/rensai/toloveru/"
+            }
+          },
+          {
+            "id": "gido-rito-son_in_law",
+            "source": "gido_lucione_deviluke",
+            "target": "yuuki_rito",
+            "label": "银河霸主岳父的器量认可",
+            "description": "戴比路克帝王因过度耗能退化为孩童之姿，起初欲抹杀地球或严厉考验梨斗，后被梨斗甘冒生死守护菈菈的赤诚打动，认可了其女婿资格。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "前期主线 · 戴比路克来袭",
+            "evidence": {
+              "title": "周刊少年Jump · 《出包王女》官方作品介绍",
+              "url": "https://www.shonenjump.com/j/rensai/list/toloveru.html"
+            }
+          },
+          {
+            "id": "mikado-darkness-doctor",
+            "source": "mikado_ryouko",
+            "target": "golden_darkness",
+            "label": "宇宙名医与机体调理",
+            "description": "御门医生知晓小暗纳米活体兵器的体质秘密，常年在彩南高校保健室为其提供生理机能抑制与身体调理，充当睿智的长辈依靠。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 保健室日常",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "momo-haruna-harem_talk",
+            "source": "momo_velia_deviluke",
+            "target": "sairenji_haruna",
+            "label": "乐园密友与心意鼓动",
+            "description": "梦梦敏锐看穿春菜对梨斗刻骨铭心的暗恋，屡屡在私下鼓励羞涩的春菜跨越心理防线加入后宫乐园，两人结为紧密的阵营盟友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Darkness篇 · 乐园同盟",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "yui-haruna-classmates",
+            "source": "kotegawa_yui",
+            "target": "sairenji_haruna",
+            "label": "同班挚友与委员搭档",
+            "description": "唯与春菜是同班好友兼美化委员会同仁，面对关于梨斗的各种害羞恋爱话题时常相互倾诉，是彼此在学园中最值得信赖的闺蜜。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学园篇 · 闺蜜谈心",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "yui-mikan-cooking",
+            "source": "kotegawa_yui",
+            "target": "yuuki_mikan",
+            "label": "家政请教与助攻契机",
+            "description": "唯常在放学后拜访结城家向持家有方的小恶魔美柑请教便当料理手艺，美柑则心领神会地为唯制造与梨斗近距离独处的害羞机会。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 结城家串门",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "nana-mikan-soulmates",
+            "source": "nana_asta_deviluke",
+            "target": "yuuki_mikan",
+            "label": "最投缘的挚友与生活伴侣",
+            "description": "娜娜虽然在他人面前嘴硬傲娇，但在美柑面前最为率真放松，两人常常一同采购食材、照料外星萌宠，情谊超越一般好友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 逛街相伴",
+            "evidence": {
+              "title": "集英社 · 《出包王女Darkness》官方动画专页",
+              "url": "https://www.to-love-ru.com/"
+            }
+          },
+          {
+            "id": "haruna-mikan-neighbors",
+            "source": "sairenji_haruna",
+            "target": "yuuki_mikan",
+            "label": "邻里关怀与暗中助攻",
+            "description": "春菜与美柑自幼相识，美柑非常看好温婉贤惠的春菜成为自己的大嫂，常年暗中为木讷的哥哥与春菜制造化解误会的契机。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 邻家相助",
+            "evidence": {
+              "title": "周刊少年Jump · 《出包王女》官方作品介绍",
+              "url": "https://www.shonenjump.com/j/rensai/list/toloveru.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

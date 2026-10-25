@@ -33,26 +33,28 @@
         "signature": "银白双马尾、樱花发饰、红白正统巫女服、黑丝连裤袜与深蓝凤眸"
       },
       "personality": [
-        "举止端庄有礼的大小姐气质",
-        "责任感极强、独自背负家族除祟使命",
-        "超级甜食控，遇到好吃点心就瞬间破防",
-        "面对恋爱手足无措、极其容易害羞红脸",
-        "外冷内热，全心全意为镇民与所爱之人付出"
+        "举止优雅端庄、知书达理的神道名门千金",
+        "责任感极强，甘愿独自背负家族沉重的除祟诅咒",
+        "重度甜食控，一旦吃到极品点心就会幸福破防",
+        "面对青涩恋爱极易娇羞脸红、手足无措",
+        "外表清冷庄重，内心对世俗烟火与同龄生活充满向往",
+        "拥有至纯至洁的奉献精神与坚定如磐的内心"
       ],
       "likes": [
-        "穗织产的传统金锷烧与甜点",
-        "跳神道奉纳神乐舞",
-        "神社庭院的早樱漫步",
-        "安静地和将臣独处喝茶"
+        "穗织名产金锷烧、红豆羊羹与各式传统和果子",
+        "在神乐殿手执神乐铃跳奉纳神乐舞",
+        "初春在神社庭院中静看早樱绯红飘落",
+        "泡上一壶醇香绿茶与将臣静静相对而坐",
+        "换上便服体验普通情侣逛街约会的甜蜜"
       ],
       "classic_cg": {
-        "title": "月夜神乐的奉纳华舞",
-        "description": "神社神乐殿前，芳乃手执神乐铃翩跹起舞，绯红行灯袴与银白长发流转，神圣而绝美。"
+        "title": "绯樱月夜的奉纳华舞",
+        "description": "神社神乐殿落英缤纷，银白长双马尾随风曼舞，芳乃身着红白巫女礼装手挽七五三神乐铃轻盈踏步，深蓝眸子倒映着漫天飘樱与火烛，高贵脱俗恍若神女降世。"
       },
       "identity": {
-        "role": "朝武神社掌管者 / 穗织巫女姬",
-        "age": "少女",
-        "occupation": "神社巫女姬 / 除祟神职",
+        "role": "朝武神社现任巫女姬 / 朝武一族正统继承人",
+        "age": "17岁（高中二年生）",
+        "occupation": "神社巫女姬 / 穗织神职除祟师 / 高中生",
         "faction": "穗织镇 · 朝武神社"
       },
       "tags": [
@@ -64,7 +66,7 @@
         "樱花头饰",
         "千恋万花"
       ],
-      "bg_story": "朝武芳乃是柚子社《千恋＊万花》的女主角之一，穗织镇朝武神社的巫女姬，肩负着朝武一族历代传承的除祟使命。外表高洁典雅、宛如古代神道画卷中走出的千金巫女，实际内心纯洁真挚、极度钟爱各种甜点美食。面对将臣从起初的提防疏离到深陷爱恋，举手投足间散发出令人心醉的神圣与娇羞。",
+      "bg_story": "朝武芳乃是柚子社作品《千恋＊万花》的核心女主角之一，穗织镇名门朝武神社的掌上明珠兼现任“巫女姬”。由于朝武一族世代背负着镇压穗织土地荒魂祟神的诅咒，芳乃自幼便展现出异于常人的灵力，耳后更生有象征诅咒的灵兽之耳，因而从小被当作庄严神圣的神职象征严厉培养，早早习惯了克制少女应有的娇憨任性与世俗玩乐。当男主角有地将臣意外拔出断裂神刀丛雨丸、按照古老乡规成为其名义上的“未婚夫”后，芳乃在与将臣的同居与日常相处中，逐渐剥离了高高在上的神女外壳，暴露出酷爱甜食点心（尤其是金锷烧）且一经夸奖便羞愤难当的纯情少女本貌。在芳乃个人线中，地脉祟神暴动加剧，千年的古老诅咒反噬险些将芳乃吞噬作为永恒祭品；将臣毫无惧色地踏入凶煞深处，以神刀之威与不离不弃的炽热深情紧紧握住芳乃冰冷的手，与她共同完成净化大典，彻底击碎了缠绕朝武血脉数百年的祟神枷锁与兽耳诅咒。在感人至深的结局与后日谈中，芳乃在全镇乡亲与挚友的真挚祝福下与将臣举行了盛大的传统神前婚礼，在落樱纷飞的暖阳中翻开了作为寻常幸福人妻的瑰丽人生新卷。",
       "palette": [
         "月光白",
         "朱砂绯",
@@ -91,7 +93,319 @@
         "senren_banka"
       ],
       "accent_color": "#e0f2fe",
-      "bg_color": "#0a101d"
+      "bg_color": "#0a101d",
+      "voice": "我是朝武芳乃。守护穗织的安宁与传承，是身负神职的我无可推卸之责……但如果是与你同行，这沉重的道路或许也能开出花来。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "千恋＊万花",
+        "people": [
+          {
+            "id": "arichi_masaomi",
+            "name": "有地将臣",
+            "aliases": [
+              "有地将臣",
+              "Arichi Masaomi",
+              "将臣",
+              "折刀之人"
+            ]
+          },
+          {
+            "id": "murasame",
+            "name": "丛雨",
+            "aliases": [
+              "丛雨",
+              "Murasame",
+              "ムラサメ",
+              "幼刀",
+              "村雨",
+              "丛雨丸"
+            ],
+            "characterId": "murasame"
+          },
+          {
+            "id": "hitachi_mako",
+            "name": "常陆茉子",
+            "aliases": [
+              "常陆茉子",
+              "Hitachi Mako",
+              "常陸茉子",
+              "茉子",
+              "忍者妹"
+            ],
+            "characterId": "hitachi_mako"
+          },
+          {
+            "id": "tomotake_yoshino",
+            "name": "朝武芳乃",
+            "aliases": [
+              "朝武芳乃",
+              "Tomotake Yoshino",
+              "芳乃",
+              "巫女姬大人"
+            ],
+            "characterId": "tomotake_yoshino"
+          },
+          {
+            "id": "rena_liechtenauer",
+            "name": "蕾娜·莉希特娜瓦",
+            "aliases": [
+              "蕾娜·莉希特娜瓦",
+              "Rena Liechtenauer",
+              "レナ・リヒテナウアー",
+              "蕾娜"
+            ]
+          },
+          {
+            "id": "kurama_koharu",
+            "name": "鞍马小春",
+            "aliases": [
+              "鞍马小春",
+              "Kurama Koharu",
+              "鞍馬小春",
+              "小春"
+            ]
+          },
+          {
+            "id": "baba_renjou",
+            "name": "马场廉太郎",
+            "aliases": [
+              "马场廉太郎",
+              "Baba Renjou",
+              "廉太郎"
+            ]
+          },
+          {
+            "id": "arichi_genjuro",
+            "name": "有地玄十郎",
+            "aliases": [
+              "有地玄十郎",
+              "Arichi Genjurou",
+              "外公"
+            ]
+          },
+          {
+            "id": "tomotake_keima",
+            "name": "朝武庆真",
+            "aliases": [
+              "朝武庆真",
+              "Tomotake Keima",
+              "宫司大人"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "masaomi-murasame-contract",
+            "source": "arichi_masaomi",
+            "target": "murasame",
+            "label": "神刀契约与唯一感应",
+            "description": "将臣在祭典中意外折断神刀拔出刀柄打破古老契约，成为全穗织唯一能目视、听见并触碰丛雨灵体的人，开启了两人跨越生死界限的羁绊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 神刀折断",
+            "evidence": {
+              "title": "YUZUSOFT · 《千恋＊万花》官方故事介绍",
+              "url": "https://www.yuzu-soft.com/products/senren/story.html"
+            }
+          },
+          {
+            "id": "murasame-masaomi-liberation",
+            "source": "murasame",
+            "target": "arichi_masaomi",
+            "label": "破除宿命与重获肉身",
+            "description": "在将臣不惜赌上自身魂魄与剑道意志的誓死守护下，丛雨彻底净化了体内封印五百年的凶残祟神怨念，得以脱离灵体化作真正的人类少女。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "丛雨线 · 终局破祟",
+            "evidence": {
+              "title": "Steam · 《千恋＊万花》官方剧情全览",
+              "url": "https://store.steampowered.com/app/1144400/SenrenBanka/"
+            }
+          },
+          {
+            "id": "masaomi-yoshino-fiance",
+            "source": "arichi_masaomi",
+            "target": "tomotake_yoshino",
+            "label": "乡规婚约与心灵相知",
+            "description": "依照穗织镇拔出神刀者即为巫女夫婿的古老乡规，将臣成为芳乃名义上的未婚夫；同居相伴中芳乃逐渐卸下神圣巫女防备，展露酷爱甜点的娇憨本貌。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 寄宿同居",
+            "evidence": {
+              "title": "YUZUSOFT · 朝武芳乃官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "masaomi-yoshino-purify",
+            "source": "arichi_masaomi",
+            "target": "tomotake_yoshino",
+            "label": "破除血脉诅咒",
+            "description": "面对地脉祟神暴动险些将芳乃吞噬为永恒活祭的危机，将臣以神刀之威紧握芳乃冰冷的手，与她共同完成净化大典，斩断了朝武一族的兽耳诅咒。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "芳乃线 · 终局祓除",
+            "evidence": {
+              "title": "Steam · 《千恋＊万花》官方剧情全览",
+              "url": "https://store.steampowered.com/app/1144400/SenrenBanka/"
+            }
+          },
+          {
+            "id": "yoshino-mako-master_servant",
+            "source": "tomotake_yoshino",
+            "target": "hitachi_mako",
+            "label": "主仆护卫兼莫逆挚友",
+            "description": "茉子出身世代效忠朝武神职的常陆忍者世家，自幼作为贴身护卫保卫芳乃；两人日常虽恪守主仆名分，私下却情同无话不谈的亲姐妹。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "YUZUSOFT · 常陆茉子官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "masaomi-mako-bodyguard_trust",
+            "source": "arichi_masaomi",
+            "target": "hitachi_mako",
+            "label": "护卫搭档与化解心防",
+            "description": "将臣敏锐察觉到茉子将自己物化为“影与工具”的自卑软肋，执意以对等姿态守护她，打破了常陆家沉重的宗族枷锁，赢得了茉子深种的恋心。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "茉子线 · 刀光与真心",
+            "evidence": {
+              "title": "YUZUSOFT · 常陆茉子官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "murasame-yoshino-shrine_warden",
+            "source": "murasame",
+            "target": "tomotake_yoshino",
+            "label": "守护刀灵与现任巫女姬",
+            "description": "丛雨作为供奉在朝武神社的神刀之灵，在漫长的五百年岁月里默默注视并守护着朝武家的历代巫女；芳乃虽起初无法看见她，但对神刀怀有最高敬意。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 神社岁月",
+            "evidence": {
+              "title": "YUZUSOFT · 丛雨官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "murasame-mako-guardian",
+            "source": "murasame",
+            "target": "hitachi_mako",
+            "label": "暗影护卫与刀灵的感知",
+            "description": "身手敏锐的忍者茉子起初能通过武者直觉感知丛雨的气息异动，在将臣充当沟通桥梁后，茉子经常为贪吃的丛雨偷偷准备美味糕点。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 神社日常",
+            "evidence": {
+              "title": "YUZUSOFT · 丛雨官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "masaomi-rena-friendship",
+            "source": "arichi_masaomi",
+            "target": "rena_liechtenauer",
+            "label": "和风向导与异国留学生",
+            "description": "远渡重洋来到穗织留学的蕾娜对日本传统刀剑文化痴迷，将臣作为同班同僚主动担任其文化生活向导，两人在嬉笑中结下深厚友情。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 异国访客",
+            "evidence": {
+              "title": "YUZUSOFT · 蕾娜官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "rena-yoshino-cultural_exchange",
+            "source": "rena_liechtenauer",
+            "target": "tomotake_yoshino",
+            "label": "神道求教与跨文化交流",
+            "description": "蕾娜极度喜爱穗织镇的传统神社风韵，常常向芳乃认真请教巫女礼仪与神道历史，芳乃也热情接纳了这位活泼坦诚的异国少女。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 穗织学园",
+            "evidence": {
+              "title": "YUZUSOFT · 蕾娜官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "masaomi-koharu-cousin",
+            "source": "arichi_masaomi",
+            "target": "kurama_koharu",
+            "label": "表兄妹与归乡照料",
+            "description": "小春是将臣的表妹兼甜品老字号“鞍马屋”的看板娘，性格温顺元气，在将臣归乡穗织后给予了他无微不至的起居照应与温暖关怀。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇归乡",
+            "evidence": {
+              "title": "YUZUSOFT · 鞍马小春官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "koharu-mako-close_friends",
+            "source": "kurama_koharu",
+            "target": "hitachi_mako",
+            "label": "同龄密友与茶点慰劳",
+            "description": "同在穗织镇长大的两人私交极好，小春深知茉子操持家政杂务的辛苦，经常送来鞍马屋的新鲜日式团子与糕点犒劳茉子。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 街町日常",
+            "evidence": {
+              "title": "YUZUSOFT · 鞍马小春官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "masaomi-renjou-best_friends",
+            "source": "arichi_masaomi",
+            "target": "baba_renjou",
+            "label": "同窗损友与八卦参谋",
+            "description": "廉太郎是将臣在穗织学园的同班死党，性格大大咧咧且极其八卦，在将臣被卷入神刀与巫女的多角关系时经常出谋划策（或在一旁幸灾乐祸）。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 学园日常",
+            "evidence": {
+              "title": "YUZUSOFT · 角色关系介绍",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          },
+          {
+            "id": "genjuro-masaomi-grandson",
+            "source": "arichi_genjuro",
+            "target": "arichi_masaomi",
+            "label": "祖孙兼剑道严师",
+            "description": "外公玄十郎是将臣的神阴流剑道师傅，平日威严庄重，严厉锤炼将臣的心性与体魄，使将臣具备了关键时刻掌控神刀降服祟神的力量。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 道场修行",
+            "evidence": {
+              "title": "YUZUSOFT · 《千恋＊万花》官方故事介绍",
+              "url": "https://www.yuzu-soft.com/products/senren/story.html"
+            }
+          },
+          {
+            "id": "keima-yoshino-father_daughter",
+            "source": "tomotake_keima",
+            "target": "tomotake_yoshino",
+            "label": "严父兼神社宫司",
+            "description": "朝武庆真身兼穗织镇神社宫司与芳乃的父亲，一方面必须严格恪守朝武一族代代相传的神职戒律，另一方面在内心深处深沉怜惜着背负诅咒的女儿。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 朝武神社",
+            "evidence": {
+              "title": "YUZUSOFT · 朝武芳乃官方人物设定",
+              "url": "https://www.yuzu-soft.com/products/senren/character.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

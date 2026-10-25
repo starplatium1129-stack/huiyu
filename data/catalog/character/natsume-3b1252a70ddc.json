@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "natsume",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-25T14:46:00.632106+00:00",
   "data": {
     "id": "natsume",
     "profile": {
@@ -32,30 +32,32 @@
         "signature": "黑色长发、金瞳与眼下泪痣"
       },
       "personality": [
-        "不擅长表达感情",
-        "外冷内柔",
-        "相当纯情",
-        "做事认真",
-        "讨厌轻浮喧闹",
-        "熟悉后会露出小脾气"
+        "冷静毒舌",
+        "无口外表",
+        "面冷心热",
+        "深藏脆弱",
+        "理性敏锐",
+        "死生超然",
+        "专情别扭"
       ],
       "likes": [
-        "安静的相处",
-        "认真完成咖啡馆工作",
-        "含蓄地照顾重要的人",
-        "不被打扰的个人时间"
+        "红茶与咖啡冲泡",
+        "调侃昂晴的窘态",
+        "安稳的打工日常",
+        "精美洋菓子",
+        "独处的阅读时光"
       ],
       "classic_cg": {
-        "title": "闭店后的无声关心",
-        "description": "她把最后一杯热饮推到你面前，嘴上说只是顺手，视线却一直确认你有没有好好喝下去。"
+        "title": "红茶氤氲中的冷彻与温柔独白",
+        "description": "在星光咖啡馆洒满午后光斑的吧台前，夏目端着精致骨瓷茶杯，神情平淡中带着一丝不易察觉的微红，毒舌而认真地向昂晴吐露对生死的淡然与对两人日常的眷恋。"
       },
       "identity": {
-        "role": "不擅长表达感情的大学生",
-        "age": "大学生",
-        "occupation": "大学生 / Café Stella 店员",
-        "faction": "Café Stella"
+        "role": "与死神签下因果契约的咖啡店员 / 面冷心热的大学同级生",
+        "age": "18-19岁（大学一年级）/ 24岁（后日谈）",
+        "occupation": "大学生 / 星光咖啡馆（Cafe Stella）看板店员",
+        "faction": "Cafe Stella / 高岭家"
       },
-      "voice": "……别误会。我只是觉得这样比较有效率。",
+      "voice": "前辈又在想什么下流的事情了吧？眼神全都写在脸上了……不过，如果是前辈的话，我倒是不讨厌。",
       "voiceJa": "それ、単純に相手の誘いに気付いてなかっただけでしょ",
       "tags": [
         "黑色长发",
@@ -64,7 +66,7 @@
         "侧发夹",
         "咖啡馆制服"
       ],
-      "bg_story": "四季夏目是《星光咖啡馆与死神之蝶》的女主角之一，与主人公就读同一所大学。旁人常把她当成冷静疏离的类型，其实她只是不擅长把感情写在脸上；她相当纯情，碰到暧昧或成人话题会迅速脸红，也很厌烦轻浮吵闹的饮酒圈子。场景应让她通过动作表达关心，再用简短的否认掩饰动摇。特工、长官和战术服可以作为同人 AU 使用，但分类与故事必须明确，不应冒充本篇身份。",
+      "bg_story": "高岭昂晴的大学同级生，留着标志性银色短发与冷静红瞳，平日里总是面无表情地吐出辛辣毒舌与冷幽默，显得成熟而难以捉摸。然而这份冷淡超然背后，却深埋着致命的宿命危机——夏目幼时曾遭遇严重意外事故陷入濒死，依靠死神明石的介入以及“死神之蝶”的宿体才得以维系生命，但体内也因此积存了沉重的死之因果。为了清偿因果并继续活下去，她在死神设立的“星光咖啡馆”兼职担任店员，与因死神获得预知梦能力的昂晴共同经营店铺。在朝夕相处的咖啡冲泡与点心制作中，夏目以看似不近人情的指导和调侃掩饰着内心的动摇，昂晴则看穿了她平静外表下对死亡的深层恐惧与对活下去的渴望。面对因果残渣暴走带来的生命威胁，昂晴与死神团队联手打破了命运枷锁，彻底净化了夏目体内的死亡烙印，使其作为健康的人类少女重获新生。后日谈中两人顺理成章同居相恋，夏目虽依旧嘴不饶人，却在昂晴面前展露出全心全意的娇羞与依赖，迎来了平淡温馨的长久相守。",
       "palette": [
         "夜色黑",
         "琥珀金",
@@ -205,7 +207,193 @@
         }
       ],
       "accent_color": "#fbb040",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "星光咖啡馆与死神之蝶",
+        "people": [
+          {
+            "id": "natsume",
+            "name": "四季夏目",
+            "aliases": [
+              "四季ナツメ",
+              "Shiki Natsume"
+            ],
+            "characterId": "natsume"
+          },
+          {
+            "id": "takamine_kousei",
+            "name": "高岭昂晴",
+            "aliases": [
+              "高嶺昂晴",
+              "Takamine Kousei"
+            ]
+          },
+          {
+            "id": "akizuki_kanna",
+            "name": "明月栞那",
+            "aliases": [
+              "明月栞那",
+              "Akizuki Kanna"
+            ],
+            "characterId": "akizuki_kanna"
+          },
+          {
+            "id": "sumizome_nozomi",
+            "name": "墨染希",
+            "aliases": [
+              "墨染希",
+              "Sumizome Nozomi"
+            ]
+          },
+          {
+            "id": "hiuchidani_mei",
+            "name": "火打谷爱衣",
+            "aliases": [
+              "火打谷愛衣",
+              "Hiuchidani Mei"
+            ]
+          },
+          {
+            "id": "shioyama_suzune",
+            "name": "汐山凉音",
+            "aliases": [
+              "汐山涼音",
+              "Shioyama Suzune"
+            ]
+          },
+          {
+            "id": "shioyama_hiroto",
+            "name": "汐山宏人",
+            "aliases": [
+              "汐山宏人",
+              "Shioyama Hiroto"
+            ]
+          },
+          {
+            "id": "stella_mikado",
+            "name": "米卡多",
+            "aliases": [
+              "ミカド",
+              "Mikado"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "natsume-kousei-university",
+            "source": "natsume",
+            "target": "takamine_kousei",
+            "label": "同一所大学",
+            "description": "夏目与昂晴就读于同一所大学；这不代表两人开篇就已经是恋人。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 四季夏目官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "natsume-kanna-cafe",
+            "source": "natsume",
+            "target": "akizuki_kanna",
+            "label": "咖啡馆同事",
+            "description": "夏目与栞那在星光咖啡馆一起工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 咖啡馆营业期间",
+            "evidence": {
+              "title": "柚子社 · 官方人物介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "natsume-suzune-cafe",
+            "source": "natsume",
+            "target": "shioyama_suzune",
+            "label": "咖啡馆同事",
+            "description": "凉音负责咖啡馆的甜点制作，与夏目在同一家店工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 咖啡馆营业期间",
+            "evidence": {
+              "title": "柚子社 · 汐山凉音官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "kousei-nozomi-childhood",
+            "source": "takamine_kousei",
+            "target": "sumizome_nozomi",
+            "label": "青梅竹马",
+            "description": "希年纪比昂晴小，两人从小相识，交谈时很熟悉彼此。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 墨染希官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "nozomi-mei-classmates",
+            "source": "sumizome_nozomi",
+            "target": "hiuchidani_mei",
+            "label": "曾经的同班同学",
+            "description": "希和爱衣曾经在同一个班级，如今在不同的地方就读。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 火打谷爱衣官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "hiroto-suzune-siblings",
+            "source": "shioyama_hiroto",
+            "target": "shioyama_suzune",
+            "label": "弟弟 → 姐姐",
+            "description": "宏人是凉音的弟弟；姐弟关系不差，但宏人有些怕姐姐。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 其他人物介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "kousei-hiroto-friends",
+            "source": "takamine_kousei",
+            "target": "shioyama_hiroto",
+            "label": "同学与朋友",
+            "description": "宏人与昂晴是同学科的朋友，平日会一起闲聊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 其他人物介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "kanna-mikado-partners",
+            "source": "akizuki_kanna",
+            "target": "stella_mikado",
+            "label": "引导灵魂的搭档",
+            "description": "栞那作为死神，与担任神使的米卡多一同承担引导亡者灵魂的工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 栞那与米卡多官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          }
+        ]
+      }
     }
   }
 }

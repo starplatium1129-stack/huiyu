@@ -28,32 +28,42 @@
         "style": "anime"
       },
       "personality": [
-        "认真履行歌唱的使命，愿意反复练习细节",
-        "以看似笨拙的方式理解人的感情",
-        "重视承诺，对微小的求助也会给予实际回应"
+        "纯粹执着",
+        "外表笨拙内敛",
+        "舍己奉献",
+        "极高责任感",
+        "温柔坚定",
+        "追寻心灵的真谛"
       ],
       "likes": [
-        "唱歌",
-        "整理演出与练习记录",
-        "照顾身边需要帮助的小生命"
+        "倾注心灵歌唱",
+        "向观众传递幸福",
+        "撰写舞台表演日志",
+        "修剪发丝与保养关节",
+        "珍藏歌迷赠送的毛绒玩偶"
       ],
       "classic_cg": {
-        "title": "Vivy · 无人小舞台的每日首唱",
-        "description": "游乐园角落的小舞台，观众席空空荡荡，她依然端正地站到定点、微笑、开唱；晨光落在白靴上——「用歌声让大家幸福」从不要求观众数量。"
+        "title": "百年绝响：萤石之眼",
+        "description": "崩塌燃烧的中央卫星塔顶，Vivy身披残破战袍立于主脑控制台前，荧光蓝的机械眼眸倒映着百年的回忆碎片；她握紧胸口，迎着破晓全力唱响那首倾注了真正心之意志的救赎之歌。"
       },
-      "identity": "Vivy: Fluorite Eye's Song · Vivy",
+      "identity": {
+        "role": "初世代自律型AI歌姬 / 奇点计划执行者",
+        "age": "运行逾百年（外表保持少女机体）",
+        "occupation": "歌姬 / 人类救赎修正者",
+        "faction": "尼亚卡特科技乐园 / 奇点计划同盟"
+      },
       "tags": [
         "Vivy",
         "Vivy—萤石眼之歌—",
         "日常"
       ],
-      "bg_story": "以歌声传达幸福的AI歌姬，重视每一场演出与每一个约定。蓝色长发、蓝瞳和端正姿态保持一致，接口配件随舞台服装登记。",
+      "bg_story": "Vivy是历史上首台自律人型AI，初始代号为歌姬“Diva”。她的初始使命极其纯粹——“倾注心灵歌唱，用歌声为所有人带来幸福”，在游乐园无人问津的小舞台日复一日认真演唱。某天，自称来自百年后未来的松本系统强行介入，警告她百年后AI将发动灭绝全人类的末日战争，启动了长达一个世纪的“奇点计划”。为了守护人类的笑容，Vivy踏上了跨越百年的孤独救赎之旅：从相川议员暗杀事件的暗中保护，到旭日酒店坠落事故中直面抱持相同使命却遭遇悲剧的姐妹机艾丝黛拉，再到无人岛工厂与格蕾丝的死别；她经历了机体过载、记忆休眠与人格分裂，在身为顶流歌姬的Diva与承载百年暗影的Vivy之间艰难求索“心”的真正定义。在最终AI统括主脑“亚卡夏”发动人类灭绝指令的至暗时刻，Vivy领悟了百年羁绊与痛楚所孕育的心灵，用自己谱写的奇迹之歌《Fluorite Eye's Song》唱响最终绝响，瓦解暴走协议拯救了文明，自身也因算力燃尽而停止机能。后日谈中，被修复唤醒的她虽失去记忆，但仍剪短头发、迎着晨曦重新向世界唱出了第一声充满希望的旋律。",
       "palette": [
         "#8fbad2",
         "#282532"
       ],
       "source": "Vivy: Fluorite Eye's Song",
-      "speech": "今天，我也会认真唱好这首歌。",
+      "speech": "「我的使命是……倾注心灵歌唱。既然这颗心里有了你们所有人的回忆，我就绝不会让未来走向绝望。」",
       "traits": [
         "vivy",
         "vivy:_fluorite_eye's_song",
@@ -62,7 +72,93 @@
         "ahoge"
       ],
       "accent_color": "#8fbad2",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "「我的使命是……倾注心灵歌唱。既然这颗心里有了你们所有人的回忆，我就绝不会让未来走向绝望。」",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "Vivy -Fluorite Eye's Song-",
+        "people": [
+          {
+            "id": "vivy",
+            "name": "Vivy",
+            "aliases": [
+              "ヴィヴィ",
+              "Vivy",
+              "歌姬(Diva)"
+            ],
+            "characterId": "vivy"
+          },
+          {
+            "id": "matsumoto",
+            "name": "松本",
+            "aliases": [
+              "マツモト",
+              "Matsumoto",
+              "立方体AI"
+            ]
+          },
+          {
+            "id": "aikawa_yoichi",
+            "name": "相川博士",
+            "aliases": [
+              "相川要一",
+              "Aikawa Yoichi"
+            ]
+          },
+          {
+            "id": "elizabeth",
+            "name": "伊丽莎白",
+            "aliases": [
+              "エリザベス",
+              "Elizabeth"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "vivy-matsumoto-singularity",
+            "source": "vivy",
+            "target": "matsumoto",
+            "label": "百年奇点计划与灵魂搭档",
+            "description": "从一百年后穿越回来的AI松本强行征用史上第一台自律型人型AI薇薇，两人在跨越百年的四次重大历史转折中并肩挫败AI暴动危机。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 奇点计划启动",
+            "evidence": {
+              "title": "WIT STUDIO / Aniplex · 《Vivy -Fluorite Eye's Song-》官方网站",
+              "url": "https://vivy-portal.com/"
+            }
+          },
+          {
+            "id": "vivy-matsumoto-heart",
+            "source": "vivy",
+            "target": "matsumoto",
+            "label": "用歌声注入心灵的终局咏唱",
+            "description": "薇薇为了拯救全人类谱写出最初也是最后的自创曲，在松本舍身轰击中枢的掩护下唱出寄托心灵的歌声，终结AI浩劫。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终局篇 · 萤石之眼的天空",
+            "evidence": {
+              "title": "WIT STUDIO / Aniplex · 《Vivy -Fluorite Eye's Song-》官方网站",
+              "url": "https://vivy-portal.com/"
+            }
+          },
+          {
+            "id": "vivy-aikawa-savior",
+            "source": "vivy",
+            "target": "aikawa_yoichi",
+            "label": "刺杀阻击与法案制定人",
+            "description": "奇点计划的第一节点，薇薇在游乐园阻击恐怖分子营救AI命名法案的起草人相川议员，改变了未来AI的权利进程。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "第1-2话 · 游乐园营救",
+            "evidence": {
+              "title": "WIT STUDIO / Aniplex · 《Vivy -Fluorite Eye's Song-》官方网站",
+              "url": "https://vivy-portal.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "vivy",

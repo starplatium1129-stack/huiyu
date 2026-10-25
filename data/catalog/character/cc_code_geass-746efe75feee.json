@@ -34,21 +34,30 @@
         "signature": "及腰翠绿长发、金珀眼眸、纯白拘束服与奶酪君抱枕"
       },
       "personality": [
-        "看破世间沧桑的从容淡漠",
-        "唯独对你的生死相托与羁绊",
-        "酷爱披萨的慵懒萌态",
-        "偶尔脸红微怔的反差娇羞"
+        "神秘清冷",
+        "洞悉世事",
+        "毒舌慵懒",
+        "灵魂共犯深情",
+        "内在孤独渴望被爱",
+        "外表从容不迫"
       ],
       "likes": [
-        "必胜客热烤披萨",
-        "奶酪君黄色玩偶",
-        "在午后的阳光下静静发呆"
+        "芝士披萨（尤其是必胜客）",
+        "起司君毛绒玩偶",
+        "悠闲晒太阳与睡眠",
+        "与鲁路修拌嘴",
+        "观察人类欲望变迁"
       ],
       "classic_cg": {
-        "title": "废墟月下的契约魔女",
-        "description": "在钟楼断壁残垣之上迎风而立，纯白拘束带翻飞、额间Geass红光闪烁的绝代魔女。"
+        "title": "新宿列车下的命运血誓",
+        "description": "在倒塌的新宿集装箱列车中，额头染血的绿发少女握住鲁路修的手腕，金眸闪烁与飞鸟印记显现，开启席卷世界反叛史诗的名场面。"
       },
-      "identity": "反叛的鲁路修女主角 · 不老不死的Code持有者 · 灵魂共犯",
+      "identity": {
+        "role": "Code持有者 / 鲁路修唯一的命运共犯与终身伴侣",
+        "age": "不老不死（肉体定格16岁）",
+        "occupation": "Geass契约赋予者 / 黑色骑士团顾问",
+        "faction": "黑色骑士团 / 复活者联盟"
+      },
       "tags": [
         "反叛的鲁路修",
         "C.C.",
@@ -57,7 +66,7 @@
         "拘束服",
         "披萨魔女"
       ],
-      "bg_story": "二次元神作历史上无可争议的魔女之王。拥有不老不死之躯与赐予他人Geass力量的能力，经历了数百年的战乱、背叛与孤独，将自己的内心冰封在冷漠的面具之下。直到遇见了唯一的共犯，冰冷的心彻底被融化，甘愿背负一切罪孽与他同行至世界尽头。",
+      "bg_story": "不老不死的神秘绿发魔女，拥有赐予人类绝对命令“Geass”契约的Code持有者。中世纪修女出身，曾被奴役饱受背叛，在弑杀修女继承永生Code后经历数百年生死轮回的孤独折磨。在新宿贫民区生死一线之际与鲁路修缔结契约，成为黑色骑士团幕后的唯一共犯与见证者。在查尔斯弑神计划、神根岛遗迹与达摩克里斯决战中，C.C.逐渐被鲁路修赤诚热烈的反叛意志所打动，放弃了求死的夙愿。在零之镇魂曲鲁路修陨落后，她独自乘着马车浪迹天涯；在《复活的鲁路修》中，她凭借不朽执念寻遍废墟将鲁路修从C之世界唤回，与复活的鲁路修定下永恒羁绊，以“L.L.”与“C.C.”的新名携手浪迹无尽星空。",
       "palette": [
         "#84cc16",
         "#14532d",
@@ -81,6 +90,208 @@
         "flexible": [],
         "avoid": [
           "geass_sigil"
+        ]
+      },
+      "voice": "虚伪的眼泪会伤害他人，虚伪的笑容会伤害自己。鲁路修，你以为你能抛下你的共犯吗？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "反叛的鲁路修",
+        "people": [
+          {
+            "id": "cc_code_geass",
+            "name": "C.C.",
+            "aliases": [
+              "C.C.",
+              "シーツー",
+              "不老不死的魔女",
+              "命运共犯"
+            ],
+            "characterId": "cc_code_geass"
+          },
+          {
+            "id": "lelouch_lamperouge",
+            "name": "鲁路修·兰佩路基",
+            "aliases": [
+              "Lelouch Lamperouge",
+              "ルルーシュ・ランペルージ",
+              "Zero",
+              "黑色皇子",
+              "L.L."
+            ]
+          },
+          {
+            "id": "kururugi_suzaku",
+            "name": "枢木朱雀",
+            "aliases": [
+              "Kururugi Suzaku",
+              "枢木スザク",
+              "白色骑士",
+              "白色死神"
+            ]
+          },
+          {
+            "id": "kouzuki_kallen",
+            "name": "红月卡莲",
+            "aliases": [
+              "Kouzuki Kallen",
+              "紅月カレン",
+              "卡莲·休妲菲尔特"
+            ]
+          },
+          {
+            "id": "nunnally_lamperouge",
+            "name": "娜娜莉·兰佩路基",
+            "aliases": [
+              "Nunnally Lamperouge",
+              "ナナリー・ランペルージ",
+              "娜娜莉"
+            ]
+          },
+          {
+            "id": "charles_zi_britannia",
+            "name": "查尔斯·di·不列颠尼亚",
+            "aliases": [
+              "Charles zi Britannia",
+              "シャルル・ジ・ブリタニア",
+              "不列颠皇帝"
+            ]
+          },
+          {
+            "id": "shirley_fenette",
+            "name": "夏莉·菲内特",
+            "aliases": [
+              "Shirley Fenette",
+              "シャーリー・フェネット"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "cc-lelouch-accomplice",
+            "source": "cc_code_geass",
+            "target": "lelouch_lamperouge",
+            "label": "契约相连的唯一共犯与不朽伴侣",
+            "description": "新宿相遇赋予Geass，C.C.成为鲁路修复仇与弑神路上唯一的避风港与见证者；在经历零之镇魂曲与复活重生后，两人以‘L.L.’与‘C.C.’之名永恒携手漫游星河。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终局 · 复活的鲁路修",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
+              "url": "https://geass.jp/first/world_03_ex.php"
+            }
+          },
+          {
+            "id": "lelouch-suzaku-contradiction",
+            "source": "lelouch_lamperouge",
+            "target": "kururugi_suzaku",
+            "label": "黑白宿敌与托付终局的挚友",
+            "description": "从童年无话不谈的挚友演变为手段完全对立的宿敌，在撕心裂肺的尤菲米娅惨剧后结下血海深仇，最终为了世界和平联手策划并执行‘零之镇魂曲’。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "R2终曲 · 零之镇魂曲",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "kallen-lelouch-ace",
+            "source": "kouzuki_kallen",
+            "target": "lelouch_lamperouge",
+            "label": "最锋利的王牌利剑与未尽的倾慕",
+            "description": "卡莲作为黑色骑士团无可匹敌的红莲王牌，将毕生忠诚与暗恋献给Zero；即便在零之镇魂曲中被迫与鲁路修决战，在洞悉真相后依然默默铭记与泪流成河。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "决战特异点 · 达摩克里斯之战",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
+              "url": "https://geass.jp/first/world_03_ex.php"
+            }
+          },
+          {
+            "id": "cc-kallen-guard",
+            "source": "cc_code_geass",
+            "target": "kouzuki_kallen",
+            "label": "前线护卫与心意心照不宣",
+            "description": "C.C.常作为鲁路修身旁的护卫或替身与卡莲协同作战，两人因鲁路修的存在而有着微妙的情感张力，却在无数次危机中结下互相信赖的战友情谊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "黑色骑士团作战",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "lelouch-nunnally-motive",
+            "source": "lelouch_lamperouge",
+            "target": "nunnally_lamperouge",
+            "label": "颠覆世界的唯一初心与骨肉至亲",
+            "description": "鲁路修所掀起的所有战争与弑神杀戮，最初的起点皆是为了给双目失明、双腿残疾的妹妹娜娜莉创造一个温柔的新世界。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "开篇设定 · 反叛之由",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
+              "url": "https://geass.jp/first/world_03_ex.php"
+            }
+          },
+          {
+            "id": "suzaku-nunnally-knight",
+            "source": "kururugi_suzaku",
+            "target": "nunnally_lamperouge",
+            "label": "誓死护卫的骑士长",
+            "description": "朱雀视娜娜莉为必须用生命守护的圣洁象征，不仅在出任骑士顾问时竭力保护她，在继任Zero之位后更成为娜娜莉新时代最坚强的无影之盾。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "零之镇魂曲后日谈",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "charles-lelouch-patricide",
+            "source": "charles_zi_britannia",
+            "target": "lelouch_lamperouge",
+            "label": "宿命父子与弑神之战",
+            "description": "查尔斯无情将兄妹二人充当质子放逐日本，更企图用阿卡夏之剑消灭人类谎言与个性；鲁路修以‘明天与未来’为名彻底抹杀了查尔斯的意志。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "C之世界 · 弑神",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "charles-cc-past",
+            "source": "charles_zi_britannia",
+            "target": "cc_code_geass",
+            "label": "旧识盟友与破裂的赎罪契约",
+            "description": "查尔斯与玛丽安娜曾答应终结C.C.永生的痛苦，但因其抹杀人性的终极计划而遭到C.C.的彻底背弃与抗拒。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "神根岛遗迹篇",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "shirley-lelouch-tragedy",
+            "source": "shirley_fenette",
+            "target": "lelouch_lamperouge",
+            "label": "纯真救赎与残酷命途",
+            "description": "夏莉深爱着鲁路修，即使在记忆被抹除、父亲因黑色骑士团身亡的极致痛苦下，依然选择宽恕并再次爱上鲁路修，最终不幸沦为罗洛毒手的牺牲品。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "R2第13话 · 刺客之刀",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          }
         ]
       }
     },

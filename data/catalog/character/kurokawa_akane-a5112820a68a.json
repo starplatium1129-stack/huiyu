@@ -32,28 +32,30 @@
         "signature": "蓝紫长发、蓝紫瞳与演剧时的星形瞳孔"
       },
       "personality": [
-        "冷静理性",
-        "演技天才",
-        "钻研狂",
-        "外冷内热",
-        "对自己极狠"
+        "敏锐聪颖",
+        "执着深情",
+        "心理学天才",
+        "容易自毁",
+        "自我献身",
+        "温柔冷静",
+        "神格化演技"
       ],
       "likes": [
-        "研究角色",
-        "舞台剧",
-        "剧本",
-        "咖啡",
-        "把演技打磨到极致"
+        "阿库亚（阿奎亚）",
+        "剧团「Lalalai」",
+        "深入分析角色心理笔记",
+        "舞台剧剧本",
+        "香浓咖啡"
       ],
       "classic_cg": {
-        "title": "东京之刃",
-        "description": "血色布景光中，蓝紫长发的女演员以纱姬之姿提剑而立，瞳孔点亮为璀璨的星形。"
+        "title": "星瞳重生的降灵之瞬",
+        "description": "练习室昏暗的镜前，茜放下分析笔记本，将长发挽起的一刹那，星野爱生前的眼神、笑容与手势如恶魔附体般在镜中复苏，双眸绽放出与爱一模一样的耀眼星芒。"
       },
       "identity": {
-        "role": "天才舞台剧/影视演员",
-        "age": "登场高二 17 岁 · 电影篇 19 岁",
-        "occupation": "演员",
-        "faction": "我推的孩子 · 艺能界"
+        "role": "剧团「Lalalai」王牌演员 / 青年影视女演员",
+        "age": "17岁（登场）至 20岁（完结）",
+        "occupation": "舞台剧与影视演员",
+        "faction": "剧团Lalalai / 艺能界"
       },
       "tags": [
         "蓝紫长发",
@@ -62,7 +64,7 @@
         "眼镜",
         "演员"
       ],
-      "bg_story": "黑川茜是《我推的孩子》中剧团「Lalalai」备受瞩目的演技天才，拥有极其罕见的人物心理洞察力与沉浸式体验派演技，能将剧本角色的一切过往与微表情推演到极致。曾因真人秀风波陷入至暗绝境，被阿库亚救下后重获新生，为了回报阿库亚将推演天赋发挥到极致，甚至能精准复刻星野爱的星眸与举止。在《东京之刃》舞台剧中饰演「纱姬」以惊艳全场的提剑星瞳技惊四座，逐步成长为横跨舞台剧与电影界的实力派大女优。场景应突出清冷知性日常与入戏狂热的极度反差——从日常戴细框眼镜的书店、咖啡馆与阳光厨房，到舞台上光芒万丈的提剑星瞳，蓝紫是她的主色。",
+      "bg_story": "自幼加入顶级演技派剧团“Lalalai”，凭借超凡的努力与人物心理侧写天赋成长为青年演员翘楚。在参加高中生恋综真人秀《现在开始谈恋爱》期间，因性格老实不擅炒作而遭遇节目组恶意剪辑，引发全网恶毒网络暴力与人肉搜索。绝望之下她在暴风雨之夜企图跳天桥自尽，被阿库亚拼死拉回救下。在阿库亚等人的策划下风波平息，茜为了回报阿库亚并找寻其理想型，通过浩瀚资料将已故偶像星野爱的一切神态心理推演重现，震惊众人。在与阿库亚建立恋爱关系后，茜凭借敏锐的洞察力极早看穿了阿库亚接近自己的复仇动机，甚至凭借一己之力推理出了杀害爱的真凶正是神木光。为了阻止阿库亚走上玉石俱焚的复仇绝路，她一度决定背负罪孽亲自刺杀神木光，却被阿库亚强行阻止并斩断情丝分手。在终局《15年的谎言》电影拍摄与复仇决战中，茜始终站在暗处保护阿库亚与露比，并在阿库亚自溺死后痛不欲生，但最终遵从其遗愿坚强回归舞台，成为支撑露比与艺能界的伟大女演员。",
       "palette": [
         "蓝紫",
         "灰",
@@ -73,7 +75,7 @@
         "试镜午后",
         "书店黄昏"
       ],
-      "speech": "黑川茜推了推眼镜打量你——「要来看我的下一场公演吗？」",
+      "speech": "阿库亚……不管你要去往何等黑暗的地狱，我都会陪在你身边。即便要帮你杀人，我也绝不退缩。",
       "source": "Doga Kobo《我推的孩子 / Oshi no Ko》",
       "traits": [
         "kurokawa_akane",
@@ -88,7 +90,133 @@
         "oshi_no_ko"
       ],
       "accent_color": "#8A7CD8",
-      "bg_color": "#14121f"
+      "bg_color": "#14121f",
+      "voice": "阿库亚……不管你要去往何等黑暗的地狱，我都会陪在你身边。即便要帮你杀人，我也绝不退缩。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "我推的孩子",
+        "people": [
+          {
+            "id": "hoshino_ai",
+            "name": "星野爱",
+            "aliases": [
+              "星野アイ",
+              "Hoshino Ai",
+              "B小町中心"
+            ],
+            "characterId": "hoshino_ai"
+          },
+          {
+            "id": "kurokawa_akane",
+            "name": "黑川茜",
+            "aliases": [
+              "黒川あかね",
+              "Kurokawa Akane"
+            ],
+            "characterId": "kurokawa_akane"
+          },
+          {
+            "id": "arima_kana",
+            "name": "有马加奈",
+            "aliases": [
+              "有馬かな",
+              "Arima Kana",
+              "十秒能哭出来的天才童星"
+            ],
+            "characterId": "arima_kana"
+          },
+          {
+            "id": "aqua",
+            "name": "阿库亚",
+            "aliases": [
+              "アクア",
+              "星野爱久爱海",
+              "Aqua"
+            ]
+          },
+          {
+            "id": "ruby",
+            "name": "星野露比",
+            "aliases": [
+              "ルビー",
+              "星野瑠美衣",
+              "Ruby"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "ai-aqua-ruby-mother",
+            "source": "hoshino_ai",
+            "target": "aqua",
+            "label": "谎言偶像与弥留真爱",
+            "description": "在隐婚生子的人生中探寻真爱，在生命的最后时刻抱住阿库亚与露比，终于说出了发自肺腑的‘我爱你们’并非谎言。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "开篇终章 · 门前遇刺",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          },
+          {
+            "id": "akane-aqua-saving-bond",
+            "source": "kurokawa_akane",
+            "target": "aqua",
+            "label": "救赎之恩与共谋复仇",
+            "description": "在网络暴力轻生瞬间被阿库亚救下，凭借神级侧写洞悉星野爱真相与阿库亚复仇心魔，立誓无论坠入何种深渊都全力协助他。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "恋爱真人秀篇 · 舞台剧篇",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          },
+          {
+            "id": "kana-aqua-light",
+            "source": "arima_kana",
+            "target": "aqua",
+            "label": "纯粹爱意与心之白月光",
+            "description": "童星时代被阿库亚演技震撼，重逢后加入新生B小町成为C位偶像，誓言要成为照亮阿库亚黑暗人生的本命星。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "新生B小町篇 · 首演",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          },
+          {
+            "id": "akane-kana-rivalry",
+            "source": "kurokawa_akane",
+            "target": "arima_kana",
+            "label": "宿命对手与演艺共鸣",
+            "description": "从童星时代起互相视为演艺巅峰的较量对手，在《东京Blade》舞台剧与阿库亚的情感归宿上展开激烈交锋。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "舞台剧篇 · 刀剑相向",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          },
+          {
+            "id": "ai-akane-profiling",
+            "source": "kurokawa_akane",
+            "target": "hoshino_ai",
+            "label": "灵魂侧写与人格拟态",
+            "description": "黑川茜通过翻阅海量资料彻底洞悉星野爱的行为模式、眼神与真实伤痛，在真人秀中完美化身为星野爱重现于世。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "恋爱真人秀篇 · 觉醒",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

@@ -31,26 +31,30 @@
         "signature": "粉橘渐变长发、赤红眼眸与红色发筒"
       },
       "personality": [
-        "三无",
-        "安静",
-        "对男主忠诚",
-        "献身",
-        "隐藏的坚强"
+        "空灵纯净",
+        "内敛深情",
+        "无口少言",
+        "舍己忘我",
+        "外柔内刚",
+        "坚定忠诚",
+        "天籁之音"
       ],
       "likes": [
-        "歌唱",
-        "与集的羁绊",
-        "安静的角落"
+        "樱满集",
+        "唱歌（EGOIST乐团）",
+        "翻花绳（Ayatori）",
+        "可爱的机械小宠物飞鸫",
+        "静谧而温暖的阳光"
       ],
       "classic_cg": {
-        "title": "废墟舞台",
-        "description": "被占领的东京废墟中，她立于聚光灯下歌唱，红色歌姬装在末世里格外鲜明。"
+        "title": "王之巨剑的胸口拔出与结晶消逝的终曲",
+        "description": "在废墟顶端的晨光与结晶病毒交织中，祈双手抱胸微仰首，由集胸口拔出流淌着耀眼光芒的巨大空洞巨剑；而在终幕的结晶苍穹下，祈流着泪微笑着递出翻花绳，将生还的光辉留给心爱之人，自身破碎成漫天白芒。"
       },
       "identity": {
-        "role": "网络歌姬 / 葬仪社成员",
-        "age": "约 15 岁（克隆体）",
-        "occupation": "歌手（EGOIST）/ 葬仪社",
-        "faction": "葬仪社（Guilty Crown）"
+        "role": "网络歌姬 / 葬仪社核心成员 / 默示录病毒真名容器",
+        "age": "16-17岁",
+        "occupation": "EGOIST网络主唱 / 葬仪社战士 / 天王洲第一高校学生",
+        "faction": "葬仪社 / 樱满集阵营"
       },
       "tags": [
         "粉发",
@@ -59,7 +63,7 @@
         "红发夹",
         "歌姬"
       ],
-      "bg_story": "楪祈是《罪恶王冠》的女主角，网络歌姬 EGOIST 主唱兼葬仪社成员，也是樱满真名的容器。2039 年的末世东京，歌姬的歌声与虚空之剑并存。场景应偏末世废都、舞台与屋顶。",
+      "bg_story": "反抗组织“葬仪社”核心成员兼超人气网络乐团“EGOIST”主唱，其真实身份是由茎道悠舵等人为了复活默示录病毒始祖天王寺真名而制造的人造人容器。由于被剥夺了自我意识，初期的祈宛如缺乏感情波动的空洞人偶。在执行运送基因组试剂任务时重伤邂逅普通高中生樱满集，集从祈的胸口拔出了象征其心灵本质的璀璨虚空巨剑，自此两人的命运深度纠缠。在葬仪社的战斗与校园生活中，祈逐渐被集的温柔与挣扎唤醒了属于人类的真正情感，甘愿为了守护集付出一切。当集黑化成为饱受世人背叛与痛恨的“暴君”时，唯有祈毫无保留地站在集的身后，甚至不惜被真名意识侵蚀重伤被捕。在最终决战中，集吸收了世界上所有的默示录病毒准备一同赴死；祈在最后一刻将自己编织的红色生命线绳与生的希望留给了集，自己化作漫天纯白结晶消逝在虚空中。多年后，双目失明的集在耳机中倾听着祈的歌声，两人的灵魂在心境深处达成了永不分离的永恒依恋。",
       "palette": [
         "樱粉",
         "歌姬红",
@@ -87,7 +91,213 @@
         "guilty_crown"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "集，即使大家都说你错了，我也绝对会站在你这一边……我这双手，就是为了保护集而存在的。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "罪恶王冠",
+        "people": [
+          {
+            "id": "yuzuriha_inori",
+            "name": "楪祈",
+            "aliases": [
+              "Inori Yuzuriha",
+              "楪いのり",
+              "祈"
+            ],
+            "characterId": "yuzuriha_inori"
+          },
+          {
+            "id": "ouma_shu",
+            "name": "樱满集",
+            "aliases": [
+              "Ouma Shu",
+              "桜満集",
+              "集",
+              "祭祀之王"
+            ]
+          },
+          {
+            "id": "tsutsugami_gai",
+            "name": "恙神涯",
+            "aliases": [
+              "Tsutsugami Gai",
+              "恙神涯",
+              "涯",
+              "特里同"
+            ]
+          },
+          {
+            "id": "shinomiya_ayase",
+            "name": "篠宫绫濑",
+            "aliases": [
+              "Shinomiya Ayase",
+              "篠宮綾瀬",
+              "绫濑"
+            ]
+          },
+          {
+            "id": "tsugumi",
+            "name": "鸫",
+            "aliases": [
+              "Tsugumi",
+              "ツグミ"
+            ]
+          },
+          {
+            "id": "ouma_mana",
+            "name": "樱满真名",
+            "aliases": [
+              "Ouma Mana",
+              "桜満真名",
+              "夏娃",
+              "原初感染者"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "inori-shu-soulmate",
+            "source": "yuzuriha_inori",
+            "target": "ouma_shu",
+            "label": "命运共生与终焉之爱",
+            "description": "集从祈的胸口拔出璀璨的虚空巨剑，两人自此结下超越生死的灵魂羁绊；在集沦为千夫所指的暴君与救世主时，祈始终不离不弃，最终献出自己的双眼与生命丝线换取集的生还。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "最终幕 · 终焉结晶",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方人物设定",
+              "url": "https://guilty-crown.jp/character/"
+            }
+          },
+          {
+            "id": "shu-inori-void",
+            "source": "ouma_shu",
+            "target": "yuzuriha_inori",
+            "label": "虚空共鸣与心灵救赎",
+            "description": "初次相遇时集被祈的歌声与虚空巨剑所震撼，由此觉醒‘王之能力’；祈的心灵与歌声成为集迷茫与黑化时唯一的救赎灯塔。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "开篇 · 崩坏的邂逅",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方故事档案",
+              "url": "https://guilty-crown.jp/story/"
+            }
+          },
+          {
+            "id": "inori-gai-subordinate",
+            "source": "yuzuriha_inori",
+            "target": "tsutsugami_gai",
+            "label": "绝对服从与收留之恩",
+            "description": "祈曾视涯为赋予自己生存意义与名字的首领，毫无保留地服从涯的战斗指令；随着与集的相处，祈逐渐分清了对涯的敬仰与对集的深爱。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "前期 · 葬仪社行动",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方人物设定",
+              "url": "https://guilty-crown.jp/character/"
+            }
+          },
+          {
+            "id": "shu-gai-rivalry",
+            "source": "ouma_shu",
+            "target": "tsutsugami_gai",
+            "label": "光暗交织与宿命对决",
+            "description": "涯既是引领集走出怯懦、成为合格战士的人生导师与憧憬对象，也是集与真名、祈命运纠缠中的最大对手；两人最终在结晶王座前完成终极决斗与释怀托付。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终局 · 复活与决战",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方故事档案",
+              "url": "https://guilty-crown.jp/story/"
+            }
+          },
+          {
+            "id": "inori-mana-clone",
+            "source": "yuzuriha_inori",
+            "target": "ouma_mana",
+            "label": "人造容器与基因原型",
+            "description": "祈是由茎道悠舵等人为了复活默示录始祖真名而制造的人造人容器；在故事后期，祈险些被觉醒的真名意识彻底吞噬抹杀自我。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "崩坏篇 · 失落圣诞之谜",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方用语解说",
+              "url": "https://guilty-crown.jp/keyword/"
+            }
+          },
+          {
+            "id": "gai-mana-obsession",
+            "source": "tsutsugami_gai",
+            "target": "ouma_mana",
+            "label": "毕生执念与骑士之誓",
+            "description": "涯童年时被真名从实验所救出并唤醒，自此将‘将真名从默示录病毒诅咒中拯救与解脱’立为终生唯一的战斗执念，甚至不惜成为恶魔与世界为敌。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "终局决战 · 赎罪的安魂曲",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方故事档案",
+              "url": "https://guilty-crown.jp/story/"
+            }
+          },
+          {
+            "id": "ayase-gai-admiration",
+            "source": "shinomiya_ayase",
+            "target": "tsutsugami_gai",
+            "label": "默默仰慕与忠诚部下",
+            "description": "身为轮椅少女的绫濑在涯的肯定下重拾做战士的尊严，内心深处极度仰慕并暗恋涯，为守护涯的葬仪社理想战斗在第一线。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通设定 · 葬仪社",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方人物设定",
+              "url": "https://guilty-crown.jp/character/"
+            }
+          },
+          {
+            "id": "ayase-shu-trust",
+            "source": "shinomiya_ayase",
+            "target": "ouma_shu",
+            "label": "生死相托与并肩战友",
+            "description": "集曾化作绫濑的义足协助她操作Endlave击败强敌，绫濑在集最孤立无援的黑化时期依旧给予他战士层面的认可与支持。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学园封锁篇 · 战友之誓",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方故事档案",
+              "url": "https://guilty-crown.jp/story/"
+            }
+          },
+          {
+            "id": "tsugumi-ayase-bestfriends",
+            "source": "tsugumi",
+            "target": "shinomiya_ayase",
+            "label": "挚友闺蜜与最佳搭档",
+            "description": "葬仪社中年龄最相仿的两位少女，鸫在后方为绫濑提供天衣无缝的雷达侦察与操作支持，日常中更是无话不谈的亲密姐妹。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常与作战",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方人物设定",
+              "url": "https://guilty-crown.jp/character/"
+            }
+          },
+          {
+            "id": "tsugumi-inori-care",
+            "source": "tsugumi",
+            "target": "yuzuriha_inori",
+            "label": "同伴关照与网络粉丝",
+            "description": "作为葬仪社网络骇客，鸫既是EGOIST主唱祈的头号狂热听众，也在日常起居中像体贴妹妹一样关照感情木讷的祈。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "葬仪社日常",
+            "evidence": {
+              "title": "Production I.G · 《Guilty Crown》官方人物设定",
+              "url": "https://guilty-crown.jp/character/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "yuzuriha_inori",

@@ -31,27 +31,30 @@
         "signature": "浅蓝长发双辫、蓝眼与尖顶魔女帽"
       },
       "personality": [
-        "内向认真",
-        "努力型",
-        "温柔端庄",
-        "天然呆",
-        "对魔法执着"
+        "认真成熟",
+        "坚毅自立",
+        "偶尔迷糊天然",
+        "外冷内热",
+        "缺乏自尊（对身材年龄）",
+        "极度包容",
+        "深情忠贞"
       ],
       "likes": [
-        "魔法研究",
-        "读书",
-        "独处",
-        "学生（和鲁迪）"
+        "鲁迪乌斯·格雷拉特",
+        "研究高深水系与综合魔法",
+        "甜味酒与各地特色料理",
+        "拉诺亚魔法大学图书馆",
+        "家庭温暖与陪伴孩子"
       ],
       "classic_cg": {
-        "title": "学院图书馆",
-        "description": "魔法学院的图书馆，她在书架间查找典籍，蓝色魔女帽、白色褶边上衣与蓝裙是熟悉的风景。"
+        "title": "牵手走出家门的晴空与迷宫深处的获救",
+        "description": "在布耶纳村微风吹拂的青绿麦田前，头戴宽大三角魔女帽的娇小少女拉住瑟缩男童的手，将他引向阳光洒满的大千世界；而在幽暗绝望的转生迷宫底层，魔石回廊的火光中，她含泪望向如天神般降临斩碎魔物的青年。"
       },
       "identity": {
-        "role": "魔导师（水圣级）",
-        "age": "长寿的米格路德族，已成年",
-        "occupation": "魔导师 / 教师",
-        "faction": "米格路德族；与格雷拉特家关系密切"
+        "role": "鲁迪乌斯的魔法启蒙恩师 / 次席妻子 / 水王级魔术师",
+        "age": "初登场37-44岁 / 完结时过百岁（米格路达族寿命长达两百岁）",
+        "occupation": "冒险者（原S级） / 拉诺亚魔法大学教授 / 宫廷魔术师",
+        "faction": "格雷拉特家族 / 拉诺亚魔法大学"
       },
       "tags": [
         "浅蓝发",
@@ -60,7 +63,7 @@
         "魔女帽",
         "白色褶边上衣与蓝裙"
       ],
-      "bg_story": "洛琪希是《无职转生》中主角的魔法启蒙导师，来自米格路德族。浅蓝长发双辫、蓝眼、蓝色魔女帽与白色褶边上衣配蓝裙是她的标志。场景应偏魔法学院、荒野旅行与故乡村落。",
+      "bg_story": "魔大陆米格路达族的纯血魔族，由于天生不具备族群通用的心灵念话感应，自幼在故乡村落备受排挤与孤独。为了见证广阔的世界，她少小离家远渡重洋成为冒险者，历经磨砺考入拉诺亚魔法大学深造，终成水王级大魔术师。受保罗雇佣担任年幼鲁迪乌斯的家庭魔术教师，不仅倾囊相授高阶咏唱技巧，更在察觉到鲁迪前世封闭自卑的心理阴影时，温柔地牵起幼童的手带他骑马迈向村外大道，打破了困扰鲁迪一生的茧壳，被鲁迪终生奉为拯救人生的“神明”。在大转移天灾发生后，洛琪希四处奔走打听鲁迪家眷，却在贝卡利特大陆转生迷宫深层受困濒死，于危急关头被千里驰援的鲁迪在魔物獠牙下解救。在保罗战死、鲁迪精神濒临彻底崩溃时，洛琪希以毫无保留的身心拥抱将心爱之人从自毁深渊中拉回，两人正式结为夫妻。战后她任职拉诺亚魔法大学教授，孕育儿女并作为最坚实后盾协助鲁迪对抗龙神与人神的倾轧。直至鲁迪安详寿终正寝的床榻前，洛琪希始终深情守护在侧，圆满走完了漫长温暖的一生。",
       "palette": [
         "水蓝",
         "魔女深蓝",
@@ -88,7 +91,207 @@
       ],
       "accent_color": "#38bdf8",
       "bg_color": "#0f172a",
-      "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》"
+      "series": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
+      "voice": "外面的世界很大，没有你想象中那么可怕……鲁迪，不管何时，老师都会在这里一直注视着你。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "无职转生",
+        "people": [
+          {
+            "id": "roxy_migurdia",
+            "name": "洛琪希",
+            "aliases": [
+              "Roxy Migurdia",
+              "ロキシー・ミグルディア",
+              "洛琪希·米格路迪亚",
+              "水王级魔术师",
+              "鲁迪的神明"
+            ],
+            "characterId": "roxy_migurdia"
+          },
+          {
+            "id": "sylphiette",
+            "name": "希露菲叶特",
+            "aliases": [
+              "Sylphiette",
+              "Sylphie",
+              "シルフィエット",
+              "希露菲",
+              "菲兹"
+            ],
+            "characterId": "sylphiette"
+          },
+          {
+            "id": "eris_greyrat",
+            "name": "艾莉丝",
+            "aliases": [
+              "Eris Greyrat",
+              "艾莉丝·伯雷亚斯·格雷拉特",
+              "狂犬",
+              "剑王"
+            ],
+            "characterId": "eris_greyrat"
+          },
+          {
+            "id": "aisha_greyrat",
+            "name": "爱夏·格雷拉特",
+            "aliases": [
+              "Aisha Greyrat",
+              "Aisha",
+              "アイシャ・グレイラット",
+              "爱夏",
+              "爱夏·格雷拉特",
+              "格雷拉特首席管家"
+            ],
+            "characterId": "aisha_greyrat"
+          },
+          {
+            "id": "rudeus_greyrat",
+            "name": "鲁迪乌斯·格雷拉特",
+            "aliases": [
+              "Rudeus Greyrat",
+              "ルーデウス・グレイラット",
+              "鲁迪",
+              "泥沼",
+              "龙神右腕"
+            ]
+          },
+          {
+            "id": "paul_greyrat",
+            "name": "保罗·格雷拉特",
+            "aliases": [
+              "Paul Greyrat",
+              "パウロ・グレイラット",
+              "黑狼之牙队长",
+              "保罗"
+            ]
+          },
+          {
+            "id": "norn_greyrat",
+            "name": "诺伦·格雷拉特",
+            "aliases": [
+              "Norn Greyrat",
+              "ノルン・グレイラット",
+              "诺伦",
+              "学生会长"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "rudeus_greyrat-roxy_migurdia-mentor_goddess_and_wife",
+            "source": "rudeus_greyrat",
+            "target": "roxy_migurdia",
+            "label": "恩师神明与次席妻子",
+            "description": "洛琪希温柔牵起幼年鲁迪的手走出家门打破前世自闭心魔，被鲁迪奉为毕生神明；转生迷宫被救后在保罗战死之夜以身心救赎崩溃的鲁迪，两人结为夫妻相伴终老。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "童年布耶纳村 / 贝卡利特大陆转生迷宫篇",
+            "evidence": {
+              "title": "角川MF Books《无职转生》原作特设",
+              "url": "https://mfbooks.jp/special/roxy/index.html"
+            }
+          },
+          {
+            "id": "rudeus_greyrat-sylphiette-childhood_and_first_wife",
+            "source": "rudeus_greyrat",
+            "target": "sylphiette",
+            "label": "青梅竹马与贤惠正妻",
+            "description": "自幼被鲁迪拯救摆脱霸凌并修习无咏唱魔法，大转移后以‘菲兹’身份与鲁迪重逢并治愈其心疾结为正妻；以博大胸襟包容洛琪希与艾莉丝进门维系家庭和睦。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "拉诺亚魔法大学重逢 / 新婚篇",
+            "evidence": {
+              "title": "《无职转生》动画官方网站",
+              "url": "https://mushokutensei.jp/"
+            }
+          },
+          {
+            "id": "rudeus_greyrat-eris_greyrat-demon_continent_and_sword_king",
+            "source": "rudeus_greyrat",
+            "target": "eris_greyrat",
+            "label": "共度魔大陆之险与狂犬剑王之诺",
+            "description": "大转移后历经数年魔大陆返乡艰辛，深感自身弱小无法保护鲁迪而远赴剑之圣地苦修获得剑王之名，在龙神决战飞身救下鲁迪化解误会结为第三位妻子。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "魔大陆归途 / 龙神对决下半部",
+            "evidence": {
+              "title": "《无职转生》动画官方角色介绍",
+              "url": "https://mushokutensei.jp/character/"
+            }
+          },
+          {
+            "id": "rudeus_greyrat-aisha_greyrat-brother_and_genius_steward",
+            "source": "rudeus_greyrat",
+            "target": "aisha_greyrat",
+            "label": "兄妹亲情与绝顶智谋的家族大管家",
+            "description": "自西隆王国被救后视鲁迪为最崇敬的兄长，凭借惊世绝顶的才华放弃求学甘当格雷拉特宅邸大管家与佣兵团智囊，全方位统筹家族一切后勤事务。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "西隆王国营救 / 格雷拉特宅邸建立",
+            "evidence": {
+              "title": "《无职转生》动画官方网站",
+              "url": "https://mushokutensei.jp/"
+            }
+          },
+          {
+            "id": "rudeus_greyrat-paul_greyrat-father_and_son_sacrifice",
+            "source": "rudeus_greyrat",
+            "target": "paul_greyrat",
+            "label": "笨拙父子从误会隔阂到舍命托付",
+            "description": "曾因大转移后各自重压在米里斯神圣国大打出手发生父子隔阂，后在酒馆痛哭言和；迷宫决战中保罗在多头九头蛇猛攻下舍身推开鲁迪被斩为两截壮烈牺牲。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "米里斯酒馆和解 / 贝卡利特转生迷宫决战",
+            "evidence": {
+              "title": "《无职转生》动画官方网站",
+              "url": "https://mushokutensei.jp/"
+            }
+          },
+          {
+            "id": "aisha_greyrat-norn_greyrat-half_sisters_reconciliation",
+            "source": "aisha_greyrat",
+            "target": "norn_greyrat",
+            "label": "同父异母的双生对比与手足释怀",
+            "description": "同一天出生的同父异母姐妹，爱夏全知全能的耀眼才华曾让资质平庸的诺伦深感自卑压抑，后在魔法大学共同生活与家庭危机中冰释前嫌互相照拂。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "拉诺亚魔法大学同窗 / 格雷拉特家日常",
+            "evidence": {
+              "title": "角川MF Books《无职转生》官方特设",
+              "url": "https://mfbooks.jp/special/roxy/index.html"
+            }
+          },
+          {
+            "id": "sylphiette-roxy_migurdia-wives_harmony",
+            "source": "sylphiette",
+            "target": "roxy_migurdia",
+            "label": "师徒传承与同甘共苦的妻室",
+            "description": "鲁迪所掌握的魔法多源自洛琪希传授，再由鲁迪教给希露菲；两人在格雷拉特家共同执掌内闱相亲相爱，面对人神阴谋与家族战事同甘共苦。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "夏莉亚大宅邸同居生活",
+            "evidence": {
+              "title": "《无职转生》动画官方网站",
+              "url": "https://mushokutensei.jp/"
+            }
+          },
+          {
+            "id": "eris_greyrat-roxy_migurdia-idol_and_family_bastion",
+            "source": "eris_greyrat",
+            "target": "roxy_migurdia",
+            "label": "崇敬神像与家庭双柱",
+            "description": "艾莉丝自魔大陆起就将鲁迪虔诚随身携带的洛琪希木雕视为神圣图腾，重聚进门后对洛琪希敬重有加，一武一法构成守护鲁迪一生的坚不可摧堡垒。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "格雷拉特家庭共同守卫期",
+            "evidence": {
+              "title": "《无职转生》动画官方网站",
+              "url": "https://mushokutensei.jp/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

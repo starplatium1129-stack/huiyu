@@ -28,32 +28,42 @@
         "style": "anime"
       },
       "personality": [
-        "自信爽朗，对武艺训练认真自律",
-        "活泼表情之外，也郑重对待家族传承",
-        "在料理与节日中表现出亲切自然的一面"
+        "明艳爽朗",
+        "热情专一",
+        "自律严谨",
+        "豪放表象下的大和抚子",
+        "极富家庭责任感",
+        "正义好胜"
       ],
       "likes": [
-        "折扇练习",
-        "家常料理",
-        "传统节庆"
+        "安迪·博加德",
+        "制作爱心特大便当与杂煮",
+        "修习传统茶道与花道",
+        "不知火流舞扇练习",
+        "与女性格斗家同伴聚会"
       ],
       "classic_cg": {
         "title": "不知火舞 · 道场晨训的扇舞",
-        "description": "清晨道场，不知火舞穿着系好的红色训练上衣与白色长裤，完成一遍受控扇舞后利落合扇。高马尾随着收势轻摆，脚步站稳，画面没有对手或火焰。"
+        "description": "红莲烈焰在格斗擂台四周冲天而起，不知火舞在半空中完成一记凌厉优美的飞鼠之舞落地，高马尾轻盈拂动，折扇啪地一声潇洒收拢掩住红唇，琥珀明眸巧笑嫣然：“日本第一！”"
       },
-      "identity": "Fatal Fury · 不知火舞",
+      "identity": {
+        "role": "不知火流忍术宗师继承人 / 女性格斗家队核心",
+        "age": "青年（格斗家常青盛期）",
+        "occupation": "现代女忍者 / 职业格斗家",
+        "faction": "不知火流道场 / 女性格斗家队"
+      },
       "tags": [
         "不知火舞",
         "饿狼传说／拳皇",
         "日常"
       ],
-      "bg_story": "不知火流的继承者，动作利落，也珍视家庭手艺与对身边人的照顾。高马尾和折扇是识别点，本批采用完整训练服、围裙便装与浴衣。",
+      "bg_story": "不知火舞是不知火流忍术正统继承人，已故宗师不知火半藏的亲生孙女。她自幼在森严严格的家族道场中经受残酷训练，凭借超凡的武学悟性全面继承了不知火流体术精粹，精熟于操纵超必杀忍蜂、红莲阳炎以及变化莫测的蝶之舞折扇术。当美国青年格斗家安迪·博加德前来日本拜入门下修行时，性格爽朗奔放的舞对这位沉默坚毅的异国武者一见钟情，自此拉开了数十年热烈倒追的经典序幕。祖父仙逝后，作为当代掌门人的舞义无反顾踏出道场，追随安迪的步伐投身南镇风云，与特瑞、安迪并肩血战吉斯·霍华德与克劳萨等黑帮霸主。在世界格斗大赛“The King of Fighters”创办后，她屡次与琼、坂崎百合、神乐千鹤组建所向披靡的“女性格斗家队”，在历次挫败大蛇一族封印危机、音巢组织改造人狂潮、遥远彼之地灭世阴谋乃至瞬影时空异变的浩大主线中屡建奇功。尽管擂台上她总是身穿大胆性感的朱红深V忍装震撼全场，但私下里却是一位极尽贤淑、茶艺厨艺双绝的传统大和抚子，执着而幸福地守护着心上人与不知火流的传承门楣。",
       "palette": [
         "#cf9f94",
         "#282532"
       ],
       "source": "Fatal Fury",
-      "speech": "练习结束，接下来该准备便当了。",
+      "speech": "「不知火流忍术可不是光用来看的花架子！接招吧——安迪，今晚的便当我也准备好了哦！」",
       "traits": [
         "shiranui_mai",
         "fatal_fury",
@@ -62,7 +72,93 @@
         "ponytail"
       ],
       "accent_color": "#cf9f94",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "「不知火流忍术可不是光用来看的花架子！接招吧——安迪，今晚的便当我也准备好了哦！」",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "饿狼传说",
+        "people": [
+          {
+            "id": "shiranui_mai",
+            "name": "不知火舞",
+            "aliases": [
+              "不知火舞",
+              "Shiranui Mai",
+              "不知火流忍术当家女忍"
+            ],
+            "characterId": "shiranui_mai"
+          },
+          {
+            "id": "andy_bogard",
+            "name": "安迪·博加德",
+            "aliases": [
+              "アンディ・ボガード",
+              "Andy Bogard"
+            ]
+          },
+          {
+            "id": "terry_bogard",
+            "name": "特瑞·博加德",
+            "aliases": [
+              "テリー・ボガード",
+              "Terry Bogard",
+              "传说之狼"
+            ]
+          },
+          {
+            "id": "geese_howard",
+            "name": "吉斯·霍华德",
+            "aliases": [
+              "ギース・ハワード",
+              "Geese Howard"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "mai-andy-fiancee",
+            "source": "shiranui_mai",
+            "target": "andy_bogard",
+            "label": "直球逼婚与害羞忍者",
+            "description": "舞在祖父不知火半藏门下对前来学艺的安迪一见钟情，多年来在格斗赛场与日常中身穿婚纱高调逼婚，安迪虽然羞赧退缩但心意早已相系。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 不知火流忍术传人",
+            "evidence": {
+              "title": "SNK · 《饿狼传说：群狼之城》官方主页",
+              "url": "https://www.snk-corp.co.jp/official/fatalfury-cotw/"
+            }
+          },
+          {
+            "id": "mai-terry-brother-in-law",
+            "source": "shiranui_mai",
+            "target": "terry_bogard",
+            "label": "大伯哥与格斗同盟",
+            "description": "舞称呼特瑞为‘义兄/特瑞大哥’，在南镇对抗吉斯与克劳萨的历次KOF大赛中与博加德兄弟组成坚不可摧的格斗正义同盟。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "格斗家同盟 · 南镇保卫战",
+            "evidence": {
+              "title": "SNK · 《饿狼传说：群狼之城》官方主页",
+              "url": "https://www.snk-corp.co.jp/official/fatalfury-cotw/"
+            }
+          },
+          {
+            "id": "andy-geese-blood-feud",
+            "source": "andy_bogard",
+            "target": "geese_howard",
+            "label": "杀父血仇与吉斯塔决战",
+            "description": "吉斯残暴杀死养父杰夫·博加德，安迪与特瑞历经十年血泪修行重返南镇，在吉斯塔顶完成为父雪恨的命运宿命终战。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "终局决战 · 吉斯塔之战",
+            "evidence": {
+              "title": "SNK · 《饿狼传说：群狼之城》官方主页",
+              "url": "https://www.snk-corp.co.jp/official/fatalfury-cotw/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "shiranui_mai",

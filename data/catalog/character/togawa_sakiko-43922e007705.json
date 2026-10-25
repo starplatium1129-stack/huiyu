@@ -28,32 +28,42 @@
         "style": "anime"
       },
       "personality": [
-        "重视礼节与体面，对音乐抱有强烈决心",
-        "承受压力时倾向于独自维持秩序，不轻易示弱",
-        "练琴时专注细致，微小进步也能让紧绷神态短暂放松"
+        "自尊心极强",
+        "高傲决绝",
+        "才华横溢",
+        "内心脆弱撕裂",
+        "责任感扭曲",
+        "极具统率魄力"
       ],
       "likes": [
-        "钢琴与键盘",
-        "推敲曲谱",
-        "安静聆听乐团演出"
+        "弹奏古典钢琴与键盘",
+        "严谨推敲乐谱与编曲",
+        "红茶与古典音乐黑胶",
+        "按计划高效完成工作",
+        "深夜独自一人的宁静"
       ],
       "classic_cg": {
-        "title": "丰川祥子 · 月之森音乐祭的憧憬",
-        "description": "初三的她在月之森音乐祭观众席仰望 Morfonica 的舞台，琥珀色的眼睛被舞台灯光点亮；「我也要组乐队」——一切开始的瞬间。"
+        "title": "撕碎春日的破晓黑蝶",
+        "description": "在 Ave Mujica 幽暗瑰丽的哥特式舞台中央，身披羽翼与金属假面的祥子端坐于双排琴前，十指在琴键上暴风雨般飞驰倾泻出绝望而狂乱的音符，面具边缘渗出的泪水在刺目聚光灯下闪烁如刀锋。"
       },
-      "identity": "BanG Dream! · 丰川祥子",
+      "identity": {
+        "role": "Ave Mujica 领队兼键盘手（Oblivionis） / 原 CRYCHIC 创立者兼键盘手",
+        "age": "高中一年级（约16岁）",
+        "occupation": "高中生 / 乐团统帅兼键盘手 / 电话客服兼职者",
+        "faction": "羽丘女子学园 / Ave Mujica / 原月之森女子学园"
+      },
       "tags": [
         "丰川祥子",
         "BanG Dream!／少女乐团派对",
         "日常"
       ],
-      "bg_story": "把音乐看得十分认真的键盘手，在端正外表下承受着生活与创作的压力。蓝发双侧发束、发带与金色眼睛为识别点，本批关注学习、工作和乐团练习。",
+      "bg_story": "丰川祥子曾是就读于贵族私立月之森女子学园的名门千金，自幼在豪华宅邸接受精英教育，拥有极为高超的古典钢琴造诣与过人的音乐才华。初中三年级时，被 Morfonica 演出深深打动的她创立了乐队“CRYCHIC”，汇聚了高松灯、若叶睦、长崎爽世与椎名立希，并为灯写下的文字谱写了饱含希望的成名作《春日影》。然而一场突如其来的家族变故彻底击碎了她的人生——父亲投资破产身败名裂、父母离异，曾经锦衣玉食的大小姐瞬间沦落至极度贫困，不得不转学至平民公立羽丘女子学园，在逼仄发霉的狭小出租屋里照料沉迷酗酒的父亲，深夜靠着客服热线兼职打工苦苦维持生计。为了捍卫最后仅存的病态自尊，无法接受同伴怜悯的祥子在暴雨中冷酷斩断羁绊退出乐队，导致 CRYCHIC 骤然分崩离析。当她后来在 Livehouse 偶然撞见重生的 MyGO!!!!! 演奏《春日影》时，她最后的心理防线彻底崩塌，带着撕心裂肺的屈辱仓皇逃离。为了彻底向残酷命运复仇并夺回被剥夺的一切，祥子戴上假面化身“Oblivionis”，以纯粹残酷的商业逻辑组建了假面重型乐队“Ave Mujica”。在最新主线中，她白天是强撑体面兼职维生的穷困高中生，夜晚则是君临舞台掌控一切的暗夜统帅，在愧疚、傲骨与对成功的无尽饥渴中疯狂前行。",
       "palette": [
         "#9facd1",
         "#282532"
       ],
       "source": "BanG Dream!",
-      "speech": "这一小节，再从头练一次。",
+      "speech": "「祝贺你们能够得偿所愿。但是……我必须把这副假面戴到底。为了夺回属于我的一切，我已经没有退路了。」",
       "traits": [
         "togawa_sakiko",
         "bang_dream!",
@@ -62,7 +72,95 @@
         "hair_ribbon"
       ],
       "accent_color": "#9facd1",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "「祝贺你们能够得偿所愿。但是……我必须把这副假面戴到底。为了夺回属于我的一切，我已经没有退路了。」",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "BanG Dream!",
+        "people": [
+          {
+            "id": "togawa_sakiko",
+            "name": "丰川祥子",
+            "aliases": [
+              "豊川祥子",
+              "Togawa Sakiko",
+              "祥子大人",
+              "Oblivionis"
+            ],
+            "characterId": "togawa_sakiko"
+          },
+          {
+            "id": "takamatsu_tomori",
+            "name": "高松灯",
+            "aliases": [
+              "高松燈",
+              "Takamatsu Tomori"
+            ]
+          },
+          {
+            "id": "wakaba_mutsumi",
+            "name": "若叶睦",
+            "aliases": [
+              "若葉睦",
+              "Wakaba Mutsumi",
+              "Mortis"
+            ]
+          },
+          {
+            "id": "sankaku_uika",
+            "name": "三角初华",
+            "aliases": [
+              "三角初華",
+              "Sankaku Uika",
+              "Timoris"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "sakiko-tomori-crychic-breakup",
+            "source": "togawa_sakiko",
+            "target": "takamatsu_tomori",
+            "label": "创设救赎与雨中决绝退队",
+            "description": "祥子一手发掘并将自闭阴郁的灯拉入阳光创立CRYCHIC，但在家庭突遭灭顶剧变后在雨中排练室决绝离去，成为灯无法抚平的巨大心结。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "CRYCHIC崩解 · 开篇序幕",
+            "evidence": {
+              "title": "武士道 · 《BanG Dream! It's MyGO!!!!!》官方网站",
+              "url": "https://anime.bang-dream.com/mygo/"
+            }
+          },
+          {
+            "id": "sakiko-mutsumi-childhood-puppet",
+            "source": "togawa_sakiko",
+            "target": "wakaba_mutsumi",
+            "label": "发小默从与沉重的人偶枷锁",
+            "description": "富家千金时代的青梅竹马，睦目睹祥子家道中落后的残酷挣扎，甘愿顺从祥子组建Ave Mujica扮演没有感情的木偶吉他手。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Ave Mujica创立篇",
+            "evidence": {
+              "title": "武士道 · 《BanG Dream! It's MyGO!!!!!》官方网站",
+              "url": "https://anime.bang-dream.com/mygo/"
+            }
+          },
+          {
+            "id": "sakiko-uika-rebuilding",
+            "source": "togawa_sakiko",
+            "target": "sankaku_uika",
+            "label": "星空誓约与商业化假面乐队",
+            "description": "祥子在走投无路时找上已成为顶流偶像的初华，凭借过去的星空看星回忆拉拢其戴上假面化身吉他手兼主唱，开启Ave Mujica逆袭风暴。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第一季终章 · 假面降临",
+            "evidence": {
+              "title": "武士道 · 《BanG Dream! It's MyGO!!!!!》官方网站",
+              "url": "https://anime.bang-dream.com/mygo/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "togawa_sakiko",

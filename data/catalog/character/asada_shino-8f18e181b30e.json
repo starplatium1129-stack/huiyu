@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "谨慎内敛，习惯先观察再作回应",
-        "遇到困难愿意磨练自己，逐渐建立信任",
-        "现实生活与游戏中的表现不同，但都重视专注与可靠"
+        "沉着冷静",
+        "坚毅顽强",
+        "自尊自强",
+        "现实中内秀内敛",
+        "重情重义",
+        "战术决断极度敏锐",
+        "直面创伤的勇气"
       ],
       "likes": [
-        "安静阅读",
-        "了解游戏资讯",
-        "整理自己的生活空间"
+        "大型反器材狙击步枪黑卡蒂II",
+        "弹道线锁定目标瞬间的绝对寂静",
+        "军事历史与纪实读物",
+        "雨后独自漫步东京街头",
+        "与桐人和伙伴们相聚的时光"
       ],
       "classic_cg": {
-        "title": "朝田诗乃 · 图书馆的角落",
-        "description": "现实中的图书馆，她坐在最里面的座位读军事纪实，眼镜稍稍滑下；窗外下雨，她伸手把书页上的光挡住一点——安静的下午是她的充电器。"
+        "title": "风沙荒野上的绝命一击",
+        "description": "GGO炽热狂风呼啸的废墟巨岩后，浅蓝短发少女单眼紧贴黑卡蒂II的瞄准镜，幽蓝弹道线贯穿沙暴直指死枪核心，扣动扳机的瞬间，枪火撕裂苍穹打破了多年心魔。"
       },
-      "identity": "Sword Art Online · 朝田诗乃",
+      "identity": {
+        "role": "幽灵子弹篇女主角 / GGO顶尖王牌狙击手 / 战胜心魔的坚韧战士",
+        "age": "16岁（GGO登场）→ 18岁（UR篇）",
+        "occupation": "东京都立总武台高中学生 / GGO与ALO资深顶级玩家",
+        "faction": "GGO顶级狙击手 / 桐人同伴阵营 / 太阳神索鲁斯操作者"
+      },
       "tags": [
         "朝田诗乃",
         "刀剑神域",
         "日常"
       ],
-      "bg_story": "现实中安静爱读书的少女，在虚拟世界以Sinon之名活动。本批采用现实形态，灰棕发与眼镜和GGO冰蓝发、ALO猫耳严格分开，围巾与读物连接两个世界的记忆。",
+      "bg_story": "东京都立总武台高中的女高中生，现实中因幼年遭遇邮局劫案、为保护母亲被迫抢枪击杀劫匪，留下了极其严重的“枪械恐惧症/PTSD”，在现实中只要目睹枪械形状甚至玩具就会引发剧烈呕吐与晕厥。为了以毒攻毒战胜心魔，诗乃进入崇尚枪械与杀戮的硬派VRMMO游戏《Gun Gale Online》（GGO），换上代号“Sinon（诗乃）”，凭借稀有大型反器材狙击步枪“黑卡蒂II”磨练出登峰造极的狙击绝技，成为名震全服的“冰之狙击手”。在第三届BoB大赛中，她邂逅了化身女性虚拟形象潜入调查的桐人（桐谷和人）。两人从最初的误会、对立演变为并肩作战的生死同盟；在面对“死枪”连环夺命杀手的绝境中，诗乃被桐人唤醒斗志，领悟到逃避无法抹除罪愆，唯有背负生命之重继续前行。大赛落幕后，桐人安排诗乃与当年邮局被救女职员及其孩子重逢，诗乃得知自己的开枪拯救了两条无辜生命，沉积多年的创伤终被阳光化解。在随后《Alicization》篇中，诗乃使用超级账号“太阳神索鲁斯”降临UW战场，以无限飞行神技狙击强敌力挽狂澜；在最新的《Unital Ring》篇中，她作为桐人现实与虚拟世界不可动摇的生死挚友与战友，持续活跃在虚拟与现实的交界线上。",
       "palette": [
         "#9bb8c6",
         "#282532"
@@ -62,7 +73,196 @@
         "brown_eyes"
       ],
       "accent_color": "#9bb8c6",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "这一枪的重量，既是拯救也是罪愆……我已经不会再逃避了，黑卡蒂，我们要一起走下去！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "刀剑神域",
+        "people": [
+          {
+            "id": "asuna_yuuki",
+            "name": "结城明日奈",
+            "aliases": [
+              "Asuna Yuuki",
+              "亚丝娜",
+              "闪光亚丝娜",
+              "血盟骑士团副团长",
+              "创世神史提西亚"
+            ],
+            "characterId": "asuna_yuuki"
+          },
+          {
+            "id": "asada_shino",
+            "name": "朝田诗乃",
+            "aliases": [
+              "朝田诗乃",
+              "Shino Asada",
+              "Sinon",
+              "冰之狙击手",
+              "太阳神索鲁斯"
+            ],
+            "characterId": "asada_shino"
+          },
+          {
+            "id": "kirito",
+            "name": "桐人",
+            "aliases": [
+              "Kirito",
+              "桐谷和人",
+              "Kirigaya Kazuto",
+              "黑衣剑士",
+              "双剑士",
+              "星王"
+            ]
+          },
+          {
+            "id": "alice_sao",
+            "name": "爱丽丝·辛赛西斯·萨蒂",
+            "aliases": [
+              "Alice Synthesis Thirty",
+              "爱丽丝",
+              "金木犀整合骑士",
+              "Alice Zuberg"
+            ]
+          },
+          {
+            "id": "leafa",
+            "name": "莉法",
+            "aliases": [
+              "Leafa",
+              "桐谷直叶",
+              "Kirigaya Suguha",
+              "风精灵领主助理",
+              "地神提拉利亚"
+            ]
+          },
+          {
+            "id": "yui",
+            "name": "结衣",
+            "aliases": [
+              "Yui",
+              "结衣",
+              "MHCP-0001",
+              "心之咨询程序",
+              "桐人与亚丝娜的女儿"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kirito-asuna_yuuki-transcendent_love_and_two_centuries",
+            "source": "kirito",
+            "target": "asuna_yuuki",
+            "label": "超越虚实的神仙眷侣与生死挚爱",
+            "description": "SAO第22层木屋结为夫妻，75层舍身替桐人挡剑打破系统死则；现实中相濡以沫，UW大战中亚丝娜以神之号降临并留在极限加速世界相伴桐人度过两百年时光。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "SAO攻略期 · 22层新婚 / UW大战极度加速期",
+            "evidence": {
+              "title": "Aniplex《刀剑神域》动画官方网站",
+              "url": "https://www.swordart-online.net/"
+            }
+          },
+          {
+            "id": "kirito-asada_shino-back_to_back_comrades",
+            "source": "kirito",
+            "target": "asada_shino",
+            "label": "背靠背战友与破除心魔的引路人",
+            "description": "GGO中相遇揭开彼此深层PTSD创伤，联手破除死枪刺杀危机，桐人安排诗乃与当年救下之人重逢彻底治愈心结；UW大战中诗乃以太阳神索鲁斯降临极限援护桐人。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "幽灵子弹篇（死枪事件） / 异界战争篇",
+            "evidence": {
+              "title": "Aniplex《刀剑神域II》动画官方网站",
+              "url": "https://www.swordart-online.net/phantom/"
+            }
+          },
+          {
+            "id": "asuna_yuuki-asada_shino-confidantes_and_comrades",
+            "source": "asuna_yuuki",
+            "target": "asada_shino",
+            "label": "互为奥援的情敌战友与知心闺蜜",
+            "description": "现实中常在艾基尔的咖啡吧聚会温情相伴，在死枪事件中亚丝娜在医院为桐人祈祷并信任诗乃；UW异界大战两人作为最高神明账号并肩在前线浴血奋战。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "现实日常 / UW大战爱丽丝争夺战",
+            "evidence": {
+              "title": "川原砾《刀剑神域》官方公式档案",
+              "url": "https://dengekibunko.jp/title/sao/"
+            }
+          },
+          {
+            "id": "kirito-alice_sao-cathedral_vow_and_care",
+            "source": "kirito",
+            "target": "alice_sao",
+            "label": "打破天命的誓约与央都决战羁绊",
+            "description": "央都大圣堂外墙攀登时两人经历生死谈话，桐人唤醒爱丽丝破除右眼封印向公理教会挥剑；在桐人心智封闭的半年里爱丽丝细心照顾推车相伴直至异界战争爆发。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Alicization篇 · 央都大圣堂 / 卢利特村照料期",
+            "evidence": {
+              "title": "Aniplex《刀剑神域 Alicization》官方特设",
+              "url": "https://www.swordart-online.net/alicization/"
+            }
+          },
+          {
+            "id": "asuna_yuuki-alice_sao-rivals_and_allies",
+            "source": "asuna_yuuki",
+            "target": "alice_sao",
+            "label": "异界营地拔剑对峙与并肩护夫",
+            "description": "亚丝娜以创世神史提西亚降临人界军军营探视失智桐人时与爱丽丝拔剑对峙火花四溅，在坦诚彼此对桐人的深切爱意后放下芥蒂，携手在异界大军围攻中杀出血路。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Alicization War of Underworld · 补给营夜谈",
+            "evidence": {
+              "title": "Aniplex《刀剑神域 War of Underworld》官方特设",
+              "url": "https://www.swordart-online.net/war_of_underworld/"
+            }
+          },
+          {
+            "id": "kirito-leafa-siblings_and_alo_sky",
+            "source": "kirito",
+            "target": "leafa",
+            "label": "兄妹血亲与ALO风精灵天空翱翔",
+            "description": "现实中为堂兄妹，直叶在ALO以风精灵莉法身份与桐人相识倾心，得知真相后在世界树泪流释怀；UW大战以地神提拉利亚降临承受万次贯穿痛苦死守战线。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "ALO妖精之舞篇 · 世界树 / UW大战决死战",
+            "evidence": {
+              "title": "Aniplex《刀剑神域》动画官方网站",
+              "url": "https://www.swordart-online.net/"
+            }
+          },
+          {
+            "id": "yui-kirito-ai_daughter_and_navigator",
+            "source": "yui",
+            "target": "kirito",
+            "label": "心之女儿与万能导航精灵",
+            "description": "在SAO第22层被桐人与亚丝娜收养并认其为父母，被桐人通过管理者权限化作水滴项链保存；此后在所有现实与虚拟世界中化身万能导航精灵全力协助父母。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "SAO第22层收养 / ALO营救行动",
+            "evidence": {
+              "title": "Aniplex《刀剑神域》动画官方网站",
+              "url": "https://www.swordart-online.net/"
+            }
+          },
+          {
+            "id": "yui-asuna_yuuki-maternal_support",
+            "source": "yui",
+            "target": "asuna_yuuki",
+            "label": "母女相称与最贴心的精神支柱",
+            "description": "视亚丝娜为最温柔的母亲，在亚丝娜被困须乡鸟笼时全力引导桐人突破，在现实中亦通过微型摄像头与亚丝娜心心相印，提供全天候战略数据指引。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "世界树营救 / 圣母圣咏篇",
+            "evidence": {
+              "title": "川原砾《刀剑神域》官方公式档案",
+              "url": "https://dengekibunko.jp/title/sao/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "asada_shino",

@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "做事精细耐心，对手工成果有自己的坚持",
-        "外表戒备，进入熟悉日常后会流露柔和神态",
-        "愿意认真经营来之不易的安定生活"
+        "执着深情",
+        "腹黑高傲",
+        "人妻属性",
+        "手工极佳",
+        "极度缺爱",
+        "恩怨分明",
+        "护短至死"
       ],
       "likes": [
-        "手工缝制",
-        "料理",
-        "安静整理自己的收藏"
+        "葛木宗一郎",
+        "手工缝制可爱服装",
+        "制作精致手办与洋娃娃",
+        "少女漫画",
+        "学习现代日料"
       ],
       "classic_cg": {
-        "title": "美狄亚 · 柳洞寺厨房的手作料理",
-        "description": "柳洞寺厨房，她把长袍袖子用襻带扎起、系着围裙做饭，尖耳从垂落的发丝间露出；尝味时专注的神情不像魔女，更像新婚的妻子。"
+        "title": "雨夜倒影中的救赎邂逅",
+        "description": "冬木冷雨倾盆的柳洞寺山道石阶上，魔力耗尽、紫袍破碎的美狄亚奄奄一息地蜷缩在泥泞中。撑伞的葛木宗一郎默默向她伸出手，那一双毫无惊惧的平静眼眸，瞬间击碎并治愈了魔女数千年的孤绝背叛。"
       },
-      "identity": "Fate · 美狄亚",
+      "identity": {
+        "role": "第五次圣杯战争魔术师从者 / 神代背叛之魔女",
+        "age": "神话时代英雄王时期（外貌约20多岁成熟女性）",
+        "occupation": "柳洞寺主妇 / 神代大魔术师",
+        "faction": "柳洞寺阵营 / 葛木宗一郎守护者"
+      },
       "tags": [
         "美狄亚",
         "Fate 系列",
         "日常"
       ],
-      "bg_story": "在柳洞寺生活的魔术师，也珍惜料理、模型和针线这些日常手艺。蓝发侧辫、尖耳和专注神态是识别点，兜帽与长袍按活动切换。",
+      "bg_story": "古希腊神话中科尔基斯岛的王女，因爱神丘比特的金箭而疯狂爱上伊阿宋，背叛祖国并杀害亲弟助其取得金羊毛，最终却被伊阿宋残酷抛弃，被世人唾骂为“背叛与弑子的魔女”。在第五次冬木圣杯战争中被残忍的魔术师阿特拉姆召唤，美狄亚用计杀死残害幼童的御主后魔力耗尽倒在冬木雨夜，被平凡的教师葛木宗一郎收留并结下契约。葛木全然接纳了她魔女的身份并赋予她纯粹的容身之地，使美狄亚平生第一次体会到不被神明操控、作为真正女子的爱。为了葛木能长久生活，她将柳洞寺据为堡垒，利用“万符必应破戒”夺取从者、操纵城镇灵脉。在 UBW 线终局战中，吉尔伽美什王之财宝突袭葛木，美狄亚在生死关头毫不犹豫地挺身而出用身躯为葛木挡下所有致命光剑，在葛木怀中含泪微笑消散，坦言“我的愿望早就已经实现了”。在后日谈嘉年华与卫宫家今天的饭中，她化身为沉迷为 Saber 制作可爱衣服、专研日本料理的娇羞人妻，终获神话未曾给予的温情归宿。",
       "palette": [
         "#94a6d1",
         "#282532"
@@ -62,7 +73,777 @@
         "side_braid"
       ],
       "accent_color": "#94a6d1",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "我的愿望从一开始就实现了……能够遇到宗一郎大人，我就已经得到了世间所有的救赎。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "Fate 系列",
+        "people": [
+          {
+            "id": "artoria_pendragon",
+            "name": "阿尔托莉雅",
+            "aliases": [
+              "Artoria Pendragon",
+              "阿尔托莉雅·潘德拉贡",
+              "セイバー",
+              "亚瑟王"
+            ],
+            "characterId": "artoria_pendragon"
+          },
+          {
+            "id": "tohsaka_rin",
+            "name": "远坂凛",
+            "aliases": [
+              "Tohsaka Rin",
+              "遠坂凛",
+              "远坂当主",
+              "红色恶魔"
+            ],
+            "characterId": "tohsaka_rin"
+          },
+          {
+            "id": "illyasviel_von_einzbern",
+            "name": "伊莉雅丝菲尔",
+            "aliases": [
+              "Illyasviel von Einzbern",
+              "イリヤスフィール・フォン・アインツベルン",
+              "伊莉雅"
+            ],
+            "characterId": "illyasviel_von_einzbern"
+          },
+          {
+            "id": "jeanne_alter",
+            "name": "贞德[Alter]",
+            "aliases": [
+              "Jeanne d'Arc (Alter)",
+              "Jeanne Alter",
+              "Jalter",
+              "黑贞德",
+              "龙之魔女"
+            ],
+            "characterId": "jeanne_alter"
+          },
+          {
+            "id": "matou_sakura",
+            "name": "间桐樱",
+            "aliases": [
+              "Matou Sakura",
+              "Sakura",
+              "间桐樱",
+              "黑樱"
+            ],
+            "characterId": "matou_sakura"
+          },
+          {
+            "id": "morgan_le_fay_fate",
+            "name": "摩根",
+            "aliases": [
+              "Morgan le Fay",
+              "モルガン",
+              "冬之女王",
+              "救世主梣"
+            ],
+            "characterId": "morgan_le_fay_fate"
+          },
+          {
+            "id": "mash_kyrielight",
+            "name": "玛修",
+            "aliases": [
+              "Mash Kyrielight",
+              "マシュ・キリエライト",
+              "Shielder",
+              "玛修·基列莱特"
+            ],
+            "characterId": "mash_kyrielight"
+          },
+          {
+            "id": "caren_hortensia",
+            "name": "卡莲·C·奥尔黛西亚",
+            "aliases": [
+              "Caren Hortensia",
+              "卡莲",
+              "圣痕修女",
+              "抹大拉的圣骸布"
+            ],
+            "characterId": "caren_hortensia"
+          },
+          {
+            "id": "artoria_pendragon_alter",
+            "name": "阿尔托莉雅·Alter",
+            "aliases": [
+              "Artoria Pendragon Alter",
+              "Saber Alter",
+              "黑呆",
+              "暴君骑士王"
+            ],
+            "characterId": "artoria_pendragon_alter"
+          },
+          {
+            "id": "jeanne_d_arc",
+            "name": "圣女贞德",
+            "aliases": [
+              "Jeanne d'Arc",
+              "贞德",
+              "圣女贞德",
+              "Ruler",
+              "奥尔良圣女"
+            ],
+            "characterId": "jeanne_d_arc"
+          },
+          {
+            "id": "scathach_fate",
+            "name": "斯卡哈",
+            "aliases": [
+              "Scathach",
+              "影之国女王",
+              "弑神师匠",
+              "Siabhair"
+            ],
+            "characterId": "scathach_fate"
+          },
+          {
+            "id": "ishtar_fate",
+            "name": "伊什塔尔",
+            "aliases": [
+              "Ishtar",
+              "天之女主人",
+              "金星女神",
+              "美与战争的女神"
+            ],
+            "characterId": "ishtar_fate"
+          },
+          {
+            "id": "ereshkigal_fate",
+            "name": "埃列什基伽勒",
+            "aliases": [
+              "Ereshkigal",
+              "艾蕾",
+              "冥界女王",
+              "冥界幽府之主"
+            ],
+            "characterId": "ereshkigal_fate"
+          },
+          {
+            "id": "medusa_rider",
+            "name": "美杜莎 Rider",
+            "aliases": [
+              "美杜莎 Rider",
+              "Medusa (Rider)",
+              "美杜莎",
+              "Rider"
+            ],
+            "characterId": "medusa_rider"
+          },
+          {
+            "id": "chloe_von_einzbern",
+            "name": "克洛伊",
+            "aliases": [
+              "克洛伊",
+              "Chloe von Einzbern",
+              "小黑",
+              "克洛伊·冯·爱因兹贝伦"
+            ],
+            "characterId": "chloe_von_einzbern"
+          },
+          {
+            "id": "medea_caster",
+            "name": "美狄亚",
+            "aliases": [
+              "美狄亚",
+              "Medea (Caster)",
+              "Caster",
+              "神代背叛魔女"
+            ],
+            "characterId": "medea_caster"
+          },
+          {
+            "id": "kama_fate",
+            "name": "迦摩",
+            "aliases": [
+              "迦摩",
+              "Kama",
+              "爱神迦摩",
+              "魔罗",
+              "Beast Ⅲ/L"
+            ],
+            "characterId": "kama_fate"
+          },
+          {
+            "id": "emiya_shirou",
+            "name": "卫宫士郎",
+            "aliases": [
+              "卫宫士郎",
+              "Emiya Shirou",
+              "正义的伙伴"
+            ]
+          },
+          {
+            "id": "fujimaru_ritsuka",
+            "name": "藤丸立香",
+            "aliases": [
+              "藤丸立香",
+              "Fujimaru Ritsuka",
+              "迦勒底御主",
+              "咕哒"
+            ]
+          },
+          {
+            "id": "kotomine_kirei",
+            "name": "言峰绮礼",
+            "aliases": [
+              "言峰绮礼",
+              "Kotomine Kirei",
+              "麻婆神父",
+              "冬木监督者"
+            ]
+          },
+          {
+            "id": "gilgamesh",
+            "name": "吉尔伽美什",
+            "aliases": [
+              "吉尔伽美什",
+              "Gilgamesh",
+              "英雄王",
+              "金闪闪"
+            ]
+          },
+          {
+            "id": "emiya_archer",
+            "name": "英灵卫宫",
+            "aliases": [
+              "英灵卫宫",
+              "Archer",
+              "红A",
+              "炼铁英灵"
+            ]
+          },
+          {
+            "id": "cu_chulainn",
+            "name": "库·丘林",
+            "aliases": [
+              "库·丘林",
+              "Cu Chulainn",
+              "Lancer",
+              "光之子"
+            ]
+          },
+          {
+            "id": "baobhan_sith",
+            "name": "芭班·茜",
+            "aliases": [
+              "芭班·茜",
+              "Baobhan Sith",
+              "妖精骑士崔斯坦"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "artoria_pendragon-emiya_shirou-master_servant_and_lovers",
+            "source": "artoria_pendragon",
+            "target": "emiya_shirou",
+            "label": "契约从者与灵魂伴侣",
+            "description": "士郎在仓库中偶然召唤阿尔托莉雅，在Fate线中士郎的赤诚肯定解开了她背负的沉重枷锁，战后更在星之内海阿瓦隆达成灵魂的永恒重聚。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/stay night · Fate线 & Last Episode",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "tohsaka_rin-emiya_shirou-ally_and_lovers",
+            "source": "tohsaka_rin",
+            "target": "emiya_shirou",
+            "label": "同盟战友与恋人",
+            "description": "穗群原学园的优等生与普通少年，在圣杯战争结成生死同盟。UBW线中凛看穿士郎自我牺牲的病态执念，发誓将他拉回人间并相伴前往伦敦时钟塔。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/stay night · Unlimited Blade Works线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "matou_sakura-emiya_shirou-protector_and_lovers",
+            "source": "matou_sakura",
+            "target": "emiya_shirou",
+            "label": "学妹与唯一守护者",
+            "description": "士郎是樱在黑暗地狱中唯一的救赎微光；HF线士郎毅然舍弃正义伙伴的理想，立誓只做樱一人的英雄，最终从黑圣杯泥沼中彻底解救樱。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/stay night · Heaven's Feel线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "illyasviel_von_einzbern-emiya_shirou-siblings_and_sacrifice",
+            "source": "illyasviel_von_einzbern",
+            "target": "emiya_shirou",
+            "label": "义姐弟与舍命救赎",
+            "description": "切嗣的亲生女与义子，从起初的怨恨纠葛到重温亲情。HF线伊莉雅披上第三法天之衣，以姐姐的宠溺姿态代替士郎关闭大圣杯，换来士郎灵魂新生。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/stay night · Heaven's Feel线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "artoria_pendragon_alter-emiya_shirou-tragic_duel",
+            "source": "artoria_pendragon_alter",
+            "target": "emiya_shirou",
+            "label": "宿命决裂与终末手刃",
+            "description": "黑化暴君将纯粹理性王道贯彻到底，HF大空洞决战中士郎在美杜莎协助下突破重围，含泪挥刀亲手刺穿曾深爱从者的心脏。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/stay night · Heaven's Feel线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "medusa_rider-matou_sakura-loyal_guardian",
+            "source": "medusa_rider",
+            "target": "matou_sakura",
+            "label": "契约从者与生死守护",
+            "description": "同为身陷诅咒深渊的神话怪物与受虐少女，美杜莎将樱视作唯一的真正御主，哪怕面对毁灭世界的黑圣杯暴走也至死不离不弃。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/stay night · 全线共通设定",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "medusa_rider-emiya_shirou-alliance_and_peaceful_days",
+            "source": "medusa_rider",
+            "target": "emiya_shirou",
+            "label": "生死同盟与破晓共战",
+            "description": "HF线中为了拯救樱，美杜莎打破敌对阵营偏见与士郎结下战线，在深窟决战中解放骑英之缰绳阻击Saber Alter，战后在卫宫邸共同生活。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/stay night · Heaven's Feel线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "tohsaka_rin-matou_sakura-biological_sisters",
+            "source": "tohsaka_rin",
+            "target": "matou_sakura",
+            "label": "骨肉姐妹与绝境相拥",
+            "description": "本为远坂家亲姐妹，时臣的过继铸就了十数年命运的殊途与创伤。HF终战中凛敛起泽尔里奇宝石剑，以血肉身躯深情拥抱唤醒了暴走黑樱的人性。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/stay night · Heaven's Feel线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "tohsaka_rin-emiya_archer-master_servant_trust",
+            "source": "tohsaka_rin",
+            "target": "emiya_archer",
+            "label": "契约御主与从者",
+            "description": "凛在圣杯战争之初召唤出的弓兵，互相嫌弃却心有灵犀，Archer将自己生前未能达成的理想与遗憾托付给凛，是凛最信赖的骑士。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/stay night · 全线共通设定",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "emiya_shirou-emiya_archer-ideological_clash",
+            "source": "emiya_shirou",
+            "target": "emiya_archer",
+            "label": "理想之敌与过去自我",
+            "description": "绝望的守护者残骸企图抹杀少年时期的自我以斩断永劫悔恨，UBW线在固有结界中少年士郎以对理想的纯粹笃定击溃了未来的虚无沉沦。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/stay night · Unlimited Blade Works线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "tohsaka_rin-kotomine_kirei-guardian_and_grudge",
+            "source": "tohsaka_rin",
+            "target": "kotomine_kirei",
+            "label": "监护师徒与杀父死仇",
+            "description": "绮礼作为时臣指定的监护人传授凛八极拳与教会魔术，然而其真实面目却是背叛刺死时臣的凶手，在第五次圣杯战争终局反目决战。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/stay night · 全线暗线揭秘",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "emiya_shirou-kotomine_kirei-mirror_nemesis",
+            "source": "emiya_shirou",
+            "target": "kotomine_kirei",
+            "label": "镜面宿敌与宿命清算",
+            "description": "一者视他人幸福为自身救赎，一者唯从毁灭痛苦中汲取愉悦，圣杯空洞前两人舍弃魔术进行凡人肉体搏杀，完成对彼此存在意义的究极回答。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/stay night · Heaven's Feel线决战",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "caren_hortensia-kotomine_kirei-father_daughter_fate",
+            "source": "caren_hortensia",
+            "target": "kotomine_kirei",
+            "label": "骨肉父女与圣痕羁绊",
+            "description": "卡莲是言峰绮礼生前留在世上的亲生骨肉，继承了父亲与恶魔纠缠的宿命，在冬木教会以代行者身份直面父亲留下的罪恶残局。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/hollow ataraxia · 核心背景揭秘",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/hollow ataraxia 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "caren_hortensia-emiya_shirou-church_and_tenant",
+            "source": "caren_hortensia",
+            "target": "emiya_shirou",
+            "label": "冬木教区主理与食客交集",
+            "description": "卡莲接管冬木教会并搬入卫宫邸偏宅，日常以冷酷毒舌戏弄士郎，却在凡人的人间烟火中第一次感受到被善待的安宁体温。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/hollow ataraxia · 日常后日谈",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/hollow ataraxia 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "chloe_von_einzbern-illyasviel_von_einzbern-twin_souls",
+            "source": "chloe_von_einzbern",
+            "target": "illyasviel_von_einzbern",
+            "label": "同体半身与共生姐妹",
+            "description": "从小黑企图抹杀伊莉雅夺取肉身，到建立痛觉共享契约并作为表妹融入卫宫家，两人在数度世界线绝境中成为彼此无可替代的魔法国度同袍。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/kaleid liner 魔法少女☆伊莉雅 2wei!",
+            "evidence": {
+              "title": "Prisma Illya · 官方系列网站",
+              "url": "https://anime.prisma-illya.jp/"
+            }
+          },
+          {
+            "id": "medea_caster-artoria_pendragon-capture_and_bondage",
+            "source": "medea_caster",
+            "target": "artoria_pendragon",
+            "label": "强行掠夺与金屋囚禁",
+            "description": "美狄亚利用万符必应斩断士郎契约掠夺Saber，将阿尔托莉雅换上婚纱拘禁于柳洞寺地下，视其为神代所不及的高洁绝美藏品。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Fate/stay night · Unlimited Blade Works线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "medea_caster-cu_chulainn-temple_skirmish",
+            "source": "medea_caster",
+            "target": "cu_chulainn",
+            "label": "柳洞寺攻防死斗",
+            "description": "库·丘林受言峰绮礼之命侦查柳洞寺，与盘踞地脉的美狄亚展开数度交锋，对魔女卑劣的窃法行径抱持纯粹的武人唾弃。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/stay night · 开篇设定",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "scathach_fate-cu_chulainn-mentor_and_pupil",
+            "source": "scathach_fate",
+            "target": "cu_chulainn",
+            "label": "影之国师徒与弑神托付",
+            "description": "影之国女王亲手将盖博尔加魔枪与卢恩传授给爱徒库·丘林，在漫长永生中既是爱徒最尊敬的严师，亦隐秘期盼徒弟终有一日能赐予自己一死。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "TYPE-MOON · 凯尔特神话设定",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方英灵设定",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "scathach_fate-fujimaru_ritsuka-strict_instructor",
+            "source": "scathach_fate",
+            "target": "fujimaru_ritsuka",
+            "label": "从者导师与试炼教官",
+            "description": "降临迦勒底后担任立香的严厉教官，以弑神武者的至高要求锤炼御主的心智与体魄，在第五特异点与神殿终决战中为人类开辟血路。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 第五特异点 北美神话大战",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "mash_kyrielight-fujimaru_ritsuka-eternal_guardian_and_master",
+            "source": "mash_kyrielight",
+            "target": "fujimaru_ritsuka",
+            "label": "命定御主与永恒守护者",
+            "description": "迦勒底管制室爆炸中缔结生死誓约，横跨七大特异点与各大异闻带，时间神殿玛修以纯白之盾挡下魔神王焚世光带，是彼此最深厚的精神支柱。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/Grand Order · 终局特异点 冠位时间神殿",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "mash_kyrielight-artoria_pendragon-knightly_reverence",
+            "source": "mash_kyrielight",
+            "target": "artoria_pendragon",
+            "label": "圆桌溯源与骑士敬仰",
+            "description": "玛修融合加拉哈德英灵之座灵基，对作为骑士团灵魂象征的亚瑟王阿尔托莉雅抱有发自心底的纯粹敬仰与忠诚。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 第六特异点 神圣圆桌领域",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "jeanne_d_arc-jeanne_alter-saint_and_avenger_alter",
+            "source": "jeanne_d_arc",
+            "target": "jeanne_alter",
+            "label": "圣女正体与狂念赝作",
+            "description": "黑贞德是由元帅狂执许愿诞生的怨念化身，深陷对原版圣女高洁包容的嫉恨与自卑，白贞则始终以无私宽容的目光温柔注视着这抹迷茫黑炎。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 赝作英灵事件",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "jeanne_alter-artoria_pendragon_alter-shinjuku_rivals_and_buddies",
+            "source": "jeanne_alter",
+            "target": "artoria_pendragon_alter",
+            "label": "新宿战友与欢喜冤家",
+            "description": "新宿幻灵事件中双双换上机车皮衣现界，口角互嘲却配合无间，在崩塌的摩天大厦废墟中并肩驾驶重型机车狂飙突进扫荡魔神柱。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 亚种特异点Ⅰ 恶性隔绝魔境新宿",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "jeanne_alter-fujimaru_ritsuka-contract_and_farewell",
+            "source": "jeanne_alter",
+            "target": "fujimaru_ritsuka",
+            "label": "生死誓约与无悔诀别",
+            "description": "新宿废墟终局与御主共舞，漫长旅途中化作御主最锋锐的复仇烈焰；奏章不可逆废弃孔为了不让御主灵基崩坏，毅然选择主动切断契约淡出离去。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/Grand Order · 奏章Ⅱ 不可逆废弃孔",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "jeanne_d_arc-fujimaru_ritsuka-sacred_guide",
+            "source": "jeanne_d_arc",
+            "target": "fujimaru_ritsuka",
+            "label": "圣洁指引与裁定从者",
+            "description": "从第一特异点邪龙百年战争带领立香平定法兰西狂澜，到时间神殿高举白百合战旗召唤全英灵结阵反击，是立香人理拯救路上的纯白旗帜。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 第一特异点 邪龙百年战争",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "morgan_le_fay_fate-fujimaru_ritsuka-queen_and_spouse",
+            "source": "morgan_le_fay_fate",
+            "target": "fujimaru_ritsuka",
+            "label": "冬之女王与命定伴侣",
+            "description": "褪去妖精国两千年惨烈统治的血泪重担，以狂阶降临迦勒底后将立香视作自己唯一的伴侣，以极具占有欲的绝对姿态誓言用十二圣枪庇护御主。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 迦勒底从者日常",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "morgan_le_fay_fate-baobhan_sith-mother_daughter_tragedy",
+            "source": "morgan_le_fay_fate",
+            "target": "baobhan_sith",
+            "label": "母女相惜与终焉悲剧",
+            "description": "无情冬之女王将所有罕见的温柔与母爱倾注在养女芭班·茜身上；在妖精国叛乱终末，摩根为救受尽折磨的养女放弃反抗，在王座前甘愿被残虐肢解。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/Grand Order · 第2部第6章 妖精圆桌领域阿瓦隆·勒·菲",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "morgan_le_fay_fate-artoria_pendragon-destined_royal_rivals",
+            "source": "morgan_le_fay_fate",
+            "target": "artoria_pendragon",
+            "label": "乐园异闻与泛人类史宿命姊妹",
+            "description": "泛人类史中作为阿尔托莉雅同母异父的王姐与毁灭不列颠的宿敌，异闻带中则是分别背负拯救不列颠悲剧使命的救世主与预言之子。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/Grand Order · 第2部第6章 妖精圆桌领域阿瓦隆·勒·菲",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "ishtar_fate-tohsaka_rin-pseudo_servant_vessel",
+            "source": "ishtar_fate",
+            "target": "tohsaka_rin",
+            "label": "拟似从者与宿主灵魂",
+            "description": "苏美尔美与战争女神以远坂凛身躯凭依现世，原本残酷任性的神性被凛正直要强的人性深刻同化，化身为极具傲娇萌感的红衣金星女神。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 第七特异点 绝对魔兽战线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "ereshkigal_fate-tohsaka_rin-underworld_vessel",
+            "source": "ereshkigal_fate",
+            "target": "tohsaka_rin",
+            "label": "冥府神明与宿主灵魂",
+            "description": "冥界幽府之主以远坂凛之躯为凭依降临，继承了宿主金发黑衣的冷峻外貌与极端口嫌体正直、认真负责却内心自卑柔软的赤诚本质。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 第七特异点 绝对魔兽战线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "ishtar_fate-ereshkigal_fate-divine_twin_sisters",
+            "source": "ishtar_fate",
+            "target": "ereshkigal_fate",
+            "label": "神代孪生姊妹与宿命吵闹",
+            "description": "执掌天空金星与执掌幽深地底的孪生女神，性格针锋相对互看不顺眼，却在提亚马特觉醒灭世的大决战中联手施展通天神罚贯穿冥界死斗。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 第七特异点 绝对魔兽战线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "ishtar_fate-gilgamesh-uruk_ancient_allies",
+            "source": "ishtar_fate",
+            "target": "gilgamesh",
+            "label": "神话仇敌与乌鲁克同盟",
+            "description": "神话中因求婚遭拒而降下天之公牛的死仇，第七特异点吉尔伽美什以乌鲁克国库珍宝将其收买纳为战力，战火中互相嘲讽却彼此托付战线。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Fate/Grand Order · 第七特异点 绝对魔兽战线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "ereshkigal_fate-fujimaru_ritsuka-underworld_sunflower_vow",
+            "source": "ereshkigal_fate",
+            "target": "fujimaru_ritsuka",
+            "label": "幽府白月光与绝域誓约",
+            "description": "立香打破冥界戒律为艾蕾带来向日葵与地下初雪，融化了千万年的孤寂冰川；南美异闻带艾蕾拼至神核破碎也要护送立香前行，是立香心中的永恒白月光。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/Grand Order · 冥界的圣诞快乐 & 黄金树海雨林",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "kama_fate-matou_sakura-beast_vessel",
+            "source": "kama_fate",
+            "target": "matou_sakura",
+            "label": "印度爱神与宿主灵基",
+            "description": "爱神迦摩以少女间桐樱的躯体作为灵基凭依降世，将其受尽折磨与无限贪恋温暖的情感放大为溺爱宇宙的堕落恶之兽（Beast Ⅲ/L）。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "Fate/Grand Order · 德川回天迷宫 大奥",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "kama_fate-fujimaru_ritsuka-salvation_and_obsessive_guardian",
+            "source": "kama_fate",
+            "target": "fujimaru_ritsuka",
+            "label": "人类恶救赎与偏执护法",
+            "description": "在大奥迷宫中企图用无限情欲同化立香却被其直面自我的纯粹意志击溃，战后受召入驻迦勒底，终日以诱惑御主堕落为借口寸步不离施展绝对庇护。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Fate/Grand Order · 德川回天迷宫 大奥 & 迦勒底日常",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/Grand Order 官方网站",
+              "url": "https://www.fate-go.jp/"
+            }
+          },
+          {
+            "id": "gilgamesh-artoria_pendragon-arrogant_proposal",
+            "source": "gilgamesh",
+            "target": "artoria_pendragon",
+            "label": "狂妄求婚与誓死抗拒",
+            "description": "英雄王在第四与第五次圣杯战争中狂傲宣告要将骑士王纳为后宫珍藏，阿尔托莉雅则以手中胜利誓约之剑果断回绝其荒谬侮辱。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Fate/Zero & Fate/stay night · Fate线",
+            "evidence": {
+              "title": "TYPE-MOON · Fate/stay night 官方设定",
+              "url": "https://typemoon.com/products/fate/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "medea_caster",

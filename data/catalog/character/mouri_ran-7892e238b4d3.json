@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "温柔体贴，习惯主动照料家庭与朋友",
-        "遇到危险会勇敢行动，不因善良而缺少判断",
-        "运动时专注坚定，日常也有少女式的期待与烦恼"
+        "温柔善良",
+        "坚韧勇毅",
+        "纯粹正直",
+        "极度重情",
+        "偶有醋意",
+        "害怕幽灵鬼怪",
+        "隐忍深情"
       ],
       "likes": [
-        "空手道练习",
-        "为家人做饭",
-        "和朋友逛商店街"
+        "工藤新一",
+        "空手道段位训练",
+        "为家人制作丰盛饭菜",
+        "与铃木园子逛街",
+        "撮合父母复合"
       ],
       "classic_cg": {
-        "title": "毛利兰 · 空手道社的晨训",
-        "description": "清晨道场，她扎起头发穿着道服练习正拳，动作干净利落；朝阳从道场高窗斜照进来，汗水与呼出的白气——「主将」二字的说服力全在这一帧。"
+        "title": "清水寺舞台的红枫之吻",
+        "description": "京都修学旅行的清水寺舞台上，漫山枫红如火。面对工藤新一伦敦告白的回应，小兰红着脸颊轻轻揪住新一的领带拉近，垫起脚尖吻上他的面颊，在千年古刹与万千秋枫的见证下完成了漫长青涩岁月的深情确认。"
       },
-      "identity": "Detective Conan · 毛利兰",
+      "identity": {
+        "role": "侦探事务所的坚韧支柱与帝丹高中空手道部主将",
+        "age": "16~17岁（高二）",
+        "occupation": "帝丹高中二年B班学生、空手道部主将",
+        "faction": "毛利侦探事务所 / 帝丹高中"
+      },
       "tags": [
         "毛利兰",
         "名侦探柯南",
         "日常"
       ],
-      "bg_story": "毛利侦探事务所里可靠的家人，也是空手道社的主将。角状发尖、温柔眼神与果断动作共同构成形象，日常既有料理和学习，也有等待与信任。",
+      "bg_story": "出身名侦探毛利小五郎与律政界不败女王妃英理的家庭。在幼时父母分居后，小兰早早承担起料理事务所家务与照料酗酒父亲的责任，并在帝丹高中成长为关东空手道大赛冠军。与青梅竹马工藤新一自幼相伴，曾在纽约连环杀人案中不顾安危救下伪装成杀人魔的贝尔摩德，其纯粹而崇高的仁善令对方尊称其为永不伤害的“天使（Angel）”。在多罗碧加乐园新一离奇失踪后，她迎来了寄住家中的江户川柯南，虽多次凭敏锐直觉怀疑柯南的真实身份，但在众人巧妙遮掩下始终选择相信与等待。主线历经满月对决（飞身扑救灰原哀以肉身挡下子弹）、漆黑的特快列车等生死交锋，小兰始终是柯南最竭力保护却也最信赖的避风港。伦敦大本钟下新一的告白，与京都修学旅行清水寺舞台上小兰的深情亲吻回应，正式确立了二人的恋人关系。尽管长年饱受聚少离多的相思之苦与黑衣组织暗流涌动的危机，兰始终以非凡的勇气与坚贞的信念守护着身边的所有人。在朗姆阴影逼近的最新主线中，她依然是所有伙伴在黑暗对抗中最温暖坚定的光明后盾。",
       "palette": [
         "#a9a1d0",
         "#282532"
@@ -62,7 +73,235 @@
         "blue_eyes"
       ],
       "accent_color": "#a9a1d0",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "勇气这个词，是用来形容挺身而出的正义之举，不能当作杀人的理由！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "名侦探柯南",
+        "people": [
+          {
+            "id": "mouri_ran",
+            "name": "毛利兰",
+            "aliases": [
+              "Ran Mouri",
+              "毛利蘭",
+              "兰",
+              "Angel"
+            ],
+            "characterId": "mouri_ran"
+          },
+          {
+            "id": "edogawa_conan",
+            "name": "江户川柯南/工藤新一",
+            "aliases": [
+              "Edogawa Conan",
+              "Kudou Shinichi",
+              "江戸川コナン",
+              "工藤新一",
+              "平成年代的福尔摩斯"
+            ]
+          },
+          {
+            "id": "mouri_kogorou",
+            "name": "毛利小五郎",
+            "aliases": [
+              "Mouri Kogorou",
+              "毛利小五郎",
+              "沉睡的小五郎",
+              "小五郎叔叔"
+            ]
+          },
+          {
+            "id": "kisaki_eri",
+            "name": "妃英理",
+            "aliases": [
+              "Kisaki Eri",
+              "妃英理",
+              "律政界不败女王"
+            ]
+          },
+          {
+            "id": "suzuki_sonoko",
+            "name": "铃木园子",
+            "aliases": [
+              "Suzuki Sonoko",
+              "鈴木園子",
+              "园子"
+            ]
+          },
+          {
+            "id": "haibara_ai",
+            "name": "灰原哀",
+            "aliases": [
+              "Haibara Ai",
+              "灰原哀",
+              "宫野志保",
+              "Sherry"
+            ]
+          },
+          {
+            "id": "vermouth",
+            "name": "贝尔摩德",
+            "aliases": [
+              "Vermouth",
+              "ベルモット",
+              "克丽丝·温亚德",
+              "苦艾酒"
+            ]
+          },
+          {
+            "id": "hattori_heiji",
+            "name": "服部平次",
+            "aliases": [
+              "Hattori Heiji",
+              "服部平次",
+              "关西名侦探"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "ran-shinichi-love",
+            "source": "mouri_ran",
+            "target": "edogawa_conan",
+            "label": "青梅竹马与清水寺深情定情的恋人",
+            "description": "自幼相识相伴，兰在漫长的等待与思念中始终坚守对新一的信任；经历伦敦大本钟下新一的深情告白，兰在京都修学旅行清水寺舞台上以轻吻脸颊热烈回应，正式确定恋人关系。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "红之校外旅行 · 清水寺定情",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方角色设定",
+              "url": "https://www.ytv.co.jp/conan/character/"
+            }
+          },
+          {
+            "id": "ran-conan-guardian",
+            "source": "mouri_ran",
+            "target": "edogawa_conan",
+            "label": "悉心照料的姐姐与拼死护卫的秘密",
+            "description": "兰将借住家中的柯南视若亲生弟弟般悉心照料，柯南则借助小五郎屡破奇案，并多次在黑衣组织暗影逼近时拼死隐瞒身份以保兰的安全。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通主线 · 侦探日常",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方人物介绍",
+              "url": "https://www.ytv.co.jp/conan/character/"
+            }
+          },
+          {
+            "id": "ran-kogorou-family",
+            "source": "mouri_ran",
+            "target": "mouri_kogorou",
+            "label": "撑起事务所的父女亲情",
+            "description": "兰一手包办事务所内务、料理家常并管束酗酒好赌的父亲；小五郎看似玩世不恭，但在兰遭遇任何危险时都会立刻暴走展现出前刑警的顶尖格斗实力。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "毛利家日常",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方角色设定",
+              "url": "https://www.ytv.co.jp/conan/character/"
+            }
+          },
+          {
+            "id": "ran-eri-motherdaughter",
+            "source": "mouri_ran",
+            "target": "kisaki_eri",
+            "label": "母女至情与撮合父母的执念",
+            "description": "兰继承了母亲的聪颖与坚毅，多年来屡次费尽心机制造机会撮合分居的父母复合，是母女二人无话不谈的贴心港湾。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "家庭日常",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方角色设定",
+              "url": "https://www.ytv.co.jp/conan/character/"
+            }
+          },
+          {
+            "id": "kogorou-eri-couple",
+            "source": "mouri_kogorou",
+            "target": "kisaki_eri",
+            "label": "分居傲娇夫妻与深入骨髓的关怀",
+            "description": "两人因年轻时的负气拌嘴分居多年，日常相见总是言语刻薄互不相让，但在涉及对方安危或名誉时比任何人都在意和舍命相护。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "法律与侦探交织篇",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方角色设定",
+              "url": "https://www.ytv.co.jp/conan/character/"
+            }
+          },
+          {
+            "id": "ran-sonoko-bestfriends",
+            "source": "mouri_ran",
+            "target": "suzuki_sonoko",
+            "label": "情逾姐妹的自幼闺蜜",
+            "description": "从幼儿园起相伴至今的至交死党，财阀千金园子毫无架子且极度仗义，总是无条件支持兰对新一的感情并在危急关头互相舍身相救。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "帝丹高中校园日常",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方角色设定",
+              "url": "https://www.ytv.co.jp/conan/character/"
+            }
+          },
+          {
+            "id": "ran-haibara-sisterhood",
+            "source": "mouri_ran",
+            "target": "haibara_ai",
+            "label": "舍身挡弹与宛若亡姐的救赎",
+            "description": "在满月之夜的码头对决中，兰奋不顾身以肉身扑救灰原挡下子弹；灰原在兰身上看见了姐姐宫野明美的无私温柔与圣洁光辉，自此彻底放下心防将兰视为敬重的姐姐。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "满月对决篇 · 与黑衣组织的正面对决",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方故事档案",
+              "url": "https://www.ytv.co.jp/conan/archive/"
+            }
+          },
+          {
+            "id": "conan-haibara-partners",
+            "source": "edogawa_conan",
+            "target": "haibara_ai",
+            "label": "命运共同体与黑衣组织对抗搭档",
+            "description": "同为APTX4869药物受害者与返老还童者，灰原担任解药研发与后勤情报分析，与柯南在对抗黑衣组织的第一线互为最可靠的命运共犯。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线对抗黑衣组织",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方角色设定",
+              "url": "https://www.ytv.co.jp/conan/character/"
+            }
+          },
+          {
+            "id": "vermouth-ran-angel",
+            "source": "vermouth",
+            "target": "mouri_ran",
+            "label": "心之圣所与不可触碰的‘天使’",
+            "description": "在纽约雨夜兰不顾自身安危救下了伪装成杀人魔的贝尔摩德，贝尔摩德深为震撼并尊奉兰为绝不允许组织伤害的纯白‘天使（Angel）’。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "纽约事件篇 · 工藤新一的纽约事件",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方故事档案",
+              "url": "https://www.ytv.co.jp/conan/archive/"
+            }
+          },
+          {
+            "id": "conan-heiji-rivalry",
+            "source": "edogawa_conan",
+            "target": "hattori_heiji",
+            "label": "关东关西双子星与知晓秘密的挚友",
+            "description": "从最初关东关西侦探的激烈比拼，到平次识破柯南真身后成为其最坚不可摧的同盟伙伴，多次联手揭开惊天密室并直面黑衣组织交锋。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "外交官杀人事件及后续",
+            "evidence": {
+              "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方角色设定",
+              "url": "https://www.ytv.co.jp/conan/character/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "mouri_ran",

@@ -28,25 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "自尊心强",
-        "对表演认真",
-        "不轻易示弱"
+        "傲娇毒舌",
+        "自尊心极强",
+        "勤勉拼搏",
+        "极度缺乏安全感",
+        "舞台爆发力惊人",
+        "渴望被认可",
+        "深情隐忍"
       ],
       "likes": [
-        "钻研演技",
-        "舞台表演"
+        "钻研剧本与即兴表演",
+        "各式潮流贝雷帽",
+        "黑暗中挥舞的纯白荧光棒",
+        "甜椒料理",
+        "阿库亚专注注视自己的眼神"
       ],
       "classic_cg": {
-        "title": "东京blade 的舞台中央",
-        "description": "舞台聚光灯下，她穿着打歌服握着麦克风完成定格姿势，汗水在额角发亮；眼神是专业的、燃烧的状态，整个画面只给她一个人和光——17 年艺龄的厚度。"
+        "title": "聚光灯下唯一的白色荧光",
+        "description": "舞台巨幅追光灯倾泻如瀑，红发少女握紧麦克风完成定格，汗水自发梢飞溅，当她穿过茫茫人海看见那支只为她拼命挥舞的白色荧光棒时，眼底绽放出泣涕与共的绝美微笑。"
       },
-      "identity": "Oshi no Ko · 有马加奈",
+      "identity": {
+        "role": "女主角之一 / 前天才童星 / 新生B小町C位偶像 → 顶级实力派影后",
+        "age": "16岁 → 18岁（大结局后日谈约22岁）",
+        "occupation": "童星（前）/ 偶像（毕业）/ 职业电影女演员",
+        "faction": "阳东高校演艺科 / 草莓制作事务所（前）/ 演艺界顶峰"
+      },
       "tags": [
         "Oshi no Ko",
         "有马加奈",
         "全年龄日常"
       ],
-      "bg_story": "从童星时期开始磨练演技的演员，也曾以偶像身份登台。她的自尊背后是反复排练与对认可的渴望；舞台、剧本、帽子和不肯坦率示弱的日常表情，是人物还原的重点。",
+      "bg_story": "童年时期红极一时、被称为“十秒就能哭出来的天才童星”。随着年龄增长经历演艺事业断崖式滑坡，为了在残酷的娱乐圈生存，她磨平了所有棱角，学会了迎合导演与制片人、甘当衬托他人的“顺从绿叶”。在阳东高中与儿时演技宿敌阿库亚重逢后，加奈在阿库亚的算计与引导下接拍舞台剧《东京Blade》，在剧场聚光灯下彻底解放被压抑的天赋，以惊世骇俗的演技演活了“鹤”，重回实力派舞台。随后，加奈因无法拒绝阿库亚的请求，穿上打歌服加入新生“B小町”担任C位偶像。在首演的舞台上，看到台下阿库亚为她拼命挥舞的白色荧光棒，加奈心中立下“我要成为你唯一的推”的坚毅誓言。然而随之而来的复仇阴谋、刻意疏离与绯闻危机让加奈备受折磨，最终认清自己最热爱的仍是演戏，选择从偶像界圆满毕业。在全166话大结局中，阿库亚以生命为代价斩断了仇恨的连锁，痛失挚爱的加奈将撕心裂肺的悲伤化为演艺灵魂的薪柴，多年后横扫日本各大影后奖项，登顶演艺界巅峰，带着属于阿库亚的光芒骄傲地活在银幕之上。",
       "palette": [
         "#d79baf",
         "#753c50"
@@ -62,7 +74,133 @@
         "blunt_bangs"
       ],
       "accent_color": "#d79baf",
-      "bg_color": "#753c50"
+      "bg_color": "#753c50",
+      "voice": "这一次……我要成为你心中唯一的推！给我好好看着吧，阿库亚！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "我推的孩子",
+        "people": [
+          {
+            "id": "hoshino_ai",
+            "name": "星野爱",
+            "aliases": [
+              "星野アイ",
+              "Hoshino Ai",
+              "B小町中心"
+            ],
+            "characterId": "hoshino_ai"
+          },
+          {
+            "id": "kurokawa_akane",
+            "name": "黑川茜",
+            "aliases": [
+              "黒川あかね",
+              "Kurokawa Akane"
+            ],
+            "characterId": "kurokawa_akane"
+          },
+          {
+            "id": "arima_kana",
+            "name": "有马加奈",
+            "aliases": [
+              "有馬かな",
+              "Arima Kana",
+              "十秒能哭出来的天才童星"
+            ],
+            "characterId": "arima_kana"
+          },
+          {
+            "id": "aqua",
+            "name": "阿库亚",
+            "aliases": [
+              "アクア",
+              "星野爱久爱海",
+              "Aqua"
+            ]
+          },
+          {
+            "id": "ruby",
+            "name": "星野露比",
+            "aliases": [
+              "ルビー",
+              "星野瑠美衣",
+              "Ruby"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "ai-aqua-ruby-mother",
+            "source": "hoshino_ai",
+            "target": "aqua",
+            "label": "谎言偶像与弥留真爱",
+            "description": "在隐婚生子的人生中探寻真爱，在生命的最后时刻抱住阿库亚与露比，终于说出了发自肺腑的‘我爱你们’并非谎言。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "开篇终章 · 门前遇刺",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          },
+          {
+            "id": "akane-aqua-saving-bond",
+            "source": "kurokawa_akane",
+            "target": "aqua",
+            "label": "救赎之恩与共谋复仇",
+            "description": "在网络暴力轻生瞬间被阿库亚救下，凭借神级侧写洞悉星野爱真相与阿库亚复仇心魔，立誓无论坠入何种深渊都全力协助他。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "恋爱真人秀篇 · 舞台剧篇",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          },
+          {
+            "id": "kana-aqua-light",
+            "source": "arima_kana",
+            "target": "aqua",
+            "label": "纯粹爱意与心之白月光",
+            "description": "童星时代被阿库亚演技震撼，重逢后加入新生B小町成为C位偶像，誓言要成为照亮阿库亚黑暗人生的本命星。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "新生B小町篇 · 首演",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          },
+          {
+            "id": "akane-kana-rivalry",
+            "source": "kurokawa_akane",
+            "target": "arima_kana",
+            "label": "宿命对手与演艺共鸣",
+            "description": "从童星时代起互相视为演艺巅峰的较量对手，在《东京Blade》舞台剧与阿库亚的情感归宿上展开激烈交锋。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "舞台剧篇 · 刀剑相向",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          },
+          {
+            "id": "ai-akane-profiling",
+            "source": "kurokawa_akane",
+            "target": "hoshino_ai",
+            "label": "灵魂侧写与人格拟态",
+            "description": "黑川茜通过翻阅海量资料彻底洞悉星野爱的行为模式、眼神与真实伤痛，在真人秀中完美化身为星野爱重现于世。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "恋爱真人秀篇 · 觉醒",
+            "evidence": {
+              "title": "集英社 · 《我推的孩子》官方作品站",
+              "url": "https://ichigoproduction.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

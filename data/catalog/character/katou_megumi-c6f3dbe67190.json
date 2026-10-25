@@ -34,21 +34,30 @@
         "signature": "春日坡道白贝雷帽、红开衫与‘明明是同班同学却被忽略’的平静吐槽"
       },
       "personality": [
-        "存在感看似极淡却有不可逾越的边界",
-        "言行克制，越平静的吐槽杀伤力越大",
-        "愿意默默陪伴他人实现梦想的包容与人情味",
-        "表面无所谓但被忽视时也会赌气吃醋"
+        "波澜不惊",
+        "腹黑隐形独占欲",
+        "包容大度",
+        "现实理性",
+        "默默奉献坚韧",
+        "随和知性"
       ],
       "likes": [
-        "春日盛开的樱花坡道",
-        "便利店的关东煮与热奶茶",
-        "安艺伦也认真的笨拙背影"
+        "安艺伦也",
+        "白色贝雷帽",
+        "逛街买衣服",
+        "制作同人游戏",
+        "喝红茶吃可丽饼"
       ],
       "classic_cg": {
-        "title": "春日坡道的白色贝雷帽",
-        "description": "樱花飞舞的坡道上，她单手轻按被风吹起的白色贝雷帽，回眸露出若有若无的浅笑。"
+        "title": "红叶坡道上的定情告白",
+        "description": "在秋叶纷飞的红叶山道上，被伦也紧紧抱住坦白心意的加藤惠，眼角溢出泪水却露出全剧最动人真挚的微笑的名场面。"
       },
-      "identity": "路人女主的养成方法 女主角 · blessing software 社团第一女主角与企划原型",
+      "identity": {
+        "role": "Blessing Software第一女主角兼副导演 / 安艺伦也的妻子",
+        "age": "高中至大学毕业成婚（成年）",
+        "occupation": "同人游戏企划监督 / 公司合伙人",
+        "faction": "Blessing Software"
+      },
       "tags": [
         "路人女主",
         "圣人惠",
@@ -58,7 +67,7 @@
         "水手服",
         "同人社团"
       ],
-      "bg_story": "明明是同班同学，却直到春日坡道上那一顶被风吹落的白色贝雷帽，才被真正的命运所捕捉。她是同人游戏社团最坚实的核心，从最初对宅文化毫无了解的普通高中女生，到陪伴伦也一路跌跌撞撞完成属于所有人的游戏。那句平静的吐槽和最后毫无保留的握手，终于让她从路人走成了独一无二的女主角。",
+      "bg_story": "看似毫无鲜明二次元萌属性与存在感的普通女子高中生。在春天飘满樱花的侦探坡上因白色贝雷帽被风吹落，与飞奔拾帽的安艺伦也命运般邂逅，成为伦也立志打造最顶尖美少女同人游戏的女主角原型。在加入社团Blessing Software后，从对同人创作一无所知的“路人女高”，逐渐在英梨梨与诗羽相继出走危局中成为社团最可靠的支柱与副导演。惠默默包容着伦也一切任性与偏执，在漫长的陪伴中深爱上伦也。在剧场版完结篇中，面对伦也在红叶山坡撕心裂肺的真情告白，加藤惠微笑着接纳了伦也的爱意，两人正式相恋并在多年后完婚，成为Blessing Software终身的游戏女主角与事业贤内助。",
       "palette": [
         "#f43f5e",
         "#f8fafc",
@@ -75,7 +84,227 @@
         "deadpan_smile"
       ],
       "accent_color": "#f43f5e",
-      "bg_color": "#4c0519"
+      "bg_color": "#4c0519",
+      "voice": "请把安艺同学的一切都交给我吧。既然让我当了第一女主角，那半途而废我可是绝对不答应的哦？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "路人女主的养成方法",
+        "people": [
+          {
+            "id": "kasumigaoka_utaha",
+            "name": "霞之丘诗羽",
+            "aliases": [
+              "霞ヶ丘詩羽",
+              "Utaha Kasumigaoka",
+              "诗羽学姐",
+              "霞诗子"
+            ],
+            "characterId": "kasumigaoka_utaha"
+          },
+          {
+            "id": "katou_megumi",
+            "name": "加藤惠",
+            "aliases": [
+              "加藤恵",
+              "Megumi Katou",
+              "圣人惠",
+              "小惠",
+              "惠"
+            ],
+            "characterId": "katou_megumi"
+          },
+          {
+            "id": "aki_tomoya",
+            "name": "安艺伦也",
+            "aliases": [
+              "安芸倫也",
+              "Tomoya Aki",
+              "伦也",
+              "伦理君"
+            ]
+          },
+          {
+            "id": "sawamura_spencer_eriri",
+            "name": "泽村·斯宾塞·英梨梨",
+            "aliases": [
+              "澤村・スペンサー・英梨々",
+              "Eriri Spencer Sawamura",
+              "英梨梨",
+              "柏木英理"
+            ]
+          },
+          {
+            "id": "hashima_izumi",
+            "name": "波岛出海",
+            "aliases": [
+              "波島出海",
+              "Izumi Hashima",
+              "出海",
+              "出海酱"
+            ]
+          },
+          {
+            "id": "hyoudou_michiru",
+            "name": "冰堂美智留",
+            "aliases": [
+              "氷堂美智留",
+              "Michiru Hyoudou",
+              "美智留"
+            ]
+          },
+          {
+            "id": "hashima_iori",
+            "name": "波岛伊织",
+            "aliases": [
+              "波島伊織",
+              "Iori Hashima",
+              "伊织"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "saenai-tomoya-megumi-destined_lovers",
+            "source": "aki_tomoya",
+            "target": "katou_megumi",
+            "label": "坡道邂逅与此生唯一的伴侣",
+            "description": "在飘满樱花的坡道偶遇白色贝雷帽少女，伦也立志将其打造成顶级同人游戏女主角；惠在漫长的社团陪伴中成为不可替代的灵魂支柱，剧场版红叶坡道伦也真情告白，两人终成眷属并步入婚姻。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "剧场版《路人女主的养成方法 Fine》",
+            "evidence": {
+              "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+              "url": "https://www.saenai.tv/"
+            }
+          },
+          {
+            "id": "saenai-tomoya-utaha-creative_unrequited",
+            "source": "kasumigaoka_utaha",
+            "target": "aki_tomoya",
+            "label": "创作者知己与深情一吻告别",
+            "description": "处女作濒临腰斩时因伦也的推介重获生机，诗羽将炽烈的爱意倾注进游戏剧本；虽在争夺中目睹伦也心系加藤惠，但在毕业旅行坡道留下一记深吻作为青春谢幕，终生作为顶尖创作者相守支持。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "第二季第11话至剧场版",
+            "evidence": {
+              "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+              "url": "https://www.saenai.tv/"
+            }
+          },
+          {
+            "id": "saenai-tomoya-eriri-childhood_regret",
+            "source": "sawamura_spencer_eriri",
+            "target": "aki_tomoya",
+            "label": "青梅竹马与创作者之痛",
+            "description": "童年因惧怕非议背叛伦也成为难以抹平的心结；在那须高原别墅病倒画出神级原画证明爱意，但为追求画力极限与红坂朱音出走，成为两人青春中最壮烈耀眼却无可挽回的遗憾。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第二季第8-11话至剧场版",
+            "evidence": {
+              "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+              "url": "https://www.saenai.tv/"
+            }
+          },
+          {
+            "id": "saenai-utaha-eriri-creative_comrades",
+            "source": "kasumigaoka_utaha",
+            "target": "sawamura_spencer_eriri",
+            "label": "欢喜冤家与巅峰创作者盟友",
+            "description": "在社团中天天为剧本原画争吵开撕，却在灵魂深处最懂得彼此身为创作者的孤独与骄傲；两人双双接受红坂朱音挖角制作《寰域编年史》，在业界巅峰携手相伴。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第二季终盘至剧场版",
+            "evidence": {
+              "title": "富士见Fantasia文库《路人女主》官方特设",
+              "url": "https://fantasiabunko.jp/sp/201210saenai/"
+            }
+          },
+          {
+            "id": "saenai-megumi-eriri-break_and_reconciliation",
+            "source": "katou_megumi",
+            "target": "sawamura_spencer_eriri",
+            "label": "决裂冷战与坡道相拥释怀",
+            "description": "因英梨梨不告而别转投红坂团队，惠感到深遭背叛长达数月冷战不语；在剧场版坡道上英梨梨含泪剖白心扉，惠微笑着伸出双手将她拥入怀中，彻底解开心结重归挚友。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "剧场版《路人女主的养成方法 Fine》",
+            "evidence": {
+              "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+              "url": "https://www.saenai.tv/"
+            }
+          },
+          {
+            "id": "saenai-megumi-utaha-subtle_reverence",
+            "source": "kasumigaoka_utaha",
+            "target": "katou_megumi",
+            "label": "才情敬畏与无声的掌控者",
+            "description": "诗羽自诩情场与文坛老手，却在温泉夜谈中折服于惠看似毫无破绽却极度强大的包容力与存在感，最终坦然将伦也托付给加藤惠。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第二季第11话 / 剧场版",
+            "evidence": {
+              "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+              "url": "https://www.saenai.tv/"
+            }
+          },
+          {
+            "id": "saenai-tomoya-michiru-cousins_music",
+            "source": "hyoudou_michiru",
+            "target": "aki_tomoya",
+            "label": "随性表姐与灵魂配乐师",
+            "description": "奔放外向的表姐，性格直爽常捉弄伦也；加入社团后将Icy Tail乐队的摇滚激情倾注于游戏，创作出极富震撼力的配乐并成为伦也坚定的后盾。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第一季第10-12话",
+            "evidence": {
+              "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+              "url": "https://www.saenai.tv/"
+            }
+          },
+          {
+            "id": "saenai-tomoya-izumi-otaku_mentor",
+            "source": "hashima_izumi",
+            "target": "aki_tomoya",
+            "label": "御宅启蒙恩师与崇拜学妹",
+            "description": "自幼在伦也引导下踏入御宅文化与绘画领域，视伦也为最重要的‘师父’与崇敬对象，以惊人的同人本创作天赋向伦也交出成长答卷。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "第一季第6-7话",
+            "evidence": {
+              "title": "富士见Fantasia文库《路人女主》官方特设",
+              "url": "https://fantasiabunko.jp/sp/201210saenai/"
+            }
+          },
+          {
+            "id": "saenai-eriri-izumi-rival_illustrators",
+            "source": "sawamura_spencer_eriri",
+            "target": "hashima_izumi",
+            "label": "同人画力对决的宿命对手",
+            "description": "冬Comiket上出海的极速飞跃让英梨梨感受到了前所未有的画力危机，激发出英梨梨舍弃一切自满、不顾身体极限实现神级蜕变的催化剂。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第一季第7话至第二季第8话",
+            "evidence": {
+              "title": "富士见Fantasia文库《路人女主》官方特设",
+              "url": "https://fantasiabunko.jp/sp/201210saenai/"
+            }
+          },
+          {
+            "id": "saenai-tomoya-iori-rival_producers",
+            "source": "hashima_iori",
+            "target": "aki_tomoya",
+            "label": "创作观念对立的商业对手与前挚友",
+            "description": "两人因同人创作观念出现分歧分道扬镳，伊织奉行商业效率至上，伦也坚持创作者纯粹热情，在第二作游戏中成为既针锋相对又互相信任的业界竞争者。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第二季第4-6话",
+            "evidence": {
+              "title": "富士见Fantasia文库《路人女主》官方特设",
+              "url": "https://fantasiabunko.jp/sp/201210saenai/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "katou_megumi",

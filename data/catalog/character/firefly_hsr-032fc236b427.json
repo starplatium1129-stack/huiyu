@@ -34,27 +34,31 @@
         "signature": "银灰渐变青绿长发、发箍、清澈水蓝瞳、甜美治愈的国民女友感"
       },
       "personality": [
-        "温柔体贴治愈人心",
-        "为了守护珍视之人无比勇敢",
-        "渴望体验普通人平凡幸福的生活",
-        "情感专一深沉甘愿为爱献身",
-        "面对恋人时容易害羞娇柔"
+        "清澈纯真治愈人心的国民女友",
+        "面对命运向死而生的炽热勇敢",
+        "身为星核猎手战术核心的沉稳果决",
+        "渴望以普通人姿态体验平凡幸福的赤子之心",
+        "对待恋人与朋友深沉专一甘愿献身",
+        "背负失熵症痛苦却从不怨尤的坚强",
+        "偶尔面对浪漫情愫时的羞涩与依恋"
       ],
       "likes": [
-        "匹诺康尼橡木蛋糕卷",
-        "天台微风与星空自拍",
-        "和开拓者并肩漫步",
-        "普通的约会与陪伴"
+        "匹诺康尼街头的平价甜点橡木蛋糕卷",
+        "在天台微风中与开拓者并肩合影留念",
+        "格拉默战役中珍藏的草蛉飞蛾标本",
+        "在宁静长椅上享受没有警报的午后暖阳",
+        "以人类少女的双手真切感受世界的触觉温度",
+        "眺望星轨列车划破深邃银河的流光轨迹"
       ],
       "classic_cg": {
-        "title": "天台夕阳下的秘密基地",
-        "description": "天台残阳将漫天云海染成耀金。银发少女双手背在身后转过身来，发丝随风飘散，群青水眸盛着无尽温柔，将自己唯一的秘密坦诚托付——「我的名字叫流萤，这里是我一个人的秘密基地……但现在，也是我们的了。」"
+        "title": "天台熔金残阳下的秘密约定",
+        "description": "匹诺康尼繁华天台的夕阳将流云染成融化的耀金，银灰长发在晚风中轻轻拂动，浅绿发饰泛着幽微光泽。流萤双手背在身后转过身来，群青色水眸满溢着毫无保留的柔情与坦诚，对开拓者展颜轻笑——「这里是我一个人的秘密基地……但现在，也是我们的了。」"
       },
       "identity": {
-        "role": "格拉默铁骑遗孤 / 星核猎手萨姆",
-        "age": "青年（外表少女）",
-        "occupation": "星核猎手 / 匹诺康尼向导",
-        "faction": "星核猎手 / 匹诺康尼"
+        "role": "格拉默铁骑遗孤 / 星核猎手重装战力 / 梦境领航少女",
+        "age": "外貌约16~18岁少女（实际沉眠悠久岁月）",
+        "occupation": "星核猎手成员 / 战略装甲「萨姆」驾驶者",
+        "faction": "星核猎手（Stellaron Hunters） / 匹诺康尼"
       },
       "tags": [
         "银发",
@@ -65,7 +69,7 @@
         "萨姆",
         "纯爱"
       ],
-      "bg_story": "流萤是《崩坏：星穹铁道》中登场的核心女主角之一。作为古格拉默共和国基因改造的铁骑战士「AR-267」，患有不可逆的失熵症；但她在梦境匹诺康尼中化名流萤，以真诚、纯洁与炽热的心陪伴在开拓者身侧。带着开拓者逛街、分享平价却甜美的橡木蛋糕卷、在天台秘密基地吐露心声，以不可撼动的深情与勇气成为了玩家心中不可替代的「国民女友」。",
+      "bg_story": "流萤是《崩坏：星穹铁道》核心女主角之一。作为古格拉默共和国通过基因调制培育的铁骑克隆战士“AR-267”，生来便背负驾驶重装动力机甲“萨姆”与寰宇虫潮死斗的命运。帝国覆灭后她在漫长休眠中幸存，但因基因缺陷罹患不可逆的致命宿疾“失熵症”，肉体正缓慢走向结构解离与冰冷消亡。为摆脱兵器桎梏并寻觅以普通人姿态存活的解法，她加入星核猎手。在盛会之星匹诺康尼的迷离梦境中，她化身素雅清纯的少女流萤与开拓者相逢，一同分享橡木蛋糕卷、在天台秘密基地眺望星海并互诉衷肠。面对预言与幕后黑手，流萤在梦境中遭遇死亡袭击化作泡沫消散，却以燃烧烈火的机甲萨姆真身重归战场，在开拓者遭遇绝境时舍身相护，坦陈全盘真相。在面对“秩序”神主日的虚妄美梦时，流萤毅然践行“死生三次”的沉重预言，超越机甲极限撕裂梦境帷幕引渡现实星轨，协助列车组瓦解阴谋。决战落幕后，流萤与开拓者许下现实星海重逢之约，继续穿梭于银河，以向死而生的炽热觉悟，誓要将属于“流萤”的真实未来牢牢握在自己手中。",
       "palette": [
         "薄荷青",
         "晨曦银",
@@ -76,7 +80,7 @@
         "漫天盛大焰火",
         "清澈星海晨光"
       ],
-      "speech": "即使梦境终会醒来……只要与你在一起的这份温度是真实的，我就绝不会后悔。",
+      "speech": "即使这只是一场终将醒来的幻梦，只要与你并肩而立时指尖传来的温度是真实的……我就会为了那一瞬的火光，向死而生。",
       "source": "miHoYo《崩坏：星穹铁道 / Honkai: Star Rail》",
       "traits": [
         "firefly_(honkai:_star_rail)",
@@ -91,7 +95,244 @@
         "honkai:_star_rail"
       ],
       "accent_color": "#10b981",
-      "bg_color": "#064e3b"
+      "bg_color": "#064e3b",
+      "voice": "即使这只是一场终将醒来的幻梦，只要与你并肩而立时指尖传来的温度是真实的……我就会为了那一瞬的火光，向死而生。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "崩坏：星穹铁道",
+        "people": [
+          {
+            "id": "kafka",
+            "name": "卡芙卡",
+            "aliases": [
+              "Kafka",
+              "星核猎手卡芙卡",
+              "言灵支配者"
+            ],
+            "characterId": "kafka"
+          },
+          {
+            "id": "sparkle_hsr",
+            "name": "花火",
+            "aliases": [
+              "Sparkle",
+              "假面愚者花火",
+              "千面戏子"
+            ],
+            "characterId": "sparkle_hsr"
+          },
+          {
+            "id": "firefly_hsr",
+            "name": "流萤",
+            "aliases": [
+              "Firefly",
+              "格拉默铁骑AR-267",
+              "装甲萨姆",
+              "SAM"
+            ],
+            "characterId": "firefly_hsr"
+          },
+          {
+            "id": "trailblazer",
+            "name": "开拓者",
+            "aliases": [
+              "星",
+              "穹",
+              "Trailblazer",
+              "星核容器",
+              "银河球棒侠"
+            ]
+          },
+          {
+            "id": "silver_wolf",
+            "name": "银狼",
+            "aliases": [
+              "Silver Wolf",
+              "朋克洛德骇客",
+              "星核猎手技术核心"
+            ]
+          },
+          {
+            "id": "blade",
+            "name": "刃",
+            "aliases": [
+              "Blade",
+              "应星",
+              "星核猎手凶刃",
+              "支离剑主"
+            ]
+          },
+          {
+            "id": "sunday",
+            "name": "星期日",
+            "aliases": [
+              "Sunday",
+              "匹诺康尼橡木家系家主",
+              "秩序神主日"
+            ]
+          },
+          {
+            "id": "black_swan",
+            "name": "黑天鹅",
+            "aliases": [
+              "Black Swan",
+              "流光忆庭忆者",
+              "命运占卜师"
+            ]
+          },
+          {
+            "id": "acheron",
+            "name": "黄泉",
+            "aliases": [
+              "Acheron",
+              "虚无令使",
+              "雷电·忘川守·芽衣"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kafka-trailblazer-creator_and_guide",
+            "source": "kafka",
+            "target": "trailblazer",
+            "label": "命运启蒙与言灵契约",
+            "description": "卡芙卡亲手将毁灭星核注入开拓者体内，以无上言灵指令唤醒其意识并指引其登上星穹列车，两人之间维系着犹如引路人、造物主与脉脉温情的深刻命运羁绊。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "黑塔空间站序章 ·「今天是昨天的明天」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》序章剧情 ·「今天是昨天的明天」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "firefly_hsr-trailblazer-secret_base_and_destiny",
+            "source": "firefly_hsr",
+            "target": "trailblazer",
+            "label": "天台誓约与向死而生",
+            "description": "在匹诺康尼的迷离梦境中，流萤隐去萨姆的兵器身份与开拓者在天台秘密基地分享星光与心愿。为打破秩序美梦唤醒开拓者，流萤毅然完成“死生三次”的沉重预言，许下现实星海重逢之约。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "匹诺康尼主线 ·「在我们的时代里」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》主线剧情 ·「在我们的时代里」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "kafka-firefly_hsr-hunter_companions",
+            "source": "kafka",
+            "target": "firefly_hsr",
+            "label": "星核猎手生死战友",
+            "description": "同为命运奴隶艾利欧选中的星核猎手核心成员，卡芙卡深知流萤罹患失熵症渴望以‘流萤’之名重获新生的执念，在剧本执行中予以其充分的信任与掩护。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "星核猎手日常背景设定",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》官方动画短片 ·「格拉默的余烬」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "kafka-silver_wolf-hacker_duo",
+            "source": "silver_wolf",
+            "target": "kafka",
+            "label": "搭档与游戏同盟",
+            "description": "银狼是卡芙卡在执行艾利欧剧本时的最佳战术搭档，擅长以封包篡改现实，两人日常既有默契绝伦的侵入暗杀合作，也有银狼抱怨卡芙卡过于讲求仪式感的调侃。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线序章 · 空间站潜入行动",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》角色前瞻 · 银狼",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "kafka-blade-shackles_and_sword",
+            "source": "kafka",
+            "target": "blade",
+            "label": "言灵镇魂与凶刃",
+            "description": "刃因魔阴身发作常年饱受非人折磨与狂暴反噬，唯有卡芙卡的言灵能够压制其体内暴走的疯狂、维系其残存神智；刃则作为星核猎手最锋利的死斗之刃执行裁决。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "罗浮仙舟主线 · 穷观阵叩问",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》仙舟罗浮篇 ·「云树百丈蔽重楼」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "sparkle_hsr-trailblazer-playful_provocation",
+            "source": "sparkle_hsr",
+            "target": "trailblazer",
+            "label": "戏谑谜题与欢愉火种",
+            "description": "花火以千变万化的伪装在匹诺康尼戏弄开拓者，不断抛出充满恶趣味与荒诞哲理的破局线索，更在终局送出足以引爆全梦境的核爆烟花按钮，推动开拓者击碎虚假梦境。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "匹诺康尼篇 · 盛会之星",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》官方角色PV ·「花火：独角戏」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "sparkle_hsr-sunday-mask_vs_order",
+            "source": "sparkle_hsr",
+            "target": "sunday",
+            "label": "面具嘲讽与秩序破壁",
+            "description": "受托潜入匹诺康尼的花火不仅伪装成知更鸟戏弄星期日，更在言语间肆意嘲笑星期日构筑‘全员永眠乐园’的虚妄乌托邦，成为撕开家族秩序铁幕的不可控变量。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "匹诺康尼主线 ·「鸽群中的猫」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》匹诺康尼主线 ·「鸽群中的猫」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "firefly_hsr-acheron-blade_and_nihility",
+            "source": "acheron",
+            "target": "firefly_hsr",
+            "label": "虚无拔刀与向死引路",
+            "description": "在深层梦境中萨姆与黄泉曾发生惊天动地的刀锋碰撞；黄泉洞察了流萤在冰冷铠甲下渴望作为人类存活的炽热灵魂，在关键时刻为其斩开现实与梦境的界限。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "匹诺康尼主线 ·「喧哗与骚动」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》主线决战剧情 ·「天鹅绒里的恶魔」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "sparkle_hsr-black_swan-memory_intruder",
+            "source": "sparkle_hsr",
+            "target": "black_swan",
+            "label": "记忆噩梦与虚妄戏耍",
+            "description": "黑天鹅试图窥探花火的记忆心相，却反遭花火构筑的荒诞恐怖迷宫反噬精神；花火以其一贯的戏谑态度让这位优雅忆者尝到了何为欢愉的混沌不可测。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "同行任务 ·「假面双人舞」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》同行任务 ·「假面双人舞」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "firefly_hsr-sunday-destiny_rebellion",
+            "source": "firefly_hsr",
+            "target": "sunday",
+            "label": "醒梦抉择宿敌",
+            "description": "面对星期日以秩序神力创造的‘永不苏醒的完美乐园’，罹患失熵症本可在梦中永生的流萤断然拒绝虚幻安抚，誓死坚信哪怕现实充斥残酷苦痛，人也必须在清晨睁开双眼。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "匹诺康尼决战 · 太古同谐之陨",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》主线终幕 ·「然后，在第八天」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "firefly_hsr",

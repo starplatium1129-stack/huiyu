@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "活泼不羁，喜欢用玩笑试探距离",
-        "对自由与陪伴有强烈向往，也藏着孤独",
-        "面对珍视的绘本会安静下来，动作格外小心"
+        "野性不羁",
+        "霸道主动",
+        "极度渴望真爱与归宿",
+        "畏惧被视作怪物",
+        "极致深情",
+        "纯粹执着",
+        "面对同伴展露温柔"
       ],
       "likes": [
-        "蜂蜜",
-        "反复阅读珍藏绘本",
-        "到户外感受风与天空"
+        "浇满甜腻纯蜂蜜的饭菜与棒棒糖",
+        "广（DARLING）的怀抱与亲吻",
+        "翻阅手绘童话绘本《魔物与王子》",
+        "在海风中光脚奔跑",
+        "在广的耳边轻声撒娇"
       ],
       "classic_cg": {
-        "title": "02 · 蜂蜜浇一切",
-        "description": "食堂，她把整瓶蜂蜜豪爽地浇在饭菜上，在周围目瞪口呆中满足地大快朵颐；嘴角沾着蜜转头问「DARLING 也要吗」，是她的款待方式。"
+        "title": "苍穹宇宙尽头的比翼双飞",
+        "description": "浩瀚银河的星芒风暴中，真红天女的庞大机神解构为漫天璀璨的金色光之粒子，少女与少年的灵魂紧紧相拥缠绕，化作穿越千年时空的比翼之鸟飞向故土。"
       },
-      "identity": "DARLING in the FRANXX · 02",
+      "identity": {
+        "role": "女主角 / 叫龙之后裔 / 鹤望兰号专属核心驾驶员",
+        "age": "约16岁（肉体年龄）/ 灵魂历经千年转世",
+        "occupation": "寄宿者驾驶员 / APE特殊亲卫队王牌",
+        "faction": "APE直属特卫队 / 第13都市种植园鹤望兰小队"
+      },
       "tags": [
         "02",
         "DARLING in the FRANXX",
         "日常"
       ],
-      "bg_story": "向往外面世界的少女驾驶员，以红角、粉色长发、绿瞳和棒棒糖为识别点。日常场景保留她好奇又自由的性格，选择食堂、绘本和海边散步等全着装情境。",
+      "bg_story": "流淌着纯正叫龙之血的精英驾驶员，代号Code:002，APE直属特殊亲卫队成员，因与她搭档的男性驾驶员无一例外会在三次出击内丧命，被称为恶名昭彰的“搭档杀手”。02头上长有赤红小角，血液呈奇异的蓝红色。幼年时曾被APE研究所施以极其残忍的人体解剖与生化实验，是年幼的广（Code:016）冒死打破囚笼将她救出，并赠予她甜美的糖果与手绘童话《魔物与王子》。这段被强行消除的记忆，成为她毕生拼命战斗、渴望“变成真正人类”的执念源泉。在第13都市与广重逢后，她一眼认出了命中注定的“DARLING”，并强行与广建立搭档契约。在经历相互猜疑、暴走失控与记忆彻底苏醒后，02放下成为人类的执念，接纳了自己的本质，与广达成绝对的心灵合一，觉醒为终极形态的真红天女鹤望兰。在面对外星侵略者VIRM的大决战中，02与广一同驾驶“鹤望兰·阿帕斯”飞入深邃宇宙，在引爆外星母星后化作比翼双飞的光之鸟。两人灵魂在浩瀚星海中穿梭千年重返地球，在繁衍新生的人类神木之下，转世为一对无角的普通少年少女再次相牵，践行了跨越千年的重逢誓言。",
       "palette": [
         "#db9eae",
         "#282532"
@@ -62,7 +73,197 @@
         "green_eyes"
       ],
       "accent_color": "#db9eae",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "从很久以前开始，你就是我的DARLING了……只要能和你在一起，变成怪物也好，飞向宇宙的尽头也罢，我都毫无所谓！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "DARLING in the FRANXX",
+        "people": [
+          {
+            "id": "zero_two",
+            "name": "02",
+            "aliases": [
+              "Zero Two",
+              "Code:002",
+              "叫龙的后裔",
+              "搭档杀手"
+            ],
+            "characterId": "zero_two"
+          },
+          {
+            "id": "hiro",
+            "name": "广",
+            "aliases": [
+              "Hiro",
+              "ヒロ",
+              "Code:016",
+              "神童",
+              "比翼之鸟"
+            ]
+          },
+          {
+            "id": "ichigo",
+            "name": "莓",
+            "aliases": [
+              "Ichigo",
+              "イチゴ",
+              "Code:015",
+              "第13部队队长"
+            ]
+          },
+          {
+            "id": "goro",
+            "name": "五郎",
+            "aliases": [
+              "Goro",
+              "ゴロー",
+              "Code:056",
+              "守护之盾"
+            ]
+          },
+          {
+            "id": "kokoro",
+            "name": "心",
+            "aliases": [
+              "Kokoro",
+              "ココロ",
+              "Code:556"
+            ]
+          },
+          {
+            "id": "mitsuru",
+            "name": "满",
+            "aliases": [
+              "Mitsuru",
+              "ミツル",
+              "Code:326"
+            ]
+          },
+          {
+            "id": "dr_franxx",
+            "name": "弗兰克斯博士",
+            "aliases": [
+              "Dr. FRANXX",
+              "ヴェルナー・フランク",
+              "维尔纳·法兰克"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "zerotwo-hiro-darling",
+            "source": "zero_two",
+            "target": "hiro",
+            "label": "跨越千年生死与共的命定比翼鸟",
+            "description": "幼年时广用糖果与童话书拯救了囚笼中满身血迹的02；两人在消除记忆后再次相遇，达成绝对的心灵合一觉醒真红鹤望兰，驾驶阿帕斯在宇宙深处引爆敌人，历经千年星海漫游再次转世相牵。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "最终幕 · 星海比翼与千年转世",
+            "evidence": {
+              "title": "TRIGGER / A-1 Pictures · 《DARLING in the FRANXX》官方人物设定",
+              "url": "https://darli-fra.jp/character/"
+            }
+          },
+          {
+            "id": "ichigo-hiro-childhood",
+            "source": "ichigo",
+            "target": "hiro",
+            "label": "青梅竹马与释怀的少女心事",
+            "description": "莓一直深爱着幼时赋予自己名字的广，曾极力反对广与危险的02搭档并深情告白，但在目睹广为了02甘愿化身叫龙的决绝后，选择忍痛退步由衷祝福挚友。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第14话 · 破碎的心扉与成全",
+            "evidence": {
+              "title": "TRIGGER / A-1 Pictures · 《DARLING in the FRANXX》官方故事介绍",
+              "url": "https://darli-fra.jp/story/"
+            }
+          },
+          {
+            "id": "zerotwo-ichigo-clash",
+            "source": "zero_two",
+            "target": "ichigo",
+            "label": "情敌冲突与并肩作战的战友",
+            "description": "初期莓因保护广而对02充满警惕与排斥，两人多次爆发肢体与言语冲突；在叫龙真相揭开与第13都市独立后，莓彻底接纳02为不可替代的核心同伴。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "种植园崩坏篇",
+            "evidence": {
+              "title": "TRIGGER / A-1 Pictures · 《DARLING in the FRANXX》官方人物设定",
+              "url": "https://darli-fra.jp/character/"
+            }
+          },
+          {
+            "id": "goro-ichigo-devotion",
+            "source": "goro",
+            "target": "ichigo",
+            "label": "默默守护的温柔与终成眷属",
+            "description": "五郎多年来以搭档身份包容并守护着心系广的莓，在九死一生的作战中勇敢告白，战后与莓携手重建文明，迎来两人的新生骨肉。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "终局重建篇 · 幸福的终点",
+            "evidence": {
+              "title": "TRIGGER / A-1 Pictures · 《DARLING in the FRANXX》官方故事介绍",
+              "url": "https://darli-fra.jp/story/"
+            }
+          },
+          {
+            "id": "hiro-goro-brotherhood",
+            "source": "hiro",
+            "target": "goro",
+            "label": "肝胆相照的挚友与战友",
+            "description": "两人是第13部队中最深受信赖的男性同伴，五郎深知广背负的重担并全力在背后支撑，广也冒险冲入叫龙体内救出被困的五郎。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "翠雀号救援作战",
+            "evidence": {
+              "title": "TRIGGER / A-1 Pictures · 《DARLING in the FRANXX》官方故事介绍",
+              "url": "https://darli-fra.jp/story/"
+            }
+          },
+          {
+            "id": "kokoro-mitsuru-marriage",
+            "source": "kokoro",
+            "target": "mitsuru",
+            "label": "生命禁忌的觉醒与被洗脑后的重逢",
+            "description": "心拾获人类生育手册后与满互生情愫结为伴侣，遭到APE残酷强行洗脑抹除记忆；然而刻在肉体与灵魂上的爱意打破了洗脑枷锁，两人诞下了新世界的第一批新生儿。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第18话 · 告解之婚与洗脑",
+            "evidence": {
+              "title": "TRIGGER / A-1 Pictures · 《DARLING in the FRANXX》官方故事介绍",
+              "url": "https://darli-fra.jp/story/"
+            }
+          },
+          {
+            "id": "mitsuru-hiro-reconciliation",
+            "source": "mitsuru",
+            "target": "hiro",
+            "label": "童年誓言的释怀与握手言和",
+            "description": "满曾因广忘记了童年‘一起搭档FRANXX’的承诺而深感背叛与怨恨，在得知广被消除记忆的残酷真相后彻底释怀，重新视广为值得托付的兄长与好友。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "记忆复苏篇",
+            "evidence": {
+              "title": "TRIGGER / A-1 Pictures · 《DARLING in the FRANXX》官方故事介绍",
+              "url": "https://darli-fra.jp/story/"
+            }
+          },
+          {
+            "id": "drfranxx-zerotwo-creator",
+            "source": "dr_franxx",
+            "target": "zero_two",
+            "label": "残酷创造者与最后的怜悯",
+            "description": "弗兰克斯博士利用叫龙女王的细胞克隆并制造了02，施以严酷的人体试验；但他也被02与广超越计算的纯爱所震撼，在终末决战中用身躯掩护了鹤望兰飞向宇宙。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "决战花之女王 · 博士的赎罪",
+            "evidence": {
+              "title": "TRIGGER / A-1 Pictures · 《DARLING in the FRANXX》官方人物设定",
+              "url": "https://darli-fra.jp/character/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "zero_two",

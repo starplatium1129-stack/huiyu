@@ -35,27 +35,29 @@
         "signature": "橙红双马尾、蓝瞳与赤红二号机驾驶服"
       },
       "personality": [
-        "极度骄傲自信",
-        "傲娇好强",
-        "渴望被认可与瞩目",
-        "战斗天赋出众骁勇善战",
-        "内心害怕孤独与被抛弃"
+        "骄傲自尊",
+        "火爆好胜",
+        "傲娇毒舌",
+        "战力拔群",
+        "内心极惧孤独脆弱",
+        "重情深潜"
       ],
       "likes": [
-        "完美的驾驶同步率",
-        "受到赞赏与崇拜",
-        "二号机的强大性能",
-        "夏日的明媚阳光"
+        "二号机极致完美的同步率表现",
+        "畅饮甜热可可",
+        "来自世人的掌声与最高赞誉",
+        "痛快击溃敌人的战斗狂欢",
+        "独自沉浸掌机游戏时光"
       ],
       "classic_cg": {
-        "title": "赤红王牌的咆哮",
-        "description": "赤红的EVA二号机立于翻滚的红海与战火之上，少女傲然昂首，红发在狂风中肆意飞扬。"
+        "title": "沸腾湖底的绝境觉醒",
+        "description": "碧绿湖水急剧汽化蒸发的深渊中，二号机高高举起钢铁战舰，橙红发丝在座舱内狂乱飞舞，少女双眸喷薄出决绝怒火，向着苍穹发出震天动地的咆哮。"
       },
       "identity": {
         "role": "EVA二号机专属王牌驾驶员 / 第二适格者",
-        "age": "14岁",
-        "occupation": "初中生 / NERV特务机关王牌驾驶员",
-        "faction": "NERV特务机关 / 德国分部 / 第3新东京市立第1中学"
+        "age": "14岁（生理受EVA诅咒冻结）· 心理历经28岁",
+        "occupation": "NERV王牌驾驶员 / WILLE突击队长",
+        "faction": "特务机关NERV德国分部 / 反NERV组织WILLE"
       },
       "tags": [
         "橙红双马尾",
@@ -65,7 +67,7 @@
         "EVA二号机",
         "王牌驾驶员"
       ],
-      "bg_story": "惣流·明日香·兰格雷是《新世纪福音战士》的女主角之一，德日混血天才少女，EVA二号机王牌驾驶员，二次元「傲娇」概念的集大成者。性格火爆、自尊心极强，拥有极其深厚的心理刻画与战力表现，是动漫史上无可撼动的经典角色。",
+      "bg_story": "德日混血天才少女，自幼展现超凡智识与战斗才情，少年即获大学学位，被选拔为EVA二号机专属王牌驾驶员、第二适格者。幼年亲历母亲因同步实验精神失常、溺爱人偶并自缢身亡的惨绝惨剧，自此铸就了以极度骄傲自负掩饰内心对抛弃与孤独之极度恐惧的厚重心理防线。以君临天下的高傲姿态转入第3新东京市，与真嗣并肩在乐声双人舞中斩杀音乐天使。然而随后遭遇同步率暴跌与鸟天使精神强暴，心灵防线彻底崩塌。在旧剧场版《Air》战略自卫队突袭总部时，二号机在深冷湖底感知到母亲灵魂的温暖拥抱而彻底觉醒，明日香爆发出撕裂苍穹的战意单机全歼自卫队、手撕九台量产机，最终在朗基努斯之枪贯穿中悲壮战至最后一刻；在新剧场版系列中，她身为式波系列仅存个体，背负14年肉身不老的「EVA诅咒」，作为反NERV组织WILLE前线主帅在《终》中挖出左眼封印使徒化决死突袭十三号机。在终极负宇宙海滩被真嗣坦诚告解化开心结后，明日香与自己的执念彻底和解，在没有EVA的全新世界里，迎来了成熟而温暖的人生归宿。",
       "palette": [
         "猩红",
         "明黄",
@@ -92,7 +94,194 @@
         "neon_genesis_evangelion"
       ],
       "accent_color": "#f87171",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "你是笨蛋吗？看着吧，这才是真正王牌的战斗方式！只要妈妈在身边，我就绝不会输给任何人！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "新世纪福音战士",
+        "people": [
+          {
+            "id": "ayanami_rei",
+            "name": "绫波丽",
+            "aliases": [
+              "Ayanami Rei",
+              "丽",
+              "第一适格者",
+              "绫波零",
+              "EVA零号机驾驶员"
+            ],
+            "characterId": "ayanami_rei"
+          },
+          {
+            "id": "asuka_langley",
+            "name": "惣流/式波·明日香·兰格雷",
+            "aliases": [
+              "Asuka Langley",
+              "明日香",
+              "惣流·明日香·兰格雷",
+              "式波·明日香·兰格雷",
+              "第二适格者",
+              "EVA二号机驾驶员"
+            ],
+            "characterId": "asuka_langley"
+          },
+          {
+            "id": "ikari_shinji",
+            "name": "碇真嗣",
+            "aliases": [
+              "Ikari Shinji",
+              "碇真嗣",
+              "第三适格者",
+              "初号机驾驶员"
+            ]
+          },
+          {
+            "id": "nagisa_kaworu",
+            "name": "渚薰",
+            "aliases": [
+              "Nagisa Kaworu",
+              "渚薰",
+              "第五适格者",
+              "第十七使徒自由使徒",
+              "塔布里斯"
+            ]
+          },
+          {
+            "id": "katsuragi_misato",
+            "name": "葛城美里",
+            "aliases": [
+              "Katsuragi Misato",
+              "葛城美里",
+              "NERV作战部长",
+              "WILLE舰长"
+            ]
+          },
+          {
+            "id": "ikari_gendou",
+            "name": "碇源堂",
+            "aliases": [
+              "Ikari Gendou",
+              "碇源堂",
+              "NERV总司令",
+              "人类补完计划制定者"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "ikari_shinji-ayanami_rei-smile_and_salvation",
+            "source": "ikari_shinji",
+            "target": "ayanami_rei",
+            "label": "灵魂共鸣与微笑之救赎",
+            "description": "屋岛作战中真嗣冒死撬开零号机灼热驾驶舱让丽展露微笑；丽在真嗣身上感知到人类的温暖与心跳，并在第三次冲击中打破源堂意志将选择权交付真嗣。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "屋岛作战 / 人类补完计划",
+            "evidence": {
+              "title": "Khara《新世纪福音战士》官方特设站",
+              "url": "https://www.evangelion.co.jp/"
+            }
+          },
+          {
+            "id": "ikari_shinji-asuka_langley-hedgehog_dilemma",
+            "source": "ikari_shinji",
+            "target": "asuka_langley",
+            "label": "刺猬困境与破除心壁的初恋",
+            "description": "同居一室、在乐声中同步击杀音乐天使；两人因极度害怕受伤害而彼此刺痛与试探，历经旧剧场版海滩绝望掐颈与新剧场版坦荡告解，最终在没有EVA的新世界各自走向成熟与释怀。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "乐声合奏训练 / 终局负宇宙海滩",
+            "evidence": {
+              "title": "Khara《新世纪福音战士新剧场版：终》官方资料",
+              "url": "https://www.evangelion.co.jp/final.html"
+            }
+          },
+          {
+            "id": "ayanami_rei-asuka_langley-doll_conflict_and_elevator",
+            "source": "ayanami_rei",
+            "target": "asuka_langley",
+            "label": "人形玩偶之嫌与电梯里的无言对峙",
+            "description": "明日香因对母亲被洋娃娃替代的心理创伤而极度厌恶冷淡顺从的绫波丽，电梯内长达数分钟的静默对峙见证了两人性格与生存理念的极度对立，但面对鸟天使侵蚀时仍产生复杂痛惜。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第22使徒侵蚀战前夕 / NERV电梯会面",
+            "evidence": {
+              "title": "GAINAX《EVA角色资料设定库》",
+              "url": "https://www.gainax.co.jp/"
+            }
+          },
+          {
+            "id": "ikari_shinji-nagisa_kaworu-unconditional_love_and_sacrifice",
+            "source": "ikari_shinji",
+            "target": "nagisa_kaworu",
+            "label": "无条件之爱与残酷的终局牺牲",
+            "description": "在真嗣精神濒临彻底崩溃时给予他唯一的理解、包容与钢琴四手联弹温情，却因自身使徒宿命迫使真嗣亲手驾驶初号机将其捏碎杀死，成为真嗣心中最深刻的创痛。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第24话 · 最后的使徒 / Q联弹之夜",
+            "evidence": {
+              "title": "Khara《新世纪福音战士新剧场版：Q》官方特设",
+              "url": "https://www.evangelion.co.jp/q.html"
+            }
+          },
+          {
+            "id": "katsuragi_misato-ikari_shinji-guardian_and_adult_guidance",
+            "source": "katsuragi_misato",
+            "target": "ikari_shinji",
+            "label": "监护人与成人世界的引导者",
+            "description": "将内向孤独的真嗣接到家中同居照顾，用啤酒、速食与笨拙的温情填补他的家庭缺失；决战前以成年人的热吻与父亲军牌推着真嗣迈向终极抉择。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "日常生活同居 / 旧剧场版第三次冲击前夕",
+            "evidence": {
+              "title": "Khara《新世纪福音战士》官方角色志",
+              "url": "https://www.evangelion.co.jp/"
+            }
+          },
+          {
+            "id": "ikari_gendou-ayanami_rei-creator_and_wife_substitute",
+            "source": "ikari_gendou",
+            "target": "ayanami_rei",
+            "label": "造物主与亡妻唯的执念替身",
+            "description": "碇源堂亲手以亡妻碇唯DNA与莉莉丝肉身克隆出丽，在零号机暴走时舍身烫伤双手救她，自始至终将丽作为发动补完以见唯的纯粹工具与执念容器。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "NERV极秘实验阶段 / 人类补完计划准备期",
+            "evidence": {
+              "title": "Khara《新世纪福音战士》官方设定库",
+              "url": "https://www.evangelion.co.jp/"
+            }
+          },
+          {
+            "id": "ikari_gendou-ikari_shinji-alienation_and_at_field",
+            "source": "ikari_gendou",
+            "target": "ikari_shinji",
+            "label": "疏离抛弃与冷酷父权压迫",
+            "description": "早年将真嗣寄养于伯父家不闻不问，唯有初号机需要驾驶员时才冷酷召回命令其坐上EVA；父子间巨大的心之壁直至终局负宇宙中才在真嗣的聆听下坦露源堂内心的软弱与和解。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "使徒袭来 / 负宇宙父子心之壁对话",
+            "evidence": {
+              "title": "Khara《新世纪福音战士新剧场版：终》官方资料",
+              "url": "https://www.evangelion.co.jp/final.html"
+            }
+          },
+          {
+            "id": "katsuragi_misato-asuka_langley-wille_comrades",
+            "source": "katsuragi_misato",
+            "target": "asuka_langley",
+            "label": "战友羁绊与WILLE前线搭档",
+            "description": "早年一同在葛城家生活，在14年后的近第三次冲击浩劫后，葛城美里担任AAA Wunder舰长，明日香作为前线王牌突击队长，彼此托付生死与人类存续希望。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "WILLE时代 / 《Q》与《终》决战期",
+            "evidence": {
+              "title": "Khara《新世纪福音战士新剧场版：终》官方资料",
+              "url": "https://www.evangelion.co.jp/final.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

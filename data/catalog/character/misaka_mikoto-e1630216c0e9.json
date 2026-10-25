@@ -31,26 +31,30 @@
         "signature": "茶色短发、棕瞳与额前电光"
       },
       "personality": [
-        "热血正义",
-        "不服输",
-        "倔强傲娇",
-        "运动系",
-        "守护弱者"
+        "爽朗好胜",
+        "正义感极强",
+        "傲娇纯情",
+        "责任心过重",
+        "护短坚韧",
+        "对可爱事物毫无抵抗力",
+        "外刚内柔"
       ],
       "likes": [
-        "学园都市的日常",
-        "自动售货机",
-        "（隐藏的）蛙太周边"
+        "呱太（Gekota）相关周边",
+        "贩卖机踢踹与椰子汁",
+        "与上条当麻拌嘴",
+        "常盘台宿舍的日常生活",
+        "畅快的电磁切磋"
       ],
       "classic_cg": {
-        "title": "超电磁炮",
-        "description": "夜空下，她指尖弹出一枚硬币，蓝白色电光贯穿夜幕——学园都市最强电击使。"
+        "title": "指尖跃动的超电磁炮与暴雨铁桥下的痛哭",
+        "description": "在黄昏的学园都市高架上，美琴将游戏代币弹向高空，指尖雷光迸发轰出划破苍穹的橙色雷击光束；而在滂沱暴雨的铁桥上，身心俱疲的她挥拳哭喊着冲向下定决心替她送死的无能力者少年。"
       },
       "identity": {
-        "role": "学园都市 LV5 超能力者（第三位）",
-        "age": "14 岁（初中二年级）",
-        "occupation": "常盘台中学学生",
-        "faction": "常盘台中学"
+        "role": "学园都市第三位超能力者（Level 5） / 常盘台的王牌 / 妹妹们的姐姐",
+        "age": "14岁（初中二年级）",
+        "occupation": "常盘台中学初中生 / 超能力者",
+        "faction": "常盘台中学 / 上条当麻阵营 / 御坂网络"
       },
       "tags": [
         "茶色短发",
@@ -59,7 +63,7 @@
         "电击使",
         "发夹"
       ],
-      "bg_story": "御坂美琴是《某科学的超电磁炮》的主角，学园都市 7 名 LV5 超能力者之一（第三位），能力为电击使（Electromaster），招牌技超电磁炮以街机硬币为弹。常盘台制服为白衬衫+浅棕背心+卡其百褶裙（非水手服）。",
+      "bg_story": "贵族女校常盘台中学二年级生，君临学园都市两百三十万人的第三位超能力者（Level 5），代号“超电磁炮”。幼时出于救治肌肉萎缩患者的善意交出自身DNA地图，却被暗部高层挪用于“绝对能力者进化计划”，量产出两万名克隆人“妹妹们”供第一位一方通行残酷屠戮。得知真相的美琴在孤身突袭暗部基地无果后陷入崩溃与自我毁灭的边缘，最终在暴雨铁桥下被无能力者少年上条当麻以肉身粉碎实验解救，从此对当麻深种情愫与信赖。在大霸星祭中，因木原幻生算计她险些被强行推向“Level 6”神境暴走，得益于食蜂操祈、黑子与上条当麻的舍命救援才化险为夷。进入新约与创约篇章，面对魔神降临、亚雷斯塔清算与爱华斯维度的巨大神话危机，美琴拒绝继续充当被动受保护的弱者，披挂对马格斯驱动铠等尖端黑科技装备，毅然与当麻并肩立于对抗神明与命运的最前线。她既是庇护两万名克隆妹妹的坚强长姐，亦是学园都市永不熄灭的耀眼雷光。",
       "palette": [
         "电光蓝",
         "茶棕",
@@ -85,7 +89,182 @@
         "toaru_kagaku_no_railgun"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "你以为你在跟谁说话呢？我的指尖所跃动的电光，可是能将挡在眼前的一切绝望通通击碎的啊！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "某科学的超电磁炮",
+        "people": [
+          {
+            "id": "misaka_mikoto",
+            "name": "御坂美琴",
+            "aliases": [
+              "Misaka Mikoto",
+              "御坂美琴",
+              "超电磁炮",
+              "常盘台的王牌",
+              "哔哩哔哩"
+            ],
+            "characterId": "misaka_mikoto"
+          },
+          {
+            "id": "shokuhou_misaki",
+            "name": "食蜂操祈",
+            "aliases": [
+              "Shokuhou Misaki",
+              "食蜂操祈",
+              "女王蜂",
+              "Mental Out",
+              "心理掌握",
+              "常盘台女王"
+            ],
+            "characterId": "shokuhou_misaki"
+          },
+          {
+            "id": "kamijou_touma",
+            "name": "上条当麻",
+            "aliases": [
+              "Kamijou Touma",
+              "上条当麻",
+              "幻想杀手",
+              "不幸的高中生",
+              "把妹手"
+            ]
+          },
+          {
+            "id": "shirai_kuroko",
+            "name": "白井黑子",
+            "aliases": [
+              "Shirai Kuroko",
+              "白井黑子",
+              "风纪委员第177支部",
+              "空间移动能力者"
+            ]
+          },
+          {
+            "id": "uiharu_kazari",
+            "name": "初春饰利",
+            "aliases": [
+              "Uiharu Kazari",
+              "初春饰利",
+              "顶尖黑客",
+              "风纪委员",
+              "恒温死守"
+            ]
+          },
+          {
+            "id": "saten_ruiko",
+            "name": "佐天泪子",
+            "aliases": [
+              "Saten Ruiko",
+              "佐天泪子",
+              "无能力者Level 0",
+              "都市传说探求者",
+              "泪子"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kamijou_touma-misaka_mikoto-iron_bridge_salvation",
+            "source": "kamijou_touma",
+            "target": "misaka_mikoto",
+            "label": "暴雨铁桥的救赎与傲娇情愫",
+            "description": "在美琴为阻止两万克隆妹妹屠杀企图自毁时，当麻以血肉之躯在暴雨铁桥下击溃一方通行救回她的世界；从此成为美琴无论遭遇任何灾难都坚信的英雄与暗恋对象。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "妹妹篇（妹妹们事件） / 大霸星祭篇",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+              "url": "https://toaru-project.com/railgun_t/"
+            }
+          },
+          {
+            "id": "shokuhou_misaki-kamijou_touma-unremembered_first_love",
+            "source": "shokuhou_misaki",
+            "target": "kamijou_touma",
+            "label": "永远无法被记住的盛夏初恋与誓约",
+            "description": "幼年被当麻舍命解救，却因当麻脑部神经永久受损导致其大脑永远无法保留关于食蜂的记忆；面对当麻一次次视自己如陌生人，食蜂依然以傲然笑容拼尽全力守护他。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "某科学的超电磁炮T · 大霸星祭 / 新约魔禁第11卷",
+            "evidence": {
+              "title": "电击文库《魔法禁书目录》官方特设",
+              "url": "https://dengekibunko.jp/title/index/"
+            }
+          },
+          {
+            "id": "misaka_mikoto-shokuhou_misaki-rivals_and_allies",
+            "source": "misaka_mikoto",
+            "target": "shokuhou_misaki",
+            "label": "水火不容的常盘台双璧与共斗战友",
+            "description": "常盘台仅有的两位Level 5，平日性格与理念针锋相对、派阀互斥；但在大霸星祭面对木原幻生企图将美琴推向Level 6暴走的绝境中，两人达成极高默契舍命联手破局。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "大霸星祭篇（Level 6进化丧失）",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+              "url": "https://toaru-project.com/railgun_t/"
+            }
+          },
+          {
+            "id": "shirai_kuroko-misaka_mikoto-devoted_roommate",
+            "source": "shirai_kuroko",
+            "target": "misaka_mikoto",
+            "label": "狂热爱慕的室友与生死与共的风纪委员搭档",
+            "description": "常盘台208室同寝室友，常年对美琴抱有极其露骨狂热的痴迷爱慕与肢体接触；但关键战斗中凭借空间移动绝对信赖与支援美琴，是美琴最坚不可摧的后盾。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "超电磁炮常盘台日常生活 / 幻想御手篇",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮》官方网站",
+              "url": "https://toaru-project.com/railgun_t/"
+            }
+          },
+          {
+            "id": "shirai_kuroko-uiharu_kazari-judgment_partners",
+            "source": "shirai_kuroko",
+            "target": "uiharu_kazari",
+            "label": "风纪委员177支部的前后线黄金搭档",
+            "description": "同属第177支部的亲密同僚，初春在后方凭借神乎其技的情报搜索与黑客黑科技提供绝对算力支持，黑子在前线瞬间移动突入破案，多次联手化解学园都市危机。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "风纪委员常态执勤",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮》官方角色介绍",
+              "url": "https://toaru-project.com/railgun_t/character/"
+            }
+          },
+          {
+            "id": "uiharu_kazari-saten_ruiko-close_friends",
+            "source": "uiharu_kazari",
+            "target": "saten_ruiko",
+            "label": "掀裙恶友与互相搀扶的挚友",
+            "description": "日常佐天以掀初春裙子打趣逗乐，在佐天因Level 0自卑误用‘幻想御手’昏迷后初春哭泣奔走营救；佐天则在初春遭遇绑架与危机时凭借敏锐直觉与棒球棒挺身而出。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "幻想御手篇 / 杂乱开放篇",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮》官方角色介绍",
+              "url": "https://toaru-project.com/railgun_t/character/"
+            }
+          },
+          {
+            "id": "misaka_mikoto-saten_ruiko-level_crossing_friendship",
+            "source": "misaka_mikoto",
+            "target": "saten_ruiko",
+            "label": "跨越能力等级的平等友谊",
+            "description": "学园都市顶峰的Level 5与谷底的Level 0在此毫无芥蒂，佐天以爽朗乐观感染美琴并经常分享都市传说线索，美琴则给予佐天平等的尊重与庇护。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "栅川中学与常盘台四人组日常",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+              "url": "https://toaru-project.com/railgun_t/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

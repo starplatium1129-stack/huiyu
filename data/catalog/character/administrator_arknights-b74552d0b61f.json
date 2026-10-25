@@ -29,20 +29,30 @@
         "signature": "黑色短发、黑白黄机能服与护目面罩"
       },
       "personality": [
-        "冷静",
-        "坚定"
+        "绝对冷静",
+        "坚定果敢",
+        "极具大局观",
+        "深受干员信赖",
+        "内敛深沉",
+        "不屈不挠"
       ],
-      "likes": [],
+      "likes": [
+        "规划集成工业物流动线",
+        "核验协议网络连接状态",
+        "调试战术装备与护目面罩",
+        "查阅塔卫二失落历史档案",
+        "与佩丽卡等先遣队员复盘战局"
+      ],
       "identity": {
-        "role": "终末地管理员 / 塔卫二文明保护者",
-        "age": "官方未公开（原稿年龄缺少来源，待核实）",
-        "occupation": "终末地管理员",
-        "faction": "终末地工业"
+        "role": "终末地最高统帅 / 塔卫二文明保护者",
+        "age": "协议冷冻跨越漫长纪元（外表保持青年女性盛年）",
+        "occupation": "终末地工业管理员 / 战地总指挥官",
+        "faction": "终末地工业（Endfield Industries）"
       },
       "tags": [
         "黑色短发、黑白黄机能服与护目面罩"
       ],
-      "bg_story": "管理员与终末地工业的源石和协议网络密切相关，并被视作塔卫二文明的保护者。本档案选用女性形态；种族与精确年龄未公开。日常场景与非默认衣装为创作设定。",
+      "bg_story": "管理员是塔卫二人类开拓史与终末地工业文明最高顺位的核心统御者，亦被全体开拓者与干员奉为“塔卫二文明的终极保护者”。她的身世与源石深层奥秘、全星球自动化集成工业体系以及贯通天地的协议网络紧密绑定。在塔卫二遭遇大停滞浩劫与文明濒临断绝的漫长冰封岁月中，管理员沉睡于深层休眠舱内，直至危机迫近被执行总监佩丽卡全力唤醒。苏醒后的她虽受神经协议休眠影响而遗失了大部分过往记忆，但刻入基因与骨髓的战术指挥本能、冷静卓绝的决断力依然分毫不减。面对百废待兴、侵蚀异象肆虐、天使等神秘造物环伺的极恶绝境，管理员果断接掌大权，以极高效率重启了集成工业流水线、自动化传送带网络与前哨枢纽，率领佩丽卡、陈千语、狼群等各方力量在蛮荒大地上披荆斩棘。在历次主线重大开拓战役中，她不仅在战术指挥室运筹帷幄，更屡次身披黑黄机能风衣亲临交火第一线，以神级权限操控协议终端逆转战局。在最新的主线节点中，随着古老文明遗迹的大门逐步开启，管理员正引领着整颗星球的人类，在绝望的废墟中重新点燃文明的万家灯火。",
       "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
       "traits": [
         "female endministrator (arknights)",
@@ -56,7 +66,7 @@
         "image": "../assets/characters/popular-administrator_arknights.png?v=f8f3262011d5",
         "alt": "管理员立绘"
       },
-      "speech": "协议网络已连接，继续推进开拓。",
+      "speech": "「协议网络已全面接通。无论前路面对的是侵蚀浪潮还是未知的荒原，终末地绝不会停下开拓的脚步——全员，跟随我的指示前进。」",
       "accent_color": "#eab308",
       "bg_color": "#0f172a",
       "lora": {
@@ -66,6 +76,347 @@
         ],
         "recommended_scene": [
           "终末地角色 Anima 出图"
+        ]
+      },
+      "classic_cg": {
+        "title": "协议重连与黎明降临",
+        "description": "在残破的工业塔顶端，身着黑黄机能风衣的管理员摘下护目面罩，极目远眺荒凉雄浑的塔卫二地平线；伴随着她按下终端权限确认，沉寂百年的庞大协议能源网络如同金色巨龙在大地上层层被点亮。"
+      },
+      "voice": "「协议网络已全面接通。无论前路面对的是侵蚀浪潮还是未知的荒原，终末地绝不会停下开拓的脚步——全员，跟随我的指示前进。」",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "明日方舟：终末地",
+        "people": [
+          {
+            "id": "administrator",
+            "name": "管理员",
+            "aliases": [
+              "Administrator",
+              "Endministrator",
+              "女性管理员",
+              "总指挥官"
+            ],
+            "characterId": "administrator_arknights"
+          },
+          {
+            "id": "perlica",
+            "name": "佩丽卡",
+            "aliases": [
+              "Perlica",
+              "监督",
+              "佩丽卡监督",
+              "Supervisor Perlica"
+            ],
+            "characterId": "perlica_arknights"
+          },
+          {
+            "id": "laevatain",
+            "name": "莱万汀",
+            "aliases": [
+              "Laevatain",
+              "莱瓦汀",
+              "终末地特勤干员"
+            ],
+            "characterId": "laevatain_arknights"
+          },
+          {
+            "id": "yvonne",
+            "name": "伊冯",
+            "aliases": [
+              "Yvonne",
+              "イヴォンヌ",
+              "天才工程师",
+              "双枪干员"
+            ],
+            "characterId": "yvonne_arknights"
+          },
+          {
+            "id": "zhuang_fangyi",
+            "name": "庄方宜",
+            "aliases": [
+              "Zhuang Fangyi",
+              "庄天师",
+              "息壤主持天师",
+              "武陵管代"
+            ],
+            "characterId": "zhuang_fangyi_arknights"
+          },
+          {
+            "id": "rossy",
+            "name": "洛茜",
+            "aliases": [
+              "Rossi",
+              "洛茜娜·狼珀·卢皮诺",
+              "狼群首领"
+            ],
+            "characterId": "rossy_arknights"
+          },
+          {
+            "id": "si",
+            "name": "祀",
+            "aliases": [
+              "Si",
+              "小葱",
+              "巨兽代理人",
+              "塔卫二神裔"
+            ],
+            "characterId": "si_arknights"
+          },
+          {
+            "id": "chen_qianyu",
+            "name": "陈千语",
+            "aliases": [
+              "Chen Qianyu",
+              "千语",
+              "终末地近卫干员",
+              "炎国流云剑客"
+            ]
+          },
+          {
+            "id": "wulfgard",
+            "name": "沃尔夫加德",
+            "aliases": [
+              "Wulfgard",
+              "狼卫",
+              "荒原独行剑士",
+              "洛茜的兄长"
+            ]
+          },
+          {
+            "id": "ember",
+            "name": "余烬",
+            "aliases": [
+              "Ember",
+              "战术装甲重装",
+              "终末地重装守卫"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "administrator-perlica-supreme_partnership",
+            "source": "administrator",
+            "target": "perlica",
+            "label": "统帅与执行监督 · 唤醒与托付",
+            "description": "管理员沉睡数载后被佩丽卡监督自休眠舱倾力唤醒，两人形成终末地工业最核心的战术决策与基地统筹黄金中枢，共同抗击塔卫二侵蚀浩劫。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开拓序幕 · 塔卫二基地重启",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》官方网站人物档案",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "administrator-chen_qianyu-vanguard_guard",
+            "source": "chen_qianyu",
+            "target": "administrator",
+            "label": "贴身护卫与赤诚效忠",
+            "description": "继承炎国古老剑技的陈千语视管理员为最崇敬的统帅，冲锋在前线最险恶的裂隙异象区域，誓死确保指挥中枢的安全无虞。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "主线第一章 · 荒野协议勘探",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》实机战术演示记录",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "perlica-chen_qianyu-supervisor_and_executor",
+            "source": "perlica",
+            "target": "chen_qianyu",
+            "label": "指令传达与先锋利刃",
+            "description": "佩丽卡监督统筹自动化基建与战术部署，陈千语则作为行动小队的中坚锋芒精准执行回收协议，两人在多年苦战中形成了无需言语的绝对默契。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线序章 · 协议回收第一序列",
+            "evidence": {
+              "title": "PRTS维基 · 明日方舟：终末地干员编制记录",
+              "url": "https://prts.wiki/w/明日方舟：终末地"
+            }
+          },
+          {
+            "id": "administrator-laevatain-blazing_vanguard",
+            "source": "administrator",
+            "target": "laevatain",
+            "label": "熔火宿命之刃与先锋依仗",
+            "description": "莱万汀手持蕴含上古萨卡兹熔火伟力的同名重剑，虽然性格孤高且受困于记忆碎片，但对管理员的战场指令绝对服从，以千度烈火劈开开拓前路。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线深层勘探 · 熔岩侵蚀带突破",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》官方角色特勤报告",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "chen_qianyu-laevatain-swords_resonance",
+            "source": "chen_qianyu",
+            "target": "laevatain",
+            "label": "双锋交辉 · 剑技切磋与战术配合",
+            "description": "流云剑客陈千语与熔岩重剑士莱万汀在多次特勤攻坚中互为照应，轻灵敏捷的连斩与大开大阖的熔火重劈构成前线最强杀伤组合。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "荒野特勤联合行动",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》战术小队编成档案",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "laevatain-ember-sarkaz_heavy_assault",
+            "source": "laevatain",
+            "target": "ember",
+            "label": "重铠坚盾与熔火巨剑的攻防阵列",
+            "description": "余烬的重装防卫装甲构筑起坚不可摧的防线，为莱万汀释放大范围熔岩烈焰争取关键吟唱间隙，同为精锐特勤战士具有极高的战术默契。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "基地前哨抵御侵蚀潮",
+            "evidence": {
+              "title": "PRTS维基 · 终末地防卫部队编制",
+              "url": "https://prts.wiki/w/明日方舟：终末地"
+            }
+          },
+          {
+            "id": "administrator-yvonne-wild_engineering_loyalty",
+            "source": "administrator",
+            "target": "yvonne",
+            "label": "机械奇才与前哨工业支柱",
+            "description": "瓦伊凡工程师伊冯总能用令人咋舌的手工焊机与天马行空的改装化解致命工业停摆，表面上咬着棒棒糖抱怨加班，内心对管理员的开拓事业极度忠诚。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "基地建设 · 自动化流水线铺设",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》技术干员履历",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "perlica-yvonne-headache_and_reliance",
+            "source": "perlica",
+            "target": "yvonne",
+            "label": "安全规范与违章狂人的拉锯",
+            "description": "佩丽卡监督常因伊冯不按工业标准改装重武器而头痛不已，但每逢外勤设备面临不可逆损毁时，唯有伊冯能奇迹般地逆转乾坤，令佩丽卡托付重任。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "前线基地日常运维",
+            "evidence": {
+              "title": "PRTS维基 · 终末地工程部日志",
+              "url": "https://prts.wiki/w/明日方舟：终末地"
+            }
+          },
+          {
+            "id": "administrator-zhuang_fangyi-wuling_alliance",
+            "source": "administrator",
+            "target": "zhuang_fangyi",
+            "label": "武陵盟约与息壤固化重托",
+            "description": "庄方宜作为武陵科学发展区首席管代兼麒麟天师，代表宏科院与管理员建立战略同盟，以东方玄门神机与终末地工业管网合力镇压裂隙侵蚀。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线第二章 · 裂隙稳定化项目",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》武陵阵营公布资料",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "perlica-zhuang_fangyi-diplomatic_cooperation",
+            "source": "perlica",
+            "target": "zhuang_fangyi",
+            "label": "政务协调与两大势力桥梁",
+            "description": "两位兼具雷厉风行决断力与从容气度的女性领导者，在塔卫二恶劣的开拓环境下迅速破除利益隔阂，实现了宏科院与终末地的高效互信。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "武陵使团入驻终末地基地",
+            "evidence": {
+              "title": "PRTS维基 · 塔卫二地缘政治档案",
+              "url": "https://prts.wiki/w/明日方舟：终末地"
+            }
+          },
+          {
+            "id": "zhuang_fangyi-si-taoist_and_beast_proxy",
+            "source": "zhuang_fangyi",
+            "target": "si",
+            "label": "天师玄法与巨兽大道归一",
+            "description": "庄方宜的麒麟法脉与祀的巨兽代理人权能在异星塔卫二地脉上深度呼应，两人携手引动天地玄黄之息，多次封镇狂暴的古老侵蚀源泉。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "地脉灵境深层勘探",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》世界观设定",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "administrator-rossy-pack_alliance",
+            "source": "administrator",
+            "target": "rossy",
+            "label": "荒原狼群盟约与平民守护誓约",
+            "description": "洛茜以惊人魄力带领民间武装集团“狼群”与终末地工业结盟，管理员为其提供高精医疗与庇护物资，洛茜则以刚猛重剑为终末地构筑荒野外围屏障。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "荒野平民据点接管协议",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》阵营档案：狼群",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "rossy-wulfgard-sibling_torch",
+            "source": "rossy",
+            "target": "wulfgard",
+            "label": "血脉至亲与未竟旗帜的传承",
+            "description": "在兄长“狼卫”因追查侵蚀真相离奇失踪后，年少的洛茜毅然扛起染血的战旗接管狼群，一边守护孤儿同伴一边在整个星球废土上追寻兄长足迹。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "个人剧情 · 荒原白狼之歌",
+            "evidence": {
+              "title": "PRTS维基 · 洛茜角色背景纪实",
+              "url": "https://prts.wiki/w/明日方舟：终末地"
+            }
+          },
+          {
+            "id": "rossy-yvonne-wasteland_firepower_customization",
+            "source": "rossy",
+            "target": "yvonne",
+            "label": "重装改装与荒野勘测互保",
+            "description": "伊冯为狼群粗犷的废土战车与重剑加装高能源石驱动装置，洛茜则在险象环生的地热勘测中以本能的猎手嗅觉无数次提前斩杀潜伏偷袭的侵蚀巨兽。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "荒野前哨重型补给线建立",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》干员互动轶事",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "administrator-si-divine_proxy_inquiry",
+            "source": "administrator",
+            "target": "si",
+            "label": "巨兽神威护道与人间烟火眷恋",
+            "description": "少女外表的神裔代理人“小葱”对管理员的战略智慧与现代化自动化流水线抱有无尽好奇，常在工歇时提笔泼墨为管理员绘制惟妙惟肖的水墨战地速写。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "地脉灵境合作协议达成",
+            "evidence": {
+              "title": "Hypergryph · 《明日方舟：终末地》官方角色图鉴：祀",
+              "url": "https://endfield.hypergryph.com"
+            }
+          },
+          {
+            "id": "chen_qianyu-si-delightful_contrast",
+            "source": "chen_qianyu",
+            "target": "si",
+            "label": "严肃剑客与灵动仙童的日常趣事",
+            "description": "性格一丝不苟、恪守条令的陈千语总被灵动跳脱的祀拉着品尝市井茶点或当画模，两人在严酷艰辛的异星开拓之余构成了最富反差萌的温馨日常景致。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "终末地基地生活工歇纪事",
+            "evidence": {
+              "title": "PRTS维基 · 陈千语与祀干员互动档案",
+              "url": "https://prts.wiki/w/明日方舟：终末地"
+            }
+          }
         ]
       }
     },

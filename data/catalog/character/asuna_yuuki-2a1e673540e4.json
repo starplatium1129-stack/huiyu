@@ -34,21 +34,30 @@
         "signature": "栗色长发、细剑闪烁之光、红白骑士战袍与副团长威严"
       },
       "personality": [
-        "名校优等生的自尊与要强",
-        "对认定之人毫无保留的深情",
-        "战斗中果断凌厉的副团长气场",
-        "居家时贤惠人妻感与傲娇反差"
+        "坚毅勇敢",
+        "温柔人妻力",
+        "大家闺秀知性",
+        "果决干练",
+        "极度深情执着",
+        "包容大度"
       ],
       "likes": [
-        "与你在湖畔木屋一起下厨",
-        "下午茶与高级甜品",
-        "被摸头时嘴硬却不动"
+        "桐人（桐谷和人）",
+        "结衣",
+        "虚拟与现实烹饪料理",
+        "在艾恩葛朗特草坪午休",
+        "陪伴绝剑有纪的记忆"
       ],
       "classic_cg": {
-        "title": "闪光的五连击",
-        "description": "艾恩葛朗特迷宫区，红白战袍飘扬的副团长以细剑划出金色剑气光轨的英姿。"
+        "title": "世界树鸟笼的相聚泪吻",
+        "description": "在妖精之舞巅峰的世界树枝头，突破虚假牢笼的亚丝娜与遍体鳞伤的桐人泪水相拥深吻，宣示现实与虚拟双重爱意的永恒名场面。"
       },
-      "identity": "刀剑神域女主角 · 血盟骑士团副团长 · 闪光（The Lightning Flash）",
+      "identity": {
+        "role": "血盟骑士团副团长 / 创世神史提西亚 / 桐人的唯一伴侣",
+        "age": "高中毕业迈入大学（20代初期）",
+        "occupation": "大学生兼顶级VRMMO攻略者",
+        "faction": "血盟骑士团 / 桐人后宫团队核心"
+      },
       "tags": [
         "刀剑神域",
         "血盟骑士团",
@@ -57,7 +66,7 @@
         "人妻感",
         "骑士女友"
       ],
-      "bg_story": "不折不扣的名门大小姐与全能优等生，却在 Death Game 里蜕变为令全服务器闻风丧胆的「闪光」。以细剑与闪电般的连击守护同伴，也与你在艾恩葛朗特 22 层的湖畔木屋里度过了一段真正的婚姻生活——围裙、晨光与两人份的早餐，是她最珍视的宝物。",
+      "bg_story": "SAO最强公会“血盟骑士团”副团长，现实中为结城综合电子千金。在SAO初期的残酷死亡阴影下曾陷入自闭与绝望拼命练级，被桐人影响重拾对料理与生活温度的向往，两人在第22层购置木屋结为夫妻并收养AI结衣。在75层直面希兹克利夫茅场晶彦时舍身替桐人挡刀化解死局。在ALO妖精之舞篇中被变态须乡软禁于世界树鸟笼，坚守贞洁最终被桐人斩杀须乡营救；圣母圣咏篇中陪伴绝剑有纪走完生命最后一程，继承圣母圣咏十一连击。在Underworld大战中以创世神史提西亚降临，与桐人留在极限加速世界相伴度过两百年无悔漫长时光。无论现实或虚幻，亚丝娜始终是桐人无可撼动的灵魂灯塔与毕生挚爱。",
       "palette": [
         "#e11d48",
         "#f8fafc",
@@ -74,7 +83,196 @@
         "wifely_devotion"
       ],
       "accent_color": "#e11d48",
-      "bg_color": "#7f1d1d"
+      "bg_color": "#7f1d1d",
+      "voice": "我的生命是属于你的，桐人。为你而生，为你而死，无论跨越多少个两百年我都不会后悔。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "刀剑神域",
+        "people": [
+          {
+            "id": "asuna_yuuki",
+            "name": "结城明日奈",
+            "aliases": [
+              "Asuna Yuuki",
+              "亚丝娜",
+              "闪光亚丝娜",
+              "血盟骑士团副团长",
+              "创世神史提西亚"
+            ],
+            "characterId": "asuna_yuuki"
+          },
+          {
+            "id": "asada_shino",
+            "name": "朝田诗乃",
+            "aliases": [
+              "朝田诗乃",
+              "Shino Asada",
+              "Sinon",
+              "冰之狙击手",
+              "太阳神索鲁斯"
+            ],
+            "characterId": "asada_shino"
+          },
+          {
+            "id": "kirito",
+            "name": "桐人",
+            "aliases": [
+              "Kirito",
+              "桐谷和人",
+              "Kirigaya Kazuto",
+              "黑衣剑士",
+              "双剑士",
+              "星王"
+            ]
+          },
+          {
+            "id": "alice_sao",
+            "name": "爱丽丝·辛赛西斯·萨蒂",
+            "aliases": [
+              "Alice Synthesis Thirty",
+              "爱丽丝",
+              "金木犀整合骑士",
+              "Alice Zuberg"
+            ]
+          },
+          {
+            "id": "leafa",
+            "name": "莉法",
+            "aliases": [
+              "Leafa",
+              "桐谷直叶",
+              "Kirigaya Suguha",
+              "风精灵领主助理",
+              "地神提拉利亚"
+            ]
+          },
+          {
+            "id": "yui",
+            "name": "结衣",
+            "aliases": [
+              "Yui",
+              "结衣",
+              "MHCP-0001",
+              "心之咨询程序",
+              "桐人与亚丝娜的女儿"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kirito-asuna_yuuki-transcendent_love_and_two_centuries",
+            "source": "kirito",
+            "target": "asuna_yuuki",
+            "label": "超越虚实的神仙眷侣与生死挚爱",
+            "description": "SAO第22层木屋结为夫妻，75层舍身替桐人挡剑打破系统死则；现实中相濡以沫，UW大战中亚丝娜以神之号降临并留在极限加速世界相伴桐人度过两百年时光。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "SAO攻略期 · 22层新婚 / UW大战极度加速期",
+            "evidence": {
+              "title": "Aniplex《刀剑神域》动画官方网站",
+              "url": "https://www.swordart-online.net/"
+            }
+          },
+          {
+            "id": "kirito-asada_shino-back_to_back_comrades",
+            "source": "kirito",
+            "target": "asada_shino",
+            "label": "背靠背战友与破除心魔的引路人",
+            "description": "GGO中相遇揭开彼此深层PTSD创伤，联手破除死枪刺杀危机，桐人安排诗乃与当年救下之人重逢彻底治愈心结；UW大战中诗乃以太阳神索鲁斯降临极限援护桐人。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "幽灵子弹篇（死枪事件） / 异界战争篇",
+            "evidence": {
+              "title": "Aniplex《刀剑神域II》动画官方网站",
+              "url": "https://www.swordart-online.net/phantom/"
+            }
+          },
+          {
+            "id": "asuna_yuuki-asada_shino-confidantes_and_comrades",
+            "source": "asuna_yuuki",
+            "target": "asada_shino",
+            "label": "互为奥援的情敌战友与知心闺蜜",
+            "description": "现实中常在艾基尔的咖啡吧聚会温情相伴，在死枪事件中亚丝娜在医院为桐人祈祷并信任诗乃；UW异界大战两人作为最高神明账号并肩在前线浴血奋战。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "现实日常 / UW大战爱丽丝争夺战",
+            "evidence": {
+              "title": "川原砾《刀剑神域》官方公式档案",
+              "url": "https://dengekibunko.jp/title/sao/"
+            }
+          },
+          {
+            "id": "kirito-alice_sao-cathedral_vow_and_care",
+            "source": "kirito",
+            "target": "alice_sao",
+            "label": "打破天命的誓约与央都决战羁绊",
+            "description": "央都大圣堂外墙攀登时两人经历生死谈话，桐人唤醒爱丽丝破除右眼封印向公理教会挥剑；在桐人心智封闭的半年里爱丽丝细心照顾推车相伴直至异界战争爆发。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Alicization篇 · 央都大圣堂 / 卢利特村照料期",
+            "evidence": {
+              "title": "Aniplex《刀剑神域 Alicization》官方特设",
+              "url": "https://www.swordart-online.net/alicization/"
+            }
+          },
+          {
+            "id": "asuna_yuuki-alice_sao-rivals_and_allies",
+            "source": "asuna_yuuki",
+            "target": "alice_sao",
+            "label": "异界营地拔剑对峙与并肩护夫",
+            "description": "亚丝娜以创世神史提西亚降临人界军军营探视失智桐人时与爱丽丝拔剑对峙火花四溅，在坦诚彼此对桐人的深切爱意后放下芥蒂，携手在异界大军围攻中杀出血路。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "Alicization War of Underworld · 补给营夜谈",
+            "evidence": {
+              "title": "Aniplex《刀剑神域 War of Underworld》官方特设",
+              "url": "https://www.swordart-online.net/war_of_underworld/"
+            }
+          },
+          {
+            "id": "kirito-leafa-siblings_and_alo_sky",
+            "source": "kirito",
+            "target": "leafa",
+            "label": "兄妹血亲与ALO风精灵天空翱翔",
+            "description": "现实中为堂兄妹，直叶在ALO以风精灵莉法身份与桐人相识倾心，得知真相后在世界树泪流释怀；UW大战以地神提拉利亚降临承受万次贯穿痛苦死守战线。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "ALO妖精之舞篇 · 世界树 / UW大战决死战",
+            "evidence": {
+              "title": "Aniplex《刀剑神域》动画官方网站",
+              "url": "https://www.swordart-online.net/"
+            }
+          },
+          {
+            "id": "yui-kirito-ai_daughter_and_navigator",
+            "source": "yui",
+            "target": "kirito",
+            "label": "心之女儿与万能导航精灵",
+            "description": "在SAO第22层被桐人与亚丝娜收养并认其为父母，被桐人通过管理者权限化作水滴项链保存；此后在所有现实与虚拟世界中化身万能导航精灵全力协助父母。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "SAO第22层收养 / ALO营救行动",
+            "evidence": {
+              "title": "Aniplex《刀剑神域》动画官方网站",
+              "url": "https://www.swordart-online.net/"
+            }
+          },
+          {
+            "id": "yui-asuna_yuuki-maternal_support",
+            "source": "yui",
+            "target": "asuna_yuuki",
+            "label": "母女相称与最贴心的精神支柱",
+            "description": "视亚丝娜为最温柔的母亲，在亚丝娜被困须乡鸟笼时全力引导桐人突破，在现实中亦通过微型摄像头与亚丝娜心心相印，提供全天候战略数据指引。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "世界树营救 / 圣母圣咏篇",
+            "evidence": {
+              "title": "川原砾《刀剑神域》官方公式档案",
+              "url": "https://dengekibunko.jp/title/sao/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "asuna_yuuki",

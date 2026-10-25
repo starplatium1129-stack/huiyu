@@ -33,21 +33,30 @@
         "signature": "红黑和风短裙、狐狸面具、黑发双马尾与赤红眼眸"
       },
       "personality": [
-        "愉悦犯与小恶魔乐子人",
-        "以假面游戏人间",
-        "攻防反转后的嘴硬羞恼",
-        "卸下面具后的真诚依恋"
+        "极度欢愉戏谑",
+        "千面百变",
+        "唯恐天下不乱",
+        "洞悉人心弱点",
+        "任性妄为",
+        "冷眼旁观戏剧"
       ],
       "likes": [
-        "策划颠覆狂欢的恶作剧",
-        "收集各式面具",
-        "和喜欢的人在天台吹风喝汽水"
+        "编排盛大闹剧",
+        "制作整蛊爆炸物",
+        "易容与戏弄各方名流",
+        "精妙的戏剧冲突",
+        "吃街头小吃"
       ],
       "classic_cg": {
-        "title": "梦境千面的狂欢序幕",
-        "description": "在匹诺康尼黄金时刻的钟表广场夜空，勾起狐狸面具露出戏谑坏笑的千面戏子。"
+        "title": "匹诺康尼引爆按钮狂想曲",
+        "description": "在梦境高耸入云的天台顶端，花火单脚站在栏杆边缘，晃动着手里的红绿引爆按钮与狐面具，在璀璨夜空下扬起狂气嘲弄微笑的名场面。"
       },
-      "identity": "崩坏：星穹铁道高人气角色 · 假面愚者成员 · 欢愉令使门徒",
+      "identity": {
+        "role": "假面愚者欢愉信徒 / 戏谑千面的戏剧幕后黑手",
+        "age": "外表少女 / 真实年龄成谜",
+        "occupation": "舞台剧演员兼流浪恶作剧家",
+        "faction": "假面愚者（欢愉星神阿哈信徒）"
+      },
       "tags": [
         "崩坏星穹铁道",
         "假面愚者",
@@ -56,7 +65,7 @@
         "狐狸面具",
         "雌小鬼反差"
       ],
-      "bg_story": "难以捉摸、视世间一切为狂欢舞台的假面愚者。拥有千变万化的化身与无尽的面具，擅长将所有人玩弄于鼓掌之间。看似疯狂而混乱，实则内心有着独属于她自己的浪漫法则，一旦被真正看穿了脆弱防线，就会变成满脸涨红、手足无措的傲娇小少女。",
+      "bg_story": "假面愚者不可捉摸的狂热信徒、桑博在艾普瑟隆的同僚，身兼千面千相、极度危险的戏剧戏谑者。花火将全宇宙视为巨大荒诞的游乐场，追寻着不可预知的纯粹乐子与戏剧张力。在匹诺康尼盛会之星中，她受邀以假面愚者身份深度入局，伪装成知更鸟、桑博与开拓者等多种身份穿梭于星际和平公司、家族与星穹列车各方势力之间。她既暗中为黑天鹅与开拓者送上关键谜题线索，又策划了惊心动魄的全城核爆烟花装置狂欢，用戏谑手段撕碎秩序之神星期日的虚妄美梦，让所有人直面现实的荒谬与真实。在匹诺康尼风波落幕时，她在绚丽烟火中轻蔑而优雅地谢幕退场，踏上前往下一个欢愉舞台的漫游之旅。",
       "palette": [
         "#f43f5e",
         "#881337",
@@ -81,6 +90,243 @@
         "avoid": [
           "fox_mask",
           "kitsune_mask"
+        ]
+      },
+      "voice": "如果一出戏里没有意料之外的反转与烟花，那和死气沉沉的现实有什么区别？来，按下这个按钮试试吧！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "崩坏：星穹铁道",
+        "people": [
+          {
+            "id": "kafka",
+            "name": "卡芙卡",
+            "aliases": [
+              "Kafka",
+              "星核猎手卡芙卡",
+              "言灵支配者"
+            ],
+            "characterId": "kafka"
+          },
+          {
+            "id": "sparkle_hsr",
+            "name": "花火",
+            "aliases": [
+              "Sparkle",
+              "假面愚者花火",
+              "千面戏子"
+            ],
+            "characterId": "sparkle_hsr"
+          },
+          {
+            "id": "firefly_hsr",
+            "name": "流萤",
+            "aliases": [
+              "Firefly",
+              "格拉默铁骑AR-267",
+              "装甲萨姆",
+              "SAM"
+            ],
+            "characterId": "firefly_hsr"
+          },
+          {
+            "id": "trailblazer",
+            "name": "开拓者",
+            "aliases": [
+              "星",
+              "穹",
+              "Trailblazer",
+              "星核容器",
+              "银河球棒侠"
+            ]
+          },
+          {
+            "id": "silver_wolf",
+            "name": "银狼",
+            "aliases": [
+              "Silver Wolf",
+              "朋克洛德骇客",
+              "星核猎手技术核心"
+            ]
+          },
+          {
+            "id": "blade",
+            "name": "刃",
+            "aliases": [
+              "Blade",
+              "应星",
+              "星核猎手凶刃",
+              "支离剑主"
+            ]
+          },
+          {
+            "id": "sunday",
+            "name": "星期日",
+            "aliases": [
+              "Sunday",
+              "匹诺康尼橡木家系家主",
+              "秩序神主日"
+            ]
+          },
+          {
+            "id": "black_swan",
+            "name": "黑天鹅",
+            "aliases": [
+              "Black Swan",
+              "流光忆庭忆者",
+              "命运占卜师"
+            ]
+          },
+          {
+            "id": "acheron",
+            "name": "黄泉",
+            "aliases": [
+              "Acheron",
+              "虚无令使",
+              "雷电·忘川守·芽衣"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kafka-trailblazer-creator_and_guide",
+            "source": "kafka",
+            "target": "trailblazer",
+            "label": "命运启蒙与言灵契约",
+            "description": "卡芙卡亲手将毁灭星核注入开拓者体内，以无上言灵指令唤醒其意识并指引其登上星穹列车，两人之间维系着犹如引路人、造物主与脉脉温情的深刻命运羁绊。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "黑塔空间站序章 ·「今天是昨天的明天」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》序章剧情 ·「今天是昨天的明天」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "firefly_hsr-trailblazer-secret_base_and_destiny",
+            "source": "firefly_hsr",
+            "target": "trailblazer",
+            "label": "天台誓约与向死而生",
+            "description": "在匹诺康尼的迷离梦境中，流萤隐去萨姆的兵器身份与开拓者在天台秘密基地分享星光与心愿。为打破秩序美梦唤醒开拓者，流萤毅然完成“死生三次”的沉重预言，许下现实星海重逢之约。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "匹诺康尼主线 ·「在我们的时代里」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》主线剧情 ·「在我们的时代里」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "kafka-firefly_hsr-hunter_companions",
+            "source": "kafka",
+            "target": "firefly_hsr",
+            "label": "星核猎手生死战友",
+            "description": "同为命运奴隶艾利欧选中的星核猎手核心成员，卡芙卡深知流萤罹患失熵症渴望以‘流萤’之名重获新生的执念，在剧本执行中予以其充分的信任与掩护。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "星核猎手日常背景设定",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》官方动画短片 ·「格拉默的余烬」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "kafka-silver_wolf-hacker_duo",
+            "source": "silver_wolf",
+            "target": "kafka",
+            "label": "搭档与游戏同盟",
+            "description": "银狼是卡芙卡在执行艾利欧剧本时的最佳战术搭档，擅长以封包篡改现实，两人日常既有默契绝伦的侵入暗杀合作，也有银狼抱怨卡芙卡过于讲求仪式感的调侃。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线序章 · 空间站潜入行动",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》角色前瞻 · 银狼",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "kafka-blade-shackles_and_sword",
+            "source": "kafka",
+            "target": "blade",
+            "label": "言灵镇魂与凶刃",
+            "description": "刃因魔阴身发作常年饱受非人折磨与狂暴反噬，唯有卡芙卡的言灵能够压制其体内暴走的疯狂、维系其残存神智；刃则作为星核猎手最锋利的死斗之刃执行裁决。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "罗浮仙舟主线 · 穷观阵叩问",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》仙舟罗浮篇 ·「云树百丈蔽重楼」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "sparkle_hsr-trailblazer-playful_provocation",
+            "source": "sparkle_hsr",
+            "target": "trailblazer",
+            "label": "戏谑谜题与欢愉火种",
+            "description": "花火以千变万化的伪装在匹诺康尼戏弄开拓者，不断抛出充满恶趣味与荒诞哲理的破局线索，更在终局送出足以引爆全梦境的核爆烟花按钮，推动开拓者击碎虚假梦境。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "匹诺康尼篇 · 盛会之星",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》官方角色PV ·「花火：独角戏」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "sparkle_hsr-sunday-mask_vs_order",
+            "source": "sparkle_hsr",
+            "target": "sunday",
+            "label": "面具嘲讽与秩序破壁",
+            "description": "受托潜入匹诺康尼的花火不仅伪装成知更鸟戏弄星期日，更在言语间肆意嘲笑星期日构筑‘全员永眠乐园’的虚妄乌托邦，成为撕开家族秩序铁幕的不可控变量。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "匹诺康尼主线 ·「鸽群中的猫」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》匹诺康尼主线 ·「鸽群中的猫」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "firefly_hsr-acheron-blade_and_nihility",
+            "source": "acheron",
+            "target": "firefly_hsr",
+            "label": "虚无拔刀与向死引路",
+            "description": "在深层梦境中萨姆与黄泉曾发生惊天动地的刀锋碰撞；黄泉洞察了流萤在冰冷铠甲下渴望作为人类存活的炽热灵魂，在关键时刻为其斩开现实与梦境的界限。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "匹诺康尼主线 ·「喧哗与骚动」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》主线决战剧情 ·「天鹅绒里的恶魔」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "sparkle_hsr-black_swan-memory_intruder",
+            "source": "sparkle_hsr",
+            "target": "black_swan",
+            "label": "记忆噩梦与虚妄戏耍",
+            "description": "黑天鹅试图窥探花火的记忆心相，却反遭花火构筑的荒诞恐怖迷宫反噬精神；花火以其一贯的戏谑态度让这位优雅忆者尝到了何为欢愉的混沌不可测。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "同行任务 ·「假面双人舞」",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》同行任务 ·「假面双人舞」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          },
+          {
+            "id": "firefly_hsr-sunday-destiny_rebellion",
+            "source": "firefly_hsr",
+            "target": "sunday",
+            "label": "醒梦抉择宿敌",
+            "description": "面对星期日以秩序神力创造的‘永不苏醒的完美乐园’，罹患失熵症本可在梦中永生的流萤断然拒绝虚幻安抚，誓死坚信哪怕现实充斥残酷苦痛，人也必须在清晨睁开双眼。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "匹诺康尼决战 · 太古同谐之陨",
+            "evidence": {
+              "title": "米哈游《崩坏：星穹铁道》主线终幕 ·「然后，在第八天」",
+              "url": "https://sr.mihoyo.com/"
+            }
+          }
         ]
       }
     },

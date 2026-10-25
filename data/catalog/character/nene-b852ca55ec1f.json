@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nene",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-25T14:46:00.632106+00:00",
   "data": {
     "id": "nene",
     "profile": {
@@ -32,30 +32,32 @@
         "signature": "银白低双马尾、紫瞳与呆毛"
       },
       "personality": [
-        "温柔体贴",
+        "端庄温柔",
         "认真负责",
-        "在校人缘很好",
-        "容易害羞慌乱",
-        "紧张时会不慎自曝",
-        "关键时刻坚定"
+        "羞怯纯情",
+        "牺牲奉献",
+        "极易慌乱自曝",
+        "外柔内韧",
+        "深情依恋"
       ],
       "likes": [
-        "家人平安",
-        "安稳的校园生活",
-        "与信任的人分享秘密",
-        "超自然研究会的伙伴"
+        "保科柊史",
+        "家人的安康",
+        "自制便当与料理",
+        "超自然研究会活动",
+        "宁静的图书室角落"
       ],
       "classic_cg": {
-        "title": "图书馆里被撞破的秘密",
-        "description": "平日从容温柔的宁宁，因为无法说明的契约代价陷入慌乱；秘密被看见后，她的羞耻、脆弱与信任也由此展开。"
+        "title": "图书室失控的秘密与黄昏车站的重逢",
+        "description": "在黄昏封闭的昏暗图书室中，因魔石代价而面泛潮红、衣衫凌乱的宁宁在绝望羞耻中被柊史撞破；而在命运收束的车站黄昏，重新寻回记忆的柊史飞奔相拥，宁宁在泪水与晚风中迎来了属于凡人少女的真正救赎。"
       },
       "identity": {
-        "role": "与契约代价抗争的魔女",
-        "age": "本篇高中生 / After Story 成年",
-        "occupation": "姬松学院学生",
-        "faction": "超自然研究会"
+        "role": "背负残酷契约代价的纯情魔女 / 救赎与被救赎的恋人",
+        "age": "17岁（本篇高二）/ 23岁（后日谈成婚）",
+        "occupation": "姬松学园学生 / 超自然研究会副会长（后日谈为职场新人与妻子）",
+        "faction": "超自然研究同好会 / 保科家"
       },
-      "voice": "等、等等！刚才的事情不准说出去……绝对不准！",
+      "voice": "等、等等！刚才的事情请全部忘记……不准说出去，绝对不准！但是……如果是柊史同学的话，我想相信你。",
       "voiceJa": "気にしないで下さい。自分の分を毎日作ってますから",
       "tags": [
         "银白长发",
@@ -65,7 +67,7 @@
         "发带",
         "魔女服"
       ],
-      "bg_story": "绫地宁宁是《魔女的夜宴》的女主角之一。她在学校里温柔、认真又受欢迎，却一直独自隐瞒成为魔女后必须承担的契约代价。被柊史察觉秘密后，她会因为羞耻和焦虑变得语无伦次，甚至不小心越解释越暴露；但真正面对家人、契约与重要之人的选择时，她又有非常坚定的一面。After Story 场景应突出她获得安全感后的依恋、生活感与仍然容易害羞的反差，而不是把她写成契约设定之外的诱惑型角色或无条件顺从的人偶。",
+      "bg_story": "姬松学园二年级学生，在校内以端庄温婉、成绩优异的大和抚子形象深受欢迎，真实身份却是与魔石签订契约的“魔女”。童年时为了拯救患重病命悬一线的弟弟，她被迫接受残酷而羞耻的契约代价——定期产生不可遏制的生理发情冲动，必须独自暗中排解并收集心之碎片。在图书室自慰排解发作时不幸被男主角保科柊史撞破，秘密曝光后从最初的慌乱羞愤、越描越黑，到在柊史全心全意的体谅与协助下结为同盟，逐渐向对方敞开尘封的心扉并坠入爱河。当心之碎片收集齐备时，魔石的诅咒降临——愿望达成之日，世间所有人关于宁宁的记忆都将被彻底抹除。宁宁为了不让柊史痛苦，选择独自背负遗忘与孤独在世界上彻底消失。然而柊史凭借刻骨铭心的爱与残存既视感跨越世界线的抹消再次寻回了她，彻底粉碎了魔女的宿命。在解除诅咒后，宁宁重获平凡而温暖的青春；后日谈中两人相濡以沫顺利步入婚姻殿堂，宁宁终于能坦然依靠心爱之人，过上了平静幸福的圆满生活。",
       "palette": [
         "月光银",
         "魔女紫",
@@ -225,7 +227,104 @@
         }
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "魔女的夜宴",
+        "people": [
+          {
+            "id": "nene",
+            "name": "绫地宁宁",
+            "aliases": [
+              "綾地寧々",
+              "Ayachi Nene"
+            ],
+            "characterId": "nene"
+          },
+          {
+            "id": "hoshina_shuuji",
+            "name": "保科柊史",
+            "aliases": [
+              "保科柊史",
+              "Hoshina Shuuji"
+            ]
+          },
+          {
+            "id": "inaba_meguru",
+            "name": "因幡巡",
+            "aliases": [
+              "因幡めぐる",
+              "Inaba Meguru"
+            ]
+          },
+          {
+            "id": "togakushi_touko",
+            "name": "户隐憧子",
+            "aliases": [
+              "戸隠憧子",
+              "Togakushi Touko"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "nene-shuuji-classmates",
+            "source": "nene",
+            "target": "hoshina_shuuji",
+            "label": "同班同学",
+            "description": "宁宁与保科柊史是同班同学；两人的相遇从各自不愿公开的秘密展开。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "发行商 · Steam 作品介绍",
+              "url": "https://store.steampowered.com/app/888790/Sabbat_of_the_Witch/"
+            }
+          },
+          {
+            "id": "touko-nene-senior",
+            "source": "togakushi_touko",
+            "target": "nene",
+            "label": "高一年级的学姐",
+            "description": "憧子是学生会长与三年级的人气学姐，宁宁则是二年级学生。这里记录年级关系，不将其直接写成亲密好友。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 户隐憧子官方介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+            }
+          },
+          {
+            "id": "meguru-shuuji-help",
+            "source": "inaba_meguru",
+            "target": "hoshina_shuuji",
+            "label": "请求帮助",
+            "description": "巡想改变交友不顺的处境，鼓起勇气向柊史等人求助。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 因幡巡官方介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+            }
+          },
+          {
+            "id": "shuuji-nene-secret",
+            "source": "hoshina_shuuji",
+            "target": "nene",
+            "label": "发现她的秘密",
+            "description": "柊史偶然发现宁宁隐瞒的秘密，两人的日常由此发生变化。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "共通线 · 秘密被发现后",
+            "evidence": {
+              "title": "柚子社 · 官方故事介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/story.html"
+            }
+          }
+        ]
+      }
     }
   }
 }

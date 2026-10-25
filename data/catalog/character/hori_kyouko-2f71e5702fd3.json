@@ -29,23 +29,36 @@
       },
       "personality": [
         "开朗利落",
-        "重视家人",
-        "亲近的人面前更坦率"
+        "顾家贤惠",
+        "强烈反差萌",
+        "独占欲极强",
+        "略带抖S特质",
+        "害怕寂寞与被遗忘",
+        "深情体贴"
       ],
       "likes": [
-        "看恐怖电影"
+        "重口味恐怖悬疑电影",
+        "做家务与照料弟弟创太",
+        "宫村伊澄身上的耳洞与刺青",
+        "挑选超市特价生鲜食材",
+        "冬日被炉里的蜜柑"
       ],
       "classic_cg": {
-        "title": "放学到主妇的十分钟切换",
-        "description": "玄关，她一只手还拎着书包，另一只手已经抓起围裙，头发随手扎起；镜子里还是学校的精致形象，镜外的她已经切换到家务模式，构图定格在「变身中」的瞬间。"
+        "title": "暖光玄关前的心跳撞破",
+        "description": "堀家玄关暖黄的灯影下，素颜扎发、腰系围裙的少女同耳垂满是银环的俊美少年相对而立，在彼此最狼狈真实的秘密暴露在空气中的刹那，听见了青春萌动的初声。"
       },
-      "identity": "Horimiya · 堀京子",
+      "identity": {
+        "role": "女主角 / 操持家庭的贤惠长姐与校园校花",
+        "age": "17岁 → 18岁（高中毕业）/ 后日谈成年",
+        "occupation": "片桐高中学生（毕业）/ 职业女性兼家庭主妇",
+        "faction": "片桐高中三年一班 / 堀家与宫村家"
+      },
       "tags": [
         "Horimiya",
         "堀京子",
         "全年龄日常"
       ],
-      "bg_story": "在学校开朗受欢迎、回家便熟练操持家务的高中生。照顾弟弟、准备晚饭和与宫村相处，让旁人看见她利落外表下会害羞、会赌气也会温柔的一面。校园长发与后期短发造型应按时间线区分。",
+      "bg_story": "片桐高中三年级学生，容貌靓丽端庄、成绩名列前茅、深受全校师生欢迎的班级风云人物。然而在光鲜的校园形象背后，由于双亲长期忙于工作，京子每天放学后都必须火速卸掉妆容、褪下精致服饰，扎起头发穿上围裙，承担起买菜做饭、洗衣打扫以及照看年幼弟弟创太的全部家务，过着近乎全职主妇的隐秘生活。某天，同班看似阴暗死宅的宫村伊澄护送受伤的创太回家，两人猝不及防地撞破了彼此隐藏的秘密（宫村身上布满耳洞与刺青，京子则是素面朝天的持家姐姐）。以共同的秘密为契机，宫村开始频繁出入堀家，京子在他面前逐渐卸下坚强面具，展现出暴躁、依赖甚至略带受虐与支配反差的真实自我。两人在相处中情愫渐深，当宫村剪短头发并向她深情告白后，京子毫不犹豫地握住了他的手，两人在雪夜里互相交付心身，并在毕业前夕许下婚约。在全16卷完结大结局的高中毕业典礼上，京子剪去长发告别过去；在后日谈中，京子与宫村正式结为夫妻，育有一子宫村京平，曾经青涩酸甜的秘密最终酿成了平凡而深厚的家庭幸福。",
       "palette": [
         "#d2a475",
         "#775438"
@@ -61,7 +74,91 @@
         "brown_eyes"
       ],
       "accent_color": "#d2a475",
-      "bg_color": "#775438"
+      "bg_color": "#775438",
+      "voice": "不管别人怎么看你……我所认识的宫村，就是属于我一个人的宫村，绝对不会让给任何人！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "堀与宫村",
+        "people": [
+          {
+            "id": "hori_kyouko",
+            "name": "堀京子",
+            "aliases": [
+              "堀京子",
+              "Hori Kyouko"
+            ],
+            "characterId": "hori_kyouko"
+          },
+          {
+            "id": "miyamura_izumi",
+            "name": "宫村伊澄",
+            "aliases": [
+              "宮村伊澄",
+              "Miyamura Izumi"
+            ]
+          },
+          {
+            "id": "ishikawa_toru",
+            "name": "石川透",
+            "aliases": [
+              "石川透",
+              "Ishikawa Toru"
+            ]
+          },
+          {
+            "id": "yoshikawa_yuki",
+            "name": "吉川由纪",
+            "aliases": [
+              "吉川由紀",
+              "Yoshikawa Yuki"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "hori-miyamura-secret",
+            "source": "hori_kyouko",
+            "target": "miyamura_izumi",
+            "label": "互知隐秘与家庭依恋",
+            "description": "辣妹外表下操持家务的堀，与阴沉外表下满是耳洞纹身的宫村在校外偶遇，因分享只有彼此知晓的真实自我而坠入深情爱河。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 秘密的反差日常",
+            "evidence": {
+              "title": "SQUARE ENIX · 《堀与宫村》官方动画网站",
+              "url": "https://horimiya-anime.com/"
+            }
+          },
+          {
+            "id": "hori-miyamura-engagement",
+            "source": "miyamura_izumi",
+            "target": "hori_kyouko",
+            "label": "毕业求婚与终生托付",
+            "description": "自卑被彻底治愈的宫村在大雪纷飞的初诣参拜时向堀求婚，立誓一生守护她与创太，两人圆满步入毕业殿堂。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终章 · 毕业典礼",
+            "evidence": {
+              "title": "SQUARE ENIX · 《堀与宫村》官方动画网站",
+              "url": "https://horimiya-anime.com/"
+            }
+          },
+          {
+            "id": "miyamura-ishikawa-bestfriends",
+            "source": "miyamura_izumi",
+            "target": "ishikawa_toru",
+            "label": "情敌释怀与无可替代的挚友",
+            "description": "石川最初暗恋堀，在明白堀对宫村的心意后坦然放手，反过来成为宫村在校园里最交心、最护短的铁哥们儿。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 少年心事",
+            "evidence": {
+              "title": "SQUARE ENIX · 《堀与宫村》官方动画网站",
+              "url": "https://horimiya-anime.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "hori_kyouko",

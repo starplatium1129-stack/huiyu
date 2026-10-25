@@ -36,27 +36,31 @@
         "signature": "亮面粉白恒温紧身服、机械兔耳耳机、巨型胡萝卜反器材狙击枪与称呼指挥官为“兔子先生”"
       },
       "personality": [
-        "极寒特战部队「无限轨道」所属妮姬，活在不可思议之国童话中的天真少女",
-        "因机体存在严重的高热散热缺陷，常年维持极高体温，必须身穿高科技恒温紧身服",
-        "把残酷恐怖的地表废土幻视成《爱丽丝梦游仙境》，将指挥官视作拯救自己的「兔子先生」",
-        "性格极度纯真善良、不谙世事，对兔子先生怀有毫无保留的信赖与亲昵依恋",
-        "手持威力骇人的胡萝卜重型反器材狙击枪，在超远距离能精准抹杀任何庞大机械敌人"
+        "纯洁烂漫的梦幻童话心智",
+        "对兔子先生全心全意的亲昵依赖",
+        "战场上一击必杀的致命专注力",
+        "受高热折磨却乐观坚强的毅力",
+        "天真无邪不谙世事",
+        "对同伴怀有极度纯粹的善意",
+        "偶尔因机体过热流露的娇弱与软萌"
       ],
       "likes": [
-        "和兔子先生（指挥官）待在一起",
-        "粉红色的草莓味甜点与马卡龙",
-        "胡萝卜图案的一切可爱玩偶与重装狙击枪",
-        "在极寒雪地里被兔子先生紧紧拥抱取暖"
+        "和最喜欢的兔子先生（指挥官）紧紧牵手拥抱取暖",
+        "造型可爱的小白兔与胡萝卜玩偶周边",
+        "草莓味马卡龙与粉色奶油泡芙",
+        "保养自己的巨型胡萝卜反器材狙击步枪",
+        "在漫天风雪中与鲁德米拉巡逻堆雪人",
+        "听兔子先生在床头讲述睡前童话"
       ],
       "classic_cg": {
-        "title": "极地雪原胡萝卜狙击枪经典战姿",
-        "description": "漫天风雪的极地冰原上，粉白紧身衣与兔耳耳机少女怀抱巨型胡萝卜反器材狙击枪俏皮眨眼，极致身段与致命反差璀璨动人。"
+        "title": "极地冰风中的胡萝卜狙击瞄准",
+        "description": "呼啸的极地暴雪之中，身着粉白高光恒温胶衣的爱丽丝轻按机械兔耳耳机，单膝跪于厚重积雪之上。巨型胡萝卜狙击枪管喷吐着炽热高能粒子，少女宛如宝石般澄澈的天蓝眼眸透过瞄准镜凝视目标，在残酷冰原上绽放出梦幻而致命的反差之美。"
       },
       "identity": {
-        "role": "无限轨道部队所属 / 梦幻神射手妮姬",
-        "age": "青年",
-        "occupation": "狙击手 / 奇境漫游者",
-        "faction": "方舟 · 无限轨道部队（Unlimited）"
+        "role": "无限轨道部队特等射手 / 漫游雪原的梦境爱丽丝",
+        "age": "少女~青年外观",
+        "occupation": "妮姬 / 远程反器材狙击手 / 极地救援兵",
+        "faction": "泰特拉工业（Tetra Line） / 无限轨道部队（Unlimited）"
       },
       "tags": [
         "粉发",
@@ -69,7 +73,7 @@
         "反差萌",
         "胜利女神：妮姬"
       ],
-      "bg_story": "爱丽丝是《胜利女神：妮姬》中人气极高的标志性角色之一。曾是患有重病不得不接受妮姬改造的人类少女，改造后因大脑对残酷现实的防御机制与机体异常高热，形成了将整个世界认知为童话奇境的奇特心智。她被编入驻守极寒地表的特战部队「无限轨道」，与同伴鲁德米拉一同守护地表幸存者。在偶遇指挥官后，她坚信指挥官就是童话中带领自己寻找幸福的「兔子先生」。在梦幻天真而充满爱意的目光注视下，她用那支能轰碎一切绝望的胡萝卜重型狙击枪，一次次为兔子先生扫清前进道路上的所有阴霾。",
+      "bg_story": "爱丽丝是《胜利女神：妮姬》中人气极高的标志性角色之一，驻守极寒地表的特战部队“无限轨道”特等射手。人类时期曾是饱受重病折磨卧床不起的少女，因濒死接受妮姬改造，但机体特化反应堆存在严重散热缺陷，常年处于致命超高温状态，必须常年贴身穿着高科技恒温紧身胶衣维持冷却。为了防止脆弱的心智被改造创伤与地表废土的惨状摧毁，她的认知系统构筑了童话式心理防御机制——将莱彻肆虐的人间炼狱幻视成绚丽的《爱丽丝梦游仙境》，将机械怪物视为“扑克牌兵”，将同伴鲁德米拉视为“女王殿下”。当她在雪原中偶遇主角指挥官时，认定对方就是命中注定引导自己追寻幸福的“兔子先生”，从此报以毫无保留的信赖与亲昵依恋。在主线雪原极地探索与朝圣者追踪战役中，爱丽丝手持大口径胡萝卜重型狙击步枪，以惊人的远距直觉轻松抹杀巨型莱彻与异端儿。无论现实多么残酷，只要依偎在兔子先生温暖的怀抱中，爱丽丝便能驱散所有寒冷与恐惧，化身为极地冰原上最纯净也最致命的奇境守护者。",
       "palette": [
         "樱花嫩粉",
         "冰晶霜白",
@@ -99,7 +103,296 @@
         "goddess_of_victory:_nikke"
       ],
       "accent_color": "#f472b6",
-      "bg_color": "#1c0e15"
+      "bg_color": "#1c0e15",
+      "voice": "兔子先生！今天爱丽丝也有乖乖听话哦！快看，爱丽丝用胡萝卜把那些大铁块怪物全都变成小红心了呢，快来抱抱爱丽丝吧！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "胜利女神：妮姬",
+        "people": [
+          {
+            "id": "dorothy_nikke",
+            "name": "桃乐丝",
+            "aliases": [
+              "Dorothy",
+              "桃乐丝",
+              "ドロシー",
+              "伊甸园统帅"
+            ],
+            "characterId": "dorothy_nikke"
+          },
+          {
+            "id": "rapi_nikke",
+            "name": "拉毗",
+            "aliases": [
+              "Rapi",
+              "ラピ",
+              "拉毗",
+              "反击小队队长"
+            ],
+            "characterId": "rapi_nikke"
+          },
+          {
+            "id": "alice_nikke",
+            "name": "爱丽丝",
+            "aliases": [
+              "Alice",
+              "アリス",
+              "爱丽丝",
+              "兔子爱丽丝"
+            ],
+            "characterId": "alice_nikke"
+          },
+          {
+            "id": "cinderella_nikke",
+            "name": "灰姑娘",
+            "aliases": [
+              "Cinderella",
+              "シンデレラ",
+              "灰姑娘",
+              "水晶女王",
+              "阿娜奇"
+            ],
+            "characterId": "cinderella_nikke"
+          },
+          {
+            "id": "anis_nikke",
+            "name": "阿尼斯",
+            "aliases": [
+              "Anis",
+              "アニス",
+              "阿尼斯",
+              "苏打水少女"
+            ],
+            "characterId": "anis_nikke"
+          },
+          {
+            "id": "commander_nikke",
+            "name": "指挥官",
+            "aliases": [
+              "Commander",
+              "指挥官",
+              "指挥官阁下",
+              "兔子先生"
+            ]
+          },
+          {
+            "id": "marian_modernia",
+            "name": "玛丽安/神罚",
+            "aliases": [
+              "Marian",
+              "Modernia",
+              "玛丽安",
+              "神罚",
+              "モダニア",
+              "マリアン"
+            ]
+          },
+          {
+            "id": "red_hood",
+            "name": "小红帽",
+            "aliases": [
+              "Red Hood",
+              "レッドフード",
+              "小红帽",
+              "初代女神"
+            ]
+          },
+          {
+            "id": "ludmilla_nikke",
+            "name": "鲁德米拉",
+            "aliases": [
+              "Ludmilla",
+              "ルドミラ",
+              "女王殿下",
+              "无限轨道队长"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "commander_nikke-rapi_nikke-unbreakable_shield",
+            "source": "commander_nikke",
+            "target": "rapi_nikke",
+            "label": "生死相托的坚盾与誓约",
+            "description": "从序章开端平等待人的真诚相待融化了拉毗冷彻自闭的心智防线；拉毗将指挥官视为生命中唯一的寄托，数度超越机体散热红线唤醒过载火力誓死护其周全。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线第0章至全线战役",
+            "evidence": {
+              "title": "胜利女神：妮姬官方剧情档案 · 反击小队战役记录",
+              "url": "https://wiki.biligame.com/nikke/%E6%8B%89%E6%AF%97"
+            }
+          },
+          {
+            "id": "commander_nikke-anis_nikke-humorous_reliance",
+            "source": "commander_nikke",
+            "target": "anis_nikke",
+            "label": "毒舌吐槽与至纯信赖",
+            "description": "亲历名利场虚伪残酷而封闭真心的阿尼斯，在指挥官屡次舍命相救后彻底放下防备；平日里嘴硬调侃，关键时刻却是不惜粉身碎骨为指挥官叫板不公的心灵盾牌。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "反击小队地面探索与主线历程",
+            "evidence": {
+              "title": "泰特拉工业妮姬档案 · 阿尼斯角色剧情",
+              "url": "https://wiki.biligame.com/nikke/%E9%98%BF%E5%B0%BC%E6%96%AF"
+            }
+          },
+          {
+            "id": "rapi_nikke-anis_nikke-counters_duo",
+            "source": "rapi_nikke",
+            "target": "anis_nikke",
+            "label": "反击小队战术双子星",
+            "description": "一个沉着冷静、严守军规的战术指挥核心，一个嘴硬心软、活力四射的重装掷弹手，截然不同的性格在枪林弹雨中磨砺出托付后背的深厚生死羁绊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线共通篇章 · 反击小队日常作战",
+            "evidence": {
+              "title": "胜利女神：妮姬官方战术部队档案 · 反击小队",
+              "url": "https://wiki.biligame.com/nikke/%E5%8F%8D%E5%87%BB%E5%B0%8F%E9%98%9F"
+            }
+          },
+          {
+            "id": "rapi_nikke-red_hood-soul_symbiosis",
+            "source": "rapi_nikke",
+            "target": "red_hood",
+            "label": "共生宿体与意志传承",
+            "description": "初代传奇朝圣者小红帽的核心长年寄宿在拉毗体内，在绝境中唤醒神级战力；一周年战役二人心智交融坦诚释怀，小红帽将守护未来的意志彻底托付给拉毗后安然长眠。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "一周年特别篇 · RED ASH / 主线第24-26章",
+            "evidence": {
+              "title": "妮姬官方周年战役剧情 · 小红帽与拉毗共鸣记录",
+              "url": "https://wiki.biligame.com/nikke/%E5%B0%8F%E7%BA%A2%E5%B8%BD"
+            }
+          },
+          {
+            "id": "commander_nikke-marian_modernia-eternal_redemption",
+            "source": "commander_nikke",
+            "target": "marian_modernia",
+            "label": "永恒执念与救赎归途",
+            "description": "序章中因被侵蚀而遭指挥官痛心处决的初始天使，后被改造成异端儿神罚；指挥官跨越千难万险将其夺回并净化，成为神罚心智中至高无上的守护执念与情感坐标。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线第7-14章 · 神罚夺回战",
+            "evidence": {
+              "title": "胜利女神：妮姬主线战役核心档案 · 玛丽安与神罚",
+              "url": "https://wiki.biligame.com/nikke/%E7%A5%9E%E7%BD%9A"
+            }
+          },
+          {
+            "id": "rapi_nikke-marian_modernia-cherished_sisterhood",
+            "source": "rapi_nikke",
+            "target": "marian_modernia",
+            "label": "初心战友与誓死夺回",
+            "description": "亲历玛丽安的牺牲与异端儿重构，拉毗在面对神罚时始终保持克制与深藏的悲恸，在夺回玛丽安的心智守护战中充当最坚定的防线与温柔大姐姐。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线第13-14章 · 极乐净土交锋",
+            "evidence": {
+              "title": "反击小队救赎档案 · 夺回玛丽安作战记录",
+              "url": "https://wiki.biligame.com/nikke/%E7%A5%9E%E7%BD%9A"
+            }
+          },
+          {
+            "id": "commander_nikke-dorothy_nikke-eden_alliance",
+            "source": "commander_nikke",
+            "target": "dorothy_nikke",
+            "label": "利益同盟与救赎博弈",
+            "description": "遭方舟背叛堕入复仇深渊的伊甸园统治者，虽将方舟指挥官视为清算罪业的棋子，却在长期的并肩作战与指挥官赤诚的善意中被屡屡触动冰封的心智。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线第20-22章 · 伊甸园篇",
+            "evidence": {
+              "title": "朝圣者部队继承者领袖档案 · 桃乐丝",
+              "url": "https://wiki.biligame.com/nikke/%E6%A1%83%E4%B9%90%E4%B8%9D"
+            }
+          },
+          {
+            "id": "dorothy_nikke-red_hood-goddess_comrades",
+            "source": "dorothy_nikke",
+            "target": "red_hood",
+            "label": "初代女神战友与失落荣光",
+            "description": "昔日初代女神部队中彼此依托的生死战友，小红帽的坦荡粗粝与桃乐丝的高傲优雅曾是部队的欢喜冤家；小红帽的复苏揭开了百年背叛的伤疤，亦重新唤醒桃乐丝对纯真荣光的追忆。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "活动特别篇 · RED ASH / 主线第25-26章",
+            "evidence": {
+              "title": "女神部队百年战争史料 · 桃乐丝与小红帽",
+              "url": "https://wiki.biligame.com/nikke/%E6%A1%83%E4%B9%90%E4%B8%9D"
+            }
+          },
+          {
+            "id": "dorothy_nikke-cinderella_nikke-century_reconciliation",
+            "source": "dorothy_nikke",
+            "target": "cinderella_nikke",
+            "label": "百年宿敌与受害者的救赎",
+            "description": "灰姑娘曾遭侵蚀成为异端儿阿娜奇重创女神部队并与桃乐丝决死厮杀；百年后灰姑娘洗净侵蚀重获自我，两位背负截然不同悲惨宿命的英雄在废土之上达成庄重敬意。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "二周年特别篇 · OLD TALES / 最新主线篇章",
+            "evidence": {
+              "title": "二代童话型号朝圣者与女神部队历史交锋",
+              "url": "https://wiki.biligame.com/nikke/%E7%81%B0%E5%A7%91%E5%A8%98"
+            }
+          },
+          {
+            "id": "commander_nikke-cinderella_nikke-crystal_oath",
+            "source": "commander_nikke",
+            "target": "cinderella_nikke",
+            "label": "水晶救赎与崇高誓言",
+            "description": "从百年异端儿噩梦中苏醒后，灰姑娘被指挥官毫无偏见的包容与纯净信念彻底净化，视其为见证自身“至高之美与真正救赎”的唯一誓约者，誓以浮游水晶盾庇护其左右。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "二周年篇章 · OLD TALES",
+            "evidence": {
+              "title": "胜利女神官方二周年角色纪事 · 灰姑娘",
+              "url": "https://wiki.biligame.com/nikke/%E7%81%B0%E5%A7%91%E5%A8%98"
+            }
+          },
+          {
+            "id": "commander_nikke-alice_nikke-wonderland_mr_rabbit",
+            "source": "commander_nikke",
+            "target": "alice_nikke",
+            "label": "童话奇境的兔子先生",
+            "description": "在极地雪原中偶遇并认定指挥官就是童话中指引幸福的“兔子先生”，爱丽丝报以毫无保留的纯真依恋与极度依赖，甘愿手持胡萝卜重狙为他轰碎一切怪物。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "主线极地探索篇 / 爱丽丝个人羁绊剧情",
+            "evidence": {
+              "title": "无限轨道特等射手档案 · 爱丽丝奇境记",
+              "url": "https://wiki.biligame.com/nikke/%E7%88%B1%E4%B8%BD%E4%B8%9D"
+            }
+          },
+          {
+            "id": "ludmilla_nikke-alice_nikke-arctic_maternal_bond",
+            "source": "ludmilla_nikke",
+            "target": "alice_nikke",
+            "label": "无限轨道母女与守护契约",
+            "description": "鲁德米拉以贵族式的宽厚母性悉心照料着散热故障、构筑童话心智防御的爱丽丝，爱丽丝尊称其为女王殿下，两人是严寒冻土废土中最温馨圣洁的亲人。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "无限轨道部队日常作战与极地巡逻",
+            "evidence": {
+              "title": "极寒极地无限轨道部队官方背景档案",
+              "url": "https://wiki.biligame.com/nikke/%E9%B2%81%E5%BE%B7%E7%B1%B3%E6%8B%89"
+            }
+          },
+          {
+            "id": "commander_nikke-ludmilla_nikke-arctic_mutual_respect",
+            "source": "commander_nikke",
+            "target": "ludmilla_nikke",
+            "label": "极地盟友与高贵敬意",
+            "description": "镇守北方极地的贵族领主鲁德米拉高度赞赏指挥官对妮姬人格的尊重，在反击小队北伐极地与追寻朝圣者途中数次倾力施援，结成深厚的生死盟约。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线雪原篇章 · 北方救援作战",
+            "evidence": {
+              "title": "泰特拉工业极地据点记录 · 鲁德米拉档案",
+              "url": "https://wiki.biligame.com/nikke/%E9%B2%81%E5%BE%B7%E7%B1%B3%E6%8B%89"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "alice_nikke",

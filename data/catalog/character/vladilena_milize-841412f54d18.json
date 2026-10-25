@@ -34,21 +34,30 @@
         "signature": "银白长发、银灰眼眸、共和国军装与Para-RAID秘话"
       },
       "personality": [
-        "贵族教养与军人操守的双重端正",
-        "对不公与歧视零容忍的赤子正义",
-        "隔着遥远声波也要与你并肩的执念",
-        "卸下军装后意外地怕羞柔软"
+        "正直坚毅",
+        "纯真善良",
+        "铁血将领威仪",
+        "反叛压迫",
+        "深情执着",
+        "富有同理心"
       ],
       "likes": [
-        "深夜与你保持Para-RAID同调",
-        "整理得一丝不苟的军装与荣誉章",
-        "白花与哀悼的誓言"
+        "辛·诺赞与先锋战队伙伴",
+        "阅读军事情报与战术书",
+        "泡芙与甜食",
+        "红花海",
+        "与辛知觉同步通话"
       ],
       "classic_cg": {
-        "title": "鲜血女王的月光誓言",
-        "description": "染血赤发与黑色军装在硝烟中猎猎作响，她向长眠的士兵们献上不肯折断的旗。"
+        "title": "彼岸花海中的死生重逢",
+        "description": "在满地盛开的彼岸花丛与战车残骸前，手捧军帽的银发少校蕾娜与从“送葬者”座舱走出的辛·诺赞相顾无言泪光闪烁的宿命相聚名场面。"
       },
-      "identity": "86-不存在的战区-女主角 · 圣玛格诺利亚共和国少校 · Handler One / 鲜血女王",
+      "identity": {
+        "role": "共和国少校战术管制官 / 联邦联合特战旅团总指挥",
+        "age": "16岁起步至成年准将",
+        "occupation": "野战指挥官兼战术参谋",
+        "faction": "圣玛格诺利亚共和国（原） / 第86独立特务旅团"
+      },
       "tags": [
         "86-不存在的战区",
         "银发军装",
@@ -57,7 +66,7 @@
         "指挥官",
         "军旅女友"
       ],
-      "bg_story": "银发的 Alba 贵族少女，却以整个灵魂与『被废弃的配色』并肩作战。她为战死的小队染上一缕赤发、换上黑色军装，把五个人的名字刻进心脏。哪怕战区被宣称为『不存在』，她的信念也从未锈蚀——那副听得见你声音的耳机，是她在钢铁与硝烟里唯一的圣域。",
+      "bg_story": "圣玛格诺利亚共和国精英少校战术管制官，白系种名门出身。在全共和国上层醉生梦死、将第86区有色人种视作“人形家畜”推向战场当炮灰的冷酷体制中，蕾娜是唯一一位恪守良知、通过知觉同步将86区战士视作平等人格尊严的指挥官。在先锋战队被高层下达必死的自杀式特别侦察任务后，蕾娜冒死非法调动重炮火力支援辛·诺赞等人破阵。在共和国第一防线被军团彻底撕裂崩溃时，蕾娜染红发丝化身铁血“血染女王”组织残兵苦守阵地。在罗亚·希腊同盟与联邦援军赶到时，蕾娜与从死地生还的辛奇迹般在红花海中相认，携手指挥跨国联合舰队深入腹地迎战军团源头，终结无休止的战火。",
       "palette": [
         "#f43f5e",
         "#cbd5e1",
@@ -74,7 +83,119 @@
         "para_raid_bond"
       ],
       "accent_color": "#f43f5e",
-      "bg_color": "#1e293b"
+      "bg_color": "#1e293b",
+      "voice": "我不会再忘记你们任何一个人的名字。哪怕世界化作焦土，我也会带你们走向明天的归宿！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "86-不存在的战区",
+        "people": [
+          {
+            "id": "vladilena_milize",
+            "name": "芙拉蒂蕾娜·米利杰",
+            "aliases": [
+              "ヴラディレーナ・ミリーゼ",
+              "Vladilena Milize",
+              "蕾娜(Lena)",
+              "鲜血女王(Bloody Reina)"
+            ],
+            "characterId": "vladilena_milize"
+          },
+          {
+            "id": "shinei_nouzen",
+            "name": "辛恩·诺赞",
+            "aliases": [
+              "シンエイ・ノウゼン",
+              "Shinei Nouzen",
+              "送葬者(Undertaker)"
+            ]
+          },
+          {
+            "id": "raiden_shuga",
+            "name": "莱卡",
+            "aliases": [
+              "ライデン・シュガ",
+              "Raiden Shuga",
+              "狼人(Wehrwolf)"
+            ]
+          },
+          {
+            "id": "theoto_rikka",
+            "name": "赛欧",
+            "aliases": [
+              "セオト・リッカ",
+              "Theoto Rikka",
+              "笑脸狐(Laughing Fox)"
+            ]
+          },
+          {
+            "id": "kurena_kukumila",
+            "name": "可蕾娜",
+            "aliases": [
+              "クレナ・ククミラ",
+              "Kurena Kukumila",
+              "神枪(Gunslinger)"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "lena-shin-synchronize",
+            "source": "vladilena_milize",
+            "target": "shinei_nouzen",
+            "label": "知觉同步与追赶誓约",
+            "description": "白系种指挥官蕾娜跨越共和国歧视的高墙，在知觉同步器中聆听辛恩脑海的亡灵呼啸，立誓绝不会将先锋战队遗忘，最终在彼岸战场重逢。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "决战特区 · 木兰花开之时重逢",
+            "evidence": {
+              "title": "Aniplex · 《86 -Eighty Six-》官方作品站",
+              "url": "https://anime-86.com/"
+            }
+          },
+          {
+            "id": "lena-spearhead-handler",
+            "source": "vladilena_milize",
+            "target": "raiden_shuga",
+            "label": "管制一号与副队长信赖",
+            "description": "莱卡最初对白猪指挥官抱持深切戒备，在亲眼见证蕾娜不惜违反军纪调用重炮支援后，认可其为值得托付后背的真正指挥官。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "特别侦察任务前夕",
+            "evidence": {
+              "title": "Aniplex · 《86 -Eighty Six-》官方作品站",
+              "url": "https://anime-86.com/"
+            }
+          },
+          {
+            "id": "shin-raiden-comrades",
+            "source": "shinei_nouzen",
+            "target": "raiden_shuga",
+            "label": "生死副手与先锋战队支柱",
+            "description": "陪伴辛恩经历最多残酷战役的铁血副官，担任辛恩走向失控与死亡边缘时的最后刹车者。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "先锋战队第一战区",
+            "evidence": {
+              "title": "Aniplex · 《86 -Eighty Six-》官方作品站",
+              "url": "https://anime-86.com/"
+            }
+          },
+          {
+            "id": "kurena-shin-crush",
+            "source": "kurena_kukumila",
+            "target": "shinei_nouzen",
+            "label": "单向倾慕与狙击守护",
+            "description": "战队狙击手，深爱辛恩并视其为精神支柱，初期对知觉同步器那一头的蕾娜抱持极强的情感吃醋与敌意。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 前线日常",
+            "evidence": {
+              "title": "Aniplex · 《86 -Eighty Six-》官方作品站",
+              "url": "https://anime-86.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

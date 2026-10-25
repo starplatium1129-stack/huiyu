@@ -34,21 +34,30 @@
         "signature": "白和服配红皮夹克、直死之魔眼与反手短刀"
       },
       "personality": [
-        "孤高冷彻、言辞利落",
-        "骨子里的温柔与专一",
-        "酷爱草莓哈根达斯的甜品反差",
-        "对认同之人绝不退缩的守护"
+        "冷冽孤傲",
+        "外冷内热",
+        "决绝凌厉",
+        "纯真专一",
+        "厌恶虚伪",
+        "在干也面前笨拙温柔"
       ],
       "likes": [
-        "草莓味哈根达斯冰淇淋",
-        "黑桐干也亲手泡的茶",
-        "在安静的长椅上放空"
+        "黑桐干也",
+        "草莓冰淇淋",
+        "穿皮夹克搭配和服",
+        "静谧的落雪夜晚",
+        "保养古董小刀"
       ],
       "classic_cg": {
-        "title": "踏雪折梅的直死之瞳",
-        "description": "在暴风雪路灯下反手拔出短刀，双眸闪烁湛蓝绯红魔眼神光的孤高杀手姿态。"
+        "title": "落雪夜下的竹林相望",
+        "description": "在飘落细雪的和式庭院回廊外，身着和服皮夹克的短发少女手挽长刀回眸凝视撑伞的黑桐干也，眼神流转冰雪消融的凄美名场面。"
       },
-      "identity": "空之境界女主角 · 两仪家正统继承人 · 直死之魔眼持有者",
+      "identity": {
+        "role": "两仪家当主 / 直死之魔眼拥有者 / 根源之涡连接者",
+        "age": "婚后成年为人母（本篇高中至20代）",
+        "occupation": "退魔专员 / 伽蓝之堂调查员",
+        "faction": "两仪家 / 伽蓝之堂"
+      },
       "tags": [
         "空之境界",
         "两仪式",
@@ -57,7 +66,7 @@
         "短发御姐",
         "反差萌"
       ],
-      "bg_story": "型月四大台柱之一，退魔名门两仪家的继承人。拥有能看穿万物死线、触碰即可令其灭亡的『直死之魔眼』。平日里身穿纯白和服与红色皮夹克穿梭于都市夜幕之中，性格孤僻冷淡；但只要被心爱之人融化了心房，就会展现出极具杀伤力的笨拙、娇羞与一生相托的纯情。",
+      "bg_story": "退魔四家两仪家嫡女正统继承人，体内具有“织”（阳性杀人冲动）与“式”（阴性否定冲动）双重人格，连接着万物起源之「根源」。高中邂逅黑桐干也，因其毫无杂念的纯白温柔产生动摇；在车祸重伤昏迷两年后，“织”主动牺牲自我让式苏醒，式自此获得了能够看破万物死线的「直死之魔眼」。在伽蓝之堂苍崎橙子手下担任退魔调查员，手持九字兼定与匕首，斩灭浅上藤乃、荒耶宗莲与白纯里绪等一系列异端事件。在黑桐干也瞎了一只眼仍坚守包容她的誓言下，式的嗜杀心魔被彻底融化。在雪夜中「肉体人格·两仪式」向干也倾吐根源秘密后永恒隐匿。两人最终结为夫妇并诞下女儿未那，迎来了宁静平凡的俗世幸福。",
       "palette": [
         "#dc2626",
         "#1e293b",
@@ -84,6 +93,214 @@
           "leather_jacket",
           "holding_knife",
           "mystic_eyes_of_death_perception"
+        ]
+      },
+      "voice": "只要是活着的生物，哪怕是神明，我也杀给你看。……但是干也，别丢下我一个人啊。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "空之境界",
+        "people": [
+          {
+            "id": "ryougi_shiki",
+            "name": "两仪式",
+            "aliases": [
+              "Ryougi Shiki",
+              "两仪式",
+              "式姐",
+              "直死之魔眼",
+              "伽蓝之堂"
+            ],
+            "characterId": "ryougi_shiki"
+          },
+          {
+            "id": "kokutou_mikiya",
+            "name": "黑桐干也",
+            "aliases": [
+              "黑桐干也",
+              "Kokutou Mikiya",
+              "干也",
+              "平凡的诗人"
+            ]
+          },
+          {
+            "id": "aozaki_touko",
+            "name": "苍崎橙子",
+            "aliases": [
+              "苍崎橙子",
+              "Aozaki Touko",
+              "伤痛之赤",
+              "冠位人偶师"
+            ]
+          },
+          {
+            "id": "asagami_fujino",
+            "name": "浅上藤乃",
+            "aliases": [
+              "浅上藤乃",
+              "Asagami Fujino",
+              "歪曲之魔眼"
+            ]
+          },
+          {
+            "id": "araya_souren",
+            "name": "荒耶宗莲",
+            "aliases": [
+              "荒耶宗莲",
+              "Araya Souren",
+              "结界魔术师"
+            ]
+          },
+          {
+            "id": "kokutou_azaka",
+            "name": "黑桐鲜花",
+            "aliases": [
+              "黑桐鲜花",
+              "Kokutou Azaka",
+              "礼园女学生"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "ryougi_shiki-kokutou_mikiya-salvation_and_lifelong_partners",
+            "source": "ryougi_shiki",
+            "target": "kokutou_mikiya",
+            "label": "灵魂救赎与终身伴侣",
+            "description": "黑桐干也如雪花般纯粹无暇的包容，将式从杀人冲动的黑暗深渊中救赎。两人跨越生死与残缺，最终结为夫妻并育有一女未那。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "空之境界 · 杀人考察（后） & 未来福音",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          },
+          {
+            "id": "ryougi_shiki-aozaki_touko-employer_and_investigator",
+            "source": "ryougi_shiki",
+            "target": "aozaki_touko",
+            "label": "雇主与退魔调查员",
+            "description": "橙子为车祸苏醒的式制作灵体假手，引导式接纳并掌控直死之魔眼；式则作为伽蓝之堂专属调查员斩除各类异端魔术师。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "空之境界 · 俯瞰风景 & 伽蓝之洞",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          },
+          {
+            "id": "ryougi_shiki-asagami_fujino-duel_and_merciful_sever",
+            "source": "ryougi_shiki",
+            "target": "asagami_fujino",
+            "label": "痛觉绝杀与慈悲斩断",
+            "description": "雨夜断桥决战，面对被凌辱暴走化作杀戮修罗的藤乃，式识破其身患腹膜炎将死的痛楚，以直死之魔眼斩断其病灶而非取其性命。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "空之境界 · 痛觉残留",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          },
+          {
+            "id": "ryougi_shiki-araya_souren-origin_battle",
+            "source": "ryougi_shiki",
+            "target": "araya_souren",
+            "label": "根源争夺与太极死斗",
+            "description": "荒耶宗莲图谋夺取式连接根源的肉体开启真理，式在小川公寓的太极螺旋结界中重拾九字兼定，看破万物死线将其概念彻底粉碎。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "空之境界 · 矛盾螺旋",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          },
+          {
+            "id": "kokutou_mikiya-aozaki_touko-office_assistant",
+            "source": "kokutou_mikiya",
+            "target": "aozaki_touko",
+            "label": "情报调查员与侦探社主理",
+            "description": "干也在伽蓝之堂担任兼职调查员，橙子极其看重干也那几乎具备魔术级别的情报搜集能力与看穿人心的纯朴洞察力。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "空之境界 · 共通设定",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          },
+          {
+            "id": "kokutou_mikiya-asagami_fujino-rainy_night_comfort",
+            "source": "kokutou_mikiya",
+            "target": "asagami_fujino",
+            "label": "雨中温情与短暂庇护",
+            "description": "在藤乃流离失所、精神近乎崩溃的杀戮之夜，干也给予了她不带任何审判的纯洁温柔与住所庇护，成为藤乃痛苦余生中唯一的微光。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "空之境界 · 痛觉残留",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          },
+          {
+            "id": "kokutou_mikiya-kokutou_azaka-siblings_and_affection",
+            "source": "kokutou_mikiya",
+            "target": "kokutou_azaka",
+            "label": "亲兄妹与单向爱慕",
+            "description": "鲜花深爱着毫无血缘隔阂的亲兄长干也，将两仪式视作最大的情敌，因执意要在异能世界追赶上兄长而毅然投身魔术。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "空之境界 · 忘却录音",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          },
+          {
+            "id": "aozaki_touko-kokutou_azaka-magic_mentor_and_student",
+            "source": "aozaki_touko",
+            "target": "kokutou_azaka",
+            "label": "魔术导师与得意弟子",
+            "description": "橙子破例收鲜花为徒传授点火魔术，表面刻薄调侃鲜花的恋兄情结，实则在礼园女学院人造妖精异端事件中暗中为弟子保驾护航。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "空之境界 · 忘却录音",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          },
+          {
+            "id": "aozaki_touko-araya_souren-clock_tower_rivals",
+            "source": "aozaki_touko",
+            "target": "araya_souren",
+            "label": "时钟塔同门与宿命决裂",
+            "description": "同为伦敦时钟塔的异端求道者，橙子洞悉荒耶对抑止之轮与拯救人类的狂执妄念，在矛盾螺旋之战中以替身人偶破局协助式击溃荒耶。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "空之境界 · 矛盾螺旋",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          },
+          {
+            "id": "ryougi_shiki-kokutou_azaka-rivals_and_allies",
+            "source": "ryougi_shiki",
+            "target": "kokutou_azaka",
+            "label": "情敌竞争与默契搭档",
+            "description": "鲜花对霸占哥哥的式抱有强烈的敌意与醋劲，但在礼园女学院调查中两人背靠背迎战妖精附魔异变，结下了微妙的姑嫂战友羁绊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "空之境界 · 忘却录音",
+            "evidence": {
+              "title": "空之境界 · 剧场版官方网站",
+              "url": "https://www.karanokyoukai.com/"
+            }
+          }
         ]
       }
     },

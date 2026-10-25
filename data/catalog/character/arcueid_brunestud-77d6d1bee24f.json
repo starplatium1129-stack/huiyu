@@ -34,21 +34,30 @@
         "signature": "金色短发、红宝石眼眸、白高领毛衣与真祖白姬威严"
       },
       "personality": [
-        "天真纯洁如同白猫",
-        "对人类世界充满孩童般好奇",
-        "战斗时至高无上的暴君威严",
-        "认定爱人后的绝对依赖与吃醋"
+        "天真烂漫",
+        "至高霸气",
+        "不谙世事",
+        "深情隐忍",
+        "纯洁无瑕",
+        "面临吸血冲动时痛苦自制"
       ],
       "likes": [
-        "可丽饼与甜食",
-        "在阳光和草地上打滚",
-        "缠着志贵一起出门冒险"
+        "远野志贵",
+        "阳光下的城市散步",
+        "美味的人类料理",
+        "千年城的玫瑰花海",
+        "与志贵牵手"
       ],
       "classic_cg": {
-        "title": "绯红真祖的月下狂舞",
-        "description": "在血月当空的摩天大楼天台，金色利爪撕裂夜幕、嘴角含笑的真祖王女姿态。"
+        "title": "屋顶上的纯白吸血姬晨曦",
+        "description": "在击退死徒后的高楼水塔顶端，金发红瞳的白裙少女迎着初升朝阳对远野志贵露出灿烂无邪微笑的绝美名场面。"
       },
-      "identity": "月姬女主角 · 吸血鬼真祖皇女 · 地球意志 Archetype: Earth",
+      "identity": {
+        "role": "真祖王族吸血姬 / 地球盖亚意识延伸实体",
+        "age": "受肉数百岁（外貌少女形态）",
+        "occupation": "死徒处刑者 / 千年城之主",
+        "faction": "真祖阵营 / 远野志贵的守护者"
+      },
       "tags": [
         "月姬",
         "真祖白姬",
@@ -57,7 +66,7 @@
         "猫系女友",
         "反差萌"
       ],
-      "bg_story": "型月元祖大女主，至高无上的真祖之王女。拥有与地球盖亚同等维度的近乎无限力量。为了处决堕落死徒而苏醒，本应是不食人间烟火的冰冷自然化身，却在与主角相遇后体会到了人心的温暖，化身为一只黏人、爱吃醋、极度护短的金发小野猫。",
+      "bg_story": "真祖的吸血姬，真祖阵营代行死徒处刑的纯白公主，拥有不需吸血即可永生的「空想具现化」至高神能。被转生者罗亚欺骗饮血暴走后，陷入沉睡并封印吸血冲动，定期苏醒猎杀罗亚。在三咲市街角与突发反冲的远野志贵偶遇，被志贵以直死之魔眼精准分解为十七块肉块；耗尽大部分神能重组复活后，她并未报复，反而像孩子般拉着志贵协助歼灭罗亚。在共同经历死徒暴乱、地下决战与吸血冲动反噬的煎熬中，爱尔奎特体验到了人类平凡爱情的至美。在击杀罗亚后，为不被吸血欲望吞噬化作怪物，她在给志贵留下深情一吻后自愿退回千年城沉睡；而在后续篇章与重制版深邃结局中，这份跨越种族的眷恋化作永恒的奇迹归宿。",
       "palette": [
         "#eab308",
         "#581c87",
@@ -75,7 +84,259 @@
         "feline_charm"
       ],
       "accent_color": "#eab308",
-      "bg_color": "#581c87"
+      "bg_color": "#581c87",
+      "voice": "是你杀了我一次对吧？所以，你要负责把剩下的任务陪我完成到底哦，志贵！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "月姬",
+        "people": [
+          {
+            "id": "arcueid_brunestud",
+            "name": "爱尔奎特·布伦史塔德",
+            "aliases": [
+              "Arcueid Brunestud",
+              "爱尔奎特",
+              "真祖白姬",
+              "纯白吸血姬",
+              "月姬"
+            ],
+            "characterId": "arcueid_brunestud"
+          },
+          {
+            "id": "ciel_tsukihime",
+            "name": "希耶尔",
+            "aliases": [
+              "Ciel",
+              "希耶尔",
+              "知性修女",
+              "埋葬机关第七位",
+              "咖喱学姐"
+            ],
+            "characterId": "ciel_tsukihime"
+          },
+          {
+            "id": "tohno_shiki",
+            "name": "远野志贵",
+            "aliases": [
+              "远野志贵",
+              "Tohno Shiki",
+              "志贵",
+              "直死之魔眼",
+              "杀人贵"
+            ]
+          },
+          {
+            "id": "tohno_akiha",
+            "name": "远野秋叶",
+            "aliases": [
+              "远野秋叶",
+              "Tohno Akiha",
+              "秋叶",
+              "远野家当主",
+              "赤主"
+            ]
+          },
+          {
+            "id": "hisui",
+            "name": "翡翠",
+            "aliases": [
+              "翡翠",
+              "Hisui",
+              "无口女仆"
+            ]
+          },
+          {
+            "id": "kohaku",
+            "name": "琥珀",
+            "aliases": [
+              "琥珀",
+              "Kohaku",
+              "笑颜女仆",
+              "远野邸管家"
+            ]
+          },
+          {
+            "id": "michael_roa_valdamjong",
+            "name": "罗亚",
+            "aliases": [
+              "罗亚",
+              "Michael Roa Valdamjong",
+              "转生无限者",
+              "阿卡夏之蛇"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "tohno_shiki-arcueid_brunestud-seventeen_cuts_and_true_love",
+            "source": "tohno_shiki",
+            "target": "arcueid_brunestud",
+            "label": "十七分割相遇与真爱契约",
+            "description": "志贵因贫血冲动失控将爱尔奎特十七分割，复活后的真祖白姬拉他一同猎杀死徒罗亚；在患难与共中两人情愫暗生，最终达成跨越吸血宿命的纯真至爱。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "月姬 · 月姬篇 · 爱尔奎特线",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "tohno_shiki-ciel_tsukihime-senior_and_salvation",
+            "source": "tohno_shiki",
+            "target": "ciel_tsukihime",
+            "label": "学姐后辈与因果拯救",
+            "description": "校园里温和亲切的咖喱学姐，实为负罪深重的埋葬机关代行者；决战中志贵不惜耗尽生命以直死魔眼斩断希耶尔身上的不死共生因果，救赎其灵魂。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "月姬 · 月姬篇 · 希耶尔线",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "arcueid_brunestud-ciel_tsukihime-nemesis_and_love_rivals",
+            "source": "arcueid_brunestud",
+            "target": "ciel_tsukihime",
+            "label": "阵营死敌与争风吃醋",
+            "description": "真祖吸血鬼与圣堂教会埋葬机关的天生敌对，在三咲市街头碰撞；更因为同时倾心于远野志贵，在日常中经常互呈口舌之快、大打出手。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "月姬 · 共通设定",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "tohno_shiki-tohno_akiha-siblings_and_shared_life",
+            "source": "tohno_shiki",
+            "target": "tohno_akiha",
+            "label": "骨肉名义与分命羁绊",
+            "description": "名义上的兄妹，秋叶在八年前惨剧中以远野家秘术将自身一半生命分给志贵；面对归家的志贵，秋叶在严厉家训外表下深藏着狂乱执拗的占有爱意。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "月姬 · 远野家篇 · 秋叶线",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "tohno_shiki-hisui-maid_and_white_ribbon_promise",
+            "source": "tohno_shiki",
+            "target": "hisui",
+            "label": "贴身女仆与白丝带之约",
+            "description": "自幼在远野邸相伴的无口女仆，负责照顾志贵的病弱起居；志贵随身珍视多年的白色手帕原主人正是翡翠，是童年彼此相濡以沫的微光证物。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "月姬 · 远野家篇 · 翡翠线",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "tohno_shiki-kohaku-smiling_mask_and_redemption",
+            "source": "tohno_shiki",
+            "target": "kohaku",
+            "label": "笑颜伪装与深渊救赎",
+            "description": "表面开朗元气的主厨管家，实则因幼年遭远野慎久凌辱而心如死灰、暗中策划毁灭远野家；志贵是彻底融化其仇恨死结、带她走出绝望深渊的人。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "月姬 · 远野家篇 · 琥珀线",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "hisui-kohaku-twin_sisters_mutual_burden",
+            "source": "hisui",
+            "target": "kohaku",
+            "label": "感应孪生与苦难互担",
+            "description": "巫条神社末裔双胞胎姊妹，琥珀幼年为了保护妹妹翡翠而主动代替其承受折磨，翡翠则甘愿戴上冷面伪装守护姐姐，彼此血脉相连不可分割。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "月姬 · 远野家篇 · 核心真相揭秘",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "tohno_akiha-hisui-master_and_maid",
+            "source": "tohno_akiha",
+            "target": "hisui",
+            "label": "当主与贴身侍从",
+            "description": "秋叶作为远野家严厉当主，翡翠作为专属随侍一丝不苟地执行命令，共同维系着古老豪门在重重秘密下的日常运转。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "月姬 · 共通设定",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "tohno_akiha-kohaku-master_and_herbalist",
+            "source": "tohno_akiha",
+            "target": "kohaku",
+            "label": "当主与调药照料",
+            "description": "琥珀负责调制抑制秋叶体内退魔之血狂化反转的特殊汤药，秋叶对琥珀怀有高度信赖，却未料到远野家惨烈宿命背后交织的复仇阴影。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "月姬 · 远野家篇 · 秋叶线",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "arcueid_brunestud-michael_roa_valdamjong-millennial_hunt",
+            "source": "arcueid_brunestud",
+            "target": "michael_roa_valdamjong",
+            "label": "诱骗原罪与千年追猎",
+            "description": "罗亚欺骗纯真的爱尔奎特吸血令其神能暴走并窃取真祖之力，爱尔奎特为此自封千年城，每次罗亚转生现世便破茧追杀将其千刀万剐。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "月姬 · 核心背景",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "ciel_tsukihime-michael_roa_valdamjong-reincarnation_nightmare",
+            "source": "ciel_tsukihime",
+            "target": "michael_roa_valdamjong",
+            "label": "附身梦魇与必诛宿敌",
+            "description": "希耶尔十四岁时曾作为罗亚第十七世转生容器，在其操控下屠戮全村；希耶尔加入埋葬机关以无休止的战斗追剿罗亚，誓要彻底铲除恶魔洗净污名。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "月姬 · 希耶尔线真相",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          },
+          {
+            "id": "tohno_shiki-michael_roa_valdamjong-fatal_deathline_thrust",
+            "source": "tohno_shiki",
+            "target": "michael_roa_valdamjong",
+            "label": "宿命决战与终结之刃",
+            "description": "附身于四季之躯的罗亚企图夺取三咲市与吸血姬，志贵直面自身残暴本能与魔眼负荷，在大圣堂将罗亚的死点一击贯穿永世泯灭。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "月姬 · 终局决战",
+            "evidence": {
+              "title": "TYPE-MOON · 月姬重制版官方网站",
+              "url": "https://tsukihime.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "arcueid_brunestud",

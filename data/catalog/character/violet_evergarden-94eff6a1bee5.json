@@ -33,21 +33,30 @@
         "signature": "金发红发带、机械义手、湛蓝眼眸与普鲁士蓝人偶装"
       },
       "personality": [
-        "军人出身令行禁止的刻板认真",
-        "对『爱』的含义怀有执拗的探寻",
-        "像人偶般端正却渴望被触碰温度",
-        "学会情感后笨拙而滚烫的温柔"
+        "纯粹澄澈",
+        "坚毅无畏",
+        "恪尽职守",
+        "深情内敛",
+        "从冰冷机械蜕变为饱含温情",
+        "坚忍不拔"
       ],
       "likes": [
-        "代笔信完成后客人的眼泪与笑容",
-        "少佐留下的翡翠胸针",
-        "第一次吃到的桃子挞"
+        "基尔伯特·布甘比利亚",
+        "少佐赠送的祖母绿胸针",
+        "打字机与信纸油墨香",
+        "观察紫罗兰花朵",
+        "平静的海洋"
       ],
       "classic_cg": {
-        "title": "晨光废墟的代笔誓言",
-        "description": "破晓石柱遗迹上，机械义手轻捧胸针的金发人偶在晨曦中第一次读懂了心声。"
+        "title": "孤岛浅滩的泪水狂奔与相拥",
+        "description": "在夕阳染红的海滩浅水处，薇尔莉特不顾假肢跌跌撞撞奔向残疾的基尔伯特少佐，泪如泉涌喊出“我也深爱着少佐”的圆满大结局名场面。"
       },
-      "identity": "紫罗兰永恒花园女主角 · C.H.邮政公司自动手记人偶 · 前战争兵器少女",
+      "identity": {
+        "role": "原帝国特种部队战斗人员 / C·H邮政顶级自动手记人偶",
+        "age": "战后成长至18-20岁青年",
+        "occupation": "代读书信的人偶师 / 岛屿教师生活伴侣",
+        "faction": "C·H邮政公司 / 莱登沙夫特里希陆军（原退役）"
+      },
       "tags": [
         "紫罗兰永恒花园",
         "自动手记人偶",
@@ -56,7 +65,7 @@
         "神圣人偶",
         "治愈系"
       ],
-      "bg_story": "在战场上被当作兵器养大的少女，失去了双臂，也失去了理解人心的能力。成为代笔人偶后，她借由一封封他人的情书，笨拙地拼凑出『我爱你』这句话的形状。那双银白机械义手可以敲出最优雅的字体，也在学会之后，想要第一次为你捧起自己的心。",
+      "bg_story": "原莱登沙夫特里希帝国特种军人，自幼作为毫无情感波动的“战争兵器”被培养，在严酷决战中失去双臂被装配全金属假肢。战后被霍金斯中校收留进入C·H邮政公司担任“自动手记人偶”，为了解开在弥留之际少佐基尔伯特对她道出的那句“我爱你”的真正含义，跨越战火疮痍的大陆为无数人们代笔书信。在见证病危母亲预留给女儿五十年的跨时空母爱、剧作家的思念、垂死士兵与战友的家书之后，薇尔莉特流下了懂得人类悲欢痛苦的眼泪，成长为全大陆最富深情的人偶师。在剧场版终章中，薇尔莉特在偏远孤岛找回了隐姓埋名自责自囚的基尔伯特，两人在浪花夕阳下相拥相认，她辞去信使职务陪伴在少佐身边共度终生。",
       "palette": [
         "#3b82f6",
         "#f59e0b",
@@ -73,7 +82,91 @@
         "emotion_learning"
       ],
       "accent_color": "#3b82f6",
-      "bg_color": "#1e3a8a"
+      "bg_color": "#1e3a8a",
+      "voice": "只要客人有需求，无论何处我都会赶来。我是自动手记人偶，薇尔莉特·伊芙加登。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "紫罗兰永恒花园",
+        "people": [
+          {
+            "id": "violet_evergarden",
+            "name": "薇尔莉特·伊芙加登",
+            "aliases": [
+              "ヴァイオレット・エヴァーガーデン",
+              "Violet Evergarden"
+            ],
+            "characterId": "violet_evergarden"
+          },
+          {
+            "id": "gilbert_bougainvillea",
+            "name": "吉尔伯特·布甘维利亚",
+            "aliases": [
+              "ギルベルト・ブーゲンビリア",
+              "Gilbert Bougainvillea"
+            ]
+          },
+          {
+            "id": "claudia_hodgins",
+            "name": "克劳迪亚·霍金斯",
+            "aliases": [
+              "クラウディア・ホッジンズ",
+              "Claudia Hodgins"
+            ]
+          },
+          {
+            "id": "cattleya_baudelaire",
+            "name": "嘉德丽雅·波德莱尔",
+            "aliases": [
+              "カトレア・ボードレール",
+              "Cattleya Baudelaire"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "violet-gilbert-love-promise",
+            "source": "violet_evergarden",
+            "target": "gilbert_bougainvillea",
+            "label": "灵魂誓言与‘我爱你’的真谛",
+            "description": "被作为战争武器抚养的薇尔莉特，为了探寻少佐在最后战役断壁残垣中留下的‘我爱你’真正含义，成为代笔人偶走遍世间。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终章剧场版 · 孤岛重逢",
+            "evidence": {
+              "title": "京都动画 · 《紫罗兰永恒花园》官方主页",
+              "url": "https://tv.violet-evergarden.jp/"
+            }
+          },
+          {
+            "id": "violet-hodgins-guardian",
+            "source": "claudia_hodgins",
+            "target": "violet_evergarden",
+            "label": "战友托付与慈父般监护人",
+            "description": "受挚友吉尔伯特战前重托，霍金斯在战后将薇尔莉特接入自己的C·H邮政公司，以监护人身份守护她像普通少女一样成长。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "开篇设定 · C·H邮政公司",
+            "evidence": {
+              "title": "京都动画 · 《紫罗兰永恒花园》官方主页",
+              "url": "https://tv.violet-evergarden.jp/"
+            }
+          },
+          {
+            "id": "violet-cattleya-guidance",
+            "source": "cattleya_baudelaire",
+            "target": "violet_evergarden",
+            "label": "顶级人偶前辈与情感引导",
+            "description": "C·H邮政最具声望的王牌代笔人偶，在薇尔莉特初期无法理解人类细腻感情时耐心地引导她体会文字承载的温度。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 代笔人偶见习",
+            "evidence": {
+              "title": "京都动画 · 《紫罗兰永恒花园》官方主页",
+              "url": "https://tv.violet-evergarden.jp/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

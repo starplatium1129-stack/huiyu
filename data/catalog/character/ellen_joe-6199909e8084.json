@@ -33,26 +33,28 @@
         "signature": "巨大的鲨鱼尾巴、棒棒糖、冷酷死鱼眼、眼角泪痣与黑红挑染短发"
       },
       "personality": [
-        "极度嗜睡且怕麻烦",
-        "外冷内热的反差少女",
-        "热爱甜食尤其是圣代与棒棒糖",
-        "战斗时爆发力惊人毫不留情",
-        "珍视家政伙伴与重要羁绊"
+        "极度嗜睡怕麻烦的厌世摸鱼派",
+        "外表冷漠毒舌但内心极其护短",
+        "护食且重度依赖甜食尤其是圣代与棒棒糖",
+        "战斗中瞬间觉醒顶级掠食者的凌厉与残暴",
+        "珍视家政社伙伴与重要雇主羁绊",
+        "对高中生日常作息与课业抱有微妙执念"
       ],
       "likes": [
-        "下午四点前去吃限定圣代",
-        "水果味棒棒糖",
-        "安静无人的角落补觉",
-        "大海与冰爽的气泡水"
+        "下午四点前赶往甜品店吃季节限定草莓圣代",
+        "各式水果味棒棒糖与冰镇气泡苏打水",
+        "在安静无人的阴凉角落戴着耳机补觉",
+        "浸泡在冰水浴缸中放松强韧的鲨鱼尾巴",
+        "收集可爱的个性发卡与刀片发饰"
       ],
       "classic_cg": {
-        "title": "空洞深处的极寒猎杀",
-        "description": "冰晶以骸废墟中，艾莲拖着巨剪与强劲鲨鱼尾撕裂暴风雪，展现深海顶级掠食者的绝对力量。"
+        "title": "空洞裂隙的极寒游猎",
+        "description": "冰封崩解的以骸废墟深处，黑红短发的少女在半空中凌空甩动巨大鲨尾，挥舞极冻重剪斩出刺骨寒霜，冷漠的暗红死鱼眼里倒映出瞬间冻结的残骸。"
       },
       "identity": {
-        "role": "维多利亚家政专属女仆 / 高中在读学生",
-        "age": "高中生",
-        "occupation": "空洞作战执事 / 战斗女仆",
+        "role": "维多利亚家政专属执事 / 新艾利都高中在读学生",
+        "age": "16岁（高一生）",
+        "occupation": "战斗女仆 / 空洞作战执事 / 巡逻保镖",
         "faction": "新艾利都 · 维多利亚家政"
       },
       "tags": [
@@ -63,7 +65,7 @@
         "巨剪武器",
         "棒棒糖"
       ],
-      "bg_story": "艾莲·乔是《绝区零》中维多利亚家政的专属执事，同时也是新艾利都的一名普通高中生。她拥有标志性的巨大鲨鱼尾巴与锐利鲨齿，平时在学校总是困倦不堪、含着棒棒糖厌世摸鱼，但一旦进入空洞执行家政任务，便会化身为挥舞重剪、速度极快的寒冰游猎者。",
+      "bg_story": "艾莲·乔是新艾利都著名家政公司“维多利亚家政”的核心执事之一，表面上是一名在普通女子高中就读、整天顶着黑眼圈抱怨缺觉的高中生。她拥有一条力量惊人的巨大黑色锯齿鲨尾与尖锐鲨齿，日常在学校总是含着棒棒糖趴在课桌上摸鱼补觉，对繁重课业与人际交往表现出极度厌倦；然而一旦换上黑白相间的执事战斗女仆装踏入空洞，其体内深海顶级掠食者的血脉便会彻底苏醒。在主线深入芭莱大厦与空洞核心的多次重大委托中，面对狂暴的变异以骸与复杂阴谋，艾莲手持比自身更沉重的巨型折叠剪刀，踏着极速滑行步法在冰霜与残骸中穿梭，以近乎本能的残暴力量瞬杀敌阵，数次在生死关头救下同伴莱卡恩、可琳与绳匠主角。尽管嘴上总是嘟囔着“麻烦死了、我要准点下班”，但在维多利亚家政伙伴与重要之人遭遇危机时，她从不退缩，以绝对冰冷的杀意和强悍守护力在新艾利都的地下暗流中刻下了属于极寒掠食者的威名。",
       "palette": [
         "暗夜黑",
         "深海红",
@@ -90,7 +92,245 @@
         "zenless_zone_zero"
       ],
       "accent_color": "#ef4444",
-      "bg_color": "#090d16"
+      "bg_color": "#090d16",
+      "voice": "工作赶快利落搞定吧……今天店里还有四点截止的超大草莓圣代，要是迟到了我可是会咬人的哦。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "绝区零",
+        "people": [
+          {
+            "id": "ellen_joe",
+            "name": "艾莲·乔",
+            "aliases": [
+              "Ellen Joe",
+              "艾莲",
+              "鲨鱼妹",
+              "维多利亚家政专属女仆"
+            ],
+            "characterId": "ellen_joe"
+          },
+          {
+            "id": "hoshimi_miyabi",
+            "name": "星见雅",
+            "aliases": [
+              "Hoshimi Miyabi",
+              "雅",
+              "星见课长",
+              "虚狩"
+            ],
+            "characterId": "hoshimi_miyabi"
+          },
+          {
+            "id": "wise_belle",
+            "name": "哲与铃",
+            "aliases": [
+              "Wise & Belle",
+              "法厄同",
+              "Phaethon",
+              "Random Play店长",
+              "传奇绳匠"
+            ]
+          },
+          {
+            "id": "von_lycaon",
+            "name": "冯·莱卡恩",
+            "aliases": [
+              "Von Lycaon",
+              "莱卡恩",
+              "狼哥",
+              "维多利亚家政首席执事"
+            ]
+          },
+          {
+            "id": "corin_wickes",
+            "name": "可琳·威克斯",
+            "aliases": [
+              "Corin Wickes",
+              "可琳",
+              "电锯女仆",
+              "维多利亚家政保洁员"
+            ]
+          },
+          {
+            "id": "alexandrina",
+            "name": "亚历山德丽娜",
+            "aliases": [
+              "Alexandrina Sebastiane",
+              "丽娜",
+              "维多利亚家政女仆长"
+            ]
+          },
+          {
+            "id": "soukaku",
+            "name": "苍角",
+            "aliases": [
+              "Soukaku",
+              "蓝皮鬼族少女",
+              "对空六课干员"
+            ]
+          },
+          {
+            "id": "tsukishiro_yanagi",
+            "name": "月城柳",
+            "aliases": [
+              "Tsukishiro Yanagi",
+              "对空六课副课长",
+              "星见流辅佐"
+            ]
+          },
+          {
+            "id": "asaba_harumasa",
+            "name": "浅羽悠真",
+            "aliases": [
+              "Asaba Harumasa",
+              "对空六课干员",
+              "雷电弓术巡查"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "ellen_joe-von_lycaon-butler_and_maid",
+            "source": "von_lycaon",
+            "target": "ellen_joe",
+            "label": "执事长与战斗执事",
+            "description": "莱卡恩是维多利亚家政的领头人与执事长，对嗜睡、贪图下班的艾莲既包容其高中生天性，又在任务中充分信任其深海掠食者般的战力；艾莲虽然嫌弃莱卡恩的说教，但在战斗中极度信赖其稳健的判断。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线第三章 · 芭莱大厦危机",
+            "evidence": {
+              "title": "HoYoverse《绝区零》官方角色PV ·「艾莲·乔：极寒掠食」",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          },
+          {
+            "id": "ellen_joe-corin_wickes-senior_and_junior",
+            "source": "ellen_joe",
+            "target": "corin_wickes",
+            "label": "前辈照拂与患难护短",
+            "description": "面对胆小怯懦、总是道歉的可琳，艾莲表面冷淡嫌麻烦，实则处处护短，常在空洞激战中为可琳挡下致命偷袭，是可琳在公司中最有安全感的前辈。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "维多利亚家政日常委托",
+            "evidence": {
+              "title": "HoYoverse《绝区零》代理人档案 · 可琳与艾莲",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          },
+          {
+            "id": "ellen_joe-alexandrina-maid_guidance",
+            "source": "alexandrina",
+            "target": "ellen_joe",
+            "label": "女仆长与问题少女",
+            "description": "丽娜以优雅包容的母性姿态照拂着年轻的艾莲，唯独丽娜做出的黑暗料理令艾莲避之唯恐不及；在深入以骸群巢穴时，丽娜的人偶电击与艾莲的冰霜剪刀配合无间。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "维多利亚家政阵营剧本",
+            "evidence": {
+              "title": "HoYoverse《绝区零》阵营故事 · 维多利亚家政",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          },
+          {
+            "id": "ellen_joe-wise_belle-proxy_trust",
+            "source": "wise_belle",
+            "target": "ellen_joe",
+            "label": "绳匠雇佣与战地信赖",
+            "description": "法厄同（哲/铃）作为幕后传奇绳匠，多次在零号空洞迷途与芭莱大厦危局中为艾莲规划精准突围逃生路线；艾莲认可法厄同的引路才能，常在课后来到录像店借阅并享受闲暇。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "芭莱大厦主线与录像店偶遇",
+            "evidence": {
+              "title": "HoYoverse《绝区零》主线剧情 · 第三章",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          },
+          {
+            "id": "hoshimi_miyabi-wise_belle-hollow_symbiosis",
+            "source": "hoshimi_miyabi",
+            "target": "wise_belle",
+            "label": "虚狩之刃与深渊之眼",
+            "description": "新艾利都至强虚狩星见雅与法厄同兄妹在多次零号空洞禁区调查中达成战略默契。法厄同的视界同步技术为雅破除以太迷雾，雅的无匹刀势则多次在以骸巨兽面前护得绳匠周全。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "零号空洞深层与主线第四章",
+            "evidence": {
+              "title": "HoYoverse《绝区零》主线剧情 ·「火狱骑行」与后续篇章",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          },
+          {
+            "id": "hoshimi_miyabi-tsukishiro_yanagi-chief_and_deputy",
+            "source": "tsukishiro_yanagi",
+            "target": "hoshimi_miyabi",
+            "label": "课长与全能副课长",
+            "description": "月城柳担任对空六课副课长，不仅在刀术战场上与雅并肩作战，更在日常生活中全盘打理雅完全不擅长的行政公文、生活开支与社交琐事，是对空六课最不可或缺的定海神针。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "对空六课阵营篇章",
+            "evidence": {
+              "title": "HoYoverse《绝区零》角色前瞻 · 月城柳与星见雅",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          },
+          {
+            "id": "hoshimi_miyabi-soukaku-master_and_apprentice_bond",
+            "source": "hoshimi_miyabi",
+            "target": "soukaku",
+            "label": "收留之恩与纯真守护",
+            "description": "雅在过去执行空洞任务时收留了懵懂饥饿的鬼族少女苍角，将其带入对空六课悉心培养。苍角对雅敬爱有加、寸步不离，用大旗巨刃为课长横扫一切胆敢阻挡前路之敌。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "对空六课日常设定",
+            "evidence": {
+              "title": "HoYoverse《绝区零》代理人档案 · 苍角",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          },
+          {
+            "id": "hoshimi_miyabi-asaba_harumasa-superior_and_subordinate",
+            "source": "hoshimi_miyabi",
+            "target": "asaba_harumasa",
+            "label": "课长与特工游侠",
+            "description": "浅羽悠真虽然平日里看似散漫不羁、热衷划水摸鱼，但在雅拔刀下达指令时总能精准化身阴影中的破阵雷矢，二人恪守着武家特勤干员间无声的默契与信赖。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "对空六课出击行动",
+            "evidence": {
+              "title": "HoYoverse《绝区零》官方剧情活动 · 六课作战记录",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          },
+          {
+            "id": "von_lycaon-wise_belle-gentleman_pact",
+            "source": "von_lycaon",
+            "target": "wise_belle",
+            "label": "绅士契约与旧城托付",
+            "description": "莱卡恩在芭莱大厦危机中以执事礼仪与法厄同结下长期战略同盟，敬重兄妹二人的黑客与空洞引航技艺，多次委托法厄同调查旧都陨落与莫克家族历史秘辛。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线第三章 · 芭莱大厦旧事",
+            "evidence": {
+              "title": "HoYoverse《绝区零》莱卡恩代理人秘闻",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          },
+          {
+            "id": "hoshimi_miyabi-von_lycaon-mutual_respect",
+            "source": "hoshimi_miyabi",
+            "target": "von_lycaon",
+            "label": "精锐之敬",
+            "description": "新艾利都军方特别治安机构的虚狩剑仙与隐秘民间精锐执事长，彼此深知对方在守护新艾利都和平中不可替代的份量，在多次大型灾厄空洞交汇处遥相呼应、互不相扰却暗含敬意。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "零号空洞联合前线",
+            "evidence": {
+              "title": "HoYoverse《绝区零》官方世界观设定 · 新艾利都势力谱系",
+              "url": "https://zzz.mihoyo.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

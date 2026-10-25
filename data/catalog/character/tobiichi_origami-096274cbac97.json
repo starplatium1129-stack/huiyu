@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "表情克制，说话简洁，做事具有明确目标",
-        "对细节的关注往往比外在反应更强烈",
-        "放松时也保持认真，偶尔显出不自觉的笨拙"
+        "无口三无",
+        "行动力极强",
+        "思维跳跃极度痴情",
+        "冷静理智",
+        "面对心爱之人毫无防线",
+        "内心背负重创后获救赎",
+        "坚毅果敢"
       ],
       "likes": [
-        "整理笔记",
-        "有规律的练习",
-        "安静的居家休息"
+        "五河士道的一切（包括气味与日程）",
+        "收集高端战术武器与显现装置",
+        "制定与士道结婚的严密计划书",
+        "安静的居所与校园图书室",
+        "整理训练记录"
       ],
       "classic_cg": {
-        "title": "鸢一折纸 · 教室窗边的完美侧脸",
-        "description": "教室靠窗，她坐姿笔直地看书，白发在午后光里近乎透明；周围同学的窃窃私语全部被她无视，翻页的节奏都像设定好的程序——直到手机震动，她的视线瞬间离开书本。"
+        "title": "重构世界线下的泪眼重逢",
+        "description": "飘落细雪的天宫市十字路口，两条世界线记忆彻底融合的长发白发少女扑倒在少年怀中，冰封多年的面庞第一次被夺眶而出的滚烫泪水彻底打湿。"
       },
-      "identity": "Date A Live · 鸢一折纸",
+      "identity": {
+        "role": "女主角之一 / AST顶尖王牌魔术师 / 第一位双世界线记忆融合的救赎精灵",
+        "age": "16岁（登场）→ 18岁（完结）",
+        "occupation": "来禅高中学生 / 陆上自卫队AST曹长（退役）",
+        "faction": "陆上自卫队AST / 拉塔托斯克 / 来禅高中"
+      },
       "tags": [
         "鸢一折纸",
         "约会大作战",
         "日常"
       ],
-      "bg_story": "成绩和运动都出色的少女，也是AST成员。她习惯以准确的动作表达心意，旧时间线短发与新时间线长发分别绑定服装形态，避免常驻DNA冲突。",
+      "bg_story": "来禅高中文武双全的超级优等生，陆上自卫队对抗精灵部队“AST”的顶尖王牌魔术师。五年前天宫市大火导致父母双亡，认定凶手是火焰精灵的折纸怀着血海深仇加入AST，将消灭所有精灵视作毕生夙愿。平日表情冷若冰霜、如同人偶，但唯独对曾拯救过自己心灵的五河士道展现出近乎狂热跟踪狂般的痴恋。为了获取向精灵复仇的究极力量，折纸主动接受幻影的灵结晶化身精灵“绝灭天使”，并借助时崎狂三的力量穿越回五年前，却惊骇地发现当年误杀父母的凶手竟是来自未来的自己。精神崩溃的折纸当场绝望反转为无差别毁灭一切的漆黑魔王。士道不惜穿越世界线改写历史，在新世界线中拯救了她的父母（虽因意外延后去世），并抚平了长发折纸的心结。最终两条世界线的记忆在折纸脑海中完美融合，诞生了外表留有温婉长发、内心兼具害羞少女与对士道极度进击的主动型人格。在全书终章大决战中，折纸作为核心主力迎击宿命始祖；在十香奇迹归来后的后日谈中，折纸顺利高中毕业，继续以严密的计划守护着来之不易的和平与心爱之人的怀抱。",
       "palette": [
         "#9dbce5",
         "#282532"
@@ -62,7 +73,154 @@
         "hair_ornament"
       ],
       "accent_color": "#9dbce5",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "我的过去、现在和未来，哪怕是变成精灵或恶魔……只要是为了保护士道，我都绝不后悔。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "约会大作战",
+        "people": [
+          {
+            "id": "tokisaki_kurumi",
+            "name": "时崎狂三",
+            "aliases": [
+              "時崎狂三",
+              "Tokisaki Kurumi",
+              "梦魇(Nightmare)"
+            ],
+            "characterId": "tokisaki_kurumi"
+          },
+          {
+            "id": "yatogami_tohka",
+            "name": "夜刀神十香",
+            "aliases": [
+              "夜刀神十香",
+              "Yatogami Tohka",
+              "公主(Princess)"
+            ],
+            "characterId": "yatogami_tohka"
+          },
+          {
+            "id": "tobiichi_origami",
+            "name": "鸢一折纸",
+            "aliases": [
+              "鳶一折紙",
+              "Tobiichi Origami",
+              "天使(Angel)"
+            ],
+            "characterId": "tobiichi_origami"
+          },
+          {
+            "id": "itsuka_shidou",
+            "name": "五河士道",
+            "aliases": [
+              "五河士道",
+              "Itsuka Shidou"
+            ]
+          },
+          {
+            "id": "itsuka_kotori",
+            "name": "五河琴里",
+            "aliases": [
+              "五河琴里",
+              "Itsuka Kotori"
+            ]
+          },
+          {
+            "id": "yoshino",
+            "name": "四糸乃",
+            "aliases": [
+              "四糸乃",
+              "Yoshino"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kurumi-shidou-bond",
+            "source": "tokisaki_kurumi",
+            "target": "itsuka_shidou",
+            "label": "宿命誓约与救赎",
+            "description": "狂三初期假借吞噬士道灵力接近，历经多次轮回在暗中独自抵挡死境、牺牲分身全力逆转士道的死亡宿命。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "狂三篇 · 决战终章",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "tohka-shidou-first-love",
+            "source": "yatogami_tohka",
+            "target": "itsuka_shidou",
+            "label": "命定初恋与灵魂信赖",
+            "description": "最初降临天宫市并被士道命名的精灵，在士道的接纳与关爱下重获世界色彩，全心守护士道安危。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 初始相遇",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "origami-shidou-devotion",
+            "source": "tobiichi_origami",
+            "target": "itsuka_shidou",
+            "label": "倾心守护与命运救赎",
+            "description": "折纸开篇便对士道抱持极致热烈爱意，在得知父母之死真相灵结晶反转后，被穿越时空的士道彻底拯救心象。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "折纸反转篇 · 历史改写",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "origami-tohka-rivalry",
+            "source": "tobiichi_origami",
+            "target": "yatogami_tohka",
+            "label": "情敌竞争与并肩作战",
+            "description": "AST时代视十香为危险精灵誓死消灭，日常则在争夺士道注意力上火花四溅，但在大决战中是彼此最信赖的战斗后背。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 学园与战场",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "kurumi-origami-cooperation",
+            "source": "tokisaki_kurumi",
+            "target": "tobiichi_origami",
+            "label": "十二之弹回溯契约",
+            "description": "狂三响应折纸的恳求，使用第十二之弹将其意识送回五年前的大火现场，间接促成了历史的重构与两人的和解。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "折纸篇 · 时间回溯",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "kotori-shidou-siblings",
+            "source": "itsuka_kotori",
+            "target": "itsuka_shidou",
+            "label": "兄妹羁绊与琴里司令",
+            "description": "白丝带模式下是被士道溺爱的娇弱义妹，黑丝带模式下则是拉塔托斯克司令官，全权指挥士道的精灵拯救约会。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "tobiichi_origami",

@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "反应鲜活，开心和失落都很容易写在脸上",
-        "谈起食物兴致勃勃，遇到心事又会故作轻松",
-        "愿意参与朋友的日常，热闹过后也需要独处整理情绪"
+        "食量惊人",
+        "粗线条脱线",
+        "败犬自信",
+        "嘴硬贪吃",
+        "重情讲义气",
+        "表情丰富",
+        "潜意识吃醋"
       ],
       "likes": [
-        "丰盛的午餐",
-        "分享零食",
-        "文学部的闲谈"
+        "温水和彦的便当与零食",
+        "家庭餐厅高热量甜品",
+        "烤肉与白米饭",
+        "蹭饭免单",
+        "调侃文艺部同伴"
       ],
       "classic_cg": {
-        "title": "八奈见杏菜 · 食堂大份定食的满足感",
-        "description": "学校食堂，她面前摆着堆成小山的特大份定食，双手合十说出「我开动了」的瞬间眼睛亮得像星星；第一口下去后整个人散发出幸福气场，周围同学都侧目。"
+        "title": "家庭餐厅里的泪崩狂吃",
+        "description": "深夜略显昏暗的家庭餐厅卡座里，八奈见杏菜嘴里塞满了肉酱意面，眼角挂着大颗泪珠向刚刚被拉来结账的温水嚎啕大哭。失恋的委屈与惊人的食量在此刻碰撞出令人捧腹又心疼的荒诞青春名场面。"
       },
-      "identity": "Too Many Losing Heroines! · 八奈见杏菜",
+      "identity": {
+        "role": "败犬女主军团领衔者 / 文艺部核心成员 / 胃口无底洞美少女",
+        "age": "16岁（高一）",
+        "occupation": "石蕗高中学生、文艺部成员",
+        "faction": "石蕗高中文艺部 / 败犬女主阵营"
+      },
       "tags": [
         "八奈见杏菜",
         "败犬女主太多了！",
         "日常"
       ],
-      "bg_story": "开朗爱吃、表情丰富的文学部少女，也会在热闹背后认真消化失落。蓝发、呆毛与蓝瞳为识别点，食物场景保留情绪变化而不只堆砌食量。",
+      "bg_story": "石蕗高中的校花级美少女，容貌精致出众，却在高中开学不久遭遇了惨绝人寰的失恋：自幼相伴的青梅竹马袴田草介毫无预兆地选择了辣妹朝云千早作为恋人。在家庭餐厅独自狂吃抚慰情伤并因钱包空空无法结账时，八奈见偶然强行拉同班的背景板路人温水和彦替自己买单，两人自此结下了不解之缘。作为“败犬四天王”之首，她展现出了超凡脱俗的超大胃口与令人绝倒的脱线性格，不仅能面不改色地大吃温水昂贵的便当与甜点，还经常以“正宫前女友”般的自信口吻向温水大倒苦水。随后在加入文艺部的过程中，她与烧盐柠檬、小毬知花等同样失恋的败犬少女们组成了互助阵营。在修学旅行、校庆活动以及最新的轻小说主线节点中，八奈见虽然嘴上依旧沉浸在对草介的无意义怨念中，但其身心与依赖感早已在潜移默化中彻底向温水倾斜，从最初的蹭饭工具人依赖，演变成为在温水遭遇家庭或人际困境时毫不犹豫挺身维护的核心羁绊，成为了以无敌食欲与开朗元气冲淡所有青春伤痛的灵魂人物。",
       "palette": [
         "#9caed8",
         "#282532"
@@ -62,7 +73,93 @@
         "ahoge"
       ],
       "accent_color": "#9caed8",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "温水……我那么喜欢草介，为什么他会选千早啊！呜呜……嚼嚼……你这块炸鸡能分我一口吗？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "败犬女主太多了！",
+        "people": [
+          {
+            "id": "yanami_anna",
+            "name": "八奈见杏菜",
+            "aliases": [
+              "八奈見杏菜",
+              "Yanami Anna",
+              "吃货败犬海 Otter"
+            ],
+            "characterId": "yanami_anna"
+          },
+          {
+            "id": "nukumizu_kazuhiko",
+            "name": "温水和彦",
+            "aliases": [
+              "温水和彦",
+              "Nukumizu Kazuhiko",
+              "温水君"
+            ]
+          },
+          {
+            "id": "yakishio_lemon",
+            "name": "烧盐柠檬",
+            "aliases": [
+              "焼塩檸檬",
+              "Yakishio Lemon"
+            ]
+          },
+          {
+            "id": "komari_chika",
+            "name": "小鞠知花",
+            "aliases": [
+              "小鞠知花",
+              "Komari Chika"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "anna-nukumizu-food-witness",
+            "source": "yanami_anna",
+            "target": "nukumizu_kazuhiko",
+            "label": "失恋见证人与蹭饭冤家",
+            "description": "八奈见在家庭餐厅遭遇青梅竹马失恋破防现场被温水全盘目睹，随后以找借口赖账蹭饭为由常驻温水身旁，在文艺部斗嘴中产生深厚羁绊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 餐厅失恋现场",
+            "evidence": {
+              "title": "小学馆 / A-1 Pictures · 《败犬女主太多了！》官方网站",
+              "url": "https://makeine-anime.com/"
+            }
+          },
+          {
+            "id": "anna-nukumizu-subtle-jealousy",
+            "source": "yanami_anna",
+            "target": "nukumizu_kazuhiko",
+            "label": "未觉察的独占欲与吃醋",
+            "description": "虽然嘴硬宣称自己绝不可能喜欢温水这种路人，但当温水协助柠檬或小鞠时八奈见便会疯狂狂炫食物并显露出强烈醋意。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "学园祭篇 · 文艺部危机",
+            "evidence": {
+              "title": "小学馆 / A-1 Pictures · 《败犬女主太多了！》官方网站",
+              "url": "https://makeine-anime.com/"
+            }
+          },
+          {
+            "id": "lemon-nukumizu-comfort",
+            "source": "yakishio_lemon",
+            "target": "nukumizu_kazuhiko",
+            "label": "田径阳光少女与倾诉之港",
+            "description": "同样遭遇暗恋失利的田径王牌烧盐，在温水包容且不探听隐私的温柔倾听下找回奔跑动力。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第二卷 · 奔跑的烧盐",
+            "evidence": {
+              "title": "小学馆 / A-1 Pictures · 《败犬女主太多了！》官方网站",
+              "url": "https://makeine-anime.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "yanami_anna",

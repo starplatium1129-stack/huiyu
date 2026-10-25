@@ -28,25 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "专业敏锐",
-        "擅长应变",
-        "渴望自主生活"
+        "冷静干练",
+        "极擅伪装变脸",
+        "吐槽犀利精准",
+        "极具重情重义",
+        "渴望平凡恋爱",
+        "追求自主独立",
+        "内心脆弱孤独"
       ],
       "likes": [
-        "组装小型电脑",
-        "独自泡澡放松"
+        "组装与改装高配置迷你主机",
+        "在香薰浴缸中长时间泡澡",
+        "各式潮流短发发饰",
+        "机械改造与网络渗透",
+        "无拘无束的环球背包旅行"
       ],
       "classic_cg": {
-        "title": "清晨四宫宅的女仆晨检",
-        "description": "清晨的四宫宅走廊，她穿着整洁女仆装核对平板上的日程清单，晨光从高窗洒下；走路带风、表情无波，是专业模式全开的瞬间。"
+        "title": "剪断束缚的晨曦断发",
+        "description": "修学旅行清晨静谧的群山之巅，少女用剪刀决绝地剪短了象征侍从锁链的长金发，在拂晓的微风中轻抚耳畔碎发，第一次对身旁的辉夜露出毫无伪装的澄澈笑颜。"
       },
-      "identity": "Kaguya-sama: Love Is War · 早坂爱",
+      "identity": {
+        "role": "女主角之一 / 辉夜的心腹近侍 → 获得自由的一生挚友",
+        "age": "16岁（登场）→ 18岁（完结）",
+        "occupation": "专职女仆（已解约）/ 秀知院学园学生（毕业）/ 自由旅行者",
+        "faction": "四宫家侍从（已脱离）/ 秀知院学园学生会幕后坚强后盾"
+      },
       "tags": [
         "Kaguya-sama: Love Is War",
         "早坂爱",
         "全年龄日常"
       ],
-      "bg_story": "四宫辉夜身边善于切换身份的侍从。专业、敏锐，也会为任务繁忙而疲惫；离职与剪短头发的阶段代表她开始尝试自己选择的生活，长发女仆时期和短发旅行时期应分别呈现。",
+      "bg_story": "四宫财阀从属名门早坂家之女，自幼作为四宫辉夜的心腹侍从与专职女仆共同成长。为了隐秘处理各种情报侦察、黑客渗透与反监视任务，早坂爱练就了神乎其神的伪装变脸能力——在学校扮演指甲涂满亮油的辣妹辣妹JK，在主家展现冷静高效的扑克脸女仆，在白银御行面前则化身柔弱纯洁的爱尔兰混血千金“哈萨卡”。然而长年在四宫本家监视者与辉夜之间充当双重间谍，让她承受着难以言喻的精神撕裂与窒息感。在京都修学旅行篇中，四宫三男以其母亲为要挟逼其彻底背叛，深感绝望的早坂决心孤注一掷叛逃。在学生会全员的拼死掩护与辉夜的舍命追随下，两人在悬崖边坦诚相见打破隔阂，正式解除了长达十余年的主从契约，早坂亲手剪短标志性金发，宣告获得新生。在四宫家争夺战的大决战中，早坂以完全平等的自由身全力襄助辉夜与白银御行瓦解家族阴谋。全书完结大结局后，早坂爱彻底摆脱了女仆束缚，带着对未知世界的好奇开启了环球旅行，成为走遍五湖四海的技术极客与自由冒险家，与辉夜维系着一生的挚友情谊。",
       "palette": [
         "#8ea9d7",
         "#3c5076"
@@ -61,7 +73,244 @@
         "blue_eyes"
       ],
       "accent_color": "#8ea9d7",
-      "bg_color": "#3c5076"
+      "bg_color": "#3c5076",
+      "voice": "从今天开始，我不再是你的侍从了……所以辉夜，以平等的‘朋友’身份，请多指教吧。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "辉夜大小姐想让我告白",
+        "people": [
+          {
+            "id": "shinomiya_kaguya",
+            "name": "四宫辉夜",
+            "aliases": [
+              "四宮かぐや",
+              "Shinomiya Kaguya",
+              "辉夜大小姐",
+              "副会长"
+            ],
+            "characterId": "shinomiya_kaguya"
+          },
+          {
+            "id": "hayasaka_ai",
+            "name": "早坂爱",
+            "aliases": [
+              "早坂愛",
+              "Ai Hayasaka",
+              "哈萨卡",
+              "早坂"
+            ],
+            "characterId": "hayasaka_ai"
+          },
+          {
+            "id": "shirogane_kei",
+            "name": "白银圭",
+            "aliases": [
+              "白銀圭",
+              "Kei Shirogane",
+              "圭妹",
+              "圭"
+            ],
+            "characterId": "shirogane_kei"
+          },
+          {
+            "id": "shirogane_miyuki",
+            "name": "白银御行",
+            "aliases": [
+              "白銀御行",
+              "Miyuki Shirogane",
+              "白银会长",
+              "会长"
+            ]
+          },
+          {
+            "id": "fujiwara_chika",
+            "name": "藤原千花",
+            "aliases": [
+              "藤原千花",
+              "Chika Fujiwara",
+              "千花",
+              "书记",
+              "地球之癌"
+            ]
+          },
+          {
+            "id": "ishigami_yuu",
+            "name": "石上优",
+            "aliases": [
+              "石上優",
+              "Yuu Ishigami",
+              "石上真男人",
+              "石上会计"
+            ]
+          },
+          {
+            "id": "iino_miko",
+            "name": "伊井野弥子",
+            "aliases": [
+              "伊井野ミコ",
+              "Miko Iino",
+              "弥子",
+              "风纪委员"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kaguya-kaguya-miyuki-intellectual_lovers",
+            "source": "shinomiya_kaguya",
+            "target": "shirogane_miyuki",
+            "label": "恋爱智脑战对手与此生伴侣",
+            "description": "两人因极高自尊心展开长达数个学期的‘先告白就输了’头脑战；奉心祭御行以巨型心形气球告白融化冰山，白银更组织跨国营救助辉夜脱离宗族锁链并结下婚约。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "奉心祭文化祭至最终回拯救决战",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          },
+          {
+            "id": "kaguya-kaguya-hayasaka-confidant_sisters",
+            "source": "shinomiya_kaguya",
+            "target": "hayasaka_ai",
+            "label": "从主仆契约到自由的一生挚友",
+            "description": "早坂自幼作为心腹女仆兼黑客护卫陪伴辉夜；京都修学旅行遭遇背叛危机后，两人在悬崖坦诚相见解除主从关系，早坂剪短发重获自由，成为辉夜最亲密的真正挚友。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "修学旅行篇（漫画第178-187话）",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-kaguya-kei-sister_in_law_admiration",
+            "source": "shirogane_kei",
+            "target": "shinomiya_kaguya",
+            "label": "崇拜倾心与准大嫂",
+            "description": "圭对辉夜优雅清丽的气度怀有极度狂热的少女崇拜，辉夜也极力在圭面前表现完美以赢得未来小姑子的认可，两人互动格外可爱温馨。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "白银家日常篇",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-miyuki-kei-tsundere_siblings",
+            "source": "shirogane_kei",
+            "target": "shirogane_miyuki",
+            "label": "傲娇反叛与心疼哥哥的亲兄妹",
+            "description": "圭正值青春叛逆期，常吐槽御行唠叨、时尚品味土气‘恶心’，但内心深处极度心疼哥哥拼命兼职与熬夜维持家庭，暗中为哥哥挑礼物并引以为傲。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常贯穿",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-kaguya-chika-best_friends_chaos",
+            "source": "shinomiya_kaguya",
+            "target": "fujiwara_chika",
+            "label": "十余年闺蜜与混沌变数",
+            "description": "初中起相伴的闺蜜，千花总以天真烂漫的天然呆思维化解辉夜的冰冷，却又频繁在辉夜算计御行时成为不可预知的‘混沌之癌’搅乱全场。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "贯穿全作日常",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-miyuki-chika-motherly_training",
+            "source": "fujiwara_chika",
+            "target": "shirogane_miyuki",
+            "label": "灾难特训与老母亲般的泪水",
+            "description": "每当御行在排球、唱歌、跳舞、折气球等运动弱项濒临崩溃时，千花便赌上尊严对其进行地狱特训，哭喊‘这是我带大的孩子’，结下悲壮又搞笑的师徒羁绊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "排球/唱校歌/折气球等特训回",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-kaguya-ishigami-brotherly_care",
+            "source": "shinomiya_kaguya",
+            "target": "ishigami_yuu",
+            "label": "严慈并济的姐弟情深",
+            "description": "起初石上对辉夜的杀气胆战心惊，但辉夜暗中彻夜帮石上辅导功课使其及格，并在体育祭后夜祭全力为石上撑腰复仇，被辉夜视作不可或缺的亲弟弟。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "体育祭篇至秀知院后期",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          },
+          {
+            "id": "kaguya-miyuki-ishigami-savior_confidant",
+            "source": "shirogane_miyuki",
+            "target": "ishigami_yuu",
+            "label": "救赎恩人与学生会双雄",
+            "description": "在石上因中学见义勇为反遭全校霸凌孤立的绝境中，御行一人彻查真相还其清白并将他拉入学生会，是石上愿意追随一生的兄长级英雄。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "石上初中篇 / 体育祭篇",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          },
+          {
+            "id": "kaguya-ishigami-miko-quarrelsome_soulmates",
+            "source": "ishigami_yuu",
+            "target": "iino_miko",
+            "label": "暗中守护与命定欢喜冤家",
+            "description": "初中时石上因弥子遭受嘲笑而匿名送花留便条鼓励她，高中在学生会整日争吵抬杠，却在危机时刻互相援手，最终在毕业前夕彼此袒露心意确立暧昧羁绊。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "学生会后期至完结篇",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          },
+          {
+            "id": "kaguya-chika-miko-spoiled_junior",
+            "source": "fujiwara_chika",
+            "target": "iino_miko",
+            "label": "宠溺学姐与崇拜后辈",
+            "description": "正义感过剩的弥子盲目崇拜千花并将她视作典范，千花则将娇小的弥子当成心爱宠物般肆意宠溺投喂，是学生会内最轻松融洽的关系。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学生会日常篇",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-miyuki-hayasaka-allies_confidant",
+            "source": "hayasaka_ai",
+            "target": "shirogane_miyuki",
+            "label": "伪装调侃与可靠盟友",
+            "description": "早坂曾多次化名哈萨卡试探御行，更在辉夜营救行动中与御行并肩作战瓦解四宫家阴谋，是御行极度信任的智谋伙伴。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "四宫家夺回决战篇",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

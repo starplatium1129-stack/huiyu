@@ -31,27 +31,30 @@
         "signature": "金色长发、粉色发梢、粉瞳与辣妹妆"
       },
       "personality": [
-        "开朗外向",
-        "元气",
-        "直率可爱",
-        "对 cosplay 狂热",
-        "动手能力强"
+        "元气开朗",
+        "直率坦诚",
+        "包容尊重",
+        "敢爱敢恨",
+        "情感细腻",
+        "害羞反差",
+        "热忱专注"
       ],
       "likes": [
-        "cosplay",
-        "缝纫制衣",
-        "漫展",
-        "游乐园"
+        "Cosplay与ACG文化",
+        "新菜亲手制作的Cos服",
+        "新菜烹饪的家常料理",
+        "熬夜打游戏看动漫",
+        "与新菜共处的二人时光"
       ],
       "classic_cg": {
-        "title": "制衣工房",
-        "description": "家里的手作工房，缝纫机前她专注量体裁衣——为下一套 cos 倾注全部热情。"
+        "title": "盛夏电车上的怦然心动",
+        "description": "漫展归途的夕阳电车上，新菜精疲力竭睡去，海梦凝视着他疲惫而温柔的侧脸，因新菜先前那句由衷夸赞“真美”而悸动不已，在心中将那句“我喜欢你”默念了千百遍。"
       },
       "identity": {
-        "role": "cosplayer（辣妹高中生）",
-        "age": "高中一年级",
-        "occupation": "学生 / cosplayer",
-        "faction": "（原作学校）"
+        "role": "狂热二次元Cosplayer / 辣妹高中生",
+        "age": "15-16岁（高中一年级）",
+        "occupation": "学生 / 读者模特 / Cosplayer",
+        "faction": "私立紫苑高中"
       },
       "tags": [
         "金发",
@@ -60,7 +63,7 @@
         "cosplayer",
         "制衣"
       ],
-      "bg_story": "喜多川海梦是《更衣人偶坠入爱河》的女主角，元气辣妹 cosplayer。金发粉瞳与下垂眼妆是标志。场景应偏制衣工房、漫展、游乐园等明亮日常。",
+      "bg_story": "喜多川海梦是《更衣人偶坠入爱河》的女主角。幼年丧母、父亲常年出差外地的她性格极其开朗包容、尊重他人的热爱，深爱二次元与Cosplay。在学校家政教室偶然撞见正在制作女儿节娃娃的五条新菜后，她不仅毫不嘲笑新菜的传统爱好，反而由衷惊叹其精湛手艺，真诚请求新菜协助自己制作心仪已久的《圣奴隶学园》黑江雫Cos服。在共同度过的漫展备战、海边约会、夏日祭烟火大会以及学园祭反串执事等一系列时光中，海梦逐渐沦陷并深深爱上了温柔专注的新菜。面对新菜为了完美还原服装而废寝忘食的付出，她既心疼又自责；而在经历大型漫展上出展“天命”Haniel引发轰动后，两人一度因美感冲击与自卑产生心理隔阂。最终在冬漫展后的雪夜归途，两人坦率敞开心扉，新菜深情告白，海梦泪流满面地热烈回应，正式确定恋爱关系。两人不仅成为无可替代的创作搭档与摄影模特，海梦更彻底融入五条家的温馨日常，迈向充满阳光与热爱的全新人生。",
       "palette": [
         "亮金",
         "海梦粉",
@@ -87,7 +90,213 @@
         "sono_bisque_doll_wa_koi_wo_suru"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "只要是自己真心喜欢的事物，就绝对不能被任何人践踏，更不需要去迎合别人的偏见！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "更衣人偶坠入爱河",
+        "people": [
+          {
+            "id": "kitagawa_marin",
+            "name": "喜多川海梦",
+            "aliases": [
+              "Kitagawa Marin",
+              "喜多川海夢",
+              "海梦"
+            ],
+            "characterId": "kitagawa_marin"
+          },
+          {
+            "id": "gojou_wakana",
+            "name": "五条新菜",
+            "aliases": [
+              "Gojou Wakana",
+              "五条新菜",
+              "新菜",
+              "五条同学"
+            ]
+          },
+          {
+            "id": "inui_sajuna",
+            "name": "乾纱寿叶",
+            "aliases": [
+              "Inui Sajuna",
+              "乾紗寿叶",
+              "珠珠大人",
+              "茱洁"
+            ]
+          },
+          {
+            "id": "inui_shinju",
+            "name": "乾心寿",
+            "aliases": [
+              "Inui Shinju",
+              "乾心寿",
+              "心寿酱"
+            ]
+          },
+          {
+            "id": "gojou_kaoru",
+            "name": "五条薰",
+            "aliases": [
+              "Gojou Kaoru",
+              "五条薫",
+              "爷爷"
+            ]
+          },
+          {
+            "id": "amane",
+            "name": "姬野甘菜",
+            "aliases": [
+              "Himeno Amane",
+              "天野あまね",
+              "天音君"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "marin-wakana-love",
+            "source": "kitagawa_marin",
+            "target": "gojou_wakana",
+            "label": "灵魂拍档与双向奔赴的恋人",
+            "description": "从海梦热情撞入新菜封闭的匠人世界开始，新菜以极致细致的手艺为海梦裁制每一件C服，海梦则以灿烂的笑容与认可治愈新菜自卑的内心；经历冬漫展的波折后新菜深情告白，两人正式成为恋人。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "雪夜篇 · 告白与确立关系",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方故事档案",
+              "url": "https://bisquedoll-anime.com/story/"
+            }
+          },
+          {
+            "id": "marin-wakana-cosplay",
+            "source": "kitagawa_marin",
+            "target": "gojou_wakana",
+            "label": "无可替代的专属服装师",
+            "description": "海梦对新菜制作的黑江雫、十六夜亚丽莎等角色服装崇敬备至，只要在新菜身边就能展露出最惊艳迷人的角色神韵。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "开篇 · 命运的相遇",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方人物介绍",
+              "url": "https://bisquedoll-anime.com/character/"
+            }
+          },
+          {
+            "id": "wakana-marin-admiration",
+            "source": "gojou_wakana",
+            "target": "kitagawa_marin",
+            "label": "惊艳神采与无条件倾心",
+            "description": "原本自卑孤独的新菜被海梦毫无偏见的坦荡与盛世美颜深深触动，甚至在心底认定海梦就是世界上最美丽动人的生命形态。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通设定 · 互助时光",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方故事档案",
+              "url": "https://bisquedoll-anime.com/story/"
+            }
+          },
+          {
+            "id": "marin-sajuna-fan",
+            "source": "kitagawa_marin",
+            "target": "inui_sajuna",
+            "label": "狂热粉丝与同好挚友",
+            "description": "海梦自初中起就是人气Coser‘珠珠大人’的忠实迷妹，在现实相遇后毫不拘束地向纱寿叶表达狂热敬意，并力邀其一同合影合作。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "废墟摄影篇",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方人物介绍",
+              "url": "https://bisquedoll-anime.com/character/"
+            }
+          },
+          {
+            "id": "wakana-sajuna-cosplay",
+            "source": "gojou_wakana",
+            "target": "inui_sajuna",
+            "label": "服装委托与艺术追求共鸣",
+            "description": "纱寿叶被新菜制作服装的专业考究所折服，委托其制作《魔法少女小紫乃》的服装，两人在还原原作设定的严苛上达成高度默契。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "合宿摄影篇",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方故事档案",
+              "url": "https://bisquedoll-anime.com/story/"
+            }
+          },
+          {
+            "id": "sajuna-shinju-sisters",
+            "source": "inui_sajuna",
+            "target": "inui_shinju",
+            "label": "相依相伴的亲姐妹",
+            "description": "纱寿叶虽然外表傲娇幼态，却全心爱护高挑懂事的妹妹心寿；心寿则全心全意充当姐姐的专属摄影师与坚强后盾。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "乾家姐妹日常",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方人物介绍",
+              "url": "https://bisquedoll-anime.com/character/"
+            }
+          },
+          {
+            "id": "wakana-shinju-mentor",
+            "source": "gojou_wakana",
+            "target": "inui_shinju",
+            "label": "秘密打气与心愿成真",
+            "description": "看穿心寿暗藏想要尝试Cos男角愿望的新菜，瞒着纱寿叶悄悄为心寿改造服装并传授束胸妆容技巧，让心寿在漫展上圆梦绽放。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "废墟摄影篇 · 心寿的秘密",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方故事档案",
+              "url": "https://bisquedoll-anime.com/story/"
+            }
+          },
+          {
+            "id": "wakana-kaoru-family",
+            "source": "gojou_kaoru",
+            "target": "gojou_wakana",
+            "label": "祖孙至亲与匠人精神传授",
+            "description": "爷爷五条薰是抚养新菜长大的至亲兼人偶手艺师父，不仅全力支持新菜结交海梦等年轻好友，更为新菜的手艺进步由衷欣慰。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "五条家日常",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方人物介绍",
+              "url": "https://bisquedoll-anime.com/character/"
+            }
+          },
+          {
+            "id": "marin-kaoru-warmth",
+            "source": "kitagawa_marin",
+            "target": "gojou_kaoru",
+            "label": "热情后辈与宛如家人",
+            "description": "海梦经常出入五条家工坊蹭饭和交流，爽朗元气的性格深受爷爷喜爱，将五条家视作最温暖的安心归宿。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "五条家日常",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方人物介绍",
+              "url": "https://bisquedoll-anime.com/character/"
+            }
+          },
+          {
+            "id": "amane-marin-cosplay",
+            "source": "amane",
+            "target": "kitagawa_marin",
+            "label": "漫展结缘与Cosplay知己",
+            "description": "在棺材漫展上相识的美型男装Coser天音，因坦率追求所爱与海梦一见如故，在新菜与海梦的真诚鼓励下更加自信地享受Cosplay乐趣。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "棺材聚会篇",
+            "evidence": {
+              "title": "福田晋一 · 《更衣人偶坠入爱河》官方原作档案",
+              "url": "https://bisquedoll-anime.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

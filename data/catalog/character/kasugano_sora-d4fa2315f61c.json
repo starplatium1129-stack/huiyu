@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "不善主动交际，对熟悉的人和物有强烈依恋",
-        "安静外表下有任性与倔强，也会坦率表达不满",
-        "在安心的环境里才慢慢显露柔软与好奇"
+        "沉默寡言",
+        "极度依恋",
+        "敏感脆弱",
+        "傲娇任性",
+        "占有欲极强",
+        "专一病娇",
+        "内心清澈"
       ],
       "likes": [
-        "随身的兔子玩偶",
-        "安静的居家时间",
-        "乡间夏日风景"
+        "春日野悠",
+        "黑色兔子布偶",
+        "泡面与零食",
+        "上网冲浪",
+        "安静昏暗的房间"
       ],
       "classic_cg": {
-        "title": "春日野穹 · 夏日乡道的白裙",
-        "description": "奥木染町的乡间道路，她穿着白色连衣裙走在蝉鸣里，双手背在身后抱着兔子布偶；远处是稻田与积雨云，她微微眯眼躲避阳光，像一幅会呼吸的油画。"
+        "title": "玄关暖光中的禁忌誓约",
+        "description": "夏夜蝉鸣渐歇的玄关地板上，银白长发如瀑散落，穹紧紧抱着破旧的黑兔玩偶，泪水模糊的双眼倒映着悠的身影。当颤抖的手指终于越过血缘的界限彼此交叠，全世界的喧嚣在此刻彻底归于死寂与纯粹。"
       },
-      "identity": "Yosuga no Sora · 春日野穹",
+      "identity": {
+        "role": "春日野悠的双胞胎妹妹 / 孤寂依恋的执着爱人",
+        "age": "16岁（高一）",
+        "occupation": "奥木染高中学生（常居家休养）",
+        "faction": "春日野家"
+      },
       "tags": [
         "春日野穹",
         "缘之空",
         "日常"
       ],
-      "bg_story": "回到乡间旧居后逐渐适应日常的少女，安静又有些倔强。长白发、黑色发带与兔子布偶是识别点，场景聚焦乡道、居家手工和季节变化。",
+      "bg_story": "出身春日野家，与双胞胎哥哥春日野悠自幼形影不离，但因体弱多病长期出入医院，性格内向孤僻且极度排斥外界。父母在车祸中骤然离世后，穹带着童年悠赠予的旧黑兔玩偶，与悠一同搬回故乡奥木染町的外公祖屋生活。由于无法承受失去至亲的剧烈恐慌，穹将生命与情感的全部锚点倾注在悠身上，在压抑的小镇中逐渐暴露出近乎窒息的禁忌之恋。在悠面对世俗道德与青梅竹马等关系的迷茫与游移中，穹陷入了深重的绝望与自我厌弃，最终在风雨交加之日留下一封绝笔走向深幽的湖泊试图沉湖自尽。在千钧一发之际，悠不顾生死跳入湖中将穹救起，并在濒死与告白中打破了血缘伦理的枷锁，决意与穹共同承担世界的一切责难。在穹线 True End 中，兄妹二人变卖祖屋、收拾行装，远离了非议横流的小镇，乘上飞往欧洲异国的列车与航班。在遥远的异国他乡，穹解开了内心长久的抑郁与封闭，与悠相依相守，迎来了彼此成为对方唯一容身之所的宁静后日谈。",
       "palette": [
         "#b0b8cd",
         "#282532"
@@ -62,7 +73,92 @@
         "straight_hair"
       ],
       "accent_color": "#b0b8cd",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "悠……如果这世上所有人都责怪我们，那就让他们去责怪吧。只要有你在，我什么都不要了。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "缘之空",
+        "people": [
+          {
+            "id": "kasugano_sora",
+            "name": "春日野穹",
+            "aliases": [
+              "春日野穹",
+              "Kasugano Sora",
+              "穹妹"
+            ],
+            "characterId": "kasugano_sora"
+          },
+          {
+            "id": "kasugano_haruka",
+            "name": "春日野悠",
+            "aliases": [
+              "春日野悠",
+              "Kasugano Haruka"
+            ]
+          },
+          {
+            "id": "amatsume_akira",
+            "name": "天女目瑛",
+            "aliases": [
+              "天女目瑛",
+              "Amatsume Akira"
+            ]
+          },
+          {
+            "id": "yorihime_nao",
+            "name": "依媛奈绪",
+            "aliases": [
+              "依媛奈緒",
+              "Yorihime Nao"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "sora-haruka-taboo-love",
+            "source": "kasugano_sora",
+            "target": "kasugano_haruka",
+            "label": "相依为命与禁断真爱",
+            "description": "双亲事故亡故后兄妹重返奥木染乡间，穹体弱多病极度依赖悠，两人跨越世俗伦理的万丈阻隔在湖畔倾诉宿命爱恋并相伴远赴海外。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "穹线终章 · 破茧重生",
+            "evidence": {
+              "title": "Sphere · 《缘之空》官方作品主页",
+              "url": "https://king-cr.jp/special/yosuganosora/"
+            }
+          },
+          {
+            "id": "sora-nao-hostility",
+            "source": "kasugano_sora",
+            "target": "yorihime_nao",
+            "label": "旧事芥蒂与冷眼相对",
+            "description": "穹因幼年目睹奈绪与悠的往事对奈绪怀有深刻排斥，多次警告奈绪远离自己的哥哥悠。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "奥木染再会篇",
+            "evidence": {
+              "title": "Sphere · 《缘之空》官方作品主页",
+              "url": "https://king-cr.jp/special/yosuganosora/"
+            }
+          },
+          {
+            "id": "haruka-akira-childhood",
+            "source": "kasugano_haruka",
+            "target": "amatsume_akira",
+            "label": "儿时玩伴与神社暖阳",
+            "description": "悠儿时在奥木染相识的神社巫女，永远保持元气烂漫的笑容，为初来乍到的春日野兄妹提供温厚照料。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 乡村初夏",
+            "evidence": {
+              "title": "Sphere · 《缘之空》官方作品主页",
+              "url": "https://king-cr.jp/special/yosuganosora/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "kasugano_sora",

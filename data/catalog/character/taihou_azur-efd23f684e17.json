@@ -33,26 +33,28 @@
         "signature": "曳地漆黑双马尾、金鱼大振袖、极具压迫感丰满身段与赤红凤眸"
       },
       "personality": [
-        "对指挥官怀有毫无保留的炽热爱意",
-        "独占欲强但极度听话顺从",
-        "家务与侍奉全能的完美贤妻",
-        "战场上如烈焰般果断狂猛",
-        "内心极其渴望被全心全意注视"
+        "对指挥官怀抱近乎偏执狂热却无害的至深爱意",
+        "极度强烈的独占欲与随叫随到的绝对忠诚顺从",
+        "家政、烹饪、理财与内务打理全能的完美贤妻",
+        "战场上杀伐果断、烈焰焚天的狂猛修罗",
+        "内心极度缺乏安全感、渴望被全心全意注视与肯定",
+        "偶尔因害羞或受宠若惊而流露令人怜惜的柔弱"
       ],
       "likes": [
-        "为指挥官打理官邸所有内务",
-        "亲手烹饪滋补的重樱和食",
-        "在深夜陪伴在指挥官身侧",
-        "漫步在盛开落樱的神殿庭院"
+        "全天候打理指挥官官邸内务与贴身衣物",
+        "亲手烹调豪华温润的传统重樱会席料理",
+        "在深夜静静凝视熟睡中的指挥官睡颜",
+        "收集指挥官散落的随身物品作为私密珍藏",
+        "与指挥官漫步在绯樱漫天的神社庭院"
       ],
       "classic_cg": {
-        "title": "重樱烈焰的深情相候",
-        "description": "神殿朱红回廊下，漫天绯樱飘扬，大凤执赤金折扇侧身含情脉脉相迎，身段曼妙美艳不可方物。"
+        "title": "炽烈绯樱下的赤金幽候",
+        "description": "朱红漆柱与漫天飘落的绯樱下，大凤轻摇赤金折扇侧身伫立，如夜长发与红金金鱼振袖在晚霞中如炽焰般铺展，赤红凤眸中流淌着足以融化神魂的痴醉深情。"
       },
       "identity": {
-        "role": "重樱主力装甲航空母舰",
-        "age": "青年",
-        "occupation": "装甲航母舰船 / 指挥官贴身侍奉",
+        "role": "重樱帝国主力装甲航空母舰 / 旗舰守护者",
+        "age": "青年外表（约20岁）",
+        "occupation": "装甲航空母舰舰船 / 指挥官专属侍奉掌管者",
         "faction": "碧蓝航线 · 重樱群岛"
       },
       "tags": [
@@ -64,7 +66,7 @@
         "装甲航母",
         "丰腴尤物"
       ],
-      "bg_story": "大凤是《碧蓝航线》中重樱阵营的装甲航空母舰。外表是美艳绝伦的和风绝色佳人，拖曳着如夜色般的极长黑双马尾，身着华丽如锦鲤的红金振袖。她对指挥官有着近乎病态却毫无恶意的绝对深情与献身精神，时时刻刻将指挥官的一切放在第一位。",
+      "bg_story": "大凤是《碧蓝航线》中重樱阵营的主力装甲航空母舰，承载着历史上海战惨烈沉没的悲情记忆与坚实装甲甲板的重望降临母港。她拥有绝美妖娆的和风容颜、拖曳至足跟的漆黑双马尾与赤红火眸，常年身着如锦鲤畅游般的红金华丽振袖与金凤发饰。因前世未能充分施展羽翼便骤然殒命的深沉遗憾，重生后的大凤将全部的存在意义、炽热爱意与灵魂寄托尽数倾注于指挥官一人。她以近乎全能的家政与侍奉技艺渗透进指挥官的衣食起居，熟记指挥官的每一种喜好、心跳节奏与作息规律。在对抗塞壬狂潮、构建奇点突破战以及与各大阵营的联合作战中，大凤凭借厚重坚固的装甲甲板与舰载轰炸机的炽烈焰火构筑起不可逾越的移动天幕，数次以玉石俱焚般的决绝姿态荡平来犯之敌。在看似病娇偏执的极强独占欲之下，深藏着一颗极度害怕再度被冷落遗弃的脆弱少女心；只要得到指挥官温柔的注视与誓言相伴，她便会收敛所有刺痛的烈焰，绽放出全世界最温顺幸福的贤妻笑容。",
       "palette": [
         "朱砂红",
         "曜石黑",
@@ -90,7 +92,190 @@
         "azur_lane"
       ],
       "accent_color": "#dc2626",
-      "bg_color": "#160808"
+      "bg_color": "#160808",
+      "voice": "指挥官大人……大凤的一针一线、每分每秒，全部都是为您而存在的哦。今晚，也请不要把视线从大凤身上移开……好吗？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "碧蓝航线",
+        "people": [
+          {
+            "id": "cheshire_azur",
+            "name": "柴郡",
+            "aliases": [
+              "Cheshire",
+              "柴郡",
+              "猫猫头",
+              "猫爪重巡"
+            ],
+            "characterId": "cheshire_azur"
+          },
+          {
+            "id": "taihou_azur",
+            "name": "大凤",
+            "aliases": [
+              "Taihou",
+              "大凤",
+              "大凤航母",
+              "重樱大凤"
+            ],
+            "characterId": "taihou_azur"
+          },
+          {
+            "id": "commander_azur",
+            "name": "指挥官",
+            "aliases": [
+              "Commander",
+              "指挥官",
+              "亲爱的",
+              "指挥官大人"
+            ]
+          },
+          {
+            "id": "formidable_azur",
+            "name": "可畏",
+            "aliases": [
+              "Formidable",
+              "可畏",
+              "光辉级三号舰",
+              "重金属淑女"
+            ]
+          },
+          {
+            "id": "akagi_azur",
+            "name": "赤城",
+            "aliases": [
+              "Akagi",
+              "赤城",
+              "赤城一航战",
+              "重樱九尾狐"
+            ]
+          },
+          {
+            "id": "belfast_azur",
+            "name": "贝尔法斯特",
+            "aliases": [
+              "Belfast",
+              "贝尔法斯特",
+              "贝法",
+              "皇家女仆长"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "commander_azur-cheshire_azur-pampered_darling",
+            "source": "commander_azur",
+            "target": "cheshire_azur",
+            "label": "猫猫撒娇与纯真炽爱",
+            "description": "自科研入港的第一天起便对指挥官一见钟情，张口闭口呼唤“亲爱的”，不论何时何地都会扑入怀中撒娇求抚摸，是母港最璀璨治愈的快乐源泉。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "母港日常 / 科研三期入港契约",
+            "evidence": {
+              "title": "碧蓝航线海事局官方图鉴 · 柴郡档案",
+              "url": "https://wiki.biligame.com/blhx/%E6%9F%B4%E9%83%A1"
+            }
+          },
+          {
+            "id": "commander_azur-taihou_azur-possessive_devotion",
+            "source": "commander_azur",
+            "target": "taihou_azur",
+            "label": "极致独占欲与灵魂寄托",
+            "description": "背负前世沉没创伤的大凤将全部存在意义倾注于指挥官，以无微不至的家政侍奉与病娇般的狂热炽爱将指挥官包裹，誓死捍卫其安全与笑容。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "母港日常 / 重樱主线与誓约篇",
+            "evidence": {
+              "title": "碧蓝航线官方舰船档案 · 大凤",
+              "url": "https://wiki.biligame.com/blhx/%E5%A4%A7%E5%87%A4"
+            }
+          },
+          {
+            "id": "belfast_azur-cheshire_azur-maid_head_and_cat",
+            "source": "belfast_azur",
+            "target": "cheshire_azur",
+            "label": "女仆长与调皮名誉女仆",
+            "description": "柴郡自告奋勇加入皇家女仆团，贝尔法斯特总以端庄优雅的姿态包容柴郡泡红茶时的手忙脚乱与猫耳恶作剧，耐心地教导其正统女仆礼仪。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "皇家女仆队日常侍奉",
+            "evidence": {
+              "title": "皇家海军女仆团官方设定记录",
+              "url": "https://wiki.biligame.com/blhx/%E8%B4%9D%E5%B0%94%E6%B3%95%E6%96%AF%E7%89%B9"
+            }
+          },
+          {
+            "id": "cheshire_azur-formidable_azur-royal_sisterhood",
+            "source": "cheshire_azur",
+            "target": "formidable_azur",
+            "label": "皇家同僚与优雅反差姐妹",
+            "description": "同为皇家海军高人气主力舰，可畏表面优雅淑女实则热衷摇滚重金属，常因柴郡不按常理出牌的黏人猫猫行径哭笑不得，战场上则是最默契的防空与轰炸搭档。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "皇家海军演习与母港派对",
+            "evidence": {
+              "title": "碧蓝航线皇家阵营舰船档案 · 可畏",
+              "url": "https://wiki.biligame.com/blhx/%E5%8F%AF%E7%95%8F"
+            }
+          },
+          {
+            "id": "akagi_azur-taihou_azur-sakura_devotion_rivals",
+            "source": "akagi_azur",
+            "target": "taihou_azur",
+            "label": "重樱同僚与争宠劲敌",
+            "description": "同为重樱阵营对指挥官抱有极端炽热占有欲的核心航母，日常中为了争夺指挥官身边的侍奉位置针锋相对，战场上则展现出毁天灭地的舰载机协同战力。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "重樱阵营日常 / 母港修罗场",
+            "evidence": {
+              "title": "重樱一航战与主力装母档案记录",
+              "url": "https://wiki.biligame.com/blhx/%E8%B5%A4%E5%9F%8E"
+            }
+          },
+          {
+            "id": "commander_azur-formidable_azur-lady_caprice",
+            "source": "commander_azur",
+            "target": "formidable_azur",
+            "label": "淑女伪装与任性依恋",
+            "description": "在指挥官面前努力维持光辉级皇家淑女的从容端庄，却总在独处时暴露慵懒与任性小脾气，将指挥官视为唯一能倾诉重重少女心事的特殊之人。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "母港日常 / 可畏誓约剧情",
+            "evidence": {
+              "title": "碧蓝航线誓约剧情记录 · 可畏",
+              "url": "https://wiki.biligame.com/blhx/%E5%8F%AF%E7%95%8F"
+            }
+          },
+          {
+            "id": "commander_azur-akagi_azur-crimson_oath",
+            "source": "commander_azur",
+            "target": "akagi_azur",
+            "label": "病娇神乐与命运执念",
+            "description": "视指挥官为生命中不可替代的唯一神明，为了扫除阻碍不惜涉险追寻神石与塞壬禁忌技术，将偏执狂烈的爱意化作庇护指挥官的灼灼红莲。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "重樱主线天宇启户祭 / 苍红的回响",
+            "evidence": {
+              "title": "碧蓝航线主线剧情 · 苍红的回响与重樱神木",
+              "url": "https://wiki.biligame.com/blhx/%E8%B5%A4%E5%9F%8E"
+            }
+          },
+          {
+            "id": "cheshire_azur-taihou_azur-port_office_rivalry",
+            "source": "cheshire_azur",
+            "target": "taihou_azur",
+            "label": "阵营对撞与争宠修罗场",
+            "description": "在母港指挥官办公室门前，直球黏人的皇家猫猫柴郡与全副武装严防死守的大凤时常正面交锋，引发令指挥官头疼又忍俊不禁的欢乐修罗场。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "母港节日庆典与日常互动",
+            "evidence": {
+              "title": "碧蓝航线四格漫画与母港日常纪事",
+              "url": "https://wiki.biligame.com/blhx/%E6%9F%B4%E9%83%A1"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "taihou_azur",

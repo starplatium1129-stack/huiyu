@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "语气轻松，常用玩笑拉近距离",
-        "面对工作熟练从容，懂得体察身边人的疲惫",
-        "漫长经历没有消磨她对普通日常的兴味"
+        "外冷内热",
+        "毒舌傲娇",
+        "脆弱怕生",
+        "极度专情",
+        "粘人撒娇",
+        "隐忍深情",
+        "偶尔腹黑"
       ],
       "likes": [
-        "咖啡馆的工作节奏",
-        "休息时品尝茶点",
-        "与熟悉的人闲聊"
+        "保科柊史",
+        "甜点与蛋糕",
+        "安静的阅读时光",
+        "超自然研究会的闲聊",
+        "牵着柊史的手散步"
       ],
       "classic_cg": {
-        "title": "明月栞那 · 吧台后的百年手艺",
-        "description": "星光咖啡馆吧台后，她用老式虹吸壶冲煮咖啡，动作是从容到近乎悠闲的精准；阳光穿过玻璃杯，她抬眼对客人微笑，眼角藏着与外表年龄不符的沉淀。"
+        "title": "夕阳屋顶下的契约解咒之泪",
+        "description": "落日余晖笼罩的学校天台上，长久以来神情冰冷的栞那终于在柊史怀中崩溃痛哭。数百年的孤寂、恐惧与疲惫在这一刻随着泪水彻底瓦解，她紧紧抓住柊史的衣襟，第一次露出了身为普通少女重获新生的无助与释怀。"
       },
-      "identity": "YUZUSOFT · 明月栞那",
+      "identity": {
+        "role": "姬松学院的孤冷后辈 / 跨越数百年契约的不老魔女",
+        "age": "实际数百岁（外貌停留在高一约15~16岁）",
+        "occupation": "姬松学院学生 / 超自然研究会成员",
+        "faction": "姬松学院 / 超自然研究会"
+      },
       "tags": [
         "明月栞那",
         "柚子社作品",
         "日常"
       ],
-      "bg_story": "在星光咖啡馆工作的神秘店员，从容的手艺与对新式设备的生疏形成反差。白发侧马尾、粉瞳和轻松带笑的神情是识别点。",
+      "bg_story": "表面上是姬松学院孤僻少言、独来独往的一年级学妹，真实身份却是数百年前便与恶魔签订契约的不老不死的魔女。因契约的严苛代价，她长久徘徊在人间见证无数至亲好友的衰老与离世，内心被永恒的孤独与自我封闭所噬，习惯用冷漠与讽刺来推开一切试图靠近她的人。在保科柊史察觉宁宁等人的魔女秘密后，栞那作为关键引路人暗中协助超自然研究会，却始终拒绝让任何人踏入自己的内心深处。在栞那个人线中，柊史不顾被其冷淡拒绝，一遍遍耐心地叩开她的心门，共同面对栞那数百年积压的罪恶感与契约终结带来的生死危机。当恶魔的试炼与代价降临之际，柊史用无私的真爱彻底解除了捆绑栞那数百年的永生诅咒。契约解除后，栞那重新拥有了作为正常人类女孩生老病死的资格。在 True End 与 After Story 中，她展现出极其粘人、爱撒娇与对柊史毫无保留的依恋反差，与研究会的伙伴们共同欢笑，作为一名平凡而幸福的少女携手柊史走过终身。",
       "palette": [
         "#d5a4bd",
         "#282532"
@@ -62,7 +73,194 @@
         "ahoge"
       ],
       "accent_color": "#d5a4bd",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "笨蛋……擅自闯进别人的心扉，又要让我习惯失去你吗？既然解开了诅咒，你就要对我负责一辈子。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "星光咖啡馆与死神之蝶",
+        "people": [
+          {
+            "id": "natsume",
+            "name": "四季夏目",
+            "aliases": [
+              "四季ナツメ",
+              "Shiki Natsume"
+            ],
+            "characterId": "natsume"
+          },
+          {
+            "id": "takamine_kousei",
+            "name": "高岭昂晴",
+            "aliases": [
+              "高嶺昂晴",
+              "Takamine Kousei"
+            ]
+          },
+          {
+            "id": "akizuki_kanna",
+            "name": "明月栞那",
+            "aliases": [
+              "明月栞那",
+              "Akizuki Kanna"
+            ],
+            "characterId": "akizuki_kanna"
+          },
+          {
+            "id": "sumizome_nozomi",
+            "name": "墨染希",
+            "aliases": [
+              "墨染希",
+              "Sumizome Nozomi"
+            ]
+          },
+          {
+            "id": "hiuchidani_mei",
+            "name": "火打谷爱衣",
+            "aliases": [
+              "火打谷愛衣",
+              "Hiuchidani Mei"
+            ]
+          },
+          {
+            "id": "shioyama_suzune",
+            "name": "汐山凉音",
+            "aliases": [
+              "汐山涼音",
+              "Shioyama Suzune"
+            ]
+          },
+          {
+            "id": "shioyama_hiroto",
+            "name": "汐山宏人",
+            "aliases": [
+              "汐山宏人",
+              "Shioyama Hiroto"
+            ]
+          },
+          {
+            "id": "stella_mikado",
+            "name": "米卡多",
+            "aliases": [
+              "ミカド",
+              "Mikado"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "natsume-kousei-university",
+            "source": "natsume",
+            "target": "takamine_kousei",
+            "label": "同一所大学",
+            "description": "夏目与昂晴就读于同一所大学；这不代表两人开篇就已经是恋人。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 四季夏目官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "natsume-kanna-cafe",
+            "source": "natsume",
+            "target": "akizuki_kanna",
+            "label": "咖啡馆同事",
+            "description": "夏目与栞那在星光咖啡馆一起工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 咖啡馆营业期间",
+            "evidence": {
+              "title": "柚子社 · 官方人物介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "natsume-suzune-cafe",
+            "source": "natsume",
+            "target": "shioyama_suzune",
+            "label": "咖啡馆同事",
+            "description": "凉音负责咖啡馆的甜点制作，与夏目在同一家店工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 咖啡馆营业期间",
+            "evidence": {
+              "title": "柚子社 · 汐山凉音官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "kousei-nozomi-childhood",
+            "source": "takamine_kousei",
+            "target": "sumizome_nozomi",
+            "label": "青梅竹马",
+            "description": "希年纪比昂晴小，两人从小相识，交谈时很熟悉彼此。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 墨染希官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "nozomi-mei-classmates",
+            "source": "sumizome_nozomi",
+            "target": "hiuchidani_mei",
+            "label": "曾经的同班同学",
+            "description": "希和爱衣曾经在同一个班级，如今在不同的地方就读。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 火打谷爱衣官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "hiroto-suzune-siblings",
+            "source": "shioyama_hiroto",
+            "target": "shioyama_suzune",
+            "label": "弟弟 → 姐姐",
+            "description": "宏人是凉音的弟弟；姐弟关系不差，但宏人有些怕姐姐。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 其他人物介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "kousei-hiroto-friends",
+            "source": "takamine_kousei",
+            "target": "shioyama_hiroto",
+            "label": "同学与朋友",
+            "description": "宏人与昂晴是同学科的朋友，平日会一起闲聊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 其他人物介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "kanna-mikado-partners",
+            "source": "akizuki_kanna",
+            "target": "stella_mikado",
+            "label": "引导灵魂的搭档",
+            "description": "栞那作为死神，与担任神使的米卡多一同承担引导亡者灵魂的工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 栞那与米卡多官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

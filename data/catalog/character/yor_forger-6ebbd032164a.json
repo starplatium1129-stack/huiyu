@@ -34,19 +34,22 @@
         "signature": "黑发红瞳、玫瑰耳环与杀手/人妻反差"
       },
       "source": "远藤达哉《间谍过家家 / SPY x FAMILY》",
-      "bg_story": "约尔·福杰是《SPY×FAMILY》的女主角，表面是伯林特市政厅的温和职员，真实身份是代号「荆棘公主」的顶尖杀手。黑色长发与红色眼眸、金色玫瑰耳环是她的标志。为完成任务与黄昏组建了福杰家，却在这份「虚假」的家庭里找到了真正的幸福。",
+      "bg_story": "旧姓布莱尔，自幼父母双亡，在东国贫困动荡的环境中与幼弟尤里相依为命。为了抚养弟弟长大成人并供其接受高等教育，她少年时便被东国隐秘暗杀组织“花园”收纳，接受严酷的非人特训，以代号“荆棘公主”执行清肃卖国贼与叛逆者的暗杀任务，肉体力量与杀人格斗术均臻至人类巅峰。成年后表面上是伯林特市政厅一名笨拙低调的女公务员，因大龄未婚屡遭同事非议，面临被怀疑为敌国间谍的风险。为了掩饰杀手身份，她与伪装成精神科医生的西国顶尖间谍“黄昏”（洛伊德·福杰）达成了互利互惠的假结婚协议，并接纳了具有读心超能力的养女阿尼亚。尽管家务粗疏、厨艺常具“毁灭性”，且对社会常识极度脱线，她却以最淳朴真挚的母爱守护着这个充满谎言的重组家庭。在豪华客轮篇中，她接受花园的高危保卫委托，在面对无穷杀手围攻与生死边缘时，坚定确认了自己挥动凶刃正是为了“守护与洛伊德、阿尼亚共同的安宁日常”。如今她与家人在互隐秘密中相濡以沫，成为福杰一家最坚实的守护盾牌。",
       "personality": [
-        "天然",
-        "温柔",
-        "运动万能",
-        "不善社交",
-        "反差萌"
+        "天然呆萌",
+        "温柔善良",
+        "杀伐果断",
+        "不谙世故",
+        "敏感自卑",
+        "母爱充沛",
+        "纯粹坦率"
       ],
       "likes": [
-        "家人",
-        "做饭（努力中）",
-        "花生",
-        "平静的生活"
+        "阿尼亚与洛伊德",
+        "打扫卫生与利刃",
+        "红酒",
+        "苹果",
+        "家人夸奖的料理"
       ],
       "traits": [
         "yor_briar",
@@ -60,18 +63,18 @@
         "flower_earrings",
         "spy_x_family"
       ],
-      "speech": "约尔·福杰向你致以问候。",
+      "speech": "为了阿尼亚和洛伊德先生能生活在和平的世界里……这份染满鲜血的工作，就由我来斩断！",
       "accent_color": "#38bdf8",
       "bg_color": "#0f172a",
       "classic_cg": {
-        "title": "福杰家的晚餐",
-        "description": "她系着熊熊围裙端上卖相微妙的料理，丈夫和女儿却都笑得很开心——这就是她守护的日常。"
+        "title": "豪华邮轮的血色蔷薇",
+        "description": "暴风雨中的豪华客轮甲板上，约尔手持双刺迎战蜂拥而至的职业刺客群，黑白礼服浴血飞扬，眼神中唯有护卫委托人母子与回归家人身边的决绝战意。"
       },
       "identity": {
-        "role": "市政厅职员 / 代号「荆棘公主」的杀手",
-        "age": "27 岁（官方设定）",
-        "occupation": "公务员（表面）",
-        "faction": "福杰家 / 伯林特市政厅"
+        "role": "福杰家女主人 / 暗杀组织「花园」顶尖刺客（荆棘公主）",
+        "age": "27岁",
+        "occupation": "伯林特市政厅公务员（表面伪装） / 职业杀手",
+        "faction": "福杰一家 / 暗杀组织「花园」"
       },
       "tags": [
         "黑发",
@@ -90,7 +93,132 @@
         "市政厅午休",
         "任务雨夜"
       ],
-      "series": "远藤达哉《间谍过家家 / SPY x FAMILY》"
+      "series": "远藤达哉《间谍过家家 / SPY x FAMILY》",
+      "voice": "为了阿尼亚和洛伊德先生能生活在和平的世界里……这份染满鲜血的工作，就由我来斩断！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "间谍过家家",
+        "people": [
+          {
+            "id": "yor_forger",
+            "name": "约尔·福杰",
+            "aliases": [
+              "ヨル・フォージャー",
+              "Yor Forger",
+              "荆棘公主(Thorn Princess)"
+            ],
+            "characterId": "yor_forger"
+          },
+          {
+            "id": "fiona_frost",
+            "name": "菲奥娜·弗罗斯特",
+            "aliases": [
+              "フィオナ・フロスト",
+              "Fiona Frost",
+              "夜帷(Nightfall)"
+            ],
+            "characterId": "fiona_frost"
+          },
+          {
+            "id": "loid_forger",
+            "name": "劳埃德·福杰",
+            "aliases": [
+              "ロイド・フォージャー",
+              "Loid Forger",
+              "黄昏(Twilight)"
+            ]
+          },
+          {
+            "id": "anya_forger",
+            "name": "阿尼亚·福杰",
+            "aliases": [
+              "アーニャ・フォージャー",
+              "Anya Forger",
+              "实验体007"
+            ]
+          },
+          {
+            "id": "yuri_briar",
+            "name": "尤里·布莱尔",
+            "aliases": [
+              "ユーリ・ブライア",
+              "Yuri Briar"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "yor-loid-marriage",
+            "source": "yor_forger",
+            "target": "loid_forger",
+            "label": "契约夫妻与真挚依恋",
+            "description": "为各自掩饰杀手身份与间谍任务缔结伪装婚姻，但在同居养育阿尼亚的日常中逐渐滋生出深厚笃定的家庭依恋。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 福杰家组建",
+            "evidence": {
+              "title": "集英社 · 《间谍过家家》官方作品站",
+              "url": "https://spy-family.net/"
+            }
+          },
+          {
+            "id": "yor-anya-motherhood",
+            "source": "yor_forger",
+            "target": "anya_forger",
+            "label": "保护者与母女情深",
+            "description": "约尔以母亲身份全心保护阿尼亚免受任何暴力与侵害，甚至能为守护阿尼亚一脚踢飞汽车。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 暖心日常",
+            "evidence": {
+              "title": "集英社 · 《间谍过家家》官方作品站",
+              "url": "https://spy-family.net/"
+            }
+          },
+          {
+            "id": "fiona-loid-infatuation",
+            "source": "fiona_frost",
+            "target": "loid_forger",
+            "label": "表面冷酷与内心狂热",
+            "description": "WISE同僚与后辈，表面维持毫无波动的面瘫特工仪态，内心世界对黄昏前辈抱持近乎沸腾的狂热爱意与占有欲。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "夜帷登场篇 · 拜访福杰家",
+            "evidence": {
+              "title": "集英社 · 《间谍过家家》官方作品站",
+              "url": "https://spy-family.net/"
+            }
+          },
+          {
+            "id": "fiona-yor-rivalry",
+            "source": "fiona_frost",
+            "target": "yor_forger",
+            "label": "情敌敌意与力量慑服",
+            "description": "夜帷为争夺黄昏妻子位置向约尔发起网球挑战，被约尔超越常理的恐怖怪力一击碎拍后彻底被其实力震撼。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "网球决斗篇",
+            "evidence": {
+              "title": "集英社 · 《间谍过家家》官方作品站",
+              "url": "https://spy-family.net/"
+            }
+          },
+          {
+            "id": "yuri-yor-sister-complex",
+            "source": "yuri_briar",
+            "target": "yor_forger",
+            "label": "秘密警察与重度姐控",
+            "description": "东国保安局少尉，由姐姐约尔一手抚养成人，对姐姐抱持绝对崇拜与护短，极度警惕并敌视劳埃德。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "秘密警察篇 · 登门造访",
+            "evidence": {
+              "title": "集英社 · 《间谍过家家》官方作品站",
+              "url": "https://spy-family.net/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "yor_forger",

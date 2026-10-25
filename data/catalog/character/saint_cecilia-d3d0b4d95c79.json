@@ -32,19 +32,22 @@
         "signature": "薄荷绿发、翠绿圆瞳与圣女白袍"
       },
       "source": "和武叶佐乃《白圣女与黑牧师》",
-      "bg_story": "塞西莉亚是和武叶佐乃《白圣女与黑牧师》的女主角，小镇教堂的圣女。薄荷嫩绿的长发盘成低髻，翠绿的眼眸纯净而天真，纯白圣女袍与头纱是她的标志。她天然呆得像小动物，喜怒哀乐全写在脸上，与牧师劳伦斯之间有着温柔又笨拙的日常。",
+      "bg_story": "拥有真正能感知神圣奇迹、为众人驱除灾厄并降下恩赐的圣女体质。然而在过往的生活中，她曾因被周围人当成高高在上、没有感情的神圣图腾而备感孤独与压抑，最终因某种变故流离失所，流浪至偏僻宁静的边境乡村小镇。在暴雨交加的夜晚，饥寒交迫的塞西莉亚倒在小镇教堂门前，被性格沉稳体贴但恋爱神经极其迟钝的年轻牧师劳伦斯收留，从此在这座质朴的小教堂里定居下来。在小镇居民与信众面前，她举止得体、神圣庄严，深得全镇人民的崇敬与爱戴；然而一旦回到教堂后厅只剩劳伦斯一人时，她便会彻底卸下圣女包袱，变回一个爱吃甜点、极度懒散黏人、离了劳伦斯就生活不能自理的娇憨少女。面对劳伦斯无微不至的照料，塞西莉亚芳心暗许并多次直球出击，却总被对方误解为对家人的依赖。随着好友阿贝尔、黑泽尔塔的到访以及过往教会阴影的浮现，塞西莉亚在守护小镇安宁的同时，解开了劳伦斯的心结，两人在平淡温馨的日常中逐步确认了彼此无可替代的爱恋羁绊。",
       "personality": [
-        "天然呆",
-        "温柔治愈",
+        "娇憨依恋",
+        "温柔圣洁",
+        "天真烂漫",
+        "敏感体贴",
+        "胆小怕雷",
         "喜怒形于色",
-        "怕打雷",
-        "依赖劳伦斯"
+        "深情纯粹"
       ],
       "likes": [
         "劳伦斯",
-        "司康饼",
-        "教会的人们",
-        "晒太阳"
+        "刚出炉的热司康饼与红茶",
+        "被劳伦斯摸头与夸奖",
+        "在教堂长椅上午睡",
+        "小镇信徒们的笑容"
       ],
       "traits": [
         "1girl",
@@ -65,18 +68,18 @@
         "cross_necklace",
         "large_breasts"
       ],
-      "speech": "塞西莉亚向你致以问候。",
+      "speech": "劳伦斯……今天的司康饼烤好了吗？如果不摸摸我的头，我就赖在沙发上不起来了哦。",
       "accent_color": "#38bdf8",
       "bg_color": "#0f172a",
       "classic_cg": {
-        "title": "教堂的午后",
-        "description": "她抱着圣经在长椅上打瞌睡，头纱滑落一半——劳伦斯轻轻替她扶正，没有叫醒她。"
+        "title": "晨光圣所的无防备睡颜",
+        "description": "阳光透过彩绘玻璃洒在教堂长椅上，平日里端庄圣洁的圣女毫无形象地蜷缩在劳伦斯的膝头安眠，嘴角挂着满足的笑意，头纱滑落在一旁也浑然不觉。"
       },
       "identity": {
-        "role": "小镇教堂的圣女",
-        "age": "不到二十岁",
+        "role": "边境小镇教堂圣女（真正拥有神圣守护之力的圣女）",
+        "age": "约 17 岁",
         "occupation": "圣女",
-        "faction": "教会（与劳伦斯一起）"
+        "faction": "边境小镇教堂 / 圣女守护阵营"
       },
       "tags": [
         "薄荷绿发",
@@ -95,7 +98,93 @@
         "小镇集市",
         "雷雨夜"
       ],
-      "series": "和武叶佐乃《白圣女与黑牧师》"
+      "series": "和武叶佐乃《白圣女与黑牧师》",
+      "voice": "劳伦斯……今天的司康饼烤好了吗？如果不摸摸我的头，我就赖在沙发上不起来了哦。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "白圣女与黑牧师",
+        "people": [
+          {
+            "id": "saint_cecilia",
+            "name": "塞西莉亚",
+            "aliases": [
+              "セシリア",
+              "Saint Cecilia",
+              "白圣女"
+            ],
+            "characterId": "saint_cecilia"
+          },
+          {
+            "id": "pastor_lawrence",
+            "name": "劳伦斯",
+            "aliases": [
+              "ローレンス",
+              "Pastor Lawrence",
+              "黑牧师"
+            ]
+          },
+          {
+            "id": "abel",
+            "name": "亚伯",
+            "aliases": [
+              "アベル",
+              "Abel"
+            ]
+          },
+          {
+            "id": "hazelita",
+            "name": "海洁莉塔",
+            "aliases": [
+              "ヘーゼリッタ",
+              "Hazelita"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "cecilia-lawrence-church-cohabitation",
+            "source": "saint_cecilia",
+            "target": "pastor_lawrence",
+            "label": "教堂同居与隐秘娇憨单恋",
+            "description": "镇民敬仰的完美圣女在小教堂里是对劳伦斯毫无保留撒娇耍赖的树懒少女，塞西莉亚全心全意单恋着劳伦斯，而迟钝的劳伦斯只当她是需要精心照顾的孩子。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 乡村小教堂的日常",
+            "evidence": {
+              "title": "讲谈社 · 《白圣女与黑牧师》官方动画主页",
+              "url": "https://shiroseijo-anime.com/"
+            }
+          },
+          {
+            "id": "lawrence-cecilia-guardian-vow",
+            "source": "pastor_lawrence",
+            "target": "saint_cecilia",
+            "label": "守护誓约与迟来的心动",
+            "description": "无论塞西莉亚多么任性懒散都无条件包容照顾其三餐与起居，在历经小镇危机后，劳伦斯终于察觉到自己绝不想将塞西莉亚让给任何人的独占心。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "主线推进 · 城镇暴风雨事件",
+            "evidence": {
+              "title": "讲谈社 · 《白圣女与黑牧师》官方动画主页",
+              "url": "https://shiroseijo-anime.com/"
+            }
+          },
+          {
+            "id": "lawrence-abel-childhood-friend",
+            "source": "pastor_lawrence",
+            "target": "abel",
+            "label": "神学校旧友与无情吐槽",
+            "description": "借住在教堂的劳伦斯旧友，旁观者清地看穿塞西莉亚的炽烈爱意与劳伦斯的木头迟钝，日常乐此不疲地进行毒舌助攻。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "神职人员日常",
+            "evidence": {
+              "title": "讲谈社 · 《白圣女与黑牧师》官方动画主页",
+              "url": "https://shiroseijo-anime.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

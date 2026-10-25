@@ -31,26 +31,30 @@
         "signature": "鲑粉色长辫、金色同心圆眼睛与从容难测的神态"
       },
       "personality": [
-        "冷静掌控",
-        "高深莫测",
-        "支配欲强",
-        "表面温柔",
-        "危险"
+        "极度冷酷",
+        "深不可测",
+        "病态支配欲",
+        "外表温柔典雅",
+        "善于操纵人心",
+        "孤独渴望被爱",
+        "绝对理性"
       ],
       "likes": [
-        "电影",
-        "狗（和人的关系）",
-        "支配的乐趣"
+        "电影鉴赏（尤其感人的烂片）",
+        "散步与抚养大型犬",
+        "啤酒与肉类料理",
+        "链锯人（波奇塔）",
+        "被平等拥抱的感觉"
       ],
       "classic_cg": {
-        "title": "电影院",
-        "description": "荧幕冷光映在她脸上，她并肩而坐，微笑里藏着支配一切的从容。"
+        "title": "神社高台血肉祭祀与公寓门前的致命开枪",
+        "description": "在京都千本鸟居的高台神社上，玛奇玛蒙眼念出死囚之名，令千里之外的刺客凭空粉碎成肉泥；而在昏暗破旧的公寓门前，她面带甜美无情的微笑，抬手指向端着蛋糕的帕瓦，无情吐出冰冷的‘砰’。"
       },
       "identity": {
-        "role": "支配之恶魔（公安对魔特异课）",
-        "age": "成年（恶魔）",
-        "occupation": "公安对魔特异课负责人",
-        "faction": "公安 / 支配之恶魔"
+        "role": "公安对魔特异4课实际掌权者 / 天启四骑士之「支配恶魔」",
+        "age": "外表20岁前半（恶魔概念存在已久）",
+        "occupation": "内阁官房长官直属公安干部",
+        "faction": "日本公安对魔特异课 / 天启四骑士"
       },
       "tags": [
         "淡粉长发",
@@ -59,7 +63,7 @@
         "红发饰",
         "支配"
       ],
-      "bg_story": "玛奇玛是《电锯人》中的支配之恶魔，公安对魔特异课负责人。日常形态为淡粉长发与正常红瞳，真身为红发+圈圈眼+麻花辫（见独立变体）。场景应偏现代都市、电影院与办公室，避免阳光田园。",
+      "bg_story": "表面是日本内阁官房长官直属的公安对魔特异4课最高长官，容貌端丽、气质神秘且拥有令人绝对服从的掌控力；其真正面目是天启四骑士之一的“支配恶魔”，自始至终渴望利用链锯人抹消恶魔概念的能力，消除饥荒、战争与死亡，创造自己理想中的绝对乌托邦。她在破烂小巷收留了濒死的电次，用丰盛温饱、温柔拥抱与家庭伪装诱惑电次沦为家犬。为了彻底粉碎电次的心智、唤醒沉睡在其心脏内部的真正链锯人波奇塔，玛奇玛精心培养电次与帕瓦、早川秋的羁绊，随后无情将早川秋改造为枪之魔人让电次亲手击杀，并在公寓门前当着电次的面开枪轰碎帕瓦，将其推入绝望深渊。玛奇玛狂热崇拜着链锯人，却因支配恶魔的本能永远无法构筑对等、平等的爱，内心极度荒芜孤独。在最终决战中，电次看透了玛奇玛自始至终只注视着链锯人而从未看清自己本人的盲点，借帕瓦血锯重创玛奇玛，并将她的血肉完全烹饪吃下以示同化救赎。其转世后的幼女“那由多”被托付给电次，完成了支配恶魔从神性暴虐回归凡俗温情的宿命收束。",
       "palette": [
         "淡粉",
         "西装白",
@@ -85,7 +89,169 @@
         "chainsaw_man"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "尸体在说话。只要能够消除世上所有的不幸，即便被链锯人彻底吞噬消灭，对我而言也是至高无上的荣幸呢。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "电锯人",
+        "people": [
+          {
+            "id": "makima",
+            "name": "玛奇玛",
+            "aliases": [
+              "Makima",
+              "マキマ",
+              "支配恶魔",
+              "支配之恶魔"
+            ],
+            "characterId": "makima"
+          },
+          {
+            "id": "reze_chainsaw",
+            "name": "蕾塞",
+            "aliases": [
+              "Reze",
+              "レゼ",
+              "炸弹恶魔",
+              "Bomb Devil",
+              "蕾塞"
+            ],
+            "characterId": "reze_chainsaw"
+          },
+          {
+            "id": "denji",
+            "name": "电次",
+            "aliases": [
+              "Denji",
+              "デンジ",
+              "电锯人",
+              "Chainsaw Man",
+              "波奇塔之契约者"
+            ]
+          },
+          {
+            "id": "hayakawa_aki",
+            "name": "早川秋",
+            "aliases": [
+              "Hayakawa Aki",
+              "早川アキ",
+              "秋",
+              "枪之魔人"
+            ]
+          },
+          {
+            "id": "power",
+            "name": "帕瓦",
+            "aliases": [
+              "Power",
+              "パワー",
+              "血之恶魔",
+              "初代总统",
+              "血之魔人"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "makima-denji-domination_and_bait",
+            "source": "makima",
+            "target": "denji",
+            "label": "支配饲育与毁灭人性的诱饵",
+            "description": "用温饱、拥抱与伪善的关怀将电次圈养为忠犬，实质渴望通过毁灭电次所有的平凡幸福（杀死秋与帕瓦）来剥离其人性，以唤醒真正抹消恶魔概念的链锯人波奇塔。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "支配恶魔篇 · 终局决战",
+            "evidence": {
+              "title": "集英社《少年JUMP+》电锯人官方特设",
+              "url": "https://shonenjumpplus.com/episode/10834108156635208453"
+            }
+          },
+          {
+            "id": "reze_chainsaw-denji-rainy_firework_promise",
+            "source": "reze_chainsaw",
+            "target": "denji",
+            "label": "雨夜烟火的悸动与未赴之约",
+            "description": "作为苏联炸弹恶魔特工潜伏接近电次，教他游泳并在祭典接吻；在生死厮杀后被电次的真心打动相约私奔，却在迈向约定咖啡馆前一步被玛奇玛冷酷伏击扼杀。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "蕾塞篇（炸弹恶魔篇）",
+            "evidence": {
+              "title": "集英社《周刊少年JUMP》蕾塞篇官方特设",
+              "url": "https://www.shonenjump.com/j/rensai/chainsaw.html"
+            }
+          },
+          {
+            "id": "denji-hayakawa_aki-brothers_and_snowball_tragedy",
+            "source": "denji",
+            "target": "hayakawa_aki",
+            "label": "鸡飞狗跳的室友与悲怆雪仗",
+            "description": "从最初互相看不顺眼的同居搭档，演变成为彼此拼命的义兄弟；最终早川秋被玛奇玛改造为枪之魔人，在秋脑海幻化为扔雪球的残酷幻觉中被电次含泪亲手击杀。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "枪之恶魔篇 · 打雪仗之死",
+            "evidence": {
+              "title": "集英社《周刊少年JUMP》电锯人特设官方页",
+              "url": "https://www.shonenjump.com/j/rensai/chainsaw.html"
+            }
+          },
+          {
+            "id": "denji-power-blood_bond_and_contract",
+            "source": "denji",
+            "target": "power",
+            "label": "臭味相投的恶友与鲜血契约",
+            "description": "同居在早川家的欢喜冤家，从互相算计到视若至亲；在帕瓦被玛奇玛轰碎后，其残魂在电次体内觉醒化为血之恶魔拼死救走电次，以订下寻找转生血魔的契约换回电次性命。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "支配恶魔篇 · 垃圾箱里的契约",
+            "evidence": {
+              "title": "MAPPA《电锯人》官方动画网站",
+              "url": "https://chainsawman.dog/"
+            }
+          },
+          {
+            "id": "hayakawa_aki-makima-manipulated_admiration",
+            "source": "hayakawa_aki",
+            "target": "makima",
+            "label": "盲从倾慕与被支配的寿命奴役",
+            "description": "早川秋自始至终在支配恶魔的心智诱导下对玛奇玛抱有无法自拔的好感与顺从，甚至不惜将自己仅剩的短暂寿命与灵魂完全奉献给玛奇玛，沦为悲惨的棋子。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "海滩契约 · 枪之魔人诞生前夕",
+            "evidence": {
+              "title": "MAPPA《电锯人》官方动画角色库",
+              "url": "https://chainsawman.dog/character/"
+            }
+          },
+          {
+            "id": "makima-reze_chainsaw-alley_ambush_and_enslavement",
+            "source": "makima",
+            "target": "reze_chainsaw",
+            "label": "暗巷伏击与洗脑武器人傀儡",
+            "description": "在蕾塞捧着野花准备赴约电次时，玛奇玛率领天使恶魔在小巷实施伏击将蕾塞残杀俘获，抹杀其自主意识将其重组为效忠自己的武器人军团之一。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "炸弹恶魔篇末尾 · 雨巷埋伏",
+            "evidence": {
+              "title": "集英社《少年JUMP+》电锯人连载官方",
+              "url": "https://shonenjumpplus.com/"
+            }
+          },
+          {
+            "id": "hayakawa_aki-power-caretaker_and_companion",
+            "source": "hayakawa_aki",
+            "target": "power",
+            "label": "头疼家长的照料与羁绊",
+            "description": "作为同居三人组中唯一的靠谱常识人，早川秋常年照料帕瓦糟糕的饮食起居并为她善后，帕瓦在秋遇害后亦流露出极度悲伤与绝望恐惧。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "特异4课日常同居篇",
+            "evidence": {
+              "title": "MAPPA《电锯人》官方动画网站",
+              "url": "https://chainsawman.dog/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "makima",

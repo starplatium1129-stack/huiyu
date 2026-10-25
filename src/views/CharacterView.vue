@@ -24,8 +24,16 @@
         <CharacterBookshelf v-if="showShelf || shelfVisited" v-show="showShelf" v-content-motion:up="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @vue:mounted="shelfVisited = true" @select="selectCharacter" />
       <div v-if="!showShelf" v-content-motion:up="current?.id" class="library-layout">
         <BrowsingCharacterDirectory v-model:search="directorySearch" :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
-        <div class="library-detail" data-route-arrive>
-      <section v-if="current" ref="profileAnchor" tabindex="-1" :aria-label="current.name + '的角色档案'" class="character-hero card-direct card-level-3">
+        <div ref="profileAnchor" tabindex="-1" class="library-detail" data-route-arrive>
+          <div class="archive-view-switch studio-segments" role="group" aria-label="角色档案内容"><AnimatedSelection />
+            <button type="button" :aria-pressed="archiveSection === 'profile'" @click="archiveSection = 'profile'">人物档案</button>
+            <button type="button" :aria-pressed="archiveSection === 'relations'" @click="archiveSection = 'relations'">人物关系</button>
+          </div>
+          <AsyncPanel v-if="archiveSection === 'relations' && current" :loader="loadRelationsPanel" label="人物关系图" v-slot="{ component }">
+            <component :is="component" :profiles="characters" :character-id="current.id" @open-profile="openRelatedProfile" />
+          </AsyncPanel>
+          <div v-else v-content-motion:up="current?.id">
+      <section v-if="current" :aria-label="current.name + '的角色档案'" class="character-hero card-direct card-level-3">
         <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
         <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="paintedPortrait?.state || portraitView.state" :aria-busy="portraitPending">
           <img v-for="frame in portraitFrames" :key="frame.token" :crossorigin="frame.crossorigin" class="portrait-image"
@@ -52,6 +60,7 @@
           </div>
         </div>
         </CharacterParticleStage>
+        <div class="character-reading-column">
         <div class="character-profile">
           <div class="profile-kicker"><ArchiveIcon name="character" />人物档案</div>
           <h2 class="character-name">{{ current.name }}</h2>
@@ -82,12 +91,11 @@
             <p id="character-background" class="profile-story" :class="{ expanded: bgExpanded }">{{ current.bg_story }}</p>
             <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起介绍' : '展开介绍' }}<StudioToggleIcon :active="bgExpanded" /></button>
           </section>
-          <div class="detail-grid">
-            <section class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="star" />性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div><CardEdgeLight /></section>
-            <section class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="love" />喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div><CardEdgeLight /></section>
+          <div v-if="current.personality.length || current.likes.length" class="detail-grid">
+            <section v-if="current.personality.length" class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="star" />性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div><CardEdgeLight /></section>
+            <section v-if="current.likes.length" class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="love" />喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div><CardEdgeLight /></section>
           </div>
         </div>
-      </section>
 
       <details v-if="current?.lora" :key="current.id" class="character-production">
         <StudioDisclosureSummary><span><ArchiveIcon name="image" />模型信息</span><span class="production-hint">LoRA 与触发词</span></StudioDisclosureSummary>
@@ -127,6 +135,9 @@
         </div>
       </section>
         </div>
+      </section>
+          </div>
+        </div>
       </div>
     </template>
     <Teleport to="body">
@@ -160,6 +171,8 @@ import { characterArtEntry } from '@/platform/characterArtState'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { ref, computed, nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -185,6 +198,13 @@ import {
 
 const sceneStore = useSceneStore()
 const characters = computed(() => parseCharacterProfiles(sceneStore.characters))
+const archiveSection = ref<'profile' | 'relations'>('profile')
+const loadRelationsPanel = () => import('@/components/library/CharacterRelationsPanel.vue')
+async function openRelatedProfile(id: string) {
+  archiveSection.value = 'profile'; selectCharacter(id)
+  await nextTick()
+  profileAnchor.value?.focus({ preventScroll: true })
+}
 const scenes = ref<CharacterScene[]>([])
 const loading = ref(!characters.value.length)
 const profileAnchor = ref<HTMLElement | null>(null)

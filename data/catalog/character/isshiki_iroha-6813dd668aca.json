@@ -35,21 +35,31 @@
         "signature": "‘前辈，这是在向我告白吗？对不起我们是不可能的’的小恶魔经典连段"
       },
       "personality": [
-        "八面玲珑擅长撒娇，精通如何在男生面前展现最大化可爱",
-        "在八幡面前会毫无顾忌地撕下假面，展露毒舌、懒惰与真实野心",
-        "虽被戏称为小恶魔，在学生会工作中却意外认真、有责任心",
-        "在八幡的笨拙守护下逐渐沦陷，用层出不穷的假意拒绝掩盖真挚心动"
+        "八面玲珑",
+        "精明狡黠",
+        "善于撒娇",
+        "假意防备",
+        "关键时刻极具担当",
+        "毒舌率直",
+        "执着不服输"
       ],
       "likes": [
-        "商业街新开业的可丽饼与首饰店",
-        "看比企谷八幡被自己噎得说不出话的窘迫表情",
-        "寒冷冬夜里两人在看台分享的微温罐装热茶"
+        "商业街新出炉的可丽饼",
+        "看比企谷八幡窘迫无措的表情",
+        "冬天在体育馆看台分享的热饮",
+        "足球部经理工作",
+        "给前辈发毫无诚意的好人卡"
       ],
       "classic_cg": {
-        "title": "对不起，我们是不可能的♪",
-        "description": "学生会室的夕阳下，蜜发少女单手托腮一手轻摆，坏笑着发出毫无诚意的拒绝。"
+        "title": "夕阳学生会室的假意拒绝",
+        "description": "放学后的学生会室被落日余晖浸透，蜜发少女单手托腮微偏着头，眼眸闪烁着促狭的光彩，一边轻轻摆动另一只手，一边坏笑着说出毫无诚意的拒绝连段。"
       },
-      "identity": "我的青春恋爱物语果然有问题。 女主角之一 · 总武高中一年级足球部经理兼学生会会长",
+      "identity": {
+        "role": "侍奉部委托人与核心后辈 / 学生会长",
+        "age": "16岁（高一）→ 17岁（高二）",
+        "occupation": "总武高中学生 / 学生会会长 / 足球部经理",
+        "faction": "总武高中学生会 / 侍奉部常客"
+      },
       "tags": [
         "春物",
         "一色彩羽",
@@ -59,7 +69,7 @@
         "学生会长",
         "后辈"
       ],
-      "bg_story": "总武高的一年级学妹，原本只是个为了维持可爱形象随波逐流的足球部经理。在被推上学生会长选举的风口浪尖时，八幡以最别扭却最有效的方式拯救了她的处境。从此，她学会了在会长办公室只对一个人卸下假面——那些层出不穷的假意拒绝与戏谑撒娇，不知从何时起，变成了她最舍不得结束的专属特权。",
+      "bg_story": "总武高中一年级学生，最初只是个为维持可爱形象、在男生中左右逢源的足球部经理。在遭人推举为学生会长候选人的政治风波中，她极度抗拒承担责任却又渴望体面退出。比企谷八幡看穿了她的伪装，以特有的别扭手段暗中操盘，帮她顺利化解被动局势并正式就任学生会长。在随后的联合圣诞活动陷入泥潭时，八幡再度拼死奔走力挽狂澜，令彩羽深受震撼，从此彻底在八幡面前卸下心机伪装，展现出毒舌、慵懒与真实野心并存的一面。虽然她曾倾心于叶山隼人并在八幡的鼓励下鼓起勇气告白被拒，但在数次相处中，她真正依恋与倾心的对象早已悄然转变为八幡。在侍奉部迎来毕业季与舞会危机时，彩羽作为学生会长积极奔走，协助八幡打破僵局，见证了八幡与雪乃确立关系。在《春物·完》的大结局与《春物·结》后日谈中，彩羽不仅没有退缩，反而以标志性的“小恶魔”姿态，频繁以学生会工作为由向侍奉部发出新委托，在八幡身边嬉笑调侃、制造层出不穷的假意拒绝与进攻契机，狡黠而充满生命力地享受着属于她的青春。",
       "palette": [
         "#f59e0b",
         "#fef3c7",
@@ -76,7 +86,289 @@
         "black_pantyhose"
       ],
       "accent_color": "#f59e0b",
-      "bg_color": "#78350f"
+      "bg_color": "#78350f",
+      "voice": "前辈，刚才盯着我看超过三秒了吧？……难道是在暗恋我吗？虽然心跳了一下，但冷静想想还是有点勉强呢，对不起！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "我的青春恋爱物语果然有问题",
+        "people": [
+          {
+            "id": "yukinoshita_yukino",
+            "name": "雪之下雪乃",
+            "aliases": [
+              "雪ノ下雪乃",
+              "Yukinoshita Yukino",
+              "雪乃",
+              "雪之下"
+            ],
+            "characterId": "yukinoshita_yukino"
+          },
+          {
+            "id": "yuigahama_yui",
+            "name": "由比滨结衣",
+            "aliases": [
+              "由比ヶ浜結衣",
+              "Yuigahama Yui",
+              "结衣",
+              "团子"
+            ],
+            "characterId": "yuigahama_yui"
+          },
+          {
+            "id": "isshiki_iroha",
+            "name": "一色彩羽",
+            "aliases": [
+              "一色いろは",
+              "Isshiki Iroha",
+              "彩羽",
+              "一色",
+              "小恶魔学妹"
+            ],
+            "characterId": "isshiki_iroha"
+          },
+          {
+            "id": "yukinoshita_haruno",
+            "name": "雪之下阳乃",
+            "aliases": [
+              "雪ノ下陽乃",
+              "Haruno Yukinoshita",
+              "阳乃",
+              "阳乃姐姐"
+            ],
+            "characterId": "yukinoshita_haruno"
+          },
+          {
+            "id": "hikigaya_hachiman",
+            "name": "比企谷八幡",
+            "aliases": [
+              "比企谷八幡",
+              "Hikigaya Hachiman",
+              "八幡",
+              "大老师",
+              "比企谷"
+            ]
+          },
+          {
+            "id": "hiratsuka_shizuka",
+            "name": "平冢静",
+            "aliases": [
+              "平塚静",
+              "Shizuka Hiratsuka",
+              "静可爱",
+              "平冢老师"
+            ]
+          },
+          {
+            "id": "hikigaya_komachi",
+            "name": "比企谷小町",
+            "aliases": [
+              "比企谷小町",
+              "Komachi Hikigaya",
+              "小町",
+              "小町妹妹"
+            ]
+          },
+          {
+            "id": "totsuka_saika",
+            "name": "户冢彩加",
+            "aliases": [
+              "戸塚彩加",
+              "Saika Totsuka",
+              "彩加",
+              "户冢",
+              "小天使"
+            ]
+          },
+          {
+            "id": "hayama_hayato",
+            "name": "叶山隼人",
+            "aliases": [
+              "葉山隼人",
+              "Hayato Hayama",
+              "叶山"
+            ]
+          },
+          {
+            "id": "miura_yumiko",
+            "name": "三浦优美子",
+            "aliases": [
+              "三浦優美子",
+              "Yumiko Miura",
+              "优美子"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "oregairu-hachiman-yukino-genuine_lovers",
+            "source": "hikigaya_hachiman",
+            "target": "yukinoshita_yukino",
+            "label": "追求‘真物’的灵魂共鸣与终生誓约",
+            "description": "从侍奉部初见针锋相对的冰冷孤僻，到八幡在长桥上许下‘请将你的人生交给我’的誓约，两人跨越别扭与脆弱，终成彼此不可分割的相守恋人。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "原作第14卷 / 动画完结篇第11-12话",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/"
+            }
+          },
+          {
+            "id": "oregairu-hachiman-yui-bittersweet_crush",
+            "source": "yuigahama_yui",
+            "target": "hikigaya_hachiman",
+            "label": "深情暗恋与温柔守护",
+            "description": "因八幡车祸救狗而结缘，结衣在侍奉部中被八幡独特的真诚吸引并坠入深爱；虽目睹八幡选择雪乃而泪崩，仍勇敢决意不放开三人同在的温暖羁绊。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "原作第14卷 / 动画完结篇第11-12话",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/"
+            }
+          },
+          {
+            "id": "oregairu-yukino-yui-best_friends",
+            "source": "yukinoshita_yukino",
+            "target": "yuigahama_yui",
+            "label": "超越情敌的至交挚友",
+            "description": "性格截然相反的两人在侍奉部朝夕相处中成为彼此唯一的真正闺蜜，即使面对残酷的三人感情困局，依然全心珍视对方、共同维系真挚的友情。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通主线贯穿",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。续》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/story/"
+            }
+          },
+          {
+            "id": "oregairu-hachiman-iroha-mentor_devilish",
+            "source": "isshiki_iroha",
+            "target": "hikigaya_hachiman",
+            "label": "小恶魔学妹与信赖托付",
+            "description": "在学生会选举与圣诞联合活动中被八幡的暗中守护深深打动，在八幡面前彻底卸下伪装，以假意抗拒‘前辈你在追求我吗’的标志性调侃维系着若即若离的依恋。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "第二季第10话至第三季",
+            "evidence": {
+              "title": "小学馆 GAGAGA文库《春物》官方特设",
+              "url": "https://gagagabunko.jp/specal/oregairu/"
+            }
+          },
+          {
+            "id": "oregairu-yukino-haruno-sisterly_shadow",
+            "source": "yukinoshita_haruno",
+            "target": "yukinoshita_yukino",
+            "label": "压抑阴影与苛烈试炼",
+            "description": "阳乃既是雪乃自幼难以企及的家族完美阴影，又以近乎残酷的言语‘共依存’撕碎雪乃的软弱，逼迫妹妹真正脱离依赖、赢得家族的独立自由。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "第二季终盘至第三季舞会篇",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/"
+            }
+          },
+          {
+            "id": "oregairu-hachiman-haruno-keen_observers",
+            "source": "yukinoshita_haruno",
+            "target": "hikigaya_hachiman",
+            "label": "清醒的看客与试金石",
+            "description": "阳乃视八幡为能够看透虚伪同类的罕见存在，不断用尖锐挑衅刺激八幡撕碎表面伪善，是推动侍奉部直面真正‘真物’的核心外力。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第二季至第三季",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/"
+            }
+          },
+          {
+            "id": "oregairu-hachiman-shizuka-life_mentor",
+            "source": "hiratsuka_shizuka",
+            "target": "hikigaya_hachiman",
+            "label": "灵魂引路人与至高恩师",
+            "description": "创建侍奉部强制拉入八幡的引路教师；在八幡陷入自我牺牲的迷局时，在海滨击腹长谈开导他‘追求真物，即使犯错也无妨’，是八幡一生最敬重感念的导师。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第二季第8话至第三季第11话",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/"
+            }
+          },
+          {
+            "id": "oregairu-hachiman-komachi-beloved_siblings",
+            "source": "hikigaya_hachiman",
+            "target": "hikigaya_komachi",
+            "label": "相依相惜的温馨兄妹",
+            "description": "八幡无可救药的妹控源泉与精神后盾；小町善解人意，不仅以‘小町积分’调和家庭气氛，更在考入总武高后接棒侍奉部部长，守护哥哥的青春幸福。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "贯穿全作",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/"
+            }
+          },
+          {
+            "id": "oregairu-hachiman-totsuka-pure_friendship",
+            "source": "hikigaya_hachiman",
+            "target": "totsuka_saika",
+            "label": "纯洁治愈的至交挚友",
+            "description": "八幡在全校唯一能够完全放下心防与毒舌的‘天使’好友，每次与彩加互动都让八幡内心小鹿乱撞，是八幡灰暗校园生活中罕见的纯净阳光。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "日常学园篇",
+            "evidence": {
+              "title": "小学馆 GAGAGA文库《春物》官方特设",
+              "url": "https://gagagabunko.jp/specal/oregairu/"
+            }
+          },
+          {
+            "id": "oregairu-hachiman-hayama-mirror_rivals",
+            "source": "hikigaya_hachiman",
+            "target": "hayama_hayato",
+            "label": "镜面对立与深层理解",
+            "description": "现充群体的领袖与阴角孤狼的镜像宿敌；两人互道‘我讨厌你’，却在修学旅行与雪乃的过去事件中极度理解彼此背负的沉重期望与无奈妥协。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第二季修学旅行与马拉松篇",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。续》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/story/"
+            }
+          },
+          {
+            "id": "oregairu-yui-miura-clique_friends",
+            "source": "miura_yumiko",
+            "target": "yuigahama_yui",
+            "label": "现充同伴与真诚护短",
+            "description": "优美子外表跋扈专横但极度护短，真心将结衣视作亲密同伴，在结衣为侍奉部感情烦恼时给予了真诚的大姐头式关切与支持。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常学园篇",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。续》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/story/"
+            }
+          },
+          {
+            "id": "oregairu-iroha-yukino-cooperation_rivalry",
+            "source": "isshiki_iroha",
+            "target": "yukinoshita_yukino",
+            "label": "学生会协作与微妙争锋",
+            "description": "彩羽崇拜并依赖雪乃出类拔萃的策划办事能力，而在围绕八幡的情感攻防中又以敏锐的小恶魔嗅觉向雪乃展现不甘落后的试探与竞争心。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第三季舞会企划篇",
+            "evidence": {
+              "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
+              "url": "https://www.tbs.co.jp/anime/oregairu/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "isshiki_iroha",

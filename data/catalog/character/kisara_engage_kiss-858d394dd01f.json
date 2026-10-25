@@ -31,26 +31,30 @@
         "signature": "粉发红瞳、发饰与傲娇气质"
       },
       "personality": [
-        "傲娇",
-        "病娇",
-        "独占欲强",
-        "吃醋",
-        "深情"
+        "深情决绝",
+        "傲娇占有欲",
+        "病娇爱意",
+        "家务全能",
+        "敏感脆弱",
+        "纯真执着",
+        "战力天花板"
       ],
       "likes": [
-        "重要的人",
-        "同居日常",
-        "（代价是）记忆"
+        "绪方修",
+        "与修同居的柴米油盐日常",
+        "亲手烹饪爱心便当",
+        "偷拍修的各种生活照",
+        "吃醋与宣示正宫主权"
       ],
       "classic_cg": {
-        "title": "都市恶魔战",
-        "description": "Baylong City 的霓虹夜空，她恶魔化形态红角显现，白色战衣在火光中炽烈。"
+        "title": "吞噬回忆的契约之吻",
+        "description": "硝烟弥漫的贝隆市废墟中，恶魔双翼与白色战装炽烈展开，木更泪流满面地深吻向修，将两人之间最珍贵的相处记忆，一口口化作毁灭敌人的纯白烈焰。"
       },
       "identity": {
-        "role": "恶魔少女（伪装高中生）",
-        "age": "外貌 17 岁（恶魔）",
-        "occupation": "学生 / 契约恶魔",
-        "faction": "（Baylong City）"
+        "role": "上位契约恶魔 / 伪装高中生 / PMC核心战力",
+        "age": "外貌17岁（恶魔真实年龄未知）",
+        "occupation": "学生 / PMC作战协力恶魔 / 兼职主妇（自称）",
+        "faction": "I&S社（绪方修个人事务所） / 贝隆市"
       },
       "tags": [
         "粉发",
@@ -59,7 +63,7 @@
         "恶魔",
         "傲娇"
       ],
-      "bg_story": "木更是《Engage Kiss》的女主角，与男主签订契约的恶魔少女，粉发红瞳。恶魔形态为红角+白发+白色战衣。场景应偏近未来都市、战斗与居家日常。",
+      "bg_story": "木更是《Engage Kiss》的女主角，真身为沉睡在浮岛巨都市贝隆市深海矿脉底部的顶级上位恶魔“怠惰”。多年前为了追查父母与妹妹惨死真相的男主角绪方修与她相遇，两人立下严苛而残酷的契约。为了协助修向仇敌恶魔复仇，木更化身粉发高中生协助其经营私人军事公司（PMC），不仅包揽了修贫困潦倒的起居生活，每次战况危急时更通过接吻吸取修的“人类记忆”转化为压倒性魔力。随着战斗升级，修不得不支付与前女友绫乃、乃至与木更自身的相处记忆，木更饱受吃醋、嫉妒与独占欲的折磨，内心深处却始终深爱并怜惜着修的创伤。在决战中，面对修的妹妹环奈恶魔化暴走与阿斯莫德的终极危机，修献出了全部宝贵记忆换取终极战力，木更心碎欲绝却依然义无反顾陪他战至最后一刻。最终危机平息，失忆的修虽遗忘了过去的一切，却在贝隆市的微风中重新接纳了守护在侧的木更；木更与绫乃、莎朗维系着微妙的修罗场平衡，继续作为修不可替代的恶魔伴侣与终身守护者生活下去。",
       "palette": [
         "樱粉",
         "酒红",
@@ -86,7 +90,184 @@
         "engage_kiss"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "只要能留在修的身边，就算把我的所有都给你也无所谓……但你的记忆，只能由我来夺走！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "契约之吻",
+        "people": [
+          {
+            "id": "kisara_engage_kiss",
+            "name": "木更",
+            "aliases": [
+              "Kisara",
+              "キサラ",
+              "怠惰恶魔"
+            ],
+            "characterId": "kisara_engage_kiss"
+          },
+          {
+            "id": "ogata_shuu",
+            "name": "绪方修",
+            "aliases": [
+              "Ogata Shuu",
+              "緒方シュウ",
+              "修",
+              "I&S社长"
+            ]
+          },
+          {
+            "id": "yuugiri_ayano",
+            "name": "夕桐绫乃",
+            "aliases": [
+              "Yuugiri Ayano",
+              "夕桐綾乃",
+              "绫乃"
+            ]
+          },
+          {
+            "id": "sharon_holygrail",
+            "name": "莎朗·霍莉格蕾尔",
+            "aliases": [
+              "Sharon Holygrail",
+              "シャロン・ホーリーグレイル",
+              "莎朗修女"
+            ]
+          },
+          {
+            "id": "ogata_kanna",
+            "name": "绪方环奈",
+            "aliases": [
+              "Ogata Kanna",
+              "緒方カンナ",
+              "环奈"
+            ]
+          },
+          {
+            "id": "miles_morgan",
+            "name": "迈尔斯·摩根",
+            "aliases": [
+              "Miles Morgan",
+              "マイルズ・モーガン",
+              "迈尔斯刑警"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kisara-shuu-contract",
+            "source": "kisara_engage_kiss",
+            "target": "ogata_shuu",
+            "label": "记忆献祭与残酷深爱的契约恶魔",
+            "description": "木更以吸取修对心爱之人的记忆为代价提供压倒性恶魔魔力，照料修落魄的生活起居；虽然饱受吃醋与嫉妒折磨，却甘愿陪修走向万劫不复的复仇深渊。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "共通主线 · 恶魔契约",
+            "evidence": {
+              "title": "Project Engage · 《Engage Kiss》官方角色设定",
+              "url": "https://engage-kiss.com/character/"
+            }
+          },
+          {
+            "id": "ayano-shuu-ex",
+            "source": "yuugiri_ayano",
+            "target": "ogata_shuu",
+            "label": "旧情难断的前任与暗中照拂者",
+            "description": "身为大公司千金的绫乃曾与修是恋人与搭档，即便分手后仍忍不住替修垫付水电费、暗中分配优质委托，无法斩断对修的依恋。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "贝隆市日常",
+            "evidence": {
+              "title": "Project Engage · 《Engage Kiss》官方角色设定",
+              "url": "https://engage-kiss.com/character/"
+            }
+          },
+          {
+            "id": "kisara-ayano-rivals",
+            "source": "kisara_engage_kiss",
+            "target": "yuugiri_ayano",
+            "label": "争风吃醋的情敌与作战盟友",
+            "description": "木更极度吃醋修对绫乃的记忆与关注，两人在生活和谈判中日常修罗场针锋相对；但为了保护修的生命安全，又总能在战场上达成惊人的战术配合。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "修罗场日常与共同防卫",
+            "evidence": {
+              "title": "Project Engage · 《Engage Kiss》官方角色设定",
+              "url": "https://engage-kiss.com/character/"
+            }
+          },
+          {
+            "id": "sharon-shuu-past",
+            "source": "sharon_holygrail",
+            "target": "ogata_shuu",
+            "label": "圣教旧识与致命情愫",
+            "description": "星天教会顶级退魔修女莎朗曾与修一同在海外执行任务并互生好感，因无法容忍修堕落与恶魔木更契约而拔刀相向，内心却始终牵挂修的安危。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "星天教会介入篇",
+            "evidence": {
+              "title": "Project Engage · 《Engage Kiss》官方角色设定",
+              "url": "https://engage-kiss.com/character/"
+            }
+          },
+          {
+            "id": "kisara-sharon-clash",
+            "source": "kisara_engage_kiss",
+            "target": "sharon_holygrail",
+            "label": "宿命天敌与情敌死斗",
+            "description": "正统退魔修女与顶级高位恶魔的天然对立，加上两人都对修怀有特殊情感，使得双方交手招招致命，最终在解决环奈危机中达成休战协定。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "决战特异点 · 恶魔与修女",
+            "evidence": {
+              "title": "Project Engage · 《Engage Kiss》官方故事集",
+              "url": "https://engage-kiss.com/story/"
+            }
+          },
+          {
+            "id": "shuu-kanna-family",
+            "source": "ogata_shuu",
+            "target": "ogata_kanna",
+            "label": "刻骨铭心的兄妹与拯救宿命",
+            "description": "寻找在恶魔灾害中失踪的妹妹环奈是修不惜沦落恶魔契约的终极执念；面对被阿斯莫德改造成究极恶魔兵器的环奈，修宁可燃尽所有记忆也要将其唤醒拯救。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终局决战 · 环奈苏醒",
+            "evidence": {
+              "title": "Project Engage · 《Engage Kiss》官方故事集",
+              "url": "https://engage-kiss.com/story/"
+            }
+          },
+          {
+            "id": "kisara-kanna-battle",
+            "source": "kisara_engage_kiss",
+            "target": "ogata_kanna",
+            "label": "恶魔争夺战与小姑子之争",
+            "description": "木更为了保护修免遭暴走环奈撕碎而全力阻击，在大决战后环奈康复同住，两人在争夺修的关注上开启了更加混乱的家庭混战。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "尾声 · 新的日常",
+            "evidence": {
+              "title": "Project Engage · 《Engage Kiss》官方角色设定",
+              "url": "https://engage-kiss.com/character/"
+            }
+          },
+          {
+            "id": "miles-shuu-fatherfigure",
+            "source": "miles_morgan",
+            "target": "ogata_shuu",
+            "label": "如父长辈与背叛之殇",
+            "description": "资深刑警迈尔斯在修失去双亲后像养父般抚养照顾他，然而真相揭露迈尔斯亦被恶魔附身利用，迫使修在绝望中亲手将其了结。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第8话 · 悲恸的雨夜",
+            "evidence": {
+              "title": "Project Engage · 《Engage Kiss》官方故事集",
+              "url": "https://engage-kiss.com/story/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "kisara_engage_kiss",

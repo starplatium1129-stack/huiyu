@@ -34,21 +34,30 @@
         "signature": "双手撑桌身体前倾的‘我很好奇！’与神山神社的白无垢誓约"
       },
       "personality": [
-        "知书达礼的豪农千反田家掌上明珠，待人彬彬有礼",
-        "一旦产生好奇心便势不可挡，会以极近的距离紧盯对方不放",
-        "天真烂漫的外表下，背负着继承庞大家业与守护故乡土地的责任感",
-        "恋爱时极度纯真羞怯，却敢于在夕阳下的水渠边许下未来的约定"
+        "好奇心极强",
+        "名门闺秀教养",
+        "纯洁无邪",
+        "责任感深重",
+        "真诚率直",
+        "感情含蓄深厚"
       ],
       "likes": [
-        "未解之谜与古典部文集《冰菓》",
-        "自家农园里种植的果蔬与紫阳花",
-        "折木奉太郎打破节能模式时的认真神情"
+        "折木奉太郎",
+        "各类未解之谜",
+        "烹饪与制作糕点",
+        "神山乡土传统文化",
+        "古典部活动"
       ],
       "classic_cg": {
-        "title": "我很好奇！",
-        "description": "放学后的教室夕阳下，黑发千金双手撑桌倾身迫近，紫眸中闪耀着璀璨星尘。"
+        "title": "生雏祭后的落樱桥畔誓约",
+        "description": "在生雏祭落幕的黄昏桥边，身着巫女正装的千反田在樱花纷飞微风中转过身，对奉太郎轻声诉说故乡未来的绝美收束名场面。"
       },
-      "identity": "冰菓 女主角 · 神山高中古典部部长 · 地方名门富农千反田家独生女",
+      "identity": {
+        "role": "神山高中古典部部长 / 千反田家独生女继承人",
+        "age": "高中二年级（青春期）",
+        "occupation": "高中生兼名门千金",
+        "faction": "神山高中古典部 / 千反田家"
+      },
       "tags": [
         "冰菓",
         "千反田",
@@ -58,7 +67,7 @@
         "名门千金",
         "水手服"
       ],
-      "bg_story": "地方名门豪农千反田家的掌上明珠。为了查明舅舅当年在古典部留下的真相，她推开了那扇尘封三十年的活动室大门。她有着让任何节能主义者都无从招架的好奇心与清亮紫眸，也有着深沉眷恋故乡土地的端庄风骨。夕阳下的水渠边，她挽起被风吹散的黑发说出‘这里是我的故乡’，那份美丽早已超越了青春的谜团。",
+      "bg_story": "神山高中古典部部长，神山富农豪门千反田家掌上明珠。拥有清澈如水般的大眼与无可遏制的好奇心，以一句灵动的“我很好奇！”彻底打破了折木奉太郎贯彻的节能主义信条，带领古典部同伴相继解开沉寂数十年的冰菓之谜、愚者的残片与校庆万钟窃案。在神情俏皮灵动的背后，千反田深知自己背负着庞大家族土地传承的责任与无法自由飞翔的宿命。在全作最经典的生雏祭后，漫步于夕阳残照与漫天落樱的乡间小道桥畔，千反田向奉太郎坦言自己的故乡蓝图与无法割舍的土地，在奉太郎“我来替你承担理科”的无声誓约中，青涩美好的爱意在春风落樱中永恒定格。",
       "palette": [
         "#8b5cf6",
         "#f5f3ff",
@@ -75,7 +84,108 @@
         "purple_eyes"
       ],
       "accent_color": "#8b5cf6",
-      "bg_color": "#4c1d95"
+      "bg_color": "#4c1d95",
+      "voice": "折木同学，我很好奇！如果不把这个秘密解开的话，我今天晚上一定会睡不着觉的！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "冰菓",
+        "people": [
+          {
+            "id": "chitanda_eru",
+            "name": "千反田爱瑠",
+            "aliases": [
+              "千反田える",
+              "Chitanda Eru",
+              "我很好奇"
+            ],
+            "characterId": "chitanda_eru"
+          },
+          {
+            "id": "oreki_houtarou",
+            "name": "折木奉太郎",
+            "aliases": [
+              "折木奉太郎",
+              "Oreki Houtarou",
+              "节能主义者"
+            ]
+          },
+          {
+            "id": "fukube_satoshi",
+            "name": "福部里志",
+            "aliases": [
+              "福部里志",
+              "Fukube Satoshi",
+              "数据库"
+            ]
+          },
+          {
+            "id": "ibara_mayaka",
+            "name": "伊原摩耶花",
+            "aliases": [
+              "伊原摩耶花",
+              "Ibara Mayaka"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "chitanda-oreki-curiosity",
+            "source": "chitanda_eru",
+            "target": "oreki_houtarou",
+            "label": "‘我很好奇’与节能崩解",
+            "description": "千反田一句闪烁着紫瞳的‘我很好奇’彻底打碎折木的灰色节能主义，引导他为解开舅舅关谷纯的谜团步入古典部历史。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "开篇设定 · 神山高校古典部",
+            "evidence": {
+              "title": "京都动画 · 《冰菓》官方动画主页",
+              "url": "https://www.kyotoanimation.co.jp/kotenbu/"
+            }
+          },
+          {
+            "id": "oreki-chitanda-cherry-blossom",
+            "source": "oreki_houtarou",
+            "target": "chitanda_eru",
+            "label": "落樱下的无声誓约",
+            "description": "在远垣内家的活着雏祭后，折木望着千反田介绍自己故乡的侧颜，在心中默默做出了放弃绝对节能、守护她前行方向的心意抉择。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终章 · 绕远的雏人偶",
+            "evidence": {
+              "title": "京都动画 · 《冰菓》官方动画主页",
+              "url": "https://www.kyotoanimation.co.jp/kotenbu/"
+            }
+          },
+          {
+            "id": "oreki-satoshi-friends",
+            "source": "oreki_houtarou",
+            "target": "fukube_satoshi",
+            "label": "自封数据库与嫉妒心结",
+            "description": "折木的初中旧友，自称数据库无法得出结论，对折木敏锐的天才推理才华既真诚钦佩又深藏少年好胜的无力感。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 古典部日常",
+            "evidence": {
+              "title": "京都动画 · 《冰菓》官方动画主页",
+              "url": "https://www.kyotoanimation.co.jp/kotenbu/"
+            }
+          },
+          {
+            "id": "satoshi-mayaka-romance",
+            "source": "ibara_mayaka",
+            "target": "fukube_satoshi",
+            "label": "执着追随与未完的情人节",
+            "description": "摩根对里志始终抱持直球爱意，而里志因恐惧执着于某种结果而一度偷走巧克力逃避，经历波折后两人关系终获破冰。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "情人节巧克力事件",
+            "evidence": {
+              "title": "京都动画 · 《冰菓》官方动画主页",
+              "url": "https://www.kyotoanimation.co.jp/kotenbu/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "chitanda_eru",

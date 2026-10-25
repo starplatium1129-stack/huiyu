@@ -31,27 +31,30 @@
         "signature": "银发紫瞳、尖耳与白花发饰"
       },
       "personality": [
-        "纯洁善良",
-        "天真认真",
-        "略带笨拙",
-        "坚韧",
-        "温柔"
+        "纯真善良",
+        "极度温柔",
+        "略显天然笨拙",
+        "坚毅要强",
+        "富有责任感",
+        "外柔内刚",
+        "重情重义"
       ],
       "likes": [
-        "雪",
-        "契约精灵帕克",
-        "重要的人",
-        "王选的使命"
+        "菜月昴",
+        "契约猫咪精灵帕克",
+        "小动物与精灵们",
+        "雪景与冰雕",
+        "收养照顾弱小与孤独之人"
       ],
       "classic_cg": {
-        "title": "冰雪森林",
-        "description": "艾利欧尔冰雪森林，银发半精灵与契约精灵帕克在冰晶与雪光中驻足。"
+        "title": "圣域墓所的告白与大森林冰封初解的泪光",
+        "description": "在昏暗压抑的圣域试炼墓所石室内，面对满身疮痍却眼神炽热的少年，爱蜜莉雅在动情深吻中彻底解开心锁；而在漫天飘落的晶莹雪花中，身披洁白斗篷的半精灵少女呼唤着微精灵，展露出洗尽铅华的澄澈笑颜。"
       },
       "identity": {
-        "role": "半精灵（王选候选人）",
-        "age": "约 114 岁（外貌年轻）",
-        "occupation": "王选候选人",
-        "faction": "卢格尼卡王国"
+        "role": "卢格尼卡王国第五位王位候选人 / 艾力欧尔大森林半精灵公主",
+        "age": "肉体与精神约18岁（实际肉身冰封已过百岁）",
+        "occupation": "精灵术士 / 卢格尼卡王位候选人",
+        "faction": "爱蜜莉雅王选阵营 / 罗兹瓦尔领地"
       },
       "tags": [
         "银发",
@@ -60,7 +63,7 @@
         "半精灵",
         "白裙"
       ],
-      "bg_story": "爱蜜莉雅是《Re:Zero》的女主角，银发半精灵王选候选人，契约精灵为帕克。冰雪系与纯洁气质是核心。场景应偏冰雪森林、王城宫廷与宅邸花园。",
+      "bg_story": "居住在艾力欧尔大森林深处的半精灵少女，因银发紫眸与封印世界的“嫉妒魔女”莎缇拉如出一辙，自幼备受世人仇视与避忌。幼年时目睹养母福尔特娜与怠惰司教裘斯在虚饰魔女潘多拉的阴谋下凄惨牺牲，悲愤暴走的她释放出封冻整座大森林的永冻冰雪，自身亦沉睡近百年。后被大精灵帕克唤醒解封，在罗兹瓦尔举荐下作为第五位王位候选人登上卢格尼卡王选舞台。在王都偶遇意外穿越而来的菜月昴，以纯善的举动成为昴在无数次绝望惨烈“死亡回归”中誓死守护的唯一信仰。在圣域篇面对过去被封印的惨痛记忆与试炼，在帕克契约解除的绝境中，昴的一吻与真挚告白给予了她无限勇气。爱蜜莉雅勇敢正视过去的悲剧，成功通过圣域三大试炼，击溃大兔，真正从受人保护的稚弱雏鸟蜕变为成熟、自信、坚定担当王座的真正领袖。在最新的水门都市、沙塔贤者试炼与佛拉基亚帝国激战中，她统领冰结军团破局克敌，以无与伦比的坚毅仁善成长为合格的王者候选人。",
       "palette": [
         "银白",
         "冰雪蓝",
@@ -87,7 +90,181 @@
         "re:zero"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "我的名字是爱蜜莉雅，只是普通的半精灵爱蜜莉雅……昴，谢谢你一直以来愿意相信我、呼唤我的名字。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "Re:从零开始的异世界生活",
+        "people": [
+          {
+            "id": "rem_rezero",
+            "name": "雷姆",
+            "aliases": [
+              "Rem",
+              "レム",
+              "罗兹瓦尔宅邸女仆长（妹妹）",
+              "鬼族少女"
+            ],
+            "characterId": "rem_rezero"
+          },
+          {
+            "id": "emilia_rezero",
+            "name": "爱蜜莉雅",
+            "aliases": [
+              "Emilia",
+              "エミリア",
+              "半精灵公主",
+              "卢格尼卡王位候选人",
+              "爱蜜莉雅碳"
+            ],
+            "characterId": "emilia_rezero"
+          },
+          {
+            "id": "natsuki_subaru",
+            "name": "菜月昴",
+            "aliases": [
+              "Natsuki Subaru",
+              "ナツキ・スバル",
+              "巴鲁斯",
+              "死亡回归者",
+              "幼女使"
+            ]
+          },
+          {
+            "id": "ram",
+            "name": "拉姆",
+            "aliases": [
+              "Ram",
+              "ラム",
+              "双胞胎姐姐",
+              "千里眼使用者",
+              "罗兹瓦尔女仆"
+            ]
+          },
+          {
+            "id": "beatrice",
+            "name": "碧翠丝",
+            "aliases": [
+              "Beatrice",
+              "ベアトリス",
+              "贝蒂",
+              "禁书库司书",
+              "大精灵"
+            ]
+          },
+          {
+            "id": "puck",
+            "name": "帕克",
+            "aliases": [
+              "Puck",
+              "パック",
+              "终焉之兽",
+              "星兽",
+              "人工大精灵"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "natsuki_subaru-rem_rezero-from_zero_and_hero",
+            "source": "natsuki_subaru",
+            "target": "rem_rezero",
+            "label": "从零开始与无悔的灵魂英雄",
+            "description": "在昴崩溃想要遁逃时雷姆以纯真告白唤醒昴的英雄之心，成为昴心中不可替代的‘英雄’支柱；雷姆遭暴食吞噬沉睡后昴发誓哪怕历经无数次死亡回归也要将她唤醒。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "王都奔逃篇 · 从零开始 / 白鲸讨伐战",
+            "evidence": {
+              "title": "角川MF文库J《Re:从零开始的异世界生活》官网",
+              "url": "https://mfbunkoj.jp/special/rezero/"
+            }
+          },
+          {
+            "id": "natsuki_subaru-emilia_rezero-unwavering_devotion",
+            "source": "natsuki_subaru",
+            "target": "emilia_rezero",
+            "label": "誓死守护的唯一光芒与初恋执念",
+            "description": "自第一天穿越被爱蜜莉雅温柔施救起，昴便以“死亡回归”无数次淌过血海地狱只为替她铺就通往幸福的道路；圣域一吻更坚定让爱蜜莉雅破茧成蝶。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "王选篇 / 圣域篇三大试炼",
+            "evidence": {
+              "title": "《Re:从零开始的异世界生活》动画官方网站",
+              "url": "https://re-zero-anime.jp/tv/"
+            }
+          },
+          {
+            "id": "rem_rezero-ram-twin_sisters_and_guilt",
+            "source": "rem_rezero",
+            "target": "ram",
+            "label": "断角之疚与相依为命的双生姐妹",
+            "description": "童年魔女教屠村拉姆为护妹断角失去绝顶神力，雷姆常年怀抱愧疚甘当劣等替代品拼命服侍；拉姆看似毒舌刻薄实则将妹妹的安危置于自身生命之上。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "鬼村惨案 / 罗兹瓦尔宅邸日常",
+            "evidence": {
+              "title": "角川MF文库J《Re:Zero》官方角色介绍",
+              "url": "https://mfbunkoj.jp/special/rezero/"
+            }
+          },
+          {
+            "id": "emilia_rezero-rem_rezero-faction_companions",
+            "source": "emilia_rezero",
+            "target": "rem_rezero",
+            "label": "王选阵营同盟与情敌兼战友",
+            "description": "共同居住在罗兹瓦尔宅邸，雷姆不仅悉心照料爱蜜莉雅的日常生活，在王选争夺中亦与昴并肩作为爱蜜莉雅阵营最可靠的战力支撑，彼此怀抱敬意与信赖。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "王选启动篇 / 宅邸同盟",
+            "evidence": {
+              "title": "《Re:Zero》动画官方角色档案",
+              "url": "https://re-zero-anime.jp/tv/character/"
+            }
+          },
+          {
+            "id": "puck-emilia_rezero-paternal_spirit_and_apocalypse",
+            "source": "puck",
+            "target": "emilia_rezero",
+            "label": "如父契约精灵与灭世守护",
+            "description": "以亲生父亲般慈爱的契约精灵陪伴爱蜜莉雅成长，订立爱蜜莉雅一旦死亡自身便化身冻结世界的终焉之兽毁天灭地的极端契约，最终为助她独立选择解除契约。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "艾力欧尔大森林冰封 / 圣域试炼契约解除",
+            "evidence": {
+              "title": "《Re:从零开始的异世界生活》官方网站",
+              "url": "https://re-zero-anime.jp/"
+            }
+          },
+          {
+            "id": "natsuki_subaru-beatrice-choose_me_contract",
+            "source": "natsuki_subaru",
+            "target": "beatrice",
+            "label": "选我吧与跨越四百年的契约",
+            "description": "碧翠丝在禁书库守望四百年‘那个人’已近自毁，昴以‘我不是那个人，但我会成为只属于你的昴’伸出手掌，强行将她拉出火海缔结灵魂共生的大精灵契约。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "圣域篇 · 选择我吧（Choose Me）",
+            "evidence": {
+              "title": "角川MF文库J《Re:从零开始的异世界生活》官网",
+              "url": "https://mfbunkoj.jp/special/rezero/"
+            }
+          },
+          {
+            "id": "natsuki_subaru-ram-acerbic_trust",
+            "source": "natsuki_subaru",
+            "target": "ram",
+            "label": "刻薄毒舌与危难中的性命托付",
+            "description": "日常称昴为‘巴鲁斯’并极尽讽刺之能事，但在魔兽骚乱、罗兹瓦尔背叛与圣域绝境中，多次在关键时刻给予昴行动的提示并与昴一同破除死局。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "宅邸诅咒事件 / 圣域对峙篇",
+            "evidence": {
+              "title": "《Re:从零开始的异世界生活》官方网站",
+              "url": "https://re-zero-anime.jp/tv/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "emilia_rezero",

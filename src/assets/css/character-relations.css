@@ -1,0 +1,482 @@
+.character-relations {
+  container-type: inline-size;
+  min-width: 0;
+  transition: all var(--motion-page) var(--ease-out);
+}
+
+/* Fullscreen / Zen mode */
+.character-relations.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: var(--s-4) var(--s-5);
+  background: var(--bg-base);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.character-relations.is-fullscreen .relations-layout {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: calc(100vh - 120px);
+}
+
+.character-relations.is-fullscreen .relations-map {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.character-relations.is-fullscreen .relations-canvas {
+  flex: 1 1 auto;
+  height: 100%;
+  max-height: none;
+}
+
+.character-relations.is-fullscreen .relations-inspector {
+  height: 100%;
+  max-height: none;
+}
+
+.relations-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-bottom: var(--s-4);
+}
+
+.relations-heading h2 {
+  margin: var(--s-2) 0 0;
+  color: var(--text-primary);
+  font: 500 var(--fs-title-sm)/var(--lh-tight) var(--font-serif);
+}
+
+.relations-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.relations-summary {
+  padding: var(--s-2) var(--s-3);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-md);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+}
+
+.relations-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-4);
+  margin-bottom: var(--s-4);
+}
+
+.relations-toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.relations-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  align-items: start;
+  gap: var(--s-4);
+  transition: grid-template-columns var(--motion-hover) var(--ease-out);
+}
+
+.relations-layout.is-inspector-collapsed {
+  grid-template-columns: minmax(0, 1fr) 42px;
+}
+
+.relations-map {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+}
+
+.relations-map-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.relations-map-head strong {
+  color: var(--text-primary);
+  font-size: var(--fs-body-sm);
+}
+
+.relations-map-head span {
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+  font-weight: 400;
+}
+
+.relations-map-head strong span {
+  margin-left: var(--s-2);
+}
+
+.relations-canvas {
+  position: relative;
+  height: clamp(540px, 68dvh, 880px);
+  background-color: var(--bg-base);
+  background-image: radial-gradient(circle, var(--border-soft) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.relations-canvas:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: -3px;
+}
+
+.relations-canvas :deep(.vue-flow__pane) {
+  cursor: grab;
+}
+
+.relations-canvas :deep(.vue-flow__pane:active) {
+  cursor: grabbing;
+}
+
+.relations-map-controls {
+  position: absolute;
+  bottom: var(--s-3);
+  left: var(--s-3);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1);
+  width: fit-content;
+  max-width: calc(100% - 2 * var(--s-3));
+  padding: var(--s-1);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg-surface) 90%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+}
+
+.relations-map-help,
+.relations-map-empty {
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+  line-height: var(--lh-body);
+}
+
+.relations-map-empty {
+  border-top: 1px solid var(--border-soft);
+}
+
+.relations-inspector {
+  min-width: 0;
+  max-height: clamp(540px, 68dvh, 880px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+}
+
+.relations-inspector-collapsed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  height: clamp(540px, 68dvh, 880px);
+  padding: var(--s-3) var(--s-1);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  writing-mode: vertical-rl;
+  font: 500 var(--fs-label-xs)/var(--lh-label) var(--font-sans);
+  letter-spacing: 0.1em;
+  transition: border-color var(--motion-hover) var(--ease-out),
+              background-color var(--motion-hover) var(--ease-out),
+              color var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .relations-inspector-collapsed:hover {
+    border-color: var(--accent);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+  }
+}
+
+.relation-description {
+  padding: var(--s-4);
+  flex-shrink: 0;
+  max-height: 50%;
+  overflow-y: auto;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.relation-description-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.relation-description h3 {
+  margin: var(--s-2) 0 var(--s-3);
+  font: 500 var(--fs-body-lg)/var(--lh-body) var(--font-serif);
+  overflow-wrap: anywhere;
+}
+
+.relation-description > strong {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-pill);
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  font: 500 var(--fs-label-sm)/var(--lh-tight) var(--font-sans);
+  letter-spacing: 0.02em;
+}
+
+.relation-description p,
+.relation-list > p {
+  margin: var(--s-3) 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-loose);
+}
+
+.relation-stage {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  margin-top: var(--s-2);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+}
+
+.relation-stage::before {
+  content: "•";
+  color: var(--accent);
+}
+
+.relation-evidence {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  margin-top: var(--s-3);
+  padding: var(--s-1) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-elevated);
+  color: var(--text-accent, var(--accent));
+  font-size: var(--fs-label-xs);
+  line-height: var(--lh-body);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: border-color var(--motion-hover) var(--ease-out),
+              background-color var(--motion-hover) var(--ease-out),
+              color var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .relation-evidence:hover {
+    border-color: var(--accent);
+    background: var(--bg-surface);
+    color: var(--accent-hover, var(--accent));
+  }
+}
+
+.relation-person-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+}
+
+.relation-list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: var(--s-4);
+}
+
+.relation-list h3 {
+  margin: 0 0 var(--s-2);
+  color: var(--text-primary);
+  font-size: var(--fs-label-sm);
+}
+
+.relation-list-item {
+  display: grid;
+  gap: var(--s-1);
+  width: 100%;
+  padding: var(--s-3);
+  margin-top: var(--s-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--motion-hover) var(--ease-out),
+              background-color var(--motion-hover) var(--ease-out),
+              transform var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .relation-list-item:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-elevated);
+    transform: translateX(2px);
+  }
+  .relation-list-item:active {
+    transform: translateX(0);
+  }
+}
+
+.relation-list-item span {
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+  line-height: var(--lh-body);
+  overflow-wrap: anywhere;
+}
+
+.relation-list-item strong {
+  font-size: var(--fs-label-sm);
+  font-weight: 500;
+}
+
+.relation-list-item small {
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+}
+
+.relation-list-item[aria-pressed='true'] {
+  border-color: var(--accent);
+  border-left-width: 3px;
+  background: var(--bg-surface);
+  box-shadow: var(--selection-shadow);
+}
+
+.relation-list-item:focus-visible,
+.relation-evidence:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 3px;
+}
+
+/* Edge & Handle stylings */
+.relations-canvas :deep(.vue-flow__edge-path) {
+  stroke: var(--text-secondary);
+  stroke-width: 1.6;
+  fill: none;
+  transition: stroke var(--motion-hover) var(--ease-out),
+              stroke-width var(--motion-hover) var(--ease-out),
+              opacity var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .relations-canvas :deep(.vue-flow__edge:hover .vue-flow__edge-path) {
+    stroke: var(--text-primary);
+    stroke-width: 2.4;
+  }
+}
+
+.relations-canvas :deep(.relation-edge-active .vue-flow__edge-path) {
+  stroke: var(--accent);
+  stroke-width: 2.8;
+  filter: drop-shadow(0 0 5px var(--accent-glow));
+  opacity: 1 !important;
+}
+
+.relations-canvas :deep(.relation-edge-dimmed .vue-flow__edge-path) {
+  opacity: 0.12;
+}
+
+.relations-canvas :deep(.relation-edge-dimmed .vue-flow__edge-text),
+.relations-canvas :deep(.relation-edge-dimmed .vue-flow__edge-textbg) {
+  opacity: 0.15;
+}
+
+.relations-canvas :deep(.vue-flow__edge:focus-visible .vue-flow__edge-path) {
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+
+.relations-canvas :deep(.vue-flow__edge-text) {
+  font-family: var(--font-sans);
+  transition: opacity var(--motion-hover) var(--ease-out), fill var(--motion-hover) var(--ease-out);
+}
+
+.relations-canvas :deep(.vue-flow__edge-textbg) {
+  transition: opacity var(--motion-hover) var(--ease-out), stroke var(--motion-hover) var(--ease-out);
+}
+
+.relations-canvas :deep(.vue-flow__edge-interaction) {
+  cursor: pointer;
+}
+
+.relations-canvas :deep(.vue-flow__nodesselection-rect) {
+  display: none;
+}
+
+@container (max-width: 900px) {
+  .relations-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .relations-layout.is-inspector-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .relations-inspector-collapsed {
+    display: none;
+  }
+  .relations-inspector {
+    max-height: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .relation-description {
+    max-height: none;
+    border-bottom: 0;
+  }
+  .relation-list {
+    border-top: 0;
+    border-left: 1px solid var(--border-soft);
+  }
+}
+
+@container (max-width: 540px) {
+  .relations-inspector {
+    grid-template-columns: 1fr;
+  }
+  .relation-list {
+    border-left: 0;
+    border-top: 1px solid var(--border-soft);
+  }
+}
+
+@media (forced-colors: active) {
+  .relations-canvas :deep(.vue-flow__edge-path) { stroke: CanvasText; }
+  .relations-canvas :deep(.relation-edge-active .vue-flow__edge-path) { stroke: Highlight; }
+  .relations-canvas :deep(.vue-flow__edge-textbg) { fill: Canvas; }
+  .relations-canvas :deep(.vue-flow__edge-text) { fill: CanvasText; }
+}

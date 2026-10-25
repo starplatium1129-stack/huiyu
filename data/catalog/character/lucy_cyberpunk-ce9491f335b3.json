@@ -33,27 +33,29 @@
         "signature": "幻彩渐变短发、单分子线手环、脊柱发光插槽与月球追忆"
       },
       "personality": [
-        "防备心极强、性格清冷独立",
-        "曾受荒坂残酷训练内心渴望自由",
-        "对认定的人深情至死不渝",
-        "夜之城最顶级的神经黑客技术",
-        "毕生心愿是前往宁静纯洁的月球"
+        "清冷孤傲、戒备心极强的独行客",
+        "幼年受创导致极难信任他人但对爱人至死不渝",
+        "拥有顶尖的深潜技术与致命单分子线暗杀技艺",
+        "面对命运残酷敢于默默背负一切牺牲与黑暗",
+        "灵魂深处渴望纯洁宁静、厌恶夜之城的铜臭残杀",
+        "外表冷峻神秘、内心深藏细腻凄美的浪漫"
       ],
       "likes": [
-        "坐在沃森区高空天台仰望月球",
-        "抽着泛淡紫光的赛博香烟",
-        "在深潜数据冰海中畅游",
-        "与深爱之人相依为命的平静时光"
+        "坐在沃森区高空公寓天台静静仰望夜空月球",
+        "抽着泛有淡紫荧光的赛博香烟吐出烟圈",
+        "在黑墙边界无拘无束的数据冰海中深潜漫游",
+        "体验超梦头盔中月球重力与地出的宁静幻境",
+        "与大卫紧紧相拥、感受彼此真实的体温"
       ],
       "classic_cg": {
-        "title": "月球之巅的蔚蓝地出",
-        "description": "荒凉死寂的月球平原上，露西手抱宇航头盔凝望星空中冉冉升起的蔚蓝地球，目光深邃凄美。"
+        "title": "苍凉月面的孤影地出",
+        "description": "冰冷寂静的月球撞击坑边缘，身着轻型宇航服的露西独自抱盔伫立，炽烈耀眼的日光照亮苍凉月壤与星空中璀璨的蔚蓝地球，她迎着日光缓缓张开手臂，宛若与消逝的大卫跨越生死相拥。"
       },
       "identity": {
-        "role": "夜之城顶尖自由网络黑客 / 原荒坂深潜逃犯",
-        "age": "青年",
-        "occupation": "网络黑客 (Netrunner)",
-        "faction": "夜之城 · 曼恩佣兵小队"
+        "role": "夜之城顶尖自由黑客 / 原荒坂深潜逃犯 / 大卫·马丁内斯挚爱",
+        "age": "20岁",
+        "occupation": "网络黑客 (Netrunner) / 雇佣兵",
+        "faction": "夜之城 · 曼恩佣兵小队（已解散）"
       },
       "tags": [
         "幻彩短发",
@@ -64,7 +66,7 @@
         "红眼影",
         "赛博朋克"
       ],
-      "bg_story": "露西是《赛博朋克：边缘行者》的女主角，夜之城身手最高超的网络黑客之一。年幼时曾被荒坂当做深潜探针残酷训练，逃出生天后独自在夜之城流浪，性格戒备而孤傲。直到遇见大卫后冰封的心才被融化，她始终怀抱着逃离夜之城、前往纯净月球生活的终极梦想。",
+      "bg_story": "露西本名露西娜·库希纳达，幼年时作为具有黑客天赋的孤儿被荒坂公司收容，在严酷残忍的地下设施中接受非人训练，被强迫深潜至旧网黑墙彼端打捞遗留数据，亲睹同伴相继脑死。在一次险象环生的暴动中，她侥幸逃出荒坂魔窟，流落至充满霓虹与血腥的夜之城，靠在轻轨列车上切取芯片与充当黑客维生，暗自攒钱希冀逃往纯洁宁静的月球。在偶遇少年大卫·马丁内斯并将他引入曼恩佣兵小队后，露西冰封的心被大卫赤诚热烈的爱意逐渐融化，两人成为生死相依的恋人。为了阻止荒坂高层发现大卫与义体金刚的适配数据，露西独自在暗网中猎杀荒坂特工，却不慎落入法拉第与荒坂的陷阱。大卫为营救爱人，不惜注射过量免疫抑制剂驱动毁灭性的义体金刚杀穿夜之城，最终在荒坂塔顶被亚当·重锤斩杀，以生命为露西换取了生路与一张前往月球的单程票。结局中，露西独自登上梦想中的月球，站在炽烈阳光与深邃星空下的苍凉环形山前，任由微风幻觉轻抚脸颊，永远怀抱着大卫的爱与灵魂孤独前行。",
       "palette": [
         "幻彩白",
         "赛博紫",
@@ -91,7 +93,123 @@
         "cyberpunk"
       ],
       "accent_color": "#c084fc",
-      "bg_color": "#0e0b16"
+      "bg_color": "#0e0b16",
+      "voice": "夜之城会夺走你的一切……但大卫，你看，月球真的很美，上面什么都没有，只有我们两个人曾经约定过的阳光。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "赛博朋克：边缘行者",
+        "people": [
+          {
+            "id": "lucy_cyberpunk",
+            "name": "露西",
+            "aliases": [
+              "Lucy",
+              "Lucyna Kushinada"
+            ],
+            "characterId": "lucy_cyberpunk"
+          },
+          {
+            "id": "david_martinez",
+            "name": "大卫·马丁内斯",
+            "aliases": [
+              "David Martinez"
+            ]
+          },
+          {
+            "id": "rebecca",
+            "name": "丽贝卡",
+            "aliases": [
+              "Rebecca"
+            ]
+          },
+          {
+            "id": "maine",
+            "name": "曼恩",
+            "aliases": [
+              "Maine"
+            ]
+          },
+          {
+            "id": "adam_smasher",
+            "name": "亚当·重锤",
+            "aliases": [
+              "Adam Smasher"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "lucy-david-moon",
+            "source": "lucy_cyberpunk",
+            "target": "david_martinez",
+            "label": "生死挚爱与月球之约",
+            "description": "露西将大卫视作夜之城唯一的锚点与救赎，大卫最终为了守护露西的月球之梦直面重锤并牺牲自己。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终局决战 · 荒坂塔之战",
+            "evidence": {
+              "title": "Netflix / CDPR · 《赛博朋克：边缘行者》官方主页",
+              "url": "https://www.cyberpunk.net/edgerunners"
+            }
+          },
+          {
+            "id": "rebecca-david-unrequited",
+            "source": "rebecca",
+            "target": "david_martinez",
+            "label": "单向深情与生死相随",
+            "description": "深爱大卫却尊重其对露西的执着，在最后时刻明知九死一生依然陪同大卫杀入荒坂塔，最终战死。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "终局决战 · 荒坂塔陷落",
+            "evidence": {
+              "title": "Netflix / CDPR · 《赛博朋克：边缘行者》官方主页",
+              "url": "https://www.cyberpunk.net/edgerunners"
+            }
+          },
+          {
+            "id": "lucy-rebecca-companions",
+            "source": "lucy_cyberpunk",
+            "target": "rebecca",
+            "label": "小队战友与共同守护",
+            "description": "曼恩小队并肩作战的默契队友，虽然性格迥异且心系同一人，但在危急时刻将后背彼此托付。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "佣兵生涯 · 曼恩小队",
+            "evidence": {
+              "title": "Netflix / CDPR · 《赛博朋克：边缘行者》官方主页",
+              "url": "https://www.cyberpunk.net/edgerunners"
+            }
+          },
+          {
+            "id": "maine-david-mentor",
+            "source": "maine",
+            "target": "david_martinez",
+            "label": "义父领路人与赛博精神病悲剧",
+            "description": "接纳大卫进入边缘行者世界并教导其义体战斗，最终在精神病发作中为掩护大卫和露西自爆牺牲。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "主线转折 · 曼恩陨落",
+            "evidence": {
+              "title": "Netflix / CDPR · 《赛博朋克：边缘行者》官方主页",
+              "url": "https://www.cyberpunk.net/edgerunners"
+            }
+          },
+          {
+            "id": "david-smasher-nemesis",
+            "source": "david_martinez",
+            "target": "adam_smasher",
+            "label": "夜之城传奇与绝对死敌",
+            "description": "装备斯安威斯坦与重型义体的大卫在荒坂塔顶迎战夜之城传奇杀器亚当·重锤，战至最后一刻。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "终局死斗 · 荒坂塔顶",
+            "evidence": {
+              "title": "Netflix / CDPR · 《赛博朋克：边缘行者》官方主页",
+              "url": "https://www.cyberpunk.net/edgerunners"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

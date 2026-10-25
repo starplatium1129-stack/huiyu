@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "社交时笑容圆融，独处时更专注于自己的世界",
-        "对怪兽造型的细节有强烈兴趣",
-        "轻松表情之下也有挫败与脆弱，需要真实的理解"
+        "孤独脆弱",
+        "病娇偏执",
+        "渴望救赎",
+        "敏感封闭",
+        "极度珍视六花",
+        "雕刻才华",
+        "释怀自强"
       ],
       "likes": [
-        "拼装怪兽模型",
-        "整理模型工具",
-        "研究特摄造型"
+        "宝多六花",
+        "亲手雕刻怪兽黏土模型",
+        "特摄怪兽图鉴",
+        "电脑编程",
+        "甜品与碳酸饮料"
       ],
       "classic_cg": {
-        "title": "新条茜 · 教室中心的完美微笑",
-        "description": "课间教室，茜一手托腮，用恰到好处的亲切笑容回应画外的话语。另一只手在合起的笔记旁无意识地转着橡皮，午间光线照出她完美表情与小动作之间的差异。"
+        "title": "夕阳天台上的断罪拥抱",
+        "description": "崩塌瓦解的杜鹃台天台之上，茜手握碎裂的美工刀无助跪倒在血色夕阳中。六花没有后退与指责，而是微笑着张开双臂将哭泣颤抖的茜紧紧搂入怀中，以一句‘无论你在哪里，我们都是朋友’彻底照亮了神明的无尽深渊。"
       },
-      "identity": "SSSS.GRIDMAN · 新条茜",
+      "identity": {
+        "role": "杜鹃台微型世界的创造神（原）/ 现实世界重获新生的女子高中生",
+        "age": "15~16岁（高一）",
+        "occupation": "电脑世界的神明（原）、现实世界女子高中生",
+        "faction": "怪兽阵营（原）/ 宝多六花与古立特救赎同盟"
+      },
       "tags": [
         "新条茜",
         "SSSS.古立特",
         "日常"
       ],
-      "bg_story": "外表亲切、喜爱怪兽模型的少女，会在社交与独处间呈现不同神情。浅紫短发和红瞳保持一致，眼镜为制作模型时的可选配件。",
+      "bg_story": "现实世界中一位因人际交往创伤而深陷严重抑郁与孤独的普通女子高中生。在自闭于房间的绝望中，她被潜伏的恶质宇宙人亚历克西斯·凯利夫蛊惑，在电脑空间中创造了属于自己的乌托邦微型世界“杜鹃台”。在这个世界里，茜是无所不能的神，所有人必须无条件喜欢她，任何惹她不快的人都会被她亲手雕刻的怪兽在现实中残忍抹杀。然而虚假的崇拜无法填补内心的巨大空洞，随着古立特与响裕太等人的登场反抗，茜的精神逐渐滑向崩溃深渊，最终被亚历克西斯侵蚀化作绝望的巨大无眼怪兽。在万劫不复之际，被茜设定为“无论何时都会成为自己挚友”的宝多六花不顾一切冲入核心，用最纯粹的拥抱与真情解开了茜心中的毒刺，古立特亦将其从怪兽宿命中斩裂救赎。在 TV 终局中，茜重拾了面对现实的勇气，告别了六花与电脑世界，在现实世界的凌乱房间中苏醒睁开双眼。在完结剧场版《GRIDMAN UNIVERSE》中，当电脑世界再度面临灭顶之灾时，现实中的茜借助六花的思念化作全新姿态跨越维度驰援战场，与挚友们完成最后的合体守护，为自己的青春画下了无悔而充满希望的圆满句号。",
       "palette": [
         "#b79fca",
         "#282532"
@@ -62,7 +73,209 @@
         "red_eyes"
       ],
       "accent_color": "#b79fca",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "我啊……其实一直都很讨厌这个世界。但是……如果是六花在的地方，我也许能够试着鼓起勇气生活下去。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "SSSS.GRIDMAN",
+        "people": [
+          {
+            "id": "takarada_rikka",
+            "name": "宝多六花",
+            "aliases": [
+              "Takarada Rikka",
+              "宝多六花",
+              "六花"
+            ],
+            "characterId": "takarada_rikka"
+          },
+          {
+            "id": "shinjou_akane",
+            "name": "新条茜",
+            "aliases": [
+              "Shinjou Akane",
+              "新条茜",
+              "茜",
+              "神明"
+            ],
+            "characterId": "shinjou_akane"
+          },
+          {
+            "id": "hibiki_yuuta",
+            "name": "响裕太",
+            "aliases": [
+              "Hibiki Yuuta",
+              "響裕太",
+              "裕太"
+            ]
+          },
+          {
+            "id": "utsumi_shou",
+            "name": "内海将",
+            "aliases": [
+              "Utsumi Shou",
+              "内海将",
+              "内海"
+            ]
+          },
+          {
+            "id": "gridman",
+            "name": "古立特",
+            "aliases": [
+              "Gridman",
+              "グリッドマン",
+              "超级特工"
+            ]
+          },
+          {
+            "id": "alexis_kerib",
+            "name": "亚历克西斯·凯利夫",
+            "aliases": [
+              "Alexis Kerib",
+              "アレクシス・ケリヴ",
+              "亚历克西斯"
+            ]
+          },
+          {
+            "id": "anti",
+            "name": "安奇",
+            "aliases": [
+              "Anti",
+              "アンチ",
+              "古立特骑士",
+              "Gridknight"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "rikka-akane-salvation",
+            "source": "takarada_rikka",
+            "target": "shinjou_akane",
+            "label": "超越设定的真挚拯救与永恒羁绊",
+            "description": "即便得知自己只是茜设定中‘无论如何都会喜欢茜’的造物，六花依然选择用最纯粹的人性温暖拥抱陷入疯狂化身怪兽的茜，并用通行卡套作为礼物送茜重返现实世界。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "TV终局 · 觉醒与救赎",
+            "evidence": {
+              "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
+              "url": "https://gridman.net/character/#/rikka"
+            }
+          },
+          {
+            "id": "akane-alexis-manipulation",
+            "source": "alexis_kerib",
+            "target": "shinjou_akane",
+            "label": "蛊惑利用与恶意寄生",
+            "description": "恶质宇宙人亚历克西斯利用茜内心的孤独与脆弱，将其亲手雕刻的怪兽实体化摧毁城市，并在茜崩溃时企图将其吞噬为纯粹的绝望之核。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "杜鹃台危机 · 幕后黑手",
+            "evidence": {
+              "title": "TRIGGER · 《SSSS.GRIDMAN》官方故事介绍",
+              "url": "https://gridman.net/story/"
+            }
+          },
+          {
+            "id": "yuuta-rikka-confession",
+            "source": "hibiki_yuuta",
+            "target": "takarada_rikka",
+            "label": "暗生情愫与黄昏坡道的真情相守",
+            "description": "裕太醒来第一眼见到的就是六花并对其怀有真挚的喜欢；在经历失去身体、古立特分离以及剧场版多元危机后，裕太在黄昏坡道真诚告白，六花红着脸欣然接纳。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "完结篇 · GRIDMAN UNIVERSE",
+            "evidence": {
+              "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
+              "url": "https://gridman.net/character/#/yuuta"
+            }
+          },
+          {
+            "id": "yuuta-gridman-fusion",
+            "source": "hibiki_yuuta",
+            "target": "gridman",
+            "label": "寄宿一心与超级特工载体",
+            "description": "古立特在TV全篇寄宿在裕太体内代替其战斗，而裕太本人的灵魂则在沉睡中默默分担负荷，两人齐心协力修补了茜创伤破碎的心灵世界。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "杜鹃台决战 · 真实身份",
+            "evidence": {
+              "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
+              "url": "https://gridman.net/character/#/gridman"
+            }
+          },
+          {
+            "id": "yuuta-utsumi-alliance",
+            "source": "hibiki_yuuta",
+            "target": "utsumi_shou",
+            "label": "古立特同盟核心好友",
+            "description": "身为怪兽特摄迷的内海与裕太组建古立特同盟，作为前线观察员与不可替代的同伴，在裕太陷入困惑时给予坚实的朋友支撑。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "古立特同盟日常",
+            "evidence": {
+              "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
+              "url": "https://gridman.net/character/#/utsumi"
+            }
+          },
+          {
+            "id": "utsumi-rikka-support",
+            "source": "utsumi_shou",
+            "target": "takarada_rikka",
+            "label": "同盟后方智囊与日常挚友",
+            "description": "在旧电脑Junk前共同分析怪兽动向，面对世界危机时时常互相提醒打气，是支撑裕太与古立特奋战的后勤生命线。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "古立特同盟日常",
+            "evidence": {
+              "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
+              "url": "https://gridman.net/character/#/rikka"
+            }
+          },
+          {
+            "id": "akane-anti-creator",
+            "source": "shinjou_akane",
+            "target": "anti",
+            "label": "造物主的抛弃与重生的骑士心",
+            "description": "茜创造安奇只为了斩杀古立特，因安奇多次失败而将其无情遗弃；安奇在六花的救助下萌生守护之心，进化为‘古立特骑士’反向保护茜免遭亚历克西斯毒手。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终局觉醒 · 骑士的誓言",
+            "evidence": {
+              "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
+              "url": "https://gridman.net/character/#/anti"
+            }
+          },
+          {
+            "id": "rikka-anti-kindness",
+            "source": "takarada_rikka",
+            "target": "anti",
+            "label": "雪中送炭与温柔救赎",
+            "description": "面对饥肠辘辘、伤痕累累被茜赶出的流浪少年安奇，六花多次为他提供食物与疗伤，正是这份无差别的温柔赋予了安奇理解人类心灵的开端。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "中盘 · 雨中的便当",
+            "evidence": {
+              "title": "TRIGGER · 《SSSS.GRIDMAN》官方故事介绍",
+              "url": "https://gridman.net/story/"
+            }
+          },
+          {
+            "id": "gridman-alexis-nemesis",
+            "source": "gridman",
+            "target": "alexis_kerib",
+            "label": "光明特工与混沌邪念的宿怨",
+            "description": "超级特工古立特跨越宇宙追缉恶意煽动人心的亚历克西斯，最终以‘Fixer Beam’将其彻底封印净化，修复了崩塌的电脑空间。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "最终战 · 修复的光辉",
+            "evidence": {
+              "title": "TRIGGER · 《SSSS.GRIDMAN》官方故事介绍",
+              "url": "https://gridman.net/story/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "shinjou_akane",

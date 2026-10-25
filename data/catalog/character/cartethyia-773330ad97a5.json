@@ -28,32 +28,42 @@
         "style": "anime"
       },
       "personality": [
-        "面对熟悉地点仍有探索与确认的认真",
-        "愿意帮助身边人，日常喜悦表达得朴素直接",
-        "重要身份之外，也珍惜小镇生活的温暖与归属"
+        "孤勇坚毅",
+        "近乡情怯",
+        "质朴温柔",
+        "沉静克制",
+        "恪守骑士道",
+        "深怀救赎之心"
       ],
       "likes": [
-        "新鲜面包",
-        "在石板街道散步",
-        "照看旅途用品"
+        "埃格拉小镇刚出炉的热面包",
+        "在静谧的石板路散步",
+        "打理随身佩剑与轻甲",
+        "微风拂过麦田的沙沙声",
+        "凡人生活的质朴烟火"
       ],
       "classic_cg": {
         "title": "卡提希娅 · 埃格拉小镇的归还",
-        "description": "故乡小镇的石板路，她以流浪骑士的装扮站在熟悉又陌生的街角，光环下的表情近乡情怯；二十年殉道换来的「回来」，第一步比任何战斗都难。"
+        "description": "晨曦穿透薄雾照耀在埃格拉小镇古老的石板路上，身着素雅骑士斗篷的金发少女驻足在飘出面包香气的街角，光环微光流转，她抬手轻抚被晨风扬起的金辫，近乡情怯的蓝眸中泛起晶莹的泪光。"
       },
-      "identity": "Wuthering Waves · 卡提希娅",
+      "identity": {
+        "role": "流浪骑士 / 前黎那汐塔百合圣女",
+        "age": "外表约20岁（历经二十年殉道）",
+        "occupation": "流浪共鸣者 / 迅刀剑士",
+        "faction": "黎那汐塔 / 独立流浪者"
+      },
       "tags": [
         "卡提希娅",
         "鸣潮",
         "日常"
       ],
-      "bg_story": "重返故乡的流浪骑士，在熟悉街道与日常善意中重新寻找归属。金色长辫、蓝瞳、尖耳和光环为识别点，本批不混用另一战斗形态的外观。",
+      "bg_story": "卡提希娅是漂泊于索拉里斯大地的流浪骑士，真身为黎那汐塔地区曾被万人膜拜供奉的“百合圣女”（Fleurdelys）。她生来便与此方天地的岁主、乃至悲鸣利维坦的渊薮宿命紧密缠绕，曾作为至圣祭品被推上神坛，独自背负起抗击黑暗回响、拯救黎那汐塔的残酷神职。在长达二十余年与孤独、侵蚀及神格异化抗争的殉道岁月里，她将少女的青涩与欢笑深埋于冰冷铠甲之下，以迅刀与气动风刃斩断无数灾厄。当浩劫暂歇、宿命的重枷终于被撕开裂痕后，她断然舍弃了虚妄的神圣尊号，换上褪去金饰的素色轻便行装，以凡人“卡提希娅”的名字踏上重返人间与故土的漫漫旅程。在主线剧情中，重返埃格拉小镇的她面对久违的石板路与热面包香气近乡情怯，深知体内的神性回响与残存暗潮从未彻底平息。如今的她一边行侠于荒原城镇之间、用风之刃荡涤残存的残象危机，一边学着像普通少女那样珍惜每一个清晨与偶遇的善意，在流浪与战斗中重新拼接属于自己的人格与归宿。",
       "palette": [
         "#c4b995",
         "#282532"
       ],
       "source": "Wuthering Waves",
-      "speech": "这里的面包香气，好像一直没有变。",
+      "speech": "「二十年的风暴已经过去，这一次……我不是作为高悬神坛的圣女，而是作为卡提希娅回到了这里。」",
       "traits": [
         "cartethyia",
         "wuthering_waves",
@@ -62,7 +72,220 @@
         "braid"
       ],
       "accent_color": "#c4b995",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "「二十年的风暴已经过去，这一次……我不是作为高悬神坛的圣女，而是作为卡提希娅回到了这里。」",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "鸣潮",
+        "people": [
+          {
+            "id": "changli_wuthering",
+            "name": "长离",
+            "aliases": [
+              "Changli",
+              "今州令尹之师",
+              "大衍离火术继承者",
+              "乘霄山执棋者"
+            ],
+            "characterId": "changli_wuthering"
+          },
+          {
+            "id": "shorekeeper",
+            "name": "守岸人",
+            "aliases": [
+              "The Shorekeeper",
+              "黑海岸神祇化身",
+              "泰缇斯系统守护者",
+              "原初生命"
+            ],
+            "characterId": "shorekeeper"
+          },
+          {
+            "id": "cartethyia",
+            "name": "卡提希娅",
+            "aliases": [
+              "Cartethyia",
+              "百合圣女",
+              "Fleurdelys",
+              "黎那汐塔流浪骑士"
+            ],
+            "characterId": "cartethyia"
+          },
+          {
+            "id": "rover",
+            "name": "漂泊者",
+            "aliases": [
+              "Rover",
+              "初祖降临",
+              "黑石与索拉里斯的命定观测者"
+            ]
+          },
+          {
+            "id": "jinhsi",
+            "name": "今汐",
+            "aliases": [
+              "Jinhsi",
+              "今州令尹",
+              "岁主「角」之共鸣者"
+            ]
+          },
+          {
+            "id": "camellya",
+            "name": "椿",
+            "aliases": [
+              "Camellya",
+              "黑海岸执花人",
+              "红椿寄生共鸣者"
+            ]
+          },
+          {
+            "id": "jiyan",
+            "name": "忌炎",
+            "aliases": [
+              "Jiyan",
+              "夜归军大将",
+              "青龙之刃"
+            ]
+          },
+          {
+            "id": "yangyang",
+            "name": "秧秧",
+            "aliases": [
+              "Yangyang",
+              "夜归斥候",
+              "风羽聆音者"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "changli_wuthering-rover-destiny_and_chessboard",
+            "source": "changli_wuthering",
+            "target": "rover",
+            "label": "棋枰知己与生机托付",
+            "description": "长离以自身大衍离火寿数为柴薪推演天命，在陷入必死之局前遇见了超脱命运常理的漂泊者。她视漂泊者为唯一能打碎既定棋谱的知己与变数，甘愿倾尽离火之力为其引渡黎明。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线1.1版本 ·「往日春山行」/ 乘霄山篇",
+            "evidence": {
+              "title": "库洛游戏《鸣潮》长离伴星任务 ·「离火灼天」",
+              "url": "https://mc.kurogames.com/"
+            }
+          },
+          {
+            "id": "changli_wuthering-jinhsi-master_and_disciple",
+            "source": "changli_wuthering",
+            "target": "jinhsi",
+            "label": "倾心育徒与代代传承",
+            "description": "长离辞去瑝珑中枢高官远赴今州收今汐为徒，传授治世棋道与武道心法，护佑今汐克服异象反噬成长为独当一面的今州令尹，师徒情逾母女至亲。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "今州府日常政务与乘霄山同盟",
+            "evidence": {
+              "title": "库洛游戏《鸣潮》今州主线设定 · 乘霄之约",
+              "url": "https://mc.kurogames.com/"
+            }
+          },
+          {
+            "id": "shorekeeper-rover-starry_shore_and_anchor",
+            "source": "shorekeeper",
+            "target": "rover",
+            "label": "造物守望与灵魂锚点",
+            "description": "守岸人诞生于原初漂泊者的呼唤与泰缇斯系统深处，在孤独的群星黑石中守候漂泊者千万载；当守岸人为拯救黑海岸献祭意识沉入虚无时，漂泊者逆向撕裂数据裂隙将其挽回，赋予其作为自由少女的全新生命。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线1.3版本 ·「行至海岸尽头」",
+            "evidence": {
+              "title": "库洛游戏《鸣潮》1.3版本主线剧情 · 黑海岸核心篇",
+              "url": "https://mc.kurogames.com/"
+            }
+          },
+          {
+            "id": "shorekeeper-camellya-black_shores_custodians",
+            "source": "shorekeeper",
+            "target": "camellya",
+            "label": "黑海岸核心与执花人",
+            "description": "守岸人作为黑海岸的中枢核心与精神象征，包容并信任行事乖张但实力卓绝的执花人椿；椿亦敬仰守岸人维持黑海岸生态运转的圣洁神能，两人共同维系黑海岸抵御暗潮侵蚀。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "黑海岸阵营设定",
+            "evidence": {
+              "title": "库洛游戏《鸣潮》黑海岸组织档案",
+              "url": "https://mc.kurogames.com/"
+            }
+          },
+          {
+            "id": "rover-camellya-fate_and_red_bloom",
+            "source": "camellya",
+            "target": "rover",
+            "label": "宿命纠缠与狂热追逐",
+            "description": "椿在黑海岸的深红花簇中与漂泊者定下不可分割的宿命纠葛，对其展现出狂烈而执着的羁绊爱恋，在无数次暗潮危机中化作最凶险锋锐的花藤为漂泊者破开前路。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "主线黑海岸篇 · 椿伴星任务",
+            "evidence": {
+              "title": "库洛游戏《鸣潮》椿伴星任务剧情",
+              "url": "https://mc.kurogames.com/"
+            }
+          },
+          {
+            "id": "cartethyia-rover-knight_and_redemption",
+            "source": "cartethyia",
+            "target": "rover",
+            "label": "流浪同行与人性复归",
+            "description": "曾作为百合圣女被供奉殉道的卡提希娅在舍弃神职后流浪荒原，在与漂泊者共战悲鸣巨兽与巡礼故土的过程中，深感漂泊者对世间生命的温柔尊重，逐渐解开冰封心结，寻回身为凡人少女的欢笑。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "黎那汐塔流浪巡礼篇",
+            "evidence": {
+              "title": "库洛游戏《鸣潮》角色故事 · 卡提希娅巡礼录",
+              "url": "https://mc.kurogames.com/"
+            }
+          },
+          {
+            "id": "rover-jinhsi-guardian_and_sovereign",
+            "source": "rover",
+            "target": "jinhsi",
+            "label": "护道之剑与岁主令尹",
+            "description": "漂泊者在今州初醒后得到今汐的坦诚接纳，在乘霄山岁主蜕变危机中，漂泊者作为护道者并肩迎战残星会阴谋，助今汐成功承接岁主神格权能，成为生死托付的坚实同盟。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线1.1版本 · 乘霄山主线终章",
+            "evidence": {
+              "title": "库洛游戏《鸣潮》主线任务 ·「照彻乘霄的晨光」",
+              "url": "https://mc.kurogames.com/"
+            }
+          },
+          {
+            "id": "rover-yangyang-first_guide",
+            "source": "yangyang",
+            "target": "rover",
+            "label": "初遇引路人",
+            "description": "秧秧是漂泊者降临索拉里斯世界苏醒时见到的第一位少女，用温柔的风羽异能平息漂泊者的困惑与伤痛，一路护送引荐其进入今州城，结下温暖质朴的初心羁绊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "序章 · 黄雀之歌",
+            "evidence": {
+              "title": "库洛游戏《鸣潮》序章剧情",
+              "url": "https://mc.kurogames.com/"
+            }
+          },
+          {
+            "id": "jiyan-rover-battlefield_comrades",
+            "source": "jiyan",
+            "target": "rover",
+            "label": "夜归同袍与裂隙共战",
+            "description": "夜归军大将忌炎在云陵谷防线与漂泊者联手击溃鸣钟龟与溯洄雨潮，以青龙破阵枪为漂泊者在今州前线构筑坚强后盾，对其深不可测的战略洞察抱持绝对信赖。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线第一章 ·「击水溯浪」",
+            "evidence": {
+              "title": "库洛游戏《鸣潮》第一章主线战役 · 夜归云陵",
+              "url": "https://mc.kurogames.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "cartethyia",

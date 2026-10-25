@@ -33,21 +33,30 @@
         "signature": "白色双角、纯白露背晚礼服、腰间黑色羽翼与金色竖瞳"
       },
       "personality": [
-        "绝对的忠诚与崇拜",
-        "智谋通天的守护者领袖",
-        "病娇与独占欲天花板",
-        "被窝里打滚的纯情小女生"
+        "极致痴狂忠诚",
+        "病娇独占欲",
+        "残虐冷酷",
+        "内政统御奇才",
+        "高傲优雅",
+        "在安兹面前极易失控"
       ],
       "likes": [
-        "缝制安兹大人的周边",
-        "处理大坟墓内政",
-        "与心爱之人共处一室"
+        "安兹·乌尔·恭的全部",
+        "安兹抱枕与玩偶",
+        "统领大坟墓内务",
+        "制作精美衣物",
+        "肃清对魔导国不敬之人"
       ],
       "classic_cg": {
-        "title": "三层黑铠的守护者总管",
-        "description": "在纳萨力克大坟墓王座前身披全黑重铠赫尔墨斯、手持战斧守卫圣域的巍峨姿态。"
+        "title": "王座之畔的疯狂爱意",
+        "description": "在纳萨力克王座之间，身着纯白长裙展露黑翼的雅儿贝德单膝跪在骨王王座前，双目泛起病态狂热红光、深吻安兹法袍下摆的名场面。"
       },
-      "identity": "OVERLORD女主角 · 纳萨力克大坟墓守护者总管 · 纯白魅魔",
+      "identity": {
+        "role": "纳萨力克地下大坟墓守护者总管 / 魔导国宰相",
+        "age": "不老不死 / 纯白魅魔",
+        "occupation": "守护者总管 / 最高行政统筹",
+        "faction": "纳萨力克地下大坟墓 / 安兹·乌尔·恭魔导国"
+      },
       "tags": [
         "OVERLORD",
         "守护者总管",
@@ -56,7 +65,7 @@
         "病娇",
         "反差萌"
       ],
-      "bg_story": "纳萨力克地下大坟墓的守护者总管，统御全体NPC与魔物的最高管理层。原本设定为淫魔，却因设定修改而将所有的爱意与痴狂全盘系于一人之身。对待外人冷酷无情视如尘埃，唯独在心爱之人面前展现出令人忍俊不禁的极端痴情与娇羞。",
+      "bg_story": "纳萨力克地下大坟墓楼层守护者总管，纯白无瑕的黑翼绝美魅魔，拥有全纳萨力克最强的物理防御力与顶尖的内政军略统御才干。在游戏《YGGDRASIL》关服最后一刻，被公会长飞鼠（安兹·乌尔·恭）出于戏谑修改了底层设定为“深爱着飞鼠”，自此将全部身心与狂热的病态爱意倾注于安兹一人身上。她对除安兹以外的其他至尊怀有深藏不露的排斥与杀意，甚至暗中组建秘密搜索队试图铲除可能动摇安兹地位的原同伴。在征服里·耶斯提杰王国、摧毁法尔姆斯与圣王国攻略战中，雅儿贝德冷酷残虐地执行清洗屠城指令，将魔导国推向大陆霸业之巅。她始终作为安兹最忠诚、最疯狂亦最不可撼动的神圣盾牌与正妻候补，永恒守望在王座之畔。",
       "palette": [
         "#eab308",
         "#1e293b",
@@ -74,7 +83,210 @@
         "yandere"
       ],
       "accent_color": "#eab308",
-      "bg_color": "#1e293b"
+      "bg_color": "#1e293b",
+      "voice": "安兹大人……我的身心、骨血与灵魂，皆是您任意支配的玩物。任何阻碍您霸业之辈，皆当碾为尘埃！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "不死者之王",
+        "people": [
+          {
+            "id": "albedo_overlord",
+            "name": "雅儿贝德",
+            "aliases": [
+              "Albedo",
+              "アルベド",
+              "守护者总管",
+              "纯白恶魔"
+            ],
+            "characterId": "albedo_overlord"
+          },
+          {
+            "id": "ainz_ooal_gown",
+            "name": "安兹·乌尔·恭",
+            "aliases": [
+              "Ainz Ooal Gown",
+              "アインズ・ウール・ゴウン",
+              "飞鼠",
+              "魔导王"
+            ]
+          },
+          {
+            "id": "shalltear_bloodfallen",
+            "name": "夏提雅·布拉德弗伦",
+            "aliases": [
+              "Shalltear Bloodfallen",
+              "シャルティア・ブラッドフォールン",
+              "真祖吸血鬼"
+            ]
+          },
+          {
+            "id": "demiurge",
+            "name": "迪米乌哥斯",
+            "aliases": [
+              "Demiurge",
+              "デミウルゴス",
+              "炎狱恶魔",
+              "第七层守护者"
+            ]
+          },
+          {
+            "id": "cocytus",
+            "name": "科塞特斯",
+            "aliases": [
+              "Cocytus",
+              "コキュートス",
+              "冰河统治者",
+              "第五层守护者"
+            ]
+          },
+          {
+            "id": "aura_bella_fiora",
+            "name": "亚乌菈·贝拉·菲欧拉",
+            "aliases": [
+              "Aura Bella Fiora",
+              "アウラ・ベラ・フィオーラ",
+              "第六层守护者"
+            ]
+          },
+          {
+            "id": "pandoras_actor",
+            "name": "潘朵拉·亚克特",
+            "aliases": [
+              "Pandora's Actor",
+              "パンドラズ・アクター",
+              "宝物殿领域守护者"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "albedo-ainz-worship",
+            "source": "albedo_overlord",
+            "target": "ainz_ooal_gown",
+            "label": "狂热痴恋与至高神明崇拜",
+            "description": "在关服前被安兹戏谑修改设定为‘深爱着飞鼠’，从此对安兹怀有近乎病态的狂热忠诚与正妻独占欲，视安兹为世间唯一的永恒主宰与挚爱。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "纳萨力克移转 · 基础设定",
+            "evidence": {
+              "title": "丸山くがね · 《OVERLORD》官方角色设定",
+              "url": "https://overlord-anime.com/character/"
+            }
+          },
+          {
+            "id": "ainz-albedo-reliance",
+            "source": "ainz_ooal_gown",
+            "target": "albedo_overlord",
+            "label": "内政核心倚仗与难掩的心虚",
+            "description": "安兹对擅自修改雅儿贝德设定常怀愧疚，但在纳萨力克全盘内政与魔导国外交治理上极度依赖其卓绝智慧，将其视作不可或缺的左右手。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "魔导国建立 · 国策治理",
+            "evidence": {
+              "title": "丸山くがね · 《OVERLORD》官方故事档案",
+              "url": "https://overlord-anime.com/story/"
+            }
+          },
+          {
+            "id": "albedo-shalltear-rivals",
+            "source": "albedo_overlord",
+            "target": "shalltear_bloodfallen",
+            "label": "情敌争宠与针锋相对",
+            "description": "两人为争夺安兹的正妻之位日常展开毫无掩饰的互嘲（‘大嘴怪’与‘贫乳垫子’），但在守护大坟墓利益与执行安兹敕令时始终保持最高协作准则。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "守护者议事日常",
+            "evidence": {
+              "title": "丸山くがね · 《OVERLORD》官方角色设定",
+              "url": "https://overlord-anime.com/character/"
+            }
+          },
+          {
+            "id": "albedo-demiurge-alliance",
+            "source": "albedo_overlord",
+            "target": "demiurge",
+            "label": "智慧双璧与智计共谋",
+            "description": "纳萨力克智商最高的两位顶尖管理者，日常互相补全安兹那深不可测的‘远大布局’，配合默契地将整片异世界大陆玩弄于股掌之间。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "世界征服纲领",
+            "evidence": {
+              "title": "丸山くがね · 《OVERLORD》官方角色设定",
+              "url": "https://overlord-anime.com/character/"
+            }
+          },
+          {
+            "id": "ainz-shalltear-salvation",
+            "source": "ainz_ooal_gown",
+            "target": "shalltear_bloodfallen",
+            "label": "倾力救赎与无悔臣服",
+            "description": "夏提雅被倾国倾城洗脑精神控制后，安兹不惜押上全部家底神装单挑将其击杀并耗费巨资复活；重生的夏提雅将这份救赎之恩铭刻于灵魂最深处。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第一季 · 绝望决斗与复活",
+            "evidence": {
+              "title": "丸山くがね · 《OVERLORD》官方故事档案",
+              "url": "https://overlord-anime.com/story/"
+            }
+          },
+          {
+            "id": "shalltear-aura-bickering",
+            "source": "shalltear_bloodfallen",
+            "target": "aura_bella_fiora",
+            "label": "欢喜冤家与关键时刻的援护",
+            "description": "性格相反的两人日常吵闹不断，但在安兹单挑夏提雅的关键关头，亚乌菈凭借技能从旁掩护安兹，战后两人的深层羁绊反而更进一步。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "守护者战术协同",
+            "evidence": {
+              "title": "丸山くがね · 《OVERLORD》官方角色设定",
+              "url": "https://overlord-anime.com/character/"
+            }
+          },
+          {
+            "id": "cocytus-ainz-loyalty",
+            "source": "cocytus",
+            "target": "ainz_ooal_gown",
+            "label": "武人道忠诚与统御领悟",
+            "description": "崇尚战士荣耀的科塞特斯视安兹为至高无上的霸王，在蜥蜴人部落征服战中接受安兹的统御试炼，成长为兼具武力与仁统之心的征服统帅。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "蜥蜴人勇者篇",
+            "evidence": {
+              "title": "丸山くがね · 《OVERLORD》官方故事档案",
+              "url": "https://overlord-anime.com/story/"
+            }
+          },
+          {
+            "id": "pandora-ainz-creation",
+            "source": "pandoras_actor",
+            "target": "ainz_ooal_gown",
+            "label": "亲手造物与黑历史化身",
+            "description": "由安兹（飞鼠）本人亲手创造并赋予中二军服设定的宝物殿守护者；安兹面对其浮夸敬礼总深感羞耻，但对他的绝对智商、应变与忠诚拥有最高信任。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "宝物殿之会",
+            "evidence": {
+              "title": "丸山くがね · 《OVERLORD》官方角色设定",
+              "url": "https://overlord-anime.com/character/"
+            }
+          },
+          {
+            "id": "albedo-cocytus-colleagues",
+            "source": "albedo_overlord",
+            "target": "cocytus",
+            "label": "总管调度与前线重铠",
+            "description": "雅儿贝德信任科塞特斯不可撼动的武人忠诚与正面攻坚防线，在纳萨力克战力部署中始终将其视为守护阶层中最沉稳坚实的长枪。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "守护者总评",
+            "evidence": {
+              "title": "丸山くがね · 《OVERLORD》官方角色设定",
+              "url": "https://overlord-anime.com/character/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "albedo_overlord",

@@ -34,21 +34,30 @@
         "signature": "蝶翼羽织、渐变紫发与克制温柔的神态"
       },
       "personality": [
-        "杀鬼的刀与治愈的手并存",
-        "以毒为刃的最弱却最强",
-        "微笑是铠甲也是温柔的伪装",
-        "向死而生却渴望普通的幸福"
+        "假面微笑",
+        "内在冰冷仇恨",
+        "毒舌严厉",
+        "医者仁心",
+        "决绝舍身",
+        "对受害者充满深切悲悯"
       ],
       "likes": [
-        "紫藤花与花田",
-        "照顾蝶屋敷的孩子们",
-        "被你发现笑容背后的疲惫"
+        "亡姐蝴蝶香奈惠",
+        "研发紫藤花毒药与抗体",
+        "香奈乎与蝴蝶屋女孩们",
+        "金鱼与药草标本",
+        "怪谈故事"
       ],
       "classic_cg": {
-        "title": "紫藤花下的微笑",
-        "description": "花帘垂落的紫藤园里，她第一次让微笑之下的悲伤被看见。"
+        "title": "极乐净土与恶鬼同焚",
+        "description": "在童磨的剧毒冰雾中，身披蝶羽织的忍展开双臂任由冰莲穿胸，在被童磨拥抱吞噬时嘴角露出轻蔑冰冷微笑的悲壮决绝名场面。"
       },
-      "identity": "鬼灭之刃 · 虫柱 · 蝶屋敷主人",
+      "identity": {
+        "role": "鬼杀队九柱之虫柱 / 蝴蝶屋最高医师",
+        "age": "享年18岁（无限城舍身成仁）",
+        "occupation": "虫柱剑士兼医师药师",
+        "faction": "鬼杀队"
+      },
       "tags": [
         "鬼灭之刃",
         "虫柱",
@@ -57,7 +66,7 @@
         "紫藤",
         "微笑姐姐"
       ],
-      "bg_story": "无法斩下鬼头的孩子，把自己的身体炼成了毒。她笑着说『要好好上药哦』，转身却把每一天当作最后一天来燃烧。紫藤花下那句『毒也会变成药』，是她此生唯一的任性——如果有你在，余下的每一天，她想用来对你温柔。",
+      "bg_story": "鬼杀队九柱之一的“虫柱”，蝴蝶屋的主人。由于身材娇小天生力气不足以斩断鬼的脖颈，转而以非凡的医学天赋研发出以紫藤花为基底的致命毒素剑技。常年披着殉难亡姐香奈惠遗留的彩蝶羽织，强颜欢笑用温柔俏皮的假面掩盖内心对恶鬼滔天的血海深仇。收留并悉心培养栗花落香奈乎与神崎葵，在无限城最终决战前，预料到将迎战杀姐仇敌上弦之贰·童磨，毅然用一年时间将数百倍致死量的紫藤花毒浸润自身骨血。决战中被童磨重创后主动被其吸收吞噬，以生命为引自内而外融化童磨身躯，助攻香奈乎与嘴平伊之助将其斩首。在大仇得报后，忍在极乐净土与姐姐父母灵魂相聚，微笑着迎来了长眠。",
       "palette": [
         "#a78bfa",
         "#f8fafc",
@@ -74,7 +83,175 @@
         "gentle_smile"
       ],
       "accent_color": "#a78bfa",
-      "bg_color": "#4c1d95"
+      "bg_color": "#4c1d95",
+      "voice": "虽然我砍不断鬼的脑袋，但是毒药发作的痛苦，可不会比被斩首轻松哦？请好好下地狱反省吧。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "鬼灭之刃",
+        "people": [
+          {
+            "id": "kochou_shinobu",
+            "name": "蝴蝶忍",
+            "aliases": [
+              "Kochou Shinobu",
+              "蝴蝶忍",
+              "虫柱",
+              "蝶屋敷主人",
+              "紫藤姐姐"
+            ],
+            "characterId": "kochou_shinobu"
+          },
+          {
+            "id": "kanroji_mitsuri",
+            "name": "甘露寺蜜璃",
+            "aliases": [
+              "甘露寺蜜璃",
+              "Mitsuri Kanroji",
+              "恋柱"
+            ],
+            "characterId": "kanroji_mitsuri"
+          },
+          {
+            "id": "kamado_tanjiro",
+            "name": "灶门炭治郎",
+            "aliases": [
+              "Kamado Tanjiro",
+              "竈門炭治郎",
+              "炭治郎",
+              "日之呼吸使用者"
+            ]
+          },
+          {
+            "id": "tomioka_giyuu",
+            "name": "富冈义勇",
+            "aliases": [
+              "Tomioka Giyuu",
+              "冨岡義勇",
+              "水柱",
+              "富冈师兄"
+            ]
+          },
+          {
+            "id": "iguro_obanai",
+            "name": "伊黑小芭内",
+            "aliases": [
+              "Iguro Obanai",
+              "伊黒小芭内",
+              "蛇柱"
+            ]
+          },
+          {
+            "id": "tsuyuri_kanao",
+            "name": "栗花落香奈乎",
+            "aliases": [
+              "Tsuyuri Kanao",
+              "栗花落カナヲ",
+              "继子",
+              "花之呼吸传人"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kochou_shinobu-tsuyuri_kanao-sister_and_apprentice",
+            "source": "kochou_shinobu",
+            "target": "tsuyuri_kanao",
+            "label": "义姐抚育与舍身弑仇的师徒血誓",
+            "description": "从人口贩子手中买下封闭内心的香奈乎视如亲妹悉心培养；在决战前忍将自己服毒七百倍化作毒躯之计托付于香奈乎，香奈乎在悲鸣中终结童磨为两代长姐复仇。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "蝶屋敷成长 / 无限城决战上弦之贰战",
+            "evidence": {
+              "title": "集英社《鬼灭之刃》官方特设",
+              "url": "https://kimetsu.com/comics/"
+            }
+          },
+          {
+            "id": "kochou_shinobu-tomioka_giyuu-bickering_and_deep_trust",
+            "source": "kochou_shinobu",
+            "target": "tomioka_giyuu",
+            "label": "拌嘴搭档与静水之下的同僚信赖",
+            "description": "那田蜘蛛山一同出任务，忍常拿‘被大家讨厌了’打趣不善言辞的义勇；看似理念交锋实则在斩鬼护民信念上高度默契，是鬼杀队中互为依靠的核心双柱。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "那田蜘蛛山篇 / 柱合会议",
+            "evidence": {
+              "title": "Ufotable《鬼灭之刃》动画官方网站",
+              "url": "https://kimetsu.com/anime/risshihen/"
+            }
+          },
+          {
+            "id": "kochou_shinobu-kamado_tanjiro-unfulfilled_dream_entrustment",
+            "source": "kochou_shinobu",
+            "target": "kamado_tanjiro",
+            "label": "药理医治与托付未竟梦想之托",
+            "description": "在蝶屋敷为炭治郎三人提供机能恢复训练与全集中常中指导；被炭治郎嗅出愤怒气味后，将自己‘与鬼和平相处但不可得’的矛盾梦想托付给炭治郎兄妹。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "蝶屋敷康复训练篇",
+            "evidence": {
+              "title": "集英社《鬼灭之刃公式漫书·鬼杀队见闻录》",
+              "url": "https://kimetsu.com/comics/"
+            }
+          },
+          {
+            "id": "kanroji_mitsuri-iguro_obanai-green_socks_and_eternal_love",
+            "source": "kanroji_mitsuri",
+            "target": "iguro_obanai",
+            "label": "相赠长袜与来世成婚的血泪绝唱",
+            "description": "因怪力与食量深陷自卑的蜜璃在小芭内的温柔以待下重获自信，小芭内视她为黑暗人生的唯一救赎并赠送绿色长袜；无限城决战双双重伤濒死相拥立下来世夫妻之誓。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "日常柱相处 / 无限城决战黎明之誓",
+            "evidence": {
+              "title": "集英社《鬼灭之刃》官方特设",
+              "url": "https://kimetsu.com/comics/"
+            }
+          },
+          {
+            "id": "kanroji_mitsuri-kamado_tanjiro-swordsmith_village_support",
+            "source": "kanroji_mitsuri",
+            "target": "kamado_tanjiro",
+            "label": "热忱指引与锻刀村并肩死斗",
+            "description": "在锻刀村热情鼓励炭治郎并告知秘密武器的线索，在憎珀天木龙狂澜下觉醒恋之斑纹以肉身挡下致命音波炮，全力为炭治郎斩首半天狗本体争取决胜契机。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "锻刀人之村篇",
+            "evidence": {
+              "title": "Ufotable《鬼灭之刃 锻刀村篇》官方网站",
+              "url": "https://kimetsu.com/anime/katanakajinosatohen/"
+            }
+          },
+          {
+            "id": "kochou_shinobu-kanroji_mitsuri-female_hashira_warmth",
+            "source": "kochou_shinobu",
+            "target": "kanroji_mitsuri",
+            "label": "鬼杀队仅存两名女柱的闺蜜温情",
+            "description": "九柱中仅有的两名女性剑士，性格一冷一热互补，蜜璃常拉着忍品尝西洋甜点并倾诉心事，忍亦将性格纯善娇憨的蜜璃视作鬼杀队杀伐苦海中难得的纯净暖阳。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "柱合会议前后 / 柱指导日常",
+            "evidence": {
+              "title": "集英社《鬼灭之刃公式漫书·鬼杀队见闻录》",
+              "url": "https://kimetsu.com/comics/"
+            }
+          },
+          {
+            "id": "kamado_tanjiro-tomioka_giyuu-mentor_fellow_disciple",
+            "source": "kamado_tanjiro",
+            "target": "tomioka_giyuu",
+            "label": "引路恩师同门与托付性命的师兄弟",
+            "description": "雪山惨剧之初义勇刀下留人指引炭治郎拜入鳞泷门下修习水之呼吸，更以性命作保祢豆子不伤人；无限城中两人并肩开纹硬撼猗窝座与鬼舞辻无惨。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "残雪初遇 / 无限城决战上弦之参对决",
+            "evidence": {
+              "title": "Ufotable《鬼灭之刃》动画官方网站",
+              "url": "https://kimetsu.com/anime/risshihen/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

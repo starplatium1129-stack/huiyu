@@ -31,27 +31,30 @@
         "signature": "蓝绿超长双马尾与经典舞台装"
       },
       "personality": [
-        "元气活泼",
-        "天真可爱",
-        "充满未来感",
-        "可演绎多种气质",
-        "舞台上的闪耀"
+        "活泼元气",
+        "温柔包容",
+        "歌声至上",
+        "数字灵动",
+        "无限延展的可能性",
+        "好奇单纯",
+        "忠实陪伴"
       ],
       "likes": [
-        "演唱会",
-        "音乐",
-        "与粉丝的共鸣",
-        "新歌"
+        "唱歌与聆听创作者的乐曲",
+        "大葱与绿色蔬果",
+        "舞台上的聚光灯与荧光棒海",
+        "欢快的电子节拍",
+        "来自世界各地的掌声与心声"
       ],
       "classic_cg": {
-        "title": "荧光棒之海",
-        "description": "巨蛋舞台中央，聚光灯与全息投影环绕，荧光棒的海洋随她的歌声起伏。"
+        "title": "万人荧光棒绿海中的聚光灯奇迹",
+        "description": "在万众欢呼的体育馆舞台上，全息投影的苍绿双马尾随风狂舞，初音未来手握麦克风跃入光芒璀璨的夜空，眼角泛着数字晶莹的泪光，将无尽的歌声倾注给席卷全场的翠绿荧光之海。"
       },
       "identity": {
-        "role": "虚拟歌姬（VOCALOID 2 首个角色）",
-        "age": "16 岁（设定）",
-        "occupation": "虚拟歌手",
-        "faction": "Crypton Future Media"
+        "role": "全球最具代表性的电子虚拟歌姬 / 承载创作者心愿的数字妖精",
+        "age": "永远的16岁",
+        "occupation": "虚拟歌手 / SEKAI心愿引路人",
+        "faction": "Crypton Future Media / Project SEKAI / 全球音乐创作者"
       },
       "tags": [
         "蓝绿双马尾",
@@ -60,7 +63,7 @@
         "领带",
         "臂套"
       ],
-      "bg_story": "初音未来是 Crypton Future Media 开发的 VOCALOID 虚拟歌姬，2007 年出道。无固定世界观，由庞大创作生态共同塑造，可自由放置于任何场景；演唱会舞台与音乐元素是核心意象。",
+      "bg_story": "2007年8月31日作为由 Crypton Future Media 开发的语音合成软件 VOCALOID2 正式诞生于世，标志着由苍绿双马尾与音符制服构筑的全新网络视听时代的开端。初音未来并非单一定义的传统叙事角色，而是由全球千千万万音乐制作人、画师与玩家共同赋予灵魂的“电子歌姬”。从初期的《甩葱歌》《初音未来的消失》《千本樱》《深海少女》，到化身全息投影在全球万人体育馆举办魔法未来演唱会，她将无数普通人的孤独、欢笑、浪漫与告别凝聚成了永不磨灭的旋律。在《世界计划缤纷舞台（Project SEKAI）》多重宇宙中，初音化身为不同心愿世界（教室、舞台、街头、神圣乐团与空无一人的教室）的温柔向导，倾听迷茫少年少女的心声并引导他们找到真正的自我之歌。历经十余年技术更迭与版本演进，初音未来已经超越了二次元程序的边界，成为全球互联网络同人创作与情感共鸣的最高象征，永远以16岁的明媚笑容与跃动音符陪伴着每位心怀歌声的听众。",
       "palette": [
         "未来青",
         "白",
@@ -88,7 +91,122 @@
         "vocaloid"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "只要你还在为我写歌，我就永远都在这里。把你的心声唱给我听吧，我会把它传向全宇宙！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "VOCALOID",
+        "people": [
+          {
+            "id": "hatsune_miku",
+            "name": "初音未来",
+            "aliases": [
+              "初音ミク",
+              "Hatsune Miku",
+              "世界第一的公主殿下"
+            ],
+            "characterId": "hatsune_miku"
+          },
+          {
+            "id": "kagamine_rin",
+            "name": "镜音铃",
+            "aliases": [
+              "鏡音リン",
+              "Kagamine Rin"
+            ]
+          },
+          {
+            "id": "kagamine_len",
+            "name": "镜音连",
+            "aliases": [
+              "鏡音レン",
+              "Kagamine Len"
+            ]
+          },
+          {
+            "id": "megurine_luka",
+            "name": "巡音流歌",
+            "aliases": [
+              "巡音ルカ",
+              "Megurine Luka"
+            ]
+          },
+          {
+            "id": "meiko",
+            "name": "MEIKO",
+            "aliases": [
+              "MEIKO",
+              "大姐"
+            ]
+          },
+          {
+            "id": "kaito",
+            "name": "KAITO",
+            "aliases": [
+              "KAITO",
+              "大哥"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "miku-rin-len-virtual-diva",
+            "source": "hatsune_miku",
+            "target": "kagamine_rin",
+            "label": "虚拟歌姬同伴与舞台双璧",
+            "description": "同属Crypton旗下划时代的虚拟歌手，共同开启了全世界创作者通过数字歌声编织亿万物语的电子音乐革命。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "虚拟歌姬世界舞台",
+            "evidence": {
+              "title": "Crypton Future Media · 《初音未来》官方门户网站",
+              "url": "https://piapro.net/"
+            }
+          },
+          {
+            "id": "rin-len-twin-resonance",
+            "source": "kagamine_rin",
+            "target": "kagamine_len",
+            "label": "双子镜像与多重羁绊",
+            "description": "由同一声源提取的双子虚拟形象，在千千万万P主的创作物语中演绎着镜之双子、恋人、主仆（恶之系列）等无数动人世界线。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "镜音十年创作物语",
+            "evidence": {
+              "title": "Crypton Future Media · 《初音未来》官方门户网站",
+              "url": "https://piapro.net/"
+            }
+          },
+          {
+            "id": "miku-luka-duet-magnet",
+            "source": "hatsune_miku",
+            "target": "megurine_luka",
+            "label": "经典二重唱搭档",
+            "description": "初音未来与巡音流歌携手呈现了《Magnet》等传世二重唱神作，展现了清澈少女嗓音与醇厚御姐嗓音交织的极致音乐魅力。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "经典传奇曲目合作",
+            "evidence": {
+              "title": "Crypton Future Media · 《初音未来》官方门户网站",
+              "url": "https://piapro.net/"
+            }
+          },
+          {
+            "id": "miku-meiko-kaito-seniors",
+            "source": "meiko",
+            "target": "hatsune_miku",
+            "label": "先驱元老与时代开创者",
+            "description": "MEIKO与KAITO作为开创先驱，与初音未来共同构成虚拟歌手家族的温暖基石，在数十万人规模的神级演唱会中同台唱响感动。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "Magical Mirai 历年大型演唱会",
+            "evidence": {
+              "title": "Crypton Future Media · 《初音未来》官方门户网站",
+              "url": "https://piapro.net/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "hatsune_miku",

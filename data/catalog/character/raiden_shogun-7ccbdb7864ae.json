@@ -32,27 +32,30 @@
         "signature": "深紫长辫、紫瞳与额前雷纹"
       },
       "personality": [
-        "威严沉静",
-        "贯彻永恒的秩序",
-        "寡言",
-        "战斗凌厉",
-        "日常清冷克制"
+        "冷酷威严",
+        "武道极致",
+        "执着深沉",
+        "社恐笨拙",
+        "不通世故",
+        "外冷内柔",
+        "坚定护国"
       ],
       "likes": [
-        "稻妻的安宁",
-        "雷雨中的寂静",
-        "天守阁的屏风",
-        "永恒的理想"
+        "团子牛奶",
+        "八重堂轻小说与甜点",
+        "武艺与刀法切磋",
+        "静谧冥想",
+        "稻妻百姓的安康"
       ],
       "classic_cg": {
-        "title": "万雷之下",
-        "description": "稻妻天守阁外雷暴骤起，她拔刀而立，紫电环绕，为「永恒」降下裁决。"
+        "title": "天守阁无想之一刀与一心净土的明悟",
+        "description": "天守阁高台之上紫电撕裂苍穹，雷电将军拔出胸口缠绕暴烈雷霆的梦想一心，斩出极致威严的寂灭之刀；随后在一心净土的千手百眼神像前，影在万千愿望星芒中放下了数百年的孤寂与执念。"
       },
       "identity": {
-        "role": "雷电之神（稻妻的统治者）",
-        "age": "神（外貌年轻）",
-        "occupation": "稻妻幕府将军",
-        "faction": "稻妻 / 幕府"
+        "role": "稻妻最高统治者 / 鸣神大社守护神 / 雷之执政",
+        "age": "数千岁（魔神之躯）",
+        "occupation": "稻妻幕府大御所将军 / 鸣神之神",
+        "faction": "稻妻幕府 / 尘世七执政"
       },
       "tags": [
         "深紫长辫",
@@ -61,7 +64,7 @@
         "和服振袖",
         "雷元素"
       ],
-      "bg_story": "雷电将军是《原神》中稻妻的雷电之神，理念为「永恒」。真身为雷电影，其人偶之身运行着将军的意志。故事发生在稻妻——和风岛国文明，幕府、神社与雷电信仰。场景应突出和风神性、雷雨与神社，而非现代都市。",
+      "bg_story": "稻妻尘世七执政中的雷神，真名为雷电影，与孪生姐姐雷电真一同历经坎坷开创幕府。五百年前坎瑞亚灾变席卷提瓦特，姐姐真与诸多挚友（狐斋宫、笹百合、御舆千代）在这场灾难中相继陨落。目睹挚爱之人消亡与天理磨损之残酷的影，为了使稻妻永不因变异与灾厄走向毁灭，决心追寻停滞的“永恒”。她制造了拥有精密神格与自我法则的人偶“雷电将军”代为执掌幕府政务，自身意识则斩断凡尘、沉入心象空间“一心净土”进行永恒的枯坐冥想。由于愚人众暗中挑拨与奉行背叛，人偶颁布“锁国令”与“眼狩令”，引爆海祇岛反抗军内战。旅行者跨海而来，在八重神子协助下步入一心净土，汇聚稻妻万千民众的愿望星芒击败了影，动摇了她对永恒的偏执。在直面真留下的思念、斩除愚人众阴谋后，影在意识空间与坚守旧法则的人偶将军展开长达五百年的殊死对决，最终收服人偶、革新理念，明悟永恒并非停滞而是顺应梦想的开拓。最新篇章中她废除锁国，与过去和解，作为威严又略显笨拙可爱的神明庇护稻妻迈向新生。",
       "palette": [
         "雷紫",
         "樱粉",
@@ -92,7 +95,264 @@
         "genshin_impact"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "此刻，寂灭之时！浮世景色百千年如旧，昔人已逝如朝霞，徒留执妄……但我已明晰前路。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "原神",
+        "people": [
+          {
+            "id": "raiden_shogun",
+            "name": "雷电将军",
+            "aliases": [
+              "雷电影",
+              "Raiden Shogun",
+              "巴尔泽布",
+              "鸣神大御所"
+            ],
+            "characterId": "raiden_shogun"
+          },
+          {
+            "id": "yae_miko",
+            "name": "八重神子",
+            "aliases": [
+              "Yae Miko",
+              "鸣神大社大巫女",
+              "八重宫司",
+              "八重堂总编"
+            ],
+            "characterId": "yae_miko"
+          },
+          {
+            "id": "hu_tao",
+            "name": "胡桃",
+            "aliases": [
+              "Hu Tao",
+              "往生堂第七十七代堂主",
+              "璃月打油诗人"
+            ],
+            "characterId": "hu_tao"
+          },
+          {
+            "id": "furina",
+            "name": "芙宁娜",
+            "aliases": [
+              "Furina",
+              "芙卡洛斯",
+              "Focalors",
+              "枫丹前任水神",
+              "欧庇克莱大歌剧院名导"
+            ],
+            "characterId": "furina"
+          },
+          {
+            "id": "traveler",
+            "name": "旅行者",
+            "aliases": [
+              "空",
+              "荧",
+              "Aether",
+              "Lumine",
+              "荣誉骑士",
+              "提瓦特的见证者"
+            ]
+          },
+          {
+            "id": "zhongli",
+            "name": "钟离",
+            "aliases": [
+              "Zhongli",
+              "摩拉克斯",
+              "岩王帝君",
+              "往生堂首席客卿"
+            ]
+          },
+          {
+            "id": "neuvillette",
+            "name": "那维莱特",
+            "aliases": [
+              "Neuvillette",
+              "最高审判官",
+              "水之龙王",
+              "古龙大权执掌者"
+            ]
+          },
+          {
+            "id": "kujou_sara",
+            "name": "九条裟罗",
+            "aliases": [
+              "Kujou Sara",
+              "天领奉行大将",
+              "鸦天狗羽裔"
+            ]
+          },
+          {
+            "id": "clorinde",
+            "name": "克洛琳德",
+            "aliases": [
+              "Clorinde",
+              "枫丹决斗代理人",
+              "逐影猎人继承者"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "raiden_shogun-yae_miko-familiar_and_god",
+            "source": "yae_miko",
+            "target": "raiden_shogun",
+            "label": "神明与灵狐眷属",
+            "description": "八重神子既是鸣神大社大巫女，亦是雷电影千百年相伴的灵狐眷属与灵魂挚友。在影沉沦一心净土追逐停滞永恒时，神子借旅行者之手将其从漫长孤寂中喝醒，引领其直面人间梦想。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线第二章 · 千手百眼，天下人间",
+            "evidence": {
+              "title": "米哈游《原神》官方角色PV ·「八重神子：狐之独白」",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "raiden_shogun-traveler-wishes_and_eternity",
+            "source": "traveler",
+            "target": "raiden_shogun",
+            "label": "愿望撼动者",
+            "description": "旅行者跨越雷暴踏足稻妻，汇聚千手百眼像中万千稻妻民众的愿望星芒破入一心净土，击碎了雷电影对停滞永恒的偏执，成为推动稻妻废除眼狩令与锁国令的核心契机。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "主线第二章第三幕 · 一心净土决战",
+            "evidence": {
+              "title": "米哈游《原神》魔神任务第二章第三幕 ·「千手百眼，天下人间」",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "raiden_shogun-kujou_sara-absolute_loyalty",
+            "source": "kujou_sara",
+            "target": "raiden_shogun",
+            "label": "绝对效忠",
+            "description": "九条裟罗身为天领奉行大将，对雷电将军抱有近乎崇拜的绝对忠诚与信仰，誓死践行将军之令；纵然面对九条家私通愚人众的残酷真相，她亦毫不动摇守护神明威仪的誓言。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "稻妻幕府共通设定",
+            "evidence": {
+              "title": "米哈游《原神》角色图鉴 · 九条裟罗",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "raiden_shogun-zhongli-archon_fellowship",
+            "source": "raiden_shogun",
+            "target": "zhongli",
+            "label": "七执政旧交",
+            "description": "同为最初立于尘世顶点的七神，雷电影敬重摩拉克斯的武德与契约，钟离亦深知影在坎瑞亚灾变中痛失孪生姐姐与至亲同伴后的创痛，彼此保留着古老神明间的惺惺相惜。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "提瓦特旧事 · 魔神战争至今",
+            "evidence": {
+              "title": "米哈游《原神》语音档案 · 雷电将军与钟离交谈",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "hu_tao-zhongli-hall_master_and_consultant",
+            "source": "hu_tao",
+            "target": "zhongli",
+            "label": "堂主与客卿",
+            "description": "胡桃是往生堂第七十七代堂主，钟离则是其聘请的学识渊博、仪轨通天的首席客卿。胡桃对钟离挥金如土又爱又叹，早已隐约勘破这位客卿非凡的仙神底蕴；钟离亦极度赞赏胡桃通透豁达的生死境界。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "璃月港日常 · 往生堂篇",
+            "evidence": {
+              "title": "米哈游《原神》角色传说任务 ·「奈何蝶飞」",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "hu_tao-traveler-soul_friendship",
+            "source": "hu_tao",
+            "target": "traveler",
+            "label": "往生挚友",
+            "description": "胡桃欣赏旅行者游历四海带来的开阔眼界，屡次邀其参与海灯节大宴与无妄坡生死交界祭仪；旅行者则视其为璃月港活得最纯粹透彻、将阴阳两界看得最豁达的赤子知己。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "璃月海灯节 · 磬弦奏华夜",
+            "evidence": {
+              "title": "米哈游《原神》海灯节活动剧情 ·「磬弦奏华夜」",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "furina-neuvillette-trial_and_redemption",
+            "source": "neuvillette",
+            "target": "furina",
+            "label": "守望与终局审判",
+            "description": "那维莱特被神格芙卡洛斯邀至枫丹担任最高审判官，五百年来一直在高台上默默注视并守护着芙宁娜。当终局审判降临，那维莱特见证了芙宁娜身为脆弱凡人独自承担救世剧目的无上伟业，以水龙之名赦免凡人原罪并给予其彻底自由。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线第四章第五幕 ·「罪人舞步旋」",
+            "evidence": {
+              "title": "米哈游《原神》魔神任务第四章第五幕 ·「罪人舞步旋」",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "furina-traveler-stage_to_humanity",
+            "source": "traveler",
+            "target": "furina",
+            "label": "谢幕与新生见证",
+            "description": "旅行者在审判席上迫使芙宁娜道出真相以拯救枫丹，亦是唯一走入她精神深处见证她五百年无休独角戏孤寂之人。灾厄平息后，旅行者陪伴回归凡人生活的芙宁娜重拾歌剧热爱，见证其获得神之眼的新生。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "芙宁娜传说任务 · 司颂之章",
+            "evidence": {
+              "title": "米哈游《原神》角色传说任务 ·「水的女儿」",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "furina-clorinde-guardian_and_confidant",
+            "source": "clorinde",
+            "target": "furina",
+            "label": "贴身护卫与知心密友",
+            "description": "克洛琳德作为枫丹最强决斗代理人，多年来形影不离地护卫芙宁娜周全；在芙宁娜卸下水神重担迁居公寓后，克洛琳德依然常去探访照料其起居，是芙宁娜最信赖的知心好友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "枫丹日常生活 · 逐影猎人往事",
+            "evidence": {
+              "title": "米哈游《原神》克洛琳德传说任务 ·「剑客的誓言」",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "yae_miko-traveler-guiding_fox",
+            "source": "yae_miko",
+            "target": "traveler",
+            "label": "救赎之引与弈棋盟友",
+            "description": "八重神子在旅行者身陷稻妻绝境时出手相救，以神之心为筹码换回其性命，并对其展开反雷电将军特训，将拯救雷电影与稻妻未来的重任与信任全盘交予旅行者。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "主线第二章第二幕至第三幕",
+            "evidence": {
+              "title": "米哈游《原神》魔神任务第二章 ·「千手百眼天下人间」",
+              "url": "https://ys.mihoyo.com/"
+            }
+          },
+          {
+            "id": "zhongli-traveler-witness_contract",
+            "source": "zhongli",
+            "target": "traveler",
+            "label": "契约之神与岁月见证者",
+            "description": "钟离在假死退位将璃月托付给凡人后，郑重嘱托旅行者作为跨越星海的“记录者”，将提瓦特这颗星球与众神走过的沧桑岁月永远铭刻于心。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "主线第一章第三幕 ·「迫近的客星」",
+            "evidence": {
+              "title": "米哈游《原神》魔神任务第一章第三幕 ·「迫近的客星」",
+              "url": "https://ys.mihoyo.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "raiden_shogun",

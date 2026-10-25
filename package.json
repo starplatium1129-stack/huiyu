@@ -72,6 +72,7 @@
     "@fontsource/noto-sans-sc": "^5.3.0",
     "@soullink-emotion/engine": "0.1.0-beta.1",
     "@tanstack/vue-virtual": "3.13.39",
+    "@vue-flow/core": "1.48.2",
     "@vueuse/core": "^14.4.0",
     "motion": "^12.43.0",
     "photoswipe": "5.4.4",

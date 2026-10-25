@@ -2,6 +2,8 @@ use super::*;
 use crate::download_transport::{self as transfer, CopyError, CopyEvent, Error};
 use tokio::io::AsyncSeekExt;
 use tokio::io::AsyncWriteExt;
+#[path = "setup_sources.rs"]
+mod sources;
 
 fn error(error: Error) -> ApiError {
     match error {
@@ -41,8 +43,10 @@ pub(super) async fn write(
 ) -> Result<u64> {
     let mirror = plan.allow_mirror.then(|| transfer::public_mirror(&plan.url)).flatten();
     let mut sources = Vec::new();
-    if let Some(mirror) = mirror { sources.push(mirror); }
     sources.push(plan.url.clone());
+    if let Some(mirror) = sources::model_mirror(plan) { sources.push(mirror); }
+    if let Some(mirror) = mirror { sources.push(mirror); }
+    sources::order(plan, client, cancel, &mut sources).await?;
     let mut last = None;
     for round in 0..3 {
         for source in &sources {

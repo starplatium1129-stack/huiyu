@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "好奇心旺盛，喜欢与不喜欢都表达得很直接",
-        "面对新鲜事物容易兴奋，做决定又很认真",
-        "珍视陪伴，普通的一顿饭也能带来由衷快乐"
+        "天真烂漫",
+        "纯真直率",
+        "食欲旺盛",
+        "极度深情护短",
+        "战斗时威严决绝",
+        "容易吃醋撒娇",
+        "珍视同伴"
       ],
       "likes": [
-        "黄豆粉面包",
-        "节日摊位",
-        "和朋友分享美食"
+        "烤黄豆粉面包",
+        "与五河士道在商业街约会",
+        "节日庆典上的章鱼烧与可丽饼",
+        "来禅高中的同班合宿活动",
+        "和大家围坐在一起吃晚饭"
       ],
       "classic_cg": {
-        "title": "夜刀神十香 · 面包店的黄豆粉面包",
-        "description": "面包店玻璃柜前，她整个人贴上去盯着新出炉的黄豆粉面包，眼睛亮得像发现宝物；买到之后当场咬下一大口，幸福到头顶的蝴蝶结都在晃。"
+        "title": "废墟王座上的命名之契",
+        "description": "空间震撕裂的焦黑废墟最高处，手持鏖杀公的紫发精灵少女端坐在钢铁王座之上，金瞳泛着警惕与动容，俯视着向自己伸出双手的平凡少年，在初次听闻自己名字的刹那融化了冰霜。"
       },
-      "identity": "Date A Live · 夜刀神十香",
+      "identity": {
+        "role": "女主角 / 第一精灵 / 救世的最强灵装守护者",
+        "age": "外表16岁（现界诞生约数年）",
+        "occupation": "来禅高中学生 / 精灵",
+        "faction": "拉塔托斯克（Ratatoskr）/ 来禅高中二年四班"
+      },
       "tags": [
         "夜刀神十香",
         "约会大作战",
         "日常"
       ],
-      "bg_story": "初到人类世界的精灵，对面包、节日和日常小事抱有直接而热烈的好奇。深紫长发、蝴蝶结和坦率的表情是视觉重点，日常场景不混入灵装与巨剑。",
+      "bg_story": "被识别为初次现界的第一精灵，代号“公主（Princess）”，身负神威灵装·十番与大剑天使“鏖杀公（Sandalphon）”。因每次现界都会无意识引发毁灭性空间震，遭到人类陆上自卫队AST部队的长年追杀，原本对人类世界充满敌意、戒备与深重孤独。直到在天宫市的瓦砾废墟中，高中生五河士道毫不畏缩地向她伸出双手，并为原本无名的她取名为“夜刀神十香”。通过一场场温馨笨拙的约会，十香感受到了人间的善意与美味，并由士道成功封印灵力，以转学生身份融入来禅高中。十香深爱着士道，在士道遇险时总是不惜一切拔剑死战；在经历反转体暴走、修罗场日常与始祖精灵澪的宿命大战中，十香吸收了所有同伴的灵力化身最强灵装击败源头。在全22卷大结局决战落幕后，由纯粹灵力构成的十香因灵结晶崩溃不可避免地迎来消亡，在向士道深情告白后微笑着化作漫天光尘消散。一年后，士道对十香铭心刻骨的思念与世界意识产生奇迹共鸣，在樱花飞扬的天台上十香再度现界归来，与士道含泪紧紧相拥，迎来了永不分离的圆满大结局。",
       "palette": [
         "#a794db",
         "#282532"
@@ -62,7 +73,154 @@
         "purple_eyes"
       ],
       "accent_color": "#a794db",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "你……真的不害怕我吗？十香……这就是我的名字吗？士道，我喜欢这个名字！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "约会大作战",
+        "people": [
+          {
+            "id": "tokisaki_kurumi",
+            "name": "时崎狂三",
+            "aliases": [
+              "時崎狂三",
+              "Tokisaki Kurumi",
+              "梦魇(Nightmare)"
+            ],
+            "characterId": "tokisaki_kurumi"
+          },
+          {
+            "id": "yatogami_tohka",
+            "name": "夜刀神十香",
+            "aliases": [
+              "夜刀神十香",
+              "Yatogami Tohka",
+              "公主(Princess)"
+            ],
+            "characterId": "yatogami_tohka"
+          },
+          {
+            "id": "tobiichi_origami",
+            "name": "鸢一折纸",
+            "aliases": [
+              "鳶一折紙",
+              "Tobiichi Origami",
+              "天使(Angel)"
+            ],
+            "characterId": "tobiichi_origami"
+          },
+          {
+            "id": "itsuka_shidou",
+            "name": "五河士道",
+            "aliases": [
+              "五河士道",
+              "Itsuka Shidou"
+            ]
+          },
+          {
+            "id": "itsuka_kotori",
+            "name": "五河琴里",
+            "aliases": [
+              "五河琴里",
+              "Itsuka Kotori"
+            ]
+          },
+          {
+            "id": "yoshino",
+            "name": "四糸乃",
+            "aliases": [
+              "四糸乃",
+              "Yoshino"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kurumi-shidou-bond",
+            "source": "tokisaki_kurumi",
+            "target": "itsuka_shidou",
+            "label": "宿命誓约与救赎",
+            "description": "狂三初期假借吞噬士道灵力接近，历经多次轮回在暗中独自抵挡死境、牺牲分身全力逆转士道的死亡宿命。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "狂三篇 · 决战终章",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "tohka-shidou-first-love",
+            "source": "yatogami_tohka",
+            "target": "itsuka_shidou",
+            "label": "命定初恋与灵魂信赖",
+            "description": "最初降临天宫市并被士道命名的精灵，在士道的接纳与关爱下重获世界色彩，全心守护士道安危。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 初始相遇",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "origami-shidou-devotion",
+            "source": "tobiichi_origami",
+            "target": "itsuka_shidou",
+            "label": "倾心守护与命运救赎",
+            "description": "折纸开篇便对士道抱持极致热烈爱意，在得知父母之死真相灵结晶反转后，被穿越时空的士道彻底拯救心象。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "折纸反转篇 · 历史改写",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "origami-tohka-rivalry",
+            "source": "tobiichi_origami",
+            "target": "yatogami_tohka",
+            "label": "情敌竞争与并肩作战",
+            "description": "AST时代视十香为危险精灵誓死消灭，日常则在争夺士道注意力上火花四溅，但在大决战中是彼此最信赖的战斗后背。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 学园与战场",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "kurumi-origami-cooperation",
+            "source": "tokisaki_kurumi",
+            "target": "tobiichi_origami",
+            "label": "十二之弹回溯契约",
+            "description": "狂三响应折纸的恳求，使用第十二之弹将其意识送回五年前的大火现场，间接促成了历史的重构与两人的和解。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "折纸篇 · 时间回溯",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "kotori-shidou-siblings",
+            "source": "itsuka_kotori",
+            "target": "itsuka_shidou",
+            "label": "兄妹羁绊与琴里司令",
+            "description": "白丝带模式下是被士道溺爱的娇弱义妹，黑丝带模式下则是拉塔托斯克司令官，全权指挥士道的精灵拯救约会。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "yatogami_tohka",

@@ -31,27 +31,30 @@
         "signature": "银白双马尾、绿瞳与精灵长耳"
       },
       "personality": [
-        "温和缄默",
-        "理性",
-        "对时间流逝淡然",
-        "怀念故人",
-        "偶尔慵懒"
+        "淡然超脱",
+        "慵懒早起困难",
+        "执着求知",
+        "内敛深情",
+        "无情冷酷（对魔族）",
+        "迟钝温柔",
+        "善于隐藏锋芒"
       ],
       "likes": [
-        "魔法书",
-        "旅途",
-        "安静的回忆",
-        "古老的魔法"
+        "收集各种冷门民间魔法",
+        "宝箱怪（即使99%是陷阱）",
+        "睡懒觉与点心",
+        "辛美尔赠予的苍月草戒指",
+        "看菲伦和修塔尔克拌嘴"
       ],
       "classic_cg": {
-        "title": "勇者之墓",
-        "description": "白花丛生的墓前，她静静站立——对精灵而言，十年只是一瞬，怀念却是一生。"
+        "title": "苍月草花海中的戒指与阿乌拉的天秤斩落",
+        "description": "在蔚蓝苍月草随风摇曳的原野上，年轻的辛美尔单膝跪地为她戴上代表永恒之爱的镜莲华戒指；而在断头台阿乌拉面前，她解除压制了千年的浩瀚魔力，以冰冷无情的姿态令魔族自刎归于尘土。"
       },
       "identity": {
-        "role": "精灵魔法使（葬送的芙莉莲）",
-        "age": "精灵（长寿，外貌年轻）",
-        "occupation": "魔法使 / 旅人",
-        "faction": "勇者一行（过去）"
+        "role": "击溃魔王的勇者小队魔法使 / 活体传奇精灵大魔法使",
+        "age": "1000岁以上",
+        "occupation": "冒险者（大陆魔法协会一级魔法使）",
+        "faction": "勇者辛美尔小队 / 芙莉莲旅行小队"
       },
       "tags": [
         "银白长发",
@@ -60,7 +63,7 @@
         "精灵耳",
         "魔导袍"
       ],
-      "bg_story": "芙莉莲是《葬送的芙莉莲》的主角，击败魔王的勇者队伍中的精灵魔法使。寿命绵长的她以「人类的时间」重新认识旅途与怀念。场景应偏古典奇幻、旅途与魔法书。",
+      "bg_story": "存活超过千年的精灵族大魔法使，童年故乡被魔族残忍摧毁，幸得人类大魔法使弗兰梅搭救并悉心传授本领，终生贯彻“收敛压抑魔力欺骗魔族”的无情杀招。千百年来对岁月与生命始终抱持淡漠心态的芙莉莲，在勇者辛美尔的诚挚邀请下加入了为期十年的讨伐魔王小队，四人历经艰险斩杀魔王拯救了大陆。然而对寿命动辄逾万年的精灵而言，十年不过如弹指一挥间。直到五十年后辛美尔寿终正寝、在葬礼上看着其灵柩入土，芙莉莲才流下悔恨的泪水，痛感自己从未尝试去了解这位深爱着她的人类。为了前往大陆极北处的灵魂长眠之地“奥里欧尔（天国）”与辛美尔再次相见，她带着海塔托付的孤儿菲伦、艾冉推荐的战士修塔尔克，沿着当年的远征路线再度启程。一路上她斩杀断头台阿乌拉、通过一级魔法使考核、破解黄金乡大魔族的绝对防御，并在最新的帝国篇暗流中守护同伴。漫漫旅途让这位曾经迟钝冷淡的精灵，深刻体会到了人类情感的炽热重量，将勇者辛美尔的精神永远铭刻在人间大地上。",
       "palette": [
         "银白",
         "奶油白",
@@ -87,7 +90,139 @@
         "gold_earrings"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "辛美尔，我原本以为十年只是微不足道的一瞬……为什么，我没有再多去了解你一点呢？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "葬送的芙莉莲",
+        "people": [
+          {
+            "id": "frieren",
+            "name": "芙莉莲",
+            "aliases": [
+              "フリーレン",
+              "Frieren",
+              "葬送的芙莉莲"
+            ],
+            "characterId": "frieren"
+          },
+          {
+            "id": "fern_frieren",
+            "name": "菲伦",
+            "aliases": [
+              "フェルン",
+              "Fern"
+            ],
+            "characterId": "fern_frieren"
+          },
+          {
+            "id": "ubel_frieren",
+            "name": "尤贝尔",
+            "aliases": [
+              "ユーベル",
+              "Ubel"
+            ],
+            "characterId": "ubel_frieren"
+          },
+          {
+            "id": "himmel",
+            "name": "辛美尔",
+            "aliases": [
+              "ヒンメル",
+              "Himmel",
+              "勇者辛美尔"
+            ]
+          },
+          {
+            "id": "stark",
+            "name": "修塔尔克",
+            "aliases": [
+              "シュタルク",
+              "Stark"
+            ]
+          },
+          {
+            "id": "land",
+            "name": "兰特",
+            "aliases": [
+              "ラント",
+              "Land"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "frieren-himmel-memories",
+            "source": "frieren",
+            "target": "himmel",
+            "label": "逝去勇者与追寻之旅",
+            "description": "辛美尔逝世后，芙莉莲为自己未曾真正理解人类而落泪，踏上重走十年讨伐路线前往灵魂长眠之地的漫长旅程。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 勇者逝世",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          },
+          {
+            "id": "frieren-fern-master",
+            "source": "frieren",
+            "target": "fern_frieren",
+            "label": "师徒与照料者",
+            "description": "芙莉莲受海塔托付收菲伦为徒传授魔法，日常生活中生活自理能力极弱的芙莉莲反而经常需要生活严谨的菲伦照料。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 旅途日常",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          },
+          {
+            "id": "fern-stark-companions",
+            "source": "fern_frieren",
+            "target": "stark",
+            "label": "旅途同伴与青涩情愫",
+            "description": "在芙莉莲队伍中担任法师与前卫战士，两人经常因日常小事拌嘴斗气，但在生死之战中对彼此怀有绝对信赖与朦胧情意。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 一级魔法使考试篇",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          },
+          {
+            "id": "ubel-land-resonance",
+            "source": "ubel_frieren",
+            "target": "land",
+            "label": "共感魔法与搭档纠葛",
+            "description": "尤贝尔凭借极度敏锐的杀戮共感试图看透兰特本体，在考场中与始终用分身行事的兰特结成兼具试探与默契的危险搭档。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "一级魔法使考试篇 · 第二轮合格",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          },
+          {
+            "id": "frieren-ubel-exam",
+            "source": "frieren",
+            "target": "ubel_frieren",
+            "label": "考场对手与克制视线",
+            "description": "在二级进阶考试中尤贝尔认出芙莉莲不可揣度的巨大魔力，深知其作为活了千年的大魔法使对杀戮感知的绝对压制。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "一级魔法使考试篇 · 陨铁鸟捕获",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "frieren",

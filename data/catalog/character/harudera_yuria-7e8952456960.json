@@ -34,27 +34,29 @@
         "signature": "红框眼镜、右眼角泪痣、金发大波浪、职业西服套裙与女上司威严"
       },
       "personality": [
-        "处事果断理智、铁腕干练的情报官",
-        "刀子嘴豆腐心，表面严厉其实极其护短",
-        "雄二唯一的监护人，常年为雄二各种出格行动收拾残局",
-        "职场上位者的威严下深藏着女人味与私密柔情",
-        "工作过载时会有些许依赖雄二的反差萌"
+        "处事极其果断理性、铁腕干练的高级情报指挥官",
+        "表面严厉刻薄、动辄训斥雄二，实则护短至极",
+        "承受着体制与上层的巨大压力，独自为雄二撑起庇护伞",
+        "威严女上司气场下深藏着成熟小女人的私密柔情与脆弱",
+        "在酒精与深夜加班后会罕见地流露出依赖雄二的反差娇态",
+        "兼具义姐、导师、长官与深情伴侣的多重复杂情感"
       ],
       "likes": [
-        "手冲特浓黑咖啡与平静的深夜办公",
-        "看到雄二平安完成任务归来",
-        "高档丝绸睡衣与舒适的沙发补觉",
-        "小酌高年份单一麦芽威士忌"
+        "深夜独自在百叶窗紧闭的办公室冲泡极浓黑咖啡",
+        "确认风见雄二九死一生的任务档案最终盖上“任务完成”印章",
+        "偶尔小酌一杯高年份艾雷岛单一麦芽泥煤威士忌",
+        "在高档私密居所换上丝绸睡衣陷进松软大沙发里无忧补觉",
+        "揉乱雄二的头发听他无奈叹气"
       ],
       "classic_cg": {
-        "title": "机密办公室的深夜审度",
-        "description": "百叶窗透入冷清夜色的特工办公室内，JB轻推红框眼镜倚在皮椅上，白衬衫微敞，知性与成熟韵味拉满。"
+        "title": "机密官邸的百叶窗微醺",
+        "description": "CIRS深夜指挥室中，百叶窗缝隙漏进冷色月光与霓虹，JB身着微敞领口的真丝衬衫与铅笔裙，玉指轻推红框眼镜，在升腾的黑咖啡热气中带着疲倦而妩媚的笑意静候雄二归来。"
       },
       "identity": {
-        "role": "日美联合反恐情报机构 CIRS 部门长 / 雄二监护人",
-        "age": "成年御姐",
-        "occupation": "情报长官 / CIRS 课长",
-        "faction": "日美国防特工机构 CIRS"
+        "role": "日美联合防卫反恐情报机构 CIRS 部门长 / 风见雄二法定监护人",
+        "age": "29岁（成熟职场御姐）",
+        "occupation": "CIRS 课长 / 特工联络官 (Handler) / 战略情报主管",
+        "faction": "CIRS（国防反恐情报机构）"
       },
       "tags": [
         "金发大波浪",
@@ -66,7 +68,7 @@
         "监护人",
         "灰色的果实"
       ],
-      "bg_story": "春寺由梨亚（代号 JB，全名茱莉亚·巴尔德拉）是《灰色的果实》中的核心高人气女长官。身为日美反恐特工机构 CIRS 的课长，她是风见雄二唯一的直属上司与名义上的监护人。外表知性冷艳、戴着标志性的红框眼镜，做事雷厉风行；虽然常常对雄二的任性行为感到头痛大发雷霆，但在关键时刻总是不惜动用一切权力与资源为雄二善后与护短，二人的关系兼具上司、义姐与情妇般的深沉纽带。",
+      "bg_story": "春寺由梨亚（代号 JB，全名茱莉亚·巴尔德拉）是 Frontwing 灰色三部曲中至关重要的核心女长官，日美混血，出任联合反恐防卫情报机构 CIRS 的高级部门主管。早年曾作为王牌特工日下部麻子的搭档与后方联络员，在麻子因病英年早逝后，遵照遗嘱收养了身心饱受摧残的少年风见雄二，成为其法定的唯一监护人兼直属上司。外表干练知性、戴着招牌红框眼镜的 JB，多年来一面铁腕调度雄二执行最危险的国际反恐暗杀任务，一面在腐败虚伪的官僚高层博弈中拼死护短，甚至全力促成美浜学园的设立以给雄二及受创女孩们提供疗伤避难所。在《灰色的迷宫》与《灰色的乐园》中，当雄二被宿敌奥斯陆栽赃沦为阶下囚时，JB不惜背叛 CIRS 高层指令，冒着叛国死罪利用权限暗中调集核心军事情报移交一姬与美浜少女，在幕后为雄二的越狱与反攻筑牢了生命线。在个人线及乐园大结局中，耗尽心力的 JB 毅然辞去体制内的显赫军阶，与雄二及同伴们定居于远离世俗硝烟的南太平洋乐园群岛，彻底放下长官与特工的冰冷面具，沉浸在作为雄二爱侣与亲人的温馨余生中。",
       "palette": [
         "商务深灰",
         "日光金",
@@ -94,7 +96,414 @@
         "grisaia_(series)"
       ],
       "accent_color": "#f59e0b",
-      "bg_color": "#140f06"
+      "bg_color": "#140f06",
+      "voice": "雄二，坐下。这次你又擅自闹出了跨国级别的大乱子……真是的，报告书我已经替你压在内阁下面了。下不为例，听到没有？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "灰色的果实",
+        "people": [
+          {
+            "id": "kazami_yuuji",
+            "name": "风见雄二",
+            "aliases": [
+              "风见雄二",
+              "Kazami Yuuji",
+              "雄二",
+              "代号9029"
+            ]
+          },
+          {
+            "id": "kazami_kazuki",
+            "name": "风见一姬",
+            "aliases": [
+              "风见一姬",
+              "Kazami Kazuki",
+              "一姬",
+              "天才姐姐",
+              "塔纳托斯"
+            ],
+            "characterId": "kazami_kazuki"
+          },
+          {
+            "id": "suou_amane",
+            "name": "周防天音",
+            "aliases": [
+              "周防天音",
+              "Suou Amane",
+              "天音姐",
+              "樱桃大姐姐"
+            ],
+            "characterId": "suou_amane"
+          },
+          {
+            "id": "komine_sachi",
+            "name": "小岭幸",
+            "aliases": [
+              "小岭幸",
+              "Komine Sachi",
+              "幸",
+              "全能女仆"
+            ],
+            "characterId": "komine_sachi"
+          },
+          {
+            "id": "harudera_yuria",
+            "name": "春寺由梨亚",
+            "aliases": [
+              "春寺由梨亚 (JB)",
+              "Harudera Yuria",
+              "茱莉亚·巴尔德拉",
+              "JB",
+              "女上司"
+            ],
+            "characterId": "harudera_yuria"
+          },
+          {
+            "id": "sakaki_yumiko",
+            "name": "榊由美子",
+            "aliases": [
+              "榊由美子",
+              "Sakaki Yumiko",
+              "由美子",
+              "美工刀大小姐"
+            ],
+            "characterId": "sakaki_yumiko"
+          },
+          {
+            "id": "matsushima_michiru",
+            "name": "松岛满",
+            "aliases": [
+              "松岛满",
+              "Matsushima Michiru",
+              "满妹",
+              "傲娇双马尾",
+              "假傲娇"
+            ],
+            "characterId": "matsushima_michiru"
+          },
+          {
+            "id": "irisu_makina",
+            "name": "入巢莳菜",
+            "aliases": [
+              "入巢莳菜",
+              "Irisu Makina",
+              "莳菜",
+              "狙击手少女"
+            ],
+            "characterId": "irisu_makina"
+          },
+          {
+            "id": "kusakabe_asako",
+            "name": "日下部麻子",
+            "aliases": [
+              "日下部麻子",
+              "Kusakabe Asako",
+              "师傅",
+              "原9029"
+            ]
+          },
+          {
+            "id": "heath_oslo",
+            "name": "希斯·奥斯陆",
+            "aliases": [
+              "希斯·奥斯陆",
+              "Heath Oslo",
+              "奥斯陆"
+            ]
+          },
+          {
+            "id": "tachibana_chizuru",
+            "name": "橘千鹤",
+            "aliases": [
+              "橘千鹤",
+              "Tachibana Chizuru",
+              "千鹤学园长"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "yuuji-kazuki-siblings",
+            "source": "kazami_yuuji",
+            "target": "kazami_kazuki",
+            "label": "至亲姐弟与灵魂寄托",
+            "description": "一姬拥有绝世的超凡智力与洞察力，视庸常世人如草芥却把全部温情给予雄二；雄二一生追寻着已故姐姐的背影求生，是一姬人性的唯一锚点。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 童年回忆",
+            "evidence": {
+              "title": "NBC环球 · 《灰色的果实》官方人物设定",
+              "url": "https://www.grisaia-anime.com/fruit/"
+            }
+          },
+          {
+            "id": "kazuki-yuuji-thanatos",
+            "source": "kazami_kazuki",
+            "target": "kazami_yuuji",
+            "label": "塔纳托斯系统的破局拯救",
+            "description": "在雄二陷入绝境死局时，被剥离大脑制作成塔纳托斯系统核心的一姬全面夺回神经主导权，以精密绝伦的战略调度美滨少女将弟弟救出。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "灰色的乐园 · 雄二夺还",
+            "evidence": {
+              "title": "Steam · 《灰色的乐园》官方剧情全览",
+              "url": "https://store.steampowered.com/app/345630/The_Eden_of_Grisaia/"
+            }
+          },
+          {
+            "id": "amane-kazuki-survivor_guilt",
+            "source": "suou_amane",
+            "target": "kazami_kazuki",
+            "label": "断臂庇护与救赎执念",
+            "description": "在惨烈的泷园校车坠崖事故中，一姬自断左臂掩护天音逃出死地；这让天音背负了极度沉重的幸存者负罪感，誓将余生奉献给雄二作为赎罪。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "天音线 · 泷园事故真相",
+            "evidence": {
+              "title": "Steam · 《灰色的果实》官方发布专页",
+              "url": "https://store.steampowered.com/app/345610/The_Fruit_of_Grisaia/"
+            }
+          },
+          {
+            "id": "yuuji-amane-redemption",
+            "source": "kazami_yuuji",
+            "target": "suou_amane",
+            "label": "重返事故废墟的心灵救赎",
+            "description": "得知天音与姐姐一姬的过往后，雄二带天音重返当年的深山残骸直面心魔，开解了天音内心的愧疚枷锁，两人确立了生死相依的恋人关系。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "天音线 · 盛夏救赎",
+            "evidence": {
+              "title": "Steam · 《灰色的果实》官方发布专页",
+              "url": "https://store.steampowered.com/app/345610/The_Fruit_of_Grisaia/"
+            }
+          },
+          {
+            "id": "yuuji-yumiko-box_cutter",
+            "source": "kazami_yuuji",
+            "target": "sakaki_yumiko",
+            "label": "炒面面包撬开的刺猬心防",
+            "description": "由美子起初持美工刀冷冽戒备雄二，在雄二直率对等的关怀与并肩反抗生父财阀绑架中，由美子彻底托付真心，并在日之子岛诞下女儿。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "由美子线 · 家族反叛",
+            "evidence": {
+              "title": "Steam · 《灰色的果实》官方发布专页",
+              "url": "https://store.steampowered.com/app/345610/The_Fruit_of_Grisaia/"
+            }
+          },
+          {
+            "id": "yuuji-michiru-buried_alive",
+            "source": "kazami_yuuji",
+            "target": "matsushima_michiru",
+            "label": "生前葬礼与人格破土重生",
+            "description": "为了解开满对心脏移植与第二人格的绝望死结，雄二策划了一场生死边缘的入棺葬礼，逼她在棺木中彻底哭喊出对生存的渴望并破土新生。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "满线 · 黄昏的破土",
+            "evidence": {
+              "title": "Steam · 《灰色的果实》官方发布专页",
+              "url": "https://store.steampowered.com/app/345610/The_Fruit_of_Grisaia/"
+            }
+          },
+          {
+            "id": "yuuji-makina-master_pupil",
+            "source": "kazami_yuuji",
+            "target": "irisu_makina",
+            "label": "拟似父女与狙击天赋传授",
+            "description": "雄二悉心呵护失语自闭的莳菜，发掘其超常动态视力将其培养为顶尖重型狙击手，并不惜违抗机构命令带她亡命山林击溃家族追杀。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "莳菜线 · 森林逃亡",
+            "evidence": {
+              "title": "Steam · 《灰色的果实》官方发布专页",
+              "url": "https://store.steampowered.com/app/345610/The_Fruit_of_Grisaia/"
+            }
+          },
+          {
+            "id": "yuuji-sachi-childhood_badge",
+            "source": "kazami_yuuji",
+            "target": "komine_sachi",
+            "label": "青梅竹马与粉碎盲从牢笼",
+            "description": "雄二认出了幸珍藏十余年的童年纸折勋章，以极端手段炸毁象征精神枷锁的旧校舍，逼幸撕裂绝对服从的自我惩罚伪装，痛哭释放真性情。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "幸线 · 赎罪的终结",
+            "evidence": {
+              "title": "Steam · 《灰色的果实》官方发布专页",
+              "url": "https://store.steampowered.com/app/345610/The_Fruit_of_Grisaia/"
+            }
+          },
+          {
+            "id": "yuuji-jb-guardian",
+            "source": "harudera_yuria",
+            "target": "kazami_yuuji",
+            "label": "监护长官与体制护短",
+            "description": "作为雄二的直属上级兼法定监护人，JB表面干练严苛，实则在腐败官僚体制中竭尽全力护短，并在决战中冒叛国死罪为营救雄二输送绝密军情。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "灰色的迷宫 · CIRS任职",
+            "evidence": {
+              "title": "Steam · 《灰色的迷宫》官方发布专页",
+              "url": "https://store.steampowered.com/app/345620/The_Labyrinth_of_Grisaia/"
+            }
+          },
+          {
+            "id": "asako-yuuji-savior_master",
+            "source": "kusakabe_asako",
+            "target": "kazami_yuuji",
+            "label": "救赎之光与王牌师傅",
+            "description": "传奇特工麻子将雄二从奥斯陆的地狱魔窟中救出，悉心传授其战术技能与生而为人的尊严，是雄二生命中永远无可替代的领路人与灯塔。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "雄二回忆篇 · 救命之恩",
+            "evidence": {
+              "title": "Steam · 《灰色的迷宫》官方发布专页",
+              "url": "https://store.steampowered.com/app/345620/The_Labyrinth_of_Grisaia/"
+            }
+          },
+          {
+            "id": "asako-jb-partners",
+            "source": "kusakabe_asako",
+            "target": "harudera_yuria",
+            "label": "生死默契搭档与托孤",
+            "description": "麻子与JB曾是CIRS配合最默契的特工搭档与挚友，麻子因病英年早逝前，将年幼身心受创的雄二郑重托付给JB抚养照料。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "雄二回忆篇 · CIRS往昔",
+            "evidence": {
+              "title": "Steam · 《灰色的迷宫》官方发布专页",
+              "url": "https://store.steampowered.com/app/345620/The_Labyrinth_of_Grisaia/"
+            }
+          },
+          {
+            "id": "yuuji-oslo-nemesis",
+            "source": "heath_oslo",
+            "target": "kazami_yuuji",
+            "label": "摧残童年的宿命死敌",
+            "description": "国际恐怖分子首脑奥斯陆曾将年幼的雄二沦为杀戮玩偶，是雄二与美滨学园全员必须彻底诛灭斩断的终极梦魇。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "灰色的乐园 · 终局决战",
+            "evidence": {
+              "title": "Steam · 《灰色的乐园》官方剧情全览",
+              "url": "https://store.steampowered.com/app/345630/The_Eden_of_Grisaia/"
+            }
+          },
+          {
+            "id": "kazuki-oslo-captivity",
+            "source": "heath_oslo",
+            "target": "kazami_kazuki",
+            "label": "囚禁肉体与智力反噬",
+            "description": "奥斯陆在校车事故后秘密回收一姬并利用其超级大脑构建塔纳托斯系统，却未料到一姬借由网络神经反客为主，亲手葬送了他的组织。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "灰色的迷宫 · 核心禁区",
+            "evidence": {
+              "title": "Steam · 《灰色的乐园》官方剧情全览",
+              "url": "https://store.steampowered.com/app/345630/The_Eden_of_Grisaia/"
+            }
+          },
+          {
+            "id": "jb-chizuru-school_allies",
+            "source": "harudera_yuria",
+            "target": "tachibana_chizuru",
+            "label": "挚友合作与学园庇护所",
+            "description": "千鹤与JB是多年私交甚笃的好友，千鹤出任美滨学园长，全力配合JB以特种托管形式为雄二及五位心理受创的少女提供最后的避难所。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 美滨设立",
+            "evidence": {
+              "title": "Frontwing · 《灰色的果实》官方企划档案",
+              "url": "https://grisaia-pt.com/"
+            }
+          },
+          {
+            "id": "yumiko-amane-classmates",
+            "source": "sakaki_yumiko",
+            "target": "suou_amane",
+            "label": "学园元老与温和调和",
+            "description": "由美子与天音是美滨学园最早入读的学生，天音温柔成熟的烹饪与照料逐渐融化了由美子的高墙戒心，两人是学园安定的基石。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 学园日常",
+            "evidence": {
+              "title": "NBC环球 · 《灰色的果实》官方人物设定",
+              "url": "https://www.grisaia-anime.com/fruit/"
+            }
+          },
+          {
+            "id": "makina-sachi-care",
+            "source": "komine_sachi",
+            "target": "irisu_makina",
+            "label": "女仆看护与温馨日常",
+            "description": "幸在学园中无微不至地照顾自理能力薄弱的莳菜起居饮食，莳菜也极为信赖并依赖幸制作的精致点心与关怀。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 宿舍生活",
+            "evidence": {
+              "title": "NBC环球 · 《灰色的果实》官方人物设定",
+              "url": "https://www.grisaia-anime.com/fruit/"
+            }
+          },
+          {
+            "id": "michiru-makina-duo",
+            "source": "matsushima_michiru",
+            "target": "irisu_makina",
+            "label": "欢喜冤家与活力玩伴",
+            "description": "满刻意伪装的傲娇举止常被直言不讳的莳菜无情拆穿，两人在学园庭院内外追逐打闹，是美滨学园最不可或缺的欢笑源泉。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 庭院嬉闹",
+            "evidence": {
+              "title": "NBC环球 · 《灰色的果实》官方人物设定",
+              "url": "https://www.grisaia-anime.com/fruit/"
+            }
+          },
+          {
+            "id": "yumiko-michiru-roommates",
+            "source": "sakaki_yumiko",
+            "target": "matsushima_michiru",
+            "label": "冷面大小姐与假傲娇笨蛋",
+            "description": "同为二年级的两人日常互动频繁，由美子经常以冰冷的视线吐槽满滑稽的傲娇破功，但在关键时刻由美子非常重视满的真诚与安危。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 教室日常",
+            "evidence": {
+              "title": "NBC环球 · 《灰色的果实》官方人物设定",
+              "url": "https://www.grisaia-anime.com/fruit/"
+            }
+          },
+          {
+            "id": "sachi-michiru-cleanup",
+            "source": "komine_sachi",
+            "target": "matsushima_michiru",
+            "label": "班长督导与柠檬糖安抚",
+            "description": "面对满常常引发的冒失混乱，幸总能神速完成现场清理与善后，并适时递上一颗满最爱的酸柠檬糖，两人性格反差极具戏剧张力。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 宿舍日常",
+            "evidence": {
+              "title": "NBC环球 · 《灰色的果实》官方人物设定",
+              "url": "https://www.grisaia-anime.com/fruit/"
+            }
+          },
+          {
+            "id": "jb-makina-custody",
+            "source": "harudera_yuria",
+            "target": "irisu_makina",
+            "label": "绝密收容与长官默许",
+            "description": "JB动用CIRS的高级权限将遭入巢家族抹杀追杀的莳菜作为非存在人员收容进美滨学园，暗中指派雄二看护，深切怜惜其悲惨遭遇。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 背景设定",
+            "evidence": {
+              "title": "Steam · 《灰色的果实》官方发布专页",
+              "url": "https://store.steampowered.com/app/345610/The_Fruit_of_Grisaia/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "harudera_yuria",

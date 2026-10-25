@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "行动随性，目光敏锐，善于捕捉他人的反应",
-        "面对陌生环境仍带着近乎漫不经心的自信",
-        "轻快笑容与危险判断力并存，不宜写成单纯温顺"
+        "漫不经心",
+        "危险嗜血",
+        "敏锐通透",
+        "直觉极强",
+        "善于心理共感",
+        "玩世不恭",
+        "社交边界感独特"
       ],
       "likes": [
-        "观察往来旅人",
-        "旅途中短暂歇脚",
-        "尝试小镇日常"
+        "探究感兴趣之人的内心深处",
+        "享受生死边缘的切裂厮杀",
+        "缠着兰特问东问西与近距离观察",
+        "尝试旅途中城镇的特色点心",
+        "收集奇特的实用魔法"
       ],
       "classic_cg": {
-        "title": "尤贝尔 · 考试会场的缠人精",
-        "description": "一级魔法使考试等候区，她整个人凑到别人面前叽叽喳喳地问个不停，半睁的眼睛里没有恶意也没有分寸；对方后退半步她就前进半步，是她的社交距离。"
+        "title": "毫无波动的绝对切断",
+        "description": "考场幽深的石廊阴影下，绿发侧马尾少女嘴角泛起若有若无的诡谲轻笑，半阖的紫眸未曾掀起一丝涟漪，仅凭一缕无形挥斩便将不可摧毁的防御外套与血肉一分为二。"
       },
-      "identity": "Frieren: Beyond Journey's End · 尤贝尔",
+      "identity": {
+        "role": "核心魔法使 / 一级魔法使 / 极度危险的共感与斩击大师",
+        "age": "约18~20岁",
+        "occupation": "大陆魔法协会所属一级魔法使",
+        "faction": "大陆魔法协会 / 帝都暗部调查组"
+      },
       "tags": [
         "尤贝尔",
         "葬送的芙莉莲",
         "日常"
       ],
-      "bg_story": "以独特想象力施法的魔法使，习惯靠近观察、随口发问。绿发侧马尾与半睁紫瞳是识别重点，日常侧重旅途见闻、挑选法杖和不太可靠的厨艺。",
+      "bg_story": "大陆魔法协会所属的一级魔法使，原为三级魔法使。曾在一级考核中因将考官连同其拥有绝对防御的特制外套一刀两断而名噪魔法界。尤贝尔性格漫不经心、喜怒不形于色，行事凭直觉与危险的冲动驱动。她持有的王牌法术是“几乎什么都能切开的魔法（Reelseiden）”，该魔法的生效逻辑不取决于魔力强弱，而是取决于她内心的“共感”——只要她在心理认知上认定目标“是可以被切开的东西”，无论对方构筑多么坚固的魔法屏障或护盾，都能将其瞬间切裂。在一级魔法使选拔测验中，她对性格冷酷、从不以真身示人的替身魔法使兰特产生浓厚兴趣，以近乎死缠烂打的近距离接触试图探查兰特的内心世界。在陨铁鸟夺取战和迷宫攻略中，尤贝尔凭借极其敏锐的战斗直觉与致命杀意屡建奇功，并在第三轮面试中被大魔法使赛莉耶一眼看中其狂傲本质而破格录取。在漫画最新主线帝国篇中，尤贝尔与兰特作为一级魔法使搭档深入帝都执行绝密谍报任务，直面帝国精锐暗杀部队“影子战士”的伏击，在生死交锋中两人展现出超越常理的配合默契，成为当下旅途中最危险也最吸睛的存在。",
       "palette": [
         "#7fba9b",
         "#282532"
@@ -62,7 +73,139 @@
         "side_ponytail"
       ],
       "accent_color": "#7fba9b",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "魔法就是‘想象’的世界吧？只要我觉得它能被切开……那么，它就一定会被斩断哦。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "葬送的芙莉莲",
+        "people": [
+          {
+            "id": "frieren",
+            "name": "芙莉莲",
+            "aliases": [
+              "フリーレン",
+              "Frieren",
+              "葬送的芙莉莲"
+            ],
+            "characterId": "frieren"
+          },
+          {
+            "id": "fern_frieren",
+            "name": "菲伦",
+            "aliases": [
+              "フェルン",
+              "Fern"
+            ],
+            "characterId": "fern_frieren"
+          },
+          {
+            "id": "ubel_frieren",
+            "name": "尤贝尔",
+            "aliases": [
+              "ユーベル",
+              "Ubel"
+            ],
+            "characterId": "ubel_frieren"
+          },
+          {
+            "id": "himmel",
+            "name": "辛美尔",
+            "aliases": [
+              "ヒンメル",
+              "Himmel",
+              "勇者辛美尔"
+            ]
+          },
+          {
+            "id": "stark",
+            "name": "修塔尔克",
+            "aliases": [
+              "シュタルク",
+              "Stark"
+            ]
+          },
+          {
+            "id": "land",
+            "name": "兰特",
+            "aliases": [
+              "ラント",
+              "Land"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "frieren-himmel-memories",
+            "source": "frieren",
+            "target": "himmel",
+            "label": "逝去勇者与追寻之旅",
+            "description": "辛美尔逝世后，芙莉莲为自己未曾真正理解人类而落泪，踏上重走十年讨伐路线前往灵魂长眠之地的漫长旅程。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 勇者逝世",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          },
+          {
+            "id": "frieren-fern-master",
+            "source": "frieren",
+            "target": "fern_frieren",
+            "label": "师徒与照料者",
+            "description": "芙莉莲受海塔托付收菲伦为徒传授魔法，日常生活中生活自理能力极弱的芙莉莲反而经常需要生活严谨的菲伦照料。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 旅途日常",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          },
+          {
+            "id": "fern-stark-companions",
+            "source": "fern_frieren",
+            "target": "stark",
+            "label": "旅途同伴与青涩情愫",
+            "description": "在芙莉莲队伍中担任法师与前卫战士，两人经常因日常小事拌嘴斗气，但在生死之战中对彼此怀有绝对信赖与朦胧情意。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 一级魔法使考试篇",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          },
+          {
+            "id": "ubel-land-resonance",
+            "source": "ubel_frieren",
+            "target": "land",
+            "label": "共感魔法与搭档纠葛",
+            "description": "尤贝尔凭借极度敏锐的杀戮共感试图看透兰特本体，在考场中与始终用分身行事的兰特结成兼具试探与默契的危险搭档。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "一级魔法使考试篇 · 第二轮合格",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          },
+          {
+            "id": "frieren-ubel-exam",
+            "source": "frieren",
+            "target": "ubel_frieren",
+            "label": "考场对手与克制视线",
+            "description": "在二级进阶考试中尤贝尔认出芙莉莲不可揣度的巨大魔力，深知其作为活了千年的大魔法使对杀戮感知的绝对压制。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "一级魔法使考试篇 · 陨铁鸟捕获",
+            "evidence": {
+              "title": "小学馆 · 《葬送的芙莉莲》官方作品站",
+              "url": "https://frieren-anime.jp/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "ubel_frieren",

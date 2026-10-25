@@ -33,21 +33,30 @@
         "signature": "黑色高马尾、橙色发带、绯袴巫女服与堕天使黑翼"
       },
       "personality": [
-        "口癖『啊啦啊啦』的抖S调戏",
-        "内心极度渴望被爱与救赎",
-        "被触及弱点时的慌乱纯情",
-        "温柔体贴的包容人妻感"
+        "妖娆抖S",
+        "柔媚深情",
+        "内在创伤自卑",
+        "病娇依恋",
+        "善解人意",
+        "为爱奉献一切"
       ],
       "likes": [
-        "神前祈祷与泡茶",
-        "制作手工便当",
-        "调戏心爱之人"
+        "兵藤一诚",
+        "料理与做家务",
+        "挑逗一诚与莉雅丝",
+        "和服与神道祭祀",
+        "雨夜依偎"
       ],
       "classic_cg": {
-        "title": "降魔雷光与堕天之翼",
-        "description": "在暴风雨夜中展开漆黑羽翼引落万丈雷霆的神圣制裁姿态。"
+        "title": "雷光巫女的堕天使黑翼救赎",
+        "description": "在雨幕的神社后山，朱乃展露出曾被视作诅咒的漆黑单翼，在一诚温柔抚摸羽翼时泪如雨下、将脸深埋一诚胸口的动人名场面。"
       },
-      "identity": "恶魔高校DxD女二号 · 吉蒙里眷属『女王』 · 雷光巫女",
+      "identity": {
+        "role": "神秘学研究部副部长 / 兵藤一诚的重要妻子",
+        "age": "学园毕业 / 堕天使与人类混血",
+        "occupation": "驹王学园学生 / 吉蒙里女王棋子",
+        "faction": "吉蒙里眷属 / 堕天使方舟"
+      },
       "tags": [
         "恶魔高校DxD",
         "黑发高马尾",
@@ -56,7 +65,7 @@
         "抖S",
         "温柔学姐"
       ],
-      "bg_story": "神道巫女与堕天使干部之女，继承了神圣雷光与堕天之力的强大混血修罗。平日里是一口一个『啊啦啊啦』、喜欢调戏后辈的抖S大姐姐，实则内心背负着沉重的家庭创伤，在得到救赎后成为了最温顺深情的专属小娇妻。",
+      "bg_story": "驹王学园神秘学研究部副部长，拥有“雷光巫女”凶名与极具反差的抖S妖娆外表，实为纯血神道巫女与堕天使总督拜罗的混血后代。童年目睹母亲惨遭堕天使仇敌杀害，因而对抛弃妻女的生父怀有蚀骨仇恨，常年因体内污浊的堕天使羽翼陷入自卑与绝望自弃，以轻浮微笑与嗜虐折磨强敌掩盖内心的创伤。在一诚毫不嫌弃其黑翼、真诚称赞其羽翼神圣美丽并温柔拥抱她之后，朱乃冰封千疮百孔的心灵被彻底救赎，对一诚展开近乎献祭般的炽烈爱意。历经三大势力和解与冥界决战，朱乃在一诚陪伴下终于与父亲相逢解开心结，在终局后日谈中成为一诚重要的爱妻并诞下子嗣，迎来了明亮温暖的新生。",
       "palette": [
         "#9333ea",
         "#3b0764",
@@ -74,7 +83,356 @@
         "seductive"
       ],
       "accent_color": "#9333ea",
-      "bg_color": "#3b0764"
+      "bg_color": "#3b0764",
+      "voice": "啊啦啊啦，一诚君……若是愿意接纳我这双丑陋的翅膀，那我整个人都任由你处置哦？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "恶魔高校DxD",
+        "people": [
+          {
+            "id": "hyoudou_issei",
+            "name": "兵藤一诚",
+            "aliases": [
+              "兵藤一诚",
+              "Hyoudou Issei",
+              "一诚",
+              "赤龙帝",
+              "乳龙帝"
+            ]
+          },
+          {
+            "id": "rias_gremory",
+            "name": "莉雅丝·吉蒙里",
+            "aliases": [
+              "莉雅丝·吉蒙里",
+              "Rias Gremory",
+              "莉雅丝",
+              "红发的灭杀姬",
+              "吉蒙里公爵千金"
+            ],
+            "characterId": "rias_gremory"
+          },
+          {
+            "id": "akeno_himejima",
+            "name": "姬岛朱乃",
+            "aliases": [
+              "姬岛朱乃",
+              "Akeno Himejima",
+              "姬岛朱乃",
+              "雷光巫女",
+              "副会长"
+            ],
+            "characterId": "akeno_himejima"
+          },
+          {
+            "id": "asia_argento",
+            "name": "爱西亚·阿基多",
+            "aliases": [
+              "爱西亚·阿基多",
+              "Asia Argento",
+              "爱西亚",
+              "圣母的微笑"
+            ]
+          },
+          {
+            "id": "toujou_koneko",
+            "name": "塔城小猫",
+            "aliases": [
+              "塔城小猫",
+              "Toujou Koneko",
+              "小猫",
+              "白音",
+              "猫又"
+            ]
+          },
+          {
+            "id": "kiba_yuuto",
+            "name": "木场佑斗",
+            "aliases": [
+              "木场佑斗",
+              "Kiba Yuuto",
+              "佑斗",
+              "魔剑创造者"
+            ]
+          },
+          {
+            "id": "xenovia_quarta",
+            "name": "洁诺薇亚·夸塔",
+            "aliases": [
+              "洁诺薇亚·夸塔",
+              "Xenovia Quarta",
+              "洁诺薇亚",
+              "杜兰朵使用者"
+            ]
+          },
+          {
+            "id": "azazel",
+            "name": "阿萨谢尔",
+            "aliases": [
+              "阿萨谢尔",
+              "Azazel",
+              "堕天使总督",
+              "顾问老师"
+            ]
+          },
+          {
+            "id": "sirzechs_lucifer",
+            "name": "萨瑟克斯·路西法",
+            "aliases": [
+              "萨瑟克斯·路西法",
+              "Sirzechs Lucifer",
+              "魔王路西法",
+              "红发魔王"
+            ]
+          },
+          {
+            "id": "raiser_phenex",
+            "name": "莱萨·菲尼克斯",
+            "aliases": [
+              "莱萨·菲尼克斯",
+              "Raiser Phenex",
+              "莱萨",
+              "不死鸟三男"
+            ]
+          },
+          {
+            "id": "vali_lucifer",
+            "name": "瓦利·路西法",
+            "aliases": [
+              "瓦利·路西法",
+              "Vali Lucifer",
+              "瓦利",
+              "白龙皇"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "rias-issei-reincarnation",
+            "source": "rias_gremory",
+            "target": "hyoudou_issei",
+            "label": "转生恶魔与正室挚爱",
+            "description": "莉雅丝以恶魔棋子将濒死的一诚转生为恶魔仆从；一诚为夺回莉雅丝的婚姻自由在决斗中以赤龙帝之手击溃莱萨，征服了莉雅丝的心，终成正妻与赤龙帝传奇。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 转生与决斗",
+            "evidence": {
+              "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",
+              "url": "https://fantasiabunko.jp/special/200809dxd/"
+            }
+          },
+          {
+            "id": "akeno-issei-redemption",
+            "source": "akeno_himejima",
+            "target": "hyoudou_issei",
+            "label": "雷光巫女的黑翼救赎",
+            "description": "朱乃常年因体内杂糅的堕天使黑翼陷入自卑与仇恨，一诚由衷赞美其黑翼神圣美丽并温柔相拥，彻底融化了朱乃残损的心防，使其成为甘愿献祭一切的爱妻。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "圣剑篇 · 黑翼救赎",
+            "evidence": {
+              "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",
+              "url": "https://fantasiabunko.jp/special/200809dxd/"
+            }
+          },
+          {
+            "id": "rias-akeno-best_friends",
+            "source": "rias_gremory",
+            "target": "akeno_himejima",
+            "label": "主从兼生死不渝的闺蜜",
+            "description": "朱乃是莉雅丝最重要的第一眷属兼“女王”，两人自冥界年少起便形影不离，在驹王学园神秘学研究部中互为彼此最坚固的依靠与后盾。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 神秘学研究部",
+            "evidence": {
+              "title": "恶魔高校DxD制作委员会 · 官方动画人物档案",
+              "url": "https://www.hxdxd.tv/"
+            }
+          },
+          {
+            "id": "issei-asia-salvation",
+            "source": "hyoudou_issei",
+            "target": "asia_argento",
+            "label": "圣母救赎与纯白依恋",
+            "description": "流放修女爱西亚遭堕天使杀害夺走神器，一诚拼死将其夺回并转生为吉蒙里眷属主教；爱西亚全心全意敬慕深爱着一诚，是一诚誓死捍卫的纯白灯塔。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第一卷 · 修女救出",
+            "evidence": {
+              "title": "角川BookWalker · 《恶魔高校DxD》官方文库收录",
+              "url": "https://bookwalker.jp/series/1054/"
+            }
+          },
+          {
+            "id": "issei-koneko-past_healing",
+            "source": "hyoudou_issei",
+            "target": "toujou_koneko",
+            "label": "化解心魔与猫又觉醒",
+            "description": "小猫因姐姐黑歌弑主而封闭心扉恐惧仙术，在一诚不顾安危的接纳与保护下，小猫解开心魔觉醒猫又力量并深深爱上一诚。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "排位战篇 · 仙术觉醒",
+            "evidence": {
+              "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",
+              "url": "https://fantasiabunko.jp/special/200809dxd/"
+            }
+          },
+          {
+            "id": "issei-kiba-brothers_in_arms",
+            "source": "hyoudou_issei",
+            "target": "kiba_yuuto",
+            "label": "生死托付的修罗战友",
+            "description": "木场曾深陷圣剑计划复仇执念，在一诚与眷属同伴的死战支援下解开心结领悟双剑，视一诚为无可替代的生死兄弟与前进主将。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "圣剑篇 · 复仇释怀",
+            "evidence": {
+              "title": "恶魔高校DxD制作委员会 · 官方动画人物档案",
+              "url": "https://www.hxdxd.tv/"
+            }
+          },
+          {
+            "id": "xenovia-issei-proposal",
+            "source": "xenovia_quarta",
+            "target": "hyoudou_issei",
+            "label": "圣剑使转生与豪爽倾慕",
+            "description": "信仰破灭转生为吉蒙里骑士后，前教会王牌洁诺薇亚性格极其奔放豪迈，倾心于赤龙帝一诚并直球索求诞育强大子嗣，战意炽烈。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "圣剑篇 · 信仰崩塌",
+            "evidence": {
+              "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",
+              "url": "https://fantasiabunko.jp/special/200809dxd/"
+            }
+          },
+          {
+            "id": "rias-asia_koneko-family",
+            "source": "rias_gremory",
+            "target": "asia_argento",
+            "label": "如母长姐的温厚庇护",
+            "description": "莉雅丝不仅视爱西亚为部下主教，更将其视同亲妹悉心庇护照顾，为经历凄惨的爱西亚打造了温暖安详的学园家园。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "日常篇 · 吉蒙里眷属",
+            "evidence": {
+              "title": "恶魔高校DxD制作委员会 · 官方动画人物档案",
+              "url": "https://www.hxdxd.tv/"
+            }
+          },
+          {
+            "id": "azazel-issei-mentor",
+            "source": "azazel",
+            "target": "hyoudou_issei",
+            "label": "神器总督与传道恩师",
+            "description": "堕天使总督阿萨谢尔性格随性洒脱，出任学园顾问期间悉心指导一诚掌控赤龙帝禁手化与战术演练，是一诚最重要的引路长辈。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "和平会谈篇 · 堕天使顾问",
+            "evidence": {
+              "title": "角川BookWalker · 《恶魔高校DxD》官方文库收录",
+              "url": "https://bookwalker.jp/series/1054/"
+            }
+          },
+          {
+            "id": "sirzechs-rias-loving_brother",
+            "source": "sirzechs_lucifer",
+            "target": "rias_gremory",
+            "label": "极度宠溺的魔王亲兄",
+            "description": "冥界魔王之首萨瑟克斯性格温厚且极度妹控，全力支持莉雅丝追求真正的自由与幸福，暗中认可并扶持一诚成长为上级恶魔。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "冥界主线 · 魔王之诺",
+            "evidence": {
+              "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",
+              "url": "https://fantasiabunko.jp/special/200809dxd/"
+            }
+          },
+          {
+            "id": "issei-raiser-duel",
+            "source": "hyoudou_issei",
+            "target": "raiser_phenex",
+            "label": "夺回自由的断臂决斗",
+            "description": "莱萨依仗纯血不死鸟威能强加包办政治婚姻，一诚在排位赛中以凡人恶魔之躯不惜断臂发动赤龙帝之手将其击溃，赢回了莉雅丝的自由。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "决斗篇 · 冥界宴会",
+            "evidence": {
+              "title": "恶魔高校DxD制作委员会 · 官方动画人物档案",
+              "url": "https://www.hxdxd.tv/"
+            }
+          },
+          {
+            "id": "issei-vali-rivalry",
+            "source": "hyoudou_issei",
+            "target": "vali_lucifer",
+            "label": "赤龙帝与白龙皇的宿敌宿命",
+            "description": "背负千年宿命的双龙争锋，瓦利追求至高武道杀伐，与一诚在死战碰撞中惺惺相惜，最终结成并肩拯救世界危局的至强竞争对手。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "和平会谈篇 · 双龙对决",
+            "evidence": {
+              "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",
+              "url": "https://fantasiabunko.jp/special/200809dxd/"
+            }
+          },
+          {
+            "id": "azazel-akeno-reconciliation",
+            "source": "azazel",
+            "target": "akeno_himejima",
+            "label": "引导父女释怀千古血仇",
+            "description": "阿萨谢尔作为朱乃父亲拜罗的直属首领与旧友，多年来默默照看朱乃，并在决战时刻充当桥梁促成了朱乃与生父解开心结重归于好。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "冥界决战 · 父女和解",
+            "evidence": {
+              "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",
+              "url": "https://fantasiabunko.jp/special/200809dxd/"
+            }
+          },
+          {
+            "id": "rias-kiba-knighthood",
+            "source": "rias_gremory",
+            "target": "kiba_yuuto",
+            "label": "骑士救赎与主从之诺",
+            "description": "莉雅丝在木场被圣剑计划抛弃濒死时将其转生为恶魔骑士，木场视莉雅丝为再造父母与无上君主，立誓献上毕生忠诚之刃。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "开篇设定 · 眷属骑士",
+            "evidence": {
+              "title": "恶魔高校DxD制作委员会 · 官方动画人物档案",
+              "url": "https://www.hxdxd.tv/"
+            }
+          },
+          {
+            "id": "akeno-koneko-comfort",
+            "source": "akeno_himejima",
+            "target": "toujou_koneko",
+            "label": "大姐姐的呵护与心境共鸣",
+            "description": "朱乃深知背负受创血脉的痛苦，日常如亲姐姐般温柔照护寡言的小猫，小猫也在朱乃面前格外温顺与放松。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常篇 · 部室茶歇",
+            "evidence": {
+              "title": "恶魔高校DxD制作委员会 · 官方动画人物档案",
+              "url": "https://www.hxdxd.tv/"
+            }
+          },
+          {
+            "id": "akeno-asia-tea",
+            "source": "akeno_himejima",
+            "target": "asia_argento",
+            "label": "茶道教导与恶魔常识引导",
+            "description": "朱乃经常在神秘学研究部耐心教导刚踏入恶魔人间的爱西亚学习日本茶道与起居礼仪，细心抚平她因身份剧变带来的彷徨。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "日常篇 · 茶道修习",
+            "evidence": {
+              "title": "恶魔高校DxD制作委员会 · 官方动画人物档案",
+              "url": "https://www.hxdxd.tv/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "akeno_himejima",

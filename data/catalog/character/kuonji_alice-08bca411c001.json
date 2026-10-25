@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "寡言而自持，习惯以精确动作维持生活秩序",
-        "重视自己的空间与习惯，不轻易让人靠近",
-        "细微的停顿与目光变化比夸张表情更能传达心意"
+        "孤高冷彻",
+        "恪守准则",
+        "内敛温柔",
+        "略带傲娇",
+        "独喜红茶",
+        "洞察敏锐",
+        "极度护短洋馆"
       ],
       "likes": [
-        "旧书",
-        "按自己的节奏喝茶",
-        "洋馆中安静的夜晚"
+        "古董茶具与大吉岭红茶",
+        "收集古籍童话",
+        "独坐洋馆窗边听雨",
+        "摆弄木制使魔",
+        "安静的西洋乐"
       ],
       "classic_cg": {
-        "title": "久远寺有珠 · 洋馆客厅的炉火",
-        "description": "久远寺宅的客厅，她坐在高背扶手椅上读一本旧书，壁炉的火光在黑色洋装上跳动；红茶的热气与古董家具之间，她是这座屋子唯一的主人。"
+        "title": "童话游乐园的午夜降诞",
+        "description": "大雪纷飞的荒废游乐园镜之森中，黑衣的有珠宛若伫立于童话尽头的漆黑孤鸟。她指尖轻吟着残酷的鹅妈妈童谣，身后庞大的蓝鸟与迷雾怪物轰然撕裂夜幕，以纯粹冰冷的神秘碾压入侵现世的凡愚。"
       },
-      "identity": "Witch on the Holy Night · 久远寺有珠",
+      "identity": {
+        "role": "久远寺邸的真正主人 / 隐世的纯血正统魔女",
+        "age": "16~17岁（礼园女学院高二）",
+        "occupation": "礼园女学院学生 / 神秘纯血魔女",
+        "faction": "久远寺宅邸 / 三咲市灵脉管理盟友"
+      },
       "tags": [
         "久远寺有珠",
         "魔法使之夜",
         "日常"
       ],
-      "bg_story": "独居洋馆、延续古老魔女传统的少女。短黑发、沉静眼神和端正姿态是核心；童话书、红茶与工作间里的细致手艺承载她的日常。",
+      "bg_story": "纯血英国魔女梅·里德尔与日本富豪久远寺家后裔所生的末裔魔女，生来便继承了古老的“第一魔法”余波童话使魔（Ploy Kickshaw）。自幼生活在远离尘世的久远寺洋馆中，性格冷彻如严霜，恪守魔术师不得暴露神秘、凡窥见者必抹杀的铁律。在三咲市灵脉争夺战中，有珠与同居的同盟魔女苍崎青子联手对抗苍崎橙子与黄金狼人卢·贝奥武夫。当平凡少年静希草十郎偶然闯入废弃游乐园目睹魔术后，有珠本欲依律将其灭口，却在草十郎超脱生死常理的纯粹心性面前数度产生动摇。洋馆三人的同居生活逐渐融化了她数百年魔女宿命般的冰封心房。在决战中，橙子操纵卢·贝奥武夫突袭洋馆，有珠召唤顶级秘宝“扁平杜姆”与“大厅的茶会”拼至重伤濒死，见证了青子觉醒第五魔法与草十郎奇迹般的搏命舍击。战后，洋馆恢复了微妙而平衡的日常，有珠在平静的书房中默许了草十郎的存在，褪去了绝对冷酷的假面，在后日谈中继续作为守护三咲市灵脉的孤高魔女平静注视着世间流转。",
       "palette": [
         "#9aa9ba",
         "#282532"
@@ -62,7 +73,180 @@
         "hair_intakes"
       ],
       "accent_color": "#9aa9ba",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "魔术师的世界是没有慈悲的。既然你看见了真实的夜晚……就请在这里退场吧。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "魔法使之夜",
+        "people": [
+          {
+            "id": "kuonji_alice",
+            "name": "久远寺有珠",
+            "aliases": [
+              "久远寺有珠",
+              "Alice Kuonji",
+              "魔女有珠",
+              "纯血魔女"
+            ],
+            "characterId": "kuonji_alice"
+          },
+          {
+            "id": "aozaki_aoko",
+            "name": "苍崎青子",
+            "aliases": [
+              "苍崎青子",
+              "Aozaki Aoko",
+              "第五魔法使",
+              "Magic Gunner",
+              "青子"
+            ]
+          },
+          {
+            "id": "shizuki_soujuurou",
+            "name": "静希草十郎",
+            "aliases": [
+              "静希草十郎",
+              "Shizuki Soujuurou",
+              "草十郎",
+              "山里来的少年"
+            ]
+          },
+          {
+            "id": "aozaki_touko_mahoyo",
+            "name": "苍崎橙子",
+            "aliases": [
+              "苍崎橙子",
+              "Aozaki Touko",
+              "伤痛之赤",
+              "冠位人偶师"
+            ]
+          },
+          {
+            "id": "lugh_beowulf",
+            "name": "卢·贝奥武夫",
+            "aliases": [
+              "卢·贝奥武夫",
+              "Lugh Beowulf",
+              "黄金狼人",
+              "贝奥"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kuonji_alice-aozaki_aoko-mansion_allies_and_friends",
+            "source": "kuonji_alice",
+            "target": "aozaki_aoko",
+            "label": "洋馆同居与魔道挚友",
+            "description": "同居于久远寺洋馆的魔术师同盟，性格冰炭不同却在守护三咲市灵脉的死斗中生死相依，是彼此在冷酷神秘世界中唯一的依靠。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 共通设定",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "kuonji_alice-shizuki_soujuurou-from_murderous_to_shelter",
+            "source": "kuonji_alice",
+            "target": "shizuki_soujuurou",
+            "label": "由杀意至容留默契",
+            "description": "草十郎因目击魔术险遭有珠抹杀，然而在同居日常与游乐园死斗中有珠被其纯粹无欲的心境触动，暗中赠予防护护符并默许其留宿。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 日常与合宿",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "kuonji_alice-aozaki_touko_mahoyo-mansion_clash",
+            "source": "kuonji_alice",
+            "target": "aozaki_touko_mahoyo",
+            "label": "洋馆袭杀与使魔鏖战",
+            "description": "橙子突袭久远寺洋馆企图夺取灵脉与使魔，有珠释放传家秘宝大桥之巨人和大厅茶会拼至重伤濒死，誓死捍卫洋馆的神秘尊严。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "魔法使之夜 · 洋馆袭击战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "aozaki_aoko-shizuki_soujuurou-contract_and_humanity_anchor",
+            "source": "aozaki_aoko",
+            "target": "shizuki_soujuurou",
+            "label": "契约同盟与灵魂锚点",
+            "description": "青子给目击者草十郎戴上致命项圈限制自由，但在废弃游乐园与雪山决战中草十郎舍命阻击狼人，成为青子觉醒第五魔法后维系人性的永恒锚点。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "魔法使之夜 · 雪山决战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "aozaki_aoko-aozaki_touko_mahoyo-sisters_magic_dispute",
+            "source": "aozaki_aoko",
+            "target": "aozaki_touko_mahoyo",
+            "label": "同胞姊妹与魔法争夺",
+            "description": "因祖父突然将苍崎家第五魔法继承权托付给毫无魔术基础的妹妹青子，橙子愤而出走并在数年后杀回三咲市决战，最终被青子的魔法之青击溃放逐。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "魔法使之夜 · 最终决战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "shizuki_soujuurou-lugh_beowulf-mortal_critical_strike",
+            "source": "shizuki_soujuurou",
+            "target": "lugh_beowulf",
+            "label": "徒手重击与破格一击",
+            "description": "雪夜林中决战，凡人少年草十郎以在深山练就的极致徒手暗杀体术，出其不意击碎黄金狼人的心窝，颠覆了神秘唯有神秘能破的铁律。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "魔法使之夜 · 雪山决战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "aozaki_touko_mahoyo-lugh_beowulf-familiar_contract",
+            "source": "aozaki_touko_mahoyo",
+            "target": "lugh_beowulf",
+            "label": "使魔契约与黄金王牌",
+            "description": "橙子在北欧耗费极大心血收服的神代人狼遗孤，将其作为攻破久远寺结界与压制青子的终极王牌，狼人战败后被其放养。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 袭来篇",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "aozaki_aoko-lugh_beowulf-snowfield_duel",
+            "source": "aozaki_aoko",
+            "target": "lugh_beowulf",
+            "label": "激战死斗",
+            "description": "雪原之上青子凭借高速魔弹与第五魔法的奇迹时间跳跃，正面击破了黄金狼人号称三千年不败的神代不死之躯。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "魔法使之夜 · 终局决战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "kuonji_alice",

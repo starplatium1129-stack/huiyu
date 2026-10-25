@@ -34,26 +34,29 @@
       },
       "personality": [
         "孤高傲娇",
-        "成绩优异",
+        "纯情害羞",
+        "严于律己",
         "不服输",
-        "害羞时会用俄语吐露真情",
-        "暗地里纯情可爱"
+        "极易娇羞",
+        "渴望认可",
+        "真诚专一"
       ],
       "likes": [
-        "俄语",
-        "红茶",
-        "猫咪",
-        "被真心夸奖"
+        "轻声用俄语说出真心话",
+        "香醇红茶与精美甜点",
+        "毛茸茸的小猫咪",
+        "久世政近真诚的夸奖与陪伴",
+        "学生会工作与严谨的自律生活"
       ],
       "classic_cg": {
         "title": "放学后的夕阳窗边",
-        "description": "教室窗边夕阳洒在银发上，她转过头红着脸轻声用俄语说出喜欢。"
+        "description": "放学后微风拂动的静谧教室里，夕阳将艾莉的银发染成暖金，她红着脸颊侧过头去，故意避开政近的视线，用颤抖而软糯的俄语轻声吐露着藏不住的心动。"
       },
       "identity": {
-        "role": "学生会干部（高一学生）",
-        "age": "高中一年级",
-        "occupation": "学生",
-        "faction": "征岭学园学生会"
+        "role": "征岭学园学生会干部（竞选会长） / 日俄混血才女",
+        "age": "15-16岁（高中一年级）",
+        "occupation": "学生 / 学生会干部",
+        "faction": "私立征岭学园学生会"
       },
       "tags": [
         "银发",
@@ -62,7 +65,7 @@
         "制服",
         "俄妹"
       ],
-      "bg_story": "艾莉莎是《不时轻声地用俄语遮羞的邻座艾莉同学》的女主角，日俄混血的银发蓝瞳美少女。表面冷若冰霜、严以律己，实际上极易害羞，习惯用俄语掩饰自己的真心。",
+      "bg_story": "艾莉莎是《不时轻声地用俄语遮羞的邻座艾莉同学》的女主角，拥有日俄混血血统。她生得容貌清绝，如月华般皎洁的银发与澄澈蓝眸使她被称为学园的“孤高之花”。由于从小严于律己且才貌兼备，艾莉在班级中习惯独来独往，难以融入集体，内心深处却极易害羞、极度渴望真诚的认同与关怀。当面对整日散漫摸鱼的邻座同桌久世政近时，每当内心悸动或羞赧难当，她便习惯用自以为无人知晓的俄语悄悄呢喃吐露爱意或傲娇遮羞（殊不知政近幼年因初恋早已精通俄语，内心窃喜不已）。为了突破凡事孤军奋战的执念，艾莉决定竞选征岭学园学生会会长；在政近的真诚辅佐与鼓励下，她逐步学会展现脆弱并信赖伙伴。在经历了校庆演说、会长候选辩论以及重重挑战后，艾莉不仅赢得了全校师生的信服，与政近的感情也在一次次俄语私语中飞速升温。从高冷孤傲的独行才女，成长为既威严坚强又在恋人面前娇憨可人的少女，艾莉迎来了属于自己的青春晴空。",
       "palette": [
         "冰川蓝",
         "雪银白",
@@ -90,7 +93,215 @@
         "fair_skin"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "И правда милый……（真的很可爱呢……）哼，听不懂吧？我刚才说的是‘你这个大笨蛋’！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "不时轻声地用俄语遮羞的邻座艾莉同学",
+        "people": [
+          {
+            "id": "alisa_mikhailovna_kujou",
+            "name": "艾莉莎·米哈伊洛夫娜·九条",
+            "aliases": [
+              "アリサ・ミハイロヴナ・九条",
+              "Alisa Mikhailovna Kujou",
+              "艾莉",
+              "Alya",
+              "阿莉雅"
+            ],
+            "characterId": "alisa_mikhailovna_kujou"
+          },
+          {
+            "id": "suou_yuki",
+            "name": "周防有希",
+            "aliases": [
+              "周防有希",
+              "Yuki Suou",
+              "有希",
+              "深闺千金"
+            ],
+            "characterId": "suou_yuki"
+          },
+          {
+            "id": "maria_mikhailovna_kujou",
+            "name": "玛夏",
+            "aliases": [
+              "マリヤ・ミハイロヴナ・九条",
+              "Mariya Mikhailovna Kujou",
+              "玛利亚",
+              "Masha",
+              "学园圣母"
+            ],
+            "characterId": "maria_mikhailovna_kujou"
+          },
+          {
+            "id": "kuze_masachika",
+            "name": "久世政近",
+            "aliases": [
+              "久世政近",
+              "Masachika Kuze",
+              "政近",
+              "小夜"
+            ]
+          },
+          {
+            "id": "kimishima_ayano",
+            "name": "君嶋绫乃",
+            "aliases": [
+              "君嶋綾乃",
+              "Ayano Kimishima",
+              "绫乃",
+              "无口从者"
+            ]
+          },
+          {
+            "id": "kenzaki_touya",
+            "name": "剑崎统也",
+            "aliases": [
+              "剣崎統也",
+              "Touya Kenzaki",
+              "统也会长"
+            ]
+          },
+          {
+            "id": "sarashina_chisaki",
+            "name": "更科茅咲",
+            "aliases": [
+              "更科茅咲",
+              "Chisaki Sarashina",
+              "茅咲学姐"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "roshidere-masachika-alya-partners_crush",
+            "source": "kuze_masachika",
+            "target": "alisa_mikhailovna_kujou",
+            "label": "俄语心声与学生会竞选同盟",
+            "description": "艾莉习惯用自以为无人知晓的俄语羞涩低语吐露爱慕，殊不知精通俄语的政近听得清清楚楚；两人携手竞选学生会长，在选战磨砺中羁绊日益笃深。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线开篇至学生会长选战",
+            "evidence": {
+              "title": "动画《不时轻声地用俄语遮羞的邻座艾莉同学》官网",
+              "url": "https://roshidere.com/character/"
+            }
+          },
+          {
+            "id": "roshidere-alya-masha-sisters",
+            "source": "maria_mikhailovna_kujou",
+            "target": "alisa_mikhailovna_kujou",
+            "label": "情深意切的九条姐妹",
+            "description": "治愈温柔的姐姐玛夏全心照料孤高认真的妹妹艾莉；玛夏敏锐察觉到艾莉对政近的深厚依赖，为了妹妹的幸福选择将自己与政近的童年羁绊深藏心底。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "原作第4卷夏日祭与第5卷",
+            "evidence": {
+              "title": "角川Sneaker文库《俄语遮羞》官方特设",
+              "url": "https://sneakerbunko.jp/series/roshidere/"
+            }
+          },
+          {
+            "id": "roshidere-masachika-masha-childhood_destiny",
+            "source": "kuze_masachika",
+            "target": "maria_mikhailovna_kujou",
+            "label": "红绳约定与命运初恋",
+            "description": "玛夏正是政近童年在公园沙坑相遇、赠予红绳并改变他人生的‘初恋女孩’；重逢后玛夏以大姐姐的温柔治愈政近的心理创伤，在初恋隐忍与克制中默默守护。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "原作第4-5卷 / 动画第10-12话",
+            "evidence": {
+              "title": "角川Sneaker文库《俄语遮羞》官方特设",
+              "url": "https://sneakerbunko.jp/series/roshidere/"
+            }
+          },
+          {
+            "id": "roshidere-masachika-yuki-secret_siblings",
+            "source": "suou_yuki",
+            "target": "kuze_masachika",
+            "label": "双重面孔与极度依恋的亲兄妹",
+            "description": "因家庭变故分居的名门亲兄妹；在外人面前是优雅端庄的千金对手，私底下有希则是整蛊哥哥、向哥哥撒娇的疯狂兄控，以竞选为契机激发出政近封存的全力。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "贯穿主线",
+            "evidence": {
+              "title": "动画《不时轻声地用俄语遮羞的邻座艾莉同学》官网",
+              "url": "https://roshidere.com/character/"
+            }
+          },
+          {
+            "id": "roshidere-alya-yuki-election_rivals",
+            "source": "alisa_mikhailovna_kujou",
+            "target": "suou_yuki",
+            "label": "竞选最强宿敌与战友",
+            "description": "在学生会会长辩论与竞选中展开策略与魅力的顶尖交锋；有希既以高超手段逼迫艾莉与政近成长，又在私下频繁以腹黑恶作剧捉弄毫无防备的艾莉。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学生会会长选战篇",
+            "evidence": {
+              "title": "动画《不时轻声地用俄语遮羞的邻座艾莉同学》官网",
+              "url": "https://roshidere.com/character/"
+            }
+          },
+          {
+            "id": "roshidere-masachika-ayano-servant_loyalty",
+            "source": "kimishima_ayano",
+            "target": "kuze_masachika",
+            "label": "主仆羁绊与绝对忠诚",
+            "description": "君嶋家世代侍奉周防家，绫乃自幼被当作政近的近侍培养；虽受命协助有希竞选，但绫乃在心底对政近少爷抱有毫不动摇的忠诚与听从。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "选战篇与暑假合宿篇",
+            "evidence": {
+              "title": "角川Sneaker文库《俄语遮羞》官方特设",
+              "url": "https://sneakerbunko.jp/series/roshidere/"
+            }
+          },
+          {
+            "id": "roshidere-yuki-ayano-mistress_retainer",
+            "source": "kimishima_ayano",
+            "target": "suou_yuki",
+            "label": "大小姐与无口随从",
+            "description": "绫乃作为有希贴身侍从兼竞选搭档，无微不至地执行有希的一切智谋指令，也是极少数知晓有希私下脱线御宅兄控本性的亲信。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "日常与竞选篇",
+            "evidence": {
+              "title": "动画《不时轻声地用俄语遮羞的邻座艾莉同学》官网",
+              "url": "https://roshidere.com/character/"
+            }
+          },
+          {
+            "id": "roshidere-touya-chisaki-lovers_leaders",
+            "source": "kenzaki_touya",
+            "target": "sarashina_chisaki",
+            "label": "学生会顶梁柱与公开情侣",
+            "description": "豪爽威严的统协会长与武艺非凡的茅咲副会长既是统治学园的黄金拍档，又是私下极具反差的甜蜜情侣，全力为政近与艾莉的竞选搭建公平坚固的舞台。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学生会日常篇",
+            "evidence": {
+              "title": "动画《不时轻声地用俄语遮羞的邻座艾莉同学》官网",
+              "url": "https://roshidere.com/character/"
+            }
+          },
+          {
+            "id": "roshidere-touya-masachika-admiration",
+            "source": "kenzaki_touya",
+            "target": "kuze_masachika",
+            "label": "赏识提携的前后辈",
+            "description": "统也深刻赏识政近在初中展现的非凡统筹与谋略才干，力邀其加入学生会，视其为征岭学园新时代的基石领袖。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "学生会篇",
+            "evidence": {
+              "title": "角川Sneaker文库《俄语遮羞》官方特设",
+              "url": "https://sneakerbunko.jp/series/roshidere/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "alisa_mikhailovna_kujou",

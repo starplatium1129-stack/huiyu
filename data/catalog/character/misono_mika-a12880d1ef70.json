@@ -33,26 +33,29 @@
         "signature": "粉发内侧星空、璀璨星芒光环、带金色星徽羽翼、星眸"
       },
       "personality": [
-        "天真烂漫",
-        "笨蛋",
-        "大小姐",
-        "怪力",
-        "酒品差"
+        "天真浪漫",
+        "傲娇任性",
+        "偏执自弃",
+        "怪力破格",
+        "渴望被爱",
+        "脆弱敏感",
+        "重情深挚"
       ],
       "likes": [
-        "聊天",
-        "收集首饰",
-        "被人注视",
-        "甜点"
+        "老师（Sensei）",
+        "瑞士卷与精致甜品",
+        "可爱首饰与发夹",
+        "与百合园圣徒会的闲聊",
+        "仰望璀璨星空"
       ],
       "classic_cg": {
-        "title": "茶话会的微笑",
-        "description": "崔尼蒂午后茶会上，她端着红茶回眸一笑，阳光穿过发丝，像天使又像陷阱。"
+        "title": "礼拜堂的以身赎罪",
+        "description": "破败阴暗的地下礼拜堂深处，失去一切权能的未花满身伤痕地背靠崩塌的石柱，面对无穷无尽的圣徒会幽灵大军，为了守护老师与同伴咬牙微笑着挥拳战至力竭。"
       },
       "identity": {
-        "role": "崔尼蒂综合学院学生 · 前茶话会成员",
+        "role": "崔尼蒂综合学院学生 · 前学生会茶话会三巨头（帕特尔派领袖）",
         "age": "17岁",
-        "occupation": "学生",
+        "occupation": "学生 / 前茶话会成员",
         "faction": "崔尼蒂综合学院 / 茶话会"
       },
       "tags": [
@@ -65,7 +68,7 @@
         "光环",
         "白色连裤袜"
       ],
-      "bg_story": "圣园未花是《碧蓝档案》中崔尼蒂综合学院学生会「茶话会」前三巨头之一，帕特尔分派领袖。外表是拥有星空渐变发色与甜美微笑的优雅名媛，实则拥有徒手拆墙的逆天怪力与反差萌。曾因天真与迷茫卷入伊甸条约政治漩涡深陷自责与囚徒深渊，在老师的无条件信任与拯救下解开心结，重拾自我并化身为在任何绝境下都誓死守护老师的“无敌魔女”。场景应突出崔尼蒂大圣堂的神圣浪漫与未花天真又病娇的极度反差——大理石茶会、晨曦寝殿、忏悔室私语与蔷薇花瓣浴池，粉紫星空与圣白是她的灵魂色。",
+      "bg_story": "基沃托斯名校崔尼蒂综合学院学生会“茶话会”三巨头之一，帕特尔派系领袖。看似是性格随性、喜爱开玩笑且身怀怪力的大小姐，实则因好友桐藤渚的偏执猜忌与阿里乌斯分校的历史宿怨而深感压抑窒息。为了打破崔尼蒂的伪善僵局，她暗中联络阿里乌斯分校，试图策划小规模事端迎回阿里乌斯，却未料自己被贝亚特丽切彻底利用，导致伊甸条约签署仪式遭到毁灭性袭击，渚与鹤城重伤濒死，自己亦被揭穿并作为“叛乱主谋”羁押入狱。在牢狱中，未花陷入自我憎恨与精神崩溃，坚信自己是不可宽恕的“恶毒魔女”。在伊甸条约篇第四章决战中，得知老师与阿里乌斯小队陷入绝境，未花单枪匹马突破监禁，在地下圣所为掩护老师和佐仓慈等人与浩瀚的圣徒会幽灵死斗，战至满身血痕仍不退半步，最终被老师温柔拥抱并拯救。基沃托斯最终章末日危机爆发时，戴罪立功的未花作为崔尼蒂核心战力迎战虚伪圣所。如今虽失去政治权柄成为普通学员，但洗尽铅华的未花重获真挚友情，将老师视为照亮自己漆黑人生的永恒救赎。",
       "palette": [
         "浅粉",
         "蓝",
@@ -76,7 +79,7 @@
         "雨天",
         "茶会暖光"
       ],
-      "speech": "未花向你优雅地问候。",
+      "speech": "呐，老师……如果我是个无药可救的坏魔女，你也会来救我、对我露出微笑吗？",
       "source": "NEXON《蔚蓝档案 / Blue Archive》",
       "traits": [
         "misono_mika",
@@ -108,7 +111,395 @@
       ],
       "accent_color": "#f9a8d4",
       "bg_color": "#1e3a8a",
-      "series": "NEXON《蔚蓝档案 / Blue Archive》"
+      "series": "NEXON《蔚蓝档案 / Blue Archive》",
+      "voice": "呐，老师……如果我是个无药可救的坏魔女，你也会来救我、对我露出微笑吗？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "蔚蓝档案",
+        "people": [
+          {
+            "id": "misono_mika",
+            "name": "圣园未花",
+            "aliases": [
+              "Misono Mika",
+              "聖園ミカ",
+              "圣园弥香",
+              "未花"
+            ],
+            "characterId": "misono_mika"
+          },
+          {
+            "id": "sorasaki_hina",
+            "name": "空崎日奈",
+            "aliases": [
+              "Sorasaki Hina",
+              "空崎ヒナ",
+              "空崎陽奈",
+              "日奈"
+            ],
+            "characterId": "sorasaki_hina"
+          },
+          {
+            "id": "kyouyama_kazusa",
+            "name": "杏山和纱",
+            "aliases": [
+              "Kyouyama Kazusa",
+              "杏山カズサ",
+              "杏山千纱",
+              "和纱"
+            ],
+            "characterId": "kyouyama_kazusa"
+          },
+          {
+            "id": "asuma_toki",
+            "name": "飞鸟马时",
+            "aliases": [
+              "Asuma Toki",
+              "飛鳥馬トキ",
+              "飞鸟马季",
+              "小时"
+            ],
+            "characterId": "asuma_toki"
+          },
+          {
+            "id": "tsukatsuki_rio",
+            "name": "调月莉音",
+            "aliases": [
+              "Tsukatsuki Rio",
+              "調月リオ",
+              "调月莉央",
+              "莉音"
+            ],
+            "characterId": "tsukatsuki_rio"
+          },
+          {
+            "id": "hayase_yuuka",
+            "name": "早濑优香",
+            "aliases": [
+              "Hayase Yuuka",
+              "优香",
+              "冷酷的算数使",
+              "大魔王"
+            ],
+            "characterId": "hayase_yuuka"
+          },
+          {
+            "id": "shiromi_iori",
+            "name": "银镜伊织",
+            "aliases": [
+              "Shiromi Iori",
+              "伊织",
+              "风纪委员会突击队长"
+            ],
+            "characterId": "shiromi_iori"
+          },
+          {
+            "id": "ichinose_asuna",
+            "name": "一之濑明日奈",
+            "aliases": [
+              "Ichinose Asuna",
+              "明日奈",
+              "兔女郎明日奈",
+              "C&C 00"
+            ],
+            "characterId": "ichinose_asuna"
+          },
+          {
+            "id": "sensei",
+            "name": "老师",
+            "aliases": [
+              "Sensei",
+              "先生",
+              "夏莱顾问老师",
+              "夏莱老师"
+            ]
+          },
+          {
+            "id": "tendou_alice",
+            "name": "天童爱丽丝",
+            "aliases": [
+              "Tendou Alice",
+              "天童アリス",
+              "爱丽丝",
+              "无名王女"
+            ]
+          },
+          {
+            "id": "kirifuji_nagisa",
+            "name": "桐藤渚",
+            "aliases": [
+              "Kirifuji Nagisa",
+              "桐藤ナギサ",
+              "渚大人",
+              "渚"
+            ]
+          },
+          {
+            "id": "joumae_saori",
+            "name": "锭前纱织",
+            "aliases": [
+              "Joumae Saori",
+              "錠前サオリ",
+              "纱织",
+              "Saori"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "sensei-misono_mika-redemption",
+            "source": "sensei",
+            "target": "misono_mika",
+            "label": "无条件救赎与深厚依恋",
+            "description": "未花自囚于牢狱深陷恶毒魔女的自弃深渊时，老师以血肉之躯在圣徒会幽灵狂潮中将她救出；洗尽铅华的未花将老师视为照亮自己漆黑人生的永恒救赎与心灵归宿。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线Vol.3伊甸条约篇第四章 · 忘记的众神们的主人",
+            "evidence": {
+              "title": "蔚蓝档案官方剧情设定 · 伊甸条约篇第四章",
+              "url": "https://wiki.biligame.com/bluearchive/%E5%9C%A3%E5%9B%AD%E6%9C%AA%E8%8A%B1"
+            }
+          },
+          {
+            "id": "kirifuji_nagisa-misono_mika-tea_party_friends",
+            "source": "kirifuji_nagisa",
+            "target": "misono_mika",
+            "label": "茶话会挚友与信任裂痕",
+            "description": "同为崔尼蒂茶话会三巨头与自幼相伴的青梅竹马，未花因试图打破伪善僵局暗中联络阿里乌斯而酿成袭击惨剧；在背叛与伤痛抚平后，渚重新向未花敞开包容的怀抱。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线Vol.3伊甸条约篇第三章 · 我们的故事",
+            "evidence": {
+              "title": "蔚蓝档案官方剧情档案 · 茶话会人物档案",
+              "url": "https://wiki.biligame.com/bluearchive/%E6%A1%90%E8%97%A4%E6%B8%98"
+            }
+          },
+          {
+            "id": "joumae_saori-misono_mika-sanctuary_reconciliation",
+            "source": "joumae_saori",
+            "target": "misono_mika",
+            "label": "被操纵的共谋与圣所释怀",
+            "description": "未花起初试图借阿里乌斯制造事端迎回分校，却反被利用沦为阶下囚；在地下圣所决死战中，未花拼死掩护重伤的纱织与老师突围，两人在血火中达成和解与救赎。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线Vol.3伊甸条约篇第四章 · 忘记的众神们的主人",
+            "evidence": {
+              "title": "蔚蓝档案官方剧情记录 · 阿里乌斯分校与崔尼蒂决战",
+              "url": "https://wiki.biligame.com/bluearchive/%E9%94%AD%E5%89%8D%E7%BA%B1%E7%BB%87"
+            }
+          },
+          {
+            "id": "sensei-sorasaki_hina-haven_of_trust",
+            "source": "sensei",
+            "target": "sorasaki_hina",
+            "label": "最深信赖与心灵避风港",
+            "description": "常年背负歌赫娜全校动乱与过劳高压的风纪委员长日奈，唯有在老师面前才能卸下铁血防备流露少女的依赖；老师是日奈在喧嚣乱局中最温暖坚实的心灵港湾。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "歌赫娜风纪委员会日常 / 日奈羁绊剧情",
+            "evidence": {
+              "title": "蔚蓝档案官方角色介绍 · 空崎日奈档案",
+              "url": "https://wiki.biligame.com/bluearchive/%E7%A9%BA%E5%B4%8E%E6%97%A5%E5%A5%88"
+            }
+          },
+          {
+            "id": "sorasaki_hina-shiromi_iori-prefect_trust",
+            "source": "sorasaki_hina",
+            "target": "shiromi_iori",
+            "label": "铁血委员长与最倚重突击队长",
+            "description": "伊织是日奈最信任的前线突击锋刃，对日奈抱有绝对崇敬与军令服从，日奈亦高度信赖伊织百步穿杨的枪法与雷厉风行的前线决断力。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "歌赫娜风纪委员会日常维持运作",
+            "evidence": {
+              "title": "歌赫娜风纪委员会组织架构与官方档案",
+              "url": "https://wiki.biligame.com/bluearchive/%E9%93%B6%E9%95%9C%E4%BC%8A%E7%BB%87"
+            }
+          },
+          {
+            "id": "sensei-shiromi_iori-playful_banter",
+            "source": "sensei",
+            "target": "shiromi_iori",
+            "label": "前线战友与羞恼调侃",
+            "description": "战场上所向披靡的铁面突击队长，面对老师时却因耿直性格屡屡被捉弄调侃，每次都满脸通红拔枪炸毛追赶，内心却对老师抱有深厚的敬仰与依赖。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "夏莱日常 / 伊织羁绊剧情",
+            "evidence": {
+              "title": "蔚蓝档案角色羁绊故事 · 银镜伊织夏莱日常",
+              "url": "https://wiki.biligame.com/bluearchive/%E9%93%B6%E9%95%9C%E4%BC%8A%E7%BB%87"
+            }
+          },
+          {
+            "id": "sorasaki_hina-misono_mika-treaty_rivals",
+            "source": "sorasaki_hina",
+            "target": "misono_mika",
+            "label": "条约危机与阵营宿怨",
+            "description": "在伊甸条约签署仪式遭受毁灭性空袭的风暴中，日奈率部在火海中阻敌掩护，与暗中引狼入室的未花深陷阵营宿命的对立碰撞，最终在基沃托斯联军中各自作为王牌抗击大灾。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线Vol.3伊甸条约篇第三章至最终章",
+            "evidence": {
+              "title": "蔚蓝档案主线战役档案 · 伊甸条约危机始末",
+              "url": "https://wiki.biligame.com/bluearchive/%E5%89%A7%E6%83%85%E6%A6%82%E8%A7%88"
+            }
+          },
+          {
+            "id": "sensei-hayase_yuuka-schale_treasurer",
+            "source": "sensei",
+            "target": "hayase_yuuka",
+            "label": "夏莱首席财务与深情管家",
+            "description": "千禧年精算天才优香自夏莱初创起便主动统管全部账目与物资；日常总因老师乱买玩具和邋遢作息严厉说教，实则是对老师倾注最多深情与细腻关怀的王道正宫代表。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 夏莱创立与千禧年日常",
+            "evidence": {
+              "title": "蔚蓝档案官方角色档案 · 早濑优香",
+              "url": "https://wiki.biligame.com/bluearchive/%E6%97%A9%E7%80%AC%E4%BC%98%E9%A6%99"
+            }
+          },
+          {
+            "id": "tsukatsuki_rio-hayase_yuuka-seminar_conflict",
+            "source": "tsukatsuki_rio",
+            "target": "hayase_yuuka",
+            "label": "研讨会上下级与理念决裂",
+            "description": "优香原本敬畏莉音会长的战略统筹力，但在查明莉音瞒天过海挪用巨资修建耶利哥要塞、企图抹杀爱丽丝以求理性最优解时，优香毅然站上对立面捍卫学生的尊严。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线Vol.2发条之花的帕凡舞曲第二章",
+            "evidence": {
+              "title": "千年科学学园学生会研讨会档案记录",
+              "url": "https://wiki.biligame.com/bluearchive/%E8%B0%83%E6%9C%88%E8%8E%89%E9%9F%B3"
+            }
+          },
+          {
+            "id": "tsukatsuki_rio-asuma_toki-secret_agent_loyalty",
+            "source": "tsukatsuki_rio",
+            "target": "asuma_toki",
+            "label": "大总统与单线绝密特工",
+            "description": "时是由莉音一手发掘并单线指挥的王牌特工04，视执行莉音的严苛命令为绝对存在意义；在要塞战败与莉音引咎流亡后，时逐步走出盲从阴影融入集体。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "主线Vol.2发条之花的帕凡舞曲第二章",
+            "evidence": {
+              "title": "千年秘密特勤组档案 · 飞鸟马时特工记录",
+              "url": "https://wiki.biligame.com/bluearchive/%E9%A3%9E%E9%B8%9F%E9%A9%AC%E6%97%B6"
+            }
+          },
+          {
+            "id": "sensei-tsukatsuki_rio-rationality_and_salvation",
+            "source": "sensei",
+            "target": "tsukatsuki_rio",
+            "label": "冷酷功利与全人教育的救赎",
+            "description": "莉音坚信功利推演试图牺牲个体换取多数存续，老师以大人的担当击碎其冰冷傲慢；在莉音流亡赎罪、太空方舟决战危难之际，老师再度敞开怀抱接纳这位迷途的学生会长。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线最终章 · 阿特拉哈西斯方舟占领战",
+            "evidence": {
+              "title": "蔚蓝档案官方主线战役 · 最终篇章",
+              "url": "https://wiki.biligame.com/bluearchive/%E8%B0%83%E6%9C%88%E8%8E%89%E9%9F%B3"
+            }
+          },
+          {
+            "id": "ichinose_asuna-asuma_toki-cc_senpai_kouhai",
+            "source": "ichinose_asuna",
+            "target": "asuma_toki",
+            "label": "C&C同僚特工与前后辈",
+            "description": "在要塞风波平息后时正式以04号身份回归C&C，性格一本正经、缺乏常识的时常被凭直觉行事的大型犬前辈明日奈带偏，两人在兔女郎潜入行动中配合默契、笑料百出。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "活动剧情 · 船上的兔女郎追缉令",
+            "evidence": {
+              "title": "C&C清洁与清算部活动特勤记录",
+              "url": "https://wiki.biligame.com/bluearchive/%E4%B8%80%E4%B9%8B%E7%80%AC%E6%98%8E%E6%97%A5%E5%A5%88"
+            }
+          },
+          {
+            "id": "ichinose_asuna-sensei-pure_affection",
+            "source": "ichinose_asuna",
+            "target": "sensei",
+            "label": "神级直觉与纯真炽爱",
+            "description": "拥有不可思议气运与野性直觉的特工女仆明日奈，对老师抱有如同忠犬般毫无保留的热情与信赖；无论战况何等凶险，只要有她的明媚笑容便必将迎来胜利转机。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "C&C特工日常与夏莱羁绊剧情",
+            "evidence": {
+              "title": "蔚蓝档案角色档案 · 一之濑明日奈",
+              "url": "https://wiki.biligame.com/bluearchive/%E4%B8%80%E4%B9%8B%E7%80%AC%E6%98%8E%E6%97%A5%E5%A5%88"
+            }
+          },
+          {
+            "id": "sensei-asuma_toki-peace_bond",
+            "source": "sensei",
+            "target": "asuma_toki",
+            "label": "专属效忠与脱线温情",
+            "description": "脱离冰冷要塞指令后，时在老师的引导下重塑自我人格；日常里总以一本正经比出“Peace”手势的专属动作向老师表达信赖，视老师为无可取代的守护者。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线最终章后日谈 / 飞鸟马时羁绊故事",
+            "evidence": {
+              "title": "飞鸟马时官方专属羁绊剧集记录",
+              "url": "https://wiki.biligame.com/bluearchive/%E9%A3%9E%E9%B8%9F%E9%A9%AC%E6%97%B6"
+            }
+          },
+          {
+            "id": "tsukatsuki_rio-tendou_alice-prophecy_atonement",
+            "source": "tsukatsuki_rio",
+            "target": "tendou_alice",
+            "label": "灭世兵器预言与真挚宽恕",
+            "description": "莉音认定爱丽丝是毁灭基沃托斯的无名王女而试图将其抹除，爱丽丝却用纯洁的勇者之心粉碎了宿命锁链；最终章莉音舍身提供轨道支援后，爱丽丝以最明媚的笑颜将莉音认作挚友。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线最终章 · 阿特拉哈西斯方舟决战",
+            "evidence": {
+              "title": "蔚蓝档案官方主线档案 · 爱丽丝与莉音",
+              "url": "https://wiki.biligame.com/bluearchive/%E5%A4%A9%E7%AB%A5%E7%88%B1%E4%B8%BD%E4%B8%9D"
+            }
+          },
+          {
+            "id": "hayase_yuuka-tendou_alice-maternal_care",
+            "source": "hayase_yuuka",
+            "target": "tendou_alice",
+            "label": "研讨会守护者与如母关怀",
+            "description": "优香力排众议将废墟中苏醒的爱丽丝注册为千年正式学籍；日常虽总因爱丽丝沉迷电子游戏而头疼叹气，实则如同操碎了心的年轻母亲般为她的成长倾尽心血。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线Vol.2发条之花的帕凡舞曲第一章",
+            "evidence": {
+              "title": "千年科学学园游戏开发部保护记录",
+              "url": "https://wiki.biligame.com/bluearchive/%E5%A4%A9%E7%AB%A5%E7%88%B1%E4%B8%BD%E4%B8%9D"
+            }
+          },
+          {
+            "id": "sensei-kyouyama_kazusa-after_school_secret",
+            "source": "sensei",
+            "target": "kyouyama_kazusa",
+            "label": "不良黑历史守护者与心动暗恋",
+            "description": "努力告别“凯茜”传说的和纱，在老师面前卸下所有掩饰与防备；老师倾听并完全接纳她的过去，让和纱在每一次甜点约会与直球互动中满脸通红、情愫暗生。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "放学后甜点部日常 / 和纱羁绊剧情",
+            "evidence": {
+              "title": "蔚蓝档案角色羁绊剧情 · 杏山和纱档案",
+              "url": "https://wiki.biligame.com/bluearchive/%E6%9D%8F%E5%B1%B1%E5%92%8C%E7%BA%B1"
+            }
+          },
+          {
+            "id": "misono_mika-kyouyama_kazusa-trinity_students",
+            "source": "misono_mika",
+            "target": "kyouyama_kazusa",
+            "label": "崔尼蒂同校学妹与退隐默契",
+            "description": "同为崔尼蒂自治区中曾背负显赫恶名与沉重目光的风云人物，一个洗尽铅华回归普通学员，一个褪去街头不良领袖外衣安享甜点青春，彼此在喧闹学园中形成不言而喻的默契共鸣。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "崔尼蒂综合学院日常生活",
+            "evidence": {
+              "title": "崔尼蒂综合学院学生自治档案",
+              "url": "https://wiki.biligame.com/bluearchive/%E5%B4%94%E5%B0%BC%E8%92%82%E7%BB%BC%E5%90%88%E5%AD%A6%E9%99%A2"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "adultEligibility": "adult",

@@ -34,27 +34,31 @@
         "signature": "深蓝碎短发、左眼下泪痣、琥珀金瞳、复古贝斯与散漫气质"
       },
       "personality": [
-        "特立独行不随波逐流",
-        "沉迷复古乐器买到破产",
-        "表面冷淡实则极有主见",
-        "经常理直气壮借钱和吃草",
-        "绝对信任认可伙伴的才华"
+        "特立独行且绝不妥协的独立摇滚狂人",
+        "散漫慵懒中性酷感的无口毒舌",
+        "家境优渥却甘于物质赤贫的反叛千金",
+        "对伙伴音乐才华怀有最高敬意的伯乐",
+        "理直气壮借钱不还的脱线厚脸皮",
+        "舞台上掌控全场节奏的绝对支柱",
+        "深藏于心底对纯粹艺术的赤子之心"
       ],
       "likes": [
-        "买古董贝斯与效果器",
-        "下北泽中古黑胶唱片",
-        "安静作曲与试听",
-        "被波奇酱请客吃饭"
+        "在二手乐器行淘古董老贝斯与稀奇古怪的效果器",
+        "下北泽中古唱片店挖掘冷门迷幻摇滚黑胶",
+        "路边洗干净的新鲜野草与被波奇酱请客吃牛丼",
+        "在幽暗静谧的房间里戴着监听耳机闭眼作曲",
+        "观察并捉弄波奇酱各种崩坏脱线的奇特反应",
+        "结束乐队排练结束后那一口冰凉的茶水"
       ],
       "classic_cg": {
-        "title": "地下室的深沉低音律动",
-        "description": "昏暗沉静的Livehouse地下排练室，蓝发少女闭着双眼微倾上身，手指在复古白护板贝斯弦上沉稳拨动，流淌出沉厚扣人心弦的低音波线。"
+        "title": "幽暗排练室的低音独白",
+        "description": "STARRY逼仄昏暗的地下排练室里，蓝发少女抱着复古Fender Precision贝斯斜靠在音箱旁。琥珀色的瞳孔半阖，修长白皙的手指在粗粝琴弦上扣下沉浑有力的音符，在满室回荡的低频震颤中，嘴角浮起一抹若有若无的傲然浅笑。"
       },
       "identity": {
-        "role": "结束乐队贝斯手兼作曲担当",
-        "age": "17岁（高中二年级）",
-        "occupation": "高中生 / Livehouse STARRY店员",
-        "faction": "秀华高中 / 结束乐队"
+        "role": "结束乐队贝斯手兼唯一作曲家 / 下北泽独立音乐怪才",
+        "age": "17岁（秀华高中二年级）",
+        "occupation": "高中生 / Livehouse STARRY店员 / 独立音乐创作者",
+        "faction": "秀华高中 / 结束乐队（Kessoku Band）"
       },
       "tags": [
         "蓝发短发",
@@ -64,7 +68,7 @@
         "中性酷感",
         "古着风"
       ],
-      "bg_story": "山田凉是《孤独摇滚！》的核心角色之一，结束乐队的贝斯手与作曲担当。家境优渥的大小姐，却对物质享受毫无兴趣，将所有零用钱与打工收入全部投入收集中古二手乐器中，因此经常穷得吃路边的野草充饥。性格特立独行、散漫从容，拥有出众的音乐才华与敏锐的鉴赏眼光。第一眼就看穿了后藤一里「guitarhero」的潜力并给予坚定支持，是结束乐队不可动摇的音乐灵魂。",
+      "bg_story": "山田凉是《孤独摇滚！》的核心角色之一，结束乐队的贝斯手兼唯一作曲担当。表面上是经常穷得靠在路边嚼野草果腹的脱线少女，真实家境却是开设有大型综合医院的豪门名媛千金。因厌倦世俗既定名媛轨道的束缚与家庭物质享受，凉对豪门生活毫无兴趣。初中时曾加入商业女子乐队，因不愿迎合大众流行市场而妥协自身纯粹的原创音乐理念，在激烈争执后断然退队陷入迷茫，随后被伊地知虹夏救赎，两人共同创立了结束乐队。因将所有生活费和兼职打工收入毫无节制地用于收集中古稀有电贝斯、效果器与古着黑胶唱片，常年处于赤贫破产状态，经常理直气壮借钱吃草。当后藤一里（波奇酱）入队后，凉凭借敏锐的艺术直觉成为第一个洞察波奇惊人吉他才华与精神深度的伯乐，全盘认可其阴郁晦涩的歌词草稿并以一句“无需迎合大众，写出只有你才能创作的个性”定下了乐队的音乐基石。在文化祭及STARRY演出中，凉以沉稳霸气的重低音波律动死死掌控全场音墙节奏，用最酷烈内敛的姿态默默支持同伴，在下北泽地下摇滚界烙下了属于自己的先锋印记。",
       "palette": [
         "深海蓝",
         "复古青",
@@ -75,7 +79,7 @@
         "地下室昏灯",
         "下北泽夜色"
       ],
-      "speech": "与其迎合大多数人，不如做只有自己才能做出来的音乐……波奇，下次再借我一点钱买效果器吧。",
+      "speech": "与其为了迎合大多数人而写出平庸廉价的旋律，我宁可一辈子在路边嚼野草……波奇，不要丢掉你内心的阴暗，把它全部化作摇滚砸向这个世界吧。还有，今天的便当分我一半。",
       "source": "CloverWorks《孤独摇滚！ / Bocchi the Rock!》",
       "traits": [
         "yamada_ryo",
@@ -90,7 +94,132 @@
         "bocchi_the_rock!"
       ],
       "accent_color": "#0284c7",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "与其为了迎合大多数人而写出平庸廉价的旋律，我宁可一辈子在路边嚼野草……波奇，不要丢掉你内心的阴暗，把它全部化作摇滚砸向这个世界吧。还有，今天的便当分我一半。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "孤独摇滚！",
+        "people": [
+          {
+            "id": "gotoh_hitori",
+            "name": "后藤一里",
+            "aliases": [
+              "後藤ひとり",
+              "Gotoh Hitori",
+              "波奇酱(Bocchi)"
+            ],
+            "characterId": "gotoh_hitori"
+          },
+          {
+            "id": "kita_ikuyo",
+            "name": "喜多郁代",
+            "aliases": [
+              "喜多郁代",
+              "Kita Ikuyo"
+            ],
+            "characterId": "kita_ikuyo"
+          },
+          {
+            "id": "yamada_ryo",
+            "name": "山田凉",
+            "aliases": [
+              "山田リョウ",
+              "Yamada Ryo"
+            ],
+            "characterId": "yamada_ryo"
+          },
+          {
+            "id": "ijichi_nijika",
+            "name": "伊地知虹夏",
+            "aliases": [
+              "伊地知虹夏",
+              "Ijichi Nijika",
+              "下北泽大天使"
+            ]
+          },
+          {
+            "id": "ijichi_seika",
+            "name": "伊地知星歌",
+            "aliases": [
+              "伊地知星歌",
+              "Ijichi Seika",
+              "STARRY店长"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "hitori-nijika-savior",
+            "source": "ijichi_nijika",
+            "target": "gotoh_hitori",
+            "label": "拉入阳光的伯乐与灵魂支撑",
+            "description": "在公园偶遇并一眼邀请背着吉他的波奇加入结束乐队，是波奇音乐人生中最信赖的领路人与阳光港湾。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 结识相遇",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "hitori-kita-adoration",
+            "source": "kita_ikuyo",
+            "target": "gotoh_hitori",
+            "label": "耀眼阳光与吉他师徒",
+            "description": "社交牛人喜多极度崇拜并依恋波奇的神级吉他技巧，在后藤指引下苦练吉他，并在文化祭危机中主动为波奇托底挽救演出。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "文化祭篇 · 星座成为星座",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "hitori-ryo-music-soul",
+            "source": "yamada_ryo",
+            "target": "gotoh_hitori",
+            "label": "孤高贝斯手与作词共鸣",
+            "description": "看穿波奇不愿写虚伪轻浮歌词的心思，鼓励波奇写出内向者最真实的痛苦与阴暗，是结束乐队的音乐基石与怪人知音。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 作词阶段",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "kita-ryo-admiration",
+            "source": "kita_ikuyo",
+            "target": "yamada_ryo",
+            "label": "盲目迷妹与借钱常客",
+            "description": "喜多最初因为迷恋山田凉弹奏贝斯的帅气英姿而加入乐队，即便常常被凉借钱不还依然抱持着近乎盲目的崇拜热忱。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇动机",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "nijika-ryo-childhood",
+            "source": "ijichi_nijika",
+            "target": "yamada_ryo",
+            "label": "旧友搭档与彼此包容",
+            "description": "在上一支乐队解散后一同创立结束乐队的挚友，虹夏在生活中督促负责乐队各项杂务，凉则提供最纯粹的编曲才华。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 乐队初创",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "yamada_ryo",

@@ -1,6 +1,7 @@
 mod flow;
 mod installer;
 mod jobs;
+mod downloads;
 mod pixai;
 mod plan;
 mod image_models;

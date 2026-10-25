@@ -60,6 +60,7 @@ export interface CharacterLora {
 }
 
 export interface CharacterProfile {
+  relationshipGraph?: import('./characterRelations').CharacterRelationGraph | null
   id: string
   name: string
   icon: string

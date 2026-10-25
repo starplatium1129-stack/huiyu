@@ -28,26 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "重视组织与仪态，希望以实力获得认可",
-        "善于安排事务，也容易受到比较心的牵动",
-        "独处时会暂时卸下领袖姿态，认真整理自己的想法"
+        "高雅冷艳",
+        "渴望被认可",
+        "领导力出众",
+        "极重部下情义",
+        "面对姐姐容易动摇自卑",
+        "骨子里坚韧不拔",
+        "不服输"
       ],
       "likes": [
-        "有条理的工作环境",
-        "安静喝茶",
-        "与团队共享休息时间"
+        "吹雪组全员的敬仰与效忠",
+        "黑色高订礼服与名贵珍珠项链",
+        "品尝高级红茶",
+        "赖在琦玉狭小的公寓里蹭火锅",
+        "成功执行高难度讨伐任务"
       ],
       "classic_cg": {
-        "title": "吹雪 · 吹雪组的晨会",
-        "description": "吹雪组总部，她坐在长桌主位听取各小队报告，指尖轻叩桌面；分配任务时的果断与滴水不漏，是 B 级第一真正的实力所在。"
+        "title": "珍珠狂岚下的领袖之盾",
+        "description": "狂风撕裂的废墟战场上，黑发冷艳女子踏碎瓦砾张开双臂，墨绿正装猎猎狂舞，胸前珍珠项链在念动力激荡下泛着冷光，拼死筑起无坚不摧的地狱岚屏障守护身后的组员。"
       },
-      "identity": "One-Punch Man · 吹雪",
+      "identity": {
+        "role": "核心英雄 / B级第1位领袖 / 吹雪组统帅",
+        "age": "23岁",
+        "occupation": "职业英雄（B级第1位）/ 吹雪组首领",
+        "faction": "英雄协会 / 吹雪组 / 琦玉火锅组核心成员"
+      },
       "tags": [
         "吹雪",
         "一拳超人",
         "日常"
       ],
-      "bg_story": "吹雪组的组织者，重视同伴，也在学着走出姐姐的阴影。黑发绿瞳、珍珠饰品与克制姿态是重点，不能误写为姐姐龙卷的绿发。",
+      "bg_story": "英雄协会B级排名第1位的职业英雄，代号“地狱的吹雪”，S级第2位战栗的龙卷的亲妹妹，英雄协会最大派系“吹雪组”的统帅。自幼生活在姐姐那犹如天灾神明般不可逾越的超能力阴影下，内心深植着难以摆脱的自卑与无力感。为了反抗“孤独的顶点”，她在B级组建了以黑色西装为标志的庞大团体“吹雪组”，通过抱团取暖、把持B级榜首来寻求安全感，并试图强行招揽新晋英雄琦玉加入。在目睹琦玉随手一击轰碎龙级灾难的惊天神力后，吹雪的世界观受到剧烈冲击，随后顺理成章地将琦玉、杰诺斯、邦古等人自封为自己的“新吹雪组”。在怪人协会决战中，吹雪彻底摆脱了怯懦与软弱，不仅单挑击溃了心智操控者怪人弩S，更以超越极限的精细念动力治愈并强化了重伤的邦普与杰诺斯。面对暴走的龙级巨兽波奇，她甚至以凡人之躯张开屏障死守同伴，完成了从懦弱小头目到真正英雄领袖的蜕变。在最新漫画主线中，面对姐姐龙卷强制解散吹雪组的强权逼迫，吹雪第一次挺直脊梁正面宣战；随后在Neo Heroes的挖角狂潮中，吹雪坚守信念率全员进驻新阵地，蜕变为能够独当一面的成熟统帅。",
       "palette": [
         "#86ad9c",
         "#282532"
@@ -62,7 +73,212 @@
         "blunt_bangs"
       ],
       "accent_color": "#86ad9c",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "我不会再逃避姐姐的阴影了……我的同伴，我的吹雪组，由我亲自来守护！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "一拳超人",
+        "people": [
+          {
+            "id": "tatsumaki",
+            "name": "战栗的龙卷",
+            "aliases": [
+              "Tatsumaki",
+              "戦慄のタツマキ",
+              "龙卷",
+              "S级第2位"
+            ],
+            "characterId": "tatsumaki"
+          },
+          {
+            "id": "fubuki_one_punch",
+            "name": "吹雪",
+            "aliases": [
+              "Fubuki",
+              "地獄のフブキ",
+              "吹雪组首领",
+              "B级第1位"
+            ],
+            "characterId": "fubuki_one_punch"
+          },
+          {
+            "id": "saitama",
+            "name": "埼玉",
+            "aliases": [
+              "Saitama",
+              "サイタマ",
+              "秃头披风侠",
+              "秃头"
+            ]
+          },
+          {
+            "id": "genos",
+            "name": "杰诺斯",
+            "aliases": [
+              "Genos",
+              "ジェノス",
+              "魔鬼改造人",
+              "S级第14位"
+            ]
+          },
+          {
+            "id": "bang",
+            "name": "邦古",
+            "aliases": [
+              "Bang",
+              "バング",
+              "银色獠牙",
+              "流水岩碎拳宗师"
+            ]
+          },
+          {
+            "id": "blast",
+            "name": "爆破",
+            "aliases": [
+              "Blast",
+              "ブラスト",
+              "S级第1位"
+            ]
+          },
+          {
+            "id": "psykos",
+            "name": "赛克斯",
+            "aliases": [
+              "Psykos",
+              "サイコス",
+              "大炯眼"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "tatsumaki-fubuki-sisters",
+            "source": "tatsumaki",
+            "target": "fubuki_one_punch",
+            "label": "极度过保护与挣脱阴影的姐妹羁绊",
+            "description": "龙卷因童年惨剧将吹雪视作世界上唯一的弱点拼死庇护，行事霸道蛮横甚至企图解散吹雪组；吹雪则深感压迫自卑，拼命建立派系只为向姐姐证明自己的独立与价值。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "姐妹对决篇 · 羁绊的释怀",
+            "evidence": {
+              "title": "ONE / 村田雄介 · 《一拳超人》官方人物档案",
+              "url": "https://onepunchman-anime.net/character/"
+            }
+          },
+          {
+            "id": "tatsumaki-saitama-duel",
+            "source": "tatsumaki",
+            "target": "saitama",
+            "label": "傲娇暴走与无可撼动的强者试炼",
+            "description": "龙卷在战后试图强行干预吹雪的人生，与埼玉爆发惊天单挑；任凭龙卷如何释放毁天灭地的超能力都无法撼动埼玉分毫，反而在紧握埼玉手腕中得到了久违的释怀。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "原作英雄协会动荡篇",
+            "evidence": {
+              "title": "ONE / 村田雄介 · 《一拳超人》官方原作档案",
+              "url": "https://onepunchman-anime.net/story/"
+            }
+          },
+          {
+            "id": "fubuki-saitama-hotpot",
+            "source": "fubuki_one_punch",
+            "target": "saitama",
+            "label": "强行招揽与顺势蹭饭的火锅组",
+            "description": "吹雪本想以B级霸主姿态霸凌招揽刚升入B级的埼玉，在目睹埼玉轻松击碎龙级灾难后彻底三观尽碎，从此三天两头带昂贵牛肉上门蹭饭，自封为‘新吹雪组’领袖。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "埼玉公寓的火锅组",
+            "evidence": {
+              "title": "ONE / 村田雄介 · 《一拳超人》官方人物档案",
+              "url": "https://onepunchman-anime.net/character/"
+            }
+          },
+          {
+            "id": "blast-tatsumaki-lifesaver",
+            "source": "blast",
+            "target": "tatsumaki",
+            "label": "破笼恩人与刻骨铭心的生存箴言",
+            "description": "在研究所怪兽暴走时，爆破击破囚笼拯救了绝望的幼年龙卷，并留下‘真正紧要关头不要指望任何人来救你’的教诲，成为龙卷终生强大与孤傲的精神支柱。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "怪协决战 · 龙卷的回忆",
+            "evidence": {
+              "title": "ONE / 村田雄介 · 《一拳超人》官方故事",
+              "url": "https://onepunchman-anime.net/story/"
+            }
+          },
+          {
+            "id": "tatsumaki-psykos-vendetta",
+            "source": "tatsumaki",
+            "target": "psykos",
+            "label": "天灾级超能死斗与宿怨",
+            "description": "赛克斯作为怪人协会幕后黑手，融合大蛇企图以行星级切片威能抹杀龙卷；龙卷展现神明级全力将整个Z市地下基地拧成麻花，全盘压制赛克斯。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "怪人协会总决战",
+            "evidence": {
+              "title": "ONE / 村田雄介 · 《一拳超人》官方故事",
+              "url": "https://onepunchman-anime.net/story/"
+            }
+          },
+          {
+            "id": "fubuki-psykos-past",
+            "source": "fubuki_one_punch",
+            "target": "psykos",
+            "label": "学生时代旧友与理念背道而驰",
+            "description": "吹雪与赛克斯曾是中学异能研究会的同伴，因赛克斯在预知中目睹人类灭亡陷入疯狂，吹雪被迫封印其能力，多年后两人在怪协决战中完成了宿命了断。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "怪协地下深入战",
+            "evidence": {
+              "title": "ONE / 村田雄介 · 《一拳超人》官方故事",
+              "url": "https://onepunchman-anime.net/story/"
+            }
+          },
+          {
+            "id": "genos-saitama-disciple",
+            "source": "genos",
+            "target": "saitama",
+            "label": "狂热崇拜与内门首席弟子",
+            "description": "亲眼见证埼玉一掌拍死蚊女的无敌神力后，杰诺斯毫不犹豫尊奉埼玉为唯一的‘老师’，不仅出资合租承包家务，更随时拿小本子严谨记录埼玉的随口胡扯。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "拜师入门",
+            "evidence": {
+              "title": "ONE / 村田雄介 · 《一拳超人》官方人物档案",
+              "url": "https://onepunchman-anime.net/character/"
+            }
+          },
+          {
+            "id": "bang-saitama-admiration",
+            "source": "bang",
+            "target": "saitama",
+            "label": "惺惺相惜的宗师与忘年茶友",
+            "description": "邦古是极少数亲眼见证埼玉一击碎陨石真面目的人，深刻洞悉埼玉深不可测的境界，经常邀埼玉到道馆吃火锅、下围棋，试图拉拢其继承衣钵。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "陨石灾难后",
+            "evidence": {
+              "title": "ONE / 村田雄介 · 《一拳超人》官方人物档案",
+              "url": "https://onepunchman-anime.net/character/"
+            }
+          },
+          {
+            "id": "fubuki-genos-rivalry",
+            "source": "fubuki_one_punch",
+            "target": "genos",
+            "label": "火锅组斗嘴与战场默契援护",
+            "description": "杰诺斯毫不客气地称吹雪为‘厚脸皮蹭饭女’，但在面对怪协龙级强敌波奇时，吹雪以念动力全力辅助强化杰诺斯核心，两人并肩护卫身后同伴。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "怪人协会突入战",
+            "evidence": {
+              "title": "ONE / 村田雄介 · 《一拳超人》官方人物档案",
+              "url": "https://onepunchman-anime.net/character/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "fubuki_one_punch",

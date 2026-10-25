@@ -31,27 +31,30 @@
         "signature": "灰银发、紫瞳与黑魔女帽"
       },
       "personality": [
-        "聪慧自信",
-        "略带自恋",
-        "毒舌",
-        "表面优雅实则狡猾",
-        "热爱旅行"
+        "自恋自信",
+        "理性自私",
+        "善解人意",
+        "贪财小财迷",
+        "坚韧豁达",
+        "观察入微",
+        "爱憎分明"
       ],
       "likes": [
-        "飞行",
-        "异国见闻",
-        "魔法书",
-        "旅途小憩"
+        "金币与高额报酬",
+        "美味的面包与红茶",
+        "写旅行日记",
+        "芙兰老师的赞许",
+        "自由翱翔在晴朗蓝天"
       ],
       "classic_cg": {
-        "title": "云端飞行",
-        "description": "她跨坐扫帚穿行云海，黑帽与斗篷在风中猎猎——灰之魔女的旅途永无终点。"
+        "title": "骑着扫帚掠过云海的回眸与十六位魔女的茶会",
+        "description": "在蔚蓝天际与翻涌云海之间，头戴黑色尖顶魔女帽、长袍猎猎作响的银发少女单手按檐回眸一笑，紫水晶般的眼眸映照着大地万千风景；而在命运相聚的书房，十六个不同时空的伊蕾娜围坐畅谈，接纳了所有的遗憾与自我。"
       },
       "identity": {
-        "role": "旅行魔女（灰之魔女）",
-        "age": "约 18 岁（魔女）",
-        "occupation": "旅人 / 魔女",
-        "faction": "无（独自旅行）"
+        "role": "史上最年轻的天才魔女 / 漫游各国的灰之魔女记录者",
+        "age": "18-20岁（漫游历练中）",
+        "occupation": "正统魔女（灰之魔女） / 自由旅人与见闻作家",
+        "faction": "自由旅人 / 芙兰师门"
       },
       "tags": [
         "灰银发",
@@ -60,7 +63,7 @@
         "黑色魔女装",
         "扫帚"
       ],
-      "bg_story": "伊雷娜是《魔女之旅》的主角，天才魔女「灰之魔女」。以单元式旅行见闻游历各国，聪慧自信略带自恋。场景应偏魔法旅行、云端飞行与异国小镇。",
+      "bg_story": "出生于和平之国洛洛克耶，自幼痴迷于《妮可冒险记》中描绘的辽阔天地，立志成为一名周游列国的旅行魔女。年仅十四岁便打破记录通过魔术考试成为见习魔女，随后在父母引荐下拜入“星尘魔女”芙兰门下。起初因受挫而自命不凡，在芙兰严厉而深情的特训与心理考验中学会了正视软弱与哭泣，最终荣获象征自由包容的“灰之魔女”名号，手持扫帚与日记本展开漫游天下的旅程。伊蕾娜并非盲目救世的正义使者，也绝非冷酷旁观的局外人；面对诚实之国、鲜花之国、钟表之乡等形形色色的国度，她始终坚持作为旅人的分寸感与自保底线。在见证奴隶少女悲剧与时间逆转的杀人惨剧后，她深感凡人力量的渺小与遗憾的沉重。在“十六位伊蕾娜相遇”的奇迹中，她直面了因过往悔恨分裂出的暴戾、绝望与孤独人格，最终接纳全部自我达成心智升华。她依然跨上飞天扫帚翱翔在大陆高空，用生动的文字与画笔，如实记录着世间一切的美丽、残酷与人性的奇迹。",
       "palette": [
         "灰银",
         "魔女黑",
@@ -85,7 +88,184 @@
         "majo_no_tabitabi"
       ],
       "accent_color": "#38bdf8",
-      "bg_color": "#0f172a"
+      "bg_color": "#0f172a",
+      "voice": "请问那位美貌与智慧并重、即使在旅途中也散发着耀眼光芒的魔女是谁呢？没错，就是我——伊蕾娜！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "魔女之旅",
+        "people": [
+          {
+            "id": "elaina",
+            "name": "伊雷娜",
+            "aliases": [
+              "Elaina",
+              "イレイナ",
+              "灰之魔女"
+            ],
+            "characterId": "elaina"
+          },
+          {
+            "id": "fran",
+            "name": "芙兰",
+            "aliases": [
+              "Fran",
+              "フラン",
+              "星尘魔女"
+            ]
+          },
+          {
+            "id": "saya",
+            "name": "沙耶",
+            "aliases": [
+              "Saya",
+              "サヤ",
+              "暗夜魔女"
+            ]
+          },
+          {
+            "id": "sheila",
+            "name": "席拉",
+            "aliases": [
+              "Sheila",
+              "シーラ",
+              "暗影魔女"
+            ]
+          },
+          {
+            "id": "amnesia",
+            "name": "艾姆妮西亚",
+            "aliases": [
+              "Amnesia",
+              "アムネシア",
+              "见习魔女"
+            ]
+          },
+          {
+            "id": "elaina_mother",
+            "name": "维多利加/妮可",
+            "aliases": [
+              "Nike",
+              "ヴィクトリカ",
+              "妮可",
+              "伊雷娜之母"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "elaina-fran-master",
+            "source": "elaina",
+            "target": "fran",
+            "label": "师徒情深与心智导师",
+            "description": "芙兰以‘星尘魔女’之名倾囊相授魔法，教导自视甚高的伊雷娜学会宣泄脆弱与直面挫折，并授予她象征自由包容的‘灰之魔女’称号。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第一卷 · 灰之魔女的诞生",
+            "evidence": {
+              "title": "白石定规 · 《魔女之旅》官方人物设定",
+              "url": "https://majotabi.jp/character.html"
+            }
+          },
+          {
+            "id": "saya-elaina-obsession",
+            "source": "saya",
+            "target": "elaina",
+            "label": "狂热迷恋与救赎恩人",
+            "description": "在故乡面临魔法测试自闭无助的沙耶，受到伊雷娜的鼓舞与启发重拾信心，自此视伊雷娜为心中独一无二的神明与挚爱，并追随其脚步成为正统魔女。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "第二卷 · 魔法师之国",
+            "evidence": {
+              "title": "白石定规 · 《魔女之旅》官方人物设定",
+              "url": "https://majotabi.jp/character.html"
+            }
+          },
+          {
+            "id": "elaina-saya-friendship",
+            "source": "elaina",
+            "target": "saya",
+            "label": "头疼旅伴与真挚好友",
+            "description": "虽然伊雷娜对沙耶狂热痴缠的贴面表达方式常感无奈，但在沙耶遇到困难时总会伸出援手，将她视作不可多得的同辈挚友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "漫游各地的偶遇",
+            "evidence": {
+              "title": "白石定规 · 《魔女之旅》官方故事集",
+              "url": "https://majotabi.jp/story.html"
+            }
+          },
+          {
+            "id": "fran-sheila-rivalry",
+            "source": "fran",
+            "target": "sheila",
+            "label": "同门冤家与互怼挚友",
+            "description": "芙兰与席拉曾共同在妮可门下受训，一个随性温婉、一个豪迈率性，多年来互相拌嘴攀比，但深知彼此是托付生死的至交同门。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第九卷 · 师门旧忆",
+            "evidence": {
+              "title": "白石定规 · 《魔女之旅》官方人物设定",
+              "url": "https://majotabi.jp/character.html"
+            }
+          },
+          {
+            "id": "sheila-saya-master",
+            "source": "sheila",
+            "target": "saya",
+            "label": "师徒羁绊与暗夜传承",
+            "description": "席拉看中沙耶的坚韧资质收其为徒，以严厉且负责的方式将其培养成‘暗夜魔女’，两人的斗嘴日常与师姐芙兰门下如出一辙。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "暗影与暗夜的传承",
+            "evidence": {
+              "title": "白石定规 · 《魔女之旅》官方人物设定",
+              "url": "https://majotabi.jp/character.html"
+            }
+          },
+          {
+            "id": "elaina-amnesia-companion",
+            "source": "elaina",
+            "target": "amnesia",
+            "label": "互为依靠的患难旅伴",
+            "description": "在艾姆妮西亚因被剥夺记忆遭祖国流放期间，伊雷娜护送她展开漫长的寻忆之旅，两人建立了深厚的信任与心灵共鸣。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第四卷 · 遗忘之国篇",
+            "evidence": {
+              "title": "白石定规 · 《魔女之旅》官方故事集",
+              "url": "https://majotabi.jp/story.html"
+            }
+          },
+          {
+            "id": "elaina-mother-inspiration",
+            "source": "elaina_mother",
+            "target": "elaina",
+            "label": "梦想启蒙与母亲的守护",
+            "description": "母亲撰写的《妮可冒险记》是伊雷娜踏上环游世界旅途的终极初心，母亲暗中安排芙兰收徒，以隐秘的温柔护佑女儿展翅飞翔。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "终幕 · 妮可与灰之魔女",
+            "evidence": {
+              "title": "白石定规 · 《魔女之旅》官方故事集",
+              "url": "https://majotabi.jp/story.html"
+            }
+          },
+          {
+            "id": "fran-mother-disciple",
+            "source": "fran",
+            "target": "elaina_mother",
+            "label": "尊师重道与传承重托",
+            "description": "芙兰深受师父妮可的人格魅力感染，怀着对恩师的无上敬仰接下悉心培养其女伊雷娜的重任。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "回忆篇 · 漫游的始源",
+            "evidence": {
+              "title": "白石定规 · 《魔女之旅》官方人物设定",
+              "url": "https://majotabi.jp/character.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "elaina",

@@ -35,20 +35,31 @@
         "signature": "黑紫长发、蓝眼与享用蛋糕时自然明亮的笑容"
       },
       "personality": [
-        "待人真诚，不凭外表或学校标签判断他人",
-        "重视朋友与家人，认真对待自己的学习和生活",
-        "享用美食时反应坦率，笑容温暖自然"
+        "热情真挚",
+        "毫无偏见",
+        "乐观明朗",
+        "极富共情力",
+        "坦率贪吃",
+        "面对原则勇敢坚定",
+        "体贴温柔"
       ],
       "likes": [
-        "蛋糕与各式美食",
-        "偶尔的小睡",
-        "与信任的人坦诚交谈"
+        "紬家工坊刚出炉的各式蛋糕甜点",
+        "与紬凛太郎并肩散步闲聊",
+        "两校好友聚在一起畅谈",
+        "绘制美食与生活手账",
+        "晴天午后的微风"
       ],
       "classic_cg": {
-        "title": "橱窗后的初晨招手",
-        "description": "晨曦洒满蛋糕店橱窗，金发双麻花辫的少女贴着玻璃窗，欢快地向窗外少年挥手绽放笑容。"
+        "title": "初晨橱窗前的无邪挥手",
+        "description": "晨曦洒满蛋糕工坊的玻璃橱窗，双麻花辫的制服少女贴着明净的玻璃窗，看见门外走来的高大少年时眼眸瞬间弯成月牙，绽放出驱散一切阴霾的明媚笑容。"
       },
-      "identity": "薰香花朵凛然绽放 女主角 · 名门千鸟女子高中二年级生 · 和栗蛋糕工坊独生女",
+      "identity": {
+        "role": "女主角 / 跨越学校偏见的治愈系小太阳",
+        "age": "16岁 → 17岁",
+        "occupation": "私立桔梗女子学园学生",
+        "faction": "桔梗女子学园 / 紬家蛋糕工坊常客伙伴圈"
+      },
       "tags": [
         "薰香花朵",
         "和栗薰子",
@@ -58,7 +69,7 @@
         "吃货",
         "水手服"
       ],
-      "bg_story": "桔梗女子学园的学生，喜欢吃东西，也是紬凛太郎家蛋糕店的常客。她不以千鸟与桔梗之间的成见判断人，而在真诚交往中逐渐认识凛太郎。蛋糕店属于凛太郎家；烘焙体验等新增场景属于日常创作设想。",
+      "bg_story": "私立桔梗女子学园高中二年级生，容貌清丽温婉、性格阳光纯粹的少女。桔梗女高作为恪守传统、升学优异的名门千金私立校，与隔壁被称为不良聚集地、底边底层的千鸟男子高中水火不容。然而薰子自幼心怀善意，从不以门第偏见或外界标签评判他人。在千鸟男高旁边的紬家蛋糕工坊中，薰子被店内香甜温暖的甜点深深吸引成为常客，并与长相凶悍、金发刺眼却心思细腻自卑的紬凛太郎相遇。面对因外貌饱受误解的凛太郎，薰子以极具感染力的真诚笑容彻底融化了他的心防，并由衷称赞他烤制蛋糕的双手充满了温柔。薰子的无私接纳不仅让凛太郎走出了自卑阴影，更主动跨越两校敌视的鸿沟，促成了千鸟与桔梗好友圈的破冰与和解。在海边集训、烟花大会与学园祭等一系列温暖治愈的相伴中，两人情愫渐深；面对凛太郎在河畔坦诚炽热的告白，薰子感动落泪并欣然接受，二人正式结为恋人。在漫画最新主线中，薰子在全力支持凛太郎糕点师梦想的同时，也坚定地追寻自己的大学与人生方向，双方家庭在彼此认可中共同守护着两人如花朵般凛然绽放的青春。",
       "palette": [
         "#f59e0b",
         "#fef3c7",
@@ -75,7 +86,91 @@
         "radiant_sunshine"
       ],
       "accent_color": "#f59e0b",
-      "bg_color": "#78350f"
+      "bg_color": "#78350f",
+      "voice": "凛太郎烤出来的蛋糕……真的是世界上最好吃的东西！所以，绝对不要讨厌你自己哦。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "薰香花朵凛然绽放",
+        "people": [
+          {
+            "id": "waguri_kaoruko",
+            "name": "和栗薰子",
+            "aliases": [
+              "和栗薫子",
+              "Waguri Kaoruko"
+            ],
+            "characterId": "waguri_kaoruko"
+          },
+          {
+            "id": "tsumugi_rintarou",
+            "name": "䌷凛太郎",
+            "aliases": [
+              "紬凛太郎",
+              "Tsumugi Rintarou"
+            ]
+          },
+          {
+            "id": "usami_shouhei",
+            "name": "宇佐美翔平",
+            "aliases": [
+              "宇佐美翔平",
+              "Usami Shouhei"
+            ]
+          },
+          {
+            "id": "hoshina_subaru",
+            "name": "保科昴",
+            "aliases": [
+              "保科昴",
+              "Hoshina Subaru"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "kaoruko-rintarou-cake-shop",
+            "source": "waguri_kaoruko",
+            "target": "tsumugi_rintarou",
+            "label": "蛋糕店温暖与跨校真恋",
+            "description": "名门大小姐女校的薰子常去凛太郎家蛋糕店，对相貌凶恶实则极其温柔自卑的凛太郎展露毫无芥蒂的甜美笑容与炽热喜爱。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 蛋糕店常客",
+            "evidence": {
+              "title": "讲谈社 · 《薰香花朵凛然绽放》官方页面",
+              "url": "https://pocket.shonenmagazine.com/"
+            }
+          },
+          {
+            "id": "kaoruko-subaru-bestfriend",
+            "source": "waguri_kaoruko",
+            "target": "hoshina_subaru",
+            "label": "挚友守护与成见破冰",
+            "description": "昴对男生抱有极强敌意并誓死保护薰子，在亲眼见证凛太郎高尚正直的为人后放下成见并成为两人的坚定支持者。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "夏祭篇 · 破除隔阂",
+            "evidence": {
+              "title": "讲谈社 · 《薰香花朵凛然绽放》官方页面",
+              "url": "https://pocket.shonenmagazine.com/"
+            }
+          },
+          {
+            "id": "rintarou-friends-solidarity",
+            "source": "tsumugi_rintarou",
+            "target": "usami_shouhei",
+            "label": "不良死党与肝胆相照",
+            "description": "千鸟高中的铁哥们儿，在凛太郎为恋爱困惑时无条件给予仗义声援，彼此珍视少年时代的纯粹友谊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常学园生活",
+            "evidence": {
+              "title": "讲谈社 · 《薰香花朵凛然绽放》官方页面",
+              "url": "https://pocket.shonenmagazine.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "waguri_kaoruko",

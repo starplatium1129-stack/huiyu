@@ -28,25 +28,37 @@
         "style": "anime"
       },
       "personality": [
-        "熟悉环境里直率",
-        "面对陌生人容易紧张",
-        "认真投入绘画"
+        "傲娇别扭",
+        "重度怕生",
+        "容易害羞暴走",
+        "作画时极具狂热",
+        "强烈独占欲",
+        "细腻敏感",
+        "对兄长极度依赖"
       ],
       "likes": [
-        "绘制插画",
-        "阅读轻小说"
+        "绘制极具肉感与色气的少女插画",
+        "和泉正宗亲手做的三餐",
+        "大号粉色连帽衫",
+        "被炉里的专属绘图工作舱",
+        "收集正宗的全部原稿与周边"
       ],
       "classic_cg": {
-        "title": "被炉绘图舱",
-        "description": "她的房间中央，被炉上架着绘图板与显示器，她整个人缩在被炉里只露出脑袋和拿笔的手，耳机夹着碎发；屏幕上是从未示人的新插画，房间灯光全关只剩屏幕光。"
+        "title": "被炉工作舱里的秘密告白",
+        "description": "昏暗的卧室中唯有数位屏泛着荧蓝微光，身穿宽大粉色卫衣的银发少女缩在被炉里，耳机半挂在耳畔，屏幕上正勾勒着未公开的兄妹主题插画，眼角闪烁着羞涩而骄傲的光泽。"
       },
-      "identity": "Eromanga Sensei · 和泉纱雾",
+      "identity": {
+        "role": "女主角 / 和泉正宗的义妹兼终身伴侣",
+        "age": "12岁（登场）→ 15岁（完结）",
+        "occupation": "初中生 / 职业人气插画家（笔名：埃罗芒阿老师）",
+        "faction": "和泉家 / 富士见Sneaker文库核心创作者"
+      },
       "tags": [
         "Eromanga Sensei",
         "和泉纱雾",
         "全年龄日常"
       ],
-      "bg_story": "独自在房间里画插画的年轻创作者。她在熟悉的线上环境里说话直接，面对现实中的陌生环境却容易紧张；通过绘画、家人的陪伴和一次次小小的外出，逐渐尝试与外界建立联系。",
+      "bg_story": "和泉正宗没有血缘关系的义妹，同时也是网络上坐拥极高人气、擅长绘制色气萌妹的神秘顶级插画师“埃罗芒阿老师”。一年前，父母再婚后不久便在蜜月旅行中因事故双亡，巨大的心灵创伤让纱雾陷入重度闭门不出状态，整整一年将自己反锁在二楼卧室中，仅靠正宗每天将三餐送到门外维生。与此同时，正宗为了独立抚养妹妹拼命撰写轻小说，却不知道自己长期合作、性格傲慢毒舌的专属插画搭档正是门后的妹妹。在一场作画直播的突发事故中，两人真实身份曝光，自此结下了共同打造最强轻小说的羁绊。为了成为正宗唯一的专属插画师，纱雾在被炉绘图舱中日夜奋战，克服重重心理障碍戴上面具踏出房门，与山田妖精、千寿村征等强敌展开激烈的插画与连载竞争，并勇敢直面了生母生前关于绘画的约定。在全13卷完结大结局中，正宗为纱雾创作的专属小说《世界上最可爱的妹妹》大获成功并实现动画化，纱雾终于彻底走出阴霾踏出房门，身披洁白婚纱与正宗互许终身，两人在亲朋好友的祝福中举行了深情的婚礼，迎来了最美满的归宿。",
       "palette": [
         "#a9bced",
         "#424f70"
@@ -62,7 +74,93 @@
         "gradient_hair"
       ],
       "accent_color": "#a9bced",
-      "bg_color": "#424f70"
+      "bg_color": "#424f70",
+      "voice": "我不认识叫那种名字的人！……但是，正宗小说的插画，除了我以外谁也不准画！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "埃罗芒阿老师",
+        "people": [
+          {
+            "id": "izumi_sagiri",
+            "name": "和泉纱雾",
+            "aliases": [
+              "和泉紗霧",
+              "Izumi Sagiri",
+              "情色漫画老师"
+            ],
+            "characterId": "izumi_sagiri"
+          },
+          {
+            "id": "izumi_masamune",
+            "name": "和泉正宗",
+            "aliases": [
+              "和泉マサムネ",
+              "Izumi Masamune"
+            ]
+          },
+          {
+            "id": "yamada_elf",
+            "name": "山田妖精",
+            "aliases": [
+              "山田エルフ",
+              "Yamada Elf",
+              "艾蜜莉·爱尔文"
+            ]
+          },
+          {
+            "id": "senju_muramasa",
+            "name": "千寿村征",
+            "aliases": [
+              "千寿村征",
+              "Senju Muramasa"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "sagiri-masamune-siblings",
+            "source": "izumi_sagiri",
+            "target": "izumi_masamune",
+            "label": "重度家里蹲与共创新作",
+            "description": "再婚家庭的义妹纱雾闭门不出，暗中以埃罗芒阿老师身份为哥哥正宗的小说绘制神级插画，相认后誓言共同打造世界第一的轻小说。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 真实身份揭晓",
+            "evidence": {
+              "title": "Aniplex · 《埃罗芒阿老师》官方动画网站",
+              "url": "https://eromanga-sensei.com/"
+            }
+          },
+          {
+            "id": "sagiri-masamune-love-promise",
+            "source": "izumi_sagiri",
+            "target": "izumi_masamune",
+            "label": "青梅竹马真相与终身之约",
+            "description": "两人幼年便在网络相遇并相约互为搭档，纱雾在破除心魔走出房门后向正宗表白，誓愿成为正宗未来的新娘。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "终章 · 盛大的告白",
+            "evidence": {
+              "title": "Aniplex · 《埃罗芒阿老师》官方动画网站",
+              "url": "https://eromanga-sensei.com/"
+            }
+          },
+          {
+            "id": "elf-masamune-rival",
+            "source": "yamada_elf",
+            "target": "izumi_masamune",
+            "label": "超畅销作家与豪爽情敌",
+            "description": "隔壁的千万销量天才作家，视正宗为竞争对手并倾心于他，在创作大战中豪迈爽朗地鼓励和泉兄妹全力以赴。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 轻小说比赛篇",
+            "evidence": {
+              "title": "Aniplex · 《埃罗芒阿老师》官方动画网站",
+              "url": "https://eromanga-sensei.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "izumi_sagiri",

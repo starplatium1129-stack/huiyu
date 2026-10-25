@@ -2,6 +2,7 @@ import type { CharacterIdentity, CharacterPortrait, CharacterLora, CharacterProf
 export type { CharacterProfile, CharacterScene } from '../types/character';
 
 import type { Scene } from '@/stores/sceneStore'
+import { parseCharacterRelationGraph } from './characterRelations'
 export { popularPortraitSrc, isPopularPortraitPending } from './popularPortraitSource.ts'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -64,6 +65,7 @@ export function parseCharacterProfiles(value: unknown): CharacterProfile[] {
     return [{
       id,
       name,
+      relationshipGraph: item.relationshipGraph === undefined ? undefined : parseCharacterRelationGraph(item.relationshipGraph),
       type: optionalString(item.type),
       icon: optionalString(item.icon) ?? '',
       source: optionalString(item.source) ?? '',

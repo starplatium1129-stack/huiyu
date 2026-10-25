@@ -28,32 +28,43 @@
         "style": "anime"
       },
       "personality": [
-        "外表冷静疏离，内心对重要约定十分执着",
-        "面对熟悉记忆时会显出与身份不同的柔软",
-        "在独处的学习与等待中保持耐心"
+        "外冷内热",
+        "孤高威严",
+        "深情执着",
+        "重度青梅竹马控",
+        "从容沉静",
+        "偶尔任性傲娇",
+        "绝对自信"
       ],
       "likes": [
-        "安静读书",
-        "俯瞰高塔外的景色",
-        "与旧日约定有关的小物"
+        "与威尔的夕阳约定",
+        "收集威尔的画像与近况",
+        "推敲十二冰花术式",
+        "高塔红茶与甜点",
+        "俯瞰地面学园的景象"
       ],
       "classic_cg": {
-        "title": "艾尔菲利亚 · 高塔之巅的俯瞰",
-        "description": "塔的顶层，她站在巨大的观测水晶前俯瞰下方学院，蓝发垂落及地；水晶里映出某个少年的身影时，她威严的表情瞬间软化成傻笑——冰姬与恋爱脑的一秒切换。"
+        "title": "高塔绝巅的落日凝望",
+        "description": "高耸入云的魔导圣塔顶层，冰姬独立于巨大落地窗前，及地冰蓝发丝在极寒微光中轻扬；她俯瞰着学园中手握木剑奋战的少年背影，冷若冰霜的容颜瞬间融化成温柔而傻气的浅笑。"
       },
-      "identity": "Wistoria: Wand and Sword · 艾尔菲利亚",
+      "identity": {
+        "role": "至高之五杖之一 / 深窗的冰姬",
+        "age": "16岁（最年轻的至高之五杖）",
+        "occupation": "大魔法使 / 水与冰之至高席位",
+        "faction": "魔法统括塔（Magia Vende）"
+      },
       "tags": [
         "艾尔菲利亚",
         "杖与剑的魔剑谭",
         "日常"
       ],
-      "bg_story": "居于高塔的冰之魔法使，在繁重职责外仍珍视旧日约定。极长蓝发、蓝瞳和浅色睫毛为识别点，日常围绕茶、文书、冰花与信件展开。",
+      "bg_story": "艾尔菲利亚·阿尔维斯·塞佛特，被誉为“深窗的冰姬”，是立于里加丁魔法界顶点的五位至高统治者“至高之五杖”中最年轻的成员。她自幼生活在偏远孤儿院，与天生无法使用魔法的青梅竹马威尔·塞佛特许下真挚约定，誓要登上魔法高塔之巅并肩仰望黄昏落日。为此，拥有旷世绝伦冰系天赋的她仅用短短数年便自创了包括“十二冰花”在内的众多高阶冰系秘术，打破帝国历史纪录破格荣登至高席位。对外，她是冷漠孤高、执掌万年玄冰神权与全塔结界的大魔法使，在元老评议会面前展现出令人胆寒的威严；然而在高塔深处的私密寝宫里，她却藏满了威尔从小到大的画像、剪报与特制冰雕，甚至不惜冒着违规风险以高阶使魔全天候窥探威尔在学园的动向。当威尔因魔力匮乏在学院受尽冷眼、嘲讽与歧视时，艾尔菲利亚始终坚信威尔手中那柄能够斩断世俗常理的剑锋，数次暗中借由魔法道具与冰之意志为他化解杀机。在学园迷宫大暴走与始祖魔导士侵袭的危机节点中，她高悬于塔顶引动万里寒霜封冻死境，凝视着持剑破晓而来的少年，坚定等待着两人并肩登临绝巅的誓约实现。",
       "palette": [
         "#97bddd",
         "#282532"
       ],
       "source": "Wistoria: Wand and Sword",
-      "speech": "这朵冰花……是不是还可以更好一点？",
+      "speech": "「威尔……我一直在这里等着你。不管世人如何评价，你的剑一定会斩开常理，来到我的身边。」",
       "traits": [
         "elfaria_alvis_serfort",
         "tsue_to_tsurugi_no_wistoria",
@@ -62,7 +73,92 @@
         "long_sidelocks"
       ],
       "accent_color": "#97bddd",
-      "bg_color": "#282532"
+      "bg_color": "#282532",
+      "voice": "「威尔……我一直在这里等着你。不管世人如何评价，你的剑一定会斩开常理，来到我的身边。」",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "杖与剑的魔剑谭",
+        "people": [
+          {
+            "id": "elfaria_alvis_serfort",
+            "name": "艾尔菲利亚",
+            "aliases": [
+              "エルファリア・アルヴィス・サーフォート",
+              "Elfaria Alvis Serfort",
+              "深窗的冰姬(至高之五杖)"
+            ],
+            "characterId": "elfaria_alvis_serfort"
+          },
+          {
+            "id": "will_serfort",
+            "name": "威尔·塞弗特",
+            "aliases": [
+              "ウィル・サーフォート",
+              "Will Serfort"
+            ]
+          },
+          {
+            "id": "roスティ",
+            "name": "罗斯蒂",
+            "aliases": [
+              "ロスティ・ナウマン",
+              "Rosti Nauman"
+            ]
+          },
+          {
+            "id": "sion_alster",
+            "name": "席翁·阿尔斯塔",
+            "aliases": [
+              "シオン・アルスター",
+              "Sion Alster"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "elfaria-will-childhood-promise",
+            "source": "elfaria_alvis_serfort",
+            "target": "will_serfort",
+            "label": "至高顶峰与看夕阳的约定",
+            "description": "年仅十六岁便登顶‘至高之五杖’的绝世魔法天才艾尔菲利亚，心心念念的全是在塔底不能使用魔法却以绝世体术挥剑的青梅竹马威尔。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 塔顶与塔底",
+            "evidence": {
+              "title": "讲谈社 · 《杖与剑的魔剑谭》官方动画网站",
+              "url": "https://wistoria-anime.com/"
+            }
+          },
+          {
+            "id": "elfaria-will-frost-barrier",
+            "source": "elfaria_alvis_serfort",
+            "target": "will_serfort",
+            "label": "深窗冰锁与思念分身",
+            "description": "艾尔菲利亚为了等待威尔登塔拒绝任何政治联姻，甚至暗中分化出魔导替身陪伴在威尔身旁辅助他跨越阶层大试炼。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "学院魔导大祭篇",
+            "evidence": {
+              "title": "讲谈社 · 《杖与剑的魔剑谭》官方动画网站",
+              "url": "https://wistoria-anime.com/"
+            }
+          },
+          {
+            "id": "will-sion-rivalry",
+            "source": "will_serfort",
+            "target": "sion_alster",
+            "label": "贵族骄傲与拔剑相向的敬佩",
+            "description": "炎之名门席翁最初鄙视无法使用魔法的无能者威尔，在迷宫实战见证威尔以斩断魔法的剑术拯救全员后对其充满执着的好胜宿敌心。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "迷宫实战篇 · 斩断魔法之剑",
+            "evidence": {
+              "title": "讲谈社 · 《杖与剑的魔剑谭》官方动画网站",
+              "url": "https://wistoria-anime.com/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "elfaria_alvis_serfort",
