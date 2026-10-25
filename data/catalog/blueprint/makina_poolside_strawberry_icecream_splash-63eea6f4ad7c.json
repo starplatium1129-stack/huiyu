@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "makina_poolside_strawberry_icecream_splash",
+  "revision": 1,
+  "sortOrder": 1907,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "makina_poolside_strawberry_icecream_splash",
+    "characterId": "irisu_makina",
+    "title": "入巢莳菜 · 泳池边草莓雪糕与飞溅水花",
+    "description": "美浜学园阳光炽烈的户外泳池边，莳菜身着带荷叶边的草莓图案比基尼坐在池边踢水。一手抓着快要融化的草莓甜筒雪糕，双脚溅起晶莹水花，双马尾随风晃荡，冲着镜头吐出舌头露出恶作剧得逞的古灵精怪大笑。",
+    "category": "假日漫游",
+    "location": "美浜学园烈日泳池畔",
+    "action": "坐在池边踢起水花，手握雪糕做鬼脸大笑",
+    "mood": "天真恶作剧",
+    "lighting": "烈日下闪闪发光的泳池水面反光",
+    "timeOfDay": "午后",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "cute_strawberry_swimsuit",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "swimming_pool",
+      "bikini",
+      "strawberry",
+      "ice_cream",
+      "splashing_water",
+      "sitting_by_pool",
+      "tongue_out",
+      "very_long_twintails",
+      "smile"
+    ],
+    "promptTokens": [
+      "poolside",
+      "cute strawberry swimsuit",
+      "pink frilled bikini",
+      "strawberry pattern",
+      "sitting on pool edge",
+      "kicking water",
+      "splashing",
+      "holding ice cream cone",
+      "very long pink twintails",
+      "brown eyes",
+      "playful smirk",
+      "tongue out",
+      "cowboy shot",
+      "sparkling water reflections",
+      "bright summer sun"
+    ],
+    "promptProse": "Sitting on the sun-warmed pool edge in her frilly strawberry bikini, she kicks up a spray of shimmering water. Her floor-length candy-pink twintails sway as she licks her ice cream and flashes a mischievous, carefree grin.",
+    "animaCaption": "She kicks water from the pool edge with an ice cream cone, laughing playfully at the viewer.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "vacation"
+    ]
+  }
+}

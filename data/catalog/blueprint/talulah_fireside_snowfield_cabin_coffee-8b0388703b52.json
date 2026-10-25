@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "talulah_fireside_snowfield_cabin_coffee",
+  "revision": 1,
+  "sortOrder": 1932,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "talulah_fireside_snowfield_cabin_coffee",
+    "characterId": "talulah_arknights",
+    "title": "塔露拉 · 暴风雪小木屋壁炉旁的温热咖啡",
+    "description": "深山暴风雪中隐蔽的原木小屋里，壁炉内松木噼啪燃烧。塔露拉换上一袭柔软的米白色高领毛衣，双手捧着冒出热气的粗陶咖啡杯坐在地毯上取暖。火光映照着她难得松弛下来的柔和神情，眼神中闪烁着难能可贵的安宁。",
+    "category": "相伴日常",
+    "location": "极北雪原避难所原木小屋壁炉前",
+    "action": "双手捧咖啡杯坐在炉边地毯，微抿热饮露出浅笑",
+    "mood": "温馨安谧",
+    "lighting": "壁炉内橙红木柴火光的温暖照耀",
+    "timeOfDay": "夜晚",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "casual_warm_sweater",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "cabin",
+      "fireplace",
+      "warm_sweater",
+      "coffee_mug",
+      "sitting_on_floor",
+      "steam",
+      "dragon_horns",
+      "dragon_tail",
+      "relaxing",
+      "cozy"
+    ],
+    "promptTokens": [
+      "log cabin interior",
+      "roaring fireplace",
+      "casual warm sweater",
+      "cream turtleneck sweater",
+      "sitting on rug",
+      "cupping ceramic coffee mug",
+      "steam rising from mug",
+      "dragon horns",
+      "dragon tail curled beside her",
+      "silver hair draped down",
+      "golden eyes soft",
+      "rare gentle smile",
+      "cowboy shot",
+      "warm orange hearthfire light",
+      "dark wooden logs"
+    ],
+    "promptProse": "Curled upon a wool rug before the roaring stone hearth, she cradles a steaming ceramic mug with both hands. Firelight bathes her cream turtleneck sweater and softening draconic horns in deep, comforting amber.",
+    "animaCaption": "She cradles a steaming mug beside the roaring fireplace with a rare gentle expression.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

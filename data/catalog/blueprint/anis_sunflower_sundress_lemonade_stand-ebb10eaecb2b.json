@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "anis_sunflower_sundress_lemonade_stand",
+  "revision": 1,
+  "sortOrder": 1899,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "anis_sunflower_sundress_lemonade_stand",
+    "characterId": "anis_nikke",
+    "title": "阿尼斯 · 夏日明黄碎花吊带裙与冰镇柠檬水",
+    "description": "初夏微风拂过的热闹露天集市旁，阿尼斯身穿明黄色碎花吊带连衣裙。她单手递出一杯凝结着清凉水珠的柠檬冷饮，在斑驳树影下冲你元气满溢地展颜欢笑，裙摆随微风轻轻拂动。",
+    "category": "假日漫游",
+    "location": "前哨基地遮阳树荫集市",
+    "action": "手递冰柠檬水，露出元气自信的灿烂笑颜",
+    "mood": "明朗愉悦",
+    "lighting": "树荫斑驳的明亮夏日阳光",
+    "timeOfDay": "午后",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "summer_sunflower_sundress",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "street",
+      "sundress",
+      "sunflowers",
+      "lemonade",
+      "cup",
+      "holding_drink",
+      "smile",
+      "cleavage",
+      "dappled_sunlight"
+    ],
+    "promptTokens": [
+      "outdoors",
+      "yellow sundress",
+      "floral print sundress",
+      "spaghetti straps",
+      "bare shoulders",
+      "holding iced drink",
+      "lemonade cup",
+      "bright smile",
+      "blonde hair",
+      "short hair",
+      "cleavage",
+      "dappled sunlight",
+      "tree shade",
+      "cowboy shot",
+      "summer breeze",
+      "market stalls background"
+    ],
+    "promptProse": "Holding out a condensation-beaded cup of iced lemonade under the park trees, she wears a radiant yellow floral sundress with delicate thin straps. Dappled afternoon light accents her bare shoulders and lively, cheerful grin.",
+    "animaCaption": "She offers a cold cup of lemonade under the dappled sunlight in her yellow sundress.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "vacation"
+    ]
+  }
+}

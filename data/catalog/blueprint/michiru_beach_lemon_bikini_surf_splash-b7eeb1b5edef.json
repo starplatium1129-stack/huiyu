@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "michiru_beach_lemon_bikini_surf_splash",
+  "revision": 1,
+  "sortOrder": 1911,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "michiru_beach_lemon_bikini_surf_splash",
+    "characterId": "matsushima_michiru",
+    "title": "松岛满 · 海滩柠檬比基尼夏日水花与傲娇大笑",
+    "description": "美浜学园初夏的海滨沙滩上，满换上亮柠檬黄荷叶边挂脖比基尼。她赤足踩在温热浅滩中踢起飞溅浪花，单手叉腰，另一手比出标志性胜利手势，灿烂金发双马尾在海风中扬起，洋溢着傲娇元气的夏日活力。",
+    "category": "假日漫游",
+    "location": "美浜海岸夏日浅滩浪花边",
+    "action": "赤足踩水比出V字手势，金发双马尾飞扬灿烂大笑",
+    "mood": "元气傲娇",
+    "lighting": "烈日碧海下的金亮热带阳光与浪花反光",
+    "timeOfDay": "午后",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "beach_lemon_bikini",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "beach",
+      "bikini",
+      "yellow_bikini",
+      "peace_sign",
+      "splashing_water",
+      "bare_midriff",
+      "blonde_twintails",
+      "smile",
+      "summer_sun"
+    ],
+    "promptTokens": [
+      "tropical beach",
+      "beach lemon bikini",
+      "yellow ruffled bikini",
+      "halterneck",
+      "bare midriff",
+      "peace sign",
+      "splashing sea water",
+      "barefoot in surf",
+      "blonde twin tails fluttering",
+      "blue eyes",
+      "tsundere confident smile",
+      "cowboy shot",
+      "glittering ocean waves",
+      "bright summer sun"
+    ],
+    "promptProse": "Splashing barefoot through the sunlit shallows in her lemon-yellow ruffled bikini, she flashes a defiant peace sign. Her blonde twintails catch the coastal breeze as ocean spray glitters around her triumphant grin.",
+    "animaCaption": "She flashes a peace sign while splashing in the shallows in a yellow bikini.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "vacation"
+    ]
+  }
+}

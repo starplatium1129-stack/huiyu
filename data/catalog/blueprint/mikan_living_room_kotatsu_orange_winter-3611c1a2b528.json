@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "mikan_living_room_kotatsu_orange_winter",
+  "revision": 1,
+  "sortOrder": 1926,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "mikan_living_room_kotatsu_orange_winter",
+    "characterId": "yuuki_mikan",
+    "title": "结城美柑 · 冬日暖桌剥橘子与温柔陪伴",
+    "description": "冬日落雪的结城家客厅，温暖的被炉散发着融融暖意。美柑穿着柔软的粉白棉质睡衣把腿蜷在被炉里，双手正细致地剥开一颗新鲜蜜柑，将一瓣果肉递到你嘴边，歪着头眼神温柔俏皮，充满了平凡家庭最治愈的幸福烟火气。",
+    "category": "相伴日常",
+    "location": "结城家冬日温馨客厅被炉旁",
+    "action": "盘坐暖桌剥橘子，递出果肉歪头体贴微笑",
+    "mood": "温暖治愈",
+    "lighting": "客厅暖黄色吸顶灯与窗外静谧雪景相映",
+    "timeOfDay": "傍晚",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "tender_pajamas",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "living_room",
+      "kotatsu",
+      "pajamas",
+      "peeling_orange",
+      "mandarin",
+      "sitting",
+      "feeding",
+      "gentle_smile",
+      "cozy",
+      "snow_window"
+    ],
+    "promptTokens": [
+      "living room",
+      "kotatsu table",
+      "tender pajamas",
+      "pink striped pajamas",
+      "sitting under kotatsu blanket",
+      "peeling mandarin orange",
+      "holding orange slice to viewer",
+      "tilted head",
+      "affectionate smile",
+      "brown hair shoulder length",
+      "brown eyes",
+      "cowboy shot",
+      "warm yellow room lamp",
+      "snow falling outside window"
+    ],
+    "promptProse": "Tucked comfortably beneath the heavy kotatsu blanket in the living room, she carefully peels a sweet mandarin orange. Extending a juicy slice toward the viewer with a tilted head, her gentle smile radiates homestyle warmth.",
+    "animaCaption": "She sits under the warm kotatsu offering a peeled orange slice with a sweet smile.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

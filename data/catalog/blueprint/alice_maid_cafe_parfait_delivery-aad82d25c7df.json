@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "alice_maid_cafe_parfait_delivery",
+  "revision": 1,
+  "sortOrder": 1896,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "alice_maid_cafe_parfait_delivery",
+    "characterId": "alice_nikke",
+    "title": "爱丽丝 · 梦游奇境女仆草莓芭菲端递",
+    "description": "前哨基地主题女仆咖啡厅内，爱丽丝换上荷叶边粉白女仆装。她双手稳稳端着装饰了满满草莓与兔子饼干的高脚玻璃芭菲杯，微微躬身将甜点递向桌前的你，蓝宝石般的眸子泛着期待夸奖的灵动光彩。",
+    "category": "相伴日常",
+    "location": "前哨基地梦幻女仆咖啡厅",
+    "action": "双手端递草莓芭菲，微倾上身露出期待眼神",
+    "mood": "元气治愈",
+    "lighting": "暖黄色咖啡厅吊灯与草莓甜点光泽",
+    "timeOfDay": "午后",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "sweet_rabbit_maid",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "maid_cafe",
+      "maid_apron",
+      "frills",
+      "parfait",
+      "strawberry",
+      "holding_tray",
+      "leaning_forward",
+      "sparkling_eyes",
+      "smile"
+    ],
+    "promptTokens": [
+      "cafe",
+      "sweet rabbit maid",
+      "white apron",
+      "frills",
+      "headband",
+      "standing",
+      "holding parfait glass",
+      "strawberry dessert",
+      "leaning forward",
+      "looking at viewer",
+      "cheerful smile",
+      "sparkling blue eyes",
+      "cowboy shot",
+      "warm indoor lighting",
+      "wooden tables"
+    ],
+    "promptProse": "Holding a tall strawberry parfait carefully with both hands, she leans forward across the cafe table. Warm pendant lights highlight the crisp frills of her pink maid dress and her eager, sparkling gaze.",
+    "animaCaption": "She presents a tall strawberry parfait with both hands and leans toward the viewer.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

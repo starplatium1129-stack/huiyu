@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "cinderella_tea_salon_glass_maid_service",
+  "revision": 1,
+  "sortOrder": 1904,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "cinderella_tea_salon_glass_maid_service",
+    "characterId": "cinderella_nikke",
+    "title": "灰姑娘 · 水晶红茶沙龙女仆端托微礼",
+    "description": "水晶回廊下午茶沙龙中，灰姑娘换上极具古典气质的黑白长裙玻璃女仆装。她单手托着银质托盘上的精致骨瓷茶具与冒着热气的伯爵红茶，另一只手优雅提裙行微礼，清冷尊贵的面庞上浮现一丝专注的温和。",
+    "category": "相伴日常",
+    "location": "浮空城水晶沙龙观景窗旁",
+    "action": "托着红茶托盘优雅提裙微礼，沉静垂眸",
+    "mood": "典雅清冷",
+    "lighting": "午后高空云层透射进来的纯净天光",
+    "timeOfDay": "下午",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "glass_curtsy_maid",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "salon",
+      "maid_dress",
+      "tea_tray",
+      "curtsy",
+      "teacup",
+      "holding_tray",
+      "red_eyes",
+      "graceful",
+      "window_light"
+    ],
+    "promptTokens": [
+      "crystal salon",
+      "glass curtsy maid",
+      "long maid dress",
+      "white frilled apron",
+      "holding silver tea tray",
+      "porcelain cup",
+      "curtsying slightly",
+      "red eyes",
+      "composed serene expression",
+      "large panoramic window",
+      "sky view",
+      "cowboy shot",
+      "crisp natural lighting"
+    ],
+    "promptProse": "Balancing a polished silver tea service on one gloved hand, she dips into an immaculate curtsy beside the panoramic cloud view. Bright sky light illuminates her silver low twintails and the crisp pleats of her formal maid uniform.",
+    "animaCaption": "She curtsies gracefully while holding a silver tea tray beside the salon window.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

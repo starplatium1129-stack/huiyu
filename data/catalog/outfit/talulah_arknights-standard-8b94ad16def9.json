@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "talulah_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1603,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "characterId": "talulah_arknights",
+    "outfit": {
+      "id": "standard",
+      "default": true,
+      "isDefault": true,
+      "name": "整合运动领袖军官大衣",
+      "tokens": [
+        "black trench coat",
+        "white lapels",
+        "red armband",
+        "high collar",
+        "dark uniform",
+        "gold buttons",
+        "black trousers",
+        "combat boots"
+      ],
+      "prose": "a tailored black trench coat with white lapels, crimson armband, high collar, gold buttons, dark trousers and polished officer boots"
+    }
+  }
+}

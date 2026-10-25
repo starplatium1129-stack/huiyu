@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "yumiko_gala_crimson_gown_balcony_wine",
+  "revision": 1,
+  "sortOrder": 1920,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "yumiko_gala_crimson_gown_balcony_wine",
+    "characterId": "sakaki_yumiko",
+    "title": "榊由美子 · 名门夜宴露台红酒与幽冷凝眸",
+    "description": "财阀名流云集的高级宴会厅露台外，夜风习习。由美子身着剪裁大胆的露背绯红晚礼服，单手轻托高脚郁金香红酒杯倚靠在大理石雕栏边。如瀑的紫色长发垂落光滑美背，她侧过冰冷而孤高的容颜，在夜色与香槟灯火中静静注视着你。",
+    "category": "戏剧瞬间",
+    "location": "海滨豪华庄园宴会厅室外大理石露台",
+    "action": "手持红酒杯轻倚石栏，露背侧身回眸，神情孤傲清冷",
+    "mood": "孤高冷艳",
+    "lighting": "宴会厅内透出的金色吊灯光芒与室外银色月光交相辉映",
+    "timeOfDay": "夜晚",
+    "camera": "cowboy shot, from behind, looking over shoulder",
+    "outfitId": "gala_backless_crimson_gown",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "balcony",
+      "evening_gown",
+      "backless",
+      "wine_glass",
+      "marble_railing",
+      "long_purple_hair",
+      "looking_back",
+      "night_sky",
+      "city_lights"
+    ],
+    "promptTokens": [
+      "mansion balcony",
+      "gala backless crimson gown",
+      "red velvet gown",
+      "backless dress",
+      "holding wine glass",
+      "red wine",
+      "leaning on marble railing",
+      "very long black hair",
+      "purple eyes",
+      "aloof proud gaze",
+      "bare back",
+      "cowboy shot",
+      "chandelier glow from doorway",
+      "starry night background"
+    ],
+    "promptProse": "Leaning against the terrace marble balustrade away from the gala crowds, her backless crimson gown gleams under the moon. Her long raven-black hair tumbles past her shoulder as she raises her wine glass in quiet, piercing scrutiny.",
+    "animaCaption": "She leans against the balcony railing in a backless crimson gown, holding a glass of wine.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "dramatic"
+    ]
+  }
+}

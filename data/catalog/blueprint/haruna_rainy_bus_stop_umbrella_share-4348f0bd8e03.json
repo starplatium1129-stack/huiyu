@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "haruna_rainy_bus_stop_umbrella_share",
+  "revision": 1,
+  "sortOrder": 1919,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "haruna_rainy_bus_stop_umbrella_share",
+    "characterId": "sairenji_haruna",
+    "title": "西连寺春菜 · 雨后巴士站同撑一把伞的微羞侧颜",
+    "description": "放学后的初夏微雨初歇，彩南町路边静谧的木质巴士站台下。春菜身着温柔恬静的浅粉色短袖衬衫与白色长褶裙，与你并肩站立在透明雨伞下方。她双手轻握伞柄，耳尖泛着淡淡红晕，悄悄侧头看向被雨水打湿的街道，心跳在淅沥雨声中悄然加速。",
+    "category": "相伴日常",
+    "location": "彩南町雨后街角巴士停靠站",
+    "action": "并肩同撑一把伞，双手握伞柄，耳根泛红侧眸轻笑",
+    "mood": "青涩悸动",
+    "lighting": "雨后阴翳天空透出的一缕温润天光与水洼倒影",
+    "timeOfDay": "傍晚",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "casual_summer",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bus_stop",
+      "rain",
+      "umbrella",
+      "sharing_umbrella",
+      "standing",
+      "school_uniform",
+      "cardigan",
+      "blush",
+      "puddle",
+      "gentle_smile"
+    ],
+    "promptTokens": [
+      "bus stop shelter",
+      "pale pink blouse",
+      "short sleeves",
+      "white long skirt",
+      "pleated skirt",
+      "sandals",
+      "holding umbrella together",
+      "standing side by side",
+      "short dark purple hair",
+      "hair clip",
+      "purple eyes",
+      "soft blush on cheeks",
+      "shy gentle smile",
+      "rain wet street",
+      "puddle reflections",
+      "cowboy shot",
+      "overcast soft light"
+    ],
+    "promptProse": "Sheltered under a shared clear umbrella at the roadside bus stop, raindrops bead along the canopy. Soft post-rain light illuminates her gentle pale-pink blouse, airy white pleated skirt, and the delicate blush rising on her cheeks as she glances sideways.",
+    "animaCaption": "She shares a clear umbrella with the viewer at a bus stop in her summer skirt.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

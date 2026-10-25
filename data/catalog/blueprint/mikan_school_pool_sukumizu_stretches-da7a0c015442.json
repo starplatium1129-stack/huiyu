@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "mikan_school_pool_sukumizu_stretches",
+  "revision": 1,
+  "sortOrder": 1925,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "mikan_school_pool_sukumizu_stretches",
+    "characterId": "yuuki_mikan",
+    "title": "结城美柑 · 校园泳池边死库水热身拉伸",
+    "description": "初夏明媚的体育课泳池畔，美柑身着彩南中学深蓝连体死库水泳衣。她双手向上伸展交叠做着入水前的侧腰拉伸，白皙匀称的少女身姿在阳光下展露无遗，胸前胸牌随动作微晃，转头冲你露出阳光灿烂的活力笑容。",
+    "category": "相伴日常",
+    "location": "彩南中学户外标准游泳池畔",
+    "action": "双手举过头顶做热身拉伸，侧头阳光微笑",
+    "mood": "青春元气",
+    "lighting": "清澈泳池波光粼粼的明媚日光反射",
+    "timeOfDay": "上午",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "school_swimsuit_sukumizu",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "school_pool",
+      "school_swimsuit",
+      "sukumizu",
+      "stretching",
+      "arms_up",
+      "name_tag",
+      "bare_legs",
+      "smile",
+      "sparkling_water"
+    ],
+    "promptTokens": [
+      "poolside",
+      "school swimsuit sukumizu",
+      "navy one-piece swimsuit",
+      "white name tag",
+      "arms raised overhead",
+      "stretching pose",
+      "arching waist",
+      "brown hair pony tail",
+      "brown eyes",
+      "energetic smile",
+      "slender athletic figure",
+      "cowboy shot",
+      "sparkling pool water",
+      "bright morning sunlight"
+    ],
+    "promptProse": "Stretching her arms high above her head beside the school pool, her navy one-piece swimsuit shows a lean, athletic frame. Rippling turquoise water reflects morning light across her bright, confident smile.",
+    "animaCaption": "She stretches her arms overhead beside the school pool, smiling brightly in the morning sun.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

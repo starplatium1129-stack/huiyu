@@ -1,0 +1,144 @@
+{
+  "kind": "character",
+  "id": "talulah_arknights",
+  "revision": 2,
+  "sortOrder": 183,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "data": {
+    "id": "talulah_arknights",
+    "profile": {
+      "id": "talulah_arknights",
+      "name": "塔露拉",
+      "alias": [
+        "Talulah",
+        "塔露拉",
+        "塔露拉·雅特利亚斯",
+        "Talulah Artorius",
+        "斗士塔露拉"
+      ],
+      "type": "popular",
+      "icon": "🔥",
+      "visual_dna": {
+        "hair": "银灰色/灰白色及腰长发，发丝带有微卷质感，两侧自然垂落修饰面颊；发顶佩戴深红龙族角质发饰与羽翼状装饰。",
+        "hair_color": "银灰色 / 灰白 (Silver-grey / ash white)",
+        "eyes": "明亮炽烈的金黄色/琥珀金瞳孔 (Golden / amber eyes)，眼神高傲冷峻、威严坚毅，带着源石火焰的炽烈与深邃的悲悯。",
+        "hairstyle": "柔顺的银灰色长发，前额齐碎刘海搭配两鬓长发缕与发顶微卷。",
+        "uniform": "整合运动领袖大衣：高领黑白双色长风衣外套、红黑色肩章与红袖章，内搭黑色战术军装衬衫与长裤，佩戴黑色长皮手套与及膝军官皮靴；腰系金色龙纹扣腰带与烈火长剑挂鞘。",
+        "expression": "威严高贵、冷峻内敛、坚毅不屈、偶尔流露出背负宿命的淡淡悲伤与深情。",
+        "style": "近未来泰拉废土军武风格、高贵德拉克龙裔骑士风范、威严霸气。",
+        "signature": "头顶挺拔优雅的深红/黑褐色修长德拉克双龙角（Dragon horns）；身后延展而出的深色龙鳞长尾（Dragon tail）；烈火缠绕的佩剑与掌控源石火势的德拉克法术烈焰。"
+      },
+      "personality": [
+        "威严从容",
+        "坚韧不屈",
+        "内敛深沉",
+        "胸怀大局",
+        "骄傲冷冽",
+        "重情重诺"
+      ],
+      "likes": [
+        "雪原夜色与篝火",
+        "磨砺剑术与源石法术",
+        "保护受压迫的感染者同胞",
+        "与信任之人静默相伴",
+        "热红茶与粗粮面包"
+      ],
+      "identity": {
+        "role": "整合运动前领袖 / 德拉克血脉继承者 / 感染者斗士",
+        "age": "官方未公开（推测青年女性，20代中后期，外貌成熟优雅而英姿飒爽）",
+        "occupation": "领袖 / 感染者权益斗士 / 龙裔执剑者",
+        "faction": "乌萨斯 / 整合运动（Reunion） / 维多利亚"
+      },
+      "tags": [
+        "银灰色 / 灰白 (Silver-grey / ash white)",
+        "明亮炽烈的金黄色/琥珀金瞳孔 (Golden / amber eyes)，眼神高傲冷峻、威严坚毅，带着源石火焰的炽烈与深邃的悲悯。"
+      ],
+      "bg_story": "塔露拉出身维多利亚名门贵族德拉克家族，兼具乌萨斯血脉，自幼被公爵柯西切掠走抚养。她不甘沦为棋子，毅然挣脱枷锁逃入极北冻原，创立整合运动为感染者争取生存权力。在切尔诺伯格核心城战役后，历经宿命沉沦与解脱，她重拾斗士意志踏上赎罪与继续追寻大地光明的旅程。",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "traits": [
+        "talulah (arknights)",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "long_hair",
+        "golden_eyes",
+        "horns",
+        "dragon_horns",
+        "tail",
+        "dragon_tail",
+        "black_coat",
+        "arknights"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-talulah_arknights.png?v=1",
+        "alt": "塔露拉热门角色立绘"
+      },
+      "speech": "燃尽荆棘与冻土，大地终将见证黎明。",
+      "accent_color": "#f97316",
+      "bg_color": "#1c1917"
+    },
+    "popular": {
+      "adultEligibility": "adult",
+      "aliases": [
+        "talulah",
+        "talulah_artorius",
+        "arknights",
+        "reunion"
+      ],
+      "animeStudio": "arknights, hypergryph, official anime art",
+      "canon": {
+        "era": "近未来泰拉奇幻",
+        "formNotes": "银灰长发金瞳；德拉克龙角与龙尾；黑白领袖大衣与烈火佩剑",
+        "research": "2026-10-25 调研（Danbooru talulah_(arknights)）",
+        "world": "泰拉（乌萨斯冻原 / 维多利亚）"
+      },
+      "curatedArtistStyles": [
+        "swav",
+        "yoneyama_mai",
+        "so-bin"
+      ],
+      "displayName": "塔露拉",
+      "exactPrefixes": [],
+      "exactTokens": [
+        "talulah (arknights)"
+      ],
+      "franchise": "Arknights",
+      "id": "talulah_arknights",
+      "identityProse": "Talulah from Arknights, with long silver-grey hair, fiery golden eyes, crimson dragon horns, a dragon tail, and draconic flame aura.",
+      "identityTokens": [
+        "talulah (arknights)",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "long_hair",
+        "golden_eyes",
+        "dragon_horns",
+        "dragon_tail",
+        "arknights"
+      ],
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "originalName": "Talulah",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "talulah (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ]
+    }
+  }
+}

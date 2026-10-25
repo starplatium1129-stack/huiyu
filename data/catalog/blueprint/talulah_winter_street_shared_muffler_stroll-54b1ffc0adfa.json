@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "talulah_winter_street_shared_muffler_stroll",
+  "revision": 1,
+  "sortOrder": 1930,
+  "createdAt": "2026-10-25T03:46:32.566833200+00:00",
+  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "data": {
+    "id": "talulah_winter_street_shared_muffler_stroll",
+    "characterId": "talulah_arknights",
+    "title": "塔露拉 · 初雪商业街同撑伞与共享羊绒围巾",
+    "description": "初冬落雪的静谧林荫街道上，塔露拉换上一件剪裁修长的黑色毛呢大衣。她与你并肩慢步在积雪薄霜的石板路上，两人颈间共围着一条深红色的羊绒长围巾。她一手捧着冒着白气的纸杯热可可，微偏着头看向你，泛红的脸颊与白雪相映，满是冬日依恋。",
+    "category": "相伴日常",
+    "location": "初冬飘雪的树影街头石板步道",
+    "action": "共围深红围巾并肩散步，手捧热可可呼出白汽，微红着脸凝视",
+    "mood": "浪漫依恋",
+    "lighting": "街旁咖啡馆暖色橱窗与飘雪中的路灯温光",
+    "timeOfDay": "傍晚",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "standard",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "winter_street",
+      "light_snow",
+      "trench_coat",
+      "shared_scarf",
+      "hot_cocoa",
+      "breath_vapor",
+      "walking_together",
+      "dragon_horns",
+      "dragon_tail",
+      "blush"
+    ],
+    "promptTokens": [
+      "winter street",
+      "gentle snow falling",
+      "standard officer coat",
+      "black wool overcoat",
+      "sharing long red wool scarf",
+      "holding paper cup of hot cocoa",
+      "breath vapor in air",
+      "walking side by side",
+      "dragon horns catching snowflakes",
+      "dragon tail curled close",
+      "silver grey hair",
+      "golden eyes glistening",
+      "soft blush on cheeks",
+      "cowboy shot",
+      "warm boutique window lights"
+    ],
+    "promptProse": "Strolling together along the snow-dusted brick sidewalk as evening settles in, she shares a long crimson wool scarf with the viewer. Clutching a warm cup of cocoa, she breathes out a cloud of white mist and turns with a soft, affectionate flush.",
+    "animaCaption": "She walks along the snowy winter street sharing a crimson scarf, looking over with a gentle blush.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

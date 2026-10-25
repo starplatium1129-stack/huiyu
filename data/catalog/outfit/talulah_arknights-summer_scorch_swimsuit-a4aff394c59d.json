@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "talulah_arknights/summer_scorch_swimsuit",
+  "revision": 1,
+  "sortOrder": 1606,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "characterId": "talulah_arknights",
+    "outfit": {
+      "id": "summer_scorch_swimsuit",
+      "default": false,
+      "isDefault": false,
+      "name": "炽阳之火绯红分体比基尼",
+      "tokens": [
+        "red bikini",
+        "halterneck bikini",
+        "gold clasps",
+        "bare shoulders",
+        "bare midriff",
+        "wet skin"
+      ],
+      "prose": "a fiery crimson halterneck bikini accented with golden ring clasps, showing sunlit shoulders and bare midriff"
+    }
+  }
+}

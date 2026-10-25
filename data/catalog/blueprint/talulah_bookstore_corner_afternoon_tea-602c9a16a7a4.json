@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "talulah_bookstore_corner_afternoon_tea",
+  "revision": 1,
+  "sortOrder": 1928,
+  "createdAt": "2026-10-25T03:46:32.566833200+00:00",
+  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "data": {
+    "id": "talulah_bookstore_corner_afternoon_tea",
+    "characterId": "talulah_arknights",
+    "title": "塔露拉 · 街角旧书店窗边的午后红茶与诗集",
+    "description": "城市林荫路旁的复古旧书店内，塔露拉换上米白色高领粗针毛衣坐在靠窗木桌旁。桌上摆着一壶热大吉岭红茶与精美茶点，她一手轻轻翻过古旧诗集的泛黄纸页，另一手端起白瓷茶杯轻抿，银灰长发在午后阳光中镀上金边，龙角散发着宁静恬淡的从容。",
+    "category": "相伴日常",
+    "location": "街角静谧复古旧书店阳光窗边木桌",
+    "action": "坐在书桌旁翻书品茶，侧颜恬静优雅",
+    "mood": "宁静优雅",
+    "lighting": "透过大片格子玻璃窗洒落的温暖午后阳光",
+    "timeOfDay": "下午",
+    "camera": "cowboy shot, side profile",
+    "outfitId": "casual_warm_sweater",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bookstore",
+      "wooden_table",
+      "bookshelves",
+      "cream_sweater",
+      "turtleneck",
+      "teacup",
+      "reading",
+      "turning_page",
+      "dragon_horns",
+      "dragon_tail",
+      "window_light"
+    ],
+    "promptTokens": [
+      "cozy bookstore",
+      "wooden table",
+      "surrounding bookshelves",
+      "casual warm sweater",
+      "cream turtleneck sweater",
+      "holding teacup",
+      "reading vintage book",
+      "turning page",
+      "steam from tea",
+      "dragon horns",
+      "dragon tail resting on floor",
+      "silver grey long hair",
+      "golden eyes soft",
+      "peaceful serene expression",
+      "cowboy shot",
+      "warm afternoon window sunlight",
+      "quiet atmosphere"
+    ],
+    "promptProse": "Sitting beside the tall bay window of a quiet neighborhood bookstore, she cradles a fine china teacup while turning the pages of an antique poetry book. Warm afternoon sunlight streams across her cream knit sweater and the graceful sweep of her dragon horns.",
+    "animaCaption": "She turns a book page by the sunlit bookstore window, taking a gentle sip of hot tea.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

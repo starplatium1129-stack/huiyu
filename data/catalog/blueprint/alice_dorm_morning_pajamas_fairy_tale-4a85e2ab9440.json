@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "alice_dorm_morning_pajamas_fairy_tale",
+  "revision": 1,
+  "sortOrder": 1895,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "alice_dorm_morning_pajamas_fairy_tale",
+    "characterId": "alice_nikke",
+    "title": "爱丽丝 · 宿舍绒毛睡袍与床头童话绘本",
+    "description": "清晨的方舟前哨基地宿舍，爱丽丝穿着连帽垂耳兔绒毛睡袍盘坐在大床上。怀中抱着巨大的粉色胡萝卜抱枕，膝头摊开一本色彩斑斓的立体童话书，仰起头对走进房间的你露出天真无邪的晨间甜笑。",
+    "category": "相伴日常",
+    "location": "前哨基地爱丽丝的宿舍卧房",
+    "action": "抱着胡萝卜抱枕盘坐床上，抬头对镜头露出甜美晨笑",
+    "mood": "纯真甜美",
+    "lighting": "清晨柔和白光透过百叶窗洒在被褥上",
+    "timeOfDay": "早晨",
+    "camera": "medium shot, slightly high angle",
+    "outfitId": "cozy_rabbit_fleece_pajamas",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "pajamas",
+      "rabbit_hood",
+      "plushie",
+      "story_book",
+      "sitting_on_bed",
+      "hugging_pillow",
+      "smile",
+      "morning_light"
+    ],
+    "promptTokens": [
+      "indoor",
+      "bedroom",
+      "sitting on bed",
+      "cozy rabbit fleece pajamas",
+      "hood down",
+      "holding carrot plushie",
+      "open storybook on knees",
+      "looking at viewer",
+      "bright sweet smile",
+      "morning sunlight",
+      "fluffy blanket",
+      "pastel room",
+      "medium shot",
+      "soft warm lighting"
+    ],
+    "promptProse": "Sitting cross-legged on her ruffled dorm bed, she hugs a giant plush carrot and looks up with an innocent smile. Gentle morning sunlight streams through the blinds onto her pastel pajamas and open picture book.",
+    "animaCaption": "She hugs her carrot plushie on the bed and smiles up at the viewer in morning light.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

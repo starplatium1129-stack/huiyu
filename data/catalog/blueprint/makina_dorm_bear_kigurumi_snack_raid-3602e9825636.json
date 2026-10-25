@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "makina_dorm_bear_kigurumi_snack_raid",
+  "revision": 1,
+  "sortOrder": 1908,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "makina_dorm_bear_kigurumi_snack_raid",
+    "characterId": "irisu_makina",
+    "title": "入巢莳菜 · 宿舍粉绒小熊睡衣深夜搜刮零食",
+    "description": "美浜学园宿舍厨房的冰箱前，莳菜套着宽大松垮的粉色小熊连体睡衣。连衣帽子上的圆熊耳朵耷拉着，她半蹲在冰箱冷光前，嘴里叼着一包小熊饼干，怀里塞满了果汁和布丁，被突然开灯的你抓了个正着，心虚地眨巴着大眼睛。",
+    "category": "相伴日常",
+    "location": "美浜学园宿舍深夜厨房",
+    "action": "蹲在开着的冰箱前偷抱零食，心虚愣住",
+    "mood": "诙谐可爱",
+    "lighting": "冰箱内部冷白光照亮脸庞与昏暗厨房对比",
+    "timeOfDay": "深夜",
+    "camera": "cowboy shot, low angle",
+    "outfitId": "pastel_bear_kigurumi",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "kitchen",
+      "refrigerator",
+      "kigurumi",
+      "bear_hood",
+      "snacks",
+      "crouching",
+      "caught",
+      "guilty_look",
+      "comic"
+    ],
+    "promptTokens": [
+      "kitchen",
+      "pastel bear kigurumi",
+      "pink bear onesie",
+      "hood with bear ears",
+      "crouching",
+      "open refrigerator",
+      "holding juice and snacks",
+      "biscuit in mouth",
+      "wide eyes",
+      "guilty blush",
+      "looking at viewer",
+      "cowboy shot",
+      "cool refrigerator light",
+      "dim room background"
+    ],
+    "promptProse": "Crouched in front of the open refrigerator in her oversized pink bear onesie, she clutches an armful of puddings and sodas. The cold appliance glow catches her startled, guilty expression as she freezes mid-bite.",
+    "animaCaption": "She crouches by the glowing refrigerator clutching snacks in her bear kigurumi, caught by surprise.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "talulah_arknights/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 1608,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "characterId": "talulah_arknights",
+    "outfit": {
+      "id": "nsfw_nude",
+      "default": false,
+      "isDefault": false,
+      "name": "🔞 私密全裸 / 龙裔原生形态",
+      "tokens": [
+        "nude",
+        "bare skin",
+        "dragon horns",
+        "dragon tail",
+        "blush",
+        "sweat",
+        "collarbone",
+        "bare shoulders"
+      ],
+      "prose": "completely unclad with flushed porcelain skin, revealing proud draconic horns and slender tail in quiet private intimacy"
+    }
+  }
+}

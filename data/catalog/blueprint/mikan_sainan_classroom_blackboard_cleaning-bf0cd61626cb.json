@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "mikan_sainan_classroom_blackboard_cleaning",
+  "revision": 1,
+  "sortOrder": 1924,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "mikan_sainan_classroom_blackboard_cleaning",
+    "characterId": "yuuki_mikan",
+    "title": "结城美柑 · 放学后初中教室擦黑板的值日回眸",
+    "description": "放学后的彩南中学初中部空旷教室内，夕阳将课桌拉出长长的影子。美柑身穿整洁的初中部水手服制服，正踮起脚尖用板擦擦拭黑板高处的粉笔字。听到门边脚步声，她轻巧转过身来，手中扬起淡淡的粉笔微尘，露出元气体贴的微笑。",
+    "category": "相伴日常",
+    "location": "彩南中学初中部夕阳下的教室讲台",
+    "action": "踮脚擦黑板，听到动静回头露出明朗温暖的笑容",
+    "mood": "青春温馨",
+    "lighting": "金黄色的夕阳斜照整面黑板与窗格",
+    "timeOfDay": "黄昏",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "sainan_junior_uniform",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "classroom",
+      "blackboard",
+      "school_uniform",
+      "sailor_uniform",
+      "chalk",
+      "tiptoe",
+      "turning_back",
+      "smile",
+      "sunset_light"
+    ],
+    "promptTokens": [
+      "classroom",
+      "sainan junior uniform",
+      "navy sailor collar",
+      "pleated skirt",
+      "standing by blackboard",
+      "holding chalk eraser",
+      "erasing board",
+      "looking back over shoulder",
+      "cheerful bright smile",
+      "brown hair half updo",
+      "brown eyes",
+      "cowboy shot",
+      "warm orange sunset rays",
+      "empty desks"
+    ],
+    "promptProse": "Reaching on tiptoe to erase the upper blackboard in the empty classroom, her sailor uniform pleats catch the amber dusk. She turns back with the chalk eraser in hand, beaming warmly as footsteps approach the doorway.",
+    "animaCaption": "She pauses while cleaning the classroom blackboard, turning back with a bright sunset smile.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

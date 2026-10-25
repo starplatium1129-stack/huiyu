@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "yumiko_dorm_morning_silk_pajamas_tea",
+  "revision": 1,
+  "sortOrder": 1922,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "yumiko_dorm_morning_silk_pajamas_tea",
+    "characterId": "sakaki_yumiko",
+    "title": "榊由美子 · 宿舍晨光红茶与居家乐棉质睡衣侧影",
+    "description": "美浜学园清晨微曦的静谧个人宿舍内，由美子身穿舒适的浅蓝长袖棉质居家乐睡衣。她静静伫立在采光极佳的窗前，手持细瓷茶壶将温热大吉岭红茶缓缓注入骨瓷杯中。晨光柔和勾勒出她及膝墨黑长发与沉静侧颜，享受难得无防备的安宁独处。",
+    "category": "相伴日常",
+    "location": "美浜学园由美子的古典欧式寝室窗边",
+    "action": "伫立窗边手持茶壶沏茶，侧影微敛优雅倒茶",
+    "mood": "宁静优雅",
+    "lighting": "透过白纱帘的柔和清晨逆光与发丝金边",
+    "timeOfDay": "清晨",
+    "camera": "cowboy shot, side profile",
+    "outfitId": "cozy_silk_pajamas",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "bedroom",
+      "pajamas",
+      "silk_nightgown",
+      "pouring_tea",
+      "teapot",
+      "teacup",
+      "long_hair",
+      "window_light",
+      "morning",
+      "peaceful"
+    ],
+    "promptTokens": [
+      "elegant bedroom",
+      "light blue pajamas",
+      "buttoned pajama top",
+      "long sleeves",
+      "pajama pants",
+      "pouring tea",
+      "porcelain teapot",
+      "teacup on table",
+      "long black hair cascading",
+      "raven-black hair",
+      "hime cut",
+      "side profile",
+      "serene calm expression",
+      "cowboy shot",
+      "bright window morning light",
+      "rim lighting on hair"
+    ],
+    "promptProse": "Standing beside the sunlit dormitory window in her loose pastel-blue cotton pajamas, she pours steaming Darjeeling into a fine china teacup. The soft morning glow outlines her quiet profile and the sweep of her cascading raven-black hair.",
+    "animaCaption": "She pours hot morning tea by the sunlit window in her pastel pajamas.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

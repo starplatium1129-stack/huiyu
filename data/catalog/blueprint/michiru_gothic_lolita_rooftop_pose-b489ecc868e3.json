@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "michiru_gothic_lolita_rooftop_pose",
+  "revision": 1,
+  "sortOrder": 1912,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "michiru_gothic_lolita_rooftop_pose",
+    "characterId": "matsushima_michiru",
+    "title": "松岛满 · 哥特萝莉黑洋装天台神秘华丽现身",
+    "description": "夕阳下的美浜学园天台铁丝网旁，满换上一套极其精致考究的黑蕾丝哥特萝莉塔洋装。黑丝带扎起金发双马尾，单手优雅提起层叠荷叶边裙摆，微微扬起下巴故作高冷神秘地向你发表魔女宣言，却因微红的耳根出卖了内心的害羞。",
+    "category": "相伴日常",
+    "location": "美浜学园放学后空旷天台铁网旁",
+    "action": "单手提洋装裙摆故作高冷，金发双马尾飘扬，耳根微红",
+    "mood": "娇蛮可爱",
+    "lighting": "晚霞将天际染成金红色的壮阔逆光",
+    "timeOfDay": "黄昏",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "black_gothic_lolita",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "rooftop",
+      "gothic_lolita",
+      "black_dress",
+      "frills",
+      "lace",
+      "holding_skirt",
+      "blonde_twintails",
+      "blush",
+      "sunset_sky"
+    ],
+    "promptTokens": [
+      "school rooftop",
+      "black gothic lolita",
+      "frilled black dress",
+      "black ribbons",
+      "holding skirt hem",
+      "dramatic pose",
+      "blonde twin tails",
+      "blue eyes",
+      "pouting haughty expression",
+      "slight blush on ears",
+      "cowboy shot",
+      "wire fence",
+      "sunset silhouette",
+      "golden hour sky"
+    ],
+    "promptProse": "Posing dramatically against the rooftop chain-link fence in a lavish black gothic lolita dress, she lifts her ruffled hem. Sunset fire backlights her floating blonde twintails while she strikes a proud, adorable pose.",
+    "animaCaption": "She poses proudly on the sunset rooftop in a frilled black gothic lolita dress.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

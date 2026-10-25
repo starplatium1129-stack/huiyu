@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "cinderella_bridal_chapel_mirror_vow",
+  "revision": 1,
+  "sortOrder": 1903,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "cinderella_bridal_chapel_mirror_vow",
+    "characterId": "cinderella_nikke",
+    "title": "灰姑娘 · 纯白花嫁圣堂镜前誓约",
+    "description": "静谧巍峨的纯白水晶大圣堂内，灰姑娘身披层叠纯白花嫁婚纱与透明长头纱。她驻足在巨型镜面圣坛前，白皙的手指抚上胸前的蓝宝石胸针，侧过如雕塑般完美的容颜，深红双瞳流露出交付一生的庄重与柔情。",
+    "category": "相伴日常",
+    "location": "水晶镜廊纯白穹顶誓约圣堂",
+    "action": "手抚胸针侧身伫立镜前，目光庄重深情",
+    "mood": "圣洁庄严",
+    "lighting": "彩绘天窗洒下的神圣银白色光柱",
+    "timeOfDay": "正午",
+    "camera": "full body, eye level",
+    "outfitId": "pure_white_bridal_veil",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "chapel",
+      "wedding_dress",
+      "bridal_veil",
+      "mirror",
+      "stained_glass",
+      "holding_chest",
+      "red_eyes",
+      "elegant",
+      "divine_light"
+    ],
+    "promptTokens": [
+      "grand cathedral",
+      "pure white bridal veil",
+      "white wedding gown",
+      "flowing lace veil",
+      "standing by mirror",
+      "hand on chest",
+      "sapphire brooch",
+      "red eyes",
+      "solemn gentle gaze",
+      "stained glass window",
+      "shafts of light",
+      "full body",
+      "crystal reflections",
+      "majestic architecture"
+    ],
+    "promptProse": "Standing before the towering mirrored altar of the white crystal cathedral, her layered bridal gown and veil cascade like fresh snow. Beams of sunlight pierce the vaulted ceiling, reflecting in her crimson gaze and silver hair.",
+    "animaCaption": "She stands before the cathedral mirror in a flowing white bridal gown, gazing back softly.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

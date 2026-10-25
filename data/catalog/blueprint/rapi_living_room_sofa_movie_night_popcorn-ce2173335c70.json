@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "rapi_living_room_sofa_movie_night_popcorn",
+  "revision": 1,
+  "sortOrder": 1923,
+  "createdAt": "2026-10-25T03:46:32.566833200+00:00",
+  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "data": {
+    "id": "rapi_living_room_sofa_movie_night_popcorn",
+    "characterId": "rapi_nikke",
+    "title": "拉毗 · 休闲起居室沙发电影之夜的并肩小憩",
+    "description": "深夜的前哨基地起居室内，拉毗身穿舒适的宽大白衬衫与休闲短裤，与你并肩陷入柔软的布艺大沙发中。怀中抱着一桶刚爆好的香甜爆米花，侧过头看向你，向来严谨认真的神色在电影的柔光中彻底放松，肩膀悄悄向你轻靠。",
+    "category": "相伴日常",
+    "location": "前哨基地私人起居室布艺沙发",
+    "action": "并肩靠坐在沙发上捧着爆米花桶看电影，神情放松依赖",
+    "mood": "慵懒依赖",
+    "lighting": "电视屏幕微弱的光影起伏与茶几柔暖台灯",
+    "timeOfDay": "深夜",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "commander_private_office_shirt",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "living_room",
+      "sofa",
+      "loose_shirt",
+      "popcorn_bowl",
+      "watching_movie",
+      "sitting_side_by_side",
+      "leaning_shoulder",
+      "relaxed",
+      "scarlet_eyes"
+    ],
+    "promptTokens": [
+      "living room",
+      "fabric couch",
+      "commander private office shirt",
+      "oversized white shirt",
+      "sitting side by side",
+      "holding bowl of popcorn",
+      "leaning toward viewer",
+      "relaxed gentle expression",
+      "scarlet eyes warm",
+      "long brown hair loose over shoulder",
+      "cowboy shot",
+      "faint tv glow",
+      "dim ambient living room light",
+      "cozy late night"
+    ],
+    "promptProse": "Curled beside the viewer on the living room sofa during a late-night movie, she holds a large bowl of buttered popcorn. The dim glow of the screen reflects in her softening scarlet eyes as her posture eases into quiet, comfortable warmth.",
+    "animaCaption": "She sits on the couch sharing popcorn during a movie, leaning gently toward the viewer in the soft tv light.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

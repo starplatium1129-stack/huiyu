@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "yumiko_poolside_purple_bikini_sunglasses",
+  "revision": 1,
+  "sortOrder": 1921,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "data": {
+    "id": "yumiko_poolside_purple_bikini_sunglasses",
+    "characterId": "sakaki_yumiko",
+    "title": "榊由美子 · 美浜夏日泳池畔的紫色比基尼与墨镜",
+    "description": "美浜学园被高墙环绕的私人露天泳池边，由美子换上深紫色挂脖比基尼。她单手将墨镜推上额头，坐在遮阳伞下的白色躺椅上翻看精装文库本小说，修长白皙的双腿交叠，对打扰她独处时光的来人投以矜持而微显动摇的锐利目光。",
+    "category": "假日漫游",
+    "location": "美浜学园被围墙环抱的隐秘泳池躺椅",
+    "action": "坐在泳池躺椅上推起墨镜，合上书本冷淡注视",
+    "mood": "大小姐的从容",
+    "lighting": "烈日遮阳伞边缘明暗分明的纯净光影",
+    "timeOfDay": "午后",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "summer_purple_bikini",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "poolside",
+      "bikini",
+      "sunglasses",
+      "deck_chair",
+      "parasol",
+      "holding_book",
+      "crossed_legs",
+      "purple_eyes",
+      "summer_sun"
+    ],
+    "promptTokens": [
+      "poolside deck",
+      "summer purple bikini",
+      "dark purple halterneck bikini",
+      "sunglasses on head",
+      "sitting on lounge chair",
+      "legs crossed",
+      "holding novel",
+      "very long black hair",
+      "purple eyes",
+      "composed stern gaze",
+      "cowboy shot",
+      "parasol shadow",
+      "glittering blue pool"
+    ],
+    "promptProse": "Perched gracefully on a white pool lounger in her deep purple bikini, she rests an open hardcover book in her lap. Pushing her sunglasses up into her cascading raven-black hair, her cool gaze sharpens with quiet interest.",
+    "animaCaption": "She sits on the pool lounge chair in a purple bikini, resting her novel and looking up.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "vacation"
+    ]
+  }
+}

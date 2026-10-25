@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "anis_convenience_store_ice_cream_walk",
+  "revision": 1,
+  "sortOrder": 1906,
+  "createdAt": "2026-10-25T03:46:32.566833200+00:00",
+  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "data": {
+    "id": "anis_convenience_store_ice_cream_walk",
+    "characterId": "anis_nikke",
+    "title": "阿尼斯 · 晚风街角便利店冰淇淋与闲散漫步",
+    "description": "前哨基地夏夜街角的24小时便利店门口，阿尼斯穿着舒适宽大的套头卫衣坐在长椅上。她一边晃着双腿吃着双色蛋卷冰淇淋，刚买的一袋冰镇汽水放在身旁的长椅上，抬头冲你灿烂大笑，享受着毫无烦恼的轻松假日夜晚。",
+    "category": "相伴日常",
+    "location": "前哨基地街角24小时便利店门前长椅",
+    "action": "坐在长椅上吃冰淇淋晃腿，抬头露出灿烂开朗的大笑",
+    "mood": "闲适快活",
+    "lighting": "便利店玻璃幕墙透出的明亮白光与街边暖黄路灯",
+    "timeOfDay": "夜晚",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "off_duty_soda_break",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "convenience_store",
+      "wooden_bench",
+      "hoodie",
+      "shorts",
+      "ice_cream",
+      "eating",
+      "plastic_bag",
+      "swinging_legs",
+      "smile",
+      "night_breeze"
+    ],
+    "promptTokens": [
+      "outside convenience store",
+      "wooden bench",
+      "oversized hoodie",
+      "utility shorts",
+      "sitting swinging legs",
+      "eating soft serve ice cream",
+      "shopping bag on bench beside her",
+      "blonde hair",
+      "short hair",
+      "bright open smile",
+      "blue eyes",
+      "cowboy shot",
+      "warm streetlamp light",
+      "glowing storefront window",
+      "breezy summer night"
+    ],
+    "promptProse": "Sitting on the wooden bench outside the glowing convenience store, she happily eats a swirl ice cream cone while a plastic shopping bag of iced sodas rests beside her on the bench. Warm streetlamp light catches her bright laugh as she swings her legs into the balmy night breeze.",
+    "animaCaption": "She happily eats an ice cream cone on a bench beside a shopping bag.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}
