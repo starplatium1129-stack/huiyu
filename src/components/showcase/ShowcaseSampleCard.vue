@@ -4,7 +4,7 @@
     <button class="sample-visual tw:block tw:w-full tw:p-0 tw:text-left tw:relative tw:overflow-hidden" type="button"
       :style="imageStyle"
       :aria-label="`${broken || !image.src ? '预览暂未连接，' : ''}查看 ${entry.title} 大图`" @click="emit('open', entry.id)">
-      <Transition name="sample-loading"><span v-if="image.src && !loaded && !broken" class="sample-loading" aria-hidden="true"></span></Transition>
+      <Transition :css="false" @leave="skeleton.leave" @leave-cancelled="skeleton.cancel"><span v-if="image.src && !loaded && !broken" class="sample-loading" aria-hidden="true"></span></Transition>
       <img v-if="image.src && !broken" v-bind="{ ...image, onLoad: measureImage }" class="sample-image tw:w-full tw:h-auto tw:block" :class="{ 'sample-image-ready': loaded }"
         :alt="entry.title" :width="dimensions.width" :height="dimensions.height" :loading="eager ? 'eager' : 'lazy'" :fetchpriority="eager ? 'high' : undefined" decoding="async" />
       <span v-else class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /><span>预览暂未连接 · 可查看大图</span></span>
@@ -24,6 +24,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
+import { useOpacityLeave } from '@/composables/useOpacityLeave'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
 import { cachedImageDimensions, rememberImageDimensions } from '@/utils/imageDimensions'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
@@ -43,6 +44,7 @@ const displayTitle = computed(() => {
   return title
 })
 const { image, loaded, failed: broken } = useRuntimeImage(() => props.src)
+const skeleton = useOpacityLeave()
 const naturalSize = shallowRef(cachedImageDimensions(image.value.src))
 watch([() => props.entry.id, () => image.value.src, runtimeResourceIdentity], ([, src]) => {
   naturalSize.value = cachedImageDimensions(src)
@@ -76,8 +78,6 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample:has(.sample-visual:focus-visible) .sample-caption { box-shadow:var(--focus-shadow); }
 /* The frame and caption arrive first; only decoded media fades onto the mat. */
 .sample-loading { position:absolute; inset:0; z-index:var(--z-raised); background:linear-gradient(135deg,var(--bg-elevated),var(--bg-base)); pointer-events:none; }
-.sample-loading-leave-active { transition:opacity var(--motion-surface) var(--ease-out); }
-.sample-loading-leave-to { opacity:0; }
 .sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); opacity:0; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-art-hover) var(--spring-soft); }
 .sample-image-ready { opacity:1; }
 /* Picture light stays below captions; rating masks retain their own layer. */
@@ -103,10 +103,10 @@ const emit = defineEmits<{ open: [id: string] }>()
 }
 .sample-r18:focus-within .sample-sensitive { opacity:0; }
 @media (max-width: 480px) { .sample-caption { @apply tw:p-s-3; } .sample-title { @apply tw:text-body-sm; } }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .sample-image, :root:not([data-motion='full']) .sample-sensitive, :root:not([data-motion='full']) .sample-loading-leave-active { transition:opacity var(--motion-press) var(--ease-out); } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .sample-image, :root:not([data-motion='full']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sample-image,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sample-sensitive,
-:root:is([data-motion='reduce'],[data-motion='reduced']) .sample-loading-leave-active { transition:opacity var(--motion-press) var(--ease-out); }
+
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) body .showcase-page .sample { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
   :root:not([data-motion='full']) .sample-visual::after { transition:none; }

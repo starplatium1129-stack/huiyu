@@ -118,8 +118,8 @@ import { useSceneStore } from '@/stores/sceneStore'
 import { copyText } from '@/utils/clipboard'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import neneAvatar from '@/assets/illustrations/nene-avatar.webp'
-import natsumeAvatar from '@/assets/illustrations/natsume-avatar.webp'
+import neneAvatar from '@/assets/illustrations/nene-avatar-256.webp'
+import natsumeAvatar from '@/assets/illustrations/natsume-avatar-256.webp'
 import {
   formatLoraWeight,
   parseLoraCatalog,

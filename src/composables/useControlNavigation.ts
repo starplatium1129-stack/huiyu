@@ -52,6 +52,11 @@ export function useControlNavigation(imageProvider: Ref<'native' | 'comfy' | nul
     if (focus) document.getElementById('control-section-heading')?.focus({ preventScroll: true })
   }
   watch([() => route.fullPath, activeSection], () => { if (route.path === '/control') void reveal(true) })
+  function panelReady(id: string) {
+    // Legacy links can target an element inside a lazily loaded subsection.
+    // Ordinary section loads keep the user's current scroll and focus.
+    if (id === activeSection.value && route.hash && !controlSections.some(section => section.id === route.hash.slice(1))) void reveal(false)
+  }
   const compact = useMediaQuery('(max-width: 1000px)')
   function focusNavigation() {
     document.querySelector<HTMLElement>(compact.value ? '.control-compact-nav [role="combobox"]' : '.control-rail-link[aria-current]')?.focus({ preventScroll: true })
@@ -64,5 +69,5 @@ export function useControlNavigation(imageProvider: Ref<'native' | 'comfy' | nul
     focusNavigation()
   })
   onMounted(() => { void reveal(false) })
-  return { activeSection, currentSection, groups, visited, focusNavigation }
+  return { activeSection, currentSection, groups, visited, focusNavigation, panelReady }
 }

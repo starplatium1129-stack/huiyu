@@ -1,8 +1,8 @@
 import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import type { Scene } from '@/stores/sceneStore'
-import neneHeader from '@/assets/illustrations/nene-moonlit-study-header.webp'
-import natsumeHeader from '@/assets/illustrations/natsume-rainy-cafe-header.webp'
-import summerHeader from '@/assets/illustrations/nene-natsume-summer-outing-header.webp'
+import neneHeader from '@/assets/illustrations/nene-moonlit-study-header-1024.webp'
+import natsumeHeader from '@/assets/illustrations/natsume-rainy-cafe-header-1024.webp'
+import summerHeader from '@/assets/illustrations/nene-natsume-summer-outing-header-1024.webp'
 
 export interface ExplorerScene extends Scene {
   title?: string

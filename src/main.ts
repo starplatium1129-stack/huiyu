@@ -40,11 +40,15 @@ void (async () => {
   const center = useTaskCenter()
   stopPlatform = await initializePlatform(() => center.activeCount.value > 0)
   initializeTheme()
-  await initializeDesktopPreferences()
-  const [{ default: App }, { default: router }] = await Promise.all([import('./App.vue'), import('./router')])
+  // The platform authority is ready. Theme CSS, UI modules and the artwork
+  // lease can now prepare together; all three still finish before mounting.
+  const [[{ default: App }, { default: router }]] = await Promise.all([
+    Promise.all([import('./App.vue'), import('./router')]),
+    initializeDesktopPreferences(),
+    startArtworkSession().catch(error => console.warn('作品清理保护不可用', error)),
+  ])
   installRouteRecovery(router)
   stopNavigationFeedback = installNavigationFeedback(router)
-  await startArtworkSession().catch(error => console.warn('作品清理保护不可用', error))
   if (disposed) return
   const app = createApp(App).directive('content-motion', contentMotion).use(createPinia()).use(router)
   // Keep first-paint feedback until the initial lazy route can replace it.

@@ -45,14 +45,24 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
       const accepted = parseShowcaseManifest(raw).entries.filter(item => counts.get(item.id) === 1)
       if (alive && request === controller && !controller.signal.aborted && source === identity && revision >= publishedRequest) {
         const nextVersions = new Map(versions.value)
+        const nextEntries = new Map<string, ShowcaseEntry>()
+        let versionChanged = false
         for (const entry of accepted) {
           const previous = catalogue.value.get(entry.id)
-          if (refreshImages || (previous && JSON.stringify(previous) !== JSON.stringify(entry)))
+          const unchanged = previous && JSON.stringify(previous) === JSON.stringify(entry)
+          nextEntries.set(entry.id, unchanged ? previous : entry)
+          if (refreshImages || (previous && !unchanged)) {
             nextVersions.set(entry.id, Math.max(Date.now(), (nextVersions.get(entry.id) ?? sessionVersion.value) + 1))
+            versionChanged = true
+          }
         }
-        const nextEntries = new Map(accepted.map(item => [item.id, item]))
-        for (const id of nextVersions.keys()) if (!nextEntries.has(id)) nextVersions.delete(id)
-        versions.value = nextVersions; catalogue.value = nextEntries; publishedRequest = revision
+        for (const id of nextVersions.keys()) if (!nextEntries.has(id)) { nextVersions.delete(id); versionChanged = true }
+        // A successful revalidation must not rerender every cached image library.
+        const previousEntries = [...catalogue.value.values()]
+        if (previousEntries.length !== nextEntries.size || [...nextEntries.values()].some((entry, index) => entry !== previousEntries[index]))
+          catalogue.value = nextEntries
+        if (versionChanged) versions.value = nextVersions
+        publishedRequest = revision
       }
     } catch (cause) {
       if (alive && request === controller && (timedOut || !controller.signal.aborted))

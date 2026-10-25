@@ -15,15 +15,18 @@ let fluid: ReturnType<typeof createFluidMotion> | undefined
 let baseWidth = 1, baseHeight = 1
 let targetX = 0, targetY = 0
 let suspended = false
-let measurement: { x: number; y: number; width: number; height: number; box: string } | null = null
+type Measurement = { x: number; y: number; width: number; height: number; box: string }
+let measurement: Measurement | null = null
+const layoutCache = new Map<HTMLElement, Measurement>()
+const observedControls = new Set<HTMLElement>()
 let media: MediaQueryList | undefined
 let removeMediaListener: (() => void) | undefined
 let initialized = false
 let parent: HTMLElement | null = null
-let observedTarget: HTMLElement | null = null
 let observing = false
 let destinationBox = ''
 let parentBox = ''
+let layoutReady = false
 let keyboardInput = false
 function keyboard(event: KeyboardEvent) {
   // Keep keyboard selection and its painted state together in every group;
@@ -80,7 +83,7 @@ function focusSegment(button: HTMLButtonElement) {
 function pointer() { keyboardInput = false }
 // Motion batches all indicator reads before any indicator writes in this frame.
 function schedule() {
-  if (!suspended && !document.hidden) frame.read(update)
+  if (layoutReady && !suspended && !document.hidden) frame.read(update)
 }
 function cancelScheduled() {
   cancelFrame(update); cancelFrame(render); measurement = null
@@ -108,8 +111,9 @@ function stopObserving() {
   observing = false
   resize?.disconnect()
   mutations?.disconnect()
-  observedTarget = null
+  observedControls.clear(); layoutCache.clear()
   parentBox = ''
+  layoutReady = false
 }
 function resized(entries: ResizeObserverEntry[]) {
   if (suspended || document.hidden) return
@@ -118,40 +122,60 @@ function resized(entries: ResizeObserverEntry[]) {
     const box = `${entry.contentRect.width}:${entry.contentRect.height}`
     const reflowed = parentBox !== '' && parentBox !== box
     parentBox = box
+    layoutReady = true
     if (reflowed) {
       // A row/size change belongs to layout, not selection travel. Snap before
-      // paint so the old spring cannot leave a newly shortened control group.
-      // Absolute indicator writes do not resize the observed parent or buttons.
+      // the next indicator paint. Keep every observer's reads ahead of writes.
       cancelScheduled()
-      update()
-      cancelFrame(render)
-      render()
-      return
     }
   }
+  measureControls()
   // Observing a newly selected button produces an initial notification too;
   // it must not interrupt the ordinary continuous selection spring.
+  // Initial reads follow natural layout; all groups still share Motion's write phase.
+  if (layoutReady) update()
+}
+function measureControls() {
+  if (!parent) return
+  const selected = selectedElement()
+  const controls = new Set(parent.querySelectorAll<HTMLElement>('button, a, [role="tab"], [role="radio"]'))
+  if (selected) controls.add(selected)
+  for (const control of observedControls) if (!controls.has(control)) {
+    resize?.unobserve(control); observedControls.delete(control); layoutCache.delete(control)
+  }
+  for (const control of controls) {
+    if (!observedControls.has(control)) { observedControls.add(control); resize?.observe(control) }
+    const x = control.offsetLeft, y = control.offsetTop, width = control.offsetWidth, height = control.offsetHeight
+    layoutCache.set(control, { x, y, width, height, box: [x, y, width, height].join(',') })
+  }
+}
+function selectedElement() {
+  const selector = props.target
+  return parent?.querySelector<HTMLElement>(selector)
+    ?? (selector.includes(':scope >') ? parent?.querySelector<HTMLElement>(selector.replace(':scope >', ':scope ')) : null)
+}
+function refreshLayout() {
+  if (!observing || !parent || suspended || document.hidden) return
+  // Reordering and breakpoint gap changes can move controls without resizing
+  // them. Request a fresh natural-layout delivery instead of reading now.
+  resize?.unobserve(parent); resize?.observe(parent)
+}
+function mutated() {
+  refreshLayout()
   schedule()
 }
 function update() {
   const el = indicator.value
-  const targetSelector = props.target
-  const selected = parent?.querySelector<HTMLElement>(targetSelector)
-    ?? (targetSelector.includes(':scope >') ? parent?.querySelector<HTMLElement>(targetSelector.replace(':scope >', ':scope ')) : null)
+  const selected = selectedElement()
   if (!el || !parent || (typeof document !== 'undefined' && document.hidden)) return
-  if (selected !== observedTarget) {
-    if (observedTarget) resize?.unobserve(observedTarget)
-    observedTarget = selected ?? null
-    if (observedTarget) resize?.observe(observedTarget)
-  }
-  if (!selected?.offsetWidth || !selected.offsetHeight) { measurement = null; frame.render(render); return }
+  const geometry = selected ? layoutCache.get(selected) : undefined
+  if (selected && !geometry) resize?.observe(selected)
+  if (!geometry?.width || !geometry.height) { measurement = null; frame.render(render); return }
   // Controls and their indicator share a positioned parent. Layout coordinates
   // exclude opening/press transforms, which would otherwise be applied twice.
-  const x = selected.offsetLeft, y = selected.offsetTop
-  const width = selected.offsetWidth, height = selected.offsetHeight
-  const box = [x, y, width, height].join(',')
+  const { box } = geometry
   if (initialized && box === destinationBox && !media?.matches) return
-  measurement = { x, y, width, height, box }
+  measurement = geometry
   frame.render(render)
 }
 function render() {
@@ -201,12 +225,13 @@ onMounted(() => {
   parent = indicator.value?.parentElement ?? null
   if (!parent) return
   resize = new ResizeObserver(resized)
-  mutations = new MutationObserver(schedule)
+  mutations = new MutationObserver(mutated)
   startObserving()
   parent.addEventListener('scroll', schedule, { passive: true })
   parent.addEventListener('keydown', keyboard, true)
   parent.addEventListener('pointerdown', pointer, true)
-  document.fonts?.addEventListener('loadingdone', schedule)
+  window.addEventListener('resize', refreshLayout)
+  document.fonts?.addEventListener('loadingdone', refreshLayout)
   schedule()
 })
 onActivated(() => {
@@ -224,7 +249,8 @@ onDeactivated(() => {
 watch(() => props.target, schedule)
 onUnmounted(() => {
   suspended = true
-  document.fonts?.removeEventListener('loadingdone', schedule)
+  document.fonts?.removeEventListener('loadingdone', refreshLayout)
+  window.removeEventListener('resize', refreshLayout)
   removeMediaListener?.()
   if (typeof document !== 'undefined') {
     document.removeEventListener('visibilitychange', onVisibilityChange)

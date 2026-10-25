@@ -50,7 +50,8 @@ export function useCharacterBookshelf(items: MaybeRefOrGetter<readonly Directory
     }
     return exact.length ? exact.concat(remaining) : remaining
   })
-  const pageCount = computed(() => Math.max(1, Math.ceil(results.value.length / PAGE_SIZE)))
+  const pageCount = computed(() => Math.max(1, Math.ceil((showingShelf.value ? groups.value.length : results.value.length) / PAGE_SIZE)))
+  const visibleGroups = computed(() => groups.value.slice((page.value - 1) * PAGE_SIZE, page.value * PAGE_SIZE))
   const visibleResults = computed(() => results.value.slice((page.value - 1) * PAGE_SIZE, page.value * PAGE_SIZE))
   watch([query, mode, series], () => { page.value = 1 })
   watch(pageCount, count => { page.value = Math.min(page.value, count) }, { immediate: true })
@@ -60,5 +61,5 @@ export function useCharacterBookshelf(items: MaybeRefOrGetter<readonly Directory
   function clearSearch() { query.value = '' }
   function snapshot(): CharacterBookshelfState { return { query: query.value, mode: mode.value, series: series.value, page: page.value } }
 
-  return { query, mode, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch, snapshot }
+  return { query, mode, series, page, term, groups, visibleGroups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch, snapshot }
 }

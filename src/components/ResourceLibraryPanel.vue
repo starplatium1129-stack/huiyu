@@ -8,7 +8,7 @@
     <template v-else>
       <div class="resource-version"><span class="resource-label">当前使用</span><strong>{{ !status ? '状态待确认' : status.mounted ? '已安装资源' : '随包基础资源' }}</strong>
         <StudioTooltip v-if="status?.mounted && status.current" :content="status.current.identity">
-          <code>{{ status.current.releaseId }} · {{ status.current.identity.slice(0, 12) }}</code>
+          <code tabindex="0">{{ status.current.releaseId }} · {{ status.current.identity.slice(0, 12) }}</code>
         </StudioTooltip>
       </div>
       <p v-if="!status && loading && !error" role="status">正在读取资源库…</p>

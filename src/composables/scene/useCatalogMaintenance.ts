@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { catalogApi, isCatalogRecord, type CatalogChange, type CatalogKind, type CatalogPage, type CatalogReceipt, type CatalogRecord, type CatalogSummary, type CatalogSnapshot } from '@/api/catalogApi'
 import { ApiClientError } from '@/api/client'
@@ -20,7 +20,8 @@ const editorRecord = (record: CatalogRecord, change?: CatalogChange): CatalogRec
 // New, unfinished records may not have an ID yet; the server still validates saved records.
 const isDraftRecord = (value: unknown): value is CatalogRecord => !!value && typeof value === 'object'
   && typeof (value as CatalogRecord).id === 'string' && isCatalogRecord({ ...value, id: (value as CatalogRecord).id || 'draft' })
-export function useCatalogMaintenance() {
+export type CatalogFieldError = { field: 'id' | 'sortOrder' | 'advanced'; message: string }
+export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
   const kind = ref<CatalogKind>('scene'), search = ref(''), character = ref(''), category = ref(''), rating = ref(''), sort = ref('order'), page = ref(1)
   const result = ref<CatalogPage | null>(null), counts = ref<Record<string, number>>({}), loading = ref(false), error = ref(''), hint = ref('')
   const listScope = ref(''), listKind = ref<CatalogKind>()
@@ -31,6 +32,7 @@ export function useCatalogMaintenance() {
   const historyLoading = ref(false), historyError = ref('')
   const baseline = ref(''), bulkInput = ref(''), bulkError = ref('')
   const advanced = ref<string | null>(null), advancedError = ref(''), editorSession = ref(0)
+  const fieldError = ref<CatalogFieldError | null>(null)
   const nextSceneId = ref('')
   const characterNames = ref<Record<string, string>>({})
   let namesVersion = -1, namesController: AbortController | null = null
@@ -68,7 +70,25 @@ export function useCatalogMaintenance() {
     return ++detailSeq
   }
   function renewEditorSession() {
-    editorSession.value++; advanced.value = null; advancedError.value = ''
+    editorSession.value++; advanced.value = null; advancedError.value = ''; fieldError.value = null
+  }
+  async function focusInvalidField(field: CatalogFieldError['field']) {
+    const owner = editorSession.value, record = selected.value
+    await nextTick()
+    if (disposed || owner !== editorSession.value || selected.value !== record) return
+    const container = editorPane.value?.querySelector<HTMLElement>(`[data-catalog-field="${field}"]`)
+    for (let node: HTMLElement | null = container ?? null; node && node !== editorPane.value; node = node.parentElement)
+      if (node instanceof HTMLDetailsElement) node.open = true
+    await nextTick()
+    if (disposed || owner !== editorSession.value || selected.value !== record) return
+    const input = container?.querySelector<HTMLElement>('input:not(:disabled), textarea:not(:disabled), [role="combobox"]:not(:disabled)')
+    input?.focus({ preventScroll: true })
+    input?.scrollIntoView({ block: 'center', behavior: 'instant' })
+  }
+  function rejectField(field: CatalogFieldError['field'], message: string): false {
+    fieldError.value = { field, message }; hint.value = message
+    void focusInvalidField(field)
+    return false
   }
   function updateAdvanced(text: string, owner: number) {
     const record = selected.value
@@ -96,6 +116,7 @@ export function useCatalogMaintenance() {
     } catch (e) {
       advancedError.value = (e as Error).message
       hint.value = '完整数据尚未应用，原文已保留。请修正格式或放弃这部分修改后再暂存。'
+      void focusInvalidField('advanced')
       return false
     }
   }
@@ -189,15 +210,16 @@ export function useCatalogMaintenance() {
     if (!record || busy.value) return false
     if (editorPendingNotice.value) { hint.value = editorPendingNotice.value; return false }
     if (!applyAdvanced()) return false
-    if (!record.id.trim() || record.id.trim() !== record.id) { hint.value = '请在管理信息中填写编号，首尾不要留空白'; return false }
-    if (!Number.isSafeInteger(record.sortOrder)) { hint.value = '展示顺序需要一个整数'; return false }
+    fieldError.value = null
+    if (!record.id.trim() || record.id.trim() !== record.id) return rejectField('id', '请在管理信息中填写编号，首尾不要留空白')
+    if (!Number.isSafeInteger(record.sortOrder)) return rejectField('sortOrder', '展示顺序需要一个整数')
     const data = clone(record.data) as Record<string, unknown>
     if (record.kind === 'character') {
       data.id = record.id
       for (const field of ['profile', 'popular']) if (data[field] && typeof data[field] === 'object') (data[field] as Record<string, unknown>).id = record.id
     } else if (record.kind === 'outfit') {
       const outfit = data.outfit as Record<string, unknown>
-      if (!outfit || typeof outfit !== 'object' || Array.isArray(outfit) || record.id !== `${data.characterId}/${outfit.id}`) { hint.value = '服装记录 ID 必须为「角色ID/服装ID」'; return false }
+      if (!outfit || typeof outfit !== 'object' || Array.isArray(outfit) || record.id !== `${data.characterId}/${outfit.id}`) return rejectField('advanced', '服装记录 ID 必须为「角色ID/服装ID」')
     } else if (record.kind !== 'document') data.id = record.id
     const previous = pending.value.find(change => key(change.kind, change.id) === key(record.kind, record.id))
     const before = baseline.value ? JSON.parse(baseline.value) as CatalogRecord : null
@@ -379,10 +401,11 @@ export function useCatalogMaintenance() {
   watch(bulkInput, () => { ++bulkReadSeq }, { flush: 'sync' })
   watch(busy, value => { if (value) ++bulkReadSeq }, { flush: 'sync' })
   watch(pending, () => { preview.value = null }, { deep: true })
+  watch(() => [selected.value?.id, selected.value?.sortOrder, selected.value?.data], () => { fieldError.value = null }, { flush: 'sync' })
   const release = registerMaintenanceParticipant(() => { if (dirty.value) throw new Error('UNSAVED_CONTENT'); if (busy.value) throw new Error('CONTENT_BUSY') })
   const beforeUnload = (event: BeforeUnloadEvent) => { if (dirty.value || busy.value) event.preventDefault() }
   onMounted(() => { window.addEventListener('beforeunload', beforeUnload); void load() })
   onBeforeUnmount(() => { disposed = true; ++bulkReadSeq; ++listSeq; invalidateDetail(); clearHistory(); listController?.abort(); detailController?.abort(); namesController?.abort(); clearTimeout(timer); release(); window.removeEventListener('beforeunload', beforeUnload) })
   onBeforeRouteLeave(async () => !busy.value && (!dirty.value || await confirmAction({ title: '离开内容维护？', message: '未保存修改将丢失，可先导出草稿。', confirmLabel: '离开', danger: true })))
-  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
+  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, fieldError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
 }

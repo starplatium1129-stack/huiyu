@@ -326,7 +326,7 @@ const loadAlbumOverview = () => import('@/components/gallery/GalleryAlbumOvervie
 const loadAlbumEditor = () => import('@/components/gallery/GallerySmartAlbumEditor.vue')
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import MangaScreenLauncher from '@/components/manga/MangaScreenLauncher.vue'
-import galleryEmptyOriginal from '@/assets/illustrations/atelier-gallery.png'
+import galleryEmptyOriginal from '@/assets/illustrations/atelier-gallery-1408.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
 const galleryEmptyArt = useThemeIllustration(galleryEmptyOriginal, 'collection')
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

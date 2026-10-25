@@ -15,6 +15,9 @@ export interface CharacterArtManifest { version: string; entries: Record<string,
 const manifest = shallowRef<CharacterArtManifest>({ version: '0', entries: {} })
 export const characterArtManifest = readonly(manifest)
 export function adoptCharacterArtManifest(value: CharacterArtManifest): void {
+  // The runtime changes this immutable version on every write. Focus refreshes
+  // of the same catalogue must not invalidate every mounted character image.
+  if (isLocalStudioHost() && manifest.value.version === value.version) return
   const copy = isLocalStudioHost() ? structuredClone(value) : { version: '0', entries: {} }
   Object.values(copy.entries).forEach(Object.freeze)
   Object.freeze(copy.entries)

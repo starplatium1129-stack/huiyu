@@ -6,6 +6,7 @@ import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 
 const props = defineProps<{
@@ -103,7 +104,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           <label :for="idOf('seed')">随机种子</label>
           <div class="anima-seed-control">
             <input :id="idOf('seed')" v-model.number="seed" type="number" min="0" step="1" placeholder="随机" class="input input-sm anima-num" :disabled="busy" />
-            <button type="button" class="btn btn-ghost btn-icon btn-sm" aria-label="生成随机种子" title="生成随机种子" :disabled="busy" @click="randomSeed"><ArchiveIcon name="refresh" /></button>
+            <StudioTooltip content="生成随机种子" anchor><button type="button" class="btn btn-ghost btn-icon btn-sm" aria-label="生成随机种子" :disabled="busy" @click="randomSeed"><ArchiveIcon name="refresh" /></button></StudioTooltip>
           </div>
         </div>
         <div class="anima-field anima-field--slider">

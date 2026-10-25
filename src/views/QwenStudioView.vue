@@ -11,7 +11,7 @@
           <button type="button" :class="{ active: preview === 'source' }" :aria-pressed="preview === 'source'" :disabled="!sourceUrl" @click="referencePreview = ''; preview = 'source'">输入图片</button>
         </div><strong v-else>生成结果</strong><span v-if="result && preview === 'result'">{{ result.input.width }} × {{ result.input.height }}</span></div>
         <div class="qwen-stage">
-          <ZoomableImageViewer v-if="preview === 'source' ? previewInputUrl : resultUrl" :src="preview === 'source' ? previewInputUrl : resultUrl" :alt="preview === 'source' ? '编辑输入图片' : title + '生成结果'" />
+          <AsyncPanel v-if="preview === 'source' ? previewInputUrl : resultUrl" :loader="loadImageViewer" label="图片预览" v-slot="{ component }"><component :is="component" :src="preview === 'source' ? previewInputUrl : resultUrl" :alt="preview === 'source' ? '编辑输入图片' : title + '生成结果'" /></AsyncPanel>
           <div v-else class="qwen-empty"><ArchiveIcon name="image" /><h2>{{ result ? '结果已保存在任务中' : '从一句描述开始' }}</h2><p>{{ result ? '可直接存入作品册，或刷新预览。' : moss ? '填写画面描述，确认画幅后生成图片。' : '填写画面描述，再点击生成。编辑已有图片时，先导入原图。' }}</p></div>
         </div>
         <p v-if="result && task?.taskId !== result.taskId">这里保留的是上一次结果，新任务不会覆盖已保存的图片。</p>
@@ -68,12 +68,13 @@ import { useRoute, useRouter, RouterLink } from 'vue-router'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import { useQwenStudio } from '@/composables/generation/useQwenStudio'
 import { useTaskCenter } from '@/composables/useTaskCenter'
 const props = defineProps<{ mode?: 'qwen' | 'moss' }>()
+const loadImageViewer = () => import('@/components/visual/ZoomableImageViewer.vue')
 const moss = props.mode === 'moss'
 const title = moss ? 'MiaoMiao MOSS 创作' : 'Qwen 图像创作'
 const introduction = moss ? '用中文、自然语言或标签描绘画面，也可以直接输入布局 JSON。' : '用文字生成画面，或结合原图与参考图，描述想做的修改。'

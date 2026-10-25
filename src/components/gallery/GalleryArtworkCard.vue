@@ -86,7 +86,7 @@
         @load="onImageLoad($event, 'image')"
         @error="onImageError($event, 'image')"
       />
-      <Transition name="artwork-skeleton"><div v-if="previewPending" class="artwork-skeleton" aria-hidden="true"></div></Transition>
+      <Transition :css="false" @leave="skeleton.leave" @leave-cancelled="skeleton.cancel"><div v-if="previewPending" class="artwork-skeleton" aria-hidden="true"></div></Transition>
     </div>
       <div class="artwork-caption">
         <span class="artwork-caption-copy tw:min-w-0">
@@ -112,6 +112,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import { artworkContinueTarget } from '@/utils/artworkNavigation'
+import { useOpacityLeave } from '@/composables/useOpacityLeave'
 import { readStoryOrigin, storyOriginRoute } from '@/types/storyOrigin'
 const props = defineProps<{
   item: ArtworkRecord; title: string; character: string; formattedDate: string; ratio: number;
@@ -119,6 +120,7 @@ const props = defineProps<{
   selectionMode: boolean; selected: boolean; confirmingDelete: boolean; deleting: boolean;
 }>()
 const continueTarget = computed(() => artworkContinueTarget(props.item, 'remix'))
+const skeleton = useOpacityLeave()
 const storyOrigin = computed(() => readStoryOrigin(props.item.storyOrigin))
 const artworkButton = ref<HTMLElement | null>(null)
 let selectShift = false

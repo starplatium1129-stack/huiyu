@@ -26,7 +26,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
-import lostOriginal from '@/assets/illustrations/natsume-lost.png'
+import lostOriginal from '@/assets/illustrations/natsume-lost-1408.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
 const lostNatsume = useThemeIllustration(lostOriginal, 'scene')
 

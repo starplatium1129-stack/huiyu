@@ -1,9 +1,9 @@
 <template>
-  <img class="atelier-empty-art" :src="studioArt" width="1536" height="1024" alt="" aria-hidden="true" draggable="false" />
+  <img class="atelier-empty-art" :src="studioArt" width="768" height="512" alt="" aria-hidden="true" draggable="false" />
 </template>
 
 <script setup lang="ts">
-import studioOriginal from '@/assets/illustrations/atelier-studio.webp'
+import studioOriginal from '@/assets/illustrations/atelier-studio-768.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
 const studioArt = useThemeIllustration(studioOriginal, 'draw')
 </script>

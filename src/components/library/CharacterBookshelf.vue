@@ -16,7 +16,7 @@
     <div v-content-motion:up="`${showingShelf}:${series}:${page}`">
     <template v-if="showingShelf">
       <div v-if="groups.length" ref="shelfGrid" class="bookshelf-grid tw:grid" role="group" aria-label="作品书架">
-        <article v-for="group in groups" :key="group.key" class="bookshelf-work tw:min-w-0 tw:flex tw:flex-col tw:items-center tw:rounded-lg tw:cursor-pointer">
+        <article v-for="group in visibleGroups" :key="group.key" class="bookshelf-work tw:min-w-0 tw:flex tw:flex-col tw:items-center tw:rounded-lg tw:cursor-pointer">
         <button type="button" class="bookshelf-open tw:w-full tw:flex tw:flex-col tw:items-center tw:p-0 tw:rounded-lg tw:cursor-pointer" :data-franchise="group.key" :aria-label="`${group.label}，${group.count} 位角色`" @click="enterGroup(group.key)">
           <span class="bookshelf-cover-stage tw:relative tw:block tw:w-full tw:mb-s-4 tw:isolate" :class="{ 'is-empty': !group.covers.length }" aria-hidden="true">
             <span v-for="(cover, index) in rotatedCovers(group.key, group.covers)" :key="cover.id" class="bookshelf-cover tw:absolute tw:left-[21%] tw:top-[5%] tw:w-[58%] tw:h-[86%] tw:rounded-lg tw:overflow-hidden" :data-slot="index">
@@ -54,8 +54,8 @@
         <ArchiveIcon name="search" /><p>没有找到匹配的角色</p>
         <button type="button" class="bookshelf-text-button" @click="clearQuery">清除搜索</button>
       </div>
-      <StudioPagination v-if="pageCount > 1" class="tw:mt-s-6" :model-value="page" :pages="pageCount" label="角色分页" @update:model-value="changePage" />
     </template>
+    <StudioPagination v-if="pageCount > 1" class="tw:mt-s-6" :model-value="page" :pages="pageCount" :label="showingShelf ? '作品书架分页' : '角色分页'" @update:model-value="changePage" />
     </div>
   </section>
 </template>
@@ -83,6 +83,7 @@ const characterGrid = ref<HTMLElement | null>(null)
 const resultsHeading = ref<HTMLElement | null>(null)
 const keyboardInput = ref(false)
 let shelfAnchor: ScrollAnchor | null = null
+let shelfPage = props.initialState?.mode === 'shelf' ? props.initialState.page : 1
 let cancelRestore = () => {}
 let revision = 0
 function interruptNavigation() { cancelRestore(); return ++revision }
@@ -92,7 +93,7 @@ function rotatedCovers(key: string, covers: readonly DirectoryCharacter[]) {
   const offset = (coverOffsets.value[key] || 0) % (covers.length || 1)
   return [...covers.slice(offset), ...covers.slice(0, offset)]
 }
-const { query, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch, snapshot } = useCharacterBookshelf(() => props.items, props.initialState)
+const { query, series, page, term, groups, visibleGroups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch, snapshot } = useCharacterBookshelf(() => props.items, props.initialState)
 useListTransition(characterGrid, () => visibleResults.value.map(item => item.id))
 
 function focusResults() {
@@ -104,6 +105,7 @@ function focusResults() {
 }
 async function enterGroup(key: string) {
   const version = interruptNavigation(); shelfAnchor = captureScrollAnchor()
+  shelfPage = page.value
   openGroup(key); await nextTick()
   if (version !== revision) return
   focusResults()
@@ -111,8 +113,10 @@ async function enterGroup(key: string) {
 async function switchMode(value: 'shelf' | 'characters') {
   if (value === 'shelf' && showingShelf.value || value === 'characters' && !showingShelf.value && series.value === null && !term.value) return
   const version = interruptNavigation()
-  if (showingShelf.value) shelfAnchor = captureScrollAnchor()
+  if (showingShelf.value) { shelfAnchor = captureScrollAnchor(); shelfPage = page.value }
   changeMode(value); await nextTick()
+  if (version !== revision) return
+  if (value === 'shelf') { page.value = Math.min(shelfPage, pageCount.value); await nextTick() }
   if (version !== revision) return
   if (value === 'shelf' && shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => version === revision && showingShelf.value })
   searchInput.value?.focus({ preventScroll: true })
@@ -123,12 +127,22 @@ async function backToShelf() {
   changeMode('shelf')
   await nextTick()
   if (version !== revision) return
+  page.value = Math.min(shelfPage, pageCount.value)
+  await nextTick()
+  if (version !== revision) return
   if (shelfAnchor) cancelRestore = restoreScrollAnchor(shelfAnchor, { immediate: true, shouldContinue: () => version === revision && showingShelf.value })
   const origin = [...(shelfGrid.value?.querySelectorAll<HTMLButtonElement>('[data-franchise]') || [])].find(button => button.dataset.franchise === key)
   ;(origin || searchInput.value)?.focus({ preventScroll: true })
 }
 async function clearQuery() { const version = interruptNavigation(); clearSearch(); await nextTick(); if (version === revision) searchInput.value?.focus() }
-async function changePage(value: number) { const version = interruptNavigation(); page.value = value; await nextTick(); if (version === revision) focusResults() }
+async function changePage(value: number) {
+  const version = interruptNavigation(); page.value = value; await nextTick()
+  if (version !== revision) return
+  if (showingShelf.value) {
+    const target = shelfGrid.value?.querySelector<HTMLButtonElement>('[data-franchise]')
+    target?.focus({ preventScroll: true }); target?.scrollIntoView({ block: 'center', behavior: 'instant' })
+  } else focusResults()
+}
 function onSearchKeydown(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229) return
   if (event.key === 'ArrowDown') {

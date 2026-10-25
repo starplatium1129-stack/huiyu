@@ -10,14 +10,16 @@ type Arrival = { root: ContentSpring; content: Map<HTMLElement, ReadingSurface>;
 /** The route root only fades: fixed toolbars and native-overlay anchors stay put. */
 export function useRouteTransition(destinationPath: () => string) {
   const active = new Map<HTMLElement, Arrival>()
+  const pending = new Map<HTMLElement, { observer: ResizeObserver; finish: () => void }>()
   let keyboard = false
   let interrupted = new WeakMap<HTMLElement, Presentation>()
   let departure: { path: string; time: number; root: SpringPresentation; content: SpringPresentation[] } | undefined
   let leaving: HTMLElement | undefined
   let focusReturn: { href: string | null; origin: Element } | undefined
   const pathname = (path: string) => path.split(/[?#]/, 1)[0]
-  function settle(el: HTMLElement) { active.get(el)?.finish() }
+  function settle(el: HTMLElement) { pending.get(el)?.finish(); active.get(el)?.finish() }
   function settleAll() {
+    for (const arrival of [...pending.values()]) arrival.finish()
     for (const arrival of [...active.values()]) arrival.finish()
     interrupted = new WeakMap()
     departure = undefined
@@ -113,7 +115,26 @@ export function useRouteTransition(destinationPath: () => string) {
     for (const surface of content.values()) surface.motion.to([0], entering ? arrived : undefined)
     root.to([entering ? 1 : 0], entering ? arrived : finish)
   }
-  function onEnter(element: Element, done: () => void) { transition(element as HTMLElement, true, done) }
+  function onEnter(element: Element, done: () => void) {
+    const el = element as HTMLElement
+    if (el.dataset.routeEntered === 'true' || prefersReducedMotion() || document.hidden
+      || typeof ResizeObserver === 'undefined' || !el.querySelector('[data-route-arrive]')) {
+      transition(el, true, done); return
+    }
+    // First arrival measures large reading surfaces. Observe the browser's
+    // natural layout before measuring, then start the animation before paint;
+    // entering must not synchronously lay out a route inside Vue's patch.
+    const observer = new ResizeObserver(() => {
+      if (!pending.has(el)) return
+      observer.disconnect(); pending.delete(el)
+      transition(el, true, done)
+    })
+    pending.set(el, { observer, finish: () => {
+      observer.disconnect(); pending.delete(el); delete el.dataset.routeEntering
+      done()
+    } })
+    observer.observe(el)
+  }
   function onLeave(element: Element, done: () => void) {
     const el = element as HTMLElement, origin = document.activeElement
     focusReturn = keyboard && origin && el.contains(origin)

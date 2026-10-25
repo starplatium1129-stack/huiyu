@@ -87,7 +87,7 @@
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
             <template v-else-if="selected">
               <p v-if="editorPendingNotice" class="catalog-feedback" role="status">{{ editorPendingNotice }}</p>
-              <CatalogRecordEditor :key="editorSession" v-model:record="selected" :advanced="advanced" :advanced-error="advancedError" :editor-session="editorSession" @advanced="updateAdvanced" @apply-advanced="applyAdvanced" @discard-advanced="discardAdvanced" :disabled="busy || !!editorPendingNotice" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
+              <CatalogRecordEditor :key="editorSession" v-model:record="selected" :advanced="advanced" :advanced-error="advancedError" :field-error="fieldError" :editor-session="editorSession" @advanced="updateAdvanced" @apply-advanced="applyAdvanced" @discard-advanced="discardAdvanced" :disabled="busy || !!editorPendingNotice" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
               <details v-if="selected.revision" class="catalog-history" :aria-busy="historyLoading">
                 <StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary>
                 <p v-if="historyLoading" role="status">正在读取版本…</p>
@@ -151,7 +151,7 @@ const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }>
   { value: 'character', label: '角色档案', icon: 'character' }, { value: 'outfit', label: '服装方案', icon: 'image' },
   { value: 'scene', label: '场景故事', icon: 'scene' }, { value: 'blueprint', label: '场景蓝图', icon: 'spark' }, { value: 'document', label: '标签与推荐', icon: 'manager' },
 ]
-const { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending: withdrawChange, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
+const { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, fieldError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending: withdrawChange, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance(editorPane)
 watch(listScope, () => { recordList.value?.scrollTo(0, 0) }, { flush: 'post' })
 watch(preview, value => { if (value) pendingOpen.value = true })
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])

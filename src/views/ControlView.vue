@@ -39,16 +39,16 @@
             class="control-section" :data-control-section="item.id" v-content-motion:right="activeSection === item.id">
             <template v-if="visited.has(item.id) || item.id === 'control-setup' && localSetupRequested">
               <ControlWelcome v-if="item.id === 'control-overview'" />
-              <ControlSetupPanel v-else-if="item.id === 'control-setup'" />
+              <AsyncPanel v-else-if="item.id === 'control-setup'" :loader="loadSetup" label="绘图与模型" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <AsyncPanel v-else-if="item.id === 'control-interrogate'" :loader="loadInterrogateSetup" label="图片反推" v-slot="{ component }"><component :is="component" /></AsyncPanel>
-              <ResourceLibraryPanel v-else-if="item.id === 'control-library'" />
+              <AsyncPanel v-else-if="item.id === 'control-library'" :loader="loadLibrary" label="离线资源库" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <div v-else-if="item.id === 'control-personalization'" class="control-panel-stack">
                 <section class="panel-card"><div class="panel-kicker">随时调整 · 自动保存</div><h2 class="panel-heading">让画室更合你心意</h2><p class="control-section-note">主题、字号和动态效果可在外观面板中调整。</p><AppearancePreferences launcher-only /></section>
                 <DesktopPreferences />
               </div>
-              <ControlServicesPanel v-else-if="item.id === 'control-services'" />
-              <ControlSharePanel v-else-if="item.id === 'control-share'" />
-              <ControlLogsPanel v-else-if="item.id === 'control-logs'" :active="activeSection === item.id" />
+              <AsyncPanel v-else-if="item.id === 'control-services'" :loader="loadServices" label="服务与连接" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
+              <AsyncPanel v-else-if="item.id === 'control-share'" :loader="loadShare" label="分享与访问" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
+              <AsyncPanel v-else-if="item.id === 'control-logs'" :loader="loadLogs" label="日志与排查" v-slot="{ component }"><component :is="component" :active="activeSection === item.id" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
             </template>
           </div>
         </main>
@@ -67,15 +67,10 @@ import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
-import ResourceLibraryPanel from '@/components/ResourceLibraryPanel.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import ControlWelcome from '@/components/control/ControlWelcome.vue'
-import ControlSetupPanel from '@/components/control/ControlSetupPanel.vue'
-import ControlServicesPanel from '@/components/control/ControlServicesPanel.vue'
-import ControlSharePanel from '@/components/control/ControlSharePanel.vue'
-import ControlLogsPanel from '@/components/control/ControlLogsPanel.vue'
 import ControlOperation from '@/components/control/ControlOperation.vue'
 import { controlSections, useControlNavigation } from '@/composables/useControlNavigation'
 import { provideControlContext } from '@/composables/useControlContext'
@@ -83,10 +78,15 @@ import { useLocalSetupPanelLoading } from '@/composables/useLocalSetupPanelLoadi
 const router = useRouter()
 const { status } = provideControlContext()
 const { statusError, serviceChecking, opBusy, pollStatus } = status
-const { activeSection, currentSection, groups, visited, focusNavigation } = useControlNavigation(status.imageProvider)
+const { activeSection, currentSection, groups, visited, focusNavigation, panelReady } = useControlNavigation(status.imageProvider)
 const { localSetupRequested } = useLocalSetupPanelLoading()
 const compactOptions = groups.map(group => ({ label: group.label, options: group.sections.map(section => ({ value: section.id, label: section.label })) }))
 const loadInterrogateSetup = () => import('@/components/InterrogateSetupPanel.vue')
+const loadSetup = () => import('@/components/control/ControlSetupPanel.vue')
+const loadLibrary = () => import('@/components/ResourceLibraryPanel.vue')
+const loadServices = () => import('@/components/control/ControlServicesPanel.vue')
+const loadShare = () => import('@/components/control/ControlSharePanel.vue')
+const loadLogs = () => import('@/components/control/ControlLogsPanel.vue')
 function selectSection(id: string | number) { void router.push({ path: '/control', hash: '#' + id }) }
 function focusMain() { document.getElementById('control-main')?.focus({ preventScroll: true }) }
 onMounted(status.startPolling)

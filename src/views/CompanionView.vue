@@ -343,7 +343,8 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
 const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
-import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
+// Quality settings are rendered only after the preferences slot is revealed.
+const Live2DQualityControl = defineAsyncComponent(() => import('@/components/Live2DQualityControl.vue'))
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 const loadSpeechInputSettings = () => import('@/components/SpeechInputSettings.vue')
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"

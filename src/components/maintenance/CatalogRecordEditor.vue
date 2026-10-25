@@ -23,18 +23,18 @@
     <details class="catalog-advanced catalog-management-info" :open="!record.revision">
       <StudioDisclosureSummary>管理信息</StudioDisclosureSummary>
       <div data-disclosure-content class="form-grid">
-        <label class="form-group"><span class="field-label">内部编号</span><input v-model="record.id" class="input" :disabled="!!record.revision || fieldsDisabled || record.kind === 'outfit'" /></label>
-        <label class="form-group"><span class="field-label">排序（小值优先）</span><input v-model.number="record.sortOrder" class="input" type="number" step="1" :disabled="fieldsDisabled" /></label>
+        <label class="form-group" data-catalog-field="id"><span class="field-label">内部编号</span><input v-model="record.id" class="input" :aria-invalid="fieldError?.field === 'id' || undefined" :aria-describedby="fieldError?.field === 'id' ? fieldErrorId : undefined" :disabled="!!record.revision || fieldsDisabled || record.kind === 'outfit'" /><span v-if="fieldError?.field === 'id'" :id="fieldErrorId" class="catalog-error" role="alert">{{ fieldError.message }}</span></label>
+        <label class="form-group" data-catalog-field="sortOrder"><span class="field-label">排序（小值优先）</span><input v-model.number="record.sortOrder" class="input" type="number" step="1" :aria-invalid="fieldError?.field === 'sortOrder' || undefined" :aria-describedby="fieldError?.field === 'sortOrder' ? fieldErrorId : undefined" :disabled="fieldsDisabled" /><span v-if="fieldError?.field === 'sortOrder'" :id="fieldErrorId" class="catalog-error" role="alert">{{ fieldError.message }}</span></label>
         <label v-for="field in fields.filter(f => technicalPaths.has(f.path))" :key="field.path" class="form-group"><span class="field-label">{{ field.label }}</span><textarea v-if="field.type === 'list'" class="input" rows="2" :value="text(field)" :disabled="fieldsDisabled || locked(field.path)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea><input v-else class="input" :value="text(field)" :disabled="fieldsDisabled || locked(field.path)" @input="update(field, ($event.target as HTMLInputElement).value)" /></label>
       </div>
     </details>
-    <details v-if="!systemDocument" class="catalog-advanced" :open="advancedOpen" @toggle="toggleAdvanced">
+    <details v-if="!systemDocument" class="catalog-advanced" data-catalog-field="advanced" :open="advancedOpen" @toggle="toggleAdvanced">
       <StudioDisclosureSummary>完整数据与扩展设置</StudioDisclosureSummary><div data-disclosure-content>
       <p v-if="advanced !== null" class="catalog-note" role="status">完整数据尚未应用。请应用或放弃这部分修改后继续填写普通字段；暂存和保存也会先检查这些数据。</p>
-      <textarea v-if="advancedRevealed" :value="advancedText" class="input" rows="12" aria-label="完整内容数据" :aria-invalid="!!advancedError" :aria-describedby="advancedError ? 'catalog-advanced-error' : undefined" :disabled="disabled" @input="updateAdvanced"></textarea>
+      <textarea v-if="advancedRevealed" :value="advancedText" class="input" rows="12" aria-label="完整内容数据" :aria-invalid="!!completeDataError" :aria-describedby="completeDataError ? 'catalog-advanced-error' : undefined" :disabled="disabled" @input="updateAdvanced"></textarea>
       <button v-if="advancedRevealed" class="btn btn-ghost btn-sm" type="button" :disabled="disabled || advanced === null" @click="emit('applyAdvanced', owner)">应用这些设置</button>
       <button v-if="advanced !== null" class="btn btn-quiet btn-sm" type="button" :disabled="disabled" @click="emit('discardAdvanced', owner)">放弃完整数据修改</button>
-      <p v-if="advancedError" id="catalog-advanced-error" role="alert" class="catalog-error">{{ advancedError }}</p></div>
+      <p v-if="completeDataError" id="catalog-advanced-error" role="alert" class="catalog-error">{{ completeDataError }}</p></div>
     </details>
     <p v-if="error" role="alert" class="catalog-error">{{ error }}</p>
     <p v-if="generated" class="catalog-note">这份内容来自已有画面。名称和说明可以修改，原来的生成描述会保留。</p>
@@ -49,7 +49,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, useId, watch } from 'vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -59,7 +59,9 @@ import CatalogPromptPreview from './CatalogPromptPreview.vue'
 import type { CatalogChange, CatalogRecord } from '@/api/catalogApi'
 import { CATALOG_FIELDS, fieldValue, setField, type CatalogField } from '@/composables/scene/catalogFields'
 import { CATALOG_LABELS, recordTitle } from '@/composables/scene/catalogPresentation'
-const props = defineProps<{ disabled: boolean; characterNames: Record<string, string>; pending: CatalogChange[]; dirty: boolean; advanced: string | null; advancedError: string; editorSession: number }>()
+import type { CatalogFieldError } from '@/composables/scene/useCatalogMaintenance'
+const props = defineProps<{ disabled: boolean; characterNames: Record<string, string>; pending: CatalogChange[]; dirty: boolean; advanced: string | null; advancedError: string; fieldError: CatalogFieldError | null; editorSession: number }>()
+const fieldErrorId = `catalog-field-error-${useId()}`
 const record = defineModel<CatalogRecord>('record', { required: true })
 const emit = defineEmits<{ stage: []; duplicate: []; remove: []; advanced: [text: string, owner: number]; applyAdvanced: [owner: number]; discardAdvanced: [owner: number] }>()
 const fields = computed(() => CATALOG_FIELDS[record.value.kind]), sections = computed(() => [...new Set(fields.value.map(f => f.section))])
@@ -72,12 +74,13 @@ let disposed = false
 onBeforeUnmount(() => { disposed = true })
 const fieldsDisabled = computed(() => props.disabled || props.advanced !== null)
 const advancedText = computed(() => props.advanced ?? JSON.stringify(record.value.data, null, 2))
+const completeDataError = computed(() => props.advancedError || (props.fieldError?.field === 'advanced' ? props.fieldError.message : ''))
 function toggleAdvanced(event: Event) {
   advancedOpen.value = (event.target as HTMLDetailsElement).open
   if (advancedOpen.value) advancedRevealed.value = true
 }
-watch(() => [props.advanced, props.advancedError], () => {
-  if (props.advanced !== null) { advancedOpen.value = true; advancedRevealed.value = true }
+watch(() => [props.advanced, completeDataError.value], () => {
+  if (props.advanced !== null || completeDataError.value) { advancedOpen.value = true; advancedRevealed.value = true }
 })
 function updateAdvanced(event: Event) {
   if (!disposed && !props.disabled) emit('advanced', (event.target as HTMLTextAreaElement).value, owner)

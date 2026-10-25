@@ -20,7 +20,7 @@ import {
     type ExplorerScene,
 } from './sceneExplorerPresentation';
 import { orderExplorerScenes } from './sceneExplorerOrdering';
-import { computed,nextTick,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
+import { computed,nextTick,onActivated,onDeactivated,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
 
@@ -300,7 +300,8 @@ export function useSceneExplorerWorkspace() {
         ? fChar.value as SceneBrowseTarget
         : debouncedQuery.value.trim() || fTier.value !== 'core' ? 'all' : 'core');
     let preferenceLoad: Promise<PreferenceProfile | null> | undefined;
-    async function refreshScenes(target: SceneBrowseTarget): Promise<boolean> {
+    let loadedTarget: SceneBrowseTarget | undefined, loadedVersion: number | undefined;
+    async function refreshScenes(target: SceneBrowseTarget, reuseCatalog = false): Promise<boolean> {
         const revision = ++loadRevision;
         loading.value = true;
         loadError.value = '';
@@ -308,10 +309,15 @@ export function useSceneExplorerWorkspace() {
         // across filters, but refresh them on an explicit reload or new page visit.
         preferenceLoad ??= artworkRepository.readPreferenceHistory().then(buildPreferenceProfile).catch(() => null);
         try {
-            const [catalog, nextProfile] = await Promise.all([sceneStore.loadBrowserScenes(target), preferenceLoad]);
+            const retained = reuseCatalog && loadedTarget === target && loadedVersion === sceneStore.version;
+            const sourceVersion = sceneStore.version;
+            const [catalog, nextProfile] = await Promise.all([retained ? null : sceneStore.loadBrowserScenes(target), preferenceLoad]);
             if (revision !== loadRevision) return false;
-            scenes.value = catalog.scenes as ExplorerScene[];
-            curation.value = catalog.curation as ExplorerCuration;
+            if (catalog) {
+                scenes.value = catalog.scenes as ExplorerScene[];
+                curation.value = catalog.curation as ExplorerCuration;
+                loadedTarget = target; loadedVersion = sourceVersion;
+            }
             if (nextProfile) profile.value = nextProfile;
             return true;
         } catch (e) {
@@ -321,7 +327,7 @@ export function useSceneExplorerWorkspace() {
             if (revision === loadRevision) loading.value = false;
         }
     }
-    async function init() {
+    async function openWorkspace(reuseCatalog = false) {
         const openingRevision = ++loadRevision;
         dataReady = false;
         preferenceLoad = undefined;
@@ -329,13 +335,17 @@ export function useSceneExplorerWorkspace() {
         await nextTick();
         if (openingRevision !== loadRevision) return;
         dataReady = true;
-        await refreshScenes(browseTarget.value);
+        await refreshScenes(browseTarget.value, reuseCatalog);
     }
+    function init() { return openWorkspace(); }
     // Query changes only fetch when crossing core/full coverage, never per key.
     watch(browseTarget, target => { if (dataReady) void refreshScenes(target); });
     watch(() => sceneStore.version, () => {
-        loadRevision++; scenes.value = []; curation.value = {}; drawerScene.value = null; handledScene = '';
-        if (dataReady) void refreshScenes(browseTarget.value);
+        loadRevision++; loadedTarget = undefined; drawerScene.value = null; handledScene = '';
+        if (dataReady) {
+            scenes.value = []; curation.value = {};
+            void refreshScenes(browseTarget.value);
+        }
     });
     watch([requestedScene, loading], ([id, pending]) => {
         if (!id) {
@@ -350,6 +360,16 @@ export function useSceneExplorerWorkspace() {
         else { if (linkedViewer) drawerScene.value = null; toast.error('这个场景暂不可用，可继续浏览其他灵感'); }
     }, { flush: 'post' });
     onMounted(() => { init(); });
+    let activatedOnce = false;
+    onActivated(() => {
+        if (!activatedOnce) { activatedOnce = true; return; }
+        favs.value = readFavorites(); hiddenIds.value = readHiddenScenes(); localUsage.value = readSceneUsage();
+        void openWorkspace(true);
+    });
+    onDeactivated(() => {
+        dataReady = false; loadRevision++; clearFilterAnchor();
+        drawerScene.value = null; handledScene = ''; linkedViewer = false; closingLinked = false;
+    });
     return {
         ...filters,
         companionId, scenes, manualCompanion, moodRails, applyMoodRail,
