@@ -1,9 +1,14 @@
 import endfieldLora from '../../runtime-rs/src/images/endfield-lora.json' with { type: 'json' }
 
-/** Only the installed Endfield cast uses this collection; expanded 2.9B is excluded. */
+/** Endfield character bindings, including Si's dedicated Anima Base LoRA. */
 export function endfieldAnimaBinding(characterId: string | null | undefined, family = 'anima', modelId = 'anima-miaomiao-v1.6') {
+  if (family !== 'anima' || !characterId) return null
+  if (characterId === 'si_arknights') {
+    if (!['anima-base-v1.0', 'anima-miaomiao-v1.6'].includes(modelId)) return null
+    return { character: characterId, loraId: 'L_SI_ANIMA_BASE_V1', loraStrength: 0.8 }
+  }
   const nativeCharacters = endfieldLora.nativeCharactersByModel as Record<string, string[]>
-  if (family !== 'anima' || !characterId || !Object.hasOwn(endfieldLora.characters, characterId)
+  if (!Object.hasOwn(endfieldLora.characters, characterId)
     || !endfieldLora.compatibleModels.includes(modelId) || nativeCharacters[modelId]?.includes(characterId)) return null
   return { character: characterId, loraId: endfieldLora.id, loraStrength: endfieldLora.strength }
 }
