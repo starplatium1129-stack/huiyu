@@ -1,8 +1,8 @@
-import { computed, ref, watch, type Ref } from 'vue'
-import { Position, type Edge, type Node } from '@vue-flow/core'
+import { computed, ref, shallowRef, watch, type Ref } from 'vue'
+import { Position, type Edge, type Node, type NodeChange } from '@vue-flow/core'
 import type { CharacterProfile } from '@/types/character'
 import type { CharacterRelation, RelationPerson } from '@/types/characterRelations'
-import { arrangeTerritories, atlasIdentity, atlasShape, type AtlasShape } from '@/utils/relationAtlas'
+import { arrangeTerritories, atlasIdentity, atlasShape, atlasPortraitField, type AtlasShape } from '@/utils/relationAtlas'
 
 export type CircleDimension = 'region' | 'race' | 'school'
 const dimensions: Array<{ value: CircleDimension; label: string }> = [
@@ -13,11 +13,16 @@ const dimensions: Array<{ value: CircleDimension; label: string }> = [
 export function useRelationCircles(input: {
   work: Ref<string>; people: Ref<RelationPerson[]>; classificationPeople: Ref<RelationPerson[]>; relations: Ref<CharacterRelation[]>
   nodes: Ref<Node[]>; edges: Ref<Edge[]>; profileFor: (person: RelationPerson) => CharacterProfile | undefined
+  size: Ref<{ width: number; height: number }>
   clearSelection: () => void
 }) {
   const mode = ref<'circles' | 'person'>('circles')
   const dimension = ref<CircleDimension>('region')
   const groupId = ref(''), hoveredGroup = ref('')
+  const page = ref(0)
+  const readingAnchor = ref('')
+  const readingPlaces = new Map<string, string>()
+  const trail = ref<Array<{ id: string; first: string }>>([])
   const options = computed(() => dimensions.filter(item => input.classificationPeople.value.some(person => input.profileFor(person)?.identity?.[item.value])))
   const enabled = computed(() => mode.value === 'circles' && options.value.length > 0)
   const dimensionLabel = computed(() => dimensions.find(item => item.value === dimension.value)!.label)
@@ -47,10 +52,30 @@ export function useRelationCircles(input: {
     })
   })
 
-  function overview() { groupId.value = ''; hoveredGroup.value = ''; input.clearSelection() }
-  function openGroup(id: string) { groupId.value = id; hoveredGroup.value = ''; input.clearSelection() }
-  function reveal(person: RelationPerson) { mode.value = 'circles'; groupId.value = groupFor(person) }
-  watch(input.work, () => { mode.value = 'circles'; overview() })
+  function anchorAt(id: string) {
+    readingAnchor.value = members.value.find(person => person.id === id)?.id || members.value[0]?.id || ''
+    page.value = Math.max(0, Math.floor(members.value.findIndex(person => person.id === readingAnchor.value) / pageSize.value))
+    if (groupId.value) readingPlaces.set(`${dimension.value}:${groupId.value}`, readingAnchor.value)
+  }
+  function overview() { groupId.value = ''; page.value = 0; readingAnchor.value = ''; trail.value = []; hoveredGroup.value = ''; input.clearSelection() }
+  function openGroup(id: string) {
+    if (id === groupId.value) return
+    if (groupId.value) trail.value.push({ id: groupId.value, first: readingAnchor.value })
+    groupId.value = id; anchorAt(readingPlaces.get(`${dimension.value}:${id}`) || '')
+    hoveredGroup.value = ''; input.clearSelection()
+  }
+  function backGroup() {
+    const previous = trail.value.pop()
+    if (!previous) return
+    groupId.value = previous.id
+    anchorAt(previous.first)
+    hoveredGroup.value = ''; input.clearSelection()
+  }
+  function reveal(person: RelationPerson) {
+    mode.value = 'circles'; openGroup(groupFor(person))
+    anchorAt(person.id)
+  }
+  watch(input.work, () => { readingPlaces.clear(); mode.value = 'circles'; overview() })
   watch(options, items => {
     if (!items.some(item => item.value === dimension.value)) dimension.value = items[0]?.value || 'region'
   }, { immediate: true })
@@ -68,9 +93,34 @@ export function useRelationCircles(input: {
         return a && b && a !== b ? [[a, b] as [string, string]] : []
       }))
   })
-  const detailShape = computed(() => atlasShape(Math.max(1, members.value.length)))
-  const neighborGroups = computed(() => [...new Set(outsideConnections.value.map(connection => connection.group))]
-    .flatMap(id => groups.value.find(group => group.id === id) || []))
+  // Keep the portraits readable instead of shrinking a large group into a single screen.
+  const pageSize = computed(() => {
+    const { width, height } = input.size.value
+    if (!width || !height) return 7
+    let count = 1
+    for (let next = 2; next <= 36; next++) {
+      const shape = atlasShape(next)
+      if (shape.width * .9 > Math.max(264, width - 420) || shape.height * .9 > Math.max(230, height - 190)) break
+      count = next
+    }
+    return count
+  })
+  const pageCount = computed(() => Math.max(1, Math.ceil(members.value.length / pageSize.value)))
+  const pageMembers = computed(() => members.value.slice(page.value * pageSize.value, (page.value + 1) * pageSize.value))
+  const pageIds = computed(() => new Set(pageMembers.value.map(person => person.id)))
+  function setPage(value: number) {
+    const next = Math.max(0, Math.min(pageCount.value - 1, value))
+    anchorAt(members.value[next * pageSize.value]?.id || ''); input.clearSelection()
+  }
+  watch(pageSize, () => { if (activeGroup.value) anchorAt(readingAnchor.value) }, { flush: 'sync' })
+  watch(members, () => { if (activeGroup.value) anchorAt(readingAnchor.value) })
+  watch(pageCount, count => { page.value = Math.min(page.value, count - 1) })
+  const detailShape = computed(() => atlasShape(Math.max(1, pageMembers.value.length)))
+  const neighborGroups = computed(() => [...new Set(outsideConnections.value.filter(connection =>
+    requestedEdges.value.some(edge => edge.id === connection.relation.id) &&
+    (pageIds.value.has(connection.relation.source) || pageIds.value.has(connection.relation.target))).map(connection => connection.group))]
+    // A few nearby portals keep the canvas quiet; the inspector lists every cross-group relation.
+    .slice(0, 3).flatMap(id => groups.value.find(group => group.id === id) || []))
 
   function territoryNode(group: { id: string; people: RelationPerson[] }, position: { x: number; y: number }, expanded = false, portal = false, shapeOverride?: AtlasShape): Node {
     const shape = shapeOverride || (expanded ? detailShape.value : portal ? atlasShape(1) : territoryShapes.value.get(group.id)!)
@@ -81,11 +131,37 @@ export function useRelationCircles(input: {
       // Region buttons own activation; only their expanded decorative ground stays inert.
       style: { pointerEvents: expanded ? 'none' : 'all' },
       data: { label: group.id, count: group.people.length, dimension: options.value.length ? dimensionLabel.value : '作品', active: hoveredGroup.value === group.id,
-        expanded, portal, shape, ...atlasIdentity(group.id) },
+        expanded, portal, shape, origin: { ...position }, ...atlasIdentity(group.id) },
     }
   }
 
   const portraitMembership = computed(() => input.nodes.value.map(node => node.id).join('\0'))
+  const layoutKey = computed(() => `${input.work.value}:${mode.value}:${dimension.value}:${enabled.value ? groupId.value : portraitMembership.value}\0`)
+  const manualPositions = shallowRef(new Map<string, { x: number; y: number }>())
+  const hasManualPositions = computed(() => [...manualPositions.value.keys()].some(key => key.startsWith(layoutKey.value)))
+  function rememberPositions(changes: NodeChange[]) {
+    const positions = changes.filter(change => change.type === 'position' && change.position &&
+      canvasNodes.value.some(node => node.id === change.id && node.type === 'portrait'))
+    if (!positions.length) return
+    const next = new Map(manualPositions.value)
+    for (const change of positions) if (change.type === 'position' && change.position) next.set(layoutKey.value + change.id, { ...change.position })
+    manualPositions.value = next
+  }
+  function movePerson(id: string, dx: number, dy: number) {
+    const node = canvasNodes.value.find(node => node.id === id && node.type === 'portrait')
+    if (!node) return
+    manualPositions.value = new Map(manualPositions.value).set(layoutKey.value + id, { x: node.position.x + dx, y: node.position.y + dy })
+  }
+  function resetPositions() {
+    manualPositions.value = new Map([...manualPositions.value].filter(([key]) => !key.startsWith(layoutKey.value)))
+  }
+  function portraitField(group: { id: string; people: RelationPerson[] }, portraits: Node[]) {
+    const moved = portraits.map(node => ({ ...node, draggable: true,
+      position: manualPositions.value.get(layoutKey.value + node.id) || node.position }))
+    const field = atlasPortraitField(moved.map(node => ({ x: node.position.x + 54, y: node.position.y + 74 })))
+    const ground = territoryNode(group, field.origin, true, false, field.shape)
+    return [ground, ...moved]
+  }
   const portraitGroups = computed(() => {
     const ids = new Set(portraitMembership.value.split('\0'))
     const buckets = new Map<string, RelationPerson[]>()
@@ -130,14 +206,15 @@ export function useRelationCircles(input: {
     if (!enabled.value) return portraitGroups.value.flatMap(group => {
       const shape = portraitLayout.value.shapes.get(group.id)!, origin = portraitLayout.value.positions.get(group.id)!
       const byId = new Map(input.nodes.value.map(node => [node.id, node]))
-      return [territoryNode(group, origin, true, false, shape), ...group.people.map((person, index) => {
+      return portraitField(group, group.people.map((person, index) => {
         const cell = shape.cells[index], node = byId.get(person.id)!
         return { ...node, type: 'portrait', draggable: false, zIndex: 2,
           position: { x: origin.x + cell.x - 54, y: origin.y + cell.y - 74 }, data: { ...node.data, center: false } }
-      })]
+      }))
     })
     if (activeGroup.value) {
-      const portraits = input.nodes.value.filter(node => memberIds.value.has(node.id)).map((node, index) => {
+      const portraits = pageMembers.value.map((person, index) => {
+        const node = input.nodes.value.find(node => node.id === person.id)!
         const cell = detailShape.value.cells[index]
         return { ...node, type: 'portrait', draggable: false, zIndex: 2,
           position: { x: cell.x - 54, y: cell.y - 74 }, data: { ...node.data, center: false } }
@@ -146,7 +223,7 @@ export function useRelationCircles(input: {
         x: detailShape.value.width + 210 + (index % 2) * 90,
         y: (index - (neighborGroups.value.length - 1) / 2) * 290 + detailShape.value.height / 2 - 110,
       }, false, true))
-      return [territoryNode(activeGroup.value, { x: 0, y: 0 }, true), ...portraits, ...portals]
+      return [...portraitField(activeGroup.value, portraits), ...portals]
     }
     return groups.value.map(group => territoryNode(group, territoryPositions.value.get(group.id)!))
   })
@@ -158,10 +235,10 @@ export function useRelationCircles(input: {
   const canvasEdges = computed<Edge[]>(() => {
     if (!enabled.value) return portraitEdges(requestedEdges.value)
     if (activeGroup.value) {
-      const internal = portraitEdges(requestedEdges.value.filter(edge => memberIds.value.has(edge.source) && memberIds.value.has(edge.target)))
+      const internal = portraitEdges(requestedEdges.value.filter(edge => pageIds.value.has(edge.source) && pageIds.value.has(edge.target)))
       const external = outsideConnections.value.flatMap(connection => {
         const edge = requestedEdges.value.find(edge => edge.id === connection.relation.id)
-        if (!edge) return []
+        if (!edge || !neighborGroups.value.some(group => group.id === connection.group)) return []
         const sourceInside = memberIds.value.has(edge.source)
         const showLabel = typeof edge.class === 'object' && !Array.isArray(edge.class) && (edge.class?.['relation-edge-hovered'] || edge.class?.['relation-edge-selected'])
         return [{ ...edge, source: sourceInside ? edge.source : `territory:${connection.group}`,
@@ -174,5 +251,6 @@ export function useRelationCircles(input: {
     return []
   })
   return { mode, dimension, options, enabled, dimensionLabel, groups, groupId, activeGroup, members, groupRelations,
-    outsideConnections, hoveredGroup, overview, openGroup, reveal, canvasNodes, canvasEdges }
+    outsideConnections, hoveredGroup, overview, openGroup, backGroup, trail, reveal, canvasNodes, canvasEdges,
+    page, pageSize, pageCount, pageMembers, setPage, rememberPositions, movePerson, resetPositions, hasManualPositions }
 }

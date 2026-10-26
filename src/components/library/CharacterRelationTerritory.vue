@@ -6,7 +6,7 @@ import { atlasDefs, type AtlasEmblemName } from '@/components/visual/icons/atlas
 import type { AtlasShape } from '@/utils/relationAtlas'
 defineProps<{ data: {
   label: string; count: number; dimension: string; active?: boolean; expanded?: boolean; portal?: boolean
-  shape: AtlasShape; color: string; emblem: AtlasEmblemName
+  shape: AtlasShape; origin: { x: number; y: number }; color: string; emblem: AtlasEmblemName
 } }>()
 const emit = defineEmits<{ open: [id: string]; hover: [id: string]; focus: [] }>()
 const patternId = useId().replaceAll(':', '')
@@ -21,7 +21,7 @@ const patternId = useId().replaceAll(':', '')
     @mouseenter="!data.expanded && emit('hover', data.label)" @mouseleave="emit('hover', '')"
     @focus="emit('hover', data.label); emit('focus')" @blur="emit('hover', '')">
     <svg class="territory-ground" :viewBox="`0 0 ${data.shape.width} ${data.shape.height}`" aria-hidden="true">
-      <defs><pattern :id="patternId" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".85" fill="currentColor" /></pattern></defs>
+      <defs><pattern :id="patternId" :x="-data.origin.x" :y="-data.origin.y" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".85" fill="currentColor" /></pattern></defs>
       <g class="territory-cells"><polygon v-for="(cell, i) in data.shape.cells" :key="i" :points="cell.points" /></g>
       <g class="territory-grain"><polygon v-for="(cell, i) in data.shape.cells" :key="i" :points="cell.points" :fill="`url(#${patternId})`" /></g>
       <path class="territory-boundary" :d="data.shape.outline" />
@@ -39,6 +39,7 @@ const patternId = useId().replaceAll(':', '')
 
 <style scoped>
 .relation-territory { position: relative; display: block; padding: 0; border: 0; background: transparent; color: var(--territory-color); text-align: left; cursor: pointer; isolation: isolate; transition: transform var(--motion-control) var(--ease-out); }
+/* compositor-exempt: dragging recalculates SVG cells and their shared outer perimeter. */
 .territory-ground { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .territory-cells polygon { fill: color-mix(in srgb, var(--territory-color) 12%, var(--bg-base)); stroke: color-mix(in srgb, var(--territory-color) 24%, transparent); stroke-width: 1; }
 .territory-grain { opacity: .22; }
@@ -55,7 +56,7 @@ const patternId = useId().replaceAll(':', '')
 .relation-territory:active { transform: translateY(-1px); }
 .relation-territory:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 14px; }
 .relation-territory.is-expanded { pointer-events: none; }
-.is-expanded .territory-cells polygon { fill: color-mix(in srgb, var(--territory-color) 7%, var(--bg-base)); }
+.is-expanded .territory-cells polygon { fill: color-mix(in srgb, var(--territory-color) 7%, var(--bg-base)); stroke: color-mix(in srgb, var(--territory-color) 40%, transparent); }
 .is-expanded .territory-emblem { width: 72%; height: 72%; opacity: .13; }
 .is-expanded .territory-nameplate { left: auto; right: -50px; bottom: auto; top: -62px; }
 .is-expanded .territory-boundary { stroke-width: 1.5; opacity: .65; }

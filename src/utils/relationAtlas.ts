@@ -3,6 +3,30 @@ import type { AtlasEmblemName } from '@/components/visual/icons/atlas'
 export interface AtlasCell { x: number; y: number; points: string }
 export interface AtlasShape { cells: AtlasCell[]; outline: string; width: number; height: number }
 const RADIUS = 126
+type Axial = { q: number; r: number }
+const ROOT_THREE = Math.sqrt(3)
+const hexCenter = ({ q, r }: Axial) => ({ x: RADIUS * 1.5 * q, y: RADIUS * ROOT_THREE * (r + q / 2) })
+
+function hexField(centers: Array<{ x: number; y: number }>) {
+  const origin = { x: Math.min(...centers.map(p => p.x)) - RADIUS - 6,
+    y: Math.min(...centers.map(p => p.y)) - RADIUS * ROOT_THREE / 2 - 6 }
+  const edges = new Map<string, { path: string; count: number }>()
+  const cells = centers.map(center => {
+    const x = center.x - origin.x, y = center.y - origin.y
+    const vertices = Array.from({ length: 6 }, (_, i) => ({ x: x + RADIUS * Math.cos(i * Math.PI / 3), y: y + RADIUS * Math.sin(i * Math.PI / 3) }))
+    for (let i = 0; i < 6; i++) {
+      const a = vertices[i], b = vertices[(i + 1) % 6]
+      const key = [a, b].map(v => `${v.x.toFixed(2)},${v.y.toFixed(2)}`).sort().join('|')
+      const edge = edges.get(key)
+      if (edge) edge.count++
+      else edges.set(key, { path: `M${a.x},${a.y}L${b.x},${b.y}`, count: 1 })
+    }
+    return { x, y, points: vertices.map(v => `${v.x},${v.y}`).join(' ') }
+  })
+  const shape: AtlasShape = { cells, outline: [...edges.values()].filter(edge => edge.count === 1).map(edge => edge.path).join(''),
+    width: Math.max(...cells.map(p => p.x)) + RADIUS + 6, height: Math.max(...cells.map(p => p.y)) + RADIUS * ROOT_THREE / 2 + 6 }
+  return { origin, shape }
+}
 
 /** Flat-top hexagons share exact edges; the perimeter excludes internal seams. */
 export function atlasShape(count: number): AtlasShape {
@@ -17,23 +41,53 @@ export function atlasShape(count: number): AtlasShape {
       if (axial.length >= count) break
     }
   }
-  const centers = axial.map(([q, r]) => ({ x: RADIUS * 1.5 * q, y: RADIUS * Math.sqrt(3) * (r + q / 2) }))
-  const minX = Math.min(...centers.map(p => p.x)) - RADIUS, minY = Math.min(...centers.map(p => p.y)) - RADIUS * Math.sqrt(3) / 2
-  const edges = new Map<string, { path: string; count: number }>()
-  const cells = centers.map(center => {
-    const x = center.x - minX + 6, y = center.y - minY + 6
-    const vertices = Array.from({ length: 6 }, (_, i) => ({ x: x + RADIUS * Math.cos(i * Math.PI / 3), y: y + RADIUS * Math.sin(i * Math.PI / 3) }))
-    for (let i = 0; i < 6; i++) {
-      const a = vertices[i], b = vertices[(i + 1) % 6]
-      const key = [a, b].map(v => `${v.x.toFixed(2)},${v.y.toFixed(2)}`).sort().join('|')
-      const edge = edges.get(key)
-      if (edge) edge.count++
-      else edges.set(key, { path: `M${a.x},${a.y}L${b.x},${b.y}`, count: 1 })
+  return hexField(axial.map(([q, r]) => hexCenter({ q, r }))).shape
+}
+
+/** One continuous Voronoi cell per portrait inside a hexagon-padded envelope. */
+export function atlasPortraitField(centers: Array<{ x: number; y: number }>) {
+  type Point = { x: number; y: number }
+  const points = centers.flatMap(center => Array.from({ length: 6 }, (_, i) => ({
+    x: center.x + RADIUS * Math.cos(i * Math.PI / 3), y: center.y + RADIUS * Math.sin(i * Math.PI / 3),
+  }))).sort((a, b) => a.x - b.x || a.y - b.y)
+  const cross = (a: Point, b: Point, c: Point) => (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
+  const half = (list: Point[]) => {
+    const hull: Point[] = []
+    for (const point of list) {
+      while (hull.length > 1 && cross(hull[hull.length - 2], hull[hull.length - 1], point) <= 0) hull.pop()
+      hull.push(point)
     }
-    return { x, y, points: vertices.map(v => `${v.x},${v.y}`).join(' ') }
+    return hull.slice(0, -1)
+  }
+  const hull = [...half(points), ...half([...points].reverse())]
+  const origin = { x: points[0].x - 6, y: Math.min(...points.map(point => point.y)) - 6 }
+  const local = (point: Point) => `${point.x - origin.x},${point.y - origin.y}`
+  // Subpixel separation gives coincident portraits distinct cells without moving their cards.
+  const sites = centers.map((point, index) => ({ x: point.x + Math.cos(index) * 1e-4, y: point.y + Math.sin(index) * 1e-4 }))
+  const cells = sites.map((site, index) => {
+    let polygon = hull
+    for (let other = 0; other < sites.length; other++) {
+      if (other === index) continue
+      const neighbor = sites[other], nx = neighbor.x - site.x, ny = neighbor.y - site.y
+      const limit = nx * (neighbor.x + site.x) / 2 + ny * (neighbor.y + site.y) / 2
+      const clipped: Point[] = []
+      for (let i = 0; i < polygon.length; i++) {
+        const a = polygon[i], b = polygon[(i + 1) % polygon.length]
+        const da = a.x * nx + a.y * ny - limit, db = b.x * nx + b.y * ny - limit
+        if (da <= 0) clipped.push(a)
+        if ((da <= 0) !== (db <= 0)) {
+          const ratio = da / (da - db)
+          clipped.push({ x: a.x + (b.x - a.x) * ratio, y: a.y + (b.y - a.y) * ratio })
+        }
+      }
+      polygon = clipped
+    }
+    return { x: centers[index].x - origin.x, y: centers[index].y - origin.y, points: polygon.map(local).join(' ') }
   })
-  return { cells, outline: [...edges.values()].filter(edge => edge.count === 1).map(edge => edge.path).join(''),
-    width: Math.max(...cells.map(p => p.x)) + RADIUS + 6, height: Math.max(...cells.map(p => p.y)) + RADIUS * Math.sqrt(3) / 2 + 6 }
+  const shape: AtlasShape = { cells, outline: `M${hull.map(local).join('L')}Z`,
+    width: Math.max(...points.map(point => point.x)) - origin.x + 6,
+    height: Math.max(...points.map(point => point.y)) - origin.y + 6 }
+  return { origin, shape }
 }
 
 const emblems: Record<string, AtlasEmblemName> = {

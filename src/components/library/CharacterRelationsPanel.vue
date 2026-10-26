@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onDeactivated, ref, toRef, useId, watch } from 'vue'
 import { VueFlow, useVueFlow, type EdgeChange } from '@vue-flow/core'
+import { useElementSize } from '@vueuse/core'
 import '@vue-flow/core/dist/style.css'
 import type { CharacterProfile } from '@/types/character'
 import { useCharacterRelations } from '@/composables/useCharacterRelations'
@@ -16,9 +17,14 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import CharacterRelationTerritory from './CharacterRelationTerritory.vue'
 import CharacterRelationPortrait from './CharacterRelationPortrait.vue'
 import { useRelationCircles } from '@/composables/useRelationCircles'
+import { useRelationAtlasViewport } from '@/composables/useRelationAtlasViewport'
+import CharacterRelationGroupControls from './CharacterRelationGroupControls.vue'
 
 const props = defineProps<{ profiles: CharacterProfile[]; characterId: string }>()
 const emit = defineEmits<{ openProfile: [id: string] }>()
+const canvas = ref<HTMLElement | null>(null)
+const { width: canvasWidth, height: canvasHeight } = useElementSize(canvas)
+const canvasSize = computed(() => ({ width: canvasWidth.value, height: canvasHeight.value }))
 
 const {
   graph, invalid, scope, showSpoilers, pendingOnly, pendingPeople, visiblePeople, visibleRelations,
@@ -32,18 +38,31 @@ const circlePeople = computed(() => pendingOnly.value ? safePeople.value.filter(
 const {
   mode, dimension, options: circleOptions, enabled: circlesEnabled, dimensionLabel, groups, groupId, activeGroup,
   members, groupRelations, outsideConnections, hoveredGroup, overview, openGroup, reveal, canvasNodes, canvasEdges,
+  backGroup, trail, page, pageSize, pageCount, setPage,
+  rememberPositions, movePerson, resetPositions, hasManualPositions,
 } = useRelationCircles({ work: computed(() => graph.value?.work || ''), people: circlePeople, classificationPeople: safePeople, relations: safeRelations,
-  nodes, edges, profileFor, clearSelection })
+  nodes, edges, profileFor, clearSelection, size: canvasSize })
 watch([circlesEnabled, toRef(props, 'characterId')], ([enabled]) => {
   if (enabled) { scope.value = 'work'; overview() }
 }, { immediate: true, flush: 'post' })
-const inspectorRelations = computed(() => circlesEnabled.value ? groupRelations.value : listedRelations.value)
+const inspectorRelations = computed(() => circlesEnabled.value ? groupRelations.value.filter(relation => !selectedPerson.value || selectedRelation.value
+  || relation.source === selectedPerson.value.id || relation.target === selectedPerson.value.id) : listedRelations.value)
+const inspectorOutside = computed(() => outsideConnections.value.filter(connection => !selectedPerson.value ||
+  connection.relation.source === selectedPerson.value.id || connection.relation.target === selectedPerson.value.id))
 function explorePerson(id: string) { mode.value = 'person'; expandPerson(id) }
 async function enterGroup(id: string) {
   inspectorCollapsed.value = true; openGroup(id)
   await nextTick(); canvas.value?.focus({ preventScroll: true })
 }
-async function showOverview() { overview(); await nextTick(); canvas.value?.focus({ preventScroll: true }) }
+async function showOverview() {
+  const previousGroup = groupId.value
+  overview(); await nextTick()
+  const territory = canvas.value?.querySelector<HTMLElement>(`.vue-flow__node[data-id="territory:${CSS.escape(previousGroup)}"] button`)
+  ;(territory || canvas.value)?.focus({ preventScroll: true })
+}
+async function returnGroup() { inspectorCollapsed.value = true; backGroup(); await nextTick(); canvas.value?.focus({ preventScroll: true }) }
+async function changePage(value: number) { setPage(value); await nextTick(); canvas.value?.focus({ preventScroll: true }) }
+async function restoreLayout() { resetPositions(); await nextTick(); canvas.value?.focus({ preventScroll: true }) }
 
 const flowId = useId(), canvasId = useId(), helpId = useId()
 const { fitView, zoomIn, zoomOut, getViewport, setViewport } = useVueFlow(flowId)
@@ -52,17 +71,16 @@ const isFullscreen = ref(false)
 const inspectorCollapsed = ref(true)
 const showInspector = computed(() => !inspectorCollapsed.value && (!circlesEnabled.value || !!activeGroup.value && (!!selectedPerson.value || !!selectedRelation.value)))
 const inspectorToggle = ref<HTMLButtonElement | null>(null)
-const canvas = ref<HTMLElement | null>(null)
 const fullscreenDialog = ref<HTMLDialogElement | null>(null)
 const fullscreenButton = ref<HTMLButtonElement | null>(null)
 const { open: openFullscreen, close: closeFullscreen } = useFluidDialog(fullscreenDialog)
 
 const name = (id: string) => graph.value?.people.find(person => person.id === id)?.name || ''
-const topology = computed(() => `${mode.value}:${dimension.value}:${groupId.value}:${centerPerson.value?.id}:${canvasNodes.value.map(node => node.id).join(',')}:${visibleRelations.value.map(relation => relation.id).join(',')}`)
+const viewKey = computed(() => `${graph.value?.work}:${props.characterId}:${mode.value}:${dimension.value}:${groupId.value}:${page.value}:${scope.value}:${centerPerson.value?.id}:${pendingOnly.value}:${showSpoilers.value}:${canvasNodes.value.filter(node => !node.data.portal).map(node => node.id).join(',')}`)
 const duration = () => prefersReducedMotion() ? 0 : cssTimeToMilliseconds(getComputedStyle(document.documentElement).getPropertyValue('--motion-control'))
 
 function fit() {
-  if (!circlesEnabled.value || activeGroup.value) { frameMap(); return }
+  if (!circlesEnabled.value || activeGroup.value) { reframe(); return }
   void fitView({ padding: .12, minZoom: .65, maxZoom: 1, duration: duration() })
 }
 function frameMap() {
@@ -78,8 +96,8 @@ function frameMap() {
     || canvasNodes.value.find(node => node.type === 'territory')
   if (!territory) return
   const shape = territory.data.shape
-  const zoom = activeGroup.value ? Math.min(1, Math.max(.6, ((canvas.value?.clientHeight || 700) - 160) / (shape.height + 100))) : .9
-  const centerX = territory.position.x + shape.width / 2 + (activeGroup.value ? 130 : 0), centerY = territory.position.y + shape.height / 2
+  const zoom = activeGroup.value ? Math.min(1, Math.max(.9, ((canvas.value?.clientHeight || 700) - 180) / (shape.height + 100))) : .9
+  const centerX = territory.position.x + shape.width / 2 + (activeGroup.value ? 90 : 0), centerY = territory.position.y + shape.height / 2
   void setViewport({ x: (canvas.value?.clientWidth || 1000) / 2 - centerX * zoom, y: (canvas.value?.clientHeight || 700) / 2 - centerY * zoom, zoom }, { duration: duration() })
 }
 function focusAtlasNode(id: string) {
@@ -93,13 +111,14 @@ function focusAtlasNode(id: string) {
   void setViewport({ x: canvas.value.clientWidth / 2 - (node.position.x + width / 2) * zoom,
     y: canvas.value.clientHeight / 2 - (node.position.y + height / 2) * zoom, zoom }, { duration: duration() })
 }
-watch(topology, async () => { await nextTick(); frameMap() }, { flush: 'post' })
+const { initialize: initializeViewport, reframe } = useRelationAtlasViewport({ view: viewKey, size: canvasSize,
+  get: getViewport, set: (viewport, animate) => setViewport(viewport, { duration: animate ? duration() : 0 }), frame: frameMap })
 onDeactivated(() => { isFullscreen.value = false })
 
 function resetView() {
   reset()
   if (circlesEnabled.value) { overview(); scope.value = 'work' }
-  void nextTick(frameMap)
+  void nextTick(reframe)
 }
 
 async function toggleFullscreen() {
@@ -113,7 +132,6 @@ async function toggleFullscreen() {
   }
   await nextTick()
   fullscreenButton.value?.focus({ preventScroll: true })
-  frameMap()
 }
 
 function inspectPerson(id: string) { inspectorCollapsed.value = false; selectPerson(id) }
@@ -124,7 +142,14 @@ async function locate(id: string) {
   if (circlesEnabled.value && person) {
     pendingOnly.value = false; reveal(person); selectPerson(id); personQuery.value = ''; scope.value = 'work'
   } else locatePerson(id)
-  await nextTick(); canvas.value?.focus({ preventScroll: true }); frameMap()
+  await nextTick()
+  const target = canvasNodes.value.find(node => node.type === 'portrait' && node.id === id)
+  if (target && canvas.value) {
+    const zoom = Math.max(1, getViewport().zoom)
+    reframe({ x: canvas.value.clientWidth / 2 - (target.position.x + 54) * zoom,
+      y: canvas.value.clientHeight / 2 - (target.position.y + 74) * zoom, zoom })
+  } else reframe()
+  canvas.value?.focus({ preventScroll: true })
 }
 async function setInspectorCollapsed(collapsed: boolean) {
   const returnFocus = document.activeElement?.closest('.relations-inspector, .relations-inspector-collapsed')
@@ -224,10 +249,17 @@ function keyboardPan(event: KeyboardEvent) {
         <div class="relations-map">
           <div class="relations-map-head">
             <template v-if="circlesEnabled">
-              <div class="relations-circle-breadcrumb"><button v-if="activeGroup" class="btn btn-ghost btn-sm" type="button" @click="showOverview"><ArchiveIcon class="atlas-back" name="chevron-down" />返回{{ dimensionLabel }}总览</button><strong>{{ activeGroup?.id || dimensionLabel + '总览' }}</strong></div>
+              <div class="relations-circle-breadcrumb">
+                <button v-if="trail.length" class="btn btn-ghost btn-sm" type="button" @click="returnGroup"><ArchiveIcon class="atlas-back" name="chevron-down" />返回{{ trail[trail.length - 1]?.id }}</button>
+                <button v-if="activeGroup" class="btn btn-ghost btn-sm" type="button" @click="showOverview">{{ dimensionLabel }}总览</button>
+                <strong>{{ activeGroup?.id || dimensionLabel + '总览' }}</strong>
+              </div>
               <span>{{ activeGroup ? members.length + ' 位人物' : groups.length + ' 个' + dimensionLabel + ' · ' + circlePeople.length + ' 位人物' }}</span>
             </template>
             <template v-else><strong>{{ scope === 'nearby' ? centerPerson?.name + '的关系' : '作品人物关系' }}</strong><span>{{ visiblePeople.length }} 人 · {{ visibleRelations.length }} 条关系</span></template>
+          </div>
+          <div v-if="circlesEnabled && activeGroup" v-content-motion:fade="groupId" class="atlas-group-strip">
+            <CharacterRelationGroupControls :group="activeGroup.id" :members="members" :page="page" :page-size="pageSize" :page-count="pageCount" @page="changePage" @locate="locate" />
           </div>
 
           <div
@@ -246,7 +278,9 @@ function keyboardPan(event: KeyboardEvent) {
               :id="flowId"
               :nodes="canvasNodes"
               :edges="canvasEdges"
-              :nodes-draggable="false"
+              :nodes-draggable="true"
+              :node-drag-threshold="6"
+              :select-nodes-on-drag="false"
               :nodes-connectable="false"
               :edges-updatable="false"
               :delete-key-code="null"
@@ -261,7 +295,8 @@ function keyboardPan(event: KeyboardEvent) {
               :min-zoom=".55"
               :max-zoom="2.5"
               :fit-view-on-init="false"
-              @nodes-initialized="frameMap"
+              @init="initializeViewport"
+              @nodes-change="rememberPositions"
               @edge-click="(!circlesEnabled || activeGroup) && inspectRelation($event.edge.id)"
               @edge-mouse-enter="(!circlesEnabled || activeGroup) && setHoveredRelation($event.edge.id)"
               @edge-mouse-leave="setHoveredRelation('')"
@@ -269,7 +304,7 @@ function keyboardPan(event: KeyboardEvent) {
               @edges-change="(!circlesEnabled || activeGroup) && edgeSelection($event)"
             >
               <template #node-territory="node"><CharacterRelationTerritory :data="node.data" @open="enterGroup" @hover="hoveredGroup = $event" @focus="focusAtlasNode(node.id)" /></template>
-              <template #node-portrait="node"><CharacterRelationPortrait :data="node.data" @select="inspectPerson" @hover="(id, enter) => setHoveredPerson(enter ? id : '')" @focus="focusAtlasNode(node.id)" /></template>
+              <template #node-portrait="node"><CharacterRelationPortrait :data="node.data" @select="inspectPerson" @move="movePerson" @hover="(id, enter) => setHoveredPerson(enter ? id : '')" @focus="focusAtlasNode(node.id)" /></template>
             </VueFlow>
 
             <div class="relations-map-controls nopan" role="group" aria-label="关系图缩放与布局控制">
@@ -285,11 +320,12 @@ function keyboardPan(event: KeyboardEvent) {
               <button class="btn btn-ghost btn-sm" type="button" @click="resetView">
                 {{ circlesEnabled ? '返回总览' : '回到主角' }}
               </button>
+              <button v-if="hasManualPositions" class="btn btn-ghost btn-sm" type="button" @click="restoreLayout">恢复排布</button>
             </div>
           </div>
 
           <p :id="helpId" class="relations-map-help">
-            {{ circlesEnabled && !activeGroup ? '单击区域进入 · 空白处拖动 · 滚轮缩放' : '单击肖像或连线查看关系 · 空白处拖动 · 中键可从人物上拖动 · 滚轮缩放' }}
+            {{ circlesEnabled && !activeGroup ? '单击区域进入 · 空白处拖动 · 滚轮缩放' : '拖动人物调整位置 · 空白处拖动画布 · 滚轮缩放 · Shift＋方向键移动人物' }}
           </p>
           <p v-if="circlesEnabled && !circlePeople.length" class="relations-map-empty" role="status">当前没有符合筛选的人物，请取消“只看待补人物”。</p>
           <p v-else-if="!circlesEnabled && !visibleRelations.length" class="relations-map-empty" role="status">
@@ -308,6 +344,10 @@ function keyboardPan(event: KeyboardEvent) {
             <h3>{{ name(selectedRelation.source) }} {{ selectedRelation.directed ? '→' : '与' }} {{ name(selectedRelation.target) }}</h3>
             <strong>{{ selectedRelation.label }}</strong>
             <p>{{ selectedRelation.description }}</p>
+            <div class="relation-person-actions">
+              <button class="btn btn-ghost btn-sm" type="button" @click="locate(selectedRelation.source)">定位{{ name(selectedRelation.source) }}</button>
+              <button class="btn btn-ghost btn-sm" type="button" @click="locate(selectedRelation.target)">定位{{ name(selectedRelation.target) }}</button>
+            </div>
             <span class="relation-stage">{{ selectedRelation.stage }}</span>
             <a class="relation-evidence" :href="selectedRelation.evidence.url" target="_blank" rel="noopener noreferrer">{{ selectedRelation.evidence.title }} ↗</a>
           </section>
@@ -341,9 +381,9 @@ function keyboardPan(event: KeyboardEvent) {
           </section>
 
           <section class="relation-list" aria-label="可见关系列表">
-            <div class="relation-list-heading"><h3>{{ circlesEnabled ? '圈内关系' : selectedPerson && !selectedRelation ? selectedPerson.name + '的关系' : '关系一览' }}</h3><span>{{ inspectorRelations.length }}</span></div>
+            <div class="relation-list-heading"><h3>{{ selectedPerson && !selectedRelation ? selectedPerson.name + '的关系' : circlesEnabled ? '本区关系' : '关系一览' }}</h3><span>{{ inspectorRelations.length }}</span></div>
             <button v-if="!circlesEnabled && selectedPerson && !selectedRelation" class="btn btn-ghost btn-sm" type="button" @click="clearSelection">查看全部可见关系</button>
-            <p v-if="!inspectorRelations.length">{{ circlesEnabled ? '同属一个圈子，不代表人物之间已有直接关系。' : '当前范围暂无关系。' }}</p>
+            <p v-if="!inspectorRelations.length">{{ circlesEnabled ? '当前人物在本区暂无已收录的直接关系。' : '当前范围暂无关系。' }}</p>
             <button
               v-for="relation in inspectorRelations"
               :key="relation.id"
@@ -358,8 +398,8 @@ function keyboardPan(event: KeyboardEvent) {
               <strong>{{ relation.label }}</strong>
               <small>{{ relation.stage }}</small>
             </button>
-            <template v-if="circlesEnabled && outsideConnections.length"><h3 class="relations-outside-title">圈外的联系</h3>
-              <button v-for="connection in outsideConnections" :key="connection.relation.id" class="relation-list-item" type="button" @click="locate(connection.person.id)"><span>{{ connection.group }} · {{ connection.person.name }}</span><strong>{{ connection.relation.label }}</strong></button>
+            <template v-if="circlesEnabled && inspectorOutside.length"><h3 class="relations-outside-title">跨{{ dimensionLabel }}联系</h3>
+              <button v-for="connection in inspectorOutside" :key="connection.relation.id" class="relation-list-item" type="button" @click="locate(connection.person.id)"><span>{{ connection.group }} · {{ connection.person.name }}<ArchiveIcon name="search" /></span><strong>{{ connection.relation.label }}</strong></button>
             </template>
           </section>
         </aside>

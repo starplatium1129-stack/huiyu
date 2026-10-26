@@ -5,15 +5,22 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { RelationPerson } from '@/types/characterRelations'
 import type { CharacterProfile } from '@/types/character'
 defineProps<{ data: { person: RelationPerson; profile?: CharacterProfile; image: string; selected: boolean; isHighlighted?: boolean } }>()
-const emit = defineEmits<{ select: [id: string]; hover: [id: string, enter: boolean]; focus: [] }>()
+const emit = defineEmits<{ select: [id: string]; hover: [id: string, enter: boolean]; focus: []; move: [id: string, dx: number, dy: number] }>()
 const sides = [Position.Top, Position.Right, Position.Bottom, Position.Left]
+function move(event: KeyboardEvent, id: string) {
+  if (!event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) return
+  const delta: Record<string, [number, number]> = { ArrowLeft: [-20, 0], ArrowRight: [20, 0], ArrowUp: [0, -20], ArrowDown: [0, 20] }
+  if (!delta[event.key]) return
+  event.preventDefault(); event.stopPropagation()
+  emit('move', id, ...delta[event.key])
+}
 </script>
 
 <template>
-  <button class="atlas-portrait nodrag nopan" :class="{ 'is-selected': data.selected, 'is-highlighted': data.isHighlighted, 'is-pending': !data.profile }"
+  <button class="atlas-portrait nopan" :class="{ 'is-selected': data.selected, 'is-highlighted': data.isHighlighted, 'is-pending': !data.profile }"
     type="button" :aria-pressed="data.selected" :aria-label="`${data.person.name}，${data.profile ? '已收录档案' : '待补档案'}，查看关系`"
     @click.stop="emit('select', data.person.id)" @mouseenter="emit('hover', data.person.id, true)" @mouseleave="emit('hover', data.person.id, false)"
-    @focus="emit('hover', data.person.id, true); emit('focus')" @blur="emit('hover', data.person.id, false)">
+    @focus="emit('hover', data.person.id, true); emit('focus')" @blur="emit('hover', data.person.id, false)" @keydown="move($event, data.person.id)">
     <CharacterPortrait v-if="data.profile" :src="data.image" :name="data.person.name" />
     <span v-else class="atlas-portrait-placeholder" aria-hidden="true"><ArchiveIcon name="character" /></span>
     <strong>{{ data.person.name }}</strong>

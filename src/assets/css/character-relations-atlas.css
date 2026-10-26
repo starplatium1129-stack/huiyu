@@ -8,11 +8,12 @@
 .is-atlas .relations-circle-breadcrumb { gap: var(--s-3); padding: var(--s-2) var(--s-3); background: var(--bg-surface); border-left: 3px solid var(--accent); box-shadow: var(--shadow-sm); }
 .is-atlas .relations-map-head > span { padding: var(--s-2) var(--s-3); background: var(--bg-surface); color: var(--text-primary); }
 .is-atlas .relations-map-head button { pointer-events: auto; }
+.is-atlas .atlas-group-strip { position: absolute; z-index: 6; top: 82px; left: var(--s-4); max-width: calc(100% - 32px); }
 .is-atlas .atlas-back { transform: rotate(90deg); }
 .is-atlas .relations-canvas { height: clamp(650px, 76dvh, 1200px); background-color: var(--bg-base); background-image: radial-gradient(ellipse at 35% 30%, color-mix(in srgb, var(--accent) 6%, transparent), transparent 65%), linear-gradient(135deg, var(--bg-base), var(--bg-surface)); background-size: auto; }
 .is-atlas .relations-map-help { position: absolute; z-index: 5; bottom: var(--s-3); right: var(--s-3); max-width: 48%; padding: var(--s-2) var(--s-3); background: var(--bg-surface); pointer-events: none; }
 .is-atlas .relations-map-empty { position: absolute; z-index: 5; left: var(--s-5); top: 85px; border: 0; }
-.is-atlas .relations-inspector { position: absolute; z-index: 7; top: 78px; right: var(--s-4); width: 310px; max-height: calc(100% - 150px); background: var(--bg-surface); box-shadow: var(--shadow-lg); }
+.is-atlas .relations-inspector { position: absolute; z-index: 7; top: 140px; right: var(--s-4); width: 310px; max-height: calc(100% - 212px); background: var(--bg-surface); box-shadow: var(--shadow-lg); }
 .is-atlas .relation-description { max-height: min(380px, 44dvh); }
 .is-atlas .relation-list { max-height: 32dvh; }
 .is-atlas .relations-canvas :deep(.vue-flow__handle) { opacity: 0; pointer-events: none; }
@@ -21,13 +22,15 @@
 .is-atlas .relations-canvas :deep(.atlas-portrait),
 .is-atlas .relations-canvas :deep(.vue-flow__edge-interaction) { cursor: url('../cursors/atlas-open.svg') 5 3, pointer; }
 .is-atlas .relations-canvas:has(.vue-flow__pane.dragging) :deep(*) { cursor: url('../cursors/atlas-drag.svg') 16 16, grabbing !important; }
+.is-atlas .relations-canvas :deep(.atlas-portrait) { cursor: url('../cursors/atlas-pan.svg') 16 16, grab; }
+.is-atlas .relations-canvas :deep(.vue-flow__node.dragging .atlas-portrait) { cursor: url('../cursors/atlas-drag.svg') 16 16, grabbing; transform: none; transition: none; }
 .is-atlas .relations-canvas :deep(.vue-flow__node-territory) { background: none; border: 0; }
 .is-atlas .relations-canvas :deep(.vue-flow__edge-path) { stroke-width: 1.5; }
 .is-atlas .relations-canvas :deep(.relation-edge-active .vue-flow__edge-path) { stroke: var(--accent); stroke-width: 2.5; }
 .is-atlas .relations-canvas :deep(.relation-edge-dimmed .vue-flow__edge-path) { opacity: .25; }
 .is-atlas.is-fullscreen .relations-layout { overflow: hidden; }
 .is-atlas.is-fullscreen .relations-map { height: 100%; }
-.is-atlas.is-fullscreen .relations-inspector { height: auto; max-height: calc(100% - 150px); }
+.is-atlas.is-fullscreen .relations-inspector { height: auto; max-height: calc(100% - 212px); }
 @container (max-width: 900px) {
   .is-atlas .relations-inspector { display: flex; max-height: 65%; width: min(310px, calc(100% - 32px)); }
   .is-atlas .relation-description { border-bottom: 1px solid var(--border-soft); }
