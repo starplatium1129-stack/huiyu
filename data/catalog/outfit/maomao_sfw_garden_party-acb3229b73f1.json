@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "maomao/sfw_garden_party",
+  "revision": 1,
+  "sortOrder": 9,
+  "createdAt": "2026-10-26T09:10:15.020Z",
+  "updatedAt": "2026-10-26T09:10:15.020Z",
+  "data": {
+    "characterId": "maomao",
+    "outfit": {
+      "id": "sfw_garden_party",
+      "name": "园游会宫廷华服",
+      "prose": "An opulent imperial hanfu with elaborate botanical embroidery and wide flowing sleeves, styled with an elegant palace updo, golden tassel hairpins, crimson lipstick, a red forehead mark, and flawless, clear porcelain skin with no freckles.",
+      "tokens": [
+        "clear skin",
+        "no freckles",
+        "makeup",
+        "red lipstick",
+        "forehead mark",
+        "elaborate bun",
+        "ornate hairpins",
+        "tassel hair ornament",
+        "kanzashi",
+        "luxurious hanfu",
+        "wide sleeves",
+        "embroidered chinese clothes",
+        "layered silk robes",
+        "jade jewelry"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

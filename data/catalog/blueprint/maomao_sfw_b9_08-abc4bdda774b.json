@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "maomao_sfw_b9_08",
+  "revision": 1,
+  "sortOrder": 8,
+  "createdAt": "2026-10-26T09:10:15.020Z",
+  "updatedAt": "2026-10-26T09:10:15.020Z",
+  "data": {
+    "id": "maomao_sfw_b9_08",
+    "title": "猫猫 · 园游会的惊艳盛装",
+    "characterId": "maomao",
+    "rating": "sfw",
+    "outfitId": "sfw_garden_party",
+    "recommendedSize": "832x1216",
+    "promptProse": "Maomao from The Apothecary Diaries attends the imperial garden party in an opulent, layered silk hanfu with delicate botanical embroidery and wide flowing sleeves. Her fake freckles have been thoroughly washed away by the Jade Pavilion ladies, revealing smooth, radiant porcelain skin complemented by a delicate red forehead mark, soft rouge on her cheeks, and crimson-tinted lips. Her green hair is arranged into an elegant palace updo adorned with golden hairpin tassels that gently sway as she turns. A quiet, contemplative smile graces her lips as warm lanterns illuminate the festive pavilion. vertical framing, solo 1girl.",
+    "tokens": [
+      "maomao_(kusuriya_no_hitorigoto)",
+      "kusuriya_no_hitorigoto",
+      "green_hair",
+      "blue_eyes",
+      "clear skin",
+      "no freckles",
+      "makeup",
+      "red lipstick",
+      "forehead mark",
+      "delicate blush",
+      "elaborate bun",
+      "ornate hairpins",
+      "tassel hair ornament",
+      "kanzashi",
+      "luxurious hanfu",
+      "wide sleeves",
+      "embroidered chinese clothes",
+      "layered silk robes",
+      "jade jewelry",
+      "lantern light"
+    ]
+  }
+}
