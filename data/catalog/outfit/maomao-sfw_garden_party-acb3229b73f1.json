@@ -4,7 +4,7 @@
   "revision": 1,
   "sortOrder": 9,
   "createdAt": "2026-10-26T09:10:15.020Z",
-  "updatedAt": "2026-10-26T09:14:50.408Z",
+  "updatedAt": "2026-10-26T09:51:50.545Z",
   "data": {
     "characterId": "maomao",
     "outfit": {
@@ -25,7 +25,6 @@
         "hair_bun",
         "elaborate_hair",
         "clear_skin",
-        "no_freckles",
         "makeup",
         "lipstick",
         "red_lips",

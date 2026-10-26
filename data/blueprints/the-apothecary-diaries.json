@@ -989,7 +989,6 @@
         "kanzashi",
         "tassel",
         "clear_skin",
-        "no_freckles",
         "makeup",
         "lipstick",
         "red_lips",
@@ -1009,6 +1008,7 @@
       "negativeTokens": [
         "freckles",
         "freckled",
+        "blemish",
         "worst_quality",
         "low_quality",
         "bad_anatomy",

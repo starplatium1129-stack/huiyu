@@ -4,7 +4,7 @@
   "revision": 1,
   "sortOrder": 1719,
   "createdAt": "2026-10-26T09:10:15.020Z",
-  "updatedAt": "2026-10-26T09:35:00.000Z",
+  "updatedAt": "2026-10-26T09:51:50.550Z",
   "data": {
     "id": "maomao_sfw_b9_08",
     "title": "猫猫 · 园游会的惊艳盛装",
@@ -47,7 +47,6 @@
       "kanzashi",
       "tassel",
       "clear_skin",
-      "no_freckles",
       "makeup",
       "lipstick",
       "red_lips",
@@ -67,6 +66,7 @@
     "negativeTokens": [
       "freckles",
       "freckled",
+      "blemish",
       "worst_quality",
       "low_quality",
       "bad_anatomy",
