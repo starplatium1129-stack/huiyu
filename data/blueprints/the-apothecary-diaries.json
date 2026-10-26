@@ -950,16 +950,36 @@
     {
       "id": "maomao_sfw_b9_08",
       "title": "猫猫 · 园游会的惊艳盛装",
+      "category": "节日盛宴",
       "characterId": "maomao",
-      "rating": "sfw",
       "outfitId": "sfw_garden_party",
-      "recommendedSize": "832x1216",
-      "promptProse": "Maomao from The Apothecary Diaries attends the imperial garden party in an opulent embroidered silk hanfu with wide sleeves. Her fake freckles are washed away, revealing radiant clear skin accented by a red forehead mark, blush, and crimson lipstick. Her green hair is styled in an ornate bun with golden tassel kanzashi hairpins. Soft lantern light illuminates the festive pavilion as she smiles quietly toward the viewer.",
-      "tokens": [
-        "maomao_(kusuriya_no_hitorigoto)",
-        "kusuriya_no_hitorigoto",
+      "description": "宫廷园游会灯火阑珊的楼阁间，猫猫褪去假雀斑，薄施粉黛，额点朱砂。身着华丽刺绣宽袖汉服，绿发挽成垂云髻，金步摇流苏随步微晃，在宫灯暖光下回眸浅笑。",
+      "location": "宫廷园游会楼阁与长廊",
+      "action": "身着华丽汉服漫步于宫廷园游会长廊，回眸轻扶金步摇，神情端庄从容",
+      "timeOfDay": "黄昏/入夜",
+      "lighting": "warm_lantern_light",
+      "camera": "medium shot",
+      "mood": "端庄惊艳",
+      "sceneTags": [
+        "imperial_palace",
+        "garden_party",
+        "hanfu",
+        "wide_sleeves",
+        "hair_bun",
+        "kanzashi",
+        "tassel",
+        "forehead_mark",
+        "clear_skin",
+        "lantern",
+        "warm_lighting",
+        "medium_shot"
+      ],
+      "promptProse": "Between the illuminated garden pavilions, Maomao attends the imperial garden party in an opulent embroidered silk hanfu with wide sleeves. Her fake freckles are washed away, revealing radiant clear skin accented by a red forehead mark, blush, and crimson lipstick. Her green hair is styled in an ornate bun with golden tassel kanzashi hairpins. Soft lantern light illuminates the festive pavilion as she smiles quietly toward the viewer.",
+      "promptTokens": [
         "1girl",
         "solo",
+        "maomao_(kusuriya_no_hitorigoto)",
+        "kusuriya_no_hitorigoto",
         "green_hair",
         "blue_eyes",
         "hair_bun",
@@ -985,7 +1005,37 @@
         "warm_lighting",
         "looking_at_viewer",
         "smile"
-      ]
+      ],
+      "negativeTokens": [
+        "freckles",
+        "freckled",
+        "worst_quality",
+        "low_quality",
+        "bad_anatomy",
+        "bad_hands",
+        "missing_fingers",
+        "extra_fingers",
+        "extra_limbs",
+        "blurry",
+        "watermark",
+        "text",
+        "signature",
+        "2girls",
+        "1boy",
+        "nude",
+        "underwear",
+        "see-through"
+      ],
+      "recommendedSize": "832x1216",
+      "adult": false,
+      "sampleRating": "SFW",
+      "kreaStyleHint": "anime_portrait_sharp",
+      "animaStyleHint": "anime_portrait_sharp",
+      "coverageTags": [
+        "iconic",
+        "event"
+      ],
+      "animaCaption": "Maomao at the imperial garden party in luxurious hanfu, clear skin and adorned bun with golden tassel kanzashi, smiling under warm lantern light."
     }
   ]
 }
