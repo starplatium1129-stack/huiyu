@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "sakura_rainy_station_waiting",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "sakura_rainy_station_waiting",
     "characterId": "matou_sakura",
     "title": "间桐樱 · 雨中车站·伞下守候与安静侧颜",
-    "description": "【间桐樱 · 雨中车站·伞下守候与安静侧颜】淅淅沥沥的冬雨中，樱撑着一把淡粉色的雨伞静静伫立在车站出站口。雨水溅湿了她的裙摆，但看到你走出闸机的那一瞬间，她清澈的紫眸里立刻盈满了全部的光彩——「学长！太好了，我一直很担心你没带伞……只要能等到学长，无论等多久都不冷。」",
+    "description": "淅淅沥沥的冬雨中，樱撑着一把淡粉色的雨伞静静伫立在车站出站口。雨水溅湿了她的裙摆，但看到你走出闸机的那一瞬间，她清澈的紫眸里立刻盈满了全部的光彩——「学长！太好了，我一直很担心你没带伞……只要能等到学长，无论等多久都不冷。」",
     "outfitId": "winter_outfit",
     "sceneTags": [
       "station_exit",

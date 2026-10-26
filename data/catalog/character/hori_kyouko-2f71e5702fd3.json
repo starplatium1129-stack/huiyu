@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hori_kyouko",
-  "revision": 6,
+  "revision": 9,
   "sortOrder": 123,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "hori_kyouko",
     "profile": {
@@ -28,13 +28,13 @@
         "style": "anime"
       },
       "personality": [
-        "开朗利落",
-        "顾家贤惠",
-        "强烈反差萌",
-        "独占欲极强",
-        "略带抖S特质",
-        "害怕寂寞与被遗忘",
-        "深情体贴"
+        "开朗大方",
+        "家务全能",
+        "照顾家人",
+        "心思多面",
+        "占有欲强",
+        "外向坚强",
+        "坦率真诚"
       ],
       "likes": [
         "重口味恐怖悬疑电影",
@@ -136,7 +136,7 @@
             "label": "毕业求婚与终生托付",
             "description": "自卑被彻底治愈的宫村在大雪纷飞的初诣参拜时向堀求婚，立誓一生守护她与创太，两人圆满步入毕业殿堂。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终章 · 毕业典礼",
             "evidence": {
               "title": "SQUARE ENIX · 《堀与宫村》官方动画网站",
@@ -154,6 +154,34 @@
             "stage": "共通线 · 少年心事",
             "evidence": {
               "title": "SQUARE ENIX · 《堀与宫村》官方动画网站",
+              "url": "https://horimiya-anime.com/"
+            }
+          },
+          {
+            "id": "horimiya-hori-yuki",
+            "source": "hori_kyouko",
+            "target": "yoshikawa_yuki",
+            "label": "同班挚友与无话不谈闺蜜",
+            "description": "性格元气随和，自始至终陪伴在堀身旁，包容堀的一切任性，两人关系极度亲密。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "片桐高校日常",
+            "evidence": {
+              "title": "《堀与宫村》官方网站",
+              "url": "https://horimiya-anime.com/"
+            }
+          },
+          {
+            "id": "horimiya-toru-yuki",
+            "source": "ishikawa_toru",
+            "target": "yoshikawa_yuki",
+            "label": "假扮情侣与心意相通的伴侣",
+            "description": "为了拒绝追求者而假扮情侣，在日常默契相处中假戏真做，互相治愈彼此的自卑与不安。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "积雪归途篇章",
+            "evidence": {
+              "title": "《堀与宫村》官方网站",
               "url": "https://horimiya-anime.com/"
             }
           }

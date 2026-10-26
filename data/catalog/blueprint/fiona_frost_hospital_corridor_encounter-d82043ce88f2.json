@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_hospital_corridor_encounter",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 815,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "fiona_frost_hospital_corridor_encounter",
     "characterId": "fiona_frost",
     "title": "菲奥娜 · 医院长廊的冷面交错",
-    "description": "【菲奥娜 · 医院长廊的冷面交错】巴林特综合医院明净肃穆的白瓷长廊间，晨间阳光穿过连排高窗洒在光洁地板上。菲奥娜身穿深蓝毛衣配灰底黑条纹背心的医院事务员制服，双手紧抱厚重病历文件夹快步行走。在与前方迎面而来的白色大褂身影交错的一瞬，她维持着绝对冷静的扑克脸平视前方，内心深处却如海啸般剧烈翻涌着对前辈的炽热狂潮。",
+    "description": "巴林特综合医院明净肃穆的白瓷长廊间，晨间阳光穿过连排高窗洒在光洁地板上。菲奥娜身穿深蓝毛衣配灰底黑条纹背心的医院事务员制服，双手紧抱厚重病历文件夹快步行走。在与前方迎面而来的白色大褂身影交错的一瞬，她维持着绝对冷静的扑克脸平视前方，心底却如海啸般剧烈翻涌着对前辈的炽热狂潮。",
     "outfitId": "hospital_clerk_uniform",
     "category": "职场日常",
     "location": "巴林特综合医院走廊",

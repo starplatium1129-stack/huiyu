@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc028",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Nene, in ivory chiffon with a pink waist ribbon, sits left holding the agreement and the viewer's hand. Natsume, in pearl-white satin with a boat neckline, sits right and straightens Nene's hair ornament.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -26,7 +26,7 @@
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",
-    "story": "【成年 AU · 婚礼后的余温协议】仪式结束后的新房只剩暖色烛光。已经成年的宁宁与夏目换下沉重头纱，一左一右坐到你身边，把三个人共同写下的未来约定放在掌心。宁宁紧张却坦率地与你十指相扣，夏目则替她整理歪掉的发饰，嘴上仍不肯承认感动——「从今晚开始，遇到任何事都不准有人独自逞强。」",
+    "story": "仪式结束后的新房只剩暖色烛光。已经成年的宁宁与夏目换下沉重头纱，一左一右坐到你身边，把三个人共同写下的未来约定放在掌心。宁宁紧张却坦率地与你十指相扣，夏目则替她整理歪掉的发饰，嘴上仍不肯承认感动——「从今晚开始，遇到任何事都不准有人独自逞强。」",
     "storyJa": "【夏目＆寧々・大人のAU・結婚式後の契約書】式典の後、新しい家には温かいろうそくの灯りだけが残りました。大人になった寧々と夏目は重いベールを脱ぎ、左右に一人ずつ隣に座り、三人で書いた将来の約束を手のひらに置いた。寧々さんは緊張しながらも率直にあなたと手を握り、一方で夏目さんは彼女の傾いたヘアアクセサリーを直すのを手伝いましたが、それでも彼女が感動したことを認めませんでした。――「今夜から、どんなことがあっても、誰か一人で無理をするのは禁止です。」",
     "tags": [
       "2girls",

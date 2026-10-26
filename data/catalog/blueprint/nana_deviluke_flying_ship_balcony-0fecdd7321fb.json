@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_deviluke_flying_ship_balcony",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1265,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单手扶着护盾栏杆眺望蔚蓝地球，微重力下长双马尾与爱心尾巴飘拂，神采飞扬",
     "camera": "cowboy shot, low angle, sweeping cosmic planetary backdrop",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "royal"
     ],
-    "description": "【娜娜 · 皇家战舰露台的星河眺望】停泊在地球轨道上的戴比路克王家战舰露天观景甲板边，浩瀚星空与地球的蔚蓝弧线近在咫尺。娜娜身穿暗红相间的王女科技短裙，单手扶着能量护盾栏杆。太空中的微重力让她的粉色长双马尾轻盈悬浮，黑色的爱心尾巴在身后自如舒展。她侧过脸庞注视着下方的蓝色行星，眼神中闪烁着对异星冒险的向往。",
+    "description": "停泊在地球轨道上的戴比路克王家战舰露天观景甲板边，浩瀚星空与地球的蔚蓝弧线近在咫尺。娜娜身穿暗红相间的王女科技短裙，单手扶着能量护盾栏杆。太空中的微重力让她的粉色长双马尾轻盈悬浮，黑色的爱心尾巴在身后自如舒展。她侧过脸庞注视着下方的蓝色行星，眼神中闪烁着对异星冒险的向往。",
     "id": "nana_deviluke_flying_ship_balcony",
     "lighting": "地球大气层边缘折射的极亮蔚蓝弧光与深空繁星点点",
     "location": "轨道星际战舰露天观景甲板边缘",

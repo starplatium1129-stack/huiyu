@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_clocktower",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 893,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "站在钟楼俯瞰学院",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【圣园未花 · 钟楼顶端的清风】古老钟楼的最顶层，轻柔的微风吹拂着未花的浅粉连衣裙与象牙白开衫与粉色长发。她倚着石雕护栏俯瞰着下方的学园，回过头对你展颜一笑——「从这里看下去景色超棒对吧？但是对我来说……能和老师一起站在这里，才是最棒的奇迹哦。」",
+    "description": "古老钟楼的最顶层，轻柔的微风吹拂着未花的浅粉连衣裙与象牙白开衫与粉色长发。她倚着石雕护栏俯瞰着下方的学园，回过头对你展颜一笑——「从这里看下去景色超棒对吧？但是对我来说……能和老师一起站在这里，才是最棒的奇迹哦。」",
     "id": "misono_mika_clocktower",
     "kreaStyleHint": "",
     "lighting": "夕光与机械阴影",

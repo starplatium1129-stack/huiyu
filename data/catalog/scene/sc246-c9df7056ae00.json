@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc246",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 241,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Beside the travel photographs, she catches her loosened collar and looks up in embarrassment; warm wall light reaches her damp hair, with cool moonlight at the shoji.",
     "auditRevision": "careful-batch08-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, pink floral yukata, white tabi, wet hair, cross-legged, holding collar, blush, photographs, tatami, ryokan room, night, wall lamp, close up, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R15",
     "season": "夏",
-    "story": "【宁宁 · 旅行夜晚的靠近】夏日旅行的温泉旅馆双人房。洗完澡的宁宁穿着旅馆提供的薄款浴衣，因为腰带系得松垮，衣襟在动作间微微敞开，露出精致的锁骨与一小片白皙的胸口。她盘腿坐在你对面的榻榻米上整理照片，完全没注意到自己走光的边缘。当你提醒她时，她低头一看，瞬间满脸通红地捂住衣襟，头顶的呆毛在湿润的发丝间慌乱地颤动——「呜啊！柊、柊史你看到了多少！不准回忆！才、才没有故意穿成这样……浴衣的带子太滑了嘛……笨蛋，转过去！」",
+    "story": "夏日旅行的温泉旅馆双人房。洗完澡的宁宁穿着旅馆提供的薄款浴衣，因为腰带系得松垮，衣襟在动作间微微敞开，露出精致的锁骨与一小片白皙的胸口。她盘腿坐在你对面的榻榻米上整理照片，完全没注意到自己走光的边缘。当你提醒她时，她低头一看，瞬间满脸通红地捂住衣襟，头顶的呆毛在湿润的发丝间慌乱地颤动——「呜啊！柊、柊史你看到了多少！不准回忆！才、才没有故意穿成这样……浴衣的带子太滑了嘛……笨蛋，转过去！」",
     "storyJa": "【寧々・旅先のほどけた襟元】夏の温泉旅館。湯上がりの寧々は、少し緩んだ浴衣の帯に気づかないまま畳の上で写真を整理していた。あなたに教えられると、彼女は真っ赤になって襟元を押さえる――「どこまで見たの！？ 思い出すのもだめ！ 浴衣の紐が滑りやすいだけなんだから……後ろ向いて！」",
     "tags": [
       "hair_ribbon",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_silk_curtain",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 657,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "立于窗边，一手举过头顶抓住丝帘，夜风拂动帘幕。",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "cowboy shot, three-quarter view",
     "category": "成人",
     "characterId": "ling_arknights",
-    "description": "【令 · 纱帐月夜】月光透过雕花窗棂洒进寝殿，半垂的纱帐被夜风轻轻拂动。全裸的令倚在窗边，月光在她白皙的肌肤上镀了一层银辉，极长的蓝发垂到脚踝。她侧过身回眸望你，声音里带着吟诗般的慵懒——「月色如酒，醉人的不是月光，是看月亮的人。」",
+    "description": "月光透过雕花窗棂洒进寝殿，半垂的纱帐被夜风轻轻拂动。全裸的令倚在窗边，月光在她白皙的肌肤上镀了一层银辉，极长的蓝发垂到脚踝。她侧过身回眸望你，声音里带着吟诗般的慵懒——「月色如酒，醉人的不是月光，是看月亮的人。」",
     "id": "ling_arknights_r18_silk_curtain",
     "kreaStyleHint": "",
     "lighting": "cool blue moonlight through lattice window, sheer curtain shadows, silver rim light",

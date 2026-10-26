@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kurokawa_akane",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "kurokawa_akane",
     "profile": {
@@ -152,7 +152,7 @@
             "label": "谎言偶像与弥留真爱",
             "description": "在隐婚生子的人生中探寻真爱，在生命的最后时刻抱住阿库亚与露比，终于说出了发自肺腑的‘我爱你们’并非谎言。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "开篇终章 · 门前遇刺",
             "evidence": {
               "title": "集英社 · 《我推的孩子》官方作品站",
@@ -166,7 +166,7 @@
             "label": "救赎之恩与共谋复仇",
             "description": "在网络暴力轻生瞬间被阿库亚救下，凭借神级侧写洞悉星野爱真相与阿库亚复仇心魔，立誓无论坠入何种深渊都全力协助他。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "恋爱真人秀篇 · 舞台剧篇",
             "evidence": {
               "title": "集英社 · 《我推的孩子》官方作品站",
@@ -208,11 +208,39 @@
             "label": "灵魂侧写与人格拟态",
             "description": "黑川茜通过翻阅海量资料彻底洞悉星野爱的行为模式、眼神与真实伤痛，在真人秀中完美化身为星野爱重现于世。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "恋爱真人秀篇 · 觉醒",
             "evidence": {
               "title": "集英社 · 《我推的孩子》官方作品站",
               "url": "https://ichigoproduction.com/"
+            }
+          },
+          {
+            "id": "oshi-kana-ruby-fixed",
+            "source": "arima_kana",
+            "target": "ruby",
+            "label": "新生B小町核心伙伴",
+            "description": "加奈被露比元气满满的真挚执着所打动重返偶像舞台，两人既是舞台上的前后辈搭档也是无话不谈的挚友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "新生B小町结成",
+            "evidence": {
+              "title": "《我推的孩子》集英社官方主页",
+              "url": "https://youngjump.jp/oshinoko/"
+            }
+          },
+          {
+            "id": "oshi-aqua-ruby-fixed",
+            "source": "aqua",
+            "target": "ruby",
+            "label": "双胞胎兄妹与暗中守护",
+            "description": "前世今生奇妙缘分的延续，阿库娅在暗中不惜一切保护露比免受演艺圈黑暗侵蚀，露比视哥哥为最重要的至亲。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "全篇兄妹羁绊",
+            "evidence": {
+              "title": "《我推的孩子》集英社官方主页",
+              "url": "https://youngjump.jp/oshinoko/"
             }
           }
         ]

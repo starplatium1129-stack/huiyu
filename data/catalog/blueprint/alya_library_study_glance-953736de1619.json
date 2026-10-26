@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_library_study_glance",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 776,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "怀抱厚厚精装书倚在书架旁，透过书架空隙不经意回眸",
     "camera": "medium shot, standing beside library shelves and peeking between books",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【艾莉 · 图书馆午后·书架后的凝视】午后静谧的图书馆深处，艾莉怀抱着厚厚的精装参考书穿梭在书架之间。透过书册的缝隙，她悄悄打量着对面正抓耳挠腮做题的你，唇角泛起一抹藏不住的笑意——「这道数学题有那么难吗？真是个让人放不下心的家伙……」",
+    "description": "午后静谧的图书馆深处，艾莉怀抱着厚厚的精装参考书穿梭在书架之间。透过书册的缝隙，她悄悄打量着对面正抓耳挠腮做题的你，唇角泛起一抹藏不住的笑意——「这道数学题有那么难吗？真是个让人放不下心的家伙……」",
     "id": "alya_library_study_glance",
     "lighting": "warm dust motes in sunbeams filtering between bookshelves",
     "location": "学校图书馆书架走廊",

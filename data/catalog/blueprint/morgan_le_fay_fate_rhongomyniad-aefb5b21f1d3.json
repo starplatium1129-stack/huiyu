@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_rhongomyniad",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 190,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [
       "readable inscription"
@@ -13,7 +13,7 @@
     "title": "摩根 · 圣枪誓约",
     "category": "哥特暗黑",
     "characterId": "morgan_le_fay_fate",
-    "description": "【摩根 · 圣枪誓约】冬宫的高台上，摩根单手拄着圣枪伦戈米尼亚德，长裙被晚风拂动，冰蓝瞳仁映着天边的最后一缕光——「圣枪之下，我将以这片土地为誓，守护到底。」",
+    "description": "冬宫的高台上，摩根单手拄着圣枪伦戈米尼亚德，长裙被晚风拂动，冰蓝瞳仁映着天边的最后一缕光——「圣枪之下，我将以这片土地为誓，守护到底。」",
     "location": "冬宫高台",
     "action": "站在冬宫高台上，一手稳住竖立的圣枪，另一手垂在裙侧，望向余晖",
     "timeOfDay": "黄昏",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_rooftop_headset",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 871,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐天台按耳麦",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【飞鸟马时 · 黄昏天台听耳麦】黄昏降临的千年高楼天台上，时独自坐在护栏边缘，纤细的手指轻按着耳麦，金发在晚霞中如黄金般闪耀。看见你走近，她眼底浮现出一抹极难察觉的温柔——「通讯频道已静默……现在是属于主人和时的私人时间。不用说话，这样吹吹风就很舒服了。」",
+    "description": "黄昏降临的千年高楼天台上，时独自坐在护栏边缘，纤细的手指轻按着耳麦，金发在晚霞中如黄金般闪耀。看见你走近，她眼底浮现出一抹极难察觉的温柔——「通讯频道已静默……现在是属于主人和时的私人时间。不用说话，这样吹吹风就很舒服了。」",
     "id": "asuma_toki_rooftop_headset",
     "kreaStyleHint": "",
     "lighting": "金色夕光",

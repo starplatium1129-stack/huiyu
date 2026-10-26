@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cartethyia",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 156,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "cartethyia",
     "profile": {
@@ -165,7 +165,7 @@
             "label": "棋枰知己与生机托付",
             "description": "长离以自身大衍离火寿数为柴薪推演天命，在陷入必死之局前遇见了超脱命运常理的漂泊者。她视漂泊者为唯一能打碎既定棋谱的知己与变数，甘愿倾尽离火之力为其引渡黎明。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线1.1版本 ·「往日春山行」/ 乘霄山篇",
             "evidence": {
               "title": "库洛游戏《鸣潮》长离伴星任务 ·「离火灼天」",
@@ -193,7 +193,7 @@
             "label": "造物守望与灵魂锚点",
             "description": "守岸人诞生于原初漂泊者的呼唤与泰缇斯系统深处，在孤独的群星黑石中守候漂泊者千万载；当守岸人为拯救黑海岸献祭意识沉入虚无时，漂泊者逆向撕裂数据裂隙将其挽回，赋予其作为自由少女的全新生命。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线1.3版本 ·「行至海岸尽头」",
             "evidence": {
               "title": "库洛游戏《鸣潮》1.3版本主线剧情 · 黑海岸核心篇",
@@ -235,7 +235,7 @@
             "label": "流浪同行与人性复归",
             "description": "曾作为百合圣女被供奉殉道的卡提希娅在舍弃神职后流浪荒原，在与漂泊者共战悲鸣巨兽与巡礼故土的过程中，深感漂泊者对世间生命的温柔尊重，逐渐解开冰封心结，寻回身为凡人少女的欢笑。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "黎那汐塔流浪巡礼篇",
             "evidence": {
               "title": "库洛游戏《鸣潮》角色故事 · 卡提希娅巡礼录",
@@ -249,7 +249,7 @@
             "label": "护道之剑与岁主令尹",
             "description": "漂泊者在今州初醒后得到今汐的坦诚接纳，在乘霄山岁主蜕变危机中，漂泊者作为护道者并肩迎战残星会阴谋，助今汐成功承接岁主神格权能，成为生死托付的坚实同盟。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线1.1版本 · 乘霄山主线终章",
             "evidence": {
               "title": "库洛游戏《鸣潮》主线任务 ·「照彻乘霄的晨光」",

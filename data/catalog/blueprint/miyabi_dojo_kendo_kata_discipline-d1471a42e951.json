@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_dojo_kendo_kata_discipline",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1066,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手持木刀摆出中段持剑姿态，赤足站立，眼神如刀锋般锐利清澈",
     "camera": "full body, front view, disciplined martial composition",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "martial"
     ],
-    "description": "【星见雅 · 剑道场上的修心挥斩】庄严肃穆的家族剑道场内，清晨阳光透过排窗在地板上映出整齐的光栅。雅赤足踩在古旧平滑的桧木地板上，手持一柄深色木刀保持着笔直的中段构势。绷带紧密缠绕的双手沉稳有力，汗水顺着修长的玉颈滑落浸润练功服领口，纯净专注的武者风范令人屏息。",
+    "description": "庄严肃穆的家族剑道场内，清晨阳光透过排窗在地板上映出整齐的光栅。雅赤足踩在古旧平滑的桧木地板上，手持一柄深色木刀保持着笔直的中段构势。绷带紧密缠绕的双手沉稳有力，汗水顺着修长的玉颈滑落浸润练功服领口，纯净专注的武者风范令人屏息。",
     "id": "miyabi_dojo_kendo_kata_discipline",
     "lighting": "高排窗倾泻的清冽晨曦光柱与木地板镜面微光",
     "location": "传统和风剑道场正殿",

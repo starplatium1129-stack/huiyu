@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_dorm_cocoa_break",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 946,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "pajamas_loungewear",
@@ -14,7 +14,7 @@
     "location": "宿舍的小桌旁",
     "timeOfDay": "夜晚",
     "mood": "轻松安心",
-    "description": "【优香 · 核账之后的可可】最后一张收据终于归好类，优香穿着淡蓝色宽松毛衣和居家短裤坐在宿舍小桌旁，红框眼镜下的眉头放松下来。她用双手捧起温热的可可杯，闭上的账本留在桌角——「今天就到这里。喝完这一杯，我也该好好休息了。」",
+    "description": "最后一张收据终于归好类，优香穿着淡蓝色宽松毛衣和居家短裤坐在宿舍小桌旁，红框眼镜下的眉头放松下来。她用双手捧起温热的可可杯，闭上的账本留在桌角——「今天就到这里。喝完这一杯，我也该好好休息了。」",
     "action": "坐在小桌旁，双手捧着可可杯，闭合的账本放在桌角",
     "promptProse": "Yuuka raises the cocoa in both hands and relaxes her brow, the closed ledger at the table’s corner. The bedside lamp catches the steam above the mug.",
     "promptTokens": [

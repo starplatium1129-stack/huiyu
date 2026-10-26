@@ -8,6 +8,7 @@
 
 - 开工明确目标、受影响文件、完成标准与必要验证；仅缺少关键决策或授权时询问。复杂任务按需维护并复用计划与交接，不强制创建 `PLAN.md`；补充消息或上下文压缩后继续原目标，保留约束与有效证据。
 - 图像提示词创作/编译才读 [studio-prompt-craft](.agents/skills/studio-prompt-craft/SKILL.md)；普通 UI/代码不加载，不为可选 skill 安装工具或扩展任务。
+- 角色档案、角色场景故事的中文创作、润色或审阅先读 [humanizer-zh 写作指南](.agents/skills/humanizer-zh/SKILL.md)，保留设定与人物声音，按语境消除套话；不用于图像提示词、标签或普通 UI 文案。
 - UI 布局、控件、交互、动效开发或审查先读 [DESIGN.md](DESIGN.md) 与 [studio-ui-design](.agents/skills/studio-ui-design/SKILL.md)，按需加载参考，遵循其中融合的 Emil Kowalski 原则，保留绘遇品牌与 Vue 实现；后端、文档和 CG 美术不加载 UI skill。
 - 写入前核对 `git status`、`git diff`，保留其他会话改动。禁止 `git add .`、`git reset --hard`；仅暂存、提交本次已审查文件，同一工作区仅一个会话执行 Git 写操作。提交/推送/合并按本次授权，推送后核对远端 commit。
 - 并行只用于可独立拆分且有明确收益的任务：明确职责、文件归属与完成标准，独立写入用 worktree，不同时修改同一文件。有依赖的调查、编辑、审查顺序推进，主会话复核关键证据；不按文件数量分配子代理。

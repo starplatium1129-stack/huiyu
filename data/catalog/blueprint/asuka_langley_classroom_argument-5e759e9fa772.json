@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_classroom_argument",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1022,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手抱胸身体微前倾，眉头轻挑傲娇俯视",
     "camera": "cowboy shot, low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【惣流·明日香 · 教室里的傲娇女王】课间嘈杂的教室窗边，明亮的日光倾泻在过道上。明日香双手抱胸站在课桌前，穿着精致的水手服与过膝黑丝袜，眉头微挑，红润的樱唇轻翘，神采飞扬地俯视着面前的同伴——「你到底是不是笨蛋啊？这点基础算式还要本天才亲自教你吗？还不快把笔记本拿过来！」",
+    "description": "课间嘈杂的教室窗边，明亮的日光倾泻在过道上。明日香双手抱胸站在课桌前，穿着精致的水手服与过膝黑丝袜，眉头微挑，红润的樱唇轻翘，神采飞扬地俯视着面前的同伴——「你到底是不是笨蛋啊？这点基础算式还要本天才亲自教你吗？还不快把笔记本拿过来！」",
     "id": "asuka_langley_classroom_argument",
     "lighting": "教室大窗投射的温暖自然日光",
     "location": "学校教室课桌过道",

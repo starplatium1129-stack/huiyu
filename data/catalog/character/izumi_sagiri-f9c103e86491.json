@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "izumi_sagiri",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "izumi_sagiri",
     "profile": {
@@ -138,7 +138,7 @@
             "label": "青梅竹马真相与终身之约",
             "description": "两人幼年便在网络相遇并相约互为搭档，纱雾在破除心魔走出房门后向正宗表白，誓愿成为正宗未来的新娘。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终章 · 盛大的告白",
             "evidence": {
               "title": "Aniplex · 《埃罗芒阿老师》官方动画网站",
@@ -156,6 +156,34 @@
             "stage": "共通线 · 轻小说比赛篇",
             "evidence": {
               "title": "Aniplex · 《埃罗芒阿老师》官方动画网站",
+              "url": "https://eromanga-sensei.com/"
+            }
+          },
+          {
+            "id": "eromanga-masamune-muramasa",
+            "source": "izumi_masamune",
+            "target": "senju_muramasa",
+            "label": "顶流前辈与热烈倾慕者",
+            "description": "超畅销书作家，既是正宗写作道路上的强大前辈，也在接触中爱上了正宗并大胆求婚。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "作家竞争与表白",
+            "evidence": {
+              "title": "《埃罗芒阿老师》官方网站",
+              "url": "https://eromanga-sensei.com/"
+            }
+          },
+          {
+            "id": "eromanga-sagiri-muramasa",
+            "source": "izumi_sagiri",
+            "target": "senju_muramasa",
+            "label": "插画竞争与情敌防范",
+            "description": "纱雾为了捍卫哥哥专属插画师的地位，对村征的拉拢与追求表现出强烈的警惕与好胜心。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "轻小说插画师争夺",
+            "evidence": {
+              "title": "《埃罗芒阿老师》官方网站",
               "url": "https://eromanga-sensei.com/"
             }
           }

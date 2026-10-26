@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_endfield_lab",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 712,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "站在全息投影前核对数据",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【佩丽卡 · 终末地实验室】终末地工业先遣基地核心实验室内，身为监管人的佩丽卡正伫立在巨大的全息三维星图投影前，神情严谨专注地校对着开拓区源石能源的输送网络数据。她扶了扶耳侧的通讯发饰转过身——「管理员，塔罗斯II星域的基础设施建设进度已达标，下一阶段的拓荒方案需要您的最终授权。」",
+    "description": "终末地工业先遣基地核心实验室内，身为监管人的佩丽卡正伫立在巨大的全息三维星图投影前，神情严谨专注地校对着开拓区源石能源的输送网络数据。她扶了扶耳侧的通讯发饰转过身——「管理员，塔罗斯II星域的基础设施建设进度已达标，下一阶段的拓荒方案需要您的最终授权。」",
     "id": "perlica_arknights_endfield_lab",
     "lighting": "cool lab light with hologram glow",
     "location": "终末地实验室",

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_flower_field",
-  "revision": 7,
+  "revision": 5,
   "sortOrder": 579,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "弯腰捡起一朵野花",
     "camera": "medium shot",
     "category": "泰拉自然",
     "characterId": "mudrock_arknights",
-    "description": "【泥岩 · 花田拾花】莱塔尼亚郊外盛开着各色野花的宁静草坡上，换上素白连衣裙的泥岩弯下腰，小心翼翼地用粗糙但温柔的指尖摘下一朵雏菊捧在掌心。她转过身有些害羞地递给你——「大地不仅孕育了坚硬的磐石，也孕育了这么温柔的花朵……送给你，博士。」",
+    "description": "莱塔尼亚郊外盛开着各色野花的宁静草坡上，换上素白连衣裙的泥岩弯下腰，小心翼翼地用粗糙但温柔的指尖摘下一朵雏菊捧在掌心。她转过身有些害羞地递给你——「大地不仅孕育了坚硬的磐石，也孕育了这么温柔的花朵……送给你，博士。」",
     "id": "mudrock_arknights_flower_field",
     "lighting": "bright flower-field light",
     "location": "泰拉原野花田",
@@ -22,25 +22,21 @@
       "daisy",
       "offering flower",
       "shy smile",
-      "wildflower field",
-      "afternoon",
-      "bending forward",
-      "open palm",
-      "bright lighting",
-      "medium shot"
+      "field",
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
       "flower_field",
       "wildflowers",
       "afternoon",
+      "armor",
       "horns",
       "gentle"
     ],
     "timeOfDay": "午后",
     "title": "泥岩 · 花田拾花",
     "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Her open palm offers the freshly picked daisy toward the viewer."
+    "nsfwProse": ""
   }
 }

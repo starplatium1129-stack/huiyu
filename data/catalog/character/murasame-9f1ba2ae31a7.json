@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "murasame",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "murasame",
     "profile": {
@@ -221,7 +221,7 @@
             "label": "破除宿命与重获肉身",
             "description": "在将臣不惜赌上自身魂魄与剑道意志的誓死守护下，丛雨彻底净化了体内封印五百年的凶残祟神怨念，得以脱离灵体化作真正的人类少女。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "丛雨线 · 终局破祟",
             "evidence": {
               "title": "Steam · 《千恋＊万花》官方剧情全览",
@@ -249,7 +249,7 @@
             "label": "破除血脉诅咒",
             "description": "面对地脉祟神暴动险些将芳乃吞噬为永恒活祭的危机，将臣以神刀之威紧握芳乃冰冷的手，与她共同完成净化大典，斩断了朝武一族的兽耳诅咒。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "芳乃线 · 终局祓除",
             "evidence": {
               "title": "Steam · 《千恋＊万花》官方剧情全览",

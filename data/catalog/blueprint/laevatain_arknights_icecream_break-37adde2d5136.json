@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_icecream_break",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 724,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "举着三球抹茶草莓冰淇淋，紫色眼眸微弯，黑色弯角与尾巴在休息区明亮灯光下清晰可见。",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【莱瓦汀 · 冰淇淋时间】休息区明亮的冷饮自动贩卖机前，莱瓦汀举着超大号的三球抹茶草莓冰淇淋甜筒，两只紫色的眼眸闪闪发亮，头顶的黑色弯角随着兴奋轻轻抖动——「哈！大战一场之后大口吃冰淇淋简直是世上最棒的享受！管理员，你要不要也尝尝这一大口？超级过瘾！」",
+    "description": "休息区明亮的冷饮自动贩卖机前，莱瓦汀举着超大号的三球抹茶草莓冰淇淋甜筒，两只紫色的眼眸闪闪发亮，头顶的黑色弯角随着兴奋轻轻抖动——「哈！大战一场之后大口吃冰淇淋简直是世上最棒的享受！管理员，你要不要也尝尝这一大口？超级过瘾！」",
     "id": "laevatain_arknights_icecream_break",
     "lighting": "bright industrial canteen light",
     "location": "塔罗斯-II 基地休息区冷饮自动贩卖机前",

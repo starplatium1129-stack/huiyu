@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc004",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She peeks around the shelf with the top book drawn against her chest.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, nene_school_uniform, peeking, holding books, bookshelf, library, window light, medium shot, looking at viewer, book hug",
     "rating": "All",
     "season": "秋",
-    "story": "【宁宁 · 书架间的偶遇】午后的图书馆里只有翻页声。宁宁抱着几本神秘学资料从高书架后探出头，发现来人是你时明显松了口气，又慌忙把最上面那本藏进怀里。窗光落在她发梢，她故作自然地挪出半个位置——「你也来查资料吗？那就坐这里吧。不过，不准问我为什么借了这一本。」",
+    "story": "午后的图书馆里只有翻页声。宁宁抱着几本神秘学资料从高书架后探出头，发现来人是你时明显松了口气，又慌忙把最上面那本藏进怀里。窗光落在她发梢，她故作自然地挪出半个位置——「你也来查资料吗？那就坐这里吧。不过，不准问我为什么借了这一本。」",
     "storyJa": "【寧々・本棚との出会い】午後の図書館にはページをめくる音だけが響いていた。寧々は、いくつかのオカルト資料を収めた高い本棚の後ろから顔を出しました。来たのがあなただと分かったとき、彼女は目に見えて安堵し、急いで一番上の本を腕の中に隠しました。窓からの光が髪先に当たり、彼女は自然を装って半分位置を移動した。――「あなたも資料を調べに来たんですか？　それなら、ここに座ってください。でも、どうしてこの本を借りたのかは聞かないこと。」",
     "tags": [
       "hair_ribbon",

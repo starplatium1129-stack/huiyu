@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_bougainvillea_field_parasol",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1385,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "漫步在花瀑下，手握蕾丝阳伞与你的手相牵，草帽随风轻扬，蓝眸羞涩而深情地仰望着你",
     "adult": false,
@@ -17,7 +17,7 @@
       "romantic",
       "summer"
     ],
-    "description": "【繁花盛开的花园小径】南国小镇的花园里，紫红色的九重葛花藤宛如瀑布般从白色石墙倾泻而下。薇尔莉特身着一袭纯白的夏日轻薄棉质连身裙，头戴系着海蓝缎带的宽檐草帽。她一手轻撑着蕾丝遮阳伞，一手小心翼翼地牵住你的指尖，微微偏过头，脸颊泛着淡淡的樱粉色。",
+    "description": "南国小镇的花园里，紫红色的九重葛花藤宛如瀑布般从白色石墙倾泻而下。薇尔莉特身着一袭纯白的夏日轻薄棉质连身裙，头戴系着海蓝缎带的宽檐草帽。她一手轻撑着蕾丝遮阳伞，一手小心翼翼地牵住你的指尖，微微偏过头，脸颊泛着淡淡的樱粉色。",
     "id": "violet_bougainvillea_field_parasol",
     "kreaStyleHint": "anime_cinematic_scenic",
     "lighting": "明媚灿烂的地中海夏日阳光穿透花隙，投下绚丽的紫红与金黄光斑",

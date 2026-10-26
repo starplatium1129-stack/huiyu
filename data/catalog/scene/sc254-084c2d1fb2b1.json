@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc254",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 249,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Beside the viewer, she shares their scarf across both shoulders and glances down with reddened ears; warm holiday lights reflect from fresh snow around her coat hem.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, camel double breasted wool coat, ivory turtleneck, sharing scarf, red ears, blush, snowy street, festival lights, bokeh, night, side view, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "冬",
-    "story": "【夏目 · 初雪街头的围巾温度】深夜初雪纷飞的繁华商业街，两旁亮满暖金色的节日彩灯。换下工作服的夏目身穿驼色双排扣毛呢大衣与米白高领毛衣，长发随风微扬。夜间气温骤降，你在雪中驻足时自然地解下围巾，绕过去将两个人圈在一起。夏目身子微微一缩，半垂着清冷的金瞳任由你动作。在璀璨灯火的映照下，她那泛红的耳根格外可爱，用微弱的音量小声说着——「……别误会，我只是觉得两个人围一条比较暖和，要是你感冒了明天就没人顶班了。……笨蛋，手要是冷的话，可以伸进我大衣口袋里。」",
+    "story": "深夜初雪纷飞的繁华商业街，两旁亮满暖金色的节日彩灯。换下工作服的夏目身穿驼色双排扣毛呢大衣与米白高领毛衣，长发随风微扬。夜间气温骤降，你在雪中驻足时自然地解下围巾，绕过去将两个人圈在一起。夏目身子微微一缩，半垂着清冷的金瞳任由你动作。在璀璨灯火的映照下，她那泛红的耳根格外可爱，用微弱的音量小声说着——「……别误会，我只是觉得两个人围一条比较暖和，要是你感冒了明天就没人顶班了。……笨蛋，手要是冷的话，可以伸进我大衣口袋里。」",
     "storyJa": "【夏目】【ナツメ・初雪の街とマフラーの温もり】深夜、初雪が舞う並木道。キャメルのコートに身を包んだナツメの隣で、あなたはマフラーを広げて二人を包み込んだ。ナツメは身をすくめ、金の瞳を伏せたまま受け入れる。イルミネーションに照らされて赤くなった耳を隠すように、小さな声で呟く――「……勘違いしないで。風邪を引かれたら明日のシフトが困るからよ。……バカ、手が冷たいなら、私のポケットに入れなさい」",
     "tags": [
       "black_hair",

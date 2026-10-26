@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc005",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Fireworks rim her hair while nearby lanterns light the cheek turned toward the viewer.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, dusty pink yukata, camellia print, burgundy obi, gold obijime, looking back, riverbank, festival, lanterns, fireworks, night, medium shot, walking, light smile, firelight, warm lighting",
     "rating": "All",
     "season": "夏",
-    "story": "【夏目 · 烟花亮起时的回眸】夏日祭的人潮在河岸缓慢移动，穿浴衣的夏目始终走在你半步之前。烟花升空时，她没有立刻抬头，反而先回身确认你还跟着；绚丽光影映亮她眼下的泪痣，也照出耳根的红色。被你发现后，她迅速移开视线——「我只是怕你在人群里走丢。烟花已经开始了，别再看我。」",
+    "story": "夏日祭的人潮在河岸缓慢移动，穿浴衣的夏目始终走在你半步之前。烟花升空时，她没有立刻抬头，反而先回身确认你还跟着；绚丽光影映亮她眼下的泪痣，也照出耳根的红色。被你发现后，她迅速移开视线——「我只是怕你在人群里走丢。烟花已经开始了，别再看我。」",
     "storyJa": "【夏目・花火が上がる頃に振り返る】夏祭りの人だかりが川岸をゆっくりと進んでいく中、常に半歩先を行くのが浴衣姿の夏目です。花火が打ち上げられたとき、彼女はすぐには顔を上げなかった。代わりに、彼女は最初に振り返って、あなたがまだ追いかけていることを確認しました。華やかな光と影が目の下の泣きぼくろを照らし、耳の赤い色も照らしました。あなたに発見された後、彼女はすぐに目をそらしました――「人混みではぐれたら困ると思っただけ。ほら、花火はもう始まってるんだから、私ばかり見てないで。」",
     "tags": [
       "mole_under_eye",

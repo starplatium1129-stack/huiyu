@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc046",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "At the stairwell landing, she holds the viewer near the wall by their apron, leaning close but stopping before a kiss. Warm light catches her flushed cheek against the dark corridor.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "safe, 1girl, shiki_natsume, natsume_cafe_uniform, standing close, hand on chest, blush, stairwell, wall, cafe, night, pendant light, pov, close up, @rella",
     "rating": "All",
     "season": "春",
-    "story": "【夏目 · 闭店楼梯间的一分钟】Café Stella 闭店后，夏目在楼梯转角叫住准备离开的你。她先替你取下围裙上沾着的纸屑，又把你推回墙边，像是终于决定执行某件计划。吻落下前，她眼下的泪痣都被红晕包围——「只给你一分钟，不准得寸进尺。还有……明天见面时，不许装作什么都没发生。」",
+    "story": "Café Stella 闭店后，夏目在楼梯转角叫住准备离开的你。她先替你取下围裙上沾着的纸屑，又把你推回墙边，像是终于决定执行某件计划。吻落下前，她眼下的泪痣都被红晕包围——「只给你一分钟，不准得寸进尺。还有……明天见面时，不许装作什么都没发生。」",
     "storyJa": "【夏目・閉店した店舗の階段で1分】カフェステラが閉店し、帰ろうとしたところを夏目が階段の角で呼び止めた。彼女はまずあなたのエプロンについた紙切れを取り除き、それからまるである計画を実行することを最終的に決意したかのように、あなたを壁に押し戻しました。キスが落ちる前に、彼女の目は赤くなった――「一分だけ。調子に乗るのは禁止。それと……明日会ったとき、何もなかったみたいな顔をしないで。」",
     "tags": [
       "mole_under_eye",

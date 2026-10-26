@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_gyaru_street",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 501,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "举着手机逛街聊天",
     "camera": "medium shot",
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【喜多川海梦 · 辣妹街头】阳光明媚的商业街上，海梦穿着标志性的潮流辣妹装，漂亮的渐变金发在阳光下熠熠生辉。她熟练地挽住你的手臂穿梭在潮牌店之间，活力四射——「这家店新出了超可爱的饰品，我们快进去看看！不准喊累哦，今天可是我的专属约会日！」",
+    "description": "阳光明媚的商业街上，海梦穿着标志性的潮流辣妹装，漂亮的渐变金发在阳光下熠熠生辉。她熟练地挽住你的手臂穿梭在潮牌店之间，活力四射——「这家店新出了超可爱的饰品，我们快进去看看！不准喊累哦，今天可是我的专属约会日！」",
     "id": "kitagawa_marin_gyaru_street",
     "lighting": "明亮日光下的商业街",
     "location": "商业街",

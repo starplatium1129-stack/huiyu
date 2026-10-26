@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_hotel_suit",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 565,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在落地窗前的轮椅上侧身回眸，夜色与微光交织",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate medium shot",
     "category": "成人",
     "characterId": "lemuen_arknights",
-    "description": "【蕾缪安 · 旅店夜装】五星级酒店落地窗前俯瞰着城市璀璨夜色，蕾缪安穿着松开的西装与长裤坐在轮椅上侧身回眸，夜色与头顶光环交织成梦幻的光晕。她轻咬朱唇低语——「今夜的巡逻与职责已经全部结束了……抱我到床上去吧，我的指挥官。」",
+    "description": "五星级酒店落地窗前俯瞰着城市璀璨夜色，蕾缪安穿着松开的西装与长裤坐在轮椅上侧身回眸，夜色与头顶光环交织成梦幻的光晕。她轻咬朱唇低语——「今夜的巡逻与职责已经全部结束了……抱我到床上去吧，我的指挥官。」",
     "id": "lemuen_arknights_r18_hotel_suit",
     "kreaStyleHint": "",
     "lighting": "city lights through the window",

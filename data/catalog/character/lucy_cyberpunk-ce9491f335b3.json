@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lucy_cyberpunk",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "lucy_cyberpunk",
     "profile": {
@@ -33,12 +33,13 @@
         "signature": "幻彩渐变短发、单分子线手环、脊柱发光插槽与月球追忆"
       },
       "personality": [
-        "清冷孤傲、戒备心极强的独行客",
-        "幼年受创导致极难信任他人但对爱人至死不渝",
-        "拥有顶尖的深潜技术与致命单分子线暗杀技艺",
-        "面对命运残酷敢于默默背负一切牺牲与黑暗",
-        "灵魂深处渴望纯洁宁静、厌恶夜之城的铜臭残杀",
-        "外表冷峻神秘、内心深藏细腻凄美的浪漫"
+        "冷静内敛",
+        "心思深沉",
+        "向往自由",
+        "深情执着",
+        "身手敏捷",
+        "独自承担",
+        "心向明月"
       ],
       "likes": [
         "坐在沃森区高空公寓天台静静仰望夜空月球",
@@ -145,7 +146,7 @@
             "label": "生死挚爱与月球之约",
             "description": "露西将大卫视作夜之城唯一的锚点与救赎，大卫最终为了守护露西的月球之梦直面重锤并牺牲自己。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终局决战 · 荒坂塔之战",
             "evidence": {
               "title": "Netflix / CDPR · 《赛博朋克：边缘行者》官方主页",
@@ -159,7 +160,7 @@
             "label": "单向深情与生死相随",
             "description": "深爱大卫却尊重其对露西的执着，在最后时刻明知九死一生依然陪同大卫杀入荒坂塔，最终战死。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终局决战 · 荒坂塔陷落",
             "evidence": {
               "title": "Netflix / CDPR · 《赛博朋克：边缘行者》官方主页",
@@ -187,7 +188,7 @@
             "label": "义父领路人与赛博精神病悲剧",
             "description": "接纳大卫进入边缘行者世界并教导其义体战斗，最终在精神病发作中为掩护大卫和露西自爆牺牲。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线转折 · 曼恩陨落",
             "evidence": {
               "title": "Netflix / CDPR · 《赛博朋克：边缘行者》官方主页",
@@ -201,7 +202,7 @@
             "label": "夜之城传奇与绝对死敌",
             "description": "装备斯安威斯坦与重型义体的大卫在荒坂塔顶迎战夜之城传奇杀器亚当·重锤，战至最后一刻。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终局死斗 · 荒坂塔顶",
             "evidence": {
               "title": "Netflix / CDPR · 《赛博朋克：边缘行者》官方主页",

@@ -1,31 +1,28 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_ruins_shelter",
-  "revision": 8,
+  "revision": 5,
   "sortOrder": 578,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在断墙上，头盔搁在膝边",
     "camera": "medium shot",
     "category": "泰拉自然",
     "characterId": "mudrock_arknights",
-    "description": "【泥岩 · 废墟小憩】被夕阳染红的残破石堡废墟顶端，脱下厚重全覆式头盔的泥岩将头盔搁在膝边，一头如瀑布般的银白色长发在晚风中散落开来。她红色的眼眸中满是宁静——「战场上的废墟虽然荒凉……但只要头顶还有天空，泥土里就依然会蕴藏着新生的希望。」",
+    "description": "被夕阳染红的残破石堡废墟顶端，脱下厚重全覆式头盔的泥岩将头盔搁在膝边，一头如瀑布般的银白色长发在晚风中散落开来。她碧蓝色的眼眸中满是宁静——「战场上的废墟虽然荒凉……但只要头顶还有天空，泥土里就依然会蕴藏着新生的希望。」",
     "id": "mudrock_arknights_ruins_shelter",
     "lighting": "amber ruins light",
     "location": "泰拉战场废墟",
     "mood": "疲倦而平静",
     "negativeTokens": [],
     "outfitId": "cozy_winter_knit_coat",
-    "promptProse": "Mudrock rests on the broken fortress wall with her helmet beside one knee, evening wind moving her hair. Amber sunset light catches her silver hair and the broken stone.",
+    "promptProse": "Mudrock rests on the broken fortress wall with her helmet beside one knee, evening wind moving her hair.",
     "promptTokens": [
-      "helmet beside knee",
+      "helmet",
       "sitting",
       "ruined wall",
-      "dusk",
-      "wind",
-      "sunset",
-      "medium shot"
+      "dusk"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,7 +36,6 @@
     "timeOfDay": "黄昏",
     "title": "泥岩 · 废墟小憩",
     "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Her helmet rests beside one knee on the broken fortress wall."
+    "nsfwProse": ""
   }
 }

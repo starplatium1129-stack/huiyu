@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_canteen_hotpot",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 727,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "两眼放光地盯着九宫格辣锅里翻滚的红油与辣椒，熟练地捞起一块爽脆毛肚塞入口中，辣得直哈气却大呼痛快",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【莱万汀 · 火锅挑战】基地食堂热气滚滚的九宫格变态辣火锅桌前，莱万汀两眼放光地盯着锅里翻滚的红油与辣椒，熟练地捞起一大块爽脆毛肚塞入口中，辣得直哈气却大呼痛快——「这才叫真正的吃饭！管理员，连这种程度的辣都受不了可成不了优秀的指挥官哦，快张嘴吃这块牛肉！」",
+    "description": "基地食堂热气滚滚的九宫格变态辣火锅桌前，莱万汀两眼放光地盯着锅里翻滚的红油与辣椒，熟练地捞起一大块爽脆毛肚塞入口中，辣得直哈气却大呼痛快——「这才叫真正的吃饭！管理员，连这种程度的辣都受不了可成不了优秀的指挥官哦，快张嘴吃这块牛肉！」",
     "id": "laevatain_arknights_canteen_hotpot",
     "lighting": "bright cafeteria light",
     "location": "终末地舰内食堂",

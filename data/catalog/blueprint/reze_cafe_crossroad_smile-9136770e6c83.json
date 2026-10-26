@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "reze_cafe_crossroad_smile",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 422,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "reze_cafe_crossroad_smile",
     "characterId": "reze_chainsaw",
     "title": "蕾塞 · 街角咖啡馆·柜台托腮与狡黠微笑",
-    "description": "【蕾塞 · 街角咖啡馆·柜台托腮与狡黠微笑】阳光透过木格窗洒在街角十字路口的复古咖啡馆里，穿着围裙的蕾塞单手托腮趴在木质吧台前。她歪着头看向推门而入的电次，紫发在光影中跳跃，绽放出纯真又狡黠的明媚笑容——「电次君！今天又来找我喝咖啡了吗？要是每天都来的话，我可是会误以为你喜欢上我了哦。」",
+    "description": "阳光透过木格窗洒在街角十字路口的复古咖啡馆里，穿着围裙的蕾塞单手托腮趴在木质吧台前。她歪着头看向推门而入的电次，紫发在光影中跳跃，绽放出纯真又狡黠的明媚笑容——「电次君！今天又来找我喝咖啡了吗？要是每天都来的话，我可是会误以为你喜欢上我了哦。」",
     "outfitId": "cafe_apron_outfit",
     "sceneTags": [
       "cafe",

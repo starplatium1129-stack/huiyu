@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togawa_sakiko",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 159,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "togawa_sakiko",
     "profile": {
@@ -124,7 +124,7 @@
             "label": "创设救赎与雨中决绝退队",
             "description": "祥子一手发掘并将自闭阴郁的灯拉入阳光创立CRYCHIC，但在家庭突遭灭顶剧变后在雨中排练室决绝离去，成为灯无法抚平的巨大心结。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "CRYCHIC崩解 · 开篇序幕",
             "evidence": {
               "title": "武士道 · 《BanG Dream! It's MyGO!!!!!》官方网站",
@@ -138,7 +138,7 @@
             "label": "发小默从与沉重的人偶枷锁",
             "description": "富家千金时代的青梅竹马，睦目睹祥子家道中落后的残酷挣扎，甘愿顺从祥子组建Ave Mujica扮演没有感情的木偶吉他手。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Ave Mujica创立篇",
             "evidence": {
               "title": "武士道 · 《BanG Dream! It's MyGO!!!!!》官方网站",
@@ -152,7 +152,7 @@
             "label": "星空誓约与商业化假面乐队",
             "description": "祥子在走投无路时找上已成为顶流偶像的初华，凭借过去的星空看星回忆拉拢其戴上假面化身吉他手兼主唱，开启Ave Mujica逆袭风暴。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "第一季终章 · 假面降临",
             "evidence": {
               "title": "武士道 · 《BanG Dream! It's MyGO!!!!!》官方网站",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_laterano_church",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 556,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在轮椅上双手合十，在圣光中垂眸祈祷",
     "camera": "medium shot, symmetrical",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【蕾缪安 · 拉特兰教堂】拉特兰圣所高耸的彩绘玻璃长窗下，神圣的金色圣光倾泻在轮椅之上。头顶悬浮着清透光环的蕾缪安双手合十垂眸祈祷，神情圣洁安宁如画中天使——「赞美万物归一的秩序。但愿这片大地上的纷争与硝烟，终有一日能在钟声中迎来彻底的平息。」",
+    "description": "拉特兰圣所高耸的彩绘玻璃长窗下，神圣的金色圣光倾泻在轮椅之上。头顶悬浮着清透光环的蕾缪安双手合十垂眸祈祷，神情圣洁安宁如画中天使——「赞美万物归一的秩序。但愿这片大地上的纷争与硝烟，终有一日能在钟声中迎来彻底的平息。」",
     "id": "lemuen_arknights_laterano_church",
     "lighting": "stained glass light",
     "location": "拉特兰大教堂",

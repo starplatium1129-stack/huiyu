@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_weekend_bookstore_shojo_manga",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1257,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手捧着纯爱少女漫画翻阅，满脸通红沉浸在浪漫幻想中，眼神含情脉脉",
     "camera": "cowboy shot, eye-level",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "manga"
     ],
-    "description": "【古手川唯 · 休日书店的纯情少女漫画】安静的街角书店中，唯穿象牙色开衫、浅紫衬衫与藏青百褶裙，双手捧着纯爱漫画站在木书架间。柔和暖白灯光照着书页，她读得入神，脸颊泛红。",
+    "description": "安静的街角书店中，唯穿象牙色开衫、浅紫衬衫与藏青百褶裙，双手捧着纯爱漫画站在木书架间。柔和暖白灯光照着书页，她读得入神，脸颊泛红。",
     "id": "kotegawa_weekend_bookstore_shojo_manga",
     "lighting": "书店头顶柔和暖白日光灯与木质书架的温润书卷光感",
     "location": "街角书店少女漫画书架前通道",

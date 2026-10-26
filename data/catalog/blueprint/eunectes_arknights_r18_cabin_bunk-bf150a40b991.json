@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_r18_cabin_bunk",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 594,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "盘腿坐在床上裹着干毛巾擦头发，尾巴轻拍",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "medium shot, three-quarter view",
     "category": "成人",
     "characterId": "eunectes_arknights",
-    "description": "【森蚺 · 舱室床铺】私人舱室温暖的床铺上，盘腿坐着的森蚺赤身裹着一条干毛巾擦拭着头发，强健有力的尾巴在被单上不安分地轻轻拍打。她大大方方地张开怀抱——「在雨林里长大的孩子可不习惯扭扭捏捏！博士，快过来躺在我的尾巴上睡觉，超级软和哦！」",
+    "description": "私人舱室温暖的床铺上，盘腿坐着的森蚺赤身裹着一条干毛巾擦拭着头发，强健有力的尾巴在被单上不安分地轻轻拍打。她大大方方地张开怀抱——「在雨林里长大的孩子可不习惯扭扭捏捏！博士，快过来躺在我的尾巴上睡觉，超级软和哦！」",
     "id": "eunectes_arknights_r18_cabin_bunk",
     "kreaStyleHint": "",
     "lighting": "warm lamp",

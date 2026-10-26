@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_canteen_big",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 589,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "大口吃着大碗烤肉饭，腮帮鼓鼓",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【森蚺 · 食堂干饭】中午罗德岛食堂内，森蚺面前摆着三个大号海碗，正大口大口狂炫着堆成小山般的萨贡烤肉拌饭，腮帮子鼓得像只可爱的小仓鼠。吃完一口她满足地拍了拍平坦的小腹——「吃饱了才有力气去机库打铁！博士，你碗里的肉如果吃不下的话，我也能全包哦！」",
+    "description": "中午罗德岛食堂内，森蚺面前摆着三个大号海碗，正大口大口狂炫着堆成小山般的萨贡烤肉拌饭，腮帮子鼓得像只可爱的小仓鼠。吃完一口她满足地拍了拍平坦的小腹——「吃饱了才有力气去机库打铁！博士，你碗里的肉如果吃不下的话，我也能全包哦！」",
     "id": "eunectes_arknights_canteen_big",
     "lighting": "bright cafeteria light",
     "location": "罗德岛食堂",

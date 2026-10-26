@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_hotpot_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 539,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "举筷捞起热汤里的菜",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【陈 · 火锅小聚】热气腾腾的九宫格牛油火锅桌前，陈熟练地用筷子捞起烫得刚刚好的脆毛肚放进你的香油碟里。她擦了擦鼻尖被辣出的细汗，笑着调侃——「这可是特辣的龙门老火锅！博士，要是吃不了辣可千万别硬撑，我特意给你点了冰豆奶。」",
+    "description": "热气腾腾的九宫格牛油火锅桌前，陈熟练地用筷子捞起烫得刚刚好的脆毛肚放进你的香油碟里。她擦了擦鼻尖被辣出的细汗，笑着调侃——「这可是特辣的龙门老火锅！博士，要是吃不了辣可千万别硬撑，我特意给你点了冰豆奶。」",
     "id": "chen_arknights_hotpot_night",
     "lighting": "warm restaurant glow",
     "location": "龙门街边小馆",

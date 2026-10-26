@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_schale_office_budget_lecture",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 915,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "一手叉腰，另一手托着计算器平板与账单文件，鼓腮说教",
     "camera": "cowboy shot, eye level, tablet and receipts held together visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【早濑优香 · 夏莱办公室的说教与陪伴】夏莱总指挥室内，午后暖阳透过百叶窗洒下斑驳光影。优香一手叉腰站在老师的办公桌旁，另一手托着计算器平板和一叠被驳回的零食请款单，鼓起腮帮子故作威严地进行说教——「老师！怎么又偷偷买了这么多高价手办和点心！真拿老师没办法……这次的账目我帮您平了，但下不为例！」",
+    "description": "夏莱总指挥室内，午后暖阳透过百叶窗洒下斑驳光影。优香一手叉腰站在老师的办公桌旁，另一手托着计算器平板和一叠被驳回的零食请款单，鼓起腮帮子故作威严地进行说教——「老师！怎么又偷偷买了这么多高价手办和点心！真拿老师没办法……这次的账目我帮您平了，但下不为例！」",
     "id": "yuuka_schale_office_budget_lecture",
     "lighting": "百叶窗透射的斜射暖阳与室内明亮荧光",
     "location": "夏莱（SCHALE）中央办公室",

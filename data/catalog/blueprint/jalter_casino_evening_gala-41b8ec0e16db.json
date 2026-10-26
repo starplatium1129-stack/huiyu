@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_casino_evening_gala",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 182,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "jalter_casino_evening_gala",
     "title": "贞德[Alter] · 晚宴酒杯",
@@ -12,7 +12,7 @@
     "characterId": "jeanne_alter",
     "outfitId": "evening_black_dress",
     "adult": false,
-    "description": "【贞德[Alter] · 晚宴酒杯】灯红酒绿的豪华赌场露台上，身着一袭优雅露背深黑晚礼服的黑贞单手摇晃着盛满红酒的高脚杯，冷艳的眼妆在夜色下格外魅惑。她转过身将酒杯递向你——「今晚在赌桌上赢了整整一千万筹码。走吧，去把这家赌场最贵的香槟全包下来！」",
+    "description": "灯红酒绿的豪华赌场露台上，身着一袭优雅露背深黑晚礼服的黑贞单手摇晃着盛满红酒的高脚杯，冷艳的眼妆在夜色下格外魅惑。她转过身将酒杯递向你——「今晚在赌桌上赢了整整一千万筹码。走吧，去把这家赌场最贵的香槟全包下来！」",
     "location": "赌场外侧夜间露台的栏杆旁",
     "action": "站在夜间露台栏杆边，一手将红酒杯递向同行者，另一手轻扶栏杆",
     "timeOfDay": "night",

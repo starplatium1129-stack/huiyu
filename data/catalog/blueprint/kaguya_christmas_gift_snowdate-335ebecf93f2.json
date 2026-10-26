@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_christmas_gift_snowdate",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1397,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "围白围巾递出礼物盒，雪光里红瞳亮晶晶，傲娇嘴硬",
     "adult": false,
@@ -17,7 +17,7 @@
       "date",
       "girlfriend"
     ],
-    "description": "【东京银座街头·圣诞夜】初雪落下的时候，辉夜裹着白色围巾站在灯饰下，把一份包装得一丝不苟的礼物盒递到你面前，红瞳在雪光里亮晶晶的，嘴角却努力保持大小姐的矜持——「给、给你的。别、别误会，只是碰巧多买了一份而已！……快说声谢谢啊。」雪花落在她的红色发带与睫毛上，像不肯融化的心动。",
+    "description": "初雪落下的时候，辉夜裹着白色围巾站在灯饰下，把一份包装得一丝不苟的礼物盒递到你面前，红瞳在雪光里亮晶晶的，嘴角却努力保持大小姐的矜持——「给、给你的。别、别误会，只是碰巧多买了一份而已！……快说声谢谢啊。」雪花落在她的红色发带与睫毛上，像不肯融化的心动。",
     "id": "kaguya_christmas_gift_snowdate",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "暖金灯饰与冷蓝雪夜光交织",

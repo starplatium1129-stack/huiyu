@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_ortinax_launch",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 203,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [
       "readable telemetry"
@@ -13,7 +13,7 @@
     "title": "玛修 · 奥特瑙斯出击",
     "category": "近未来",
     "characterId": "mash_kyrielight",
-    "description": "【玛修 · 奥特瑙斯出击】迦勒底机库的出击平台上，玛修身着黑色奥特瑙斯装甲，装甲的间隙透出幽幽蓝光，她握紧拳头深吸一口气——「新装甲的出力……已经完全掌握了。出击！」",
+    "description": "迦勒底机库的出击平台上，玛修身着黑色奥特瑙斯装甲，装甲的间隙透出幽幽蓝光，她握紧拳头深吸一口气——「新装甲的出力……已经完全掌握了。出击！」",
     "location": "迦勒底机库",
     "action": "站在机库出击平台上握紧双拳，深吸一口气后准备前进",
     "timeOfDay": "白天",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mimori_byakuya",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:16:23.182130+00:00",
   "data": {
     "id": "mimori_byakuya",
     "profile": {
@@ -136,7 +136,7 @@
             "id": "byakuya-miller-love-at-first-sight",
             "source": "miller",
             "target": "mimori_byakuya",
-            "label": "宿敌交锋与恶魔沦陷一见钟情",
+            "label": "敌对交锋与恶魔一见钟情",
             "description": "邪恶帝国的恶魔参谋米拉受命消灭薄命贫穷的魔法少女白夜，却在目睹白夜坚强纯真的身姿瞬间一见钟情，从此在暗中化身疯狂送温暖与投喂的守护者。",
             "directed": true,
             "spoiler": false,
@@ -158,6 +158,20 @@
             "evidence": {
               "title": "SQUARE ENIX · 《曾经魔法少女和大恶魔经常为敌》官方网站",
               "url": "https://mahoraku.com/"
+            }
+          },
+          {
+            "id": "mahoaku-byakuya-hibana",
+            "source": "mimori_byakuya",
+            "target": "kagari_hibana",
+            "label": "魔法少女伙伴与毒舌前辈",
+            "description": "身经百战的魔法少女前辈，面对白夜与恶魔参谋米拉的奇妙相处经常忍不住犀利吐槽。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常同盟",
+            "evidence": {
+              "title": "《曾经魔法少女和大恶魔经常为敌》官方网站",
+              "url": "https://mahoaku-anime.com/"
             }
           }
         ]

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc011",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 10,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Without looking up, she slides her marked notes toward the viewer taking the neighboring seat. Morning window light catches her reddening ear and the notebook edge.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "safe, 1girl, shiki_natsume, knit cardigan, checkered skirt, black tights, sitting, notebook, lecture hall, desk, morning, window light, medium shot, @rella",
     "rating": "All",
     "season": "春",
-    "story": "【夏目 · 大学教室的第一束晨光】春日清晨的大学阶梯教室还空着大半，夏目已经坐在窗边整理讲义，并顺手替你占了旁边的位置。你拉开椅子时，她没有抬头，只把一份标好重点的笔记推过来。晨光照亮她微红的耳廓——「昨天缺的内容我顺便整理了。别误会，我只是不想小组作业被你拖后腿。」",
+    "story": "春日清晨的大学阶梯教室还空着大半，夏目已经坐在窗边整理讲义，并顺手替你占了旁边的位置。你拉开椅子时，她没有抬头，只把一份标好重点的笔记推过来。晨光照亮她微红的耳廓——「昨天缺的内容我顺便整理了。别误会，我只是不想小组作业被你拖后腿。」",
     "storyJa": "【夏目・大学の教室に朝の最初の光が射す】春先の朝、大学の講堂にはまだほとんど人がいなかった。夏目さんはすでに窓際に座って講義ノートを整理していて、あなたの隣の席に座りました。あなたが椅子を引くとき、彼女は顔を上げず、ただ重要事項が書かれたメモを押し倒しました。朝の光が彼女の赤みを照らす――「昨日抜けていたところ、ついでにまとめておいたから。勘違いしないで。グループ課題で足を引っ張られたくないだけ。」",
     "tags": [
       "mole_under_eye",

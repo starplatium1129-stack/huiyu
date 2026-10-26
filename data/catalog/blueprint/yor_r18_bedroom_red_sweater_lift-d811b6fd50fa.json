@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_bedroom_red_sweater_lift",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yor_r18_bedroom_red_sweater_lift",
     "characterId": "yor_forger",
     "title": "约尔·福杰 · 卧室床沿·大红毛衣与微醺凝望",
-    "description": "【约尔 · 卧室床沿·大红毛衣与微醺凝望】主卧昏暗的床沿，微醺的约尔穿着大红露背粗线毛衣和黑裙，咬住毛衣下摆向上提起，侧目看向画外的人。床头暖灯照着针织褶皱和裙面，保留她卸下日常拘谨后的神情。",
+    "description": "主卧昏暗的床沿，微醺的约尔穿着大红露背粗线毛衣和黑裙，咬住毛衣下摆向上提起，侧目看向画外的人。床头暖灯照着针织褶皱和裙面，保留她卸下日常拘谨后的神情。",
     "outfitId": "red_sweater_black_skirt",
     "sceneTags": [
       "bedroom",

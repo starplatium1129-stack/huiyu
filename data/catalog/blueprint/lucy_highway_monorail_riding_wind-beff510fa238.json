@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_highway_monorail_riding_wind",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1101,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单手抓车厢扶手探出身躯迎风狂驰，霓虹光芒倒退飞掠，发丝狂乱飞扬",
     "camera": "side view, dynamic angle, high speed motion blur background",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "motion"
     ],
-    "description": "【露西 · 磁悬浮空轨的车厢迎风】在夜之城摩天大楼之间飞速穿梭的高空磁悬浮列车外廊间，呼啸的狂风撕扯着衣摆。露西单手拉着车厢扶手，身体探向车外俯瞰脚下的霓虹车流。高速掠过的全息广告光带将她白皙的面孔染上绚烂光芒，渐变短发在狂暴气流中狂舞，展现出狂野而自由的街头灵魂。",
+    "description": "在夜之城摩天大楼之间飞速穿梭的高空磁悬浮列车外廊间，呼啸的狂风撕扯着衣摆。露西单手拉着车厢扶手，身体探向车外俯瞰脚下的霓虹车流。高速掠过的全息广告光带将她白皙的面孔染上绚烂光芒，渐变短发在狂暴气流中狂舞，展现出狂野而自由的街头灵魂。",
     "id": "lucy_highway_monorail_riding_wind",
     "lighting": "高速倒退的五彩霓虹广告牌形成长曝光拖尾动态光效",
     "location": "高空穿梭磁浮列车敞开式连接处",

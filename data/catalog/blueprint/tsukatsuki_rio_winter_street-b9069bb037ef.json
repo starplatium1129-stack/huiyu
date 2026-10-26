@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_winter_street",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 879,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "穿风衣走在雪中",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【调月莉音 · 冬季街道漫步】飘着初雪的城市公园步道上，莉音穿着收腰长款风衣与保暖皮靴，黑色长发与雪白的围巾形成鲜明对比。她将冻得有些发红的双手插进大衣口袋，侧目看向你——「气温已经降至零度以下，但……像这样两个人并肩走在雪地里，体感温度似乎比数据预测的要温暖许多。」",
+    "description": "飘着初雪的城市公园步道上，莉音穿着收腰长款风衣与保暖皮靴，黑色长发与雪白的围巾形成鲜明对比。她将冻得有些发红的双手插进大衣口袋，侧目看向你——「气温已经降至零度以下，但……像这样两个人并肩走在雪地里，体感温度似乎比数据预测的要温暖许多。」",
     "id": "tsukatsuki_rio_winter_street",
     "kreaStyleHint": "",
     "lighting": "雪天柔光",

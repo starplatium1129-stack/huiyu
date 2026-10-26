@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_lava_pool",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 735,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "赤身伫立在沸腾熔池边，红光勾勒身姿",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate dramatic angle",
     "category": "成人",
     "characterId": "laevatain_arknights",
-    "description": "【莱万汀 · 熔池畔】地热工坊沸腾的红光照亮了整座岩洞，赤身伫立在池边的莱万汀身姿婀娜挺拔，火光在她紧致无暇的胴体上勾勒出动人心魄的完美轮廓。她向你张开双臂——「这里没有寒冷也没有顾虑……来吧，管理员，让我们在这片熔光之中尽情燃烧！」",
+    "description": "地热工坊沸腾的红光照亮了整座岩洞，赤身伫立在池边的莱万汀身姿婀娜挺拔，火光在她紧致无暇的胴体上勾勒出动人心魄的完美轮廓。她向你张开双臂——「这里没有寒冷也没有顾虑……来吧，管理员，让我们在这片熔光之中尽情燃烧！」",
     "id": "laevatain_arknights_r18_lava_pool",
     "kreaStyleHint": "",
     "lighting": "deep lava glow",

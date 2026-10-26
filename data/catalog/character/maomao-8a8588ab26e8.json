@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "maomao",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "maomao",
     "profile": {
@@ -136,7 +136,7 @@
             "label": "真实皇弟身世与烙印求婚",
             "description": "壬氏向猫猫袒露自己身为当今皇帝亲弟华瑞月的真正身世，为摆脱继承顺位甚至不惜自烙印记，向猫猫立下执着不悔的深情求娶誓约。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线深入 · 皇弟真相与烙印之誓",
             "evidence": {
               "title": "东宝 · 《药屋少女的呢喃》官方动画网站",
@@ -154,6 +154,34 @@
             "stage": "翡翠宫就任篇",
             "evidence": {
               "title": "东宝 · 《药屋少女的呢喃》官方动画网站",
+              "url": "https://kusuriyanohitorigoto.jp/"
+            }
+          },
+          {
+            "id": "kusuriya-jinshi-gaoshun",
+            "source": "jinshi",
+            "target": "gaoshun",
+            "label": "如影随形的忠诚近侍与长辈",
+            "description": "操碎了心的老臣，长年伴随壬氏身侧料理公私杂务，是壬氏最信赖的如长辈般的亲信。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "后宫与外廷日常",
+            "evidence": {
+              "title": "《药屋少女的呢喃》官方网站",
+              "url": "https://kusuriyanohitorigoto.jp/"
+            }
+          },
+          {
+            "id": "kusuriya-maomao-gaoshun",
+            "source": "maomao",
+            "target": "gaoshun",
+            "label": "体恤照顾猫猫的稳重长辈",
+            "description": "深知猫猫的医药才华，常在壬氏任性时出面周旋，给猫猫递送零食药物与委托，深得猫猫敬重。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "翡翠宫协助办案",
+            "evidence": {
+              "title": "《药屋少女的呢喃》官方网站",
               "url": "https://kusuriyanohitorigoto.jp/"
             }
           }

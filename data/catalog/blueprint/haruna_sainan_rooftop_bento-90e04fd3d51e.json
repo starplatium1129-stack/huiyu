@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_sainan_rooftop_bento",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1762,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "haruna_sainan_rooftop_bento",
     "title": "西连寺春菜 · 彩南高校天台的心意便当",
@@ -31,7 +31,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【西连寺春菜 · 彩南高校天台的心意便当】微风拂过彩南高校天台的防护铁丝网。春菜坐在绿色长凳上，双手从底部托稳已打开的自制便当，举在膝头上方，稍稍朝画外走近的梨斗递出。盒内的厚蛋烧清晰可见，她抬眼望着对方，脸颊泛红，轻声邀请——「结城君如果不介意的话……要尝尝看我做的厚蛋烧吗？」",
+    "description": "微风拂过彩南高校天台的防护铁丝网。春菜坐在绿色长凳上，双手从底部托稳已打开的自制便当，举在膝头上方，稍稍朝画外走近的梨斗递出。盒内的厚蛋烧清晰可见，她抬眼望着对方，脸颊泛红，轻声邀请——「结城君如果不介意的话……要尝尝看我做的厚蛋烧吗？」",
     "promptTokens": [
       "school_rooftop",
       "chainlink_fence",

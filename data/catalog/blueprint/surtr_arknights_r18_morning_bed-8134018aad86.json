@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_morning_bed",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 524,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "裹着薄被侧卧回眸",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "medium shot, side view, face and reaching hand visible",
     "category": "成人",
     "characterId": "surtr_arknights",
-    "description": "【史尔特尔 · 晨光床榻】清晨第一缕阳光洒在凌乱的被单上，史尔特尔裹着薄薄的丝被侧卧在床铺中央，慵懒回眸看着醒来的你。她伸出白皙的手臂拉住你的手腕——「哈啊……天亮得真快。今天罗德岛没有紧急出击任务吧？那就再陪我躺一个小时。」",
+    "description": "清晨第一缕阳光洒在凌乱的被单上，史尔特尔裹着薄薄的丝被侧卧在床铺中央，慵懒回眸看着醒来的你。她伸出白皙的手臂拉住你的手腕——「哈啊……天亮得真快。今天罗德岛没有紧急出击任务吧？那就再陪我躺一个小时。」",
     "id": "surtr_arknights_r18_morning_bed",
     "kreaStyleHint": "",
     "lighting": "soft pale morning light",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_mental_out_queen_gesture",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 401,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "白手套手指抵太阳穴施展心理掌握，星瞳狡黠，从容微笑",
     "adult": false,
@@ -17,7 +17,7 @@
       "iconic",
       "signature"
     ],
-    "description": "【常盘台中庭·午后】女王蜂缓缓抬起雪白的手套手指，轻轻抵在太阳穴旁——那是最优雅的支配手势。星形的瞳孔里闪过狡黠的光，常盘台的中庭在她的一次眨眼间秩序井然。米色毛衣背心与灰裙勾勒出从容的仪态，手提包里的遥控器排成一列，仿佛整个学园都是她的舞台——「心理掌握，全员听我指挥哦♪」",
+    "description": "女王蜂缓缓抬起雪白的手套手指，轻轻抵在太阳穴旁——那是最优雅的支配手势。星形的瞳孔里闪过狡黠的光，常盘台的中庭在她的一次眨眼间秩序井然。米色毛衣背心与灰裙勾勒出从容的仪态，手提包里的遥控器排成一列，仿佛整个学园都是她的舞台——「心理掌握，全员听我指挥哦♪」",
     "id": "misaki_mental_out_queen_gesture",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "明亮校园阳光与中庭绿荫",

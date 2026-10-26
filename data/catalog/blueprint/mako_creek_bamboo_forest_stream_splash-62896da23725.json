@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_creek_bamboo_forest_stream_splash",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1133,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "弯腰涉水双手泼洒晶莹溪水，比基尼勾勒曼妙身材，水珠飞溅，神采奕奕",
     "camera": "cowboy shot, dynamic water splashing foreground, action depth",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "summer"
     ],
-    "description": "【常陆茉子 · 幽谷清溪的碧波逐浪】穗织镇后山竹林环抱的山涧溪流边，清泉击石，水花飞溅。茉子身着一袭墨绿相间的运动分体泳装，修长健美的大腿毫无防备地浸在清凉的泉水中。她弯下腰双手捧起冰凉甘甜的溪水向镜头泼洒，水珠在灿烂阳光下化作剔透的水帘，丰满诱人的胸线在微湿的布料下若隐若现。",
+    "description": "穗织镇后山竹林环抱的山涧溪流边，清泉击石，水花飞溅。茉子身着一袭墨绿相间的运动分体泳装，修长健美的大腿毫无防备地浸在清凉的泉水中。她弯下腰双手捧起冰凉甘甜的溪水向镜头泼洒，水珠在灿烂阳光下化作剔透的水帘，丰满诱人的胸线在微湿的布料下若隐若现。",
     "id": "mako_creek_bamboo_forest_stream_splash",
     "lighting": "茂密竹林间透射下的直射烈日与水面跳跃的焦散光斑",
     "location": "竹林深处山涧清澈溪流卵石滩",

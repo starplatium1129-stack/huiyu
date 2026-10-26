@@ -4,28 +4,26 @@
   "revision": 6,
   "sortOrder": 577,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "扛着战锤稳步前行",
     "camera": "full-body shot",
     "category": "泰拉自然",
     "characterId": "mudrock_arknights",
-    "description": "【泥岩 · 雪原行军】风雪呼啸的莱塔尼亚荒原之上，穿着全套厚重萨卡兹战甲的泥岩单手扛着比人还高的巨型破城战锤，在及膝的深雪中迈着如山岳般坚实沉稳的步伐。她回头确认同伴的距离——「大家跟紧我。只要我的护盾还在，就没有任何风雪与敌人能伤到你们。」",
+    "description": "风雪呼啸的莱塔尼亚荒原之上，穿着全套厚重萨卡兹战甲的泥岩单手扛着比人还高的巨型破城战锤，在及膝的深雪中迈着如山岳般坚实沉稳的步伐。她回头确认同伴的距离——「大家跟紧我。只要我的护盾还在，就没有任何风雪与敌人能伤到你们。」",
     "id": "mudrock_arknights_snowfield_march",
     "lighting": "pale snow light",
     "location": "北境雪原",
     "mood": "沉默坚毅",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Mudrock carries the engineering warhammer, taller than herself, over one shoulder as she walks through knee-deep snow and looks back to check her off-frame companions. Pale snow-reflected light catches the armor edges.",
+    "promptProse": "Mudrock carries the engineering warhammer over one shoulder and glances back to check her companions beyond the frame.",
     "promptTokens": [
       "hammer",
       "walking",
       "looking back",
       "snowfield",
-      "wind",
-      "carrying hammer",
-      "full body"
+      "wind"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,7 +44,6 @@
       "solo",
       "arknights"
     ],
-    "identityProseOverride": "Mudrock from Arknights, enclosed in her sealed heavy armor and helmet.",
-    "animaCaption": "She looks back toward off-frame companions while carrying the taller-than-herself warhammer."
+    "identityProseOverride": "Mudrock from Arknights, enclosed in her sealed heavy armor and helmet."
   }
 }

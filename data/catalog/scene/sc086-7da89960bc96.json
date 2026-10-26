@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc086",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "One hand holds the umbrella while the other tightens around the viewer's just before she steps into the puddle.",
     "auditRevision": "careful-batch08-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, light grey fine knit sweater, pink scalloped cuffs, navy A-line skirt, white tights, transparent umbrella, holding hands, laughing, crosswalk, puddles, rainbow, full body, holding umbrella, sunlight, walking",
     "rating": "All",
     "season": "夏",
-    "story": "【宁宁 · 雨停以后抬头】夏日阵雨刚停，宁宁撑着透明伞站在路口，忽然发现云层间出现完整彩虹。她兴奋地回头叫你，差点踩进积水，又被你及时拉住。她顺势握紧你的手，仰头笑起来——「还好没有急着回去。坏天气结束以后，真的会有值得等待的东西呢。」",
+    "story": "夏日阵雨刚停，宁宁撑着透明伞站在路口，忽然发现云层间出现完整彩虹。她兴奋地回头叫你，差点踩进积水，又被你及时拉住。她顺势握紧你的手，仰头笑起来——「还好没有急着回去。坏天气结束以后，真的会有值得等待的东西呢。」",
     "storyJa": "【寧々・雨が止んだら見上げてください】夏の夕立はちょうど止んだところだった。寧々さんは透明な傘を持って交差点に立っていましたが、突然雲の間に完全な虹が現れていることに気づきました。彼女は興奮してあなたを呼び戻し、危うく水に入りそうになりましたが、あなたは間に合って彼女を捕まえました。彼女はあなたの手を握り、顔を上げて微笑んだ――「急いで帰らなくてよかったです。悪い天気が過ぎたあとには、本当に待つだけのものがあるんですね。」",
     "tags": [
       "rainbow",

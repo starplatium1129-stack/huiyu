@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_rhodes_canteen",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 519,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "身着休闲卫衣短裤，单手托腮，用小银勺极其专注地挖起高脚玻璃杯里的双球浆果冰淇淋送入口中，紧绷的眉头舒展，眼神中透着无可替代的满足",
     "camera": "medium close-up, face, spoon and ice-cream glass visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【史尔特尔 · 食堂一角】午后空闲的罗德岛舰内食堂角落，史尔特尔单手托腮，用小银勺极其专注地挖起高脚玻璃杯里的双球浆果冰淇淋送入口中，紧绷的眉头罕见地舒展开来——「甜度刚刚好。今天的冰淇淋配方是谁调的？……作为交换，下午的战术推演我破例参加。」",
+    "description": "午后空闲的罗德岛舰内食堂角落，史尔特尔单手托腮，用小银勺极其专注地挖起高脚玻璃杯里的双球浆果冰淇淋送入口中，紧绷的眉头罕见地舒展开来——「甜度刚刚好。今天的冰淇淋配方是谁调的？……作为交换，下午的战术推演我破例参加。」",
     "id": "surtr_arknights_rhodes_canteen",
     "lighting": "罗德岛室内温暖和煦的人造日光与甜品台暖黄吊灯",
     "location": "罗德岛生活区甜品吧台",

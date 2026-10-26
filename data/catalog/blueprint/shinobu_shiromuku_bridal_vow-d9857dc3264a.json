@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_shiromuku_bridal_vow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1453,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "白无垢十指相扣立神前，紫瞳认真含泪微笑",
     "adult": false,
@@ -18,7 +18,7 @@
       "iconic",
       "romance"
     ],
-    "description": "【神社·婚礼日】向来向死而行的虫柱，今天披上了纯白无垢。白角隐下的紫瞳认真得前所未有，她在神前与你十指相扣——「我这一生的剧毒，本该随我葬进夜里。……但如果是你，毒也会变成药。所以，请让我把余下的每一天，都用来对你温柔。」",
+    "description": "向来向死而行的虫柱，今天披上了纯白无垢。白角隐下的紫瞳认真得前所未有，她在神前与你十指相扣——「我这一生的剧毒，本该随我葬进夜里。……但如果是你，毒也会变成药。所以，请让我把余下的每一天，都用来对你温柔。」",
     "id": "shinobu_shiromuku_bridal_vow",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "神社晨光圣洁柔和",

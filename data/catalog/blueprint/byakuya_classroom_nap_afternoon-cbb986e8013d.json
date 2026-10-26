@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_classroom_nap_afternoon",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 830,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "趴在课桌上睡着了",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【深森白夜 · 教室午睡】午后微风轻拂的安静教室内，打工疲惫不堪的白夜趴在课桌上沉沉睡去，几缕铂白色长发散落在书本间，睫毛在阳光下投下柔和的阴影。察觉到你在她身上披了件外套，她迷迷糊糊地轻声梦呓——「唔……还要去送报纸……」",
+    "description": "午后微风轻拂的安静教室内，打工疲惫不堪的白夜趴在课桌上沉沉睡去，几缕铂白色长发散落在书本间，睫毛在阳光下投下柔和的阴影。察觉到你在她身上披了件外套，她迷迷糊糊地轻声梦呓——「唔……还要去送报纸……」",
     "id": "byakuya_classroom_nap_afternoon",
     "lighting": "window_light",
     "location": "学校教室",

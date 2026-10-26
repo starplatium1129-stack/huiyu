@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_tea_corner",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 529,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端起茶杯，眉眼微垂",
     "camera": "close-up",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【凯尔希 · 茶叙】办公室内弥漫着略带苦涩的红茶香气，凯尔希端起精致的白瓷茶杯轻抿一口，眉眼在热茶升腾的薄雾中微垂——「无糖的浓红茶有助于维持高强度的神经运转。如果你习惯了加奶加糖……旁边有阿米娅为你准备的方糖盒。」",
+    "description": "办公室内弥漫着略带苦涩的红茶香气，凯尔希端起精致的白瓷茶杯轻抿一口，眉眼在热茶升腾的薄雾中微垂——「无糖的浓红茶有助于维持高强度的神经运转。如果你习惯了加奶加糖……旁边有阿米娅为你准备的方糖盒。」",
     "id": "kaltsit_arknights_tea_corner",
     "lighting": "soft window light",
     "location": "罗德岛办公室",

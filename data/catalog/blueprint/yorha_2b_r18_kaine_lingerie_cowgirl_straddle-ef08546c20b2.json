@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_kaine_lingerie_cowgirl_straddle",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1121,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yorha_2b_r18_kaine_lingerie_cowgirl_straddle",
     "title": "2B · 凯妮蕾丝战装跨坐骑乘与上下轻摇",
@@ -14,7 +14,7 @@
     "coverageTags": [
       "cowgirl"
     ],
-    "description": "【成年2B · 营地软垫的单人休整】成年2B独自跨坐折叠软垫，蓝白战斗内衣松开，一手撑住床褥、一手在腿间自抚，武器与Pod均关闭置于远处。",
+    "description": "成年2B独自跨坐折叠软垫，蓝白战斗内衣松开，一手撑住床褥、一手在腿间自抚，武器与Pod均关闭置于远处。",
     "location": "抵抗军营地帐篷行军榻",
     "action": "独自跨坐软垫，一手撑床、一手腿间自抚",
     "timeOfDay": "夜间",

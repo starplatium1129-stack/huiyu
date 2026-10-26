@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_parlour_lily",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 890,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "在茶具旁整理白蔷薇，回望微笑",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【圣园未花 · 帕特尔派议事厅的小憩】帕特尔派的华丽休息室内，未花将一枝刚采摘的白蔷薇插在红茶杯旁，双手托腮笑眯眯地凝视着批改文件的你——「唔～文件有什么好看的嘛，明明可爱的未花就在你眼前！老师，再不理我我可就要捣蛋咯☆」",
+    "description": "帕特尔派的华丽休息室内，未花将一枝刚采摘的白蔷薇插在红茶杯旁，双手托腮笑眯眯地凝视着批改文件的你——「唔～文件有什么好看的嘛，明明可爱的未花就在你眼前！老师，再不理我我可就要捣蛋咯☆」",
     "id": "misono_mika_parlour_lily",
     "kreaStyleHint": "",
     "lighting": "侧窗冷光",

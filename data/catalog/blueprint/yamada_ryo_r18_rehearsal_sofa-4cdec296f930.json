@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_r18_rehearsal_sofa",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1833,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yamada_ryo_r18_rehearsal_sofa",
     "characterId": "yamada_ryo",
@@ -15,7 +15,7 @@
     "sampleRating": "R18",
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@hisasi",
-    "description": "【成年山田凉 · 排练室旧沙发的慵懒沉溺】演出散场后空无一人的隔音排练室，褪去一切衣物的成年凉慵懒地靠在旧皮沙发深处。修长匀称的冷白身躯在昏暗暖光下泛着微光，泪痣在潮红的面庞上愈发引人注目。少女微张双腿、散漫地抬眼勾住你的视线——「难得单独留下来……不想只听我弹琴吧？」",
+    "description": "演出散场后空无一人的隔音排练室，褪去一切衣物的成年凉慵懒地靠在旧皮沙发深处。修长匀称的冷白身躯在昏暗暖光下泛着微光，泪痣在潮红的面庞上愈发引人注目。少女微张双腿、散漫地抬眼勾住你的视线——「难得单独留下来……不想只听我弹琴吧？」",
     "action": "靠在旧皮沙发上，双腿微敞，眼神迷离慵懒地看着前方",
     "location": "空无一人的隔音排练室角落",
     "timeOfDay": "深夜",

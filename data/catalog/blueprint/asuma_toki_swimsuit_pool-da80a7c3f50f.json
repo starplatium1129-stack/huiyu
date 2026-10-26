@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_swimsuit_pool",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 902,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "戴耳麦端果汁站立",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【飞鸟马时 · 泳池潜伏任务】夏日湛蓝的度假泳池边，时身穿蓝白配色的特工分体泳装，腰间依然严谨地系着战术小包，手里端着一杯椰汁。她面无表情地戴着遮阳镜——「泳池区域警戒无异常……主人，时已经做好了随时为您下水排查危险的准备，Peace ✌️。」",
+    "description": "夏日湛蓝的度假泳池边，时身穿蓝白配色的特工分体泳装，腰间依然严谨地系着战术小包，手里端着一杯椰汁。她面无表情地戴着遮阳镜——「泳池区域警戒无异常……主人，时已经做好了随时为您下水排查危险的准备，Peace ✌️。」",
     "id": "asuma_toki_swimsuit_pool",
     "kreaStyleHint": "",
     "lighting": "泳池反光与阳光",

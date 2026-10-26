@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_emiya_garden_watering",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 185,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "sakura_emiya_garden_watering",
     "title": "间桐樱 · 卫宫家庭院",
@@ -12,7 +12,7 @@
     "characterId": "matou_sakura",
     "outfitId": "homurahara_uniform",
     "adult": false,
-    "description": "【间桐樱 · 卫宫家庭院】阳光和煦的卫宫宅庭院里，樱提着绿色洒水壶细心地浇灌着墙角的花草，清澈的水雾在阳光下泛着微光。微风扬起她的校服裙摆，她转头冲你温柔浅笑——「只要看着这些小花一天天健康长大，就觉得这个世界的每一天都充满希望呢。」",
+    "description": "阳光和煦的卫宫宅庭院里，樱提着绿色洒水壶细心地浇灌着墙角的花草，清澈的水雾在阳光下泛着微光。微风扬起她的校服裙摆，她转头冲你温柔浅笑——「只要看着这些小花一天天健康长大，就觉得这个世界的每一天都充满希望呢。」",
     "location": "卫宫家庭院",
     "action": "提着洒水壶浇花，裙摆轻扬",
     "timeOfDay": "afternoon",

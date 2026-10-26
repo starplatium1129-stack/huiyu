@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_yuuki_kitchen_breakfast_cooking",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1776,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "mikan_yuuki_kitchen_breakfast_cooking",
     "title": "结城美柑 · 结城家厨房的元气早餐料理",
@@ -33,7 +33,7 @@
     "coverageTags": [
       "character_featured"
     ],
-    "description": "【结城美柑 · 结城家厨房的元气早餐料理】清晨的结城家厨房里飘出烤面包与煎蛋的香气。美柑穿着暖黄色围裙熟练地翻动平底锅，听到楼梯上传来哥哥迷迷糊糊的脚步声，她微微侧头露出甜美又带着一丝小恶魔调侃的笑容——「再慢吞吞的话，早餐可就要被菈菈吃光了哦，哥哥？」",
+    "description": "清晨的结城家厨房里飘出烤面包与煎蛋的香气。美柑穿着暖黄色围裙熟练地翻动平底锅，听到楼梯上传来哥哥迷迷糊糊的脚步声，她微微侧头露出甜美又带着一丝小恶魔调侃的笑容——「再慢吞吞的话，早餐可就要被菈菈吃光了哦，哥哥？」",
     "promptTokens": [
       "kitchen",
       "counter",

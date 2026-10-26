@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "reze_chainsaw",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 42,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "reze_chainsaw",
     "profile": {
@@ -160,7 +160,7 @@
             "label": "支配饲育与毁灭人性的诱饵",
             "description": "用温饱、拥抱与伪善的关怀将电次圈养为忠犬，实质渴望通过毁灭电次所有的平凡幸福（杀死秋与帕瓦）来剥离其人性，以唤醒真正抹消恶魔概念的链锯人波奇塔。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "支配恶魔篇 · 终局决战",
             "evidence": {
               "title": "集英社《少年JUMP+》电锯人官方特设",
@@ -174,7 +174,7 @@
             "label": "雨夜烟火的悸动与未赴之约",
             "description": "作为苏联炸弹恶魔特工潜伏接近电次，教他游泳并在祭典接吻；在生死厮杀后被电次的真心打动相约私奔，却在迈向约定咖啡馆前一步被玛奇玛冷酷伏击扼杀。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "蕾塞篇（炸弹恶魔篇）",
             "evidence": {
               "title": "集英社《周刊少年JUMP》蕾塞篇官方特设",
@@ -188,7 +188,7 @@
             "label": "鸡飞狗跳的室友与悲怆雪仗",
             "description": "从最初互相看不顺眼的同居搭档，演变成为彼此拼命的义兄弟；最终早川秋被玛奇玛改造为枪之魔人，在秋脑海幻化为扔雪球的残酷幻觉中被电次含泪亲手击杀。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "枪之恶魔篇 · 打雪仗之死",
             "evidence": {
               "title": "集英社《周刊少年JUMP》电锯人特设官方页",
@@ -202,7 +202,7 @@
             "label": "臭味相投的恶友与鲜血契约",
             "description": "同居在早川家的欢喜冤家，从互相算计到视若至亲；在帕瓦被玛奇玛轰碎后，其残魂在电次体内觉醒化为血之恶魔拼死救走电次，以订下寻找转生血魔的契约换回电次性命。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "支配恶魔篇 · 垃圾箱里的契约",
             "evidence": {
               "title": "MAPPA《电锯人》官方动画网站",
@@ -216,7 +216,7 @@
             "label": "盲从倾慕与被支配的寿命奴役",
             "description": "早川秋自始至终在支配恶魔的心智诱导下对玛奇玛抱有无法自拔的好感与顺从，甚至不惜将自己仅剩的短暂寿命与灵魂完全奉献给玛奇玛，沦为悲惨的棋子。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "海滩契约 · 枪之魔人诞生前夕",
             "evidence": {
               "title": "MAPPA《电锯人》官方动画角色库",
@@ -230,7 +230,7 @@
             "label": "暗巷伏击与洗脑武器人傀儡",
             "description": "在蕾塞捧着野花准备赴约电次时，玛奇玛率领天使恶魔在小巷实施伏击将蕾塞残杀俘获，抹杀其自主意识将其重组为效忠自己的武器人军团之一。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "炸弹恶魔篇末尾 · 雨巷埋伏",
             "evidence": {
               "title": "集英社《少年JUMP+》电锯人连载官方",

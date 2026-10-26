@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "jalter_summer_beach_katana",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 171,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "jalter_summer_beach_katana",
     "characterId": "jeanne_alter",
     "title": "贞德[Alter] · 落日海滩·水着狂阶收刀回眸",
-    "description": "【贞德[Alter] · 落日海滩·水着狂阶收刀回眸】落日余晖洒满海浪翻滚的金色沙滩，换上狂野黑色比基尼泳装的黑贞潇洒地将漆黑日本刀收入鞘中，海风吹卷着她短俏的白发。她回过头冲你挑眉一笑——「哼，区区几只海怪也敢打扰我们的假期？今晚的烧烤食材已经解决了，快去生火！」",
+    "description": "落日余晖洒满海浪翻滚的金色沙滩，换上狂野黑色比基尼泳装的黑贞潇洒地将漆黑日本刀收入鞘中，海风吹卷着她短俏的白发。她回过头冲你挑眉一笑——「哼，区区几只海怪也敢打扰我们的假期？今晚的烧烤食材已经解决了，快去生火！」",
     "outfitId": "summer_swimsuit_berserker",
     "sceneTags": [
       "sunset_beach",

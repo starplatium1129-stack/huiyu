@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc029",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 27,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Her free hand rests over her heart beside the monitor's rising waveform.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, white fitted lab coat, pink A-line dress, peter pan collar, small bow at waist, heart rate sensor, monitor, notebook, laboratory, medium shot, holding notebook, open book, hand on own chest, smile, blush, cool lighting",
     "rating": "All",
     "season": "不限",
-    "story": "【成年跨界 AU · 情绪同步校准】明亮实验室里，成年的宁宁戴着轻量心率感应器，呆毛随着屏幕上的情绪曲线轻轻晃动。你的快乐被设备放大后，她也忍不住跟着笑起来，却认真记录每一次波峰。发现同步率持续上升，她红着脸按住胸口——「原来安心也会有这么清楚的形状……这组数据，不可以交给别人看。」",
+    "story": "明亮实验室里，成年的宁宁戴着轻量心率感应器，呆毛随着屏幕上的情绪曲线轻轻晃动。你的快乐被设备放大后，她也忍不住跟着笑起来，却认真记录每一次波峰。发现同步率持续上升，她红着脸按住胸口——「原来安心也会有这么清楚的形状……这组数据，不可以交给别人看。」",
     "storyJa": "【寧々・大人のクロスオーバーAU・感情同調キャリブレーション】明るい実験室では、大人の寧々が軽量の心拍数センサーを身に着けており、アホ毛が画面上の感情曲線に合わせて優しく揺れています。あなたの幸せがデバイスによって増幅された後、彼女も笑わずにはいられませんでしたが、すべてのピークを注意深く記録しました。シンクロ率が上がり続けることに気づき、顔を赤らめて胸を押さえた――「安心って、こんなにはっきりした形になるんですね……このデータは、ほかの人には見せちゃだめです。」",
     "tags": [
       "hair_ribbon",

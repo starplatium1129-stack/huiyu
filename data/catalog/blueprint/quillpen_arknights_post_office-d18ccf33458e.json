@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_post_office",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 616,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "将调好的粉色鸡尾酒沿吧台推向观众，雪克壶放在另一只手旁，困倦地轻轻打哈欠。",
     "camera": "medium shot, slightly low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【羽毛笔 · 多索雷斯调酒】多索雷斯喧闹的地下酒吧吧台前，睡眼惺忪的黎博利少女拉菲艾拉正单手极其熟练地翻飞摇晃着不锈钢调酒雪克壶。她打了个浅浅的哈欠，将一杯渐变粉色的特调鸡尾酒推到你面前——「唔……哈啊……这是加了双倍薄荷的‘多索雷斯之夜’。博士，喝了它就不困了哦。」",
+    "description": "多索雷斯喧闹的地下酒吧吧台前，睡眼惺忪的黎博利少女拉菲艾拉正单手极其熟练地翻飞摇晃着不锈钢调酒雪克壶。她打了个浅浅的哈欠，将一杯渐变粉色的特调鸡尾酒推到你面前——「唔……哈啊……这是加了双倍薄荷的‘多索雷斯之夜’。博士，喝了它就不困了哦。」",
     "id": "quillpen_arknights_post_office",
     "lighting": "warm ambient bar glow, colorful neon bokeh, soft spotlight",
     "location": "多索雷斯酒吧吧台",

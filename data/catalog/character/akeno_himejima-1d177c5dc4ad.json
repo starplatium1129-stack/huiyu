@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "akeno_himejima",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 98,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "akeno_himejima",
     "profile": {
@@ -270,7 +270,7 @@
             "label": "化解心魔与猫又觉醒",
             "description": "小猫因姐姐黑歌弑主而封闭心扉恐惧仙术，在一诚不顾安危的接纳与保护下，小猫解开心魔觉醒猫又力量并深深爱上一诚。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "排位战篇 · 仙术觉醒",
             "evidence": {
               "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",
@@ -354,7 +354,7 @@
             "label": "夺回自由的断臂决斗",
             "description": "莱萨依仗纯血不死鸟威能强加包办政治婚姻，一诚在排位赛中以凡人恶魔之躯不惜断臂发动赤龙帝之手将其击溃，赢回了莉雅丝的自由。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "决斗篇 · 冥界宴会",
             "evidence": {
               "title": "恶魔高校DxD制作委员会 · 官方动画人物档案",
@@ -365,10 +365,10 @@
             "id": "issei-vali-rivalry",
             "source": "hyoudou_issei",
             "target": "vali_lucifer",
-            "label": "赤龙帝与白龙皇的宿敌宿命",
+            "label": "赤龙帝与白龙皇的竞争与盟友",
             "description": "背负千年宿命的双龙争锋，瓦利追求至高武道杀伐，与一诚在死战碰撞中惺惺相惜，最终结成并肩拯救世界危局的至强竞争对手。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "和平会谈篇 · 双龙对决",
             "evidence": {
               "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",
@@ -382,7 +382,7 @@
             "label": "引导父女释怀千古血仇",
             "description": "阿萨谢尔作为朱乃父亲拜罗的直属首领与旧友，多年来默默照看朱乃，并在决战时刻充当桥梁促成了朱乃与生父解开心结重归于好。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "冥界决战 · 父女和解",
             "evidence": {
               "title": "富士见Fantasia文库 · 《恶魔高校DxD》官方特设专页",

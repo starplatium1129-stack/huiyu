@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "reze_rainy_phone_booth_glance",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 423,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "reze_rainy_phone_booth_glance",
     "characterId": "reze_chainsaw",
     "title": "蕾塞 · 暴雨电话亭·狭小空间与湿发回眸",
-    "description": "【蕾塞 · 暴雨电话亭·狭小空间与湿发回眸】狂风暴雨席卷的东京街头，狭小而闷热的红色公用电话亭成了唯一的避难所。湿透的短发紧贴着蕾塞白皙的脸颊，雨水顺着她的脖颈流淌进衣领。她转过身在极近的距离凝视着你——「这里好挤……但是很暖和呢。电次君，心跳声吵得我都要听不清外面的雨声了。」",
+    "description": "狂风暴雨席卷的东京街头，狭小而闷热的红色公用电话亭成了唯一的避难所。湿透的短发紧贴着蕾塞白皙的脸颊，雨水顺着她的脖颈流淌进衣领。她转过身在极近的距离凝视着你——「这里好挤……但是很暖和呢。电次君，心跳声吵得我都要听不清外面的雨声了。」",
     "outfitId": "sleeveless_white_shirt",
     "sceneTags": [
       "phone_booth",

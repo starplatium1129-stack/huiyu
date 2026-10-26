@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "takarada_rikka",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 120,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "takarada_rikka",
     "profile": {
@@ -156,7 +156,7 @@
             "label": "超越设定的真挚拯救与永恒羁绊",
             "description": "即便得知自己只是茜设定中‘无论如何都会喜欢茜’的造物，六花依然选择用最纯粹的人性温暖拥抱陷入疯狂化身怪兽的茜，并用通行卡套作为礼物送茜重返现实世界。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "TV终局 · 觉醒与救赎",
             "evidence": {
               "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
@@ -170,7 +170,7 @@
             "label": "蛊惑利用与恶意寄生",
             "description": "恶质宇宙人亚历克西斯利用茜内心的孤独与脆弱，将其亲手雕刻的怪兽实体化摧毁城市，并在茜崩溃时企图将其吞噬为纯粹的绝望之核。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "杜鹃台危机 · 幕后黑手",
             "evidence": {
               "title": "TRIGGER · 《SSSS.GRIDMAN》官方故事介绍",
@@ -184,7 +184,7 @@
             "label": "暗生情愫与黄昏坡道的真情相守",
             "description": "裕太醒来第一眼见到的就是六花并对其怀有真挚的喜欢；在经历失去身体、古立特分离以及剧场版多元危机后，裕太在黄昏坡道真诚告白，六花红着脸欣然接纳。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "完结篇 · GRIDMAN UNIVERSE",
             "evidence": {
               "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
@@ -198,7 +198,7 @@
             "label": "寄宿一心与超级特工载体",
             "description": "古立特在TV全篇寄宿在裕太体内代替其战斗，而裕太本人的灵魂则在沉睡中默默分担负荷，两人齐心协力修补了茜创伤破碎的心灵世界。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "杜鹃台决战 · 真实身份",
             "evidence": {
               "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
@@ -240,7 +240,7 @@
             "label": "造物主的抛弃与重生的骑士心",
             "description": "茜创造安奇只为了斩杀古立特，因安奇多次失败而将其无情遗弃；安奇在六花的救助下萌生守护之心，进化为‘古立特骑士’反向保护茜免遭亚历克西斯毒手。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终局觉醒 · 骑士的誓言",
             "evidence": {
               "title": "TRIGGER · 《SSSS.GRIDMAN》官方角色设定",
@@ -268,7 +268,7 @@
             "label": "光明特工与混沌邪念的宿怨",
             "description": "超级特工古立特跨越宇宙追缉恶意煽动人心的亚历克西斯，最终以‘Fixer Beam’将其彻底封印净化，修复了崩塌的电脑空间。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "最终战 · 修复的光辉",
             "evidence": {
               "title": "TRIGGER · 《SSSS.GRIDMAN》官方故事介绍",

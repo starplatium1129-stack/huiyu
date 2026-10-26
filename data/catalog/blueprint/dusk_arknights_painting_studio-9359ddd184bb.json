@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_painting_studio",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 567,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "盘坐在宣纸中央，手持毛笔悬停沉思，墨龙与山峦从纸面逸出",
     "camera": "wide shot, eye level",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【夕 · 画室】堆满万卷水墨长卷与陈年松烟墨锭的画室内，夕赤足盘坐于铺展的宣纸中央，提笔悬停在半空沉思。她回过头斜睨着走近的你，语气傲娇而慵懒——「吵死了……难得有点作画的灵感全被你的脚步声打乱了。罚你坐在这儿给我研墨三个时辰，不准乱动。」",
+    "description": "堆满万卷水墨长卷与陈年松烟墨锭的画室内，夕赤足盘坐于铺展的宣纸中央，提笔悬停在半空沉思。她回过头斜睨着走近的你，语气傲娇而慵懒——「吵死了……难得有点作画的灵感全被你的脚步声打乱了。罚你坐在这儿给我研墨三个时辰，不准乱动。」",
     "id": "dusk_arknights_painting_studio",
     "lighting": "泼洒的水墨泛着幽冷青蓝微光与金箔碎屑，如梦似幻的东方奇幻大片感",
     "location": "水墨重叠的画中洞天",

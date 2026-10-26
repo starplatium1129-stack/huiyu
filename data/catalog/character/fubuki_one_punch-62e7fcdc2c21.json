@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fubuki_one_punch",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "fubuki_one_punch",
     "profile": {
@@ -158,7 +158,7 @@
             "label": "极度过保护与挣脱阴影的姐妹羁绊",
             "description": "龙卷因童年惨剧将吹雪视作世界上唯一的弱点拼死庇护，行事霸道蛮横甚至企图解散吹雪组；吹雪则深感压迫自卑，拼命建立派系只为向姐姐证明自己的独立与价值。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "姐妹对决篇 · 羁绊的释怀",
             "evidence": {
               "title": "ONE / 村田雄介 · 《一拳超人》官方人物档案",
@@ -172,7 +172,7 @@
             "label": "傲娇暴走与无可撼动的强者试炼",
             "description": "龙卷在战后试图强行干预吹雪的人生，与埼玉爆发惊天单挑；任凭龙卷如何释放毁天灭地的超能力都无法撼动埼玉分毫，反而在紧握埼玉手腕中得到了久违的释怀。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "原作英雄协会动荡篇",
             "evidence": {
               "title": "ONE / 村田雄介 · 《一拳超人》官方原作档案",
@@ -200,7 +200,7 @@
             "label": "破笼恩人与刻骨铭心的生存箴言",
             "description": "在研究所怪兽暴走时，爆破击破囚笼拯救了绝望的幼年龙卷，并留下‘真正紧要关头不要指望任何人来救你’的教诲，成为龙卷终生强大与孤傲的精神支柱。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "怪协决战 · 龙卷的回忆",
             "evidence": {
               "title": "ONE / 村田雄介 · 《一拳超人》官方故事",
@@ -211,10 +211,10 @@
             "id": "tatsumaki-psykos-vendetta",
             "source": "tatsumaki",
             "target": "psykos",
-            "label": "天灾级超能死斗与宿怨",
+            "label": "超能对决与旧怨清算",
             "description": "赛克斯作为怪人协会幕后黑手，融合大蛇企图以行星级切片威能抹杀龙卷；龙卷展现神明级全力将整个Z市地下基地拧成麻花，全盘压制赛克斯。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "怪人协会总决战",
             "evidence": {
               "title": "ONE / 村田雄介 · 《一拳超人》官方故事",
@@ -228,7 +228,7 @@
             "label": "学生时代旧友与理念背道而驰",
             "description": "吹雪与赛克斯曾是中学异能研究会的同伴，因赛克斯在预知中目睹人类灭亡陷入疯狂，吹雪被迫封印其能力，多年后两人在怪协决战中完成了宿命了断。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "怪协地下深入战",
             "evidence": {
               "title": "ONE / 村田雄介 · 《一拳超人》官方故事",

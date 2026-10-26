@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_r18_uniform_off",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 989,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "淋浴间百叶窗晨光下敞开军装衬衫擦发回眸",
     "adult": true,
@@ -13,7 +13,7 @@
     "category": "成人",
     "characterId": "mikasa_ackerman",
     "coverageTags": [],
-    "description": "【三笠 · 训练营阳光淋浴间热气擦拭】清晨训练结束后的淋浴间木隔断旁，三笠穿着敞襟军装衬衫与松开的长裤擦拭湿润黑发，红围巾搭在木栏杆上，晨光穿透百叶窗，水汽与水珠在白皙锁骨、纤细腰肢与饱满胸型上泛着晶莹光泽，回眸浅笑。",
+    "description": "清晨训练结束后的淋浴间木隔断旁，三笠穿着敞襟军装衬衫与松开的长裤擦拭湿润黑发，红围巾搭在木栏杆上，晨光穿透百叶窗，水汽与水珠在白皙锁骨、纤细腰肢与饱满胸型上泛着晶莹光泽，回眸浅笑。",
     "id": "mikasa_ackerman_r18_uniform_off",
     "kreaStyleHint": "",
     "lighting": "morning sunlight through washroom blinds, reflected softly by the steam",

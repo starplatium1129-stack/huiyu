@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_mansion_tending_wounds",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1448,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "跪坐替你换药缠绷带，指尖轻柔紫瞳认真，微笑叮嘱",
     "adult": false,
@@ -18,7 +18,7 @@
       "signature",
       "romance"
     ],
-    "description": "【蝶屋敷诊疗间·夜】你绷着伤臂坐在蒲团上，忍跪坐在对面替你换药。她的指尖轻得像蝶翼落上皮肤，紫瞳却认真地盯着伤口深处——「乱来的话，毒会把坏人麻痹，也会把你麻痹哦。……伤口要好好上药，不然，我会生气的哦？」微笑依旧，语气里的关心却烫得惊人。",
+    "description": "你绷着伤臂坐在蒲团上，忍跪坐在对面替你换药。她的指尖轻得像蝶翼落上皮肤，紫瞳却认真地盯着伤口深处——「乱来的话，毒会把坏人麻痹，也会把你麻痹哦。……伤口要好好上药，不然，我会生气的哦？」微笑依旧，语气里的关心却烫得惊人。",
     "id": "shinobu_mansion_tending_wounds",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "纸灯笼暖光透过障子门",

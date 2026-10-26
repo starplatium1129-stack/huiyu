@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_old_library",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱书差点绊倒扶住书架",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【杏山和纱 · 古书馆的秘密角落】圣三一静谧的旧古书馆深处，和纱怀里抱着一摞厚厚的甜点食谱，脚下一个踉跄险些被绊倒。她慌张地靠住身旁的书架，黑发与猫耳因受惊而竖起，粉瞳里满是窘迫——「哇啊……！老师，不准笑！我只是想找找古典法式点心的秘方而已……才、才没有冒冒失失的！」",
+    "description": "圣三一静谧的旧古书馆深处，和纱怀里抱着一摞厚厚的甜点食谱，脚下一个踉跄险些被绊倒。她慌张地靠住身旁的书架，黑发与猫耳因受惊而竖起，粉瞳里满是窘迫——「哇啊……！老师，不准笑！我只是想找找古典法式点心的秘方而已……才、才没有冒冒失失的！」",
     "id": "kyouyama_kazusa_old_library",
     "kreaStyleHint": "",
     "lighting": "天窗斜光与尘埃",

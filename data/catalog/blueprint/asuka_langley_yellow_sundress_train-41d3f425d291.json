@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_yellow_sundress_train",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1021,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手背在身后回首傲娇娇嗔，夏裙微扬",
     "camera": "medium shot, eye level",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【惣流·明日香 · 夏日黄色连衣裙】烈日炎炎的盛夏高架电车月台上，蝉鸣在炽热空气中回响。明日香身着一袭明艳娇嫩的黄色吊带连衣裙，双手背在身后，微风掀起明黄色的裙摆露出修长白皙的美腿。她微微侧身回头，眼神中带着三分娇嗔与七分骄傲——「笨蛋真嗣！连电车时间都记不住，待会可别指望本小姐在路上等你！」",
+    "description": "烈日炎炎的盛夏高架电车月台上，蝉鸣在炽热空气中回响。明日香身着一袭明艳娇嫩的黄色吊带连衣裙，双手背在身后，微风掀起明黄色的裙摆露出修长白皙的美腿。她微微侧身回头，眼神中带着三分娇嗔与七分骄傲——「笨蛋真嗣！连电车时间都记不住，待会可别指望本小姐在路上等你！」",
     "id": "asuka_langley_yellow_sundress_train",
     "lighting": "盛夏炽烈阳光与清透蓝天光照",
     "location": "第3新东京市高架列车月台",

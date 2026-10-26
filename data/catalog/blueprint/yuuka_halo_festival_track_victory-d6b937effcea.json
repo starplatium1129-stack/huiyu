@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_halo_festival_track_victory",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 913,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "微弯腰单手扶膝微喘，另一手拿白色运动毛巾擦汗，脸颊泛红娇羞微笑",
     "camera": "medium shot, dynamic low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【早濑优香 · 晄轮大祭冲线时刻】晄轮大祭热闹非凡的巨型体育场跑道旁，阳光洒在泛着微光的塑胶地面上。优香刚刚冲过终点线，微喘着单手扶着白毛巾擦拭泛红的脸颊，胸前的银色秒表随着急促的呼吸轻轻起伏——「呼……呼……怎么样老师？我的速度……没有辜负大家的期待吧！」",
+    "description": "晄轮大祭热闹非凡的巨型体育场跑道旁，阳光洒在泛着微光的塑胶地面上。优香刚刚冲过终点线，微喘着单手扶着白毛巾擦拭泛红的脸颊，胸前的银色秒表随着急促的呼吸轻轻起伏——「呼……呼……怎么样老师？我的速度……没有辜负大家的期待吧！」",
     "id": "yuuka_halo_festival_track_victory",
     "lighting": "明媚阳光直射与跑道漫射光",
     "location": "晄轮大祭中央体育场跑道旁",

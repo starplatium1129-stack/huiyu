@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yatogami_tohka",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 125,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "yatogami_tohka",
     "profile": {
@@ -142,7 +142,7 @@
             "label": "宿命誓约与救赎",
             "description": "狂三初期假借吞噬士道灵力接近，历经多次轮回在暗中独自抵挡死境、牺牲分身全力逆转士道的死亡宿命。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "狂三篇 · 决战终章",
             "evidence": {
               "title": "角川 · 《约会大作战》官方角色站",
@@ -170,7 +170,7 @@
             "label": "倾心守护与命运救赎",
             "description": "折纸开篇便对士道抱持极致热烈爱意，在得知父母之死真相灵结晶反转后，被穿越时空的士道彻底拯救心象。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "折纸反转篇 · 历史改写",
             "evidence": {
               "title": "角川 · 《约会大作战》官方角色站",
@@ -198,7 +198,7 @@
             "label": "十二之弹回溯契约",
             "description": "狂三响应折纸的恳求，使用第十二之弹将其意识送回五年前的大火现场，间接促成了历史的重构与两人的和解。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "折纸篇 · 时间回溯",
             "evidence": {
               "title": "角川 · 《约会大作战》官方角色站",
@@ -216,6 +216,34 @@
             "stage": "共通线 · 开篇设定",
             "evidence": {
               "title": "角川 · 《约会大作战》官方角色站",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "dal-shido-yoshino",
+            "source": "itsuka_shido",
+            "target": "yoshino",
+            "label": "水之精灵与纯真信赖",
+            "description": "士道以温柔拯救封印灵力的第二个精灵，四糸乃视其为可以全心依靠的大哥哥与保护者。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "雨中偶遇与灵力封印",
+            "evidence": {
+              "title": "《约会大作战》官方角色介绍",
+              "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "dal-kurumi-yoshino",
+            "source": "tokisaki_kurumi",
+            "target": "yoshino",
+            "label": "暗中庇护的小精灵",
+            "description": "狂三在多次危机中特意避开伤害四糸乃，并在幕后暗中护持这些天真弱小的精灵同伴。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "精灵日常与共同战线",
+            "evidence": {
+              "title": "《约会大作战》官方角色介绍",
               "url": "https://date-a-live.net/"
             }
           }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_candle_lab",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 555,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "穿宽大白衬衫侧身坐在实验桌沿，烛火摇曳",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "medium shot",
     "category": "成人",
     "characterId": "eyjafjalla_arknights",
-    "description": "【艾雅法拉 · 烛光实验】实验室内跳跃的烛光在石壁上投下摇曳的阴影，只穿着一件宽大白衬衫的艾雅法拉侧身坐在桌沿，修长细腻的双腿毫无防备地展露在外。她眼眸泛着水光轻声呼唤——「前辈……今晚的火山数据已经全部记录完了，接下来的时间……全部都是属于前辈的。」",
+    "description": "实验室内跳跃的烛光在石壁上投下摇曳的阴影，只穿着一件宽大白衬衫的艾雅法拉侧身坐在桌沿，修长细腻的双腿毫无防备地展露在外。她眼眸泛着水光轻声呼唤——「前辈……今晚的火山数据已经全部记录完了，接下来的时间……全部都是属于前辈的。」",
     "id": "eyjafjalla_arknights_r18_candle_lab",
     "kreaStyleHint": "",
     "lighting": "flickering candlelight",

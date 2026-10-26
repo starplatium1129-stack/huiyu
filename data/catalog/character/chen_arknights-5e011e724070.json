@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chen_arknights",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 21,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "chen_arknights",
     "profile": {
@@ -51,7 +51,10 @@
         "role": "前龙门近卫局高级督察 / 游历剑客 / 罗德岛合作干员",
         "age": "20代中后期",
         "occupation": "近卫干员 / 狙击干员（假日） / 泰拉巡游者",
-        "faction": "炎国龙门 / 罗德岛"
+        "faction": "炎国龙门 / 罗德岛",
+        "region": "龙门",
+        "race": "龙",
+        "classificationSource": "游戏内基础档案（出身地、种族）；https://github.com/Kengxxiao/ArknightsGameData/blob/master/zh_CN/gamedata/excel/handbook_info_table.json"
       },
       "tags": [
         "墨绿色偏蓝 / 黛青色（Deep teal / dark cyan-blue）",
@@ -464,7 +467,7 @@
             "label": "跨越纪元的同行与审视",
             "description": "两人同为前文明遗存的关键存在，凯尔希数万年来注视并戒备着博士的选择，却依然在巴别塔与罗德岛与之一同托起文明火种。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 凯尔希与博士历史档案",
@@ -492,7 +495,7 @@
             "label": "魔王之冠与慈悲托付",
             "description": "特蕾西娅在巴别塔陷落前将萨卡兹的古老权能与文明愿景尽数托付给年幼的阿米娅，阿米娅终生背负其意志为大地寻找宽恕之道。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔与魔王传承专条",
@@ -506,7 +509,7 @@
             "label": "旧日知音与理念决裂",
             "description": "曾携手开创巴别塔的挚友，却因前人类复兴宿命与泰拉现实生命的取舍而走向悲剧性的殊途与永别。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 巴别塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔活动全档案",
@@ -520,7 +523,7 @@
             "label": "骨肉至亲与救赎誓言",
             "description": "同母异父的亲姐妹，童年被迫离散并走向截然不同的命运；陈甘冒生死突入核心城斩断附着其身的黑蛇狂魂，唤醒了塔露拉的本心。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "鹰角网络 · 《明日方舟》主线第八章剧本",
@@ -534,7 +537,7 @@
             "label": "宿命较量与真理启示",
             "description": "作为整合运动暴动的领袖与罗德岛领袖展开殊死决斗，阿米娅在升变后以精神之剑共鸣唤醒被科西切怨念压制的塔露拉原初意志。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "PRTS维基 · 塔露拉决战记录",
@@ -576,7 +579,7 @@
             "label": "看押受审与前路明证",
             "description": "在塔露拉被收监罗德岛期间，凯尔希以洞悉千年的冷静视角与这位昔日整合运动领袖多次深入对谈，见证其作为赎罪斗士重回战场。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第九章至第十一章",
             "evidence": {
               "title": "PRTS维基 · 塔露拉收监与再出发档案",
@@ -646,7 +649,7 @@
             "label": "圣堂罹难与无言谅解",
             "description": "八年前精锐小队的生死搭档，因安多恩事件蕾缪安重伤昏迷、莫斯提马堕天流亡；蕾缪安苏醒后以从容的心境放下了往昔怨尤。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 吾导先路",
             "evidence": {
               "title": "PRTS维基 · 吾导先路教宗枢机处记录",
@@ -814,7 +817,7 @@
             "label": "生死与共的深海血誓",
             "description": "二度同生共死的第二小队深海猎人同袍，在陆地与海嗣低语交织的绝境中彼此呼唤人性，以斩断潮涌的决心支撑对方不被同化。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 愚人号与覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 深海猎人阵营总志",
@@ -842,7 +845,7 @@
             "label": "海洋盟约与审慎防范",
             "description": "凯尔希深刻知晓深海猎人改造的残酷真相与大群海嗣覆灭泰拉的风险，在竭力为斯卡蒂提供生理支持的同时时刻监控异变征兆。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 覆潮之下医疗报告",

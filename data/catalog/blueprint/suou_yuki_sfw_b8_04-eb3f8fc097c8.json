@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "礼堂花卡旁以淑女姿态整理缎带，确认无人后向镜头淘气眨眼",
     "adult": false,
@@ -17,7 +17,7 @@
       "bridal",
       "daily"
     ],
-    "description": "【学生会礼堂·午后】有希穿着端庄白色婚纱坐在宣传板旁，黑色半扎发用紫色缎带固定；她先以淑女姿态整理桌上的花卡，确认四下无人后才对镜头露出“俺模式”的淘气眨眼。",
+    "description": "有希穿着端庄白色婚纱坐在宣传板旁，黑色半扎发用紫色缎带固定；她先以淑女姿态整理桌上的花卡，确认四下无人后才对镜头露出“俺模式”的淘气眨眼。",
     "id": "suou_yuki_sfw_b8_04",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "soft afternoon light over violet decorations",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc038",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She stops beneath the streetlamp and turns toward the viewer, gripping the umbrella as rain streams from its rim. Rainy daylight reveals her hurt expression above the pavement's faint warm reflection.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "safe, 1girl, ayachi_nene, beige duffle coat, red plaid scarf, black tights, white umbrella, holding umbrella, looking back, teary eyes, streetlamp, wet street, rain, afternoon, medium shot, @rella",
     "rating": "All",
     "season": "冬",
-    "story": "【宁宁 · 走了三步又回头】争吵后的雨天街道上，宁宁转身离开，走出三步却怎么也无法继续。她站在路灯下攥紧伞柄，直到你从身后叫住她，才带着委屈重新转回来。雨水沿伞缘落成一道帘，她终于说出真正难过的原因——「我不是想赢。我只是害怕，你有一天会连解释都不愿意听。」",
+    "story": "争吵后的雨天街道上，宁宁转身离开，走出三步却怎么也无法继续。她站在路灯下攥紧伞柄，直到你从身后叫住她，才带着委屈重新转回来。雨水沿伞缘落成一道帘，她终于说出真正难过的原因——「我不是想赢。我只是害怕，你有一天会连解释都不愿意听。」",
     "storyJa": "【寧々・三歩歩いて引き返した】口論後の雨の道路で、寧々は向きを変えて立ち去りました。彼女は三歩進みましたが、続けることができませんでした。彼女は街灯の下に立って、あなたが後ろから呼ぶまで傘の柄を握りしめていましたが、その後、不機嫌そうに振り返りました。雨が傘の端に沿ってカーテンに落ち、彼女はついに悲しみの本当の理由を明らかにしました。――「勝ちたいわけじゃないんです。ただ、いつかあなたが、私の説明さえ聞いてくれなくなるのが怖くて。」",
     "tags": [
       "hair_ribbon",

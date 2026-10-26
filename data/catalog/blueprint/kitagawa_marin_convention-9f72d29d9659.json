@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_convention",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 495,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "身着精致的黑紫哥特萝莉女仆装，手提洋伞，紫瞳中闪烁着对角色极致热爱的自信光芒",
     "camera": "cowboy shot, striking gothic lolita cosplay pose",
@@ -14,7 +14,7 @@
       "iconic",
       "daily"
     ],
-    "description": "【喜多川海梦 · 漫展会场】人山人海的夏季大型漫展现场，完美还原角色的海梦站在聚光灯与无数摄影镜头前自信摆出帅气的招牌姿势。一转头在人群中看到你，她立刻打破酷冷形象开心地挥手——「哇！你真的来看我出 cos 了！待会儿拍完合影我们一起去逛摊位吧！」",
+    "description": "人山人海的夏季大型漫展现场，完美还原角色的海梦站在聚光灯与无数摄影镜头前自信摆出帅气的招牌姿势。一转头在人群中看到你，她立刻打破酷冷形象开心地挥手——「哇！你真的来看我出 cos 了！待会儿拍完合影我们一起去逛摊位吧！」",
     "id": "kitagawa_marin_convention",
     "lighting": "展馆高顶聚光灯与闪光灯交织，高光勾勒蕾丝花边与丝绒质感",
     "location": "东京国际展示场漫展大厅",

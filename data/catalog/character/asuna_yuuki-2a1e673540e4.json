@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asuna_yuuki",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 105,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "asuna_yuuki",
     "profile": {
@@ -166,7 +166,7 @@
             "label": "超越虚实的神仙眷侣与生死挚爱",
             "description": "SAO第22层木屋结为夫妻，75层舍身替桐人挡剑打破系统死则；现实中相濡以沫，UW大战中亚丝娜以神之号降临并留在极限加速世界相伴桐人度过两百年时光。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SAO攻略期 · 22层新婚 / UW大战极度加速期",
             "evidence": {
               "title": "Aniplex《刀剑神域》动画官方网站",
@@ -180,7 +180,7 @@
             "label": "背靠背战友与破除心魔的引路人",
             "description": "GGO中相遇揭开彼此深层PTSD创伤，联手破除死枪刺杀危机，桐人安排诗乃与当年救下之人重逢彻底治愈心结；UW大战中诗乃以太阳神索鲁斯降临极限援护桐人。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "幽灵子弹篇（死枪事件） / 异界战争篇",
             "evidence": {
               "title": "Aniplex《刀剑神域II》动画官方网站",
@@ -208,7 +208,7 @@
             "label": "打破天命的誓约与央都决战羁绊",
             "description": "央都大圣堂外墙攀登时两人经历生死谈话，桐人唤醒爱丽丝破除右眼封印向公理教会挥剑；在桐人心智封闭的半年里爱丽丝细心照顾推车相伴直至异界战争爆发。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Alicization篇 · 央都大圣堂 / 卢利特村照料期",
             "evidence": {
               "title": "Aniplex《刀剑神域 Alicization》官方特设",
@@ -222,7 +222,7 @@
             "label": "异界营地拔剑对峙与并肩护夫",
             "description": "亚丝娜以创世神史提西亚降临人界军军营探视失智桐人时与爱丽丝拔剑对峙火花四溅，在坦诚彼此对桐人的深切爱意后放下芥蒂，携手在异界大军围攻中杀出血路。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Alicization War of Underworld · 补给营夜谈",
             "evidence": {
               "title": "Aniplex《刀剑神域 War of Underworld》官方特设",
@@ -236,7 +236,7 @@
             "label": "兄妹血亲与ALO风精灵天空翱翔",
             "description": "现实中为堂兄妹，直叶在ALO以风精灵莉法身份与桐人相识倾心，得知真相后在世界树泪流释怀；UW大战以地神提拉利亚降临承受万次贯穿痛苦死守战线。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "ALO妖精之舞篇 · 世界树 / UW大战决死战",
             "evidence": {
               "title": "Aniplex《刀剑神域》动画官方网站",
@@ -250,7 +250,7 @@
             "label": "心之女儿与万能导航精灵",
             "description": "在SAO第22层被桐人与亚丝娜收养并认其为父母，被桐人通过管理者权限化作水滴项链保存；此后在所有现实与虚拟世界中化身万能导航精灵全力协助父母。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SAO第22层收养 / ALO营救行动",
             "evidence": {
               "title": "Aniplex《刀剑神域》动画官方网站",

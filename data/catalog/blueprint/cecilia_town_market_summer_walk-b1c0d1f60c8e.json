@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_town_market_summer_walk",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 837,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "向日葵花摊前回眸一笑",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【塞西莉亚 · 小镇市集·向日葵花摊与明媚回眸】阳光明媚的小镇夏日市集上，塞西莉亚站在盛开的金黄色向日葵花摊前，双手按着被微风吹拂的白色草帽，回过头对你露出毫无防备的明媚笑容——「劳伦斯你看！这朵向日葵开得多漂亮！今天能和你一起出来散步，真的太幸福了！」",
+    "description": "阳光明媚的小镇夏日市集上，塞西莉亚站在盛开的金黄色向日葵花摊前，双手按着被微风吹拂的白色草帽，回过头对你露出毫无防备的明媚笑容——「劳伦斯你看！这朵向日葵开得多漂亮！今天能和你一起出来散步，真的太幸福了！」",
     "id": "cecilia_town_market_summer_walk",
     "lighting": "sunny",
     "location": "小镇夏日市集",

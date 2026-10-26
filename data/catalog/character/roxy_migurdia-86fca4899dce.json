@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "roxy_migurdia",
-  "revision": 7,
+  "revision": 10,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "roxy_migurdia",
     "profile": {
@@ -98,16 +98,15 @@
         "work": "无职转生",
         "people": [
           {
-            "id": "roxy_migurdia",
-            "name": "洛琪希",
+            "id": "rudeus_greyrat",
+            "name": "鲁迪乌斯·格雷拉特",
             "aliases": [
-              "Roxy Migurdia",
-              "ロキシー・ミグルディア",
-              "洛琪希·米格路迪亚",
-              "水王级魔术师",
-              "鲁迪的神明"
-            ],
-            "characterId": "roxy_migurdia"
+              "Rudeus Greyrat",
+              "ルーデウス・グレイラット",
+              "鲁迪",
+              "泥沼",
+              "龙神右腕"
+            ]
           },
           {
             "id": "sylphiette",
@@ -122,6 +121,18 @@
             "characterId": "sylphiette"
           },
           {
+            "id": "roxy_migurdia",
+            "name": "洛琪希",
+            "aliases": [
+              "Roxy Migurdia",
+              "ロキシー・ミグルディア",
+              "洛琪希·米格路迪亚",
+              "水王级魔术师",
+              "鲁迪的神明"
+            ],
+            "characterId": "roxy_migurdia"
+          },
+          {
             "id": "eris_greyrat",
             "name": "艾莉丝",
             "aliases": [
@@ -133,6 +144,16 @@
             "characterId": "eris_greyrat"
           },
           {
+            "id": "norn_greyrat",
+            "name": "诺伦·格雷拉特",
+            "aliases": [
+              "Norn Greyrat",
+              "ノルン・グレイラット",
+              "诺伦",
+              "学生会长"
+            ]
+          },
+          {
             "id": "aisha_greyrat",
             "name": "爱夏·格雷拉特",
             "aliases": [
@@ -140,21 +161,9 @@
               "Aisha",
               "アイシャ・グレイラット",
               "爱夏",
-              "爱夏·格雷拉特",
               "格雷拉特首席管家"
             ],
             "characterId": "aisha_greyrat"
-          },
-          {
-            "id": "rudeus_greyrat",
-            "name": "鲁迪乌斯·格雷拉特",
-            "aliases": [
-              "Rudeus Greyrat",
-              "ルーデウス・グレイラット",
-              "鲁迪",
-              "泥沼",
-              "龙神右腕"
-            ]
           },
           {
             "id": "paul_greyrat",
@@ -167,127 +176,309 @@
             ]
           },
           {
-            "id": "norn_greyrat",
-            "name": "诺伦·格雷拉特",
+            "id": "zenith_greyrat",
+            "name": "塞妮丝·格雷拉特",
             "aliases": [
-              "Norn Greyrat",
-              "ノルン・グレイラット",
-              "诺伦",
-              "学生会长"
+              "Zenith Greyrat",
+              "ゼニス・グレイラット",
+              "塞妮丝"
+            ]
+          },
+          {
+            "id": "lilia_greyrat",
+            "name": "莉莉雅·格雷拉特",
+            "aliases": [
+              "Lilia Greyrat",
+              "リーリャ・グレイラット",
+              "莉莉雅"
+            ]
+          },
+          {
+            "id": "ruijerd_superdia",
+            "name": "瑞杰路德·斯佩路德",
+            "aliases": [
+              "Ruijerd Superdia",
+              "ルイジェルド・スペルディア",
+              "瑞杰路德",
+              "斯佩路德族战士"
+            ]
+          },
+          {
+            "id": "orsted",
+            "name": "奥尔斯帝德",
+            "aliases": [
+              "Orsted",
+              "オルステッド",
+              "龙神",
+              "社长"
             ]
           }
         ],
         "relations": [
           {
-            "id": "rudeus_greyrat-roxy_migurdia-mentor_goddess_and_wife",
-            "source": "rudeus_greyrat",
-            "target": "roxy_migurdia",
-            "label": "恩师神明与次席妻子",
-            "description": "洛琪希温柔牵起幼年鲁迪的手走出家门打破前世自闭心魔，被鲁迪奉为毕生神明；转生迷宫被救后在保罗战死之夜以身心救赎崩溃的鲁迪，两人结为夫妻相伴终老。",
-            "directed": false,
-            "spoiler": true,
-            "stage": "童年布耶纳村 / 贝卡利特大陆转生迷宫篇",
-            "evidence": {
-              "title": "角川MF Books《无职转生》原作特设",
-              "url": "https://mfbooks.jp/special/roxy/index.html"
-            }
-          },
-          {
-            "id": "rudeus_greyrat-sylphiette-childhood_and_first_wife",
+            "id": "mushoku-rudeus-sylphiette",
             "source": "rudeus_greyrat",
             "target": "sylphiette",
-            "label": "青梅竹马与贤惠正妻",
-            "description": "自幼被鲁迪拯救摆脱霸凌并修习无咏唱魔法，大转移后以‘菲兹’身份与鲁迪重逢并治愈其心疾结为正妻；以博大胸襟包容洛琪希与艾莉丝进门维系家庭和睦。",
+            "label": "青梅竹马与挚爱正妻",
+            "description": "自幼被鲁迪拯救摆脱霸凌并修习无咏唱魔法，大转移后以‘菲兹’身份与鲁迪重逢并治愈其心疾结为正妻；以博大包容的心胸接纳洛琪希与艾莉丝进门，维系着整个大家庭的温馨和睦。",
             "directed": false,
             "spoiler": false,
             "stage": "拉诺亚魔法大学重逢 / 新婚篇",
             "evidence": {
-              "title": "《无职转生》动画官方网站",
-              "url": "https://mushokutensei.jp/"
+              "title": "《无职转生》官方轻小说第9-10卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
             }
           },
           {
-            "id": "rudeus_greyrat-eris_greyrat-demon_continent_and_sword_king",
+            "id": "mushoku-rudeus-roxy",
+            "source": "rudeus_greyrat",
+            "target": "roxy_migurdia",
+            "label": "启蒙恩师与相守之妻",
+            "description": "幼年时温柔牵起鲁迪的手走出家门、打破前世自闭心魔的启蒙恩师与精神指引；转生迷宫救援后在保罗战死之夜挽救了崩溃边缘的鲁迪，两人结为夫妻相伴终老。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "童年布耶纳村 / 贝卡利特大陆转生迷宫篇",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第12卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-rudeus-eris",
             "source": "rudeus_greyrat",
             "target": "eris_greyrat",
-            "label": "共度魔大陆之险与狂犬剑王之诺",
-            "description": "大转移后历经数年魔大陆返乡艰辛，深感自身弱小无法保护鲁迪而远赴剑之圣地苦修获得剑王之名，在龙神决战飞身救下鲁迪化解误会结为第三位妻子。",
+            "label": "患难伴侣与坚实后盾",
+            "description": "大转移后历经数年魔大陆返乡的艰难险阻，深感自身弱小无法保护鲁迪而远赴剑之圣地苦修获得剑王之名，在龙神对决中及时赶到化解危机，结为夫妻，是鲁迪最凶悍也最坚定的护卫。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "魔大陆归途 / 龙神对决下半部",
             "evidence": {
-              "title": "《无职转生》动画官方角色介绍",
-              "url": "https://mushokutensei.jp/character/"
+              "title": "《无职转生》官方轻小说第15卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
             }
           },
           {
-            "id": "rudeus_greyrat-aisha_greyrat-brother_and_genius_steward",
-            "source": "rudeus_greyrat",
-            "target": "aisha_greyrat",
-            "label": "兄妹亲情与绝顶智谋的家族大管家",
-            "description": "自西隆王国被救后视鲁迪为最崇敬的兄长，凭借惊世绝顶的才华放弃求学甘当格雷拉特宅邸大管家与佣兵团智囊，全方位统筹家族一切后勤事务。",
+            "id": "mushoku-sylphiette-eris",
+            "source": "sylphiette",
+            "target": "eris_greyrat",
+            "label": "互信互敬的妻室羁绊",
+            "description": "艾莉丝自幼敬重‘菲兹大人’，重聚进门后全心尊奉希露菲为正妻并听从其家庭安排；希露菲则以宽容接纳艾莉丝的莽撞，两人共同构筑起守护鲁迪与家庭的内外支柱。",
             "directed": false,
             "spoiler": false,
-            "stage": "西隆王国营救 / 格雷拉特宅邸建立",
+            "stage": "格雷拉特家夏莉亚大宅日常",
             "evidence": {
-              "title": "《无职转生》动画官方网站",
-              "url": "https://mushokutensei.jp/"
+              "title": "《无职转生》官方轻小说第15-16卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
             }
           },
           {
-            "id": "rudeus_greyrat-paul_greyrat-father_and_son_sacrifice",
-            "source": "rudeus_greyrat",
-            "target": "paul_greyrat",
-            "label": "笨拙父子从误会隔阂到舍命托付",
-            "description": "曾因大转移后各自重压在米里斯神圣国大打出手发生父子隔阂，后在酒馆痛哭言和；迷宫决战中保罗在多头九头蛇猛攻下舍身推开鲁迪被斩为两截壮烈牺牲。",
-            "directed": false,
-            "spoiler": true,
-            "stage": "米里斯酒馆和解 / 贝卡利特转生迷宫决战",
-            "evidence": {
-              "title": "《无职转生》动画官方网站",
-              "url": "https://mushokutensei.jp/"
-            }
-          },
-          {
-            "id": "aisha_greyrat-norn_greyrat-half_sisters_reconciliation",
-            "source": "aisha_greyrat",
-            "target": "norn_greyrat",
-            "label": "同父异母的双生对比与手足释怀",
-            "description": "同一天出生的同父异母姐妹，爱夏全知全能的耀眼才华曾让资质平庸的诺伦深感自卑压抑，后在魔法大学共同生活与家庭危机中冰释前嫌互相照拂。",
-            "directed": false,
-            "spoiler": false,
-            "stage": "拉诺亚魔法大学同窗 / 格雷拉特家日常",
-            "evidence": {
-              "title": "角川MF Books《无职转生》官方特设",
-              "url": "https://mfbooks.jp/special/roxy/index.html"
-            }
-          },
-          {
-            "id": "sylphiette-roxy_migurdia-wives_harmony",
+            "id": "mushoku-sylphiette-roxy",
             "source": "sylphiette",
             "target": "roxy_migurdia",
-            "label": "师徒传承与同甘共苦的妻室",
-            "description": "鲁迪所掌握的魔法多源自洛琪希传授，再由鲁迪教给希露菲；两人在格雷拉特家共同执掌内闱相亲相爱，面对人神阴谋与家族战事同甘共苦。",
+            "label": "同心相扶的亲密妻室",
+            "description": "鲁迪掌握的魔法多源自洛琪希传授，再由鲁迪教给希露菲；两人在格雷拉特宅邸共同操持家务、照料子女，在人神危机与波折岁月中相亲相爱同甘共苦。",
             "directed": false,
             "spoiler": false,
             "stage": "夏莉亚大宅邸同居生活",
             "evidence": {
-              "title": "《无职转生》动画官方网站",
-              "url": "https://mushokutensei.jp/"
+              "title": "《无职转生》官方轻小说第13卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
             }
           },
           {
-            "id": "eris_greyrat-roxy_migurdia-idol_and_family_bastion",
+            "id": "mushoku-eris-roxy",
             "source": "eris_greyrat",
             "target": "roxy_migurdia",
-            "label": "崇敬神像与家庭双柱",
-            "description": "艾莉丝自魔大陆起就将鲁迪虔诚随身携带的洛琪希木雕视为神圣图腾，重聚进门后对洛琪希敬重有加，一武一法构成守护鲁迪一生的坚不可摧堡垒。",
+            "label": "敬奉神明与并肩家人",
+            "description": "艾莉丝自魔大陆起就将鲁迪虔诚携带的洛琪希木雕视为神圣图腾，重聚进门后对洛琪希敬重有加；洛琪希则体谅艾莉丝直率笨拙的关心，一武一法构成守护家庭的基石。",
             "directed": false,
             "spoiler": false,
             "stage": "格雷拉特家庭共同守卫期",
             "evidence": {
-              "title": "《无职转生》动画官方网站",
-              "url": "https://mushokutensei.jp/"
+              "title": "《无职转生》官方轻小说第15卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-rudeus-norn",
+            "source": "rudeus_greyrat",
+            "target": "norn_greyrat",
+            "label": "自闭拯救与崇敬兄长",
+            "description": "诺伦曾因米里斯冲突对鲁迪怀有恐惧与自卑，在魔法大学闭门自闭；鲁迪推己及人、在门外温柔守护开导化解其心结，诺伦从此成为兄长最忠实的崇拜者与坚强后盾。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "拉诺亚魔法大学诺伦自闭篇",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第11卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-rudeus-aisha",
+            "source": "rudeus_greyrat",
+            "target": "aisha_greyrat",
+            "label": "深受信赖的管家妹妹",
+            "description": "西隆王国被救后视鲁迪为最崇敬的兄长，凭借卓越聪慧的才能承担起格雷拉特宅邸大管家与事务统筹职责，全方位照料全家生活起居。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "西隆王国营救 / 格雷拉特宅邸建立",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第6卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-aisha-norn",
+            "source": "aisha_greyrat",
+            "target": "norn_greyrat",
+            "label": "同父异母的互补姐妹",
+            "description": "同一天出生的同父异母姐妹，爱夏的聪慧一度让资质平庸的诺伦深感压力，后在魔法大学同窗与共同家庭生活中冰释前嫌、互相扶持照拂。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "拉诺亚魔法大学同窗 / 格雷拉特家日常",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第11卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-rudeus-paul",
+            "source": "rudeus_greyrat",
+            "target": "paul_greyrat",
+            "label": "从隔阂争吵到舍命托付",
+            "description": "大转移后父子在米里斯神圣国因误解与重压爆发冲突，后在酒馆痛哭和解；在转生迷宫深层决战中，保罗舍身推开鲁迪英勇牺牲，将未竟的责任托付给长子。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "米里斯酒馆和解 / 贝卡利特转生迷宫决战",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第5卷与第12卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-paul-zenith",
+            "source": "paul_greyrat",
+            "target": "zenith_greyrat",
+            "label": "结发夫妻与千里寻妻",
+            "description": "名门出奔的神圣国千金与佣兵骑士结发为妻，感情深厚；大转移后保罗历尽千辛万苦远赴贝卡利特大陆迷宫深处，终以生命为代价将水晶中的塞妮丝救出。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "童年布耶纳村 / 贝卡利特大陆救援",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第12卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-paul-lilia",
+            "source": "paul_greyrat",
+            "target": "lilia_greyrat",
+            "label": "从侍妾女仆到患难家人",
+            "description": "原王宫近卫女仆，因伤退役后受保罗庇护并在出轨风波后被纳为侧室；莉莉雅感念格雷拉特家的包容，一生尽心尽责侍奉保罗与塞妮丝。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "童年布耶纳村出轨风波",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第1卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-rudeus-zenith",
+            "source": "rudeus_greyrat",
+            "target": "zenith_greyrat",
+            "label": "母子情深与晚年侍奉",
+            "description": "自幼在母亲温暖怀抱中长大的鲁迪，在迷宫救出心智退化如废人的塞妮丝后，将其接回夏莉亚大宅悉心照料，塞妮丝虽寡言却始终认得并依恋长子。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "贝卡利特迷宫归途 / 夏莉亚大宅照料",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第13卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-rudeus-lilia",
+            "source": "rudeus_greyrat",
+            "target": "lilia_greyrat",
+            "label": "忠诚长辈与主仆恩情",
+            "description": "幼年鲁迪在出轨危机中智救莉莉雅母女，让莉莉雅敬奉其为恩人；大转移后鲁迪千里驰援西隆王国解救莉莉雅，莉莉雅随后长年作为女仆长操持鲁迪的宅邸。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "童年救助 / 西隆王国解救",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第1卷与第6卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-paul-norn",
+            "source": "paul_greyrat",
+            "target": "norn_greyrat",
+            "label": "最宠溺疼爱的小女儿",
+            "description": "保罗在大转移后的漫长流浪中始终将诺伦带在身边呵护，诺伦也极度依恋父亲；保罗的战死让诺伦痛彻心扉，但也促成了她真正坚强成长。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "米里斯大转移流浪 / 迷宫事后",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第5卷与第12卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-norn-ruijerd",
+            "source": "norn_greyrat",
+            "target": "ruijerd_superdia",
+            "label": "跨越种族的忘年眷侣",
+            "description": "斯佩路德族老战士在流浪中拯救并护卫诺伦，其正直温柔彻底打动了诺伦的芳心；面对巨大年龄与种族差异，诺伦勇敢告白，两人最终结为夫妻诞下后代。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "流浪护卫 / 结婚篇章",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第23卷及蛇足篇",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-rudeus-ruijerd",
+            "source": "rudeus_greyrat",
+            "target": "ruijerd_superdia",
+            "label": "Dead End 领袖与敬重长辈",
+            "description": "魔大陆流浪三年期间并肩破局的可靠守护者，瑞杰路德以战士的正直洗涤了斯佩路德族的恶名，也被鲁迪视为亦师亦友的长辈。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔大陆归途篇",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第3-6卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-eris-ruijerd",
+            "source": "eris_greyrat",
+            "target": "ruijerd_superdia",
+            "label": "战士师徒与深厚敬仰",
+            "description": "瑞杰路德悉心传授艾莉丝魔大陆实战战技，艾莉丝深受其战士气魄熏陶并视其为尊敬的师父，结下毕生信赖的羁绊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔大陆归途篇",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第3-6卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
+            }
+          },
+          {
+            "id": "mushoku-rudeus-orsted",
+            "source": "rudeus_greyrat",
+            "target": "orsted",
+            "label": "龙神右腕与毕生战友",
+            "description": "从两次险些丧命的绝境仇敌，到为了守护家人而发誓臣服；鲁迪作为‘龙神右腕’穷尽一生为奥尔斯帝德奔走效力，成为龙神漫长孤独轮回中唯一的知己与战友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "下半部决战人神篇章",
+            "evidence": {
+              "title": "《无职转生》官方轻小说第15-26卷",
+              "url": "https://mfbooks.jp/mushokutensei/"
             }
           }
         ]

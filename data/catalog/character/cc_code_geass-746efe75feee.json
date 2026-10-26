@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cc_code_geass",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 101,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "cc_code_geass",
     "profile": {
@@ -173,7 +173,7 @@
             "label": "契约相连的唯一共犯与不朽伴侣",
             "description": "新宿相遇赋予Geass，C.C.成为鲁路修复仇与弑神路上唯一的避风港与见证者；在经历零之镇魂曲与复活重生后，两人以‘L.L.’与‘C.C.’之名永恒携手漫游星河。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终局 · 复活的鲁路修",
             "evidence": {
               "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
@@ -184,10 +184,10 @@
             "id": "lelouch-suzaku-contradiction",
             "source": "lelouch_lamperouge",
             "target": "kururugi_suzaku",
-            "label": "黑白宿敌与托付终局的挚友",
+            "label": "黑白对立与托付终局的挚友",
             "description": "从童年无话不谈的挚友演变为手段完全对立的宿敌，在撕心裂肺的尤菲米娅惨剧后结下血海深仇，最终为了世界和平联手策划并执行‘零之镇魂曲’。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "R2终曲 · 零之镇魂曲",
             "evidence": {
               "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
@@ -201,7 +201,7 @@
             "label": "最锋利的王牌利剑与未尽的倾慕",
             "description": "卡莲作为黑色骑士团无可匹敌的红莲王牌，将毕生忠诚与暗恋献给Zero；即便在零之镇魂曲中被迫与鲁路修决战，在洞悉真相后依然默默铭记与泪流成河。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "决战特异点 · 达摩克里斯之战",
             "evidence": {
               "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
@@ -243,7 +243,7 @@
             "label": "誓死护卫的骑士长",
             "description": "朱雀视娜娜莉为必须用生命守护的圣洁象征，不仅在出任骑士顾问时竭力保护她，在继任Zero之位后更成为娜娜莉新时代最坚强的无影之盾。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "零之镇魂曲后日谈",
             "evidence": {
               "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
@@ -257,7 +257,7 @@
             "label": "宿命父子与弑神之战",
             "description": "查尔斯无情将兄妹二人充当质子放逐日本，更企图用阿卡夏之剑消灭人类谎言与个性；鲁路修以‘明天与未来’为名彻底抹杀了查尔斯的意志。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "C之世界 · 弑神",
             "evidence": {
               "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
@@ -271,7 +271,7 @@
             "label": "旧识盟友与破裂的赎罪契约",
             "description": "查尔斯与玛丽安娜曾答应终结C.C.永生的痛苦，但因其抹杀人性的终极计划而遭到C.C.的彻底背弃与抗拒。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "神根岛遗迹篇",
             "evidence": {
               "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
@@ -285,7 +285,7 @@
             "label": "纯真救赎与残酷命途",
             "description": "夏莉深爱着鲁路修，即使在记忆被抹除、父亲因黑色骑士团身亡的极致痛苦下，依然选择宽恕并再次爱上鲁路修，最终不幸沦为罗洛毒手的牺牲品。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "R2第13话 · 刺客之刀",
             "evidence": {
               "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",

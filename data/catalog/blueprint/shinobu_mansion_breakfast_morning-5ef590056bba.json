@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_mansion_breakfast_morning",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1450,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "和服跪坐盛汤合十，微笑督促吃饭",
     "adult": false,
@@ -17,7 +17,7 @@
       "girlfriend",
       "morning"
     ],
-    "description": "【蝶屋敷食堂·清晨】晨光里的食堂飘着白饭与烤鱼的香气。忍穿着淡紫色的居家着物替你盛好味噌汤，在自己的位置上端正跪坐，双手合十——「我要开动了。挑食的孩子不可以哦，蔬菜也要全部吃完——放心，香奈乎做的腌菜，比药好喝多了。」",
+    "description": "晨光里的食堂飘着白饭与烤鱼的香气。忍穿着淡紫色的居家着物替你盛好味噌汤，在自己的位置上端正跪坐，双手合十——「我要开动了。挑食的孩子不可以哦，蔬菜也要全部吃完——放心，香奈乎做的腌菜，比药好喝多了。」",
     "id": "shinobu_mansion_breakfast_morning",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "障子门透进的明亮晨光",

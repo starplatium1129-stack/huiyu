@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc009",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Across the table, she slides the cake toward the center with her free hand.",
     "auditRevision": "careful-batch04-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, cream cable knit sweater, pink ribbon at collar, mauve pleated skirt, white tights, sitting, comic book, coffee cup, cake, table, cafe, window light, medium shot, reading, looking at viewer, light smile, steam",
     "rating": "All",
     "season": "秋",
-    "story": "【宁宁 · 咖啡杯旁的偷看】秋日午后，宁宁坐在靠窗的位置翻一本轻松漫画，咖啡的热气不时遮住她的表情。她早就察觉你在对面看她，却故意多翻了两页才抬眼，呆毛不满地晃了晃。等你移开视线，她又把甜点推到桌子中央——「一直盯着很没礼貌哦。作为赔礼，这块蛋糕要和我一人一半。」",
+    "story": "秋日午后，宁宁坐在靠窗的位置翻一本轻松漫画，咖啡的热气不时遮住她的表情。她早就察觉你在对面看她，却故意多翻了两页才抬眼，呆毛不满地晃了晃。等你移开视线，她又把甜点推到桌子中央——「一直盯着很没礼貌哦。作为赔礼，这块蛋糕要和我一人一半。」",
     "storyJa": "【寧々・コーヒーカップの横を覗いてください】秋の午後、寧々さんは窓際に座って軽い漫画を読んでいましたが、コーヒーの熱さで時折表情が見えなくなりました。彼女は、あなたが向かい側から自分を見ていることにずっと気づいていましたが、わざとさらに2ページめくって目を上げ、アホ毛は不満そうに首を振りました。あなたが目をそらすと、彼女はデザートをテーブルの中央に押し込みます――「そんなにじっと見つめるのは失礼ですよ。お詫びに、このケーキは私と半分こです。」",
     "tags": [
       "hair_ribbon",

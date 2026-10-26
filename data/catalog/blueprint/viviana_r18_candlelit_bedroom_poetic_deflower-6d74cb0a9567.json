@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_r18_candlelit_bedroom_poetic_deflower",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 688,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "独自斜卧天鹅绒软榻，一手托金焰、一手腿间自抚，黑金礼裙松至腰际",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【成年薇薇安娜 · 烛光诗页与金焰】成年薇薇安娜独自斜卧天鹅绒软榻，黑金礼裙松开并聚在腰际。她一手托起诗句般的小簇金焰，另一手在屈起双腿间自抚，金色源石技艺沿帘幕扩散，角与湿润眼眸保持端庄轮廓。",
+    "description": "成年薇薇安娜独自斜卧天鹅绒软榻，黑金礼裙松开并聚在腰际。她一手托起诗句般的小簇金焰，另一手在屈起双腿间自抚，金色源石技艺沿帘幕扩散，角与湿润眼眸保持端庄轮廓。",
     "id": "viviana_r18_candlelit_bedroom_poetic_deflower",
     "kreaStyleHint": "r18_elegant_boudoir",
     "lighting": "数十盏香薰蜡烛摇曳的温暖金红光芒",

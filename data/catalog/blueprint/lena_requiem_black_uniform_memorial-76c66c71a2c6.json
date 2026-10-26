@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_requiem_black_uniform_memorial",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1352,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单膝跪在纪念墙前，白花已放在墙脚，双手合拢垂首默祷",
     "adult": false,
@@ -17,7 +17,7 @@
       "emotional",
       "iconic"
     ],
-    "description": "【基地纪念墙前·黄昏】染血赤发在晚风中轻扬，身着黑色军装的蕾娜单膝跪在刻满名字的纪念墙前，将一束白花轻轻放下。黑裙、黑靴与黑手套勾勒出肃穆的剪影，唯有那缕赤红发丝像不肯熄灭的火种。她合拢双手垂首默祷，银灰的睫毛在颤动，坚强与哀恸在她脸上达成了完美的平衡。",
+    "description": "染血赤发在晚风中轻扬，身着黑色军装的蕾娜单膝跪在刻满名字的纪念墙前，将一束白花轻轻放下。黑裙、黑靴与黑手套勾勒出肃穆的剪影，唯有那缕赤红发丝像不肯熄灭的火种。她合拢双手垂首默祷，银灰的睫毛在颤动，坚强与哀恸在她脸上达成了完美的平衡。",
     "id": "lena_requiem_black_uniform_memorial",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "低角度橙金夕照为黑色军装镶上暖边，白花高光纯净",

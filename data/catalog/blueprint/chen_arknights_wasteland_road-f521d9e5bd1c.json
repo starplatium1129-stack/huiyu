@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_wasteland_road",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 647,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "背负双剑，逆风独行",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【陈 · 荒野古道】辞去警服后的泰拉荒原，残阳如血。身着行者风衣的陈背负双剑孑然独行，风沙掠过墨绿色双马尾与龙尾，身影在古道尽头挺拔如松——「龙门的陈警司已经留在昨天了。前路还长，走吧。」",
+    "description": "辞去警服后的泰拉荒原，残阳如血。身着行者风衣的陈背负双剑孑然独行，风沙掠过墨绿色双马尾与龙尾，身影在古道尽头挺拔如松——「龙门的陈警司已经留在昨天了。前路还长，走吧。」",
     "id": "chen_arknights_wasteland_road",
     "lighting": "blood-red sunset over the wasteland",
     "location": "泰拉荒原古道",

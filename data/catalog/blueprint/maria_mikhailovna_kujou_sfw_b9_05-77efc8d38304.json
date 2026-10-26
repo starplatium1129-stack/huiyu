@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 794,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "海滨温泉木台上披肩捧热可可，向镜头举杯分享冬日温暖",
     "adult": false,
@@ -17,7 +17,7 @@
       "summer",
       "beach"
     ],
-    "description": "【海滨温泉小镇·黄昏】玛夏穿着浅棕泳装与厚披肩坐在海边温泉木台，双手捧着热可可，雪花落在卷发上；她把杯子朝镜头轻轻举起，像邀请远行的人一起分享温暖。",
+    "description": "玛夏穿着浅棕泳装与厚披肩坐在海边温泉木台，双手捧着热可可，雪花落在卷发上；她把杯子朝镜头轻轻举起，像邀请远行的人一起分享温暖。",
     "id": "maria_mikhailovna_kujou_sfw_b9_05",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "blue dusk, warm steam and lantern light",

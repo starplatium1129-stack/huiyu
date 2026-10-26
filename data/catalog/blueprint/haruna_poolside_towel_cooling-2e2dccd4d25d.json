@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_poolside_towel_cooling",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1765,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "haruna_poolside_towel_cooling",
     "title": "西连寺春菜 · 校园泳池畔的清凉微风与毛巾",
@@ -31,7 +31,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【西连寺春菜 · 校园泳池畔的清凉微风与毛巾】阳光炽烈的彩南高校泳池边。春菜身穿深蓝色的学校死库水泳装，胸前绣着工整的「西连寺」名牌。她坐在池边将双脚探入清凉的池水中轻轻踢起水花，一条雪白的毛巾披在柔弱的肩头。水滴顺着微湿的蓝紫色短发滑落，映照出少女纯净无瑕的初夏美感。",
+    "description": "阳光炽烈的彩南高校泳池边。春菜身穿深蓝色的学校死库水泳装，胸前绣着工整的「西连寺」名牌。她坐在池边将双脚探入清凉的池水中轻轻踢起水花，一条雪白的毛巾披在柔弱的肩头。水滴顺着微湿的蓝紫色短发滑落，映照出少女纯净无瑕的初夏美感。",
     "promptTokens": [
       "poolside",
       "swimming_pool",

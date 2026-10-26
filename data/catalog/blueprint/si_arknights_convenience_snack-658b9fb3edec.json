@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_convenience_snack",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1766,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "si_arknights_convenience_snack",
     "characterId": "si_arknights",
@@ -16,7 +16,7 @@
     "lighting": "便利店玻璃透出的明亮暖光与霓虹街灯",
     "camera": "medium close-up",
     "mood": "轻松可爱",
-    "description": "【祀 · 街边便利店捧着热关东煮】阵线补给站外的便利店玻璃窗前，街灯明亮。祀双手捧着冒着白气的纸杯，小口咬着热乎乎的萝卜，被热气熏得微微眯起双眼，双颊透着冻红与满足的红晕——「开拓站的关东煮比想象中好吃多了……喂，不准抢我的鱼饼！」",
+    "description": "阵线补给站外的便利店玻璃窗前，街灯明亮。祀双手捧着冒着白气的纸杯，小口咬着热乎乎的萝卜，被热气熏得微微眯起双眼，双颊透着冻红与满足的红晕——「开拓站的关东煮比想象中好吃多了……喂，不准抢我的鱼饼！」",
     "outfitId": "sfw_oversized_hoodie",
     "recommendedSize": "1152x1536",
     "coverageTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_family_dinner",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 479,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端坐于晚宴席间",
     "camera": "full body",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【艾莉丝 · 府邸晚宴】格雷拉特家的长桌上烛火摇曳，换上贵族裙装的艾莉丝端坐席间，明明穿着最规矩的礼服，眼神却早就飘向了窗外——「宴会礼仪？那也要等我先去练完今天的剑再说。」",
+    "description": "格雷拉特家的长桌上烛火摇曳，换上贵族裙装的艾莉丝端坐席间，明明穿着最规矩的礼服，眼神却早就飘向了窗外——「宴会礼仪？那也要等我先去练完今天的剑再说。」",
     "id": "eris_greyrat_family_dinner",
     "lighting": "烛光摇曳",
     "location": "格雷拉特府邸餐厅",

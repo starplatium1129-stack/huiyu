@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_summer_festival_fireworks_yukata",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1067,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "手持折扇侧身回眸，夜空烟花璀璨，浴衣下摆微扬，神情柔和含蓄",
     "camera": "medium shot, low angle looking up, dramatic sky view",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "festival"
     ],
-    "description": "【星见雅 · 夏夜花火与深蓝浴衣】临海神社石阶的高台上，夜空绽放出一朵璀璨耀眼的千轮金色花火。雅身穿月夜深蓝暗纹浴衣，系着深红腰带，手持一柄精巧的折扇侧身回眸。盛大花火的光华映照在她清秀绝俗的面庞上，红色的眼瞳中罕见地流露出一丝少女特有的柔软微光。",
+    "description": "临海神社石阶的高台上，夜空绽放出一朵璀璨耀眼的千轮金色花火。雅身穿月夜深蓝暗纹浴衣，系着深红腰带，手持一柄精巧的折扇侧身回眸。盛大花火的光华映照在她清秀绝俗的面庞上，红色的眼瞳中罕见地流露出一丝少女特有的柔软微光。",
     "id": "miyabi_summer_festival_fireworks_yukata",
     "lighting": "漫天花火爆开的金色、绯红多重光晕映照脸庞与发丝",
     "location": "神社鸟居石阶高台观景处",

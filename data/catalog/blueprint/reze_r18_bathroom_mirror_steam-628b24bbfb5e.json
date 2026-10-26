@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_bathroom_mirror_steam",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 431,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "reze_r18_bathroom_mirror_steam",
     "title": "蕾塞 · 浴室镜前",
@@ -12,7 +12,7 @@
     "characterId": "reze_chainsaw",
     "outfitId": "nsfw_nude",
     "adult": true,
-    "description": "【蕾塞 · 浴室镜前】水汽弥漫的浴室里，沐浴完毕的蕾塞赤身站在起雾的镜子前，用纤细的指尖在水雾上画了一颗心。透过镜中模糊的倒影，她看向身后的你，眼眸水光潋滟——「镜子上的这颗心……是画给你的哦。不打算走过来把它擦干净，看清楚现在的我吗？」",
+    "description": "水汽弥漫的浴室里，沐浴完毕的蕾塞赤身站在起雾的镜子前，用纤细的指尖在水雾上画了一颗心。透过镜中模糊的倒影，她看向身后的你，眼眸水光潋滟——「镜子上的这颗心……是画给你的哦。不打算走过来把它擦干净，看清楚现在的我吗？」",
     "location": "浴室",
     "action": "站在镜前，指尖划过雾面",
     "timeOfDay": "night",

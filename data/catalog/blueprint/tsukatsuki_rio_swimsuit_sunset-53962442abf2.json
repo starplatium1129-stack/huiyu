@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_swimsuit_sunset",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 910,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐池边披薄纱外套",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【调月莉音 · 晚霞泳池边的独处时刻】晚霞如锦缎般铺满水面的黄昏，莉音披着湿润的薄纱坐在池边，黑发垂落在白皙的锁骨前，红眸映着漫天晚霞与你的倒影——「夕阳很美……但比夕阳更让我安心的，是你此刻就坐在我的身边，老师。」",
+    "description": "晚霞如锦缎般铺满水面的黄昏，莉音披着湿润的薄纱坐在池边，黑发垂落在白皙的锁骨前，红眸映着漫天晚霞与你的倒影——「夕阳很美……但比夕阳更让我安心的，是你此刻就坐在我的身边，老师。」",
     "id": "tsukatsuki_rio_swimsuit_sunset",
     "kreaStyleHint": "",
     "lighting": "夕阳与池水反光",

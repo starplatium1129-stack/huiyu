@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_backstage",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 952,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "镜前补妆",
     "camera": "medium shot, three-quarter rear view",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【星野爱 · 后台化妆间】演出前的后台化妆间里，星野爱对着化妆镜补上最后一笔亮片眼影，镜灯把她的侧脸照得近乎透明——「化妆是舞台魔法的一部分……你看，一点就亮啦。」",
+    "description": "演出前的后台化妆间里，星野爱对着化妆镜补上最后一笔亮片眼影，镜灯把她的侧脸照得近乎透明——「化妆是舞台魔法的一部分……你看，一点就亮啦。」",
     "id": "hoshino_ai_backstage",
     "lighting": "化妆镜灯",
     "location": "演唱会后台化妆间",

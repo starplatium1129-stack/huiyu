@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "vladilena_milize",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 107,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "vladilena_milize",
     "profile": {
@@ -145,7 +145,7 @@
             "label": "知觉同步与追赶誓约",
             "description": "白系种指挥官蕾娜跨越共和国歧视的高墙，在知觉同步器中聆听辛恩脑海的亡灵呼啸，立誓绝不会将先锋战队遗忘，最终在彼岸战场重逢。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "决战特区 · 木兰花开之时重逢",
             "evidence": {
               "title": "Aniplex · 《86 -Eighty Six-》官方作品站",
@@ -192,6 +192,34 @@
             "evidence": {
               "title": "Aniplex · 《86 -Eighty Six-》官方作品站",
               "url": "https://anime-86.com/"
+            }
+          },
+          {
+            "id": "eightysix-shin-theo",
+            "source": "shin_nouzen",
+            "target": "theoto_rikka",
+            "label": "先锋战队生死与共的战友",
+            "description": "在第86区的无数次死生绝境中并肩操纵机甲浴血突围的生死伙伴，彼此托付后背。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第86区前线战斗",
+            "evidence": {
+              "title": "《86-不存在的战区-》电击文库官方网站",
+              "url": "https://dengekibunko.jp/special/86/"
+            }
+          },
+          {
+            "id": "eightysix-lena-theo",
+            "source": "vladilena_milize",
+            "target": "theoto_rikka",
+            "label": "从质疑冷讽到真诚敬服",
+            "description": "最初因同伴战死愤怒质问蕾娜的白系种伪善，后被蕾娜冒死火力支援打动，全心接纳其为指挥官。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "知觉同步沟通",
+            "evidence": {
+              "title": "《86-不存在的战区-》电击文库官方网站",
+              "url": "https://dengekibunko.jp/special/86/"
             }
           }
         ]

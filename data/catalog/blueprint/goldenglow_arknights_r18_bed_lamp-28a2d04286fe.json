@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_bed_lamp",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 604,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "靠着床头软枕，一臂环住膝盖，另一手伸向视角，被角落在膝上",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate close shot",
     "category": "成人",
     "characterId": "goldenglow_arknights",
-    "description": "【澄闪 · 床头灯】温馨寝室内微弱的床头灯下，苏茜靠在床头的大软枕上，滑落的被角将她纤细诱人的身段与白皙大腿暴露无遗。她抱着膝盖红着脸向你伸手——「屋子里好安静，静电把被子弄得噼里啪啦的……博士，可以钻进被窝里抱紧我吗？」",
+    "description": "温馨寝室内微弱的床头灯下，苏茜靠在床头的大软枕上，滑落的被角将她纤细诱人的身段与白皙大腿暴露无遗。她抱着膝盖红着脸向你伸手——「屋子里好安静，静电把被子弄得噼里啪啦的……博士，可以钻进被窝里抱紧我吗？」",
     "id": "goldenglow_arknights_r18_bed_lamp",
     "kreaStyleHint": "",
     "lighting": "warm bedside lamp",

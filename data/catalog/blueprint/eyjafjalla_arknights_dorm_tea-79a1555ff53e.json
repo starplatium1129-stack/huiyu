@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_dorm_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 549,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "托腮看着蛋糕两眼放光",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【艾雅法拉 · 宿舍茶点】温馨可爱的宿舍小圆桌前，艾雅法拉双手托腮，看着面前刚出炉的草莓奶油小蛋糕两眼放光，羊角在头顶欢快地晃动——「哇！前辈特意为我带了蛋糕吗？因为听力不太好，平时总让前辈费心大声说话……真的太谢谢前辈了！」",
+    "description": "温馨可爱的宿舍小圆桌前，艾雅法拉双手托腮，看着面前刚出炉的草莓奶油小蛋糕两眼放光，羊角在头顶欢快地晃动——「哇！前辈特意为我带了蛋糕吗？因为听力不太好，平时总让前辈费心大声说话……真的太谢谢前辈了！」",
     "id": "eyjafjalla_arknights_dorm_tea",
     "lighting": "bright cheerful light",
     "location": "罗德岛·艾雅法拉宿舍",

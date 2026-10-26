@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_enoshima_beach",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1003,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手按住发丝回眸微笑，海风吹起裙角",
     "camera": "medium shot, eye level",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【后藤一里 · 江之岛海风】蔚蓝的大海泛着波光粼粼的浪花，江之岛海风卷起白色水手服的裙摆。后藤一里停在海滨栏杆旁，双手紧紧按住被风吹乱的发丝，回眸看向镜头，羞涩而灿烂的微笑在夏日晴空下格外动人——「大家一起看到的大海……比我想象中要辽阔几千倍呢。」",
+    "description": "蔚蓝的大海泛着波光粼粼的浪花，江之岛海风卷起白色水手服的裙摆。后藤一里停在海滨栏杆旁，双手紧紧按住被风吹乱的发丝，回眸看向镜头，羞涩而灿烂的微笑在夏日晴空下格外动人——「大家一起看到的大海……比我想象中要辽阔几千倍呢。」",
     "id": "gotoh_hitori_enoshima_beach",
     "lighting": "夏日海滨明朗阳光与海面高光反光",
     "location": "江之岛海滨步道",

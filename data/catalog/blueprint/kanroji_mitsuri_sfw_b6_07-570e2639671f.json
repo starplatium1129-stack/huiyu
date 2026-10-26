@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_07",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1468,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱粉色灯笼写下分享美食的愿望，将绘马举向镜头",
     "adult": false,
@@ -15,7 +15,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【夏日祭神社·黄昏】蜜璃穿着浅绿浴衣抱着粉色灯笼，在绘马架前认真写下“大家一起吃很多好吃的”；她把绘马举向镜头，绿瞳里的愿望比灯火更亮。",
+    "description": "蜜璃穿着浅绿浴衣抱着粉色灯笼，在绘马架前认真写下“大家一起吃很多好吃的”；她把绘马举向镜头，绿瞳里的愿望比灯火更亮。",
     "id": "kanroji_mitsuri_sfw_b6_07",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "pink lantern light beneath the evening sky",

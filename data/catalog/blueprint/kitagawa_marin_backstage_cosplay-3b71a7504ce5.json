@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_backstage_cosplay",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 496,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "对着随身镜调整假发与饰品，回眸比出角色招牌姿势，元气满满",
     "camera": "medium shot, three-quarter view, portable mirror and adjusting hand visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【喜多川海梦 · 漫展后台】开幕前十分钟的后台更衣区，化妆镜的环形灯亮得晃眼。穿着泛用 cosplay 服的海梦对着随身镜最后调整假发角度，忽然回眸冲你比出角色的招牌姿势——「怎么样怎么样！这个还原度！等会儿走场的时候，眼睛只准看我一个人哦！」",
+    "description": "开幕前十分钟的后台更衣区，化妆镜的环形灯亮得晃眼。穿着泛用 cosplay 服的海梦对着随身镜最后调整假发角度，忽然回眸冲你比出角色的招牌姿势——「怎么样怎么样！这个还原度！等会儿走场的时候，眼睛只准看我一个人哦！」",
     "id": "kitagawa_marin_backstage_cosplay",
     "lighting": "后台化妆镜环形灯与帘缝漏进的日光交错，碎金般落在肩头",
     "location": "漫展后台更衣区",

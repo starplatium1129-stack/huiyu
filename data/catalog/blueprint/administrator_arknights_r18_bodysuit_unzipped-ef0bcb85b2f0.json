@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_bodysuit_unzipped",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 770,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "administrator_arknights_r18_bodysuit_unzipped",
     "characterId": "administrator_arknights",
     "title": "管理员 · 战巡整备拉链轻解",
-    "description": "【管理员 · 战巡整备拉链轻解】背靠更衣舱金属壁，黑色紧身衣前胸拉链下拉至小腹，饱满双峰与纤细腰线毕现，大汗淋漓中双眼锋芒化作情欲。",
+    "description": "背靠更衣舱金属壁，黑色紧身衣前胸拉链下拉至小腹，饱满双峰与纤细腰线毕现，大汗淋漓中双眼锋芒化作情欲。",
     "category": "成人",
     "location": "战备整修舱隔离室",
     "action": "背靠更衣舱金属壁，黑色紧身衣前胸拉链下拉至小腹，饱满双峰与纤细腰线毕现",

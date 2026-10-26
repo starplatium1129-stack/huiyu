@@ -46,6 +46,11 @@ export interface CharacterIdentity {
   age?: string
   occupation?: string
   faction?: string
+  /** Explicit everyday-life classifications; never inferred from faction prose. */
+  region?: string
+  race?: string
+  school?: string
+  classificationSource?: string
 }
 
 export interface CharacterPortrait {

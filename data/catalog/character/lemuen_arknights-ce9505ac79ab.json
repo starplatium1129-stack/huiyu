@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lemuen_arknights",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "lemuen_arknights",
     "profile": {
@@ -50,14 +50,17 @@
         "role": "拉特兰教宗枢机处及第七厅顾问 / 公证所高级特工兼神射手 / 罗德岛合作干员",
         "age": "20代中后期（年轻成熟女性，能天使的亲姐）",
         "occupation": "狙击干员（神射手 / 战略狙击手）",
-        "faction": "拉特兰 / 罗德岛"
+        "faction": "拉特兰 / 罗德岛",
+        "region": "拉特兰",
+        "race": "萨科塔",
+        "classificationSource": "游戏内基础档案（出身地、种族）；https://github.com/Kengxxiao/ArknightsGameData/blob/master/zh_CN/gamedata/excel/handbook_info_table.json"
       },
       "tags": [
         "粉色长发",
         "萨科塔光环",
         "轮椅神射手"
       ],
-      "bg_story": "蕾缪安是拉特兰公证所声名赫赫的顶尖神射手，亦是能天使（蕾缪尔）敬爱的亲生姐姐。早年她曾与莫斯提马、菲亚梅塔、安多恩同属拉特兰万众瞩目的精锐执行小队。八年前在执行保卫绝密圣堂任务时，因安多恩理念抉择引发剧变，蕾缪安遭受致命重创并陷入长达五年的重度昏迷。五年前苏醒后，尽管因下肢神经受损不得不依靠特制轮椅代步，但她以惊人的坚毅心性重拾长管源石狙击铳，将超远距定点狙杀造诣推向巅峰。在《吾导先路》万国峰会与《空想花庭》等重大事件中，蕾缪安作为教宗枢机处与第七厅的核心智囊，端坐轮椅于数千米外高塔一枪定乾坤，从容化解刺杀与倾覆之危。随后她以合作干员身份登上罗德岛，在接受神经康复治疗的同时，以无可挑剔的战略视野为后方提供绝对信赖的超远距火力压制。平日里她言行优雅恬淡、腹黑风趣且极为宠溺妹妹，是令同伴无比安心的后背守护者。",
+      "bg_story": "拉特兰教宗骑士兼罗德岛合作干员，代号蕾缪安，莫斯提马与能天使共同敬重的前辈。多年前在拉特兰边境押运“门”的行动中遭遇同僚叛变，为掩护队友身负重伤导致双腿神经瘫痪，常年依赖轮椅行动。随后她登上罗德岛接受神经康复治疗，同时以冷静宽广的视野为后方提供信赖的超远距火力支援。平日里言行优雅恬淡，偶带一丝腹黑调侃，内心深处却极具大局观与原则底线。在《空想花庭》与拉特兰万国峰会事件中，蕾缪安不顾身体负荷坐镇全局，协助教宗化解极端主义危机，以温和而坚韧的意志守护着身旁的同伴与家园。",
       "source": "Hypergryph《明日方舟 / Arknights》",
       "traits": [
         "lemuen (arknights)",
@@ -461,7 +464,7 @@
             "label": "跨越纪元的同行与审视",
             "description": "两人同为前文明遗存的关键存在，凯尔希数万年来注视并戒备着博士的选择，却依然在巴别塔与罗德岛与之一同托起文明火种。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 凯尔希与博士历史档案",
@@ -489,7 +492,7 @@
             "label": "魔王之冠与慈悲托付",
             "description": "特蕾西娅在巴别塔陷落前将萨卡兹的古老权能与文明愿景尽数托付给年幼的阿米娅，阿米娅终生背负其意志为大地寻找宽恕之道。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔与魔王传承专条",
@@ -503,7 +506,7 @@
             "label": "旧日知音与理念决裂",
             "description": "曾携手开创巴别塔的挚友，却因前人类复兴宿命与泰拉现实生命的取舍而走向悲剧性的殊途与永别。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 巴别塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔活动全档案",
@@ -517,7 +520,7 @@
             "label": "骨肉至亲与救赎誓言",
             "description": "同母异父的亲姐妹，童年被迫离散并走向截然不同的命运；陈甘冒生死突入核心城斩断附着其身的黑蛇狂魂，唤醒了塔露拉的本心。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "鹰角网络 · 《明日方舟》主线第八章剧本",
@@ -531,7 +534,7 @@
             "label": "宿命较量与真理启示",
             "description": "作为整合运动暴动的领袖与罗德岛领袖展开殊死决斗，阿米娅在升变后以精神之剑共鸣唤醒被科西切怨念压制的塔露拉原初意志。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "PRTS维基 · 塔露拉决战记录",
@@ -573,7 +576,7 @@
             "label": "看押受审与前路明证",
             "description": "在塔露拉被收监罗德岛期间，凯尔希以洞悉千年的冷静视角与这位昔日整合运动领袖多次深入对谈，见证其作为赎罪斗士重回战场。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第九章至第十一章",
             "evidence": {
               "title": "PRTS维基 · 塔露拉收监与再出发档案",
@@ -643,7 +646,7 @@
             "label": "圣堂罹难与无言谅解",
             "description": "八年前精锐小队的生死搭档，因安多恩事件蕾缪安重伤昏迷、莫斯提马堕天流亡；蕾缪安苏醒后以从容的心境放下了往昔怨尤。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 吾导先路",
             "evidence": {
               "title": "PRTS维基 · 吾导先路教宗枢机处记录",
@@ -811,7 +814,7 @@
             "label": "生死与共的深海血誓",
             "description": "二度同生共死的第二小队深海猎人同袍，在陆地与海嗣低语交织的绝境中彼此呼唤人性，以斩断潮涌的决心支撑对方不被同化。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 愚人号与覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 深海猎人阵营总志",
@@ -839,7 +842,7 @@
             "label": "海洋盟约与审慎防范",
             "description": "凯尔希深刻知晓深海猎人改造的残酷真相与大群海嗣覆灭泰拉的风险，在竭力为斯卡蒂提供生理支持的同时时刻监控异变征兆。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 覆潮之下医疗报告",

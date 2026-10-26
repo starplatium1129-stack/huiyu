@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc040",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Standing beneath the stage spotlight with the certificate held at her chest, she finds the viewer among the dim audience and breaks into a relieved smile.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, nene_school_uniform, holding certificate, smile, looking toward audience, award ceremony, stage, spotlight, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "冬",
-    "story": "【宁宁 · 掌声里只找一个人】冬日校园表彰仪式上，宁宁站在聚光灯下接过奖状，礼貌地向全场鞠躬。掌声响起时，她的目光却越过人群，直到找到后排的你才真正笑开。结束后她抱着奖状跑来，把最先准备好的感谢留给你——「我没有辜负大家的期待吧？其实刚才最想确认的，是你有没有看到。」",
+    "story": "冬日校园表彰仪式上，宁宁站在聚光灯下接过奖状，礼貌地向全场鞠躬。掌声响起时，她的目光却越过人群，直到找到后排的你才真正笑开。结束后她抱着奖状跑来，把最先准备好的感谢留给你——「我没有辜负大家的期待吧？其实刚才最想确认的，是你有没有看到。」",
     "storyJa": "【寧々・拍手の中から一人だけ見つけてください】冬期キャンパス表彰式では、寧々さんはスポットライトの下に立ち、賞状を受け取り、聴衆に丁寧にお辞儀をしました。拍手が始まったとき、彼女は群衆を見渡しましたが、後列にいるあなたを見つけるまで、本当の笑顔はありませんでした。終わった後、彼女は賞状を抱えて駆け寄り、最初に用意していたお礼状を残して去っていきました。――「みんなの期待を裏切らずに済みましたよね？　本当はさっき、一番確かめたかったのは、あなたが見ていてくれたかどうかなんです。」",
     "tags": [
       "hair_ribbon",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc017",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 16,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She cups the uniform button in one palm beside the blackboard of farewell notes and drawings, smiling toward the viewer through happy tears. Window light reaches her hand and hair.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, nene_school_uniform, holding button, happy tears, classroom, blackboard, chalk writing, chalk drawings, graduation, afternoon, window light, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "春",
-    "story": "【宁宁 · 最后一块黑板】毕业典礼后的教室里，黑板写满同学们留下的名字和祝福。宁宁站在自己的签名旁，认真替你补上一行“以后也要见面”。人群散去后，她把第二颗制服纽扣轻轻握在掌心，笑里带着泪光——「毕业不是结束，对吧？就算换了新的生活，我也想继续出现在你的每一天里。」",
+    "story": "毕业典礼后的教室里，黑板写满同学们留下的名字和祝福。宁宁站在自己的签名旁，认真替你补上一行“以后也要见面”。人群散去后，她把第二颗制服纽扣轻轻握在掌心，笑里带着泪光——「毕业不是结束，对吧？就算换了新的生活，我也想继续出现在你的每一天里。」",
     "storyJa": "【寧々・最後の黒板】卒業式後の教室では、黒板に生徒たちの名前と祝福の言葉が書かれていました。寧々はサインの隣に立ち、「卒業は終わりじゃありませんよね？　新しい暮らしになっても、あなたの毎日の中に、ずっと私がいたいです。」",
     "tags": [
       "hair_ribbon",

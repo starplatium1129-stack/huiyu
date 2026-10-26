@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_festival_goldfish_scooping_joy",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1123,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "蹲在水池前手握纸网小心捞金鱼，浴衣下摆微收，呆毛竖直，神情极度专注",
     "camera": "medium close-up, water-level angle, face and paper scoop visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "festival"
     ],
-    "description": "【丛雨 · 夏日祭捞金鱼的执着对决】热闹非凡的穗织夏日祭典红灯笼长街上，丛雨蹲在水流潺潺的捞金鱼水池边。她身穿深红金鱼花纹浴衣，手里拿着已经有些破损的纸网，全神贯注地屏住呼吸盯着水里游动的一条绯红小金鱼。头顶的大呆毛因为紧张而笔直竖起，娇憨认真的模样惹人无限怜爱。",
+    "description": "热闹非凡的穗织夏日祭典红灯笼长街上，丛雨蹲在水流潺潺的捞金鱼水池边。她身穿深红金鱼花纹浴衣，手里拿着已经有些破损的纸网，全神贯注地屏住呼吸盯着水里游动的一条绯红小金鱼。头顶的大呆毛因为紧张而笔直竖起，娇憨认真的模样惹人无限怜爱。",
     "id": "murasame_festival_goldfish_scooping_joy",
     "lighting": "头顶红色祭典灯笼洒下的浓艳暖光与水面反光",
     "location": "夏日祭典红灯笼小吃长街水池摊前",

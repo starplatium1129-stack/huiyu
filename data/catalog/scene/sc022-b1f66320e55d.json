@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc022",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 21,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "One hand rests on the just-closed album as she looks back at the viewer approaching her shoulder. Afternoon window light falls across its cover and her embarrassed face.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, cream oversized cardigan, white blouse, plaid skirt, black tights, sitting, closed photo album, low table, looking back, apartment, afternoon, window light, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "春",
-    "story": "【夏目 · 相册停留的那一页】春日午后，夏目在公寓整理大学毕业相册，翻到有你的小组照时停了很久。照片里的她仍刻意站得离人群稍远，目光却正好落在你身上。你从身后靠近，她立刻合上相册，却没有真正收走——「只是确认照片有没有拍糊。想看的话坐过来……但不准分析我的视线。」",
+    "story": "春日午后，夏目在公寓整理大学毕业相册，翻到有你的小组照时停了很久。照片里的她仍刻意站得离人群稍远，目光却正好落在你身上。你从身后靠近，她立刻合上相册，却没有真正收走——「只是确认照片有没有拍糊。想看的话坐过来……但不准分析我的视线。」",
     "storyJa": "【夏目・フォトアルバムが置かれているページ】春の午後、夏目はアパートで大学の卒業写真アルバムを整理していました。彼女はあなたの集合写真に目を向けたとき、長い間立ち止まりました。写真の中で、彼女はまだ人混みから意図的に少し離れて立っていますが、彼女の目はあなたに向かっています。あなたが後ろから近づくと、彼女はすぐにアルバムを閉じましたが、実際にはアルバムを取り上げませんでした。――「写真がぶれていないか確認していただけ。見たいならこっちに座って……でも、私の視線まで分析するのは禁止。」",
     "tags": [
       "mole_under_eye",

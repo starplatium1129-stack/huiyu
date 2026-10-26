@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_r18_study_ink_marks",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1770,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "si_arknights_r18_study_ink_marks",
     "characterId": "si_arknights",
@@ -18,7 +18,7 @@
     "mood": "羞耻沉沦",
     "adult": true,
     "sampleRating": "R18",
-    "description": "【祀 · 深夜案前宣纸玉体染墨】万籁俱寂的深夜书斋，厚重的紫檀大案上铺开素白长卷。祀褪尽罗衣赤足跪坐于案头，雪白如玉的肌肤上不经意擦过几道淋漓淡墨，与雪肤形成惊心动魄的对比。她双臂微撑案面，龙尾随着细促的喘息在案头游曳打翻了砚台，羞耻与快慰在美眸中交织泛泪——「别……别在案上……笔墨都弄脏了……」",
+    "description": "万籁俱寂的深夜书斋，厚重的紫檀大案上铺开素白长卷。祀褪尽罗衣赤足跪坐于案头，雪白如玉的肌肤上不经意擦过几道淋漓淡墨，与雪肤形成跌宕起伏的对比。她双臂微撑案面，龙尾随着细促的喘息在案头游曳打翻了砚台，羞耻与快慰在美眸中交织泛泪——「别……别在案上……笔墨都弄脏了……」",
     "outfitId": "nsfw_nude",
     "recommendedSize": "1152x1536",
     "coverageTags": [],

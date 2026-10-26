@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_school_library_reading_quiet",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1220,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "倚靠在窗台书桌旁单手捧厚书阅读，制服裙摆微拂，金发及踝，眼神清冷专注",
     "camera": "cowboy shot, eye level, Yami by the desk and approaching companion visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【小暗 · 窗边书架的寂静阅读】彩南高中图书馆高耸的深色木质书架深处，微风吹拂着米白窗帘。小暗换上了整洁的彩南水手服制服，倚靠在临窗的书桌边。她单手托着一本精装的地球科学大部头书籍全神贯注地研读，及踝的金色秀发如金瀑般垂落在百褶裙边。她微微抬眼望向走近的梨斗，红瞳中带着一抹警惕与淡淡的在意。",
+    "description": "彩南高中图书馆高耸的深色木质书架深处，微风吹拂着米白窗帘。小暗换上了整洁的彩南水手服制服，倚靠在临窗的书桌边。她单手托着一本精装的地球科学大部头书籍全神贯注地研读，及踝的金色秀发如金瀑般垂落在百褶裙边。她微微抬眼望向走近的梨斗，红瞳中带着一抹警惕与淡淡的在意。",
     "id": "yami_school_library_reading_quiet",
     "lighting": "高大排窗透射入的清朗白色日光与书页上的柔和反光",
     "location": "学园图书馆靠窗高大实木书架旁",

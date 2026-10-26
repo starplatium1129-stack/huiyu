@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_bridal_vow_white_chapel",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 406,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "捧白纱花束立于圣堂，星瞳湿润含笑",
     "adult": false,
@@ -17,7 +17,7 @@
       "iconic",
       "romance"
     ],
-    "description": "【学园都市小圣堂·婚礼日】女王蜂第一次没有使用任何能力，就得到了全场的心。纯白婚纱与头纱之下，星形的瞳孔罕见地湿润——「本小姐明明……可以操纵所有人的心……可你的这份心意，是怎么都无法被操纵的……所以、所以本小姐宣布：这份心理掌握，对你永久失效——因为根本不需要。」",
+    "description": "女王蜂第一次没有使用任何能力，就得到了全场的心。纯白婚纱与头纱之下，星形的瞳孔罕见地湿润——「本小姐明明……可以操纵所有人的心……可你的这份心意，是怎么都无法被操纵的……所以、所以本小姐宣布：这份心理掌握，对你永久失效——因为根本不需要。」",
     "id": "misaki_bridal_vow_white_chapel",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "圣堂彩窗折射的圣洁光柱",

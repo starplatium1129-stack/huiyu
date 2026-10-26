@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_veranda_watermelon_summer_breeze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1777,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "mikan_veranda_watermelon_summer_breeze",
     "title": "结城美柑 · 休日午后的庭院清凉西瓜",
@@ -34,7 +34,7 @@
     "coverageTags": [
       "character_featured"
     ],
-    "description": "【结城美柑 · 休日午后的庭院清凉西瓜】盛夏的蝉鸣声中，美柑换上明媚的黄色吊带裙坐在庭院缘侧。光着脚丫在木阶边缘前后悠闲晃悠，双手捧着切好的冰镇红西瓜轻轻小咬一口，微风拂动单侧发辫，紫褐眼眸里满是假日悠闲的惬意舒畅。",
+    "description": "盛夏的蝉鸣声中，美柑换上明媚的黄色吊带裙坐在庭院缘侧。光着脚丫在木阶边缘前后悠闲晃悠，双手捧着切好的冰镇红西瓜轻轻小咬一口，微风拂动单侧发辫，紫褐眼眸里满是假日悠闲的惬意舒畅。",
     "promptTokens": [
       "veranda",
       "garden",

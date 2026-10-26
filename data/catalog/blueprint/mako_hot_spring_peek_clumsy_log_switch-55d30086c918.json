@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_hot_spring_peek_clumsy_log_switch",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1140,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "从冒烟的替身木桩后慌乱探身，手握苦无遮掩胸口，面红耳赤窘迫大喊",
     "camera": "medium shot, eye-level comedic framing, dense steam depth",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "stealth"
     ],
-    "description": "【常陆茉子 · 温泉雾气的替身术自爆】水雾蒸腾的露天天然温泉浴池边，圆木替身桩正冒着青烟。茉子手忙脚乱地从假山岩石后探出半个身子，紧身忍者服因为水汽浸润半贴在丰满娇躯上。她一手握着苦无，一手护在胸前，脸蛋红透得像煮熟的龙虾，猫嘴窘迫地大喊——「才、才没有借着潜行侦察偷看呢！在下是正经在执行警卫任务！木桩……木桩只是意外发动啦！」",
+    "description": "水雾蒸腾的露天天然温泉浴池边，圆木替身桩正冒着青烟。茉子手忙脚乱地从假山岩石后探出半个身子，紧身忍者服因为水汽浸润半贴在丰满娇躯上。她一手握着苦无，一手护在胸前，脸蛋红透得像煮熟的龙虾，猫嘴窘迫地大喊——「才、才没有借着潜行侦察偷看呢！在下是正经在执行警卫任务！木桩……木桩只是意外发动啦！」",
     "id": "mako_hot_spring_peek_clumsy_log_switch",
     "lighting": "温泉水雾中灯笼透出的暖黄柔光与暮色天光",
     "location": "山野露天温泉热气腾腾假山后",

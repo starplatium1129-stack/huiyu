@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc019",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "On tiptoe before the viewer, she uses both hands to straighten their loosened scarf. Cool morning light reflected from the snow reaches her reddened ears and fingers, with a faint warm reflection from the scarf.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, beige winter coat, white scarf, tiptoes, adjusting scarf, blush, snowy street, morning, close up, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "冬",
-    "story": "【宁宁 · 围巾里藏着的体温】雪后清晨的街道格外安静，宁宁发现你的围巾松开，便踮脚替你重新绕好。距离忽然拉近，她冻红的耳尖也变得更红，却仍认真把最后一角压平。退开前，她把自己的手也藏进围巾边缘暖了一下——「这样就不会漏风了。我的手很冷？那……借我握一会儿就好。」",
+    "story": "雪后清晨的街道格外安静，宁宁发现你的围巾松开，便踮脚替你重新绕好。距离忽然拉近，她冻红的耳尖也变得更红，却仍认真把最后一角压平。退开前，她把自己的手也藏进围巾边缘暖了一下——「这样就不会漏风了。我的手很冷？那……借我握一会儿就好。」",
     "storyJa": "【寧々・スカーフに隠れた体温】特に雪が降った早朝の街路は静かです。寧々はあなたのスカーフが緩んでいることに気づくと、つま先立ちでスカーフを巻き直してくれます。急に距離が近づき、凍り付いた耳の先はさらに赤くなったが、それでも彼女は最後の角を慎重に平らにした。退却する前に、彼女はスカーフの端の下に手を隠して暖めました。――「これでもう風は入ってきません。私の手、冷たいですか？　それなら……少しだけ、握らせてください。」",
     "tags": [
       "hair_ribbon",

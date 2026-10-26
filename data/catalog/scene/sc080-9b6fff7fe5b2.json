@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc080",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 78,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She faces the viewer at the waterline as the sea breeze lifts her hair; sunset edges her dress above the wet sand.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, white sundress, puff sleeves, straw hat, barefoot, standing, looking at viewer, gentle smile, beach, shoreline, ocean, sunset, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
-    "story": "【宁宁 · 海风里的心之碎片】黄昏海边，宁宁沿着潮线走了很久，终于停下来面对你。她说过去总把重要情绪拆成碎片藏好，害怕一旦交出去就无法收回。海风掀起银白长发，她却没有再避开视线——「现在我想把完整的心意告诉你。不是契约，也不是魔法……我喜欢你，一直都是。」",
+    "story": "黄昏海边，宁宁沿着潮线走了很久，终于停下来面对你。她说过去总把重要情绪拆成碎片藏好，害怕一旦交出去就无法收回。海风掀起银白长发，她却没有再避开视线——「现在我想把完整的心意告诉你。不是契约，也不是魔法……我喜欢你，一直都是。」",
     "storyJa": "【寧々・海風に吹かれる心のかけら】夕暮れの海辺で、寧々は潮の流れに沿って長い間歩き、ついに立ち止まってあなたに向かいました。彼女は、一度手に渡ってしまうと取り返しがつかないのではないかと恐れ、大切な感情を細かく砕いて隠していたと語った。海風が彼女の長い銀髪をかき乱したが、彼女は目をそらさなかった。――「今は、私の気持ちを全部伝えたいんです。契約でも、魔法でもなくて……あなたが好きです。ずっと、好きでした。」",
     "tags": [
       "hair_ribbon",

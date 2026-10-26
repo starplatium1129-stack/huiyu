@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_05",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1156,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "海滨咖啡车旁举起亲手打出的冰拿铁展示拉花，侧马尾迎风轻扬",
     "adult": false,
@@ -17,7 +17,7 @@
       "summer",
       "beach"
     ],
-    "description": "【海滨公路咖啡车·午后】栞那穿着奶油色泳装与浅色衬衫，坐在咖啡车旁的高脚凳上给自己打出一杯冰拿铁；她把拉花杯举给镜头看，海风吹动侧马尾，熟练笑容里多了假日的轻快。",
+    "description": "栞那穿着奶油色泳装与浅色衬衫，坐在咖啡车旁的高脚凳上给自己打出一杯冰拿铁；她把拉花杯举给镜头看，海风吹动侧马尾，熟练笑容里多了假日的轻快。",
     "id": "akizuki_kanna_sfw_b7_05",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "warm afternoon light with ocean highlights",

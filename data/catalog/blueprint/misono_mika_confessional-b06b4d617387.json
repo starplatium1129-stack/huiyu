@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_confessional",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 899,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "跪坐忏悔室木格窗旁，指尖贴着窗扉，含泪向画面外的老师倾诉。",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【圣园未花 · 忏悔室里的真心话】深夜静谧的圣堂忏悔室内，未花隔着木格窗跪坐，眼角泛着泪光，指尖轻轻贴在窗扉上低语——「老师……大家都说我是罪人……但只要老师还愿意相信我、摸摸我的头，我就永远都有勇气去面对一切……」",
+    "description": "深夜静谧的圣堂忏悔室内，未花隔着木格窗跪坐，眼角泛着泪光，指尖轻轻贴在窗扉上低语——「老师……大家都说我是罪人……但只要老师还愿意相信我、摸摸我的头，我就永远都有勇气去面对一切……」",
     "id": "misono_mika_confessional",
     "kreaStyleHint": "r18_elegant_boudoir",
     "lighting": "烛火与帘影",

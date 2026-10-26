@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_winter_street_snow_messenger",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 663,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "漫步在积雪街道旁驻足，单手端热咖啡，微吐白雾，目光温柔看向镜头",
     "camera": "medium shot, slightly low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【德克萨斯 · 冬日落雪的街角信使】白雪皑皑的龙门老街街头，雪花在路灯的光晕中静静飘落。德克萨斯裹着军绿色厚毛领派克大衣与米白围巾，单手拎着皮质邮差包，另一手端着冒着热气的纸杯咖啡。她驻足在街角复古红砖墙边，呼出一口淡淡的白气——「下雪了。送完这一单，一起去吃热拉面吧。」",
+    "description": "白雪皑皑的龙门老街街头，雪花在路灯的光晕中静静飘落。德克萨斯裹着军绿色厚毛领派克大衣与米白围巾，单手拎着皮质邮差包，另一手端着冒着热气的纸杯咖啡。她驻足在街角复古红砖墙边，呼出一口淡淡的白气——「下雪了。送完这一单，一起去吃热拉面吧。」",
     "id": "texas_winter_street_snow_messenger",
     "lighting": "暖黄色复古路灯与漫天落雪的冷色微光",
     "location": "冬日落雪的城市红砖老街转角",

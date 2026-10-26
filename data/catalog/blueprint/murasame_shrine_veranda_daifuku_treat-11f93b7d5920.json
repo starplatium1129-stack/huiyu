@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_shrine_veranda_daifuku_treat",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1120,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双膝并拢端坐在走廊坐垫上，双手捧着草莓大福小口品尝，嘴角沾粉，眼神陶醉",
     "camera": "medium shot, seated eye-level, intimate cozy framing",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【丛雨 · 神社回廊的草莓大福小憩】初夏午后阳光温暖的朝武家木质回廊上，微风拂动风铃发出叮咚脆响。丛雨双膝跪坐在木地板坐垫上，双手捧着一只软糯雪白的草莓大福。嘴角还沾着一小抹白色的糯米粉，两只红宝石般的眸子笑成了幸福的弯月牙，身后的神刀靠在柱旁，整个人洋溢着对人间美味无法抗拒的满足感。",
+    "description": "初夏午后阳光温暖的朝武家木质回廊上，微风拂动风铃发出叮咚脆响。丛雨双膝跪坐在木地板坐垫上，双手捧着一只软糯雪白的草莓大福。嘴角还沾着一小抹白色的糯米粉，两只红宝石般的眸子笑成了幸福的弯月牙，身后的神刀靠在柱旁，整个人洋溢着对人间美味无法抗拒的满足感。",
     "id": "murasame_shrine_veranda_daifuku_treat",
     "lighting": "檐角透入的温润暖金斜阳与庭院水池反射的清澈微光",
     "location": "神社木质走廊日式缘侧",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_r18_morning_sheets",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1771,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "si_arknights_r18_morning_sheets",
     "characterId": "si_arknights",
@@ -18,7 +18,7 @@
     "mood": "极致温柔欢愉",
     "adult": true,
     "sampleRating": "R18",
-    "description": "【祀 · 晨光凌乱被单间的温存缠绵】初晨明媚的阳光透过薄纱窗帘散落一床凌乱，祀慵懒无力地伏在白色床单深处，长发如绿藻般散开。龙尾亲昵无间地卷住你的大腿，身上微汗渐退、留下点点红痕。感受到你的轻抚，她回眸绽开极尽柔媚的甜笑，在被单下悄悄向你贴近——「早上好……今天哪也不准去，就在床上陪我……」",
+    "description": "初晨明媚的阳光透过薄纱窗帘散落一床凌乱，祀慵懒无力地伏在白色床单深处，长发如绿藻般散开。龙尾亲昵无间地卷住你的大腿，身上微汗渐退、留下点点红痕。感受到你的轻抚，她回眸绽开极尽柔媚的甜笑，在被单下悄悄向你贴近——「早上好……今天哪也不准去，就在床上陪我……」",
     "outfitId": "nsfw_nude",
     "recommendedSize": "1152x1536",
     "coverageTags": [],

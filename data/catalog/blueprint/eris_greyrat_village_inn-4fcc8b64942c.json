@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_village_inn",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 478,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "桌前用餐休整",
     "camera": "medium shot, eating roasted meat at tavern table",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【艾莉丝 · 边境旅店】边境小镇的旅店里，艾莉丝把剑靠在桌边，大口啃着热腾腾的烤肉，冒险者外套搭在椅背上，红发随意披散——「旅店的饭就该这样实在，比府邸的礼仪餐强多了。」",
+    "description": "边境小镇的旅店里，艾莉丝把剑靠在桌边，大口啃着热腾腾的烤肉，冒险者外套搭在椅背上，红发随意披散——「旅店的饭就该这样实在，比府邸的礼仪餐强多了。」",
     "id": "eris_greyrat_village_inn",
     "lighting": "油灯暖光",
     "location": "边境旅店",

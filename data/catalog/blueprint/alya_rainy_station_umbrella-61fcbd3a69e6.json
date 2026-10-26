@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_rainy_station_umbrella",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 775,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "手持透明雨伞微微向身侧倾斜，清亮蓝眸凝视镜头",
     "camera": "medium two-shot, clear umbrella tilted toward a companion on a rainy train platform",
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【艾莉 · 雨后车站·共撑一把伞】放学后的车站前飘着淅淅沥沥的细雨，艾莉撑开一把透明雨伞，将伞面不动声色地大半倾斜到你的头顶。她仰起清澈蔚蓝的眼眸，耳根微红地别开视线——「看在你没带伞的份上才顺路捎你一段。靠近一点，肩膀要是淋湿了我可不管。」",
+    "description": "放学后的车站前飘着淅淅沥沥的细雨，艾莉撑开一把透明雨伞，将伞面不动声色地大半倾斜到你的头顶。她仰起清澈蔚蓝的眼眸，耳根微红地别开视线——「看在你没带伞的份上才顺路捎你一段。靠近一点，肩膀要是淋湿了我可不管。」",
     "id": "alya_rainy_station_umbrella",
     "lighting": "cool overcast rainy lighting, wet pavement reflections",
     "location": "电车站台入口雨廊",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_park_bench_sunset",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "缩在长椅一侧抱膝沉思，吉他包靠在身旁",
     "camera": "medium shot, eye level",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【后藤一里 · 黄昏公园长椅】放学后的静谧街心公园，夕阳将天空染成温柔的金粉色。后藤一里独自坐在木质长椅一角，把下巴深深埋进粉色运动服的高领里，身旁放着心爱的黑色吉他包，静静看着飘落的晚霞落叶——「今天也没有鼓起勇气去搭话……不过，有吉他陪伴的黄昏，似乎也没有那么难熬。」",
+    "description": "放学后的静谧街心公园，夕阳将天空染成温柔的金粉色。后藤一里独自坐在木质长椅一角，把下巴深深埋进粉色运动服的高领里，身旁放着心爱的黑色吉他包，静静看着飘落的晚霞落叶——「今天也没有鼓起勇气去搭话……不过，有吉他陪伴的黄昏，似乎也没有那么难熬。」",
     "id": "gotoh_hitori_park_bench_sunset",
     "lighting": "金色落日逆光与柔和余晖轮廓光",
     "location": "社区公园长椅",

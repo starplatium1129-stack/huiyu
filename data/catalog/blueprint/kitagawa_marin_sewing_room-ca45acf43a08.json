@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_sewing_room",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 494,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "身着高中辣妹制服（解开两颗扣子），双手微张配合量身，脸颊泛红，眼神中满是期待与娇羞",
     "camera": "medium shot, arms slightly spread for a fitting with a measuring tape",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【喜多川海梦 · 制衣工房】五条君家里堆满布料的工坊里，身着清凉水手服的海梦张开双臂配合着量尺寸，眼睛里闪烁着狂热的憧憬光芒——「五条君你看你看！这个角色的腰线是不是超赞！能帮我把这套 cos 服做出来的人只有五条君你了，拜托拜托！」",
+    "description": "五条君家里堆满布料的工坊里，身着清凉水手服的海梦张开双臂配合着量尺寸，眼睛里闪烁着狂热的憧憬光芒——「五条君你看你看！这个角色的腰线是不是超赞！能帮我把这套 cos 服做出来的人只有五条君你了，拜托拜托！」",
     "id": "kitagawa_marin_sewing_room",
     "lighting": "传统木格窗透进柔和日光，空气中漂浮着细小金粉与布匹纹理",
     "location": "五条家的传统人偶工房",

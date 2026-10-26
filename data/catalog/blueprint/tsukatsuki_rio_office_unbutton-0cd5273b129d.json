@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_office_unbutton",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 887,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐办公桌半解制服",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【调月莉音 · 研讨会办公室制服半解】深夜彻底反锁的会长办公室里，莉音卸下了所有防备坐在宽大的办公桌沿，黑色高领毛衣被拉下露出雪白的香肩，百褶裙微散。她居高临下却耳根发烫地凝视着你——「所有安全日志已断网……老师，现在这里只有理智与本能的交锋，由你来验收最终的结论吧。」",
+    "description": "深夜彻底反锁的会长办公室里，莉音卸下了所有防备坐在宽大的办公桌沿，黑色高领毛衣被拉下露出雪白的香肩，百褶裙微散。她居高临下却耳根发烫地凝视着你——「所有安全日志已断网……老师，现在这里只有理智与本能的交锋，由你来验收最终的结论吧。」",
     "id": "tsukatsuki_rio_office_unbutton",
     "kreaStyleHint": "",
     "lighting": "昏暗台灯",

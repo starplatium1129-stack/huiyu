@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_bubble_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 499,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "举着奶茶自拍",
     "animaStyleHint": "anime_promo_art",
@@ -15,7 +15,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【喜多川海梦 · 街头奶茶店】涩谷街头熙攘的奶茶店门前，海梦咬着吸管大口喝着加了双倍珍珠的黑糖波霸奶茶，单手举着手机将你一把揽进自拍镜头——「看镜头看镜头！一二三——茄子！这张合照要发在 Instagram 上当今天的每日精选哦！」",
+    "description": "涩谷街头熙攘的奶茶店门前，海梦咬着吸管大口喝着加了双倍珍珠的黑糖波霸奶茶，单手举着手机将你一把揽进自拍镜头——「看镜头看镜头！一二三——茄子！这张合照要发在 Instagram 上当今天的每日精选哦！」",
     "id": "kitagawa_marin_bubble_tea",
     "kreaStyleHint": "anime_promo_art",
     "lighting": "明亮日光",

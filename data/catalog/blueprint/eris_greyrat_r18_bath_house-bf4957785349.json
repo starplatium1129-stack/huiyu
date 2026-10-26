@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_bath_house",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 483,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "露天温泉岩石台阶上全身坐姿回眸招手娇呼",
     "adult": true,
@@ -13,7 +13,7 @@
     "category": "成人",
     "characterId": "eris_greyrat",
     "coverageTags": [],
-    "description": "【艾莉丝 · 晴林岩石温泉水汽】露天温泉清澈的暖汤中，阳光明媚，艾莉丝坐在天然岩石台阶上展露修长全身身段，湿润红发贴在光滑背脊上，侧首回眸招手，水珠沿着优美腰线与修长美腿滚落，神情娇羞燥热。",
+    "description": "露天温泉清澈的暖汤中，阳光明媚，艾莉丝坐在天然岩石台阶上展露修长全身身段，湿润红发贴在光滑背脊上，侧首回眸招手，水珠沿着优美腰线与修长美腿滚落，神情娇羞燥热。",
     "id": "eris_greyrat_r18_bath_house",
     "kreaStyleHint": "",
     "lighting": "林隙透射的明媚阳光与温泉水面波光",

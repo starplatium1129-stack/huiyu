@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc067",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Rejected outfits hang beside her as she adjusts her hairclip, seeking the viewer's approval.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, grey cropped cardigan, pearl buttons, white blouse, small neck bow, navy pleated midi skirt, clothes hangers, adjusting hairclip, mirror, dressing room, medium shot, looking at viewer, window light",
     "rating": "All",
     "season": "春",
-    "story": "【夏目 · 约会前的第三套选择】春日下午，夏目在更衣室前连续换了三套衣服，每次都说只是确认尺寸，却会在出来后先观察你的反应。最终她选了最简洁的一套，又把与衣服相配的发夹别好——「不是为了迎合你的喜好，只是这套行动方便。……如果你觉得好看，可以再说一次，我刚才没听清。」",
+    "story": "春日下午，夏目在更衣室前连续换了三套衣服，每次都说只是确认尺寸，却会在出来后先观察你的反应。最终她选了最简洁的一套，又把与衣服相配的发夹别好——「不是为了迎合你的喜好，只是这套行动方便。……如果你觉得好看，可以再说一次，我刚才没听清。」",
     "storyJa": "【夏目・付き合う前の3番目のオプション】春の午後、夏目はロッカールームの前で3着の服を着替えました。毎回彼は、サイズを確認しているだけで、出てきた後のあなたの反応を観察すると言いました。結局、彼女は最もシンプルな衣装を選び、その衣装に合わせたヘアピンを留めました。――「あなたの好みに合わせたわけじゃない。ただ、これが動きやすかっただけ。……似合うと思うなら、もう一度言って。さっきはよく聞こえなかった。」",
     "tags": [
       "mole_under_eye",

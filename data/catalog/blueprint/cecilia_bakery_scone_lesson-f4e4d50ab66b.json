@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_bakery_scone_lesson",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 842,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "认真地揉面团，鼻尖沾着面粉",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【塞西莉亚 · 面包店学做司康】小镇面包房充满黄油香气的工作台前，塞西莉亚系着大号围裙，两只小手沾满了面粉，正一本正经地揉搓着司康饼面团，小鼻尖上也蹭上了一点白粉——「我也想亲手给劳伦斯烤一次最好吃的司康饼！虽然比例好像有点搞混了……但爱心绝对是加倍的！」",
+    "description": "小镇面包房充满黄油香气的工作台前，塞西莉亚系着大号围裙，两只小手沾满了面粉，正一本正经地揉搓着司康饼面团，小鼻尖上也蹭上了一点白粉——「我也想亲手给劳伦斯烤一次最好吃的司康饼！虽然比例好像有点搞混了……但爱心绝对是加倍的！」",
     "id": "cecilia_bakery_scone_lesson",
     "lighting": "window_light",
     "location": "小镇面包店",

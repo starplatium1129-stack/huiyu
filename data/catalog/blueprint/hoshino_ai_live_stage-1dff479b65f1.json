@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_live_stage",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 948,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "舞台上高唱登场",
     "camera": "full-body shot, low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【星野爱 · B 小町演唱会】万人场馆的聚光灯下，星野爱跃上舞台最高点，粉裙与兔耳发饰在光柱中飞扬，星形瞳孔倒映着整片应援海——「把爱送给大家！今天也要好好应援哦！」",
+    "description": "万人场馆的聚光灯下，星野爱跃上舞台最高点，粉裙与兔耳发饰在光柱中飞扬，星形瞳孔倒映着整片应援海——「把爱送给大家！今天也要好好应援哦！」",
     "id": "hoshino_ai_live_stage",
     "lighting": "舞台聚光与应援海",
     "location": "万人演唱会舞台",

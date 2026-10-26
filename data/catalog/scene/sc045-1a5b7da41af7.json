@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc045",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She accepts the clothes through the door gap, brushing the viewer's fingertips; her towel remains hidden behind the door.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, bath towel, reaching, door, bathroom, steam, warm light, close up, peeking, blush, receiving clothes, touching fingers",
     "rating": "R15",
     "season": "冬",
-    "story": "【成年 After Story · 浴室门后的求援】冬夜浴室里水汽未散，成年的宁宁发现换洗衣物忘在外面，只好把门推开一道细缝。她刚出浴的身子还带着水汽，双腿光裸地并拢藏在门板之后，伸出的手却因为害羞一直发抖。你把衣服递过去，她又轻轻勾住你的指尖——「谢谢……还有，不准根据这一点缝隙胡乱想象。等我换好，再抱你一下当作谢礼。」",
+    "story": "冬夜浴室里水汽未散，成年的宁宁发现换洗衣物忘在外面，只好把门推开一道细缝。她刚出浴的身子还带着水汽，双腿光裸地并拢藏在门板之后，伸出的手却因为害羞一直发抖。你把衣服递过去，她又轻轻勾住你的指尖——「谢谢……还有，不准根据这一点缝隙胡乱想象。等我换好，再抱你一下当作谢礼。」",
     "storyJa": "【寧々・大人のアフターストーリー・トイレのドアの向こうで助けを求める】冬の夜でもバスルームの湿気はまだ残っていた。大人の寧々さんは、着替えを外に置き忘れたことに気づき、ドアを押して小さな隙間を開けなければなりませんでした。バスタオルをしっかりと巻いているが、伸ばした手は恥ずかしさのあまり震えていた。服を手渡すと、彼女はそっと指先を引っ掛けた――「ありがとうございます……それから、この隙間から勝手な想像をしないでください。着替え終わったら、お礼にもう一度だけ抱きしめますから。」",
     "tags": [
       "hair_ribbon",

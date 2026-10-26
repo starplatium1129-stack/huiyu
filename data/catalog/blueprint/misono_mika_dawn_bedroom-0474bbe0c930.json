@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_dawn_bedroom",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 905,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手背撑床沿微仰注视",
     "adult": false,
@@ -17,7 +17,7 @@
       "daily",
       "intimate"
     ],
-    "description": "【圣园未花 · 晨曦私语白蔷薇寝所】圣三一茶会顶层的私密贵宾卧房，清晨第一缕阳光穿透拱形落地窗与轻盈飘拂的蕾丝白纱，未花双手背撑在床沿微微后仰，浅粉长发与纯白羽翼如晨曦般展开，琥珀金眸带着温柔依恋的笑意凝视着你。",
+    "description": "圣三一茶会顶层的私密贵宾卧房，清晨第一缕阳光穿透拱形落地窗与轻盈飘拂的蕾丝白纱，未花双手背撑在床沿微微后仰，浅粉长发与纯白羽翼如晨曦般展开，琥珀金眸带着温柔依恋的笑意凝视着你。",
     "id": "misono_mika_dawn_bedroom",
     "kreaStyleHint": "",
     "lighting": "morning sunlight filtered through the lace curtain",

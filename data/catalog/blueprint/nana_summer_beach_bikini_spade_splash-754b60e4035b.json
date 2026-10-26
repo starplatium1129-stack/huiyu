@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_summer_beach_bikini_spade_splash",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1266,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单脚踢起浪花水花嬉闹，珊瑚粉比基尼衬托紧致身材，小虎牙绽放灿烂笑容",
     "camera": "full body, three-quarter view, splashing water foreground",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "summer"
     ],
-    "description": "【娜娜 · 蔚蓝浪花的珊瑚粉活力踢水】阳光明媚的热带海岛白沙滩浅水区，碧蓝清澈的波浪层层卷来。娜娜身穿一套亮眼的珊瑚粉分体运动比基尼，虽然身材娇小纤细，但充满青春少女的紧致活力。她单脚轻快地踢起一串晶莹剔透的水珠飞向镜头，小虎牙伴随着欢笑闪烁，爱心尾巴在身后激动拍水，将夏日海滩的热烈气氛推至顶点。",
+    "description": "阳光明媚的热带海岛白沙滩浅水区，碧蓝清澈的波浪层层卷来。娜娜身穿一套亮眼的珊瑚粉分体运动比基尼，虽然身材娇小纤细，但充满青春少女的紧致活力。她单脚轻快地踢起一串晶莹剔透的水珠飞向镜头，小虎牙伴随着欢笑闪烁，爱心尾巴在身后激动拍水，将夏日海滩的热烈气氛推至顶点。",
     "id": "nana_summer_beach_bikini_spade_splash",
     "lighting": "澄澈热带阳光直射与海面跳跃的耀眼水纹光斑",
     "location": "热带海岛细白沙滩浅海浪花间",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_insect_breathing_butterfly_dance",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1447,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "足尖点梁翻转腾挪，蝶翼羽织展开，毒针寒光，落地眨眼",
     "adult": false,
@@ -17,7 +17,7 @@
       "iconic",
       "signature"
     ],
-    "description": "【黄昏的天守遗迹·鬼气弥漫】紫蝶般的身影在残垣间翻转腾挪，蝶翼羽织在身后展开如真正的蝶翅。忍足尖轻点断梁，毒针在指间寒光一闪，脸上却始终挂着那抹温柔的笑——「虫之呼吸 · 蜈蚣之腹。」轻如蝶落，毒已入髓。她落地收刃，对呆住的你眨了眨眼——「看呆了呢。要跟上哦，下一个敌人可不会等你。」",
+    "description": "紫蝶般的身影在残垣间翻转腾挪，蝶翼羽织在身后展开如真正的蝶翅。忍足尖轻点断梁，毒针在指间寒光一闪，脸上却始终挂着那抹温柔的笑——「虫之呼吸 · 蜈蚣之腹。」轻如蝶落，毒已入髓。她落地收刃，对呆住的你眨了眨眼——「看呆了呢。要跟上哦，下一个敌人可不会等你。」",
     "id": "shinobu_insect_breathing_butterfly_dance",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "橙紫渐变的黄昏天光与蝶翼羽织的紫纹",

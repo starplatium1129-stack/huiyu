@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_school_hallway",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 959,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱课本走过走廊",
     "camera": "medium shot, walking through the school hallway with textbooks",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【黑川茜 · 阳东走廊】阳东高中的午后走廊，黑川茜抱着课本走过光斑交错的窗边，蓝紫直发在阳光里泛着清冷的光泽，制服裙摆随着步伐轻摆——「戏外的我，也只是一个普通的高中生而已。」",
+    "description": "阳东高中的午后走廊，黑川茜抱着课本走过光斑交错的窗边，蓝紫直发在阳光里泛着清冷的光泽，制服裙摆随着步伐轻摆——「戏外的我，也只是一个普通的高中生而已。」",
     "id": "kurokawa_akane_school_hallway",
     "lighting": "走廊窗光",
     "location": "阳东高中走廊",

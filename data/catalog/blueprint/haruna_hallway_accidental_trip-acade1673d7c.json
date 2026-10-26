@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_hallway_accidental_trip",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1764,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "haruna_hallway_accidental_trip",
     "title": "西连寺春菜 · 学园楼梯转角的神摔失重跌坐",
@@ -32,7 +32,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【西连寺春菜 · 学园楼梯转角的神摔失重跌坐】彩南高校转角楼梯口，春菜不慎踩空，跌坐在明亮的木地板上。她双手撑住身前地面稳住身体，课本和讲义散落在身旁。午后的阳光从高窗洒进走廊，她抬头望向画外赶来的梨斗，脸颊通红，眼里还带着慌乱的泪光。",
+    "description": "彩南高校转角楼梯口，春菜不慎踩空，跌坐在明亮的木地板上。她双手撑住身前地面稳住身体，课本和讲义散落在身旁。午后的阳光从高窗洒进走廊，她抬头望向画外赶来的梨斗，脸颊通红，眼里还带着慌乱的泪光。",
     "promptTokens": [
       "school_hallway",
       "wooden_floor",

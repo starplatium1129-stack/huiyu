@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc003",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Seen from a rear three-quarter view, she rests one hand on the rooftop rail and gathers her skirt hem with the other, turning toward the viewer beside her. The low sun edges her hair above the sea beyond the railing.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "safe, 1girl, ayachi_nene, nene_school_uniform, standing, hand on railing, holding skirt, looking at viewer, rooftop, ocean, sunset, backlighting, medium shot, @rella",
     "rating": "All",
     "season": "夏",
-    "story": "【宁宁 · 只告诉你的天台秘密】放学后的天台被夏日晚风吹得格外安静，远处海面正吞下最后一层夕光。宁宁扶着栏杆，把一直不敢说出口的烦恼讲到一半，又因为你的注视紧张地捏住裙角。她深吸一口气，终于没有逃开——「我不是想让你替我解决一切……只是觉得，如果是你的话，可以知道真正的我。」",
+    "story": "放学后的天台被夏日晚风吹得格外安静，远处海面正吞下最后一层夕光。宁宁扶着栏杆，把一直不敢说出口的烦恼讲到一半，又因为你的注视紧张地捏住裙角。她深吸一口气，终于没有逃开——「我不是想让你替我解决一切……只是觉得，如果是你的话，可以知道真正的我。」",
     "storyJa": "【寧々・屋上の秘密を教えてください】放課後の屋上は夏の夜風のせいで特に静かで、遠くの海は夕焼けの光の最後の層を飲み込んでいた。寧々は手すりにつかまり、表現するのが怖かった悩みについて話している途中で、あなたの視線を気にして緊張しながらスカートの角をつねっています。彼女は深呼吸をした、そしてついに逃げなかった――「何もかも解決してほしいわけじゃないんです……ただ、あなたになら本当の私を知ってもらってもいいって、そう思っただけで。」",
     "tags": [
       "hair_ribbon",

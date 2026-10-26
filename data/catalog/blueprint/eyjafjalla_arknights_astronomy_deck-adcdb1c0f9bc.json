@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_astronomy_deck",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 551,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "仰头望着漫天星斗",
     "camera": "wide shot",
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【艾雅法拉 · 观星甲板】深夜平静的罗德岛观景甲板上，艾雅法拉仰脸凝望星斗，微风轻拂肩头的羊毛披肩。她靠近身旁的同行者，握着对方的手，在安静的星光中感受掌心传来的温暖。",
+    "description": "深夜平静的罗德岛观景甲板上，艾雅法拉仰脸凝望星斗，微风轻拂肩头的羊毛披肩。她靠近身旁的同行者，握着对方的手，在安静的星光中感受掌心传来的温暖。",
     "id": "eyjafjalla_arknights_astronomy_deck",
     "lighting": "starlight and dim deck lamps",
     "location": "罗德岛甲板",

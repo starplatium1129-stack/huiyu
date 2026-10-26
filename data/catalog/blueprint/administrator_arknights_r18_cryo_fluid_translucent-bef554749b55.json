@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_cryo_fluid_translucent",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 771,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "administrator_arknights_r18_cryo_fluid_translucent",
     "characterId": "administrator_arknights",
     "title": "管理员 · 净化凝胶透湿苏醒",
-    "description": "【管理员 · 净化凝胶透湿苏醒】苏醒池温润凝胶将纯白薄袍彻底浸润透明，紧密包裹每一寸紧实起伏的女性曲线，挺立乳晕与私密轮廓纤毫毕现。",
+    "description": "苏醒池温润凝胶将纯白薄袍彻底浸润透明，紧密包裹每一寸紧实起伏的女性曲线，挺立乳晕与私密轮廓纤毫毕现。",
     "category": "成人",
     "location": "休眠修复凝胶池",
     "action": "苏醒池温润凝胶将纯白薄袍彻底浸润透明，紧密包裹每一寸紧实起伏的女性曲线",

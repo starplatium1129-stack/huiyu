@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_dorm_shower",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 743,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "浴室浴缸泡沫中撩水眨眼",
     "adult": true,
@@ -13,7 +13,7 @@
     "category": "成人",
     "characterId": "yvonne_arknights",
     "coverageTags": [],
-    "description": "【伊冯 · 晨间浴缸彩虹泡泡】阳光浴室的温热浴缸里，伊冯俏皮地探出湿润的粉色双马尾与小龙角，绵密泡沫贴在饱满的胸脯与摇曳的龙尾上，撩起水花眨眼娇笑。",
+    "description": "阳光浴室的温热浴缸里，伊冯俏皮地探出湿润的粉色双马尾与小龙角，绵密泡沫贴在饱满的胸脯与摇曳的龙尾上，撩起水花眨眼娇笑。",
     "id": "yvonne_arknights_r18_dorm_shower",
     "kreaStyleHint": "",
     "lighting": "百叶窗透射的明亮晨光与水汽光晕",

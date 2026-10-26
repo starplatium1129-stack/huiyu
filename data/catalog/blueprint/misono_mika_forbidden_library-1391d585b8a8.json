@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_forbidden_library",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 891,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "在古老藏书库的高书架前伸手取一本旧书",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【圣园未花 · 古老藏书库的秘密】静谧古老的旧藏书库角落，未花踮起脚尖在高高的书架前找寻着什么，粉发随动作轻扬，金瞳在烛光下熠熠生辉。她回头冲你俏皮地眨了眨眼——「嘘——老师，这是我们两个人的秘密探险哦，绝对不能告诉渚酱她们～」",
+    "description": "静谧古老的旧藏书库角落，未花踮起脚尖在高高的书架前找寻着什么，粉发随动作轻扬，金瞳在烛光下熠熠生辉。她回头冲你俏皮地眨了眨眼——「嘘——老师，这是我们两个人的秘密探险哦，绝对不能告诉渚酱她们～」",
     "id": "misono_mika_forbidden_library",
     "kreaStyleHint": "",
     "lighting": "烛光",

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "fern_sunset_wagon_travel",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "fern_sunset_wagon_travel",
     "characterId": "fern_frieren",
     "title": "菲伦 · 落日马车·旅途书卷与知性侧颜",
-    "description": "【菲伦 · 落日马车·旅途书卷与知性侧颜】黄昏行进的木轮马车车厢内，夕阳余晖将菲伦深紫色的长发与知性的侧颜镀上一层温暖的光泽。她膝上摊着厚厚的魔法书，微微侧过头望向你——「在颠簸的车上看书容易头晕，请您也稍微休息一下吧。茶壶里刚煮好了温热的花草茶。」",
+    "description": "黄昏行进的木轮马车车厢内，夕阳余晖将菲伦深紫色的长发与知性的侧颜镀上一层温暖的光泽。她膝上摊着厚厚的魔法书，微微侧过头望向你——「在颠簸的车上看书容易头晕，请您也稍微休息一下吧。茶壶里刚煮好了温热的花草茶。」",
     "outfitId": "journey_robe",
     "sceneTags": [
       "wagon_interior",

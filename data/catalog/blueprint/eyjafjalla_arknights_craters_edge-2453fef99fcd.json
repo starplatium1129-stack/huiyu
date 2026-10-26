@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_craters_edge",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 547,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "蹲在岩缘采集样本",
     "camera": "wide shot, dramatic scale",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【艾雅法拉 · 火山口边缘】翻滚着刺鼻硫磺气体的活火山口断崖边缘，艾雅法拉蹲在滚烫的岩壁旁小心翼翼地用小铁铲采集凝固岩浆样本。微风吹动她毛茸茸的羊耳，她回头向你露出安心的微笑——「前辈请站在安全线后面！有小黑和小白保护我，采集工作马上就结束了哦！」",
+    "description": "翻滚着刺鼻硫磺气体的活火山口断崖边缘，艾雅法拉蹲在滚烫的岩壁旁小心翼翼地用小铁铲采集凝固岩浆样本。微风吹动她毛茸茸的羊耳，她回头向你露出安心的微笑——「前辈请站在安全线后面！有小黑和小白保护我，采集工作马上就结束了哦！」",
     "id": "eyjafjalla_arknights_craters_edge",
     "lighting": "harsh volcanic light and steam",
     "location": "火山口",

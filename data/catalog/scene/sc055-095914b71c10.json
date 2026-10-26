@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc055",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She keeps hold of the viewer's sleeve against their shoulder, their silhouettes corresponding in the door glass.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, navy tailored blazer, single button, burgundy knit vest, white blouse, standing, sleeve grab, tram, window reflection, city lights, night, side view, close up, leaning on person, reflection",
     "rating": "All",
     "season": "冬",
-    "story": "【夏目 · 末班电车的玻璃倒影】冬夜末班电车几乎空无一人，夏目站在门边看着玻璃里的倒影，身体随着转弯轻轻撞到你。你扶住她后，她没有离开，反而借着车厢晃动握住你的衣袖。倒影里两个人靠得很近——「下一站才下车，所以不用急着放开。还有，不准一直看玻璃……那里什么都没有。」",
+    "story": "冬夜末班电车几乎空无一人，夏目站在门边看着玻璃里的倒影，身体随着转弯轻轻撞到你。你扶住她后，她没有离开，反而借着车厢晃动握住你的衣袖。倒影里两个人靠得很近——「下一站才下车，所以不用急着放开。还有，不准一直看玻璃……那里什么都没有。」",
     "storyJa": "【夏目・最終路面電車のガラス反射】冬の夜、最後のトラムはほとんど空いていました。夏目はドアのそばに立ってガラスに映る景色を眺め、向きを変えたときに体がそっとあなたにぶつかりました。あなたが彼女をサポートした後、彼女は離れませんでした。その代わりに、馬車が揺れている間、彼女はあなたの袖を押さえていました。反射の中で二人はとても近くにいます――「降りるのは次の駅だから、急いで離さなくてもいい。あと、窓ばかり見ないで……そこには何も映ってないから。」",
     "tags": [
       "mole_under_eye",

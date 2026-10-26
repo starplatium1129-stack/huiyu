@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_morning_tea",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1762,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "si_arknights_morning_tea",
     "characterId": "si_arknights",
@@ -16,7 +16,7 @@
     "lighting": "温暖柔和的侧向晨曦",
     "camera": "medium shot",
     "mood": "温馨恬静",
-    "description": "【祀 · 晨光窗台沏一盏清茶】清晨基地生活区洒满金色晨光，祀拢了拢宽松的薄荷绿落肩开衫，纤细的手指轻捏白瓷茶夹，将刚沏好的清茶推到你面前。澄净的蓝眸含着温软的笑意，青翠的龙角在晨曦中泛着剔透的微光——「新采的茶芽，水温正好，趁热尝尝吧。」",
+    "description": "清晨基地生活区洒满金色晨光，祀拢了拢宽松的薄荷绿落肩开衫，纤细的手指轻捏白瓷茶夹，将刚沏好的清茶推到你面前。澄净的蓝眸含着温软的笑意，青翠的龙角在晨曦中泛着剔透的微光——「新采的茶芽，水温正好，趁热尝尝吧。」",
     "outfitId": "sfw_tea_cardigan",
     "recommendedSize": "1152x1536",
     "coverageTags": [

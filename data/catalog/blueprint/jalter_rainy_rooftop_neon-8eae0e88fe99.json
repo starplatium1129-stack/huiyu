@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_rainy_rooftop_neon",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 183,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "jalter_rainy_rooftop_neon",
     "title": "贞德[Alter] · 雨夜天台",
@@ -12,7 +12,7 @@
     "characterId": "jeanne_alter",
     "outfitId": "shinjuku_jacket_casual",
     "adult": false,
-    "description": "【贞德[Alter] · 雨夜天台】大雨倾盆的都市高楼天台边缘，黑贞倚在湿冷的铁栏杆旁，任由雨水打湿面颊，眼底倒映着下方如梦似幻的霓虹光海。她伸手抹去眼角的雨滴——「从这里看下去，整座城市渺小得像堆积木呢。……不过，能和你一起站在这里，感觉还不赖。」",
+    "description": "大雨倾盆的都市高楼天台边缘，黑贞倚在湿冷的铁栏杆旁，任由雨水打湿面颊，眼底倒映着下方如梦似幻的霓虹光海。她伸手抹去眼角的雨滴——「从这里看下去，整座城市渺小得像堆积木呢。……不过，能和你一起站在这里，感觉还不赖。」",
     "location": "新宿高楼天台",
     "action": "一手扶湿栏杆，另一手抹去眼角雨滴，无遮挡地望向夜色中的城市",
     "timeOfDay": "night",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_swimsuit_poolside",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 907,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐躺椅喝冰饮",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【空崎日奈 · 躺椅上的悠闲夏日】泳池边的白色躺椅上，日奈双手捧着一杯冰镇柠檬水，双腿放松地微微晃动，银白长发披散在躺椅软垫上。她微眯起紫瞳看向你，露出极其罕见的惬意笑容——「难得的假期……没有紧急联络，也没有违纪报告。老师，能像这样一直陪在我身边吗？」",
+    "description": "泳池边的白色躺椅上，日奈双手捧着一杯冰镇柠檬水，双腿放松地微微晃动，银白长发披散在躺椅软垫上。她微眯起紫瞳看向你，露出极其罕见的惬意笑容——「难得的假期……没有紧急联络，也没有违纪报告。老师，能像这样一直陪在我身边吗？」",
     "id": "sorasaki_hina_swimsuit_poolside",
     "kreaStyleHint": "",
     "lighting": "泳池反光与遮阳伞",

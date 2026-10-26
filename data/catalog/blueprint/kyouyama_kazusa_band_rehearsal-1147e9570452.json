@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_band_rehearsal",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 857,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "背贝斯练习",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【杏山和纱 · SugarRush 乐队排练室】放学后热闹的排练室里，和纱背着电贝斯站在音箱前，修长的手指利落地按压琴弦，神情认真得微微抿起嘴唇。黑色舞台制服衬托出她曾作为不良少女时的帅气与酷劲，可看见你推门进来，粉瞳中立刻闪过一丝局促与喜悦——「……老师？怎么突然来了。刚好……要不要听听我刚写好的贝斯独奏？」",
+    "description": "放学后热闹的排练室里，和纱背着电贝斯站在音箱前，修长的手指利落地按压琴弦，神情认真得微微抿起嘴唇。黑色舞台制服衬托出她曾作为不良少女时的帅气与酷劲，可看见你推门进来，粉瞳中立刻闪过一丝局促与喜悦——「……老师？怎么突然来了。刚好……要不要听听我刚写好的贝斯独奏？」",
     "id": "kyouyama_kazusa_band_rehearsal",
     "kreaStyleHint": "",
     "lighting": "排练室灯光与音箱蓝光",

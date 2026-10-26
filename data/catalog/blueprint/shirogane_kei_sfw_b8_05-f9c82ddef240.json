@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1415,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "海滨贩卖机前比较冷饮性价比，坐到海堤边贴脸降温并偷偷得意",
     "adult": false,
@@ -17,7 +17,7 @@
       "summer",
       "beach"
     ],
-    "description": "【海滨商业街·午后】圭穿着蓝灰色泳装外搭轻薄风衣，蹲在自动贩卖机前认真比较两种冷饮；她最终选择最划算的一瓶，坐到海堤边把罐子贴在脸上，蓝眼睛里藏着小小的得意。",
+    "description": "圭穿着蓝灰色泳装外搭轻薄风衣，蹲在自动贩卖机前认真比较两种冷饮；她最终选择最划算的一瓶，坐到海堤边把罐子贴在脸上，蓝眼睛里藏着小小的得意。",
     "id": "shirogane_kei_sfw_b8_05",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "warm afternoon light with cool can highlights",

@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "rapi_combat_range_precision_target_shot",
+  "revision": 1,
+  "sortOrder": 1915,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "data": {
+    "id": "rapi_combat_range_precision_target_shot",
+    "characterId": "rapi_nikke",
+    "title": "拉毗 · 战术靶场沉稳立射正中靶心",
+    "description": "前哨基地模拟地下靶场内，拉毗身着反击小队标准特勤战斗制服。她双手沉稳端持制式突击步枪维持标准的站姿立射，枪口青烟未散，远方靶心十环洞穿。她微微侧过头向身后的指挥官汇报，猩红眼眸中透出无可挑剔的专业与可靠。",
+    "category": "工作生活",
+    "location": "前哨基地地下战术射击训练靶场",
+    "action": "端枪立射收枪，枪口轻烟微袅，侧头冷静汇报",
+    "mood": "沉稳可靠",
+    "lighting": "靶道上方整齐排列的战术荧光灯冷白光",
+    "timeOfDay": "白天",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "classic_shooting_stance_combat",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "shooting_range",
+      "firing_range",
+      "assault_rifle",
+      "combat_uniform",
+      "smoke",
+      "aiming",
+      "target",
+      "scarlet_eyes",
+      "composed",
+      "tactical"
+    ],
+    "promptTokens": [
+      "shooting range",
+      "classic shooting stance combat",
+      "counters tactical uniform",
+      "holding assault rifle",
+      "smoke from gun barrel",
+      "lowering rifle",
+      "turning head to viewer",
+      "composed stern gaze",
+      "scarlet eyes",
+      "dark red hair tied back",
+      "cowboy shot",
+      "cold fluorescent lights",
+      "target in background"
+    ],
+    "promptProse": "Lowering her assault rifle as a faint wisp of smoke curls from the muzzle, her stance remains rock-solid in the underground range. Overhead fluorescent strips illuminate her scarlet gaze as she turns calmly to confirm target elimination.",
+    "animaCaption": "She lowers her smoking rifle at the firing range, turning back with a calm, focused gaze.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "work"
+    ]
+  }
+}

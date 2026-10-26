@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc031",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Nene in white chiffon with a pink waist ribbon stands left; Natsume in black satin with a burgundy sash stands right. Each clasps the nearer foreground hand beneath three glowing heart-rate curves.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -26,7 +26,7 @@
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",
-    "story": "【成年 AU · 三人契约的无限回路】仪式厅的光幕将三条心率曲线投向穹顶，宁宁与夏目分别握住你的左右手。同步数值越过阈值后没有失控，反而稳定成一枚缓慢旋转的光环。宁宁先笑着落泪，夏目则握得更紧，用简短的话替三个人完成誓言——「不是谁依附谁。是我们都选择留下，并且一次次重新选择。」",
+    "story": "仪式厅的光幕将三条心率曲线投向穹顶，宁宁与夏目分别握住你的左右手。同步数值越过阈值后没有失控，反而稳定成一枚缓慢旋转的光环。宁宁先笑着落泪，夏目则握得更紧，用简短的话替三个人完成誓言——「不是谁依附谁。是我们都选择留下，并且一次次重新选择。」",
     "storyJa": "【夏目＆寧々・大人のAU・3人契約の無限ループ】式典ホールのライトカーテンは、3つの心拍数曲線をドームに投影します。寧々と夏目はそれぞれ左手と右手を持ちます。同期値がしきい値を超えた後も、制御を失うことはありませんでした。代わりに、ゆっくりと回転する後光となって安定しました。寧々が最初に笑い、泣き、夏目がしっかりと手を握り、短い言葉で3人の宣誓を終えました。――「誰かが誰かに寄りかかるんじゃない。私たちはみんな、ここに残ることを選んで、何度でも選び直すんです。」",
     "tags": [
       "2girls",

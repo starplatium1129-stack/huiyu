@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yui_service_club_sunset",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 348,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yui_service_club_sunset",
     "characterId": "yuigahama_yui",
     "title": "由比滨结衣 · 侍奉部活动室·夕阳余晖与微风红茶",
-    "description": "【由比滨结衣 · 侍奉部活动室·夕阳余晖与微风红茶】夕阳将侍奉部教室的一切染上蜜糖般的暖橙色，微风拂动窗帘与结衣蓬松的粉色团子发髻。她双手捧着小雪泡好的热红茶，向你露出毫无阴霾的灿烂笑容——「小企！今天的红茶超级香哦！大家能像这样每天聚在一起聊天，真的最喜欢了！」",
+    "description": "夕阳将侍奉部教室的一切染上蜜糖般的暖橙色，微风拂动窗帘与结衣蓬松的粉色团子发髻。她双手捧着小雪泡好的热红茶，向你露出毫无阴霾的灿烂笑容——「小企！今天的红茶超级香哦！大家能像这样每天聚在一起聊天，真的最喜欢了！」",
     "outfitId": "sobu_uniform",
     "sceneTags": [
       "classroom",

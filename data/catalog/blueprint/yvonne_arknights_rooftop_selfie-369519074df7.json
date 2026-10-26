@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_rooftop_selfie",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 735,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "举手机自拍",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【伊冯 · 天台自拍】基地天台的天光下，伊冯举着手机找了一百个角度，最后干脆把镜头对向蓝得透亮的天——「拍得好不好不重要，重要的是本天才的可爱要传遍全终末地！」",
+    "description": "基地天台的天光下，伊冯举着手机找了一百个角度，最后干脆把镜头对向蓝得透亮的天——「拍得好不好不重要，重要的是本天才的可爱要传遍全终末地！」",
     "id": "yvonne_arknights_rooftop_selfie",
     "lighting": "蓝天日光",
     "location": "基地天台",

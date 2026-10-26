@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc197",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 193,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:39:58.915038600+00:00",
   "data": {
     "animaCaption": "The gown rests at her waist as she holds the viewer's neck from the hotel bed.",
     "auditRevision": "careful-batch12-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy satin lining, small gold clasp, black silk evening gown, backless dress, unzipped, dress slip, sideboob, black thighhighs, on bed, arms around neck, blush, hotel suite, neon lights, bedside lamp, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, lying",
     "rating": "R18",
     "season": "不限",
-    "story": "【夏目 · 高开叉晚礼服解开极致沦陷】高档宴会结束后的顶级酒店总统套房。窗外是繁华都市的无边霓虹。平时高冷优雅的夏目此时被你温柔地推倒在宽大的双人床上。她身上那一件奢华的黑色露背高开叉丝绸晚礼服背后的拉链已经被你完全拉开，整件礼服松垮垮地滑落到了腰际，露出了大片极具线条感、泛着潮红的绝美裸背与丰满侧乳。她腿上性感的超薄黑丝袜在灯光下散发着撩人光泽。她眼角的泪痣被红晕彻底染透，一边无力地搂紧你的脖子，一边娇喘着呻吟——「长官...今晚这件衣服...就随你高兴撕裂掉好了...嗯嗯...」",
+    "story": "夜幕下的酒店高层阳台，晚风习习。夏目卸下了紧绷的晚礼服，披着一件宽松的羊毛披风靠在扶手旁，手中托着冰镇苏打水，望着远处绵延的霓虹。听到你推门走出，她转过身递来另一只玻璃杯：「外勤收工了。今晚不用再提心吊胆地演戏，陪我吹会儿风吧。」",
     "storyJa": "【夏目・ハイスリットのイブニングドレスが究極の秋を演出】高級宴会後の一流ホテルのプレジデンシャルスイート。窓の外には、賑やかな街の無限のネオンが広がっています。普段は飄々として上品な夏目君が、あなたにそっと大きなダブルベッドに押し倒されました。彼女の豪華な黒い背中の開いたハイスリットのシルクのイブニングガウンの背中のジッパーがあなたによって完全に外され、ガウン全体が彼女のウエストまでゆるく落ち、彼女の美しい裸の背中と、非常に直線的で赤面した豊満な横乳の広い領域が明らかになりました。彼女の脚にはセクシーな極薄の黒ストッキングが光の下で艶めかしい光沢を放っています。目尻の泣きぼくろが真っ赤に染まっていた。彼女はあえぎ、うめき声​​を上げながらあなたの首を力なく抱きしめました。――「店長……今夜のこの服、あなたが好きだと言うなら……もう少しだけ着ていてあげてもいい。」",
     "tags": [
       "mole_under_eye",
@@ -44,7 +44,7 @@
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "华丽终幕：晚礼服背后的特工拆封仪式",
+    "title": "任务收尾的阳台对酌",
     "usage": [
       "壁纸级",
       "成人向"

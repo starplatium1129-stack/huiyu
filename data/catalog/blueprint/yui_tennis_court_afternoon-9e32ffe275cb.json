@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_tennis_court_afternoon",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 354,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yui_tennis_court_afternoon",
     "title": "由比滨结衣 · 网球训练场",
@@ -12,7 +12,7 @@
     "characterId": "yuigahama_yui",
     "outfitId": "tennis_sportswear",
     "adult": false,
-    "description": "【由比滨结衣 · 网球训练场】午后明亮的网球场上，结衣穿着清爽的网球运动装，握着球拍稍作休息。她擦去额头的汗珠，团子发髻被微风轻轻拂动，转头露出灿烂的笑容——「刚才那一球我可是用了全力哦！休息一下，再来一局吧。」",
+    "description": "午后明亮的网球场上，结衣穿着清爽的网球运动装，握着球拍稍作休息。她擦去额头的汗珠，团子发髻被微风轻轻拂动，转头露出灿烂的笑容——「刚才那一球我可是用了全力哦！休息一下，再来一局吧。」",
     "location": "学校网球场",
     "action": "握着网球拍在场边擦汗，笑着准备下一局",
     "timeOfDay": "afternoon",

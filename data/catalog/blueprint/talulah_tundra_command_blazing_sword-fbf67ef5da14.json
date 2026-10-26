@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "talulah_tundra_command_blazing_sword",
+  "revision": 1,
+  "sortOrder": 1928,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "data": {
+    "id": "talulah_tundra_command_blazing_sword",
+    "characterId": "talulah_arknights",
+    "title": "塔露拉 · 极北雪原的烈焰长剑出鞘",
+    "description": "暴风雪肆虐的乌萨斯冻原荒野，塔露拉身披整合运动黑白领袖风衣屹立于风雪之巅。她单手拔出燃烧着源石烈火的修长佩剑，炽热烈焰将漫天飞雪瞬间汽化，金红眼眸锋芒毕露，尽显整合运动领袖傲视风雪的帝王威仪。",
+    "category": "戏剧瞬间",
+    "location": "乌萨斯极北雪原荒野废墟顶端",
+    "action": "拔出烈焰长剑直指前方，风衣在暴风雪中翻飞，眼神威严凌厉",
+    "mood": "威严霸气",
+    "lighting": "暴风雪阴霾下的佩剑炽烈火光与剑刃反光",
+    "timeOfDay": "白天",
+    "camera": "cowboy shot, low angle",
+    "outfitId": "standard",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "snowstorm",
+      "tundra",
+      "ruins",
+      "military_coat",
+      "flaming_sword",
+      "drawing_sword",
+      "dragon_horns",
+      "dragon_tail",
+      "fire",
+      "intense_gaze"
+    ],
+    "promptTokens": [
+      "snowy tundra",
+      "blizzard",
+      "ruined spire",
+      "standard officer coat",
+      "black trench coat flowing",
+      "drawing sword",
+      "greatsword ablaze with fire",
+      "draconic flames",
+      "dragon horns",
+      "dragon tail",
+      "long silver hair in wind",
+      "golden eyes glowing",
+      "stern regal expression",
+      "cowboy shot",
+      "low angle",
+      "dramatic fiery illumination",
+      "snow particles"
+    ],
+    "promptProse": "Standing atop a frozen parapet amid the howling tundra blizzard, she draws her blade enveloped in searing golden flames. Her black and white officer's coat whips in the gale as her dragon horns catch the fiery brilliance of her gaze.",
+    "animaCaption": "She draws her blazing sword against the raging blizzard, her golden eyes blazing with command.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "action"
+    ]
+  }
+}

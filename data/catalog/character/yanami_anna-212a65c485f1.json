@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yanami_anna",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:15:06.523905900+00:00",
   "data": {
     "id": "yanami_anna",
     "profile": {
@@ -155,6 +155,34 @@
             "stage": "第二卷 · 奔跑的烧盐",
             "evidence": {
               "title": "小学馆 / A-1 Pictures · 《败犬女主太多了！》官方网站",
+              "url": "https://makeine-anime.com/"
+            }
+          },
+          {
+            "id": "makeine-nukumizu-komari",
+            "source": "nukumizu_kazuhiko",
+            "target": "komari_chika",
+            "label": "文艺部同僚与温和守护",
+            "description": "温水帮助极度内向认生的小鞠逐渐融入部活并走出失恋阴霾，小鞠视温水为最信赖的同伴。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "文艺部日常与夏合宿",
+            "evidence": {
+              "title": "《败犬女主太多了！》官方网站",
+              "url": "https://makeine-anime.com/"
+            }
+          },
+          {
+            "id": "makeine-anna-komari",
+            "source": "yanami_anna",
+            "target": "komari_chika",
+            "label": "文艺部败犬姐妹",
+            "description": "杏菜以大大咧咧的随和性格经常照顾开导小鞠，两人是文艺部欢闹日常的伙伴。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "文艺部日常",
+            "evidence": {
+              "title": "《败犬女主太多了！》官方网站",
               "url": "https://makeine-anime.com/"
             }
           }

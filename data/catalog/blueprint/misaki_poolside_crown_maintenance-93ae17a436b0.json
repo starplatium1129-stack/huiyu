@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_poolside_crown_maintenance",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 404,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "躺椅上拉低墨镜打量你，湿发铺开星瞳狡黠",
     "adult": false,
@@ -17,7 +17,7 @@
       "summer",
       "beach"
     ],
-    "description": "【学园都市室内泳池·夏日】白金比基尼的女王蜂斜倚在池畔躺椅上，金色长发湿漉漉地铺开，雪白手套难得换成了裸手。她把王冠造型的墨镜往下一拉，星瞳越过镜框上缘打量你——「盯着我看的话，要收观光费哦♪ 现金……或者陪本小姐游十圈也可以。」",
+    "description": "白金比基尼的女王蜂斜倚在池畔躺椅上，金色长发湿漉漉地铺开，雪白手套难得换成了裸手。她把王冠造型的墨镜往下一拉，星瞳越过镜框上缘打量你——「盯着我看的话，要收观光费哦♪ 现金……或者陪本小姐游十圈也可以。」",
     "id": "misaki_poolside_crown_maintenance",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "池水折射的粼粼波光",

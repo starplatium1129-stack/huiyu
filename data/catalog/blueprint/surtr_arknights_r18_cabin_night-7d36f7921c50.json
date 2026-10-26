@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_cabin_night",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 522,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "半倚床沿，回眸相望",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate medium shot, front view",
     "category": "成人",
     "characterId": "surtr_arknights",
-    "description": "【史尔特尔 · 舱室夜色】深夜锁闭的私人舱室内，卸下战术装甲的史尔特尔半倚在床沿，黑衬衫与红衬外套半敞，雪白滑腻的肌肤因体内涌动的源石热流而泛着诱人的绯红。她回眸斜睨着你——「身体里很烫……魔剑的热度压不下去。博士，你的手很凉……靠近一点，替我降温。」",
+    "description": "深夜锁闭的私人舱室内，卸下战术装甲的史尔特尔半倚在床沿，黑衬衫与红衬外套半敞，雪白滑腻的肌肤因体内涌动的源石热流而泛着诱人的绯红。她回眸斜睨着你——「身体里很烫……魔剑的热度压不下去。博士，你的手很凉……靠近一点，替我降温。」",
     "id": "surtr_arknights_r18_cabin_night",
     "kreaStyleHint": "",
     "lighting": "warm candlelight and dim blue night light",

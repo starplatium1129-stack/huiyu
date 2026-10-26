@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc100",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 98,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She offers the wrapped gift in both hands, the sheet resting around her shoulders.",
     "auditRevision": "careful-batch10-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, red velvet lingerie, white scalloped trim, small gold bow, sheet around shoulders, sitting on bed, gift box, shy smile, snowy window, christmas, morning, close up, <lora:ayachi_nene_v18_wd14:0.8>, holding gift, outstretched arms, window light, soft shadow",
     "rating": "R15",
     "season": "冬",
-    "story": "【成年 After Story · 圣诞早晨的拆礼物顺序】婚后圣诞清晨，成年的宁宁换上精心挑选的节日内衣，披着被单坐在床边等你醒来。她原本准备了从容的台词，却在你睁眼的瞬间全忘了，只能红着脸把礼物盒塞进你怀里——「先拆盒子里的礼物，不准跳过顺序……至于我准备的这一份，要等你认真说喜欢以后。」",
+    "story": "婚后圣诞清晨，成年的宁宁换上精心挑选的节日内衣，披着被单坐在床边等你醒来。她原本准备了从容的台词，却在你睁眼的瞬间全忘了，只能红着脸把礼物盒塞进你怀里——「先拆盒子里的礼物，不准跳过顺序……至于我准备的这一份，要等你认真说喜欢以后。」",
     "storyJa": "【寧々・大人のアフターストーリー・クリスマスの朝にプレゼントを開ける順番】結婚後のクリスマスの朝、大人の寧々は厳選したホリデー用の下着を身に着け、シーツを背負ってベッドのそばに座って、あなたが起きるのを待っています。彼女は穏やかなセリフを用意していましたが、あなたが目を開けた瞬間にそれをすべて忘れてしまい、顔を赤らめてギフトボックスをあなたの腕に詰め込むことしかできませんでした。――「まず箱の中のプレゼントから開けてください。順番を飛ばしたらだめですよ……私が用意したほうは、ちゃんと好きだと言ってくれてからです。」",
     "tags": [
       "hair_ribbon",

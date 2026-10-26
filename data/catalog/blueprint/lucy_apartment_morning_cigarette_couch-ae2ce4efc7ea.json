@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_apartment_morning_cigarette_couch",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1098,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "赤足抱膝蜷坐在旧皮沙发上抽烟，神情清冷疏离，烟圈在晨光中升腾",
     "camera": "medium shot, eye-level, intimate atmospheric realism",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【露西 · 安全屋清晨的抱膝浅思】杂乱而充满科技感的高层小公寓内，清晨惨淡的阳光透过带有雨痕的百叶窗在地板上划出道道光栅。露西身穿宽松的无袖背心和工装慢跑裤，赤足抱膝蜷缩在皮质沙发一角。烟灰缸里落着几根烟蒂，她微眯起眼睛凝视着升腾的淡蓝烟圈，整个人散发着猫一般的警惕与片刻安宁。",
+    "description": "杂乱而充满科技感的高层小公寓内，清晨惨淡的阳光透过带有雨痕的百叶窗在地板上划出道道光栅。露西身穿宽松的无袖背心和工装慢跑裤，赤足抱膝蜷缩在皮质沙发一角。烟灰缸里落着几根烟蒂，她微眯起眼睛凝视着升腾的淡蓝烟圈，整个人散发着猫一般的警惕与片刻安宁。",
     "id": "lucy_apartment_morning_cigarette_couch",
     "lighting": "百叶窗投射出的清冷水平光栅与屋内全息投影的幽蓝微光",
     "location": "高层公寓客厅百叶窗边皮沙发",

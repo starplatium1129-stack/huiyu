@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_hoori_town_summer_sundress_stroll",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1121,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单手压草帽回眸张望，吊带裙摆随风摇曳，脸上带着探索小镇的好奇神采",
     "camera": "cowboy shot, slight low angle, vibrant street depth",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "summer"
     ],
-    "description": "【丛雨 · 穗织温泉街的薄荷洋装漫步】温泉水汽袅袅的穗织古街石板路上，两旁是古色古香的和风旅馆与垂柳。丛雨换上一袭清凉的薄荷白吊带洋装，头戴系着红丝带的草帽。她轻快地单手压着草帽帽檐，另一只手在身边欢快摆动，好奇地打量着街边各式各样的小吃摊位，草绿色的长发在夏日微风中轻扬。",
+    "description": "温泉水汽袅袅的穗织古街石板路上，两旁是古色古香的和风旅馆与垂柳。丛雨换上一袭清凉的薄荷白吊带洋装，头戴系着红丝带的草帽。她轻快地单手压着草帽帽檐，另一只手在身边欢快摆动，好奇地打量着街边各式各样的小吃摊位，草绿色的长发在夏日微风中轻扬。",
     "id": "murasame_hoori_town_summer_sundress_stroll",
     "lighting": "明朗纯净的夏日山间阳光穿透柳树枝条的斑驳绿影",
     "location": "穗织镇温泉老街石板路",

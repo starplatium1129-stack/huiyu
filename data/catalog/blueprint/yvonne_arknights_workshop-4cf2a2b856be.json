@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_workshop",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 732,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "维修台前调试双枪",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【伊冯 · 废土工坊】终末地基地的维修车间里，伊冯咬着螺丝刀把刚修好的手枪转了个圈，粉色双马尾沾着机油，小角在射灯下反光——「本天才出品，保修十年，坏了大可来找我。」",
+    "description": "终末地基地的维修车间里，伊冯咬着螺丝刀把刚修好的手枪转了个圈，粉色双马尾沾着机油，小角在射灯下反光——「本天才出品，保修十年，坏了大可来找我。」",
     "id": "yvonne_arknights_workshop",
     "lighting": "车间射灯",
     "location": "终末地基地工坊",

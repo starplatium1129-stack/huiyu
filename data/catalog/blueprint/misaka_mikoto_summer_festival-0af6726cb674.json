@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_summer_festival",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 396,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "蹲在捞金鱼摊前",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【御坂美琴 · 夏日祭摊位】夏日祭典热闹非凡的街道旁，换上清爽浴衣的美琴蹲在捞金鱼的水槽前，手里的纸网已经破了好几个。她咬紧牙关不服输地再次拿起一个新纸网——「可恶……这只红色的金鱼动作太敏捷了！我就不信我堂堂第三位超能力者连一条金鱼都捞不上来！」",
+    "description": "夏日祭典热闹非凡的街道旁，换上清爽浴衣的美琴蹲在捞金鱼的水槽前，手里的纸网已经破了好几个。她咬紧牙关不服输地再次拿起一个新纸网——「可恶……这只红色的金鱼动作太敏捷了！我就不信我堂堂第三位超能力者连一条金鱼都捞不上来！」",
     "id": "misaka_mikoto_summer_festival",
     "lighting": "暖色灯笼光",
     "location": "夏日祭典",

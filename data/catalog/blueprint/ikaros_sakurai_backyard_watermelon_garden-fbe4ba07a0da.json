@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_sakurai_backyard_watermelon_garden",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1209,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "收拢羽翼蹲在菜畦边伸手指轻抚西瓜，白裙微拢，神情专注温柔，呆毛轻摆",
     "camera": "medium shot, crouching at eye level beside the garden bed",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【伊卡洛斯 · 樱井家菜园的西瓜私语】樱井智树家后院生机勃勃的西瓜菜畦旁，木篱笆缠绕着牵牛花。伊卡洛斯将巨大的羽翼轻轻收拢在背后，乖巧地双膝蹲在泥土垄边。她伸出一只纤细白嫩的手指，极其温柔专注地轻抚着瓜藤下一颗刚刚长大的小西瓜。头顶呆毛随着动作晃动，嘴角泛起极其罕见、比春风还要柔软的微弱微笑。",
+    "description": "樱井智树家后院生机勃勃的西瓜菜畦旁，木篱笆缠绕着牵牛花。伊卡洛斯将巨大的羽翼轻轻收拢在背后，乖巧地双膝蹲在泥土垄边。她伸出一只纤细白嫩的手指，极其温柔专注地轻抚着瓜藤下一颗刚刚长大的小西瓜。头顶呆毛随着动作晃动，嘴角泛起极其罕见、比春风还要柔软的微弱微笑。",
     "id": "ikaros_sakurai_backyard_watermelon_garden",
     "lighting": "透过树荫洒在西瓜叶片上的斑驳金黄日光与泥土暖色",
     "location": "樱井家后院绿色西瓜田与木栅栏边",

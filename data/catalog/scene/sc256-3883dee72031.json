@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc256",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 251,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "With cocoa before the viewer and a dry towel over the chair, she returns her hand to the ledger. The remaining counter lamp warms her face against the cooler rain-lit window.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, ledger, hot chocolate, cup on counter, towel on chair, slight blush, cafe counter, rainy window, night, warm lamp, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "冬",
-    "story": "【夏目 · 不必说明的照顾】Café Stella 打烊后，夏目把最后一盏吧台灯留了下来。你刚从雨里进门，她没有问太多，只是把一杯热可可推到你面前，又把干毛巾搭在椅背上。等你抬头时，她已经假装在整理账本——「……别误会。客人感冒会影响明天的营业效率。喝完再走。」",
+    "story": "Café Stella 打烊后，夏目把最后一盏吧台灯留了下来。你刚从雨里进门，她没有问太多，只是把一杯热可可推到你面前，又把干毛巾搭在椅背上。等你抬头时，她已经假装在整理账本——「……别误会。客人感冒会影响明天的营业效率。喝完再走。」",
     "storyJa": "【夏目・閉店後のホットココア】Café Stellaの閉店後、夏目はカウンターの灯りを一つだけ残していた。雨の中から入ってきたあなたへ、何も聞かずに温かいココアと乾いたタオルを差し出す。帳簿へ視線を落としたまま、彼女は小さく言った――「……勘違いしないで。風邪をひかれたら明日の営業に困るだけ。飲んでから帰って」",
     "tags": [
       "black_hair",

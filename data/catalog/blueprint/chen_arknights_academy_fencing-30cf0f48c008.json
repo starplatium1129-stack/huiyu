@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_academy_fencing",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 646,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "一手握细剑刺向前方，另一手抬在身后保持平衡，呈标准刺击预备姿势",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【陈 · 军校剑术课】维多利亚皇家近卫学院的旧击剑馆，晨光斜照木地板。学员时代的陈身着藏青礼服制服，手持细剑摆出标准刺击姿势，动作干净利落——「剑术的第一课不是出剑，是收剑。风笛，再来一次。」",
+    "description": "维多利亚皇家近卫学院的旧击剑馆，晨光斜照木地板。学员时代的陈身着藏青礼服制服，手持细剑摆出标准刺击姿势，动作干净利落——「剑术的第一课不是出剑，是收剑。风笛，再来一次。」",
     "id": "chen_arknights_academy_fencing",
     "lighting": "cool morning light through tall hall windows",
     "location": "维多利亚皇家近卫学院击剑馆",

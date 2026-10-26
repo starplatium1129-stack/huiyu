@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cheshire_azur",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "cheshire_azur",
     "profile": {
@@ -256,7 +256,7 @@
             "label": "病娇神乐与命运执念",
             "description": "视指挥官为生命中不可替代的唯一神明，为了扫除阻碍不惜涉险追寻神石与塞壬禁忌技术，将偏执狂烈的爱意化作庇护指挥官的灼灼红莲。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "重樱主线天宇启户祭 / 苍红的回响",
             "evidence": {
               "title": "碧蓝航线主线剧情 · 苍红的回响与重樱神木",

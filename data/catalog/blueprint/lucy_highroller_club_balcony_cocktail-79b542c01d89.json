@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_highroller_club_balcony_cocktail",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1102,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "手执荧光鸡尾酒杯靠在琉璃吧台旁，高开叉长裙展现修长美腿，眼神敏锐侦查",
     "camera": "cowboy shot, eye level, bar and executives beyond the water curtain visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "stealth"
     ],
-    "description": "【露西 · 云顶俱乐部的幻彩鸡尾酒】夜之城顶级云顶俱乐部顶层空中花园，水幕与全息锦鲤在身边穿梭。露西身穿闪烁着幻彩偏光的银灰高开叉吊带晚礼服，指尖捏着一杯冒着荧光烟雾的马天尼。她假装漫不经心地倚在吧台边观察着荒坂高层的动向，优雅高贵却暗藏致命杀机。",
+    "description": "夜之城顶级云顶俱乐部顶层空中花园，水幕与全息锦鲤在身边穿梭。露西身穿闪烁着幻彩偏光的银灰高开叉吊带晚礼服，指尖捏着一杯冒着荧光烟雾的马天尼。她假装漫不经心地倚在吧台边观察着荒坂高层的动向，优雅高贵却暗藏致命杀机。",
     "id": "lucy_highroller_club_balcony_cocktail",
     "lighting": "水幕反射的荧光粉紫霓虹与奢华金箔吧台柔和光影",
     "location": "云顶高空奢华俱乐部露天水榭",

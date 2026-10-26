@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc170",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 167,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Seated on the library desk after closing, she braces both hands on its edge, skirt slightly lifted. Warm light catches her teary blush, her bare feet above the loafers on the floor.",
     "auditRevision": "careful-batch02-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "1girl, solo, ayachi_nene, ahoge, white shirt, unbuttoned shirt, navy pleated miniskirt, bare legs, sitting, library desk, skirt lift, hands on desk, heavy blush, teary eyes, bookshelf, night, warm lighting, depth of field, close up, very_long_hair, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R18",
     "season": "秋",
-    "story": "【成年 After Story · 宁宁 · 图书馆隐秘限制级】深夜彻底闭馆后的大学图书馆深处。两旁是高耸的胡桃木书架，空气中弥漫着旧书页与微热的荷尔蒙气息。宁宁被你温柔地抱上了宽大的木质阅览桌，她身上的制服衬衫已经被你完全解开，白皙的双腿无力地交叠垂下。她双手死死抓着桌沿，头顶的呆毛因为极度动情而完全瘫软成了一个剧烈颤抖的心形螺旋，满脸泪痕与红晕交织，微张着小嘴溢出温热的娇喘——「呜...柊史...在图书馆这种地方...万一保安走过来...宁宁真的要羞死了啦...」",
+    "story": "深夜彻底闭馆后的大学图书馆深处。两旁是高耸的胡桃木书架，空气中弥漫着旧书页与微热的荷尔蒙气息。宁宁被你温柔地抱上了宽大的木质阅览桌，她身上的制服衬衫已经被你完全解开，白皙的双腿无力地交叠垂下。她双手死死抓着桌沿，头顶的呆毛因为极度动情而完全瘫软成了一个剧烈颤抖的心形螺旋，满脸泪痕与红晕交织，微张着小嘴溢出温热的娇喘——「呜...柊史...在图书馆这种地方...万一保安走过来...宁宁真的要羞死了啦...」",
     "storyJa": "【寧々・大人のアフターストーリー · ·図書館の秘密評価済み】深夜完全閉館後の大学図書館の奥深く。両側にはクルミ材の本棚がそびえ立ち、古いページと温かいホルモンの匂いが空気に満ちています。寧々はあなたによって大きな木製の読書テーブルにそっと運ばれました。彼女の制服のシャツのボタンはあなたに完全に外され、白い足はたたまれて力なく垂れ下がっていました。彼女はテーブルの端を両手で握り、頭上のアホ毛は極度の感情で激しく震えるハート型の螺旋を描き完全に崩壊した。彼女の顔は涙と赤面で覆われ、口はわずかに開いて温かいあえぎ声を上げていました。――「柊史……ここ、図書館ですよ。警備員さんが来たら、寧々は恥ずかしくて顔を上げられません……。」",
     "tags": [
       "hair_ribbon",

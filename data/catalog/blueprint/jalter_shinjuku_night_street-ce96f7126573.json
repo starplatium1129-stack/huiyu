@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "jalter_shinjuku_night_street",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 170,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "jalter_shinjuku_night_street",
     "characterId": "jeanne_alter",
     "title": "贞德[Alter] · 新宿雨夜·霓虹街角与傲娇侧影",
-    "description": "【贞德[Alter] · 新宿雨夜·霓虹街角与傲娇侧影】被淅沥冷雨浇湿的新宿街头，闪烁的霓虹灯倒映在积水之中。换上帅气黑色皮夹克与短裙的黑贞单手插兜倚靠在墙角，金色眼眸斜睨着你，别扭地轻哼一声——「别自作多情了！我只是顺路经过这里而已……喂，你那把伞太小了，还不快点靠过来一点！」",
+    "description": "被淅沥冷雨浇湿的新宿街头，闪烁的霓虹灯倒映在积水之中。换上帅气黑色皮夹克与短裙的黑贞单手插兜倚靠在墙角，金色眼眸斜睨着你，别扭地轻哼一声——「别自作多情了！我只是顺路经过这里而已……喂，你那把伞太小了，还不快点靠过来一点！」",
     "outfitId": "shinjuku_jacket_skirt",
     "sceneTags": [
       "shinjuku_corner",

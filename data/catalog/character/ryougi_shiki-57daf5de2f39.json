@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ryougi_shiki",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "ryougi_shiki",
     "profile": {
@@ -168,7 +168,7 @@
             "label": "灵魂救赎与终身伴侣",
             "description": "黑桐干也如雪花般纯粹无暇的包容，将式从杀人冲动的黑暗深渊中救赎。两人跨越生死与残缺，最终结为夫妻并育有一女未那。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "空之境界 · 杀人考察（后） & 未来福音",
             "evidence": {
               "title": "空之境界 · 剧场版官方网站",
@@ -196,7 +196,7 @@
             "label": "痛觉绝杀与慈悲斩断",
             "description": "雨夜断桥决战，面对被凌辱暴走化作杀戮修罗的藤乃，式识破其身患腹膜炎将死的痛楚，以直死之魔眼斩断其病灶而非取其性命。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "空之境界 · 痛觉残留",
             "evidence": {
               "title": "空之境界 · 剧场版官方网站",
@@ -207,10 +207,10 @@
             "id": "ryougi_shiki-araya_souren-origin_battle",
             "source": "ryougi_shiki",
             "target": "araya_souren",
-            "label": "根源争夺与太极死斗",
+            "label": "根源争夺与信念对决",
             "description": "荒耶宗莲图谋夺取式连接根源的肉体开启真理，式在小川公寓的太极螺旋结界中重拾九字兼定，看破万物死线将其概念彻底粉碎。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "空之境界 · 矛盾螺旋",
             "evidence": {
               "title": "空之境界 · 剧场版官方网站",
@@ -238,7 +238,7 @@
             "label": "雨中温情与短暂庇护",
             "description": "在藤乃流离失所、精神近乎崩溃的杀戮之夜，干也给予了她不带任何审判的纯洁温柔与住所庇护，成为藤乃痛苦余生中唯一的微光。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "空之境界 · 痛觉残留",
             "evidence": {
               "title": "空之境界 · 剧场版官方网站",
@@ -280,7 +280,7 @@
             "label": "时钟塔同门与宿命决裂",
             "description": "同为伦敦时钟塔的异端求道者，橙子洞悉荒耶对抑止之轮与拯救人类的狂执妄念，在矛盾螺旋之战中以替身人偶破局协助式击溃荒耶。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "空之境界 · 矛盾螺旋",
             "evidence": {
               "title": "空之境界 · 剧场版官方网站",

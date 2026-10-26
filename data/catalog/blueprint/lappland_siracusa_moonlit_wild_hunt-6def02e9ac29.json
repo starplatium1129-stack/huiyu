@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_moonlit_wild_hunt",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 670,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "手持苍蓝电弧双刃凌空跃起斩击，白狼尾狂甩，狂气大笑露出尖牙",
     "camera": "wide shot, low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【拉普兰德 · 狂月下的双刃猎杀】叙拉古废墟古罗马圆形剧场遗址上，血色满月高悬。拉普兰德手握双刃逆风跃起，银白色的凌乱长发在月光下如狂狼鬃毛般狂舞，双刃上缠绕着苍蓝色的源石电弧，狂气的笑容与尖牙展露无遗——「哈哈哈哈！来吧，让我见识一下你们的挣扎！千万不要太快死掉啊！」",
+    "description": "叙拉古废墟古罗马圆形剧场遗址上，血色满月高悬。拉普兰德手握双刃逆风跃起，银白色的凌乱长发在月光下如狂狼鬃毛般狂舞，双刃上缠绕着苍蓝色的源石电弧，狂气的笑容与尖牙展露无遗——「哈哈哈哈！来吧，让我见识一下你们的挣扎！千万不要太快死掉啊！」",
     "id": "lappland_siracusa_moonlit_wild_hunt",
     "lighting": "血色残月冷光与双刃苍蓝源石雷电强光",
     "location": "叙拉古荒原古罗马斗兽场废墟",

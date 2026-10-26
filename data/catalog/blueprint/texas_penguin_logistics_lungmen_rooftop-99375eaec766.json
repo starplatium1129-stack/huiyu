@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_penguin_logistics_lungmen_rooftop",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 659,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "雨中伫立天台，一手扶刀柄，嘴叼巧克力棒，两柄光剑悬浮身后。",
     "camera": "wide shot, low angle, cinematic noir",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【德克萨斯 · 龙门天台雨夜信使】暴雨如注的龙门摩天大楼天台上，五彩斑斓的巨型霓虹灯在雨幕中泛起耀眼的晕光。德克萨斯身着企鹅物流风衣，嘴里叼着一根巧克力棒，单手扶在刀柄上迎风伫立，身后的两柄光能剑雨在雨滴击打下发出嗡鸣——「能天使，后方视野确认完毕。目标货车将在三十秒后进入包围圈……准备动手。」",
+    "description": "暴雨如注的龙门摩天大楼天台上，五彩斑斓的巨型霓虹灯在雨幕中泛起耀眼的晕光。德克萨斯身着企鹅物流风衣，嘴里叼着一根巧克力棒，单手扶在刀柄上迎风伫立，身后的两柄光能剑雨在雨滴击打下发出嗡鸣——「能天使，后方视野确认完毕。目标货车将在三十秒后进入包围圈……准备动手。」",
     "id": "texas_penguin_logistics_lungmen_rooftop",
     "lighting": "巨型全息霓虹灯倒影与雨水反光、剑雨金色微光",
     "location": "龙门商业区摩天大楼雨夜天台",

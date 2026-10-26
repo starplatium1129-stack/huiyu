@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_wall_patrol",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 978,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "垛口边俯瞰巡逻",
     "camera": "cowboy shot, standing atop a stone Wall rampart with wind in scarf",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【三笠 · 城墙巡逻】帕拉迪岛的高墙之上，三笠立于垛口边俯瞰墙内，棕色制服与绿披风在风中猎猎作响，红色围巾在颈间轻轻扬起——「城墙之内，就是我必须守住的答案。」",
+    "description": "帕拉迪岛的高墙之上，三笠立于垛口边俯瞰墙内，棕色制服与绿披风在风中猎猎作响，红色围巾在颈间轻轻扬起——「城墙之内，就是我必须守住的答案。」",
     "id": "mikasa_ackerman_wall_patrol",
     "lighting": "墙顶日光",
     "location": "帕拉迪岛城墙",

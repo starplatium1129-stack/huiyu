@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc060",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "In a medium two-shot under the bus-stop roof, Nene stands beside the companion who lent her the blazer. She pulls its fronts together at her chest and looks up at her companion with relief; rain-diffused light glances off her wet hair.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, 2people, ayachi_nene, nene_school_uniform, borrowed blazer, coat over shoulders, wet hair, holding clothes, bus stop, awning, rain, afternoon, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
-    "story": "【宁宁 · 暴雨里的校服外套】放学时暴雨突至，宁宁的制服外套被雨水打湿，冷得缩起肩膀。你赶来把自己的外套披到她身上，她先担心你会着凉，确认两个人能一起躲进屋檐后才松口气。雨声里，她攥住外套前襟——「谢谢你来找我。衣服湿掉没关系……只是刚才一个人站着的时候，有一点害怕。」",
+    "story": "放学时暴雨突至，宁宁的制服外套被雨水打湿，冷得缩起肩膀。你赶来把自己的外套披到她身上，她先担心你会着凉，确认两个人能一起躲进屋檐后才松口气。雨声里，她攥住外套前襟——「谢谢你来找我。衣服湿掉没关系……只是刚才一个人站着的时候，有一点害怕。」",
     "storyJa": "【寧々・大雨の中での学生服の上着】学校が終わる頃に激しい雨が降りました。寧々さんの制服の上着は雨で濡れ、寒さで肩を縮めた。あなたは急いで駆け寄り、彼女の体にコートを掛けました。最初はあなたが風邪をひくのではないかと心配していましたが、二人で軒下に隠れられるのを確認してからは安心しました。雨の音の中、彼女はコートの前を握りしめた――「探しに来てくれて、ありがとうございます。服が濡れたことは平気です……ただ、さっき一人で立っていたとき、少しだけ怖くて。」",
     "tags": [
       "hair_ribbon",

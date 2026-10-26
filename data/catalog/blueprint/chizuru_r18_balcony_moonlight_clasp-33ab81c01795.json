@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_r18_balcony_moonlight_clasp",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1882,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "chizuru_r18_balcony_moonlight_clasp",
     "characterId": "mizuhara_chizuru",
@@ -15,7 +15,7 @@
     "sampleRating": "R18",
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@hisasi",
-    "description": "【成年水原千鹤 · 落地窗边的依偎温存】露台落地窗帘半遮半掩的暗影中，千鹤的黑色露背晚礼服拉链滑落，整片如玉雕般的无瑕美背与雪白腰肢完全袒露。双手反撑在玻璃窗上，在爱人从身后的深情贴近下仰起修长脖颈，咬住下唇战栗娇啼——「窗外……能看到夜景……别在这里……唔……！」",
+    "description": "露台落地窗帘半遮半掩的暗影中，千鹤的黑色露背晚礼服拉链滑落，整片如玉雕般的无瑕美背与雪白腰肢完全袒露。双手反撑在玻璃窗上，在爱人从身后的深情贴近下仰起修长脖颈，咬住下唇战栗娇啼——「窗外……能看到夜景……别在这里……唔……！」",
     "action": "背靠落地窗玻璃，晚礼服半褪袒露美背，双手反撑窗台仰头娇吟",
     "location": "高层套房落地窗前暗处",
     "timeOfDay": "深夜",

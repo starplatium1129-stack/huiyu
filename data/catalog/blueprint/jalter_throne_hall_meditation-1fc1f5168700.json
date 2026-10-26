@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_throne_hall_meditation",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 181,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "jalter_throne_hall_meditation",
     "title": "贞德[Alter] · 王座厅沉思",
@@ -12,7 +12,7 @@
     "characterId": "jeanne_alter",
     "outfitId": "avenger_black_armor",
     "adult": false,
-    "description": "【贞德[Alter] · 王座厅沉思】空旷昏暗的王座厅内唯有两旁的火把在无声燃烧，黑贞孤身坐在高高台阶的扶手旁，指尖无聊地敲击着剑柄。察觉到你的脚步声，她眼底的戾气悄然散去——「这么晚了还不去睡觉……算了，反正我也睡不着。过来坐下，陪我说会儿话。」",
+    "description": "空旷昏暗的王座厅内唯有两旁的火把在无声燃烧，黑贞孤身坐在高高台阶的扶手旁，指尖无聊地敲击着剑柄。察觉到你的脚步声，她眼底的戾气悄然散去——「这么晚了还不去睡觉……算了，反正我也睡不着。过来坐下，陪我说会儿话。」",
     "location": "漆黑王座厅",
     "action": "坐在宽阔王座扶手上，一手稳住横在腿上的带鞘剑，另一手指尖轻叩剑柄",
     "timeOfDay": "night",

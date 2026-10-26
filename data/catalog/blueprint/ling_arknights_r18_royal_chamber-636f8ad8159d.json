@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_royal_chamber",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 655,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "斜倚锦被，一手举酒盏，另一手向画面外同伴招手，烟气绕过榻柱。",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【令 · 寝殿春宵】岁府寝殿内红烛高照，锦帐半垂。全裸的令斜倚在堆叠的锦被之间，蓝发如月光般铺满枕席，龙角在烛光下泛着温润的光。她慵懒地朝你招手，声音带着微醺的笑意——「春宵苦短，博士还在等什么呢？过来，与我对饮这最后一杯。」",
+    "description": "岁府寝殿内红烛高照，锦帐半垂。全裸的令斜倚在堆叠的锦被之间，蓝发如月光般铺满枕席，龙角在烛光下泛着温润的光。她慵懒地朝你招手，声音带着微醺的笑意——「春宵苦短，博士还在等什么呢？过来，与我对饮这最后一杯。」",
     "id": "ling_arknights_r18_royal_chamber",
     "kreaStyleHint": "",
     "lighting": "warm candlelight, flickering red candle glow, soft silk shadows",

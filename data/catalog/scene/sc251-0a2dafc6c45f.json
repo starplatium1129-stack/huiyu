@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc251",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 246,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She pauses with the open book held in both hands beside the balcony rail as a gust carries her long hair across the viewer's shoulder. Afternoon light catches her reddening ear, with the hanging laundry moving behind her.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, solo, shiki_natsume, white casual blouse, (standing directly beside an apartment balcony railing:1.7), (one open book held in both hands at chest height:1.75), windblown hair, hair crossing foreground, close eye contact, red ears, subtle blush, autumn afternoon sunlight, laundry, medium shot, two red hairclips, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "秋",
-    "story": "【夏目 · 风中的距离】秋日午后的公寓阳台，微风吹动着晾晒的衣物。夏目靠在栏杆边看书，乌黑的长发被风吹起，发梢轻轻拂过站在她身旁的你的脸颊。她似乎没有注意到这个亲密的距离，依旧专注地翻着书页。直到风再次吹起，她的整个发丝都缠绕在你的肩头，她才后知后觉地抬起头。四目相对的距离近得能感受到彼此的呼吸，她的耳根瞬间泛红，但依旧保持着那副冷淡的表情——「……别误会。是风的问题，不是我靠太近。而且……你也没躲开，大笨蛋。」",
+    "story": "秋日午后的公寓阳台，微风吹动着晾晒的衣物。夏目靠在栏杆边看书，乌黑的长发被风吹起，发梢轻轻拂过站在她身旁的你的脸颊。她似乎没有注意到这个亲密的距离，依旧专注地翻着书页。直到风再次吹起，她的整个发丝都缠绕在你的肩头，她才后知后觉地抬起头。四目相对的距离近得能感受到彼此的呼吸，她的耳根瞬间泛红，但依旧保持着那副冷淡的表情——「……别误会。是风的问题，不是我靠太近。而且……你也没躲开，大笨蛋。」",
     "storyJa": "【夏目・風にほどける髪】秋の午後のベランダ。読書中の夏目の黒髪が風に舞い、あなたの頬をかすめた。髪が肩に絡んで初めて、彼女は近すぎる距離に気づく。赤い耳を隠すように視線をそらし――「……風のせい。私が近づいたわけじゃないし、あなたも避けなかったでしょ」",
     "tags": [
       "black_hair",

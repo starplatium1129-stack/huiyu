@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_blade_spirit_awakening_shrine",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1119,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手背后微倾身从空中缓缓降下，青蓝鬼火环绕；将臣在下方握着发光断刀。",
     "camera": "full body, low angle, descending Murasame above Masaomi holding the broken sword",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【丛雨 · 神刀复苏的空中轻降】穗织镇古老朝武神社的神木古殿前，神刀丛雨丸的断刃在将臣手中发出璀璨辉光。丛雨宛如被晨曦拂开的轻雾，从半空悠然旋转轻降。她一头浅草绿的长发与鲜红长发带如波浪翻卷，头顶呆毛欢快抖动。几团幽蓝色的青空鬼火环绕周身，她双手背后微微倾身，傲娇元气地自报家门——「呼啊~睡了太久身子都僵了呢！唤醒我辈的人，就是汝吗？」",
+    "description": "穗织镇古老朝武神社的神木古殿前，神刀丛雨丸的断刃在将臣手中发出璀璨辉光。丛雨宛如被晨曦拂开的轻雾，从半空悠然旋转轻降。她一头浅草绿的长发与鲜红长发带如波浪翻卷，头顶呆毛欢快抖动。几团幽蓝色的青空鬼火环绕周身，她双手背后微微倾身，傲娇元气地自报家门——「呼啊~睡了太久身子都僵了呢！唤醒我辈的人，就是汝吗？」",
     "id": "murasame_blade_spirit_awakening_shrine",
     "lighting": "透过千年神木冠层洒落的金灿晨曦与身侧环绕的青蓝鬼火冷辉",
     "location": "朝武神社神木大殿中庭",

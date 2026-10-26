@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_r18_mirror_reflection_blush",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1769,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "haruna_r18_mirror_reflection_blush",
     "title": "西连寺春菜 · 落地穿衣镜前的侧影对视",
@@ -32,7 +32,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【西连寺春菜 · 落地穿衣镜前的侧影对视】黄昏的卧房角落，椭圆形落地镜前。春菜侧立在木地板上正整理衣着，镜子清晰映照出她轻挽耳发的身影。突然在镜中与站在门边的观众视线相撞，她像受惊的小鹿般僵在原地，整个人从耳垂红到脖颈。",
+    "description": "黄昏的卧房角落，椭圆形落地镜前。春菜侧立在木地板上正整理衣着，镜子清晰映照出她轻挽耳发的身影。突然在镜中与站在门边的观众视线相撞，她像受惊的小鹿般僵在原地，整个人从耳垂红到脖颈。",
     "promptTokens": [
       "bedroom",
       "full_length_mirror",

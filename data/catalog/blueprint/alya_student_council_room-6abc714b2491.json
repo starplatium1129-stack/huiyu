@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_student_council_room",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 774,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端着白瓷红茶杯坐在皮质沙发上，低头专注审阅文件",
     "camera": "medium shot, seated on a leather sofa reviewing documents with a teacup",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【艾莉 · 学生会室·午后对座红茶】安静雅致的学生会办公室里，阳光透过百叶窗在红木桌上划出明暗条纹。身兼副会长的艾莉端起白瓷茶杯轻抿红茶，神情认真而优雅——「今天的会议记录整理得还算及格。不过作为我的搭档，接下来的竞选准备可不能有丝毫松懈哦，政近同学。」",
+    "description": "安静雅致的学生会办公室里，阳光透过百叶窗在红木桌上划出明暗条纹。身兼副会长的艾莉端起白瓷茶杯轻抿红茶，神情认真而优雅——「今天的会议记录整理得还算及格。不过作为我的搭档，接下来的竞选准备可不能有丝毫松懈哦，政近同学。」",
     "id": "alya_student_council_room",
     "lighting": "soft natural window light, bright ambient illumination",
     "location": "征岭学园学生会办公室",

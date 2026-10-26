@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc030",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 28,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Holding the detached sensor, she touches her flushed cheek with her free hand and turns from the heartbeat monitor. Its cool light outlines her face against the dark room.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "safe, 1girl, shiki_natsume, white lab coat, black camisole, black thighhighs, sitting, sensor, touching cheek, monitor, waveform, laboratory, night, blue light, medium shot, @rella",
     "rating": "All",
     "season": "不限",
-    "story": "【成年跨界 AU · 夏目的迟滞校准】深夜私人研究室只亮着监测屏的冷光。成年的夏目坚持完成最后一轮压力测试，直到系统把她刻意压低的心率与真实情绪同时投上大屏。她沉默地摘下传感器，眼下泪痣旁已经泛红——「机器偶尔也会误判。你如果敢把刚才的数据保存下来……至少先让我确认加密等级。」",
+    "story": "深夜私人研究室只亮着监测屏的冷光。成年的夏目坚持完成最后一轮压力测试，直到系统把她刻意压低的心率与真实情绪同时投上大屏。她沉默地摘下传感器，眼下泪痣旁已经泛红——「机器偶尔也会误判。你如果敢把刚才的数据保存下来……至少先让我确认加密等级。」",
     "storyJa": "【夏目・大人のクロスオーバーAUのヒステリシス校正・】深夜、個室研究室は監視画面の冷たい光だけが照らしていた。大人の夏目さんは、システムが意図的に低い心拍数と本当の感情を同時に大画面に映し出すまで、ストレステストの最後のラウンドを完了することを主張しました。彼女が黙ってセンサーを外すと、泣きぼくろはすでに赤くなっていた。――「機械だって、たまには判定を間違えるものよ。さっきのデータを保存するつもりなら……せめて先に、暗号化の強度を確認させて。」",
     "tags": [
       "blushing",

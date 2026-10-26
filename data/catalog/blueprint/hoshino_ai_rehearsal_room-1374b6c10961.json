@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_rehearsal_room",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 949,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "镜前反复彩排",
     "camera": "full-body shot, three-quarter rear view",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【星野爱 · 彩排室镜前】彩排室的落地镜前，星野爱一遍遍校准舞步与微笑的弧度，紫色侧发垂落，镜中的偶像连呼吸都掐着节拍——「舞台上的每一秒，都是这样练出来的哦。」",
+    "description": "彩排室的落地镜前，星野爱一遍遍校准舞步与微笑的弧度，紫色侧发垂落，镜中的偶像连呼吸都掐着节拍——「舞台上的每一秒，都是这样练出来的哦。」",
     "id": "hoshino_ai_rehearsal_room",
     "lighting": "窗光与镜面反光",
     "location": "偶像彩排室",

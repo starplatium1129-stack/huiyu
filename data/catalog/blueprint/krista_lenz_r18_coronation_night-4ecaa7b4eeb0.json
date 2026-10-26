@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_coronation_night",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 999,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "王宫阳光长廊微扶王冠展露露背白裙",
     "adult": true,
@@ -13,7 +13,7 @@
     "category": "成人",
     "characterId": "krista_lenz",
     "coverageTags": [],
-    "description": "【希斯特里亚 · 王宫阳光长廊白裙回眸】阳光穿透王宫高大白理石拱廊，希斯特里亚身着挂脖露背纯白王女礼服，微扶王冠回眸微笑，明媚天光将她娇小纤细的玉背、迷人侧乳与娇柔胸线勾勒得分外圣洁动人。",
+    "description": "阳光穿透王宫高大白理石拱廊，希斯特里亚身着挂脖露背纯白王女礼服，微扶王冠回眸微笑，明媚天光将她娇小纤细的玉背、迷人侧乳与娇柔胸线勾勒得分外圣洁动人。",
     "id": "krista_lenz_r18_coronation_night",
     "kreaStyleHint": "",
     "lighting": "宽幅拱廊透入的明亮纯净阳光与室内通透漫射光",

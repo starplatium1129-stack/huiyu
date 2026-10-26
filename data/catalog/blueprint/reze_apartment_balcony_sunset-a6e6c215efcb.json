@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_apartment_balcony_sunset",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 430,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "reze_apartment_balcony_sunset",
     "title": "蕾塞 · 公寓阳台黄昏",
@@ -12,7 +12,7 @@
     "characterId": "reze_chainsaw",
     "outfitId": "oversized_jacket_casual",
     "adult": false,
-    "description": "【蕾塞 · 公寓阳台黄昏】落日余晖洒满单身公寓的破旧小阳台，晾衣绳上的白色衬衫在晚风中轻轻摇曳。蕾塞双臂交叠倚靠在铁栏杆上，望着远处逐渐亮起的城市灯火，神情恬静——「每天看着太阳落山，就觉得今天又安安稳稳地度过了呢。真希望这样的日子能一直持续下去。」",
+    "description": "落日余晖洒满单身公寓的破旧小阳台，晾衣绳上的白色衬衫在晚风中轻轻摇曳。蕾塞双臂交叠倚靠在铁栏杆上，望着远处逐渐亮起的城市灯火，神情恬静——「每天看着太阳落山，就觉得今天又安安稳稳地度过了呢。真希望这样的日子能一直持续下去。」",
     "location": "破旧公寓阳台",
     "action": "靠在阳台栏杆上，晾衣绳随风轻摆",
     "timeOfDay": "sunset",

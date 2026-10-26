@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc097",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 95,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "One hand at her swimsuit strap, she gives the viewer a restrained warning glance; seaside daylight catches her windblown hair against the water.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, black bikini, adjusting strap, standing, looking at viewer, blush, windblown hair, beach, summer, afternoon, full body, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "夏",
-    "story": "【夏目 · 沙滩上的黑色泳装】盛夏海滩，夏目穿着简洁的黑色泳装调整肩带，察觉你的视线后先用目光警告，随后又站直让你看清整体。海风吹起黑色长发，她眼下泪痣旁微微泛红——「提前说好，不接受夸张评价。……如果只是觉得合适，就正常地说出来。」",
+    "story": "盛夏海滩，夏目穿着简洁的黑色泳装调整肩带，察觉你的视线后先用目光警告，随后又站直让你看清整体。海风吹起黑色长发，她眼下泪痣旁微微泛红——「提前说好，不接受夸张评价。……如果只是觉得合适，就正常地说出来。」",
     "storyJa": "【夏目・ビーチでの黒い水着】真夏のビーチで、夏目はシンプルな黒の水着を着て、肩紐を調整していました。あなたの視線に気づいた彼は、まず目で警告し、それから全体をはっきりと見えるように背筋を伸ばして立ち上がった。海風が彼女の長い黒髪をなびかせ、瞳はほんのり赤く染まっていた。――「先に言っておくけど、大げさな感想はいらない。……似合うと思っただけなら、普通にそう言って。」",
     "tags": [
       "mole_under_eye",

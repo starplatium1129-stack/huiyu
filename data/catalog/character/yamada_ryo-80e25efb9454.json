@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yamada_ryo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 177,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-26T03:15:06.523905900+00:00",
   "data": {
     "id": "yamada_ryo",
     "profile": {
@@ -215,6 +215,34 @@
             "stage": "共通线 · 乐队初创",
             "evidence": {
               "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "bocchi-nijika-seika",
+            "source": "ijichi_nijika",
+            "target": "ijichi_seika",
+            "label": "相依为命的傲娇姐姐",
+            "description": "在母亲早逝后独自支撑Livehouse并照顾虹夏长大的亲姐姐，表面严厉冷淡实则极度关爱妹妹。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常Livehouse",
+            "evidence": {
+              "title": "《孤独摇滚！》动画官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "bocchi-hitori-seika",
+            "source": "gotoh_hitori",
+            "target": "ijichi_seika",
+            "label": "暗中赏识的伯乐店长",
+            "description": "最早从一里的吉他弹奏中听出“吉他英雄”本色并默默给予舞台考验与成长机会的冷面伯乐。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "STARRY首演审查",
+            "evidence": {
+              "title": "《孤独摇滚！》动画官方网站",
               "url": "https://bocchi.rocks/"
             }
           }

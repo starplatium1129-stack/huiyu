@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuonji_alice",
-  "revision": 3,
+  "revision": 6,
   "sortOrder": 139,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "kuonji_alice",
     "profile": {
@@ -44,8 +44,8 @@
         "安静的西洋乐"
       ],
       "classic_cg": {
-        "title": "童话游乐园的午夜降诞",
-        "description": "大雪纷飞的荒废游乐园镜之森中，黑衣的有珠宛若伫立于童话尽头的漆黑孤鸟。她指尖轻吟着残酷的鹅妈妈童谣，身后庞大的蓝鸟与迷雾怪物轰然撕裂夜幕，以纯粹冰冷的神秘碾压入侵现世的凡愚。"
+        "title": "古宅长窗下的月下魔女",
+        "description": "月光穿过久远寺古宅高耸的哥特式长窗，身穿纯黑长裙的短发少女静静漂浮在半空之中，指尖轻点，古老童话的魔术幻象在夜色中徐徐展开，神态清冷沉静，宛若时间静止。"
       },
       "identity": {
         "role": "久远寺邸的真正主人 / 隐世的纯血正统魔女",
@@ -168,7 +168,7 @@
             "label": "洋馆袭杀与使魔鏖战",
             "description": "橙子突袭久远寺洋馆企图夺取灵脉与使魔，有珠释放传家秘宝大桥之巨人和大厅茶会拼至重伤濒死，誓死捍卫洋馆的神秘尊严。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "魔法使之夜 · 洋馆袭击战",
             "evidence": {
               "title": "TYPE-MOON · 魔法使之夜官方网站",
@@ -182,7 +182,7 @@
             "label": "契约同盟与灵魂锚点",
             "description": "青子给目击者草十郎戴上致命项圈限制自由，但在废弃游乐园与雪山决战中草十郎舍命阻击狼人，成为青子觉醒第五魔法后维系人性的永恒锚点。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "魔法使之夜 · 雪山决战",
             "evidence": {
               "title": "TYPE-MOON · 魔法使之夜官方网站",
@@ -196,7 +196,7 @@
             "label": "同胞姊妹与魔法争夺",
             "description": "因祖父突然将苍崎家第五魔法继承权托付给毫无魔术基础的妹妹青子，橙子愤而出走并在数年后杀回三咲市决战，最终被青子的魔法之青击溃放逐。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "魔法使之夜 · 最终决战",
             "evidence": {
               "title": "TYPE-MOON · 魔法使之夜官方网站",
@@ -210,7 +210,7 @@
             "label": "徒手重击与破格一击",
             "description": "雪夜林中决战，凡人少年草十郎以在深山练就的极致徒手暗杀体术，出其不意击碎黄金狼人的心窝，颠覆了神秘唯有神秘能破的铁律。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "魔法使之夜 · 雪山决战",
             "evidence": {
               "title": "TYPE-MOON · 魔法使之夜官方网站",
@@ -235,10 +235,10 @@
             "id": "aozaki_aoko-lugh_beowulf-snowfield_duel",
             "source": "aozaki_aoko",
             "target": "lugh_beowulf",
-            "label": "激战死斗",
+            "label": "风雪激战",
             "description": "雪原之上青子凭借高速魔弹与第五魔法的奇迹时间跳跃，正面击破了黄金狼人号称三千年不败的神代不死之躯。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "魔法使之夜 · 终局决战",
             "evidence": {
               "title": "TYPE-MOON · 魔法使之夜官方网站",

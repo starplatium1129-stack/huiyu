@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_armor_off",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 208,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -13,7 +13,7 @@
     "title": "玛修 · 训练室木长凳卸甲休整",
     "category": "成人",
     "characterId": "mash_kyrielight",
-    "description": "【玛修 · 训练室木长凳卸甲休整】明亮训练室更衣区的木长凳上，玛修卸下沉重战甲并拉开紧身作战内衣拉链，健美丰腴的体态、平坦小腹、修长美腿与饱满双峰展露无遗，擦拭微汗回眸浅笑。",
+    "description": "明亮训练室更衣区的木长凳上，玛修卸下沉重战甲并拉开紧身作战内衣拉链，健美丰腴的体态、平坦小腹、修长美腿与饱满双峰展露无遗，擦拭微汗回眸浅笑。",
     "location": "明亮更衣室",
     "action": "训练室长凳上拉开紧身内衣拉链",
     "timeOfDay": "白天",

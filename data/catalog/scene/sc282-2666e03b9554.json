@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc282",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 277,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "sc282",
     "title": "黑蕾丝滑落后的静默",
@@ -37,7 +37,7 @@
       "展示图",
       "成人向"
     ],
-    "story": "【成年 After Story】黑色蕾丝滑落后，夏目仍把双手交叠在胸前。她努力维持平静：「不要移开视线……是我自己决定留在这里的。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "story": "黑色蕾丝滑落后，夏目仍把双手交叠在胸前。她努力维持平静：「不要移开视线……是我自己决定留在这里的。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "prompt": "natsume_r18, adult, visual novel event CG, dutch angle, from above, 1girl, solo, hair spread out, topless, nipples, black lace panties, black garter belt, garter straps, black thighhighs, lying, on back, clasped hands, shy, looking at viewer, dark blue bedding, dim cool lighting, bedroom, <lora:shiki_natsume_v18_wd14:0.85>, very long hair",
     "negative": "bra, standing, sitting, warm orange bedding",

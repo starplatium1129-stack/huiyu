@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_r18_cabin_hearth",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 988,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "木屋阳光窗台边解衣倚坐回眸凝视",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【三笠 · 森林木屋阳光窗台红围巾】宁静木屋的晨光窗台旁，三笠红色围巾松散地挂在颈间，薄衫已褪下，瓷白平坦的小腹、优美纤细的腰线与挺拔饱满的胸型在充沛阳光下极具美感，眼眸流淌着独属于你的温柔。",
+    "description": "宁静木屋的晨光窗台旁，三笠红色围巾松散地挂在颈间，薄衫已褪下，瓷白平坦的小腹、优美纤细的腰线与挺拔饱满的胸型在充沛阳光下极具美感，眼眸流淌着独属于你的温柔。",
     "id": "mikasa_ackerman_r18_cabin_hearth",
     "kreaStyleHint": "",
     "lighting": "morning window light as the key, low hearth glow as warm cabin fill",

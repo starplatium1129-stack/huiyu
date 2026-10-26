@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_canteen_lunch",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 580,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端着餐盘，银发扎起",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【泥岩 · 食堂打饭】中午热闹的罗德岛食堂窗口前，卸下装甲的银发少女扎着利落的马尾辫，端着盛满高热量炖土豆与烤香肠的巨大餐盘在餐桌间寻找空位。看到你招手，她红着脸快步走来——「博士！今天的炖土豆分量很足……如果博士吃不饱的话，我的这份可以分给你一半。」",
+    "description": "中午热闹的罗德岛食堂窗口前，卸下装甲的银发少女扎着利落的马尾辫，端着盛满高热量炖土豆与烤香肠的巨大餐盘在餐桌间寻找空位。看到你招手，她红着脸快步走来——「博士！今天的炖土豆分量很足……如果博士吃不饱的话，我的这份可以分给你一半。」",
     "id": "mudrock_arknights_canteen_lunch",
     "lighting": "bright cafeteria light",
     "location": "罗德岛食堂",

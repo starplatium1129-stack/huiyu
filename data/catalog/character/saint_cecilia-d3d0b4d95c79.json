@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saint_cecilia",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "saint_cecilia",
     "profile": {
@@ -162,7 +162,7 @@
             "label": "守护誓约与迟来的心动",
             "description": "无论塞西莉亚多么任性懒散都无条件包容照顾其三餐与起居，在历经小镇危机后，劳伦斯终于察觉到自己绝不想将塞西莉亚让给任何人的独占心。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线推进 · 城镇暴风雨事件",
             "evidence": {
               "title": "讲谈社 · 《白圣女与黑牧师》官方动画主页",
@@ -180,6 +180,34 @@
             "stage": "神职人员日常",
             "evidence": {
               "title": "讲谈社 · 《白圣女与黑牧师》官方动画主页",
+              "url": "https://shiroseijo-anime.com/"
+            }
+          },
+          {
+            "id": "shiroseijo-cecilia-hazelita",
+            "source": "saint_cecilia",
+            "target": "hazelita",
+            "label": "喜爱甜点的贴心闺蜜",
+            "description": "迷妹般崇拜塞西莉亚，经常给塞西莉亚投喂各种美味点心，分享少女心事。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "教会小镇生活",
+            "evidence": {
+              "title": "《白圣女与黑牧师》官方网站",
+              "url": "https://shiroseijo-anime.com/"
+            }
+          },
+          {
+            "id": "shiroseijo-lawrence-hazelita",
+            "source": "lawrence",
+            "target": "hazelita",
+            "label": "寄宿客人与恋爱助攻",
+            "description": "在教会长住的贵族千金，敏锐看穿劳伦斯与圣女之间双向奔赴的迟钝爱意，暗中促成助攻。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "教会日常生活",
+            "evidence": {
+              "title": "《白圣女与黑牧师》官方网站",
               "url": "https://shiroseijo-anime.com/"
             }
           }

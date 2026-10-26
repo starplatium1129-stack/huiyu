@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_cafe_contrast",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 848,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "小口品尝草莓芭菲，并用勺子把最甜的草莓递给你；背部的小翅膀开心拍打",
     "adult": false,
@@ -17,7 +17,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【空崎日奈 · 甜品店里的反差萌】谁也想不到，令不良学生闻风丧胆的风纪委员长私底下其实超喜欢甜食。在隐蔽的咖啡店角落，日奈坐在你对面，小口品尝着草莓芭菲，背部的小翅膀开心地微微拍打——「……老师，这可是绝对机密，绝对不准告诉风纪委员会的其他人哦！作为封口费……分你一颗最甜的草莓。」",
+    "description": "谁也想不到，令不良学生闻风丧胆的风纪委员长私底下其实超喜欢甜食。在隐蔽的咖啡店角落，日奈坐在你对面，小口品尝着草莓芭菲，背部的小翅膀开心地微微拍打——「……老师，这可是绝对机密，绝对不准告诉风纪委员会的其他人哦！作为封口费……分你一颗最甜的草莓。」",
     "id": "sorasaki_hina_cafe_contrast",
     "kreaStyleHint": "",
     "lighting": "咖啡店暖光",
@@ -54,7 +54,7 @@
       "two_shot"
     ],
     "timeOfDay": "午后",
-    "title": "空崎日奈 · 甜品店里的反差萌",
+    "title": "空崎日奈 · 甜品店里的私语",
     "animaCaption": "She offers the selected strawberry on a spoon toward her companion across the cafe table."
   }
 }

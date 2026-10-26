@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_bath_towels",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 543,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "裹着浴巾擦拭墨绿湿发",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "cowboy shot",
     "category": "成人",
     "characterId": "chen_arknights",
-    "description": "【陈 · 浴后】浴室的大理石镜前弥漫着温热白汽，裹着大浴巾的陈正用毛巾轻轻擦拭着湿漉漉的墨绿秀发。水珠沿着饱满的胸部与紧致修长的大腿滑落，她转过脸娇嗔地瞪了你一眼——「敲门之后不马上说话……看傻了吗？还不快点拿吹风机过来帮我吹头发。」",
+    "description": "浴室的大理石镜前弥漫着温热白汽，裹着大浴巾的陈正用毛巾轻轻擦拭着湿漉漉的墨绿秀发。水珠沿着饱满的胸部与紧致修长的大腿滑落，她转过脸娇嗔地瞪了你一眼——「敲门之后不马上说话……看傻了吗？还不快点拿吹风机过来帮我吹头发。」",
     "id": "chen_arknights_r18_bath_towels",
     "kreaStyleHint": "",
     "lighting": "soft warm bathroom light",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_fan_signing",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 953,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "与粉丝握手交谈",
     "camera": "medium two-shot, eye level",
@@ -12,7 +12,7 @@
     "characterId": "hoshino_ai",
     "compositionIntent": "group",
     "coverageTags": [],
-    "description": "【星野爱 · 握手会】握手会会场里，星野爱隔着桌面握住粉丝的手，星形瞳孔亮得像两颗真正的星星，双色裙装在会馆灯光下泛着柔光——「谢谢你今天来见我……我最喜欢你了。」",
+    "description": "握手会会场里，星野爱隔着桌面握住粉丝的手，星形瞳孔亮得像两颗真正的星星，双色裙装在会馆灯光下泛着柔光——「谢谢你今天来见我……我最喜欢你了。」",
     "id": "hoshino_ai_fan_signing",
     "lighting": "会馆灯光",
     "location": "握手会会场",

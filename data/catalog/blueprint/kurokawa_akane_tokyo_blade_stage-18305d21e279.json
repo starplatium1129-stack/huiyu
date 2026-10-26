@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_tokyo_blade_stage",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 958,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "拔刀出鞘立于布景光中",
     "camera": "cowboy shot, drawing katana",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【黑川茜 · 东京之刃】《东京之刃》舞台剧的决胜幕，黑川茜身着和风刺客戏服以纱姬之姿拔刀出鞘，蓝紫长发扬起，双瞳点亮为璀璨的星形——「这一刀，我要让整座剧场都记住纱姬的名字。」",
+    "description": "《东京之刃》舞台剧的决胜幕，黑川茜身着和风刺客戏服以纱姬之姿拔刀出鞘，蓝紫长发扬起，双瞳点亮为璀璨的星形——「这一刀，我要让整座剧场都记住纱姬的名字。」",
     "id": "kurokawa_akane_tokyo_blade_stage",
     "lighting": "血色舞台光",
     "location": "剧场舞台",

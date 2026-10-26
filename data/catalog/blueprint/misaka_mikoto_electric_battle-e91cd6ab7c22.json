@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_electric_battle",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 393,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "指尖弹出硬币，电光贯穿夜空",
     "camera": "full body, from below",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【御坂美琴 · 电光战场】被刺目雷光彻底照亮的夜间高架桥上，狂暴的十亿伏特高压电流撕裂黑暗。美琴大拇指将一枚游戏机特制硬币高高弹向夜空，橙红色的超电磁炮光束贯穿虚空轰然爆发——「敢在我的面前伤害无辜的人……做好被电成焦炭的觉悟了吗？超电磁炮（Railgun）——！」",
+    "description": "被刺目雷光彻底照亮的夜间高架桥上，狂暴的十亿伏特高压电流撕裂黑暗。美琴大拇指将一枚游戏机特制硬币高高弹向夜空，橙红色的超电磁炮光束贯穿虚空轰然爆发——「敢在我的面前伤害无辜的人……做好被电成焦炭的觉悟了吗？超电磁炮（Railgun）——！」",
     "id": "misaka_mikoto_electric_battle",
     "lighting": "蓝白电光",
     "location": "学园都市受损高架桥",

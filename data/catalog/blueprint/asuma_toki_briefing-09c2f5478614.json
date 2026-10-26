@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_briefing",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 866,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "站在全息投影前听简报",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【飞鸟马时 · C&C任务简报】千年科学学园秘密基地内，C&C 04号特工时伫立在全息作战投影前，金发扎成利落的侧马尾，耳麦闪烁着微光。她冷静地向你敬礼汇报——「C&C 04号飞鸟马时，向主人汇报任务简报。本次作战无论目标是谁，时都会完美排除障碍……Peace Peace ✌️✌️。」",
+    "description": "千年科学学园秘密基地内，C&C 04号特工时伫立在全息作战投影前，金发扎成利落的侧马尾，耳麦闪烁着微光。她冷静地向你敬礼汇报——「C&C 04号飞鸟马时，向主人汇报任务简报。本次作战无论目标是谁，时都会完美排除障碍……Peace Peace ✌️✌️。」",
     "id": "asuma_toki_briefing",
     "kreaStyleHint": "",
     "lighting": "冷色全息光",

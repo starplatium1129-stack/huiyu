@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_rooftop_kiss",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 545,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "倚着落地窗，回眸凝视",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate medium shot",
     "category": "成人",
     "characterId": "chen_arknights",
-    "description": "【陈 · 深夜窗畔】落地窗外龙门都市的霓虹夜景如繁星铺展，衣衫半褪的陈被你轻轻按在冰凉的玻璃窗前。她呼吸急促，双颊滚烫地紧紧环住你的脖颈——「外面全都是灯火……要是被人看到就死定了……唔，吻我，不要让我分心……」",
+    "description": "落地窗外龙门都市的霓虹夜景如繁星铺展，衣衫半褪的陈被你轻轻按在冰凉的玻璃窗前。她呼吸急促，双颊滚烫地紧紧环住你的脖颈——「外面全都是灯火……要是被人看到就死定了……唔，吻我，不要让我分心……」",
     "id": "chen_arknights_r18_rooftop_kiss",
     "kreaStyleHint": "",
     "lighting": "city lights and moonlight",

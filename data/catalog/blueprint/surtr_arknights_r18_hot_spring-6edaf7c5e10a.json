@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_hot_spring",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 523,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "泡在温泉中仰头望雪",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate medium shot",
     "category": "成人",
     "characterId": "surtr_arknights",
-    "description": "【史尔特尔 · 北境温泉】北境山谷被白雪覆盖的露天天然温泉中，史尔特尔将整个人浸泡在滚烫的泉水里，仰头凝望着漫天落雪。湿透的红发散落于泉面，雪白饱满的胸脯在水汽中起伏——「这池热水的温度勉强能让我感到舒服……别站在岸上吹冷风了，下来和我一起泡。」",
+    "description": "北境山谷被白雪覆盖的露天天然温泉中，史尔特尔将整个人浸泡在滚烫的泉水里，仰头凝望着漫天落雪。湿透的红发散落于泉面，雪白饱满的胸脯在水汽中起伏——「这池热水的温度勉强能让我感到舒服……别站在岸上吹冷风了，下来和我一起泡。」",
     "id": "surtr_arknights_r18_hot_spring",
     "kreaStyleHint": "",
     "lighting": "steam and moonlight",

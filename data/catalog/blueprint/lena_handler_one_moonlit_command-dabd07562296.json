@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_handler_one_moonlit_command",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1351,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单手扶全息沙盘下达指令，指尖划过战线光点，颈侧耳机泛蓝光，银灰眼眸锐利坚定",
     "adult": false,
@@ -17,7 +17,7 @@
       "iconic",
       "signature"
     ],
-    "description": "【共和国防线地下指挥室·深夜】全息沙盘的幽蓝光束切开黑暗，身着蓝色共和国军装的蕾娜立于指挥桌前，军帽檐下的银白长发泛着冷冽光泽。她单手扶着全息投影边缘，颈侧的Para-RAID秘话耳机亮起微光，银灰色的双眸倒映着战线光点，果决地下达一道道指令——那是既是温柔又绝不容侵犯的指挥官威严。",
+    "description": "全息沙盘的幽蓝光束切开黑暗，身着蓝色共和国军装的蕾娜立于指挥桌前，军帽檐下的银白长发泛着冷冽光泽。她单手扶着全息投影边缘，颈侧的Para-RAID秘话耳机亮起微光，银灰色的双眸倒映着战线光点，果决地下达一道道指令——那是既是温柔又绝不容侵犯的指挥官威严。",
     "id": "lena_handler_one_moonlit_command",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "全息沙盘幽蓝光束自下而上勾勒军装轮廓与银发冷光",

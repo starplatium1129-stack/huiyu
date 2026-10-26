@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_fox_den_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 641,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "蜷成一团，尾巴盖在身上",
     "camera": "medium shot, curled tails and face visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【铃兰 · 窝里夜话】夜晚温馨的宿舍小床上，丽萨整个人像只可爱的小狐狸一样蜷缩成一团，九条蓬松厚实的大尾巴把身体团团包裹起来当做最温暖的被子。她露出小脑袋向你眨巴着大眼睛——「博士，九尾的毛皮超级暖和哦！今晚想听博士讲睡前故事再睡觉……」",
+    "description": "夜晚温馨的宿舍小床上，丽萨整个人像只可爱的小狐狸一样蜷缩成一团，九条蓬松厚实的大尾巴把身体团团包裹起来当做最温暖的被子。她露出小脑袋向你眨巴着大眼睛——「博士，九尾的毛皮超级暖和哦！今晚想听博士讲睡前故事再睡觉……」",
     "id": "suzuran_arknights_fox_den_night",
     "lighting": "dim warm lamp",
     "location": "罗德岛·铃兰宿舍",

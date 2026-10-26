@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_firing_range",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 868,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "外骨骼装甲举枪瞄准",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【飞鸟马时 · 外骨骼射击训练】地下实弹射击场内，时装备着高机动外骨骼装甲「Abi-Eshuh」稳稳端起突击步枪。枪口火光吞吐间十发全中靶心，金发从护目镜旁飘散。她稳稳托住枪身，视线仍沿着瞄具指向靶心——「所有目标均已彻底清除。主人的安全评级已上升至最高标准……呼呼，毫无破绽。」",
+    "description": "地下实弹射击场内，时装备着高机动外骨骼装甲「Abi-Eshuh」稳稳端起突击步枪。枪口火光吞吐间十发全中靶心，金发从护目镜旁飘散。她稳稳托住枪身，视线仍沿着瞄具指向靶心——「所有目标均已彻底清除。主人的安全评级已上升至最高标准……呼呼，毫无破绽。」",
     "id": "asuma_toki_firing_range",
     "kreaStyleHint": "",
     "lighting": "训练场冷光",

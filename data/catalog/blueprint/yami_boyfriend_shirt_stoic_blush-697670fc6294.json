@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_boyfriend_shirt_stoic_blush",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1771,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yami_boyfriend_shirt_stoic_blush",
     "title": "金色暗影 · 晨光窗台的白衬衫与微红面颊",
@@ -34,7 +34,7 @@
     "coverageTags": [
       "special_character_art"
     ],
-    "description": "【金色暗影 · 晨光窗台的白衬衫与微红面颊】清晨安静的客厅里，小暗双膝微蜷坐在宽阔的木质窗台上。宽大松垮的男士白衬衫被她紧紧护在胸前，露出一侧白皙精巧的肩头。身旁一缕金发化作拳头微微垂下，赤足踩在窗台软垫上，迎着晨光望向你，虽维持着冷淡神情，两颊却透出难以掩饰的淡粉红晕。",
+    "description": "清晨安静的客厅里，小暗双膝微蜷坐在宽阔的木质窗台上。宽大松垮的男士白衬衫被她紧紧护在胸前，露出一侧白皙精巧的肩头。身旁一缕金发化作拳头微微垂下，赤足踩在窗台软垫上，迎着晨光望向你，虽维持着冷淡神情，两颊却透出难以掩饰的淡粉红晕。",
     "promptTokens": [
       "living_room",
       "window_sill",

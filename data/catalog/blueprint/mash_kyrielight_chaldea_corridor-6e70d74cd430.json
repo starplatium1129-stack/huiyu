@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_chaldea_corridor",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 199,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [
       "tablet",
@@ -14,7 +14,7 @@
     "title": "玛修 · 迦勒底走廊",
     "category": "近未来",
     "characterId": "mash_kyrielight",
-    "description": "【玛修 · 迦勒底走廊】迦勒底明亮的走廊里，玛修抱着一叠文件快步走来，黑裙外搭着灰外套，红领结在灯光下一晃一晃，右眼被粉色刘海遮住却挡不住她的笑容——「前辈，今天的观测报告已经整理好了。」",
+    "description": "迦勒底明亮的走廊里，玛修抱着一叠文件快步走来，黑裙外搭着灰外套，红领结在灯光下一晃一晃，右眼被粉色刘海遮住却挡不住她的笑容——「前辈，今天的观测报告已经整理好了。」",
     "location": "迦勒底走廊",
     "action": "双臂抱稳纸质观测文件快步走来，戴着眼镜向同行者微笑",
     "timeOfDay": "白天",

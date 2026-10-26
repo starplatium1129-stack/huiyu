@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_gehenna_night_stealth_infiltration",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 928,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "在钢架阴影中单膝蹲伏潜伏，单手扶夜视镜，细长尾巴贴近钢梁",
     "camera": "cowboy shot, high angle, stealth atmosphere",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【银镜伊织 · 暗夜要塞潜行突防】深夜重工业基地的高空钢梁结构上，红色的警戒探照灯在下方冰冷的管道间来回扫过。伊织身穿紧贴身形的黑色战术潜行衣，单膝蹲伏在阴影之中，指尖轻触夜视单目光镜，细长尾巴贴近钢梁隐入夜色——「潜入成功，已绕过外部传感器。突击准备完毕，倒数三秒发起压制。」",
+    "description": "深夜重工业基地的高空钢梁结构上，红色的警戒探照灯在下方冰冷的管道间来回扫过。伊织身穿紧贴身形的黑色战术潜行衣，单膝蹲伏在阴影之中，指尖轻触夜视单目光镜，细长尾巴贴近钢梁隐入夜色——「潜入成功，已绕过外部传感器。突击准备完毕，倒数三秒发起压制。」",
     "id": "iori_gehenna_night_stealth_infiltration",
     "lighting": "冷色月光与下方红色探照灯交错硬光",
     "location": "要塞工厂高空重型钢架走廊",

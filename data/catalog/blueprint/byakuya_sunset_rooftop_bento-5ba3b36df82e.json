@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_sunset_rooftop_bento",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 824,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "夕阳下吃便当，清贫的平静",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【深森白夜 · 学校天台·夕阳便当与清贫侧影】放学后染满晚霞的学校天台铁丝网旁，生活清贫却格外坚韧的白夜静静坐在水泥阶梯上，慢慢吃着只有一个腌梅子和白米饭的单薄便当。看到你走过来，她有些窘迫却依然露出平静而温柔的浅笑——「虽然便当很简单……但吃饱了就有力气继续去打工和战斗了。」",
+    "description": "放学后染满晚霞的学校天台铁丝网旁，生活清贫却格外坚韧的白夜静静坐在水泥阶梯上，慢慢吃着只有一个腌梅子和白米饭的单薄便当。看到你走过来，她有些窘迫却依然露出平静而温柔的浅笑——「虽然便当很简单……但吃饱了就有力气继续去打工和战斗了。」",
     "id": "byakuya_sunset_rooftop_bento",
     "lighting": "golden_hour",
     "location": "学校天台",

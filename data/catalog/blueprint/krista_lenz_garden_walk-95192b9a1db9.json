@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_garden_walk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 991,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "花丛间散步闻花",
     "camera": "cowboy shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【希斯特里亚 · 王宫花园】王宫花园的午后，希斯特里亚脱下繁复的朝服换上浅色大衣，在花丛间慢慢踱步，金色长发披散下来，她弯腰轻嗅一朵白花——「这里的玫瑰，比墙外的野花要安静得多。」",
+    "description": "王宫花园的午后，希斯特里亚脱下繁复的朝服换上浅色大衣，在花丛间慢慢踱步，金色长发披散下来，她弯腰轻嗅一朵白花——「这里的玫瑰，比墙外的野花要安静得多。」",
     "id": "krista_lenz_garden_walk",
     "lighting": "花园柔光",
     "location": "王宫花园",

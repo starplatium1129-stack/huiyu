@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_summer_cabin",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 206,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -13,7 +13,7 @@
     "title": "玛修 · 露天温泉单薄浴巾微遮",
     "category": "成人",
     "characterId": "mash_kyrielight",
-    "description": "【玛修 · 露天温泉单薄浴巾微遮】阳光明媚的露天温泉池畔，玛修仅裹一条单薄白浴巾坐在木栈道石阶上，单眼微闭娇羞浅笑，水汽凝结的水珠沿着锁骨、丰满双峰与修长玉腿滑落，脸颊泛着诱人潮红。",
+    "description": "阳光明媚的露天温泉池畔，玛修仅裹一条单薄白浴巾坐在木栈道石阶上，单眼微闭娇羞浅笑，水汽凝结的水珠沿着锁骨、丰满双峰与修长玉腿滑落，脸颊泛着诱人潮红。",
     "location": "海岛晴日露天温泉",
     "action": "温泉池边石阶上裹单薄浴巾娇羞微笑",
     "timeOfDay": "白天",

@@ -41,9 +41,9 @@ const ICON_DEFS = {
 } satisfies Record<string, ArchiveIconDef>
 
 export type { ArchiveIconName } from './icons/types.ts'
-const props = defineProps<{ name: ArchiveIconName }>()
+const props = defineProps<{ name: ArchiveIconName; definition?: ArchiveIconDef }>()
 // 老存档中的图标名可能已失效；文字和操作仍应正常呈现。
-const def = computed(() => Object.hasOwn(ICON_DEFS, props.name) ? ICON_DEFS[props.name] : statusDefs.info)
+const def = computed(() => props.definition ?? (Object.hasOwn(ICON_DEFS, props.name) ? ICON_DEFS[props.name] : statusDefs.info))
 </script>
 
 

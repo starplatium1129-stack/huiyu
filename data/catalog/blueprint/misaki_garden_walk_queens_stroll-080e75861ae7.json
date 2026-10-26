@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_garden_walk_queens_stroll",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 403,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "挽臂走过蔷薇拱门，花瓣落肩，星瞳眯起得意",
     "adult": false,
@@ -18,7 +18,7 @@
       "date",
       "girlfriend"
     ],
-    "description": "【学园都市植物园·春】女王蜂挽着你的手臂走过花廊，白色草帽压住金色的长发，星瞳眯起像被阳光喂饱的猫。蔷薇拱门下一阵风过，花瓣落在她的肩头与手套上——「看到了吗？全体的花都为本小姐盛开呢……啊，当然，你也是本小姐的东西。」",
+    "description": "女王蜂挽着你的手臂走过花廊，白色草帽压住金色的长发，星瞳眯起像被阳光喂饱的猫。蔷薇拱门下一阵风过，花瓣落在她的肩头与手套上——「看到了吗？全体的花都为本小姐盛开呢……啊，当然，你也是本小姐的东西。」",
     "id": "misaki_garden_walk_queens_stroll",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "透过花廊的斑驳春光",

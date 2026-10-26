@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_rain_courtyard",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 570,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "倚着廊柱，看雨打芭蕉",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【夕 · 檐下听雨】烟雨蒙蒙的江南庭院回廊下，夕单手支颐倚靠在朱红雕花廊柱旁，静静注视着漫天细雨打在肥绿的芭蕉叶上，神情淡漠超然——「雨声最适合用来睡觉和发呆了……过来坐在我身边，借你的肩膀靠一会儿，不准推开我。」",
+    "description": "烟雨蒙蒙的江南庭院回廊下，夕单手支颐倚靠在朱红雕花廊柱旁，静静注视着漫天细雨打在肥绿的芭蕉叶上，神情淡漠超然——「雨声最适合用来睡觉和发呆了……过来坐在我身边，借你的肩膀靠一会儿，不准推开我。」",
     "id": "dusk_arknights_rain_courtyard",
     "lighting": "grey rain light",
     "location": "岁家庭院",

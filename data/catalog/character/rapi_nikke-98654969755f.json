@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rapi_nikke",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 172,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "rapi_nikke",
     "profile": {
@@ -35,13 +35,13 @@
         "signature": "黑色军帽、及腰深棕长发、赤红眼眸、突击步枪与经典妮姬战斗后背身姿"
       },
       "personality": [
-        "沉着内敛的铁血军官",
-        "将命令与纪律视为准绳的职业军人",
-        "对指挥官至死不渝的绝对忠诚",
-        "深藏内心的细腻温柔与独占欲",
-        "面对同伴牺牲时的极度隐忍",
-        "承载小红帽意志的坚毅觉悟",
-        "私下独处时罕见的羞涩与依赖"
+        "忠实坚定",
+        "冷静沉稳",
+        "遵从军纪",
+        "默默守护",
+        "心思细腻",
+        "重情重义",
+        "坚毅不屈"
       ],
       "likes": [
         "与指挥官并肩拟定战术行动方案",
@@ -253,7 +253,7 @@
             "label": "共生宿体与意志传承",
             "description": "初代传奇朝圣者小红帽的核心长年寄宿在拉毗体内，在绝境中唤醒神级战力；一周年战役二人心智交融坦诚释怀，小红帽将守护未来的意志彻底托付给拉毗后安然长眠。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "一周年特别篇 · RED ASH / 主线第24-26章",
             "evidence": {
               "title": "妮姬官方周年战役剧情 · 小红帽与拉毗共鸣记录",
@@ -267,7 +267,7 @@
             "label": "永恒执念与救赎归途",
             "description": "序章中因被侵蚀而遭指挥官痛心处决的初始天使，后被改造成异端儿神罚；指挥官跨越千难万险将其夺回并净化，成为神罚心智中至高无上的守护执念与情感坐标。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第7-14章 · 神罚夺回战",
             "evidence": {
               "title": "胜利女神：妮姬主线战役核心档案 · 玛丽安与神罚",
@@ -281,7 +281,7 @@
             "label": "初心战友与誓死夺回",
             "description": "亲历玛丽安的牺牲与异端儿重构，拉毗在面对神罚时始终保持克制与深藏的悲恸，在夺回玛丽安的心智守护战中充当最坚定的防线与温柔大姐姐。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第13-14章 · 极乐净土交锋",
             "evidence": {
               "title": "反击小队救赎档案 · 夺回玛丽安作战记录",
@@ -295,7 +295,7 @@
             "label": "利益同盟与救赎博弈",
             "description": "遭方舟背叛堕入复仇深渊的伊甸园统治者，虽将方舟指挥官视为清算罪业的棋子，却在长期的并肩作战与指挥官赤诚的善意中被屡屡触动冰封的心智。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第20-22章 · 伊甸园篇",
             "evidence": {
               "title": "朝圣者部队继承者领袖档案 · 桃乐丝",
@@ -309,7 +309,7 @@
             "label": "初代女神战友与失落荣光",
             "description": "昔日初代女神部队中彼此依托的生死战友，小红帽的坦荡粗粝与桃乐丝的高傲优雅曾是部队的欢喜冤家；小红帽的复苏揭开了百年背叛的伤疤，亦重新唤醒桃乐丝对纯真荣光的追忆。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "活动特别篇 · RED ASH / 主线第25-26章",
             "evidence": {
               "title": "女神部队百年战争史料 · 桃乐丝与小红帽",
@@ -320,10 +320,10 @@
             "id": "dorothy_nikke-cinderella_nikke-century_reconciliation",
             "source": "dorothy_nikke",
             "target": "cinderella_nikke",
-            "label": "百年宿敌与受害者的救赎",
+            "label": "方舟放逐与侵蚀创伤下的共鸣",
             "description": "灰姑娘曾遭侵蚀成为异端儿阿娜奇重创女神部队并与桃乐丝决死厮杀；百年后灰姑娘洗净侵蚀重获自我，两位背负截然不同悲惨宿命的英雄在废土之上达成庄重敬意。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "二周年特别篇 · OLD TALES / 最新主线篇章",
             "evidence": {
               "title": "二代童话型号朝圣者与女神部队历史交锋",
@@ -337,7 +337,7 @@
             "label": "水晶救赎与崇高誓言",
             "description": "从百年异端儿噩梦中苏醒后，灰姑娘被指挥官毫无偏见的包容与纯净信念彻底净化，视其为见证自身“至高之美与真正救赎”的唯一誓约者，誓以浮游水晶盾庇护其左右。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "二周年篇章 · OLD TALES",
             "evidence": {
               "title": "胜利女神官方二周年角色纪事 · 灰姑娘",

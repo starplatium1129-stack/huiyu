@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_candlelight_shadow_moth_arts",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 682,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "优雅侧身摆出古典细剑击剑架势，身后巨大影蛾金翼展开，剑尖凝聚星烛",
     "camera": "full body, three-quarter view",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【薇薇安娜 · 微光照彻长夜的剑芒】昏暗沉寂的战场中央，薇薇安娜摆出高雅古典的击剑架势。金色细剑的尖端凝聚起一团璀璨如星辰的烛光，巨大的影蛾光翼在她身后展开，将周围的阴影与黑暗尽数驱散——「即使微光渺小……我也绝不会背弃我的誓言。」",
+    "description": "昏暗沉寂的战场中央，薇薇安娜摆出高雅古典的击剑架势。金色细剑的尖端凝聚起一团璀璨如星辰的烛光，巨大的影蛾光翼在她身后展开，将周围的阴影与黑暗尽数驱散——「即使微光渺小……我也绝不会背弃我的誓言。」",
     "id": "viviana_candlelight_shadow_moth_arts",
     "lighting": "细剑尖端凝聚的耀眼星烛金光与身后影蛾光芒",
     "location": "泰拉暗夜荒原战场",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_shrine_veranda_tea_break",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1065,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端庄跪坐在缘侧捧茶碗啜饮，微风吹拂巫女大袖与狐耳，眼神沉静平和",
     "camera": "medium shot, eye level, serene composition",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【星见雅 · 神社回廊的静心抹茶】古老重樱神社的朱红木质缘侧上，初秋微风吹落数片金黄银杏。雅身穿宽袍大袖的传统雪白红裙巫女服，端庄地并拢双膝跪坐。她双手捧着细腻碧绿的茶碗细细啜饮，头顶的毛茸茸深色狐耳偶尔轻轻抖动捕捉风声，在喧嚣的都会生活之外觅得一方极致宁静的心境。",
+    "description": "古老重樱神社的朱红木质缘侧上，初秋微风吹落数片金黄银杏。雅身穿宽袍大袖的传统雪白红裙巫女服，端庄地并拢双膝跪坐。她双手捧着细腻碧绿的茶碗细细啜饮，头顶的毛茸茸深色狐耳偶尔轻轻抖动捕捉风声，在喧嚣的都会生活之外觅得一方极致宁静的心境。",
     "id": "miyabi_shrine_veranda_tea_break",
     "lighting": "庭院枫树间漏下的斑驳明澈晨光与朱红回廊反光",
     "location": "古老神社木质回廊庭院边",

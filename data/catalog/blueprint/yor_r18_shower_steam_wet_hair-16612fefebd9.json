@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_shower_steam_wet_hair",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 813,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yor_r18_shower_steam_wet_hair",
     "characterId": "yor_forger",
     "title": "约尔·福杰 · 浴室水汽中的荆棘玫瑰",
-    "description": "【约尔·福杰 · 浴室水汽中的荆棘玫瑰】夜晚的福杰家浴室蒸汽弥漫，约尔站在淋浴下，湿透的黑发贴着脊背，水珠沿着锁骨滚落。她回眸的瞬间，浴巾边缘露出了半截荆棘针——那是她藏了一整天的习惯。她慌忙把针藏进抽屉，红着脸若无其事——「……什么都没有哦。只是普通的沐浴时间而已。」",
+    "description": "夜晚的福杰家浴室蒸汽弥漫，约尔站在淋浴下，湿透的黑发贴着脊背，水珠沿着锁骨滚落。她回眸的瞬间，浴巾边缘露出了半截荆棘针——那是她藏了一整天的习惯。她慌忙把针藏进抽屉，红着脸若无其事——「……什么都没有哦。只是普通的沐浴时间而已。」",
     "outfitId": "nsfw_nude",
     "sceneTags": [
       "bathroom",

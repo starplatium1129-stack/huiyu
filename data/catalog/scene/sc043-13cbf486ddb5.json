@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc043",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 41,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She watches the viewer from behind rocks and steam, only her flushed face and upper shoulders above the water. Moonlight touches her wet hair while a bath lantern warms the steam.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, wet hair, bare shoulders, outdoor onsen, rocks, steam, snow, night, moonlight, lantern light, close up, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "冬",
-    "story": "【成年 After Story · 雪夜温泉的视线约定】旅行的露天温泉被雪夜围住，成年的宁宁躲在蒸汽与岩石后，只露出泛红的脸。你主动转开视线，她才慢慢放松，隔着水声挪到不远处。月光落在银白长发上，她小声提出规则——「可以陪我说话，但不准突然回头。等我准备好了……我会自己走到你看得见的地方。」",
+    "story": "旅行的露天温泉被雪夜围住，成年的宁宁躲在蒸汽与岩石后，只露出泛红的脸。你主动转开视线，她才慢慢放松，隔着水声挪到不远处。月光落在银白长发上，她小声提出规则——「可以陪我说话，但不准突然回头。等我准备好了……我会自己走到你看得见的地方。」",
     "storyJa": "【寧々・大人のアフターストーリー・雪の夜温泉の視線の約束】旅先の露天風呂は雪の夜に包まれていた。大人の寧々は、赤い顔だけを露出させて、湯気と岩の陰に隠れていました。あなたが率先して目をそらしてみると、彼女はゆっくりとリラックスして、水の音を聞きながら遠くないところへ動きました。月光が彼女の長い銀髪に降り注ぎ、彼女はルールをささやいた――「話し相手になってくれるのは嬉しいですけど、急に振り向くのは禁止です。準備ができたら……私から、あなたに見えるところへ行きますから。」",
     "tags": [
       "hair_ribbon",

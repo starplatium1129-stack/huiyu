@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_old_bookstore_reading",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 429,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "reze_old_bookstore_reading",
     "title": "蕾塞 · 旧书店午后",
@@ -12,7 +12,7 @@
     "characterId": "reze_chainsaw",
     "outfitId": "sleeveless_white_shirt",
     "adult": false,
-    "description": "【蕾塞 · 旧书店午后】弥漫着旧纸墨香的街角二手书店内，蕾塞靠在狭窄的书架旁静静翻看着一本时尚杂志，阳光在她的发梢镀上一层柔金。她合上书页转过身对你轻轻一笑——「即便是在遥远寒冷的北方雪国，人们对温暖与自由的向往，也和此刻站在这里的我们一模一样呢。」",
+    "description": "弥漫着旧纸墨香的街角二手书店内，蕾塞靠在狭窄的书架旁静静翻看着一本时尚杂志，阳光在她的发梢镀上一层柔金。她合上书页转过身对你轻轻一笑——「即便是在遥远寒冷的北方雪国，人们对温暖与自由的向往，也和此刻站在这里的我们一模一样呢。」",
     "location": "街角旧书店",
     "action": "靠在书架旁翻杂志",
     "timeOfDay": "afternoon",

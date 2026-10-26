@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_training_dummy",
-  "revision": 6,
+  "revision": 5,
   "sortOrder": 581,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "拄锤而立，气定神闲",
     "camera": "wide shot, low angle",
@@ -13,23 +13,21 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【泥岩 · 训练场】重装干员演练场中央，拄着巨锤傲然伫立的泥岩周围环绕着坚不可摧的沃土石巨人守卫。演练结束后她收起土石魔术，神情气定神闲地向你行礼——「萨卡兹的古老巫术与泥土共鸣，只要双脚踏在这片大地上，我就绝不会退后半步。」",
+    "description": "重装干员演练场中央，拄着巨锤傲然伫立的泥岩周围环绕着坚不可摧的沃土石巨人守卫。演练结束后她收起土石魔术，神情气定神闲地向你行礼——「萨卡兹的古老巫术与泥土共鸣，只要双脚踏在这片大地上，我就绝不会退后半步。」",
     "id": "mudrock_arknights_training_dummy",
     "lighting": "cool morning light",
     "location": "罗德岛训练场",
     "mood": "沉稳如山",
     "negativeTokens": [],
     "outfitId": "elite2",
-    "promptProse": "Mudrock stands relaxed beside her planted warhammer after the drill, stone guardians encircling the yard behind her in cool morning light.",
+    "promptProse": "Mudrock stands relaxed beside her planted warhammer after the drill, stone guardians encircling the yard behind her.",
     "promptTokens": [
       "hammer",
       "standing",
       "golem",
       "training ground",
       "morning",
-      "from below",
-      "cool lighting",
-      "wide shot"
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,7 +41,6 @@
     "title": "泥岩 · 训练场",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Her planted warhammer stands beside her inside the ring of stone guardians."
+    "nsfwProse": ""
   }
 }

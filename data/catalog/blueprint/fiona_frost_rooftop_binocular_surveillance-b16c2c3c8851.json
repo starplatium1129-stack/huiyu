@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_rooftop_binocular_surveillance",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "fiona_frost_rooftop_binocular_surveillance",
     "characterId": "fiona_frost",
     "title": "菲奥娜 · 寒夜天台的静默监视",
-    "description": "【菲奥娜 · 寒夜天台的静默监视】冬夜冷风呼啸的高耸钟楼天台之上，菲奥娜身披深蓝厚大衣隐匿于背光的阴影中。她戴着棕色皮质手套双手稳定托举战术双筒望远镜，镜头锁向远处街角亮着橘暖微光的福杰家公寓。风吹乱了她额前垂落的发丝，她如同雕塑般在零下风雪中静止伫立，无怨无悔地在暗夜中担任守护者。",
+    "description": "冬夜冷风呼啸的高耸钟楼天台之上，菲奥娜身披深蓝厚大衣隐匿于背光的阴影中。她戴着棕色皮质手套双手稳定托举战术双筒望远镜，镜头锁向远处街角亮着橘暖微光的福杰家公寓。风吹乱了她额前垂落的发丝，她如同雕塑般在零下风雪中静止伫立，无怨无悔地在暗夜中担任守护者。",
     "outfitId": "wise_agent_trench",
     "category": "间谍日常",
     "location": "城市钟楼高层天台",

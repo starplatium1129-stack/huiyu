@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_autumn_woods_kunai_training",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1135,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "踩在岩石上舒展腰身投掷苦无，身体前倾发力，枫叶随劲风环绕飞舞",
     "camera": "full body, from below",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "training"
     ],
-    "description": "【常陆茉子 · 红枫树下的忍道飞掷】漫山遍野红枫如烈火燃烧的后山林道中，秋风卷起漫天赤色落叶。茉子身体微沉踏在一块青苔古岩上，右手正精准将一枚锋利苦无脱手掷出。破空呼啸的气流带起翻飞的枫叶，黑色短发与忍者服下摆在动静之间展露出极致的力量美与矫健身手。",
+    "description": "漫山遍野红枫如烈火燃烧的后山林道中，秋风卷起漫天赤色落叶。茉子身体微沉踏在一块青苔古岩上，右手正精准将一枚锋利苦无脱手掷出。破空呼啸的气流带起翻飞的枫叶，黑色短发与忍者服下摆在动静之间展露出极致的力量美与矫健身手。",
     "id": "mako_autumn_woods_kunai_training",
     "lighting": "浓烈深秋枫树冠层透出的金红漫射光与苦无金属反光",
     "location": "红枫密林深处落叶林道",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_abyss_shore",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 607,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单膝跪地，剑尖抵着沙滩",
     "camera": "cowboy shot, low angle, kneeling pose and hand on the sword visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【斯卡蒂 · 深渊海岸】狂暴巨浪拍打着黑色礁石的深渊海岸线上，斯卡蒂单膝跪地，将那柄沉重如巨碑的深海大剑重重插入黑沙之中。她擦去脸颊上腥咸的海水，转过头凝视着你——「恐鱼的血已经流尽了。只要我还握得动这柄剑，任何来自深海的阴影，都休想触碰到你一根头发。」",
+    "description": "狂暴巨浪拍打着黑色礁石的深渊海岸线上，斯卡蒂单膝跪地，将那柄沉重如巨碑的深海大剑重重插入黑沙之中。她擦去脸颊上腥咸的海水，转过头凝视着你——「恐鱼的血已经流尽了。只要我还握得动这柄剑，任何来自深海的阴影，都休想触碰到你一根头发。」",
     "id": "skadi_arknights_abyss_shore",
     "lighting": "grey-violet dusk",
     "location": "泰拉深渊海岸",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_water_moon",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 197,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -13,7 +13,7 @@
     "title": "摩根 · 海滨阳台躺椅日光微敞",
     "category": "成人",
     "characterId": "morgan_le_fay_fate",
-    "description": "【摩根 · 海滨阳台躺椅日光微敞】海滨别墅阳光露台的躺椅上，摩根解开白色水妃泳衣系带侧卧微憩，海风吹拂银发，明媚日光照耀在凝脂般的雪肤与曼妙起伏的胸线上，冰蓝眼眸泛起罕见的温柔红晕。",
+    "description": "海滨别墅阳光露台的躺椅上，摩根解开白色水妃泳衣系带侧卧微憩，海风吹拂银发，明媚日光照耀在凝脂般的雪肤与曼妙起伏的胸线上，冰蓝眼眸泛起罕见的温柔红晕。",
     "location": "晨光水妃浅海露台",
     "action": "海滨阳台躺椅上解开泳衣系带侧卧",
     "timeOfDay": "清晨",

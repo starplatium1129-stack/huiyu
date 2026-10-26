@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_cafeteria",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 204,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [
       "jacket worn"
@@ -13,7 +13,7 @@
     "title": "玛修 · 食堂午餐",
     "category": "温馨日常",
     "characterId": "mash_kyrielight",
-    "description": "【玛修 · 食堂午餐】迦勒底食堂的午间，玛修端着盛满的餐盘找到座位，灰色外套搭在椅背，她认真地把蔬菜和肉排分开摆好，粉发刘海下的紫瞳亮晶晶——「前辈，今天食堂的炖菜很好吃哦。」",
+    "description": "迦勒底食堂的午间，玛修端着盛满的餐盘找到座位，灰色外套搭在椅背，她认真地把蔬菜和肉排分开摆好，粉发刘海下的紫瞳亮晶晶——「前辈，今天食堂的炖菜很好吃哦。」",
     "location": "迦勒底食堂",
     "action": "坐好后将灰外套搭在椅背，一手扶餐盘，另一手把肉排与蔬菜分开摆好",
     "timeOfDay": "白天",

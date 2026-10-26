@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_swimsuit_watermelon",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 908,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "蹲在西瓜旁研究",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【杏山和纱 · 泳池边西瓜】清凉的度假泳池边，和纱蹲在冰镇大西瓜旁，黑发扎成可爱的小团子，猫耳随着动作一颤一颤。她握着塑料小刀认真比划着分割线，粉瞳满是专注——「老师快看，这个西瓜绝对超甜！我把最中间最甜的那一块切给你，作为交换……今天的防晒油你要负责帮我涂完全身哦。」",
+    "description": "清凉的度假泳池边，和纱蹲在冰镇大西瓜旁，黑发扎成可爱的小团子，猫耳随着动作一颤一颤。她握着塑料小刀认真比划着分割线，粉瞳满是专注——「老师快看，这个西瓜绝对超甜！我把最中间最甜的那一块切给你，作为交换……今天的防晒油你要负责帮我涂完全身哦。」",
     "id": "kyouyama_kazusa_swimsuit_watermelon",
     "kreaStyleHint": "",
     "lighting": "夏日阳光",

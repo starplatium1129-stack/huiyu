@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misaka_mikoto",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "misaka_mikoto",
     "profile": {
@@ -172,7 +172,7 @@
             "label": "暴雨铁桥的救赎与傲娇情愫",
             "description": "在美琴为阻止两万克隆妹妹屠杀企图自毁时，当麻以血肉之躯在暴雨铁桥下击溃一方通行救回她的世界；从此成为美琴无论遭遇任何灾难都坚信的英雄与暗恋对象。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "妹妹篇（妹妹们事件） / 大霸星祭篇",
             "evidence": {
               "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
@@ -186,7 +186,7 @@
             "label": "永远无法被记住的盛夏初恋与誓约",
             "description": "幼年被当麻舍命解救，却因当麻脑部神经永久受损导致其大脑永远无法保留关于食蜂的记忆；面对当麻一次次视自己如陌生人，食蜂依然以傲然笑容拼尽全力守护他。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "某科学的超电磁炮T · 大霸星祭 / 新约魔禁第11卷",
             "evidence": {
               "title": "电击文库《魔法禁书目录》官方特设",
@@ -200,7 +200,7 @@
             "label": "水火不容的常盘台双璧与共斗战友",
             "description": "常盘台仅有的两位Level 5，平日性格与理念针锋相对、派阀互斥；但在大霸星祭面对木原幻生企图将美琴推向Level 6暴走的绝境中，两人达成极高默契舍命联手破局。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "大霸星祭篇（Level 6进化丧失）",
             "evidence": {
               "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",

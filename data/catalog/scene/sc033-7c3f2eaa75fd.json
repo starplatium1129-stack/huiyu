@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc033",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 31,
   "createdAt": null,
-  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She steps out from behind the door and offers the small birthday cake in both hands. Its candle lights her blushing face while the unlit apartment entrance stays dim behind her.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "safe, 1girl, shiki_natsume, white shirt, navy pleated skirt, black tights, holding cake, birthday cake, candle, doorway, apartment entrance, night, candlelight, medium shot, <lora:shiki_natsume_v21_anima:0.85>",
     "rating": "All",
     "season": "冬",
-    "story": "【夏目 · 门后藏不住的生日惊喜】冬夜公寓玄关没有开灯，夏目捧着小蛋糕躲在门后，本想等你进屋再点亮蜡烛，却被提前回家的脚步打乱。她僵在原地几秒，索性把蛋糕直接递来，脸颊比烛火更红——「只是大家都说生日应该有点仪式感。愿望快点许，奶油要化了……我没有等很久。」",
+    "story": "冬夜公寓玄关没有开灯，夏目捧着小蛋糕躲在门后，本想等你进屋再点亮蜡烛，却被提前回家的脚步打乱。她僵在原地几秒，索性把蛋糕直接递来，脸颊比烛火更红——「只是大家都说生日应该有点仪式感。愿望快点许，奶油要化了……我没有等很久。」",
     "storyJa": "【夏目・ドアの後ろに隠せない誕生日サプライズ】冬の夜、アパートの入り口には明かりがついていなかった。夏目は小さなケーキを持ってドアの後ろに隠れていました。彼女はあなたが家に入るのを待ってからキャンドルに火を灯したかったのですが、早く帰宅しようとする足音に邪魔されました。彼女は数秒間その場で固まったが、ろうそくの明かりよりも頬を赤くして、ただケーキを手渡した。――「誕生日には、それらしいことをしたほうがいいって、みんなが言うから。早く願い事をして。クリームが溶けちゃう……別に、ずっと待ってたわけじゃないけど。」",
     "tags": [
       "mole_under_eye",

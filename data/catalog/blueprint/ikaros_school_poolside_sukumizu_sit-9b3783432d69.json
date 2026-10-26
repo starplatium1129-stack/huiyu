@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_school_poolside_sukumizu_sit",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1212,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在池边双腿浸水紧抱大西瓜，死库水贴身水珠滚落，眼神好奇注视水面波纹",
     "camera": "medium shot, seated side 3/4 perspective, shimmering water depth",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "summer"
     ],
-    "description": "【伊卡洛斯 · 校园泳池边的西瓜浮力实验】夏日蝉鸣阵阵的空美中学露天游泳池畔，伊卡洛斯身穿深蓝色连体死库水，胸前白名牌端端正正写着她的名字。她双腿并拢坐在波光粼粼的瓷砖水边，微微前倾，用双手将大西瓜缓缓放低到浅水中，好奇地观察着西瓜的浮力。清凉的池水沾湿了她洁白的羽毛与粉色发丝，水珠在微翘的鼻尖晶莹闪烁。",
+    "description": "夏日蝉鸣阵阵的空美中学露天游泳池畔，伊卡洛斯身穿深蓝色连体死库水，胸前白名牌端端正正写着她的名字。她双腿并拢坐在波光粼粼的瓷砖水边，微微前倾，用双手将大西瓜缓缓放低到浅水中，好奇地观察着西瓜的浮力。清凉的池水沾湿了她洁白的羽毛与粉色发丝，水珠在微翘的鼻尖晶莹闪烁。",
     "id": "ikaros_school_poolside_sukumizu_sit",
     "lighting": "盛夏炽烈阳光与碧蓝池水反射的跳跃焦散光斑",
     "location": "中学露天游泳池深蓝浅水台阶处",

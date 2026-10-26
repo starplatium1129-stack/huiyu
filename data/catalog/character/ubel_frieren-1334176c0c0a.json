@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ubel_frieren",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 127,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "ubel_frieren",
     "profile": {
@@ -183,7 +183,7 @@
             "label": "共感魔法与搭档纠葛",
             "description": "尤贝尔凭借极度敏锐的杀戮共感试图看透兰特本体，在考场中与始终用分身行事的兰特结成兼具试探与默契的危险搭档。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "一级魔法使考试篇 · 第二轮合格",
             "evidence": {
               "title": "小学馆 · 《葬送的芙莉莲》官方作品站",

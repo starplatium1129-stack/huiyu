@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_pistol_shadow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 882,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "独自握枪凝视窗外",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【调月莉音 · 夕阳下的决意】黄昏被血色残阳笼罩的研讨室内，莉音独自握着特制手枪静静伫立在落地窗前。红瞳中倒映着落日余晖，指节因用力而微微泛白。察觉到你的靠近，她眼神微动——「老师，不要走得太近……如果你要否定我的正义，就请亲手从我手里夺下这把枪吧。」",
+    "description": "黄昏被血色残阳笼罩的研讨室内，莉音独自握着特制手枪静静伫立在落地窗前。红瞳中倒映着落日余晖，指节因用力而微微泛白。察觉到你的靠近，她眼神微动——「老师，不要走得太近……如果你要否定我的正义，就请亲手从我手里夺下这把枪吧。」",
     "id": "tsukatsuki_rio_pistol_shadow",
     "kreaStyleHint": "",
     "lighting": "夕光逆光",

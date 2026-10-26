@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_library_think",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 881,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "靠书架沉思",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【调月莉音 · 绝密档案馆深思】千年中央绝密档案馆幽暗的书架前，莉音靠在金属隔板旁翻阅着古老的记录晶片，手腕上的银色腕表折射着冷光。她低声自语——「世人都以为我冷酷自负……但为了保护所有人，即便成为大家口中的‘大笨蛋’，我也必须做那个背负一切的观测者。」",
+    "description": "千年中央绝密档案馆幽暗的书架前，莉音靠在金属隔板旁翻阅着古老的记录晶片，手腕上的银色腕表折射着冷光。她低声自语——「世人都以为我冷酷自负……但为了保护所有人，即便成为大家口中的‘大笨蛋’，我也必须做那个背负一切的观测者。」",
     "id": "tsukatsuki_rio_library_think",
     "kreaStyleHint": "",
     "lighting": "soft recessed ceiling lights",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_summer_beach_surf_patrol",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1056,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "踩在清澈浅水海浪中，手扶墨镜回眸，鲨鱼尾在海水中激起晶莹水花",
     "camera": "full body, 3/4 dynamic perspective",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "summer"
     ],
-    "description": "【艾莲·乔 · 碧海清波的鲨鱼泳姿】夏日灿烂艳阳下的金沙浅海，碧蓝清澈的波浪轻轻拍击着艾莲细嫩的脚踝。她身穿红黑相间的运动分体泳装，单手推起墨镜，结实修长的深海鲨鱼尾巴在清澈海水间轻快划动，激起一圈圈纯白的浪花泡沫，整个人宛如真正回到归宿的海洋游猎少女。",
+    "description": "夏日灿烂艳阳下的金沙浅海，碧蓝清澈的波浪轻轻拍击着艾莲细嫩的脚踝。她身穿红黑相间的运动分体泳装，单手推起墨镜，结实修长的深海鲨鱼尾巴在清澈海水间轻快划动，激起一圈圈纯白的浪花泡沫，整个人宛如真正回到归宿的海洋游猎少女。",
     "id": "ellen_summer_beach_surf_patrol",
     "lighting": "明澈热带阳光与水面反射的跳跃焦散光斑",
     "location": "阳光蔚蓝浅海沙滩",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_evening_dress_piano",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 911,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "穿晚礼服弹钢琴",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【空崎日奈 · 晚宴钢琴前的深情独奏】格黑娜盛大晚宴的聚光灯下，日奈换上了一袭高贵优雅的深紫色露背晚礼服，银白长发挽起露出优美修长的天鹅颈。她端坐在三角钢琴前弹奏着动人的旋律，紫色的眼眸在乐声中深情地望向台下的你——「这首曲子……是专门为你一个人弹奏的，老师。」",
+    "description": "格黑娜盛大晚宴的聚光灯下，日奈换上了一袭高贵优雅的深紫色露背晚礼服，银白长发挽起露出优美修长的天鹅颈。她端坐在三角钢琴前弹奏着动人的旋律，紫色的眼眸在乐声中深情地望向台下的你——「这首曲子……是专门为你一个人弹奏的，老师。」",
     "id": "sorasaki_hina_evening_dress_piano",
     "kreaStyleHint": "",
     "lighting": "宴会暖光与钢琴灯",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zhuang_fangyi_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 162,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights",
     "profile": {
@@ -377,7 +377,7 @@
             "label": "血脉至亲与未竟旗帜的传承",
             "description": "在兄长“狼卫”因追查侵蚀真相离奇失踪后，年少的洛茜毅然扛起染血的战旗接管狼群，一边守护孤儿同伴一边在整个星球废土上追寻兄长足迹。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "个人剧情 · 荒原白狼之歌",
             "evidence": {
               "title": "PRTS维基 · 洛茜角色背景纪实",

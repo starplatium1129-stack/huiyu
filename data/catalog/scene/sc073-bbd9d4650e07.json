@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc073",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 71,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She keeps one milk bottle and places the other into the viewer's waiting palm.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, dusty pink yukata, camellia print, burgundy obi, cream haori, sitting, veranda, milk bottles, snowy garden, lantern light, medium shot, holding bottle, offering, blush, warm lighting, evening",
     "rating": "All",
     "season": "冬",
-    "story": "【夏目 · 温泉旅馆的晚风】冬日傍晚，夏目穿着浴衣坐在温泉旅馆的缘侧，发梢还带着水汽。你递来冰牛奶，她接过后把另一瓶推回你掌心，脸上的红色在灯笼下更明显——「是温泉太热，不是别的原因。外面在下雪……喝完以后，陪我去庭院走一圈。」",
+    "story": "冬日傍晚，夏目穿着浴衣坐在温泉旅馆的缘侧，发梢还带着水汽。你递来冰牛奶，她接过后把另一瓶推回你掌心，脸上的红色在灯笼下更明显——「是温泉太热，不是别的原因。外面在下雪……喝完以后，陪我去庭院走一圈。」",
     "storyJa": "【夏目・温泉旅館の夜風】冬の夕方、夏目は髪先に湿気を残したまま、浴衣を着て温泉旅館の端に座っていた。あなたがアイスミルクを手渡すと、彼女はそれを受け取り、もう一方のボトルをあなたの手のひらに押し戻しました。彼女の顔の赤い色はランタンの下でさらにはっきりと見えました。――「温泉が熱かっただけ。ほかに理由はない。外は雪だから……飲み終わったら、庭を少し歩かない？」",
     "tags": [
       "mole_under_eye",

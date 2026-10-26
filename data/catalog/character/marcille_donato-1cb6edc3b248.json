@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "marcille_donato",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "marcille_donato",
     "profile": {
@@ -137,7 +137,7 @@
             "label": "学院挚友与禁忌古代黑魔术",
             "description": "在魔法学院便与法琳结下无可替代的深厚羁绊，在炎龙腹中找到法琳残骸后，玛露希尔不惜触犯全大陆禁忌发动古代黑魔术将法琳复活。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "炎龙讨伐篇 · 禁忌苏生",
             "evidence": {
               "title": "KADOKAWA / TRIGGER · 《迷宫饭》官方动画网站",

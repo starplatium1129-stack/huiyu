@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_shiromuku_bridal_vow",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1399,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "白无垢端坐神前捧扇，闻誓词睫毛颤动落泪红瞳",
     "adult": false,
@@ -17,7 +17,7 @@
       "iconic",
       "romance"
     ],
-    "description": "【东京大神宫·婚礼日】纯白无垢的婚纱衬着辉夜挺直的背脊，白色角隐覆在折叠马尾上，她双手捧着扇子端坐于神前。当你说出誓词，她的睫毛颤了颤，红瞳里终于蓄不住泪光——那个把『先告白的人就输了』挂在嘴边的大小姐，此刻放下所有胜负，轻声说：这次，换我先说。我爱你。",
+    "description": "纯白无垢的婚纱衬着辉夜挺直的背脊，白色角隐覆在折叠马尾上，她双手捧着扇子端坐于神前。当你说出誓词，她的睫毛颤了颤，红瞳里终于蓄不住泪光——那个把『先告白的人就输了』挂在嘴边的大小姐，此刻放下所有胜负，轻声说：这次，换我先说。我爱你。",
     "id": "kaguya_shiromuku_bridal_vow",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "神社檐下柔光与白无垢相映的圣洁光",

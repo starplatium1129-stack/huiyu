@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_sui_courtyard",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 650,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "半卧竹榻把玩酒葫芦听雨",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【令 · 岁府闲居听雨】大炎旧宅的檐下回廊，令半卧在铺了软垫的竹榻上，宽松的墨灰家居袍半敞，腰间挂着一只青玉酒葫芦。檐外细雨如帘，她晃着杯中的残酒，懒洋洋地哼起不成调的古谣——「雨打芭蕉，最是催眠。博士若无事，不如也躺下歇一歇。」",
+    "description": "大炎旧宅的檐下回廊，令半卧在铺了软垫的竹榻上，宽松的墨灰家居袍半敞，腰间挂着一只青玉酒葫芦。檐外细雨如帘，她晃着杯中的残酒，懒洋洋地哼起不成调的古谣——「雨打芭蕉，最是催眠。博士若无事，不如也躺下歇一歇。」",
     "id": "ling_arknights_sui_courtyard",
     "lighting": "soft diffused overcast light, gentle rain haze, warm indoor lamp glow",
     "location": "岁府檐下回廊",

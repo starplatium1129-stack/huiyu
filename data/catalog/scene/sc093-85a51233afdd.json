@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc093",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "The viewer holds the umbrella while she links her arm through theirs, facing ahead.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, grey ribbed boat neck sweater, navy wrap skirt, small gold buckle, umbrella, arm in arm, rainy street, puddles, night, medium shot, looking ahead, blush, streetlamp, reflected light",
     "rating": "All",
     "season": "夏",
-    "story": "【夏目 · 雨夜共伞的自然靠近】夏夜回家途中，雨势让伞下的空间越来越窄。夏目主动挽住你的手臂，把两个人拉到不会淋湿的距离，脸上却努力维持平静。你提醒她耳朵红了，她立刻看向前方——「只是走得太快。伞这么小，靠近是合理选择……别故意把路走短。」",
+    "story": "夏夜回家途中，雨势让伞下的空间越来越窄。夏目主动挽住你的手臂，把两个人拉到不会淋湿的距离，脸上却努力维持平静。你提醒她耳朵红了，她立刻看向前方——「只是走得太快。伞这么小，靠近是合理选择……别故意把路走短。」",
     "storyJa": "【夏目・雨の夜の相合傘の自然な親近感】夏の夜の帰り道、雨で傘の下はどんどん狭くなった。夏目は率先して腕を掴み、濡れない距離まで二人を引っ張りながらも、懸命に平静な表情を保っていた。彼女の耳が赤いことを思い出させると、彼女はすぐに前を向きます――「少し歩くのが速かっただけ。傘がこんなに小さいなら、近づくのは合理的……わざと近道しないで。」",
     "tags": [
       "mole_under_eye",

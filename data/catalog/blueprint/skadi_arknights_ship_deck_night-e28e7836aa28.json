@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_ship_deck_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 608,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "站在船舷边，任海风吹动长发",
     "camera": "medium back shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【斯卡蒂 · 夜航甲板】夜航中破浪前行的罗德岛甲板船舷旁，刺骨的夜风撕扯着斯卡蒂的风衣下摆，银发在夜空下如翻滚的白色浪花。察觉到你在身后为她披上毛毯，她微微侧过头——「深海猎人感受不到严寒……但你手心的温度，确实让我那颗早已冷却的心脏，重新有了跳动的感觉。」",
+    "description": "夜航中破浪前行的罗德岛甲板船舷旁，刺骨的夜风撕扯着斯卡蒂的风衣下摆，银发在夜空下如翻滚的白色浪花。察觉到你在身后为她披上毛毯，她微微侧过头——「深海猎人感受不到严寒……但你手心的温度，确实让我那颗早已冷却的心脏，重新有了跳动的感觉。」",
     "id": "skadi_arknights_ship_deck_night",
     "lighting": "dim deck lamps and starlight",
     "location": "泰拉货轮甲板",

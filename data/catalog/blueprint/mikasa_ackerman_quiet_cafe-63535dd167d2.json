@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_quiet_cafe",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 981,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "窗边喝热饮",
     "camera": "medium shot, sitting at cafe table holding warm teacup",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【三笠 · 常服咖啡店】墙内市镇的咖啡店里，三笠难得穿着白色连衣裙和开衫坐在窗边，红围巾搭在膝头，端着一杯热饮望着窗外的人流——「偶尔……这样安静地坐着，也不坏。」",
+    "description": "墙内市镇的咖啡店里，三笠难得穿着白色连衣裙和开衫坐在窗边，红围巾搭在膝头，端着一杯热饮望着窗外的人流——「偶尔……这样安静地坐着，也不坏。」",
     "id": "mikasa_ackerman_quiet_cafe",
     "lighting": "窗边柔光",
     "location": "墙内市镇咖啡店",

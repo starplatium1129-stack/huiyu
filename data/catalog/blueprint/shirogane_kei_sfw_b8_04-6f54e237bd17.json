@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_04",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1414,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "矮桌旁核对完花束预算合上家计簿，向镜头露出没有超支的满足笑",
     "adult": false,
@@ -17,7 +17,7 @@
       "bridal",
       "daily"
     ],
-    "description": "【白银家公寓客厅·清晨】圭穿着简洁的银白婚纱坐在矮桌前，旁边仍放着她整理过的家计簿与一束便宜但新鲜的小花；她核对完最后一笔预算，才抬眼向镜头露出“这次没有超支”的满足笑。",
+    "description": "圭穿着简洁的银白婚纱坐在矮桌前，旁边仍放着她整理过的家计簿与一束便宜但新鲜的小花；她核对完最后一笔预算，才抬眼向镜头露出“这次没有超支”的满足笑。",
     "id": "shirogane_kei_sfw_b8_04",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "gentle morning light across the low table",

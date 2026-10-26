@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "vivy",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 153,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "vivy",
     "profile": {
@@ -136,7 +136,7 @@
             "label": "用歌声注入心灵的终局咏唱",
             "description": "薇薇为了拯救全人类谱写出最初也是最后的自创曲，在松本舍身轰击中枢的掩护下唱出寄托心灵的歌声，终结AI浩劫。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终局篇 · 萤石之眼的天空",
             "evidence": {
               "title": "WIT STUDIO / Aniplex · 《Vivy -Fluorite Eye's Song-》官方网站",
@@ -154,6 +154,20 @@
             "stage": "第1-2话 · 游乐园营救",
             "evidence": {
               "title": "WIT STUDIO / Aniplex · 《Vivy -Fluorite Eye's Song-》官方网站",
+              "url": "https://vivy-portal.com/"
+            }
+          },
+          {
+            "id": "vivy-vivy-elizabeth",
+            "source": "vivy",
+            "target": "elizabeth",
+            "label": "姐妹机体与AI宿命共鸣",
+            "description": "原本为同型号量产的姐妹机，在经历托瓦克恐袭与改写后被Vivy拯救并寻回自我。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "太空站坠落篇",
+            "evidence": {
+              "title": "《Vivy -Fluorite Eye's Song-》官方网站",
               "url": "https://vivy-portal.com/"
             }
           }

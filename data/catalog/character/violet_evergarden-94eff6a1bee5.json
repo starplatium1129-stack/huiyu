@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "violet_evergarden",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "violet_evergarden",
     "profile": {
@@ -130,7 +130,7 @@
             "label": "灵魂誓言与‘我爱你’的真谛",
             "description": "被作为战争武器抚养的薇尔莉特，为了探寻少佐在最后战役断壁残垣中留下的‘我爱你’真正含义，成为代笔人偶走遍世间。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终章剧场版 · 孤岛重逢",
             "evidence": {
               "title": "京都动画 · 《紫罗兰永恒花园》官方主页",

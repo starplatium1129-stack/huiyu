@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ciel_tsukihime",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "ciel_tsukihime",
     "profile": {
@@ -195,7 +195,7 @@
             "label": "学姐后辈与因果拯救",
             "description": "校园里温和亲切的咖喱学姐，实为负罪深重的埋葬机关代行者；决战中志贵不惜耗尽生命以直死魔眼斩断希耶尔身上的不死共生因果，救赎其灵魂。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "月姬 · 月姬篇 · 希耶尔线",
             "evidence": {
               "title": "TYPE-MOON · 月姬重制版官方网站",
@@ -223,7 +223,7 @@
             "label": "骨肉名义与分命羁绊",
             "description": "名义上的兄妹，秋叶在八年前惨剧中以远野家秘术将自身一半生命分给志贵；面对归家的志贵，秋叶在严厉家训外表下深藏着狂乱执拗的占有爱意。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "月姬 · 远野家篇 · 秋叶线",
             "evidence": {
               "title": "TYPE-MOON · 月姬重制版官方网站",
@@ -237,7 +237,7 @@
             "label": "贴身女仆与白丝带之约",
             "description": "自幼在远野邸相伴的无口女仆，负责照顾志贵的病弱起居；志贵随身珍视多年的白色手帕原主人正是翡翠，是童年彼此相濡以沫的微光证物。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "月姬 · 远野家篇 · 翡翠线",
             "evidence": {
               "title": "TYPE-MOON · 月姬重制版官方网站",
@@ -251,7 +251,7 @@
             "label": "笑颜伪装与深渊救赎",
             "description": "表面开朗元气的主厨管家，实则因幼年遭远野慎久凌辱而心如死灰、暗中策划毁灭远野家；志贵是彻底融化其仇恨死结、带她走出绝望深渊的人。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "月姬 · 远野家篇 · 琥珀线",
             "evidence": {
               "title": "TYPE-MOON · 月姬重制版官方网站",
@@ -265,7 +265,7 @@
             "label": "感应孪生与苦难互担",
             "description": "巫条神社末裔双胞胎姊妹，琥珀幼年为了保护妹妹翡翠而主动代替其承受折磨，翡翠则甘愿戴上冷面伪装守护姐姐，彼此血脉相连不可分割。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "月姬 · 远野家篇 · 核心真相揭秘",
             "evidence": {
               "title": "TYPE-MOON · 月姬重制版官方网站",
@@ -293,7 +293,7 @@
             "label": "当主与调药照料",
             "description": "琥珀负责调制抑制秋叶体内退魔之血狂化反转的特殊汤药，秋叶对琥珀怀有高度信赖，却未料到远野家惨烈宿命背后交织的复仇阴影。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "月姬 · 远野家篇 · 秋叶线",
             "evidence": {
               "title": "TYPE-MOON · 月姬重制版官方网站",
@@ -307,7 +307,7 @@
             "label": "诱骗原罪与千年追猎",
             "description": "罗亚欺骗纯真的爱尔奎特吸血令其神能暴走并窃取真祖之力，爱尔奎特为此自封千年城，每次罗亚转生现世便破茧追杀将其千刀万剐。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "月姬 · 核心背景",
             "evidence": {
               "title": "TYPE-MOON · 月姬重制版官方网站",
@@ -318,10 +318,10 @@
             "id": "ciel_tsukihime-michael_roa_valdamjong-reincarnation_nightmare",
             "source": "ciel_tsukihime",
             "target": "michael_roa_valdamjong",
-            "label": "附身梦魇与必诛宿敌",
+            "label": "附身梦魇与必破诅咒",
             "description": "希耶尔十四岁时曾作为罗亚第十七世转生容器，在其操控下屠戮全村；希耶尔加入埋葬机关以无休止的战斗追剿罗亚，誓要彻底铲除恶魔洗净污名。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "月姬 · 希耶尔线真相",
             "evidence": {
               "title": "TYPE-MOON · 月姬重制版官方网站",
@@ -335,7 +335,7 @@
             "label": "宿命决战与终结之刃",
             "description": "附身于四季之躯的罗亚企图夺取三咲市与吸血姬，志贵直面自身残暴本能与魔眼负荷，在大圣堂将罗亚的死点一击贯穿永世泯灭。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "月姬 · 终局决战",
             "evidence": {
               "title": "TYPE-MOON · 月姬重制版官方网站",

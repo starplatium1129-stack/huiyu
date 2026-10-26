@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_stars_deck",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 591,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "躺在图纸上翘着腿看星星",
     "camera": "wide shot, side view",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【森蚺 · 甲板观星】深夜安静的罗德岛顶层甲板上，森蚺直接四仰八叉地躺在摊开的巨幅机甲设计图纸上，双腿翘在栏杆边缘仰望漫天银河，眼神里充满了对星空的憧憬——「雨林的长者说星星是神明的眼睛……但在我看来，未来我们一定能造出飞向星星的巨大钢铁飞船。」",
+    "description": "深夜安静的罗德岛顶层甲板上，森蚺直接四仰八叉地躺在摊开的巨幅机甲设计图纸上，双腿翘在栏杆边缘仰望漫天银河，眼神里充满了对星空的憧憬——「雨林的长者说星星是神明的眼睛……但在我看来，未来我们一定能造出飞向星星的巨大钢铁飞船。」",
     "id": "eunectes_arknights_stars_deck",
     "lighting": "starlight",
     "location": "罗德岛甲板",

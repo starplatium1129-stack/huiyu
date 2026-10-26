@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_dorm_pc",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 734,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "电竞椅里打游戏",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【伊冯 · 宿舍打机】基地宿舍的深夜，伊冯窝在电竞椅里打联机游戏，时尚休闲装被空调吹得懒洋洋，屏幕光把她的侧脸照成一片蓝粉——「这把打完绝对上分……什么？维修报告？明天再说！」",
+    "description": "基地宿舍的深夜，伊冯窝在电竞椅里打联机游戏，时尚休闲装被空调吹得懒洋洋，屏幕光把她的侧脸照成一片蓝粉——「这把打完绝对上分……什么？维修报告？明天再说！」",
     "id": "yvonne_arknights_dorm_pc",
     "lighting": "屏幕光与夜灯",
     "location": "基地宿舍",

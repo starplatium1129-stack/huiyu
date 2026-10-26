@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "reze_night_school_pool_summer",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 424,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "reze_night_school_pool_summer",
     "characterId": "reze_chainsaw",
     "title": "蕾塞 · 深夜学校泳池·月下水波与轻盈出水",
-    "description": "【蕾塞 · 深夜学校泳池·月下水波与轻盈出水】夏夜万籁俱寂的学校露天泳池里，清澈的池水在月色下荡漾着粼粼波光。身穿深蓝连体死库水的蕾塞宛如美人鱼般破水而出，抹开脸上的水珠在月下仰起笑靥——「游泳一点都不难对吧？电次君，如果明天我们一起逃走……去一个没有人认识我们的地方生活，好不好？」",
+    "description": "夏夜万籁俱寂的学校露天泳池里，清澈的池水在月色下荡漾着粼粼波光。身穿深蓝连体死库水的蕾塞宛如美人鱼般破水而出，抹开脸上的水珠在月下仰起笑靥——「游泳一点都不难对吧？电次君，如果明天我们一起逃走……去一个没有人认识我们的地方生活，好不好？」",
     "outfitId": "summer_swimsuit_night",
     "sceneTags": [
       "school_pool",

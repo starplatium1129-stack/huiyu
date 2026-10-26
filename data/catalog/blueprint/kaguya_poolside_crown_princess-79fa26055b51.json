@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_poolside_crown_princess",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1398,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "躺椅上递防晒霜别脸傲娇，肩头微红发梢滴水",
     "adult": false,
@@ -17,7 +17,7 @@
       "summer",
       "beach"
     ],
-    "description": "【避暑山庄泳池·午后】她穿着系海军蓝小结的白棉连衣裙，辉夜坐在遮阳伞下的躺椅上，把防晒霜递给你的时候别着脸——「裙、裙子有什么好看的……但是晒伤了就失礼了，所以……勉为其难让你涂吧。」白皙的肩膀在阳光下泛着微红，折叠马尾的发梢滴着水珠，大小姐的第一次度假笨拙又可爱。",
+    "description": "她穿着系海军蓝小结的白棉连衣裙，辉夜坐在遮阳伞下的躺椅上，把防晒霜递给你的时候别着脸——「裙、裙子有什么好看的……但是晒伤了就失礼了，所以……勉为其难让你涂吧。」白皙的肩膀在阳光下泛着微红，折叠马尾的发梢滴着水珠，大小姐的第一次度假笨拙又可爱。",
     "id": "kaguya_poolside_crown_princess",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "炽白阳光与泳池水光反射",

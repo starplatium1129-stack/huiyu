@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_cabin_rope",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 612,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在床沿，解开发绳",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【斯卡蒂 · 舱室解发】昏暗的船舱大床上，褪去厚重风衣与皮手套的斯卡蒂坐在床沿，抬手解开发绳，瀑布般的银发如银河倾泻铺满雪白的香肩。她深红色的眼眸中泛起醉人的柔光——「深海的血脉让我力大无穷……但面对你的时候，我只想把最柔软脆弱的一面献给你。」",
+    "description": "昏暗的船舱大床上，褪去厚重风衣与皮手套的斯卡蒂坐在床沿，抬手解开发绳，瀑布般的银发如银河倾泻铺满雪白的香肩。她深红色的眼眸中泛起醉人的柔光——「深海的血脉让我力大无穷……但面对你的时候，我只想把最柔软脆弱的一面献给你。」",
     "id": "skadi_arknights_r18_cabin_rope",
     "kreaStyleHint": "",
     "lighting": "dim warm lamp",

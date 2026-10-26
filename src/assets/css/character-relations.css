@@ -1,16 +1,18 @@
 .character-relations {
   container-type: inline-size;
   min-width: 0;
-  transition: all var(--motion-page) var(--ease-out);
 }
+
+.relations-fullscreen-dialog {
+  inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; background: var(--bg-base); color: var(--text-primary);
+}
+.relations-fullscreen-dialog::backdrop { background: var(--bg-base); }
 
 /* Fullscreen / Zen mode */
 .character-relations.is-fullscreen {
-  position: fixed;
-  inset: 0;
-  z-index: 120;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: var(--s-4) var(--s-5);
   background: var(--bg-base);
@@ -23,7 +25,7 @@
 .character-relations.is-fullscreen .relations-layout {
   flex: 1 1 auto;
   min-height: 0;
-  height: calc(100vh - 120px);
+  overflow: auto;
 }
 
 .character-relations.is-fullscreen .relations-map {
@@ -34,7 +36,7 @@
 
 .character-relations.is-fullscreen .relations-canvas {
   flex: 1 1 auto;
-  height: 100%;
+  min-height: 280px;
   max-height: none;
 }
 
@@ -84,12 +86,20 @@
   flex: 1 1 auto;
 }
 
+.relations-finder { display: flex; align-items: flex-start; flex-wrap: wrap; gap: var(--s-3); margin-bottom: var(--s-4); }
+.relations-finder > .studio-search { flex: 0 1 320px; min-width: 220px; }
+.relations-finder-results { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); max-height: 120px; overflow-y: auto; }
+.relations-finder-results > span { color: var(--text-secondary); font-size: var(--fs-label-sm); }
+.relation-list-heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-2); }
+.relation-list-heading > span { color: var(--text-secondary); font-size: var(--fs-label-xs); font-variant-numeric: tabular-nums; }
+.relations-circle-breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-3); }
+.relation-list .relations-outside-title { margin-top: var(--s-5); }
+
 .relations-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 24%, 380px);
   align-items: start;
   gap: var(--s-4);
-  transition: grid-template-columns var(--motion-hover) var(--ease-out);
 }
 
 .relations-layout.is-inspector-collapsed {
@@ -389,9 +399,7 @@
   stroke: var(--text-secondary);
   stroke-width: 1.6;
   fill: none;
-  transition: stroke var(--motion-hover) var(--ease-out),
-              stroke-width var(--motion-hover) var(--ease-out),
-              opacity var(--motion-hover) var(--ease-out);
+  transition: opacity var(--motion-hover) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -404,17 +412,11 @@
 .relations-canvas :deep(.relation-edge-active .vue-flow__edge-path) {
   stroke: var(--accent);
   stroke-width: 2.8;
-  filter: drop-shadow(0 0 5px var(--accent-glow));
   opacity: 1 !important;
 }
 
 .relations-canvas :deep(.relation-edge-dimmed .vue-flow__edge-path) {
-  opacity: 0.12;
-}
-
-.relations-canvas :deep(.relation-edge-dimmed .vue-flow__edge-text),
-.relations-canvas :deep(.relation-edge-dimmed .vue-flow__edge-textbg) {
-  opacity: 0.15;
+  opacity: 0.35;
 }
 
 .relations-canvas :deep(.vue-flow__edge:focus-visible .vue-flow__edge-path) {
@@ -424,11 +426,6 @@
 
 .relations-canvas :deep(.vue-flow__edge-text) {
   font-family: var(--font-sans);
-  transition: opacity var(--motion-hover) var(--ease-out), fill var(--motion-hover) var(--ease-out);
-}
-
-.relations-canvas :deep(.vue-flow__edge-textbg) {
-  transition: opacity var(--motion-hover) var(--ease-out), stroke var(--motion-hover) var(--ease-out);
 }
 
 .relations-canvas :deep(.vue-flow__edge-interaction) {
@@ -440,6 +437,9 @@
 }
 
 @container (max-width: 900px) {
+  .character-relations.is-fullscreen .relations-layout { display: flex; flex-direction: column; }
+  .character-relations.is-fullscreen .relations-map { flex: 1 0 360px; width: 100%; }
+  .character-relations.is-fullscreen .relations-inspector { height: auto; flex: 0 0 auto; width: 100%; }
   .relations-layout {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -473,6 +473,15 @@
     border-top: 1px solid var(--border-soft);
   }
 }
+
+.relations-inspector-collapsed:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 3px; }
+.character-relations.is-fullscreen .relations-inspector-collapsed { height: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .relation-list-item,
+  :root:not([data-motion='full']) .relations-canvas :deep(.vue-flow__edge-path) { transition: none; transform: none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .relation-list-item,
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .relations-canvas :deep(.vue-flow__edge-path) { transition: none; transform: none; }
 
 @media (forced-colors: active) {
   .relations-canvas :deep(.vue-flow__edge-path) { stroke: CanvasText; }

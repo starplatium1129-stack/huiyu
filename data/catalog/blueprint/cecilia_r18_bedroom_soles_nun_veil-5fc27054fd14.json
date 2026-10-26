@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_r18_bedroom_soles_nun_veil",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 843,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "披着月光立于彩绘玻璃前轻声祈祷",
     "adult": true,
@@ -17,7 +17,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【塞西莉亚 · 教堂钟楼的白月光】小镇入夜后，塞西莉亚独自登上教堂钟楼。月光穿过彩绘玻璃，在她身上落下一片斑斓。她披着月光立在玻璃前，修女的头纱被夜风轻轻掀起，薄荷绿的长发在风中飘散。她双手交叠于胸前轻声祈祷，脸颊却悄悄泛红——「……主啊，请原谅塞西莉亚心里，那一点点不纯洁的思念。」",
+    "description": "小镇入夜后，塞西莉亚独自登上教堂钟楼。月光穿过彩绘玻璃，在她身上落下一片斑斓。她披着月光立在玻璃前，修女的头纱被夜风轻轻掀起，薄荷绿的长发在风中飘散。她双手交叠于胸前轻声祈祷，脸颊却悄悄泛红——「……主啊，请原谅塞西莉亚心里，那一点点不纯洁的思念。」",
     "id": "cecilia_r18_bedroom_soles_nun_veil",
     "kreaStyleHint": "",
     "lighting": "moonlight through stained glass, rainbow refractions, soft silver glow",

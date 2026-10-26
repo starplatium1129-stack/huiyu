@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_sweets_shop",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 869,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "冷脸吃草莓圣代",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【飞鸟马时 · 甜品店冷娇】任务间隙的咖啡馆里，时端坐在桌前凝视着超大份草莓巧克力圣代。虽然依旧保持着端庄冷峻的女仆神情，但小手却诚实地舀起一勺草莓递到你嘴边——「主人，这是补充作战能量的必要程序……请张嘴。啊——（盯）。」",
+    "description": "任务间隙的咖啡馆里，时端坐在桌前凝视着超大份草莓巧克力圣代。虽然依旧保持着端庄冷峻的女仆神情，但小手却诚实地舀起一勺草莓递到你嘴边——「主人，这是补充作战能量的必要程序……请张嘴。啊——（盯）。」",
     "id": "asuma_toki_sweets_shop",
     "kreaStyleHint": "",
     "lighting": "甜品店暖光",

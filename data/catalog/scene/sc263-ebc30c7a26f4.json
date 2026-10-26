@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc263",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 258,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Standing on the left, she aims the oversized silver revolver toward the viewer in the right foreground. Vivid rim light outlines her against the purple starfield, floating magic circles and blue particles.",
     "audit": {
@@ -34,7 +34,7 @@
     "rating": "R15",
     "recommendedSize": "1344×768",
     "season": "不限",
-    "story": "【官方 CG 灵感】紫色星海在魔法阵外翻涌，宁宁压低帽檐，将银色枪口稳稳指向异变中心。「躲在我身后——这一次，轮到我保护你。」星海的冷光沿着银色枪身与黑粉披风勾出轮廓，魔法阵在她身后旋转。",
+    "story": "紫色星海在魔法阵外翻涌，宁宁压低帽檐，将银色枪口稳稳指向异变中心。「躲在我身后——这一次，轮到我保护你。」星海的冷光沿着银色枪身与黑粉披风勾出轮廓，魔法阵在她身后旋转。",
     "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "tags": [
       "official_cg",

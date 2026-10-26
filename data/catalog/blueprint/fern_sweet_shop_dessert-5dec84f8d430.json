@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "fern_sweet_shop_dessert",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "fern_sweet_shop_dessert",
     "characterId": "fern_frieren",
     "title": "菲伦 · 城镇甜品店·巨型圣代与鼓鼓腮帮",
-    "description": "【菲伦 · 城镇甜品店·巨型圣代与满足腮帮】装潢温馨的城镇甜品屋里，菲伦坐在桌前，双手捧着比脸还大的巨型草莓冰淇淋圣代。她鼓起塞得满满的腮帮子幸福地眯起眼睛，头顶仿佛冒出了小花——「这家店的奶油甜度非常完美……芙莉莲大人要是再赖床的话，我就要把属于她的那份也全部吃掉了。」",
+    "description": "装潢温馨的城镇甜品屋里，菲伦坐在桌前，双手捧着比脸还大的巨型草莓冰淇淋圣代。她鼓起塞得满满的腮帮子幸福地眯起眼睛，头顶仿佛冒出了小花——「这家店的奶油甜度非常完美……芙莉莲大人要是再赖床的话，我就要把属于她的那份也全部吃掉了。」",
     "outfitId": "town_casual",
     "sceneTags": [
       "dessert_shop",

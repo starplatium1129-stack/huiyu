@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_sword_king_trial",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 474,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "持剑迎风而立",
     "camera": "cowboy shot, standing with her broadsword",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【艾莉丝 · 剑王试炼】魔大陆尽头的试炼悬崖上，艾莉丝立于风声之中，深红卷发与白色头带猎猎飞扬，手中大剑映着天光——「就算全世界都说我做不到，我也要自己走完这条路。」",
+    "description": "魔大陆尽头的试炼悬崖上，艾莉丝立于风声之中，深红卷发与白色头带猎猎飞扬，手中大剑映着天光——「就算全世界都说我做不到，我也要自己走完这条路。」",
     "id": "eris_greyrat_sword_king_trial",
     "lighting": "悬崖烈日照耀",
     "location": "魔大陆试炼悬崖",

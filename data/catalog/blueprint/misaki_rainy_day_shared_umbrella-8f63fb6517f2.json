@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_rainy_day_shared_umbrella",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 407,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "钻进你的伞下紧贴肩膀，星瞳别扭又满足",
     "adult": false,
@@ -18,7 +18,7 @@
       "date",
       "girlfriend"
     ],
-    "description": "【学园都市街道·雨】突如其来的夏日骤雨里，女王蜂的白色手提包被她举过头顶挡雨的样子实在称不上优雅。你撑开的伞递过去，她愣了一瞬，随即若无其事地钻进来，肩膀却紧紧贴着你——「哼、本小姐只是给你面子才进来的……伞下三厘米以内，都是本小姐的领域哦。」",
+    "description": "突如其来的夏日骤雨里，女王蜂的白色手提包被她举过头顶挡雨的样子实在称不上优雅。你撑开的伞递过去，她愣了一瞬，随即若无其事地钻进来，肩膀却紧紧贴着你——「哼、本小姐只是给你面子才进来的……伞下三厘米以内，都是本小姐的领域哦。」",
     "id": "misaki_rainy_day_shared_umbrella",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "雨幕青灰与街灯暖光交映",

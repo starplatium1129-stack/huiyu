@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_letter_desk",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 620,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱抱枕蜷缩在沙发上安稳沉睡",
     "camera": "intimate medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【羽毛笔 · 休息室午憩】罗德岛干员休息室柔软的大沙发上，拉菲艾拉整个人蜷缩成一团，怀里紧紧抱着一只毛绒大抱枕安稳沉睡，耳侧的羽毛随着均匀的呼吸轻轻起伏。宛如一只在安全巢穴里熟睡的幼鸟，让人忍不住想要轻抚她的头顶。",
+    "description": "罗德岛干员休息室柔软的大沙发上，拉菲艾拉整个人蜷缩成一团，怀里紧紧抱着一只毛绒大抱枕安稳沉睡，耳侧的羽毛随着均匀的呼吸轻轻起伏。宛如一只在安全巢穴里熟睡的幼鸟，让人忍不住想要轻抚她的头顶。",
     "id": "quillpen_arknights_letter_desk",
     "lighting": "warm golden window sunlight, soft dust motes, gentle ambient fill",
     "location": "罗德岛休息室",

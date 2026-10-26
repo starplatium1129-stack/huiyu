@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tohsaka_rin",
-  "revision": 6,
+  "revision": 10,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "tohsaka_rin",
     "profile": {
@@ -63,7 +63,7 @@
         "宝石魔术",
         "傲娇"
       ],
-      "bg_story": "冬木市灵脉管理者远坂家的当家继承人，自第四次圣杯战争父亲远坂时臣遇害后，年纪轻轻便独自支撑起古老名门，在监护人言峰绮礼的冷酷指导下刻苦修行宝石魔术与八极拳。在穗群原学园是无可挑剔的优等生高岭之花，私底下却有着傲娇要强、关键时刻偶犯糊涂的可爱反差。在第五次圣杯战争中召唤出弓之骑士Archer（英灵卫宫），与不谙魔术的卫宫士郎结成生死同盟。在UBW线中作为灵魂女主角，凛洞悉了士郎病态追求“正义伙伴”的自我毁灭本质，发誓要将士郎从虚无的深渊中拉回人间，在最终决战中凭胆识突破圣杯黑泥与绮礼的杀局。而在HF线面对黑化暴走的妹妹间桐樱，原本以魔术师冷酷条规挥出泽尔里奇宝石剑的凛，在致命一击的刹那毅然敛起锋芒张开双臂，以自己的血肉与深情拥抱唤醒了樱濒死的人性。战后凛远赴伦敦时钟塔埃尔梅罗二世门下深造成为杰出的大魔术师，与士郎并肩漫步在泰晤士河畔，成为指引少年灵魂、永不西沉的人间暖阳。",
+      "bg_story": "冬木市灵脉管理世家远坂家的当家继承人，自幼在刻苦修行宝石魔术与近身格斗中长大。在穗群原学园是各科成绩优异、举止得体的优等生，私下里却有着要强不服输、关键时刻偶尔掉链子的可爱一面。在第五次圣杯战争中意外召唤出Archer英灵卫宫，在残酷的魔术角逐中，她选择与门外汉卫宫士郎结成同盟。无论是面对狂暴的海格力斯，还是吉尔伽美什的威胁，凛始终恪守人道良知与骑士精神，屡次在危难中挽救士郎与樱的命运。在无限剑制线与宛若天堂线中，她凭借果决的心智与精妙的魔术破除死局，拯救了饱受折磨的妹妹间桐樱。圣杯战争终结后，凛前往英国伦敦时钟塔进修，士郎作为弟子随行相伴，两人在异国他乡携手迈向广阔的魔术与人生旅途。",
       "palette": [
         "红",
         "黑",
@@ -360,7 +360,7 @@
             "label": "契约从者与灵魂伴侣",
             "description": "士郎在仓库中偶然召唤阿尔托莉雅，在Fate线中士郎的赤诚肯定解开了她背负的沉重枷锁，战后更在星之内海阿瓦隆达成灵魂的永恒重聚。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/stay night · Fate线 & Last Episode",
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
@@ -388,7 +388,7 @@
             "label": "学妹与唯一守护者",
             "description": "士郎是樱在黑暗地狱中唯一的救赎微光；HF线士郎毅然舍弃正义伙伴的理想，立誓只做樱一人的英雄，最终从黑圣杯泥沼中彻底解救樱。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/stay night · Heaven's Feel线",
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
@@ -402,7 +402,7 @@
             "label": "义姐弟与舍命救赎",
             "description": "切嗣的亲生女与义子，从起初的怨恨纠葛到重温亲情。HF线伊莉雅披上第三法天之衣，以姐姐的宠溺姿态代替士郎关闭大圣杯，换来士郎灵魂新生。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/stay night · Heaven's Feel线",
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
@@ -416,7 +416,7 @@
             "label": "宿命决裂与终末手刃",
             "description": "黑化暴君将纯粹理性王道贯彻到底，HF大空洞决战中士郎在美杜莎协助下突破重围，含泪挥刀亲手刺穿曾深爱从者的心脏。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/stay night · Heaven's Feel线",
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
@@ -444,7 +444,7 @@
             "label": "生死同盟与破晓共战",
             "description": "HF线中为了拯救樱，美杜莎打破敌对阵营偏见与士郎结下战线，在深窟决战中解放骑英之缰绳阻击Saber Alter，战后在卫宫邸共同生活。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/stay night · Heaven's Feel线",
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
@@ -458,7 +458,7 @@
             "label": "骨肉姐妹与绝境相拥",
             "description": "本为远坂家亲姐妹，时臣的过继铸就了十数年命运的殊途与创伤。HF终战中凛敛起泽尔里奇宝石剑，以血肉身躯深情拥抱唤醒了暴走黑樱的人性。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/stay night · Heaven's Feel线",
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
@@ -486,7 +486,7 @@
             "label": "理想之敌与过去自我",
             "description": "绝望的守护者残骸企图抹杀少年时期的自我以斩断永劫悔恨，UBW线在固有结界中少年士郎以对理想的纯粹笃定击溃了未来的虚无沉沦。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/stay night · Unlimited Blade Works线",
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
@@ -500,7 +500,7 @@
             "label": "监护师徒与杀父死仇",
             "description": "绮礼作为时臣指定的监护人传授凛八极拳与教会魔术，然而其真实面目却是背叛刺死时臣的凶手，在第五次圣杯战争终局反目决战。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/stay night · 全线暗线揭秘",
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
@@ -511,10 +511,10 @@
             "id": "emiya_shirou-kotomine_kirei-mirror_nemesis",
             "source": "emiya_shirou",
             "target": "kotomine_kirei",
-            "label": "镜面宿敌与宿命清算",
+            "label": "信念碰撞与命运宿命",
             "description": "一者视他人幸福为自身救赎，一者唯从毁灭痛苦中汲取愉悦，圣杯空洞前两人舍弃魔术进行凡人肉体搏杀，完成对彼此存在意义的究极回答。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/stay night · Heaven's Feel线决战",
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
@@ -528,7 +528,7 @@
             "label": "骨肉父女与圣痕羁绊",
             "description": "卡莲是言峰绮礼生前留在世上的亲生骨肉，继承了父亲与恶魔纠缠的宿命，在冬木教会以代行者身份直面父亲留下的罪恶残局。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/hollow ataraxia · 核心背景揭秘",
             "evidence": {
               "title": "TYPE-MOON · Fate/hollow ataraxia 官方设定",
@@ -581,7 +581,7 @@
             "id": "medea_caster-cu_chulainn-temple_skirmish",
             "source": "medea_caster",
             "target": "cu_chulainn",
-            "label": "柳洞寺攻防死斗",
+            "label": "柳洞寺攻防对峙",
             "description": "库·丘林受言峰绮礼之命侦查柳洞寺，与盘踞地脉的美狄亚展开数度交锋，对魔女卑劣的窃法行径抱持纯粹的武人唾弃。",
             "directed": false,
             "spoiler": false,
@@ -626,7 +626,7 @@
             "label": "命定御主与永恒守护者",
             "description": "迦勒底管制室爆炸中缔结生死誓约，横跨七大特异点与各大异闻带，时间神殿玛修以纯白之盾挡下魔神王焚世光带，是彼此最深厚的精神支柱。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/Grand Order · 终局特异点 冠位时间神殿",
             "evidence": {
               "title": "TYPE-MOON · Fate/Grand Order 官方网站",
@@ -682,7 +682,7 @@
             "label": "生死誓约与无悔诀别",
             "description": "新宿废墟终局与御主共舞，漫长旅途中化作御主最锋锐的复仇烈焰；奏章不可逆废弃孔为了不让御主灵基崩坏，毅然选择主动切断契约淡出离去。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/Grand Order · 奏章Ⅱ 不可逆废弃孔",
             "evidence": {
               "title": "TYPE-MOON · Fate/Grand Order 官方网站",
@@ -724,7 +724,7 @@
             "label": "母女相惜与终焉悲剧",
             "description": "无情冬之女王将所有罕见的温柔与母爱倾注在养女芭班·茜身上；在妖精国叛乱终末，摩根为救受尽折磨的养女放弃反抗，在王座前甘愿被残虐肢解。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/Grand Order · 第2部第6章 妖精圆桌领域阿瓦隆·勒·菲",
             "evidence": {
               "title": "TYPE-MOON · Fate/Grand Order 官方网站",
@@ -738,7 +738,7 @@
             "label": "乐园异闻与泛人类史宿命姊妹",
             "description": "泛人类史中作为阿尔托莉雅同母异父的王姐与毁灭不列颠的宿敌，异闻带中则是分别背负拯救不列颠悲剧使命的救世主与预言之子。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/Grand Order · 第2部第6章 妖精圆桌领域阿瓦隆·勒·菲",
             "evidence": {
               "title": "TYPE-MOON · Fate/Grand Order 官方网站",
@@ -808,7 +808,7 @@
             "label": "幽府白月光与绝域誓约",
             "description": "立香打破冥界戒律为艾蕾带来向日葵与地下初雪，融化了千万年的孤寂冰川；南美异闻带艾蕾拼至神核破碎也要护送立香前行，是立香心中的永恒白月光。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/Grand Order · 冥界的圣诞快乐 & 黄金树海雨林",
             "evidence": {
               "title": "TYPE-MOON · Fate/Grand Order 官方网站",
@@ -822,7 +822,7 @@
             "label": "印度爱神与宿主灵基",
             "description": "爱神迦摩以少女间桐樱的躯体作为灵基凭依降世，将其受尽折磨与无限贪恋温暖的情感放大为溺爱宇宙的堕落恶之兽（Beast Ⅲ/L）。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/Grand Order · 德川回天迷宫 大奥",
             "evidence": {
               "title": "TYPE-MOON · Fate/Grand Order 官方网站",
@@ -836,7 +836,7 @@
             "label": "人类恶救赎与偏执护法",
             "description": "在大奥迷宫中企图用无限情欲同化立香却被其直面自我的纯粹意志击溃，战后受召入驻迦勒底，终日以诱惑御主堕落为借口寸步不离施展绝对庇护。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "Fate/Grand Order · 德川回天迷宫 大奥 & 迦勒底日常",
             "evidence": {
               "title": "TYPE-MOON · Fate/Grand Order 官方网站",

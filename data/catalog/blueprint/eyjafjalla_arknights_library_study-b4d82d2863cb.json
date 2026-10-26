@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_library_study",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 548,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱着厚书坐在窗边",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【艾雅法拉 · 图书馆研读】午后安静的图书室角落，身材娇小的艾雅法拉怀抱着一本比自己身躯还厚的古火山学巨著坐在向阳的长桌边。温暖的阳光洒在她浅茶褐色的卷发上，小羊耳随着专注的阅读轻轻抖动——「只要多读一些前人的记录，就能拯救更多可能受到天灾伤害的人呢。」",
+    "description": "午后安静的图书室角落，身材娇小的艾雅法拉怀抱着一本比自己身躯还厚的古火山学巨著坐在向阳的长桌边。温暖的阳光洒在她浅茶褐色的卷发上，小羊耳随着专注的阅读轻轻抖动——「只要多读一些前人的记录，就能拯救更多可能受到天灾伤害的人呢。」",
     "id": "eyjafjalla_arknights_library_study",
     "lighting": "soft window light",
     "location": "罗德岛图书馆",

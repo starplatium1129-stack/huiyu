@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_04",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 793,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "温室钢琴旁弹完旋律向镜头点头，捧花里藏着给妹妹的花",
     "adult": false,
@@ -17,7 +17,7 @@
       "bridal",
       "daily"
     ],
-    "description": "【学校温室音乐室·午后】玛夏穿着暖白婚纱坐在钢琴旁，浅棕卷发从头纱两侧落下，捧花里夹着一枚妹妹喜欢的花朵；她弹完一小段旋律后向镜头点头，笑容像一封写给家人的信。",
+    "description": "玛夏穿着暖白婚纱坐在钢琴旁，浅棕卷发从头纱两侧落下，捧花里夹着一枚妹妹喜欢的花朵；她弹完一小段旋律后向镜头点头，笑容像一封写给家人的信。",
     "id": "maria_mikhailovna_kujou_sfw_b9_04",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "warm afternoon light through glass and leaves",

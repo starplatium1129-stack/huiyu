@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_water_princess",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 193,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [
       "cropped feet"
@@ -13,7 +13,7 @@
     "title": "摩根 · 夏之水妃",
     "category": "度假海滨",
     "characterId": "morgan_le_fay_fate",
-    "description": "【摩根 · 夏之水妃】盛夏的海滩上，换上水妃泳装的摩根难得露出浅淡的笑意，银发被海风扬起，白纱裙摆在水边轻轻荡漾——「这个夏天……偶尔也容许本王任性一次。」",
+    "description": "盛夏的海滩上，换上水妃泳装的摩根难得露出浅淡的笑意，银发被海风扬起，白纱裙摆在水边轻轻荡漾——「这个夏天……偶尔也容许本王任性一次。」",
     "location": "盛夏海滩",
     "action": "穿白色挂颈泳装和轻薄白色罩裙沿浅浪水边漫步，侧头微笑",
     "timeOfDay": "白天",

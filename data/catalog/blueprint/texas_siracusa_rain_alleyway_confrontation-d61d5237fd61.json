@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_siracusa_rain_alleyway_confrontation",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 665,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "在雨夜狭巷中持剑半出鞘踏步向前，眼神凌厉威严，风衣下摆飞扬",
     "camera": "cowboy shot, dramatic low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【德克萨斯 · 狭巷对峙与冷冽锋芒】叙拉古阴雨绵绵的古老石砌窄巷深处，昏暗的壁灯在湿滑石墙上投下斑驳的光斑。德克萨斯踏着水洼向前一步，指间刺剑瞬间出鞘半寸，金色的剑芒刺破雨雾，冷冽的杀气让阴影中的杀手们不寒而栗——「不要再跟过来了。我不想让家族的血，再次弄脏这条街道。」",
+    "description": "叙拉古阴雨绵绵的古老石砌窄巷深处，昏暗的壁灯在湿滑石墙上投下斑驳的光斑。德克萨斯踏着水洼向前一步，指间刺剑瞬间出鞘半寸，金色的剑芒刺破雨雾，冷冽的杀气让阴影中的杀手们不寒而栗——「不要再跟过来了。我不想让家族的血，再次弄脏这条街道。」",
     "id": "texas_siracusa_rain_alleyway_confrontation",
     "lighting": "复古壁灯暖黄局部照明与冷色雨丝漫射",
     "location": "叙拉古古城雨夜石砌窄巷",

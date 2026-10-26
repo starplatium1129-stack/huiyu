@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1155,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "咖啡馆开店前把咖啡豆与小白花放入捧花，闻到点心香后放松微笑",
     "adult": false,
@@ -17,7 +17,7 @@
       "bridal",
       "daily"
     ],
-    "description": "【星光咖啡馆露台·清晨】栞那穿着带围裙式腰饰的白色婚纱，站在刚开店的露台旁，把咖啡豆与小白花一起放进捧花；她闻到第一炉点心的香气便弯起眼睛，像把日常工作变成了婚礼。",
+    "description": "栞那穿着带围裙式腰饰的白色婚纱，站在刚开店的露台旁，把咖啡豆与小白花一起放进捧花；她闻到第一炉点心的香气便弯起眼睛，像把日常工作变成了婚礼。",
     "id": "akizuki_kanna_sfw_b7_04",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "soft morning light over the pastry window",

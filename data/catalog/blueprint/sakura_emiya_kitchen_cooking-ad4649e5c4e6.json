@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "sakura_emiya_kitchen_cooking",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 175,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "sakura_emiya_kitchen_cooking",
     "characterId": "matou_sakura",
     "title": "间桐樱 · 卫宫家厨房·热汤升腾与贤淑微笑",
-    "description": "【间桐樱 · 卫宫家厨房·热汤升腾与贤淑微笑】清晨卫宫宅明亮的厨房里，砂锅里的味噌豆腐汤正咕嘟咕嘟冒着香浓的热气。系着干净白色围裙的樱回过头，紫色的长发被发带温柔地束在肩侧，向你露出治愈而满足的温婉笑容——「学长，早安！早餐和便当都已经准备好了，快去洗手坐下趁热吃吧。」",
+    "description": "清晨卫宫宅明亮的厨房里，砂锅里的味噌豆腐汤正咕嘟咕嘟冒着香浓的热气。系着干净白色围裙的樱回过头，紫色的长发被发带温柔地束在肩侧，向你露出治愈而满足的温婉笑容——「学长，早安！早餐和便当都已经准备好了，快去洗手坐下趁热吃吧。」",
     "outfitId": "kitchen_apron_homewear",
     "sceneTags": [
       "emiya_kitchen",

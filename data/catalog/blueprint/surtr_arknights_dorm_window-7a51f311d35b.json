@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_dorm_window",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 516,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱着膝盖坐在窗台上望向远方",
     "camera": "medium shot, eye level",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【史尔特尔 · 宿舍窗边】罗德岛黄昏的单人宿舍内，史尔特尔双手抱着膝盖坐在窗台上，火红色的长发在夕阳余晖中如流动的余烬。她凝望着窗外荒原上飞掠而过的风滚草，眼神迷茫中带着一丝烦躁——「脑海里的那些记忆碎片又开始吵闹了……博士，别站在门口发呆，过来陪我坐一会儿。」",
+    "description": "罗德岛黄昏的单人宿舍内，史尔特尔双手抱着膝盖坐在窗台上，火红色的长发在夕阳余晖中如流动的余烬。她凝望着窗外荒原上飞掠而过的风滚草，眼神迷茫中带着一丝烦躁——「脑海里的那些记忆碎片又开始吵闹了……博士，别站在门口发呆，过来陪我坐一会儿。」",
     "id": "surtr_arknights_dorm_window",
     "lighting": "warm dusk light through the window",
     "location": "罗德岛·史尔特尔宿舍窗边",

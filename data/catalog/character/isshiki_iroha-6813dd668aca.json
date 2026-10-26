@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "isshiki_iroha",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "isshiki_iroha",
     "profile": {
@@ -206,7 +206,7 @@
             "label": "追求‘真物’的灵魂共鸣与终生誓约",
             "description": "从侍奉部初见针锋相对的冰冷孤僻，到八幡在长桥上许下‘请将你的人生交给我’的誓约，两人跨越别扭与脆弱，终成彼此不可分割的相守恋人。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "原作第14卷 / 动画完结篇第11-12话",
             "evidence": {
               "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
@@ -220,7 +220,7 @@
             "label": "深情暗恋与温柔守护",
             "description": "因八幡车祸救狗而结缘，结衣在侍奉部中被八幡独特的真诚吸引并坠入深爱；虽目睹八幡选择雪乃而泪崩，仍勇敢决意不放开三人同在的温暖羁绊。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "原作第14卷 / 动画完结篇第11-12话",
             "evidence": {
               "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
@@ -262,7 +262,7 @@
             "label": "压抑阴影与苛烈试炼",
             "description": "阳乃既是雪乃自幼难以企及的家族完美阴影，又以近乎残酷的言语‘共依存’撕碎雪乃的软弱，逼迫妹妹真正脱离依赖、赢得家族的独立自由。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "第二季终盘至第三季舞会篇",
             "evidence": {
               "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",

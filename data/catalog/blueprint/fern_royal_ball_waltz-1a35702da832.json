@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_royal_ball_waltz",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 124,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "fern_royal_ball_waltz",
     "title": "菲伦 · 王都舞会",
@@ -12,7 +12,7 @@
     "characterId": "fern_frieren",
     "outfitId": "noble_ball_dress",
     "adult": false,
-    "description": "【菲伦 · 王都舞会】灯火辉煌的王都宫廷舞厅内，换上华丽露肩晚礼服的菲伦在悠扬的华尔兹乐曲中轻轻提起裙摆，向你微微欠身施礼，紫眸中泛着少见的娇美——「我并不擅长跳舞，如果踩到您的脚……请务必提前原谅我。那么，能请您带我跳第一支舞吗？」",
+    "description": "灯火辉煌的王都宫廷舞厅内，换上华丽露肩晚礼服的菲伦在悠扬的华尔兹乐曲中轻轻提起裙摆，向你微微欠身施礼，紫眸中泛着少见的娇美——「我并不擅长跳舞，如果踩到您的脚……请务必提前原谅我。那么，能请您带我跳第一支舞吗？」",
     "location": "王都舞会大厅",
     "action": "提着裙摆微微欠身",
     "timeOfDay": "night",

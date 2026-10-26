@@ -27,6 +27,10 @@ function parseIdentity(value: unknown): CharacterIdentity | undefined {
     age: optionalString(value.age),
     occupation: optionalString(value.occupation),
     faction: optionalString(value.faction),
+    region: optionalString(value.region),
+    race: optionalString(value.race),
+    school: optionalString(value.school),
+    classificationSource: optionalString(value.classificationSource),
   }
   return Object.values(identity).some(Boolean) ? identity : undefined
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinomiya_kaguya",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "shinomiya_kaguya",
     "profile": {
@@ -172,7 +172,7 @@
             "label": "恋爱智脑战对手与此生伴侣",
             "description": "两人因极高自尊心展开长达数个学期的‘先告白就输了’头脑战；奉心祭御行以巨型心形气球告白融化冰山，白银更组织跨国营救助辉夜脱离宗族锁链并结下婚约。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "奉心祭文化祭至最终回拯救决战",
             "evidence": {
               "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
@@ -186,7 +186,7 @@
             "label": "从主仆契约到自由的一生挚友",
             "description": "早坂自幼作为心腹女仆兼黑客护卫陪伴辉夜；京都修学旅行遭遇背叛危机后，两人在悬崖坦诚相见解除主从关系，早坂剪短发重获自由，成为辉夜最亲密的真正挚友。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "修学旅行篇（漫画第178-187话）",
             "evidence": {
               "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
@@ -256,7 +256,7 @@
             "label": "严慈并济的姐弟情深",
             "description": "起初石上对辉夜的杀气胆战心惊，但辉夜暗中彻夜帮石上辅导功课使其及格，并在体育祭后夜祭全力为石上撑腰复仇，被辉夜视作不可或缺的亲弟弟。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "体育祭篇至秀知院后期",
             "evidence": {
               "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
@@ -270,7 +270,7 @@
             "label": "救赎恩人与学生会双雄",
             "description": "在石上因中学见义勇为反遭全校霸凌孤立的绝境中，御行一人彻查真相还其清白并将他拉入学生会，是石上愿意追随一生的兄长级英雄。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "石上初中篇 / 体育祭篇",
             "evidence": {
               "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
@@ -284,7 +284,7 @@
             "label": "暗中守护与命定欢喜冤家",
             "description": "初中时石上因弥子遭受嘲笑而匿名送花留便条鼓励她，高中在学生会整日争吵抬杠，却在危机时刻互相援手，最终在毕业前夕彼此袒露心意确立暧昧羁绊。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "学生会后期至完结篇",
             "evidence": {
               "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
@@ -312,7 +312,7 @@
             "label": "伪装调侃与可靠盟友",
             "description": "早坂曾多次化名哈萨卡试探御行，更在辉夜营救行动中与御行并肩作战瓦解四宫家阴谋，是御行极度信任的智谋伙伴。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "四宫家夺回决战篇",
             "evidence": {
               "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",

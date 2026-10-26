@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_bedroom_gaming_carpet_slouch",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1059,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "趴在地毯上翘起小腿打掌机，鲨鱼尾巴垫在身后，专注微咬唇",
     "camera": "full-body shot, from above",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "cozy"
     ],
-    "description": "【艾莲·乔 · 宅室地毯上的掌机时光】杂乱温馨的少女卧室内，屏幕光斑在墙上跳跃。艾莲整个人趴在厚实的毛绒羊毛地毯上，双手捧着掌上游戏机全神贯注操作。两条修长的素腿高高翘起在半空交叠晃悠，庞大的鲨鱼尾巴平铺在地毯上充当柔软靠垫，整个人散发着不修边幅的惬意死宅快乐。",
+    "description": "杂乱温馨的少女卧室内，屏幕光斑在墙上跳跃。艾莲整个人趴在厚实的毛绒羊毛地毯上，双手捧着掌上游戏机全神贯注操作。两条修长的素腿高高翘起在半空交叠晃悠，庞大的鲨鱼尾巴平铺在地毯上充当柔软靠垫，整个人散发着不修边幅的惬意死宅快乐。",
     "id": "ellen_bedroom_gaming_carpet_slouch",
     "lighting": "电视大屏冷光与床头暖色盐灯交融的光影",
     "location": "少女卧室毛绒地毯与懒人沙发旁",

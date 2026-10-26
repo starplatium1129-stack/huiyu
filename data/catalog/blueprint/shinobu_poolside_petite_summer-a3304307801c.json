@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_poolside_petite_summer",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1452,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "池边晃脚仰头瞪你，递防晒霜，紫瞳鼓脸",
     "adult": false,
@@ -17,7 +17,7 @@
       "summer",
       "beach"
     ],
-    "description": "【蝶屋敷泳池·盛夏】紫蝶印花的比基尼衬得忍的小巧身段愈发精致。她坐在池边把脚尖浸在水里晃荡，忽然仰头瞪你——「用那种‘好小一只’的眼神看我……哼，个子小是战术需要哦？狭窄地形里我可是最强的。……防晒霜，快涂。晒黑的话，羽织就不搭了。」",
+    "description": "紫蝶印花的比基尼衬得忍的小巧身段愈发精致。她坐在池边把脚尖浸在水里晃荡，忽然仰头瞪你——「用那种‘好小一只’的眼神看我……哼，个子小是战术需要哦？狭窄地形里我可是最强的。……防晒霜，快涂。晒黑的话，羽织就不搭了。」",
     "id": "shinobu_poolside_petite_summer",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "池水波光与炽白阳光",

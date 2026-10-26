@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mouri_ran",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "mouri_ran",
     "profile": {
@@ -167,7 +167,7 @@
             "label": "青梅竹马与清水寺深情定情的恋人",
             "description": "自幼相识相伴，兰在漫长的等待与思念中始终坚守对新一的信任；经历伦敦大本钟下新一的深情告白，兰在京都修学旅行清水寺舞台上以轻吻脸颊热烈回应，正式确定恋人关系。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "红之校外旅行 · 清水寺定情",
             "evidence": {
               "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方角色设定",
@@ -251,7 +251,7 @@
             "label": "舍身挡弹与宛若亡姐的救赎",
             "description": "在满月之夜的码头对决中，兰奋不顾身以肉身扑救灰原挡下子弹；灰原在兰身上看见了姐姐宫野明美的无私温柔与圣洁光辉，自此彻底放下心防将兰视为敬重的姐姐。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "满月对决篇 · 与黑衣组织的正面对决",
             "evidence": {
               "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方故事档案",
@@ -279,7 +279,7 @@
             "label": "心之圣所与不可触碰的‘天使’",
             "description": "在纽约雨夜兰不顾自身安危救下了伪装成杀人魔的贝尔摩德，贝尔摩德深为震撼并尊奉兰为绝不允许组织伤害的纯白‘天使（Angel）’。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "纽约事件篇 · 工藤新一的纽约事件",
             "evidence": {
               "title": "青山刚昌 / 读卖电视台 · 《名侦探柯南》官方故事档案",

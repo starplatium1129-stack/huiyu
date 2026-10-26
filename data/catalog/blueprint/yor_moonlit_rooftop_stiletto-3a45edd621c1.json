@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yor_moonlit_rooftop_stiletto",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 804,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yor_moonlit_rooftop_stiletto",
     "characterId": "yor_forger",
     "title": "约尔·福杰 · 月下屋顶·荆棘双针与冷艳杀气",
-    "description": "【约尔 · 月下屋顶·荆棘双针与冷艳杀气】清冷孤月高悬的都市钟楼屋顶之上，代号「荆棘公主」的顶级暗杀者身着一袭优雅性感的露背黑礼裙。她反握着泛着寒光的金色锥针，眼底凌厉的杀气如极北寒冰——「为了守护劳埃德先生与阿尼亚的和平生活……阻碍于此的害虫们，就由我彻底打扫干净吧。」",
+    "description": "清冷孤月高悬的都市钟楼屋顶之上，代号「荆棘公主」的顶级暗杀者身着一袭优雅性感的露背黑礼裙。她反握着泛着寒光的金色锥针，眼底凌厉的杀气如极北寒冰——「为了守护劳埃德先生与阿尼亚的和平生活……阻碍于此的害虫们，就由我彻底打扫干净吧。」",
     "outfitId": "thorn_princess_dress",
     "sceneTags": [
       "rooftop",

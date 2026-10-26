@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_riverbank_sunset_chain_walk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1213,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "落后半步跟随行走，手轻按胸前红领结，项圈铁链被牵引，白翼染上夕阳暖金",
     "camera": "medium two-shot, companion holding the broken chain as they walk along the sunset riverbank",
@@ -14,7 +14,7 @@
     "coverageTags": [
       "sunset"
     ],
-    "description": "【伊卡洛斯 · 金红河堤的锁链相伴】斜阳如血的空美町河川高架草堤上，晚风将芦苇荡吹拂成一片金色波涛。伊卡洛斯脖颈上的金属拘束项圈垂落着一段断裂铁链，链子的末端正被主人牵在手中。她落后智树半步安静跟随，巨大洁白的羽翼在夕照下被染成温暖的橙红金辉，红润的脸颊微微泛起幸福的红晕，眼神中满溢着对主人的无限依恋。",
+    "description": "斜阳如血的空美町河川高架草堤上，晚风将芦苇荡吹拂成一片金色波涛。伊卡洛斯脖颈上的金属拘束项圈垂落着一段断裂铁链，链子的末端正被主人牵在手中。她落后智树半步安静跟随，巨大洁白的羽翼在夕照下被染成温暖的橙红金辉，红润的脸颊微微泛起幸福的红晕，眼神中满溢着对主人的无限依恋。",
     "id": "ikaros_riverbank_sunset_chain_walk",
     "lighting": "浓烈宏大的落日余晖打在羽毛末端与长发上的温暖逆光轮廓",
     "location": "空美町夕阳金红河堤草坡步道",

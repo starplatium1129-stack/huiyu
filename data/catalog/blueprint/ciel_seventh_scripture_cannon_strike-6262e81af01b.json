@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_seventh_scripture_cannon_strike",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1329,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单臂肩抗巨型重火器第七圣典，神圣光辉汇聚炮口，眼神冷冽推了推眼镜架",
     "camera": "cowboy shot, low angle, heavy artillery combat view",
@@ -14,7 +14,7 @@
       "iconic",
       "combat"
     ],
-    "description": "【希耶尔 · 第七圣典月下重炮制裁】废弃工业大楼顶端狂风呼啸，希耶尔身穿深蓝修女法衣战袍，戴着金丝无框眼镜。她单臂稳稳架起比人还庞大、散发着神圣白光的巨型概念武装「第七圣典」，炮口魔力洪流汇聚如炽热烈阳。短发在狂暴的气流中飞舞，镜片后深蓝眼眸冷静而决绝——「转生之因果，由我在此斩断。第七圣典，神圣真理击铁开合！」",
+    "description": "废弃工业大楼顶端狂风呼啸，希耶尔身穿深蓝修女法衣战袍，戴着金丝无框眼镜。她单臂稳稳架起比人还庞大、散发着神圣白光的巨型概念武装「第七圣典」，炮口魔力洪流汇聚如炽热烈阳。短发在狂暴的气流中飞舞，镜片后深蓝眼眸冷静而决绝——「转生之因果，由我在此斩断。第七圣典，神圣真理击铁开合！」",
     "id": "ciel_seventh_scripture_cannon_strike",
     "lighting": "第七圣典炽烈白金炮口光芒与清冷夜色",
     "location": "废弃工厂高耸水泥平台顶端",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_archive_reading",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 521,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "低头翻看一本旧书",
     "camera": "medium close-up, eye level, face and open book visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【史尔特尔 · 档案室午读】罗德岛深层档案室昏暗静谧的书架间，史尔特尔倚靠在书桌旁，指尖缓缓翻过一本泛黄的古代萨卡兹地理志。察觉到你的靠近，她合上书页低声自语——「找遍了所有记录，依然没有我真正出身的村落……不过只要有你在，找不到过去的答案似乎也没那么糟糕了。」",
+    "description": "罗德岛深层档案室昏暗静谧的书架间，史尔特尔倚靠在书桌旁，指尖缓缓翻过一本泛黄的古代萨卡兹地理志。察觉到你的靠近，她合上书页低声自语——「找遍了所有记录，依然没有我真正出身的村落……不过只要有你在，找不到过去的答案似乎也没那么糟糕了。」",
     "id": "surtr_arknights_archive_reading",
     "lighting": "dusty golden light through shelves",
     "location": "罗德岛档案室",

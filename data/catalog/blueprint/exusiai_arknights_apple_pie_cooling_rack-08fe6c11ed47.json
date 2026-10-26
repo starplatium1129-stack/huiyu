@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_apple_pie_cooling_rack",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 694,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfitId": "apple_pie_bakery_patissiere",
@@ -14,7 +14,7 @@
     "location": "烘焙间",
     "timeOfDay": "上午",
     "mood": "期待满足",
-    "description": "【能天使 · 苹果派出炉之后】烘焙间飘着苹果和肉桂的香气，穿着奶油色毛衣、百褶裙与苹果图案围裙的能天使站在操作台前。她戴好隔热手套，用双手把一盘刚出炉的苹果派稳稳放上冷却架，忍不住露出期待的笑容——「先等它凉一点！这次边缘烤得刚刚好！」",
+    "description": "烘焙间飘着苹果和肉桂的香气，穿着奶油色毛衣、百褶裙与苹果图案围裙的能天使站在操作台前。她戴好隔热手套，用双手把一盘刚出炉的苹果派稳稳放上冷却架，忍不住露出期待的笑容——「先等它凉一点！这次边缘烤得刚刚好！」",
     "action": "戴着隔热手套，双手把烤盘放在台面的冷却架上",
     "promptProse": "Both oven-mitted hands hold the tray level as she lowers it onto the cooling rack. Morning window light meets the oven's amber glow on the apple pie crust.",
     "promptTokens": [

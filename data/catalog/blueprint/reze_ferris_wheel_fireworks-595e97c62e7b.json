@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_ferris_wheel_fireworks",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 428,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "reze_ferris_wheel_fireworks",
     "title": "蕾塞 · 摩天轮烟花",
@@ -12,7 +12,7 @@
     "characterId": "reze_chainsaw",
     "outfitId": "oversized_jacket_casual",
     "adult": false,
-    "description": "【蕾塞 · 摩天轮烟花】夏夜游乐园升至最高点的摩天轮座舱内，绚烂的花火在巨大的玻璃窗外接连炸裂。蕾塞将男士外套松松披在肩头，仰起清秀的脸庞看着满天火树银花，眼底藏着转瞬即逝的落寞——「烟花虽然短暂，但盛开的那一瞬间真的好美啊……就像我和你在一起的时光一样。」",
+    "description": "夏夜游乐园升至最高点的摩天轮座舱内，绚烂的花火在巨大的玻璃窗外接连炸裂。蕾塞将男士外套松松披在肩头，仰起清秀的脸庞看着满天火树银花，眼底藏着转瞬即逝的落寞——「烟花虽然短暂，但盛开的那一瞬间真的好美啊……就像我和你在一起的时光一样。」",
     "location": "夏夜游乐园",
     "action": "仰头看烟花，外套披在肩头",
     "timeOfDay": "night",

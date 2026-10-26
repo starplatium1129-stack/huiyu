@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_tennis_bench_rest",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 819,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "fiona_frost_tennis_bench_rest",
     "characterId": "fiona_frost",
     "title": "菲奥娜 · 赛场长椅微喘小憩",
-    "description": "【菲奥娜 · 赛场长椅微喘小憩】激烈战局的中场换边时刻，菲奥娜斜倚在球场边缘的木质长椅上。白毛巾搭在微热的香肩上，网球拍斜倚膝旁。无袖球衣下的胸脯随着微促的呼吸轻微起伏，洁白的百褶超短裙下展露出因运动而泛着健康淡粉色的紧致双腿。她单手拧开水壶仰头小饮，侧颜冷艳动人，汗水在聚光灯下闪烁如钻石。",
+    "description": "激烈战局的中场换边时刻，菲奥娜斜倚在球场边缘的木质长椅上。白毛巾搭在微热的香肩上，网球拍斜倚膝旁。无袖球衣下的胸脯随着微促的呼吸轻微起伏，洁白的百褶超短裙下展露出因运动而泛着健康淡粉色的紧致双腿。她单手拧开水壶仰头小饮，侧颜冷艳动人，汗水在聚光灯下闪烁如钻石。",
     "outfitId": "tennis_sportswear",
     "category": "运动休闲",
     "location": "网球场边休息长椅",

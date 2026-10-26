@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_refined_horrormare_gothic_waltz",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 672,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "在旋转舞步中单手轻撩黑色蕾丝眼罩面具，黑红礼裙飞扬，优雅而危险地微笑",
     "camera": "full-body shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【拉普兰德 · 典雅噩兆的血色华尔兹】叙拉古黑帮假面舞会的华丽大厅内，金色烛台与暗红玫瑰交织出奢靡的死亡气息。拉普兰德身着黑红渐变的哥特蕾丝晚礼裙，修长戴着黑皮手套的手指轻轻挑起面具一角，在旋转的舞步中朝博士递上一个致命优雅的微笑——「在这场虚伪的宴会上……只有与你的这支舞，是真实的。」",
+    "description": "叙拉古黑帮假面舞会的华丽大厅内，金色烛台与暗红玫瑰交织出奢靡的死亡气息。拉普兰德身着黑红渐变的哥特蕾丝晚礼裙，修长戴着黑皮手套的手指轻轻挑起面具一角，在旋转的舞步中朝博士递上一个致命优雅的微笑——「在这场虚伪的宴会上……只有与你的这支舞，是真实的。」",
     "id": "lappland_refined_horrormare_gothic_waltz",
     "lighting": "金色水晶吊灯与暗红玫瑰烛光微晕",
     "location": "叙拉古贵族假面舞会大厅",

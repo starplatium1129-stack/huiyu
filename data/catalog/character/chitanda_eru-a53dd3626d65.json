@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chitanda_eru",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "chitanda_eru",
     "profile": {
@@ -49,8 +49,8 @@
         "古典部活动"
       ],
       "classic_cg": {
-        "title": "生雏祭后的落樱桥畔誓约",
-        "description": "在生雏祭落幕的黄昏桥边，身着巫女正装的千反田在樱花纷飞微风中转过身，对奉太郎轻声诉说故乡未来的绝美收束名场面。"
+        "title": "樱花树下的春日低语",
+        "description": "春日微风吹落漫天樱花雨，撑着红伞的和服少女在古老神树下驻足回首，紫瞳清澈见底，向身后的奉太郎轻声倾诉着关于家乡土地与未来的责任心声，神态动人而释然。"
       },
       "identity": {
         "role": "神山高中古典部部长 / 千反田家独生女继承人",
@@ -149,7 +149,7 @@
             "label": "落樱下的无声誓约",
             "description": "在远垣内家的活着雏祭后，折木望着千反田介绍自己故乡的侧颜，在心中默默做出了放弃绝对节能、守护她前行方向的心意抉择。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终章 · 绕远的雏人偶",
             "evidence": {
               "title": "京都动画 · 《冰菓》官方动画主页",
@@ -177,7 +177,7 @@
             "label": "执着追随与未完的情人节",
             "description": "摩根对里志始终抱持直球爱意，而里志因恐惧执着于某种结果而一度偷走巧克力逃避，经历波折后两人关系终获破冰。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "情人节巧克力事件",
             "evidence": {
               "title": "京都动画 · 《冰菓》官方动画主页",

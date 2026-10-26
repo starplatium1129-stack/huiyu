@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_section6_iaido_moonlit_slash",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1064,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "微微压低身形拇指推刀出鞘，红瞳凝视前方，刀刃寒芒迸射",
     "camera": "cowboy shot, low-angle front three-quarter view",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【星见雅 · 对空六课月夜居合斩决】新艾利都幽邃竹林空洞深处，一轮苍白银月高悬。雅身着蓝灰宽袖外套与黑色长袴，深色狐耳机警竖起，红瞳如炬。伴随着太刀出鞘半寸的一道极寒白光，斩断落叶的居合气刃瞬间横扫十方。清丽绝伦的面容不带丝毫人间杂念——「星见流拔刀术……虚空俱灭。」",
+    "description": "新艾利都幽邃竹林空洞深处，一轮苍白银月高悬。雅身着蓝灰宽袖外套与黑色长袴，深色狐耳机警竖起，红瞳如炬。伴随着太刀出鞘半寸的一道极寒白光，斩断落叶的居合气刃瞬间横扫十方。清丽绝伦的面容不带丝毫人间杂念——「星见流拔刀术……虚空俱灭。」",
     "id": "miyabi_section6_iaido_moonlit_slash",
     "lighting": "皎洁清冷圆月天光与太刀出鞘的青白电光",
     "location": "银月当空竹林以骸废墟",

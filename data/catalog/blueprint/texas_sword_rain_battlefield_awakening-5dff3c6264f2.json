@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_sword_rain_battlefield_awakening",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 660,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手持剑凌空挥斩，周身金色源石剑阵万剑齐发从天而降",
     "camera": "wide shot, low angle, descending blades and distant enemy formation visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【德克萨斯 · 剑雨降临万物肃杀】荒芜焦黑的源石战场中央，狂暴的气流激荡。德克萨斯拔剑出鞘，双眸中闪耀着璀璨的金芒。随着她的剑指挥下，虚空中数百柄璀璨的金色源石光剑如暴雨般轰然坠落，将敌阵瞬间贯穿封锁——「剑雨，肃清。」",
+    "description": "荒芜焦黑的源石战场中央，狂暴的气流激荡。德克萨斯拔剑出鞘，双眸中闪耀着璀璨的金芒。随着她的剑指挥下，虚空中数百柄璀璨的金色源石光剑如暴雨般轰然坠落，将敌阵瞬间贯穿封锁——「剑雨，肃清。」",
     "id": "texas_sword_rain_battlefield_awakening",
     "lighting": "金色剑雨爆裂强光与夕阳血色天幕",
     "location": "泰拉荒野源石感染重灾战场",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_viewport",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 725,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "倚在舷窗旁侧身回眸，一手向画面外同伴伸出，拉链裙随站姿自然垂落。",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate medium shot",
     "category": "成人",
     "characterId": "perlica_arknights",
-    "description": "【佩丽卡 · 舷窗星海】巨大的强化玻璃舷窗外是一望无际的静谧星海与流转星云，只着拉链连衣裙的佩丽卡倚着舷窗侧身回眸，星光为她完美的胴体镀上了一层梦幻银边。她向你伸出修长的指尖——「在宇宙的尺度下生命何其渺小……但此刻你的心跳与体温，对我而言便是整个宇宙的意义。」",
+    "description": "巨大的强化玻璃舷窗外是一望无际的静谧星海与流转星云，只着拉链连衣裙的佩丽卡倚着舷窗侧身回眸，星光为她完美的胴体镀上了一层梦幻银边。她向你伸出修长的指尖——「在宇宙的尺度下生命何其渺小……但此刻你的心跳与体温，对我而言便是整个宇宙的意义。」",
     "id": "perlica_arknights_r18_viewport",
     "kreaStyleHint": "",
     "lighting": "starlight through the window",

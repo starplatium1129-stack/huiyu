@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_beach",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 201,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [
       "cropped feet"
@@ -13,7 +13,7 @@
     "title": "玛修 · 常夏海滩",
     "category": "泳装夏日",
     "characterId": "mash_kyrielight",
-    "description": "【玛修 · 常夏海滩】常夏之岛的海滩上，玛修披着白色连体泳装的薄纱下摆，小心翼翼地踩过浪花，粉色短发被海风吹得飞起，她回头露出一个清爽的笑——「前辈，海水比想象中还要凉快呢！」",
+    "description": "常夏之岛的海滩上，玛修披着白色连体泳装的薄纱下摆，小心翼翼地踩过浪花，粉色短发被海风吹得飞起，她回头露出一个清爽的笑——「前辈，海水比想象中还要凉快呢！」",
     "location": "常夏海岛海滩",
     "action": "穿白色连体挂颈泳装，在浅浪中小心迈步，回头清爽微笑",
     "timeOfDay": "白天",

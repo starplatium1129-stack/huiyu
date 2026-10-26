@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_r18_magical_girl_torn_dress",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 833,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "破碎战服半挂，无防备地跌坐",
     "adult": true,
@@ -14,7 +14,7 @@
     "camera": "cowboy shot",
     "category": "私密写真",
     "characterId": "mimori_byakuya",
-    "description": "【深森白夜 · 战后废墟·破碎战服与无防备私密】激烈战斗后的硝烟废墟中，魔法成年女性的战服被魔力余波撕裂大半，白夜无力地跌坐在碎石堆上，大片雪白滑腻的肌肤与贴身衣物完全暴露在外。她喘息着抬头望向走近的你——「敌人……终于被击退了……但是战服坏成这副模样，根本没办法走出去了啦……」",
+    "description": "激烈战斗后的硝烟废墟中，魔法成年女性的战服被魔力余波撕裂大半，白夜无力地跌坐在碎石堆上，大片雪白滑腻的肌肤与贴身衣物完全暴露在外。她喘息着抬头望向走近的你——「敌人……终于被击退了……但是战服坏成这副模样，根本没办法走出去了啦……」",
     "id": "byakuya_r18_magical_girl_torn_dress",
     "kreaStyleHint": "",
     "lighting": "moonlight",

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_sofa_morning_hoodie",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 353,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yui_r18_sofa_morning_hoodie",
     "characterId": "yuigahama_yui",
     "title": "由比滨结衣 · 晨光厨房的笨拙早餐",
-    "description": "【成年 After Story · 由比滨结衣 · 晨光沙发的早餐事故】二十岁以上成年后的结衣端着煎坏的早餐回到客厅，独自蜷坐在晨光沙发里。珊瑚粉宽大连帽衫前襟敞开，一腿屈起藏在下摆中；盘边融化的黄油滴到大腿内侧，她红着脸用两根手指擦去，丰满胸线随慌乱呼吸起伏。她把焦边煎蛋藏到盘底小声保证——「焦掉的我会负责……这个意外也会自己收拾，不许笑。」",
+    "description": "二十岁以上成年后的结衣端着煎坏的早餐回到客厅，独自蜷坐在晨光沙发里。珊瑚粉宽大连帽衫前襟敞开，一腿屈起藏在下摆中；盘边融化的黄油滴到大腿内侧，她红着脸用两根手指擦去，丰满胸线随慌乱呼吸起伏。她把焦边煎蛋藏到盘底小声保证——「焦掉的我会负责……这个意外也会自己收拾，不许笑。」",
     "outfitId": "coral_hoodie",
     "sceneTags": [
       "kitchen",

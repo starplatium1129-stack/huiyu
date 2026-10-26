@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_boudoir_candle_dress",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 184,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "jalter_r18_boudoir_candle_dress",
     "title": "贞德[Alter] · 闺阁烛光",
@@ -12,7 +12,7 @@
     "characterId": "jeanne_alter",
     "outfitId": "evening_black_dress",
     "adult": true,
-    "description": "【成年贞德 Alter · 闺阁烛光】二十岁以上成年版本的黑贞独坐在奢华卧室床沿，黑色晚礼服两侧吊带滑落，紧绷胸衣被她向下拉到乳下。她一手撑住天鹅绒床褥，另一手沿高叉裙摆探向腿间，黑色蕾丝与吊带袜在大腿留下勒痕。烛火映亮银发与金色眼睛，她倔强地偏开脸，却藏不住湿润眼角和咬紧的唇。",
+    "description": "黑贞独坐在奢华卧室床沿，黑色晚礼服两侧吊带滑落，紧绷胸衣被她向下拉到乳下。她一手撑住天鹅绒床褥，另一手沿高叉裙摆探向腿间，黑色蕾丝与吊带袜在大腿留下勒痕。烛火映亮银发与金色眼睛，她倔强地偏开脸，却藏不住湿润眼角和咬紧的唇。",
     "location": "私密闺阁",
     "action": "独坐床沿将黑色胸衣拉至乳下，一手撑床、一手沿高叉裙摆探向腿间，烛光下倔强含泪",
     "timeOfDay": "night",

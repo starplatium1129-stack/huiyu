@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc013",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "A single cherry petal rests in the palm she offers toward the viewer.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, cream blouse, pleated collar, sand beige midi skirt, burgundy waist belt, brown tights, petal, cherry blossoms, profile, blush, close up, outstretched hand, open hand, looking away, soft lighting",
     "rating": "All",
     "season": "春",
-    "story": "【夏目 · 花瓣落进掌心以后】春日公园的樱花正盛，夏目安静地走在外侧，替你挡开迎面的人群。一片花瓣落进她掌心，你说很适合她，她便故作冷淡地把花瓣递来，视线却不肯与你相接——「只是碰巧接到而已。既然你这么喜欢，就收好……不准笑，我没有在特意送你什么。」",
+    "story": "春日公园的樱花正盛，夏目安静地走在外侧，替你挡开迎面的人群。一片花瓣落进她掌心，你说很适合她，她便故作冷淡地把花瓣递来，视线却不肯与你相接——「只是碰巧接到而已。既然你这么喜欢，就收好……不准笑，我没有在特意送你什么。」",
     "storyJa": "【夏目・花びらが手のひらに落ちたあと、】春日公園の桜は満開で、夏目は外から来る人混みを遮りながら静かに歩いています。花びらが彼女の手のひらに落ちた。とても似合っているとあなたが言ったので、彼女は無関心を装って花びらをあなたに渡しましたが、彼女はあなたの目と目を合わせようとしませんでした。――「たまたま受け止めただけ。そんなに気に入ったなら、大事にしなさい……笑わないで。別に、あなたに贈ったわけじゃないから。」",
     "tags": [
       "mole_under_eye",

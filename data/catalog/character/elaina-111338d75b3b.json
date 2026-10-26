@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "elaina",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 10,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "elaina",
     "profile": {
@@ -201,7 +201,7 @@
             "label": "同门冤家与互怼挚友",
             "description": "芙兰与席拉曾共同在妮可门下受训，一个随性温婉、一个豪迈率性，多年来互相拌嘴攀比，但深知彼此是托付生死的至交同门。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "第九卷 · 师门旧忆",
             "evidence": {
               "title": "白石定规 · 《魔女之旅》官方人物设定",
@@ -229,7 +229,7 @@
             "label": "互为依靠的患难旅伴",
             "description": "在艾姆妮西亚因被剥夺记忆遭祖国流放期间，伊雷娜护送她展开漫长的寻忆之旅，两人建立了深厚的信任与心灵共鸣。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "第四卷 · 遗忘之国篇",
             "evidence": {
               "title": "白石定规 · 《魔女之旅》官方故事集",
@@ -243,7 +243,7 @@
             "label": "梦想启蒙与母亲的守护",
             "description": "母亲撰写的《妮可冒险记》是伊雷娜踏上环游世界旅途的终极初心，母亲暗中安排芙兰收徒，以隐秘的温柔护佑女儿展翅飞翔。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终幕 · 妮可与灰之魔女",
             "evidence": {
               "title": "白石定规 · 《魔女之旅》官方故事集",
@@ -257,7 +257,7 @@
             "label": "尊师重道与传承重托",
             "description": "芙兰深受师父妮可的人格魅力感染，怀着对恩师的无上敬仰接下悉心培养其女伊雷娜的重任。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "回忆篇 · 漫游的始源",
             "evidence": {
               "title": "白石定规 · 《魔女之旅》官方人物设定",

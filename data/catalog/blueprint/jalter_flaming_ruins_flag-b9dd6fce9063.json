@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "jalter_flaming_ruins_flag",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 169,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "jalter_flaming_ruins_flag",
     "characterId": "jeanne_alter",
     "title": "贞德[Alter] · 邪龙黑旗·烈焰废墟上的傲慢冷笑",
-    "description": "【贞德[Alter] · 烈焰废墟·邪龙黑旗与傲慢冷笑】燃烧着无尽红莲业火的焦黑废墟之上，身披黑铁铠甲的复仇者高高立起漆黑的邪龙军旗。黑贞反手握着被火光灼热的诅咒之剑，嘴角勾起傲慢而狂暴的冷笑——「哈哈哈哈！愚蠢的杂碎们，在龙之魔女的业火中化作灰烬吧！御主，好好看着我为你烧尽一切阻碍的姿态！」",
+    "description": "燃烧着无尽红莲业火的焦黑废墟之上，身披黑铁铠甲的复仇者高高立起漆黑的邪龙军旗。黑贞反手握着被火光灼热的诅咒之剑，嘴角勾起傲慢而狂暴的冷笑——「哈哈哈哈！愚蠢的杂碎们，在龙之魔女的业火中化作灰烬吧！御主，好好看着我为你烧尽一切阻碍的姿态！」",
     "outfitId": "avenger_black_armor",
     "sceneTags": [
       "burning_ruins",

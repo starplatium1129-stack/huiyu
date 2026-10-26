@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "krista_lenz",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "krista_lenz",
     "profile": {
@@ -170,7 +170,7 @@
             "label": "宿命誓约与红围巾之绊",
             "description": "童年艾伦救下三笠并为她围上红色围巾，成为三笠毕生守护的信仰；艾伦至死深爱三笠却为彻底终结巨人之力而推开她，最终三笠在泪吻中亲手将艾伦斩首解放始祖尤弥尔。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "天与地之战 · 终局决战",
             "evidence": {
               "title": "《进击的巨人》讲谈社官方原作漫画",
@@ -184,7 +184,7 @@
             "label": "看海之约与终局分歧",
             "description": "童年因一本记载墙外世界与大海的书结下生死挚友之谊；后期面对种族灭绝地鸣危机两人理念冲突，阿尔敏最终在坐标道路中与艾伦坦诚告别并承担和平使者之责。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "天与地之战 · 道路对话",
             "evidence": {
               "title": "讲谈社《别册少年Magazine》进击的巨人公式书",
@@ -212,7 +212,7 @@
             "label": "灵魂救赎与无悔之爱",
             "description": "尤弥尔看穿克里斯塔以自我牺牲博取好感的心结，促使她撕碎假面以“希斯特里亚”之名做自己；两人彼此承诺为自己而活，尤弥尔为还莱纳人情远赴马莱赴死前留下深情遗书。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "厄特加尔城之战 / 王政篇",
             "evidence": {
               "title": "《进击的巨人》角色名鉴公式书",
@@ -226,7 +226,7 @@
             "label": "最坏女孩的同盟与共谋",
             "description": "在雷斯教堂地底希斯特里亚拒绝注射始祖针剂吞噬艾伦并救下他，自称‘与人类为敌的最坏女孩’；四年后艾伦发动地鸣前曾私下将计划告知她并达成默契。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "王政篇雷斯地下礼拜堂 / 地鸣前夕",
             "evidence": {
               "title": "讲谈社进击的巨人官方档案",
@@ -251,7 +251,7 @@
             "id": "levi_ackerman-mikasa_ackerman-ackerman_clan_elite",
             "source": "levi_ackerman",
             "target": "mikasa_ackerman",
-            "label": "阿克曼末裔与最强战力搭档",
+            "label": "阿克曼末裔与生死引路与战场托付",
             "description": "同为血脉觉醒的人类顶级战斗种族阿克曼末裔，最初因三笠急于救艾伦导致利威尔断腿而互有微词，后在女巨人捕获战与决战中成为调查兵团不可替代的双重尖刀。",
             "directed": false,
             "spoiler": false,
@@ -268,7 +268,7 @@
             "label": "战后政权斡旋与信赖使节",
             "description": "地鸣平息后，加冕执政的希斯特里亚女王力排岛内耶格尔派激进狂潮，全力庇护阿尔敏等联合国和平使节团展开谈判，维系岛内外的脆弱和平。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "终局战后 · 和平交涉期",
             "evidence": {
               "title": "《进击的巨人》最终卷官方记录",

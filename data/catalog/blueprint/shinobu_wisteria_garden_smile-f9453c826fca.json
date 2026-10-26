@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_wisteria_garden_smile",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1449,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "仰头立于花帘下，花瓣落发，转身浅笑藏悲",
     "adult": false,
@@ -17,7 +17,7 @@
       "story",
       "emotional"
     ],
-    "description": "【藤园·满开午后】紫藤花帘垂落如瀑，忍站在花架下仰头让花影落在脸上。她忽然开口，声音轻得像花瓣——「紫藤花的毒对鬼致命……对我也一样哦。所以呐，在我还笑得出来的日子里……要一起看更多、更多的花才行。」转过身来，微笑之下第一次露出了真实的悲伤。",
+    "description": "紫藤花帘垂落如瀑，忍站在花架下仰头让花影落在脸上。她忽然开口，声音轻得像花瓣——「紫藤花的毒对鬼致命……对我也一样哦。所以呐，在我还笑得出来的日子里……要一起看更多、更多的花才行。」转过身来，微笑之下第一次露出了真实的悲伤。",
     "id": "shinobu_wisteria_garden_smile",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "紫藤花帘过滤的淡紫光",

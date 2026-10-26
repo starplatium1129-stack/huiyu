@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_weekend_bookshop_receipt",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 947,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "casual_date",
@@ -14,7 +14,7 @@
     "location": "街角书店门外",
     "timeOfDay": "下午",
     "mood": "轻快认真",
-    "description": "【优香 · 周末书店的小票】周末的街角书店门外，优香穿着米色风衣、奶油色高领毛衣和藏青格裙，肩上挎着小黑包。她一手抱住刚买的两本书，另一手看着收据核对金额，确认无误后露出轻松的笑容——「书买到了，预算也正好。接下来可以慢慢逛回去。」",
+    "description": "周末的街角书店门外，优香穿着米色风衣、奶油色高领毛衣和藏青格裙，肩上挎着小黑包。她一手抱住刚买的两本书，另一手看着收据核对金额，确认无误后露出轻松的笑容——「书买到了，预算也正好。接下来可以慢慢逛回去。」",
     "action": "站在书店门外，一手抱住两本书，另一手查看收据",
     "promptProse": "Yuuka holds two new books against one arm and checks their receipt, smiling when the total matches.",
     "promptTokens": [

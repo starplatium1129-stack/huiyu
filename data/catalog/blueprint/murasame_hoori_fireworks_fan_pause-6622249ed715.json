@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_hoori_fireworks_fan_pause",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1163,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "characterId": "murasame",
     "outfitId": "summer_yukata",
@@ -14,7 +14,7 @@
     "location": "穗织河畔祭典步道",
     "timeOfDay": "夜晚",
     "mood": "期待雀跃",
-    "description": "【丛雨 · 花火开始前的团扇】穗织河畔的祭典灯笼次第亮起，丛雨穿着金鱼与水纹图案的棉浴衣，绯红腰带在背后结成蝴蝶结。她一手拿团扇轻轻扇风，另一手扶着河边栏杆，抬头等着第一朵烟花——「快看那边！马上就要开始了，可别错过呀！」",
+    "description": "穗织河畔的祭典灯笼次第亮起，丛雨穿着金鱼与水纹图案的棉浴衣，绯红腰带在背后结成蝴蝶结。她一手拿团扇轻轻扇风，另一手扶着河边栏杆，抬头等着第一朵烟花——「快看那边！马上就要开始了，可别错过呀！」",
     "action": "站在河畔栏杆边，一手拿团扇扇风，另一手扶栏，抬头看花火",
     "promptProse": "Murasame holds the round fan in one hand, the other on the river rail, watching the first firework above warm lantern light.",
     "promptTokens": [

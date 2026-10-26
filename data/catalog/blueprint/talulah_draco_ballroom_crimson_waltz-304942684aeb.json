@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "talulah_draco_ballroom_crimson_waltz",
+  "revision": 1,
+  "sortOrder": 1931,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "data": {
+    "id": "talulah_draco_ballroom_crimson_waltz",
+    "characterId": "talulah_arknights",
+    "title": "塔露拉 · 幽暗古堡夜宴的黑金礼裙回眸",
+    "description": "维多利亚古老庄严的黑石古堡宴会厅内，塔露拉身着一袭带有德拉克古老金纹的绯红露肩丝绒礼裙。高开叉裙摆随着步伐展露优美身段，她回眸望向镜头，手轻扶佩剑般的黑金长柄权杖，展现出龙裔王室血脉无可匹敌的高贵与骄傲。",
+    "category": "戏剧瞬间",
+    "location": "维多利亚黑石古堡穹顶夜宴长厅",
+    "action": "执权杖驻足回眸，黑色高开叉礼裙轻摆，龙角威严耸立",
+    "mood": "高贵尊荣",
+    "lighting": "巨型水晶烛台垂落的庄重金辉与古堡阴影",
+    "timeOfDay": "夜晚",
+    "camera": "full body, eye level",
+    "outfitId": "draco_regal_gown",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "gothic_hall",
+      "evening_gown",
+      "off_shoulder",
+      "gold_embroidery",
+      "scepter",
+      "slit_dress",
+      "dragon_horns",
+      "dragon_tail",
+      "regal",
+      "chandelier"
+    ],
+    "promptTokens": [
+      "grand gothic hall",
+      "draco regal gown",
+      "crimson and black velvet gown",
+      "gold draconic embroidery",
+      "off shoulder neckline",
+      "high slit dress",
+      "holding ceremonial scepter",
+      "majestic dragon horns",
+      "dragon tail trailing",
+      "silver grey long hair",
+      "golden eyes",
+      "imperious proud gaze",
+      "full body",
+      "crystal chandelier glow",
+      "stone pillars"
+    ],
+    "promptProse": "Sweeping through the vaulted stone ballroom in an off-shoulder crimson and black velvet gown, gold draconic embroidery catches the candlelight. Her towering horns and trailing tail command the hall as she pauses to look back with imperial poise.",
+    "animaCaption": "She pauses in the vaulted gothic ballroom in a crimson and black velvet gown, her gaze regal.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "dramatic"
+    ]
+  }
+}

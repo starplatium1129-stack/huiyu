@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_archive_ledger",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 531,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "执笔在账册上批注",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【凯尔希 · 档案核录】深夜办公室的台灯光晕下，厚重的罗德岛收支账目与干员档案堆叠整齐。凯尔希执笔在纸页上做出严谨的批注，听见你的脚步声头也不抬——「我以为你早该在三个小时前进入深度睡眠。既然来了，就坐下把这份物资调配协议过目一遍。」",
+    "description": "深夜办公室的台灯光晕下，厚重的罗德岛收支账目与干员档案堆叠整齐。凯尔希执笔在纸页上做出严谨的批注，听见你的脚步声头也不抬——「我以为你早该在三个小时前进入深度睡眠。既然来了，就坐下把这份物资调配协议过目一遍。」",
     "id": "kaltsit_arknights_archive_ledger",
     "lighting": "single desk lamp",
     "location": "罗德岛档案室",

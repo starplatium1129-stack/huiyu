@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_hygiene_bay",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 723,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "站在清洁舱淋浴水流下，一手抹去脸上水痕，侧身回头看向画面外同伴。",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "medium shot, side view",
     "category": "成人",
     "characterId": "perlica_arknights",
-    "description": "【佩丽卡 · 清洁舱】水汽弥漫的高压消毒淋浴舱内，滚烫的水流冲刷着佩丽卡湿透的长发与紧致优美的背部曲线。水珠顺着她高挑修长的大腿流淌而下，她抹开脸上的水痕回眸注视——「野外勘探归来的深度清洁非常重要……管理员，如果不介意的话，请进来与我一同完成洗消程序。」",
+    "description": "水汽弥漫的高压消毒淋浴舱内，滚烫的水流冲刷着佩丽卡湿透的长发与紧致优美的背部曲线。水珠顺着她高挑修长的大腿流淌而下，她抹开脸上的水痕回眸注视——「野外勘探归来的深度清洁非常重要……管理员，如果不介意的话，请进来与我一同完成洗消程序。」",
     "id": "perlica_arknights_r18_hygiene_bay",
     "kreaStyleHint": "",
     "lighting": "soft steam light",

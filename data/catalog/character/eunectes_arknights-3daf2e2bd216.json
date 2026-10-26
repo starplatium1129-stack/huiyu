@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eunectes_arknights",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 23,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "eunectes_arknights",
     "profile": {
@@ -51,13 +51,16 @@
         "role": "萨尔贡阿卡胡拉森蚺部族前酋长 / 机械工程师 / 罗德岛重装干员",
         "age": "约20岁（年轻成年女性）",
         "occupation": "部族领袖 / 机械技师 / 重装干员（决战者）",
-        "faction": "萨尔贡阿卡胡拉 / 嘉维尔意志 / 罗德岛工程部"
+        "faction": "萨尔贡阿卡胡拉 / 嘉维尔意志 / 罗德岛工程部",
+        "region": "萨尔贡",
+        "race": "斐迪亚",
+        "classificationSource": "游戏内基础档案（出身地、种族）；https://github.com/Kengxxiao/ArknightsGameData/blob/master/zh_CN/gamedata/excel/handbook_info_table.json"
       },
       "tags": [
         "深墨绿色 / 暗橄榄绿（Dark Green / Deep Olive Green）",
         "金黄色 / 琥珀金（Golden amber / Yellow eyes），具有爬行类与蛇类典型的细长竖瞳（slit pupils），目光锐利专注却又透着工匠的纯粹与率真。"
       ],
-      "bg_story": "森蚺本名祖玛玛，出生于萨尔贡封闭蛮荒的阿卡胡拉雨林，曾任森蚺部族酋长。幼年时，掠过雨林边缘的现代移动城市钢铁巨躯给祖玛玛幼小的心灵带来了前所未有的机械启蒙震撼。在神秘长生种金刚鹦鹉“大祭司”的启蒙下，祖玛玛无师自通，凭借拾荒得来的工业废料与天然源石零件，独立打造出了重型战斗机甲“大丑”（暴食）。在《密林悍将归来》事件中，为了带领族人摆脱落后困境并守护雨林，她与重归故乡的嘉维尔产生激烈理念碰撞，机甲被嘉维尔徒手击破后心悦诚服，结下深厚同盟。随后祖玛玛率部加入“嘉维尔意志”，并正式入职罗德岛工程部。在可露希尔等专业工程师指导下，她以惊人的求知欲飞速吸收现代机电与材料学，将土法改装提升为顶级战术装甲。在多索雷斯度假及《理想城》地底勘探中，祖玛玛均作为中坚战力冲锋陷阵。她誓要用学到的先进现代机械工业彻底反哺贫瘠落后的阿卡胡拉，为族人拓出一条通往明天的光明大道。",
+      "bg_story": "祖玛玛是萨尔贡阿卡胡拉雨林部族“嘉维尔意志”的族长兼机械工程师，代号森蚺。她天生对冷冰冰的机械构造、齿轮与蒸汽动力怀有极高的好奇心，自学掌握了精湛的焊接与金属加工技艺，亲手打造出大型战斗机械“百丑”。在大酋长祭典期间，因受外来技术人员误导而试图推行工业化变革，与归乡的嘉维尔爆发冲突，随后在嘉维尔的直率敲打下认识到急功近利的危害，放下偏执率部加入罗德岛。在多索雷斯度假及《理想城》地底勘探中，祖玛玛均作为核心机械师独当一面。她誓要用学到的先进现代机械工业反哺贫瘠的故土，为雨林同胞拓展更广阔安稳的生活空间。",
       "source": "Hypergryph《明日方舟 / Arknights》",
       "traits": [
         "eunectes (arknights)",
@@ -460,7 +463,7 @@
             "label": "跨越纪元的同行与审视",
             "description": "两人同为前文明遗存的关键存在，凯尔希数万年来注视并戒备着博士的选择，却依然在巴别塔与罗德岛与之一同托起文明火种。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 凯尔希与博士历史档案",
@@ -488,7 +491,7 @@
             "label": "魔王之冠与慈悲托付",
             "description": "特蕾西娅在巴别塔陷落前将萨卡兹的古老权能与文明愿景尽数托付给年幼的阿米娅，阿米娅终生背负其意志为大地寻找宽恕之道。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔与魔王传承专条",
@@ -502,7 +505,7 @@
             "label": "旧日知音与理念决裂",
             "description": "曾携手开创巴别塔的挚友，却因前人类复兴宿命与泰拉现实生命的取舍而走向悲剧性的殊途与永别。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 巴别塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔活动全档案",
@@ -516,7 +519,7 @@
             "label": "骨肉至亲与救赎誓言",
             "description": "同母异父的亲姐妹，童年被迫离散并走向截然不同的命运；陈甘冒生死突入核心城斩断附着其身的黑蛇狂魂，唤醒了塔露拉的本心。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "鹰角网络 · 《明日方舟》主线第八章剧本",
@@ -530,7 +533,7 @@
             "label": "宿命较量与真理启示",
             "description": "作为整合运动暴动的领袖与罗德岛领袖展开殊死决斗，阿米娅在升变后以精神之剑共鸣唤醒被科西切怨念压制的塔露拉原初意志。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "PRTS维基 · 塔露拉决战记录",
@@ -572,7 +575,7 @@
             "label": "看押受审与前路明证",
             "description": "在塔露拉被收监罗德岛期间，凯尔希以洞悉千年的冷静视角与这位昔日整合运动领袖多次深入对谈，见证其作为赎罪斗士重回战场。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第九章至第十一章",
             "evidence": {
               "title": "PRTS维基 · 塔露拉收监与再出发档案",
@@ -642,7 +645,7 @@
             "label": "圣堂罹难与无言谅解",
             "description": "八年前精锐小队的生死搭档，因安多恩事件蕾缪安重伤昏迷、莫斯提马堕天流亡；蕾缪安苏醒后以从容的心境放下了往昔怨尤。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 吾导先路",
             "evidence": {
               "title": "PRTS维基 · 吾导先路教宗枢机处记录",
@@ -810,7 +813,7 @@
             "label": "生死与共的深海血誓",
             "description": "二度同生共死的第二小队深海猎人同袍，在陆地与海嗣低语交织的绝境中彼此呼唤人性，以斩断潮涌的决心支撑对方不被同化。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 愚人号与覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 深海猎人阵营总志",
@@ -838,7 +841,7 @@
             "label": "海洋盟约与审慎防范",
             "description": "凯尔希深刻知晓深海猎人改造的残酷真相与大群海嗣覆灭泰拉的风险，在竭力为斯卡蒂提供生理支持的同时时刻监控异变征兆。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 覆潮之下医疗报告",

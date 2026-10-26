@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "typhon_arknights",
-  "revision": 6,
+  "revision": 9,
   "sortOrder": 165,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "typhon_arknights",
     "profile": {
@@ -48,13 +48,16 @@
         "role": "萨米极北萨卡兹猎人 / 罗德岛合作狙击干员",
         "age": "青年（猎人盛年）",
         "occupation": "极地向导 / 萨米猎人 / 重弓狙击手",
-        "faction": "萨米独石防线 / 罗德岛"
+        "faction": "萨米独石防线 / 罗德岛",
+        "region": "萨米",
+        "race": "萨卡兹",
+        "classificationSource": "游戏内基础档案（出身地、种族）；https://github.com/Kengxxiao/ArknightsGameData/blob/master/zh_CN/gamedata/excel/handbook_info_table.json"
       },
       "tags": [
         "萨卡兹猎人",
         "萨米"
       ],
-      "bg_story": "提丰是生长于萨米极北苦寒冻原的年轻萨卡兹猎人，体内流淌着古老而罕见的萨卡兹血脉，额生漆黑而巨大的扭曲弯角。幼年时在风雪中奄奄一息的她被萨米独石守卫玛加丹救下并悉心抚养，在酷烈冰原与神秘低语中磨砺出远超常人的感知力与生存本领。她手持一把由稀有源石骨材与精密合金打造的巨型重复合弓，在漫天暴风雪与地磁紊乱的极夜中，亦能仅凭风息动静精准狙杀千里之外的狂暴雪兽。随着极北深渊“坍缩”异象的剧烈暴发与无形“邪魔”的南侵腐蚀，萨米古老的树木与生灵成片畸变消亡。在亲眼见证战友被不可名状之物侵蚀瓦解的惨痛后，提丰接受玛加丹的嘱托踏入文明阵线，与深入冰原科考的罗德岛先遣队及麦哲伦相遇，并受聘成为罗德岛在极北方向的特聘向导兼远程狙击干员。在“探索者的银凇止境”系列惨烈战役中，提丰协助罗德岛与独石战士们正面硬抗邪魔潮涌，以超凡的神箭多次洞穿坍缩实体的核心，为整个泰拉文明死死守住了北疆防线。战斗之余，她逐渐学着适应温暖的舰桥生活，以纯粹无瑕的心灵注视着大地生灵。",
+      "bg_story": "萨米独行侠猎人，提丰是萨米部族在无尽冰原上孕育出的坚韧神射手。手持一把融入古老冰原巫术与源石机械的大型复合狙击重弓，对极地风雪与邪魔侵蚀具有极强的洞察力。因童年目睹故乡聚落遭遇邪魔风暴覆灭，年幼的提丰在严寒绝境中艰难求生，最终被麦哲伦与萨米守护者所救，由此成长为一名坚毅警惕的雪原猎手。在《探索者的银霜止境》冰原探索中，提丰协助麦哲伦与罗德岛先遣队抵御极北邪魔的扩散，用沉着冷静的箭矢在茫茫雪海中撕开生路。加入罗德岛后，她作为高台狙击核心活跃在最前沿，用猎人的朴实与敏锐守护着大地的边缘。",
       "source": "Hypergryph《明日方舟 / Arknights》",
       "traits": [
         "typhon_(arknights)",
@@ -454,7 +457,7 @@
             "label": "跨越纪元的同行与审视",
             "description": "两人同为前文明遗存的关键存在，凯尔希数万年来注视并戒备着博士的选择，却依然在巴别塔与罗德岛与之一同托起文明火种。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 凯尔希与博士历史档案",
@@ -482,7 +485,7 @@
             "label": "魔王之冠与慈悲托付",
             "description": "特蕾西娅在巴别塔陷落前将萨卡兹的古老权能与文明愿景尽数托付给年幼的阿米娅，阿米娅终生背负其意志为大地寻找宽恕之道。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔与魔王传承专条",
@@ -496,7 +499,7 @@
             "label": "旧日知音与理念决裂",
             "description": "曾携手开创巴别塔的挚友，却因前人类复兴宿命与泰拉现实生命的取舍而走向悲剧性的殊途与永别。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 巴别塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔活动全档案",
@@ -510,7 +513,7 @@
             "label": "骨肉至亲与救赎誓言",
             "description": "同母异父的亲姐妹，童年被迫离散并走向截然不同的命运；陈甘冒生死突入核心城斩断附着其身的黑蛇狂魂，唤醒了塔露拉的本心。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "鹰角网络 · 《明日方舟》主线第八章剧本",
@@ -524,7 +527,7 @@
             "label": "宿命较量与真理启示",
             "description": "作为整合运动暴动的领袖与罗德岛领袖展开殊死决斗，阿米娅在升变后以精神之剑共鸣唤醒被科西切怨念压制的塔露拉原初意志。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "PRTS维基 · 塔露拉决战记录",
@@ -566,7 +569,7 @@
             "label": "看押受审与前路明证",
             "description": "在塔露拉被收监罗德岛期间，凯尔希以洞悉千年的冷静视角与这位昔日整合运动领袖多次深入对谈，见证其作为赎罪斗士重回战场。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第九章至第十一章",
             "evidence": {
               "title": "PRTS维基 · 塔露拉收监与再出发档案",
@@ -636,7 +639,7 @@
             "label": "圣堂罹难与无言谅解",
             "description": "八年前精锐小队的生死搭档，因安多恩事件蕾缪安重伤昏迷、莫斯提马堕天流亡；蕾缪安苏醒后以从容的心境放下了往昔怨尤。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 吾导先路",
             "evidence": {
               "title": "PRTS维基 · 吾导先路教宗枢机处记录",
@@ -804,7 +807,7 @@
             "label": "生死与共的深海血誓",
             "description": "二度同生共死的第二小队深海猎人同袍，在陆地与海嗣低语交织的绝境中彼此呼唤人性，以斩断潮涌的决心支撑对方不被同化。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 愚人号与覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 深海猎人阵营总志",
@@ -832,7 +835,7 @@
             "label": "海洋盟约与审慎防范",
             "description": "凯尔希深刻知晓深海猎人改造的残酷真相与大群海嗣覆灭泰拉的风险，在竭力为斯卡蒂提供生理支持的同时时刻监控异变征兆。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 覆潮之下医疗报告",

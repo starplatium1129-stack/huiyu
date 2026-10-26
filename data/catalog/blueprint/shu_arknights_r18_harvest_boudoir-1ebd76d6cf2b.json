@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_harvest_boudoir",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 713,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "shu_arknights_r18_harvest_boudoir",
     "characterId": "shu_arknights",
     "title": "黍 · 丰年夜的薄纱",
-    "description": "【黍 · 丰年夜的薄纱】收获庆典散场后，黍独自在木屋寝间换下礼服，只穿半褪的薄纱寝衣与蕾丝内裤斜倚在丝绸床铺上。寝衣滑到腰间，裸露的胸口与内裤旁若隐若现；她带着微红脸颊，用指尖勾住内裤边缘，侧身回望。",
+    "description": "收获庆典散场后，黍独自在木屋寝间换下礼服，只穿半褪的薄纱寝衣与蕾丝内裤斜倚在丝绸床铺上。寝衣滑到腰间，裸露的胸口与内裤旁若隐若现；她带着微红脸颊，用指尖勾住内裤边缘，侧身回望。",
     "category": "成人",
     "location": "大荒城收获节后的木屋寝间",
     "action": "斜倚在床上拨开薄纱寝衣与内裤，侧身看向镜头",

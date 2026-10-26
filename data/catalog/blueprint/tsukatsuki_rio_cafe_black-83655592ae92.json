@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_cafe_black",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 880,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端黑咖啡审视对方",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【调月莉音 · 黑咖啡与卸下防备】清静的高级咖啡馆角落，莉音端起无糖黑咖啡轻抿一口，血红色的眼眸静静注视着对面手忙脚乱加糖的你。她唇角难得扬起一抹极浅的弧度——「纯黑咖啡能让人保持绝对的理智。不过……偶尔尝一口你推过来的甜甜圈，似乎也不算逻辑错误。」",
+    "description": "清静的高级咖啡馆角落，莉音端起无糖黑咖啡轻抿一口，血红色的眼眸静静注视着对面手忙脚乱加糖的你。她唇角难得扬起一抹极浅的弧度——「纯黑咖啡能让人保持绝对的理智。不过……偶尔尝一口你推过来的甜甜圈，似乎也不算逻辑错误。」",
     "id": "tsukatsuki_rio_cafe_black",
     "kreaStyleHint": "",
     "lighting": "咖啡店暖光",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_desk_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 461,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "深夜伏在书桌前，单薄睡衣滑落肩头",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "side view, medium shot, horizontal framing",
     "category": "成人",
     "characterId": "roxy_migurdia",
-    "description": "【洛琪希 · 书桌夜读】深夜书房昏黄的油灯下，洛琪希伏在堆满羊皮纸的书桌前，睡眼惺忪中单薄的睡衣滑落肩头。她揉了揉泛酸的眼睛，声音软糯迷糊——「唔……这道水系复合术式终于推导完成了……好困，抱我回床上去睡嘛……」",
+    "description": "深夜书房昏黄的油灯下，洛琪希伏在堆满羊皮纸的书桌前，睡眼惺忪中单薄的睡衣滑落肩头。她揉了揉泛酸的眼睛，声音软糯迷糊——「唔……这道水系复合术式终于推导完成了……好困，抱我回床上去睡嘛……」",
     "id": "roxy_migurdia_r18_desk_night",
     "kreaStyleHint": "",
     "lighting": "warm oil lamp",

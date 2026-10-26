@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mashiro",
-  "revision": 6,
+  "revision": 9,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "shiina_mashiro",
     "profile": {
@@ -44,8 +44,8 @@
         "猫咪与缤纷的颜料色彩"
       ],
       "classic_cg": {
-        "title": "樱花雨下的宿命相拥",
-        "description": "水明高中的坡道上粉白樱花如雪纷飞，浅金长发绝美少女赤足站在树荫下，淡橙眼眸倒映着少年奔赴而来的身影，画笔脱手坠落，在无言中交付了四年沉淀的爱意。"
+        "title": "晨曦画室中的长椅相依",
+        "description": "晨光洒满堆满画布与画笔的樱花庄房间，金发少女安静地坐在画架前，指尖沾着油彩，微微侧头靠在空太的肩头，眼眸映着窗外飞舞的樱花，神态柔和安详。"
       },
       "identity": {
         "role": "女主角 / 世界级天才油画家兼职业漫画家",
@@ -137,7 +137,7 @@
             "label": "同甘共苦与落幕的暗恋",
             "description": "为当声优拼命打工的七海暗恋空太并默默付出，在空太选择真白后流着泪勇敢面对现实，是空太最敬重的奋斗同伴。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "情人节篇 · 心意抉择",
             "evidence": {
               "title": "角川 · 《樱花庄的宠物女孩》官方作品页",

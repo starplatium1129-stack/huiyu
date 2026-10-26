@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_wrench_pose",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 590,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "把扳手扛在肩上，比了个大拇指",
     "camera": "medium shot",
@@ -14,7 +14,7 @@
       "iconic",
       "daily"
     ],
-    "description": "【森蚺 · 扳手英姿】重型装配台前，森蚺潇洒地将一米多长的巨型管钳扳手扛在肩上，冲着镜头自信地比起大拇指，粗壮的蛇尾在身后欢快地晃动——「无论是机械故障还是来袭的敌人，只要有我和丑东西在，一扳手下去就能全部解决！」",
+    "description": "重型装配台前，森蚺潇洒地将一米多长的巨型管钳扳手扛在肩上，冲着镜头自信地比起大拇指，粗壮的蛇尾在身后欢快地晃动——「无论是机械故障还是来袭的敌人，只要有我和丑东西在，一扳手下去就能全部解决！」",
     "id": "eunectes_arknights_wrench_pose",
     "lighting": "golden workshop light",
     "location": "罗德岛机工坊门口",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 788,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "海边祭典摊位举起捞到的星星面具，半扎发在灯笼与海风里轻摇",
     "adult": false,
@@ -17,7 +17,7 @@
       "summer",
       "beach"
     ],
-    "description": "【夏日祭海滨摊位·傍晚】有希穿着紫白泳装外搭轻薄浴衣短衫，坐在海边祭典的捞面具摊旁挑选纪念品；她把捞到的星星面具举给镜头，半扎发被灯笼和海风照得轻轻摇曳。",
+    "description": "有希穿着紫白泳装外搭轻薄浴衣短衫，坐在海边祭典的捞面具摊旁挑选纪念品；她把捞到的星星面具举给镜头，半扎发被灯笼和海风照得轻轻摇曳。",
     "id": "suou_yuki_sfw_b8_05",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "lantern glow mixed with blue evening sea light",

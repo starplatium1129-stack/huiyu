@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "talulah_ruined_spire_sunset_embers",
+  "revision": 1,
+  "sortOrder": 1930,
+  "createdAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "data": {
+    "id": "talulah_ruined_spire_sunset_embers",
+    "characterId": "talulah_arknights",
+    "title": "塔露拉 · 废墟尖塔残照下的飞雪与火烬",
+    "description": "夕阳残照洒满切尔诺伯格破损的旧钟塔天台。塔露拉身着高领厚毛衣与长靴迎风伫立在断壁旁，指尖燃着一簇温和微弱的小火苗。她眺望着远方无垠的感染者土地，冷峻的神色中流露出一丝对和平的深切追寻与落寞。",
+    "category": "戏剧瞬间",
+    "location": "被战争摧毁的旧钟塔残破尖顶",
+    "action": "指尖托着微弱火苗眺望远方，微风吹拂长发",
+    "mood": "孤寂悠远",
+    "lighting": "冬日血色残阳与指尖微弱火苗的幽光",
+    "timeOfDay": "黄昏",
+    "camera": "cowboy shot, eye level",
+    "outfitId": "casual_warm_sweater",
+    "recommendedSize": "1152x1536",
+    "sceneTags": [
+      "ruined_tower",
+      "sunset",
+      "embers",
+      "turtleneck_sweater",
+      "small_flame",
+      "standing",
+      "dragon_horns",
+      "dragon_tail",
+      "lonely",
+      "looking_into_distance"
+    ],
+    "promptTokens": [
+      "ruined clocktower roof",
+      "casual warm sweater",
+      "cream cable knit sweater",
+      "wool scarf fluttering",
+      "small flame hovering on fingertip",
+      "glowing embers",
+      "standing by stone parapet",
+      "dragon horns",
+      "dragon tail",
+      "silver hair in breeze",
+      "golden eyes looking into distance",
+      "melancholy serene expression",
+      "cowboy shot",
+      "crimson sunset sky",
+      "snow falling"
+    ],
+    "promptProse": "Standing on the crumbling rooftop parapet against a bruised winter sunset, a gentle ember hovers above her bare fingertip. Her cream knit sweater shields her from the biting wind as she gazes into the horizon with quiet, solemn resolve.",
+    "animaCaption": "She stands at the ruined tower edge watching the crimson sunset with an ember at her fingertip.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "dramatic"
+    ]
+  }
+}

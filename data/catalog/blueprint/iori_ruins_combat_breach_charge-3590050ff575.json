@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_ruins_combat_breach_charge",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 924,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "在硝烟与碎石中贴地滑铲突进，手持卡宾狙击枪射击",
     "camera": "full-body shot, Dutch angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【银镜伊织 · 突击队长的破晓突进】硝烟弥漫的废墟走廊内，砖石碎屑在空中飞扬。伊织在爆破烟雾中完成贴地滑铲突进，修长矫健的双腿在黑丝包裹下划出凌厉的弧线，枪口火光瞬间照亮了她倔强而充满战意的小脸——「第一突击点突破！跟紧我，不要拖后腿！」",
+    "description": "硝烟弥漫的废墟走廊内，砖石碎屑在空中飞扬。伊织在爆破烟雾中完成贴地滑铲突进，修长矫健的双腿在黑丝包裹下划出凌厉的弧线，枪口火光瞬间照亮了她倔强而充满战意的小脸——「第一突击点突破！跟紧我，不要拖后腿！」",
     "id": "iori_ruins_combat_breach_charge",
     "lighting": "枪口火光与晨曦穿透硝烟的强体积光",
     "location": "废弃学园战术据点走廊",

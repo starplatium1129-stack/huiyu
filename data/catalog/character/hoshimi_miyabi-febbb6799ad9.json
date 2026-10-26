@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshimi_miyabi",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 78,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "hoshimi_miyabi",
     "profile": {
@@ -252,7 +252,7 @@
             "label": "虚狩之刃与深渊之眼",
             "description": "新艾利都至强虚狩星见雅与法厄同兄妹在多次零号空洞禁区调查中达成战略默契。法厄同的视界同步技术为雅破除以太迷雾，雅的无匹刀势则多次在以骸巨兽面前护得绳匠周全。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "零号空洞深层与主线第四章",
             "evidence": {
               "title": "HoYoverse《绝区零》主线剧情 ·「火狱骑行」与后续篇章",

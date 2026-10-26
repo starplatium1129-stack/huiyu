@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_school_train_station_sunset_wait",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1058,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单肩背包靠在栏杆边听歌，列车进站风卷起发丝与百褶裙，尾尖微摆",
     "camera": "medium shot, from the side",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "moody"
     ],
-    "description": "【艾莲·乔 · 暮色站台的黄昏候车】高架空铁站台上，晚霞把铁轨染成浓郁的金红。艾莲倚靠在安全防护栏旁，耳机线顺着脖颈垂落，书包随手搭在肩头。列车进站的狂风掀起她的水手服裙摆与短发，巨大的鲨鱼尾巴在背后沉稳保持平衡，勾勒出都市女高放学后最真实的静谧剪影。",
+    "description": "高架空铁站台上，晚霞把铁轨染成浓郁的金红。艾莲倚靠在安全防护栏旁，耳机线顺着脖颈垂落，书包随手搭在肩头。列车进站的狂风掀起她的水手服裙摆与短发，巨大的鲨鱼尾巴在背后沉稳保持平衡，勾勒出都市女高放学后最真实的静谧剪影。",
     "id": "ellen_school_train_station_sunset_wait",
     "lighting": "浓郁金红晚霞与站台荧光灯交融的丁达尔光",
     "location": "新艾利都高架空铁露天站台",

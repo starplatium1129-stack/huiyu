@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc034",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 32,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Seated cross-legged, she holds the brush over the last painted star, tired eyes fixed on the canvas. Dawn catches the blue-violet paint in her hair and the wet brush marks.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "safe, 1girl, ayachi_nene, white art smock, pink dress, cross-legged, holding paintbrush, painting, canvas, starry sky painting, palette, easel, art room, dawn, medium shot, @rella",
     "rating": "All",
     "season": "春",
-    "story": "【宁宁 · 把星空画到天亮】春日美术室里，宁宁为了完成社团海报，对着昨晚拍下的星空画了一整夜。晨光照进来时，她还在为最后一颗星调整颜色，银白长发沾上几道蓝紫颜料。你替她拿走画笔，她才疲惫地靠过来——「再一下就完成了……好吧，先休息五分钟。醒来以后，你要第一个看成品。」",
+    "story": "春日美术室里，宁宁为了完成社团海报，对着昨晚拍下的星空画了一整夜。晨光照进来时，她还在为最后一颗星调整颜色，银白长发沾上几道蓝紫颜料。你替她拿走画笔，她才疲惫地靠过来——「再一下就完成了……好吧，先休息五分钟。醒来以后，你要第一个看成品。」",
     "storyJa": "【寧々・夜明けまで星空を描いて】春の美術室では、寧々さんがクラブのポスターを完成させるために、昨夜撮った星空を一晩かけて描きました。朝の光が入ってきたとき、彼女はまだ最後の星の色を調整しており、彼女の長い銀の髪は青と紫の絵の具の数筋で汚れていました。あなたが彼女のためにブラシを取り上げると、彼女は疲れたように身をかがめました。――「あと少しで完成するんです……分かりました、五分だけ休みます。起きたら、あなたが最初に完成品を見てくださいね。」",
     "tags": [
       "hair_ribbon",

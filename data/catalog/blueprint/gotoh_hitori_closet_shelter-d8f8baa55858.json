@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_closet_shelter",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 999,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "蜷坐于壁橱软垫上，头戴耳机专注看吉他谱",
     "camera": "medium shot, eye level",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【后藤一里 · 壁橱秘密基地】逼仄而充满安全感的卧室壁橱里，四壁贴满了喜爱的摇滚乐队海报与暖黄色小串灯。波奇酱蜷坐在软垫上，头戴专业监听耳机，怀抱吉他专注练琴，眼神温柔又安心——「这里是属于我一个人的安全岛……只有吉他和录音麦克风，不用担心任何人的目光。」",
+    "description": "逼仄而充满安全感的卧室壁橱里，四壁贴满了喜爱的摇滚乐队海报与暖黄色小串灯。波奇酱蜷坐在软垫上，头戴专业监听耳机，怀抱吉他专注练琴，眼神温柔又安心——「这里是属于我一个人的安全岛……只有吉他和录音麦克风，不用担心任何人的目光。」",
     "id": "gotoh_hitori_closet_shelter",
     "lighting": "暖黄串灯微光与电脑屏幕冷光交融",
     "location": "家中卧室壁橱内部",

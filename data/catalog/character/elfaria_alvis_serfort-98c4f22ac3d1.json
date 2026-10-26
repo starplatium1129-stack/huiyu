@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "elfaria_alvis_serfort",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 152,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "elfaria_alvis_serfort",
     "profile": {
@@ -136,7 +136,7 @@
             "label": "深窗冰锁与思念分身",
             "description": "艾尔菲利亚为了等待威尔登塔拒绝任何政治联姻，甚至暗中分化出魔导替身陪伴在威尔身旁辅助他跨越阶层大试炼。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "学院魔导大祭篇",
             "evidence": {
               "title": "讲谈社 · 《杖与剑的魔剑谭》官方动画网站",
@@ -154,6 +154,20 @@
             "stage": "迷宫实战篇 · 斩断魔法之剑",
             "evidence": {
               "title": "讲谈社 · 《杖与剑的魔剑谭》官方动画网站",
+              "url": "https://wistoria-anime.com/"
+            }
+          },
+          {
+            "id": "wistoria-will-rosti",
+            "source": "will_serfort",
+            "target": "roスティ",
+            "label": "同寝室挚友与魔导具制作搭档",
+            "description": "同寝室好友，天才魔导具制作师，极度溺爱并全力支援不擅长魔法却体术无双的威尔。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法学院同窗",
+            "evidence": {
+              "title": "《杖与剑的魔剑谭》官方网站",
               "url": "https://wistoria-anime.com/"
             }
           }

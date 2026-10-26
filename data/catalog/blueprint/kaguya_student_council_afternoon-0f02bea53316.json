@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_student_council_afternoon",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1395,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端坐批阅文件偷看你，耳根泛红低头掩饰，钢笔游走纸面",
     "adult": false,
@@ -17,7 +17,7 @@
       "school",
       "girlfriend"
     ],
-    "description": "【秀知院学生会室·午后】夕阳斜斜地铺满长桌，辉夜端坐在会长席旁批阅文件，钢笔尖在纸面上沙沙游走。她时不时抬眼偷看你一眼又立刻低头，耳根悄悄泛红——第三杯茶也已经凉了。夕阳把她的红缎带与黑发折叠马尾染成暖金色，那份大小姐的矜持里，藏着一场谁先告白谁就输的战争。",
+    "description": "夕阳斜斜地铺满长桌，辉夜端坐在会长席旁批阅文件，钢笔尖在纸面上沙沙游走。她时不时抬眼偷看你一眼又立刻低头，耳根悄悄泛红——第三杯茶也已经凉了。夕阳把她的红缎带与黑发折叠马尾染成暖金色，那份大小姐的矜持里，藏着一场谁先告白谁就输的战争。",
     "id": "kaguya_student_council_afternoon",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "暖金色夕阳斜铺长桌与发丝",

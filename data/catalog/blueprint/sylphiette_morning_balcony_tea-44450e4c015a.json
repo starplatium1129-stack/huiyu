@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_morning_balcony_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 466,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端着热气腾腾的红茶，害羞地露出幸福微笑",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【希露菲 · 清晨阳台·新婚红茶与温柔晨曦】拉诺亚王国新婚宅邸洒满晨曦的二楼阳台上，换上温婉便服的希露菲双手端着热气腾腾的红茶，白皙的脸颊在晨光中泛着幸福的绯红——「早上好，鲁迪。今天的天气非常好呢……红茶已经泡好了，无论未来发生什么，我都会一直守护在你身边。」",
+    "description": "拉诺亚王国新婚宅邸洒满晨曦的二楼阳台上，换上温婉便服的希露菲双手端着热气腾腾的红茶，白皙的脸颊在晨光中泛着幸福的绯红——「早上好，鲁迪。今天的天气非常好呢……红茶已经泡好了，无论未来发生什么，我都会一直守护在你身边。」",
     "id": "sylphiette_morning_balcony_tea",
     "lighting": "soft_morning_light",
     "location": "格雷拉特家清晨露台",

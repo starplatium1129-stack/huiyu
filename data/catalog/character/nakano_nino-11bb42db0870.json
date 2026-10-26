@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_nino",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 179,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "nakano_nino",
     "profile": {
@@ -182,7 +182,7 @@
             "label": "战国共鸣与自卑破茧的倾心告白",
             "description": "因风太郎真诚接纳其战国爱好而最早敞开心扉；为追上风太郎苦练烘焙面包，在京都清水寺鼓起全身勇气向他伸手告白，虽未成新娘却在追爱中找到了立足人生的自信与梦想。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "修学旅行清水寺篇至终局",
             "evidence": {
               "title": "TBS电视台《五等分的新娘》官方网站",
@@ -196,7 +196,7 @@
             "label": "从敌视排斥到恋爱暴走机车",
             "description": "起初为守护姐妹下药驱逐风太郎，在七次感谢祭与短发蜕变后彻底爱上风太郎，在机车后座轰轰烈烈直球告白；学园祭落选后虽痛哭拭泪，依然展现最骄傲洒脱的自尊与祝福。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "七个再见篇至学园祭终盘",
             "evidence": {
               "title": "TBS电视台《五等分的新娘∬》官方网站",
@@ -210,7 +210,7 @@
             "label": "童年京都誓言与命中注定的新娘",
             "description": "四叶正是童年在京都鼓励风太郎奋发图强的‘写真之子’；因愧对姐妹长年掩藏爱意，风太郎在学园祭直面内心选择四叶，两人跨越漫长岁月许下一生一世的婚礼誓约。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "剧场版《五等分的新娘》婚礼完结篇",
             "evidence": {
               "title": "剧场版《五等分的新娘》官方网站",
@@ -224,7 +224,7 @@
             "label": "长女的依赖与暗黑失控的救赎",
             "description": "作为职业演员与家庭经济支柱，一花在兼职中被风太郎看穿脆弱；京都修学旅行因嫉妒假扮三玖引发姐妹信任危机，在风太郎与妹妹们真诚包容下重拾长女担当并坦然释怀。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "修学旅行篇至学园祭",
             "evidence": {
               "title": "TBS电视台《五等分的新娘∬》官方网站",
@@ -238,7 +238,7 @@
             "label": "同甘共苦的战友与梦想引路人",
             "description": "五姐妹中唯一与风太郎保持纯粹革命友谊的存在；曾化名‘零奈’帮助风太郎走出童年初恋执念，在风太郎严苛鞭策下立志成为像母亲一样的优秀教师，是彼此无话不谈的挚友。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "全篇主线贯穿",
             "evidence": {
               "title": "TBS电视台《五等分的新娘》官方网站",
@@ -252,7 +252,7 @@
             "label": "相爱相杀的姐妹与终生咖啡厅合伙人",
             "description": "高中时期在料理与恋爱上频繁较劲，但在落选新娘后两人抱团痛哭彼此理解，五年后携手创办风靡街巷的法式甜品咖啡厅Cafe Futanari，终生相伴互为最牢固的支柱。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "后日谈与婚礼完结篇",
             "evidence": {
               "title": "讲谈社《周刊少年Magazine》五等分的新娘官方主页",
@@ -266,7 +266,7 @@
             "label": "伪装背刺与泪水中的深刻和解",
             "description": "一花因私心假扮三玖告白令三玖痛苦绝望，在风太郎拆穿真相后一花深感愧疚放弃竞争；三玖展现博大胸襟拥抱原谅一花，让五姐妹的羁绊更加坚不可摧。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "漫画第83-86话修学旅行篇",
             "evidence": {
               "title": "TBS电视台《五等分的新娘∬》官方网站",
@@ -280,7 +280,7 @@
             "label": "洒脱泪水与全心全意的姐妹祝福",
             "description": "二乃深知四叶多年来为姐妹牺牲自我的隐忍，在新娘公布后虽为自己的无果爱情在洗手间痛哭，但擦干眼泪后第一个冲上前拥抱四叶并送上最真挚的骄傲祝福。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "学园祭最终抉择篇",
             "evidence": {
               "title": "剧场版《五等分的新娘》官方网站",

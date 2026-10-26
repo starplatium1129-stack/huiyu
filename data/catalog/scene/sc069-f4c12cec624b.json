@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc069",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She tilts the umbrella toward the viewer with one hand and links her free arm through theirs.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, navy single button blazer, burgundy piping, ivory blouse, umbrella, arm in arm, looking away, blush, rain, street, night, close up, holding umbrella, wet shoulder, streetlamp",
     "rating": "All",
     "season": "夏",
-    "story": "【夏目 · 共伞回家路的半步距离】夏夜雨势渐大，夏目把伞往你这边倾斜，自己一侧的肩膀却被打湿。你把她拉近，她先皱眉说走路不方便，手臂却自然挽得更紧。路灯在积水里拉出长长倒影——「靠近一点确实不会淋到。这个结论只在伞太小的时候成立……到家之前都别松开。」",
+    "story": "夏夜雨势渐大，夏目把伞往你这边倾斜，自己一侧的肩膀却被打湿。你把她拉近，她先皱眉说走路不方便，手臂却自然挽得更紧。路灯在积水里拉出长长倒影——「靠近一点确实不会淋到。这个结论只在伞太小的时候成立……到家之前都别松开。」",
     "storyJa": "【夏目・半歩家まで傘を相合】夏の夜、雨が強くなってきました。夏目さんは傘をこちらに傾けますが、肩が濡れてしまいます。あなたは彼女を引き寄せました。最初は眉をひそめ、歩くのが不便だと言いましたが、自然と腕を強く抱きしめました。街灯が水面に長く反射する――「近づけば濡れないのは確か。この結論が成り立つのは、傘が小さいときだけ……家に着くまで離さないで。」",
     "tags": [
       "mole_under_eye",

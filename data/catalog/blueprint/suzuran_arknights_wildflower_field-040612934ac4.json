@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_wildflower_field",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 639,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "蹲在铃兰花丛中轻嗅",
     "camera": "wide shot, crouching figure and flower valley visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【铃兰 · 花田铃兰】开满白色铃兰花的清幽山谷间，丽萨蹲在花丛中，小巧的鼻尖轻轻嗅着花瓣的清香，九条蓬松的尾巴在花海中如浪花般舒展。她采下一朵开得最美的铃兰花捧给你——「铃兰花的花语是‘幸福归来’。博士，愿这朵花能永远带给你好运与快乐！」",
+    "description": "开满白色铃兰花的清幽山谷间，丽萨蹲在花丛中，小巧的鼻尖轻轻嗅着花瓣的清香，九条蓬松的尾巴在花海中如浪花般舒展。她采下一朵开得最美的铃兰花捧给你——「铃兰花的花语是‘幸福归来’。博士，愿这朵花能永远带给你好运与快乐！」",
     "id": "suzuran_arknights_wildflower_field",
     "lighting": "bright field light",
     "location": "泰拉花田",

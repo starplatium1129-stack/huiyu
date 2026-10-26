@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_veranda_rain",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 574,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "独坐雨夜回廊，一手持墨碟、一手沿湿袍探向腿间，水墨游鱼环绕",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "cowboy shot, eye level",
     "category": "成人",
     "characterId": "dusk_arknights",
-    "description": "【成年夕 · 雨夜回廊的水墨独处】成年夕独自坐在雨夜红木回廊的竹席上，湿透黑袍敞开并聚在腰际。她一手端着浅墨碟，另一手沿雨水探入腿间，黑色游鱼随呼吸在地板水光中显形。",
+    "description": "成年夕独自坐在雨夜红木回廊的竹席上，湿透黑袍敞开并聚在腰际。她一手端着浅墨碟，另一手沿雨水探入腿间，黑色游鱼随呼吸在地板水光中显形。",
     "id": "dusk_arknights_r18_veranda_rain",
     "kreaStyleHint": "",
     "lighting": "dim lantern and rain glow",

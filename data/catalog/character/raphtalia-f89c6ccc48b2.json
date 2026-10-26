@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "raphtalia",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 124,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "raphtalia",
     "profile": {
@@ -139,7 +139,7 @@
             "label": "刀之眷属器与并肩称霸",
             "description": "在异世界浪潮战役中被刀之眷属器选为主宰，以独立勇者姿态誓死护卫尚文，两人情深意笃平定两国危机。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "异界浪潮篇 · 羁绊升华",
             "evidence": {
               "title": "角川 · 《盾之勇者成名录》官方动画网站",
@@ -158,6 +158,34 @@
             "evidence": {
               "title": "角川 · 《盾之勇者成名录》官方动画网站",
               "url": "https://shieldhero-anime.jp/"
+            }
+          },
+          {
+            "id": "shield-naofumi-glass",
+            "source": "iwatani_naofumi",
+            "target": "glass",
+            "label": "异界眷属器之勇者与盟友",
+            "description": "从最初守护各自世界的敌对交锋，到在共同对抗浪潮幕后黑手时结下深厚的战友信赖。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "灵龟篇与异世界篇",
+            "evidence": {
+              "title": "《盾之勇者成名录》官方网站",
+              "url": "http://shieldhero-anime.jp/"
+            }
+          },
+          {
+            "id": "shield-raphtalia-glass",
+            "source": "raphtalia",
+            "target": "glass",
+            "label": "刀之勇者与并肩同伴",
+            "description": "拉芙塔莉雅在异界获得刀之眷属器认可后，与扇之勇者葛拉丝并肩作战、惺惺相惜。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "异世界浪潮战役",
+            "evidence": {
+              "title": "《盾之勇者成名录》官方网站",
+              "url": "http://shieldhero-anime.jp/"
             }
           }
         ]

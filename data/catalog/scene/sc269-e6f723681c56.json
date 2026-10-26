@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc269",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 264,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:37:28.240603900+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "sc269",
     "title": "黄枕边张开的距离",
@@ -37,7 +37,7 @@
       "展示图",
       "成人向"
     ],
-    "story": "【成年 After Story】金色软枕间，宁宁的长发与粉色发带散成一圈。她在近得无法逃开的距离里低声说：「今天不准装作没听见我的心跳。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
+    "story": "金色软枕间，宁宁的长发与粉色发带散成一圈。她在近得无法逃开的距离里低声说：「今天不准装作没听见我的心跳。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
     "prompt": "nene_r18, adult, visual novel event CG, extreme foreshortening, close up, from below, 1girl, solo, long hair, hair spread out, golden yellow pillows, topless, nipples, pale blue lace panties, black thighhighs, lying, on back, knees up, spread legs, gold neck bow, shy, open mouth, looking at viewer, warm bedroom lighting, <lora:ayachi_nene_v18_wd14:0.95>",
     "negative": "fused legs, closed legs, skirt, bra, shirt, standing, sitting, distant camera",

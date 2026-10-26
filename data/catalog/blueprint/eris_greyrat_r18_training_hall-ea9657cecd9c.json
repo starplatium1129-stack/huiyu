@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_training_hall",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 482,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "晨练后倚木柱解领立姿微嗔擦汗",
     "adult": true,
@@ -13,7 +13,7 @@
     "category": "成人",
     "characterId": "eris_greyrat",
     "coverageTags": [],
-    "description": "【艾莉丝 · 道馆木柱微汗傲娇】晨练后的道馆木柱旁，艾莉丝解开练功服领口立姿擦汗，修长健美的全身线条尽收眼底，微蹙眉头带着傲娇的红晕，晶莹汗珠滑过锁骨、平坦腹部、挺拔双峰与修长美腿，斜射晨光充满张力。",
+    "description": "晨练后的道馆木柱旁，艾莉丝解开练功服领口立姿擦汗，修长健美的全身线条尽收眼底，微蹙眉头带着傲娇的红晕，晶莹汗珠滑过锁骨、平坦腹部、挺拔双峰与修长美腿，斜射晨光充满张力。",
     "id": "eris_greyrat_r18_training_hall",
     "kreaStyleHint": "",
     "lighting": "道场高窗倾泻的明亮晨光与通透天光",

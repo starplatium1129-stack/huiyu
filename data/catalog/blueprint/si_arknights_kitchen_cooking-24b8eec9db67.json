@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_kitchen_cooking",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1764,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "si_arknights_kitchen_cooking",
     "characterId": "si_arknights",
@@ -16,7 +16,7 @@
     "lighting": "暖黄灶台吊灯与暖光",
     "camera": "medium shot",
     "mood": "居家烟火",
-    "description": "【祀 · 厨房灶台前尝一口热汤】傍晚的厨房里飘散着浓郁的鲜汤香气，祀系着松绿条纹围裙，一手轻轻挽起袖口，另一手拿着木汤勺凑在唇边轻轻吹气。转头看见你进门，眼底满是轻快笑意——「回来得正好，汤刚刚煨好，替我尝尝咸淡如何？」",
+    "description": "傍晚的厨房里飘散着浓郁的鲜汤香气，祀系着松绿条纹围裙，一手轻轻挽起袖口，另一手拿着木汤勺凑在唇边轻轻吹气。转头看见你进门，眼底满是轻快笑意——「回来得正好，汤刚刚煨好，替我尝尝咸淡如何？」",
     "outfitId": "sfw_silk_apron",
     "recommendedSize": "1152x1536",
     "coverageTags": [

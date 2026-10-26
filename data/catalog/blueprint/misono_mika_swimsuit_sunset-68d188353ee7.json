@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_swimsuit_sunset",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 904,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "刚从海里上岸回望",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【圣园未花 · 晚霞海滩的湿发私语】落日将海面染成粉紫色的黄昏，刚从海水里走上岸的未花披着毛巾坐在沙滩上，湿漉漉的粉发贴在肩头。她靠在你的肩上轻声低语——「今天的约会超开心……老师，等明年的夏天，我们还要像这样一起来看海哦，约好了☆」",
+    "description": "落日将海面染成粉紫色的黄昏，刚从海水里走上岸的未花披着毛巾坐在沙滩上，湿漉漉的粉发贴在肩头。她靠在你的肩上轻声低语——「今天的约会超开心……老师，等明年的夏天，我们还要像这样一起来看海哦，约好了☆」",
     "id": "misono_mika_swimsuit_sunset",
     "kreaStyleHint": "",
     "lighting": "金色夕光与水光",

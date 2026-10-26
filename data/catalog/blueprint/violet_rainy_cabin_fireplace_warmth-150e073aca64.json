@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_rainy_cabin_fireplace_warmth",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1388,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "裹着毛毯蜷缩在你的怀中，微凉的金属手掌贴在你的心口，仰起白净面容依恋地凝望你",
     "adult": false,
@@ -18,7 +18,7 @@
       "cuddling",
       "fireplace"
     ],
-    "description": "【暴风雨夜的松木山间小屋】窗外雷雨交加，而简朴的小木屋内，红泥壁炉里的松木柴火正毕剥燃烧，暖意融融。薇尔莉特身穿纯白细带真丝睡裙，身上裹着一条厚厚的红白羊毛毯。她紧贴在你的怀里，微凉的机械手掌轻轻覆在你的胸膛上，感受着你的体温，蓝眸中盈满了对归宿的安详眷恋。",
+    "description": "窗外雷雨交加，而简朴的小木屋内，红泥壁炉里的松木柴火正毕剥燃烧，暖意融融。薇尔莉特身穿纯白细带真丝睡裙，身上裹着一条厚厚的红白羊毛毯。她紧贴在你的怀里，微凉的机械手掌轻轻覆在你的胸膛上，感受着你的体温，蓝眸中盈满了对归宿的安详眷恋。",
     "id": "violet_rainy_cabin_fireplace_warmth",
     "kreaStyleHint": "anime_warm_domestic",
     "lighting": "壁炉柴火跳跃激荡出的深红与赤橙暖芒，勾勒出丝绸与毛毯的柔和轮廓",

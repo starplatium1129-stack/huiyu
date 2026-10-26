@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kasugano_sora",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 138,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "kasugano_sora",
     "profile": {
@@ -122,7 +122,7 @@
             "label": "相依为命与禁断真爱",
             "description": "双亲事故亡故后兄妹重返奥木染乡间，穹体弱多病极度依赖悠，两人跨越世俗伦理的万丈阻隔在湖畔倾诉宿命爱恋并相伴远赴海外。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "穹线终章 · 破茧重生",
             "evidence": {
               "title": "Sphere · 《缘之空》官方作品主页",

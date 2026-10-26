@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_training_range",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 560,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端坐于战术展开的轮椅上，手抚长管重型狙击铳，目光沉着锐利",
     "camera": "medium shot, low angle, mounted rifle and wheelchair supports visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【蕾缪安 · 靶场】战术射击靶场内，蕾缪安端坐于展开战术支架的特制轮椅上，纤细的手指沉稳地抚过长管重型狙击铳的枪机，目光瞬间变得极其锐利——「即便身处轮椅之上，在两千米外的距离内，我的子弹也绝对不会允许任何威胁靠近你半步。」",
+    "description": "战术射击靶场内，蕾缪安端坐于展开战术支架的特制轮椅上，纤细的手指沉稳地抚过长管重型狙击铳的枪机，目光瞬间变得极其锐利——「即便身处轮椅之上，在两千米外的距离内，我的子弹也绝对不会允许任何威胁靠近你半步。」",
     "id": "lemuen_arknights_training_range",
     "lighting": "harsh daylight",
     "location": "拉特兰靶场",

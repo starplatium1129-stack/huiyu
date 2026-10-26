@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_after_bath",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 868,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "蜷坐休息角沙发，猫耳兜帽半戴，双手捧着热可可。",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【杏山和纱 · 打烊后的热可可与猫耳兜帽】甜点部打烊后，和纱裹着浴后家居服窝进休息角的沙发里，猫耳形状的兜帽半戴在头上，双手捧着冒热气的大杯热可可。她眯起粉瞳，像只餍足的猫一样呼出一口气——「……今天试做的焦糖布丁卖光了。嗯，明天要不要加个新品？……再加一勺奶油。」",
+    "description": "甜点部打烊后，和纱裹着浴后家居服窝进休息角的沙发里，猫耳形状的兜帽半戴在头上，双手捧着冒热气的大杯热可可。她眯起粉瞳，像只餍足的猫一样呼出一口气——「……今天试做的焦糖布丁卖光了。嗯，明天要不要加个新品？……再加一勺奶油。」",
     "id": "kyouyama_kazusa_after_bath",
     "kreaStyleHint": "",
     "lighting": "warm dim café light after closing, soft counter glow, gentle lamp",

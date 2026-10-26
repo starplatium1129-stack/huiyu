@@ -1,19 +1,19 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_bath_muscle",
-  "revision": 7,
+  "revision": 4,
   "sortOrder": 583,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
-    "action": "站在整备间淋浴水流下，转身以一只手臂轻遮胸前，湿发与水珠顺肩而下。",
+    "action": "单膝跪在石池边，一手提木桶朝抬起的大腿浇水，另一手顺着水流，身后装甲放在干燥处",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
     "camera": "medium shot, side view",
     "category": "成人",
     "characterId": "mudrock_arknights",
-    "description": "【泥岩 · 整备间浴水】水雾弥漫的淋浴间内，滚烫的热水冲刷着泥岩被汗水打湿的银发。水珠沿着她线条紧致优美、充满健康力量感的身躯流淌而下。她转过身用手臂半遮着胸前饱满的雪峰——「战斗后的身体总是充满肌肉酸痛……博士，能进来帮我放松一下紧绷的肌肉吗？」",
+    "description": "水雾弥漫的淋浴间内，滚烫的热水冲刷着泥岩被汗水打湿的银发。水珠沿着她线条紧致优美、充满健康力量感的身躯流淌而下。她转过身用手臂半遮着胸前饱满的雪峰——「战斗后的身体总是充满肌肉酸痛……博士，能进来帮我放松一下紧绷的肌肉吗？」",
     "id": "mudrock_arknights_r18_bath_muscle",
     "kreaStyleHint": "",
     "lighting": "warm steam light",
@@ -23,20 +23,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Mudrock turns toward the off-frame viewer under the shower, one forearm across her chest. Warm light catches water in her silver hair against the misty tiles.",
+    "promptProse": "Mudrock pours water over her raised thigh from a wooden bucket, following the stream with her free hand while her armor stays dry behind her.",
     "promptTokens": [
       "adult",
       "nude",
       "muscular",
-      "standing",
-      "arm across chest",
-      "wet hair",
-      "shower",
+      "kneeling",
+      "knee up",
+      "wooden bucket",
+      "hand between legs",
       "steam",
-      "water droplets",
-      "warm lighting",
-      "medium shot",
-      "side view"
+      "stone bath"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -49,7 +46,6 @@
       "horns"
     ],
     "timeOfDay": "夜晚",
-    "title": "泥岩 · 整备间浴水",
-    "animaCaption": "She turns toward the off-frame viewer with one forearm across her chest under the shower."
+    "title": "泥岩 · 整备间浴水"
   }
 }

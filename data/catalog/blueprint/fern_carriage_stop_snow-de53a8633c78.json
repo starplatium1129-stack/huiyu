@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_carriage_stop_snow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 125,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "fern_carriage_stop_snow",
     "title": "菲伦 · 驿站雪中",
@@ -12,7 +12,7 @@
     "characterId": "fern_frieren",
     "outfitId": "winter_coat",
     "adult": false,
-    "description": "【菲伦 · 驿站雪中】漫天飞雪的驿站木屋屋檐下，菲伦双手捧着热气腾腾的瓦罐热汤，轻轻呵出的白雾在冷风中飘散。她将热汤递向冻得发抖的你，眼神温和如长姐——「天太冷了，先喝一口热汤暖暖身子吧。马车还要等暴风雪停歇后才会出发。」",
+    "description": "漫天飞雪的驿站木屋屋檐下，菲伦双手捧着热气腾腾的瓦罐热汤，轻轻呵出的白雾在冷风中飘散。她将热汤递向冻得发抖的你，眼神温和如长姐——「天太冷了，先喝一口热汤暖暖身子吧。马车还要等暴风雪停歇后才会出发。」",
     "location": "雪中驿站",
     "action": "屋檐下双手托住热汤陶罐递向同行者，围巾抵御冷风，等待雪停发车",
     "timeOfDay": "day",

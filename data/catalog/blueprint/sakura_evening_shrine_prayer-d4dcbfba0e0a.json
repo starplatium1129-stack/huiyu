@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_evening_shrine_prayer",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 187,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "sakura_evening_shrine_prayer",
     "title": "间桐樱 · 郊外神社祈愿（想象）",
@@ -12,7 +12,7 @@
     "characterId": "matou_sakura",
     "outfitId": "white_summer_sundress",
     "adult": false,
-    "description": "【冬木近郊的想象神社·黄昏】樱站在木制绘马架前，一手托住小木牌，另一手把红绳系上横杆。确认挂稳后，她垂眸默念希望同行者平安的心愿；白色夏裙与发间红缎带被晚风轻轻拂动。此处为场景创作中的虚构小神社，不作为圆藏山原作地点还原。",
+    "description": "樱站在木制绘马架前，一手托住小木牌，另一手把红绳系上横杆。确认挂稳后，她垂眸默念希望同行者平安的心愿；白色夏裙与发间红缎带被晚风轻轻拂动。此处为场景创作中的虚构小神社，不作为圆藏山原作地点还原。",
     "location": "冬木近郊的虚构小神社绘马架",
     "action": "一手托绘马另一手系红绳，确认挂稳后垂眸祈愿",
     "timeOfDay": "evening",

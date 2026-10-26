@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc065",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 63,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Seen from the aisle, she peeks over the burgundy book concealing her lower face.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, beige belted trench coat, storm flap, black turtleneck, burgundy pleated midi skirt, book, library, window seat, blush, side view, medium shot, holding book, peeking, looking at viewer, window light",
     "rating": "All",
     "season": "秋",
-    "story": "【夏目 · 书页挡不住的侧脸】秋日午后，夏目坐在图书馆窗边阅读，阳光沿着黑色长发落在书页上。她早已发现你隔着书架偷看，直到同一页停了太久才把书抬高，遮住泛红的下半张脸——「公共场合一直盯着别人很没礼貌。真想坐在这里就过来……别像可疑人物一样躲着。」",
+    "story": "秋日午后，夏目坐在图书馆窗边阅读，阳光沿着黑色长发落在书页上。她早已发现你隔着书架偷看，直到同一页停了太久才把书抬高，遮住泛红的下半张脸——「公共场合一直盯着别人很没礼貌。真想坐在这里就过来……别像可疑人物一样躲着。」",
     "storyJa": "【夏目・本のページに遮られない横顔】秋の午後、夏目は図書館の窓際に座って本を読んでいました。太陽の光が彼の長い黒髪に沿って本のページに降り注いでいました。彼女はあなたが本棚から覗いていることにすでに気づいていました。あなたが同じページで長時間立ち止まり、顔の赤い下半分を覆うまで、彼女は本を持ち上げませんでした。――「公共の場所で人をじっと見るのは失礼。ここに座りたいなら、こっちへ来て……不審者みたいに隠れないで。」",
     "tags": [
       "mole_under_eye",

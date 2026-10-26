@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc299",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 294,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:00:32.819838100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Leaning against the studio window frame, she turns toward the viewer with a trusting smile; golden afternoon light softly rims her knit top.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, visual novel event CG, very_long_hair, ahoge, light-colored loose knit top, off shoulder sweater, bare shoulders, light-colored short shorts, bare legs, leaning on window, profile, looking at viewer, gentle smile, afternoon sunlight, rim light, art studio, easel, soft shadows, sensual, <lora:ayachi_nene_v18_wd14:0.85>",
     "rating": "R15",
     "season": "不限",
-    "story": "【成年 After Story · 宁宁 · 委托私稿的专属模特】你接了一份私人的插画委托，对方指定了非常细致的构图要求——主题是「日常的亲密瞬间」。你对着参考照片画了一整个下午，总觉得缺少一点真实的温度。宁宁端着热牛奶走进画室，站在你身后看了一会儿屏幕上的草图，然后安静地把杯子放在桌角。她没有说话，只是走到窗边，让午后的阳光从侧面照出身体的轮廓，然后回头看了你一眼——「动态参考的话……我就在这里。」她穿着宽松的浅色针织衫和浅色短裤，侧身倚在窗框上。光线透过薄薄的布料描出腰线和肩胛骨的形状，她微微偏过头，紫色瞳孔里跃动着细碎的光——「就按你说的构图来，不用把我画成照片里的人——画成你看到的我的样子就好。画完之前……我会一直保持这个姿势。」",
+    "story": "你接了一份私人的插画委托，对方指定了非常细致的构图要求——主题是「日常的亲密瞬间」。你对着参考照片画了一整个下午，总觉得缺少一点真实的温度。宁宁端着热牛奶走进画室，站在你身后看了一会儿屏幕上的草图，然后安静地把杯子放在桌角。她没有说话，只是走到窗边，让午后的阳光从侧面照出身体的轮廓，然后回头看了你一眼——「动态参考的话……我就在这里。」她穿着宽松的浅色针织衫和浅色短裤，侧身倚在窗框上。光线透过薄薄的布料描出腰线和肩胛骨的形状，她微微偏过头，紫色瞳孔里跃动着细碎的光——「就按你说的构图来，不用把我画成照片里的人——画成你看到的我的样子就好。画完之前……我会一直保持这个姿势。」",
     "storyJa": "【寧々・大人のAfter Story・依頼私稿の専属モデル】あなたは個人のイラスト依頼を受けていた。クライアントは非常に細かい構図を指定してきた——テーマは「日常の親密な瞬間」。あなたは参考写真を見ながら丸一日描いていたが、どうしてもリアルな温かみが足りないと感じていた。寧々が温めたミルクを運んでアトリエに入ってきた。彼女はあなたの後ろに立ち、しばらくモニターのラフを見ていた。そして静かにカップを机の隅に置いた。何も言わずに、窓辺へ歩いていった。午後の日差しが横から彼女の体の輪郭を描き出し、彼女は振り返ってあなたを見た——「ポーズ参考なら……ここにいるよ。」彼女はゆったりとした淡い色のニットトップとショートパンツを着て、窓枠に寄りかかっていた。光が薄い布地を通して腰のラインと肩甲骨の形を浮かび上がらせていた。彼女は少し首を傾げ、紫色の瞳に細かな光をきらめかせた——「あなたの言う構図のままでいいよ。写真の人みたいに描かなくていい——あなたの目に映る私の姿を描いて。描き終わるまで……この姿勢を保つから。」",
     "tags": [
       "official_cg",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_bath_flowers",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 603,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "靠在浴缸里，指尖拨弄花瓣",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate overhead",
     "category": "成人",
     "characterId": "goldenglow_arknights",
-    "description": "【澄闪 · 花瓣浴】洒满新鲜玫瑰花瓣的温热浴缸里，苏茜赤身泡在清澈的水中，纤细娇柔的双臂搭在浴缸边沿，湿漉漉的粉色猫耳害羞地紧紧贴在头顶。她红着脸将下巴藏在水面下——「博士……水里漂着好多香香的花瓣呢。能进来……帮苏茜洗头发吗？」",
+    "description": "洒满新鲜玫瑰花瓣的温热浴缸里，苏茜赤身泡在清澈的水中，纤细娇柔的双臂搭在浴缸边沿，湿漉漉的粉色猫耳害羞地紧紧贴在头顶。她红着脸将下巴藏在水面下——「博士……水里漂着好多香香的花瓣呢。能进来……帮苏茜洗头发吗？」",
     "id": "goldenglow_arknights_r18_bath_flowers",
     "kreaStyleHint": "",
     "lighting": "soft candlelit bathroom",

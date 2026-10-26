@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_late_night_command_tea_stargazing",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1311,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在指挥桌沿双腿交叠，端来红茶后侧首与视角并肩凝望窗外星海",
     "camera": "cowboy shot, eye level, atmospheric sci-fi view",
@@ -15,7 +15,7 @@
       "peaceful",
       "stargazing"
     ],
-    "description": "【C.C. · 深夜指挥室的热茶与星河】巨大落地观察窗外的星空深邃无垠，母舰正在安静航行。C.C.端着一杯热气腾腾的红茶轻放在你桌前，随后顺势坐在桌沿边，双腿在微弱的战术屏幕蓝光下交叠。她凝视着舷窗外的茫茫星海，转过头将目光落在你身上，声音空灵而温柔——「不管这场战争的结果如何，只有这一刻的星空……以及你，是永恒的。」",
+    "description": "巨大落地观察窗外的星空深邃无垠，母舰正在安静航行。C.C.端着一杯热气腾腾的红茶轻放在你桌前，随后顺势坐在桌沿边，双腿在微弱的战术屏幕蓝光下交叠。她凝视着舷窗外的茫茫星海，转过头将目光落在你身上，声音空灵而温柔——「不管这场战争的结果如何，只有这一刻的星空……以及你，是永恒的。」",
     "id": "cc_late_night_command_tea_stargazing",
     "lighting": "全息星图的淡蓝微光与舷窗外的浩瀚星空",
     "location": "旗舰舰桥深处寂静的战术指挥台窗前",

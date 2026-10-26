@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_library_fox",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 637,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "捧着书，狐耳微微转动",
     "camera": "medium shot, open book and hands visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【铃兰 · 书阁听读】午后安静的图书室内，娇小的丽萨端坐在软椅上，两只小手捧着厚厚的童话绘本，毛茸茸的金色狐耳随着故事的情节好奇地微微转动。察觉到你在身旁坐下，她开心地将绘本往你身边挪了挪——「博士！这个关于星星旅行的故事好神奇，可以念给我听吗？」",
+    "description": "午后安静的图书室内，娇小的丽萨端坐在软椅上，两只小手捧着厚厚的童话绘本，毛茸茸的金色狐耳随着故事的情节好奇地微微转动。察觉到你在身旁坐下，她开心地将绘本往你身边挪了挪——「博士！这个关于星星旅行的故事好神奇，可以念给我听吗？」",
     "id": "suzuran_arknights_library_fox",
     "lighting": "warm library light",
     "location": "罗德岛书阁",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc018",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-20T09:39:24.339672700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Under the convenience-store eaves, she places the sweeter coffee can in the viewer's hand while keeping the other can near her chest. The shop light warms her cheek above the rain-dark pavement.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, beige sweater, navy pleated skirt, black tights, offering drink, canned coffee, convenience store, awning, rain, night, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "All",
     "season": "秋",
-    "story": "【夏目 · 便利店屋檐下的热饮】秋雨把夜色洗得发亮，你和夏目并肩困在便利店屋檐下。她买了两罐热咖啡，把更甜的那一罐塞进你手里，又自然地往你这边挪了半步替你避开溅起的雨水。你问她是不是担心，她看着街面回答——「只是买一送一。雨小一点再走，省得你感冒以后还要麻烦别人。」",
+    "story": "秋雨把夜色洗得发亮，你和夏目并肩困在便利店屋檐下。她买了两罐热咖啡，把更甜的那一罐塞进你手里，又自然地往你这边挪了半步替你避开溅起的雨水。你问她是不是担心，她看着街面回答——「只是买一送一。雨小一点再走，省得你感冒以后还要麻烦别人。」",
     "storyJa": "【夏目・コンビニの軒下で温かい飲み物】秋の雨が夜を明るく染め、あなたと夏目はコンビニの軒下に並んで閉じ込められます。彼女はホットコーヒーを2缶購入し、甘い方をあなたの手に置き、しぶき雨を避けるために自然に半歩あなたのほうに移動しました。あなたは彼女に心配しているかと尋ねると、彼女は通りを見て答えました――「たまたま二つで一つの値段だっただけ。雨が弱くなるまで待ちなさい。風邪をひいて、あとで誰かに迷惑をかけないように。」",
     "tags": [
       "mole_under_eye",

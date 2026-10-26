@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_apartment",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 542,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在沙发扶手边，解开领口",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【陈 · 居所夜话】深夜温馨的单身公寓客厅里，卸下重担的陈坐在沙发扶手旁，制服衬衫的领扣被随意解开两颗，露出白皙性感的锁骨。她微红着脸端起啤酒罐小酌一口——「呼……终于能把近卫局的规矩全抛在脑后了。博士……今晚可以留下来陪我喝完这罐酒吗？」",
+    "description": "深夜温馨的单身公寓客厅里，卸下重担的陈坐在沙发扶手旁，制服衬衫的领扣被随意解开两颗，露出白皙性感的锁骨。她微红着脸端起啤酒罐小酌一口——「呼……终于能把近卫局的规矩全抛在脑后了。博士……今晚可以留下来陪我喝完这罐酒吗？」",
     "id": "chen_arknights_r18_apartment",
     "kreaStyleHint": "",
     "lighting": "warm living-room lamp",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_rooftop_sing",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 860,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在天台长椅边缘轻轻哼唱旋律",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【杏山和纱 · 天台微风与专属旋律】黄昏染红的教学楼天台上，和纱独自坐在长椅边缘，轻轻哼唱着新谱写的旋律。黑发被晚风轻柔拂起，粉瞳在夕阳下泛着温柔的波光。察觉到你的脚步声，她回过头露出淡淡的浅笑——「……你来啦，老师。这首曲子……其实是想着你写出来的，听听看吧。」",
+    "description": "黄昏染红的教学楼天台上，和纱独自坐在长椅边缘，轻轻哼唱着新谱写的旋律。黑发被晚风轻柔拂起，粉瞳在夕阳下泛着温柔的波光。察觉到你的脚步声，她回过头露出淡淡的浅笑——「……你来啦，老师。这首曲子……其实是想着你写出来的，听听看吧。」",
     "id": "kyouyama_kazusa_rooftop_sing",
     "kreaStyleHint": "",
     "lighting": "金色夕光",

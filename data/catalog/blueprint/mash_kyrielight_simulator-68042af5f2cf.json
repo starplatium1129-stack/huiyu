@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_simulator",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 200,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [
       "injured bodies"
@@ -13,7 +13,7 @@
     "title": "玛修 · 模拟战斗",
     "category": "近未来",
     "characterId": "mash_kyrielight",
-    "description": "【玛修 · 模拟战斗】迦勒底模拟训练室的虚拟战场里，玛修举起圆桌型大盾挡在队友身前，装甲裙的菱形镂空处渗出微光，紫瞳燃着战意——「交给我吧，前辈的后背，由我来守护！」",
+    "description": "迦勒底模拟训练室的虚拟战场里，玛修举起圆桌型大盾挡在队友身前，装甲裙的菱形镂空处渗出微光，紫瞳燃着战意——「交给我吧，前辈的后背，由我来守护！」",
     "location": "迦勒底模拟训练室",
     "action": "单膝稳住低位防御姿势，将大盾挡在训练队友身前",
     "timeOfDay": "白天",

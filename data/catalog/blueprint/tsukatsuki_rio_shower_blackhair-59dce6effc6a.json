@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_shower_blackhair",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 889,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "泡浴时举着平板查看数据",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【调月莉音 · 研讨会深夜的数据浴】研讨会办公室深处的私人浴室里，莉音把黑发挽起，泡在温水中，单手举着防水平板，屏幕上滚动着明天的预算数据。红瞳在蒸汽中依然锐利，她轻轻推了推滑落的眼镜——「……预算案还剩最后一页。泡完这十分钟，就把它改完。」",
+    "description": "研讨会办公室深处的私人浴室里，莉音把黑发挽起，泡在温水中，单手举着防水平板，屏幕上滚动着明天的预算数据。红瞳在蒸汽中依然锐利，她轻轻推了推滑落的眼镜——「……预算案还剩最后一页。泡完这十分钟，就把它改完。」",
     "id": "tsukatsuki_rio_shower_blackhair",
     "kreaStyleHint": "",
     "lighting": "cool tablet glow, warm dim bath light, gentle steam haze",

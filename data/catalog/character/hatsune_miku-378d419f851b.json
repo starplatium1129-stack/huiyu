@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hatsune_miku",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-26T03:15:06.523905900+00:00",
   "data": {
     "id": "hatsune_miku",
     "profile": {
@@ -202,6 +202,34 @@
             "stage": "Magical Mirai 历年大型演唱会",
             "evidence": {
               "title": "Crypton Future Media · 《初音未来》官方门户网站",
+              "url": "https://piapro.net/"
+            }
+          },
+          {
+            "id": "vocaloid-miku-kaito",
+            "source": "hatsune_miku",
+            "target": "kaito",
+            "label": "元祖声库大哥与合唱搭档",
+            "description": "同属Crypton旗下早期经典男声音库，经常在各类大型交响与经典歌曲中并肩合唱。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "音乐殿堂与舞台合演",
+            "evidence": {
+              "title": "Crypton Future Media 官方网站",
+              "url": "https://piapro.net/"
+            }
+          },
+          {
+            "id": "vocaloid-meiko-kaito",
+            "source": "meiko",
+            "target": "kaito",
+            "label": "经典初代搭档",
+            "description": "V家初代大姐与大哥，最经典元老双人组合。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "初创音乐作品",
+            "evidence": {
+              "title": "Crypton Future Media 官方网站",
               "url": "https://piapro.net/"
             }
           }

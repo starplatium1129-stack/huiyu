@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_sweets_shop_after_school",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 355,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yui_sweets_shop_after_school",
     "title": "由比滨结衣 · 放学后的甜品店",
@@ -12,7 +12,7 @@
     "characterId": "yuigahama_yui",
     "outfitId": "sobu_uniform",
     "adult": false,
-    "description": "【由比滨结衣 · 放学后的甜品店】放学后的咖啡馆里，结衣捧着草莓奶油可丽饼，开心地咬下一口。柔和的灯光映着她泛红的脸颊，笑意怎么也藏不住——「这家的可丽饼真的很好吃！下次放学以后，我们也一起来吧。」",
+    "description": "放学后的咖啡馆里，结衣捧着草莓奶油可丽饼，开心地咬下一口。柔和的灯光映着她泛红的脸颊，笑意怎么也藏不住——「这家的可丽饼真的很好吃！下次放学以后，我们也一起来吧。」",
     "location": "商店街甜品店",
     "action": "捧着草莓奶油可丽饼品尝，开心地微笑",
     "timeOfDay": "afternoon",

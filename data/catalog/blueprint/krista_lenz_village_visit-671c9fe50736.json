@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_village_visit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 992,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "木栏上与孩子并坐",
     "camera": "medium shot",
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【希斯特里亚 · 村落走访】墙内村落的晒谷场边，希斯特里亚穿着便装与农家的孩子一起坐在木栏上，白色连衣裙的裙摆沾着草屑，她笑眼弯弯——「女王也是从小在孤儿院听着你们的笑声长大的呀。」",
+    "description": "墙内村落的晒谷场边，希斯特里亚穿着便装与农家的孩子一起坐在木栏上，白色连衣裙的裙摆沾着草屑，她笑眼弯弯——「女王也是从小在孤儿院听着你们的笑声长大的呀。」",
     "id": "krista_lenz_village_visit",
     "lighting": "村间日光",
     "location": "墙内村落",

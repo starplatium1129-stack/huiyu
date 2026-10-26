@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_starlight_terrace",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 601,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手合十，仰望星空",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【澄闪 · 观景台】深夜寂静的罗德岛顶层露台上，苏茜双手合十仰望着漫天璀璨的星空，猫尾巴在身后轻轻摇曳。她转过头看着身旁的你，眼眸中盛满了星光——「神明啊，请保佑母亲和弟弟妹妹们平安健康……还有，愿博士今晚也能做一个甜甜的美梦。」",
+    "description": "深夜寂静的罗德岛顶层露台上，苏茜双手合十仰望着漫天璀璨的星空，猫尾巴在身后轻轻摇曳。她转过头看着身旁的你，眼眸中盛满了星光——「神明啊，请保佑母亲和弟弟妹妹们平安健康……还有，愿博士今晚也能做一个甜甜的美梦。」",
     "id": "goldenglow_arknights_starlight_terrace",
     "lighting": "starlight",
     "location": "罗德岛观景台",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_swimsuit_beach_headset",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 909,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐遮阳伞下整理耳麦",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【飞鸟马时 · 沙滩整理耳机】热浪翻滚的夏日海滩阳伞下，时端坐在沙滩垫上细致地调试防水通讯耳麦，海风吹起她耀眼的金发与泳装系带。她转头看向身旁的你，比出一个坚定的胜利手势——「海浪声已被降噪过滤，现在时能百分之百听清主人的每一句心声了……Peace Peace ✌️✌️。」",
+    "description": "热浪翻滚的夏日海滩阳伞下，时端坐在沙滩垫上细致地调试防水通讯耳麦，海风吹起她耀眼的金发与泳装系带。她转头看向身旁的你，比出一个坚定的胜利手势——「海浪声已被降噪过滤，现在时能百分之百听清主人的每一句心声了……Peace Peace ✌️✌️。」",
     "id": "asuma_toki_swimsuit_beach_headset",
     "kreaStyleHint": "",
     "lighting": "阳光与伞影",

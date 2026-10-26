@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_teacher",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 456,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "侧卧在床上，头枕摊开的魔导书，望向成年同伴",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate medium shot, side view",
     "category": "成人",
     "characterId": "roxy_migurdia",
-    "description": "【洛琪希 · 魔导教师的私人时间】昏暗的单身宿舍里，成年洛琪希褪去衣装侧卧在床上，头枕摊开的魔导书，水蓝发辫散在枕间。油灯旁的小型水系法术轻轻颤动；她红着脸望向成年同伴——「身为导师……却在成年同事面前露出这种毫无防备的模样……请不要一直盯着我看，太令人害羞了。」",
+    "description": "昏暗的单身宿舍里，成年洛琪希褪去衣装侧卧在床上，头枕摊开的魔导书，水蓝发辫散在枕间。油灯旁的小型水系法术轻轻颤动；她红着脸望向成年同伴——「身为导师……却在成年同事面前露出这种毫无防备的模样……请不要一直盯着我看，太令人害羞了。」",
     "id": "roxy_migurdia_r18_teacher",
     "kreaStyleHint": "",
     "lighting": "warm oil lamp and soft fireplace glow",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc151",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Nene in pink silk with white piping lies left, holding the viewer's sleeve. Natsume in blue silk with burgundy piping props herself on one elbow at the right beneath their shared blanket.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -26,7 +26,7 @@
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",
-    "story": "【成年 After Story · 究极甜蜜修罗场】一个无限慵懒的清晨。你从暖烘烘的床铺中醒来，震惊地发现自己陷入了最幸福的“重叠防线”：左边是红着脸、把你衣角死死攥在手里的宁宁，头顶的呆毛正羞涩地弯成完美的心形；右边是半撑着身体、用微带倦意的妩媚眼神调侃看着你的夏目。她们在晨光中一左一右，将你牢牢锁在被窝的温柔乡里——「早安，大笨蛋。今天的晨间协议，不准赖床哦。」",
+    "story": "一个无限慵懒的清晨。你从暖烘烘的床铺中醒来，震惊地发现自己陷入了最幸福的“重叠防线”：左边是红着脸、把你衣角死死攥在手里的宁宁，头顶的呆毛正羞涩地弯成完美的心形；右边是半撑着身体、用微带倦意的妩媚眼神调侃看着你的夏目。她们在晨光中一左一右，将你牢牢锁在被窝的温柔乡里——「早安，大笨蛋。今天的晨间协议，不准赖床哦。」",
     "storyJa": "【寧々＆夏目・大人のアフターストーリー・究極に甘い修羅場】どこまでも怠惰な朝。あなたは暖かいベッドから目覚め、最も幸せな「おはよう、このお寝坊さん。今朝の約束、二度寝は禁止だからね。」",
     "tags": [
       "2girls",

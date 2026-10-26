@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_swimsuit_beach",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 899,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "戴遮阳帽站在海边回眸",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【圣园未花 · 夏日海滩的可爱泳装】阳光灿烂的圣三一专属海滩上，未花换上了可爱的粉白荷叶边比基尼，戴着草帽在浪花边欢快地蹦跳。洁白的羽翼在海风中舒展，金眸在波光中闪耀——「老师快看快看！这套泳装可爱吗？今天一整天，老师的视线都不准从未花身上移开哦☆」",
+    "description": "阳光灿烂的圣三一专属海滩上，未花换上了可爱的粉白荷叶边比基尼，戴着草帽在浪花边欢快地蹦跳。洁白的羽翼在海风中舒展，金眸在波光中闪耀——「老师快看快看！这套泳装可爱吗？今天一整天，老师的视线都不准从未花身上移开哦☆」",
     "id": "misono_mika_swimsuit_beach",
     "kreaStyleHint": "",
     "lighting": "强烈夏日阳光",

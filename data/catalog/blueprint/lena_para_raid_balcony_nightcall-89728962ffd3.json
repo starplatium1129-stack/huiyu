@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_para_raid_balcony_nightcall",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1357,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "披军装外套倚栏夜谈，指尖轻抵泛光耳机，侧头露出深夜限定柔笑",
     "adult": false,
@@ -17,7 +17,7 @@
       "signature",
       "romance"
     ],
-    "description": "【基地宿舍阳台·星夜】万籁俱寂的深夜，蕾娜披着军装外套倚在阳台栏杆上，银白长发与星河一同倾泻。颈侧的Para-RAID耳机泛着温柔蓝光，她把指尖轻抵在耳机上，像是在确认你的心跳频率。夜风拂起她的发梢与外套衣摆，她侧过头对你露出一个只有深夜才允许的、柔软到透明的微笑。",
+    "description": "万籁俱寂的深夜，蕾娜披着军装外套倚在阳台栏杆上，银白长发与星河一同倾泻。颈侧的Para-RAID耳机泛着温柔蓝光，她把指尖轻抵在耳机上，像是在确认你的心跳频率。夜风拂起她的发梢与外套衣摆，她侧过头对你露出一个只有深夜才允许的、柔软到透明的微笑。",
     "id": "lena_para_raid_balcony_nightcall",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "星河冷蓝环境光与耳机暖蓝辉光相映",

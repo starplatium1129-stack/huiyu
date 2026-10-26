@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_home_pajama",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 500,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱着玩偶趴在床上",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【喜多川海梦 · 居家睡衣趴】周末温馨的卧室大床上，换上宽松丝绸睡衣的海梦整个人趴在松软的抱枕堆里，一边摇晃着修长的大腿一边对着手机上的动漫番剧兴奋傻笑——「今天我要在床上躺平一整天！薯片和快乐水都准备好了，快过来和我一起看最新一集！」",
+    "description": "周末温馨的卧室大床上，换上宽松丝绸睡衣的海梦整个人趴在松软的抱枕堆里，一边摇晃着修长的大腿一边对着手机上的动漫番剧兴奋傻笑——「今天我要在床上躺平一整天！薯片和快乐水都准备好了，快过来和我一起看最新一集！」",
     "id": "kitagawa_marin_home_pajama",
     "lighting": "暖色床头灯",
     "location": "家中卧室",

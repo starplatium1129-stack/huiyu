@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_bath_bubbles",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 633,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "趴在浴缸边，指尖戳着泡泡",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "side view, medium shot, horizontal framing",
     "category": "成人",
     "characterId": "exusiai_arknights",
-    "description": "【能天使 · 泡泡浴】装满丰富泡沫的宽大浴缸里，能天使整个人趴在浴缸沿旁，指尖欢快地戳破一个又一个飞起的七彩肥皂泡。白皙滑腻的香肩在水雾中泛着红晕——「老板快来看！这个泡泡吹得超级大！……一个人洗澡好无聊啊，要不要进来和我一起打水仗？」",
+    "description": "装满丰富泡沫的宽大浴缸里，能天使整个人趴在浴缸沿旁，指尖欢快地戳破一个又一个飞起的七彩肥皂泡。白皙滑腻的香肩在水雾中泛着红晕——「老板快来看！这个泡泡吹得超级大！……一个人洗澡好无聊啊，要不要进来和我一起打水仗？」",
     "id": "exusiai_arknights_r18_bath_bubbles",
     "kreaStyleHint": "",
     "lighting": "warm bathroom glow",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_monowire_combat_alley_dash",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1103,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "极速滑铲突进甩出青蓝单分子线切裂敌机，火花在暴雨中炸裂，眼神凌厉绝杀",
     "camera": "full body, low angle, sliding legs and monowire strike visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "combat"
     ],
-    "description": "【露西 · 赛博暗巷的单分子线截杀】倾盆大雨冲刷的昏暗潮湿小巷中，雨水在垃圾桶与废弃电缆间飞溅。露西极速向前滑铲突进，右手手腕的线轴中骤然爆射出数道极细耀眼的青蓝单分子光丝。锋利光丝撕裂雨幕将眼前的无人机瞬间切碎，火花在雨夜中剧烈四溅，清冷神情带着不可阻挡的决绝死意。",
+    "description": "倾盆大雨冲刷的昏暗潮湿小巷中，雨水在垃圾桶与废弃电缆间飞溅。露西极速向前滑铲突进，右手手腕的线轴中骤然爆射出数道极细耀眼的青蓝单分子光丝。锋利光丝撕裂雨幕将眼前的无人机瞬间切碎，火花在雨夜中剧烈四溅，清冷神情带着不可阻挡的决绝死意。",
     "id": "lucy_monowire_combat_alley_dash",
     "lighting": "单分子线青蓝电弧闪光与火花照亮潮湿积水路面",
     "location": "大雨滂沱的狭窄赛博暗巷废墟",

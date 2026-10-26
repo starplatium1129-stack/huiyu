@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_hotel_mirror_reflection",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "对镜练习俄语情话，说完瞬间捂脸",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "medium shot",
     "category": "成人",
     "characterId": "alisa_mikhailovna_kujou",
-    "description": "【艾莉莎·九条 · 镜前练习的俄语情话】温泉旅馆的更衣室里，艾莉莎对着落地镜一遍遍练习那句俄语。她清了清嗓子，声音越来越小——「Я люблю тебя……不行！太害羞了！换一句换一句！」她抓起浴巾捂住发烫的脸，镜子里映出她红透的耳尖和散开的银发。",
+    "description": "温泉旅馆的更衣室里，艾莉莎对着落地镜一遍遍练习那句俄语。她清了清嗓子，声音越来越小——「Я люблю тебя……不行！太害羞了！换一句换一句！」她抓起浴巾捂住发烫的脸，镜子里映出她红透的耳尖和散开的银发。",
     "id": "alya_r18_hotel_mirror_reflection",
     "kreaStyleHint": "",
     "lighting": "warm bathhouse lantern glow, soft steam haze, gentle mirror reflections",

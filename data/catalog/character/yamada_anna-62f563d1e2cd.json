@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yamada_anna",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "yamada_anna",
     "profile": {
@@ -148,7 +148,7 @@
             "label": "修学旅行与心之告白",
             "description": "市川彻底走出阴暗自卑的心理泥沼，在修学旅行的寂静神社交汇处向山田坦率告白，两人终于互通心意深情拥吻。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "修学旅行篇 · 告白",
             "evidence": {
               "title": "秋田书店 · 《我心里危险的东西》官方动画主页",
@@ -166,6 +166,34 @@
             "stage": "学园日常",
             "evidence": {
               "title": "秋田书店 · 《我心里危险的东西》官方动画主页",
+              "url": "https://bokuyaba-anime.com/"
+            }
+          },
+          {
+            "id": "bokuyaba-kyotaro-kana",
+            "source": "ichikawa_kyotaro",
+            "target": "ichikawa_kana",
+            "label": "感情深厚的摇滚姐姐",
+            "description": "大学生兼乐队主唱姐姐，虽然偶尔大大咧咧，但比谁都关心内向的弟弟，暗中为其恋爱助攻。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "市川家日常",
+            "evidence": {
+              "title": "《我心里危险的东西》官方网站",
+              "url": "https://bokuyaba-anime.com/"
+            }
+          },
+          {
+            "id": "bokuyaba-anna-kana",
+            "source": "yamada_anna",
+            "target": "ichikawa_kana",
+            "label": "相处融洽的知心大姐姐",
+            "description": "山田深受香菜姐弟俩温和家庭氛围的感染，与香菜一见如故、亲密无间。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "市川家作客",
+            "evidence": {
+              "title": "《我心里危险的东西》官方网站",
               "url": "https://bokuyaba-anime.com/"
             }
           }

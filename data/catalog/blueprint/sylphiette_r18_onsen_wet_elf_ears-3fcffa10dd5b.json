@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_onsen_wet_elf_ears",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 469,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "泡在汤浴中，绯红的尖耳在水汽里若隐若现",
     "adult": true,
@@ -14,7 +14,7 @@
     "camera": "close-up, face and ears above the bathwater",
     "category": "私密写真",
     "characterId": "sylphiette",
-    "description": "【希露菲叶特 · 格雷拉特家的初汤】新婚宅邸的木质汤浴间里，希露菲把身子沉进温热的汤水，只露出一双尖尖的精灵耳——耳朵尖已经被热气熏成了绯红色。她羞得把脸埋进水里咕嘟咕嘟冒泡，半晌才探出脑袋，红着脸小声说——「……水温、水温刚刚好！不是害羞！真的不是！」",
+    "description": "新婚宅邸的木质汤浴间里，希露菲把身子沉进温热的汤水，只露出一双尖尖的精灵耳——耳朵尖已经被热气熏成了绯红色。她羞得把脸埋进水里咕嘟咕嘟冒泡，半晌才探出脑袋，红着脸小声说——「……水温、水温刚刚好！不是害羞！真的不是！」",
     "id": "sylphiette_r18_onsen_wet_elf_ears",
     "kreaStyleHint": "",
     "lighting": "warm wooden bathhouse lantern glow, rising steam, soft firelight reflections",

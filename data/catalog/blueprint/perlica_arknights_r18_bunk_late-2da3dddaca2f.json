@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_bunk_late",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 724,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "盘腿坐在床上，一手揉眼，身体靠向画面外同伴的肩侧，报告暂放腿边。",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "medium shot",
     "category": "成人",
     "characterId": "perlica_arknights",
-    "description": "【佩丽卡 · 夜读报告】深夜床榻上，盘腿坐着的佩丽卡穿着敞襟灰衬衫与宽松短裤，雪白饱满的胸脯在布料边缘若隐若现。她揉了揉泛酸的眼眶靠在你的肩头——「今天审阅了整整四十份工程报告……脑子快要运转过载了。管理员……能让我这样靠着你休息一会儿吗？」",
+    "description": "深夜床榻上，盘腿坐着的佩丽卡穿着敞襟灰衬衫与宽松短裤，雪白饱满的胸脯在布料边缘若隐若现。她揉了揉泛酸的眼眶靠在你的肩头——「今天审阅了整整四十份工程报告……脑子快要运转过载了。管理员……能让我这样靠着你休息一会儿吗？」",
     "id": "perlica_arknights_r18_bunk_late",
     "kreaStyleHint": "",
     "lighting": "dim reading lamp",

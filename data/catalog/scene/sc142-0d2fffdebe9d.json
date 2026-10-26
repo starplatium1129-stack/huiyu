@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc142",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She stares at the pan floating above the stove as the viewer appears in the doorway; morning window light reaches her apron over the borrowed shirt.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, oversized white shirt, white apron, floating pan, magic, surprised, blush, kitchen, morning, window light, medium shot, <lora:ayachi_nene_v18_wd14:0.85>",
     "rating": "All",
     "season": "春",
-    "story": "【宁宁 After Story】婚后清晨的公寓厨房里弥漫着面包的焦味。宁宁穿着你那件大号的衬衫、套着围裙，正手忙脚乱地准备早餐。因为平底锅快烧焦了，她慌乱间下意识用了魔力让锅子自己悬浮在半空，结果正好被推门而入的你撞个正着。她瞬间满脸通红，头顶的呆毛直接害羞地弯成了心形——「啊啊啊！不准看！魔女的料理魔法失败现场也是家务最高机密！」",
+    "story": "婚后清晨的公寓厨房里弥漫着面包的焦味。宁宁穿着你那件大号的衬衫、套着围裙，正手忙脚乱地准备早餐。因为平底锅快烧焦了，她慌乱间下意识用了魔力让锅子自己悬浮在半空，结果正好被推门而入的你撞个正着。她瞬间满脸通红，头顶的呆毛直接害羞地弯成了心形——「啊啊啊！不准看！魔女的料理魔法失败现场也是家务最高机密！」",
     "storyJa": "【寧々・アフターストーリー】結婚式の翌朝、アパートのキッチンは焼けたパンの匂いでいっぱいだった。寧々はあなたのオーバーサイズのシャツとエプロンを着て、朝食の準備に忙しいです。鍋が焦げそうになったので、彼女はパニックになり、無意識のうちに魔法を使って鍋を空中に浮かせました。その結果、彼女はドアを押し込んだあなたにぶつかってしまいました。彼女の顔はすぐに赤くなり、頭のアホ毛は恥ずかしそうにハート型に曲がりました。――「きゃあっ、見ちゃだめです！　魔女の料理魔法が失敗した現場も、家事の最高機密なんですから！」",
     "tags": [
       "oversized_shirt",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evening_library_reading_together",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1386,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在深色长木椅上，身子微微倚靠在你的肩头，银色手指轻按泛黄书页，神色恬静安详",
     "adult": false,
@@ -18,7 +18,7 @@
       "library",
       "healing"
     ],
-    "description": "【夕阳静谧的高穹图书馆】高达穹顶的老式木质图书馆内弥漫着古卷与墨汁的沉静清香。斜阳将巨大的落地窗棂投影在长木桌上。薇尔莉特与你并肩而坐共享一本厚厚的诗集。或许是因为看得入神，她那松散开的金色秀发轻轻倚靠在你的肩膀上，静静聆听着你均匀的心跳声。",
+    "description": "高达穹顶的老式木质图书馆内弥漫着古卷与墨汁的沉静清香。斜阳将巨大的落地窗棂投影在长木桌上。薇尔莉特与你并肩而坐共享一本厚厚的诗集。或许是因为看得入神，她那松散开的金色秀发轻轻倚靠在你的肩膀上，静静聆听着你均匀的心跳声。",
     "id": "violet_evening_library_reading_together",
     "kreaStyleHint": "anime_warm_domestic",
     "lighting": "晚霞透过高耸彩绘玻璃投射的浓郁暖橙与古铜金斜射光",

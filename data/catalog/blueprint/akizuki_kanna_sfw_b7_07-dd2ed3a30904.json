@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_07",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1162,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "点心店门口检查怀旧糖果后递给镜头，外套和侧马尾迎风轻动",
     "adult": false,
@@ -15,7 +15,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【小镇粗点心店·午后】栞那穿着外出便装站在点心店门口，双手抱着刚买的纸袋，先挑出一颗糖确认包装，再把最怀旧的那颗递给镜头。",
+    "description": "栞那穿着外出便装站在点心店门口，双手抱着刚买的纸袋，先挑出一颗糖确认包装，再把最怀旧的那颗递给镜头。",
     "id": "akizuki_kanna_sfw_b7_07",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "late afternoon street light and warm shop glow",

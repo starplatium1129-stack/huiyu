@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc229",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 224,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "One hand holds the console while the other draws half the blanket over the viewer's knees.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, light brown cable knit sweater, asymmetrical ribbed collar, burgundy cuff edging, round eyewear, handheld game console, blanket, couch, attic, rain, window, lamp, holding game console, holding blanket, warm lighting",
     "rating": "All",
     "season": "秋",
-    "story": "【夏目 · 阴雨午后的阁楼书房】窗外细雨绵绵的温馨阁楼书房。没有排班的假日午后，夏目穿着一件宽大松软的浅咖啡色粗针毛衣，乌黑的长发随意散落，鼻梁上罕见地架着一副精巧的细圆框眼镜，正全神贯注地看着掌机屏幕。当你端着热茶坐到她身边时，她自然地拉起身上柔软的羊毛毯，分出一半盖在你腿上。距离瞬间拉近，她眼角的泪痣在屏幕荧光映照下分外动人，耳根悄悄泛起红晕，语气依然带着几分特有的淡然——「……别误会。我只是觉得两个人一起盖毯子比较暖和。……喂，顺便帮我把桌上的红茶递过来一下。」",
+    "story": "窗外细雨绵绵的温馨阁楼书房。没有排班的假日午后，夏目穿着一件宽大松软的浅咖啡色粗针毛衣，乌黑的长发随意散落，鼻梁上罕见地架着一副精巧的细圆框眼镜，正全神贯注地看着掌机屏幕。当你端着热茶坐到她身边时，她自然地拉起身上柔软的羊毛毯，分出一半盖在你腿上。距离瞬间拉近，她眼角的泪痣在屏幕荧光映照下分外动人，耳根悄悄泛起红晕，语气依然带着几分特有的淡然——「……别误会。我只是觉得两个人一起盖毯子比较暖和。……喂，顺便帮我把桌上的红茶递过来一下。」",
     "storyJa": "【夏目】【ナツメ・雨音響く屋根裏の書房】窓外に雨が降り続く居心地の良い屋根裏部屋。休日の午後、ナツメはざっくり編まれたモカ色のセーターをまとい、珍しく丸眼鏡をかけて携帯ゲームに夢中になっていた。温かいお茶を持って隣に腰掛けると、彼女は無造作にウール毛布の半分をあなたの膝へと掛けた。急に縮まった距離の中、目尻の泣きぼくろが液晶の光に揺れ、耳を赤らめながら淡々と口を開く――「……勘違いしないで。一緒に使った方が暖かいだけよ。……ねえ、ついでに机の紅茶取って」",
     "tags": [
       "mole_under_eye",

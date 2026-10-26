@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_morning_cafe_letter_writing",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1384,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在白色铁艺椅上，身前摆放着复古打字机，双手端正托起写好的信纸递向你，面带温柔微笑",
     "adult": false,
@@ -17,7 +17,7 @@
       "casual",
       "girlfriend"
     ],
-    "description": "【阳光倾泻的露天咖啡桌】清晨的莱顿港微风和煦。薇尔莉特在咖啡馆的白色铸铁圆桌上端正摆放着便携式机械打字机，修长的银白金属指节在键帽上轻快跳跃。打完最后一朵花体的收尾句后，她双手托起散发着墨香的信纸递向你，瓷白的面庞上露出一抹浅浅却极尽温柔的微笑。",
+    "description": "清晨的莱顿港微风和煦。薇尔莉特在咖啡馆的白色铸铁圆桌上端正摆放着便携式机械打字机，修长的银白金属指节在键帽上轻快跳跃。打完最后一朵花体的收尾句后，她双手托起散发着墨香的信纸递向你，瓷白的面庞上露出一抹浅浅却极尽温柔的微笑。",
     "id": "violet_morning_cafe_letter_writing",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "明净澄澈的晨曦直射，树影与白色蕾丝桌布交织出透亮光斑",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_desk_night",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 534,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "坐在红木办公桌沿，单手挑起下颌眼神深邃",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【凯尔希 · 灯下案前】深夜书房昏黄的台灯旁，衣衫半解的凯尔希坐在红木办公桌边缘，修长纤细的黑丝美腿在视线下交叠。她用指尖轻轻挑起你的下颌，目光意味深长——「博士，你现在的心率和瞳孔扩张程度，已经远远超出了安全阈值……不打算做点什么来平复心率吗？」",
+    "description": "深夜书房昏黄的台灯旁，衣衫半解的凯尔希坐在红木办公桌边缘，修长纤细的黑丝美腿在视线下交叠。她用指尖轻轻挑起你的下颌，目光意味深长——「博士，你现在的心率和瞳孔扩张程度，已经远远超出了安全阈值……不打算做点什么来平复心率吗？」",
     "id": "kaltsit_arknights_r18_desk_night",
     "kreaStyleHint": "",
     "lighting": "desk lamp and shadows",

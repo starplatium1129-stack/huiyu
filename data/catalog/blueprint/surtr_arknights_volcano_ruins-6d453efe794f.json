@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_volcano_ruins",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 518,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单手将炽热的莱瓦汀巨剑抗在肩头，身后熔岩火巨人拔地而起，暗红长发与炽热火星在狂风中疯狂飞扬",
     "camera": "wide shot, low angle, Surtr in the foreground with the fire giant rising behind",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【史尔特尔 · 火山遗迹】滚烫地热翻涌的火山遗迹裂隙边缘，黑曜石在炽热的地火下泛着幽光。史尔特尔伫立在沸腾的熔岩溪流旁回眸望向你，身后隐隐浮现出庞大的火焰巨人虚影——「这里的温度……和魔剑深处沉睡的声音一模一样。博士，抓紧我的手，可别掉进岩浆里了。」",
+    "description": "滚烫地热翻涌的火山遗迹裂隙边缘，黑曜石在炽热的地火下泛着幽光。史尔特尔伫立在沸腾的熔岩溪流旁回眸望向你，身后隐隐浮现出庞大的火焰巨人虚影——「这里的温度……和魔剑深处沉睡的声音一模一样。博士，抓紧我的手，可别掉进岩浆里了。」",
     "id": "surtr_arknights_volcano_ruins",
     "lighting": "熔岩翻滚喷涌的耀眼金红火光，极致的高光与深邃阴影，电影级粒子特效",
     "location": "萨卡兹古老火山熔岩祭坛",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_starry_stage",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 998,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "低头全神贯注弹奏电吉他，发丝随激烈演奏飘扬",
     "camera": "medium shot, dynamic low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【后藤一里 · STARRY 舞台觉醒】下北泽 STARRY 的地下舞台上，眩目的聚光灯如潮水般打在身上。后藤一里深吸一口气，抱紧怀中的黑金电吉他，手指在指板上如幻影般飞舞，奏出撕裂全场的失真SOLO——「虽然我还是那么害怕社交……但这一刻在舞台上，我想要把心中的全部声音，传达给每一个人！」",
+    "description": "下北泽 STARRY 的地下舞台上，眩目的聚光灯如潮水般打在身上。后藤一里深吸一口气，抱紧怀中的黑金电吉他，手指在指板上如幻影般飞舞，奏出撕裂全场的失真SOLO——「虽然我还是那么害怕社交……但这一刻在舞台上，我想要把心中的全部声音，传达给每一个人！」",
     "id": "gotoh_hitori_starry_stage",
     "lighting": "炫目舞台顶光与侧面冷蓝射灯",
     "location": "STARRY Livehouse 地下舞台",

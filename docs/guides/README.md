@@ -26,6 +26,7 @@
 - [角色点阵粒子管线（操作手册）](characters/particle-portrait-pipeline.md)
 - [视觉资产审核与用户审美意见](characters/quality-audit-standards-charter.md)
 - [Scene 数据与写作规范 · 绫季绘境](characters/scene-spec.html)
+- [Humanizer-zh 角色与故事写作指南](../../.agents/skills/humanizer-zh/SKILL.md)：角色档案与场景故事的中文创作、润色和审阅。
 
 <a id="desktop"></a>
 

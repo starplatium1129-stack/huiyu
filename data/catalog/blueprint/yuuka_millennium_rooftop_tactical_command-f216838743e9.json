@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_millennium_rooftop_tactical_command",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 918,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "迎风伫立在金属露台边缘，一手扶耳侧战术耳机，一手滑动全息光屏",
     "camera": "wide shot, low angle, epic vista",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【早濑优香 · 千年科学钟塔战术指挥】千年科学学园宏伟的高塔露台上，俯瞰着整座未来科技都市。强劲的高空气流猎猎吹拂着优香披在肩头的外套与双马尾。她神情果敢坚毅，指尖在半空中漂浮的战术全息光幕上迅速滑动演算，精准下达资源调配指令——「各小组注意，战术算力与后勤护盾已全部配置完毕！研讨会不会允许任何意外发生！」",
+    "description": "千年科学学园宏伟的高塔露台上，俯瞰着整座未来科技都市。强劲的高空气流猎猎吹拂着优香披在肩头的外套与双马尾。她神情果敢坚毅，指尖在半空中漂浮的战术全息光幕上迅速滑动演算，精准下达资源调配指令——「各小组注意，战术算力与后勤护盾已全部配置完毕！研讨会不会允许任何意外发生！」",
     "id": "yuuka_millennium_rooftop_tactical_command",
     "lighting": "黎明破晓的第一缕冷金晨光与全息蓝光",
     "location": "千年科学学园主塔高空全景露台",

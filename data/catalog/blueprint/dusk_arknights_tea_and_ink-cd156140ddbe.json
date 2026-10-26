@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_tea_and_ink",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 569,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "跪坐茶席前，研墨的手微顿",
     "camera": "medium close-up",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【夕 · 煮茶研墨】古朴清幽的茶席前，红泥小火炉上的清泉正咕嘟作响。夕跪坐于竹席上，研墨的纤细玉手微微一顿，将一盏泛着墨香的春茶推到你的面前——「尝尝看吧，这是取画中雪水煮的雨前茶。哼，要是敢说不好喝，下次就只能喝砚台里的墨汁了。」",
+    "description": "古朴清幽的茶席前，红泥小火炉上的清泉正咕嘟作响。夕跪坐于竹席上，研墨的纤细玉手微微一顿，将一盏泛着墨香的春茶推到你的面前——「尝尝看吧，这是取画中雪水煮的雨前茶。哼，要是敢说不好喝，下次就只能喝砚台里的墨汁了。」",
     "id": "dusk_arknights_tea_and_ink",
     "lighting": "soft courtyard light",
     "location": "岁家廊下",

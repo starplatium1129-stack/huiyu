@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_boyfriend_shirt_pantyhose_adjust",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1775,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "nana_boyfriend_shirt_pantyhose_adjust",
     "title": "娜娜 · 穿衣镜旁的提袜白衬衫与羞恼抗议",
@@ -35,7 +35,7 @@
     "coverageTags": [
       "special_character_art"
     ],
-    "description": "【娜娜 · 穿衣镜旁的提袜白衬衫与羞恼抗议】更衣镜旁，娜娜正手忙脚乱地整理行装。宽松的白衬衫从一侧肩头滑落，她金鸡独立般单脚踩着长凳提拉黑色连裤袜，见你突然走近，慌得立刻伸出另一只手挡在面前大声抗议，粉色双马尾一甩一甩，露出两颗小虎牙气鼓鼓地涨红了脸。",
+    "description": "更衣镜旁，娜娜正手忙脚乱地整理行装。宽松的白衬衫从一侧肩头滑落，她金鸡独立般单脚踩着长凳提拉黑色连裤袜，见你突然走近，慌得立刻伸出另一只手挡在面前大声抗议，粉色双马尾一甩一甩，露出两颗小虎牙气鼓鼓地涨红了脸。",
     "promptTokens": [
       "bedroom",
       "wooden_bench",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_r18_rooftop_moon",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 399,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "正面微侧站立，一手捏住胸前卡死的拉链、一手绷紧裙摆，领口与侧缝在相反受力下敞开",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "cowboy shot, low-angle front three-quarter view",
     "category": "成人",
     "characterId": "misaka_mikoto",
-    "description": "【成年 After Story · 御坂美琴 · 城市观景层的礼裙拉链事故】二十岁后的美琴参加完学园都市研究晚宴，独自躲进高层观景台的私密休息间。深蓝礼裙的前拉链卡在胸骨下方，她一手捏住发烫的金属拉片、一手向下绷紧裙摆，拉开的领口挤出成熟胸线，侧缝也因受力绽开露出黑色蕾丝与大腿勒痕。月光和电弧映亮她通红的耳尖——「不许笑！一定是电磁场让拉链卡住了……先把视线移开，我自己能处理。」",
+    "description": "二十岁后的美琴参加完学园都市研究晚宴，独自躲进高层观景台的私密休息间。深蓝礼裙的前拉链卡在胸骨下方，她一手捏住发烫的金属拉片、一手向下绷紧裙摆，拉开的领口挤出成熟胸线，侧缝也因受力绽开露出黑色蕾丝与大腿勒痕。月光和电弧映亮她通红的耳尖——「不许笑！一定是电磁场让拉链卡住了……先把视线移开，我自己能处理。」",
     "id": "misaka_mikoto_r18_rooftop_moon",
     "kreaStyleHint": "",
     "lighting": "落地窗月光、城市霓虹与礼裙边缘的细微电弧",

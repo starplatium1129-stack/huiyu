@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_tennis_court_drive",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 816,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "fiona_frost_tennis_court_drive",
     "characterId": "fiona_frost",
     "title": "菲奥娜 · 地下球场的破空抽击",
-    "description": "【菲奥娜 · 地下球场的破空抽击】坎贝尔顿地下网球赛的聚光灯耀眼夺目，全场观众屏息凝视。菲奥娜身着白色无袖运动球衫与飘逸百褶短裙，双足蹬地凌空飞跃。球拍在空气中划出凌厉的风压残影，网球如炮弹般轰然砸向对手半场。晶莹的汗珠沿她雪白的下颌飞溅，冷静淡漠的灰瞳深处点燃了为了前辈誓夺胜利的狂怒烈焰。",
+    "description": "坎贝尔顿地下网球赛的聚光灯耀眼夺目，全场观众屏息凝视。菲奥娜身着白色无袖运动球衫与飘逸百褶短裙，双足蹬地凌空飞跃。球拍在空气中划出凌厉的风压残影，网球如炮弹般轰然砸向对手半场。晶莹的汗珠沿她雪白的下颌飞溅，冷静淡漠的灰瞳深处点燃了为了前辈誓夺胜利的狂怒烈焰。",
     "outfitId": "tennis_sportswear",
     "category": "名场面",
     "location": "地下网球锦标赛球场",

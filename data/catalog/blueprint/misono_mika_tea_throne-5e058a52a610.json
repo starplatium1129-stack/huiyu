@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_tea_throne",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 888,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端坐主席位端红茶",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【圣园未花 · 茶话会的茶会之座】圣三一茶话会华丽奢靡的最高席位上，未花姿态优雅地端坐于天鹅绒座椅中，纤细指尖轻捏骨瓷茶杯。浅粉色长发与洁白羽翼在阳光下闪烁微光，琥珀金色的眼眸笑意盈盈地望向你——「Sensei☆ 今天的茶会特地为你准备了超好吃的瑞士卷哦！快坐到我身边来嘛～」",
+    "description": "圣三一茶话会华丽奢靡的最高席位上，未花姿态优雅地端坐于天鹅绒座椅中，纤细指尖轻捏骨瓷茶杯。浅粉色长发与洁白羽翼在阳光下闪烁微光，琥珀金色的眼眸笑意盈盈地望向你——「Sensei☆ 今天的茶会特地为你准备了超好吃的瑞士卷哦！快坐到我身边来嘛～」",
     "id": "misono_mika_tea_throne",
     "kreaStyleHint": "",
     "lighting": "彩窗透光与烛台",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_armor_workshop",
-  "revision": 7,
+  "revision": 5,
   "sortOrder": 576,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "单膝跪地调试装甲关节",
     "camera": "medium shot",
@@ -14,24 +14,20 @@
       "iconic",
       "daily"
     ],
-    "description": "【泥岩 · 装甲整备】罗德岛重型装备工坊内，身形娇小的泥岩单膝跪在巨大的重型动力防护服旁，一丝不苟地调试着液压关节与厚重的合金装甲板。擦去脸颊上的机油灰尘后，她转过脸露出纯净的微笑——「这套装甲虽然沉重笨拙，但只要能穿上它守护同伴，我就不会感到丝毫疲惫。」",
+    "description": "罗德岛重型装备工坊内，身形娇小的泥岩单膝跪在巨大的重型动力防护服旁，一丝不苟地调试着液压关节与厚重的合金装甲板。擦去脸颊上的机油灰尘后，她转过脸露出纯净的微笑——「这套装甲虽然沉重笨拙，但只要能穿上它守护同伴，我就不会感到丝毫疲惫。」",
     "id": "mudrock_arknights_armor_workshop",
     "lighting": "workshop lamps",
     "location": "罗德岛整备间",
     "mood": "专注温柔",
     "negativeTokens": [],
     "outfitId": "elite2",
-    "promptProse": "Kneeling on one knee beside the empty armor, she fits the wrench into its knee joint while her other hand steadies the fitting above the toolbox.",
+    "promptProse": "Kneeling beside the empty power armor, she fits the wrench into its exposed knee joint, steadying the fitting with her other hand above the open toolbox.",
     "promptTokens": [
       "kneeling",
       "wrench",
       "power armor",
       "toolbox",
-      "workshop",
-      "holding wrench",
-      "one knee",
-      "work light",
-      "medium shot"
+      "workshop"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,7 +40,6 @@
     "timeOfDay": "白天",
     "title": "泥岩 · 装甲整备",
     "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "One hand fits the wrench into the empty armor's knee joint while the other steadies it."
+    "nsfwProse": ""
   }
 }

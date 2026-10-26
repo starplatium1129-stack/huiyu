@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc027",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She holds the phone to her ear while resting against the pillow.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, dusty pink cotton pajamas, rounded collar, cream piping, ribbon button loop, phone, bedroom, pillow, bedside lamp, night, close up, lying, holding phone, light smile, lamplight",
     "rating": "All",
     "season": "秋",
-    "story": "【宁宁 · 没有挂断的深夜电话】秋夜里，宁宁在床上反复点开你的号码，终于拨通后却紧张得一句话也说不出。你没有催促，只隔着听筒陪她听窗外的风。很久以后，她把脸埋进枕头，小声承认——「其实没有急事……只是今天一直没见到你。听到声音以后，好像就能安心睡着了。」",
+    "story": "秋夜里，宁宁在床上反复点开你的号码，终于拨通后却紧张得一句话也说不出。你没有催促，只隔着听筒陪她听窗外的风。很久以后，她把脸埋进枕头，小声承认——「其实没有急事……只是今天一直没见到你。听到声音以后，好像就能安心睡着了。」",
     "storyJa": "【寧々・深夜の電話は一度も切られなかった】秋の夜、寧々はベッドの上であなたの番号を繰り返しクリックしました。ようやく電話をかけた後、彼女は緊張のあまり何も言えなかった。あなたは彼女を急かすこともなく、ただ受話器を通して彼女と一緒に窓の外の風を聞いていました。久しぶりに枕に顔を埋めてささやいた――「実は、急ぎの用事なんてないんです……今日はずっと会えなかったから。声を聞いたら、安心して眠れそうな気がして。」",
     "tags": [
       "hair_ribbon",

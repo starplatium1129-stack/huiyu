@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_shrine_rooftop_cloud_watching",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1124,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "侧卧在青黑屋脊瓦片上望天，手伸向云朵，草绿长发披散在瓦片间，赤足微翘",
     "camera": "wide cinematic shot, side-lying on curved roof tiles with one hand reaching toward the clouds",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "scenic"
     ],
-    "description": "【丛雨 · 飞檐之上的天高云淡】朝武神社主殿飞檐雕梁的最高瓦顶上，白云如棉絮般在纯净蓝天缓缓游动。丛雨惬意地侧躺在温热的青黑瓦片上，单手枕在脑后，另一只小手伸向天空仿佛在虚握飘荡的白云。她修长的素足在屋脊边晃荡，身侧两团小鬼火像宠物一样静静悬浮，展现出刀灵不受俗世拘束的悠然自得。",
+    "description": "朝武神社主殿飞檐雕梁的最高瓦顶上，白云如棉絮般在纯净蓝天缓缓游动。丛雨惬意地侧躺在温热的青黑瓦片上，单手枕在脑后，另一只小手伸向天空仿佛在虚握飘荡的白云。她修长的素足在屋脊边晃荡，身侧两团小鬼火像宠物一样静静悬浮，展现出刀灵不受俗世拘束的悠然自得。",
     "id": "murasame_shrine_rooftop_cloud_watching",
     "lighting": "万里晴空的纯净天光与屋瓦反射的暖灰漫光",
     "location": "神社大殿古旧青瓦高处飞檐",

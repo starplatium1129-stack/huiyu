@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_mage_library_candle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 123,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "fern_mage_library_candle",
     "title": "菲伦 · 早期修行的烛光抄写",
@@ -12,7 +12,7 @@
     "characterId": "fern_frieren",
     "outfitId": "journey_robe",
     "adult": false,
-    "description": "【早期修行想象·烛光书房】为三级魔法使资格准备的夜晚，菲伦端坐在书桌前抄写古代符文。听见同行者放下热茶，她停住笔尖，轻轻点头致谢，另一手仍压着书页；木质法杖靠在墙边，烛光照亮她专注而安静的侧脸。",
+    "description": "为三级魔法使资格准备的夜晚，菲伦端坐在书桌前抄写古代符文。听见同行者放下热茶，她停住笔尖，轻轻点头致谢，另一手仍压着书页；木质法杖靠在墙边，烛光照亮她专注而安静的侧脸。",
     "location": "魔法书图书馆",
     "action": "在书房抄写符文时暂停笔尖、点头谢茶，另一手压住书页，法杖靠墙",
     "timeOfDay": "evening",

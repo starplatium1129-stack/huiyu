@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_school_library_reading",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 186,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "sakura_school_library_reading",
     "title": "间桐樱 · 图书室窗边",
@@ -12,7 +12,7 @@
     "characterId": "matou_sakura",
     "outfitId": "homurahara_uniform",
     "adult": false,
-    "description": "【间桐樱 · 图书室窗边】午后放学后的图书室角落，樱安静地倚靠在窗边的长桌旁翻看着花卉种植图册，金色光尘在她的紫发间缓缓跳跃。察觉到你在对面坐下，她将食指轻轻按在唇上——「嘘……图书室要保持安静哦。不过能和学长坐在一起看书，真的好开心。」",
+    "description": "午后放学后的图书室角落，樱安静地倚靠在窗边的长桌旁翻看着花卉种植图册，金色光尘在她的紫发间缓缓跳跃。察觉到你在对面坐下，她将食指轻轻按在唇上——「嘘……图书室要保持安静哦。不过能和学长坐在一起看书，真的好开心。」",
     "location": "学校图书室",
     "action": "倚在窗边长桌旁，将花卉种植图册摊在桌上，一手压页另一手食指抵唇提醒安静",
     "timeOfDay": "afternoon",

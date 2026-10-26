@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_seminar_late_night_accounting",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 912,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "端坐在现代办公桌前微俯身核对账目，单手持计算器，微蹙眉头看向镜头",
     "camera": "cowboy shot, slightly high angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【早濑优香 · 研讨会深夜清算】千年科学学园研讨会宽敞现代的办公室内，窗外是基沃托斯璀璨的霓虹夜景。优香端坐在堆满发票与预算表的宽大办公桌前，单手飞速敲击着特制数字计算器，深蓝色的双马尾在柔和的台灯光晕下微微晃动——「老师！这个月夏莱的账单赤字又超标了！不许装傻，现在就跟我一笔笔核对清楚！」",
+    "description": "千年科学学园研讨会宽敞现代的办公室内，窗外是基沃托斯璀璨的霓虹夜景。优香端坐在堆满发票与预算表的宽大办公桌前，单手飞速敲击着特制数字计算器，深蓝色的双马尾在柔和的台灯光晕下微微晃动——「老师！这个月夏莱的账单赤字又超标了！不许装傻，现在就跟我一笔笔核对清楚！」",
     "id": "yuuka_seminar_late_night_accounting",
     "lighting": "暖色现代办公台灯与窗外全息霓虹泛光",
     "location": "千年科学学园研讨会核心办公室",

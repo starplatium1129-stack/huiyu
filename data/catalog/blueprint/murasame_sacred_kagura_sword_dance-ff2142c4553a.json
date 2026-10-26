@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_sacred_kagura_sword_dance",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1122,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "手持神刀丛雨丸旋转舞动，巫女宽袖与绯红袴裤翻飞，刀刃拖出神圣白芒",
     "camera": "full body, low three-quarter angle, sword arc and turning feet visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "dance"
     ],
-    "description": "【丛雨 · 神乐殿前的神刀奉纳舞】夜幕降临的朝武神社神乐殿朱红木台上，四周烛火通明。丛雨身穿白衣绯袴的小巫女服，双手紧握神刀丛雨丸的刀柄。她踏着古老神道仪轨的节奏轻巧旋身，刀锋划过空气留下一道冰清玉洁的雪亮光弧，神刀之灵在这一刻展露出守护这方水土的庄严神圣气魄。",
+    "description": "夜幕降临的朝武神社神乐殿朱红木台上，四周烛火通明。丛雨身穿白衣绯袴的小巫女服，双手紧握神刀丛雨丸的刀柄。她踏着古老神道仪轨的节奏轻巧旋身，刀锋划过空气留下一道冰清玉洁的雪亮光弧，神刀之灵在这一刻展露出守护这方水土的庄严神圣气魄。",
     "id": "murasame_sacred_kagura_sword_dance",
     "lighting": "四周石灯笼与红烛火光映衬出的高对比金红与刀光冷白",
     "location": "神社神乐殿红木露天戏台",

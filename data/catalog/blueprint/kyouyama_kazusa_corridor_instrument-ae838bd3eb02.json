@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_corridor_instrument",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 859,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱贝斯盒匆匆赶路",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【杏山和纱 · 校园走廊里的偶遇】圣三一明亮的教学楼走廊上，和纱单肩背着厚重的贝斯盒快步走过，黑色短发与猫耳在微风中轻颤。迎面撞见你时，她脚步猛地一顿，有些害羞地压了压头顶——「……巧遇呢，老师。接下来要去甜点部集合……要是你有空的话，要不要一起来尝尝刚出炉的司康？」",
+    "description": "圣三一明亮的教学楼走廊上，和纱单肩背着厚重的贝斯盒快步走过，黑色短发与猫耳在微风中轻颤。迎面撞见你时，她脚步猛地一顿，有些害羞地压了压头顶——「……巧遇呢，老师。接下来要去甜点部集合……要是你有空的话，要不要一起来尝尝刚出炉的司康？」",
     "id": "kyouyama_kazusa_corridor_instrument",
     "kreaStyleHint": "",
     "lighting": "走廊窗户光",

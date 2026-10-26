@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_bedroom_soles_choker_pull",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 426,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "reze_r18_bedroom_soles_choker_pull",
     "characterId": "reze_chainsaw",
     "title": "蕾塞 · 破旧公寓的月光陷阱",
-    "description": "【蕾塞 · 破旧公寓的月光陷阱】破旧公寓的深夜，蕾塞赤脚坐在窗台上，月光把她的影子拉得很长。她颈间的 pin choker 在月光下泛着冷光，绿瞳里盛着危险又甜蜜的笑意。她像布置陷阱一样，慢悠悠地朝你勾了勾手指——「……过来呀。炸弹的引信，可已经点着了哦。」",
+    "description": "破旧公寓的深夜，蕾塞赤脚坐在窗台上，月光把她的影子拉得很长。她颈间的 pin choker 在月光下泛着冷光，绿瞳里盛着危险又甜蜜的笑意。她像布置陷阱一样，慢悠悠地朝你勾了勾手指——「……过来呀。炸弹的引信，可已经点着了哦。」",
     "outfitId": "nsfw_nude",
     "sceneTags": [
       "window",

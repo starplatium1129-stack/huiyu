@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_flower_room",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 597,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "提着水壶，弯腰浇花",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【澄闪 · 花房】开满温室花卉的罗德岛生态种植舱内，苏茜提着小喷壶弯下腰，温柔地给一盆盆盛开的金盏花浇水。几缕跳跃的微弱静电火花在她的指尖与花瓣间闪烁——「源石技艺带来的静电虽然偶尔会惹小麻烦……但用来刺激植物生长，花朵开得比平时更加鲜艳了呢。」",
+    "description": "开满温室花卉的罗德岛生态种植舱内，苏茜提着小喷壶弯下腰，温柔地给一盆盆盛开的金盏花浇水。几缕跳跃的微弱静电火花在她的指尖与花瓣间闪烁——「源石技艺带来的静电虽然偶尔会惹小麻烦……但用来刺激植物生长，花朵开得比平时更加鲜艳了呢。」",
     "id": "goldenglow_arknights_flower_room",
     "lighting": "greenhouse morning light",
     "location": "罗德岛花房",

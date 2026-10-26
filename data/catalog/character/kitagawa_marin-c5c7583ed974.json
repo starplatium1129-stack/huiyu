@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kitagawa_marin",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "kitagawa_marin",
     "profile": {
@@ -162,7 +162,7 @@
             "label": "灵魂拍档与双向奔赴的恋人",
             "description": "从海梦热情撞入新菜封闭的匠人世界开始，新菜以极致细致的手艺为海梦裁制每一件C服，海梦则以灿烂的笑容与认可治愈新菜自卑的内心；经历冬漫展的波折后新菜深情告白，两人正式成为恋人。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "雪夜篇 · 告白与确立关系",
             "evidence": {
               "title": "福田晋一 · 《更衣人偶坠入爱河》官方故事档案",

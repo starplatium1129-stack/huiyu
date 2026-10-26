@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc090",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 88,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Steadying her ribbon with one hand, she turns toward the viewer calling her name; morning light filters through falling petals onto her surprised smile.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, nene_school_uniform, standing, adjusting hair ribbon, looking back, gentle smile, cherry blossoms, falling petals, path, morning, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "春",
-    "story": "【宁宁 · 樱吹雪中的名字】春日清晨的樱花道空无一人，宁宁站在花瓣形成的雪幕里，手指轻轻按住发带。你叫她名字时，她越过漫天粉白转身，先是惊讶，随后露出安心而温柔的笑——「原来被重要的人叫住，会觉得自己的名字也变得特别。再叫一次，可以吗？」",
+    "story": "春日清晨的樱花道空无一人，宁宁站在花瓣形成的雪幕里，手指轻轻按住发带。你叫她名字时，她越过漫天粉白转身，先是惊讶，随后露出安心而温柔的笑——「原来被重要的人叫住，会觉得自己的名字也变得特别。再叫一次，可以吗？」",
     "storyJa": "【寧々・桜吹雪の名前】春の早朝の桜並木は空いていました。寧々は花びらでできた雪のカーテンの中に立っており、ヘアバンドを指でそっと押さえていました。あなたが彼女の名前を呼ぶと、彼女はピンクの空の向こうを振り向いた。彼女は最初は驚いていましたが、その後安心したような優しい笑顔を見せてくれました。――「大切な人に呼び止められると、自分の名前まで特別になるんですね。もう一度、呼んでもらえますか？」",
     "tags": [
       "hair_ribbon",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_riverbank_dog_walk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1763,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "haruna_riverbank_dog_walk",
     "title": "西连寺春菜 · 黄昏河堤与爱犬马隆的悠闲散步",
@@ -30,7 +30,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【西连寺春菜 · 黄昏河堤与爱犬马隆的悠闲散步】落日熔金的彩南町河堤上，春菜穿着清爽的浅粉短袖上衣与洁白长裙。她一手牵着欢快小跑的波士顿梗犬马隆，一手轻挽被晚风吹乱的耳边短发。夕阳将她温柔的侧颜与眼眸染上一层暖橙色光晕，转过身来展颜微笑，画面充满了宁静而惬意的生活气息。",
+    "description": "落日熔金的彩南町河堤上，春菜穿着清爽的浅粉短袖上衣与洁白长裙。她一手牵着欢快小跑的波士顿梗犬马隆，一手轻挽被晚风吹乱的耳边短发。夕阳将她温柔的侧颜与眼眸染上一层暖橙色光晕，转过身来展颜微笑，画面充满了宁静而惬意的生活气息。",
     "promptTokens": [
       "riverbank",
       "grassy_hill",

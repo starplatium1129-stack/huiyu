@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc048",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She offers the blanket edge while the viewer's raised hand shades her eyes from the sun.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "1girl, shiki_natsume, powder blue pajamas, burgundy piping, notched collar, matching shorts, pillow, blanket, sleepy, smile, bedroom, morning, close up, lying, reaching, sunlight",
     "rating": "All",
     "season": "春",
-    "story": "【夏目 · 晨光叫醒的真心话】春日晨光穿过窗帘，夏目还缩在被子里熟睡。你替她挡住刺眼的光，她醒来后本想把脸藏起来，却发现你的手一直停在窗边。沉默几秒，她把被角分给你一半——「一直看别人睡觉很没礼貌。不过今天不用道歉……再躺十分钟，闹钟响了再起来。」",
+    "story": "春日晨光穿过窗帘，夏目还缩在被子里熟睡。你替她挡住刺眼的光，她醒来后本想把脸藏起来，却发现你的手一直停在窗边。沉默几秒，她把被角分给你一半——「一直看别人睡觉很没礼貌。不过今天不用道歉……再躺十分钟，闹钟响了再起来。」",
     "storyJa": "【夏目・朝の光で目覚めるという真実】春の朝の光がカーテンを通り抜け、夏目はまだ布団の中で丸まってぐっすり眠っていました。あなたは彼女のまぶしい光を遮りました。彼女が目を覚ましたとき、彼女は顔を隠そうとしましたが、あなたの手が窓の上に置かれていることに気づきました。数秒の沈黙の後、彼女はあなたにキルトの半分を渡します。――「人の寝顔をずっと見ているなんて失礼ね。でも今日は謝らなくていい……あと十分だけ、このまま。目覚ましが鳴ったら起きましょう。」",
     "tags": [
       "mole_under_eye",

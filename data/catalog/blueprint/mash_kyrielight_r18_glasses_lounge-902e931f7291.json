@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_glasses_lounge",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 207,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -13,7 +13,7 @@
     "title": "玛修 · 阳光活动室沙发抱枕依偎",
     "category": "成人",
     "characterId": "mash_kyrielight",
-    "description": "【玛修 · 阳光活动室沙发抱枕依偎】迦勒底活动室明媚阳光洒落的布艺沙发上，玛修抱枕依偎前倾，粉色短发垂落，丰满饱满的双峰在俯身姿态下挤压出惊心动魄的优美弧度，紫眸中满溢着毫无保留的爱意。",
+    "description": "迦勒底活动室明媚阳光洒落的布艺沙发上，玛修抱枕依偎前倾，粉色短发垂落，丰满饱满的双峰在俯身姿态下挤压出跌宕起伏的优美弧度，紫眸中满溢着毫无保留的爱意。",
     "location": "迦勒底阳光休息室",
     "action": "阳光活动室沙发上抱枕俯身前倾注视",
     "timeOfDay": "下午",

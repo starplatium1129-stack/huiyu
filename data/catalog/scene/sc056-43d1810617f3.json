@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc056",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "She catches the windblown cover-up hem while turning from the shallows toward the viewer.",
     "camera": "全身回眸远景",
@@ -23,7 +23,7 @@
     "prompt": "1girl, ayachi_nene, pale aqua one-piece swimsuit, ruffled neckline, pink cotton beach coverup, scalloped hem, walking, looking back, shallow water, beach, full body, holding hem, wind, wet hair, shy smile, reflected light",
     "rating": "All",
     "season": "夏",
-    "story": "【宁宁 · 浪花边的泳装回眸】盛夏午后，宁宁穿着新泳装从浅水区走来，外罩被海风吹得不断扬起。她察觉你的视线后先是害羞地拉了拉衣摆，随后又鼓起勇气转身让你看清整体搭配——「选了很久才决定这一套。你可以说感想，但不准只盯着一个地方……要认真地全部看完。」",
+    "story": "盛夏午后，宁宁穿着新泳装从浅水区走来，外罩被海风吹得不断扬起。她察觉你的视线后先是害羞地拉了拉衣摆，随后又鼓起勇气转身让你看清整体搭配——「选了很久才决定这一套。你可以说感想，但不准只盯着一个地方……要认真地全部看完。」",
     "storyJa": "【寧々・波紋エッジの水着を振り返る】真夏の午後、寧々さんが新しい水着を着て浅瀬から出てきたところ、外側のカバーが潮風で飛ばされてしまいました。あなたの視線に気づいた彼女は、恥ずかしそうに服の裾を引っ張り、勇気を出して振り向くと、服装全体がはっきりと見えました。――「ずいぶん迷って、これに決めたんです。感想は聞かせてほしいですけど、一か所ばかり見ないで……ちゃんと全部見てくださいね。」",
     "tags": [
       "hair_ribbon",

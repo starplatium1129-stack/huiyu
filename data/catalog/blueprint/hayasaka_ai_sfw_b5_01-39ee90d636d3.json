@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_01",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1405,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "停在高窗边，双手持平板低头核对日程。",
     "adult": false,
@@ -16,7 +16,7 @@
       "iconic",
       "daily"
     ],
-    "description": "【四宫宅走廊·清晨】早坂爱穿着整洁的黑白女仆装停在高窗旁，双手稳稳持着平板核对日程。侧马尾落在肩后，表情克制而专注；晨光在木地板上排成长条，远处走廊仍然安静。",
+    "description": "早坂爱穿着整洁的黑白女仆装停在高窗旁，双手稳稳持着平板核对日程。侧马尾落在肩后，表情克制而专注；晨光在木地板上排成长条，远处走廊仍然安静。",
     "id": "hayasaka_ai_sfw_b5_01",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "morning_light",

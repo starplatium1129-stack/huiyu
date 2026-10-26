@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suzuran_arknights",
-  "revision": 7,
+  "revision": 10,
   "sortOrder": 35,
   "createdAt": null,
-  "updatedAt": "2026-10-21T12:26:04.913Z",
+  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
   "data": {
     "id": "suzuran_arknights",
     "profile": {
@@ -51,13 +51,16 @@
         "role": "罗德岛辅助干员（凝滞师） / 东国神民与叙拉古名门之后",
         "age": "未知（外表与心智约为9-12岁幼女阶段）",
         "occupation": "罗德岛辅助干员 / 见习干员 / 学生",
-        "faction": "罗德岛 / 出生地：东国 / 家族势力：叙拉古"
+        "faction": "罗德岛 / 出生地：东国 / 家族势力：叙拉古",
+        "region": "东国",
+        "race": "沃尔珀",
+        "classificationSource": "游戏内基础档案（出身地、种族）；https://github.com/Kengxxiao/ArknightsGameData/blob/master/zh_CN/gamedata/excel/handbook_info_table.json"
       },
       "tags": [
         "浅金色 / 米金色（blonde / pale gold）",
         "清澈透亮的浅天蓝色/冰蓝色大眼睛（light blue / cyan eyes），眼眸纯真温润、神采明亮，带有柔和的高光与大眼睛萝莉神韵。"
       ],
-      "bg_story": "铃兰本名丽萨，父亲是东国小有名气的神职人员，母亲是叙拉古黑手党名门的核心要员。丽萨继承了父亲高贵的神民血统，生来拥有九条纯洁的金色尾巴，天生亲和强大的源石治愈技艺。为了让女儿免受家族宗法与残酷黑帮联姻的桎梏，父母秘密将她带往叙拉古生活。然而家族卷入惨烈的黑手党内讧，年幼的丽萨在刺杀中被藏有源石凶器的玩偶刺伤左臂，不幸罹患重度矿石病。为求生机，父母忍痛将她托付给罗德岛救治，自己则留在远方浴血搏杀。在罗德岛舰上，代号“铃兰”的小丽萨虽身受病痛折磨且思念远方的双亲，却展现出超越年龄的坚强、懂事与教养。她悉心培育花草盆栽，用九尾散发的纯净神圣光辉抚平伤员的心身痛楚，深受全舰干员的怜爱与呵护。在多次实战支援中，她用柔弱的身躯支撑起强大的凝滞与祈福法阵，以小太阳般的温柔与纯善，成为昏暗泰拉大地上永不熄灭的希望微光。",
+      "bg_story": "罗德岛辅助干员，代号铃兰，本名丽萨，九尾沃尔珀族少女。出身东国神职家庭，因意外感染矿石病被送往罗德岛接受长期医疗照料。年纪尚幼的她乖巧懂事、礼貌体贴，不仅从未因疾病与同龄人疏远而怨天尤人，反而常常主动在医疗部和生活区帮忙分发物资、递送茶水。她那天真纯净的笑颜、轻柔的话语以及能够抚平伤痛的源石技艺，如同一束柔和明亮的阳光，照亮了罗德岛舰船上每一位疲惫干员的心灵，被全舰上下真诚地唤作“我们的小光芒”。在最新行动中，铃兰依然跟随医疗小队出发，以最纯善的初心守望着大地的安宁。",
       "source": "Hypergryph《明日方舟 / Arknights》",
       "traits": [
         "suzuran (arknights)",
@@ -461,7 +464,7 @@
             "label": "跨越纪元的同行与审视",
             "description": "两人同为前文明遗存的关键存在，凯尔希数万年来注视并戒备着博士的选择，却依然在巴别塔与罗德岛与之一同托起文明火种。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 凯尔希与博士历史档案",
@@ -489,7 +492,7 @@
             "label": "魔王之冠与慈悲托付",
             "description": "特蕾西娅在巴别塔陷落前将萨卡兹的古老权能与文明愿景尽数托付给年幼的阿米娅，阿米娅终生背负其意志为大地寻找宽恕之道。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第十四章 · 慈悲灯塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔与魔王传承专条",
@@ -503,7 +506,7 @@
             "label": "旧日知音与理念决裂",
             "description": "曾携手开创巴别塔的挚友，却因前人类复兴宿命与泰拉现实生命的取舍而走向悲剧性的殊途与永别。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 巴别塔",
             "evidence": {
               "title": "PRTS维基 · 巴别塔活动全档案",
@@ -517,7 +520,7 @@
             "label": "骨肉至亲与救赎誓言",
             "description": "同母异父的亲姐妹，童年被迫离散并走向截然不同的命运；陈甘冒生死突入核心城斩断附着其身的黑蛇狂魂，唤醒了塔露拉的本心。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "鹰角网络 · 《明日方舟》主线第八章剧本",
@@ -531,7 +534,7 @@
             "label": "宿命较量与真理启示",
             "description": "作为整合运动暴动的领袖与罗德岛领袖展开殊死决斗，阿米娅在升变后以精神之剑共鸣唤醒被科西切怨念压制的塔露拉原初意志。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第八章 · 怒号光明",
             "evidence": {
               "title": "PRTS维基 · 塔露拉决战记录",
@@ -573,7 +576,7 @@
             "label": "看押受审与前路明证",
             "description": "在塔露拉被收监罗德岛期间，凯尔希以洞悉千年的冷静视角与这位昔日整合运动领袖多次深入对谈，见证其作为赎罪斗士重回战场。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "主线第九章至第十一章",
             "evidence": {
               "title": "PRTS维基 · 塔露拉收监与再出发档案",
@@ -643,7 +646,7 @@
             "label": "圣堂罹难与无言谅解",
             "description": "八年前精锐小队的生死搭档，因安多恩事件蕾缪安重伤昏迷、莫斯提马堕天流亡；蕾缪安苏醒后以从容的心境放下了往昔怨尤。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 吾导先路",
             "evidence": {
               "title": "PRTS维基 · 吾导先路教宗枢机处记录",
@@ -811,7 +814,7 @@
             "label": "生死与共的深海血誓",
             "description": "二度同生共死的第二小队深海猎人同袍，在陆地与海嗣低语交织的绝境中彼此呼唤人性，以斩断潮涌的决心支撑对方不被同化。",
             "directed": false,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 愚人号与覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 深海猎人阵营总志",
@@ -839,7 +842,7 @@
             "label": "海洋盟约与审慎防范",
             "description": "凯尔希深刻知晓深海猎人改造的残酷真相与大群海嗣覆灭泰拉的风险，在竭力为斯卡蒂提供生理支持的同时时刻监控异变征兆。",
             "directed": true,
-            "spoiler": true,
+            "spoiler": false,
             "stage": "SideStory · 覆潮之下",
             "evidence": {
               "title": "PRTS维基 · 覆潮之下医疗报告",

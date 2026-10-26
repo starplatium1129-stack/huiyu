@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_geofront_terminal_dogma",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1015,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "伫立于高空平台边缘俯瞰下方红色海洋",
     "camera": "medium shot, standing on a high platform overlooking the crimson LCL lake",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【绫波丽 · 最终教条的神圣肃穆】深邃浩瀚的地底最终教条区，庞大无垠的LCL红海散发着神圣而压抑的光晕。绫波丽身着白色的战斗服独立于钢铁升降梯前端，凝视着沉眠于十字架上的神之具现，眼底涌动着超越人类理解的崇高宿命——「这就是最初与最终的源头……一切生命归于一体的时刻，终将到来。」",
+    "description": "深邃浩瀚的地底最终教条区，庞大无垠的LCL红海散发着神圣而压抑的光晕。绫波丽身着白色的战斗服独立于钢铁升降梯前端，凝视着沉眠于十字架上的神之具现，眼底涌动着超越人类理解的崇高宿命——「这就是最初与最终的源头……一切生命归于一体的时刻，终将到来。」",
     "id": "ayanami_rei_geofront_terminal_dogma",
     "lighting": "地下红海暗红辉光与高空探照冷光交错",
     "location": "NERV 最终教条区 LCL 巨大湖泊",

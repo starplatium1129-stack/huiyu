@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_boyfriend_shirt_flustered_lean",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1774,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "kotegawa_boyfriend_shirt_flustered_lean",
     "title": "古手川唯 · 更衣室前的敞怀白衬衫与拘谨微倾",
@@ -34,7 +34,7 @@
     "coverageTags": [
       "special_character_art"
     ],
-    "description": "【古手川唯 · 更衣室前的敞怀白衬衫与拘谨微倾】穿衣镜前，换衣中途的唯套着敞怀的大码白衬衫。黑发白发箍衬托下，整张清丽面庞早已红透至耳根。双手无措地按在透肉黑丝大腿上，身子略微拘谨前倾，咬着下唇偏过头不敢正视你，结结巴巴斥责却全无平日风纪委员的威严。",
+    "description": "穿衣镜前，换衣中途的唯套着敞怀的大码白衬衫。黑发白发箍衬托下，整张清丽面庞早已红透至耳根。双手无措地按在透肉黑丝大腿上，身子略微拘谨前倾，咬着下唇偏过头不敢正视你，结结巴巴斥责却全无平日风纪委员的威严。",
     "promptTokens": [
       "dressing_room",
       "mirror",

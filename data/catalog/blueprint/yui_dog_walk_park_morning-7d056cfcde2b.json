@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yui_dog_walk_park_morning",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 350,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "yui_dog_walk_park_morning",
     "characterId": "yuigahama_yui",
     "title": "由比滨结衣 · 清晨公园·林荫道旁的明媚笑容",
-    "description": "【由比滨结衣 · 清晨公园·林荫道旁的明媚笑容】清晨公园的林荫大道上洒满斑驳树影，结衣牵着欢快小跑的家里的小狗萨布雷。看到迎面走来的你，她兴奋地用力挥舞手臂，元气满满的活力扑面而来——「早上好！竟然能在散步的时候偶遇，今天一定会有超棒的好运气吧！」",
+    "description": "清晨公园的林荫大道上洒满斑驳树影，结衣牵着欢快小跑的家里的小狗萨布雷。看到迎面走来的你，她兴奋地用力挥舞手臂，元气满满的活力扑面而来——「早上好！竟然能在散步的时候偶遇，今天一定会有超棒的好运气吧！」",
     "outfitId": "dog_pajamas",
     "sceneTags": [
       "park",

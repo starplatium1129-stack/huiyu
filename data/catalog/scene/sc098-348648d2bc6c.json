@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc098",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Her head rests on the viewer's clothed lap as one fingertip traces their open palm.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, pink satin camisole, cream silk robe, pink scalloped trim, lap pillow, looking up, smile, tatami, window light, close up, lying, touching palm",
     "rating": "All",
     "season": "秋",
-    "story": "【宁宁 · 膝上倒映的眼睛】秋日下午，宁宁躺在你腿上看窗外摇动的树影，忽然转过脸认真端详你。她说从这个角度能看见平时忽略的表情，随后用手指轻轻描过你的掌纹。被问在想什么，她眯起眼笑——「在确认我喜欢的人是不是还在这里。答案没有变，所以可以放心睡一会儿了。」",
+    "story": "秋日下午，宁宁躺在你腿上看窗外摇动的树影，忽然转过脸认真端详你。她说从这个角度能看见平时忽略的表情，随后用手指轻轻描过你的掌纹。被问在想什么，她眯起眼笑——「在确认我喜欢的人是不是还在这里。答案没有变，所以可以放心睡一会儿了。」",
     "storyJa": "【寧々・膝に映る目】秋の午後、寧々はあなたの膝の上に寝そべって、窓の外に揺れる木々の影を眺めていましたが、突然顔を向けてあなたを真剣に見つめました。この角度からは普段無視していた表情が見えると言い、そっと掌紋を指でなぞってくれました。何を考えているのかと尋ねると、彼女は目を細めて微笑んだ。――「好きな人がまだここにいるか、確かめていたんです。答えは変わっていないから、安心してもう少し眠れます。」",
     "tags": [
       "hair_ribbon",

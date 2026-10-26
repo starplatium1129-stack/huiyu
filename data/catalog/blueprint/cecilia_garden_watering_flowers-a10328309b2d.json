@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_garden_watering_flowers",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 841,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "提着水壶浇花，阳光洒落",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【塞西莉亚 · 教堂庭院浇花】清晨阳光洒满教堂后院的花园，塞西莉亚提着小铜水壶笨拙却认真地给白玫瑰花丛浇水，几缕薄荷绿发在阳光下熠熠生辉。她擦了擦额头的小汗珠转过脸甜甜一笑——「花儿喝饱水之后开得真精神呢！劳伦斯，今天早上的浇花任务我可是超额完成了哦！」",
+    "description": "清晨阳光洒满教堂后院的花园，塞西莉亚提着小铜水壶笨拙却认真地给白玫瑰花丛浇水，几缕薄荷绿发在阳光下熠熠生辉。她擦了擦额头的小汗珠转过脸甜甜一笑——「花儿喝饱水之后开得真精神呢！劳伦斯，今天早上的浇花任务我可是超额完成了哦！」",
     "id": "cecilia_garden_watering_flowers",
     "lighting": "morning_sunlight",
     "location": "教堂庭院",

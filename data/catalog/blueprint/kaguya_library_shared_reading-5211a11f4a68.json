@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_library_shared_reading",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1400,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "并肩共读留三厘米距离，侧脸微近，余光偷看",
     "adult": false,
@@ -17,7 +17,7 @@
       "daily",
       "school"
     ],
-    "description": "【秀知院图书室·午后】辉夜与你并肩坐在靠窗的阅读位，两本书之间刻意留出三厘米的距离——这是她计算过的、既不会越界也不会疏远的安全值。翻页的间隙她的侧脸靠近了一点，红瞳的余光一直落在你的书页上。午后的光尘在两人之间浮游，谁都没有开口，谁都没有挪开。",
+    "description": "辉夜与你并肩坐在靠窗的阅读位，两本书之间刻意留出三厘米的距离——这是她计算过的、既不会越界也不会疏远的安全值。翻页的间隙她的侧脸靠近了一点，红瞳的余光一直落在你的书页上。午后的光尘在两人之间浮游，谁都没有开口，谁都没有挪开。",
     "id": "kaguya_library_shared_reading",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "窗边洒落的明亮午后光与浮游光尘",

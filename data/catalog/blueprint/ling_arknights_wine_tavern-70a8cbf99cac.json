@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_wine_tavern",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 649,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "倚栏独坐举盏温酒轻啜",
     "camera": "medium shot, slightly high angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【令 · 龙门酒肆独酌】夜幕下的龙门老街酒肆二楼，蓝发如瀑的岁之龙女倚栏独坐，将一盏温酒缓缓举至唇边。龙角在墨青旗袍映衬下泛着幽光，她微微眯起蓝瞳，望着楼下川流的人群轻笑——「千年过去，人间依旧热闹。只是这酒，还是独酌最香。」",
+    "description": "夜幕下的龙门老街酒肆二楼，蓝发如瀑的岁之龙女倚栏独坐，将一盏温酒缓缓举至唇边。龙角在墨青旗袍映衬下泛着幽光，她微微眯起蓝瞳，望着楼下川流的人群轻笑——「千年过去，人间依旧热闹。只是这酒，还是独酌最香。」",
     "id": "ling_arknights_wine_tavern",
     "lighting": "warm lantern glow, amber wine reflections, soft window moon",
     "location": "龙门老街酒肆二楼",

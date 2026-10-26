@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_fashion_fitting",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "试衣间镜前半褪上衣回眸坏笑",
     "adult": true,
@@ -13,7 +13,7 @@
     "category": "成人",
     "characterId": "yvonne_arknights",
     "coverageTags": [],
-    "description": "【伊冯 · 时尚试衣间全身镜心跳】明亮的精品店试衣间全身镜前，伊冯半褪下紧身上衣回眸征询，沙漏般的火辣辣妹腰臀比与挺拔双峰在环形柔光下极具视觉冲击力。",
+    "description": "明亮的精品店试衣间全身镜前，伊冯半褪下紧身上衣回眸征询，沙漏般的火辣辣妹腰臀比与挺拔双峰在环形柔光下极具视觉冲击力。",
     "id": "yvonne_arknights_r18_fashion_fitting",
     "kreaStyleHint": "",
     "lighting": "全身镜环绕高显色柔光与暖白天幕",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_shimokitazawa_alley",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1002,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "背着吉他包在街道前行，回首害羞张望",
     "camera": "full-body shot, eye level",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【后藤一里 · 下北泽街巷漫步】下北泽错落有致的文艺后巷中，涂鸦墙与复古店铺牌匾在午后树影斑驳下交错。波奇酱背着比自己身躯还沉重的黑色吉他包，小心翼翼地沿着路沿石走过，微风吹拂着她粉色的发丝与蓝黄发夹——「去排练室的这条路我已经走过很多次了……但每次心跳还是快得像双踩鼓点一样。」",
+    "description": "下北泽错落有致的文艺后巷中，涂鸦墙与复古店铺牌匾在午后树影斑驳下交错。波奇酱背着比自己身躯还沉重的黑色吉他包，小心翼翼地沿着路沿石走过，微风吹拂着她粉色的发丝与蓝黄发夹——「去排练室的这条路我已经走过很多次了……但每次心跳还是快得像双踩鼓点一样。」",
     "id": "gotoh_hitori_shimokitazawa_alley",
     "lighting": "午后阳光穿透树叶投下斑驳光斑",
     "location": "下北泽街头后巷",

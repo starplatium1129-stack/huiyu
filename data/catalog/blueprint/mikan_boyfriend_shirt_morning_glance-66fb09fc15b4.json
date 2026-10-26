@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_boyfriend_shirt_morning_glance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1778,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "mikan_boyfriend_shirt_morning_glance",
     "title": "结城美柑 · 展会纪念宽大白衬衫与晨光回眸",
@@ -34,7 +34,7 @@
     "coverageTags": [
       "character_featured"
     ],
-    "description": "【结城美柑 · 展会纪念宽大白衬衫与晨光回眸】晨风拂动百叶窗，金色朝阳在地板上映出横向光斑。美柑偷偷套上哥哥那件宽大松垮的男士白衬衫，双手缩在长长的袖口里，正打量镜中的自己，忽然听到开门声，立刻像触电般侧身回眸，小脸红得像番茄，气鼓鼓娇嗔抗议——「进门前要先敲门啦，笨蛋哥哥！」",
+    "description": "晨风拂动百叶窗，金色朝阳在地板上映出横向光斑。美柑偷偷套上哥哥那件宽大松垮的男士白衬衫，双手缩在长长的袖口里，正打量镜中的自己，忽然听到开门声，立刻像触电般侧身回眸，小脸红得像番茄，气鼓鼓娇嗔抗议——「进门前要先敲门啦，笨蛋哥哥！」",
     "promptTokens": [
       "bedroom",
       "window",

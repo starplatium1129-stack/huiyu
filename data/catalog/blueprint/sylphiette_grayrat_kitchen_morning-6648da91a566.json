@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_grayrat_kitchen_morning",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 472,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "穿着宽松睡衣哼着歌准备早餐",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【希露菲 · 新婚宅邸晨间】飘散着刚出炉面包香气的新家厨房里，希露菲穿着可爱的宽松居家服，一边哼着轻快的家乡小调一边熟练地翻动平底锅里的培根煎蛋。听到你的脚步声，她回过头笑靥如花——「早餐马上就好啦！快去洗手坐好，今天也为你准备了满满的能量哦！」",
+    "description": "飘散着刚出炉面包香气的新家厨房里，希露菲穿着可爱的宽松居家服，一边哼着轻快的家乡小调一边熟练地翻动平底锅里的培根煎蛋。听到你的脚步声，她回过头笑靥如花——「早餐马上就好啦！快去洗手坐好，今天也为你准备了满满的能量哦！」",
     "id": "sylphiette_grayrat_kitchen_morning",
     "lighting": "soft_morning_light",
     "location": "格雷拉特家厨房",

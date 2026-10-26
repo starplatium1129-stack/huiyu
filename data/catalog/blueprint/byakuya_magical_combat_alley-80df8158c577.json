@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_magical_combat_alley",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 825,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "魔法少女变身，星尘光阵展开",
     "adult": false,
@@ -15,7 +15,7 @@
       "iconic",
       "daily"
     ],
-    "description": "【深森白夜 · 雨中小巷·魔法少女变身与星尘阵】阴暗狭窄的雨后小巷深处，面对强大的敌人，白夜毫不犹豫地高举法杖展开耀眼的星尘变身魔法阵。绚丽的魔法光芒驱散了所有的阴霾与潮湿，她神情凛然地护在身后的人面前——「只要我还站在这里，就绝对不会允许任何人夺走大家的笑容与日常！」",
+    "description": "阴暗狭窄的雨后小巷深处，面对强大的敌人，白夜毫不犹豫地高举法杖展开耀眼的星尘变身魔法阵。绚丽的魔法光芒驱散了所有的阴霾与潮湿，她神情凛然地护在身后的人面前——「只要我还站在这里，就绝对不会允许任何人夺走大家的笑容与日常！」",
     "id": "byakuya_magical_combat_alley",
     "lighting": "magic_glow",
     "location": "雨中小巷",

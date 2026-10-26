@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_snow_garden",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 194,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "negativeTokens": [
       "extra people"
@@ -13,7 +13,7 @@
     "title": "摩根 · 冬宫雪庭",
     "category": "哥特暗黑",
     "characterId": "morgan_le_fay_fate",
-    "description": "【摩根 · 冬宫雪庭】冬宫的雪庭里，摩根独自立于漫天飞雪之中，黑蓝长裙与银发几乎融进雪光，只有王冠与冰瞳仍是触目的冷色——「雪落无声，正如王座之上的岁月。」",
+    "description": "冬宫的雪庭里，摩根独自立于漫天飞雪之中，黑蓝长裙与银发几乎融进雪光，只有王冠与冰瞳仍是触目的冷色——「雪落无声，正如王座之上的岁月。」",
     "location": "冬宫雪庭",
     "action": "独自站在雪庭空地，双手轻合在身前，抬眼看落雪",
     "timeOfDay": "白天",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_training_supervise",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 530,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双臂环抱立于场边",
     "camera": "medium shot, slight low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【凯尔希 · 训练督导】战术模拟室坚硬的防爆玻璃前，凯尔希双臂环抱于胸前，目光冷静犀利地审视着场内干员的协同作战数据。她微微颔首——「干员们的战术配合有所提升。但在战场上，任何一丝侥幸心理都会导致无可挽回的伤亡，继续保持最高标准的警惕。」",
+    "description": "战术模拟室坚硬的防爆玻璃前，凯尔希双臂环抱于胸前，目光冷静犀利地审视着场内干员的协同作战数据。她微微颔首——「干员们的战术配合有所提升。但在战场上，任何一丝侥幸心理都会导致无可挽回的伤亡，继续保持最高标准的警惕。」",
     "id": "kaltsit_arknights_training_supervise",
     "lighting": "bright training hall light",
     "location": "罗德岛演武场",

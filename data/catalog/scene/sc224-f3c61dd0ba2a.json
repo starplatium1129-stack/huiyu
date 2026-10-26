@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc224",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:39:58.915038600+00:00",
   "data": {
     "animaCaption": "Both hands catch the hem as she turns toward the viewer at the rooftop door, her costume wings spread behind her.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, petal layered skirt, pearl waist chain, scalloped neckline, white angel dress, feathered costume wings, costume halo, holding hem, rooftop, sunset, full body, centered composition, looking at viewer, spread wings, wind, hair blowing, rim light, shoes",
     "rating": "All",
     "season": "秋",
-    "story": "【宁宁 · 天台天使装反差萌】学园祭前夕被晚霞染红的学校天台。为了帮戏剧部试衣，宁宁换上了一套极其精致的纯白圣洁天使连衣裙，背后一对洁白的羽毛翅膀与头顶的发光光环在强烈的夕阳逆光中散发着神圣的光晕。微风吹过，她银白色的低双马尾与裙摆一同飞扬。原本正有些羞耻地在镜子前练习动作，一回头却发现你正靠在门边含笑注视着她。宁宁瞬间满脸通红，头顶的呆毛慌乱地跟着翅膀一起颤动起来，急忙用手捂住裙摆大声自曝——「呜啊！柊、柊史！什么时候进来的啦！不准看！人家、人家只是帮戏剧部试一下衣服而已，绝对没有故意穿成这样在等你哦……呜，笨蛋，快转过头去！」",
+    "story": "天台被晚霞染成一片温暖的绯橙色。宁宁正对着落地玻璃试穿戏剧部的白色天使裙道具，轻抚着背后的羽毛翅膀练习动作。一转头发现你不知何时站在安全门边，她吓了一跳，脸颊瞬间涨得通红，连忙拽住裙角，头顶的呆毛也慌张地晃动起来：「呜啊！柊、柊史！你怎么不敲门呀……快转过头去，只是帮社团试尺寸啦，不许笑！」",
     "storyJa": "【寧々・屋上の純白の福音と恥ずかしさ】文化祭の前夜、夕暮れに染まる学校の屋上。演劇部の手伝いで、寧々は非常に精緻な純白の聖なる天使のワンピースに着替えていた。背中の白い羽の翼と頭上の光る輪が、強い夕日の逆光の中で神聖な光輪を放っている。微風が吹き抜け、彼女の銀髪のローツインテールとスカートの裾が一緒に舞い上がる。少し恥ずかしそうに鏡の前でポーズの練習をしていたが、振り返るとあなたがドアの傍に寄りかかって微笑みながら見つめているのに気づいた。寧々は瞬間的に顔を真っ赤にし、頭の上のアホ毛が慌てて翼と一緒に震え出し、手でスカートを覆いながら大声で自爆した――「うあぁ！柊、柊史！いつからそこにいたの？！見ちゃダメ！私、私はただ演劇部の衣装を試着してるだけで、決してわざとこんな格好であなたを待ってたわけじゃ……うう、バカ、早く後ろを向いて！」",
     "tags": [
       "hair_ribbon",
@@ -43,7 +43,7 @@
     ],
     "time": "黄昏",
     "timeOfDay": "sunset",
-    "title": "落日天台上的纯白福音",
+    "title": "落日天台的天使裙试穿",
     "usage": [
       "新手推荐",
       "壁纸级"

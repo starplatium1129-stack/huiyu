@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_fireworks_furisode_okawaii",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1394,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "穿深红振袖回眸浅笑，红瞳倒映金色烟花，广袖随风轻扬",
     "adult": false,
@@ -17,7 +17,7 @@
       "iconic",
       "signature"
     ],
-    "description": "【京都夏夜·鸭川河畔】深红振袖和服上金色的红叶纹样随夜风轻扬，辉夜立于河畔石阶，回头望向仰头看烟花的你。金色烟花在她红瞳里炸开成漫天星屑，她唇角弯起那一抹标志性的、居高临下又百转千回的浅笑——「お可愛いこと……」唇形无声落下，千年的大小姐骄傲与少女的悸动，在烟花里同时被看穿。",
+    "description": "深红振袖和服上金色的红叶纹样随夜风轻扬，辉夜立于河畔石阶，回头望向仰头看烟花的你。金色烟花在她红瞳里炸开成漫天星屑，她唇角弯起那一抹标志性的、居高临下又百转千回的浅笑——「お可愛いこと……」唇形无声落下，千年的大小姐骄傲与少女的悸动，在烟花里同时被看穿。",
     "id": "kaguya_fireworks_furisode_okawaii",
     "kreaStyleHint": "anime_portrait_sharp",
     "lighting": "金色烟花冷艳光与河面反光交织",

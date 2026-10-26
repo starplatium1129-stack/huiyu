@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc052",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "After kissing the viewer's cheek, she nestles against their shoulder and looks up beneath the rooftop stars; moonlight edges her hair.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "safe, 1girl, ayachi_nene, nene_school_uniform, leaning on person, blush, rooftop, stars, night, moonlight, close up, @rella",
     "rating": "All",
     "season": "夏",
-    "story": "【宁宁 · 屋顶星空下的第二个约定】夏夜的屋顶风很轻，宁宁靠在你肩上数星星，数到一半却总把同一颗重复计算。你拆穿她只是想延长独处时间，她索性抬头吻了一下你的脸侧，随后把发热的脸藏进你肩窝——「既然被发现就没办法了。那我们约好，下一次流星雨也一起看，不准让别人抢走这个位置。」",
+    "story": "夏夜的屋顶风很轻，宁宁靠在你肩上数星星，数到一半却总把同一颗重复计算。你拆穿她只是想延长独处时间，她索性抬头吻了一下你的脸侧，随后把发热的脸藏进你肩窝——「既然被发现就没办法了。那我们约好，下一次流星雨也一起看，不准让别人抢走这个位置。」",
     "storyJa": "【寧々・屋上の星空の下二度目の約束】夏の夜、屋上に吹く風はとても軽いです。寧々はあなたの肩に寄りかかって星を数えます。数えの途中で、彼女はいつも同じものをもう一度数えます。あなたは、彼女がただ一人の時間を引き延ばしたかっただけだと明らかにしました。彼女はただ頭を上げてあなたの顔の横にキスをし、熱くなった顔をあなたの肩に隠しました。――「見つかってしまったなら仕方ありませんね。じゃあ約束です。次の流星群も一緒に見て、この場所を誰にも取らせないこと。」",
     "tags": [
       "hair_ribbon",

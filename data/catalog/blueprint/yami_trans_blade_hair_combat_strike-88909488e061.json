@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_trans_blade_hair_combat_strike",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1221,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "轻盈腾空而起，金色长发化作巨大锋利金属刀刃破空斩击，黑裙翻飞，杀意凌厉",
     "camera": "full body, low angle, airborne figure and two hair blades striking the target visible",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "combat"
     ],
-    "description": "【金色暗影 · 杀手本色的金发利刃斩击】夜色笼罩的彩南町高架公路桥下，路灯在水泥地面拉出长长的暗影。小暗完全激活生物变形能力，她金色长发的两束发梢化作数把闪耀着寒光的巨大精钢利刃破空扫过，将眼前的机械傀儡一刀两断。火花与狂风在身边激荡，她身穿黑色哥特战裙凌空跃起，深红的眼眸不带丝毫感情波动，展现出银河第一杀手的绝对战力。",
+    "description": "夜色笼罩的彩南町高架公路桥下，路灯在水泥地面拉出长长的暗影。小暗完全激活生物变形能力，她金色长发的两束发梢化作数把闪耀着寒光的巨大精钢利刃破空扫过，将眼前的机械傀儡一刀两断。火花与狂风在身边激荡，她身穿黑色哥特战裙凌空跃起，深红的眼眸不带丝毫感情波动，展现出银河第一杀手的绝对战力。",
     "id": "yami_trans_blade_hair_combat_strike",
     "lighting": "刀刃斩断机械爆发出的炽烈橙红火花与冷蓝路灯逆光",
     "location": "夜间高架桥下立柱与开阔公路水泥地面",

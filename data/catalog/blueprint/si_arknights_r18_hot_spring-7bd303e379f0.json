@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_r18_hot_spring",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1768,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "si_arknights_r18_hot_spring",
     "characterId": "si_arknights",
@@ -18,7 +18,7 @@
     "mood": "湿身娇媚",
     "adult": true,
     "sampleRating": "R18",
-    "description": "【祀 · 雾气清泉水下龙尾缠绕】基地后山隐秘的温泉池中水汽氤氲，祀浑身湿透、仅裹着一袭几乎被温水浸透贴肉的薄浴巾。她背靠光滑的青石池壁，晶莹的水珠顺着天鹅颈与锁骨滑入深邃沟壑，眼眸迷蒙泛水光，修长的青色龙尾在水下游动、悄然缠上你的脚踝——「水温……好像越来越烫了……」",
+    "description": "基地后山隐秘的温泉池中水汽氤氲，祀浑身湿透、仅裹着一袭几乎被温水浸透贴肉的薄浴巾。她背靠光滑的青石池壁，晶莹的水珠顺着天鹅颈与锁骨滑入深邃沟壑，眼眸迷蒙泛水光，修长的青色龙尾在水下游动、悄然缠上你的脚踝——「水温……好像越来越烫了……」",
     "outfitId": "white_bath_wrap",
     "recommendedSize": "1152x1536",
     "coverageTags": [],

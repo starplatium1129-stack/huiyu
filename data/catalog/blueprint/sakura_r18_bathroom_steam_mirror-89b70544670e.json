@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_bathroom_steam_mirror",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 188,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "id": "sakura_r18_bathroom_steam_mirror",
     "title": "间桐樱 · 卫宫家晨间雾气",
@@ -12,7 +12,7 @@
     "characterId": "matou_sakura",
     "outfitId": "white_bath_towel",
     "adult": true,
-    "description": "【间桐樱 · 卫宫家晨间雾气】清晨的卫宫家浴室还浮着一层薄薄的水汽。樱抬手在起雾的镜面上擦出一道清晰的印子，映出她湿润的紫色长发和温柔的眼睛。她对着镜子里的自己笑了笑，声音轻轻的——「……今天也要加油，做前辈爱吃的早餐。」",
+    "description": "清晨的卫宫家浴室还浮着一层薄薄的水汽。樱抬手在起雾的镜面上擦出一道清晰的印子，映出她湿润的紫色长发和温柔的眼睛。她对着镜子里的自己笑了笑，声音轻轻的——「……今天也要加油，做前辈爱吃的早餐。」",
     "location": "卫宫家浴室",
     "action": "晨雾中抬手擦亮镜面",
     "timeOfDay": "清晨",

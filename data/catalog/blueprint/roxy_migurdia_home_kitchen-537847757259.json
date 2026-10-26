@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_home_kitchen",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 458,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "踮脚伸手取高处橱柜里的调料罐",
     "camera": "medium shot",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【洛琪希 · 居家厨房】飘满炖肉香气的温馨厨房里，系着淡蓝色围裙的洛琪希正踮起脚尖，拼命伸长手臂试图够到顶层橱柜里的调料罐。她有些窘迫地转过头——「唔……就差一点点！绝对不准笑我个子矮，快过来帮我拿一下啦！」",
+    "description": "飘满炖肉香气的温馨厨房里，系着淡蓝色围裙的洛琪希正踮起脚尖，拼命伸长手臂试图够到顶层橱柜里的调料罐。她有些窘迫地转过头——「唔……就差一点点！绝对不准笑我个子矮，快过来帮我拿一下啦！」",
     "id": "roxy_migurdia_home_kitchen",
     "lighting": "明亮日光",
     "location": "公寓厨房",

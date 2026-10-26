@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_deep_dive_tub_cyberspace_interface",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1099,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "半卧在冰水深潜舱中，神经光纤插入脊髓插槽，双眼泛着数据流金光",
     "camera": "top-down overhead angle, intimate technological depth",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "netrunning"
     ],
-    "description": "【露西 · 冰水深潜舱的数据流接入】漆黑的安全屋暗室内，高科技深潜冰水浴缸泛着幽幽的青蓝冷光。露西半浸泡在漂浮着碎冰的纯净冷水中，深潜战术服紧贴肌肤。数根粗重的高速神经光纤线缆插在她脖颈与脊椎的神经接口上，数以亿计的代码数据流在她眼中如流星般飞速瀑流而过，展现出顶级黑客撕裂荒坂防火墙时的超然神态。",
+    "description": "漆黑的安全屋暗室内，高科技深潜冰水浴缸泛着幽幽的青蓝冷光。露西半浸泡在漂浮着碎冰的纯净冷水中，深潜战术服紧贴肌肤。数根粗重的高速神经光纤线缆插在她脖颈与脊椎的神经接口上，数以亿计的代码数据流在她眼中如流星般飞速瀑流而过，展现出顶级黑客撕裂荒坂防火墙时的超然神态。",
     "id": "lucy_deep_dive_tub_cyberspace_interface",
     "lighting": "浴缸水底发光二极管的幽蓝冷光与全息数据流的高亮反光",
     "location": "黑客安全屋深潜冰水浴缸",

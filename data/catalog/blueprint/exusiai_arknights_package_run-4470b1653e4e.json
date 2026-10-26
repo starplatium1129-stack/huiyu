@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_package_run",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 629,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱着包裹全力奔跑，衣摆飞扬",
     "camera": "full body, from below",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【能天使 · 极速派送】繁华拥挤的龙门老街上，能天使双手紧紧抱着盖着绝密火漆印章的急件包裹，在摩肩接踵的人流与巷道障碍物之间以令人咋舌的高速全速穿梭奔跑，红色的防风外套在身后猎猎飞扬——「借过借过！企鹅物流极速特派！迟到一秒可是要扣老板奖金的！」",
+    "description": "繁华拥挤的龙门老街上，能天使双手紧紧抱着盖着绝密火漆印章的急件包裹，在摩肩接踵的人流与巷道障碍物之间以令人咋舌的高速全速穿梭奔跑，红色的防风外套在身后猎猎飞扬——「借过借过！企鹅物流极速特派！迟到一秒可是要扣老板奖金的！」",
     "id": "exusiai_arknights_package_run",
     "lighting": "bright daylight, motion energy",
     "location": "龙门街道",

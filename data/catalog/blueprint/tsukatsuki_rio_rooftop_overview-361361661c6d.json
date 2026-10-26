@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_rooftop_overview",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 878,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "俯瞰城市",
     "adult": false,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "iconic"
     ],
-    "description": "【调月莉音 · 千年楼顶俯瞰】千年科学学园千米摩天楼顶的天台上，黑色风衣下摆在狂风中猎猎作响。莉音双手插兜俯瞰着脚下整座璀璨的科技之城，红瞳中映着星火——「整座城市的运作逻辑都在我的计算之内。但唯独你……老师，你每一次做出的选择，都会彻底打破我的精密模型呢。」",
+    "description": "千年科学学园千米摩天楼顶的天台上，黑色风衣下摆在狂风中猎猎作响。莉音双手插兜俯瞰着脚下整座璀璨的科技之城，红瞳中映着星火——「整座城市的运作逻辑都在我的计算之内。但唯独你……老师，你每一次做出的选择，都会彻底打破我的精密模型呢。」",
     "id": "tsukatsuki_rio_rooftop_overview",
     "kreaStyleHint": "",
     "lighting": "城市灯火与暮色",

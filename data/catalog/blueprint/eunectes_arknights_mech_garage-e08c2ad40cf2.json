@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_mech_garage",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 586,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "仰头调试机甲臂的管线",
     "camera": "medium shot, low angle",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【森蚺 · 机甲工坊】巨大开阔的罗德岛工程机库内，身穿工装热裤的斐迪亚工程师森蚺正仰着头，熟练地用扳手调试着巨型机甲‘丑东西’粗壮机械臂的液压管线。她抹了一把脸上的机油开心地笑了起来——「博士快看！动力核心的输出功率又提升了百分之十五！这就是钢铁与机械的终极浪漫！」",
+    "description": "巨大开阔的罗德岛工程机库内，身穿工装热裤的斐迪亚工程师森蚺正仰着头，熟练地用扳手调试着巨型机甲‘丑东西’粗壮机械臂的液压管线。她抹了一把脸上的机油开心地笑了起来——「博士快看！动力核心的输出功率又提升了百分之十五！这就是钢铁与机械的终极浪漫！」",
     "id": "eunectes_arknights_mech_garage",
     "lighting": "bright workshop lights",
     "location": "罗德岛机工坊",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_festival_yukata_night",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1451,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "浴衣并肩牵手走过摊位，烟花亮起时侧头微笑",
     "adult": false,
@@ -18,7 +18,7 @@
       "date",
       "festival"
     ],
-    "description": "【夏祭街道·夜】紫藤花纹的浴衣衬着忍的笑靥，苹果糖的甜香混在祭典的喧嚣里。人潮涌动的路口，她自然而然地把手递给你——「人潮里牵着就不会走散了。……嗯？脸红什么，只是防走失措施而已哦？……啊，烟花开始了。不快点看的话，就要错过了。」",
+    "description": "紫藤花纹的浴衣衬着忍的笑靥，苹果糖的甜香混在祭典的喧嚣里。人潮涌动的路口，她自然而然地把手递给你——「人潮里牵着就不会走散了。……嗯？脸红什么，只是防走失措施而已哦？……啊，烟花开始了。不快点看的话，就要错过了。」",
     "id": "shinobu_festival_yukata_night",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "灯笼暖光与远处烟花的冷艳",

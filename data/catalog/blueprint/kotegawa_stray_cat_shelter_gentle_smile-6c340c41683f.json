@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_stray_cat_shelter_gentle_smile",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1253,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "蹲在纸箱前单手轻抚小花猫下巴，百褶裙微拢，眼神极尽温柔，嘴角漾起浅笑",
     "camera": "medium shot, eye-level with the crouching subject",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【古手川唯 · 雨后巷口的心软小猫呢喃】放学后雨过天晴的安静小巷拐角处，水洼倒映着碧蓝天光。唯换上端庄的针织开衫与百褶长裙，收起雨伞，温柔地蹲在一只躲在纸箱里的受伤小花猫面前。她伸出一只纤细白嫩的手指，轻轻挠着小猫的下巴，嘴角绽放出平日严厉外表下绝难得见的圣洁纯真微笑，眼神中满是少女独有的纯情与怜爱。",
+    "description": "放学后雨过天晴的安静小巷拐角处，水洼倒映着碧蓝天光。唯换上端庄的针织开衫与百褶长裙，收起雨伞，温柔地蹲在一只躲在纸箱里的受伤小花猫面前。她伸出一只纤细白嫩的手指，轻轻挠着小猫的下巴，嘴角绽放出平日严厉外表下绝难得见的圣洁纯真微笑，眼神中满是少女独有的纯情与怜爱。",
     "id": "kotegawa_stray_cat_shelter_gentle_smile",
     "lighting": "雨后初霁的透亮金黄斜阳穿透巷道木格栅形成的丁达尔光束",
     "location": "居民区青石板小巷木栅栏旁纸箱前",

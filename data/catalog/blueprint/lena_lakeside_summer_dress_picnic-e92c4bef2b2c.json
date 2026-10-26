@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_lakeside_summer_dress_picnic",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1353,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱膝坐在野餐布上远眺湖面，裙摆长发随风轻扬，被偷看后红着脸嗔怒",
     "adult": false,
@@ -17,7 +17,7 @@
       "summer",
       "girlfriend"
     ],
-    "description": "【军事区外的宁静湖畔·午后】难得的休假日，蕾娜褪下军装换上淡紫色碎花连衣裙，与你并肩坐在湖边的野餐布上。她抱着膝盖望向粼粼波光，裙摆与银白长发随风轻扬，白皙的脚踝交叠在草地上。回过神来发现你在看她，贵族小姐的脸颊瞬间烧红——「看、看什么呀，快点把三明治吃掉啦。」",
+    "description": "难得的休假日，蕾娜褪下军装换上淡紫色碎花连衣裙，与你并肩坐在湖边的野餐布上。她抱着膝盖望向粼粼波光，裙摆与银白长发随风轻扬，白皙的脚踝交叠在草地上。回过神来发现你在看她，贵族小姐的脸颊瞬间烧红——「看、看什么呀，快点把三明治吃掉啦。」",
     "id": "lena_lakeside_summer_dress_picnic",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "明亮通透的夏日阳光，湖面反光在她侧脸跳跃",

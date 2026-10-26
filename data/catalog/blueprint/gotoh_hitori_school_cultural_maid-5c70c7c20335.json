@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_school_cultural_maid",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1000,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "双手端着托盘微躬身躯，满脸通红眼角带泪",
     "camera": "cowboy shot, eye level",
@@ -13,7 +13,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【后藤一里 · 文化祭女仆危机】高中文化祭热闹的教室里，波奇酱换上了黑白蕾丝花边的女仆装，双手战战兢兢地端着盛有蛋包饭的餐盘。面对客人的注视，她的脸颊泛起剧烈的红晕，头顶的呆毛剧烈颤抖——「欢、欢迎光临主人……请问要给蛋包饭施加变好吃的魔法吗……呜呜我好想钻进地缝里！」",
+    "description": "高中文化祭热闹的教室里，波奇酱换上了黑白蕾丝花边的女仆装，双手战战兢兢地端着盛有蛋包饭的餐盘。面对客人的注视，她的脸颊泛起剧烈的红晕，头顶的呆毛剧烈颤抖——「欢、欢迎光临主人……请问要给蛋包饭施加变好吃的魔法吗……呜呜我好想钻进地缝里！」",
     "id": "gotoh_hitori_school_cultural_maid",
     "lighting": "教室午后明亮柔和窗光",
     "location": "秀华高中文化祭班级女仆咖啡厅",

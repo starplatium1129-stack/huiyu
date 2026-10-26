@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc244",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 239,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:33:39.047179100+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "Her head rests on the viewer's lap, with research papers beside the sofa cushion.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -24,7 +24,7 @@
     "prompt": "1girl, ayachi_nene, white cable knit sweater, pink scalloped cuffs, grey cotton shorts, sleeping, lap pillow, couch, papers, from above, afternoon, window light, curled up",
     "rating": "All",
     "season": "不限",
-    "story": "【宁宁 · 慵懒午后】周末午后温暖的阳光洒进客厅。宁宁蜷缩在沙发上看着超自然研究会的资料，不知不觉就睡着了，银白色的长发散落在靠垫上，呼吸均匀而轻柔。你轻手轻脚地走过去，小心翼翼地把她的头搬到你的膝盖上。宁宁在睡梦中似乎感觉到了什么，嘴角微微上扬，头顶那根呆毛在阳光下轻轻晃动。她含糊地嘟囔了一句——「柊史的味道……安心……」然后又沉沉睡去，脸颊在你的膝盖上蹭了蹭，像一只餍足的猫咪。",
+    "story": "周末午后温暖的阳光洒进客厅。宁宁蜷缩在沙发上看着超自然研究会的资料，不知不觉就睡着了，银白色的长发散落在靠垫上，呼吸均匀而轻柔。你轻手轻脚地走过去，小心翼翼地把她的头搬到你的膝盖上。宁宁在睡梦中似乎感觉到了什么，嘴角微微上扬，头顶那根呆毛在阳光下轻轻晃动。她含糊地嘟囔了一句——「柊史的味道……安心……」然后又沉沉睡去，脸颊在你的膝盖上蹭了蹭，像一只餍足的猫咪。",
     "storyJa": "【寧々・午後の膝枕】週末の午後、超自然研究会の資料を読んでいた寧々は、いつの間にかソファで眠ってしまう。あなたがそっと彼女の頭を膝へ移すと、銀色の髪が陽だまりにほどけた。安心したように頬を寄せ、彼女は寝言をこぼす――「柊史の匂い……安心する……」",
     "tags": [
       "hair_ribbon",

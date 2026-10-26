@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_convenience_store_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 826,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "打工下班数着硬币",
     "adult": false,
@@ -14,7 +14,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【深森白夜 · 深夜便利店·打工下班与数硬币】深夜结束了漫长便利店打工的白夜坐在街边长椅上，借着路灯微弱的光线一枚一枚仔细清点着今天赚到的零钱硬币。她小心地把硬币收进洗得发白的钱包里，舒心地呼出一口气——「太好了，这个月弟弟妹妹的伙食费和学费终于凑齐了……明天也要继续加油！」",
+    "description": "深夜结束了漫长便利店打工的白夜坐在街边长椅上，借着路灯微弱的光线一枚一枚仔细清点着今天赚到的零钱硬币。她小心地把硬币收进洗得发白的钱包里，舒心地呼出一口气——「太好了，这个月弟弟妹妹的伙食费和学费终于凑齐了……明天也要继续加油！」",
     "id": "byakuya_convenience_store_night",
     "lighting": "weak streetlamp with convenience-store spill light",
     "location": "便利店外的街边长椅",

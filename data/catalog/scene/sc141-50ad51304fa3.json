@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc141",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 139,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:16:21.853546200+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "animaCaption": "At the rooftop edge, she looks back holding a silenced pistol. The full moon and cyan city lights rim her unzipped catsuit and boots against the dark sky.",
     "camera": "全身远景",
@@ -23,7 +23,7 @@
     "prompt": "nsfw, 1girl, solo, shiki_natsume, adult, tactical catsuit, unzipped clothes, breasts, nipples, exposed pussy, standing, rooftop, pistol, silencer, looking back, smirk, boots, full body, cityscape, neon lights, holograms, full moon, night, cyan rim light, warm ambient light, chiaroscuro, @rella",
     "rating": "R18",
     "season": "不限",
-    "story": "【Astral 超能力特工形态】抛弃了咖啡馆女仆的伪装，此时的夏目是属于 Astral 组织的精英特工。她换上了紧身的黑色特工战斗服，站在月光皎洁的摩天大楼天台边缘。夜风吹拂着她的黑发，她居高临下地俯瞰着都市的霓虹，眼神冰冷而决绝，周身隐隐有超能力能量在波动。",
+    "story": "抛弃了咖啡馆女仆的伪装，此时的夏目是属于 Astral 组织的精英特工。她换上了紧身的黑色特工战斗服，站在月光皎洁的摩天大楼天台边缘。夜风吹拂着她的黑发，她居高临下地俯瞰着都市的霓虹，眼神冰冷而决绝，周身隐隐有超能力能量在波动。",
     "storyJa": "【夏目・Astralエージェント】カフェのメイドという仮の姿を解き、今夜の夏目はAstralに所属する精鋭エージェントとして任務に立つ。黒い戦闘服に身を包み、月明かりに照らされた高層ビルの屋上から街のネオンを見下ろしていた。夜風が黒髪を揺らし、黄色い瞳は冷静に標的を捉えている。周囲には、抑え込まれた異能の気配がかすかに波打っていた。",
     "tags": [
       "tactical_gear",

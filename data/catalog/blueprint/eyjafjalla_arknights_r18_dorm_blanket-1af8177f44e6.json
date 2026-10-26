@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_dorm_blanket",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 553,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "裹着薄毯蜷在床角",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【艾雅法拉 · 宿舍薄毯】私密宿舍温暖的大床上，艾雅法拉裹着薄薄的羊毛毯蜷缩在床角，单薄的睡裙滑落露出圆润可爱的香肩与雪白小腿。她怯生生地掀开毛毯的一角——「前辈……屋子里有点冷呢。可以钻进毛毯里抱紧小羊吗？我想和前辈贴在一起。」",
+    "description": "私密宿舍温暖的大床上，艾雅法拉裹着薄薄的羊毛毯蜷缩在床角，单薄的睡裙滑落露出圆润可爱的香肩与雪白小腿。她怯生生地掀开毛毯的一角——「前辈……屋子里有点冷呢。可以钻进毛毯里抱紧小羊吗？我想和前辈贴在一起。」",
     "id": "eyjafjalla_arknights_r18_dorm_blanket",
     "kreaStyleHint": "",
     "lighting": "warm bedside lamp",

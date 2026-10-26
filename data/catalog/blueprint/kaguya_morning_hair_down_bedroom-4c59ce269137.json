@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_morning_hair_down_bedroom",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1396,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
   "data": {
     "action": "抱枕坐在床中央，散发披肩红瞳惺忪，傲娇别脸又偷瞄",
     "adult": false,
@@ -17,7 +17,7 @@
       "girlfriend",
       "morning"
     ],
-    "description": "【四宫家寝室·清晨】难得的假日清晨，辉夜卸下了折叠马尾，黑发如绸缎般披散过肩——那是只有『冰』融化时才允许出现的柔软。她抱着枕头坐在大床中央，晨光穿过蕾丝窗帘落在发梢，红瞳带着刚睡醒的湿润，傲娇地别过脸去——「……只、只准看一秒哦？……才、才不是特意为你散开的呢。」",
+    "description": "难得的假日清晨，辉夜卸下了折叠马尾，黑发如绸缎般披散过肩——那是只有『冰』融化时才允许出现的柔软。她抱着枕头坐在大床中央，晨光穿过蕾丝窗帘落在发梢，红瞳带着刚睡醒的湿润，傲娇地别过脸去——「……只、只准看一秒哦？……才、才不是特意为你散开的呢。」",
     "id": "kaguya_morning_hair_down_bedroom",
     "kreaStyleHint": "anime_slice_of_life",
     "lighting": "蕾丝窗帘过滤的柔白晨光",
