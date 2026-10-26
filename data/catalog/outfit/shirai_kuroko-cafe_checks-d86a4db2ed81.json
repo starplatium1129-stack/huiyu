@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "shirai_kuroko/cafe_checks",
+  "revision": 1,
+  "sortOrder": 1647,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "shirai_kuroko",
+    "outfit": {
+      "id": "cafe_checks",
+      "name": "海军蓝格纹吊带裙与白衬衫",
+      "prose": "A navy gingham pinafore dress over a white puff-sleeved blouse, a slim waist belt, white socks, and brown Mary Jane shoes",
+      "tokens": [
+        "navy_dress",
+        "gingham",
+        "pinafore_dress",
+        "white_blouse",
+        "puff_sleeves",
+        "belt",
+        "white_socks",
+        "mary_janes"
+      ],
+      "default": false
+    }
+  }
+}

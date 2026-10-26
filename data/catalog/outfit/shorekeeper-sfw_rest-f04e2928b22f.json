@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_rest",
-  "revision": 6,
+  "revision": 3,
   "sortOrder": 940,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_rest",
       "name": "白色细针开衫与海蓝长裙装",
-      "prose": "A white fine-knit cardigan with pearl buttons over a sea-blue blouse and cream pleated long skirt.",
+      "prose": "a soft white fine-knit cardigan with pearl-like buttons over a sea-blue blouse and a softly pleated long cream skirt",
       "tokens": [
-        "white fine-knit cardigan",
-        "pearl buttons",
-        "sea blue blouse",
-        "cream pleated long skirt"
+        "white cardigan",
+        "blue blouse",
+        "cream long skirt"
       ],
       "default": false,
       "isDefault": false

@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "saten_ruiko_daily_market_tomatoes",
+  "revision": 1,
+  "sortOrder": 2020,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "saten_ruiko_daily_market_tomatoes",
+    "title": "佐天泪子 · 这一袋可以做晚饭",
+    "description": "周末菜市里，泪子把一颗熟番茄放进纸袋，又低头数了数。她已经想好晚饭要做什么，顺手把袋口折得平平整整。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "farmers_market",
+      "tomatoes",
+      "paper_bag",
+      "choosing_food",
+      "smile",
+      "vegetable_stall",
+      "daylight"
+    ],
+    "promptProse": "At a small vegetable market, Ruiko wears a cream blouse and moss-green pinafore dress. She lowers a ripe tomato into a paper shopping bag, smiling as she checks the vegetables inside. Daylight filters through the stall awning onto the produce baskets.",
+    "animaCaption": "One tomato is held just above the open paper bag; the rest stay in the stall basket.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "market awning daylight",
+    "location": "周末的社区菜市场",
+    "characterId": "saten_ruiko",
+    "outfitId": "weekend_salopette",
+    "action": "把挑好的番茄放进纸袋",
+    "timeOfDay": "周末上午",
+    "mood": "盘算晚饭的愉快",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "farmers_market",
+      "tomatoes",
+      "paper_bag",
+      "choosing_food",
+      "smile",
+      "vegetable_stall",
+      "daylight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

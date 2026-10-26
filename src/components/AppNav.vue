@@ -10,7 +10,7 @@
       </RouterLink>
 
       <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }" @keydown="onNavigationKey">
-        <AnimatedSelection target=":scope > a.active" />
+        <AnimatedSelection target=":scope > a.active" variant="underline" />
         <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
         <RouterLink
           v-for="item in primaryNav"
@@ -353,20 +353,18 @@ onUnmounted(deactivateNavigation)
 }
 .nav-brand { @apply tw:gap-s-3 tw:shrink-0; }
 .nav-brand-note { display: none; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 400; padding-left: var(--s-3); border-left: 1px solid var(--border-soft); }
-.nav-links { --selection-radius: var(--r-md); --selection-shadow: none; border-color:transparent; background:transparent; box-shadow:none; }
-.nav-links :deep(.animated-selection) { background:var(--bg-elevated); border-color:transparent; }
+.nav-links { --selection-radius: var(--r-md); --selection-shadow: none; --selection-ink:var(--accent); border-color:transparent; background:transparent; box-shadow:none; }
+.nav-links :deep(.animated-selection) { background:none; border-color:transparent; }
+.nav-links :deep(.animated-selection--underline::after) { inset:auto 18% 3px; }
 .nav-links > a { white-space:nowrap; isolation:isolate; }
-/* Shared paper feedback keeps navigation still; a small dot motif marks the chapter. */
+/* The shared hover lift pairs with the character-colored selection underline. */
 .nav-brand:active,.nav-links > a:active,.nav-more :deep(.nav-more-trigger:active),.nav-utilities :deep(button:active:not(.app-theme-toggle)),.nav-menu-toggle:active { transform:none; }
 .nav-logo,.nav-item-label,.nav-more :deep(.nav-more-label),.nav-links > a > .archive-icon,.nav-utilities :deep(button > .archive-icon),.nav-utilities :deep(.task-center-button > span),.nav-menu-toggle > .archive-icon { transition:transform var(--motion-hover) var(--ease-out); }
-.nav-links > a::after { content:''; position:absolute; inset:auto 0 3px; width:22px; height:4px; margin-inline:auto; background:radial-gradient(circle,var(--text-secondary) 1px,transparent 1.5px) left center / 7px 4px repeat-x; opacity:0; pointer-events:none; transition:opacity var(--motion-hover) var(--ease-out); }
-.nav-links > a.active::after { opacity:.8; }
 .nav-links > a:hover { background:transparent; }
 .nav-links > a:focus-visible > :is(.archive-icon,.nav-item-label),.nav-brand:focus-visible .nav-logo,.nav-more :deep(.nav-more-trigger:focus-visible > span),.nav-utilities :deep(button:focus-visible > .archive-icon),.nav-menu-toggle:focus-visible > .archive-icon { transform:none; transition:none; }
 .nav-links > a:focus-visible::before { transition:none; }
 @media (hover:hover) and (pointer:fine) {
   .nav-brand:where(:hover:not(:focus-visible)) .nav-logo { transform:translateY(-2px) scale(1.025); }
-  .nav-links > a:where(:hover:not(:focus-visible))::after { opacity:.65; }
 }
 .nav-brand:where(:active:not(:focus-visible)) .nav-logo { transform:scale(.97); }
 .nav-links > a:where(:active:not(:focus-visible)) > :is(.archive-icon,.nav-item-label),.nav-more :deep(.nav-more-trigger:where(:active:not(:focus-visible)) > .nav-more-label),.nav-utilities :deep(button:where(:active:not(:focus-visible):not(.app-theme-toggle):not([data-spring-button])) > :is(.archive-icon,span)),.nav-menu-toggle:where(:active:not(:focus-visible)) > .archive-icon { transform:scale(.98); transition-duration:var(--motion-press); }

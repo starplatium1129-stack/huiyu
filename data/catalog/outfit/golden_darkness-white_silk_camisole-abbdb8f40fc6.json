@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "golden_darkness/white_silk_camisole",
-  "revision": 2,
+  "revision": 1,
   "sortOrder": 1182,
-  "createdAt": "2026-10-15T14:37:48.939637+00:00",
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "golden_darkness",
     "outfit": {
       "id": "white_silk_camisole",
       "name": "纯白真丝吊带睡裙",
       "tokens": [
-        "white silk camisole nightdress"
+        "white silk camisole"
       ],
       "prose": "a light white silk camisole nightdress",
       "default": false,

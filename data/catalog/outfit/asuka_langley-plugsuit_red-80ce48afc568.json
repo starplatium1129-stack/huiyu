@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/plugsuit_red",
-  "revision": 5,
+  "revision": 2,
   "sortOrder": 563,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
@@ -13,11 +13,9 @@
       "isDefault": true,
       "name": "二号机经典赤红战斗服（Plugsuit）",
       "prose": "her glossy red pilot plugsuit with green chest accents, high collar and Unit-02 markings",
-      "styleHint": "",
+      "styleHint": "dynamic high-contrast mecha hangar lighting with crimson rim lights",
       "tokens": [
         "red plugsuit",
-        "green chest accents",
-        "high collar",
         "gloves",
         "number_02"
       ]

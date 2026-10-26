@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "faln_touden_daily_bread_soup",
+  "revision": 1,
+  "sortOrder": 2024,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "faln_touden_daily_bread_soup",
+    "title": "法琳 · 汤还要再凉一会儿",
+    "description": "旅店厨房的小锅刚离火。法琳舀起一勺蔬菜汤轻轻吹气，另一只手把碗端稳，等温度合适才请你尝。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "rustic_kitchen",
+      "vegetable_soup",
+      "bowl",
+      "spoon",
+      "blowing",
+      "steam",
+      "gentle_smile",
+      "hearth_light"
+    ],
+    "promptProse": "In a rustic inn kitchen, Falin wears an oatmeal linen dress and terracotta apron. She supports a bowl of vegetable soup and gently blows across a spoonful to cool it. The small cooking pot rests off the fire; warm hearth light reaches her face and the bread on the counter.",
+    "animaCaption": "One hand steadies the bowl while the other holds the spoon just below her lips.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "warm kitchen hearth",
+    "location": "旅店的共用厨房",
+    "characterId": "faln_touden",
+    "outfitId": "inn_apron",
+    "action": "端稳汤碗，吹凉勺中的蔬菜汤",
+    "timeOfDay": "用餐前的傍晚",
+    "mood": "温和体贴",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "rustic_kitchen",
+      "vegetable_soup",
+      "bowl",
+      "spoon",
+      "blowing",
+      "steam",
+      "gentle_smile",
+      "hearth_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

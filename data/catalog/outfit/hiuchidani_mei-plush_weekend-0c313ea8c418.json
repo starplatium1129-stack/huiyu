@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "hiuchidani_mei/plush_weekend",
+  "revision": 1,
+  "sortOrder": 1624,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "hiuchidani_mei",
+    "outfit": {
+      "id": "plush_weekend",
+      "name": "青柠连帽衫与工装半裙",
+      "prose": "A lime-green oversized hoodie, a beige knee-length cargo skirt with large patch pockets, ankle socks, and purple sneakers",
+      "tokens": [
+        "green_hoodie",
+        "oversized_clothes",
+        "beige_skirt",
+        "cargo_skirt",
+        "pockets",
+        "ankle_socks",
+        "purple_sneakers"
+      ],
+      "default": false
+    }
+  }
+}

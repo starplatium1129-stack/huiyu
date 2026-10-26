@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/dossoles_tropical_casual",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 360,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "dossoles_tropical_casual",
       "isDefault": false,
       "name": "白色荷叶边上衣与浅蓝牛仔短裤",
-      "prose": "A white off-shoulder ruffled crop top, high-waisted light-blue denim shorts, woven brown belt and strappy sandals.",
+      "prose": "A white cotton off-shoulder crop top with a soft ruffled edge, high-waisted light-blue denim shorts and a woven brown belt, paired with strappy sandals.",
       "tokens": [
         "white crop top",
         "off shoulder",
         "frills",
-        "high-waist light blue denim shorts",
+        "light blue denim shorts",
         "woven belt",
-        "strappy sandals"
+        "sandals"
       ]
     }
   }

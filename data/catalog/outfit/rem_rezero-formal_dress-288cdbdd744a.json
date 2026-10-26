@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/formal_dress",
-  "revision": 4,
+  "revision": 3,
   "sortOrder": 245,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "formal_dress",
       "name": "银束腰宝蓝长袖晚礼服",
-      "prose": "A long-sleeved deep-blue gown with pleated skirt and slim silver waist sash.",
+      "prose": "a deep-blue long-sleeved evening gown with a softly pleated skirt and a slim silver sash at the fitted waist",
       "tokens": [
         "blue evening gown",
         "long sleeves",

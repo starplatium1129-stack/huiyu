@@ -1,5 +1,5 @@
-/* AIRI's light feedback and WebGAL's layered menu treatment, adapted to HUIYU.
-   A prepainted paper wash fades beneath steady ink; hit areas never move. */
+/* Shared feedback for media and secondary controls. Ordinary actions below
+   use a character-colored underline and a small hover lift. */
 :root {
   --control-hover-fill:color-mix(in srgb,var(--text-primary) 6%,transparent);
   --control-hover-edge:color-mix(in srgb,var(--text-secondary) 20%,transparent);
@@ -61,6 +61,54 @@
   }
 }
 .studio-control-label { display:inline-block; }
+/* Individual translate composes with existing press springs and local transforms.
+   Authored generation/action-link controls and artwork keep their own motion. */
+:root body :is(
+  .btn:not(.generation-action):not(.studio-action-link),[data-control-motion],
+  .nav-links > a,.nav-more-trigger,.nav-back,.nav-search,.sound-toggle,.nav-menu-toggle,.task-center-button,
+  .control-rail-link,.control-section-jump a,.nav-local-home,
+  .studio-segments[role] :is(button,a),[role='tab'],
+  button:is(.filter-pill,.gallery-filter,.scene-cat-btn,.trait-chip,.outfit-chip,.artist-cat-btn,.pop-cat,.pop-rating-pill,.chip),
+  .blueprint-cat-btn,.blueprint-reco-btn,.gallery-refine-toggle,.gallery-filter-chip,
+  .scene-active-filters button,.scene-reset,.filter-reset,.pop-filter-reset,
+  .studio-pagination .page-arrow,.directory-page-turn,.catalog-filter-button,.catalog-text-button
+) {
+  --control-hover-ink:var(--character-ink,var(--accent));
+  --control-hover-lift:-3px;
+  position:relative;
+  translate:0 0;
+  transition:translate var(--control-feedback-duration,var(--motion-hover)) var(--ease-out),transform var(--motion-press) var(--ease-out);
+  &::before {
+    content:''; display:block; position:absolute; z-index:0;
+    inset:auto 18% 3px; height:2px; border:0; border-radius:var(--r-pill);
+    background:currentColor; box-shadow:none; pointer-events:none;
+    opacity:0; transform:scaleX(.45);
+    transition:opacity var(--control-feedback-duration,var(--motion-hover)) var(--ease-out),transform var(--control-feedback-duration,var(--motion-hover)) var(--ease-out);
+  }
+  @media (hover:hover) and (pointer:fine) {
+    &:hover:where(:not(:focus-visible):not(:has(:focus-visible,button:hover,a:hover)):not(:disabled):not([aria-disabled='true']):not([data-disabled]):not([aria-busy='true'])) {
+      translate:0 var(--control-hover-lift);
+      color:var(--control-hover-ink);
+      &:where(:not(.btn-primary):not(.btn-danger)) { background:transparent; }
+      &::before { opacity:1; transform:scaleX(1); }
+    }
+  }
+  &:where(:active,:focus-visible,:disabled,[aria-disabled='true'],[data-disabled],[aria-busy='true']) { translate:0 0; }
+  &:focus-visible { transition:none; }
+  &:where(:disabled,[aria-disabled='true'],[data-disabled])::before { display:none; }
+  &:is(.btn-primary) { --control-hover-ink:var(--text-inverse); }
+  &:is(.btn-danger) { --control-hover-ink:var(--danger-text); }
+  @media (prefers-reduced-motion:reduce) {
+    :root:not([data-motion='full']) & { --control-hover-lift:0px; --control-feedback-duration:0s; }
+  }
+  :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) & { --control-hover-lift:0px; --control-feedback-duration:0s; }
+  @media (forced-colors:active) { --control-hover-ink:Highlight; }
+}
+/* The selected navigation underline is owned by AnimatedSelection. */
+:root body .nav-links > a.active::before { display:none; }
+:root body .nav-links > a.active { color:var(--accent); }
+:root .nav { --accent:color-mix(in srgb,var(--active-character-accent,var(--character-accent)) 60%,var(--text-primary)); }
+:root[data-theme='light'] .nav { --accent:color-mix(in srgb,var(--active-character-accent,var(--character-accent)) 40%,var(--ink-base)); }
 /* Dot texture belongs to chapter furniture, never behind a label or artwork. */
 :root:not([data-theme-style='terraria']) :is(.pb .panel-title,.nav-more-group-label)::after {
   content:''; display:inline-block; flex:0 0 22px; width:22px; height:6px; margin-inline-start:var(--s-2); vertical-align:middle;

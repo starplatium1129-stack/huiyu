@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "chen_qianyu_daily_radio_assembly",
+  "revision": 1,
+  "sortOrder": 2001,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "chen_qianyu_daily_radio_assembly",
+    "title": "陈千语 · 还差最后一颗螺丝",
+    "description": "旧收音机的外壳摊在工作垫上。千语扶着后盖拧紧螺丝，抬头听了听刚恢复的广播声，笑得像完成了一场小挑战。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "workbench",
+      "radio",
+      "screwdriver",
+      "repairing",
+      "focused",
+      "smile",
+      "desk_lamp",
+      "tools"
+    ],
+    "promptProse": "Chen Qianyu sits at a hobby workbench in sand-colored overalls and a brick-red T-shirt. She holds a radio back panel steady while tightening its final screw with a small screwdriver, smiling at the restored sound. A desk lamp lights the rubber work mat and scattered screws.",
+    "animaCaption": "The screwdriver meets a screw in the radio casing while her other hand holds the panel still.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "warm workbench lamp",
+    "location": "基地的手作工作台",
+    "characterId": "chen_qianyu",
+    "outfitId": "weekend_overall",
+    "action": "用螺丝刀固定旧收音机后盖",
+    "timeOfDay": "晚间",
+    "mood": "修好东西的成就感",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "workbench",
+      "radio",
+      "screwdriver",
+      "repairing",
+      "focused",
+      "smile",
+      "desk_lamp",
+      "tools"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

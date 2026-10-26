@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "faln_touden/inn_apron",
+  "revision": 1,
+  "sortOrder": 1654,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "faln_touden",
+    "outfit": {
+      "id": "inn_apron",
+      "name": "燕麦色亚麻裙与陶土围裙",
+      "prose": "An oatmeal linen ankle-length dress with rolled cuffs, a terracotta waist apron, and simple brown leather shoes",
+      "tokens": [
+        "linen_dress",
+        "beige_dress",
+        "ankle-length_dress",
+        "rolled_up_sleeves",
+        "brown_waist_apron",
+        "leather_shoes"
+      ],
+      "default": false
+    }
+  }
+}

@@ -1,18 +1,25 @@
 {
   "kind": "outfit",
   "id": "ciel_tsukihime/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 726,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "ciel_tsukihime",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing; fair skin and no glasses.",
+      "prose": "her completely bare, voluptuous body with short navy hair, generous natural breasts with tender pink areolas, toned waist, and smooth fair skin without glasses",
       "tokens": [
-        "nude"
+        "completely_nude",
+        "bare_breasts",
+        "large_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "hourglass_body"
       ]
     }
   }

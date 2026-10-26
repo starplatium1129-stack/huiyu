@@ -1,24 +1,22 @@
 {
   "kind": "outfit",
   "id": "frieren/travel_clothes",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 61,
   "createdAt": null,
-  "updatedAt": "2026-10-20T12:15:05.333909100+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
       "id": "travel_clothes",
       "name": "白金短斗篷旅行装",
-      "prose": "A short white capelet with broad gold edging and red gemstone fasteners, over a long-sleeved white tunic with gold cuffs and hem, a black waist belt, black leggings and brown boots.",
+      "prose": "A white travel cloak with narrow gold edging and a plain brown clasp, over a cream jacket, charcoal trousers and brown boots.",
       "tokens": [
-        "white capelet",
+        "white cloak",
         "gold trim",
-        "red gemstone brooch",
-        "white tunic",
-        "long sleeves",
-        "black belt",
-        "black leggings",
+        "brown clasp",
+        "cream jacket",
+        "charcoal pants",
         "brown boots"
       ],
       "isDefault": false,

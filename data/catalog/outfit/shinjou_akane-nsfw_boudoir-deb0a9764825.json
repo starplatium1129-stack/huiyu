@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/nsfw_boudoir",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 872,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "nsfw_boudoir",
       "name": "新条茜·成人私密造型",
-      "prose": "No clothing.",
+      "prose": "a private adult ensemble built around completely_nude",
       "tokens": [
         "completely_nude"
       ],

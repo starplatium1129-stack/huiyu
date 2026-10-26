@@ -1,18 +1,24 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 703,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "Nude.",
+      "prose": "her completely bare, voluptuous body with her silky black ponytail resting against her shoulder, ample breasts with delicate rose-tinted areolas, a slender waist, and shapely hips glistening softly",
       "tokens": [
-        "nude"
+        "completely_nude",
+        "bare_breasts",
+        "nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "hourglass_body"
       ]
     }
   }

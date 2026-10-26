@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ayanami_rei/hospital_bandages_gown",
-  "revision": 5,
+  "revision": 2,
   "sortOrder": 558,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ayanami_rei",
     "outfit": {
@@ -13,10 +13,10 @@
       "isDefault": false,
       "name": "第一话病房绷带病服",
       "prose": "a loose white hospital gown, gauze bandages around her left arm and leg, a medical eyepatch and bare feet",
-      "styleHint": "",
+      "styleHint": "clinical stark white hospital ambient light with soft shadows",
       "tokens": [
-        "loose white hospital gown",
-        "bandage on left arm",
+        "hospital gown",
+        "bandage on arm",
         "bandage on leg",
         "medical eyepatch",
         "barefoot"

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "maomao/sfw_garden_party",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 9,
-  "createdAt": "2026-10-26T09:10:15.020Z",
-  "updatedAt": "2026-10-26T09:51:50.545Z",
+  "createdAt": "2026-10-26T09:09:55.806Z",
+  "updatedAt": "2026-10-26T11:03:55.240025900+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "sfw_garden_party",
       "name": "园游会宫廷华服",
-      "prose": "Maomao from The Apothecary Diaries attends the imperial garden party in an opulent embroidered silk hanfu with wide sleeves. Her fake freckles are washed away, revealing radiant clear skin accented by a red forehead mark, blush, and crimson lipstick. Her green hair is styled in an ornate bun with golden tassel kanzashi hairpins. Soft lantern light illuminates the festive pavilion as she smiles quietly toward the viewer.",
+      "prose": "An opulent embroidered silk hanfu with wide flowing sleeves and layered fabric, paired with an ornate bun and golden tassel hairpins. Clear skin, a red forehead mark, blush, and crimson lipstick complete the look.",
       "tokens": [
         "hanfu",
         "chinese_clothes",

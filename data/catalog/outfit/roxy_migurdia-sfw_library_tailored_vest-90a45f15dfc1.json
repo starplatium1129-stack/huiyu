@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/sfw_library_tailored_vest",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 1126,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "sfw_library_tailored_vest",
       "name": "藏蓝马甲学院便装",
-      "prose": "A fitted navy vest, ivory cotton blouse, slate-blue trousers and brown flats.",
+      "prose": "A fitted navy vest layers over an ivory cotton blouse, paired with slate-blue straight trousers and brown leather flats.",
       "tokens": [
-        "fitted navy vest",
-        "ivory cotton blouse",
+        "navy vest",
+        "ivory blouse",
         "long sleeves",
-        "slate blue straight-leg pants",
+        "slate blue pants",
         "brown flats"
       ],
       "default": false,

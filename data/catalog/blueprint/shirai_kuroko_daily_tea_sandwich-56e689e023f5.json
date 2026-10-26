@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "shirai_kuroko_daily_tea_sandwich",
+  "revision": 1,
+  "sortOrder": 2017,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "shirai_kuroko_daily_tea_sandwich",
+    "title": "白井黑子 · 三明治要摆整齐",
+    "description": "休息日的小茶桌旁，黑子把三角三明治的尖角朝同一方向摆好。她满意地端详了一眼，才把茶杯放到你这边。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "cafe",
+      "tea_table",
+      "sandwiches",
+      "arranging_food",
+      "teacup",
+      "pleased",
+      "window_light"
+    ],
+    "promptProse": "At a cafe window table, Kuroko wears a navy gingham pinafore over a white puff-sleeved blouse. She aligns small triangular sandwiches on a plate, with a teacup set at the viewer side of the table. Soft daylight lights the tablecloth and her pleased expression.",
+    "animaCaption": "Her fingertips adjust one sandwich on the plate; the teacup rests safely on its saucer.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "soft cafe daylight",
+    "location": "街角咖啡馆的窗边",
+    "characterId": "shirai_kuroko",
+    "outfitId": "cafe_checks",
+    "action": "调整三角三明治在盘中的方向",
+    "timeOfDay": "休息日下午",
+    "mood": "讲究的小满足",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "cafe",
+      "tea_table",
+      "sandwiches",
+      "arranging_food",
+      "teacup",
+      "pleased",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

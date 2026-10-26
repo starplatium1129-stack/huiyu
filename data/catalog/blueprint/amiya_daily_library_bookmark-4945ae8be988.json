@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "amiya_daily_library_bookmark",
+  "revision": 1,
+  "sortOrder": 1997,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "amiya_daily_library_bookmark",
+    "title": "阿米娅 · 暂时不谈工作",
+    "description": "休息室靠窗的位置很安静。阿米娅用一张浅蓝书签夹住读到的那页，合上书看向你，示意旁边的椅子还空着。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "reading_room",
+      "book",
+      "bookmark",
+      "empty_chair",
+      "looking_at_viewer",
+      "gentle_smile",
+      "soft_daylight"
+    ],
+    "promptProse": "On her rest day, Amiya sits by the reading-room window in a cream cardigan and indigo midi skirt. She closes a book over a pale blue bookmark and looks toward the viewer, with an empty chair beside her. Soft daylight illuminates her brown hair and upright rabbit ears.",
+    "animaCaption": "The blue bookmark remains partly visible between the closed pages.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "soft window daylight",
+    "location": "罗德岛阅读休息室",
+    "characterId": "amiya",
+    "outfitId": "restday_knit",
+    "action": "合上夹好书签的书，望向空椅旁的你",
+    "timeOfDay": "休息日午后",
+    "mood": "安静欢迎",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "reading_room",
+      "book",
+      "bookmark",
+      "empty_chair",
+      "looking_at_viewer",
+      "gentle_smile",
+      "soft_daylight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ellen_joe/school_uniform",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 582,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ellen_joe",
     "outfit": {
@@ -16,10 +16,9 @@
       "tokens": [
         "sailor uniform",
         "white shirt",
-        "navy collar",
         "red neckerchief",
-        "navy pleated skirt",
-        "loose black socks",
+        "navy skirt",
+        "loose socks",
         "loafers"
       ]
     }

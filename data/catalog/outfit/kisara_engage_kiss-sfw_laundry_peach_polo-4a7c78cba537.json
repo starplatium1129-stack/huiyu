@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kisara_engage_kiss/sfw_laundry_peach_polo",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 1129,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "kisara_engage_kiss",
     "outfit": {
@@ -14,7 +14,7 @@
       "tokens": [
         "peach polo shirt",
         "short sleeves",
-        "off-white loose cargo pants",
+        "white cargo pants",
         "slip-on shoes"
       ],
       "default": false,

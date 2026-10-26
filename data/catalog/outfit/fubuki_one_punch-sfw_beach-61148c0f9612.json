@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "fubuki_one_punch/sfw_beach",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 908,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "fubuki_one_punch",
     "outfit": {
@@ -13,8 +13,7 @@
       "prose": "an emerald one-piece swimsuit with a clean square neckline beneath a long white linen beach coat, with pearl earrings and a woven sunhat",
       "tokens": [
         "emerald one-piece swimsuit",
-        "square neckline",
-        "long white linen coat",
+        "white linen coat",
         "pearl earrings",
         "woven sunhat"
       ],

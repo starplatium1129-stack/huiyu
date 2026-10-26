@@ -1,0 +1,284 @@
+{
+  "kind": "character",
+  "id": "saten_ruiko",
+  "revision": 1,
+  "sortOrder": 199,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "saten_ruiko",
+    "profile": {
+      "id": "saten_ruiko",
+      "name": "佐天泪子",
+      "alias": [
+        "佐天涙子",
+        "Saten Ruiko"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "/assets/characters/portrait-pending.svg",
+        "alt": "佐天泪子 · 立绘待制作"
+      },
+      "visual_dna": {
+        "signature": "Long black hair, green eyes, and a small white flower hair ornament",
+        "hair": "black_hair, long_hair, hair_flower",
+        "eyes": "green_eyes",
+        "style": "anime"
+      },
+      "personality": [
+        "开朗健谈",
+        "好奇心强",
+        "珍惜朋友",
+        "遇到困难愿意行动"
+      ],
+      "likes": [
+        "都市传说",
+        "和初春一起逛街",
+        "尝试新鲜事物"
+      ],
+      "bg_story": "佐天泪子是《某科学的超电磁炮》中的角色，与初春饰利关系亲近，也和御坂美琴、白井黑子成为朋友。她没有高等级能力，却总愿意留意身边的人和新鲜消息。热闹的闲聊、放学后的绕路和偶然发现的小店，都是她熟悉的日常。",
+      "identity": {
+        "role": "栅川中学学生 / 都市传说爱好者",
+        "age": "成年创作设定",
+        "classificationSource": "https://wwws.warnerbros.co.jp/anime/wba/result/wb_anime08.html"
+      },
+      "source": "A Certain Scientific Railgun",
+      "traits": [
+        "black_hair",
+        "long_hair",
+        "green_eyes",
+        "hair_flower"
+      ],
+      "tags": [
+        "佐天泪子",
+        "某科学的超电磁炮",
+        "日常"
+      ],
+      "accent_color": "#74B7A7",
+      "bg_color": "#202833",
+      "palette": [
+        "#74B7A7",
+        "#F4EEDF"
+      ],
+      "relationshipGraph": {
+        "version": 1,
+        "work": "某科学的超电磁炮",
+        "people": [
+          {
+            "id": "misaka_mikoto",
+            "name": "御坂美琴",
+            "aliases": [
+              "Misaka Mikoto",
+              "御坂美琴",
+              "超电磁炮",
+              "常盘台的王牌",
+              "哔哩哔哩"
+            ],
+            "characterId": "misaka_mikoto"
+          },
+          {
+            "id": "shokuhou_misaki",
+            "name": "食蜂操祈",
+            "aliases": [
+              "Shokuhou Misaki",
+              "食蜂操祈",
+              "女王蜂",
+              "Mental Out",
+              "心理掌握",
+              "常盘台女王"
+            ],
+            "characterId": "shokuhou_misaki"
+          },
+          {
+            "id": "kamijou_touma",
+            "name": "上条当麻",
+            "aliases": [
+              "Kamijou Touma",
+              "上条当麻",
+              "幻想杀手",
+              "不幸的高中生",
+              "把妹手"
+            ],
+            "role": "某高中学生 / 幻想杀手拥有者",
+            "summary": "右手寄宿着能抹消一切异能「幻想杀手」的少年。在自动贩卖机前与美琴相遇，在拯救御坂妹妹的绝对能力者进化计划中击溃一方通行，成为美琴心中最重要且暗自倾慕的依靠。"
+          },
+          {
+            "id": "shirai_kuroko",
+            "name": "白井黑子",
+            "aliases": [
+              "Shirai Kuroko",
+              "白井黑子",
+              "风纪委员第177支部",
+              "空间移动能力者"
+            ],
+            "role": "风纪委员第177支部成员 / 常盘台学生",
+            "summary": "美琴的常盘台学妹兼室友。行事正义果敢，对姐姐大人美琴有着近乎变态的痴迷与崇拜，但在战场上始终是美琴最坚实无可替代的后盾。",
+            "characterId": "shirai_kuroko"
+          },
+          {
+            "id": "uiharu_kazari",
+            "name": "初春饰利",
+            "aliases": [
+              "Uiharu Kazari",
+              "初春饰利",
+              "顶尖黑客",
+              "风纪委员",
+              "恒温死守"
+            ],
+            "role": "风纪委员第177支部 / 天才情报员",
+            "summary": "性格害羞但电脑黑客技术通神的情报分析员。与佐天泪子形影不离，为美琴和食蜂操祈的多次行动提供无可挑剔的数据支援。"
+          },
+          {
+            "id": "saten_ruiko",
+            "name": "佐天泪子",
+            "aliases": [
+              "Saten Ruiko",
+              "佐天泪子",
+              "无能力者Level 0",
+              "都市传说探求者",
+              "泪子"
+            ],
+            "role": "栅川中学学生 / 都市传说爱好者",
+            "summary": "元气豁达、充满好奇心的普通初中生。曾因无能力而迷茫，后以无畏的勇气与棒球棍参与多场都市传说事件，是美琴最宝贵且无拘无束的日常好友。",
+            "characterId": "saten_ruiko"
+          }
+        ],
+        "relations": [
+          {
+            "id": "kamijou_touma-misaka_mikoto-iron_bridge_salvation",
+            "source": "kamijou_touma",
+            "target": "misaka_mikoto",
+            "label": "暴雨铁桥的救赎与傲娇情愫",
+            "description": "在美琴为阻止两万克隆妹妹屠杀企图自毁时，当麻以血肉之躯在暴雨铁桥下击溃一方通行救回她的世界；从此成为美琴无论遭遇任何灾难都坚信的英雄与暗恋对象。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "妹妹篇（妹妹们事件） / 大霸星祭篇",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+              "url": "https://toaru-project.com/railgun_t/"
+            }
+          },
+          {
+            "id": "shokuhou_misaki-kamijou_touma-unremembered_first_love",
+            "source": "shokuhou_misaki",
+            "target": "kamijou_touma",
+            "label": "永远无法被记住的盛夏初恋与誓约",
+            "description": "幼年被当麻舍命解救，却因当麻脑部神经永久受损导致其大脑永远无法保留关于食蜂的记忆；面对当麻一次次视自己如陌生人，食蜂依然以傲然笑容拼尽全力守护他。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "某科学的超电磁炮T · 大霸星祭 / 新约魔禁第11卷",
+            "evidence": {
+              "title": "电击文库《魔法禁书目录》官方特设",
+              "url": "https://dengekibunko.jp/title/index/"
+            }
+          },
+          {
+            "id": "misaka_mikoto-shokuhou_misaki-rivals_and_allies",
+            "source": "misaka_mikoto",
+            "target": "shokuhou_misaki",
+            "label": "水火不容的常盘台双璧与共斗战友",
+            "description": "常盘台仅有的两位Level 5，平日性格与理念针锋相对、派阀互斥；但在大霸星祭面对木原幻生企图将美琴推向Level 6暴走的绝境中，两人达成极高默契舍命联手破局。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "大霸星祭篇（Level 6进化丧失）",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+              "url": "https://toaru-project.com/railgun_t/"
+            }
+          },
+          {
+            "id": "shirai_kuroko-misaka_mikoto-devoted_roommate",
+            "source": "shirai_kuroko",
+            "target": "misaka_mikoto",
+            "label": "狂热爱慕的室友与生死与共的风纪委员搭档",
+            "description": "常盘台208室同寝室友，常年对美琴抱有极其露骨狂热的痴迷爱慕与肢体接触；但关键战斗中凭借空间移动绝对信赖与支援美琴，是美琴最坚不可摧的后盾。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "超电磁炮常盘台日常生活 / 幻想御手篇",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮》官方网站",
+              "url": "https://toaru-project.com/railgun_t/"
+            }
+          },
+          {
+            "id": "shirai_kuroko-uiharu_kazari-judgment_partners",
+            "source": "shirai_kuroko",
+            "target": "uiharu_kazari",
+            "label": "风纪委员177支部的前后线黄金搭档",
+            "description": "同属第177支部的亲密同僚，初春在后方凭借神乎其技的情报搜索与黑客黑科技提供绝对算力支持，黑子在前线瞬间移动突入破案，多次联手化解学园都市危机。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "风纪委员常态执勤",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮》官方角色介绍",
+              "url": "https://toaru-project.com/railgun_t/character/"
+            }
+          },
+          {
+            "id": "uiharu_kazari-saten_ruiko-close_friends",
+            "source": "uiharu_kazari",
+            "target": "saten_ruiko",
+            "label": "掀裙恶友与互相搀扶的挚友",
+            "description": "日常佐天以掀初春裙子打趣逗乐，在佐天因Level 0自卑误用‘幻想御手’昏迷后初春哭泣奔走营救；佐天则在初春遭遇绑架与危机时凭借敏锐直觉与棒球棒挺身而出。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "幻想御手篇 / 杂乱开放篇",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮》官方角色介绍",
+              "url": "https://toaru-project.com/railgun_t/character/"
+            }
+          },
+          {
+            "id": "misaka_mikoto-saten_ruiko-level_crossing_friendship",
+            "source": "misaka_mikoto",
+            "target": "saten_ruiko",
+            "label": "跨越能力等级的平等友谊",
+            "description": "学园都市顶峰的Level 5与谷底的Level 0在此毫无芥蒂，佐天以爽朗乐观感染美琴并经常分享都市传说线索，美琴则给予佐天平等的尊重与庇护。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "栅川中学与常盘台四人组日常",
+            "evidence": {
+              "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+              "url": "https://toaru-project.com/railgun_t/"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "saten_ruiko",
+      "displayName": "佐天泪子",
+      "originalName": "佐天涙子",
+      "franchise": "A Certain Scientific Railgun",
+      "aliases": [
+        "佐天泪子",
+        "佐天涙子",
+        "Saten Ruiko"
+      ],
+      "identityProse": "Adult Saten Ruiko from A Certain Scientific Railgun. Long black hair, green eyes, and a small white flower hair ornament.",
+      "identityTokens": [
+        "saten_ruiko",
+        "black_hair",
+        "long_hair",
+        "green_eyes",
+        "hair_flower"
+      ],
+      "characterTokens": [
+        "saten_ruiko"
+      ],
+      "copyrightTokens": [
+        "toaru_kagaku_no_railgun"
+      ],
+      "exactTokens": [
+        "saten_ruiko"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult"
+    }
+  }
+}

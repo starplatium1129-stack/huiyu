@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "ijichi_nijika_daily_dinner_omelet",
+  "revision": 1,
+  "sortOrder": 2006,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "ijichi_nijika_daily_dinner_omelet",
+    "title": "伊地知虹夏 · 煎蛋卷要趁热吃",
+    "description": "厨房的小煎锅还放在灶台上。虹夏用锅铲把刚卷好的蛋卷移到盘里，回头提醒你先把餐垫铺好。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "kitchen",
+      "cooking",
+      "omelet",
+      "spatula",
+      "plate",
+      "looking_back",
+      "smile",
+      "warm_lighting"
+    ],
+    "promptProse": "Nijika stands at a small kitchen counter in a cream knit shirt, navy trousers, and a blue apron. She uses a spatula to slide a rolled omelet from the pan onto a plate, glancing back toward the viewer with a practical smile. Warm kitchen lighting falls on the breakfast-sized pan.",
+    "animaCaption": "The spatula supports the omelet between the pan rim and the plate on the counter.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "warm kitchen light",
+    "location": "家中的厨房",
+    "characterId": "ijichi_nijika",
+    "outfitId": "home_apron",
+    "action": "用锅铲把蛋卷移到盘里",
+    "timeOfDay": "晚饭前",
+    "mood": "熟练又有些操心",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "kitchen",
+      "cooking",
+      "omelet",
+      "spatula",
+      "plate",
+      "looking_back",
+      "smile",
+      "warm_lighting"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

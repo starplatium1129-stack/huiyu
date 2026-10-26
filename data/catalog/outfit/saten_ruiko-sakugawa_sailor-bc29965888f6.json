@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "saten_ruiko/sakugawa_sailor",
+  "revision": 1,
+  "sortOrder": 1649,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "saten_ruiko",
+    "outfit": {
+      "id": "sakugawa_sailor",
+      "name": "白蓝水手服与红领巾",
+      "prose": "A white short-sleeved sailor blouse with navy collar and cuffs, a red neckerchief, a navy pleated skirt, white ankle socks, and brown loafers",
+      "tokens": [
+        "white_sailor_uniform",
+        "navy_sailor_collar",
+        "short_sleeves",
+        "red_neckerchief",
+        "navy_skirt",
+        "pleated_skirt",
+        "white_socks",
+        "loafers"
+      ],
+      "default": true
+    }
+  }
+}

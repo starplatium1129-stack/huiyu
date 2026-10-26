@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/nsfw_nude",
-  "revision": 4,
+  "revision": 1,
   "sortOrder": 657,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
@@ -12,11 +12,21 @@
       "name": "🔞 私密全裸 / 纯粹形态",
       "tokens": [
         "nude",
+        "completely_naked",
         "uncensored",
-        "pale_skin"
+        "pale_skin",
+        "large_breasts",
+        "pink_nipples",
+        "slender_waist",
+        "wide_hips",
+        "navel",
+        "pussy",
+        "mole_under_eye",
+        "bare_legs",
+        "bare_feet"
       ],
-      "prose": "Nude, with pale skin.",
-      "styleHint": "",
+      "prose": "completely naked, full nudity, glowing fair skin, ripe heavy voluptuous breasts with sensitive dark-pink nipples, slender curved waist, wide sensual hips, exposed pussy, soft affectionate expression with flushed flustered cheeks, beauty mark under right eye, bare feet, warm executive suite lamplight",
+      "styleHint": "tender romantic candlelight",
       "default": false,
       "isDefault": false
     }

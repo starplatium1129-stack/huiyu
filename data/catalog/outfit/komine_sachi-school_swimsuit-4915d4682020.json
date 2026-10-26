@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "komine_sachi/school_swimsuit",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 651,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:35.997300+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "komine_sachi",
     "outfit": {
       "id": "school_swimsuit",
       "name": "深蓝连体竞技死库水",
-      "prose": "A navy-blue one-piece swimsuit with a white chest name tag, worn barefoot.",
+      "prose": "a navy-blue one-piece swimsuit with a white chest name tag, worn barefoot at the pool",
       "tokens": [
         "navy blue one-piece swimsuit",
         "white name tag",

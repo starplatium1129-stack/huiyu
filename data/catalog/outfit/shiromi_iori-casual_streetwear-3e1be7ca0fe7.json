@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiromi_iori/casual_streetwear",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 515,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shiromi_iori",
     "outfit": {
@@ -16,9 +16,9 @@
       "tokens": [
         "black halter crop top",
         "ribbed fabric",
-        "distressed denim shorts",
+        "denim shorts",
         "leather belt",
-        "open oversized red and black flannel shirt",
+        "red plaid shirt",
         "black choker",
         "white high-top sneakers"
       ]

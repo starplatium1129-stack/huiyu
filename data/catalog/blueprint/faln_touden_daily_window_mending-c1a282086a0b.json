@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "faln_touden_daily_window_mending",
+  "revision": 1,
+  "sortOrder": 2026,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "faln_touden_daily_window_mending",
+    "title": "法琳 · 破口已经快看不见了",
+    "description": "傍晚的窗边，针已经收进布包。法琳把补好的旅行毯摊在膝上，轻轻抚平那道细密的针脚，身后的庭院渐渐暗下来。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "window_seat",
+      "blanket",
+      "patch",
+      "sewing_kit",
+      "hand_on_fabric",
+      "relaxed",
+      "dusk",
+      "warm_lamp"
+    ],
+    "promptProse": "Falin sits on an inn window seat in a slate-blue knitted cardigan and long brown skirt. A mended travel blanket lies across her knees; she smooths its repaired seam while the needle is already stored in a cloth sewing kit beside her. A small lamp warms the room as the courtyard outside turns blue at dusk.",
+    "animaCaption": "Her empty hand smooths the stitched blanket; the sewing needle remains stored in the closed kit.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "warm lamp against blue dusk",
+    "location": "旅店面向庭院的窗边",
+    "characterId": "faln_touden",
+    "outfitId": "inn_knit",
+    "action": "抚平旅行毯的补缝，针已收进布包",
+    "timeOfDay": "入夜前",
+    "mood": "收好一天事务后的安心",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "window_seat",
+      "blanket",
+      "patch",
+      "sewing_kit",
+      "hand_on_fabric",
+      "relaxed",
+      "dusk",
+      "warm_lamp"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

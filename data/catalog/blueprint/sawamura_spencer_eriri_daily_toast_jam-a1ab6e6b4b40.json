@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "sawamura_spencer_eriri_daily_toast_jam",
+  "revision": 1,
+  "sortOrder": 2014,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "sawamura_spencer_eriri_daily_toast_jam",
+    "title": "英梨梨 · 果酱别涂到稿子上",
+    "description": "休息日的早餐摆在远离画稿的一侧。英梨梨拿着抹刀给吐司涂果酱，看你望向另一边的速写本，立刻把盘子推到你面前。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "kitchen",
+      "toast",
+      "jam",
+      "butter_knife",
+      "plate",
+      "looking_at_viewer",
+      "slight_blush",
+      "morning_light"
+    ],
+    "promptProse": "Eriri stands at a kitchen counter in a pale blue shirt, jeans, and cream apron. She spreads berry jam onto toast with a blunt butter knife, then angles the plate toward the viewer with a slightly embarrassed glance. Morning light crosses the clean counter, away from a closed sketchbook.",
+    "animaCaption": "The blunt spreader touches the toast on the plate; the closed sketchbook stays at the far end.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "morning kitchen light",
+    "location": "家中的早餐台",
+    "characterId": "sawamura_spencer_eriri",
+    "outfitId": "weekend_apron",
+    "action": "用抹刀给吐司涂果酱",
+    "timeOfDay": "休息日清晨",
+    "mood": "有些不好意思的照顾",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "kitchen",
+      "toast",
+      "jam",
+      "butter_knife",
+      "plate",
+      "looking_at_viewer",
+      "slight_blush",
+      "morning_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

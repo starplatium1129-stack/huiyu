@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_short",
-  "revision": 6,
+  "revision": 3,
   "sortOrder": 776,
   "createdAt": null,
-  "updatedAt": "2026-10-20T14:59:03.561756700+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
@@ -12,14 +12,12 @@
       "id": "sfw_short",
       "isDefault": false,
       "name": "浅蓝轻夹克旅行装",
-      "prose": "A light-blue cotton-twill jacket with useful patch pockets over a cream top, tapered charcoal trousers and low-profile walking shoes; her hair is cut into a short bob.",
+      "prose": "A light-blue cotton-twill jacket with useful patch pockets over a cream top, tapered charcoal trousers and low-profile walking shoes.",
       "tokens": [
-        "light blue twill jacket",
-        "patch pockets",
+        "light blue jacket",
         "cream shirt",
-        "tapered charcoal trousers",
-        "walking shoes",
-        "bob cut"
+        "dark pants",
+        "walking shoes"
       ]
     }
   }

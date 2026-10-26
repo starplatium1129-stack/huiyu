@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "cheshire_azur/cheongsam_spring",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 593,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "cheshire_azur",
     "outfit": {
@@ -12,11 +12,10 @@
       "name": "冰雪仙子旗袍",
       "prose": "an icy cyan-and-white silk qipao with gold cloud embroidery, a high side slit, lace chest inset, white fur at the shoulders, sheer white stockings and satin heels",
       "tokens": [
-        "light blue and white china dress",
-        "silk",
+        "china dress",
+        "light blue dress",
         "high slit",
-        "lace chest inset",
-        "white fur shawl",
+        "fur trim",
         "white pantyhose",
         "high heels",
         "gold embroidery"

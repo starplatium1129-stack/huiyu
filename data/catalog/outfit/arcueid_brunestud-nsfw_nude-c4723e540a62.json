@@ -1,18 +1,24 @@
 {
   "kind": "outfit",
   "id": "arcueid_brunestud/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 721,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "arcueid_brunestud",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "Nude.",
+      "prose": "her completely bare, glowing vampire body with golden hair framing her neck, tender natural breasts with pale pink nipples, slender waist, and flawless alabaster skin under the moon",
       "tokens": [
-        "nude"
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "slender_body"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/sfw_shiromuku",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 830,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
@@ -13,8 +13,6 @@
       "prose": "a white brocade shiromuku with layered uchikake, white obi and a simple white bridal hair ornament",
       "tokens": [
         "shiromuku",
-        "white brocade",
-        "layered uchikake",
         "white obi",
         "bridal hair ornament"
       ],

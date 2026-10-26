@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chen_qianyu/weekend_overall",
+  "revision": 1,
+  "sortOrder": 1631,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "chen_qianyu",
+    "outfit": {
+      "id": "weekend_overall",
+      "name": "砂色工装背带裤与砖红上衣",
+      "prose": "Sand-colored canvas overalls over a brick-red short-sleeved T-shirt, a narrow utility belt, and brown ankle boots",
+      "tokens": [
+        "beige_overalls",
+        "canvas",
+        "red_t-shirt",
+        "short_sleeves",
+        "utility_belt",
+        "ankle_boots"
+      ],
+      "default": false
+    }
+  }
+}

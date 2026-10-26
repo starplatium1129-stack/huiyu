@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_08",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 1719,
   "createdAt": "2026-10-26T09:10:15.020Z",
-  "updatedAt": "2026-10-26T09:51:50.550Z",
+  "updatedAt": "2026-10-26T11:04:45.265124300+00:00",
   "data": {
     "id": "maomao_sfw_b9_08",
     "title": "猫猫 · 园游会的惊艳盛装",
@@ -32,7 +32,7 @@
       "warm_lighting",
       "medium_shot"
     ],
-    "promptProse": "Between the illuminated garden pavilions, Maomao attends the imperial garden party in an opulent embroidered silk hanfu with wide sleeves. Her fake freckles are washed away, revealing radiant clear skin accented by a red forehead mark, blush, and crimson lipstick. Her green hair is styled in an ornate bun with golden tassel kanzashi hairpins. Soft lantern light illuminates the festive pavilion as she smiles quietly toward the viewer.",
+    "promptProse": "Maomao walks along the palace garden corridor at dusk in an embroidered silk hanfu with wide sleeves. She turns her head back toward the viewer with a quiet smile, resting her fingertips against a golden tassel hairpin in her ornate green bun. Her clear skin is accented with a red forehead mark, blush, and crimson lipstick. Warm lantern light illuminates her face and the pavilion corridor behind her.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -61,7 +61,14 @@
       "lantern",
       "warm_lighting",
       "looking_at_viewer",
-      "smile"
+      "smile",
+      "walking",
+      "looking_back",
+      "hand_in_hair",
+      "palace",
+      "corridor",
+      "garden",
+      "dusk"
     ],
     "negativeTokens": [
       "freckles",
@@ -93,6 +100,6 @@
       "iconic",
       "event"
     ],
-    "animaCaption": "Maomao at the imperial garden party in luxurious hanfu, clear skin and adorned bun with golden tassel kanzashi, smiling under warm lantern light."
+    "animaCaption": "She glances back while walking along the palace garden corridor, her fingertips lightly touching the golden tassel hairpin in her bun."
   }
 }

@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "fujiwara_chika_daily_puzzle_corner",
+  "revision": 1,
+  "sortOrder": 2008,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "fujiwara_chika_daily_puzzle_corner",
+    "title": "藤原千花 · 最后一块在这里",
+    "description": "书店的桌游角摆着一幅没拼完的拼图。千花把找到的角片贴到空位边上，抬眼看你，显然等着一句夸奖。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "bookstore",
+      "jigsaw_puzzle",
+      "holding_puzzle_piece",
+      "table",
+      "smug_smile",
+      "looking_at_viewer",
+      "warm_lighting"
+    ],
+    "promptProse": "In a bookstore game corner, Chika wears a sky-blue striped blouse and cream wide-leg trousers. She positions a corner puzzle piece beside its matching gap on the table and looks toward the viewer with a pleased smile. Warm reading lamps illuminate the puzzle.",
+    "animaCaption": "The single loose piece is held just above the empty corner of the puzzle.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "warm reading lamps",
+    "location": "书店的桌游角",
+    "characterId": "fujiwara_chika",
+    "outfitId": "boardgame_sailor",
+    "action": "把找到的拼图角片移到对应空位",
+    "timeOfDay": "下午",
+    "mood": "等着被夸奖",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "bookstore",
+      "jigsaw_puzzle",
+      "holding_puzzle_piece",
+      "table",
+      "smug_smile",
+      "looking_at_viewer",
+      "warm_lighting"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

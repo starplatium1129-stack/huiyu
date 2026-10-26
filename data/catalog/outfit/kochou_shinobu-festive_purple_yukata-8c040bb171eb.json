@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/festive_purple_yukata",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 802,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
@@ -16,8 +16,7 @@
         "wisteria print",
         "purple obi",
         "geta",
-        "butterfly hair ornament",
-        "hair bun"
+        "butterfly hair ornament"
       ]
     }
   }

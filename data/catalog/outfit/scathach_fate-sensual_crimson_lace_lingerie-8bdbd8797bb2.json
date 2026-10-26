@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/sensual_crimson_lace_lingerie",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "sensual_crimson_lace_lingerie",
       "name": "绯影·交带蕾丝内衣",
-      "prose": "Black lingerie with crimson lace and crossover straps, matching garter belt and black lace thigh-highs.",
+      "prose": "Black lingerie edged in crimson lace, with a matching garter belt, black lace thighhighs and fine crimson crossover straps.",
       "tokens": [
         "black lingerie",
         "crimson lace",

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "ijichi_nijika/record_store",
+  "revision": 1,
+  "sortOrder": 1635,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "ijichi_nijika",
+    "outfit": {
+      "id": "record_store",
+      "name": "芥末黄短外套与牛仔背带裙",
+      "prose": "A mustard cropped jacket over a striped white-and-navy shirt, a dark denim pinafore skirt, and brown lace-up shoes",
+      "tokens": [
+        "yellow_jacket",
+        "striped_shirt",
+        "denim_pinafore",
+        "blue_skirt",
+        "lace-up_shoes"
+      ],
+      "default": false
+    }
+  }
+}

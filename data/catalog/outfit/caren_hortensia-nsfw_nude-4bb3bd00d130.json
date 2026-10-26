@@ -1,19 +1,25 @@
 {
   "kind": "outfit",
   "id": "caren_hortensia/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "caren_hortensia",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "Nude, with stigmata marks.",
+      "prose": "her completely bare, slender and fragile body with silver hair brushing her neck, perky natural breasts with pale pink nipples, stigmata blush on her skin, and slender waist",
       "tokens": [
-        "nude",
-        "stigmata"
+        "completely_nude",
+        "bare_breasts",
+        "small_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "slender_body"
       ],
       "isDefault": false,
       "default": false

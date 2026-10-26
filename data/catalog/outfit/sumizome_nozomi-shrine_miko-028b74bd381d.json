@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sumizome_nozomi/shrine_miko",
+  "revision": 1,
+  "sortOrder": 1618,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "sumizome_nozomi",
+    "outfit": {
+      "id": "shrine_miko",
+      "name": "白小袖与绯色袴",
+      "prose": "A white kosode with wide sleeves over a red hakama, a discreet red waist tie, white tabi socks, and simple zori sandals",
+      "tokens": [
+        "miko",
+        "white_kimono",
+        "wide_sleeves",
+        "red_hakama",
+        "sash",
+        "tabi",
+        "zouri"
+      ],
+      "default": false
+    }
+  }
+}

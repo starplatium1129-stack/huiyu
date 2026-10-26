@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "saint_cecilia/saint_nun_habit",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 476,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "saint_cecilia",
     "outfit": {
@@ -17,7 +17,7 @@
       "tokens": [
         "white habit",
         "white veil",
-        "gold cross embroidery",
+        "gold trim",
         "cross necklace"
       ]
     }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "misono_mika/casual_pink",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 484,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "misono_mika",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "casual_pink",
       "isDefault": false,
       "name": "浅粉蕾丝与象牙白针织装",
-      "prose": "A pink lace-edged sundress, ivory cardigan with gold star clasp, white tights and flats.",
+      "prose": "A pastel-pink sleeveless sundress with white lace edging, an ivory knit cardigan fastened with one small gold star, white tights and flats.",
       "tokens": [
         "pink sundress",
         "white lace trim",

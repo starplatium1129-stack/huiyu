@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kazami_kazuki/white_dress",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 638,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "kazami_kazuki",
     "outfit": {
@@ -14,9 +14,7 @@
       "tokens": [
         "white sundress",
         "sleeveless",
-        "square neckline",
-        "linen",
-        "thin shoulder straps"
+        "square neckline"
       ],
       "default": true,
       "isDefault": true

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "amiya/restday_knit",
+  "revision": 1,
+  "sortOrder": 1627,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "amiya",
+    "outfit": {
+      "id": "restday_knit",
+      "name": "奶油针织衫与靛蓝长裙",
+      "prose": "A cream rib-knit cardigan over a pale blue blouse, an indigo A-line midi skirt, gray socks, and flat brown shoes",
+      "tokens": [
+        "cream_cardigan",
+        "ribbed_sweater",
+        "blue_blouse",
+        "blue_skirt",
+        "a-line_skirt",
+        "midi_skirt",
+        "flat_shoes"
+      ],
+      "default": false
+    }
+  }
+}

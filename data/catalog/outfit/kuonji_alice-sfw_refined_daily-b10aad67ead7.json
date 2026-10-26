@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/sfw_refined_daily",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 930,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
@@ -12,7 +12,7 @@
       "name": "烟灰羊毛梅色披肩裙",
       "prose": "A smoke-gray wool dress with long sleeves and a high ivory collar, a dark-plum shawl and opaque black tights.",
       "tokens": [
-        "long gray wool dress",
+        "gray wool dress",
         "long sleeves",
         "ivory high collar",
         "plum shawl",

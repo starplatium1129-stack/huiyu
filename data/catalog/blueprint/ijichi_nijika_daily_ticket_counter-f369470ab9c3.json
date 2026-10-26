@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "ijichi_nijika_daily_ticket_counter",
+  "revision": 1,
+  "sortOrder": 2003,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "ijichi_nijika_daily_ticket_counter",
+    "title": "伊地知虹夏 · 开场前的零钱盒",
+    "description": "STARRY开门前，虹夏把找零的钱币分进小格，抬头确认你手里的票。吧台后的灯刚亮，鼓点还没从排练室传出来。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "livehouse",
+      "ticket_counter",
+      "coins",
+      "cash_box",
+      "sorting",
+      "looking_at_viewer",
+      "smile",
+      "warm_lighting"
+    ],
+    "promptProse": "Before the doors open at STARRY, Nijika wears a red band T-shirt and black pleated midi skirt behind the ticket counter. She sorts coins into a small cash tray, looking up toward the viewer. Warm counter lamps light her hands and the quiet entrance.",
+    "animaCaption": "The coins remain in the cash tray beneath her hands; no readable ticket text is required.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "warm counter lamps",
+    "location": "STARRY入口柜台",
+    "characterId": "ijichi_nijika",
+    "outfitId": "livehouse_staff",
+    "action": "把找零硬币分入零钱盒，抬头确认来客",
+    "timeOfDay": "开场前的傍晚",
+    "mood": "忙碌而亲切",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "livehouse",
+      "ticket_counter",
+      "coins",
+      "cash_box",
+      "sorting",
+      "looking_at_viewer",
+      "smile",
+      "warm_lighting"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

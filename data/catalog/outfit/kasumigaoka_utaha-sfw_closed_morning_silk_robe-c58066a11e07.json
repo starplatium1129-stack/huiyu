@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sfw_closed_morning_silk_robe",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 1154,
   "createdAt": "2026-10-06T14:36:56.397422600+00:00",
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
@@ -14,14 +14,13 @@
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "An opaque ivory silk robe with long sleeves, a knee-length hem and charcoal piping, closed with a tied waist sash and paired with house slippers.",
+      "prose": "An opaque ivory silk lounge robe with long sleeves and a knee-length hem, closed with a tied waist sash and finished with fine charcoal piping. Soft house slippers complete the outfit.",
       "tokens": [
         "ivory silk robe",
         "tied sash",
         "long sleeves",
         "knee-length robe",
-        "slippers",
-        "charcoal piping"
+        "slippers"
       ]
     }
   }

@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 129,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing; her golden hair is loose in waves.",
+      "prose": "her completely bare, divine and feminine body with golden braid undone in flowing waves, full natural breasts with delicate pink nipples, slender waist, and smooth porcelain skin",
       "tokens": [
-        "nude",
-        "hair_down",
-        "wavy_hair"
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "divine_body"
       ]
     }
   }

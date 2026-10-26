@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nene",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
   "data": {
     "id": "nene",
     "profile": {
@@ -258,8 +258,9 @@
               "因幡めぐる",
               "Inaba Meguru"
             ],
-            "role": "宁宁的同级好友 / 游戏同好",
-            "summary": "性格活泼豪爽，因想要结交朋友而常在部室活跃气氛。与宁宁在社团中相处融洽，是宁宁在校内最信赖的闺蜜之一。"
+            "role": "超自然研究社成员 / 游戏爱好者",
+            "summary": "性格活泼豪爽，因想要结交朋友而常在部室活跃气氛。与宁宁在社团中相处融洽，是宁宁在校内最信赖的闺蜜之一。",
+            "characterId": "inaba_meguru"
           },
           {
             "id": "togakushi_touko",
@@ -268,8 +269,9 @@
               "戸隠憧子",
               "Togakushi Touko"
             ],
-            "role": "学生会长 / 柊史的学姐",
-            "summary": "容貌秀丽、待人温和的学生会长。深受后辈仰慕，在校内事务与社团活动上多次为宁宁与柊史提供关照和指引。"
+            "role": "学生会长 / 宁宁的学姐",
+            "summary": "容貌秀丽、待人温和的学生会长。深受后辈仰慕，在校内事务与社团活动上多次为宁宁与柊史提供关照和指引。",
+            "characterId": "togakushi_touko"
           }
         ],
         "relations": [
@@ -327,6 +329,20 @@
             "evidence": {
               "title": "柚子社 · 官方故事介绍",
               "url": "https://www.yuzu-soft.com/products/sothewitch/story.html"
+            }
+          },
+          {
+            "id": "meguru_nene_club",
+            "source": "inaba_meguru",
+            "target": "nene",
+            "label": "憧憬的社团前辈",
+            "description": "巡与宁宁同在超自然研究社活动，也憧憬宁宁这位前辈。",
+            "stage": "日常相处",
+            "directed": false,
+            "spoiler": false,
+            "evidence": {
+              "title": "柚子社官方角色介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
             }
           }
         ]

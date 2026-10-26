@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "sumizome_nozomi_daily_rainy_bus",
+  "revision": 1,
+  "sortOrder": 1990,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "sumizome_nozomi_daily_rainy_bus",
+    "title": "墨染希 · 雨停之前慢慢等",
+    "description": "公交站的屋檐挡住了大半雨水。希把雨衣袖口抖了抖，抱着纸袋挪到长椅里面，为你空出一块干燥的位置。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "bus_stop",
+      "bench",
+      "rain",
+      "paper_bag",
+      "looking_at_viewer",
+      "gentle_smile",
+      "wet_pavement",
+      "overcast"
+    ],
+    "promptProse": "Nozomi sits beneath a covered bus stop in a mist-blue raincoat and floral dress, her yellow rain boots resting on the wet pavement. She holds a paper shopping bag against her lap and shifts toward the dry end of the bench, leaving room beside her. Soft gray daylight reflects from the rain.",
+    "animaCaption": "The seat beside her is empty and sheltered under the bus-stop roof.",
+    "camera": "cowboy shot",
+    "recommendedSize": "1216x832",
+    "lighting": "overcast rainy daylight",
+    "location": "雨中的公交站",
+    "characterId": "sumizome_nozomi",
+    "outfitId": "rain_dress",
+    "action": "抱着纸袋向里挪，留出干燥的座位",
+    "timeOfDay": "雨天午后",
+    "mood": "体贴放松",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "bus_stop",
+      "bench",
+      "rain",
+      "paper_bag",
+      "looking_at_viewer",
+      "gentle_smile",
+      "wet_pavement",
+      "overcast"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

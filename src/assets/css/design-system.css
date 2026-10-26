@@ -367,12 +367,6 @@ body > *:has(+ .footer),
 .nav-links a:focus-visible { transition: none; }
 .nav-links a:hover, .nav-links a.active { @apply tw:text-primary; background: transparent; }
 .nav-links a.active { @apply tw:text-primary; background: transparent; }
-.nav-links :is(> a, .studio-tooltip-anchor > a, a)::after {
-  content:""; @apply tw:absolute tw:left-[50%] tw:bottom-[2px] tw:w-[12px] tw:h-[2px] tw:rounded-pill; background:var(--accent);
-  opacity:0; transform:translateX(-50%) scaleX(.35);
-  transition:opacity var(--motion-hover),transform var(--motion-hover) var(--ease-out);
-}
-.nav-links :is(> a, .studio-tooltip-anchor > a, a).active::after { opacity:0; }
 .nav-more { @apply tw:relative; }
 .nav-more-trigger {
   @apply tw:flex tw:items-center tw:gap-[5px]; list-style:none; @apply tw:cursor-pointer; min-height:var(--control-height); border:0; background:transparent; font-family:inherit;
@@ -860,7 +854,6 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
   background: var(--bg-elevated);
   box-shadow: none;
 }
-@media (hover:hover) and (pointer:fine) { .chip:hover { transform:translateY(-1px); } }
 .chip.active:where(:not(:hover)) {
   background:var(--bg-elevated);
   @apply tw:border-strong tw:text-primary;

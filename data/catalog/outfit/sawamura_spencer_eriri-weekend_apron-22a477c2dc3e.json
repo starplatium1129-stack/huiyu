@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "sawamura_spencer_eriri/weekend_apron",
+  "revision": 1,
+  "sortOrder": 1644,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "sawamura_spencer_eriri",
+    "outfit": {
+      "id": "weekend_apron",
+      "name": "浅蓝衬衫与奶油色围裙",
+      "prose": "A pale blue rolled-sleeve cotton shirt, dark straight jeans, a cream kitchen apron, and house slippers",
+      "tokens": [
+        "blue_shirt",
+        "rolled_up_sleeves",
+        "jeans",
+        "cream_apron",
+        "slippers"
+      ],
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "togakushi_touko/evening_robe",
+  "revision": 1,
+  "sortOrder": 1616,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "togakushi_touko",
+    "outfit": {
+      "id": "evening_robe",
+      "name": "梅紫家居裙与针织披肩",
+      "prose": "An opaque plum cotton lounge dress with long sleeves and a soft cream knitted shawl, worn with indoor slippers",
+      "tokens": [
+        "purple_dress",
+        "cotton_dress",
+        "long_sleeves",
+        "knitted_shawl",
+        "slippers"
+      ],
+      "default": false
+    }
+  }
+}

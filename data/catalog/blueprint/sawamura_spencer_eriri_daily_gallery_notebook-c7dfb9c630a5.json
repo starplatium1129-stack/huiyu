@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "sawamura_spencer_eriri_daily_gallery_notebook",
+  "revision": 1,
+  "sortOrder": 2013,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "sawamura_spencer_eriri_daily_gallery_notebook",
+    "title": "英梨梨 · 先记住这块颜色",
+    "description": "展厅长椅上，英梨梨摊开随身速写本，记下刚才那幅画的配色。她没急着画轮廓，只在纸角试了几块颜色。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "art_gallery",
+      "bench",
+      "sketchbook",
+      "colored_pencil",
+      "color_swatch",
+      "focused",
+      "soft_lighting"
+    ],
+    "promptProse": "Eriri sits on a gallery bench in a camel beret, cream cardigan, and navy midi dress. She makes a few small color swatches in an open sketchbook with a colored pencil, considering the palette rather than copying a whole painting. Soft gallery lights illuminate the quiet room.",
+    "animaCaption": "The sketchbook rests on her lap while the pencil makes small swatches near a page corner.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "soft gallery lighting",
+    "location": "美术馆展厅长椅",
+    "characterId": "sawamura_spencer_eriri",
+    "outfitId": "gallery_beret",
+    "action": "坐在展厅长椅上记下几块配色",
+    "timeOfDay": "下午",
+    "mood": "创作中的思考",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "art_gallery",
+      "bench",
+      "sketchbook",
+      "colored_pencil",
+      "color_swatch",
+      "focused",
+      "soft_lighting"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

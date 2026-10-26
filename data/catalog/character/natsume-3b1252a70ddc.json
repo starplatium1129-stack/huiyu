@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "natsume",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": "2026-10-25T14:46:00.632106+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
   "data": {
     "id": "natsume",
     "profile": {
@@ -247,8 +247,9 @@
               "墨染希",
               "Sumizome Nozomi"
             ],
-            "role": "昂晴的青梅竹马 / 神社之女",
-            "summary": "性格温和大方，在昂晴加入咖啡馆后常来探望与协助，与栞那建立了温暖融洽的日常友谊。"
+            "role": "神社家的女儿 / 咖啡馆伙伴",
+            "summary": "性格温和大方，在昂晴加入咖啡馆后常来探望与协助，与栞那建立了温暖融洽的日常友谊。",
+            "characterId": "sumizome_nozomi"
           },
           {
             "id": "hiuchidani_mei",
@@ -257,8 +258,9 @@
               "火打谷愛衣",
               "Hiuchidani Mei"
             ],
-            "role": "咖啡馆店员 / 昂晴的表妹",
-            "summary": "开朗元气的后辈，同样在咖啡馆兼职。日常中经常与栞那开玩笑打闹，为咖啡馆带来欢快的气氛。"
+            "role": "咖啡馆伙伴 / 曾参加游泳部",
+            "summary": "开朗元气的后辈，同样在咖啡馆兼职。日常中经常与栞那开玩笑打闹，为咖啡馆带来欢快的气氛。",
+            "characterId": "hiuchidani_mei"
           },
           {
             "id": "shioyama_suzune",
@@ -401,6 +403,34 @@
             "stage": "共通线 · 开篇设定",
             "evidence": {
               "title": "柚子社 · 栞那与米卡多官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "nozomi_natsume_cafe",
+            "source": "sumizome_nozomi",
+            "target": "natsume",
+            "label": "咖啡馆伙伴",
+            "description": "希与夏目在星光咖啡馆共事，成为日常往来的伙伴。",
+            "stage": "日常相处",
+            "directed": false,
+            "spoiler": false,
+            "evidence": {
+              "title": "柚子社官方角色介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "mei_natsume_cafe",
+            "source": "hiuchidani_mei",
+            "target": "natsume",
+            "label": "咖啡馆伙伴",
+            "description": "爱衣与夏目在星光咖啡馆的工作中相识。",
+            "stage": "日常相处",
+            "directed": false,
+            "spoiler": false,
+            "evidence": {
+              "title": "柚子社官方角色介绍",
               "url": "https://www.yuzu-soft.com/products/stella/character.html"
             }
           }

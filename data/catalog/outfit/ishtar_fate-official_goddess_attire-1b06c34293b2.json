@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ishtar_fate/official_goddess_attire",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 142,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ishtar_fate",
     "outfit": {
@@ -13,12 +13,12 @@
       "prose": "a fitted black top and miniskirt, one white detached sleeve and a single sheer white thighhigh, with a gold neck ring, hoop earrings, tiara and anklet",
       "tokens": [
         "black top",
-        "single white detached sleeve",
+        "single detached sleeve",
         "neck ring",
         "hoop earrings",
         "tiara",
         "black miniskirt",
-        "single white thighhigh",
+        "single thighhigh",
         "anklet"
       ],
       "default": true,

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/standard",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 349,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
@@ -15,7 +15,6 @@
       "prose": "Her black high-cut sleeveless bodysuit with red edging, cropped black jacket with red lining, black wide-brimmed hunter hat and black thigh-high boots.",
       "tokens": [
         "black bodysuit",
-        "highleg",
         "sleeveless",
         "red trim",
         "black cropped jacket",

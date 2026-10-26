@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "saten_ruiko_daily_festival_goldfish",
+  "revision": 1,
+  "sortOrder": 2022,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "saten_ruiko_daily_festival_goldfish",
+    "title": "佐天泪子 · 纸网还没破",
+    "description": "夏夜的小摊前，泪子把纸网慢慢伸进水里，耐心等一条金鱼游近。她侧过脸冲你笑，手腕却一点也没乱动。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "crouching",
+      "summer_festival",
+      "goldfish_scooping",
+      "paper_scoop",
+      "water_basin",
+      "smile",
+      "yukata",
+      "lantern_light"
+    ],
+    "promptProse": "Ruiko kneels at a festival goldfish stall in a pale lilac floral yukata and teal obi. She lowers a paper scoop into the shallow water basin and smiles sideways toward the viewer without moving her wrist. The stall lanterns reflect on the water and small goldfish.",
+    "animaCaption": "Her paper scoop is partly submerged beside a goldfish, with its delicate surface still intact.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "warm stall lanterns",
+    "location": "夏日祭的捞金鱼摊",
+    "characterId": "saten_ruiko",
+    "outfitId": "summer_yukata",
+    "action": "把纸网慢慢放进浅水盆等金鱼靠近",
+    "timeOfDay": "夏夜",
+    "mood": "屏息又忍不住笑",
+    "category": "日常相处",
+    "sceneTags": [
+      "crouching",
+      "summer_festival",
+      "goldfish_scooping",
+      "paper_scoop",
+      "water_basin",
+      "smile",
+      "yukata",
+      "lantern_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

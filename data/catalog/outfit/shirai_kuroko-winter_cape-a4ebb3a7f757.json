@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "shirai_kuroko/winter_cape",
+  "revision": 1,
+  "sortOrder": 1648,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "shirai_kuroko",
+    "outfit": {
+      "id": "winter_cape",
+      "name": "灰色短斗篷与针织长裙",
+      "prose": "A gray wool cape coat with a navy ribbon closure over a cream turtleneck knit dress, opaque brown tights, and leather ankle boots",
+      "tokens": [
+        "grey_cape",
+        "wool_coat",
+        "navy_ribbon",
+        "cream_dress",
+        "turtleneck",
+        "knit_dress",
+        "brown_pantyhose",
+        "ankle_boots"
+      ],
+      "default": false
+    }
+  }
+}

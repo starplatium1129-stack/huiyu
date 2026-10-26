@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "si_arknights",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 167,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
   "data": {
     "id": "si_arknights",
     "profile": {
@@ -181,8 +181,9 @@
               "终末地近卫干员",
               "炎国流云剑客"
             ],
-            "role": "终末地工业监督干员",
-            "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。"
+            "role": "终末地工业特勤干员 / 剑术习练者",
+            "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+            "characterId": "chen_qianyu"
           },
           {
             "id": "wulfgard",

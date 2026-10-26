@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ellen_joe/streetwear_hoodie",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 584,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ellen_joe",
     "outfit": {
@@ -17,8 +17,8 @@
         "oversized charcoal hoodie",
         "red zipper",
         "shark teeth print",
-        "frayed denim shorts",
-        "striped knee socks",
+        "denim shorts",
+        "striped socks",
         "chunky sneakers"
       ]
     }

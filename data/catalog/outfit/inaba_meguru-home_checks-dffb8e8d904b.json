@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "inaba_meguru/home_checks",
+  "revision": 1,
+  "sortOrder": 1612,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "inaba_meguru",
+    "outfit": {
+      "id": "home_checks",
+      "name": "珊瑚棉上衣与格纹家居裤",
+      "prose": "A loose coral cotton sweatshirt, navy checked lounge pants, and soft indoor slippers",
+      "tokens": [
+        "coral_sweatshirt",
+        "long_sleeves",
+        "plaid_pants",
+        "slippers"
+      ],
+      "default": false
+    }
+  }
+}

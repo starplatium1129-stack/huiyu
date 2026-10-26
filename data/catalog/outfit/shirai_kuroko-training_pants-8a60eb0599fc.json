@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shirai_kuroko/training_pants",
+  "revision": 1,
+  "sortOrder": 1646,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "shirai_kuroko",
+    "outfit": {
+      "id": "training_pants",
+      "name": "酒红运动套装",
+      "prose": "A burgundy track jacket with pale piping, matching loose track trousers, a white crew-neck T-shirt, and white running shoes",
+      "tokens": [
+        "red_track_jacket",
+        "piping",
+        "red_track_pants",
+        "white_t-shirt",
+        "running_shoes"
+      ],
+      "default": false
+    }
+  }
+}

@@ -17,9 +17,13 @@ export function parseCharacterRelationGraph(value: unknown): CharacterRelationGr
   for (const person of value.people) {
     if (!object(person) || !text(person.id) || !text(person.name) || ids.has(person.id)
       || !Array.isArray(person.aliases) || !person.aliases.every(text)
-      || (person.characterId !== undefined && !text(person.characterId))) return null
+      || (person.characterId !== undefined && !text(person.characterId))
+      || (person.role !== undefined && !text(person.role))
+      || (person.summary !== undefined && !text(person.summary))
+      || (person.avatar !== undefined && !text(person.avatar))) return null
     ids.add(person.id)
-    people.push({ id: person.id, name: person.name, aliases: [...person.aliases], characterId: person.characterId as string | undefined })
+    people.push({ id: person.id, name: person.name, aliases: [...person.aliases], characterId: person.characterId as string | undefined,
+      role: person.role as string | undefined, summary: person.summary as string | undefined, avatar: person.avatar as string | undefined })
   }
   const relationIds = new Set<string>()
   for (const relation of value.relations) {

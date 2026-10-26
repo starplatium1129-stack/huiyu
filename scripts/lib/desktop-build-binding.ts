@@ -82,9 +82,9 @@ function writeReceipt(root: string, receipt: unknown, stage: string) {
   }
 }
 function sourceIdentity(root: string) {
-  const names = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd:root, encoding:'utf8', windowsHide:true }).split('\0')
+  const names = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd:root, encoding:'utf8', windowsHide:true, maxBuffer: 16 * 1024 * 1024 }).split('\0')
     .filter(name => name && !/^(docs|plans)\//.test(name) && (!/\.md$/i.test(name) || name.startsWith('runtime-rs/native-licenses/')));
-  const deleted = new Set(execFileSync('git', ['ls-files', '-z', '--deleted'], { cwd:root, encoding:'utf8', windowsHide:true }).split('\0').filter(Boolean));
+  const deleted = new Set(execFileSync('git', ['ls-files', '-z', '--deleted'], { cwd:root, encoding:'utf8', windowsHide:true, maxBuffer: 16 * 1024 * 1024 }).split('\0').filter(Boolean));
   const selection: Selection[] = [...new Set(names)].filter(name => {
     if (!deleted.has(name)) return true;
     // Staging a deletion must not change the identity of the same source bytes.

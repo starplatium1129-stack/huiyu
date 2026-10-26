@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "fujiwara_chika_daily_piano_page",
+  "revision": 1,
+  "sortOrder": 2009,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "fujiwara_chika_daily_piano_page",
+    "title": "藤原千花 · 从这一小节重新来",
+    "description": "琴房里只听得见翻谱声。千花用手指压住刚翻过去的一页，另一只手轻放琴键，等纸页安静下来再弹。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "piano",
+      "grand_piano",
+      "sheet_music",
+      "turning_page",
+      "hand_on_keyboard",
+      "focused",
+      "music_room",
+      "window_light"
+    ],
+    "promptProse": "Chika sits at a piano in a navy pleated dress and cream cardigan. One hand holds a newly turned sheet-music page in place while the other rests on the keyboard, her expression attentive. Soft daylight crosses the quiet practice room and polished piano lid.",
+    "animaCaption": "Her page-turning hand stays on the score while the other rests above the keys.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "soft music-room daylight",
+    "location": "午后的钢琴练习室",
+    "characterId": "fujiwara_chika",
+    "outfitId": "music_recital",
+    "action": "压住刚翻过去的琴谱，另一只手停在琴键上",
+    "timeOfDay": "午后",
+    "mood": "认真沉静",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "piano",
+      "grand_piano",
+      "sheet_music",
+      "turning_page",
+      "hand_on_keyboard",
+      "focused",
+      "music_room",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

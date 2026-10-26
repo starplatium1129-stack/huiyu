@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "fujiwara_chika/music_recital",
+  "revision": 1,
+  "sortOrder": 1639,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "fujiwara_chika",
+    "outfit": {
+      "id": "music_recital",
+      "name": "海军蓝褶裙与珍珠扣开衫",
+      "prose": "A navy sleeveless pleated midi dress with a cream pearl-button cardigan, black ballet flats, and a small black hair bow",
+      "tokens": [
+        "navy_dress",
+        "pleated_dress",
+        "midi_dress",
+        "cream_cardigan",
+        "pearl_buttons",
+        "ballet_flats",
+        "black_hair_bow"
+      ],
+      "default": false
+    }
+  }
+}

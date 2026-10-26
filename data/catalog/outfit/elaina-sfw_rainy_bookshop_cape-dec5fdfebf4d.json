@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "elaina/sfw_rainy_bookshop_cape",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 1115,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "elaina",
     "outfit": {
@@ -12,11 +12,11 @@
       "name": "雨旅深蓝斗篷便装",
       "prose": "a short navy rain cape over an ivory sweater, charcoal pleated skirt, black tights and buckle boots, with her black witch hat and gold buckle",
       "tokens": [
-        "short navy rain cape",
+        "navy cape",
         "ivory sweater",
-        "charcoal pleated skirt",
+        "charcoal skirt",
         "black tights",
-        "buckle boots",
+        "ankle boots",
         "black witch hat",
         "gold buckle"
       ],

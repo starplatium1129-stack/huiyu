@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "inaba_meguru/school_cardigan",
+  "revision": 1,
+  "sortOrder": 1609,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "inaba_meguru",
+    "outfit": {
+      "id": "school_cardigan",
+      "name": "粉色开衫与柠檬黄围巾",
+      "prose": "A pink varsity-style cardigan with white sleeves over a white collared blouse and blue ribbon, a gray plaid pleated skirt, navy knee socks, brown loafers, and a yellow scarf",
+      "tokens": [
+        "pink_cardigan",
+        "white_sleeves",
+        "collared_shirt",
+        "blue_ribbon",
+        "plaid_skirt",
+        "pleated_skirt",
+        "kneehighs",
+        "loafers",
+        "yellow_scarf"
+      ],
+      "default": true
+    }
+  }
+}

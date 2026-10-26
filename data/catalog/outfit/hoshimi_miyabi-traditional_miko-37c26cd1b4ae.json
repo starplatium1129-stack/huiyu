@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/traditional_miko",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 588,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
@@ -16,12 +16,10 @@
       "tokens": [
         "miko",
         "white kimono",
-        "vermilion borders",
         "wide sleeves",
         "red hakama",
-        "shimenawa belt",
-        "gold paper charms",
-        "white tabi",
+        "shimenawa",
+        "tabi",
         "geta"
       ]
     }

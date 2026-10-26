@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "murasame/spirit_kimono",
-  "revision": 6,
+  "revision": 4,
   "sortOrder": 614,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "murasame",
     "outfit": {
@@ -12,15 +12,14 @@
       "id": "spirit_kimono",
       "isDefault": true,
       "name": "黄结绳深蓝神刀和装",
-      "prose": "A sleeveless navy-black kimono with white frills, crossed black-and-red chest cords, yellow rope obi, lace-edged tiered skirt and detached sleeves.",
+      "prose": "a sleeveless navy-black kimono over white frills, crossed black and vermilion chest cords, a yellow rope obi, a tiered pleated skirt with lace edging and detached sleeves",
       "tokens": [
         "dark blue kimono",
         "sleeveless kimono",
         "white frills",
-        "crossed black and red chest cords",
-        "yellow rope obi",
-        "tiered skirt",
-        "lace trim",
+        "yellow obi",
+        "red cord",
+        "pleated skirt",
         "detached sleeves"
       ]
     }

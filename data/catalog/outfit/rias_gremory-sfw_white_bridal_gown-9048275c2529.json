@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/sfw_white_bridal_gown",
-  "revision": 5,
+  "revision": 2,
   "sortOrder": 697,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "sfw_white_bridal_gown",
       "name": "纯白蕾丝鱼尾婚纱",
-      "prose": "An opaque white satin mermaid gown with folded off-shoulder neck, lace-edged flared hem and long translucent lace veil.",
+      "prose": "An opaque white satin mermaid gown with a folded off-shoulder neckline, fine lace along the flared hem and a long translucent lace veil.",
       "tokens": [
-        "white satin wedding gown",
+        "white wedding gown",
         "mermaid dress",
-        "folded off-shoulder neckline",
-        "lace-edged flared hem",
+        "off shoulder",
+        "lace trim",
         "long veil"
       ],
       "default": false,

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "hiuchidani_mei/sailor_blue",
+  "revision": 1,
+  "sortOrder": 1621,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "hiuchidani_mei",
+    "outfit": {
+      "id": "sailor_blue",
+      "name": "浅蓝水手领上衣与红帆布鞋",
+      "prose": "A pale blue sailor-collar blouse with a navy neckerchief, a dark plaid pleated skirt, white knee socks, and red high-top canvas sneakers",
+      "tokens": [
+        "blue_blouse",
+        "sailor_collar",
+        "neckerchief",
+        "plaid_skirt",
+        "pleated_skirt",
+        "white_kneehighs",
+        "red_sneakers"
+      ],
+      "default": true
+    }
+  }
+}

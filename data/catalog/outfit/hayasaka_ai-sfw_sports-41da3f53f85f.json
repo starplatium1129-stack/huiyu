@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_sports",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 775,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
@@ -15,7 +15,7 @@
       "prose": "An opaque cobalt-blue athletic T-shirt with pale grey side seams, paired with grey cuffed track trousers and white training shoes.",
       "tokens": [
         "blue t-shirt",
-        "grey cuffed track pants",
+        "grey track pants",
         "white sneakers"
       ]
     }

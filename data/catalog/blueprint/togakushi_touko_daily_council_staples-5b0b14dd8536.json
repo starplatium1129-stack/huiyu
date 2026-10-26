@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "togakushi_touko_daily_council_staples",
+  "revision": 1,
+  "sortOrder": 1983,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "togakushi_touko_daily_council_staples",
+    "title": "户隐憧子 · 最后一叠申请表",
+    "description": "憧子把申请表的边角在桌面磕齐，按住订书机。你问还有多少，她抬眼笑了笑：“这叠弄完，今天就到这里吧。”",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "desk",
+      "paperwork",
+      "stapler",
+      "office",
+      "looking_at_viewer",
+      "gentle_smile",
+      "sunset",
+      "window_light"
+    ],
+    "promptProse": "Touko sits at the student-council desk in her white school sweater. She holds a neatly aligned stack of forms under a stapler and looks up toward the viewer with a small smile. Low evening sunlight reaches the paperwork through the office window.",
+    "animaCaption": "One hand keeps the forms aligned while the other rests on the stapler.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "late afternoon window light",
+    "location": "学生会室",
+    "characterId": "togakushi_touko",
+    "outfitId": "school_sweater",
+    "action": "按齐申请表，准备订好最后一叠",
+    "timeOfDay": "傍晚",
+    "mood": "温和从容",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "desk",
+      "paperwork",
+      "stapler",
+      "office",
+      "looking_at_viewer",
+      "gentle_smile",
+      "sunset",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

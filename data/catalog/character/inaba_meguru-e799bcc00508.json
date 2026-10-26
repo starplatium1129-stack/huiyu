@@ -1,0 +1,219 @@
+{
+  "kind": "character",
+  "id": "inaba_meguru",
+  "revision": 1,
+  "sortOrder": 189,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "inaba_meguru",
+    "profile": {
+      "id": "inaba_meguru",
+      "name": "因幡巡",
+      "alias": [
+        "因幡めぐる",
+        "Inaba Meguru"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "/assets/characters/portrait-pending.svg",
+        "alt": "因幡巡 · 立绘待制作"
+      },
+      "visual_dna": {
+        "signature": "Coral-orange hair in a long side ponytail and pink eyes",
+        "hair": "orange_hair, long_hair, side_ponytail",
+        "eyes": "pink_eyes",
+        "style": "anime"
+      },
+      "personality": [
+        "直率热情",
+        "认真看待朋友",
+        "游戏时专注",
+        "偶尔不善于拉近距离"
+      ],
+      "likes": [
+        "角色扮演游戏",
+        "与社团伙伴相处",
+        "讨论游戏攻略"
+      ],
+      "bg_story": "因幡巡是《魔女的夜宴》中的角色。她打扮活泼，也喜欢独自钻研游戏；面对想要结交的人，有时反而不知道该怎样开口。加入超自然研究社后，她逐渐学会把自己的兴趣和烦恼告诉伙伴，也很憧憬前辈宁宁。",
+      "identity": {
+        "role": "超自然研究社成员 / 游戏爱好者",
+        "age": "成年创作设定",
+        "classificationSource": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+      },
+      "source": "Sabbat of the Witch",
+      "traits": [
+        "orange_hair",
+        "long_hair",
+        "side_ponytail",
+        "pink_eyes"
+      ],
+      "tags": [
+        "因幡巡",
+        "魔女的夜宴",
+        "日常"
+      ],
+      "accent_color": "#E78285",
+      "bg_color": "#202833",
+      "palette": [
+        "#E78285",
+        "#F4EEDF"
+      ],
+      "relationshipGraph": {
+        "version": 1,
+        "work": "魔女的夜宴",
+        "people": [
+          {
+            "id": "nene",
+            "name": "绫地宁宁",
+            "aliases": [
+              "綾地寧々",
+              "Ayachi Nene"
+            ],
+            "characterId": "nene"
+          },
+          {
+            "id": "hoshina_shuuji",
+            "name": "保科柊史",
+            "aliases": [
+              "保科柊史",
+              "Hoshina Shuuji"
+            ],
+            "role": "超能力研究部部员",
+            "summary": "拥有感知他人强烈情感的心灵感应能力。在学校意外撞破绫地宁宁吸取心之碎片的秘密，自此加入社团协助宁宁收集碎片，并以真挚的日常陪伴化解宁宁内心的自卑与契约孤独。"
+          },
+          {
+            "id": "inaba_meguru",
+            "name": "因幡巡",
+            "aliases": [
+              "因幡めぐる",
+              "Inaba Meguru"
+            ],
+            "role": "超自然研究社成员 / 游戏爱好者",
+            "summary": "性格活泼豪爽，因想要结交朋友而常在部室活跃气氛。与宁宁在社团中相处融洽，是宁宁在校内最信赖的闺蜜之一。",
+            "characterId": "inaba_meguru"
+          },
+          {
+            "id": "togakushi_touko",
+            "name": "户隐憧子",
+            "aliases": [
+              "戸隠憧子",
+              "Togakushi Touko"
+            ],
+            "role": "学生会长 / 宁宁的学姐",
+            "summary": "容貌秀丽、待人温和的学生会长。深受后辈仰慕，在校内事务与社团活动上多次为宁宁与柊史提供关照和指引。",
+            "characterId": "togakushi_touko"
+          }
+        ],
+        "relations": [
+          {
+            "id": "nene-shuuji-classmates",
+            "source": "nene",
+            "target": "hoshina_shuuji",
+            "label": "同班同学",
+            "description": "宁宁与保科柊史是同班同学；两人的相遇从各自不愿公开的秘密展开。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "发行商 · Steam 作品介绍",
+              "url": "https://store.steampowered.com/app/888790/Sabbat_of_the_Witch/"
+            }
+          },
+          {
+            "id": "touko-nene-senior",
+            "source": "togakushi_touko",
+            "target": "nene",
+            "label": "高一年级的学姐",
+            "description": "憧子是学生会长与三年级的人气学姐，宁宁则是二年级学生。这里记录年级关系，不将其直接写成亲密好友。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 户隐憧子官方介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+            }
+          },
+          {
+            "id": "meguru-shuuji-help",
+            "source": "inaba_meguru",
+            "target": "hoshina_shuuji",
+            "label": "请求帮助",
+            "description": "巡想改变交友不顺的处境，鼓起勇气向柊史等人求助。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 因幡巡官方介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+            }
+          },
+          {
+            "id": "shuuji-nene-secret",
+            "source": "hoshina_shuuji",
+            "target": "nene",
+            "label": "发现她的秘密",
+            "description": "柊史偶然发现宁宁隐瞒的秘密，两人的日常由此发生变化。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 秘密被发现后",
+            "evidence": {
+              "title": "柚子社 · 官方故事介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/story.html"
+            }
+          },
+          {
+            "id": "meguru_nene_club",
+            "source": "inaba_meguru",
+            "target": "nene",
+            "label": "憧憬的社团前辈",
+            "description": "巡与宁宁同在超自然研究社活动，也憧憬宁宁这位前辈。",
+            "stage": "日常相处",
+            "directed": false,
+            "spoiler": false,
+            "evidence": {
+              "title": "柚子社官方角色介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "inaba_meguru",
+      "displayName": "因幡巡",
+      "originalName": "因幡めぐる",
+      "franchise": "Sabbat of the Witch",
+      "aliases": [
+        "因幡巡",
+        "因幡めぐる",
+        "Inaba Meguru"
+      ],
+      "identityProse": "Adult Inaba Meguru from Sabbat of the Witch. Coral-orange hair in a long side ponytail and pink eyes.",
+      "identityTokens": [
+        "inaba_meguru",
+        "orange_hair",
+        "long_hair",
+        "side_ponytail",
+        "pink_eyes"
+      ],
+      "characterTokens": [
+        "inaba_meguru"
+      ],
+      "copyrightTokens": [
+        "sanoba_witch"
+      ],
+      "exactTokens": [
+        "inaba_meguru"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hiuchidani_mei/cafe_mauve",
+  "revision": 1,
+  "sortOrder": 1623,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "hiuchidani_mei",
+    "outfit": {
+      "id": "cafe_mauve",
+      "name": "灰紫衬衫与牛仔围裙",
+      "prose": "A muted violet button-up shirt with rolled sleeves, a dark denim bib apron, straight black trousers, and practical lace-up shoes",
+      "tokens": [
+        "purple_shirt",
+        "rolled_up_sleeves",
+        "denim_apron",
+        "bib_apron",
+        "black_pants",
+        "lace-up_shoes"
+      ],
+      "default": false
+    }
+  }
+}

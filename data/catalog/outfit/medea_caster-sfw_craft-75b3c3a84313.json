@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "medea_caster/sfw_craft",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 170,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "medea_caster",
     "outfit": {
       "id": "sfw_craft",
       "name": "雾蓝细褶手作便装",
-      "prose": "A pintucked pale-blue blouse with fitted cuffs, charcoal ankle-length skirt and fine-framed glasses.",
+      "prose": "A pale-blue blouse with narrow pintucks and fitted cuffs, a charcoal ankle-length skirt and fine-framed craft glasses.",
       "tokens": [
         "light blue blouse",
         "pintucks",
         "long sleeves",
-        "fitted cuffs",
-        "charcoal ankle-length skirt",
+        "charcoal long skirt",
         "thin-framed glasses"
       ],
       "default": false,

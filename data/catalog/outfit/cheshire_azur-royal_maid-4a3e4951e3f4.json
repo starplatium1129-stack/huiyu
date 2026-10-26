@@ -1,20 +1,19 @@
 {
   "kind": "outfit",
   "id": "cheshire_azur/royal_maid",
-  "revision": 6,
+  "revision": 3,
   "sortOrder": 592,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "cheshire_azur",
     "outfit": {
       "id": "royal_maid",
       "name": "皇家海军蓝荷叶边女仆裙",
-      "prose": "A navy maid dress with puffed sleeves, a layered skirt and white lace apron, a gold anchor pendant, white ribboned gloves, gartered white thighhighs and black Mary Janes.",
+      "prose": "A navy Royal Navy maid dress with puffed sleeves, a layered skirt and white lace apron. A small gold anchor pendant, white ribboned gloves and gartered white thighhighs with black Mary Janes preserve its familiar silhouette.",
       "tokens": [
         "maid",
         "navy dress",
-        "layered skirt",
         "white apron",
         "lace trim",
         "puff sleeves",

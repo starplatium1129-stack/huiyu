@@ -1,30 +1,26 @@
 {
   "kind": "outfit",
   "id": "ishtar_fate/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 146,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "ishtar_fate",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing; gold hoop earrings remain on, with her hair loose.",
+      "prose": "her completely bare, divine body with black hair let loose from its two-side-up style, pert goddess breasts with pink nipples, a slim divine waist, and golden earrings still on — even naked she is radiantly regal",
       "tokens": [
-        "nude",
-        "hoop_earrings"
-      ],
-      "identityTokensOverride": [
-        "ishtar (fate)",
-        "fate/grand_order",
-        "1girl",
-        "solo",
-        "black_hair",
-        "hair_down",
-        "red_eyes"
-      ],
-      "identityProseOverride": "Ishtar from Fate/Grand Order, a goddess with loose black hair and red eyes."
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "hoop_earrings",
+        "divine_body"
+      ]
     }
   }
 }

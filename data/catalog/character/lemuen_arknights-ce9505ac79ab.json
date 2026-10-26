@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lemuen_arknights",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
   "data": {
     "id": "lemuen_arknights",
     "profile": {
@@ -337,8 +337,9 @@
               "奇美拉",
               "特蕾西娅继承人"
             ],
-            "role": "罗德岛公开领袖 / 魔王继承者",
-            "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+            "role": "罗德岛公开领袖",
+            "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+            "characterId": "amiya"
           },
           {
             "id": "theresa",

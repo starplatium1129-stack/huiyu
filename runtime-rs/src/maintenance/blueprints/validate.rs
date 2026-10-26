@@ -1,6 +1,6 @@
 use super::*;
 pub(crate) fn validate_items(items: &[Value]) -> Result<()> {
-    if items.len() > 2000 {
+    if items.len() > 10000 {
         return Err(Error::invalid("蓝图 数据格式或数量超出限制"));
     }
     let mut ids = HashSet::new();

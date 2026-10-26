@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_night",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 777,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
@@ -14,8 +14,8 @@
       "name": "奶油开衫与藏蓝休闲长裤",
       "prose": "A soft cream rib-knit cardigan over a buttoned white cotton shirt and fluid navy trousers, with quiet pearl-grey buttons.",
       "tokens": [
-        "cream rib-knit cardigan",
-        "buttoned white shirt",
+        "cream cardigan",
+        "white shirt",
         "navy pants"
       ]
     }

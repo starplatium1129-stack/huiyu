@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "makima/work_suit",
-  "revision": 4,
+  "revision": 3,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "work_suit",
       "name": "白衬衫黑领带公务套装",
-      "prose": "A white blouse, narrow black tie and black pencil skirt.",
+      "prose": "A crisp white office blouse with a narrow black tie and a clean black pencil skirt.",
       "tokens": [
         "white blouse",
         "black necktie",

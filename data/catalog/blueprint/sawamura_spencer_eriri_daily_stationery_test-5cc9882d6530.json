@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "sawamura_spencer_eriri_daily_stationery_test",
+  "revision": 1,
+  "sortOrder": 2011,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "sawamura_spencer_eriri_daily_stationery_test",
+    "title": "英梨梨 · 这支笔的线更细",
+    "description": "文具店的试写台前，英梨梨把两支针管笔的线条并排画下。她低头比较墨线的边缘，连你凑近都没马上察觉。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "stationery_store",
+      "testing_pen",
+      "drawing",
+      "paper",
+      "pen",
+      "focused",
+      "counter",
+      "daylight"
+    ],
+    "promptProse": "Eriri stands at a stationery-store test counter in her navy school blazer and gray skirt. She draws two short parallel lines with a fine-liner and studies the ink edges on the sample paper. Clear shop-window daylight lights her hands and the pen display.",
+    "animaCaption": "The uncapped pen tip touches the sample paper; the second pen lies beside it.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "shop-window daylight",
+    "location": "文具店试笔台",
+    "characterId": "sawamura_spencer_eriri",
+    "outfitId": "school_blazer",
+    "action": "在试写纸上画线比较针管笔",
+    "timeOfDay": "放学后",
+    "mood": "挑剔而专注",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "stationery_store",
+      "testing_pen",
+      "drawing",
+      "paper",
+      "pen",
+      "focused",
+      "counter",
+      "daylight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

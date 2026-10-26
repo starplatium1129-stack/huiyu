@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/standard",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 286,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
@@ -18,9 +18,9 @@
         "crop top",
         "black and white jacket",
         "red lining",
-        "black high-waisted shorts",
+        "black shorts",
         "thigh holster",
-        "asymmetrical black thighhighs",
+        "asymmetrical thighhighs",
         "combat boots",
         "fingerless gloves",
         "black headband"

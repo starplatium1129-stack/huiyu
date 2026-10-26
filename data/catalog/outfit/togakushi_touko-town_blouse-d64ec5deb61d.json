@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "togakushi_touko/town_blouse",
+  "revision": 1,
+  "sortOrder": 1614,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "togakushi_touko",
+    "outfit": {
+      "id": "town_blouse",
+      "name": "薰衣草衬衫与高腰长裙",
+      "prose": "A lavender blouse with gathered cuffs tucked into a charcoal high-waisted midi skirt, a narrow leather belt, and low-heeled pumps",
+      "tokens": [
+        "lavender_blouse",
+        "long_sleeves",
+        "high-waist_skirt",
+        "grey_skirt",
+        "midi_skirt",
+        "belt",
+        "pumps"
+      ],
+      "default": false
+    }
+  }
+}

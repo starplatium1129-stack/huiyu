@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "inaba_meguru_daily_club_save",
+  "revision": 1,
+  "sortOrder": 1979,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "inaba_meguru_daily_club_save",
+    "title": "因幡巡 · 存档点旁的攻略本",
+    "description": "放学后的社团室只剩窗边亮着。巡把游戏机放在腿上，指着攻略本里一条绕远的路线，认真问你要不要先去捡那只宝箱。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "handheld_game_console",
+      "open_book",
+      "pointing",
+      "classroom",
+      "desk",
+      "window_light",
+      "curious",
+      "looking_at_viewer"
+    ],
+    "promptProse": "Meguru sits by the clubroom window in her pink cardigan and yellow scarf. A handheld console rests on her lap as she points to a route in an open guidebook on the desk, looking toward the viewer for an opinion. Late afternoon window light falls across the pages.",
+    "animaCaption": "Her console rests on her lap while one finger stays on the guidebook route.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "afternoon window light",
+    "location": "放学后的社团室",
+    "characterId": "inaba_meguru",
+    "outfitId": "school_cardigan",
+    "action": "指着攻略本上的路线征询意见",
+    "timeOfDay": "放学后",
+    "mood": "认真又期待",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "handheld_game_console",
+      "open_book",
+      "pointing",
+      "classroom",
+      "desk",
+      "window_light",
+      "curious",
+      "looking_at_viewer"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

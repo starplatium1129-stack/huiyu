@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "hiuchidani_mei_daily_canal_stretch",
+  "revision": 1,
+  "sortOrder": 1992,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "hiuchidani_mei_daily_canal_stretch",
+    "title": "火打谷爱衣 · 跑完再绕一圈",
+    "description": "河堤跑道旁，爱衣一手扶着栏杆，弯起一条腿拉伸。她看见你走近，点了点空着的步道，像是在提议再走一小段。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "stretching",
+      "one_leg_raised",
+      "hand_on_railing",
+      "riverside",
+      "running_track",
+      "smile",
+      "morning_light"
+    ],
+    "promptProse": "On a riverside path, Mei wears a white-and-violet track jacket and black joggers. One hand holds the railing while the other draws her raised ankle toward her hip for a standing quadriceps stretch. Clear morning light falls across the quiet path and water.",
+    "animaCaption": "Her supporting foot stays flat on the path while the raised leg bends behind her.",
+    "camera": "full body",
+    "recommendedSize": "832x1216",
+    "lighting": "clear morning daylight",
+    "location": "河堤边的跑步道",
+    "characterId": "hiuchidani_mei",
+    "outfitId": "sport_track",
+    "action": "扶栏杆做单腿站立拉伸",
+    "timeOfDay": "清晨",
+    "mood": "轻快自如",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "stretching",
+      "one_leg_raised",
+      "hand_on_railing",
+      "riverside",
+      "running_track",
+      "smile",
+      "morning_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

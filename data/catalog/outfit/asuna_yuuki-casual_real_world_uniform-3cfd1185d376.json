@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asuna_yuuki/casual_real_world_uniform",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 745,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "asuna_yuuki",
     "outfit": {
@@ -14,9 +14,9 @@
       "tokens": [
         "school uniform",
         "gray blazer",
-        "white collared shirt",
-        "red ribbon tie",
-        "navy pleated skirt",
+        "white shirt",
+        "red ribbon",
+        "navy skirt",
         "brown loafers"
       ]
     }

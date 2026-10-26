@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "shirai_kuroko_daily_lost_property",
+  "revision": 1,
+  "sortOrder": 2015,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "shirai_kuroko_daily_lost_property",
+    "title": "白井黑子 · 失物袋上的小蝴蝶结",
+    "description": "支部桌面上摆着刚送来的失物。黑子把一枚蝴蝶结发夹装进透明袋，抬头耐心问你还记不记得在哪里捡到的。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "office",
+      "desk",
+      "hairclip",
+      "transparent_bag",
+      "lost_property",
+      "looking_at_viewer",
+      "attentive",
+      "window_light"
+    ],
+    "promptProse": "Kuroko sits at the Judgment branch desk in her beige school vest and brown skirt. She places a ribbon-shaped hair clip into a clear lost-property bag and looks toward the viewer attentively. Daylight from the office window falls over the neatly arranged items.",
+    "animaCaption": "The hair clip is inside the clear bag held above the desk, separate from her own hair ribbons.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "office window daylight",
+    "location": "风纪委员支部的办公桌",
+    "characterId": "shirai_kuroko",
+    "outfitId": "tokiwadai_uniform",
+    "action": "把蝴蝶结发夹装入透明失物袋",
+    "timeOfDay": "白昼",
+    "mood": "工作中的耐心",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "office",
+      "desk",
+      "hairclip",
+      "transparent_bag",
+      "lost_property",
+      "looking_at_viewer",
+      "attentive",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

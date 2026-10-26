@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "faln_touden_daily_travel_inventory",
+  "revision": 1,
+  "sortOrder": 2023,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "faln_touden_daily_travel_inventory",
+    "title": "法琳 · 把药草留在最上层",
+    "description": "旅店的木桌上铺开了旅行包。法琳把晒干的药草包放到最容易拿到的位置，再用布带束好，免得和餐具撞在一起。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "inn",
+      "wooden_table",
+      "backpack",
+      "herb_pouch",
+      "packing",
+      "cloth_ribbon",
+      "focused",
+      "window_light"
+    ],
+    "promptProse": "In a modest inn room, Falin wears a blue-and-white mage robe and brown belt. She sits at a wooden table, placing a small dried-herb pouch at the top of an open travel pack and tying its cloth ribbon. Quiet window light falls across the folded supplies.",
+    "animaCaption": "The herb pouch stays separate from the wrapped utensils inside the open pack.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "soft inn window light",
+    "location": "旅店客房的木桌旁",
+    "characterId": "faln_touden",
+    "outfitId": "mage_travel",
+    "action": "把药草包放进旅行包最上层并系好布带",
+    "timeOfDay": "白昼",
+    "mood": "细致妥帖",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "inn",
+      "wooden_table",
+      "backpack",
+      "herb_pouch",
+      "packing",
+      "cloth_ribbon",
+      "focused",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_formal",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 447,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_formal",
       "name": "淡紫交领·茶会和装裙",
-      "prose": "An opaque pale-violet jacquard wrap dress with kimono sleeves, geometric woven border and cream sash.",
+      "prose": "A modest pale-violet jacquard wrap dress with kimono sleeves and a subtle geometric woven border, opaque layers and a clean cream waist sash.",
       "tokens": [
         "pale violet dress",
         "kimono sleeves",

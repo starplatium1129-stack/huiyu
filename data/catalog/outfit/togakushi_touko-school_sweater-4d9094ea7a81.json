@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "togakushi_touko/school_sweater",
+  "revision": 1,
+  "sortOrder": 1613,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "togakushi_touko",
+    "outfit": {
+      "id": "school_sweater",
+      "name": "白针织校服与深色连裤袜",
+      "prose": "A white knit school pullover with a gray sailor collar and red bow, a gray plaid pleated skirt, black tights, brown lace-up ankle boots, and white hair ribbons",
+      "tokens": [
+        "white_sweater",
+        "sailor_collar",
+        "red_bow",
+        "plaid_skirt",
+        "pleated_skirt",
+        "black_pantyhose",
+        "lace-up_boots",
+        "white_hair_ribbon"
+      ],
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "fujiwara_chika_daily_street_crepe",
+  "revision": 1,
+  "sortOrder": 2010,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "fujiwara_chika_daily_street_crepe",
+    "title": "藤原千花 · 先拍照还是先吃",
+    "description": "公园入口的可丽饼摊前，千花举着刚买的水果可丽饼，犹豫要不要先咬一口。她把纸套转到不沾奶油的位置，认真得像在做大决定。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "park",
+      "food_stall",
+      "crepe",
+      "fruit",
+      "whipped_cream",
+      "holding_food",
+      "curious",
+      "daylight"
+    ],
+    "promptProse": "Chika stands near a park crepe stall in a rose-pink parka and denim skirt. She holds a fruit crepe upright in its paper cone, studying the cream-topped edge with an amused, indecisive expression. Bright afternoon light reaches the tree-lined park entrance.",
+    "animaCaption": "Both hands grip the paper sleeve beneath the exposed fruit and cream.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "bright afternoon daylight",
+    "location": "公园入口的小吃摊",
+    "characterId": "fujiwara_chika",
+    "outfitId": "weekend_parka",
+    "action": "举着水果可丽饼，犹豫从哪里开始吃",
+    "timeOfDay": "下午",
+    "mood": "为小事认真纠结",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "park",
+      "food_stall",
+      "crepe",
+      "fruit",
+      "whipped_cream",
+      "holding_food",
+      "curious",
+      "daylight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

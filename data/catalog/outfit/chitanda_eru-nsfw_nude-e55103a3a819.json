@@ -1,18 +1,25 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 827,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "Nude, with pale skin.",
+      "prose": "her completely bare, noble body with her long inky-black hair cascading down her back and chest, full natural breasts with pale rose nipples, a soft feminine waist, and flawless milky-white skin",
       "tokens": [
-        "nude",
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "large_breasts",
+        "long_hair",
         "pale_skin"
       ]
     }

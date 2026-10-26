@@ -17,6 +17,8 @@
 const FRANCHISE_CN: Record<string, string> = {
   'Arknights': '明日方舟',
   'Arknights: Endfield': '明日方舟：终末地',
+  'Sabbat of the Witch': '魔女的夜宴',
+  "Cafe Stella and the Reapers' Butterflies": '星光咖啡馆与死神之蝶',
   'Genshin Impact': '原神',
   'Fate': 'Fate 系列',
   'Fate/stay night': '命运之夜',

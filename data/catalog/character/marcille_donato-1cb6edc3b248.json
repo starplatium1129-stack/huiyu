@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "marcille_donato",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
   "data": {
     "id": "marcille_donato",
     "profile": {
@@ -106,8 +106,9 @@
               "ファリン・トーデン",
               "Falin Touden"
             ],
-            "role": "莱欧斯的妹妹 / 强力神术师",
-            "summary": "性格温和善良的圣职者，玛露希尔最珍视的挚友。在被红龙消化前被黑魔法与红龙融合复活，最终在同伴们的齐心协力下剥离红龙肉身重返人间。"
+            "role": "魔术师 / 擅长回复与强化魔法",
+            "summary": "性格温和善良的圣职者，玛露希尔最珍视的挚友。在被红龙消化前被黑魔法与红龙融合复活，最终在同伴们的齐心协力下剥离红龙肉身重返人间。",
+            "characterId": "faln_touden"
           },
           {
             "id": "senshi",

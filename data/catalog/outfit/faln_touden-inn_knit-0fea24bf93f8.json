@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "faln_touden/inn_knit",
+  "revision": 1,
+  "sortOrder": 1656,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "faln_touden",
+    "outfit": {
+      "id": "inn_knit",
+      "name": "灰蓝针织外套与深棕长裙",
+      "prose": "A loose slate-blue knitted cardigan over a cream high-neck blouse, a dark brown ankle-length skirt, thick socks, and indoor leather slippers",
+      "tokens": [
+        "blue_cardigan",
+        "knitted_cardigan",
+        "cream_blouse",
+        "high_collar",
+        "brown_skirt",
+        "long_skirt",
+        "socks",
+        "slippers"
+      ],
+      "default": false
+    }
+  }
+}

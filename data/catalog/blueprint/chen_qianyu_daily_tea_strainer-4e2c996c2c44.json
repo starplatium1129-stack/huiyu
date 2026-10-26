@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "chen_qianyu_daily_tea_strainer",
+  "revision": 1,
+  "sortOrder": 2000,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "chen_qianyu_daily_tea_strainer",
+    "title": "陈千语 · 茶叶沉下去的时候",
+    "description": "茶台边，千语一手扶住壶盖，一手缓缓倾斜茶壶。热茶穿过小滤网落进杯子，她这次特意放慢了动作。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "tea_table",
+      "teapot",
+      "pouring_tea",
+      "tea_strainer",
+      "teacup",
+      "focused",
+      "wooden_interior",
+      "window_light"
+    ],
+    "promptProse": "In a quiet wooden tea room, Chen Qianyu wears a forest-green linen blouse and cream trousers. She pours tea through a small strainer into a cup, steadying the teapot lid with her other hand. Window light falls across the tea table and her dark hair.",
+    "animaCaption": "One hand holds the teapot handle and the other keeps its lid in place above the strainer.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "gentle window light",
+    "location": "基地休息区的小茶室",
+    "characterId": "chen_qianyu",
+    "outfitId": "tea_linen",
+    "action": "扶稳壶盖，把茶缓缓倒过小滤网",
+    "timeOfDay": "下午",
+    "mood": "刻意放慢的专注",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "tea_table",
+      "teapot",
+      "pouring_tea",
+      "tea_strainer",
+      "teacup",
+      "focused",
+      "wooden_interior",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

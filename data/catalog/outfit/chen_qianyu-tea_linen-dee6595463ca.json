@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "chen_qianyu/tea_linen",
+  "revision": 1,
+  "sortOrder": 1630,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "chen_qianyu",
+    "outfit": {
+      "id": "tea_linen",
+      "name": "墨绿斜襟衫与米色长裤",
+      "prose": "A forest-green asymmetrical Chinese-collar linen blouse with frog closures, loose cream trousers, and black cloth shoes",
+      "tokens": [
+        "green_shirt",
+        "chinese_collar",
+        "frog_buttons",
+        "linen",
+        "cream_pants",
+        "loose_pants",
+        "cloth_shoes"
+      ],
+      "default": false
+    }
+  }
+}

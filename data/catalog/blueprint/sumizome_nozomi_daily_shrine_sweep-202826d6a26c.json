@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "sumizome_nozomi_daily_shrine_sweep",
+  "revision": 1,
+  "sortOrder": 1988,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "sumizome_nozomi_daily_shrine_sweep",
+    "title": "墨染希 · 石阶上新落的叶子",
+    "description": "清早的神社还没有访客。希把竹扫帚斜放在石阶前，正把最后几片落叶拢到一起，听见脚步才抬起头。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "shrine",
+      "stone_steps",
+      "sweeping",
+      "broom",
+      "fallen_leaves",
+      "looking_at_viewer",
+      "morning_light",
+      "peaceful"
+    ],
+    "promptProse": "Nozomi wears white kosode and red hakama on the shrine steps in the early morning. She sweeps a few fallen leaves into a small pile with a bamboo broom and lifts her gaze toward the arriving viewer. Cool daylight passes through the shrine trees.",
+    "animaCaption": "Both hands guide the broom along the ground toward the small leaf pile.",
+    "camera": "full body",
+    "recommendedSize": "832x1216",
+    "lighting": "early morning daylight",
+    "location": "神社前的石阶",
+    "characterId": "sumizome_nozomi",
+    "outfitId": "shrine_miko",
+    "action": "把石阶前的落叶扫成一小堆",
+    "timeOfDay": "清晨",
+    "mood": "清爽平静",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "shrine",
+      "stone_steps",
+      "sweeping",
+      "broom",
+      "fallen_leaves",
+      "looking_at_viewer",
+      "morning_light",
+      "peaceful"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

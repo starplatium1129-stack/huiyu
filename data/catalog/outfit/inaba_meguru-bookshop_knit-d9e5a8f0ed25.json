@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "inaba_meguru/bookshop_knit",
+  "revision": 1,
+  "sortOrder": 1611,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "inaba_meguru",
+    "outfit": {
+      "id": "bookshop_knit",
+      "name": "杏色针织衫与背带裙",
+      "prose": "An oatmeal cable-knit pullover under a dark teal corduroy pinafore dress, brown ankle boots, and a small crossbody bag",
+      "tokens": [
+        "beige_sweater",
+        "cable_knit",
+        "pinafore_dress",
+        "teal_dress",
+        "corduroy",
+        "ankle_boots",
+        "shoulder_bag"
+      ],
+      "default": false
+    }
+  }
+}

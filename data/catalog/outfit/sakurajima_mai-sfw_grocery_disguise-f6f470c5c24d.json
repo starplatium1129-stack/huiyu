@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/sfw_grocery_disguise",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 27,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "sfw_grocery_disguise",
       "name": "烟灰针织采购便服",
-      "prose": "A gray cardigan and beanie, ivory blouse, dark-green A-line skirt and clear-lens glasses.",
+      "prose": "a smoke-grey cardigan over an ivory blouse, a dark-green A-line long skirt, plain clear-lens glasses and a matching grey knitted beanie",
       "tokens": [
         "grey cardigan",
         "ivory blouse",
-        "dark green long A-line skirt",
-        "clear-lens glasses",
+        "dark green long skirt",
+        "glasses",
         "grey knit hat"
       ],
       "isDefault": false,

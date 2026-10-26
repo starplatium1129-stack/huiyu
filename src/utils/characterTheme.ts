@@ -68,17 +68,19 @@ export function characterThemeStyle(id: string, records: readonly CharacterTheme
   } as CSSProperties
 }
 
-/** Only the document-level atmosphere needs to escape the .pb subtree. */
+/** Atmosphere and shared navigation follow the active workspace character. */
 export function applyCharacterAtmosphere(id: string, records: readonly CharacterThemeRecord[] = [], catalog: CharacterThemeCatalog = STUDIO_CHARACTER_THEMES): void {
   if (typeof document === 'undefined') return
   const theme = resolveCharacterTheme(id, records, catalog)
   const root = document.documentElement
+  root.style.setProperty('--active-character-accent', theme.accent)
   root.style.setProperty('--character-aura', theme.aura || `color-mix(in srgb, ${theme.accent} 22%, transparent)`)
   root.style.setProperty('--character-aura-secondary', theme.auraSecondary || `color-mix(in srgb, ${theme.accent} 14%, transparent)`)
 }
 
 export function clearCharacterAtmosphere(): void {
   if (typeof document === 'undefined') return
+  document.documentElement.style.removeProperty('--active-character-accent')
   document.documentElement.style.removeProperty('--character-aura')
   document.documentElement.style.removeProperty('--character-aura-secondary')
 }

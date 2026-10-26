@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/sfw_kitchen_apron",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 28,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "sfw_kitchen_apron",
       "name": "淡杏围裙与柔灰针织装",
-      "prose": "A gray long-sleeved knit top, navy skirt and apricot apron with broad waist ties.",
+      "prose": "a soft grey long-sleeved knit top and navy casual skirt under a light apricot kitchen apron with wide waist ties",
       "tokens": [
         "grey knit top",
         "long sleeves",
         "navy skirt",
-        "apricot apron",
-        "broad waist ties"
+        "pale apron"
       ],
       "isDefault": false,
       "default": false,

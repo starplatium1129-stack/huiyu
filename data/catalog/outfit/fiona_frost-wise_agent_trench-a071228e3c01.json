@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "fiona_frost/wise_agent_trench",
-  "revision": 5,
+  "revision": 2,
   "sortOrder": 465,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "fiona_frost",
     "outfit": {
       "id": "wise_agent_trench",
       "name": "夜帷·WISE 特工双排扣大衣",
       "tokens": [
-        "dark blue pea coat",
+        "blue coat",
         "double-breasted",
         "purple sweater",
         "turtleneck",
-        "black leather pants",
+        "leather pants",
         "brown gloves",
-        "ankle boots",
+        "boots",
         "stud earrings"
       ],
       "prose": "a dark-blue double-breasted pea coat over a purple turtleneck and black leather trousers, with brown gloves, ankle boots and WISE stud earrings",
-      "styleHint": "",
+      "styleHint": "cool cinematic espionage lighting",
       "isDefault": true,
       "default": true
     }

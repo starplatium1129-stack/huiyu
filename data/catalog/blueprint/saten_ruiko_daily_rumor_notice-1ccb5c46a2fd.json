@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "saten_ruiko_daily_rumor_notice",
+  "revision": 1,
+  "sortOrder": 2019,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "saten_ruiko_daily_rumor_notice",
+    "title": "佐天泪子 · 公告栏里藏着一条线索",
+    "description": "放学路上的社区公告栏换了新海报。泪子凑近看一张旧街区照片，回头朝你招手，说照片里的那口井她好像见过。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "bulletin_board",
+      "photograph",
+      "pointing",
+      "looking_back",
+      "beckoning",
+      "curious",
+      "street",
+      "afternoon_light"
+    ],
+    "promptProse": "Ruiko pauses at a neighborhood bulletin board in her white-and-navy sailor uniform. She points to an old street photograph pinned among the notices and glances back toward the viewer, beckoning with her free hand. Afternoon light falls on the glass-fronted board.",
+    "animaCaption": "The clue is a picture of a well in the posted photograph, with no readable headline needed.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "afternoon daylight",
+    "location": "社区公告栏前",
+    "characterId": "saten_ruiko",
+    "outfitId": "sakugawa_sailor",
+    "action": "指着公告栏里的旧照片回头招呼你",
+    "timeOfDay": "放学后",
+    "mood": "发现线索的兴奋",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "bulletin_board",
+      "photograph",
+      "pointing",
+      "looking_back",
+      "beckoning",
+      "curious",
+      "street",
+      "afternoon_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "hiuchidani_mei_daily_desk_sticker",
+  "revision": 1,
+  "sortOrder": 1991,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "hiuchidani_mei_daily_desk_sticker",
+    "title": "火打谷爱衣 · 这个贴纸像不像你",
+    "description": "爱衣把刚买的猫咪贴纸排在桌边，挑出一枚举到你眼前。她自己先笑了起来，书包里还露着没拆完的包装袋。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "classroom",
+      "desk",
+      "sticker",
+      "cat_print",
+      "school_bag",
+      "holding",
+      "grin",
+      "looking_at_viewer",
+      "daylight"
+    ],
+    "promptProse": "Mei sits at a classroom desk in her pale blue sailor blouse and plaid skirt. She holds a small cat sticker toward the viewer, grinning, with the opened sticker packet beside her school bag. Afternoon daylight illuminates her tanned face and lavender hair.",
+    "animaCaption": "She pinches one sticker by its corner while the other stickers remain on the desk.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "afternoon daylight",
+    "location": "放学前的教室",
+    "characterId": "hiuchidani_mei",
+    "outfitId": "sailor_blue",
+    "action": "把一枚猫咪贴纸举到你眼前",
+    "timeOfDay": "放学前",
+    "mood": "顽皮开心",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "classroom",
+      "desk",
+      "sticker",
+      "cat_print",
+      "school_bag",
+      "holding",
+      "grin",
+      "looking_at_viewer",
+      "daylight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

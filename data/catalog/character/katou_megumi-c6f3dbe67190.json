@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "katou_megumi",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": "2026-10-26T03:28:05.268892100+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
   "data": {
     "id": "katou_megumi",
     "profile": {
@@ -134,8 +134,9 @@
               "英梨梨",
               "柏木英理"
             ],
-            "role": "人气同人画师「柏木英理」 / 伦也的青梅竹马",
-            "summary": "混血金发双马尾大小姐，绘画技艺顶尖。因过去逃避与伦也的关系而留下遗憾，在游戏制作中被惠的沉稳与包容逐步触动。"
+            "role": "画师 / 同人游戏原画创作者",
+            "summary": "混血金发双马尾大小姐，绘画技艺顶尖。因过去逃避与伦也的关系而留下遗憾，在游戏制作中被惠的沉稳与包容逐步触动。",
+            "characterId": "sawamura_spencer_eriri"
           },
           {
             "id": "hashima_izumi",

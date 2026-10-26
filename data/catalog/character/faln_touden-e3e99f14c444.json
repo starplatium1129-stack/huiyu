@@ -1,0 +1,191 @@
+{
+  "kind": "character",
+  "id": "faln_touden",
+  "revision": 1,
+  "sortOrder": 200,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "faln_touden",
+    "profile": {
+      "id": "faln_touden",
+      "name": "法琳",
+      "alias": [
+        "ファリン・トーデン",
+        "Falin Touden"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "/assets/characters/portrait-pending.svg",
+        "alt": "法琳 · 立绘待制作"
+      },
+      "visual_dna": {
+        "signature": "Short pale ash-blonde hair, soft facial features, and golden eyes",
+        "hair": "blonde_hair, short_hair",
+        "eyes": "yellow_eyes",
+        "style": "anime"
+      },
+      "personality": [
+        "温和体贴",
+        "观察事物细致",
+        "对生物充满好奇",
+        "在需要保护同伴时果断"
+      ],
+      "likes": [
+        "观察小动物",
+        "和玛露希尔相处",
+        "研究魔法与植物"
+      ],
+      "bg_story": "法琳是《迷宫饭》中的魔术师，莱欧斯的妹妹，也是玛露希尔在魔法学校结识的朋友。她擅长强化、回复和除灵一类魔法，待人温和，也有对自然与生物格外好奇的一面。本批日常场景采用她的人类形态，描绘旅途休息、照料植物和整理生活用品的片刻。",
+      "identity": {
+        "role": "魔术师 / 擅长回复与强化魔法",
+        "age": "成年创作设定",
+        "classificationSource": "https://delicious-in-dungeon.com/"
+      },
+      "source": "Delicious in Dungeon",
+      "traits": [
+        "blonde_hair",
+        "short_hair",
+        "yellow_eyes"
+      ],
+      "tags": [
+        "法琳",
+        "迷宫饭",
+        "日常"
+      ],
+      "accent_color": "#C6B58B",
+      "bg_color": "#202833",
+      "palette": [
+        "#C6B58B",
+        "#F4EEDF"
+      ],
+      "relationshipGraph": {
+        "version": 1,
+        "work": "迷宫饭",
+        "people": [
+          {
+            "id": "marcille_donato",
+            "name": "玛露希尔",
+            "aliases": [
+              "マルシル・ドナトー",
+              "Marcille Donato",
+              "精灵魔法使"
+            ],
+            "characterId": "marcille_donato"
+          },
+          {
+            "id": "laios_touden",
+            "name": "莱欧斯",
+            "aliases": [
+              "ライオス・トーデン",
+              "Laios Touden",
+              "魔物狂战士"
+            ],
+            "role": "迷宫探索小队队长 / 狂热魔物学者",
+            "summary": "为了救回被红龙吞噬的妹妹法琳而深入迷宫的铠甲战士。对烹饪与食用魔物抱有病态的热忱，在森西的指导下一路烹饪魔物前行，虽常让法师玛露希尔抓狂，但始终以绝对战力庇护队友。"
+          },
+          {
+            "id": "faln_touden",
+            "name": "法琳",
+            "aliases": [
+              "ファリン・トーデン",
+              "Falin Touden"
+            ],
+            "role": "魔术师 / 擅长回复与强化魔法",
+            "summary": "性格温和善良的圣职者，玛露希尔最珍视的挚友。在被红龙消化前被黑魔法与红龙融合复活，最终在同伴们的齐心协力下剥离红龙肉身重返人间。",
+            "characterId": "faln_touden"
+          },
+          {
+            "id": "senshi",
+            "name": "森西",
+            "aliases": [
+              "センシ",
+              "Senshi",
+              "矮人厨师"
+            ],
+            "role": "迷宫生活十年的斧战士矮人",
+            "summary": "深谙地下城生态循环与魔物料理的胡须矮人。加入队伍担任主厨，悉心照料莱欧斯与玛露希尔的肠胃与营养平衡。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "marcille-laios-cooking-dungeon",
+            "source": "marcille_donato",
+            "target": "laios_touden",
+            "label": "魔物烹饪受害者与生死托付",
+            "description": "精通正统学院魔法的玛露希尔对莱欧斯的吃魔物狂热日常崩溃抗拒，却在为了救出挚友法琳的征程中无数次用魔力为莱欧斯抵挡死境。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 迷宫绝境求生",
+            "evidence": {
+              "title": "KADOKAWA / TRIGGER · 《迷宫饭》官方动画网站",
+              "url": "https://delicious-in-dungeon.com/"
+            }
+          },
+          {
+            "id": "marcille-faln-ancient-magic",
+            "source": "marcille_donato",
+            "target": "faln_touden",
+            "label": "学院挚友与禁忌古代黑魔术",
+            "description": "在魔法学院便与法琳结下无可替代的深厚羁绊，在炎龙腹中找到法琳残骸后，玛露希尔不惜触犯全大陆禁忌发动古代黑魔术将法琳复活。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "炎龙讨伐篇 · 禁忌苏生",
+            "evidence": {
+              "title": "KADOKAWA / TRIGGER · 《迷宫饭》官方动画网站",
+              "url": "https://delicious-in-dungeon.com/"
+            }
+          },
+          {
+            "id": "marcille-senshi-food-culture",
+            "source": "senshi",
+            "target": "marcille_donato",
+            "label": "迷宫饮食哲理传授",
+            "description": "研究迷宫魔物烹饪十余年的矮人森西，耐心引导排斥魔物的玛露希尔理解‘摄取营养、维持生命’是地底探索的第一铁律。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 营火聚餐日常",
+            "evidence": {
+              "title": "KADOKAWA / TRIGGER · 《迷宫饭》官方动画网站",
+              "url": "https://delicious-in-dungeon.com/"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "faln_touden",
+      "displayName": "法琳",
+      "originalName": "ファリン・トーデン",
+      "franchise": "Delicious in Dungeon",
+      "aliases": [
+        "法琳",
+        "ファリン・トーデン",
+        "Falin Touden"
+      ],
+      "identityProse": "Adult Falin Touden from Delicious in Dungeon. Short pale ash-blonde hair, soft facial features, and golden eyes.",
+      "identityTokens": [
+        "falin_touden_(tallman)",
+        "blonde_hair",
+        "short_hair",
+        "yellow_eyes"
+      ],
+      "characterTokens": [
+        "falin_touden_(tallman)"
+      ],
+      "copyrightTokens": [
+        "dungeon_meshi"
+      ],
+      "exactTokens": [
+        "falin_touden_(tallman)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult"
+    }
+  }
+}

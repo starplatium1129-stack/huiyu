@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "shirai_kuroko_daily_station_map",
+  "revision": 1,
+  "sortOrder": 2018,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "shirai_kuroko_daily_station_map",
+    "title": "白井黑子 · 下一站换哪条线",
+    "description": "车站入口风有些大，黑子拢住短斗篷，低头核对手里的折页地图。确认路线后，她把地图转过来，指给你看要换乘的位置。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "train_station",
+      "folded_map",
+      "pointing",
+      "cape",
+      "looking_at_viewer",
+      "overcast",
+      "winter"
+    ],
+    "promptProse": "At a station entrance on a cool day, Kuroko wears a gray wool cape over a cream knit dress and brown tights. She holds a folded route map toward the viewer and points to a transfer mark. Diffuse winter daylight reaches her face beneath the station canopy.",
+    "animaCaption": "The route map shows simple colored lines and marks without requiring readable lettering.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "diffuse winter daylight",
+    "location": "车站入口的雨棚下",
+    "characterId": "shirai_kuroko",
+    "outfitId": "winter_cape",
+    "action": "把折页路线图转向你并指出换乘位置",
+    "timeOfDay": "冬日白昼",
+    "mood": "确认路线的从容",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "train_station",
+      "folded_map",
+      "pointing",
+      "cape",
+      "looking_at_viewer",
+      "overcast",
+      "winter"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

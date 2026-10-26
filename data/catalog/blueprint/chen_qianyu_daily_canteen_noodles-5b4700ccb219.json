@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "chen_qianyu_daily_canteen_noodles",
+  "revision": 1,
+  "sortOrder": 1999,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "chen_qianyu_daily_canteen_noodles",
+    "title": "陈千语 · 食堂的新口味",
+    "description": "午间食堂还空着几张桌子。面碗稳稳放在桌上，千语一手夹起刚拌好的面条，另一只手朝你竖起拇指，示意这道新口味很值得试试。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "cafeteria",
+      "bowl",
+      "noodles",
+      "chopsticks",
+      "eating",
+      "thumbs_up",
+      "smile",
+      "daylight"
+    ],
+    "promptProse": "Chen Qianyu sits at an Endfield canteen table in her black-and-white work jacket. She lifts a small bite of noodles with chopsticks and gives the viewer a cheerful thumbs-up, the bowl supported on the table. Broad windows fill the canteen with midday light.",
+    "animaCaption": "The bowl stays on the table while her chopsticks lift one small bite.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "midday window light",
+    "location": "终末地基地食堂",
+    "characterId": "chen_qianyu",
+    "outfitId": "endfield_work",
+    "action": "夹起一口拌面，朝你竖起拇指",
+    "timeOfDay": "中午",
+    "mood": "爽快满意",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "cafeteria",
+      "bowl",
+      "noodles",
+      "chopsticks",
+      "eating",
+      "thumbs_up",
+      "smile",
+      "daylight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

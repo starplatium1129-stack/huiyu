@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/home_casual_shirt",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 655,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
@@ -15,7 +15,7 @@
         "oversized white shirt",
         "unbuttoned",
         "off shoulder",
-        "black lace bra",
+        "black bra",
         "black pantyhose"
       ],
       "default": false,

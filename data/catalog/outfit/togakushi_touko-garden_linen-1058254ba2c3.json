@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "togakushi_touko/garden_linen",
+  "revision": 1,
+  "sortOrder": 1615,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "togakushi_touko",
+    "outfit": {
+      "id": "garden_linen",
+      "name": "亚麻罩衫与苔绿宽腿裤",
+      "prose": "A cream linen overshirt over a pale blue camisole, moss-green wide-leg trousers, and flat woven shoes",
+      "tokens": [
+        "linen_shirt",
+        "cream_shirt",
+        "camisole",
+        "green_pants",
+        "wide-leg_pants",
+        "flat_shoes"
+      ],
+      "default": false
+    }
+  }
+}

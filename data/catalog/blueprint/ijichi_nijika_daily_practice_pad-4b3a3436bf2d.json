@@ -1,0 +1,53 @@
+{
+  "kind": "blueprint",
+  "id": "ijichi_nijika_daily_practice_pad",
+  "revision": 1,
+  "sortOrder": 2004,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "ijichi_nijika_daily_practice_pad",
+    "title": "伊地知虹夏 · 先把这一拍敲稳",
+    "description": "虹夏没有开整套架子鼓，只把练习垫搬到窗边。她握着鼓棒重复一小节，听见节拍器响起才轻轻点头。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "holding_drumsticks",
+      "practice_pad",
+      "metronome",
+      "rehearsal_room",
+      "focused",
+      "window_light"
+    ],
+    "promptProse": "Nijika sits on a drum stool by the rehearsal-room window in an indigo sleeveless top and olive cargo trousers. She holds two sticks above a small practice pad, following the metronome beside it. Daylight gives a clear view of her wrists and the pad surface.",
+    "animaCaption": "Each hand holds one stick, both positioned above the practice pad.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "rehearsal room daylight",
+    "location": "排练室窗边",
+    "characterId": "ijichi_nijika",
+    "outfitId": "rehearsal_sport",
+    "action": "跟着节拍器在练习垫上练一小节",
+    "timeOfDay": "白天",
+    "mood": "踏实专注",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "holding_drumsticks",
+      "practice_pad",
+      "metronome",
+      "rehearsal_room",
+      "focused",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

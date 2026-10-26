@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "sumizome_nozomi_daily_bakery_bag",
+  "revision": 1,
+  "sortOrder": 1989,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "sumizome_nozomi_daily_bakery_bag",
+    "title": "墨染希 · 留给你的那只面包",
+    "description": "从面包店出来，希忍不住先掰开一只热面包。她把较大的一半连同纸袋递向你，自己那半还冒着一点热气。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "bakery",
+      "bread",
+      "paper_bag",
+      "offering_food",
+      "smile",
+      "storefront",
+      "daylight"
+    ],
+    "promptProse": "Outside a neighborhood bakery, Nozomi wears a honey cardigan and straight jeans. She offers the viewer half of a freshly split bread roll on its paper bag, holding the other half close to her chest. The shop window catches the late-morning light.",
+    "animaCaption": "The larger bread half rests on the paper bag extended toward the viewer.",
+    "camera": "medium shot",
+    "recommendedSize": "832x1216",
+    "lighting": "late morning daylight",
+    "location": "社区面包店门外",
+    "characterId": "sumizome_nozomi",
+    "outfitId": "market_casual",
+    "action": "把刚掰开的热面包递给你",
+    "timeOfDay": "上午",
+    "mood": "坦率亲切",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "bakery",
+      "bread",
+      "paper_bag",
+      "offering_food",
+      "smile",
+      "storefront",
+      "daylight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

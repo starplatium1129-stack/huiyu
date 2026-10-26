@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mikasa_ackerman/cafe_white_dress",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 542,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "mikasa_ackerman",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "cafe_white_dress",
       "isDefault": false,
       "name": "白棉裙与炭灰针织开衫",
-      "prose": "A white cotton dress under a charcoal rib-cuff knit cardigan, with dark boots.",
+      "prose": "a simple white cotton day dress with clean waist seams beneath a charcoal knit cardigan with ribbed cuffs, paired with dark boots",
       "tokens": [
         "white cotton dress",
         "charcoal cardigan",

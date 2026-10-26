@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "amiya_daily_seedling_labels",
+  "revision": 1,
+  "sortOrder": 1996,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "amiya_daily_seedling_labels",
+    "title": "阿米娅 · 新芽长到了刻度线",
+    "description": "温室里的苗盆排得很齐。阿米娅蹲下比较嫩叶和木牌上的高度刻度，嘴角一点点扬起来，浇水壶就放在脚边。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "crouching",
+      "greenhouse",
+      "seedling",
+      "flower_pot",
+      "wooden_marker",
+      "watering_can",
+      "smile",
+      "dappled_sunlight"
+    ],
+    "promptProse": "In a Rhodes Island greenhouse, Amiya wears a gray shirt and sage canvas apron. She crouches beside a seedling tray, comparing a new leaf with the height marks on a small wooden marker. A watering can rests on the floor nearby; sunlight passes through the glass roof onto the plants.",
+    "animaCaption": "The measurement marks are simple lines, with no written labels required.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "greenhouse sunlight",
+    "location": "罗德岛温室",
+    "characterId": "amiya",
+    "outfitId": "greenhouse_work",
+    "action": "蹲下比较新叶与木牌的高度刻度",
+    "timeOfDay": "上午",
+    "mood": "细小的喜悦",
+    "category": "日常相处",
+    "sceneTags": [
+      "crouching",
+      "greenhouse",
+      "seedling",
+      "flower_pot",
+      "wooden_marker",
+      "watering_can",
+      "smile",
+      "dappled_sunlight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

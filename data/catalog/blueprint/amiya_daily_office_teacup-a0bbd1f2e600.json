@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "amiya_daily_office_teacup",
+  "revision": 1,
+  "sortOrder": 1995,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "amiya_daily_office_teacup",
+    "title": "阿米娅 · 把下午茶留在桌角",
+    "description": "阿米娅把已核对的文件放到一旁，双手捧起桌角那杯茶。杯子还温着，她朝你点点头，终于肯让自己停一会儿。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "office",
+      "desk",
+      "paperwork",
+      "holding_cup",
+      "teacup",
+      "gentle_smile",
+      "looking_at_viewer",
+      "window_light"
+    ],
+    "promptProse": "Amiya sits at her Rhodes Island office desk in a black field coat and blue tunic. The checked documents rest in a tidy stack while she holds a warm teacup in both hands, looking toward the viewer with a relieved smile. Afternoon window light reaches the clear corner of the desk.",
+    "animaCaption": "Both gloved hands cup the teacup above its saucer; the paperwork stays to one side.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "afternoon window light",
+    "location": "罗德岛办公室",
+    "characterId": "amiya",
+    "outfitId": "rhodes_coat",
+    "action": "暂放文件，双手捧起温茶",
+    "timeOfDay": "下午",
+    "mood": "终于松一口气",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "office",
+      "desk",
+      "paperwork",
+      "holding_cup",
+      "teacup",
+      "gentle_smile",
+      "looking_at_viewer",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

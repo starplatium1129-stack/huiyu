@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asada_shino/sfw_beach",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 756,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "asada_shino",
     "outfit": {
@@ -13,9 +13,9 @@
       "prose": "a slate-blue athletic one-piece with narrow grey side panels, a cropped pale windbreaker and a small waterproof waist pouch",
       "tokens": [
         "blue one-piece swimsuit",
-        "grey side panels",
-        "cropped white windbreaker",
-        "waist pouch"
+        "grey trim",
+        "white windbreaker",
+        "utility pouch"
       ],
       "default": false,
       "isDefault": false

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/witch_outfit",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 249,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
@@ -12,9 +12,9 @@
       "id": "witch_outfit",
       "isDefault": true,
       "name": "蓝白魔女标志装",
-      "prose": "A broad blue witch hat, white frilled blouse, blue skirt and thigh-high stockings.",
+      "prose": "A broad blue witch hat accompanies a white frilled blouse, blue skirt and fitted thigh-high stockings.",
       "tokens": [
-        "broad-brimmed blue witch hat",
+        "blue witch hat",
         "white blouse",
         "frills",
         "blue skirt",

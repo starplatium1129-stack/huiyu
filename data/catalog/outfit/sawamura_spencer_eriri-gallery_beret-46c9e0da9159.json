@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sawamura_spencer_eriri/gallery_beret",
+  "revision": 1,
+  "sortOrder": 1643,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "sawamura_spencer_eriri",
+    "outfit": {
+      "id": "gallery_beret",
+      "name": "驼色贝雷帽与墨蓝连衣裙",
+      "prose": "A camel wool beret, a cream cropped cardigan over an ink-blue collared midi dress, black ankle boots, and a small tan satchel",
+      "tokens": [
+        "brown_beret",
+        "cream_cardigan",
+        "navy_dress",
+        "collared_dress",
+        "midi_dress",
+        "ankle_boots",
+        "satchel"
+      ],
+      "default": false
+    }
+  }
+}

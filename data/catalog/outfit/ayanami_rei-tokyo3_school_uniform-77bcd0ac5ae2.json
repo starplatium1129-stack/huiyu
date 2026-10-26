@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ayanami_rei/tokyo3_school_uniform",
-  "revision": 5,
+  "revision": 2,
   "sortOrder": 557,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ayanami_rei",
     "outfit": {
@@ -13,11 +13,11 @@
       "isDefault": false,
       "name": "第3新东京市立中学水手校服",
       "prose": "the Tokyo-3 uniform: a short-sleeved white shirt under a turquoise pinafore dress, with a red ribbon bow, white socks and loafers",
-      "styleHint": "",
+      "styleHint": "sunlit nostalgic classroom golden hour aesthetic with long shadows",
       "tokens": [
         "school uniform",
         "white shirt",
-        "turquoise jumper skirt",
+        "blue jumper skirt",
         "red bow",
         "short sleeves",
         "white socks",

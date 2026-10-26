@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "faln_touden/mage_travel",
+  "revision": 1,
+  "sortOrder": 1653,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "faln_touden",
+    "outfit": {
+      "id": "mage_travel",
+      "name": "蓝白法师袍与皮腰带",
+      "prose": "A practical blue-and-white long-sleeved mage robe secured with a brown leather belt, loose white trousers, and worn brown travel boots",
+      "tokens": [
+        "blue_robe",
+        "white_robe",
+        "long_sleeves",
+        "leather_belt",
+        "white_pants",
+        "loose_pants",
+        "brown_boots"
+      ],
+      "default": true
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suzuran_arknights/small_kimono",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 375,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "suzuran_arknights",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "small_kimono",
       "isDefault": false,
       "name": "白色铃兰纹和服",
-      "prose": "A white cotton kimono with sparse lily-of-the-valley print, crisp collar and muted green obi.",
+      "prose": "A white cotton kimono carries a sparse lily-of-the-valley pattern, with a crisp collar and muted green obi.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "white cotton kimono",
+        "white kimono",
         "white collar",
-        "muted green obi",
+        "green obi",
         "long sleeves",
-        "lily-of-the-valley print"
+        "floral print"
       ]
     }
   }

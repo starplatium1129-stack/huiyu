@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/official_kamiyama_uniform",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 823,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
@@ -14,8 +14,7 @@
       "tokens": [
         "sailor uniform",
         "white blouse",
-        "navy collar",
-        "navy knee-length pleated skirt",
+        "navy skirt",
         "black scarf",
         "white socks",
         "loafers"

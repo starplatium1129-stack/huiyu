@@ -280,7 +280,7 @@ onUnmounted(() => {
 }
 /* The same geometry spring can travel beneath labels without painting a panel. */
 .animated-selection.animated-selection--underline { z-index:var(--z-raised); border:0; border-radius:0; box-shadow:none; background:none; }
-.animated-selection--underline::after { content:''; position:absolute; inset:auto 0 0; height:2px; border-radius:var(--r-pill); background:var(--text-primary); }
+.animated-selection--underline::after { content:''; position:absolute; inset:auto 0 0; height:2px; border-radius:var(--r-pill); background:var(--selection-ink,var(--text-primary)); }
 .animated-selection--underline .animated-selection-highlight { display:none; }
 @media (forced-colors: active) {
   .animated-selection-highlight { display:none; }

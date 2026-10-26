@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "ijichi_nijika/home_apron",
+  "revision": 1,
+  "sortOrder": 1636,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "ijichi_nijika",
+    "outfit": {
+      "id": "home_apron",
+      "name": "奶白针织上衣与蓝围裙",
+      "prose": "A cream long-sleeved knit shirt, navy tapered cotton trousers, a sky-blue kitchen apron, and house slippers",
+      "tokens": [
+        "cream_sweater",
+        "long_sleeves",
+        "navy_pants",
+        "blue_apron",
+        "slippers"
+      ],
+      "default": false
+    }
+  }
+}

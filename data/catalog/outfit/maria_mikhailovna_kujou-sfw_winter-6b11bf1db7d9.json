@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "maria_mikhailovna_kujou/sfw_winter",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 454,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "maria_mikhailovna_kujou",
     "outfit": {
       "id": "sfw_winter",
       "name": "暖米羊毛大衣与奶油披肩",
-      "prose": "A round-collar beige wool coat with covered buttons, cream shawl, brown long skirt and winter shoes.",
+      "prose": "A warm beige wool coat with a rounded collar and covered buttons, a thick cream shawl, brown long skirt and practical winter shoes.",
       "tokens": [
         "beige coat",
         "wool",

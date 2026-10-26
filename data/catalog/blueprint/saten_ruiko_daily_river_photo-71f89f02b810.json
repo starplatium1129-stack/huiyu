@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "saten_ruiko_daily_river_photo",
+  "revision": 1,
+  "sortOrder": 2021,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "saten_ruiko_daily_river_photo",
+    "title": "佐天泪子 · 快看水面上的倒影",
+    "description": "河边的栏杆上落着一只小鸟。泪子蹲下把手机放低，对准鸟和水里的倒影，怕惊动它，连呼吸都放轻了。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "crouching",
+      "riverside",
+      "bird",
+      "railing",
+      "reflection",
+      "smartphone",
+      "taking_photo",
+      "focused",
+      "soft_sunlight"
+    ],
+    "promptProse": "Ruiko crouches beside a riverside railing in a lemon windbreaker and navy shorts. She holds her phone low to photograph a small bird perched on the rail and its reflection in the water. Gentle late-afternoon sunlight reaches the quiet path.",
+    "animaCaption": "Both hands steady the phone below the perched bird, without touching the railing.",
+    "camera": "cowboy shot",
+    "recommendedSize": "1216x832",
+    "lighting": "gentle late afternoon sunlight",
+    "location": "河滨步道",
+    "characterId": "saten_ruiko",
+    "outfitId": "riverside_parka",
+    "action": "蹲低手机，拍下栏杆小鸟与倒影",
+    "timeOfDay": "傍晚前",
+    "mood": "小心翼翼的好奇",
+    "category": "日常相处",
+    "sceneTags": [
+      "crouching",
+      "riverside",
+      "bird",
+      "railing",
+      "reflection",
+      "smartphone",
+      "taking_photo",
+      "focused",
+      "soft_sunlight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

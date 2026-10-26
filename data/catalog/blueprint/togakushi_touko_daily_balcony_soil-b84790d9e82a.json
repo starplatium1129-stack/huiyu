@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "togakushi_touko_daily_balcony_soil",
+  "revision": 1,
+  "sortOrder": 1985,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "togakushi_touko_daily_balcony_soil",
+    "title": "户隐憧子 · 换个大一点的花盆",
+    "description": "阳台铺着旧报纸。憧子扶稳刚移栽的小苗，用小铲把松土拢到根边，袖口卷得整整齐齐。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "kneeling",
+      "balcony",
+      "gardening",
+      "flower_pot",
+      "seedling",
+      "trowel",
+      "rolled_up_sleeves",
+      "focused",
+      "morning_light"
+    ],
+    "promptProse": "On a balcony covered with old newspaper, Touko kneels in a cream linen overshirt and green wide-leg trousers. She steadies a newly potted seedling with one hand and brings loose soil toward its base with a small trowel. Morning light falls over the clay pots.",
+    "animaCaption": "The trowel touches the soil beside the stem while her other hand steadies the pot.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "morning daylight",
+    "location": "家中的种植阳台",
+    "characterId": "togakushi_touko",
+    "outfitId": "garden_linen",
+    "action": "扶稳苗盆，把松土拢到根边",
+    "timeOfDay": "清晨",
+    "mood": "安静专注",
+    "category": "日常相处",
+    "sceneTags": [
+      "kneeling",
+      "balcony",
+      "gardening",
+      "flower_pot",
+      "seedling",
+      "trowel",
+      "rolled_up_sleeves",
+      "focused",
+      "morning_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

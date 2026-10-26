@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "aisha_greyrat/nsfw_nude",
-  "revision": 2,
+  "revision": 1,
   "sortOrder": 270,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "aisha_greyrat",
     "outfit": {
@@ -13,10 +13,15 @@
       "isDefault": false,
       "default": false,
       "isNsfw": true,
-      "prose": "Nude.",
+      "prose": "completely unclad with an adult feminine figure, soft full breasts with flushed pink nipples and bare intimate contours",
       "tokens": [
         "nude",
-        "uncensored"
+        "completely_naked",
+        "uncensored",
+        "bare_breasts",
+        "pink_nipples",
+        "exposed_pussy",
+        "slender_waist"
       ]
     }
   }

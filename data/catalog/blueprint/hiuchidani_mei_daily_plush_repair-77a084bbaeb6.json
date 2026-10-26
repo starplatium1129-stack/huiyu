@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "hiuchidani_mei_daily_plush_repair",
+  "revision": 1,
+  "sortOrder": 1994,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "hiuchidani_mei_daily_plush_repair",
+    "title": "火打谷爱衣 · 小熊的围巾歪了",
+    "description": "杂货店的玩偶架前，爱衣托住一只小熊，仔细把它歪到一边的围巾理正。平时大大咧咧的动作，这会儿放得很轻。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "gift_shop",
+      "plush_bear",
+      "holding_plush",
+      "adjusting_clothes",
+      "gentle_smile",
+      "shelves",
+      "warm_lighting"
+    ],
+    "promptProse": "In a small gift shop, Mei wears a lime hoodie and beige cargo skirt. She cradles a plush bear against her forearm and straightens its tiny scarf with her fingertips, smiling down at it. Warm shelf lighting picks out the soft fabric and rows of toys.",
+    "animaCaption": "The scarf belongs to the toy bear held in her arms.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "warm shop lighting",
+    "location": "街边杂货店的玩偶区",
+    "characterId": "hiuchidani_mei",
+    "outfitId": "plush_weekend",
+    "action": "抱住小熊玩偶，理正它的围巾",
+    "timeOfDay": "下午",
+    "mood": "难得轻柔",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "gift_shop",
+      "plush_bear",
+      "holding_plush",
+      "adjusting_clothes",
+      "gentle_smile",
+      "shelves",
+      "warm_lighting"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

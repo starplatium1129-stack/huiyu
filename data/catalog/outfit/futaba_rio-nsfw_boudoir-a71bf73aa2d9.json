@@ -1,19 +1,19 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/nsfw_boudoir",
-  "revision": 2,
+  "revision": 1,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "nsfw_boudoir",
       "name": "双叶理央·成人私密造型",
-      "prose": "Sheer lace lingerie.",
+      "prose": "a private adult ensemble built around sheer lace and soft shadows",
       "tokens": [
-        "lace lingerie",
-        "sheer fabric"
+        "private_lingerie",
+        "sheer_fabric"
       ],
       "default": false,
       "isDefault": false

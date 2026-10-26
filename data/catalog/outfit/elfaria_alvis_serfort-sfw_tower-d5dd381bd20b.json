@@ -1,19 +1,19 @@
 {
   "kind": "outfit",
   "id": "elfaria_alvis_serfort/sfw_tower",
-  "revision": 5,
+  "revision": 2,
   "sortOrder": 967,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "elfaria_alvis_serfort",
     "outfit": {
       "id": "sfw_tower",
       "name": "冰蓝高领刺绣议事长袍",
-      "prose": "A pale-blue ceremonial robe with a high collar, long sleeves and layered white embroidered panels.",
+      "prose": "A pale blue long ceremonial robe with a high collar, covered sleeves and layered white embroidered panels, keeping the ice mage silhouette composed and flowing.",
       "tokens": [
         "light blue robe",
-        "layered white panels",
+        "white trim",
         "embroidery",
         "high collar",
         "long sleeves"

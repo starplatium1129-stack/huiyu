@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yamada_ryo",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 177,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T03:15:06.523905900+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
   "data": {
     "id": "yamada_ryo",
     "profile": {
@@ -136,8 +136,9 @@
               "Ijichi Nijika",
               "下北泽大天使"
             ],
-            "role": "纽带乐队鼓手兼队长",
-            "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。"
+            "role": "结束乐队鼓手 / STARRY店员",
+            "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。",
+            "characterId": "ijichi_nijika"
           },
           {
             "id": "ijichi_seika",

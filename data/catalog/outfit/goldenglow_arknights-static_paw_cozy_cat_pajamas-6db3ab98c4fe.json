@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "goldenglow_arknights/static_paw_cozy_cat_pajamas",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 344,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "goldenglow_arknights",
     "outfit": {
@@ -14,11 +14,11 @@
       "name": "粉白闪电绒绒睡衣",
       "prose": "A pastel-pink fleece hoodie with white trim, a cat-ear hood and one yellow lightning-bolt print, with matching fleece shorts.",
       "tokens": [
-        "pink fleece hoodie",
+        "pink fleece pajamas",
         "white trim",
         "cat ear hood",
         "yellow lightning print",
-        "matching fleece shorts"
+        "matching shorts"
       ]
     }
   }

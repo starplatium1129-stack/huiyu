@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_school",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 445,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
@@ -16,7 +16,7 @@
         "navy_jacket",
         "white_blouse",
         "ribbon",
-        "knee-length_pleated_skirt"
+        "pleated_skirt"
       ],
       "default": true,
       "isDefault": true

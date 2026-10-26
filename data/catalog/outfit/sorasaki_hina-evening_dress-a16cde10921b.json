@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/evening_dress",
-  "revision": 4,
+  "revision": 3,
   "sortOrder": 490,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
@@ -18,8 +18,7 @@
         "evening gown",
         "strapless dress",
         "frilled hem",
-        "long black opera gloves",
-        "black ribbon hair corsage",
+        "opera gloves",
         "pearl necklace",
         "high heels"
       ]

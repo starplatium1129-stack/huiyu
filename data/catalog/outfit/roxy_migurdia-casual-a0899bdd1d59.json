@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/casual",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 250,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
@@ -12,13 +12,13 @@
       "id": "casual",
       "isDefault": false,
       "name": "浅蓝棉裙日常装",
-      "prose": "A gathered light-blue cotton dress with white collar and blue buttons.",
+      "prose": "A softly gathered light-blue cotton dress has a small white collar and a row of blue buttons.",
       "tokens": [
-        "gathered light blue dress",
+        "light blue dress",
         "cotton",
         "white collar",
         "long sleeves",
-        "blue buttons"
+        "buttons"
       ]
     }
   }

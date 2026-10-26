@@ -1,18 +1,27 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/nsfw_nude",
-  "revision": 2,
+  "revision": 1,
   "sortOrder": 216,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:34:19.158154300+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "her completely bare, voluptuous mature body with glossy black hair falling around her bare shoulders, full heavy breasts with dusky rose nipples, a narrow sculpted waist, curvy hips, and long shapely legs",
       "tokens": [
-        "nude"
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "large_breasts",
+        "mature_female",
+        "curvy_body",
+        "long_legs"
       ]
     }
   }

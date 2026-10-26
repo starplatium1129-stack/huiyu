@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "inaba_meguru_daily_used_guidebook",
+  "revision": 1,
+  "sortOrder": 1981,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "inaba_meguru_daily_used_guidebook",
+    "title": "因幡巡 · 旧书架上的隐藏关卡",
+    "description": "巡在旧书店找到一本绝版攻略。她用指腹托住松动的书脊，小声念出以前卡住自己的关卡名，连笑容都放轻了。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "bookstore",
+      "bookshelf",
+      "holding_book",
+      "reading",
+      "gentle_smile",
+      "wooden_floor",
+      "warm_lighting"
+    ],
+    "promptProse": "In a quiet used bookstore, Meguru wears an oatmeal knit pullover and teal corduroy pinafore. She supports the worn spine of a game guide with both hands while reading a familiar chapter, smiling to herself. Warm ceiling lights illuminate the narrow wooden shelves.",
+    "animaCaption": "Both hands support the old book without pulling its loose cover apart.",
+    "camera": "medium shot",
+    "recommendedSize": "832x1216",
+    "lighting": "warm bookstore lighting",
+    "location": "旧书店的游戏书架",
+    "characterId": "inaba_meguru",
+    "outfitId": "bookshop_knit",
+    "action": "托着旧书书脊阅读攻略",
+    "timeOfDay": "下午",
+    "mood": "发现宝物般的欣喜",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "bookstore",
+      "bookshelf",
+      "holding_book",
+      "reading",
+      "gentle_smile",
+      "wooden_floor",
+      "warm_lighting"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

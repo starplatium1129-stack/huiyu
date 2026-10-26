@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asuna_yuuki/sfw_lakeside_knit",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 750,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "asuna_yuuki",
     "outfit": {
@@ -15,7 +15,7 @@
         "cream sweater",
         "round neckline",
         "red cuffs",
-        "navy blue knee-length pleated skirt",
+        "navy blue pleated skirt",
         "brown flats"
       ],
       "default": false,

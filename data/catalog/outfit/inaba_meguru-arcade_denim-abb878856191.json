@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "inaba_meguru/arcade_denim",
+  "revision": 1,
+  "sortOrder": 1610,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "inaba_meguru",
+    "outfit": {
+      "id": "arcade_denim",
+      "name": "薄荷卫衣与卷边牛仔短裤",
+      "prose": "A mint zip-up hoodie over a white T-shirt, cuffed denim shorts, striped ankle socks, and canvas sneakers",
+      "tokens": [
+        "mint_hoodie",
+        "white_t-shirt",
+        "denim_shorts",
+        "ankle_socks",
+        "sneakers"
+      ],
+      "default": false
+    }
+  }
+}

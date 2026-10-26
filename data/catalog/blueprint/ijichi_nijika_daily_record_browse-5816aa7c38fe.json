@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "ijichi_nijika_daily_record_browse",
+  "revision": 1,
+  "sortOrder": 2005,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "ijichi_nijika_daily_record_browse",
+    "title": "伊地知虹夏 · 这张的鼓听起来很棒",
+    "description": "唱片店试听区前，虹夏把耳机的一边稍稍移开，举起正在听的唱片封套给你看。她想说的第一件事，果然还是里面的鼓。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "record_store",
+      "headphones",
+      "holding_record",
+      "vinyl_record",
+      "looking_at_viewer",
+      "cheerful",
+      "warm_lighting"
+    ],
+    "promptProse": "At a record-store listening station, Nijika wears a mustard jacket over a striped shirt and denim pinafore. She lifts one headphone cup off her ear while showing a record sleeve to the viewer. Warm shelf lights illuminate the vinyl bins around her.",
+    "animaCaption": "One hand moves the headphone cup; the other supports the lower edge of the record sleeve.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "warm record-store lighting",
+    "location": "唱片店试听区",
+    "characterId": "ijichi_nijika",
+    "outfitId": "record_store",
+    "action": "移开一边耳机，举起唱片封套给你看",
+    "timeOfDay": "下午",
+    "mood": "急着分享的开心",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "record_store",
+      "headphones",
+      "holding_record",
+      "vinyl_record",
+      "looking_at_viewer",
+      "cheerful",
+      "warm_lighting"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

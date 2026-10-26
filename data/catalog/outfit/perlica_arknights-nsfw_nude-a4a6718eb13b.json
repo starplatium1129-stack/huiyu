@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 410,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
@@ -12,10 +12,19 @@
       "id": "nsfw_nude",
       "isDefault": false,
       "name": "🔞 私密全裸 / 纯粹形态",
-      "prose": "No clothing.",
+      "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
       "styleHint": "tender romantic candlelight",
       "tokens": [
-        "nude"
+        "nude",
+        "completely_naked",
+        "uncensored",
+        "breasts",
+        "nipples",
+        "navel",
+        "bare_shoulders",
+        "collarbone",
+        "bare_legs",
+        "bare_feet"
       ]
     }
   }

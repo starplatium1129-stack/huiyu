@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/wasteland_explorer",
-  "revision": 6,
+  "revision": 3,
   "sortOrder": 407,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
@@ -12,11 +12,9 @@
       "id": "wasteland_explorer",
       "isDefault": false,
       "name": "卡其色荒地探索装",
-      "prose": "A khaki hooded coat with layered storm flap and reinforced pockets, cargo trousers, trekking backpack and hiking boots.",
+      "prose": "a khaki hooded coat with a layered storm flap and reinforced pocket edges, cargo trousers, a compact trekking backpack and hiking boots",
       "tokens": [
         "khaki hooded coat",
-        "layered storm flap",
-        "reinforced pockets",
         "cargo pants",
         "backpack",
         "hiking boots"

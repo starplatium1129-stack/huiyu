@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "sumizome_nozomi/rain_dress",
+  "revision": 1,
+  "sortOrder": 1620,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "sumizome_nozomi",
+    "outfit": {
+      "id": "rain_dress",
+      "name": "雾蓝雨衣与碎花连衣裙",
+      "prose": "A mist-blue hooded raincoat over an ivory small-floral midi dress, with yellow rain boots",
+      "tokens": [
+        "blue_raincoat",
+        "hood_down",
+        "floral_print",
+        "white_dress",
+        "midi_dress",
+        "yellow_rain_boots"
+      ],
+      "default": false
+    }
+  }
+}

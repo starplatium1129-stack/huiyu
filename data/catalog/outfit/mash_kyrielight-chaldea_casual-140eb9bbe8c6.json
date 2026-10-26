@@ -1,20 +1,19 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/chaldea_casual",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "chaldea_casual",
       "name": "迦勒底灰夹克黑裙便服",
-      "prose": "A black collared dress, open cropped gray jacket, red tie, black tights and glasses.",
+      "prose": "a neatly collared black dress beneath an open cropped gray jacket, with a red necktie, black tights and plain glasses",
       "tokens": [
         "black collared dress",
         "gray cropped jacket",
-        "open jacket",
         "red necktie",
         "black tights",
         "glasses"

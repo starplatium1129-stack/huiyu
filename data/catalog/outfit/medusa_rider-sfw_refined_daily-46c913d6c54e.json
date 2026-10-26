@@ -1,20 +1,18 @@
 {
   "kind": "outfit",
   "id": "medusa_rider/sfw_refined_daily",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 161,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "medusa_rider",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "米色骑行轻风衣",
-      "prose": "A knee-length beige cotton coat with back vent and covered pockets, black turtleneck, dark trousers, glasses and low leather shoes.",
+      "prose": "A knee-length beige cotton coat with a back vent and flat covered pockets over a black fine-knit turtleneck, dark straight trousers, simple glasses and low leather shoes.",
       "tokens": [
-        "knee-length beige coat",
-        "cotton",
-        "back vent",
+        "beige coat",
         "black turtleneck",
         "dark straight pants",
         "glasses",

@@ -1,18 +1,25 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 805,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing; hair loose from its bun.",
+      "prose": "her completely bare, petite and slender body with pale flawless skin, small perky breasts with pale pink nipples, wavy gradient hair loose from its bun, and her ever-present gentle smile turned tender",
       "tokens": [
-        "nude",
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "petite",
+        "slender_body",
         "hair_down"
       ]
     }

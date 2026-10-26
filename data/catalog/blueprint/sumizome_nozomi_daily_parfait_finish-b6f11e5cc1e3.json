@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "sumizome_nozomi_daily_parfait_finish",
+  "revision": 1,
+  "sortOrder": 1987,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "sumizome_nozomi_daily_parfait_finish",
+    "title": "墨染希 · 草莓要放在最上面",
+    "description": "希站在咖啡馆操作台前，用小夹子把切好的草莓放上芭菲。她退后一点端详，又把杯子转向你：“这样看起来是不是更好？”",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "cafe",
+      "counter",
+      "parfait",
+      "strawberry",
+      "tweezers",
+      "food_preparation",
+      "smile",
+      "window_light"
+    ],
+    "promptProse": "Nozomi stands behind the cafe counter in her yellow striped waitress dress and white apron. With small serving tweezers she places a sliced strawberry on a parfait, angling the glass toward the viewer. Daylight from the cafe window lights the fruit and cream.",
+    "animaCaption": "The serving tweezers hold one strawberry slice directly above the parfait glass.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "cafe window light",
+    "location": "星光咖啡馆的操作台",
+    "characterId": "sumizome_nozomi",
+    "outfitId": "stella_yellow",
+    "action": "用小夹子把草莓片放上芭菲",
+    "timeOfDay": "午后",
+    "mood": "认真又有些得意",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "cafe",
+      "counter",
+      "parfait",
+      "strawberry",
+      "tweezers",
+      "food_preparation",
+      "smile",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

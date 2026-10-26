@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hiuchidani_mei/sport_track",
+  "revision": 1,
+  "sortOrder": 1622,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "hiuchidani_mei",
+    "outfit": {
+      "id": "sport_track",
+      "name": "白紫运动外套与束脚裤",
+      "prose": "A white track jacket with violet side panels over a charcoal T-shirt, black joggers, and cushioned running shoes",
+      "tokens": [
+        "white_track_jacket",
+        "purple_trim",
+        "t-shirt",
+        "black_pants",
+        "joggers",
+        "running_shoes"
+      ],
+      "default": false
+    }
+  }
+}

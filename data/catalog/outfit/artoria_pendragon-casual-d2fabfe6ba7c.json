@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/casual",
-  "revision": 4,
+  "revision": 3,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
@@ -13,8 +13,8 @@
       "prose": "a neatly fitted navy fine-knit cardigan with small gold buttons over a white collared shirt and an A-line blue skirt",
       "tokens": [
         "navy cardigan",
-        "white collared shirt",
-        "blue a-line skirt",
+        "white shirt",
+        "blue skirt",
         "gold buttons"
       ],
       "isDefault": false,

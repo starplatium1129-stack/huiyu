@@ -1,21 +1,18 @@
 {
   "kind": "outfit",
   "id": "marcille_donato/sfw_refined_daily",
-  "revision": 5,
+  "revision": 2,
   "sortOrder": 994,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "marcille_donato",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "苔绿短斗篷与赭色旅行长衫",
-      "prose": "A wooden-toggle moss-green wool cape over a rust tunic, cream trousers and brown travel boots.",
+      "prose": "A moss-green wool short cape fastened with a small wooden toggle over a rust-colored long-sleeved tunic, cream trousers and brown travel boots.",
       "tokens": [
         "moss green cape",
-        "short cape",
-        "wool",
-        "wooden toggles",
         "rust tunic",
         "long sleeves",
         "cream pants",

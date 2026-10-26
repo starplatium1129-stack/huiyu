@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "jeanne_alter/evening_black_dress",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "jeanne_alter",
     "outfit": {
@@ -17,7 +17,7 @@
         "high slit",
         "black opera gloves"
       ],
-      "prose": "A fitted black velvet gown with an open back, high side slit, silver waist clasp and long black satin gloves.",
+      "prose": "A fitted black velvet evening gown with an open back and a high side slit, paired with long black satin gloves. A narrow silver clasp at the waist accents the austere silhouette.",
       "styleHint": "luxurious ballroom chiaroscuro",
       "isDefault": false,
       "default": false

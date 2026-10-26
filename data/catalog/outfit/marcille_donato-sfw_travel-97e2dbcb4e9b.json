@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "marcille_donato/sfw_travel",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 988,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "marcille_donato",
     "outfit": {
       "id": "sfw_travel",
       "name": "蓝色迷宫旅行法袍",
-      "prose": "A long-sleeved blue travel robe over a cream tunic, leggings and brown boots.",
+      "prose": "Her practical blue long-sleeved travel robe over a cream tunic, fitted leggings and sturdy brown boots.",
       "tokens": [
         "blue robe",
         "long sleeves",

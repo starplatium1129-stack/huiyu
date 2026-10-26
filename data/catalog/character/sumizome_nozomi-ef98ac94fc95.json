@@ -1,0 +1,327 @@
+{
+  "kind": "character",
+  "id": "sumizome_nozomi",
+  "revision": 2,
+  "sortOrder": 191,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:47:18.141766100+00:00",
+  "data": {
+    "id": "sumizome_nozomi",
+    "profile": {
+      "id": "sumizome_nozomi",
+      "name": "墨染希",
+      "alias": [
+        "墨染希",
+        "Sumizome Nozomi"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "/assets/characters/portrait-pending.svg",
+        "alt": "墨染希 · 立绘待制作"
+      },
+      "visual_dna": {
+        "signature": "A warm light-brown bob, small side hair ribbons, and blue eyes",
+        "hair": "light_brown_hair, short_hair, bob_cut",
+        "eyes": "blue_eyes",
+        "style": "anime"
+      },
+      "personality": [
+        "坦率亲切",
+        "对熟人很放松",
+        "愿意帮忙",
+        "容易被美食吸引"
+      ],
+      "likes": [
+        "好吃的点心",
+        "与熟人闲聊",
+        "帮家里打理神社"
+      ],
+      "bg_story": "墨染希是《星光咖啡馆与死神之蝶》中的角色，和昂晴从小相识。她开朗坦率，在熟人面前会直接说出自己的想法。家里经营神社，她偶尔帮忙做巫女工作；遇见喜欢的食物时，也常把原先的克制抛到脑后。",
+      "identity": {
+        "role": "神社家的女儿 / 咖啡馆伙伴",
+        "age": "成年创作设定",
+        "classificationSource": "https://www.yuzu-soft.com/products/stella/character.html"
+      },
+      "source": "Cafe Stella and the Reapers' Butterflies",
+      "traits": [
+        "light_brown_hair",
+        "short_hair",
+        "bob_cut",
+        "blue_eyes"
+      ],
+      "tags": [
+        "墨染希",
+        "星光咖啡馆与死神之蝶",
+        "日常"
+      ],
+      "accent_color": "#DEA75D",
+      "bg_color": "#202833",
+      "palette": [
+        "#DEA75D",
+        "#F4EEDF"
+      ],
+      "relationshipGraph": {
+        "version": 1,
+        "work": "星光咖啡馆与死神之蝶",
+        "people": [
+          {
+            "id": "natsume",
+            "name": "四季夏目",
+            "aliases": [
+              "四季ナツメ",
+              "Shiki Natsume"
+            ],
+            "characterId": "natsume"
+          },
+          {
+            "id": "takamine_kousei",
+            "name": "高岭昂晴",
+            "aliases": [
+              "高嶺昂晴",
+              "Takamine Kousei"
+            ],
+            "role": "星光咖啡馆店员 / 大学生",
+            "summary": "在遭遇致命意外后因明月栞那的契约而延命，随后作为店员加入星光咖啡馆。在制作糕点与接待客人的日常中，陪伴栞那与伙伴们收集思念之蝶。"
+          },
+          {
+            "id": "akizuki_kanna",
+            "name": "明月栞那",
+            "aliases": [
+              "明月栞那",
+              "Akizuki Kanna"
+            ],
+            "characterId": "akizuki_kanna"
+          },
+          {
+            "id": "sumizome_nozomi",
+            "name": "墨染希",
+            "aliases": [
+              "墨染希",
+              "Sumizome Nozomi"
+            ],
+            "role": "神社家的女儿 / 咖啡馆伙伴",
+            "summary": "性格温和大方，在昂晴加入咖啡馆后常来探望与协助，与栞那建立了温暖融洽的日常友谊。",
+            "characterId": "sumizome_nozomi"
+          },
+          {
+            "id": "hiuchidani_mei",
+            "name": "火打谷爱衣",
+            "aliases": [
+              "火打谷愛衣",
+              "Hiuchidani Mei"
+            ],
+            "role": "咖啡馆伙伴 / 曾参加游泳部",
+            "summary": "开朗元气的后辈，同样在咖啡馆兼职。日常中经常与栞那开玩笑打闹，为咖啡馆带来欢快的气氛。",
+            "characterId": "hiuchidani_mei"
+          },
+          {
+            "id": "shioyama_suzune",
+            "name": "汐山凉音",
+            "aliases": [
+              "汐山涼音",
+              "Shioyama Suzune"
+            ],
+            "role": "咖啡馆甜点师",
+            "summary": "昂晴的青梅竹马姐姐，负责咖啡馆全套甜点研发与制作。性格认真干练，在后厨悉心指点后辈。"
+          },
+          {
+            "id": "shioyama_hiroto",
+            "name": "汐山宏人",
+            "aliases": [
+              "汐山宏人",
+              "Shioyama Hiroto"
+            ],
+            "role": "咖啡馆店长",
+            "summary": "凉音的兄长，性格随和且善解人意。主持星光咖啡馆的日常运营，为栞那等死神与人类提供安稳的落脚点。"
+          },
+          {
+            "id": "stella_mikado",
+            "name": "米卡多",
+            "aliases": [
+              "ミカド",
+              "Mikado"
+            ],
+            "role": "死神之蝶使魔",
+            "summary": "外形如猫头鹰般的使魔，辅佐死神栞那执行引导灵魂的职责，平时在咖啡馆充当吉祥物。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "natsume-kousei-university",
+            "source": "natsume",
+            "target": "takamine_kousei",
+            "label": "同一所大学",
+            "description": "夏目与昂晴就读于同一所大学；这不代表两人开篇就已经是恋人。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 四季夏目官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "natsume-kanna-cafe",
+            "source": "natsume",
+            "target": "akizuki_kanna",
+            "label": "咖啡馆同事",
+            "description": "夏目与栞那在星光咖啡馆一起工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 咖啡馆营业期间",
+            "evidence": {
+              "title": "柚子社 · 官方人物介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "natsume-suzune-cafe",
+            "source": "natsume",
+            "target": "shioyama_suzune",
+            "label": "咖啡馆同事",
+            "description": "凉音负责咖啡馆的甜点制作，与夏目在同一家店工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 咖啡馆营业期间",
+            "evidence": {
+              "title": "柚子社 · 汐山凉音官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "kousei-nozomi-childhood",
+            "source": "takamine_kousei",
+            "target": "sumizome_nozomi",
+            "label": "青梅竹马",
+            "description": "希年纪比昂晴小，两人从小相识，交谈时很熟悉彼此。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 墨染希官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "nozomi-mei-classmates",
+            "source": "sumizome_nozomi",
+            "target": "hiuchidani_mei",
+            "label": "曾经的同班同学",
+            "description": "希和爱衣曾经在同一个班级，如今在不同的地方就读。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 火打谷爱衣官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "hiroto-suzune-siblings",
+            "source": "shioyama_hiroto",
+            "target": "shioyama_suzune",
+            "label": "弟弟 → 姐姐",
+            "description": "宏人是凉音的弟弟；姐弟关系不差，但宏人有些怕姐姐。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 其他人物介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "kousei-hiroto-friends",
+            "source": "takamine_kousei",
+            "target": "shioyama_hiroto",
+            "label": "同学与朋友",
+            "description": "宏人与昂晴是同学科的朋友，平日会一起闲聊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 其他人物介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "kanna-mikado-partners",
+            "source": "akizuki_kanna",
+            "target": "stella_mikado",
+            "label": "引导灵魂的搭档",
+            "description": "栞那作为死神，与担任神使的米卡多一同承担引导亡者灵魂的工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 栞那与米卡多官方介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "nozomi_natsume_cafe",
+            "source": "sumizome_nozomi",
+            "target": "natsume",
+            "label": "咖啡馆伙伴",
+            "description": "希与夏目在星光咖啡馆共事，成为日常往来的伙伴。",
+            "stage": "日常相处",
+            "directed": false,
+            "spoiler": false,
+            "evidence": {
+              "title": "柚子社官方角色介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          },
+          {
+            "id": "mei_natsume_cafe",
+            "source": "hiuchidani_mei",
+            "target": "natsume",
+            "label": "咖啡馆伙伴",
+            "description": "爱衣与夏目在星光咖啡馆的工作中相识。",
+            "stage": "日常相处",
+            "directed": false,
+            "spoiler": false,
+            "evidence": {
+              "title": "柚子社官方角色介绍",
+              "url": "https://www.yuzu-soft.com/products/stella/character.html"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "sumizome_nozomi",
+      "displayName": "墨染希",
+      "originalName": "墨染希",
+      "franchise": "Cafe Stella and the Reapers' Butterflies",
+      "aliases": [
+        "墨染希",
+        "Sumizome Nozomi"
+      ],
+      "identityProse": "Adult Sumizome Nozomi from Cafe Stella and the Reapers' Butterflies. A warm light-brown bob, small side hair ribbons, and blue eyes.",
+      "identityTokens": [
+        "sumizome_nozomi",
+        "light_brown_hair",
+        "short_hair",
+        "bob_cut",
+        "blue_eyes"
+      ],
+      "characterTokens": [
+        "sumizome_nozomi"
+      ],
+      "copyrightTokens": [
+        "kissa_stella_to_shinigami_no_chou"
+      ],
+      "exactTokens": [
+        "sumizome_nozomi"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult"
+    }
+  }
+}

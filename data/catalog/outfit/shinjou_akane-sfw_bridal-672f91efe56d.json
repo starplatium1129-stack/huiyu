@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_bridal",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 873,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "sfw_bridal",
       "name": "淡紫折缎·粉结花嫁",
-      "prose": "A lavender satin gown with fitted waist, broad skirt folds, pink back ribbon and short veil.",
+      "prose": "A lavender satin bridal dress with a structured waist and broad folded skirt panels, one pink ribbon at the back and a short veil.",
       "tokens": [
-        "lavender satin wedding dress",
-        "fitted waist",
-        "broad skirt folds",
-        "pink back ribbon",
+        "lavender wedding dress",
+        "pleated skirt",
+        "pink ribbon",
         "short veil"
       ],
       "default": false,

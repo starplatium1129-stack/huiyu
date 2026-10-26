@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/leithanien_volcanology_lab_coat",
-  "revision": 4,
+  "revision": 3,
   "sortOrder": 314,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
@@ -17,7 +17,7 @@
         "white lab coat",
         "brown sweater",
         "dark pleated skirt",
-        "gold half-rim glasses",
+        "gold-rimmed glasses",
         "hearing aid"
       ]
     }

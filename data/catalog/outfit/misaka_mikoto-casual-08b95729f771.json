@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/casual",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 225,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
@@ -12,12 +12,11 @@
       "id": "casual",
       "isDefault": false,
       "name": "茶白条纹休闲衬衫与牛仔裤",
-      "prose": "A chestnut-striped white shirt with rolled cuffs and green frog pin, straight blue jeans and white sneakers.",
+      "prose": "A relaxed white cotton shirt with fine chestnut stripes and rolled cuffs, straight blue jeans and white sneakers. A small green frog pin sits at the shirt pocket.",
       "tokens": [
         "white shirt",
         "brown stripes",
         "rolled sleeves",
-        "green frog pin",
         "blue jeans",
         "white sneakers"
       ]

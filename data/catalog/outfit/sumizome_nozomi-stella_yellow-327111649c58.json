@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "sumizome_nozomi/stella_yellow",
+  "revision": 1,
+  "sortOrder": 1617,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "sumizome_nozomi",
+    "outfit": {
+      "id": "stella_yellow",
+      "name": "奶黄色条纹咖啡馆制服",
+      "prose": "A yellow striped short-sleeved waitress dress with white piping, a white ruffled waist apron, white thigh-high socks, and burgundy Mary Jane shoes",
+      "tokens": [
+        "yellow_dress",
+        "striped_dress",
+        "short_sleeves",
+        "waitress",
+        "waist_apron",
+        "white_apron",
+        "frills",
+        "white_thighhighs",
+        "mary_janes"
+      ],
+      "default": true
+    }
+  }
+}

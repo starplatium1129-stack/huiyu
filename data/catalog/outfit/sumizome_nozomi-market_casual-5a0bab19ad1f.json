@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "sumizome_nozomi/market_casual",
+  "revision": 1,
+  "sortOrder": 1619,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "sumizome_nozomi",
+    "outfit": {
+      "id": "market_casual",
+      "name": "蜂蜜色开衫与水洗牛仔裤",
+      "prose": "A honey-colored cropped cardigan over a white blouse, straight light-wash jeans, lace-up sneakers, and a canvas tote",
+      "tokens": [
+        "yellow_cardigan",
+        "white_blouse",
+        "jeans",
+        "sneakers",
+        "tote_bag"
+      ],
+      "default": false
+    }
+  }
+}

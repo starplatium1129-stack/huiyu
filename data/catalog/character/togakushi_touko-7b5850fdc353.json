@@ -1,0 +1,219 @@
+{
+  "kind": "character",
+  "id": "togakushi_touko",
+  "revision": 1,
+  "sortOrder": 190,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "togakushi_touko",
+    "profile": {
+      "id": "togakushi_touko",
+      "name": "户隐憧子",
+      "alias": [
+        "戸隠憧子",
+        "Togakushi Touko"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "/assets/characters/portrait-pending.svg",
+        "alt": "户隐憧子 · 立绘待制作"
+      },
+      "visual_dna": {
+        "signature": "Long dark hair tied into twin tails and amber-yellow eyes",
+        "hair": "black_hair, long_hair, twintails",
+        "eyes": "yellow_eyes",
+        "style": "anime"
+      },
+      "personality": [
+        "待人温和",
+        "做事从容",
+        "会照顾后辈",
+        "喜欢轻巧地打趣"
+      ],
+      "likes": [
+        "与后辈聊天",
+        "整理学生会事务",
+        "安静的午后"
+      ],
+      "bg_story": "户隐憧子是《魔女的夜宴》中的学姐，也是学生会长。她说话温和，处理事务时有自己的节奏，和后辈相处却并不拘谨。比起摆出前辈的架子，她更习惯先听对方把话说完，再带着一点笑意回应。",
+      "identity": {
+        "role": "学生会长 / 宁宁的学姐",
+        "age": "成年创作设定",
+        "classificationSource": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+      },
+      "source": "Sabbat of the Witch",
+      "traits": [
+        "black_hair",
+        "long_hair",
+        "twintails",
+        "yellow_eyes"
+      ],
+      "tags": [
+        "户隐憧子",
+        "魔女的夜宴",
+        "日常"
+      ],
+      "accent_color": "#A48FC0",
+      "bg_color": "#202833",
+      "palette": [
+        "#A48FC0",
+        "#F4EEDF"
+      ],
+      "relationshipGraph": {
+        "version": 1,
+        "work": "魔女的夜宴",
+        "people": [
+          {
+            "id": "nene",
+            "name": "绫地宁宁",
+            "aliases": [
+              "綾地寧々",
+              "Ayachi Nene"
+            ],
+            "characterId": "nene"
+          },
+          {
+            "id": "hoshina_shuuji",
+            "name": "保科柊史",
+            "aliases": [
+              "保科柊史",
+              "Hoshina Shuuji"
+            ],
+            "role": "超能力研究部部员",
+            "summary": "拥有感知他人强烈情感的心灵感应能力。在学校意外撞破绫地宁宁吸取心之碎片的秘密，自此加入社团协助宁宁收集碎片，并以真挚的日常陪伴化解宁宁内心的自卑与契约孤独。"
+          },
+          {
+            "id": "inaba_meguru",
+            "name": "因幡巡",
+            "aliases": [
+              "因幡めぐる",
+              "Inaba Meguru"
+            ],
+            "role": "超自然研究社成员 / 游戏爱好者",
+            "summary": "性格活泼豪爽，因想要结交朋友而常在部室活跃气氛。与宁宁在社团中相处融洽，是宁宁在校内最信赖的闺蜜之一。",
+            "characterId": "inaba_meguru"
+          },
+          {
+            "id": "togakushi_touko",
+            "name": "户隐憧子",
+            "aliases": [
+              "戸隠憧子",
+              "Togakushi Touko"
+            ],
+            "role": "学生会长 / 宁宁的学姐",
+            "summary": "容貌秀丽、待人温和的学生会长。深受后辈仰慕，在校内事务与社团活动上多次为宁宁与柊史提供关照和指引。",
+            "characterId": "togakushi_touko"
+          }
+        ],
+        "relations": [
+          {
+            "id": "nene-shuuji-classmates",
+            "source": "nene",
+            "target": "hoshina_shuuji",
+            "label": "同班同学",
+            "description": "宁宁与保科柊史是同班同学；两人的相遇从各自不愿公开的秘密展开。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "发行商 · Steam 作品介绍",
+              "url": "https://store.steampowered.com/app/888790/Sabbat_of_the_Witch/"
+            }
+          },
+          {
+            "id": "touko-nene-senior",
+            "source": "togakushi_touko",
+            "target": "nene",
+            "label": "高一年级的学姐",
+            "description": "憧子是学生会长与三年级的人气学姐，宁宁则是二年级学生。这里记录年级关系，不将其直接写成亲密好友。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 户隐憧子官方介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+            }
+          },
+          {
+            "id": "meguru-shuuji-help",
+            "source": "inaba_meguru",
+            "target": "hoshina_shuuji",
+            "label": "请求帮助",
+            "description": "巡想改变交友不顺的处境，鼓起勇气向柊史等人求助。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇设定",
+            "evidence": {
+              "title": "柚子社 · 因幡巡官方介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+            }
+          },
+          {
+            "id": "shuuji-nene-secret",
+            "source": "hoshina_shuuji",
+            "target": "nene",
+            "label": "发现她的秘密",
+            "description": "柊史偶然发现宁宁隐瞒的秘密，两人的日常由此发生变化。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 秘密被发现后",
+            "evidence": {
+              "title": "柚子社 · 官方故事介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/story.html"
+            }
+          },
+          {
+            "id": "meguru_nene_club",
+            "source": "inaba_meguru",
+            "target": "nene",
+            "label": "憧憬的社团前辈",
+            "description": "巡与宁宁同在超自然研究社活动，也憧憬宁宁这位前辈。",
+            "stage": "日常相处",
+            "directed": false,
+            "spoiler": false,
+            "evidence": {
+              "title": "柚子社官方角色介绍",
+              "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "togakushi_touko",
+      "displayName": "户隐憧子",
+      "originalName": "戸隠憧子",
+      "franchise": "Sabbat of the Witch",
+      "aliases": [
+        "户隐憧子",
+        "戸隠憧子",
+        "Togakushi Touko"
+      ],
+      "identityProse": "Adult Togakushi Touko from Sabbat of the Witch. Long dark hair tied into twin tails and amber-yellow eyes.",
+      "identityTokens": [
+        "togakushi_touko",
+        "black_hair",
+        "long_hair",
+        "twintails",
+        "yellow_eyes"
+      ],
+      "characterTokens": [
+        "togakushi_touko"
+      ],
+      "copyrightTokens": [
+        "sanoba_witch"
+      ],
+      "exactTokens": [
+        "togakushi_touko"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult"
+    }
+  }
+}

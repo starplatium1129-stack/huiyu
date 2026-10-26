@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_bridal",
-  "revision": 6,
+  "revision": 3,
   "sortOrder": 449,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_bridal",
       "name": "白纱紫带·黑结婚礼服",
-      "prose": "A white bridal dress with bodice pintucks and pleated skirt, broad violet satin sash and veil held by a black ribbon.",
+      "prose": "A white bridal dress with neat bodice pintucks and a softly pleated skirt, a broad violet satin sash and a veil secured with a black ribbon.",
       "tokens": [
         "white wedding dress",
-        "bodice pintucks",
-        "pleated skirt",
-        "broad violet satin sash",
+        "pintucks",
+        "violet sash",
         "veil",
-        "black veil ribbon"
+        "black ribbon"
       ],
       "default": false,
       "isDefault": false

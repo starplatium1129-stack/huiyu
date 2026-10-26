@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/cultural_festival_maid",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 552,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
@@ -18,7 +18,7 @@
         "black thighhighs"
       ],
       "prose": "a black maid dress with a white frilled apron, lace headdress and black thighhighs",
-      "styleHint": "",
+      "styleHint": "warm nostalgic classroom cafe lighting with soft bokeh",
       "isDefault": false,
       "default": false
     }

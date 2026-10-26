@@ -1,0 +1,256 @@
+{
+  "kind": "character",
+  "id": "ijichi_nijika",
+  "revision": 1,
+  "sortOrder": 195,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "ijichi_nijika",
+    "profile": {
+      "id": "ijichi_nijika",
+      "name": "伊地知虹夏",
+      "alias": [
+        "伊地知虹夏",
+        "Ijichi Nijika"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "/assets/characters/portrait-pending.svg",
+        "alt": "伊地知虹夏 · 立绘待制作"
+      },
+      "visual_dna": {
+        "signature": "Blonde hair in a side ponytail, a triangular ahoge, and red eyes",
+        "hair": "blonde_hair, side_ponytail",
+        "eyes": "red_eyes",
+        "style": "anime"
+      },
+      "personality": [
+        "善于照顾同伴",
+        "开朗务实",
+        "会替团队操心",
+        "对音乐有明确目标"
+      ],
+      "likes": [
+        "打鼓",
+        "乐队排练",
+        "和伙伴一起吃饭"
+      ],
+      "bg_story": "伊地知虹夏是《孤独摇滚！》中结束乐队的鼓手。她邀请后藤一里加入乐队，也和山田凉、喜多郁代一起维持排练与演出。虹夏习惯留意伙伴的状态，忙起来会一边安排事情一边吐槽，但始终认真对待大家共同的音乐目标。",
+      "identity": {
+        "role": "结束乐队鼓手 / STARRY店员",
+        "age": "成年创作设定",
+        "classificationSource": "https://bocchi.rocks/omnibus/character/"
+      },
+      "source": "Bocchi the Rock!",
+      "traits": [
+        "blonde_hair",
+        "side_ponytail",
+        "ahoge",
+        "red_eyes"
+      ],
+      "tags": [
+        "伊地知虹夏",
+        "孤独摇滚！",
+        "日常"
+      ],
+      "accent_color": "#E9BD57",
+      "bg_color": "#202833",
+      "palette": [
+        "#E9BD57",
+        "#F4EEDF"
+      ],
+      "relationshipGraph": {
+        "version": 1,
+        "work": "孤独摇滚！",
+        "people": [
+          {
+            "id": "gotoh_hitori",
+            "name": "后藤一里",
+            "aliases": [
+              "後藤ひとり",
+              "Gotoh Hitori",
+              "波奇酱(Bocchi)"
+            ],
+            "characterId": "gotoh_hitori"
+          },
+          {
+            "id": "kita_ikuyo",
+            "name": "喜多郁代",
+            "aliases": [
+              "喜多郁代",
+              "Kita Ikuyo"
+            ],
+            "characterId": "kita_ikuyo"
+          },
+          {
+            "id": "yamada_ryo",
+            "name": "山田凉",
+            "aliases": [
+              "山田リョウ",
+              "Yamada Ryo"
+            ],
+            "characterId": "yamada_ryo"
+          },
+          {
+            "id": "ijichi_nijika",
+            "name": "伊地知虹夏",
+            "aliases": [
+              "伊地知虹夏",
+              "Ijichi Nijika",
+              "下北泽大天使"
+            ],
+            "role": "结束乐队鼓手 / STARRY店员",
+            "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。",
+            "characterId": "ijichi_nijika"
+          },
+          {
+            "id": "ijichi_seika",
+            "name": "伊地知星歌",
+            "aliases": [
+              "伊地知星歌",
+              "Ijichi Seika",
+              "STARRY店长"
+            ],
+            "role": "Livehouse STARRY店长 / 虹夏的姐姐",
+            "summary": "外冷内热的前摇滚乐手。嘴上严厉批评纽带乐队的稚嫩，暗地里为一里定制演出机会并暗中骄傲地支持妹妹与乐队的发展。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "hitori-nijika-savior",
+            "source": "ijichi_nijika",
+            "target": "gotoh_hitori",
+            "label": "拉入阳光的伯乐与灵魂支撑",
+            "description": "在公园偶遇并一眼邀请背着吉他的波奇加入结束乐队，是波奇音乐人生中最信赖的领路人与阳光港湾。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "开篇设定 · 结识相遇",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "hitori-kita-adoration",
+            "source": "kita_ikuyo",
+            "target": "gotoh_hitori",
+            "label": "耀眼阳光与吉他师徒",
+            "description": "社交牛人喜多极度崇拜并依恋波奇的神级吉他技巧，在后藤指引下苦练吉他，并在文化祭危机中主动为波奇托底挽救演出。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "文化祭篇 · 星座成为星座",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "hitori-ryo-music-soul",
+            "source": "yamada_ryo",
+            "target": "gotoh_hitori",
+            "label": "孤高贝斯手与作词共鸣",
+            "description": "看穿波奇不愿写虚伪轻浮歌词的心思，鼓励波奇写出内向者最真实的痛苦与阴暗，是结束乐队的音乐基石与怪人知音。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 作词阶段",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "kita-ryo-admiration",
+            "source": "kita_ikuyo",
+            "target": "yamada_ryo",
+            "label": "盲目迷妹与借钱常客",
+            "description": "喜多最初因为迷恋山田凉弹奏贝斯的帅气英姿而加入乐队，即便常常被凉借钱不还依然抱持着近乎盲目的崇拜热忱。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 开篇动机",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "nijika-ryo-childhood",
+            "source": "ijichi_nijika",
+            "target": "yamada_ryo",
+            "label": "旧友搭档与彼此包容",
+            "description": "在上一支乐队解散后一同创立结束乐队的挚友，虹夏在生活中督促负责乐队各项杂务，凉则提供最纯粹的编曲才华。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 乐队初创",
+            "evidence": {
+              "title": "Aniplex · 《孤独摇滚！》官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "bocchi-nijika-seika",
+            "source": "ijichi_nijika",
+            "target": "ijichi_seika",
+            "label": "相依为命的傲娇姐姐",
+            "description": "在母亲早逝后独自支撑Livehouse并照顾虹夏长大的亲姐姐，表面严厉冷淡实则极度关爱妹妹。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常Livehouse",
+            "evidence": {
+              "title": "《孤独摇滚！》动画官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          },
+          {
+            "id": "bocchi-hitori-seika",
+            "source": "gotoh_hitori",
+            "target": "ijichi_seika",
+            "label": "暗中赏识的伯乐店长",
+            "description": "最早从一里的吉他弹奏中听出“吉他英雄”本色并默默给予舞台考验与成长机会的冷面伯乐。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "STARRY首演审查",
+            "evidence": {
+              "title": "《孤独摇滚！》动画官方网站",
+              "url": "https://bocchi.rocks/"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "ijichi_nijika",
+      "displayName": "伊地知虹夏",
+      "originalName": "伊地知虹夏",
+      "franchise": "Bocchi the Rock!",
+      "aliases": [
+        "伊地知虹夏",
+        "Ijichi Nijika"
+      ],
+      "identityProse": "Adult Ijichi Nijika from Bocchi the Rock!. Blonde hair in a side ponytail, a triangular ahoge, and red eyes.",
+      "identityTokens": [
+        "ijichi_nijika",
+        "blonde_hair",
+        "side_ponytail",
+        "ahoge",
+        "red_eyes"
+      ],
+      "characterTokens": [
+        "ijichi_nijika"
+      ],
+      "copyrightTokens": [
+        "bocchi_the_rock!"
+      ],
+      "exactTokens": [
+        "ijichi_nijika"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult"
+    }
+  }
+}

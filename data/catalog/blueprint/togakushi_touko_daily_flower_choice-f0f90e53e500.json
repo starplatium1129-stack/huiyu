@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "togakushi_touko_daily_flower_choice",
+  "revision": 1,
+  "sortOrder": 1984,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "togakushi_touko_daily_flower_choice",
+    "title": "户隐憧子 · 花店门口的两枝花",
+    "description": "花店门口，憧子把一枝浅紫洋桔梗举到眼前，又看了看桶里的白花。她侧过身，留出位置请你一起挑。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "flower_shop",
+      "holding_flower",
+      "lisianthus",
+      "flower_bucket",
+      "looking_at_viewer",
+      "smile",
+      "soft_daylight"
+    ],
+    "promptProse": "Touko pauses at a florist in a lavender blouse and charcoal midi skirt. She holds a pale purple lisianthus near her face, glancing toward the viewer beside a bucket of white flowers. Soft daylight from the storefront illuminates the petals and her sleeves.",
+    "animaCaption": "She holds a single stem below the blossom, leaving the other flowers in their bucket.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "soft storefront daylight",
+    "location": "街角花店",
+    "characterId": "togakushi_touko",
+    "outfitId": "town_blouse",
+    "action": "举起一枝洋桔梗请你一起挑花",
+    "timeOfDay": "下午",
+    "mood": "轻松商量",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "flower_shop",
+      "holding_flower",
+      "lisianthus",
+      "flower_bucket",
+      "looking_at_viewer",
+      "smile",
+      "soft_daylight"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ijichi_nijika/rehearsal_sport",
+  "revision": 1,
+  "sortOrder": 1634,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "ijichi_nijika",
+    "outfit": {
+      "id": "rehearsal_sport",
+      "name": "靛蓝运动背心与宽松工装裤",
+      "prose": "An indigo sleeveless sports top with a white undershirt at the neckline, olive loose cargo trousers, and light trainers",
+      "tokens": [
+        "blue_tank_top",
+        "sleeveless",
+        "white_undershirt",
+        "cargo_pants",
+        "green_pants",
+        "sneakers"
+      ],
+      "default": false
+    }
+  }
+}

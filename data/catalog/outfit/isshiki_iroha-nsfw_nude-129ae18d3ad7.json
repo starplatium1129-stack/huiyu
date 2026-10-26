@@ -1,18 +1,26 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/nsfw_nude",
-  "revision": 2,
+  "revision": 1,
   "sortOrder": 208,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "her completely bare, youthful and enticing body with soft honey-brown wavy locks framing her collarbones, pert rounded breasts with sweet pink nipples, a smooth tummy, and shapely slender legs",
       "tokens": [
-        "nude"
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "slender_body",
+        "youthful",
+        "pale_skin"
       ]
     }
   }

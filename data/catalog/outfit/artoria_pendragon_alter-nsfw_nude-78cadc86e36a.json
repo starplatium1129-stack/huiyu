@@ -1,19 +1,24 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing; hair loose over her shoulders.",
+      "prose": "her completely bare, pale and regal body with platinum hair unpinned across her shoulders, firm natural breasts with pale pink nipples, slender waist, and smooth alabaster skin under dark shadows",
       "tokens": [
-        "nude",
-        "hair_down"
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "hourglass_body"
       ]
     }
   }

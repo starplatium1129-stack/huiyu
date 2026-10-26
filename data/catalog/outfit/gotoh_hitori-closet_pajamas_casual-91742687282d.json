@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/closet_pajamas_casual",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 554,
   "createdAt": null,
-  "updatedAt": "2026-10-20T10:16:50.129327500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
@@ -17,7 +17,7 @@
         "gray shorts"
       ],
       "prose": "A loose pastel-pink T-shirt with one square blue pocket edged in yellow stitching, and soft gray lounge shorts.",
-      "styleHint": "",
+      "styleHint": "moody dim ambient lighting with warm fairy lights and screen glow",
       "isDefault": false,
       "default": false
     }

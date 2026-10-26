@@ -4,7 +4,7 @@
   "revision": 4,
   "sortOrder": 435,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "rossy_arknights",
     "outfit": {
@@ -12,19 +12,16 @@
       "id": "standard",
       "isDefault": true,
       "name": "洛茜红兜帽斗篷原作衣装",
-      "prose": "A raised red hooded cloak with black lining and ear openings, dark-trimmed white A-line dress, black waist cincher and belt, fingerless gloves and armored knee boots with red accents.",
+      "prose": "her original red hooded cloak with a black lining and angular dark fastenings, an opaque white A-line dress with dark hem trim, a structured black waist cincher and utility belt, short fingerless black gloves and black lace-up armored knee boots with red accents; her wolf ears pass through openings in the raised hood",
       "tokens": [
         "red hooded cloak",
-        "black lining",
         "hood up",
         "ears through headwear",
-        "white A-line dress",
-        "dark trim",
+        "white dress",
         "black corset",
         "belt",
         "fingerless gloves",
-        "black armored knee boots",
-        "red accents"
+        "black knee boots"
       ],
       "category": "官方衣装"
     }

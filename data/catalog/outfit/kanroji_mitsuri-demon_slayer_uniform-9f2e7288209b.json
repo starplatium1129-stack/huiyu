@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/demon_slayer_uniform",
-  "revision": 2,
+  "revision": 1,
   "sortOrder": 1393,
-  "createdAt": "2026-10-15T14:37:48.939637+00:00",
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
@@ -13,7 +13,7 @@
       "tokens": [
         "black uniform",
         "white collar",
-        "pleated miniskirt",
+        "pleated skirt",
         "green striped thighhighs"
       ],
       "prose": "Her black Demon Slayer Corps uniform with a white collar, short pleated skirt and green striped thighhighs.",

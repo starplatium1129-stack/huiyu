@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "amiya/rhodes_coat",
+  "revision": 1,
+  "sortOrder": 1625,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "amiya",
+    "outfit": {
+      "id": "rhodes_coat",
+      "name": "罗德岛黑外套与蓝色内搭",
+      "prose": "A structured black field coat over a blue tunic dress with a white collar and narrow black tie, black tights, ankle boots, and black gloves",
+      "tokens": [
+        "black_coat",
+        "blue_dress",
+        "white_collar",
+        "black_necktie",
+        "black_pantyhose",
+        "ankle_boots",
+        "black_gloves"
+      ],
+      "default": true
+    }
+  }
+}

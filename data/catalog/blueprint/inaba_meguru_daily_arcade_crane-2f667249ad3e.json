@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "inaba_meguru_daily_arcade_crane",
+  "revision": 1,
+  "sortOrder": 1980,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "inaba_meguru_daily_arcade_crane",
+    "title": "因幡巡 · 差一点就夹到了",
+    "description": "夹娃娃机里的小兔子已经挪到出口旁。巡扶着摇杆，另一只手悬在按钮上，先朝你露出一个“这次肯定行”的笑容。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "arcade",
+      "claw_machine",
+      "joystick",
+      "plush_toy",
+      "hand_on_button",
+      "smile",
+      "looking_at_viewer",
+      "neon_lights"
+    ],
+    "promptProse": "At an arcade claw machine, Meguru wears a mint hoodie and denim shorts. One hand holds the joystick and the other hovers over the button; a small rabbit plush lies near the chute behind the glass. She gives the viewer a confident smile under the colored machine lights.",
+    "animaCaption": "Her hands stay outside the glass, one on the joystick and one above its button.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "arcade machine lights",
+    "location": "街边游戏厅",
+    "characterId": "inaba_meguru",
+    "outfitId": "arcade_denim",
+    "action": "握住摇杆，把手停在夹娃娃按钮上",
+    "timeOfDay": "午后",
+    "mood": "跃跃欲试",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "arcade",
+      "claw_machine",
+      "joystick",
+      "plush_toy",
+      "hand_on_button",
+      "smile",
+      "looking_at_viewer",
+      "neon_lights"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

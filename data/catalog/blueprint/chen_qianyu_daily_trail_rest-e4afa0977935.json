@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "chen_qianyu_daily_trail_rest",
+  "revision": 1,
+  "sortOrder": 2002,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "chen_qianyu_daily_trail_rest",
+    "title": "陈千语 · 路标旁歇一小会儿",
+    "description": "休息日的山路没有任务。千语坐在低矮石墙上系紧鞋带，背包靠在一边，尾巴自然垂在不挡路的位置。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "stone_wall",
+      "tying_shoelaces",
+      "hiking",
+      "backpack",
+      "mountain_path",
+      "dragon_tail",
+      "dappled_sunlight",
+      "relaxed"
+    ],
+    "promptProse": "On a rest-day hike, Chen Qianyu wears a slate windbreaker and charcoal hiking trousers. She sits on a low stone wall to tighten a boot lace, her backpack beside her and her dragon tail resting clear of the path. Patches of morning sunlight fall through the trees.",
+    "animaCaption": "Both hands work on the lace of one boot; her other boot remains on the ground.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "dappled morning sunlight",
+    "location": "基地近郊的山间步道",
+    "characterId": "chen_qianyu",
+    "outfitId": "trail_windbreaker",
+    "action": "坐在石墙上系紧登山鞋带",
+    "timeOfDay": "上午",
+    "mood": "没有任务的轻松",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "stone_wall",
+      "tying_shoelaces",
+      "hiking",
+      "backpack",
+      "mountain_path",
+      "dragon_tail",
+      "dappled_sunlight",
+      "relaxed"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

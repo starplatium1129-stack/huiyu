@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ciel_tsukihime/official_burial_agency_habit",
-  "revision": 5,
+  "revision": 4,
   "sortOrder": 722,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ciel_tsukihime",
     "outfit": {
@@ -17,7 +17,6 @@
         "high collar",
         "white trim",
         "gold cross",
-        "short dark skirt",
         "black pantyhose",
         "gloves"
       ],

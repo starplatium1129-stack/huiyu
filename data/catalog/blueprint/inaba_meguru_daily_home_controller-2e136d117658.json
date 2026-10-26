@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "inaba_meguru_daily_home_controller",
+  "revision": 1,
+  "sortOrder": 1982,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "inaba_meguru_daily_home_controller",
+    "title": "因幡巡 · 暂停一下，先尝一口",
+    "description": "客厅的游戏画面停在暂停菜单。巡抱着靠垫坐在地毯上，把装着新烤饼干的小碟往你这边推了推，手柄还放在膝边。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting_on_floor",
+      "living_room",
+      "cushion",
+      "game_controller",
+      "cookies",
+      "plate",
+      "reaching_out",
+      "smile",
+      "table_lamp"
+    ],
+    "promptProse": "Meguru sits on the living-room rug in a coral sweatshirt and navy checked lounge pants. Her controller lies beside her knee while she slides a small plate of cookies across the low table toward the viewer. A shaded table lamp lights her face and the cushion in her lap.",
+    "animaCaption": "She moves the cookie plate with one hand; the controller stays on the rug.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "warm table lamp",
+    "location": "家中的客厅",
+    "characterId": "inaba_meguru",
+    "outfitId": "home_checks",
+    "action": "把饼干碟推向你，手柄暂放膝边",
+    "timeOfDay": "晚间",
+    "mood": "放松亲近",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting_on_floor",
+      "living_room",
+      "cushion",
+      "game_controller",
+      "cookies",
+      "plate",
+      "reaching_out",
+      "smile",
+      "table_lamp"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

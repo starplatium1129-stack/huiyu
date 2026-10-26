@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "dusk_arknights/standard",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 321,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfit": {
@@ -16,10 +16,10 @@
       "tokens": [
         "china dress",
         "black dress",
-        "teal cloud pattern",
+        "teal trim",
         "high slit",
         "wide sleeves",
-        "sheer black-and-white robe",
+        "sheer robe",
         "barefoot"
       ]
     }

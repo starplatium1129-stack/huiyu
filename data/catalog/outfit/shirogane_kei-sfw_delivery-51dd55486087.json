@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_delivery",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 781,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
@@ -14,10 +14,9 @@
       "name": "雾蓝晨间配送装",
       "prose": "A mist-blue zip windbreaker with a reflective cuff stripe layers over a white shirt, charcoal straight trousers and grey sneakers.",
       "tokens": [
-        "mist blue zip windbreaker",
-        "reflective cuff stripe",
+        "blue windbreaker",
         "white shirt",
-        "charcoal straight-leg pants",
+        "charcoal pants",
         "grey sneakers"
       ]
     }

@@ -1,18 +1,20 @@
 {
   "kind": "outfit",
   "id": "furina/nsfw_nude",
-  "revision": 2,
+  "revision": 1,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.833130300+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "furina",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯白无瑕",
-      "prose": "Nude, with pale skin.",
+      "prose": "completely nude and unclad with delicate porcelain pale skin",
       "tokens": [
-        "nude"
+        "nude",
+        "completely_naked",
+        "bare_skin"
       ],
       "default": false,
       "isDefault": false

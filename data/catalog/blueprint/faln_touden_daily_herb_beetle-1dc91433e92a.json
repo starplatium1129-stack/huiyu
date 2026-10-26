@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "faln_touden_daily_herb_beetle",
+  "revision": 1,
+  "sortOrder": 2025,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "faln_touden_daily_herb_beetle",
+    "title": "法琳 · 叶背上有个小客人",
+    "description": "采药的小路边，法琳托起一片宽叶，发现叶背停着一只小甲虫。她没有把叶子摘下，只蹲在那里看它慢慢爬过叶脉。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "crouching",
+      "forest_path",
+      "leaf",
+      "beetle",
+      "observing",
+      "hand_under_leaf",
+      "gentle_smile",
+      "dappled_sunlight",
+      "herbs"
+    ],
+    "promptProse": "Beside a woodland herb path, Falin wears a moss-green cloak and brown wool trousers. She crouches and supports an attached broad leaf from below, watching a tiny beetle move along its veins. Dappled sunlight filters through the trees onto her hands and the living plant.",
+    "animaCaption": "The leaf remains attached to the plant, and the beetle stays on its surface.",
+    "camera": "close-up",
+    "recommendedSize": "1216x832",
+    "lighting": "dappled forest sunlight",
+    "location": "林间采药小路",
+    "characterId": "faln_touden",
+    "outfitId": "herb_cloak",
+    "action": "托住仍连着枝茎的叶子观察小甲虫",
+    "timeOfDay": "上午",
+    "mood": "安静的好奇",
+    "category": "日常相处",
+    "sceneTags": [
+      "crouching",
+      "forest_path",
+      "leaf",
+      "beetle",
+      "observing",
+      "hand_under_leaf",
+      "gentle_smile",
+      "dappled_sunlight",
+      "herbs"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

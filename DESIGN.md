@@ -259,8 +259,9 @@ Light-mode elevation uses boundaries and shadow, not ever-brighter surfaces.
 角色强调色和图片叠字的实际画面验收；遵守 AGENTS.md 的验证范围与测试禁令。
 
 - Use `primary` for the main call to action or a small piece of emphasis.
-  Ordinary hover, selection and keyboard focus use neutral feedback. A page must
-  not look uniformly pink.
+  Ordinary hover uses the active character's readable accent for ink and a short
+  underline. Selection keeps its own indicator; keyboard focus stays neutral.
+  Keep resting controls neutral rather than tinting the whole page.
 - Use Nene violet and Natsume amber to clarify character context. Within a
   character cover or director workspace, the primary action may inherit that
   character accent; neutral pages retain sakura pink for their main action.
@@ -445,14 +446,15 @@ Depth makes grouping, focus and interactive layers visible:
 - Interactive controls: buttons, tabs, segments and menus share authored hover
   and press feedback through surfaces, icons and labels, with stable hit targets.
   Selection keeps its own indicator, and keyboard focus stays visible and immediate.
-- Ordinary controls fade in a light neutral paper wash and a fine edge beneath
-  stable text and hand-drawn icons. Keep the hit area fixed; only the inner press
-  feedback compresses to about 0.98 and springs back. Hover must not add pink/red
-  fills, rims or labels. Disclosure arrows rotate on opening or closing, without
-  hovering displacement. Navigation can use a small dot marker; short underlines
-  are reserved for text links and input state. Keyboard focus uses a clear neutral
-  ring, and reduced motion retains static feedback. Primary actions, destructive
-  actions and artwork keep their semantic colors and purpose-specific motion.
+- Ordinary buttons, navigation and filters lift 3px on mouse hover, with readable
+  character-accent ink and a short underline instead of a full paper wash.
+  Reuse the existing dark/light ink conversion; do not hardcode a pink hover.
+  Navigation selection uses the existing AnimatedSelection underline in that
+  same accent. Inner press feedback compresses to about 0.98 and springs back
+  without moving the hit target. Disclosure arrows retain their open/close
+  rotation. Keyboard focus uses a clear neutral ring, and reduced motion keeps
+  static feedback without the lift. Primary actions, destructive actions and
+  artwork keep their semantic colors and purpose-specific motion.
 - Floating surfaces: popovers, dialogs and viewers use existing elevation tokens;
   primary actions gain emphasis from their action color, not an extra shadow tier.
 

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "fujiwara_chika/boardgame_sailor",
+  "revision": 1,
+  "sortOrder": 1638,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "fujiwara_chika",
+    "outfit": {
+      "id": "boardgame_sailor",
+      "name": "天蓝条纹衬衫与奶白长裤",
+      "prose": "A sky-blue striped blouse with a rounded collar, cream high-waisted wide-leg trousers, white canvas shoes, and a black hair bow",
+      "tokens": [
+        "blue_blouse",
+        "striped_blouse",
+        "round_collar",
+        "cream_pants",
+        "high-waist_pants",
+        "wide-leg_pants",
+        "canvas_shoes",
+        "black_hair_bow"
+      ],
+      "default": false
+    }
+  }
+}

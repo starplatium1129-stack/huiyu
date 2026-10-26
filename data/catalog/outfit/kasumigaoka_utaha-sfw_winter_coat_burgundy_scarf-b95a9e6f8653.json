@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sfw_winter_coat_burgundy_scarf",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 1153,
   "createdAt": "2026-10-06T14:36:56.397422600+00:00",
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
@@ -19,8 +19,7 @@
         "black wool coat",
         "burgundy scarf",
         "black tights",
-        "leather ankle boots",
-        "belted waist"
+        "leather ankle boots"
       ]
     }
   }

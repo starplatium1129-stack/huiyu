@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/casual_winter_coat",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
@@ -12,10 +12,10 @@
       "name": "象牙白牛角扣羊毛大衣",
       "prose": "an ivory hooded wool duffle coat with horn toggles, a red-and-white plaid scarf, black tights and ankle boots",
       "tokens": [
-        "ivory wool duffle coat",
+        "ivory duffle coat",
         "hood",
-        "horn toggles",
-        "red and white plaid scarf",
+        "toggle buttons",
+        "red plaid scarf",
         "black pantyhose",
         "ankle boots"
       ]

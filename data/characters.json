@@ -250,8 +250,9 @@
             "因幡めぐる",
             "Inaba Meguru"
           ],
-          "role": "宁宁的同级好友 / 游戏同好",
-          "summary": "性格活泼豪爽，因想要结交朋友而常在部室活跃气氛。与宁宁在社团中相处融洽，是宁宁在校内最信赖的闺蜜之一。"
+          "role": "超自然研究社成员 / 游戏爱好者",
+          "summary": "性格活泼豪爽，因想要结交朋友而常在部室活跃气氛。与宁宁在社团中相处融洽，是宁宁在校内最信赖的闺蜜之一。",
+          "characterId": "inaba_meguru"
         },
         {
           "id": "togakushi_touko",
@@ -260,8 +261,9 @@
             "戸隠憧子",
             "Togakushi Touko"
           ],
-          "role": "学生会长 / 柊史的学姐",
-          "summary": "容貌秀丽、待人温和的学生会长。深受后辈仰慕，在校内事务与社团活动上多次为宁宁与柊史提供关照和指引。"
+          "role": "学生会长 / 宁宁的学姐",
+          "summary": "容貌秀丽、待人温和的学生会长。深受后辈仰慕，在校内事务与社团活动上多次为宁宁与柊史提供关照和指引。",
+          "characterId": "togakushi_touko"
         }
       ],
       "relations": [
@@ -319,6 +321,20 @@
           "evidence": {
             "title": "柚子社 · 官方故事介绍",
             "url": "https://www.yuzu-soft.com/products/sothewitch/story.html"
+          }
+        },
+        {
+          "id": "meguru_nene_club",
+          "source": "inaba_meguru",
+          "target": "nene",
+          "label": "憧憬的社团前辈",
+          "description": "巡与宁宁同在超自然研究社活动，也憧憬宁宁这位前辈。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
+            "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
           }
         }
       ]
@@ -564,8 +580,9 @@
             "墨染希",
             "Sumizome Nozomi"
           ],
-          "role": "昂晴的青梅竹马 / 神社之女",
-          "summary": "性格温和大方，在昂晴加入咖啡馆后常来探望与协助，与栞那建立了温暖融洽的日常友谊。"
+          "role": "神社家的女儿 / 咖啡馆伙伴",
+          "summary": "性格温和大方，在昂晴加入咖啡馆后常来探望与协助，与栞那建立了温暖融洽的日常友谊。",
+          "characterId": "sumizome_nozomi"
         },
         {
           "id": "hiuchidani_mei",
@@ -574,8 +591,9 @@
             "火打谷愛衣",
             "Hiuchidani Mei"
           ],
-          "role": "咖啡馆店员 / 昂晴的表妹",
-          "summary": "开朗元气的后辈，同样在咖啡馆兼职。日常中经常与栞那开玩笑打闹，为咖啡馆带来欢快的气氛。"
+          "role": "咖啡馆伙伴 / 曾参加游泳部",
+          "summary": "开朗元气的后辈，同样在咖啡馆兼职。日常中经常与栞那开玩笑打闹，为咖啡馆带来欢快的气氛。",
+          "characterId": "hiuchidani_mei"
         },
         {
           "id": "shioyama_suzune",
@@ -718,6 +736,34 @@
           "stage": "共通线 · 开篇设定",
           "evidence": {
             "title": "柚子社 · 栞那与米卡多官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "nozomi_natsume_cafe",
+          "source": "sumizome_nozomi",
+          "target": "natsume",
+          "label": "咖啡馆伙伴",
+          "description": "希与夏目在星光咖啡馆共事，成为日常往来的伙伴。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "mei_natsume_cafe",
+          "source": "hiuchidani_mei",
+          "target": "natsume",
+          "label": "咖啡馆伙伴",
+          "description": "爱衣与夏目在星光咖啡馆的工作中相识。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
             "url": "https://www.yuzu-soft.com/products/stella/character.html"
           }
         }
@@ -4119,8 +4165,9 @@
             "风纪委员第177支部",
             "空间移动能力者"
           ],
-          "role": "风纪委员第177支部 / 空间移动能力者",
-          "summary": "美琴的常盘台学妹兼室友。行事正义果敢，对姐姐大人美琴有着近乎变态的痴迷与崇拜，但在战场上始终是美琴最坚实无可替代的后盾。"
+          "role": "风纪委员第177支部成员 / 常盘台学生",
+          "summary": "美琴的常盘台学妹兼室友。行事正义果敢，对姐姐大人美琴有着近乎变态的痴迷与崇拜，但在战场上始终是美琴最坚实无可替代的后盾。",
+          "characterId": "shirai_kuroko"
         },
         {
           "id": "uiharu_kazari",
@@ -4145,8 +4192,9 @@
             "都市传说探求者",
             "泪子"
           ],
-          "role": "栅川中学学生 / 无能力者(Level 0)",
-          "summary": "元气豁达、充满好奇心的普通初中生。曾因无能力而迷茫，后以无畏的勇气与棒球棍参与多场都市传说事件，是美琴最宝贵且无拘无束的日常好友。"
+          "role": "栅川中学学生 / 都市传说爱好者",
+          "summary": "元气豁达、充满好奇心的普通初中生。曾因无能力而迷茫，后以无畏的勇气与棒球棍参与多场都市传说事件，是美琴最宝贵且无拘无束的日常好友。",
+          "characterId": "saten_ruiko"
         }
       ],
       "relations": [
@@ -4382,8 +4430,9 @@
             "风纪委员第177支部",
             "空间移动能力者"
           ],
-          "role": "风纪委员第177支部 / 空间移动能力者",
-          "summary": "美琴的常盘台学妹兼室友。行事正义果敢，对姐姐大人美琴有着近乎变态的痴迷与崇拜，但在战场上始终是美琴最坚实无可替代的后盾。"
+          "role": "风纪委员第177支部成员 / 常盘台学生",
+          "summary": "美琴的常盘台学妹兼室友。行事正义果敢，对姐姐大人美琴有着近乎变态的痴迷与崇拜，但在战场上始终是美琴最坚实无可替代的后盾。",
+          "characterId": "shirai_kuroko"
         },
         {
           "id": "uiharu_kazari",
@@ -4408,8 +4457,9 @@
             "都市传说探求者",
             "泪子"
           ],
-          "role": "栅川中学学生 / 无能力者(Level 0)",
-          "summary": "元气豁达、充满好奇心的普通初中生。曾因无能力而迷茫，后以无畏的勇气与棒球棍参与多场都市传说事件，是美琴最宝贵且无拘无束的日常好友。"
+          "role": "栅川中学学生 / 都市传说爱好者",
+          "summary": "元气豁达、充满好奇心的普通初中生。曾因无能力而迷茫，后以无畏的勇气与棒球棍参与多场都市传说事件，是美琴最宝贵且无拘无束的日常好友。",
+          "characterId": "saten_ruiko"
         }
       ],
       "relations": [
@@ -8429,8 +8479,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -9637,8 +9688,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -10843,8 +10895,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -12052,8 +12105,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -13257,8 +13311,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -14465,8 +14520,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -15670,8 +15726,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -16721,8 +16778,9 @@
             "终末地近卫干员",
             "炎国流云剑客"
           ],
-          "role": "终末地工业监督干员",
-          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。"
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
         },
         {
           "id": "wulfgard",
@@ -17306,8 +17364,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -18508,8 +18567,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -19556,8 +19616,9 @@
             "终末地近卫干员",
             "炎国流云剑客"
           ],
-          "role": "终末地工业监督干员",
-          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。"
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
         },
         {
           "id": "wulfgard",
@@ -20142,8 +20203,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -21347,8 +21409,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -22555,8 +22618,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -23762,8 +23826,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -31450,8 +31515,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -33497,8 +33563,9 @@
             "终末地近卫干员",
             "炎国流云剑客"
           ],
-          "role": "终末地工业监督干员",
-          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。"
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
         },
         {
           "id": "wulfgard",
@@ -41350,8 +41417,9 @@
             "Ijichi Nijika",
             "下北泽大天使"
           ],
-          "role": "纽带乐队鼓手兼队长",
-          "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。"
+          "role": "结束乐队鼓手 / STARRY店员",
+          "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。",
+          "characterId": "ijichi_nijika"
         },
         {
           "id": "ijichi_seika",
@@ -44388,8 +44456,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -45605,8 +45674,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -46821,8 +46891,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -59800,8 +59871,9 @@
             "书记",
             "地球之癌"
           ],
-          "role": "秀知院学生会书记 / 政治名门千金",
-          "summary": "天真烂漫、脑回路清奇的混沌制造者。辉夜唯一的多年挚友，多次在会长与副会长的恋爱博弈中无意搅局打破僵局。"
+          "role": "秀知院学生会书记",
+          "summary": "天真烂漫、脑回路清奇的混沌制造者。辉夜唯一的多年挚友，多次在会长与副会长的恋爱博弈中无意搅局打破僵局。",
+          "characterId": "fujiwara_chika"
         },
         {
           "id": "ishigami_yuu",
@@ -60112,8 +60184,9 @@
             "英梨梨",
             "柏木英理"
           ],
-          "role": "人气同人画师「柏木英理」 / 伦也的青梅竹马",
-          "summary": "混血金发双马尾大小姐，绘画技艺顶尖。因过去逃避与伦也的关系而留下遗憾，在游戏制作中被惠的沉稳与包容逐步触动。"
+          "role": "画师 / 同人游戏原画创作者",
+          "summary": "混血金发双马尾大小姐，绘画技艺顶尖。因过去逃避与伦也的关系而留下遗憾，在游戏制作中被惠的沉稳与包容逐步触动。",
+          "characterId": "sawamura_spencer_eriri"
         },
         {
           "id": "hashima_izumi",
@@ -60675,8 +60748,9 @@
             "英梨梨",
             "柏木英理"
           ],
-          "role": "人气同人画师「柏木英理」 / 伦也的青梅竹马",
-          "summary": "混血金发双马尾大小姐，绘画技艺顶尖。因过去逃避与伦也的关系而留下遗憾，在游戏制作中被惠的沉稳与包容逐步触动。"
+          "role": "画师 / 同人游戏原画创作者",
+          "summary": "混血金发双马尾大小姐，绘画技艺顶尖。因过去逃避与伦也的关系而留下遗憾，在游戏制作中被惠的沉稳与包容逐步触动。",
+          "characterId": "sawamura_spencer_eriri"
         },
         {
           "id": "hashima_izumi",
@@ -63115,8 +63189,9 @@
             "书记",
             "地球之癌"
           ],
-          "role": "秀知院学生会书记 / 政治名门千金",
-          "summary": "天真烂漫、脑回路清奇的混沌制造者。辉夜唯一的多年挚友，多次在会长与副会长的恋爱博弈中无意搅局打破僵局。"
+          "role": "秀知院学生会书记",
+          "summary": "天真烂漫、脑回路清奇的混沌制造者。辉夜唯一的多年挚友，多次在会长与副会长的恋爱博弈中无意搅局打破僵局。",
+          "characterId": "fujiwara_chika"
         },
         {
           "id": "ishigami_yuu",
@@ -70192,8 +70267,9 @@
             "墨染希",
             "Sumizome Nozomi"
           ],
-          "role": "昂晴的青梅竹马 / 神社之女",
-          "summary": "性格温和大方，在昂晴加入咖啡馆后常来探望与协助，与栞那建立了温暖融洽的日常友谊。"
+          "role": "神社家的女儿 / 咖啡馆伙伴",
+          "summary": "性格温和大方，在昂晴加入咖啡馆后常来探望与协助，与栞那建立了温暖融洽的日常友谊。",
+          "characterId": "sumizome_nozomi"
         },
         {
           "id": "hiuchidani_mei",
@@ -70202,8 +70278,9 @@
             "火打谷愛衣",
             "Hiuchidani Mei"
           ],
-          "role": "咖啡馆店员 / 昂晴的表妹",
-          "summary": "开朗元气的后辈，同样在咖啡馆兼职。日常中经常与栞那开玩笑打闹，为咖啡馆带来欢快的气氛。"
+          "role": "咖啡馆伙伴 / 曾参加游泳部",
+          "summary": "开朗元气的后辈，同样在咖啡馆兼职。日常中经常与栞那开玩笑打闹，为咖啡馆带来欢快的气氛。",
+          "characterId": "hiuchidani_mei"
         },
         {
           "id": "shioyama_suzune",
@@ -70346,6 +70423,34 @@
           "stage": "共通线 · 开篇设定",
           "evidence": {
             "title": "柚子社 · 栞那与米卡多官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "nozomi_natsume_cafe",
+          "source": "sumizome_nozomi",
+          "target": "natsume",
+          "label": "咖啡馆伙伴",
+          "description": "希与夏目在星光咖啡馆共事，成为日常往来的伙伴。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "mei_natsume_cafe",
+          "source": "hiuchidani_mei",
+          "target": "natsume",
+          "label": "咖啡馆伙伴",
+          "description": "爱衣与夏目在星光咖啡馆的工作中相识。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
             "url": "https://www.yuzu-soft.com/products/stella/character.html"
           }
         }
@@ -72070,8 +72175,9 @@
             "书记",
             "地球之癌"
           ],
-          "role": "秀知院学生会书记 / 政治名门千金",
-          "summary": "天真烂漫、脑回路清奇的混沌制造者。辉夜唯一的多年挚友，多次在会长与副会长的恋爱博弈中无意搅局打破僵局。"
+          "role": "秀知院学生会书记",
+          "summary": "天真烂漫、脑回路清奇的混沌制造者。辉夜唯一的多年挚友，多次在会长与副会长的恋爱博弈中无意搅局打破僵局。",
+          "characterId": "fujiwara_chika"
         },
         {
           "id": "ishigami_yuu",
@@ -74123,8 +74229,9 @@
             "ファリン・トーデン",
             "Falin Touden"
           ],
-          "role": "莱欧斯的妹妹 / 强力神术师",
-          "summary": "性格温和善良的圣职者，玛露希尔最珍视的挚友。在被红龙消化前被黑魔法与红龙融合复活，最终在同伴们的齐心协力下剥离红龙肉身重返人间。"
+          "role": "魔术师 / 擅长回复与强化魔法",
+          "summary": "性格温和善良的圣职者，玛露希尔最珍视的挚友。在被红龙消化前被黑魔法与红龙融合复活，最终在同伴们的齐心协力下剥离红龙肉身重返人间。",
+          "characterId": "faln_touden"
         },
         {
           "id": "senshi",
@@ -76035,8 +76142,9 @@
             "终末地近卫干员",
             "炎国流云剑客"
           ],
-          "role": "终末地工业监督干员",
-          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。"
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
         },
         {
           "id": "wulfgard",
@@ -76454,8 +76562,9 @@
             "终末地近卫干员",
             "炎国流云剑客"
           ],
-          "role": "终末地工业监督干员",
-          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。"
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
         },
         {
           "id": "wulfgard",
@@ -76874,8 +76983,9 @@
             "终末地近卫干员",
             "炎国流云剑客"
           ],
-          "role": "终末地工业监督干员",
-          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。"
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
         },
         {
           "id": "wulfgard",
@@ -77452,8 +77562,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -78663,8 +78774,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -80245,8 +80357,9 @@
             "终末地近卫干员",
             "炎国流云剑客"
           ],
-          "role": "终末地工业监督干员",
-          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。"
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
         },
         {
           "id": "wulfgard",
@@ -84239,8 +84352,9 @@
             "Ijichi Nijika",
             "下北泽大天使"
           ],
-          "role": "纽带乐队鼓手兼队长",
-          "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。"
+          "role": "结束乐队鼓手 / STARRY店员",
+          "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。",
+          "characterId": "ijichi_nijika"
         },
         {
           "id": "ijichi_seika",
@@ -84485,8 +84599,9 @@
             "Ijichi Nijika",
             "下北泽大天使"
           ],
-          "role": "纽带乐队鼓手兼队长",
-          "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。"
+          "role": "结束乐队鼓手 / STARRY店员",
+          "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。",
+          "characterId": "ijichi_nijika"
         },
         {
           "id": "ijichi_seika",
@@ -86251,8 +86366,9 @@
             "奇美拉",
             "特蕾西娅继承人"
           ],
-          "role": "罗德岛公开领袖 / 魔王继承者",
-          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。"
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
         },
         {
           "id": "theresa",
@@ -87123,6 +87239,3908 @@
           "evidence": {
             "title": "鹰角网络 · 《明日方舟》羽毛笔语音档案",
             "url": "https://ak.hypergryph.com"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "inaba_meguru",
+    "name": "因幡巡",
+    "alias": [
+      "因幡めぐる",
+      "Inaba Meguru"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "因幡巡 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Coral-orange hair in a long side ponytail and pink eyes",
+      "hair": "orange_hair, long_hair, side_ponytail",
+      "eyes": "pink_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "直率热情",
+      "认真看待朋友",
+      "游戏时专注",
+      "偶尔不善于拉近距离"
+    ],
+    "likes": [
+      "角色扮演游戏",
+      "与社团伙伴相处",
+      "讨论游戏攻略"
+    ],
+    "bg_story": "因幡巡是《魔女的夜宴》中的角色。她打扮活泼，也喜欢独自钻研游戏；面对想要结交的人，有时反而不知道该怎样开口。加入超自然研究社后，她逐渐学会把自己的兴趣和烦恼告诉伙伴，也很憧憬前辈宁宁。",
+    "identity": {
+      "role": "超自然研究社成员 / 游戏爱好者",
+      "age": "成年创作设定",
+      "classificationSource": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+    },
+    "source": "Sabbat of the Witch",
+    "traits": [
+      "orange_hair",
+      "long_hair",
+      "side_ponytail",
+      "pink_eyes"
+    ],
+    "tags": [
+      "因幡巡",
+      "魔女的夜宴",
+      "日常"
+    ],
+    "accent_color": "#E78285",
+    "bg_color": "#202833",
+    "palette": [
+      "#E78285",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "魔女的夜宴",
+      "people": [
+        {
+          "id": "nene",
+          "name": "绫地宁宁",
+          "aliases": [
+            "綾地寧々",
+            "Ayachi Nene"
+          ],
+          "characterId": "nene"
+        },
+        {
+          "id": "hoshina_shuuji",
+          "name": "保科柊史",
+          "aliases": [
+            "保科柊史",
+            "Hoshina Shuuji"
+          ],
+          "role": "超能力研究部部员",
+          "summary": "拥有感知他人强烈情感的心灵感应能力。在学校意外撞破绫地宁宁吸取心之碎片的秘密，自此加入社团协助宁宁收集碎片，并以真挚的日常陪伴化解宁宁内心的自卑与契约孤独。"
+        },
+        {
+          "id": "inaba_meguru",
+          "name": "因幡巡",
+          "aliases": [
+            "因幡めぐる",
+            "Inaba Meguru"
+          ],
+          "role": "超自然研究社成员 / 游戏爱好者",
+          "summary": "性格活泼豪爽，因想要结交朋友而常在部室活跃气氛。与宁宁在社团中相处融洽，是宁宁在校内最信赖的闺蜜之一。",
+          "characterId": "inaba_meguru"
+        },
+        {
+          "id": "togakushi_touko",
+          "name": "户隐憧子",
+          "aliases": [
+            "戸隠憧子",
+            "Togakushi Touko"
+          ],
+          "role": "学生会长 / 宁宁的学姐",
+          "summary": "容貌秀丽、待人温和的学生会长。深受后辈仰慕，在校内事务与社团活动上多次为宁宁与柊史提供关照和指引。",
+          "characterId": "togakushi_touko"
+        }
+      ],
+      "relations": [
+        {
+          "id": "nene-shuuji-classmates",
+          "source": "nene",
+          "target": "hoshina_shuuji",
+          "label": "同班同学",
+          "description": "宁宁与保科柊史是同班同学；两人的相遇从各自不愿公开的秘密展开。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "发行商 · Steam 作品介绍",
+            "url": "https://store.steampowered.com/app/888790/Sabbat_of_the_Witch/"
+          }
+        },
+        {
+          "id": "touko-nene-senior",
+          "source": "togakushi_touko",
+          "target": "nene",
+          "label": "高一年级的学姐",
+          "description": "憧子是学生会长与三年级的人气学姐，宁宁则是二年级学生。这里记录年级关系，不将其直接写成亲密好友。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 户隐憧子官方介绍",
+            "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+          }
+        },
+        {
+          "id": "meguru-shuuji-help",
+          "source": "inaba_meguru",
+          "target": "hoshina_shuuji",
+          "label": "请求帮助",
+          "description": "巡想改变交友不顺的处境，鼓起勇气向柊史等人求助。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 因幡巡官方介绍",
+            "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+          }
+        },
+        {
+          "id": "shuuji-nene-secret",
+          "source": "hoshina_shuuji",
+          "target": "nene",
+          "label": "发现她的秘密",
+          "description": "柊史偶然发现宁宁隐瞒的秘密，两人的日常由此发生变化。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 秘密被发现后",
+          "evidence": {
+            "title": "柚子社 · 官方故事介绍",
+            "url": "https://www.yuzu-soft.com/products/sothewitch/story.html"
+          }
+        },
+        {
+          "id": "meguru_nene_club",
+          "source": "inaba_meguru",
+          "target": "nene",
+          "label": "憧憬的社团前辈",
+          "description": "巡与宁宁同在超自然研究社活动，也憧憬宁宁这位前辈。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
+            "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "togakushi_touko",
+    "name": "户隐憧子",
+    "alias": [
+      "戸隠憧子",
+      "Togakushi Touko"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "户隐憧子 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Long dark hair tied into twin tails and amber-yellow eyes",
+      "hair": "black_hair, long_hair, twintails",
+      "eyes": "yellow_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "待人温和",
+      "做事从容",
+      "会照顾后辈",
+      "喜欢轻巧地打趣"
+    ],
+    "likes": [
+      "与后辈聊天",
+      "整理学生会事务",
+      "安静的午后"
+    ],
+    "bg_story": "户隐憧子是《魔女的夜宴》中的学姐，也是学生会长。她说话温和，处理事务时有自己的节奏，和后辈相处却并不拘谨。比起摆出前辈的架子，她更习惯先听对方把话说完，再带着一点笑意回应。",
+    "identity": {
+      "role": "学生会长 / 宁宁的学姐",
+      "age": "成年创作设定",
+      "classificationSource": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+    },
+    "source": "Sabbat of the Witch",
+    "traits": [
+      "black_hair",
+      "long_hair",
+      "twintails",
+      "yellow_eyes"
+    ],
+    "tags": [
+      "户隐憧子",
+      "魔女的夜宴",
+      "日常"
+    ],
+    "accent_color": "#A48FC0",
+    "bg_color": "#202833",
+    "palette": [
+      "#A48FC0",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "魔女的夜宴",
+      "people": [
+        {
+          "id": "nene",
+          "name": "绫地宁宁",
+          "aliases": [
+            "綾地寧々",
+            "Ayachi Nene"
+          ],
+          "characterId": "nene"
+        },
+        {
+          "id": "hoshina_shuuji",
+          "name": "保科柊史",
+          "aliases": [
+            "保科柊史",
+            "Hoshina Shuuji"
+          ],
+          "role": "超能力研究部部员",
+          "summary": "拥有感知他人强烈情感的心灵感应能力。在学校意外撞破绫地宁宁吸取心之碎片的秘密，自此加入社团协助宁宁收集碎片，并以真挚的日常陪伴化解宁宁内心的自卑与契约孤独。"
+        },
+        {
+          "id": "inaba_meguru",
+          "name": "因幡巡",
+          "aliases": [
+            "因幡めぐる",
+            "Inaba Meguru"
+          ],
+          "role": "超自然研究社成员 / 游戏爱好者",
+          "summary": "性格活泼豪爽，因想要结交朋友而常在部室活跃气氛。与宁宁在社团中相处融洽，是宁宁在校内最信赖的闺蜜之一。",
+          "characterId": "inaba_meguru"
+        },
+        {
+          "id": "togakushi_touko",
+          "name": "户隐憧子",
+          "aliases": [
+            "戸隠憧子",
+            "Togakushi Touko"
+          ],
+          "role": "学生会长 / 宁宁的学姐",
+          "summary": "容貌秀丽、待人温和的学生会长。深受后辈仰慕，在校内事务与社团活动上多次为宁宁与柊史提供关照和指引。",
+          "characterId": "togakushi_touko"
+        }
+      ],
+      "relations": [
+        {
+          "id": "nene-shuuji-classmates",
+          "source": "nene",
+          "target": "hoshina_shuuji",
+          "label": "同班同学",
+          "description": "宁宁与保科柊史是同班同学；两人的相遇从各自不愿公开的秘密展开。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "发行商 · Steam 作品介绍",
+            "url": "https://store.steampowered.com/app/888790/Sabbat_of_the_Witch/"
+          }
+        },
+        {
+          "id": "touko-nene-senior",
+          "source": "togakushi_touko",
+          "target": "nene",
+          "label": "高一年级的学姐",
+          "description": "憧子是学生会长与三年级的人气学姐，宁宁则是二年级学生。这里记录年级关系，不将其直接写成亲密好友。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 户隐憧子官方介绍",
+            "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+          }
+        },
+        {
+          "id": "meguru-shuuji-help",
+          "source": "inaba_meguru",
+          "target": "hoshina_shuuji",
+          "label": "请求帮助",
+          "description": "巡想改变交友不顺的处境，鼓起勇气向柊史等人求助。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 因幡巡官方介绍",
+            "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+          }
+        },
+        {
+          "id": "shuuji-nene-secret",
+          "source": "hoshina_shuuji",
+          "target": "nene",
+          "label": "发现她的秘密",
+          "description": "柊史偶然发现宁宁隐瞒的秘密，两人的日常由此发生变化。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 秘密被发现后",
+          "evidence": {
+            "title": "柚子社 · 官方故事介绍",
+            "url": "https://www.yuzu-soft.com/products/sothewitch/story.html"
+          }
+        },
+        {
+          "id": "meguru_nene_club",
+          "source": "inaba_meguru",
+          "target": "nene",
+          "label": "憧憬的社团前辈",
+          "description": "巡与宁宁同在超自然研究社活动，也憧憬宁宁这位前辈。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
+            "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "sumizome_nozomi",
+    "name": "墨染希",
+    "alias": [
+      "墨染希",
+      "Sumizome Nozomi"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "墨染希 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "A warm light-brown bob, small side hair ribbons, and blue eyes",
+      "hair": "light_brown_hair, short_hair, bob_cut",
+      "eyes": "blue_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "坦率亲切",
+      "对熟人很放松",
+      "愿意帮忙",
+      "容易被美食吸引"
+    ],
+    "likes": [
+      "好吃的点心",
+      "与熟人闲聊",
+      "帮家里打理神社"
+    ],
+    "bg_story": "墨染希是《星光咖啡馆与死神之蝶》中的角色，和昂晴从小相识。她开朗坦率，在熟人面前会直接说出自己的想法。家里经营神社，她偶尔帮忙做巫女工作；遇见喜欢的食物时，也常把原先的克制抛到脑后。",
+    "identity": {
+      "role": "神社家的女儿 / 咖啡馆伙伴",
+      "age": "成年创作设定",
+      "classificationSource": "https://www.yuzu-soft.com/products/stella/character.html"
+    },
+    "source": "Cafe Stella and the Reapers' Butterflies",
+    "traits": [
+      "light_brown_hair",
+      "short_hair",
+      "bob_cut",
+      "blue_eyes"
+    ],
+    "tags": [
+      "墨染希",
+      "星光咖啡馆与死神之蝶",
+      "日常"
+    ],
+    "accent_color": "#DEA75D",
+    "bg_color": "#202833",
+    "palette": [
+      "#DEA75D",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "星光咖啡馆与死神之蝶",
+      "people": [
+        {
+          "id": "natsume",
+          "name": "四季夏目",
+          "aliases": [
+            "四季ナツメ",
+            "Shiki Natsume"
+          ],
+          "characterId": "natsume"
+        },
+        {
+          "id": "takamine_kousei",
+          "name": "高岭昂晴",
+          "aliases": [
+            "高嶺昂晴",
+            "Takamine Kousei"
+          ],
+          "role": "星光咖啡馆店员 / 大学生",
+          "summary": "在遭遇致命意外后因明月栞那的契约而延命，随后作为店员加入星光咖啡馆。在制作糕点与接待客人的日常中，陪伴栞那与伙伴们收集思念之蝶。"
+        },
+        {
+          "id": "akizuki_kanna",
+          "name": "明月栞那",
+          "aliases": [
+            "明月栞那",
+            "Akizuki Kanna"
+          ],
+          "characterId": "akizuki_kanna"
+        },
+        {
+          "id": "sumizome_nozomi",
+          "name": "墨染希",
+          "aliases": [
+            "墨染希",
+            "Sumizome Nozomi"
+          ],
+          "role": "神社家的女儿 / 咖啡馆伙伴",
+          "summary": "性格温和大方，在昂晴加入咖啡馆后常来探望与协助，与栞那建立了温暖融洽的日常友谊。",
+          "characterId": "sumizome_nozomi"
+        },
+        {
+          "id": "hiuchidani_mei",
+          "name": "火打谷爱衣",
+          "aliases": [
+            "火打谷愛衣",
+            "Hiuchidani Mei"
+          ],
+          "role": "咖啡馆伙伴 / 曾参加游泳部",
+          "summary": "开朗元气的后辈，同样在咖啡馆兼职。日常中经常与栞那开玩笑打闹，为咖啡馆带来欢快的气氛。",
+          "characterId": "hiuchidani_mei"
+        },
+        {
+          "id": "shioyama_suzune",
+          "name": "汐山凉音",
+          "aliases": [
+            "汐山涼音",
+            "Shioyama Suzune"
+          ],
+          "role": "咖啡馆甜点师",
+          "summary": "昂晴的青梅竹马姐姐，负责咖啡馆全套甜点研发与制作。性格认真干练，在后厨悉心指点后辈。"
+        },
+        {
+          "id": "shioyama_hiroto",
+          "name": "汐山宏人",
+          "aliases": [
+            "汐山宏人",
+            "Shioyama Hiroto"
+          ],
+          "role": "咖啡馆店长",
+          "summary": "凉音的兄长，性格随和且善解人意。主持星光咖啡馆的日常运营，为栞那等死神与人类提供安稳的落脚点。"
+        },
+        {
+          "id": "stella_mikado",
+          "name": "米卡多",
+          "aliases": [
+            "ミカド",
+            "Mikado"
+          ],
+          "role": "死神之蝶使魔",
+          "summary": "外形如猫头鹰般的使魔，辅佐死神栞那执行引导灵魂的职责，平时在咖啡馆充当吉祥物。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "natsume-kousei-university",
+          "source": "natsume",
+          "target": "takamine_kousei",
+          "label": "同一所大学",
+          "description": "夏目与昂晴就读于同一所大学；这不代表两人开篇就已经是恋人。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 四季夏目官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "natsume-kanna-cafe",
+          "source": "natsume",
+          "target": "akizuki_kanna",
+          "label": "咖啡馆同事",
+          "description": "夏目与栞那在星光咖啡馆一起工作。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 咖啡馆营业期间",
+          "evidence": {
+            "title": "柚子社 · 官方人物介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "natsume-suzune-cafe",
+          "source": "natsume",
+          "target": "shioyama_suzune",
+          "label": "咖啡馆同事",
+          "description": "凉音负责咖啡馆的甜点制作，与夏目在同一家店工作。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 咖啡馆营业期间",
+          "evidence": {
+            "title": "柚子社 · 汐山凉音官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "kousei-nozomi-childhood",
+          "source": "takamine_kousei",
+          "target": "sumizome_nozomi",
+          "label": "青梅竹马",
+          "description": "希年纪比昂晴小，两人从小相识，交谈时很熟悉彼此。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 墨染希官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "nozomi-mei-classmates",
+          "source": "sumizome_nozomi",
+          "target": "hiuchidani_mei",
+          "label": "曾经的同班同学",
+          "description": "希和爱衣曾经在同一个班级，如今在不同的地方就读。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 火打谷爱衣官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "hiroto-suzune-siblings",
+          "source": "shioyama_hiroto",
+          "target": "shioyama_suzune",
+          "label": "弟弟 → 姐姐",
+          "description": "宏人是凉音的弟弟；姐弟关系不差，但宏人有些怕姐姐。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 其他人物介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "kousei-hiroto-friends",
+          "source": "takamine_kousei",
+          "target": "shioyama_hiroto",
+          "label": "同学与朋友",
+          "description": "宏人与昂晴是同学科的朋友，平日会一起闲聊。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 其他人物介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "kanna-mikado-partners",
+          "source": "akizuki_kanna",
+          "target": "stella_mikado",
+          "label": "引导灵魂的搭档",
+          "description": "栞那作为死神，与担任神使的米卡多一同承担引导亡者灵魂的工作。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 栞那与米卡多官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "nozomi_natsume_cafe",
+          "source": "sumizome_nozomi",
+          "target": "natsume",
+          "label": "咖啡馆伙伴",
+          "description": "希与夏目在星光咖啡馆共事，成为日常往来的伙伴。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "mei_natsume_cafe",
+          "source": "hiuchidani_mei",
+          "target": "natsume",
+          "label": "咖啡馆伙伴",
+          "description": "爱衣与夏目在星光咖啡馆的工作中相识。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "hiuchidani_mei",
+    "name": "火打谷爱衣",
+    "alias": [
+      "火打谷愛衣",
+      "Hiuchidani Mei"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "火打谷爱衣 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Short lavender hair falling over one eye, green eyes, and a sun-tanned complexion",
+      "hair": "purple_hair, short_hair, hair_over_one_eye",
+      "eyes": "green_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "精力充沛",
+      "直来直去",
+      "喜欢可爱的小东西",
+      "不喜欢繁琐的规矩"
+    ],
+    "likes": [
+      "毛绒玩偶",
+      "游泳",
+      "和希聊天"
+    ],
+    "bg_story": "火打谷爱衣是《星光咖啡馆与死神之蝶》中的角色，过去和墨染希同班。她喜欢把事情说得简单明白，情绪也很容易写在脸上。虽然看起来活力十足，她也会对可爱的玩偶毫无抵抗力；曾参加游泳部留下的晒色，是她自己有点在意的小事。",
+    "identity": {
+      "role": "咖啡馆伙伴 / 曾参加游泳部",
+      "age": "成年创作设定",
+      "classificationSource": "https://www.yuzu-soft.com/products/stella/character.html"
+    },
+    "source": "Cafe Stella and the Reapers' Butterflies",
+    "traits": [
+      "purple_hair",
+      "short_hair",
+      "hair_over_one_eye",
+      "green_eyes",
+      "tan"
+    ],
+    "tags": [
+      "火打谷爱衣",
+      "星光咖啡馆与死神之蝶",
+      "日常"
+    ],
+    "accent_color": "#AA91C8",
+    "bg_color": "#202833",
+    "palette": [
+      "#AA91C8",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "星光咖啡馆与死神之蝶",
+      "people": [
+        {
+          "id": "natsume",
+          "name": "四季夏目",
+          "aliases": [
+            "四季ナツメ",
+            "Shiki Natsume"
+          ],
+          "characterId": "natsume"
+        },
+        {
+          "id": "takamine_kousei",
+          "name": "高岭昂晴",
+          "aliases": [
+            "高嶺昂晴",
+            "Takamine Kousei"
+          ],
+          "role": "星光咖啡馆店员 / 大学生",
+          "summary": "在遭遇致命意外后因明月栞那的契约而延命，随后作为店员加入星光咖啡馆。在制作糕点与接待客人的日常中，陪伴栞那与伙伴们收集思念之蝶。"
+        },
+        {
+          "id": "akizuki_kanna",
+          "name": "明月栞那",
+          "aliases": [
+            "明月栞那",
+            "Akizuki Kanna"
+          ],
+          "characterId": "akizuki_kanna"
+        },
+        {
+          "id": "sumizome_nozomi",
+          "name": "墨染希",
+          "aliases": [
+            "墨染希",
+            "Sumizome Nozomi"
+          ],
+          "role": "神社家的女儿 / 咖啡馆伙伴",
+          "summary": "性格温和大方，在昂晴加入咖啡馆后常来探望与协助，与栞那建立了温暖融洽的日常友谊。",
+          "characterId": "sumizome_nozomi"
+        },
+        {
+          "id": "hiuchidani_mei",
+          "name": "火打谷爱衣",
+          "aliases": [
+            "火打谷愛衣",
+            "Hiuchidani Mei"
+          ],
+          "role": "咖啡馆伙伴 / 曾参加游泳部",
+          "summary": "开朗元气的后辈，同样在咖啡馆兼职。日常中经常与栞那开玩笑打闹，为咖啡馆带来欢快的气氛。",
+          "characterId": "hiuchidani_mei"
+        },
+        {
+          "id": "shioyama_suzune",
+          "name": "汐山凉音",
+          "aliases": [
+            "汐山涼音",
+            "Shioyama Suzune"
+          ],
+          "role": "咖啡馆甜点师",
+          "summary": "昂晴的青梅竹马姐姐，负责咖啡馆全套甜点研发与制作。性格认真干练，在后厨悉心指点后辈。"
+        },
+        {
+          "id": "shioyama_hiroto",
+          "name": "汐山宏人",
+          "aliases": [
+            "汐山宏人",
+            "Shioyama Hiroto"
+          ],
+          "role": "咖啡馆店长",
+          "summary": "凉音的兄长，性格随和且善解人意。主持星光咖啡馆的日常运营，为栞那等死神与人类提供安稳的落脚点。"
+        },
+        {
+          "id": "stella_mikado",
+          "name": "米卡多",
+          "aliases": [
+            "ミカド",
+            "Mikado"
+          ],
+          "role": "死神之蝶使魔",
+          "summary": "外形如猫头鹰般的使魔，辅佐死神栞那执行引导灵魂的职责，平时在咖啡馆充当吉祥物。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "natsume-kousei-university",
+          "source": "natsume",
+          "target": "takamine_kousei",
+          "label": "同一所大学",
+          "description": "夏目与昂晴就读于同一所大学；这不代表两人开篇就已经是恋人。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 四季夏目官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "natsume-kanna-cafe",
+          "source": "natsume",
+          "target": "akizuki_kanna",
+          "label": "咖啡馆同事",
+          "description": "夏目与栞那在星光咖啡馆一起工作。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 咖啡馆营业期间",
+          "evidence": {
+            "title": "柚子社 · 官方人物介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "natsume-suzune-cafe",
+          "source": "natsume",
+          "target": "shioyama_suzune",
+          "label": "咖啡馆同事",
+          "description": "凉音负责咖啡馆的甜点制作，与夏目在同一家店工作。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 咖啡馆营业期间",
+          "evidence": {
+            "title": "柚子社 · 汐山凉音官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "kousei-nozomi-childhood",
+          "source": "takamine_kousei",
+          "target": "sumizome_nozomi",
+          "label": "青梅竹马",
+          "description": "希年纪比昂晴小，两人从小相识，交谈时很熟悉彼此。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 墨染希官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "nozomi-mei-classmates",
+          "source": "sumizome_nozomi",
+          "target": "hiuchidani_mei",
+          "label": "曾经的同班同学",
+          "description": "希和爱衣曾经在同一个班级，如今在不同的地方就读。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 火打谷爱衣官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "hiroto-suzune-siblings",
+          "source": "shioyama_hiroto",
+          "target": "shioyama_suzune",
+          "label": "弟弟 → 姐姐",
+          "description": "宏人是凉音的弟弟；姐弟关系不差，但宏人有些怕姐姐。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 其他人物介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "kousei-hiroto-friends",
+          "source": "takamine_kousei",
+          "target": "shioyama_hiroto",
+          "label": "同学与朋友",
+          "description": "宏人与昂晴是同学科的朋友，平日会一起闲聊。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 其他人物介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "kanna-mikado-partners",
+          "source": "akizuki_kanna",
+          "target": "stella_mikado",
+          "label": "引导灵魂的搭档",
+          "description": "栞那作为死神，与担任神使的米卡多一同承担引导亡者灵魂的工作。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 开篇设定",
+          "evidence": {
+            "title": "柚子社 · 栞那与米卡多官方介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "nozomi_natsume_cafe",
+          "source": "sumizome_nozomi",
+          "target": "natsume",
+          "label": "咖啡馆伙伴",
+          "description": "希与夏目在星光咖啡馆共事，成为日常往来的伙伴。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        },
+        {
+          "id": "mei_natsume_cafe",
+          "source": "hiuchidani_mei",
+          "target": "natsume",
+          "label": "咖啡馆伙伴",
+          "description": "爱衣与夏目在星光咖啡馆的工作中相识。",
+          "stage": "日常相处",
+          "directed": false,
+          "spoiler": false,
+          "evidence": {
+            "title": "柚子社官方角色介绍",
+            "url": "https://www.yuzu-soft.com/products/stella/character.html"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "amiya",
+    "name": "阿米娅",
+    "alias": [
+      "アーミヤ",
+      "Amiya"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "阿米娅 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Long brown hair, upright rabbit ears, and blue eyes",
+      "hair": "brown_hair, long_hair",
+      "eyes": "blue_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "认真负责",
+      "善于体谅他人",
+      "意志坚定",
+      "偶尔把自己的休息放在最后"
+    ],
+    "likes": [
+      "和同伴安静相处",
+      "阅读",
+      "休息时的一杯热饮"
+    ],
+    "bg_story": "阿米娅是《明日方舟》中罗德岛的公开领袖。她和博士、凯尔希共同承担组织的工作，面对感染者的处境始终保有同理心。责任让她常常显得比同龄人沉稳，但在可以卸下事务的片刻，她也会珍惜普通的聊天、阅读和休息。",
+    "identity": {
+      "role": "罗德岛公开领袖",
+      "age": "成年创作设定",
+      "classificationSource": "https://ak.hypergryph.com/"
+    },
+    "source": "Arknights",
+    "traits": [
+      "brown_hair",
+      "long_hair",
+      "blue_eyes",
+      "rabbit_ears"
+    ],
+    "tags": [
+      "阿米娅",
+      "明日方舟",
+      "日常"
+    ],
+    "accent_color": "#66BCD2",
+    "bg_color": "#202833",
+    "palette": [
+      "#66BCD2",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "明日方舟",
+      "people": [
+        {
+          "id": "chen",
+          "name": "陈",
+          "aliases": [
+            "Ch'en",
+            "陈晖洁",
+            "老陈",
+            "陈Sir",
+            "赤霄"
+          ],
+          "characterId": "chen_arknights"
+        },
+        {
+          "id": "dusk",
+          "name": "夕",
+          "aliases": [
+            "Dusk",
+            "夕娘娘",
+            "十一妹",
+            "岁兽碎片"
+          ],
+          "characterId": "dusk_arknights"
+        },
+        {
+          "id": "eunectes",
+          "name": "森蚺",
+          "aliases": [
+            "Eunectes",
+            "祖玛玛",
+            "Zumama",
+            "大丑驾驶员"
+          ],
+          "characterId": "eunectes_arknights"
+        },
+        {
+          "id": "exusiai",
+          "name": "能天使",
+          "aliases": [
+            "Exusiai",
+            "蕾缪尔",
+            "阿能",
+            "企鹅物流"
+          ],
+          "characterId": "exusiai_arknights"
+        },
+        {
+          "id": "eyjafjalla",
+          "name": "艾雅法拉",
+          "aliases": [
+            "Eyjafjalla",
+            "小羊",
+            "阿黛尔·冯·艾雅法拉",
+            "Adele von Eyjafjalla"
+          ],
+          "characterId": "eyjafjalla_arknights"
+        },
+        {
+          "id": "goldenglow",
+          "name": "澄闪",
+          "aliases": [
+            "Goldenglow",
+            "苏茜·格里特",
+            "粉毛",
+            "Susie Glitter"
+          ],
+          "characterId": "goldenglow_arknights"
+        },
+        {
+          "id": "kaltsit",
+          "name": "凯尔希",
+          "aliases": [
+            "Kal'tsit",
+            "AMa-10",
+            "老太婆",
+            "医疗总监"
+          ],
+          "characterId": "kaltsit_arknights"
+        },
+        {
+          "id": "lemuen",
+          "name": "蕾缪安",
+          "aliases": [
+            "Lemuen",
+            "蕾缪安·席尔瓦",
+            "小祥",
+            "神射手"
+          ],
+          "characterId": "lemuen_arknights"
+        },
+        {
+          "id": "mudrock",
+          "name": "泥岩",
+          "aliases": [
+            "Mudrock",
+            "土石之子",
+            "大药队长",
+            "マドロック"
+          ],
+          "characterId": "mudrock_arknights"
+        },
+        {
+          "id": "quillpen",
+          "name": "羽毛笔",
+          "aliases": [
+            "La Pluma",
+            "拉菲艾拉·席尔瓦",
+            "羽毛笔",
+            "Rafaela Silva"
+          ],
+          "characterId": "quillpen_arknights"
+        },
+        {
+          "id": "skadi",
+          "name": "斯卡蒂",
+          "aliases": [
+            "Skadi",
+            "蒂蒂",
+            "深海猎人",
+            "浊心斯卡蒂",
+            "伊莎玛拉"
+          ],
+          "characterId": "skadi_arknights"
+        },
+        {
+          "id": "surtr",
+          "name": "史尔特尔",
+          "aliases": [
+            "Surtr",
+            "42姐",
+            "莱瓦汀之主",
+            "surtur"
+          ],
+          "characterId": "surtr_arknights"
+        },
+        {
+          "id": "suzuran",
+          "name": "铃兰",
+          "aliases": [
+            "Suzuran",
+            "丽萨",
+            "Lisa",
+            "罗德岛的光"
+          ],
+          "characterId": "suzuran_arknights"
+        },
+        {
+          "id": "ling",
+          "name": "令",
+          "aliases": [
+            "Ling",
+            "岁之龙",
+            "三姐",
+            "尚蜀隐士"
+          ],
+          "characterId": "ling_arknights"
+        },
+        {
+          "id": "texas",
+          "name": "德克萨斯",
+          "aliases": [
+            "Texas",
+            "切利尼娜·德克萨斯",
+            "缄默德克萨斯",
+            "德狗"
+          ],
+          "characterId": "texas_arknights"
+        },
+        {
+          "id": "lappland",
+          "name": "拉普兰德",
+          "aliases": [
+            "Lappland",
+            "荒芜拉普兰德",
+            "萨卢佐的狂狼",
+            "拉狗"
+          ],
+          "characterId": "lappland_arknights"
+        },
+        {
+          "id": "viviana",
+          "name": "薇薇安娜",
+          "aliases": [
+            "Viviana Droste",
+            "烛骑士",
+            "德罗斯特",
+            "金律骑士"
+          ],
+          "characterId": "viviana_arknights"
+        },
+        {
+          "id": "typhon",
+          "name": "提丰",
+          "aliases": [
+            "Typhon",
+            "小提丰",
+            "萨米猎人",
+            "ティフォン"
+          ],
+          "characterId": "typhon_arknights"
+        },
+        {
+          "id": "shu",
+          "name": "黍",
+          "aliases": [
+            "Shu",
+            "黍姐",
+            "六妹",
+            "农业天师"
+          ],
+          "characterId": "shu_arknights"
+        },
+        {
+          "id": "talulah",
+          "name": "塔露拉",
+          "aliases": [
+            "Talulah",
+            "塔露拉·雅特利亚斯",
+            "斗士塔露拉",
+            "领袖"
+          ],
+          "characterId": "talulah_arknights"
+        },
+        {
+          "id": "doctor",
+          "name": "博士",
+          "aliases": [
+            "Doctor",
+            "预言家",
+            "巴别塔恶灵",
+            "罗德岛战术指挥官"
+          ],
+          "role": "罗德岛战术指挥官 / 神经科学学者",
+          "summary": "石棺苏醒后的罗德岛灵魂人物。以惊人的战术指挥能力化解多场天灾与战乱危机，是阿米娅、凯尔希、陈、令、水月等无数干员誓死追随与托付生死的精神依靠。"
+        },
+        {
+          "id": "amiya",
+          "name": "阿米娅",
+          "aliases": [
+            "Amiya",
+            "兔兔",
+            "罗德岛公开领袖",
+            "奇美拉",
+            "特蕾西娅继承人"
+          ],
+          "role": "罗德岛公开领袖",
+          "summary": "背负萨卡兹十王冠的卡特斯少女。在残酷大地与天灾战火中始终贯彻感染者平权的理想，深爱并信任博士与凯尔希，以稚嫩肩膀扛起罗德岛的前行之路。",
+          "characterId": "amiya"
+        },
+        {
+          "id": "theresa",
+          "name": "特蕾西娅",
+          "aliases": [
+            "Theresa",
+            "萨卡兹仁君",
+            "巴别塔领袖",
+            "前代魔王"
+          ],
+          "role": "巴别塔前领袖 / 萨卡兹正统魔王",
+          "summary": "温柔博爱但身负萨卡兹宿命的魔王。与凯尔希共同创立巴别塔，将罗德岛旗舰交托给未来的希望阿米娅，其意志长久照亮泰拉大陆的夜空。"
+        },
+        {
+          "id": "wei_yenwu",
+          "name": "魏彦吾",
+          "aliases": [
+            "Wei Yenwu",
+            "龙门执政官",
+            "魏公"
+          ],
+          "role": "龙门执政官 / 前炎国皇族",
+          "summary": "智谋深远、手段铁血的龙门大总督。陈与塔露拉的舅父，在切尔诺伯格核心城危机与龙门近卫局防卫中坐镇全局，维系龙门在多方夹缝中的生机。"
+        },
+        {
+          "id": "chongyue",
+          "name": "重岳",
+          "aliases": [
+            "Chongyue",
+            "朔",
+            "岁家长兄",
+            "玉门宗师"
+          ],
+          "role": "岁兽长兄 / 前玉门司岁台武术总教练",
+          "summary": "岁兽十二碎片之首。化身凡人镇守玉门关百余年，拳法通神、心怀黎民，悉心看护着令、夕、黍等弟妹在人间的旅程。"
+        },
+        {
+          "id": "nian",
+          "name": "年",
+          "aliases": [
+            "Nian",
+            "年华",
+            "岁家次女",
+            "铸兵宗师"
+          ],
+          "role": "岁兽次女 / 铸造与电影爱好者",
+          "summary": "性格豪爽嗜辣、热爱拍摄低成本烂片的岁兽碎片。在尚蜀与大炎各处穿梭，为了阻止岁兽本体复苏而努力联络令与夕等姐妹并肩抗争。"
+        },
+        {
+          "id": "mostima",
+          "name": "莫斯提马",
+          "aliases": [
+            "Mostima",
+            "堕天使",
+            "信使",
+            "黑角信使"
+          ],
+          "role": "企鹅物流信使 / 堕天萨科塔",
+          "summary": "手持黑白双杖、穿梭泰拉的行者。曾为拉特兰公证所执行人，在经历安多恩背叛事件后堕天，与能天使、蕾缪安有着深厚的青梅竹马羁绊。"
+        },
+        {
+          "id": "specter",
+          "name": "幽灵鲨",
+          "aliases": [
+            "Specter",
+            "劳伦缇娜",
+            "Laurentina",
+            "二队长"
+          ],
+          "role": "深海猎人 / 归溟幽灵鲨",
+          "summary": "深海猎人二队成员，斯卡哈最珍视的战友。历经源石神经侵蚀与教会折磨后重拾清醒记忆，以雕塑家与狂傲战士的姿态重返战场守护家园。"
+        },
+        {
+          "id": "logos",
+          "name": "Logos",
+          "aliases": [
+            "Logos",
+            "女妖之主",
+            "罗德岛精英干员"
+          ],
+          "role": "罗德岛精英干员 / 萨卡兹咒术大师",
+          "summary": "年轻的萨卡兹王庭咒术核心领袖。实力冠绝战场却极富同理心与少年心气，多次在萨卡兹内战与维多利亚危机中扭转乾坤，与泥岩、凯尔希互信至深。"
+        },
+        {
+          "id": "gavial",
+          "name": "嘉维尔",
+          "aliases": [
+            "Gavial",
+            "百炼嘉维尔",
+            "萨尔贡大酋长"
+          ],
+          "role": "罗德岛医疗干员 / 阿达克里斯战神",
+          "summary": "性格豪放热烈的前萨尔贡部落大酋长。精通近身肉搏与医疗技术，与羽毛笔、森蚺同族情谊深厚，深受罗德岛干员爱戴。"
+        },
+        {
+          "id": "nearl",
+          "name": "玛嘉烈·临光",
+          "aliases": [
+            "Nearl",
+            "耀骑士",
+            "临光",
+            "卡西米尔之光"
+          ],
+          "role": "耀骑士 / 卡西米尔临光家长女",
+          "summary": "光芒璀璨、秉持纯粹骑士道的卡西米尔英雄。在特胄骑士大赛中夺冠冲破资本牢笼，与薇薇安娜在决赛擂台上英雄相惜，后重返罗德岛奔赴大地。"
+        },
+        {
+          "id": "tequila",
+          "name": "龙舌兰",
+          "aliases": [
+            "Tequila",
+            "埃内斯托·萨拉斯",
+            "Ernesto Salas"
+          ],
+          "role": "多索雷斯保安副主任 / 罗德岛干员",
+          "summary": "羽毛笔拉菲艾拉的义兄。在多索雷斯政变中深陷家族与义父的阴谋，最终选择护卫妹妹的安全与尊严，与羽毛笔一同加入罗德岛。"
+        },
+        {
+          "id": "magallan",
+          "name": "麦哲伦",
+          "aliases": [
+            "Magallan",
+            "莱茵生命科考员",
+            "小企鹅"
+          ],
+          "role": "莱茵生命科考信使 / 极地探险家",
+          "summary": "性格乐观坚韧的莱茵生命勘探员。在萨米冰原与北方极地深入考察，与提丰在风雪猎原中结伴探索邪魔遗迹。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "doctor-amiya-core_bond",
+          "source": "doctor",
+          "target": "amiya",
+          "label": "灵魂契约与共同掌舵者",
+          "description": "博士是阿米娅从切尔诺伯格石棺中拼死唤醒的战术支柱，阿米娅则是博士直面残酷旧日罪愆时永不褪色的希望微光。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 切尔诺伯格救援",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》主线序章至第八章设定",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "doctor-kaltsit-ancient_companions",
+          "source": "doctor",
+          "target": "kaltsit",
+          "label": "跨越纪元的同行与审视",
+          "description": "两人同为前文明遗存的关键存在，凯尔希数万年来注视并戒备着博士的选择，却依然在巴别塔与罗德岛与之一同托起文明火种。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主线第十四章 · 慈悲灯塔",
+          "evidence": {
+            "title": "PRTS维基 · 凯尔希与博士历史档案",
+            "url": "https://prts.wiki/w/罗德岛"
+          }
+        },
+        {
+          "id": "kaltsit-amiya-guardian_and_mentor",
+          "source": "kaltsit",
+          "target": "amiya",
+          "label": "养育之恩与精神导师",
+          "description": "凯尔希恪守对特蕾西娅的临终誓约，如严母与导师般悉心庇护并引导阿米娅成长为能独当一面的罗德岛真正领袖。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛常态管理",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》干员晋升记录",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "theresa-amiya-crown_succession",
+          "source": "theresa",
+          "target": "amiya",
+          "label": "魔王之冠与慈悲托付",
+          "description": "特蕾西娅在巴别塔陷落前将萨卡兹的古老权能与文明愿景尽数托付给年幼的阿米娅，阿米娅终生背负其意志为大地寻找宽恕之道。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "主线第十四章 · 慈悲灯塔",
+          "evidence": {
+            "title": "PRTS维基 · 巴别塔与魔王传承专条",
+            "url": "https://prts.wiki/w/卡兹戴尔"
+          }
+        },
+        {
+          "id": "doctor-theresa-sorrowful_parting",
+          "source": "doctor",
+          "target": "theresa",
+          "label": "旧日知音与理念决裂",
+          "description": "曾携手开创巴别塔的挚友，却因前人类复兴宿命与泰拉现实生命的取舍而走向悲剧性的殊途与永别。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 巴别塔",
+          "evidence": {
+            "title": "PRTS维基 · 巴别塔活动全档案",
+            "url": "https://prts.wiki/w/卡兹戴尔"
+          }
+        },
+        {
+          "id": "chen-talulah-sisterhood_and_atonement",
+          "source": "chen",
+          "target": "talulah",
+          "label": "骨肉至亲与救赎誓言",
+          "description": "同母异父的亲姐妹，童年被迫离散并走向截然不同的命运；陈甘冒生死突入核心城斩断附着其身的黑蛇狂魂，唤醒了塔露拉的本心。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主线第八章 · 怒号光明",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》主线第八章剧本",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "talulah-amiya-fated_confrontation",
+          "source": "talulah",
+          "target": "amiya",
+          "label": "宿命较量与真理启示",
+          "description": "作为整合运动暴动的领袖与罗德岛领袖展开殊死决斗，阿米娅在升变后以精神之剑共鸣唤醒被科西切怨念压制的塔露拉原初意志。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主线第八章 · 怒号光明",
+          "evidence": {
+            "title": "PRTS维基 · 塔露拉决战记录",
+            "url": "https://prts.wiki/w/整合运动"
+          }
+        },
+        {
+          "id": "chen-wei_yenwu-defiance_and_path",
+          "source": "chen",
+          "target": "wei_yenwu",
+          "label": "甥舅至亲与理念决裂",
+          "description": "魏彦吾视陈为最器重的内侄女，但陈无法容忍其残酷的冷血清洗政治手腕，毅然掷下高级督察警徽踏上属于自己的游历之道。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "主线第七章 · 苦难产生",
+          "evidence": {
+            "title": "PRTS维基 · 龙门警署与执政厅记录",
+            "url": "https://prts.wiki/w/泰拉世界观"
+          }
+        },
+        {
+          "id": "chen-amiya-trusted_allies",
+          "source": "chen",
+          "target": "amiya",
+          "label": "生死战友与救赎并肩",
+          "description": "切尔诺伯格与龙门危机中建立深厚信任，阿米娅在核心城顶层陪伴陈完成了对塔露拉的终极拯救，成为陈在迷茫时最信赖的同伴。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主线第八章 · 怒号光明",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》主线故事线",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "talulah-kaltsit-scrutiny_and_redemption",
+          "source": "talulah",
+          "target": "kaltsit",
+          "label": "看押受审与前路明证",
+          "description": "在塔露拉被收监罗德岛期间，凯尔希以洞悉千年的冷静视角与这位昔日整合运动领袖多次深入对谈，见证其作为赎罪斗士重回战场。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "主线第九章至第十一章",
+          "evidence": {
+            "title": "PRTS维基 · 塔露拉收监与再出发档案",
+            "url": "https://prts.wiki/w/整合运动"
+          }
+        },
+        {
+          "id": "exusiai-lemuen-beloved_sisters",
+          "source": "exusiai",
+          "target": "lemuen",
+          "label": "亲生姐妹与彼此牵绊",
+          "description": "蕾缪尔与蕾缪安是拉特兰深具血缘羁绊的姐妹，姐姐在昏迷五年苏醒后重返战阵，能天使对其既无比敬爱又满怀重逢的欣喜。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 空想花庭",
+          "evidence": {
+            "title": "PRTS维基 · 蕾缪安与能天使语音关联",
+            "url": "https://prts.wiki/w/拉特兰"
+          }
+        },
+        {
+          "id": "exusiai-texas-logistics_duo",
+          "source": "exusiai",
+          "target": "texas",
+          "label": "王牌搭档与日常羁绊",
+          "description": "企鹅物流冲锋在最前线的黄金拍档，能天使的元气欢脱与德克萨斯的冷静缄默形成完美互补，在无数枪林弹雨中互托后背。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 企鹅物流日常与叙拉古人",
+          "evidence": {
+            "title": "PRTS维基 · 企鹅物流档案专页",
+            "url": "https://prts.wiki/w/企鹅物流"
+          }
+        },
+        {
+          "id": "texas-lappland-fated_nemesis",
+          "source": "texas",
+          "target": "lappland",
+          "label": "宿命羁绊与镜影纠葛",
+          "description": "拉普兰德疯狂痴迷于德克萨斯骨子里的狼性，在沃尔西尼暴雨中逼迫其拔剑；而德克萨斯以彻底斩断黑帮枷锁的决绝回答了对方的追逐。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 叙拉古人",
+          "evidence": {
+            "title": "PRTS维基 · 叙拉古人活动全文本",
+            "url": "https://prts.wiki/w/叙拉古"
+          }
+        },
+        {
+          "id": "exusiai-mostima-cherished_seeker",
+          "source": "exusiai",
+          "target": "mostima",
+          "label": "追寻的昔日挚友",
+          "description": "能天使离开拉特兰加入企鹅物流的重要初衷便是探寻堕天流浪的莫斯提马，对当年圣堂事件毫不知情的她始终珍视着这份同伴情谊。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 企鹅物流秘闻",
+          "evidence": {
+            "title": "PRTS维基 · 莫斯提马与能天使角色设定",
+            "url": "https://prts.wiki/w/企鹅物流"
+          }
+        },
+        {
+          "id": "lemuen-mostima-stolen_past_comrades",
+          "source": "lemuen",
+          "target": "mostima",
+          "label": "圣堂罹难与无言谅解",
+          "description": "八年前精锐小队的生死搭档，因安多恩事件蕾缪安重伤昏迷、莫斯提马堕天流亡；蕾缪安苏醒后以从容的心境放下了往昔怨尤。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 吾导先路",
+          "evidence": {
+            "title": "PRTS维基 · 吾导先路教宗枢机处记录",
+            "url": "https://prts.wiki/w/拉特兰"
+          }
+        },
+        {
+          "id": "texas-doctor-sworn_guardian",
+          "source": "texas",
+          "target": "doctor",
+          "label": "坚实护卫与绝对信任",
+          "description": "德克萨斯作为罗德岛外勤先锋与特种利刃，在战场上以精湛双剑守护博士周全，唯有在博士身边才会展露难得的温和笑意。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛合作契约",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》干员语音档案",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "lappland-doctor-unhinged_observer",
+          "source": "lappland",
+          "target": "doctor",
+          "label": "荒野狂狼与清醒试探",
+          "description": "拉普兰德将博士视为唯一能理解其癫狂背后真实理性的同类，在罗德岛享受无拘无束的杀戮指令，同时也观察着这艘方舟的终点。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛干员观察",
+          "evidence": {
+            "title": "PRTS维基 · 拉普兰德晋升记录",
+            "url": "https://prts.wiki/w/叙拉古"
+          }
+        },
+        {
+          "id": "lappland-suzuran-siracusa_shadows",
+          "source": "lappland",
+          "target": "suzuran",
+          "label": "故土黑帮的暗影与守护",
+          "description": "深知铃兰父母在叙拉古家族争斗中的血泪往事，拉普兰德在舰内暗中以自己的方式警告图谋不轨者，守护着小九尾的纯真。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "SideStory · 叙拉古人背景设定",
+          "evidence": {
+            "title": "PRTS维基 · 铃兰与拉普兰德背景档案",
+            "url": "https://prts.wiki/w/叙拉古"
+          }
+        },
+        {
+          "id": "lemuen-doctor-sniper_trust",
+          "source": "lemuen",
+          "target": "doctor",
+          "label": "超远距支援与战术托付",
+          "description": "蕾缪安在罗德岛接受下肢神经康复治疗期间，作为超远距神射手向指挥官提供战术视野，以幽默恬淡的谈吐深受博士信赖。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 空想花庭罗德岛驻舰",
+          "evidence": {
+            "title": "PRTS维基 · 蕾缪安干员履历",
+            "url": "https://prts.wiki/w/拉特兰"
+          }
+        },
+        {
+          "id": "ling-dusk-sisterly_banter",
+          "source": "ling",
+          "target": "dusk",
+          "label": "诗酒豪情与深闺画仙",
+          "description": "岁家三姐令以豪迈潇洒的大江诗酒之意，屡屡打破十一妹夕画室的自闭清冷，表面斗嘴不断，实则在危机中全力护佑妹辈。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 将进酒",
+          "evidence": {
+            "title": "PRTS维基 · 将进酒尚蜀卷宗",
+            "url": "https://prts.wiki/w/炎国"
+          }
+        },
+        {
+          "id": "ling-shu-siblings_care",
+          "source": "ling",
+          "target": "shu",
+          "label": "豪侠醉客与稼穑宗师",
+          "description": "令深知六妹黍甘愿耗尽神力滋养大荒城沃土的仁厚苦心，在大荒兽灾中携酒策应，为黍分担地脉紊乱的凶险冲击。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 怀黍离",
+          "evidence": {
+            "title": "PRTS维基 · 怀黍离大荒城事件",
+            "url": "https://prts.wiki/w/大荒城"
+          }
+        },
+        {
+          "id": "ling-chongyue-eldest_siblings_bond",
+          "source": "ling",
+          "target": "chongyue",
+          "label": "朔望相望与玉门并肩",
+          "description": "长兄重岳褪去神性化为凡人守卫玉门，令携残谱与清酒共话沧海桑田，两位岁家年长者携手抵御巨兽本体意识的觉醒。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 登临意",
+          "evidence": {
+            "title": "PRTS维基 · 登临意玉门关志",
+            "url": "https://prts.wiki/w/炎国"
+          }
+        },
+        {
+          "id": "shu-dusk-sisterly_guidance",
+          "source": "shu",
+          "target": "dusk",
+          "label": "稼穑春风与丹青点染",
+          "description": "性格温柔和蔼的六姐黍总爱给自闭在画室不肯吃饭的夕送去热腾腾的米饭与点心，以大地生机化解夕笔尖过重的清寂之气。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "SideStory · 怀黍离后日谈",
+          "evidence": {
+            "title": "PRTS维基 · 黍与夕互动语音",
+            "url": "https://prts.wiki/w/大荒城"
+          }
+        },
+        {
+          "id": "shu-chongyue-elders_responsibility",
+          "source": "shu",
+          "target": "chongyue",
+          "label": "耕耘守望与长兄如父",
+          "description": "重岳舍生忘死镇守边关，黍则扎根荒漠化育黎民，两人以凡人姿态深入红尘，共同守护着岁家弟妹不被本体阴魂吞噬。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 怀黍离与登临意",
+          "evidence": {
+            "title": "PRTS维基 · 岁家兄弟姐妹总览",
+            "url": "https://prts.wiki/w/炎国"
+          }
+        },
+        {
+          "id": "dusk-nian-bickering_sisters",
+          "source": "dusk",
+          "target": "nian",
+          "label": "画境对峙与欢喜冤家",
+          "description": "二姐年千方百计将夕逼出避世数千年的画卷，夕虽对年的粗鲁吵闹百般嫌弃，却在年遭遇危险时毫不犹豫地泼墨化阵襄助。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 画中人",
+          "evidence": {
+            "title": "PRTS维基 · 画中人夕山卷轴",
+            "url": "https://prts.wiki/w/炎国"
+          }
+        },
+        {
+          "id": "ling-nian-smithy_and_poetry",
+          "source": "ling",
+          "target": "nian",
+          "label": "铸火热烈与诗剑清风",
+          "description": "年沉迷于人间铸造与拍烂片，令则品评其铸剑之技，两位性格迥异的长姐在罗德岛甲板上对酌畅谈对抗长兄朔与岁兽本体之策。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 将进酒前夕",
+          "evidence": {
+            "title": "PRTS维基 · 年与令对话记录",
+            "url": "https://prts.wiki/w/炎国"
+          }
+        },
+        {
+          "id": "skadi-specter-abyssal_kinship",
+          "source": "skadi",
+          "target": "specter",
+          "label": "生死与共的深海血誓",
+          "description": "二度同生共死的第二小队深海猎人同袍，在陆地与海嗣低语交织的绝境中彼此呼唤人性，以斩断潮涌的决心支撑对方不被同化。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 愚人号与覆潮之下",
+          "evidence": {
+            "title": "PRTS维基 · 深海猎人阵营总志",
+            "url": "https://prts.wiki/w/深海猎人"
+          }
+        },
+        {
+          "id": "skadi-doctor-shelter_of_humanity",
+          "source": "skadi",
+          "target": "doctor",
+          "label": "唯一的心灵避风港",
+          "description": "惧怕自身引来天灾海嗣而刻意远离人群的斯卡蒂，在博士真诚毫无保留的接纳下重拾身为人类的情感与笑容，甘愿为其斩裂惊涛。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛干员信赖记录",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》斯卡蒂信赖档案",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "skadi-kaltsit-ocean_treaty",
+          "source": "skadi",
+          "target": "kaltsit",
+          "label": "海洋盟约与审慎防范",
+          "description": "凯尔希深刻知晓深海猎人改造的残酷真相与大群海嗣覆灭泰拉的风险，在竭力为斯卡蒂提供生理支持的同时时刻监控异变征兆。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "SideStory · 覆潮之下",
+          "evidence": {
+            "title": "PRTS维基 · 覆潮之下医疗报告",
+            "url": "https://prts.wiki/w/深海猎人"
+          }
+        },
+        {
+          "id": "mudrock-logos-salvation_in_the_ruins",
+          "source": "mudrock",
+          "target": "logos",
+          "label": "荒原救赎与同胞破晓",
+          "description": "在泥岩小队遭萨卡兹雇佣兵追杀逼入绝境之际，精英干员Logos出手相救并引入罗德岛，赋予了这群漂泊萨卡兹重获新生的归宿。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 沃伦姆德的薄暮后日谈",
+          "evidence": {
+            "title": "PRTS维基 · 泥岩干员密录与Logos记录",
+            "url": "https://prts.wiki/w/卡兹戴尔"
+          }
+        },
+        {
+          "id": "mudrock-doctor-loyal_guardian",
+          "source": "mudrock",
+          "target": "doctor",
+          "label": "卸甲真情与不动长壁",
+          "description": "褪去厚重生化铠甲的泥岩将最脆弱真诚的容颜展现在博士面前，以血肉之躯化为巍峨土石屏障，誓死守护罗德岛的和平。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛舰内生活",
+          "evidence": {
+            "title": "PRTS维基 · 泥岩信赖记录",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "mudrock-kaltsit-kazdel_refuge",
+          "source": "mudrock",
+          "target": "kaltsit",
+          "label": "萨卡兹难民庇护与医者托付",
+          "description": "凯尔希妥善安置了泥岩麾下饱受矿石病折磨的非战斗感染者部众，泥岩对凯尔希总监怀有无尽感激与崇敬。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛医疗部收容",
+          "evidence": {
+            "title": "PRTS维基 · 泥岩小队医疗档案",
+            "url": "https://prts.wiki/w/罗德岛"
+          }
+        },
+        {
+          "id": "surtr-doctor-memory_anchor",
+          "source": "surtr",
+          "target": "doctor",
+          "label": "记忆旅人与唯一的清醒安宁",
+          "description": "身陷海量虚妄碎裂记忆折磨的史尔特尔，在博士的陪伴与一份冰淇淋的甜蜜中找回心灵的宁静，将当下并肩之战视作唯一真实。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 史尔特尔干员密录",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》史尔特尔干员密录",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "surtr-logos-ancient_rune_investigation",
+          "source": "surtr",
+          "target": "logos",
+          "label": "远古铭文与烈焰源流考据",
+          "description": "精英干员Logos以其深厚的古萨卡兹咒术知识协助史尔特尔剖析魔剑“莱瓦汀”上的古老刻痕，探究其源石技艺背后失落的时代记忆。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛术师学术交流",
+          "evidence": {
+            "title": "PRTS维基 · 史尔特尔源石技艺分析",
+            "url": "https://prts.wiki/w/卡兹戴尔"
+          }
+        },
+        {
+          "id": "surtr-kaltsit-archaic_origin_inquiry",
+          "source": "surtr",
+          "target": "kaltsit",
+          "label": "记忆探寻与生理抑制诊断",
+          "description": "凯尔希亲自主持史尔特尔的大脑源石病灶抑制与记忆解构，以长生者的广博见闻为其辨析错乱记忆中关于远古遗迹的蛛丝马迹。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 医疗部特别诊断",
+          "evidence": {
+            "title": "PRTS维基 · 史尔特尔临床诊断档案",
+            "url": "https://prts.wiki/w/罗德岛"
+          }
+        },
+        {
+          "id": "eunectes-gavial-warrior_admiration",
+          "source": "eunectes",
+          "target": "gavial",
+          "label": "拳锋折服与坚定同盟",
+          "description": "在萨尔贡雨林深处，森蚺引以为傲的巨型战手机甲被嘉维尔徒手击破后心悦诚服，带领部族追随嘉维尔意志一同登上罗德岛。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 密林悍将归来",
+          "evidence": {
+            "title": "PRTS维基 · 密林悍将归来大酋长竞选记录",
+            "url": "https://prts.wiki/w/泰拉世界观"
+          }
+        },
+        {
+          "id": "eunectes-doctor-machinery_passion",
+          "source": "eunectes",
+          "target": "doctor",
+          "label": "工业探索与领袖指引",
+          "description": "森蚺对现代工业机械抱有赤子般狂热的好奇心，经常向博士请教移动城市动力结构，立志用罗德岛工程知识反哺阿卡胡拉雨林。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 工程部技术交流",
+          "evidence": {
+            "title": "PRTS维基 · 森蚺语音档案",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "eunectes-kaltsit-engineering_trust",
+          "source": "eunectes",
+          "target": "kaltsit",
+          "label": "部族开化与工程部批准",
+          "description": "凯尔希亲自批准了祖玛玛进入罗德岛顶尖工程部进修的申请，并对其将萨尔贡传统工法与现代机电融合的设想给予高度赞赏。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛人事录用",
+          "evidence": {
+            "title": "PRTS维基 · 森蚺入职履历",
+            "url": "https://prts.wiki/w/罗德岛"
+          }
+        },
+        {
+          "id": "suzuran-doctor-pure_affection",
+          "source": "suzuran",
+          "target": "doctor",
+          "label": "纯真敬仰与心灵守护",
+          "description": "九尾少女丽萨将博士视作最温暖可敬的引路人，用九尾散发的治愈光芒为博士驱散案牍劳顿，是全罗德岛倾力呵护的掌中微光。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛日常信赖",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》铃兰角色信赖记录",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "goldenglow-suzuran-workshop_friendship",
+          "source": "goldenglow",
+          "target": "suzuran",
+          "label": "理发沙龙里的暖心姐妹",
+          "description": "澄闪在罗德岛开设的美发小站里，铃兰总是最乖巧的常客；两位历经磨难的年轻干员用纯洁温厚的笑容相互勉励扶持。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛后勤生活",
+          "evidence": {
+            "title": "PRTS维基 · 澄闪干员密录",
+            "url": "https://prts.wiki/w/罗德岛"
+          }
+        },
+        {
+          "id": "goldenglow-doctor-kindling_of_hope",
+          "source": "goldenglow",
+          "target": "doctor",
+          "label": "救赎之手与新生蜕变",
+          "description": "卡拉顿大火中陷入偏见绝境的苏茜被罗德岛救赎，在博士鼓励下掌握了驭械雷电术法，用晶莹电光照亮了弱小者的生存尊严。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 阴云火花",
+          "evidence": {
+            "title": "PRTS维基 · 阴云火花卡拉顿事件",
+            "url": "https://prts.wiki/w/维多利亚"
+          }
+        },
+        {
+          "id": "goldenglow-amiya-gentle_camaraderie",
+          "source": "goldenglow",
+          "target": "amiya",
+          "label": "同龄领袖与真诚挚友",
+          "description": "年龄相仿的阿米娅与苏茜在舰内建立起无话不谈的少女友谊，阿米娅的坚定担当让昔日自卑的苏茜逐渐萌生出面对世界的非凡勇气。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛青少年干员日常",
+          "evidence": {
+            "title": "PRTS维基 · 澄闪入职档案",
+            "url": "https://prts.wiki/w/罗德岛"
+          }
+        },
+        {
+          "id": "eyjafjalla-doctor-volcano_dream_echo",
+          "source": "eyjafjalla",
+          "target": "doctor",
+          "label": "火山旅梦同行与温情告别",
+          "description": "在听力与视力日渐沉寂的苦痛中，阿黛尔在博士的悉心陪伴下游历汐斯塔火山，解开对父母遇难的心结，绽放出最动人的生命微笑。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 火山旅梦",
+          "evidence": {
+            "title": "PRTS维基 · 火山旅梦汐斯塔纪事",
+            "url": "https://prts.wiki/w/泰拉世界观"
+          }
+        },
+        {
+          "id": "eyjafjalla-viviana-leithanien_scholarly_resonance",
+          "source": "eyjafjalla",
+          "target": "viviana",
+          "label": "莱塔尼亚学者与诗性共鸣",
+          "description": "同出莱塔尼亚学术与贵族名门的两位才女，在罗德岛图书室内常就源石地脉能量与自然音律展开深入学术研讨，相敬如宾。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛学者沙龙",
+          "evidence": {
+            "title": "PRTS维基 · 艾雅法拉与薇薇安娜干员档案",
+            "url": "https://prts.wiki/w/泰拉世界观"
+          }
+        },
+        {
+          "id": "eyjafjalla-kaltsit-medical_vigilance",
+          "source": "eyjafjalla",
+          "target": "kaltsit",
+          "label": "感官衰退监测与慈母看护",
+          "description": "面对阿黛尔因长期火山口科考而急剧恶化的听觉中枢与视网膜源石结晶，凯尔希总监亲自调配抑制方案并时刻关注其生理负荷。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛重症医疗记录",
+          "evidence": {
+            "title": "PRTS维基 · 艾雅法拉医疗健康专档",
+            "url": "https://prts.wiki/w/罗德岛"
+          }
+        },
+        {
+          "id": "viviana-nearl-knights_mutual_respect",
+          "source": "viviana",
+          "target": "nearl",
+          "label": "烛火与耀光的灵魂致敬",
+          "description": "卡西米尔特锦赛舞台上最具风骨的对手，微光细剑与烈阳战戟在商业铜臭浊流中交织出纯粹高尚的骑士道誓约，赛后结为莫逆之交。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 耀日之主与大骑士领",
+          "evidence": {
+            "title": "PRTS维基 · 卡西米尔特锦赛决战记录",
+            "url": "https://prts.wiki/w/卡西米尔"
+          }
+        },
+        {
+          "id": "viviana-doctor-candlelight_confidant",
+          "source": "viviana",
+          "target": "doctor",
+          "label": "驱散巫王余音的诗意知己",
+          "description": "薇薇安娜斩断家族血统与巫王余孽阴云后登舰罗德岛，在博士的理解与支持下重拾独立骑士之名，以微烛之芒誓卫博士前路。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 崔林特尔梅的秋天",
+          "evidence": {
+            "title": "PRTS维基 · 崔林特尔梅的秋天金色大厅剧本",
+            "url": "https://prts.wiki/w/泰拉世界观"
+          }
+        },
+        {
+          "id": "typhon-magallan-polar_expedition_partners",
+          "source": "typhon",
+          "target": "magallan",
+          "label": "极地冰原的生死向导与勘探搭档",
+          "description": "提丰凭借萨卡兹重弓与对冰雪的超凡直觉带领麦哲伦穿越极寒冻原，抵御不可名状的坍缩实体，结下患难见真情的极地友谊。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主题曲集成 · 探索者的银凇止境",
+          "evidence": {
+            "title": "PRTS维基 · 探索者的银凇止境全记录",
+            "url": "https://prts.wiki/w/萨米"
+          }
+        },
+        {
+          "id": "typhon-doctor-northern_hunter_and_strategist",
+          "source": "typhon",
+          "target": "doctor",
+          "label": "冰原神射手与战术引路人",
+          "description": "踏出萨米古老防线的提丰受聘成为罗德岛特聘狙击手，在博士高超的战术部署下多次一箭洞穿坍缩邪魔核心，守护文明北疆。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主题曲集成 · 探索者的银凇止境",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》提丰晋升档案",
+            "url": "https://ak.hypergryph.com"
+          }
+        },
+        {
+          "id": "typhon-kaltsit-demonic_collapse_appraisal",
+          "source": "typhon",
+          "target": "kaltsit",
+          "label": "极北邪魔异象前沿评估",
+          "description": "凯尔希高度重视萨米独石防线的坍缩异化危机，定期与提丰推演极北空间裂隙动态，为其源石重弓提供高精度的科技校准。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 极北防御战略会议",
+          "evidence": {
+            "title": "PRTS维基 · 萨米独石与邪魔考察总览",
+            "url": "https://prts.wiki/w/萨米"
+          }
+        },
+        {
+          "id": "quillpen-tequila-inseparable_siblings",
+          "source": "quillpen",
+          "target": "tequila",
+          "label": "相依为命的义兄妹羁绊",
+          "description": "在玻利瓦尔战火与多索雷斯阴谋中一同长大的义兄妹，羽毛笔对龙舌兰怀有极致的依赖与信任，龙舌兰则永远将守护妹妹视作首要底线。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SideStory · 多索雷斯假日",
+          "evidence": {
+            "title": "PRTS维基 · 多索雷斯假日全文本",
+            "url": "https://prts.wiki/w/多索雷斯"
+          }
+        },
+        {
+          "id": "chen-quillpen-dossoles_rescue_and_care",
+          "source": "chen",
+          "target": "quillpen",
+          "label": "多索雷斯风暴救援与关照",
+          "description": "化身“假日威龙”的陈在多索雷斯动乱中揭露潘乔阴谋时兼顾人道救助，将懵懂随从的羽毛笔引导向罗德岛，平日如大姐姐般对其照顾有加。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "SideStory · 多索雷斯假日后日谈",
+          "evidence": {
+            "title": "PRTS维基 · 假日威龙陈干员密录",
+            "url": "https://prts.wiki/w/多索雷斯"
+          }
+        },
+        {
+          "id": "quillpen-doctor-quiet_trust",
+          "source": "quillpen",
+          "target": "doctor",
+          "label": "安静依赖的收割者与安全港",
+          "description": "平时总是睡眼惺忪、慢吞吞的拉菲艾拉最喜欢在博士办公室的阳光下打瞌睡，在博士受威胁时则能本能地挥动沉重斩首巨镰化身最冷酷的护卫。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 罗德岛干员信赖记录",
+          "evidence": {
+            "title": "鹰角网络 · 《明日方舟》羽毛笔语音档案",
+            "url": "https://ak.hypergryph.com"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "chen_qianyu",
+    "name": "陈千语",
+    "alias": [
+      "陈千语",
+      "Chen Qianyu"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "陈千语 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Long black hair, two small dragon horns, and a dark dragon tail",
+      "hair": "black_hair, long_hair",
+      "eyes": "",
+      "style": "anime"
+    },
+    "personality": [
+      "热心爽快",
+      "重视练习",
+      "愿意主动帮忙",
+      "对新鲜事物好奇"
+    ],
+    "likes": [
+      "磨练剑术",
+      "品茶",
+      "和伙伴分享见闻"
+    ],
+    "bg_story": "陈千语是《明日方舟：终末地》中隶属终末地工业的特勤干员。她从小习武，后应佩丽卡邀请加入终末地，以行动力与热情面对开拓中的难题。工作之外，她也乐于和伙伴聊聊剑术、茶与沿途遇见的小事。",
+    "identity": {
+      "role": "终末地工业特勤干员 / 剑术习练者",
+      "age": "成年创作设定",
+      "classificationSource": "https://endfield.hypergryph.com/operator"
+    },
+    "source": "Arknights: Endfield",
+    "traits": [
+      "black_hair",
+      "long_hair",
+      "horns",
+      "dragon_tail"
+    ],
+    "tags": [
+      "陈千语",
+      "明日方舟：终末地",
+      "日常"
+    ],
+    "accent_color": "#D68B56",
+    "bg_color": "#202833",
+    "palette": [
+      "#D68B56",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "明日方舟：终末地",
+      "people": [
+        {
+          "id": "administrator",
+          "name": "管理员",
+          "aliases": [
+            "Administrator",
+            "Endministrator",
+            "女性管理员",
+            "总指挥官"
+          ],
+          "characterId": "administrator_arknights"
+        },
+        {
+          "id": "perlica",
+          "name": "佩丽卡",
+          "aliases": [
+            "Perlica",
+            "监督",
+            "佩丽卡监督",
+            "Supervisor Perlica"
+          ],
+          "characterId": "perlica_arknights"
+        },
+        {
+          "id": "laevatain",
+          "name": "莱万汀",
+          "aliases": [
+            "Laevatain",
+            "莱瓦汀",
+            "终末地特勤干员"
+          ],
+          "characterId": "laevatain_arknights"
+        },
+        {
+          "id": "yvonne",
+          "name": "伊冯",
+          "aliases": [
+            "Yvonne",
+            "イヴォンヌ",
+            "天才工程师",
+            "双枪干员"
+          ],
+          "characterId": "yvonne_arknights"
+        },
+        {
+          "id": "zhuang_fangyi",
+          "name": "庄方宜",
+          "aliases": [
+            "Zhuang Fangyi",
+            "庄天师",
+            "息壤主持天师",
+            "武陵管代"
+          ],
+          "characterId": "zhuang_fangyi_arknights"
+        },
+        {
+          "id": "rossy",
+          "name": "洛茜",
+          "aliases": [
+            "Rossi",
+            "洛茜娜·狼珀·卢皮诺",
+            "狼群首领"
+          ],
+          "characterId": "rossy_arknights"
+        },
+        {
+          "id": "si",
+          "name": "祀",
+          "aliases": [
+            "Si",
+            "小葱",
+            "巨兽代理人",
+            "塔卫二神裔"
+          ],
+          "characterId": "si_arknights"
+        },
+        {
+          "id": "chen_qianyu",
+          "name": "陈千语",
+          "aliases": [
+            "Chen Qianyu",
+            "千语",
+            "终末地近卫干员",
+            "炎国流云剑客"
+          ],
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
+        },
+        {
+          "id": "wulfgard",
+          "name": "沃尔夫加德",
+          "aliases": [
+            "Wulfgard",
+            "狼卫",
+            "荒原独行剑士",
+            "洛茜的兄长"
+          ],
+          "role": "荒野赏金猎人 / 终末地防卫干员",
+          "summary": "行事粗粝但重情重义的佣兵战士。熟悉塔卫二恶劣生态，在佩丽卡遇袭时多次以重装火力掩护撤退。"
+        },
+        {
+          "id": "ember",
+          "name": "余烬",
+          "aliases": [
+            "Ember",
+            "战术装甲重装",
+            "终末地重装守卫"
+          ],
+          "role": "终末地资深探索员",
+          "summary": "沉静敏锐的近战防卫专家。在源石工业遗迹的深度发掘中为佩丽卡提供关键技术与防卫支持。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "administrator-perlica-supreme_partnership",
+          "source": "administrator",
+          "target": "perlica",
+          "label": "统帅与执行监督 · 唤醒与托付",
+          "description": "管理员沉睡数载后被佩丽卡监督自休眠舱倾力唤醒，两人形成终末地工业最核心的战术决策与基地统筹黄金中枢，共同抗击塔卫二侵蚀浩劫。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "开拓序幕 · 塔卫二基地重启",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》官方网站人物档案",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "administrator-chen_qianyu-vanguard_guard",
+          "source": "chen_qianyu",
+          "target": "administrator",
+          "label": "贴身护卫与赤诚效忠",
+          "description": "继承炎国古老剑技的陈千语视管理员为最崇敬的统帅，冲锋在前线最险恶的裂隙异象区域，誓死确保指挥中枢的安全无虞。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "主线第一章 · 荒野协议勘探",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》实机战术演示记录",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "perlica-chen_qianyu-supervisor_and_executor",
+          "source": "perlica",
+          "target": "chen_qianyu",
+          "label": "指令传达与先锋利刃",
+          "description": "佩丽卡监督统筹自动化基建与战术部署，陈千语则作为行动小队的中坚锋芒精准执行回收协议，两人在多年苦战中形成了无需言语的绝对默契。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主线序章 · 协议回收第一序列",
+          "evidence": {
+            "title": "PRTS维基 · 明日方舟：终末地干员编制记录",
+            "url": "https://prts.wiki/w/明日方舟：终末地"
+          }
+        },
+        {
+          "id": "administrator-laevatain-blazing_vanguard",
+          "source": "administrator",
+          "target": "laevatain",
+          "label": "熔火宿命之刃与先锋依仗",
+          "description": "莱万汀手持蕴含上古萨卡兹熔火伟力的同名重剑，虽然性格孤高且受困于记忆碎片，但对管理员的战场指令绝对服从，以千度烈火劈开开拓前路。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主线深层勘探 · 熔岩侵蚀带突破",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》官方角色特勤报告",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "chen_qianyu-laevatain-swords_resonance",
+          "source": "chen_qianyu",
+          "target": "laevatain",
+          "label": "双锋交辉 · 剑技切磋与战术配合",
+          "description": "流云剑客陈千语与熔岩重剑士莱万汀在多次特勤攻坚中互为照应，轻灵敏捷的连斩与大开大阖的熔火重劈构成前线最强杀伤组合。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "荒野特勤联合行动",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》战术小队编成档案",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "laevatain-ember-sarkaz_heavy_assault",
+          "source": "laevatain",
+          "target": "ember",
+          "label": "重铠坚盾与熔火巨剑的攻防阵列",
+          "description": "余烬的重装防卫装甲构筑起坚不可摧的防线，为莱万汀释放大范围熔岩烈焰争取关键吟唱间隙，同为精锐特勤战士具有极高的战术默契。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "基地前哨抵御侵蚀潮",
+          "evidence": {
+            "title": "PRTS维基 · 终末地防卫部队编制",
+            "url": "https://prts.wiki/w/明日方舟：终末地"
+          }
+        },
+        {
+          "id": "administrator-yvonne-wild_engineering_loyalty",
+          "source": "administrator",
+          "target": "yvonne",
+          "label": "机械奇才与前哨工业支柱",
+          "description": "瓦伊凡工程师伊冯总能用令人咋舌的手工焊机与天马行空的改装化解致命工业停摆，表面上咬着棒棒糖抱怨加班，内心对管理员的开拓事业极度忠诚。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "基地建设 · 自动化流水线铺设",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》技术干员履历",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "perlica-yvonne-headache_and_reliance",
+          "source": "perlica",
+          "target": "yvonne",
+          "label": "安全规范与违章狂人的拉锯",
+          "description": "佩丽卡监督常因伊冯不按工业标准改装重武器而头痛不已，但每逢外勤设备面临不可逆损毁时，唯有伊冯能奇迹般地逆转乾坤，令佩丽卡托付重任。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "前线基地日常运维",
+          "evidence": {
+            "title": "PRTS维基 · 终末地工程部日志",
+            "url": "https://prts.wiki/w/明日方舟：终末地"
+          }
+        },
+        {
+          "id": "administrator-zhuang_fangyi-wuling_alliance",
+          "source": "administrator",
+          "target": "zhuang_fangyi",
+          "label": "武陵盟约与息壤固化重托",
+          "description": "庄方宜作为武陵科学发展区首席管代兼麒麟天师，代表宏科院与管理员建立战略同盟，以东方玄门神机与终末地工业管网合力镇压裂隙侵蚀。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主线第二章 · 裂隙稳定化项目",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》武陵阵营公布资料",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "perlica-zhuang_fangyi-diplomatic_cooperation",
+          "source": "perlica",
+          "target": "zhuang_fangyi",
+          "label": "政务协调与两大势力桥梁",
+          "description": "两位兼具雷厉风行决断力与从容气度的女性领导者，在塔卫二恶劣的开拓环境下迅速破除利益隔阂，实现了宏科院与终末地的高效互信。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "武陵使团入驻终末地基地",
+          "evidence": {
+            "title": "PRTS维基 · 塔卫二地缘政治档案",
+            "url": "https://prts.wiki/w/明日方舟：终末地"
+          }
+        },
+        {
+          "id": "zhuang_fangyi-si-taoist_and_beast_proxy",
+          "source": "zhuang_fangyi",
+          "target": "si",
+          "label": "天师玄法与巨兽大道归一",
+          "description": "庄方宜的麒麟法脉与祀的巨兽代理人权能在异星塔卫二地脉上深度呼应，两人携手引动天地玄黄之息，多次封镇狂暴的古老侵蚀源泉。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "地脉灵境深层勘探",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》世界观设定",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "administrator-rossy-pack_alliance",
+          "source": "administrator",
+          "target": "rossy",
+          "label": "荒原狼群盟约与平民守护誓约",
+          "description": "洛茜以惊人魄力带领民间武装集团“狼群”与终末地工业结盟，管理员为其提供高精医疗与庇护物资，洛茜则以刚猛重剑为终末地构筑荒野外围屏障。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "荒野平民据点接管协议",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》阵营档案：狼群",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "rossy-wulfgard-sibling_torch",
+          "source": "rossy",
+          "target": "wulfgard",
+          "label": "血脉至亲与未竟旗帜的传承",
+          "description": "在兄长“狼卫”因追查侵蚀真相离奇失踪后，年少的洛茜毅然扛起染血的战旗接管狼群，一边守护孤儿同伴一边在整个星球废土上追寻兄长足迹。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "个人剧情 · 荒原白狼之歌",
+          "evidence": {
+            "title": "PRTS维基 · 洛茜角色背景纪实",
+            "url": "https://prts.wiki/w/明日方舟：终末地"
+          }
+        },
+        {
+          "id": "rossy-yvonne-wasteland_firepower_customization",
+          "source": "rossy",
+          "target": "yvonne",
+          "label": "重装改装与荒野勘测互保",
+          "description": "伊冯为狼群粗犷的废土战车与重剑加装高能源石驱动装置，洛茜则在险象环生的地热勘测中以本能的猎手嗅觉无数次提前斩杀潜伏偷袭的侵蚀巨兽。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "荒野前哨重型补给线建立",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》干员互动轶事",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "administrator-si-divine_proxy_inquiry",
+          "source": "administrator",
+          "target": "si",
+          "label": "巨兽神威护道与人间烟火眷恋",
+          "description": "少女外表的神裔代理人“小葱”对管理员的战略智慧与现代化自动化流水线抱有无尽好奇，常在工歇时提笔泼墨为管理员绘制惟妙惟肖的水墨战地速写。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "地脉灵境合作协议达成",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》官方角色图鉴：祀",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "chen_qianyu-si-delightful_contrast",
+          "source": "chen_qianyu",
+          "target": "si",
+          "label": "严肃剑客与灵动仙童的日常趣事",
+          "description": "性格一丝不苟、恪守条令的陈千语总被灵动跳脱的祀拉着品尝市井茶点或当画模，两人在严酷艰辛的异星开拓之余构成了最富反差萌的温馨日常景致。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "终末地基地生活工歇纪事",
+          "evidence": {
+            "title": "PRTS维基 · 陈千语与祀干员互动档案",
+            "url": "https://prts.wiki/w/明日方舟：终末地"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "ijichi_nijika",
+    "name": "伊地知虹夏",
+    "alias": [
+      "伊地知虹夏",
+      "Ijichi Nijika"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "伊地知虹夏 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Blonde hair in a side ponytail, a triangular ahoge, and red eyes",
+      "hair": "blonde_hair, side_ponytail",
+      "eyes": "red_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "善于照顾同伴",
+      "开朗务实",
+      "会替团队操心",
+      "对音乐有明确目标"
+    ],
+    "likes": [
+      "打鼓",
+      "乐队排练",
+      "和伙伴一起吃饭"
+    ],
+    "bg_story": "伊地知虹夏是《孤独摇滚！》中结束乐队的鼓手。她邀请后藤一里加入乐队，也和山田凉、喜多郁代一起维持排练与演出。虹夏习惯留意伙伴的状态，忙起来会一边安排事情一边吐槽，但始终认真对待大家共同的音乐目标。",
+    "identity": {
+      "role": "结束乐队鼓手 / STARRY店员",
+      "age": "成年创作设定",
+      "classificationSource": "https://bocchi.rocks/omnibus/character/"
+    },
+    "source": "Bocchi the Rock!",
+    "traits": [
+      "blonde_hair",
+      "side_ponytail",
+      "ahoge",
+      "red_eyes"
+    ],
+    "tags": [
+      "伊地知虹夏",
+      "孤独摇滚！",
+      "日常"
+    ],
+    "accent_color": "#E9BD57",
+    "bg_color": "#202833",
+    "palette": [
+      "#E9BD57",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "孤独摇滚！",
+      "people": [
+        {
+          "id": "gotoh_hitori",
+          "name": "后藤一里",
+          "aliases": [
+            "後藤ひとり",
+            "Gotoh Hitori",
+            "波奇酱(Bocchi)"
+          ],
+          "characterId": "gotoh_hitori"
+        },
+        {
+          "id": "kita_ikuyo",
+          "name": "喜多郁代",
+          "aliases": [
+            "喜多郁代",
+            "Kita Ikuyo"
+          ],
+          "characterId": "kita_ikuyo"
+        },
+        {
+          "id": "yamada_ryo",
+          "name": "山田凉",
+          "aliases": [
+            "山田リョウ",
+            "Yamada Ryo"
+          ],
+          "characterId": "yamada_ryo"
+        },
+        {
+          "id": "ijichi_nijika",
+          "name": "伊地知虹夏",
+          "aliases": [
+            "伊地知虹夏",
+            "Ijichi Nijika",
+            "下北泽大天使"
+          ],
+          "role": "结束乐队鼓手 / STARRY店员",
+          "summary": "性格阳光元气、善解人意的大天使鼓手。在公园偶遇并邀请后藤一里加入乐队，一手建立起纽带乐队，是一里重拾自信最关键的领路人。",
+          "characterId": "ijichi_nijika"
+        },
+        {
+          "id": "ijichi_seika",
+          "name": "伊地知星歌",
+          "aliases": [
+            "伊地知星歌",
+            "Ijichi Seika",
+            "STARRY店长"
+          ],
+          "role": "Livehouse STARRY店长 / 虹夏的姐姐",
+          "summary": "外冷内热的前摇滚乐手。嘴上严厉批评纽带乐队的稚嫩，暗地里为一里定制演出机会并暗中骄傲地支持妹妹与乐队的发展。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "hitori-nijika-savior",
+          "source": "ijichi_nijika",
+          "target": "gotoh_hitori",
+          "label": "拉入阳光的伯乐与灵魂支撑",
+          "description": "在公园偶遇并一眼邀请背着吉他的波奇加入结束乐队，是波奇音乐人生中最信赖的领路人与阳光港湾。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "开篇设定 · 结识相遇",
+          "evidence": {
+            "title": "Aniplex · 《孤独摇滚！》官方网站",
+            "url": "https://bocchi.rocks/"
+          }
+        },
+        {
+          "id": "hitori-kita-adoration",
+          "source": "kita_ikuyo",
+          "target": "gotoh_hitori",
+          "label": "耀眼阳光与吉他师徒",
+          "description": "社交牛人喜多极度崇拜并依恋波奇的神级吉他技巧，在后藤指引下苦练吉他，并在文化祭危机中主动为波奇托底挽救演出。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "文化祭篇 · 星座成为星座",
+          "evidence": {
+            "title": "Aniplex · 《孤独摇滚！》官方网站",
+            "url": "https://bocchi.rocks/"
+          }
+        },
+        {
+          "id": "hitori-ryo-music-soul",
+          "source": "yamada_ryo",
+          "target": "gotoh_hitori",
+          "label": "孤高贝斯手与作词共鸣",
+          "description": "看穿波奇不愿写虚伪轻浮歌词的心思，鼓励波奇写出内向者最真实的痛苦与阴暗，是结束乐队的音乐基石与怪人知音。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 作词阶段",
+          "evidence": {
+            "title": "Aniplex · 《孤独摇滚！》官方网站",
+            "url": "https://bocchi.rocks/"
+          }
+        },
+        {
+          "id": "kita-ryo-admiration",
+          "source": "kita_ikuyo",
+          "target": "yamada_ryo",
+          "label": "盲目迷妹与借钱常客",
+          "description": "喜多最初因为迷恋山田凉弹奏贝斯的帅气英姿而加入乐队，即便常常被凉借钱不还依然抱持着近乎盲目的崇拜热忱。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 开篇动机",
+          "evidence": {
+            "title": "Aniplex · 《孤独摇滚！》官方网站",
+            "url": "https://bocchi.rocks/"
+          }
+        },
+        {
+          "id": "nijika-ryo-childhood",
+          "source": "ijichi_nijika",
+          "target": "yamada_ryo",
+          "label": "旧友搭档与彼此包容",
+          "description": "在上一支乐队解散后一同创立结束乐队的挚友，虹夏在生活中督促负责乐队各项杂务，凉则提供最纯粹的编曲才华。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "共通线 · 乐队初创",
+          "evidence": {
+            "title": "Aniplex · 《孤独摇滚！》官方网站",
+            "url": "https://bocchi.rocks/"
+          }
+        },
+        {
+          "id": "bocchi-nijika-seika",
+          "source": "ijichi_nijika",
+          "target": "ijichi_seika",
+          "label": "相依为命的傲娇姐姐",
+          "description": "在母亲早逝后独自支撑Livehouse并照顾虹夏长大的亲姐姐，表面严厉冷淡实则极度关爱妹妹。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "日常Livehouse",
+          "evidence": {
+            "title": "《孤独摇滚！》动画官方网站",
+            "url": "https://bocchi.rocks/"
+          }
+        },
+        {
+          "id": "bocchi-hitori-seika",
+          "source": "gotoh_hitori",
+          "target": "ijichi_seika",
+          "label": "暗中赏识的伯乐店长",
+          "description": "最早从一里的吉他弹奏中听出“吉他英雄”本色并默默给予舞台考验与成长机会的冷面伯乐。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "STARRY首演审查",
+          "evidence": {
+            "title": "《孤独摇滚！》动画官方网站",
+            "url": "https://bocchi.rocks/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fujiwara_chika",
+    "name": "藤原千花",
+    "alias": [
+      "藤原千花",
+      "Fujiwara Chika"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "藤原千花 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Soft pink shoulder-length hair, blue eyes, and a black hair bow",
+      "hair": "pink_hair, medium_hair, hair_bow",
+      "eyes": "blue_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "活泼好奇",
+      "热衷游戏",
+      "容易投入自己感兴趣的事",
+      "有时会出人意料"
+    ],
+    "likes": [
+      "桌游",
+      "钢琴",
+      "恋爱话题"
+    ],
+    "bg_story": "藤原千花是《辉夜大小姐想让我告白》中秀知院学生会的书记，也是辉夜从中等部起的朋友。她喜欢桌游和热闹的话题，常以自己的节奏打断学生会里微妙的气氛。看似随兴的她也有扎实的音乐基础，认真坐到钢琴前时会显出另一种专注。",
+    "identity": {
+      "role": "秀知院学生会书记",
+      "age": "成年创作设定",
+      "classificationSource": "https://kaguya.love/character/"
+    },
+    "source": "Kaguya-sama: Love Is War",
+    "traits": [
+      "pink_hair",
+      "medium_hair",
+      "blue_eyes",
+      "hair_bow"
+    ],
+    "tags": [
+      "藤原千花",
+      "辉夜大小姐想让我告白",
+      "日常"
+    ],
+    "accent_color": "#DF93B3",
+    "bg_color": "#202833",
+    "palette": [
+      "#DF93B3",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "辉夜大小姐想让我告白",
+      "people": [
+        {
+          "id": "shinomiya_kaguya",
+          "name": "四宫辉夜",
+          "aliases": [
+            "四宮かぐや",
+            "Shinomiya Kaguya",
+            "辉夜大小姐",
+            "副会长"
+          ],
+          "characterId": "shinomiya_kaguya"
+        },
+        {
+          "id": "hayasaka_ai",
+          "name": "早坂爱",
+          "aliases": [
+            "早坂愛",
+            "Ai Hayasaka",
+            "哈萨卡",
+            "早坂"
+          ],
+          "characterId": "hayasaka_ai"
+        },
+        {
+          "id": "shirogane_kei",
+          "name": "白银圭",
+          "aliases": [
+            "白銀圭",
+            "Kei Shirogane",
+            "圭妹",
+            "圭"
+          ],
+          "characterId": "shirogane_kei"
+        },
+        {
+          "id": "shirogane_miyuki",
+          "name": "白银御行",
+          "aliases": [
+            "白銀御行",
+            "Miyuki Shirogane",
+            "白银会长",
+            "会长"
+          ],
+          "role": "秀知院学园学生会会长",
+          "summary": "出身贫寒但凭借超人般的自律与努力常年独占年级第一的努力狂。深爱四宫辉夜却因强烈的自尊心展开「先告白者即输」的恋爱头脑战，在奉心祭气球拱门下彻底敞开心扉向辉夜求爱。"
+        },
+        {
+          "id": "fujiwara_chika",
+          "name": "藤原千花",
+          "aliases": [
+            "藤原千花",
+            "Chika Fujiwara",
+            "千花",
+            "书记",
+            "地球之癌"
+          ],
+          "role": "秀知院学生会书记",
+          "summary": "天真烂漫、脑回路清奇的混沌制造者。辉夜唯一的多年挚友，多次在会长与副会长的恋爱博弈中无意搅局打破僵局。",
+          "characterId": "fujiwara_chika"
+        },
+        {
+          "id": "ishigami_yuu",
+          "name": "石上优",
+          "aliases": [
+            "石上優",
+            "Yuu Ishigami",
+            "石上真男人",
+            "石上会计"
+          ],
+          "role": "秀知院学生会会计 / 数据天才",
+          "summary": "曾遭受校园霸凌的阴郁游戏宅。在白银与辉夜的联手保护下洗清冤屈，逐渐打开心扉融入学生会，视辉夜为严厉又极其护短的姐姐。"
+        },
+        {
+          "id": "iino_miko",
+          "name": "伊井野弥子",
+          "aliases": [
+            "伊井野ミコ",
+            "Miko Iino",
+            "弥子",
+            "风纪委员"
+          ],
+          "role": "秀知院学生会监察委员",
+          "summary": "秉持绝对正义、身材娇小但气场严肃的纪律委员。加入学生会后在辉夜的关照与石上的暗中保护下体会到规矩之外的人情温暖。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "kaguya-kaguya-miyuki-intellectual_lovers",
+          "source": "shinomiya_kaguya",
+          "target": "shirogane_miyuki",
+          "label": "恋爱智脑战对手与此生伴侣",
+          "description": "两人因极高自尊心展开长达数个学期的‘先告白就输了’头脑战；奉心祭御行以巨型心形气球告白融化冰山，白银更组织跨国营救助辉夜脱离宗族锁链并结下婚约。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "奉心祭文化祭至最终回拯救决战",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        },
+        {
+          "id": "kaguya-kaguya-hayasaka-confidant_sisters",
+          "source": "shinomiya_kaguya",
+          "target": "hayasaka_ai",
+          "label": "从主仆契约到自由的一生挚友",
+          "description": "早坂自幼作为心腹女仆兼黑客护卫陪伴辉夜；京都修学旅行遭遇背叛危机后，两人在悬崖坦诚相见解除主从关系，早坂剪短发重获自由，成为辉夜最亲密的真正挚友。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "修学旅行篇（漫画第178-187话）",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-kaguya-kei-sister_in_law_admiration",
+          "source": "shirogane_kei",
+          "target": "shinomiya_kaguya",
+          "label": "崇拜倾心与准大嫂",
+          "description": "圭对辉夜优雅清丽的气度怀有极度狂热的少女崇拜，辉夜也极力在圭面前表现完美以赢得未来小姑子的认可，两人互动格外可爱温馨。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "白银家日常篇",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-miyuki-kei-tsundere_siblings",
+          "source": "shirogane_kei",
+          "target": "shirogane_miyuki",
+          "label": "傲娇反叛与心疼哥哥的亲兄妹",
+          "description": "圭正值青春叛逆期，常吐槽御行唠叨、时尚品味土气‘恶心’，但内心深处极度心疼哥哥拼命兼职与熬夜维持家庭，暗中为哥哥挑礼物并引以为傲。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "日常贯穿",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-kaguya-chika-best_friends_chaos",
+          "source": "shinomiya_kaguya",
+          "target": "fujiwara_chika",
+          "label": "十余年闺蜜与混沌变数",
+          "description": "初中起相伴的闺蜜，千花总以天真烂漫的天然呆思维化解辉夜的冰冷，却又频繁在辉夜算计御行时成为不可预知的‘混沌之癌’搅乱全场。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "贯穿全作日常",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-miyuki-chika-motherly_training",
+          "source": "fujiwara_chika",
+          "target": "shirogane_miyuki",
+          "label": "灾难特训与老母亲般的泪水",
+          "description": "每当御行在排球、唱歌、跳舞、折气球等运动弱项濒临崩溃时，千花便赌上尊严对其进行地狱特训，哭喊‘这是我带大的孩子’，结下悲壮又搞笑的师徒羁绊。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "排球/唱校歌/折气球等特训回",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-kaguya-ishigami-brotherly_care",
+          "source": "shinomiya_kaguya",
+          "target": "ishigami_yuu",
+          "label": "严慈并济的姐弟情深",
+          "description": "起初石上对辉夜的杀气胆战心惊，但辉夜暗中彻夜帮石上辅导功课使其及格，并在体育祭后夜祭全力为石上撑腰复仇，被辉夜视作不可或缺的亲弟弟。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "体育祭篇至秀知院后期",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        },
+        {
+          "id": "kaguya-miyuki-ishigami-savior_confidant",
+          "source": "shirogane_miyuki",
+          "target": "ishigami_yuu",
+          "label": "救赎恩人与学生会双雄",
+          "description": "在石上因中学见义勇为反遭全校霸凌孤立的绝境中，御行一人彻查真相还其清白并将他拉入学生会，是石上愿意追随一生的兄长级英雄。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "石上初中篇 / 体育祭篇",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        },
+        {
+          "id": "kaguya-ishigami-miko-quarrelsome_soulmates",
+          "source": "ishigami_yuu",
+          "target": "iino_miko",
+          "label": "暗中守护与命定欢喜冤家",
+          "description": "初中时石上因弥子遭受嘲笑而匿名送花留便条鼓励她，高中在学生会整日争吵抬杠，却在危机时刻互相援手，最终在毕业前夕彼此袒露心意确立暧昧羁绊。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "学生会后期至完结篇",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        },
+        {
+          "id": "kaguya-chika-miko-spoiled_junior",
+          "source": "fujiwara_chika",
+          "target": "iino_miko",
+          "label": "宠溺学姐与崇拜后辈",
+          "description": "正义感过剩的弥子盲目崇拜千花并将她视作典范，千花则将娇小的弥子当成心爱宠物般肆意宠溺投喂，是学生会内最轻松融洽的关系。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "学生会日常篇",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-miyuki-hayasaka-allies_confidant",
+          "source": "hayasaka_ai",
+          "target": "shirogane_miyuki",
+          "label": "伪装调侃与可靠盟友",
+          "description": "早坂曾多次化名哈萨卡试探御行，更在辉夜营救行动中与御行并肩作战瓦解四宫家阴谋，是御行极度信任的智谋伙伴。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "四宫家夺回决战篇",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "sawamura_spencer_eriri",
+    "name": "泽村·斯宾塞·英梨梨",
+    "alias": [
+      "澤村・スペンサー・英梨々",
+      "Eriri Spencer Sawamura"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "泽村·斯宾塞·英梨梨 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Long blonde twin tails, blue eyes, and ribbon hair ties",
+      "hair": "blonde_hair, long_hair, twintails",
+      "eyes": "blue_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "对作品要求高",
+      "在熟人前容易嘴硬",
+      "在意伙伴的评价",
+      "投入创作时很专注"
+    ],
+    "likes": [
+      "绘画",
+      "画材",
+      "动画与游戏"
+    ],
+    "bg_story": "英梨梨是《路人女主的养成方法》中的画师，以“柏木英理”的名字进行同人创作。她和加藤惠、霞之丘诗羽共同参与游戏制作，也会因创作目标与人际关系产生分歧。表面上骄傲又不肯服输，真正面对画稿时，她却比谁都在意自己能否把作品画好。",
+    "identity": {
+      "role": "画师 / 同人游戏原画创作者",
+      "age": "成年创作设定",
+      "classificationSource": "https://www.saenai.tv/character/"
+    },
+    "source": "Saenai Heroine no Sodatekata",
+    "traits": [
+      "blonde_hair",
+      "long_hair",
+      "twintails",
+      "blue_eyes"
+    ],
+    "tags": [
+      "泽村·斯宾塞·英梨梨",
+      "路人女主的养成方法",
+      "日常"
+    ],
+    "accent_color": "#D5B75A",
+    "bg_color": "#202833",
+    "palette": [
+      "#D5B75A",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "路人女主的养成方法",
+      "people": [
+        {
+          "id": "kasumigaoka_utaha",
+          "name": "霞之丘诗羽",
+          "aliases": [
+            "霞ヶ丘詩羽",
+            "Utaha Kasumigaoka",
+            "诗羽学姐",
+            "霞诗子"
+          ],
+          "characterId": "kasumigaoka_utaha"
+        },
+        {
+          "id": "katou_megumi",
+          "name": "加藤惠",
+          "aliases": [
+            "加藤恵",
+            "Megumi Katou",
+            "圣人惠",
+            "小惠",
+            "惠"
+          ],
+          "characterId": "katou_megumi"
+        },
+        {
+          "id": "aki_tomoya",
+          "name": "安艺伦也",
+          "aliases": [
+            "安芸倫也",
+            "Tomoya Aki",
+            "伦也",
+            "伦理君"
+          ],
+          "role": "同人社团「Blessing Software」制作人",
+          "summary": "资深御宅族高中生。在斜坡上被加藤惠的纯真容颜震撼，立誓将其打造为究极女主角制作美少女游戏，在创作与情感的拉扯中最终坚定选择加藤惠并成为伴侣。"
+        },
+        {
+          "id": "sawamura_spencer_eriri",
+          "name": "泽村·斯宾塞·英梨梨",
+          "aliases": [
+            "澤村・スペンサー・英梨々",
+            "Eriri Spencer Sawamura",
+            "英梨梨",
+            "柏木英理"
+          ],
+          "role": "画师 / 同人游戏原画创作者",
+          "summary": "混血金发双马尾大小姐，绘画技艺顶尖。因过去逃避与伦也的关系而留下遗憾，在游戏制作中被惠的沉稳与包容逐步触动。",
+          "characterId": "sawamura_spencer_eriri"
+        },
+        {
+          "id": "hashima_izumi",
+          "name": "波岛出海",
+          "aliases": [
+            "波島出海",
+            "Izumi Hashima",
+            "出海",
+            "出海酱"
+          ],
+          "role": "后辈同人画师 / 伦也的初中后辈",
+          "summary": "元气开朗的天才插画师，将伦也视为引领自己进入宅圈的师傅。与英梨梨在绘画领域展开激烈竞争。"
+        },
+        {
+          "id": "hyoudou_michiru",
+          "name": "冰堂美智留",
+          "aliases": [
+            "氷堂美智留",
+            "Michiru Hyoudou",
+            "美智留"
+          ],
+          "role": "摇滚乐队「Icy Tail」主唱兼吉他手 / 伦也的表姐",
+          "summary": "奔放洒脱的运动系少女，负责同人游戏音乐创作。经常以毫无防备的亲近态度调戏伦也。"
+        },
+        {
+          "id": "hashima_iori",
+          "name": "波岛伊织",
+          "aliases": [
+            "波島伊織",
+            "Iori Hashima",
+            "伊织"
+          ],
+          "role": "知名同人社团「Rouge en rouge」代表",
+          "summary": "出海的兄长，善于商业策划与挖角的同人制作人。曾视伦也为竞争对手，后在游戏发行中施以战略援手。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "saenai-tomoya-megumi-destined_lovers",
+          "source": "aki_tomoya",
+          "target": "katou_megumi",
+          "label": "坡道邂逅与此生唯一的伴侣",
+          "description": "在飘满樱花的坡道偶遇白色贝雷帽少女，伦也立志将其打造成顶级同人游戏女主角；惠在漫长的社团陪伴中成为不可替代的灵魂支柱，剧场版红叶坡道伦也真情告白，两人终成眷属并步入婚姻。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "剧场版《路人女主的养成方法 Fine》",
+          "evidence": {
+            "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+            "url": "https://www.saenai.tv/"
+          }
+        },
+        {
+          "id": "saenai-tomoya-utaha-creative_unrequited",
+          "source": "kasumigaoka_utaha",
+          "target": "aki_tomoya",
+          "label": "创作者知己与深情一吻告别",
+          "description": "处女作濒临腰斩时因伦也的推介重获生机，诗羽将炽烈的爱意倾注进游戏剧本；虽在争夺中目睹伦也心系加藤惠，但在毕业旅行坡道留下一记深吻作为青春谢幕，终生作为顶尖创作者相守支持。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "第二季第11话至剧场版",
+          "evidence": {
+            "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+            "url": "https://www.saenai.tv/"
+          }
+        },
+        {
+          "id": "saenai-tomoya-eriri-childhood_regret",
+          "source": "sawamura_spencer_eriri",
+          "target": "aki_tomoya",
+          "label": "青梅竹马与创作者之痛",
+          "description": "童年因惧怕非议背叛伦也成为难以抹平的心结；在那须高原别墅病倒画出神级原画证明爱意，但为追求画力极限与红坂朱音出走，成为两人青春中最壮烈耀眼却无可挽回的遗憾。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "第二季第8-11话至剧场版",
+          "evidence": {
+            "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+            "url": "https://www.saenai.tv/"
+          }
+        },
+        {
+          "id": "saenai-utaha-eriri-creative_comrades",
+          "source": "kasumigaoka_utaha",
+          "target": "sawamura_spencer_eriri",
+          "label": "欢喜冤家与巅峰创作者盟友",
+          "description": "在社团中天天为剧本原画争吵开撕，却在灵魂深处最懂得彼此身为创作者的孤独与骄傲；两人双双接受红坂朱音挖角制作《寰域编年史》，在业界巅峰携手相伴。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "第二季终盘至剧场版",
+          "evidence": {
+            "title": "富士见Fantasia文库《路人女主》官方特设",
+            "url": "https://fantasiabunko.jp/sp/201210saenai/"
+          }
+        },
+        {
+          "id": "saenai-megumi-eriri-break_and_reconciliation",
+          "source": "katou_megumi",
+          "target": "sawamura_spencer_eriri",
+          "label": "决裂冷战与坡道相拥释怀",
+          "description": "因英梨梨不告而别转投红坂团队，惠感到深遭背叛长达数月冷战不语；在剧场版坡道上英梨梨含泪剖白心扉，惠微笑着伸出双手将她拥入怀中，彻底解开心结重归挚友。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "剧场版《路人女主的养成方法 Fine》",
+          "evidence": {
+            "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+            "url": "https://www.saenai.tv/"
+          }
+        },
+        {
+          "id": "saenai-megumi-utaha-subtle_reverence",
+          "source": "kasumigaoka_utaha",
+          "target": "katou_megumi",
+          "label": "才情敬畏与无声的掌控者",
+          "description": "诗羽自诩情场与文坛老手，却在温泉夜谈中折服于惠看似毫无破绽却极度强大的包容力与存在感，最终坦然将伦也托付给加藤惠。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "第二季第11话 / 剧场版",
+          "evidence": {
+            "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+            "url": "https://www.saenai.tv/"
+          }
+        },
+        {
+          "id": "saenai-tomoya-michiru-cousins_music",
+          "source": "hyoudou_michiru",
+          "target": "aki_tomoya",
+          "label": "随性表姐与灵魂配乐师",
+          "description": "奔放外向的表姐，性格直爽常捉弄伦也；加入社团后将Icy Tail乐队的摇滚激情倾注于游戏，创作出极富震撼力的配乐并成为伦也坚定的后盾。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "第一季第10-12话",
+          "evidence": {
+            "title": "剧场版《路人女主的养成方法 Fine》官方网站",
+            "url": "https://www.saenai.tv/"
+          }
+        },
+        {
+          "id": "saenai-tomoya-izumi-otaku_mentor",
+          "source": "hashima_izumi",
+          "target": "aki_tomoya",
+          "label": "御宅启蒙恩师与崇拜学妹",
+          "description": "自幼在伦也引导下踏入御宅文化与绘画领域，视伦也为最重要的‘师父’与崇敬对象，以惊人的同人本创作天赋向伦也交出成长答卷。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "第一季第6-7话",
+          "evidence": {
+            "title": "富士见Fantasia文库《路人女主》官方特设",
+            "url": "https://fantasiabunko.jp/sp/201210saenai/"
+          }
+        },
+        {
+          "id": "saenai-eriri-izumi-rival_illustrators",
+          "source": "sawamura_spencer_eriri",
+          "target": "hashima_izumi",
+          "label": "同人画力对决的宿命对手",
+          "description": "冬Comiket上出海的极速飞跃让英梨梨感受到了前所未有的画力危机，激发出英梨梨舍弃一切自满、不顾身体极限实现神级蜕变的催化剂。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "第一季第7话至第二季第8话",
+          "evidence": {
+            "title": "富士见Fantasia文库《路人女主》官方特设",
+            "url": "https://fantasiabunko.jp/sp/201210saenai/"
+          }
+        },
+        {
+          "id": "saenai-tomoya-iori-rival_producers",
+          "source": "hashima_iori",
+          "target": "aki_tomoya",
+          "label": "创作观念对立的商业对手与前挚友",
+          "description": "两人因同人创作观念出现分歧分道扬镳，伊织奉行商业效率至上，伦也坚持创作者纯粹热情，在第二作游戏中成为既针锋相对又互相信任的业界竞争者。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "第二季第4-6话",
+          "evidence": {
+            "title": "富士见Fantasia文库《路人女主》官方特设",
+            "url": "https://fantasiabunko.jp/sp/201210saenai/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "shirai_kuroko",
+    "name": "白井黑子",
+    "alias": [
+      "白井黒子",
+      "Shirai Kuroko"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "白井黑子 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Brown twin tails tied with ribbons and brown eyes",
+      "hair": "brown_hair, twintails",
+      "eyes": "brown_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "有责任心",
+      "行动果断",
+      "对亲近的人情绪鲜明",
+      "工作时讲究原则"
+    ],
+    "likes": [
+      "和美琴相处",
+      "维护街区秩序",
+      "精致的小点心"
+    ],
+    "bg_story": "白井黑子是《某科学的超电磁炮》中的风纪委员，拥有空间移动能力，也是御坂美琴的学妹与室友。她在美琴面前常常表现得格外热切，但处理风纪委员的工作时十分认真。与支部伙伴初春饰利配合，是她日常生活中重要的一部分。",
+    "identity": {
+      "role": "风纪委员第177支部成员 / 常盘台学生",
+      "age": "成年创作设定",
+      "classificationSource": "https://toaru-project.com/railgun_t/chara/kuroko.html"
+    },
+    "source": "A Certain Scientific Railgun",
+    "traits": [
+      "brown_hair",
+      "twintails",
+      "brown_eyes"
+    ],
+    "tags": [
+      "白井黑子",
+      "某科学的超电磁炮",
+      "日常"
+    ],
+    "accent_color": "#B97972",
+    "bg_color": "#202833",
+    "palette": [
+      "#B97972",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "某科学的超电磁炮",
+      "people": [
+        {
+          "id": "misaka_mikoto",
+          "name": "御坂美琴",
+          "aliases": [
+            "Misaka Mikoto",
+            "御坂美琴",
+            "超电磁炮",
+            "常盘台的王牌",
+            "哔哩哔哩"
+          ],
+          "characterId": "misaka_mikoto"
+        },
+        {
+          "id": "shokuhou_misaki",
+          "name": "食蜂操祈",
+          "aliases": [
+            "Shokuhou Misaki",
+            "食蜂操祈",
+            "女王蜂",
+            "Mental Out",
+            "心理掌握",
+            "常盘台女王"
+          ],
+          "characterId": "shokuhou_misaki"
+        },
+        {
+          "id": "kamijou_touma",
+          "name": "上条当麻",
+          "aliases": [
+            "Kamijou Touma",
+            "上条当麻",
+            "幻想杀手",
+            "不幸的高中生",
+            "把妹手"
+          ],
+          "role": "某高中学生 / 幻想杀手拥有者",
+          "summary": "右手寄宿着能抹消一切异能「幻想杀手」的少年。在自动贩卖机前与美琴相遇，在拯救御坂妹妹的绝对能力者进化计划中击溃一方通行，成为美琴心中最重要且暗自倾慕的依靠。"
+        },
+        {
+          "id": "shirai_kuroko",
+          "name": "白井黑子",
+          "aliases": [
+            "Shirai Kuroko",
+            "白井黑子",
+            "风纪委员第177支部",
+            "空间移动能力者"
+          ],
+          "role": "风纪委员第177支部成员 / 常盘台学生",
+          "summary": "美琴的常盘台学妹兼室友。行事正义果敢，对姐姐大人美琴有着近乎变态的痴迷与崇拜，但在战场上始终是美琴最坚实无可替代的后盾。",
+          "characterId": "shirai_kuroko"
+        },
+        {
+          "id": "uiharu_kazari",
+          "name": "初春饰利",
+          "aliases": [
+            "Uiharu Kazari",
+            "初春饰利",
+            "顶尖黑客",
+            "风纪委员",
+            "恒温死守"
+          ],
+          "role": "风纪委员第177支部 / 天才情报员",
+          "summary": "性格害羞但电脑黑客技术通神的情报分析员。与佐天泪子形影不离，为美琴和食蜂操祈的多次行动提供无可挑剔的数据支援。"
+        },
+        {
+          "id": "saten_ruiko",
+          "name": "佐天泪子",
+          "aliases": [
+            "Saten Ruiko",
+            "佐天泪子",
+            "无能力者Level 0",
+            "都市传说探求者",
+            "泪子"
+          ],
+          "role": "栅川中学学生 / 都市传说爱好者",
+          "summary": "元气豁达、充满好奇心的普通初中生。曾因无能力而迷茫，后以无畏的勇气与棒球棍参与多场都市传说事件，是美琴最宝贵且无拘无束的日常好友。",
+          "characterId": "saten_ruiko"
+        }
+      ],
+      "relations": [
+        {
+          "id": "kamijou_touma-misaka_mikoto-iron_bridge_salvation",
+          "source": "kamijou_touma",
+          "target": "misaka_mikoto",
+          "label": "暴雨铁桥的救赎与傲娇情愫",
+          "description": "在美琴为阻止两万克隆妹妹屠杀企图自毁时，当麻以血肉之躯在暴雨铁桥下击溃一方通行救回她的世界；从此成为美琴无论遭遇任何灾难都坚信的英雄与暗恋对象。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "妹妹篇（妹妹们事件） / 大霸星祭篇",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+            "url": "https://toaru-project.com/railgun_t/"
+          }
+        },
+        {
+          "id": "shokuhou_misaki-kamijou_touma-unremembered_first_love",
+          "source": "shokuhou_misaki",
+          "target": "kamijou_touma",
+          "label": "永远无法被记住的盛夏初恋与誓约",
+          "description": "幼年被当麻舍命解救，却因当麻脑部神经永久受损导致其大脑永远无法保留关于食蜂的记忆；面对当麻一次次视自己如陌生人，食蜂依然以傲然笑容拼尽全力守护他。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "某科学的超电磁炮T · 大霸星祭 / 新约魔禁第11卷",
+          "evidence": {
+            "title": "电击文库《魔法禁书目录》官方特设",
+            "url": "https://dengekibunko.jp/title/index/"
+          }
+        },
+        {
+          "id": "misaka_mikoto-shokuhou_misaki-rivals_and_allies",
+          "source": "misaka_mikoto",
+          "target": "shokuhou_misaki",
+          "label": "水火不容的常盘台双璧与共斗战友",
+          "description": "常盘台仅有的两位Level 5，平日性格与理念针锋相对、派阀互斥；但在大霸星祭面对木原幻生企图将美琴推向Level 6暴走的绝境中，两人达成极高默契舍命联手破局。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "大霸星祭篇（Level 6进化丧失）",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+            "url": "https://toaru-project.com/railgun_t/"
+          }
+        },
+        {
+          "id": "shirai_kuroko-misaka_mikoto-devoted_roommate",
+          "source": "shirai_kuroko",
+          "target": "misaka_mikoto",
+          "label": "狂热爱慕的室友与生死与共的风纪委员搭档",
+          "description": "常盘台208室同寝室友，常年对美琴抱有极其露骨狂热的痴迷爱慕与肢体接触；但关键战斗中凭借空间移动绝对信赖与支援美琴，是美琴最坚不可摧的后盾。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "超电磁炮常盘台日常生活 / 幻想御手篇",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮》官方网站",
+            "url": "https://toaru-project.com/railgun_t/"
+          }
+        },
+        {
+          "id": "shirai_kuroko-uiharu_kazari-judgment_partners",
+          "source": "shirai_kuroko",
+          "target": "uiharu_kazari",
+          "label": "风纪委员177支部的前后线黄金搭档",
+          "description": "同属第177支部的亲密同僚，初春在后方凭借神乎其技的情报搜索与黑客黑科技提供绝对算力支持，黑子在前线瞬间移动突入破案，多次联手化解学园都市危机。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "风纪委员常态执勤",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮》官方角色介绍",
+            "url": "https://toaru-project.com/railgun_t/character/"
+          }
+        },
+        {
+          "id": "uiharu_kazari-saten_ruiko-close_friends",
+          "source": "uiharu_kazari",
+          "target": "saten_ruiko",
+          "label": "掀裙恶友与互相搀扶的挚友",
+          "description": "日常佐天以掀初春裙子打趣逗乐，在佐天因Level 0自卑误用‘幻想御手’昏迷后初春哭泣奔走营救；佐天则在初春遭遇绑架与危机时凭借敏锐直觉与棒球棒挺身而出。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "幻想御手篇 / 杂乱开放篇",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮》官方角色介绍",
+            "url": "https://toaru-project.com/railgun_t/character/"
+          }
+        },
+        {
+          "id": "misaka_mikoto-saten_ruiko-level_crossing_friendship",
+          "source": "misaka_mikoto",
+          "target": "saten_ruiko",
+          "label": "跨越能力等级的平等友谊",
+          "description": "学园都市顶峰的Level 5与谷底的Level 0在此毫无芥蒂，佐天以爽朗乐观感染美琴并经常分享都市传说线索，美琴则给予佐天平等的尊重与庇护。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "栅川中学与常盘台四人组日常",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+            "url": "https://toaru-project.com/railgun_t/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "saten_ruiko",
+    "name": "佐天泪子",
+    "alias": [
+      "佐天涙子",
+      "Saten Ruiko"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "佐天泪子 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Long black hair, green eyes, and a small white flower hair ornament",
+      "hair": "black_hair, long_hair, hair_flower",
+      "eyes": "green_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "开朗健谈",
+      "好奇心强",
+      "珍惜朋友",
+      "遇到困难愿意行动"
+    ],
+    "likes": [
+      "都市传说",
+      "和初春一起逛街",
+      "尝试新鲜事物"
+    ],
+    "bg_story": "佐天泪子是《某科学的超电磁炮》中的角色，与初春饰利关系亲近，也和御坂美琴、白井黑子成为朋友。她没有高等级能力，却总愿意留意身边的人和新鲜消息。热闹的闲聊、放学后的绕路和偶然发现的小店，都是她熟悉的日常。",
+    "identity": {
+      "role": "栅川中学学生 / 都市传说爱好者",
+      "age": "成年创作设定",
+      "classificationSource": "https://wwws.warnerbros.co.jp/anime/wba/result/wb_anime08.html"
+    },
+    "source": "A Certain Scientific Railgun",
+    "traits": [
+      "black_hair",
+      "long_hair",
+      "green_eyes",
+      "hair_flower"
+    ],
+    "tags": [
+      "佐天泪子",
+      "某科学的超电磁炮",
+      "日常"
+    ],
+    "accent_color": "#74B7A7",
+    "bg_color": "#202833",
+    "palette": [
+      "#74B7A7",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "某科学的超电磁炮",
+      "people": [
+        {
+          "id": "misaka_mikoto",
+          "name": "御坂美琴",
+          "aliases": [
+            "Misaka Mikoto",
+            "御坂美琴",
+            "超电磁炮",
+            "常盘台的王牌",
+            "哔哩哔哩"
+          ],
+          "characterId": "misaka_mikoto"
+        },
+        {
+          "id": "shokuhou_misaki",
+          "name": "食蜂操祈",
+          "aliases": [
+            "Shokuhou Misaki",
+            "食蜂操祈",
+            "女王蜂",
+            "Mental Out",
+            "心理掌握",
+            "常盘台女王"
+          ],
+          "characterId": "shokuhou_misaki"
+        },
+        {
+          "id": "kamijou_touma",
+          "name": "上条当麻",
+          "aliases": [
+            "Kamijou Touma",
+            "上条当麻",
+            "幻想杀手",
+            "不幸的高中生",
+            "把妹手"
+          ],
+          "role": "某高中学生 / 幻想杀手拥有者",
+          "summary": "右手寄宿着能抹消一切异能「幻想杀手」的少年。在自动贩卖机前与美琴相遇，在拯救御坂妹妹的绝对能力者进化计划中击溃一方通行，成为美琴心中最重要且暗自倾慕的依靠。"
+        },
+        {
+          "id": "shirai_kuroko",
+          "name": "白井黑子",
+          "aliases": [
+            "Shirai Kuroko",
+            "白井黑子",
+            "风纪委员第177支部",
+            "空间移动能力者"
+          ],
+          "role": "风纪委员第177支部成员 / 常盘台学生",
+          "summary": "美琴的常盘台学妹兼室友。行事正义果敢，对姐姐大人美琴有着近乎变态的痴迷与崇拜，但在战场上始终是美琴最坚实无可替代的后盾。",
+          "characterId": "shirai_kuroko"
+        },
+        {
+          "id": "uiharu_kazari",
+          "name": "初春饰利",
+          "aliases": [
+            "Uiharu Kazari",
+            "初春饰利",
+            "顶尖黑客",
+            "风纪委员",
+            "恒温死守"
+          ],
+          "role": "风纪委员第177支部 / 天才情报员",
+          "summary": "性格害羞但电脑黑客技术通神的情报分析员。与佐天泪子形影不离，为美琴和食蜂操祈的多次行动提供无可挑剔的数据支援。"
+        },
+        {
+          "id": "saten_ruiko",
+          "name": "佐天泪子",
+          "aliases": [
+            "Saten Ruiko",
+            "佐天泪子",
+            "无能力者Level 0",
+            "都市传说探求者",
+            "泪子"
+          ],
+          "role": "栅川中学学生 / 都市传说爱好者",
+          "summary": "元气豁达、充满好奇心的普通初中生。曾因无能力而迷茫，后以无畏的勇气与棒球棍参与多场都市传说事件，是美琴最宝贵且无拘无束的日常好友。",
+          "characterId": "saten_ruiko"
+        }
+      ],
+      "relations": [
+        {
+          "id": "kamijou_touma-misaka_mikoto-iron_bridge_salvation",
+          "source": "kamijou_touma",
+          "target": "misaka_mikoto",
+          "label": "暴雨铁桥的救赎与傲娇情愫",
+          "description": "在美琴为阻止两万克隆妹妹屠杀企图自毁时，当麻以血肉之躯在暴雨铁桥下击溃一方通行救回她的世界；从此成为美琴无论遭遇任何灾难都坚信的英雄与暗恋对象。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "妹妹篇（妹妹们事件） / 大霸星祭篇",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+            "url": "https://toaru-project.com/railgun_t/"
+          }
+        },
+        {
+          "id": "shokuhou_misaki-kamijou_touma-unremembered_first_love",
+          "source": "shokuhou_misaki",
+          "target": "kamijou_touma",
+          "label": "永远无法被记住的盛夏初恋与誓约",
+          "description": "幼年被当麻舍命解救，却因当麻脑部神经永久受损导致其大脑永远无法保留关于食蜂的记忆；面对当麻一次次视自己如陌生人，食蜂依然以傲然笑容拼尽全力守护他。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "某科学的超电磁炮T · 大霸星祭 / 新约魔禁第11卷",
+          "evidence": {
+            "title": "电击文库《魔法禁书目录》官方特设",
+            "url": "https://dengekibunko.jp/title/index/"
+          }
+        },
+        {
+          "id": "misaka_mikoto-shokuhou_misaki-rivals_and_allies",
+          "source": "misaka_mikoto",
+          "target": "shokuhou_misaki",
+          "label": "水火不容的常盘台双璧与共斗战友",
+          "description": "常盘台仅有的两位Level 5，平日性格与理念针锋相对、派阀互斥；但在大霸星祭面对木原幻生企图将美琴推向Level 6暴走的绝境中，两人达成极高默契舍命联手破局。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "大霸星祭篇（Level 6进化丧失）",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+            "url": "https://toaru-project.com/railgun_t/"
+          }
+        },
+        {
+          "id": "shirai_kuroko-misaka_mikoto-devoted_roommate",
+          "source": "shirai_kuroko",
+          "target": "misaka_mikoto",
+          "label": "狂热爱慕的室友与生死与共的风纪委员搭档",
+          "description": "常盘台208室同寝室友，常年对美琴抱有极其露骨狂热的痴迷爱慕与肢体接触；但关键战斗中凭借空间移动绝对信赖与支援美琴，是美琴最坚不可摧的后盾。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "超电磁炮常盘台日常生活 / 幻想御手篇",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮》官方网站",
+            "url": "https://toaru-project.com/railgun_t/"
+          }
+        },
+        {
+          "id": "shirai_kuroko-uiharu_kazari-judgment_partners",
+          "source": "shirai_kuroko",
+          "target": "uiharu_kazari",
+          "label": "风纪委员177支部的前后线黄金搭档",
+          "description": "同属第177支部的亲密同僚，初春在后方凭借神乎其技的情报搜索与黑客黑科技提供绝对算力支持，黑子在前线瞬间移动突入破案，多次联手化解学园都市危机。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "风纪委员常态执勤",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮》官方角色介绍",
+            "url": "https://toaru-project.com/railgun_t/character/"
+          }
+        },
+        {
+          "id": "uiharu_kazari-saten_ruiko-close_friends",
+          "source": "uiharu_kazari",
+          "target": "saten_ruiko",
+          "label": "掀裙恶友与互相搀扶的挚友",
+          "description": "日常佐天以掀初春裙子打趣逗乐，在佐天因Level 0自卑误用‘幻想御手’昏迷后初春哭泣奔走营救；佐天则在初春遭遇绑架与危机时凭借敏锐直觉与棒球棒挺身而出。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "幻想御手篇 / 杂乱开放篇",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮》官方角色介绍",
+            "url": "https://toaru-project.com/railgun_t/character/"
+          }
+        },
+        {
+          "id": "misaka_mikoto-saten_ruiko-level_crossing_friendship",
+          "source": "misaka_mikoto",
+          "target": "saten_ruiko",
+          "label": "跨越能力等级的平等友谊",
+          "description": "学园都市顶峰的Level 5与谷底的Level 0在此毫无芥蒂，佐天以爽朗乐观感染美琴并经常分享都市传说线索，美琴则给予佐天平等的尊重与庇护。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "栅川中学与常盘台四人组日常",
+          "evidence": {
+            "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
+            "url": "https://toaru-project.com/railgun_t/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "faln_touden",
+    "name": "法琳",
+    "alias": [
+      "ファリン・トーデン",
+      "Falin Touden"
+    ],
+    "type": "popular",
+    "portrait": {
+      "image": "/assets/characters/portrait-pending.svg",
+      "alt": "法琳 · 立绘待制作"
+    },
+    "visual_dna": {
+      "signature": "Short pale ash-blonde hair, soft facial features, and golden eyes",
+      "hair": "blonde_hair, short_hair",
+      "eyes": "yellow_eyes",
+      "style": "anime"
+    },
+    "personality": [
+      "温和体贴",
+      "观察事物细致",
+      "对生物充满好奇",
+      "在需要保护同伴时果断"
+    ],
+    "likes": [
+      "观察小动物",
+      "和玛露希尔相处",
+      "研究魔法与植物"
+    ],
+    "bg_story": "法琳是《迷宫饭》中的魔术师，莱欧斯的妹妹，也是玛露希尔在魔法学校结识的朋友。她擅长强化、回复和除灵一类魔法，待人温和，也有对自然与生物格外好奇的一面。本批日常场景采用她的人类形态，描绘旅途休息、照料植物和整理生活用品的片刻。",
+    "identity": {
+      "role": "魔术师 / 擅长回复与强化魔法",
+      "age": "成年创作设定",
+      "classificationSource": "https://delicious-in-dungeon.com/"
+    },
+    "source": "Delicious in Dungeon",
+    "traits": [
+      "blonde_hair",
+      "short_hair",
+      "yellow_eyes"
+    ],
+    "tags": [
+      "法琳",
+      "迷宫饭",
+      "日常"
+    ],
+    "accent_color": "#C6B58B",
+    "bg_color": "#202833",
+    "palette": [
+      "#C6B58B",
+      "#F4EEDF"
+    ],
+    "relationshipGraph": {
+      "version": 1,
+      "work": "迷宫饭",
+      "people": [
+        {
+          "id": "marcille_donato",
+          "name": "玛露希尔",
+          "aliases": [
+            "マルシル・ドナトー",
+            "Marcille Donato",
+            "精灵魔法使"
+          ],
+          "characterId": "marcille_donato"
+        },
+        {
+          "id": "laios_touden",
+          "name": "莱欧斯",
+          "aliases": [
+            "ライオス・トーデン",
+            "Laios Touden",
+            "魔物狂战士"
+          ],
+          "role": "迷宫探索小队队长 / 狂热魔物学者",
+          "summary": "为了救回被红龙吞噬的妹妹法琳而深入迷宫的铠甲战士。对烹饪与食用魔物抱有病态的热忱，在森西的指导下一路烹饪魔物前行，虽常让法师玛露希尔抓狂，但始终以绝对战力庇护队友。"
+        },
+        {
+          "id": "faln_touden",
+          "name": "法琳",
+          "aliases": [
+            "ファリン・トーデン",
+            "Falin Touden"
+          ],
+          "role": "魔术师 / 擅长回复与强化魔法",
+          "summary": "性格温和善良的圣职者，玛露希尔最珍视的挚友。在被红龙消化前被黑魔法与红龙融合复活，最终在同伴们的齐心协力下剥离红龙肉身重返人间。",
+          "characterId": "faln_touden"
+        },
+        {
+          "id": "senshi",
+          "name": "森西",
+          "aliases": [
+            "センシ",
+            "Senshi",
+            "矮人厨师"
+          ],
+          "role": "迷宫生活十年的斧战士矮人",
+          "summary": "深谙地下城生态循环与魔物料理的胡须矮人。加入队伍担任主厨，悉心照料莱欧斯与玛露希尔的肠胃与营养平衡。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "marcille-laios-cooking-dungeon",
+          "source": "marcille_donato",
+          "target": "laios_touden",
+          "label": "魔物烹饪受害者与生死托付",
+          "description": "精通正统学院魔法的玛露希尔对莱欧斯的吃魔物狂热日常崩溃抗拒，却在为了救出挚友法琳的征程中无数次用魔力为莱欧斯抵挡死境。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "开篇设定 · 迷宫绝境求生",
+          "evidence": {
+            "title": "KADOKAWA / TRIGGER · 《迷宫饭》官方动画网站",
+            "url": "https://delicious-in-dungeon.com/"
+          }
+        },
+        {
+          "id": "marcille-faln-ancient-magic",
+          "source": "marcille_donato",
+          "target": "faln_touden",
+          "label": "学院挚友与禁忌古代黑魔术",
+          "description": "在魔法学院便与法琳结下无可替代的深厚羁绊，在炎龙腹中找到法琳残骸后，玛露希尔不惜触犯全大陆禁忌发动古代黑魔术将法琳复活。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "炎龙讨伐篇 · 禁忌苏生",
+          "evidence": {
+            "title": "KADOKAWA / TRIGGER · 《迷宫饭》官方动画网站",
+            "url": "https://delicious-in-dungeon.com/"
+          }
+        },
+        {
+          "id": "marcille-senshi-food-culture",
+          "source": "senshi",
+          "target": "marcille_donato",
+          "label": "迷宫饮食哲理传授",
+          "description": "研究迷宫魔物烹饪十余年的矮人森西，耐心引导排斥魔物的玛露希尔理解‘摄取营养、维持生命’是地底探索的第一铁律。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "共通线 · 营火聚餐日常",
+          "evidence": {
+            "title": "KADOKAWA / TRIGGER · 《迷宫饭》官方动画网站",
+            "url": "https://delicious-in-dungeon.com/"
           }
         }
       ]

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ijichi_nijika/livehouse_staff",
+  "revision": 1,
+  "sortOrder": 1633,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "ijichi_nijika",
+    "outfit": {
+      "id": "livehouse_staff",
+      "name": "红色乐队衫与黑色长裙",
+      "prose": "A red short-sleeved band T-shirt tucked into a black calf-length pleated skirt, white ankle socks, and black canvas sneakers",
+      "tokens": [
+        "red_t-shirt",
+        "short_sleeves",
+        "black_skirt",
+        "pleated_skirt",
+        "midi_skirt",
+        "ankle_socks",
+        "black_sneakers"
+      ],
+      "default": true
+    }
+  }
+}

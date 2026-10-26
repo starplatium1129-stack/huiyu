@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/evening_gown",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 294,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "evening_gown",
       "isDefault": false,
       "name": "不觅浪尘黑丝绒礼服",
-      "prose": "A long black velvet gown with gold and emerald embroidery.",
+      "prose": "An elegant black velvet evening gown with restrained gold and emerald embroidery following its long, composed silhouette.",
       "tokens": [
         "black evening gown",
         "velvet",

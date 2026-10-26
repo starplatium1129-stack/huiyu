@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "fujiwara_chika/shuchiin_uniform",
+  "revision": 1,
+  "sortOrder": 1637,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "fujiwara_chika",
+    "outfit": {
+      "id": "shuchiin_uniform",
+      "name": "秀知院黑色连衣裙校服",
+      "prose": "A black long-sleeved school dress with a white sailor-style collar and red ribbon, black knee socks, brown loafers, and a black hair bow",
+      "tokens": [
+        "black_dress",
+        "long_sleeves",
+        "white_sailor_collar",
+        "red_ribbon",
+        "black_kneehighs",
+        "loafers",
+        "black_hair_bow"
+      ],
+      "default": true
+    }
+  }
+}

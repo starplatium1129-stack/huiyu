@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "amiya_daily_rain_herb_stall",
+  "revision": 1,
+  "sortOrder": 1998,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "amiya_daily_rain_herb_stall",
+    "title": "阿米娅 · 雨棚下的薄荷香",
+    "description": "街市突然下起小雨，阿米娅停在香草摊的雨棚下。她拢住围巾，低头闻一小束薄荷，摊外的石板路映着水光。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "market_stall",
+      "mint",
+      "holding_plant",
+      "smelling",
+      "scarf",
+      "rain",
+      "awning",
+      "wet_pavement",
+      "overcast"
+    ],
+    "promptProse": "Amiya shelters beneath a market awning in a navy raincoat and pale blue checked scarf. She holds a small bunch of fresh mint below her nose, her eyes softened by the scent. Light rain falls beyond the covered stall onto the reflective stone street.",
+    "animaCaption": "The fresh mint is held above the stall counter, beneath the dry awning.",
+    "camera": "medium shot",
+    "recommendedSize": "832x1216",
+    "lighting": "overcast reflected daylight",
+    "location": "街市的香草摊",
+    "characterId": "amiya",
+    "outfitId": "rain_walk",
+    "action": "在雨棚下低头闻一小束薄荷",
+    "timeOfDay": "雨天白昼",
+    "mood": "片刻舒展",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "market_stall",
+      "mint",
+      "holding_plant",
+      "smelling",
+      "scarf",
+      "rain",
+      "awning",
+      "wet_pavement",
+      "overcast"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

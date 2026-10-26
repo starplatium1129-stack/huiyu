@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/sfw_home",
-  "revision": 4,
+  "revision": 2,
   "sortOrder": 852,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:34.941387900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
       "id": "sfw_home",
       "name": "奶油针织与栗棕宽松裤",
-      "prose": "A cream rib-hem sweater and chestnut wide-leg trousers.",
+      "prose": "a soft cream sweater with a broad ribbed hem and loose chestnut-brown wide-leg trousers",
       "tokens": [
         "cream sweater",
         "ribbed hem",

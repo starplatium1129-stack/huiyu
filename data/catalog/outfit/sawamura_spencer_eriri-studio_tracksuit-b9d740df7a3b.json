@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "sawamura_spencer_eriri/studio_tracksuit",
+  "revision": 1,
+  "sortOrder": 1642,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "sawamura_spencer_eriri",
+    "outfit": {
+      "id": "studio_tracksuit",
+      "name": "绿色运动外套与家居短裤",
+      "prose": "A green zip-up tracksuit jacket with white sleeve stripes over a plain white T-shirt, navy cotton lounge shorts, and soft slippers",
+      "tokens": [
+        "green_track_jacket",
+        "white_stripes",
+        "white_t-shirt",
+        "navy_shorts",
+        "cotton",
+        "slippers"
+      ],
+      "default": false
+    }
+  }
+}

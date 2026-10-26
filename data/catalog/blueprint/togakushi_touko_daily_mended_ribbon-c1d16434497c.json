@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "togakushi_touko_daily_mended_ribbon",
+  "revision": 1,
+  "sortOrder": 1986,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "togakushi_touko_daily_mended_ribbon",
+    "title": "户隐憧子 · 把缎带缝好再睡",
+    "description": "桌灯下，憧子把松开的发饰摊在掌心，低头穿过最后一针。线轴滚到桌沿，她伸出小指轻轻拦住。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "sewing",
+      "needle",
+      "thread",
+      "hair_ribbon",
+      "desk",
+      "table_lamp",
+      "focused",
+      "indoors"
+    ],
+    "promptProse": "Touko sits at a small desk in a plum cotton lounge dress and cream shawl. She sews the loose seam of a hair ribbon, holding the fabric over her palm while a spool rests near the desk edge. A warm lamp lights the needlework and her lowered gaze.",
+    "animaCaption": "The needle passes through the detached ribbon in her hands, away from her hair.",
+    "camera": "close-up",
+    "recommendedSize": "1216x832",
+    "lighting": "warm desk lamp",
+    "location": "卧室的小书桌",
+    "characterId": "togakushi_touko",
+    "outfitId": "evening_robe",
+    "action": "在桌灯下缝好脱线的发饰",
+    "timeOfDay": "夜晚",
+    "mood": "细致耐心",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "sewing",
+      "needle",
+      "thread",
+      "hair_ribbon",
+      "desk",
+      "table_lamp",
+      "focused",
+      "indoors"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

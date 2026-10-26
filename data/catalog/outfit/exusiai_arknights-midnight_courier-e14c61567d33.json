@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/midnight_courier",
-  "revision": 3,
+  "revision": 2,
   "sortOrder": 364,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
@@ -16,7 +16,7 @@
       "tokens": [
         "black coat",
         "hood",
-        "yellow reflective stripes",
+        "reflective trim",
         "messenger bag",
         "boots"
       ]

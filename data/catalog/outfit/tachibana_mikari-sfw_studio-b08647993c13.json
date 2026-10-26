@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "tachibana_mikari/sfw_studio",
-  "revision": 5,
+  "revision": 2,
   "sortOrder": 959,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tachibana_mikari",
     "outfit": {
       "id": "sfw_studio",
       "name": "白色露肩上衣与玫粉短裙",
-      "prose": "A sculpted white off-shoulder top, rose-pink A-line miniskirt and pale-pink heels.",
+      "prose": "A sculpted white off-shoulder top balances a rose-pink A-line miniskirt with a discreet side seam and pale-pink heels.",
       "tokens": [
-        "sculpted white off-shoulder top",
-        "rose pink A-line miniskirt",
-        "pale pink high heels"
+        "white off-shoulder top",
+        "pink miniskirt",
+        "high heels"
       ],
       "default": true,
       "isDefault": true

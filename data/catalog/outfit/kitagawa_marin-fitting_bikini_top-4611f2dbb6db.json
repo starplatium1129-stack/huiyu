@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/fitting_bikini_top",
-  "revision": 2,
+  "revision": 1,
   "sortOrder": 1400,
-  "createdAt": "2026-10-15T14:37:48.939637+00:00",
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
@@ -14,7 +14,7 @@
         "bikini top",
         "garter straps"
       ],
-      "prose": "A simple bikini top with garter straps.",
+      "prose": "A simple bikini top with garter straps for the existing fitting scene.",
       "default": false,
       "isDefault": false
     }

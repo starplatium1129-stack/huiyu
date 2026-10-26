@@ -1,18 +1,25 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/nsfw_nude",
-  "revision": 3,
+  "revision": 1,
   "sortOrder": 790,
   "createdAt": null,
-  "updatedAt": "2026-10-20T11:43:35.070894700+00:00",
+  "updatedAt": null,
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "her completely bare, mature and voluptuous body with long black hair loose to her waist, full soft breasts with dusky pink nipples, a narrow waist, and long elegant legs",
       "tokens": [
-        "nude"
+        "completely_nude",
+        "bare_breasts",
+        "pink_nipples",
+        "areola",
+        "pussy",
+        "navel",
+        "large_breasts",
+        "long_legs"
       ]
     }
   }

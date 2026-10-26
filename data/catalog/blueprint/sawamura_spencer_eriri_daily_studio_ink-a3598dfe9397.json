@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "sawamura_spencer_eriri_daily_studio_ink",
+  "revision": 1,
+  "sortOrder": 2012,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "sawamura_spencer_eriri_daily_studio_ink",
+    "title": "英梨梨 · 不许碰左边那张",
+    "description": "桌上的墨线还没有干。英梨梨用手掌挡住那页画稿，另一只手捏着橡皮，示意你先看右边已经完成的分镜。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "artist_studio",
+      "drawing_desk",
+      "manga_page",
+      "eraser",
+      "raised_hand",
+      "focused",
+      "desk_lamp"
+    ],
+    "promptProse": "In her studio, Eriri wears a green tracksuit jacket and navy lounge shorts. Seated at a drawing desk, she keeps one open hand above a freshly inked page while holding an eraser in the other, directing the viewer toward the finished storyboard on her right. A desk lamp illuminates the paper.",
+    "animaCaption": "Her open palm guards the wet ink without touching it; the eraser stays over a separate page.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "warm drawing lamp",
+    "location": "家中的绘画工作台",
+    "characterId": "sawamura_spencer_eriri",
+    "outfitId": "studio_tracksuit",
+    "action": "护住未干的墨线，示意先看另一张分镜",
+    "timeOfDay": "晚间",
+    "mood": "紧张地维护作品",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "artist_studio",
+      "drawing_desk",
+      "manga_page",
+      "eraser",
+      "raised_hand",
+      "focused",
+      "desk_lamp"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

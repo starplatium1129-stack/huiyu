@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "fujiwara_chika_daily_council_dice",
+  "revision": 1,
+  "sortOrder": 2007,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "fujiwara_chika_daily_council_dice",
+    "title": "藤原千花 · 规则我还没讲完呢",
+    "description": "学生会桌上铺开了棋盘。千花捏着一枚骰子，另一只手挡住你正要伸向棋子的方向，笑着表示先听她把规则讲完。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "student_council_room",
+      "board_game",
+      "dice",
+      "raised_hand",
+      "playful_smile",
+      "looking_at_viewer",
+      "window_light"
+    ],
+    "promptProse": "Chika sits at the student-council table in her black school dress. She holds a single die between her fingertips and raises her free hand toward the viewer, smiling as she explains a board game laid out before her. Daylight from the tall windows lights the pieces.",
+    "animaCaption": "Only Chika is visible; her raised palm addresses the viewer across the game board.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "afternoon window light",
+    "location": "学生会室的长桌",
+    "characterId": "fujiwara_chika",
+    "outfitId": "shuchiin_uniform",
+    "action": "捏住骰子，举手请你先听完规则",
+    "timeOfDay": "放学后",
+    "mood": "兴致勃勃",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "student_council_room",
+      "board_game",
+      "dice",
+      "raised_hand",
+      "playful_smile",
+      "looking_at_viewer",
+      "window_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

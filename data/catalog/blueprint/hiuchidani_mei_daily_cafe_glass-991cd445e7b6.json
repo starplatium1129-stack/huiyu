@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "hiuchidani_mei_daily_cafe_glass",
+  "revision": 1,
+  "sortOrder": 1993,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "hiuchidani_mei_daily_cafe_glass",
+    "title": "火打谷爱衣 · 玻璃杯擦得亮亮的",
+    "description": "午后的客人还没到，爱衣站在吧台里擦杯子。她把杯口朝窗边转了转，确认没有水痕，才满意地放到整齐的一排里。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "standing",
+      "cafe",
+      "counter",
+      "glass",
+      "wiping",
+      "cleaning_cloth",
+      "focused",
+      "window_light",
+      "glassware"
+    ],
+    "promptProse": "Mei stands behind the cafe counter in a muted violet shirt and dark denim apron. She wipes a clear drinking glass with a clean cloth, turning its rim toward the window to check for water marks. The empty glasses stand in a neat row beside her under soft daylight.",
+    "animaCaption": "One hand supports the glass base while the cloth in the other hand polishes its outer wall.",
+    "camera": "medium shot",
+    "recommendedSize": "1216x832",
+    "lighting": "soft cafe window light",
+    "location": "营业前的咖啡馆吧台",
+    "characterId": "hiuchidani_mei",
+    "outfitId": "cafe_mauve",
+    "action": "擦亮玻璃杯并对光检查水痕",
+    "timeOfDay": "营业前的午后",
+    "mood": "工作中的专注",
+    "category": "日常相处",
+    "sceneTags": [
+      "standing",
+      "cafe",
+      "counter",
+      "glass",
+      "wiping",
+      "cleaning_cloth",
+      "focused",
+      "window_light",
+      "glassware"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/sfw_bridal_lace",
-  "revision": 5,
+  "revision": 3,
   "sortOrder": 800,
   "createdAt": null,
-  "updatedAt": "2026-10-20T13:20:08.960326+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
@@ -15,8 +15,7 @@
         "ivory wedding dress",
         "long lace sleeves",
         "veil",
-        "ivory pumps",
-        "floor-length dress"
+        "ivory pumps"
       ],
       "isDefault": false,
       "isNsfw": false

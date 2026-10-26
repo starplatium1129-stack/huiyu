@@ -1,0 +1,53 @@
+{
+  "kind": "blueprint",
+  "id": "shirai_kuroko_daily_laces_before_run",
+  "revision": 1,
+  "sortOrder": 2016,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "id": "shirai_kuroko_daily_laces_before_run",
+    "title": "白井黑子 · 出发前再检查一遍",
+    "description": "体育场看台旁，黑子坐在最低一阶，把一只鞋的鞋带重新系紧。她抬头看了眼跑道，决定先慢跑两圈热身。",
+    "promptTokens": [
+      "safe",
+      "1girl",
+      "solo",
+      "sitting",
+      "stadium_steps",
+      "tying_shoelaces",
+      "running_track",
+      "sportswear",
+      "focused",
+      "morning_light"
+    ],
+    "promptProse": "Beside a running track, Kuroko wears a burgundy tracksuit and white trainers. She sits on the lowest stadium step, leaning forward to tie one shoelace securely before warming up. Soft morning light outlines the empty track behind her.",
+    "animaCaption": "Both hands tie the lace of the same shoe while its sole stays on the ground.",
+    "camera": "cowboy shot",
+    "recommendedSize": "832x1216",
+    "lighting": "soft morning light",
+    "location": "运动场看台边",
+    "characterId": "shirai_kuroko",
+    "outfitId": "training_pants",
+    "action": "坐在台阶上重新系紧跑鞋鞋带",
+    "timeOfDay": "清晨",
+    "mood": "出发前的认真",
+    "category": "日常相处",
+    "sceneTags": [
+      "sitting",
+      "stadium_steps",
+      "tying_shoelaces",
+      "running_track",
+      "sportswear",
+      "focused",
+      "morning_light"
+    ],
+    "negativeTokens": [],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

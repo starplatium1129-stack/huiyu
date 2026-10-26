@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "faln_touden/herb_cloak",
+  "revision": 1,
+  "sortOrder": 1655,
+  "createdAt": "2026-10-26T12:45:22.504+00:00",
+  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "data": {
+    "characterId": "faln_touden",
+    "outfit": {
+      "id": "herb_cloak",
+      "name": "苔绿短斗篷与粗纺长裤",
+      "prose": "A moss-green hooded short cloak over a cream tunic, brown wool trousers, sturdy lace-up boots, and a woven herb satchel",
+      "tokens": [
+        "green_cloak",
+        "hood_down",
+        "cream_tunic",
+        "brown_pants",
+        "wool",
+        "lace-up_boots",
+        "woven_bag"
+      ],
+      "default": false
+    }
+  }
+}
