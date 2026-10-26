@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { useDrawingWorkspace } from '@/composables/prompt/useDrawingWorkspace'
+import { loadPromptDrawingWorkspace } from '@/router/routeFeatures'
+
+// The route shell and primary workspace download in parallel with the catalog.
+// PromptDrawingWorkspace reuses these store-owned requests and keeps error UI.
+void loadPromptDrawingWorkspace().catch(() => {})
+void import('@/stores/sceneStore').then(({ useSceneStore }) => {
+  const store = useSceneStore()
+  return Promise.all([store.load(), store.loadPresetCatalog()])
+}).catch(() => {})
 const { editorPanel, editorOpen, editorEntry, sourceImage, opener, closeEditor } = useDrawingWorkspace()
-const loadPrompt = () => import('@/components/director/PromptDrawingWorkspace.vue')
+const loadPrompt = loadPromptDrawingWorkspace
 </script>
 
 <template>

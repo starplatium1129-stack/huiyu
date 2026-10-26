@@ -110,7 +110,7 @@
   </article>
 </template>
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
@@ -122,7 +122,7 @@ import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import CatalogRecordEditor from '@/components/maintenance/CatalogRecordEditor.vue'
-import CatalogChangePreview from '@/components/maintenance/CatalogChangePreview.vue'
+const CatalogChangePreview = defineAsyncComponent(() => import('@/components/maintenance/CatalogChangePreview.vue'))
 import { useCatalogMaintenance } from '@/composables/scene/useCatalogMaintenance'
 import { CATALOG_LABELS, catalogTitle, catalogRating, catalogCategory, catalogDate, recordTitle } from '@/composables/scene/catalogPresentation'
 import type { CatalogChange, CatalogKind, CatalogSummary } from '@/api/catalogApi'

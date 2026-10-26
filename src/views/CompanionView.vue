@@ -323,18 +323,18 @@
 <script setup lang="ts">
 
 import CompanionPreferences from '@/components/CompanionPreferences.vue'
-import CompanionOrbitMenu from '@/components/CompanionOrbitMenu.vue'
-import CompanionClipboardCard from '@/components/CompanionClipboardCard.vue'
-import CompanionImportRecovery from '@/components/CompanionImportRecovery.vue'
-import CompanionImportRecoveryDialog from '@/components/CompanionImportRecoveryDialog.vue'
 import VoiceGlow from "@/components/visual/VoiceGlow.vue"
 import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
+const CompanionOrbitMenu = defineAsyncComponent(() => import('@/components/CompanionOrbitMenu.vue'))
+const CompanionClipboardCard = defineAsyncComponent(() => import('@/components/CompanionClipboardCard.vue'))
+const CompanionImportRecovery = defineAsyncComponent(() => import('@/components/CompanionImportRecovery.vue'))
+const CompanionImportRecoveryDialog = defineAsyncComponent(() => import('@/components/CompanionImportRecoveryDialog.vue'))
 const AppearancePreferences = defineAsyncComponent(() => import('@/components/AppearancePreferences.vue'))
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
 const loadCharacterPicker = () => import('@/components/CompanionCharacterPicker.vue')
-import CompanionDesktopFloat from '@/components/CompanionDesktopFloat.vue'
-import CompanionWorkspaceSettings from '@/components/CompanionWorkspaceSettings.vue'
+const CompanionDesktopFloat = defineAsyncComponent(() => import('@/components/CompanionDesktopFloat.vue'))
+const CompanionWorkspaceSettings = defineAsyncComponent(() => import('@/components/CompanionWorkspaceSettings.vue'))
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'

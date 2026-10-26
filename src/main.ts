@@ -36,14 +36,17 @@ let stopNavigationFeedback = () => {}
 let stopPlatform = () => {}
 let stopFontLoad = () => {}
 void (async () => {
-  const { useTaskCenter } = await import('./composables/useTaskCenter')
+  const appPromise = import('./App.vue')
+  const routerPromise = import('./router')
+  const taskCenterPromise = import('./composables/useTaskCenter')
+  const { useTaskCenter } = await taskCenterPromise
   const center = useTaskCenter()
   stopPlatform = await initializePlatform(() => center.activeCount.value > 0)
   initializeTheme()
   // The platform authority is ready. Theme CSS, UI modules and the artwork
   // lease can now prepare together; all three still finish before mounting.
   const [[{ default: App }, { default: router }]] = await Promise.all([
-    Promise.all([import('./App.vue'), import('./router')]),
+    Promise.all([appPromise, routerPromise]),
     initializeDesktopPreferences(),
     startArtworkSession().catch(error => console.warn('作品清理保护不可用', error)),
   ])

@@ -63,11 +63,19 @@
       </dialog>
     </Teleport>
     <section class="chat-layout" aria-label="角色聊天">
-      <ChatCharacterStage ref="characterStageRef" :active-id="activeChar" :suspended="presentationSuspended"
-        :surface="immersive ? 'immersive' : 'room'" :character="currentCharacter" :speaking="isSpeaking"
-        :volume="volume" :chat-status-text="chatStatusText" :status-kind="statusKind"
-        :auto-load="storage.state.settings.live2dEnabled" :outfit="storage.live2dOutfit(activeChar)"
-        @select="switchCharacter" @live2d-enabled="storage.setLive2dEnabled" @outfit-changed="storage.setLive2dOutfit(activeChar, $event)" />
+      <Suspense>
+        <ChatCharacterStage ref="characterStageRef" :active-id="activeChar" :suspended="presentationSuspended"
+          :surface="immersive ? 'immersive' : 'room'" :character="currentCharacter" :speaking="isSpeaking"
+          :volume="volume" :chat-status-text="chatStatusText" :status-kind="statusKind"
+          :auto-load="storage.state.settings.live2dEnabled" :outfit="storage.live2dOutfit(activeChar)"
+          @select="switchCharacter" @live2d-enabled="storage.setLive2dEnabled" @outfit-changed="storage.setLive2dOutfit(activeChar, $event)" />
+        <template #fallback>
+          <aside class="character-card room-character-stage-loading" :data-character="activeChar" :aria-label="`正在准备${currentCharacter.name}的角色舞台`" aria-busy="true">
+            <RuntimeImage class="room-character-stage-loading-art" :src="avatar" alt="" />
+            <p role="status"><ArchiveIcon name="character" /><span>正在准备{{ currentCharacter.name }}的角色舞台…</span></p>
+          </aside>
+        </template>
+      </Suspense>
       <section class="conversation-card" data-route-arrive v-content-motion:up="activeChar" :aria-label="immersive ? '当前对话' : '完整对话'">
         <header class="conversation-head">
           <div class="room-chat-identity">
@@ -78,7 +86,10 @@
             <StudioTooltip :content="immersive ? '展开对话' : '专注陪伴'"><button class="btn btn-ghost" type="button" :aria-label="immersive ? '展开对话' : '专注陪伴'" :aria-pressed="immersive" @click="toggleImmersive"><ArchiveIcon :name="immersive ? 'chat' : 'moon'" /></button></StudioTooltip>
             <StudioTooltip :content="clearLabel"><button class="btn btn-ghost" type="button" :aria-label="clearLabel" :aria-busy="clearBusy" :disabled="busy || storyBusy || chatMutationBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
             <StudioTooltip content="聊天设置"><button class="btn btn-ghost chat-settings-trigger" type="button" aria-label="聊天设置" @click="openRoomPanel('settings')"><ArchiveIcon name="gear" /></button></StudioTooltip>
-            <ChatActionsMenu @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
+            <Suspense>
+              <ChatActionsMenu @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
+              <template #fallback><button class="btn btn-ghost" type="button" aria-label="正在准备更多聊天操作" aria-busy="true" disabled><ArchiveIcon name="menu" /></button></template>
+            </Suspense>
           </div>
         </header>
         <ChatStoryPicker :branch-id="branchId" :branches="storyBranches" :disabled="busy || storyBusy || chatMutationBusy || storage.writeBlocked.value"
@@ -149,8 +160,6 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import { companionChatAvatars } from '@/config/companionChatAvatars'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { resolveCompanionAvatar } from '@/utils/companionRegistry'
-import ChatCharacterStage from '@/components/ChatCharacterStage.vue'
-import ChatActionsMenu from '@/components/ChatActionsMenu.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useChatSpeechInteraction } from '@/composables/chat/useChatSpeechInteraction'
 import type { ChatUserProfile } from '@/utils/chatUserProfile'
@@ -159,6 +168,8 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
 const ChatStoryPicker = defineAsyncComponent(() => import('@/components/ChatStoryPicker.vue'))
 const ChatMessageRow = defineAsyncComponent(() => import('@/components/ChatMessageRow.vue'))
+const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
+const ChatActionsMenu = defineAsyncComponent(() => import('@/components/ChatActionsMenu.vue'))
 // App's TaskCenter already loads this boundary before tools can open; keep its
 // low-frequency use outside the room's static dependency closure.
 const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel.vue'))

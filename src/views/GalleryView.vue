@@ -281,7 +281,7 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
 import GalleryVirtualRows from '@/components/gallery/GalleryVirtualRows.vue'
-import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
+const ArtworkViewerStage = defineAsyncComponent(() => import('@/components/gallery/ArtworkViewerStage.vue'))
 import { computed, defineAsyncComponent, nextTick, onActivated, onDeactivated, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { artworkTags } from '@/composables/gallery/artworkTags'
@@ -318,16 +318,16 @@ const originalViewer = ref(false)
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 const loadCandidateCompare = () => import('@/components/gallery/CandidateCompare.vue')
 const GalleryOrganization = defineAsyncComponent(() => import('@/components/gallery/GalleryOrganization.vue'))
-import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
+const GalleryTrashWall = defineAsyncComponent(() => import('@/components/gallery/GalleryTrashWall.vue'))
 const loadAlbumOverview = () => import('@/components/gallery/GalleryAlbumOverview.vue')
 const loadAlbumEditor = () => import('@/components/gallery/GallerySmartAlbumEditor.vue')
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
-import MangaScreenLauncher from '@/components/manga/MangaScreenLauncher.vue'
+const MangaScreenLauncher = defineAsyncComponent(() => import('@/components/manga/MangaScreenLauncher.vue'))
 import galleryEmptyOriginal from '@/assets/illustrations/atelier-gallery-1408.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
 const galleryEmptyArt = useThemeIllustration(galleryEmptyOriginal, 'collection')
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
+const ImageCompareSlider = defineAsyncComponent(() => import('@/components/visual/ImageCompareSlider.vue'))
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'

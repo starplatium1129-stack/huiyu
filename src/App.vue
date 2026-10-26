@@ -3,7 +3,7 @@
     <DesktopTitleBar />
     <RuntimeConnectionNotice />
     <RouteRecoveryBanner />
-    <DesktopUpdateBanner v-if="!isCompanion" />
+    <DesktopUpdateBanner v-if="desktop && !isCompanion" />
     <div class="route-stage tw:relative tw:grid tw:[align-items:start] tw:min-w-0">
       <RouterView v-slot="{ Component }">
         <Transition appear :css="false" @before-enter="beforeEnterLayout" @enter="enterLayout" @leave="layoutMotion.onLeave" @enter-cancelled="layoutMotion.onEnterCancelled" @leave-cancelled="layoutMotion.onLeaveCancelled">
@@ -25,7 +25,7 @@ import '@/assets/css/control-feedback.css'
 import { getDesktopCapabilities, onDesktopNavigate } from '@/platform/desktop/capabilities'
 import { getDesktopWindowRole } from '@/platform/desktop/runtime'
 
-import { computed, onErrorCaptured, onMounted, onUnmounted, watch } from 'vue'
+import { computed, defineAsyncComponent, onErrorCaptured, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { TooltipProvider } from 'reka-ui'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
@@ -37,13 +37,14 @@ import GlobalSearch from '@/components/GlobalSearchHost.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 import RuntimeConnectionNotice from '@/components/RuntimeConnectionNotice.vue'
 import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
-import DesktopUpdateBanner from '@/components/DesktopUpdateBanner.vue'
 import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
 import { useRouteTransition } from '@/composables/useRouteTransition'
 import { useCharacterArtRefresh } from '@/composables/useCharacterArtRefresh'
 import { routeRecovery } from '@/composables/useRouteRecovery'
 
 const route = useRoute()
+const desktop = Boolean(getDesktopCapabilities())
+const DesktopUpdateBanner = defineAsyncComponent(() => import('@/components/DesktopUpdateBanner.vue'))
 useCharacterArtRefresh()
 const router = useRouter()
 onErrorCaptured((error, instance, info) => {

@@ -126,13 +126,36 @@ const router = createRouter({
   }
 })
 
-// Track navigation before loading local characters; room setup still waits for them.
+const ROOM_RESOURCE_PATHS = new Set(['/chat', '/companion', '/companion-chat'])
+let roomResourcePreparation: Promise<void> | null = null
+function prepareRoomResources(): Promise<void> {
+  if (!roomResourcePreparation) {
+    roomResourcePreparation = Promise.all([
+      import('@/utils/localCompanions').then(module => module.loadLocalCompanions()),
+      import('@/platform/web/profileStorage').then(module => module.ensureProfileChatHistory()),
+    ]).then(() => undefined)
+  }
+  return roomResourcePreparation
+}
+
+// Begin room data before Vue Router resolves the lazy page component. Browser
+// policy transitions reload the document, so their old document does not start
+// work it cannot reuse; direct entries and desktop SPA navigation run in parallel.
+router.beforeEach((to, from) => {
+  if (!ROOM_RESOURCE_PATHS.has(to.path)) return
+  if (from.matched.length && import.meta.env.MODE !== 'desktop' && needsDocumentReload(from.path, to.path)) return
+  void prepareRoomResources().catch(() => {})
+})
+
+// The page still receives complete local characters and chat history. Awaiting
+// here preserves the existing boundary while overlapping its I/O with imports.
 router.beforeResolve(async to => {
-  if (['/chat', '/companion', '/companion-chat'].includes(to.path)) {
-    await Promise.all([
-      (await import('@/utils/localCompanions')).loadLocalCompanions(),
-      (await import('@/platform/web/profileStorage')).ensureProfileChatHistory(),
-    ])
+  if (!ROOM_RESOURCE_PATHS.has(to.path)) return
+  const pending = roomResourcePreparation ?? prepareRoomResources()
+  try {
+    await pending
+  } finally {
+    if (roomResourcePreparation === pending) roomResourcePreparation = null
   }
 })
 

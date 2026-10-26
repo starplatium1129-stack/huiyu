@@ -7,6 +7,10 @@
 /* 角色舞台与对话按可用宽度共同扩展，避免大屏仍被固定侧栏宽度截断。 */
 .room-surface .chat-layout { flex:1; @apply tw:h-auto; grid-template-columns:minmax(280px,2fr) minmax(0,3fr); gap:var(--s-4); @apply tw:min-h-0; }
 .room-surface .character-card { border: 0; border-radius: 0; background: transparent; box-shadow: none; animation:none; @apply tw:overflow-visible tw:min-w-0 tw:min-h-0; }
+.room-surface .room-character-stage-loading { position:relative; display:grid; place-items:center; overflow:hidden; background:var(--bg-surface); }
+.room-character-stage-loading-art { width:min(62%,320px); max-height:70%; object-fit:contain; }
+.room-character-stage-loading p { position:absolute; inset:auto var(--s-3) var(--s-3); display:flex; align-items:center; justify-content:center; gap:var(--s-2); margin:0; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-secondary); font:400 var(--fs-label-sm)/var(--lh-label) var(--font-sans); }
+.room-character-stage-loading p .archive-icon { width:18px; height:18px; color:var(--accent); }
 /* Keep the original entrance inside the rail so settings can rise without its portrait. */
 .room-surface :is(.portrait-stage,.character-info) { animation:chatRailIn .48s var(--ease-out) .06s backwards; }
 .room-surface .character-info:has(.character-controls[open]) { z-index:var(--z-popover); }
