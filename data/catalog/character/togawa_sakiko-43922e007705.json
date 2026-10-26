@@ -95,7 +95,9 @@
             "aliases": [
               "高松燈",
               "Takamatsu Tomori"
-            ]
+            ],
+            "role": "MyGO!!!!!主唱 / 收集创伤的作词少女",
+            "summary": "因自认无法成为普通人而封闭心扉的少女。在CRYCHIC解散后迷茫彷徨，最终在千早爱音等人的拉扯下喊出「哪怕迷茫也要前进」，与丰川祥子曾组建乐队并留下刻入心底的音乐共鸣。"
           },
           {
             "id": "wakaba_mutsumi",
@@ -104,7 +106,9 @@
               "若葉睦",
               "Wakaba Mutsumi",
               "Mortis"
-            ]
+            ],
+            "role": "CRYCHIC前吉他手 / 知名演员千金",
+            "summary": "寡言阴郁的吉他手，祥子童年唯一的邻家玩伴。深知祥子家庭破裂的残酷真相并默默忍受折磨，最终跟随祥子加入Ave Mujica。"
           },
           {
             "id": "sankaku_uika",
@@ -113,7 +117,9 @@
               "三角初華",
               "Sankaku Uika",
               "Timoris"
-            ]
+            ],
+            "role": "偶像组合「sumimi」吉他手 / Ave Mujica吉他手",
+            "summary": "祥子幼年结识的星空好友。在祥子家道中落跌入深渊时毫不犹豫响应其组建Ave Mujica的召集，全力支持祥子完成演艺逆袭。"
           }
         ],
         "relations": [

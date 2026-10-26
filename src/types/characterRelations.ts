@@ -3,6 +3,9 @@ export interface RelationPerson {
   name: string
   aliases: string[]
   characterId?: string
+  role?: string
+  summary?: string
+  avatar?: string
 }
 
 export interface CharacterRelation {

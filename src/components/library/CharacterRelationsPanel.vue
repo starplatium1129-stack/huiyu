@@ -196,7 +196,7 @@ function keyboardPan(event: KeyboardEvent) {
           <h2>{{ graph.work }}</h2>
         </div>
         <div class="relations-heading-actions">
-          <span class="relations-summary">{{ pendingPeople.length }} 位待补档案</span>
+          <span class="relations-summary">{{ pendingPeople.length }} 位原作人物</span>
           <button ref="fullscreenButton" class="btn btn-ghost btn-sm" type="button" :aria-expanded="isFullscreen" :title="isFullscreen ? '退出全屏沉浸（Esc）' : '全屏沉浸画板'" @click="toggleFullscreen">
             <ArchiveIcon :name="isFullscreen ? 'compress' : 'expand'" />
             <span>{{ isFullscreen ? '退出沉浸' : '沉浸全屏' }}</span>
@@ -217,7 +217,7 @@ function keyboardPan(event: KeyboardEvent) {
           <button type="button" :aria-pressed="scope === 'nearby'" @click="scope = 'nearby'">当前人物</button>
           <button type="button" :aria-pressed="scope === 'work'" @click="scope = 'work'">作品全貌</button>
         </div>
-        <StudioCheckbox v-model:checked="pendingOnly" label="只看待补人物">只看待补人物</StudioCheckbox>
+        <StudioCheckbox v-model:checked="pendingOnly" label="只看原作人物">只看原作人物</StudioCheckbox>
         <StudioCheckbox v-model:checked="showSpoilers" label="显示剧透关系">显示剧透关系</StudioCheckbox>
         <div class="relations-toolbar-spacer"></div>
         <button
@@ -327,9 +327,9 @@ function keyboardPan(event: KeyboardEvent) {
           <p :id="helpId" class="relations-map-help">
             {{ circlesEnabled && !activeGroup ? '单击区域进入 · 空白处拖动 · 滚轮缩放' : '拖动人物调整位置 · 空白处拖动画布 · 滚轮缩放 · Shift＋方向键移动人物' }}
           </p>
-          <p v-if="circlesEnabled && !circlePeople.length" class="relations-map-empty" role="status">当前没有符合筛选的人物，请取消“只看待补人物”。</p>
+          <p v-if="circlesEnabled && !circlePeople.length" class="relations-map-empty" role="status">当前没有符合筛选的人物，请取消“只看原作人物”。</p>
           <p v-else-if="!circlesEnabled && !visibleRelations.length" class="relations-map-empty" role="status">
-            {{ pendingOnly ? '当前范围内没有待补人物的关系，可切换作品全貌。' : '当前人物在此范围内暂无公开关系。' }}
+            {{ pendingOnly ? '当前范围内没有原作人物的关系，可切换作品全貌。' : '当前人物在此范围内暂无公开关系。' }}
           </p>
         </div>
 
@@ -354,14 +354,17 @@ function keyboardPan(event: KeyboardEvent) {
 
           <section v-else-if="selectedPerson" :key="selectedPerson.id" v-content-motion:fade="selectedPerson.id" class="relation-description">
             <div class="relation-description-head">
-              <span class="page-kicker">{{ selectedProfile ? '已收录档案' : '待补档案' }}</span>
+              <span class="page-kicker">{{ selectedProfile ? '已收录图鉴' : '原作背景人物' }}</span>
               <button class="btn btn-ghost btn-sm btn-icon" type="button" title="收起说明栏" @click="setInspectorCollapsed(true)">
                 <ArchiveIcon name="minus" />
               </button>
             </div>
             <h3>{{ selectedPerson.name }}</h3>
-            <p v-if="!selectedProfile">{{ graph.work }}中的人物，尚未建立角色档案。补入档案后，会接回这个人物及已有关系。</p>
-            <p v-else>查看与{{ selectedPerson.name }}相关的原作关系，或进入人物档案。</p>
+            <span v-if="selectedPerson.role" class="relation-person-role">{{ selectedPerson.role }}</span>
+            <p v-if="!selectedProfile" class="relation-person-summary">
+              {{ selectedPerson.summary || `${graph.work}原作登场人物，承托女主角们的剧情渊源与羁绊关系。` }}
+            </p>
+            <p v-else>查看与{{ selectedPerson.name }}相关的原作羁绊关系，或进入人物档案。</p>
             <div class="relation-person-actions">
               <button class="btn btn-ghost btn-sm" type="button" @click="explorePerson(selectedPerson.id)">以此人为中心</button>
               <button v-if="selectedProfile" class="btn btn-primary btn-sm" type="button" @click="emit('openProfile', selectedProfile.id)">进入档案</button>

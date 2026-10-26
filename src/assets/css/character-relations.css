@@ -249,9 +249,30 @@
 }
 
 .relation-description h3 {
-  margin: var(--s-2) 0 var(--s-3);
+  margin: var(--s-2) 0 var(--s-2);
   font: 500 var(--fs-body-lg)/var(--lh-body) var(--font-serif);
   overflow-wrap: anywhere;
+}
+
+.relation-person-role {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: var(--s-2);
+  padding: 2px var(--s-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-sm);
+  background: var(--bg-elevated);
+  color: var(--text-accent, var(--accent));
+  font: 500 var(--fs-label-xs)/var(--lh-tight) var(--font-sans);
+  letter-spacing: 0.02em;
+}
+
+.relation-person-summary {
+  margin: var(--s-2) 0 var(--s-3);
+  color: var(--text-secondary);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-loose);
+  white-space: pre-line;
 }
 
 .relation-description > strong {

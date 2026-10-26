@@ -18,7 +18,7 @@ function move(event: KeyboardEvent, id: string) {
 
 <template>
   <button class="atlas-portrait nopan" :class="{ 'is-selected': data.selected, 'is-highlighted': data.isHighlighted, 'is-pending': !data.profile }"
-    type="button" :aria-pressed="data.selected" :aria-label="`${data.person.name}，${data.profile ? '已收录档案' : '待补档案'}，查看关系`"
+    type="button" :aria-pressed="data.selected" :aria-label="`${data.person.name}，${data.profile ? '已收录图鉴' : '原作背景人物'}，查看关系`"
     @click.stop="emit('select', data.person.id)" @mouseenter="emit('hover', data.person.id, true)" @mouseleave="emit('hover', data.person.id, false)"
     @focus="emit('hover', data.person.id, true); emit('focus')" @blur="emit('hover', data.person.id, false)" @keydown="move($event, data.person.id)">
     <CharacterPortrait v-if="data.profile" :src="data.image" :name="data.person.name" />
