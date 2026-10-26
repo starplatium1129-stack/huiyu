@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/sfw_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 635,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
@@ -17,6 +17,7 @@
         "white wedding dress",
         "satin",
         "layered skirt",
+        "apron overskirt",
         "gold buttons",
         "waist bow"
       ]

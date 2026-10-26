@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/sfw_coral_game_cardigan",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1134,
   "createdAt": "2026-10-06T12:58:20.813784400+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
@@ -19,7 +19,7 @@
         "cream cardigan",
         "coral trim",
         "navy t-shirt",
-        "charcoal pleated skirt",
+        "charcoal pleated midi skirt",
         "black pantyhose",
         "white sneakers",
         "nail polish"

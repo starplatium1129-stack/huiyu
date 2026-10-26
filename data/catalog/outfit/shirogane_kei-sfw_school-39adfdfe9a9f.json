@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_school",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 779,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
@@ -12,11 +12,11 @@
       "id": "sfw_school",
       "isDefault": true,
       "name": "深色白领整齐制服",
-      "prose": "A neatly fitted dark uniform keeps its crisp white collar and knee-length pleated skirt.",
+      "prose": "A fitted dark uniform with a white collar and knee-length pleated skirt.",
       "tokens": [
-        "dark school uniform",
+        "fitted dark school uniform",
         "white collar",
-        "pleated skirt"
+        "knee-length pleated skirt"
       ]
     }
   }

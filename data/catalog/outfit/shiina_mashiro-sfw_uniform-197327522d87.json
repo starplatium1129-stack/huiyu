@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/sfw_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 851,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
       "id": "sfw_uniform",
       "name": "红领结藏蓝制服",
-      "prose": "a white school blouse with a red ribbon beneath a navy blazer, paired with a knee-length navy pleated skirt",
+      "prose": "A white blouse, red ribbon, navy blazer and knee-length navy pleated skirt.",
       "tokens": [
         "school uniform",
         "white blouse",
         "red ribbon",
         "navy blazer",
-        "navy pleated skirt"
+        "navy knee-length pleated skirt"
       ],
       "default": false,
       "isDefault": false

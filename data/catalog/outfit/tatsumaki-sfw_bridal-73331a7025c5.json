@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tatsumaki/sfw_bridal",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 900,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "tatsumaki",
     "outfit": {
@@ -12,7 +12,8 @@
       "name": "翡翠黑玫瑰花嫁",
       "prose": "a black-and-emerald bridal gown with sharp panel lines, rose embroidery and a layered veil, paired with polished black shoes",
       "tokens": [
-        "black and green wedding dress",
+        "black and emerald wedding dress",
+        "sharp panel lines",
         "layered veil",
         "rose embroidery",
         "black shoes"

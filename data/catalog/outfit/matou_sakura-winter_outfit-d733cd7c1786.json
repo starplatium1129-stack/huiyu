@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/winter_outfit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
@@ -17,7 +17,7 @@
         "plum skirt",
         "brown boots"
       ],
-      "prose": "A soft gray wool coat with restrained plum piping over a cream sweater and plum skirt, with brown boots.",
+      "prose": "A gray wool coat with plum piping over a cream sweater and plum skirt, with brown boots.",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

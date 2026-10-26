@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tachibana_mikari/nsfw_boudoir",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 962,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "tachibana_mikari",
     "outfit": {
@@ -26,7 +26,21 @@
         "white costume horns"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "identityTokensOverride": [
+        "tachibana_mikari",
+        "2.5 jigen no ririsa",
+        "1girl",
+        "solo",
+        "adult",
+        "pink eyes",
+        "wig",
+        "two-tone hair",
+        "purple and pink wig",
+        "twintails",
+        "long hair"
+      ],
+      "identityProseOverride": "Adult Mikari Tachibana from 2.5 Dimensional Seduction, with pink eyes and a purple-and-pink long twintail wig for her Miriella cosplay."
     }
   }
 }

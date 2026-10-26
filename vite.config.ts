@@ -173,8 +173,9 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     port: 5173,
     watch: {
       // Rust 构建产物会被锁（EBUSY 导致 dev server 崩溃）；
-      // runtime/ 由网关随时写入 pid/日志，同样会触发 EBUSY
-      ignored: ['**/desktop-tauri/**', '**/runtime-rs/target/**', '**/native-live2d/target/**', '**/src-tauri/**', '**/runtime/**']
+      // runtime/ 由网关随时写入 pid/日志；catalog 是整目录原子切换的
+      // 构建输入，页面内容从网关读取，不能由 watcher 持有目录句柄。
+      ignored: ['**/desktop-tauri/**', '**/runtime-rs/target/**', '**/native-live2d/target/**', '**/src-tauri/**', '**/runtime/**', '**/data/catalog', '**/data/catalog/**', '**/.catalog-export*', '**/.catalog-export*/**']
     },
     proxy: {
       // 模块导入和前端启动资源由 Vite 提供；其余运行时资源交给

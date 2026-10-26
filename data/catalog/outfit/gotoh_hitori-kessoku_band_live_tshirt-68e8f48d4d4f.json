@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/kessoku_band_live_tshirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 551,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
@@ -13,11 +13,12 @@
       "tokens": [
         "black t-shirt",
         "print shirt",
+        "tucked-in shirt",
         "black pleated skirt",
         "red wristband"
       ],
       "prose": "a black Kessoku Band graphic T-shirt tucked into a dark pleated skirt, with a red wristband",
-      "styleHint": "dynamic anime concert stage lighting with vibrant volumetric rays",
+      "styleHint": "",
       "isDefault": false,
       "default": false
     }

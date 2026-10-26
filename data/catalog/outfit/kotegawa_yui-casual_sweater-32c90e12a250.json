@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kotegawa_yui/casual_sweater",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 683,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "kotegawa_yui",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "casual_sweater",
       "isDefault": false,
       "name": "象牙开衫与浅紫百褶裙装",
-      "prose": "A neatly fitted ivory cardigan with small shell buttons over a pale-lavender blouse, a navy pleated midi skirt, black tights and brown low-heeled strap shoes, finished with a structured leather handbag.",
+      "prose": "A fitted ivory cardigan over a pale-lavender blouse, navy pleated midi skirt, black tights, brown strap shoes and a leather handbag.",
       "tokens": [
         "ivory cardigan",
         "lavender blouse",

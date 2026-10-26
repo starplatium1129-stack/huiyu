@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 943,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
@@ -13,7 +13,8 @@
       "prose": "a blue-and-white swimsuit with curved tide-like color panels, a translucent shoulder wrap and a shell bracelet, worn barefoot",
       "tokens": [
         "blue and white swimsuit",
-        "shoulder wrap",
+        "curved tide-like panels",
+        "translucent shoulder wrap",
         "shell bracelet",
         "barefoot"
       ],

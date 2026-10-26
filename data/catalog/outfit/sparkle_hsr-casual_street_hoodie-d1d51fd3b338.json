@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/casual_street_hoodie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 576,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
@@ -14,7 +14,9 @@
       "tokens": [
         "red and black hoodie",
         "oversized clothes",
-        "denim shorts",
+        "offset graphic panel",
+        "dark denim shorts",
+        "mismatched legwear",
         "striped thighhighs",
         "black sneakers"
       ]

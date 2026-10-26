@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/sfw_arcade_varsity",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1116,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
       "id": "sfw_arcade_varsity",
       "name": "奶油砖红棒球夹克运动装",
-      "prose": "A cream varsity jacket with muted brick-red sleeves over a white crew-neck T-shirt, dark denim shorts over opaque black leggings and white trainers.",
+      "prose": "A cream varsity jacket with brick-red sleeves, white T-shirt, dark denim shorts over opaque black leggings, and white trainers.",
       "tokens": [
         "cream varsity jacket",
         "red sleeves",

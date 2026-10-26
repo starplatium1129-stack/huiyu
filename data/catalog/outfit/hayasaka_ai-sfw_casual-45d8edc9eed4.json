@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_casual",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 774,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
@@ -12,12 +12,12 @@
       "id": "sfw_casual",
       "isDefault": false,
       "name": "藏蓝短夹克与直筒牛仔裤",
-      "prose": "An opaque cropped navy zip jacket over a cream crew-neck T-shirt, straight indigo jeans and clean white sneakers. Small silver zip pulls keep the practical outfit understated.",
+      "prose": "A cropped navy zip jacket with small silver pulls over a cream crew-neck T-shirt, straight indigo jeans and white sneakers.",
       "tokens": [
-        "navy jacket",
+        "cropped navy jacket",
         "zipper",
-        "cream t-shirt",
-        "straight jeans",
+        "cream crew-neck t-shirt",
+        "straight indigo jeans",
         "white sneakers"
       ]
     }

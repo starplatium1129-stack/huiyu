@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/neon_evening_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 605,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
@@ -12,13 +12,13 @@
       "id": "neon_evening_dress",
       "isDefault": false,
       "name": "幻彩银灰吊带晚裙",
-      "prose": "An iridescent silver silk slip dress with a high side slit, paired with a delicate fiber-optic choker, sheer black tights and pointed ankle-strap heels.",
+      "prose": "An iridescent silver silk slip dress with a high slit, fiber-optic choker, sheer black tights and ankle-strap heels.",
       "tokens": [
         "silver slip dress",
         "iridescent fabric",
         "silk",
         "high slit",
-        "choker",
+        "fiber-optic choker",
         "black pantyhose",
         "ankle strap heels"
       ]

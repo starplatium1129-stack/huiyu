@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/cadet_royal_guard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 305,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
@@ -16,10 +16,11 @@
         "double-breasted",
         "gold trim",
         "epaulettes",
+        "white high-collared shirt",
         "red neck scarf",
         "beige jodhpurs",
         "white gloves",
-        "riding boots"
+        "black riding boots"
       ]
     }
   }

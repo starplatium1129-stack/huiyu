@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "maomao/sfw_beach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 986,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "sfw_beach",
       "name": "深绿奶油披肩药师泳装",
-      "prose": "A deep-green swimsuit with a short cream cape tied by a simple cloth-knot clasp and a small herb pouch.",
+      "prose": "A deep-green swimsuit, short cream cape with cloth-knot clasp, and herb pouch.",
       "tokens": [
         "dark green swimsuit",
         "cream short cape",

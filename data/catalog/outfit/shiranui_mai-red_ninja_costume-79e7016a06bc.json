@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/red_ninja_costume",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1431,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
@@ -16,7 +16,7 @@
         "white trim",
         "white rope"
       ],
-      "prose": "A red sleeveless ninja tunic retains its white trim and thick white rope fastening.",
+      "prose": "A sleeveless red ninja tunic with white trim and thick white rope fastening.",
       "default": false,
       "isDefault": false
     }

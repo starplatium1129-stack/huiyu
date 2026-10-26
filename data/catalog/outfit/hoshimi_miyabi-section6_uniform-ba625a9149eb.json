@@ -1,29 +1,28 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/section6_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 587,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
       "default": true,
       "id": "section6_uniform",
       "isDefault": true,
-      "name": "对空六课课长军服",
-      "prose": "her Section 6 uniform: a navy military coat with gold cords over a black sleeveless top, a high-waisted black pleated miniskirt, black thighhighs, armored gauntlets, a sheath harness and dark boots",
+      "name": "对空六课课长制服",
+      "prose": "her Section 6 uniform: a blue-gray wide-sleeved coat with red braided shoulder cord, a white shirt over a fitted dark inner layer, long black pleated hakama, armored forearm guards and a sheath harness",
       "tokens": [
-        "section_6",
-        "military uniform",
-        "navy coat",
-        "gold cord",
-        "black sleeveless shirt",
-        "black pleated skirt",
-        "black thighhighs",
-        "gauntlets",
-        "sheath harness",
-        "boots"
+        "blue gray coat",
+        "wide sleeves",
+        "white shirt",
+        "black vest",
+        "red braided shoulder cord",
+        "armored bracers",
+        "long black hakama",
+        "pleated pants",
+        "sheath harness"
       ]
     }
   }

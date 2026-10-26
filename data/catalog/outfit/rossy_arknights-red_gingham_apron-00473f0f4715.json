@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "rossy_arknights/red_gingham_apron",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1107,
   "createdAt": "2026-10-04T15:24:42.960074100+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "rossy_arknights",
     "outfit": {
@@ -12,13 +12,13 @@
       "default": false,
       "isDefault": false,
       "name": "红格围裙与米白棉衫",
-      "prose": "a cream cotton blouse with short puff sleeves and a modest round neckline, a red-and-white gingham bib apron with broad ties, an opaque charcoal knee-length skirt with room for her tail and red canvas flats",
+      "prose": "A cream puff-sleeve blouse, red-and-white gingham apron, charcoal knee-length skirt with tail room, and red canvas flats.",
       "tokens": [
         "cream blouse",
         "puff sleeves",
-        "red gingham apron",
-        "black skirt",
-        "flats"
+        "red and white gingham apron",
+        "charcoal knee-length skirt",
+        "red canvas flats"
       ],
       "category": "日常衣装（创作）"
     }

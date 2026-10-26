@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "ereshkigal_fate/summer_swimsuit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 151,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "ereshkigal_fate",
     "outfit": {
       "id": "summer_swimsuit",
       "name": "幽蓝褶边比基尼与轻纱围裙",
-      "prose": "A black bikini edged with pale-blue ruffles, a matching sheer blue sarong and pale-blue hair ribbons echoing her goddess attire.",
+      "prose": "A black bikini with pale-blue ruffles, a sheer blue sarong and pale-blue hair ribbons.",
       "tokens": [
         "black bikini",
         "blue frills",
-        "sheer sarong",
+        "sheer blue sarong",
         "blue hair ribbon"
       ]
     }

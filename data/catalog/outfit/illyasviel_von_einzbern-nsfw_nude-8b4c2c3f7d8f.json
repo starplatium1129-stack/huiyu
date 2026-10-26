@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "illyasviel_von_einzbern/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 88,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "illyasviel_von_einzbern",
     "outfit": {
@@ -12,18 +12,10 @@
       "name": "🔞 私密全裸 / 纯粹形态",
       "tokens": [
         "nude",
-        "completely_naked",
-        "uncensored",
-        "breasts",
-        "nipples",
-        "navel",
-        "bare_shoulders",
-        "collarbone",
-        "bare_legs",
-        "bare_feet"
+        "uncensored"
       ],
-      "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
-      "styleHint": "tender romantic candlelight",
+      "prose": "No clothing.",
+      "styleHint": "",
       "isDefault": false,
       "default": false
     }

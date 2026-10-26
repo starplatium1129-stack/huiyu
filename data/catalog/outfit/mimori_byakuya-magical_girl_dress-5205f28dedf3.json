@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mimori_byakuya/magical_girl_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 470,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfit": {
@@ -12,10 +12,11 @@
       "id": "magical_girl_dress",
       "isDefault": true,
       "name": "粉白荷叶边魔法战裙",
-      "prose": "her pink-and-white frilled magical-girl dress with a neatly layered skirt, detached sleeves, pink ribbon ties and black thigh-high stockings",
+      "prose": "A layered pink-and-white frilled magical-girl dress with detached sleeves, pink ribbon ties and black thigh-highs.",
       "styleHint": "sparkling magical starlight aesthetic",
       "tokens": [
         "pink and white magical girl dress",
+        "layered skirt",
         "frills",
         "detached sleeves",
         "pink ribbon",

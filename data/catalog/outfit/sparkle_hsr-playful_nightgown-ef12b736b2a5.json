@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/playful_nightgown",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 577,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
       "id": "playful_nightgown",
       "name": "深红真丝睡裙",
-      "prose": "A short crimson silk nightgown has narrow straps, a softly draped neckline and a relaxed hem.",
+      "prose": "A short crimson silk nightgown with narrow straps, draped neckline and loose hem.",
       "tokens": [
-        "crimson nightgown",
+        "short crimson nightgown",
         "silk",
-        "thin straps"
+        "thin straps",
+        "draped neckline",
+        "loose hem"
       ]
     }
   }

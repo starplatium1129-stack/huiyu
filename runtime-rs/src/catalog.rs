@@ -7,6 +7,7 @@ mod http;
 mod import;
 mod migration;
 mod projection_cache;
+mod provenance;
 mod query;
 mod showcase;
 mod snapshots;
@@ -264,6 +265,9 @@ impl Catalog {
             .parse()
             .map_err(|_| ApiError::new(503, "CATALOG_VERSION", "内容库版本无效"))
     }
+    pub fn source_info(&self) -> Value {
+        json!({"database":self.options.database,"contentRoot":self.options.source,"seedRoot":self.options.seed_source})
+    }
     pub fn document(&self, id: &str) -> Result<Value> {
         Ok(self.get("document", id)?.data)
     }
@@ -293,7 +297,7 @@ impl Catalog {
                 }
             }
         }
-        let value = json!({"ok":true,"version":self.version()?,"counts":counts,"nextSceneId":self.next_scene_id()?,"authority":"sqlite","schemaVersion":1});
+        let value = json!({"ok":true,"version":self.version()?,"counts":counts,"nextSceneId":self.next_scene_id()?,"authority":"sqlite","schemaVersion":1,"source":self.source_info()});
         if let Some(transaction) = transaction {
             transaction.commit()?;
         }

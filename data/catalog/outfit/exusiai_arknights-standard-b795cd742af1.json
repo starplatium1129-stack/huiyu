@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/standard",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 362,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
@@ -14,8 +14,8 @@
       "name": "企鹅物流制服",
       "prose": "her light grey-white hooded windbreaker with black panels, a fitted black shirt, black shorts and thigh-high stockings, and black-and-white tactical sneakers",
       "tokens": [
-        "white jacket",
-        "hood",
+        "white hooded windbreaker",
+        "black panels",
         "black shirt",
         "black shorts",
         "black thighhighs",

@@ -1,19 +1,19 @@
 {
   "kind": "outfit",
   "id": "asada_shino/green_tactical_bodysuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1360,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "asada_shino",
     "outfit": {
       "id": "green_tactical_bodysuit",
       "name": "苔绿狙击战术紧身衣",
       "tokens": [
-        "green bodysuit",
-        "black trim",
-        "zipper"
+        "green tactical bodysuit",
+        "black reinforced panels",
+        "front zipper"
       ],
       "prose": "A fitted moss-green tactical bodysuit with black reinforced panels and a front zipper.",
       "default": false,

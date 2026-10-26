@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/sfw_winter_coat_red_scarf",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1145,
   "createdAt": "2026-10-06T14:13:16.548313600+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
@@ -16,10 +16,10 @@
       "category": "日常衣装（创作）",
       "prose": "a beige double-breasted cashmere coat, soft red wool scarf and heeled leather boots, worn without glasses",
       "tokens": [
-        "beige coat",
+        "beige cashmere coat",
         "double-breasted",
-        "red scarf",
-        "heeled boots"
+        "red wool scarf",
+        "heeled leather boots"
       ]
     }
   }

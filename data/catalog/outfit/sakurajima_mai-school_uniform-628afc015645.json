@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/school_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 22,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "school_uniform",
       "name": "校服",
-      "prose": "the Minegahara uniform with a brown blazer over a beige sweater vest and white shirt, red necktie, grey pleated skirt, black tights and loafers",
+      "prose": "A brown blazer, beige sweater vest, white shirt, red tie, gray pleated skirt, black tights and loafers.",
       "tokens": [
         "school uniform",
         "brown blazer",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "arcueid_brunestud/casual_summer_sundress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 718,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "arcueid_brunestud",
     "outfit": {
@@ -16,7 +16,7 @@
         "cotton",
         "spaghetti straps",
         "backless",
-        "flared skirt",
+        "flared knee-length skirt",
         "barefoot"
       ]
     }

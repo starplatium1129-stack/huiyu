@@ -1,21 +1,19 @@
 {
   "kind": "outfit",
   "id": "makima/overcoat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 236,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "overcoat",
       "name": "高领黑色长大衣",
-      "prose": "A long structured black wool overcoat with a high collar, concealed fastenings and clean vertical seams.",
+      "prose": "A structured high-collar black wool overcoat with concealed fastenings.",
       "tokens": [
-        "black overcoat",
-        "high collar",
-        "long coat",
-        "wool"
+        "black wool overcoat",
+        "high collar"
       ],
       "isDefault": false,
       "default": false

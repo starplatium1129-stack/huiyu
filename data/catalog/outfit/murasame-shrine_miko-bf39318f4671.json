@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "murasame/shrine_miko",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 616,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "murasame",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "shrine_miko",
       "isDefault": false,
       "name": "金铃奉纳巫女装",
-      "prose": "a white crossover kimono with wide sleeves, crimson hakama, small gold bells at the red waist cords, white tabi and geta",
+      "prose": "A wide-sleeved white crossover kimono, crimson hakama, gold bells on red waist cords, white tabi and geta.",
       "tokens": [
         "miko",
         "white kimono",

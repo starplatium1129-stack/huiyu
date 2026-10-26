@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "fern_frieren/winter_coat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "fern_frieren",
     "outfit": {
@@ -12,7 +12,7 @@
       "name": "米呢大衣与灰紫围巾",
       "prose": "a long beige wool overcoat with a folded collar, a thick muted-mauve knitted scarf, gloves and sturdy boots",
       "tokens": [
-        "beige wool coat",
+        "long beige wool coat",
         "mauve scarf",
         "gloves",
         "boots"

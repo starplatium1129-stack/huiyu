@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/gothic_punk_jacket_q",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 567,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
@@ -13,10 +13,10 @@
       "isDefault": false,
       "name": "红黑飞行夹克与猫耳针织帽",
       "prose": "A cropped scarlet bomber with black ribbed cuffs sits over a black tank top and tailored shorts. Black thighhighs, boots, a cat-ear knit cap and an eyepatch complete the pilot streetwear.",
-      "styleHint": "gritty post-apocalyptic cinematic desert sunset lighting",
+      "styleHint": "",
       "tokens": [
-        "red bomber jacket",
-        "black trim",
+        "cropped red bomber jacket",
+        "black ribbed cuffs",
         "black tank top",
         "black shorts",
         "black thighhighs",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "typhon_arknights/standard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 397,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "typhon_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "standard",
       "isDefault": true,
       "name": "萨米猎人原作衣装",
-      "prose": "her original gray outer coat draped below the shoulders with pale lining and broad cuffs, a black hunter leotard with crossing chest straps and a small upper-chest cutout beneath the white-and-silver separate neck collar, layered utility belts and pouches, asymmetrical black legwear with one thigh-high stocking, white thigh straps, and broad strapped dark boots",
+      "prose": "Her wide-cuffed gray coat hangs off the shoulders over a cross-laced black leotard with a chest cutout and white-silver neck collar. Utility belts and pouches, one black thighhigh with white thigh straps, and broad strapped boots complete the outfit.",
       "tokens": [
         "grey coat",
         "off shoulder",

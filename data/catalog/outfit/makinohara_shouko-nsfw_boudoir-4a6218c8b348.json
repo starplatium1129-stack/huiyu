@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 32,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "牧之原翔子·成人私密造型",
-      "prose": "a private adult ensemble built around white_dress, small_towel, dressing_room, wedding_dress, hospital_gown",
+      "name": "象牙白细褶吊带私服",
+      "prose": "An ankle-length ivory silk slip dress with pintucked bodice and narrow straps.",
       "tokens": [
-        "white_dress",
-        "small_towel",
-        "dressing_room",
-        "wedding_dress",
-        "hospital_gown"
+        "ivory slip dress",
+        "silk",
+        "pintucks",
+        "spaghetti straps",
+        "ankle-length skirt"
       ],
       "default": false,
       "isDefault": false

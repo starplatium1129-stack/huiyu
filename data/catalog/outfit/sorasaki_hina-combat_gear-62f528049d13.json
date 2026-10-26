@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/combat_gear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 488,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
@@ -12,9 +12,10 @@
       "id": "combat_gear",
       "isDefault": false,
       "name": "风纪战术·黑金机能装",
-      "prose": "A fitted black tactical jacket with restrained gold fastenings and a red disciplinary armband, combat webbing, a utility belt with pouches, fingerless gloves and combat boots.",
+      "prose": "A fitted black tactical jacket with gold fastenings and red armband, combat webbing, utility belt with pouches, fingerless gloves and combat boots.",
       "tokens": [
-        "black tactical jacket",
+        "fitted black tactical jacket",
+        "gold fastenings",
         "harness",
         "utility belt",
         "pouches",

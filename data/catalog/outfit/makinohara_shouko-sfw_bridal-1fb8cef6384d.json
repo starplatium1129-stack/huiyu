@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/sfw_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 33,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "sfw_bridal",
       "name": "海蓝腰带白纱花嫁",
-      "prose": "a soft white bridal dress with a boat neckline, sea-blue sash, lightly layered chiffon skirt and short veil",
+      "prose": "A white boat-neck bridal dress with a sea-blue sash, layered chiffon skirt and short veil.",
       "tokens": [
         "white wedding dress",
         "boat neckline",

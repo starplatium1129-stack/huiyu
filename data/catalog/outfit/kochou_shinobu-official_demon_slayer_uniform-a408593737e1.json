@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/official_demon_slayer_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 801,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "official_demon_slayer_uniform",
       "isDefault": true,
       "name": "虫柱队服与蝶翼羽织",
-      "prose": "her black high-collared Demon Slayer jacket with gold buttons, hakama trousers and white belt beneath the butterfly-wing haori, with white tabi, purple-strapped waraji and butterfly hair ornament",
+      "prose": "her black high-collared Demon Slayer jacket with gold buttons, hakama trousers and white belt beneath the butterfly-wing haori, with white tabi, purple-strapped waraji and a butterfly hair ornament holding her rear bun",
       "tokens": [
         "black demon slayer uniform",
         "high collar",
@@ -22,7 +22,8 @@
         "butterfly haori",
         "tabi",
         "waraji",
-        "butterfly hair ornament"
+        "butterfly hair ornament",
+        "hair bun"
       ]
     }
   }

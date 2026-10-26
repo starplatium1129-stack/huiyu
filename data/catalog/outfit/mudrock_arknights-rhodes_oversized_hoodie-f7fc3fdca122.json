@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/rhodes_oversized_hoodie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 330,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
@@ -12,9 +12,9 @@
       "id": "rhodes_oversized_hoodie",
       "isDefault": false,
       "name": "罗德岛炭灰宽松连帽卫衣",
-      "prose": "A roomy charcoal-grey hoodie with long relaxed sleeves and a small geometric chest emblem, paired with black athletic shorts beneath its mid-thigh hem.",
+      "prose": "A mid-thigh charcoal hoodie with a geometric chest emblem, loose sleeves and black athletic shorts.",
       "tokens": [
-        "charcoal hoodie",
+        "mid-thigh charcoal hoodie",
         "oversized clothes",
         "long sleeves",
         "geometric emblem",

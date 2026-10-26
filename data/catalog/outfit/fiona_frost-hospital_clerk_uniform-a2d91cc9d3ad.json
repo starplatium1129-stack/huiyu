@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "fiona_frost/hospital_clerk_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 466,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "fiona_frost",
     "outfit": {
       "id": "hospital_clerk_uniform",
       "name": "巴林特综合医院事务员制服",
       "tokens": [
-        "blue sweater",
-        "striped vest",
+        "dark blue sweater",
+        "grey vest",
+        "black stripes",
         "white shirt",
         "black skirt",
-        "pantyhose",
+        "dark grey pantyhose",
         "heels"
       ],
       "prose": "a dark-blue sweater beneath a grey vest with black stripes, a white shirt, black office skirt, dark-grey tights and heels",
-      "styleHint": "bright organized hospital interior",
+      "styleHint": "",
       "isDefault": false,
       "default": false
     }

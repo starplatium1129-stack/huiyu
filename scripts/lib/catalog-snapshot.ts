@@ -1,9 +1,21 @@
 import fs = require('node:fs');
 import path = require('node:path');
 type RecordRow = { kind: string; id: string; revision: number; sortOrder: number; createdAt: string | null; updatedAt: string | null; data: any };
+function canonical(value: any): string {
+  return JSON.stringify(value, (_key, item) => item && typeof item === 'object' && !Array.isArray(item)
+    ? Object.fromEntries(Object.keys(item).sort().map(key => [key, item[key]])) : item);
+}
 /** Build/review reads committed snapshots. Runtime editing uses the native record service. */
 function read(root: string): RecordRow[] | null {
-  return readDirectory(path.join(root, 'data/catalog'));
+  const records = readDirectory(path.join(root, 'data/catalog'));
+  const policyFile = path.join(root, 'data/prompt-pinned-scenes.json');
+  if (records && fs.existsSync(policyFile)) {
+    const pinned = records.find(record => record.kind === 'document' && record.id === 'prompt-pinned-scenes');
+    if (!pinned || canonical(pinned.data) !== canonical(JSON.parse(fs.readFileSync(policyFile, 'utf8')))) {
+      throw Error('CATALOG_PIN_CONFLICT: 项目内容快照与定稿保护基线不一致；拒绝构建或同步，请先从正确工作库恢复并定向导出。');
+    }
+  }
+  return records;
 }
 function readDirectory(directory: string): RecordRow[] | null {
   const manifestFile = path.join(directory, 'manifest.json');

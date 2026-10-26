@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/candle_knight_armor",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 392,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
@@ -14,7 +14,8 @@
       "name": "烛骑士礼装铠甲",
       "prose": "a midnight-black pleated knight dress with gold embroidery, gold breastplate and pauldrons, white opera gloves, sword sash and armored greaves",
       "tokens": [
-        "gold armor",
+        "gold breastplate",
+        "gold pauldrons",
         "black dress",
         "gold trim",
         "pleated skirt",

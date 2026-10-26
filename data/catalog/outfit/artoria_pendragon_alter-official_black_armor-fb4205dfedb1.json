@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/official_black_armor",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
@@ -12,8 +12,8 @@
       "name": "漆黑赤纹哥特重铠",
       "prose": "black gothic plate armor with jagged red filigree, iron gauntlets and a dark-blue gown beneath the segmented plates",
       "tokens": [
-        "black armor",
-        "red trim",
+        "black plate armor",
+        "red filigree",
         "gauntlets",
         "dark blue dress"
       ],

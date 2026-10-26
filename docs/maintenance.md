@@ -63,16 +63,27 @@ npm run wf -- content:catalog patch --runtime-root <运行目录> --file patch.j
 
 在提交 Git 或打包发布前，将 SQLite 工作库中的修改显式导出为 `data/catalog` 快照：
 
-### 全量导出
+先用 `content:catalog stats --runtime-root <实际运行目录>` 核对回执中的 `source.database`。项目的 `runtime` 与已安装桌面端的个人运行目录是不同的工作库，不能凭目录名称或相同角色 ID 判断它们已经同步。
+
+### 全量备份（使用新目录）
 ```powershell
-npm run wf -- content:catalog export --runtime-root <运行目录> --out data/catalog
+npm run wf -- content:catalog export --runtime-root <运行目录> --out runtime/catalog-backups/<新的备份编号>
 ```
+
+全库导出不能覆盖已有目录。日常新增、编辑只导出本次涉及的记录或角色；不以整库导出代替两份工作库之间的内容合并。
 
 ### 定向导出特定角色（推荐）
 避免把本地无关的个人修改混入公共提交：
 ```powershell
 npm run wf -- content:catalog export --runtime-root <运行目录> --out data/catalog --character firefly_hsr
+
+# 只更新一条蓝图
+npm run wf -- content:catalog export --runtime-root <运行目录> --out data/catalog --record blueprint:<蓝图ID>
 ```
+
+已有记录只有在目标内容属于当前工作库的已知历史或默认基线时才能被替换；来源冲突会在发布前拒绝，不提供跳过保护的强制覆盖参数。先比较双方内容，在正确工作库中合并保存，再重新导出。导出中发生实际变化的项目记录采用高于目标的发布修订，避免个人库本机计数较低导致下次升级误判；工作库保存仍使用 `record` 读取的本机修订。未修改记录保留原字节，导出使用同目录互斥与目标变更核对；失败时清理本次临时目录，发布成功后的清理异常会保留备份并明确提示。
+
+`import --preserve-local` 继续保留个人修改，并额外拒绝低于已接收上游修订、同修订异内容或更新时间回退的快照。这里比较的是先前接收的上游基线，不是不同工作库的本机修订号。项目构建和桌面同步也会拒绝与 `data/prompt-pinned-scenes.json` 不一致的定稿文档快照。
 
 ---
 

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ayanami_rei/black_plugsuit_q",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 559,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "ayanami_rei",
     "outfit": {
@@ -12,10 +12,12 @@
       "id": "black_plugsuit_q",
       "isDefault": false,
       "name": "黑丽战斗服（Mark.09）",
-      "prose": "her matte black Mark.09 plugsuit with charcoal panels, bright orange accents and neural interface clips",
-      "styleHint": "dramatic post-apocalyptic cinematic lighting with red earth glow",
+      "prose": "her matte black Mark.09 plugsuit with charcoal panels, bright orange accents, gloves and neural interface clips",
+      "styleHint": "",
       "tokens": [
-        "black plugsuit",
+        "matte black plugsuit",
+        "charcoal panels",
+        "orange accents",
         "interface headset",
         "gloves"
       ]

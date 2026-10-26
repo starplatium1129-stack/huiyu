@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "medea_caster/sfw_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 173,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "medea_caster",
     "outfit": {
       "id": "sfw_bridal",
       "name": "深蓝银线长袖花嫁",
-      "prose": "A deep-navy long-sleeved bridal gown with delicate silver embroidery at the cuffs and neckline, and a simple veil.",
+      "prose": "A navy long-sleeved bridal gown with silver embroidery at its cuffs and neckline, and a veil.",
       "tokens": [
         "navy blue wedding dress",
         "long sleeves",

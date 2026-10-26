@@ -1,20 +1,18 @@
 {
   "kind": "outfit",
   "id": "hu_tao/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "hu_tao",
     "outfit": {
       "id": "nsfw_nude",
       "name": "赤子之躯",
-      "prose": "completely nude and unclad, highlighting her slender youthful physique and smooth porcelain skin",
+      "prose": "No clothing.",
       "tokens": [
-        "nude",
-        "completely_naked",
-        "bare_skin"
+        "nude"
       ],
       "default": false,
       "isDefault": false

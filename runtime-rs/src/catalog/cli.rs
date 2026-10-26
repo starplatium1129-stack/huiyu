@@ -5,7 +5,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
     }
     if args.iter().any(|v| v == "--help") {
         println!(
-            "huiyu-runtime catalog <stats|query|record|history|character|export|patch|import|check|colors> [--root <content source>] [--seed-root <bundled defaults>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; selected exports merge into existing snapshots\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}\nimport only: --preserve-local keeps complete locally modified records and accepts incoming seeds; reports preservedLocal. Default import rejects conflicts. Dependent changes to preserved records still reject the import."
+            "huiyu-runtime catalog <stats|query|record|history|character|export|patch|import|check|colors> [--root <content source>] [--seed-root <bundled defaults>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; an existing destination requires a scope and known ancestry; full backups use a new directory\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}\nimport only: --preserve-local keeps complete locally modified records and accepts incoming seeds; reports preservedLocal. Older upstream snapshots and conflicting imports are rejected. stats and CLI receipts identify the actual database."
         );
         return Ok(Some(json!({"ok":true})));
     }
@@ -98,7 +98,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
             })
             .transpose()
     };
-    let result = match action {
+    let mut result = match action {
         "stats" => catalog.stats()?,
         "check" => catalog.check()?,
         "colors" => Ok::<_, ApiError>(
@@ -167,5 +167,6 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
             ));
         }
     };
+    result["source"] = catalog.source_info();
     Ok(Some(result))
 }

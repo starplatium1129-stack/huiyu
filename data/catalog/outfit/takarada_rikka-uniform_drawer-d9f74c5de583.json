@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/uniform_drawer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1444,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
@@ -17,7 +17,7 @@
         "grey cotton panties",
         "ankle socks"
       ],
-      "prose": "The white shirt, navy cardigan and grey pleated uniform skirt retain their simple cut, with pale-grey cotton underwear.",
+      "prose": "A white shirt, navy cardigan, grey pleated uniform skirt, pale-grey cotton underwear and ankle socks.",
       "default": false,
       "isDefault": false
     }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kazami_kazuki/hospital_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 640,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "kazami_kazuki",
     "outfit": {
@@ -12,7 +12,7 @@
       "name": "白棉长衬衫静养装",
       "prose": "a loose white cotton long shirt with an open collar, fine covered buttons and rolled cuffs, worn with slippers",
       "tokens": [
-        "white cotton shirt",
+        "long white cotton shirt",
         "oversized shirt",
         "open collar",
         "rolled cuffs",

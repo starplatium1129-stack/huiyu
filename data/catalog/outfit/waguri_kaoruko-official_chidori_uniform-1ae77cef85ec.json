@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/official_chidori_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 842,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
@@ -16,7 +16,7 @@
         "blazer",
         "white collar",
         "navy necktie",
-        "navy pleated skirt",
+        "below-knee navy pleated skirt",
         "white kneehighs",
         "loafers"
       ],

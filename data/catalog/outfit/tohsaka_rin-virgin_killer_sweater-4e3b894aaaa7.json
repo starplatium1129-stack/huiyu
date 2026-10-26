@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/virgin_killer_sweater",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "virgin_killer_sweater",
       "name": "赤红露背高领毛衣",
-      "prose": "her signature crimson shade in a virgin killer backless turtleneck sweater, bare back, prominent sideboob, and black thigh-high socks",
+      "prose": "A crimson backless sleeveless turtleneck sweater with open sides, paired with black thigh-high socks.",
       "tokens": [
         "virgin_killer_sweater",
         "red_sweater",

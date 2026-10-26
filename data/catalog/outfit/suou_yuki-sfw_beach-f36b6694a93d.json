@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 450,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_beach",
       "name": "紫白拼色·浴衣泳装搭配",
-      "prose": "A violet swimsuit with crisp white side panels beneath a lightweight white short yukata jacket with double violet edging, finished with a ribbon hair tie.",
+      "prose": "A white-panelled violet swimsuit under a short white yukata jacket with double violet edging, plus a ribbon hair tie.",
       "tokens": [
         "violet swimsuit",
         "white panels",
-        "short yukata",
-        "violet trim",
+        "short white yukata jacket",
+        "double violet edging",
         "hair ribbon"
       ],
       "default": false,

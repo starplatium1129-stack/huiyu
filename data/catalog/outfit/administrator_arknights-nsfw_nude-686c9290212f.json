@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "administrator_arknights/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 434,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "administrator_arknights",
     "outfit": {
@@ -12,17 +12,10 @@
       "id": "nsfw_nude",
       "isDefault": false,
       "name": "🔞 私密全裸 / 纯粹形态",
-      "prose": "completely naked, full nudity, bare skin, athletic toned female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+      "prose": "Nude.",
       "tokens": [
         "nude",
-        "uncensored",
-        "breasts",
-        "nipples",
-        "navel",
-        "bare_shoulders",
-        "collarbone",
-        "bare_legs",
-        "barefoot"
+        "uncensored"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/sfw_errand",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 633,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
@@ -15,9 +15,11 @@
       "prose": "a cream rounded-collar blouse, burgundy A-line midi skirt and cropped charcoal wool jacket fastened with a small butterfly brooch",
       "tokens": [
         "cream blouse",
-        "burgundy skirt",
+        "round collar",
+        "burgundy midi skirt",
         "a-line skirt",
-        "charcoal jacket",
+        "cropped charcoal jacket",
+        "wool",
         "butterfly brooch"
       ]
     }

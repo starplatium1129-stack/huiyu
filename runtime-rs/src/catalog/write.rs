@@ -106,6 +106,9 @@ impl Catalog {
         let transaction = self
             .connection
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        for (record, removed) in seeds {
+            super::provenance::seed_update(&transaction, record, *removed)?;
+        }
         let seed_index = seeds
             .iter()
             .map(|(r, _)| ((r.kind.as_str(), r.id.as_str()), r))

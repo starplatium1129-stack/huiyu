@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 914,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_bridal",
       "name": "浅蓝樱绣轻步花嫁",
-      "prose": "A white bridal gown with a pale-blue sash, a short veil, small cherry-blossom embroidery at the hem and comfortable white flats.",
+      "prose": "A white bridal gown with pale-blue sash, cherry-blossom hem embroidery, short veil and white flats.",
       "tokens": [
         "white wedding dress",
         "light blue sash",

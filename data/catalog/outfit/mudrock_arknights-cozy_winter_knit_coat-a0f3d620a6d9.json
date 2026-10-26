@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/cozy_winter_knit_coat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 331,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
@@ -12,12 +12,13 @@
       "id": "cozy_winter_knit_coat",
       "isDefault": false,
       "name": "象牙绞花高领与驼色羊毛大衣",
-      "prose": "An ivory cable-knit turtleneck beneath an open camel wool coat with broad soft lapels, finished with an oatmeal cashmere scarf.",
+      "prose": "An ivory cable-knit turtleneck, open camel wool coat with broad lapels, and oatmeal cashmere scarf.",
       "tokens": [
         "ivory turtleneck",
         "cable knit",
-        "camel coat",
-        "cashmere scarf"
+        "open camel wool coat",
+        "wide lapels",
+        "oatmeal cashmere scarf"
       ]
     }
   }

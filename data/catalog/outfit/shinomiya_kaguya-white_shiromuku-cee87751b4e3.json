@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/white_shiromuku",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 771,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
@@ -12,10 +12,11 @@
       "id": "white_shiromuku",
       "isDefault": false,
       "name": "白无垢·织纹角隐礼装",
-      "prose": "A formal opaque white shiromuku with subtle woven maple-leaf motifs, a white obi and a white tsunokakushi head covering.",
+      "prose": "An opaque white silk shiromuku with woven maple motifs, white obi and tsunokakushi.",
       "tokens": [
         "shiromuku",
         "white kimono",
+        "woven maple motifs",
         "white obi",
         "silk",
         "tsunokakushi"

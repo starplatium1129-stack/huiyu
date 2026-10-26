@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "medusa_rider/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
   "data": {
     "characterId": "medusa_rider",
     "outfit": {
       "id": "sfw_beach",
       "name": "黑紫连体泳装与长罩衫",
-      "prose": "An opaque black one-piece swimsuit with slender violet side panels, a long lightweight violet cover-up and simple reading glasses.",
+      "prose": "An opaque black one-piece swimsuit with violet side panels, a long violet cover-up and reading glasses.",
       "tokens": [
         "black one-piece swimsuit",
         "violet panels",
-        "long cover-up",
+        "long violet cover-up",
         "glasses"
       ],
       "default": false,
