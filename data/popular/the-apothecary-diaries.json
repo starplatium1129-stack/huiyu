@@ -11,14 +11,13 @@
         "猫猫",
         "Maomao"
       ],
-      "identityProse": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, blue eyes and small freckles across her face. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",
+      "identityProse": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, and blue eyes. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",
       "identityTokens": [
         "maomao_(kusuriya_no_hitorigoto)",
         "kusuriya_no_hitorigoto",
         "green_hair",
         "long_hair",
         "blue_eyes",
-        "freckles",
         "hair_bun"
       ],
       "exactTokens": [
@@ -60,7 +59,8 @@
             "long_sleeves",
             "cream_collar",
             "aoqun",
-            "long_skirt"
+            "long_skirt",
+            "freckles"
           ],
           "default": true,
           "isDefault": true
@@ -138,6 +138,34 @@
             "long_sleeves",
             "beige_long_skirt",
             "linen_apron"
+          ],
+          "isDefault": false,
+          "isNsfw": false
+        },
+        {
+          "id": "sfw_garden_party",
+          "name": "园游会宫廷华服",
+          "prose": "An opulent imperial hanfu with elaborate botanical embroidery and wide flowing sleeves, styled with an elegant palace updo, golden tassel hairpins, crimson lipstick, a red forehead mark, and flawless, clear porcelain skin with no freckles.",
+          "tokens": [
+            "hanfu",
+            "chinese_clothes",
+            "wide_sleeves",
+            "embroidered_clothing",
+            "layered_clothing",
+            "jewelry",
+            "hairpin",
+            "hair_ornament",
+            "kanzashi",
+            "tassel",
+            "hair_bun",
+            "elaborate_hair",
+            "clear_skin",
+            "no_freckles",
+            "makeup",
+            "lipstick",
+            "red_lips",
+            "forehead_mark",
+            "blush"
           ],
           "isDefault": false,
           "isNsfw": false
