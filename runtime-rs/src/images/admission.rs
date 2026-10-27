@@ -175,7 +175,6 @@ async fn owner_salt(root: &Path, cancel: &CancellationToken) -> Result<Vec<u8>> 
     }
 }
 
-
 pub(super) async fn store(
     root: PathBuf,
     image: Bytes,

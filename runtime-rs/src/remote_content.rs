@@ -183,7 +183,8 @@ impl RemoteContent {
                 .as_u64()
                 .filter(|n| *n > 0 && *n <= MAX_IMAGE as u64)
                 .ok_or_else(unpublished)? as usize;
-            if !matches!(entry["rating"].as_str(), Some("All" | "R15" | "R18")) || !entry["reviewedAt"].as_str().is_some_and(reviewed_date)
+            if !matches!(entry["rating"].as_str(), Some("All" | "R15" | "R18"))
+                || !entry["reviewedAt"].as_str().is_some_and(reviewed_date)
             {
                 return Err(unpublished());
             }
@@ -249,10 +250,7 @@ impl RemoteContent {
                 {
                     return Err(unpublished());
                 }
-                serde_json::to_vec(&projection::project(
-                    &name,
-                    current.unwrap_or(approved),
-                ))?
+                serde_json::to_vec(&projection::project(&name, current.unwrap_or(approved)))?
             } else {
                 bytes
             };
@@ -297,11 +295,15 @@ fn catalog_equal(left: &Value, right: &Value) -> bool {
             // Matching ID sequences share the same stable permutation, or both
             // keep input order when any ID is not a string.
             if left.first().is_some_and(|value| value["id"].is_string())
-                && left.iter().zip(right).all(|(left, right)| {
-                    left["id"].as_str() == right["id"].as_str()
-                })
+                && left
+                    .iter()
+                    .zip(right)
+                    .all(|(left, right)| left["id"].as_str() == right["id"].as_str())
             {
-                return left.iter().zip(right).all(|(left, right)| catalog_equal(left, right));
+                return left
+                    .iter()
+                    .zip(right)
+                    .all(|(left, right)| catalog_equal(left, right));
             }
             let left_order = catalog_id_order(left);
             let right_order = catalog_id_order(right);

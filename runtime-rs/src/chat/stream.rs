@@ -19,8 +19,12 @@ pub(super) enum Event {
         #[serde(rename = "queueWaitMs")]
         queue_wait_ms: u64,
     },
-    Reasoning { content: String },
-    Token { content: String },
+    Reasoning {
+        content: String,
+    },
+    Token {
+        content: String,
+    },
     ToolCall(Box<ToolCall>),
     Done,
 }
@@ -124,7 +128,9 @@ impl Events {
                             continue;
                         }
                         match serde_json::from_str::<Value>(payload) {
-                            Ok(event) => self.pending.extend(self.decoder.decode(event)?.into_iter().flatten()),
+                            Ok(event) => self
+                                .pending
+                                .extend(self.decoder.decode(event)?.into_iter().flatten()),
                             Err(_) => self.decoder.malformed = true,
                         }
                     } else {
@@ -186,7 +192,10 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
         ),
         protocol: prepared.protocol,
         decoder: Decoder::new(vendor),
-        pending: VecDeque::from([Event::Meta { model: prepared.model, queue_wait_ms: wait }]),
+        pending: VecDeque::from([Event::Meta {
+            model: prepared.model,
+            queue_wait_ms: wait,
+        }]),
         json: String::new(),
         finished: false,
         shutdown,

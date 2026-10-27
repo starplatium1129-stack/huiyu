@@ -27,17 +27,31 @@ impl Preparation {
 impl TaskRuntime {
     /// Read the bound image job only. Step updates never write task revisions or
     /// change acceptance, recovery, cancellation or result collection state.
-    pub async fn image_progress(&self, storage: &Storage, principal: &str, task: &Value) -> Option<Value> {
-        if self.check_running().is_err() || task["status"] != "running"
-            || task["recoveryState"] != "normal" || task["upstreamSettled"] == true {
+    pub async fn image_progress(
+        &self,
+        storage: &Storage,
+        principal: &str,
+        task: &Value,
+    ) -> Option<Value> {
+        if self.check_running().is_err()
+            || task["status"] != "running"
+            || task["recoveryState"] != "normal"
+            || task["upstreamSettled"] == true
+        {
             return None;
         }
         let family = match task["kind"].as_str()? {
-            "anima" => "anima", "creative" => "krea2", _ => return None,
+            "anima" => "anima",
+            "creative" => "krea2",
+            _ => return None,
         };
         let id = task["taskId"].as_str()?;
         let binding = self.job(storage, id).filter(|job| !job.is_empty())?;
-        let snapshot = self.images.get_job(&binding, principal, family).await.ok()?;
+        let snapshot = self
+            .images
+            .get_job(&binding, principal, family)
+            .await
+            .ok()?;
         if snapshot["status"] != "running" || snapshot["unknown"] == true {
             return None;
         }
@@ -57,7 +71,12 @@ impl TaskRuntime {
                 "SD_RETIRED",
                 "SD 新生成已退役；原任务可继续查询、收集或取消",
             )),
-            TaskKind::Anima | TaskKind::Creative | TaskKind::Qwen | TaskKind::Moss | TaskKind::Manga | TaskKind::Lineart => {
+            TaskKind::Anima
+            | TaskKind::Creative
+            | TaskKind::Qwen
+            | TaskKind::Moss
+            | TaskKind::Manga
+            | TaskKind::Lineart => {
                 if kind.is_manga()
                     && (kind == TaskKind::Lineart) != (input["operation"] == "lineart")
                 {

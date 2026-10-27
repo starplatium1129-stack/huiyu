@@ -50,7 +50,10 @@ fn members<'a>(actual: impl Iterator<Item = &'a str>, expected: &Value) -> bool 
     if !items.iter().all(Value::is_string) {
         return false;
     }
-    let expected = items.iter().map(|item| item.as_str().unwrap()).collect::<HashSet<_>>();
+    let expected = items
+        .iter()
+        .map(|item| item.as_str().unwrap())
+        .collect::<HashSet<_>>();
     expected.len() == items.len() && actual.collect::<HashSet<_>>() == expected
 }
 fn validate_manifest(value: &Value) -> Result<()> {
@@ -155,9 +158,10 @@ fn dictionary_impl(tags: &[Value], policy: &Value, build: bool) -> Result<Value>
         if tag.get("desc").is_some_and(|value| !value.is_string()) {
             return Err(invalid(format!("Invalid tag description: {id}")));
         }
-        if tag.get("status").is_some_and(|value| {
-            !matches!(value.as_str(), Some("active" | "retired"))
-        }) {
+        if tag
+            .get("status")
+            .is_some_and(|value| !matches!(value.as_str(), Some("active" | "retired")))
+        {
             return Err(invalid(format!("Invalid tag status: {id}")));
         }
         for field in ["aliases", "related"] {
@@ -188,9 +192,7 @@ fn dictionary_impl(tags: &[Value], policy: &Value, build: bool) -> Result<Value>
         if group.len() > 1 {
             let decision = &policy["duplicates"][key];
             if !members(
-                group
-                    .iter()
-                    .map(|tag| tag["id"].as_str().unwrap()),
+                group.iter().map(|tag| tag["id"].as_str().unwrap()),
                 &decision["members"],
             ) {
                 return Err(invalid(format!(
@@ -263,9 +265,7 @@ fn dictionary_impl(tags: &[Value], policy: &Value, build: bool) -> Result<Value>
                 if let Some(shadowed) = groups.get(&key) {
                     let decision = &policy["aliasOverrides"][&key];
                     if !members(
-                        shadowed
-                            .iter()
-                            .map(|tag| tag["id"].as_str().unwrap()),
+                        shadowed.iter().map(|tag| tag["id"].as_str().unwrap()),
                         &decision["shadowed"],
                     ) || decision["target"]
                         .as_str()

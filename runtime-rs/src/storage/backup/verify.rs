@@ -2,9 +2,9 @@ use super::*;
 use rusqlite::{OpenFlags, OptionalExtension};
 pub(super) fn manifest(c: &Files, directory: &Path, id: &str) -> Result<Value> {
     let value = read_json(directory, "manifest.json")?;
-    validate_manifest(c,value,id)
+    validate_manifest(c, value, id)
 }
-pub(super) fn validate_manifest(c: &Files,value: Value,id: &str) -> Result<Value> {
+pub(super) fn validate_manifest(c: &Files, value: Value, id: &str) -> Result<Value> {
     if value["kind"] != "huiyu-workspace-backup"
         || value["formatVersion"] != 1
         || value["backupId"] != id
@@ -96,7 +96,9 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
         inventory.sort_by(|a, b| a["hash"].as_str().cmp(&b["hash"].as_str()));
         let (mut matches, mut count) = (true, 0);
         visit_media_rows(c, &db, |row| {
-            matches &= inventory.get(count).is_some_and(|expected| &row == *expected);
+            matches &= inventory
+                .get(count)
+                .is_some_and(|expected| &row == *expected);
             count += 1;
         })?;
         if !matches || count != inventory.len() {
@@ -113,8 +115,8 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
     c.check_cancel()?;
     let inventory = verified?;
     let total = inventory.len() as u64;
-    for (index,entry) in inventory.into_iter().enumerate() {
-        c.progress("verifying-media",index as u64,total);
+    for (index, entry) in inventory.into_iter().enumerate() {
+        c.progress("verifying-media", index as u64, total);
         c.check_cancel()?;
         let hash = string(entry, "hash")?;
         media::verify_checked(
@@ -129,11 +131,15 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
     Ok(())
 }
 fn verify_records(c: &Files, db: &Connection) -> Result<()> {
-    let version: i64 = db.query_row("PRAGMA user_version",[],|row|row.get(0))?;
-    if version >= 6 { verify_payloads(c,db)?; }
+    let version: i64 = db.query_row("PRAGMA user_version", [], |row| row.get(0))?;
+    if version >= 6 {
+        verify_payloads(c, db)?;
+    }
     if version >= 5 {
         let chat: Option<String> = db.query_row("SELECT body FROM profile_records WHERE domain='chat' AND record_key='aics_chat_v1'",[],|row|row.get(0)).optional()?;
-        if let Some(chat) = chat { profile::messages::decode(db,serde_json::from_str(&chat)?)?; }
+        if let Some(chat) = chat {
+            profile::messages::decode(db, serde_json::from_str(&chat)?)?;
+        }
     }
     let mut original = db.prepare(
         "SELECT 1 FROM media_aliases a JOIN media_refs r ON r.hash=a.hash WHERE a.alias=? AND r.owner_id=?",
@@ -165,11 +171,13 @@ fn verify_records(c: &Files, db: &Connection) -> Result<()> {
             } else {
                 let ids = body["history_ids"].as_array();
                 let (mut matches, mut count) = (true, 0);
-                for row in membership
-                    .query_map([key], |row| Ok(serde_json::from_str::<Value>(text_column(row, 0)?)))?
-                {
+                for row in membership.query_map([key], |row| {
+                    Ok(serde_json::from_str::<Value>(text_column(row, 0)?))
+                })? {
                     let id = row??;
-                    matches &= ids.and_then(|ids| ids.get(count)).is_some_and(|expected| expected == &id);
+                    matches &= ids
+                        .and_then(|ids| ids.get(count))
+                        .is_some_and(|expected| expected == &id);
                     count += 1;
                 }
                 if !matches || ids.is_none_or(|ids| ids.len() != count) {
@@ -203,15 +211,17 @@ fn verify_records(c: &Files, db: &Connection) -> Result<()> {
 }
 
 fn verify_payloads(c: &Files, db: &Connection) -> Result<()> {
-    let mut statement = db.prepare(&format!("SELECT {} FROM tasks",tasks::TASK_BODY))?;
+    let mut statement = db.prepare(&format!("SELECT {} FROM tasks", tasks::TASK_BODY))?;
     let mut rows = statement.query([])?;
     while let Some(row) = rows.next()? {
         c.check_cancel()?;
-        let _: crate::task_contract::TaskRecord = serde_json::from_str(text_column(row,0)?)?;
+        let _: crate::task_contract::TaskRecord = serde_json::from_str(text_column(row, 0)?)?;
     }
     let invalid = db.prepare("SELECT 1 FROM image_batch_plans p WHERE NOT EXISTS(SELECT 1 FROM image_batch_sources s WHERE s.id=p.id)
         OR (SELECT count(*) FROM image_batch_inputs i WHERE i.batch_id=p.id)!=json_array_length(p.body,'$.jobs')
         OR EXISTS(SELECT 1 FROM image_batch_inputs i WHERE i.batch_id=p.id AND (i.job_index<0 OR i.job_index>=json_array_length(p.body,'$.jobs') OR json_type(i.body,'$.taskInput') IS NOT 'object' OR json_type(i.body,'$.snapshot') IS NOT 'object')) LIMIT 1")?.exists([])?;
-    if invalid { return Err(invalid_backup("Backup image batch inputs are incomplete")); }
+    if invalid {
+        return Err(invalid_backup("Backup image batch inputs are incomplete"));
+    }
     Ok(())
 }

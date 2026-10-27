@@ -60,7 +60,10 @@ fn validate(envelope: &Value) -> Result<()> {
         ));
     }
     string(envelope, "migrationId")?;
-    let unsigned = envelope.as_object().unwrap().iter()
+    let unsigned = envelope
+        .as_object()
+        .unwrap()
+        .iter()
         .filter(|(field, _)| field.as_str() != "fingerprint");
     if fingerprint_object(unsigned) != envelope["fingerprint"] {
         return Err(format_error(
@@ -301,7 +304,10 @@ fn import_record(
             "Record digest does not match the manifest or contains a credential",
         ));
     }
-    let expected_fields = expected.as_object().unwrap().iter()
+    let expected_fields = expected
+        .as_object()
+        .unwrap()
+        .iter()
         .filter(|(field, _)| !["id", "sha256", "bytes"].contains(&field.as_str()));
     let actual = record
         .as_object()

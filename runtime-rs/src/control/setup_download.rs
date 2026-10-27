@@ -41,7 +41,14 @@ pub(super) async fn managed_file(
     cancel: &CancellationToken,
     allow_mirror: bool,
 ) -> Result<Value> {
-    let plan = DownloadPlan { workspace, root, spec, url, id: "native-setup".into(), allow_mirror };
+    let plan = DownloadPlan {
+        workspace,
+        root,
+        spec,
+        url,
+        id: "native-setup".into(),
+        allow_mirror,
+    };
     download(&plan, client, send, cancel).await
 }
 
@@ -458,7 +465,14 @@ async fn download(
     if outcome.as_ref().is_err_and(|error| {
         matches!(
             error.code.as_str(),
-            "CANCELLED" | "DOWNLOAD_TIMEOUT" | "DOWNLOAD_FAILED" | "DOWNLOAD_RETRYABLE_HTTP" | "DOWNLOAD_HTTP" | "DOWNLOAD_ACCESS" | "ENOSPC" | "MODEL_IO"
+            "CANCELLED"
+                | "DOWNLOAD_TIMEOUT"
+                | "DOWNLOAD_FAILED"
+                | "DOWNLOAD_RETRYABLE_HTTP"
+                | "DOWNLOAD_HTTP"
+                | "DOWNLOAD_ACCESS"
+                | "ENOSPC"
+                | "MODEL_IO"
         )
     }) && let Some(pending) = temporary.take()
         && pending

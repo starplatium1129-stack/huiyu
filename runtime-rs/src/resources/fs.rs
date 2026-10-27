@@ -138,7 +138,12 @@ pub(super) fn open(path: &Path, max: u64, hardlinks: bool) -> Result<File> {
     let before = safe(path, false, hardlinks)?.unwrap();
     open_checked(path, max, hardlinks, &before)
 }
-pub(super) fn open_checked(path: &Path, max: u64, hardlinks: bool, before: &Metadata) -> Result<File> {
+pub(super) fn open_checked(
+    path: &Path,
+    max: u64,
+    hardlinks: bool,
+    before: &Metadata,
+) -> Result<File> {
     if !before.is_file() || before.len() > max {
         return Err(Error::new(
             "METADATA_INVALID",

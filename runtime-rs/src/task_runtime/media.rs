@@ -224,7 +224,9 @@ pub(super) async fn restore_result(
         (Ok(value), Ok(())) => Ok(value),
         (Ok(_), Err(error)) => Err(error),
         (Err(error), released) => {
-            if let Err(released) = released { eprintln!("task result restore lease cleanup: {released}"); }
+            if let Err(released) = released {
+                eprintln!("task result restore lease cleanup: {released}");
+            }
             Err(error)
         }
     }

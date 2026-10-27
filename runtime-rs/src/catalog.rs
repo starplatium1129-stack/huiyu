@@ -1,4 +1,5 @@
 //! Record content authority. JSON is an explicit seed/export, never a second writer.
+mod authoring;
 mod check;
 mod cli;
 mod dependencies;
@@ -73,18 +74,20 @@ fn now() -> String {
 fn text_column<'row>(row: &'row rusqlite::Row<'_>, column: usize) -> rusqlite::Result<&'row str> {
     // Borrow while SQLite owns the text, retaining column type and UTF-8 checks.
     match row.get_ref(column)? {
-        rusqlite::types::ValueRef::Text(bytes) => std::str::from_utf8(bytes)
-            .map_err(|error| rusqlite::Error::Utf8Error(column, error)),
-        value => {
-            Err(rusqlite::Error::InvalidColumnType(
-                column,
-                row.as_ref().column_name(column)?.into(),
-                value.data_type(),
-            ))
+        rusqlite::types::ValueRef::Text(bytes) => {
+            std::str::from_utf8(bytes).map_err(|error| rusqlite::Error::Utf8Error(column, error))
         }
+        value => Err(rusqlite::Error::InvalidColumnType(
+            column,
+            row.as_ref().column_name(column)?.into(),
+            value.data_type(),
+        )),
     }
 }
-fn optional_text_column<'row>(row: &'row rusqlite::Row<'_>, column: usize) -> rusqlite::Result<Option<&'row str>> {
+fn optional_text_column<'row>(
+    row: &'row rusqlite::Row<'_>,
+    column: usize,
+) -> rusqlite::Result<Option<&'row str>> {
     if matches!(row.get_ref(column)?, rusqlite::types::ValueRef::Null) {
         Ok(None)
     } else {

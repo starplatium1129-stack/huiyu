@@ -61,7 +61,10 @@ async fn record(inner: &Inner, id: &str) -> Option<Value> {
 }
 
 pub(super) async fn recover(inner: &Inner, task: &RecoveryTask<'_>) -> Result<Option<Observation>> {
-    let Some(id) = task.checkpoint.and_then(|checkpoint| checkpoint["gatewayJobId"].as_str()) else {
+    let Some(id) = task
+        .checkpoint
+        .and_then(|checkpoint| checkpoint["gatewayJobId"].as_str())
+    else {
         return Ok(None);
     };
     let Some(value) = record(inner, id).await else {

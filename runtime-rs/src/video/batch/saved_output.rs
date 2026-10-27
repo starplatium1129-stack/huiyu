@@ -46,7 +46,8 @@ pub(super) async fn saved_output(
         return Ok(None);
     };
     if let Some(raw) = value["path"].as_str()
-        && let Some(output) = checked_output(service, PathBuf::from(raw), reference, proofs, index).await?
+        && let Some(output) =
+            checked_output(service, PathBuf::from(raw), reference, proofs, index).await?
     {
         return Ok(Some(output));
     }
@@ -63,9 +64,17 @@ pub(super) async fn saved_output(
     let path = {
         let mut directory = proofs.restored.lock().unwrap();
         if directory.is_none() {
-            *directory = Some(tempfile::Builder::new().prefix(".batch-recovery-").tempdir_in(&root)?);
+            *directory = Some(
+                tempfile::Builder::new()
+                    .prefix(".batch-recovery-")
+                    .tempdir_in(&root)?,
+            );
         }
-        directory.as_ref().unwrap().path().join(format!("{index}.{extension}"))
+        directory
+            .as_ref()
+            .unwrap()
+            .path()
+            .join(format!("{index}.{extension}"))
     };
     if let Some(output) = checked_output(service, path.clone(), reference, proofs, index).await? {
         return Ok(Some(output));
@@ -73,8 +82,16 @@ pub(super) async fn saved_output(
     if !hooks.restore_result(index, path.clone()).await? {
         return Ok(None);
     }
-    checked_output(service, path, reference, proofs, index).await?
-        .map(Some).ok_or_else(|| error(409, "BATCH_RESULT_INVALID", "工作区分镜文件与持久结果记录不一致"))
+    checked_output(service, path, reference, proofs, index)
+        .await?
+        .map(Some)
+        .ok_or_else(|| {
+            error(
+                409,
+                "BATCH_RESULT_INVALID",
+                "工作区分镜文件与持久结果记录不一致",
+            )
+        })
 }
 async fn checked_output(
     service: &Service,

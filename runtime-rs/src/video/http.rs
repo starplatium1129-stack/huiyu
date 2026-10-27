@@ -1,7 +1,5 @@
 use super::*;
-use crate::images::{
-    upload_body::RawUploadBody,
-};
+use crate::images::upload_body::RawUploadBody;
 use crate::{AppState, security};
 use axum::{
     Extension, Json, Router,
@@ -26,7 +24,10 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
             post(create).layer(DefaultBodyLimit::max(32 * 1024)),
         )
         .route("/api/video/jobs/{id}", get(get_job).delete(cancel))
-        .route("/api/video/requests/{key}", get(request_status).delete(cancel_request))
+        .route(
+            "/api/video/requests/{key}",
+            get(request_status).delete(cancel_request),
+        )
         .route("/api/video/jobs/{id}/result", get(result))
         .route(
             "/api/video/batches",
@@ -37,7 +38,10 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
             get(get_batch).delete(cancel_batch),
         )
         .route("/api/video/batches/{id}/result", get(batch_result))
-        .route("/api/video/batch-requests/{key}", get(request_status).delete(cancel_request))
+        .route(
+            "/api/video/batch-requests/{key}",
+            get(request_status).delete(cancel_request),
+        )
         .route("/api/video/batches/{id}/concat", post(concat))
         .route(
             "/api/video/batches/{id}/retry",
@@ -123,14 +127,27 @@ async fn create(
 ) -> Response {
     let result = async {
         state.host.check_running()?;
-        let key = body.get("requestKey").and_then(Value::as_str)
-            .ok_or_else(|| ApiError::invalid("视频请求必须携带请求编号"))?.to_owned();
+        let key = body
+            .get("requestKey")
+            .and_then(Value::as_str)
+            .ok_or_else(|| ApiError::invalid("视频请求必须携带请求编号"))?
+            .to_owned();
         body.as_object_mut().unwrap().remove("requestKey");
-        let input = if uri.path() == "/api/video/batches" { requests::RequestInput::Batch(body) }
-            else { requests::RequestInput::Job(body) };
-        http.service.accept_request(input, key, generation::request_owner(&headers, peer, &query),
-            security::is_direct_local(&headers, peer.ip())).await
-    }.await;
+        let input = if uri.path() == "/api/video/batches" {
+            requests::RequestInput::Batch(body)
+        } else {
+            requests::RequestInput::Job(body)
+        };
+        http.service
+            .accept_request(
+                input,
+                key,
+                generation::request_owner(&headers, peer, &query),
+                security::is_direct_local(&headers, peer.ip()),
+            )
+            .await
+    }
+    .await;
     response(result, StatusCode::ACCEPTED)
 }
 macro_rules! lookup {
@@ -157,23 +174,59 @@ lookup!(cancel, cancel, "job");
 lookup!(get_batch, get_batch, "batch");
 lookup!(cancel_batch, cancel_batch, "batch");
 fn request_family(uri: &axum::http::Uri) -> &'static str {
-    if uri.path().starts_with("/api/video/batch-requests/") { requests::BATCH } else { requests::JOB }
+    if uri.path().starts_with("/api/video/batch-requests/") {
+        requests::BATCH
+    } else {
+        requests::JOB
+    }
 }
 async fn request_status(
-    State(state): State<AppState>, Extension(http): Extension<Arc<Http>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>, OriginalUri(uri): OriginalUri,
-    Path(key): Path<String>, Query(query): Query<HashMap<String, String>>, headers: HeaderMap,
+    State(state): State<AppState>,
+    Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    OriginalUri(uri): OriginalUri,
+    Path(key): Path<String>,
+    Query(query): Query<HashMap<String, String>>,
+    headers: HeaderMap,
 ) -> Response {
-    response(async { state.host.check_running()?; http.service.request_status(&key,
-        &generation::request_owner(&headers, peer, &query), request_family(&uri)).await }.await, StatusCode::OK)
+    response(
+        async {
+            state.host.check_running()?;
+            http.service
+                .request_status(
+                    &key,
+                    &generation::request_owner(&headers, peer, &query),
+                    request_family(&uri),
+                )
+                .await
+        }
+        .await,
+        StatusCode::OK,
+    )
 }
 async fn cancel_request(
-    State(state): State<AppState>, Extension(http): Extension<Arc<Http>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>, OriginalUri(uri): OriginalUri,
-    Path(key): Path<String>, Query(query): Query<HashMap<String, String>>, headers: HeaderMap,
+    State(state): State<AppState>,
+    Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    OriginalUri(uri): OriginalUri,
+    Path(key): Path<String>,
+    Query(query): Query<HashMap<String, String>>,
+    headers: HeaderMap,
 ) -> Response {
-    response(async { state.host.check_running()?; http.service.cancel_request(&key,
-        &generation::request_owner(&headers, peer, &query), request_family(&uri)).await }.await, StatusCode::ACCEPTED)
+    response(
+        async {
+            state.host.check_running()?;
+            http.service
+                .cancel_request(
+                    &key,
+                    &generation::request_owner(&headers, peer, &query),
+                    request_family(&uri),
+                )
+                .await
+        }
+        .await,
+        StatusCode::ACCEPTED,
+    )
 }
 async fn concat(
     State(state): State<AppState>,
@@ -185,12 +238,25 @@ async fn concat(
 ) -> Response {
     let cancel = http.service.shutdown.child_token();
     let _guard = cancel.clone().drop_guard();
-    response(async {
-        state.host.check_running()?;
-        let mut value = json!({"batch":null});
-        value["batch"] = http.service.clone().batch_action(&id,&generation::request_owner(&headers,peer,&query),"concat",cancel).await?;
-        Ok(value)
-    }.await, StatusCode::OK)
+    response(
+        async {
+            state.host.check_running()?;
+            let mut value = json!({"batch":null});
+            value["batch"] = http
+                .service
+                .clone()
+                .batch_action(
+                    &id,
+                    &generation::request_owner(&headers, peer, &query),
+                    "concat",
+                    cancel,
+                )
+                .await?;
+            Ok(value)
+        }
+        .await,
+        StatusCode::OK,
+    )
 }
 #[derive(serde::Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -207,13 +273,34 @@ async fn retry_many(
     headers: HeaderMap,
     Json(selection): Json<RetrySelection>,
 ) -> Response {
-    response(async {
-        state.host.check_running()?;
-        let indices = selection.indices.into_iter().map(|index| index.checked_sub(1)
-            .ok_or_else(||error(400,"SHOT_INDEX_INVALID","分镜序号无效"))).collect::<Result<Vec<_>>>()?;
-        let owner = generation::request_owner(&headers, peer, &query);
-        http.service.accept_request(requests::RequestInput::Retry { batch_id: id, indices }, selection.request_key, owner, false).await
-    }.await,StatusCode::ACCEPTED)
+    response(
+        async {
+            state.host.check_running()?;
+            let indices = selection
+                .indices
+                .into_iter()
+                .map(|index| {
+                    index
+                        .checked_sub(1)
+                        .ok_or_else(|| error(400, "SHOT_INDEX_INVALID", "分镜序号无效"))
+                })
+                .collect::<Result<Vec<_>>>()?;
+            let owner = generation::request_owner(&headers, peer, &query);
+            http.service
+                .accept_request(
+                    requests::RequestInput::Retry {
+                        batch_id: id,
+                        indices,
+                    },
+                    selection.request_key,
+                    owner,
+                    false,
+                )
+                .await
+        }
+        .await,
+        StatusCode::ACCEPTED,
+    )
 }
 async fn stream(
     state: &AppState,
@@ -224,17 +311,18 @@ async fn stream(
     let Output::File { path, mime, bytes } = output else {
         return Err(error(404, "RESULT_NOT_FOUND", "视频结果不存在"));
     };
-    let range = crate::http_media::range(
-        headers.get("range").and_then(|v| v.to_str().ok()),
-        bytes,
-    );
+    let range = crate::http_media::range(headers.get("range").and_then(|v| v.to_str().ok()), bytes);
     let range = match range {
         Ok(r) => r,
         Err(response) => return Ok(response),
     };
     let mut response = crate::http_media::stream(
-        method, range, crate::http_media::Source::Path(path), state.shutdown.clone(),
-    ).await?;
+        method,
+        range,
+        crate::http_media::Source::Path(path),
+        state.shutdown.clone(),
+    )
+    .await?;
     response
         .headers_mut()
         .insert("content-type", mime.parse().unwrap());

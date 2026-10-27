@@ -58,7 +58,8 @@ impl ControlService {
         let service = self.clone();
         let returned = operation.clone();
         self.tasks.spawn(async move {
-            let work = service.prepare_native_chain(body, runtime, model, &operation, &cancel, &permit);
+            let work =
+                service.prepare_native_chain(body, runtime, model, &operation, &cancel, &permit);
             tokio::pin!(work);
             let result = match tokio::time::timeout(Duration::from_secs(8 * 3600), &mut work).await
             {
@@ -104,12 +105,23 @@ impl ControlService {
         require_supported(&current)?;
         if model.checkpoint_filename.is_some() {
             self.native_progress(operation, json!({"message":"校验并准备本机作者权重"}));
-            checkpoint_models::stage_checkpoint(self, &model, body.checkpoint_path.as_deref(), cancel).await?;
+            checkpoint_models::stage_checkpoint(
+                self,
+                &model,
+                body.checkpoint_path.as_deref(),
+                cancel,
+            )
+            .await?;
         }
         if model.requires_access {
             self.native_progress(operation, json!({"message":"检查模型访问权与固定文件清单"}));
-            let root = self.config.ai_workspace_root.join("inference/models").join(&model.id);
-            image_models::resolve_files(self, &model, &root, body.hf_token.as_deref(), cancel).await?;
+            let root = self
+                .config
+                .ai_workspace_root
+                .join("inference/models")
+                .join(&model.id);
+            image_models::resolve_files(self, &model, &root, body.hf_token.as_deref(), cancel)
+                .await?;
         }
         let runtime_bytes = runtime.download_bytes;
         let model_bytes = model.files.iter().map(|file| file.bytes).sum::<u64>();
@@ -153,8 +165,15 @@ impl ControlService {
             .join("inference/models")
             .join(&model.id);
         if !receipt_matches(&model_root, &model) {
-            self.install_native_model(&model, &model_operation, cancel, permit, body.hf_token.as_deref(), body.checkpoint_path.as_deref())
-                .await?;
+            self.install_native_model(
+                &model,
+                &model_operation,
+                cancel,
+                permit,
+                body.hf_token.as_deref(),
+                body.checkpoint_path.as_deref(),
+            )
+            .await?;
         }
         self.stage(operation, 6);
         self.native_progress(
@@ -182,7 +201,9 @@ impl ControlService {
             "result":{"engine":"native","modelId":model.id,
                 "restartRequired":saved["restartRequired"],"active":saved["active"],"configured":saved["configured"],
                 "generationVerified":false}});
-        if !image_models::is_adapter_runtime(&runtime) { progress["preparedPaths"] = paths; }
+        if !image_models::is_adapter_runtime(&runtime) {
+            progress["preparedPaths"] = paths;
+        }
         self.native_progress(&activation, progress);
         Ok(())
     }

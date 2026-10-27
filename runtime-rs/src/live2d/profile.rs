@@ -8,7 +8,9 @@ fn id(value: &Value) -> bool {
 fn id_str(value: &str) -> bool {
     !value.is_empty()
         && value.len() <= 160
-        && value.bytes().all(|b| b.is_ascii_alphanumeric() || b"_-".contains(&b))
+        && value
+            .bytes()
+            .all(|b| b.is_ascii_alphanumeric() || b"_-".contains(&b))
 }
 fn number(value: &Value) -> Option<f64> {
     value.as_f64().filter(|value| value.is_finite())

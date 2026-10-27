@@ -1,5 +1,9 @@
 use super::*;
-use std::{collections::HashMap, io::{self, Write}, sync::{Arc, Mutex}};
+use std::{
+    collections::HashMap,
+    io::{self, Write},
+    sync::{Arc, Mutex},
+};
 
 const MAX_BYTES: usize = 1024 * 1024;
 
@@ -82,9 +86,7 @@ impl FacetCache {
             entries.bytes = 0;
         }
         entries.bytes += bytes;
-        entries
-            .kinds
-            .insert(kind.to_owned(), (value, total));
+        entries.kinds.insert(kind.to_owned(), (value, total));
         Ok(())
     }
 }

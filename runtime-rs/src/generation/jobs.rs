@@ -238,7 +238,9 @@ pub(super) async fn discard_output(job: &Job) {
     if let Some(Output::File { path, .. }) = result {
         native::manga::discard(job, &path).await;
         let _ = tokio::fs::remove_file(&path).await;
-        if job.provider == "native" { native::recovery::forget(&path).await; }
+        if job.provider == "native" {
+            native::recovery::forget(&path).await;
+        }
     }
 }
 pub(super) async fn remove(inner: &Inner, job: &Job) {
@@ -291,7 +293,9 @@ pub(super) async fn succeed(inner: &Arc<Inner>, job: &Arc<Job>, output: Output) 
             if let Output::File { path, .. } = output {
                 native::manga::discard(job, &path).await;
                 let _ = tokio::fs::remove_file(&path).await;
-                if job.provider == "native" { native::recovery::forget(&path).await; }
+                if job.provider == "native" {
+                    native::recovery::forget(&path).await;
+                }
             }
             return;
         }
@@ -362,7 +366,9 @@ async fn try_collect(inner: &Inner, job: &Job) -> bool {
     }
     match result {
         Ok(()) => {
-            if job.provider == "native" && let Output::File { path, .. } = &output {
+            if job.provider == "native"
+                && let Output::File { path, .. } = &output
+            {
                 native::recovery::forget(path).await;
             }
             if matches!(job.provider, "webui" | "native") {

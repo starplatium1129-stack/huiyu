@@ -65,7 +65,8 @@ impl ControlService {
             .filter_map(|node| node["class_type"].as_str().map(str::to_owned))
             .collect();
         // Snapshot active settings, not saved configuration pending a restart.
-        let host = self.runtime_setting("comfyHost")
+        let host = self
+            .runtime_setting("comfyHost")
             .as_str()
             .unwrap_or("")
             .to_owned();
@@ -213,9 +214,15 @@ impl ControlService {
             if devices.is_empty() {
                 devices = local["devices"].as_array().cloned().unwrap_or_default();
                 if devices.is_empty() {
-                    devices = local["otherDevices"].as_array().into_iter().flatten()
-                        .map(|device| json!({"name":device["name"],"type":"display",
-                            "vramBytes":null,"driverVersion":device["driverVersion"]})).collect();
+                    devices = local["otherDevices"]
+                        .as_array()
+                        .into_iter()
+                        .flatten()
+                        .map(|device| {
+                            json!({"name":device["name"],"type":"display",
+                            "vramBytes":null,"driverVersion":device["driverVersion"]})
+                        })
+                        .collect();
                 }
             }
         }
@@ -225,7 +232,8 @@ impl ControlService {
             "models":null,"chat":{"host":self.runtime_setting("llamaHost"),"runtimePresent":workspace.join("Chat/runtime/llama-server.exe").is_file()},"nodes":{"state":if nodes_checked{"checked"}else{"unknown"},"required":null,"missing":null},
             "hardware":{"state":if ram.is_some()||!devices.is_empty(){"reported"}else{"unknown"},"devices":null,"ramBytes":ram}});
         value["models"] = Value::Array(models);
-        value["nodes"]["required"] = Value::Array(required.into_iter().map(Value::String).collect());
+        value["nodes"]["required"] =
+            Value::Array(required.into_iter().map(Value::String).collect());
         value["nodes"]["missing"] = missing.into();
         value["hardware"]["devices"] = Value::Array(devices);
         Ok(value)

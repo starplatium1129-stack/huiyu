@@ -1,5 +1,5 @@
-mod results;
 mod qwen_inputs;
+mod results;
 
 use crate::{
     AppState,
@@ -55,7 +55,11 @@ async fn handle(
 fn failure(error: ApiError, message: &str) -> Response {
     let message = if error.submission_not_accepted && error.code == "TASK_PROVIDER_BUSY" {
         "另一项任务尚未结束，本次未接收；请完成或核对原任务后重试。"
-    } else if error.submission_not_accepted { &error.message } else { message };
+    } else if error.submission_not_accepted {
+        &error.message
+    } else {
+        message
+    };
     (
         error.status,
         Json(json!({"ok":false,"error":message,"msg":message,"code":error.code,"submissionNotAccepted":error.submission_not_accepted})),
@@ -143,19 +147,39 @@ async fn perform(
     }
     let path = path_segments(uri)?;
     if body.len() > 256 * 1024 && path.first().is_none_or(|part| part != "image-batches") {
-        return Err(ApiError::new(413,"TASK_BODY_TOO_LARGE","Task request is too large"));
+        return Err(ApiError::new(
+            413,
+            "TASK_BODY_TOO_LARGE",
+            "Task request is too large",
+        ));
     }
     if path.first().is_some_and(|part| part == "image-batches") {
-        let runtime = state.tasks.as_ref().ok_or_else(|| ApiError::invalid("Task runtime unavailable"))?;
-        let input: Value = if body.is_empty() { json!({}) } else { serde_json::from_slice(body)? };
+        let runtime = state
+            .tasks
+            .as_ref()
+            .ok_or_else(|| ApiError::invalid("Task runtime unavailable"))?;
+        let input: Value = if body.is_empty() {
+            json!({})
+        } else {
+            serde_json::from_slice(body)?
+        };
         let command = match (method.as_str(), path.as_slice()) {
             ("GET", [_, id]) => json!({"kind":"imageBatch.get","id":id}),
             ("POST", [_, id]) => json!({"kind":"imageBatch.create","id":id,"plan":input}),
-            ("POST", [_, id, action]) if matches!(action.as_str(), "pause" | "resume" | "retry") => json!({"kind":"imageBatch.control","id":id,"action":action}),
+            ("POST", [_, id, action])
+                if matches!(action.as_str(), "pause" | "resume" | "retry") =>
+            {
+                json!({"kind":"imageBatch.control","id":id,"action":action})
+            }
             _ => return Err(ApiError::invalid("Unknown image batch route")),
         };
-        let result = runtime.image_batch(storage.clone(), session.principal_id.clone(), command).await?;
-        return encode_response(json!({"ok":true,"result":result,"runtimeEpoch":storage.runtime_epoch()})).await;
+        let result = runtime
+            .image_batch(storage.clone(), session.principal_id.clone(), command)
+            .await?;
+        return encode_response(
+            json!({"ok":true,"result":result,"runtimeEpoch":storage.runtime_epoch()}),
+        )
+        .await;
     }
     // Scoped reads and actions must remain reachable when another task's
     // recovery fails. In particular, persist cancellation before any probe.
@@ -165,11 +189,14 @@ async fn perform(
     {
         if reading {
             runtime.start_recovery(storage.clone(), session.principal_id.clone())?;
-            runtime.recover_image_batches(&storage, &session.principal_id).await?;
+            runtime
+                .recover_image_batches(&storage, &session.principal_id)
+                .await?;
         } else {
             runtime
                 .ensure_recovered(&storage, &session.principal_id)
-                .await.map_err(ApiError::not_accepted)?;
+                .await
+                .map_err(ApiError::not_accepted)?;
         }
     }
     if !reading {
@@ -204,11 +231,7 @@ async fn perform(
                     .to_owned();
                 drop(task);
                 runtime
-                    .cancel(
-                        storage.clone(),
-                        session.principal_id.clone(),
-                        key,
-                    )
+                    .cancel(storage.clone(), session.principal_id.clone(), key)
                     .await?
             }
             ("POST", [id, action]) if action == "reconcile" => {
@@ -368,8 +391,10 @@ async fn perform(
     if result.get("taskId").is_some() {
         project_task(&mut result, &session, state, &storage)?;
         if let Some(runtime) = &state.tasks {
-            result["liveProgress"] = runtime.image_progress(&storage, &session.principal_id, &result)
-                .await.unwrap_or(Value::Null);
+            result["liveProgress"] = runtime
+                .image_progress(&storage, &session.principal_id, &result)
+                .await
+                .unwrap_or(Value::Null);
         }
     }
     let mut envelope = json!({"ok":true,"result":null,"runtimeEpoch":storage.runtime_epoch(),"executionAvailable":state.tasks.is_some()});

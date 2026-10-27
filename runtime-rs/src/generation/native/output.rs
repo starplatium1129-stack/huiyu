@@ -33,7 +33,9 @@ pub(super) fn anima_request(
         input[key] = plan.input[key].clone();
     }
     for key in ["sketchControl", "regions"] {
-        if let Some(value) = plan.input.get(key) { input[key] = value.clone(); }
+        if let Some(value) = plan.input.get(key) {
+            input[key] = value.clone();
+        }
     }
     input["teaCacheAuto"] = json!(plan.input["teaCacheAuto"] == true);
     if let Some(threshold) = plan.input.get("teaCacheThresh") {
@@ -52,8 +54,12 @@ pub(super) fn anima_request(
     }
     let mut request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":null,"inputImagePath":image,"maskImagePath":mask,"loras":plan.loras});
     request["input"] = input;
-    if let Some(path) = sketch { request["sketchImagePath"] = json!(path); }
-    if let Some(path) = &plan.sketch_model_path { request["sketchModelPath"] = json!(path); }
+    if let Some(path) = sketch {
+        request["sketchImagePath"] = json!(path);
+    }
+    if let Some(path) = &plan.sketch_model_path {
+        request["sketchModelPath"] = json!(path);
+    }
     request
 }
 
@@ -121,10 +127,16 @@ pub(super) fn adapter_request(
         input["fps"] = plan.input["fps"].clone();
     }
     if let Some(trigger) = plan.input["styleLoraTrigger"].as_str() {
-        input["prompt"] = json!(format!("{}, {}", plan.input["prompt"].as_str().unwrap_or(""), trigger));
+        input["prompt"] = json!(format!(
+            "{}, {}",
+            plan.input["prompt"].as_str().unwrap_or(""),
+            trigger
+        ));
     }
     let mut request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"outputPath":output,"input":null,"inputImagePath":image});
-    if !plan.loras.is_empty() { request["loras"] = json!(plan.loras); }
+    if !plan.loras.is_empty() {
+        request["loras"] = json!(plan.loras);
+    }
     request["input"] = input;
     request
 }

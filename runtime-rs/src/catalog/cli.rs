@@ -5,7 +5,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
     }
     if args.iter().any(|v| v == "--help") {
         println!(
-            "huiyu-runtime catalog <stats|query|record|history|character|export|patch|import|check|colors> [--root <content source>] [--seed-root <bundled defaults>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; an existing destination requires a scope and known ancestry; full backups use a new directory\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}\nimport only: --preserve-local keeps complete locally modified records and accepts incoming seeds; reports preservedLocal. Older upstream snapshots and conflicting imports are rejected. stats and CLI receipts identify the actual database."
+            "huiyu-runtime catalog <stats|query|record|history|character|authoring|export|patch|import|check|colors> [--root <content source>] [--seed-root <bundled defaults>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nauthoring: --character <existing id> returns compact revision-bearing context; --character <new id> --example <existing id> marks a new target with a reference; --kind scene [--id <existing scene>] returns scene context or next scene ID and pin protection\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; an existing destination requires a scope and known ancestry; full backups use a new directory\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}\nimport only: --preserve-local keeps complete locally modified records and accepts incoming seeds; reports preservedLocal. Older upstream snapshots and conflicting imports are rejected. stats and CLI receipts identify the actual database."
         );
         return Ok(Some(json!({"ok":true})));
     }
@@ -39,6 +39,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
             "--file",
             "--kind",
             "--character",
+            "--example",
             "--search",
             "--id",
             "--revision",
@@ -80,9 +81,17 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
     };
     let mut catalog = Catalog::open(Options {
         source: absolute("--root")?,
-        seed_source: flags.contains_key("--seed-root").then(|| absolute("--seed-root")).transpose()?,
+        seed_source: flags
+            .contains_key("--seed-root")
+            .then(|| absolute("--seed-root"))
+            .transpose()?,
         database: absolute("--runtime-root")?.join("content/catalog.sqlite"),
     })?;
+    if action == "authoring" && apply || action != "authoring" && flags.contains_key("--example") {
+        return Err(ApiError::invalid(
+            "authoring 只读，--example 仅用于 authoring",
+        ));
+    }
     let required = |flag: &str| -> Result<&str> {
         flags
             .get(flag)
@@ -148,11 +157,32 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
             characters: vec![required("--character")?.into()],
             records: vec![],
         })?,
+        "authoring" => match flags
+            .get("--kind")
+            .map(|value| value.as_str())
+            .unwrap_or("character")
+        {
+            "character" if !flags.contains_key("--id") => catalog.authoring_context(
+                required("--character")?,
+                flags.get("--example").map(|value| value.as_str()),
+            )?,
+            "scene" if !flags.contains_key("--character") && !flags.contains_key("--example") => {
+                catalog.scene_authoring_context(flags.get("--id").map(|value| value.as_str()))?
+            }
+            _ => {
+                return Err(ApiError::invalid(
+                    "authoring 请使用 --character <ID> [--example <ID>] 或 --kind scene [--id <ID>]",
+                ));
+            }
+        },
         "export" => catalog.export_selected(&absolute("--out")?, &scope)?,
         "patch" => {
             let mut value: Value = serde_json::from_slice(&std::fs::read(absolute("--file")?)?)?;
             let changes: Vec<Change> = serde_json::from_value(
-                value.get_mut("changes").map(Value::take).unwrap_or_default(),
+                value
+                    .get_mut("changes")
+                    .map(Value::take)
+                    .unwrap_or_default(),
             )?;
             catalog.apply(&changes, !apply)?
         }
@@ -163,7 +193,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
         )?,
         _ => {
             return Err(ApiError::invalid(
-                "内容命令需要 stats、query、record、history、character、export、patch、import、check 或 colors",
+                "内容命令需要 stats、query、record、history、character、authoring、export、patch、import、check 或 colors",
             ));
         }
     };

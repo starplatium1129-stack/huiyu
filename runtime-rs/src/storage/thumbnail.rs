@@ -17,12 +17,20 @@ static DECODERS: OnceLock<queue::Queue> = OnceLock::new();
 
 pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
     let preview = command.get("width").is_some();
-    let requested = command.get("width").map(|value| value.as_u64()
-        .filter(|width| (1..=8192).contains(width))
-        .ok_or_else(|| ApiError::new(400, "INVALID_WIDTH", "Preview width must be 1–8192")))
-        .transpose()?.unwrap_or(560);
-    let width = [560, 1120, 1680, 2240, 3360, 4480, 8192].into_iter()
-        .find(|width| u64::from(*width) >= requested).unwrap_or(8192);
+    let requested = command
+        .get("width")
+        .map(|value| {
+            value
+                .as_u64()
+                .filter(|width| (1..=8192).contains(width))
+                .ok_or_else(|| ApiError::new(400, "INVALID_WIDTH", "Preview width must be 1–8192"))
+        })
+        .transpose()?
+        .unwrap_or(560);
+    let width = [560, 1120, 1680, 2240, 3360, 4480, 8192]
+        .into_iter()
+        .find(|width| u64::from(*width) >= requested)
+        .unwrap_or(8192);
     let (reader, cancelled) = storage.thumbnails.begin()?;
     let _cancel = cancelled.clone().drop_guard();
     let source = match tokio::select! { biased;
@@ -38,7 +46,12 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
     }
     // Unsupported preview codecs must leave the browser's original fallback in
     // charge instead of publishing a derivative with different image semantics.
-    if preview && !matches!(source.mime.as_str(), "image/png" | "image/jpeg" | "image/webp") {
+    if preview
+        && !matches!(
+            source.mime.as_str(),
+            "image/png" | "image/jpeg" | "image/webp"
+        )
+    {
         return Ok(Value::Null);
     }
     let root = storage.root.clone();
@@ -50,7 +63,11 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         (true, false) => ("thumbnails-rust-vips-v1", "jpg", "image/jpeg"),
         (false, false) => ("thumbnails-rust-v1", "jpg", "image/jpeg"),
     };
-    let suffix = if width == 560 { String::new() } else { format!("-{width}") };
+    let suffix = if width == 560 {
+        String::new()
+    } else {
+        format!("-{width}")
+    };
     let relative = format!("cache/{version}/{}{suffix}.{extension}", source.sha256);
     let owner = storage.sender.clone();
     let (cache_root, cache_relative, read_cancel) =

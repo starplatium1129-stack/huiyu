@@ -58,7 +58,8 @@ impl ControlService {
         let service = self.clone();
         let returned = operation.clone();
         self.tasks.spawn(async move {
-            let work = service.prepare_pixai(&operation, &cancel, &interrogate, &permit, &admission);
+            let work =
+                service.prepare_pixai(&operation, &cancel, &interrogate, &permit, &admission);
             tokio::pin!(work);
             let result = match tokio::time::timeout(Duration::from_secs(8 * 3600), &mut work).await
             {
@@ -102,8 +103,14 @@ impl ControlService {
             .join(&runtime.runtime_id);
         let installed = runtime_ready(&runtime_root, &runtime);
         if !installed {
-            self.install_native_runtime(&runtime, operation, cancel, permit, Some(admission.clone()))
-                .await?;
+            self.install_native_runtime(
+                &runtime,
+                operation,
+                cancel,
+                permit,
+                Some(admission.clone()),
+            )
+            .await?;
         } else {
             self.stage(operation, 3);
             self.native_progress(
@@ -127,7 +134,10 @@ impl ControlService {
         );
         let expected = expected_paths(self, &runtime, &manifest);
         let python = Path::new(expected["python"].as_str().unwrap());
-        let script = self.config.app_root.join("scripts/lib/prepare-pixai-runtime.py");
+        let script = self
+            .config
+            .app_root
+            .join("scripts/lib/prepare-pixai-runtime.py");
         let mut command = crate::native_python::command(python, &script);
         command
             .arg("--root")
@@ -137,7 +147,16 @@ impl ControlService {
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
-        let value = self.run_setup_helper(&mut command, cancel, 600, permit.clone(), Some(admission.clone()), None).await?;
+        let value = self
+            .run_setup_helper(
+                &mut command,
+                cancel,
+                600,
+                permit.clone(),
+                Some(admission.clone()),
+                None,
+            )
+            .await?;
         if value["schemaVersion"] != 1
             || value["engine"] != "pixai"
             || value["environment"]["cudaAvailable"] != true

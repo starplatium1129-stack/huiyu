@@ -61,7 +61,7 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     match string(command, "kind")? {
         "readGalleryPage" => super::gallery::read(c, command),
         "readGalleryCatalog" => super::gallery::catalog(c),
-        "readArtworkExportPage" => super::artwork_export::page(c,command),
+        "readArtworkExportPage" => super::artwork_export::page(c, command),
         "readArtworkRecentIndex" => super::recent::read(c, command),
         "getArtwork" => Ok(artwork(c, &entity_key(&command["id"])?)?.unwrap_or(Value::Null)),
         "getArtworks" => {

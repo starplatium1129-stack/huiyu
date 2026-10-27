@@ -50,7 +50,10 @@ impl Catalog {
                 .optional()?;
             let base = seed_query
                 .query_row(params![incoming.kind, incoming.id], |r| {
-                    Ok((serde_json::from_str::<Record>(text_column(r, 0)?), r.get::<_, bool>(1)?))
+                    Ok((
+                        serde_json::from_str::<Record>(text_column(r, 0)?),
+                        r.get::<_, bool>(1)?,
+                    ))
                 })
                 .optional()?
                 .map(|(record, removed)| record.map(|record| (record, removed)))
@@ -58,12 +61,16 @@ impl Catalog {
             let equal = current
                 .as_ref()
                 .is_some_and(|(r, old_removed)| same(r, incoming) && *old_removed == removed);
-            let untouched = !equal && current.as_ref().zip(base.as_ref()).is_some_and(
-                |((r, old_removed), (b, base_removed))| same(r, b) && old_removed == base_removed,
-            );
-            let incoming_unchanged = !equal && base
-                .as_ref()
-                .is_some_and(|(b, base_removed)| same(b, incoming) && *base_removed == removed);
+            let untouched = !equal
+                && current.as_ref().zip(base.as_ref()).is_some_and(
+                    |((r, old_removed), (b, base_removed))| {
+                        same(r, b) && old_removed == base_removed
+                    },
+                );
+            let incoming_unchanged = !equal
+                && base
+                    .as_ref()
+                    .is_some_and(|(b, base_removed)| same(b, incoming) && *base_removed == removed);
             // Preserve the complete local record, including metadata, on repeat
             // imports too. The original incoming record remains the new seed;
             // a local record must never be mistaken for the upstream baseline.

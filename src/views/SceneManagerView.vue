@@ -29,18 +29,19 @@
             <div class="catalog-more-menu">
               <button type="button" :disabled="busy" @click="refreshContent"><ArchiveIcon name="refresh" />刷新内容</button>
               <button type="button" @click="exportDraft"><ArchiveIcon name="download" />备份未保存的修改</button>
-              <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" />导出已保存内容</button>
+              <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" />下载内容库备份</button>
             </div>
           </StudioPopover>
         </div>
       </header>
       <p v-if="hint" class="catalog-feedback" role="status" aria-live="polite">{{ hint }}</p>
+      <div v-if="lastOnboardedCharacter" class="catalog-feedback catalog-onboarding-next" role="status"><span>{{ characterNames[lastOnboardedCharacter] || lastOnboardedCharacter }}与首套服装已保存。</span><button class="btn btn-primary btn-sm" type="button" :disabled="busy || dirty" @click="addBlueprintFor(lastOnboardedCharacter)">继续创建蓝图</button><button class="btn btn-quiet btn-sm" type="button" @click="lastOnboardedCharacter = ''">稍后再说</button></div>
       <div v-if="section === 'portraits'" v-content-motion="section" class="catalog-support-surface"><AsyncPanel :loader="loadCharacterArt" label="角色立绘维护" v-slot="{ component }"><component :is="component" ref="artManager" :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></AsyncPanel></div>
       <div v-else-if="section === 'media'" v-content-motion="section" class="catalog-support-surface"><AsyncPanel :loader="loadCatalogMedia" label="样张与封面维护" v-slot="{ component }"><component :is="component" :record="selected" :character-names="characterNames" /></AsyncPanel></div>
       <section v-else-if="section === 'tools'" v-content-motion="section" class="catalog-support-surface">
         <h2>文件与备份</h2>
         <div class="catalog-tool-options">
-          <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" /><strong>导出已保存内容</strong></button>
+          <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" /><strong>下载内容库备份</strong></button>
           <button type="button" :disabled="checking" @click="listBackups"><ArchiveIcon name="image" /><strong>查看图片备份</strong></button>
           <button type="button" :disabled="checking" @click="checkContent"><ArchiveIcon name="manager" /><strong>检查资料关联</strong></button>
         </div>
@@ -58,7 +59,7 @@
       <template v-else>
         <div v-content-motion="`${section}:${kind}`" class="catalog-workspace">
           <section class="catalog-library" aria-label="内容列表" :aria-busy="loading">
-            <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : listMatchesKind ? (result?.total ?? 0) + ' 份' : '尚未读取' }}</span></div><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><ArchiveIcon name="plus" />新建</button></header>
+            <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : listMatchesKind ? (result?.total ?? 0) + ' 份' : '尚未读取' }}</span></div><span class="catalog-library-actions"><button v-if="kind === 'character'" class="catalog-add" type="button" :disabled="busy" @click="add(false, true)"><ArchiveIcon name="plus" />接入绘图角色</button><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><ArchiveIcon name="plus" />{{ kind === 'character' ? '新建档案' : '新建' }}</button></span></header>
             <StudioSearch ref="contentSearch" v-model="search" label="搜索内容" :placeholder="searchPlaceholder" />
             <div class="catalog-list-controls">
               <StudioSelect v-model="sort" label="排列方式" :options="sortOptions" />
@@ -87,7 +88,7 @@
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
             <template v-else-if="selected">
               <p v-if="editorPendingNotice" class="catalog-feedback" role="status">{{ editorPendingNotice }}</p>
-              <CatalogRecordEditor :key="editorSession" v-model:record="selected" :advanced="advanced" :advanced-error="advancedError" :field-error="fieldError" :editor-session="editorSession" @advanced="updateAdvanced" @apply-advanced="applyAdvanced" @discard-advanced="discardAdvanced" :disabled="busy || !!editorPendingNotice" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
+              <CatalogRecordEditor :key="editorSession" v-model:record="selected" :advanced="advanced" :advanced-error="advancedError" :field-error="fieldError" :editor-session="editorSession" @advanced="updateAdvanced" @apply-advanced="applyAdvanced" @discard-advanced="discardAdvanced" @field-input="clearFieldError" :disabled="busy || !!editorPendingNotice" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
               <details v-if="selected.revision" class="catalog-history" :aria-busy="historyLoading">
                 <StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary>
                 <p v-if="historyLoading" role="status">正在读取版本…</p>
@@ -98,7 +99,7 @@
               </details>
               <section v-if="currentServer" class="catalog-conflict"><h3>这份内容有了新修改</h3><p>你的草稿还在上面。对照最新内容，合并好以后再保存。</p><details><StudioDisclosureSummary>查看最新内容</StudioDisclosureSummary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy || !!editorPendingNotice" @click="adoptRevision">已核对，继续编辑</button></section>
             </template>
-            <div v-else class="catalog-editor-empty"><img class="catalog-empty-illustration" :src="collectionArt" width="512" height="512" alt="" /><h2>翻开一份{{ sectionTitle }}</h2><p>从左侧选取，让角色与故事慢慢成册。</p><button v-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">新建内容</button></div>
+            <div v-else class="catalog-editor-empty"><img class="catalog-empty-illustration" :src="collectionArt" width="512" height="512" alt="" /><h2>翻开一份{{ sectionTitle }}</h2><p>从左侧选取，让角色与故事慢慢成册。</p><button v-if="kind === 'character'" class="btn btn-primary" type="button" :disabled="busy" @click="add(false, true)">接入绘图角色与首套服装</button><button v-else-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">新建内容</button></div>
           </section>
         </div>
       </template>
@@ -151,7 +152,7 @@ const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }>
   { value: 'character', label: '角色档案', icon: 'character' }, { value: 'outfit', label: '服装方案', icon: 'image' },
   { value: 'scene', label: '场景故事', icon: 'scene' }, { value: 'blueprint', label: '场景蓝图', icon: 'spark' }, { value: 'document', label: '标签与推荐', icon: 'manager' },
 ]
-const { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, fieldError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending: withdrawChange, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance(editorPane)
+const { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, fieldError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending: withdrawChange, submit, compareCurrent, adoptRevision, lastOnboardedCharacter, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance(editorPane)
 watch(listScope, () => { recordList.value?.scrollTo(0, 0) }, { flush: 'post' })
 watch(preview, value => { if (value) pendingOpen.value = true })
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
@@ -222,6 +223,16 @@ async function withdrawPending(change: CatalogChange, index: number) {
   if (target === pageTitle.value) target?.scrollIntoView({ block: 'center', behavior: 'instant' })
 }
 async function saveEdits() { if (dirtyEditor.value && !stage()) return; await submit(false) }
+async function addBlueprintFor(characterId: string) {
+  if (busy.value || dirty.value) return
+  kind.value = 'blueprint'; character.value = characterId
+  if (await add() && selected.value?.kind === 'blueprint') {
+    (selected.value.data as Record<string, unknown>).characterId = characterId
+    lastOnboardedCharacter.value = ''
+    await nextTick(); editorPane.value?.scrollIntoView({ block: 'start', behavior: scrollBehavior() })
+  }
+}
+function clearFieldError() { fieldError.value = null }
 async function reviewEdits() { if (dirtyEditor.value && !stage()) return; await submit(true) }
 async function checkContent() { checking.value = true; try { await catalogApi.check(); toolHint.value = '检查完成，资料关联完整' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
 async function listBackups() { checking.value = true; try { backups.value = (await maintenanceApi.listBackups()).entries; toolHint.value = '找到 ' + backups.value.length + ' 份图片备份' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }

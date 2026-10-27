@@ -38,7 +38,13 @@ impl PendingAcceptance<'_> {
         F: FnOnce(String, CancellationToken) -> Fut + Send + 'static,
         Fut: Future<Output = ()> + Send + 'static,
     {
-        let Self { receipt, token, cancel, permit, active } = self;
+        let Self {
+            receipt,
+            token,
+            cancel,
+            permit,
+            active,
+        } = self;
         tasks.spawn(async move {
             let _permit = permit;
             work(token, cancel).await;
@@ -109,7 +115,9 @@ impl Requests {
         let token = self.token(&receipt.owner, &receipt.family, &receipt.request_key)?;
         let active = self.active.lock().await;
         // A checkpoint or acceptance may have finished after the caller's read.
-        if let Some(latest) = self.read(&token).await? { receipt = latest; }
+        if let Some(latest) = self.read(&token).await? {
+            receipt = latest;
+        }
         Ok((receipt, active.contains_key(&token)))
     }
     pub async fn begin<'a>(
@@ -121,35 +129,55 @@ impl Requests {
         conflict_message: &str,
     ) -> Result<Acceptance<'a>> {
         let mut active = self.active.lock().await;
-        if shutdown.is_cancelled() { return Err(closed()); }
+        if shutdown.is_cancelled() {
+            return Err(closed());
+        }
         if let Some(receipt) = self.read(&intent.token).await? {
             if receipt.cancel_requested && receipt.fingerprint.is_empty() {
                 return Ok(Acceptance::Existing(receipt));
             }
             if receipt.fingerprint != fingerprint {
-                return Err(ApiError::new(409, format!("{}_REQUEST_CONFLICT", self.prefix), conflict_message));
+                return Err(ApiError::new(
+                    409,
+                    format!("{}_REQUEST_CONFLICT", self.prefix),
+                    conflict_message,
+                ));
             }
             // Only a known capacity rejection can re-enter with the same key;
             // accepted or uncertain work retains its original lookup identity.
             if !receipt.error.as_ref().is_some_and(|e| e.status == 429)
-                || receipt.cancel_requested || active.contains_key(&intent.token)
+                || receipt.cancel_requested
+                || active.contains_key(&intent.token)
             {
                 return Ok(Acceptance::Existing(receipt));
             }
         }
         let permit = self.admission.clone().try_acquire_owned().map_err(|_| {
-            ApiError::new(429, format!("{}_ACCEPTANCE_BUSY", self.prefix),
-                format!("{}接收队列已满，请稍后查询原请求", self.subject))
+            ApiError::new(
+                429,
+                format!("{}_ACCEPTANCE_BUSY", self.prefix),
+                format!("{}接收队列已满，请稍后查询原请求", self.subject),
+            )
         })?;
         let cancel = shutdown.child_token();
         let receipt = Receipt {
-            request_key: intent.key, owner: intent.owner, family: intent.family, fingerprint,
-            epoch: self.epoch.clone(), job_id: None, cancel_requested: false, error: None,
+            request_key: intent.key,
+            owner: intent.owner,
+            family: intent.family,
+            fingerprint,
+            epoch: self.epoch.clone(),
+            job_id: None,
+            cancel_requested: false,
+            error: None,
         };
         self.save(&intent.token, &receipt).await?;
         active.insert(intent.token.clone(), cancel.clone());
         Ok(Acceptance::New(PendingAcceptance {
-            receipt, token: intent.token, cancel, permit, active,
+            receipt,
+            token: intent.token,
+            cancel,
+            permit,
+            active,
         }))
     }
     pub async fn finish(&self, token: &str, failure: Option<ApiError>) {
@@ -161,11 +189,16 @@ impl Requests {
             // A checkpointed job remains authoritative after a failed submit
             // response; only a pre-checkpoint failure can become a rejection.
             receipt.error = Some(Rejection {
-                status: error.status.as_u16(), code: error.code,
+                status: error.status.as_u16(),
+                code: error.code,
                 message: error.message.chars().take(1000).collect(),
             });
             if let Err(error) = self.save(token, &receipt).await {
-                eprintln!("{} receipt: {}", self.prefix.to_ascii_lowercase(), error.code);
+                eprintln!(
+                    "{} receipt: {}",
+                    self.prefix.to_ascii_lowercase(),
+                    error.code
+                );
             }
         }
         active.remove(token);
@@ -174,12 +207,20 @@ impl Requests {
         let token = self.token(owner, family, key)?;
         let active = self.active.lock().await;
         let mut receipt = self.read(&token).await?.unwrap_or(Receipt {
-            request_key: key.into(), owner: owner.into(), family: family.into(), fingerprint: String::new(),
-            epoch: self.epoch.clone(), job_id: None, cancel_requested: true, error: None,
+            request_key: key.into(),
+            owner: owner.into(),
+            family: family.into(),
+            fingerprint: String::new(),
+            epoch: self.epoch.clone(),
+            job_id: None,
+            cancel_requested: true,
+            error: None,
         });
         receipt.cancel_requested = true;
         self.save(&token, &receipt).await?;
-        if let Some(cancel) = active.get(&token) { cancel.cancel(); }
+        if let Some(cancel) = active.get(&token) {
+            cancel.cancel();
+        }
         Ok(receipt)
     }
     pub async fn checkpoint(
@@ -191,14 +232,25 @@ impl Requests {
         missing_job_message: &str,
     ) -> Result<()> {
         let _active = self.active.lock().await;
-        if cancel.is_cancelled() { return Err(cancelled()); }
+        if cancel.is_cancelled() {
+            return Err(cancelled());
+        }
         let mut receipt = self.read(token).await?.ok_or_else(|| {
-            ApiError::new(503, format!("{}_RECEIPT_UNAVAILABLE", self.prefix),
-                format!("{}接收凭据丢失", self.subject))
+            ApiError::new(
+                503,
+                format!("{}_RECEIPT_UNAVAILABLE", self.prefix),
+                format!("{}接收凭据丢失", self.subject),
+            )
         })?;
-        if receipt.cancel_requested { return Err(cancelled()); }
-        receipt.job_id = Some(value["gatewayJobId"].as_str()
-            .ok_or_else(|| ApiError::invalid(missing_job_message))?.into());
+        if receipt.cancel_requested {
+            return Err(cancelled());
+        }
+        receipt.job_id = Some(
+            value["gatewayJobId"]
+                .as_str()
+                .ok_or_else(|| ApiError::invalid(missing_job_message))?
+                .into(),
+        );
         self.save(token, &receipt).await
     }
     fn unavailable(&self, message: &str) -> ApiError {
@@ -233,10 +285,6 @@ impl Requests {
                 return Err(self.unavailable("目录不可用"));
             }
         }
-        write_job_record(
-            &self.directory.join(format!("{token}.json")),
-            receipt,
-        )
-        .await
+        write_job_record(&self.directory.join(format!("{token}.json")), receipt).await
     }
 }

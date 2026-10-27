@@ -97,8 +97,9 @@ pub(super) fn display(value: &Value) -> Result<HashMap<String, Cow<'_, Value>>> 
         for (field, folder) in [("image", "images"), ("thumb", "thumbs")] {
             let path: Cow<'_, str> = match item.get(field) {
                 None | Some(Value::Null) => Cow::Owned(format!("{folder}/{id}.jpg")),
-                Some(Value::String(value)) if value.is_empty() =>
-                    Cow::Owned(format!("{folder}/{id}.jpg")),
+                Some(Value::String(value)) if value.is_empty() => {
+                    Cow::Owned(format!("{folder}/{id}.jpg"))
+                }
                 Some(Value::String(value)) => Cow::Borrowed(value),
                 _ => {
                     return Err(Error::new(
@@ -344,7 +345,10 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
     drop(expected);
     let id = id.to_owned();
     let app_version = app_version.to_owned();
-    let catalog_entry = value.get_mut("catalog").map(Value::take).unwrap_or(Value::Null);
+    let catalog_entry = value
+        .get_mut("catalog")
+        .map(Value::take)
+        .unwrap_or(Value::Null);
     drop(value);
     // The exact union above covers both payloads and their metadata. This
     // traversal checks every path, size and hash; verifying each subtree again

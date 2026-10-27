@@ -46,12 +46,7 @@ pub(super) fn timeout_pending(state: &JobState, id: &str) -> bool {
         && state.cancel_acknowledged
         && state.cancel_deadline.is_none()
 }
-pub(super) async fn confirm_timeout_absent(
-    inner: &Inner,
-    job: &Job,
-    id: &str,
-    history: &Value,
-) {
+pub(super) async fn confirm_timeout_absent(inner: &Inner, job: &Job, id: &str, history: &Value) {
     {
         let mut state = job.state.lock().await;
         if !timeout_pending(&state, id) {
@@ -237,7 +232,9 @@ pub(super) async fn confirm(inner: &Inner, job: &Job, id: &str) -> bool {
             return false;
         }
         let expired = state.status == "cancelling"
-            && state.cancel_deadline.is_some_and(|deadline| Instant::now() > deadline);
+            && state
+                .cancel_deadline
+                .is_some_and(|deadline| Instant::now() > deadline);
         if expired {
             state.status = "failed".into();
             state.error = Some("无法确认上游任务已安全取消".into());

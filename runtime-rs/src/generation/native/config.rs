@@ -1,8 +1,8 @@
+use super::resources::{self, within};
 use super::*;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{io::Read, path::Path};
-use super::resources::{self, within};
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -62,7 +62,8 @@ impl Settings {
                 acceleration: default_acceleration(),
                 memory_policy: default_memory_policy(),
                 python,
-                adapter_python: installed_adapter_runtime(&root, &worker).and_then(|(_, value)| value["python"].as_str().map(PathBuf::from)),
+                adapter_python: installed_adapter_runtime(&root, &worker)
+                    .and_then(|(_, value)| value["python"].as_str().map(PathBuf::from)),
                 worker,
                 models_root,
                 loras_root,
@@ -98,7 +99,11 @@ impl Settings {
                 return Err(ApiError::invalid("推理路径必须是有效的绝对路径"));
             }
         }
-        if self.adapter_python.as_ref().is_some_and(|p| !p.is_absolute() || p.to_str().is_none_or(|s| s.contains('\0'))) {
+        if self
+            .adapter_python
+            .as_ref()
+            .is_some_and(|p| !p.is_absolute() || p.to_str().is_none_or(|s| s.contains('\0')))
+        {
             return Err(ApiError::invalid("新增模型 Python 必须是有效的绝对路径"));
         }
         Ok(())
@@ -108,8 +113,15 @@ impl Settings {
     }
     pub(crate) async fn validate_files(&self) -> Result<()> {
         let settings = self.clone();
-        tokio::task::spawn_blocking(move || settings.validate_files_sync()).await
-            .map_err(|_| ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", "独立推理运行文件读取未完成"))?
+        tokio::task::spawn_blocking(move || settings.validate_files_sync())
+            .await
+            .map_err(|_| {
+                ApiError::new(
+                    503,
+                    "NATIVE_RUNTIME_UNAVAILABLE",
+                    "独立推理运行文件读取未完成",
+                )
+            })?
     }
     /// Anima's shipped helpers, without importing Python or checking weights/devices.
     /// Adapter and manga runtimes keep their own explicit bundle declarations.
@@ -117,20 +129,41 @@ impl Settings {
         let settings = self.clone();
         tokio::task::spawn_blocking(move || {
             settings.validate_files_sync()?;
-            if let Some(issue) = resources::worker_bundle_issue(&settings.worker, resources::ANIMA_WORKER_FILES) {
+            if let Some(issue) =
+                resources::worker_bundle_issue(&settings.worker, resources::ANIMA_WORKER_FILES)
+            {
                 return Err(ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", issue));
             }
             Ok(())
-        }).await.map_err(|_| ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", "独立推理运行文件读取未完成"))?
+        })
+        .await
+        .map_err(|_| {
+            ApiError::new(
+                503,
+                "NATIVE_RUNTIME_UNAVAILABLE",
+                "独立推理运行文件读取未完成",
+            )
+        })?
     }
     /// Drawing mode accepts either independent image runtime; each submission
     /// still checks the exact selected family, model and helper bundle.
     pub(crate) async fn validate_image_files(&self) -> Result<()> {
-        if self.validate_anima_files().await.is_ok() { return Ok(()); }
+        if self.validate_anima_files().await.is_ok() {
+            return Ok(());
+        }
         let settings = self.clone();
         tokio::task::spawn_blocking(move || {
-            super::adapters::settings(&settings).and_then(|adapter| super::adapters::validate_runtime(&adapter))
-        }).await.map_err(|_| ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", "原生图像运行文件读取未完成"))?
+            super::adapters::settings(&settings)
+                .and_then(|adapter| super::adapters::validate_runtime(&adapter))
+        })
+        .await
+        .map_err(|_| {
+            ApiError::new(
+                503,
+                "NATIVE_RUNTIME_UNAVAILABLE",
+                "原生图像运行文件读取未完成",
+            )
+        })?
     }
     pub(crate) fn validate_files_sync(&self) -> Result<()> {
         self.validate()?;
@@ -166,14 +199,20 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
         // Managed setup records its workspace independently of user-selected
         // external paths. A changed workspace must not retain old readiness.
         // Legacy explicit settings have no marker and remain user-owned.
-        let moved = saved["inferenceWorkspacePath"].as_str().is_some_and(|workspace| {
-            let path = Path::new(workspace);
-            path != config.ai_workspace_root.as_path()
-                && path.canonicalize().ok().zip(config.ai_workspace_root.canonicalize().ok())
-                    .is_none_or(|(saved, current)| saved != current)
-        });
+        let moved = saved["inferenceWorkspacePath"]
+            .as_str()
+            .is_some_and(|workspace| {
+                let path = Path::new(workspace);
+                path != config.ai_workspace_root.as_path()
+                    && path
+                        .canonicalize()
+                        .ok()
+                        .zip(config.ai_workspace_root.canonicalize().ok())
+                        .is_none_or(|(saved, current)| saved != current)
+            });
         if moved {
-            let mut value = serde_json::to_value(Settings::discovered(&config.ai_workspace_root).0)?;
+            let mut value =
+                serde_json::to_value(Settings::discovered(&config.ai_workspace_root).0)?;
             value["videoEngine"] = json!(settings.video_engine());
             value["engine"] = json!(settings.engine);
             value
@@ -206,24 +245,21 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
 }
 
 fn bundled_worker() -> PathBuf {
-    let installed = std::env::current_exe()
-        .ok()
-        .and_then(|path| {
-            path.parent()
-                .map(|root| root.join("tools/inference/worker.py"))
-        });
+    let installed = std::env::current_exe().ok().and_then(|path| {
+        path.parent()
+            .map(|root| root.join("tools/inference/worker.py"))
+    });
     // Packaged machines use only the installed worker. The compile-time source
     // path is a developer convenience, never an installation fallback.
     if std::env::var("AICS_DESKTOP_PACKAGED").as_deref() == Ok("1") {
         return installed.unwrap_or_default();
     }
-    installed.filter(|path| path.is_file())
-        .unwrap_or_else(|| {
-            PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-                .parent()
-                .unwrap()
-                .join("tools/inference/worker.py")
-        })
+    installed.filter(|path| path.is_file()).unwrap_or_else(|| {
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap()
+            .join("tools/inference/worker.py")
+    })
 }
 fn python_relative() -> &'static str {
     if cfg!(windows) {
@@ -234,8 +270,16 @@ fn python_relative() -> &'static str {
 }
 impl Settings {
     pub(crate) fn model_count(&self) -> usize {
-        model_count(&self.models_root) + super::adapters::manifest()["models"].as_object().unwrap().iter()
-            .filter(|(id, spec)| spec["media"] == "image" && super::adapters::status(self, id)["available"] == true).count()
+        model_count(&self.models_root)
+            + super::adapters::manifest()["models"]
+                .as_object()
+                .unwrap()
+                .iter()
+                .filter(|(id, spec)| {
+                    spec["media"] == "image"
+                        && super::adapters::status(self, id)["available"] == true
+                })
+                .count()
     }
     pub(crate) fn lora_count(&self) -> usize {
         lora_count(&self.loras_root)
@@ -260,8 +304,14 @@ fn lora_count(root: &Path) -> usize {
         .values()
         .filter_map(|lora| lora["file"].as_str())
         .filter(|name| resources::file(root, name, false).is_some())
-        .count() + crate::images::catalog()["KREA_STYLE_LORAS"].as_object().unwrap().values()
-            .filter_map(|lora| lora["file"].as_str()).filter(|name| resources::file(root, name, true).is_some()).count()
+        .count()
+        + crate::images::catalog()["KREA_STYLE_LORAS"]
+            .as_object()
+            .unwrap()
+            .values()
+            .filter_map(|lora| lora["file"].as_str())
+            .filter(|name| resources::file(root, name, true).is_some())
+            .count()
 }
 fn installed_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {
     installed_runtime_for(root, worker, "requirements.txt")
@@ -269,7 +319,11 @@ fn installed_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {
 pub(crate) fn installed_adapter_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {
     installed_runtime_for(root, worker, "requirements-adapters.txt")
 }
-pub(crate) fn installed_runtime_for(root: &Path, worker: &Path, requirements_name: &str) -> Option<(PathBuf, Value)> {
+pub(crate) fn installed_runtime_for(
+    root: &Path,
+    worker: &Path,
+    requirements_name: &str,
+) -> Option<(PathBuf, Value)> {
     if std::fs::symlink_metadata(root)
         .ok()?
         .file_type()

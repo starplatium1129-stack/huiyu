@@ -16,9 +16,19 @@ pub(super) fn known_tool(name: &str) -> bool {
         .any(|tool| tool["function"]["name"] == name)
 }
 pub(super) fn tools(room: bool, web: bool) -> Vec<Value> {
-    TOOLS.as_array().unwrap().iter().filter(|tool| {
-        if tool["function"]["name"] == "search_web" { web } else { room }
-    }).cloned().collect()
+    TOOLS
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|tool| {
+            if tool["function"]["name"] == "search_web" {
+                web
+            } else {
+                room
+            }
+        })
+        .cloned()
+        .collect()
 }
 pub(super) fn length(text: &str) -> usize {
     text.encode_utf16().count()
@@ -176,7 +186,9 @@ pub(super) fn build(character: &str, body: &Value, local: Option<&str>) -> Resul
 }
 
 fn tool_guidance(lines: &mut Vec<Cow<'_, str>>, character: &str, body: &Value) {
-    if body["provider"] != "api" { return; }
+    if body["provider"] != "api" {
+        return;
+    }
     if body["companionTools"] == true || body["webSearch"] == true {
         lines.push("【工具输出规则】只输出角色中文对白的规则约束面向用户的文字，不禁止调用实际工具；工具参数可使用需要的英文，联网回答可附来源链接。".into());
     }

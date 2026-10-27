@@ -134,11 +134,17 @@ impl Service {
         let family = input.family();
         let intent = self.requests.intent(key, owner.clone(), family)?;
         let fingerprint = input.fingerprint();
-        let receipt = match self.requests.begin(
-            intent, fingerprint, &self.shutdown,
-            || error(503, "SERVICE_CLOSED", "视频服务已关闭"),
-            "视频请求编号已绑定其他操作，请先核对原任务",
-        ).await? {
+        let receipt = match self
+            .requests
+            .begin(
+                intent,
+                fingerprint,
+                &self.shutdown,
+                || error(503, "SERVICE_CLOSED", "视频服务已关闭"),
+                "视频请求编号已绑定其他操作，请先核对原任务",
+            )
+            .await?
+        {
             Acceptance::Existing(receipt) => receipt,
             Acceptance::New(pending) => {
                 let service = self.clone();
@@ -173,13 +179,23 @@ impl Service {
                                     .await?;
                                 service
                                     .clone()
-                                    .submit_batch_accepting(prepared, owner, None, Some(hooks.as_ref()))
+                                    .submit_batch_accepting(
+                                        prepared,
+                                        owner,
+                                        None,
+                                        Some(hooks.as_ref()),
+                                    )
                                     .await
                             }
                             RequestInput::Retry { batch_id, indices } => {
                                 service
                                     .clone()
-                                    .retry_shots_accepting(&batch_id, &owner, indices, hooks.as_ref())
+                                    .retry_shots_accepting(
+                                        &batch_id,
+                                        &owner,
+                                        indices,
+                                        hooks.as_ref(),
+                                    )
                                     .await
                             }
                         }
@@ -249,11 +265,16 @@ impl ExecutionHooks for ReceiptObservation {
                 .service
                 .upgrade()
                 .ok_or_else(|| error(503, "SERVICE_CLOSED", "视频服务已关闭"))?;
-            service.requests.checkpoint(
-                &self.token, &self.cancel, &value,
-                || error(499, "VIDEO_REQUEST_CANCELLED", "视频请求已取消"),
-                "缺少视频任务编号",
-            ).await
+            service
+                .requests
+                .checkpoint(
+                    &self.token,
+                    &self.cancel,
+                    &value,
+                    || error(499, "VIDEO_REQUEST_CANCELLED", "视频请求已取消"),
+                    "缺少视频任务编号",
+                )
+                .await
         })
     }
     fn submitting(&self, _: String) -> BoxFuture<'_, Result<()>> {

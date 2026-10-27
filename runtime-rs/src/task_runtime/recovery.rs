@@ -425,9 +425,16 @@ impl TaskRuntime {
                     Err(error) => return Err(error),
                 }
             }
-            let observation = self.provider
-                .recover_task(crate::generation::RecoveryTask::from(task), &mut cancellation.single).await?;
-            if !task.kind.is_manga() || observation.error_code.as_deref() != Some("NATIVE_RESTART_INTERRUPTED") {
+            let observation = self
+                .provider
+                .recover_task(
+                    crate::generation::RecoveryTask::from(task),
+                    &mut cancellation.single,
+                )
+                .await?;
+            if !task.kind.is_manga()
+                || observation.error_code.as_deref() != Some("NATIVE_RESTART_INTERRUPTED")
+            {
                 return Ok(observation);
             }
         }
@@ -437,7 +444,10 @@ impl TaskRuntime {
         if task.kind != TaskKind::Batch {
             return self
                 .provider
-                .recover_task(crate::generation::RecoveryTask::from(task), &mut cancellation.single)
+                .recover_task(
+                    crate::generation::RecoveryTask::from(task),
+                    &mut cancellation.single,
+                )
                 .await;
         }
         let id = &task.task_id;

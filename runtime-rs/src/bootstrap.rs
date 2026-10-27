@@ -70,11 +70,7 @@ fn plan(root: &Path, face: &str) -> Result<Plan> {
             let count = blueprints.len();
             let mut value = json!({"version":2,"blueprints":null});
             value["blueprints"] = Value::Array(blueprints);
-            (
-                vec![("scene-blueprints.json", value)],
-                count,
-                "compressed",
-            )
+            (vec![("scene-blueprints.json", value)], count, "compressed")
         }
         "tags" => {
             let (tags, dictionary) = tags::load(root)?;

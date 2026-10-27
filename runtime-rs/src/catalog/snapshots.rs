@@ -26,9 +26,17 @@ fn write_export(path: &Path, value: &impl Serialize) -> Result<()> {
     Ok(())
 }
 fn rename_export(from: &Path, to: &Path) -> Result<()> {
-    std::fs::rename(from, to).map_err(|error| ApiError::new(503, "CATALOG_EXPORT_IO", format!(
-        "快照目录切换失败 {} → {}：{error}", from.display(), to.display()
-    )))
+    std::fs::rename(from, to).map_err(|error| {
+        ApiError::new(
+            503,
+            "CATALOG_EXPORT_IO",
+            format!(
+                "快照目录切换失败 {} → {}：{error}",
+                from.display(),
+                to.display()
+            ),
+        )
+    })
 }
 struct Staging(PathBuf);
 impl Drop for Staging {
@@ -83,8 +91,12 @@ fn read_snapshot(directory: &Path) -> Result<(Vec<Record>, Vec<Record>, Vec<u8>)
         }
         records.push(record);
     }
-    let retired: Vec<Record> =
-        serde_json::from_value(manifest.get_mut("retired").map(Value::take).unwrap_or(json!([])))?;
+    let retired: Vec<Record> = serde_json::from_value(
+        manifest
+            .get_mut("retired")
+            .map(Value::take)
+            .unwrap_or(json!([])),
+    )?;
     for record in &retired {
         validation::key(&record.kind, &record.id)?;
         if record.revision < 1 || !seen.insert((record.kind.clone(), record.id.clone())) {
@@ -102,8 +114,11 @@ impl Catalog {
         snapshot_value(records, retired)
     }
     fn snapshot_records(&self, scope: &Scope) -> Result<(Vec<Record>, Vec<Record>)> {
-        let transaction = self.connection.is_autocommit()
-            .then(|| self.connection.unchecked_transaction()).transpose()?;
+        let transaction = self
+            .connection
+            .is_autocommit()
+            .then(|| self.connection.unchecked_transaction())
+            .transpose()?;
         let mut filters = Vec::new();
         let mut values = Vec::<String>::new();
         for id in &scope.characters {
@@ -156,7 +171,9 @@ impl Catalog {
                 records.push(record);
             }
         }
-        if let Some(transaction) = transaction { transaction.commit()?; }
+        if let Some(transaction) = transaction {
+            transaction.commit()?;
+        }
         Ok((records, retired))
     }
     pub(super) fn export_selected(&self, directory: &Path, scope: &Scope) -> Result<Value> {
@@ -168,12 +185,19 @@ impl Catalog {
             .ok_or_else(|| ApiError::invalid("导出路径无效"))?;
         std::fs::create_dir_all(parent)?;
         let _export_lock = crate::file_lock::try_lock(&parent.join(".catalog-export.lock"))
-            .map_err(|error| ApiError::new(409, "CATALOG_EXPORT_BUSY", format!(
-                "此目录正在导出或不可写；请等待当前导出完成后重试：{error}"
-            )))?;
+            .map_err(|error| {
+                ApiError::new(
+                    409,
+                    "CATALOG_EXPORT_BUSY",
+                    format!("此目录正在导出或不可写；请等待当前导出完成后重试：{error}"),
+                )
+            })?;
         if directory.exists() && !scope.partial() {
-            return Err(ApiError::new(409, "CATALOG_EXPORT_SCOPE_REQUIRED",
-                "更新已有快照必须使用 --record 或 --character 指定范围；全库备份请导出到新的目录，不能整库覆盖项目"));
+            return Err(ApiError::new(
+                409,
+                "CATALOG_EXPORT_SCOPE_REQUIRED",
+                "更新已有快照必须使用 --record 或 --character 指定范围；全库备份请导出到新的目录，不能整库覆盖项目",
+            ));
         }
         let source_snapshot = self.connection.unchecked_transaction()?;
         let version = self.version()?;
@@ -195,25 +219,44 @@ impl Catalog {
             {
                 merged.insert((record.kind.clone(), record.id.clone()), (record, removed));
             }
-            for (mut record, removed) in records.into_iter().map(|r| (r, false))
-                .chain(retired.into_iter().map(|r| (r, true))) {
+            for (mut record, removed) in records
+                .into_iter()
+                .map(|r| (r, false))
+                .chain(retired.into_iter().map(|r| (r, true)))
+            {
                 let key = (record.kind.clone(), record.id.clone());
                 if let Some((before, was_removed)) = merged.get(&key) {
-                    super::provenance::export_ancestor(&self.connection, before, *was_removed, &record, removed)?;
+                    super::provenance::export_ancestor(
+                        &self.connection,
+                        before,
+                        *was_removed,
+                        &record,
+                        removed,
+                    )?;
                     if super::provenance::same(before, &record) && *was_removed == removed {
                         continue;
                     }
                     // The project revision is an upstream publication counter.
                     // A local database imported from it can have a lower edit
                     // counter; ancestry is proved above by content, not numbers.
-                    record.revision = record.revision.max(before.revision.checked_add(1)
-                        .ok_or_else(|| ApiError::invalid("项目快照修订已用尽"))?);
+                    record.revision = record.revision.max(
+                        before
+                            .revision
+                            .checked_add(1)
+                            .ok_or_else(|| ApiError::invalid("项目快照修订已用尽"))?,
+                    );
                 }
                 if !removed {
                     let project_policy = parent.join("prompt-pinned-scenes.json");
                     let source_policy = self.options.source.join("data/prompt-pinned-scenes.json");
-                    super::provenance::export_pins(&record,
-                        if project_policy.is_file() { &project_policy } else { &source_policy })?;
+                    super::provenance::export_pins(
+                        &record,
+                        if project_policy.is_file() {
+                            &project_policy
+                        } else {
+                            &source_policy
+                        },
+                    )?;
                 }
                 changed.insert(key.clone());
                 merged.insert(key, (record, removed));
@@ -250,7 +293,8 @@ impl Catalog {
             let name = format!("{}/{}-{}.json", record.kind, label, &digest[..12]);
             std::fs::create_dir_all(staging.join(&record.kind))?;
             let original = directory.join(&name);
-            if original_fingerprint.is_some() && !changed.contains(&(record.kind.clone(), record.id.clone()))
+            if original_fingerprint.is_some()
+                && !changed.contains(&(record.kind.clone(), record.id.clone()))
                 && original.is_file()
             {
                 std::fs::copy(original, staging.join(&name))?;
@@ -260,16 +304,26 @@ impl Catalog {
             files.push(name);
         }
         files.sort();
-        let manifest = ExportManifest { version: 1, files: &files, retired: &retired };
+        let manifest = ExportManifest {
+            version: 1,
+            files: &files,
+            retired: &retired,
+        };
         write_export(&staging.join("manifest.json"), &manifest)?;
         if let Some(before) = original_fingerprint {
             if !directory.exists() || fingerprint(directory)? != before {
-                return Err(ApiError::new(409, "CATALOG_EXPORT_CONFLICT",
-                    "目标快照在导出期间改变，未覆盖目标；请重新读取后导出"));
+                return Err(ApiError::new(
+                    409,
+                    "CATALOG_EXPORT_CONFLICT",
+                    "目标快照在导出期间改变，未覆盖目标；请重新读取后导出",
+                ));
             }
         } else if directory.exists() {
-            return Err(ApiError::new(409, "CATALOG_EXPORT_CONFLICT",
-                "导出目标已由其他操作创建，未覆盖目标；请重新选择目录"));
+            return Err(ApiError::new(
+                409,
+                "CATALOG_EXPORT_CONFLICT",
+                "导出目标已由其他操作创建，未覆盖目标；请重新选择目录",
+            ));
         }
         let backup = parent.join(format!(".catalog-export-backup-{}", uuid::Uuid::new_v4()));
         if directory.exists() {
@@ -282,10 +336,15 @@ impl Catalog {
             return Err(error.into());
         }
         let cleanup_warning = if backup.exists() {
-            std::fs::remove_dir_all(&backup).err().map(|error| format!(
-                "快照已导出，旧目录清理失败，备份保留于 {}：{error}", backup.display()
-            ))
-        } else { None };
+            std::fs::remove_dir_all(&backup).err().map(|error| {
+                format!(
+                    "快照已导出，旧目录清理失败，备份保留于 {}：{error}",
+                    backup.display()
+                )
+            })
+        } else {
+            None
+        };
         source_snapshot.commit()?;
         Ok(
             json!({"ok":true,"count":count,"total":files.len(),"partial":scope.partial(),"directory":directory,"version":version,"cleanupWarning":cleanup_warning}),

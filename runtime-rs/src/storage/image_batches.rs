@@ -5,7 +5,8 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     let kind = string(command, "kind")?;
     if kind == "imageBatch.list" {
         if let Some((owner, plans)) = &c.image_batch_recovery
-            && owner == principal {
+            && owner == principal
+        {
             return Ok(plans.clone());
         }
         // Recovery needs IDs; portable activation additionally reads state.
@@ -25,8 +26,12 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         return Ok(plans);
     }
     let id = string(command, "id")?;
-    if uuid::Uuid::parse_str(id).is_err() { return Err(invalid("Invalid image batch identity")); }
-    if kind == "imageBatch.get" { return read(c, principal, id); }
+    if uuid::Uuid::parse_str(id).is_err() {
+        return Err(invalid("Invalid image batch identity"));
+    }
+    if kind == "imageBatch.get" {
+        return read(c, principal, id);
+    }
     if kind == "imageBatch.input" {
         let body: String = c.db.query_row("SELECT i.body FROM image_batch_inputs i JOIN image_batch_plans p ON p.id=i.batch_id WHERE p.id=? AND p.principal=? AND i.job_index=?",
             params![id,principal,command["index"].as_i64().filter(|index| *index >= 0).ok_or_else(|| invalid("Invalid batch index"))?], |row| row.get(0))?;
@@ -126,43 +131,83 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
 }
 
 fn split(plan: &mut Value) -> Result<Vec<Value>> {
-    let jobs = plan["jobs"].as_array_mut().ok_or_else(|| invalid("Missing batch jobs"))?;
-    jobs.iter_mut().map(|job| {
-        let object = job.as_object_mut().ok_or_else(|| invalid("Invalid batch job"))?;
-        let input = object.remove("taskInput").filter(Value::is_object).ok_or_else(|| invalid("Missing batch input"))?;
-        let mut snapshot = object.remove("snapshot").filter(Value::is_object).ok_or_else(|| invalid("Missing batch snapshot"))?;
-        // Catalog thumbnails still need the original maturity marker.
-        job["snapshot"] = json!({"adult":snapshot["adult"]});
-        // The backend consumes the normalized request and recorded context.
-        // Browser request/history copies have no reader after acknowledgement.
-        let fields = snapshot.as_object_mut().unwrap();
-        let engine = fields.remove("engine").ok_or_else(|| invalid("Missing batch engine"))?;
-        let context = fields.remove("context").filter(Value::is_object).ok_or_else(|| invalid("Missing batch context"))?;
-        Ok(json!({"taskInput":input,"snapshot":{"engine":engine,"context":context}}))
-    }).collect()
+    let jobs = plan["jobs"]
+        .as_array_mut()
+        .ok_or_else(|| invalid("Missing batch jobs"))?;
+    jobs.iter_mut()
+        .map(|job| {
+            let object = job
+                .as_object_mut()
+                .ok_or_else(|| invalid("Invalid batch job"))?;
+            let input = object
+                .remove("taskInput")
+                .filter(Value::is_object)
+                .ok_or_else(|| invalid("Missing batch input"))?;
+            let mut snapshot = object
+                .remove("snapshot")
+                .filter(Value::is_object)
+                .ok_or_else(|| invalid("Missing batch snapshot"))?;
+            // Catalog thumbnails still need the original maturity marker.
+            job["snapshot"] = json!({"adult":snapshot["adult"]});
+            // The backend consumes the normalized request and recorded context.
+            // Browser request/history copies have no reader after acknowledgement.
+            let fields = snapshot.as_object_mut().unwrap();
+            let engine = fields
+                .remove("engine")
+                .ok_or_else(|| invalid("Missing batch engine"))?;
+            let context = fields
+                .remove("context")
+                .filter(Value::is_object)
+                .ok_or_else(|| invalid("Missing batch context"))?;
+            Ok(json!({"taskInput":input,"snapshot":{"engine":engine,"context":context}}))
+        })
+        .collect()
 }
 fn save_inputs(db: &Connection, id: &str, inputs: Vec<Value>) -> Result<()> {
     let mut statement = db.prepare_cached("INSERT INTO image_batch_inputs VALUES(?,?,?)")?;
-    for (index,input) in inputs.into_iter().enumerate() {
-        statement.execute(params![id,index as i64,stringify(&input)])?;
+    for (index, input) in inputs.into_iter().enumerate() {
+        statement.execute(params![id, index as i64, stringify(&input)])?;
     }
     Ok(())
 }
 pub(super) fn migrate(db: &Connection) -> Result<()> {
-    let ids = db.prepare("SELECT id FROM image_batch_plans")?.query_map([],|r|r.get::<_,String>(0))?
+    let ids = db
+        .prepare("SELECT id FROM image_batch_plans")?
+        .query_map([], |r| r.get::<_, String>(0))?
         .collect::<rusqlite::Result<Vec<_>>>()?;
     for id in ids {
-        let body: String = db.query_row("SELECT body FROM image_batch_plans WHERE id=?",[&id],|r|r.get(0))?;
+        let body: String = db.query_row(
+            "SELECT body FROM image_batch_plans WHERE id=?",
+            [&id],
+            |r| r.get(0),
+        )?;
         let mut plan: Value = serde_json::from_str(&body)?;
-        let source = plan.as_object_mut().and_then(|p|p.remove("source")).ok_or_else(|| invalid("Missing original batch plan"))?;
-        db.execute("INSERT INTO image_batch_sources VALUES(?,?)",params![id,canonical::fingerprint(&source)])?;
-        save_inputs(db,&id,split(&mut plan)?)?;
-        db.execute("UPDATE image_batch_plans SET body=? WHERE id=?",params![stringify(&plan),id])?;
+        let source = plan
+            .as_object_mut()
+            .and_then(|p| p.remove("source"))
+            .ok_or_else(|| invalid("Missing original batch plan"))?;
+        db.execute(
+            "INSERT INTO image_batch_sources VALUES(?,?)",
+            params![id, canonical::fingerprint(&source)],
+        )?;
+        save_inputs(db, &id, split(&mut plan)?)?;
+        db.execute(
+            "UPDATE image_batch_plans SET body=? WHERE id=?",
+            params![stringify(&plan), id],
+        )?;
     }
     Ok(())
 }
 
 fn read(c: &Context, principal: &str, id: &str) -> Result<Value> {
-    let body: Option<String> = c.db.query_row("SELECT body FROM image_batch_plans WHERE id=? AND principal=?", params![id,principal], |row| row.get(0)).optional()?;
-    body.map(|body| serde_json::from_str(&body).map_err(Into::into)).transpose().map(|value| value.unwrap_or(Value::Null))
+    let body: Option<String> =
+        c.db.query_row(
+            "SELECT body FROM image_batch_plans WHERE id=? AND principal=?",
+            params![id, principal],
+            |row| row.get(0),
+        )
+        .optional()?;
+    body.map(|body| serde_json::from_str(&body).map_err(Into::into))
+        .transpose()
+        .map(|value| value.unwrap_or(Value::Null))
 }

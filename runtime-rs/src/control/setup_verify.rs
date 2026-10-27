@@ -107,10 +107,10 @@ pub(super) fn model_file(id: &str) -> Result<ModelFile> {
 }
 
 pub(super) fn model_manifest() -> Result<&'static Value> {
-    static MANIFEST: std::sync::LazyLock<Result<Value>> = std::sync::LazyLock::new(|| {
-        Ok(serde_json::from_str(include_str!("setup-models.json"))?)
-    });
-    MANIFEST.as_ref()
+    static MANIFEST: std::sync::LazyLock<Result<Value>> =
+        std::sync::LazyLock::new(|| Ok(serde_json::from_str(include_str!("setup-models.json"))?));
+    MANIFEST
+        .as_ref()
         .map_err(|error| ApiError::new(error.status.as_u16(), &error.code, &error.message))
 }
 

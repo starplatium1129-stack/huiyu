@@ -9,7 +9,7 @@ use super::{
 use crate::{
     byte_buffer::Buffer,
     error::{ApiError, Result},
-    upstream::{LocalUpstream, HealthProbes},
+    upstream::{HealthProbes, LocalUpstream},
 };
 use axum::{body::Bytes, response::Response};
 use futures_util::StreamExt;
@@ -97,17 +97,49 @@ impl Speech {
             probes,
         })
     }
-    pub async fn status(&self) -> Value { self.status_observed(true).await }
+    pub async fn status(&self) -> Value {
+        self.status_observed(true).await
+    }
     pub async fn status_observed(&self, fresh: bool) -> Value {
         let vox = self.settings.engine == Engine::VoxCpm2;
-        let mut online = self.probes.read(&self.settings.tts_host, if vox { "/health" } else { "/docs" },
-            Duration::from_millis(1500), 1024 * 1024, fresh).await.is_some_and(|probe| {
-                if vox { (200..300).contains(&probe.status) && probe.json.as_ref().is_some_and(|v| v["online"] == true && v["engine"] == "VoxCPM2") }
-                else { (200..500).contains(&probe.status) }
+        let mut online = self
+            .probes
+            .read(
+                &self.settings.tts_host,
+                if vox { "/health" } else { "/docs" },
+                Duration::from_millis(1500),
+                1024 * 1024,
+                fresh,
+            )
+            .await
+            .is_some_and(|probe| {
+                if vox {
+                    (200..300).contains(&probe.status)
+                        && probe
+                            .json
+                            .as_ref()
+                            .is_some_and(|v| v["online"] == true && v["engine"] == "VoxCPM2")
+                } else {
+                    (200..500).contains(&probe.status)
+                }
             });
         if online && !vox {
-            online = !self.probes.read(&self.settings.tts_host, "/health", Duration::from_millis(1500), 64 * 1024, fresh).await
-                .is_some_and(|probe| probe.json.as_ref().is_some_and(|v| v["engine"] == "VoxCPM2"));
+            online = !self
+                .probes
+                .read(
+                    &self.settings.tts_host,
+                    "/health",
+                    Duration::from_millis(1500),
+                    64 * 1024,
+                    fresh,
+                )
+                .await
+                .is_some_and(|probe| {
+                    probe
+                        .json
+                        .as_ref()
+                        .is_some_and(|v| v["engine"] == "VoxCPM2")
+                });
         }
         let voice = self.active.lock().unwrap().voice.clone();
         let configured = |id: &str| {
@@ -276,11 +308,13 @@ impl Speech {
                     }
                     bytes.append(chunk, 0);
                 }
-                Some(serde_json::from_slice::<Value>(bytes.as_ref()).unwrap_or_else(|_| {
-                    Value::String(String::from_utf8(bytes.into_vec()).unwrap_or_else(|error| {
-                        String::from_utf8_lossy(error.as_bytes()).into_owned()
-                    }))
-                }))
+                Some(
+                    serde_json::from_slice::<Value>(bytes.as_ref()).unwrap_or_else(|_| {
+                        Value::String(String::from_utf8(bytes.into_vec()).unwrap_or_else(|error| {
+                            String::from_utf8_lossy(error.as_bytes()).into_owned()
+                        }))
+                    }),
+                )
             };
             let detail = tokio::select! {
                 result = tokio::time::timeout_at(deadline, read) => result.map_err(|_| speech_timeout())?.unwrap_or(Value::Null),
@@ -394,13 +428,17 @@ impl Speech {
         let mut hash = BufWriter::with_capacity(8 * 1024, Sha256::new());
         // A tuple preserves the existing JSON array encoding while borrowing
         // the validated payload instead of copying its tree and encoded bytes.
-        serde_json::to_writer(&mut hash, &(
-            &self.settings.tts_host,
-            &value.voice,
-            &value.profile.gpt_weights_path,
-            &value.profile.sovits_weights_path,
-            &value.payload,
-        )).unwrap();
+        serde_json::to_writer(
+            &mut hash,
+            &(
+                &self.settings.tts_host,
+                &value.voice,
+                &value.profile.gpt_weights_path,
+                &value.profile.sovits_weights_path,
+                &value.payload,
+            ),
+        )
+        .unwrap();
         hash.flush().expect("Hash writer is infallible");
         hex::encode(hash.into_inner().unwrap().finalize())
     }
@@ -464,7 +502,10 @@ impl Speech {
             Self::remember_into(
                 &self.cache,
                 key.to_owned(),
-                CachedAudio { bytes: bytes.clone(), pcm: pcm.then_some(data) },
+                CachedAudio {
+                    bytes: bytes.clone(),
+                    pcm: pcm.then_some(data),
+                },
                 &self.cancel,
                 deadline,
             );

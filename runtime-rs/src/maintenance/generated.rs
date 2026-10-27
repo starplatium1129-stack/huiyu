@@ -108,7 +108,8 @@ pub(super) fn validate(scene: &Value, blueprint: bool) -> Result<bool> {
             )
             || (recipe["engine"] == "krea2"
                 && (scene["promptProse"] != recipe["prompt"]
-                    || scene["promptTokens"].as_array().map(Vec::as_slice) != Some(&[] as &[Value])))
+                    || scene["promptTokens"].as_array().map(Vec::as_slice)
+                        != Some(&[] as &[Value])))
             || (recipe["engine"] != "krea2"
                 && (scene["promptTokens"].as_array().map(Vec::as_slice)
                     != Some(std::slice::from_ref(&recipe["prompt"]))

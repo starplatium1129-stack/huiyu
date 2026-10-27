@@ -228,7 +228,11 @@ pub(super) fn publish(
     let mut model = upload_checks::inspect(&upload.directory, &upload.paths, entry, cancel)?
         .filter(|value| value["Version"] == 3)
         .ok_or_else(|| invalid("Only Cubism3 Version 3 is supported"))?;
-    upload_checks::references(&model, entry, &upload.paths.iter().map(String::as_str).collect())?;
+    upload_checks::references(
+        &model,
+        entry,
+        &upload.paths.iter().map(String::as_str).collect(),
+    )?;
     model.as_object_mut().unwrap().remove("Controllers");
     model.as_object_mut().unwrap().remove("Options");
     let prefix = entry
@@ -256,13 +260,34 @@ pub(super) fn publish(
     manifest_file.sync_all()?;
     drop(manifest_file);
     files.push(manifest.clone());
-    let expressions: Vec<Value> = model["FileReferences"]["Expressions"].as_array().into_iter().flatten().map(|expression| {
-        let data = manifest::read_json(&model_file(&upload.directory, expression["File"].as_str().ok_or_else(|| invalid("Invalid expression file"))?)?)?;
-        let parameters: Vec<Value> = data["Parameters"].as_array().into_iter().flatten().filter_map(|parameter| parameter["Id"].as_str().filter(|id| !id.is_empty()).map(Value::from)).collect();
-        let mut value = json!({"id":expression["Name"],"label":expression["Name"],"parameterIds":null});
-        value["parameterIds"] = Value::Array(parameters);
-        Ok(value)
-    }).collect::<Result<_>>()?;
+    let expressions: Vec<Value> = model["FileReferences"]["Expressions"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .map(|expression| {
+            let data = manifest::read_json(&model_file(
+                &upload.directory,
+                expression["File"]
+                    .as_str()
+                    .ok_or_else(|| invalid("Invalid expression file"))?,
+            )?)?;
+            let parameters: Vec<Value> = data["Parameters"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .filter_map(|parameter| {
+                    parameter["Id"]
+                        .as_str()
+                        .filter(|id| !id.is_empty())
+                        .map(Value::from)
+                })
+                .collect();
+            let mut value =
+                json!({"id":expression["Name"],"label":expression["Name"],"parameterIds":null});
+            value["parameterIds"] = Value::Array(parameters);
+            Ok(value)
+        })
+        .collect::<Result<_>>()?;
     drop(model);
     let character = json!({"id":id,"name":meta["name"],"shortName":meta["name"],"defaultAvatarId":profile["avatarId"],"personaPrompt":meta["persona"],"tags":["local-import"],
         "presentation":{"id":id,"name":meta["name"],"image":"","caption":format!("{} · {}",meta["author"].as_str().unwrap(),meta["terms"].as_str().unwrap()),"description":"本机导入模型","icon":"character","greeting":"你好，今天想聊些什么？","roomCode":"LOCAL · LIVE2D","roomMood":"一起聊聊今天的生活与灵感","starters":["聊聊今天吧"],"voice":"","accent":"var(--accent)","live2dLayout":{"scale":1,"anchorX":0.5,"bottomOffset":0}}});

@@ -1,5 +1,5 @@
-use axum::serve::ListenerExt;
 use crate::{AppState, config::Config, host::HostAuthority, storage::Storage};
+use axum::serve::ListenerExt;
 use std::sync::Arc;
 use tokio_util::sync::CancellationToken;
 
@@ -12,7 +12,9 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         let mut ready = [0; 6];
         std::io::stdin().read_exact(&mut ready)?;
         if &ready != b"owned\n" {
-            return Err(std::io::Error::other("Desktop process ownership was not established").into());
+            return Err(
+                std::io::Error::other("Desktop process ownership was not established").into(),
+            );
         }
     }
     if let Some(result) = crate::catalog::cli(&args)? {
@@ -67,10 +69,8 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
     let catalog_options = crate::catalog::Options::from_config(&config);
-    tokio::task::spawn_blocking(move || {
-        crate::catalog::Catalog::open(catalog_options).map(|_| ())
-    })
-    .await??;
+    tokio::task::spawn_blocking(move || crate::catalog::Catalog::open(catalog_options).map(|_| ()))
+        .await??;
     let listener = tokio::net::TcpListener::bind(config.bind).await?;
     config.bind = listener.local_addr()?;
     config.gateway_origin = format!("http://{}", config.bind);
@@ -87,10 +87,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         config.workspace_pointer.clone(),
         config.workspace_candidate.clone(),
     ));
-    let voice = Arc::new(crate::voice::VoiceService::new(
-        &config,
-        shutdown.clone(),
-    ));
+    let voice = Arc::new(crate::voice::VoiceService::new(&config, shutdown.clone()));
     let model_config = crate::generation::Config {
         sd_host: config.sd_host.clone(),
         sd_auth: config.sd_auth.clone(),
@@ -105,7 +102,10 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         shutdown.clone(),
     )?);
     let generation = Arc::new(crate::generation::GenerationService::new(
-        model_config.clone(), transport.clone(), shutdown.clone(), images.native_engine(),
+        model_config.clone(),
+        transport.clone(),
+        shutdown.clone(),
+        images.native_engine(),
     )?);
     let video = Arc::new(crate::video::VideoService::new(
         model_config,
@@ -130,15 +130,17 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         &state.config,
         shutdown.clone(),
     )));
-    state.desktop_tools = Some(Arc::new(
-        crate::desktop_tools::DesktopToolsService::new(&state.config, shutdown.clone()),
-    ));
-    state.maintenance = Some(Arc::new(
-        crate::maintenance::MaintenanceService::new(&state.config),
-    ));
-    state.interrogate = Some(Arc::new(
-        crate::interrogate::InterrogateService::new(&state.config, shutdown.clone()),
-    ));
+    state.desktop_tools = Some(Arc::new(crate::desktop_tools::DesktopToolsService::new(
+        &state.config,
+        shutdown.clone(),
+    )));
+    state.maintenance = Some(Arc::new(crate::maintenance::MaintenanceService::new(
+        &state.config,
+    )));
+    state.interrogate = Some(Arc::new(crate::interrogate::InterrogateService::new(
+        &state.config,
+        shutdown.clone(),
+    )));
     state.remote = Some(Arc::new(crate::remote_content::RemoteAccess::new(
         &state.config,
         shutdown.clone(),

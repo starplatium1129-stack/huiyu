@@ -6,9 +6,8 @@ use std::sync::LazyLock;
 static RECIPES: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!("recipes.json")).expect("checked recipe snapshot")
 });
-static METADATA: LazyLock<regex::Regex> = LazyLock::new(|| {
-    regex::Regex::new(r"(?i)(?:official_cg|visual_audited)").unwrap()
-});
+static METADATA: LazyLock<regex::Regex> =
+    LazyLock::new(|| regex::Regex::new(r"(?i)(?:official_cg|visual_audited)").unwrap());
 static RECIPE_TOKENS: LazyLock<regex::Regex> = LazyLock::new(|| {
     regex::Regex::new(r"(?i)(?:ayachi_nene|shiki_natsume|nene_|natsume_)").unwrap()
 });

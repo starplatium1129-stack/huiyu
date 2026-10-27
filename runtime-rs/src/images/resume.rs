@@ -25,21 +25,21 @@ impl Service {
             None
         };
         for name in inputs::input_names(&input) {
-                // Restore the accepted bytes before the resource probe. A stale
-                // working copy must not change the resumed input silently.
-                let restored = hooks
-                    .restore_input(
-                        name.into(),
-                        inputs::path_for(&self.config, name, self.native)?,
-                    )
-                    .await?;
-                if self.native && !restored {
-                    return Err(ApiError::new(
-                        409,
-                        "TASK_RESUME_UNSAFE",
-                        "独立推理缺少受保护的原始输入图像",
-                    ));
-                }
+            // Restore the accepted bytes before the resource probe. A stale
+            // working copy must not change the resumed input silently.
+            let restored = hooks
+                .restore_input(
+                    name.into(),
+                    inputs::path_for(&self.config, name, self.native)?,
+                )
+                .await?;
+            if self.native && !restored {
+                return Err(ApiError::new(
+                    409,
+                    "TASK_RESUME_UNSAFE",
+                    "独立推理缺少受保护的原始输入图像",
+                ));
+            }
         }
         let originals = inputs::capture(&self.config, &input, true, None, &cancel).await?;
         let prepared = if let Some(permit) = permit {

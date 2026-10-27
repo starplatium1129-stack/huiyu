@@ -61,7 +61,10 @@ impl ControlService {
         let Some(value) = saved.get("inference") else {
             return Ok(active.clone());
         };
-        if saved["inferenceWorkspacePath"].as_str().is_some_and(|path| std::path::Path::new(path) != self.config.ai_workspace_root) {
+        if saved["inferenceWorkspacePath"]
+            .as_str()
+            .is_some_and(|path| std::path::Path::new(path) != self.config.ai_workspace_root)
+        {
             // Saved paths belong to the previous workspace. Keep those user files
             // and saved data, but do not advertise them as resources of this one.
             let engine = value["engine"].as_str().unwrap_or("native").to_owned();
@@ -73,8 +76,8 @@ impl ControlService {
             current.environment_overrides = active.environment_overrides.clone();
             return Ok(current);
         }
-        let mut configured = Settings::deserialize(value)
-            .map_err(|_| ApiError::invalid("已保存的推理配置无效"))?;
+        let mut configured =
+            Settings::deserialize(value).map_err(|_| ApiError::invalid("已保存的推理配置无效"))?;
         drop(saved);
         if !active.environment_overrides.is_empty() {
             let active_json = serde_json::to_value(active)?;
@@ -113,7 +116,10 @@ impl ControlService {
                 ));
             }
         }
-        self.patch(json!({"inference":target,"inferenceWorkspacePath":self.config.ai_workspace_root})).await?;
+        self.patch(
+            json!({"inference":target,"inferenceWorkspacePath":self.config.ai_workspace_root}),
+        )
+        .await?;
         self.inference_view()
     }
 }
@@ -137,7 +143,8 @@ async fn save(
             }
         }
     }
-    let settings: Settings = serde_json::from_value(body).map_err(|_| ApiError::invalid("推理配置字段无效"))?;
+    let settings: Settings =
+        serde_json::from_value(body).map_err(|_| ApiError::invalid("推理配置字段无效"))?;
     Ok(Json(s.save_inference(settings).await?))
 }
 async fn status(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {

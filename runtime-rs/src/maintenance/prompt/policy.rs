@@ -4,7 +4,10 @@ use std::{collections::HashSet, sync::LazyLock};
 
 fn token_key(value: &str) -> String {
     let value = trim(value);
-    if value.bytes().all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || byte == b'_') {
+    if value
+        .bytes()
+        .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || byte == b'_')
+    {
         return value.to_owned();
     }
     let token = value.to_lowercase();
@@ -49,22 +52,29 @@ fn stories(name: &str) -> Vec<regex::Regex> {
         })
         .collect()
 }
-pub(in crate::maintenance) fn rating(title: &str, description: &str, prompt: &str, tags: &[Value]) -> &'static str {
+pub(in crate::maintenance) fn rating(
+    title: &str,
+    description: &str,
+    prompt: &str,
+    tags: &[Value],
+) -> &'static str {
     static R18: LazyLock<Vec<regex::Regex>> = LazyLock::new(|| stories("R18_STORY"));
     static R15: LazyLock<Vec<regex::Regex>> = LazyLock::new(|| stories("R15_STORY"));
     let keys = positive_keys(prompt, tags);
-    let matches = |name: &str| CONSTANTS["policy"][name].as_array().is_some_and(|tags| {
-        tags.iter().filter_map(Value::as_str).any(|tag| keys.contains(tag))
-    });
+    let matches = |name: &str| {
+        CONSTANTS["policy"][name].as_array().is_some_and(|tags| {
+            tags.iter()
+                .filter_map(Value::as_str)
+                .any(|tag| keys.contains(tag))
+        })
+    };
     if matches("R18_TAGS") {
         return "R18";
     }
     let story = js_units(&format!("{title} {description} {prompt}").to_lowercase());
     if R18.iter().any(|pattern| pattern.is_match(&story)) {
         "R18"
-    } else if matches("R15_TAGS")
-        || R15.iter().any(|pattern| pattern.is_match(&story))
-    {
+    } else if matches("R15_TAGS") || R15.iter().any(|pattern| pattern.is_match(&story)) {
         "R15"
     } else {
         "All"

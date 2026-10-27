@@ -140,7 +140,9 @@ async fn chat(
         running(&app)?;
         let admission = request_body::admit(&scope).await?;
         running(&app)?;
-        let body = Bytes::from_request(request, &app).await.map_err(body_error)?;
+        let body = Bytes::from_request(request, &app)
+            .await
+            .map_err(body_error)?;
         let body = request_body::parse(body, &admission, &scope).await?;
         let direct = security::is_direct_local(&headers, peer.ip());
         let settings = chat.settings(&app).await;
@@ -197,8 +199,10 @@ fn local(headers: &HeaderMap, peer: SocketAddr) -> Result<()> {
 }
 
 async fn search_web(
-    State(app): State<AppState>, Extension(chat): Extension<Arc<ChatService>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>, headers: HeaderMap,
+    State(app): State<AppState>,
+    Extension(chat): Extension<Arc<ChatService>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    headers: HeaderMap,
     body: std::result::Result<Bytes, axum::extract::rejection::BytesRejection>,
 ) -> Response {
     let scope = app.shutdown.child_token();
@@ -207,12 +211,23 @@ async fn search_web(
         local(&headers, peer)?;
         running(&app)?;
         let body = body.map_err(body_error)?;
-        let body: Value = serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?;
-        let host = if body["search"]["hostConfig"] == true && body["search"]["provider"] != "duckduckgo"
-            && body["search"]["apiKey"].as_str().unwrap_or("").trim().is_empty() {
+        let body: Value =
+            serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?;
+        let host = if body["search"]["hostConfig"] == true
+            && body["search"]["provider"] != "duckduckgo"
+            && body["search"]["apiKey"]
+                .as_str()
+                .unwrap_or("")
+                .trim()
+                .is_empty()
+        {
             chat.settings(&app).await.read_host().await
-        } else { None };
-        Ok::<Response, Error>(Json(search::run(&chat.transport, &body, host.as_ref(), &scope).await?).into_response())
+        } else {
+            None
+        };
+        Ok::<Response, Error>(
+            Json(search::run(&chat.transport, &body, host.as_ref(), &scope).await?).into_response(),
+        )
     };
     tokio::select! {
         _ = app.shutdown.cancelled() => Error::new(503,"DESKTOP_DRAINING","桌面正在维护").into_response(),

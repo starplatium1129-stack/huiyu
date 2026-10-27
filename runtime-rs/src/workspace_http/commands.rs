@@ -50,16 +50,29 @@ fn integer(value: &Value, min: u64) -> Result<Value> {
 }
 pub(super) fn binary_chunk(path: &[String], query: &Query, workspace_id: &str) -> Result<Value> {
     if query.get("protocolVersion").map(String::as_str) != Some("1") {
-        return Err(ApiError::new(409, "PROTOCOL_VERSION", "Workspace protocol version does not match"));
+        return Err(ApiError::new(
+            409,
+            "PROTOCOL_VERSION",
+            "Workspace protocol version does not match",
+        ));
     }
     if query.get("workspaceId").map(String::as_str) != Some(workspace_id) {
-        return Err(ApiError::new(409, "WORKSPACE_IDENTITY", "Workspace identity does not match"));
+        return Err(ApiError::new(
+            409,
+            "WORKSPACE_IDENTITY",
+            "Workspace identity does not match",
+        ));
     }
-    let offset = query.get("offset").and_then(|value| value.parse::<u64>().ok())
+    let offset = query
+        .get("offset")
+        .and_then(|value| value.parse::<u64>().ok())
         .ok_or_else(|| ApiError::invalid("Invalid chunk offset"))?;
-    let id = json!(path[1]); text(&id)?;
-    Ok(json!({"kind":if path[0]=="media-uploads" {"uploadMediaChunk"}else{"uploadChunk"},
-        "operationId":id,"offset":integer(&json!(offset),0)?}))
+    let id = json!(path[1]);
+    text(&id)?;
+    Ok(
+        json!({"kind":if path[0]=="media-uploads" {"uploadMediaChunk"}else{"uploadChunk"},
+        "operationId":id,"offset":integer(&json!(offset),0)?}),
+    )
 }
 fn entity_id(value: &Value) -> Result<Value> {
     if !value.is_number() {
@@ -223,8 +236,12 @@ pub(super) fn command(
         }
         ("GET", ["artwork-export"]) => {
             let mut command = json!({"kind":"readArtworkExportPage"});
-            if let Some(cursor) = query.get("cursor") { command["cursor"] = json!(cursor); }
-            if query.contains_key("revision") { command["revision"] = query_int(query,"revision",0,0)?; }
+            if let Some(cursor) = query.get("cursor") {
+                command["cursor"] = json!(cursor);
+            }
+            if query.contains_key("revision") {
+                command["revision"] = query_int(query, "revision", 0, 0)?;
+            }
             command
         }
         ("GET", ["artwork-recent-index"]) => {
@@ -235,9 +252,14 @@ pub(super) fn command(
             command
         }
         ("POST", ["gallery", "query"]) => {
-            let mut command = json!({"kind":"readGalleryPage","query":record(&input["query"])?.clone()});
-            if let Some(cursor) = input.get("cursor") { command["cursor"] = cursor.clone(); }
-            if let Some(limit) = input.get("limit") { command["limit"] = integer(limit,1)?; }
+            let mut command =
+                json!({"kind":"readGalleryPage","query":record(&input["query"])?.clone()});
+            if let Some(cursor) = input.get("cursor") {
+                command["cursor"] = cursor.clone();
+            }
+            if let Some(limit) = input.get("limit") {
+                command["limit"] = integer(limit, 1)?;
+            }
             command
         }
         ("GET", ["gallery", "catalog"]) => json!({"kind":"readGalleryCatalog"}),
@@ -309,8 +331,12 @@ pub(super) fn command(
         ("GET", ["operations", id]) => {
             json!({"kind": "getOperation", "operationId": route_op(id)?})
         }
-        ("GET", ["operations", id, "progress"]) => json!({"kind":"jobStatus","operationId":route_op(id)?}),
-        ("POST", ["operations", id, "cancel"]) => json!({"kind":"jobCancel","operationId":route_op(id)?}),
+        ("GET", ["operations", id, "progress"]) => {
+            json!({"kind":"jobStatus","operationId":route_op(id)?})
+        }
+        ("POST", ["operations", id, "cancel"]) => {
+            json!({"kind":"jobCancel","operationId":route_op(id)?})
+        }
         ("POST", ["trash", "purge"]) => {
             json!({"kind": "purgeExpiredTrash", "operationId": operation()?})
         }
@@ -327,13 +353,24 @@ pub(super) fn command(
         }
         ("GET", ["profile", domain @ ("settings" | "chat" | "drafts")])
         | ("GET", ["profile", domain @ "chat", "archive"]) => {
-            let kind = if path.len() == 3 { "profile.readChatArchive" }
-                else { match *domain { "settings" => "profile.readSettings", "chat" => "profile.readChat", _ => "profile.readDrafts" } };
+            let kind = if path.len() == 3 {
+                "profile.readChatArchive"
+            } else {
+                match *domain {
+                    "settings" => "profile.readSettings",
+                    "chat" => "profile.readChat",
+                    _ => "profile.readDrafts",
+                }
+            };
             let mut command = json!({"kind":kind});
             for field in ["ifVersion", "ifArchiveVersion"] {
                 if let Some(version) = query.get(field) {
                     if (field == "ifArchiveVersion" && kind != "profile.readChat")
-                        || version.len() != 64 || !version.bytes().all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)) {
+                        || version.len() != 64
+                        || !version
+                            .bytes()
+                            .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
+                    {
                         return Err(ApiError::invalid("Invalid profile snapshot version"));
                     }
                     command[field] = json!(version);
@@ -344,7 +381,11 @@ pub(super) fn command(
                     json!(query.get("windowId").map(String::as_str).unwrap_or(""));
             }
             if let Some(projection) = query.get("projection") {
-                if kind != "profile.readChat" || !matches!(projection.as_str(),"bootstrap"|"history") { return Err(ApiError::invalid("Invalid profile projection")); }
+                if kind != "profile.readChat"
+                    || !matches!(projection.as_str(), "bootstrap" | "history")
+                {
+                    return Err(ApiError::invalid("Invalid profile projection"));
+                }
                 command["projection"] = json!(projection);
             }
             command
@@ -352,7 +393,10 @@ pub(super) fn command(
         ("PUT", ["profile", domain @ ("settings" | "chat" | "drafts")]) => {
             let mut command = json!({"kind": match *domain { "settings" => "profile.saveSetting", "chat" => "profile.saveChatRecord", _ => "profile.saveDraft" }, "operationId": operation()?, "key": text(&input["key"])?, "value": input.get("value").map(|_| Value::Null).ok_or_else(|| ApiError::invalid("Missing profile value"))?, "expectedRevision": if input.get("expectedRevision") == Some(&Value::Null) { Value::Null } else { revision()? }});
             if let Some(mode) = input.get("ackOnly") {
-                command["ackOnly"] = json!(mode.as_bool().ok_or_else(|| ApiError::invalid("Invalid profile acknowledgement mode"))?);
+                command["ackOnly"] = json!(
+                    mode.as_bool()
+                        .ok_or_else(|| ApiError::invalid("Invalid profile acknowledgement mode"))?
+                );
             }
             if *domain != "settings" {
                 command["expectedReset"] = json!(input["expectedReset"].as_str().unwrap_or(""));
@@ -370,7 +414,9 @@ pub(super) fn command(
         }
         ("POST", ["profile", "chat", "archive", "chunks"]) => {
             let hashes = array(&input["hashes"], false)?;
-            if hashes.len() > 1000 { return Err(ApiError::invalid("Too many archive chunks")); }
+            if hashes.len() > 1000 {
+                return Err(ApiError::invalid("Too many archive chunks"));
+            }
             json!({"kind":"profile.archiveMissing","operationId":operation()?,"hashes":hashes,"expectedReset":input["expectedReset"]})
         }
         ("PUT", ["profile", "chat", "archive", "chunks", hash]) => {

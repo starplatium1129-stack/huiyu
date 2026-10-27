@@ -7,8 +7,8 @@ pub(crate) mod native;
 mod output;
 mod plan;
 mod probe;
-mod recovery;
 pub(crate) mod receipts;
+mod recovery;
 mod resources;
 mod service;
 mod snapshots;
@@ -30,8 +30,8 @@ use plan::Execution;
 pub(crate) use plan::{ComfyPlan, MediaKind};
 pub(crate) use recovery::RecoveryTask;
 pub(crate) use resources::{super_res, super_res_name};
-pub(crate) use snapshots::write as write_job_record;
 use serde_json::{Value, json};
+pub(crate) use snapshots::write as write_job_record;
 use std::{
     collections::{HashMap, VecDeque},
     sync::{
@@ -176,7 +176,10 @@ struct JobState {
     gpu: Option<native::ComfyLease>,
 }
 impl JobState {
-    fn release_capacity(&mut self) { self.permit.take(); self.gpu.take(); }
+    fn release_capacity(&mut self) {
+        self.permit.take();
+        self.gpu.take();
+    }
 }
 
 impl Service {
@@ -225,7 +228,8 @@ impl Service {
         let inner = Arc::new(Inner {
             control: std::sync::RwLock::new(std::sync::Weak::new()),
             native: native_engine.unwrap_or_default(),
-            native_images: matches!(scope, Scope::Images | Scope::Video) && native_settings.engine == "native",
+            native_images: matches!(scope, Scope::Images | Scope::Video)
+                && native_settings.engine == "native",
             native_settings,
             scope,
             config,

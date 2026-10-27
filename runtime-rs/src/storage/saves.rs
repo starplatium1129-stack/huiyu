@@ -5,7 +5,11 @@ use rusqlite::{OptionalExtension, params};
 pub(super) mod commit;
 pub(super) fn state(c: &Context, mut row: Operation, library: bool) -> Result<Value> {
     let media = if row.kind == "saveArtwork" || (library && row.kind == "prepareMedia") {
-        let mut input = row.input.get_mut("media").map(Value::take).unwrap_or_default();
+        let mut input = row
+            .input
+            .get_mut("media")
+            .map(Value::take)
+            .unwrap_or_default();
         input["writtenBytes"] = if row.state == "committed" {
             input["bytes"].clone()
         } else {
@@ -88,7 +92,11 @@ fn upload_operation(c: &Context, principal: &str, id: &str, kind: &str) -> Resul
     let (stored_kind, operation) = match projected {
         Ok(Some(operation)) => operation,
         Ok(None) => {
-            return Err(ApiError::new(404, "NOT_FOUND", "Save operation does not exist"));
+            return Err(ApiError::new(
+                404,
+                "NOT_FOUND",
+                "Save operation does not exist",
+            ));
         }
         Err(_) => {
             // Preserve the full reader's persisted JSON/type errors. Normal
@@ -97,7 +105,11 @@ fn upload_operation(c: &Context, principal: &str, id: &str, kind: &str) -> Resul
             return Ok(UploadOperation {
                 key: row.key,
                 state: row.state,
-                media: row.input.get_mut("media").map(Value::take).unwrap_or_default(),
+                media: row
+                    .input
+                    .get_mut("media")
+                    .map(Value::take)
+                    .unwrap_or_default(),
             });
         }
     };

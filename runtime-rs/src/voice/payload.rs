@@ -2,13 +2,15 @@ use super::config::{Engine, Profile, Settings};
 use crate::error::{ApiError, Result};
 use regex::Regex;
 use serde_json::{Value, json};
-use std::{borrow::Cow, sync::{Arc, LazyLock}};
+use std::{
+    borrow::Cow,
+    sync::{Arc, LazyLock},
+};
 use unicode_normalization::UnicodeNormalization;
 
 const EMOTIONS: &[&str] = &["neutral", "gentle", "happy", "shy", "serious", "sad"];
-static JAPANESE_REPLACEMENTS: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"绫地宁宁|綾地寧々|綾地寧寧|四季夏目|四季ナツメ|\.\.\.").unwrap()
-});
+static JAPANESE_REPLACEMENTS: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"绫地宁宁|綾地寧々|綾地寧寧|四季夏目|四季ナツメ|\.\.\.").unwrap());
 pub(super) struct Validated {
     pub voice: String,
     pub profile: Arc<Profile>,
@@ -152,14 +154,15 @@ pub(super) fn normalize(raw: &str, language: &str) -> String {
     if language == "ja" {
         // Patterns neither overlap nor produce another pattern, so one pass
         // preserves the previous ordered replacements.
-        if let Cow::Owned(replaced) = JAPANESE_REPLACEMENTS.replace_all(
-            &text,
-            |matched: &regex::Captures<'_>| match &matched[0] {
+        if let Cow::Owned(replaced) =
+            JAPANESE_REPLACEMENTS.replace_all(&text, |matched: &regex::Captures<'_>| match &matched
+                [0]
+            {
                 "绫地宁宁" | "綾地寧々" | "綾地寧寧" => "あやち ねね",
                 "四季夏目" | "四季ナツメ" => "しき なつめ",
                 _ => "……",
-            },
-        ) {
+            })
+        {
             text = replaced;
         }
     }

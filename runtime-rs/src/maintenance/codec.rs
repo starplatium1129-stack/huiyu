@@ -30,9 +30,13 @@ fn canonical(value: &Value, output: &mut impl Write) {
             }
             output.write_all(b"}").unwrap();
         }
-        Value::Number(value) => output.write_all(
-            ryu_js::Buffer::new().format(value.as_f64().unwrap()).as_bytes(),
-        ).unwrap(),
+        Value::Number(value) => output
+            .write_all(
+                ryu_js::Buffer::new()
+                    .format(value.as_f64().unwrap())
+                    .as_bytes(),
+            )
+            .unwrap(),
         other => serde_json::to_writer(output, other).unwrap(),
     }
 }
@@ -42,7 +46,9 @@ impl Write for MacWriter<'_> {
         self.0.update(bytes);
         Ok(bytes.len())
     }
-    fn flush(&mut self) -> io::Result<()> { Ok(()) }
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
 }
 fn canonical_mac(value: &Value, key: &[u8]) -> Hmac<Sha256> {
     let mut mac = Hmac::<Sha256>::new_from_slice(key).expect("HMAC accepts arbitrary keys");
@@ -59,13 +65,21 @@ pub(super) fn digest(value: impl AsRef<[u8]>) -> String {
 pub(super) fn equal(left: &Value, right: &Value) -> bool {
     match (left, right) {
         // Canonical numbers use ECMAScript f64 rounding, including -0 == 0.
-        (Value::Number(left), Value::Number(right)) => left.as_f64().unwrap() == right.as_f64().unwrap(),
+        (Value::Number(left), Value::Number(right)) => {
+            left.as_f64().unwrap() == right.as_f64().unwrap()
+        }
         (Value::Array(left), Value::Array(right)) => {
-            left.len() == right.len() && left.iter().zip(right).all(|(left, right)| equal(left, right))
+            left.len() == right.len()
+                && left
+                    .iter()
+                    .zip(right)
+                    .all(|(left, right)| equal(left, right))
         }
         (Value::Object(left), Value::Object(right)) => {
             left.len() == right.len()
-                && left.iter().all(|(key, left)| right.get(key).is_some_and(|right| equal(left, right)))
+                && left
+                    .iter()
+                    .all(|(key, left)| right.get(key).is_some_and(|right| equal(left, right)))
         }
         _ => left == right,
     }

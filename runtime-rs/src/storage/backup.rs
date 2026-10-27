@@ -38,7 +38,9 @@ impl Files {
         }
     }
     fn progress(&self, phase: &str, completed: u64, total: u64) {
-        if let Some(job) = &self.job { job.progress(phase, completed, total); }
+        if let Some(job) = &self.job {
+            job.progress(phase, completed, total);
+        }
     }
 }
 
@@ -205,12 +207,21 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
     }
     let directory = prepare_directory(files, &format!("backups/{id}"), id)?;
     if schema::safe(&directory, "snapshot.json")?.exists() {
-        let manifest = validate_manifest(files,read_json(&directory,"snapshot.json")?,id)?;
-        if manifest["backupId"] != id || manifest["workspaceId"] != c.workspace_id
-            || digest_file(files,&directory.join("huiyu.sqlite3"))? != manifest["database"] {
-            return Err(invalid_backup("Incomplete backup snapshot identity or digest mismatch"));
+        let manifest = validate_manifest(files, read_json(&directory, "snapshot.json")?, id)?;
+        if manifest["backupId"] != id
+            || manifest["workspaceId"] != c.workspace_id
+            || digest_file(files, &directory.join("huiyu.sqlite3"))? != manifest["database"]
+        {
+            return Err(invalid_backup(
+                "Incomplete backup snapshot identity or digest mismatch",
+            ));
         }
-        return Ok(CopyKind::Backup { directory, manifest, existing:false, source:None });
+        return Ok(CopyKind::Backup {
+            directory,
+            manifest,
+            existing: false,
+            source: None,
+        });
     }
     let revision = c.transaction(|c| {
         c.db.execute(
@@ -258,7 +269,11 @@ fn copy_database(files: &Files, source: Connection, directory: &Path, id: &str) 
         loop {
             files.check_cancel()?;
             let progress = backup.progress();
-            files.progress("snapshot", (progress.pagecount - progress.remaining) as u64, progress.pagecount as u64);
+            files.progress(
+                "snapshot",
+                (progress.pagecount - progress.remaining) as u64,
+                progress.pagecount as u64,
+            );
             match backup.step(256)? {
                 rusqlite::backup::StepResult::Done => break,
                 rusqlite::backup::StepResult::Busy | rusqlite::backup::StepResult::Locked => {

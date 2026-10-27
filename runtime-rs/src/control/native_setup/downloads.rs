@@ -6,19 +6,35 @@ const DOWNLOAD_CONCURRENCY: usize = 4;
 
 impl ControlService {
     pub(super) async fn download_native_files(
-        &self, root: &Path, files: &[Artifact], operation: &Value, cancel: &CancellationToken,
+        &self,
+        root: &Path,
+        files: &[Artifact],
+        operation: &Value,
+        cancel: &CancellationToken,
     ) -> Result<()> {
-        self.download_native_files_authorized(root, files, operation, cancel, None, true).await
+        self.download_native_files_authorized(root, files, operation, cancel, None, true)
+            .await
     }
 
     pub(super) async fn download_native_files_authorized(
-        &self, root: &Path, files: &[Artifact], operation: &Value,
-        cancel: &CancellationToken, token: Option<&str>, allow_mirror: bool,
+        &self,
+        root: &Path,
+        files: &[Artifact],
+        operation: &Value,
+        cancel: &CancellationToken,
+        token: Option<&str>,
+        allow_mirror: bool,
     ) -> Result<()> {
         stopped(cancel)?;
         plan::safe_directory(root)?;
-        if files.is_empty() { return Ok(()); }
-        if token.is_some() && files.iter().any(|file| !file.url.starts_with("https://huggingface.co/")) {
+        if files.is_empty() {
+            return Ok(());
+        }
+        if token.is_some()
+            && files
+                .iter()
+                .any(|file| !file.url.starts_with("https://huggingface.co/"))
+        {
             return Err(ApiError::invalid("凭据只能用于固定 Hugging Face 模型来源"));
         }
         let client = reqwest::Client::builder()
@@ -26,16 +42,28 @@ impl ControlService {
             .connect_timeout(Duration::from_secs(15))
             .default_headers(image_models::token_header(token)?)
             .build()
-            .map_err(|_| ApiError::new(502, "DOWNLOAD_FAILED", "无法连接下载源，请检查网络后重试"))?;
+            .map_err(|_| {
+                ApiError::new(502, "DOWNLOAD_FAILED", "无法连接下载源，请检查网络后重试")
+            })?;
         let batch_cancel = cancel.child_token();
         let (events, mut progress) = tokio::sync::mpsc::channel(64);
         let mut remaining = files.iter().cloned().enumerate();
         let mut work = FuturesUnordered::new();
-        let start = |(index, file)| download_file(
-            self.config.ai_workspace_root.clone(), root.to_owned(), index, file,
-            client.clone(), events.clone(), batch_cancel.clone(), allow_mirror && token.is_none(),
-        );
-        for entry in remaining.by_ref().take(DOWNLOAD_CONCURRENCY) { work.push(start(entry)); }
+        let start = |(index, file)| {
+            download_file(
+                self.config.ai_workspace_root.clone(),
+                root.to_owned(),
+                index,
+                file,
+                client.clone(),
+                events.clone(),
+                batch_cancel.clone(),
+                allow_mirror && token.is_none(),
+            )
+        };
+        for entry in remaining.by_ref().take(DOWNLOAD_CONCURRENCY) {
+            work.push(start(entry));
+        }
         let mut rows = vec![(0u64, false); files.len()];
         loop {
             tokio::select! {
@@ -70,15 +98,30 @@ impl ControlService {
 }
 
 async fn download_file(
-    workspace: PathBuf, root: PathBuf, index: usize, file: Artifact, client: reqwest::Client,
-    events: tokio::sync::mpsc::Sender<(usize, Value)>, cancel: CancellationToken, allow_mirror: bool,
+    workspace: PathBuf,
+    root: PathBuf,
+    index: usize,
+    file: Artifact,
+    client: reqwest::Client,
+    events: tokio::sync::mpsc::Sender<(usize, Value)>,
+    cancel: CancellationToken,
+    allow_mirror: bool,
 ) -> Result<usize> {
     stopped(&cancel)?;
     let (send, mut receive) = tokio::sync::mpsc::channel(16);
     let download = setup_download::managed_file(
-        workspace, root,
-        ModelFile { path: file.path, bytes: file.bytes, sha256: file.sha256 },
-        file.url, &client, &send, &cancel, allow_mirror,
+        workspace,
+        root,
+        ModelFile {
+            path: file.path,
+            bytes: file.bytes,
+            sha256: file.sha256,
+        },
+        file.url,
+        &client,
+        &send,
+        &cancel,
+        allow_mirror,
     );
     tokio::pin!(download);
     loop {

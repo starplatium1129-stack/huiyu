@@ -141,7 +141,10 @@ pub(super) fn baseline(paths: &Paths, release: &Release) -> Result<()> {
             "已安装样张基线与增量包不匹配。",
         ));
     }
-    let hashes: HashMap<_, _> = files.iter().map(|entry| (entry.path.as_str(), entry)).collect();
+    let hashes: HashMap<_, _> = files
+        .iter()
+        .map(|entry| (entry.path.as_str(), entry))
+        .collect();
     let payload = release
         .showcase_payload()
         .entries
@@ -149,7 +152,9 @@ pub(super) fn baseline(paths: &Paths, release: &Release) -> Result<()> {
         .map(|entry| entry.path.as_str())
         .collect::<std::collections::HashSet<_>>();
     for entry in &release.showcase.entries {
-        if !payload.contains(entry.path.as_str()) && hashes.get(entry.path.as_str()).copied() != Some(entry) {
+        if !payload.contains(entry.path.as_str())
+            && hashes.get(entry.path.as_str()).copied() != Some(entry)
+        {
             return Err(Error::new(
                 "MANIFEST_INVALID",
                 "增量包缺少新增或变化的样张文件。",
@@ -229,7 +234,10 @@ fn merge(
             "Showcase seed differs from the installed edition pointer",
         ));
     }
-    let hashes: HashMap<_, _> = files.iter().map(|entry| (entry.path.as_str(), entry)).collect();
+    let hashes: HashMap<_, _> = files
+        .iter()
+        .map(|entry| (entry.path.as_str(), entry))
+        .collect();
     let original = release::display(&seed["manifest"])?;
     let local_raw = fs::json(&old.join("manifest.json"), false, false)?.unwrap();
     let mut local = release::display(&local_raw)?;
@@ -239,7 +247,9 @@ fn merge(
         let entries = std::mem::take(output["entries"].as_array_mut().unwrap());
         (output, entries)
     };
-    let by_id = release.display["entries"].as_array().unwrap()
+    let by_id = release.display["entries"]
+        .as_array()
+        .unwrap()
         .iter()
         .enumerate()
         .map(|(index, entry)| (entry["id"].as_str().unwrap().to_ascii_lowercase(), index))
@@ -255,10 +265,8 @@ fn merge(
     for id in names {
         op.check()?;
         let item = local.remove(&id);
-        let mut modified = !release::same_entry(
-            item.as_deref(),
-            original.get(&id).map(|item| item.as_ref()),
-        );
+        let mut modified =
+            !release::same_entry(item.as_deref(), original.get(&id).map(|item| item.as_ref()));
         if let Some(item) = &item {
             for field in ["image", "thumb"] {
                 let name = item[field].as_str().unwrap();
@@ -457,20 +465,36 @@ pub(super) fn prepare(
         {
             let mut seed = json!({"schemaVersion":1,"kind":"huiyu-showcase-seed","releaseSha256":release.approved["releaseSha256"],"contentIdentity":release.showcase_identity(),"entries":release.showcase.entries,"manifest":null,"manifestRaw":null});
             seed["manifestRaw"] = manifest_raw.into();
-            let mut body = crate::storage::stringify_object(seed.as_object().unwrap().iter()
-                .map(|(key, value)| (key, if key == "manifest" { &release.display } else { value })));
+            let mut body = crate::storage::stringify_object(seed.as_object().unwrap().iter().map(
+                |(key, value)| {
+                    (
+                        key,
+                        if key == "manifest" {
+                            &release.display
+                        } else {
+                            value
+                        },
+                    )
+                },
+            ));
             body.push('\n');
             drop(seed);
             fs::atomic(&staging.join(".offline-seed.json"), body.as_bytes())?;
         }
         let installed = inventory(op, &staging)?;
         let mut ready = json!({"schemaVersion":1,"releaseSha256":release.approved["releaseSha256"],"identity":installed.identity(),"entries":null,"preservedLocalEntries":preserved});
-        ready["entries"] = Value::Array(installed.entries.into_iter().map(|entry| {
-            let mut value = json!({"path":null,"bytes":entry.bytes,"sha256":null});
-            value["path"] = entry.path.into();
-            value["sha256"] = entry.sha256.into();
-            value
-        }).collect());
+        ready["entries"] = Value::Array(
+            installed
+                .entries
+                .into_iter()
+                .map(|entry| {
+                    let mut value = json!({"path":null,"bytes":entry.bytes,"sha256":null});
+                    value["path"] = entry.path.into();
+                    value["sha256"] = entry.sha256.into();
+                    value
+                })
+                .collect(),
+        );
         fs::write_json(&staging.join(".offline-ready.json"), &ready)?;
         verify_ready(op, &staging, release)?;
         op.check()?;

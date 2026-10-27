@@ -1,8 +1,8 @@
 use super::*;
 use canonical::stringify;
 use rusqlite::{OptionalExtension, params};
-pub(super) mod media_refs;
 pub(in crate::storage) mod archive;
+pub(super) mod media_refs;
 pub(in crate::storage) mod messages;
 const CHAT_ARCHIVE: &str = "aics_chat_archive_v1";
 const CHAT: &[&str] = &[
@@ -120,16 +120,24 @@ fn reset(c: &Context) -> Result<String> {
 }
 fn archive_version(c: &Context, revision: Option<i64>, reset: &str) -> Result<String> {
     Ok(canonical::digest(serde_json::to_vec(&(
-        &c.workspace_id, &c.epoch, "chat", CHAT_ARCHIVE, reset, revision,
+        &c.workspace_id,
+        &c.epoch,
+        "chat",
+        CHAT_ARCHIVE,
+        reset,
+        revision,
     ))?))
 }
 fn archive_snapshot(c: &Context, known: Option<&str>) -> Result<Value> {
     c.check_cancel()?;
     let reset_revision = reset(c)?;
-    let revision: Option<i64> = c.db.query_row(
-        "SELECT revision FROM profile_records WHERE domain='chat' AND record_key=?",
-        [CHAT_ARCHIVE], |row| row.get(0),
-    ).optional()?;
+    let revision: Option<i64> =
+        c.db.query_row(
+            "SELECT revision FROM profile_records WHERE domain='chat' AND record_key=?",
+            [CHAT_ARCHIVE],
+            |row| row.get(0),
+        )
+        .optional()?;
     let version = archive_version(c, revision, &reset_revision)?;
     let mut snapshot = json!({"records":[],"revision":c.revision()?,"resetRevision":reset_revision,"version":version});
     if known == Some(version.as_str()) {
@@ -140,10 +148,15 @@ fn archive_snapshot(c: &Context, known: Option<&str>) -> Result<Value> {
     // or parses the archive; a miss reads only this row, not the whole chat domain.
     if let Some(revision) = revision {
         c.check_cancel()?;
-        let mut statement = c.db.prepare_cached("SELECT body FROM profile_records WHERE domain='chat' AND record_key=?")?;
+        let mut statement = c.db.prepare_cached(
+            "SELECT body FROM profile_records WHERE domain='chat' AND record_key=?",
+        )?;
         let mut rows = statement.query([CHAT_ARCHIVE])?;
-        let row = rows.next()?.ok_or_else(|| invalid("Chat archive disappeared during read"))?;
-        let mut record = json!({"key":CHAT_ARCHIVE,"value":null,"revision":revision,"version":version});
+        let row = rows
+            .next()?
+            .ok_or_else(|| invalid("Chat archive disappeared during read"))?;
+        let mut record =
+            json!({"key":CHAT_ARCHIVE,"value":null,"revision":revision,"version":version});
         record["value"] = archive::decode(&c.db, serde_json::from_str(text_column(row, 0)?)?)?;
         snapshot["records"] = Value::Array(vec![record]);
     }
@@ -180,7 +193,14 @@ fn clear_chat(c: &Context) -> Result<()> {
     c.db.execute("DELETE FROM chat_message_records", [])?;
     Ok(())
 }
-fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>, known_archive: Option<&str>, projection: &str) -> Result<Value> {
+fn snapshot(
+    c: &Context,
+    domain: &str,
+    window: Option<&str>,
+    known: Option<&str>,
+    known_archive: Option<&str>,
+    projection: &str,
+) -> Result<Value> {
     c.check_cancel()?;
     let prefix = format!("{}:", window.unwrap_or("undefined"));
     // Filter window-owned drafts before copying their bodies out of SQLite.
@@ -211,22 +231,34 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
     // window/global draft precedence; the key set also detects deletions.
     // Task/artwork writes must not invalidate unchanged profile snapshots.
     let version = {
-        let mut statement = c.db.prepare_cached(&format!("SELECT record_key,revision {scope} ORDER BY record_key"))?;
+        let mut statement = c.db.prepare_cached(&format!(
+            "SELECT record_key,revision {scope} ORDER BY record_key"
+        ))?;
         let mut rows = statement.query(rusqlite::params_from_iter(parameters.clone()))?;
         let mut entries = Vec::new();
         while let Some(row) = rows.next()? {
             c.check_cancel()?;
             let key = row.get::<_, String>(0)?;
             let revision = row.get::<_, i64>(1)?;
-            if domain == "chat" && key == CHAT_ARCHIVE { archive_revision = Some(revision); }
+            if domain == "chat" && key == CHAT_ARCHIVE {
+                archive_revision = Some(revision);
+            }
             entries.push((key, revision));
         }
         canonical::digest(serde_json::to_vec(&(
-            &c.workspace_id, &c.epoch, domain, window, &reset_revision, projection, entries,
+            &c.workspace_id,
+            &c.epoch,
+            domain,
+            window,
+            &reset_revision,
+            projection,
+            entries,
         ))?)
     };
     if known == Some(version.as_str()) {
-        return Ok(json!({"records":[],"revision":c.revision()?,"resetRevision":reset_revision,"version":version,"unchanged":true}));
+        return Ok(
+            json!({"records":[],"revision":c.revision()?,"resetRevision":reset_revision,"version":version,"unchanged":true}),
+        );
     }
     let unchanged_archive = match (domain, known_archive, archive_revision) {
         ("chat", Some(known), Some(revision)) => {
@@ -237,10 +269,16 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
     };
     // The domain token above still covers every row. Omit only the archive body
     // whose exact record token the caller already holds, within this same read.
-    let skip_archive = if unchanged_archive.is_some() { CHAT_ARCHIVE } else { "" };
+    let skip_archive = if unchanged_archive.is_some() {
+        CHAT_ARCHIVE
+    } else {
+        ""
+    };
     let parameter = DRAFT.len() + 3;
     let mut statement = c.db.prepare_cached(&format!("SELECT record_key,body,revision {scope} AND (?1!='chat' OR record_key NOT IN ({excluded})) AND (?{parameter}='' OR record_key!=?{parameter}) ORDER BY record_key"))?;
-    let mut rows = statement.query(rusqlite::params_from_iter(parameters.chain(std::iter::once(skip_archive))))?;
+    let mut rows = statement.query(rusqlite::params_from_iter(
+        parameters.chain(std::iter::once(skip_archive)),
+    ))?;
     let mut records = Vec::new();
     while let Some(row) = rows.next().transpose() {
         c.check_cancel()?;
@@ -255,7 +293,9 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
         };
         let mut record = json!({"key":key,"value":null,"revision":revision});
         record["value"] = serde_json::from_str(body)?;
-        if domain == "chat" && key == "aics_chat_v1" { record["value"] = messages::decode(&c.db, record["value"].take())?; }
+        if domain == "chat" && key == "aics_chat_v1" {
+            record["value"] = messages::decode(&c.db, record["value"].take())?;
+        }
         if domain == "chat" && key == CHAT_ARCHIVE {
             record["value"] = archive::decode(&c.db, record["value"].take())?;
             record["version"] = json!(archive_version(c, Some(revision), &reset_revision)?);
@@ -264,15 +304,24 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
     }
     let mut snapshot = json!({"records":null,"revision":c.revision()?,"resetRevision":reset_revision,"version":version});
     snapshot["records"] = Value::Array(records);
-    if domain == "chat" && projection != "full" { snapshot["archiveVersion"] = json!(archive_version(c,archive_revision,&reset_revision)?); }
-    if let Some(version) = unchanged_archive { snapshot["unchangedArchive"] = json!(version); }
+    if domain == "chat" && projection != "full" {
+        snapshot["archiveVersion"] = json!(archive_version(c, archive_revision, &reset_revision)?);
+    }
+    if let Some(version) = unchanged_archive {
+        snapshot["unchangedArchive"] = json!(version);
+    }
     Ok(snapshot)
 }
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;
-    if matches!(kind, "profile.archiveMissing" | "profile.archiveChunk") { return archive::execute(c, command); }
+    if matches!(kind, "profile.archiveMissing" | "profile.archiveChunk") {
+        return archive::execute(c, command);
+    }
     if kind == "profile.readChatArchive" {
-        let known = command.get("ifVersion").map(|_| string(command, "ifVersion")).transpose()?;
+        let known = command
+            .get("ifVersion")
+            .map(|_| string(command, "ifVersion"))
+            .transpose()?;
         return archive_snapshot(c, known);
     }
     let read_domain = match kind {
@@ -282,10 +331,28 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         _ => None,
     };
     if let Some(domain) = read_domain {
-        let window = if domain == "draft" { Some(string(command, "windowId")?) } else { None };
-        let known = command.get("ifVersion").map(|_| string(command, "ifVersion")).transpose()?;
-        let archive = if domain == "chat" { command.get("ifArchiveVersion").map(|_| string(command, "ifArchiveVersion")).transpose()? } else { None };
-        let projection = command.get("projection").map(|_| string(command,"projection")).transpose()?.unwrap_or("full");
+        let window = if domain == "draft" {
+            Some(string(command, "windowId")?)
+        } else {
+            None
+        };
+        let known = command
+            .get("ifVersion")
+            .map(|_| string(command, "ifVersion"))
+            .transpose()?;
+        let archive = if domain == "chat" {
+            command
+                .get("ifArchiveVersion")
+                .map(|_| string(command, "ifArchiveVersion"))
+                .transpose()?
+        } else {
+            None
+        };
+        let projection = command
+            .get("projection")
+            .map(|_| string(command, "projection"))
+            .transpose()?
+            .unwrap_or("full");
         return snapshot(c, domain, window, known, archive, projection);
     }
     match kind {
@@ -297,7 +364,11 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     }
     let ack_only = command
         .get("ackOnly")
-        .map(|value| value.as_bool().ok_or_else(|| invalid("Invalid profile acknowledgement mode")))
+        .map(|value| {
+            value
+                .as_bool()
+                .ok_or_else(|| invalid("Invalid profile acknowledgement mode"))
+        })
         .transpose()?
         .unwrap_or(false);
     c.transaction(|c| {

@@ -41,9 +41,7 @@ fn fields<'a>(record: &'a Record, payload: &str) -> (&'a str, &'a str, &'a str, 
         _ => text(&value["title"]),
     };
     let title = if title.is_empty() {
-        value["profile"]["name"]
-            .as_str()
-            .unwrap_or(&record.id)
+        value["profile"]["name"].as_str().unwrap_or(&record.id)
     } else {
         title
     };
@@ -86,7 +84,15 @@ pub(super) fn history(
 ) -> Result<String> {
     let mut statement = connection.prepare_cached("INSERT INTO content_history(batch,kind,id,revision,at,record,deleted) VALUES(?1,?2,?3,?4,?5,?6,?7)")?;
     let encoded = serde_json::to_string(record)?;
-    statement.execute(params![batch,record.kind,record.id,record.revision,at,encoded,removed])?;
+    statement.execute(params![
+        batch,
+        record.kind,
+        record.id,
+        record.revision,
+        at,
+        encoded,
+        removed
+    ])?;
     Ok(encoded)
 }
 impl Catalog {
@@ -131,7 +137,11 @@ impl Catalog {
         let expanded = super::dependencies::expand(&transaction, changes)?;
         let original = if expanded.is_none() { changes } else { &[] };
         let changes = original.iter().chain(
-            expanded.as_deref().unwrap_or(&[]).iter().map(|change| change.as_ref()),
+            expanded
+                .as_deref()
+                .unwrap_or(&[])
+                .iter()
+                .map(|change| change.as_ref()),
         );
         let preserved_keys: HashSet<_> = preserved
             .iter()
@@ -285,12 +295,18 @@ impl Catalog {
                 if retired_ids.is_none() {
                     let retired: String = transaction.query_row("SELECT payload FROM content_records WHERE kind='document' AND id='retired-scenes'",[],|r|r.get(0))?;
                     let mut retired: Value = serde_json::from_str(&retired)?;
-                    retired_ids = Some(retired.get_mut("records")
-                        .and_then(Value::as_array_mut).into_iter().flatten()
-                        .filter_map(|row| match row.get_mut("id") {
-                            Some(Value::String(id)) => Some(std::mem::take(id)),
-                            _ => None,
-                        }).collect());
+                    retired_ids = Some(
+                        retired
+                            .get_mut("records")
+                            .and_then(Value::as_array_mut)
+                            .into_iter()
+                            .flatten()
+                            .filter_map(|row| match row.get_mut("id") {
+                                Some(Value::String(id)) => Some(std::mem::take(id)),
+                                _ => None,
+                            })
+                            .collect(),
+                    );
                 }
                 if retired_ids.as_ref().unwrap().contains(&change.id) {
                     return Err(ApiError::invalid("已退役的场景 ID 不能复用"));
@@ -335,11 +351,13 @@ impl Catalog {
                     |(r, _)| r.created_at.clone(),
                 )
             };
-            if !change.remove && current.as_ref().is_some_and(|(record, _)| {
-                record.data == *value
-                    && record.sort_order == order
-                    && record.created_at == created_at
-            }) {
+            if !change.remove
+                && current.as_ref().is_some_and(|(record, _)| {
+                    record.data == *value
+                        && record.sort_order == order
+                        && record.created_at == created_at
+                })
+            {
                 continue;
             }
             let record = Record {
@@ -353,7 +371,10 @@ impl Catalog {
                 } else {
                     Some(at.clone())
                 },
-                data: change.data.clone().or(patched)
+                data: change
+                    .data
+                    .clone()
+                    .or(patched)
                     .or_else(|| current.as_ref().map(|(record, _)| record.data.clone()))
                     .unwrap(),
             };
@@ -426,8 +447,12 @@ impl Catalog {
                     return Err(ApiError::invalid("策展引用了不存在的场景"));
                 }
             }
-            let curated = value["curatedSceneIds"].as_array().into_iter().flatten()
-                .filter_map(Value::as_str).collect::<HashSet<_>>();
+            let curated = value["curatedSceneIds"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .filter_map(Value::as_str)
+                .collect::<HashSet<_>>();
             if signature.iter().any(|id| !curated.contains(id)) {
                 return Err(ApiError::invalid("招牌场景必须同时属于精选场景"));
             }

@@ -1,12 +1,32 @@
 use super::*;
 
 impl Storage {
-    pub(crate) async fn export_portable_backup(&self, id: String, target: PathBuf, job: Arc<crate::workspace_jobs::Job>) -> Result<Value> {
-        let root = self.root.as_ref().clone(); let workspace_id = self.workspace_id.to_string();
-        tokio::task::spawn_blocking(move || backup::portable::export(root,workspace_id,id,target,job)).await.map_err(|_| unavailable())?
+    pub(crate) async fn export_portable_backup(
+        &self,
+        id: String,
+        target: PathBuf,
+        job: Arc<crate::workspace_jobs::Job>,
+    ) -> Result<Value> {
+        let root = self.root.as_ref().clone();
+        let workspace_id = self.workspace_id.to_string();
+        tokio::task::spawn_blocking(move || {
+            backup::portable::export(root, workspace_id, id, target, job)
+        })
+        .await
+        .map_err(|_| unavailable())?
     }
-    pub(crate) async fn import_portable_backup(source: PathBuf, destination: PathBuf, id: String, principal: String, job: Arc<crate::workspace_jobs::Job>) -> Result<Value> {
-        tokio::task::spawn_blocking(move || backup::portable::import(source,destination,id,principal,job)).await.map_err(|_| unavailable())?
+    pub(crate) async fn import_portable_backup(
+        source: PathBuf,
+        destination: PathBuf,
+        id: String,
+        principal: String,
+        job: Arc<crate::workspace_jobs::Job>,
+    ) -> Result<Value> {
+        tokio::task::spawn_blocking(move || {
+            backup::portable::import(source, destination, id, principal, job)
+        })
+        .await
+        .map_err(|_| unavailable())?
     }
     pub async fn open(root: PathBuf, workspace_id: String, create: bool) -> Result<Self> {
         let epoch = uuid::Uuid::new_v4().to_string();
@@ -55,13 +75,30 @@ impl Storage {
     pub async fn request(&self, command: Value, principal: &str) -> Result<Value> {
         self.request_job(command, principal, None).await
     }
-    pub(crate) async fn request_job(&self, command: Value, principal: &str, job: Option<Arc<crate::workspace_jobs::Job>>) -> Result<Value> {
+    pub(crate) async fn request_job(
+        &self,
+        command: Value,
+        principal: &str,
+        job: Option<Arc<crate::workspace_jobs::Job>>,
+    ) -> Result<Value> {
         self.request_payload(command, principal, job, None).await
     }
-    pub(crate) async fn upload_chunk(&self, command: Value, bytes: Bytes, principal: &str) -> Result<Value> {
-        self.request_payload(command, principal, None, Some(bytes)).await
+    pub(crate) async fn upload_chunk(
+        &self,
+        command: Value,
+        bytes: Bytes,
+        principal: &str,
+    ) -> Result<Value> {
+        self.request_payload(command, principal, None, Some(bytes))
+            .await
     }
-    async fn request_payload(&self, command: Value, principal: &str, job: Option<Arc<crate::workspace_jobs::Job>>, bytes: Option<Bytes>) -> Result<Value> {
+    async fn request_payload(
+        &self,
+        command: Value,
+        principal: &str,
+        job: Option<Arc<crate::workspace_jobs::Job>>,
+        bytes: Option<Bytes>,
+    ) -> Result<Value> {
         if principal.is_empty() {
             return Err(ApiError::new(
                 401,
@@ -74,12 +111,20 @@ impl Storage {
         }
         if matches!(
             command["kind"].as_str(),
-            Some("searchArtworks" | "readArtworkRecentIndex" | "readGalleryPage" | "readGalleryCatalog")
+            Some(
+                "searchArtworks"
+                    | "readArtworkRecentIndex"
+                    | "readGalleryPage"
+                    | "readGalleryCatalog"
+            )
         ) {
             return artwork_index::request(self, command, principal).await;
         }
         let mutation = !is_read(command["kind"].as_str().unwrap_or(""));
-        let cancellation = job.as_ref().map(|job| job.cancel.clone()).unwrap_or_else(|| Arc::new(AtomicBool::new(false)));
+        let cancellation = job
+            .as_ref()
+            .map(|job| job.cancel.clone())
+            .unwrap_or_else(|| Arc::new(AtomicBool::new(false)));
         let _cancel_on_drop = job.is_none().then(|| CancelOnDrop(cancellation.clone()));
         let (reply, result) = oneshot::channel();
         let permit = if result_commit::is_write(&command) {
@@ -87,7 +132,15 @@ impl Storage {
         } else {
             None
         };
-        let work = Work::Request(command, principal.into(), cancellation, reply, permit, job, bytes);
+        let work = Work::Request(
+            command,
+            principal.into(),
+            cancellation,
+            reply,
+            permit,
+            job,
+            bytes,
+        );
         self.sender.send(work).await.map_err(|_| unavailable())?;
         result.await.map_err(|_| {
             if mutation {
@@ -122,11 +175,27 @@ impl Storage {
             }
         })?
     }
-    pub(crate) async fn patch_task(&self, id: &str, revision: i64, patch: crate::task_contract::TaskPatch, principal: &str) -> Result<crate::task_contract::TaskRecord> {
+    pub(crate) async fn patch_task(
+        &self,
+        id: &str,
+        revision: i64,
+        patch: crate::task_contract::TaskPatch,
+        principal: &str,
+    ) -> Result<crate::task_contract::TaskRecord> {
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply,result) = oneshot::channel();
-        self.sender.send(Work::TaskPatch(id.into(),revision,patch,principal.into(),cancel.0.clone(),reply)).await.map_err(|_|unavailable())?;
-        result.await.map_err(|_|commit_unknown())?
+        let (reply, result) = oneshot::channel();
+        self.sender
+            .send(Work::TaskPatch(
+                id.into(),
+                revision,
+                patch,
+                principal.into(),
+                cancel.0.clone(),
+                reply,
+            ))
+            .await
+            .map_err(|_| unavailable())?;
+        result.await.map_err(|_| commit_unknown())?
     }
     pub(crate) async fn task_record(
         &self,
@@ -263,9 +332,16 @@ impl Storage {
         .await?;
         Ok(())
     }
-    pub(crate) async fn stage_task_file(&self, path: PathBuf, bytes: u64) -> Result<(TaskMediaSource,String)> {
-        let (staged,hash) = self.verification.stage(self.root.clone(),path,bytes,self.sender.clone()).await?;
-        Ok((TaskMediaSource::Staged(staged),hash))
+    pub(crate) async fn stage_task_file(
+        &self,
+        path: PathBuf,
+        bytes: u64,
+    ) -> Result<(TaskMediaSource, String)> {
+        let (staged, hash) = self
+            .verification
+            .stage(self.root.clone(), path, bytes, self.sender.clone())
+            .await?;
+        Ok((TaskMediaSource::Staged(staged), hash))
     }
     pub(crate) async fn task_media_copy(
         &self,

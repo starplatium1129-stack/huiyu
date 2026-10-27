@@ -2,6 +2,8 @@ mod actions;
 mod execution;
 mod fingerprint;
 mod hooks;
+mod image_batch_artwork;
+mod image_batches;
 mod manga;
 mod media;
 mod providers;
@@ -9,8 +11,6 @@ mod recovery;
 mod resume;
 mod retry;
 mod submission;
-mod image_batches;
-mod image_batch_artwork;
 use providers::Preparation;
 
 use crate::{
@@ -218,7 +218,11 @@ impl TaskRuntime {
         self.tracker.wait().await;
     }
     fn binding_for(&self, kind: TaskKind) -> String {
-        let provider = if matches!(kind, TaskKind::Anima | TaskKind::Creative | TaskKind::Qwen | TaskKind::Moss) || kind.is_manga() {
+        let provider = if matches!(
+            kind,
+            TaskKind::Anima | TaskKind::Creative | TaskKind::Qwen | TaskKind::Moss
+        ) || kind.is_manga()
+        {
             self.images.provider_identity(&self.unbound_epoch)
         } else if matches!(kind, TaskKind::Video | TaskKind::Batch) {
             self.video.provider_identity(&self.unbound_epoch)
@@ -259,7 +263,7 @@ pub(super) async fn patch_at(
 ) -> Result<TaskRecord> {
     for attempt in 0..5 {
         let result = storage
-            .patch_task(id,revision,value.clone(),principal)
+            .patch_task(id, revision, value.clone(), principal)
             .await;
         match result {
             Err(error) if error.code == "REVISION_CONFLICT" && attempt < 4 => {

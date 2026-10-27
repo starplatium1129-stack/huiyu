@@ -187,7 +187,9 @@ impl ControlService {
         };
         if index == 1 {
             self.comfy_cancel.lock().unwrap().take();
-            if start && result.is_err() { return result.map(|_| ()); }
+            if start && result.is_err() {
+                return result.map(|_| ());
+            }
         }
         if self.shutdown.is_cancelled() {
             return Err(ApiError::new(499, "ABORTED", "服务操作已取消"));

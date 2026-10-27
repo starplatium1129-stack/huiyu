@@ -144,7 +144,10 @@ async fn get_job(
     let result = async {
         state.host.check_running()?;
         let mut value = json!({"job":null});
-        value["job"] = http.service.get_job(&id, &owner(&headers, peer, &query)).await?;
+        value["job"] = http
+            .service
+            .get_job(&id, &owner(&headers, peer, &query))
+            .await?;
         Ok(value)
     }
     .await;
@@ -161,7 +164,10 @@ async fn cancel(
     let result = async {
         state.host.check_running()?;
         let mut value = json!({"job":null});
-        value["job"] = http.service.cancel(&id, &owner(&headers, peer, &query)).await?;
+        value["job"] = http
+            .service
+            .cancel(&id, &owner(&headers, peer, &query))
+            .await?;
         Ok(value)
     }
     .await;

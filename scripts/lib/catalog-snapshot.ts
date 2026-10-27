@@ -15,6 +15,19 @@ function read(root: string): RecordRow[] | null {
       throw Error('CATALOG_PIN_CONFLICT: 项目内容快照与定稿保护基线不一致；拒绝构建或同步，请先从正确工作库恢复并定向导出。');
     }
   }
+  if (records) {
+    for (const record of records) {
+      if (record.kind !== 'character') continue;
+      const image = record.data?.profile?.portrait?.image;
+      if (typeof image !== 'string' || !image.startsWith('../assets/characters/')) continue;
+      const relative = image.split('?')[0].slice('../assets/characters/'.length);
+      const assetRoot = path.resolve(root, 'assets/characters');
+      const asset = path.resolve(assetRoot, relative);
+      if (!asset.startsWith(assetRoot + path.sep) || !fs.existsSync(asset) || !fs.statSync(asset).isFile()) {
+        throw Error(`CATALOG_PORTRAIT_MISSING: ${record.id} 指向不存在的立绘 ${image}；请补齐素材或使用 portrait-pending.svg。`);
+      }
+    }
+  }
   return records;
 }
 function readDirectory(directory: string): RecordRow[] | null {

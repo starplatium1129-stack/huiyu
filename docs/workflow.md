@@ -314,7 +314,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 仅工具源或配置变化、所需生成入口缺失时准备 build:runtime；不手改生成的 JS。未运行构建或产品验收时如实记录，不把源码审查视为行为通过。
 
-记录式内容管理使用 npm run wf -- content:catalog --help。stats/query 读取工作库；record/history 读取记录与历史。patch/import 默认预览，--apply 写入；export --out 显式导出项目快照，保留范围外内容。check 检查工作库结构与关联，colors 检查配色，均为真实内容维护。权威边界见[维护手册](maintenance.md)与[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
+记录式内容管理使用 npm run wf -- content:catalog --help。stats/query 读取工作库；record/history 读取记录与历史；authoring 按角色返回带修订号的人物、服装与精简蓝图索引，新角色须显式给出参考角色；`--kind scene` 返回现有场景修订与定稿保护，或下一个可用编号，这些上下文读取不写记录。patch/import 默认预览，--apply 写入；export --out 显式导出项目快照，保留范围外内容。check 检查工作库结构与关联，colors 检查配色，均为真实内容维护。权威边界见[维护手册](maintenance.md)与[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
 
 首次迁移个人内容时，`--root` 指向个人内容目录，`--seed-root` 指向随包默认内容目录；前者提供工作记录，后者只提供升级比较基线。未知的旧分片基线保持为空，不把个人修改登记为默认值。已有内容库继续读取数据库，不重新初始化。
 

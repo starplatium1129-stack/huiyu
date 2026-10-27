@@ -105,7 +105,14 @@ impl ControlService {
                 let work = async {
                     if let Some(model) = model {
                         service
-                            .install_native_model(&model, &operation, &cancel, &permit, body.hf_token.as_deref(), body.checkpoint_path.as_deref())
+                            .install_native_model(
+                                &model,
+                                &operation,
+                                &cancel,
+                                &permit,
+                                body.hf_token.as_deref(),
+                                body.checkpoint_path.as_deref(),
+                            )
                             .await
                     } else {
                         service
@@ -165,11 +172,12 @@ impl ControlService {
                 "Bypass",
                 "-File",
             ])
-            .arg(
-                crate::file_paths::absolute(&self.config
+            .arg(crate::file_paths::absolute(
+                &self
+                    .config
                     .app_root
-                    .join("scripts/lib/prepare-native-runtime.ps1"))?,
-            )
+                    .join("scripts/lib/prepare-native-runtime.ps1"),
+            )?)
             .arg("-Workspace")
             .arg(crate::file_paths::absolute(workspace)?)
             .arg("-RuntimeId")
@@ -209,7 +217,9 @@ impl ControlService {
         stopped(cancel)?;
         self.native_stage(operation, 3);
         let mut progress = json!({"result":value});
-        if !image_models::is_adapter_runtime(runtime) { progress["preparedPaths"] = paths; }
+        if !image_models::is_adapter_runtime(runtime) {
+            progress["preparedPaths"] = paths;
+        }
         self.native_progress(operation, progress);
         Ok(())
     }
@@ -227,7 +237,9 @@ impl ControlService {
         let workspace = &self.config.ai_workspace_root;
         let target = workspace.join("inference/models").join(&model.id);
         if model.conversion_profile.is_some() {
-            return self.install_anima_checkpoint(model, &target, operation, cancel, permit).await;
+            return self
+                .install_anima_checkpoint(model, &target, operation, cancel, permit)
+                .await;
         }
         let staged = workspace
             .join("inference/.staging")
@@ -239,12 +251,21 @@ impl ControlService {
         // Reuses matching files and downloads only missing components; a corrupt
         // user-owned file is a conflict, never silently replaced.
         let files = image_models::resolve_files(self, model, root, hf_token, cancel).await?;
-        self.download_native_files_authorized(root, &files, operation, cancel, hf_token, !model.requires_access).await?;
+        self.download_native_files_authorized(
+            root,
+            &files,
+            operation,
+            cancel,
+            hf_token,
+            !model.requires_access,
+        )
+        .await?;
         self.native_stage(operation, 2);
         verify_files(root, &files, cancel).await?;
         let runtime = image_models::runtime_for(Some(&model.id))?;
         let settings = image_models::settings(self, &runtime)?;
-        self.validate_native_model(&settings, root, &model.id, cancel, permit).await?;
+        self.validate_native_model(&settings, root, &model.id, cancel, permit)
+            .await?;
         stopped(cancel)?;
         self.native_stage(operation, 3);
         let document = json!({"schemaVersion":1,"modelId":model.id,"revision":model.revision,
@@ -296,7 +317,8 @@ impl ControlService {
     ) -> Result<()> {
         let inspect = model.to_owned();
         let id = model_id.to_owned();
-        let issue = tokio::task::spawn_blocking(move || image_models::model_issue(&inspect, &id)).await
+        let issue = tokio::task::spawn_blocking(move || image_models::model_issue(&inspect, &id))
+            .await
             .map_err(|_| ApiError::new(503, "NATIVE_MODEL_INCOMPLETE", "模型目录读取未完成"))?;
         if let Some(issue) = issue {
             return Err(ApiError::new(409, "NATIVE_MODEL_INCOMPLETE", issue));
@@ -308,8 +330,12 @@ impl ControlService {
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
-        if crate::generation::native::adapters::model(model_id).is_some() { command.arg("--model-id").arg(model_id); }
-        let value = self.run_setup_helper(&mut command, cancel, 120, permit.clone(), None, None).await?;
+        if crate::generation::native::adapters::model(model_id).is_some() {
+            command.arg("--model-id").arg(model_id);
+        }
+        let value = self
+            .run_setup_helper(&mut command, cancel, 120, permit.clone(), None, None)
+            .await?;
         if value["event"] != "validation" || value["valid"] != true {
             return Err(ApiError::new(
                 502,
@@ -372,7 +398,10 @@ impl ControlService {
                 .unwrap()
                 .extend(update.as_object().unwrap().clone());
         }
-        self.checkpoint_operation(&mut state, update.get("stage").is_some() || update.get("cancelAllowed").is_some());
+        self.checkpoint_operation(
+            &mut state,
+            update.get("stage").is_some() || update.get("cancelAllowed").is_some(),
+        );
     }
 }
 pub(super) async fn verify_files(
@@ -380,9 +409,14 @@ pub(super) async fn verify_files(
     files: &[Artifact],
     cancel: &CancellationToken,
 ) -> Result<()> {
-    let files = files.iter().map(|file| ModelFile {
-        path: file.path.clone(), bytes: file.bytes, sha256: file.sha256.clone(),
-    }).collect();
+    let files = files
+        .iter()
+        .map(|file| ModelFile {
+            path: file.path.clone(),
+            bytes: file.bytes,
+            sha256: file.sha256.clone(),
+        })
+        .collect();
     verify_model_files(root, files, cancel).await
 }
 pub(super) async fn verify_model_files(

@@ -41,7 +41,9 @@ fn load_manifest() -> Result<Arc<Manifest>> {
             "../../../../tools/interrogate/pixai-manifest.json"
         ))?))
     });
-    MANIFEST.as_ref().cloned()
+    MANIFEST
+        .as_ref()
+        .cloned()
         .map_err(|e| ApiError::new(e.status.as_u16(), &e.code, &e.message))
 }
 fn artifacts() -> Result<Arc<Vec<Artifact>>> {
@@ -68,7 +70,9 @@ fn artifacts() -> Result<Arc<Vec<Artifact>>> {
         validate_artifacts(&files)?;
         Ok(Arc::new(files))
     });
-    ARTIFACTS.as_ref().cloned()
+    ARTIFACTS
+        .as_ref()
+        .cloned()
         .map_err(|e| ApiError::new(e.status.as_u16(), &e.code, &e.message))
 }
 fn fingerprint(service: &ControlService) -> String {

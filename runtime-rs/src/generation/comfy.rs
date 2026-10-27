@@ -94,9 +94,20 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
     let payload = PromptRequest {
         prompt: &plan.workflow,
         client_id: &initialized.client_id,
-        extra_data: ExtraData { aics_session_id: &initialized.session_id },
+        extra_data: ExtraData {
+            aics_session_id: &initialized.session_id,
+        },
     };
-    let response = inner.json_payload("comfy", Method::POST, "/prompt", &payload, Duration::from_secs(20), &inner.cancel).await;
+    let response = inner
+        .json_payload(
+            "comfy",
+            Method::POST,
+            "/prompt",
+            &payload,
+            Duration::from_secs(20),
+            &inner.cancel,
+        )
+        .await;
     if response.is_ok() {
         *family = Some(plan.family.into());
     } else {

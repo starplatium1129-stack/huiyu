@@ -7,8 +7,8 @@ mod inference_discovery;
 mod inference_setup;
 mod llama;
 mod logs;
-mod operation_journal;
 mod native_setup;
+mod operation_journal;
 mod probe;
 mod settings;
 mod setup;
@@ -125,7 +125,10 @@ impl ControlService {
             journal.get(None)?;
             Ok(journal)
         });
-        let operation = operation_journal.as_ref().ok().and_then(|journal| journal.get(None).ok().flatten());
+        let operation = operation_journal
+            .as_ref()
+            .ok()
+            .and_then(|journal| journal.get(None).ok().flatten());
         let service = Arc::new(Self {
             voice,
             inference,
@@ -140,7 +143,10 @@ impl ControlService {
             settings: RwLock::new(Arc::new(settings)),
             saved: Arc::new(RwLock::new(saved)),
             config_write: Arc::new(tokio::sync::Mutex::new(())),
-            state: Mutex::new(ControlState { operation, ..Default::default() }),
+            state: Mutex::new(ControlState {
+                operation,
+                ..Default::default()
+            }),
             operation_journal: Mutex::new(operation_journal),
             instance_id: uuid::Uuid::new_v4().to_string(),
             probe_lock: tokio::sync::Mutex::new(()),
@@ -198,7 +204,9 @@ impl ControlService {
         let message = self.redact(message);
         let mut state = self.state.lock().unwrap();
         state.log_seq += 1;
-        state.logs.push_back(Arc::new(format!("[{}] {}", now(), message)));
+        state
+            .logs
+            .push_back(Arc::new(format!("[{}] {}", now(), message)));
         if state.logs.len() > 200 {
             state.logs.pop_front();
         }
@@ -228,7 +236,12 @@ impl ControlService {
     fn begin(&self, kind: &str, stages: &[&str]) -> Result<Value> {
         self.begin_with_id(kind, stages, None)
     }
-    fn begin_with_id(&self, kind: &str, stages: &[&str], requested_id: Option<&str>) -> Result<Value> {
+    fn begin_with_id(
+        &self,
+        kind: &str,
+        stages: &[&str],
+        requested_id: Option<&str>,
+    ) -> Result<Value> {
         if self.shutdown.is_cancelled() {
             return Err(ApiError::new(503, "SHUTTING_DOWN", "运行时正在退出"));
         }
@@ -245,7 +258,9 @@ impl ControlService {
             ));
         }
         let id = match requested_id {
-            Some(id) => uuid::Uuid::parse_str(id).map_err(|_| ApiError::invalid("操作编号无效"))?.to_string(),
+            Some(id) => uuid::Uuid::parse_str(id)
+                .map_err(|_| ApiError::invalid("操作编号无效"))?
+                .to_string(),
             None => uuid::Uuid::new_v4().to_string(),
         };
         let op = json!({"id":id,"kind":kind,"label":kind,"workspacePath":self.config.ai_workspace_root,"status":"running","stageIndex":0,"stages":stages,"message":stages.first().copied().unwrap_or(kind),"startedAt":now(),"finishedAt":0,"error":""});
@@ -267,7 +282,11 @@ impl ControlService {
     }
     fn work_progress(&self, id: &Value, done: u64, total: u64, message: &str) {
         let mut state = self.state.lock().unwrap();
-        if let Some(op) = state.operation.as_mut().filter(|op| op["id"] == id["id"] && op["status"] == "running") {
+        if let Some(op) = state
+            .operation
+            .as_mut()
+            .filter(|op| op["id"] == id["id"] && op["status"] == "running")
+        {
             op["workDone"] = json!(done.min(total));
             op["workTotal"] = json!(total);
             op["message"] = json!(self.redact(message));
@@ -275,7 +294,10 @@ impl ControlService {
         self.checkpoint_operation(&mut state, false);
     }
     fn finish(&self, id: &Value, result: Result<()>) {
-        let cancelled = result.as_ref().err().is_some_and(|error| error.status == 499);
+        let cancelled = result
+            .as_ref()
+            .err()
+            .is_some_and(|error| error.status == 499);
         let error = result.err().map(|e| self.redact(&e.message));
         if let Some(error) = &error {
             self.log(error);

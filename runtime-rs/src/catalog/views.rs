@@ -2,18 +2,27 @@ use super::*;
 fn scene_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Value> {
     let mut data = json_column(row, 0)?;
     data["sortOrder"] = row.get::<_, i64>(1)?.into();
-    data["createdAt"] = row.get::<_, Option<String>>(2)?.map(Value::String).unwrap_or_default();
-    data["updatedAt"] = row.get::<_, Option<String>>(3)?.map(Value::String).unwrap_or_default();
+    data["createdAt"] = row
+        .get::<_, Option<String>>(2)?
+        .map(Value::String)
+        .unwrap_or_default();
+    data["updatedAt"] = row
+        .get::<_, Option<String>>(3)?
+        .map(Value::String)
+        .unwrap_or_default();
     Ok(data)
 }
 impl Catalog {
     pub(crate) fn character_profile_exists(&self, id: &str) -> Result<bool> {
         // Match the profile identity exposed by characters.json.
-        Ok(self.connection.prepare_cached(
-            "SELECT 1 FROM content_records WHERE kind='character' AND deleted=0
+        Ok(self
+            .connection
+            .prepare_cached(
+                "SELECT 1 FROM content_records WHERE kind='character' AND deleted=0
              AND json_type(payload,'$.profile.id')='text'
              AND json_extract(payload,'$.profile.id')=?1 LIMIT 1",
-        )?.exists([id])?)
+            )?
+            .exists([id])?)
     }
     pub fn next_scene_id(&self) -> Result<String> {
         let highest: i64=self.connection.query_row("SELECT COALESCE(MAX(CAST(substr(id,3) AS INTEGER)),0) FROM content_records WHERE kind='scene'",[],|r|r.get(0))?;
@@ -47,9 +56,8 @@ impl Catalog {
         let outfits = statement
             .query_map([id], |row| {
                 let mut data = json_column(row, 0)?;
-                Ok((data["characterId"] == id).then(|| {
-                    data.get_mut("outfit").map(Value::take).unwrap_or_default()
-                }))
+                Ok((data["characterId"] == id)
+                    .then(|| data.get_mut("outfit").map(Value::take).unwrap_or_default()))
             })?
             .filter_map(|item| item.transpose())
             .collect::<rusqlite::Result<Vec<_>>>()?;
@@ -95,9 +103,12 @@ impl Catalog {
             let mut statement = self.connection.prepare(
                 "SELECT payload FROM content_records WHERE kind='character' AND deleted=0 ORDER BY sort_order,id",
             )?;
-            let profiles = statement.query_map([], |row| {
-                Ok(json_column(row, 0)?.get_mut("profile").map(Value::take))
-            })?.filter_map(|item| item.transpose()).collect::<rusqlite::Result<Vec<_>>>()?;
+            let profiles = statement
+                .query_map([], |row| {
+                    Ok(json_column(row, 0)?.get_mut("profile").map(Value::take))
+                })?
+                .filter_map(|item| item.transpose())
+                .collect::<rusqlite::Result<Vec<_>>>()?;
             return Ok(Some(Value::Array(profiles)));
         }
         if name == "popular-characters.json" {
@@ -116,15 +127,18 @@ impl Catalog {
             let mut statement = self.connection.prepare(
                 "SELECT id,payload FROM content_records WHERE kind='character' AND deleted=0 ORDER BY sort_order,id",
             )?;
-            let characters = statement.query_map([], |row| {
-                let id: String = row.get(0)?;
-                let mut data = json_column(row, 1)?;
-                Ok(data.get_mut("popular").map(|popular| {
-                    let mut value = popular.take();
-                    value["outfits"] = outfits.remove(&id).unwrap_or_default().into();
-                    value
-                }))
-            })?.filter_map(|item| item.transpose()).collect::<rusqlite::Result<Vec<_>>>()?;
+            let characters = statement
+                .query_map([], |row| {
+                    let id: String = row.get(0)?;
+                    let mut data = json_column(row, 1)?;
+                    Ok(data.get_mut("popular").map(|popular| {
+                        let mut value = popular.take();
+                        value["outfits"] = outfits.remove(&id).unwrap_or_default().into();
+                        value
+                    }))
+                })?
+                .filter_map(|item| item.transpose())
+                .collect::<rusqlite::Result<Vec<_>>>()?;
             let mut value = json!({"version":1,"characters":null});
             value["characters"] = Value::Array(characters);
             return Ok(Some(value));
@@ -133,7 +147,8 @@ impl Catalog {
             let mut statement = self.connection.prepare(
                 "SELECT payload FROM content_records WHERE kind='blueprint' AND deleted=0 ORDER BY sort_order,id",
             )?;
-            let blueprints = statement.query_map([], |row| json_column(row, 0))?
+            let blueprints = statement
+                .query_map([], |row| json_column(row, 0))?
                 .collect::<rusqlite::Result<Vec<_>>>()?;
             let mut value = json!({"version":2,"blueprints":null});
             value["blueprints"] = Value::Array(blueprints);
@@ -160,7 +175,11 @@ impl Catalog {
         ]
         .contains(&name)
         {
-            let core = match self.document("curation")?.get_mut("personaCoreSceneIds").map(Value::take) {
+            let core = match self
+                .document("curation")?
+                .get_mut("personaCoreSceneIds")
+                .map(Value::take)
+            {
                 Some(Value::Array(values)) => values,
                 _ => Vec::new(),
             };
@@ -231,7 +250,9 @@ impl Catalog {
                     "SELECT payload,sort_order,created_at,updated_at FROM content_records WHERE kind='scene'
                      AND deleted=0 ORDER BY sort_order,id",
                 )?;
-                statement.query_map([], scene_row)?.collect::<rusqlite::Result<Vec<_>>>()?
+                statement
+                    .query_map([], scene_row)?
+                    .collect::<rusqlite::Result<Vec<_>>>()?
             };
             return Ok(Some(Value::Array(scenes)));
         }

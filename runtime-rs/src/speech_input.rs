@@ -322,14 +322,12 @@ async fn probe(
 }
 
 async fn read_reply(response: reqwest::Response) -> Result<Buffer> {
-    http_body::collect(response, MAX_REPLY_BYTES).await.map_err(|error| match error {
-        ReadError::Network(error) => network(error),
-        ReadError::TooLarge => ApiError::new(
-            502,
-            "SPEECH_PAYLOAD",
-            "语音服务响应超过大小限制",
-        ),
-    })
+    http_body::collect(response, MAX_REPLY_BYTES)
+        .await
+        .map_err(|error| match error {
+            ReadError::Network(error) => network(error),
+            ReadError::TooLarge => ApiError::new(502, "SPEECH_PAYLOAD", "语音服务响应超过大小限制"),
+        })
 }
 
 fn provider_status(status: u16) -> ApiError {

@@ -54,7 +54,9 @@ async fn inspect(
 ) -> Result<Json<Value>> {
     let permit = s.setup_permit()?;
     let (mut command, target) = s.model_import_command(&body.model_id, &body.source_dir, None)?;
-    let value = s.run_setup_helper(&mut command, &s.shutdown, 120, permit.clone(), None, None).await?;
+    let value = s
+        .run_setup_helper(&mut command, &s.shutdown, 120, permit.clone(), None, None)
+        .await?;
     validate_import_result(&value, true, &body.source_dir, &target)?;
     Ok(Json(value))
 }
@@ -80,10 +82,14 @@ impl ControlService {
             .try_acquire_owned()
             .map(Arc::new)
             .map_err(|error| match error {
-                tokio::sync::TryAcquireError::Closed => ApiError::new(503,
-                    "TERMINATION_UNCONFIRMED", "准备进程退出尚未确认，不能开始另一操作；请检查后完全退出绘遇。"),
-                tokio::sync::TryAcquireError::NoPermits => ApiError::new(409,
-                    "SETUP_BUSY", "已有准备、导入、下载或校验正在进行"),
+                tokio::sync::TryAcquireError::Closed => ApiError::new(
+                    503,
+                    "TERMINATION_UNCONFIRMED",
+                    "准备进程退出尚未确认，不能开始另一操作；请检查后完全退出绘遇。",
+                ),
+                tokio::sync::TryAcquireError::NoPermits => {
+                    ApiError::new(409, "SETUP_BUSY", "已有准备、导入、下载或校验正在进行")
+                }
             })
     }
     fn prepare_inference(self: &Arc<Self>, body: PrepareRequest) -> Result<Value> {
@@ -174,7 +180,8 @@ impl ControlService {
         operation_id: Option<&str>,
     ) -> Result<Value> {
         let permit = self.setup_permit()?;
-        let mut operation = self.begin_with_id(kind, &["正在执行离线准备或目录导入"], operation_id)?;
+        let mut operation =
+            self.begin_with_id(kind, &["正在执行离线准备或目录导入"], operation_id)?;
         operation
             .as_object_mut()
             .unwrap()
@@ -232,13 +239,17 @@ impl ControlService {
         if cancel.is_cancelled() {
             return Err(cancelled());
         }
-        let process = self.processes.spawn_with_permit(command, permit, keep_alive)?;
+        let process = self
+            .processes
+            .spawn_with_permit(command, permit, keep_alive)?;
         let (stdout, stderr) = process.take_output();
         let work = async {
             let (out, err) = tokio::try_join!(
                 bounded_output(stdout, 131072),
                 helper_stderr(stderr, |message| {
-                    if let Some(operation) = operation { self.work_progress(operation, 0, 0, message); }
+                    if let Some(operation) = operation {
+                        self.work_progress(operation, 0, 0, message);
+                    }
                 })
             )?;
             let success = loop {
@@ -252,7 +263,11 @@ impl ControlService {
                 let detail = value
                     .as_ref()
                     .ok()
-                    .and_then(|v| v["error"]["message"].as_str().or_else(||v["message"].as_str()))
+                    .and_then(|v| {
+                        v["error"]["message"]
+                            .as_str()
+                            .or_else(|| v["message"].as_str())
+                    })
                     .map(str::to_owned)
                     .unwrap_or_else(|| String::from_utf8_lossy(&err).into_owned());
                 return Err(ApiError::new(
@@ -266,7 +281,10 @@ impl ControlService {
                 ));
             }
             let value = value.map_err(|_| protocol_error())?;
-            if value["ok"] != true && !(matches!(value["event"].as_str(), Some("validation" | "diagnostic")) && value["valid"] == true) {
+            if value["ok"] != true
+                && !(matches!(value["event"].as_str(), Some("validation" | "diagnostic"))
+                    && value["valid"] == true)
+            {
                 return Err(protocol_error());
             }
             Ok(value)
@@ -308,28 +326,53 @@ async fn bounded_output<R: AsyncRead + Unpin>(stream: Option<R>, limit: u64) -> 
         .ok_or_else(protocol_error)?
         .take(limit + 1)
         .read_to_end(&mut bytes)
-        .await.map_err(|error| ApiError::new(503, "NATIVE_HELPER_IO", format!("原生准备进程输出读取失败：{error}")))?;
+        .await
+        .map_err(|error| {
+            ApiError::new(
+                503,
+                "NATIVE_HELPER_IO",
+                format!("原生准备进程输出读取失败：{error}"),
+            )
+        })?;
     if bytes.len() as u64 > limit {
         return Err(protocol_error());
     }
     Ok(bytes)
 }
-async fn helper_stderr<R: AsyncRead + Unpin>(stream: Option<R>, progress: impl Fn(&str)) -> Result<Vec<u8>> {
+async fn helper_stderr<R: AsyncRead + Unpin>(
+    stream: Option<R>,
+    progress: impl Fn(&str),
+) -> Result<Vec<u8>> {
     use tokio::io::{AsyncBufReadExt, BufReader};
     let mut reader = BufReader::new(stream.ok_or_else(protocol_error)?);
     let mut output = Vec::new();
     loop {
         let mut line = Vec::new();
-        let count = (&mut reader).take(8193).read_until(b'\n', &mut line).await
-            .map_err(|error| ApiError::new(503, "NATIVE_HELPER_IO", format!("原生准备进程日志读取失败：{error}")))?;
-        if count == 0 { return Ok(output); }
-        if line.len() > 8192 { return Err(protocol_error()); }
+        let count = (&mut reader)
+            .take(8193)
+            .read_until(b'\n', &mut line)
+            .await
+            .map_err(|error| {
+                ApiError::new(
+                    503,
+                    "NATIVE_HELPER_IO",
+                    format!("原生准备进程日志读取失败：{error}"),
+                )
+            })?;
+        if count == 0 {
+            return Ok(output);
+        }
+        if line.len() > 8192 {
+            return Err(protocol_error());
+        }
         let text = String::from_utf8_lossy(&line);
         if let Some(message) = text.trim().strip_prefix("HUIYU:CONVERT|") {
             progress(message);
         } else {
             output.extend_from_slice(&line);
-            if output.len() > 32768 { return Err(protocol_error()); }
+            if output.len() > 32768 {
+                return Err(protocol_error());
+            }
         }
     }
 }

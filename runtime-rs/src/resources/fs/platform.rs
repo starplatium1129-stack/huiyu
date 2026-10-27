@@ -29,7 +29,10 @@ pub(in crate::resources) fn hostname() -> Result<String> {
 pub(in crate::resources) fn space(path: &Path, needed: u64) -> Result<()> {
     let available = available_space(path)?;
     if available < needed {
-        Err(Error::new("ENOSPC", "Not enough free space; previous installation retained"))
+        Err(Error::new(
+            "ENOSPC",
+            "Not enough free space; previous installation retained",
+        ))
     } else {
         Ok(())
     }

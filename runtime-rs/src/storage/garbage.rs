@@ -31,7 +31,8 @@ fn validate(c: &Context, principal: &str, command: &Value) -> Result<()> {
 }
 pub(super) fn receipt(c: &Context, principal: &str, command: &Value) -> Result<Option<Value>> {
     validate(c, principal, command)?;
-    Ok(c.operation_receipt(principal, command)?.and_then(|(_, receipt)| receipt))
+    Ok(c.operation_receipt(principal, command)?
+        .and_then(|(_, receipt)| receipt))
 }
 pub(super) fn prepare(c: &mut Context, principal: &str, command: &Value) -> Result<Prepared> {
     validate(c, principal, command)?;
@@ -146,7 +147,10 @@ fn remove_metadata(c: &Context, hash: &str) -> Result<()> {
         ("previews-rust-vips-v1", "webp"),
     ] {
         for suffix in ["", "-1120", "-1680", "-2240", "-3360", "-4480", "-8192"] {
-            let thumbnail = schema::safe(&c.root, format!("cache/{version}/{hash}{suffix}.{extension}"))?;
+            let thumbnail = schema::safe(
+                &c.root,
+                format!("cache/{version}/{hash}{suffix}.{extension}"),
+            )?;
             if thumbnail.exists() {
                 fs::remove_file(thumbnail)?;
             }

@@ -23,8 +23,8 @@ pub(crate) fn available_space(path: &std::path::Path) -> Result<u64> {
     fs::available_space(path)
 }
 
-use serde_json::{Value, json};
 use crate::storage::stringify_equal as equal;
+use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
 pub type Result<T> = std::result::Result<T, Error>;

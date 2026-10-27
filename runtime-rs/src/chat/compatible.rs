@@ -34,7 +34,11 @@ pub(super) async fn prepare(
     if let Some(origin) = &input.tool_result_origin
         && target(&api, &api.pathname)?.origin().ascii_serialization() != *origin
     {
-        return Err(Error::new(409, "TOOL_DESTINATION_CHANGED", "API 接收地址已改变，工具结果未发送；请重新发起并授权"));
+        return Err(Error::new(
+            409,
+            "TOOL_DESTINATION_CHANGED",
+            "API 接收地址已改变，工具结果未发送；请重新发起并授权",
+        ));
     }
     if let Some((origin, key)) = managed_auth
         && api.model == "huiyu-local"
@@ -182,8 +186,12 @@ pub(super) async fn inspect(client: &Transport, api: &Api) -> Result<Value> {
         )
         .await?;
     let response = transport::success(response, 2 * 1024 * 1024, "API 连接测试返回").await?;
-    let data: Value = serde_json::from_slice(transport::bounded(response, 2 * 1024 * 1024).await?.as_ref())
-        .map_err(|_| Error::stream("INVALID_MODEL_LIST", "模型列表不是有效 JSON"))?;
+    let data: Value = serde_json::from_slice(
+        transport::bounded(response, 2 * 1024 * 1024)
+            .await?
+            .as_ref(),
+    )
+    .map_err(|_| Error::stream("INVALID_MODEL_LIST", "模型列表不是有效 JSON"))?;
     let items = data["data"]
         .as_array()
         .or_else(|| data["models"].as_array())
@@ -237,13 +245,20 @@ pub(super) struct Decoder {
 }
 impl Decoder {
     pub fn new(vendor: String) -> Self {
-        Self { vendor, ..Self::default() }
+        Self {
+            vendor,
+            ..Self::default()
+        }
     }
     pub fn decode(&mut self, mut event: Value) -> Result<[Option<Event>; 2]> {
         if let Some(error) = response_error(&event, &self.vendor) {
             return Err(error);
         }
-        let Some(choice) = event.get_mut("choices").and_then(Value::as_array_mut).and_then(|v| v.first_mut()) else {
+        let Some(choice) = event
+            .get_mut("choices")
+            .and_then(Value::as_array_mut)
+            .and_then(|v| v.first_mut())
+        else {
             return Ok([None, None]);
         };
         let source = if choice["delta"]["tool_calls"].is_array() {
@@ -251,7 +266,8 @@ impl Decoder {
         } else {
             "message"
         };
-        if let Some(deltas) = choice.get_mut(source)
+        if let Some(deltas) = choice
+            .get_mut(source)
             .and_then(|value| value.get_mut("tool_calls"))
             .and_then(Value::as_array_mut)
         {
@@ -269,12 +285,17 @@ impl Decoder {
                     return Err(Error::stream("STREAM_BUDGET", "工具数量或索引无效"));
                 }
                 let call = self.calls.entry(index).or_default();
-                if let Some(signature) = delta.get_mut("extra_content")
+                if let Some(signature) = delta
+                    .get_mut("extra_content")
                     .and_then(|value| value.get_mut("google"))
                     .and_then(|value| value.get_mut("thought_signature"))
                 {
                     let signature = match signature {
-                        Value::String(signature) if !signature.is_empty() && signature.len() <= 64 * 1024 => signature,
+                        Value::String(signature)
+                            if !signature.is_empty() && signature.len() <= 64 * 1024 =>
+                        {
+                            signature
+                        }
                         _ => return Err(Error::stream("INVALID_SSE", "工具思考签名格式无效")),
                     };
                     call.thought_signature = Some(std::mem::take(signature));
@@ -315,11 +336,27 @@ impl Decoder {
             self.terminal = true;
         }
         let mut events = [None, None];
-        let reasoning = take_string(choice.get_mut("delta").and_then(|v| v.get_mut("reasoning_content")))
-            .or_else(|| take_string(choice.get_mut("delta").and_then(|v| v.get_mut("reasoning"))))
-            .or_else(|| take_string(choice.get_mut("message").and_then(|v| v.get_mut("reasoning_content"))))
-            .or_else(|| take_string(choice.get_mut("message").and_then(|v| v.get_mut("reasoning"))))
-            .unwrap_or_default();
+        let reasoning = take_string(
+            choice
+                .get_mut("delta")
+                .and_then(|v| v.get_mut("reasoning_content")),
+        )
+        .or_else(|| take_string(choice.get_mut("delta").and_then(|v| v.get_mut("reasoning"))))
+        .or_else(|| {
+            take_string(
+                choice
+                    .get_mut("message")
+                    .and_then(|v| v.get_mut("reasoning_content")),
+            )
+        })
+        .or_else(|| {
+            take_string(
+                choice
+                    .get_mut("message")
+                    .and_then(|v| v.get_mut("reasoning")),
+            )
+        })
+        .unwrap_or_default();
         if !reasoning.is_empty() {
             if self.reasoning.len() + reasoning.len() > 20000 {
                 return Err(Error::stream("STREAM_BUDGET", "推理过程超限"));
@@ -379,11 +416,23 @@ fn take_string(value: Option<&mut Value>) -> Option<String> {
 // Check before consuming content or declaring completion, including non-streaming calls.
 pub(super) fn response_error(value: &Value, vendor: &str) -> Option<Error> {
     let choice = &value["choices"][0];
-    let error = value.get("error").filter(|error| !error.is_null())
+    let error = value
+        .get("error")
+        .filter(|error| !error.is_null())
         .or_else(|| choice.get("error").filter(|error| !error.is_null()));
-    if error.is_none() && choice["finish_reason"] != "error" { return None; }
+    if error.is_none() && choice["finish_reason"] != "error" {
+        return None;
+    }
     let error = error.unwrap_or(&Value::Null);
-    let status = error["code"].as_u64().filter(|code| (400..600).contains(code))
-        .map(|code| code as u16).unwrap_or(503);
-    Some(transport::upstream_error(status, vendor, error, "API 回复中断"))
+    let status = error["code"]
+        .as_u64()
+        .filter(|code| (400..600).contains(code))
+        .map(|code| code as u16)
+        .unwrap_or(503);
+    Some(transport::upstream_error(
+        status,
+        vendor,
+        error,
+        "API 回复中断",
+    ))
 }

@@ -41,7 +41,9 @@ impl ControlService {
             .stdin(std::process::Stdio::null())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped());
-        let diagnostic = self.run_setup_helper(&mut command, cancel, 120, permit.clone(), None, None).await?;
+        let diagnostic = self
+            .run_setup_helper(&mut command, cancel, 120, permit.clone(), None, None)
+            .await?;
         if diagnostic["event"] != "diagnostic" || diagnostic["cudaAvailable"] != true {
             return Err(ApiError::new(
                 409,
@@ -51,7 +53,9 @@ impl ControlService {
         }
         self.native_stage(operation, 1);
         let inputs = anima_models::input_root(&root, &model);
-        let files = image_models::resolve_files(self, &model, &inputs, body.hf_token.as_deref(), cancel).await?;
+        let files =
+            image_models::resolve_files(self, &model, &inputs, body.hf_token.as_deref(), cancel)
+                .await?;
         jobs::verify_files(&inputs, &files, cancel).await?;
         if model.conversion_profile.is_some() {
             jobs::verify_model_files(&root, anima_models::output_files(&root)?, cancel).await?;

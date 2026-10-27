@@ -3,22 +3,22 @@ mod config;
 pub(crate) mod manga;
 mod output;
 use output::stage_text;
-mod model_layout;
 mod input;
+mod model_layout;
 pub(crate) use input::InputFile;
 use input::RunFiles;
 pub(crate) use model_layout::model_issue;
-pub(crate) mod resources;
 mod observations;
-mod results;
 pub(in crate::generation) mod recovery;
+pub(crate) mod resources;
+mod results;
 mod worker;
-pub(crate) use worker::ComfyLease;
 use super::*;
-pub(crate) use config::{Settings, load, installed_runtime_for};
+pub(crate) use config::{Settings, installed_runtime_for, load};
 pub(super) use results::prune;
 use std::{path::PathBuf, process::Stdio};
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader};
+pub(crate) use worker::ComfyLease;
 
 pub(crate) struct Plan {
     pub input: Arc<Value>,
@@ -60,7 +60,11 @@ impl Default for Engine {
 }
 impl Engine {
     pub(super) fn pending(&self) -> usize {
-        if self.comfy_leased.load(Ordering::SeqCst) { 0 } else { 4 - self.admission.available_permits() }
+        if self.comfy_leased.load(Ordering::SeqCst) {
+            0
+        } else {
+            4 - self.admission.available_permits()
+        }
     }
     pub async fn close(&self) {
         self.processes.close().await;
@@ -146,7 +150,7 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
         };
         match slot {
             Ok(slot) => {
-                worker.native.gpu_owned.store(true,Ordering::SeqCst);
+                worker.native.gpu_owned.store(true, Ordering::SeqCst);
                 let outcome = run(&worker, &job, &token).await;
                 // Hold the GPU slot through the cancellation acknowledgement
                 // and publication. No next job may run before worker cleanup.
@@ -156,7 +160,7 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
                     worker.admission.close();
                     slot.forget();
                 } else if worker.native.worker.lock().await.is_none() {
-                    worker.native.gpu_owned.store(false,Ordering::SeqCst);
+                    worker.native.gpu_owned.store(false, Ordering::SeqCst);
                 }
             }
             Err(error) => {
@@ -286,12 +290,14 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     // Already accepted files are private snapshots, never mutable upload paths.
     let mut inputs = Vec::new();
     let mut accepted = |input: Option<InputFile>| -> Result<Option<PathBuf>> {
-        input.map(|input| {
-            input.check()?;
-            let path = input.path().to_owned();
-            inputs.push(input);
-            Ok(path)
-        }).transpose()
+        input
+            .map(|input| {
+                input.check()?;
+                let path = input.path().to_owned();
+                inputs.push(input);
+                Ok(path)
+            })
+            .transpose()
     };
     let input_image_path = accepted(plan.init_image.lock().unwrap().take())?;
     let mask_image_path = accepted(plan.mask_image.lock().unwrap().take())?;
@@ -300,7 +306,9 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     let references = std::mem::take(&mut *plan.reference_images.lock().unwrap());
     let mut reference_paths = Vec::new();
     for input in references {
-        if token.is_cancelled() { return Err(ApiError::new(499, "ABORT_ERR", "参考图准备已取消")); }
+        if token.is_cancelled() {
+            return Err(ApiError::new(499, "ABORT_ERR", "参考图准备已取消"));
+        }
         reference_paths.push(accepted(Some(input))?.unwrap());
     }
     let mut request = if plan.input["family"] == "manga-screen" {
@@ -308,11 +316,23 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     } else if adapters::model(plan.input["modelId"].as_str().unwrap_or("")).is_some() {
         output::adapter_request(job, plan, &output, input_image_path)
     } else {
-        output::anima_request(job, plan, &output, input_image_path, mask_image_path, sketch_image_path)
+        output::anima_request(
+            job,
+            plan,
+            &output,
+            input_image_path,
+            mask_image_path,
+            sketch_image_path,
+        )
     };
-    if !reference_paths.is_empty() { request["referenceImagePaths"] = json!(reference_paths); }
+    if !reference_paths.is_empty() {
+        request["referenceImagePaths"] = json!(reference_paths);
+    }
     let mut worker = inner.native.take_worker(&plan.settings).await?;
-    *worker.current_temp.lock().unwrap() = Some(Arc::new(RunFiles { _output: temp.clone(), _inputs: inputs }));
+    *worker.current_temp.lock().unwrap() = Some(Arc::new(RunFiles {
+        _output: temp.clone(),
+        _inputs: inputs,
+    }));
     // Do not interrupt a partially written JSONL request with another command.
     // The stdin reader operates independently of loading and CUDA execution.
     let sent = tokio::time::timeout(Duration::from_secs(10), async {
@@ -421,8 +441,8 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         manga::validate(job, &output, token).await?;
         let length = metadata.len();
         // Do not block cancellation or observation while reading the PNG header.
-        let read_dimensions = plan.input["family"] == "manga-screen"
-            && job.state.lock().await.status == "running";
+        let read_dimensions =
+            plan.input["family"] == "manga-screen" && job.state.lock().await.status == "running";
         let dimensions = if read_dimensions {
             Some(output::png_dimensions(&output).await)
         } else {

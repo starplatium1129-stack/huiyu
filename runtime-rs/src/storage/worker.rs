@@ -115,7 +115,8 @@ pub(super) fn run(
                 }
                 context.cancel = cancel;
                 if !reply.is_closed() {
-                    let result = tasks::patch_record(&mut context,&principal,&id,revision,patch);
+                    let result =
+                        tasks::patch_record(&mut context, &principal, &id, revision, patch);
                     let _ = reply.send(result);
                 }
             }
@@ -233,7 +234,15 @@ pub(super) fn run(
                 }
                 if upload::is_chunk(&command) {
                     if let Some(permit) = permit {
-                        upload::start(&mut context, command, principal, reply, permit, bytes, &sender);
+                        upload::start(
+                            &mut context,
+                            command,
+                            principal,
+                            reply,
+                            permit,
+                            bytes,
+                            &sender,
+                        );
                     } else {
                         let _ = reply.send(Err(unavailable()));
                     }
@@ -266,14 +275,7 @@ pub(super) fn run(
                     continue;
                 }
                 if result_commit::is_commit(&command) {
-                    result_commit::start(
-                        &mut context,
-                        command,
-                        &principal,
-                        reply,
-                        permit,
-                        &sender,
-                    );
+                    result_commit::start(&mut context, command, &principal, reply, permit, &sender);
                     continue;
                 }
                 if command["kind"] == "collectGarbage" {

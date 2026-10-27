@@ -148,31 +148,32 @@ pub(super) fn build(
     // bounded and retain transparent holes without guessing a background.
     let mut colors = vec![0_usize; 4096];
     for p in grid.pixels().filter(|p| p[3] >= 32) {
-        let index = (usize::from(p[0] >> 4) << 8)
-            | (usize::from(p[1] >> 4) << 4)
-            | usize::from(p[2] >> 4);
+        let index =
+            (usize::from(p[0] >> 4) << 8) | (usize::from(p[1] >> 4) << 4) | usize::from(p[2] >> 4);
         colors[index] += 1;
     }
-    let mut ranked = colors.into_iter().enumerate()
+    let mut ranked = colors
+        .into_iter()
+        .enumerate()
         .filter(|(_, count)| *count != 0)
-        .map(|(index, count)| ([
-            ((index >> 8) as u8) << 4,
-            (((index >> 4) & 0xf) as u8) << 4,
-            ((index & 0xf) as u8) << 4,
-        ], count))
+        .map(|(index, count)| {
+            (
+                [
+                    ((index >> 8) as u8) << 4,
+                    (((index >> 4) & 0xf) as u8) << 4,
+                    ((index & 0xf) as u8) << 4,
+                ],
+                count,
+            )
+        })
         .collect::<Vec<_>>();
-    let order = |a: &([u8; 3], usize), b: &([u8; 3], usize)| {
-        b.1.cmp(&a.1).then(a.0.cmp(&b.0))
-    };
+    let order = |a: &([u8; 3], usize), b: &([u8; 3], usize)| b.1.cmp(&a.1).then(a.0.cmp(&b.0));
     if ranked.len() > 32 {
         ranked.select_nth_unstable_by(32, order);
         ranked.truncate(32);
     }
     ranked.sort_by(order);
-    let palette = ranked
-        .into_iter()
-        .map(|(rgb, _)| rgb)
-        .collect::<Vec<_>>();
+    let palette = ranked.into_iter().map(|(rgb, _)| rgb).collect::<Vec<_>>();
     if palette.is_empty() {
         return Err(invalid("图片没有可生成粒子的可见内容"));
     }

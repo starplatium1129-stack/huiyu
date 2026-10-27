@@ -1,11 +1,21 @@
 //! Local native adapter contracts. File readiness never proves model execution.
+use super::resources::{self, within};
 use super::*;
 use std::{path::Path, sync::LazyLock};
-use super::resources::{self, within};
 const FILES: &[&str] = &[
-    "adapter_worker.py", "adapter_contract.py", "adapter_media.py", "adapter_video.py",
-    "adapter-models.json", "worker_lifecycle.py", "native_memory.py",
-    "resident_adapters.py", "locked_identity.py", "krea_style.py", "moss_adapter.py", "moss_pipeline.py", "moss_spectrum.py",
+    "adapter_worker.py",
+    "adapter_contract.py",
+    "adapter_media.py",
+    "adapter_video.py",
+    "adapter-models.json",
+    "worker_lifecycle.py",
+    "native_memory.py",
+    "resident_adapters.py",
+    "locked_identity.py",
+    "krea_style.py",
+    "moss_adapter.py",
+    "moss_pipeline.py",
+    "moss_spectrum.py",
 ];
 static MANIFEST: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
@@ -57,7 +67,10 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
             "unavailableReason":manifest()["pendingVideo"][id].as_str().unwrap_or("尚无原生适配")});
     };
     let path = settings.models_root.join(id);
-    let runtime_issue = self::settings(settings).and_then(|adapter| validate_runtime(&adapter)).err().map(|e| e.message);
+    let runtime_issue = self::settings(settings)
+        .and_then(|adapter| validate_runtime(&adapter))
+        .err()
+        .map(|e| e.message);
     let issue = if runtime_issue.is_some() {
         runtime_issue
     } else if within(&settings.models_root, &path).is_none() {
@@ -92,18 +105,20 @@ pub(crate) async fn plan(
     let model_id = id.to_owned();
     let path = tokio::task::spawn_blocking(move || {
         validate_runtime(&inspected)?;
-        let path = within(&root, &root.join(&model_id)).ok_or_else(|| ApiError::new(
-            503,
-            "NATIVE_MODEL_UNAVAILABLE",
-            "需要模型根目录内完整 Diffusers 目录；不会下载或回退 ComfyUI",
-        ))?;
+        let path = within(&root, &root.join(&model_id)).ok_or_else(|| {
+            ApiError::new(
+                503,
+                "NATIVE_MODEL_UNAVAILABLE",
+                "需要模型根目录内完整 Diffusers 目录；不会下载或回退 ComfyUI",
+            )
+        })?;
         if let Some(issue) = model_issue(&path, &model_id) {
             return Err(ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", issue));
         }
         Ok(path)
     })
-        .await
-        .map_err(|_| ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", "模型目录核验未完成"))??;
+    .await
+    .map_err(|_| ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", "模型目录核验未完成"))??;
     Ok(Plan {
         input: input.into(),
         settings: adapter,

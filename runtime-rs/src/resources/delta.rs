@@ -18,7 +18,11 @@ fn identity(record: &Value, manifest: &Manifest) -> Option<String> {
     }
     Some(identity)
 }
-pub(super) fn reconstruct(base: &Manifest, pack: &Manifest, delta: &Value) -> Result<(Manifest, String)> {
+pub(super) fn reconstruct(
+    base: &Manifest,
+    pack: &Manifest,
+    delta: &Value,
+) -> Result<(Manifest, String)> {
     if delta["schemaVersion"] != 1
         || delta["kind"] != "resource-pack-delta"
         || identity(&delta["baseManifest"], base).is_none()
@@ -63,13 +67,18 @@ pub(super) fn reconstruct(base: &Manifest, pack: &Manifest, delta: &Value) -> Re
         .iter()
         .filter(|entry| !removed_paths.contains(entry.path.as_str()))
         .map(|entry| candidate.get(entry.path.as_str()).copied().unwrap_or(entry))
-        .chain(pack.entries.iter()
-            .filter(|entry| !by_path.contains_key(entry.path.as_str())));
-    let target = Manifest::from_fields(target.map(|entry| (
-        Some(entry.path.as_str()),
-        number(&Value::from(entry.bytes)),
-        Some(entry.sha256.as_str()),
-    )))
+        .chain(
+            pack.entries
+                .iter()
+                .filter(|entry| !by_path.contains_key(entry.path.as_str())),
+        );
+    let target = Manifest::from_fields(target.map(|entry| {
+        (
+            Some(entry.path.as_str()),
+            number(&Value::from(entry.bytes)),
+            Some(entry.sha256.as_str()),
+        )
+    }))
     .map_err(|_| invalid())?;
     let identity = identity(&delta["newManifest"], &target).ok_or_else(invalid)?;
     let added = pack

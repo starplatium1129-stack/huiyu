@@ -9,7 +9,8 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 .filter(|limit| (1..=200).contains(limit))
                 .ok_or_else(|| invalid("Recent candidate limit must be 1–200"))
         })
-        .transpose()?.unwrap_or(3);
+        .transpose()?
+        .unwrap_or(3);
     artwork_index::refresh(c)?;
     let sql = "SELECT r.id_json,r.timestamp_json,r.revision FROM artwork_gallery_index g
             JOIN artwork_read_index r ON r.id_key=g.id_key ORDER BY g.time DESC,g.id_key LIMIT ?1";

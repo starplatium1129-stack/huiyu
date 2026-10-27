@@ -38,7 +38,11 @@ pub(in crate::storage) fn read(
 ) -> Result<ResultReference> {
     c.check_cancel()?;
     if principal.is_empty() {
-        return Err(ApiError::new(401, "UNAUTHORIZED", "Desktop principal is required"));
+        return Err(ApiError::new(
+            401,
+            "UNAUTHORIZED",
+            "Desktop principal is required",
+        ));
     }
     // Keep complete result-reference validation and u64 index matching, without
     // decoding frozen inputs, metadata or batch checkpoints into Rust objects.

@@ -47,8 +47,10 @@ pub(super) fn vendor(target: &Url) -> String {
             "gemini"
         }
         "api.moonshot.cn" | "api.moonshot.ai" => "kimi",
-        "dashscope.aliyuncs.com" | "dashscope-intl.aliyuncs.com"
-        | "dashscope-us.aliyuncs.com" | "cn-hongkong.dashscope.aliyuncs.com" => "qwen",
+        "dashscope.aliyuncs.com"
+        | "dashscope-intl.aliyuncs.com"
+        | "dashscope-us.aliyuncs.com"
+        | "cn-hongkong.dashscope.aliyuncs.com" => "qwen",
         "opencode.ai"
             if target.path().starts_with("/zen/") || target.path().starts_with("/inference/") =>
         {
@@ -153,7 +155,8 @@ fn tool_message(raw: &Value) -> Result<Value> {
         if length(&args) > 4000 {
             return Err(Error::invalid("工具调用参数过长"));
         }
-        let mut item = json!({"id":null,"type":"function","function":{"name":null,"arguments":null}});
+        let mut item =
+            json!({"id":null,"type":"function","function":{"name":null,"arguments":null}});
         item["id"] = Value::String(id);
         item["function"]["name"] = Value::String(name);
         item["function"]["arguments"] = Value::String(args);
@@ -229,7 +232,9 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
         Some(Value::String(id))
             if !id.is_empty()
                 && id.len() <= 128
-                && id.bytes().all(|byte| byte.is_ascii_alphanumeric() || b"_-".contains(&byte)) =>
+                && id
+                    .bytes()
+                    .all(|byte| byte.is_ascii_alphanumeric() || b"_-".contains(&byte)) =>
         {
             id.clone()
         }
@@ -308,8 +313,15 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
     };
     let tool_result_origin = match body.get("toolResultOrigin") {
         None | Some(Value::Null) => None,
-        Some(Value::String(origin)) if origin.len() <= 500 && Url::parse(origin).is_ok_and(|url|
-            matches!(url.scheme(), "http" | "https") && url.origin().ascii_serialization() == *origin) => Some(origin.clone()),
+        Some(Value::String(origin))
+            if origin.len() <= 500
+                && Url::parse(origin).is_ok_and(|url| {
+                    matches!(url.scheme(), "http" | "https")
+                        && url.origin().ascii_serialization() == *origin
+                }) =>
+        {
+            Some(origin.clone())
+        }
         _ => return Err(Error::invalid("工具结果的 API 接收地址无效")),
     };
     let reasoning = string(&body["reasoning"]);

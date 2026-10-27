@@ -25,13 +25,16 @@ pub(super) async fn prepare(
         && path[2] == "chunks"
         && matches!(path[0].as_str(), "artwork-saves" | "media-uploads")
     {
-        if content_type != "application/octet-stream"
-            || body.is_empty()
-            || body.len() > 1024 * 1024
+        if content_type != "application/octet-stream" || body.is_empty() || body.len() > 1024 * 1024
         {
-            return Err(ApiError::invalid("Expected a nonempty binary chunk of at most 1 MiB"));
+            return Err(ApiError::invalid(
+                "Expected a nonempty binary chunk of at most 1 MiB",
+            ));
         }
-        return Ok(Request::Chunk(commands::binary_chunk(&path, &query, &workspace_id)?, body));
+        return Ok(Request::Chunk(
+            commands::binary_chunk(&path, &query, &workspace_id)?,
+            body,
+        ));
     }
     let size = body.len();
     let build = move || {

@@ -3,16 +3,20 @@ use serde_json::{Map, Value};
 fn directory(value: Value) -> Option<Value> {
     let mut row = match value {
         Value::Array(rows) => {
-            return Some(Value::Array(rows.into_iter().filter_map(directory).collect()));
+            return Some(Value::Array(
+                rows.into_iter().filter_map(directory).collect(),
+            ));
         }
         Value::Object(row) => row,
         _ => return None,
     };
     let id = row.get("id")?.as_str()?;
-    if !matches!(row.get("rating").and_then(Value::as_str), Some("All" | "R15" | "R18"))
-        || id
-            .trim_matches(|ch: char| ch.is_whitespace() || ch == '\u{feff}')
-            .is_empty()
+    if !matches!(
+        row.get("rating").and_then(Value::as_str),
+        Some("All" | "R15" | "R18")
+    ) || id
+        .trim_matches(|ch: char| ch.is_whitespace() || ch == '\u{feff}')
+        .is_empty()
     {
         return None;
     }

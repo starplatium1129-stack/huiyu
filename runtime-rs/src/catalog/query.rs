@@ -37,8 +37,15 @@ pub struct Query {
 }
 impl Catalog {
     pub fn query(&self, query: &Query) -> Result<Value> {
-        let Page { ok, version, items, total, page, page_size, facets } =
-            self.query_cached(query, None)?;
+        let Page {
+            ok,
+            version,
+            items,
+            total,
+            page,
+            page_size,
+            facets,
+        } = self.query_cached(query, None)?;
         let mut value = json!({"ok":ok,"version":version,"items":null,"total":total,"page":page,"pageSize":page_size,"facets":null});
         value["items"] = Value::Array(items);
         value["facets"] = Arc::unwrap_or_clone(facets);
@@ -68,8 +75,9 @@ impl Catalog {
         let size = query.page_size.unwrap_or(24).clamp(1, 100);
         let order = match query.sort.as_str() {
             "title" => "title COLLATE NOCASE,sort_order,id",
-            "relevance" if !query.search.trim().is_empty() =>
-                "CASE WHEN lower(title)=? THEN 0 WHEN instr(lower(title),?)=1 THEN 1 WHEN instr(lower(title),?)>0 THEN 2 ELSE 3 END,sort_order,id",
+            "relevance" if !query.search.trim().is_empty() => {
+                "CASE WHEN lower(title)=? THEN 0 WHEN instr(lower(title),?)=1 THEN 1 WHEN instr(lower(title),?)>0 THEN 2 ELSE 3 END,sort_order,id"
+            }
             "relevance" => "sort_order,id",
             // DESC already puts NULL last; a leading IS NULL expression
             // prevents catalog_newest from supplying the date order.
@@ -168,7 +176,12 @@ impl Catalog {
         };
         transaction.commit()?;
         if let (Some(cache), Some(generation)) = (cache, publish_generation) {
-            cache.publish(generation, &query.kind, value.facets.clone(), unfiltered_total)?;
+            cache.publish(
+                generation,
+                &query.kind,
+                value.facets.clone(),
+                unfiltered_total,
+            )?;
         }
         Ok(value)
     }

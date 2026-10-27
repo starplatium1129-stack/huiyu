@@ -77,7 +77,9 @@ async fn setup_operation(
 ) -> Result<Json<Value>> {
     let id = query.get("id").map(String::as_str);
     let operation = s.journal_operation(id)?;
-    Ok(Json(json!({"ok":true,"operation":operation,"runtimeId":s.instance_id})))
+    Ok(Json(
+        json!({"ok":true,"operation":operation,"runtimeId":s.instance_id}),
+    ))
 }
 async fn verify_setup_model(
     Extension(s): Extension<Arc<ControlService>>,

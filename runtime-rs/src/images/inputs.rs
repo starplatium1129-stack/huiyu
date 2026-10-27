@@ -1,6 +1,6 @@
 use super::*;
-use regex::Regex;
 use generation::native::InputFile;
+use regex::Regex;
 use std::sync::LazyLock;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 const MAX_BYTES: usize = 16 * 1024 * 1024;
@@ -18,10 +18,16 @@ pub(super) fn cancelled() -> ApiError {
     ApiError::new(499, "CANCELLED", "图像操作已取消")
 }
 pub(super) fn input_names(input: &Value) -> Vec<&str> {
-    let mut names: Vec<&str> = ["initImage", "maskImage", "penLines"].iter()
-        .filter_map(|key| input[*key].as_str()).collect();
-    if let Some(name) = input["sketchControl"]["image"].as_str() { names.push(name); }
-    if let Some(references) = input["referenceImages"].as_array() { names.extend(references.iter().filter_map(Value::as_str)); }
+    let mut names: Vec<&str> = ["initImage", "maskImage", "penLines"]
+        .iter()
+        .filter_map(|key| input[*key].as_str())
+        .collect();
+    if let Some(name) = input["sketchControl"]["image"].as_str() {
+        names.push(name);
+    }
+    if let Some(references) = input["referenceImages"].as_array() {
+        names.extend(references.iter().filter_map(Value::as_str));
+    }
     names.sort_unstable();
     names.dedup();
     names
@@ -78,7 +84,10 @@ async fn matches_original(
         _ = cancel.cancelled() => return Err(cancelled()),
         file = open(config, &original.name, original.native) => file?,
     };
-    original.input.matches(file.into_std().await, MAX_BYTES as u64, cancel).await
+    original
+        .input
+        .matches(file.into_std().await, MAX_BYTES as u64, cancel)
+        .await
 }
 pub(super) async fn capture(
     config: &Config,
@@ -98,7 +107,9 @@ pub(super) async fn capture(
             tokio::select! {bytes=read(config,name,native)=>bytes?,_=cancel.cancelled()=>return Err(cancelled())},
         );
         total_bytes += bytes.len();
-        if total_bytes > 64 * 1024 * 1024 { return Err(error("TASK_INPUT_INVALID", "任务输入图像合计超过 64 MiB")); }
+        if total_bytes > 64 * 1024 * 1024 {
+            return Err(error("TASK_INPUT_INVALID", "任务输入图像合计超过 64 MiB"));
+        }
         let (mime, _) = decode::sniff(&bytes)
             .ok_or_else(|| error("TASK_INPUT_INVALID", "任务输入不是受支持的图像"))?;
         if !local {
@@ -116,7 +127,12 @@ pub(super) async fn capture(
             }
         }
         let mime = mime.to_owned();
-        let input = InputFile::capture(config.runtime_root.join("inputs/image-snapshots"), bytes, cancel).await?;
+        let input = InputFile::capture(
+            config.runtime_root.join("inputs/image-snapshots"),
+            bytes,
+            cancel,
+        )
+        .await?;
         originals.push(Original {
             name: name.into(),
             native,
@@ -164,12 +180,17 @@ pub(super) async fn protect_and_restore(
                 let (output, pending) =
                     tempfile::NamedTempFile::new_in(file.parent().unwrap())?.into_parts();
                 let mut output = tokio::fs::File::from_std(output);
-                let mut source = tokio::io::BufReader::with_capacity(256 * 1024, tokio::fs::File::open(original.input.path()).await?);
+                let mut source = tokio::io::BufReader::with_capacity(
+                    256 * 1024,
+                    tokio::fs::File::open(original.input.path()).await?,
+                );
                 let copied = tokio::select! {
                     _ = cancel.cancelled() => return Err(cancelled()),
                     copied = tokio::io::copy_buf(&mut source, &mut output) => copied?,
                 };
-                if copied != original.input.bytes { return Err(error("TASK_INPUT_CHANGED", "受保护输入的长度已改变")); }
+                if copied != original.input.bytes {
+                    return Err(error("TASK_INPUT_CHANGED", "受保护输入的长度已改变"));
+                }
                 output.flush().await?;
                 output.sync_all().await?;
                 drop(output);

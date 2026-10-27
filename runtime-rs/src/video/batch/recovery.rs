@@ -15,7 +15,9 @@ impl Service {
         recovery: &mut BatchRecovery,
     ) -> Result<Observation> {
         let owner = task.principal_id.as_str();
-        let id = task.checkpoint.as_ref()
+        let id = task
+            .checkpoint
+            .as_ref()
             .and_then(|checkpoint| checkpoint["gatewayJobId"].as_str())
             .filter(|s| {
                 !s.is_empty()
@@ -27,11 +29,16 @@ impl Service {
         let existing = {
             let batches = self.batches.lock().await;
             let batch = batches.get(id).filter(|b| b.owner == owner).cloned();
-            if let Some(batch) = &batch { batch.touch(); }
+            if let Some(batch) = &batch {
+                batch.touch();
+            }
             batch
         };
         let gates = existing.as_ref().and_then(|batch| {
-            Some((batch.serial.try_lock().ok()?, batch.concat_serial.try_lock().ok()?))
+            Some((
+                batch.serial.try_lock().ok()?,
+                batch.concat_serial.try_lock().ok()?,
+            ))
         });
         if existing.is_some() && gates.is_none() {
             let batch = existing.as_ref().unwrap();
@@ -58,12 +65,15 @@ impl Service {
             .ok_or_else(|| error(409, "BATCH_CHECKPOINT_PENDING", "持久分镜检查点未就绪"))?;
         // The task's operation state survives a failed/abandoned first recovery,
         // before a complete Batch is available to retain these per-file proofs.
-        let proofs = recovery.outputs.get_or_insert_with(|| {
-            existing
-                .as_ref()
-                .map(|batch| batch.recovered_outputs.clone())
-                .unwrap_or_else(|| Arc::new(Proofs::default()))
-        }).clone();
+        let proofs = recovery
+            .outputs
+            .get_or_insert_with(|| {
+                existing
+                    .as_ref()
+                    .map(|batch| batch.recovered_outputs.clone())
+                    .unwrap_or_else(|| Arc::new(Proofs::default()))
+            })
+            .clone();
         let reference = |index: usize| task.result_refs.iter().find(|r| r.index == index as u64);
         let mut shots = Vec::with_capacity(rows.len());
         let (mut unknown, mut active, mut pending, mut failed) = (false, false, false, false);
@@ -93,8 +103,15 @@ impl Service {
                 shots.push(shot);
                 continue;
             }
-            if let Some(output) =
-                saved_output(self, &row["result"], reference(index), &proofs, index, hooks.as_ref()).await?
+            if let Some(output) = saved_output(
+                self,
+                &row["result"],
+                reference(index),
+                &proofs,
+                index,
+                hooks.as_ref(),
+            )
+            .await?
             {
                 shot.result = Some(output);
                 shot.status = "succeeded".into();
@@ -129,8 +146,7 @@ impl Service {
             unknown |= observation.unknown;
             active |= !observation.settled;
             failed |= observation.status == "failed";
-            if observation.settled && task.cancel_requested_at.is_some() && shot.result.is_none()
-            {
+            if observation.settled && task.cancel_requested_at.is_some() && shot.result.is_none() {
                 shot.status = "cancelled".into();
             }
             if observation.status == "succeeded"
@@ -175,7 +191,11 @@ impl Service {
                 s.status = status.into();
                 s.unknown = unknown || active;
                 s.error_code = code.clone();
-                s.concat_stage = if concat.is_some() { "available" } else { "none" };
+                s.concat_stage = if concat.is_some() {
+                    "available"
+                } else {
+                    "none"
+                };
                 s.concat = concat;
             }
             batch.clone()

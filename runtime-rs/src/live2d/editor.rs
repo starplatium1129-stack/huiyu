@@ -102,7 +102,10 @@ fn current(
     let hashes = files
         .iter()
         .map(|path| {
-            Ok((path.as_str(), hash_file(&model_file(&directory, path)?, cancel)?))
+            Ok((
+                path.as_str(),
+                hash_file(&model_file(&directory, path)?, cancel)?,
+            ))
         })
         .collect::<Result<Vec<_>>>()?;
     for file in receipt["files"].as_array().unwrap() {

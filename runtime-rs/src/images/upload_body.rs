@@ -1,10 +1,7 @@
 use crate::{AppState, error::ApiError};
 use axum::{
     body::Bytes,
-    extract::{
-        FromRequest, Request,
-        rejection::JsonRejection,
-    },
+    extract::{FromRequest, Request, rejection::JsonRejection},
     http::header,
     response::{IntoResponse, Response},
 };

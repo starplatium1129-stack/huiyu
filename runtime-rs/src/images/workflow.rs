@@ -37,7 +37,11 @@ fn sample(
 }
 pub fn build(input: &Value) -> Result<Value> {
     if composition::requested(input) {
-        return Err(ApiError::new(501, "NATIVE_COMPOSITION_REQUIRED", "草图控制和区域提示词需要原生 Anima 引擎，不会在 ComfyUI 路径忽略这些参数"));
+        return Err(ApiError::new(
+            501,
+            "NATIVE_COMPOSITION_REQUIRED",
+            "草图控制和区域提示词需要原生 Anima 引擎，不会在 ComfyUI 路径忽略这些参数",
+        ));
     }
     let model = catalog::model(
         input["modelId"]
@@ -285,14 +289,56 @@ fn inpaint_hires(graph: &mut Value, input: &Value, model: Value, positive: &str,
 }
 fn krea(input: &Value, model: &Value) -> Result<Value> {
     let mut graph = Value::Object(serde_json::Map::from_iter([
-        ("1".into(),node("UNETLoader",json!({"unet_name":model["file"],"weight_dtype":"default"}))),
-        ("2".into(),node("CLIPLoader",json!({"clip_name":"qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors","type":"krea2"}))),
-        ("3".into(),node("VAELoader",json!({"vae_name":"qwen_image_vae.safetensors"}))),
-        ("4".into(),node("CLIPTextEncode",json!({"clip":["2",0],"text":input["prompt"]}))),
-        ("5".into(),node("ConditioningZeroOut",json!({"conditioning":["4",0]}))),
-        ("6".into(),node("EmptyLatentImage",json!({"width":input["width"],"height":input["height"],"batch_size":1}))),
-        ("8".into(),node("VAEDecode",json!({"samples":["7",0],"vae":["3",0]}))),
-        ("10".into(),node("SaveImage",json!({"images":["8",0],"filename_prefix":"creative_app"}))),
+        (
+            "1".into(),
+            node(
+                "UNETLoader",
+                json!({"unet_name":model["file"],"weight_dtype":"default"}),
+            ),
+        ),
+        (
+            "2".into(),
+            node(
+                "CLIPLoader",
+                json!({"clip_name":"qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors","type":"krea2"}),
+            ),
+        ),
+        (
+            "3".into(),
+            node(
+                "VAELoader",
+                json!({"vae_name":"qwen_image_vae.safetensors"}),
+            ),
+        ),
+        (
+            "4".into(),
+            node(
+                "CLIPTextEncode",
+                json!({"clip":["2",0],"text":input["prompt"]}),
+            ),
+        ),
+        (
+            "5".into(),
+            node("ConditioningZeroOut", json!({"conditioning":["4",0]})),
+        ),
+        (
+            "6".into(),
+            node(
+                "EmptyLatentImage",
+                json!({"width":input["width"],"height":input["height"],"batch_size":1}),
+            ),
+        ),
+        (
+            "8".into(),
+            node("VAEDecode", json!({"samples":["7",0],"vae":["3",0]})),
+        ),
+        (
+            "10".into(),
+            node(
+                "SaveImage",
+                json!({"images":["8",0],"filename_prefix":"creative_app"}),
+            ),
+        ),
     ]));
     let mut positive = link("4", 0);
     if model.get("rebalance").is_some() {

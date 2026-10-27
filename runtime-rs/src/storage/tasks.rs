@@ -2,15 +2,15 @@ mod accept;
 mod history;
 pub(super) mod inputs;
 mod listing;
+mod payload;
 mod result_reference;
 mod retry;
 mod scopes;
-mod payload;
-pub(super) use payload::{Cache as PayloadCache, migrate as migrate_payloads};
 pub(super) use payload::BODY as TASK_BODY;
+pub(super) use payload::{Cache as PayloadCache, migrate as migrate_payloads};
 
-pub(super) use result_reference::{ResultReference, read as read_result_reference};
 pub(super) use listing::{RecoveryPage, recovery as read_recovery_page};
+pub(super) use result_reference::{ResultReference, read as read_result_reference};
 pub(super) use scopes::initialize;
 
 pub(super) mod outputs;
@@ -31,9 +31,10 @@ fn read(
 ) -> Result<Option<TaskRecord>> {
     // Decode borrowed text while the row is alive. Keep JSON failures separate
     // from SQLite errors so malformed task JSON retains its request error.
-    let decode = |row: &rusqlite::Row<'_>| -> rusqlite::Result<(serde_json::Result<TaskRecord>, String)> {
-        Ok((serde_json::from_str(text_column(row, 0)?),row.get(1)?))
-    };
+    let decode =
+        |row: &rusqlite::Row<'_>| -> rusqlite::Result<(serde_json::Result<TaskRecord>, String)> {
+            Ok((serde_json::from_str(text_column(row, 0)?), row.get(1)?))
+        };
     let row = if let Some(id) = task_id {
         c.db.prepare_cached("SELECT record_json,(SELECT token FROM task_payloads p WHERE p.task_id=tasks.task_id) FROM tasks WHERE principal_id=? AND task_id=?")?
             .query_row(params![principal, id], decode)
@@ -43,9 +44,9 @@ fn read(
             .query_row(params![principal, request_key.unwrap_or("")], decode)
             .optional()?
     };
-    row.map(|(decoded,token)| {
+    row.map(|(decoded, token)| {
         let mut task = decoded?;
-        payload::hydrate(c,&mut task,&token)?;
+        payload::hydrate(c, &mut task, &token)?;
         task.runtime_epoch = c.epoch.clone();
         Ok(task)
     })
@@ -79,7 +80,7 @@ pub(super) fn read_record(
     }
 }
 fn write(c: &Context, task: TaskRecord) -> Result<Value> {
-    Ok(write_record(c,task)?.into_value()?)
+    Ok(write_record(c, task)?.into_value()?)
 }
 fn write_record(c: &Context, mut task: TaskRecord) -> Result<TaskRecord> {
     task.revision = c.next_revision()?;
@@ -88,7 +89,7 @@ fn write_record(c: &Context, mut task: TaskRecord) -> Result<TaskRecord> {
     let provider = task.provider.clone();
     let settled = task.upstream_settled;
     let id = task.task_id.clone();
-    payload::persist(c,&task)?;
+    payload::persist(c, &task)?;
     c.db.prepare_cached(
         "UPDATE tasks SET provider=?,upstream_settled=?,record_json=? WHERE task_id=?",
     )?
@@ -133,8 +134,8 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     if kind == "task.legacy-history" {
         return history::read(c, principal);
     }
-    let command = TaskCommand::deserialize(command)
-        .map_err(|_| invalid("Invalid task command fields"))?;
+    let command =
+        TaskCommand::deserialize(command).map_err(|_| invalid("Invalid task command fields"))?;
     execute_command(c, principal, command)
 }
 pub(super) fn execute_command(
@@ -201,7 +202,13 @@ pub(super) fn patch_record(
     mut patch: TaskPatch,
 ) -> Result<TaskRecord> {
     c.check_cancel()?;
-    if principal.is_empty() { return Err(ApiError::new(401,"UNAUTHORIZED","Desktop principal is required")); }
+    if principal.is_empty() {
+        return Err(ApiError::new(
+            401,
+            "UNAUTHORIZED",
+            "Desktop principal is required",
+        ));
+    }
     c.writer()?;
     c.transaction(|c| {
         let mut task = require(c, principal, id)?;

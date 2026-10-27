@@ -51,7 +51,11 @@ impl Inner {
         timeout: Duration,
         cancel: &CancellationToken,
     ) -> Result<(u16, Value)> {
-        let max_bytes = if provider == "webui" { constants::MAX_JSON } else { 2 * 1024 * 1024 };
+        let max_bytes = if provider == "webui" {
+            constants::MAX_JSON
+        } else {
+            2 * 1024 * 1024
+        };
         let work = async {
             let response = request
                 .send()
@@ -64,10 +68,13 @@ impl Inner {
             {
                 return Err(too_large(provider));
             }
-            let bytes = http_body::collect(response, max_bytes).await.map_err(|error| match error {
-                ReadError::Network(error) => network_error(provider, error),
-                ReadError::TooLarge => too_large(provider),
-            })?;
+            let bytes =
+                http_body::collect(response, max_bytes)
+                    .await
+                    .map_err(|error| match error {
+                        ReadError::Network(error) => network_error(provider, error),
+                        ReadError::TooLarge => too_large(provider),
+                    })?;
             Ok((status, bytes))
         };
         let (status, bytes) = tokio::select! {result=tokio::time::timeout(timeout,work)=>result.map_err(|_|ApiError::new(504,if provider=="webui"{"UPSTREAM_TIMEOUT"}else{"COMFY_TIMEOUT"},"上游请求超时"))?,_ = cancel.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","上游请求已取消"))}?;
@@ -112,7 +119,9 @@ impl Inner {
         timeout: Duration,
         cancel: &CancellationToken,
     ) -> Result<Value> {
-        let request = self.request(provider, method, path, None, timeout)?.json(body);
+        let request = self
+            .request(provider, method, path, None, timeout)?
+            .json(body);
         let (status, value) = self.read_json(provider, request, timeout, cancel).await?;
         json_success(provider, status, value)
     }
@@ -121,7 +130,11 @@ fn json_success(provider: &str, status: u16, value: Value) -> Result<Value> {
     if !(200..300).contains(&status) {
         return Err(ApiError::new(
             502,
-            if provider == "webui" { "UPSTREAM_ERROR" } else { "COMFY_UPSTREAM_ERROR" },
+            if provider == "webui" {
+                "UPSTREAM_ERROR"
+            } else {
+                "COMFY_UPSTREAM_ERROR"
+            },
             crate::upstream::diagnostic_message(&value, "上游请求失败"),
         ));
     }

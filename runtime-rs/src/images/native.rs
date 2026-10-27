@@ -1,6 +1,6 @@
 use super::*;
-use generation::native::{Plan, Settings};
 use generation::native::resources::{self, REMACRI_FILE};
+use generation::native::{Plan, Settings};
 
 fn supported_sampling(input: &Value) -> bool {
     matches!(input["sampler"].as_str(), Some("euler" | "res_multistep"))
@@ -141,12 +141,28 @@ pub(super) async fn plan(
     }
     if generation::native::adapters::model(input["modelId"].as_str().unwrap_or("")).is_some() {
         let input = native_adapters::normalize(&input, input.clone())?;
-        let image = input["initImage"].as_str().map(|name| originals.iter().find(|o| o.name == name)
-            .map(|o| o.input.clone()).ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的编辑原图"))).transpose()?;
-        let references = input["referenceImages"].as_array().into_iter().flatten().map(|value| {
-            originals.iter().find(|original| Some(original.name.as_str()) == value.as_str()).map(|original| original.input.clone())
-                .ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的参考图"))
-        }).collect::<Result<Vec<_>>>()?;
+        let image = input["initImage"]
+            .as_str()
+            .map(|name| {
+                originals
+                    .iter()
+                    .find(|o| o.name == name)
+                    .map(|o| o.input.clone())
+                    .ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的编辑原图"))
+            })
+            .transpose()?;
+        let references = input["referenceImages"]
+            .as_array()
+            .into_iter()
+            .flatten()
+            .map(|value| {
+                originals
+                    .iter()
+                    .find(|original| Some(original.name.as_str()) == value.as_str())
+                    .map(|original| original.input.clone())
+                    .ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的参考图"))
+            })
+            .collect::<Result<Vec<_>>>()?;
         let plan = native_adapters::plan(settings, input, image).await?;
         *plan.reference_images.lock().unwrap() = references;
         return Ok(plan);
@@ -167,21 +183,33 @@ pub(super) async fn plan(
     let originals = originals.to_vec();
     // All local recognition shares status/discovery rules, off the async executor.
     tokio::task::spawn_blocking(move || anima_plan(&settings, input, &originals))
-        .await.map_err(|_| ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", "模型组件读取未完成，请重试"))?
+        .await
+        .map_err(|_| {
+            ApiError::new(
+                503,
+                "NATIVE_MODEL_UNAVAILABLE",
+                "模型组件读取未完成，请重试",
+            )
+        })?
 }
-fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Original]) -> Result<Plan> {
+fn anima_plan(
+    settings: &Settings,
+    mut input: Value,
+    originals: &[inputs::Original],
+) -> Result<Plan> {
     let id = input["modelId"]
         .as_str()
         .ok_or_else(|| error("UNKNOWN_MODEL", "未知生成模型"))?
         .to_owned();
     catalog::model(&id)?;
-    let model_dir = resources::within(&settings.models_root, &settings.models_root.join(&id)).ok_or_else(|| {
-        ApiError::new(
-            503,
-            "NATIVE_MODEL_UNAVAILABLE",
-            "独立推理需要完整本地 Diffusers 模型目录",
-        )
-    })?;
+    let model_dir = resources::within(&settings.models_root, &settings.models_root.join(&id))
+        .ok_or_else(|| {
+            ApiError::new(
+                503,
+                "NATIVE_MODEL_UNAVAILABLE",
+                "独立推理需要完整本地 Diffusers 模型目录",
+            )
+        })?;
     if let Some(reason) = generation::native::model_issue(&model_dir) {
         return Err(ApiError::new(
             503,
@@ -283,13 +311,16 @@ fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Origin
             lora["maxStrength"].as_f64().unwrap(),
             false,
         )?;
-        let path = lora["file"].as_str().and_then(|name| resources::file(&settings.loras_root, name, false)).ok_or_else(|| {
-            ApiError::new(
-                503,
-                "NATIVE_LORA_UNAVAILABLE",
-                "独立推理目录中未找到所选 LoRA",
-            )
-        })?;
+        let path = lora["file"]
+            .as_str()
+            .and_then(|name| resources::file(&settings.loras_root, name, false))
+            .ok_or_else(|| {
+                ApiError::new(
+                    503,
+                    "NATIVE_LORA_UNAVAILABLE",
+                    "独立推理目录中未找到所选 LoRA",
+                )
+            })?;
         loras.push(json!({"path":path,"strength":strength}));
     }
     let init_image = if let Some(name) = input["initImage"].as_str() {
@@ -320,9 +351,16 @@ fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Origin
         None
     };
     let sketch_model_path = composition::prepare(settings, &mut input, &model_dir)?;
-    let sketch_image = input["sketchControl"]["image"].as_str().map(|name| originals.iter()
-        .find(|original| original.name == name).map(|original| original.input.clone())
-        .ok_or_else(|| error("TASK_INPUT_INVALID", "草图输入尚未保护"))).transpose()?;
+    let sketch_image = input["sketchControl"]["image"]
+        .as_str()
+        .map(|name| {
+            originals
+                .iter()
+                .find(|original| original.name == name)
+                .map(|original| original.input.clone())
+                .ok_or_else(|| error("TASK_INPUT_INVALID", "草图输入尚未保护"))
+        })
+        .transpose()?;
     Ok(Plan {
         input: input.into(),
         model_dir,
@@ -345,7 +383,11 @@ pub(super) async fn status(
 ) -> Result<Value> {
     status_check(&cancel)?;
     let runtime = backend.native_settings()?;
-    let runtime_error = runtime.validate_anima_files().await.err().map(|error| error.code);
+    let runtime_error = runtime
+        .validate_anima_files()
+        .await
+        .err()
+        .map(|error| error.code);
     let family = family.to_owned();
     // One bounded filesystem job per poll, with no completed-result cache.
     let mut value = tokio::task::spawn_blocking(move || {
@@ -370,7 +412,8 @@ fn local_status(
     cancel: &CancellationToken,
 ) -> Result<Value> {
     status_check(cancel)?;
-    let automatic_mask = runtime_error.is_none() && resources::clipseg(&runtime.models_root).is_some();
+    let automatic_mask =
+        runtime_error.is_none() && resources::clipseg(&runtime.models_root).is_some();
     status_check(cancel)?;
     let remacri = runtime_error.is_none() && resources::remacri(&runtime.models_root).is_some();
     let hires_upscalers = if remacri {
@@ -403,13 +446,21 @@ fn local_status(
         }
         let mut entry = json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"readiness":if available {"files-ready"} else {"unavailable"},"unavailableReason":issue,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"builtin-anima","readiness":"builtin","policy":"builtin-anima","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}});
         entry["capabilities"]["lora"] = json!(model["lora"] != false);
-        let sketch = composition::status(runtime, model_dir.as_deref(), available && model["family"] == "anima");
+        let sketch = composition::status(
+            runtime,
+            model_dir.as_deref(),
+            available && model["family"] == "anima",
+        );
         entry["capabilities"]["sketchControl"] = sketch["available"].clone();
         entry["capabilities"]["sketchControlStatus"] = sketch;
-        entry["capabilities"]["regionalPrompting"] = json!(available && model["family"] == "anima" && runtime.acceleration == "native");
+        entry["capabilities"]["regionalPrompting"] =
+            json!(available && model["family"] == "anima" && runtime.acceleration == "native");
         models.push(entry);
     }
-    for (id, model) in generation::native::adapters::manifest()["models"].as_object().unwrap() {
+    for (id, model) in generation::native::adapters::manifest()["models"]
+        .as_object()
+        .unwrap()
+    {
         status_check(cancel)?;
         if model["media"] == "image" && (family.is_empty() || model["family"] == family) {
             models.push(generation::native::adapters::status(runtime, id));
@@ -419,13 +470,18 @@ fn local_status(
     {
         for (id, lora) in catalog::CATALOG["LORAS"].as_object().unwrap() {
             status_check(cancel)?;
-            let available = lora["file"].as_str()
+            let available = lora["file"]
+                .as_str()
                 .is_some_and(|name| resources::file(&runtime.loras_root, name, false).is_some());
             loras.push(json!({"id":id,"name":lora["name"],"character":lora["character"],"characters":lora["characters"],"compatibleModels":lora["compatibleModels"],"preview":lora["preview"]==true,"validation":lora["validation"].as_str().unwrap_or("production"),"available":available,"formatValidation":"on-load"}));
         }
     }
     let online = models.iter().any(|model| model["available"] == true);
-    let styles = if family.is_empty() || family == "krea2" { native_adapters::styles(runtime) } else { vec![] };
+    let styles = if family.is_empty() || family == "krea2" {
+        native_adapters::styles(runtime)
+    } else {
+        vec![]
+    };
     let mut value = json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":if remacri {Some(REMACRI_FILE)} else {None}},"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"builtin","rcas":true,"hires":true,"hiresTeaCache":true,"upscalers":remacri,"hiresUpscalers":hires_upscalers,"weightSyntax":true},"pending":0,"maxPending":4});
     value["styleLoras"] = json!(styles);
     if matches!(family, "krea2" | "qwen-image") {
@@ -435,7 +491,10 @@ fn local_status(
         value["characters"] = json!([]);
         value["hires"] = Value::Null;
         value["validation"] = json!("待主力机验证");
-        value["runtimeError"] = generation::native::adapters::settings(runtime).err().map(|e| json!(e.code)).unwrap_or(Value::Null);
+        value["runtimeError"] = generation::native::adapters::settings(runtime)
+            .err()
+            .map(|e| json!(e.code))
+            .unwrap_or(Value::Null);
     }
     Ok(value)
 }

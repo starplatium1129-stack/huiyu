@@ -76,7 +76,11 @@ impl Service {
         let tasks = TaskTracker::new();
         let batches = Arc::new(Mutex::new(std::collections::HashMap::new()));
         batch::reap(batches.clone(), config.clone(), shutdown.clone(), &tasks);
-        let requests = generation::receipts::Requests::new(config.runtime_root.join("jobs/video-requests"), "VIDEO", "视频");
+        let requests = generation::receipts::Requests::new(
+            config.runtime_root.join("jobs/video-requests"),
+            "VIDEO",
+            "视频",
+        );
         Ok(Self {
             backend,
             config,
@@ -139,8 +143,11 @@ impl Service {
         } else {
             None
         };
-        let input = if self.backend.native_enabled() { native::validate(&raw, size)? }
-            else { validation::validate(&raw, size)? };
+        let input = if self.backend.native_enabled() {
+            native::validate(&raw, size)?
+        } else {
+            validation::validate(&raw, size)?
+        };
         drop(raw);
         self.prepare_input(input, local, owner, false, cancel).await
     }
@@ -159,22 +166,25 @@ impl Service {
             let permit = self.backend.reserve_native(&cancel)?;
             let input = native::normalize(input)?;
             let originals = inputs::capture(&self.config, &input, local, owner, &cancel).await?;
-            let plan = generation::native::adapters::plan(&self.backend.native_settings()?, input, None).await?;
+            let plan =
+                generation::native::adapters::plan(&self.backend.native_settings()?, input, None)
+                    .await?;
             let backend = self.backend.prepare_native(plan, permit, &cancel)?;
             return Ok(Prepared { backend, originals });
         }
         if input["inferenceEngine"] == "native" {
-            return Err(error(409, "TASK_RESUME_UNSAFE", "视频任务引擎已改变，请重新创建任务"));
+            return Err(error(
+                409,
+                "TASK_RESUME_UNSAFE",
+                "视频任务引擎已改变，请重新创建任务",
+            ));
         }
         let t8 = self.t8(&cancel).await;
         let plan = resources::plan(&self.config, input, t8, batch)?;
         let backend = self.backend.prepare_comfy(plan, cancel.clone()).await?;
         let originals =
             inputs::capture(&self.config, &backend.input, local, owner, &cancel).await?;
-        Ok(Prepared {
-            backend,
-            originals,
-        })
+        Ok(Prepared { backend, originals })
     }
     pub async fn submit(
         self: Arc<Self>,
@@ -335,8 +345,8 @@ impl Service {
             self.t8(&self.shutdown),
             self.backend.comfy_online(),
         );
-        let models = models
-            .map_err(|_| error(503, "VIDEO_STATUS_UNAVAILABLE", "视频资源状态暂不可用"))?;
+        let models =
+            models.map_err(|_| error(503, "VIDEO_STATUS_UNAVAILABLE", "视频资源状态暂不可用"))?;
         let qualities = catalog::constants()["QUALITIES"]
             .as_object()
             .unwrap()

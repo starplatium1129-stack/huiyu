@@ -5,9 +5,10 @@ import { ApiClientError } from '@/api/client'
 import { useSceneStore } from '@/stores/sceneStore'
 import { confirmAction } from '@/composables/useConfirm'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
-import { blankRecord } from './catalogFields'
+import { blankPopularCharacter, blankRecord, fieldValue } from './catalogFields'
 import { recordTitle } from './catalogPresentation'
 import { downloadBlob } from '@/utils/downloadBlob'
+import { markCatalogPendingPortrait } from '@/utils/popularPortraitSource'
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
 const key = (kind: string, id: string) => `${kind}:${id}`
 const allowsAdvanced = (record: CatalogRecord) => record.kind !== 'document' || ['curation', 'tags', 'tag-dictionary-policy'].includes(record.id)
@@ -20,7 +21,7 @@ const editorRecord = (record: CatalogRecord, change?: CatalogChange): CatalogRec
 // New, unfinished records may not have an ID yet; the server still validates saved records.
 const isDraftRecord = (value: unknown): value is CatalogRecord => !!value && typeof value === 'object'
   && typeof (value as CatalogRecord).id === 'string' && isCatalogRecord({ ...value, id: (value as CatalogRecord).id || 'draft' })
-export type CatalogFieldError = { field: 'id' | 'sortOrder' | 'advanced'; message: string }
+export type CatalogFieldError = { field: string; message: string }
 export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
   const kind = ref<CatalogKind>('scene'), search = ref(''), character = ref(''), category = ref(''), rating = ref(''), sort = ref('order'), page = ref(1)
   const result = ref<CatalogPage | null>(null), counts = ref<Record<string, number>>({}), loading = ref(false), error = ref(''), hint = ref('')
@@ -34,6 +35,7 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
   const advanced = ref<string | null>(null), advancedError = ref(''), editorSession = ref(0)
   const fieldError = ref<CatalogFieldError | null>(null)
   const nextSceneId = ref('')
+  const lastOnboardedCharacter = ref('')
   const characterNames = ref<Record<string, string>>({})
   let namesVersion = -1, namesController: AbortController | null = null
   let namesLoadingVersion: number | null = null, statsVersion = -1
@@ -191,12 +193,12 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
     finally { if (seq === detailSeq) detailLoading.value = false }
     return opened && seq === detailSeq && !disposed
   }
-  async function add(copy = false) {
-    if (busy.value || disposed || kind.value === 'document' || copy && editorPendingNotice.value) return
+  async function add(copy = false, popular = false): Promise<boolean> {
+    if (busy.value || disposed || kind.value === 'document' || copy && editorPendingNotice.value) return false
     const seq = invalidateDetail()
-    if (!await canSwitch() || seq !== detailSeq || busy.value || disposed) return
-    const record = copy && selected.value ? clone(selected.value) : blankRecord(kind.value)
-    record.id = ''; record.revision = 0; record.createdAt = null; record.updatedAt = null
+    if (!await canSwitch() || seq !== detailSeq || busy.value || disposed) return false
+    const record = copy && selected.value ? clone(selected.value) : popular && kind.value === 'character' ? blankPopularCharacter() : blankRecord(kind.value)
+    record.id = ''; record.revision = 0; record.sortOrder = 0; record.createdAt = null; record.updatedAt = null
     if (record.kind === 'scene' && nextSceneId.value) {
       const occupied = new Set(pending.value.filter(c => c.kind === 'scene').map(c => c.id))
       let number = Number(nextSceneId.value.slice(2))
@@ -204,6 +206,7 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
       record.id = 'sc' + String(number).padStart(3, '0')
     } else if (record.kind === 'blueprint') record.id = 'bp_' + crypto.randomUUID().replaceAll('-', '')
     resetEditor(record)
+    return true
   }
   function stage(): boolean {
     const record = selected.value
@@ -213,6 +216,41 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
     fieldError.value = null
     if (!record.id.trim() || record.id.trim() !== record.id) return rejectField('id', '请在管理信息中填写编号，首尾不要留空白')
     if (!Number.isSafeInteger(record.sortOrder)) return rejectField('sortOrder', '展示顺序需要一个整数')
+    const newPopular = record.kind === 'character' && !record.revision && !!fieldValue(record.data, 'popular')
+    const onboarding = newPopular && !!fieldValue(record.data, 'draftDefaultOutfit')
+    if (newPopular && !onboarding && !pending.value.some(item => item.kind === 'outfit' && item.expectedRevision === 0
+      && item.id === `${record.id}/${fieldValue(record.data, 'popular.defaultOutfitId')}` && fieldValue(item.data ?? {}, 'outfit.default') === true))
+      return rejectField('advanced', '新绘图角色需要同时创建首套服装，请从“接入绘图角色”开始')
+    if (newPopular) {
+      if (!/^[a-z][a-z0-9_]*$/.test(record.id)) return rejectField('id', '绘图角色编号请使用小写英文字母、数字和下划线，并以字母开头')
+      for (const [path, label] of [
+        ['profile.name', '角色名称'], ['profile.source', '资料来源'], ['profile.speech', '开场台词'],
+        ['profile.visual_dna.signature', '识别特征'], ['popular.displayName', '绘图显示名称'], ['popular.originalName', '原名'],
+        ['popular.franchise', '作品系列'], ['popular.identityProse', '人物描述'],
+        ...(onboarding ? [['draftDefaultOutfit.id', '首套服装代号'], ['draftDefaultOutfit.name', '首套服装名称'], ['draftDefaultOutfit.prose', '首套服装描述']] : []),
+      ]) if (!String(fieldValue(record.data, path) ?? '').trim()) return rejectField(path, `请填写${label}`)
+      if (onboarding && !/^[a-z][a-z0-9_-]*$/.test(String(fieldValue(record.data, 'draftDefaultOutfit.id'))))
+        return rejectField('draftDefaultOutfit.id', '服装代号请使用小写英文字母、数字、下划线或短横线，并以字母开头')
+      if (!Array.isArray(fieldValue(record.data, 'profile.traits')) || (fieldValue(record.data, 'profile.traits') as unknown[]).length < 3)
+        return rejectField('profile.traits', '请填写至少三项人物识别词条')
+      for (const [path, label] of [['popular.identityTokens', '人物特征关键词'], ...(onboarding ? [['draftDefaultOutfit.tokens', '首套服装词条']] : [])])
+        if (!Array.isArray(fieldValue(record.data, path)) || !(fieldValue(record.data, path) as unknown[]).length)
+          return rejectField(path, `请填写至少一项${label}`)
+    }
+    if (record.kind === 'scene' && !fieldValue(record.data, 'generatedRecipe')) {
+      for (const [path, label] of [['title', '标题'], ['story', '故事'], ['prompt', '画面关键词']])
+        if (!String(fieldValue(record.data, path) ?? '').trim()) return rejectField(path, `请填写${label}`)
+    }
+    if (record.kind === 'blueprint' && !fieldValue(record.data, 'generatedRecipe')) {
+      for (const [path, label] of [
+        ['title', '标题'], ['characterId', '所属角色'], ['outfitId', '服装'], ['category', '分类'],
+        ['description', '说明'], ['location', '地点'], ['action', '动作'], ['timeOfDay', '时段'],
+        ['lighting', '光照'], ['camera', '镜头'], ['mood', '情绪'], ['recommendedSize', '尺寸'],
+        ['promptProse', 'Krea 画面描述'],
+      ]) if (!String(fieldValue(record.data, path) ?? '').trim()) return rejectField(path, `请填写${label}`)
+      if (!Array.isArray(fieldValue(record.data, 'promptTokens')) || !(fieldValue(record.data, 'promptTokens') as unknown[]).length)
+        return rejectField('promptTokens', '请填写至少一项画面关键词')
+    }
     const data = clone(record.data) as Record<string, unknown>
     if (record.kind === 'character') {
       data.id = record.id
@@ -221,14 +259,24 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
       const outfit = data.outfit as Record<string, unknown>
       if (!outfit || typeof outfit !== 'object' || Array.isArray(outfit) || record.id !== `${data.characterId}/${outfit.id}`) return rejectField('advanced', '服装记录 ID 必须为「角色ID/服装ID」')
     } else if (record.kind !== 'document') data.id = record.id
+    const defaultOutfit = onboarding ? data.draftDefaultOutfit as { id: string; name: string; prose: string; tokens: string[] } : null
+    if (defaultOutfit) {
+      (data.popular as Record<string, unknown>).defaultOutfitId = defaultOutfit.id
+      delete data.draftDefaultOutfit
+    }
     const previous = pending.value.find(change => key(change.kind, change.id) === key(record.kind, record.id))
     const before = baseline.value ? JSON.parse(baseline.value) as CatalogRecord : null
     const createdAt = previous?.createdAt ?? (before?.kind === record.kind && before.id === record.id
       && before.createdAt === null && typeof record.createdAt === 'string' ? record.createdAt : undefined)
-    const change: CatalogChange = { kind: record.kind, id: record.id, expectedRevision: record.revision, data, sortOrder: record.sortOrder,
+    const change: CatalogChange = { kind: record.kind, id: record.id, expectedRevision: record.revision, data,
+      ...(record.revision || record.sortOrder ? { sortOrder: record.sortOrder } : {}),
       ...(createdAt !== undefined ? { createdAt } : {}) }
-    pending.value = [...pending.value.filter(c => key(c.kind, c.id) !== key(change.kind, change.id)), change]
-    selected.value = { ...record, data: clone(data) }; baseline.value = JSON.stringify(selected.value); preview.value = null; hint.value = '这项修改已暂存，可以继续整理其他内容'
+    const outfitChange: CatalogChange | null = defaultOutfit ? { kind: 'outfit', id: `${record.id}/${defaultOutfit.id}`, expectedRevision: 0,
+      data: { characterId: record.id, outfit: { ...defaultOutfit, default: true, isDefault: true, characterId: record.id } } } : null
+    pending.value = [...pending.value.filter(c => key(c.kind, c.id) !== key(change.kind, change.id)
+      && !(outfitChange && c.kind === 'outfit' && c.expectedRevision === 0 && c.id.startsWith(record.id + '/') && fieldValue(c.data ?? {}, 'outfit.default') === true)), change, ...(outfitChange ? [outfitChange] : [])]
+    selected.value = { ...record, data: clone(data) }; baseline.value = JSON.stringify(selected.value); preview.value = null
+    hint.value = outfitChange ? '角色和首套服装已一起暂存，请查看修改后保存' : '这项修改已暂存，可以继续整理其他内容'
     return true
   }
   async function remove() {
@@ -247,10 +295,18 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
   }
   function withdrawPending(change: CatalogChange): boolean {
     if (busy.value || disposed || !pending.value.includes(change)) return false
+    const characterChange = change.kind === 'character' ? change : pending.value.find(item => item.kind === 'character' && item.expectedRevision === 0
+      && change.kind === 'outfit' && change.id === `${item.id}/${fieldValue(item.data ?? {}, 'popular.defaultOutfitId')}`)
+    const outfitChange = characterChange && pending.value.find(item => item.kind === 'outfit' && item.expectedRevision === 0
+      && item.id === `${characterChange.id}/${fieldValue(characterChange.data ?? {}, 'popular.defaultOutfitId')}` && fieldValue(item.data ?? {}, 'outfit.default') === true)
     const record = selected.value
-    const current = !!record && key(record.kind, record.id) === key(change.kind, change.id)
+    const current = !!record && (key(record.kind, record.id) === key(change.kind, change.id)
+      || !!outfitChange && record.kind === 'character' && record.id === characterChange?.id)
     if (current) {
       invalidateDetail()
+      if (outfitChange && record.kind === 'character') record.data = { ...record.data,
+        draftDefaultOutfit: { id: fieldValue(outfitChange.data ?? {}, 'outfit.id'), name: fieldValue(outfitChange.data ?? {}, 'outfit.name'),
+          prose: fieldValue(outfitChange.data ?? {}, 'outfit.prose'), tokens: fieldValue(outfitChange.data ?? {}, 'outfit.tokens') } }
       // Keep the mounted editor's unapplied JSON too; withdrawal no longer means this editor is saved.
       if (change.createdAt !== undefined && record.createdAt === change.createdAt) {
         const before = baseline.value ? JSON.parse(baseline.value) as CatalogRecord : record
@@ -259,13 +315,16 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
         baseline.value = JSON.stringify({ ...(sameRecord ? before : record), createdAt: null })
       } else baseline.value = ''
     }
-    pending.value = pending.value.filter(item => item !== change)
+    pending.value = pending.value.filter(item => item !== change && item !== characterChange && item !== outfitChange)
     preview.value = null
-    hint.value = current ? '已撤回这项暂存，当前输入仍保留；再次暂存会把上方内容重新加入待保存修改。' : '已撤回这项暂存'
+    hint.value = outfitChange ? '角色与首套服装已一起撤回，当前输入仍保留' : current ? '已撤回这项暂存，当前输入仍保留；再次暂存会把上方内容重新加入待保存修改。' : '已撤回这项暂存'
     return true
   }
   async function submit(previewOnly = false) {
     if (busy.value || !pending.value.length || dirtyEditor.value) return
+    const missingOutfit = pending.value.find(change => change.kind === 'character' && change.expectedRevision === 0 && fieldValue(change.data ?? {}, 'popular')
+      && !pending.value.some(item => item.kind === 'outfit' && item.expectedRevision === 0 && item.id.startsWith(change.id + '/') && fieldValue(item.data ?? {}, 'outfit.default') === true))
+    if (missingOutfit) { hint.value = `新角色 ${missingOutfit.id} 缺少首套默认服装，请撤回后从“接入绘图角色”重新整理`; return }
     const submission = clone(pending.value)
     const record = selected.value
     const editor = record ? { record, kind: record.kind, id: record.id, seq: detailSeq } : null
@@ -276,6 +335,9 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
       const receipt = await catalogApi.changes(submission, previewOnly)
       if (previewOnly) preview.value = receipt
       else {
+        lastOnboardedCharacter.value = submission.find(change => change.kind === 'character' && change.expectedRevision === 0
+          && fieldValue(change.data ?? {}, 'popular') && submission.some(item => item.kind === 'outfit' && item.id.startsWith(change.id + '/')))?.id ?? ''
+        if (lastOnboardedCharacter.value) markCatalogPendingPortrait(lastOnboardedCharacter.value)
         pending.value = []; resetEditor(); useSceneStore().invalidate()
         hint.value = '已保存 ' + receipt.items.length + ' 项修改'; await load()
       }
@@ -393,7 +455,7 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
   }
   const exportDraft = () => download({ format: 'huiyu-content-draft', version: 2, changes: pending.value,
     editor: selected.value, advanced: advanced.value, baseline: baseline.value ? JSON.parse(baseline.value) : null }, 'content-draft.json')
-  async function exportSnapshot() { try { download(await catalogApi.snapshot(), 'content-snapshot.json'); hint.value = '已导出保存到内容库的内容；未保存的编辑与完整数据原文请另用“备份未保存的修改”导出。' } catch (e) { hint.value = (e as Error).message } }
+  async function exportSnapshot() { try { download(await catalogApi.snapshot(), 'content-snapshot.json'); hint.value = '已下载本机内容库备份。项目快照仍需通过维护命令定向导出；未保存的修改请另行备份。' } catch (e) { hint.value = (e as Error).message } }
   watch(kind, invalidateDetail, { flush: 'sync' })
   watch([kind, character, category, rating, sort], () => { page.value = 1; void load() })
   watch(search, () => { clearTimeout(timer); timer = setTimeout(() => { page.value = 1; void load() }, 180) })
@@ -407,5 +469,5 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
   onMounted(() => { window.addEventListener('beforeunload', beforeUnload); void load() })
   onBeforeUnmount(() => { disposed = true; ++bulkReadSeq; ++listSeq; invalidateDetail(); clearHistory(); listController?.abort(); detailController?.abort(); namesController?.abort(); clearTimeout(timer); release(); window.removeEventListener('beforeunload', beforeUnload) })
   onBeforeRouteLeave(async () => !busy.value && (!dirty.value || await confirmAction({ title: '离开内容维护？', message: '未保存修改将丢失，可先导出草稿。', confirmLabel: '离开', danger: true })))
-  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, fieldError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
+  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, fieldError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending, submit, compareCurrent, adoptRevision, lastOnboardedCharacter, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
 }

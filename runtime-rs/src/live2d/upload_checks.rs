@@ -1,12 +1,7 @@
 use super::manifest::{invalid, relative};
 use crate::error::Result;
 use serde_json::Value;
-use std::{
-    collections::HashSet,
-    fs,
-    io::Read,
-    path::Path,
-};
+use std::{collections::HashSet, fs, io::Read, path::Path};
 use tokio_util::sync::CancellationToken;
 
 fn json_depth(value: &Value, depth: usize) -> bool {

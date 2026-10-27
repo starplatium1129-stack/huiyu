@@ -3,8 +3,8 @@ mod hooks;
 mod recovery;
 mod run;
 mod saved_output;
-pub(crate) use recovery::BatchRecovery;
 use super::*;
+pub(crate) use recovery::BatchRecovery;
 use std::collections::HashMap;
 use std::time::Instant;
 use tokio::sync::Mutex;
@@ -90,10 +90,15 @@ impl Batch {
         // outcome is still unknown. Observe those original identities, never
         // infer settlement from the row label or from unsubmitted pending rows.
         let gate = self.serial.try_lock().ok();
-        let stopped = !matches!(self.state.lock().await.status.as_str(), "running" | "cancelling");
+        let stopped = !matches!(
+            self.state.lock().await.status.as_str(),
+            "running" | "cancelling"
+        );
         let observed = if stopped && gate.is_some() {
             Some(service.reconcile_live(self).await.unwrap_or(false))
-        } else { None };
+        } else {
+            None
+        };
         let s = self.state.lock().await;
         let stopped = !matches!(s.status.as_str(), "running" | "cancelling");
         let settled = stopped && observed == Some(true);
@@ -143,7 +148,11 @@ impl Service {
         cancel: CancellationToken,
     ) -> Result<BatchPrepared> {
         if self.backend.native_enabled() {
-            return Err(error(501, "NATIVE_VIDEO_BATCH_UNSUPPORTED", "原生视频本轮仅接入单镜头任务；分镜批量、衔接与合成尚未接入，不会回退 ComfyUI"));
+            return Err(error(
+                501,
+                "NATIVE_VIDEO_BATCH_UNSUPPORTED",
+                "原生视频本轮仅接入单镜头任务；分镜批量、衔接与合成尚未接入，不会回退 ComfyUI",
+            ));
         }
         let shots = input["shots"]
             .as_array()
@@ -196,11 +205,15 @@ impl Service {
         owner: String,
         hooks: Option<Arc<dyn ExecutionHooks>>,
     ) -> Result<Value> {
-        self.submit_batch_accepting(prepared, owner, hooks, None).await
+        self.submit_batch_accepting(prepared, owner, hooks, None)
+            .await
     }
     pub(super) async fn submit_batch_accepting(
-        self: Arc<Self>, mut prepared: BatchPrepared, owner: String,
-        hooks: Option<Arc<dyn ExecutionHooks>>, acceptance: Option<&dyn ExecutionHooks>,
+        self: Arc<Self>,
+        mut prepared: BatchPrepared,
+        owner: String,
+        hooks: Option<Arc<dyn ExecutionHooks>>,
+        acceptance: Option<&dyn ExecutionHooks>,
     ) -> Result<Value> {
         inputs::protect_restore(
             &self.config,
@@ -258,7 +271,9 @@ impl Service {
             .await
             .insert(batch.id.clone(), batch.clone());
         if let Some(acceptance) = acceptance
-            && let Err(error) = acceptance.checkpoint(json!({"gatewayJobId":batch.id})).await
+            && let Err(error) = acceptance
+                .checkpoint(json!({"gatewayJobId":batch.id}))
+                .await
         {
             self.batches.lock().await.remove(&batch.id);
             return Err(error);

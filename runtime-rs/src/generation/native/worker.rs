@@ -135,31 +135,59 @@ pub(crate) struct ComfyLease {
     _admission: OwnedSemaphorePermit,
 }
 impl Drop for ComfyLease {
-    fn drop(&mut self) { self.engine.comfy_leased.store(false,Ordering::SeqCst); }
+    fn drop(&mut self) {
+        self.engine.comfy_leased.store(false, Ordering::SeqCst);
+    }
 }
 impl Engine {
     pub(crate) async fn comfy_handoff(self: &Arc<Self>) -> Result<ComfyLease> {
         let engine = self.clone();
         // Retirement owns the slot even if preparation's HTTP future disappears.
         tokio::spawn(async move {
-            let admission = engine.admission.clone().try_acquire_many_owned(4).map_err(|_| {
-                if engine.admission.is_closed() { release_error() }
-                else { ApiError::new(409,"DRAWING_BUSY","独立推理仍有准备、排队或显存交接，请待任务结束后重试") }
-            })?;
+            let admission = engine
+                .admission
+                .clone()
+                .try_acquire_many_owned(4)
+                .map_err(|_| {
+                    if engine.admission.is_closed() {
+                        release_error()
+                    } else {
+                        ApiError::new(
+                            409,
+                            "DRAWING_BUSY",
+                            "独立推理仍有准备、排队或显存交接，请待任务结束后重试",
+                        )
+                    }
+                })?;
             let slot = engine.slot.clone().try_acquire_owned().map_err(|_| {
-                if engine.slot.is_closed() { release_error() }
-                else { ApiError::new(409,"DRAWING_BUSY","另一引擎仍在使用或释放显存，请待任务结束后重试") }
+                if engine.slot.is_closed() {
+                    release_error()
+                } else {
+                    ApiError::new(
+                        409,
+                        "DRAWING_BUSY",
+                        "另一引擎仍在使用或释放显存，请待任务结束后重试",
+                    )
+                }
             })?;
             if let Some(mut worker) = engine.worker.lock().await.take() {
                 if let Err(error) = worker.stop().await {
-                    engine.slot.close(); engine.admission.close(); slot.forget();
+                    engine.slot.close();
+                    engine.admission.close();
+                    slot.forget();
                     return Err(error);
                 }
             }
-            engine.gpu_owned.store(false,Ordering::SeqCst);
-            engine.comfy_leased.store(true,Ordering::SeqCst);
-            Ok(ComfyLease { engine, _slot:slot, _admission:admission })
-        }).await.map_err(|_| release_error())?
+            engine.gpu_owned.store(false, Ordering::SeqCst);
+            engine.comfy_leased.store(true, Ordering::SeqCst);
+            Ok(ComfyLease {
+                engine,
+                _slot: slot,
+                _admission: admission,
+            })
+        })
+        .await
+        .map_err(|_| release_error())?
     }
     pub(super) async fn take_worker(&self, settings: &Settings) -> Result<Worker> {
         if let Some(mut worker) = self.worker.lock().await.take() {
@@ -214,7 +242,7 @@ impl Engine {
                 owner.admission.close();
                 eprintln!("native idle release: {}", error.code);
             } else {
-                owner.native.gpu_owned.store(false,Ordering::SeqCst);
+                owner.native.gpu_owned.store(false, Ordering::SeqCst);
             }
         });
     }
@@ -233,7 +261,8 @@ impl Service {
         // until chat startup completes so a new generation cannot enter the GPU.
         let admission = self
             .inner
-            .native.admission
+            .native
+            .admission
             .clone()
             .try_acquire_many_owned(4)
             .map_err(|_| {
@@ -272,7 +301,7 @@ impl Service {
                 return Err(error);
             }
         }
-        self.inner.native.gpu_owned.store(false,Ordering::SeqCst);
+        self.inner.native.gpu_owned.store(false, Ordering::SeqCst);
         Ok(Some(admission))
     }
 }

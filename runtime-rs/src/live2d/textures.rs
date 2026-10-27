@@ -66,7 +66,10 @@ fn scale(quality: &str) -> Result<i32> {
         _ => Err(manifest::invalid("Invalid Live2D quality")),
     }
 }
-fn selected<'a>(snapshot: &'a catalog::Snapshot, character: &str) -> Result<(&'a catalog::Model, Value)> {
+fn selected<'a>(
+    snapshot: &'a catalog::Snapshot,
+    character: &str,
+) -> Result<(&'a catalog::Model, Value)> {
     let model = snapshot
         .models
         .iter()

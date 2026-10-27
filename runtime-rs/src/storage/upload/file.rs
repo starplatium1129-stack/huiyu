@@ -48,7 +48,8 @@ pub(super) fn write(
                 return Err(conflict("MEDIA_INVALID", "Invalid media chunk"));
             }
             Bytes::from(
-                STANDARD.decode(encoded)
+                STANDARD
+                    .decode(encoded)
                     .map_err(|_| conflict("MEDIA_INVALID", "Invalid media chunk encoding"))?,
             )
         }

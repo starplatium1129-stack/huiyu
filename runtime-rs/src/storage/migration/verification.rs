@@ -202,7 +202,12 @@ fn spawn(pending: &Pending, sender: &mpsc::WeakSender<Work>) -> Result<()> {
         .name("workspace-migration-verify".into())
         .spawn(move || {
             let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                file::run(&identity, &migration_id, envelope["media"].as_array().unwrap(),job.as_deref())
+                file::run(
+                    &identity,
+                    &migration_id,
+                    envelope["media"].as_array().unwrap(),
+                    job.as_deref(),
+                )
             }))
             .unwrap_or_else(|_| Err(unavailable()));
             // The sender retains the actor and owner until the actual filesystem

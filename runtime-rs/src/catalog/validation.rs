@@ -236,6 +236,15 @@ impl PinPolicy {
         Ok(())
     }
 }
+pub(super) const PINNED_FIELDS: [&str; 6] = [
+    "prompt",
+    "negative",
+    "animaCaption",
+    "recommendedSize",
+    "rating",
+    "mature",
+];
+
 pub(super) fn pins(
     connection: &Connection,
     source: &Path,
@@ -254,14 +263,7 @@ pub(super) fn pins(
     }
     let after =
         after.ok_or_else(|| ApiError::invalid(format!("定稿场景不能下架：{}", before.id)))?;
-    for field in [
-        "prompt",
-        "negative",
-        "animaCaption",
-        "recommendedSize",
-        "rating",
-        "mature",
-    ] {
+    for field in PINNED_FIELDS {
         if before.data.get(field) != after.get(field)
             && after.get(field) != pins["scenes"][&before.id].get(field)
         {

@@ -1,7 +1,7 @@
 //! Durable task contract. JSON belongs at HTTP/provider and persistence boundaries;
 //! lifecycle decisions use these types, independently of any engine or database.
 use serde::{Deserialize, Deserializer, Serialize};
-use serde_json::{json, Map, Value};
+use serde_json::{Map, Value, json};
 use std::sync::Arc;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -156,8 +156,10 @@ impl TaskRecord {
         let checkpoint = self.checkpoint.take();
         let mut value = serde_json::to_value(self)?;
         value["input"] = Value::Object(Arc::unwrap_or_clone(input));
-        value["inputMediaRefs"] = Value::Array(input_media_refs.into_iter().map(Value::String).collect());
-        value["resultRefs"] = Value::Array(result_refs.into_iter().map(ResultRef::into_value).collect());
+        value["inputMediaRefs"] =
+            Value::Array(input_media_refs.into_iter().map(Value::String).collect());
+        value["resultRefs"] =
+            Value::Array(result_refs.into_iter().map(ResultRef::into_value).collect());
         value["metadata"] = Value::Object(metadata);
         value["checkpoint"] = checkpoint.map(Arc::unwrap_or_clone).unwrap_or(Value::Null);
         Ok(value)
@@ -201,7 +203,8 @@ impl TaskSummary {
     pub(crate) fn into_value(mut self) -> serde_json::Result<Value> {
         let result_refs = std::mem::take(&mut self.result_refs);
         let mut value = serde_json::to_value(self)?;
-        value["resultRefs"] = Value::Array(result_refs.into_iter().map(ResultRef::into_value).collect());
+        value["resultRefs"] =
+            Value::Array(result_refs.into_iter().map(ResultRef::into_value).collect());
         Ok(value)
     }
 }

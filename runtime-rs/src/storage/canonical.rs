@@ -12,7 +12,11 @@ fn index(key: &str) -> Option<u32> {
     if key == "0" {
         return Some(0);
     }
-    if !key.as_bytes().first().is_some_and(|c| matches!(c, b'1'..=b'9')) {
+    if !key
+        .as_bytes()
+        .first()
+        .is_some_and(|c| matches!(c, b'1'..=b'9'))
+    {
         return None;
     }
     let number: u32 = key.parse().ok()?;
@@ -93,17 +97,26 @@ pub(crate) fn stringify_object<'a>(
 // Match stringify's JS numbers and index-key ordering without encoding either tree.
 pub(crate) fn stringify_equal(left: &Value, right: &Value) -> bool {
     match (left, right) {
-        (Value::Number(left), Value::Number(right)) => left.as_f64().unwrap() == right.as_f64().unwrap(),
+        (Value::Number(left), Value::Number(right)) => {
+            left.as_f64().unwrap() == right.as_f64().unwrap()
+        }
         (Value::Array(left), Value::Array(right)) => {
             left.len() == right.len()
-                && left.iter().zip(right).all(|(left, right)| stringify_equal(left, right))
+                && left
+                    .iter()
+                    .zip(right)
+                    .all(|(left, right)| stringify_equal(left, right))
         }
         (Value::Object(left), Value::Object(right)) => {
             left.len() == right.len()
-                && left.keys().filter(|key| index(key).is_none())
+                && left
+                    .keys()
+                    .filter(|key| index(key).is_none())
                     .eq(right.keys().filter(|key| index(key).is_none()))
                 && left.iter().all(|(key, left)| {
-                    right.get(key).is_some_and(|right| stringify_equal(left, right))
+                    right
+                        .get(key)
+                        .is_some_and(|right| stringify_equal(left, right))
                 })
         }
         _ => left == right,

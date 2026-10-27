@@ -176,9 +176,9 @@ fn group(root: &std::path::Path, entry: &Entry, entries: &HashMap<String, Entry>
             paths.push(path);
         }
     }
-    let total_bytes = paths.iter().try_fold(0_u64, |total, name| {
-        total.checked_add(entries[name].bytes)
-    });
+    let total_bytes = paths
+        .iter()
+        .try_fold(0_u64, |total, name| total.checked_add(entries[name].bytes));
     Ok(Group { paths, total_bytes })
 }
 pub(super) fn snapshot(ctx: &Context, cancel: &CancellationToken) -> Result<Option<Snapshot>> {
@@ -210,7 +210,8 @@ pub(super) fn snapshot(ctx: &Context, cancel: &CancellationToken) -> Result<Opti
     state::validate(ctx, &value)?;
     for key in ["current", "previous"] {
         if !value[key].is_null() {
-            let (approved, source) = policy::approved(ctx, value[key]["releaseId"].as_str().unwrap())?;
+            let (approved, source) =
+                policy::approved(ctx, value[key]["releaseId"].as_str().unwrap())?;
             if source["kind"] == "http" {
                 policy::source_url(approved, source, "manifest.json")?;
             }

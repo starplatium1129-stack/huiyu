@@ -38,13 +38,19 @@ fn anchor(terms: &[String]) -> (&'static str, String) {
         // and force a full scan even when the complete query is selective.
         // Each token stays exactly three Unicode characters for detail=none;
         // all are necessary conditions, with contains still the final match.
-        let prefix_end = term.char_indices().nth(3).map_or(term.len(), |(index, _)| index);
+        let prefix_end = term
+            .char_indices()
+            .nth(3)
+            .map_or(term.len(), |(index, _)| index);
         let mut trigrams = BTreeSet::from([term[..prefix_end].to_owned()]);
         for term in terms
             .iter()
             .filter(|term| !term.contains('\0') && term.chars().nth(2).is_some())
         {
-            let prefix_end = term.char_indices().nth(3).map_or(term.len(), |(index, _)| index);
+            let prefix_end = term
+                .char_indices()
+                .nth(3)
+                .map_or(term.len(), |(index, _)| index);
             let suffix_start = term.char_indices().rev().nth(2).unwrap().0;
             for trigram in [&term[..prefix_end], &term[suffix_start..]] {
                 if !trigrams.contains(trigram) {

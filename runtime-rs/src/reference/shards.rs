@@ -32,7 +32,10 @@ fn ids(value: &Value) -> Result<Ids<'_>> {
             Ok(id)
         })
         .collect::<Result<Vec<_>>>()?;
-    Ok(Ids { ordered, members: seen })
+    Ok(Ids {
+        ordered,
+        members: seen,
+    })
 }
 
 fn manifest(directory: &Path, cancel: &CancellationToken) -> Result<Value> {
@@ -47,7 +50,10 @@ fn manifest(directory: &Path, cancel: &CancellationToken) -> Result<Value> {
     let characters = ids(&value["characterIds"])?;
     let order = ids(&value["viewOrder"])?;
     if characters.ordered.len() != order.ordered.len()
-        || order.members.iter().any(|id| !characters.members.contains(id))
+        || order
+            .members
+            .iter()
+            .any(|id| !characters.members.contains(id))
     {
         return Err(unavailable());
     }

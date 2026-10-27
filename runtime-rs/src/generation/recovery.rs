@@ -159,10 +159,7 @@ impl Service {
             result.error_code = Some("UPSTREAM_ID_UNKNOWN".into());
             return Ok(result);
         };
-        if task.cancel_requested
-            && cancellation.is_none()
-            && self.cancel_recovered(id).await?
-        {
+        if task.cancel_requested && cancellation.is_none() && self.cancel_recovered(id).await? {
             *cancellation = Some(0);
         }
         let encoded = percent_encoding::utf8_percent_encode(id, percent_encoding::NON_ALPHANUMERIC)
@@ -217,9 +214,7 @@ impl Service {
                     {
                         let target = format!(
                             "recovered-{}",
-                            hex::encode(Sha256::digest(
-                                task.task_id.as_bytes()
-                            ))
+                            hex::encode(Sha256::digest(task.task_id.as_bytes()))
                         );
                         let result_output = if kind == TaskKind::Video {
                             video_output::materialize(

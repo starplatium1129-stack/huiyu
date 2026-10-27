@@ -1,8 +1,8 @@
 mod commands;
 mod files;
 mod paths;
-mod workers;
 mod permissions;
+mod workers;
 
 use crate::{AppState, config::Config, processes::Processes, security};
 use axum::{
@@ -131,7 +131,10 @@ impl DesktopToolsService {
 pub fn router(service: Arc<DesktopToolsService>) -> Router<AppState> {
     Router::new()
         .route("/api/desktop-tools", post(execute))
-        .route("/api/desktop-tools/permissions", get(permissions::handle).patch(permissions::handle))
+        .route(
+            "/api/desktop-tools/permissions",
+            get(permissions::handle).patch(permissions::handle),
+        )
         .layer(DefaultBodyLimit::max(768 * 1024))
         .layer(Extension(service))
 }
@@ -195,7 +198,9 @@ async fn execute(
     };
     // File I/O and commands stay owned by the request future. A disconnected
     // caller drops that future, invoking temporary-file/process cleanup guards.
-    let result = service.run(name, args, payload["screenAuthorized"] == true).await;
+    let result = service
+        .run(name, args, payload["screenAuthorized"] == true)
+        .await;
     result.unwrap_or_else(|error| Json(error.value()).into_response())
 }
 fn text(value: &Value) -> String {

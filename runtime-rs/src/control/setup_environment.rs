@@ -151,10 +151,23 @@ impl ControlService {
         let detail = match checked {
             Ok(Ok(_)) => Err(running()),
             Ok(Err(error)) if error.kind() == std::io::ErrorKind::ConnectionRefused => Ok(()),
-            Ok(Err(error)) => Err(ApiError::new(503, "COMFY_STOP_UNCONFIRMED", format!(
-                "无法确认绘图服务已经停止，尚未修改环境。检查地址 {} 时连接失败：{error}；请检查本机防火墙和服务地址后重试。", endpoint))),
-            Err(_) => Err(ApiError::new(503, "COMFY_STOP_UNCONFIRMED", format!(
-                "无法确认绘图服务已经停止，尚未修改环境。检查地址 {} 超过 {} 秒，系统未返回端口状态；请检查本机防火墙和服务地址后重试。", endpoint, timeout.as_secs()))),
+            Ok(Err(error)) => Err(ApiError::new(
+                503,
+                "COMFY_STOP_UNCONFIRMED",
+                format!(
+                    "无法确认绘图服务已经停止，尚未修改环境。检查地址 {} 时连接失败：{error}；请检查本机防火墙和服务地址后重试。",
+                    endpoint
+                ),
+            )),
+            Err(_) => Err(ApiError::new(
+                503,
+                "COMFY_STOP_UNCONFIRMED",
+                format!(
+                    "无法确认绘图服务已经停止，尚未修改环境。检查地址 {} 超过 {} 秒，系统未返回端口状态；请检查本机防火墙和服务地址后重试。",
+                    endpoint,
+                    timeout.as_secs()
+                ),
+            )),
         };
         if let Err(error) = &detail {
             self.log(&error.message);
@@ -222,37 +235,46 @@ impl ControlService {
                     "Bypass",
                     "-File",
                 ])
-                .arg(
-                    crate::file_paths::absolute(&self.config
+                .arg(crate::file_paths::absolute(
+                    &self
+                        .config
                         .app_root
-                        .join("scripts/lib/prepare-ai-environment.ps1"))?,
-                )
+                        .join("scripts/lib/prepare-ai-environment.ps1"),
+                )?)
                 .arg("-Workspace")
                 .arg(crate::file_paths::absolute(&self.config.ai_workspace_root)?)
                 .arg("-Environment")
                 .arg(environment)
                 .arg("-Archive")
-                .arg(crate::file_paths::absolute(&path_for(&format!("runtime-{environment}"))?)?)
+                .arg(crate::file_paths::absolute(&path_for(&format!(
+                    "runtime-{environment}"
+                ))?)?)
                 .stdin(Stdio::null())
                 .stdout(Stdio::piped())
                 .stderr(Stdio::piped());
             if environment == "llama-cuda" {
                 command
                     .arg("-CudaArchive")
-                    .arg(crate::file_paths::absolute(&path_for("runtime-llama-cudart")?)?);
+                    .arg(crate::file_paths::absolute(&path_for(
+                        "runtime-llama-cudart",
+                    )?)?);
             }
             if environment.starts_with("comfy-") {
                 command
                     .arg("-KjArchive")
                     .arg(crate::file_paths::absolute(&path_for("runtime-kjnodes")?)?)
                     .arg("-TeaArchive")
-                    .arg(crate::file_paths::absolute(&path_for("runtime-anima-teacache")?)?)
+                    .arg(crate::file_paths::absolute(&path_for(
+                        "runtime-anima-teacache",
+                    )?)?)
                     .arg("-ArchiveSha256")
                     .arg(model_file(&format!("runtime-{environment}"))?.sha256);
             }
             // The installer may still write its shared staging directory after
             // cancellation. Retirement keeps admission until the child is reaped.
-            let process = self.processes.spawn_with_permit(&mut command, permit.clone(), None)?;
+            let process = self
+                .processes
+                .spawn_with_permit(&mut command, permit.clone(), None)?;
             let (stdout, stderr) = process.take_output();
             let output_token = cancel.child_token();
             let (out, err) = match tokio::time::timeout(Duration::from_secs(3600), async {
@@ -308,11 +330,24 @@ impl ControlService {
             self.log(&String::from_utf8_lossy(&out));
             self.stage(operation, 2);
             if environment.starts_with("comfy-") {
-                comfy::integrity::establish(&self.config.ai_workspace_root.join(".runtimes/comfy/ComfyUI"),
-                    &model_file(&format!("runtime-{environment}"))?.sha256, cancel,
+                comfy::integrity::establish(
+                    &self
+                        .config
+                        .ai_workspace_root
+                        .join(".runtimes/comfy/ComfyUI"),
+                    &model_file(&format!("runtime-{environment}"))?.sha256,
+                    cancel,
                     &self.config.runtime_root.join("comfy-code-verified.json"),
-                    |done, total, file| self.work_progress(operation, done, total,
-                        &format!("正在校验环境文件（{done}/{total}）：{file}"))).await?;
+                    |done, total, file| {
+                        self.work_progress(
+                            operation,
+                            done,
+                            total,
+                            &format!("正在校验环境文件（{done}/{total}）：{file}"),
+                        )
+                    },
+                )
+                .await?;
             }
             Ok(())
         }
@@ -321,9 +356,16 @@ impl ControlService {
 
 impl ControlService {
     #[cfg(windows)]
-    async fn environment_output(&self, output: Option<tokio::process::ChildStderr>, cancel: CancellationToken, operation: &Value) -> Vec<u8> {
+    async fn environment_output(
+        &self,
+        output: Option<tokio::process::ChildStderr>,
+        cancel: CancellationToken,
+        operation: &Value,
+    ) -> Vec<u8> {
         use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
-        let Some(output) = output else { return Vec::new(); };
+        let Some(output) = output else {
+            return Vec::new();
+        };
         let mut reader = BufReader::new(output);
         let mut tail = Vec::new();
         loop {
@@ -333,16 +375,22 @@ impl ControlService {
                 _ = cancel.cancelled() => break,
                 result = limited.read_until(b'\n', &mut line) => result,
             };
-            if !matches!(read, Ok(1..)) { break; }
+            if !matches!(read, Ok(1..)) {
+                break;
+            }
             let text = String::from_utf8_lossy(&line);
             let mut fields = text.trim().splitn(4, '|');
             if fields.next() == Some("HUIYU:ENV")
-                && let (Some(done), Some(total), Some(message)) = (fields.next(), fields.next(), fields.next())
-                && let (Ok(done), Ok(total)) = (done.parse::<u64>(), total.parse::<u64>()) {
+                && let (Some(done), Some(total), Some(message)) =
+                    (fields.next(), fields.next(), fields.next())
+                && let (Ok(done), Ok(total)) = (done.parse::<u64>(), total.parse::<u64>())
+            {
                 self.work_progress(operation, done, total, message);
             } else {
                 tail.extend_from_slice(&line);
-                if tail.len() > 16384 { tail.drain(..tail.len() - 16384); }
+                if tail.len() > 16384 {
+                    tail.drain(..tail.len() - 16384);
+                }
             }
         }
         tail
@@ -363,7 +411,8 @@ pub(super) fn managed_comfy_environment(root: &std::path::Path) -> Value {
     let Some(receipt) = receipt.filter(|value| value["schemaVersion"] == 1) else {
         return unknown();
     };
-    let Some(environment @ ("comfy-nvidia" | "comfy-cu126" | "comfy-amd")) = receipt["environment"].as_str()
+    let Some(environment @ ("comfy-nvidia" | "comfy-cu126" | "comfy-amd")) =
+        receipt["environment"].as_str()
     else {
         return unknown();
     };

@@ -1,10 +1,5 @@
 use super::*;
-use axum::{
-    body::Body,
-    extract::Request,
-    http::Method,
-    middleware::Next,
-};
+use axum::{body::Body, extract::Request, http::Method, middleware::Next};
 fn resource_path(raw: &str) -> Option<String> {
     let lower = raw.to_ascii_lowercase();
     if !(lower == "/assets" || lower.starts_with("/assets/"))

@@ -11,9 +11,9 @@ const SUMMARY_BODY: &str = "json_set(json_remove(record_json,'$.input','$.inputM
 
 pub(super) fn read_summary(c: &Context, principal: &str, id: &str) -> Result<Value> {
     static SQL: OnceLock<String> = OnceLock::new();
-    let sql = SQL.get_or_init(|| format!(
-        "SELECT {SUMMARY_BODY} FROM tasks WHERE principal_id=? AND task_id=?"
-    ));
+    let sql = SQL.get_or_init(|| {
+        format!("SELECT {SUMMARY_BODY} FROM tasks WHERE principal_id=? AND task_id=?")
+    });
     let mut statement = c.db.prepare_cached(sql)?;
     let decoded = statement
         .query_row(params![principal, id], |row| {
@@ -60,10 +60,18 @@ pub(crate) struct RecoveryPage {
     pub next_cursor: Option<i64>,
     pub through_revision: i64,
 }
-pub(in crate::storage) fn recovery(c: &Context, principal: &str, query: TaskListQuery) -> Result<RecoveryPage> {
+pub(in crate::storage) fn recovery(
+    c: &Context,
+    principal: &str,
+    query: TaskListQuery,
+) -> Result<RecoveryPage> {
     c.check_cancel()?;
     if principal.is_empty() {
-        return Err(ApiError::new(401, "UNAUTHORIZED", "Desktop principal is required"));
+        return Err(ApiError::new(
+            401,
+            "UNAUTHORIZED",
+            "Desktop principal is required",
+        ));
     }
     if !query.recoverable {
         return Err(invalid("Recovery requires complete task records"));
@@ -73,7 +81,11 @@ pub(in crate::storage) fn recovery(c: &Context, principal: &str, query: TaskList
     let (ids, next_cursor, through_revision) = page(c, principal, query, |body| {
         Ok(serde_json::from_str::<TaskRecord>(body)?.task_id)
     })?;
-    Ok(RecoveryPage { ids, next_cursor, through_revision })
+    Ok(RecoveryPage {
+        ids,
+        next_cursor,
+        through_revision,
+    })
 }
 
 fn page<T>(
@@ -127,7 +139,11 @@ fn page<T>(
         TaskListScope::Attention => 3,
         TaskListScope::Inbox => 4,
     };
-    let shape = if query.recoverable { 10 } else { scope * 2 + usize::from(query.summary) };
+    let shape = if query.recoverable {
+        10
+    } else {
+        scope * 2 + usize::from(query.summary)
+    };
     let sql = SQL[shape].get_or_init(|| scopes::sql(query.scope, cursor, body, recovery));
     let mut statement = c.db.prepare_cached(sql)?;
     let mut rows = statement.query(params![principal, after, through, before, limit + 1])?;

@@ -21,11 +21,7 @@ fn stamp(file: &File) -> std::io::Result<Stamp> {
 }
 fn current(file: &File, path: &Path, expected: &Stamp) -> bool {
     stamp(file).ok().as_ref() == Some(expected)
-        && File::open(path)
-            .and_then(|file| stamp(&file))
-            .ok()
-            .as_ref()
-            == Some(expected)
+        && File::open(path).and_then(|file| stamp(&file)).ok().as_ref() == Some(expected)
 }
 fn read_tail(
     service: &ControlService,
@@ -72,7 +68,10 @@ impl ControlService {
         let service = self.clone();
         tokio::task::spawn_blocking(move || {
             let mut lines = Vec::new();
-            for (index, name) in ["gateway.log", "tunnel.log", "control.log"].iter().enumerate() {
+            for (index, name) in ["gateway.log", "tunnel.log", "control.log"]
+                .iter()
+                .enumerate()
+            {
                 // A blocking read cannot be interrupted, but dropped requests and
                 // shutdown must not continue on to the remaining log files.
                 if cancel.is_cancelled() {

@@ -5,7 +5,9 @@ use std::{borrow::Cow, collections::HashMap};
 pub(super) fn read(c: &Context, id: &str) -> Result<Vec<Value>> {
     // Decode borrowed row text, but retain JSON errors until SQLite reading succeeds.
     c.db.prepare("SELECT body FROM migration_items WHERE migration_id=? ORDER BY item_id")?
-        .query_map([id], |row| Ok(serde_json::from_str::<Value>(text_column(row, 0)?)))?
+        .query_map([id], |row| {
+            Ok(serde_json::from_str::<Value>(text_column(row, 0)?))
+        })?
         .collect::<rusqlite::Result<Vec<_>>>()?
         .into_iter()
         .collect::<serde_json::Result<Vec<_>>>()
@@ -163,7 +165,12 @@ fn check_refs(value: &Value, media: &HashSet<&str>, blockers: &mut Vec<String>) 
         _ => {}
     }
 }
-fn insert_artwork(c: &Context, item: &Value, deleted: Option<i64>, revision: i64) -> Result<String> {
+fn insert_artwork(
+    c: &Context,
+    item: &Value,
+    deleted: Option<i64>,
+    revision: i64,
+) -> Result<String> {
     body(item)?;
     let key = entity_key(&item["id"])?;
     let snapshot = stringify(item);
@@ -175,9 +182,9 @@ fn insert_artwork(c: &Context, item: &Value, deleted: Option<i64>, revision: i64
             revision,
             deleted
         ])?;
-    let hash: String = c.db
-        .prepare_cached("SELECT hash FROM media_aliases WHERE alias=?")?
-        .query_row([string(item, "image_id")?], |r| r.get(0))?;
+    let hash: String =
+        c.db.prepare_cached("SELECT hash FROM media_aliases WHERE alias=?")?
+            .query_row([string(item, "image_id")?], |r| r.get(0))?;
     c.db.prepare_cached("INSERT OR IGNORE INTO media_refs VALUES(?,?,?)")?
         .execute(params![
             if deleted.is_some() {

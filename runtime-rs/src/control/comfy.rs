@@ -1,12 +1,15 @@
-mod model_paths;
 pub(super) mod integrity;
+mod model_paths;
 use super::*;
 use std::process::Stdio;
 use tokio::process::Command;
 
 impl ControlService {
     pub(super) fn comfy_root(&self) -> std::path::PathBuf {
-        let managed = self.config.ai_workspace_root.join(".runtimes/comfy/ComfyUI");
+        let managed = self
+            .config
+            .ai_workspace_root
+            .join(".runtimes/comfy/ComfyUI");
         if managed.join("main.py").is_file() {
             return managed;
         }
@@ -129,7 +132,9 @@ impl ControlService {
                     ));
                 }
                 if current["status"] != "running" {
-                    if current["status"] == "completed" && self.online(1, &self.runtime_settings()).await {
+                    if current["status"] == "completed"
+                        && self.online(1, &self.runtime_settings()).await
+                    {
                         return Ok(());
                     }
                     return Err(ApiError::new(
@@ -164,8 +169,22 @@ impl ControlService {
         let _action = self.comfy_action.lock().await;
         let images = self.images.read().unwrap().upgrade();
         let _gpu = if self.native_gpu_owned() {
-            Some(images.ok_or_else(|| ApiError::new(503,"NATIVE_RUNTIME_UNAVAILABLE","独立推理服务未接入，无法确认显存释放"))?.native_engine().comfy_handoff().await?)
-        } else { None };
+            Some(
+                images
+                    .ok_or_else(|| {
+                        ApiError::new(
+                            503,
+                            "NATIVE_RUNTIME_UNAVAILABLE",
+                            "独立推理服务未接入，无法确认显存释放",
+                        )
+                    })?
+                    .native_engine()
+                    .comfy_handoff()
+                    .await?,
+            )
+        } else {
+            None
+        };
         if self.shutdown.is_cancelled() {
             return Err(ApiError::new(503, "SHUTTING_DOWN", "运行时正在退出"));
         }
@@ -196,13 +215,35 @@ impl ControlService {
                 "请先一键准备 Portable 环境；外部环境可从原入口启动后连接",
             ));
         }
-        let operation = self.state.lock().unwrap().operation.clone().unwrap_or(Value::Null);
+        let operation = self
+            .state
+            .lock()
+            .unwrap()
+            .operation
+            .clone()
+            .unwrap_or(Value::Null);
         let started = Instant::now();
-        integrity::verify(&root, &cancel, &self.config.runtime_root.join("comfy-code-verified.json"),
-            |done, total, file| self.work_progress(&operation, done, total,
-                &format!("正在检查启动文件（{done}/{total}）：{file}"))).await?;
-        self.log(&format!("ComfyUI 启动文件校验完成：{:.2} 秒", started.elapsed().as_secs_f64()));
-        if operation["kind"] == "comfy-start" { self.stage(&operation, 1); }
+        integrity::verify(
+            &root,
+            &cancel,
+            &self.config.runtime_root.join("comfy-code-verified.json"),
+            |done, total, file| {
+                self.work_progress(
+                    &operation,
+                    done,
+                    total,
+                    &format!("正在检查启动文件（{done}/{total}）：{file}"),
+                )
+            },
+        )
+        .await?;
+        self.log(&format!(
+            "ComfyUI 启动文件校验完成：{:.2} 秒",
+            started.elapsed().as_secs_f64()
+        ));
+        if operation["kind"] == "comfy-start" {
+            self.stage(&operation, 1);
+        }
         self.work_progress(&operation, 0, 0, "正在启动 Python 并加载绘图节点…");
         let settings = self.runtime_settings();
         let host = settings["comfyHost"]
@@ -234,7 +275,8 @@ impl ControlService {
             .stdin(Stdio::null())
             .stdout(Stdio::from(output.try_clone()?))
             .stderr(Stdio::from(output));
-        if super::setup_environment::managed_comfy_environment(&root)["environment"] == "comfy-amd" {
+        if super::setup_environment::managed_comfy_environment(&root)["environment"] == "comfy-amd"
+        {
             // Split attention bypasses the upstream AOTriton flash capability
             // probe, which stalls startup on the accepted 880M/ROCm 7.2.1 host.
             // Keep model offload conservative for shared-memory APUs.
@@ -328,30 +370,59 @@ impl ControlService {
         Ok(())
     }
     pub(super) fn native_gpu_owned(&self) -> bool {
-        self.images.read().unwrap().upgrade().is_some_and(|images| images.native_gpu_owned())
+        self.images
+            .read()
+            .unwrap()
+            .upgrade()
+            .is_some_and(|images| images.native_gpu_owned())
     }
     pub(super) async fn stop_comfy_for_native(&self) -> Result<()> {
         // /free acknowledges a queued request; it is not proof of CUDA release.
         // The retained managed process handle can positively confirm termination.
-        if let Some(cancel) = self.comfy_cancel.lock().unwrap().as_ref() { cancel.cancel(); }
+        if let Some(cancel) = self.comfy_cancel.lock().unwrap().as_ref() {
+            cancel.cancel();
+        }
         let _action = self.comfy_action.lock().await;
         self.comfy_cancel.lock().unwrap().take();
         let managed = {
             let owner = self.comfy_process.lock().await;
             owner.as_ref().map(|process| process.exited()).transpose()?
         };
-        if matches!(managed,Some(None)) {
+        if matches!(managed, Some(None)) {
             let settings = self.runtime_settings();
-            let (status,queue) = self.request(settings["comfyHost"].as_str().unwrap_or(""),"/queue",None,3).await?;
-            if !(200..300).contains(&status) || queue.as_ref().is_none_or(|queue| ["queue_running","queue_pending"].iter().any(|key| queue[*key].as_array().is_none_or(|items| !items.is_empty()))) {
-                return Err(ApiError::new(409,"DRAWING_BUSY","ComfyUI 仍有任务，暂不能切换独立推理"));
+            let (status, queue) = self
+                .request(
+                    settings["comfyHost"].as_str().unwrap_or(""),
+                    "/queue",
+                    None,
+                    3,
+                )
+                .await?;
+            if !(200..300).contains(&status)
+                || queue.as_ref().is_none_or(|queue| {
+                    ["queue_running", "queue_pending"]
+                        .iter()
+                        .any(|key| queue[*key].as_array().is_none_or(|items| !items.is_empty()))
+                })
+            {
+                return Err(ApiError::new(
+                    409,
+                    "DRAWING_BUSY",
+                    "ComfyUI 仍有任务，暂不能切换独立推理",
+                ));
             }
         }
         if managed.is_some() {
-            if let Some(process) = self.comfy_process.lock().await.take() { process.stop().await?; }
+            if let Some(process) = self.comfy_process.lock().await.take() {
+                process.stop().await?;
+            }
         }
-        if self.online(1,&self.runtime_settings()).await {
-            return Err(ApiError::new(409,"COMFY_RELEASE_UNCONFIRMED","外部 ComfyUI 仍在运行，无法确认显存释放；请先停止它再切换独立推理"));
+        if self.online(1, &self.runtime_settings()).await {
+            return Err(ApiError::new(
+                409,
+                "COMFY_RELEASE_UNCONFIRMED",
+                "外部 ComfyUI 仍在运行，无法确认显存释放；请先停止它再切换独立推理",
+            ));
         }
         Ok(())
     }

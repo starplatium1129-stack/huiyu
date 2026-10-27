@@ -116,7 +116,10 @@ pub(super) fn save(config: &Config, mut body: Value, cancel: &CancellationToken)
             return Err(invalid("重置不能同时上传图片"));
         }
         drop(body);
-        manifest["entries"].as_object_mut().unwrap().remove(id.as_str());
+        manifest["entries"]
+            .as_object_mut()
+            .unwrap()
+            .remove(id.as_str());
     } else {
         let Some(Value::String(image)) = body.get_mut("image").map(Value::take) else {
             return Err(invalid("缺少图片"));
@@ -165,7 +168,8 @@ pub(super) fn save(config: &Config, mut body: Value, cancel: &CancellationToken)
                     remaining = remaining.get(count..).unwrap_or(&[]);
                 }
                 Ok(matches && remaining.is_empty())
-            }))?.unwrap_or(false)
+            }))?
+            .unwrap_or(false)
             {
                 return Err(corrupt());
             }

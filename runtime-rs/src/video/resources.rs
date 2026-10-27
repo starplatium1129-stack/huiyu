@@ -40,8 +40,7 @@ fn available(root: &std::path::Path, model: &Value) -> Value {
     let mut requirements = Vec::new();
     for r in model["requirements"].as_array().unwrap() {
         let label = format!("{}/{}", r[0].as_str().unwrap(), r[1].as_str().unwrap());
-        if !std::fs::metadata(root.join(&label)).is_ok_and(|m| m.is_file())
-        {
+        if !std::fs::metadata(root.join(&label)).is_ok_and(|m| m.is_file()) {
             missing.push(label.clone());
         }
         requirements.push(label);

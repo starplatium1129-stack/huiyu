@@ -6,7 +6,10 @@ use axum::{
 };
 use futures_util::StreamExt;
 use std::{io::SeekFrom, path::PathBuf};
-use tokio::{fs::File, io::{AsyncReadExt, AsyncSeekExt}};
+use tokio::{
+    fs::File,
+    io::{AsyncReadExt, AsyncSeekExt},
+};
 use tokio_util::{io::ReaderStream, sync::CancellationToken};
 
 pub(crate) enum Source {
@@ -24,14 +27,22 @@ pub(crate) struct ByteRange {
 
 pub(crate) fn range(header: Option<&str>, total: u64) -> Result<ByteRange, Response> {
     parse_range(header, total).map_err(|()| {
-        (StatusCode::RANGE_NOT_SATISFIABLE, [("content-range", format!("bytes */{total}"))])
+        (
+            StatusCode::RANGE_NOT_SATISFIABLE,
+            [("content-range", format!("bytes */{total}"))],
+        )
             .into_response()
     })
 }
 
 fn parse_range(header: Option<&str>, total: u64) -> Result<ByteRange, ()> {
     let Some(header) = header else {
-        return Ok(ByteRange { start: 0, length: total, total, partial: false });
+        return Ok(ByteRange {
+            start: 0,
+            length: total,
+            total,
+            partial: false,
+        });
     };
     let (first, last) = header
         .strip_prefix("bytes=")
@@ -40,13 +51,18 @@ fn parse_range(header: Option<&str>, total: u64) -> Result<ByteRange, ()> {
         .ok_or(())?;
     if total == 0
         || (first.is_empty() && last.is_empty())
-        || !first.bytes().chain(last.bytes()).all(|b| b.is_ascii_digit())
+        || !first
+            .bytes()
+            .chain(last.bytes())
+            .all(|b| b.is_ascii_digit())
     {
         return Err(());
     }
     let (start, end) = if first.is_empty() {
         let suffix: u64 = last.parse().map_err(|_| ())?;
-        if suffix == 0 { return Err(()); }
+        if suffix == 0 {
+            return Err(());
+        }
         (total.saturating_sub(suffix), total - 1)
     } else {
         let start = first.parse::<u64>().map_err(|_| ())?;
@@ -57,8 +73,15 @@ fn parse_range(header: Option<&str>, total: u64) -> Result<ByteRange, ()> {
         };
         (start, end)
     };
-    if start > end || start >= total { return Err(()); }
-    Ok(ByteRange { start, length: end - start + 1, total, partial: true })
+    if start > end || start >= total {
+        return Err(());
+    }
+    Ok(ByteRange {
+        start,
+        length: end - start + 1,
+        total,
+        partial: true,
+    })
 }
 
 pub(crate) async fn stream(
@@ -90,8 +113,14 @@ pub(crate) async fn stream(
     if range.partial {
         headers.insert(
             "content-range",
-            format!("bytes {}-{}/{}", range.start, range.start + range.length - 1, range.total)
-                .parse().unwrap(),
+            format!(
+                "bytes {}-{}/{}",
+                range.start,
+                range.start + range.length - 1,
+                range.total
+            )
+            .parse()
+            .unwrap(),
         );
         *response.status_mut() = StatusCode::PARTIAL_CONTENT;
     }

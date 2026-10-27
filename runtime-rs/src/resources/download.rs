@@ -3,7 +3,7 @@ use super::{
     Error, Result, Value, config::cancelled, fs, json, lease, lifecycle::Operation, manifest,
     policy,
 };
-use crate::download_transport::{self as transfer, CopyEvent, CopyError};
+use crate::download_transport::{self as transfer, CopyError, CopyEvent};
 use std::{
     path::{Path, PathBuf},
     time::Duration,

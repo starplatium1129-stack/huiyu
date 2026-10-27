@@ -35,7 +35,7 @@ pub(super) fn copy(
     match source {
         TaskMediaSource::Staged(staged) => {
             identity.check_paths()?;
-            staged.install(&identity.root,path)?;
+            staged.install(&identity.root, path)?;
             identity.check_paths()
         }
         TaskMediaSource::Bytes(bytes) => {

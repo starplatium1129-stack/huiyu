@@ -8,7 +8,11 @@ fn check_cancel(cancel: &CancellationToken) -> Option<()> {
 }
 
 // read has already checked this canonical root against the import directory.
-fn model_file(canonical_root: &Path, reference: &str, cancel: &CancellationToken) -> Option<PathBuf> {
+fn model_file(
+    canonical_root: &Path,
+    reference: &str,
+    cancel: &CancellationToken,
+) -> Option<PathBuf> {
     check_cancel(cancel)?;
     if reference.is_empty()
         || reference.contains([':', '%', '?', '#', '\0'])

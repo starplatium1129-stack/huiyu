@@ -2,15 +2,22 @@ use super::*;
 use crate::storage::verified_media::{self, Verified};
 use std::fs;
 
-pub(super) fn run(identity: &Identity, id: &str, media: &[Value], job: Option<&crate::workspace_jobs::Job>) -> Result<Outcome> {
+pub(super) fn run(
+    identity: &Identity,
+    id: &str,
+    media: &[Value],
+    job: Option<&crate::workspace_jobs::Job>,
+) -> Result<Outcome> {
     identity.check_paths()?;
     let mut outcome = Outcome {
         proofs: Vec::with_capacity(media.len()),
         blockers: Vec::new(),
     };
     let total = media.len() as u64;
-    for (index,media) in media.iter().enumerate() {
-        if let Some(job) = job { job.progress("verifying-media",index as u64,total); }
+    for (index, media) in media.iter().enumerate() {
+        if let Some(job) = job {
+            job.progress("verifying-media", index as u64, total);
+        }
         identity.cancelled()?;
         let alias = string(media, "alias")?;
         match publish(identity, &key(id, alias), media) {

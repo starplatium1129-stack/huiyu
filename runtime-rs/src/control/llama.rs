@@ -31,7 +31,8 @@ impl ControlService {
         result
     }
     pub(crate) fn llama_auth(&self) -> (String, String) {
-        let host = self.runtime_setting("llamaHost")
+        let host = self
+            .runtime_setting("llamaHost")
             .as_str()
             .unwrap_or("http://127.0.0.1:8000")
             .to_owned();
@@ -41,7 +42,8 @@ impl ControlService {
         )
     }
     pub(super) async fn ensure_llama(self: &Arc<Self>, base_url: &str) -> Result<Value> {
-        let host = self.runtime_setting("llamaHost")
+        let host = self
+            .runtime_setting("llamaHost")
             .as_str()
             .unwrap_or("http://127.0.0.1:8000")
             .to_owned();
@@ -62,7 +64,8 @@ impl ControlService {
         {
             return Ok(json!({"ok":true,"ready":true}));
         }
-        let model = self.runtime_setting("llamaModel")
+        let model = self
+            .runtime_setting("llamaModel")
             .as_str()
             .unwrap_or("")
             .to_owned();
@@ -80,7 +83,8 @@ impl ControlService {
     }
 
     pub(super) async fn llama_status(&self) -> Value {
-        let host = self.runtime_setting("llamaHost")
+        let host = self
+            .runtime_setting("llamaHost")
             .as_str()
             .unwrap_or("http://127.0.0.1:8000")
             .to_owned();

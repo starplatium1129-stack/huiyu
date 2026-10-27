@@ -179,10 +179,12 @@ fn apply(
     }
     let snapshot = states
         .entry(prompt_id.as_ref().to_owned())
-        .or_insert_with(|| Arc::new(ProgressUpdate {
-            prompt_id: prompt_id.into_owned(),
-            ..Default::default()
-        }));
+        .or_insert_with(|| {
+            Arc::new(ProgressUpdate {
+                prompt_id: prompt_id.into_owned(),
+                ..Default::default()
+            })
+        });
     let state = Arc::make_mut(snapshot);
     event.clone_into(&mut state.event);
     state.progress_text.clear();
@@ -207,8 +209,7 @@ fn apply(
                 write!(
                     &mut state.progress_text,
                     "采样 {} / {}",
-                    data["value"],
-                    data["max"]
+                    data["value"], data["max"]
                 )
                 .unwrap();
                 if let Some(node) = &state.current_node {
@@ -220,7 +221,9 @@ fn apply(
             let next_node = text(&data["node"]).map(Cow::into_owned);
             // A sampler reaching 100% does not make the following VAE decode
             // measurable. Each new node waits for its own actual step events.
-            if next_node != state.current_node { state.progress = None; }
+            if next_node != state.current_node {
+                state.progress = None;
+            }
             state.current_node = next_node;
             match &state.current_node {
                 Some(node) => write!(&mut state.progress_text, "执行节点 {node}").unwrap(),

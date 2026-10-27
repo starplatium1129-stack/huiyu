@@ -134,7 +134,10 @@ pub(super) fn start(
     let data = if let Some(bytes) = bytes {
         Data::Binary(bytes)
     } else {
-        match command.as_object_mut().and_then(|object| object.remove("data")) {
+        match command
+            .as_object_mut()
+            .and_then(|object| object.remove("data"))
+        {
             Some(Value::String(encoded)) => Data::Encoded(encoded),
             _ => {
                 let _ = reply.send(Err(invalid("data must be a string")));

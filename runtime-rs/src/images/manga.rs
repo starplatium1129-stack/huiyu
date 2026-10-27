@@ -35,9 +35,14 @@ const FILES: &[&str] = &[
 async fn validate_runtime(settings: &Settings) -> Result<()> {
     settings.validate_files().await?;
     let worker = settings.worker.clone();
-    let issue = tokio::task::spawn_blocking(move || generation::native::resources::worker_bundle_issue(&worker, FILES))
-        .await.map_err(|_| ApiError::new(503, "MANGA_RUNTIME_MISSING", "漫画运行文件读取未完成"))?;
-    if let Some(issue) = issue { return Err(ApiError::new(503, "MANGA_RUNTIME_MISSING", issue)); }
+    let issue = tokio::task::spawn_blocking(move || {
+        generation::native::resources::worker_bundle_issue(&worker, FILES)
+    })
+    .await
+    .map_err(|_| ApiError::new(503, "MANGA_RUNTIME_MISSING", "漫画运行文件读取未完成"))?;
+    if let Some(issue) = issue {
+        return Err(ApiError::new(503, "MANGA_RUNTIME_MISSING", issue));
+    }
     Ok(())
 }
 
@@ -241,7 +246,8 @@ pub(super) async fn plan(
 pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
     let runtime = backend.native_settings()?;
     let inspected = runtime.clone();
-    let capabilities = tokio::task::spawn_blocking(move || models::status(&inspected)).await
+    let capabilities = tokio::task::spawn_blocking(move || models::status(&inspected))
+        .await
         .map_err(|_| ApiError::new(503, "MANGA_RUNTIME_MISSING", "漫画模型状态读取未完成"))?;
     let settings = settings(&runtime);
     let issue = match &settings {

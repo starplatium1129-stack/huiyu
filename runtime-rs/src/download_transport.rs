@@ -36,9 +36,14 @@ pub(crate) enum CopyEvent {
 // the caller's fixed digest. Credential-bearing requests must not use this.
 pub(crate) fn public_mirror(url: &str) -> Option<String> {
     if let Some(path) = url.strip_prefix("https://huggingface.co/") {
-        return path.contains("/resolve/").then(|| format!("https://hf-mirror.com/{path}"));
+        return path
+            .contains("/resolve/")
+            .then(|| format!("https://hf-mirror.com/{path}"));
     }
-    for origin in ["https://download.pytorch.org/whl/", "https://download-r2.pytorch.org/whl/"] {
+    for origin in [
+        "https://download.pytorch.org/whl/",
+        "https://download-r2.pytorch.org/whl/",
+    ] {
         if let Some(path) = url.strip_prefix(origin) {
             return Some(format!("https://mirrors.nju.edu.cn/pytorch/whl/{path}"));
         }

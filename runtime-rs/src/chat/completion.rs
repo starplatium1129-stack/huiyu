@@ -110,12 +110,14 @@ pub(super) async fn complete_api(
         )
         .await?;
     let response = transport::success(response, 64 * 1024, "AI 上游返回").await?;
-    let mut value: Value = serde_json::from_slice(transport::bounded(response, 1024 * 1024).await?.as_ref())
-        .map_err(|_| Error::stream("INVALID_UPSTREAM_JSON", "AI 上游返回了无法解析的响应"))?;
+    let mut value: Value =
+        serde_json::from_slice(transport::bounded(response, 1024 * 1024).await?.as_ref())
+            .map_err(|_| Error::stream("INVALID_UPSTREAM_JSON", "AI 上游返回了无法解析的响应"))?;
     if let Some(error) = compatible::response_error(&value, &api.vendor) {
         return Err(error);
     }
-    let content = value.get_mut("choices")
+    let content = value
+        .get_mut("choices")
         .and_then(Value::as_array_mut)
         .and_then(|choices| choices.first_mut())
         .and_then(|choice| choice.get_mut("message"))

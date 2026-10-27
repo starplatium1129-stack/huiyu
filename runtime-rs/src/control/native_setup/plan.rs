@@ -42,8 +42,14 @@ pub(super) fn safe_directory(path: &Path) -> Result<()> {
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => continue,
             Err(e) => {
                 eprintln!("native setup directory {}: {e}", current.display());
-                return Err(ApiError::new(409, "AI_DIRECTORY_UNAVAILABLE",
-                    format!("无法检查 AI 资源目录 {}：{e}；请核对目录和访问权限后重试", current.display())));
+                return Err(ApiError::new(
+                    409,
+                    "AI_DIRECTORY_UNAVAILABLE",
+                    format!(
+                        "无法检查 AI 资源目录 {}：{e}；请核对目录和访问权限后重试",
+                        current.display()
+                    ),
+                ));
             }
         };
         let mut linked = meta.file_type().is_symlink();
@@ -73,13 +79,23 @@ fn capacity_warnings(hardware: &Value) -> Vec<String> {
         .as_u64()
         .is_none_or(|bytes| bytes < 32 * 1024 * 1024 * 1024)
     {
-        warnings.push("建议 32 GiB 系统内存；较小内存可继续准备，加载、转换或生成可能更慢或内存不足。".into());
+        warnings.push(
+            "建议 32 GiB 系统内存；较小内存可继续准备，加载、转换或生成可能更慢或内存不足。".into(),
+        );
     }
     warnings
 }
 async fn source_accessible(client: &reqwest::Client, source: &str, allow_mirror: bool) -> bool {
-    if allow_mirror && let Some(mirror) = crate::download_transport::public_mirror(source)
-        && client.head(mirror).send().await.is_ok_and(|r| r.status().is_success()) { return true; }
+    if allow_mirror
+        && let Some(mirror) = crate::download_transport::public_mirror(source)
+        && client
+            .head(mirror)
+            .send()
+            .await
+            .is_ok_and(|r| r.status().is_success())
+    {
+        return true;
+    }
     let response = client.head(source).send().await;
     response.is_ok_and(|r| r.status().is_success())
 }
@@ -126,12 +142,17 @@ pub(super) fn runtime_support(
             .as_str()
             .and_then(|s| s.parse::<f64>().ok());
         if !driver_ok {
-            reasons.push(format!("检测到 NVIDIA 驱动 {}，此运行包需要 {} 或更新，请更新驱动", device["driverVersion"].as_str().unwrap_or("未知"), runtime.minimum_nvidia_driver));
+            reasons.push(format!(
+                "检测到 NVIDIA 驱动 {}，此运行包需要 {} 或更新，请更新驱动",
+                device["driverVersion"].as_str().unwrap_or("未知"),
+                runtime.minimum_nvidia_driver
+            ));
         }
         if !capability.is_some_and(|n| (8.0..=12.0).contains(&n)) {
             reasons.push(format!("检测到 CUDA 计算能力 {}，此运行包支持 Ampere 至 Blackwell（8.0–12.0）；无法读取时请检查 NVIDIA 驱动", device["computeCapability"].as_str().unwrap_or("未知")));
         }
-        if vram_gib > 0 && !device["vramBytes"]
+        if vram_gib > 0
+            && !device["vramBytes"]
                 .as_u64()
                 .is_some_and(|bytes| bytes >= vram_gib * 1024 * 1024 * 1024 - 256 * 1024 * 1024)
         {
@@ -160,10 +181,15 @@ pub(super) fn runtime_support(
     reasons
 }
 impl ControlService {
-    pub(super) async fn native_setup_plan(self: &Arc<Self>, selected: Option<&str>) -> Result<Value> {
+    pub(super) async fn native_setup_plan(
+        self: &Arc<Self>,
+        selected: Option<&str>,
+    ) -> Result<Value> {
         let (_, models) = bundles()?;
         let selected = selected.unwrap_or(&models[0].id).to_owned();
-        let selected_model = models.iter().find(|model| model.id == selected)
+        let selected_model = models
+            .iter()
+            .find(|model| model.id == selected)
             .ok_or_else(|| ApiError::invalid("请选择已登记的原生图像模型"))?;
         let runtime = image_models::runtime_for(Some(&selected))?;
         let network = match reqwest::Client::builder()
@@ -174,7 +200,11 @@ impl ControlService {
             Ok(client) => {
                 let (python, model) = tokio::join!(
                     source_accessible(&client, &runtime.files[0].url, true),
-                    source_accessible(&client, &selected_model.files[0].url, !selected_model.requires_access)
+                    source_accessible(
+                        &client,
+                        &selected_model.files[0].url,
+                        !selected_model.requires_access
+                    )
                 );
                 let runtime_source = python;
                 let model_source = model;
@@ -367,7 +397,12 @@ pub(super) fn retained(root: &Path, files: &[Artifact]) -> u64 {
 pub(super) fn model_needed(root: &Path, model: &ModelBundle) -> u64 {
     let target = root.join("models").join(&model.id);
     if model.conversion_profile.is_some() {
-        return model.required_bytes.saturating_sub(retained(&anima_models::input_root(&target, model), &model.files))
+        return model
+            .required_bytes
+            .saturating_sub(retained(
+                &anima_models::input_root(&target, model),
+                &model.files,
+            ))
             .saturating_add(64 * 1024 * 1024);
     }
     let stage = root

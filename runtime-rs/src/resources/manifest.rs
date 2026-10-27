@@ -1,9 +1,14 @@
 use super::{Error, Result, Value, fs, number};
-use serde::{Deserialize, Serialize};
 use serde::Serializer as _;
 use serde::ser::SerializeStruct as _;
+use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::{borrow::Cow, collections::HashSet, io::{self, BufWriter, Write}, path::Path};
+use std::{
+    borrow::Cow,
+    collections::HashSet,
+    io::{self, BufWriter, Write},
+    path::Path,
+};
 use tokio_util::sync::CancellationToken;
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub(super) struct Entry {
@@ -27,7 +32,10 @@ fn excluded(path: &str) -> bool {
     ["assets/character-references", "assets/live2d-candidates"]
         .iter()
         .any(|prefix| {
-            path == *prefix || path.strip_prefix(prefix).is_some_and(|tail| tail.starts_with('/'))
+            path == *prefix
+                || path
+                    .strip_prefix(prefix)
+                    .is_some_and(|tail| tail.starts_with('/'))
         })
 }
 impl Manifest {
@@ -45,11 +53,13 @@ impl Manifest {
         let items = value["entries"]
             .as_array()
             .ok_or_else(|| Error::new("MANIFEST_INVALID", "Entries must be an array"))?;
-        Self::from_fields(items.iter().map(|item| (
-            item["path"].as_str(),
-            number(&item["bytes"]),
-            item["sha256"].as_str(),
-        )))
+        Self::from_fields(items.iter().map(|item| {
+            (
+                item["path"].as_str(),
+                number(&item["bytes"]),
+                item["sha256"].as_str(),
+            )
+        }))
     }
     pub(super) fn from_fields<'a>(
         items: impl IntoIterator<Item = (Option<&'a str>, Option<u64>, Option<&'a str>)>,
@@ -58,8 +68,7 @@ impl Manifest {
         let mut identities = HashSet::new();
         let mut total = 0_u64;
         for (path, bytes, hash) in items {
-            let path = path
-                .ok_or_else(|| Error::new("MANIFEST_INVALID", "Missing path"))?;
+            let path = path.ok_or_else(|| Error::new("MANIFEST_INVALID", "Missing path"))?;
             let bytes = bytes.ok_or_else(|| {
                 Error::new(
                     "MANIFEST_INVALID",
@@ -148,15 +157,20 @@ impl Manifest {
     pub fn encoded(&self) -> Vec<u8> {
         let mut body = Vec::new();
         let mut serializer = serde_json::Serializer::with_formatter(&mut body, IdentityFormatter);
-        let mut value = serializer.serialize_struct("Manifest", 4)
+        let mut value = serializer
+            .serialize_struct("Manifest", 4)
             .expect("Manifest serialization is infallible");
-        value.serialize_field("schemaVersion", &1_u8)
+        value
+            .serialize_field("schemaVersion", &1_u8)
             .expect("Manifest serialization is infallible");
-        value.serialize_field("kind", "resource-manifest")
+        value
+            .serialize_field("kind", "resource-manifest")
             .expect("Manifest serialization is infallible");
-        value.serialize_field("entries", &self.entries)
+        value
+            .serialize_field("entries", &self.entries)
             .expect("Manifest serialization is infallible");
-        value.serialize_field("unverified", &[] as &[Value])
+        value
+            .serialize_field("unverified", &[] as &[Value])
             .expect("Manifest serialization is infallible");
         value.end().expect("Manifest serialization is infallible");
         body
@@ -166,7 +180,11 @@ impl Manifest {
         entries.sort_by(|a, b| a.path.encode_utf16().cmp(b.path.encode_utf16()));
         let mut output = BufWriter::with_capacity(8 * 1024, Sha256::new());
         serde_json::Serializer::with_formatter(&mut output, IdentityFormatter)
-            .collect_seq(entries.into_iter().map(|entry| (&entry.path, entry.bytes, &entry.sha256)))
+            .collect_seq(
+                entries
+                    .into_iter()
+                    .map(|entry| (&entry.path, entry.bytes, &entry.sha256)),
+            )
             .expect("Manifest identity serialization is infallible");
         output.flush().expect("Hash writer is infallible");
         hex::encode(output.into_inner().unwrap().finalize())

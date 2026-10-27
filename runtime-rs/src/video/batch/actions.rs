@@ -39,11 +39,18 @@ impl Service {
         Ok(batch.public(self).await)
     }
     pub(super) async fn reconcile_live(&self, batch: &Batch) -> Result<bool> {
-        let shots = batch.state.lock().await.shots.iter().enumerate()
+        let shots = batch
+            .state
+            .lock()
+            .await
+            .shots
+            .iter()
+            .enumerate()
             .filter_map(|(index, shot)| {
                 let intent = shot.intent?;
                 (shot.status != "succeeded").then(|| (index, intent, shot.gateway.clone()))
-            }).collect::<Vec<_>>();
+            })
+            .collect::<Vec<_>>();
         let mut settled = true;
         for (index, intent, gateway) in shots {
             let Some(id) = gateway else {
@@ -61,7 +68,8 @@ impl Service {
             if observation.settled && !observation.unknown {
                 let mut s = batch.state.lock().await;
                 let Some(current) = s.shots.get_mut(index).filter(|current| {
-                    current.gateway.as_deref() == Some(id.as_str()) && current.intent == Some(intent)
+                    current.gateway.as_deref() == Some(id.as_str())
+                        && current.intent == Some(intent)
                 }) else {
                     // A late observation belongs to its original submission,
                     // never a new retry of the same displayed shot position.
@@ -133,7 +141,10 @@ impl Service {
                 }
                 let (names, link) = {
                     let s = batch.state.lock().await;
-                    if s.shots.iter().any(|s| s.intent.is_some() && s.status != "succeeded") {
+                    if s.shots
+                        .iter()
+                        .any(|s| s.intent.is_some() && s.status != "succeeded")
+                    {
                         return Err(error(
                             409,
                             "BATCH_RECOVERY_REVIEW",
@@ -211,7 +222,10 @@ impl Service {
         Ok(batch.public(&self).await)
     }
     pub(in crate::video) async fn retry_shots_accepting(
-        self: Arc<Self>, id: &str, owner: &str, indices: Vec<usize>,
+        self: Arc<Self>,
+        id: &str,
+        owner: &str,
+        indices: Vec<usize>,
         acceptance: &dyn ExecutionHooks,
     ) -> Result<Value> {
         let batch = self.batch(id, owner).await?;
@@ -287,7 +301,9 @@ impl Service {
                     "只有失败或取消的分镜可以重抽",
                 ));
             }
-            acceptance.checkpoint(json!({"gatewayJobId":batch.id})).await?;
+            acceptance
+                .checkpoint(json!({"gatewayJobId":batch.id}))
+                .await?;
             for index in indices {
                 let shot = &mut s.shots[index];
                 shot.status = "pending".into();
@@ -385,7 +401,11 @@ impl Service {
         }
     }
 }
-async fn batch_public_after_unlock(s: tokio::sync::MutexGuard<'_, State>, batch: &Batch, service: &Service) -> Value {
+async fn batch_public_after_unlock(
+    s: tokio::sync::MutexGuard<'_, State>,
+    batch: &Batch,
+    service: &Service,
+) -> Value {
     drop(s);
     batch.public(service).await
 }

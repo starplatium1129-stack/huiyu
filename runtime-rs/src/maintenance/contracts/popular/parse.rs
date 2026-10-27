@@ -150,7 +150,12 @@ fn one_blueprint(value: &Value) -> std::result::Result<Option<Cow<'_, Value>>, S
     copy_strings(
         value,
         &mut output,
-        &["sceneTags", "promptTokens", "coverageTags", "characterTokens"],
+        &[
+            "sceneTags",
+            "promptTokens",
+            "coverageTags",
+            "characterTokens",
+        ],
     );
     if list(&output["promptTokens"]).is_empty() {
         return Err("popular data: promptTokens must be a non-empty string array".into());

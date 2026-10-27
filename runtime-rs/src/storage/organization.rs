@@ -48,19 +48,22 @@ impl Memberships {
             }
             // Clean snapshots can be released. Dirty rows must stay until the
             // final flush; 8 MiB/32 albums is a soft limit, not a dirty-row cap.
-            if self.albums.len() >= 32 || self
-                .albums
-                .iter()
-                .map(|(key, album)| {
-                    key.len()
-                        + album.rows.capacity() * std::mem::size_of::<Member>()
-                        + album
-                            .rows
-                            .iter()
-                            .map(|row| row.key.capacity())
-                            .sum::<usize>()
-                })
-                .sum::<usize>() > 8 * 1024 * 1024 {
+            if self.albums.len() >= 32
+                || self
+                    .albums
+                    .iter()
+                    .map(|(key, album)| {
+                        key.len()
+                            + album.rows.capacity() * std::mem::size_of::<Member>()
+                            + album
+                                .rows
+                                .iter()
+                                .map(|row| row.key.capacity())
+                                .sum::<usize>()
+                    })
+                    .sum::<usize>()
+                    > 8 * 1024 * 1024
+            {
                 self.albums.retain(|_, album| album.suffix.is_some());
             }
             self.albums.insert(
@@ -108,7 +111,14 @@ impl Memberships {
         references.sort_unstable_by_key(|(order, _)| *order);
         Ok(references.into_iter().map(|(_, value)| value).collect())
     }
-    fn replace(&mut self, c: &Context, album: &str, key: &str, previous: Option<usize>, next: Option<usize>) -> Result<()> {
+    fn replace(
+        &mut self,
+        c: &Context,
+        album: &str,
+        key: &str,
+        previous: Option<usize>,
+        next: Option<usize>,
+    ) -> Result<()> {
         let write = self.write + 1;
         let current = self.album(c, album)?;
         if previous == next || current.id.is_none() {
@@ -306,10 +316,7 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
                 .ok_or_else(|| ApiError::new(404, "NOT_FOUND", "Album no longer exists"))?,
         ),
     };
-    if project
-        .as_ref()
-        .is_some_and(|row| row.smart)
-    {
+    if project.as_ref().is_some_and(|row| row.smart) {
         return Err(invalid(
             "Smart albums collect artwork by conditions; edit the album rule",
         ));
@@ -361,7 +368,14 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
                     .remove("project");
                 Vec::new()
             };
-            replace_memberships(c, &key, before["memberships"].as_array().unwrap(), &refs, &mut members, &mut affected)?;
+            replace_memberships(
+                c,
+                &key,
+                before["memberships"].as_array().unwrap(),
+                &refs,
+                &mut members,
+                &mut affected,
+            )?;
         }
         if tags_change {
             let mut tags: Vec<String> = art["body"]["collectionTags"]
@@ -445,8 +459,11 @@ fn undo(c: &Context, principal: &str, command: &Value, revision: i64) -> Result<
                 .get(name)
                 .is_some_and(|value| field(&art["body"], name) != *value)
         });
-        let current_refs = after.get("memberships").and_then(Value::as_array)
-            .map(|_| members.references(c, &key)).transpose()?;
+        let current_refs = after
+            .get("memberships")
+            .and_then(Value::as_array)
+            .map(|_| members.references(c, &key))
+            .transpose()?;
         let changed_memberships = match after.get("memberships").and_then(Value::as_array) {
             Some(refs) => !same_albums(current_refs.as_deref().unwrap(), refs)?,
             None => false,
@@ -505,7 +522,9 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         let kind = string(command, "kind")?;
         let mut receipt = json!({});
         match kind {
-            "organizeArtworks" => receipt["changes"] = Value::Array(organize(c, command, revision)?),
+            "organizeArtworks" => {
+                receipt["changes"] = Value::Array(organize(c, command, revision)?)
+            }
             "undoArtworkOrganization" => receipt = undo(c, principal, command, revision)?,
             _ => return Err(invalid("Unknown artwork organization command")),
         };

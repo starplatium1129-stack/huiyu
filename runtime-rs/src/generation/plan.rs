@@ -31,7 +31,9 @@ pub(super) enum Execution {
 impl Execution {
     pub fn input(&self) -> Arc<Value> {
         match self {
-            Self::Webui(input) => serde_json::to_value(input).expect("validated input is JSON").into(),
+            Self::Webui(input) => serde_json::to_value(input)
+                .expect("validated input is JSON")
+                .into(),
             Self::Comfy(plan) => plan.input.clone(),
             Self::Native(plan) => plan.input.clone(),
         }
@@ -84,7 +86,13 @@ impl Service {
         shutdown: CancellationToken,
         native_engine: Arc<native::Engine>,
     ) -> Result<Self> {
-        Self::with_scope(config, transport, shutdown, Scope::Video, Some(native_engine))
+        Self::with_scope(
+            config,
+            transport,
+            shutdown,
+            Scope::Video,
+            Some(native_engine),
+        )
     }
     pub(crate) async fn prepare_comfy(
         &self,

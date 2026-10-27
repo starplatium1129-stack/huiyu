@@ -79,11 +79,15 @@ pub(super) fn parameters(raw: &Value, result: &mut Value) -> Result<()> {
 fn line_issue(settings: &Settings) -> Option<String> {
     let directory = settings.models_root.join("manga-line-extraction");
     let path = directory.join("erika.pth");
-    if resources::file(&settings.models_root, "manga-line-extraction/erika.pth", true).is_none()
+    if resources::file(
+        &settings.models_root,
+        "manga-line-extraction/erika.pth",
+        true,
+    )
+    .is_none()
         || directory.is_symlink()
         || path.is_symlink()
-        || !std::fs::metadata(&path)
-            .is_ok_and(|m| m.len() <= 256 * 1024 * 1024)
+        || !std::fs::metadata(&path).is_ok_and(|m| m.len() <= 256 * 1024 * 1024)
     {
         Some("模型根目录缺少 manga-line-extraction/erika.pth（官方 v1 权重）；不会自动下载".into())
     } else {
@@ -94,8 +98,15 @@ fn line_issue(settings: &Settings) -> Option<String> {
 pub(super) async fn model_dir(settings: &Settings, input: &Value) -> Result<PathBuf> {
     if input["autoLines"] == true {
         let runtime = settings.clone();
-        let issue = tokio::task::spawn_blocking(move || line_issue(&runtime)).await
-            .map_err(|_| ApiError::new(503, "MANGA_LINE_MODEL_MISSING", "线稿模型文件读取未完成，请重试"))?;
+        let issue = tokio::task::spawn_blocking(move || line_issue(&runtime))
+            .await
+            .map_err(|_| {
+                ApiError::new(
+                    503,
+                    "MANGA_LINE_MODEL_MISSING",
+                    "线稿模型文件读取未完成，请重试",
+                )
+            })?;
         if let Some(reason) = issue {
             return Err(ApiError::new(503, "MANGA_LINE_MODEL_MISSING", reason));
         }

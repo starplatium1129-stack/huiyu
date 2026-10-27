@@ -95,7 +95,9 @@ async fn perform(
     }
     if action == "shutdown" {
         state.host.jobs.cancel_all();
-        if let Some(storage) = state.host.storage() { storage.jobs.cancel_all(); }
+        if let Some(storage) = state.host.storage() {
+            storage.jobs.cancel_all();
+        }
         let _closing = state.host.operation.lock().await;
         // Stop streamed chat/audio before waiting for their admitted HTTP bodies.
         // Storage remains open until accepted writes finish.
@@ -110,30 +112,67 @@ async fn perform(
         return Ok(Json(json!({"closed": true})));
     }
     state.host.check_running()?;
-    let principal = format!("desktop:{}",state.config.source_profile_id.as_deref().unwrap_or(""));
-    if matches!(action,"portable-export"|"portable-import"|"portable-activate"|"artwork-export") {
-        return Ok(Json(portable::handle(state,&input,&principal).await?));
+    let principal = format!(
+        "desktop:{}",
+        state.config.source_profile_id.as_deref().unwrap_or("")
+    );
+    if matches!(
+        action,
+        "portable-export" | "portable-import" | "portable-activate" | "artwork-export"
+    ) {
+        return Ok(Json(portable::handle(state, &input, &principal).await?));
     }
-    if matches!(action,"operation-status"|"operation-cancel") {
-        let id = input["operationId"].as_str().ok_or_else(|| ApiError::invalid("Missing host operation identity"))?;
-        return Ok(Json(json!({"job":state.host.jobs.status(&principal,id,action=="operation-cancel")?})));
+    if matches!(action, "operation-status" | "operation-cancel") {
+        let id = input["operationId"]
+            .as_str()
+            .ok_or_else(|| ApiError::invalid("Missing host operation identity"))?;
+        return Ok(Json(
+            json!({"job":state.host.jobs.status(&principal,id,action=="operation-cancel")?}),
+        ));
     }
-    if matches!(action,"activate"|"enable-bundled") {
-        let migration_id = if action=="activate" { input["migrationId"].as_str().map(str::to_owned) }
-            else { state.host.active().and_then(|active| active["migrationId"].as_str().map(str::to_owned)) }
-            .ok_or_else(|| ApiError::invalid("Missing verified migration identity"))?;
-        let bundled = action=="enable-bundled" || input["bundledUi"]==true;
+    if matches!(action, "activate" | "enable-bundled") {
+        let migration_id = if action == "activate" {
+            input["migrationId"].as_str().map(str::to_owned)
+        } else {
+            state
+                .host
+                .active()
+                .and_then(|active| active["migrationId"].as_str().map(str::to_owned))
+        }
+        .ok_or_else(|| ApiError::invalid("Missing verified migration identity"))?;
+        let bundled = action == "enable-bundled" || input["bundledUi"] == true;
         let command = json!({"kind":"activate","operationId":format!("activation:{migration_id}:{bundled}"),"migrationId":migration_id,"bundledUi":bundled});
         let owned = state.clone();
-        let snapshot = state.host.jobs.start(&principal,command,state.shutdown.clone(),move |job| async move {
-            let _operation = owned.host.operation.try_lock().map_err(|_| ApiError::new(409,"WORKSPACE_BUSY","Another host operation is in progress"))?;
-            let _maintenance = owned.host.maintenance()?;
-            tokio::time::timeout(std::time::Duration::from_secs(30),owned.host.wait_for_writes()).await
-                .map_err(|_| ApiError::new(504,"WORKSPACE_TIMEOUT","Waiting for workspace writes timed out"))?;
-            job.check()?;
-            activation::activate(&owned,&migration_id,bundled,job).await?;
-            Ok(Value::Null)
-        })?;
+        let snapshot = state.host.jobs.start(
+            &principal,
+            command,
+            state.shutdown.clone(),
+            move |job| async move {
+                let _operation = owned.host.operation.try_lock().map_err(|_| {
+                    ApiError::new(
+                        409,
+                        "WORKSPACE_BUSY",
+                        "Another host operation is in progress",
+                    )
+                })?;
+                let _maintenance = owned.host.maintenance()?;
+                tokio::time::timeout(
+                    std::time::Duration::from_secs(30),
+                    owned.host.wait_for_writes(),
+                )
+                .await
+                .map_err(|_| {
+                    ApiError::new(
+                        504,
+                        "WORKSPACE_TIMEOUT",
+                        "Waiting for workspace writes timed out",
+                    )
+                })?;
+                job.check()?;
+                activation::activate(&owned, &migration_id, bundled, job).await?;
+                Ok(Value::Null)
+            },
+        )?;
         return Ok(Json(json!({"job":snapshot})));
     }
     if action == "prepare-candidate" {

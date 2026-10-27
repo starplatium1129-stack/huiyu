@@ -7,8 +7,8 @@ mod manga;
 pub(crate) mod media_import;
 mod native;
 mod native_adapters;
-mod resources;
 mod requests;
+mod resources;
 mod resume;
 pub(crate) mod upload_body;
 mod validation;
@@ -67,7 +67,10 @@ impl Service {
         self.backend.native_engine()
     }
     pub(crate) fn native_gpu_owned(&self) -> bool {
-        self.backend.native_engine().gpu_owned.load(std::sync::atomic::Ordering::SeqCst)
+        self.backend
+            .native_engine()
+            .gpu_owned
+            .load(std::sync::atomic::Ordering::SeqCst)
     }
     pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
         self.backend.bind_control(control);
@@ -93,7 +96,11 @@ impl Service {
             shutdown.clone(),
         )?);
         let native = backend.native_enabled();
-        let requests = requests::Requests::new(config.runtime_root.join("jobs/image-requests"), "IMAGE", "图片");
+        let requests = requests::Requests::new(
+            config.runtime_root.join("jobs/image-requests"),
+            "IMAGE",
+            "图片",
+        );
         Ok(Self {
             backend,
             native,
@@ -221,7 +228,12 @@ impl Service {
             let _guard = cancel.clone().drop_guard();
             // /creative/status is the shared Anima/Krea catalog, as on Comfy.
             // Creation and result routes retain their strict family checks.
-            native::status(&self.backend, if family == "krea2" { "" } else { family }, cancel).await
+            native::status(
+                &self.backend,
+                if family == "krea2" { "" } else { family },
+                cancel,
+            )
+            .await
         } else {
             resources::status(&self.config, &self.backend, family).await
         }

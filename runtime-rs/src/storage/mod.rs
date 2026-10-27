@@ -1,22 +1,22 @@
-mod artwork_index;
 mod artwork_export;
-mod gallery;
-mod gallery_index;
+mod artwork_index;
 mod artwork_search;
 mod backup;
 mod canonical;
+mod gallery;
+mod gallery_index;
 pub(crate) use canonical::fingerprint as json_fingerprint;
 pub(crate) fn portable_workspace_path(root: &std::path::Path, id: &str) -> Result<PathBuf> {
-    schema::safe(root,format!("workspaces/{id}"))
+    schema::safe(root, format!("workspaces/{id}"))
 }
 mod garbage;
 mod handle;
+mod image_batches;
 mod media;
 mod migration;
 mod operations;
 mod organization;
 mod profile;
-mod image_batches;
 mod project_commands;
 mod recent;
 mod records;
@@ -32,6 +32,7 @@ mod verified_media;
 mod worker;
 
 use crate::error::{ApiError, Result};
+use axum::body::Bytes;
 use rusqlite::{Connection, Row};
 use serde_json::{Value, json};
 use std::{
@@ -43,9 +44,10 @@ use std::{
     },
 };
 use tokio::sync::{OwnedSemaphorePermit, mpsc, oneshot};
-use axum::body::Bytes;
 
-pub(crate) use canonical::{digest_object as json_object_digest, stringify, stringify_equal, stringify_object};
+pub(crate) use canonical::{
+    digest_object as json_object_digest, stringify, stringify_equal, stringify_object,
+};
 pub use media::Media;
 pub(crate) use verification::OpenedMedia;
 
@@ -86,7 +88,14 @@ enum Work {
         Arc<AtomicBool>,
         oneshot::Sender<Result<Value>>,
     ),
-    TaskPatch(String, i64, crate::task_contract::TaskPatch, String, Arc<AtomicBool>, oneshot::Sender<Result<crate::task_contract::TaskRecord>>),
+    TaskPatch(
+        String,
+        i64,
+        crate::task_contract::TaskPatch,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<crate::task_contract::TaskRecord>>,
+    ),
     TaskRecord(
         tasks::RecordKey,
         String,
@@ -181,14 +190,13 @@ impl Context {
             ));
         }
         let kind = string(command, "kind")?;
-        if kind.starts_with("imageBatch.") { return image_batches::execute(self, principal, command); }
+        if kind.starts_with("imageBatch.") {
+            return image_batches::execute(self, principal, command);
+        }
         if kind.starts_with("task.") {
             if !matches!(
                 kind,
-                "task.list"
-                    | "task.get"
-                    | "task.legacy-history"
-                    | "task.input.get"
+                "task.list" | "task.get" | "task.legacy-history" | "task.input.get"
             ) {
                 self.writer()?;
             }
@@ -274,8 +282,8 @@ impl Context {
             "listArtworks"
             | "readArtworkExportPage"
             | "readArtworkRecentIndex"
-                | "readGalleryPage"
-                | "readGalleryCatalog"
+            | "readGalleryPage"
+            | "readGalleryCatalog"
             | "getArtwork"
             | "getArtworks"
             | "listProjects" => records::read(self, command),
@@ -383,8 +391,8 @@ fn is_read(kind: &str) -> bool {
             | "listArtworks"
             | "searchArtworks"
             | "readArtworkRecentIndex"
-                | "readGalleryPage"
-                | "readGalleryCatalog"
+            | "readGalleryPage"
+            | "readGalleryCatalog"
             | "getArtwork"
             | "getArtworks"
             | "listProjects"

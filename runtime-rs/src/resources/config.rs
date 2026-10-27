@@ -1,6 +1,10 @@
 use super::{Error, PathBuf, Result, Value, fs, json, policy};
 use crate::file_paths;
-use std::{io::{ErrorKind, Read}, path::Path, sync::Arc};
+use std::{
+    io::{ErrorKind, Read},
+    path::Path,
+    sync::Arc,
+};
 use tokio_util::sync::CancellationToken;
 #[derive(Clone)]
 pub(super) struct Context {
@@ -44,9 +48,7 @@ impl Context {
                 return offset == self.bytes.len();
             }
             let end = offset + count;
-            if end as u64 > fs::MAX_JSON
-                || self.bytes.get(offset..end) != Some(&buffer[..count])
-            {
+            if end as u64 > fs::MAX_JSON || self.bytes.get(offset..end) != Some(&buffer[..count]) {
                 return false;
             }
             offset = end;

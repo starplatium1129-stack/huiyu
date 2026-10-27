@@ -169,7 +169,12 @@ async fn retire(state: &AppState, storage: Storage) -> Result<()> {
         .map_err(|_| ApiError::new(503, "WORKSPACE_CLOSE", "Candidate close worker failed"))?
 }
 
-pub(super) async fn activate(state: &AppState, migration_id: &str, bundled: bool, job: std::sync::Arc<crate::workspace_jobs::Job>) -> Result<()> {
+pub(super) async fn activate(
+    state: &AppState,
+    migration_id: &str,
+    bundled: bool,
+    job: std::sync::Arc<crate::workspace_jobs::Job>,
+) -> Result<()> {
     let root = config_root(state)?;
     let active = state.host.active();
     if active.as_ref().is_some_and(|pointer| {
@@ -228,15 +233,16 @@ pub(super) async fn activate(state: &AppState, migration_id: &str, bundled: bool
             "Candidate changed after source verification",
         ));
     }
-    let snapshot_revision = execute(&storage,&principal,json!({"kind":"status"})).await?["revision"].clone();
+    let snapshot_revision =
+        execute(&storage, &principal, json!({"kind":"status"})).await?["revision"].clone();
     job.check()?;
-    job.progress("activation-backup",0,1);
+    job.progress("activation-backup", 0, 1);
     let backup = storage.request_job(
         json!({"kind": "backup", "operationId": format!("activate-backup:{migration_id}:{bundled}:{snapshot_revision}")}),
         &principal,Some(job.clone()),
     ).await?;
     job.check()?;
-    job.progress("activation-restore",0,1);
+    job.progress("activation-restore", 0, 1);
     let restored = storage.request_job(json!({"kind": "restoreBackup", "operationId": format!("activate-restore:{migration_id}:{bundled}:{snapshot_revision}"), "backupId": backup["backupId"]}),&principal,Some(job.clone())).await?;
     let status = execute(&storage, &principal, json!({"kind": "status"})).await?;
     if restored["revision"] != backup["revision"]
@@ -267,7 +273,7 @@ pub(super) async fn activate(state: &AppState, migration_id: &str, bundled: bool
     // This tiny durable rename is deliberately synchronous: cancellation must
     // not release maintenance while a detached worker still publishes authority.
     job.check()?;
-    job.progress("activating",0,1);
+    job.progress("activating", 0, 1);
     write_pointer(root, &next, false)?;
     state.host.install(storage.clone(), next, false);
     execute(
@@ -281,18 +287,15 @@ pub(super) async fn activate(state: &AppState, migration_id: &str, bundled: bool
 }
 
 async fn execute(storage: &Storage, principal: &str, command: Value) -> Result<Value> {
-    tokio::time::timeout(
-        Duration::from_secs(30),
-        storage.request(command, principal),
-    )
-    .await
-    .map_err(|_| {
-        ApiError::new(
-            504,
-            "WORKSPACE_TIMEOUT",
-            "Host workspace operation timed out",
-        )
-    })?
+    tokio::time::timeout(Duration::from_secs(30), storage.request(command, principal))
+        .await
+        .map_err(|_| {
+            ApiError::new(
+                504,
+                "WORKSPACE_TIMEOUT",
+                "Host workspace operation timed out",
+            )
+        })?
 }
 
 fn checked(root: &Path, name: &str) -> Result<PathBuf> {

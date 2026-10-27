@@ -215,7 +215,9 @@ async fn companions(
         return Ok(Json(json!([])).into_response());
     }
     let snapshot = service.snapshot().await?;
-    let companions = snapshot.models.iter()
+    let companions = snapshot
+        .models
+        .iter()
         .filter_map(|model| model.receipt.as_ref())
         .map(|receipt| Companion {
             character: &receipt["character"],

@@ -170,7 +170,9 @@ impl Client {
                     };
                     // An unconfirmed retirement still owns the private input.
                     // A completed reply or reaped child releases its last copy.
-                    if let Ok(input) = Arc::try_unwrap(input) { input.close()?; }
+                    if let Ok(input) = Arc::try_unwrap(input) {
+                        input.close()?;
+                    }
                     result
                 }
                 .await;
@@ -341,10 +343,12 @@ async fn infer(
     // Only a complete, matching request reply can keep the model resident.
     // The worker rejects these images before GPU work and continues its loop.
     // Startup, protocol, timeout and cancellation errors must still retire it.
-    *image_rejected = result.as_ref().is_err_and(|error| {
-        matches!(error.code.as_str(), "INVALID_IMAGE" | "IMAGE_TOO_LARGE")
-    });
-    if result.is_ok() || *image_rejected { worker.current_input.lock().unwrap().take(); }
+    *image_rejected = result
+        .as_ref()
+        .is_err_and(|error| matches!(error.code.as_str(), "INVALID_IMAGE" | "IMAGE_TOO_LARGE"));
+    if result.is_ok() || *image_rejected {
+        worker.current_input.lock().unwrap().take();
+    }
     result
 }
 

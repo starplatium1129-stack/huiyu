@@ -13,7 +13,6 @@ use tokio_util::{
 pub(in crate::storage) struct Readers {
     active: TaskTracker,
     closed: Mutex<CancellationToken>,
-
 }
 
 impl Readers {
@@ -21,7 +20,6 @@ impl Readers {
         Self {
             active: TaskTracker::new(),
             closed: Mutex::new(CancellationToken::new()),
-
         }
     }
 
@@ -43,7 +41,6 @@ impl Readers {
         }
         self.active.wait().await;
     }
-
 }
 
 pub(super) struct Queue {

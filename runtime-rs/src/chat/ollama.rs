@@ -52,9 +52,12 @@ impl Ollama {
             .await?;
         let response =
             transport::success(response, 2 * 1024 * 1024, "Ollama status request failed").await?;
-        let mut data: Value =
-            serde_json::from_slice(transport::bounded(response, 2 * 1024 * 1024).await?.as_ref())
-                .map_err(|_| Error::stream("INVALID_JSON", "Ollama 模型列表不是有效 JSON"))?;
+        let mut data: Value = serde_json::from_slice(
+            transport::bounded(response, 2 * 1024 * 1024)
+                .await?
+                .as_ref(),
+        )
+        .map_err(|_| Error::stream("INVALID_JSON", "Ollama 模型列表不是有效 JSON"))?;
         Ok(data.get_mut("models")
             .and_then(Value::as_array_mut)
             .map(|models| {
@@ -79,7 +82,11 @@ impl Ollama {
         {
             settings.ollama_model.clone()
         } else {
-            models.first().and_then(|v| v["name"].as_str()).unwrap_or_default().into()
+            models
+                .first()
+                .and_then(|v| v["name"].as_str())
+                .unwrap_or_default()
+                .into()
         }
     }
     pub async fn status(&self, client: &Transport, settings: &Settings) -> Value {
@@ -128,7 +135,8 @@ impl Ollama {
         };
         let wait_ms = started.elapsed().as_millis() as u64;
         let models = self.models(client, settings).await?;
-        let selected = if !input.model.is_empty() && models.iter().any(|v| v["name"] == input.model) {
+        let selected = if !input.model.is_empty() && models.iter().any(|v| v["name"] == input.model)
+        {
             input.model
         } else {
             self.preferred(&models, settings)

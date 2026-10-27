@@ -8,7 +8,6 @@ pub(super) struct Decoder {
     slots: Arc<Semaphore>,
     workers: TaskTracker,
     closed: std::sync::Mutex<bool>,
-
 }
 
 impl Default for Decoder {
@@ -17,7 +16,6 @@ impl Default for Decoder {
             slots: Arc::new(Semaphore::new(2)),
             workers: TaskTracker::new(),
             closed: std::sync::Mutex::new(false),
-
         }
     }
 }

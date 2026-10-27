@@ -12,7 +12,9 @@ impl ControlService {
         keep_alive: Option<Arc<dyn Send + Sync>>,
     ) -> Result<Value> {
         stopped(cancel)?;
-        let process = self.processes.spawn_with_permit(command, permit, keep_alive)?;
+        let process = self
+            .processes
+            .spawn_with_permit(command, permit, keep_alive)?;
         let mut input = process
             .take_input()
             .ok_or_else(|| ApiError::invalid("安装器输入通道不可用"))?;

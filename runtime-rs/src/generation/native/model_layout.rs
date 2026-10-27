@@ -219,7 +219,8 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
                         let filename = entry.file_name();
                         let filename = filename.to_string_lossy();
                         if filename.ends_with(".safetensors")
-                            || cfg!(windows) && filename.to_ascii_lowercase().ends_with(".safetensors")
+                            || cfg!(windows)
+                                && filename.to_ascii_lowercase().ends_with(".safetensors")
                         {
                             if !file(&root, &entry.path()) {
                                 return Err(format!("空或不安全的模型权重：{name}/{filename}"));
@@ -232,7 +233,10 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
                     // Anima retains its existing component contract: at least
                     // one safe nonempty weight, plus the shard-index checks.
                     entries.iter().any(|entry| {
-                        entry.path().extension().is_some_and(|value| value == "safetensors")
+                        entry
+                            .path()
+                            .extension()
+                            .is_some_and(|value| value == "safetensors")
                             && file(&root, &entry.path())
                     })
                 };

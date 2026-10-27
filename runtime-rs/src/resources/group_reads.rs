@@ -89,7 +89,11 @@ impl GroupReads {
         let waiting = async {
             // Use the same worker-before-memory order as group reads. No group
             // admission is held by the caller when its large-file fallback starts.
-            let slot = self.workers.clone().acquire_owned().await
+            let slot = self
+                .workers
+                .clone()
+                .acquire_owned()
+                .await
                 .map_err(|_| Error::new("CANCELLED", "Resource readers closed"))?;
             let memory = if collect {
                 // Oversized files retain compatibility by taking the entire
@@ -97,31 +101,38 @@ impl GroupReads {
                 // the size of one already-supported resource.
                 let bytes = entry.bytes.min(u64::from(BUDGET)) as u32;
                 Some(
-                    self.memory.clone().acquire_many_owned(bytes).await
+                    self.memory
+                        .clone()
+                        .acquire_many_owned(bytes)
+                        .await
                         .map_err(|_| Error::new("CANCELLED", "Resource memory closed"))?,
                 )
             } else {
                 None
             };
             let worker_cancel = cancel.clone();
-            service.workers.spawn_blocking(move || {
-                // Keep admission with the actual verifier after HTTP cancellation,
-                // then with its response bytes until the last frame is released.
-                let _slot = slot;
-                super::config::cancelled(&worker_cancel)?;
-                let path = fs::child(&snapshot.root, &entry.path)?;
-                if let Some(memory) = memory {
-                    let bytes = fs::verified_bytes(&path, &entry, &worker_cancel)?;
-                    Ok(Some(Bytes::from_owner(Published {
-                        bytes,
-                        _memory: memory,
-                    })))
-                } else if fs::file_matches(&path, &entry, &worker_cancel)? {
-                    Ok(None)
-                } else {
-                    Err(Error::new("CONTENT_INVALID", "Installed bytes changed"))
-                }
-            }).await.map_err(|_| Error::new("RESOURCE_FAILED", "Resource worker stopped"))?
+            service
+                .workers
+                .spawn_blocking(move || {
+                    // Keep admission with the actual verifier after HTTP cancellation,
+                    // then with its response bytes until the last frame is released.
+                    let _slot = slot;
+                    super::config::cancelled(&worker_cancel)?;
+                    let path = fs::child(&snapshot.root, &entry.path)?;
+                    if let Some(memory) = memory {
+                        let bytes = fs::verified_bytes(&path, &entry, &worker_cancel)?;
+                        Ok(Some(Bytes::from_owner(Published {
+                            bytes,
+                            _memory: memory,
+                        })))
+                    } else if fs::file_matches(&path, &entry, &worker_cancel)? {
+                        Ok(None)
+                    } else {
+                        Err(Error::new("CONTENT_INVALID", "Installed bytes changed"))
+                    }
+                })
+                .await
+                .map_err(|_| Error::new("RESOURCE_FAILED", "Resource worker stopped"))?
         };
         tokio::select! { biased;
             _ = cancel.cancelled() => Err(Error::new("CANCELLED", "Resource read cancelled")),

@@ -66,8 +66,14 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         match tokio::task::spawn_blocking(move || {
             // Presence checks stay with file/SQLite work, not on the request worker.
             if !config.runtime_root.join("content/catalog.sqlite").is_file()
-                && !config.runtime_root.join("content/catalog.identity.json").is_file()
-                && !config.content_root().join("data/catalog/manifest.json").is_file()
+                && !config
+                    .runtime_root
+                    .join("content/catalog.identity.json")
+                    .is_file()
+                && !config
+                    .content_root()
+                    .join("data/catalog/manifest.json")
+                    .is_file()
             {
                 return Ok(None);
             }
@@ -131,7 +137,17 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
     } else if let Some(name) = path.strip_prefix("/_app/") {
         (root.join("dist/_app"), name.to_owned(), true)
     } else if let Some(name) = path.strip_prefix("/vendor/anime25d/") {
-        if !["runtime.js", "rigger.js", "renderer.js", "stage.js", "psd-worker.js", "ag-psd.min.js", "genericparts.js"].contains(&name) {
+        if ![
+            "runtime.js",
+            "rigger.js",
+            "renderer.js",
+            "stage.js",
+            "psd-worker.js",
+            "ag-psd.min.js",
+            "genericparts.js",
+        ]
+        .contains(&name)
+        {
             return StatusCode::NOT_FOUND.into_response();
         }
         (root.join("dist/vendor/anime25d"), name.to_owned(), false)
@@ -170,10 +186,17 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         return StatusCode::NOT_FOUND.into_response();
     };
     if path == "/scene-showcase/manifest.json" {
-        let refresh = request.uri().query().is_some_and(|query|
-            url::form_urlencoded::parse(query.as_bytes()).any(|(key, value)| key == "refresh" && value == "1"));
-        return showcase::serve(base, request.method() == Method::HEAD,
-            request.headers().get("if-none-match").cloned(), refresh).await;
+        let refresh = request.uri().query().is_some_and(|query| {
+            url::form_urlencoded::parse(query.as_bytes())
+                .any(|(key, value)| key == "refresh" && value == "1")
+        });
+        return showcase::serve(
+            base,
+            request.method() == Method::HEAD,
+            request.headers().get("if-none-match").cloned(),
+            refresh,
+        )
+        .await;
     }
     let modified = metadata
         .modified()

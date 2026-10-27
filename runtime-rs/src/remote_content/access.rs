@@ -152,7 +152,9 @@ fn provider_path(path: &str, method: &Method) -> bool {
             matches!(parts[1], "anima" | "creative" | "video") && !key.is_empty()
         }
         ("POST", ["batches"]) => parts[1] == "video",
-        ("GET" | "HEAD" | "DELETE", ["batch-requests", key]) => parts[1] == "video" && !key.is_empty(),
+        ("GET" | "HEAD" | "DELETE", ["batch-requests", key]) => {
+            parts[1] == "video" && !key.is_empty()
+        }
         ("GET" | "HEAD" | "DELETE", ["batches", id]) => parts[1] == "video" && !id.is_empty(),
         ("GET" | "HEAD", ["batches", id, "result"]) => parts[1] == "video" && !id.is_empty(),
         ("POST", ["batches", id, "concat"]) => parts[1] == "video" && !id.is_empty(),

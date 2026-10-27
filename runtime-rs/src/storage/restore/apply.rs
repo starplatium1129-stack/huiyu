@@ -6,9 +6,7 @@ pub(super) struct Memberships(BTreeMap<String, Option<Vec<String>>>);
 impl Memberships {
     fn insert(&mut self, c: &Context, project: &str, key: &str, position: usize) -> Result<()> {
         if !self.0.contains_key(project) {
-            let keys = if records::project_header(c, project)?
-                .is_none_or(|row| row.smart)
-            {
+            let keys = if records::project_header(c, project)?.is_none_or(|row| row.smart) {
                 None
             } else {
                 let mut statement = c.db.prepare_cached(
@@ -62,14 +60,18 @@ pub(super) fn restore(
     memberships: &mut Memberships,
 ) -> Result<()> {
     let refs = {
-        let mut statement = c.db.prepare_cached("SELECT snapshot,project_refs FROM trash WHERE artwork_key=?")?;
+        let mut statement =
+            c.db.prepare_cached("SELECT snapshot,project_refs FROM trash WHERE artwork_key=?")?;
         let mut rows = statement.query([key])?;
-        let row = rows.next()?
+        let row = rows
+            .next()?
             .ok_or_else(|| conflict("WORKSPACE_IDENTITY", "Artwork trash snapshot is missing"))?;
         let snapshot = text_column(row, 0)?;
         let refs = records::json_column(row, 1)?;
-        c.db.prepare_cached("UPDATE artworks SET body=?,deleted_at=NULL,revision=? WHERE id_key=?")?
-            .execute(params![snapshot, revision, key])?;
+        c.db.prepare_cached(
+            "UPDATE artworks SET body=?,deleted_at=NULL,revision=? WHERE id_key=?",
+        )?
+        .execute(params![snapshot, revision, key])?;
         refs
     };
     c.db.prepare_cached(

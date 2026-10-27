@@ -26,7 +26,8 @@ impl TaskRuntime {
                 501,
                 "TASK_PROVIDER_NOT_MIGRATED",
                 "This task provider has not been migrated",
-            ).not_accepted()
+            )
+            .not_accepted()
         })?;
         if !request["input"].is_object() {
             return Err(ApiError::invalid("Task input must be an object").not_accepted());
@@ -43,10 +44,16 @@ impl TaskRuntime {
             }
             let parent = &context["parentId"];
             if !parent.is_null()
-                && !parent.as_str().is_some_and(|id| !id.is_empty() && id.encode_utf16().count() <= 240)
-                && !parent.as_u64().is_some_and(|id| id <= 9_007_199_254_740_991)
+                && !parent
+                    .as_str()
+                    .is_some_and(|id| !id.is_empty() && id.encode_utf16().count() <= 240)
+                && !parent
+                    .as_u64()
+                    .is_some_and(|id| id <= 9_007_199_254_740_991)
             {
-                return Err(ApiError::invalid("Invalid Qwen parent artwork identity").not_accepted());
+                return Err(
+                    ApiError::invalid("Invalid Qwen parent artwork identity").not_accepted()
+                );
             }
         }
         let existing = storage.task_record_by_request(&key, &principal).await?;
@@ -68,7 +75,9 @@ impl TaskRuntime {
         }
         // No acceptance command has been transferred yet. Validation and model
         // preparation failures are definite rejections, never a lost receipt.
-        let prepared = self.prepare(kind, frozen["input"].take()).await
+        let prepared = self
+            .prepare(kind, frozen["input"].take())
+            .await
             .map_err(ApiError::not_accepted)?;
         self.accept_prepared(
             storage,
@@ -131,7 +140,8 @@ impl TaskRuntime {
                 .input()
                 .as_object()
                 .cloned()
-                .ok_or_else(|| ApiError::invalid("Invalid prepared task input").not_accepted())?.into(),
+                .ok_or_else(|| ApiError::invalid("Invalid prepared task input").not_accepted())?
+                .into(),
             input_media_refs: vec![],
             result_state: ResultState::None,
             result_refs: vec![],

@@ -239,7 +239,11 @@ pub(super) fn read_pack(
     Ok(pack)
 }
 // Full packages reuse their manifest; deltas return a replacement.
-pub(super) fn target(pack: &Pack, base: Option<&Manifest>, release: &Value) -> Result<Option<Manifest>> {
+pub(super) fn target(
+    pack: &Pack,
+    base: Option<&Manifest>,
+    release: &Value,
+) -> Result<Option<Manifest>> {
     let (target, identity) = if let Some(delta) = &pack.delta {
         let (target, identity) = super::delta::reconstruct(
             base.ok_or_else(|| {

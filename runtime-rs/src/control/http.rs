@@ -7,15 +7,18 @@ use axum::{
     response::{IntoResponse, Response},
     routing::{get, post},
 };
-use std::{collections::HashMap, net::SocketAddr};
 use serde::ser::{SerializeMap as _, SerializeSeq as _};
+use std::{collections::HashMap, net::SocketAddr};
 
 struct StatusResponse {
     health: Arc<Value>,
     overlay: Value,
 }
 impl serde::Serialize for StatusResponse {
-    fn serialize<S: serde::Serializer>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error> {
+    fn serialize<S: serde::Serializer>(
+        &self,
+        serializer: S,
+    ) -> std::result::Result<S::Ok, S::Error> {
         let health = self.health.as_object().unwrap();
         let overlay = self.overlay.as_object().unwrap();
         let mut map = serializer.serialize_map(None)?;
@@ -37,7 +40,10 @@ struct LogsResponse {
     total: u64,
     operation: Option<Value>,
 }
-fn serialize_lines<S: serde::Serializer>(lines: &[Arc<String>], serializer: S) -> std::result::Result<S::Ok, S::Error> {
+fn serialize_lines<S: serde::Serializer>(
+    lines: &[Arc<String>],
+    serializer: S,
+) -> std::result::Result<S::Ok, S::Error> {
     let mut seq = serializer.serialize_seq(Some(lines.len()))?;
     for line in lines {
         seq.serialize_element(line.as_ref())?;
@@ -101,15 +107,26 @@ async fn status(
     value["running"] = (!s.shutdown.is_cancelled()).into();
     value["modeBusy"] = mode_busy.into();
     value["operation"] = operation.unwrap_or(Value::Null);
-    value["localLink"] = format!("http://127.0.0.1:{}/",s.config.bind.port()).into();
+    value["localLink"] = format!("http://127.0.0.1:{}/", s.config.bind.port()).into();
     value["shareLinkAvailable"] = (!tunnel.is_empty()).into();
-    value["tunnelStatus"] = if !tunnel.is_empty() {"active"} else if s.tunnel_disabled() {"disabled"} else {"waiting"}.into();
+    value["tunnelStatus"] = if !tunnel.is_empty() {
+        "active"
+    } else if s.tunnel_disabled() {
+        "disabled"
+    } else {
+        "waiting"
+    }
+    .into();
     value["tunnelAvailable"] = tunnel_available.into();
     value["uptime"] = s.started.elapsed().as_secs().into();
     value["scripts"] = scripts;
     value["selfHealing"] = s.watchdog_status();
     value["webBuild"] = build;
-    Json(StatusResponse { health, overlay: value }).into_response()
+    Json(StatusResponse {
+        health,
+        overlay: value,
+    })
+    .into_response()
 }
 async fn file_status(s: &ControlService) -> (bool, Value) {
     let tunnel_enabled = !s.tunnel_disabled();
@@ -164,7 +181,11 @@ async fn logs(
         )
     };
     logs.extend(s.file_logs().await);
-    Json(LogsResponse { logs, total, operation })
+    Json(LogsResponse {
+        logs,
+        total,
+        operation,
+    })
 }
 fn redact_config(s: &ControlService, value: &Value) -> Value {
     match value {
@@ -203,7 +224,7 @@ fn redact_config(s: &ControlService, value: &Value) -> Value {
             items
                 .iter()
                 .map(|v| redact_config(s, v))
-                .collect::<Vec<_>>()
+                .collect::<Vec<_>>(),
         ),
         Value::String(text) => Value::String(s.redact(text)),
         other => other.clone(),
@@ -397,7 +418,11 @@ async fn build(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Valu
     ))
 }
 async fn sd_status(Extension(s): Extension<Arc<ControlService>>) -> Response {
-    let host = s.runtime_setting("sdHost").as_str().unwrap_or("").to_string();
+    let host = s
+        .runtime_setting("sdHost")
+        .as_str()
+        .unwrap_or("")
+        .to_string();
     let (models, samplers, schedulers, upscalers, options) = tokio::join!(
         s.request(&host, "/sdapi/v1/sd-models", None, 5),
         s.request(&host, "/sdapi/v1/samplers", None, 5),
@@ -436,7 +461,11 @@ async fn sd_status(Extension(s): Extension<Arc<ControlService>>) -> Response {
             .collect()
     };
     let mut value = json!({"online":online,"host":host,"models":null,"samplers":null,"schedulers":null,"upscalers":null,"checkpoint":options.ok().and_then(|(_,v)|v).and_then(|v|v["sd_model_checkpoint"].as_str().map(str::to_owned)).unwrap_or_default(),"error":if online{String::new()}else{format!("SD WebUI 未响应（{host}）")}});
-    value["models"] = Value::Array(if online { names(models, &["title", "model_name", "name"]) } else { vec![] });
+    value["models"] = Value::Array(if online {
+        names(models, &["title", "model_name", "name"])
+    } else {
+        vec![]
+    });
     value["samplers"] = Value::Array(names(samplers, &["name"]));
     value["schedulers"] = Value::Array(names(schedulers, &["name", "label"]));
     value["upscalers"] = Value::Array(names(upscalers, &["name"]));

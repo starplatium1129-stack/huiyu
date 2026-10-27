@@ -4,9 +4,10 @@ const fields = (section: string, entries: Array<[string, string, CatalogField['t
 export const CATALOG_FIELDS: Record<CatalogKind, CatalogField[]> = {
   character: [
     ...fields('日常圈子', [['profile.identity.region', '地区（出生地）'], ['profile.identity.race', '种族'], ['profile.identity.school', '学院'], ['profile.identity.classificationSource', '分类资料出处']]),
-    ...fields('人物档案', [['profile.name', '名称'], ['profile.alias', '别名', 'list'], ['profile.source', '来源'], ['profile.bg_story', '背景', 'long'], ['profile.personality', '性格', 'list'], ['profile.accent_color', '强调色'], ['profile.portrait', '立绘地址']]),
-    ...fields('视觉设定', [['profile.visual_dna.hair', '头发'], ['profile.visual_dna.hair_color', '发色'], ['profile.visual_dna.eyes', '眼睛'], ['profile.visual_dna.hairstyle', '发型'], ['profile.visual_dna.uniform', '服装设定'], ['profile.visual_dna.expression', '表情'], ['profile.visual_dna.style', '绘画特征'], ['profile.visual_dna.signature', '识别特征']]),
+    ...fields('人物档案', [['profile.name', '名称'], ['profile.alias', '别名', 'list'], ['profile.source', '来源'], ['profile.speech', '开场台词'], ['profile.bg_story', '背景', 'long'], ['profile.personality', '性格', 'list'], ['profile.accent_color', '强调色'], ['profile.portrait', '立绘地址']]),
+    ...fields('视觉设定', [['profile.visual_dna.hair', '头发'], ['profile.visual_dna.hair_color', '发色'], ['profile.visual_dna.eyes', '眼睛'], ['profile.visual_dna.hairstyle', '发型'], ['profile.visual_dna.uniform', '服装设定'], ['profile.visual_dna.expression', '表情'], ['profile.visual_dna.style', '绘画特征'], ['profile.visual_dna.signature', '识别特征'], ['profile.traits', '人物识别词条', 'list']]),
     ...fields('提示词身份', [['popular.displayName', '显示名称'], ['popular.originalName', '原名'], ['popular.franchise', '系列'], ['popular.recommendedEngine', '常用绘图方式'], ['popular.supportedEngines', '可用绘图方式', 'list'], ['popular.adultEligibility', '年龄确认'], ['popular.aliases', '搜索别名', 'list'], ['popular.identityProse', '人物描述', 'long'], ['popular.identityTokens', '人物特征关键词', 'list'], ['popular.negativeTokens', '需要避免的特征', 'list'], ['popular.exactTokens', '匹配词条', 'list'], ['popular.exactPrefixes', '匹配前缀', 'list']]),
+    ...fields('首套服装', [['draftDefaultOutfit.id', '服装代号'], ['draftDefaultOutfit.name', '服装名称'], ['draftDefaultOutfit.prose', '服装描述', 'long'], ['draftDefaultOutfit.tokens', '服装词条', 'list']]),
   ],
   outfit: [
     ...fields('服装绑定', [['characterId', '所属角色'], ['outfit.id', '服装代号'], ['outfit.name', '名称'], ['outfit.default', '默认服装', 'boolean']]),
@@ -39,7 +40,18 @@ export function setField(data: CatalogRecord['data'], field: CatalogField, input
 export function blankRecord(kind: CatalogKind): CatalogRecord {
   const data: Record<string, unknown> = kind === 'character' ? { id: '', profile: { id: '', name: '' } }
     : kind === 'outfit' ? { characterId: '', outfit: { id: '', name: '', default: false, prose: '', tokens: [] } }
-      : kind === 'blueprint' ? { id: '', title: '', characterId: '', category: '', description: '', promptProse: '', promptTokens: [], negativeTokens: [], adult: false, sampleRating: 'All' }
-        : { id: '', title: '', char: 'nene', character: '宁宁', category: 'custom', story: '', storyJa: '', rating: 'All', mature: false, tags: [], prompt: '', negative: '', animaCaption: '' }
+      : kind === 'blueprint' ? { id: '', title: '', characterId: '', outfitId: '', category: '', description: '', location: '', action: '', timeOfDay: '', lighting: '', camera: '', mood: '', promptProse: '', promptTokens: [], negativeTokens: [], recommendedSize: '', adult: false, sampleRating: 'All' }
+        : { id: '', title: '', char: 'nene', character: ['nene'], category: 'custom', story: '', storyJa: '', rating: 'All', mature: false, tags: [], prompt: '', negative: '', animaCaption: '' }
   return { kind, id: '', revision: 0, sortOrder: 0, createdAt: null, updatedAt: null, data }
+}
+export function blankPopularCharacter(): CatalogRecord {
+  const record = blankRecord('character')
+  record.data = {
+    id: '',
+    profile: { id: '', name: '', type: 'popular', source: '', speech: '', visual_dna: { signature: '' }, traits: [], portrait: { image: '../assets/characters/portrait-pending.svg', alt: '立绘待补' } },
+    popular: { id: '', displayName: '', originalName: '', franchise: '', identityProse: '', identityTokens: [], negativeTokens: [],
+      recommendedEngine: 'anima-miaomiao-v1.6', supportedEngines: ['anima-miaomiao-v1.6'], adultEligibility: 'adult' },
+    draftDefaultOutfit: { id: '', name: '', prose: '', tokens: [] },
+  }
+  return record
 }

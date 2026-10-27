@@ -23,20 +23,66 @@ impl ControlService {
         self.online_observed(index, settings, true).await
     }
     async fn online_observed(&self, index: usize, settings: &Value, fresh: bool) -> bool {
-        if index == 0 { return false; }
-        if index == 3 { return self.voice.translation_status(fresh).await["ready"] == true; }
-        let probes = self.voice.health_probes();
-        let host = settings[if index == 1 { "comfyHost" } else { "ttsHost" }].as_str().unwrap_or("");
-        if index == 2 && settings["ttsEngine"] == "voxcpm2" {
-            return probes.read(host, "/health", Duration::from_secs(3), 8 * 1024 * 1024, fresh).await
-                .is_some_and(|probe| (200..300).contains(&probe.status)
-                    && probe.json.as_ref().is_some_and(|v| v["online"] == true && v["engine"] == "VoxCPM2"));
+        if index == 0 {
+            return false;
         }
-        match probes.read(host, if index == 1 { "/system_stats" } else { "/docs" }, Duration::from_secs(3), 8 * 1024 * 1024, fresh).await {
-            Some(probe) => (200..if index == 1 { 300 } else { 500 }).contains(&probe.status)
-                && (index != 2 || !probes.read(host, "/health", Duration::from_secs(2), 8 * 1024 * 1024, fresh).await
-                    .is_some_and(|probe| probe.json.as_ref().is_some_and(|v| v["engine"] == "VoxCPM2"))),
-            None if index == 2 => probes.read(host, "/", Duration::from_secs(3), 8 * 1024 * 1024, fresh).await
+        if index == 3 {
+            return self.voice.translation_status(fresh).await["ready"] == true;
+        }
+        let probes = self.voice.health_probes();
+        let host = settings[if index == 1 { "comfyHost" } else { "ttsHost" }]
+            .as_str()
+            .unwrap_or("");
+        if index == 2 && settings["ttsEngine"] == "voxcpm2" {
+            return probes
+                .read(
+                    host,
+                    "/health",
+                    Duration::from_secs(3),
+                    8 * 1024 * 1024,
+                    fresh,
+                )
+                .await
+                .is_some_and(|probe| {
+                    (200..300).contains(&probe.status)
+                        && probe
+                            .json
+                            .as_ref()
+                            .is_some_and(|v| v["online"] == true && v["engine"] == "VoxCPM2")
+                });
+        }
+        match probes
+            .read(
+                host,
+                if index == 1 { "/system_stats" } else { "/docs" },
+                Duration::from_secs(3),
+                8 * 1024 * 1024,
+                fresh,
+            )
+            .await
+        {
+            Some(probe) => {
+                (200..if index == 1 { 300 } else { 500 }).contains(&probe.status)
+                    && (index != 2
+                        || !probes
+                            .read(
+                                host,
+                                "/health",
+                                Duration::from_secs(2),
+                                8 * 1024 * 1024,
+                                fresh,
+                            )
+                            .await
+                            .is_some_and(|probe| {
+                                probe
+                                    .json
+                                    .as_ref()
+                                    .is_some_and(|v| v["engine"] == "VoxCPM2")
+                            }))
+            }
+            None if index == 2 => probes
+                .read(host, "/", Duration::from_secs(3), 8 * 1024 * 1024, fresh)
+                .await
                 .is_some_and(|probe| (200..500).contains(&probe.status)),
             None => false,
         }
@@ -77,7 +123,8 @@ impl ControlService {
     }
     fn cached_health(&self) -> Option<Arc<Value>> {
         let state = self.state.lock().unwrap();
-        state.health_at
+        state
+            .health_at
             .filter(|at| at.elapsed() < Duration::from_secs(2))
             .map(|_| state.health.clone())
     }
@@ -150,7 +197,9 @@ impl ControlService {
                 .collect::<Vec<_>>()
         };
         for index in selected {
-            if index == 1 && self.native_gpu_owned() { continue; }
+            if index == 1 && self.native_gpu_owned() {
+                continue;
+            }
             if self.shutdown.is_cancelled() {
                 return;
             }

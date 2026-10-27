@@ -1,6 +1,7 @@
 import { runtimeFetch, runtimeResourceIdentity } from '../platform/runtimeUrl.ts'
 import { catalogApi } from '../api/catalogApi'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment'
+import { adoptCatalogPendingPortraits } from '../utils/popularPortraitSource.ts'
 import type { SceneRecord as Scene } from '../types/scene.ts'
 export type { SceneRecord as Scene } from '../types/scene.ts'
 
@@ -157,7 +158,7 @@ export const useSceneStore = defineStore('scenes', () => {
 
   const META_SPECS: MetaSpec[] = [
     { file: 'curation.json', required: false, lite: true, parse: (raw) => raw ?? {}, apply: (d) => { curation.value = d as CurationData } },
-    { file: 'characters.json', required: true, lite: false, parse: (raw) => requireDataRecords(raw, 'characters.json'), apply: (d) => { characters.value = d as Array<Record<string, unknown>> } },
+    { file: 'characters.json', required: true, lite: false, parse: (raw) => requireDataRecords(raw, 'characters.json'), apply: (d) => { characters.value = d as Array<Record<string, unknown>>; adoptCatalogPendingPortraits(d) } },
     { file: 'loras.json', required: false, lite: false, parse: (raw) => requireDataRecords(raw, 'LoRA资料'), apply: (d) => { loras.value = d as LoraMeta[] } },
     { file: 'tags.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
     { file: 'presets.json', required: false, lite: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
@@ -354,6 +355,7 @@ export const useSceneStore = defineStore('scenes', () => {
     sceneBlueprints.value = []
     if (sourceChanged) {
       scenes.value = []; curation.value = {}; characters.value = []; loras.value = []
+      adoptCatalogPendingPortraits([])
       tags.value = []; presets.value = []; popularCharacters.value = []
       error.value = null
     }

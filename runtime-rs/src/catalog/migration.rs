@@ -20,7 +20,8 @@ fn legacy_rows(root: &Path, folder: &str, field: &str) -> Result<Vec<Value>> {
         }
         let mut value = read(root, &format!("{folder}/{name}"))?;
         result.append(
-            value.get_mut(field)
+            value
+                .get_mut(field)
                 .and_then(Value::as_array_mut)
                 .ok_or_else(|| ApiError::invalid("旧分片内容无效"))?,
         );
@@ -51,10 +52,7 @@ pub(super) fn legacy(root: &Path) -> Result<Vec<Record>> {
             .to_owned();
         let mut data = json!({"id":id,"profile":null});
         data["profile"] = profile;
-        if characters
-            .insert(id.clone(), data)
-            .is_some()
-        {
+        if characters.insert(id.clone(), data).is_some() {
             return Err(ApiError::invalid("人物 ID 重复"));
         }
         order.push(id);
@@ -80,12 +78,7 @@ pub(super) fn legacy(root: &Path) -> Result<Vec<Record>> {
             let key = format!("{id}/{outfit_id}");
             let mut data = json!({"characterId":id,"outfit":null});
             data["outfit"] = outfit;
-            outfits.push(record(
-                "outfit",
-                key,
-                data,
-                outfits.len(),
-            ));
+            outfits.push(record("outfit", key, data, outfits.len()));
         }
         if !characters.contains_key(&id) {
             order.push(id.clone());
@@ -159,15 +152,27 @@ pub(super) fn legacy(root: &Path) -> Result<Vec<Record>> {
 }
 impl Catalog {
     pub(super) fn migrate_seed_provenance(&mut self) -> Result<()> {
-        let policy: Option<String> = self.connection.query_row(
-            "SELECT value FROM catalog_meta WHERE key='seedPolicy'", [], |r| r.get(0),
-        ).optional()?;
-        if policy.as_deref() == Some("2") { return Ok(()); }
-        let transaction = self.connection
+        let policy: Option<String> = self
+            .connection
+            .query_row(
+                "SELECT value FROM catalog_meta WHERE key='seedPolicy'",
+                [],
+                |r| r.get(0),
+            )
+            .optional()?;
+        if policy.as_deref() == Some("2") {
+            return Ok(());
+        }
+        let transaction = self
+            .connection
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        let policy: Option<String> = transaction.query_row(
-            "SELECT value FROM catalog_meta WHERE key='seedPolicy'", [], |r| r.get(0),
-        ).optional()?;
+        let policy: Option<String> = transaction
+            .query_row(
+                "SELECT value FROM catalog_meta WHERE key='seedPolicy'",
+                [],
+                |r| r.get(0),
+            )
+            .optional()?;
         match policy.as_deref() {
             Some("2") => (),
             None => {
@@ -176,9 +181,18 @@ impl Catalog {
                 // historical defaults. Discard only that unproven comparison
                 // baseline; keep all working records, tombstones and history.
                 transaction.execute("DELETE FROM content_seed", [])?;
-                transaction.execute("INSERT INTO catalog_meta(key,value) VALUES('seedPolicy','2')", [])?;
+                transaction.execute(
+                    "INSERT INTO catalog_meta(key,value) VALUES('seedPolicy','2')",
+                    [],
+                )?;
             }
-            _ => return Err(ApiError::new(503, "CATALOG_SEED_POLICY", "内容库基线版本不受支持，请使用匹配版本的程序")),
+            _ => {
+                return Err(ApiError::new(
+                    503,
+                    "CATALOG_SEED_POLICY",
+                    "内容库基线版本不受支持，请使用匹配版本的程序",
+                ));
+            }
         }
         transaction.commit()?;
         Ok(())
@@ -228,9 +242,14 @@ impl Catalog {
             write::put(&transaction, record, removed)?;
             write::history(&transaction, record, removed, batch, &at)?;
         }
-        let existing: HashSet<_> = records.iter().chain(retired.iter())
-            .map(|r| (&r.kind, &r.id)).collect();
-        for (record, removed) in seeds.iter().map(|r| (r, false))
+        let existing: HashSet<_> = records
+            .iter()
+            .chain(retired.iter())
+            .map(|r| (&r.kind, &r.id))
+            .collect();
+        for (record, removed) in seeds
+            .iter()
+            .map(|r| (r, false))
             .chain(retired_seeds.iter().map(|r| (r, true)))
             .filter(|(r, _)| existing.contains(&(&r.kind, &r.id)))
         {

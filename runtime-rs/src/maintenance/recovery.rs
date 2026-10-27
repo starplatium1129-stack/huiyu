@@ -5,7 +5,10 @@ use super::{
     recovery_claim::Claim,
 };
 use serde_json::{Value, json};
-use std::{collections::HashMap, path::{Path, PathBuf}};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+};
 
 pub fn preview(options: &Options, backup_id: Option<&str>) -> Result<Value> {
     let ctx = Context::new(options)?;

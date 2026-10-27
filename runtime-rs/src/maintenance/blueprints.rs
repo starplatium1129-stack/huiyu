@@ -5,8 +5,8 @@ mod validate;
 use super::{Error, Result, fs};
 use serde_json::Value;
 use std::{collections::HashSet, path::Path};
-pub(crate) use store::load_popular;
 pub use store::load;
+pub(crate) use store::load_popular;
 pub(crate) use validate::validate_items;
 
 fn reserved(name: &str) -> bool {

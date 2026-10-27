@@ -5,7 +5,7 @@ use super::{
 use crate::{
     error::{ApiError, Result},
     processes::{OwnedProcess, Processes},
-    upstream::{LocalUpstream, HealthProbes},
+    upstream::{HealthProbes, LocalUpstream},
 };
 use serde_json::{Value, json};
 use std::{
@@ -65,9 +65,19 @@ impl Translation {
             probes,
         })
     }
-    async fn ping(&self) -> bool { self.ping_observed(true).await }
+    async fn ping(&self) -> bool {
+        self.ping_observed(true).await
+    }
     async fn ping_observed(&self, fresh: bool) -> bool {
-        self.probes.read(&self.settings.translation_url, "/health", Duration::from_millis(800), 64 * 1024, fresh).await
+        self.probes
+            .read(
+                &self.settings.translation_url,
+                "/health",
+                Duration::from_millis(800),
+                64 * 1024,
+                fresh,
+            )
+            .await
             .is_some_and(|probe| probe.status == 200)
     }
     pub async fn status(&self, fresh: bool) -> Value {
@@ -205,14 +215,22 @@ impl Translation {
         }
         result
     }
-    pub async fn translate(self: &Arc<Self>, text: String, deadline: Deadline) -> Result<Arc<Value>> {
+    pub async fn translate(
+        self: &Arc<Self>,
+        text: String,
+        deadline: Deadline,
+    ) -> Result<Arc<Value>> {
         tokio::select! {
             biased;
             _ = self.cancel.cancelled() => Err(cancelled()),
             result = tokio::time::timeout_at(deadline, self.translate_inner(text, deadline)) => result.map_err(|_| translation_timeout())?,
         }
     }
-    async fn translate_inner(self: &Arc<Self>, text: String, deadline: Deadline) -> Result<Arc<Value>> {
+    async fn translate_inner(
+        self: &Arc<Self>,
+        text: String,
+        deadline: Deadline,
+    ) -> Result<Arc<Value>> {
         remaining(deadline, Duration::MAX, translation_timeout)?;
         if let Some(value) = self.cached(&text) {
             return Ok(value);

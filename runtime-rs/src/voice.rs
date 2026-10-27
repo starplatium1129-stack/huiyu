@@ -9,7 +9,7 @@ use crate::{
     config::Config,
     error::{ApiError, Result},
     security,
-    upstream::{LocalUpstream, HealthProbes},
+    upstream::{HealthProbes, LocalUpstream},
 };
 use axum::{
     Extension, Json, Router,
@@ -44,9 +44,20 @@ impl VoiceService {
         let transport = LocalUpstream::new();
         let probes = HealthProbes::new(transport.clone(), shutdown.clone());
         Self {
-            speech: speech::Speech::new(settings.clone(), transport.clone(), shutdown.clone(), probes.clone()),
-            translation: translation::Translation::new(settings, transport, shutdown.clone(), probes.clone()),
-            shutdown, probes,
+            speech: speech::Speech::new(
+                settings.clone(),
+                transport.clone(),
+                shutdown.clone(),
+                probes.clone(),
+            ),
+            translation: translation::Translation::new(
+                settings,
+                transport,
+                shutdown.clone(),
+                probes.clone(),
+            ),
+            shutdown,
+            probes,
         }
     }
     pub fn queue_status(&self) -> Value {
@@ -56,8 +67,12 @@ impl VoiceService {
     pub(crate) fn translation_owned(&self) -> bool {
         self.translation.owned()
     }
-    pub(crate) fn health_probes(&self) -> &Arc<HealthProbes> { &self.probes }
-    pub(crate) async fn translation_status(&self, fresh: bool) -> Value { self.translation.status(fresh).await }
+    pub(crate) fn health_probes(&self) -> &Arc<HealthProbes> {
+        &self.probes
+    }
+    pub(crate) async fn translation_status(&self, fresh: bool) -> Value {
+        self.translation.status(fresh).await
+    }
     pub(crate) async fn prepare_translation(&self) -> Result<()> {
         self.translation
             .prepare(Deadline::now() + Duration::from_secs(200))
@@ -124,7 +139,8 @@ async fn translate(
         target_language: "ja",
         translation: &result["translation"],
         segments: result.get("segments").unwrap_or(&empty_segments),
-    }).into_response())
+    })
+    .into_response())
 }
 async fn status(
     State(state): State<AppState>,
@@ -133,8 +149,10 @@ async fn status(
 ) -> Result<Json<Value>> {
     service.running(&state)?;
     let fresh = query.get("fresh").is_some_and(|value| value == "1");
-    let (mut result, translation) =
-        tokio::join!(service.speech.status_observed(fresh), service.translation.status(fresh));
+    let (mut result, translation) = tokio::join!(
+        service.speech.status_observed(fresh),
+        service.translation.status(fresh)
+    );
     result["translation"] = translation;
     Ok(Json(result))
 }

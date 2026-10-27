@@ -41,7 +41,9 @@ fn read_sources(root: &Path, folder: &str, field: &str) -> Result<Vec<Value>> {
         let bytes = fs::read(&file, false)?.unwrap();
         let mut data = json(&bytes, name)?;
         drop(bytes);
-        let values = data.get_mut(field).and_then(Value::as_array_mut)
+        let values = data
+            .get_mut(field)
+            .and_then(Value::as_array_mut)
             .ok_or_else(|| Error::invalid(format!("{name} 根必须含 {field} 数组")))?;
         rows.append(values);
     }

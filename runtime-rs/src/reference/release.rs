@@ -38,7 +38,9 @@ pub(super) fn seal(release: &Value) -> String {
         "reviewSha256",
         "baseIdentity",
         "approvals",
-    ].into_iter().filter_map(|key| {
+    ]
+    .into_iter()
+    .filter_map(|key| {
         let (field, value) = release.as_object()?.get_key_value(key)?;
         (key != "approvals" || truthy(value)).then_some((field, value))
     });
@@ -109,7 +111,10 @@ fn scan(
         if !relative_image(&relative) {
             return Err(invalid_release());
         }
-        if found.insert(relative, io::file_digest(&file, cancel)?).is_some() {
+        if found
+            .insert(relative, io::file_digest(&file, cancel)?)
+            .is_some()
+        {
             return Err(invalid_release());
         }
     }
@@ -192,7 +197,10 @@ impl Release {
             return Err(invalid_release());
         }
         let view_bytes = io::bytes(&root.join("character-reference-view.json"), cancel)?;
-        let standards = io::bytes(&app_root.join("data/character-reference-standards.json"), cancel)?;
+        let standards = io::bytes(
+            &app_root.join("data/character-reference-standards.json"),
+            cancel,
+        )?;
         let source_view = io::bytes(&app_root.join("data/character-reference-view.json"), cancel)?;
         if !hash_matches(&view_bytes, &manifest["viewSha256"])
             || !hash_matches(&standards, &manifest["sourceStandardsSha256"])
@@ -238,7 +246,10 @@ impl Release {
             self.root.join("character-reference-view.json"),
             app_root.join("data/character-reference-standards.json"),
             app_root.join("data/character-reference-view.json"),
-        ].into_iter().zip(&self.control_hashes) {
+        ]
+        .into_iter()
+        .zip(&self.control_hashes)
+        {
             let (_, hash) = io::file_digest(&path, cancel)?;
             if expected != &hash {
                 return Err(invalid_release());

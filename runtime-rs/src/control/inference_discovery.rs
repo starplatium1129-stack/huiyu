@@ -22,11 +22,18 @@ impl ControlService {
             let active = service.active_inference()?;
             let explicit = {
                 let saved = service.saved.read().unwrap();
-                let workspace_matches = saved["inferenceWorkspacePath"].as_str()
+                let workspace_matches = saved["inferenceWorkspacePath"]
+                    .as_str()
                     .is_none_or(|path| std::path::Path::new(path) == config.ai_workspace_root);
-                saved.get("inference").filter(|_| workspace_matches).map(|value| {
-                    SAVED_FIELDS.into_iter().filter(|key| value.get(*key).is_some()).collect::<Vec<_>>()
-                })
+                saved
+                    .get("inference")
+                    .filter(|_| workspace_matches)
+                    .map(|value| {
+                        SAVED_FIELDS
+                            .into_iter()
+                            .filter(|key| value.get(*key).is_some())
+                            .collect::<Vec<_>>()
+                    })
             };
             let (mut suggested, receipt) = Settings::discovered(&config.ai_workspace_root);
             suggested.engine = "native".into();
@@ -60,9 +67,18 @@ impl ControlService {
                     .environment_overrides
                     .iter()
                     .any(|key| key == "python");
-            let adapter_ready = crate::generation::native::adapters::manifest()["models"].as_object().unwrap().iter()
-                .any(|(id, model)| model["media"] == "image" && crate::generation::native::adapters::status(&selected, id)["available"] == true);
-            if !adapter_ready && (!selected.python.is_file() || (receipt.is_none() && !explicit_python)) {
+            let adapter_ready = crate::generation::native::adapters::manifest()["models"]
+                .as_object()
+                .unwrap()
+                .iter()
+                .any(|(id, model)| {
+                    model["media"] == "image"
+                        && crate::generation::native::adapters::status(&selected, id)["available"]
+                            == true
+                });
+            if !adapter_ready
+                && (!selected.python.is_file() || (receipt.is_none() && !explicit_python))
+            {
                 missing.push("兼容的本机 Python 运行库");
             }
             if !selected.worker.is_file() {
