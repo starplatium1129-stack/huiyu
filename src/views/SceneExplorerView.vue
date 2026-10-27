@@ -47,10 +47,10 @@
           @click="showPersonalScenes">常用 {{ usedCount }}</button>
         <button type="button"
           :aria-pressed="fTier === 'all' && sortBy === 'favorite' && !showHidden"
-          @click="showFavoriteScenes">收藏 {{ favoriteCount }}</button>
+          @click="showFavoriteScenes">收藏 {{ loading ? '…' : loadError ? '—' : favoriteCount ?? '' }}</button>
         <button type="button"
           :aria-pressed="fTier === 'all' && sortBy === 'smart' && !showHidden"
-          @click="showAllScenes">完整库 {{ loading ? '…' : loadError ? '—' : availableCount }}</button>
+          @click="showAllScenes">完整库 {{ loading ? '…' : loadError ? '—' : availableCount ?? '' }}</button>
       </div>
 
       <div class="toolbar-primary">

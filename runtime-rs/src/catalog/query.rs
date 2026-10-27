@@ -68,6 +68,9 @@ impl Catalog {
         let size = query.page_size.unwrap_or(24).clamp(1, 100);
         let order = match query.sort.as_str() {
             "title" => "title COLLATE NOCASE,sort_order,id",
+            "relevance" if !query.search.trim().is_empty() =>
+                "CASE WHEN lower(title)=? THEN 0 WHEN instr(lower(title),?)=1 THEN 1 WHEN instr(lower(title),?)>0 THEN 2 ELSE 3 END,sort_order,id",
+            "relevance" => "sort_order,id",
             // DESC already puts NULL last; a leading IS NULL expression
             // prevents catalog_newest from supplying the date order.
             "newest" => "created_at DESC,sort_order,id",
@@ -146,6 +149,9 @@ impl Catalog {
         };
         let selected_page = page.min(((total + size - 1) / size).max(1));
         let mut statement = self.connection.prepare(&format!("SELECT kind,id,revision,sort_order,created_at,updated_at,title,character_id,category,rating FROM content_records WHERE {filter} ORDER BY {order} LIMIT ? OFFSET ?"))?;
+        if query.sort == "relevance" && !search.is_empty() {
+            values.extend((0..3).map(|_| search.clone().into()));
+        }
         values.extend([size.into(), ((selected_page - 1) * size).into()]);
         let items = statement.query_map(rusqlite::params_from_iter(&values), |r| {
             Ok(json!({"kind":text_column(r,0)?,"id":text_column(r,1)?,"revision":r.get::<_,i64>(2)?,"sortOrder":r.get::<_,i64>(3)?,"createdAt":optional_text_column(r,4)?,"updatedAt":optional_text_column(r,5)?,

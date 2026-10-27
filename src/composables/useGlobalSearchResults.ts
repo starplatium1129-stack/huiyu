@@ -100,7 +100,7 @@ export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Read
         key: `action:${item.id}`, path: item.path, label: item.label, icon: item.icon, meta: item.hint,
       })) }, pages,
     ].filter(group => group.items.length)
-    return [pages, ...(local ? catalog.groups.value : [
+    const groups = [pages, ...(local ? catalog.groups.value : [
       { id: 'scenes', label: `灵感场景 · ${filteredScenes.value.length}`, items: filteredScenes.value.map(item => ({
         key: `scene:${item.id}`, path: item.path, label: item.title, icon: 'scene' as const, meta: item.meta,
       })) }]),
@@ -108,8 +108,12 @@ export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Read
         key: `work:${item.id}`, artworkId: item.id, label: item.title, icon: 'gallery' as const, meta: item.meta,
       })) },
     ].filter(group => group.items.length)
+    const exact = query.value.trim().toLowerCase()
+    return groups.sort((a, b) => Number(b.items.some(item => item.label.trim().toLowerCase() === exact))
+      - Number(a.items.some(item => item.label.trim().toLowerCase() === exact)))
   })
   const flat = computed(() => resultGroups.value.flatMap(group => group.items))
+  const moreCatalogGroups = computed(() => local ? catalog.groups.value.filter(group => group.items.length < group.total) : [])
 
   function resetSceneRead() {
     scenesRequest++; scenesLoading.value = false; scenesError.value = ''
@@ -153,6 +157,7 @@ export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Read
     else { void loadScenes(); loadWorks() }
   })
   onScopeDispose(resetSceneRead)
-  return { queryTerms, resultGroups, flat, scenesLoading: local ? catalog.loading : scenesLoading,
+  return { queryTerms, resultGroups, flat, moreCatalogGroups, loadMoreCatalog: catalog.loadMore,
+    scenesLoading: local ? catalog.loading : scenesLoading,
     scenesError: local ? catalog.error : scenesError, worksLoading, worksError, retryScenes }
 }

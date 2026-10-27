@@ -382,9 +382,10 @@ function initContinueDraft() {
   const draft = readDraft(localStorage.getItem(DRAFT_KEY))
   if (!draft || (!draft.sceneId && !draft.story)) return false
   const title = draft.sceneTitle || draft.story || '未完成创作'
+  const characters = Array.from(title)
   continueLink.value = { to: '/prompt-builder?resume=1', label: '继续上次创作' }
   continueIconName.value = 'refresh'
-  continueHint.value = `上次停在「${title.slice(0, 24)}」`
+  continueHint.value = `上次停在「${characters.slice(0, 24).join('')}${characters.length > 24 ? '…' : ''}」`
   return true
 }
 

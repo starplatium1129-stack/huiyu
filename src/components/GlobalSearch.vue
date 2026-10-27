@@ -3,7 +3,7 @@
     <Transition :css="false" @enter="searchMotion.enter" @leave="searchMotion.leave" @after-leave="searchMotion.dispose">
     <div v-show="open" class="global-search" :inert="!open" @pointerdown.self="close()">
       <ListboxRoot ref="listbox" as-child highlight-on-hover :model-value="''" @highlight="activeKey = typeof $event?.value === 'string' ? $event.value : undefined" @update:model-value="run">
-      <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
+      <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索" @keydown.capture="recordSelectionKey">
         <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>快速查找</strong><span>角色、场景与作品</span></div>
         <div class="gs-input-row tw:flex tw:items-center tw:gap-s-3">
           <StudioSearch v-model="query" class="gs-search" label="搜索角色、服装、场景、蓝图、作品或页面" placeholder="搜索角色、服装、场景、蓝图…" :clear-on-escape="false">
@@ -27,7 +27,7 @@
           <ListboxGroup v-for="group in resultGroups" :key="group.id" class="gs-group tw:mb-s-2">
             <ListboxGroupLabel as="h4" class="gs-group-title tw:text-muted tw:text-label-sm tw:font-semibold">{{ group.label }}</ListboxGroupLabel>
             <ListboxItem v-for="item in group.items" :key="item.key" :value="item.key" as="button" type="button"
-              class="gs-row tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[46px] tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer">
+              class="gs-row tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[46px] tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer" @pointermove="selectionTouched = true">
               <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span><small v-if="item.meta">{{ item.meta }}</small>
             </ListboxItem>
           </ListboxGroup>
@@ -40,6 +40,12 @@
           </template>
         </div>
         </ListboxContent>
+        <div v-if="moreCatalogGroups.length" class="gs-more" aria-label="更多目录结果">
+          <button v-for="group in moreCatalogGroups" :key="group.id" type="button" class="btn btn-quiet btn-sm"
+            :aria-disabled="group.loadingMore" @click="showMore(group.id, $event)">
+            {{ group.loadingMore ? '正在读取…' : `查看更多${group.name}（剩余 ${group.total - group.items.length}）` }}
+          </button>
+        </div>
         <p :id="searchAnnouncementId" class="gs-sr-status tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden tw:whitespace-nowrap" role="status" aria-live="polite" aria-atomic="true">{{ resultsAnnouncement }}</p>
         <div class="gs-footer tw:flex tw:justify-between tw:gap-s-3 tw:text-muted tw:text-label-sm" aria-hidden="true"><span>↑ ↓ 选择 · Enter 打开</span><span>Esc 关闭</span></div>
       </div>
@@ -58,6 +64,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useFluidSurface } from '@/composables/useFluidSurface'
 import { useGlobalSearchPanel } from '@/composables/useGlobalSearchPanel'
 import { useGlobalSearchResults } from '@/composables/useGlobalSearchResults'
+import type { SearchCatalogKind } from '@/composables/useCatalogSearch'
 
 const props = defineProps<{
   initialSource?: 'keyboard' | 'pointer'
@@ -67,12 +74,13 @@ const props = defineProps<{
 }>()
 
 const activeKey = ref<string>()
+const selectionTouched = ref(false)
 const listbox = ref<{ highlightFirstItem: () => void; highlightedElement: HTMLElement | null } | null>(null)
 const inputEl = ref<HTMLInputElement | null>(null), panelEl = ref<HTMLElement | null>(null)
 const resultsEl = ref<HTMLElement | null>(null)
 const searchMotion = useFluidSurface('.gs-panel', { animatePanel: true, small: true })
 const { open, query, triggerSource, close, navigate } = useGlobalSearchPanel({ panelEl, inputEl, initial: props })
-const { queryTerms, resultGroups, flat, scenesLoading, scenesError, worksLoading, worksError, retryScenes: reloadScenes } = useGlobalSearchResults(open, query)
+const { queryTerms, resultGroups, flat, moreCatalogGroups, loadMoreCatalog, scenesLoading, scenesError, worksLoading, worksError, retryScenes: reloadScenes } = useGlobalSearchResults(open, query)
 const searchInstanceId = useId()
 const listboxId = `global-search-listbox-${searchInstanceId}`
 const searchAnnouncementId = `global-search-announcement-${searchInstanceId}`
@@ -85,8 +93,8 @@ const resultsAnnouncement = computed(() => {
   const status = [scenesLoading.value ? '内容目录读取中' : scenesError.value,
     queryTerms.value.length ? worksLoading.value ? '作品读取中' : worksError.value : ''].filter(Boolean).join('；')
   const message = !total ? status ? '当前暂无结果' : query.value.trim() ? '没有匹配的结果' : '暂无可用结果' : result
-    ? `找到 ${total} 个结果，当前第 ${activeIndex.value + 1} 项：${result.label}`
-    : `找到 ${total} 个结果`
+    ? `已显示 ${total} 个结果，当前第 ${activeIndex.value + 1} 项：${result.label}`
+    : `已显示 ${total} 个结果`
   return [message, status].filter(Boolean).join('；')
 })
 
@@ -98,10 +106,21 @@ function retryScenes(event: MouseEvent) {
   if (document.activeElement === event.currentTarget) inputEl.value?.focus({ preventScroll: true })
   reloadScenes()
 }
+function recordSelectionKey(event: KeyboardEvent) {
+  if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) selectionTouched.value = true
+}
+async function showMore(kind: SearchCatalogKind, event: MouseEvent) {
+  const button = event.currentTarget as HTMLElement
+  selectionTouched.value = true
+  await loadMoreCatalog(kind)
+  await nextTick()
+  if (open.value && !button.isConnected && document.activeElement === document.body) inputEl.value?.focus({ preventScroll: true })
+}
 
 watch([query, open], () => {
   if (!open.value) return
   activeKey.value = undefined
+  selectionTouched.value = false
   // Opening and query changes restart selection at the first result.
   void nextTick(() => {
     if (!open.value) return
@@ -110,9 +129,9 @@ watch([query, open], () => {
   })
 })
 
-// Async catalog updates preserve the highlighted record, never its old array index.
+// Preserve an explicit selection; otherwise highlight the best result after async reads.
 watch(flat, () => {
-  if (!open.value || listbox.value?.highlightedElement?.isConnected && activeResult.value) return
+  if (!open.value || selectionTouched.value && listbox.value?.highlightedElement?.isConnected && activeResult.value) return
   activeKey.value = undefined
   listbox.value?.highlightFirstItem()
 }, { flush: 'post' })
@@ -153,6 +172,7 @@ watch(flat, () => {
 .gs-catalog-state { display:flex; align-items:center; gap:var(--s-3); flex-shrink:0; padding:var(--s-2) var(--s-5); border-bottom:1px solid var(--border-soft); }
 .gs-catalog-state p { flex:1; min-width:0; margin:0; color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); overflow-wrap:anywhere; }
 .gs-catalog-state button { flex:none; }
+.gs-more { display:flex; flex-wrap:wrap; gap:var(--s-1); padding:var(--s-2) var(--s-4); border-top:1px solid var(--border-soft); }
 .gs-esc { flex:0 0 auto; }
 .gs-heading, .gs-input-row, .gs-footer { flex-shrink:0; }
 .gs-results { min-height:0; flex:1 1 auto; max-height: min(52vh, 480px); overscroll-behavior:contain; scroll-padding-block:var(--s-2); }

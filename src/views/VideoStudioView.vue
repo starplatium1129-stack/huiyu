@@ -42,7 +42,12 @@
       :duration-options="durationSelectOptions"
       :quality-options="qualitySelectOptions"
       :can-generate="canGenerate" :submitting="submitting" :submit-title="submitTitle" :submit-description="submitDescription"
-      @generate="submitVideo" />
+      @generate="submitVideo">
+      <template #recovery>
+        <button v-if="status && !statusLoading && (!status.online || activeModel && !activeModel.available)"
+          class="btn btn-quiet btn-sm" type="button" @click="showEnvironment">查看视频环境</button>
+      </template>
+    </VideoGenerationBar>
     <div class="video-workspace" data-route-arrive :class="{ 'video-workspace--shots': selectedMode === 'shots' }" v-content-motion:up="selectedMode">
       <div class="video-creation-column">
         <KeepAlive><AsyncPanel v-if="selectedMode === 'shots'" :loader="loadShotListEditor" label="分镜工作台" v-slot="{ component }"><component :is="component" :status="status" /></AsyncPanel></KeepAlive>
@@ -269,7 +274,7 @@
           </details>
         </section>
 
-        <section class="video-panel video-environment-panel">
+        <section id="video-environment" ref="environmentPanel" class="video-panel video-environment-panel" tabindex="-1">
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
               <span class="video-step">本机环境</span>
@@ -285,12 +290,17 @@
               <strong>{{ activeModel.label }}</strong>
               <p>{{ activeModel.summary }}</p>
             </div>
-            <details v-if="activeModel.missing.length" class="video-advanced">
+            <p v-if="nativeVideo && !activeModel.available && activeModel.reason" class="video-install-note">当前原因：{{ activeModel.reason }}</p>
+            <template v-if="nativeVideo && !activeModel.available && activeModel.requirements.length">
+              <p class="video-install-note">准备 {{ activeModel.label }} 需要：</p>
+              <ul class="video-missing-list"><li v-for="requirement in activeModel.requirements" :key="requirement">{{ requirement }}</li></ul>
+            </template>
+            <details v-if="!nativeVideo && activeModel.missing.length" class="video-advanced">
               <StudioDisclosureSummary class="video-disclosure-heading">需要安装 {{ activeModel.missing.length }} 项资源 · 查看详情</StudioDisclosureSummary>
               <ul class="video-missing-list"><li v-for="file in activeModel.missing" :key="file"><code>{{ file }}</code></li></ul>
             </details>
             <p v-if="activeModel.missing.length && activeModel.executable" class="video-install-note">
-              {{ nativeVideo ? '请准备所列模型与运行环境，然后重新检测。' : 'ComfyUI 节点已支持；安装所列资源后即可启用生成按钮。' }}
+              {{ nativeVideo ? '请准备所列模型与运行环境，然后重新检测。' : '请将所列资源放入 ComfyUI/models 的对应目录，然后重新检测。' }}
             </p>
             <p v-else-if="activeModel.missing.length" class="video-install-note">
               此模型暂不支持生成，可选择其他模型。
@@ -300,7 +310,7 @@
               <span>Wan 5B 快速验证镜头，H3 再做带原生音效与音乐的最终成片。</span>
             </div>
           </template>
-          <RouterLink v-if="!status?.online" class="btn btn-ghost btn-block" :to="nativeVideo ? '/control#control-inference' : '/control#control-services'">
+          <RouterLink v-if="status && (!status.online || nativeVideo && activeModel && !activeModel.available)" class="btn btn-ghost btn-block" :to="videoControlTarget">
             {{ nativeVideo ? '准备视频运行环境' : '打开服务与连接' }}
           </RouterLink>
         </section>
@@ -354,6 +364,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -371,6 +382,12 @@ import { useTaskCenter } from '@/composables/useTaskCenter'
 import { useVideoWorkspace } from "@/composables/video/useVideoWorkspace"
 function openTaskCenter() { useTaskCenter().opened.value = true }
 const queuePanel = ref<HTMLElement | null>(null)
+const route = useRoute()
+const environmentPanel = ref<HTMLElement | null>(null)
+function showEnvironment() {
+  environmentPanel.value?.scrollIntoView({ block: 'start', behavior: 'instant' })
+  environmentPanel.value?.focus({ preventScroll: true })
+}
 function retrySelectedTask() { queuePanel.value?.focus({ preventScroll: true }); void retrySelectedJob() }
 const firstFrameInput = ref<HTMLInputElement | null>(null), lastFrameInput = ref<HTMLInputElement | null>(null)
 async function removeFrame(event: MouseEvent, slot: 'first' | 'last') {
@@ -444,6 +461,15 @@ const aspectSelectOptions = computed(() => aspectOptions.value.map(item => {
 }))
 const durationSelectOptions = computed(() => durationOptions.value.map(seconds => ({ value: seconds, label: `${seconds} 秒` })))
 const qualitySelectOptions = computed(() => (status.value?.qualities || []).map(item => ({ value: item.id, label: item.label })))
+const videoControlTarget = computed(() => ({
+  path: '/control',
+  hash: nativeVideo.value ? '#control-inference' : '#control-services',
+  query: {
+    ...(nativeVideo.value ? { videoSetup: '1' } : { engine: 'video' }),
+    ...(typeof route.query.job === 'string' ? { videoJob: route.query.job } : {}),
+    ...(selectedMode.value === 'shots' ? { videoMode: 'shots' } : {}),
+  },
+}))
 const cameraSelectOptions = cameraOptions.map(item => ({ value: item.id, label: item.label }))
 const motionSelectOptions = motionOptions.map(item => ({ value: item.id, label: item.label }))
 </script>

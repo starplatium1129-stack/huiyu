@@ -3,6 +3,7 @@
       <section id="control-service-status" class="control-overview" aria-label="连接状态" tabindex="-1" :aria-busy="serviceChecking || (!statusLoaded && !statusError)">
         <div class="overview-heading"><div><h2>{{ overviewFeedback.title }}</h2><p>{{ overviewFeedback.note }}</p></div><button class="btn btn-ghost btn-sm" type="button" :disabled="serviceChecking || opBusy" :aria-busy="serviceChecking" @click="recheckStatus"><ArchiveIcon name="refresh" />{{ serviceChecking ? '检测中…' : '重新检测' }}</button></div>
         <p v-if="requestedService" class="service-context">{{ requestedEngineLabel }}需要 {{ requestedService === 'webui' ? 'SD WebUI' : 'ComfyUI' }}，先检查高亮的服务。</p>
+        <RouterLink v-if="route.query.engine === 'video'" class="btn btn-quiet btn-sm" :to="videoReturnLocation(route.query)">返回故事短片</RouterLink>
         <div class="status-wall service-rows">
           <article v-for="service in serviceCards" :key="service.key" :id="`control-service-${service.key}`" class="status-tile service-row"
             :class="{ 'service-required': requestedService === service.key }" :data-state="!statusUsable ? 'checking' : service.online ? 'on' : 'off'">
@@ -115,6 +116,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { videoReturnLocation } from '@/utils/videoNavigation'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'

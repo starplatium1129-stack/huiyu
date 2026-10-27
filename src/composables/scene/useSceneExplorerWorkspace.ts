@@ -148,8 +148,14 @@ export function useSceneExplorerWorkspace() {
     const matureCount = computed(() => scenes.value.filter(s => s.mature).length);
     const hiddenCount = computed(() => hiddenIds.value.size);
     const usedCount = computed(() => Object.keys(localUsage.value).length);
-    const favoriteCount = computed(() => scenes.value.filter(s => favs.value.has(s.id) || uxIsFav(s, profile.value)).length);
-    const availableCount = computed(() => scenes.value.filter(s => !hiddenIds.value.has(s.id)).length);
+    // A core/character shard cannot provide a full-library count.
+    const browseTarget = computed<SceneBrowseTarget>(() => requestedScene.value ? 'all' : fChar.value !== 'all'
+        ? fChar.value as SceneBrowseTarget
+        : debouncedQuery.value.trim() || fTier.value !== 'core' ? 'all' : 'core');
+    const favoriteCount = computed(() => browseTarget.value === 'all'
+        ? scenes.value.filter(s => favs.value.has(s.id) || uxIsFav(s, profile.value)).length : null);
+    const availableCount = computed(() => browseTarget.value === 'all'
+        ? scenes.value.filter(s => !hiddenIds.value.has(s.id)).length : null);
     const tierLabel = computed(() => {
         if (showHidden.value)
             return '已隐藏';
@@ -186,26 +192,21 @@ export function useSceneExplorerWorkspace() {
         const days = Math.max(0, Math.floor((Date.now() - timestamp) / 86400000));
         return days === 0 ? '今天' : days === 1 ? '昨天' : days < 30 ? `${days} 天前` : '较早';
     }
-    const themeCounts = computed<Record<string, number>>(() => Object.fromEntries(THEME_DEFS.map(({ id }) => [id,
-        scenes.value.filter(s => !hiddenIds.value.has(s.id) && matchesTheme(s, id)).length])));
-    function themeCount(id: string) { return themeCounts.value[id] || 0; }
     const searching = computed(() => !!debouncedQuery.value.trim());
     const queryAnalysis = computed(() => uxAnalyze(debouncedQuery.value, curation.value));
     const searchDocuments = computed(() => searching.value
         ? new Map(scenes.value.map(scene => [scene, prepareSceneSearch(scene, [primaryCategory(scene), timeLabel(scene.timeOfDay)])])) : null);
     // Release normalized strings when clearing a search, including a cached page.
     watch(searching, active => { if (!active) void searchDocuments.value; }, { flush: 'sync' });
-    const filtered = computed(() => {
+    const themeCandidates = computed(() => {
         // 用 debounce 后的值：直接读 searchQuery 会让下面的过滤+排序在每次击键时重跑
         const q = debouncedQuery.value.trim().toLowerCase();
         const analysis = q ? queryAnalysis.value : undefined;
         const documents = searchDocuments.value;
         const collection = fTier.value, hidden = showHidden.value;
         const needsTier = !hidden && ((!q && collection === 'featured') || !['all', 'personal', 'featured', 'core'].includes(collection));
-        let r = scenes.value.filter(s => {
+        return scenes.value.filter(s => {
             if (hidden ? !hiddenIds.value.has(s.id) : hiddenIds.value.has(s.id))
-                return false;
-            if (!matchesTheme(s, activeTheme.value))
                 return false;
             if (!matchesSeries(s, fSeries.value))
                 return false;
@@ -231,6 +232,14 @@ export function useSceneExplorerWorkspace() {
                 return false;
             return !analysis || uxMatchesSearch(documents!.get(s)!, analysis);
         });
+    });
+    const themeCounts = computed<Record<string, number>>(() => Object.fromEntries(THEME_DEFS.map(({ id }) => [id,
+        themeCandidates.value.filter(s => matchesTheme(s, id)).length])));
+    function themeCount(id: string) { return themeCounts.value[id] || 0; }
+    const filtered = computed(() => {
+        const r = themeCandidates.value.filter(s => matchesTheme(s, activeTheme.value));
+        const analysis = searching.value ? queryAnalysis.value : undefined;
+        const documents = searchDocuments.value;
         // 相关度先算一遍存 Map:原先在比较器里每次比较都调 uxSearchScore 两次,
         // 297 条 ≈ 每次重算 4900 次评分,每次还带字符串归一化
         const relevance = new Map<string, number>();
@@ -295,10 +304,6 @@ export function useSceneExplorerWorkspace() {
             manualCompanion.value = rail.character;
         nextTick(() => document.getElementById('sceneSearch')?.focus());
     }
-    // An explicit scene can be outside the current collection or rendered range.
-    const browseTarget = computed<SceneBrowseTarget>(() => requestedScene.value ? 'all' : fChar.value !== 'all'
-        ? fChar.value as SceneBrowseTarget
-        : debouncedQuery.value.trim() || fTier.value !== 'core' ? 'all' : 'core');
     let preferenceLoad: Promise<PreferenceProfile | null> | undefined;
     let loadedTarget: SceneBrowseTarget | undefined, loadedVersion: number | undefined;
     async function refreshScenes(target: SceneBrowseTarget, reuseCatalog = false): Promise<boolean> {

@@ -1,8 +1,8 @@
 <template>
   <section id="control-inference" class="panel-card inference-settings" aria-labelledby="inference-settings-title">
     <header class="inference-heading">
-      <div><h2 id="inference-settings-title" tabindex="-1">原生绘图</h2></div>
-      <span v-if="snapshot" class="inference-active">当前使用 · {{ engineLabel(snapshot.active.engine) }}</span>
+      <div><h2 id="inference-settings-title" tabindex="-1">{{ videoSetupRequested ? '原生视频环境' : '原生绘图' }}</h2></div>
+      <span v-if="snapshot" class="inference-active">{{ videoSetupRequested ? '当前绘图' : '当前使用' }} · {{ engineLabel(snapshot.active.engine) }}</span>
     </header>
     <p v-if="!isLocal">请在运行绘遇的电脑上修改引擎设置。</p>
     <template v-else>
@@ -10,6 +10,19 @@
       <button v-if="error && !snapshot" class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="retrySettings">重新读取推理设置</button>
       <p v-if="notice" role="status">{{ notice }}</p>
       <template v-if="snapshot">
+        <section v-if="videoSetupRequested" class="inference-video-help" aria-labelledby="inference-video-title">
+          <h3 id="inference-video-title">准备所选视频模型</h3>
+          <ol>
+            <li>在故事短片页确认所选模型和当前缺失项。</li>
+            <li>准备独立 adapters Python 环境及 ffmpeg；把视频模型的完整 Diffusers 目录放在模型根目录下，并使用模型 ID 命名。</li>
+            <li>在高级路径设置中填写模型根目录和「Krea / Qwen 独立 Python」，保存后按提示重启，再返回短片页重新检测。</li>
+          </ol>
+          <p>视频状态检查只确认运行库与模型文件；设备兼容性和速度仍需在本机确认。</p>
+          <div class="inference-actions">
+            <button class="btn btn-ghost btn-sm" type="button" :disabled="blocked || loading || saving || setupBusy" @click="openVideoPaths">查看视频路径设置</button>
+            <RouterLink class="btn btn-quiet btn-sm" :to="videoReturnTarget">返回故事短片</RouterLink>
+          </div>
+        </section>
         <p v-if="snapshot.restartRequired" role="status">新设置将在重启后生效。</p>
         <p v-if="snapshot.environmentOverrides.length">{{ snapshot.environmentOverrides.join('、') }} 由启动配置指定，请在启动配置中修改。</p>
         <p v-if="blocked" role="status">上方的模型准备正在处理，完成后可配置原生引擎。</p><p v-if="dirty">请先保存引擎设置的修改，再继续原生准备。</p>
@@ -50,7 +63,7 @@
             <small>{{ draft.memoryPolicy === 'offload' ? '减少显存占用，生成时需要在内存与显卡间传输模型。' : '模型保留在显卡中，适合连续生成。' }}</small>
           </div>
           <details class="inference-paths" :open="advancedPathsOpen" @toggle="advancedPathsOpen = ($event.target as HTMLDetailsElement).open">
-            <StudioDisclosureSummary>高级路径设置</StudioDisclosureSummary>
+            <StudioDisclosureSummary id="inference-paths-summary">高级路径设置</StudioDisclosureSummary>
             <div data-disclosure-content>
             <p>填写运行绘遇的电脑上的绝对路径。</p>
             <div class="inference-path-grid">
@@ -105,7 +118,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { videoReturnLocation } from '@/utils/videoNavigation'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
@@ -114,6 +129,9 @@ import type { PreparedInferencePaths } from '@/api/inferenceSetupApi'
 import { useInferenceSettings } from '@/composables/useInferenceSettings'
 const { isLocal, draft, snapshot, diagnostics, discovery, adoptionChanges, adopt, loading, saving, error, notice, dirty, refresh, save, probe, probing, probeError, diagnose } = useInferenceSettings()
 const props = defineProps<{ blocked: boolean; settingsRevision: number }>()
+const route = useRoute()
+const videoSetupRequested = computed(() => route.query.videoSetup === '1')
+const videoReturnTarget = computed(() => videoReturnLocation(route.query))
 const emit = defineEmits<{ busy: [value: boolean]; configured: []; ready: [] }>()
 const setupBusy = ref(false), setupWorking = ref(false)
 watch([setupWorking, saving], values => emit('busy', values.some(Boolean)), { immediate: true })
@@ -132,6 +150,15 @@ function activated() { void refresh(); emit('configured') }
 const advancedOpen = ref(false)
 const advancedPathsOpen = ref(false)
 const diagnosticsOpen = ref(false)
+async function openVideoPaths() {
+  advancedOpen.value = true
+  advancedPathsOpen.value = true
+  await nextTick()
+  const field = document.querySelector<HTMLElement>('#inference-modelsRoot:not(:disabled), #inference-adapter-python:not(:disabled)')
+    || document.getElementById('inference-paths-summary')
+  field?.scrollIntoView({ block: 'center', behavior: 'instant' })
+  field?.focus({ preventScroll: true })
+}
 // Request state may reveal an issue, but must not close a surface the user opened.
 watch([dirty, advancedPathsOpen], ([changed, pathsOpen]) => { if (changed || pathsOpen) advancedOpen.value = true })
 watch([() => diagnostics.value?.configuration === 'invalid', probeError], ([invalid, failure]) => {
@@ -167,6 +194,8 @@ onMounted(async () => { await refresh(); emit('ready') })
 .inference-heading h2 { margin:0; font-size:var(--fs-title-sm); }
 .inference-disclosure-hint { display:block; margin-top:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:400; }
 .inference-active { font-size: var(--fs-label-sm); color: var(--text-secondary); }
+.inference-video-help { margin-top:var(--s-4); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); }
+.inference-video-help h3 { margin:0; }
 .inference-advanced { margin-top: var(--s-4); border-top: 1px solid var(--border-soft); padding-top: var(--s-2); }
 .inference-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .inference-settings p, .inference-settings li { color: var(--text-secondary); line-height: var(--lh-loose); overflow-wrap: anywhere; }
