@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_crossroads_map",
+  "revision": 1,
+  "sortOrder": 2060,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "acheron_crossroads_map",
+    "title": "黄泉 · 岔路与地图",
+    "category": "银河旅途",
+    "outfitId": "rain_coat",
+    "description": "两条路在桥头分开。黄泉摊开地图看了片刻，又抬头望向路牌，似乎还没决定先走哪边。",
+    "location": "石桥边岔路",
+    "action": "展开地图看向路牌",
+    "timeOfDay": "午后",
+    "lighting": "云层间柔光",
+    "camera": "medium shot",
+    "mood": "短暂停留",
+    "promptProse": "At a fork beside a stone bridge, Acheron holds an unfolded map and looks up at the signpost beneath overcast afternoon light.",
+    "promptTokens": [
+      "crossroads",
+      "stone bridge",
+      "holding map",
+      "signpost",
+      "looking up",
+      "overcast",
+      "medium shot"
+    ],
+    "animaCaption": "She compares the map with the signpost.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

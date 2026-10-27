@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yorha_a2/damaged_combat",
+  "revision": 1,
+  "sortOrder": 1668,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "characterId": "yorha_a2",
+    "outfit": {
+      "id": "damaged_combat",
+      "name": "破损黑色战斗装",
+      "prose": "A weathered black sleeveless combat bodysuit with black gloves and tall black boots.",
+      "tokens": [
+        "black sleeveless bodysuit",
+        "black gloves",
+        "black boots",
+        "worn clothing"
+      ],
+      "default": true,
+      "characterId": "yorha_a2",
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_rain_umbrella",
+  "revision": 1,
+  "sortOrder": 2072,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "belfast_rain_umbrella",
+    "title": "贝尔法斯特 · 雨中的伞",
+    "category": "港区日常",
+    "outfitId": "harbor_coat",
+    "description": "港区突然下雨，贝尔法斯特停在台阶旁撑开伞，侧身为身旁画外的人留出一半伞面。",
+    "location": "港区石阶",
+    "action": "撑伞侧身留出位置",
+    "timeOfDay": "雨天",
+    "lighting": "雨幕中的柔和天光",
+    "camera": "medium shot",
+    "mood": "体贴",
+    "promptProse": "Belfast stands beside stone steps holding an umbrella to one side, leaving room beneath it for someone outside the frame.",
+    "promptTokens": [
+      "rain",
+      "stone steps",
+      "holding umbrella",
+      "umbrella tilted to side",
+      "soft daylight",
+      "medium shot"
+    ],
+    "animaCaption": "She leaves room under the umbrella for someone outside the frame.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

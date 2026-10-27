@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_flower_ledge",
+  "revision": 1,
+  "sortOrder": 2082,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_flower_ledge",
+    "title": "A2 · 瓦砾里的白花",
+    "category": "废土行旅",
+    "outfitId": "wasteland_cloak",
+    "description": "一朵白花从裂开的水泥缝里长出来。A2 在旁边蹲下，没有摘它，只伸手拨开压在花旁的碎石。",
+    "location": "长满植物的城市废墟",
+    "action": "蹲下拨开花旁碎石",
+    "timeOfDay": "上午",
+    "lighting": "废墟间的柔和日光",
+    "camera": "medium shot",
+    "mood": "克制的温柔",
+    "promptProse": "A2 crouches by a white flower growing through cracked concrete, moving a small piece of rubble away without touching the flower.",
+    "promptTokens": [
+      "ruined city",
+      "cracked concrete",
+      "single white flower",
+      "crouching",
+      "moving rubble",
+      "soft sunlight",
+      "medium shot"
+    ],
+    "animaCaption": "She moves the rubble without touching the flower.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

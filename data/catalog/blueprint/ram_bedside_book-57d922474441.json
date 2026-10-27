@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "ram_bedside_book",
+  "revision": 1,
+  "sortOrder": 2055,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_bedside_book",
+    "title": "拉姆 · 床边的书",
+    "category": "私密时光",
+    "outfitId": "ivory_robe",
+    "description": "拉姆穿着浴袍倚坐在床头，书本半合在膝上。台灯还亮着，她看向门口，像是在等一句晚安。",
+    "location": "卧室床边",
+    "action": "倚坐床头看向门口",
+    "timeOfDay": "夜晚",
+    "lighting": "床头台灯",
+    "camera": "medium shot",
+    "mood": "亲近而安静",
+    "promptProse": "Ram rests against the headboard with a half-closed book on her lap and looks toward the doorway.",
+    "promptTokens": [
+      "sitting on bed",
+      "headboard",
+      "book on lap",
+      "bedside lamp",
+      "medium shot"
+    ],
+    "animaCaption": "Her book rests half closed on her lap.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_ichika_intimate_bath_steam",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1958,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-27T13:30:51.153660400+00:00",
+  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
   "data": {
     "id": "nakano_ichika_intimate_bath_steam",
     "title": "中野一花 · 温泉雾气中的温软回眸",
@@ -18,7 +18,7 @@
     "lighting": "soft lantern glow through rising steam",
     "camera": "medium_shot",
     "mood": "steamy sensual elegance",
-    "promptProse": "Soaking peacefully in a secluded cedar onsen under night lantern light, Nakano Ichika looks over her bare shoulder through rising mist. Clear warm water ripples around her collarbones as gentle water droplets glisten on her delicate skin.",
+    "promptProse": "Soaking peacefully in a secluded cedar onsen under night lantern light, Nakano Ichika looks over her bare shoulder through rising mist. A white bath towel is wrapped around her body. Clear warm water ripples around her collarbones as gentle water droplets glisten on her delicate skin.",
     "promptTokens": [
       "nakano_ichika",
       "1girl",
@@ -26,6 +26,9 @@
       "short_hair",
       "pink_hair",
       "blue_eyes",
+      "white towel",
+      "towel",
+      "towel around body",
       "hot_spring",
       "onsen",
       "steam",
@@ -60,9 +63,10 @@
       "blurry"
     ],
     "animaCaption": "Ichika relaxing gracefully in a steamy outdoor onsen at night.",
-    "isNsfw": false,
+    "isNsfw": true,
     "rating": "R18",
     "mature": true,
-    "characterId": "nakano_ichika"
+    "characterId": "nakano_ichika",
+    "adult": true
   }
 }

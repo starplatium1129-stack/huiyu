@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "acheron/soft_loungewear",
+  "revision": 1,
+  "sortOrder": 1663,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "characterId": "acheron",
+    "outfit": {
+      "id": "soft_loungewear",
+      "name": "紫灰色居家长衫",
+      "prose": "A loose muted violet long-sleeved lounge shirt and dark lounge trousers.",
+      "tokens": [
+        "loose purple shirt",
+        "long sleeves",
+        "dark lounge pants"
+      ],
+      "characterId": "acheron",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

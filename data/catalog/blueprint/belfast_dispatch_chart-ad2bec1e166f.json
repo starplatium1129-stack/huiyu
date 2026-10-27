@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_dispatch_chart",
+  "revision": 1,
+  "sortOrder": 2070,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "belfast_dispatch_chart",
+    "title": "贝尔法斯特 · 出航前的图纸",
+    "category": "港区工作",
+    "outfitId": "royal_maid",
+    "description": "出航前的办公室里，贝尔法斯特俯身查看桌上的航海图，一手按住卷起的纸角，另一手指向航线。",
+    "location": "港区办公室",
+    "action": "按住航海图标记航线",
+    "timeOfDay": "上午",
+    "lighting": "桌边窗光",
+    "camera": "medium shot",
+    "mood": "专注",
+    "promptProse": "Belfast leans over a nautical chart, holding its curling corner flat while indicating the route with her other hand.",
+    "promptTokens": [
+      "office desk",
+      "nautical chart",
+      "leaning over table",
+      "holding paper",
+      "pointing at map",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "She holds the curling chart flat.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_bath_steam",
+  "revision": 2,
+  "sortOrder": 2074,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:58:20.655668500+00:00",
+  "data": {
+    "id": "belfast_bath_steam",
+    "title": "贝尔法斯特 · 浴室的热雾",
+    "category": "私密时光",
+    "outfitId": "white_bath_wrap",
+    "description": "温水将浴室镜面熏得朦胧。贝尔法斯特裹着白色浴巾坐在镜前，用毛巾擦拭垂在肩侧的湿发。",
+    "location": "港区浴室",
+    "action": "裹浴巾擦湿发",
+    "timeOfDay": "夜晚",
+    "lighting": "镜前暖光与水汽",
+    "camera": "medium shot",
+    "mood": "放松",
+    "promptProse": "Wrapped in a white bath towel, Belfast sits by the fogged bathroom mirror and dries the wet hair over one shoulder with a second towel.",
+    "promptTokens": [
+      "white towel",
+      "towel around body",
+      "drying hair",
+      "holding cloth",
+      "wet hair",
+      "fogged mirror",
+      "steam",
+      "warm light",
+      "medium shot"
+    ],
+    "animaCaption": "She dries the wet hair over one shoulder.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": true,
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true
+  }
+}

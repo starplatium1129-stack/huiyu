@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_factory_gate",
+  "revision": 1,
+  "sortOrder": 2083,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_factory_gate",
+    "title": "A2 · 工厂门前",
+    "category": "废土战影",
+    "outfitId": "damaged_combat",
+    "description": "废弃工厂的大门半开，A2 站在门外，长剑垂在身侧。她隔着门缝观察里面亮起的一盏灯。",
+    "location": "废弃工厂入口",
+    "action": "持剑观察半开的门",
+    "timeOfDay": "夜晚",
+    "lighting": "门缝里透出的冷光",
+    "camera": "cowboy shot",
+    "mood": "紧张",
+    "promptProse": "A2 stands outside the half-open factory gate with her sword lowered at her side, studying a single light inside.",
+    "promptTokens": [
+      "abandoned factory gate",
+      "half-open door",
+      "holding sword down",
+      "light through doorway",
+      "night",
+      "cowboy shot"
+    ],
+    "animaCaption": "A single light shows through the gate.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

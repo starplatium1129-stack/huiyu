@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_onsen_steam",
+  "revision": 1,
+  "sortOrder": 2064,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "acheron_onsen_steam",
+    "title": "黄泉 · 山间温泉",
+    "category": "私密时光",
+    "outfitId": "soft_loungewear",
+    "description": "山间浴室的窗半开着，黄泉穿着宽松长衫坐在木凳上，捧起热茶听外面的水声。",
+    "location": "山间浴室休息区",
+    "action": "坐着捧茶听水声",
+    "timeOfDay": "夜晚",
+    "lighting": "暖灯与窗外暗色山影",
+    "camera": "medium shot",
+    "mood": "静谧",
+    "promptProse": "Acheron sits on a wooden stool with a cup of tea by the half-open bathhouse window.",
+    "promptTokens": [
+      "sitting on stool",
+      "holding tea",
+      "bathhouse window",
+      "warm lamp",
+      "medium shot"
+    ],
+    "animaCaption": "The half-open window lets in the sound of water.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

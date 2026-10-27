@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_repair_room",
+  "revision": 1,
+  "sortOrder": 2084,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_repair_room",
+    "title": "A2 · 维修室的灯",
+    "category": "私密时光",
+    "outfitId": "rest_shirt",
+    "description": "A2 换下战斗装，穿着宽松衬衫坐在维修台边，低头检查手臂上的擦痕。工具放在一旁，她暂时没有去拿。",
+    "location": "废墟中的维修室",
+    "action": "坐着查看手臂擦痕",
+    "timeOfDay": "夜晚",
+    "lighting": "维修台上一盏暖灯",
+    "camera": "medium shot",
+    "mood": "疲惫后的平静",
+    "promptProse": "A2 sits beside the repair bench and examines a scrape on her arm under a single warm lamp.",
+    "promptTokens": [
+      "sitting beside workbench",
+      "looking at arm",
+      "repair tools on table",
+      "warm lamp",
+      "medium shot"
+    ],
+    "animaCaption": "The repair tools remain on the bench beside her.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

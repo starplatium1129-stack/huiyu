@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "ram_rain_window",
+  "revision": 1,
+  "sortOrder": 2052,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_rain_window",
+    "title": "拉姆 · 听雨的午后",
+    "category": "外出日常",
+    "outfitId": "rose_cardigan",
+    "description": "雨把窗上的街景冲得模糊。拉姆在窗边坐下，双手捧着热茶，等雨势小一些再出门。",
+    "location": "小镇茶室窗边",
+    "action": "坐着捧茶看雨",
+    "timeOfDay": "雨天午后",
+    "lighting": "阴天窗光与杯上热气",
+    "camera": "medium shot",
+    "mood": "安静等待",
+    "promptProse": "Seated by a rain-streaked teahouse window, Ram warms both hands around a cup and watches the blurred street outside.",
+    "promptTokens": [
+      "sitting",
+      "holding cup with both hands",
+      "rain on window",
+      "teahouse",
+      "steam",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "She watches the rain through the window.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

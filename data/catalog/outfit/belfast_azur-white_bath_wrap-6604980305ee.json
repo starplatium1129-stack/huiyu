@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "belfast_azur/white_bath_wrap",
+  "revision": 1,
+  "sortOrder": 1667,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "characterId": "belfast_azur",
+    "outfit": {
+      "id": "white_bath_wrap",
+      "name": "白色浴巾",
+      "prose": "A white bath towel wrapped securely around the body.",
+      "tokens": [
+        "white towel",
+        "towel around body"
+      ],
+      "characterId": "belfast_azur",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

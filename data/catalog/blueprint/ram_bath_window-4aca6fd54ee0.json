@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "ram_bath_window",
+  "revision": 1,
+  "sortOrder": 2056,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_bath_window",
+    "title": "拉姆 · 雨夜温泉",
+    "category": "私密时光",
+    "outfitId": "white_bath_wrap",
+    "description": "雨点落在露天浴池外的檐角。拉姆在池边裹着白色浴巾坐下，把脚尖探进温水，回头看了一眼。",
+    "location": "露天浴池边",
+    "action": "裹浴巾坐在池边试水",
+    "timeOfDay": "雨夜",
+    "lighting": "檐下灯光穿过薄雾",
+    "camera": "medium shot",
+    "mood": "轻松",
+    "promptProse": "At a sheltered outdoor bath, Ram sits on the edge wrapped in a white towel, testing the water with her toes and glancing back.",
+    "promptTokens": [
+      "white towel",
+      "towel around body",
+      "sitting at pool edge",
+      "toes in water",
+      "outdoor bath",
+      "rain",
+      "steam",
+      "lantern light",
+      "medium shot"
+    ],
+    "animaCaption": "She tests the warm water with her toes.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": true,
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true
+  }
+}

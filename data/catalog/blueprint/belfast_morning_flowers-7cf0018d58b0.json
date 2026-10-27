@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_morning_flowers",
+  "revision": 1,
+  "sortOrder": 2069,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "belfast_morning_flowers",
+    "title": "贝尔法斯特 · 花瓶里的海风",
+    "category": "皇家日常",
+    "outfitId": "royal_maid",
+    "description": "早晨的海风吹动窗帘，贝尔法斯特扶住窗边的花瓶，将一枝偏斜的白花重新摆正。",
+    "location": "港区走廊窗边",
+    "action": "扶住花瓶整理花枝",
+    "timeOfDay": "清晨",
+    "lighting": "临海窗户的晨光",
+    "camera": "medium shot",
+    "mood": "细致",
+    "promptProse": "Belfast steadies a vase on the windowsill and straightens a white flower as sea air moves the curtain.",
+    "promptTokens": [
+      "windowsill",
+      "holding vase",
+      "arranging white flower",
+      "curtain blowing",
+      "morning light",
+      "medium shot"
+    ],
+    "animaCaption": "She steadies the vase in the sea breeze.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

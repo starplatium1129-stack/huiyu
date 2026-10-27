@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_intimate_whisper_bench",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1965,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
   "data": {
     "id": "nakano_yotsuba_intimate_whisper_bench",
     "title": "中野四叶 · 长椅月光下的解开心结",
@@ -58,10 +58,21 @@
       "username",
       "blurry"
     ],
-    "animaCaption": "Yotsuba sharing her deepest secret under the soft silver moonlight.",
+    "animaCaption": "Yotsuba sits on a rooftop bench without her green ribbon, tears in her eyes.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false,
-    "characterId": "nakano_yotsuba"
+    "characterId": "nakano_yotsuba",
+    "identityTokensOverride": [
+      "nakano_yotsuba",
+      "1girl",
+      "solo",
+      "short_hair",
+      "orange_hair",
+      "blue_eyes",
+      "slender",
+      "5-toubun_no_hanayome"
+    ],
+    "identityProseOverride": "Adult Nakano Yotsuba from The Quintessential Quintuplets, an energetic and compassionate woman with short orange hair and blue eyes."
   }
 }

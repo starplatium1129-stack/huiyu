@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "ram_bath_steam",
+  "revision": 1,
+  "sortOrder": 2054,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_bath_steam",
+    "title": "拉姆 · 浴后的水汽",
+    "category": "私密时光",
+    "outfitId": "ivory_robe",
+    "description": "浴室里水汽未散。拉姆系好象牙白浴袍的腰带，隔着蒙雾的镜面理顺发梢。",
+    "location": "浴室镜前",
+    "action": "系着浴袍整理头发",
+    "timeOfDay": "夜晚",
+    "lighting": "镜前柔和暖光",
+    "camera": "upper body",
+    "mood": "放松",
+    "promptProse": "In a steamy bathroom, Ram smooths the ends of her pink hair beside a fogged mirror.",
+    "promptTokens": [
+      "steam",
+      "fogged mirror",
+      "touching hair",
+      "warm light",
+      "upper body"
+    ],
+    "animaCaption": "She smooths her hair beside the fogged mirror.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "power",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 200,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
   "data": {
     "id": "power",
     "profile": {
@@ -21,8 +21,8 @@
       "type": "popular",
       "icon": "🩸",
       "portrait": {
-        "image": "../assets/characters/popular-power.png?v=1",
-        "alt": "帕瓦 样张立绘"
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "帕瓦 立绘待补"
       },
       "visual_dna": {
         "hair": "浅金草莓金及腰长直发 · 微凌乱野性蓬松感",
@@ -279,7 +279,7 @@
         "初代总统",
         "chainsaw man"
       ],
-      "identityProse": "Adult Power from Chainsaw Man, a wild yet stunning blood devil with waist-length blonde hair, prominent crimson horns protruding from her head, sharp fangs, glowing cross-patterned red eyes, sporting a cool leather jacket and a fiercely confident smirk.",
+      "identityProse": "Adult Power from Chainsaw Man, a wild yet stunning blood devil with waist-length blonde hair, prominent crimson horns protruding from her head, sharp fangs, glowing cross-patterned red eyes, and a fiercely confident smirk.",
       "identityTokens": [
         "power_(chainsaw_man)",
         "1girl",

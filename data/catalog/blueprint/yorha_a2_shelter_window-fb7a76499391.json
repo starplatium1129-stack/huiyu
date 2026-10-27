@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_shelter_window",
+  "revision": 1,
+  "sortOrder": 2085,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_shelter_window",
+    "title": "A2 · 避难所的雨",
+    "category": "私密时光",
+    "outfitId": "rest_shirt",
+    "description": "夜雨落在避难所窗外。A2 穿着宽松衬衫倚坐窗台，膝上搭着毯子，望着被雨洗净的街道。",
+    "location": "避难所窗边",
+    "action": "倚坐窗边看雨",
+    "timeOfDay": "雨夜",
+    "lighting": "窗外冷光与室内微弱灯光",
+    "camera": "medium shot",
+    "mood": "短暂安宁",
+    "promptProse": "A2 sits by the shelter window, a blanket over her knees as she watches the rainy street.",
+    "promptTokens": [
+      "sitting by window",
+      "blanket on knees",
+      "rain on window",
+      "cool light",
+      "medium shot"
+    ],
+    "animaCaption": "A blanket lies across her knees.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

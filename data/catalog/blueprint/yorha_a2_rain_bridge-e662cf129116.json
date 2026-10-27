@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_rain_bridge",
+  "revision": 1,
+  "sortOrder": 2080,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_rain_bridge",
+    "title": "A2 · 断桥避雨",
+    "category": "废土行旅",
+    "outfitId": "wasteland_cloak",
+    "description": "雨落在断桥下的水面上。A2 倚在桥墩阴影里，收拢斗篷，等远处的机械巡逻经过。",
+    "location": "城市断桥下",
+    "action": "靠桥墩避雨观察远处",
+    "timeOfDay": "雨天",
+    "lighting": "阴雨天光与水面反光",
+    "camera": "medium shot",
+    "mood": "戒备",
+    "promptProse": "Under a ruined bridge, A2 gathers her grey cloak and watches the distant road while rain ripples the water beyond the pillar.",
+    "promptTokens": [
+      "under ruined bridge",
+      "leaning against pillar",
+      "holding cloak",
+      "rain",
+      "water ripples",
+      "overcast light",
+      "medium shot"
+    ],
+    "animaCaption": "She watches the road from the shelter of the pillar.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

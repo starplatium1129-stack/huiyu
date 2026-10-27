@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_hair_comb",
+  "revision": 1,
+  "sortOrder": 2066,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "acheron_hair_comb",
+    "title": "黄泉 · 梳理长发",
+    "category": "私密时光",
+    "outfitId": "soft_loungewear",
+    "description": "旅途结束后，黄泉坐在镜前梳理长发。梳子停在发梢，她从镜中望向桌上的旅途照片。",
+    "location": "旅店梳妆台",
+    "action": "对镜梳理长发",
+    "timeOfDay": "夜晚",
+    "lighting": "梳妆台暖灯",
+    "camera": "medium shot",
+    "mood": "沉思",
+    "promptProse": "Acheron combs the ends of her long hair at the dressing table and glances toward a photograph.",
+    "promptTokens": [
+      "sitting at dressing table",
+      "combing hair",
+      "photograph on table",
+      "warm lamp",
+      "medium shot"
+    ],
+    "animaCaption": "Her comb pauses at the ends of her hair.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

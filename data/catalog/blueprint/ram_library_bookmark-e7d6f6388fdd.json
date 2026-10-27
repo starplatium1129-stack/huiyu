@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "ram_library_bookmark",
+  "revision": 1,
+  "sortOrder": 2050,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_library_bookmark",
+    "title": "拉姆 · 书页里的书签",
+    "category": "宅邸日常",
+    "outfitId": "roswaal_maid",
+    "description": "拉姆在书架旁翻到夹着书签的一页，指尖停在纸边。走廊有人叫她，她先抬头应了一声。",
+    "location": "宅邸书架旁",
+    "action": "翻书并抬眼回应",
+    "timeOfDay": "傍晚",
+    "lighting": "书架旁的暖色壁灯",
+    "camera": "upper body",
+    "mood": "闲适",
+    "promptProse": "Ram pauses over an open book beside the shelves, one finger holding a bookmark as she looks up toward a voice in the corridor.",
+    "promptTokens": [
+      "bookshelves",
+      "open book",
+      "bookmark",
+      "looking up",
+      "wall lamp",
+      "upper body"
+    ],
+    "animaCaption": "A finger holds the marked page open.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

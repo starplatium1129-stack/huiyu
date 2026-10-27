@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_harbor_walk",
+  "revision": 1,
+  "sortOrder": 2071,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "belfast_harbor_walk",
+    "title": "贝尔法斯特 · 港口散步",
+    "category": "港区日常",
+    "outfitId": "harbor_coat",
+    "description": "短暂休息时，贝尔法斯特沿码头慢行。她把手放在大衣口袋里，看海鸟掠过停泊的船只。",
+    "location": "港口码头",
+    "action": "沿码头走并望向海鸟",
+    "timeOfDay": "午后",
+    "lighting": "薄云下的海面反光",
+    "camera": "cowboy shot",
+    "mood": "闲适",
+    "promptProse": "Belfast walks along the pier with her hands in her coat pockets, watching seabirds pass above the moored ships.",
+    "promptTokens": [
+      "harbor pier",
+      "walking",
+      "hands in pockets",
+      "seabirds",
+      "moored ships",
+      "overcast daylight",
+      "cowboy shot"
+    ],
+    "animaCaption": "She watches the birds above the harbor.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

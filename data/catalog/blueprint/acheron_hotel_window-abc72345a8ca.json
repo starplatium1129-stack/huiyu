@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_hotel_window",
+  "revision": 1,
+  "sortOrder": 2065,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "acheron_hotel_window",
+    "title": "黄泉 · 旅店雨声",
+    "category": "私密时光",
+    "outfitId": "soft_loungewear",
+    "description": "雨敲着旅店窗沿。黄泉穿居家长衫倚坐窗边，手搭在膝上，看着远处被雨雾遮住的街灯。",
+    "location": "旅店窗边",
+    "action": "倚坐窗边看雨",
+    "timeOfDay": "雨夜",
+    "lighting": "街灯透过雨窗",
+    "camera": "medium shot",
+    "mood": "安静",
+    "promptProse": "Acheron sits by the hotel window and watches distant streetlights through the rain.",
+    "promptTokens": [
+      "sitting by window",
+      "rain on window",
+      "distant streetlights",
+      "night",
+      "medium shot"
+    ],
+    "animaCaption": "The streetlights blur beyond the rain.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

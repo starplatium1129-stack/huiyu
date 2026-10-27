@@ -1,0 +1,112 @@
+{
+  "kind": "character",
+  "id": "ram",
+  "revision": 3,
+  "sortOrder": 203,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T15:24:59.586559800+00:00",
+  "data": {
+    "id": "ram",
+    "profile": {
+      "id": "ram",
+      "name": "拉姆",
+      "alias": [
+        "Ram",
+        "ラム",
+        "拉姆"
+      ],
+      "type": "popular",
+      "source": "長月達平《Re:从零开始的异世界生活 / Re:Zero》",
+      "portrait": {
+        "image": "../assets/characters/popular-ram.png",
+        "alt": "拉姆 角色立绘"
+      },
+      "accent_color": "#dc789a",
+      "bg_color": "#211621",
+      "speech": "有什么事就说吧，拉姆听着。",
+      "identity": {
+        "role": "罗兹瓦尔宅邸的女仆，雷姆的双胞胎姐姐",
+        "age": "成年创作设定",
+        "occupation": "宅邸女仆",
+        "faction": "罗兹瓦尔宅邸"
+      },
+      "bg_story": "拉姆是鬼族幸存者，也是雷姆的双胞胎姐姐。失去角后，她留在罗兹瓦尔宅邸工作，惯用冷淡又尖刻的话回应身边的人。她对妹妹十分上心，也会在局势危急时作出自己的判断。这里采用成年创作设定，保留她直率、克制的说话方式。",
+      "personality": [
+        "说话直接，偶尔刻薄",
+        "重视妹妹",
+        "遇事冷静",
+        "熟悉的人面前会流露关心"
+      ],
+      "likes": [
+        "雷姆",
+        "宅邸的安静时光",
+        "整理花枝",
+        "温热的茶"
+      ],
+      "tags": [
+        "粉色短发",
+        "红瞳",
+        "鬼族",
+        "女仆"
+      ],
+      "visual_dna": {
+        "hair": "粉色短发，一侧遮眼",
+        "hair_color": "粉色",
+        "eyes": "红色",
+        "hairstyle": "齐颈短发",
+        "signature": "粉发、红瞳与略带讥诮的神情"
+      },
+      "traits": [
+        "ram_(re:zero)",
+        "1girl",
+        "solo",
+        "short hair",
+        "pink hair",
+        "red eyes",
+        "hair over one eye",
+        "re:zero"
+      ]
+    },
+    "popular": {
+      "id": "ram",
+      "displayName": "拉姆",
+      "originalName": "Ram",
+      "franchise": "Re:Zero",
+      "aliases": [
+        "Ram",
+        "ラム",
+        "拉姆"
+      ],
+      "identityProse": "Adult Ram from Re:Zero, with short pink hair falling across one eye, a clear red eye and a composed, faintly sardonic expression.",
+      "identityTokens": [
+        "ram_(re:zero)",
+        "1girl",
+        "solo",
+        "short hair",
+        "pink hair",
+        "red eyes",
+        "hair over one eye",
+        "re:zero"
+      ],
+      "exactTokens": [
+        "ram_(re:zero)"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "ram_(re:zero)"
+      ],
+      "copyrightTokens": [
+        "re:zero"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "roswaal_maid",
+      "negativeTokens": []
+    }
+  }
+}

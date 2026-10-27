@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_forest_machine",
+  "revision": 1,
+  "sortOrder": 2079,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_forest_machine",
+    "title": "A2 · 林间的旧机器",
+    "category": "废土行旅",
+    "outfitId": "wasteland_cloak",
+    "description": "生锈的机械残骸半埋在森林里。A2 蹲下观察它的外壳，手指停在裂开的接缝旁。",
+    "location": "森林机械残骸旁",
+    "action": "蹲下查看外壳接缝",
+    "timeOfDay": "午后",
+    "lighting": "树冠间的碎光",
+    "camera": "medium shot",
+    "mood": "谨慎",
+    "promptProse": "In the forest, A2 crouches beside a rusted machine shell, examining the split seam as dappled light falls through the leaves.",
+    "promptTokens": [
+      "forest",
+      "crouching",
+      "rusted machine",
+      "looking at mechanical shell",
+      "dappled sunlight",
+      "medium shot"
+    ],
+    "animaCaption": "Her hand pauses beside the split seam.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

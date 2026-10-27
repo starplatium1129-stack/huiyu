@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_short_hair_blade",
+  "revision": 1,
+  "sortOrder": 2081,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_short_hair_blade",
+    "title": "A2 · 短发与旧剑",
+    "category": "废土行旅",
+    "outfitId": "damaged_combat",
+    "description": "短发的 A2 坐在高楼废墟边缘，旧剑横放在膝上。她用布擦过剑身，楼下的街道已长满绿植。",
+    "location": "高楼废墟边缘",
+    "action": "坐着擦拭膝上的剑",
+    "timeOfDay": "傍晚",
+    "lighting": "夕光照亮剑身",
+    "camera": "medium shot",
+    "mood": "沉思",
+    "promptProse": "Short-haired A2 sits on the edge of a ruined high-rise, wiping the blade laid across her knees as evening light catches the metal.",
+    "promptTokens": [
+      "short hair",
+      "white hair",
+      "sitting on ledge",
+      "sword across lap",
+      "wiping sword",
+      "ruined city",
+      "evening light",
+      "medium shot"
+    ],
+    "animaCaption": "The sword rests across her knees.",
+    "identityTokensOverride": [
+      "yorha_type_a_no._2",
+      "1girl",
+      "solo",
+      "short hair",
+      "white hair",
+      "blue eyes",
+      "android",
+      "nier:automata"
+    ],
+    "identityProseOverride": "Adult A2 from NieR:Automata, an android with short white hair and uncovered blue eyes.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

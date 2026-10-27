@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_afternoon_tea",
+  "revision": 1,
+  "sortOrder": 2068,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "belfast_afternoon_tea",
+    "title": "贝尔法斯特 · 茶点时间",
+    "category": "皇家日常",
+    "outfitId": "royal_maid",
+    "description": "贝尔法斯特将茶壶倾向杯沿，桌上的茶点已经摆好。她留意着水位，等客人说完话再回应。",
+    "location": "港区茶室",
+    "action": "为客人斟茶",
+    "timeOfDay": "午后",
+    "lighting": "窗光照亮茶壶和桌面",
+    "camera": "medium shot",
+    "mood": "周到",
+    "promptProse": "In the harbor tearoom, Belfast pours tea into a cup beside a prepared plate of pastries, with afternoon light across the table.",
+    "promptTokens": [
+      "tearoom",
+      "pouring tea",
+      "teapot",
+      "teacup",
+      "pastries",
+      "afternoon window light",
+      "medium shot"
+    ],
+    "animaCaption": "She watches the cup as she pours.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

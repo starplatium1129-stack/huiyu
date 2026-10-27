@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_morning_coffee",
+  "revision": 1,
+  "sortOrder": 2086,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_morning_coffee",
+    "title": "A2 · 清晨的热饮",
+    "category": "私密时光",
+    "outfitId": "rest_shirt",
+    "description": "晨光穿过避难所破损的百叶窗。A2 穿着宽松衬衫坐在床边，低头吹凉手里的热饮。",
+    "location": "避难所卧室",
+    "action": "坐在床边吹凉热饮",
+    "timeOfDay": "清晨",
+    "lighting": "百叶窗间的晨光",
+    "camera": "medium shot",
+    "mood": "松弛",
+    "promptProse": "A2 sits on the bed and cools a hot drink as morning light passes through broken blinds.",
+    "promptTokens": [
+      "sitting on bed",
+      "holding mug",
+      "steam from mug",
+      "light through blinds",
+      "morning",
+      "medium shot"
+    ],
+    "animaCaption": "She waits for the drink to cool.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_hair_tie",
+  "revision": 1,
+  "sortOrder": 2087,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_hair_tie",
+    "title": "A2 · 整理白发",
+    "category": "私密时光",
+    "outfitId": "rest_shirt",
+    "description": "回到临时住处，A2 坐在矮凳上拢起长发，准备系好再开始修理装备。背后的窗外是安静的废墟。",
+    "location": "临时住处",
+    "action": "坐着将长发拢到身后",
+    "timeOfDay": "黄昏",
+    "lighting": "窗外斜入的夕光",
+    "camera": "medium shot",
+    "mood": "专注",
+    "promptProse": "A2 gathers her long white hair behind her head while sitting on a low stool.",
+    "promptTokens": [
+      "sitting on stool",
+      "gathering hair",
+      "long white hair",
+      "ruined city through window",
+      "evening light",
+      "medium shot"
+    ],
+    "animaCaption": "She gathers her hair before repairing her gear.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "ram/ivory_robe",
+  "revision": 1,
+  "sortOrder": 1659,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "characterId": "ram",
+    "outfit": {
+      "id": "ivory_robe",
+      "name": "象牙白居家浴袍",
+      "prose": "A belted ivory bathrobe with long sleeves.",
+      "tokens": [
+        "ivory bathrobe",
+        "robe belt",
+        "long sleeves"
+      ],
+      "characterId": "ram",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

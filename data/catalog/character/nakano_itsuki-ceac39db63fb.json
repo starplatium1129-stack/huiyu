@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_itsuki",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 188,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
   "data": {
     "id": "nakano_itsuki",
     "profile": {
@@ -21,8 +21,8 @@
       "type": "popular",
       "icon": "⭐",
       "portrait": {
-        "image": "../assets/characters/popular-nakano_itsuki.png?v=1",
-        "alt": "中野五月 样张立绘"
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "中野五月 立绘待补"
       },
       "visual_dna": {
         "hair": "及腰微卷赤红长发 · 两侧黄色五角星发夹 · 头顶大呆毛",

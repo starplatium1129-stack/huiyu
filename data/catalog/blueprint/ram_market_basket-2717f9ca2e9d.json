@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "ram_market_basket",
+  "revision": 1,
+  "sortOrder": 2051,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_market_basket",
+    "title": "拉姆 · 集市归途",
+    "category": "外出日常",
+    "outfitId": "rose_cardigan",
+    "description": "集市收摊时，拉姆提着装有面包和苹果的篮子走过石桥，低头检查纸袋是否系紧。",
+    "location": "小镇石桥",
+    "action": "提篮查看纸袋",
+    "timeOfDay": "黄昏",
+    "lighting": "夕阳照亮石桥边缘",
+    "camera": "cowboy shot",
+    "mood": "轻快",
+    "promptProse": "Ram crosses a stone bridge with a basket of bread and apples, checking the tied paper bag in the warm evening light.",
+    "promptTokens": [
+      "stone bridge",
+      "basket",
+      "bread",
+      "apples",
+      "walking",
+      "sunset light",
+      "cowboy shot"
+    ],
+    "animaCaption": "She checks the tied paper bag in her basket.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

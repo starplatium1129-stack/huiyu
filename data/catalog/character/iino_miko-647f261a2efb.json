@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "iino_miko",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 202,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
   "data": {
     "id": "iino_miko",
     "profile": {
@@ -22,8 +22,8 @@
       "type": "popular",
       "icon": "⚖️",
       "portrait": {
-        "image": "../assets/characters/popular-iino_miko.png?v=1",
-        "alt": "伊井野弥子 样张立绘"
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "伊井野弥子 立绘待补"
       },
       "visual_dna": {
         "hair": "柔顺深褐齐肩双低马尾 · 发尾自然落在双肩",

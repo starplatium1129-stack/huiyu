@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_balcony_dawn",
+  "revision": 1,
+  "sortOrder": 2077,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "belfast_balcony_dawn",
+    "title": "贝尔法斯特 · 黎明的阳台",
+    "category": "私密时光",
+    "outfitId": "silk_robe",
+    "description": "天还未亮透，贝尔法斯特穿着居家袍站在阳台，双手捧杯，目送第一艘船离港。",
+    "location": "港区卧室阳台",
+    "action": "捧杯目送船离港",
+    "timeOfDay": "黎明",
+    "lighting": "海面微亮的晨光",
+    "camera": "medium shot",
+    "mood": "安静",
+    "promptProse": "Belfast stands on the balcony, holding a cup with both hands as the first ship leaves the harbor at dawn.",
+    "promptTokens": [
+      "standing on balcony",
+      "holding cup with both hands",
+      "distant ship",
+      "dawn light",
+      "medium shot"
+    ],
+    "animaCaption": "She watches the first ship leave the harbor.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

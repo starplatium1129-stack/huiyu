@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_evening_deck",
+  "revision": 1,
+  "sortOrder": 2073,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "belfast_evening_deck",
+    "title": "贝尔法斯特 · 甲板上的灯",
+    "category": "港区工作",
+    "outfitId": "royal_maid",
+    "description": "夜班开始前，贝尔法斯特站在甲板边检查远处的港灯，海风掠过她的发尾。",
+    "location": "停泊中的船舶甲板",
+    "action": "扶栏查看港灯",
+    "timeOfDay": "夜晚",
+    "lighting": "远处港灯映在水面",
+    "camera": "cowboy shot",
+    "mood": "沉静",
+    "promptProse": "Belfast rests a hand on the deck railing and watches the harbor lights reflected on the dark water.",
+    "promptTokens": [
+      "ship deck",
+      "hand on railing",
+      "harbor lights",
+      "water reflections",
+      "sea breeze",
+      "night",
+      "cowboy shot"
+    ],
+    "animaCaption": "Harbor lights reflect on the dark water.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

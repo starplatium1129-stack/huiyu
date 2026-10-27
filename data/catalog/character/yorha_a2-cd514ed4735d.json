@@ -1,0 +1,111 @@
+{
+  "kind": "character",
+  "id": "yorha_a2",
+  "revision": 3,
+  "sortOrder": 206,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T15:24:59.586559800+00:00",
+  "data": {
+    "id": "yorha_a2",
+    "profile": {
+      "id": "yorha_a2",
+      "name": "A2",
+      "alias": [
+        "A2",
+        "YoRHa Type A No. 2",
+        "寄叶A型二号"
+      ],
+      "type": "popular",
+      "source": "Square Enix / PlatinumGames《尼尔：机械纪元 / NieR:Automata》",
+      "portrait": {
+        "image": "../assets/characters/popular-yorha_a2.png",
+        "alt": "A2 角色立绘"
+      },
+      "accent_color": "#9ba4ae",
+      "bg_color": "#171b20",
+      "speech": "有事就说。别浪费时间。",
+      "identity": {
+        "role": "寄叶 A 型二号",
+        "age": "成年外观的创作设定",
+        "occupation": "战斗型人造人",
+        "faction": "寄叶原型部队"
+      },
+      "bg_story": "A2 是寄叶部队的旧型战斗人造人，曾参加珍珠湾降下作战。作战后的经历使她不再信任司令部，她独自在地表与机械生命体战斗。她不擅长解释自己的选择，却会用行动回应仍愿意信任她的人。",
+      "personality": [
+        "寡言戒备",
+        "行动直接",
+        "不轻易信任命令",
+        "会照顾需要帮助的人"
+      ],
+      "likes": [
+        "安静的废墟",
+        "磨好的刀刃",
+        "不受打扰的休息"
+      ],
+      "tags": [
+        "白色长发",
+        "蓝瞳",
+        "人造人",
+        "战斗原型机"
+      ],
+      "visual_dna": {
+        "hair": "白色长发",
+        "hair_color": "白色",
+        "eyes": "蓝色，无遮挡",
+        "hairstyle": "长发",
+        "signature": "白发、裸露的蓝眼与战损外观"
+      },
+      "traits": [
+        "yorha_type_a_no._2",
+        "1girl",
+        "solo",
+        "long hair",
+        "white hair",
+        "blue eyes",
+        "android",
+        "nier:automata"
+      ]
+    },
+    "popular": {
+      "id": "yorha_a2",
+      "displayName": "A2",
+      "originalName": "YoRHa Type A No. 2",
+      "franchise": "NieR:Automata",
+      "aliases": [
+        "A2",
+        "YoRHa Type A No. 2",
+        "寄叶A型二号"
+      ],
+      "identityProse": "Adult A2 from NieR:Automata, a battle-worn android with long white hair, blue eyes and a guarded expression; her eyes are uncovered.",
+      "identityTokens": [
+        "yorha_type_a_no._2",
+        "1girl",
+        "solo",
+        "long hair",
+        "white hair",
+        "blue eyes",
+        "android",
+        "nier:automata"
+      ],
+      "exactTokens": [
+        "yorha_type_a_no._2"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "yorha_type_a_no._2"
+      ],
+      "copyrightTokens": [
+        "nier:automata"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "damaged_combat",
+      "negativeTokens": []
+    }
+  }
+}

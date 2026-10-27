@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "ram_morning_tea",
+  "revision": 1,
+  "sortOrder": 2048,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_morning_tea",
+    "title": "拉姆 · 窗边的早茶",
+    "category": "宅邸日常",
+    "outfitId": "roswaal_maid",
+    "description": "早餐前，拉姆端着茶盘站在窗边，侧目看向刚走进来的客人。她把杯柄转向对方，等人先坐下。",
+    "location": "宅邸餐厅窗边",
+    "action": "端着茶盘侧目",
+    "timeOfDay": "清晨",
+    "lighting": "窗外晨光落在茶杯上",
+    "camera": "medium shot",
+    "mood": "清醒而从容",
+    "promptProse": "Ram holds a tea tray by the dining-room window, turning one cup handle toward the arriving guest in the morning light.",
+    "promptTokens": [
+      "holding tray",
+      "teacup",
+      "standing by window",
+      "morning light",
+      "looking to the side",
+      "medium shot"
+    ],
+    "animaCaption": "She turns a cup handle toward the guest.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

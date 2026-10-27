@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_yotsuba",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 187,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
   "data": {
     "id": "nakano_yotsuba",
     "profile": {
@@ -20,8 +20,8 @@
       "type": "popular",
       "icon": "🍀",
       "portrait": {
-        "image": "../assets/characters/popular-nakano_yotsuba.png?v=1",
-        "alt": "中野四叶 样张立绘"
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "中野四叶 立绘待补"
       },
       "visual_dna": {
         "hair": "亮橙色齐颈波波短发 · 标志性亮绿色四叶草兔耳发带",

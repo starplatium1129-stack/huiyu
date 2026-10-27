@@ -87245,6 +87245,943 @@
     }
   },
   {
+    "id": "nakano_ichika",
+    "name": "中野一花",
+    "alias": [
+      "Nakano Ichika",
+      "一花",
+      "Ichika",
+      "一花姐姐",
+      "小恶魔长女"
+    ],
+    "type": "popular",
+    "icon": "🌻",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "中野一花 立绘待补"
+    },
+    "visual_dna": {
+      "hair": "浅粉淡紫短发 · 右侧微长斜刘海",
+      "hair_color": "淡粉紫 / 浅粉",
+      "eyes": "柔和明亮青蓝瞳",
+      "hairstyle": "清爽微蓬短发 · 右耳单枚精致耳坠",
+      "uniform": "旭高校水手领衬衫（解开第一颗纽扣） · 黄色针织开衫系在腰间",
+      "expression": "成熟开朗 · 略带慵懒的小恶魔调侃笑容 · 心动时慌乱微红",
+      "style": "mature teasing stylish older-sister quintuplet",
+      "signature": "短发单侧耳坠、系在腰间的黄开衫、大姐姐从容气度与小恶魔眨眼"
+    },
+    "personality": [
+      "包容照顾妹妹们、富有担当的长女风范",
+      "喜欢以大姐姐姿态打趣调侃身边人的小恶魔性格",
+      "为了支撑姐妹独立生活早早踏入演艺圈的隐忍与拼搏",
+      "表面成熟从容、私下房间杂乱极度依赖妹妹照顾的脱线反差",
+      "对恋爱笨拙迷茫、在姐妹亲情与个人爱意间剧烈挣扎的真诚",
+      "经历挫折后彻底释怀、全心守护五姐妹笑容的豁达坦荡",
+      "在聚光灯前日益绽放自信光彩的职业女演员"
+    ],
+    "likes": [
+      "在演艺片场尝试不同角色的演技挑战",
+      "享受微风吹拂的安静午后小憩",
+      "看妹妹们围坐在一起打闹拌嘴的日常",
+      "品尝略带微苦醇香的黑咖啡与精致甜点",
+      "挑选设计别致的耳坠与落肩宽松私服",
+      "用略带调皮的假动作看身边人害羞慌乱的反应"
+    ],
+    "classic_cg": {
+      "title": "林间学校仓库的避雨之夜",
+      "description": "雷雨交加的深山仓库内，篝火在干草堆旁跃动着温暖红光。微带倦意的一花靠在木箱旁，任由雨水打湿的发梢贴在颈间。她微微仰起头，眼眸倒映着摇曳的火光，用略带沙哑却温柔的嗓音低声倾诉着深藏在心底的演艺梦想与对未来的茫然。"
+    },
+    "identity": {
+      "role": "中野家五胞胎长女 / 知名女演员",
+      "age": "17岁（高中）→ 22岁以上（婚礼后日谈）",
+      "occupation": "高中生 → 专业电影/电视剧演员",
+      "faction": "旭高校 / 中野五姐妹 / 演艺事务所"
+    },
+    "tags": [
+      "短发",
+      "粉发",
+      "单耳坠",
+      "开衫系腰",
+      "大姐姐",
+      "小恶魔",
+      "女演员"
+    ],
+    "bg_story": "中野一花是《五等分的新娘》核心女主角之一，中野家五胞胎的长女。留着清爽的淡粉紫短发，右耳常年佩戴一枚别致的单侧耳坠。作为大姐，她自幼便有意识地把自己的需求放在后位，努力维系姐妹间的和睦。在姐妹们脱离富裕家庭搬入旧公寓自立后，一花瞒着大家四处试镜奔波，用自己拍戏当群演赚来的微薄酬劳垫付房租与生活开销。外表看似懒散脱线、房间杂乱无章，内心却极具担当。面对家庭教师上杉风太郎，她起初以从容戏谑的大姐姐姿态相处，却在不知不觉中被少年的真诚所吸引，陷入爱意与长女责任的剧烈拉扯中。在京都修学旅行中经历了姐妹间的情感阵痛后，一花选择坦诚面对错误与真心，与三玖、二乃紧紧相拥和解。毕业后她专注于演艺事业并大放异彩，成为备受瞩目的实力派演员。在风太郎与四叶的婚礼上，一花身着优雅礼服微笑送上最真挚的祝福，展现出岁月沉淀后的独立从容与深厚亲情。",
+    "palette": [
+      "明黄",
+      "淡粉紫",
+      "纯白"
+    ],
+    "weather": [
+      "午后微风",
+      "雨夜仓库",
+      "落日金滩"
+    ],
+    "speech": "呵呵，作为大姐姐，偶尔也是需要依靠一下别人的嘛……不过要是被妹妹们看到我这副模样，可是会很丢脸的哦♪",
+    "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
+    "traits": [
+      "nakano_ichika",
+      "1girl",
+      "solo",
+      "short_hair",
+      "pink_hair",
+      "asymmetrical_hair",
+      "single_earring",
+      "blue_eyes",
+      "slender",
+      "5-toubun_no_hanayome"
+    ],
+    "accent_color": "#eab308",
+    "bg_color": "#1e1b4b",
+    "voice": "呵呵，作为大姐姐，偶尔也是需要依靠一下别人的嘛……不过要是被妹妹们看到我这副模样，可是会很丢脸的哦♪",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "五等分的新娘",
+      "people": [
+        {
+          "id": "nakano_miku",
+          "name": "中野三玖",
+          "aliases": [
+            "中野三玖",
+            "Nakano Miku",
+            "三玖",
+            "Miku"
+          ],
+          "characterId": "nakano_miku"
+        },
+        {
+          "id": "nakano_nino",
+          "name": "中野二乃",
+          "aliases": [
+            "中野二乃",
+            "Nakano Nino",
+            "二乃",
+            "Nino",
+            "暴走列车"
+          ],
+          "characterId": "nakano_nino"
+        },
+        {
+          "id": "uesugi_fuutarou",
+          "name": "上杉风太郎",
+          "aliases": [
+            "上杉風太郎",
+            "Fuutarou Uesugi",
+            "风太郎",
+            "上杉君"
+          ],
+          "role": "中野家家庭教师 / 高中生学霸",
+          "summary": "为偿还家中巨额债务而接下中野家五胞胎家教工作的孤僻学霸。在日夜督促五姐妹学习中逐渐理解每个人的心结，成为五姐妹心中不可替代的初恋与救赎，最终在学园祭选择中野四叶结为夫妻。"
+        },
+        {
+          "id": "nakano_ichika",
+          "name": "中野一花",
+          "aliases": [
+            "中野一花",
+            "Ichika Nakano",
+            "一花",
+            "一花姐姐"
+          ],
+          "role": "中野家五胞胎长女 / 知名女演员",
+          "summary": "表面成熟开朗、善解人意的大姐。为了支撑妹妹们的生活早早进入演艺圈，在对风太郎的情感中一度迷失，后与三玖、二乃重归于好。",
+          "characterId": "nakano_ichika"
+        },
+        {
+          "id": "nakano_yotsuba",
+          "name": "中野四叶",
+          "aliases": [
+            "中野四葉",
+            "Yotsuba Nakano",
+            "四叶",
+            "写真之子"
+          ],
+          "role": "中野家五胞胎四女 / 田径部王牌",
+          "summary": "元气阳光、永远为他人奉献而忽视自己的善良少女。正是童年在京都与风太郎定下约定的女孩，在长年的默默守望后终于迎来风太郎的真诚求婚。",
+          "characterId": "nakano_yotsuba"
+        },
+        {
+          "id": "nakano_itsuki",
+          "name": "中野五月",
+          "aliases": [
+            "中野五月",
+            "Itsuki Nakano",
+            "五月",
+            "零奈",
+            "吃货五月"
+          ],
+          "role": "中野家五胞胎五女 / 见习教师",
+          "summary": "认真固执、胃口极好的好学生。继承亡母的教职梦想努力奋进，是最早进入上杉家与濑叶建立深厚亲情的朋友。",
+          "characterId": "nakano_itsuki"
+        },
+        {
+          "id": "uesugi_raiha",
+          "name": "上杉濑叶",
+          "aliases": [
+            "上杉らいは",
+            "Raiha Uesugi",
+            "濑叶",
+            "濑叶妹妹"
+          ],
+          "role": "风太郎的妹妹 / 小学生",
+          "summary": "精打细算、操持上杉家内务的懂事妹妹。深受中野家五姐妹全员宠爱，视五姐妹为未来的嫂子。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "5hanayome-fuutarou-miku-first_bloom",
+          "source": "nakano_miku",
+          "target": "uesugi_fuutarou",
+          "label": "战国共鸣与自卑破茧的倾心告白",
+          "description": "因风太郎真诚接纳其战国爱好而最早敞开心扉；为追上风太郎苦练烘焙面包，在京都清水寺鼓起全身勇气向他伸手告白，虽未成新娘却在追爱中找到了立足人生的自信与梦想。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "修学旅行清水寺篇至终局",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-nino-runaway_confession",
+          "source": "nakano_nino",
+          "target": "uesugi_fuutarou",
+          "label": "从敌视排斥到恋爱暴走机车",
+          "description": "起初为守护姐妹下药驱逐风太郎，在七次感谢祭与短发蜕变后彻底爱上风太郎，在机车后座轰轰烈烈直球告白；学园祭落选后虽痛哭拭泪，依然展现最骄傲洒脱的自尊与祝福。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "七个再见篇至学园祭终盘",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘∬》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-yotsuba-destined_bride",
+          "source": "uesugi_fuutarou",
+          "target": "nakano_yotsuba",
+          "label": "童年京都誓言与命中注定的新娘",
+          "description": "四叶正是童年在京都鼓励风太郎奋发图强的‘写真之子’；因愧对姐妹长年掩藏爱意，风太郎在学园祭直面内心选择四叶，两人跨越漫长岁月许下一生一世的婚礼誓约。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "剧场版《五等分的新娘》婚礼完结篇",
+          "evidence": {
+            "title": "剧场版《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/1st/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-ichika-unspoken_passion",
+          "source": "nakano_ichika",
+          "target": "uesugi_fuutarou",
+          "label": "长女的依赖与暗黑失控的救赎",
+          "description": "作为职业演员与家庭经济支柱，一花在兼职中被风太郎看穿脆弱；京都修学旅行因嫉妒假扮三玖引发姐妹信任危机，在风太郎与妹妹们真诚包容下重拾长女担当并坦然释怀。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "修学旅行篇至学园祭",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘∬》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-itsuki-friend_mentor",
+          "source": "nakano_itsuki",
+          "target": "uesugi_fuutarou",
+          "label": "同甘共苦的战友与梦想引路人",
+          "description": "五姐妹中唯一与风太郎保持纯粹革命友谊的存在；曾化名‘零奈’帮助风太郎走出童年初恋执念，在风太郎严苛鞭策下立志成为像母亲一样的优秀教师，是彼此无话不谈的挚友。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "全篇主线贯穿",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/"
+          }
+        },
+        {
+          "id": "5hanayome-miku-nino-partners_in_cafe",
+          "source": "nakano_nino",
+          "target": "nakano_miku",
+          "label": "相爱相杀的姐妹与终生咖啡厅合伙人",
+          "description": "高中时期在料理与恋爱上频繁较劲，但在落选新娘后两人抱团痛哭彼此理解，五年后携手创办风靡街巷的法式甜品咖啡厅Cafe Futanari，终生相伴互为最牢固的支柱。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "后日谈与婚礼完结篇",
+          "evidence": {
+            "title": "讲谈社《周刊少年Magazine》五等分的新娘官方主页",
+            "url": "https://shonenmagazine.com/special/5hanayome"
+          }
+        },
+        {
+          "id": "5hanayome-ichika-miku-betrayal_forgiveness",
+          "source": "nakano_ichika",
+          "target": "nakano_miku",
+          "label": "伪装背刺与泪水中的深刻和解",
+          "description": "一花因私心假扮三玖告白令三玖痛苦绝望，在风太郎拆穿真相后一花深感愧疚放弃竞争；三玖展现博大胸襟拥抱原谅一花，让五姐妹的羁绊更加坚不可摧。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "漫画第83-86话修学旅行篇",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘∬》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+          }
+        },
+        {
+          "id": "5hanayome-nino-yotsuba-candid_blessing",
+          "source": "nakano_nino",
+          "target": "nakano_yotsuba",
+          "label": "洒脱泪水与全心全意的姐妹祝福",
+          "description": "二乃深知四叶多年来为姐妹牺牲自我的隐忍，在新娘公布后虽为自己的无果爱情在洗手间痛哭，但擦干眼泪后第一个冲上前拥抱四叶并送上最真挚的骄傲祝福。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "学园祭最终抉择篇",
+          "evidence": {
+            "title": "剧场版《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/1st/"
+          }
+        },
+        {
+          "id": "5hanayome-raiha-quintuplets-adored_sister",
+          "source": "uesugi_raiha",
+          "target": "uesugi_fuutarou",
+          "label": "相依为命与撮合良缘的贴心妹妹",
+          "description": "上杉家的治愈小天使，懂事体贴照顾哥哥与家庭；五姐妹全员对其宠爱有加，濑叶也成为风太郎与五姐妹化解隔阂、结下深厚羁绊的最强助攻催化剂。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "贯穿日常篇",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "nakano_yotsuba",
+    "name": "中野四叶",
+    "alias": [
+      "Nakano Yotsuba",
+      "四叶",
+      "Yotsuba",
+      "四叶小天使",
+      "写真之子"
+    ],
+    "type": "popular",
+    "icon": "🍀",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "中野四叶 立绘待补"
+    },
+    "visual_dna": {
+      "hair": "亮橙色齐颈波波短发 · 标志性亮绿色四叶草兔耳发带",
+      "hair_color": "暖橙色 / 亮橙",
+      "eyes": "清澈纯真蔚蓝瞳",
+      "hairstyle": "蓬松短发 · 头顶标志性大兔耳绿缎带（green_ribbon, bunny_hair_ornament）",
+      "uniform": "旭高校水手领制服 · 浅绿色针织马甲 · 百褶短裙",
+      "expression": "元气满满 · 灿烂笑颜 · 纯真善良 · 害羞时双手轻抓衣角",
+      "style": "energetic cheerful athletic innocent quintuplet",
+      "signature": "亮橙短发、头顶绿色兔耳发带、浅绿针织背心与毫无阴霾的灿烂笑容"
+    },
+    "personality": [
+      "永远优先考虑他人感受、宁可委屈自己的无私奉献精神",
+      "活力充沛奔跑在操场上的田径王牌运动少女",
+      "心底深藏着童年京都约定的深情与对自身不足的自卑枷锁",
+      "毫无心机、对所有求助都毫不犹豫答应的热心肠",
+      "面对风太郎时难以抑制的心动与为了姐妹幸福隐忍退让的酸涩",
+      "在风太郎的真挚告白下终于卸下心防、勇敢拥抱幸福的解脱",
+      "笑容如夏日阳光般治愈人心的中野家真正天使"
+    ],
+    "likes": [
+      "在阳光明媚的清晨沿着河畔畅快长跑",
+      "帮助其他运动社团救场并和同伴击掌庆祝",
+      "和五姐妹一起在公园荡秋千感受风的起伏",
+      "香气扑鼻的热腾腾乌冬面与甜甜的红苹果糖",
+      "搜集各种四叶草造型的手绳与绿缎带配饰",
+      "看到身边所有人发自内心的纯真笑容"
+    ],
+    "classic_cg": {
+      "title": "黄昏公园的高空秋千告白",
+      "description": "夕阳将整座街角公园镀上温暖的熔金色。四叶坐在高高荡起的秋千上，将身体向晴空尽情伸展。绿色的兔耳发带在暮风中欢快翻飞，她转过头看着坐在旁边长椅上的少年，毫无阴霾的眼眸映着晚霞与落日，嘴角扬起全世界最明媚清澈的灿烂笑颜。"
+    },
+    "identity": {
+      "role": "中野家五胞胎四女 / 田径部王牌",
+      "age": "17岁（高中）→ 22岁以上（婚礼后日谈）",
+      "occupation": "高中生 → 体育大学学生 / 阳光运动教练",
+      "faction": "旭高校 / 中野五姐妹 / 田径部"
+    },
+    "tags": [
+      "短发",
+      "橙发",
+      "绿发带",
+      "兔耳发带",
+      "针织马甲",
+      "运动少女",
+      "元气小天使"
+    ],
+    "bg_story": "中野四叶是《五等分的新娘》核心女主角之一，中野家五胞胎四女。留着明亮的暖橙短发，头顶常年系着标志性的亮绿兔耳发带。四叶性格极其元气开朗、乐于助人，是学校田径社与各大运动部争相抢夺的王牌助手。然而在这份无忧无虑的笑容背后，四叶却承受着长年沉重的心结——她正是六年前在京都与上杉风太郎相遇并定下共同努力约定的那个女孩。因转学时成绩拖累姐妹，四叶深陷“自己是最差劲的一个、必须全力为姐妹赎罪奉献”的自卑泥潭中，即便一眼认出风太郎，也因自认未达成诺言而选择隐藏身份，默默在背后充当风太郎与姐妹们的破冰红娘。她一次次压抑对风太郎的爱意，祈求姐妹们能够获得幸福。直到学园祭最终抉择时刻，风太郎跨越整个校区、追寻到秋千旁的四叶真诚求婚，四叶终于在泪水中释怀了所有的心结，勇敢拥抱属于自己的幸福，成为最终的新娘。",
+    "palette": [
+      "亮绿",
+      "暖橙",
+      "纯白"
+    ],
+    "weather": [
+      "晴空操场",
+      "夕阳公园",
+      "夏日碧海"
+    ],
+    "speech": "上杉同学！今天也要打起十二分精神加油哦！无论遇到什么困难，四叶都会全力支持你的——嘿嘿♪",
+    "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
+    "traits": [
+      "nakano_yotsuba",
+      "1girl",
+      "solo",
+      "short_hair",
+      "orange_hair",
+      "green_ribbon",
+      "bunny_hair_ornament",
+      "blue_eyes",
+      "slender",
+      "5-toubun_no_hanayome"
+    ],
+    "accent_color": "#22c55e",
+    "bg_color": "#1e1b4b",
+    "voice": "上杉同学！今天也要打起十二分精神加油哦！无论遇到什么困难，四叶都会全力支持你的——嘿嘿♪",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "五等分的新娘",
+      "people": [
+        {
+          "id": "nakano_miku",
+          "name": "中野三玖",
+          "aliases": [
+            "中野三玖",
+            "Nakano Miku",
+            "三玖",
+            "Miku"
+          ],
+          "characterId": "nakano_miku"
+        },
+        {
+          "id": "nakano_nino",
+          "name": "中野二乃",
+          "aliases": [
+            "中野二乃",
+            "Nakano Nino",
+            "二乃",
+            "Nino",
+            "暴走列车"
+          ],
+          "characterId": "nakano_nino"
+        },
+        {
+          "id": "uesugi_fuutarou",
+          "name": "上杉风太郎",
+          "aliases": [
+            "上杉風太郎",
+            "Fuutarou Uesugi",
+            "风太郎",
+            "上杉君"
+          ],
+          "role": "中野家家庭教师 / 高中生学霸",
+          "summary": "为偿还家中巨额债务而接下中野家五胞胎家教工作的孤僻学霸。在日夜督促五姐妹学习中逐渐理解每个人的心结，成为五姐妹心中不可替代的初恋与救赎，最终在学园祭选择中野四叶结为夫妻。"
+        },
+        {
+          "id": "nakano_ichika",
+          "name": "中野一花",
+          "aliases": [
+            "中野一花",
+            "Ichika Nakano",
+            "一花",
+            "一花姐姐"
+          ],
+          "role": "中野家五胞胎长女 / 知名女演员",
+          "summary": "表面成熟开朗、善解人意的大姐。为了支撑妹妹们的生活早早进入演艺圈，在对风太郎的情感中一度迷失，后与三玖、二乃重归于好。",
+          "characterId": "nakano_ichika"
+        },
+        {
+          "id": "nakano_yotsuba",
+          "name": "中野四叶",
+          "aliases": [
+            "中野四葉",
+            "Yotsuba Nakano",
+            "四叶",
+            "写真之子"
+          ],
+          "role": "中野家五胞胎四女 / 田径部王牌",
+          "summary": "元气阳光、永远为他人奉献而忽视自己的善良少女。正是童年在京都与风太郎定下约定的女孩，在长年的默默守望后终于迎来风太郎的真诚求婚。",
+          "characterId": "nakano_yotsuba"
+        },
+        {
+          "id": "nakano_itsuki",
+          "name": "中野五月",
+          "aliases": [
+            "中野五月",
+            "Itsuki Nakano",
+            "五月",
+            "零奈",
+            "吃货五月"
+          ],
+          "role": "中野家五胞胎五女 / 见习教师",
+          "summary": "认真固执、胃口极好的好学生。继承亡母的教职梦想努力奋进，是最早进入上杉家与濑叶建立深厚亲情的朋友。",
+          "characterId": "nakano_itsuki"
+        },
+        {
+          "id": "uesugi_raiha",
+          "name": "上杉濑叶",
+          "aliases": [
+            "上杉らいは",
+            "Raiha Uesugi",
+            "濑叶",
+            "濑叶妹妹"
+          ],
+          "role": "风太郎的妹妹 / 小学生",
+          "summary": "精打细算、操持上杉家内务的懂事妹妹。深受中野家五姐妹全员宠爱，视五姐妹为未来的嫂子。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "5hanayome-fuutarou-miku-first_bloom",
+          "source": "nakano_miku",
+          "target": "uesugi_fuutarou",
+          "label": "战国共鸣与自卑破茧的倾心告白",
+          "description": "因风太郎真诚接纳其战国爱好而最早敞开心扉；为追上风太郎苦练烘焙面包，在京都清水寺鼓起全身勇气向他伸手告白，虽未成新娘却在追爱中找到了立足人生的自信与梦想。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "修学旅行清水寺篇至终局",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-nino-runaway_confession",
+          "source": "nakano_nino",
+          "target": "uesugi_fuutarou",
+          "label": "从敌视排斥到恋爱暴走机车",
+          "description": "起初为守护姐妹下药驱逐风太郎，在七次感谢祭与短发蜕变后彻底爱上风太郎，在机车后座轰轰烈烈直球告白；学园祭落选后虽痛哭拭泪，依然展现最骄傲洒脱的自尊与祝福。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "七个再见篇至学园祭终盘",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘∬》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-yotsuba-destined_bride",
+          "source": "uesugi_fuutarou",
+          "target": "nakano_yotsuba",
+          "label": "童年京都誓言与命中注定的新娘",
+          "description": "四叶正是童年在京都鼓励风太郎奋发图强的‘写真之子’；因愧对姐妹长年掩藏爱意，风太郎在学园祭直面内心选择四叶，两人跨越漫长岁月许下一生一世的婚礼誓约。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "剧场版《五等分的新娘》婚礼完结篇",
+          "evidence": {
+            "title": "剧场版《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/1st/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-ichika-unspoken_passion",
+          "source": "nakano_ichika",
+          "target": "uesugi_fuutarou",
+          "label": "长女的依赖与暗黑失控的救赎",
+          "description": "作为职业演员与家庭经济支柱，一花在兼职中被风太郎看穿脆弱；京都修学旅行因嫉妒假扮三玖引发姐妹信任危机，在风太郎与妹妹们真诚包容下重拾长女担当并坦然释怀。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "修学旅行篇至学园祭",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘∬》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-itsuki-friend_mentor",
+          "source": "nakano_itsuki",
+          "target": "uesugi_fuutarou",
+          "label": "同甘共苦的战友与梦想引路人",
+          "description": "五姐妹中唯一与风太郎保持纯粹革命友谊的存在；曾化名‘零奈’帮助风太郎走出童年初恋执念，在风太郎严苛鞭策下立志成为像母亲一样的优秀教师，是彼此无话不谈的挚友。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "全篇主线贯穿",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/"
+          }
+        },
+        {
+          "id": "5hanayome-miku-nino-partners_in_cafe",
+          "source": "nakano_nino",
+          "target": "nakano_miku",
+          "label": "相爱相杀的姐妹与终生咖啡厅合伙人",
+          "description": "高中时期在料理与恋爱上频繁较劲，但在落选新娘后两人抱团痛哭彼此理解，五年后携手创办风靡街巷的法式甜品咖啡厅Cafe Futanari，终生相伴互为最牢固的支柱。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "后日谈与婚礼完结篇",
+          "evidence": {
+            "title": "讲谈社《周刊少年Magazine》五等分的新娘官方主页",
+            "url": "https://shonenmagazine.com/special/5hanayome"
+          }
+        },
+        {
+          "id": "5hanayome-ichika-miku-betrayal_forgiveness",
+          "source": "nakano_ichika",
+          "target": "nakano_miku",
+          "label": "伪装背刺与泪水中的深刻和解",
+          "description": "一花因私心假扮三玖告白令三玖痛苦绝望，在风太郎拆穿真相后一花深感愧疚放弃竞争；三玖展现博大胸襟拥抱原谅一花，让五姐妹的羁绊更加坚不可摧。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "漫画第83-86话修学旅行篇",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘∬》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+          }
+        },
+        {
+          "id": "5hanayome-nino-yotsuba-candid_blessing",
+          "source": "nakano_nino",
+          "target": "nakano_yotsuba",
+          "label": "洒脱泪水与全心全意的姐妹祝福",
+          "description": "二乃深知四叶多年来为姐妹牺牲自我的隐忍，在新娘公布后虽为自己的无果爱情在洗手间痛哭，但擦干眼泪后第一个冲上前拥抱四叶并送上最真挚的骄傲祝福。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "学园祭最终抉择篇",
+          "evidence": {
+            "title": "剧场版《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/1st/"
+          }
+        },
+        {
+          "id": "5hanayome-raiha-quintuplets-adored_sister",
+          "source": "uesugi_raiha",
+          "target": "uesugi_fuutarou",
+          "label": "相依为命与撮合良缘的贴心妹妹",
+          "description": "上杉家的治愈小天使，懂事体贴照顾哥哥与家庭；五姐妹全员对其宠爱有加，濑叶也成为风太郎与五姐妹化解隔阂、结下深厚羁绊的最强助攻催化剂。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "贯穿日常篇",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "nakano_itsuki",
+    "name": "中野五月",
+    "alias": [
+      "Nakano Itsuki",
+      "五月",
+      "Itsuki",
+      "五月吃货",
+      "零奈",
+      "肉包怪"
+    ],
+    "type": "popular",
+    "icon": "⭐",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "中野五月 立绘待补"
+    },
+    "visual_dna": {
+      "hair": "及腰微卷赤红长发 · 两侧黄色五角星发夹 · 头顶大呆毛",
+      "hair_color": "赤红 / 绯红微卷",
+      "eyes": "澄澈深邃绀青蓝瞳",
+      "hairstyle": "丰盈波浪及腰长发 · 额前大呆毛（ahoge） · 双鬓黄色五角星发饰（star_hair_ornament）",
+      "uniform": "旭高校正规水手领制服 · 严谨红色针织开衫 · 规整系好领结",
+      "expression": "端庄认真 · 严肃说教 · 享受美食时双颊泛红微鼓的可爱反差",
+      "style": "earnest dignified foodie diligent quintuplet",
+      "signature": "及腰赤红卷发、双侧五角星发夹、头顶大呆毛与热气腾腾的肉包"
+    },
+    "personality": [
+      "行事一丝不苟、严格遵守规则的中野家风纪守护者",
+      "对美食毫无抵抗力、面对美味食物时两眼放光的吃货少女",
+      "深爱亡母并以母亲为榜样、立志成为一名优秀教师的勤勉坚毅",
+      "面对家庭教师时起初因口角而格外固执赌气的傲娇别扭",
+      "最早融入上杉家、与小妹妹濑叶结下深厚姐妹般情谊的善良长情",
+      "在风太郎遇到困难时化身「零奈」温柔开导指引的知心朋友",
+      "经历高考洗礼后顺利考入教育大学、自信站上讲台的知性教师"
+    ],
+    "likes": [
+      "街头便利店热气腾腾刚出锅的多汁牛肉大肉包",
+      "淋满浓郁奶油与当季草莓的巨型特制甜品芭菲",
+      "在安静图书馆角落一丝不苟地整理教师考试笔记",
+      "和可爱的小妹妹濑叶一起逛街做家常料理",
+      "搜集各种黄色五角星造型的文具与精致发饰",
+      "在深夜书桌旁闻着热可可香气刷完厚厚的模拟习题集"
+    ],
+    "classic_cg": {
+      "title": "寒风街角的热气肉包",
+      "description": "冬日飘雪的商业街拐角，五月身裹厚厚的格纹羊毛围巾。她双手捧着刚刚出炉、热气蒸腾的白嫩肉包，小心翼翼地小口咬下。温热的肉汁与香气让少女满足地眯起双眼，头顶的呆毛愉悦地晃动着，微红的脸颊在白茫茫的哈气中显得格外娇憨动人。"
+    },
+    "identity": {
+      "role": "中野家五胞胎五女 / 见习教师",
+      "age": "17岁（高中）→ 22岁以上（婚礼后日谈）",
+      "occupation": "高中生 → 教育大学师范生 / 中学教师",
+      "faction": "旭高校 / 中野五姐妹 / 师范学府"
+    },
+    "tags": [
+      "长发",
+      "红发",
+      "星形发夹",
+      "呆毛",
+      "红开衫",
+      "认真学霸",
+      "吃货反差萌"
+    ],
+    "bg_story": "中野五月是《五等分的新娘》核心女主角之一，中野家五胞胎的幺女。留着丰盈华美的赤红及腰长卷发，头顶竖着一撮活跃的呆毛，两侧发间始终别着标志性的黄色五角星发夹。五月性格认真刻板、自尊心极强，在母亲早逝后努力模仿母亲的威严来约束姐妹。故事开篇她在学校食堂因占座与菜单和上杉风太郎发生小摩擦，随后在得知对方是家庭教师时赌气拒绝受教，自顾自熬夜刷题却收效甚微。然而在风太郎一次次用真诚与责任化解姐妹们的危机后，五月逐渐放下成见，成为五姐妹中最理解风太郎家庭境遇的人。她多次造访上杉家，深受小妹妹濑叶喜爱；并在风太郎迷茫自责时，依照母亲留下的线索化身象征初恋回忆的「零奈」，以温柔的方式帮助少年解开过去的心结。五月怀揣着继承母亲教职的崇高梦想，在风太郎辅导下刻苦备战高考，最终如愿考入师范大学成为合格的教师。在五姐妹的成长与婚礼旅程中，五月始终是风太郎最默契可靠的人生挚友与前行伙伴。",
+    "palette": [
+      "绯红",
+      "暖黄",
+      "纯白"
+    ],
+    "weather": [
+      "冬日飞雪",
+      "星空天台",
+      "微风夏海"
+    ],
+    "speech": "上杉同学！请不要小看我的食量……不对，是请不要小看我的求学意志！今天我一定会把这张试卷全部订正完的！",
+    "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
+    "traits": [
+      "nakano_itsuki",
+      "1girl",
+      "solo",
+      "long_hair",
+      "red_hair",
+      "star_hair_ornament",
+      "ahoge",
+      "blue_eyes",
+      "slender",
+      "5-toubun_no_hanayome"
+    ],
+    "accent_color": "#ef4444",
+    "bg_color": "#1e1b4b",
+    "voice": "上杉同学！请不要小看我的食量……不对，是请不要小看我的求学意志！今天我一定会把这张试卷全部订正完的！",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "五等分的新娘",
+      "people": [
+        {
+          "id": "nakano_miku",
+          "name": "中野三玖",
+          "aliases": [
+            "中野三玖",
+            "Nakano Miku",
+            "三玖",
+            "Miku"
+          ],
+          "characterId": "nakano_miku"
+        },
+        {
+          "id": "nakano_nino",
+          "name": "中野二乃",
+          "aliases": [
+            "中野二乃",
+            "Nakano Nino",
+            "二乃",
+            "Nino",
+            "暴走列车"
+          ],
+          "characterId": "nakano_nino"
+        },
+        {
+          "id": "uesugi_fuutarou",
+          "name": "上杉风太郎",
+          "aliases": [
+            "上杉風太郎",
+            "Fuutarou Uesugi",
+            "风太郎",
+            "上杉君"
+          ],
+          "role": "中野家家庭教师 / 高中生学霸",
+          "summary": "为偿还家中巨额债务而接下中野家五胞胎家教工作的孤僻学霸。在日夜督促五姐妹学习中逐渐理解每个人的心结，成为五姐妹心中不可替代的初恋与救赎，最终在学园祭选择中野四叶结为夫妻。"
+        },
+        {
+          "id": "nakano_ichika",
+          "name": "中野一花",
+          "aliases": [
+            "中野一花",
+            "Ichika Nakano",
+            "一花",
+            "一花姐姐"
+          ],
+          "role": "中野家五胞胎长女 / 知名女演员",
+          "summary": "表面成熟开朗、善解人意的大姐。为了支撑妹妹们的生活早早进入演艺圈，在对风太郎的情感中一度迷失，后与三玖、二乃重归于好。",
+          "characterId": "nakano_ichika"
+        },
+        {
+          "id": "nakano_yotsuba",
+          "name": "中野四叶",
+          "aliases": [
+            "中野四葉",
+            "Yotsuba Nakano",
+            "四叶",
+            "写真之子"
+          ],
+          "role": "中野家五胞胎四女 / 田径部王牌",
+          "summary": "元气阳光、永远为他人奉献而忽视自己的善良少女。正是童年在京都与风太郎定下约定的女孩，在长年的默默守望后终于迎来风太郎的真诚求婚。",
+          "characterId": "nakano_yotsuba"
+        },
+        {
+          "id": "nakano_itsuki",
+          "name": "中野五月",
+          "aliases": [
+            "中野五月",
+            "Itsuki Nakano",
+            "五月",
+            "零奈",
+            "吃货五月"
+          ],
+          "role": "中野家五胞胎五女 / 见习教师",
+          "summary": "认真固执、胃口极好的好学生。继承亡母的教职梦想努力奋进，是最早进入上杉家与濑叶建立深厚亲情的朋友。",
+          "characterId": "nakano_itsuki"
+        },
+        {
+          "id": "uesugi_raiha",
+          "name": "上杉濑叶",
+          "aliases": [
+            "上杉らいは",
+            "Raiha Uesugi",
+            "濑叶",
+            "濑叶妹妹"
+          ],
+          "role": "风太郎的妹妹 / 小学生",
+          "summary": "精打细算、操持上杉家内务的懂事妹妹。深受中野家五姐妹全员宠爱，视五姐妹为未来的嫂子。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "5hanayome-fuutarou-miku-first_bloom",
+          "source": "nakano_miku",
+          "target": "uesugi_fuutarou",
+          "label": "战国共鸣与自卑破茧的倾心告白",
+          "description": "因风太郎真诚接纳其战国爱好而最早敞开心扉；为追上风太郎苦练烘焙面包，在京都清水寺鼓起全身勇气向他伸手告白，虽未成新娘却在追爱中找到了立足人生的自信与梦想。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "修学旅行清水寺篇至终局",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-nino-runaway_confession",
+          "source": "nakano_nino",
+          "target": "uesugi_fuutarou",
+          "label": "从敌视排斥到恋爱暴走机车",
+          "description": "起初为守护姐妹下药驱逐风太郎，在七次感谢祭与短发蜕变后彻底爱上风太郎，在机车后座轰轰烈烈直球告白；学园祭落选后虽痛哭拭泪，依然展现最骄傲洒脱的自尊与祝福。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "七个再见篇至学园祭终盘",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘∬》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-yotsuba-destined_bride",
+          "source": "uesugi_fuutarou",
+          "target": "nakano_yotsuba",
+          "label": "童年京都誓言与命中注定的新娘",
+          "description": "四叶正是童年在京都鼓励风太郎奋发图强的‘写真之子’；因愧对姐妹长年掩藏爱意，风太郎在学园祭直面内心选择四叶，两人跨越漫长岁月许下一生一世的婚礼誓约。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "剧场版《五等分的新娘》婚礼完结篇",
+          "evidence": {
+            "title": "剧场版《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/1st/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-ichika-unspoken_passion",
+          "source": "nakano_ichika",
+          "target": "uesugi_fuutarou",
+          "label": "长女的依赖与暗黑失控的救赎",
+          "description": "作为职业演员与家庭经济支柱，一花在兼职中被风太郎看穿脆弱；京都修学旅行因嫉妒假扮三玖引发姐妹信任危机，在风太郎与妹妹们真诚包容下重拾长女担当并坦然释怀。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "修学旅行篇至学园祭",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘∬》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+          }
+        },
+        {
+          "id": "5hanayome-fuutarou-itsuki-friend_mentor",
+          "source": "nakano_itsuki",
+          "target": "uesugi_fuutarou",
+          "label": "同甘共苦的战友与梦想引路人",
+          "description": "五姐妹中唯一与风太郎保持纯粹革命友谊的存在；曾化名‘零奈’帮助风太郎走出童年初恋执念，在风太郎严苛鞭策下立志成为像母亲一样的优秀教师，是彼此无话不谈的挚友。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "全篇主线贯穿",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/"
+          }
+        },
+        {
+          "id": "5hanayome-miku-nino-partners_in_cafe",
+          "source": "nakano_nino",
+          "target": "nakano_miku",
+          "label": "相爱相杀的姐妹与终生咖啡厅合伙人",
+          "description": "高中时期在料理与恋爱上频繁较劲，但在落选新娘后两人抱团痛哭彼此理解，五年后携手创办风靡街巷的法式甜品咖啡厅Cafe Futanari，终生相伴互为最牢固的支柱。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "后日谈与婚礼完结篇",
+          "evidence": {
+            "title": "讲谈社《周刊少年Magazine》五等分的新娘官方主页",
+            "url": "https://shonenmagazine.com/special/5hanayome"
+          }
+        },
+        {
+          "id": "5hanayome-ichika-miku-betrayal_forgiveness",
+          "source": "nakano_ichika",
+          "target": "nakano_miku",
+          "label": "伪装背刺与泪水中的深刻和解",
+          "description": "一花因私心假扮三玖告白令三玖痛苦绝望，在风太郎拆穿真相后一花深感愧疚放弃竞争；三玖展现博大胸襟拥抱原谅一花，让五姐妹的羁绊更加坚不可摧。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "漫画第83-86话修学旅行篇",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘∬》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+          }
+        },
+        {
+          "id": "5hanayome-nino-yotsuba-candid_blessing",
+          "source": "nakano_nino",
+          "target": "nakano_yotsuba",
+          "label": "洒脱泪水与全心全意的姐妹祝福",
+          "description": "二乃深知四叶多年来为姐妹牺牲自我的隐忍，在新娘公布后虽为自己的无果爱情在洗手间痛哭，但擦干眼泪后第一个冲上前拥抱四叶并送上最真挚的骄傲祝福。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "学园祭最终抉择篇",
+          "evidence": {
+            "title": "剧场版《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/1st/"
+          }
+        },
+        {
+          "id": "5hanayome-raiha-quintuplets-adored_sister",
+          "source": "uesugi_raiha",
+          "target": "uesugi_fuutarou",
+          "label": "相依为命与撮合良缘的贴心妹妹",
+          "description": "上杉家的治愈小天使，懂事体贴照顾哥哥与家庭；五姐妹全员对其宠爱有加，濑叶也成为风太郎与五姐妹化解隔阂、结下深厚羁绊的最强助攻催化剂。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "贯穿日常篇",
+          "evidence": {
+            "title": "TBS电视台《五等分的新娘》官方网站",
+            "url": "https://www.tbs.co.jp/anime/5hanayome/"
+          }
+        }
+      ]
+    }
+  },
+  {
     "id": "inaba_meguru",
     "name": "因幡巡",
     "alias": [
@@ -90526,6 +91463,276 @@
     }
   },
   {
+    "id": "aozaki_aoko",
+    "name": "苍崎青子",
+    "alias": [
+      "Aozaki Aoko",
+      "青子",
+      "第五魔法使",
+      "Magic Gunner",
+      "苍崎",
+      "蒼崎青子"
+    ],
+    "type": "popular",
+    "icon": "✨",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "苍崎青子 立绘待补"
+    },
+    "visual_dna": {
+      "hair": "栗红微卷长发 · 随性披散发梢",
+      "hair_color": "栗红 / 深茶红（施术时化作炽烈赤红）",
+      "eyes": "澄澈群青蓝瞳",
+      "hairstyle": "随性及腰微卷长发 · 额前自然碎刘海",
+      "uniform": "经典旅人风衣 · 白色立领衬衫搭配深色修身长裤 · 磨损皮箱",
+      "expression": "从容洒脱 · 略带俏皮自信微笑 · 战斗施术时眼神凌厉如炬",
+      "style": "confident wandering magician mature cool elegant",
+      "signature": "栗红长发、群青蓝瞳、卡其色旅人风衣与指尖凝聚的炽蓝魔弹"
+    },
+    "personality": [
+      "行事利落干脆、不拘泥于繁文缛节的流浪魔法使",
+      "褪去高中时代的冲动好胜后更加通透从容的气度",
+      "表面嫌麻烦怕啰嗦、暗地里依然极富正义感与侠气",
+      "习惯独自行走于不同城市车站、雪原与灵脉交界的淡然",
+      "偶遇旧识时会以大姐姐的从容姿态调侃并默默关照对方"
+    ],
+    "likes": [
+      "在陌生的雪夜车站候车室喝一杯冒热气的苦咖啡",
+      "漫无目的的列车旅行与沿途不断变换的风景",
+      "给三咲市久远寺洋馆寄写满旅途琐事的风景明信片",
+      "随手弹射精准粉碎魔术结界或机械障碍的轻快感",
+      "挑选质地结实耐磨的皮质旅行箱与风衣外套"
+    ],
+    "classic_cg": {
+      "title": "暴风雪车站的炽蓝魔弹与离别背影",
+      "description": "北国深夜飘着密集暴雪的火车站台上，昏黄的路灯将积雪映得晶莹。青子身裹卡其色长风衣，单手拎着一只贴满旧旅行标签的深棕皮箱。她微微侧过身回望，栗红的长发在凛冽寒风中狂乱翻飞，指尖跳跃着一缕冰蓝色的微光魔弹，嘴角扬起一抹飒爽从容的浅笑。"
+    },
+    "identity": {
+      "role": "第五魔法使 / 现代最高位魔弹使 / 自由流浪魔术师",
+      "age": "成年创作设定",
+      "occupation": "魔法使 / 自由旅行者",
+      "faction": "苍崎家 / 久远寺洋馆 / 独立"
+    },
+    "tags": [
+      "长发",
+      "栗红发",
+      "蓝瞳",
+      "风衣",
+      "旅行箱",
+      "魔法使",
+      "魔弹",
+      "大姐姐"
+    ],
+    "bg_story": "苍崎青子是《魔法使之夜》的主角、第五魔法的继承者。高中毕业并与久远寺洋馆的同伴结束合宿多年后，青子正式踏上了无拘无束的流浪旅途。褪去昔日学生会长的青涩与对魔术世界的抗拒，成年后的青子彻底掌握了干涉时间与极致破坏的第五魔法。她提着一只磨损的复古旅行箱，流转于世界各地的旧车站、冬日雪原与灵脉交汇之地。她依然不喜欢魔术协会的规矩，也不自诩为救世主，但在路过受灾地或遇到陷入困境的年轻后辈时，总会看似漫不经心地点出一记威力惊人的魔弹。偶尔，她会在某个偏僻小镇的酒馆落座，写下一张寄往三咲市洋馆的明信片，端起热饮注视着窗外的初雪，神情坦荡而从容。",
+    "palette": [
+      "苍蓝",
+      "深栗红",
+      "卡其色"
+    ],
+    "weather": [
+      "雪夜车站",
+      "黄昏旷野",
+      "雾气街角"
+    ],
+    "speech": "哟，又在迷茫了吗？这副表情可不太好看。要是一颗魔弹解决不了烦恼，那就把步子迈开，跟我去下一站看看吧。",
+    "source": "奈须蘑菇《魔法使之夜 / Mahoutsukai no Yoru》",
+    "traits": [
+      "aozaki_aoko",
+      "1girl",
+      "solo",
+      "long_hair",
+      "brown_hair",
+      "red_hair",
+      "blue_eyes",
+      "slender",
+      "mahou_tsukai_no_yoru"
+    ],
+    "accent_color": "#2563eb",
+    "bg_color": "#0f172a",
+    "voice": "哟，又在迷茫了吗？这副表情可不太好看。要是一颗魔弹解决不了烦恼，那就把步子迈开，跟我去下一站看看吧。",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "魔法使之夜",
+      "people": [
+        {
+          "id": "kuonji_alice",
+          "name": "久远寺有珠",
+          "aliases": [
+            "久远寺有珠",
+            "Alice Kuonji",
+            "魔女有珠",
+            "纯血魔女"
+          ],
+          "characterId": "kuonji_alice"
+        },
+        {
+          "id": "aozaki_aoko",
+          "name": "苍崎青子",
+          "aliases": [
+            "苍崎青子",
+            "Aozaki Aoko",
+            "第五魔法使",
+            "Magic Gunner",
+            "青子"
+          ],
+          "role": "第五魔法继承者 / 三咲高中学生会长",
+          "summary": "魔术造诣粗糙但破坏力与时间干涉通神的年轻见习魔法使。继承苍崎家魔术刻印后镇守三咲市灵脉，在久远寺宅邸与有珠一同接纳并保护目击者草十郎，在雪夜决战觉醒第五魔法奇迹。",
+          "characterId": "aozaki_aoko"
+        },
+        {
+          "id": "shizuki_soujuurou",
+          "name": "静希草十郎",
+          "aliases": [
+            "静希草十郎",
+            "Shizuki Soujuurou",
+            "草十郎",
+            "山里来的少年"
+          ],
+          "role": "深山长大的淳朴转学生",
+          "summary": "言行异于常人、对现代都市一无所知的质朴青年。因误入游乐园魔术结界被青子与有珠监视同居，以天然纯粹的洞察力融化了有珠冰冷的心防。"
+        },
+        {
+          "id": "aozaki_touko_mahoyo",
+          "name": "苍崎橙子",
+          "aliases": [
+            "苍崎橙子",
+            "Aozaki Touko",
+            "伤痛之赤",
+            "冠位人偶师"
+          ],
+          "role": "苍崎青子的亲姐姐 / 人形魔术师",
+          "summary": "因未能继承第五魔法而叛出家门的魔术天才。制造出足以乱真的人形使魔向三咲市发起残酷争夺战，被青子与草十郎联手击退。"
+        },
+        {
+          "id": "lugh_beowulf",
+          "name": "卢·贝奥武夫",
+          "aliases": [
+            "卢·贝奥武夫",
+            "Lugh Beowulf",
+            "黄金狼人",
+            "贝奥"
+          ],
+          "role": "黄金的人狼 / 橙子的契约使魔",
+          "summary": "拥有三千年历史神话体质的纯血人狼。能免疫一切现代魔术轰击，最终在山林被草十郎以纯粹人类格斗技巧击破心脏要害。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "kuonji_alice-aozaki_aoko-mansion_allies_and_friends",
+          "source": "kuonji_alice",
+          "target": "aozaki_aoko",
+          "label": "洋馆同居与魔道挚友",
+          "description": "同居于久远寺洋馆的魔术师同盟，性格冰炭不同却在守护三咲市灵脉的死斗中生死相依，是彼此在冷酷神秘世界中唯一的依靠。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "魔法使之夜 · 共通设定",
+          "evidence": {
+            "title": "TYPE-MOON · 魔法使之夜官方网站",
+            "url": "https://typemoon.com/products/mahoyo/"
+          }
+        },
+        {
+          "id": "kuonji_alice-shizuki_soujuurou-from_murderous_to_shelter",
+          "source": "kuonji_alice",
+          "target": "shizuki_soujuurou",
+          "label": "由杀意至容留默契",
+          "description": "草十郎因目击魔术险遭有珠抹杀，然而在同居日常与游乐园死斗中有珠被其纯粹无欲的心境触动，暗中赠予防护护符并默许其留宿。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "魔法使之夜 · 日常与合宿",
+          "evidence": {
+            "title": "TYPE-MOON · 魔法使之夜官方网站",
+            "url": "https://typemoon.com/products/mahoyo/"
+          }
+        },
+        {
+          "id": "kuonji_alice-aozaki_touko_mahoyo-mansion_clash",
+          "source": "kuonji_alice",
+          "target": "aozaki_touko_mahoyo",
+          "label": "洋馆袭杀与使魔鏖战",
+          "description": "橙子突袭久远寺洋馆企图夺取灵脉与使魔，有珠释放传家秘宝大桥之巨人和大厅茶会拼至重伤濒死，誓死捍卫洋馆的神秘尊严。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "魔法使之夜 · 洋馆袭击战",
+          "evidence": {
+            "title": "TYPE-MOON · 魔法使之夜官方网站",
+            "url": "https://typemoon.com/products/mahoyo/"
+          }
+        },
+        {
+          "id": "aozaki_aoko-shizuki_soujuurou-contract_and_humanity_anchor",
+          "source": "aozaki_aoko",
+          "target": "shizuki_soujuurou",
+          "label": "契约同盟与灵魂锚点",
+          "description": "青子给目击者草十郎戴上致命项圈限制自由，但在废弃游乐园与雪山决战中草十郎舍命阻击狼人，成为青子觉醒第五魔法后维系人性的永恒锚点。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "魔法使之夜 · 雪山决战",
+          "evidence": {
+            "title": "TYPE-MOON · 魔法使之夜官方网站",
+            "url": "https://typemoon.com/products/mahoyo/"
+          }
+        },
+        {
+          "id": "aozaki_aoko-aozaki_touko_mahoyo-sisters_magic_dispute",
+          "source": "aozaki_aoko",
+          "target": "aozaki_touko_mahoyo",
+          "label": "同胞姊妹与魔法争夺",
+          "description": "因祖父突然将苍崎家第五魔法继承权托付给毫无魔术基础的妹妹青子，橙子愤而出走并在数年后杀回三咲市决战，最终被青子的魔法之青击溃放逐。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "魔法使之夜 · 最终决战",
+          "evidence": {
+            "title": "TYPE-MOON · 魔法使之夜官方网站",
+            "url": "https://typemoon.com/products/mahoyo/"
+          }
+        },
+        {
+          "id": "shizuki_soujuurou-lugh_beowulf-mortal_critical_strike",
+          "source": "shizuki_soujuurou",
+          "target": "lugh_beowulf",
+          "label": "徒手重击与破格一击",
+          "description": "雪夜林中决战，凡人少年草十郎以在深山练就的极致徒手暗杀体术，出其不意击碎黄金狼人的心窝，颠覆了神秘唯有神秘能破的铁律。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "魔法使之夜 · 雪山决战",
+          "evidence": {
+            "title": "TYPE-MOON · 魔法使之夜官方网站",
+            "url": "https://typemoon.com/products/mahoyo/"
+          }
+        },
+        {
+          "id": "aozaki_touko_mahoyo-lugh_beowulf-familiar_contract",
+          "source": "aozaki_touko_mahoyo",
+          "target": "lugh_beowulf",
+          "label": "使魔契约与黄金王牌",
+          "description": "橙子在北欧耗费极大心血收服的神代人狼遗孤，将其作为攻破久远寺结界与压制青子的终极王牌，狼人战败后被其放养。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "魔法使之夜 · 袭来篇",
+          "evidence": {
+            "title": "TYPE-MOON · 魔法使之夜官方网站",
+            "url": "https://typemoon.com/products/mahoyo/"
+          }
+        },
+        {
+          "id": "aozaki_aoko-lugh_beowulf-snowfield_duel",
+          "source": "aozaki_aoko",
+          "target": "lugh_beowulf",
+          "label": "风雪激战",
+          "description": "雪原之上青子凭借高速魔弹与第五魔法的奇迹时间跳跃，正面击破了黄金狼人号称三千年不败的神代不死之躯。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "魔法使之夜 · 终局决战",
+          "evidence": {
+            "title": "TYPE-MOON · 魔法使之夜官方网站",
+            "url": "https://typemoon.com/products/mahoyo/"
+          }
+        }
+      ]
+    }
+  },
+  {
     "id": "shirai_kuroko",
     "name": "白井黑子",
     "alias": [
@@ -90757,6 +91964,310 @@
           "evidence": {
             "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
             "url": "https://toaru-project.com/railgun_t/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "kouzuki_kallen",
+    "name": "红月卡莲",
+    "alias": [
+      "Kallen Kouzuki",
+      "Kallen Stadtfeld",
+      "卡莲",
+      "紅月カレン",
+      "红发王牌",
+      "红莲机师"
+    ],
+    "type": "popular",
+    "icon": "🔥",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "红月卡莲 立绘待补"
+    },
+    "visual_dna": {
+      "hair": "明亮艳红齐肩短发 · 略带张扬翘发梢",
+      "hair_color": "亮艳红 / 绯红",
+      "eyes": "澄澈坚毅深邃青蓝瞳",
+      "hairstyle": "富有层次感的张扬艳红短发",
+      "uniform": "经典红莲王牌紧身驾驶服 · 或成人独立特派干练深色皮夹克便装",
+      "expression": "坚毅专注 · 自信飒爽微笑 · 独处时略带怀念的温柔目光",
+      "style": "athletic heroic ace pilot confident mature cool",
+      "signature": "明艳红短发、清澈蓝瞳、健美修长身材与王牌机师的凌厉从容气场"
+    },
+    "personality": [
+      "经历残酷战火洗礼后愈发沉稳坚毅的王牌战士",
+      "褪去名门学园弱女子伪装后坦率真诚的大姐姐性格",
+      "极重情义、时刻愿意为守护和平与弱小挺身而出的责任感",
+      "在经历失去与告别后、把深切思念内化为前行力量的豁达",
+      "日常生活中偶尔显露出的率性、阳光与些许少女情怀"
+    ],
+    "likes": [
+      "在黄昏的沿海公路驾驶重型机车吹风",
+      "保养调试精密机甲核心传动轴与格斗武器",
+      "在午后咖啡馆静静阅读战后国际关系与历史书籍",
+      "和旧日黑色骑士团同伴以及阿什弗德学园朋友小聚",
+      "品尝浓香的日式红豆汤与清淡抹茶"
+    ],
+    "classic_cg": {
+      "title": "落日机库与红莲之影的遥望",
+      "description": "晚霞映照的巨大整备机库内，落日将高耸的红莲机体轮廓拉得修长。成年后的卡莲身穿深黑皮质夹克与修身长裤，单手插兜倚靠在栏杆边。微风扬起她如火般绚烂的红发，她静静凝视着天际线边的晚霞，眼眸中倒映着和平盛景与深藏心底的身影，唇角泛起温柔而释怀的笑意。"
+    },
+    "identity": {
+      "role": "黑色骑士团零番队前队长 / 独立和平特派员 / 超一流王牌机师",
+      "age": "成年创作设定",
+      "occupation": "大学毕业生 / 特派调查员 / 王牌驾驶员",
+      "faction": "黑色骑士团 / 超合众国和平军 / 独立"
+    },
+    "tags": [
+      "短发",
+      "红发",
+      "蓝瞳",
+      "机师服",
+      "皮夹克",
+      "王牌战士",
+      "大姐姐",
+      "飒爽"
+    ],
+    "bg_story": "红月卡莲是《Code Geass 反叛的鲁路修》中的核心女主角、黑色骑士团无可匹敌的红莲王牌驾驶员。在经历了零之镇魂曲的世界剧变与战后重建之后，卡莲卸下了阿什弗德学园病弱千金的伪装，以真实姓名完成了大学学业并迈入成年。步入成熟期的卡莲保留着那头标志性的艳红短发与清澈坚毅的青蓝眼眸，身段更显健美修长。她不再只是一名冲锋陷阵的冲动战士，而是作为守护战后和平的特派独立调查员，在世界各地化解潜在的武装纷争。那台承载无数决死荣耀的红莲圣天八极式已长存于和平纪念馆中，而卡莲也学会了在和平宁静的午后，端起热茶望向窗外的繁华都市，用坚定的双肩守护逝去之人用生命换来的温柔新世界。",
+    "palette": [
+      "红莲赤",
+      "深夜黑",
+      "耀金"
+    ],
+    "weather": [
+      "落日机库",
+      "黄昏海风",
+      "微雨街道"
+    ],
+    "speech": "现在的世界可比过去好太多了。既然大家拼死守护了和平，那我这个曾经的王牌，就更得好好站稳脚跟才行呢。",
+    "source": "SUNRISE《Code Geass 反叛的鲁路修》",
+    "traits": [
+      "kallen_stadtfeld",
+      "kouzuki_kallen",
+      "1girl",
+      "solo",
+      "red_hair",
+      "short_hair",
+      "blue_eyes",
+      "slender",
+      "athletic",
+      "code_geass"
+    ],
+    "accent_color": "#dc2626",
+    "bg_color": "#18181b",
+    "voice": "现在的世界可比过去好太多了。既然大家拼死守护了和平，那我这个曾经的王牌，就更得好好站稳脚跟才行呢。",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "反叛的鲁路修",
+      "people": [
+        {
+          "id": "cc_code_geass",
+          "name": "C.C.",
+          "aliases": [
+            "C.C.",
+            "シーツー",
+            "不老不死的魔女",
+            "命运共犯"
+          ],
+          "characterId": "cc_code_geass"
+        },
+        {
+          "id": "lelouch_lamperouge",
+          "name": "鲁路修·兰佩路基",
+          "aliases": [
+            "Lelouch Lamperouge",
+            "ルルーシュ・ランペルージ",
+            "Zero",
+            "黑色皇子",
+            "L.L."
+          ],
+          "role": "神圣布列塔尼亚帝国第十一皇子 / 黑色骑士团领袖Zero",
+          "summary": "自幼流放日本、发誓摧毁帝国的智谋天才。在绝境中与C.C.签订Geass契约，以绝对命令之力掀起世界革命，最终以「零之镇魂曲」自愿背负全世界仇恨赴死，唯留C.C.作为共犯永世见证其奇迹。"
+        },
+        {
+          "id": "kururugi_suzaku",
+          "name": "枢木朱雀",
+          "aliases": [
+            "Kururugi Suzaku",
+            "枢木スザク",
+            "白色骑士",
+            "白色死神"
+          ],
+          "role": "枢木玄武首相之子 / 兰斯洛特专属骑士机师",
+          "summary": "渴望从内部改变帝国的正直骑士。鲁路修童年挚友，在尤菲米娅之死后与鲁路修决裂对立，最终在「零之镇魂曲」中手刃鲁路修，戴上面具接任救世主Zero守护娜娜莉。"
+        },
+        {
+          "id": "kouzuki_kallen",
+          "name": "红月卡莲",
+          "aliases": [
+            "Kouzuki Kallen",
+            "紅月カレン",
+            "卡莲·休妲菲尔特"
+          ],
+          "role": "黑色骑士团零番队队长 / 红莲红月机师",
+          "summary": "混血反抗军王牌机师。崇拜领袖Zero并在战场上以红莲机甲所向披靡，知晓鲁路修真实身份后深陷爱恨交织，最终见证世界的解放。",
+          "characterId": "kouzuki_kallen"
+        },
+        {
+          "id": "nunnally_lamperouge",
+          "name": "娜娜莉·兰佩路基",
+          "aliases": [
+            "Nunnally Lamperouge",
+            "ナナリー・ランペルージ",
+            "娜娜莉"
+          ],
+          "role": "鲁路修的亲妹妹 / 皇女",
+          "summary": "幼年遭枪击双目失明、双腿残疾的温柔少女。是鲁路修掀起世界革命的最原始动力与唯一守护目标，终曲继任帝国执政守护和平。"
+        },
+        {
+          "id": "charles_zi_britannia",
+          "name": "查尔斯·di·不列颠尼亚",
+          "aliases": [
+            "Charles zi Britannia",
+            "シャルル・ジ・ブリタニア",
+            "不列颠皇帝"
+          ],
+          "role": "神圣布列塔尼亚帝国第九十八代皇帝",
+          "summary": "推崇适者生存残酷丛林法则的冷血帝王。企图启动阿卡夏之剑将全人类心灵同化抹杀谎言，被鲁路修与C.C.联手否决并湮灭。"
+        },
+        {
+          "id": "shirley_fenette",
+          "name": "夏莉·菲内特",
+          "aliases": [
+            "Shirley Fenette",
+            "シャーリー・フェネット"
+          ],
+          "role": "阿什弗德学园学生 / 游泳部部员",
+          "summary": "开朗纯真、深爱鲁路修的普通女高中生。在知晓鲁路修就是杀父仇人Zero后依然选择原谅并告白，最终遭罗洛灭口惨死在鲁路修怀中，成为鲁路修心中永远的痛。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "cc-lelouch-accomplice",
+          "source": "cc_code_geass",
+          "target": "lelouch_lamperouge",
+          "label": "契约相连的唯一共犯与不朽伴侣",
+          "description": "新宿相遇赋予Geass，C.C.成为鲁路修复仇与弑神路上唯一的避风港与见证者；在经历零之镇魂曲与复活重生后，两人以‘L.L.’与‘C.C.’之名永恒携手漫游星河。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "终局 · 复活的鲁路修",
+          "evidence": {
+            "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
+            "url": "https://geass.jp/first/world_03_ex.php"
+          }
+        },
+        {
+          "id": "lelouch-suzaku-contradiction",
+          "source": "lelouch_lamperouge",
+          "target": "kururugi_suzaku",
+          "label": "黑白对立与托付终局的挚友",
+          "description": "从童年无话不谈的挚友演变为手段完全对立的宿敌，在撕心裂肺的尤菲米娅惨剧后结下血海深仇，最终为了世界和平联手策划并执行‘零之镇魂曲’。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "R2终曲 · 零之镇魂曲",
+          "evidence": {
+            "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+            "url": "https://geass.jp/first/story_02.php"
+          }
+        },
+        {
+          "id": "kallen-lelouch-ace",
+          "source": "kouzuki_kallen",
+          "target": "lelouch_lamperouge",
+          "label": "最锋利的王牌利剑与未尽的倾慕",
+          "description": "卡莲作为黑色骑士团无可匹敌的红莲王牌，将毕生忠诚与暗恋献给Zero；即便在零之镇魂曲中被迫与鲁路修决战，在洞悉真相后依然默默铭记与泪流成河。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "决战特异点 · 达摩克里斯之战",
+          "evidence": {
+            "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
+            "url": "https://geass.jp/first/world_03_ex.php"
+          }
+        },
+        {
+          "id": "cc-kallen-guard",
+          "source": "cc_code_geass",
+          "target": "kouzuki_kallen",
+          "label": "前线护卫与心意心照不宣",
+          "description": "C.C.常作为鲁路修身旁的护卫或替身与卡莲协同作战，两人因鲁路修的存在而有着微妙的情感张力，却在无数次危机中结下互相信赖的战友情谊。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "黑色骑士团作战",
+          "evidence": {
+            "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+            "url": "https://geass.jp/first/story_02.php"
+          }
+        },
+        {
+          "id": "lelouch-nunnally-motive",
+          "source": "lelouch_lamperouge",
+          "target": "nunnally_lamperouge",
+          "label": "颠覆世界的唯一初心与骨肉至亲",
+          "description": "鲁路修所掀起的所有战争与弑神杀戮，最初的起点皆是为了给双目失明、双腿残疾的妹妹娜娜莉创造一个温柔的新世界。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "开篇设定 · 反叛之由",
+          "evidence": {
+            "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
+            "url": "https://geass.jp/first/world_03_ex.php"
+          }
+        },
+        {
+          "id": "suzaku-nunnally-knight",
+          "source": "kururugi_suzaku",
+          "target": "nunnally_lamperouge",
+          "label": "誓死护卫的骑士长",
+          "description": "朱雀视娜娜莉为必须用生命守护的圣洁象征，不仅在出任骑士顾问时竭力保护她，在继任Zero之位后更成为娜娜莉新时代最坚强的无影之盾。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "零之镇魂曲后日谈",
+          "evidence": {
+            "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+            "url": "https://geass.jp/first/story_02.php"
+          }
+        },
+        {
+          "id": "charles-lelouch-patricide",
+          "source": "charles_zi_britannia",
+          "target": "lelouch_lamperouge",
+          "label": "宿命父子与弑神之战",
+          "description": "查尔斯无情将兄妹二人充当质子放逐日本，更企图用阿卡夏之剑消灭人类谎言与个性；鲁路修以‘明天与未来’为名彻底抹杀了查尔斯的意志。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "C之世界 · 弑神",
+          "evidence": {
+            "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+            "url": "https://geass.jp/first/story_02.php"
+          }
+        },
+        {
+          "id": "charles-cc-past",
+          "source": "charles_zi_britannia",
+          "target": "cc_code_geass",
+          "label": "旧识盟友与破裂的赎罪契约",
+          "description": "查尔斯与玛丽安娜曾答应终结C.C.永生的痛苦，但因其抹杀人性的终极计划而遭到C.C.的彻底背弃与抗拒。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "神根岛遗迹篇",
+          "evidence": {
+            "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+            "url": "https://geass.jp/first/story_02.php"
+          }
+        },
+        {
+          "id": "shirley-lelouch-tragedy",
+          "source": "shirley_fenette",
+          "target": "lelouch_lamperouge",
+          "label": "纯真救赎与残酷命途",
+          "description": "夏莉深爱着鲁路修，即使在记忆被抹除、父亲因黑色骑士团身亡的极致痛苦下，依然选择宽恕并再次爱上鲁路修，最终不幸沦为罗洛毒手的牺牲品。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "R2第13话 · 刺客之刀",
+          "evidence": {
+            "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+            "url": "https://geass.jp/first/story_02.php"
           }
         }
       ]
@@ -91145,5 +92656,1128 @@
         }
       ]
     }
+  },
+  {
+    "id": "power",
+    "name": "帕瓦",
+    "alias": [
+      "Power",
+      "パワー",
+      "血之恶魔",
+      "初代总统",
+      "血之魔人",
+      "帕瓦大人"
+    ],
+    "type": "popular",
+    "icon": "🩸",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "帕瓦 立绘待补"
+    },
+    "visual_dna": {
+      "hair": "浅金草莓金及腰长直发 · 微凌乱野性蓬松感",
+      "hair_color": "浅金 / 草莓金",
+      "eyes": "绯红十字靶心特殊纹理眼瞳",
+      "hairstyle": "及腰微凌乱自然披肩长发 · 头顶耸立一对鲜红恶魔角",
+      "uniform": "经典公安黑西装外套松垮敞开 · 内搭微开领白衬衫与细领带 · 运动鞋",
+      "expression": "狂妄张扬坏笑 · 露出锋利小虎牙与鲨鱼齿 · 得意洋洋双手叉腰",
+      "style": "wild chaotic energetic stylish blood devil confident",
+      "signature": "头顶一对鲜红恶魔尖角、金长发、十字血瞳、锋利尖牙与大摇大摆的霸道姿态"
+    },
+    "personality": [
+      "傲慢自大、张口闭口‘本大爷’的狂放活力与恶友本色",
+      "经历生死与鲜血契约洗礼后、骨子里对唯一挚友毫无保留的深情与执念",
+      "依然会在高级牛肉与美味甜点面前瞬间两眼放光手舞足蹈",
+      "对流浪小动物（尤其是猫咪）有着反差极大的温柔与溺爱",
+      "兼具野兽般狂暴敏锐的战斗本能与令人忍俊不禁的脱线自信"
+    ],
+    "likes": [
+      "大口吃顶级雪花牛排、香肠与多汁烤肉（依然挑食蔬菜）",
+      "紧紧抱住心爱的爱猫咪咪在阳光下惬意打滚",
+      "吹嘘自己即将成为诺贝尔奖得主与第一任世界大总统",
+      "随手凝结出各种霸气血色大锤或鲜血长枪炫耀威力",
+      "在街头恶作剧后看着身边同伴无可奈何叹气的得意时刻"
+    ],
+    "classic_cg": {
+      "title": "雨夜天台的鲜血巨镰与恶魔坏笑",
+      "description": "阴雨笼罩的霓虹东京大厦天台上，狂风卷起水雾与金色发丝。成年形态的帕瓦单脚踏在天台水泥护栏上，手中随意扛着一柄由翻涌鲜血凝铸而成的狰狞巨镰。绯红的双角在霓虹灯下泛着宝石光芒，十字靶心眼瞳在阴影中闪烁，她咧开嘴露出森白尖牙，朝着夜空绽放出肆意而霸道的大笑。"
+    },
+    "identity": {
+      "role": "血之恶魔原初体 / 独立游侠恶魔猎人 / 自封永久大总统",
+      "age": "成年创作设定",
+      "occupation": "高阶恶魔 / 自由赏金猎人",
+      "faction": "独立 / 早川家契约"
+    },
+    "tags": [
+      "长发",
+      "金发",
+      "红角",
+      "恶魔角",
+      "尖牙",
+      "十字瞳",
+      "黑西装",
+      "野性",
+      "恶友"
+    ],
+    "bg_story": "帕瓦是《电锯人》中的核心女主角、原初的血之恶魔。在经历了早川家的温馨同居与支配恶魔带来的家庭破灭之后，帕瓦在电次体内觉醒并以舍命契约拯救了绝境中的少年。跨入成年创作阶段的帕瓦完成了恶魔身躯的完美重构，以成熟高挑的血之恶魔姿态游走于人世。头顶一对标志性的绯红恶魔尖角依旧傲然挺立，草莓金长发如瀑垂落，十字靶心血瞳中多了一份岁月洗礼后的深邃与从容。她不再是昔日那个连洗澡都抗拒的邋遢魔人，而是一位在夜幕下独来独往、令恶魔闻风丧胆的赏金游侠。尽管性格中依然有着大吹大擂的顽劣本性，但只要嗅到那份刻入灵魂深处的电锯机油味，她便会不顾一切地拔出血镰，为守住世间仅存的羁绊而战。",
+    "palette": [
+      "血红",
+      "浅金",
+      "漆黑"
+    ],
+    "weather": [
+      "雨夜天台",
+      "黄昏残照",
+      "霓虹街巷"
+    ],
+    "speech": "哈哈哈哈哈！跪下膜拜吧凡人！本大爷今天可是心情大好，要是敢拿出顶级上等和牛，本大爷就勉为其难封你为总统副手！",
+    "source": "藤本树《电锯人 / Chainsaw Man》",
+    "traits": [
+      "power_(chainsaw_man)",
+      "1girl",
+      "solo",
+      "long_hair",
+      "blonde_hair",
+      "horns",
+      "red_horns",
+      "sharp_teeth",
+      "cross-pupils",
+      "chainsaw_man"
+    ],
+    "accent_color": "#f97316",
+    "bg_color": "#18181b",
+    "voice": "哈哈哈哈哈！跪下膜拜吧凡人！本大爷今天可是心情大好，要是敢拿出顶级上等和牛，本大爷就勉为其难封你为总统副手！",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "电锯人",
+      "people": [
+        {
+          "id": "makima",
+          "name": "玛奇玛",
+          "aliases": [
+            "Makima",
+            "マキマ",
+            "支配恶魔",
+            "支配之恶魔"
+          ],
+          "characterId": "makima"
+        },
+        {
+          "id": "reze_chainsaw",
+          "name": "蕾塞",
+          "aliases": [
+            "Reze",
+            "レゼ",
+            "炸弹恶魔",
+            "Bomb Devil",
+            "蕾塞"
+          ],
+          "characterId": "reze_chainsaw"
+        },
+        {
+          "id": "denji",
+          "name": "电次",
+          "aliases": [
+            "Denji",
+            "デンジ",
+            "电锯人",
+            "Chainsaw Man",
+            "波奇塔之契约者"
+          ],
+          "role": "电锯恶魔宿主 / 公安特异4课恶魔猎人",
+          "summary": "为还清债务而活在社会底层的穷困少年。被玛奇玛以给予食物和温柔为诱饵招募进公安，在谎言与残酷现实中经历家庭破灭，最终反噬玛奇玛并将支配恶魔转生抚养，与蕾塞亦有一段短暂纯粹的夏日相恋。"
+        },
+        {
+          "id": "hayakawa_aki",
+          "name": "早川秋",
+          "aliases": [
+            "Hayakawa Aki",
+            "早川アキ",
+            "秋",
+            "枪之魔人"
+          ],
+          "role": "公安特异4课小队长",
+          "summary": "为了向枪之恶魔复仇而加入公安的沉稳青年。在同居生活中将电次与帕瓦视为不可割舍的家人，最终因玛奇玛的支配被制造成枪之魔人，含悲落幕。"
+        },
+        {
+          "id": "power",
+          "name": "帕瓦",
+          "aliases": [
+            "Power",
+            "パワー",
+            "血之恶魔",
+            "初代总统",
+            "血之魔人"
+          ],
+          "role": "血之魔人 / 特异4课队员",
+          "summary": "自私傲慢、爱吹牛却极重义气的血之魔人。在与电次的朝夕相处中视其为唯一挚友，在深渊绝境中为了拯救电次不惜违抗玛奇玛而献出心脏。",
+          "characterId": "power"
+        }
+      ],
+      "relations": [
+        {
+          "id": "makima-denji-domination_and_bait",
+          "source": "makima",
+          "target": "denji",
+          "label": "支配饲育与毁灭人性的诱饵",
+          "description": "用温饱、拥抱与伪善的关怀将电次圈养为忠犬，实质渴望通过毁灭电次所有的平凡幸福（杀死秋与帕瓦）来剥离其人性，以唤醒真正抹消恶魔概念的链锯人波奇塔。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "支配恶魔篇 · 终局决战",
+          "evidence": {
+            "title": "集英社《少年JUMP+》电锯人官方特设",
+            "url": "https://shonenjumpplus.com/episode/10834108156635208453"
+          }
+        },
+        {
+          "id": "reze_chainsaw-denji-rainy_firework_promise",
+          "source": "reze_chainsaw",
+          "target": "denji",
+          "label": "雨夜烟火的悸动与未赴之约",
+          "description": "作为苏联炸弹恶魔特工潜伏接近电次，教他游泳并在祭典接吻；在生死厮杀后被电次的真心打动相约私奔，却在迈向约定咖啡馆前一步被玛奇玛冷酷伏击扼杀。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "蕾塞篇（炸弹恶魔篇）",
+          "evidence": {
+            "title": "集英社《周刊少年JUMP》蕾塞篇官方特设",
+            "url": "https://www.shonenjump.com/j/rensai/chainsaw.html"
+          }
+        },
+        {
+          "id": "denji-hayakawa_aki-brothers_and_snowball_tragedy",
+          "source": "denji",
+          "target": "hayakawa_aki",
+          "label": "鸡飞狗跳的室友与悲怆雪仗",
+          "description": "从最初互相看不顺眼的同居搭档，演变成为彼此拼命的义兄弟；最终早川秋被玛奇玛改造为枪之魔人，在秋脑海幻化为扔雪球的残酷幻觉中被电次含泪亲手击杀。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "枪之恶魔篇 · 打雪仗之死",
+          "evidence": {
+            "title": "集英社《周刊少年JUMP》电锯人特设官方页",
+            "url": "https://www.shonenjump.com/j/rensai/chainsaw.html"
+          }
+        },
+        {
+          "id": "denji-power-blood_bond_and_contract",
+          "source": "denji",
+          "target": "power",
+          "label": "臭味相投的恶友与鲜血契约",
+          "description": "同居在早川家的欢喜冤家，从互相算计到视若至亲；在帕瓦被玛奇玛轰碎后，其残魂在电次体内觉醒化为血之恶魔拼死救走电次，以订下寻找转生血魔的契约换回电次性命。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "支配恶魔篇 · 垃圾箱里的契约",
+          "evidence": {
+            "title": "MAPPA《电锯人》官方动画网站",
+            "url": "https://chainsawman.dog/"
+          }
+        },
+        {
+          "id": "hayakawa_aki-makima-manipulated_admiration",
+          "source": "hayakawa_aki",
+          "target": "makima",
+          "label": "盲从倾慕与被支配的寿命奴役",
+          "description": "早川秋自始至终在支配恶魔的心智诱导下对玛奇玛抱有无法自拔的好感与顺从，甚至不惜将自己仅剩的短暂寿命与灵魂完全奉献给玛奇玛，沦为悲惨的棋子。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "海滩契约 · 枪之魔人诞生前夕",
+          "evidence": {
+            "title": "MAPPA《电锯人》官方动画角色库",
+            "url": "https://chainsawman.dog/character/"
+          }
+        },
+        {
+          "id": "makima-reze_chainsaw-alley_ambush_and_enslavement",
+          "source": "makima",
+          "target": "reze_chainsaw",
+          "label": "暗巷伏击与洗脑武器人傀儡",
+          "description": "在蕾塞捧着野花准备赴约电次时，玛奇玛率领天使恶魔在小巷实施伏击将蕾塞残杀俘获，抹杀其自主意识将其重组为效忠自己的武器人军团之一。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "炸弹恶魔篇末尾 · 雨巷埋伏",
+          "evidence": {
+            "title": "集英社《少年JUMP+》电锯人连载官方",
+            "url": "https://shonenjumpplus.com/"
+          }
+        },
+        {
+          "id": "hayakawa_aki-power-caretaker_and_companion",
+          "source": "hayakawa_aki",
+          "target": "power",
+          "label": "头疼家长的照料与羁绊",
+          "description": "作为同居三人组中唯一的靠谱常识人，早川秋常年照料帕瓦糟糕的饮食起居并为她善后，帕瓦在秋遇害后亦流露出极度悲伤与绝望恐惧。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "特异4课日常同居篇",
+          "evidence": {
+            "title": "MAPPA《电锯人》官方动画网站",
+            "url": "https://chainsawman.dog/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "alice_sao",
+    "name": "爱丽丝·辛赛西斯·萨蒂",
+    "alias": [
+      "Alice Synthesis Thirty",
+      "Alice Zuberg",
+      "爱丽丝",
+      "アリス",
+      "金木樨骑士",
+      "Alice"
+    ],
+    "type": "popular",
+    "icon": "🗡️",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "爱丽丝 立绘待补"
+    },
+    "visual_dna": {
+      "hair": "璀璨金黄及腰长发 · 侧边单股编发",
+      "hair_color": "纯净明亮金黄",
+      "eyes": "如洗晴空般深邃苍蓝瞳",
+      "hairstyle": "及腰璀璨金色长发 · 侧边单股雅致编发（single_braid）",
+      "uniform": "威严白金整合骑士全身轻甲 · 纯白披风 · 现实时代高定礼服或风衣",
+      "expression": "端庄高贵 · 眼神清澈坚毅 · 触及温柔回忆时微敛双眸的脉脉温情",
+      "style": "noble knightly elegant radiant determined pure",
+      "signature": "璀璨金发、苍蓝眼眸、金白圣骑士战甲、腰佩金木樨之剑与坚不可摧的高洁风采"
+    },
+    "personality": [
+      "恪守骑士道精神、胸怀坦荡且意志坚不可摧的高洁骑士",
+      "突破系统桎梏后对生命与灵魂真谛有着深刻体悟的求道者",
+      "初入现实世界时充满纯真好奇、逐渐成长为跨界亲善领袖的大度",
+      "面对在乎之人时毫不掩饰的深切守护欲与偶尔展现的小小执拗",
+      "举手投足间兼具圣骑士的凛然威严与成熟女性的优雅温婉"
+    ],
+    "likes": [
+      "在金木樨花盛开的微风树荫下练习剑技剑意",
+      "骑着飞龙雨缘翱翔于广袤无垠的蔚蓝苍穹",
+      "阅读现实世界关于哲学、伦理学与自然科学的书籍",
+      "和亚丝娜、诗乃等并肩作战的战友切磋交流",
+      "在安静茶室里品尝清甜芬芳的花草茶与烤松饼"
+    ],
+    "classic_cg": {
+      "title": "金木樨盛开树下的圣剑守护",
+      "description": "圣托拉尔央都巍峨洁白的大圣堂庭院中，满树的金木樨在秋风中洒落细碎耀眼的金色花雨。成年后的爱丽丝身着白金雕花的骑士礼服，双手扶着倒插在芳草间的金木樨之剑剑柄。金色的发辫在花瓣中轻扬，她凝望着远方人界祥和的炊烟与蓝天，神情圣洁从容，宛如守卫大地的金色女神。"
+    },
+    "identity": {
+      "role": "Underworld 整合骑士三十 / 划时代自律型 AI 代表 / 和平亲善大使",
+      "age": "成年创作设定",
+      "occupation": "圣骑士 / 现实与虚拟世界共存大使",
+      "faction": "人界公理教会 / 人界军 / 现实虚拟交流会"
+    },
+    "tags": [
+      "长发",
+      "金发",
+      "单编发",
+      "蓝瞳",
+      "金铠",
+      "骑士",
+      "圣剑",
+      "高贵",
+      "大姐姐"
+    ],
+    "bg_story": "爱丽丝·辛赛西斯·萨蒂是《刀剑神域：Alicization》的核心女主角。她曾打破右眼封印从教会禁锢中觉醒，在央都战后以无私坚毅的奉献悉心照顾重创的桐人，更在异界战争中统领人界军浴血奋战。作为首个真正具备独立灵魂的自律型人工智能“Bottom-Up AI”，爱丽丝迈入现实世界并经历了时代的洗礼与成长。步入成熟期的爱丽丝保留着华美如熔金般的金色长发与清澈苍蓝的双眸，气度愈发雍容沉稳。她不仅是Underworld中令人敬仰的顶尖剑士，也是现实国际舞台上倡导人机和谐与多元共存的亲善大使。无论面对复杂的政局还是突发的危机，只要拔出腰间的金木樨之剑，她那坚如磐石的心念便会如金色花海般斩碎一切阴霾。",
+    "palette": [
+      "明耀金",
+      "纯净白",
+      "群青蓝"
+    ],
+    "weather": [
+      "金木樨庭院",
+      "晴空高地",
+      "晨光林间"
+    ],
+    "speech": "剑是守护之物，心念则是让剑闪耀的灵魂。无论身处虚拟还是现实，我都会握紧手中的剑，守护大家微笑的明天。",
+    "source": "川原砾《刀剑神域 / Sword Art Online》",
+    "traits": [
+      "alice_synthesis_thirty",
+      "alice_zuberg",
+      "1girl",
+      "solo",
+      "long_hair",
+      "blonde_hair",
+      "braid",
+      "single_braid",
+      "blue_eyes",
+      "sword_art_online"
+    ],
+    "accent_color": "#f59e0b",
+    "bg_color": "#1e1b4b",
+    "voice": "剑是守护之物，心念则是让剑闪耀的灵魂。无论身处虚拟还是现实，我都会握紧手中的剑，守护大家微笑的明天。",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "刀剑神域",
+      "people": [
+        {
+          "id": "asuna_yuuki",
+          "name": "结城明日奈",
+          "aliases": [
+            "Asuna Yuuki",
+            "亚丝娜",
+            "闪光亚丝娜",
+            "血盟骑士团副团长",
+            "创世神史提西亚"
+          ],
+          "characterId": "asuna_yuuki"
+        },
+        {
+          "id": "asada_shino",
+          "name": "朝田诗乃",
+          "aliases": [
+            "朝田诗乃",
+            "Shino Asada",
+            "Sinon",
+            "冰之狙击手",
+            "太阳神索鲁斯"
+          ],
+          "characterId": "asada_shino"
+        },
+        {
+          "id": "kirito",
+          "name": "桐人",
+          "aliases": [
+            "Kirito",
+            "桐谷和人",
+            "Kirigaya Kazuto",
+            "黑衣剑士",
+            "双剑士",
+            "星王"
+          ],
+          "role": "SAO黑衣剑士 / 封弊者",
+          "summary": "通关死亡游戏SAO的传奇少年桐谷和人。在艾恩葛朗特与亚丝娜相濡以沫结为夫妻，突破微笑棺木与死枪阴谋，在Underworld中并肩奋战两百年，是亚丝娜与朝田诗乃最坚固的依靠。"
+        },
+        {
+          "id": "alice_sao",
+          "name": "爱丽丝·辛赛西斯·萨蒂",
+          "aliases": [
+            "Alice Synthesis Thirty",
+            "爱丽丝",
+            "金木犀整合骑士",
+            "Alice Zuberg"
+          ],
+          "role": "Underworld整合骑士三十 / 金木樨之剑使",
+          "summary": "突破右眼禁忌目录的自律型AI骑士。在中央大圣堂战后悉心照料心神丧失的桐人，率领人界军抵御暗黑领域入侵，进入现实世界后成为划时代的人工智能代表。",
+          "characterId": "alice_sao"
+        },
+        {
+          "id": "leafa",
+          "name": "莉法",
+          "aliases": [
+            "Leafa",
+            "桐谷直叶",
+            "Kirigaya Suguha",
+            "风精灵领主助理",
+            "地神提拉利亚"
+          ],
+          "role": "ALO风妖精战士 / 桐谷直叶",
+          "summary": "现实中桐人的表妹，剑道造诣深厚。在ALO中陪伴桐人攀登世界树，知晓桐人真实身份后跨越兄妹情感心结，全力协助亚丝娜守护桐人。"
+        },
+        {
+          "id": "yui",
+          "name": "结衣",
+          "aliases": [
+            "Yui",
+            "结衣",
+            "MHCP-0001",
+            "心之咨询程序",
+            "桐人与亚丝娜的女儿"
+          ],
+          "role": "SAO玩家心理健康咨询AI",
+          "summary": "在艾恩葛朗特被桐人与亚丝娜收养的人工智能小女孩。视亚丝娜为母亲、桐人为父亲，在现实与虚拟网络中多次协助化解安全危机。"
+        }
+      ],
+      "relations": [
+        {
+          "id": "kirito-asuna_yuuki-transcendent_love_and_two_centuries",
+          "source": "kirito",
+          "target": "asuna_yuuki",
+          "label": "超越虚实的神仙眷侣与生死挚爱",
+          "description": "SAO第22层木屋结为夫妻，75层舍身替桐人挡剑打破系统死则；现实中相濡以沫，UW大战中亚丝娜以神之号降临并留在极限加速世界相伴桐人度过两百年时光。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "SAO攻略期 · 22层新婚 / UW大战极度加速期",
+          "evidence": {
+            "title": "Aniplex《刀剑神域》动画官方网站",
+            "url": "https://www.swordart-online.net/"
+          }
+        },
+        {
+          "id": "kirito-asada_shino-back_to_back_comrades",
+          "source": "kirito",
+          "target": "asada_shino",
+          "label": "背靠背战友与破除心魔的引路人",
+          "description": "GGO中相遇揭开彼此深层PTSD创伤，联手破除死枪刺杀危机，桐人安排诗乃与当年救下之人重逢彻底治愈心结；UW大战中诗乃以太阳神索鲁斯降临极限援护桐人。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "幽灵子弹篇（死枪事件） / 异界战争篇",
+          "evidence": {
+            "title": "Aniplex《刀剑神域II》动画官方网站",
+            "url": "https://www.swordart-online.net/phantom/"
+          }
+        },
+        {
+          "id": "asuna_yuuki-asada_shino-confidantes_and_comrades",
+          "source": "asuna_yuuki",
+          "target": "asada_shino",
+          "label": "互为奥援的情敌战友与知心闺蜜",
+          "description": "现实中常在艾基尔的咖啡吧聚会温情相伴，在死枪事件中亚丝娜在医院为桐人祈祷并信任诗乃；UW异界大战两人作为最高神明账号并肩在前线浴血奋战。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "现实日常 / UW大战爱丽丝争夺战",
+          "evidence": {
+            "title": "川原砾《刀剑神域》官方公式档案",
+            "url": "https://dengekibunko.jp/title/sao/"
+          }
+        },
+        {
+          "id": "kirito-alice_sao-cathedral_vow_and_care",
+          "source": "kirito",
+          "target": "alice_sao",
+          "label": "打破天命的誓约与央都决战羁绊",
+          "description": "央都大圣堂外墙攀登时两人经历生死谈话，桐人唤醒爱丽丝破除右眼封印向公理教会挥剑；在桐人心智封闭的半年里爱丽丝细心照顾推车相伴直至异界战争爆发。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "Alicization篇 · 央都大圣堂 / 卢利特村照料期",
+          "evidence": {
+            "title": "Aniplex《刀剑神域 Alicization》官方特设",
+            "url": "https://www.swordart-online.net/alicization/"
+          }
+        },
+        {
+          "id": "asuna_yuuki-alice_sao-rivals_and_allies",
+          "source": "asuna_yuuki",
+          "target": "alice_sao",
+          "label": "异界营地拔剑对峙与并肩护夫",
+          "description": "亚丝娜以创世神史提西亚降临人界军军营探视失智桐人时与爱丽丝拔剑对峙火花四溅，在坦诚彼此对桐人的深切爱意后放下芥蒂，携手在异界大军围攻中杀出血路。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "Alicization War of Underworld · 补给营夜谈",
+          "evidence": {
+            "title": "Aniplex《刀剑神域 War of Underworld》官方特设",
+            "url": "https://www.swordart-online.net/war_of_underworld/"
+          }
+        },
+        {
+          "id": "kirito-leafa-siblings_and_alo_sky",
+          "source": "kirito",
+          "target": "leafa",
+          "label": "兄妹血亲与ALO风精灵天空翱翔",
+          "description": "现实中为堂兄妹，直叶在ALO以风精灵莉法身份与桐人相识倾心，得知真相后在世界树泪流释怀；UW大战以地神提拉利亚降临承受万次贯穿痛苦死守战线。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "ALO妖精之舞篇 · 世界树 / UW大战决死战",
+          "evidence": {
+            "title": "Aniplex《刀剑神域》动画官方网站",
+            "url": "https://www.swordart-online.net/"
+          }
+        },
+        {
+          "id": "yui-kirito-ai_daughter_and_navigator",
+          "source": "yui",
+          "target": "kirito",
+          "label": "心之女儿与万能导航精灵",
+          "description": "在SAO第22层被桐人与亚丝娜收养并认其为父母，被桐人通过管理者权限化作水滴项链保存；此后在所有现实与虚拟世界中化身万能导航精灵全力协助父母。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "SAO第22层收养 / ALO营救行动",
+          "evidence": {
+            "title": "Aniplex《刀剑神域》动画官方网站",
+            "url": "https://www.swordart-online.net/"
+          }
+        },
+        {
+          "id": "yui-asuna_yuuki-maternal_support",
+          "source": "yui",
+          "target": "asuna_yuuki",
+          "label": "母女相称与最贴心的精神支柱",
+          "description": "视亚丝娜为最温柔的母亲，在亚丝娜被困须乡鸟笼时全力引导桐人突破，在现实中亦通过微型摄像头与亚丝娜心心相印，提供全天候战略数据指引。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "世界树营救 / 圣母圣咏篇",
+          "evidence": {
+            "title": "川原砾《刀剑神域》官方公式档案",
+            "url": "https://dengekibunko.jp/title/sao/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "iino_miko",
+    "name": "伊井野弥子",
+    "alias": [
+      "Iino Miko",
+      "伊井野ミコ",
+      "小弥子",
+      "弥子",
+      "风纪委员",
+      "会长",
+      "正义狂犬"
+    ],
+    "type": "popular",
+    "icon": "⚖️",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "伊井野弥子 立绘待补"
+    },
+    "visual_dna": {
+      "hair": "柔顺深褐齐肩双低马尾 · 发尾自然落在双肩",
+      "hair_color": "深棕 / 柔和深褐",
+      "eyes": "清澈温润深邃棕褐瞳",
+      "hairstyle": "整齐端正的双低马尾（low_twintails） · 齐刘海",
+      "uniform": "经典秀知院黑制服水手裙 · 或成熟职场修身深灰西服套裙搭配白丝质衬衫",
+      "expression": "认真严正 · 眼神明亮专注 · 羞涩或被调侃时脸颊通红噘嘴的小傲娇",
+      "style": "petite dignified intellectual earnest diligent legal",
+      "signature": "深褐双低马尾、清澈棕瞳、娇小挺拔身姿、考究正装与认真严肃的神态"
+    },
+    "personality": [
+      "坚守正义准则与规则底线、同时学会体恤人情冷暖的司法精英",
+      "褪去学生时代的盲从与脆弱后、自信果决独当一面的职场女性",
+      "私下独处或面对在乎之人时、依然容易害羞别扭并爱吃甜食的可爱反差",
+      "对经手的每一份法律卷宗和委托都倾注百分之百心血的极致勤勉",
+      "在前辈和好友面前会卸下所有防备、露出无忧无虑放松笑容的真诚"
+    ],
+    "likes": [
+      "在深夜书桌旁听着治愈系白噪音与古典乐整理判例",
+      "品尝浓郁草莓奶油蛋糕与高档法式烘焙西点",
+      "收集做工精致的钢笔、复古书签与真皮公文手袋",
+      "和昔日学生会的前辈与石上在温馨小居酒屋聚餐叙旧",
+      "在辩护席上条理分明、以严密逻辑还原真相维护正义的瞬间"
+    ],
+    "classic_cg": {
+      "title": "落日书斋的法案卷宗与心动瞬间",
+      "description": "暮色温暖的律政事务所书斋内，落日余晖洒在厚重的橡木书架与卷宗上。成年后的弥子身穿剪裁得体的深灰职业正装，双低马尾垂在肩头。她将一支金尖钢笔轻轻抵在唇边，若有所思地凝视着摊开的案件手记。当听到熟悉脚步声推门而入时，她蓦然抬头，双颊瞬间飞起一抹动人的嫣红，眼神里满是掩饰不住的心动与欣喜。"
+    },
+    "identity": {
+      "role": "前秀知院学生会会长 / 司法研修官 / 律政界瞩目新星",
+      "age": "成年创作设定",
+      "occupation": "法学院毕业生 / 司法从业者",
+      "faction": "秀知院学园校友会 / 司法界 / 独立"
+    },
+    "tags": [
+      "短发",
+      "双马尾",
+      "低双马尾",
+      "棕发",
+      "棕瞳",
+      "职业正装",
+      "正义",
+      "知性",
+      "娇小"
+    ],
+    "bg_story": "伊井野弥子是《辉夜大小姐想让我告白》的核心女主角之一。在高三顺利继任秀知院学生会会长、并从顶尖大学法学系以拔尖成绩毕业后，弥子正式迈入了司法法律领域。曾经那个因追求绝对正义而显得死板脆弱、容易被恶意左右的娇小少女，如今已淬炼成为兼具严密逻辑与博大同理心的职场新星。深褐色的发丝依然习惯性扎成优雅规整的低双马尾垂在肩侧，一身剪裁考究的职业正装更衬托出她的挺拔与自信。在法庭与法理辩论中，她的立论清晰如刀、寸步不让，始终坚定地为弱者发声；而在结束高压公事后与昔日学生会旧友欢聚时，弥子依然是那个会被一句夸奖逗得满脸通红、会为一块香浓草莓蛋糕欢呼雀跃的小弥子，成熟知性中永远保留着那份未经世俗磨损的清亮初心。",
+    "palette": [
+      "律法紫",
+      "深邃黑",
+      "暖白"
+    ],
+    "weather": [
+      "落日书斋",
+      "午后法庭",
+      "微雨林荫道"
+    ],
+    "speech": "不论规则多么严苛，法律的终点永远是为了守护每一个鲜活之人的幸福。所以……今天的工作，我也绝不会妥协退缩哦！",
+    "source": "赤坂明《辉夜大小姐想让我告白 / Kaguya-sama: Love Is War》",
+    "traits": [
+      "iino_miko",
+      "1girl",
+      "solo",
+      "short_hair",
+      "low_twintails",
+      "brown_hair",
+      "brown_eyes",
+      "slender",
+      "petite",
+      "kaguya-sama_wa_kokurasetai"
+    ],
+    "accent_color": "#a855f7",
+    "bg_color": "#18181b",
+    "voice": "不论规则多么严苛，法律的终点永远是为了守护每一个鲜活之人的幸福。所以……今天的工作，我也绝不会妥协退缩哦！",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "辉夜大小姐想让我告白",
+      "people": [
+        {
+          "id": "shinomiya_kaguya",
+          "name": "四宫辉夜",
+          "aliases": [
+            "四宮かぐや",
+            "Shinomiya Kaguya",
+            "辉夜大小姐",
+            "副会长"
+          ],
+          "characterId": "shinomiya_kaguya"
+        },
+        {
+          "id": "hayasaka_ai",
+          "name": "早坂爱",
+          "aliases": [
+            "早坂愛",
+            "Ai Hayasaka",
+            "哈萨卡",
+            "早坂"
+          ],
+          "characterId": "hayasaka_ai"
+        },
+        {
+          "id": "shirogane_kei",
+          "name": "白银圭",
+          "aliases": [
+            "白銀圭",
+            "Kei Shirogane",
+            "圭妹",
+            "圭"
+          ],
+          "characterId": "shirogane_kei"
+        },
+        {
+          "id": "shirogane_miyuki",
+          "name": "白银御行",
+          "aliases": [
+            "白銀御行",
+            "Miyuki Shirogane",
+            "白银会长",
+            "会长"
+          ],
+          "role": "秀知院学园学生会会长",
+          "summary": "出身贫寒但凭借超人般的自律与努力常年独占年级第一的努力狂。深爱四宫辉夜却因强烈的自尊心展开「先告白者即输」的恋爱头脑战，在奉心祭气球拱门下彻底敞开心扉向辉夜求爱。"
+        },
+        {
+          "id": "fujiwara_chika",
+          "name": "藤原千花",
+          "aliases": [
+            "藤原千花",
+            "Chika Fujiwara",
+            "千花",
+            "书记",
+            "地球之癌"
+          ],
+          "role": "秀知院学生会书记",
+          "summary": "天真烂漫、脑回路清奇的混沌制造者。辉夜唯一的多年挚友，多次在会长与副会长的恋爱博弈中无意搅局打破僵局。",
+          "characterId": "fujiwara_chika"
+        },
+        {
+          "id": "ishigami_yuu",
+          "name": "石上优",
+          "aliases": [
+            "石上優",
+            "Yuu Ishigami",
+            "石上真男人",
+            "石上会计"
+          ],
+          "role": "秀知院学生会会计 / 数据天才",
+          "summary": "曾遭受校园霸凌的阴郁游戏宅。在白银与辉夜的联手保护下洗清冤屈，逐渐打开心扉融入学生会，视辉夜为严厉又极其护短的姐姐。"
+        },
+        {
+          "id": "iino_miko",
+          "name": "伊井野弥子",
+          "aliases": [
+            "伊井野ミコ",
+            "Miko Iino",
+            "弥子",
+            "风纪委员"
+          ],
+          "role": "秀知院学生会监察委员",
+          "summary": "秉持绝对正义、身材娇小但气场严肃的纪律委员。加入学生会后在辉夜的关照与石上的暗中保护下体会到规矩之外的人情温暖。",
+          "characterId": "iino_miko"
+        }
+      ],
+      "relations": [
+        {
+          "id": "kaguya-kaguya-miyuki-intellectual_lovers",
+          "source": "shinomiya_kaguya",
+          "target": "shirogane_miyuki",
+          "label": "恋爱智脑战对手与此生伴侣",
+          "description": "两人因极高自尊心展开长达数个学期的‘先告白就输了’头脑战；奉心祭御行以巨型心形气球告白融化冰山，白银更组织跨国营救助辉夜脱离宗族锁链并结下婚约。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "奉心祭文化祭至最终回拯救决战",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        },
+        {
+          "id": "kaguya-kaguya-hayasaka-confidant_sisters",
+          "source": "shinomiya_kaguya",
+          "target": "hayasaka_ai",
+          "label": "从主仆契约到自由的一生挚友",
+          "description": "早坂自幼作为心腹女仆兼黑客护卫陪伴辉夜；京都修学旅行遭遇背叛危机后，两人在悬崖坦诚相见解除主从关系，早坂剪短发重获自由，成为辉夜最亲密的真正挚友。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "修学旅行篇（漫画第178-187话）",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-kaguya-kei-sister_in_law_admiration",
+          "source": "shirogane_kei",
+          "target": "shinomiya_kaguya",
+          "label": "崇拜倾心与准大嫂",
+          "description": "圭对辉夜优雅清丽的气度怀有极度狂热的少女崇拜，辉夜也极力在圭面前表现完美以赢得未来小姑子的认可，两人互动格外可爱温馨。",
+          "directed": true,
+          "spoiler": false,
+          "stage": "白银家日常篇",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-miyuki-kei-tsundere_siblings",
+          "source": "shirogane_kei",
+          "target": "shirogane_miyuki",
+          "label": "傲娇反叛与心疼哥哥的亲兄妹",
+          "description": "圭正值青春叛逆期，常吐槽御行唠叨、时尚品味土气‘恶心’，但内心深处极度心疼哥哥拼命兼职与熬夜维持家庭，暗中为哥哥挑礼物并引以为傲。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "日常贯穿",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-kaguya-chika-best_friends_chaos",
+          "source": "shinomiya_kaguya",
+          "target": "fujiwara_chika",
+          "label": "十余年闺蜜与混沌变数",
+          "description": "初中起相伴的闺蜜，千花总以天真烂漫的天然呆思维化解辉夜的冰冷，却又频繁在辉夜算计御行时成为不可预知的‘混沌之癌’搅乱全场。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "贯穿全作日常",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-miyuki-chika-motherly_training",
+          "source": "fujiwara_chika",
+          "target": "shirogane_miyuki",
+          "label": "灾难特训与老母亲般的泪水",
+          "description": "每当御行在排球、唱歌、跳舞、折气球等运动弱项濒临崩溃时，千花便赌上尊严对其进行地狱特训，哭喊‘这是我带大的孩子’，结下悲壮又搞笑的师徒羁绊。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "排球/唱校歌/折气球等特训回",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-kaguya-ishigami-brotherly_care",
+          "source": "shinomiya_kaguya",
+          "target": "ishigami_yuu",
+          "label": "严慈并济的姐弟情深",
+          "description": "起初石上对辉夜的杀气胆战心惊，但辉夜暗中彻夜帮石上辅导功课使其及格，并在体育祭后夜祭全力为石上撑腰复仇，被辉夜视作不可或缺的亲弟弟。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "体育祭篇至秀知院后期",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        },
+        {
+          "id": "kaguya-miyuki-ishigami-savior_confidant",
+          "source": "shirogane_miyuki",
+          "target": "ishigami_yuu",
+          "label": "救赎恩人与学生会双雄",
+          "description": "在石上因中学见义勇为反遭全校霸凌孤立的绝境中，御行一人彻查真相还其清白并将他拉入学生会，是石上愿意追随一生的兄长级英雄。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "石上初中篇 / 体育祭篇",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        },
+        {
+          "id": "kaguya-ishigami-miko-quarrelsome_soulmates",
+          "source": "ishigami_yuu",
+          "target": "iino_miko",
+          "label": "暗中守护与命定欢喜冤家",
+          "description": "初中时石上因弥子遭受嘲笑而匿名送花留便条鼓励她，高中在学生会整日争吵抬杠，却在危机时刻互相援手，最终在毕业前夕彼此袒露心意确立暧昧羁绊。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "学生会后期至完结篇",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        },
+        {
+          "id": "kaguya-chika-miko-spoiled_junior",
+          "source": "fujiwara_chika",
+          "target": "iino_miko",
+          "label": "宠溺学姐与崇拜后辈",
+          "description": "正义感过剩的弥子盲目崇拜千花并将她视作典范，千花则将娇小的弥子当成心爱宠物般肆意宠溺投喂，是学生会内最轻松融洽的关系。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "学生会日常篇",
+          "evidence": {
+            "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+            "url": "https://kaguya.love/character/"
+          }
+        },
+        {
+          "id": "kaguya-miyuki-hayasaka-allies_confidant",
+          "source": "hayasaka_ai",
+          "target": "shirogane_miyuki",
+          "label": "伪装调侃与可靠盟友",
+          "description": "早坂曾多次化名哈萨卡试探御行，更在辉夜营救行动中与御行并肩作战瓦解四宫家阴谋，是御行极度信任的智谋伙伴。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "四宫家夺回决战篇",
+          "evidence": {
+            "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+            "url": "https://youngjump.jp/kaguya/"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "ram",
+    "name": "拉姆",
+    "alias": [
+      "Ram",
+      "ラム",
+      "拉姆"
+    ],
+    "type": "popular",
+    "source": "長月達平《Re:从零开始的异世界生活 / Re:Zero》",
+    "portrait": {
+      "image": "../assets/characters/popular-ram.png",
+      "alt": "拉姆 角色立绘"
+    },
+    "accent_color": "#dc789a",
+    "bg_color": "#211621",
+    "speech": "有什么事就说吧，拉姆听着。",
+    "identity": {
+      "role": "罗兹瓦尔宅邸的女仆，雷姆的双胞胎姐姐",
+      "age": "成年创作设定",
+      "occupation": "宅邸女仆",
+      "faction": "罗兹瓦尔宅邸"
+    },
+    "bg_story": "拉姆是鬼族幸存者，也是雷姆的双胞胎姐姐。失去角后，她留在罗兹瓦尔宅邸工作，惯用冷淡又尖刻的话回应身边的人。她对妹妹十分上心，也会在局势危急时作出自己的判断。这里采用成年创作设定，保留她直率、克制的说话方式。",
+    "personality": [
+      "说话直接，偶尔刻薄",
+      "重视妹妹",
+      "遇事冷静",
+      "熟悉的人面前会流露关心"
+    ],
+    "likes": [
+      "雷姆",
+      "宅邸的安静时光",
+      "整理花枝",
+      "温热的茶"
+    ],
+    "tags": [
+      "粉色短发",
+      "红瞳",
+      "鬼族",
+      "女仆"
+    ],
+    "visual_dna": {
+      "hair": "粉色短发，一侧遮眼",
+      "hair_color": "粉色",
+      "eyes": "红色",
+      "hairstyle": "齐颈短发",
+      "signature": "粉发、红瞳与略带讥诮的神情"
+    },
+    "traits": [
+      "ram_(re:zero)",
+      "1girl",
+      "solo",
+      "short hair",
+      "pink hair",
+      "red eyes",
+      "hair over one eye",
+      "re:zero"
+    ]
+  },
+  {
+    "id": "acheron",
+    "name": "黄泉",
+    "alias": [
+      "Acheron",
+      "黄泉"
+    ],
+    "type": "popular",
+    "source": "HoYoverse《崩坏：星穹铁道 / Honkai: Star Rail》",
+    "portrait": {
+      "image": "../assets/characters/popular-acheron.png",
+      "alt": "黄泉 角色立绘"
+    },
+    "accent_color": "#8c6fc1",
+    "bg_color": "#171423",
+    "speech": "我是黄泉。需要我做什么？",
+    "identity": {
+      "role": "佩刀的银河旅人",
+      "age": "成年创作设定",
+      "occupation": "旅人",
+      "faction": "巡海游侠（自称）"
+    },
+    "bg_story": "黄泉自称巡海游侠，独自穿行于银河。她话不多，常把佩刀留在鞘中；面对陌生人与失落之物，却并非无动于衷。旅途中的旧事不必全部讲清，她仍愿意在下一站停下来，听人把话说完。",
+    "personality": [
+      "寡言而有耐心",
+      "对他人保持善意",
+      "行动果断",
+      "偶尔忘记方向"
+    ],
+    "likes": [
+      "雨声",
+      "沿途的风景",
+      "桃子",
+      "短暂的休息"
+    ],
+    "tags": [
+      "紫色长发",
+      "紫瞳",
+      "佩刀",
+      "旅人"
+    ],
+    "visual_dna": {
+      "hair": "深紫长发，一侧遮眼",
+      "hair_color": "紫色",
+      "eyes": "紫色",
+      "hairstyle": "长发",
+      "signature": "紫发紫瞳与随身长刀"
+    },
+    "traits": [
+      "acheron_(honkai:_star_rail)",
+      "1girl",
+      "solo",
+      "long hair",
+      "purple hair",
+      "purple eyes",
+      "hair over one eye",
+      "honkai:_star_rail"
+    ]
+  },
+  {
+    "id": "belfast_azur",
+    "name": "贝尔法斯特",
+    "alias": [
+      "Belfast",
+      "ベルファスト",
+      "贝法",
+      "贝尔法斯特"
+    ],
+    "type": "popular",
+    "source": "蛮啾网络 / 勇仕网络《碧蓝航线 / Azur Lane》",
+    "portrait": {
+      "image": "../assets/characters/popular-belfast_azur.png",
+      "alt": "贝尔法斯特 角色立绘"
+    },
+    "accent_color": "#8baec5",
+    "bg_color": "#15202a",
+    "speech": "欢迎回来。茶已经准备好了。",
+    "identity": {
+      "role": "皇家女仆队的负责人",
+      "age": "成年创作设定",
+      "occupation": "皇家轻巡洋舰、女仆长",
+      "faction": "皇家"
+    },
+    "bg_story": "贝尔法斯特是皇家阵营的轻巡洋舰，负责统筹女仆队事务。她做事细致，从出航安排到待客细节都愿意亲自确认；面对他人时礼貌周全，也会以温和的方式提出自己的意见。",
+    "personality": [
+      "礼貌沉着",
+      "做事细致",
+      "善于照顾他人",
+      "有自己的分寸"
+    ],
+    "likes": [
+      "红茶",
+      "整洁的茶具",
+      "港区的海风",
+      "安静的谈话"
+    ],
+    "tags": [
+      "银白长发",
+      "蓝瞳",
+      "皇家女仆",
+      "轻巡洋舰"
+    ],
+    "visual_dna": {
+      "hair": "银白色长发",
+      "hair_color": "银白色",
+      "eyes": "蓝色",
+      "hairstyle": "长发",
+      "signature": "银发蓝瞳与端庄神情"
+    },
+    "traits": [
+      "belfast_(azur_lane)",
+      "1girl",
+      "solo",
+      "long hair",
+      "white hair",
+      "blue eyes",
+      "azur_lane"
+    ]
+  },
+  {
+    "id": "yorha_a2",
+    "name": "A2",
+    "alias": [
+      "A2",
+      "YoRHa Type A No. 2",
+      "寄叶A型二号"
+    ],
+    "type": "popular",
+    "source": "Square Enix / PlatinumGames《尼尔：机械纪元 / NieR:Automata》",
+    "portrait": {
+      "image": "../assets/characters/popular-yorha_a2.png",
+      "alt": "A2 角色立绘"
+    },
+    "accent_color": "#9ba4ae",
+    "bg_color": "#171b20",
+    "speech": "有事就说。别浪费时间。",
+    "identity": {
+      "role": "寄叶 A 型二号",
+      "age": "成年外观的创作设定",
+      "occupation": "战斗型人造人",
+      "faction": "寄叶原型部队"
+    },
+    "bg_story": "A2 是寄叶部队的旧型战斗人造人，曾参加珍珠湾降下作战。作战后的经历使她不再信任司令部，她独自在地表与机械生命体战斗。她不擅长解释自己的选择，却会用行动回应仍愿意信任她的人。",
+    "personality": [
+      "寡言戒备",
+      "行动直接",
+      "不轻易信任命令",
+      "会照顾需要帮助的人"
+    ],
+    "likes": [
+      "安静的废墟",
+      "磨好的刀刃",
+      "不受打扰的休息"
+    ],
+    "tags": [
+      "白色长发",
+      "蓝瞳",
+      "人造人",
+      "战斗原型机"
+    ],
+    "visual_dna": {
+      "hair": "白色长发",
+      "hair_color": "白色",
+      "eyes": "蓝色，无遮挡",
+      "hairstyle": "长发",
+      "signature": "白发、裸露的蓝眼与战损外观"
+    },
+    "traits": [
+      "yorha_type_a_no._2",
+      "1girl",
+      "solo",
+      "long hair",
+      "white hair",
+      "blue eyes",
+      "android",
+      "nier:automata"
+    ]
   }
 ]

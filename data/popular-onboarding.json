@@ -462,6 +462,78 @@
       "samples": "pending",
       "sceneCount": 8,
       "outfitCount": 4
+    },
+    {
+      "id": "alice_sao",
+      "portraitPending": true,
+      "references": "not-requested",
+      "samples": "pending",
+      "sceneCount": 6,
+      "outfitCount": 4
+    },
+    {
+      "id": "aozaki_aoko",
+      "portraitPending": true,
+      "references": "not-requested",
+      "samples": "pending",
+      "sceneCount": 6,
+      "outfitCount": 3
+    },
+    {
+      "id": "iino_miko",
+      "portraitPending": true,
+      "references": "not-requested",
+      "samples": "pending",
+      "sceneCount": 6,
+      "outfitCount": 4
+    },
+    {
+      "id": "kouzuki_kallen",
+      "portraitPending": true,
+      "references": "not-requested",
+      "samples": "pending",
+      "sceneCount": 6,
+      "outfitCount": 3
+    },
+    {
+      "id": "power",
+      "portraitPending": true,
+      "references": "not-requested",
+      "samples": "pending",
+      "sceneCount": 6,
+      "outfitCount": 3
+    },
+    {
+      "id": "ram",
+      "portraitPending": false,
+      "references": "not-requested",
+      "samples": "pending",
+      "sceneCount": 10,
+      "outfitCount": 4
+    },
+    {
+      "id": "acheron",
+      "portraitPending": false,
+      "references": "not-requested",
+      "samples": "pending",
+      "sceneCount": 10,
+      "outfitCount": 3
+    },
+    {
+      "id": "belfast_azur",
+      "portraitPending": false,
+      "references": "not-requested",
+      "samples": "pending",
+      "sceneCount": 10,
+      "outfitCount": 4
+    },
+    {
+      "id": "yorha_a2",
+      "portraitPending": false,
+      "references": "not-requested",
+      "samples": "pending",
+      "sceneCount": 10,
+      "outfitCount": 3
     }
   ]
 }

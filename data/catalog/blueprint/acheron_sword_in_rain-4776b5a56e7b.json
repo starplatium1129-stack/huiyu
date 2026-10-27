@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_sword_in_rain",
+  "revision": 1,
+  "sortOrder": 2061,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "acheron_sword_in_rain",
+    "title": "黄泉 · 雨幕中的刀鞘",
+    "category": "巡游战影",
+    "outfitId": "wanderer",
+    "description": "雨水沿刀鞘滑落。黄泉站在积水的街道中央，一手按住刀柄，视线越过画面外的来路。",
+    "location": "积水的街道",
+    "action": "按住刀柄注视前方",
+    "timeOfDay": "夜晚",
+    "lighting": "路灯映在水面",
+    "camera": "cowboy shot",
+    "mood": "蓄势",
+    "promptProse": "On a rain-soaked street, Acheron rests one hand on the hilt of her sheathed sword and looks down the road as lamplight reflects in the water.",
+    "promptTokens": [
+      "rainy street",
+      "hand on sword hilt",
+      "sheathed sword",
+      "wet pavement",
+      "streetlight reflection",
+      "night",
+      "cowboy shot"
+    ],
+    "animaCaption": "Rain runs down the sheath at her side.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

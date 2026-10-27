@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "yorha_a2_desert_tracks",
+  "revision": 1,
+  "sortOrder": 2078,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "yorha_a2_desert_tracks",
+    "title": "A2 · 沙丘上的足迹",
+    "category": "废土行旅",
+    "outfitId": "damaged_combat",
+    "description": "风把沙丘上的旧足迹吹浅。A2 握着长剑穿过沙地，停下脚步回望身后荒废的道路。",
+    "location": "沙漠边缘",
+    "action": "持剑回望身后的道路",
+    "timeOfDay": "白天",
+    "lighting": "高处日光与沙尘",
+    "camera": "full body",
+    "mood": "警觉",
+    "promptProse": "A2 stops among the dunes with her sword in hand and looks back toward the abandoned road, sand drifting around her boots.",
+    "promptTokens": [
+      "desert dunes",
+      "holding sword",
+      "looking back",
+      "windblown sand",
+      "daylight",
+      "full body"
+    ],
+    "animaCaption": "Sand drifts across the fading tracks behind her.",
+    "characterId": "yorha_a2",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

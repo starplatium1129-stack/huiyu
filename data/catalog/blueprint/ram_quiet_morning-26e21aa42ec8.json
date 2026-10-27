@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "ram_quiet_morning",
+  "revision": 1,
+  "sortOrder": 2057,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_quiet_morning",
+    "title": "拉姆 · 未收起的薄毯",
+    "category": "私密时光",
+    "outfitId": "ivory_robe",
+    "description": "天刚亮，拉姆穿着浴袍坐在床沿，薄毯仍搭在膝上。她伸手推开窗，让凉风进来。",
+    "location": "卧室窗边",
+    "action": "坐在床沿推窗",
+    "timeOfDay": "清晨",
+    "lighting": "微亮的窗光",
+    "camera": "medium shot",
+    "mood": "慵懒",
+    "promptProse": "Ram sits on the edge of the bed, a blanket across her knees as she opens the window to the morning air.",
+    "promptTokens": [
+      "sitting on bed",
+      "blanket on lap",
+      "opening window",
+      "morning light",
+      "medium shot"
+    ],
+    "animaCaption": "A blanket remains across her knees.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

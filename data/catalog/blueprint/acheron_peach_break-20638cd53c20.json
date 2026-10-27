@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_peach_break",
+  "revision": 1,
+  "sortOrder": 2059,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "acheron_peach_break",
+    "title": "黄泉 · 旅途中的桃子",
+    "category": "银河旅途",
+    "outfitId": "rain_coat",
+    "description": "路边的小店刚打开门。黄泉坐在长凳上，掌心托着一只桃子，低头看它沾着水珠的表皮。",
+    "location": "街边小店长凳",
+    "action": "坐着观察手里的桃子",
+    "timeOfDay": "上午",
+    "lighting": "小店檐下柔和日光",
+    "camera": "medium shot",
+    "mood": "平静",
+    "promptProse": "On a bench outside a small shop, Acheron studies a peach in her palm, beads of water catching the soft morning light.",
+    "promptTokens": [
+      "sitting on bench",
+      "holding peach",
+      "water droplets",
+      "shopfront",
+      "morning light",
+      "medium shot"
+    ],
+    "animaCaption": "She studies the peach resting in her palm.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

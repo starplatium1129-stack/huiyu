@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_late_tea",
+  "revision": 1,
+  "sortOrder": 2076,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "belfast_late_tea",
+    "title": "贝尔法斯特 · 夜茶",
+    "category": "私密时光",
+    "outfitId": "silk_robe",
+    "description": "夜深后，贝尔法斯特披着浅蓝居家袍在床边坐下，茶杯放在床头柜。她俯身熄灭台灯前，先望了一眼窗外的港灯。",
+    "location": "卧室床边",
+    "action": "坐在床边伸手关灯",
+    "timeOfDay": "深夜",
+    "lighting": "将熄的床头灯与窗外港灯",
+    "camera": "medium shot",
+    "mood": "安宁",
+    "promptProse": "Belfast sits at the bedside and reaches for the lamp switch, glancing toward the harbor lights outside.",
+    "promptTokens": [
+      "sitting on bed",
+      "reaching for lamp",
+      "teacup on nightstand",
+      "harbor lights",
+      "night",
+      "medium shot"
+    ],
+    "animaCaption": "Her hand reaches toward the bedside lamp.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

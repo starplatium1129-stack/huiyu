@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "ram_lantern_path",
+  "revision": 1,
+  "sortOrder": 2053,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_lantern_path",
+    "title": "拉姆 · 提灯回廊",
+    "category": "宅邸日常",
+    "outfitId": "roswaal_maid",
+    "description": "夜里巡过长廊时，拉姆举起手灯照向门牌，确认最后一间房的门已经关好。",
+    "location": "宅邸木质回廊",
+    "action": "举灯查看门牌",
+    "timeOfDay": "夜晚",
+    "lighting": "手灯照亮门边与侧脸",
+    "camera": "cowboy shot",
+    "mood": "谨慎",
+    "promptProse": "Ram raises a small lantern toward a doorway in the wooden corridor, checking the closed door by its warm light.",
+    "promptTokens": [
+      "wooden corridor",
+      "holding lantern",
+      "doorway",
+      "night",
+      "warm lantern light",
+      "cowboy shot"
+    ],
+    "animaCaption": "The lantern lights the closed doorway.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

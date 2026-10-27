@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ram/roswaal_maid",
+  "revision": 1,
+  "sortOrder": 1657,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "characterId": "ram",
+    "outfit": {
+      "id": "roswaal_maid",
+      "name": "罗兹瓦尔宅邸女仆装",
+      "prose": "A black and white maid dress with a white apron, a white frilled headdress and a small ribbon at the collar.",
+      "tokens": [
+        "black maid dress",
+        "white apron",
+        "frilled maid headdress",
+        "collar ribbon"
+      ],
+      "default": true,
+      "characterId": "ram",
+      "isDefault": true
+    }
+  }
+}

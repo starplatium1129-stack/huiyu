@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "ram_rose_garden",
+  "revision": 1,
+  "sortOrder": 2049,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "ram_rose_garden",
+    "title": "拉姆 · 修剪玫瑰",
+    "category": "宅邸日常",
+    "outfitId": "roswaal_maid",
+    "description": "庭院的玫瑰长过了篱笆。拉姆抬手剪下一枝，另一只手托住花茎，免得刺刮到袖口。",
+    "location": "宅邸玫瑰园",
+    "action": "托住花茎修剪玫瑰",
+    "timeOfDay": "午后",
+    "lighting": "树荫间斑驳日光",
+    "camera": "medium shot",
+    "mood": "安静专注",
+    "promptProse": "In the rose garden, Ram steadies a stem with one hand while trimming it with garden shears beneath dappled light.",
+    "promptTokens": [
+      "rose garden",
+      "garden shears",
+      "holding flower stem",
+      "pruning",
+      "dappled sunlight",
+      "medium shot"
+    ],
+    "animaCaption": "She steadies the stem as she trims it.",
+    "characterId": "ram",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_dawn_blanket",
+  "revision": 1,
+  "sortOrder": 2067,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "acheron_dawn_blanket",
+    "title": "黄泉 · 天亮之前",
+    "category": "私密时光",
+    "outfitId": "soft_loungewear",
+    "description": "清晨的微光透过窗帘，黄泉穿着长衫靠在床头，手边的薄毯还未收起。她安静地看着天色变亮。",
+    "location": "旅店卧室",
+    "action": "靠床头望向窗帘",
+    "timeOfDay": "黎明",
+    "lighting": "窗帘透入的微光",
+    "camera": "medium shot",
+    "mood": "安稳",
+    "promptProse": "Acheron rests against the headboard with a blanket beside her and watches the first light through the curtains.",
+    "promptTokens": [
+      "sitting on bed",
+      "headboard",
+      "blanket",
+      "curtain light",
+      "dawn",
+      "medium shot"
+    ],
+    "animaCaption": "She watches the first light through the curtains.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

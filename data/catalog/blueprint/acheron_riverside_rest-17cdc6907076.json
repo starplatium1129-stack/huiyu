@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_riverside_rest",
+  "revision": 1,
+  "sortOrder": 2063,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "acheron_riverside_rest",
+    "title": "黄泉 · 河岸歇脚",
+    "category": "银河旅途",
+    "outfitId": "rain_coat",
+    "description": "黄泉将刀放在身旁的草地上，坐在河岸看水流绕过石头。风吹动她的外套，她没有急着起身。",
+    "location": "河岸草地",
+    "action": "坐着看水流",
+    "timeOfDay": "傍晚",
+    "lighting": "柔和的傍晚天光",
+    "camera": "medium shot",
+    "mood": "安静",
+    "promptProse": "Acheron sits on a grassy riverbank with her sheathed sword laid beside her, watching water move around the stones.",
+    "promptTokens": [
+      "sitting on grass",
+      "riverbank",
+      "sheathed sword beside her",
+      "flowing water",
+      "evening light",
+      "medium shot"
+    ],
+    "animaCaption": "Her sheathed sword rests beside her.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

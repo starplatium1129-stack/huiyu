@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_crimson_draw",
+  "revision": 1,
+  "sortOrder": 2062,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "id": "acheron_crimson_draw",
+    "title": "黄泉 · 绯色一瞬",
+    "category": "巡游战影",
+    "outfitId": "wanderer",
+    "description": "断裂的台阶上，拔刀后的黄泉白发扬起。她横持长刀停在一片绯红光影中，衣角被风掀起。",
+    "location": "破碎的石阶",
+    "action": "横持拔出的长刀",
+    "timeOfDay": "夜晚",
+    "lighting": "绯红逆光",
+    "camera": "full body",
+    "mood": "锐利",
+    "promptProse": "White-haired Acheron holds her drawn blade across her body on broken steps, her long hair and coat moving in the crimson backlight.",
+    "promptTokens": [
+      "white hair",
+      "red eyes",
+      "holding sword",
+      "drawn sword",
+      "broken steps",
+      "wind",
+      "crimson backlight",
+      "full body"
+    ],
+    "animaCaption": "Her drawn blade crosses her body in the red light.",
+    "identityTokensOverride": [
+      "acheron_(honkai:_star_rail)",
+      "1girl",
+      "solo",
+      "long hair",
+      "white hair",
+      "red eyes",
+      "hair over one eye",
+      "honkai:_star_rail"
+    ],
+    "identityProseOverride": "Adult Acheron from Honkai: Star Rail in her white-haired sword-drawn form, with long white hair and red eyes.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

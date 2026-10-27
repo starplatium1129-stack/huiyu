@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "belfast_evening_ribbon",
+  "revision": 2,
+  "sortOrder": 2075,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:58:20.655668500+00:00",
+  "data": {
+    "id": "belfast_evening_ribbon",
+    "title": "贝尔法斯特 · 解下发带",
+    "category": "私密时光",
+    "outfitId": "silk_robe",
+    "description": "结束一天的工作后，贝尔法斯特换上缎面居家袍，在镜前解开发带。长发落下时，她伸手接住发梢。",
+    "location": "卧室梳妆台",
+    "action": "对镜解开发带",
+    "timeOfDay": "夜晚",
+    "lighting": "梳妆台灯光",
+    "camera": "medium shot",
+    "mood": "松弛",
+    "promptProse": "Belfast sits at the dressing table and loosens a hair ribbon, catching her hair as it falls.",
+    "promptTokens": [
+      "sitting at dressing table",
+      "removing hair ornament",
+      "long hair",
+      "warm lamp",
+      "medium shot"
+    ],
+    "animaCaption": "She catches her hair as the ribbon comes loose.",
+    "characterId": "belfast_azur",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

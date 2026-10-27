@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_intimate_snow_hot_spring",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1978,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-27T13:30:51.153660400+00:00",
+  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
   "data": {
     "id": "nakano_itsuki_intimate_snow_hot_spring",
     "title": "中野五月 · 雪见温泉中的红晕容颜",
@@ -18,7 +18,7 @@
     "lighting": "soft wooden lanterns glowing amid falling snow",
     "camera": "medium_shot",
     "mood": "breathtaking winter hot spring sensuality",
-    "promptProse": "Soaking in a steaming outdoor rock onsen surrounded by deep winter snow, Nakano Itsuki tilts her head as gentle snowflakes melt upon her bare shoulders. The rising steam wraps around her long red hair, highlighting her vividly flushed, captivating cheeks.",
+    "promptProse": "Soaking in a steaming outdoor rock onsen surrounded by deep winter snow, Nakano Itsuki tilts her head as gentle snowflakes melt upon her bare shoulders. A white bath towel is wrapped around her body. The rising steam wraps around her long red hair, highlighting her vividly flushed, captivating cheeks.",
     "promptTokens": [
       "nakano_itsuki",
       "1girl",
@@ -26,6 +26,9 @@
       "long_hair",
       "red_hair",
       "blue_eyes",
+      "white towel",
+      "towel",
+      "towel around body",
       "hot_spring",
       "onsen",
       "snow",
@@ -63,9 +66,10 @@
       "blurry"
     ],
     "animaCaption": "Itsuki soaking peacefully in a snowy outdoor onsen at night.",
-    "isNsfw": false,
+    "isNsfw": true,
     "rating": "R18",
     "mature": true,
-    "characterId": "nakano_itsuki"
+    "characterId": "nakano_itsuki",
+    "adult": true
   }
 }

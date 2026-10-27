@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "acheron/rain_coat",
+  "revision": 1,
+  "sortOrder": 1662,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "data": {
+    "characterId": "acheron",
+    "outfit": {
+      "id": "rain_coat",
+      "name": "深紫旅途外套",
+      "prose": "A long dark violet coat over a pale blouse and black trousers.",
+      "tokens": [
+        "dark purple coat",
+        "white blouse",
+        "black trousers"
+      ],
+      "characterId": "acheron",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

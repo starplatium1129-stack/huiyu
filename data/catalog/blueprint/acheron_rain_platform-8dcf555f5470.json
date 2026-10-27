@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "acheron_rain_platform",
+  "revision": 2,
+  "sortOrder": 2058,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T15:18:03.111576800+00:00",
+  "data": {
+    "id": "acheron_rain_platform",
+    "title": "黄泉 · 雨中的站台",
+    "category": "银河旅途",
+    "outfitId": "wanderer",
+    "description": "站台的雨棚挡住大半雨水。黄泉握着刀鞘立在边缘，望着轨道另一端渐渐靠近的灯光。",
+    "location": "雨中车站站台",
+    "action": "扶着刀鞘等候",
+    "timeOfDay": "雨夜",
+    "lighting": "列车远灯与雨棚冷光",
+    "camera": "cowboy shot",
+    "mood": "克制而期待",
+    "promptProse": "Acheron stands under the station canopy with one hand on her sheathed sword, watching a distant train light approach through the rain.",
+    "promptTokens": [
+      "train platform",
+      "station canopy",
+      "standing under canopy",
+      "rain",
+      "hand on sword sheath",
+      "sheathed sword",
+      "distant train lights",
+      "night",
+      "cool light",
+      "cowboy shot"
+    ],
+    "animaCaption": "Under the station canopy she rests a hand on the sheathed sword and watches the distant train light.",
+    "characterId": "acheron",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

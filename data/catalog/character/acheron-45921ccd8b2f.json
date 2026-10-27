@@ -1,0 +1,110 @@
+{
+  "kind": "character",
+  "id": "acheron",
+  "revision": 3,
+  "sortOrder": 204,
+  "createdAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-27T15:24:59.586559800+00:00",
+  "data": {
+    "id": "acheron",
+    "profile": {
+      "id": "acheron",
+      "name": "黄泉",
+      "alias": [
+        "Acheron",
+        "黄泉"
+      ],
+      "type": "popular",
+      "source": "HoYoverse《崩坏：星穹铁道 / Honkai: Star Rail》",
+      "portrait": {
+        "image": "../assets/characters/popular-acheron.png",
+        "alt": "黄泉 角色立绘"
+      },
+      "accent_color": "#8c6fc1",
+      "bg_color": "#171423",
+      "speech": "我是黄泉。需要我做什么？",
+      "identity": {
+        "role": "佩刀的银河旅人",
+        "age": "成年创作设定",
+        "occupation": "旅人",
+        "faction": "巡海游侠（自称）"
+      },
+      "bg_story": "黄泉自称巡海游侠，独自穿行于银河。她话不多，常把佩刀留在鞘中；面对陌生人与失落之物，却并非无动于衷。旅途中的旧事不必全部讲清，她仍愿意在下一站停下来，听人把话说完。",
+      "personality": [
+        "寡言而有耐心",
+        "对他人保持善意",
+        "行动果断",
+        "偶尔忘记方向"
+      ],
+      "likes": [
+        "雨声",
+        "沿途的风景",
+        "桃子",
+        "短暂的休息"
+      ],
+      "tags": [
+        "紫色长发",
+        "紫瞳",
+        "佩刀",
+        "旅人"
+      ],
+      "visual_dna": {
+        "hair": "深紫长发，一侧遮眼",
+        "hair_color": "紫色",
+        "eyes": "紫色",
+        "hairstyle": "长发",
+        "signature": "紫发紫瞳与随身长刀"
+      },
+      "traits": [
+        "acheron_(honkai:_star_rail)",
+        "1girl",
+        "solo",
+        "long hair",
+        "purple hair",
+        "purple eyes",
+        "hair over one eye",
+        "honkai:_star_rail"
+      ]
+    },
+    "popular": {
+      "id": "acheron",
+      "displayName": "黄泉",
+      "originalName": "Acheron",
+      "franchise": "Honkai: Star Rail",
+      "aliases": [
+        "Acheron",
+        "黄泉"
+      ],
+      "identityProse": "Adult Acheron from Honkai: Star Rail, a reserved traveler with long violet hair, violet eyes and hair falling across one eye.",
+      "identityTokens": [
+        "acheron_(honkai:_star_rail)",
+        "1girl",
+        "solo",
+        "long hair",
+        "purple hair",
+        "purple eyes",
+        "hair over one eye",
+        "honkai:_star_rail"
+      ],
+      "exactTokens": [
+        "acheron_(honkai:_star_rail)"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "acheron_(honkai:_star_rail)"
+      ],
+      "copyrightTokens": [
+        "honkai:_star_rail"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "wanderer",
+      "negativeTokens": []
+    }
+  }
+}
