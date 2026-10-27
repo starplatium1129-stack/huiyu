@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "nakano_ichika/summer_beach_bikini",
+  "revision": 1,
+  "sortOrder": 1517,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "characterId": "nakano_ichika",
+    "outfit": {
+      "id": "summer_beach_bikini",
+      "name": "盛夏落日淡黄系带比基尼薄纱披肩",
+      "prose": "A mature light yellow criss-cross halterneck bikini paired with a sheer white beach capelet, fluttering in the warm ocean breeze under sunset golden light.",
+      "tokens": [
+        "bikini",
+        "yellow_bikini",
+        "halterneck",
+        "criss-cross_straps",
+        "sheer",
+        "white_capelet",
+        "beachwear",
+        "bare_shoulders",
+        "navel",
+        "single_earring"
+      ],
+      "isNsfw": false
+    }
+  }
+}

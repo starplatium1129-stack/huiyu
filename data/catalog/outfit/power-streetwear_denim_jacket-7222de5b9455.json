@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "power/streetwear_denim_jacket",
+  "revision": 2,
+  "sortOrder": 1577,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "data": {
+    "characterId": "power",
+    "outfit": {
+      "characterId": "power",
+      "id": "streetwear_denim_jacket",
+      "name": "街头野性牛仔夹克便服",
+      "prose": "An oversized faded blue denim jacket over a vintage graphic t-shirt, distressed denim cut-off shorts, tall striped socks, and high-top sneakers.",
+      "tokens": [
+        "denim jacket",
+        "oversized jacket",
+        "graphic t-shirt",
+        "denim shorts",
+        "striped socks",
+        "high-top sneakers"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

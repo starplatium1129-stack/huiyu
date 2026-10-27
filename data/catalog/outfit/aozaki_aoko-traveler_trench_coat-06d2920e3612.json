@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "aozaki_aoko/traveler_trench_coat",
+  "revision": 1,
+  "sortOrder": 1570,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:05:59.563Z",
+  "data": {
+    "characterId": "aozaki_aoko",
+    "outfit": {
+      "characterId": "aozaki_aoko",
+      "id": "traveler_trench_coat",
+      "name": "风行旅人风衣常服",
+      "prose": "A stylish tailored beige trench coat worn over an ivory button-up blouse, dark navy tailored trousers, brown leather gloves, and walking ankle boots.",
+      "tokens": [
+        "beige trench coat",
+        "open coat",
+        "white blouse",
+        "collared shirt",
+        "navy pants",
+        "trousers",
+        "gloves",
+        "leather boots"
+      ],
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

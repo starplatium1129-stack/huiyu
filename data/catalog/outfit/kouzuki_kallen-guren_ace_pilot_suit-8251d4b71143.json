@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kouzuki_kallen/guren_ace_pilot_suit",
+  "revision": 2,
+  "sortOrder": 1573,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "data": {
+    "characterId": "kouzuki_kallen",
+    "outfit": {
+      "characterId": "kouzuki_kallen",
+      "id": "guren_ace_pilot_suit",
+      "name": "红莲圣天王牌驾驶服",
+      "prose": "The iconic crimson and white form-fitting pilot suit for the Guren Seiten, with sleek aerodynamic contours, armored shoulder guards, and gold metallic accents.",
+      "tokens": [
+        "bodysuit",
+        "pilot suit",
+        "plugsuit",
+        "red and white",
+        "shoulder armor",
+        "form-fitting",
+        "sleek design"
+      ],
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

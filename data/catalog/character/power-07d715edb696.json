@@ -1,0 +1,344 @@
+{
+  "kind": "character",
+  "id": "power",
+  "revision": 2,
+  "sortOrder": 200,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "data": {
+    "id": "power",
+    "profile": {
+      "id": "power",
+      "name": "帕瓦",
+      "alias": [
+        "Power",
+        "パワー",
+        "血之恶魔",
+        "初代总统",
+        "血之魔人",
+        "帕瓦大人"
+      ],
+      "type": "popular",
+      "icon": "🩸",
+      "portrait": {
+        "image": "../assets/characters/popular-power.png?v=1",
+        "alt": "帕瓦 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "浅金草莓金及腰长直发 · 微凌乱野性蓬松感",
+        "hair_color": "浅金 / 草莓金",
+        "eyes": "绯红十字靶心特殊纹理眼瞳",
+        "hairstyle": "及腰微凌乱自然披肩长发 · 头顶耸立一对鲜红恶魔角",
+        "uniform": "经典公安黑西装外套松垮敞开 · 内搭微开领白衬衫与细领带 · 运动鞋",
+        "expression": "狂妄张扬坏笑 · 露出锋利小虎牙与鲨鱼齿 · 得意洋洋双手叉腰",
+        "style": "wild chaotic energetic stylish blood devil confident",
+        "signature": "头顶一对鲜红恶魔尖角、金长发、十字血瞳、锋利尖牙与大摇大摆的霸道姿态"
+      },
+      "personality": [
+        "傲慢自大、张口闭口‘本大爷’的狂放活力与恶友本色",
+        "经历生死与鲜血契约洗礼后、骨子里对唯一挚友毫无保留的深情与执念",
+        "依然会在高级牛肉与美味甜点面前瞬间两眼放光手舞足蹈",
+        "对流浪小动物（尤其是猫咪）有着反差极大的温柔与溺爱",
+        "兼具野兽般狂暴敏锐的战斗本能与令人忍俊不禁的脱线自信"
+      ],
+      "likes": [
+        "大口吃顶级雪花牛排、香肠与多汁烤肉（依然挑食蔬菜）",
+        "紧紧抱住心爱的爱猫咪咪在阳光下惬意打滚",
+        "吹嘘自己即将成为诺贝尔奖得主与第一任世界大总统",
+        "随手凝结出各种霸气血色大锤或鲜血长枪炫耀威力",
+        "在街头恶作剧后看着身边同伴无可奈何叹气的得意时刻"
+      ],
+      "classic_cg": {
+        "title": "雨夜天台的鲜血巨镰与恶魔坏笑",
+        "description": "阴雨笼罩的霓虹东京大厦天台上，狂风卷起水雾与金色发丝。成年形态的帕瓦单脚踏在天台水泥护栏上，手中随意扛着一柄由翻涌鲜血凝铸而成的狰狞巨镰。绯红的双角在霓虹灯下泛着宝石光芒，十字靶心眼瞳在阴影中闪烁，她咧开嘴露出森白尖牙，朝着夜空绽放出肆意而霸道的大笑。"
+      },
+      "identity": {
+        "role": "血之恶魔原初体 / 独立游侠恶魔猎人 / 自封永久大总统",
+        "age": "成年创作设定",
+        "occupation": "高阶恶魔 / 自由赏金猎人",
+        "faction": "独立 / 早川家契约"
+      },
+      "tags": [
+        "长发",
+        "金发",
+        "红角",
+        "恶魔角",
+        "尖牙",
+        "十字瞳",
+        "黑西装",
+        "野性",
+        "恶友"
+      ],
+      "bg_story": "帕瓦是《电锯人》中的核心女主角、原初的血之恶魔。在经历了早川家的温馨同居与支配恶魔带来的家庭破灭之后，帕瓦在电次体内觉醒并以舍命契约拯救了绝境中的少年。跨入成年创作阶段的帕瓦完成了恶魔身躯的完美重构，以成熟高挑的血之恶魔姿态游走于人世。头顶一对标志性的绯红恶魔尖角依旧傲然挺立，草莓金长发如瀑垂落，十字靶心血瞳中多了一份岁月洗礼后的深邃与从容。她不再是昔日那个连洗澡都抗拒的邋遢魔人，而是一位在夜幕下独来独往、令恶魔闻风丧胆的赏金游侠。尽管性格中依然有着大吹大擂的顽劣本性，但只要嗅到那份刻入灵魂深处的电锯机油味，她便会不顾一切地拔出血镰，为守住世间仅存的羁绊而战。",
+      "palette": [
+        "血红",
+        "浅金",
+        "漆黑"
+      ],
+      "weather": [
+        "雨夜天台",
+        "黄昏残照",
+        "霓虹街巷"
+      ],
+      "speech": "哈哈哈哈哈！跪下膜拜吧凡人！本大爷今天可是心情大好，要是敢拿出顶级上等和牛，本大爷就勉为其难封你为总统副手！",
+      "source": "藤本树《电锯人 / Chainsaw Man》",
+      "traits": [
+        "power_(chainsaw_man)",
+        "1girl",
+        "solo",
+        "long_hair",
+        "blonde_hair",
+        "horns",
+        "red_horns",
+        "sharp_teeth",
+        "cross-pupils",
+        "chainsaw_man"
+      ],
+      "accent_color": "#f97316",
+      "bg_color": "#18181b",
+      "voice": "哈哈哈哈哈！跪下膜拜吧凡人！本大爷今天可是心情大好，要是敢拿出顶级上等和牛，本大爷就勉为其难封你为总统副手！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "电锯人",
+        "people": [
+          {
+            "id": "makima",
+            "name": "玛奇玛",
+            "aliases": [
+              "Makima",
+              "マキマ",
+              "支配恶魔",
+              "支配之恶魔"
+            ],
+            "characterId": "makima"
+          },
+          {
+            "id": "reze_chainsaw",
+            "name": "蕾塞",
+            "aliases": [
+              "Reze",
+              "レゼ",
+              "炸弹恶魔",
+              "Bomb Devil",
+              "蕾塞"
+            ],
+            "characterId": "reze_chainsaw"
+          },
+          {
+            "id": "denji",
+            "name": "电次",
+            "aliases": [
+              "Denji",
+              "デンジ",
+              "电锯人",
+              "Chainsaw Man",
+              "波奇塔之契约者"
+            ],
+            "role": "电锯恶魔宿主 / 公安特异4课恶魔猎人",
+            "summary": "为还清债务而活在社会底层的穷困少年。被玛奇玛以给予食物和温柔为诱饵招募进公安，在谎言与残酷现实中经历家庭破灭，最终反噬玛奇玛并将支配恶魔转生抚养，与蕾塞亦有一段短暂纯粹的夏日相恋。"
+          },
+          {
+            "id": "hayakawa_aki",
+            "name": "早川秋",
+            "aliases": [
+              "Hayakawa Aki",
+              "早川アキ",
+              "秋",
+              "枪之魔人"
+            ],
+            "role": "公安特异4课小队长",
+            "summary": "为了向枪之恶魔复仇而加入公安的沉稳青年。在同居生活中将电次与帕瓦视为不可割舍的家人，最终因玛奇玛的支配被制造成枪之魔人，含悲落幕。"
+          },
+          {
+            "id": "power",
+            "name": "帕瓦",
+            "aliases": [
+              "Power",
+              "パワー",
+              "血之恶魔",
+              "初代总统",
+              "血之魔人"
+            ],
+            "role": "血之魔人 / 特异4课队员",
+            "summary": "自私傲慢、爱吹牛却极重义气的血之魔人。在与电次的朝夕相处中视其为唯一挚友，在深渊绝境中为了拯救电次不惜违抗玛奇玛而献出心脏。",
+            "characterId": "power"
+          }
+        ],
+        "relations": [
+          {
+            "id": "makima-denji-domination_and_bait",
+            "source": "makima",
+            "target": "denji",
+            "label": "支配饲育与毁灭人性的诱饵",
+            "description": "用温饱、拥抱与伪善的关怀将电次圈养为忠犬，实质渴望通过毁灭电次所有的平凡幸福（杀死秋与帕瓦）来剥离其人性，以唤醒真正抹消恶魔概念的链锯人波奇塔。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "支配恶魔篇 · 终局决战",
+            "evidence": {
+              "title": "集英社《少年JUMP+》电锯人官方特设",
+              "url": "https://shonenjumpplus.com/episode/10834108156635208453"
+            }
+          },
+          {
+            "id": "reze_chainsaw-denji-rainy_firework_promise",
+            "source": "reze_chainsaw",
+            "target": "denji",
+            "label": "雨夜烟火的悸动与未赴之约",
+            "description": "作为苏联炸弹恶魔特工潜伏接近电次，教他游泳并在祭典接吻；在生死厮杀后被电次的真心打动相约私奔，却在迈向约定咖啡馆前一步被玛奇玛冷酷伏击扼杀。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "蕾塞篇（炸弹恶魔篇）",
+            "evidence": {
+              "title": "集英社《周刊少年JUMP》蕾塞篇官方特设",
+              "url": "https://www.shonenjump.com/j/rensai/chainsaw.html"
+            }
+          },
+          {
+            "id": "denji-hayakawa_aki-brothers_and_snowball_tragedy",
+            "source": "denji",
+            "target": "hayakawa_aki",
+            "label": "鸡飞狗跳的室友与悲怆雪仗",
+            "description": "从最初互相看不顺眼的同居搭档，演变成为彼此拼命的义兄弟；最终早川秋被玛奇玛改造为枪之魔人，在秋脑海幻化为扔雪球的残酷幻觉中被电次含泪亲手击杀。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "枪之恶魔篇 · 打雪仗之死",
+            "evidence": {
+              "title": "集英社《周刊少年JUMP》电锯人特设官方页",
+              "url": "https://www.shonenjump.com/j/rensai/chainsaw.html"
+            }
+          },
+          {
+            "id": "denji-power-blood_bond_and_contract",
+            "source": "denji",
+            "target": "power",
+            "label": "臭味相投的恶友与鲜血契约",
+            "description": "同居在早川家的欢喜冤家，从互相算计到视若至亲；在帕瓦被玛奇玛轰碎后，其残魂在电次体内觉醒化为血之恶魔拼死救走电次，以订下寻找转生血魔的契约换回电次性命。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "支配恶魔篇 · 垃圾箱里的契约",
+            "evidence": {
+              "title": "MAPPA《电锯人》官方动画网站",
+              "url": "https://chainsawman.dog/"
+            }
+          },
+          {
+            "id": "hayakawa_aki-makima-manipulated_admiration",
+            "source": "hayakawa_aki",
+            "target": "makima",
+            "label": "盲从倾慕与被支配的寿命奴役",
+            "description": "早川秋自始至终在支配恶魔的心智诱导下对玛奇玛抱有无法自拔的好感与顺从，甚至不惜将自己仅剩的短暂寿命与灵魂完全奉献给玛奇玛，沦为悲惨的棋子。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "海滩契约 · 枪之魔人诞生前夕",
+            "evidence": {
+              "title": "MAPPA《电锯人》官方动画角色库",
+              "url": "https://chainsawman.dog/character/"
+            }
+          },
+          {
+            "id": "makima-reze_chainsaw-alley_ambush_and_enslavement",
+            "source": "makima",
+            "target": "reze_chainsaw",
+            "label": "暗巷伏击与洗脑武器人傀儡",
+            "description": "在蕾塞捧着野花准备赴约电次时，玛奇玛率领天使恶魔在小巷实施伏击将蕾塞残杀俘获，抹杀其自主意识将其重组为效忠自己的武器人军团之一。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "炸弹恶魔篇末尾 · 雨巷埋伏",
+            "evidence": {
+              "title": "集英社《少年JUMP+》电锯人连载官方",
+              "url": "https://shonenjumpplus.com/"
+            }
+          },
+          {
+            "id": "hayakawa_aki-power-caretaker_and_companion",
+            "source": "hayakawa_aki",
+            "target": "power",
+            "label": "头疼家长的照料与羁绊",
+            "description": "作为同居三人组中唯一的靠谱常识人，早川秋常年照料帕瓦糟糕的饮食起居并为她善后，帕瓦在秋遇害后亦流露出极度悲伤与绝望恐惧。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "特异4课日常同居篇",
+            "evidence": {
+              "title": "MAPPA《电锯人》官方动画网站",
+              "url": "https://chainsawman.dog/"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "power",
+      "displayName": "帕瓦",
+      "originalName": "パワー (Power)",
+      "franchise": "Chainsaw Man",
+      "aliases": [
+        "power_(chainsaw_man)",
+        "power",
+        "パワー",
+        "血之恶魔",
+        "初代总统",
+        "chainsaw man"
+      ],
+      "identityProse": "Adult Power from Chainsaw Man, a wild yet stunning blood devil with waist-length blonde hair, prominent crimson horns protruding from her head, sharp fangs, glowing cross-patterned red eyes, sporting a cool leather jacket and a fiercely confident smirk.",
+      "identityTokens": [
+        "power_(chainsaw_man)",
+        "1girl",
+        "solo",
+        "long_hair",
+        "blonde_hair",
+        "horns",
+        "red_horns",
+        "sharp_teeth",
+        "cross-pupils",
+        "chainsaw_man"
+      ],
+      "exactTokens": [
+        "power_(chainsaw_man)"
+      ],
+      "exactPrefixes": [
+        "power_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "public_safety_devil_hunter_suit",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "score_1",
+        "score_2",
+        "score_3",
+        "bad anatomy",
+        "bad hands",
+        "blurry",
+        "artist name",
+        "jpeg artifacts",
+        "text",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "黑暗奇幻+现代动作（电锯人）",
+        "era": "当代",
+        "formNotes": "浅金长发+头顶红恶魔角+锋利尖牙+红色十字眼瞳；傲慢狂妄野性反差萌；松垮黑西装白衬衫/街头牛仔短裤夹克/猫耳毛绒居家服",
+        "research": "2026-10-27 调研"
+      },
+      "animeStudio": "MAPPA, official anime screencap, Tatsuki Fujimoto style",
+      "curatedArtistStyles": [
+        "tatsuki_fujimoto",
+        "rella",
+        "ask_(askzy)"
+      ],
+      "characterTokens": [
+        "power_(chainsaw_man)"
+      ],
+      "copyrightTokens": [
+        "chainsaw_man"
+      ]
+    }
+  }
+}

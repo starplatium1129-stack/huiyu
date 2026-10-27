@@ -1,0 +1,355 @@
+{
+  "kind": "character",
+  "id": "aozaki_aoko",
+  "revision": 2,
+  "sortOrder": 198,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "data": {
+    "id": "aozaki_aoko",
+    "profile": {
+      "id": "aozaki_aoko",
+      "name": "苍崎青子",
+      "alias": [
+        "Aozaki Aoko",
+        "青子",
+        "第五魔法使",
+        "Magic Gunner",
+        "苍崎",
+        "蒼崎青子"
+      ],
+      "type": "popular",
+      "icon": "✨",
+      "portrait": {
+        "image": "../assets/characters/popular-aozaki_aoko.png?v=1",
+        "alt": "苍崎青子 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "栗红微卷长发 · 随性披散发梢",
+        "hair_color": "栗红 / 深茶红（施术时化作炽烈赤红）",
+        "eyes": "澄澈群青蓝瞳",
+        "hairstyle": "随性及腰微卷长发 · 额前自然碎刘海",
+        "uniform": "经典旅人风衣 · 白色立领衬衫搭配深色修身长裤 · 磨损皮箱",
+        "expression": "从容洒脱 · 略带俏皮自信微笑 · 战斗施术时眼神凌厉如炬",
+        "style": "confident wandering magician mature cool elegant",
+        "signature": "栗红长发、群青蓝瞳、卡其色旅人风衣与指尖凝聚的炽蓝魔弹"
+      },
+      "personality": [
+        "行事利落干脆、不拘泥于繁文缛节的流浪魔法使",
+        "褪去高中时代的冲动好胜后更加通透从容的气度",
+        "表面嫌麻烦怕啰嗦、暗地里依然极富正义感与侠气",
+        "习惯独自行走于不同城市车站、雪原与灵脉交界的淡然",
+        "偶遇旧识时会以大姐姐的从容姿态调侃并默默关照对方"
+      ],
+      "likes": [
+        "在陌生的雪夜车站候车室喝一杯冒热气的苦咖啡",
+        "漫无目的的列车旅行与沿途不断变换的风景",
+        "给三咲市久远寺洋馆寄写满旅途琐事的风景明信片",
+        "随手弹射精准粉碎魔术结界或机械障碍的轻快感",
+        "挑选质地结实耐磨的皮质旅行箱与风衣外套"
+      ],
+      "classic_cg": {
+        "title": "暴风雪车站的炽蓝魔弹与离别背影",
+        "description": "北国深夜飘着密集暴雪的火车站台上，昏黄的路灯将积雪映得晶莹。青子身裹卡其色长风衣，单手拎着一只贴满旧旅行标签的深棕皮箱。她微微侧过身回望，栗红的长发在凛冽寒风中狂乱翻飞，指尖跳跃着一缕冰蓝色的微光魔弹，嘴角扬起一抹飒爽从容的浅笑。"
+      },
+      "identity": {
+        "role": "第五魔法使 / 现代最高位魔弹使 / 自由流浪魔术师",
+        "age": "成年创作设定",
+        "occupation": "魔法使 / 自由旅行者",
+        "faction": "苍崎家 / 久远寺洋馆 / 独立"
+      },
+      "tags": [
+        "长发",
+        "栗红发",
+        "蓝瞳",
+        "风衣",
+        "旅行箱",
+        "魔法使",
+        "魔弹",
+        "大姐姐"
+      ],
+      "bg_story": "苍崎青子是《魔法使之夜》的主角、第五魔法的继承者。高中毕业并与久远寺洋馆的同伴结束合宿多年后，青子正式踏上了无拘无束的流浪旅途。褪去昔日学生会长的青涩与对魔术世界的抗拒，成年后的青子彻底掌握了干涉时间与极致破坏的第五魔法。她提着一只磨损的复古旅行箱，流转于世界各地的旧车站、冬日雪原与灵脉交汇之地。她依然不喜欢魔术协会的规矩，也不自诩为救世主，但在路过受灾地或遇到陷入困境的年轻后辈时，总会看似漫不经心地点出一记威力惊人的魔弹。偶尔，她会在某个偏僻小镇的酒馆落座，写下一张寄往三咲市洋馆的明信片，端起热饮注视着窗外的初雪，神情坦荡而从容。",
+      "palette": [
+        "苍蓝",
+        "深栗红",
+        "卡其色"
+      ],
+      "weather": [
+        "雪夜车站",
+        "黄昏旷野",
+        "雾气街角"
+      ],
+      "speech": "哟，又在迷茫了吗？这副表情可不太好看。要是一颗魔弹解决不了烦恼，那就把步子迈开，跟我去下一站看看吧。",
+      "source": "奈须蘑菇《魔法使之夜 / Mahoutsukai no Yoru》",
+      "traits": [
+        "aozaki_aoko",
+        "1girl",
+        "solo",
+        "long_hair",
+        "brown_hair",
+        "red_hair",
+        "blue_eyes",
+        "slender",
+        "mahou_tsukai_no_yoru"
+      ],
+      "accent_color": "#2563eb",
+      "bg_color": "#0f172a",
+      "voice": "哟，又在迷茫了吗？这副表情可不太好看。要是一颗魔弹解决不了烦恼，那就把步子迈开，跟我去下一站看看吧。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "魔法使之夜",
+        "people": [
+          {
+            "id": "kuonji_alice",
+            "name": "久远寺有珠",
+            "aliases": [
+              "久远寺有珠",
+              "Alice Kuonji",
+              "魔女有珠",
+              "纯血魔女"
+            ],
+            "characterId": "kuonji_alice"
+          },
+          {
+            "id": "aozaki_aoko",
+            "name": "苍崎青子",
+            "aliases": [
+              "苍崎青子",
+              "Aozaki Aoko",
+              "第五魔法使",
+              "Magic Gunner",
+              "青子"
+            ],
+            "role": "第五魔法继承者 / 三咲高中学生会长",
+            "summary": "魔术造诣粗糙但破坏力与时间干涉通神的年轻见习魔法使。继承苍崎家魔术刻印后镇守三咲市灵脉，在久远寺宅邸与有珠一同接纳并保护目击者草十郎，在雪夜决战觉醒第五魔法奇迹。",
+            "characterId": "aozaki_aoko"
+          },
+          {
+            "id": "shizuki_soujuurou",
+            "name": "静希草十郎",
+            "aliases": [
+              "静希草十郎",
+              "Shizuki Soujuurou",
+              "草十郎",
+              "山里来的少年"
+            ],
+            "role": "深山长大的淳朴转学生",
+            "summary": "言行异于常人、对现代都市一无所知的质朴青年。因误入游乐园魔术结界被青子与有珠监视同居，以天然纯粹的洞察力融化了有珠冰冷的心防。"
+          },
+          {
+            "id": "aozaki_touko_mahoyo",
+            "name": "苍崎橙子",
+            "aliases": [
+              "苍崎橙子",
+              "Aozaki Touko",
+              "伤痛之赤",
+              "冠位人偶师"
+            ],
+            "role": "苍崎青子的亲姐姐 / 人形魔术师",
+            "summary": "因未能继承第五魔法而叛出家门的魔术天才。制造出足以乱真的人形使魔向三咲市发起残酷争夺战，被青子与草十郎联手击退。"
+          },
+          {
+            "id": "lugh_beowulf",
+            "name": "卢·贝奥武夫",
+            "aliases": [
+              "卢·贝奥武夫",
+              "Lugh Beowulf",
+              "黄金狼人",
+              "贝奥"
+            ],
+            "role": "黄金的人狼 / 橙子的契约使魔",
+            "summary": "拥有三千年历史神话体质的纯血人狼。能免疫一切现代魔术轰击，最终在山林被草十郎以纯粹人类格斗技巧击破心脏要害。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "kuonji_alice-aozaki_aoko-mansion_allies_and_friends",
+            "source": "kuonji_alice",
+            "target": "aozaki_aoko",
+            "label": "洋馆同居与魔道挚友",
+            "description": "同居于久远寺洋馆的魔术师同盟，性格冰炭不同却在守护三咲市灵脉的死斗中生死相依，是彼此在冷酷神秘世界中唯一的依靠。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 共通设定",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "kuonji_alice-shizuki_soujuurou-from_murderous_to_shelter",
+            "source": "kuonji_alice",
+            "target": "shizuki_soujuurou",
+            "label": "由杀意至容留默契",
+            "description": "草十郎因目击魔术险遭有珠抹杀，然而在同居日常与游乐园死斗中有珠被其纯粹无欲的心境触动，暗中赠予防护护符并默许其留宿。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 日常与合宿",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "kuonji_alice-aozaki_touko_mahoyo-mansion_clash",
+            "source": "kuonji_alice",
+            "target": "aozaki_touko_mahoyo",
+            "label": "洋馆袭杀与使魔鏖战",
+            "description": "橙子突袭久远寺洋馆企图夺取灵脉与使魔，有珠释放传家秘宝大桥之巨人和大厅茶会拼至重伤濒死，誓死捍卫洋馆的神秘尊严。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 洋馆袭击战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "aozaki_aoko-shizuki_soujuurou-contract_and_humanity_anchor",
+            "source": "aozaki_aoko",
+            "target": "shizuki_soujuurou",
+            "label": "契约同盟与灵魂锚点",
+            "description": "青子给目击者草十郎戴上致命项圈限制自由，但在废弃游乐园与雪山决战中草十郎舍命阻击狼人，成为青子觉醒第五魔法后维系人性的永恒锚点。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 雪山决战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "aozaki_aoko-aozaki_touko_mahoyo-sisters_magic_dispute",
+            "source": "aozaki_aoko",
+            "target": "aozaki_touko_mahoyo",
+            "label": "同胞姊妹与魔法争夺",
+            "description": "因祖父突然将苍崎家第五魔法继承权托付给毫无魔术基础的妹妹青子，橙子愤而出走并在数年后杀回三咲市决战，最终被青子的魔法之青击溃放逐。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 最终决战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "shizuki_soujuurou-lugh_beowulf-mortal_critical_strike",
+            "source": "shizuki_soujuurou",
+            "target": "lugh_beowulf",
+            "label": "徒手重击与破格一击",
+            "description": "雪夜林中决战，凡人少年草十郎以在深山练就的极致徒手暗杀体术，出其不意击碎黄金狼人的心窝，颠覆了神秘唯有神秘能破的铁律。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 雪山决战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "aozaki_touko_mahoyo-lugh_beowulf-familiar_contract",
+            "source": "aozaki_touko_mahoyo",
+            "target": "lugh_beowulf",
+            "label": "使魔契约与黄金王牌",
+            "description": "橙子在北欧耗费极大心血收服的神代人狼遗孤，将其作为攻破久远寺结界与压制青子的终极王牌，狼人战败后被其放养。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 袭来篇",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          },
+          {
+            "id": "aozaki_aoko-lugh_beowulf-snowfield_duel",
+            "source": "aozaki_aoko",
+            "target": "lugh_beowulf",
+            "label": "风雪激战",
+            "description": "雪原之上青子凭借高速魔弹与第五魔法的奇迹时间跳跃，正面击破了黄金狼人号称三千年不败的神代不死之躯。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "魔法使之夜 · 终局决战",
+            "evidence": {
+              "title": "TYPE-MOON · 魔法使之夜官方网站",
+              "url": "https://typemoon.com/products/mahoyo/"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "aozaki_aoko",
+      "displayName": "苍崎青子",
+      "originalName": "蒼崎 青子 (Aozaki Aoko)",
+      "franchise": "Witch on the Holy Night",
+      "aliases": [
+        "aozaki_aoko",
+        "aoko_aozaki",
+        "aoko",
+        "苍崎青子",
+        "青子",
+        "第五魔法使",
+        "magic gunner",
+        "mahoutsukai no yoru"
+      ],
+      "identityProse": "Adult Aozaki Aoko from Witch on the Holy Night, a confident and free-spirited wandering magician with long reddish-brown hair, sharp azure eyes, wearing a stylish traveler trench coat, exuding a mature, cool, and effortless aura.",
+      "identityTokens": [
+        "aozaki_aoko",
+        "1girl",
+        "solo",
+        "long_hair",
+        "brown_hair",
+        "blue_eyes",
+        "slender",
+        "mahou_tsukai_no_yoru"
+      ],
+      "exactTokens": [
+        "aozaki_aoko"
+      ],
+      "exactPrefixes": [
+        "aoko_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "traveler_trench_coat",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "score_1",
+        "score_2",
+        "score_3",
+        "bad anatomy",
+        "bad hands",
+        "blurry",
+        "artist name",
+        "jpeg artifacts",
+        "text",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代奇幻+型月世界（魔法使之夜/月姬）",
+        "era": "当代",
+        "formNotes": "栗红长发+群青蓝瞳+高挑修长身姿；从容洒脱的流浪魔弹使；卡其色旅行风衣/三咲高中制服/随性针织便装",
+        "research": "2026-10-27 调研"
+      },
+      "animeStudio": "ufotable, TYPE-MOON, official anime screencap",
+      "curatedArtistStyles": [
+        "koyama_hirokazu",
+        "takeuchi_takashi",
+        "rella"
+      ],
+      "characterTokens": [
+        "aozaki_aoko"
+      ],
+      "copyrightTokens": [
+        "mahou_tsukai_no_yoru"
+      ]
+    }
+  }
+}

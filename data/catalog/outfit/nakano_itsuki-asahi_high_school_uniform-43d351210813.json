@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "nakano_itsuki/asahi_high_school_uniform",
+  "revision": 1,
+  "sortOrder": 1523,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "characterId": "nakano_itsuki",
+    "outfit": {
+      "id": "asahi_high_school_uniform",
+      "name": "旭高校端庄红色开衫星发夹制服",
+      "prose": "Asahi High School uniform with a proper collared shirt, neat red necktie, crimson knit cardigan, star hairpins, ahoge, and a pleated dark skirt with high socks.",
+      "tokens": [
+        "school_uniform",
+        "cardigan",
+        "red_cardigan",
+        "collared_shirt",
+        "red_necktie",
+        "pleated_skirt",
+        "black_skirt",
+        "star_hair_ornament",
+        "ahoge",
+        "black_thighhighs",
+        "loafers"
+      ],
+      "isNsfw": false,
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

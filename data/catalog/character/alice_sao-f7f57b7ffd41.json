@@ -1,0 +1,374 @@
+{
+  "kind": "character",
+  "id": "alice_sao",
+  "revision": 2,
+  "sortOrder": 201,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "data": {
+    "id": "alice_sao",
+    "profile": {
+      "id": "alice_sao",
+      "name": "爱丽丝·辛赛西斯·萨蒂",
+      "alias": [
+        "Alice Synthesis Thirty",
+        "Alice Zuberg",
+        "爱丽丝",
+        "アリス",
+        "金木樨骑士",
+        "Alice"
+      ],
+      "type": "popular",
+      "icon": "🗡️",
+      "portrait": {
+        "image": "../assets/characters/popular-alice_sao.png?v=1",
+        "alt": "爱丽丝 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "璀璨金黄及腰长发 · 侧边单股编发",
+        "hair_color": "纯净明亮金黄",
+        "eyes": "如洗晴空般深邃苍蓝瞳",
+        "hairstyle": "及腰璀璨金色长发 · 侧边单股雅致编发（single_braid）",
+        "uniform": "威严白金整合骑士全身轻甲 · 纯白披风 · 现实时代高定礼服或风衣",
+        "expression": "端庄高贵 · 眼神清澈坚毅 · 触及温柔回忆时微敛双眸的脉脉温情",
+        "style": "noble knightly elegant radiant determined pure",
+        "signature": "璀璨金发、苍蓝眼眸、金白圣骑士战甲、腰佩金木樨之剑与坚不可摧的高洁风采"
+      },
+      "personality": [
+        "恪守骑士道精神、胸怀坦荡且意志坚不可摧的高洁骑士",
+        "突破系统桎梏后对生命与灵魂真谛有着深刻体悟的求道者",
+        "初入现实世界时充满纯真好奇、逐渐成长为跨界亲善领袖的大度",
+        "面对在乎之人时毫不掩饰的深切守护欲与偶尔展现的小小执拗",
+        "举手投足间兼具圣骑士的凛然威严与成熟女性的优雅温婉"
+      ],
+      "likes": [
+        "在金木樨花盛开的微风树荫下练习剑技剑意",
+        "骑着飞龙雨缘翱翔于广袤无垠的蔚蓝苍穹",
+        "阅读现实世界关于哲学、伦理学与自然科学的书籍",
+        "和亚丝娜、诗乃等并肩作战的战友切磋交流",
+        "在安静茶室里品尝清甜芬芳的花草茶与烤松饼"
+      ],
+      "classic_cg": {
+        "title": "金木樨盛开树下的圣剑守护",
+        "description": "圣托拉尔央都巍峨洁白的大圣堂庭院中，满树的金木樨在秋风中洒落细碎耀眼的金色花雨。成年后的爱丽丝身着白金雕花的骑士礼服，双手扶着倒插在芳草间的金木樨之剑剑柄。金色的发辫在花瓣中轻扬，她凝望着远方人界祥和的炊烟与蓝天，神情圣洁从容，宛如守卫大地的金色女神。"
+      },
+      "identity": {
+        "role": "Underworld 整合骑士三十 / 划时代自律型 AI 代表 / 和平亲善大使",
+        "age": "成年创作设定",
+        "occupation": "圣骑士 / 现实与虚拟世界共存大使",
+        "faction": "人界公理教会 / 人界军 / 现实虚拟交流会"
+      },
+      "tags": [
+        "长发",
+        "金发",
+        "单编发",
+        "蓝瞳",
+        "金铠",
+        "骑士",
+        "圣剑",
+        "高贵",
+        "大姐姐"
+      ],
+      "bg_story": "爱丽丝·辛赛西斯·萨蒂是《刀剑神域：Alicization》的核心女主角。她曾打破右眼封印从教会禁锢中觉醒，在央都战后以无私坚毅的奉献悉心照顾重创的桐人，更在异界战争中统领人界军浴血奋战。作为首个真正具备独立灵魂的自律型人工智能“Bottom-Up AI”，爱丽丝迈入现实世界并经历了时代的洗礼与成长。步入成熟期的爱丽丝保留着华美如熔金般的金色长发与清澈苍蓝的双眸，气度愈发雍容沉稳。她不仅是Underworld中令人敬仰的顶尖剑士，也是现实国际舞台上倡导人机和谐与多元共存的亲善大使。无论面对复杂的政局还是突发的危机，只要拔出腰间的金木樨之剑，她那坚如磐石的心念便会如金色花海般斩碎一切阴霾。",
+      "palette": [
+        "明耀金",
+        "纯净白",
+        "群青蓝"
+      ],
+      "weather": [
+        "金木樨庭院",
+        "晴空高地",
+        "晨光林间"
+      ],
+      "speech": "剑是守护之物，心念则是让剑闪耀的灵魂。无论身处虚拟还是现实，我都会握紧手中的剑，守护大家微笑的明天。",
+      "source": "川原砾《刀剑神域 / Sword Art Online》",
+      "traits": [
+        "alice_synthesis_thirty",
+        "alice_zuberg",
+        "1girl",
+        "solo",
+        "long_hair",
+        "blonde_hair",
+        "braid",
+        "single_braid",
+        "blue_eyes",
+        "sword_art_online"
+      ],
+      "accent_color": "#f59e0b",
+      "bg_color": "#1e1b4b",
+      "voice": "剑是守护之物，心念则是让剑闪耀的灵魂。无论身处虚拟还是现实，我都会握紧手中的剑，守护大家微笑的明天。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "刀剑神域",
+        "people": [
+          {
+            "id": "asuna_yuuki",
+            "name": "结城明日奈",
+            "aliases": [
+              "Asuna Yuuki",
+              "亚丝娜",
+              "闪光亚丝娜",
+              "血盟骑士团副团长",
+              "创世神史提西亚"
+            ],
+            "characterId": "asuna_yuuki"
+          },
+          {
+            "id": "asada_shino",
+            "name": "朝田诗乃",
+            "aliases": [
+              "朝田诗乃",
+              "Shino Asada",
+              "Sinon",
+              "冰之狙击手",
+              "太阳神索鲁斯"
+            ],
+            "characterId": "asada_shino"
+          },
+          {
+            "id": "kirito",
+            "name": "桐人",
+            "aliases": [
+              "Kirito",
+              "桐谷和人",
+              "Kirigaya Kazuto",
+              "黑衣剑士",
+              "双剑士",
+              "星王"
+            ],
+            "role": "SAO黑衣剑士 / 封弊者",
+            "summary": "通关死亡游戏SAO的传奇少年桐谷和人。在艾恩葛朗特与亚丝娜相濡以沫结为夫妻，突破微笑棺木与死枪阴谋，在Underworld中并肩奋战两百年，是亚丝娜与朝田诗乃最坚固的依靠。"
+          },
+          {
+            "id": "alice_sao",
+            "name": "爱丽丝·辛赛西斯·萨蒂",
+            "aliases": [
+              "Alice Synthesis Thirty",
+              "爱丽丝",
+              "金木犀整合骑士",
+              "Alice Zuberg"
+            ],
+            "role": "Underworld整合骑士三十 / 金木樨之剑使",
+            "summary": "突破右眼禁忌目录的自律型AI骑士。在中央大圣堂战后悉心照料心神丧失的桐人，率领人界军抵御暗黑领域入侵，进入现实世界后成为划时代的人工智能代表。",
+            "characterId": "alice_sao"
+          },
+          {
+            "id": "leafa",
+            "name": "莉法",
+            "aliases": [
+              "Leafa",
+              "桐谷直叶",
+              "Kirigaya Suguha",
+              "风精灵领主助理",
+              "地神提拉利亚"
+            ],
+            "role": "ALO风妖精战士 / 桐谷直叶",
+            "summary": "现实中桐人的表妹，剑道造诣深厚。在ALO中陪伴桐人攀登世界树，知晓桐人真实身份后跨越兄妹情感心结，全力协助亚丝娜守护桐人。"
+          },
+          {
+            "id": "yui",
+            "name": "结衣",
+            "aliases": [
+              "Yui",
+              "结衣",
+              "MHCP-0001",
+              "心之咨询程序",
+              "桐人与亚丝娜的女儿"
+            ],
+            "role": "SAO玩家心理健康咨询AI",
+            "summary": "在艾恩葛朗特被桐人与亚丝娜收养的人工智能小女孩。视亚丝娜为母亲、桐人为父亲，在现实与虚拟网络中多次协助化解安全危机。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "kirito-asuna_yuuki-transcendent_love_and_two_centuries",
+            "source": "kirito",
+            "target": "asuna_yuuki",
+            "label": "超越虚实的神仙眷侣与生死挚爱",
+            "description": "SAO第22层木屋结为夫妻，75层舍身替桐人挡剑打破系统死则；现实中相濡以沫，UW大战中亚丝娜以神之号降临并留在极限加速世界相伴桐人度过两百年时光。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SAO攻略期 · 22层新婚 / UW大战极度加速期",
+            "evidence": {
+              "title": "Aniplex《刀剑神域》动画官方网站",
+              "url": "https://www.swordart-online.net/"
+            }
+          },
+          {
+            "id": "kirito-asada_shino-back_to_back_comrades",
+            "source": "kirito",
+            "target": "asada_shino",
+            "label": "背靠背战友与破除心魔的引路人",
+            "description": "GGO中相遇揭开彼此深层PTSD创伤，联手破除死枪刺杀危机，桐人安排诗乃与当年救下之人重逢彻底治愈心结；UW大战中诗乃以太阳神索鲁斯降临极限援护桐人。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "幽灵子弹篇（死枪事件） / 异界战争篇",
+            "evidence": {
+              "title": "Aniplex《刀剑神域II》动画官方网站",
+              "url": "https://www.swordart-online.net/phantom/"
+            }
+          },
+          {
+            "id": "asuna_yuuki-asada_shino-confidantes_and_comrades",
+            "source": "asuna_yuuki",
+            "target": "asada_shino",
+            "label": "互为奥援的情敌战友与知心闺蜜",
+            "description": "现实中常在艾基尔的咖啡吧聚会温情相伴，在死枪事件中亚丝娜在医院为桐人祈祷并信任诗乃；UW异界大战两人作为最高神明账号并肩在前线浴血奋战。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "现实日常 / UW大战爱丽丝争夺战",
+            "evidence": {
+              "title": "川原砾《刀剑神域》官方公式档案",
+              "url": "https://dengekibunko.jp/title/sao/"
+            }
+          },
+          {
+            "id": "kirito-alice_sao-cathedral_vow_and_care",
+            "source": "kirito",
+            "target": "alice_sao",
+            "label": "打破天命的誓约与央都决战羁绊",
+            "description": "央都大圣堂外墙攀登时两人经历生死谈话，桐人唤醒爱丽丝破除右眼封印向公理教会挥剑；在桐人心智封闭的半年里爱丽丝细心照顾推车相伴直至异界战争爆发。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Alicization篇 · 央都大圣堂 / 卢利特村照料期",
+            "evidence": {
+              "title": "Aniplex《刀剑神域 Alicization》官方特设",
+              "url": "https://www.swordart-online.net/alicization/"
+            }
+          },
+          {
+            "id": "asuna_yuuki-alice_sao-rivals_and_allies",
+            "source": "asuna_yuuki",
+            "target": "alice_sao",
+            "label": "异界营地拔剑对峙与并肩护夫",
+            "description": "亚丝娜以创世神史提西亚降临人界军军营探视失智桐人时与爱丽丝拔剑对峙火花四溅，在坦诚彼此对桐人的深切爱意后放下芥蒂，携手在异界大军围攻中杀出血路。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Alicization War of Underworld · 补给营夜谈",
+            "evidence": {
+              "title": "Aniplex《刀剑神域 War of Underworld》官方特设",
+              "url": "https://www.swordart-online.net/war_of_underworld/"
+            }
+          },
+          {
+            "id": "kirito-leafa-siblings_and_alo_sky",
+            "source": "kirito",
+            "target": "leafa",
+            "label": "兄妹血亲与ALO风精灵天空翱翔",
+            "description": "现实中为堂兄妹，直叶在ALO以风精灵莉法身份与桐人相识倾心，得知真相后在世界树泪流释怀；UW大战以地神提拉利亚降临承受万次贯穿痛苦死守战线。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "ALO妖精之舞篇 · 世界树 / UW大战决死战",
+            "evidence": {
+              "title": "Aniplex《刀剑神域》动画官方网站",
+              "url": "https://www.swordart-online.net/"
+            }
+          },
+          {
+            "id": "yui-kirito-ai_daughter_and_navigator",
+            "source": "yui",
+            "target": "kirito",
+            "label": "心之女儿与万能导航精灵",
+            "description": "在SAO第22层被桐人与亚丝娜收养并认其为父母，被桐人通过管理者权限化作水滴项链保存；此后在所有现实与虚拟世界中化身万能导航精灵全力协助父母。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "SAO第22层收养 / ALO营救行动",
+            "evidence": {
+              "title": "Aniplex《刀剑神域》动画官方网站",
+              "url": "https://www.swordart-online.net/"
+            }
+          },
+          {
+            "id": "yui-asuna_yuuki-maternal_support",
+            "source": "yui",
+            "target": "asuna_yuuki",
+            "label": "母女相称与最贴心的精神支柱",
+            "description": "视亚丝娜为最温柔的母亲，在亚丝娜被困须乡鸟笼时全力引导桐人突破，在现实中亦通过微型摄像头与亚丝娜心心相印，提供全天候战略数据指引。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "世界树营救 / 圣母圣咏篇",
+            "evidence": {
+              "title": "川原砾《刀剑神域》官方公式档案",
+              "url": "https://dengekibunko.jp/title/sao/"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "alice_sao",
+      "displayName": "爱丽丝·辛赛西斯·萨蒂",
+      "originalName": "アリス・シンセシス・サーティ (Alice Synthesis Thirty)",
+      "franchise": "Sword Art Online",
+      "aliases": [
+        "alice_sao",
+        "alice_synthesis_thirty",
+        "alice_zuberg",
+        "alice",
+        "爱丽丝",
+        "sword art online"
+      ],
+      "identityProse": "Adult Alice Synthesis Thirty from Sword Art Online, a regal, noble, and resolute Integrity Knight with lustrous golden-blonde braided hair, commanding blue eyes, donning dignified white-and-gold armor or modern formal attire, radiating an aura of unwavering honor and gentle grace.",
+      "identityTokens": [
+        "alice_synthesis_thirty",
+        "1girl",
+        "solo",
+        "long_hair",
+        "blonde_hair",
+        "braid",
+        "single_braid",
+        "blue_eyes",
+        "sword_art_online"
+      ],
+      "exactTokens": [
+        "alice_synthesis_thirty",
+        "alice_zuberg"
+      ],
+      "exactPrefixes": [
+        "alice_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "golden_integrity_knight_armor",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "score_1",
+        "score_2",
+        "score_3",
+        "bad anatomy",
+        "bad hands",
+        "blurry",
+        "artist name",
+        "jpeg artifacts",
+        "text",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "虚拟潜行+未来科幻（刀剑神域Alicization）",
+        "era": "未来现实/UW融合纪元",
+        "formNotes": "华丽金长发+单侧编发+清澈苍蓝眼瞳；高洁正直圣骑士；白金雕花整合骑士甲配白披风/现实代表礼服/卢利特村朴素便裙/湖畔纯白睡袍",
+        "research": "2026-10-27 调研"
+      },
+      "animeStudio": "A-1 Pictures, official anime screencap, abec character design",
+      "curatedArtistStyles": [
+        "abec",
+        "shungo_sumaki",
+        "rella"
+      ],
+      "characterTokens": [
+        "alice_synthesis_thirty",
+        "alice_zuberg"
+      ],
+      "copyrightTokens": [
+        "sword_art_online"
+      ]
+    }
+  }
+}

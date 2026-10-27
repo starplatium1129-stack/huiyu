@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "iino_miko/relaxed_hoodie_roomwear",
+  "revision": 1,
+  "sortOrder": 1586,
+  "createdAt": "2026-10-27T13:23:58.471Z",
+  "updatedAt": "2026-10-27T13:23:58.471Z",
+  "data": {
+    "characterId": "iino_miko",
+    "outfit": {
+      "characterId": "iino_miko",
+      "id": "relaxed_hoodie_roomwear",
+      "name": "周末居家宽大连帽衫",
+      "prose": "An oversized cozy lavender hoodie with front kangaroo pocket, comfy lounge shorts, and round wire-frame reading glasses.",
+      "tokens": [
+        "hoodie",
+        "oversized hoodie",
+        "lavender hoodie",
+        "shorts",
+        "glasses",
+        "round glasses"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

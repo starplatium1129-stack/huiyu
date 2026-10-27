@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nakano_yotsuba/track_athletic_hoodie",
+  "revision": 1,
+  "sortOrder": 1520,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "characterId": "nakano_yotsuba",
+    "outfit": {
+      "id": "track_athletic_hoodie",
+      "name": "田径部绿白条纹连帽运动卫衣短裤",
+      "prose": "A sporty light green zip-up athletic hoodie over a white tank top, paired with green running shorts, white wristbands, and running sneakers.",
+      "tokens": [
+        "hoodie",
+        "zipper_hoodie",
+        "green_hoodie",
+        "gym_shorts",
+        "athletic_shorts",
+        "wristband",
+        "sneakers",
+        "green_ribbon",
+        "bunny_hair_ornament"
+      ],
+      "isNsfw": false
+    }
+  }
+}

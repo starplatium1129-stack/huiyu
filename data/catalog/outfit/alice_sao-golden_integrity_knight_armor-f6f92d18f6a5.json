@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "alice_sao/golden_integrity_knight_armor",
+  "revision": 2,
+  "sortOrder": 1579,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "data": {
+    "characterId": "alice_sao",
+    "outfit": {
+      "characterId": "alice_sao",
+      "id": "golden_integrity_knight_armor",
+      "name": "金木樨黄金整合骑士铠",
+      "prose": "Magnificent white and golden knight armor, featuring intricately engraved gold pauldrons and breastplate over a royal blue tunic, paired with a pristine white cape.",
+      "tokens": [
+        "knight armor",
+        "golden armor",
+        "breastplate",
+        "pauldrons",
+        "royal blue tunic",
+        "white cape",
+        "gauntlets",
+        "greaves"
+      ],
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

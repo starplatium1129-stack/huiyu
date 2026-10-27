@@ -1,0 +1,395 @@
+{
+  "kind": "character",
+  "id": "nakano_itsuki",
+  "revision": 1,
+  "sortOrder": 188,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "id": "nakano_itsuki",
+    "profile": {
+      "id": "nakano_itsuki",
+      "name": "中野五月",
+      "alias": [
+        "Nakano Itsuki",
+        "五月",
+        "Itsuki",
+        "五月吃货",
+        "零奈",
+        "肉包怪"
+      ],
+      "type": "popular",
+      "icon": "⭐",
+      "portrait": {
+        "image": "../assets/characters/popular-nakano_itsuki.png?v=1",
+        "alt": "中野五月 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "及腰微卷赤红长发 · 两侧黄色五角星发夹 · 头顶大呆毛",
+        "hair_color": "赤红 / 绯红微卷",
+        "eyes": "澄澈深邃绀青蓝瞳",
+        "hairstyle": "丰盈波浪及腰长发 · 额前大呆毛（ahoge） · 双鬓黄色五角星发饰（star_hair_ornament）",
+        "uniform": "旭高校正规水手领制服 · 严谨红色针织开衫 · 规整系好领结",
+        "expression": "端庄认真 · 严肃说教 · 享受美食时双颊泛红微鼓的可爱反差",
+        "style": "earnest dignified foodie diligent quintuplet",
+        "signature": "及腰赤红卷发、双侧五角星发夹、头顶大呆毛与热气腾腾的肉包"
+      },
+      "personality": [
+        "行事一丝不苟、严格遵守规则的中野家风纪守护者",
+        "对美食毫无抵抗力、面对美味食物时两眼放光的吃货少女",
+        "深爱亡母并以母亲为榜样、立志成为一名优秀教师的勤勉坚毅",
+        "面对家庭教师时起初因口角而格外固执赌气的傲娇别扭",
+        "最早融入上杉家、与小妹妹濑叶结下深厚姐妹般情谊的善良长情",
+        "在风太郎遇到困难时化身「零奈」温柔开导指引的知心朋友",
+        "经历高考洗礼后顺利考入教育大学、自信站上讲台的知性教师"
+      ],
+      "likes": [
+        "街头便利店热气腾腾刚出锅的多汁牛肉大肉包",
+        "淋满浓郁奶油与当季草莓的巨型特制甜品芭菲",
+        "在安静图书馆角落一丝不苟地整理教师考试笔记",
+        "和可爱的小妹妹濑叶一起逛街做家常料理",
+        "搜集各种黄色五角星造型的文具与精致发饰",
+        "在深夜书桌旁闻着热可可香气刷完厚厚的模拟习题集"
+      ],
+      "classic_cg": {
+        "title": "寒风街角的热气肉包",
+        "description": "冬日飘雪的商业街拐角，五月身裹厚厚的格纹羊毛围巾。她双手捧着刚刚出炉、热气蒸腾的白嫩肉包，小心翼翼地小口咬下。温热的肉汁与香气让少女满足地眯起双眼，头顶的呆毛愉悦地晃动着，微红的脸颊在白茫茫的哈气中显得格外娇憨动人。"
+      },
+      "identity": {
+        "role": "中野家五胞胎五女 / 见习教师",
+        "age": "17岁（高中）→ 22岁以上（婚礼后日谈）",
+        "occupation": "高中生 → 教育大学师范生 / 中学教师",
+        "faction": "旭高校 / 中野五姐妹 / 师范学府"
+      },
+      "tags": [
+        "长发",
+        "红发",
+        "星形发夹",
+        "呆毛",
+        "红开衫",
+        "认真学霸",
+        "吃货反差萌"
+      ],
+      "bg_story": "中野五月是《五等分的新娘》核心女主角之一，中野家五胞胎的幺女。留着丰盈华美的赤红及腰长卷发，头顶竖着一撮活跃的呆毛，两侧发间始终别着标志性的黄色五角星发夹。五月性格认真刻板、自尊心极强，在母亲早逝后努力模仿母亲的威严来约束姐妹。故事开篇她在学校食堂因占座与菜单和上杉风太郎发生小摩擦，随后在得知对方是家庭教师时赌气拒绝受教，自顾自熬夜刷题却收效甚微。然而在风太郎一次次用真诚与责任化解姐妹们的危机后，五月逐渐放下成见，成为五姐妹中最理解风太郎家庭境遇的人。她多次造访上杉家，深受小妹妹濑叶喜爱；并在风太郎迷茫自责时，依照母亲留下的线索化身象征初恋回忆的「零奈」，以温柔的方式帮助少年解开过去的心结。五月怀揣着继承母亲教职的崇高梦想，在风太郎辅导下刻苦备战高考，最终如愿考入师范大学成为合格的教师。在五姐妹的成长与婚礼旅程中，五月始终是风太郎最默契可靠的人生挚友与前行伙伴。",
+      "palette": [
+        "绯红",
+        "暖黄",
+        "纯白"
+      ],
+      "weather": [
+        "冬日飞雪",
+        "星空天台",
+        "微风夏海"
+      ],
+      "speech": "上杉同学！请不要小看我的食量……不对，是请不要小看我的求学意志！今天我一定会把这张试卷全部订正完的！",
+      "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
+      "traits": [
+        "nakano_itsuki",
+        "1girl",
+        "solo",
+        "long_hair",
+        "red_hair",
+        "star_hair_ornament",
+        "ahoge",
+        "blue_eyes",
+        "slender",
+        "5-toubun_no_hanayome"
+      ],
+      "accent_color": "#ef4444",
+      "bg_color": "#1e1b4b",
+      "voice": "上杉同学！请不要小看我的食量……不对，是请不要小看我的求学意志！今天我一定会把这张试卷全部订正完的！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "五等分的新娘",
+        "people": [
+          {
+            "id": "nakano_miku",
+            "name": "中野三玖",
+            "aliases": [
+              "中野三玖",
+              "Nakano Miku",
+              "三玖",
+              "Miku"
+            ],
+            "characterId": "nakano_miku"
+          },
+          {
+            "id": "nakano_nino",
+            "name": "中野二乃",
+            "aliases": [
+              "中野二乃",
+              "Nakano Nino",
+              "二乃",
+              "Nino",
+              "暴走列车"
+            ],
+            "characterId": "nakano_nino"
+          },
+          {
+            "id": "uesugi_fuutarou",
+            "name": "上杉风太郎",
+            "aliases": [
+              "上杉風太郎",
+              "Fuutarou Uesugi",
+              "风太郎",
+              "上杉君"
+            ],
+            "role": "中野家家庭教师 / 高中生学霸",
+            "summary": "为偿还家中巨额债务而接下中野家五胞胎家教工作的孤僻学霸。在日夜督促五姐妹学习中逐渐理解每个人的心结，成为五姐妹心中不可替代的初恋与救赎，最终在学园祭选择中野四叶结为夫妻。"
+          },
+          {
+            "id": "nakano_ichika",
+            "name": "中野一花",
+            "aliases": [
+              "中野一花",
+              "Ichika Nakano",
+              "一花",
+              "一花姐姐"
+            ],
+            "role": "中野家五胞胎长女 / 知名女演员",
+            "summary": "表面成熟开朗、善解人意的大姐。为了支撑妹妹们的生活早早进入演艺圈，在对风太郎的情感中一度迷失，后与三玖、二乃重归于好。",
+            "characterId": "nakano_ichika"
+          },
+          {
+            "id": "nakano_yotsuba",
+            "name": "中野四叶",
+            "aliases": [
+              "中野四葉",
+              "Yotsuba Nakano",
+              "四叶",
+              "写真之子"
+            ],
+            "role": "中野家五胞胎四女 / 田径部王牌",
+            "summary": "元气阳光、永远为他人奉献而忽视自己的善良少女。正是童年在京都与风太郎定下约定的女孩，在长年的默默守望后终于迎来风太郎的真诚求婚。",
+            "characterId": "nakano_yotsuba"
+          },
+          {
+            "id": "nakano_itsuki",
+            "name": "中野五月",
+            "aliases": [
+              "中野五月",
+              "Itsuki Nakano",
+              "五月",
+              "零奈",
+              "吃货五月"
+            ],
+            "role": "中野家五胞胎五女 / 见习教师",
+            "summary": "认真固执、胃口极好的好学生。继承亡母的教职梦想努力奋进，是最早进入上杉家与濑叶建立深厚亲情的朋友。",
+            "characterId": "nakano_itsuki"
+          },
+          {
+            "id": "uesugi_raiha",
+            "name": "上杉濑叶",
+            "aliases": [
+              "上杉らいは",
+              "Raiha Uesugi",
+              "濑叶",
+              "濑叶妹妹"
+            ],
+            "role": "风太郎的妹妹 / 小学生",
+            "summary": "精打细算、操持上杉家内务的懂事妹妹。深受中野家五姐妹全员宠爱，视五姐妹为未来的嫂子。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "5hanayome-fuutarou-miku-first_bloom",
+            "source": "nakano_miku",
+            "target": "uesugi_fuutarou",
+            "label": "战国共鸣与自卑破茧的倾心告白",
+            "description": "因风太郎真诚接纳其战国爱好而最早敞开心扉；为追上风太郎苦练烘焙面包，在京都清水寺鼓起全身勇气向他伸手告白，虽未成新娘却在追爱中找到了立足人生的自信与梦想。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "修学旅行清水寺篇至终局",
+            "evidence": {
+              "title": "TBS电视台《五等分的新娘》官方网站",
+              "url": "https://www.tbs.co.jp/anime/5hanayome/"
+            }
+          },
+          {
+            "id": "5hanayome-fuutarou-nino-runaway_confession",
+            "source": "nakano_nino",
+            "target": "uesugi_fuutarou",
+            "label": "从敌视排斥到恋爱暴走机车",
+            "description": "起初为守护姐妹下药驱逐风太郎，在七次感谢祭与短发蜕变后彻底爱上风太郎，在机车后座轰轰烈烈直球告白；学园祭落选后虽痛哭拭泪，依然展现最骄傲洒脱的自尊与祝福。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "七个再见篇至学园祭终盘",
+            "evidence": {
+              "title": "TBS电视台《五等分的新娘∬》官方网站",
+              "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+            }
+          },
+          {
+            "id": "5hanayome-fuutarou-yotsuba-destined_bride",
+            "source": "uesugi_fuutarou",
+            "target": "nakano_yotsuba",
+            "label": "童年京都誓言与命中注定的新娘",
+            "description": "四叶正是童年在京都鼓励风太郎奋发图强的‘写真之子’；因愧对姐妹长年掩藏爱意，风太郎在学园祭直面内心选择四叶，两人跨越漫长岁月许下一生一世的婚礼誓约。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "剧场版《五等分的新娘》婚礼完结篇",
+            "evidence": {
+              "title": "剧场版《五等分的新娘》官方网站",
+              "url": "https://www.tbs.co.jp/anime/5hanayome/1st/"
+            }
+          },
+          {
+            "id": "5hanayome-fuutarou-ichika-unspoken_passion",
+            "source": "nakano_ichika",
+            "target": "uesugi_fuutarou",
+            "label": "长女的依赖与暗黑失控的救赎",
+            "description": "作为职业演员与家庭经济支柱，一花在兼职中被风太郎看穿脆弱；京都修学旅行因嫉妒假扮三玖引发姐妹信任危机，在风太郎与妹妹们真诚包容下重拾长女担当并坦然释怀。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "修学旅行篇至学园祭",
+            "evidence": {
+              "title": "TBS电视台《五等分的新娘∬》官方网站",
+              "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+            }
+          },
+          {
+            "id": "5hanayome-fuutarou-itsuki-friend_mentor",
+            "source": "nakano_itsuki",
+            "target": "uesugi_fuutarou",
+            "label": "同甘共苦的战友与梦想引路人",
+            "description": "五姐妹中唯一与风太郎保持纯粹革命友谊的存在；曾化名‘零奈’帮助风太郎走出童年初恋执念，在风太郎严苛鞭策下立志成为像母亲一样的优秀教师，是彼此无话不谈的挚友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "全篇主线贯穿",
+            "evidence": {
+              "title": "TBS电视台《五等分的新娘》官方网站",
+              "url": "https://www.tbs.co.jp/anime/5hanayome/"
+            }
+          },
+          {
+            "id": "5hanayome-miku-nino-partners_in_cafe",
+            "source": "nakano_nino",
+            "target": "nakano_miku",
+            "label": "相爱相杀的姐妹与终生咖啡厅合伙人",
+            "description": "高中时期在料理与恋爱上频繁较劲，但在落选新娘后两人抱团痛哭彼此理解，五年后携手创办风靡街巷的法式甜品咖啡厅Cafe Futanari，终生相伴互为最牢固的支柱。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "后日谈与婚礼完结篇",
+            "evidence": {
+              "title": "讲谈社《周刊少年Magazine》五等分的新娘官方主页",
+              "url": "https://shonenmagazine.com/special/5hanayome"
+            }
+          },
+          {
+            "id": "5hanayome-ichika-miku-betrayal_forgiveness",
+            "source": "nakano_ichika",
+            "target": "nakano_miku",
+            "label": "伪装背刺与泪水中的深刻和解",
+            "description": "一花因私心假扮三玖告白令三玖痛苦绝望，在风太郎拆穿真相后一花深感愧疚放弃竞争；三玖展现博大胸襟拥抱原谅一花，让五姐妹的羁绊更加坚不可摧。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "漫画第83-86话修学旅行篇",
+            "evidence": {
+              "title": "TBS电视台《五等分的新娘∬》官方网站",
+              "url": "https://www.tbs.co.jp/anime/5hanayome/2nd/"
+            }
+          },
+          {
+            "id": "5hanayome-nino-yotsuba-candid_blessing",
+            "source": "nakano_nino",
+            "target": "nakano_yotsuba",
+            "label": "洒脱泪水与全心全意的姐妹祝福",
+            "description": "二乃深知四叶多年来为姐妹牺牲自我的隐忍，在新娘公布后虽为自己的无果爱情在洗手间痛哭，但擦干眼泪后第一个冲上前拥抱四叶并送上最真挚的骄傲祝福。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "学园祭最终抉择篇",
+            "evidence": {
+              "title": "剧场版《五等分的新娘》官方网站",
+              "url": "https://www.tbs.co.jp/anime/5hanayome/1st/"
+            }
+          },
+          {
+            "id": "5hanayome-raiha-quintuplets-adored_sister",
+            "source": "uesugi_raiha",
+            "target": "uesugi_fuutarou",
+            "label": "相依为命与撮合良缘的贴心妹妹",
+            "description": "上杉家的治愈小天使，懂事体贴照顾哥哥与家庭；五姐妹全员对其宠爱有加，濑叶也成为风太郎与五姐妹化解隔阂、结下深厚羁绊的最强助攻催化剂。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "贯穿日常篇",
+            "evidence": {
+              "title": "TBS电视台《五等分的新娘》官方网站",
+              "url": "https://www.tbs.co.jp/anime/5hanayome/"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "nakano_itsuki",
+      "displayName": "中野五月",
+      "originalName": "中野 五月 (Nakano Itsuki)",
+      "franchise": "The Quintessential Quintuplets",
+      "aliases": [
+        "nakano_itsuki",
+        "itsuki_nakano",
+        "itsuki",
+        "nakano",
+        "中野五月",
+        "五月",
+        "the quintessential quintuplets",
+        "5-toubun no hanayome"
+      ],
+      "identityProse": "Adult Nakano Itsuki from The Quintessential Quintuplets, a serious, earnest, and sweet-toothed girl with waist-length wavy reddish-auburn hair, a prominent ahoge, two yellow star-shaped hairpins on both sides of her face, clear blue eyes, and an adorable blushing expression when enjoying delicious food.",
+      "identityTokens": [
+        "nakano_itsuki",
+        "1girl",
+        "solo",
+        "long_hair",
+        "red_hair",
+        "star_hair_ornament",
+        "ahoge",
+        "blue_eyes",
+        "slender",
+        "5-toubun_no_hanayome"
+      ],
+      "exactTokens": [
+        "nakano_itsuki"
+      ],
+      "exactPrefixes": [
+        "itsuki_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "asahi_high_school_uniform",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代日常+校园恋爱（五等分的新娘）",
+        "era": "当代",
+        "formNotes": "赤红及腰长发+双侧五角星发饰+大呆毛+深邃蓝瞳；认真端庄与肉包吃货反差；红色针织开衫制服/毛呢大衣厚围巾/深红荷叶边连体泳装/古典睡裙",
+        "research": "2026-10-26 调研"
+      },
+      "animeStudio": "Bibury Animation Studios, Tezuka Productions, official anime screencap",
+      "curatedArtistStyles": [
+        "haruba_negi",
+        "kantoku",
+        "rella",
+        "tiv"
+      ],
+      "characterTokens": [
+        "nakano_itsuki"
+      ],
+      "copyrightTokens": [
+        "5-toubun_no_hanayome"
+      ]
+    }
+  }
+}

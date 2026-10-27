@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "iino_miko/autumn_trench_casual",
+  "revision": 1,
+  "sortOrder": 1585,
+  "createdAt": "2026-10-27T13:23:58.471Z",
+  "updatedAt": "2026-10-27T13:23:58.471Z",
+  "data": {
+    "characterId": "iino_miko",
+    "outfit": {
+      "characterId": "iino_miko",
+      "id": "autumn_trench_casual",
+      "name": "秋日知性双排扣风衣便服",
+      "prose": "A classic beige double-breasted trench coat worn unbuttoned over a cream-colored knit sweater, a pleated navy midi skirt, and dark sheer stockings with leather loafers.",
+      "tokens": [
+        "trench coat",
+        "beige coat",
+        "knit sweater",
+        "pleated skirt",
+        "midi skirt",
+        "stockings",
+        "loafers"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,391 @@
+{
+  "kind": "character",
+  "id": "kouzuki_kallen",
+  "revision": 2,
+  "sortOrder": 199,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "data": {
+    "id": "kouzuki_kallen",
+    "profile": {
+      "id": "kouzuki_kallen",
+      "name": "红月卡莲",
+      "alias": [
+        "Kallen Kouzuki",
+        "Kallen Stadtfeld",
+        "卡莲",
+        "紅月カレン",
+        "红发王牌",
+        "红莲机师"
+      ],
+      "type": "popular",
+      "icon": "🔥",
+      "portrait": {
+        "image": "../assets/characters/popular-kouzuki_kallen.png?v=1",
+        "alt": "红月卡莲 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "明亮艳红齐肩短发 · 略带张扬翘发梢",
+        "hair_color": "亮艳红 / 绯红",
+        "eyes": "澄澈坚毅深邃青蓝瞳",
+        "hairstyle": "富有层次感的张扬艳红短发",
+        "uniform": "经典红莲王牌紧身驾驶服 · 或成人独立特派干练深色皮夹克便装",
+        "expression": "坚毅专注 · 自信飒爽微笑 · 独处时略带怀念的温柔目光",
+        "style": "athletic heroic ace pilot confident mature cool",
+        "signature": "明艳红短发、清澈蓝瞳、健美修长身材与王牌机师的凌厉从容气场"
+      },
+      "personality": [
+        "经历残酷战火洗礼后愈发沉稳坚毅的王牌战士",
+        "褪去名门学园弱女子伪装后坦率真诚的大姐姐性格",
+        "极重情义、时刻愿意为守护和平与弱小挺身而出的责任感",
+        "在经历失去与告别后、把深切思念内化为前行力量的豁达",
+        "日常生活中偶尔显露出的率性、阳光与些许少女情怀"
+      ],
+      "likes": [
+        "在黄昏的沿海公路驾驶重型机车吹风",
+        "保养调试精密机甲核心传动轴与格斗武器",
+        "在午后咖啡馆静静阅读战后国际关系与历史书籍",
+        "和旧日黑色骑士团同伴以及阿什弗德学园朋友小聚",
+        "品尝浓香的日式红豆汤与清淡抹茶"
+      ],
+      "classic_cg": {
+        "title": "落日机库与红莲之影的遥望",
+        "description": "晚霞映照的巨大整备机库内，落日将高耸的红莲机体轮廓拉得修长。成年后的卡莲身穿深黑皮质夹克与修身长裤，单手插兜倚靠在栏杆边。微风扬起她如火般绚烂的红发，她静静凝视着天际线边的晚霞，眼眸中倒映着和平盛景与深藏心底的身影，唇角泛起温柔而释怀的笑意。"
+      },
+      "identity": {
+        "role": "黑色骑士团零番队前队长 / 独立和平特派员 / 超一流王牌机师",
+        "age": "成年创作设定",
+        "occupation": "大学毕业生 / 特派调查员 / 王牌驾驶员",
+        "faction": "黑色骑士团 / 超合众国和平军 / 独立"
+      },
+      "tags": [
+        "短发",
+        "红发",
+        "蓝瞳",
+        "机师服",
+        "皮夹克",
+        "王牌战士",
+        "大姐姐",
+        "飒爽"
+      ],
+      "bg_story": "红月卡莲是《Code Geass 反叛的鲁路修》中的核心女主角、黑色骑士团无可匹敌的红莲王牌驾驶员。在经历了零之镇魂曲的世界剧变与战后重建之后，卡莲卸下了阿什弗德学园病弱千金的伪装，以真实姓名完成了大学学业并迈入成年。步入成熟期的卡莲保留着那头标志性的艳红短发与清澈坚毅的青蓝眼眸，身段更显健美修长。她不再只是一名冲锋陷阵的冲动战士，而是作为守护战后和平的特派独立调查员，在世界各地化解潜在的武装纷争。那台承载无数决死荣耀的红莲圣天八极式已长存于和平纪念馆中，而卡莲也学会了在和平宁静的午后，端起热茶望向窗外的繁华都市，用坚定的双肩守护逝去之人用生命换来的温柔新世界。",
+      "palette": [
+        "红莲赤",
+        "深夜黑",
+        "耀金"
+      ],
+      "weather": [
+        "落日机库",
+        "黄昏海风",
+        "微雨街道"
+      ],
+      "speech": "现在的世界可比过去好太多了。既然大家拼死守护了和平，那我这个曾经的王牌，就更得好好站稳脚跟才行呢。",
+      "source": "SUNRISE《Code Geass 反叛的鲁路修》",
+      "traits": [
+        "kallen_stadtfeld",
+        "kouzuki_kallen",
+        "1girl",
+        "solo",
+        "red_hair",
+        "short_hair",
+        "blue_eyes",
+        "slender",
+        "athletic",
+        "code_geass"
+      ],
+      "accent_color": "#dc2626",
+      "bg_color": "#18181b",
+      "voice": "现在的世界可比过去好太多了。既然大家拼死守护了和平，那我这个曾经的王牌，就更得好好站稳脚跟才行呢。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "反叛的鲁路修",
+        "people": [
+          {
+            "id": "cc_code_geass",
+            "name": "C.C.",
+            "aliases": [
+              "C.C.",
+              "シーツー",
+              "不老不死的魔女",
+              "命运共犯"
+            ],
+            "characterId": "cc_code_geass"
+          },
+          {
+            "id": "lelouch_lamperouge",
+            "name": "鲁路修·兰佩路基",
+            "aliases": [
+              "Lelouch Lamperouge",
+              "ルルーシュ・ランペルージ",
+              "Zero",
+              "黑色皇子",
+              "L.L."
+            ],
+            "role": "神圣布列塔尼亚帝国第十一皇子 / 黑色骑士团领袖Zero",
+            "summary": "自幼流放日本、发誓摧毁帝国的智谋天才。在绝境中与C.C.签订Geass契约，以绝对命令之力掀起世界革命，最终以「零之镇魂曲」自愿背负全世界仇恨赴死，唯留C.C.作为共犯永世见证其奇迹。"
+          },
+          {
+            "id": "kururugi_suzaku",
+            "name": "枢木朱雀",
+            "aliases": [
+              "Kururugi Suzaku",
+              "枢木スザク",
+              "白色骑士",
+              "白色死神"
+            ],
+            "role": "枢木玄武首相之子 / 兰斯洛特专属骑士机师",
+            "summary": "渴望从内部改变帝国的正直骑士。鲁路修童年挚友，在尤菲米娅之死后与鲁路修决裂对立，最终在「零之镇魂曲」中手刃鲁路修，戴上面具接任救世主Zero守护娜娜莉。"
+          },
+          {
+            "id": "kouzuki_kallen",
+            "name": "红月卡莲",
+            "aliases": [
+              "Kouzuki Kallen",
+              "紅月カレン",
+              "卡莲·休妲菲尔特"
+            ],
+            "role": "黑色骑士团零番队队长 / 红莲红月机师",
+            "summary": "混血反抗军王牌机师。崇拜领袖Zero并在战场上以红莲机甲所向披靡，知晓鲁路修真实身份后深陷爱恨交织，最终见证世界的解放。",
+            "characterId": "kouzuki_kallen"
+          },
+          {
+            "id": "nunnally_lamperouge",
+            "name": "娜娜莉·兰佩路基",
+            "aliases": [
+              "Nunnally Lamperouge",
+              "ナナリー・ランペルージ",
+              "娜娜莉"
+            ],
+            "role": "鲁路修的亲妹妹 / 皇女",
+            "summary": "幼年遭枪击双目失明、双腿残疾的温柔少女。是鲁路修掀起世界革命的最原始动力与唯一守护目标，终曲继任帝国执政守护和平。"
+          },
+          {
+            "id": "charles_zi_britannia",
+            "name": "查尔斯·di·不列颠尼亚",
+            "aliases": [
+              "Charles zi Britannia",
+              "シャルル・ジ・ブリタニア",
+              "不列颠皇帝"
+            ],
+            "role": "神圣布列塔尼亚帝国第九十八代皇帝",
+            "summary": "推崇适者生存残酷丛林法则的冷血帝王。企图启动阿卡夏之剑将全人类心灵同化抹杀谎言，被鲁路修与C.C.联手否决并湮灭。"
+          },
+          {
+            "id": "shirley_fenette",
+            "name": "夏莉·菲内特",
+            "aliases": [
+              "Shirley Fenette",
+              "シャーリー・フェネット"
+            ],
+            "role": "阿什弗德学园学生 / 游泳部部员",
+            "summary": "开朗纯真、深爱鲁路修的普通女高中生。在知晓鲁路修就是杀父仇人Zero后依然选择原谅并告白，最终遭罗洛灭口惨死在鲁路修怀中，成为鲁路修心中永远的痛。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "cc-lelouch-accomplice",
+            "source": "cc_code_geass",
+            "target": "lelouch_lamperouge",
+            "label": "契约相连的唯一共犯与不朽伴侣",
+            "description": "新宿相遇赋予Geass，C.C.成为鲁路修复仇与弑神路上唯一的避风港与见证者；在经历零之镇魂曲与复活重生后，两人以‘L.L.’与‘C.C.’之名永恒携手漫游星河。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "终局 · 复活的鲁路修",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
+              "url": "https://geass.jp/first/world_03_ex.php"
+            }
+          },
+          {
+            "id": "lelouch-suzaku-contradiction",
+            "source": "lelouch_lamperouge",
+            "target": "kururugi_suzaku",
+            "label": "黑白对立与托付终局的挚友",
+            "description": "从童年无话不谈的挚友演变为手段完全对立的宿敌，在撕心裂肺的尤菲米娅惨剧后结下血海深仇，最终为了世界和平联手策划并执行‘零之镇魂曲’。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "R2终曲 · 零之镇魂曲",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "kallen-lelouch-ace",
+            "source": "kouzuki_kallen",
+            "target": "lelouch_lamperouge",
+            "label": "最锋利的王牌利剑与未尽的倾慕",
+            "description": "卡莲作为黑色骑士团无可匹敌的红莲王牌，将毕生忠诚与暗恋献给Zero；即便在零之镇魂曲中被迫与鲁路修决战，在洞悉真相后依然默默铭记与泪流成河。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "决战特异点 · 达摩克里斯之战",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
+              "url": "https://geass.jp/first/world_03_ex.php"
+            }
+          },
+          {
+            "id": "cc-kallen-guard",
+            "source": "cc_code_geass",
+            "target": "kouzuki_kallen",
+            "label": "前线护卫与心意心照不宣",
+            "description": "C.C.常作为鲁路修身旁的护卫或替身与卡莲协同作战，两人因鲁路修的存在而有着微妙的情感张力，却在无数次危机中结下互相信赖的战友情谊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "黑色骑士团作战",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "lelouch-nunnally-motive",
+            "source": "lelouch_lamperouge",
+            "target": "nunnally_lamperouge",
+            "label": "颠覆世界的唯一初心与骨肉至亲",
+            "description": "鲁路修所掀起的所有战争与弑神杀戮，最初的起点皆是为了给双目失明、双腿残疾的妹妹娜娜莉创造一个温柔的新世界。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "开篇设定 · 反叛之由",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方人物档案",
+              "url": "https://geass.jp/first/world_03_ex.php"
+            }
+          },
+          {
+            "id": "suzaku-nunnally-knight",
+            "source": "kururugi_suzaku",
+            "target": "nunnally_lamperouge",
+            "label": "誓死护卫的骑士长",
+            "description": "朱雀视娜娜莉为必须用生命守护的圣洁象征，不仅在出任骑士顾问时竭力保护她，在继任Zero之位后更成为娜娜莉新时代最坚强的无影之盾。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "零之镇魂曲后日谈",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "charles-lelouch-patricide",
+            "source": "charles_zi_britannia",
+            "target": "lelouch_lamperouge",
+            "label": "宿命父子与弑神之战",
+            "description": "查尔斯无情将兄妹二人充当质子放逐日本，更企图用阿卡夏之剑消灭人类谎言与个性；鲁路修以‘明天与未来’为名彻底抹杀了查尔斯的意志。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "C之世界 · 弑神",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "charles-cc-past",
+            "source": "charles_zi_britannia",
+            "target": "cc_code_geass",
+            "label": "旧识盟友与破裂的赎罪契约",
+            "description": "查尔斯与玛丽安娜曾答应终结C.C.永生的痛苦，但因其抹杀人性的终极计划而遭到C.C.的彻底背弃与抗拒。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "神根岛遗迹篇",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          },
+          {
+            "id": "shirley-lelouch-tragedy",
+            "source": "shirley_fenette",
+            "target": "lelouch_lamperouge",
+            "label": "纯真救赎与残酷命途",
+            "description": "夏莉深爱着鲁路修，即使在记忆被抹除、父亲因黑色骑士团身亡的极致痛苦下，依然选择宽恕并再次爱上鲁路修，最终不幸沦为罗洛毒手的牺牲品。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "R2第13话 · 刺客之刀",
+            "evidence": {
+              "title": "SUNRISE · 《Code Geass 反叛的鲁路修》官方故事线",
+              "url": "https://geass.jp/first/story_02.php"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "kouzuki_kallen",
+      "displayName": "红月卡莲",
+      "originalName": "紅月 カレン (Kallen Kouzuki)",
+      "franchise": "Code Geass",
+      "aliases": [
+        "kouzuki_kallen",
+        "kallen_kouzuki",
+        "kallen_stadtfeld",
+        "kallen",
+        "红月卡莲",
+        "卡莲",
+        "code geass"
+      ],
+      "identityProse": "Adult Kallen Kouzuki from Code Geass, a mature and athletic ace pilot with vibrant red short spiky hair, piercing blue eyes, wearing a sleek modern jacket, carrying an air of seasoned grace, strength, and quiet reliability.",
+      "identityTokens": [
+        "kallen_stadtfeld",
+        "1girl",
+        "solo",
+        "red_hair",
+        "short_hair",
+        "blue_eyes",
+        "slender",
+        "athletic",
+        "code_geass"
+      ],
+      "exactTokens": [
+        "kallen_stadtfeld",
+        "kouzuki_kallen"
+      ],
+      "exactPrefixes": [
+        "kallen_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "guren_ace_pilot_suit",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "score_1",
+        "score_2",
+        "score_3",
+        "bad anatomy",
+        "bad hands",
+        "blurry",
+        "artist name",
+        "jpeg artifacts",
+        "text",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "科幻机甲+现代政治（反叛的鲁路修）",
+        "era": "战后新时代",
+        "formNotes": "艳红短发+清澈蓝瞳+健美身段；沉稳果敢王牌大姐姐；红莲红白紧身驾驶服/黑色特工风衣便装/真丝吊带睡衣",
+        "research": "2026-10-27 调研"
+      },
+      "animeStudio": "SUNRISE, official anime screencap, CLAMP character design",
+      "curatedArtistStyles": [
+        "takahiro_kimura",
+        "rella",
+        "ask_(askzy)"
+      ],
+      "characterTokens": [
+        "kallen_stadtfeld",
+        "kouzuki_kallen"
+      ],
+      "copyrightTokens": [
+        "code_geass"
+      ]
+    }
+  }
+}

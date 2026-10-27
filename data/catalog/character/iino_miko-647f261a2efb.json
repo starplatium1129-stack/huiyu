@@ -1,0 +1,423 @@
+{
+  "kind": "character",
+  "id": "iino_miko",
+  "revision": 2,
+  "sortOrder": 202,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "data": {
+    "id": "iino_miko",
+    "profile": {
+      "id": "iino_miko",
+      "name": "伊井野弥子",
+      "alias": [
+        "Iino Miko",
+        "伊井野ミコ",
+        "小弥子",
+        "弥子",
+        "风纪委员",
+        "会长",
+        "正义狂犬"
+      ],
+      "type": "popular",
+      "icon": "⚖️",
+      "portrait": {
+        "image": "../assets/characters/popular-iino_miko.png?v=1",
+        "alt": "伊井野弥子 样张立绘"
+      },
+      "visual_dna": {
+        "hair": "柔顺深褐齐肩双低马尾 · 发尾自然落在双肩",
+        "hair_color": "深棕 / 柔和深褐",
+        "eyes": "清澈温润深邃棕褐瞳",
+        "hairstyle": "整齐端正的双低马尾（low_twintails） · 齐刘海",
+        "uniform": "经典秀知院黑制服水手裙 · 或成熟职场修身深灰西服套裙搭配白丝质衬衫",
+        "expression": "认真严正 · 眼神明亮专注 · 羞涩或被调侃时脸颊通红噘嘴的小傲娇",
+        "style": "petite dignified intellectual earnest diligent legal",
+        "signature": "深褐双低马尾、清澈棕瞳、娇小挺拔身姿、考究正装与认真严肃的神态"
+      },
+      "personality": [
+        "坚守正义准则与规则底线、同时学会体恤人情冷暖的司法精英",
+        "褪去学生时代的盲从与脆弱后、自信果决独当一面的职场女性",
+        "私下独处或面对在乎之人时、依然容易害羞别扭并爱吃甜食的可爱反差",
+        "对经手的每一份法律卷宗和委托都倾注百分之百心血的极致勤勉",
+        "在前辈和好友面前会卸下所有防备、露出无忧无虑放松笑容的真诚"
+      ],
+      "likes": [
+        "在深夜书桌旁听着治愈系白噪音与古典乐整理判例",
+        "品尝浓郁草莓奶油蛋糕与高档法式烘焙西点",
+        "收集做工精致的钢笔、复古书签与真皮公文手袋",
+        "和昔日学生会的前辈与石上在温馨小居酒屋聚餐叙旧",
+        "在辩护席上条理分明、以严密逻辑还原真相维护正义的瞬间"
+      ],
+      "classic_cg": {
+        "title": "落日书斋的法案卷宗与心动瞬间",
+        "description": "暮色温暖的律政事务所书斋内，落日余晖洒在厚重的橡木书架与卷宗上。成年后的弥子身穿剪裁得体的深灰职业正装，双低马尾垂在肩头。她将一支金尖钢笔轻轻抵在唇边，若有所思地凝视着摊开的案件手记。当听到熟悉脚步声推门而入时，她蓦然抬头，双颊瞬间飞起一抹动人的嫣红，眼神里满是掩饰不住的心动与欣喜。"
+      },
+      "identity": {
+        "role": "前秀知院学生会会长 / 司法研修官 / 律政界瞩目新星",
+        "age": "成年创作设定",
+        "occupation": "法学院毕业生 / 司法从业者",
+        "faction": "秀知院学园校友会 / 司法界 / 独立"
+      },
+      "tags": [
+        "短发",
+        "双马尾",
+        "低双马尾",
+        "棕发",
+        "棕瞳",
+        "职业正装",
+        "正义",
+        "知性",
+        "娇小"
+      ],
+      "bg_story": "伊井野弥子是《辉夜大小姐想让我告白》的核心女主角之一。在高三顺利继任秀知院学生会会长、并从顶尖大学法学系以拔尖成绩毕业后，弥子正式迈入了司法法律领域。曾经那个因追求绝对正义而显得死板脆弱、容易被恶意左右的娇小少女，如今已淬炼成为兼具严密逻辑与博大同理心的职场新星。深褐色的发丝依然习惯性扎成优雅规整的低双马尾垂在肩侧，一身剪裁考究的职业正装更衬托出她的挺拔与自信。在法庭与法理辩论中，她的立论清晰如刀、寸步不让，始终坚定地为弱者发声；而在结束高压公事后与昔日学生会旧友欢聚时，弥子依然是那个会被一句夸奖逗得满脸通红、会为一块香浓草莓蛋糕欢呼雀跃的小弥子，成熟知性中永远保留着那份未经世俗磨损的清亮初心。",
+      "palette": [
+        "律法紫",
+        "深邃黑",
+        "暖白"
+      ],
+      "weather": [
+        "落日书斋",
+        "午后法庭",
+        "微雨林荫道"
+      ],
+      "speech": "不论规则多么严苛，法律的终点永远是为了守护每一个鲜活之人的幸福。所以……今天的工作，我也绝不会妥协退缩哦！",
+      "source": "赤坂明《辉夜大小姐想让我告白 / Kaguya-sama: Love Is War》",
+      "traits": [
+        "iino_miko",
+        "1girl",
+        "solo",
+        "short_hair",
+        "low_twintails",
+        "brown_hair",
+        "brown_eyes",
+        "slender",
+        "petite",
+        "kaguya-sama_wa_kokurasetai"
+      ],
+      "accent_color": "#a855f7",
+      "bg_color": "#18181b",
+      "voice": "不论规则多么严苛，法律的终点永远是为了守护每一个鲜活之人的幸福。所以……今天的工作，我也绝不会妥协退缩哦！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "辉夜大小姐想让我告白",
+        "people": [
+          {
+            "id": "shinomiya_kaguya",
+            "name": "四宫辉夜",
+            "aliases": [
+              "四宮かぐや",
+              "Shinomiya Kaguya",
+              "辉夜大小姐",
+              "副会长"
+            ],
+            "characterId": "shinomiya_kaguya"
+          },
+          {
+            "id": "hayasaka_ai",
+            "name": "早坂爱",
+            "aliases": [
+              "早坂愛",
+              "Ai Hayasaka",
+              "哈萨卡",
+              "早坂"
+            ],
+            "characterId": "hayasaka_ai"
+          },
+          {
+            "id": "shirogane_kei",
+            "name": "白银圭",
+            "aliases": [
+              "白銀圭",
+              "Kei Shirogane",
+              "圭妹",
+              "圭"
+            ],
+            "characterId": "shirogane_kei"
+          },
+          {
+            "id": "shirogane_miyuki",
+            "name": "白银御行",
+            "aliases": [
+              "白銀御行",
+              "Miyuki Shirogane",
+              "白银会长",
+              "会长"
+            ],
+            "role": "秀知院学园学生会会长",
+            "summary": "出身贫寒但凭借超人般的自律与努力常年独占年级第一的努力狂。深爱四宫辉夜却因强烈的自尊心展开「先告白者即输」的恋爱头脑战，在奉心祭气球拱门下彻底敞开心扉向辉夜求爱。"
+          },
+          {
+            "id": "fujiwara_chika",
+            "name": "藤原千花",
+            "aliases": [
+              "藤原千花",
+              "Chika Fujiwara",
+              "千花",
+              "书记",
+              "地球之癌"
+            ],
+            "role": "秀知院学生会书记",
+            "summary": "天真烂漫、脑回路清奇的混沌制造者。辉夜唯一的多年挚友，多次在会长与副会长的恋爱博弈中无意搅局打破僵局。",
+            "characterId": "fujiwara_chika"
+          },
+          {
+            "id": "ishigami_yuu",
+            "name": "石上优",
+            "aliases": [
+              "石上優",
+              "Yuu Ishigami",
+              "石上真男人",
+              "石上会计"
+            ],
+            "role": "秀知院学生会会计 / 数据天才",
+            "summary": "曾遭受校园霸凌的阴郁游戏宅。在白银与辉夜的联手保护下洗清冤屈，逐渐打开心扉融入学生会，视辉夜为严厉又极其护短的姐姐。"
+          },
+          {
+            "id": "iino_miko",
+            "name": "伊井野弥子",
+            "aliases": [
+              "伊井野ミコ",
+              "Miko Iino",
+              "弥子",
+              "风纪委员"
+            ],
+            "role": "秀知院学生会监察委员",
+            "summary": "秉持绝对正义、身材娇小但气场严肃的纪律委员。加入学生会后在辉夜的关照与石上的暗中保护下体会到规矩之外的人情温暖。",
+            "characterId": "iino_miko"
+          }
+        ],
+        "relations": [
+          {
+            "id": "kaguya-kaguya-miyuki-intellectual_lovers",
+            "source": "shinomiya_kaguya",
+            "target": "shirogane_miyuki",
+            "label": "恋爱智脑战对手与此生伴侣",
+            "description": "两人因极高自尊心展开长达数个学期的‘先告白就输了’头脑战；奉心祭御行以巨型心形气球告白融化冰山，白银更组织跨国营救助辉夜脱离宗族锁链并结下婚约。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "奉心祭文化祭至最终回拯救决战",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          },
+          {
+            "id": "kaguya-kaguya-hayasaka-confidant_sisters",
+            "source": "shinomiya_kaguya",
+            "target": "hayasaka_ai",
+            "label": "从主仆契约到自由的一生挚友",
+            "description": "早坂自幼作为心腹女仆兼黑客护卫陪伴辉夜；京都修学旅行遭遇背叛危机后，两人在悬崖坦诚相见解除主从关系，早坂剪短发重获自由，成为辉夜最亲密的真正挚友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "修学旅行篇（漫画第178-187话）",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-kaguya-kei-sister_in_law_admiration",
+            "source": "shirogane_kei",
+            "target": "shinomiya_kaguya",
+            "label": "崇拜倾心与准大嫂",
+            "description": "圭对辉夜优雅清丽的气度怀有极度狂热的少女崇拜，辉夜也极力在圭面前表现完美以赢得未来小姑子的认可，两人互动格外可爱温馨。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "白银家日常篇",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-miyuki-kei-tsundere_siblings",
+            "source": "shirogane_kei",
+            "target": "shirogane_miyuki",
+            "label": "傲娇反叛与心疼哥哥的亲兄妹",
+            "description": "圭正值青春叛逆期，常吐槽御行唠叨、时尚品味土气‘恶心’，但内心深处极度心疼哥哥拼命兼职与熬夜维持家庭，暗中为哥哥挑礼物并引以为傲。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "日常贯穿",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-kaguya-chika-best_friends_chaos",
+            "source": "shinomiya_kaguya",
+            "target": "fujiwara_chika",
+            "label": "十余年闺蜜与混沌变数",
+            "description": "初中起相伴的闺蜜，千花总以天真烂漫的天然呆思维化解辉夜的冰冷，却又频繁在辉夜算计御行时成为不可预知的‘混沌之癌’搅乱全场。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "贯穿全作日常",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-miyuki-chika-motherly_training",
+            "source": "fujiwara_chika",
+            "target": "shirogane_miyuki",
+            "label": "灾难特训与老母亲般的泪水",
+            "description": "每当御行在排球、唱歌、跳舞、折气球等运动弱项濒临崩溃时，千花便赌上尊严对其进行地狱特训，哭喊‘这是我带大的孩子’，结下悲壮又搞笑的师徒羁绊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "排球/唱校歌/折气球等特训回",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-kaguya-ishigami-brotherly_care",
+            "source": "shinomiya_kaguya",
+            "target": "ishigami_yuu",
+            "label": "严慈并济的姐弟情深",
+            "description": "起初石上对辉夜的杀气胆战心惊，但辉夜暗中彻夜帮石上辅导功课使其及格，并在体育祭后夜祭全力为石上撑腰复仇，被辉夜视作不可或缺的亲弟弟。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "体育祭篇至秀知院后期",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          },
+          {
+            "id": "kaguya-miyuki-ishigami-savior_confidant",
+            "source": "shirogane_miyuki",
+            "target": "ishigami_yuu",
+            "label": "救赎恩人与学生会双雄",
+            "description": "在石上因中学见义勇为反遭全校霸凌孤立的绝境中，御行一人彻查真相还其清白并将他拉入学生会，是石上愿意追随一生的兄长级英雄。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "石上初中篇 / 体育祭篇",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          },
+          {
+            "id": "kaguya-ishigami-miko-quarrelsome_soulmates",
+            "source": "ishigami_yuu",
+            "target": "iino_miko",
+            "label": "暗中守护与命定欢喜冤家",
+            "description": "初中时石上因弥子遭受嘲笑而匿名送花留便条鼓励她，高中在学生会整日争吵抬杠，却在危机时刻互相援手，最终在毕业前夕彼此袒露心意确立暧昧羁绊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学生会后期至完结篇",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          },
+          {
+            "id": "kaguya-chika-miko-spoiled_junior",
+            "source": "fujiwara_chika",
+            "target": "iino_miko",
+            "label": "宠溺学姐与崇拜后辈",
+            "description": "正义感过剩的弥子盲目崇拜千花并将她视作典范，千花则将娇小的弥子当成心爱宠物般肆意宠溺投喂，是学生会内最轻松融洽的关系。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学生会日常篇",
+            "evidence": {
+              "title": "动画《辉夜大小姐想让我告白》官方网站 · 角色介绍",
+              "url": "https://kaguya.love/character/"
+            }
+          },
+          {
+            "id": "kaguya-miyuki-hayasaka-allies_confidant",
+            "source": "hayasaka_ai",
+            "target": "shirogane_miyuki",
+            "label": "伪装调侃与可靠盟友",
+            "description": "早坂曾多次化名哈萨卡试探御行，更在辉夜营救行动中与御行并肩作战瓦解四宫家阴谋，是御行极度信任的智谋伙伴。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "四宫家夺回决战篇",
+            "evidence": {
+              "title": "集英社《辉夜大小姐想让我告白》漫画官方主页",
+              "url": "https://youngjump.jp/kaguya/"
+            }
+          }
+        ]
+      }
+    },
+    "popular": {
+      "id": "iino_miko",
+      "displayName": "伊井野弥子",
+      "originalName": "伊井野 ミコ (Iino Miko)",
+      "franchise": "Kaguya-sama: Love Is War",
+      "aliases": [
+        "iino_miko",
+        "miko_iino",
+        "iino",
+        "miko",
+        "伊井野弥子",
+        "小弥子",
+        "kaguya-sama wa kokurasetai"
+      ],
+      "identityProse": "Adult Iino Miko from Kaguya-sama: Love Is War, a poised, dignified, and earnest legal professional with neat low twintails resting on her shoulders, deep brown eyes, wearing a well-tailored business suit, exuding intellectual sharpness and heartfelt sincerity.",
+      "identityTokens": [
+        "iino_miko",
+        "1girl",
+        "solo",
+        "short_hair",
+        "low_twintails",
+        "brown_hair",
+        "brown_eyes",
+        "slender",
+        "kaguya-sama_wa_kokurasetai"
+      ],
+      "exactTokens": [
+        "iino_miko"
+      ],
+      "exactPrefixes": [
+        "iino_"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "legal_formal_suit",
+      "negativeTokens": [
+        "worst quality",
+        "low quality",
+        "score_1",
+        "score_2",
+        "score_3",
+        "bad anatomy",
+        "bad hands",
+        "blurry",
+        "artist name",
+        "jpeg artifacts",
+        "text",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "现代日常+校园职场（辉夜大小姐想让我告白）",
+        "era": "当代毕业后",
+        "formNotes": "深褐齐肩双低马尾+温润棕瞳+娇小玲珑挺拔身姿；知性干练法律新星；深灰职业西装套裙/秀知院黑水手服/秋日风衣便服/周末连帽衫居家服",
+        "research": "2026-10-27 调研"
+      },
+      "animeStudio": "A-1 Pictures, official anime screencap, Akasaka Aka style",
+      "curatedArtistStyles": [
+        "akasaka_aka",
+        "rella",
+        "tiv"
+      ],
+      "characterTokens": [
+        "iino_miko"
+      ],
+      "copyrightTokens": [
+        "kaguya-sama_wa_kokurasetai"
+      ]
+    }
+  }
+}

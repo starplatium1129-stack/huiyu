@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "nakano_ichika/asahi_high_school_uniform",
+  "revision": 1,
+  "sortOrder": 1515,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "characterId": "nakano_ichika",
+    "outfit": {
+      "id": "asahi_high_school_uniform",
+      "name": "旭高校黄色系腰开衫水手制服",
+      "prose": "Asahi High School uniform with an unbuttoned collar, a yellow knit cardigan tied casually around her waist, a pleated dark skirt, a single dangling earring, and loafers.",
+      "tokens": [
+        "school_uniform",
+        "sailor_collar",
+        "white_shirt",
+        "collared_shirt",
+        "cardigan_around_waist",
+        "yellow_cardigan",
+        "pleated_skirt",
+        "black_skirt",
+        "single_earring",
+        "loafers"
+      ],
+      "isNsfw": false,
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nakano_ichika/actress_trench_coat",
+  "revision": 1,
+  "sortOrder": 1516,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "characterId": "nakano_ichika",
+    "outfit": {
+      "id": "actress_trench_coat",
+      "name": "女演员卡其风衣修身高领私服",
+      "prose": "A stylish tan trench coat over a sleek black turtleneck sweater, paired with tailored high-waist slacks and a dangling earring, radiating actress sophistication.",
+      "tokens": [
+        "trench_coat",
+        "tan_coat",
+        "turtleneck",
+        "black_shirt",
+        "long_pants",
+        "high-waist_pants",
+        "single_earring",
+        "boots",
+        "ankle_boots"
+      ],
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "nakano_yotsuba/white_bath_wrap",
+  "revision": 1,
+  "sortOrder": 1603,
+  "createdAt": "2026-10-27T13:30:47.381Z",
+  "updatedAt": "2026-10-27T13:30:47.381Z",
+  "data": {
+    "characterId": "nakano_yotsuba",
+    "outfit": {
+      "characterId": "nakano_yotsuba",
+      "id": "white_bath_wrap",
+      "name": "露天温泉吸水裹体浴巾",
+      "prose": "A clean white cotton bath towel wrapped around her body, highlighting her athletic bare shoulders and collarbone amid the gentle morning onsen steam",
+      "tokens": [
+        "white towel",
+        "towel",
+        "towel around body",
+        "bare_shoulders",
+        "collarbone",
+        "wet_skin"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

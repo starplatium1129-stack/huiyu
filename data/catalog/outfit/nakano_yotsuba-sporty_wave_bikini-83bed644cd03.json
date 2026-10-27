@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "nakano_yotsuba/sporty_wave_bikini",
+  "revision": 1,
+  "sortOrder": 1521,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "characterId": "nakano_yotsuba",
+    "outfit": {
+      "id": "sporty_wave_bikini",
+      "name": "碧海踏浪薄荷绿分体运动比基尼",
+      "prose": "A bright mint-green sporty bikini with crisp white piping and athletic cut, complemented by her waterproof green rabbit-ear ribbon fluttering in the ocean spray.",
+      "tokens": [
+        "bikini",
+        "sport_bikini",
+        "green_bikini",
+        "white_trim",
+        "athletic_swimwear",
+        "bare_shoulders",
+        "stomach",
+        "navel",
+        "green_ribbon",
+        "bunny_hair_ornament"
+      ],
+      "isNsfw": false
+    }
+  }
+}

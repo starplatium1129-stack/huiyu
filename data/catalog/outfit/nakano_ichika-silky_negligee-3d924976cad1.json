@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "nakano_ichika/silky_negligee",
+  "revision": 1,
+  "sortOrder": 1518,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "characterId": "nakano_ichika",
+    "outfit": {
+      "id": "silky_negligee",
+      "name": "晨曦微光真丝浅粉吊带短睡裙",
+      "prose": "A soft blush pink silk negligee with delicate thin spaghetti straps, gracefully draping over her collarbones in the gentle morning bedroom sunlight.",
+      "tokens": [
+        "negligee",
+        "nightgown",
+        "pink_dress",
+        "silk",
+        "spaghetti_straps",
+        "bare_shoulders",
+        "collarbone",
+        "barefoot"
+      ],
+      "isNsfw": false
+    }
+  }
+}

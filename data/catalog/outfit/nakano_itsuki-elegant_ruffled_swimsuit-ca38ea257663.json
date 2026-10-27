@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "nakano_itsuki/elegant_ruffled_swimsuit",
+  "revision": 1,
+  "sortOrder": 1525,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "characterId": "nakano_itsuki",
+    "outfit": {
+      "id": "elegant_ruffled_swimsuit",
+      "name": "典雅深红荷叶边裙摆连体泳装",
+      "prose": "A tasteful, elegant deep crimson one-piece dress swimsuit trimmed with delicate white ruffles along the neckline and skirt hem, exuding modest feminine grace.",
+      "tokens": [
+        "one-piece_swimsuit",
+        "dress_swimsuit",
+        "red_swimsuit",
+        "frills",
+        "ruffles",
+        "white_trim",
+        "bare_shoulders",
+        "star_hair_ornament",
+        "ahoge",
+        "barefoot"
+      ],
+      "isNsfw": false
+    }
+  }
+}

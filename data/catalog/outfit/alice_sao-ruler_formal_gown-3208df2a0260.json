@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "alice_sao/ruler_formal_gown",
+  "revision": 2,
+  "sortOrder": 1580,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "data": {
+    "characterId": "alice_sao",
+    "outfit": {
+      "characterId": "alice_sao",
+      "id": "ruler_formal_gown",
+      "name": "现实世界和平代表正装礼服",
+      "prose": "An elegant, regal floor-length evening gown of midnight blue and ivory silk, adorned with tasteful gold leaf embroidery around the neckline and waist.",
+      "tokens": [
+        "formal dress",
+        "evening gown",
+        "long dress",
+        "blue dress",
+        "gold embroidery",
+        "bare shoulders",
+        "elegant necklace"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

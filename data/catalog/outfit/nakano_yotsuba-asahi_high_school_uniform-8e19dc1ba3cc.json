@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "nakano_yotsuba/asahi_high_school_uniform",
+  "revision": 1,
+  "sortOrder": 1519,
+  "createdAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "data": {
+    "characterId": "nakano_yotsuba",
+    "outfit": {
+      "id": "asahi_high_school_uniform",
+      "name": "旭高校绿发带浅绿针织背心制服",
+      "prose": "Asahi High School uniform with a light green sweater vest over a collared white shirt, paired with a pleated dark skirt and her signature bright green rabbit-ear ribbon.",
+      "tokens": [
+        "school_uniform",
+        "sweater_vest",
+        "green_sweater_vest",
+        "collared_shirt",
+        "red_tie",
+        "pleated_skirt",
+        "black_skirt",
+        "green_ribbon",
+        "bunny_hair_ornament",
+        "loafers"
+      ],
+      "isNsfw": false,
+      "isDefault": true,
+      "default": true
+    }
+  }
+}

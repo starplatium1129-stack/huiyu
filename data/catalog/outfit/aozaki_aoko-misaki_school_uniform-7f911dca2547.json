@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "aozaki_aoko/misaki_school_uniform",
+  "revision": 1,
+  "sortOrder": 1571,
+  "createdAt": "2026-10-27T13:05:59.563Z",
+  "updatedAt": "2026-10-27T13:05:59.563Z",
+  "data": {
+    "characterId": "aozaki_aoko",
+    "outfit": {
+      "characterId": "aozaki_aoko",
+      "id": "misaki_school_uniform",
+      "name": "三咲高中水手制服",
+      "prose": "The classic Misaki High School uniform featuring a neat navy sailor-collared top with white piping, a bright red neck scarf, a pleated navy skirt, and dark knee-high socks.",
+      "tokens": [
+        "school uniform",
+        "sailor uniform",
+        "sailor collar",
+        "red neckerchief",
+        "pleated skirt",
+        "knee-high socks",
+        "loafers"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}
