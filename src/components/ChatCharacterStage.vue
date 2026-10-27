@@ -4,7 +4,7 @@
     <div
       ref="stageRef"
       class="portrait-stage"
-      :class="[{ speaking, 'live2d-ready': live2dReady }, `emotion-${emotion}`]"
+      :class="[{ speaking, 'live2d-ready': live2dReady || anime.active.value }, `emotion-${emotion}`]"
       :data-character="activeId"
       :data-emotion="emotion"
       :data-presence="presence || undefined"
@@ -18,19 +18,20 @@
         <small>{{ character.roomMood }}</small>
       </div>
       <img v-if="portraitImage.src && !portraitFailed" v-bind="portraitImage" class="portrait-main" :class="{ 'portrait-decoded': portraitLoaded }" :alt="character.name" />
-      <div v-if="!portraitLoaded && !portraitFailed && !live2dReady" class="stage-portrait-feedback stage-portrait-loading" role="status">
+      <div v-if="!portraitLoaded && !portraitFailed && !live2dReady && !anime.active.value" class="stage-portrait-feedback stage-portrait-loading" role="status">
         <ArchiveIcon name="image" /><div><strong>{{ character.name }}</strong><span>{{ portraitImage.src ? '正在加载立绘…' : '暂无静态立绘，可加载动态立绘' }}</span></div>
       </div>
-      <div v-if="portraitFailed && !live2dReady" class="stage-portrait-feedback stage-portrait-missing" role="status">
+      <div v-if="portraitFailed && !live2dReady && !anime.active.value" class="stage-portrait-feedback stage-portrait-missing" role="status">
         <ArchiveIcon name="image" /><strong>{{ character.name }}</strong>
         <span>立绘暂未加载，对话仍可继续</span>
         <button type="button" class="btn btn-ghost btn-sm" @click="retryPortrait">重新加载立绘</button>
       </div>
+      <div ref="animeHostRef" class="anime25d-host" :hidden="!anime.active.value" aria-hidden="true"></div>
       <div ref="live2dHostRef" class="live2d-host" aria-hidden="true"></div>
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint" aria-live="polite">
         {{ live2d.interactionHint.value }}
       </div>
-      <StudioTooltip v-if="avatarState !== 'idle'" anchor :content="avatarActionTitle">
+      <StudioTooltip v-if="!anime.selected.value && avatarState !== 'idle'" anchor :content="avatarActionTitle">
         <button
           class="avatar-status"
           type="button"
@@ -40,7 +41,7 @@
         >{{ avatarText }}</button>
       </StudioTooltip>
       <button
-        v-if="avatarState === 'idle'"
+        v-if="!anime.selected.value && avatarState === 'idle'"
         class="live2d-enable-cta"
         type="button"
         @click.stop="handleAvatarAction"
@@ -61,6 +62,7 @@
       </div>
       <button v-if="localStudio && surface !== 'companion'" type="button" class="btn btn-ghost" @click="openModelStudio">导入或校准模型</button>
       <CharacterStageSettings ref="controlsRef" :companion="surface === 'companion'" :character-id="activeId">
+      <Anime25DSettings :runtime="anime" />
       <button v-if="localStudio && surface === 'companion'" type="button" class="btn btn-ghost" @click="openModelStudio">导入或校准模型</button>
       <details class="character-about">
         <StudioDisclosureSummary>关于{{ character.name }}</StudioDisclosureSummary>
@@ -127,7 +129,7 @@
       </div>
       <Live2DQualityControl />
       <button v-if="live2d.ready.value" type="button" class="btn btn-ghost" @click="handleAvatarAction">切换为静态立绘</button>
-      <fieldset v-if="live2d.ready.value" class="stage-framing">
+      <fieldset v-if="live2d.ready.value || anime.active.value" class="stage-framing">
         <legend>角色取景</legend>
         <label>大小 <input type="range" min="0.65" max="2.2" step="0.05" :value="framing.zoom" aria-label="角色大小" @input="updateFraming('zoom', Number(($event.target as HTMLInputElement).value))" /></label>
         <label>左右 <input type="range" min="-25" max="25" step="1" :value="framing.x" aria-label="角色左右位置" @input="updateFraming('x', Number(($event.target as HTMLInputElement).value))" /></label>
@@ -167,9 +169,9 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, onUnmounted
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import neneWallpaper from '@/assets/illustrations/nene-webchat-wallpaper.webp'
 import natsumeWallpaper from '@/assets/illustrations/natsume-webchat-wallpaper.webp'
-import {
-  type CharacterConfig,
-} from '@/config/characters'
+import type { CharacterStageProps } from '../types/characterStage'
+import { useAnime25DStage } from '@/composables/useAnime25DStage'
+import Anime25DSettings from '@/components/Anime25DSettings.vue'
 import {
   getCompanionDefaultOutfit,
   getCompanionCharacter,
@@ -184,7 +186,7 @@ import { useCharacterPetControls } from '@/composables/chat/useCharacterPetContr
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import CharacterStageSettings from '@/components/CharacterStageSettings.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
-import { useStageFraming, type StageSurface } from '@/composables/chat/useStageFraming'
+import { useStageFraming } from '@/composables/chat/useStageFraming'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -200,22 +202,7 @@ const loadModelStudio = () => import('./ModelStudio.vue')
 const companionCharacters = listCompanionUiCharacters()
 const CHARACTER_IDS = listCompanionCharacterIds()
 
-const props = defineProps<{
-  activeId: string
-  surface?: StageSurface
-  suspended?: boolean
-  character: CharacterConfig
-  speaking: boolean
-  chatStatusText: string
-  statusKind: string
-  autoLoad: boolean
-  presence?: string
-  desktopWindowBounds?: { x: number; y: number; width: number; height: number } | null
-  outfit: string
-  volume?: number
-  /** auto reads the desktop dataset or URL, falling back to the browser backend. */
-  backend?: Live2DBackendKind | 'auto'
-}>()
+const props = defineProps<CharacterStageProps>()
 
 const emit = defineEmits<{
   select: [id: string]
@@ -224,6 +211,9 @@ const emit = defineEmits<{
 }>()
 
 const stageRef = ref<HTMLElement>()
+const animeHostRef = ref<HTMLElement>()
+const anime = useAnime25DStage(() => props.activeId, animeHostRef)
+watch(() => props.presence, value => anime.setPresence(value || 'available'), { immediate: true })
 const staticPortraitSource = computed(() => props.surface === 'companion' ? props.character.image
   : props.activeId === 'nene' ? neneWallpaper : props.activeId === 'natsume' ? natsumeWallpaper : props.character.image)
 const { image: portraitImage, loaded: portraitLoaded, failed: portraitFailed, retry: reloadPortrait } = useRuntimeImage(staticPortraitSource)
@@ -281,13 +271,15 @@ const live2d = useLive2D((status) => {
   avatarRetryable.value = status.retryable
 })
 const live2dReady = computed(() => live2d.ready.value && live2d.loadedCharacter.value === props.activeId)
+watch(anime.selected, value => { if (value) { enableRequest++; live2d.disable(true) } else if (!anime.restoring.value && live2dInitialized.value && props.autoLoad) void enableCharacter(true) }, { flush: 'sync' })
 watch(framing, () => live2d.layout(), { deep: true, flush: 'post' })
 let desktopVisible = true
 watch(() => props.suspended, updateStageVisibility, { immediate: true })
 function updateStageVisibility() {
   const visible = desktopVisible && !props.suspended && !modelStudioOpen.value
+  anime.setVisible(visible)
   live2d.setPaused(!visible)
-  if (visible) void live2d.recover()
+  if (visible && !anime.selected.value) void live2d.recover()
 }
 const capabilityLabels: Record<Live2DAdapterCapabilityItem['id'], string> = {
   mouth: '口型', blink: '眨眼', focus: '视线', emotions: '情绪', interactions: '互动',
@@ -354,14 +346,15 @@ async function handleAvatarAction() {
 async function enableCharacter(automatic = false) {
   const id = props.activeId, request = ++enableRequest
   const current = () => stageAlive && props.activeId === id && request === enableRequest && (!automatic || props.autoLoad)
+  if (anime.selected.value) return false
   await activeRuntime()?.activate()
-  if (!current()) return false
+  if (!current() || anime.selected.value) return false
   await live2d.enable()
   return current()
 }
 
 function setSpeaking(value: boolean) {
-  live2d.setSpeaking(value)
+  anime.setSpeaking(value); live2d.setSpeaking(value)
   if (!value && stageRef.value) {
     stageRef.value.dataset.mouthLevel = '0.000'
     stageRef.value.dataset.audioPeak = '0.000'
@@ -370,16 +363,17 @@ function setSpeaking(value: boolean) {
 
 function setMouth(value: number) {
   if (stageRef.value) stageRef.value.dataset.mouthLevel = Math.max(0, Math.min(1, value)).toFixed(3)
-  live2d.setMouth(value)
+  anime.setMouth(value); live2d.setMouth(value)
 }
 
 function setAudioLevel(level: number, peak = level) {
   if (stageRef.value) stageRef.value.dataset.audioPeak = Math.max(0, Math.min(1, peak)).toFixed(3)
-  live2d.setAudioLevel(level, peak)
+  anime.setAudioLevel(level, peak); live2d.setAudioLevel(level, peak)
 }
 
 function setEmotion(value: string) {
   emotion.value = value
+  anime.setEmotion(value)
   activeRuntime()?.pushEmotion(value)
   live2d.syncNativeEmotion()
 }
@@ -398,10 +392,10 @@ function setGlobalPointer(
   screenY: number,
   windowBounds: { x: number; y: number; width: number; height: number },
 ) {
-  live2d.setGlobalPointer(screenX, screenY, windowBounds)
+  anime.setGlobalPointer(screenX, screenY, windowBounds); live2d.setGlobalPointer(screenX, screenY, windowBounds)
 }
 
-function releasePointerFocus() { live2d.releasePointerFocus() }
+function releasePointerFocus() { anime.releasePointerFocus(); live2d.releasePointerFocus() }
 
 let desktopBatteryPower: boolean | null = null
 function applyDesktopPerformanceMode() {
@@ -411,6 +405,7 @@ function applyDesktopPerformanceMode() {
   live2d.setMaxFps(desktopBatteryPower ? 30 : (native ? 165 : 60))
 }
 function setDesktopPerformanceMode(onBatteryPower: boolean) {
+  anime.setBattery(onBatteryPower)
   desktopBatteryPower = Boolean(onBatteryPower)
   applyDesktopPerformanceMode()
 }
@@ -434,6 +429,8 @@ async function handleOutfitChange(next: string) {
 
 async function synchronizeCharacter(id: string) {
   const request = ++characterRequest
+  await anime.restore()
+  if (!currentCharacterRequest(id, request) || anime.selected.value) return
   if (modelStudioOpen.value) closeModelStudio()
   enableRequest++
   wardrobeOpen.value = false
@@ -444,6 +441,7 @@ async function synchronizeCharacter(id: string) {
   if (live2d.enabled.value) await activeRuntime()?.activate()
   if (!currentCharacterRequest(id, request)) return
   await live2d.setCharacter(id)
+  if (currentCharacterRequest(id, request) && props.autoLoad && !live2d.enabled.value) await enableCharacter(true)
   if (currentCharacterRequest(id, request) && remembered !== live2d.outfit.value) await live2d.setOutfit(remembered)
 }
 watch(() => props.activeId, id => { void synchronizeCharacter(id) }, { flush: 'sync' })
@@ -463,7 +461,7 @@ watch(() => props.autoLoad, (enabled) => {
     if (live2d.enabled.value) live2d.disable()
     return
   }
-  if (live2d.enabled.value) return
+  if (live2d.enabled.value || anime.selected.value) return
   // Cold initialization adopts the latest preference after its own await.
   if (live2dInitialized.value) void enableCharacter(true)
 })
@@ -498,14 +496,19 @@ onMounted(async () => {
   if (!stageAlive) return
   live2dInitialized.value = true
   if (props.activeId !== id) await synchronizeCharacter(props.activeId)
-  if (stageAlive && props.autoLoad && !live2d.enabled.value) await enableCharacter(true)
+  else await anime.restore()
+  if (stageAlive && props.autoLoad && !anime.selected.value && !live2d.enabled.value) await enableCharacter(true)
 })
 
 onBeforeUnmount(() => { stageAlive = false; characterRequest++; enableRequest++ })
 onUnmounted(() => { live2d.attachEmotionRuntime(null); live2d.destroy() })
 
+const pet = useCharacterPetControls(() => props.activeId, live2d)
 defineExpose({
-  ...useCharacterPetControls(() => props.activeId, live2d),
+  ...pet,
+  petControls: computed(() => anime.active.value ? { ready: true, motions: anime.motions, expressions: anime.expressions, hint: '试试表情和互动动作；移动鼠标，角色会先看向你，再轻轻转头。' } : pet.petControls.value),
+  playPetMotion: (id: string) => anime.active.value ? anime.playMotion(id) : pet.playPetMotion(id),
+  setPetExpression: (id: string) => anime.active.value ? anime.setExpression(id) : pet.setPetExpression(id),
   openSettings,
   setSpeaking,
   setMouth,

@@ -1,4 +1,6 @@
 @reference "../tailwind.css";
+.anime25d-host { position: absolute; z-index: var(--z-raised); inset: 0; pointer-events: none; transform-origin: 50% 100%; transform: translate(var(--stage-x, 0%), var(--stage-y, 0%)) scale(var(--stage-zoom, 1)); }
+.anime25d-host :deep(canvas) { display: block; width: 100%; height: 100%; object-fit: contain; }
 .live2d-capability-report { @apply tw:mt-s-2 tw:text-secondary; font-size:var(--fs-label-xs); }
 .live2d-capability-report summary { @apply tw:min-h-[32px] tw:cursor-pointer tw:text-primary; }
 .live2d-capability-report ul { @apply tw:grid tw:gap-[6px]; margin: 6px 0 0; @apply tw:p-0; list-style: none; }

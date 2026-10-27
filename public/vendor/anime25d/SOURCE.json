@@ -1,0 +1,34 @@
+{
+  "repository": "https://github.com/852wa/Anime2.5DRig",
+  "commit": "7ddbd9943ea3152561b3dc8348fd752c850f3e95",
+  "license": "MIT",
+  "files": [
+    "rigger.js",
+    "renderer.js",
+    "runtime.js",
+    "genericparts.js",
+    "ag-psd.min.js"
+  ],
+  "adapted": {
+    "stage.js": "app.js mesh rendering and deformation; HUIYU accepts a mixed pose from the installed Soullink engine through src/anime25d/performance.ts, separate eye/head/body follow and speech; restrained part physics; closed-mouth form deformation; live model-relative pivot, difference alignment, motion, gaze, depth and physics calibration; model-proportional waist-to-shoulder bending with connected head displacement",
+    "psd-worker.js": "psd-worker.js; normalize See-through left/right layer names; built-in generic differences; Chinese synthesized-part notices; return rig only; require semantic layered input"
+  },
+  "parser": {
+    "name": "ag-psd",
+    "license": "MIT",
+    "source": "https://github.com/Agamnentzar/ag-psd",
+    "bundledLicenses": [
+      "ag-psd.LICENSE",
+      "Apache-2.0.LICENSE",
+      "base64-js.LICENSE",
+      "buffer.LICENSE",
+      "ieee754.LICENSE",
+      "pako.LICENSE"
+    ]
+  },
+  "performanceReferences": [
+    "https://github.com/DenchiSoft/VTubeStudio/wiki/VTS-Model-Settings",
+    "https://github.com/DenchiSoft/VTubeStudio/wiki/Interaction-between-Animations,-Tracking,-Physics,-etc.",
+    "https://docs.live2d.com/en/cubism-sdk-manual/parameters/"
+  ]
+}

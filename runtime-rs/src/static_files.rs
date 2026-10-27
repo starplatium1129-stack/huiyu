@@ -130,6 +130,11 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         (assets.clone(), name.to_owned(), false)
     } else if let Some(name) = path.strip_prefix("/_app/") {
         (root.join("dist/_app"), name.to_owned(), true)
+    } else if let Some(name) = path.strip_prefix("/vendor/anime25d/") {
+        if !["runtime.js", "rigger.js", "renderer.js", "stage.js", "psd-worker.js", "ag-psd.min.js", "genericparts.js"].contains(&name) {
+            return StatusCode::NOT_FOUND.into_response();
+        }
+        (root.join("dist/vendor/anime25d"), name.to_owned(), false)
     } else if path == "/favicon.ico" || path == "/favicon.svg" {
         (root.join("dist"), path[1..].to_owned(), false)
     } else if let Some((base, relative)) = extra::location(&state, &path) {

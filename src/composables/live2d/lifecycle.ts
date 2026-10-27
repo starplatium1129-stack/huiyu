@@ -224,14 +224,14 @@ export function createLifecycleController(
     await setCharacter(ctx.character.value)
   }
 
-  function disable() {
+  function disable(skipLeave = false) {
     const token = ++ctx.lifecycleToken
     ctx.enabled.value = false
     ctx.interactionHint.value = ''
     // 告别动作：先播一小段 Leave 再销毁，避免"切换回静态立绘"瞬间硬切。
-    // 减少动态效果或动作不可用时直接销毁；告别期间再次点击可立即重载。
+    // 切换至其他渲染器、减少动态效果或无动作时直接销毁，避免覆盖新角色。
     const leaveGroup = ctx.adapter?.leaveGroup
-    const playable = leaveGroup && ctx.ready.value && ctx.model && typeof ctx.model.motion === 'function' && !prefersReducedMotion()
+    const playable = !skipLeave && leaveGroup && ctx.ready.value && ctx.model && typeof ctx.model.motion === 'function' && !prefersReducedMotion()
       ? ctx.model.motion(leaveGroup, undefined, 3)
       : null
     const started = isCatchable(playable) ? playable.then((v: unknown) => v === true).catch(() => false) : Promise.resolve(playable === true)
