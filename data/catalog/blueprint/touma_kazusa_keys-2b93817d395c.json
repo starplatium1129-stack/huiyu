@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "touma_kazusa_keys",
+  "revision": 1,
+  "sortOrder": 2389,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "touma_kazusa_keys",
+    "characterId": "touma_kazusa",
+    "outfitId": "concert_dress",
+    "title": "冬马和纱 · 后台的最后一遍",
+    "category": "演出之前",
+    "description": "候场的小琴房里，她低头轻触琴键，只确认开头几个音的力度。",
+    "location": "backstage practice room",
+    "action": "sitting at a piano with fingertips on the keys",
+    "timeOfDay": "night",
+    "lighting": "soft backstage light",
+    "camera": "medium shot",
+    "mood": "平静",
+    "promptProse": "Backstage, Kazusa sits at a piano and rests her fingertips on the keys.",
+    "promptTokens": [
+      "backstage",
+      "piano",
+      "piano bench",
+      "hands on keys",
+      "night",
+      "soft light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

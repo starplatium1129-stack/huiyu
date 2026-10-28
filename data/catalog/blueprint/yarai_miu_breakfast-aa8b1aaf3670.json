@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "yarai_miu_breakfast",
+  "revision": 1,
+  "sortOrder": 2398,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "yarai_miu_breakfast",
+    "characterId": "yarai_miu",
+    "outfitId": "green_loungewear",
+    "title": "矢来美羽 · 厨房里的早饭",
+    "category": "居家日常",
+    "description": "早上起得有些晚，她靠在厨房台边喝水，面包还放在盘子里等着。",
+    "location": "home kitchen",
+    "action": "standing by the counter with a glass of water",
+    "timeOfDay": "morning",
+    "lighting": "morning daylight",
+    "camera": "medium shot",
+    "mood": "困倦",
+    "promptProse": "In the kitchen, Miu holds a glass of water beside a plate of toast.",
+    "promptTokens": [
+      "kitchen",
+      "counter",
+      "holding glass",
+      "toast",
+      "morning",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

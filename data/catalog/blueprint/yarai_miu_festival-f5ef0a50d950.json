@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "yarai_miu_festival",
+  "revision": 1,
+  "sortOrder": 2399,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "yarai_miu_festival",
+    "characterId": "yarai_miu",
+    "outfitId": "lavender_knit",
+    "title": "矢来美羽 · 摊位前的选择",
+    "category": "节日",
+    "description": "夜市摊位摆着两种颜色的手工饰品。美羽拿起其中一枚，认真看了看。",
+    "location": "night market stall",
+    "action": "holding a small ornament at a market stall",
+    "timeOfDay": "evening",
+    "lighting": "stall lantern light",
+    "camera": "medium shot",
+    "mood": "犹豫",
+    "promptProse": "At a night market stall, Miu examines a small ornament in her hand.",
+    "promptTokens": [
+      "night market",
+      "market stall",
+      "holding ornament",
+      "lantern",
+      "evening",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

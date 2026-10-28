@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "yarai_miu_harbor",
+  "revision": 1,
+  "sortOrder": 2390,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "yarai_miu_harbor",
+    "characterId": "yarai_miu",
+    "outfitId": "security_uniform",
+    "title": "矢来美羽 · 港口晚班",
+    "category": "巡逻",
+    "description": "码头的灯刚亮起。美羽沿着栏杆检查停泊区，手里拿着折好的巡逻图。",
+    "location": "harbor walkway",
+    "action": "standing beside a railing and checking a folded map",
+    "timeOfDay": "evening",
+    "lighting": "harbor lamps",
+    "camera": "wide shot",
+    "mood": "警觉",
+    "promptProse": "At the harbor, Miu checks a folded patrol map beside the railing.",
+    "promptTokens": [
+      "harbor",
+      "railing",
+      "holding map",
+      "standing",
+      "evening",
+      "streetlight",
+      "wide shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "1216x832",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

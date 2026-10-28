@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "ogiso_setsuna_coffee",
+  "revision": 1,
+  "sortOrder": 2374,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "ogiso_setsuna_coffee",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "winter_coat",
+    "title": "小木曾雪菜 · 咖啡店的歌单",
+    "category": "休息",
+    "description": "咖啡还热着，雪菜在纸上列下想唱的几首歌，停笔想了想，又补上一首旧曲。",
+    "location": "cafe table",
+    "action": "writing a song list beside a coffee cup",
+    "timeOfDay": "afternoon",
+    "lighting": "warm window light",
+    "camera": "medium shot",
+    "mood": "轻松",
+    "promptProse": "Setsuna writes a short song list beside a cup of coffee at a cafe table.",
+    "promptTokens": [
+      "cafe",
+      "table",
+      "coffee cup",
+      "paper",
+      "pen",
+      "writing",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

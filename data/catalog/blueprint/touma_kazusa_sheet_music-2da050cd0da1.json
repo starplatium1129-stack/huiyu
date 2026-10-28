@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "touma_kazusa_sheet_music",
+  "revision": 1,
+  "sortOrder": 2385,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "touma_kazusa_sheet_music",
+    "characterId": "touma_kazusa",
+    "outfitId": "winter_coat",
+    "title": "冬马和纱 · 翻页的间隙",
+    "category": "练习之后",
+    "description": "离开前，和纱站在琴凳旁，把散落的谱纸对齐收进文件夹。",
+    "location": "piano room",
+    "action": "standing beside the piano and gathering sheet music into a folder",
+    "timeOfDay": "evening",
+    "lighting": "warm room light",
+    "camera": "cowboy shot",
+    "mood": "日常",
+    "promptProse": "In the piano room, Kazusa gathers loose sheet music into a folder beside the bench.",
+    "promptTokens": [
+      "piano room",
+      "piano bench",
+      "sheet music",
+      "folder",
+      "holding papers",
+      "standing",
+      "evening",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

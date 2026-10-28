@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "ogiso_setsuna/concert_dress",
+  "revision": 1,
+  "sortOrder": 1855,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "characterId": "ogiso_setsuna",
+    "outfit": {
+      "id": "concert_dress",
+      "name": "白色演出礼服",
+      "prose": "a simple white sleeveless concert dress with a fitted waist and a flowing skirt",
+      "tokens": [
+        "white dress",
+        "sleeveless dress",
+        "long skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

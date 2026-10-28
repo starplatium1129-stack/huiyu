@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "bazett_fraga_mcremitz_station",
+  "revision": 1,
+  "sortOrder": 2406,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz_station",
+    "characterId": "bazett_fraga_mcremitz",
+    "outfitId": "dark_suit",
+    "title": "巴泽特·弗拉加·马克雷米兹 · 站台前的路线图",
+    "category": "城市日常",
+    "description": "车站墙上的路线图很大。她拿着车票对照站名，确认自己该乘哪一班车。",
+    "location": "train station",
+    "action": "standing before a route map and holding a train ticket",
+    "timeOfDay": "afternoon",
+    "lighting": "station lighting",
+    "camera": "wide shot",
+    "mood": "认真",
+    "promptProse": "At the station, Bazett holds a ticket while studying the route map on the wall.",
+    "promptTokens": [
+      "train station",
+      "route map",
+      "holding ticket",
+      "standing",
+      "indoors",
+      "wide shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "1216x832",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

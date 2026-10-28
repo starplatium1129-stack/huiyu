@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "bazett_fraga_mcremitz_menu",
+  "revision": 1,
+  "sortOrder": 2404,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz_menu",
+    "characterId": "bazett_fraga_mcremitz",
+    "outfitId": "casual_coat",
+    "title": "巴泽特·弗拉加·马克雷米兹 · 菜单上的选择",
+    "category": "日常",
+    "description": "餐馆里，她认真读着菜单，指尖停在一道菜名旁，迟迟没有叫服务员。",
+    "location": "small restaurant table",
+    "action": "sitting and reading a menu",
+    "timeOfDay": "evening",
+    "lighting": "warm restaurant lighting",
+    "camera": "medium shot",
+    "mood": "犹豫",
+    "promptProse": "At a small restaurant, Bazett reads a menu with one finger resting beside an item.",
+    "promptTokens": [
+      "restaurant",
+      "table",
+      "sitting",
+      "holding menu",
+      "reading",
+      "warm lighting",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

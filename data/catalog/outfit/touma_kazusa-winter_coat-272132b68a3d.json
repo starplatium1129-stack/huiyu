@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "touma_kazusa/winter_coat",
+  "revision": 1,
+  "sortOrder": 1858,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "characterId": "touma_kazusa",
+    "outfit": {
+      "id": "winter_coat",
+      "name": "深色大衣与围巾",
+      "prose": "a dark wool coat over a pale sweater, with a grey scarf and black boots",
+      "tokens": [
+        "dark coat",
+        "pale sweater",
+        "grey scarf",
+        "black boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

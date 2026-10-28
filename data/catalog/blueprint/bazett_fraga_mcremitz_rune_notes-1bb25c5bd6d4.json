@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "bazett_fraga_mcremitz_rune_notes",
+  "revision": 1,
+  "sortOrder": 2402,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz_rune_notes",
+    "characterId": "bazett_fraga_mcremitz",
+    "outfitId": "dark_suit",
+    "title": "巴泽特·弗拉加·马克雷米兹 · 写下符文的纸",
+    "category": "魔术准备",
+    "description": "她把一张写满记录的纸放在桌上，正用笔补上最后一个符文。",
+    "location": "quiet desk",
+    "action": "writing a rune on a sheet of paper at a desk",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "严谨",
+    "promptProse": "At a desk, Bazett writes a rune on a sheet of paper.",
+    "promptTokens": [
+      "desk",
+      "paper",
+      "pen",
+      "writing",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

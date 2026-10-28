@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "touma_kazusa_score",
+  "revision": 1,
+  "sortOrder": 2380,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "touma_kazusa_score",
+    "characterId": "touma_kazusa",
+    "outfitId": "practice_knit",
+    "title": "冬马和纱 · 谱页上的铅笔线",
+    "category": "音乐练习",
+    "description": "和纱停下练习，在谱页上用铅笔划出一个小节，目光仍停在那几行音符上。",
+    "location": "piano practice room",
+    "action": "seated at a piano, marking a score with a pencil",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "专注",
+    "promptProse": "In a practice room, Kazusa sits at the piano and marks a measure on the sheet music.",
+    "promptTokens": [
+      "piano",
+      "piano bench",
+      "sheet music",
+      "pencil",
+      "writing",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

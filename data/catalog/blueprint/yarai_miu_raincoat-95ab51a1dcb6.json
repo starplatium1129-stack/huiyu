@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "yarai_miu_raincoat",
+  "revision": 1,
+  "sortOrder": 2397,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "yarai_miu_raincoat",
+    "characterId": "yarai_miu",
+    "outfitId": "security_uniform",
+    "title": "矢来美羽 · 雨后的街角",
+    "category": "巡逻",
+    "description": "雨刚停，街角的积水映出招牌。美羽收起伞，回头确认路口已经恢复通行。",
+    "location": "street corner after rain",
+    "action": "holding a closed umbrella and looking back at the crossing",
+    "timeOfDay": "night",
+    "lighting": "storefront light",
+    "camera": "cowboy shot",
+    "mood": "放心",
+    "promptProse": "At a wet street corner, Miu holds a closed umbrella and looks back toward the crossing.",
+    "promptTokens": [
+      "street corner",
+      "wet pavement",
+      "puddle",
+      "closed umbrella",
+      "looking back",
+      "night",
+      "storefront light",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

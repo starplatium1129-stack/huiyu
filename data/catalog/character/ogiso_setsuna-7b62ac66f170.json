@@ -1,0 +1,113 @@
+{
+  "kind": "character",
+  "id": "ogiso_setsuna",
+  "revision": 2,
+  "sortOrder": 254,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:58:36.451279400+00:00",
+  "data": {
+    "id": "ogiso_setsuna",
+    "profile": {
+      "id": "ogiso_setsuna",
+      "name": "小木曾雪菜",
+      "icon": "character",
+      "source": "White Album 2",
+      "alias": [
+        "小木曽雪菜",
+        "Ogiso Setsuna",
+        "Setsuna Ogiso"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "小木曾雪菜 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "棕色长发",
+        "eyes": "棕色眼睛",
+        "hairstyle": "两侧束起的长发",
+        "uniform": "米白外套与粉色围巾",
+        "signature": "棕色长发、两侧束起的发型与棕色眼睛"
+      },
+      "personality": [
+        "善于照顾交谈的气氛",
+        "遇到在意的事会认真坚持",
+        "熟悉之后偶尔会开玩笑",
+        "珍惜与朋友共同留下的回忆"
+      ],
+      "likes": [
+        "唱歌与练习曲目",
+        "冬天出门散步",
+        "和朋友一起准备聚会"
+      ],
+      "classic_cg": {
+        "title": "排练室的最后一句",
+        "description": "排练结束后，她把歌词本合上，听着最后一个音符从房间里消失。"
+      },
+      "identity": {
+        "role": "喜欢唱歌的女性",
+        "age": "成年创作设定",
+        "occupation": "宣传与活动工作"
+      },
+      "tags": [
+        "喜欢唱歌的女性",
+        "善于照顾交谈的气氛",
+        "遇到在意的事会认真坚持"
+      ],
+      "bg_story": "雪菜喜欢唱歌，也很在意朋友之间的距离。她习惯把气氛照顾得周到，却并非总能轻松说出自己的心事。这里采用《白色相簿2》后续篇章的成年时期，场景围绕演唱、工作与冬日生活展开。",
+      "speech": "这首歌我还想再练一遍。你要是有空，就坐下来听听吧。",
+      "voice": "这首歌我还想再练一遍。你要是有空，就坐下来听听吧。",
+      "traits": [
+        "ogiso_setsuna",
+        "brown_hair",
+        "long_hair",
+        "brown_eyes",
+        "two_side_up"
+      ],
+      "accent_color": "#c25a69",
+      "voiceJa": "この歌、もう一回だけ練習したいな。よかったら、聴いていって？",
+      "bg_color": "#1c0d10"
+    },
+    "popular": {
+      "id": "ogiso_setsuna",
+      "displayName": "小木曾雪菜",
+      "originalName": "小木曽雪菜",
+      "franchise": "White Album 2",
+      "aliases": [
+        "ogiso_setsuna",
+        "小木曽雪菜",
+        "Ogiso Setsuna",
+        "Setsuna Ogiso"
+      ],
+      "identityProse": "Setsuna Ogiso from WHITE ALBUM2, a woman with long brown hair styled in two side sections and warm brown eyes.",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "ogiso_setsuna",
+        "brown_hair",
+        "long_hair",
+        "brown_eyes",
+        "two_side_up"
+      ],
+      "characterTokens": [
+        "ogiso_setsuna"
+      ],
+      "copyrightTokens": [
+        "white_album_2"
+      ],
+      "exactTokens": [
+        "ogiso_setsuna"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "winter_coat",
+      "negativeTokens": []
+    }
+  }
+}

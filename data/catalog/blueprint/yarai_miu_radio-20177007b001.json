@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "yarai_miu_radio",
+  "revision": 1,
+  "sortOrder": 2393,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "yarai_miu_radio",
+    "characterId": "yarai_miu",
+    "outfitId": "security_uniform",
+    "title": "矢来美羽 · 屋顶上的联络",
+    "category": "工作",
+    "description": "屋顶风大，她按住帽檐，听完对讲机里的消息后才看向海面。",
+    "location": "rooftop overlooking the sea",
+    "action": "holding a radio and steadying her cap",
+    "timeOfDay": "night",
+    "lighting": "rooftop light",
+    "camera": "cowboy shot",
+    "mood": "专注",
+    "promptProse": "On a rooftop above the sea, Miu steadies her cap while listening to a handheld radio.",
+    "promptTokens": [
+      "rooftop",
+      "sea",
+      "holding radio",
+      "hand on headwear",
+      "night",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

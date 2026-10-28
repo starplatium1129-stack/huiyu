@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ogiso_setsuna/winter_coat",
+  "revision": 1,
+  "sortOrder": 1853,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "characterId": "ogiso_setsuna",
+    "outfit": {
+      "id": "winter_coat",
+      "name": "米白外套与粉色围巾",
+      "prose": "an ivory winter coat, a pink scarf, a dark skirt, dark tights and ankle boots",
+      "tokens": [
+        "ivory coat",
+        "pink scarf",
+        "dark skirt",
+        "black tights",
+        "ankle boots"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

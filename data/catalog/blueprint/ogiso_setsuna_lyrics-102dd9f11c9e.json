@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "ogiso_setsuna_lyrics",
+  "revision": 1,
+  "sortOrder": 2370,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "ogiso_setsuna_lyrics",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "rehearsal_knit",
+    "title": "小木曾雪菜 · 歌词本上的记号",
+    "category": "音乐练习",
+    "description": "排练室里，雪菜用铅笔在歌词旁做了个记号，又低声把那一句唱了一遍。",
+    "location": "rehearsal room",
+    "action": "seated at a table, marking lyrics with a pencil",
+    "timeOfDay": "afternoon",
+    "lighting": "soft window light",
+    "camera": "medium shot",
+    "mood": "专注",
+    "promptProse": "In a rehearsal room, Setsuna marks a line in her lyric notebook with a pencil, pausing to read it again.",
+    "promptTokens": [
+      "rehearsal room",
+      "table",
+      "sitting",
+      "notebook",
+      "pencil",
+      "writing",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

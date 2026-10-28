@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "bazett_fraga_mcremitz_gloves",
+  "revision": 1,
+  "sortOrder": 2400,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz_gloves",
+    "characterId": "bazett_fraga_mcremitz",
+    "outfitId": "dark_suit",
+    "title": "巴泽特·弗拉加·马克雷米兹 · 街口的手套",
+    "category": "夜间行动",
+    "description": "夜里的街口很安静。巴泽特拉紧手套，确认前方没有行人后才准备穿过马路。",
+    "location": "quiet city crossing",
+    "action": "adjusting a glove while standing at a crossing",
+    "timeOfDay": "night",
+    "lighting": "streetlamp light",
+    "camera": "cowboy shot",
+    "mood": "警觉",
+    "promptProse": "At a quiet crossing, Bazett adjusts one glove beneath a streetlamp.",
+    "promptTokens": [
+      "city street",
+      "crosswalk",
+      "adjusting gloves",
+      "standing",
+      "night",
+      "streetlight",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

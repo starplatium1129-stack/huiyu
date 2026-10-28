@@ -1,0 +1,111 @@
+{
+  "kind": "character",
+  "id": "bazett_fraga_mcremitz",
+  "revision": 2,
+  "sortOrder": 257,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:58:36.451279400+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz",
+    "profile": {
+      "id": "bazett_fraga_mcremitz",
+      "name": "巴泽特·弗拉加·马克雷米兹",
+      "icon": "character",
+      "source": "Fate",
+      "alias": [
+        "Bazett Fraga McRemitz",
+        "巴泽特",
+        "バゼット"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "巴泽特·弗拉加·马克雷米兹 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "暗红紫色短发",
+        "eyes": "红褐色眼睛",
+        "hairstyle": "利落短发",
+        "uniform": "深色西装、领带与手套",
+        "signature": "暗红紫色短发、红褐色眼睛与利落的站姿"
+      },
+      "personality": [
+        "工作中严谨果断",
+        "习惯事先确认规则",
+        "面对突然的闲暇有些不知所措",
+        "对认可的对手保持尊重"
+      ],
+      "likes": [
+        "身体训练",
+        "桌面游戏",
+        "安排整齐的日程"
+      ],
+      "classic_cg": {
+        "title": "夜里的街口",
+        "description": "夜里的街口，巴泽特把手套拉好，确认前方道路后才继续向前。"
+      },
+      "identity": {
+        "role": "魔术协会派遣的魔术师",
+        "age": "成年创作设定",
+        "occupation": "魔术师与执行者"
+      },
+      "tags": [
+        "魔术协会派遣的魔术师",
+        "工作中严谨果断",
+        "习惯事先确认规则"
+      ],
+      "bg_story": "巴泽特是魔术协会派往第五次圣杯战争的魔术师，擅长格斗与卢恩魔术。在《Fate/hollow ataraxia》中，她反复面对夜晚的战斗。她认真守序，也会在不熟悉的日常安排面前显得笨拙。",
+      "speech": "请稍等，我先把今天的安排确认一遍。",
+      "voice": "请稍等，我先把今天的安排确认一遍。",
+      "traits": [
+        "bazett_fraga_mcremitz",
+        "purple_hair",
+        "short_hair",
+        "red_eyes"
+      ],
+      "accent_color": "#a56279",
+      "voiceJa": "少々お待ちを。本日の任務手順を再確認いたします",
+      "bg_color": "#180e14"
+    },
+    "popular": {
+      "id": "bazett_fraga_mcremitz",
+      "displayName": "巴泽特·弗拉加·马克雷米兹",
+      "originalName": "バゼット・フラガ・マクレミッツ",
+      "franchise": "Fate",
+      "aliases": [
+        "bazett_fraga_mcremitz",
+        "Bazett Fraga McRemitz",
+        "巴泽特",
+        "バゼット"
+      ],
+      "identityProse": "Bazett Fraga McRemitz from Fate/hollow ataraxia, an Irish mage with short dark reddish-purple hair and reddish-brown eyes.",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "bazett_fraga_mcremitz",
+        "purple_hair",
+        "short_hair",
+        "red_eyes"
+      ],
+      "characterTokens": [
+        "bazett_fraga_mcremitz"
+      ],
+      "copyrightTokens": [
+        "fate/hollow_ataraxia"
+      ],
+      "exactTokens": [
+        "bazett_fraga_mcremitz"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "dark_suit",
+      "negativeTokens": []
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "bazett_fraga_mcremitz_balcony",
+  "revision": 1,
+  "sortOrder": 2405,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz_balcony",
+    "characterId": "bazett_fraga_mcremitz",
+    "outfitId": "casual_coat",
+    "title": "巴泽特·弗拉加·马克雷米兹 · 阳台上的盆栽",
+    "category": "居家日常",
+    "description": "清晨的阳台上，她给窗边的盆栽浇水，等泥土湿透后才放下水壶。",
+    "location": "apartment balcony",
+    "action": "watering a potted plant on the balcony",
+    "timeOfDay": "morning",
+    "lighting": "morning sunlight",
+    "camera": "medium shot",
+    "mood": "平静",
+    "promptProse": "On an apartment balcony, Bazett waters a potted plant beside the window.",
+    "promptTokens": [
+      "balcony",
+      "potted plant",
+      "watering can",
+      "watering plant",
+      "morning",
+      "sunlight",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

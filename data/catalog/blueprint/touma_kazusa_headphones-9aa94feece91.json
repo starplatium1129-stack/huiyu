@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "touma_kazusa_headphones",
+  "revision": 1,
+  "sortOrder": 2382,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "touma_kazusa_headphones",
+    "characterId": "touma_kazusa",
+    "outfitId": "practice_knit",
+    "title": "冬马和纱 · 耳机里的一段旋律",
+    "category": "聆听",
+    "description": "她坐在地毯上听录音，手边摊开的谱纸被压在杯垫下面，免得卷起来。",
+    "location": "living room floor",
+    "action": "sitting on the rug and listening through headphones",
+    "timeOfDay": "evening",
+    "lighting": "floor lamp light",
+    "camera": "medium shot",
+    "mood": "沉静",
+    "promptProse": "Kazusa sits on a rug listening through headphones, with sheet music beside her.",
+    "promptTokens": [
+      "living room",
+      "sitting on floor",
+      "headphones",
+      "sheet music",
+      "floor lamp",
+      "evening",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

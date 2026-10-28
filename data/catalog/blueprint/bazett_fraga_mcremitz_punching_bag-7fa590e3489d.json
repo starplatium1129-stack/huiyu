@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "bazett_fraga_mcremitz_punching_bag",
+  "revision": 1,
+  "sortOrder": 2401,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz_punching_bag",
+    "characterId": "bazett_fraga_mcremitz",
+    "outfitId": "training_wear",
+    "title": "巴泽特·弗拉加·马克雷米兹 · 训练室的节奏",
+    "category": "训练",
+    "description": "训练室里，沙袋还在轻轻晃动。她站稳脚步，抬手准备下一次练习。",
+    "location": "training room",
+    "action": "standing in a boxing stance in front of a hanging punching bag",
+    "timeOfDay": "morning",
+    "lighting": "overhead gym light",
+    "camera": "full body",
+    "mood": "专注",
+    "promptProse": "In the training room, Bazett stands in a boxing stance before a hanging punching bag.",
+    "promptTokens": [
+      "gym",
+      "punching bag",
+      "boxing stance",
+      "standing",
+      "morning",
+      "full body"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

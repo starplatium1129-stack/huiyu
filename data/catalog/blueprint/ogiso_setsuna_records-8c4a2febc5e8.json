@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "ogiso_setsuna_records",
+  "revision": 1,
+  "sortOrder": 2377,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "ogiso_setsuna_records",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "winter_coat",
+    "title": "小木曾雪菜 · 唱片店的试听",
+    "category": "音乐日常",
+    "description": "唱片店里，她把耳机的一侧贴近耳朵，低头查看手中的专辑封面。",
+    "location": "record shop",
+    "action": "listening with headphones and holding an album cover",
+    "timeOfDay": "afternoon",
+    "lighting": "shop lighting",
+    "camera": "cowboy shot",
+    "mood": "好奇",
+    "promptProse": "In a record shop, Setsuna listens through headphones while examining an album cover.",
+    "promptTokens": [
+      "record store",
+      "headphones",
+      "holding album",
+      "looking down",
+      "indoors",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

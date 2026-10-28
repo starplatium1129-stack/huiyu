@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "ogiso_setsuna_umbrella",
+  "revision": 1,
+  "sortOrder": 2378,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "ogiso_setsuna_umbrella",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "winter_coat",
+    "title": "小木曾雪菜 · 雨停前的屋檐",
+    "category": "雨天",
+    "description": "便利店的屋檐下，雪菜把还未打开的伞靠在身边，等雨势小一点再走。",
+    "location": "convenience store entrance",
+    "action": "standing under an awning with a closed umbrella",
+    "timeOfDay": "evening",
+    "lighting": "storefront light",
+    "camera": "medium shot",
+    "mood": "从容",
+    "promptProse": "Setsuna waits beneath a store awning with her closed umbrella while rain falls beyond it.",
+    "promptTokens": [
+      "storefront",
+      "awning",
+      "rain",
+      "holding umbrella",
+      "closed umbrella",
+      "evening",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

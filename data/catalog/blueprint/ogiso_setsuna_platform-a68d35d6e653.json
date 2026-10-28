@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "ogiso_setsuna_platform",
+  "revision": 1,
+  "sortOrder": 2375,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "ogiso_setsuna_platform",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "winter_coat",
+    "title": "小木曾雪菜 · 站台上的消息",
+    "category": "城市日常",
+    "description": "列车还没到站，雪菜看了一眼手机里的消息，抬头望向轨道另一端。",
+    "location": "train platform",
+    "action": "holding a phone and looking down the tracks",
+    "timeOfDay": "evening",
+    "lighting": "platform lights",
+    "camera": "medium shot",
+    "mood": "等待",
+    "promptProse": "On the platform, Setsuna holds her phone and looks toward the far end of the tracks.",
+    "promptTokens": [
+      "train platform",
+      "holding phone",
+      "looking afar",
+      "evening",
+      "platform lights",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

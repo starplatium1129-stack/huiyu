@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "touma_kazusa/practice_knit",
+  "revision": 1,
+  "sortOrder": 1857,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "characterId": "touma_kazusa",
+    "outfit": {
+      "id": "practice_knit",
+      "name": "深灰针织练习装",
+      "prose": "a charcoal knit sweater and dark tailored trousers",
+      "tokens": [
+        "charcoal sweater",
+        "dark trousers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

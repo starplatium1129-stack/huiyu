@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "ogiso_setsuna_letters",
+  "revision": 1,
+  "sortOrder": 2379,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "ogiso_setsuna_letters",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "rehearsal_knit",
+    "title": "小木曾雪菜 · 写给朋友的卡片",
+    "category": "朋友",
+    "description": "桌上摊着几张空白卡片。雪菜写完一句，拿起其中一张端详，确认字迹没有写错。",
+    "location": "home dining table",
+    "action": "holding a handwritten card above the table",
+    "timeOfDay": "night",
+    "lighting": "warm table lamp",
+    "camera": "medium shot",
+    "mood": "认真",
+    "promptProse": "At her table, Setsuna reads a handwritten card under the light of a desk lamp.",
+    "promptTokens": [
+      "dining table",
+      "holding card",
+      "writing paper",
+      "table lamp",
+      "night",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

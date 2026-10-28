@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "touma_kazusa_record",
+  "revision": 1,
+  "sortOrder": 2386,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "touma_kazusa_record",
+    "characterId": "touma_kazusa",
+    "outfitId": "practice_knit",
+    "title": "冬马和纱 · 抽出的唱片",
+    "category": "音乐日常",
+    "description": "唱片架前，她抽出一张唱片，侧过头仔细辨认封面上的名字。",
+    "location": "record shelf",
+    "action": "holding a record sleeve and reading its cover",
+    "timeOfDay": "night",
+    "lighting": "warm indoor light",
+    "camera": "medium shot",
+    "mood": "好奇",
+    "promptProse": "Kazusa holds a record sleeve near the shelf and reads its cover.",
+    "promptTokens": [
+      "record shelf",
+      "holding album",
+      "looking down",
+      "indoors",
+      "night",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "touma_kazusa_bus_stop",
+  "revision": 1,
+  "sortOrder": 2388,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "touma_kazusa_bus_stop",
+    "characterId": "touma_kazusa",
+    "outfitId": "winter_coat",
+    "title": "冬马和纱 · 雨中的末班车",
+    "category": "城市夜晚",
+    "description": "雨落在站牌外的路面上。和纱站在候车亭里，手中握着一张折好的车票。",
+    "location": "bus shelter",
+    "action": "standing inside the shelter holding a folded ticket",
+    "timeOfDay": "night",
+    "lighting": "bus stop light",
+    "camera": "wide shot",
+    "mood": "等待",
+    "promptProse": "Kazusa waits inside a bus shelter, holding a folded ticket while rain falls outside.",
+    "promptTokens": [
+      "bus stop",
+      "rain",
+      "holding ticket",
+      "standing",
+      "night",
+      "streetlight",
+      "wide shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "1216x832",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

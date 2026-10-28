@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "ogiso_setsuna_scarf",
+  "revision": 1,
+  "sortOrder": 2371,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "ogiso_setsuna_scarf",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "winter_coat",
+    "title": "小木曾雪菜 · 围巾里的晚风",
+    "category": "冬日漫步",
+    "description": "街口的风有些冷，雪菜把围巾往上拢了拢，站在行道树旁等绿灯。",
+    "location": "winter street crossing",
+    "action": "holding a scarf near her chin while waiting by the crossing",
+    "timeOfDay": "evening",
+    "lighting": "streetlamp light",
+    "camera": "medium shot",
+    "mood": "安静",
+    "promptProse": "On a winter street, Setsuna holds her scarf near her chin as she waits beside the crossing.",
+    "promptTokens": [
+      "street",
+      "crosswalk",
+      "winter",
+      "holding scarf",
+      "streetlight",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

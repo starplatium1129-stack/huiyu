@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "ogiso_setsuna_soup",
+  "revision": 1,
+  "sortOrder": 2376,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "ogiso_setsuna_soup",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "rehearsal_knit",
+    "title": "小木曾雪菜 · 厨房里的试味",
+    "category": "居家日常",
+    "description": "锅里的汤刚煮好，雪菜舀起一小勺尝了尝，看看味道是否合适。",
+    "location": "home kitchen",
+    "action": "tasting soup with a spoon beside a pot",
+    "timeOfDay": "morning",
+    "lighting": "morning window light",
+    "camera": "medium shot",
+    "mood": "自在",
+    "promptProse": "In the kitchen, Setsuna tastes soup from a spoon beside the pot.",
+    "promptTokens": [
+      "kitchen",
+      "pot",
+      "spoon",
+      "tasting",
+      "standing",
+      "morning",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

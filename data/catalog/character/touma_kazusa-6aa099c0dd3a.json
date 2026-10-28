@@ -1,0 +1,111 @@
+{
+  "kind": "character",
+  "id": "touma_kazusa",
+  "revision": 2,
+  "sortOrder": 255,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:58:36.451279400+00:00",
+  "data": {
+    "id": "touma_kazusa",
+    "profile": {
+      "id": "touma_kazusa",
+      "name": "冬马和纱",
+      "icon": "character",
+      "source": "White Album 2",
+      "alias": [
+        "冬馬かずさ",
+        "Touma Kazusa",
+        "Kazusa Touma"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "冬马和纱 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "黑色长发",
+        "eyes": "蓝色眼睛",
+        "hairstyle": "自然垂落的黑长直发",
+        "uniform": "黑色演出礼服",
+        "signature": "黑色长直发、细长蓝眸与安静锐利的神情"
+      },
+      "personality": [
+        "对音乐要求严格",
+        "说话直接，不习惯解释太多",
+        "在熟悉的人面前会放松警惕",
+        "不愿把重要的约定轻易放下"
+      ],
+      "likes": [
+        "钢琴",
+        "独自练习",
+        "能安静听完一首曲子的人"
+      ],
+      "classic_cg": {
+        "title": "琴房里的最后一个和弦",
+        "description": "琴房里只开了一盏灯。和纱停在最后一个和弦上，低头听琴弦慢慢安静下来。"
+      },
+      "identity": {
+        "role": "钢琴家",
+        "age": "成年创作设定",
+        "occupation": "钢琴演奏与练习"
+      },
+      "tags": [
+        "钢琴家",
+        "对音乐要求严格",
+        "说话直接，不习惯解释太多"
+      ],
+      "bg_story": "和纱是钢琴家，习惯用演奏表达难以说出口的情绪。她外表冷淡，说话常常直接，真正熟悉的人能看见她对音乐和彼此关系的认真。这里采用后续篇章的成年时期，保留她独处时的节奏，不替她决定原作路线的结局。",
+      "speech": "先别说话。等这一段弹完，再告诉我哪里不对。",
+      "voice": "先别说话。等这一段弹完，再告诉我哪里不对。",
+      "traits": [
+        "touma_kazusa",
+        "black_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "accent_color": "#7c69a5",
+      "voiceJa": "ちょっと黙ってて。このフレーズが終わるまで、音を聴きたいから",
+      "bg_color": "#140f1f"
+    },
+    "popular": {
+      "id": "touma_kazusa",
+      "displayName": "冬马和纱",
+      "originalName": "冬馬かずさ",
+      "franchise": "White Album 2",
+      "aliases": [
+        "touma_kazusa",
+        "冬馬かずさ",
+        "Touma Kazusa",
+        "Kazusa Touma"
+      ],
+      "identityProse": "Kazusa Touma from WHITE ALBUM2, a woman with long straight black hair and sharp blue eyes.",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "touma_kazusa",
+        "black_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "characterTokens": [
+        "touma_kazusa"
+      ],
+      "copyrightTokens": [
+        "white_album_2"
+      ],
+      "exactTokens": [
+        "touma_kazusa"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "concert_dress",
+      "negativeTokens": []
+    }
+  }
+}

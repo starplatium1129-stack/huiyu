@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "bazett_fraga_mcremitz_tea",
+  "revision": 1,
+  "sortOrder": 2407,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz_tea",
+    "characterId": "bazett_fraga_mcremitz",
+    "outfitId": "casual_coat",
+    "title": "巴泽特·弗拉加·马克雷米兹 · 雨天的热茶",
+    "category": "休息",
+    "description": "雨点敲着玻璃，她坐在窗边捧着茶杯，难得没有查看放在一旁的日程。",
+    "location": "window seat",
+    "action": "sitting by the window and holding a cup of tea",
+    "timeOfDay": "afternoon",
+    "lighting": "soft overcast window light",
+    "camera": "medium shot",
+    "mood": "安静",
+    "promptProse": "Bazett sits by the window holding a cup of tea while rain falls outside.",
+    "promptTokens": [
+      "window",
+      "rain",
+      "sitting",
+      "holding teacup",
+      "overcast",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

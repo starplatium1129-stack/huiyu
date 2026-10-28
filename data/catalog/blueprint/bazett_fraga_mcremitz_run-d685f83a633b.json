@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "bazett_fraga_mcremitz_run",
+  "revision": 1,
+  "sortOrder": 2408,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz_run",
+    "characterId": "bazett_fraga_mcremitz",
+    "outfitId": "training_wear",
+    "title": "巴泽特·弗拉加·马克雷米兹 · 清晨河岸",
+    "category": "训练",
+    "description": "天刚亮，她沿河跑到桥下放慢脚步，低头看了一眼计时表。",
+    "location": "riverside path",
+    "action": "slowing to a walk and checking a wristwatch",
+    "timeOfDay": "dawn",
+    "lighting": "early morning light",
+    "camera": "wide shot",
+    "mood": "清醒",
+    "promptProse": "On a riverside path at dawn, Bazett slows down and checks her wristwatch.",
+    "promptTokens": [
+      "riverside",
+      "path",
+      "walking",
+      "looking at watch",
+      "dawn",
+      "wide shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "1216x832",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

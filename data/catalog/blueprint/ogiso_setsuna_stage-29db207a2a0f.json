@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "ogiso_setsuna_stage",
+  "revision": 1,
+  "sortOrder": 2372,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "ogiso_setsuna_stage",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "concert_dress",
+    "title": "小木曾雪菜 · 开场之前",
+    "category": "演出",
+    "description": "幕布还没有完全拉开。雪菜握着麦克风，在舞台入口深吸一口气。",
+    "location": "concert stage entrance",
+    "action": "standing by the curtain and holding a microphone",
+    "timeOfDay": "night",
+    "lighting": "stage lights from beyond the curtain",
+    "camera": "cowboy shot",
+    "mood": "期待",
+    "promptProse": "At the edge of the stage, Setsuna holds a microphone and looks toward the opening curtain.",
+    "promptTokens": [
+      "stage",
+      "stage curtain",
+      "microphone",
+      "holding microphone",
+      "standing",
+      "stage lighting",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

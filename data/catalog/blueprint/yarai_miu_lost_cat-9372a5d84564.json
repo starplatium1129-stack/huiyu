@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "yarai_miu_lost_cat",
+  "revision": 1,
+  "sortOrder": 2392,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "yarai_miu_lost_cat",
+    "characterId": "yarai_miu",
+    "outfitId": "security_uniform",
+    "title": "矢来美羽 · 自动贩卖机旁的来客",
+    "category": "巡逻",
+    "description": "小猫缩在自动贩卖机旁。美羽蹲下来，伸手把它面前翻倒的小纸盒扶正。",
+    "location": "street beside vending machine",
+    "action": "crouching and setting a small box upright near a cat",
+    "timeOfDay": "night",
+    "lighting": "vending machine light",
+    "camera": "medium shot",
+    "mood": "耐心",
+    "promptProse": "Miu crouches beside a vending machine and sets a small box upright near a cat.",
+    "promptTokens": [
+      "street",
+      "vending machine",
+      "cat",
+      "crouching",
+      "box",
+      "night",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

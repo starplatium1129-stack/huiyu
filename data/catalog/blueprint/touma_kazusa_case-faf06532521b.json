@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "touma_kazusa_case",
+  "revision": 1,
+  "sortOrder": 2383,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "touma_kazusa_case",
+    "characterId": "touma_kazusa",
+    "outfitId": "winter_coat",
+    "title": "冬马和纱 · 车站里的琴谱箱",
+    "category": "旅途",
+    "description": "车站人来人往。和纱站在行李箱旁，确认夹在手里的琴谱没有落下。",
+    "location": "train station concourse",
+    "action": "standing beside a suitcase and holding sheet music",
+    "timeOfDay": "morning",
+    "lighting": "cool station light",
+    "camera": "wide shot",
+    "mood": "出发",
+    "promptProse": "At a station, Kazusa stands beside her suitcase and checks the music she is carrying.",
+    "promptTokens": [
+      "train station",
+      "suitcase",
+      "standing",
+      "holding sheet music",
+      "morning",
+      "wide shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "1216x832",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

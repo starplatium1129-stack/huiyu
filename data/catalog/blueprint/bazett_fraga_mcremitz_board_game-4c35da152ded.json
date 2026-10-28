@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "bazett_fraga_mcremitz_board_game",
+  "revision": 1,
+  "sortOrder": 2403,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "bazett_fraga_mcremitz_board_game",
+    "characterId": "bazett_fraga_mcremitz",
+    "outfitId": "casual_coat",
+    "title": "巴泽特·弗拉加·马克雷米兹 · 棋盘前的一步",
+    "category": "休息",
+    "description": "轮到她走棋时，巴泽特拿起棋子停了一会儿，仔细看向棋盘另一端。",
+    "location": "table with a board game",
+    "action": "holding a game piece above the board",
+    "timeOfDay": "afternoon",
+    "lighting": "soft indoor light",
+    "camera": "medium shot",
+    "mood": "思考",
+    "promptProse": "Bazett holds a game piece above the board while considering her next move.",
+    "promptTokens": [
+      "table",
+      "board game",
+      "holding game piece",
+      "looking down",
+      "indoors",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "touma_kazusa_stage",
+  "revision": 1,
+  "sortOrder": 2381,
+  "createdAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "data": {
+    "id": "touma_kazusa_stage",
+    "characterId": "touma_kazusa",
+    "outfitId": "concert_dress",
+    "title": "冬马和纱 · 掌声落下之后",
+    "category": "演出",
+    "description": "演出结束，和纱站在钢琴旁向观众席微微欠身，手指还留着刚才用力的姿势。",
+    "location": "concert stage",
+    "action": "standing beside a grand piano and bowing",
+    "timeOfDay": "night",
+    "lighting": "warm stage light",
+    "camera": "full body",
+    "mood": "克制",
+    "promptProse": "Beside a grand piano, Kazusa bows toward the audience after her performance.",
+    "promptTokens": [
+      "concert stage",
+      "grand piano",
+      "standing",
+      "bowing",
+      "stage lighting",
+      "full body"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}
