@@ -88,6 +88,23 @@ const FRANCHISE_CN: Record<string, string> = {
   "Goddess of Victory: NIKKE": "胜利女神：妮姬",
   "Fatal Fury": "饿狼传说／拳皇",
   "BanG Dream!": "BanG Dream!／少女乐团派对",
+  "The Eminence in Shadow": "想要成为影之实力者！",
+  "Senren Banka": "千恋＊万花",
+  "RIDDLE JOKER": "密命王牌",
+  "White Album 2": "白色相簿2",
+  "DRACU-RIOT!": "吸血鬼暴动！",
+  "Steins;Gate": "命运石之门",
+  "Summer Pockets": "夏日口袋",
+  "AIR": "青空",
+  "Bishoujo Mangekyou": "美少女万华镜",
+  "Classroom of the Elite": "欢迎来到实力至上主义的教室",
+  "Oreimo": "我的妹妹哪有这么可爱！",
+  "Infinite Stratos": "无限斯特拉托斯",
+  "Chivalry of a Failed Knight": "落第骑士英雄谭",
+  "Strike the Blood": "噬血狂袭",
+  "A Certain Magical Index": "魔法禁书目录",
+  "The Quintessential Quintuplets": "五等分的花嫁",
+  "Rent-a-Girlfriend": "租借女友",
 }
 
 /** Every catalog franchise must explicitly register a display label. Unknown imports remain identifiable. */

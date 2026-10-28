@@ -92,7 +92,7 @@ watch([owner, () => portraitCloudIdentity(props.characterId), retryVersion], asy
 .portrait-stage-modes button[aria-pressed='true'] { @apply tw:text-primary tw:border-strong; background:var(--bg-surface); box-shadow:var(--shadow-sm); }
 .portrait-stage-modes button:disabled { @apply tw:text-disabled tw:cursor-default; }
 .portrait-stage-modes button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.portrait-stage-canvas { height:clamp(400px,55dvh,660px); }
+.portrait-stage-canvas { height:clamp(500px,75dvh,800px); }
 .particle-theatre { height:100%; background:var(--bg-base); }
 .particle-module-panel { height:100%; }
 .particle-module-panel :deep(.async-panel-feedback) { min-height:100%; align-content:center; justify-items:center; border:0; border-radius:0; background:var(--bg-base); text-align:center; }

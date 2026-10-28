@@ -79,6 +79,9 @@
             <RouterLink class="btn btn-ghost" :to="isPopular
               ? `/popular-scenes?character=${encodeURIComponent(current.id)}`
               : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '浏览相关场景' : '查看核心场景' }}</RouterLink>
+            <a v-if="animeResourceUrl" class="btn btn-ghost" :href="animeResourceUrl" target="_blank" rel="noopener noreferrer"
+              :aria-label="`在 Anime Garden 搜索${animeResourceWork}的动画资源，新窗口打开`"
+              title="在 Anime Garden 搜索该作品"><ArchiveIcon name="search" /><span class="anime-resource-title">{{ animeResourceWork }}</span></a>
           </div>
           <div v-if="current.voice" class="voice-block">
             <span class="voice-label"><ArchiveIcon name="chat" />语气示例</span><p class="voice-line">{{ current.voice }}</p>
@@ -282,6 +285,10 @@ const hasIdentity = computed(() => {
   return id.role || id.age || id.occupation || id.faction
 })
 const isPopular = computed(() => current.value?.type === 'popular')
+const animeResourceWork = computed(() => franchiseLabel(current.value?.source || ''))
+const animeResourceUrl = computed(() => animeResourceWork.value
+  ? `https://animes.garden/resources?search=${encodeURIComponent(animeResourceWork.value)}`
+  : '')
 const recommendationsLoading = ref(false)
 const recommendationsError = ref(false)
 const recommendationReload = ref(0)
