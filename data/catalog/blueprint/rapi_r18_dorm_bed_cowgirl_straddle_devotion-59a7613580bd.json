@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_r18_dorm_bed_cowgirl_straddle_devotion",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1805,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "rapi_r18_dorm_bed_cowgirl_straddle_devotion",
     "title": "拉毗 · 宿舍软床跨坐乘骑的深情忠诚献身",
@@ -65,7 +65,8 @@
       "intimate_lighting",
       "looking down",
       "candlelight",
-      "sweat"
+      "sweat",
+      "pov"
     ],
     "promptProse": "Mounted atop the Commander in an impassioned cowgirl position on tangled dark sheets, Rapi's completely nude body is bathed in soft amber candlelight. Her enormous perky breasts bounce rhythmically with flush-pink erect nipples, sweat tracing down her slender waist as her intense crimson eyes gaze down with profound love and surrender.",
     "negativeTokens": [],

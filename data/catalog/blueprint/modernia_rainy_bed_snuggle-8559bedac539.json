@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "modernia_rainy_bed_snuggle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2133,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "modernia_rainy_bed_snuggle",
     "characterId": "modernia",
@@ -28,7 +28,12 @@
       "blushing",
       "whispering",
       "rain_on_window",
-      "close-up"
+      "close-up",
+      "bedside_lamp",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting",
+      "overcast"
     ],
     "negativeTokens": [],
     "animaCaption": "Modernia cuddling intimately in bed under blankets on a rainy day.",

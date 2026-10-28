@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_bakery_attic_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1513,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kaoruko_nsfw_bakery_attic_straddle",
     "title": "和栗薰子 · 甜品店阁楼的晨光主控跨坐 ·「凛太郎……今天的点心是我哦」",
@@ -37,7 +37,10 @@
       "from below",
       "adult",
       "leaning forward",
-      "offering strawberry"
+      "offering strawberry",
+      "sunlight",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

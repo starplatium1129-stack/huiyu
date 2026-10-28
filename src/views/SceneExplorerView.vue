@@ -139,7 +139,7 @@
     </ArchiveStatePanel>
     <div v-else ref="listRoot" data-route-arrive class="scene-grid" :aria-busy="loading">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
-          :thumb-url="thumbUrl(s.id)" :preview-dimensions="thumbDimensions(s.id)"
+          :thumb-url="thumbUrl(s.id)" :image-url="imageUrl(s.id)" :preview-dimensions="thumbDimensions(s.id)"
           :class="{ 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id" :data-list-key="s.id"
           :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">
           <template #body="{ scene: s2 }">
@@ -225,7 +225,7 @@ const {
 const filtersRevealed = ref(false)
 watch(filtersOpen, open => { if (open) filtersRevealed.value = true }, { flush: 'sync' })
 const listRoot = ref<HTMLElement | null>(null)
-const { thumbUrl, thumbDimensions, initialLoading: samplesPending } = useShowcaseAssets()
+const { thumbUrl, imageUrl, thumbDimensions, initialLoading: samplesPending } = useShowcaseAssets()
 useListTransition(listRoot, () => paged.value.map(scene => scene.id))
 const storyDialog = ref<InstanceType<typeof SceneStoryDialog> | null>(null)
 const openedDetails = reactive(new Set<string>())

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_rooftop",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 330,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "yuzuriha_inori_rooftop",
     "title": "楪祈 · 屋顶对话",
@@ -42,7 +42,9 @@
       "both hands",
       "looking at viewer",
       "wind",
-      "dusk"
+      "dusk",
+      "sunlight",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

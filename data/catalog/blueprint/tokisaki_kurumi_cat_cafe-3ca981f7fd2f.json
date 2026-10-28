@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_cat_cafe",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 78,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "tokisaki_kurumi_cat_cafe",
     "title": "时崎狂三 · 猫咪咖啡厅",
@@ -39,7 +39,9 @@
       "holding cat",
       "petting cat",
       "looking up",
-      "smile"
+      "smile",
+      "sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [
       "weapons",

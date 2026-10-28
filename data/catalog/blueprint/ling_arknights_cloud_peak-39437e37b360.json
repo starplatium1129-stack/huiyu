@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_cloud_peak",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 653,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "立于山巅仰望银河伸臂虚握流星",
     "camera": "wide shot",
@@ -28,7 +28,12 @@
       "meteor",
       "wide shot",
       "standing",
-      "wind"
+      "wind",
+      "moonlight",
+      "starlight",
+      "glowing",
+      "soft_lighting",
+      "rim_light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_night_rooftop",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 75,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "tokisaki_kurumi_night_rooftop",
     "title": "时崎狂三 · 黑夜天台",
@@ -40,7 +40,9 @@
       "night",
       "full body",
       "reverse grip",
-      "violet energy"
+      "violet energy",
+      "moonlight",
+      "city_lights"
     ],
     "negativeTokens": [
       "gunfire",

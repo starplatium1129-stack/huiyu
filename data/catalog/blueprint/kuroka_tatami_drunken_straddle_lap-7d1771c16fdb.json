@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_tatami_drunken_straddle_lap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2205,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kuroka_tatami_drunken_straddle_lap",
     "characterId": "kuroka",
@@ -29,7 +29,11 @@
       "cat_ears",
       "two_tails",
       "blushing_heavily",
-      "close-up"
+      "close-up",
+      "lantern",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kuroka straddling partner lap on tatami with an open kimono in a deep kiss.",

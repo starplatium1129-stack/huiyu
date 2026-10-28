@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurisu_storage_room_pinned_kiss_intimacy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2325,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kurisu_storage_room_pinned_kiss_intimacy",
     "characterId": "makise_kurisu",
@@ -29,7 +29,9 @@
       "heavy_breathing",
       "flushed_face",
       "teary_eyes",
-      "close-up"
+      "close-up",
+      "sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kurisu pinned gently against a backroom shelf, flushed with passionate desire.",

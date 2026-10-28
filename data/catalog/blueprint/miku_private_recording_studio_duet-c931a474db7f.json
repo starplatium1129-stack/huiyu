@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miku_private_recording_studio_duet",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2214,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "miku_private_recording_studio_duet",
     "characterId": "izayoi_miku",
@@ -28,7 +28,10 @@
       "singing",
       "purple_sweater",
       "sweet_smile",
-      "cowboy_shot"
+      "cowboy_shot",
+      "glowing",
+      "soft_lighting",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Miku Izayoi singing a sweet duet while sharing headphones in a recording booth.",

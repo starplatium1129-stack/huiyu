@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_cafe_patio_afternoon_sweet",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2162,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "st_louis_cafe_patio_afternoon_sweet",
     "characterId": "st_louis_azur",
@@ -28,7 +28,8 @@
       "cake",
       "happy_smile",
       "day",
-      "cowboy_shot"
+      "cowboy_shot",
+      "dappled_sunlight"
     ],
     "negativeTokens": [],
     "animaCaption": "St. Louis feeding a bite of cake at a sunny sidewalk cafe.",

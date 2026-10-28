@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_bedroom_bed_flustered_drawing_material",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2313,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "izumi_bedroom_bed_flustered_drawing_material",
     "characterId": "hashima_izumi",
@@ -29,7 +29,11 @@
       "tears_of_happiness",
       "blushing_heavily",
       "panting",
-      "close-up"
+      "close-up",
+      "lamp",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Izumi Hashima embracing partner passionately on bed with tearful joy.",

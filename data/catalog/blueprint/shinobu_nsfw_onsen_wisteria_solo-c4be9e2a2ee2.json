@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_nsfw_onsen_wisteria_solo",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1461,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "斜倚池边湿身白浴衣，水下手指自抚，紫瞳失神望花影",
     "adult": true,
@@ -39,7 +39,9 @@
       "masturbation",
       "see through",
       "flower shadow",
-      "medium shot"
+      "medium shot",
+      "sunlight",
+      "soft_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

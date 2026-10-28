@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_slime_suit_whisper_embrace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2471,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "beta_slime_suit_whisper_embrace",
     "characterId": "beta_shadow",
@@ -26,7 +26,9 @@
       "close-up",
       "looking_up",
       "blushing",
-      "large_breasts"
+      "large_breasts",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Beta gazing up at Lord Shadow in devoted adoration in the underground ruins.",

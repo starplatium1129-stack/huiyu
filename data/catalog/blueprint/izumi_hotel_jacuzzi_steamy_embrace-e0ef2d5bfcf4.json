@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_hotel_jacuzzi_steamy_embrace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2314,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "izumi_hotel_jacuzzi_steamy_embrace",
     "characterId": "hashima_izumi",
@@ -30,7 +30,10 @@
       "untied_bikini",
       "blushing_heavily",
       "panting",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "water_reflection",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Izumi Hashima straddling partner passionately in steamy jacuzzi.",

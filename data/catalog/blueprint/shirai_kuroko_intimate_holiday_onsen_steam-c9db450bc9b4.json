@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_intimate_holiday_onsen_steam",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2039,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "characterId": "shirai_kuroko",
     "outfitId": "winter_cape",
@@ -37,7 +37,11 @@
       "pout",
       "heavy_blush",
       "sensual",
-      "medium_shot"
+      "medium_shot",
+      "lantern",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kuroko blushing adorably while looking back in a steamy cedar onsen.",

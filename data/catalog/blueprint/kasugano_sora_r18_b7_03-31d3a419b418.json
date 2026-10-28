@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_r18_b7_03",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1625,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kasugano_sora_r18_b7_03",
     "title": "春日野穹 · 卧室玄关黑白连衣裙拉链卡壳事故 ·「悠快过来……穹的裙子脱不掉了……好难受」",
@@ -42,7 +42,9 @@
       "bedroom",
       "adult",
       "both hands behind back",
-      "wooden chest"
+      "wooden chest",
+      "sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

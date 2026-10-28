@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_tatami_drunken_entangle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2139,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "scarlet_tatami_drunken_entangle",
     "characterId": "scarlet_nikke",
@@ -27,8 +27,11 @@
       "tipsy",
       "leaning_on_partner",
       "paper_lantern",
-      "dim_lighting",
-      "close-up"
+      "close-up",
+      "lantern",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "A tipsy Scarlet leaning close on tatami with an open yukata collar.",

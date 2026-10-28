@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_abyss_shore",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 607,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "单膝跪地，剑尖抵着沙滩",
     "camera": "cowboy shot, low angle, kneeling pose and hand on the sword visible",
@@ -31,7 +31,9 @@
       "planted sword",
       "wiping cheek",
       "salt spray",
-      "dusk"
+      "dusk",
+      "sunset",
+      "golden_hour"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

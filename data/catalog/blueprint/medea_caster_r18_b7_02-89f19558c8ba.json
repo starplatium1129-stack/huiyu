@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_02",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 310,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "medea_caster_r18_b7_02",
     "title": "美狄亚 · 龙牙魔药温汤水光湿身独奏 ·「神代的魔药……也治不好想念您的相思之毒」",
@@ -45,7 +45,10 @@
       "leaning against stone wall",
       "blushing ears",
       "water reflection",
-      "medium shot"
+      "medium shot",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

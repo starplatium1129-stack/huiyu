@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_stage_two_tone",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 951,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "镜头前比偶像手势",
     "camera": "medium shot",
@@ -25,7 +25,9 @@
       "looking at viewer",
       "television studio",
       "medium shot",
-      "studio panels"
+      "studio panels",
+      "sunlight",
+      "soft_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

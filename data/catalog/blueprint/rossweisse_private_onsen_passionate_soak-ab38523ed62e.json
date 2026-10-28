@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_private_onsen_passionate_soak",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2230,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "rossweisse_private_onsen_passionate_soak",
     "characterId": "rossweisse",
@@ -29,7 +29,10 @@
       "untied_bikini",
       "embracing",
       "blushing_heavily",
-      "close-up"
+      "close-up",
+      "lamp",
+      "warm_lighting",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Rossweisse in steamy hot spring with untied bikini clinging passionately.",

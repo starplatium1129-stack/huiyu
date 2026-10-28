@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_bed_hands",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 584,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "侧卧床上脱下最后一只手套，手指贴着大腿内侧，石盾靠在墙边",
     "adult": true,
@@ -36,7 +36,9 @@
       "removing gloves",
       "inner thigh",
       "bed",
-      "night"
+      "night",
+      "moonlight",
+      "soft_lighting"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

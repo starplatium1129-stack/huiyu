@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_r18_b6_02",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 101,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "tobiichi_origami_r18_b6_02",
     "title": "鸢一折纸 · 淋浴间白乳胶战衣水光湿身透肉 ·「被士道注视过的战衣……必须保持最高灵敏度」",
@@ -44,7 +44,10 @@
       "cowboy shot",
       "wet pilot suit",
       "water stream",
-      "composed stare"
+      "composed stare",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

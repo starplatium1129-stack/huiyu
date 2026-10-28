@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_r18_backstage_rush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1837,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kita_ikuyo_r18_backstage_rush",
     "characterId": "kita_ikuyo",
@@ -36,7 +36,9 @@
       "dim lighting",
       "cowboy shot",
       "storage room",
-      "skirt hold"
+      "skirt hold",
+      "ceiling_light",
+      "soft_lighting"
     ],
     "sceneTags": [
       "backstage",

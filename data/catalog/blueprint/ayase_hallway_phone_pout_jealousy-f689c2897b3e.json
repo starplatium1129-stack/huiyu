@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayase_hallway_phone_pout_jealousy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2257,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ayase_hallway_phone_pout_jealousy",
     "characterId": "ayase_aragaki",
@@ -28,7 +28,9 @@
       "puffed_cheeks",
       "looking_at_viewer",
       "blushing",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Ayase Aragaki pouting with puffed cheeks checking phone in hallway.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_intimate_desk_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2098,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "amau_ako_intimate_desk_whisper",
     "characterId": "amau_ako",
@@ -25,7 +25,10 @@
       "heavy_blush",
       "parted_lips",
       "night",
-      "close-up"
+      "close-up",
+      "moonlight",
+      "window_light",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Ako blushing deeply against the office desk at night.",

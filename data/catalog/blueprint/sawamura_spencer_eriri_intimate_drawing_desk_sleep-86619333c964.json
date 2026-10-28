@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_intimate_drawing_desk_sleep",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2032,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfitId": "studio_tracksuit",
@@ -37,7 +37,10 @@
       "papers",
       "night",
       "tender",
-      "medium_shot"
+      "medium_shot",
+      "screen_glow",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Eriri sleeping soundly on her messy drawing desk beside her tablet.",

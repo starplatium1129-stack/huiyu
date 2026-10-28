@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_r18_b5_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1564,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "hori_kyouko_r18_b5_02",
     "title": "堀京子 · 疲惫家事后浴室的水光湿身独奏 ·「把头发盘起来……身上的吻痕全露出来了」",
@@ -44,7 +44,10 @@
       "biting lip",
       "steam",
       "water reflection",
-      "medium shot"
+      "medium shot",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

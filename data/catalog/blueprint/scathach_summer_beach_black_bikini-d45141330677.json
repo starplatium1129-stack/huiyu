@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_summer_beach_black_bikini",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 246,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "scathach_summer_beach_black_bikini",
     "title": "斯卡哈 · 夏海黑纱的女王度假·「晒黑了？无妨，反正很快会复原」",
@@ -39,7 +39,8 @@
       "holding juice",
       "hand on towel",
       "parasol shade",
-      "sea"
+      "sea",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

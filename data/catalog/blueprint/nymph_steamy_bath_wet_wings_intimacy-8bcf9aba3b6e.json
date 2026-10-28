@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_steamy_bath_wet_wings_intimacy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2272,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "nymph_steamy_bath_wet_wings_intimacy",
     "characterId": "nymph",
@@ -30,7 +30,11 @@
       "untied_bikini",
       "embracing",
       "blushing_heavily",
-      "cowboy_shot"
+      "cowboy_shot",
+      "ceiling_light",
+      "water_reflection",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Nymph in steamy bath with wet wings clinging to partner chest.",

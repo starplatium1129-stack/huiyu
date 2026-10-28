@@ -64,7 +64,7 @@
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id" :data-list-key="blueprint.id"
           :style="{ '--scene-preview-ratio': previewRatio(blueprint) }">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
-          <RuntimeImage v-if="thumbSrc(blueprint)" :src="thumbSrc(blueprint)" v-slot="{ image, loaded, failed }" @load="measurePreview(blueprint, $event)">
+          <ShowcasePreviewSource v-if="thumbSrc(blueprint)" :src="thumbSrc(blueprint)" :full-src="imageUrl(showcaseId(blueprint))" v-slot="{ image, loaded, failed, preview, previewReady }" @load="measurePreview(blueprint, $event)">
           <button class="pop-thumb" :class="{ 'is-missing': failed, 'is-r18': sampleRatingOf(blueprint) === 'R18' }" type="button"
             :aria-label="`欣赏场景：${blueprint.title}`" @click="openPreview(blueprint, $event)">
             <span class="pop-thumb-skeleton" :class="{ visible: !loaded && !failed }" aria-hidden="true"></span>
@@ -74,12 +74,14 @@
                 'pop-thumb-missing': failed,
                 'pop-thumb-ready': loaded,
               }" />
+            <img v-if="preview.src && !failed" v-bind="preview" alt="" aria-hidden="true" decoding="async" draggable="false"
+              :class="{ 'pop-thumb-r18': sampleRatingOf(blueprint) === 'R18', 'pop-thumb-ready': previewReady }" />
             <SensitivePreviewVeil v-if="sampleRatingOf(blueprint) === 'R18' && image.src && !failed"
               :src="image.src" :crossorigin="image.crossorigin" />
             <span v-if="failed" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong></span>
             <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
           </button>
-          </RuntimeImage>
+          </ShowcasePreviewSource>
           <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>{{ assetsLoading ? '正在读取样张' : assetsError ? '样张暂不可用' : '样张待补充' }}</strong></span></div>
           <div class="pop-card-body">
             <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span></div>
@@ -132,6 +134,7 @@
 <script setup lang="ts">
 import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
+import ShowcasePreviewSource from '@/components/showcase/ShowcasePreviewSource.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'

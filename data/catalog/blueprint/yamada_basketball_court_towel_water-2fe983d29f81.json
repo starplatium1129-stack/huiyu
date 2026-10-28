@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_basketball_court_towel_water",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1495,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "yamada_basketball_court_towel_water",
     "title": "山田杏奈 · 篮球场边拧开的水瓶",
@@ -40,7 +40,9 @@
       "sitting",
       "holding bottle",
       "holding cap",
-      "afternoon shade"
+      "afternoon shade",
+      "sunlight",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

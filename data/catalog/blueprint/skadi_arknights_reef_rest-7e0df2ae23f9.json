@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_reef_rest",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 609,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "盘腿坐在礁石上，剑横在膝上",
     "camera": "full body, seated figure, sword across lap and ankles in water visible",
@@ -31,7 +31,9 @@
       "sword on lap",
       "waves",
       "ankle-deep water",
-      "afternoon"
+      "afternoon",
+      "sunlight",
+      "soft_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

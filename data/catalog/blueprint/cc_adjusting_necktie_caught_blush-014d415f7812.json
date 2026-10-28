@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_adjusting_necktie_caught_blush",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1310,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "双手整理领带动作停滞，手腕被轻握，微微别开脸颊泛起淡淡红晕",
     "camera": "cowboy shot, intimate eye level, subtle blush focus",
@@ -32,7 +32,10 @@
       "looking away",
       "preparation room",
       "window blinds",
-      "striped shadows"
+      "striped shadows",
+      "sunlight",
+      "window_light",
+      "soft_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

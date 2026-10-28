@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_hotel_mirror_dressing_gown",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "fern_r18_hotel_mirror_dressing_gown",
     "characterId": "fern_frieren",
@@ -36,7 +36,9 @@
       "from behind",
       "reaching back",
       "holding robe",
-      "steam"
+      "steam",
+      "sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "adult": true,

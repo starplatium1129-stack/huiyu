@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_garage_meat_jerky_snack",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2517,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "delta_garage_meat_jerky_snack",
     "characterId": "delta_shadow",
@@ -29,7 +29,9 @@
       "puffed_cheeks",
       "animal_ears",
       "tail",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunbeams",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Delta perched on supply crates happily devouring a giant meat bone.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_intimate_bedroom_leash",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2099,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "amau_ako_intimate_bedroom_leash",
     "characterId": "amau_ako",
@@ -30,7 +30,9 @@
       "blush",
       "sensual",
       "night",
-      "medium_shot"
+      "medium_shot",
+      "bedside_lamp",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Ako resting sweetly on the bed in a black camisole.",

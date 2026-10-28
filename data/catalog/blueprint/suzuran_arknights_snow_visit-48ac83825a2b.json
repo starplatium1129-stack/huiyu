@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_snow_visit",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 638,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "拎着食盒，站在门前",
     "camera": "medium shot",
@@ -28,7 +28,9 @@
       "holding food box",
       "both hands",
       "smile",
-      "visible breath"
+      "visible breath",
+      "window_light",
+      "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

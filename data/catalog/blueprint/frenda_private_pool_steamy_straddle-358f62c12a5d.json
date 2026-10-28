@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frenda_private_pool_steamy_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2308,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "frenda_private_pool_steamy_straddle",
     "characterId": "frenda_seivelun",
@@ -30,7 +30,12 @@
       "untied_bikini",
       "blushing_heavily",
       "panting",
-      "cowboy_shot"
+      "cowboy_shot",
+      "lamp",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Frenda Seivelun straddling partner passionately in steamy night pool.",

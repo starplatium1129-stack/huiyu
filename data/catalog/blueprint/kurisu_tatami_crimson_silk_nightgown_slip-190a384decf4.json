@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurisu_tatami_crimson_silk_nightgown_slip",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2326,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kurisu_tatami_crimson_silk_nightgown_slip",
     "characterId": "makise_kurisu",
@@ -30,7 +30,11 @@
       "parted_lips",
       "aroused",
       "heavy_blush",
-      "cowboy_shot"
+      "cowboy_shot",
+      "lantern",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kurisu lying on tatami in a fallen crimson silk nightgown, trembling with ecstasy.",

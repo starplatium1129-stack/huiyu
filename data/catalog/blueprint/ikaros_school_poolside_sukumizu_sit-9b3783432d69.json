@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_school_poolside_sukumizu_sit",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1212,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "坐在池边双腿浸水紧抱大西瓜，死库水贴身水珠滚落，眼神好奇注视水面波纹",
     "camera": "medium shot, seated side 3/4 perspective, shimmering water depth",
@@ -31,7 +31,8 @@
       "leaning forward",
       "both hands",
       "water reflection",
-      "medium shot"
+      "medium shot",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

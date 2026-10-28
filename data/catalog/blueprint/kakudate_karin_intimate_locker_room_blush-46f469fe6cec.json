@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_intimate_locker_room_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2104,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kakudate_karin_intimate_locker_room_blush",
     "characterId": "kakudate_karin",
@@ -26,7 +26,9 @@
       "sweat",
       "lockers",
       "night",
-      "close-up"
+      "close-up",
+      "ceiling_light",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Karin blushing heavily against the locker in close proximity.",

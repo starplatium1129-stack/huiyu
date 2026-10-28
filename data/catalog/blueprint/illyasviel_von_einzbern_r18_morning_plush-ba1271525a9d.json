@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_morning_plush",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 168,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_morning_plush",
     "title": "伊莉雅丝菲尔 · 晨光与玩偶",
@@ -37,7 +37,9 @@
       "morning",
       "adult",
       "sleepy",
-      "hand under shirt"
+      "hand under shirt",
+      "morning_sunlight",
+      "window_light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

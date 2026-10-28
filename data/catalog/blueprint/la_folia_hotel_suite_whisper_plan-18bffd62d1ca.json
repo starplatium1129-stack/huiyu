@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_hotel_suite_whisper_plan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2198,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "la_folia_hotel_suite_whisper_plan",
     "characterId": "la_folia_rihavein",
@@ -28,7 +28,12 @@
       "tiara",
       "emerald_dress",
       "teasing_smile",
-      "upper_body"
+      "upper_body",
+      "chandelier",
+      "warm_lighting",
+      "city_lights",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "La Folia whispering intimately in an opulent ballroom gown on a velvet couch.",

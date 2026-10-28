@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_engawa_sake_fish_feed",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2202,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kuroka_engawa_sake_fish_feed",
     "characterId": "kuroka",
@@ -29,7 +29,9 @@
       "two_tails",
       "sweet_smile",
       "day",
-      "cowboy_shot"
+      "cowboy_shot",
+      "dappled_sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kuroka feeding grilled fish on a breezy wooden veranda with twitching cat ears.",

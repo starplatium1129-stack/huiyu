@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_armor_workshop",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 576,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "单膝跪地调试装甲关节",
     "camera": "medium shot",
@@ -27,7 +27,9 @@
       "wrench",
       "power armor",
       "toolbox",
-      "workshop"
+      "workshop",
+      "lamp",
+      "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

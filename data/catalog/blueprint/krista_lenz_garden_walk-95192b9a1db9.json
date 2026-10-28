@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_garden_walk",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 991,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "花丛间散步闻花",
     "camera": "cowboy shot",
@@ -28,7 +28,9 @@
       "afternoon",
       "smelling flower",
       "holding stem",
-      "palace flowers"
+      "palace flowers",
+      "sunlight",
+      "soft_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

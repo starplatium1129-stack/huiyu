@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_living_room_lap_cuddle_kiss",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2211,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "astraea_living_room_lap_cuddle_kiss",
     "characterId": "astraea",
@@ -28,7 +28,9 @@
       "angel_wings",
       "passionate_kiss",
       "blushing_heavily",
-      "close-up"
+      "close-up",
+      "floor_lamp",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Astraea kissing partner passionately on the living room rug with trembling wings.",

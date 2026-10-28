@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_cozy_blanket_roomwear_snuggle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1996,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "power_cozy_blanket_roomwear_snuggle",
     "characterId": "power",
@@ -35,7 +35,11 @@
       "blush",
       "indoor",
       "night",
-      "close-up"
+      "close-up",
+      "lamp",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "animaCaption": "Power wrapped in a fluffy blanket, tugging a sleeve with a cute pout.",
     "isNsfw": false,

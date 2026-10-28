@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_snowfield_march",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 577,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "扛着战锤稳步前行",
     "camera": "full-body shot",
@@ -23,7 +23,9 @@
       "walking",
       "looking back",
       "snowfield",
-      "wind"
+      "wind",
+      "sunlight",
+      "soft_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

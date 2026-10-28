@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_02",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1406,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "对着手镜补好唇色，练习从职业表情切换成亲切笑容。",
     "adult": false,
@@ -32,7 +32,9 @@
       "classroom",
       "medium shot",
       "loosened collar",
-      "mirror reflection"
+      "mirror reflection",
+      "sunlight",
+      "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

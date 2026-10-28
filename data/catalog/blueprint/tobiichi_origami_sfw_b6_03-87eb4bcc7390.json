@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_03",
     "title": "鸢一折纸 · 练习后的完整午餐",
@@ -39,7 +39,9 @@
       "sitting",
       "eating",
       "water bottle",
-      "open shade"
+      "open shade",
+      "sunlight",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_after_bath_tail_grooming",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2146,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "shinano_after_bath_tail_grooming",
     "characterId": "shinano",
@@ -29,7 +29,11 @@
       "brushing_hair",
       "breathless",
       "shivering",
-      "medium_shot"
+      "medium_shot",
+      "lantern",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Shinano shivering with sweet sensitivity during tail grooming after a bath.",

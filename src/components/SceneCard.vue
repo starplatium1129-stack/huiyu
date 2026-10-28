@@ -7,10 +7,11 @@
     @click="onCardClick"
   >
     <div class="sc-band">
-      <div v-if="thumbId && thumbSrc" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
+      <ShowcasePreviewSource :src="thumbSource" :full-src="imageUrl" v-slot="{ image: thumbImage, loaded: thumbLoaded, failed: thumbFailed, preview, previewReady }" @load="measurePreview">
+      <div v-if="thumbId && thumbImage.src" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
       <img
-        v-if="thumbId && thumbSrc"
-        v-bind="{ ...thumbImage, onLoad: measurePreview }"
+        v-if="thumbId && thumbImage.src"
+        v-bind="thumbImage"
         class="sc-thumb"
         :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-missing': thumbFailed, 'sc-thumb-ready': thumbLoaded }"
         alt=""
@@ -18,9 +19,12 @@
         decoding="async"
         fetchpriority="auto"
       />
-      <SensitivePreviewVeil v-if="contentRating === 'R18' && thumbSrc && !thumbFailed"
-        :src="thumbSrc" :crossorigin="thumbImage.crossorigin" />
-      <span v-if="thumbFailed || !thumbId || !thumbSrc" class="sc-preview-unavailable">{{ !thumbSrc && thumbId ? '图片服务暂未连接 · 场景可用' : '样张暂缺 · 场景可用' }}</span>
+      <img v-if="preview.src && !thumbFailed" v-bind="preview" class="sc-thumb sc-thumb-hd"
+        :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-ready': previewReady }" alt="" aria-hidden="true" decoding="async" draggable="false" />
+      <SensitivePreviewVeil v-if="contentRating === 'R18' && thumbImage.src && !thumbFailed"
+        :src="thumbImage.src" :crossorigin="thumbImage.crossorigin" />
+      <span v-if="thumbFailed || !thumbId || !thumbImage.src" class="sc-preview-unavailable">{{ !thumbImage.src && thumbId ? '图片服务暂未连接 · 场景可用' : '样张暂缺 · 场景可用' }}</span>
+      </ShowcasePreviewSource>
       <span v-if="thumbId" class="sc-id">{{ archiveCode }}</span>
       <span v-if="contentRating === 'R18'" class="sc-badge sc-rating r18">R18</span>
       <span v-else-if="contentRating === 'R15'" class="sc-badge sc-rating r15">R15</span>
@@ -47,14 +51,14 @@
 </template>
 
 <script setup lang="ts">
-import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
+import ShowcasePreviewSource from '@/components/showcase/ShowcasePreviewSource.vue'
 
 import { computed, shallowRef, watch } from 'vue'
 import { sceneRecommendedSize } from '@/utils/sceneInference'
 import { cachedImageDimensions, rememberImageDimensions } from '@/utils/imageDimensions'
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { resolveRuntimeUrl, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
 export interface SceneCardScene {
   [key: string]: unknown
@@ -80,6 +84,7 @@ const props = withDefaults(defineProps<{
   meta?: string
   imgVersion?: string | number
   thumbUrl?: string
+  imageUrl?: string
   previewDimensions?: { width: number; height: number }
   ariaLabel?: string
   ariaExpanded?: boolean
@@ -106,11 +111,12 @@ function onCardClick(event: MouseEvent) {
 const contentRating = computed(() => props.scene.rating || (props.scene.mature ? 'R18' : 'All'))
 const thumbId = computed(() => String(props.scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''))
 const archiveCode = computed(() => thumbId.value.replace(/^sc(?=\d)/, 'sc-').toUpperCase())
-const { image: thumbImage, src: thumbSrc, loaded: thumbLoaded, failed: thumbFailed } = useRuntimeImage(() => {
+const thumbSource = computed(() => {
   if (props.thumbUrl) return props.thumbUrl
   const v = props.imgVersion ?? ''
   return `/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`
 })
+const thumbSrc = computed(() => resolveRuntimeUrl(thumbSource.value))
 const naturalDimensions = shallowRef(cachedImageDimensions(thumbSrc.value))
 watch([thumbSrc, runtimeResourceIdentity], ([src]) => {
   naturalDimensions.value = cachedImageDimensions(src)
@@ -122,7 +128,6 @@ const previewStyle = computed(() => {
   return { '--scene-preview-ratio': size ? size.width / size.height : width / height }
 })
 function measurePreview(event: Event) {
-  if (!thumbImage.value.onLoad(event)) return
   const image = event.target as HTMLImageElement
   const size = rememberImageDimensions(thumbSrc.value, image.naturalWidth, image.naturalHeight)
   if (size) naturalDimensions.value = size

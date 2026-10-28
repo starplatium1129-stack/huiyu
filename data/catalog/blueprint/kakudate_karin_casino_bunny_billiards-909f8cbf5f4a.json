@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_casino_bunny_billiards",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2101,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kakudate_karin_casino_bunny_billiards",
     "characterId": "kakudate_karin",
@@ -25,7 +25,9 @@
       "billiards",
       "holding_pool_cue",
       "night",
-      "cowboy_shot"
+      "cowboy_shot",
+      "chandelier",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Karin aiming on a pool table in her black bunny suit.",

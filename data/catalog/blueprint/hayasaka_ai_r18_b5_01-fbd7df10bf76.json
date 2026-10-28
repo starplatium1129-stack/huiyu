@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_r18_b5_01",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1425,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "在酒店床上跨坐视角腿间侧马尾轻晃，挑起下巴坏笑，开衫大敞饱满双峰主动下压",
     "adult": true,
@@ -43,7 +43,10 @@
       "night",
       "from below",
       "side ponytail",
-      "lifting viewer chin"
+      "lifting viewer chin",
+      "moonlight",
+      "soft_lighting",
+      "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

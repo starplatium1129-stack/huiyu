@@ -4,7 +4,7 @@ import { imageMediaSession } from '@/platform/imageMediaSession'
 import type { ArtworkRecord } from '@/types/artwork'
 import { blobThumbDataUrl } from '@/utils/imageThumb'
 import { safeImageUrl } from './galleryHelpers'
-import { cardPreviewImage } from './cardPreviewImage'
+import { cardPreviewImage } from '@/utils/cardPreviewImage'
 import { sameArtworkMedia } from './artworkMediaIdentity'
 
 interface CardPreviewOptions {

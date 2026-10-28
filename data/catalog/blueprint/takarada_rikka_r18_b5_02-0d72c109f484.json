@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_02",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1554,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_02",
     "title": "宝多六花 · 暴雨阳台湿身白衬衫的潮湿独奏 ·「空气好闷……身上黏糊糊的真讨厌」",
@@ -47,7 +47,10 @@
       "black lace lingerie",
       "leaning",
       "biting finger",
-      "wet hair"
+      "wet hair",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

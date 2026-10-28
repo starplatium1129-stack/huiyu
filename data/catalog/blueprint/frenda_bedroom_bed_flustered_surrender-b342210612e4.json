@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frenda_bedroom_bed_flustered_surrender",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2307,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "frenda_bedroom_bed_flustered_surrender",
     "characterId": "frenda_seivelun",
@@ -28,8 +28,11 @@
       "blonde_hair",
       "blushing_heavily",
       "panting",
-      "dim_lighting",
-      "close-up"
+      "close-up",
+      "bedside_lamp",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Frenda Seivelun with bare shoulders embracing partner passionately on bed.",

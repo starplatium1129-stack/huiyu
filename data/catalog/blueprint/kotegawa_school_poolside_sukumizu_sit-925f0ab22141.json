@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_school_poolside_sukumizu_sit",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1255,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "抱膝坐在泳池边双腿浸水，紧身死库水勾勒出丰满身段，侧脸微红眼神纯情",
     "camera": "full body, seated side three-quarter view",
@@ -30,7 +30,9 @@
       "water reflections",
       "blush",
       "wet skin",
-      "full body"
+      "full body",
+      "sunlight",
+      "water_reflection"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

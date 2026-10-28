@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_intimate_bedroom_surrender",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2111,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "rikuhachima_aru_intimate_bedroom_surrender",
     "characterId": "rikuhachima_aru",
@@ -31,7 +31,10 @@
       "heavy_blush",
       "sensual",
       "night",
-      "medium_shot"
+      "medium_shot",
+      "bedside_lamp",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Aru blushing heavily on the bed in a delicate black camisole.",

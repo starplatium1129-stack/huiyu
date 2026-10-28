@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_intimate_library_nook",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1977,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "nakano_itsuki_intimate_library_nook",
     "title": "中野五月 · 书架深处的心跳距离",
@@ -38,7 +38,9 @@
       "dusk",
       "shadows",
       "heartbeat",
-      "close-up"
+      "close-up",
+      "sunset",
+      "golden_hour"
     ],
     "negativeTokens": [],
     "animaCaption": "Itsuki blushing intensely between the narrow library bookshelves.",

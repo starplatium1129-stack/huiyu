@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1604,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_02",
     "title": "吹雪 · 顶层奢华大理石香槟浴水光湿身独奏 ·「在姐姐的阴影下喘不过气……只能在这里寻求慰藉」",
@@ -48,7 +48,10 @@
       "submerged steps",
       "champagne glass",
       "water reflection",
-      "medium shot"
+      "medium shot",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

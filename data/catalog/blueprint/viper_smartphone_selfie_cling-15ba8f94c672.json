@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_smartphone_selfie_cling",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2166,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "viper_smartphone_selfie_cling",
     "characterId": "viper_nikke",
@@ -28,7 +28,9 @@
       "peace_sign",
       "winking",
       "happy_smile",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Viper clinging tightly to partner taking a cute smartphone selfie on a city street.",

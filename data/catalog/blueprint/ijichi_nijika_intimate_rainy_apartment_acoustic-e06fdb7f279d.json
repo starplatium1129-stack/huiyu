@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_intimate_rainy_apartment_acoustic",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2026,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-10-28T16:28:17.343223400+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfitId": "cream_home_tshirt",
@@ -39,7 +39,12 @@
       "rain",
       "window",
       "sweet_smile",
-      "medium_shot"
+      "medium_shot",
+      "lamp",
+      "warm_lighting",
+      "window_light",
+      "overcast",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Nijika playing acoustic guitar softly on the floor on a rainy night.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_private_bath_blushing_back_rub",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2236,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "asia_private_bath_blushing_back_rub",
     "characterId": "asia_argento",
@@ -29,7 +29,11 @@
       "wet_hair",
       "blushing_heavily",
       "untied_bikini",
-      "cowboy_shot"
+      "cowboy_shot",
+      "ceiling_light",
+      "water_reflection",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Asia Argento blushing furiously while washing partner back in bathtub.",

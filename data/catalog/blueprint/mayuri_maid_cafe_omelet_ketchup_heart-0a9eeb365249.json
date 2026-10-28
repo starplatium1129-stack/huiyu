@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mayuri_maid_cafe_omelet_ketchup_heart",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2329,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "mayuri_maid_cafe_omelet_ketchup_heart",
     "characterId": "shiina_mayuri",
@@ -28,7 +28,10 @@
       "omelet",
       "joyful_smile",
       "leaning_forward",
-      "cowboy_shot"
+      "cowboy_shot",
+      "chandelier",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Mayuri Shiina serving decorated food in her Victorian maid uniform with radiant joy.",

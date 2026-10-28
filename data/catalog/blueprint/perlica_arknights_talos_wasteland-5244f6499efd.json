@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_talos_wasteland",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 713,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "按住耳侧通讯发饰遥望风沙",
     "camera": "wide shot",
@@ -24,7 +24,9 @@
       "wasteland",
       "wind",
       "dust",
-      "looking away"
+      "looking away",
+      "sunlight",
+      "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

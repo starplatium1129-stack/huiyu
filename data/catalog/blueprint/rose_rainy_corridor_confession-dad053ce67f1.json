@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_rainy_corridor_confession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2482,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "rose_rainy_corridor_confession",
     "characterId": "rose_oriana",
@@ -28,7 +28,10 @@
       "tears",
       "ring",
       "close-up",
-      "medium_shot"
+      "medium_shot",
+      "sunlight",
+      "overcast",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Rose entrusting her heart and ring to Cid amidst the torrential rain.",

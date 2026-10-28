@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_bath_muscle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 583,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "单膝跪在石池边，一手提木桶朝抬起的大腿浇水，另一手顺着水流，身后装甲放在干燥处",
     "adult": true,
@@ -33,7 +33,9 @@
       "wooden bucket",
       "hand between legs",
       "steam",
-      "stone bath"
+      "stone bath",
+      "sunlight",
+      "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

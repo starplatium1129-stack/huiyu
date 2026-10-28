@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_snowy_alley_lone_resolve",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2475,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "alexia_snowy_alley_lone_resolve",
     "characterId": "alexia_midgar",
@@ -28,7 +28,11 @@
       "wind",
       "determined",
       "breath_steam",
-      "full_body"
+      "full_body",
+      "street_lantern",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Alexia standing resolute with her sword in the snowy alleyway.",

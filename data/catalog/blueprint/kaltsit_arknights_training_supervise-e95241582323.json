@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_training_supervise",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 530,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "双臂环抱立于场边",
     "camera": "medium shot, slight low angle",
@@ -28,7 +28,9 @@
       "from below",
       "medium shot",
       "standing",
-      "reinforced glass"
+      "reinforced glass",
+      "sunlight",
+      "overcast"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

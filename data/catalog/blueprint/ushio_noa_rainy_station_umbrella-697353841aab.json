@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_rainy_station_umbrella",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2089,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ushio_noa_rainy_station_umbrella",
     "characterId": "ushio_noa",
@@ -26,7 +26,11 @@
       "rain",
       "wet_ground",
       "night",
-      "cowboy_shot"
+      "cowboy_shot",
+      "street_lantern",
+      "warm_lighting",
+      "overcast",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Noa sharing an umbrella on a rainy night platform.",

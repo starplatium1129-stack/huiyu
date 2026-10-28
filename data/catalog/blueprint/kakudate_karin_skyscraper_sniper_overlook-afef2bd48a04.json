@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_skyscraper_sniper_overlook",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2100,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kakudate_karin_skyscraper_sniper_overlook",
     "characterId": "kakudate_karin",
@@ -25,7 +25,10 @@
       "sniper_rifle",
       "rooftop",
       "night",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunbeams",
+      "moonlight",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Karin aiming her sniper rifle on the skyscraper rooftop at night.",

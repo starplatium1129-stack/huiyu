@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_stars_deck",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 591,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "躺在图纸上翘着腿看星星",
     "camera": "wide shot, side view",
@@ -32,7 +32,8 @@
       "from side",
       "lying",
       "stargazing",
-      "night"
+      "night",
+      "starlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

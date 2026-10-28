@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_r18_b8_03",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1551,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "shinjou_akane_r18_b8_03",
     "title": "新条茜 · 粘土台毛衣被美工刀划破的走光事故 ·「刀片滑掉了……不过……你好像很兴奋呢？」",
@@ -48,7 +48,9 @@
       "ribbed hem",
       "hand on bench",
       "hand on sweater",
-      "modeling knife"
+      "modeling knife",
+      "sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

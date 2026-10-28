@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "prinz_eugen_sofa_movie_cuddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2150,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "prinz_eugen_sofa_movie_cuddle",
     "characterId": "prinz_eugen",
@@ -27,8 +27,11 @@
       "eating_popcorn",
       "kiss_on_cheek",
       "mischievous_smile",
-      "dim_lighting",
-      "medium_shot"
+      "medium_shot",
+      "screen_glow",
+      "water_reflection",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Prinz Eugen stealing a sweet kiss on the couch in a dim living room.",

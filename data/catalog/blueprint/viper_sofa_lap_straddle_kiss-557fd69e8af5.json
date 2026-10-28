@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_sofa_lap_straddle_kiss",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2169,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "viper_sofa_lap_straddle_kiss",
     "characterId": "viper_nikke",
@@ -27,7 +27,10 @@
       "disheveled_clothes",
       "passionate_kiss",
       "blushing_heavily",
-      "close-up"
+      "close-up",
+      "lamp",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Viper straddling partner lap on a couch sharing an intense passionate kiss.",

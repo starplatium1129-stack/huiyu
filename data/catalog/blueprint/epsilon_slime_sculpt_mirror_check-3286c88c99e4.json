@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "epsilon_slime_sculpt_mirror_check",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2480,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "epsilon_slime_sculpt_mirror_check",
     "characterId": "epsilon_shadow",
@@ -27,7 +27,9 @@
       "blushing",
       "flustered",
       "embarrassed",
-      "close-up"
+      "close-up",
+      "sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Epsilon startled while adjusting her slime padding in front of the mirror.",

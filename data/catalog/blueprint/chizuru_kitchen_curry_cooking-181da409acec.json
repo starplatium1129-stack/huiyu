@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_kitchen_curry_cooking",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1878,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "chizuru_kitchen_curry_cooking",
     "characterId": "mizuhara_chizuru",
@@ -30,7 +30,9 @@
       "medium shot",
       "standing",
       "stove",
-      "smile"
+      "smile",
+      "sunlight",
+      "warm_lighting"
     ],
     "sceneTags": [
       "kitchen",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_ruins_shelter",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 578,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "坐在断墙上，头盔搁在膝边",
     "camera": "medium shot",
@@ -22,7 +22,9 @@
       "helmet",
       "sitting",
       "ruined wall",
-      "dusk"
+      "dusk",
+      "sunlight",
+      "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

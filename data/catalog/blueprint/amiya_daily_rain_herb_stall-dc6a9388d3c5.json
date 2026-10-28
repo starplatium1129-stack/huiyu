@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_daily_rain_herb_stall",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1998,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "amiya_daily_rain_herb_stall",
     "title": "阿米娅 · 雨棚下的薄荷香",
@@ -22,7 +22,8 @@
       "rain",
       "awning",
       "wet_pavement",
-      "overcast"
+      "overcast",
+      "sunlight"
     ],
     "promptProse": "Amiya shelters beneath a market awning in a navy raincoat and pale blue checked scarf. She holds a small bunch of fresh mint below her nose, her eyes softened by the scent. Light rain falls beyond the covered stall onto the reflective stone street.",
     "animaCaption": "The fresh mint is held above the stall counter, beneath the dry awning.",

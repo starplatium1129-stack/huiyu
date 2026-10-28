@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_cafe_contract_negotiation",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2109,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "rikuhachima_aru_cafe_contract_negotiation",
     "characterId": "rikuhachima_aru",
@@ -29,7 +29,9 @@
       "blush",
       "nervous_smile",
       "day",
-      "close-up"
+      "close-up",
+      "dappled_sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Aru attempting a cool business negotiation across a sunlit cafe table.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_intimate_villa_hot_spring",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2034,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfitId": "weekend_apron",
@@ -38,7 +38,9 @@
       "heavy_blush",
       "dusk",
       "sensual",
-      "medium_shot"
+      "medium_shot",
+      "sunset",
+      "golden_hour"
     ],
     "negativeTokens": [],
     "animaCaption": "Eriri flustered in the steamy private hot spring with her hair up.",

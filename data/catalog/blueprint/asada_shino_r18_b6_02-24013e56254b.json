@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_r18_b6_02",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1384,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "asada_shino_r18_b6_02",
     "title": "朝田诗乃 · 现实单身公寓浴室水雾中的战栗水光湿身 ·「只要泡在热水里……就不会看到手枪的幻影了」",
@@ -43,7 +43,10 @@
       "steam",
       "sitting",
       "hand underwater",
-      "dim lighting"
+      "dim lighting",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

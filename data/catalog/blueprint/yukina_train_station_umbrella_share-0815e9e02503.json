@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukina_train_station_umbrella_share",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2191,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "yukina_train_station_umbrella_share",
     "characterId": "himeragi_yukina",
@@ -28,7 +28,11 @@
       "blushing",
       "sweet_smile",
       "wet_clothes",
-      "medium_shot"
+      "medium_shot",
+      "glowing",
+      "soft_lighting",
+      "overcast",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Yukina sharing an umbrella in the rain with a sweet blushing smile.",

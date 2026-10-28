@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_intimate_pajama_teddy_bear",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2031,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T14:00:00.586807100+00:00",
+  "updatedAt": "2026-10-28T16:28:09.690491600+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfitId": "pink_silk_sleepdress",
@@ -37,7 +37,10 @@
       "bedroom",
       "barefoot",
       "playful",
-      "medium_shot"
+      "medium_shot",
+      "lamp",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Chika hugging a giant teddy bear on bed in a pink silk slip dress.",

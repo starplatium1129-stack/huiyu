@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1553,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_01",
     "title": "宝多六花 · 旧电器店二楼长开衫主控跨坐 ·「裕太……今天怎么这么粘人啊」",
@@ -43,7 +43,9 @@
       "afternoon",
       "cowboy shot",
       "straddling",
-      "arms around neck"
+      "arms around neck",
+      "sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

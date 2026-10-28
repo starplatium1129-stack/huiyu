@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemon_dorm_bed_tanned_skin_embrace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2277,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "lemon_dorm_bed_tanned_skin_embrace",
     "characterId": "yakishio_lemon",
@@ -28,8 +28,9 @@
       "tanned_skin",
       "blushing_heavily",
       "panting",
-      "dim_lighting",
-      "close-up"
+      "close-up",
+      "bedside_lamp",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Lemon Yakishio embracing partner passionately in bed with glowing tan.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_bakery_window_sweet_wave",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1502,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "waguri_bakery_window_sweet_wave",
     "title": "和栗薰子 · 烘焙课后的窗口招手",
@@ -39,7 +39,9 @@
       "holding cookie bag",
       "waving",
       "smile",
-      "classroom window"
+      "classroom window",
+      "sunlight",
+      "soft_lighting"
     ],
     "negativeTokens": [
       "bakery cashier counter"

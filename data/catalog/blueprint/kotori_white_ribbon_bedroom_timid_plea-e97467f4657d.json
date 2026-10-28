@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_white_ribbon_bedroom_timid_plea",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2253,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kotori_white_ribbon_bedroom_timid_plea",
     "characterId": "kotori_itsuka",
@@ -28,8 +28,11 @@
       "blushing_heavily",
       "tears_in_eyes",
       "panting",
-      "dim_lighting",
-      "close-up"
+      "close-up",
+      "bedside_lamp",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kotori Itsuka clutching partner sleeve with blushing tearful face on bed.",

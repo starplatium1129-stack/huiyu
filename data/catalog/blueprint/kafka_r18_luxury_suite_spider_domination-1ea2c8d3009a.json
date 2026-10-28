@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_luxury_suite_spider_domination",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1042,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kafka_r18_luxury_suite_spider_domination",
     "title": "卡芙卡 · 奢华套房的蛛网支配",
@@ -39,7 +39,8 @@
       "hand on backrest",
       "glowing threads",
       "candlelight",
-      "cowboy shot"
+      "cowboy shot",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

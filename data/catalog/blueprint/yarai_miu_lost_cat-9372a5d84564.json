@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_lost_cat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2392,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "yarai_miu_lost_cat",
     "characterId": "yarai_miu",
@@ -26,7 +26,9 @@
       "crouching",
       "box",
       "night",
-      "medium shot"
+      "medium shot",
+      "moonlight",
+      "soft_lighting"
     ],
     "animaCaption": "",
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_daily_station_map",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2018,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "shirai_kuroko_daily_station_map",
     "title": "白井黑子 · 下一站换哪条线",
@@ -20,7 +20,9 @@
       "cape",
       "looking_at_viewer",
       "overcast",
-      "winter"
+      "winter",
+      "sunlight",
+      "soft_lighting"
     ],
     "promptProse": "At a station entrance on a cool day, Kuroko wears a gray wool cape over a cream knit dress and brown tights. She holds a folded route map toward the viewer and points to a transfer mark. Diffuse winter daylight reaches her face beneath the station canopy.",
     "animaCaption": "The route map shows simple colored lines and marks without requiring readable lettering.",

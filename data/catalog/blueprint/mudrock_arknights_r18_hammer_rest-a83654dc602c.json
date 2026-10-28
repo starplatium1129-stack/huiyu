@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_hammer_rest",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 585,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "跨坐长凳，一手在腿间，战锤平放在身边地上",
     "adult": true,
@@ -31,7 +31,9 @@
       "bench",
       "female masturbation",
       "sweat",
-      "workshop"
+      "workshop",
+      "lamp",
+      "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

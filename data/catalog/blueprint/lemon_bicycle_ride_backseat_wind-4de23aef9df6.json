@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemon_bicycle_ride_backseat_wind",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2275,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "lemon_bicycle_ride_backseat_wind",
     "characterId": "yakishio_lemon",
@@ -29,7 +29,11 @@
       "wind_blown_hair",
       "happy_smile",
       "dusk",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunset",
+      "golden_hour",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Lemon Yakishio hugging partner waist happily on bicycle backseat.",

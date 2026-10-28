@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_rainy_garden_flower_care_smile",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1191,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "sachi_rainy_garden_flower_care_smile",
     "title": "小岭幸 · 润物细雨的花圃静候",
@@ -41,7 +41,10 @@
       "smile",
       "cowboy shot",
       "holding watering can",
-      "both hands"
+      "both hands",
+      "sunlight",
+      "overcast",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

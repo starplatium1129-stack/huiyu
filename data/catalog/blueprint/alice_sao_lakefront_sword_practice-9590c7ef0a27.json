@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_lakefront_sword_practice",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2001,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "alice_sao_lakefront_sword_practice",
     "characterId": "alice_sao",
@@ -35,7 +35,8 @@
       "forest",
       "morning",
       "dynamic_pose",
-      "medium_shot"
+      "medium_shot",
+      "dappled_sunlight"
     ],
     "animaCaption": "Alice practicing an elegant sword strike by a misty forest lake at dawn.",
     "isNsfw": false,

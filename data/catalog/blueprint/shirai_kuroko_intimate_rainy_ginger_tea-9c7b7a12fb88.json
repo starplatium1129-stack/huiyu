@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_intimate_rainy_ginger_tea",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2037,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "characterId": "shirai_kuroko",
     "outfitId": "training_pants",
@@ -36,7 +36,12 @@
       "blushing",
       "leaning",
       "intimate",
-      "cowboy_shot"
+      "cowboy_shot",
+      "campfire",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting",
+      "overcast"
     ],
     "negativeTokens": [],
     "animaCaption": "Kuroko warming her cold hands with hot tea in a cozy safehouse.",

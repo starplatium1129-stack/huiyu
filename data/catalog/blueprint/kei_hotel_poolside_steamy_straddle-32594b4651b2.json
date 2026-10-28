@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_hotel_poolside_steamy_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2242,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kei_hotel_poolside_steamy_straddle",
     "characterId": "karuizawa_kei",
@@ -30,7 +30,10 @@
       "untied_bikini",
       "blushing_heavily",
       "panting",
-      "cowboy_shot"
+      "cowboy_shot",
+      "lamp",
+      "warm_lighting",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Kei Karuizawa straddling partner passionately by a night resort pool.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_board_game",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2403,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_board_game",
     "characterId": "bazett_fraga_mcremitz",
@@ -25,7 +25,9 @@
       "holding game piece",
       "looking down",
       "indoors",
-      "medium shot"
+      "medium shot",
+      "sunlight",
+      "soft_lighting"
     ],
     "animaCaption": "",
     "negativeTokens": [],

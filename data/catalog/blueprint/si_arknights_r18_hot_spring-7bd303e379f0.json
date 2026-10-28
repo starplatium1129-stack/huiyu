@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_r18_hot_spring",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1768,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "si_arknights_r18_hot_spring",
     "characterId": "si_arknights",
@@ -47,7 +47,11 @@
       "looking at viewer",
       "cleavage",
       "night",
-      "water ripples"
+      "water ripples",
+      "moonlight",
+      "lantern",
+      "warm_lighting",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "promptProse": "Submerged to her chest in the steamy hot spring with a damp clinging white towel, Si rests against the smooth rock wall with flushed cheeks and glistening eyes, her tail curling through the rippling water toward the viewer.",

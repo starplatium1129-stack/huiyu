@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_04",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1602,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_04",
     "title": "战栗的龙卷 · 顶层防核卧室床单上的绝顶崩坏自持 ·「姐姐才没有撒娇……只是稍微……想要被抱紧而已……」",
@@ -38,7 +38,9 @@
       "bed",
       "crying",
       "masturbation",
-      "medium shot"
+      "medium shot",
+      "sunlight",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

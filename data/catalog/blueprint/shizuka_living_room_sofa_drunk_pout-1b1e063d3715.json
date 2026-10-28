@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_living_room_sofa_drunk_pout",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2247,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "shizuka_living_room_sofa_drunk_pout",
     "characterId": "shizuka_hiratsuka",
@@ -28,8 +28,9 @@
       "pulled_down_clothes",
       "blushing_heavily",
       "panting",
-      "dim_lighting",
-      "cowboy_shot"
+      "cowboy_shot",
+      "lamp",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Shizuka Hiratsuka flushed on apartment sofa in passionate embrace.",

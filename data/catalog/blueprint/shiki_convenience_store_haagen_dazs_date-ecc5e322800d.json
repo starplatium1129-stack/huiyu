@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_convenience_store_haagen_dazs_date",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1342,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "单手拿着冰淇淋盒，另一手执小勺微红着脸递向视角，眼神别扭又可爱",
     "camera": "cowboy shot, eye level",
@@ -32,7 +32,10 @@
       "holding ice cream",
       "feeding viewer",
       "subtle blush",
-      "shy smile"
+      "shy smile",
+      "street_lantern",
+      "warm_lighting",
+      "window_light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

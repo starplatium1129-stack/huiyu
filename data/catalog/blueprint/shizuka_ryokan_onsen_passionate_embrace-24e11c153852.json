@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_ryokan_onsen_passionate_embrace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2248,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "shizuka_ryokan_onsen_passionate_embrace",
     "characterId": "shizuka_hiratsuka",
@@ -29,7 +29,12 @@
       "untied_bikini",
       "kissing",
       "blushing_heavily",
-      "close-up"
+      "close-up",
+      "lantern",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Shizuka Hiratsuka kissing passionately in steamy cedar hot spring.",

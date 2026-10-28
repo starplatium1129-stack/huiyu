@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_lakeside_white_bikini_shading",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1301,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "albedo_lakeside_white_bikini_shading",
     "title": "雅儿贝德 · 湖畔水光的黑翼遮阳",
@@ -39,7 +39,9 @@
       "full body",
       "wing shade",
       "toes in water",
-      "water reflection"
+      "water reflection",
+      "sunlight",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

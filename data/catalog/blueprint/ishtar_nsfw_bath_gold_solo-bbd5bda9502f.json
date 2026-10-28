@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_nsfw_bath_gold_solo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 263,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ishtar_nsfw_bath_gold_solo",
     "title": "伊什塔尔 · 神泉沐浴的金纱独奏·「女神的入浴，是要收观赏费的」",
@@ -40,7 +40,9 @@
       "masturbation",
       "steam",
       "looking sideways",
-      "hand underwater"
+      "hand underwater",
+      "sunlight",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

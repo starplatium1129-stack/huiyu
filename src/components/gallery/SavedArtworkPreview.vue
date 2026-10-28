@@ -7,7 +7,9 @@
         :preview-src="surface.previewSrc.value || thumbnail" :load-failed="viewerLoadFailed" :reload="retryViewerImage" :title="title"
         @close="close" @toggle-original="toggleOriginal" @close-button="closeButton = $event">
         <template #tools>
-          <button class="btn btn-primary saved-preview-resume" data-viewer-chrome type="button" @click="resume"><ArchiveIcon name="spark" />{{ artworkContinueTarget(item).label }}</button>
+          <div class="saved-preview-resume" data-viewer-chrome>
+            <button class="btn btn-primary" type="button" @click="resume"><ArchiveIcon name="spark" />{{ artworkContinueTarget(item).label }}</button>
+          </div>
         </template>
       </ArtworkViewerStage>
     </div>

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_rain_shelter_hot_cocoa",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1507,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "waguri_rain_shelter_hot_cocoa",
     "title": "和栗薰子 · 雨檐下慢慢变暖的双手",
@@ -42,7 +42,9 @@
       "holding cup",
       "both hands",
       "folded umbrella",
-      "schoolbag"
+      "schoolbag",
+      "sunlight",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

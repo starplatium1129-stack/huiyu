@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_06",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1710,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "maomao_sfw_b9_06",
     "title": "猫猫 · 雨廊下的药箱",
@@ -38,7 +38,9 @@
       "rain",
       "holding medicine case",
       "checking bottles",
-      "eaves"
+      "eaves",
+      "sunlight",
+      "overcast"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

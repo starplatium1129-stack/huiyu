@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_seminar_archive_record",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2088,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ushio_noa_seminar_archive_record",
     "characterId": "ushio_noa",
@@ -25,7 +25,10 @@
       "control_panel",
       "server_room",
       "night",
-      "medium_shot"
+      "medium_shot",
+      "glowing",
+      "soft_lighting",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Noa standing calmly in the server archive room at night.",

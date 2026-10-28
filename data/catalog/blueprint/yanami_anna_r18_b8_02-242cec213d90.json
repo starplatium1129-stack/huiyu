@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_r18_b8_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1675,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "yanami_anna_r18_b8_02",
     "title": "八奈见杏菜 · 澡堂冰牛奶后的水光湿身 ·「喝完冰牛奶……浴池的水变得更烫了」",
@@ -44,7 +44,10 @@
       "wooden bath",
       "steam",
       "hand underwater",
-      "contented smile"
+      "contented smile",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

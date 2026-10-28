@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_r18_b5_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1524,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "shiina_mashiro_r18_b5_02",
     "title": "椎名真白 · 樱花庄木桶浴缸的懵懂水光湿身 ·「空太……身体好热，衣服自己脱不下来」",
@@ -46,7 +46,10 @@
       "hand between legs",
       "looking up",
       "water reflection",
-      "medium shot"
+      "medium shot",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

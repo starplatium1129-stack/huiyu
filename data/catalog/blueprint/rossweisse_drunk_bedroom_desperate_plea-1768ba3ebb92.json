@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_drunk_bedroom_desperate_plea",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2229,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "rossweisse_drunk_bedroom_desperate_plea",
     "characterId": "rossweisse",
@@ -28,8 +28,9 @@
       "blushing_heavily",
       "tears_in_eyes",
       "breathless",
-      "dim_lighting",
-      "cowboy_shot"
+      "cowboy_shot",
+      "lamp",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Rossweisse straddling partner on bed with teary eyes and bare shoulders.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_winter_snowy_shrine_stairs",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1147,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "单手撑红油纸伞伫立雪地回眸，木屐踩在雪中，哈出一缕白汽，眼神脉脉",
     "camera": "full body, three-quarter view",
@@ -28,7 +28,9 @@
       "snow",
       "full body",
       "standing",
-      "holding umbrella"
+      "holding umbrella",
+      "sunlight",
+      "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

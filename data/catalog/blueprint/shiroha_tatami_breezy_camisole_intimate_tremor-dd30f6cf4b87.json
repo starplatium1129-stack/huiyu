@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiroha_tatami_breezy_camisole_intimate_tremor",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2337,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "shiroha_tatami_breezy_camisole_intimate_tremor",
     "characterId": "naruse_shiroha",
@@ -29,7 +29,10 @@
       "biting_hair",
       "heavy_blush",
       "teary_eyes",
-      "close-up"
+      "close-up",
+      "moonlight",
+      "window_light",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Shiroha lying on tatami in lifted sleepwear, biting her hair in bashful ecstasy.",

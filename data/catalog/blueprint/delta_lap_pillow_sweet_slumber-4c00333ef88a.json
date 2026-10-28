@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_lap_pillow_sweet_slumber",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2478,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "delta_lap_pillow_sweet_slumber",
     "characterId": "delta_shadow",
@@ -27,7 +27,10 @@
       "lap_pillow",
       "sleeping",
       "peaceful_expression",
-      "full_body"
+      "full_body",
+      "dappled_sunlight",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Delta sleeping peacefully on a lap pillow under the summer tree.",

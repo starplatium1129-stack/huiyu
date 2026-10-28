@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_ice_cream",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 162,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_ice_cream",
     "title": "伊莉雅丝菲尔 · 冰淇淋店",
@@ -39,7 +39,8 @@
       "day",
       "holding ice cream",
       "open hand",
-      "excited expression"
+      "excited expression",
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

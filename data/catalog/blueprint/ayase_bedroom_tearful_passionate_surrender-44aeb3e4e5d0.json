@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayase_bedroom_tearful_passionate_surrender",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2259,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ayase_bedroom_tearful_passionate_surrender",
     "characterId": "ayase_aragaki",
@@ -28,8 +28,10 @@
       "tears_of_happiness",
       "blushing_heavily",
       "panting",
-      "dim_lighting",
-      "close-up"
+      "close-up",
+      "bedside_lamp",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Ayase Aragaki with bare shoulders and tearful loving gaze on bed.",

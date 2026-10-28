@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_dagashiya_counter_candy_tease",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2341,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ao_dagashiya_counter_candy_tease",
     "characterId": "sorakado_ao",
@@ -28,7 +28,10 @@
       "feeding",
       "leaning_forward",
       "playful_smile",
-      "close-up"
+      "close-up",
+      "glowing",
+      "soft_lighting",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Ao leaning over the retro candy counter offering a treat with a mischievous grin.",

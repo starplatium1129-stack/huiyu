@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_urban_street_coffee",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2103,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kakudate_karin_urban_street_coffee",
     "characterId": "kakudate_karin",
@@ -25,7 +25,8 @@
       "street",
       "trees",
       "day",
-      "cowboy_shot"
+      "cowboy_shot",
+      "dappled_sunlight"
     ],
     "negativeTokens": [],
     "animaCaption": "Karin waiting casually on the street corner in a sleeveless hoodie.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mayuri_sewing_cushions_sundress_down_ecstasy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2333,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "mayuri_sewing_cushions_sundress_down_ecstasy",
     "characterId": "shiina_mayuri",
@@ -29,7 +29,11 @@
       "bare_shoulders",
       "arched_back",
       "crying_pleasure",
-      "medium_shot"
+      "medium_shot",
+      "sunset",
+      "golden_hour",
+      "window_light",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Mayuri lying among sewing cushions with parted dress, overwhelmed by sweet love.",

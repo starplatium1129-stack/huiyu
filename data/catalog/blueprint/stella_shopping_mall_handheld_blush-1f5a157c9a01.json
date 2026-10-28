@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_shopping_mall_handheld_blush",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2185,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "stella_shopping_mall_handheld_blush",
     "characterId": "stella_vermillion",
@@ -28,7 +28,9 @@
       "blushing",
       "proud_smile",
       "evening",
-      "cowboy_shot"
+      "cowboy_shot",
+      "chandelier",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Stella proudly clinging to partner arm with blushing ears in a shopping mall.",

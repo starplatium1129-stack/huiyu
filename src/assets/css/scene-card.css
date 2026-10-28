@@ -61,6 +61,7 @@
 .sc-complete-preview { content-visibility:visible; contain-intrinsic-size:none; }
 .sc-complete-preview .sc-band { aspect-ratio:auto; display:block; min-height:120px; padding:var(--s-2); background:var(--art-stage); }
 .sc-complete-preview .sc-thumb { position:relative; inset:auto; display:block; width:100%; height:auto; aspect-ratio:var(--scene-preview-ratio, 3 / 4); object-fit:contain; object-position:center; border:1px solid var(--art-frame-line); border-radius:var(--r-sm); box-shadow:var(--art-frame-shadow); }
+.sc-complete-preview .sc-thumb.sc-thumb-hd { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
 .sc-complete-preview .sc-band:has(.sc-preview-unavailable) { aspect-ratio:var(--scene-preview-ratio, 3 / 4); }
 .sc-complete-preview .sc-band::after { inset:var(--s-2); border-radius:var(--r-sm); }
 /* Keep a static mat until the decoded thumbnail arrives. */

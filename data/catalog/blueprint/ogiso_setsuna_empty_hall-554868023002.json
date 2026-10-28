@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_empty_hall",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2373,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ogiso_setsuna_empty_hall",
     "characterId": "ogiso_setsuna",
@@ -26,7 +26,9 @@
       "paper",
       "night",
       "dim lighting",
-      "wide shot"
+      "wide shot",
+      "moonlight",
+      "soft_lighting"
     ],
     "animaCaption": "",
     "negativeTokens": [],

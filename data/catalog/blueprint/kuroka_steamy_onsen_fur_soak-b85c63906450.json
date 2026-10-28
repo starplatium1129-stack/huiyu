@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_steamy_onsen_fur_soak",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2206,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kuroka_steamy_onsen_fur_soak",
     "characterId": "kuroka",
@@ -29,7 +29,12 @@
       "wet_skin",
       "wet_hair",
       "blushing_heavily",
-      "medium_shot"
+      "medium_shot",
+      "lantern",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting",
+      "water_reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Kuroka shivering delightfully while soaking in a steamy private onsen.",

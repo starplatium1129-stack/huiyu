@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_dressing_room_malfunction",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1449,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "megumi_nsfw_dressing_room_malfunction",
     "title": "加藤惠 · 服装店试衣间的白裙拉链卡壳事故 ·「伦也君……能进来帮我拉一下吗」",
@@ -38,7 +38,10 @@
       "adult",
       "shoulder against mirror",
       "looking back",
-      "curtain gap"
+      "curtain gap",
+      "sunlight",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

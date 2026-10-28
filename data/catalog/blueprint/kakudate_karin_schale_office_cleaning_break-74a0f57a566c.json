@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_schale_office_cleaning_break",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2102,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kakudate_karin_schale_office_cleaning_break",
     "characterId": "kakudate_karin",
@@ -25,7 +25,10 @@
       "office",
       "blush",
       "afternoon",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "window_light",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Karin blushing while serving tea in the sunlit office.",

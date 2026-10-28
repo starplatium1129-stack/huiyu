@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_protect_barrier_battle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2487,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "claire_protect_barrier_battle",
     "characterId": "claire_kagenou",
@@ -28,7 +28,9 @@
       "holding_sword",
       "defensive_stance",
       "fierce_eyes",
-      "full_body"
+      "full_body",
+      "sunset",
+      "golden_hour"
     ],
     "negativeTokens": [],
     "animaCaption": "Claire standing as an unbreakable shield in the collapsing ruins.",

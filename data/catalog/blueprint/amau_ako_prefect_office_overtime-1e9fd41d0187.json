@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_prefect_office_overtime",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2094,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "amau_ako_prefect_office_overtime",
     "characterId": "amau_ako",
@@ -25,7 +25,11 @@
       "desk",
       "paperwork",
       "night",
-      "cowboy_shot"
+      "cowboy_shot",
+      "desk_lamp",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Ako working sternly over paperwork in her headquarters office.",

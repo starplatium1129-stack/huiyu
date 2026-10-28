@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_bedroom_bed_destiny_confession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2266,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kuroneko_bedroom_bed_destiny_confession",
     "characterId": "kuroneko",
@@ -29,7 +29,10 @@
       "tears_of_happiness",
       "blushing_heavily",
       "panting",
-      "close-up"
+      "close-up",
+      "moonlight",
+      "bedside_lamp",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Ruri Gokou in passionate embrace on bed with tears of ecstasy.",

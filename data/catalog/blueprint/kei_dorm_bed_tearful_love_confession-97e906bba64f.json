@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_dorm_bed_tearful_love_confession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2241,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kei_dorm_bed_tearful_love_confession",
     "characterId": "karuizawa_kei",
@@ -29,8 +29,11 @@
       "tears_of_happiness",
       "blushing_heavily",
       "panting",
-      "dim_lighting",
-      "close-up"
+      "close-up",
+      "floor_lamp",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kei Karuizawa clinging with tears of joy and passionate embrace on bed.",

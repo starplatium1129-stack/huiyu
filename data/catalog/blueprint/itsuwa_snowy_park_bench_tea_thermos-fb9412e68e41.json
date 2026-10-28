@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "itsuwa_snowy_park_bench_tea_thermos",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2294,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "itsuwa_snowy_park_bench_tea_thermos",
     "characterId": "itsuwa",
@@ -30,7 +30,8 @@
       "steam",
       "sweet_smile",
       "blushing",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight"
     ],
     "negativeTokens": [],
     "animaCaption": "Itsuwa handing partner hot tea lovingly on snowy park bench.",

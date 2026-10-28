@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_bedroom_bed_unbuttoned_shirt_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2319,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "michiru_bedroom_bed_unbuttoned_shirt_straddle",
     "characterId": "hyoudou_michiru",
@@ -30,7 +30,9 @@
       "beauty_mark",
       "blushing_heavily",
       "panting",
-      "close-up"
+      "close-up",
+      "desk_lamp",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Michiru Hyoudou straddling partner passionately in open white shirt on bed.",

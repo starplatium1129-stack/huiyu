@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_bedroom_tatami_tearful_saint_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2301,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kanzaki_bedroom_tatami_tearful_saint_devotion",
     "characterId": "kanzaki_kaori",
@@ -29,7 +29,11 @@
       "tears_of_happiness",
       "blushing_heavily",
       "panting",
-      "close-up"
+      "close-up",
+      "lantern",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kaori Kanzaki with bare shoulders embracing partner passionately on futon.",

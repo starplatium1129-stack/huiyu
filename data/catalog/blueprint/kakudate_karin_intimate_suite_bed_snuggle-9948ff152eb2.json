@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_intimate_suite_bed_snuggle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2105,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kakudate_karin_intimate_suite_bed_snuggle",
     "characterId": "kakudate_karin",
@@ -30,7 +30,11 @@
       "blush",
       "sensual",
       "night",
-      "medium_shot"
+      "medium_shot",
+      "moonlight",
+      "floor_lamp",
+      "warm_lighting",
+      "window_light"
     ],
     "negativeTokens": [],
     "animaCaption": "Karin reclining comfortably on a silk bed in a loosely tied white robe.",

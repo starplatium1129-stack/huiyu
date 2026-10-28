@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_rooftop_lunch_smile",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1962,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "nakano_yotsuba_rooftop_lunch_smile",
     "title": "中野四叶 · 晴空天台的元气便当",
@@ -39,7 +39,9 @@
       "eating",
       "puffy_cheeks",
       "cheerful",
-      "medium_shot"
+      "medium_shot",
+      "window_light",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Yotsuba happily enjoying lunch on the breezy school rooftop.",

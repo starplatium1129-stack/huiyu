@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_rain_stop",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2413,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "shiiba_tsumugi_rain_stop",
     "characterId": "shiiba_tsumugi",
@@ -25,7 +25,8 @@
       "rain",
       "holding umbrella",
       "overcast",
-      "cowboy shot"
+      "cowboy shot",
+      "sunlight"
     ],
     "animaCaption": "",
     "negativeTokens": [],

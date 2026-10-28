@@ -11,9 +11,11 @@
         :data-album-id="album.id" :aria-pressed="selected === album.id" :aria-label="`${album.title}，${album.count} 幅样张`" @click="emit('select', album.id)">
         <span class="album-cover artwork-album-cover" :data-covers="album.covers.length" aria-hidden="true">
           <span v-for="cover in album.covers" :key="cover.id" class="album-picture artwork-album-picture">
-            <RuntimeImage :src="thumbSrc(cover)" alt="" loading="lazy" decoding="async">
-              <template #fallback><span class="album-placeholder tw:flex tw:items-center tw:justify-center tw:text-secondary"><ArchiveIcon name="image" /></span></template>
-            </RuntimeImage>
+            <ShowcasePreviewSource :src="thumbSrc(cover)" :full-src="imageSrc(cover)" v-slot="{ image, failed, preview, previewReady }">
+              <img v-if="image.src && !failed" v-bind="image" alt="" loading="lazy" decoding="async" />
+              <span v-else class="album-placeholder tw:flex tw:items-center tw:justify-center tw:text-secondary"><ArchiveIcon name="image" /></span>
+              <img v-if="preview.src && !failed" v-bind="preview" class="album-cover-hd" :class="{ 'is-ready': previewReady }" alt="" decoding="async" draggable="false" />
+            </ShowcasePreviewSource>
           </span>
           <span v-if="!album.covers.length" class="album-placeholder tw:flex tw:items-center tw:justify-center tw:flex-col tw:gap-s-2 tw:text-secondary tw:text-label"><ArchiveIcon name="gallery" /><span>翻开这本画册</span></span>
         </span>
@@ -28,7 +30,7 @@
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { computed } from 'vue'
 import type { ShowcaseAlbum } from '@/composables/showcase/useShowcaseAlbums'
-import RuntimeImage from '@/components/visual/RuntimeImage.vue'
+import ShowcasePreviewSource from './ShowcasePreviewSource.vue'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
 import '@/assets/css/album-cards.css'
 
@@ -36,6 +38,7 @@ const props = defineProps<{
   albums: ShowcaseAlbum[]
   selected: string
   thumbSrc: (entry: ShowcaseEntry) => string
+  imageSrc: (entry: ShowcaseEntry) => string
 }>()
 const emit = defineEmits<{
   select: [id: string]
@@ -55,4 +58,8 @@ const groups = computed(() => [
 .album-group h3 { margin:0 0 var(--s-3); color:var(--text-primary); font:600 var(--fs-body-sm) var(--font-sans); }
 .album-group h3 span { margin-left:var(--s-2); color:var(--text-secondary); font:400 var(--fs-label-sm) var(--font-sans); }
 .album-placeholder > .archive-icon { @apply tw:text-title; }
+.album-picture img.album-cover-hd { position:absolute; inset:0; opacity:0; pointer-events:none; transition:opacity var(--motion-surface) var(--ease-out); }
+.album-picture img.album-cover-hd.is-ready { opacity:1; }
+@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full'])) .album-picture img.album-cover-hd { transition:none; } }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .album-picture img.album-cover-hd { transition:none; }
 </style>

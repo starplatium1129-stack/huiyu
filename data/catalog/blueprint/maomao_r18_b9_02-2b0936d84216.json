@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_r18_b9_02",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1716,
   "createdAt": null,
-  "updatedAt": "2026-10-26T09:10:15.020Z",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "maomao_r18_b9_02",
     "title": "猫猫 · 后宫药草温泉水雾中的水光湿身独奏 ·「把牛黄与蛇胆熬进汤里……身体就会变得好舒服」",
@@ -44,7 +44,10 @@
       "hand underwater",
       "herbal bath",
       "wet linen",
-      "tasting lips"
+      "tasting lips",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_futon_oversized_shirt_morning_daze",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2343,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ao_futon_oversized_shirt_morning_daze",
     "characterId": "sorakado_ao",
@@ -29,7 +29,8 @@
       "bare_thighs",
       "rubbing_eyes",
       "sleepy_eyes",
-      "cowboy_shot"
+      "cowboy_shot",
+      "morning_sunlight"
     ],
     "negativeTokens": [],
     "animaCaption": "Ao sprawling sleepily on the morning futon in a loose unbuttoned shirt.",

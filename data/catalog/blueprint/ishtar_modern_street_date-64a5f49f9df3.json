@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_modern_street_date",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 254,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ishtar_modern_street_date",
     "title": "伊什塔尔 · 现代街头的女神考察·「人类的甜甜圈……是供品吗」",
@@ -38,7 +38,8 @@
       "medium shot",
       "walking",
       "offering donut",
-      "gesturing"
+      "gesturing",
+      "sunlight"
     ],
     "negativeTokens": [
       "readable shop signs"

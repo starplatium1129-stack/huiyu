@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_r18_b9_03",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1760,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "togawa_sakiko_r18_b9_03",
     "title": "丰川祥子 · 打工更衣室白衬衫黑丝刮破的狼狈事故 ·「不许看！……就算我沦落到打工，也不是你能随意嘲笑的！」",
@@ -47,7 +47,9 @@
       "navy pencil skirt",
       "hands on locker",
       "dim lighting",
-      "medium shot"
+      "medium shot",
+      "sunlight",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

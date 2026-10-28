@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_office_outlaw_pose",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2106,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "rikuhachima_aru_office_outlaw_pose",
     "characterId": "rikuhachima_aru",
@@ -28,7 +28,9 @@
       "confident_smile",
       "dramatic_shadows",
       "day",
-      "cowboy_shot"
+      "cowboy_shot",
+      "window_light",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Aru posing with smug confidence at her office desk holding her sniper rifle.",

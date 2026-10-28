@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_daily_rainy_bus",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1990,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "sumizome_nozomi_daily_rainy_bus",
     "title": "墨染希 · 雨停之前慢慢等",
@@ -21,7 +21,8 @@
       "looking_at_viewer",
       "gentle_smile",
       "wet_pavement",
-      "overcast"
+      "overcast",
+      "sunlight"
     ],
     "promptProse": "Nozomi sits beneath a covered bus stop in a mist-blue raincoat and floral dress, her yellow rain boots resting on the wet pavement. She holds a paper shopping bag against her lap and shifts toward the dry end of the bench, leaving room beside her. Soft gray daylight reflects from the rain.",
     "animaCaption": "The seat beside her is empty and sheltered under the bus-stop roof.",

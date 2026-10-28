@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_steamy_bath_innocent_entanglement",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2254,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kotori_steamy_bath_innocent_entanglement",
     "characterId": "kotori_itsuka",
@@ -30,7 +30,11 @@
       "embracing",
       "blushing_heavily",
       "panting",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "water_reflection",
+      "warm_lighting",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kotori Itsuka clinging passionately in steamy bath with untied bikini.",

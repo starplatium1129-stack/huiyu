@@ -41,7 +41,7 @@
     <!-- Cached entries stay in place during background revalidation. -->
     <div v-if="entries.length && reloadError" class="showcase-load-status" role="status"><ArchiveIcon name="warning" /><span>{{ reloadError }}</span><button v-if="!manifestLoading" class="btn btn-quiet btn-sm" type="button" @click="loadManifest(true)">重试</button></div>
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
-      <ShowcaseAlbums v-if="albumsOpen && albums.length && !unavailable" :albums="albums" :selected="albumSelection" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
+      <ShowcaseAlbums v-if="albumsOpen && albums.length && !unavailable" :albums="albums" :selected="albumSelection" :thumb-src="thumbSrc" :image-src="entry => assets.imageUrl(entry.id)" :aria-busy="manifestLoading" @select="openAlbum" />
       <ShowcaseLoadingGrid v-if="manifestLoading && !entries.length" albums />
       <ArchiveStatePanel v-else-if="unavailable || (!manifestLoading && !albums.length)" compact :kind="unavailable ? 'error' : 'empty'" :title="unavailable ? '画册读取失败' : '暂未收录画册'"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
     </div>
@@ -69,7 +69,7 @@
     </ArchiveStatePanel>
 
     <div v-else ref="listRoot" data-route-arrive class="showcase-grid" :aria-busy="manifestLoading">
-      <ShowcaseSampleCard v-for="(entry, index) in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)" :data-list-key="entry.id" :eager="index < 6"
+      <ShowcaseSampleCard v-for="(entry, index) in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)" :full-src="assets.imageUrl(entry.id)" :data-list-key="entry.id" :eager="index < 6"
         :featured="featured.has(entry.id)"
         :character-label="charLabel(entry.char)" :rating-label="ratingLabel(entry.rating)"
         @open="openViewer" />

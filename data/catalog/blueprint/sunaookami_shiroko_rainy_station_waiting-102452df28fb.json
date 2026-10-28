@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_rainy_station_waiting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2128,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "sunaookami_shiroko_rainy_station_waiting",
     "characterId": "sunaookami_shiroko",
@@ -28,7 +28,12 @@
       "holding_arm",
       "steam",
       "night",
-      "close-up"
+      "close-up",
+      "glowing",
+      "soft_lighting",
+      "overcast",
+      "water_reflection",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Shiroko holding her companion arm close under the dripping station canopy at night.",

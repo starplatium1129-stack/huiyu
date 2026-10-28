@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_casino_bunny_vip_toast",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2168,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "viper_casino_bunny_vip_toast",
     "characterId": "viper_nikke",
@@ -27,7 +27,11 @@
       "blowing_kiss",
       "seductive_smile",
       "luxury_decor",
-      "cowboy_shot"
+      "cowboy_shot",
+      "chandelier",
+      "warm_lighting",
+      "glowing",
+      "soft_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Viper posing in a bunny suit blowing a sweet kiss in an opulent casino.",

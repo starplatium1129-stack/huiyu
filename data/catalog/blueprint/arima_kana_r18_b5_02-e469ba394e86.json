@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_r18_b5_02",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 979,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "action": "淋浴下湿身赤裸手探腿间，水流冲刷短发，咬唇仰头带泪自抚",
     "adult": true,
@@ -40,7 +40,10 @@
       "hand between legs",
       "biting lip",
       "wet skin",
-      "medium shot"
+      "medium shot",
+      "sunlight",
+      "water_reflection",
+      "soft_lighting"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

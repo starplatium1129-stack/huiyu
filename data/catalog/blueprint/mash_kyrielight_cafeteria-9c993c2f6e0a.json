@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_cafeteria",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 204,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "negativeTokens": [
       "jacket worn"
@@ -42,7 +42,8 @@
       "holding tray",
       "vegetables",
       "cutlet",
-      "jacket on chair"
+      "jacket on chair",
+      "sunlight"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "chaldea_cafeteria_jacket_off",

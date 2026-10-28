@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kamome_opened_trunk_untied_bikini_ecstasy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2350,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "kamome_opened_trunk_untied_bikini_ecstasy",
     "characterId": "kushima_kamome",
@@ -29,7 +29,9 @@
       "arched_back",
       "parted_lips",
       "heavy_blush",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "warm_lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kamome surrendering atop her antique trunk, loosened bikini falling away in ecstasy.",

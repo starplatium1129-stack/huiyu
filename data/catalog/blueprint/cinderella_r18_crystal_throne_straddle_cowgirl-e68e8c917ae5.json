@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_r18_crystal_throne_straddle_cowgirl",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1817,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "cinderella_r18_crystal_throne_straddle_cowgirl",
     "title": "灰姑娘 · 冰晶王座上的优雅骑乘深陷",
@@ -66,7 +66,8 @@
       "sapphire_glow",
       "regal",
       "arched back",
-      "looking down"
+      "looking down",
+      "pov"
     ],
     "promptProse": "Straddling the Commander atop a towering crystalline throne, Cinderella rides him in an ultra-sheer lavender babydoll that leaves her porcelain breasts and taut nipples completely visible. Her long wavy silver tresses spill over his chest as she arches her slender waist, gazing down with haughty, intoxicated adoration amidst the throne's ethereal sapphire aura.",
     "negativeTokens": [],

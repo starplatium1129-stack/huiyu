@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_records",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2377,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "ogiso_setsuna_records",
     "characterId": "ogiso_setsuna",
@@ -25,7 +25,9 @@
       "holding album",
       "looking down",
       "indoors",
-      "cowboy shot"
+      "cowboy shot",
+      "window_light",
+      "soft_lighting"
     ],
     "animaCaption": "",
     "negativeTokens": [],

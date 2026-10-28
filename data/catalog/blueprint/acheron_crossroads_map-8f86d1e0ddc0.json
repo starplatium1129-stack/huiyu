@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "acheron_crossroads_map",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2060,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
   "data": {
     "id": "acheron_crossroads_map",
     "title": "黄泉 · 岔路与地图",
@@ -25,7 +25,8 @@
       "signpost",
       "looking up",
       "overcast",
-      "medium shot"
+      "medium shot",
+      "sunlight"
     ],
     "animaCaption": "She compares the map with the signpost.",
     "characterId": "acheron",

@@ -1,16 +1,20 @@
 <template>
   <article class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }" :style="cardStyle" :data-rating="entry.rating" :data-sample-id="entry.id"
     data-reveal :data-reveal-key="`sample:${entry.id}`">
+    <ShowcasePreviewSource :src="src" :full-src="fullSrc" v-slot="{ image, loaded, failed: broken, preview, previewReady }" @load="measureImage">
     <button class="sample-visual tw:block tw:w-full tw:p-0 tw:text-left tw:relative tw:overflow-hidden" type="button"
       :style="imageStyle"
       :aria-label="`${broken || !image.src ? '预览暂未连接，' : ''}查看 ${entry.title} 大图`" @click="emit('open', entry.id)">
       <Transition :css="false" @leave="skeleton.leave" @leave-cancelled="skeleton.cancel"><span v-if="image.src && !loaded && !broken" class="sample-loading" aria-hidden="true"></span></Transition>
-      <img v-if="image.src && !broken" v-bind="{ ...image, onLoad: measureImage }" class="sample-image tw:w-full tw:h-auto tw:block" :class="{ 'sample-image-ready': loaded }"
+      <img v-if="image.src && !broken" v-bind="image" class="sample-image tw:w-full tw:h-auto tw:block" :class="{ 'sample-image-ready': loaded }"
         :alt="entry.title" :width="dimensions.width" :height="dimensions.height" :loading="eager ? 'eager' : 'lazy'" :fetchpriority="eager ? 'high' : undefined" decoding="async" />
-      <span v-else class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /><span>预览暂未连接 · 可查看大图</span></span>
+      <img v-if="preview.src && !broken" v-bind="preview" class="sample-image sample-image-hd tw:w-full tw:block" :class="{ 'sample-image-ready': previewReady }"
+        alt="" aria-hidden="true" decoding="async" draggable="false" />
+      <span v-if="!image.src || broken" class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /><span>预览暂未连接 · 可查看大图</span></span>
       <SensitivePreviewVeil v-if="entry.rating === 'R18' && image.src && !broken" :src="image.src" :crossorigin="image.crossorigin" />
       <span v-if="entry.rating === 'R18' && loaded && !broken" class="sample-sensitive tw:absolute tw:grid tw:gap-[2px] tw:min-w-[112px] tw:rounded-pill tw:pointer-events-none"><strong>R18</strong><span>悬停或聚焦预览</span></span>
     </button>
+    </ShowcasePreviewSource>
     <div class="sample-caption">
       <div class="sample-kicker tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs tw:leading-body"><span>{{ characterLabel }}</span><span v-if="featured" class="sample-featured"><ArchiveIcon name="star" /><span class="sr-only">精选</span></span><span class="sample-rating tw:shrink-0 tw:text-muted">{{ ratingLabel }}</span></div>
       <h3 class="sample-title tw:text-primary tw:text-body tw:font-semibold tw:leading-body">{{ displayTitle }}</h3>
@@ -23,14 +27,14 @@
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
-import { useRuntimeImage } from '@/composables/useRuntimeImage'
+import ShowcasePreviewSource from './ShowcasePreviewSource.vue'
 import { useOpacityLeave } from '@/composables/useOpacityLeave'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
 import { cachedImageDimensions, rememberImageDimensions } from '@/utils/imageDimensions'
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { resolveRuntimeUrl, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { computed, shallowRef, watch } from 'vue'
 
-const props = defineProps<{ entry: ShowcaseEntry; src: string; featured: boolean; characterLabel: string; ratingLabel: string; eager?: boolean }>()
+const props = defineProps<{ entry: ShowcaseEntry; src: string; fullSrc: string; featured: boolean; characterLabel: string; ratingLabel: string; eager?: boolean }>()
 const displayTitle = computed(() => {
   const name = props.characterLabel.trim(), original = props.entry.title.trim()
   let title = original
@@ -43,10 +47,10 @@ const displayTitle = computed(() => {
   }
   return title
 })
-const { image, loaded, failed: broken } = useRuntimeImage(() => props.src)
 const skeleton = useOpacityLeave()
-const naturalSize = shallowRef(cachedImageDimensions(image.value.src))
-watch([() => props.entry.id, () => image.value.src, runtimeResourceIdentity], ([, src]) => {
+const thumbnailSrc = computed(() => resolveRuntimeUrl(props.src))
+const naturalSize = shallowRef(cachedImageDimensions(thumbnailSrc.value))
+watch([() => props.entry.id, thumbnailSrc, runtimeResourceIdentity], ([, src]) => {
   naturalSize.value = cachedImageDimensions(src)
 })
 const dimensions = computed(() => {
@@ -56,10 +60,8 @@ const dimensions = computed(() => {
 const imageStyle = computed(() => ({ '--sample-ratio': `${dimensions.value.width} / ${dimensions.value.height}` }))
 const cardStyle = computed(() => ({ '--sample-grow': dimensions.value.width / dimensions.value.height }))
 function measureImage(event: Event) {
-  // useRuntimeImage validates the source and retry identity before accepting a load.
-  if (!image.value.onLoad(event)) return
   const img = event.target as HTMLImageElement
-  naturalSize.value = rememberImageDimensions(image.value.src, img.naturalWidth, img.naturalHeight)
+  naturalSize.value = rememberImageDimensions(thumbnailSrc.value, img.naturalWidth, img.naturalHeight)
 }
 const emit = defineEmits<{ open: [id: string] }>()
 </script>
@@ -79,6 +81,7 @@ const emit = defineEmits<{ open: [id: string] }>()
 /* The frame and caption arrive first; only decoded media fades onto the mat. */
 .sample-loading { position:absolute; inset:0; z-index:var(--z-raised); background:linear-gradient(135deg,var(--bg-elevated),var(--bg-base)); pointer-events:none; }
 .sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); opacity:0; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-art-hover) var(--spring-soft); }
+.sample-image-hd { position:absolute; inset:0; pointer-events:none; }
 .sample-image-ready { opacity:1; }
 /* Picture light stays below captions; rating masks retain their own layer. */
 .sample:not(.sample-r18) .sample-visual::after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
