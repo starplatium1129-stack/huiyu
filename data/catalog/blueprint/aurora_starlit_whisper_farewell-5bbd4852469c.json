@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_starlit_whisper_farewell",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2490,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
   "data": {
     "id": "aurora_starlit_whisper_farewell",
     "characterId": "aurora_shadow",
@@ -21,6 +21,8 @@
     "mood": "poignant bittersweet farewell, transcendent eternal bond, profound romantic peace",
     "promptProse": "In a starry cosmic void, black-haired witch Aurora dissolves into glowing particles while sharing a gentle tender farewell kiss.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "space",
       "starlight",
       "dissolving",
@@ -32,10 +34,11 @@
       "close-up"
     ],
     "negativeTokens": [],
-    "animaCaption": "Aurora sharing a tender farewell embrace as her spirit dissolves into stardust.",
+    "animaCaption": "Aurora embraces Shadow and kisses him as her body dissolves into stardust.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "group"
   }
 }

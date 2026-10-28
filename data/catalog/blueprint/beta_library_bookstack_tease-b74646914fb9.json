@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "beta_library_bookstack_tease",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2472,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T13:08:39.422196400+00:00",
   "data": {
     "id": "beta_library_bookstack_tease",
     "characterId": "beta_shadow",
-    "outfitId": "natsume_author_dress",
+    "outfitId": "author_dress",
     "title": "贝塔 · 王都书库高架梯旁的偶遇",
     "category": "知性风采",
     "description": "王都大图书馆的高耸书架旁，贝塔单手扶着移动滑梯，怀中抱着厚厚的古典书籍，微侧过头带着知性而略具挑逗意味的目光望向来人。",

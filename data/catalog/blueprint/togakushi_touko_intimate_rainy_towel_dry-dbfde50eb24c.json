@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_intimate_rainy_towel_dry",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2006,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T14:03:36.453458500+00:00",
   "data": {
     "characterId": "togakushi_touko",
-    "outfitId": "evening_robe",
+    "outfitId": "quiet_silk_robe",
     "id": "togakushi_touko_intimate_rainy_towel_dry",
     "title": "户隐憧子 · 晚归雨夜的解衣擦拭",
     "category": "私密温存",
@@ -24,7 +24,6 @@
       "togakushi_touko",
       "1girl",
       "solo",
-      "purple_hair",
       "long_hair",
       "robe",
       "silk_robe",
@@ -38,7 +37,7 @@
       "close-up"
     ],
     "negativeTokens": [],
-    "animaCaption": "Touko gently drying damp hair in the doorway with a tender lingering look.",
+    "animaCaption": "Touko dries the viewer's damp hair with a towel in the doorway.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false

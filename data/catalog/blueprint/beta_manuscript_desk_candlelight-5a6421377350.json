@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "beta_manuscript_desk_candlelight",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2470,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T13:08:39.422196400+00:00",
   "data": {
     "id": "beta_manuscript_desk_candlelight",
     "characterId": "beta_shadow",
-    "outfitId": "natsume_author_dress",
+    "outfitId": "author_dress",
     "title": "贝塔 · 深夜案前的暗影记事录",
     "category": "文豪倾心",
     "description": "静谧书房内烛火微明，桌面堆满摊开的原稿纸。贝塔手握精致羽毛笔快速书写，银白短发微散，嘴角带着满溢的崇拜微笑，眼角泪痣更添妩媚。",

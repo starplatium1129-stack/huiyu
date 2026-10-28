@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "sumizome_nozomi/white_inner_kimono",
+  "revision": 1,
+  "sortOrder": 1913,
+  "createdAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "data": {
+    "characterId": "sumizome_nozomi",
+    "outfit": {
+      "id": "white_inner_kimono",
+      "name": "素白襦绊",
+      "prose": "A simple white under-kimono with wide sleeves.",
+      "tokens": [
+        "kimono",
+        "white_kimono",
+        "wide_sleeves"
+      ],
+      "characterId": "sumizome_nozomi",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

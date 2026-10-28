@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "inaba_meguru/morning_white_shirt",
+  "revision": 2,
+  "sortOrder": 1911,
+  "createdAt": "2026-10-28T13:08:39.422196400+00:00",
+  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "data": {
+    "characterId": "inaba_meguru",
+    "outfit": {
+      "id": "morning_white_shirt",
+      "name": "落肩宽松男友白衬衫",
+      "prose": "An oversized white boyfriend shirt slipping off one shoulder, revealing delicate collarbones and bare legs.",
+      "tokens": [
+        "oversized_shirt",
+        "white_shirt",
+        "off-shoulder",
+        "bare_shoulders",
+        "collarbone",
+        "bare_legs"
+      ],
+      "characterId": "inaba_meguru",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

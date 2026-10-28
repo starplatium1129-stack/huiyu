@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "faln_touden/stream_barefoot_robe",
+  "revision": 1,
+  "sortOrder": 1916,
+  "createdAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "data": {
+    "characterId": "faln_touden",
+    "outfit": {
+      "id": "stream_barefoot_robe",
+      "name": "赤足溪行的蓝白法师袍",
+      "prose": "A blue-and-white mage robe secured by a leather belt, with bare legs and bare feet for wading.",
+      "tokens": [
+        "blue_robe",
+        "white_robe",
+        "long_sleeves",
+        "leather_belt",
+        "bare_legs",
+        "barefoot"
+      ],
+      "characterId": "faln_touden",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

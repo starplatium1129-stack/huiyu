@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "faln_touden/camp_tunic",
+  "revision": 1,
+  "sortOrder": 1915,
+  "createdAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "data": {
+    "characterId": "faln_touden",
+    "outfit": {
+      "id": "camp_tunic",
+      "name": "旅途休息用的奶油色束腰衣",
+      "prose": "A soft cream tunic worn after setting aside the heavy traveling cloak.",
+      "tokens": [
+        "cream_tunic",
+        "tunic",
+        "long_sleeves"
+      ],
+      "characterId": "faln_touden",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

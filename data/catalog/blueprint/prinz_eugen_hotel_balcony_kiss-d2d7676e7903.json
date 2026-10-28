@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "prinz_eugen_hotel_balcony_kiss",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 2152,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-28T14:05:42.826822800+00:00",
   "data": {
     "id": "prinz_eugen_hotel_balcony_kiss",
     "characterId": "prinz_eugen",
@@ -21,20 +21,25 @@
     "mood": "passionate abandon, summer night heat, breathless romantic indulgence",
     "promptProse": "Backed against a resort balcony railing in moonlight with her bikini strings undone, Prinz Eugen shares a deep breathless kiss in the sea breeze.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "balcony",
       "glass_railing",
       "untied_bikini",
       "head_tilted_back",
-      "passionate_kiss",
+      "kissing",
       "sea_breeze",
       "moonlight",
+      "reflected_light",
       "cowboy_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Prinz Eugen in an untied bikini sharing a deep passionate kiss on an ocean balcony.",
+    "animaCaption": "Prinz Eugen and her partner share a kiss by the balcony railing in the moonlight.",
     "isNsfw": true,
     "rating": "R18",
     "mature": true,
-    "adult": true
+    "adult": true,
+    "compositionIntent": "group",
+    "identityProseOverride": "Prinz Eugen from Azur Lane, with ash grey hair in elegant twin braids with a striking crimson streak, alluring amber eyes, and a signature beauty mark beneath her right eye."
   }
 }

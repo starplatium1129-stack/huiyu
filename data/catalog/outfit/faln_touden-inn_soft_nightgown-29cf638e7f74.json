@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "faln_touden/inn_soft_nightgown",
+  "revision": 1,
+  "sortOrder": 1917,
+  "createdAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "data": {
+    "characterId": "faln_touden",
+    "outfit": {
+      "id": "inn_soft_nightgown",
+      "name": "旅店晨醒的宽松睡衣",
+      "prose": "A loose and soft nightgown for resting at the inn.",
+      "tokens": [
+        "nightgown",
+        "loose_clothing",
+        "long_sleeves"
+      ],
+      "characterId": "faln_touden",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_after_bridge",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2495,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T13:08:39.422196400+00:00",
   "data": {
     "id": "rena_liechtenauer_after_bridge",
     "characterId": "rena_liechtenauer",
@@ -18,7 +18,7 @@
     "lighting": "warm daylight",
     "camera": "cowboy shot",
     "mood": "喜悦",
-    "promptProse": "On a wooden bridge over a stream, Lena takes her partner’s hand and looks back with a smile; only the partner’s hand is visible.",
+    "promptProse": "On a wooden bridge over a stream, Lena takes her partner's hand and looks back with a smile; only the partner's hand is visible.",
     "promptTokens": [
       "wooden bridge",
       "stream",

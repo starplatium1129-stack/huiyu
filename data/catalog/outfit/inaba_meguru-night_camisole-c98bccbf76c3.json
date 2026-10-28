@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "inaba_meguru/night_camisole",
+  "revision": 3,
+  "sortOrder": 1910,
+  "createdAt": "2026-10-28T13:08:39.422196400+00:00",
+  "updatedAt": "2026-10-28T14:11:27.985649+00:00",
+  "data": {
+    "characterId": "inaba_meguru",
+    "outfit": {
+      "id": "night_camisole",
+      "name": "薰衣草蕾丝吊带与睡裤",
+      "prose": "A soft lavender cotton camisole with delicate lace trim along the neckline, bare shoulders, and matching sleep shorts.",
+      "tokens": [
+        "camisole",
+        "purple camisole",
+        "lace_trim",
+        "pajama_shorts",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "characterId": "inaba_meguru",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

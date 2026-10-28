@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_intimate_kagura_steps",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2008,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-28T14:29:16.215024+00:00",
   "data": {
     "characterId": "sumizome_nozomi",
-    "outfitId": "shrine_miko",
+    "outfitId": "white_inner_kimono",
     "id": "sumizome_nozomi_intimate_kagura_steps",
     "title": "墨染希 · 神乐殿阶梯的月下卸装",
     "category": "私密温存",
@@ -19,13 +19,12 @@
     "lighting": "pure silver moonlight against red wooden pillars",
     "camera": "medium_shot",
     "mood": "sacred touching childhood intimacy",
-    "promptProse": "Resting on the wooden steps of the deserted shrine pavilion after the festival, Sumizome Nozomi appears in her simple white under-kimono. Silver moonlight touches her exposed neck and honey-brown hair as she gently presses her cheek against the viewer's palm.",
+    "promptProse": "Resting on the wooden steps of the deserted shrine pavilion after the festival, Sumizome Nozomi appears in her simple white under-kimono. Silver moonlight touches her exposed neck and honey-brown hair as she gently presses her cheek against the viewer's palm. Only the viewer's hand enters the frame.",
     "promptTokens": [
       "sumizome_nozomi",
       "1girl",
       "solo",
       "brown_hair",
-      "long_hair",
       "kimono",
       "white_kimono",
       "sitting",
@@ -40,7 +39,7 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Nozomi resting her cheek against a hand on the moonlit shrine steps.",
+    "animaCaption": "Only the viewer's hand enters the frame beneath Nozomi's cheek.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false

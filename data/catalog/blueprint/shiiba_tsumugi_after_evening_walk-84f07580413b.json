@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_after_evening_walk",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2492,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T13:08:39.422196400+00:00",
   "data": {
     "id": "shiiba_tsumugi_after_evening_walk",
     "characterId": "shiiba_tsumugi",
@@ -18,7 +18,7 @@
     "lighting": "streetlight",
     "camera": "cowboy shot",
     "mood": "安心",
-    "promptProse": "On a quiet town street at night, Tsumugi holds her partner’s hand while walking home; only their hand enters the frame.",
+    "promptProse": "On a quiet town street at night, Tsumugi holds her partner's hand while walking home; only their hand enters the frame.",
     "promptTokens": [
       "town street",
       "night",

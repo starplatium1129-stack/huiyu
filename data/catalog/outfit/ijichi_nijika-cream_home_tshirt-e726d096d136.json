@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "ijichi_nijika/cream_home_tshirt",
+  "revision": 1,
+  "sortOrder": 1919,
+  "createdAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "data": {
+    "characterId": "ijichi_nijika",
+    "outfit": {
+      "id": "cream_home_tshirt",
+      "name": "奶白宽松居家T恤",
+      "prose": "A loose cream off-shoulder T-shirt for relaxing barefoot at home.",
+      "tokens": [
+        "cream_shirt",
+        "oversized_t-shirt",
+        "t-shirt",
+        "off-shoulder",
+        "bare_shoulders",
+        "bare_legs",
+        "barefoot"
+      ],
+      "characterId": "ijichi_nijika",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "sumizome_nozomi/stella_yellow_apron",
+  "revision": 1,
+  "sortOrder": 1914,
+  "createdAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "data": {
+    "characterId": "sumizome_nozomi",
+    "outfit": {
+      "id": "stella_yellow_apron",
+      "name": "奶黄条纹制服与同色围裙",
+      "prose": "A yellow striped short-sleeved cafe dress with a yellow waist apron, white thigh-high socks and burgundy shoes.",
+      "tokens": [
+        "yellow_dress",
+        "striped_dress",
+        "short_sleeves",
+        "waitress",
+        "waist_apron",
+        "yellow_apron",
+        "frills",
+        "white_thighhighs",
+        "mary_janes"
+      ],
+      "characterId": "sumizome_nozomi",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

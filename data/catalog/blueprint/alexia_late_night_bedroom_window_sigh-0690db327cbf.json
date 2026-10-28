@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_late_night_bedroom_window_sigh",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2515,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
   "data": {
     "id": "alexia_late_night_bedroom_window_sigh",
     "characterId": "alexia_midgar",
@@ -29,10 +29,12 @@
       "barefoot",
       "touching_head",
       "melancholy",
-      "full_body"
+      "full_body",
+      "soft_lighting",
+      "reflected_light"
     ],
     "negativeTokens": [],
-    "animaCaption": "Alexia in quiet contemplation on her moonlit palace balcony at midnight.",
+    "animaCaption": "Alexia leans against the balcony railing, her face softly lit by moonlight.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
