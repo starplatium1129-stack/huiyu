@@ -78,7 +78,7 @@
 }
 
 /* Fit the frame to the actual image ratio so its shadow follows the work, not letterboxing. */
-.pb.atelier-workspace .result-image-wrap.archive-canvas { --canvas-artwork-inset:clamp(20px,3cqw,40px); display:flex; align-items:center; justify-content:center; border:0; border-radius:0; padding:var(--canvas-artwork-inset); background:var(--bg-base); box-shadow:none; }
+.pb.atelier-workspace .result-image-wrap.archive-canvas { --canvas-artwork-inset:clamp(var(--s-3),1.5cqw,var(--s-5)); display:flex; align-items:center; justify-content:center; border:0; border-radius:0; padding:var(--canvas-artwork-inset); background:var(--bg-base); box-shadow:none; }
 .pb.atelier-workspace .result-artwork { position:relative; flex:none; width:min(100%,calc((100cqh - 2 * var(--canvas-artwork-inset)) * var(--result-aspect))); max-height:100%; aspect-ratio:var(--result-aspect); border-radius:var(--r-sm); box-shadow:none; }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal,
 .pb.atelier-workspace .result-image-reveal .result-image { background:transparent; border-radius:inherit; }
@@ -94,7 +94,7 @@
 .pb.atelier-workspace .result-image-wrap:has(.cg-image-reveal.is-revealing),
 .pb.atelier-workspace .result-image-wrap:has(.cg-image-reveal.is-revealing) .result-artwork,
 .pb.atelier-workspace .result-image-wrap .cg-image-reveal.is-revealing { background:transparent; border-color:transparent; box-shadow:none; }
-.pb.atelier-workspace .result-image-actions { min-height:64px; min-width:0; flex-wrap:wrap; padding:12px 20px; gap:8px; }
+.pb.atelier-workspace .result-image-actions { min-height:calc(var(--control-height) + 2 * var(--s-1)); min-width:0; flex-wrap:wrap; padding:var(--s-1) var(--s-4); gap:var(--s-2); }
 .pb.atelier-workspace .result-image-actions .stage-archive-badge { margin:0; padding:0; background:transparent; }
 .pb.atelier-workspace .result-image-actions .btn { white-space:nowrap; flex-shrink:0; }
 @container canvas-column (max-width:740px) {
