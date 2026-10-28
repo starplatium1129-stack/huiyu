@@ -1,28 +1,33 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/sfw_white_mermaid_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1147,
   "createdAt": "2026-10-06T14:13:16.548313600+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "sfw_white_mermaid_bridal",
-      "name": "纯白鱼尾长拖尾婚纱",
+      "name": "重工法式蕾丝长拖尾抹胸婚纱与皮革腿环",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "A white satin mermaid gown with off-shoulder neckline, trailing hem, long lace veil and closed white bridal shoes.",
+      "prose": "A majestic strapless French corded lace wedding dress with an expansive embroidered train and high front slit, featuring white thighhighs secured with an exquisite white leather thigh band.",
       "tokens": [
-        "white satin wedding gown",
-        "mermaid dress",
-        "off shoulder",
-        "long lace veil",
-        "train",
-        "closed white bridal shoes"
-      ]
+        "wedding_dress",
+        "strapless_dress",
+        "lace_dress",
+        "long_train",
+        "high_slit",
+        "white_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "veil"
+      ],
+      "characterId": "rias_gremory"
     }
   }
 }

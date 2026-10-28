@@ -1,25 +1,32 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/sfw_vintage_bookshop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1112,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "sfw_vintage_bookshop",
-      "name": "旧书店酒红百褶复古装",
-      "prose": "a black high-collar blouse with ivory cuffs, a burgundy pleated midi skirt, opaque black tights and lace-up ankle boots",
+      "name": "复古宫廷领衬衫与酒红高衩伞裙",
+      "prose": "A high-collar ruffled Victorian blouse paired with a high-waisted burgundy skirt featuring a teasing slit. A buckled black leather thigh strap cinches over sheer stockings, causing an unmistakable soft thigh squish.",
       "tokens": [
-        "black high collar blouse",
-        "ivory cuffs",
-        "burgundy pleated midi skirt",
-        "opaque black tights",
-        "lace up ankle boots"
+        "vintage_blouse",
+        "high_collar",
+        "cuffs",
+        "burgundy_skirt",
+        "high-waist_skirt",
+        "high_slit",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "lace-up_boots"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "tokisaki_kurumi"
     }
   }
 }

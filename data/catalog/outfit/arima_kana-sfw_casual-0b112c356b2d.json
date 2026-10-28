@@ -1,25 +1,34 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 533,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
-      "default": false,
       "id": "sfw_casual",
-      "isDefault": false,
-      "name": "围读奶油白滚边针织装",
-      "prose": "A short cream cardigan edged in wine red over a white blouse and a navy knee-length A-line skirt.",
+      "name": "法式极简奶油罗纹针织开衫与开衩及膝裙",
+      "prose": "A cropped ivory bouclé cardigan with wine-red piped borders worn over a silk shell top, paired with a high-slit navy wool pencil skirt revealing sheer black thighhighs clasped by a leather thigh strap.",
       "tokens": [
-        "cropped cream cardigan",
-        "burgundy trim",
-        "white blouse",
-        "navy blue knee-length skirt",
-        "a-line skirt"
-      ]
+        "cropped_cardigan",
+        "cream_cardigan",
+        "burgundy_piping",
+        "silk_blouse",
+        "navy_skirt",
+        "pencil_skirt",
+        "high_slit",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "heels"
+      ],
+      "characterId": "arima_kana",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

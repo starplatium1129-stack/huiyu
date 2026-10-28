@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "yanami_anna/sfw_festival",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 954,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "yanami_anna",
     "outfit": {
       "id": "sfw_festival",
-      "name": "夏祭蓝色朝颜浴衣",
-      "prose": "a blue yukata with white morning-glory flowers, a yellow obi and wooden geta",
+      "name": "靛蓝朝颜亚麻浴衣与金扣腿环",
+      "prose": "A fine indigo linen yukata with white morning-glory blossoms and a yellow obi sash, parting subtly at the hem to show bare legs with a buckled leather thigh strap.",
       "tokens": [
-        "blue yukata",
-        "white morning glory print",
-        "yellow obi",
+        "blue_yukata",
+        "yukata",
+        "floral_print",
+        "yellow_obi",
+        "sash",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "geta"
       ],
+      "characterId": "yanami_anna",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

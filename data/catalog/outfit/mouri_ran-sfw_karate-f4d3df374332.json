@@ -1,23 +1,32 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_karate",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 910,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_karate",
-      "name": "空手道训练道服",
-      "prose": "a properly wrapped white karate gi, white martial-arts trousers and black belt",
+      "name": "重磅纯白修身道服与极黑战术皮革腿环",
+      "prose": "A tailored heavy-cotton white karate gi cinched with a black martial arts belt, loosely draped over long toned legs accented by a matte black leather thigh strap.",
       "tokens": [
-        "white karate gi",
-        "white pants",
-        "black belt"
+        "karate_gi",
+        "white_shirt",
+        "black_belt",
+        "martial_arts",
+        "bare_feet",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "black_buckle"
       ],
+      "characterId": "mouri_ran",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

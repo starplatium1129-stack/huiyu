@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/ambience_synesthesia_rocker",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 307,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
       "id": "ambience_synesthesia_rocker",
-      "name": "赤雷拼色短皮衣舞台装",
-      "prose": "an asymmetric crimson-and-black cropped biker jacket over a black mesh top, a silver dragon-engraved choker, distressed black denim shorts, fishnet thigh-highs and black platform boots",
+      "name": "音律联觉赤黑拼色不对称短皮衣与皮短裤",
+      "prose": "An edgy asymmetric red-and-black cropped biker jacket over a sheer mesh crop top and laced black leather micro shorts. Fishnet thighhighs showcase an irresistible soft squish under a heavy-duty buckled leather thigh strap.",
       "tokens": [
-        "cropped red and black leather jacket",
-        "asymmetric jacket",
-        "black mesh crop top",
-        "silver choker",
-        "distressed black denim shorts",
-        "fishnet thighhighs",
-        "platform boots"
-      ]
+        "cropped_jacket",
+        "leather_jacket",
+        "biker_jacket",
+        "asymmetrical_jacket",
+        "mesh_top",
+        "leather_shorts",
+        "fishnet_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "choker",
+        "platform_boots"
+      ],
+      "characterId": "chen_arknights",
+      "default": false,
+      "isDefault": false
     }
   }
 }

@@ -1,25 +1,31 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/cozy_sheep_fleece_loungewear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 312,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
-      "default": false,
       "id": "cozy_sheep_fleece_loungewear",
-      "isDefault": false,
-      "name": "奶油羊羔绒睡衣套装",
-      "prose": "Cream cotton pajamas with a small sheep print and warm tan piping, layered under a loose cream fleece cardigan with a roomy hood.",
+      "name": "奶油羊羔绒落肩连帽睡衣与毛绒皮扣腿带",
+      "prose": "An oversized fluffy cream sherpa fleece hoodie falling over soft lounge shorts, with bare legs accented by a pastel-toned leather thigh strap with a miniature buckle pressing into soft skin.",
       "tokens": [
-        "cream pajamas",
-        "sheep print",
-        "tan trim",
-        "fleece cardigan",
-        "hood"
-      ]
+        "fleece_hoodie",
+        "cream_hoodie",
+        "oversized_hoodie",
+        "shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "fluffy_socks"
+      ],
+      "characterId": "eyjafjalla_arknights",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

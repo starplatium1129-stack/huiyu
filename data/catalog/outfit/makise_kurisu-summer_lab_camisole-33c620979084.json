@@ -1,28 +1,32 @@
 {
   "kind": "outfit",
   "id": "makise_kurisu/summer_lab_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1823,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "makise_kurisu",
     "outfit": {
       "id": "summer_lab_camisole",
-      "name": "盛夏实验室清凉吊带与牛仔短裤",
-      "prose": "A lightweight white cotton camisole with slim straps, casual rolled-hem denim shorts, bare legs and indoor room slippers.",
+      "name": "盛夏极简象牙白削肩吊带与毛边牛仔短裤",
+      "prose": "A minimalist ribbed white halter camisole tucked into frayed high-waisted denim shorts, exposing bare legs clasped by a buckled brown leather thigh strap pressing softly into tender skin.",
       "tokens": [
         "white_camisole",
-        "spaghetti_straps",
+        "halterneck",
         "sleeveless",
         "denim_shorts",
-        "jean_shorts",
+        "cut_offs",
         "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "slippers"
       ],
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "makise_kurisu"
     }
   }
 }

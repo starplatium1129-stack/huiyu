@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/wanderer",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 301,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
       "default": false,
       "id": "wanderer",
       "isDefault": false,
-      "name": "赤刃明霄青红游侠袍",
-      "prose": "a dark-green traveller robe with crimson side panels, a short gray cape and a jade pendant hanging from its fitted belt",
+      "name": "赤刃明霄青红解构游侠立领短装",
+      "prose": "A modern wuxia cropped dark-teal tunic with crimson silk accents, gold clasps, and a short pleated slit skirt. A buckled leather thigh strap bearing a jade charm creates a supple soft indentation on her bare thigh skin.",
       "tokens": [
-        "dark green robe",
-        "crimson side panels",
-        "short gray cape",
-        "jade belt pendant"
-      ]
+        "teal_tunic",
+        "mandarin_collar",
+        "crimson_trim",
+        "pleated_skirt",
+        "mini_skirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "boots"
+      ],
+      "characterId": "chen_arknights"
     }
   }
 }

@@ -1,21 +1,32 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/white_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1208,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "white_camisole",
-      "name": "白色吊带里衣",
+      "name": "蕾丝真丝吊带里衣与哑光皮腿带",
+      "prose": "A ribbed white silk camisole with scalloped lace trimming paired with micro lounge shorts, leaving bare legs highlighted by a slender buckled leather thigh strap.",
       "tokens": [
-        "white camisole"
+        "camisole",
+        "white_camisole",
+        "silk",
+        "lace_trim",
+        "short_shorts",
+        "bare_shoulders",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "a white camisole",
+      "characterId": "makinohara_shouko",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

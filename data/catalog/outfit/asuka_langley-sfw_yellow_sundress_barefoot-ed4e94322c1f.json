@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/sfw_yellow_sundress_barefoot",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1139,
   "createdAt": "2026-10-06T13:54:56.677548700+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
       "id": "sfw_yellow_sundress_barefoot",
-      "name": "金黄棉质吊带裙·赤足",
+      "name": "夏日柠檬黄收腰吊带裙与皮革腿饰",
+      "prose": "A bright yellow cotton sundress with a fitted corset bodice and flared slit skirt fluttering in the wind, revealing bare golden legs adorned with a refined leather thigh strap and silver ring.",
+      "tokens": [
+        "yellow_sundress",
+        "spaghetti_straps",
+        "sweetheart_neckline",
+        "fitted_waist",
+        "flared_skirt",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
+      ],
+      "characterId": "asuka_langley",
       "default": false,
       "isDefault": false,
-      "isNsfw": false,
-      "category": "日常衣装（创作）",
-      "prose": "A canary-yellow cotton sundress with slender straps, a fitted waist and a lightly flared hem, worn barefoot.",
-      "tokens": [
-        "yellow sundress",
-        "thin straps",
-        "flared skirt",
-        "barefoot"
-      ]
+      "isNsfw": false
     }
   }
 }

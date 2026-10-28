@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_winter",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_winter",
-      "name": "梅紫冬日和服与奶油围巾",
-      "prose": "A warm plum kimono has a subtle woven blossom pattern, paired with a cream wool scarf, white tabi and closed winter sandals.",
+      "name": "梅紫暗纹短款改良羽织与高腰百褶短裙皮腿饰",
+      "prose": "A plum-violet cropped haori over a cream ribbed turtleneck and pleated wool miniskirt, showing dark stockings clasped by a polished leather thigh garter pressing softly into her skin.",
       "tokens": [
-        "plum kimono",
-        "cream wool scarf",
-        "white tabi",
-        "closed sandals"
+        "cropped_jacket",
+        "purple_jacket",
+        "turtleneck",
+        "pleated_skirt",
+        "miniskirt",
+        "dark_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "boots"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "yae_miko",
+      "isNsfw": false
     }
   }
 }

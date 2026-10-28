@@ -1,22 +1,32 @@
 {
   "kind": "outfit",
   "id": "arima_kana/nsfw_boudoir",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 536,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
-      "default": false,
       "id": "nsfw_boudoir",
-      "isDefault": false,
-      "name": "酒红蕾丝私服",
-      "prose": "Burgundy lingerie with a narrow lace border.",
+      "name": "深绯丝绒蕾丝交叉绑带文胸与皮质腿环",
+      "prose": "Rich wine-red crushed velvet lingerie trimmed with delicate black floral lace, supported by crisscross cage straps and a slender leather thigh garter pressing softly into her fair thigh.",
       "tokens": [
-        "burgundy lingerie",
-        "lace trim"
-      ]
+        "burgundy_lingerie",
+        "velvet_bra",
+        "lace_trim",
+        "strappy_bra",
+        "lace_panties",
+        "garter_straps",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sheer_thighhighs"
+      ],
+      "characterId": "arima_kana",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

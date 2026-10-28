@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/sfw_lounge_white_tee",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1160,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
       "id": "sfw_lounge_white_tee",
-      "name": "黑领白T恤与浅蓝旧牛仔",
+      "name": "黑领做旧落肩白T恤与毛边水洗牛仔短裤",
       "tokens": [
-        "oversized white t-shirt",
-        "black collar",
-        "light blue denim shorts",
-        "frayed hem"
+        "white_shirt",
+        "t-shirt",
+        "black_collar",
+        "denim_shorts",
+        "frayed_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sneakers"
       ],
-      "prose": "A loose white T-shirt with a narrow black neckband and light-blue denim shorts with worn, frayed hems.",
+      "prose": "A relaxed off-shoulder white cotton tee with a contrasting black rib collar, paired with frayed light-wash denim cutoffs. An ebony buckled leather thigh strap produces an alluring soft indentation on her bare thigh.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "lappland_arknights"
     }
   }
 }

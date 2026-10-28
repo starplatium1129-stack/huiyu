@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_formal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 447,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_formal",
-      "name": "淡紫交领·茶会和装裙",
-      "prose": "An opaque pale-violet jacquard wrap dress with kimono sleeves, geometric woven border and cream sash.",
+      "name": "雾紫提花交领礼裙与开衩皮腿带",
+      "prose": "A pale violet jacquard wrap gown with kimono-inspired sleeves and an asymmetric side slit, displaying sheer stockings accented by a buckled leather thigh strap.",
       "tokens": [
-        "pale violet dress",
-        "kimono sleeves",
-        "wrap dress",
-        "cream sash",
-        "jacquard"
+        "wrap_dress",
+        "purple_dress",
+        "kimono_sleeves",
+        "jacquard",
+        "sash",
+        "side_slit",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "pumps"
       ],
+      "characterId": "suou_yuki",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

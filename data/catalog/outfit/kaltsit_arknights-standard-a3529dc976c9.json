@@ -1,26 +1,34 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/standard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 293,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
-      "default": true,
       "id": "standard",
-      "isDefault": true,
-      "name": "浅绿滚边罗德岛医师服",
-      "prose": "Her white lab coat with pale-green edging and a translucent hem over a black backless halterneck dress, finished with a green utility belt.",
+      "name": "罗德岛医疗高定风衣与绝对领域",
+      "prose": "Her iconic tailored doctor trench coat with pale green accents and stethoscopic piping, layered over a slit skirt and sheer black thigh-high stockings secured by a tactical leather thigh strap.",
       "tokens": [
-        "white lab coat",
-        "pale green trim",
-        "translucent hem",
-        "black halterneck dress",
-        "backless dress",
-        "green utility belt"
-      ]
+        "lab_coat",
+        "trench_coat",
+        "white_coat",
+        "green_trim",
+        "pencil_skirt",
+        "slit_skirt",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "ankle_boots"
+      ],
+      "characterId": "kaltsit_arknights",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

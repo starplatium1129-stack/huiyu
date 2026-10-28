@@ -1,27 +1,32 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/sfw_morning_bakery_knit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1119,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "sfw_morning_bakery_knit",
-      "name": "晨间采购浅蓝针织裙装",
-      "prose": "A powder-blue cable-knit cardigan, ivory round-neck blouse, navy pleated midi skirt, brown loafers and white lace maid headdress.",
+      "name": "晨曦浅蓝落肩粗针毛衣与褶裙皮腿饰",
+      "prose": "A cozy baby-blue cable knit sweater draped off one shoulder over an ivory camisole and pleated miniskirt, showing white thighhighs compressed gently beneath a buckled leather strap with a tender squish.",
       "tokens": [
-        "powder blue cardigan",
-        "cable knit",
-        "ivory blouse",
-        "round neck",
-        "navy pleated midi skirt",
-        "brown loafers",
-        "white lace maid headdress"
+        "cable_knit",
+        "blue_sweater",
+        "off_shoulder",
+        "camisole",
+        "pleated_skirt",
+        "miniskirt",
+        "white_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "rem_rezero"
     }
   }
 }

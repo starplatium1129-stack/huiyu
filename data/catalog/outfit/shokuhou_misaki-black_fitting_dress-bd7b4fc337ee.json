@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/black_fitting_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1344,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
       "id": "black_fitting_dress",
-      "name": "黑金背链·试穿连衣裙",
+      "name": "露背黑金挂脖修身礼裙与蕾丝腿饰",
       "tokens": [
-        "black dress",
-        "sheath dress",
-        "gold zipper",
-        "black lace lingerie"
+        "halter_dress",
+        "backless_dress",
+        "sheath_dress",
+        "black_dress",
+        "gold_chain",
+        "sheer_thighhighs",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "gold_buckle",
+        "high_heels"
       ],
-      "prose": "A fitted black sheath dress with a gold back zipper, worn over her black-and-gold lace lingerie.",
+      "prose": "A sculptured halterneck black jersey sheath dress featuring an open cowl back accented by gold chains. Sheer black thighhighs are clasped by a gilded leather thigh strap causing an alluring soft squish.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "shokuhou_misaki"
     }
   }
 }

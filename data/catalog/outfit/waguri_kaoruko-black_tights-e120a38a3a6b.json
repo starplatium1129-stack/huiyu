@@ -1,21 +1,33 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/black_tights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1454,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "black_tights",
-      "name": "黑色薄裤袜",
+      "name": "天鹅绒透肉连裤袜与小牛皮银扣腿环",
+      "prose": "Sheer 20-denier velvet black pantyhose hugging the legs, accented at the upper thigh by a tailored calfskin leather strap with a polished silver buckle.",
       "tokens": [
-        "black pantyhose"
+        "pantyhose",
+        "black_pantyhose",
+        "sheer_legwear",
+        "black_shorts",
+        "short_shorts",
+        "tight_shorts",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "silver_buckle",
+        "high_heels"
       ],
-      "prose": "Fine black tights.",
+      "characterId": "waguri_kaoruko",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

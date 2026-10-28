@@ -1,28 +1,33 @@
 {
   "kind": "outfit",
   "id": "ellen_joe/maid_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 581,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "ellen_joe",
     "outfit": {
       "default": true,
       "id": "maid_uniform",
       "isDefault": true,
-      "name": "维多利亚执事女仆装",
-      "prose": "her black Victoria Housekeeping combat dress with white apron and frilled headband, lace trim, detached sleeves, black thighhighs with garters, red bow and heavy platform Mary Janes",
+      "name": "维多利亚执事女仆装与战术吊袜皮腿环",
+      "prose": "The signature Victoria Housekeeping combat maid gown with ruffled white pinafore, lace-edged detached sleeves, and black thighhighs cinched by a studded leather thigh strap that indents her soft thigh with a silver buckle.",
       "tokens": [
-        "black maid dress",
-        "white apron",
-        "maid headdress",
-        "detached sleeves",
-        "black thighhighs",
-        "garter straps",
-        "red bow",
-        "platform mary janes"
-      ]
+        "maid_dress",
+        "white_apron",
+        "maid_headdress",
+        "detached_sleeves",
+        "lace_trim",
+        "black_thighhighs",
+        "thighhighs",
+        "red_bow",
+        "mary_janes",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "ellen_joe"
     }
   }
 }

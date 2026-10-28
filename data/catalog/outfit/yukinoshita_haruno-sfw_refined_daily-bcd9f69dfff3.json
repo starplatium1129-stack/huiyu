@@ -1,24 +1,33 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/sfw_refined_daily",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 217,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "墨蓝缎面晚宴裤装",
-      "prose": "a midnight-blue satin jacket with matching wide-leg evening trousers, a high-neck ivory silk blouse and small silver clip-on earrings",
+      "name": "午夜蓝光泽丝缎吸烟西装与高衩晚装裤",
+      "prose": "A tailored midnight-blue satin tuxedo jacket open over a plunging ivory silk halter top and fluid slit-leg evening trousers. A glossy black leather thigh band with a chrome buckle cinches the bare leg visible in the slit, with pumps.",
       "tokens": [
-        "midnight blue suit",
-        "satin",
-        "wide-leg pants",
-        "ivory blouse",
-        "high collar",
-        "silver earrings"
+        "tuxedo",
+        "satin_jacket",
+        "blue_suit",
+        "open_jacket",
+        "halterneck",
+        "silk_top",
+        "wide-leg_pants",
+        "slit_pants",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "high_heels",
+        "couture"
       ],
+      "characterId": "yukinoshita_haruno",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

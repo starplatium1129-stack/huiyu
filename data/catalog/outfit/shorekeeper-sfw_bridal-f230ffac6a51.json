@@ -1,23 +1,32 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_bridal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 942,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "潮纹蓝绣白色花嫁",
-      "prose": "a white wedding dress with fine blue wave embroidery along its long skirt and a light blue veil",
+      "name": "星海潮纹抹胸解构流光花嫁与星扣皮腿带",
+      "prose": "An ethereal strapless bridal gown of celestial white tulle featuring wave-like indigo embroidery and a high side slit, showcasing gradient stockings held by a slender buckled leather thigh strap softly indenting the skin.",
       "tokens": [
-        "white wedding dress",
-        "blue embroidery",
-        "blue veil"
+        "wedding_dress",
+        "white_dress",
+        "strapless",
+        "blue_embroidery",
+        "layered_skirt",
+        "side_slit",
+        "veil",
+        "blue_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "shorekeeper"
     }
   }
 }

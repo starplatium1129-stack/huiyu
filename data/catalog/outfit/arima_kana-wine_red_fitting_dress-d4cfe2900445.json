@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "arima_kana/wine_red_fitting_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1273,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
       "id": "wine_red_fitting_dress",
-      "name": "酒红白滚边试装礼裙",
+      "name": "酒红抹胸包臀试装礼裙与外露金属拉链",
+      "prose": "A stunning wine-red tailored bodycon sheath dress with white satin piping and a full-length exposed silver back zipper, cut with a high thigh slit showing sheer tights and a leather thigh band.",
       "tokens": [
-        "dark red mini dress",
-        "fitted dress",
-        "white piping",
-        "back zipper",
-        "black stockings",
-        "red beret"
+        "bodycon_dress",
+        "burgundy_dress",
+        "back_zipper",
+        "sweetheart_neckline",
+        "high_slit",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "pointed_heels"
       ],
-      "prose": "A fitted dark-red mini dress with fine white piping and a back zipper, worn with black stockings and a red beret.",
+      "characterId": "arima_kana",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

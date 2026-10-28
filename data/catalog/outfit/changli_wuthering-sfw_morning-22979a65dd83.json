@@ -1,25 +1,35 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/sfw_morning",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 933,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "sfw_morning",
-      "name": "象牙绉绸晨间便装",
-      "prose": "a cream crepe-silk blouse with gathered cuffs and narrow red piping at the placket, tucked into relaxed charcoal trousers",
+      "name": "象牙绉绸深V系带晨袍与绯红滚边",
+      "prose": "A relaxed ivory crepe-silk morning robe with crimson satin piping and an open collar, draping over bare legs accented with a buckled leather thigh strap.",
       "tokens": [
-        "cream silk blouse",
-        "long sleeves",
-        "gathered cuffs",
-        "charcoal pants",
-        "red piping"
+        "robe",
+        "silk_robe",
+        "white_robe",
+        "v-neck",
+        "plunging_neckline",
+        "red_piping",
+        "sash",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "silver_buckle",
+        "slippers"
       ],
+      "characterId": "changli_wuthering",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

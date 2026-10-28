@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_home",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_home",
-      "name": "梅紫落肩家居装",
-      "prose": "A loose plum sweatshirt with dropped shoulders and a thin gold neckline border, paired with full-length charcoal lounge trousers.",
+      "name": "熟梅落肩羊绒衫与系带私享居家服",
+      "prose": "A slouchy plum cashmere off-shoulder sweater layered over delicate lace lounge shorts, complemented by a buckled leather thigh strap biting softly into the tender thigh.",
       "tokens": [
-        "plum sweatshirt",
-        "drop shoulders",
-        "gold piping",
-        "charcoal lounge pants"
+        "oversized_sweater",
+        "knit_sweater",
+        "drop_shoulders",
+        "off-shoulder",
+        "lace_shorts",
+        "thigh_strap",
+        "leather_strap",
+        "gold_buckle",
+        "black_thighhighs",
+        "bare_thighs"
       ],
+      "characterId": "kama_fate",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

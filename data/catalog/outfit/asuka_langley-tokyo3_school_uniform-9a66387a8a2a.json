@@ -1,27 +1,33 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/tokyo3_school_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 564,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
-      "default": false,
       "id": "tokyo3_school_uniform",
-      "isDefault": false,
-      "name": "第3新东京市立中学水手校服",
-      "prose": "a white sailor blouse beneath a turquoise pinafore dress, with a red bow, black over-knee socks and loafers",
-      "styleHint": "",
+      "name": "第3新东京市立中学水手服与绝对领域",
+      "prose": "The iconic Tokyo-3 sailor blouse and turquoise jumper skirt tailored high above the knees, paired with semi-sheer black over-knee stockings and a buckled leather thigh strap that indents the soft thigh.",
       "tokens": [
-        "school uniform",
-        "white sailor blouse",
-        "turquoise jumper skirt",
-        "red bow",
-        "black thighhighs",
+        "school_uniform",
+        "sailor_blouse",
+        "white_shirt",
+        "turquoise_jumper_skirt",
+        "red_bow",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "loafers"
-      ]
+      ],
+      "characterId": "asuka_langley",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

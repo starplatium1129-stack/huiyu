@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/formal_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 245,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "formal_dress",
-      "name": "银束腰宝蓝长袖晚礼服",
-      "prose": "A long-sleeved deep-blue gown with pleated skirt and slim silver waist sash.",
+      "name": "宝蓝深V高衩丝绸晚礼服与银扣皮腿环",
+      "prose": "A breathtaking royal blue silk gown with a plunging neckline, low back, and dramatic thigh-high slit, revealing bare legs cinched by a fine leather thigh strap with a silver buckle indenting soft skin.",
       "tokens": [
-        "blue evening gown",
-        "long sleeves",
-        "silver sash",
-        "pleated skirt"
+        "blue_dress",
+        "silk_dress",
+        "plunging_neckline",
+        "backless_dress",
+        "high_slit",
+        "evening_gown",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "high_heels"
       ],
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "rem_rezero"
     }
   }
 }

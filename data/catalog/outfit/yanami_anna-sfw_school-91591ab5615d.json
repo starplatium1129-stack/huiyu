@@ -1,24 +1,35 @@
 {
   "kind": "outfit",
   "id": "yanami_anna/sfw_school",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 952,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "yanami_anna",
     "outfit": {
       "id": "sfw_school",
-      "name": "石蕗高校整齐制服",
-      "prose": "a white school blouse with a blue bow, navy knee-length skirt and black socks",
+      "name": "石蕗高校高定水手风制服",
+      "prose": "A tailored white blouse with royal blue ribbon tie and a high-waisted navy pleated skirt, styled with black knee socks and a buckled leather strap on bare thighs.",
       "tokens": [
-        "white school blouse",
-        "blue bow",
-        "navy knee length skirt",
-        "black socks"
+        "school_uniform",
+        "white_shirt",
+        "sailor_collar",
+        "blue_bow",
+        "navy_skirt",
+        "pleated_skirt",
+        "mini_skirt",
+        "black_socks",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
+      "characterId": "yanami_anna",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

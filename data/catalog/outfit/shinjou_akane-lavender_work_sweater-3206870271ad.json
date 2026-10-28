@@ -1,23 +1,32 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/lavender_work_sweater",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1343,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "lavender_work_sweater",
-      "name": "淡紫落肩针织衫",
+      "name": "雾紫落肩慵懒马海毛衫与皮革腿环",
+      "prose": "A relaxed drop-shoulder lavender mohair sweater paired with a fitted miniskirt, sheer stockings, and a buckled black leather thigh strap indenting the thigh soft contour.",
       "tokens": [
-        "lavender sweater",
-        "drop shoulder",
-        "ribbed hem"
+        "sweater",
+        "purple_sweater",
+        "drop_shoulder",
+        "oversized_clothes",
+        "black_skirt",
+        "miniskirt",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "A loose lavender knit sweater with dropped shoulders and a broad ribbed hem.",
+      "characterId": "shinjou_akane",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

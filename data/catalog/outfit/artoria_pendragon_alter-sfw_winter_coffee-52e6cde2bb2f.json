@@ -1,27 +1,33 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/sfw_winter_coffee",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 123,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "sfw_winter_coffee",
-      "name": "雪夜黑呢立领大衣",
-      "prose": "a long black wool overcoat with a high collar and angular lapels, a burgundy scarf, black gloves, straight trousers and winter boots",
+      "name": "立领黑呢风衣与深V酒红高衩裙",
+      "prose": "A sharply tailored black wool greatcoat unfastened over a crimson silk gown with a plunging neckline and daring slit. Over sheer dark thighhighs, a buckled black leather strap yields an alluring soft thigh squish.",
       "tokens": [
-        "long black wool coat",
-        "high collar",
-        "burgundy scarf",
-        "black gloves",
-        "black pants",
-        "winter boots"
+        "wool_coat",
+        "trench_coat",
+        "plunging_neckline",
+        "silk_dress",
+        "red_dress",
+        "high_slit",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "heeled_boots"
       ],
       "isDefault": false,
       "default": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "artoria_pendragon_alter"
     }
   }
 }

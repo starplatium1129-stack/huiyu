@@ -1,31 +1,37 @@
 {
   "kind": "outfit",
   "id": "nakano_nino/asahi_high_school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1578,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_nino",
     "outfit": {
       "id": "asahi_high_school_uniform",
-      "name": "旭高校正统白毛衣过膝袜制服",
+      "name": "旭高校宽松白针织衫百褶短裙与过膝袜皮腿环",
       "tokens": [
         "school_uniform",
         "sweater",
         "white_sweater",
         "oversized_sweater",
         "collared_shirt",
+        "white_shirt",
         "red_necktie",
         "pleated_skirt",
         "black_skirt",
+        "mini_skirt",
         "thighhighs",
         "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "loafers"
       ],
-      "prose": "The Asahi High School uniform featuring an oversized cream-white knit sweater, white collared shirt with red ribbon necktie, dark pleated mini skirt, over-the-knee black thigh-high socks, and polished brown loafers",
+      "prose": "The Asahi High School uniform with an oversized cream knit sweater over a black pleated mini skirt and black thighhighs, cinched by a buckled leather thigh strap that causes a subtle thigh squish above the socks.",
       "isDefault": true,
-      "default": true
+      "default": true,
+      "characterId": "nakano_nino"
     }
   }
 }

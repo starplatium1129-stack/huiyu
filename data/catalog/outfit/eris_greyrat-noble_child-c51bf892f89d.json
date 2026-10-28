@@ -1,27 +1,30 @@
 {
   "kind": "outfit",
   "id": "eris_greyrat/noble_child",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 262,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "eris_greyrat",
     "outfit": {
       "default": false,
       "id": "noble_child",
       "isDefault": false,
-      "name": "格雷拉特贵族礼裙",
-      "prose": "An ivory formal dress with a structured waist, full skirt and frilled cuffs, a crimson waist sash, headband and hair ribbon.",
+      "name": "格雷拉特贵族高定刺绣礼裙与天鹅绒腿环",
+      "prose": "An aristocratic ivory tailored gown featuring an embroidered corset bodice and a high side slit, revealing bare legs cinched by a crimson leather thigh strap causing a subtle squish.",
       "tokens": [
-        "ivory dress",
-        "fitted waist",
-        "full skirt",
-        "frilled cuffs",
-        "red waist sash",
-        "headband",
-        "hair ribbon"
-      ]
+        "formal_dress",
+        "square_neckline",
+        "corset",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "heels"
+      ],
+      "characterId": "eris_greyrat"
     }
   }
 }

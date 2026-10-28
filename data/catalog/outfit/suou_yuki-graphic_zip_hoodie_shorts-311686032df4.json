@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/graphic_zip_hoodie_shorts",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1353,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "graphic_zip_hoodie_shorts",
-      "name": "灰紫痛卫衣·短裤搭配",
+      "name": "落肩灰紫拉链卫衣与短裤微勒腿环",
+      "prose": "An oversized gray zip hoodie slipping off the shoulder to reveal a lace camisole, worn with micro shorts, sheer black tights, and a buckled leather thigh strap.",
       "tokens": [
-        "gray hoodie",
-        "graphic print",
-        "violet zipper",
-        "black short shorts",
-        "lace trim",
-        "black pantyhose"
+        "hoodie",
+        "grey_hoodie",
+        "oversized_clothes",
+        "off_shoulder",
+        "zipper",
+        "short_shorts",
+        "black_pantyhose",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sneakers"
       ],
-      "prose": "A loose gray zip hoodie with an anime graphic and violet zipper tape, black short shorts with a narrow lace hem, and black pantyhose.",
+      "characterId": "suou_yuki",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

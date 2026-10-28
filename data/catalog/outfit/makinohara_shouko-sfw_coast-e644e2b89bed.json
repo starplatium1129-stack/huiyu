@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/sfw_coast",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "sfw_coast",
-      "name": "七里滨白色连衣裙",
-      "prose": "An opaque white short-sleeved summer dress with a knee-length hem, worn barefoot.",
+      "name": "七里滨海风细褶白裙与鞣革腿环",
+      "prose": "A breezy ivory tiered cotton-silk summer dress dancing in the coastal wind, slit at the hem to reveal bare legs accented by a delicate buckled leather thigh strap.",
       "tokens": [
         "white_dress",
+        "sundress",
         "short_sleeves",
-        "knee_length_dress",
-        "barefoot"
+        "side_slit",
+        "barefoot",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
+      "characterId": "makinohara_shouko",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

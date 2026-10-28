@@ -1,23 +1,37 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/red_white_feather_robe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1163,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "red_white_feather_robe",
-      "name": "红白羽饰长袍",
+      "name": "今州赤羽织锦外袍与高叉朱雀缎裙",
+      "prose": "A sweeping ivory feathered outer robe layered over a high-slit scarlet silk cheongsam, revealing sheer black stockings cinched by a gilded leather leg harness.",
       "tokens": [
-        "red and white robe",
-        "feather trim",
-        "tassel"
+        "robe",
+        "white_robe",
+        "feather_trim",
+        "cheongsam",
+        "red_dress",
+        "high_slit",
+        "tassel",
+        "cleavage",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "gold_buckle",
+        "high_heels"
       ],
-      "prose": "a red-and-white long robe with feather edging and a tasselled fastening",
+      "characterId": "changli_wuthering",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,22 +1,32 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/nsfw_boudoir",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "双叶理央·成人私密造型",
-      "prose": "Sheer lace lingerie.",
+      "name": "透光几何黑蕾丝文胸与双排扣吊袜带",
+      "prose": "A structured translucent black lace corset bra with geometric straps, paired with scalloped briefs and matching leather garters. The buckled leather thigh strap creates a gentle thigh squish around sheer black stockings, barefoot.",
       "tokens": [
-        "lace lingerie",
-        "sheer fabric"
+        "lace_lingerie",
+        "corset",
+        "sheer_lace",
+        "garter_straps",
+        "black_stockings",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot",
+        "sensual"
       ],
+      "characterId": "futaba_rio",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": true
     }
   }
 }

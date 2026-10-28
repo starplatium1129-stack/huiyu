@@ -1,25 +1,32 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/white_plain_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 332,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
-      "default": false,
       "id": "white_plain_dress",
-      "isDefault": false,
-      "name": "素白棉质短袖裙",
-      "prose": "A white cotton dress with round neck, short sleeves and gathered waist.",
-      "styleHint": "soft cinematic lighting",
+      "name": "素白法式收腰棉麻开衩裙与双扣皮环",
+      "prose": "A minimalist crisp white linen sundress with a fitted bodice and a sweeping thigh slit, revealing bare sunlit legs styled with a dual-buckle matte leather thigh band with subtle indentation.",
       "tokens": [
-        "white cotton dress",
-        "round neck",
-        "short sleeves",
-        "gathered waist"
-      ]
+        "white_dress",
+        "linen_dress",
+        "sweetheart_neckline",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "silver_buckle",
+        "sandals"
+      ],
+      "characterId": "mudrock_arknights",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

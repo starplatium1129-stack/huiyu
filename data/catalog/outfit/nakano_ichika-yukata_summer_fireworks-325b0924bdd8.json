@@ -1,26 +1,31 @@
 {
   "kind": "outfit",
   "id": "nakano_ichika/yukata_summer_fireworks",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1600,
   "createdAt": "2026-10-27T13:30:47.381Z",
-  "updatedAt": "2026-10-27T13:30:47.381Z",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_ichika",
     "outfit": {
       "characterId": "nakano_ichika",
       "id": "yukata_summer_fireworks",
-      "name": "夏夜花火浅紫渐变日式浴衣",
-      "prose": "A delicate light-purple gradated cotton summer yukata with elegant morning glory floral patterns, tied with a pale yellow obi sash, wooden geta sandals, and a dangling earring",
+      "name": "夏夜花火露肩浅紫真丝浴衣与扣带皮腿环",
+      "prose": "A light-purple silk summer yukata draped casually off one shoulder with an amber obi sash, revealing bare legs where a buckled leather thigh strap creates a soft indentation on her smooth skin.",
       "tokens": [
         "yukata",
         "japanese_clothes",
         "purple_yukata",
+        "off-shoulder_shirt",
         "floral_print",
         "obi",
         "yellow_obi",
+        "single_earring",
         "geta",
-        "single_earring"
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "isDefault": false,
       "default": false

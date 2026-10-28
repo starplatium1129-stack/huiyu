@@ -1,27 +1,34 @@
 {
   "kind": "outfit",
   "id": "mizuhara_chizuru/college_casual_turtleneck",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1591,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "mizuhara_chizuru",
     "outfit": {
       "id": "college_casual_turtleneck",
-      "name": "大学校园浅卡其高领衫配开衩长裙",
+      "name": "解构卡其落肩高领衫与低腰水洗微喇牛仔裤",
       "tokens": [
-        "turtleneck",
         "beige_sweater",
-        "long_skirt",
-        "slit_skirt",
-        "glasses",
-        "tote_bag",
+        "cropped_sweater",
+        "turtleneck",
+        "black_camisole",
+        "flare_jeans",
+        "denim_pants",
+        "low_waist",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "ankle_boots"
       ],
-      "prose": "Her studious Ichinose college persona with a chic cream-beige ribbed turtleneck sweater, high-waisted olive midi skirt with a subtle side slit, stylish eyeglasses, and leather ankle boots",
+      "prose": "A cropped beige ribbed knit sweater layered over a black tube top and low-rise washed flare jeans, revealing a buckled leather thigh strap softly indenting bare skin underneath.",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "mizuhara_chizuru",
+      "isNsfw": false
     }
   }
 }

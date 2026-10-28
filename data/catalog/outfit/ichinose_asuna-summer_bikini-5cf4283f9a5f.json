@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "ichinose_asuna/summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 520,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "ichinose_asuna",
     "outfit": {
       "default": false,
       "id": "summer_bikini",
       "isDefault": false,
-      "name": "日光白黄挂颈泳装",
-      "prose": "a white-and-yellow color-block halterneck bikini with a fine gold belly chain and a hibiscus hair ornament, worn barefoot",
+      "name": "暖阳明黄象牙白削肩挂颈高衩泳装",
+      "prose": "A color-blocked sun-yellow and white halter bikini with high-cut hips and a delicate gold belly chain, highlighted by a leather thigh strap that sinks into the soft curve of her bare thigh.",
       "tokens": [
-        "white and yellow halterneck bikini",
-        "gold belly chain",
-        "hibiscus hair ornament",
-        "barefoot"
-      ]
+        "yellow_bikini",
+        "white_trim",
+        "halterneck",
+        "high_leg_bikini",
+        "belly_chain",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sandals"
+      ],
+      "characterId": "ichinose_asuna"
     }
   }
 }

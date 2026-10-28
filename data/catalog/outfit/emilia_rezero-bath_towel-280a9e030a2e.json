@@ -1,21 +1,32 @@
 {
   "kind": "outfit",
   "id": "emilia_rezero/bath_towel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1173,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "emilia_rezero",
     "outfit": {
       "id": "bath_towel",
-      "name": "温泉浴巾",
+      "name": "浅紫滚边裹胸浴巾与暗扣皮腿环",
       "tokens": [
-        "bath towel"
+        "white_towel",
+        "bath_towel",
+        "towel_wrap",
+        "chest_towel",
+        "bare_shoulders",
+        "bare_legs",
+        "wet_skin",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "a simple bath towel",
+      "prose": "A dewy white terrycloth bath wrap with subtle lavender piping clinging across the chest and hips, revealing damp bare legs bound by a silver-buckled leather thigh strap softly indenting the skin.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "emilia_rezero"
     }
   }
 }

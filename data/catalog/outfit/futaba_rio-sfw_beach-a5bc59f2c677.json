@@ -1,24 +1,33 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_beach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 41,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_beach",
-      "name": "深蓝运动泳装与白色防晒夹克",
-      "prose": "a navy athletic one-piece swimsuit beneath a light white zip-front sun jacket, paired with clear protective glasses",
+      "name": "高衩竞速连体泳衣与透光防晒罩衫",
+      "prose": "A sleek midnight navy high-cut racerback swimsuit beneath an unzipped sheer white sunbreaker. A water-resistant matte black leather thigh band with a marine silver buckle indents her wet bare thigh with a subtle squish, barefoot.",
       "tokens": [
-        "navy athletic one-piece swimsuit",
-        "white sun jacket",
-        "zipper",
-        "clear glasses"
+        "one-piece_swimsuit",
+        "navy_swimsuit",
+        "highleg_swimsuit",
+        "windbreaker",
+        "translucent_jacket",
+        "off_shoulder",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs",
+        "barefoot"
       ],
+      "characterId": "futaba_rio",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

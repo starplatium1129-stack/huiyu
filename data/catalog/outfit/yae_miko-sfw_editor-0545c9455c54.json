@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_editor",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 16,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_editor",
-      "name": "樱粉短和风外套编辑装",
-      "prose": "A cropped pale-pink kimono jacket layers over a cream stand-collar blouse and a charcoal straight long skirt; a small gold clasp keeps the lines tidy.",
+      "name": "八重堂总编樱粉短和风夹克与开衩铅笔裙",
+      "prose": "A cropped cherry-blossom kimono jacket layered over an unbuttoned stand-collar shirt and slit charcoal pencil skirt, revealing a buckled leather thigh strap causing a distinct soft squish.",
       "tokens": [
-        "pale pink jacket",
-        "cream blouse",
-        "high collar",
-        "charcoal long skirt"
+        "cropped_jacket",
+        "pink_jacket",
+        "collared_shirt",
+        "pencil_skirt",
+        "side_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "high_heels"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "yae_miko",
+      "isNsfw": false
     }
   }
 }

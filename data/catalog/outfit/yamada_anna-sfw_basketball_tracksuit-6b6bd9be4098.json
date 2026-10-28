@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/sfw_basketball_tracksuit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 840,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "sfw_basketball_tracksuit",
-      "name": "钴蓝白拼接篮球训练套装",
-      "prose": "a cobalt-blue track jacket with white shoulder panels over a white sports T-shirt, matching trousers with white side stripes and white trainers, with a high ponytail",
+      "name": "钴蓝拼色截短运动夹克与机能腿环",
+      "prose": "A cropped cobalt-blue colorblocked track jacket over a fitted sports crop top, styled with snap-button track pants unbuttoned to reveal a buckled leather strap.",
       "tokens": [
-        "cobalt blue track jacket",
-        "white shoulder panels",
-        "white t shirt",
-        "cobalt track pants",
-        "white side stripes",
-        "white sneakers",
-        "ponytail"
+        "jacket",
+        "track_jacket",
+        "blue_jacket",
+        "cropped_jacket",
+        "sports_bra",
+        "black_tank_top",
+        "crop_top",
+        "track_pants",
+        "side_slit",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sneakers"
       ],
+      "characterId": "yamada_anna",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

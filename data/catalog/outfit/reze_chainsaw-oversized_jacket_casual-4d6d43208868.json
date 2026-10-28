@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "reze_chainsaw/oversized_jacket_casual",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 241,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "reze_chainsaw",
     "outfit": {
       "id": "oversized_jacket_casual",
-      "name": "橄榄绿紫衬飞行夹克",
+      "name": "军绿短飞行夹克内搭工字抹胸与开衩短裤",
       "tokens": [
-        "oversized olive bomber jacket",
-        "purple lining",
-        "black cropped tank top",
-        "black shorts"
+        "bomber_jacket",
+        "cropped_jacket",
+        "tank_top",
+        "crop_top",
+        "shorts",
+        "athletic_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sneakers"
       ],
-      "prose": "An oversized olive bomber with purple lining, cropped black tank and black shorts.",
+      "prose": "A cropped olive bomber jacket layered over a snug black ribbed crop top and split-hem shorts, showing bare thighs cinched by a buckled leather strap with a distinct soft squish.",
       "styleHint": "",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "reze_chainsaw"
     }
   }
 }

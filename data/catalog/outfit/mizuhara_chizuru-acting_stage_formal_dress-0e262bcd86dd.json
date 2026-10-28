@@ -1,28 +1,32 @@
 {
   "kind": "outfit",
   "id": "mizuhara_chizuru/acting_stage_formal_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1593,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "mizuhara_chizuru",
     "outfit": {
       "id": "acting_stage_formal_dress",
-      "name": "剧团演出典雅墨黑露背晚礼服",
+      "name": "剧团演出典雅黑天鹅绒露背高开衩晚礼裙",
       "tokens": [
         "evening_gown",
         "black_dress",
-        "sleeveless_dress",
-        "backless",
+        "velvet_dress",
         "backless_dress",
-        "necklace",
-        "bare_shoulders",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "high_heels"
       ],
-      "prose": "An exquisite tailored black evening gown with a daring plunging backline revealing her pale spine, fine silver pendant necklace, and glossy stiletto pumps",
+      "prose": "A tailored black velvet evening gown featuring a plunging open back and a daring high leg slit, highlighting bare thighs encircled by a sleek silver-buckled leather strap with a subtle squish.",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "mizuhara_chizuru",
+      "isNsfw": false
     }
   }
 }

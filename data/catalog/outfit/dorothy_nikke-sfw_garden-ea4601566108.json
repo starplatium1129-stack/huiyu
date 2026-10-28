@@ -1,25 +1,32 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_garden",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 996,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_garden",
-      "name": "玫瑰花房围裙裙装",
-      "prose": "A cream blouse and long pink skirt beneath a sage-green canvas gardening apron with one rose embroidered at the pocket, and work gloves.",
+      "name": "庄园方领泡泡袖衬衫与烟粉皮背带短裙腿带",
+      "prose": "An ivory vintage puff-sleeved blouse paired with a high-waisted dusty-rose suede suspender mini skirt, leaving bare legs wrapped in a buckled leather thigh strap that softly indents the tender skin.",
       "tokens": [
-        "cream blouse",
-        "pink long skirt",
-        "sage green apron",
-        "rose embroidery",
-        "gardening gloves"
+        "white_blouse",
+        "puff_sleeves",
+        "square_neckline",
+        "pink_skirt",
+        "suspender_skirt",
+        "suede",
+        "lace_trim",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "dorothy_nikke"
     }
   }
 }

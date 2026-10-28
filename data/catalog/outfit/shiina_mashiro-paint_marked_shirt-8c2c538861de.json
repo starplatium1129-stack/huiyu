@@ -1,23 +1,32 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/paint_marked_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1236,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
       "id": "paint_marked_shirt",
-      "name": "颜料宽松白衬衫",
+      "name": "油彩落肩男友白衬衫与皮革腿环",
+      "prose": "An oversized white cotton shirt sliding off one shoulder, marked with colorful oil paint splatters, worn over bare legs cinched by a buckled leather thigh strap.",
       "tokens": [
-        "white shirt",
-        "oversized shirt",
-        "paint splatter"
+        "oversized_shirt",
+        "white_shirt",
+        "off_shoulder",
+        "open_collar",
+        "paint_splatter",
+        "bottomless",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "a loose white cotton shirt marked with oil paint",
+      "characterId": "shiina_mashiro",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

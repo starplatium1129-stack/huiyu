@@ -1,21 +1,31 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/black_lace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1474,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "black_lace",
-      "name": "黑色蕾丝衣装",
+      "name": "黑蕾丝露背高衩晚礼裙",
       "tokens": [
-        "black lace clothing"
+        "black_dress",
+        "lace_dress",
+        "backless_dress",
+        "plunging_neckline",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "strappy_heels"
       ],
-      "prose": "black lace clothing",
+      "prose": "A dramatic evening gown crafted from patterned floral lace, featuring an open back, plunging V-neck, and high leg slit. A buckled leather thigh strap leaves a tender soft indentation on her bare thigh skin.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "tokisaki_kurumi"
     }
   }
 }

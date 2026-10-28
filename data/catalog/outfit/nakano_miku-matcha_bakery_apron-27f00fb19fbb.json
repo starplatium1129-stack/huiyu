@@ -1,27 +1,35 @@
 {
   "kind": "outfit",
   "id": "nakano_miku/matcha_bakery_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1573,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_miku",
     "outfit": {
       "id": "matcha_bakery_apron",
-      "name": "抹茶烘焙坊学徒半身围裙装",
+      "name": "抹茶烘焙坊修身衬衫工装百褶短裙与搭扣皮腿环",
       "tokens": [
-        "short_sleeves",
         "collared_shirt",
         "white_shirt",
+        "short_sleeves",
         "apron",
         "green_apron",
-        "bandana",
-        "slacks"
+        "pleated_skirt",
+        "mini_skirt",
+        "headphones_around_neck",
+        "thighhighs",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
-      "prose": "A crisp short-sleeved white baker shirt under a forest-green half apron, a matching hair bandana, and straight trousers",
+      "prose": "A crisp short-sleeved white baker shirt with a forest-green pleated apron skirt and neck headphones over black thighhighs, cinched by a buckled leather thigh strap that bites softly into her tender upper thigh.",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "nakano_miku"
     }
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 396,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
@@ -16,7 +16,8 @@
       "styleHint": "tender romantic candlelight",
       "tokens": [
         "nude"
-      ]
+      ],
+      "characterId": "viviana_arknights"
     }
   }
 }

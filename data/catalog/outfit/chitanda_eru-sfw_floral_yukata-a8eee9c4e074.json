@@ -1,22 +1,30 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/sfw_floral_yukata",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 831,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
       "id": "sfw_floral_yukata",
-      "name": "紫阳花轻棉浴衣",
-      "prose": "A light ivory cotton yukata with purple hydrangeas and a plain lavender obi.",
+      "name": "紫阳花落肩微敞浴衣与隐秘皮环",
+      "prose": "A crisp white cotton yukata printed with purple hydrangeas, worn casually off one shoulder with a relaxed lavender obi. The hem parts as she walks, revealing a fine leather strap lightly pressing into the bare thigh.",
       "tokens": [
-        "ivory yukata",
-        "purple hydrangea print",
-        "lavender obi",
-        "cotton"
+        "modern_yukata",
+        "white_yukata",
+        "hydrangea_print",
+        "off_shoulder",
+        "loose_yukata",
+        "lavender_obi",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "wooden_geta"
       ],
+      "characterId": "chitanda_eru",
       "default": false,
       "isDefault": false,
       "isNsfw": false

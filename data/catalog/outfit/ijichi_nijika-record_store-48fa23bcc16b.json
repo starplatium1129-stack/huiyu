@@ -1,24 +1,33 @@
 {
   "kind": "outfit",
   "id": "ijichi_nijika/record_store",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1635,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfit": {
       "id": "record_store",
-      "name": "芥末黄短外套与牛仔背带裙",
-      "prose": "A mustard cropped jacket over a striped white-and-navy shirt, a dark denim pinafore skirt, and brown lace-up shoes",
+      "name": "芥末黄微落肩短夹克与丹宁背带百褶短裙",
+      "prose": "A mustard cropped jacket layered over a striped shirt and a denim pinafore miniskirt, paired with dark thighhighs indented by a buckled leather thigh strap with an irresistible soft squish.",
       "tokens": [
         "yellow_jacket",
+        "cropped_jacket",
         "striped_shirt",
-        "denim_pinafore",
-        "blue_skirt",
+        "denim_skirt",
+        "pinafore_dress",
+        "miniskirt",
+        "black_thighhighs",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "lace-up_shoes"
       ],
-      "default": false
+      "default": false,
+      "characterId": "ijichi_nijika",
+      "isDefault": false
     }
   }
 }

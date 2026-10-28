@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/sfw_breakfast_sweater",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "sfw_breakfast_sweater",
-      "name": "炭黑落肩机车卫衣",
-      "prose": "an oversized charcoal sweatshirt with dropped shoulders and a short offset metal zipper, worn with straight black trousers",
+      "name": "炭黑落肩粗针开衫与丝缎热裤",
+      "prose": "A slouchy charcoal rib-knit cardigan falling off one shoulder to reveal an ebony tube top and silky lounge shorts. An adjustable leather thigh strap with a dark buckle softly indents the tender skin of her bare leg.",
       "tokens": [
-        "charcoal sweatshirt",
-        "oversized clothes",
-        "dropped shoulders",
-        "offset zipper",
-        "straight black trousers"
+        "black_cardigan",
+        "knit_cardigan",
+        "off_shoulder",
+        "tube_top",
+        "black_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
       "isDefault": false,
       "default": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "artoria_pendragon_alter"
     }
   }
 }

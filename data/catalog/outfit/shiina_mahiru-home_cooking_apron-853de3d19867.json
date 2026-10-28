@@ -1,22 +1,35 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/home_cooking_apron",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 816,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "home_cooking_apron",
-      "name": "粉色荷叶围裙与米色针织裙装",
-      "prose": "a pink ruffled apron over an oversized beige knit sweater and a long dark skirt",
+      "name": "法式荷叶亚麻围裙与燕麦落肩粗花毛衣",
+      "prose": "A dusty-rose ruffled linen apron cinched over a chunky oatmeal drop-shoulder cable-knit sweater and a side-slit midi skirt. Her bare thigh is clasped by a pink leather thigh strap with a rose-gold buckle creating a tender soft indent.",
       "tokens": [
-        "pink apron",
-        "frills",
-        "oversized beige knit sweater",
-        "long black skirt"
-      ]
+        "apron",
+        "ruffled_apron",
+        "chunky_knit",
+        "cable_knit",
+        "sweater",
+        "off_shoulder",
+        "slit_skirt",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs",
+        "house_slippers",
+        "cozy_elegance"
+      ],
+      "characterId": "shiina_mahiru",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

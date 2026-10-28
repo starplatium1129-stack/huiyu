@@ -1,20 +1,19 @@
 {
   "kind": "outfit",
   "id": "yorha_2b/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 613,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "yorha_2b",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "🔞 私密全裸 / 纯粹形态",
+      "name": "私密全裸 / 纯粹形态",
       "tokens": [
-        "nude",
-        "uncensored"
+        "nude"
       ],
-      "prose": "No clothing, with the blindfold removed and blue eyes uncovered.",
+      "prose": "No clothing.",
       "styleHint": "tender romantic candlelight",
       "default": false,
       "isDefault": false,
@@ -28,7 +27,8 @@
         "mole_under_mouth",
         "nier:automata"
       ],
-      "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips."
+      "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips.",
+      "characterId": "yorha_2b"
     }
   }
 }

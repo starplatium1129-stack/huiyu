@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/plugsuit_red",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 563,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
-      "default": true,
       "id": "plugsuit_red",
-      "isDefault": true,
-      "name": "二号机经典赤红战斗服（Plugsuit）",
-      "prose": "her glossy red pilot plugsuit with green chest accents, high collar and Unit-02 markings",
-      "styleHint": "",
+      "name": "赤红高定战斗服与加压机能腿部束带",
+      "prose": "The skin-tight glossy scarlet EVA-02 plugsuit with emerald chest accents and molded spinal plates, reinforced by integrated mechanical thigh compression harnesses that hug the athletic contours.",
       "tokens": [
-        "red plugsuit",
-        "green chest accents",
-        "high collar",
+        "plugsuit",
+        "red_plugsuit",
+        "bodysuit",
+        "latex_suit",
+        "green_accents",
+        "high_collar",
         "gloves",
-        "number_02"
-      ]
+        "thigh_strap",
+        "leg_harness",
+        "mechanical_buckle"
+      ],
+      "characterId": "asuka_langley",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

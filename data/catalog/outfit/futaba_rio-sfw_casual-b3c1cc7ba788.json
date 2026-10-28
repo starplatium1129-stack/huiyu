@@ -1,25 +1,34 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_casual",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 37,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_casual",
-      "name": "灰色细针开衫与直筒便装",
-      "prose": "a gray fine-knit cardigan with a narrow ribbed placket over a cream blouse, charcoal straight trousers and plain glasses",
+      "name": "落肩冷灰羊绒开衫与真丝微喇便服",
+      "prose": "A slouchy charcoal-grey cashmere cardigan sliding off one shoulder over an ivory silk scoop-neck camisole and side-slit trousers. A concealed black leather thigh strap with a silver square buckle cinches her thigh beneath the fluid slit.",
       "tokens": [
-        "gray cardigan",
-        "fine knit",
-        "cream blouse",
-        "charcoal straight pants",
-        "glasses"
+        "cashmere_cardigan",
+        "slouchy_cardigan",
+        "off_shoulder",
+        "silk_camisole",
+        "scoop_neck",
+        "dress_pants",
+        "slit_pants",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers",
+        "quiet_luxury"
       ],
+      "characterId": "futaba_rio",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

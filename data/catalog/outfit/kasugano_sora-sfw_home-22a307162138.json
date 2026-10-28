@@ -1,23 +1,32 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/sfw_home",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 918,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "sfw_home",
-      "name": "奶油细针毛衣与柔灰长裤",
-      "prose": "A cream fine-knit sweater with softly ribbed cuffs and a loose rounded neckline, paired with fluid grey cotton trousers.",
+      "name": "燕麦软糯宽松毛衣与开衩棉麻阔腿裤",
+      "prose": "An oversized slouchy cream bouclé knit sweater sliding off both shoulders, paired with relaxed slit linen lounge pants parting to reveal a fine black leather thigh strap on the fair skin.",
       "tokens": [
-        "cream sweater",
-        "long sleeves",
-        "grey loose pants"
+        "oversized_sweater",
+        "cream_sweater",
+        "chunky_knit",
+        "off_shoulder",
+        "grey_pants",
+        "slit_pants",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
+      "characterId": "kasugano_sora",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

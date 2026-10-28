@@ -1,25 +1,35 @@
 {
   "kind": "outfit",
   "id": "ijichi_nijika/rehearsal_sport",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1634,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfit": {
       "id": "rehearsal_sport",
-      "name": "靛蓝运动背心与宽松工装裤",
-      "prose": "An indigo sleeveless sports top with a white undershirt at the neckline, olive loose cargo trousers, and light trainers",
+      "name": "排练律动运动背心与高腰多袋工装短裤",
+      "prose": "A sporty indigo sleeveless tank top worn over high-waisted olive cargo shorts, complemented by a buckled leather thigh strap that leaves a gentle soft indentation on her bare thigh skin.",
       "tokens": [
-        "blue_tank_top",
+        "tank_top",
+        "blue_shirt",
         "sleeveless",
-        "white_undershirt",
-        "cargo_pants",
-        "green_pants",
+        "crop_top",
+        "cargo_shorts",
+        "green_shorts",
+        "short_shorts",
+        "bare_arms",
+        "collarbone",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "sneakers"
       ],
-      "default": false
+      "default": false,
+      "characterId": "ijichi_nijika",
+      "isDefault": false
     }
   }
 }

@@ -1,26 +1,34 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/adventurer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 251,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
-      "default": false,
       "id": "adventurer",
-      "isDefault": false,
-      "name": "藏蓝短斗篷旅行装",
-      "prose": "A brass-clasp navy wool cape over a cream tunic and brown trousers.",
+      "name": "藏蓝短斗篷旅行风衣与机能皮腿环",
+      "prose": "A tailored navy hooded traveler cape clasped over a fitted cream linen tunic and leather-laced underbust corset, paired with dark micro shorts and sturdy boots. A weathered leather thigh strap with bronze buckles gently compresses her upper thigh.",
       "tokens": [
-        "navy cape",
-        "cream tunic",
-        "brown pants",
-        "belt",
-        "brown boots",
-        "brass clasp"
-      ]
+        "navy_cape",
+        "short_cape",
+        "hooded_cape",
+        "cream_tunic",
+        "corset",
+        "leather_belt",
+        "short_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "travel_boots"
+      ],
+      "characterId": "roxy_migurdia",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

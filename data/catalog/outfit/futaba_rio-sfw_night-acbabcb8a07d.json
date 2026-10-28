@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_night",
-      "name": "深蓝绗缝观星外套",
-      "prose": "a dark-navy quilted jacket with a stand collar, a soft gray wool scarf, warm straight trousers and plain glasses",
+      "name": "几何绗缝立领猎装外套与皮扣呢绒短裤",
+      "prose": "A sleek navy diamond-quilted jacket unzipped over a ribbed merino turtleneck and wool flannel shorts. Heavy charcoal thighhighs are cinched by a dark brown leather thigh strap with a gunmetal buckle that gently pinches the soft thigh.",
       "tokens": [
-        "navy quilted jacket",
-        "stand collar",
-        "gray wool scarf",
-        "warm straight trousers",
-        "glasses"
+        "quilted_jacket",
+        "funnel_neck",
+        "open_jacket",
+        "turtleneck",
+        "wool_shorts",
+        "charcoal_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "combat_boots",
+        "outerwear"
       ],
+      "characterId": "futaba_rio",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/sfw_yellow_beach_onepiece",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1138,
   "createdAt": "2026-10-06T13:54:56.677548700+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
       "id": "sfw_yellow_beach_onepiece",
-      "name": "明黄系带泳装",
+      "name": "曜黄高叉镂空挂颈泳衣与机能腿带",
+      "prose": "A vibrant sun-yellow halterneck swimsuit featuring daring side waist cutouts and an ultra-high French leg cut, styled with a contrasting black leather thigh ring indenting the sun-warmed skin.",
+      "tokens": [
+        "yellow_swimsuit",
+        "one-piece_swimsuit",
+        "halterneck",
+        "high-leg_cut",
+        "cutout",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
+      ],
+      "characterId": "asuka_langley",
       "default": false,
       "isDefault": false,
-      "isNsfw": false,
-      "category": "日常衣装（创作）",
-      "prose": "An opaque canary-yellow one-piece swimsuit with slender shoulder straps and small side ties, worn barefoot.",
-      "tokens": [
-        "yellow one-piece swimsuit",
-        "thin straps",
-        "side-tie swimsuit",
-        "barefoot"
-      ]
+      "isNsfw": false
     }
   }
 }

@@ -1,21 +1,30 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/choker_only",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1475,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "choker_only",
-      "name": "黑色颈饰",
+      "name": "齿轮项圈与极简丝缎连体衣",
       "tokens": [
-        "black choker"
+        "choker",
+        "black_bodysuit",
+        "strapless",
+        "silk_bodysuit",
+        "cutout",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "a black choker",
+      "prose": "A velvet gear-pendant choker paired with a minimalist silk-satin bodysuit sculpted with daring hip cutouts. A pair of buckled leather thigh straps bite into her bare upper thigh, producing a distinct soft squish.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "tokisaki_kurumi"
     }
   }
 }

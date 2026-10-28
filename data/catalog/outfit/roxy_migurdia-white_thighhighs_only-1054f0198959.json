@@ -1,22 +1,29 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/white_thighhighs_only",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1430,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "white_thighhighs_only",
-      "name": "纯白过膝袜",
+      "name": "纯白罗纹过膝袜与银扣皮质腿环",
+      "prose": "Snug white ribbed over-knee stockings hugging the legs, held by an adjustable white leather thigh band with a miniature silver buckle that subtly pinches the soft flesh.",
       "tokens": [
-        "nude",
-        "white thighhighs"
+        "white_thighhighs",
+        "ribbed_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "silver_buckle",
+        "bare_skin"
       ],
-      "prose": "Plain white thigh-high stockings, with no other clothing.",
+      "characterId": "roxy_migurdia",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

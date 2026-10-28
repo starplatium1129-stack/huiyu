@@ -1,24 +1,30 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 35,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "浅蓝衬衫裙与白色针织背心",
-      "prose": "A pale-blue calf-length shirt dress with long sleeves and a tie waist, white knit vest and brown flats.",
+      "name": "浅蓝垂坠衬衫裙与绞花背心皮腿环",
+      "prose": "A relaxed pale blue silk-poplin shirt dress worn beneath an ivory cable-knit vest, slit along the thigh to display sheer hosiery and a fine buckled leather thigh strap.",
       "tokens": [
-        "pale blue shirt dress",
-        "long sleeves",
-        "calf-length",
-        "tied waist",
-        "white knit vest",
-        "brown flats"
+        "shirt_dress",
+        "blue_dress",
+        "white_sweater_vest",
+        "cable_knit",
+        "side_slit",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
+      "characterId": "makinohara_shouko",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

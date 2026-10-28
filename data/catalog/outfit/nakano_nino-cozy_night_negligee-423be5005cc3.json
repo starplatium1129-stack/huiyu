@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "nakano_nino/cozy_night_negligee",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1581,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_nino",
     "outfit": {
       "id": "cozy_night_negligee",
-      "name": "二乃私享丝绸粉紫吊带短睡裙",
+      "name": "私享香芋粉紫深V真丝睡裙与金属扣皮腿环",
       "tokens": [
         "negligee",
         "nightgown",
@@ -17,12 +17,18 @@
         "silk",
         "spaghetti_straps",
         "low_chest",
+        "lace_trim",
         "bare_shoulders",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "barefoot"
       ],
-      "prose": "A silky smooth lilac-purple short negligee slip with slender spaghetti straps and delicate lace trimming along the plunging neckline, highlighting her soft collarbones and bare legs",
+      "prose": "A luxurious lilac silk negligee with eyelash lace along the plunging neckline over bare legs, paired with a slender buckled leather thigh strap that causes a soft indentation on her smooth upper thigh skin.",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "nakano_nino"
     }
   }
 }

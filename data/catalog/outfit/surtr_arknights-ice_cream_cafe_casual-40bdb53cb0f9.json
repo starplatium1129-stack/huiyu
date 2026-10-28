@@ -1,27 +1,33 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/ice_cream_cafe_casual",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 289,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
       "default": false,
       "id": "ice_cream_cafe_casual",
       "isDefault": false,
-      "name": "香草灰短卫衣与炭灰百褶裙",
-      "prose": "an oatmeal-grey cropped zip hoodie over a black camisole, a charcoal pleated skirt with a metal-buckle belt, mismatched grey thigh-high socks, black-and-white skate sneakers and a small black crossbody bag",
+      "name": "露肩软织毛衣与炭黑百褶短裙皮腿带",
+      "prose": "A slouched off-shoulder heather grey knit sweater revealing a black lace camisole, styled with a high-waisted charcoal pleated mini skirt and mismatched thigh-highs secured by a buckled leather thigh strap softly indenting the skin.",
       "tokens": [
-        "oatmeal grey cropped hoodie",
-        "black camisole",
-        "charcoal pleated skirt",
-        "metal buckle belt",
-        "mismatched grey thighhighs",
-        "black and white sneakers",
-        "black crossbody bag"
-      ]
+        "grey_sweater",
+        "off-shoulder_sweater",
+        "knit_sweater",
+        "black_camisole",
+        "lace_trim",
+        "charcoal_skirt",
+        "pleated_skirt",
+        "belt",
+        "asymmetrical_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "surtr_arknights"
     }
   }
 }

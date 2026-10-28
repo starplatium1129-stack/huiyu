@@ -1,25 +1,35 @@
 {
   "kind": "outfit",
   "id": "yor_forger/city_hall_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 461,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "yor_forger",
     "outfit": {
       "id": "city_hall_uniform",
-      "name": "橄榄绿市政厅套裙",
+      "name": "复古橄榄绿精裁西服套裙",
       "tokens": [
-        "olive green blazer",
-        "white shirt",
-        "olive green pencil skirt",
-        "pantyhose"
+        "olive_blazer",
+        "suit_jacket",
+        "tailored_suit",
+        "white_blouse",
+        "bow_blouse",
+        "olive_skirt",
+        "pencil_skirt",
+        "side_slit",
+        "black_pantyhose",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "high_heels"
       ],
-      "prose": "her olive-green City Hall blazer with a white collared shirt, a matching pencil skirt and plain tights",
+      "prose": "A tailored olive blazer and bow-tied silk blouse tucked into a slit pencil skirt, worn over sheer pantyhose with a buckled leather thigh strap softly pressing into skin.",
       "styleHint": "retro modern office atmosphere",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "yor_forger"
     }
   }
 }

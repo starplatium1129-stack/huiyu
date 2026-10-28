@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/sfw_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 921,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "雪白蕾丝袖口简约婚纱",
-      "prose": "A white satin bridal dress with a fitted waist, lace cuffs, a ribbon-edged veil and a rabbit charm at the waist.",
+      "name": "雪白宫廷刺绣复古婚纱与珍珠腿饰",
+      "prose": "A regal snow-white silk satin bridal gown with heirloom corded lace cuffs and a long veil, featuring an open side skirt slit showing white stockings clasped by a pearl-embellished leather thigh garter.",
       "tokens": [
-        "white wedding dress",
-        "satin",
-        "lace cuffs",
-        "ribbon-trimmed veil",
-        "rabbit charm at waist"
+        "wedding_dress",
+        "vintage_wedding_dress",
+        "lace_cuffs",
+        "veil",
+        "satin_gown",
+        "high_slit",
+        "white_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "pearls",
+        "white_heels"
       ],
+      "characterId": "kasugano_sora",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

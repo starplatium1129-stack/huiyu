@@ -1,27 +1,33 @@
 {
   "kind": "outfit",
   "id": "alisa_mikhailovna_kujou/seirei_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 440,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "alisa_mikhailovna_kujou",
     "outfit": {
       "id": "seirei_uniform",
-      "name": "征岭学园制服",
-      "prose": "her Seirei Academy uniform: a dark brown blazer, white collared shirt, red ribbon tie, blue pleated skirt, black thighhighs and loafers",
+      "name": "征岭学园高阶修身西装夹克短裙与黑丝腿环",
+      "prose": "A sharp tailored brown school blazer over a crisp collared shirt and navy pleated miniskirt, showing sheer black stockings clasped by a buckled leather thigh strap causing a soft indentation.",
       "tokens": [
-        "school uniform",
-        "brown blazer",
-        "white collared shirt",
-        "red ribbon tie",
-        "blue pleated skirt",
-        "black thighhighs",
+        "school_uniform",
+        "blazer",
+        "white_shirt",
+        "red_necktie",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "loafers"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "alisa_mikhailovna_kujou",
+      "isNsfw": false
     }
   }
 }

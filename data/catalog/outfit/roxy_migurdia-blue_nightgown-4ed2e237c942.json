@@ -1,22 +1,32 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/blue_nightgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1428,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "blue_nightgown",
-      "name": "浅蓝棉质睡裙",
+      "name": "水蓝绉绸深V系带晨裙与丝绒腿带",
+      "prose": "A watery-blue crinkled silk nightgown featuring a delicate plunging neckline and thigh-high side split, leaving bare legs accented by a pale blue velvet thigh ribbon pressing into soft skin.",
       "tokens": [
-        "light blue nightgown",
-        "cotton"
+        "nightgown",
+        "blue_dress",
+        "silk_dress",
+        "plunging_neckline",
+        "high_slit",
+        "spaghetti_straps",
+        "bare_legs",
+        "thigh_strap",
+        "velvet_ribbon",
+        "barefoot"
       ],
-      "prose": "A simple light-blue cotton nightgown with narrow white edging.",
+      "characterId": "roxy_migurdia",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,21 +1,31 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/hospital_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1210,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "hospital_gown",
-      "name": "疗养病号服",
+      "name": "素蓝和风系带病号服与软皮腿环",
+      "prose": "A draped pale blue silk-cotton wrap convalescence gown loosely tied at the waist, revealing bare legs accented by a slender buckled leather thigh strap softly indenting the skin.",
       "tokens": [
-        "hospital gown"
+        "hospital_gown",
+        "blue_robe",
+        "wrap_dress",
+        "loose_clothes",
+        "bare_shoulders",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "a simple hospital gown",
+      "characterId": "makinohara_shouko",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

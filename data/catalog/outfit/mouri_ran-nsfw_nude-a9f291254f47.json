@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1337,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "无衣装",
+      "name": "纯净圣洁胴体",
+      "prose": "No clothing.",
       "tokens": [
         "nude"
       ],
-      "prose": "No clothing.",
+      "characterId": "mouri_ran",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

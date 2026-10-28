@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 944,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "海蓝针织休憩装",
-      "prose": "a sea-blue long-sleeved cable-knit sweater over an opaque ivory ankle-length dress, with flat closed shoes and no veil",
+      "name": "海蓝落肩镂空短毛衣与白缎褶裙皮腿环",
+      "prose": "A slouchy sea-blue open-knit sweater draped off one shoulder over a crisp ivory silk mini slip, highlighting bare legs cinched by a minimalist buckled leather thigh strap softly indenting the soft skin.",
       "tokens": [
-        "sea blue cable knit sweater",
-        "long sleeves",
-        "ivory ankle-length dress",
-        "opaque fabric",
-        "closed flat shoes"
+        "blue_sweater",
+        "off-shoulder_sweater",
+        "knit_sweater",
+        "crop_top",
+        "white_skirt",
+        "silk_skirt",
+        "short_skirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "shorekeeper",
+      "default": false
     }
   }
 }

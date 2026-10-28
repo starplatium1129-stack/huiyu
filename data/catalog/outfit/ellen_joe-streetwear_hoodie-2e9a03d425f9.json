@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "ellen_joe/streetwear_hoodie",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 584,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "ellen_joe",
     "outfit": {
       "default": false,
       "id": "streetwear_hoodie",
       "isDefault": false,
-      "name": "鲨齿红线宽松街头装",
-      "prose": "An oversized charcoal zip hoodie with a red zipper and a small white shark-tooth graphic along the hem, frayed denim shorts, striped knee socks and chunky sneakers.",
+      "name": "落肩鲨齿炭黑连帽卫衣与毛边热裤皮腿带",
+      "prose": "An oversized charcoal drop-shoulder zip hoodie with red shark-tooth trim over raw-hem denim cutoffs. Her striped knit thighhighs are gripped by a buckled leather thigh strap, causing a visible and juicy thigh squish.",
       "tokens": [
-        "oversized charcoal hoodie",
-        "red zipper",
-        "shark teeth print",
-        "frayed denim shorts",
-        "striped knee socks",
-        "chunky sneakers"
-      ]
+        "oversized_hoodie",
+        "hoodie",
+        "zipper",
+        "crop_top",
+        "denim_shorts",
+        "frayed_shorts",
+        "striped_thighhighs",
+        "thighhighs",
+        "sneakers",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "ellen_joe"
     }
   }
 }

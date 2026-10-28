@@ -1,28 +1,31 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/combat_gear",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 488,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "default": false,
       "id": "combat_gear",
       "isDefault": false,
-      "name": "风纪战术·黑金机能装",
-      "prose": "A fitted black tactical jacket with gold fastenings and red armband, combat webbing, utility belt with pouches, fingerless gloves and combat boots.",
+      "name": "风纪战术短机车夹克与开衩短裤枪套腿环",
+      "prose": "A fitted black tactical bolero and harness over a cropped top and combat shorts, showing bare legs clasped by heavy-buckled leather thigh straps with a noticeable soft squish.",
       "tokens": [
-        "fitted black tactical jacket",
-        "gold fastenings",
+        "tactical_jacket",
+        "cropped_jacket",
+        "tank_top",
+        "cargo_shorts",
         "harness",
-        "utility belt",
-        "pouches",
-        "fingerless gloves",
-        "combat boots",
-        "red armband"
-      ]
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "combat_boots"
+      ],
+      "characterId": "sorasaki_hina"
     }
   }
 }

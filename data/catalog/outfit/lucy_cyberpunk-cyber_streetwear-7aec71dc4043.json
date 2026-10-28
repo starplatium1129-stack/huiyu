@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/cyber_streetwear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 604,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
       "default": false,
       "id": "cyber_streetwear",
       "isDefault": false,
-      "name": "夜之城网眼背心机能便装",
-      "prose": "A cropped charcoal mesh tank, dark cargo joggers with cyan straps and utility buckles, and high-top sneakers.",
+      "name": "夜之城露脐网眼背心与超短热裤皮腿带",
+      "prose": "A cropped charcoal mesh sleeveless tank layered over a black bralette, paired with low-rise denim micro shorts and sneakers. A buckled leather thigh strap tightly encircles her bare leg, producing a subtle soft squish.",
       "tokens": [
-        "charcoal crop top",
-        "mesh fabric",
+        "crop_top",
+        "tank_top",
+        "mesh",
         "sleeveless",
-        "dark cargo joggers",
-        "cyan straps",
-        "high-top sneakers"
-      ]
+        "denim_shorts",
+        "short_shorts",
+        "sneakers",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "lucy_cyberpunk"
     }
   }
 }

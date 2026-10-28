@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/blouse_pleated_skirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1385,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "blouse_pleated_skirt",
-      "name": "白衬衫与格纹百褶裙",
+      "name": "半敞领柔白衬衫与侧褶英伦千鸟格短裙",
       "tokens": [
-        "white blouse",
-        "plaid pleated skirt",
-        "black pantyhose",
-        "pink bra"
+        "white_shirt",
+        "unbuttoned",
+        "plaid_skirt",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
-      "prose": "A white collared blouse over a pale-pink bra, paired with the familiar plaid pleated skirt and sheer black tights.",
+      "prose": "A crisp white collared blouse casually unbuttoned at the neckline, tucked into a high-waisted houndstooth pleated mini skirt, styled with sheer black stockings and a dainty leather thigh strap creating a gentle squish.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "isshiki_iroha"
     }
   }
 }

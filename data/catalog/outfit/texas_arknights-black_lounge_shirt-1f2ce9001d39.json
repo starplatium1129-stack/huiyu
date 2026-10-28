@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/black_lounge_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1466,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "id": "black_lounge_shirt",
-      "name": "舱室·黑色暗纹衬衫",
+      "name": "舱室暗夜微敞真丝衬衫与丝缎内搭短裤",
       "tokens": [
-        "black cotton shirt",
-        "tonal pinstripes",
-        "matte buttons"
+        "black_shirt",
+        "silk_shirt",
+        "unbuttoned_shirt",
+        "black_bralette",
+        "lace_trim",
+        "satin_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "a black cotton shirt with tonal pinstripes and matte buttons",
+      "prose": "A relaxed midnight-black silk shirt with tonal pinstripes left unbuttoned over a lace bralette and satin tap shorts. A narrow buckled leather thigh strap creates a delicate soft indentation on her bare upper thigh.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "texas_arknights"
     }
   }
 }

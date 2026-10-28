@@ -1,25 +1,32 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/silk_sleepwear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "silk_sleepwear",
-      "name": "珍珠灰丝缎晨睡套装",
+      "name": "重磅真丝法式吊带与哑光腿环",
+      "prose": "A dove-grey heavy mulberry silk camisole trimmed with delicate lace and matching fluid tap shorts, paired with bare legs and a slender leather thigh strap with silver buckle.",
       "tokens": [
-        "grey camisole",
-        "silk",
-        "spaghetti straps",
-        "matching shorts"
+        "grey_camisole",
+        "silk_camisole",
+        "lace_trim",
+        "spaghetti_straps",
+        "silk_shorts",
+        "bare_shoulders",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "A pearl-gray silk camisole with narrow straps and matching loose shorts.",
-      "styleHint": "soft cinematic lighting",
+      "characterId": "sakurajima_mai",
+      "default": false,
       "isDefault": false,
-      "default": false
+      "isNsfw": false
     }
   }
 }

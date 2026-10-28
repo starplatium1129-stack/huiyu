@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_coast",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 938,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_coast",
-      "name": "蓝绣层叠海岸长裙",
-      "prose": "an opaque white ankle-length dress with blue embroidered outer layers and a light matching veil",
+      "name": "黑海岸星流半透水墨薄纱开衩裙与皮腿环",
+      "prose": "A diaphanous tiered gown of sheer indigo-gradient gossamer with fluid tide embroidery and a soaring side slit, revealing translucent stockings cinched by a refined buckled leather thigh strap indenting the thigh.",
       "tokens": [
-        "white long dress",
-        "blue embroidery",
-        "layered skirt",
-        "veil"
+        "white_dress",
+        "translucent_dress",
+        "blue_gradient",
+        "embroidery",
+        "layered_dress",
+        "side_slit",
+        "bare_shoulders",
+        "white_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "shorekeeper"
     }
   }
 }

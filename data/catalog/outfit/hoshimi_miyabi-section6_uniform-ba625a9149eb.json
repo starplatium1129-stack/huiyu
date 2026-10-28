@@ -1,29 +1,34 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/section6_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 587,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
       "default": true,
       "id": "section6_uniform",
       "isDefault": true,
-      "name": "对空六课课长制服",
-      "prose": "her Section 6 uniform: a blue-gray wide-sleeved coat with red braided shoulder cord, a white shirt over a fitted dark inner layer, long black pleated hakama, armored forearm guards and a sheath harness",
+      "name": "对空六课课长羽织战服与机能剑装腿环",
+      "prose": "Her Section 6 commander uniform: a slate-blue wide-sleeved haori over a fitted black tactical vest and split hakama pants. High black thighhighs are cinched by a buckled leather thigh strap that bites softly into her skin.",
       "tokens": [
-        "blue gray coat",
-        "wide sleeves",
-        "white shirt",
-        "black vest",
-        "red braided shoulder cord",
-        "armored bracers",
-        "long black hakama",
-        "pleated pants",
-        "sheath harness"
-      ]
+        "haori",
+        "blue_coat",
+        "wide_sleeves",
+        "white_shirt",
+        "black_vest",
+        "armored_bracers",
+        "hakama",
+        "black_thighhighs",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "boots"
+      ],
+      "characterId": "hoshimi_miyabi"
     }
   }
 }

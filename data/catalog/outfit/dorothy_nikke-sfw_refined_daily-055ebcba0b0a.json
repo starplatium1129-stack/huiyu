@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_refined_daily",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "烟粉褶裙休息装",
-      "prose": "A muted rose cardigan and ivory blouse over a charcoal calf-length pleated skirt with a fine pink hem border, paired with black flats.",
+      "name": "烟粉真丝方领小衫与炭灰百褶短裙皮腿带",
+      "prose": "A tailored dusty-pink silk blouse with pearlescent buttons tucked into a high-waisted charcoal pleated mini skirt, paired with sheer black stockings clasped in a buckled leather thigh strap softly indenting the skin.",
       "tokens": [
-        "dusty pink cardigan",
-        "ivory blouse",
-        "charcoal calf-length pleated skirt",
-        "pink hem piping",
-        "black flats"
+        "pink_shirt",
+        "collared_shirt",
+        "silk",
+        "grey_skirt",
+        "pleated_skirt",
+        "high-waisted_skirt",
+        "black_thighhighs",
+        "sheer_legwear",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "dorothy_nikke",
+      "default": false
     }
   }
 }

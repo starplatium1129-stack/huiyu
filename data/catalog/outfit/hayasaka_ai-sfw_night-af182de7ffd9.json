@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 777,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
-      "default": false,
       "id": "sfw_night",
-      "isDefault": false,
-      "name": "奶油开衫与藏蓝休闲长裤",
-      "prose": "A soft cream rib-knit cardigan over a buttoned white cotton shirt and fluid navy trousers, with quiet pearl-grey buttons.",
+      "name": "奶油羊绒开衫与墨蓝开叉束带裤",
+      "prose": "A cozy cream ribbed-cashmere cardigan draped over a silk camisole and tailored navy tap shorts, showing bare legs accented by a sleek leather thigh strap with silver buckle.",
       "tokens": [
-        "cream rib-knit cardigan",
-        "buttoned white shirt",
-        "navy pants"
-      ]
+        "cream_cardigan",
+        "ribbed_cardigan",
+        "white_camisole",
+        "silk_camisole",
+        "navy_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "hayasaka_ai",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

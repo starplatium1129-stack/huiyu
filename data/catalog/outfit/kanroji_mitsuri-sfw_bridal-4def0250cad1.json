@@ -1,26 +1,34 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/sfw_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "default": false,
       "id": "sfw_bridal",
       "isDefault": false,
-      "name": "樱花粉白花嫁与嫩绿腰绸",
-      "prose": "A pink-and-white satin bridal dress with a layered petal skirt, blossom embroidery, a pale-green bow sash and a long translucent veil.",
+      "name": "樱粉抹胸刺绣鱼尾花嫁礼服",
+      "prose": "A couture bridal gown with sweetheart neckline and green silk sash, featuring a high slit displaying a buckled white leather thigh strap indenting her soft thigh.",
       "tokens": [
-        "pink and white wedding dress",
-        "petal embroidery",
-        "green sash",
-        "long veil",
-        "satin",
-        "layered petal skirt"
-      ]
+        "wedding_dress",
+        "bridal_gown",
+        "sweetheart_neckline",
+        "off_shoulder",
+        "pink_dress",
+        "white_embroidery",
+        "green_sash",
+        "high_slit",
+        "veil",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs"
+      ],
+      "characterId": "kanroji_mitsuri"
     }
   }
 }

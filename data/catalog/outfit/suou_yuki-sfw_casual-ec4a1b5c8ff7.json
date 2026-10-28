@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 446,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_casual",
-      "name": "灰紫拼线·漫画居家卫衣",
-      "prose": "A roomy gray hoodie with black side panels and narrow violet piping, paired with loose black cotton trousers.",
+      "name": "落肩拼色居家大卫衣与皮扣腿环",
+      "prose": "An oversized slouchy gray lounge hoodie sliding off one shoulder over micro athletic shorts, showcasing bare legs with a buckled leather thigh strap.",
       "tokens": [
-        "oversized gray hoodie",
-        "black side panels",
-        "violet piping",
-        "loose black cotton pants"
+        "hoodie",
+        "grey_hoodie",
+        "oversized_clothes",
+        "off_shoulder",
+        "short_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
+      "characterId": "suou_yuki",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

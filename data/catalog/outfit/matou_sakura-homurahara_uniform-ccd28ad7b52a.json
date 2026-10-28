@@ -1,27 +1,33 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/homurahara_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 95,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "homurahara_uniform",
-      "name": "穗群原米棕冬季制服",
+      "name": "穗群原燕麦呢制服大衣与束腿暗带",
+      "prose": "A sharply tailored oatmeal wool blazer and pleated skirt over a crisp collared shirt, featuring a buckled leather thigh strap creating a subtle soft indentation over sheer black tights.",
       "tokens": [
-        "school uniform",
-        "tan blazer",
-        "white shirt",
-        "red bow",
-        "pleated skirt",
-        "black tights"
+        "tan_blazer",
+        "double-breasted_jacket",
+        "white_collared_shirt",
+        "red_necktie",
+        "high-waist_skirt",
+        "pleated_skirt",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "black_thighhighs",
+        "leather_loafers"
       ],
-      "prose": "A tan blazer, white shirt, red bow, pleated skirt and black tights.",
-      "styleHint": "soft school hallway sunlight",
+      "characterId": "matou_sakura",
+      "default": true,
       "isDefault": true,
-      "default": true
+      "isNsfw": false
     }
   }
 }

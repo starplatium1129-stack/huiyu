@@ -1,27 +1,32 @@
 {
   "kind": "outfit",
   "id": "eris_greyrat/dead_end_adventurer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 261,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "eris_greyrat",
     "outfit": {
       "default": false,
       "id": "dead_end_adventurer",
       "isDefault": false,
-      "name": "赤棕皮革旅行装",
-      "prose": "A dark-brown leather travel jacket with crimson cuff edging over a cream shirt, straight brown trousers and sturdy boots.",
+      "name": "赤棕短款机车皮衣与工装短裤皮腿扣",
+      "prose": "A structured cropped chestnut leather jacket over an unbuttoned ivory tunic and high-waist shorts, highlighting bare thighs bound by a buckled leather strap with a distinct soft squish.",
       "tokens": [
-        "brown jacket",
-        "leather jacket",
-        "crimson cuff edging",
-        "cream shirt",
-        "brown pants",
-        "leather belt",
-        "brown boots"
-      ]
+        "leather_jacket",
+        "short_jacket",
+        "white_shirt",
+        "unbuttoned_shirt",
+        "shorts",
+        "cargo_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "boots"
+      ],
+      "characterId": "eris_greyrat"
     }
   }
 }

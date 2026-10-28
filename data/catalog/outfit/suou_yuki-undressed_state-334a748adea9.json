@@ -1,21 +1,32 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/undressed_state",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1354,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "undressed_state",
-      "name": "原场景无下装状态",
+      "name": "解扣落肩白衬衫与软皮扣腿环",
+      "prose": "An oversized white cotton shirt loosely unbuttoned and sliding off the shoulder, falling over a bottomless silhouette with bare legs cinched by a buckled leather thigh strap.",
       "tokens": [
-        "bottomless"
+        "white_shirt",
+        "oversized_shirt",
+        "open_shirt",
+        "unbuttoned_shirt",
+        "off_shoulder",
+        "bottomless",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "No lower-body clothing; the white shirt is held separately rather than worn.",
+      "characterId": "suou_yuki",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

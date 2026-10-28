@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/sfw_daily",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 808,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "default": true,
       "id": "sfw_daily",
       "isDefault": true,
-      "name": "樱粉小纹与嫩绿腰带",
-      "prose": "A pale sakura-pink kimono with a subtle small-blossom pattern, securely wrapped over an opaque white inner collar and tied with a soft leaf-green obi.",
+      "name": "落肩改良樱粉和服裙与翠绿腰封",
+      "prose": "A modern off-shoulder pink floral kimono dress cinched with an emerald green obi, slit high to reveal a buckled leather thigh strap creating a delicate soft squish.",
       "tokens": [
-        "pale pink kimono",
-        "green obi",
-        "white inner collar",
-        "floral pattern"
-      ]
+        "pink_kimono",
+        "modern_kimono",
+        "floral_print",
+        "green_obi",
+        "bare_shoulders",
+        "side_slit",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs",
+        "geta_sandals"
+      ],
+      "characterId": "kanroji_mitsuri"
     }
   }
 }

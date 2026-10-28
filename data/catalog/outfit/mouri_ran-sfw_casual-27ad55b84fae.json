@@ -1,26 +1,38 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 911,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_casual",
-      "name": "奶油短开衫与蓝色裙装",
-      "prose": "A short cream cardigan over a pale-blue boat-neck blouse and a navy knee-length gored skirt.",
+      "name": "米白短款粗花呢外套与冰蓝一字领开衩裙",
+      "prose": "A cropped cream tweed jacket over an off-shoulder ice-blue top and a high-slit navy miniskirt, worn with sheer black stockings and a buckled leather thigh strap.",
       "tokens": [
-        "cream cropped cardigan",
-        "light blue blouse",
-        "boat neck",
-        "navy blue skirt",
-        "knee-length skirt",
-        "gored skirt"
+        "jacket",
+        "cropped_jacket",
+        "white_jacket",
+        "tweed",
+        "off-shoulder_shirt",
+        "blue_shirt",
+        "miniskirt",
+        "slit_skirt",
+        "navy_skirt",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "silver_buckle",
+        "ankle_boots"
       ],
+      "characterId": "mouri_ran",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

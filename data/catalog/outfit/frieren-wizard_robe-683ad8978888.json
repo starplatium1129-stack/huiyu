@@ -1,25 +1,31 @@
 {
   "kind": "outfit",
   "id": "frieren/wizard_robe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
       "id": "wizard_robe",
-      "name": "白金魔导师袍",
-      "prose": "A white hooded mage robe with narrow gold edging, long sleeves and a simple brown adventurer belt.",
+      "name": "白金典仪高衩法袍与精工皮革腿环",
+      "prose": "A regal white ceremonial mage gown with gleaming gold filigree and dramatic waist-high slits, displaying bare legs clasped by an antique-buckled leather thigh strap that gently indents the soft skin.",
       "tokens": [
-        "white robe",
-        "hood",
-        "gold trim",
-        "brown belt",
-        "long sleeves"
+        "white_robe",
+        "gold_trim",
+        "high_slit",
+        "plunging_neckline",
+        "long_sleeves",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "boots"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "frieren"
     }
   }
 }

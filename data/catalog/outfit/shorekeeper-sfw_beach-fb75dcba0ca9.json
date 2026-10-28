@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_beach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 943,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_beach",
-      "name": "潮蓝拼白泳装与薄纱披肩",
-      "prose": "a blue-and-white swimsuit with curved tide-like color panels, a translucent shoulder wrap and a shell bracelet, worn barefoot",
+      "name": "潮蓝解构高衩流光泳装与薄纱披肩腿环",
+      "prose": "A futuristic tide-blue high-cut swimsuit with deconstructed side cutouts and a floating translucent ombre wrap, worn barefoot with bare legs banded by a buckled leather thigh strap creating a subtle soft squish.",
       "tokens": [
-        "blue and white swimsuit",
-        "curved tide-like panels",
-        "translucent shoulder wrap",
-        "shell bracelet",
+        "swimsuit",
+        "one-piece_swimsuit",
+        "blue_swimsuit",
+        "cutouts",
+        "highleg_swimsuit",
+        "translucent_wrap",
+        "sheer_fabric",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "barefoot"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "shorekeeper"
     }
   }
 }

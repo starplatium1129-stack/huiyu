@@ -1,24 +1,37 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_winter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 912,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_winter",
-      "name": "藏蓝大衣手织围巾装",
-      "prose": "A navy wool coat and hand-knitted cream cable scarf, with warm gray trousers and brown boots.",
+      "name": "藏蓝双排扣切斯特羊毛大衣与开衩短裙",
+      "prose": "A structured double-breasted navy wool coat paired with a chunky cable scarf and a slit miniskirt, showing off sheer stockings with a buckled leather thigh strap.",
       "tokens": [
-        "navy blue wool coat",
-        "cream cable-knit scarf",
-        "gray pants",
-        "brown boots"
+        "coat",
+        "navy_coat",
+        "wool_coat",
+        "double-breasted",
+        "scarf",
+        "cable_knit_scarf",
+        "slit_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "silver_buckle",
+        "leather_boots"
       ],
+      "characterId": "mouri_ran",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

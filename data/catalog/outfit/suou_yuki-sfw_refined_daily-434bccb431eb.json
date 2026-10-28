@@ -1,23 +1,32 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_refined_daily",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 451,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "淡黄针织背心便装",
-      "prose": "a butter-yellow knitted vest over a white puff-sleeved blouse, a navy calf-length skirt and lace-up ankle boots",
+      "name": "鹅黄绞花针织背心与百褶短裙皮腿环",
+      "prose": "A butter-yellow cable-knit sweater vest layered over a puff-sleeve blouse and pleated miniskirt, paired with black thighhighs and a buckled leather thigh strap.",
       "tokens": [
-        "butter yellow sweater vest",
-        "white blouse",
-        "puff sleeves",
-        "navy calf-length skirt",
-        "lace-up ankle boots"
+        "sweater_vest",
+        "yellow_sweater",
+        "cable_knit",
+        "white_shirt",
+        "puff_sleeves",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "ankle_boots"
       ],
+      "characterId": "suou_yuki",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

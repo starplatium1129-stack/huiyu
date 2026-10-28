@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "elaina/ivory_travel_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1283,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "elaina",
     "outfit": {
       "id": "ivory_travel_shirt",
-      "name": "旅宿象牙白衬衣",
+      "name": "象牙绉绸法式宽松落肩衬衣与软皮腿环",
       "tokens": [
-        "ivory shirt",
-        "gray cuffs",
-        "button-up shirt"
+        "ivory_shirt",
+        "oversized_shirt",
+        "silk_shirt",
+        "unbuttoned",
+        "shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "A lightweight ivory button-up shirt with narrow gray cuff borders.",
+      "prose": "A diaphanous ivory silk travel shirt left unbuttoned past the collarbones, draping loosely over micro shorts and bare legs clasped with a tan leather thigh strap indenting her soft skin.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "elaina"
     }
   }
 }

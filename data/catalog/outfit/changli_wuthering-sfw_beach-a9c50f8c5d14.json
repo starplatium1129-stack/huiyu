@@ -1,24 +1,35 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 936,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "sfw_beach",
-      "name": "桃红泳装与米白绣带罩衫",
-      "prose": "a peach-red swimsuit under a flowing cream overshirt with an embroidered sash and airy long sleeves",
+      "name": "绯桃金环镂空泳衣与轻烟水袖纱衫",
+      "prose": "A cutout peach-red halter swimsuit under an airy sheer ivory robe with flowing bell sleeves, accented by a lustrous leather thigh strap with a gold buckle.",
       "tokens": [
-        "peach red swimsuit",
-        "cream overshirt",
-        "long sleeves",
-        "embroidered sash"
+        "swimsuit",
+        "one-piece_swimsuit",
+        "red_swimsuit",
+        "cutout",
+        "halterneck",
+        "robe",
+        "wide_sleeves",
+        "see-through_sleeves",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "gold_buckle"
       ],
+      "characterId": "changli_wuthering",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

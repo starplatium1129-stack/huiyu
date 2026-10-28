@@ -1,22 +1,32 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 821,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "奶油麻花针织居家套装",
-      "prose": "a cream cable-knit sweater, loose pale-blue full-length lounge trousers and soft house socks",
+      "name": "奶油粗花落肩毛衣与侧开衩天丝居家服",
+      "prose": "A rich cream cable-knit pullover falling off collarbones, paired with fluid sky-blue lounge trousers cut with high side vents. Cream over-knee socks are fastened with a blush leather thigh strap that softly indents the supple thigh.",
       "tokens": [
-        "cream sweater",
-        "cable knit",
-        "loose pale blue full-length pants",
-        "socks"
+        "cable_knit",
+        "cream_sweater",
+        "oversized_sweater",
+        "off_shoulder",
+        "lounge_pants",
+        "slit_pants",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot",
+        "home_chic"
       ],
+      "characterId": "shiina_mahiru",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

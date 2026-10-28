@@ -1,22 +1,28 @@
 {
   "kind": "outfit",
   "id": "emilia_rezero/white_stockings_only",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1174,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "emilia_rezero",
     "outfit": {
       "id": "white_stockings_only",
-      "name": "白色长袜造型",
+      "name": "纯白透肤过膝袜与银扣机能皮腿环",
       "tokens": [
-        "nude",
-        "white thighhighs"
+        "white_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_shoulders",
+        "barefoot"
       ],
-      "prose": "white thigh-high stockings without other garments",
+      "prose": "Sheer white thigh-high stockings hugging slender legs without outer garments, held taut by an intricate buckled leather thigh strap that presses into tender soft skin with an alluring squish.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "emilia_rezero"
     }
   }
 }

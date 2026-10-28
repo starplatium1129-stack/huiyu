@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/tied_delivery_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1368,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "tied_delivery_shirt",
-      "name": "打结白衬衣与黑色短裤",
+      "name": "前襟系带微敞白衬衫与工装皮腿带",
+      "prose": "A crisp white button-down shirt knotted at the midriff to bare the navel, paired with dark denim shorts and an edgy calfskin thigh strap with silver buckles on her bare leg.",
       "tokens": [
-        "white shirt",
-        "tied shirt",
-        "black shorts",
-        "black boots"
+        "white_shirt",
+        "tied_shirt",
+        "crop_shirt",
+        "navel",
+        "denim_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "ankle_boots"
       ],
-      "prose": "A white shirt tied at the waist, black delivery shorts and practical black boots.",
+      "characterId": "exusiai_arknights",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

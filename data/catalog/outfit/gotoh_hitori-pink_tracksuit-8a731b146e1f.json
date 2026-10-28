@@ -1,27 +1,35 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/pink_tracksuit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 550,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "pink_tracksuit",
-      "name": "经典粉色白线运动服",
+      "name": "落肩粉色运动外套与黑褶短裙",
       "tokens": [
-        "pink track jacket",
-        "oversized jacket",
-        "white stripes",
-        "black pleated skirt",
-        "black kneehighs",
+        "pink_tracksuit",
+        "track_jacket",
+        "oversized_jacket",
+        "white_stripes",
+        "camisole",
+        "black_pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "sneakers"
       ],
-      "prose": "Her oversized pink zip-up track jacket with white sleeve stripes, a dark pleated skirt, black knee socks and sneakers.",
+      "prose": "An oversized pink zip-up track jacket loosely draped over a black pleated miniskirt and thighhighs, finished with a buckled leather strap creating a subtle thigh squish on soft skin.",
       "styleHint": "",
       "isDefault": true,
-      "default": true
+      "default": true,
+      "characterId": "gotoh_hitori"
     }
   }
 }

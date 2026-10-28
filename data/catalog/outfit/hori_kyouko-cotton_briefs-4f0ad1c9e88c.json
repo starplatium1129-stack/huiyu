@@ -1,22 +1,31 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/cotton_briefs",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1304,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
       "id": "cotton_briefs",
-      "name": "居家棉质内裤",
+      "name": "居家纯棉工字背心与低腰棉短裤",
+      "prose": "A minimalist white ribbed cropped tank top worn with low-rise grey cotton lounge shorts, leaving the toned midriff bare, accented with a black leather thigh band cinching the upper thigh.",
       "tokens": [
-        "cotton panties",
-        "low-rise panties"
+        "tank_top",
+        "ribbed_tank_top",
+        "crop_top",
+        "cotton_panties",
+        "low_rise_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "Simple low-rise cotton briefs.",
+      "characterId": "hori_kyouko",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

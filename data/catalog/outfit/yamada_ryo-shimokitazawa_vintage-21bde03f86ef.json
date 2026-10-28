@@ -1,28 +1,33 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/shimokitazawa_vintage",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1564,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
       "id": "shimokitazawa_vintage",
-      "name": "下北泽古着中性宽松私服",
+      "name": "下北泽古着宽松衬衫与高腰皮革短裤",
       "tokens": [
         "oversized_shirt",
         "button_up",
         "green_shirt",
         "undershirt",
-        "wide-leg_pants",
-        "trousers",
+        "high-waist_shorts",
+        "shorts",
         "suspenders",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "sneakers"
       ],
-      "prose": "An oversized olive-green vintage button-up shirt over a white undershirt, baggy high-waisted beige trousers with suspenders, and black canvas sneakers",
+      "prose": "An oversized olive vintage button-up shirt tucked into high-waisted shorts with suspenders, paired with a buckled leather thigh strap creating a subtle soft indentation on her bare thigh skin.",
       "isDefault": true,
-      "default": true
+      "default": true,
+      "characterId": "yamada_ryo"
     }
   }
 }

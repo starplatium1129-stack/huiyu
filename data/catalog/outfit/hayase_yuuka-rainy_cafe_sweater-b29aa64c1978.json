@@ -1,25 +1,32 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/rainy_cafe_sweater",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 511,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
       "default": false,
       "id": "rainy_cafe_sweater",
       "isDefault": false,
-      "name": "雨日奶油高领格裙装",
-      "prose": "A cream ribbed turtleneck and navy tartan pleated skirt, with dark tights and ankle boots.",
+      "name": "奶油白落肩高领软毛衣与藏青格纹短裙",
+      "prose": "A cozy cream ribbed turtleneck sweater paired with a pleated navy plaid mini skirt, featuring charcoal thigh-high socks held by a slender buckled leather garter pressing gently into the thigh.",
       "tokens": [
-        "cream turtleneck",
-        "ribbed knit",
-        "navy blue plaid pleated skirt",
-        "black tights",
-        "ankle boots"
-      ]
+        "cream_sweater",
+        "turtleneck",
+        "oversized_sweater",
+        "plaid_skirt",
+        "pleated_skirt",
+        "miniskirt",
+        "grey_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "oxfords"
+      ],
+      "characterId": "hayase_yuuka"
     }
   }
 }

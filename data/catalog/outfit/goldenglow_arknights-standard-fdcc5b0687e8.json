@@ -1,26 +1,31 @@
 {
   "kind": "outfit",
   "id": "goldenglow_arknights/standard",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 341,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "goldenglow_arknights",
     "outfit": {
       "default": true,
       "id": "standard",
       "isDefault": true,
-      "name": "黄领巾理发师学徒装",
-      "prose": "A white shirt with the bright yellow ascot, a dark suspender pinafore with a pleated skirt, asymmetric thigh-high stockings and a leather hairdresser tool pouch.",
+      "name": "学院理发师黄巾背带百褶短裙与工具腿带",
+      "prose": "A crisp collared white blouse knotted with a vibrant golden ascot under a pleated black suspender skirt with leather tool pouches, worn over asymmetrical stockings tightly gripped by a buckled leather thigh strap that gently indents the flesh.",
       "tokens": [
-        "white shirt",
-        "yellow ascot",
-        "dark pinafore dress",
-        "pleated skirt",
-        "asymmetrical thighhighs",
-        "leather tool pouch"
-      ]
+        "white_shirt",
+        "yellow_ascot",
+        "pinafore_dress",
+        "black_skirt",
+        "pleated_skirt",
+        "tool_bag",
+        "asymmetrical_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "goldenglow_arknights"
     }
   }
 }

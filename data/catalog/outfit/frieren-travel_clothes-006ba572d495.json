@@ -1,28 +1,32 @@
 {
   "kind": "outfit",
   "id": "frieren/travel_clothes",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 61,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
       "id": "travel_clothes",
-      "name": "白金短斗篷旅行装",
-      "prose": "A short white capelet with broad gold edging and red gemstone fasteners, over a long-sleeved white tunic with gold cuffs and hem, a black waist belt, black leggings and brown boots.",
+      "name": "白金精裁短斗篷与高腰百褶短裙皮腿带",
+      "prose": "A crisp white capelet with gold filigree clasps worn over a tailored tunic and pleated miniskirt, showing sheer black thighhighs cinched by a buckled leather strap with a subtle soft indentation.",
       "tokens": [
-        "white capelet",
-        "gold trim",
-        "red gemstone brooch",
-        "white tunic",
-        "long sleeves",
-        "black belt",
-        "black leggings",
-        "brown boots"
+        "white_capelet",
+        "gold_trim",
+        "white_shirt",
+        "corset",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "brown_boots"
       ],
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "frieren"
     }
   }
 }

@@ -1,21 +1,30 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/oversized_white_shirt",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 693,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "oversized_white_shirt",
-      "name": "宽松白棉男友衬衫",
-      "prose": "An oversized white cotton button-up shirt resting off one shoulder; barefoot.",
+      "name": "晨光微透落肩宽大白衬衫与皮腿带",
+      "prose": "A boyfriend-fit white cotton dress shirt slipping off one shoulder with top buttons undone, falling mid-thigh over bare legs clasped by an edgy black leather thigh strap with soft indentation.",
       "tokens": [
-        "oversized white shirt",
-        "off shoulder",
+        "oversized_shirt",
+        "white_shirt",
+        "unbuttoned",
+        "off_shoulder",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "barefoot"
-      ]
+      ],
+      "characterId": "rias_gremory",
+      "default": false,
+      "isDefault": false
     }
   }
 }

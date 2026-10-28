@@ -1,24 +1,34 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_beach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 915,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_beach",
-      "name": "蓝白斜线运动泳装",
-      "prose": "A blue-and-white sports swimsuit with diagonal panels, visor and matching ankle bands.",
+      "name": "曜蓝几何撞色高叉运动连体泳装",
+      "prose": "A high-performance cobalt-and-white colorblocked one-piece swimsuit with athletic high-cut legs, accessorized with a snug buckled leather thigh band.",
       "tokens": [
-        "blue and white swimsuit",
-        "diagonal stripes",
-        "visor",
-        "ankle bands"
+        "swimsuit",
+        "one-piece_swimsuit",
+        "blue_swimsuit",
+        "white_trim",
+        "highleg_swimsuit",
+        "cutout",
+        "bare_legs",
+        "bare_shoulders",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "silver_buckle"
       ],
+      "characterId": "mouri_ran",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "sylphiette/silent_fitz_uniform_no_sunglasses",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 259,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
       "default": false,
       "id": "silent_fitz_uniform_no_sunglasses",
       "isDefault": false,
-      "name": "菲兹学院执事装·摘镜",
-      "prose": "the Ranoa Academy white formal suit, matching trousers and cape, with her eyes uncovered",
+      "name": "菲兹学院修身短燕尾服与黑丝双腿环",
+      "prose": "An immaculate white academic tailcoat worn with an unbuttoned ruffled blouse and tailored shorts, showing dark thigh-highs bound by buckled leather straps with a subtle squish.",
       "styleHint": "sharp noble academy aesthetic",
       "tokens": [
-        "white formal suit",
-        "white trousers",
-        "cape"
-      ]
+        "formal_suit",
+        "tailcoat",
+        "white_shirt",
+        "frilled_collar",
+        "shorts",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "dress_shoes"
+      ],
+      "characterId": "sylphiette"
     }
   }
 }

@@ -1,24 +1,35 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/demon_slayer_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1393,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "id": "demon_slayer_uniform",
-      "name": "恋柱鬼杀队制服",
+      "name": "深V敞怀立裁队服与开衩百褶裙",
       "tokens": [
-        "black uniform",
-        "white collar",
-        "pleated miniskirt",
-        "green striped thighhighs"
+        "demon_slayer_uniform",
+        "black_jacket",
+        "open_jacket",
+        "cleavage",
+        "white_haori",
+        "black_skirt",
+        "pleated_skirt",
+        "miniskirt",
+        "green_thighhighs",
+        "striped_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "belt"
       ],
-      "prose": "Her black Demon Slayer Corps uniform with a white collar, short pleated skirt and green striped thighhighs.",
+      "prose": "A tailored Demon Slayer jacket worn open at the chest with a white haori and pleated miniskirt, featuring buckle leather thigh straps squishing into striped thighhighs.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "kanroji_mitsuri"
     }
   }
 }

@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "frieren/casual",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 62,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
       "id": "casual",
-      "name": "象牙白旅间针织裙装",
-      "prose": "A simple ivory long-sleeved dress with a soft sage-green cardigan and one small round gold clasp.",
+      "name": "象牙白挂颈露肩针织短裙与皮腿扣",
+      "prose": "A form-fitting ivory halterneck knit minidress draped beneath a breezy pastel cardigan, revealing bare porcelain legs accented by a buckled leather thigh strap with a delicate soft indentation.",
       "tokens": [
-        "ivory dress",
-        "long sleeves",
-        "sage green cardigan",
-        "gold clasp"
+        "halterneck",
+        "knit_dress",
+        "minidress",
+        "bare_shoulders",
+        "light_green_cardigan",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sandals"
       ],
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "frieren"
     }
   }
 }

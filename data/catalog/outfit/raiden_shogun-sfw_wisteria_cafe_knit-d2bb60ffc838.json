@@ -1,25 +1,31 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/sfw_wisteria_cafe_knit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1111,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "sfw_wisteria_cafe_knit",
-      "name": "藤紫细针开衫与炭灰百褶裙",
-      "prose": "A gold-buttoned wisteria knit cardigan, ivory round-neck blouse, charcoal pleated midi skirt and black loafers.",
+      "name": "藤紫落肩针织短衫与压褶短裙",
+      "prose": "A cropped wisteria-purple knit cardigan worn open over an ivory silk camisole and charcoal pleated miniskirt. Dark thighhighs swell gently beneath an engraved leather thigh strap with an alluring soft squish.",
       "tokens": [
-        "wisteria cardigan",
-        "ivory blouse",
-        "round neck",
-        "charcoal pleated midi skirt",
-        "black loafers"
+        "wisteria_cardigan",
+        "cropped_cardigan",
+        "silk_camisole",
+        "pleated_skirt",
+        "mini_skirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "raiden_shogun"
     }
   }
 }

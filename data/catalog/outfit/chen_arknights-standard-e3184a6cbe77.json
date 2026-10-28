@@ -1,27 +1,33 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/standard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 300,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
       "default": true,
       "id": "standard",
       "isDefault": true,
-      "name": "龙门近卫局蓝黑战术制服",
-      "prose": "a fitted blue-and-black tactical jacket with a gold LGD badge over a white shirt and black tie, a black pleated skirt, knee socks and combat boots",
+      "name": "龙门近卫局蓝黑战术短制服与百褶短裙",
+      "prose": "A tailored navy-and-black tactical jacket with golden LGD insignias over a white collared shirt, black tie, and knife-pleated miniskirt. A tactical leather thigh strap with a silver buckle creates a soft indentation on her bare thigh.",
       "tokens": [
-        "blue and black tactical jacket",
-        "white shirt",
-        "black necktie",
-        "black pleated skirt",
-        "knee socks",
-        "combat boots",
-        "gold badge"
-      ]
+        "tactical_jacket",
+        "navy_jacket",
+        "white_shirt",
+        "collared_shirt",
+        "black_necktie",
+        "pleated_skirt",
+        "mini_skirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "combat_boots"
+      ],
+      "characterId": "chen_arknights"
     }
   }
 }

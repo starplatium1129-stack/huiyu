@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_city",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_city",
-      "name": "淡紫金扣遮阳帽便装",
-      "prose": "A pale-lavender blouse with small gold buttons, a flowing cream long skirt and a wide sunhat with a plum ribbon, finished with gold earrings.",
+      "name": "香芋真丝立领衫与羊绒风衣套裙",
+      "prose": "A fluid lavender silk blouse under an ivory cashmere trench and slit skirt, showcasing a buckled leather thigh strap producing an exquisite soft indent along dark stockings.",
       "tokens": [
-        "lavender blouse",
-        "gold buttons",
-        "cream long skirt",
-        "sunhat",
-        "plum hat ribbon",
-        "gold earrings"
+        "lavender_shirt",
+        "silk_blouse",
+        "gold_buttons",
+        "trench_coat",
+        "cream_coat",
+        "slit_skirt",
+        "thigh_strap",
+        "leather_strap",
+        "gold_buckle",
+        "black_thighhighs",
+        "sunhat"
       ],
+      "characterId": "kama_fate",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

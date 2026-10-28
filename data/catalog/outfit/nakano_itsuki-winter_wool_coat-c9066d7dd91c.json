@@ -1,29 +1,37 @@
 {
   "kind": "outfit",
   "id": "nakano_itsuki/winter_wool_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1524,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_itsuki",
     "outfit": {
       "id": "winter_wool_coat",
-      "name": "暖冬奶白毛呢大衣厚格纹围巾私服",
-      "prose": "A cozy cream-white double-breasted wool overcoat paired with a thick red-and-green plaid scarf, her long wavy red hair flowing gracefully over her shoulders.",
+      "name": "暖冬荷叶边雪纺衬衫毛呢百褶短裙与金扣皮腿环",
+      "prose": "A refined cream ruffled chiffon blouse with a thick plaid scarf and pleated tartan mini skirt over black thighhighs, paired with a buckled leather thigh strap that presses into soft skin with a subtle squish.",
       "tokens": [
-        "coat",
-        "overcoat",
-        "white_coat",
-        "double-breasted",
+        "blouse",
+        "white_blouse",
+        "ruffled_blouse",
+        "frills",
         "scarf",
         "plaid_scarf",
-        "long_hair",
-        "star_hair_ornament",
-        "ahoge",
+        "pleated_skirt",
+        "tartan_skirt",
+        "mini_skirt",
+        "thighhighs",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "boots"
       ],
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "nakano_itsuki",
+      "default": false,
+      "isDefault": false
     }
   }
 }

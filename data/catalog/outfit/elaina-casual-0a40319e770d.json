@@ -1,25 +1,32 @@
 {
   "kind": "outfit",
   "id": "elaina/casual",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 223,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "elaina",
     "outfit": {
       "id": "casual",
-      "name": "灰紫星扣旅间连衣裙",
-      "prose": "A muted lavender square-neck dress under a soft gray cardigan fastened with a small star brooch, with black ankle boots.",
+      "name": "灰紫方领泡泡袖收腰洋装与银扣腿饰",
+      "prose": "A charming lavender linen-blend sundress with an open square neckline and fitted corset waist, cut with a fluid walking slit showing bare legs styled with a fine silver-buckled leather thigh strap.",
       "tokens": [
-        "lavender dress",
-        "square neckline",
-        "gray cardigan",
-        "star brooch",
-        "black ankle boots"
+        "lavender_dress",
+        "square_neckline",
+        "puff_sleeves",
+        "corset_waist",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "silver_buckle",
+        "sandals"
       ],
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "elaina"
     }
   }
 }

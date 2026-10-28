@@ -1,29 +1,33 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/standard_mercenary",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 387,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
       "default": true,
       "id": "standard_mercenary",
       "isDefault": true,
-      "name": "灰风衣双鞘佣兵装",
-      "prose": "An open gray trench coat with a ragged hem over a white tank top and black shorts, a thigh-strapped harness, combat boots, fingerless gloves and paired sword sheaths.",
+      "name": "狂宴双鞘机能短斗篷与皮质抹胸",
+      "prose": "An asymmetric cropped ash-gray combat capelet draped over a structured black leather bustier and shredded denim hotpants. Twin buckled leather thigh straps bite into her bare thighs with an unmistakable soft indentation.",
       "tokens": [
-        "gray trench coat",
-        "ragged hem",
-        "white tank top",
-        "black shorts",
-        "thigh harness",
-        "combat boots",
-        "fingerless gloves",
-        "paired sword sheaths",
-        "open coat"
-      ]
+        "asymmetrical_jacket",
+        "cropped_jacket",
+        "gray_capelet",
+        "leather_bustier",
+        "denim_shorts",
+        "short_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "combat_boots",
+        "fingerless_gloves"
+      ],
+      "characterId": "lappland_arknights"
     }
   }
 }

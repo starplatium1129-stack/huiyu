@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/official_kimono_leather_jacket",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 729,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
       "default": true,
       "id": "official_kimono_leather_jacket",
       "isDefault": true,
-      "name": "纯白和服赤红皮夹克",
-      "prose": "a white kimono with a dark patterned obi under a red leather biker jacket and brown lace-up combat boots",
+      "name": "赤红机车皮衣改良和服与战术腿环",
+      "prose": "Her definitive attire featuring a cropped crimson biker jacket over an overlapped white kimono with an obi sash. A dark leather combat thigh strap with dual buckles softly indents her bare thigh above boots.",
       "tokens": [
-        "white kimono",
-        "dark patterned obi",
-        "red leather biker jacket",
-        "brown lace-up combat boots"
-      ]
+        "leather_jacket",
+        "red_jacket",
+        "white_kimono",
+        "cross_collar",
+        "dark_obi",
+        "lace-up_boots",
+        "combat_boots",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "ryougi_shiki"
     }
   }
 }

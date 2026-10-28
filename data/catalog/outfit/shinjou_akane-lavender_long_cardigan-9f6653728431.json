@@ -1,23 +1,33 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/lavender_long_cardigan",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1341,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "lavender_long_cardigan",
-      "name": "粉紫长开衫",
+      "name": "落肩粉紫粗针长开衫与软肉微勒腿环",
+      "prose": "An oversized slouchy lavender cable-knit cardigan slipping off the shoulders over a black bralette and micro shorts, highlighting bare legs cinched by a buckled leather thigh strap.",
       "tokens": [
-        "long lavender cardigan",
-        "long sleeves",
-        "ribbed cuffs"
+        "cardigan",
+        "long_cardigan",
+        "purple_cardigan",
+        "oversized_sweater",
+        "off_shoulder",
+        "black_bra",
+        "short_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "A long lavender cotton-knit cardigan with ribbed cuffs and pale-gray buttons.",
+      "characterId": "shinjou_akane",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

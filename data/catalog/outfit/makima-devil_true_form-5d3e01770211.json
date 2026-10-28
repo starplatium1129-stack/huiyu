@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "makima/devil_true_form",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 237,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "devil_true_form",
-      "name": "支配形态·黑色精裁正装",
-      "prose": "A tailored black suit, white shirt, narrow black tie, straight trousers and black shoes.",
+      "name": "支配盛装·精裁垫肩吸烟装",
+      "prose": "A sharp tailored black smoking jacket over a plunge camisole with slit tailored trousers, grounded by a buckle leather thigh strap gently indenting her thigh.",
       "tokens": [
-        "black suit jacket",
-        "white shirt",
-        "black necktie",
-        "black tailored pants",
-        "black shoes"
+        "black_suit_jacket",
+        "tuxedo_jacket",
+        "plunging_neckline",
+        "black_camisole",
+        "black_necktie",
+        "high_waist_pants",
+        "slit_pants",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs",
+        "high_heels"
       ],
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "makima"
     }
   }
 }

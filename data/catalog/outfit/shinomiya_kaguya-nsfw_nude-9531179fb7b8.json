@@ -1,19 +1,18 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 769,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing; black hair loose.",
+      "prose": "No clothing.",
       "tokens": [
-        "completely_nude",
-        "hair_down"
+        "nude"
       ],
       "identityTokensOverride": [
         "shinomiya_kaguya",
@@ -24,7 +23,11 @@
         "hair down",
         "red eyes"
       ],
-      "identityProseOverride": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with loose black hair, parted bangs, sidelocks and downturned red eyes."
+      "identityProseOverride": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with loose black hair, parted bangs, sidelocks and downturned red eyes.",
+      "characterId": "shinomiya_kaguya",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

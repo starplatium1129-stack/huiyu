@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/purple_lace_negligee",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 701,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "purple_lace_negligee",
-      "name": "紫罗兰黑蕾丝飘袖晨袍",
-      "prose": "A sheer violet lace negligee with flutter sleeves, black scalloped edging and an open front, with matching lace panties.",
+      "name": "紫罗兰真丝飘袖开衫与黑蕾丝内衣腿环",
+      "prose": "A sheer violet-tinted silk dressing gown draping open over delicate black lace underwire lingerie, revealing bare legs cinched by an ink-black leather thigh strap causing a subtle soft squish.",
       "tokens": [
-        "purple negligee",
-        "black lace trim",
-        "flutter sleeves",
-        "open front",
-        "see-through",
-        "lace panties"
-      ]
+        "purple_robe",
+        "silk_robe",
+        "open_robe",
+        "black_lace",
+        "lace_camisole",
+        "bare_shoulders",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs"
+      ],
+      "characterId": "akeno_himejima",
+      "default": false,
+      "isDefault": false
     }
   }
 }

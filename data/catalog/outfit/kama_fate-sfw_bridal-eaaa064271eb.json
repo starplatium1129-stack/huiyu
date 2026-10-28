@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 180,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "黑玫瑰金边花嫁",
-      "prose": "A black bridal gown with rose-pink inset panels, narrow gold edging and a soft sheer veil.",
+      "name": "暗黑玫瑰金绣鱼尾礼裙与薄纱花嫁",
+      "prose": "A noir mermaid bridal gown adorned with ornate gold filigree and a revealing side slit, framing a buckled leather strap that causes a subtle soft squish against lace stockings.",
       "tokens": [
-        "black wedding dress",
-        "rose pink panels",
-        "gold trim",
-        "sheer veil"
+        "black_wedding_dress",
+        "mermaid_dress",
+        "gold_embroidery",
+        "rose_lining",
+        "high_slit",
+        "black_veil",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "lace_thighhighs"
       ],
+      "characterId": "kama_fate",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

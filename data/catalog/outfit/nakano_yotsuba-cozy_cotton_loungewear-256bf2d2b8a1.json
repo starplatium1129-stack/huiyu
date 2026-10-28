@@ -1,27 +1,31 @@
 {
   "kind": "outfit",
   "id": "nakano_yotsuba/cozy_cotton_loungewear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1522,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_yotsuba",
     "outfit": {
       "id": "cozy_cotton_loungewear",
-      "name": "居家松软浅草绿纯棉连帽睡衣",
-      "prose": "An oversized light green cotton loungewear hoodie and soft sleep shorts, worn barefoot without her hairband, revealing natural fluffy orange bobbed hair.",
+      "name": "居家落肩浅绿连帽纯棉短睡裙与软皮革腿环",
+      "prose": "An oversized mint-green cotton loungewear hoodie worn as a short dress over bare legs, where a buckled leather thigh strap bites softly into her relaxed thigh skin in the cozy morning sunlight.",
       "tokens": [
         "loungewear",
         "pajamas",
         "oversized_hoodie",
         "light_green_hoodie",
-        "shorts",
         "bare_legs",
-        "barefoot",
-        "messy_hair"
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "nakano_yotsuba",
+      "default": false,
+      "isDefault": false
     }
   }
 }

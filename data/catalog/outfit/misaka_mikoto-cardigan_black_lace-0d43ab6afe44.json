@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/cardigan_black_lace",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1411,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
       "id": "cardigan_black_lace",
-      "name": "茶米色开衫与黑蕾丝套装",
+      "name": "燕麦针织短开衫与黑蕾丝抹胸套装",
       "tokens": [
-        "loose beige cardigan",
-        "knit",
-        "black lace lingerie"
+        "knit_cardigan",
+        "cropped_cardigan",
+        "off_shoulder",
+        "black_bralette",
+        "lace_trim",
+        "black_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "A loose tea-beige knit cardigan over a black lace lingerie set.",
+      "prose": "A slouchy oatmeal knit cropped cardigan draped off-shoulder over an intricate black lace bralette and tap shorts. An adjustable leather thigh strap indents the soft skin of her bare legs with a silver buckle.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "misaka_mikoto"
     }
   }
 }

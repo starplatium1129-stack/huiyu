@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "makima/black_collar",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1405,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "black_collar",
-      "name": "黑色皮质项圈",
+      "name": "先锋黑皮革颈圈抹胸高定",
       "tokens": [
-        "black collar",
-        "leather",
-        "metal studs"
+        "black_choker",
+        "leather_collar",
+        "off_shoulder",
+        "black_bodysuit",
+        "sleeveless",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs",
+        "high_heels"
       ],
-      "prose": "A black leather collar with small metal studs.",
+      "prose": "A sleek black leather collar choker paired with an off-shoulder knit bodysuit, accented by a buckle leather thigh strap creating a subtle soft indentation on bare skin.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "makima"
     }
   }
 }

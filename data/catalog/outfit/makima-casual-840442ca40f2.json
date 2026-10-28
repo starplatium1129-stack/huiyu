@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "makima/casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 235,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "casual",
-      "name": "象牙衬衫与深灰休闲裙装",
-      "prose": "An ivory crepe shirt tucked into a charcoal midi skirt, an open cropped black jacket, a narrow belt and black loafers.",
+      "name": "象牙白真丝垂褶衬衫与炭灰开衩裙",
+      "prose": "An ivory silk drape blouse tucked into a charcoal slit pencil skirt under a cropped jacket, revealing a leather thigh strap with a subtle soft squish on her leg.",
       "tokens": [
-        "ivory shirt",
-        "charcoal midi skirt",
-        "black cropped jacket",
-        "open jacket",
-        "black loafers"
+        "ivory_shirt",
+        "silk_blouse",
+        "charcoal_skirt",
+        "pencil_skirt",
+        "side_slit",
+        "cropped_jacket",
+        "open_jacket",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs",
+        "loafers"
       ],
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "makima"
     }
   }
 }

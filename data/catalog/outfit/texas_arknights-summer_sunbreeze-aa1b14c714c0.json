@@ -1,25 +1,34 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/summer_sunbreeze",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 385,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "default": false,
       "id": "summer_sunbreeze",
       "isDefault": false,
-      "name": "阳光微风夏日泳装",
-      "prose": "a black one-piece swimsuit with asymmetrical waist cutouts, an open white linen shirt, dark sunglasses and sandals",
+      "name": "微风夏日高衩解构连体泳衣与白亚麻衫",
+      "prose": "An architectural black one-piece swimsuit featuring asymmetric cutouts, layered under a sheer white linen beach shirt. An ebony leather thigh strap with a silver buckle produces a distinct soft indentation on bare thigh skin.",
       "tokens": [
-        "black one piece swimsuit",
-        "asymmetrical cutouts",
-        "open white linen shirt",
-        "sunglasses",
+        "black_swimsuit",
+        "one-piece_swimsuit",
+        "cutouts",
+        "asymmetrical_swimsuit",
+        "white_shirt",
+        "open_shirt",
+        "linen_shirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "buckle",
         "sandals"
-      ]
+      ],
+      "characterId": "texas_arknights"
     }
   }
 }

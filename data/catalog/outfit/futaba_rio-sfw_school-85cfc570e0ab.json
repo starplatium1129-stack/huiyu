@@ -1,24 +1,35 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_school",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_school",
-      "name": "科学部白大褂学院套装",
-      "prose": "a white laboratory coat with plain patch pockets over a buttoned white school blouse and navy skirt, with plain glasses",
+      "name": "科学部立裁实验风衣与双排扣皮腿环制服",
+      "prose": "A tailored white laboratory trench coat worn open over a school blouse and a micro navy pleated skirt. Sheer black thighhighs are clasped by dual leather thigh straps with silver buckles visibly pinching the upper thigh soft flesh.",
       "tokens": [
-        "white lab coat",
-        "white school blouse",
-        "navy skirt",
-        "glasses"
+        "lab_coat",
+        "open_coat",
+        "school_uniform",
+        "white_shirt",
+        "unbuttoned_shirt",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "zettai_ryouiki",
+        "loafers"
       ],
+      "characterId": "futaba_rio",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

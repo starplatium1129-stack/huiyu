@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/sfw_white_shiromuku",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 704,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "sfw_white_shiromuku",
-      "name": "白鹤暗纹丝绸白无垢",
-      "prose": "opaque all-white bridal shiromuku robes in silk with subtle crane embroidery, a white obi and tsunokakushi headdress",
+      "name": "鹤纹绢丝白无垢高开衩高定礼服与白皮腿饰",
+      "prose": "A haute couture bridal shiromuku gown in lustrous white silk with an elegant high slit, displaying bare legs encircled by a delicate white leather thigh strap with a silver buckle causing a soft squish.",
       "tokens": [
         "shiromuku",
-        "white silk kimono",
-        "crane embroidery",
-        "white obi",
-        "tsunokakushi"
+        "white_kimono",
+        "silk_kimono",
+        "high_slit",
+        "white_obi",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "heels"
       ],
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "akeno_himejima"
     }
   }
 }

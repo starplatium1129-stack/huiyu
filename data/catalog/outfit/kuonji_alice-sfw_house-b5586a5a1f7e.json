@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/sfw_house",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 924,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
       "id": "sfw_house",
-      "name": "洋馆黑色长袖洋装",
-      "prose": "a modest black long-sleeved dress with a white collar, dark tights and indoor shoes",
+      "name": "洋馆立领黑呢修身洋装与束腿皮环",
+      "prose": "An austere black wool manor dress accented with a sharp white lace collar and concealed side slit, under which a buckled leather thigh strap creates a subtle soft indentation.",
       "tokens": [
         "black_dress",
+        "wool_dress",
         "long_sleeves",
         "white_collar",
-        "tights",
+        "lace_trim",
+        "side_slit",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "black_thighhighs",
         "indoor_shoes"
       ],
+      "characterId": "kuonji_alice",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

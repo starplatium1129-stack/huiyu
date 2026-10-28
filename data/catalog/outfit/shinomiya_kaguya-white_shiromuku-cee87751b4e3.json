@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/white_shiromuku",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 771,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "default": false,
       "id": "white_shiromuku",
       "isDefault": false,
-      "name": "白无垢·织纹角隐礼装",
-      "prose": "An opaque white silk shiromuku with woven maple motifs, white obi and tsunokakushi.",
+      "name": "白鹤暗纹高定露背开衩绢丝白无垢花嫁装",
+      "prose": "A modern haute couture bridal shiromuku gown in fine woven white silk with a daring side slit, revealing bare legs encircled by a delicate white leather thigh strap with a soft indentation.",
       "tokens": [
         "shiromuku",
-        "white kimono",
-        "woven maple motifs",
-        "white obi",
-        "silk",
-        "tsunokakushi"
-      ]
+        "white_kimono",
+        "silk_kimono",
+        "high_slit",
+        "white_obi",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "heels"
+      ],
+      "characterId": "shinomiya_kaguya",
+      "isNsfw": false
     }
   }
 }

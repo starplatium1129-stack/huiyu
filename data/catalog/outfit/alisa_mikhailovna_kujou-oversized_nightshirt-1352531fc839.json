@@ -1,24 +1,30 @@
 {
   "kind": "outfit",
   "id": "alisa_mikhailovna_kujou/oversized_nightshirt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 442,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "alisa_mikhailovna_kujou",
     "outfit": {
       "id": "oversized_nightshirt",
-      "name": "冰蓝真丝白滚边睡衫",
-      "prose": "an oversized ice-blue silk nightshirt with a crisp white piped collar, pearl buttons and softly curved shirt tails",
+      "name": "冰蓝真丝微敞男式宽松睡衬衫与细黑皮腿环",
+      "prose": "An oversized ice-blue silk nightshirt with white piped trim worn loosely over bare hips, adorned with a buckled leather thigh strap that indents her tender thigh flesh with an alluring squish.",
       "tokens": [
-        "light blue silk nightshirt",
-        "oversized shirt",
-        "white piping",
-        "pearl buttons"
+        "oversized_shirt",
+        "silk_shirt",
+        "unbuttoned_shirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "alisa_mikhailovna_kujou",
+      "isNsfw": false
     }
   }
 }

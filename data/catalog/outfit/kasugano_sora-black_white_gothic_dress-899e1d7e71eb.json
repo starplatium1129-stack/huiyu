@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/black_white_gothic_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1396,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "black_white_gothic_dress",
-      "name": "黑白哥特礼裙",
+      "name": "黑白宫廷哥特蕾丝蓬蓬裙与双层皮腿环",
+      "prose": "An elaborate Victorian-inspired black-and-white gothic lolita corset dress with layered tiered petticoats, paired with sheer black lace thighhighs secured by dual buckled calfskin thigh garters.",
       "tokens": [
-        "black and white dress",
-        "gothic fashion",
-        "lace trim",
-        "black thighhighs",
-        "garter straps"
+        "gothic_dress",
+        "black_and_white_dress",
+        "corset_dress",
+        "lace_trim",
+        "puff_sleeves",
+        "tiered_skirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "mary_janes"
       ],
-      "prose": "A black-and-white Gothic dress with lace edging and a back zipper, paired with black thighhighs and garter straps.",
+      "characterId": "kasugano_sora",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

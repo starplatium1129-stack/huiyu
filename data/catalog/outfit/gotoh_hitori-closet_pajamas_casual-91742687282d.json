@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/closet_pajamas_casual",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 554,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "closet_pajamas_casual",
-      "name": "壁橱浅粉方格口袋家居装",
+      "name": "慵懒浅粉落肩软卫衣与棉质短裤",
       "tokens": [
-        "oversized pink t-shirt",
-        "blue pocket",
-        "yellow stitching",
-        "gray shorts"
+        "off-shoulder_sweater",
+        "pink_sweater",
+        "loose_sweater",
+        "gray_shorts",
+        "short_shorts",
+        "bare_shoulders",
+        "collarbone",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "A loose pastel-pink T-shirt with one square blue pocket edged in yellow stitching, and soft gray lounge shorts.",
+      "prose": "A soft pastel-pink off-shoulder loungewear sweater worn over gray cotton shorts, paired with a buckled leather thigh strap that leaves a gentle soft indentation on her bare thigh skin.",
       "styleHint": "",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "gotoh_hitori"
     }
   }
 }

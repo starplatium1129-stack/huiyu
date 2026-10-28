@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 805,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing; hair loose from its bun.",
+      "prose": "No clothing.",
       "tokens": [
-        "nude",
-        "hair_down"
-      ]
+        "nude"
+      ],
+      "characterId": "kochou_shinobu",
+      "default": false,
+      "isDefault": false
     }
   }
 }

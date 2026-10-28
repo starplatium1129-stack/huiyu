@@ -1,23 +1,33 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/silver_silk_robe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1402,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
       "id": "silver_silk_robe",
-      "name": "银白真丝薄纱睡袍",
+      "name": "半透银白真丝薄纱晨袍与极细皮腿饰",
       "tokens": [
-        "silver robe",
-        "silk",
-        "sheer fabric"
+        "robe",
+        "silk_robe",
+        "white_robe",
+        "sheer_clothing",
+        "bralette",
+        "lace_bra",
+        "panties",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "A lightweight silver-white silk robe with a sheer finish.",
+      "prose": "A gossamer silver-white sheer silk robe left open in the front, revealing a minimalist lace bralette. A delicate buckled leather thigh strap wraps around her bare leg, leaving a soft indentation on bare thigh skin.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "lucy_cyberpunk"
     }
   }
 }

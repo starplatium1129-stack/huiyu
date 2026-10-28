@@ -1,22 +1,33 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/sfw_izakaya_knit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "sfw_izakaya_knit",
-      "name": "墨绿高领酒馆裙装",
-      "prose": "a forest-green turtleneck with fine ribbing, a calf-length black skirt, opaque tights and small silver stud earrings",
+      "name": "墨绿紧身高领羊绒针织衫与高开衩裹身裙",
+      "prose": "A figure-sculpting forest-green cashmere turtleneck sweater paired with a black lambskin wrap skirt with a high slit. Sheer black stockings are clasped by a double-buckle leather thigh strap accentuating a soft thigh squish, in boots.",
       "tokens": [
-        "forest green turtleneck",
-        "black midi skirt",
-        "opaque tights",
-        "silver stud earrings"
+        "turtleneck",
+        "green_sweater",
+        "tight_sweater",
+        "wrap_skirt",
+        "leather_skirt",
+        "high_slit",
+        "black_tights",
+        "sheer_tights",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "ankle_boots",
+        "mature_chic"
       ],
+      "characterId": "yukinoshita_haruno",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

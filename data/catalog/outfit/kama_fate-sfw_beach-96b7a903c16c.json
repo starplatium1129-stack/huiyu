@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 181,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_beach",
-      "name": "黑红交叠海滨泳装",
-      "prose": "A black resort swimsuit with overlapping crimson panels and one gold ring fastening, paired with a light beach wrap.",
+      "name": "黑红拼色交叠泳衣与真丝雪纺披肩",
+      "prose": "A structured black-and-crimson cutout swimsuit under a breezy silk wrap, detailed with a polished gold-buckled leather thigh strap gently cinching her bare upper leg.",
       "tokens": [
-        "black swimsuit",
-        "crimson panels",
-        "gold ring",
-        "light beach wrap"
+        "one-piece_swimsuit",
+        "cutout_swimsuit",
+        "crimson_and_black",
+        "gold_ring",
+        "sheer_shawl",
+        "beach_cover-up",
+        "thigh_strap",
+        "leather_strap",
+        "gold_buckle",
+        "bare_legs"
       ],
+      "characterId": "kama_fate",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

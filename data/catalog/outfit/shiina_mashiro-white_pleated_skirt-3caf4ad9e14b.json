@@ -1,22 +1,31 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/white_pleated_skirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1238,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
       "id": "white_pleated_skirt",
-      "name": "白色百褶裙与猫纹内衣",
+      "name": "低腰白色百褶短裙与猫纹系带腿环",
+      "prose": "A crisp low-waisted white pleated miniskirt hinting at cute cat-print undergarments, worn with bare legs cinched by a slender buckled leather thigh strap.",
       "tokens": [
-        "white pleated skirt",
-        "cat print panties"
+        "pleated_skirt",
+        "white_skirt",
+        "miniskirt",
+        "lowleg_panties",
+        "crop_top",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "a white pleated skirt and cat-patterned underwear",
+      "characterId": "shiina_mashiro",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

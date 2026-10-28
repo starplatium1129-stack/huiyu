@@ -1,24 +1,36 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/bridal_wedding_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 847,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "bridal_wedding_dress",
-      "name": "糖霜白花蕾丝婚纱",
-      "prose": "A white lace gown has soft puff sleeves and a layered skirt, finished with a white-flower veil and a delicate pearl necklace.",
+      "name": "法式浮雕蕾丝轻纱花嫁与珍珠腿环",
+      "prose": "An ethereal white gown in embossed Chantilly lace with soft puff sleeves, paired with delicate white lace stockings cinched by a pearled leather thigh strap.",
       "tokens": [
-        "white wedding dress",
-        "lace",
-        "puff sleeves",
-        "layered skirt",
-        "white floral veil",
-        "pearl necklace"
-      ]
+        "wedding_dress",
+        "white_dress",
+        "lace_dress",
+        "corset",
+        "puff_sleeves",
+        "layered_skirt",
+        "bridal_veil",
+        "pearl_necklace",
+        "white_thighhighs",
+        "lace_trim",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "white_heels"
+      ],
+      "characterId": "waguri_kaoruko",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

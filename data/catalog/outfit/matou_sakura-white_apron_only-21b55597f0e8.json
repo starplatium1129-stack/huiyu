@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/white_apron_only",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1328,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "white_apron_only",
-      "name": "白色荷叶边围裙单件",
+      "name": "白府绸荷叶围裙与蕾丝私语内搭",
+      "prose": "A crisp white backless ruffled apron worn over sheer lace underpinnings, accented by a narrow buckled leather strap creating a delicate soft squish along the bare upper thigh.",
       "tokens": [
-        "white apron",
-        "frills",
-        "waist ties"
+        "white_apron",
+        "frilled_apron",
+        "backless",
+        "lace_bustier",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs",
+        "bare_thighs"
       ],
-      "prose": "A white kitchen apron with a softly frilled edge and plain waist ties.",
+      "characterId": "matou_sakura",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

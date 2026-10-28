@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "frieren/sfw_sage_city_knit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1113,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
       "id": "sfw_sage_city_knit",
-      "name": "鼠尾草绿都市针织装",
-      "prose": "a sage-green button cardigan over an oatmeal high-neck knit top, charcoal straight-leg trousers and soft brown leather flats",
+      "name": "鼠尾草绿落肩针织开衫与A字短裙皮腿扣",
+      "prose": "An oversized sage-green ribbed knit cardigan slipping off one shoulder over a white crop camisole and wool miniskirt, framing bare legs wrapped in a buckled leather strap with a tender thigh squish.",
       "tokens": [
-        "sage green cardigan",
-        "buttons",
-        "oatmeal sweater",
-        "high collar",
-        "charcoal straight-leg trousers",
-        "brown flats"
+        "sage_green_cardigan",
+        "knit_cardigan",
+        "off_shoulder",
+        "crop_top",
+        "wool_skirt",
+        "miniskirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "frieren"
     }
   }
 }

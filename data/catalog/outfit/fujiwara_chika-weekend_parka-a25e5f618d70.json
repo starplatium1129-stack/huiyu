@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "fujiwara_chika/weekend_parka",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1640,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfit": {
       "id": "weekend_parka",
-      "name": "玫粉短风衣与牛仔半裙",
-      "prose": "A rose-pink short hooded parka over a white graphic-free T-shirt, a blue denim knee-length skirt, and white sneakers",
+      "name": "甜酷玫粉短款连帽风衣与丹宁包臀超短裙",
+      "prose": "A cropped rose-pink hooded parka over a fitted white t-shirt and washed denim miniskirt, with a buckled leather thigh strap biting softly into her bare thigh skin with a delicate squish.",
       "tokens": [
-        "pink_parka",
-        "hood_down",
+        "pink_jacket",
+        "cropped_jacket",
+        "hoodie",
         "white_t-shirt",
         "denim_skirt",
-        "knee-length_skirt",
-        "white_sneakers",
-        "black_hair_bow"
+        "miniskirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "white_sneakers"
       ],
-      "default": false
+      "default": false,
+      "characterId": "fujiwara_chika",
+      "isDefault": false
     }
   }
 }

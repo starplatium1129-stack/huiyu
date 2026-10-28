@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/bath_unclothed",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1423,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
@@ -15,7 +15,8 @@
       ],
       "prose": "No clothing.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "raiden_shogun"
     }
   }
 }

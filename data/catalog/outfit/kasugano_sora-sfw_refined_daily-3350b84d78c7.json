@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 923,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "蓝灰背带长裙与白衬衫",
-      "prose": "A slate-blue calf-length pinafore with neat pleats and small dark buckles over a white long-sleeved blouse, opaque white socks and black Mary Janes.",
+      "name": "雾霾蓝背带羊毛长裙与真丝立领衬衫",
+      "prose": "A dusty slate-blue wool pinafore dress with crisp pleats and a daring walking slit, layered over a high-neck ivory silk blouse, black stockings, and a slim leather thigh band.",
       "tokens": [
-        "slate blue calf-length pinafore dress",
-        "pleats",
-        "white blouse",
-        "long sleeves",
-        "white socks",
-        "black mary janes"
+        "pinafore_dress",
+        "slate_blue_dress",
+        "pleated_skirt",
+        "high_slit",
+        "white_blouse",
+        "high_collar",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "oxford_shoes"
       ],
+      "characterId": "kasugano_sora",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

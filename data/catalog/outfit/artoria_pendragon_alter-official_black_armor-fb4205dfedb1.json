@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/official_black_armor",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "official_black_armor",
-      "name": "漆黑赤纹哥特重铠",
-      "prose": "black gothic plate armor with jagged red filigree, iron gauntlets and a dark-blue gown beneath the segmented plates",
+      "name": "漆黑赤纹哥特重铠与高衩战裙",
+      "prose": "Segmented obsidian gothic plate armor detailed with crimson runes, worn over a dark combat gown with an aggressive slit. A reinforced leather thigh strap with an iron buckle bites deeply into soft bare thigh skin.",
       "tokens": [
-        "black plate armor",
-        "red filigree",
+        "black_armor",
+        "plate_armor",
+        "breastplate",
         "gauntlets",
-        "dark blue dress"
+        "dark_dress",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "armored_boots"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "artoria_pendragon_alter"
     }
   }
 }

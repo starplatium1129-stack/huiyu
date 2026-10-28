@@ -1,27 +1,33 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sfw_winter_coat_burgundy_scarf",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1153,
   "createdAt": "2026-10-06T14:36:56.397422600+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "sfw_winter_coat_burgundy_scarf",
-      "name": "墨黑羊毛大衣与酒红围巾",
+      "name": "双排扣墨黑羊绒大衣与绯红围巾",
+      "prose": "A tailored double-breasted black wool coat with leather accents, styled with a plush burgundy scarf, sheer dark hosiery, and a leather thigh strap with polished square buckle.",
+      "tokens": [
+        "black_coat",
+        "wool_coat",
+        "double-breasted",
+        "burgundy_scarf",
+        "skirt",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "leather_boots"
+      ],
+      "characterId": "kasumigaoka_utaha",
       "default": false,
       "isDefault": false,
-      "isNsfw": false,
-      "category": "日常衣装（创作）",
-      "prose": "A black wool coat with long clean lapels and a softly belted waist, paired with a burgundy wool scarf, dark tights and black leather ankle boots.",
-      "tokens": [
-        "black wool coat",
-        "burgundy scarf",
-        "black tights",
-        "leather ankle boots",
-        "belted waist"
-      ]
+      "isNsfw": false
     }
   }
 }

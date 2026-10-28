@@ -1,23 +1,32 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/plum_cardigan_tights",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1326,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "plum_cardigan_tights",
-      "name": "梅色针织开衫与黑丝",
+      "name": "熟梅落肩羊绒开衫与真丝包臀裙",
+      "prose": "An oversized plum cashmere cardigan loosely draped over a bodycon silk slip, highlighting a silver-buckled leather thigh strap with soft indentation against sheer dark thigh-highs.",
       "tokens": [
-        "plum cardigan",
-        "fine knit",
-        "black pantyhose"
+        "plum_cardigan",
+        "long_cardigan",
+        "knitwear",
+        "silk_slip_dress",
+        "bodycon_dress",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "black_thighhighs",
+        "pumps"
       ],
-      "prose": "A plum fine-knit buttoned cardigan with black tights.",
+      "characterId": "matou_sakura",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

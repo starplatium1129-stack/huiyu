@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/willpower_winter",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 384,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "default": false,
       "id": "willpower_winter",
       "isDefault": false,
-      "name": "意志 / 寒冬信使日常便服",
-      "prose": "an olive-green parka with a fur-trimmed hood, cream cable-knit scarf, charcoal jeans, leather boots and a brown messenger bag",
+      "name": "寒冬信使墨绿绗缝短夹克与羊绒围巾",
+      "prose": "A cropped olive-green quilted winter bomber jacket layered over a cream cable-knit sweater and dark shorts. Over-knee black thighhighs swell gently beneath an engraved leather thigh strap with an alluring soft squish.",
       "tokens": [
-        "olive green parka",
-        "fur trimmed hood",
-        "cream cable knit scarf",
-        "charcoal jeans",
-        "leather boots",
-        "brown messenger bag"
-      ]
+        "quilted_jacket",
+        "olive_jacket",
+        "bomber_jacket",
+        "cable_knit_sweater",
+        "cream_sweater",
+        "black_shorts",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "winter_boots"
+      ],
+      "characterId": "texas_arknights"
     }
   }
 }

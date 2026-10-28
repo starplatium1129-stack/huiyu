@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/maid_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 243,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "maid_uniform",
-      "name": "黑白蕾丝女仆装",
-      "prose": "A long-sleeved black dress with white frill edging, white apron and white lace maid headdress.",
+      "name": "罗兹瓦尔高阶黑丝绒女仆裙与白丝腿环",
+      "prose": "A fitted black velvet maid dress with ruffled lace apron and sweetheart neckline, paired with white thighhighs indented by a polished silver-buckled leather thigh strap with a subtle soft squish.",
       "tokens": [
         "maid",
-        "black dress",
-        "white apron",
-        "white lace headdress",
-        "frills",
-        "long sleeves"
+        "maid_apron",
+        "black_dress",
+        "ruffled_apron",
+        "maid_headdress",
+        "sweetheart_neckline",
+        "white_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "mary_janes"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "rem_rezero"
     }
   }
 }

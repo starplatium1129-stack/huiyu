@@ -1,25 +1,34 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/sfw_school",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 876,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
       "id": "sfw_school",
-      "name": "片桐高校尖领制服",
-      "prose": "The white wing-collar school shirt, dark blazer and knee-length pleated skirt of Katagiri High.",
+      "name": "片桐高校改良修身西装制服与绝对领域",
+      "prose": "The Katagiri academy uniform with a sharply tailored navy blazer over an open-collared white shirt, high-waist pleated grey miniskirt, sheer black thighhighs, and a buckled leather strap creating gentle soft squish on the thigh.",
       "tokens": [
-        "katagiri_senior_high_school_uniform",
-        "white shirt",
-        "wing collar",
-        "dark blazer",
-        "knee-length pleated skirt"
+        "school_uniform",
+        "dark_blazer",
+        "white_shirt",
+        "collared_shirt",
+        "wing_collar",
+        "grey_skirt",
+        "pleated_skirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "leather_loafers"
       ],
+      "characterId": "hori_kyouko",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/remains",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 295,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
-      "default": false,
       "id": "remains",
-      "isDefault": false,
-      "name": "残余灰黑战术便装",
-      "prose": "A cropped dark-grey tactical jacket over a black work vest, paired with charcoal cargo trousers and military boots.",
+      "name": "遗尘灰黑解构战术夹克与机能皮腿环",
+      "prose": "A tailored dark-grey cropped techwear tactical jacket over a fitted charcoal compression bodysuit and hotpants. Dual tactical leather thigh harnesses cinch the upper thigh with subtle soft indentation.",
       "tokens": [
-        "dark grey cropped jacket",
-        "black vest",
-        "charcoal cargo pants",
-        "military boots"
-      ]
+        "tactical_jacket",
+        "cropped_jacket",
+        "black_shorts",
+        "spandex_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "leg_harness",
+        "buckle",
+        "combat_boots"
+      ],
+      "characterId": "kaltsit_arknights",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

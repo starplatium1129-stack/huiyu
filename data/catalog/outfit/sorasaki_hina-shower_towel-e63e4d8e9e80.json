@@ -1,22 +1,30 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/shower_towel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1351,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "id": "shower_towel",
-      "name": "晨浴·紫缘白浴巾",
+      "name": "晨浴华夫格裹胸浴巾裙与深紫皮腿扣",
       "tokens": [
-        "white towel",
-        "purple edging"
+        "bathrobe",
+        "towel",
+        "white_towel",
+        "bare_shoulders",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "A white cotton bath towel with narrow purple woven edging.",
+      "prose": "A plush white bath towel with purple piping knotted securely above the chest, framing damp bare legs encircled by a buckled leather thigh strap leaving a soft indentation.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "sorasaki_hina"
     }
   }
 }

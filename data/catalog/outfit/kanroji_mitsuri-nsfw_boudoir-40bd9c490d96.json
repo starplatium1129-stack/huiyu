@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/nsfw_boudoir",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
@@ -15,7 +15,8 @@
       "prose": "No clothing.",
       "tokens": [
         "nude"
-      ]
+      ],
+      "characterId": "kanroji_mitsuri"
     }
   }
 }

@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/sfw_silk_dorm_robe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
       "default": false,
       "id": "sfw_silk_dorm_robe",
       "isDefault": false,
-      "name": "浅蓝金边·宿舍长睡袍",
-      "prose": "An opaque pale-blue silk gown with gold piping, long sleeves and sash-tied closed front over full-length pajamas.",
+      "name": "冰蓝暗纹丝绸落肩晨袍与金扣腿环",
+      "prose": "A lustrous ice-blue silk dressing gown trimmed with gold piping, loosely draped to open at the hip. Her bare thigh beneath is encircled by a supple white leather strap with a gold buckle causing a soft squish.",
       "tokens": [
-        "pale blue long dressing gown",
-        "opaque silk",
-        "gold piping",
-        "long sleeves",
-        "sash-tied closed front",
-        "full-length pajamas"
-      ]
+        "silk_robe",
+        "blue_robe",
+        "open_robe",
+        "sash",
+        "gold_trim",
+        "lace_trim",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "gold_buckle",
+        "slippers"
+      ],
+      "characterId": "shokuhou_misaki"
     }
   }
 }

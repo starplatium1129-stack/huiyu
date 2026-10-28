@@ -1,22 +1,31 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/blue_bath_wrap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1300,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
       "id": "blue_bath_wrap",
-      "name": "温泉蓝色浴巾",
+      "name": "湖蓝华夫格深V裹胸系带浴袍裙与皮腿扣",
       "tokens": [
-        "blue towel",
-        "waist wrap"
+        "bathrobe",
+        "blue_robe",
+        "short_robe",
+        "plunging_neckline",
+        "sash",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "A plain blue bath towel wrapped at the waist.",
+      "prose": "A plush indigo waffle-weave bath robe knotted snugly at the waist with an asymmetrical hem, framing bare legs wrapped in a buckled leather thigh strap that creates an alluring soft indentation.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "hayase_yuuka"
     }
   }
 }

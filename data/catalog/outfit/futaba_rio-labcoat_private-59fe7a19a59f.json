@@ -1,21 +1,33 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/labcoat_private",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1179,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "labcoat_private",
-      "name": "白色实验大褂",
+      "name": "极简立裁实验白大褂与皮扣胸衣短裤",
+      "prose": "A crisp white tailored lab coat worn open over a slate-grey high-neck corset bodysuit and charcoal tailored shorts. A buckled black leather thigh strap creates a soft indentation against her bare thigh above knit over-knee socks.",
       "tokens": [
-        "white lab coat"
+        "lab_coat",
+        "open_coat",
+        "bodysuit",
+        "high_neck",
+        "corset",
+        "shorts",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "layered_clothing"
       ],
-      "prose": "a white laboratory coat",
+      "characterId": "futaba_rio",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

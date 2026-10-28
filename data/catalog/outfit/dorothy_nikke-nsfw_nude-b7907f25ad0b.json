@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1280,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "无衣装",
+      "name": "无衣装状态",
       "tokens": [
         "nude"
       ],
       "prose": "No clothing.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "dorothy_nikke"
     }
   }
 }

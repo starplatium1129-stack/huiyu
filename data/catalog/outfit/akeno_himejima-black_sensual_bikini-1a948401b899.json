@@ -1,23 +1,30 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/black_sensual_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 702,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "black_sensual_bikini",
-      "name": "黑紫细绳挂颈泳装",
-      "prose": "a glossy black string bikini with narrow violet edging, slender halterneck ties and one small orange bow at the center",
+      "name": "黑金削肩挂颈高衩泳装与金属环皮腿扣",
+      "prose": "A daring black satin halter bikini accented with golden ring hardware and a high-leg cut, complemented by a buckled leather thigh strap that leaves a subtle soft indentation on sunlit skin.",
       "tokens": [
-        "black bikini",
-        "string bikini",
+        "black_bikini",
         "halterneck",
-        "purple trim",
-        "small orange bow"
-      ]
+        "high_leg_bikini",
+        "gold_trim",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sandals"
+      ],
+      "characterId": "akeno_himejima",
+      "default": false,
+      "isDefault": false
     }
   }
 }

@@ -1,31 +1,36 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/shuka_school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1565,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
       "id": "shuka_school_uniform",
-      "name": "秀华高中高年级整洁制服",
+      "name": "秀华高中英伦西装外套与百褶短裙",
       "tokens": [
         "school_uniform",
-        "jacket",
         "blazer",
         "navy_jacket",
         "white_shirt",
         "collared_shirt",
+        "necktie",
         "pleated_skirt",
         "black_skirt",
-        "pantyhose",
-        "black_pantyhose",
+        "miniskirt",
+        "black_thighhighs",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "loafers"
       ],
-      "prose": "The neat Shuka High School uniform with a dark navy blazer over a crisp collared white blouse, dark pleated skirt, sheer black tights, and polished dark loafers with her signature small hairclip",
+      "prose": "A tailored navy blazer over a crisp collared white blouse and pleated miniskirt, worn with black thighhighs clasped by a buckled leather thigh strap that causes an enticing soft thigh squish.",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "yamada_ryo"
     }
   }
 }

@@ -1,23 +1,33 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/red_turtleneck",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "red_turtleneck",
-      "name": "白十字红高领与黑色褶裙",
-      "prose": "her red turtleneck with a white cross motif and black pleated skirt",
+      "name": "经典赤红羊绒高领衫与黑褶裙微勒腿环",
+      "prose": "A form-fitting crimson cashmere turtleneck sweater tucked into an obsidian high-waist pleated skirt, revealing black thighhighs beneath a buckled leather strap pressing into soft skin.",
       "tokens": [
-        "red turtleneck",
-        "white cross print",
-        "black pleated skirt"
+        "red_sweater",
+        "turtleneck",
+        "ribbed_sweater",
+        "cross",
+        "black_skirt",
+        "pleated_skirt",
+        "high-waist_skirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "ankle_boots"
       ],
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "tohsaka_rin"
     }
   }
 }

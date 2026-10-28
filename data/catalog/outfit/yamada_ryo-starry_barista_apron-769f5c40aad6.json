@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/starry_barista_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1567,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
       "id": "starry_barista_apron",
-      "name": "STARRY深夜吧台调饮围裙装",
+      "name": "STARRY冷峻修身黑衬衫与吧台短裙围裙",
       "tokens": [
         "collared_shirt",
         "grey_shirt",
@@ -17,11 +17,19 @@
         "necktie",
         "black_necktie",
         "apron",
-        "black_apron"
+        "black_apron",
+        "miniskirt",
+        "black_skirt",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
-      "prose": "A charcoal dress shirt with rolled sleeves, a tailored black bistro apron, and a thin black necktie",
+      "prose": "A fitted charcoal dress shirt with rolled sleeves and a skinny necktie over a black miniskirt and apron, paired with dark thighhighs indented by a buckled leather thigh strap with a subtle squish.",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "yamada_ryo"
     }
   }
 }

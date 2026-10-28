@@ -1,23 +1,32 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/soft_nightdress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1370,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "soft_nightdress",
-      "name": "奶油薄棉睡裙",
+      "name": "奶油薄棉深V蕾丝睡裙与丝绒束腿带",
+      "prose": "A delicate cream semi-sheer cotton nightdress with scalloped lace along the V-neckline and a high hem slit, accompanied by a soft leather thigh strap cinching her pale thigh.",
       "tokens": [
-        "cream nightgown",
-        "thin straps",
-        "socks"
+        "nightgown",
+        "cotton_nightdress",
+        "v-neck",
+        "lace_trim",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "velvet_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "A lightweight cream cotton nightdress with narrow shoulder straps and soft matching socks.",
+      "characterId": "eyjafjalla_arknights",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "nakano_miku/asahi_high_school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1572,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_miku",
     "outfit": {
       "id": "asahi_high_school_uniform",
-      "name": "旭高校正统针织衫黑丝制服",
+      "name": "旭高校薄荷绿开衫百褶短裙与透肤黑丝皮腿环",
       "tokens": [
         "school_uniform",
         "cardigan",
@@ -19,13 +19,19 @@
         "red_necktie",
         "pleated_skirt",
         "black_skirt",
+        "mini_skirt",
+        "headphones_around_neck",
         "pantyhose",
         "black_pantyhose",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "loafers"
       ],
-      "prose": "The Asahi High School uniform featuring an oversized mint-green knit button cardigan over a collared white shirt with a red ribbon tie, dark pleated skirt, opaque black pantyhose stockings, and dark leather loafers",
+      "prose": "Asahi High School uniform with a mint-green knit cardigan over a pleated dark skirt, headphones around her neck, and sheer black pantyhose cinched by a buckled leather thigh strap causing a soft indentation on tender skin.",
       "isDefault": true,
-      "default": true
+      "default": true,
+      "characterId": "nakano_miku"
     }
   }
 }

@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_bridal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 873,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "淡紫折缎·粉结花嫁",
-      "prose": "A lavender satin gown with fitted waist, broad skirt folds, pink back ribbon and short veil.",
+      "name": "雾紫重缎胸衣花嫁与高开衩皮腿环",
+      "prose": "A sculptural lilac satin corset bridal gown with an asymmetric high slit, revealing sheer stockings accented by a sleek buckled leather thigh strap.",
       "tokens": [
-        "lavender satin wedding dress",
-        "fitted waist",
-        "broad skirt folds",
-        "pink back ribbon",
-        "short veil"
+        "wedding_dress",
+        "purple_dress",
+        "corset",
+        "satin_dress",
+        "side_slit",
+        "veil",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "high_heels"
       ],
+      "characterId": "shinjou_akane",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

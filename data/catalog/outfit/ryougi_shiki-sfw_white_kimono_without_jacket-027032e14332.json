@@ -1,24 +1,30 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/sfw_white_kimono_without_jacket",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 734,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
       "default": false,
       "id": "sfw_white_kimono_without_jacket",
       "isDefault": false,
-      "name": "白和服·卸下夹克",
-      "prose": "An opaque white kimono with overlapped collar and dark woven obi.",
+      "name": "素雅纯白绢丝和服与隐秘皮腿环",
+      "prose": "A pure white silk kimono worn without outer layers, bound at the waist by a rich indigo obi. Slender bare legs emerging from the slit hem are clasped by a black leather thigh strap with subtle soft squish.",
       "tokens": [
         "white_kimono",
-        "opaque_fabric",
-        "closed_collar",
-        "dark_obi"
-      ]
+        "silk_kimono",
+        "dark_obi",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "barefoot"
+      ],
+      "characterId": "ryougi_shiki"
     }
   }
 }

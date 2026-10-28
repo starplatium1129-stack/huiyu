@@ -1,28 +1,37 @@
 {
   "kind": "outfit",
   "id": "nakano_ichika/actress_trench_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1516,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_ichika",
     "outfit": {
       "id": "actress_trench_coat",
-      "name": "女演员卡其风衣修身高领私服",
-      "prose": "A stylish tan trench coat over a sleek black turtleneck sweater, paired with tailored high-waist slacks and a dangling earring, radiating actress sophistication.",
+      "name": "女演员精裁西装马甲热裤与双扣皮腿环",
+      "prose": "A tailored tan sleeveless vest worn over a loose off-shoulder silk blouse and matching high-waisted micro shorts, highlighting bare legs where a buckled leather thigh strap bites softly into tender skin.",
       "tokens": [
-        "trench_coat",
-        "tan_coat",
-        "turtleneck",
-        "black_shirt",
-        "long_pants",
-        "high-waist_pants",
+        "vest",
+        "suit_vest",
+        "tan_vest",
+        "sleeveless",
+        "off-shoulder_shirt",
+        "white_shirt",
+        "silk_shirt",
+        "shorts",
+        "micro_shorts",
+        "ankle_boots",
         "single_earring",
-        "boots",
-        "ankle_boots"
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "nakano_ichika",
+      "default": false,
+      "isDefault": false
     }
   }
 }

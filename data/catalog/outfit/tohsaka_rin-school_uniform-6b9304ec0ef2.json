@@ -1,24 +1,33 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/school_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "school_uniform",
-      "name": "穗群原藏蓝制服",
-      "prose": "her navy Homurahara school blazer and ribbon with a pleated skirt and black thigh-high socks",
+      "name": "穗群原精裁西装马甲制服与黑丝皮腿扣",
+      "prose": "A tailored navy school blazer and fitted vest over a white blouse with a red ribbon and pleated skirt, showing black thighhighs cinched by a buckled leather strap with a soft indentation.",
       "tokens": [
-        "navy school blazer",
-        "ribbon",
-        "pleated skirt",
-        "black thighhighs"
+        "school_uniform",
+        "navy_jacket",
+        "vest",
+        "white_shirt",
+        "red_ribbon",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "tohsaka_rin"
     }
   }
 }

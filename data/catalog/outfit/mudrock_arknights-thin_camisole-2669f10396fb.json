@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/thin_camisole",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 333,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
-      "default": false,
       "id": "thin_camisole",
-      "isDefault": false,
-      "name": "雾灰轻棉吊带单衣",
-      "prose": "A light-gray cotton camisole with narrow straps and a straight hem.",
-      "styleHint": "soft cinematic lighting",
+      "name": "雾灰冰丝透肌细吊带与软皮腿环",
+      "prose": "A delicate charcoal-grey silk jersey camisole with micro spaghetti straps and boy shorts, styled with an adjustable black leather thigh band creating a soft skin pinch on her fair thigh.",
       "tokens": [
-        "grey camisole",
-        "thin straps",
-        "cotton"
-      ]
+        "camisole",
+        "grey_camisole",
+        "silk_camisole",
+        "spaghetti_straps",
+        "cotton_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "mudrock_arknights",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/glamoth_canonical_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1584,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
       "id": "glamoth_canonical_dress",
-      "name": "格拉默浅绿薄纱礼服裙",
+      "name": "格拉默高阶先锋短披风短裙与机能双腿带",
       "tokens": [
-        "dress",
-        "sleeveless_dress",
-        "white_dress",
-        "green_dress",
-        "collared_shirt",
-        "black_ribbon",
-        "necktie",
+        "cropped_jacket",
+        "white_shirt",
         "pleated_skirt",
-        "thighhighs",
-        "white_thighhighs",
+        "miniskirt",
+        "translucent_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "boots"
       ],
-      "prose": "Her iconic light-green layered dress with a crisp white collared blouse, black chest ribbon tie, frilled pleats along the hem, pure white thigh-high stockings, and buckled ankle boots",
+      "prose": "Her refined military cadet uniform featuring a cropped bolero jacket, pleated miniskirt, and translucent stockings cinched by dual buckled leather thigh straps creating a subtle squish.",
       "isDefault": true,
-      "default": true
+      "default": true,
+      "characterId": "firefly_hsr",
+      "isNsfw": false
     }
   }
 }

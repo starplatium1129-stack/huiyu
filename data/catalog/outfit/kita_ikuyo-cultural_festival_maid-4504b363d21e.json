@@ -1,30 +1,33 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/cultural_festival_maid",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1570,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "cultural_festival_maid",
-      "name": "秀华文化祭复古黑白女仆装",
+      "name": "文化祭经典黑白荷叶边女仆短裙",
       "tokens": [
-        "maid_uniform",
+        "maid",
         "maid_dress",
         "black_dress",
         "white_apron",
-        "maid_apron",
-        "maid_headdress",
-        "frills",
         "frilled_apron",
+        "frills",
+        "black_thighhighs",
         "thighhighs",
-        "black_thighhighs"
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "mary_janes"
       ],
-      "prose": "A classic ruffled black maid dress with a crisp white frilled apron, frilly lace maid headdress, and black thigh-high stockings for the high school cultural festival cafe",
+      "prose": "A frilly black maid minidress with a crisp white apron and ruffled trim, matched with black thighhighs indented by a buckled leather thigh strap that causes an enticing soft thigh squish.",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "kita_ikuyo"
     }
   }
 }

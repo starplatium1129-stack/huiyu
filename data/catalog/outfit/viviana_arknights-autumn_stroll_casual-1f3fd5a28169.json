@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/autumn_stroll_casual",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 394,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
       "default": false,
       "id": "autumn_stroll_casual",
       "isDefault": false,
-      "name": "金秋漫步羊毛风衣",
-      "prose": "a camel wool trench over a cream cable-knit turtleneck, brown tartan midi skirt, dark riding boots and leather gloves, with a beige beret between her antlers",
+      "name": "金秋暖阳驼色羊绒短大衣与千鸟格短裙",
+      "prose": "A tailored camel wool cropped coat worn over a fitted cream ribbed turtleneck and high-waisted houndstooth miniskirt. Dark brown thighhighs swell slightly under a buckled leather thigh strap with a tempting soft squish.",
       "tokens": [
-        "camel coat",
-        "cream turtleneck",
-        "plaid skirt",
-        "riding boots",
-        "leather gloves",
-        "beret"
-      ]
+        "cropped_coat",
+        "camel_coat",
+        "wool_coat",
+        "turtleneck_sweater",
+        "cream_sweater",
+        "plaid_skirt",
+        "mini_skirt",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "riding_boots"
+      ],
+      "characterId": "viviana_arknights"
     }
   }
 }

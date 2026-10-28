@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/winter_outfit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "winter_outfit",
-      "name": "梅色滚边冬日大衣",
+      "name": "烟灰羊绒滚边大衣与系带裙套",
+      "prose": "A heavy gray cashmere overcoat with plum piping draped over a cream knit top and slit wool skirt, revealing a buckled leather strap softly pressing into opaque dark thigh-highs.",
       "tokens": [
-        "gray wool coat",
-        "plum piping",
-        "cream sweater",
-        "plum skirt",
-        "brown boots"
+        "gray_overcoat",
+        "wool_coat",
+        "plum_trim",
+        "cream_sweater",
+        "pencil_skirt",
+        "slit_skirt",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "black_thighhighs",
+        "leather_boots"
       ],
-      "prose": "A gray wool coat with plum piping over a cream sweater and plum skirt, with brown boots.",
-      "styleHint": "soft cinematic lighting",
+      "characterId": "matou_sakura",
+      "default": false,
       "isDefault": false,
-      "default": false
+      "isNsfw": false
     }
   }
 }

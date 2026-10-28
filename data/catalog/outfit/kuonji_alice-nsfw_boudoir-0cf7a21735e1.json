@@ -1,24 +1,33 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/nsfw_boudoir",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 927,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "黑色细褶洋馆私服",
-      "prose": "A black long-sleeved private dress with fine bodice pintucks and a row of small front buttons.",
+      "name": "维多利亚黑纱细褶开襟晨袍",
+      "prose": "A gossamer black pleated boudoir dress with vintage pintucks and an open side slit, framing a buckled leather thigh strap that gently indents the soft skin above stockings.",
       "tokens": [
-        "black dress",
+        "black_dress",
+        "sheer_dress",
         "pintucks",
-        "front buttons",
-        "long sleeves"
+        "front_buttons",
+        "high_collar",
+        "high_slit",
+        "long_sleeves",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "black_thighhighs"
       ],
+      "characterId": "kuonji_alice",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

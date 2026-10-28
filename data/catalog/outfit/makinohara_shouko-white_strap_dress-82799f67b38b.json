@@ -1,22 +1,33 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/white_strap_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1207,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "white_strap_dress",
-      "name": "纯白细肩带连衣裙",
+      "name": "斜裁真丝细带吊带裙与银扣皮腿环",
+      "prose": "A bias-cut white heavy silk dress suspended by delicate shoulder straps, featuring a high side slit over bare legs adorned with a silver-buckled leather thigh strap.",
       "tokens": [
-        "white dress",
-        "shoulder straps"
+        "white_dress",
+        "slip_dress",
+        "spaghetti_straps",
+        "silk",
+        "side_slit",
+        "backless",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "heels"
       ],
-      "prose": "a white dress with narrow shoulder straps",
+      "characterId": "makinohara_shouko",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

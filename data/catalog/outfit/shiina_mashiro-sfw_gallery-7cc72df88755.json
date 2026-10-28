@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/sfw_gallery",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 853,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
       "id": "sfw_gallery",
-      "name": "象牙白折褶画展连衣裙",
-      "prose": "An ivory boat-neck knee-length dress with short sleeves, two broad skirt pleats and flat shoes.",
+      "name": "象牙白精裁画展褶裙与金扣皮腿带",
+      "prose": "A tailored ivory boat-neck dress with structured architectural pleats, designed with a side slit revealing sheer white thighhighs and a fine buckled leather thigh strap.",
       "tokens": [
-        "ivory dress",
-        "boat neck",
-        "knee-length dress",
-        "short sleeves",
-        "two broad skirt pleats",
-        "flat shoes"
+        "ivory_dress",
+        "boat_neck",
+        "pleated_dress",
+        "side_slit",
+        "sheer_thighhighs",
+        "white_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "flat_shoes"
       ],
+      "characterId": "shiina_mashiro",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

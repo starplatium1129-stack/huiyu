@@ -1,25 +1,31 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/official_miko_robe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 698,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "official_miko_robe",
-      "name": "传统神道绯袴巫女服",
-      "prose": "A white wide-sleeved kimono top, red pleated hakama and an orange collar tie.",
+      "name": "绯红开衩改良巫女羽衣与金扣皮腿环",
+      "prose": "A ceremonial scarlet silk hakama modified with a daring side slit and wide white kimono sleeves, highlighting bare thighs bound by a golden-buckled crimson leather garter with a soft indentation.",
       "tokens": [
         "miko",
-        "white kimono",
-        "wide sleeves",
-        "red hakama",
-        "orange neck ribbon"
+        "white_kimono",
+        "wide_sleeves",
+        "red_hakama",
+        "side_slit",
+        "thigh_strap",
+        "leather_strap",
+        "gold_buckle",
+        "bare_legs",
+        "geta"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "akeno_himejima"
     }
   }
 }

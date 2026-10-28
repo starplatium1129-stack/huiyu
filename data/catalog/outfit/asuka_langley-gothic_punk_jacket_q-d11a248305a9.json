@@ -1,30 +1,35 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/gothic_punk_jacket_q",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 567,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
-      "default": false,
       "id": "gothic_punk_jacket_q",
-      "isDefault": false,
-      "name": "红黑飞行夹克与猫耳针织帽",
-      "prose": "A cropped scarlet bomber with black ribbed cuffs sits over a black tank top and tailored shorts. Black thighhighs, boots, a cat-ear knit cap and an eyepatch complete the pilot streetwear.",
-      "styleHint": "",
+      "name": "高街机车廓形红黑皮夹克与机能皮腿环",
+      "prose": "A distressed crimson-and-black oversized flight jacket over a tight ribbed black crop top, paired with frayed denim micro shorts and sheer black stockings secured by heavy-duty dual-buckle leather thigh straps.",
       "tokens": [
-        "cropped red bomber jacket",
-        "black ribbed cuffs",
-        "black tank top",
-        "black shorts",
-        "black thighhighs",
-        "black boots",
-        "black knit hat",
-        "cat ear hat",
-        "black eyepatch"
-      ]
+        "cropped_jacket",
+        "red_bomber_jacket",
+        "leather_jacket",
+        "black_tank_top",
+        "crop_top",
+        "navel",
+        "denim_shorts",
+        "booty_shorts",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "combat_boots"
+      ],
+      "characterId": "asuka_langley",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

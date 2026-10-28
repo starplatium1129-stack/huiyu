@@ -1,28 +1,35 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/shuka_summer_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 553,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "shuka_summer_uniform",
-      "name": "秀华高中夏季水手校服",
+      "name": "秀华夏季水手服与百褶超短裙",
       "tokens": [
-        "sailor uniform",
-        "short-sleeved white shirt",
-        "navy sailor collar",
-        "red neckerchief",
-        "black pleated skirt",
-        "white socks",
+        "school_uniform",
+        "sailor_uniform",
+        "white_shirt",
+        "short_sleeves",
+        "sailor_collar",
+        "red_neckerchief",
+        "pleated_skirt",
+        "miniskirt",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "loafers"
       ],
-      "prose": "a short-sleeved white sailor shirt with a navy collar and red neckerchief, dark pleated skirt, white socks and loafers",
+      "prose": "A crisp white sailor uniform shirt with a navy collar and red neckerchief, paired with a pleated miniskirt and thighhighs gripped by a buckled leather thigh strap with subtle squish.",
       "styleHint": "",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "gotoh_hitori"
     }
   }
 }

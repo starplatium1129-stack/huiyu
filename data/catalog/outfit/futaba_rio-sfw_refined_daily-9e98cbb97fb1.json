@@ -1,22 +1,31 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 42,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "深红斜袋连帽夹克",
-      "prose": "a burgundy hooded jacket with diagonal welt pockets over a gray crewneck T-shirt, black straight trousers and plain rectangular glasses",
+      "name": "深酒红立裁连帽战壕夹克与机能皮带短裤",
+      "prose": "A deep burgundy oversized hooded trench jacket worn open over a grey modal baby tee and black tailored shorts. A tactical double-ring black leather leg strap tightly wraps her bare thigh, forming a distinct soft flesh indentation.",
       "tokens": [
-        "burgundy hooded jacket",
-        "gray crewneck shirt",
-        "black straight pants",
-        "rectangular glasses"
+        "hooded_jacket",
+        "trench_jacket",
+        "burgundy_jacket",
+        "crop_top",
+        "black_shorts",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "leg_harness",
+        "ankle_boots",
+        "techwear_chic"
       ],
+      "characterId": "futaba_rio",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

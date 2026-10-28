@@ -1,23 +1,33 @@
 {
   "kind": "outfit",
   "id": "frieren/ivory_sleep_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1290,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
       "id": "ivory_sleep_gown",
-      "name": "旅宿象牙白睡袍",
+      "name": "象牙白真丝吊带高衩睡裙与细皮腿环",
       "tokens": [
-        "ivory nightgown",
-        "long sleeves",
-        "green piping"
+        "ivory_dress",
+        "slip_dress",
+        "nightgown",
+        "silk_dress",
+        "plunging_neckline",
+        "high_slit",
+        "spaghetti_straps",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "An ivory long-sleeved nightgown with a fine green border at the cuffs.",
+      "prose": "A delicate ivory silk slip nightgown with deep V-neckline and high side slits, gliding softly over bare legs encircled by a slender buckled leather thigh strap causing a subtle soft squish.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "frieren"
     }
   }
 }

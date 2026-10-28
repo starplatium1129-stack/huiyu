@@ -1,27 +1,34 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/sfw_verdant_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "sfw_verdant_bridal",
-      "name": "白花谷·银扣垂缎婚纱",
-      "prose": "An opaque floor-length white satin gown with silver-clasp draped neckline and veil.",
+      "name": "白花谷银环垂褶高开衩真丝婚纱",
+      "prose": "A statuesque ivory heavy-silk gown with a draped cowl neckline, exposed spine, and a soaring thigh-high slit. Her sheer stockinged leg is encircled by a silver-buckled white leather thigh strap with gentle squish.",
       "tokens": [
-        "white wedding dress",
-        "floor-length dress",
-        "satin",
-        "draped neckline",
-        "silver clasp",
-        "veil"
+        "wedding_dress",
+        "white_dress",
+        "cowl_neck",
+        "backless_dress",
+        "high_slit",
+        "silk_dress",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "bridal_veil",
+        "heels"
       ],
       "isDefault": false,
       "default": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "scathach_fate"
     }
   }
 }

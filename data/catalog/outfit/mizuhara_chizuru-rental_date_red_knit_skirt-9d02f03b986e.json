@@ -1,29 +1,33 @@
 {
   "kind": "outfit",
   "id": "mizuhara_chizuru/rental_date_red_knit_skirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1590,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "mizuhara_chizuru",
     "outfit": {
       "id": "rental_date_red_knit_skirt",
-      "name": "正统约会修身大红针织衫与白蕾丝短裙",
+      "name": "正统约会大红落肩修身针织衫与白蕾丝短裙",
       "tokens": [
-        "sweater",
         "red_sweater",
         "fitted_sweater",
         "short_sleeves",
-        "skirt",
         "white_skirt",
-        "lace_skirt",
-        "high_heels",
-        "shoulder_bag"
+        "pleated_skirt",
+        "lace_trim",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "high_heels"
       ],
-      "prose": "Her classic rental date attire featuring a form-fitting short-sleeved crimson-red knit top accentuating her feminine waistline, crisp white lace mini skirt, and elegant beige high heels",
+      "prose": "A form-fitting crimson short-sleeved knit top paired with a white lace pleated miniskirt, showing bare legs accented by a gold-buckled leather thigh strap with a delicate soft squish.",
       "isDefault": true,
-      "default": true
+      "default": true,
+      "characterId": "mizuhara_chizuru",
+      "isNsfw": false
     }
   }
 }

@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/sfw_summer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 917,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "sfw_summer",
-      "name": "乡间雪白短袖洋装",
-      "prose": "An opaque white cotton knee-length dress with short sleeves and a softly gathered skirt, finished with black hair ribbons and simple flat shoes.",
+      "name": "雪白细褶法式泡泡袖洋装与黑色皮环",
+      "prose": "A vintage-inspired pure white cotton sundress with delicate puff sleeves and a black velvet neck bow, styled with an open skirt slit that shows off a buckled black leather thigh strap on bare pale legs.",
       "tokens": [
-        "white dress",
-        "short sleeves",
-        "knee-length dress",
-        "black ribbon",
-        "flat shoes"
+        "white_dress",
+        "summer_dress",
+        "puff_sleeves",
+        "black_ribbon",
+        "sweetheart_neckline",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "strappy_sandals"
       ],
+      "characterId": "kasugano_sora",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

@@ -1,22 +1,34 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/white_nightgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1233,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "white_nightgown",
-      "name": "宽松白色睡裙",
+      "name": "微透雪纺深V吊带睡裙与珍珠皮革腿带",
+      "prose": "A diaphanous white chiffon slip nightgown with a scalloped lace deep-V neckline and high fluttery side splits. An ivory leather thigh strap with a silver pin buckle cinches the soft upper thigh with subtle soft indentation, barefoot.",
       "tokens": [
-        "white nightgown",
-        "loose dress"
+        "nightgown",
+        "slip_dress",
+        "white_dress",
+        "sheer_chiffon",
+        "deep_v_neck",
+        "lace_trim",
+        "high_slit",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot",
+        "boudoir"
       ],
-      "prose": "a loose white nightgown",
+      "characterId": "shiina_mahiru",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

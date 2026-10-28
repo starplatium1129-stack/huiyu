@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/red_sweater_stockings",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1470,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "red_sweater_stockings",
-      "name": "红高领与黑色长袜",
+      "name": "宽松赤红高领毛衣与透肤黑丝腿环",
       "tokens": [
-        "red turtleneck",
-        "white cross print",
-        "black thighhighs"
+        "oversized_sweater",
+        "red_sweater",
+        "turtleneck",
+        "cross",
+        "sheer_thighhighs",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "a red turtleneck with a white cross motif and black thigh-high socks",
+      "prose": "An oversized scarlet knit turtleneck sweater draping past the hips to frame sheer black thighhighs, firmly indented by a buckled leather thigh strap pressing into tender skin.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "tohsaka_rin"
     }
   }
 }

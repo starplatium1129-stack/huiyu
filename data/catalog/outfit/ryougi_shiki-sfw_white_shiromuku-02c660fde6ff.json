@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/sfw_white_shiromuku",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 735,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
       "default": false,
       "id": "sfw_white_shiromuku",
       "isDefault": false,
-      "name": "白无垢与角隐",
-      "prose": "a white shiromuku with woven silk motifs, white obi, tsunokakushi head covering and white tabi",
+      "name": "幽境白无垢神前礼服与素银腿带",
+      "prose": "An immaculate white silk brocade shiromuku wedding ensemble with embroidered crests and a flowing hem. Beneath the parted silk, a delicate white leather strap with an engraved silver buckle indents her pale thigh.",
       "tokens": [
         "shiromuku",
-        "white obi",
+        "white_kimono",
+        "brocade",
+        "white_obi",
         "tsunokakushi",
-        "white tabi"
-      ]
+        "white_tabi",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "zori"
+      ],
+      "characterId": "ryougi_shiki"
     }
   }
 }

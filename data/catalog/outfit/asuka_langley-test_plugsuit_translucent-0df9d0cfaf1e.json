@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/test_plugsuit_translucent",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 566,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
-      "default": false,
       "id": "test_plugsuit_translucent",
-      "isDefault": false,
-      "name": "三号机测试用半透光战斗服（破）",
-      "prose": "her orange-and-white Unit-03 test plugsuit with translucent panels",
-      "styleHint": "",
+      "name": "三号机半透光测试作战服与战术加压带",
+      "prose": "The experimental semi-translucent test plugsuit with fluorescent safety-orange accents and sheer mesh contouring, enhanced by tactical black leg harnesses cinching the upper thighs.",
       "tokens": [
-        "test plugsuit",
-        "orange and white bodysuit",
-        "translucent panels"
-      ]
+        "test_plugsuit",
+        "bodysuit",
+        "translucent_panels",
+        "orange_accents",
+        "high_collar",
+        "gloves",
+        "thigh_strap",
+        "leg_harness",
+        "compression_straps"
+      ],
+      "characterId": "asuka_langley",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

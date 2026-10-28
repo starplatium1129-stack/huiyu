@@ -1,25 +1,30 @@
 {
   "kind": "outfit",
   "id": "ichinose_asuna/casual_sweater",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 521,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "ichinose_asuna",
     "outfit": {
       "default": false,
       "id": "casual_sweater",
       "isDefault": false,
-      "name": "象牙白粗针露肩假日装",
-      "prose": "an ivory off-shoulder cable-knit sweater with a broad folded neckline, a dark denim skirt, sheer black tights and tan ankle boots",
+      "name": "燕麦色落肩粗棒针露肩毛衣与水洗牛仔短裙",
+      "prose": "An oversized ivory cable-knit sweater slouching off one shoulder over a fitted dark denim mini skirt, paired with dark tights and a buckled leather thigh band pressing into the soft skin.",
       "tokens": [
-        "ivory cable knit sweater",
-        "off shoulder",
-        "dark denim skirt",
-        "black pantyhose",
-        "tan ankle boots"
-      ]
+        "off_shoulder_sweater",
+        "cable_knit",
+        "denim_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "gold_buckle",
+        "ankle_boots"
+      ],
+      "characterId": "ichinose_asuna"
     }
   }
 }

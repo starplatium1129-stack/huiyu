@@ -1,27 +1,32 @@
 {
   "kind": "outfit",
   "id": "makise_kurisu/crimson_silk_nightwear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1824,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "makise_kurisu",
     "outfit": {
       "id": "crimson_silk_nightwear",
-      "name": "深绯色细带真丝吊带睡裙",
-      "prose": "A delicate crimson silk slip dress with fine black lace scalloping along the neckline and slender shoulder straps, worn barefoot.",
+      "name": "深绯色真丝深V黑蕾丝吊带开衩睡裙",
+      "prose": "A delicate crimson silk bias-cut slip dress trimmed with fine black lace along a deep V-neckline and high leg slit, finished with a buckled leather thigh strap softly indenting her bare thigh.",
       "tokens": [
-        "crimson_nightgown",
+        "crimson_dress",
         "silk_slip",
         "lace_trim",
         "spaghetti_straps",
-        "bare_shoulders",
-        "barefoot"
+        "plunging_neckline",
+        "side_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "makise_kurisu"
     }
   }
 }

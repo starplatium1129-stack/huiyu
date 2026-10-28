@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "asuna_yuuki/knights_rest_tunic",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1275,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "asuna_yuuki",
     "outfit": {
       "id": "knights_rest_tunic",
-      "name": "血盟骑士团露台轻装",
+      "name": "血盟骑士团露台休闲束腰白袍与皮腿环",
+      "prose": "A refined off-duty white sleeveless tunic with crimson trim and structured corset lacing, over a fluttering red pleated miniskirt. Crisp white thighhighs are clasped by a leather thigh harness creating subtle soft tension on the skin.",
       "tokens": [
-        "knights_of_the_blood_uniform",
-        "white tunic",
-        "red cross",
-        "red pleated skirt",
-        "white thighhighs"
+        "white_tunic",
+        "sleeveless_tunic",
+        "red_trim",
+        "red_pleated_skirt",
+        "miniskirt",
+        "corset_waist",
+        "thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "leather_boots"
       ],
-      "prose": "The white and red-cross tunic of the Knights of the Blood, worn without its armor over a red pleated skirt and white thigh-high stockings.",
+      "characterId": "asuna_yuuki",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

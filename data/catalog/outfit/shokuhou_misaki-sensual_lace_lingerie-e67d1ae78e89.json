@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/sensual_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 230,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "女王蜂·黑金蕾丝内衣",
-      "prose": "Black lace lingerie with fine gold edging, a matching garter belt, sheer black thighhighs and delicate gold chain accents.",
+      "name": "蜂皇黑金蛛网蕾丝内衣与吊袜腿带",
+      "prose": "Opulent black mesh lingerie edged with baroque gold embroidery, paired with a matching garter harness. Sheer black stockings are tightly gripped by a dual leather thigh strap indenting her soft thigh.",
       "tokens": [
-        "black lingerie",
-        "gold trim",
-        "lace bra",
-        "garter belt",
-        "black thighhighs",
-        "gold chains"
-      ]
+        "black_lingerie",
+        "gold_trim",
+        "lace_bra",
+        "garter_straps",
+        "black_panties",
+        "sheer_thighhighs",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "shokuhou_misaki",
+      "default": false,
+      "isDefault": false
     }
   }
 }

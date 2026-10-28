@@ -1,21 +1,28 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/locker_stockings",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1350,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "id": "locker_stockings",
-      "name": "更衣间·黑色长袜状态",
+      "name": "更衣间私密透肤黑丝与金扣战术吊袜腿环",
       "tokens": [
-        "black thighhighs"
+        "underwear",
+        "black_camisole",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "gold_buckle"
       ],
-      "prose": "Plain black thigh-high stockings, with the rest of the uniform removed.",
+      "prose": "Minimalist black boudoir lingerie paired with sheer dark stockings, secured by a gold-buckled leather thigh strap that visibly indents her soft thigh flesh with an alluring squish.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "sorasaki_hina"
     }
   }
 }

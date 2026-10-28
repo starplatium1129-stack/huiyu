@@ -1,22 +1,32 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sensual_white_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sensual_white_lace_lingerie",
-      "name": "白色花纹蕾丝套装",
-      "prose": "a white lace bra and matching briefs with a lace garter belt and white thigh-high stockings",
+      "name": "法式刺绣白蕾丝束身胸衣与晨袍",
+      "prose": "Intricate French white lace corset and garter ensemble under a sheer draped silk robe, styled with buckled white leather thigh straps pressing alluringly into soft upper thighs.",
       "tokens": [
-        "white lace bra",
-        "matching panties",
-        "garter belt",
-        "white thighhighs"
-      ]
+        "white_corset",
+        "lace_lingerie",
+        "garter_straps",
+        "white_robe",
+        "sheer_robe",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "white_thighhighs",
+        "bare_thighs"
+      ],
+      "characterId": "jeanne_d_arc",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,22 +1,31 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/white_sleep_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1358,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
       "id": "white_sleep_shirt",
-      "name": "宽松白棉睡衬衫",
+      "name": "落肩宽松白棉衬衫与棉麻短裤",
       "tokens": [
-        "oversized white shirt",
-        "long sleeves"
+        "oversized_shirt",
+        "white_shirt",
+        "open_shirt",
+        "linen_shorts",
+        "white_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "An oversized white cotton button-front shirt with long sleeves and an unadorned collar.",
+      "prose": "An oversized fine cotton shirt left unbuttoned at the throat over breathable drawstring linen lounge shorts. A supple black leather thigh strap with an alloy buckle gently bites into the soft flesh of her bare leg.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "artoria_pendragon"
     }
   }
 }

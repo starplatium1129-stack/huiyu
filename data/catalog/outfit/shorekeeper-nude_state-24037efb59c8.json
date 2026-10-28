@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/nude_state",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1242,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
@@ -15,7 +15,8 @@
       ],
       "prose": "unclothed",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "shorekeeper"
     }
   }
 }

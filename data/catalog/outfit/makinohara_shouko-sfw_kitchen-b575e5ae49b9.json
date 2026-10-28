@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/sfw_kitchen",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 31,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "sfw_kitchen",
-      "name": "米白棉衫与海蓝料理套装",
-      "prose": "A gathered-sleeve cream cotton blouse, long blue skirt and white patch-pocket apron.",
+      "name": "奶油羊绒衫与系带围裙开衩及地裙",
+      "prose": "A soft off-shoulder cream knit sweater paired with a navy slit skirt beneath a crisp white waist apron, revealing bare legs cinched by a slender buckled leather thigh strap.",
       "tokens": [
-        "cream blouse",
-        "long blue skirt",
-        "white cotton apron",
-        "patch pockets"
+        "cream_sweater",
+        "off_shoulder",
+        "white_apron",
+        "navy_skirt",
+        "slit_skirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
+      "characterId": "makinohara_shouko",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

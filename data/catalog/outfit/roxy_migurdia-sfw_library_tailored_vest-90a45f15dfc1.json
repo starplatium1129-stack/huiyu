@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/sfw_library_tailored_vest",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1126,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "sfw_library_tailored_vest",
-      "name": "藏蓝马甲学院便装",
-      "prose": "A fitted navy vest, ivory cotton blouse, slate-blue trousers and brown flats.",
+      "name": "拉诺亚魔法学院西装马甲裙与透肌长袜",
+      "prose": "A sharply tailored navy scholastic vest layered over a pleated ivory silk blouse and ruffled cravat, with a matching navy pleated miniskirt, sheer stockings, and a buckled leather thigh strap.",
       "tokens": [
-        "fitted navy vest",
-        "ivory cotton blouse",
-        "long sleeves",
-        "slate blue straight-leg pants",
-        "brown flats"
+        "tailored_vest",
+        "navy_vest",
+        "ivory_blouse",
+        "cravat",
+        "pleated_skirt",
+        "miniskirt",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "oxford_shoes"
       ],
+      "characterId": "roxy_migurdia",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

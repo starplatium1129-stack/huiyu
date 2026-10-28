@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1165,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "无衣装状态",
+      "name": "🔞 私密全裸 / 纯粹形态",
       "tokens": [
         "nude"
       ],
-      "prose": "unclothed",
+      "prose": "No clothing.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "chen_arknights"
     }
   }
 }

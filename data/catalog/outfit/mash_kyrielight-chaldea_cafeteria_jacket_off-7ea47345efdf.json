@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/chaldea_cafeteria_jacket_off",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "chaldea_cafeteria_jacket_off",
-      "name": "迦勒底午餐便服（外套脱下）",
-      "prose": "a black collared dress with a red necktie, black tights and plain glasses",
+      "name": "迦勒底立领修身衬衫黑裙与机能皮带黑丝",
+      "prose": "A tailored black collared shirt dress hugging the figure, accented by a neat crimson silk necktie. Sheer black tights are gripped by an adjustable tactical leather thigh strap with a silver buckle creating a soft indentation on the thigh.",
       "tokens": [
-        "black collared dress",
-        "red necktie",
-        "black tights",
-        "glasses"
+        "shirt_dress",
+        "black_dress",
+        "collared_dress",
+        "red_necktie",
+        "black_tights",
+        "sheer_tights",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers",
+        "uniform_chic"
       ],
-      "isDefault": false,
+      "characterId": "mash_kyrielight",
       "default": false,
+      "isDefault": false,
       "isNsfw": false
     }
   }

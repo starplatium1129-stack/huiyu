@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 231,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
@@ -13,7 +13,10 @@
       "prose": "No clothing.",
       "tokens": [
         "nude"
-      ]
+      ],
+      "characterId": "shokuhou_misaki",
+      "default": false,
+      "isDefault": false
     }
   }
 }

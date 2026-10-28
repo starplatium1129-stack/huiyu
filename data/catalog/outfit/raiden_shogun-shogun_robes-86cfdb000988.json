@@ -1,28 +1,33 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/shogun_robes",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "shogun_robes",
-      "name": "稻妻紫色振袖铠装",
-      "prose": "Gold-edged purple robes with obi and sash, detached sleeves, one pauldron, black fingerless gloves and thigh-highs.",
+      "name": "鸣神金纹振袖礼装与革带腿环",
+      "prose": "A ceremonial purple silk kimono dress adorned with gold embroidery, detached sleeves, and an asymmetrical pauldron. A buckled leather thigh strap creates a delicate soft indentation on her bare thigh skin.",
       "tokens": [
-        "purple kimono",
-        "gold trim",
+        "purple_kimono",
+        "detached_sleeves",
+        "gold_trim",
         "pauldron",
-        "black fingerless gloves",
         "obi",
         "sash",
-        "detached sleeves",
-        "black thighhighs"
+        "fingerless_gloves",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "geta"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "raiden_shogun"
     }
   }
 }

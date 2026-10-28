@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "emilia_rezero/white_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 247,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "emilia_rezero",
     "outfit": {
       "id": "white_dress",
-      "name": "白紫绣边王选礼裙",
-      "prose": "her white long-sleeved dress with lilac edging, a soft waist ribbon and restrained embroidery along the skirt hem",
+      "name": "白紫精绣王选挂颈高衩礼服裙与皮腿扣",
+      "prose": "An ethereal white silk gown detailed with lilac filigree embroidery and a daring high side slit, revealing sheer white thighhighs cinched by a silver-buckled leather strap causing a subtle thigh squish.",
       "tokens": [
-        "white dress",
-        "lilac trim",
-        "long sleeves",
-        "waist ribbon",
-        "embroidered hem"
+        "white_dress",
+        "lilac_trim",
+        "embroidery",
+        "high_slit",
+        "halterneck",
+        "detached_sleeves",
+        "sheer_thighhighs",
+        "white_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "high_heels"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "emilia_rezero"
     }
   }
 }

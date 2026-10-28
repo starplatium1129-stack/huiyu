@@ -1,21 +1,35 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/lounge_cardigan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1213,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "lounge_cardigan",
-      "name": "活动室针织开衫",
+      "name": "炭灰落肩羊绒长开衫与真丝百褶裙皮腿环",
+      "prose": "A charcoal-grey ribbed cashmere cardigan draped off shoulders over a white silk camisole and pleated micro skirt. Sheer black stockings are bound by an adjustable leather thigh strap with twin silver buckles gently depressing soft thigh flesh.",
       "tokens": [
-        "cardigan"
+        "cardigan",
+        "cashmere_cardigan",
+        "long_cardigan",
+        "off_shoulder",
+        "silk_camisole",
+        "pleated_skirt",
+        "miniskirt",
+        "black_stockings",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "slippers",
+        "casual_chic"
       ],
-      "prose": "a soft knitted cardigan",
+      "characterId": "mash_kyrielight",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

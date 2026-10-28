@@ -1,24 +1,34 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/afterwork_cardigan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1110,
   "createdAt": "2026-10-06T07:44:52.584659500+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "afterwork_cardigan",
-      "name": "燕麦绞花开衫与墨绿家居长裤",
-      "prose": "An oatmeal cable-knit cardigan with simple dark buttons over a cream cotton camisole, paired with deep-green linen lounge trousers.",
+      "name": "燕麦罗纹开衫与墨绿高开衩丝裙",
+      "prose": "A relaxed oatmeal ribbed cardigan sliding off one shoulder, layered over a forest-green silk slip skirt featuring a deep side split. Dark stockings are accented by a buckled leather thigh strap indenting her pale skin.",
       "tokens": [
-        "oatmeal cardigan",
-        "cable knit",
-        "cream camisole",
-        "dark green wide-leg pants"
+        "chunky_knit",
+        "beige_cardigan",
+        "oversized_cardigan",
+        "off_shoulder",
+        "silk_skirt",
+        "slit_skirt",
+        "green_skirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "slippers"
       ],
+      "characterId": "kaltsit_arknights",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

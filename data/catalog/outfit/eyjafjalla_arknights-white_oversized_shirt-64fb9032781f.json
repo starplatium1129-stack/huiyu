@@ -1,22 +1,30 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/white_oversized_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1369,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "white_oversized_shirt",
-      "name": "宽松白棉衬衫",
+      "name": "晨光微透宽大白衬衫与蕾丝皮腿环",
+      "prose": "An oversized white cotton button-down shirt draped casually down to the upper thighs, showing bare legs accented by a delicate leather thigh strap pressing into the skin.",
       "tokens": [
-        "oversized white shirt",
-        "long sleeves"
+        "oversized_shirt",
+        "white_shirt",
+        "unbuttoned",
+        "collarbone",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "A simple oversized white cotton shirt with long sleeves and a button front.",
+      "characterId": "eyjafjalla_arknights",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

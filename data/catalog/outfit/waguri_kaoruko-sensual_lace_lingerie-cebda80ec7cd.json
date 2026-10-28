@@ -1,23 +1,35 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/sensual_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 845,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "草莓粉蕾丝内衣与雪纺睡袍",
-      "prose": "A pastel-pink and ivory lace set has small strawberry-red bows, paired with a light pink chiffon robe.",
+      "name": "莓粉透纱法式蕾丝内衣与薄雪长睡袍",
+      "prose": "A strawberry-pink French eyelash lace lingerie set layered under a sheer flowing chiffon robe, finished with a supple buckled leather strap on the soft upper thigh.",
       "tokens": [
-        "pink bra",
-        "ivory lace",
-        "pink panties",
-        "pink chiffon robe",
-        "small bow"
-      ]
+        "pink_lingerie",
+        "lace_bra",
+        "bralette",
+        "lace_panties",
+        "robe",
+        "pink_robe",
+        "chiffon",
+        "see-through",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "gold_buckle"
+      ],
+      "characterId": "waguri_kaoruko",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

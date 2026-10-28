@@ -1,24 +1,33 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_bridal_lab_flowers",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1159,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_bridal_lab_flowers",
-      "name": "银灰腰带白缎婚纱·插花",
+      "name": "极简方领真丝白缎轻礼服与白皮革腿带",
+      "prose": "A clean square-neck ivory satin gown tailored closely to the figure with a narrow pewter leather belt. A fluid slit parts to reveal a bone-white leather thigh strap with a silver buckle softly squeezing the thigh over silk stockings.",
+      "tokens": [
+        "wedding_dress",
+        "satin_dress",
+        "square_neckline",
+        "belted_dress",
+        "high_slit",
+        "silk_stockings",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "heels",
+        "minimalism"
+      ],
+      "characterId": "futaba_rio",
       "default": false,
       "isDefault": false,
-      "isNsfw": false,
-      "prose": "a clean white satin bridal dress with a square neckline and silver-gray sash, with the veil and glasses set aside",
-      "tokens": [
-        "white satin wedding dress",
-        "square neckline",
-        "silver gray sash"
-      ]
+      "isNsfw": false
     }
   }
 }

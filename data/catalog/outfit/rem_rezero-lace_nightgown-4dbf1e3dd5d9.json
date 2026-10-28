@@ -1,25 +1,34 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/lace_nightgown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 246,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "lace_nightgown",
-      "name": "浅色蕾丝月光睡袍",
+      "name": "月光半透冰蓝真丝开衩睡袍与细腿带",
       "tokens": [
-        "pale robe",
-        "sheer fabric",
-        "lace trim",
-        "sleeveless"
+        "slip_dress",
+        "nightgown",
+        "light_blue_dress",
+        "sheer_fabric",
+        "lace_trim",
+        "side_slit",
+        "spaghetti_straps",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "a pale sleeveless sleeping robe with fine lace edging and a softly draped, lightweight fabric",
+      "prose": "A gossamer ice-blue silk slip dress trimmed with sheer floral lace and a side slit, gracefully exposing bare dewy legs clasped by a buckled black leather strap causing an alluring soft thigh squish.",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "rem_rezero"
     }
   }
 }

@@ -1,25 +1,35 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_school",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 869,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "sfw_school",
-      "name": "蓝开衫·整齐制服",
-      "prose": "A white blouse, rib-hem blue cardigan and knee-length pleated skirt.",
+      "name": "落肩蓝开衫私立制服与微勒皮腿带",
+      "prose": "A slouchy blue school cardigan sliding off one shoulder over an unbuttoned white shirt, paired with a pleated miniskirt, black thighhighs, and a buckled leather thigh strap.",
       "tokens": [
-        "school uniform",
-        "white blouse",
-        "blue cardigan",
-        "ribbed hem",
-        "knee-length pleated skirt"
+        "school_uniform",
+        "cardigan",
+        "blue_cardigan",
+        "off_shoulder",
+        "white_shirt",
+        "open_collar",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
+      "characterId": "shinjou_akane",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

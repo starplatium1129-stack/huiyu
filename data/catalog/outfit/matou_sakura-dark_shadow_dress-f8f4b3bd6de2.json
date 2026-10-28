@@ -1,22 +1,33 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/dark_shadow_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1327,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "dark_shadow_dress",
-      "name": "暗影黑色破碎长裙",
+      "name": "暗夜黑曜真丝开衩长裙与皮腿带",
+      "prose": "A tailored obsidian silk gown with a dramatic high side slit and sheer drape, paired with a buckled black leather thigh strap pressing softly into sheer thigh-highs.",
       "tokens": [
-        "black dress",
-        "torn hem"
+        "black_evening_dress",
+        "high_slit_dress",
+        "silk",
+        "sheer_shawl",
+        "side_slit",
+        "asymmetrical_dress",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "black_thighhighs",
+        "high_heels"
       ],
-      "prose": "A black dress with a ragged hem.",
+      "characterId": "matou_sakura",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

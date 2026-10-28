@@ -1,22 +1,34 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/school_blouse_skirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1180,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "school_blouse_skirt",
-      "name": "白衬衫与藏青褶裙",
+      "name": "微敞修身校服衬衫与双扣绝对领域",
+      "prose": "A tailored white school shirt with unbuttoned collar tucked into a navy pleated miniskirt. Semi-sheer black thighhighs are secured by an adjustable leather thigh strap with a silver buckle, causing a noticeable soft skin pinch.",
       "tokens": [
-        "white blouse",
-        "navy pleated skirt"
+        "school_uniform",
+        "white_shirt",
+        "unbuttoned_shirt",
+        "pleated_skirt",
+        "navy_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "zettai_ryouiki",
+        "loafers"
       ],
-      "prose": "a white school blouse and navy pleated skirt",
+      "characterId": "futaba_rio",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

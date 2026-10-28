@@ -1,28 +1,36 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/school_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 22,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "school_uniform",
-      "name": "校服",
-      "prose": "A brown blazer, beige sweater vest, white shirt, red tie, gray pleated skirt, black tights and loafers.",
+      "name": "私立峰原高定羊毛西装制服",
+      "prose": "A structured camel wool blazer over an oatmeal knit vest and crisp shirt, styled with a pleated charcoal skirt, sheer black stockings, and a buckled leather thigh strap.",
       "tokens": [
-        "school uniform",
-        "brown blazer",
-        "beige sweater vest",
-        "white shirt",
-        "red necktie",
-        "grey pleated skirt",
-        "black pantyhose",
+        "school_uniform",
+        "brown_blazer",
+        "wool_blazer",
+        "beige_sweater_vest",
+        "collared_shirt",
+        "red_necktie",
+        "charcoal_skirt",
+        "pleated_skirt",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "loafers"
       ],
+      "characterId": "sakurajima_mai",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

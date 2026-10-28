@@ -1,23 +1,30 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/casual_yukata_summer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 700,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "casual_yukata_summer",
-      "name": "深紫紫阳花与橙绳祭典浴衣",
-      "prose": "a deep-violet cotton yukata with pale hydrangeas and morning glories, a lilac obi crossed by one slender orange obijime, and wooden geta",
+      "name": "深紫紫阳花暗纹高衩真丝浴衣与皮腿带",
+      "prose": "A luxurious deep-violet silk yukata tied with a pale lilac obi, flowing into a breezy side slit that reveals a slender buckled leather thigh strap gently squeezing her smooth thigh.",
       "tokens": [
-        "purple yukata",
-        "hydrangea print",
-        "lilac obi",
-        "orange obijime",
+        "purple_yukata",
+        "floral_print",
+        "side_slit",
+        "obi",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "geta"
-      ]
+      ],
+      "characterId": "akeno_himejima",
+      "default": false,
+      "isDefault": false
     }
   }
 }

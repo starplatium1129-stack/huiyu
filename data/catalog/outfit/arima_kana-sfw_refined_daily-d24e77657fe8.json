@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 537,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
       "id": "sfw_refined_daily",
-      "isDefault": false,
-      "isNsfw": false,
-      "name": "锈棕格纹短外套与贝雷帽",
-      "prose": "A cropped rust-brown wool check jacket, cream blouse, navy wide-leg trousers and a soft brown felt beret.",
+      "name": "千鸟格英伦粗花呢短外套与高腰西裤",
+      "prose": "A tailored rust-brown houndstooth cropped wool jacket over an ivory bow blouse, styled with a wool beret and high-slit tailored trousers revealing a glimpse of a leather thigh strap.",
       "tokens": [
-        "cropped brown checkered jacket",
-        "wool jacket",
-        "cream blouse",
-        "navy blue wide-leg pants",
-        "brown beret"
-      ]
+        "tweed_jacket",
+        "cropped_jacket",
+        "houndstooth",
+        "cream_blouse",
+        "high_waist_trousers",
+        "slit_pants",
+        "beret",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "platform_loafers"
+      ],
+      "characterId": "arima_kana",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

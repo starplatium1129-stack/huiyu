@@ -1,21 +1,31 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/white_bath_undershirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1391,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "white_bath_undershirt",
-      "name": "纯白浴间内衫",
+      "name": "微湿薄透纯白棉质内衫与隐秘皮环",
+      "prose": "A damp semi-sheer white cotton cabin shirt clinging lightly to the torso, skimming mid-thigh over bare legs clasped with a secret buckled leather thigh strap that softly dents the skin.",
       "tokens": [
-        "white undershirt"
+        "white_shirt",
+        "semi_sheer",
+        "wet_shirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "dewy_skin",
+        "steam"
       ],
-      "prose": "A plain white cotton undershirt.",
+      "characterId": "kaltsit_arknights",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,24 +1,33 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_beach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 874,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "sfw_beach",
-      "name": "淡紫拼片·海滨泳装",
-      "prose": "A lavender swimsuit with angular gray panels, loose white sun shirt and shell hair clips.",
+      "name": "紫灰拼色镂空泳装与落肩薄衫皮腿带",
+      "prose": "A tailored cutout lavender and charcoal swimsuit beneath an unbuttoned sheer white shirt slipping off one shoulder, complemented by bare legs and a buckled leather thigh strap.",
       "tokens": [
-        "lavender swimsuit",
-        "angular gray panels",
-        "loose white sun shirt",
-        "shell hair ornament"
+        "swimsuit",
+        "one-piece_swimsuit",
+        "cutout_swimsuit",
+        "purple_swimsuit",
+        "oversized_shirt",
+        "white_shirt",
+        "off_shoulder",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
+      "characterId": "shinjou_akane",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

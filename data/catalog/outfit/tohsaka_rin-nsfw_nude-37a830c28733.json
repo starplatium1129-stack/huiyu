@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1488,
   "createdAt": "2026-10-15T15:17:12.504494600+00:00",
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "裸体",
+      "name": "纯净圣洁胴体",
       "tokens": [
         "nude"
       ],
       "prose": "No clothing.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "tohsaka_rin"
     }
   }
 }

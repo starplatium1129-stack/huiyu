@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 836,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
@@ -13,7 +13,11 @@
       "prose": "No clothing.",
       "tokens": [
         "nude"
-      ]
+      ],
+      "characterId": "yamada_anna",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

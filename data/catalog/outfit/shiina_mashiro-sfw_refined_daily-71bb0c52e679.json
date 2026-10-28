@@ -1,24 +1,30 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 855,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "燕麦亚麻画室罩衫",
-      "prose": "An oatmeal linen smock with rolled cuffs and patch pockets over a charcoal dress, dark leggings and flats.",
+      "name": "亚麻落肩画室罩衫与开衩裙皮腿带",
+      "prose": "An airy oatmeal linen atelier smock over a fitted charcoal slip dress with a side slit, revealing sheer stockings accented by a tailored leather thigh strap.",
       "tokens": [
-        "oatmeal smock",
-        "linen",
-        "rolled sleeves",
-        "charcoal dress",
-        "leggings",
-        "flat shoes"
+        "linen_shirt",
+        "smock",
+        "rolled_sleeves",
+        "black_dress",
+        "slit_dress",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "flats"
       ],
+      "characterId": "shiina_mashiro",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

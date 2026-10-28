@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/sfw_rain_utility",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "sfw_rain_utility",
-      "name": "奶油防雨夹克与绯红长袖",
-      "prose": "A cream waterproof utility jacket with a storm flap over a muted-red long-sleeved shirt, charcoal cargo trousers and rubber-soled shoes.",
+      "name": "奶白拼色防雨轻短夹克与高腰工装短裙",
+      "prose": "A modern cream-and-scarlet technical cropped windbreaker worn over a ribbed crimson tube top, styled with a high-waisted utility cargo mini skirt and a black leather leg harness.",
       "tokens": [
-        "cream rain jacket",
-        "red shirt",
-        "long sleeves",
-        "charcoal cargo pants",
-        "work shoes"
+        "rain_jacket",
+        "cropped_jacket",
+        "red_top",
+        "ribbed_knit",
+        "cargo_skirt",
+        "miniskirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sneakers"
       ],
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "isshiki_iroha",
+      "default": false
     }
   }
 }

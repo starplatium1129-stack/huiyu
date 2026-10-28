@@ -1,29 +1,32 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/sam_pilot_plugsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1586,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
       "id": "sam_pilot_plugsuit",
-      "name": "萨姆驾驶员特制机械紧身服",
+      "name": "萨姆驾驶员哑光黑绿机能紧身战服与枪套腿环",
       "tokens": [
-        "bodysuit",
         "plugsuit",
-        "sci-fi",
+        "bodysuit",
         "latex",
         "black_bodysuit",
-        "green_trim",
-        "glowing_trim",
-        "gloves",
-        "collarbone"
+        "collarbone",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs",
+        "boots"
       ],
-      "prose": "A sleek high-tech pilot plugsuit sculpted in black and silver composite plating with glowing emerald telemetry lines tracing along her slender waist and collarbones",
+      "prose": "A sleek sci-fi pilot plugsuit in matte black composite plating with glowing emerald telemetry lines, accented by a buckled leather tactical thigh holster pressing into her firm thigh.",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "firefly_hsr",
+      "isNsfw": false
     }
   }
 }

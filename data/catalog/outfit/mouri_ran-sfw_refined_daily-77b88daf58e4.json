@@ -1,23 +1,34 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 916,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "砖红牛角扣冬日便装",
-      "prose": "A brick-red duffle coat, cream turtleneck and scarf, navy trousers and brown ankle boots.",
+      "name": "砖红羊呢牛角扣短大衣与开衩包臀裙",
+      "prose": "A tailored brick-red wool duffle coat over a ribbed ivory turtleneck and a high-slit wool skirt, paired with sheer dark thighhighs and a buckled leather strap.",
       "tokens": [
-        "brick red duffle coat",
-        "cream turtleneck",
-        "cream scarf",
-        "navy blue pants",
-        "brown ankle boots"
+        "duffle_coat",
+        "red_coat",
+        "wool_coat",
+        "turtleneck",
+        "white_sweater",
+        "slit_skirt",
+        "pencil_skirt",
+        "navy_skirt",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "leather_boots"
       ],
+      "characterId": "mouri_ran",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sfw_unarmored_prayer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 130,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sfw_unarmored_prayer",
-      "name": "卸甲素白祈祷裙",
-      "prose": "a plain white long-sleeved prayer dress, her hair in a long braid and hands bare",
+      "name": "素白立领修身羊绒修女长袍",
+      "prose": "A minimalist monastic ivory cashmere robe with a high neckline and high side vents, discreetly exposing a buckled white leather strap creating soft squish against silky thigh-highs.",
       "tokens": [
-        "white dress",
-        "long sleeves",
-        "braid"
+        "white_dress",
+        "high_neck_dress",
+        "long_dress",
+        "long_sleeves",
+        "side_slit",
+        "minimalist_fashion",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "white_thighhighs"
       ],
-      "isDefault": false,
+      "characterId": "jeanne_d_arc",
       "default": false,
+      "isDefault": false,
       "isNsfw": false
     }
   }

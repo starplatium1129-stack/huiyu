@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/dojo_training",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 589,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
       "default": false,
       "id": "dojo_training",
       "isDefault": false,
-      "name": "道场居合练功服",
-      "prose": "a white cotton keikogi, indigo pleated hakama and cloth wraps around her hands and wrists, worn barefoot",
+      "name": "道场素白居合练功服与苍蓝剑道皮腿带",
+      "prose": "A fitted white cotton keikogi with handwraps, paired with indigo split hakama shorts. Bare legs beneath the hem are clasped by a weathered leather thigh strap with a blackened buckle, creating a visible soft squish.",
       "tokens": [
-        "white keikogi",
-        "indigo hakama",
+        "keikogi",
+        "white_shirt",
+        "sleeveless_shirt",
+        "hakama_pants",
+        "shorts",
         "handwraps",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "barefoot"
-      ]
+      ],
+      "characterId": "hoshimi_miyabi"
     }
   }
 }

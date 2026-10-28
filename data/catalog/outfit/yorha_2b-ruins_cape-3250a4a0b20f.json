@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "yorha_2b/ruins_cape",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 611,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "yorha_2b",
     "outfit": {
       "id": "ruins_cape",
-      "name": "深灰风沙斗篷战术装",
-      "prose": "a tattered dark-grey hooded traveler cloak over a charcoal tactical suit, reinforced knee guards, black leather gloves and desert-dusted combat boots",
+      "name": "废土风沙解构斗篷与机能皮带短裙",
+      "prose": "A weathered charcoal hooded combat cape draped over a cropped tactical bodice and pleated mini skirt, revealing bare legs cinched by a buckled leather thigh strap that presses into soft skin with a subtle tender indentation.",
       "tokens": [
-        "grey cloak",
-        "hood",
-        "charcoal bodysuit",
-        "knee guards",
-        "black gloves",
-        "combat boots"
+        "hooded_cloak",
+        "cape",
+        "crop_top",
+        "pleated_skirt",
+        "mini_skirt",
+        "tactical_harness",
+        "combat_boots",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "yorha_2b"
     }
   }
 }

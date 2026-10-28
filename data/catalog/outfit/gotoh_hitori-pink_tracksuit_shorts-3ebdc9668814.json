@@ -1,23 +1,35 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/pink_tracksuit_shorts",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1294,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "pink_tracksuit_shorts",
-      "name": "粉色运动外套排练短裤装",
+      "name": "短款粉色运动外套与高腰排练热裤",
       "tokens": [
-        "pink track jacket",
-        "white stripes",
-        "black shorts"
+        "cropped_jacket",
+        "pink_jacket",
+        "track_jacket",
+        "white_stripes",
+        "crop_top",
+        "black_shorts",
+        "short_shorts",
+        "midriff",
+        "navel",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sneakers"
       ],
-      "prose": "The familiar pink zip-up track jacket with white sleeve stripes, worn with simple black rehearsal shorts.",
+      "prose": "A cropped pink track jacket with white sleeve stripes paired with black high-waisted shorts, finished with a buckled leather thigh strap creating a delicate soft thigh squish on bare skin.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "gotoh_hitori"
     }
   }
 }

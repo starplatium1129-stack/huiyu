@@ -1,25 +1,31 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/nomad_wasteland",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 390,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
       "default": false,
       "id": "nomad_wasteland",
       "isDefault": false,
-      "name": "灰狼荒原皮革行装",
-      "prose": "A hooded gray fur-trimmed poncho with crossed bandoliers, weathered leather trousers and combat boots.",
+      "name": "荒原孤狼毛领战术皮斗篷与工装短裤",
+      "prose": "A weathered gray leather short poncho trimmed with thick fur over a crisscross leather harness and frayed shorts. A buckled leather thigh strap indents her toned bare thigh skin with visible tactile tension.",
       "tokens": [
-        "gray hooded poncho",
-        "fur trim",
-        "crossed bandoliers",
-        "weathered leather pants",
-        "combat boots"
-      ]
+        "leather_poncho",
+        "fur_trim",
+        "leather_harness",
+        "combat_shorts",
+        "frayed_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "combat_boots"
+      ],
+      "characterId": "lappland_arknights"
     }
   }
 }

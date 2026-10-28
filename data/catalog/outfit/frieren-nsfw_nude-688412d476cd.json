@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "frieren/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1289,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "无衣装",
+      "name": "纯净圣洁胴体",
       "tokens": [
         "nude"
       ],
       "prose": "No clothing.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "frieren"
     }
   }
 }

@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/official_kuoh_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 691,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "official_kuoh_uniform",
-      "name": "驹王学园校服制服",
-      "prose": "a white collared blouse beneath a fitted black vest, black pleated skirt, magenta cross tie and white thighhighs",
+      "name": "驹王学园立裁修身制服西装与百褶短裙",
+      "prose": "The tailored Kuoh academy school uniform featuring a white collared blouse under a structured black corset vest, pleated micro skirt, black stockings, and a buckled leather thigh strap.",
       "tokens": [
-        "kuoh academy school uniform",
-        "white blouse",
-        "black vest",
-        "black pleated skirt",
-        "magenta cross tie",
-        "white thighhighs"
+        "school_uniform",
+        "white_blouse",
+        "black_vest",
+        "corset_vest",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
       ],
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "characterId": "rias_gremory"
     }
   }
 }

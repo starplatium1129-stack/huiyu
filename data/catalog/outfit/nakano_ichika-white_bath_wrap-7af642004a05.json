@@ -1,24 +1,30 @@
 {
   "kind": "outfit",
   "id": "nakano_ichika/white_bath_wrap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1601,
   "createdAt": "2026-10-27T13:30:47.381Z",
-  "updatedAt": "2026-10-27T13:30:47.381Z",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_ichika",
     "outfit": {
       "characterId": "nakano_ichika",
       "id": "white_bath_wrap",
-      "name": "露天温泉素白裹体浴巾",
-      "prose": "A pure white linen bath towel wrapped securely around her chest and body, leaving her shoulders and collarbone bare with glistening water droplets in the rising steam",
+      "name": "露天温泉雪白微透裹身浴巾与扣带皮腿环",
+      "prose": "A pure white bath towel securely wrapped around her chest, leaving bare shoulders glistening with onsen steam over bare legs, where a buckled leather thigh strap presses into soft skin with a subtle squish.",
       "tokens": [
-        "white towel",
         "towel",
-        "towel around body",
+        "white_towel",
+        "towel_around_body",
         "bare_shoulders",
         "collarbone",
-        "wet_skin"
+        "wet_skin",
+        "single_earring",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
       "isDefault": false,
       "default": false

@@ -1,25 +1,31 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/midnight_piano_gown",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 491,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "default": false,
       "id": "midnight_piano_gown",
       "isDefault": false,
-      "name": "深紫垂缎·钢琴礼服",
-      "prose": "A backless deep-purple satin gown with a draped skirt, silver waist clasp and silver jewelry.",
+      "name": "深紫垂缎露背钢琴晚礼服与紫金皮腿扣",
+      "prose": "A fluid deep-purple satin gown with an open back and dramatic front slit, highlighting bare legs accented by an exquisite buckled leather thigh strap with a subtle squish.",
       "tokens": [
-        "deep purple evening gown",
-        "backless dress",
-        "satin",
-        "draped skirt",
-        "silver clasp"
-      ]
+        "purple_dress",
+        "satin_gown",
+        "backless_dress",
+        "halterneck",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "heels"
+      ],
+      "characterId": "sorasaki_hina"
     }
   }
 }

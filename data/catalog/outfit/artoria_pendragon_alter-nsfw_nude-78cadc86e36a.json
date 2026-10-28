@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing; hair loose over her shoulders.",
+      "prose": "No clothing.",
       "tokens": [
-        "nude",
-        "hair_down"
-      ]
+        "nude"
+      ],
+      "characterId": "artoria_pendragon_alter",
+      "default": false,
+      "isDefault": false
     }
   }
 }

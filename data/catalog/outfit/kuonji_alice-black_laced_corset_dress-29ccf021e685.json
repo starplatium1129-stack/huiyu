@@ -1,23 +1,33 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/black_laced_corset_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1320,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
       "id": "black_laced_corset_dress",
-      "name": "黑色缎面系带束腰裙",
+      "name": "维多利亚黑缎束腰礼裙与丝绒斗篷",
+      "prose": "A Victorian structured black satin corset dress with back lacing and a velvet capelet, slit to reveal a buckled leather thigh strap indenting sheer black lace stockings.",
       "tokens": [
-        "black corset dress",
-        "back lacing",
-        "satin"
+        "black_corset_dress",
+        "satin_dress",
+        "velvet_capelet",
+        "back_lacing",
+        "corset",
+        "high_slit",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "black_thighhighs",
+        "pumps"
       ],
-      "prose": "A black satin dress with a structured corset bodice and back lacing.",
+      "characterId": "kuonji_alice",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

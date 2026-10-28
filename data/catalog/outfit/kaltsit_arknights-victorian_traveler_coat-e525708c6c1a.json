@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/victorian_traveler_coat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 298,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
-      "default": false,
       "id": "victorian_traveler_coat",
-      "isDefault": false,
-      "name": "维多利亚博物学者古典旅行大衣",
-      "prose": "a forest-green wool greatcoat with brown velvet lapels and shoulder capelet over a white ruffled blouse and burgundy ribbon tie",
+      "name": "维多利亚博物学者古典双排扣风衣与皮革腿饰",
+      "prose": "A heavy Victorian double-breasted woolen travel coat cinched tightly with a leather belt, hem sweeping above sheer black stockings accented by a calfskin thigh holster strap with soft indentation.",
       "tokens": [
-        "green coat",
-        "capelet",
-        "white blouse",
-        "ribbon tie"
-      ]
+        "trench_coat",
+        "double-breasted",
+        "wool_coat",
+        "collared_coat",
+        "belted_coat",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "riding_boots"
+      ],
+      "characterId": "kaltsit_arknights",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

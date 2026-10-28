@@ -1,26 +1,31 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/apartment_streetwear_barefoot",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 607,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
       "default": false,
       "id": "apartment_streetwear_barefoot",
       "isDefault": false,
-      "name": "炭灰网眼背心与赤足工装裤",
-      "prose": "A cropped charcoal mesh tank, dark cargo joggers with cyan straps and utility buckles; barefoot.",
+      "name": "落肩华夫格卫衣与室内赤足平角裤腿饰",
+      "prose": "A slouched drop-shoulder waffle-knit sweater draped off one bare shoulder above snug dark lounge shorts. An adjustable buckled leather thigh strap clasps her bare thigh, forming a tender indentation on the soft pale skin.",
       "tokens": [
-        "charcoal crop top",
-        "mesh fabric",
-        "sleeveless",
-        "dark cargo joggers",
-        "cyan straps",
-        "barefoot"
-      ]
+        "waffle_knit",
+        "sweater",
+        "off-shoulder_sweater",
+        "loose_sweater",
+        "shorts",
+        "bare_legs",
+        "barefoot",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "lucy_cyberpunk"
     }
   }
 }

@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_short",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 776,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
-      "default": false,
       "id": "sfw_short",
-      "isDefault": false,
-      "name": "浅蓝轻夹克旅行装",
-      "prose": "A light-blue cotton-twill jacket with useful patch pockets over a cream top, tapered charcoal trousers and low-profile walking shoes; her hair is cut into a short bob.",
+      "name": "冰蓝工装短夹克与高腰褶裙",
+      "prose": "A cropped ice-blue utility jacket with zip pockets worn over an ivory mock-neck top and pleated mini skirt, styled with bare legs and a buckled leather thigh strap.",
       "tokens": [
-        "light blue twill jacket",
-        "patch pockets",
-        "cream shirt",
-        "tapered charcoal trousers",
-        "walking shoes",
-        "bob cut"
-      ]
+        "light_blue_jacket",
+        "cropped_jacket",
+        "pocket_detail",
+        "ivory_top",
+        "pleated_skirt",
+        "mini_skirt",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sneakers"
+      ],
+      "characterId": "hayasaka_ai",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

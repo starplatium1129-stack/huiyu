@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 846,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
@@ -13,7 +13,11 @@
       "prose": "No clothing.",
       "tokens": [
         "nude"
-      ]
+      ],
+      "characterId": "waguri_kaoruko",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

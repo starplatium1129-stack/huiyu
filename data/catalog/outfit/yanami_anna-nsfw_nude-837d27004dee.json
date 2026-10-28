@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "yanami_anna/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1483,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "yanami_anna",
     "outfit": {
       "id": "nsfw_nude",
       "name": "无衣装",
+      "prose": "no clothing",
       "tokens": [
         "nude"
       ],
-      "prose": "no clothing",
+      "characterId": "yanami_anna",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "kurokawa_akane/halter_evening_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1196,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "kurokawa_akane",
     "outfit": {
       "id": "halter_evening_gown",
-      "name": "挂颈露背晚礼服",
+      "name": "夜空蓝真丝露背挂颈高开衩晚礼裙",
       "tokens": [
-        "halter dress",
-        "backless dress",
-        "side zipper"
+        "halter_dress",
+        "backless_dress",
+        "silk_dress",
+        "blue_dress",
+        "high_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "silver_buckle",
+        "strappy_heels"
       ],
-      "prose": "a halterneck evening gown with a low back and side zipper",
+      "prose": "A breathtaking midnight-blue silk halterneck evening gown with a completely bare back and a hip-grazing side slit, displaying bare legs clasped with a glittering silver-buckled leather thigh strap.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "kurokawa_akane"
     }
   }
 }

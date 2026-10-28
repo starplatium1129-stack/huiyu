@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/sfw_bridal_lace",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 800,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "sfw_bridal_lace",
-      "name": "象牙白长袖蕾丝花嫁",
-      "prose": "An ivory floor-length bridal dress with long lace sleeves, a simple veil and low ivory pumps.",
+      "name": "高定蕾丝透纱鱼尾婚纱与珍珠腿饰",
+      "prose": "An haute couture ivory mermaid bridal gown with sheer French lace sleeves and a dramatic high skirt slit, accessorized with an exquisite leather thigh garter adorned with small pearl hardware.",
       "tokens": [
-        "ivory wedding dress",
-        "long lace sleeves",
+        "wedding_dress",
+        "lace_dress",
+        "mermaid_dress",
+        "long_lace_sleeves",
+        "illusion_neckline",
+        "high_slit",
+        "thigh_strap",
+        "leather_strap",
+        "pearls",
         "veil",
-        "ivory pumps",
-        "floor-length dress"
+        "white_high_heels"
       ],
+      "characterId": "katou_megumi",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

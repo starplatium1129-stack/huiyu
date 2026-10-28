@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/sfw_shrine_coat_off",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "sfw_shrine_coat_off",
-      "name": "旅装内搭·褐色束腰背心",
-      "prose": "A white shirt, brown corset vest, black trousers, leather boots and wide-brim hat; the purple coat stays separate.",
+      "name": "复古深褐牛皮束胸马甲与高开衩骑行短裙",
+      "prose": "A sculpted dark-brown leather underbust corset cinching an open-collared silk blouse, over a high-slit riding miniskirt. A buckled leather thigh strap cinches her bare thigh with an alluring soft indentation.",
       "tokens": [
-        "white shirt",
-        "brown corset vest",
-        "black pants",
-        "leather boots",
-        "wide-brimmed hat"
+        "corset",
+        "leather_vest",
+        "white_shirt",
+        "open_collar",
+        "slit_skirt",
+        "mini_skirt",
+        "riding_boots",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "isDefault": false,
       "default": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "scathach_fate"
     }
   }
 }

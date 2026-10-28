@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/gehenna_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 486,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "default": true,
       "id": "gehenna_uniform",
       "isDefault": true,
-      "name": "风纪委员·披肩军制服",
-      "prose": "A black coat draped over the shoulders with gold epaulettes and red armband, white shirt, black tie and vest, black pleated skirt, over-knee socks and lace-up boots.",
+      "name": "格赫娜风纪首席金扣双排扣军制服与黑丝腿环",
+      "prose": "A tailored Gehenna uniform with an epaulet-trimmed cropped jacket over a pleated miniskirt, showing sheer black stockings bound by golden-buckled leather straps indenting soft skin.",
       "tokens": [
-        "military uniform",
-        "black coat",
-        "coat on shoulders",
-        "gold epaulettes",
-        "white shirt",
-        "black necktie",
-        "black vest",
-        "red armband",
-        "black pleated skirt",
-        "thighhighs",
-        "lace-up boots"
-      ]
+        "military_uniform",
+        "cropped_jacket",
+        "white_shirt",
+        "black_necktie",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "gold_buckle",
+        "boots"
+      ],
+      "characterId": "sorasaki_hina"
     }
   }
 }

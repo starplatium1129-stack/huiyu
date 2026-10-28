@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_rest",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 940,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_rest",
-      "name": "白色细针开衫与海蓝长裙装",
-      "prose": "A white fine-knit cardigan with pearl buttons over a sea-blue blouse and cream pleated long skirt.",
+      "name": "云白透纱轻开衫与海蓝挂颈开衩短裙皮腿带",
+      "prose": "A gossamer white sheer-knit cardigan resting open over a rich marine-blue halter mini dress with a slit hem, paired with bare legs cinched by a buckled leather thigh strap that gently indents the flesh.",
       "tokens": [
-        "white fine-knit cardigan",
-        "pearl buttons",
-        "sea blue blouse",
-        "cream pleated long skirt"
+        "white_cardigan",
+        "sheer_cardigan",
+        "blue_dress",
+        "halterneck",
+        "short_dress",
+        "side_slit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "shorekeeper"
     }
   }
 }

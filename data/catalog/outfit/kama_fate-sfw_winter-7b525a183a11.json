@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_winter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 178,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_winter",
-      "name": "奶油大衣梅紫参拜装",
-      "prose": "A cream wool coat with a discreet gold clasp, a plum scarf, warm charcoal trousers and ankle boots.",
+      "name": "奶油羊绒廓形大衣与梅紫开衩皮裙",
+      "prose": "A voluminous cream cashmere overcoat loosely draped over a plum turtleneck and split leather skirt, revealing a buckled leather thigh strap softly squishing dark stockings.",
       "tokens": [
-        "cream coat",
-        "gold clasp",
-        "plum scarf",
-        "charcoal pants",
-        "ankle boots"
+        "cream_overcoat",
+        "wool_coat",
+        "trench_coat",
+        "gold_clasp",
+        "plum_turtleneck",
+        "leather_skirt",
+        "slit_skirt",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "black_thighhighs"
       ],
+      "characterId": "kama_fate",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_practice",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 532,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
-      "default": false,
       "id": "sfw_practice",
-      "isDefault": false,
-      "name": "酒红拼线排练运动装",
-      "prose": "A charcoal raglan T-shirt with wine-red edging, burgundy track pants with one white side stripe, and white sneakers.",
+      "name": "解构插肩露脐训练短袖与机能紧身短裤",
+      "prose": "A fitted charcoal raglan crop tee with crimson flatlock seams, paired with high-waisted black biker shorts and an integrated tactical leather thigh band that creates a subtle squish on the athletic thigh.",
       "tokens": [
-        "charcoal t-shirt",
-        "raglan sleeves",
-        "burgundy trim",
-        "burgundy track pants",
-        "white side stripe",
-        "white sneakers"
-      ]
+        "cropped_tshirt",
+        "crop_top",
+        "raglan_sleeves",
+        "burgundy_trim",
+        "cycling_shorts",
+        "spandex_shorts",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "running_shoes"
+      ],
+      "characterId": "arima_kana",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

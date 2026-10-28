@@ -1,28 +1,35 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/kessoku_band_live_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1560,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "kessoku_band_live_casual",
-      "name": "结束乐队Live主唱活力演出服",
+      "name": "结束乐队Live主唱高街露脐短T与丹宁短裙",
       "tokens": [
-        "t-shirt",
-        "print_t-shirt",
         "crop_top",
+        "print_t-shirt",
+        "short_sleeves",
+        "midriff",
+        "navel",
         "denim_skirt",
         "miniskirt",
         "belt",
         "wristband",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
         "sneakers"
       ],
-      "prose": "A cropped graphic t-shirt layered over a short-sleeved inner shirt, denim mini skirt with a belt, red wristband, and sneakers",
+      "prose": "A fitted cropped band t-shirt exposing her midriff, styled with a denim miniskirt and a buckled leather thigh strap that bites softly into her bare thigh skin with an alluring squish.",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "kita_ikuyo"
     }
   }
 }

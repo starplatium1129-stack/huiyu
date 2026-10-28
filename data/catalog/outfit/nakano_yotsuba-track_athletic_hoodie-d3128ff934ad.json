@@ -1,28 +1,37 @@
 {
   "kind": "outfit",
   "id": "nakano_yotsuba/track_athletic_hoodie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1520,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_yotsuba",
     "outfit": {
       "id": "track_athletic_hoodie",
-      "name": "田径部绿白条纹连帽运动卫衣短裤",
-      "prose": "A sporty light green zip-up athletic hoodie over a white tank top, paired with green running shorts, white wristbands, and running sneakers.",
+      "name": "田径部短款连帽运动卫衣侧开衩短裤与机能皮腿环",
+      "prose": "A cropped green athletic zip-up hoodie over a white sports bandeau and split-leg track shorts, showcasing bare legs where a sporty buckled leather thigh strap creates a soft indentation on toned thigh muscles.",
       "tokens": [
         "hoodie",
+        "cropped_hoodie",
         "zipper_hoodie",
         "green_hoodie",
+        "crop_top",
+        "sports_bra",
+        "midriff",
         "gym_shorts",
         "athletic_shorts",
         "wristband",
         "sneakers",
-        "green_ribbon",
-        "bunny_hair_ornament"
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "nakano_yotsuba",
+      "default": false,
+      "isDefault": false
     }
   }
 }

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "nakano_yotsuba/sporty_wave_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1521,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-26T12:01:52.509Z",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "nakano_yotsuba",
     "outfit": {
       "id": "sporty_wave_bikini",
-      "name": "碧海踏浪薄荷绿分体运动比基尼",
-      "prose": "A bright mint-green sporty bikini with crisp white piping and athletic cut, complemented by her waterproof green rabbit-ear ribbon fluttering in the ocean spray.",
+      "name": "碧海踏浪薄荷绿分体运动比基尼与银扣皮腿环",
+      "prose": "A bright mint-green sporty bikini with white piping and an athletic scoop top over bare legs, complemented by a buckled leather thigh strap that presses into soft skin with a subtle squish against ocean waves.",
       "tokens": [
         "bikini",
         "sport_bikini",
@@ -20,10 +20,16 @@
         "bare_shoulders",
         "stomach",
         "navel",
-        "green_ribbon",
-        "bunny_hair_ornament"
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "isNsfw": false
+      "isNsfw": false,
+      "characterId": "nakano_yotsuba",
+      "default": false,
+      "isDefault": false
     }
   }
 }

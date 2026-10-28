@@ -1,26 +1,32 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_model",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 870,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "sfw_model",
-      "name": "怪兽剪影·模型工作卫衣",
-      "prose": "An oversized lavender sweatshirt with ribbed cuffs and black monster emblem, gray trousers and craft glasses.",
+      "name": "怪兽印花落肩长卫衣与双扣皮腿环",
+      "prose": "An oversized slouchy lavender graphic hoodie worn boyfriend-style over micro shorts, paired with glasses, bare legs, and a double-buckled leather thigh strap indenting the thigh soft skin.",
       "tokens": [
-        "lavender sweatshirt",
-        "oversized clothes",
-        "ribbed cuffs",
-        "black monster emblem",
-        "gray pants",
-        "glasses"
+        "hoodie",
+        "purple_hoodie",
+        "oversized_clothes",
+        "graphic_print",
+        "short_shorts",
+        "glasses",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
+      "characterId": "shinjou_akane",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

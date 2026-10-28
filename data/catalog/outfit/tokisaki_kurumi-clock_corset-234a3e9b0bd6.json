@@ -1,24 +1,31 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/clock_corset",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1476,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "clock_corset",
-      "name": "古金扣黑红束衣与长袜",
+      "name": "古金钟盘束腰胸衣与微褶短裙",
       "tokens": [
-        "black corset",
-        "crimson panels",
-        "antique gold clasps",
-        "black thighhighs"
+        "corset",
+        "black_corset",
+        "gold_trim",
+        "red_fabric",
+        "mini_skirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "high_heels"
       ],
-      "prose": "a black corset with crimson panels and antique gold clasps, with black thigh-high socks",
+      "prose": "A structured underbust corset adorned with antique brass clock dials over a pleated crimson micro skirt. Dark over-knee socks swell gently under a studded leather thigh strap, displaying a delightful soft squish.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "tokisaki_kurumi"
     }
   }
 }

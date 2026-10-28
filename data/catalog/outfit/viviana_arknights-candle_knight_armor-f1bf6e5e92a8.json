@@ -1,28 +1,33 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/candle_knight_armor",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 392,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
       "default": true,
       "id": "candle_knight_armor",
       "isDefault": true,
-      "name": "烛骑士礼装铠甲",
-      "prose": "a midnight-black pleated knight dress with gold embroidery, gold breastplate and pauldrons, white opera gloves, sword sash and armored greaves",
+      "name": "烛骑士鎏金雕花胸甲与黑金百褶骑士裙",
+      "prose": "An ornate gold-engraved breastplate and pauldrons fitted over a midnight-black pleated dress with golden filigree embroidery. A gilded buckled leather thigh strap produces a graceful soft indentation on her bare thigh.",
       "tokens": [
-        "gold breastplate",
-        "gold pauldrons",
-        "black dress",
-        "gold trim",
-        "pleated skirt",
-        "white elbow gloves",
+        "breastplate",
+        "pauldrons",
+        "gold_trim",
+        "black_dress",
+        "pleated_skirt",
+        "white_gloves",
+        "elbow_gloves",
         "greaves",
-        "sash"
-      ]
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
+      ],
+      "characterId": "viviana_arknights"
     }
   }
 }

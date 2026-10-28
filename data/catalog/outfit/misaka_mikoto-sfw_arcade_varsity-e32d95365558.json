@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/sfw_arcade_varsity",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1116,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
       "id": "sfw_arcade_varsity",
-      "name": "奶油砖红棒球夹克运动装",
-      "prose": "A cream varsity jacket with brick-red sleeves, white T-shirt, dark denim shorts over opaque black leggings, and white trainers.",
+      "name": "拼色棒球短夹克与高街运动短裙",
+      "prose": "A cropped two-tone varsity bomber over a white ribbed crop tank and pleated athletic mini skirt. A sleek black leather thigh strap with an alloy buckle softly indents her bare thigh above crew socks.",
       "tokens": [
-        "cream varsity jacket",
-        "red sleeves",
-        "white t-shirt",
-        "dark denim shorts",
-        "black leggings",
-        "white sneakers"
+        "varsity_jacket",
+        "cropped_jacket",
+        "crop_top",
+        "tank_top",
+        "pleated_skirt",
+        "mini_skirt",
+        "crew_socks",
+        "sneakers",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "misaka_mikoto"
     }
   }
 }

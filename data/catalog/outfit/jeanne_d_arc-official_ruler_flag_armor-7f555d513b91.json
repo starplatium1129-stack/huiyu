@@ -1,26 +1,35 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/official_ruler_flag_armor",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 125,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "official_ruler_flag_armor",
-      "name": "白银胸铠Ruler圣装",
-      "prose": "white-and-blue Ruler vestments with a silver breastplate, articulated faulds, silver gauntlets and a white cape, her hair in a long braid",
+      "name": "圣堂白银雕花胸铠与披风战甲裙",
+      "prose": "Ornate silver plate armor fitted over a royal-blue slit tabard and white cape, secured with buckled leather thigh straps that gently indent the form above articulated sabatons.",
       "tokens": [
-        "white and blue armored dress",
-        "silver breastplate",
+        "armored_dress",
+        "silver_breastplate",
         "faulds",
         "gauntlets",
-        "white cape",
-        "braid"
+        "pauldrons",
+        "white_cape",
+        "royal_blue_dress",
+        "high_slit",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "thighhighs",
+        "cuisses"
       ],
+      "characterId": "jeanne_d_arc",
       "default": true,
-      "isDefault": true
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

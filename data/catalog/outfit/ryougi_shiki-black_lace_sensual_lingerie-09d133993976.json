@@ -1,21 +1,30 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/black_lace_sensual_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 732,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
       "id": "black_lace_sensual_lingerie",
-      "name": "黑色细带蕾丝内衣",
-      "prose": "A restrained black lace bralette and matching briefs with narrow straps.",
+      "name": "极简幽玄黑丝细带内衣与战术皮腿环",
+      "prose": "A minimalist black silk bralette with geometric crossover straps and micro briefs. Her bare legs are clasped by a matte black leather tactical thigh strap with a steel buckle creating a soft indentation.",
       "tokens": [
-        "black lace bralette",
-        "black panties",
-        "thin straps"
-      ]
+        "black_bralette",
+        "criss-cross_straps",
+        "black_panties",
+        "thin_straps",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
+      ],
+      "characterId": "ryougi_shiki",
+      "default": false,
+      "isDefault": false
     }
   }
 }

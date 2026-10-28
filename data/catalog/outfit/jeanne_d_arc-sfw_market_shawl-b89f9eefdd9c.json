@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sfw_market_shawl",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sfw_market_shawl",
-      "name": "蓝灰羊毛披肩夜市便装",
-      "prose": "a white blouse and long royal-blue skirt beneath a blue-gray wool shawl secured with a simple silver clasp",
+      "name": "蓝灰双面羊绒斗篷与开衩呢裙",
+      "prose": "A double-faced blue-gray wool capelet draped over a fitted knit turtleneck and slit skirt, revealing a buckled leather thigh strap indenting opaque ribbed thigh-highs beneath.",
       "tokens": [
-        "white blouse",
-        "long blue skirt",
-        "blue gray wool shawl",
-        "simple clasp"
+        "wool_capelet",
+        "grey_shawl",
+        "silver_brooch",
+        "turtleneck_sweater",
+        "slit_skirt",
+        "pencil_skirt",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "black_thighhighs",
+        "boots"
       ],
-      "isDefault": false,
+      "characterId": "jeanne_d_arc",
       "default": false,
+      "isDefault": false,
       "isNsfw": false
     }
   }

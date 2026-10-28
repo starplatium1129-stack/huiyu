@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1319,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
       "id": "nsfw_nude",
       "name": "无衣装",
+      "prose": "No clothing.",
       "tokens": [
         "nude"
       ],
-      "prose": "No clothing.",
+      "characterId": "kuonji_alice",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

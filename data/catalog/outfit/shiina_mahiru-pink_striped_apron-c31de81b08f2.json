@@ -1,23 +1,33 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/pink_striped_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1234,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "pink_striped_apron",
-      "name": "粉色条纹料理围裙",
+      "name": "糖果条纹收腰料理围裙与修身针织包臀裙",
+      "prose": "A tailored pink pinstriped bib apron cinched tightly over a curve-hugging ivory rib-knit top and a high-slit black skirt. Peeking from the slit, a soft pink leather thigh strap with a silver buckle bites gently into her bare thigh.",
       "tokens": [
-        "pink apron",
-        "striped apron",
-        "waist ties"
+        "striped_apron",
+        "pink_apron",
+        "fitted_apron",
+        "knit_top",
+        "slit_skirt",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_legs",
+        "indoor_shoes",
+        "domestic_chic"
       ],
-      "prose": "a pink striped kitchen apron with slim waist ties",
+      "characterId": "shiina_mahiru",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

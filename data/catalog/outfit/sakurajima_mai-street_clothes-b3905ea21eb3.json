@@ -1,24 +1,33 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/street_clothes",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "street_clothes",
-      "name": "酒红针织与炭灰短外套",
-      "prose": "a fine burgundy knit sweater beneath an open charcoal cropped jacket, with a fluid black midi skirt",
+      "name": "解构炭黑羊毛短外套与酒红软织",
+      "prose": "A cropped architectural charcoal wool jacket over a fine burgundy merino knit, paired with an asymmetrical slit skirt, sheer black stockings, and a buckled leather thigh strap.",
       "tokens": [
-        "burgundy knit sweater",
-        "charcoal cropped jacket",
-        "open jacket",
-        "fluid black midi skirt"
+        "charcoal_jacket",
+        "cropped_jacket",
+        "burgundy_sweater",
+        "slit_skirt",
+        "wrap_skirt",
+        "black_thighhighs",
+        "sheer_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "leather_boots"
       ],
+      "characterId": "sakurajima_mai",
+      "default": false,
       "isDefault": false,
-      "default": false
+      "isNsfw": false
     }
   }
 }

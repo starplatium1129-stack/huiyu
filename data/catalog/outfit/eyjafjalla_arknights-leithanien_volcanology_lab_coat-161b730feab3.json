@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/leithanien_volcanology_lab_coat",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 314,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
-      "default": false,
       "id": "leithanien_volcanology_lab_coat",
-      "isDefault": false,
-      "name": "地质学者白大褂与茶棕针织裙装",
-      "prose": "A clean white lab coat over a fine tea-brown knit sweater and charcoal pleated skirt, with gold half-rim glasses and her small silver hearing aid.",
+      "name": "莱塔尼亚火山地质学者精裁大衣与开衩裙",
+      "prose": "An elegant Leithanien tailored white laboratory overcoat with brass buttons, draped over a brown plaid high-slit skirt showing black stockings held by a refined leather thigh strap.",
       "tokens": [
-        "white lab coat",
-        "brown sweater",
-        "dark pleated skirt",
-        "gold half-rim glasses",
-        "hearing aid"
-      ]
+        "lab_coat",
+        "tailored_coat",
+        "high_collar",
+        "blouse",
+        "plaid_skirt",
+        "high_slit",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "oxfords"
+      ],
+      "characterId": "eyjafjalla_arknights",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

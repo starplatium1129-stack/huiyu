@@ -1,26 +1,33 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/casual",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "casual",
-      "name": "红衬黑针织与钟面颈饰",
-      "prose": "a black cardigan with crimson lining and an antique clasp over a black camisole and midi skirt, with a small clock-pendant choker",
+      "name": "绯红衬里针织短衫与皮质短裙",
+      "prose": "A cropped black wool cardigan with crimson lining worn open over an ebony camisole and high-waist leather skirt. A clockwork-buckled leather thigh strap creates an alluring soft indentation on bare thigh skin.",
       "tokens": [
-        "black cardigan",
-        "crimson lining",
-        "antique clasp",
-        "black camisole",
-        "black midi skirt",
-        "clock pendant choker"
+        "black_cardigan",
+        "cropped_cardigan",
+        "red_lining",
+        "black_camisole",
+        "leather_skirt",
+        "choker",
+        "pendant",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "ankle_boots"
       ],
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "tokisaki_kurumi"
     }
   }
 }

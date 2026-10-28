@@ -1,22 +1,32 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/green_striped_stockings",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1394,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "id": "green_striped_stockings",
-      "name": "草绿条纹过膝长袜",
+      "name": "削肩挂颈粉针织与草绿条纹过膝袜",
       "tokens": [
-        "green thighhighs",
-        "striped stockings"
+        "pink_halterneck",
+        "crop_top",
+        "sleeveless_knit",
+        "white_shorts",
+        "denim_shorts",
+        "green_thighhighs",
+        "striped_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "bare_shoulders"
       ],
-      "prose": "Grass-green striped thigh-high stockings.",
+      "prose": "A cropped pink halter knit top with white denim shorts, paired with green striped stockings held by buckled leather thigh straps creating a luscious soft indentation.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "kanroji_mitsuri"
     }
   }
 }

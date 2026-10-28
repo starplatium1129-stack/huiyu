@@ -1,25 +1,32 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/rhodes_oversized_hoodie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 330,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
-      "default": false,
       "id": "rhodes_oversized_hoodie",
-      "isDefault": false,
-      "name": "罗德岛炭灰宽松连帽卫衣",
-      "prose": "A mid-thigh charcoal hoodie with a geometric chest emblem, loose sleeves and black athletic shorts.",
+      "name": "罗德岛炭灰落肩连帽大卫衣（下身失踪）",
+      "prose": "A heavyweight washed-charcoal oversized hoodie falling mid-thigh over micro biker shorts, leaving absolute territory where sheer black stockings are gripped by a buckled leather thigh strap.",
       "tokens": [
-        "mid-thigh charcoal hoodie",
-        "oversized clothes",
-        "long sleeves",
-        "geometric emblem",
-        "black athletic shorts"
-      ]
+        "oversized_hoodie",
+        "charcoal_hoodie",
+        "drop_shoulder",
+        "booty_shorts",
+        "bare_legs",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "sneakers"
+      ],
+      "characterId": "mudrock_arknights",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

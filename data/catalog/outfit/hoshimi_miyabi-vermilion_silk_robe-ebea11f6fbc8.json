@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/vermilion_silk_robe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1305,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
       "id": "vermilion_silk_robe",
-      "name": "朱红轻绢睡袍",
+      "name": "朱红轻绢透纱晨袍与极细金扣腿饰",
       "tokens": [
-        "red robe",
-        "sheer silk",
-        "narrow sash"
+        "red_robe",
+        "silk_robe",
+        "sheer_clothing",
+        "wide_sleeves",
+        "sash",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "A vermilion silk robe with a narrow matching sash and light sheer fabric.",
+      "prose": "A gossamer vermilion silk wrap robe tied loosely with a gold-threaded sash, draping open over bare legs. A fine leather thigh strap with a golden buckle indents the soft skin of her inner thigh with an exquisite squish.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "hoshimi_miyabi"
     }
   }
 }

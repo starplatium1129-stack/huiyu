@@ -1,22 +1,32 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/linen_bath_wrap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1359,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
       "id": "linen_bath_wrap",
-      "name": "白亚麻浴巾",
+      "name": "挂颈高开衩白亚麻系带裹身裙",
       "tokens": [
-        "white towel",
-        "linen"
+        "halterneck",
+        "sarong",
+        "white_dress",
+        "wrap_dress",
+        "high_slit",
+        "backless_dress",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "barefoot"
       ],
-      "prose": "A plain white linen bath towel.",
+      "prose": "A minimalist white linen wrap dress with a crisscross halter neckline, open back, and provocative high leg slit. A sleek leather thigh strap with a silver buckle makes a delicate soft indentation on bare skin.",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "characterId": "artoria_pendragon"
     }
   }
 }

@@ -1,22 +1,31 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/black_agent_swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1378,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "id": "black_agent_swimsuit",
-      "name": "黑色高叉连体泳装",
+      "name": "战术机能高衩泳衣与快拆腿环",
+      "prose": "A matte black high-cut tactical swimsuit featuring a sleek zip-front collar and racerback, paired with bare legs cinched by a minimalist buckled leather thigh strap.",
       "tokens": [
-        "black one-piece swimsuit",
-        "highleg swimsuit"
+        "black_swimsuit",
+        "one-piece_swimsuit",
+        "highleg_swimsuit",
+        "front_zipper",
+        "sleeveless",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle"
       ],
-      "prose": "A plain black high-cut one-piece swimsuit.",
+      "characterId": "hayasaka_ai",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

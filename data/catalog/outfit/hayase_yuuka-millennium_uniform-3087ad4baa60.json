@@ -1,30 +1,33 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/millennium_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 505,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
       "default": true,
       "id": "millennium_uniform",
       "isDefault": true,
-      "name": "研讨会制服",
-      "prose": "Millennium Seminar school uniform featuring a sleeveless white collared blouse, blue necktie, open dark navy blazer draped over her shoulders, ID-card lanyard, black pleated miniskirt, black thigh-highs with white trim and brown loafers",
+      "name": "千年研讨会精裁短夹克制服与双皮腿带",
+      "prose": "The Millennium Seminar uniform featuring an open navy bolero jacket over a tucked white shirt and pleated miniskirt, showing dark thigh-highs cinched by buckled leather straps that indent the soft flesh.",
       "tokens": [
         "school_uniform",
-        "sleeveless_shirt",
-        "white collared shirt",
+        "white_shirt",
         "blue_necktie",
-        "open_jacket",
-        "navy blazer draped over shoulders",
-        "id_card",
-        "black pleated miniskirt",
-        "black thighhighs with white trim",
-        "brown loafers"
-      ]
+        "cropped_jacket",
+        "navy_jacket",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "loafers"
+      ],
+      "characterId": "hayase_yuuka"
     }
   }
 }

@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 555,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "nsfw_nude",
       "name": "🔞 私密全裸 / 纯粹形态",
       "tokens": [
-        "nude",
-        "uncensored"
+        "nude"
       ],
-      "prose": "Nude, with fair skin.",
+      "prose": "No clothing.",
       "styleHint": "",
       "isDefault": false,
-      "default": false
+      "default": false,
+      "characterId": "gotoh_hitori"
     }
   }
 }

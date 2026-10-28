@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/elite2",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 328,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
-      "default": false,
       "id": "elite2",
-      "isDefault": false,
-      "name": "卸甲破壳态（连体服）",
-      "prose": "a black high-neck bodysuit with only shoulder pauldrons and forearm gauntlets still worn",
+      "name": "破茧卸甲高弹机能战术连体衣",
+      "prose": "The form-fitting black and olive-drab compression bodysuit unzipped at the collarbone, featuring mesh side panels and heavy-duty dual-ring leather leg harnesses that firmly grip her shapely thighs.",
       "tokens": [
-        "black bodysuit",
-        "high collar",
-        "pauldrons",
-        "gauntlets"
-      ]
+        "bodysuit",
+        "compression_suit",
+        "front_zipper",
+        "cutout",
+        "sleeveless_bodysuit",
+        "bare_legs",
+        "thigh_strap",
+        "leather_strap",
+        "leg_harness",
+        "tactical_buckle"
+      ],
+      "characterId": "mudrock_arknights",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }
