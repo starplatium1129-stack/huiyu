@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_after_unfinished_book",
+  "revision": 1,
+  "sortOrder": 2502,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_after_unfinished_book",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "blue_jacket",
+    "title": "三司绫濑 · 把书留到明天",
+    "category": "恋爱后日谈",
+    "description": "绫濑在沙发上读书，你坐到她身边时，她把书签夹回那一页。她轻轻靠过来，说剩下的明天再看，今晚想和你待一会儿。",
+    "location": "living room sofa",
+    "action": "closing a book and leaning toward her partner",
+    "timeOfDay": "night",
+    "lighting": "floor lamp",
+    "camera": "medium shot",
+    "mood": "安心",
+    "promptProse": "On a living-room sofa, Ayase closes a book over its bookmark and leans toward her partner beside her.",
+    "promptTokens": [
+      "living room",
+      "sofa",
+      "sitting",
+      "holding book",
+      "leaning",
+      "floor lamp",
+      "medium shot"
+    ],
+    "animaCaption": "Her partner is beside her but remains outside the frame.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

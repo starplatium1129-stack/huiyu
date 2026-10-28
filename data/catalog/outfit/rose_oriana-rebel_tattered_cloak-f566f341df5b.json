@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "rose_oriana/rebel_tattered_cloak",
+  "revision": 1,
+  "sortOrder": 1899,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "rose_oriana",
+    "outfit": {
+      "id": "rebel_tattered_cloak",
+      "name": "亡命浪人破损斗篷剑士装",
+      "prose": "A weathered, threadbare charcoal grey hooded traveler cloak worn over a scuffed leather duelist cuirass, linen tunic, wrap bandages around the hands, and travel trousers.",
+      "tokens": [
+        "tattered_cloak",
+        "hood_down",
+        "leather_cuirass",
+        "tunic",
+        "arm_bandages",
+        "leather_trousers",
+        "boots",
+        "adventurer_clothes"
+      ],
+      "characterId": "rose_oriana",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

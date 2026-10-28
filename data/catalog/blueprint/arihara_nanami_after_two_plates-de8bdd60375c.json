@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_after_two_plates",
+  "revision": 1,
+  "sortOrder": 2504,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "arihara_nanami_after_two_plates",
+    "characterId": "arihara_nanami",
+    "outfitId": "home_apron",
+    "title": "在原七海 · 为两人准备的晚餐",
+    "category": "恋爱后日谈",
+    "description": "七海把最后一只碗放到桌上，发现筷子的方向摆反了，又转回来。你伸手帮忙时，她轻声说：“坐下吧，今天我们慢慢吃。”",
+    "location": "dining table",
+    "action": "setting two bowls on a dining table",
+    "timeOfDay": "evening",
+    "lighting": "warm lamplight",
+    "camera": "medium shot",
+    "mood": "温柔",
+    "promptProse": "At a dining table, Nanami adjusts two bowls and looks toward her partner before dinner.",
+    "promptTokens": [
+      "dining table",
+      "two bowls",
+      "setting table",
+      "looking at viewer",
+      "lamplight",
+      "medium shot"
+    ],
+    "animaCaption": "Two place settings are ready for their dinner together.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

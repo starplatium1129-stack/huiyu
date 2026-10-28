@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "delta_shallow_water_fish_catch",
+  "revision": 1,
+  "sortOrder": 2516,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "delta_shallow_water_fish_catch",
+    "characterId": "delta_shadow",
+    "outfitId": "leopard_hunt_bikini",
+    "title": "德尔塔 · 溪涧跃水的丰收欢呼",
+    "category": "猎手本能",
+    "description": "清凉的山涧溪流中水花四溅。德尔塔光着脚丫站在滑溜溜的溪石上，双手高高举着刚徒手抓到的大青鱼，狼耳竖得笔直，蓬松的大尾巴在身后疯狂摇摆，兴奋地向老大邀功：“老大看！德尔塔抓到了！！”",
+    "recommendedSize": "832x1216",
+    "location": "sunlit forest mountain stream with cascading water rapids and smooth river rocks",
+    "action": "standing in churning river water, triumphantly holding a large splashing freshwater fish overhead with both hands, wolf ears perked, tail wagging excitedly",
+    "timeOfDay": "morning",
+    "lighting": "sparkling morning sun filtering through lush green canopy creating dancing caustic reflections",
+    "camera": "full_body",
+    "mood": "explosive animal joy, unbridled hunting triumph, pure devoted loyalty",
+    "promptProse": "Delta in a leopard bikini splashes through a forest river stream, proudly lifting a giant caught fish over her head with perked wolf ears.",
+    "promptTokens": [
+      "river",
+      "stream",
+      "forest",
+      "water_splash",
+      "holding_fish",
+      "fish",
+      "triumph",
+      "wagging_tail",
+      "excited",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Delta proudly holding up a freshly caught fish in a sparkling mountain river.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

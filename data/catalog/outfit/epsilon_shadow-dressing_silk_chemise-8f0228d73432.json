@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "epsilon_shadow/dressing_silk_chemise",
+  "revision": 1,
+  "sortOrder": 1896,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "epsilon_shadow",
+    "outfit": {
+      "id": "dressing_silk_chemise",
+      "name": "晨间梳妆青瓷吊带薄衫",
+      "prose": "A delicate celadon mint green silk chemise featuring a plunging lace-trimmed V-neckline, thin straps, and an open lightweight silk robe trailing behind.",
+      "tokens": [
+        "chemise",
+        "silk_nightwear",
+        "mint_dress",
+        "plunging_neckline",
+        "lace_trim",
+        "open_robe",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "characterId": "epsilon_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

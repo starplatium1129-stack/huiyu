@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_after_night_map",
+  "revision": 1,
+  "sortOrder": 2498,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "rena_liechtenauer_after_night_map",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "blue_cardigan",
+    "title": "蕾娜·莉希特娜瓦 · 一起画的地图",
+    "category": "恋爱后日谈",
+    "description": "你们把去过的地方标在地图上。蕾娜又在空白处画了一个小圈，问下次能不能一起去那里；这回她特意把路线也记清楚了。",
+    "location": "home table",
+    "action": "marking a destination on a map",
+    "timeOfDay": "evening",
+    "lighting": "desk lamp",
+    "camera": "medium shot",
+    "mood": "期待",
+    "promptProse": "At a home table, Lena circles a destination on a map and looks toward her partner beside the table.",
+    "promptTokens": [
+      "table",
+      "map",
+      "pencil",
+      "writing",
+      "looking at viewer",
+      "desk lamp",
+      "medium shot"
+    ],
+    "animaCaption": "She marks the next destination on the shared map.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

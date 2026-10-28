@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "rose_oriana/illusion_bridal_gown",
+  "revision": 1,
+  "sortOrder": 1900,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "rose_oriana",
+    "outfit": {
+      "id": "illusion_bridal_gown",
+      "name": "誓约幻想纯白层叠婚纱",
+      "prose": "A romantic fantasy multi-tiered white lace bridal gown featuring an off-shoulder corset bodice, cathedral-length lace-trimmed veil, and an armful of white roses.",
+      "tokens": [
+        "wedding_dress",
+        "bridal_veil",
+        "white_veil",
+        "off-shoulder_dress",
+        "lace_dress",
+        "bridal_bouquet",
+        "bouquet",
+        "white_roses",
+        "train"
+      ],
+      "characterId": "rose_oriana",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

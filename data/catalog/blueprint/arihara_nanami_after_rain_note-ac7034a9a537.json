@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_after_rain_note",
+  "revision": 1,
+  "sortOrder": 2506,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "arihara_nanami_after_rain_note",
+    "characterId": "arihara_nanami",
+    "outfitId": "home_apron",
+    "title": "在原七海 · 雨夜的留言",
+    "category": "恋爱后日谈",
+    "description": "外面的雨还没停，七海在纸条上写好第二天的安排，顺手加了一句“别忘了带伞”。她把纸条放在你常坐的位置，等你回来一起喝茶。",
+    "location": "home table",
+    "action": "placing a handwritten note beside a teacup",
+    "timeOfDay": "night",
+    "lighting": "table lamp",
+    "camera": "medium shot",
+    "mood": "惦念",
+    "promptProse": "At a home table on a rainy night, Nanami places a handwritten note beside a cup of tea for her partner.",
+    "promptTokens": [
+      "home",
+      "table",
+      "handwritten note",
+      "teacup",
+      "rain outside window",
+      "table lamp",
+      "medium shot"
+    ],
+    "animaCaption": "The note waits beside the cup for her partner.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

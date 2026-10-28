@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_after_return",
+  "revision": 1,
+  "sortOrder": 2503,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "arihara_nanami_after_return",
+    "characterId": "arihara_nanami",
+    "outfitId": "home_apron",
+    "title": "在原七海 · 任务后的那句欢迎",
+    "category": "恋爱后日谈",
+    "description": "门刚打开，七海就从厨房探出头来。看到平安回家的恋人，她先松了口气，随后把准备好的热茶端过来：“欢迎回来。”",
+    "location": "home kitchen doorway",
+    "action": "offering a cup of tea at the kitchen doorway",
+    "timeOfDay": "evening",
+    "lighting": "warm indoor light",
+    "camera": "medium shot",
+    "mood": "安心",
+    "promptProse": "At the kitchen doorway, Nanami offers a cup of tea to her partner returning home.",
+    "promptTokens": [
+      "kitchen doorway",
+      "holding teacup",
+      "offering cup",
+      "looking at viewer",
+      "warm light",
+      "medium shot"
+    ],
+    "animaCaption": "She offers the tea toward her partner at the door.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

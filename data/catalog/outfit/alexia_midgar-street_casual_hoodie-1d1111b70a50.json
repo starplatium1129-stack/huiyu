@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "alexia_midgar/street_casual_hoodie",
+  "revision": 1,
+  "sortOrder": 1886,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "alexia_midgar",
+    "outfit": {
+      "id": "street_casual_hoodie",
+      "name": "微服出逃街头卫衣便服",
+      "prose": "A roomy heather grey zip-up hoodie over a simple black tank top, frayed denim cut-off shorts, opaque black thigh-high socks, and leather sneakers.",
+      "tokens": [
+        "hoodie",
+        "zip_hoodie",
+        "grey_hoodie",
+        "tank_top",
+        "denim_shorts",
+        "black_thighhighs",
+        "sneakers",
+        "casual"
+      ],
+      "characterId": "alexia_midgar",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "alpha_shadow/matsuri_yukata",
+  "revision": 1,
+  "sortOrder": 1880,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "alpha_shadow",
+    "outfit": {
+      "id": "matsuri_yukata",
+      "name": "四越盛典暗椿和风浴衣",
+      "prose": "A refined obsidian black yukata woven with subtle golden camellia crests, fastened by a vermilion silk obi sash with decorative knotting.",
+      "tokens": [
+        "yukata",
+        "black_yukata",
+        "floral_print",
+        "obi",
+        "vermilion_obi",
+        "wide_sleeves",
+        "japanese_clothes",
+        "geta"
+      ],
+      "characterId": "alpha_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

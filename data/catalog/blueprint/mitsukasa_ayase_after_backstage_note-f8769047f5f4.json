@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_after_backstage_note",
+  "revision": 1,
+  "sortOrder": 2501,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_after_backstage_note",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "red_performance",
+    "title": "三司绫濑 · 留在花束里的字条",
+    "category": "恋爱后日谈",
+    "description": "绫濑在后台读到你放进花束的字条，先把纸折好，才忍不住笑了一声。她把字条收进口袋，准备出去找你。",
+    "location": "backstage dressing table",
+    "action": "holding a small note beside a bouquet",
+    "timeOfDay": "evening",
+    "lighting": "warm dressing room light",
+    "camera": "medium shot",
+    "mood": "温柔",
+    "promptProse": "At a backstage dressing table, Ayase reads a small note beside a bouquet and smiles to herself.",
+    "promptTokens": [
+      "backstage",
+      "dressing table",
+      "bouquet",
+      "holding note",
+      "smile",
+      "warm light",
+      "medium shot"
+    ],
+    "animaCaption": "The note came from her partner and rests in her hands.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

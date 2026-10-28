@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "rose_cathedral_balcony_coronation_wave",
+  "revision": 1,
+  "sortOrder": 2522,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "rose_cathedral_balcony_coronation_wave",
+    "characterId": "rose_oriana",
+    "outfitId": "coronation_queen_gown",
+    "title": "萝丝 · 王城露台的加冕宣誓",
+    "category": "加冕登基",
+    "description": "奥利安娜王宫宏伟的圣殿露台上。晨钟回荡，千万白鸽飞跃王都。萝丝头戴金冠，一手按在胸前，向广阔广场上的臣民俯身致敬，曾经的迷茫退去，眼眸中闪烁着斩断苦难的坚毅王者威光。",
+    "recommendedSize": "832x1216",
+    "location": "grand royal palace balcony overlooking a vast fantasy kingdom square filled with banners and flying white doves",
+    "action": "standing at the edge of the stone parapet, one hand over her heart while waving gently with the other, crowned head held high with resolute regal pride",
+    "timeOfDay": "morning",
+    "lighting": "brilliant morning sunlight bathing the palace white marble and golden ornaments",
+    "camera": "wide_shot",
+    "mood": "magnificent royal ascension, sovereign resolve, liberation from tragedy",
+    "promptProse": "Rose as a crowned queen stands on the palace balcony in white gold coronation robes, hand on heart looking out with majestic resolve.",
+    "promptTokens": [
+      "palace",
+      "balcony",
+      "crown",
+      "doves",
+      "banners",
+      "cityscape",
+      "hand_on_chest",
+      "regal",
+      "morning_sun",
+      "wide_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Queen Rose waving to her kingdom from the sunlit palace balcony in coronation regalia.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

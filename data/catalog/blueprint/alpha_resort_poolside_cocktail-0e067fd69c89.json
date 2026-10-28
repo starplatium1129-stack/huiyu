@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "alpha_resort_poolside_cocktail",
+  "revision": 1,
+  "sortOrder": 2507,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "alpha_resort_poolside_cocktail",
+    "characterId": "alpha_shadow",
+    "outfitId": "resort_swimsuit",
+    "title": "阿尔法 · 池畔金辉下的薄凉浅酌",
+    "category": "假日闲暇",
+    "description": "盛夏午后无人的私人泳池畔，阿尔法侧倚在白色遮阳躺椅边，修长双腿没入清澈碧水中。她托着盛有冰镇特调的玻璃杯，金发在微风中轻拂，向身侧之人递来宁静从容的注视。",
+    "recommendedSize": "832x1216",
+    "location": "luxurious private infinity pool terrace overlooking an ocean horizon under sunny sky",
+    "action": "sitting on the edge of a white poolside lounger, one hand holding an iced cocktail glass with a lime slice, water ripples lapping at feet, gentle slight smile",
+    "timeOfDay": "afternoon",
+    "lighting": "sparkling tropical sunlight reflecting off crystal pool water with soft warm shadows",
+    "camera": "cowboy_shot",
+    "mood": "serene summer luxury, effortless aristocratic elegance, quiet private bond",
+    "promptProse": "Alpha sits by a crystal blue private pool terrace holding a cold summer drink, golden hair catching warm sunlight as water sparkles around her.",
+    "promptTokens": [
+      "poolside",
+      "water_ripples",
+      "sunlight",
+      "swimming_pool",
+      "lounger",
+      "holding_cup",
+      "drink",
+      "cowboy_shot",
+      "gentle_smile"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alpha relaxing poolside with an iced cocktail under radiant summer light.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

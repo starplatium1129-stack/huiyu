@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "alexia_beach_towel_tsundere_glare",
+  "revision": 1,
+  "sortOrder": 2513,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "alexia_beach_towel_tsundere_glare",
+    "characterId": "alexia_midgar",
+    "outfitId": "royal_crimson_bikini",
+    "title": "阿蕾克希亚 · 阳伞下的不悦侧目",
+    "category": "盛夏侧影",
+    "description": "王室避暑海滩的阳伞阴凉下。阿蕾克希亚坐在条纹沙滩巾上，双手环胸别扭地别过脸去，银色马尾随动作轻摆，余光却狠狠瞪着旁边那个装作若无其事的凡人仆从波奇。",
+    "recommendedSize": "832x1216",
+    "location": "shaded beach cabana with striped sun lounger and sunny ocean background",
+    "action": "sitting with arms crossed on a beach towel, head turned away with a sharp pout, casting a sideways scowl full of proud irritation",
+    "timeOfDay": "afternoon",
+    "lighting": "bright beach sunlight diffused softly beneath a canvas cabana canopy",
+    "camera": "cowboy_shot",
+    "mood": "tsundere pride, hidden vulnerability, sharp royal edge",
+    "promptProse": "Alexia in a red bikini sits with arms crossed under a beach umbrella, pouting and scowling sideways at the viewer.",
+    "promptTokens": [
+      "beach_umbrella",
+      "beach_towel",
+      "sand",
+      "arms_crossed",
+      "pout",
+      "tsundere",
+      "side_glance",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alexia glaring sideways with crossed arms under a beach umbrella.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

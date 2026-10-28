@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "aurora_shadow/starlit_ruins_backless_gown",
+  "revision": 1,
+  "sortOrder": 1907,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "aurora_shadow",
+    "outfit": {
+      "id": "starlit_ruins_backless_gown",
+      "name": "星穹古迹赤足幽紫露背天衣",
+      "prose": "An ethereal sheer violet silk backless floor-sweeping gown with a daring plunging draped back, silver spiral snake armlets, and no footwear.",
+      "tokens": [
+        "backless_dress",
+        "evening_gown",
+        "violet_dress",
+        "sheer_fabric",
+        "armlet",
+        "bare_back",
+        "barefoot",
+        "flowing_gown"
+      ],
+      "characterId": "aurora_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

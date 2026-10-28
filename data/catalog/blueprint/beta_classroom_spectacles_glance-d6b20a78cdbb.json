@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "beta_classroom_spectacles_glance",
+  "revision": 1,
+  "sortOrder": 2511,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "beta_classroom_spectacles_glance",
+    "characterId": "beta_shadow",
+    "outfitId": "student_disguise_uniform",
+    "title": "贝塔 · 窗边课桌后的文学少女",
+    "category": "学院日常",
+    "description": "米德加学园的午后自习室内。贝塔坐在靠窗的橡木课桌旁，指尖轻扶圆框眼镜的镜腿，另一只手在摊开的手札上飞速记录暗影大人的行踪，偶一抬头时慌忙用书卷掩住视线。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit academy library study hall with tall gothic bookshelves and arched bay windows",
+    "action": "seated at a polished oak desk, one hand holding an open leather diary while the other pushes up round glasses, glancing toward viewer with startled wide eyes",
+    "timeOfDay": "afternoon",
+    "lighting": "slanted golden afternoon sunlight filtering through diamond-paned windowpanes",
+    "camera": "cowboy_shot",
+    "mood": "quiet scholarly charm, undercover intrigue, covert devotion",
+    "promptProse": "Beta disguised as an academy student sits at a library desk pushing up round spectacles, surprised while writing in her notebook.",
+    "promptTokens": [
+      "classroom",
+      "library",
+      "bookshelves",
+      "desk",
+      "holding_notebook",
+      "feather_pen",
+      "pushing_glasses",
+      "afternoon_light",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Beta adjusting her glasses while taking secret notes at an academy library desk.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_after_two_cups",
+  "revision": 1,
+  "sortOrder": 2496,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "rena_liechtenauer_after_two_cups",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "inn_apron",
+    "title": "蕾娜·莉希特娜瓦 · 留给两人的茶",
+    "category": "恋爱后日谈",
+    "description": "旅馆的忙碌告一段落，蕾娜把第二只茶杯推到你面前。她说今天学到一个新词，非要等你喝口茶再猜是什么意思。",
+    "location": "inn veranda",
+    "action": "offering a cup of tea across a low table",
+    "timeOfDay": "evening",
+    "lighting": "warm lamplight",
+    "camera": "medium shot",
+    "mood": "放松",
+    "promptProse": "On the inn veranda, Lena offers a cup of tea across a low table, with another cup beside her.",
+    "promptTokens": [
+      "veranda",
+      "low table",
+      "two teacups",
+      "offering cup",
+      "looking at viewer",
+      "lamplight",
+      "medium shot"
+    ],
+    "animaCaption": "She offers the cup to her partner across the table.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

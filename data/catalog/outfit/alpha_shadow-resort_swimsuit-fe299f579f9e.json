@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "alpha_shadow/resort_swimsuit",
+  "revision": 1,
+  "sortOrder": 1877,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "alpha_shadow",
+    "outfit": {
+      "id": "resort_swimsuit",
+      "name": "四越度假黑金比基尼",
+      "prose": "A luxury black halter bikini with gold braided filigree straps, a sheer obsidian sarong around the hips, and polished gold arm bangles.",
+      "tokens": [
+        "black_bikini",
+        "halterneck",
+        "gold_trim",
+        "sarong",
+        "sheer_chiffon",
+        "armlet",
+        "gold_bracelet",
+        "barefoot",
+        "side-tie_bikini_bottom"
+      ],
+      "characterId": "alpha_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

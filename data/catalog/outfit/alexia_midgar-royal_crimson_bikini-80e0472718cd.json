@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "alexia_midgar/royal_crimson_bikini",
+  "revision": 1,
+  "sortOrder": 1885,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "alexia_midgar",
+    "outfit": {
+      "id": "royal_crimson_bikini",
+      "name": "王室炽红挂脖分体泳装",
+      "prose": "A bold deep crimson halter bikini paired with minimal hip strap ties and a lightweight semi-sheer white cotton beach shirt worn open.",
+      "tokens": [
+        "red_bikini",
+        "crimson_swimwear",
+        "halterneck",
+        "open_shirt",
+        "white_shirt",
+        "sheer_shirt",
+        "bare_midriff",
+        "strappy_bottom",
+        "sandals"
+      ],
+      "characterId": "alexia_midgar",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "delta_shadow/matsuri_happi",
+  "revision": 1,
+  "sortOrder": 1892,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "delta_shadow",
+    "outfit": {
+      "id": "matsuri_happi",
+      "name": "兽人祭典金纹法披短装",
+      "prose": "A wide-sleeved black cotton festival happi coat patterned with gold lightning kanji, worn open over white sarashi chest binding and black gym shorts.",
+      "tokens": [
+        "happi",
+        "sarashi",
+        "open_coat",
+        "shorts",
+        "black_shorts",
+        "japanese_festival",
+        "fox_mask",
+        "festival_clothes"
+      ],
+      "characterId": "delta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

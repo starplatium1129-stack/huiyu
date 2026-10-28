@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_after_ribbon",
+  "revision": 1,
+  "sortOrder": 2491,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_after_ribbon",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "plaid_casual",
+    "title": "椎叶紬 · 终于能挑喜欢的颜色",
+    "category": "恋爱后日谈",
+    "description": "契约结束后的休息日，紬把新挑的缎带放到镜前，试了两次才系好。她转身看向你，故作镇定地问：“真的好看吗？”等听到回答，她才笑着把手递过来。",
+    "location": "dressing room mirror",
+    "action": "adjusting a hair ribbon and turning toward her partner",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "期待",
+    "promptProse": "In front of a dressing-room mirror, Tsumugi adjusts a ribbon in her hair and turns toward her partner with a shy smile.",
+    "promptTokens": [
+      "dressing room",
+      "mirror",
+      "adjusting hair ribbon",
+      "looking at viewer",
+      "shy smile",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "She has just finished tying the ribbon and looks toward her partner.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

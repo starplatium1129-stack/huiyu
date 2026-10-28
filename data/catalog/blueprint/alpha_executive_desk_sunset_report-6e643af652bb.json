@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "alpha_executive_desk_sunset_report",
+  "revision": 1,
+  "sortOrder": 2508,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "alpha_executive_desk_sunset_report",
+    "characterId": "alpha_shadow",
+    "outfitId": "business_suit",
+    "title": "阿尔法 · 暮色落地窗前的商会部署",
+    "category": "幕后主理",
+    "description": "四越商会顶层密室内夕阳漫卷。阿尔法站在全景落地窗前，单手翻阅着刚封蜡的密信卷宗，另一只手优雅整理西装领口，夕阳余晖为她从容的面容镀上一层冷峻的金辉。",
+    "recommendedSize": "832x1216",
+    "location": "opulent executive corner office with high ceilings and arched panoramic windows overlooking a sprawling fantasy capital",
+    "action": "standing gracefully by the panoramic window, holding a leather-bound folder in one hand while lightly adjusting her collar with the other, looking calmly forward",
+    "timeOfDay": "golden_hour",
+    "lighting": "dramatic amber sunset streaming across polished mahogany parquet and dark fabric",
+    "camera": "upper_body",
+    "mood": "tactical supremacy, commanding executive majesty, quiet evening focus",
+    "promptProse": "In a grand high-rise corner office bathed in sunset glow, Alpha in a dark business suit holds leather dossiers, her expression calm and sharp.",
+    "promptTokens": [
+      "office",
+      "panoramic_window",
+      "city_view",
+      "sunset",
+      "golden_hour",
+      "holding_document",
+      "suit",
+      "upper_body",
+      "composed"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alpha reviewing intelligence dossiers in her executive high-rise office at golden hour.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "alexia_convenience_red_bean_bun",
+  "revision": 1,
+  "sortOrder": 2514,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "alexia_convenience_red_bean_bun",
+    "characterId": "alexia_midgar",
+    "outfitId": "street_casual_hoodie",
+    "title": "阿蕾克希亚 · 小巷石阶的半块面包",
+    "category": "平民日常",
+    "description": "暮色笼罩的王都背街僻静石阶上。阿蕾克希亚把卫衣兜帽拉得低低的，小心翼翼地将热腾腾的红豆面包掰成两半，红着耳尖把较大的一半递到席德面前：“别误会，我只是吃不完而已。”",
+    "recommendedSize": "832x1216",
+    "location": "cobblestone alley staircase beside brick townhouse walls under lamplight",
+    "action": "sitting on stone steps holding half of a steaming red bean bun outward toward the viewer, pulling down hoodie brim, blushing ear tips",
+    "timeOfDay": "dusk",
+    "lighting": "warm golden streetlamp glow mixing with cool evening ambient shadows",
+    "camera": "medium_shot",
+    "mood": "clandestine warmth, awkward honesty, humble everyday tenderness",
+    "promptProse": "Alexia in a hoodie sits on cobblestone alley steps offering half of a steaming bread bun to the viewer with a stubborn blushing expression.",
+    "promptTokens": [
+      "alley",
+      "stone_stairs",
+      "street_lamp",
+      "holding_food",
+      "bun",
+      "steam",
+      "blushing",
+      "hoodie",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alexia sharing a steaming red bean bun on quiet backstreet cobblestone stairs.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

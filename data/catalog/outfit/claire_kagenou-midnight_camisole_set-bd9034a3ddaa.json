@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "claire_kagenou/midnight_camisole_set",
+  "revision": 1,
+  "sortOrder": 1904,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "claire_kagenou",
+    "outfit": {
+      "id": "midnight_camisole_set",
+      "name": "宿舍夜巡暗紫吊带睡裤",
+      "prose": "A deep plum ribbed cotton camisole tank top matched with relaxed grey drawstring loungewear shorts and soft slouch socks.",
+      "tokens": [
+        "camisole",
+        "tank_top",
+        "ribbed_top",
+        "shorts",
+        "drawstring_shorts",
+        "slouch_socks",
+        "loungewear",
+        "barefoot"
+      ],
+      "characterId": "claire_kagenou",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

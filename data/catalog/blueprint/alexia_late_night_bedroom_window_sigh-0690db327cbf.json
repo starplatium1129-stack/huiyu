@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "alexia_late_night_bedroom_window_sigh",
+  "revision": 1,
+  "sortOrder": 2515,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "alexia_late_night_bedroom_window_sigh",
+    "characterId": "alexia_midgar",
+    "outfitId": "crimson_silk_slip",
+    "title": "阿蕾克希亚 · 深夜露台的独处微澜",
+    "category": "深夜心声",
+    "description": "寂静的王女寝宫露台上寒风微拂。阿蕾克希亚赤足倚着大理石围栏，手抚上曾被硬币弹中的额头，凝视着沉睡的王都夜景，卸去剑士的骄傲与王女的防备，眼眸中流淌着难得的迷茫与柔和。",
+    "recommendedSize": "832x1216",
+    "location": "palace balcony with ornate white marble balustrade overlooking silent moonlit city roofs",
+    "action": "leaning against the marble railing barefoot, one hand lightly touching her forehead, looking pensively up at the moonlit clouds",
+    "timeOfDay": "night",
+    "lighting": "cool silver moonlight tracing silhouette and casting soft deep shadows",
+    "camera": "full_body",
+    "mood": "pensive royal solitude, quiet longing, unguarded self-reflection",
+    "promptProse": "Alexia barefoot in a silk slip dress leans on a palace balcony railing at night, pensively gazing into the moonlit capital.",
+    "promptTokens": [
+      "balcony",
+      "palace",
+      "marble_railing",
+      "city_night",
+      "moonlight",
+      "barefoot",
+      "touching_head",
+      "melancholy",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alexia in quiet contemplation on her moonlit palace balcony at midnight.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

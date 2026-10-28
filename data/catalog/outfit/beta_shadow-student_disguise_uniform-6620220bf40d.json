@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "beta_shadow/student_disguise_uniform",
+  "revision": 1,
+  "sortOrder": 1882,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "beta_shadow",
+    "outfit": {
+      "id": "student_disguise_uniform",
+      "name": "米德加学园潜入学妹制服",
+      "prose": "A Midgar Academy scholar branch uniform composed of a tailored chocolate brown blazer over a crisp collared shirt, pleated checked skirt, round spectacles, and a brown beret.",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "brown_jacket",
+        "collared_shirt",
+        "pleated_skirt",
+        "plaid_skirt",
+        "round_eyewear",
+        "glasses",
+        "beret",
+        "necktie",
+        "knee_boots"
+      ],
+      "characterId": "beta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

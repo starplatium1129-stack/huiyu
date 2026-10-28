@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "alexia_midgar/fencing_training_gear",
+  "revision": 1,
+  "sortOrder": 1887,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "alexia_midgar",
+    "outfit": {
+      "id": "fencing_training_gear",
+      "name": "皇家剑道修练背心轻装",
+      "prose": "A snug charcoal athletic training tank top tucked into white stretch fencing breeches, reinforced with leather sword-arm wraps and tall riding boots.",
+      "tokens": [
+        "tank_top",
+        "athletic_wear",
+        "fencing_breeches",
+        "arm_wrap",
+        "fingerless_gloves",
+        "riding_boots",
+        "sword_belt",
+        "sporty"
+      ],
+      "characterId": "alexia_midgar",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "delta_shadow/cargo_overalls",
+  "revision": 1,
+  "sortOrder": 1890,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "delta_shadow",
+    "outfit": {
+      "id": "cargo_overalls",
+      "name": "四越特勤牛仔工装短裤",
+      "prose": "Durable faded blue denim short overalls worn over an elastic black crop halter top, outfitted with oversized utility cargo pockets and fingerless leather gloves.",
+      "tokens": [
+        "overalls",
+        "short_overalls",
+        "denim_overalls",
+        "crop_top",
+        "sleeveless",
+        "cargo_pockets",
+        "fingerless_gloves",
+        "leather_belt",
+        "boots"
+      ],
+      "characterId": "delta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

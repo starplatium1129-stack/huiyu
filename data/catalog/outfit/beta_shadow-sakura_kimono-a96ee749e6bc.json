@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "beta_shadow/sakura_kimono",
+  "revision": 1,
+  "sortOrder": 1884,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "beta_shadow",
+    "outfit": {
+      "id": "sakura_kimono",
+      "name": "春樱和风印花小振袖",
+      "prose": "A graceful blush pink chirimen silk kimono pattern-printed with drifting sakura blossoms and mist, bound with an ornate gold brocade obi.",
+      "tokens": [
+        "kimono",
+        "pink_kimono",
+        "furisode",
+        "floral_print",
+        "cherry_blossoms",
+        "obi",
+        "gold_obi",
+        "folding_fan",
+        "traditional_clothes"
+      ],
+      "characterId": "beta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

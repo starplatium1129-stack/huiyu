@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_after_quiet_cafe",
+  "revision": 1,
+  "sortOrder": 2500,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_after_quiet_cafe",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "blue_jacket",
+    "title": "三司绫濑 · 不用维持的笑容",
+    "category": "恋爱后日谈",
+    "description": "咖啡馆的角落没有镜头，也没有等待回应的人。绫濑低头尝了一口饮料，听你说完笑话才抬起眼，露出一个很自然的笑。",
+    "location": "quiet cafe corner",
+    "action": "smiling at her partner across a cafe table",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "亲昵",
+    "promptProse": "At a quiet cafe table, Ayase smiles at her partner across two drinks in the window light.",
+    "promptTokens": [
+      "cafe",
+      "table",
+      "two cups",
+      "sitting",
+      "looking at viewer",
+      "smile",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "Her partner sits across the table outside the frame.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

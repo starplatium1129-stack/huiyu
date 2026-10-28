@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_after_photo_album",
+  "revision": 1,
+  "sortOrder": 2493,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_after_photo_album",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "plaid_casual",
+    "title": "椎叶紬 · 相册里的一页",
+    "category": "恋爱后日谈",
+    "description": "紬把相册翻到两人旅行的那一页，指着拍歪的照片笑了起来。你说下次重新拍，她却把那张照片按住：“这张也很好。”",
+    "location": "living room sofa",
+    "action": "pointing at a photograph in an open album",
+    "timeOfDay": "afternoon",
+    "lighting": "soft daylight",
+    "camera": "medium shot",
+    "mood": "亲昵",
+    "promptProse": "Sitting on a living-room sofa, Tsumugi points to a crooked photograph in an open album and smiles toward her partner.",
+    "promptTokens": [
+      "living room",
+      "sofa",
+      "sitting",
+      "photo album",
+      "pointing",
+      "smile",
+      "daylight",
+      "medium shot"
+    ],
+    "animaCaption": "She shares the album with her partner, who is outside the frame.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

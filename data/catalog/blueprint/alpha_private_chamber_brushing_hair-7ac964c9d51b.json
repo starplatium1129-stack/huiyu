@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "alpha_private_chamber_brushing_hair",
+  "revision": 1,
+  "sortOrder": 2509,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "alpha_private_chamber_brushing_hair",
+    "characterId": "alpha_shadow",
+    "outfitId": "private_nightwear",
+    "title": "阿尔法 · 午夜静室的对镜梳发",
+    "category": "私享时刻",
+    "description": "幽静的私人内殿烛光摇曳。阿尔法坐在深色雕花梳妆台前，银质发刷顺着及腰金发缓缓梳落，镜中倒映着褪去所有战意与防备的面容，透着独处时的轻柔与依赖。",
+    "recommendedSize": "832x1216",
+    "location": "dimly lit private bedchamber with heavy velvet drapes and warm candlelight",
+    "action": "sitting before an antique carved vanity mirror, gently running a silver hairbrush through long golden locks, looking back over shoulder with a gentle soft gaze",
+    "timeOfDay": "night",
+    "lighting": "soft candle glow illuminating the mirror surface and casting gentle warm highlights on satin fabric",
+    "camera": "medium_shot",
+    "mood": "intimate night solitude, gentle vulnerability, unmasked warmth",
+    "promptProse": "In a quiet candlelit bedroom, Alpha brushes her long hair before a vintage vanity mirror, her gaze soft and relaxed without commander armor.",
+    "promptTokens": [
+      "bedchamber",
+      "candlelight",
+      "vanity_mirror",
+      "holding_brush",
+      "brushing_hair",
+      "looking_over_shoulder",
+      "soft_lighting",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alpha brushing her hair in front of a mirror in her candlelit private chamber.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

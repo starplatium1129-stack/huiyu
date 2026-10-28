@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_after_trip_tickets",
+  "revision": 1,
+  "sortOrder": 2494,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_after_trip_tickets",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "plaid_casual",
+    "title": "椎叶紬 · 下一次出门",
+    "category": "恋爱后日谈",
+    "description": "桌上并排放着两张车票，紬正认真研究目的地的地图。她抬起头问你要不要绕去那家小店，笔尖已经替你留好了选择的空格。",
+    "location": "dining table",
+    "action": "looking up from a map and two train tickets",
+    "timeOfDay": "morning",
+    "lighting": "morning window light",
+    "camera": "medium shot",
+    "mood": "期待",
+    "promptProse": "At a dining table, Tsumugi looks up from a map and two train tickets to ask her partner about a stop along their trip.",
+    "promptTokens": [
+      "dining table",
+      "map",
+      "train tickets",
+      "holding pen",
+      "looking at viewer",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "Two tickets lie together on the map while she looks toward her partner.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

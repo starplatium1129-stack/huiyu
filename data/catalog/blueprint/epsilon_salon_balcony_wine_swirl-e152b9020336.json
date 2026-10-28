@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "epsilon_salon_balcony_wine_swirl",
+  "revision": 1,
+  "sortOrder": 2520,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "epsilon_salon_balcony_wine_swirl",
+    "characterId": "epsilon_shadow",
+    "outfitId": "salon_hostess_cheongsam",
+    "title": "厄普西隆 · 名流沙龙的微醺执盏",
+    "category": "社交名媛",
+    "description": "四越顶级宴会厅的二楼贵宾回廊上。厄普西隆侧身轻倚雕花漆木栏杆，指尖优雅轻摇高脚杯中深红酒液，居高临下俯瞰宴会厅里受四越商会摆布的王都权贵，眼神深邃而冷艳。",
+    "recommendedSize": "832x1216",
+    "location": "luxurious mezzanine VIP balcony adorned with carved balustrades and gilded chandeliers",
+    "action": "leaning against a gilded handrail, swirling a crystal glass of red wine, gazing down with a poised, aristocratic enigmatic smile",
+    "timeOfDay": "night",
+    "lighting": "soft chandelier glow casting amber sparkles on silk fabric and gold embroidery",
+    "camera": "cowboy_shot",
+    "mood": "aristocratic allure, manipulative intelligence, supreme high-society composure",
+    "promptProse": "Epsilon in a peacock cheongsam leans on a grand salon balcony at night, swirling red wine while gazing down with cold aristocratic poise.",
+    "promptTokens": [
+      "ballroom",
+      "balcony",
+      "chandelier",
+      "holding_wine_glass",
+      "wine",
+      "fur_stole",
+      "high_slit",
+      "enigmatic_smile",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Epsilon observing the grand ballroom from a mezzanine balcony with a glass of red wine.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

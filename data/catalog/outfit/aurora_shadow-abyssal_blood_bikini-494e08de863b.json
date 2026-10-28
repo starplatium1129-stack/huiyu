@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "aurora_shadow/abyssal_blood_bikini",
+  "revision": 1,
+  "sortOrder": 1905,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "aurora_shadow",
+    "outfit": {
+      "id": "abyssal_blood_bikini",
+      "name": "血月深渊暗纹十字系带泳装",
+      "prose": "A seductive dark crimson velvet halter bikini detailed with criss-cross ribcage straps, black gothic lace edges, and oxidized silver chain hip accents.",
+      "tokens": [
+        "strappy_bikini",
+        "criss-cross_halter",
+        "red_swimwear",
+        "velvet",
+        "black_lace_trim",
+        "chains",
+        "gothic_swimsuit",
+        "hip_straps"
+      ],
+      "characterId": "aurora_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

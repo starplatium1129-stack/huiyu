@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_after_bridge",
+  "revision": 1,
+  "sortOrder": 2495,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "rena_liechtenauer_after_bridge",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "blue_cardigan",
+    "title": "蕾娜·莉希特娜瓦 · 再走一次的桥",
+    "category": "恋爱后日谈",
+    "description": "蕾娜拉着你走上那座熟悉的木桥，提醒你看水里慢慢飘走的落叶。她记得第一次来穗织时，自己也在这里停了很久。",
+    "location": "wooden bridge over a stream",
+    "action": "holding her partner’s hand on a wooden bridge",
+    "timeOfDay": "late afternoon",
+    "lighting": "warm daylight",
+    "camera": "cowboy shot",
+    "mood": "喜悦",
+    "promptProse": "On a wooden bridge over a stream, Lena takes her partner’s hand and looks back with a smile; only the partner’s hand is visible.",
+    "promptTokens": [
+      "wooden bridge",
+      "stream",
+      "holding hands",
+      "looking back",
+      "smile",
+      "pov",
+      "warm daylight",
+      "cowboy shot"
+    ],
+    "animaCaption": "Her partner is out of frame apart from the hand she holds.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

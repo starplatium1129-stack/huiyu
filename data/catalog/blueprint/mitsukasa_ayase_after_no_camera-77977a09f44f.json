@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_after_no_camera",
+  "revision": 1,
+  "sortOrder": 2499,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_after_no_camera",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "blue_jacket",
+    "title": "三司绫濑 · 镜头关掉以后",
+    "category": "恋爱后日谈",
+    "description": "回到家，绫濑把活动资料放在一边，靠着沙发长长地舒了口气。你问她今天累不累，她点点头，伸手把你拉到身边：“今晚不想当别人眼里的完美小姐。”",
+    "location": "living room sofa",
+    "action": "reaching toward her partner from a sofa",
+    "timeOfDay": "evening",
+    "lighting": "warm lamplight",
+    "camera": "medium shot",
+    "mood": "放松",
+    "promptProse": "At home, Ayase sits on the sofa and reaches toward her partner after setting aside her work papers.",
+    "promptTokens": [
+      "living room",
+      "sofa",
+      "sitting",
+      "reaching toward viewer",
+      "papers",
+      "lamplight",
+      "medium shot"
+    ],
+    "animaCaption": "Her partner is just outside the frame.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

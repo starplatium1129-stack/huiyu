@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "epsilon_shadow/salon_hostess_cheongsam",
+  "revision": 1,
+  "sortOrder": 1894,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "epsilon_shadow",
+    "outfit": {
+      "id": "salon_hostess_cheongsam",
+      "name": "四越沙龙高开衩青雀旗袍",
+      "prose": "A form-fitting peacock teal silk cheongsam embellished with golden phoenix embroidery, high side leg slits, sleeveless cut, and a plush black fur stole.",
+      "tokens": [
+        "cheongsam",
+        "teal_dress",
+        "high_slit",
+        "gold_embroidery",
+        "sleeveless_dress",
+        "fur_stole",
+        "high_heels",
+        "formal_dress"
+      ],
+      "characterId": "epsilon_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

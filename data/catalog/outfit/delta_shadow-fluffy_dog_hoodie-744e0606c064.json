@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "delta_shadow/fluffy_dog_hoodie",
+  "revision": 1,
+  "sortOrder": 1891,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "delta_shadow",
+    "outfit": {
+      "id": "fluffy_dog_hoodie",
+      "name": "毛绒大狗暖绒连帽长衫",
+      "prose": "An oversized chocolate fleece oversized tunic hoodie featuring giant plush dog paw-shaped hand-warmer pockets and thick fuzzy ribbed winter socks.",
+      "tokens": [
+        "fuzzy_hoodie",
+        "oversized_hoodie",
+        "fleece",
+        "paw_print",
+        "thick_socks",
+        "loungewear",
+        "warm_clothes",
+        "bare_thighs"
+      ],
+      "characterId": "delta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

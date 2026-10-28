@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "claire_kagenou/tournament_knight_coat",
+  "revision": 1,
+  "sortOrder": 1903,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "claire_kagenou",
+    "outfit": {
+      "id": "tournament_knight_coat",
+      "name": "武斗会正选首席骑士大衣",
+      "prose": "A tailored dark forest teal double-breasted fencing frock coat with polished brass buttons, gold wire epaulets, white leather gauntlets, and a rapier scabbard.",
+      "tokens": [
+        "frock_coat",
+        "military_jacket",
+        "epaulets",
+        "white_gloves",
+        "gauntlets",
+        "sword_belt",
+        "riding_boots",
+        "formal_uniform"
+      ],
+      "characterId": "claire_kagenou",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

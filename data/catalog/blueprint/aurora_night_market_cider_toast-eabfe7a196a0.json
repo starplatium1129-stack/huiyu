@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "aurora_night_market_cider_toast",
+  "revision": 1,
+  "sortOrder": 2530,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "aurora_night_market_cider_toast",
+    "characterId": "aurora_shadow",
+    "outfitId": "modern_trench_date",
+    "title": "奥萝拉 · 异界夜市的苹果糖香",
+    "category": "现世漫游",
+    "description": "灯火璀璨的热闹异域夜市小吃街上。热气蒸腾，人潮熙攘。奥萝拉裹着风衣，双手捧着裹着透明糖浆的苹果糖咬下一小口，眼睛亮晶晶地偏过头看向身旁的席德，流露出重获自由漫步人间的新奇与快活。",
+    "recommendedSize": "832x1216",
+    "location": "bustling night market alley filled with food stall lanterns, steam, and colorful carnival lights",
+    "action": "walking along market stalls, holding a shiny red candied apple on a wooden stick with both hands, looking over with sparkling joyful eyes",
+    "timeOfDay": "night",
+    "lighting": "warm festive red and gold paper lantern lights reflecting in glossy candied apple",
+    "camera": "cowboy_shot",
+    "mood": "delightful worldly rebirth, sweet lively companionship, vibrant festive joy",
+    "promptProse": "Aurora in a stylish camel trench coat strolls through a vibrant night market, eating a red candied apple with lively sparkling eyes.",
+    "promptTokens": [
+      "night_market",
+      "food_stalls",
+      "lanterns",
+      "steam",
+      "holding_food",
+      "candied_apple",
+      "joyful",
+      "sparkling_eyes",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Aurora enjoying a candied apple on a lively evening festival date in a warm trench coat.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

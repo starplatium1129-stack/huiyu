@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_after_evening_walk",
+  "revision": 1,
+  "sortOrder": 2492,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_after_evening_walk",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "dark_jacket",
+    "title": "椎叶紬 · 牵着手回家",
+    "category": "恋爱后日谈",
+    "description": "晚饭后的街道很安静。紬伸手牵住你，走了一段才小声说，她以前想过很多次这样的夜晚。",
+    "location": "quiet town street",
+    "action": "holding her partner’s hand while walking home",
+    "timeOfDay": "evening",
+    "lighting": "streetlight",
+    "camera": "cowboy shot",
+    "mood": "安心",
+    "promptProse": "On a quiet town street at night, Tsumugi holds her partner’s hand while walking home; only their hand enters the frame.",
+    "promptTokens": [
+      "town street",
+      "night",
+      "walking",
+      "holding hands",
+      "pov",
+      "streetlight",
+      "cowboy shot"
+    ],
+    "animaCaption": "Her partner remains outside the frame, with only one hand visible.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

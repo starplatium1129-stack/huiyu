@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "rose_dream_chapel_bridal_approach",
+  "revision": 1,
+  "sortOrder": 2524,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "rose_dream_chapel_bridal_approach",
+    "characterId": "rose_oriana",
+    "outfitId": "illusion_bridal_gown",
+    "title": "萝丝 · 彩窗圣堂的脑补婚约",
+    "category": "心海幻境",
+    "description": "宏大彩绘玻璃大教堂的长廊尽头。阳光在圣坛前洒下七彩光斑。萝丝双手捧着白玫瑰捧花，在幻想中与席德步入婚姻殿堂，白纱掩映下的面容绯红而陶醉，完全沉溺在属于自己的浪漫狂想世界中。",
+    "recommendedSize": "832x1216",
+    "location": "grand sunlit cathedral nave with soaring vaulted ceiling and brilliant stained glass windows",
+    "action": "walking down the aisle holding a bouquet of white roses, sheer bridal veil drifting, looking forward with deeply enraptured blushing happiness",
+    "timeOfDay": "afternoon",
+    "lighting": "kaleidoscopic rainbow lightbeams streaming through stained glass onto white lace",
+    "camera": "full_body",
+    "mood": "hilarious romantic delusion, pure heartfelt devotion, dreamy bridal ecstasy",
+    "promptProse": "Rose in a magnificent lace wedding gown walks down a cathedral aisle holding white roses, blushing ecstatically under rainbow stained-glass sunlight.",
+    "promptTokens": [
+      "cathedral",
+      "stained_glass",
+      "aisle",
+      "wedding_bouquet",
+      "bridal_veil",
+      "walking",
+      "blushing",
+      "dreamy",
+      "rainbow_light",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Rose floating down the cathedral aisle in her fantasy bridal gown with glowing joy.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

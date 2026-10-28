@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "beta_shadow/waterfront_bikini",
+  "revision": 1,
+  "sortOrder": 1881,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "beta_shadow",
+    "outfit": {
+      "id": "waterfront_bikini",
+      "name": "海滨娇怯荷叶边分体泳装",
+      "prose": "A pastel baby pink ruffled two-piece halter bikini featuring tiered delicate lace hems, accented by thin side-tie ribbons and a seashell pendant necklace.",
+      "tokens": [
+        "pink_bikini",
+        "frilled_bikini",
+        "ruffled_bikini",
+        "halterneck",
+        "side-tie_bikini_bottom",
+        "lace_trim",
+        "pendant",
+        "barefoot"
+      ],
+      "characterId": "beta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

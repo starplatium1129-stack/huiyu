@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "delta_hearth_rug_tail_curl",
+  "revision": 1,
+  "sortOrder": 2518,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "delta_hearth_rug_tail_curl",
+    "characterId": "delta_shadow",
+    "outfitId": "fluffy_dog_hoodie",
+    "title": "德尔塔 · 暖炉绒毯的卷尾酣梦",
+    "category": "温情依偎",
+    "description": "暗影神殿偏殿的壁炉前。炭火噼啪作响。德尔塔整个人像只大犬般蜷缩在厚厚的羊毛绒毯中央，把巨大的黑色狼尾当成抱枕紧紧抱在怀里，嘴角流下一丝晶莹的口水，嘴里还含糊咕哝着“老大的味道……好吃……”。",
+    "recommendedSize": "832x1216",
+    "location": "grand hearthstone hearth rug in a dimly lit gothic stone den with crackling fire",
+    "action": "curled into a ball on a thick fur rug, hugging her own massive fluffy tail like a bolster pillow, peaceful sleeping smile",
+    "timeOfDay": "night",
+    "lighting": "rich warm amber embers and flickering hearth fire casting dancing red glows",
+    "camera": "wide_shot",
+    "mood": "total peaceful bliss, safe home comfort, heartwarming beast devotion",
+    "promptProse": "Delta curls into a sleeping ball on a warm fireplace rug in a furry hoodie, tightly hugging her fluffy tail like a plush toy.",
+    "promptTokens": [
+      "fireplace",
+      "hearth",
+      "fur_rug",
+      "curled_up",
+      "sleeping",
+      "hugging_tail",
+      "warm_glow",
+      "wide_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Delta fast asleep by the crackling fireplace hugging her giant fluffy tail.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

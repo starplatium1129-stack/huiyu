@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "claire_tournament_podium_blade_salute",
+  "revision": 1,
+  "sortOrder": 2527,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "claire_tournament_podium_blade_salute",
+    "characterId": "claire_kagenou",
+    "outfitId": "tournament_knight_coat",
+    "title": "克莱尔 · 剑斗擂台的拔剑致礼",
+    "category": "学院名宿",
+    "description": "米德加武斗大会中央擂台之上。漫天喧嚣的欢呼声中。克莱尔昂然拔出佩剑立于眉心行标准骑士礼，黑色长发随长袍下摆在风中昂扬翻卷，作为学园顶尖魔剑士的傲骨与气魄展露无遗。",
+    "recommendedSize": "832x1216",
+    "location": "stone arena dueling ring surrounded by roaring tiered spectator stands and fluttering pennants",
+    "action": "standing at attention on stone tiles, drawing rapier upright before face in a formal duelist salute, wind catching coat hem, gaze razor sharp",
+    "timeOfDay": "golden_hour",
+    "lighting": "dramatic sunset edge lighting highlighting polished steel blade and coat gold trim",
+    "camera": "full_body",
+    "mood": "unshakeable warrior pride, duelist nobility, dazzling martial charisma",
+    "promptProse": "Claire in a teal duelist frock coat stands in an arena ring, raising her drawn sword in a proud martial salute as wind whips her coat.",
+    "promptTokens": [
+      "arena",
+      "stadium",
+      "flags",
+      "holding_sword",
+      "sword_salute",
+      "standing_tall",
+      "wind",
+      "sharp_eyes",
+      "golden_hour",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Claire saluting with drawn steel after another flawless victory in the arena ring.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

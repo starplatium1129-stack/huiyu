@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "aurora_shadow/sanctuary_memory_sailor",
+  "revision": 1,
+  "sortOrder": 1906,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "characterId": "aurora_shadow",
+    "outfit": {
+      "id": "sanctuary_memory_sailor",
+      "name": "圣域残响深蓝古朴水手服",
+      "prose": "An antique dark navy serge sailor uniform with an elongated pleated midi skirt, white three-stripe collar trims, a faded crimson scarf, and leather loafers.",
+      "tokens": [
+        "sailor_uniform",
+        "long_skirt",
+        "pleated_skirt",
+        "sailor_collar",
+        "neckerchief",
+        "vintage_uniform",
+        "loafers",
+        "dark_blue_uniform"
+      ],
+      "characterId": "aurora_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

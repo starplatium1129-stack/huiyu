@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_after_scarf",
+  "revision": 1,
+  "sortOrder": 2505,
+  "createdAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "data": {
+    "id": "arihara_nanami_after_scarf",
+    "characterId": "arihara_nanami",
+    "outfitId": "yellow_cardigan",
+    "title": "在原七海 · 围巾织好了",
+    "category": "恋爱后日谈",
+    "description": "围巾终于织完，七海把它展开给你看，又认真检查了一遍针脚。你说很喜欢，她这才把围巾递过来，脸上露出一点笑意。",
+    "location": "living room sofa",
+    "action": "offering a knitted scarf to her partner",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "欣喜",
+    "promptProse": "Sitting on the living-room sofa, Nanami offers a newly knitted scarf toward her partner with a small smile.",
+    "promptTokens": [
+      "living room",
+      "sofa",
+      "sitting",
+      "holding scarf",
+      "smile",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "She holds the finished scarf out to her partner, who is outside the frame.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

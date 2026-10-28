@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "beta_kotatsu_late_night_writing",
+  "revision": 1,
+  "sortOrder": 2512,
+  "createdAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "data": {
+    "id": "beta_kotatsu_late_night_writing",
+    "characterId": "beta_shadow",
+    "outfitId": "manuscript_pajamas",
+    "title": "贝塔 · 案前秉烛的夏目赶稿录",
+    "category": "创作沉浸",
+    "description": "四越地下编辑部的小阁间内。稿纸在暖炉案几上堆叠如山。贝塔抱着软绵绵的抱枕趴在桌前，咬着羽毛笔尾巴苦思下一章《暗影大人传记》的高潮段落，发梢微微散乱却充满狂热干劲。",
+    "recommendedSize": "832x1216",
+    "location": "cluttered cozy writer den with stacks of parchment, ink pots, and warm hearth glow",
+    "action": "leaning over a low wooden writing desk hugging a soft plush pillow, nibbling the tip of a quill pen with messy silver hair, ink stains on fingertips",
+    "timeOfDay": "night",
+    "lighting": "warm amber hearth light and a desktop brass reading lantern",
+    "camera": "medium_shot",
+    "mood": "intense creative passion, adorable late-night disarray, devoted storyteller heart",
+    "promptProse": "Beta in striped loungewear leans on a manuscript-covered desk hugging a pillow, biting her quill pen in late night writer inspiration.",
+    "promptTokens": [
+      "messy_room",
+      "writing_desk",
+      "scattered_papers",
+      "quill",
+      "holding_pillow",
+      "lantern",
+      "warm_lighting",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Beta in late-night author mode hugging a pillow and chewing her quill over manuscripts.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}
