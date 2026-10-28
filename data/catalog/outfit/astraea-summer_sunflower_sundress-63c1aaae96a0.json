@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "astraea/summer_sunflower_sundress",
+  "revision": 1,
+  "sortOrder": 1747,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "astraea",
+    "outfit": {
+      "characterId": "astraea",
+      "id": "summer_sunflower_sundress",
+      "name": "盛夏向日葵·明黄吊带荷叶边沙滩裙",
+      "prose": "A vibrant yellow sundress patterned with sunflowers, ruffled hem, narrow shoulder straps, and a ribboned straw sunhat.",
+      "tokens": [
+        "yellow_sundress",
+        "sunflower_print",
+        "ruffled_dress",
+        "straw_hat",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

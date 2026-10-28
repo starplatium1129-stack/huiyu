@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kakudate_karin/urban_hoodie_loungewear",
+  "revision": 1,
+  "sortOrder": 1679,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "data": {
+    "characterId": "kakudate_karin",
+    "outfit": {
+      "characterId": "kakudate_karin",
+      "id": "urban_hoodie_loungewear",
+      "name": "都会周末无袖连帽衫便装",
+      "prose": "A relaxed dark-grey sleeveless cropped hoodie worn over black crop top, distressed denim shorts, and athletic sneakers, showing her toned midriff and legs.",
+      "tokens": [
+        "hoodie",
+        "sleeveless hoodie",
+        "grey hoodie",
+        "denim shorts",
+        "bare legs",
+        "sneakers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

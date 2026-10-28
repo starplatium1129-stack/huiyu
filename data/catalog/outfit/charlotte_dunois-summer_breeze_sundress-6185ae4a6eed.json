@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "charlotte_dunois/summer_breeze_sundress",
+  "revision": 1,
+  "sortOrder": 1727,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "charlotte_dunois",
+    "outfit": {
+      "characterId": "charlotte_dunois",
+      "id": "summer_breeze_sundress",
+      "name": "盛夏约会·法式碎花吊带露背长裙",
+      "prose": "A romantic white floral summer sundress with thin spaghetti straps, an open back, and a wide-brimmed straw sunhat.",
+      "tokens": [
+        "floral_sundress",
+        "white_sundress",
+        "spaghetti_strap",
+        "backless_dress",
+        "straw_hat",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "kuroka_living_room_tail_wrap_cuddle",
+  "revision": 1,
+  "sortOrder": 2203,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "kuroka_living_room_tail_wrap_cuddle",
+    "characterId": "kuroka",
+    "outfitId": "loose_black_kimono",
+    "title": "黑歌 · 客厅暖桌的双尾纠缠",
+    "category": "日常约会",
+    "description": "暖桌前两人并肩而坐，黑歌整个人靠在你的怀里。她两条毛茸茸的黑色长尾巴像手铐一样紧紧缠在你的手腕上，舒服地微闭双眼任你揉揉猫耳朵，发出呼噜呼噜声。",
+    "recommendedSize": "832x1216",
+    "location": "cozy living room with warm kotatsu table",
+    "action": "curled up against partner, twin cat tails tightly wrapped around partner wrist, purring with half-closed eyes, petting ears",
+    "timeOfDay": "evening",
+    "lighting": "warm cozy indoor domestic lamp glow contrasting with cold dusk outside",
+    "camera": "medium_shot",
+    "mood": "ultimate snuggle warmth, possessive cat affection, peaceful romance",
+    "promptProse": "Cuddled closely by a warm kotatsu table, Kuroka purrs softly as her two fluffy cat tails wrap tightly around partner wrist.",
+    "promptTokens": [
+      "kotatsu",
+      "sitting_close",
+      "cat_ears",
+      "tail_around_wrist",
+      "two_tails",
+      "purring",
+      "gentle_smile",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kuroka cuddling closely with twin cat tails wrapped around partner wrist.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

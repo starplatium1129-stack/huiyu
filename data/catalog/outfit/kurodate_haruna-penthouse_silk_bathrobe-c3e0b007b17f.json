@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kurodate_haruna/penthouse_silk_bathrobe",
+  "revision": 1,
+  "sortOrder": 1689,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "data": {
+    "characterId": "kurodate_haruna",
+    "outfit": {
+      "characterId": "kurodate_haruna",
+      "id": "penthouse_silk_bathrobe",
+      "name": "私家套房黑金丝绸睡袍",
+      "prose": "A luxurious black silk kimono robe loosely belted with golden cords, cascading over her bare shoulders and collarbones in warm ambient suite lighting.",
+      "tokens": [
+        "black robe",
+        "silk robe",
+        "bare shoulders",
+        "collarbone",
+        "bare legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

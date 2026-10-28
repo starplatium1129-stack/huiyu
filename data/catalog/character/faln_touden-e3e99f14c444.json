@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "faln_touden",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 200,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
   "data": {
     "id": "faln_touden",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "/assets/characters/portrait-pending.svg",
+        "image": "../assets/characters/portrait-pending.svg",
         "alt": "法琳 · 立绘待制作"
       },
       "visual_dna": {
@@ -151,7 +151,8 @@
             }
           }
         ]
-      }
+      },
+      "speech": "先坐下休息吧。我看看伤口，很快就处理好了。"
     },
     "popular": {
       "id": "faln_touden",

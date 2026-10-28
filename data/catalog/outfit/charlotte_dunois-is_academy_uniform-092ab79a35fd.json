@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "charlotte_dunois/is_academy_uniform",
+  "revision": 1,
+  "sortOrder": 1725,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "charlotte_dunois",
+    "outfit": {
+      "characterId": "charlotte_dunois",
+      "id": "is_academy_uniform",
+      "name": "IS学园白色女式制服",
+      "prose": "A crisp white double-breasted IS Academy uniform jacket with gold trim, charcoal pleated skirt, and sleek black thigh-highs.",
+      "tokens": [
+        "white_jacket",
+        "school_uniform",
+        "pleated_skirt",
+        "grey_skirt",
+        "black_thighhighs",
+        "necktie"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

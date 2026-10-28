@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "d_wife_safehouse_dining_table_embrace",
+  "revision": 1,
+  "sortOrder": 2175,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "d_wife_safehouse_dining_table_embrace",
+    "characterId": "d_killer_wife",
+    "outfitId": "cozy_bridal_apron",
+    "title": "D · 餐桌旁的假戏真做深陷",
+    "category": "私密温存",
+    "description": "烛光微醺的餐桌旁，围裙系带已然松散。平日冷静的杀手坐在餐桌边缘，针织裙领口滑落，双手紧紧揪住你的衬衫衣襟。在热烈的深吻中，她防线尽失，喘息滚烫而无助。",
+    "recommendedSize": "832x1216",
+    "location": "safehouse dining room illuminated by warm candlelight",
+    "action": "seated on edge of dining table with apron strings undone and dress slipping off shoulder, clinging tightly in breathless passionate kiss, blushing fiercely",
+    "timeOfDay": "night",
+    "lighting": "warm flickering candlelight creating dramatic intimate shadows",
+    "camera": "close-up",
+    "mood": "broken composure, intense romantic surrender, heated newlywed passion",
+    "promptProse": "Sitting on the dining table edge with her apron untied, D kisses partner deeply with breathless moans and a fierce newlywed blush.",
+    "promptTokens": [
+      "dining_room",
+      "sitting_on_table",
+      "untied_apron",
+      "off-shoulder",
+      "passionate_kiss",
+      "blushing_heavily",
+      "candlelight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "D sharing a passionate breathless kiss on the dining table with untied apron.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

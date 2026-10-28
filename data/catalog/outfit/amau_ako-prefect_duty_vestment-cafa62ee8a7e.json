@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "amau_ako/prefect_duty_vestment",
+  "revision": 1,
+  "sortOrder": 1674,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "data": {
+    "characterId": "amau_ako",
+    "outfit": {
+      "characterId": "amau_ako",
+      "id": "prefect_duty_vestment",
+      "name": "风纪委员会露胸礼装制服",
+      "prose": "The official Gehenna Prefect Team administrative uniform featuring a white dress with an open cleavage cutout, draped black jacket, crimson armband, leather collar choker, black gloves, and pantyhose.",
+      "tokens": [
+        "white dress",
+        "open chest",
+        "cleavage cutout",
+        "black jacket",
+        "arm band",
+        "collar",
+        "choker",
+        "black gloves",
+        "black pantyhose",
+        "high heels"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

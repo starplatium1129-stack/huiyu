@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kotori_morning_sunlight_kitten_cuddle",
+  "revision": 1,
+  "sortOrder": 2255,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kotori_morning_sunlight_kitten_cuddle",
+    "characterId": "kotori_itsuka",
+    "outfitId": "oversized_hoodie_loungewear",
+    "title": "五河琴里 · 晨曦软被中的猫咪甜梦",
+    "category": "私密温存",
+    "description": "早晨纯白被窝里暖意融融，琴里像只小奶猫一样整个人钻在你的怀中，雪白幼嫩的香肩贴在你的胸膛上。眼睫轻颤、嘴角带着满足至极的甜笑，在朝阳中呢喃着一辈子的爱。",
+    "recommendedSize": "832x1216",
+    "location": "bright morning bedroom filled with sunshine",
+    "action": "completely tangled in white morning sheets with bare shoulders exposed, snuggled tightly against partner chest like a kitten, murmuring sweet lover confessions with blissful flushed smile",
+    "timeOfDay": "morning",
+    "lighting": "radiant golden morning sunbeams pouring across white bedspread",
+    "camera": "close-up",
+    "mood": "angelic morning peace, sweet possessive girlfriend cuddles, supreme domestic joy",
+    "promptProse": "Tangled in white morning duvet with flushed bare shoulders, Kotori Itsuka snuggles tightly against partner chest with a blissful kitten smile.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "clinging_closely",
+      "blushing_heavily",
+      "sweet_smile",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kotori Itsuka snuggling peacefully against partner chest in morning bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

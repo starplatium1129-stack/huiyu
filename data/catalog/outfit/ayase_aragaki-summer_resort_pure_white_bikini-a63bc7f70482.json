@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ayase_aragaki/summer_resort_pure_white_bikini",
+  "revision": 1,
+  "sortOrder": 1779,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "ayase_aragaki",
+    "outfit": {
+      "characterId": "ayase_aragaki",
+      "id": "summer_resort_pure_white_bikini",
+      "name": "盛夏海滨·典雅纯白高叉系带比基尼",
+      "prose": "An immaculate pure white halterneck bikini with slender side-tie bows, showcasing her tall, slender fashion-model figure and flawless porcelain skin.",
+      "tokens": [
+        "bikini",
+        "white_bikini",
+        "halterneck_bikini",
+        "side-tie_bikini_bottom",
+        "slender_body",
+        "collarbone",
+        "cleavage"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

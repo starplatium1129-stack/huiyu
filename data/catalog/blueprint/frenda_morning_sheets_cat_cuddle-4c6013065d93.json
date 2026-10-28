@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "frenda_morning_sheets_cat_cuddle",
+  "revision": 1,
+  "sortOrder": 2309,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "frenda_morning_sheets_cat_cuddle",
+    "characterId": "frenda_seivelun",
+    "outfitId": "sheer_pink_lace_babydoll",
+    "title": "芙兰达 · 晨光棉被里的金发小猫依恋",
+    "category": "私密温存",
+    "description": "早晨明媚的阳光穿透窗纱，被窝里暖烘烘的。芙兰达像只粘人的波斯猫一样整个人趴在你的身上，金发散落在你的胸口，睡眼惺忪地蹭着你的下巴，嘴角挂着得逞的甜笑。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit bright morning bedroom with rumpled white duvet",
+    "action": "sprawled playfully over partner chest under morning sheets, blonde hair tumbling everywhere, nuzzling his chin with a sleepy affectionate purr",
+    "timeOfDay": "morning",
+    "lighting": "warm radiant morning sunbeams bathing white bedspread and golden hair",
+    "camera": "close-up",
+    "mood": "playful kitten cuddle, morning newlywed warmth, absolute domestic happiness",
+    "promptProse": "Lying over partner chest in sunlit morning sheets, blonde Frenda Seivelun nuzzles his chin playfully with bare shoulders and a blissful sweet smile.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "clinging_closely",
+      "nuzzling",
+      "sweet_smile",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Frenda Seivelun nuzzling partner chest lovingly in morning bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

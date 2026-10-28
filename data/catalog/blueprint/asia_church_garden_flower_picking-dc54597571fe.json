@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "asia_church_garden_flower_picking",
+  "revision": 1,
+  "sortOrder": 2232,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "asia_church_garden_flower_picking",
+    "characterId": "asia_argento",
+    "outfitId": "cozy_domestic_cardigan_dress",
+    "title": "爱西亚 · 教堂庭院的雏菊采摘",
+    "category": "现代日常",
+    "description": "绿草如茵的教堂庭院内野花盛开。爱西亚轻柔地采摘下一朵嫩黄雏菊，微红着小脸踮起脚尖，小心翼翼地别在你胸前的口袋上，翠绿的双眸盛满了羞涩与幸福。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit church courtyard lawn with blooming wildflowers",
+    "action": "kneeling on green lawn picking daisies, blushing sweetly as she places a wildflower into partner breast pocket with trembling tender fingers",
+    "timeOfDay": "afternoon",
+    "lighting": "warm peaceful afternoon sunshine filtering through chapel trees",
+    "camera": "medium_shot",
+    "mood": "angelic innocence, pastoral tranquility, shy pure-hearted devotion",
+    "promptProse": "In a sunlit church garden, Asia Argento blushes sweetly as she gently places a fresh daisy into partner pocket with tender green eyes.",
+    "promptTokens": [
+      "garden",
+      "church",
+      "flower",
+      "holding_flower",
+      "kneeling",
+      "blushing",
+      "sweet_smile",
+      "daylight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Asia Argento placing a daisy into partner pocket in church garden.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

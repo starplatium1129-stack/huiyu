@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "frenda_rainy_alley_hug_confession",
+  "revision": 1,
+  "sortOrder": 2306,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "frenda_rainy_alley_hug_confession",
+    "characterId": "frenda_seivelun",
+    "outfitId": "item_black_turtleneck_beret",
+    "title": "芙兰达 · 雨天屋檐下的飞扑搂颈索吻",
+    "category": "现代日常",
+    "description": "暴雨如注的街巷屋檐下，浑身微湿的芙兰达一把丢掉雨伞扑入你的怀里，双手死死搂住你的脖子。贝雷帽微歪，金发少女眼角含泪、带着急促的喘息大喊：“结果……要是你敢离开我，我就用炸弹把你炸上天！”",
+    "recommendedSize": "832x1216",
+    "location": "rainy city alleyway under narrow shop eaves",
+    "action": "leaping forward into partner embrace in the pouring rain, clinging around his neck with wet blonde hair and tearful desperate blue eyes",
+    "timeOfDay": "sunset",
+    "lighting": "cool rainy dusk lights mingled with neon shop reflections",
+    "camera": "cowboy_shot",
+    "mood": "emotional catharsis, desperate possessive affection, dramatic rain confession",
+    "promptProse": "Under rainy shop eaves, blonde Frenda Seivelun leaps into partner arms, clinging around his neck with wet hair and tearful passionate blue eyes.",
+    "promptTokens": [
+      "alley",
+      "rain",
+      "under_eaves",
+      "jumping_hug",
+      "embracing",
+      "wet_skin",
+      "wet_hair",
+      "tears_in_eyes",
+      "blushing",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Frenda Seivelun leaping into partner arms under rain eaves.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

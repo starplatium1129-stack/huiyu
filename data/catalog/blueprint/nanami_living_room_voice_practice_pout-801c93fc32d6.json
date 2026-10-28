@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "nanami_living_room_voice_practice_pout",
+  "revision": 1,
+  "sortOrder": 2287,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "nanami_living_room_voice_practice_pout",
+    "characterId": "aoyama_nanami",
+    "outfitId": "suimei_school_uniform",
+    "title": "青山七海 · 客厅台本练习被夸奖的关西脸红",
+    "category": "现代日常",
+    "description": "放学后樱花庄榻榻米客厅里，七海正认真握着声优台本练习对白。当你在旁边真诚鼓掌并夸奖她声音真好听时，少女立刻手足无措地拿台本挡住脸，关西腔结结巴巴地娇嗔。",
+    "recommendedSize": "832x1216",
+    "location": "traditional Japanese tatami living room with Kotatsu",
+    "action": "sitting on tatami holding a script, hiding burning flushed face behind the papers, blushing ears poking out through ponytail",
+    "timeOfDay": "afternoon",
+    "lighting": "soft afternoon light through paper shoji screens",
+    "camera": "cowboy_shot",
+    "mood": "adorable Kansai dialect tsundere, pure earnest effort, heart-fluttering praise reaction",
+    "promptProse": "Sitting on tatami holding a script, Nanami Aoyama hides her burning blushing face behind papers, embarrassed by sweet partner praise.",
+    "promptTokens": [
+      "tatami",
+      "living_room",
+      "sitting",
+      "holding_book",
+      "hiding_face",
+      "blushing_heavily",
+      "ponytail",
+      "daylight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Nanami Aoyama hiding blushing face behind script on tatami.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "charlotte_dormitory_sofa_lap_pillow_kiss",
+  "revision": 1,
+  "sortOrder": 2181,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "charlotte_dormitory_sofa_lap_pillow_kiss",
+    "characterId": "charlotte_dunois",
+    "outfitId": "silk_peach_camisole",
+    "title": "夏洛特 · 宿舍沙发上的偷吻破防",
+    "category": "私密温存",
+    "description": "昏暗宿舍沙发里，假装睡着的夏洛特悄悄俯下身偷吻你的嘴唇。被你睁眼抱住后，她羞得满面绯红将脸深深埋入你的怀中，粉桃睡裙滑下香肩，娇喘求饶。",
+    "recommendedSize": "832x1216",
+    "location": "dim cozy student dormitory living room",
+    "action": "caught stealing a kiss on couch, blushing intensely, hiding face against partner chest, camisole slipping off shoulder",
+    "timeOfDay": "night",
+    "lighting": "soft romantic floor lamp casting warm amber shadows",
+    "camera": "close-up",
+    "mood": "adorable embarrassment, heart-racing stolen intimacy, intense tenderness",
+    "promptProse": "Caught stealing a kiss on the dormitory couch, Charlotte blushes fiercely with her silk camisole slipping off bare shoulders.",
+    "promptTokens": [
+      "living_room",
+      "couch",
+      "stolen_kiss",
+      "off-shoulder",
+      "blushing_heavily",
+      "hiding_face",
+      "warm_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Charlotte blushing intensely after being caught stealing a sweet kiss on the couch.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

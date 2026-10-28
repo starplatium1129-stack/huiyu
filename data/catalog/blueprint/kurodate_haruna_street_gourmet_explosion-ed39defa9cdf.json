@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "kurodate_haruna_street_gourmet_explosion",
+  "revision": 2,
+  "sortOrder": 2119,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "kurodate_haruna_street_gourmet_explosion",
+    "characterId": "kurodate_haruna",
+    "outfitId": "gourmet_executive_fur_coat",
+    "title": "黑馆晴奈 · 街角美馔爆发的决然风度",
+    "category": "战术爆破",
+    "description": "喧嚣街区拐角处，伴随着轰然巨响与冲天黑烟，一家粗制滥造的黑心快餐店化作华丽火海。晴奈手提重型狙击步枪，迈着优雅从容的步伐从浓烟与烈焰中信步走出，皮草斗篷在热浪中翻飞。她神色自若地回眸望向赶来的老师，露出毫无悔意的潇洒绝美微笑。",
+    "recommendedSize": "832x1216",
+    "location": "city street corner before explosive fire and smoke",
+    "action": "striding forward with sniper rifle, dramatic explosion backdrop, confident unapologetic smile",
+    "timeOfDay": "day",
+    "lighting": "vivid fiery orange explosion glow and dramatic backlighting",
+    "camera": "cowboy_shot",
+    "mood": "explosive chaos, unstoppable swagger, and theatrical defiance",
+    "promptProse": "Striding effortlessly away from a blazing cinematic kitchen explosion, Kurodate Haruna carries her sniper rifle with poised aristocratic composure and a fearless smile.",
+    "promptTokens": [
+      "holding_gun",
+      "sniper_rifle",
+      "explosion",
+      "smoke",
+      "street",
+      "confident_smile",
+      "dramatic_lighting",
+      "day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Haruna striding calmly with her sniper rifle before a dramatic kitchen explosion.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "frenda_seivelun/casual_sweet_hoodie_denim",
+  "revision": 1,
+  "sortOrder": 1810,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "frenda_seivelun",
+    "outfit": {
+      "characterId": "frenda_seivelun",
+      "id": "casual_sweet_hoodie_denim",
+      "name": "逛街小恶魔·奶油白连帽卫衣牛仔短裤",
+      "prose": "A stylish cream cropped hoodie over a pink camisole, frayed denim shorts, ankle sneakers, and twin hair clips.",
+      "tokens": [
+        "hoodie",
+        "cropped_hoodie",
+        "denim_shorts",
+        "sneakers",
+        "bare_legs",
+        "midriff",
+        "collarbone"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

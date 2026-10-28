@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sunaookami_shiroko/road_bike_cycling_suit",
+  "revision": 1,
+  "sortOrder": 1691,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "data": {
+    "characterId": "sunaookami_shiroko",
+    "outfit": {
+      "characterId": "sunaookami_shiroko",
+      "id": "road_bike_cycling_suit",
+      "name": "公路自行车贴身速干骑行服",
+      "prose": "A sleek blue-and-white aerodynamic cycling jersey and form-fitting padded cycling shorts, showcasing her athletic toned legs and physique.",
+      "tokens": [
+        "cycling jersey",
+        "cycling shorts",
+        "sportswear",
+        "fingerless gloves",
+        "sneakers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

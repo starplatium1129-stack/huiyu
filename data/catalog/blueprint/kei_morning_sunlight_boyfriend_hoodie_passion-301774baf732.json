@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kei_morning_sunlight_boyfriend_hoodie_passion",
+  "revision": 1,
+  "sortOrder": 2243,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kei_morning_sunlight_boyfriend_hoodie_passion",
+    "characterId": "karuizawa_kei",
+    "outfitId": "oversized_boyfriend_hoodie_night",
+    "title": "轻井泽惠 · 晨光卫衣下的丰腴私密温存",
+    "category": "私密温存",
+    "description": "晨光穿透百叶窗洒在凌乱被单上。大号黑色卫衣被推高至纤腰之上，露出光滑诱人的双腿。惠像考拉一样紧紧搂住你的腰身不肯撒手，眼角含着初尝禁果后的迷离泪花，幸福地撒娇赖床。",
+    "recommendedSize": "832x1216",
+    "location": "warm morning bedroom with rumpled white duvet",
+    "action": "curled up in morning bed with boyfriend hoodie pushed up above waist, clinging tightly to partner waist with bare legs wrapped around him, blissful teary smile",
+    "timeOfDay": "morning",
+    "lighting": "golden morning rays pouring across tangled sheets and smooth bare legs",
+    "camera": "close-up",
+    "mood": "newlywed morning ecstasy, complete surrender, sweet possessive girlfriend joy",
+    "promptProse": "Curled in morning bed with boyfriend hoodie pushed up, Kei Karuizawa hugs partner waist tightly with bare legs and an ecstatic tearful smile.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "pulled_up_clothes",
+      "bare_legs",
+      "clinging_closely",
+      "blushing_heavily",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kei Karuizawa clinging lovingly in morning bed wearing a boyfriend hoodie.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

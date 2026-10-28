@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "atago_beachside_sunscreen_apply",
+  "revision": 1,
+  "sortOrder": 2156,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "atago_beachside_sunscreen_apply",
+    "characterId": "atago_azur",
+    "outfitId": "midsummer_march_bikini",
+    "title": "爱宕 · 海滨遮阳伞下的防晒互动",
+    "category": "日常约会",
+    "description": "碧海蓝天下白色遮阳伞下，身着纯白比基尼的爱宕跪坐在沙滩垫上。她手持防晒乳液，眉眼弯弯地俯身为你涂抹肩颈，雪白肌肤与碧蓝海水在阳光下交相辉映。",
+    "recommendedSize": "832x1216",
+    "location": "white sand beach under parasol",
+    "action": "kneeling on beach towel holding sunscreen bottle, smiling warmly while applying lotion to partner shoulder, bright turquoise sea in background",
+    "timeOfDay": "day",
+    "lighting": "brilliant tropical summer sunlight with blue sea reflections",
+    "camera": "cowboy_shot",
+    "mood": "radiant summer romance, playful intimacy, sun-kissed happiness",
+    "promptProse": "Kneeling on a beach mat under a parasol, Atago applies sunscreen to partner shoulder with an affectionate loving smile by the turquoise sea.",
+    "promptTokens": [
+      "beach",
+      "parasol",
+      "kneeling",
+      "holding_bottle",
+      "sunscreen",
+      "sweet_smile",
+      "sunny_day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Atago applying sunscreen under a beach parasol with a sweet summer smile.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "st_louis_azur/luxurious_wheels_cocktail",
+  "revision": 1,
+  "sortOrder": 1714,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "st_louis_azur",
+    "outfit": {
+      "characterId": "st_louis_azur",
+      "id": "luxurious_wheels_cocktail",
+      "name": "华贵心动·深蓝高开衩晚礼裙",
+      "prose": "A breathtaking sapphire blue silk evening dress featuring a daring side slit, asymmetrical neckline, and dazzling crystal chandelier earrings.",
+      "tokens": [
+        "blue_evening_gown",
+        "side_slit",
+        "bare_shoulders",
+        "silk_dress",
+        "high_heels",
+        "jewelry_earrings"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

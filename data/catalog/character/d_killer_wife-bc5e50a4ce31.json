@@ -1,0 +1,153 @@
+{
+  "kind": "character",
+  "id": "d_killer_wife",
+  "revision": 1,
+  "sortOrder": 221,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "d_killer_wife",
+    "profile": {
+      "id": "d_killer_wife",
+      "name": "D：杀手妻子",
+      "alias": [
+        "D: Killer Wife",
+        "D(杀手妻子)",
+        "D(妻)",
+        "D",
+        "ディー",
+        "d (nikke)",
+        "d: killer wife (nikke)"
+      ],
+      "type": "popular",
+      "icon": "💍",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "D：杀手妻子 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "及腰墨灰长直发 · 整齐冷艳碎刘海 · 标志性深红金属发夹",
+        "hair_color": "墨灰 / 铁灰",
+        "eyes": "深邃高冷神秘紫眸 · 动情时带着极致羞涩的红晕水光",
+        "hairstyle": "柔顺及腰长直发 · 红色精美发夹固定右侧额发 · 清冷端庄新妻容颜",
+        "uniform": "新婚人妻粉白围裙针织裙 · 潜入利落黑色风衣 · 纯白真丝新婚睡袍",
+        "expression": "一本正经假装新婚妻子的严肃认真 · 猝不及防被撩到时耳根通红的小慌乱",
+        "style": "deadpan assassin-turned-devoted-newlywed-wife girlfriend with sweet pretending-turned-reality gap moe",
+        "signature": "墨灰长直发、深红发夹、紫瞳、新婚围裙与假戏真做的深情"
+      },
+      "personality": [
+        "方舟地下清扫部队暗影特工，为了执行隐秘搜查任务而与指挥官登记为「伪装夫妻」",
+        "平日是个冷酷果断、不讲情面的执行者，却为了完美扮演好新婚妻子而极其认真地钻研人妻技能",
+        "每天一本正经地系上粉色围裙做早饭、送别时帮忙整理领带，嘴上强调「这是任务」实则心跳狂飙",
+        "随着相处日深，假戏真做的界限彻底模糊，内心深处早已将指挥官视作自己唯一的合法伴侣",
+        "成年设定下将杀手的隐忍克制与新婚娇妻的羞赧柔情完美融合，是反差萌与真爱极致的宝藏恋人"
+      ],
+      "likes": [
+        "清晨在厨房精心熬汤，用小木勺吹凉后喂给指挥官试味道",
+        "在玄关出门前踮起脚尖，认认真真地为指挥官抚平西装领带",
+        "在卧底伪装晚宴上与指挥官搂着腰翩翩起舞，借由任务光明正大地紧贴在一起",
+        "被指挥官忽然从身后抱住腰，嘴上说着「这不在任务剧本里」但身体完全瘫软依偎",
+        "在深夜安全屋的新婚双人床上，卸下所有防备、真正以妻子的身份被深爱"
+      ],
+      "classic_cg": {
+        "title": "新婚厨房里的精心试味与耳根泛红",
+        "description": "安全屋温暖宁静的现代厨房内，晨光透过百叶窗洒在木质厨台上。D身穿粉色修身长袖针织裙，外系着带荷叶边的纯白新妻围裙。她一手端着盛热汤的木勺送到你唇边，另一手轻按胸口，深紫色的眼眸虽努力维持冷静，微颤的长睫毛与彻底红透的耳尖却泄露了新婚的羞涩。"
+      },
+      "identity": {
+        "role": "暗影搜查清扫部队特工 / 伪装夫妻搜查计划首席新娘",
+        "age": "成年创作设定",
+        "occupation": "特务暗杀者 / 假戏真做终身新婚妻子",
+        "faction": "中央情报特务处 / 反击指挥部同盟",
+        "school": "方舟暗部特别训练所（首席席位）",
+        "classificationSource": "角色背景明确归属于暗影部队新婚伪装搜查线。"
+      },
+      "tags": [
+        "墨灰发",
+        "长直发",
+        "紫瞳",
+        "新娘",
+        "新婚人妻",
+        "反差萌",
+        "杀手娇妻",
+        "妮姬"
+      ],
+      "bg_story": "D是方舟最为隐秘、负责暗中清除危害社会安定分子的冷酷特工。在代号为「新婚搜查」的高风险潜入任务中，她选定了最值得信赖的指挥官作为伪装丈夫，入住安全屋扮演恩爱夫妻。为了不露出破绽，专业素养极高的D一丝不苟地模仿着合格妻子的一切举止——下厨、洗衣、甚至睡在同一张床上。然而，在日常生活的柴米油盐与多次生死相依中，这份原本为了任务而设立的契约逐渐变成了无法自拔的真情。成年设定下的D彻底将心交付，成为了全世界最可靠也最深爱你的独家娇妻。",
+      "palette": [
+        "墨灰",
+        "绯红",
+        "浅粉"
+      ],
+      "weather": [
+        "清晨厨房",
+        "晚宴舞池",
+        "月下安全屋"
+      ],
+      "speech": "亲爱的……咳，指挥官，早饭已经准备好了。出门前请把领带递给我。别用那种眼神看我……这只是为了完美执行「新婚夫妻」的搜查任务而已，绝对没有别的企图。",
+      "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+      "traits": [
+        "d_(nikke)",
+        "dark_grey_hair",
+        "long_hair",
+        "straight_hair",
+        "purple_eyes",
+        "red_hairpin"
+      ]
+    },
+    "popular": {
+      "id": "d_killer_wife",
+      "displayName": "D：杀手妻子",
+      "originalName": "D: Killer Wife",
+      "franchise": "Goddess of Victory: NIKKE",
+      "category": "手游角色",
+      "aliases": [
+        "D: Killer Wife",
+        "D(杀手妻子)",
+        "D(妻)",
+        "D",
+        "ディー",
+        "d (nikke)",
+        "d: killer wife (nikke)"
+      ],
+      "exactTokens": [
+        "d (nikke)"
+      ],
+      "characterTokens": [
+        "d (nikke)"
+      ],
+      "copyrightTokens": [
+        "goddess_of_victory:_nikke"
+      ],
+      "identityTokens": [
+        "d (nikke)",
+        "1girl",
+        "solo",
+        "dark_grey_hair",
+        "long_hair",
+        "straight_hair",
+        "purple_eyes",
+        "red_hairpin"
+      ],
+      "identityProse": "D from Goddess of Victory: NIKKE in her Killer Wife persona, the only character in the image, with long straight dark grey hair, deep violet eyes, a red hairpin, and a stoic yet subtly blushing, tender bridal expression.",
+      "curatedArtistStyles": [
+        "range_murasaki",
+        "fkey",
+        "swav"
+      ],
+      "animeStudio": "Goddess of Victory: NIKKE official art, SHIFT UP style",
+      "canon": {
+        "era": "方舟潜入搜查新婚纪元",
+        "world": "方舟暗影部队·伪装新婚安全屋",
+        "formNotes": "墨灰长直发紫瞳，假戏真做新婚娇妻，外冷内热极具人妻女友感"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "cozy_bridal_apron",
+      "negativeTokens": []
+    }
+  }
+}

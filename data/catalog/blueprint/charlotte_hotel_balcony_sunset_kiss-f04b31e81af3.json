@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "charlotte_hotel_balcony_sunset_kiss",
+  "revision": 1,
+  "sortOrder": 2182,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "charlotte_hotel_balcony_sunset_kiss",
+    "characterId": "charlotte_dunois",
+    "outfitId": "summer_breeze_sundress",
+    "title": "夏洛特 · 度假阳台的系带解开",
+    "category": "私密温存",
+    "description": "滨海度假套房阳台上，落日将天空染成火红。法式吊带裙背后的系带已被解开，夏洛特背靠栏杆仰头承受深吻，金发在海风中飘动，呼吸急促而甜腻。",
+    "recommendedSize": "832x1216",
+    "location": "private resort hotel balcony overlooking sea at sunset",
+    "action": "pinned gently against balcony railing, sundress unzipped at back, head tilted in deep French kiss, sea breeze blowing hair",
+    "timeOfDay": "sunset",
+    "lighting": "dramatic golden hour sunset rim light on bare shoulders and waves",
+    "camera": "cowboy_shot",
+    "mood": "passionate sunset surrender, breathless romantic indulgence, ocean breeze heat",
+    "promptProse": "Backed against a resort balcony railing in sunset glow, Charlotte tilts her head in a breathless kiss as her dress unlaces at the back.",
+    "promptTokens": [
+      "balcony",
+      "glass_railing",
+      "open_back",
+      "passionate_kiss",
+      "sunset_lighting",
+      "ocean_breeze",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Charlotte sharing a breathless passionate kiss on a resort balcony at sunset.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "izumi_studio_desk_kneeling_headpat",
+  "revision": 1,
+  "sortOrder": 2310,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "izumi_studio_desk_kneeling_headpat",
+    "characterId": "hashima_izumi",
+    "outfitId": "otaku_artist_casual_tshirt_skirt",
+    "title": "波岛出海 · 工作室书桌旁的趴膝摸头撒娇",
+    "category": "现代日常",
+    "description": "同人社团工作室明亮的书桌旁，画完稿件的出海整个人趴在你的膝盖上。被你伸手抚摸茶色双马尾时，少女舒服得眯起圆圆的双眼，像只小猫咪一样蹭着你的大腿。",
+    "recommendedSize": "832x1216",
+    "location": "creative messy anime studio desk filled with drawing tablets and sketchbooks",
+    "action": "kneeling beside partner chair, resting chin on his knees, smiling blissfully as he pets her twintails, eyes sparkling with total senpai worship",
+    "timeOfDay": "afternoon",
+    "lighting": "warm cheerful studio room lighting mixed with afternoon sunbeams",
+    "camera": "medium_shot",
+    "mood": "sweet puppy-like adoration, blissful junior girlfriend warmth, pure domestic cheer",
+    "promptProse": "Kneeling beside partner chair in a sunny room, Izumi Hashima rests her chin on his knee, purring happily as he pets her brown twintails.",
+    "promptTokens": [
+      "studio",
+      "desk",
+      "sitting_on_floor",
+      "headpat",
+      "leaning_on_leg",
+      "blushing",
+      "sweet_smile",
+      "twintails",
+      "daylight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Izumi Hashima resting chin on partner knee enjoying headpats.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

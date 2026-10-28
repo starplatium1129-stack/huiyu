@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "ushio_noa_intimate_morning_sunlight",
+  "revision": 3,
+  "sortOrder": 2093,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "ushio_noa_intimate_morning_sunlight",
+    "characterId": "ushio_noa",
+    "outfitId": "silk_slip_nightdress",
+    "title": "生盐诺亚 · 晨光初醒的无防备凝望",
+    "category": "私密温存",
+    "description": "清晨纯白的薄纱窗帘透进清澈明亮的晨曦。诺亚在凌乱而舒适的大床上半撑起身子，丝绸睡裙肩带微微滑落，瀑布般的银白长发铺散在枕头间。她半眯着清透的紫眸，嘴角噙着一抹安心至极的清纯微笑，静静凝望着身侧刚刚苏醒的老师。",
+    "recommendedSize": "1216x832",
+    "location": "sunlit bright morning bedroom bed",
+    "action": "waking up, propping up on elbow, messy hair on pillows, peaceful tender smile",
+    "timeOfDay": "morning",
+    "lighting": "bright ethereal morning sunshine diffusing through white sheer curtains",
+    "camera": "medium_shot",
+    "mood": "pure peaceful bliss and morning warmth",
+    "promptProse": "Awakening in a bright sunlit bed with rumpled white sheets, Ushio Noa props herself up on one elbow in her silk nightgown, her silver locks pooling on pillows as she smiles tenderly.",
+    "promptTokens": [
+      "on_bed",
+      "lying_on_bed",
+      "pillow",
+      "morning_sunlight",
+      "smile",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Noa waking up gently in the bright morning sunlight.",
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

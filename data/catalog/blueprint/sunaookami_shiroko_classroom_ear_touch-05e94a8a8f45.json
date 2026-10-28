@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "sunaookami_shiroko_classroom_ear_touch",
+  "revision": 2,
+  "sortOrder": 2127,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "sunaookami_shiroko_classroom_ear_touch",
+    "characterId": "sunaookami_shiroko",
+    "outfitId": "abydos_foreclosure_uniform",
+    "title": "砂狼白子 · 旧校舍课后的狼耳轻触",
+    "category": "治愈甜宠",
+    "description": "阿拜多斯旧校舍安静的傍晚教室，金色夕阳将木质地板染上一片温暖光晕。白子坐在课桌前，乖巧地微微歪着脑袋，任由老师的大手轻轻抚摸头顶毛茸茸的灰色狼耳。狼耳随着抚摸轻轻颤动，清冷的少女双颊悄悄泛起好看的绯红，流露出只对老师一人的全心依赖。",
+    "recommendedSize": "832x1216",
+    "location": "warm empty Abydos classroom beside desk",
+    "action": "head tilt, companion petting wolf ears, soft blush, twitching ears, peaceful affectionate gaze",
+    "timeOfDay": "sunset",
+    "lighting": "warm golden sunset brilliance pouring through dusty classroom windows",
+    "camera": "close-up",
+    "mood": "tender healing warmth, pure canine devotion, and sweet quiet bond",
+    "promptProse": "Sitting beside a classroom desk in sunset light, Sunaookami Shiroko tilts her head obediently as a hand pets her soft wolf ears, her pale cheeks blushing sweetly.",
+    "promptTokens": [
+      "classroom",
+      "desk",
+      "window",
+      "headpat",
+      "blush",
+      "twitching_ears",
+      "warm_lighting",
+      "sunset",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shiroko blushing softly as her companion gently pets her wolf ears in the sunset classroom.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "komari_chika/modest_pastel_mint_swimsuit",
+  "revision": 1,
+  "sortOrder": 1795,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "komari_chika",
+    "outfit": {
+      "characterId": "komari_chika",
+      "id": "modest_pastel_mint_swimsuit",
+      "name": "夏日羞怯·浅薄荷绿荷叶边连体泳装",
+      "prose": "A modest pastel-mint one-piece swimsuit adorned with sweet ruffles along the chest and hip skirt, perfectly complimenting her petite frame.",
+      "tokens": [
+        "swimsuit",
+        "one-piece_swimsuit",
+        "mint_swimsuit",
+        "frilled_swimsuit",
+        "ruffles",
+        "modest_swimwear",
+        "bare_shoulders"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

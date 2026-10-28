@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "charlotte_dunois/cozy_french_apron",
+  "revision": 1,
+  "sortOrder": 1726,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "charlotte_dunois",
+    "outfit": {
+      "characterId": "charlotte_dunois",
+      "id": "cozy_french_apron",
+      "name": "法式甜心·浅黄棉麻围裙居家服",
+      "prose": "A charming pastel yellow frilled apron over a breezy white puff-sleeve blouse and domestic lounge shorts.",
+      "tokens": [
+        "yellow_apron",
+        "white_blouse",
+        "short_sleeves",
+        "frilled_apron",
+        "bare_legs",
+        "slippers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

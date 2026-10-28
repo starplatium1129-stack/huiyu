@@ -1,0 +1,36 @@
+{
+  "kind": "blueprint",
+  "id": "kakudate_karin_schale_office_cleaning_break",
+  "revision": 3,
+  "sortOrder": 2102,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "kakudate_karin_schale_office_cleaning_break",
+    "characterId": "kakudate_karin",
+    "outfitId": "candc_maid_uniform",
+    "title": "角楯花凛 · 夏莱办公室的清扫小憩",
+    "category": "日常相处",
+    "description": "夏莱宽敞明亮的办公室内，午后暖融融的阳光洒在地板上。花凛双手端着盛有热红茶与手制点心的银色托盘，亭亭玉立在老师桌侧。听到老师由衷的一声称赞，这位身材修长高挑的冷艳狙击女仆耳尖泛红，难为情地微微偏过头去。",
+    "recommendedSize": "832x1216",
+    "location": "bright sunny Schale main office beside desk",
+    "action": "holding silver tea tray, blushing head turn, tall maid posture, bashful smile",
+    "timeOfDay": "afternoon",
+    "lighting": "bright warm natural daylight streaming through tall glass windows",
+    "camera": "cowboy_shot",
+    "mood": "endearing contrast and peaceful maid devotion",
+    "promptProse": "Standing gracefully in a sunny office beside the desk holding a silver tea tray, Kakudate Karin blushes softly beneath her maid headband, looking away with endearing shyness.",
+    "promptTokens": [
+      "holding_tray",
+      "office",
+      "blush",
+      "afternoon",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Karin blushing while serving tea in the sunlit office.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

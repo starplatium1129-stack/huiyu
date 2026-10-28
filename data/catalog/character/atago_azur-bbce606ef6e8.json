@@ -1,0 +1,150 @@
+{
+  "kind": "character",
+  "id": "atago_azur",
+  "revision": 1,
+  "sortOrder": 218,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "atago_azur",
+    "profile": {
+      "id": "atago_azur",
+      "name": "爱宕",
+      "alias": [
+        "Atago",
+        "爱宕",
+        "爱宕(碧蓝航线)",
+        "あたご",
+        "愛宕",
+        "atago (azur lane)"
+      ],
+      "type": "popular",
+      "icon": "🐕",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "爱宕 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "柔顺及腰纯黑长直发 · 标志性灵动黑色犬耳 · 头顶呆毛",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "温润明亮琥珀金瞳 · 饱含宠溺与包容",
+        "hairstyle": "黑长直 · 耷拉与竖起兼具的柔软黑色犬耳 · 灵动小呆毛",
+        "uniform": "白金露肩军官制服 · 盛夏白色挂脖比基尼 · 居家棉麻围裙便装",
+        "expression": "充满母性与成熟姐姐感的温柔微笑 · 逗弄心上人时的促狭与心疼",
+        "style": "all-embracing pampering big-sister girlfriend with unmatched domestic tenderness and loving devotion",
+        "signature": "黑长直发、黑色犬耳、金瞳与极尽宠溺的治愈怀抱"
+      },
+      "personality": [
+        "重樱阵营高雄级二号舰重巡洋舰，以无可比拟的包容心与温柔著称的超人气大姐姐",
+        "极度宠溺指挥官，习惯将对方当做最珍视的恋人与需要被好好呵护的弟弟来照料",
+        "口头禅是充满宠溺意味的「叫我姐姐也可以哦」，总是主动将心上人拉进怀里抚慰疲劳",
+        "平日沉稳从容、极具长女风范，面对恋爱攻势却极富情趣，非常享受被指挥官依赖的感觉",
+        "在私密生活中兼具极致人妻属性与热烈情意，愿意为心爱之人奉献一切"
+      ],
+      "likes": [
+        "早晨轻柔地唤醒指挥官并为他整理衣领与头发",
+        "在微风吹拂的和风缘侧给指挥官膝枕并耐心地掏耳朵",
+        "在指挥官疲惫时将他的头轻轻埋进自己温暖的胸口给予拥抱",
+        "夏日海滩上微笑着让指挥官为自己涂抹防晒霜",
+        "在深夜卧榻上被紧紧拥抱，任由犬耳和尾巴被轻抚"
+      ],
+      "classic_cg": {
+        "title": "缘侧微风下的午后惬意膝枕",
+        "description": "夏日午后蝉鸣阵阵的和风庭院走廊上，微风拂动白金裙摆。爱宕端坐于木质走廊上，温柔地将你的头引枕在自己修长丰腴的大腿上。她手中握着精细的竹制掏耳勺，低垂金眸，黑色犬耳微微抖动，唇角勾勒出极度柔美宠溺的笑意。"
+      },
+      "identity": {
+        "role": "重樱阵营重巡洋舰核心主力 / 高雄级二号舰",
+        "age": "成年创作设定",
+        "occupation": "高阶战备重巡 / 专属宠溺大姐姐女友",
+        "faction": "重樱阵营（Sakura Empire）",
+        "school": "重樱海军学院（资深典范）",
+        "classificationSource": "角色背景明确归属于重樱阵营核心主力。"
+      },
+      "tags": [
+        "黑长直",
+        "犬耳",
+        "兽耳娘",
+        "大姐姐",
+        "膝枕",
+        "人妻感",
+        "碧蓝航线"
+      ],
+      "bg_story": "爱宕是重樱阵营最负盛名的高雄级二号舰重巡洋舰。与严肃刻板的姐姐高雄不同，爱宕天性豁达开朗、深谙人心，总是以令人如沐春风的温柔包容着身边的所有人。在严酷惨烈的海战之余，她最渴望的便是一个能够毫无保留倾注爱意的港湾。面对肩负重任、日夜操劳的指挥官，爱宕心甘情愿化作他最温暖的避风港。成年设定下的爱宕无论是居家料理、情绪抚慰还是私密温存，都能展现出无可挑剔的顶级女友感，让人深陷在她那几乎能融化一切疲惫的怀抱中。",
+      "palette": [
+        "纯黑",
+        "浅金",
+        "纯白"
+      ],
+      "weather": [
+        "缘侧微风",
+        "清晨暖阳",
+        "海滨夏日"
+      ],
+      "speech": "指挥官，今天也辛苦了呢……来，不要客气，把一切疲惫都交给姐姐吧。躺到姐姐的膝枕上，闭上眼睛好好休息一会儿……呵呵，乖孩子。",
+      "source": "Manjuu / Yongshi《碧蓝航线 / Azur Lane》",
+      "traits": [
+        "atago_(azur_lane)",
+        "black_hair",
+        "long_hair",
+        "yellow_eyes",
+        "dog_ears",
+        "ahoge"
+      ]
+    },
+    "popular": {
+      "id": "atago_azur",
+      "displayName": "爱宕",
+      "originalName": "Atago",
+      "franchise": "Azur Lane",
+      "category": "手游角色",
+      "aliases": [
+        "Atago",
+        "爱宕",
+        "爱宕(碧蓝航线)",
+        "あたご",
+        "愛宕",
+        "atago (azur lane)"
+      ],
+      "exactTokens": [
+        "atago (azur lane)"
+      ],
+      "characterTokens": [
+        "atago (azur lane)"
+      ],
+      "copyrightTokens": [
+        "azur_lane"
+      ],
+      "identityTokens": [
+        "atago (azur lane)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "yellow_eyes",
+        "dog_ears",
+        "ahoge"
+      ],
+      "identityProse": "Atago from Azur Lane, the only character in the image, with long straight black hair, soft black dog ears, an expressive ahoge, warm amber-yellow eyes, and an affectionate, pampering expression.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "swav",
+        "cutesexyrobutt"
+      ],
+      "animeStudio": "Azur Lane official art, Manjuu / Yongshi style",
+      "canon": {
+        "era": "重樱重巡装甲纪元",
+        "world": "重樱阵营（Sakura Empire）· 高雄级重巡洋舰二号舰",
+        "formNotes": "黑长直黑犬耳大姐姐，极度宠溺依恋指挥官，温柔治愈人妻属性"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "white_ceremony_uniform",
+      "negativeTokens": []
+    }
+  }
+}

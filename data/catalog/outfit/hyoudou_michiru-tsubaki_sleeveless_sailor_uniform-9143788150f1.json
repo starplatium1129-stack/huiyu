@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hyoudou_michiru/tsubaki_sleeveless_sailor_uniform",
+  "revision": 1,
+  "sortOrder": 1817,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "hyoudou_michiru",
+    "outfit": {
+      "characterId": "hyoudou_michiru",
+      "id": "tsubaki_sleeveless_sailor_uniform",
+      "name": "椿姬女高·清凉无袖水手服短裙装",
+      "prose": "The Tsubaki Girls High School summer uniform featuring a stylish sleeveless white sailor blouse, dark collar, pleated navy skirt, and sporty ankle socks.",
+      "tokens": [
+        "school_uniform",
+        "sailor_suit",
+        "sleeveless_shirt",
+        "white_shirt",
+        "pleated_skirt",
+        "bare_arms",
+        "socks",
+        "loafers"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

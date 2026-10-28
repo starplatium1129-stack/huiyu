@@ -1,0 +1,148 @@
+{
+  "kind": "character",
+  "id": "himeragi_yukina",
+  "revision": 1,
+  "sortOrder": 224,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "himeragi_yukina",
+    "profile": {
+      "id": "himeragi_yukina",
+      "name": "姬柊雪菜",
+      "alias": [
+        "Yukina Himeragi",
+        "姬柊雪菜",
+        "雪菜",
+        "剑巫",
+        "ひめらぎ ゆきな",
+        "himeragi yukina"
+      ],
+      "type": "popular",
+      "icon": "🗡️",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "姬柊雪菜 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "如墨长直发 · 整齐刘海 · 柔顺垂落至腰际",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "清澈透亮深褐眼眸 · 认真而略带羞涩水光",
+        "hairstyle": "齐刘海长直发 · 自然披肩 · 娇小清丽少女体态",
+        "uniform": "彩海学园水手服 · 浅蓝针织开衫居家服 · 纯白棉麻吊带睡裙",
+        "expression": "一本正经监视时的认真严肃 · 被前辈捉弄时鼓起腮帮子的娇嗔绝萌",
+        "style": "earnest devoted junior-girlfriend with fierce possessiveness and tender sacrificial love",
+        "signature": "黑发齐刘海、清澈褐瞳、水手服与「不，前辈，这是我们的战斗」"
+      },
+      "personality": [
+        "狮子王机关所属见习剑巫，被派往弦神岛担任第四真祖的「监视者」与伴侣候补",
+        "外表是尽职尽责的优等生学妹，实际上极度重视古城，早已将对方视作不可分割的恋人",
+        "极度容易吃醋，只要看见古城与其他女孩子有接触就会鼓起脸颊说「前辈是个无可救药的色狼」",
+        "同居生活中把古城的日常照顾得井井有条，每天早起做饭、洗衣、叫他起床",
+        "成年创作设定下对心上人展现出毫无保留的包容与献身精神，酥软娇羞的吸血时刻极具撩人魅力"
+      ],
+      "likes": [
+        "为前辈熬煮热气腾腾的日式咖喱并听他大口吃完的夸奖",
+        "雨天与前辈并肩共撑一把伞，悄悄把伞往对方身上偏",
+        "在玄关等待前辈放学回家，微笑着接过他的书包",
+        "被前辈紧紧抱住吸血时耳边温热的轻喘",
+        "假日的清晨窝在前辈的臂弯里贪睡片刻"
+      ],
+      "classic_cg": {
+        "title": "公寓厨房里的细致熬汤与娇嗔提醒",
+        "description": "弦神岛温馨的单身公寓厨房内，锅里的炖菜冒着咕嘟咕嘟的香气。雪菜系着猫咪小围裙，双手握着木勺尝了尝味道。她侧过身，褐色的眼眸认真而柔和地注视着你，轻声叮嘱前辈要按时吃饭、不可以再挑食，眼角含着初为人妻般的羞涩甜意。"
+      },
+      "identity": {
+        "role": "狮子王机关剑巫特工 / 第四真祖专属监视伴侣",
+        "age": "成年创作设定",
+        "occupation": "特务剑巫 / 独家终身恋人",
+        "faction": "狮子王机关 / 弦神特区特勤同盟",
+        "school": "彩海学园（高阶高中部）",
+        "classificationSource": "角色背景明确归属于狮子王机关特派核心人员。"
+      },
+      "tags": [
+        "黑长直",
+        "齐刘海",
+        "水手服",
+        "吃醋",
+        "学妹女友",
+        "剑巫",
+        "噬血狂袭"
+      ],
+      "bg_story": "姬柊雪菜自幼在狮子王机关的高神之杜接受严苛的剑巫修行，拥有操纵神格振动枪「雪霞狼」的超绝技艺。她被机关作为监视者派往魔族特区弦神岛，负责观察并必要时抹杀世界最强吸血鬼第四真祖晓古城。然而在朝夕相处的同居生活与共同守护城市的战斗中，雪菜见证了古城善良而富有担当的内心。她从最初戒备的监督者，彻底变成了与古城命脉相连的灵魂伴侣。成年设定下的雪菜温柔坚毅、女友力极强，无论面对神魔强敌还是柴米油盐，她都会握紧长枪与心上人的手，生死与共。",
+      "palette": [
+        "纯黑",
+        "浅蓝",
+        "雪白"
+      ],
+      "weather": [
+        "清晨公寓",
+        "雨后街道",
+        "祭典夜市"
+      ],
+      "speech": "不，前辈！这是我们的战斗！只要雪菜还在这里，就绝对不会让前辈一个人承担一切……今晚也是，无论去哪里，雪菜都要陪在前辈身边！",
+      "source": "SILVER LINK.《噬血狂袭 / Strike the Blood》",
+      "traits": [
+        "himeragi_yukina",
+        "black_hair",
+        "long_hair",
+        "straight_hair",
+        "brown_eyes"
+      ]
+    },
+    "popular": {
+      "id": "himeragi_yukina",
+      "displayName": "姬柊雪菜",
+      "originalName": "Yukina Himeragi",
+      "franchise": "Strike the Blood",
+      "category": "动漫角色",
+      "aliases": [
+        "Yukina Himeragi",
+        "姬柊雪菜",
+        "雪菜",
+        "剑巫",
+        "ひめらぎ ゆきな",
+        "himeragi yukina"
+      ],
+      "exactTokens": [
+        "himeragi_yukina"
+      ],
+      "characterTokens": [
+        "himeragi_yukina"
+      ],
+      "copyrightTokens": [
+        "strike_the_blood"
+      ],
+      "identityTokens": [
+        "himeragi_yukina",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "straight_hair",
+        "brown_eyes"
+      ],
+      "identityProse": "Yukina Himeragi from Strike the Blood, the only character in the image, with long straight black hair, clear dark brown eyes, and an earnest, slightly pouting, devoted junior-girlfriend expression.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "swav"
+      ],
+      "animeStudio": "Strike the Blood official anime art, SILVER LINK. / CONNECT style",
+      "canon": {
+        "era": "弦神岛魔族特区第四真祖纪元",
+        "world": "弦神岛·狮子王机关监视官邸",
+        "formNotes": "黑长直黑瞳，剑巫学妹同居女友，吃醋娇嗔与吸血酥软反差"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "saikai_academy_uniform",
+      "negativeTokens": []
+    }
+  }
+}

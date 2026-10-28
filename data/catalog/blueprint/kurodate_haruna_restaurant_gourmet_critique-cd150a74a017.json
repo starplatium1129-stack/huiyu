@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "kurodate_haruna_restaurant_gourmet_critique",
+  "revision": 2,
+  "sortOrder": 2118,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "kurodate_haruna_restaurant_gourmet_critique",
+    "characterId": "kurodate_haruna",
+    "outfitId": "gourmet_executive_fur_coat",
+    "title": "黑馆晴奈 · 米其林餐厅的优雅品鉴",
+    "category": "名流美馔",
+    "description": "学园都市顶奢法式餐厅的高级靠窗专座，璀璨的水晶吊灯将银质餐具照得流光溢彩。晴奈端坐在天鹅绒高背椅上，白手套轻握精美的银质餐叉。她微微侧过头，猩红眼眸带着真正鉴赏家的审慎与满意，向对座的老师投来赞赏而优雅的迷人注视。",
+    "recommendedSize": "832x1216",
+    "location": "luxury high-end fine dining restaurant",
+    "action": "holding silver fork, sitting poised at dining table, elegant aristocratic smile",
+    "timeOfDay": "night",
+    "lighting": "brilliant sparkling chandelier radiance and soft table candlelight",
+    "camera": "medium_shot",
+    "mood": "regal refinement, culinary sophistication, and aristocratic charm",
+    "promptProse": "Seated at an opulent fine dining table beneath crystal chandeliers, Kurodate Haruna holds a silver fork with poised aristocratic elegance, her ruby eyes glowing softly.",
+    "promptTokens": [
+      "holding_fork",
+      "restaurant",
+      "table",
+      "food",
+      "wine_glass",
+      "elegant_smile",
+      "chandelier",
+      "night",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Haruna holding a silver fork with a poised, aristocratic smile in a luxury restaurant.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

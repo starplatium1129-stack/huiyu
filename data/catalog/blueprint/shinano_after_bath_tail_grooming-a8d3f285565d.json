@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "shinano_after_bath_tail_grooming",
+  "revision": 1,
+  "sortOrder": 2146,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "shinano_after_bath_tail_grooming",
+    "characterId": "shinano",
+    "outfitId": "hazy_moon_sheer_nightgown",
+    "title": "信浓 · 浴后榻榻米的敏感梳毛",
+    "category": "私密温存",
+    "description": "沐浴后身上带着玫瑰体温与氤氲水汽，信浓跪趴在榻榻米上。当敏感的狐耳根部与九尾被你温柔梳理时，她忍不住娇躯轻颤、双颊通红，溢出甜美细碎的喘息。",
+    "recommendedSize": "832x1216",
+    "location": "warm tatami chamber with steam drifting from nearby bath",
+    "action": "flushed from warm bath, damp silver hair, trembling delightfully as sensitive fox ears and tail bases are tenderly brushed, breathless moans, blushing red",
+    "timeOfDay": "night",
+    "lighting": "warm amber lantern glow accentuating steamy glistening skin",
+    "camera": "medium_shot",
+    "mood": "intensely sensual, sensitive vulnerability, sweet whimpers",
+    "promptProse": "Flushed from a hot bath on tatami, Shinano shivers with delight as her sensitive fox ears and fluffy tails are lovingly brushed, moaning softly.",
+    "promptTokens": [
+      "tatami",
+      "steamy",
+      "wet_skin",
+      "blushing",
+      "twitching_ears",
+      "brushing_hair",
+      "breathless",
+      "shivering",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shinano shivering with sweet sensitivity during tail grooming after a bath.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

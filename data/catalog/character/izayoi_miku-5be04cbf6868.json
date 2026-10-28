@@ -1,0 +1,158 @@
+{
+  "kind": "character",
+  "id": "izayoi_miku",
+  "revision": 1,
+  "sortOrder": 228,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "izayoi_miku",
+    "profile": {
+      "id": "izayoi_miku",
+      "name": "诱宵美九",
+      "alias": [
+        "Miku Izayoi",
+        "诱宵美九",
+        "美九",
+        "宵待月乃",
+        "诱宵",
+        "诱宵美九(DAL)",
+        "诱宵美九(约会大作战)",
+        "诱宵美九 (约战)",
+        "誘宵美九",
+        "miku izayoi",
+        "izayoi miku"
+      ],
+      "type": "popular",
+      "icon": "🎤",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "诱宵美九 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "紫罗兰般华丽柔顺双马尾 · 及膝波浪长卷发",
+        "hair_color": "浅紫 / 香芋紫",
+        "eyes": "璀璨摄人紫水晶眼眸 · 充满大明星的娇憨与极度依恋",
+        "hairstyle": "高扎华丽长双马尾 · 额前自然碎发 · 丰腴高挑的偶像巨星身段",
+        "uniform": "破军歌姬月光银紫礼服 · 凛道女校灰紫制服 · 假日露肩落领针织衫",
+        "expression": "舞台上迷倒万千粉丝的耀眼笑容 · 私底下扑进达令怀里的撒娇呜咽",
+        "style": "pampered superstar idol girlfriend with sweet possessiveness, musical romance, and unreserved adoration",
+        "signature": "紫发长双马尾、紫晶瞳、银紫礼服与软糯甜腻的「达令～」"
+      },
+      "personality": [
+        "第六精灵「Diva（歌姬）」，拥有以歌声操控人心的力量，曾极度厌恶男性但被士道以生命救赎",
+        "攻略之后彻底化身为「世界上最黏人的大明星女友」，整天娇滴滴地把「达令」挂在嘴边",
+        "极度喜欢撒娇和被心上人宠溺，只要一离开舞台就会像小鸟一样钻进达令的怀里求抱抱",
+        "性格活泼浪漫、占有欲极强，喜欢在演唱会后台、高级套房甚至私人录音棚与心上人亲昵独处",
+        "成年创作设定下巨星风范与小娇妻的娇羞反差让人欲罢不能，私密时刻热情似火"
+      ],
+      "likes": [
+        "在无人的私人录音棚里与达令共戴一副耳机合唱情歌",
+        "演唱会开场前在更衣室把达令逼在墙角索要「幸运之吻」",
+        "在五星级酒店顶层全景套房里撒娇让达令喂自己吃冰淇淋",
+        "偷偷穿上达令宽大的西装外套在镜子前哼着情歌跳舞",
+        "在深夜被窝里一遍遍听达令在耳边说最爱美九"
+      ],
+      "classic_cg": {
+        "title": "私人录音棚里的双人耳机与深情合唱",
+        "description": "专业隔音玻璃环绕的豪华私人录音棚内，柔和的暖光洒在金属麦克风上。美九双手紧紧挽住你的手臂，两人共戴一副监听耳机。她紫罗兰色的双马尾垂落在你胸前，紫晶眼眸中盛满了浓得化不开的爱意，微启朱唇与你轻声合唱着只属于彼此的定情曲。"
+      },
+      "identity": {
+        "role": "第六精灵「歌姬（Diva）」 / 现役超级巨星偶像歌手",
+        "age": "成年创作设定",
+        "occupation": "顶流音乐巨星 / 专属极品黏人大明星女友",
+        "faction": "拉塔托斯克保护阵线 / 天宫市精灵特区",
+        "school": "凛道女子学院（高阶学部）",
+        "classificationSource": "角色背景明确归属于约会大作战核心精灵阵营。"
+      },
+      "tags": [
+        "紫发",
+        "双马尾",
+        "紫瞳",
+        "偶像",
+        "歌姬",
+        "达令",
+        "约会大作战"
+      ],
+      "bg_story": "诱宵美九曾是名噪一时的人气少女歌手「宵待月乃」，因拒绝权贵潜规则而遭遇全网造谣封杀，甚至失声绝望，在此绝境下与精灵水晶融合成为破军歌姬。极度失望的她曾将所有人类当作提线木偶，直到五河士道在生死关头不惜性命挡在她身前，用真挚的爱唤醒了她对世界的信任。被拯救的美九从仇恨中解脱，彻底将所有的少女心事与炽烈真情赋予了士道一人。成年设定下的美九舞台上光芒万丈、高不可攀，唯独在心上人面前是最爱吃醋撒娇的完美恋人。",
+      "palette": [
+        "香芋紫",
+        "纯银",
+        "深蓝"
+      ],
+      "weather": [
+        "舞台聚光灯",
+        "私密套房",
+        "月下录音室"
+      ],
+      "speech": "达令～！美九等你好久好久了啦！今天的演唱会美九表现得棒不棒？……哼，光说棒可不行，美九要达令现在就好好抱紧我，亲亲我的嘴唇才可以喵！",
+      "source": "AIC PLUS+ / Production IMS《约会大作战 / Date A Live》",
+      "traits": [
+        "izayoi_miku",
+        "purple_hair",
+        "long_hair",
+        "twintails",
+        "purple_eyes"
+      ]
+    },
+    "popular": {
+      "id": "izayoi_miku",
+      "displayName": "诱宵美九",
+      "originalName": "Miku Izayoi",
+      "franchise": "Date A Live",
+      "category": "动漫角色",
+      "aliases": [
+        "Miku Izayoi",
+        "诱宵美九",
+        "美九",
+        "宵待月乃",
+        "诱宵",
+        "诱宵美九(DAL)",
+        "诱宵美九(约会大作战)",
+        "诱宵美九 (约战)",
+        "誘宵美九",
+        "miku izayoi",
+        "izayoi miku"
+      ],
+      "exactTokens": [
+        "izayoi_miku"
+      ],
+      "characterTokens": [
+        "izayoi_miku"
+      ],
+      "copyrightTokens": [
+        "date_a_live"
+      ],
+      "identityTokens": [
+        "izayoi_miku",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "long_hair",
+        "twintails",
+        "purple_eyes"
+      ],
+      "identityProse": "Miku Izayoi from Date A Live, the only character in the image, with long flowing lavender-purple twintails, luminous purple eyes, and an affectionate, pampered pop-idol girlfriend expression.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "cutesexyrobutt"
+      ],
+      "animeStudio": "Date A Live official anime art, AIC PLUS+ / J.C.STAFF style",
+      "canon": {
+        "era": "天宫市空间震与精灵誓约纪元",
+        "world": "天宫市·精灵公馆与私立舞台",
+        "formNotes": "紫发华丽长双马尾紫瞳，歌姬偶像达令专属女友，黏人撒娇与巨星舞台反差"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "diva_astral_dress",
+      "negativeTokens": []
+    }
+  }
+}

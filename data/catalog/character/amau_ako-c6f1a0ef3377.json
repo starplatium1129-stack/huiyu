@@ -1,0 +1,151 @@
+{
+  "kind": "character",
+  "id": "amau_ako",
+  "revision": 4,
+  "sortOrder": 208,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
+  "data": {
+    "id": "amau_ako",
+    "profile": {
+      "id": "amau_ako",
+      "name": "天雨亚子",
+      "alias": [
+        "Amau Ako",
+        "亚子",
+        "天雨アコ",
+        "アコ",
+        "风纪委员会行政官"
+      ],
+      "type": "popular",
+      "icon": "⛓️",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "天雨亚子 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "浅灰微泛幽蓝的蓬松波浪长卷发 · 高扎侧双马尾",
+        "hair_color": "浅灰微蓝",
+        "eyes": "澄澈灵动湛蓝美眸",
+        "hairstyle": "波浪卷侧双马尾 · 黑色小恶魔小尖角 · 格黑娜红黑尖角光环",
+        "uniform": "标志性镂空深胸口黑白制服 · 红色风纪袖标 · 皮质颈带项圈 · 黑色丝袜",
+        "expression": "认真严厉 · 遇窘境时娇羞气恼 · 私下温驯依赖",
+        "style": "strict alluring prefect team administrator with devoted loyalty",
+        "signature": "侧马尾、恶魔角、镂空胸口制服、皮质项圈与蓝色眼眸"
+      },
+      "personality": [
+        "恪尽职守、行事高效严厉的风纪委员会行政官",
+        "对委员长空崎日奈怀有至死不渝的崇敬与护短之心",
+        "自尊心极强且嘴硬傲娇，极易在老师面前方寸大乱",
+        "看似强势毒舌，实则对信任之人有超乎常人的忠诚与顺从感",
+        "成年后越发具备干练大女主气场，但私底下的软糯依赖不减反增"
+      ],
+      "likes": [
+        "风纪委员长日奈平安无事、没有突发骚乱的和平早晨",
+        "井井有条、分门别类归档清晰的歌赫娜惩处文书",
+        "与老师在办公室关上百叶窗后的短暂宁静",
+        "质地柔软、剪裁高级的深色宴会晚礼服",
+        "在老师面前卸下所有戒备时被轻轻抚摸发丝的安心感"
+      ],
+      "classic_cg": {
+        "title": "闭门办公室的项圈与心跳",
+        "description": "黄昏时分的风纪委员会办公室，百叶窗斜切进金红色的光束。亚子双手背在身后立于办公桌前，修身制服勾勒出曼妙饱满的曲线，修长脖颈上的皮质项圈在微光下泛着光泽。她侧过微红的脸颊轻咬下唇，蔚蓝眼眸中闪烁着傲娇与无处安放的顺从。"
+      },
+      "identity": {
+        "role": "歌赫娜学园风纪委员会行政官 / 治安统筹首长",
+        "age": "成年创作设定",
+        "occupation": "风纪委员会二把手 / 学园治安参谋",
+        "faction": "歌赫娜学院 / 风纪委员会",
+        "school": "歌赫娜学园",
+        "classificationSource": "本角色档案 identity.faction 中明确记载的学院；统一学院名称写法。"
+      },
+      "tags": [
+        "侧双马尾",
+        "恶魔角",
+        "镂空制服",
+        "项圈",
+        "傲娇",
+        "蓝瞳",
+        "歌赫娜风纪委"
+      ],
+      "bg_story": "天雨亚子是学园都市基沃托斯歌赫娜学园风纪委员会的行政官。作为委员长空崎日奈最为信赖的左膀右臂，亚子统筹处理着全校令人头疼的无尽违纪事件与战术调度。为了不让疲惫的日奈过度操劳，她常常将所有繁琐重任一肩挑起，对外展现出铁腕严苛的冷面形象。在经历了伊甸条约会战与基沃托斯终章危机后，成年后的亚子不仅彻底挑起了歌赫娜治安重担，更在与夏莱老师的长久共事中建立了无可替代的心灵依赖。尽管面对外人时依旧是一丝不苟的成熟行政官，但在只有老师的私密空间里，她那极度傲娇外表下深藏的温驯、炽热与毫无防备的依赖，成为了唯有老师才能触及的绝美风景。",
+      "palette": [
+        "纯白",
+        "幽蓝",
+        "纯黑"
+      ],
+      "weather": [
+        "黄昏办公",
+        "夜雨巡逻",
+        "静谧卧室"
+      ],
+      "speech": "老师！您今天又把夏莱的调度报告拖延了吗？真是的……如果不是我替您核对，日奈委员长又要亲自过问了！快坐下，我们逐条审查！",
+      "source": "Blue Archive",
+      "traits": [
+        "grey_hair",
+        "twintails",
+        "blue_eyes",
+        "horns",
+        "halo"
+      ]
+    },
+    "popular": {
+      "id": "amau_ako",
+      "displayName": "天雨亚子",
+      "originalName": "Amau Ako",
+      "franchise": "Blue Archive",
+      "category": "手游角色",
+      "aliases": [
+        "Amau Ako",
+        "天雨亚子",
+        "天雨アコ",
+        "亚子",
+        "ako (blue archive)"
+      ],
+      "exactTokens": [
+        "amau_ako"
+      ],
+      "characterTokens": [
+        "amau_ako",
+        "ako (blue archive)"
+      ],
+      "copyrightTokens": [
+        "blue_archive"
+      ],
+      "identityTokens": [
+        "amau_ako",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "twintails",
+        "blue_eyes",
+        "horns",
+        "halo",
+        "choker",
+        "cleavage",
+        "cleavage_cutout"
+      ],
+      "identityProse": "Amau Ako from Blue Archive, the only character in the image, with soft grey twintails, black horns, deep blue eyes, a choker, and a glowing halo.",
+      "curatedArtistStyles": [
+        "kakao",
+        "mika_pikazo",
+        "morikura_en"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "world": "基沃托斯（Kivotos）· 歌赫娜学园",
+        "formNotes": "风纪委员会行政官，严格高效却极度忠诚、傲娇温顺"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "prefect_duty_vestment",
+      "negativeTokens": []
+    }
+  }
+}

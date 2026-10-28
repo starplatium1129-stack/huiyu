@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kuroka_engawa_sake_fish_feed",
+  "revision": 1,
+  "sortOrder": 2202,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "kuroka_engawa_sake_fish_feed",
+    "characterId": "kuroka",
+    "outfitId": "loose_black_kimono",
+    "title": "黑歌 · 和风缘侧的烤鱼投喂",
+    "category": "日常约会",
+    "description": "夏日午后微风吹拂的木质缘侧上，黑歌盘腿斜倚在廊柱边。她用筷子剔好香脆烤鱼肉送到你唇边，两只黑色猫耳欢快抖动，双尾在地板上轻拍，眉眼满是娇媚笑意。",
+    "recommendedSize": "832x1216",
+    "location": "traditional wooden veranda overlooking sunny Japanese garden",
+    "action": "feeding grilled fish to partner with chopsticks, cat ears twitching happily, twin cat tails wagging, playful golden eyes",
+    "timeOfDay": "afternoon",
+    "lighting": "warm dappled afternoon sunshine through leafy bamboo trees",
+    "camera": "cowboy_shot",
+    "mood": "lazing domestic bliss, feline charm, playful couple sweetness",
+    "promptProse": "Sitting on a wooden veranda in a loose black kimono, Kuroka feeds grilled fish to her partner, cat ears twitching with playful golden eyes.",
+    "promptTokens": [
+      "engawa",
+      "kimono",
+      "holding_chopsticks",
+      "feeding_viewer",
+      "cat_ears",
+      "two_tails",
+      "sweet_smile",
+      "day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kuroka feeding grilled fish on a breezy wooden veranda with twitching cat ears.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

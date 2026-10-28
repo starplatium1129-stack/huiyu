@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "stella_rooftop_lunch_jealous_feed",
+  "revision": 1,
+  "sortOrder": 2184,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "stella_rooftop_lunch_jealous_feed",
+    "characterId": "stella_vermillion",
+    "outfitId": "hagun_academy_uniform",
+    "title": "史黛菈 · 天台长椅的霸道投喂",
+    "category": "日常约会",
+    "description": "天台长椅上微风拂动红发双马尾，史黛菈气鼓鼓地鼓着脸颊。她用筷子夹着肉丸递到你唇边，红眸中满是吃醋的小委屈，命令你必须一口吃掉并夸奖她。",
+    "recommendedSize": "832x1216",
+    "location": "school rooftop beside chain link fence",
+    "action": "sitting on bench, feeding partner with chopsticks, pouting cheeks in jealousy, blushing passionately",
+    "timeOfDay": "noon",
+    "lighting": "bright high-noon sun casting sharp clear shadows",
+    "camera": "cowboy_shot",
+    "mood": "tsundere possessiveness, intense domestic sweetness, pure romantic devotion",
+    "promptProse": "Sitting on a rooftop bench, Stella Vermillion pouts adorably as she feeds partner with chopsticks, blushing with fierce love.",
+    "promptTokens": [
+      "rooftop",
+      "bench",
+      "holding_chopsticks",
+      "feeding_viewer",
+      "pouting",
+      "blushing",
+      "bright_sunlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Stella pouting with flushed cheeks while feeding partner on the school rooftop.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

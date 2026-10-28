@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "prinz_eugen_tangled_sheets_morning",
+  "revision": 1,
+  "sortOrder": 2153,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "prinz_eugen_tangled_sheets_morning",
+    "characterId": "prinz_eugen",
+    "outfitId": "cozy_oversized_knit",
+    "title": "欧根亲王 · 假日被窝的无度索求",
+    "category": "私密温存",
+    "description": "假日清晨凌乱的真丝床单间，大毛衣散落床尾，修长双腿亲密交缠。欧根眼角泪痣因动情而娇艳欲滴，红唇贴在你的耳畔带着得意的轻喘坏笑，索求着新一轮的亲昵。",
+    "recommendedSize": "832x1216",
+    "location": "sun-drenched morning bedroom with soft white linen",
+    "action": "tangled amidst messy silk bedsheets, sweater discarded to floor, legs entwined intimately, beauty mark flushed with radiant arousal, smiling teasingly while pulling partner back for more",
+    "timeOfDay": "morning",
+    "lighting": "warm golden morning sunlight spilling over tangled white sheets",
+    "camera": "close-up",
+    "mood": "irresistible morning intimacy, playful insatiability, deep adoration",
+    "promptProse": "Tangled in messy sheets with flushed cheeks in golden morning light, Prinz Eugen smiles teasingly as she entwines closely for more affection.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_legs",
+      "blushing_heavily",
+      "beauty_mark",
+      "seductive_smile",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Prinz Eugen tangled affectionately in messy morning sheets with an alluring blush.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

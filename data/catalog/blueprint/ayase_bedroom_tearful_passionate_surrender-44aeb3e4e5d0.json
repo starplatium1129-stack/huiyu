@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "ayase_bedroom_tearful_passionate_surrender",
+  "revision": 1,
+  "sortOrder": 2259,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "ayase_bedroom_tearful_passionate_surrender",
+    "characterId": "ayase_aragaki",
+    "outfitId": "sheer_violet_silk_slip_nightgown",
+    "title": "新垣绫濑 · 卧室单人床上的深情交托",
+    "category": "私密温存",
+    "description": "温馨静谧的闺房卧室内，淡紫真丝睡裙从雪白香肩滑落床榻。被你拥在怀里的绫濑双颊烧透，眼角噙着幸福的泪花，双手紧紧缠绕在你的脖后，主动献上滚烫的热吻。",
+    "recommendedSize": "832x1216",
+    "location": "pristine white and pastel decorated girl bedroom",
+    "action": "pinned on white duvet with lavender slip dress sliding off porcelain shoulders, tearful purple eyes gazing up with breathless devotion, arms wrapping around partner neck",
+    "timeOfDay": "night",
+    "lighting": "dim bedside night lamp casting tender warm shadows on bare model curves",
+    "camera": "close-up",
+    "mood": "emotional romantic consummation, pure possessive surrender, heated lovers embrace",
+    "promptProse": "Pinned on white duvet with lavender slip dress sliding off bare shoulders, Ayase Aragaki wraps arms around partner neck with tearful passionate kisses.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "bare_shoulders",
+      "arms_around_neck",
+      "tears_of_happiness",
+      "blushing_heavily",
+      "panting",
+      "dim_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ayase Aragaki with bare shoulders and tearful loving gaze on bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

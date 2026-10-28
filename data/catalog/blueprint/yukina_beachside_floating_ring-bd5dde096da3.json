@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "yukina_beachside_floating_ring",
+  "revision": 1,
+  "sortOrder": 2192,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "yukina_beachside_floating_ring",
+    "characterId": "himeragi_yukina",
+    "outfitId": "summer_resort_white_bikini",
+    "title": "姬柊雪菜 · 碧海晴空的浅滩涉水",
+    "category": "浪漫约会",
+    "description": "人潮散去的热带海滩浅滩上，雪菜双手抱着白粉游泳圈踩在浪花里。浪花拍打着脚踝，她牵住你的手被浪打得踉跄微靠入怀，脸颊鼓起假装生气的绝萌模样。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit shallow ocean beach with crystal clear waves",
+    "action": "wading in water holding swim ring, stumbling into partner chest, cheeks puffed in mock pout, bright sparkling sea",
+    "timeOfDay": "day",
+    "lighting": "radiant tropical summer sun sparkling on clear turquoise water",
+    "camera": "cowboy_shot",
+    "mood": "playful summer date, adorable pouting girlfriend, sun-drenched joy",
+    "promptProse": "Wading in shallow sea waves holding a swim ring, Yukina stumbles cutely into partner chest, pouting cheeks with an endearing blush.",
+    "promptTokens": [
+      "beach",
+      "shallow_water",
+      "holding_swim_ring",
+      "pouting",
+      "blushing",
+      "holding_hands",
+      "sunny_day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Yukina wading in shallow water with a swim ring pouting cutely.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

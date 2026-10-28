@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kuroneko_living_room_visual_novel_testing",
+  "revision": 1,
+  "sortOrder": 2262,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kuroneko_living_room_visual_novel_testing",
+    "characterId": "kuroneko",
+    "outfitId": "queen_of_nightmare_gothic_lolita",
+    "title": "五更琉璃 · 客厅榻榻米的同人Galgame测试",
+    "category": "现代日常",
+    "description": "五更家温馨的榻榻米客厅上，并肩坐在笔记本电脑前测试自制恋爱游戏。屏幕上跳出心动告白CG的瞬间，黑猫整张脸通红，假装咳嗽却偷偷偏头打量你的侧颜。",
+    "recommendedSize": "832x1216",
+    "location": "cozy traditional tatami living room with Kotatsu and manga stacks",
+    "action": "sitting side by side on living room tatami playing a romance visual novel on laptop, blushing furiously as an intimate scene appears, peeking at partner profile",
+    "timeOfDay": "afternoon",
+    "lighting": "soft afternoon daylight through shoji sliding doors",
+    "camera": "medium_shot",
+    "mood": "nerdy sweet awkwardness, heart-pounding proximity, adorable tsundere tension",
+    "promptProse": "Sitting side by side on living room tatami before a laptop, Ruri Gokou blushes furiously at a romance game, peeking at partner with lovely blue eyes.",
+    "promptTokens": [
+      "tatami",
+      "living_room",
+      "laptop",
+      "sitting",
+      "side_by_side",
+      "blushing_heavily",
+      "looking_at_another",
+      "daylight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ruri Gokou blushing while testing romance visual novel on tatami.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

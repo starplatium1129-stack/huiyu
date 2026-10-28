@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "shizuka_hiratsuka/relaxing_home_oversized_sweatshirt",
+  "revision": 1,
+  "sortOrder": 1772,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "shizuka_hiratsuka",
+    "outfit": {
+      "characterId": "shizuka_hiratsuka",
+      "id": "relaxing_home_oversized_sweatshirt",
+      "name": "居家小憩·宽松大号卫衣短裤女友风",
+      "prose": "A comfortable oversized heather-grey sweatshirt casually slouching off one shoulder over comfy lounge shorts and bare feet.",
+      "tokens": [
+        "sweatshirt",
+        "grey_sweatshirt",
+        "oversized_sweater",
+        "shorts",
+        "bare_legs",
+        "barefoot",
+        "collarbone"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

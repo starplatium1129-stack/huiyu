@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "shinano_sheer_nightgown_enticement",
+  "revision": 1,
+  "sortOrder": 2145,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "shinano_sheer_nightgown_enticement",
+    "characterId": "shinano",
+    "outfitId": "hazy_moon_sheer_nightgown",
+    "title": "信浓 · 月下寝殿的半透挽留",
+    "category": "私密温存",
+    "description": "夜色深沉月光照进寝殿，半透天青丝绸睡袍滑落肩头。信浓金色兽瞳中漾着如梦似幻的水光，蓬松白狐尾轻轻缠住你的手腕，柔声唤你入榻，满室旖旎。",
+    "recommendedSize": "832x1216",
+    "location": "moonlit traditional bedchamber with sliding shoji doors",
+    "action": "sitting on edge of bed, sheer gown sliding off shoulders, glowing golden eyes full of desire, soft tail curling around partner wrist pulling forward",
+    "timeOfDay": "night",
+    "lighting": "ethereal silver moonlight illuminating sheer translucent fabrics",
+    "camera": "close-up",
+    "mood": "seductive divine yearning, heart-racing temptation, gentle surrender",
+    "promptProse": "Sitting on the bed under pale moonlight, Shinano lets her sheer nightgown slip off her shoulder as a fluffy tail curls around partner wrist.",
+    "promptTokens": [
+      "bedchamber",
+      "sitting_on_bed",
+      "off-shoulder",
+      "sheer_clothes",
+      "glowing_eyes",
+      "tail_around_wrist",
+      "moonlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shinano in a sheer off-shoulder gown pulling partner close with a fox tail.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "himeragi_yukina/pure_white_cotton_camisole",
+  "revision": 1,
+  "sortOrder": 1736,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "himeragi_yukina",
+    "outfit": {
+      "characterId": "himeragi_yukina",
+      "id": "pure_white_cotton_camisole",
+      "name": "监视寝室·棉质细肩带睡裙",
+      "prose": "A pure white soft cotton slip nightgown with thin spaghetti straps, falling gently over her petite curves.",
+      "tokens": [
+        "cotton_camisole",
+        "white_camisole",
+        "short_nightgown",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

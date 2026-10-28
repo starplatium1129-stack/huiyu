@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "prinz_eugen_cafe_corner_whisper",
+  "revision": 1,
+  "sortOrder": 2149,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "prinz_eugen_cafe_corner_whisper",
+    "characterId": "prinz_eugen",
+    "outfitId": "hundred_flowers_cheongsam",
+    "title": "欧根亲王 · 雅致茶馆的耳边情话",
+    "category": "浪漫约会",
+    "description": "雅致茶馆角落卡座，身穿绯红开衩旗袍的欧根单手托腮，隔着桌子用瓷匙轻碰你的茶杯。她忽然凑近耳边用温热气音轻吐情话，红挑染在暖光下格外耀眼。",
+    "recommendedSize": "832x1216",
+    "location": "intimate corner booth of an upscale tea salon",
+    "action": "leaning across cafe table supporting chin with hand, tapping partner tea cup with porcelain spoon, leaning in to whisper a cheeky secret, red hair streak glowing in warm light",
+    "timeOfDay": "afternoon",
+    "lighting": "warm ambient indoor glow with elegant soft shadows",
+    "camera": "upper_body",
+    "mood": "flirtatious charm, magnetic intimacy, playful confidence",
+    "promptProse": "Leaning across a tea salon table in an elegant cheongsam, Prinz Eugen whispers intimately with an alluring gaze and playful smirk.",
+    "promptTokens": [
+      "cafe",
+      "table",
+      "chin_rest",
+      "whispering",
+      "teasing_smile",
+      "warm_lighting",
+      "intimate_atmosphere",
+      "upper_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Prinz Eugen whispering tenderly across a cafe table in an embroidered cheongsam.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

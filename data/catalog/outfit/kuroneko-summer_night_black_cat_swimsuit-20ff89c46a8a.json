@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kuroneko/summer_night_black_cat_swimsuit",
+  "revision": 1,
+  "sortOrder": 1783,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "kuroneko",
+    "outfit": {
+      "characterId": "kuroneko",
+      "id": "summer_night_black_cat_swimsuit",
+      "name": "盛夏黑猫·暗黑荷叶边系带连体泳衣",
+      "prose": "A chic black one-piece swimsuit featuring delicate fluttery frills, halter ties, and a daring teardrop front cutout accentuating her fair pale skin.",
+      "tokens": [
+        "swimsuit",
+        "black_swimsuit",
+        "one-piece_swimsuit",
+        "frilled_swimsuit",
+        "halterneck",
+        "cutout",
+        "bare_shoulders"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

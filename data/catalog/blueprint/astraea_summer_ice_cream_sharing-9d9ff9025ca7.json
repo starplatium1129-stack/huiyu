@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "astraea_summer_ice_cream_sharing",
+  "revision": 1,
+  "sortOrder": 2210,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "astraea_summer_ice_cream_sharing",
+    "characterId": "astraea",
+    "outfitId": "summer_sunflower_sundress",
+    "title": "阿斯特蕾亚 · 烈日沙滩的冰淇淋共享",
+    "category": "浪漫约会",
+    "description": "盛夏海滨遮阳伞下，身穿向日葵吊带裙的阿斯特蕾亚正舔着大号双球冰淇淋。看到你走来，她急忙把快融化的冰淇淋送到你的嘴唇边，金色侧马尾随风摇晃，一脸单纯可爱。",
+    "recommendedSize": "832x1216",
+    "location": "sandy beach promenade under colorful parasol",
+    "action": "holding melting ice cream cone to partner mouth, white wings ruffled by sea breeze, sunny cheerful smile",
+    "timeOfDay": "day",
+    "lighting": "radiant midday tropical sunlight and azure sea bokeh",
+    "camera": "cowboy_shot",
+    "mood": "playful summer date, sweet clumsy affection, sun-drenched joy",
+    "promptProse": "On a sunny beach in a sunflower sundress, Astraea offers a bite of her melting ice cream cone with an adorable beaming grin.",
+    "promptTokens": [
+      "beach",
+      "holding_ice_cream",
+      "feeding_viewer",
+      "sundress",
+      "angel_wings",
+      "ocean_breeze",
+      "sunny_day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Astraea offering a bite of melting ice cream on a sunny beach promenade.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

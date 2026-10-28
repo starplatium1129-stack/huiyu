@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "komari_hot_spring_steamy_innocent_soak",
+  "revision": 1,
+  "sortOrder": 2284,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "komari_hot_spring_steamy_innocent_soak",
+    "characterId": "komari_chika",
+    "outfitId": "modest_pastel_mint_swimsuit",
+    "title": "小鞠知花 · 温泉暖雾中的羞涩娇小依偎",
+    "category": "私密温存",
+    "description": "私密家庭温泉浴池内水汽袅袅，薄荷色连体泳衣已被解开。知花浑身肌肤被热水蒸得泛粉，娇小的身躯几乎整个人缩在你的怀中，在心跳如雷中羞怯地承受着温柔的抚弄。",
+    "recommendedSize": "832x1216",
+    "location": "steamy private indoor cedar hot spring bath",
+    "action": "sitting together in hot spring, untied mint swimsuit floating, wet twin braids, clinging to partner chest with heavy blushing and panting",
+    "timeOfDay": "night",
+    "lighting": "warm amber water lamps shining through thick steamy mist",
+    "camera": "cowboy_shot",
+    "mood": "shy steamy intimacy, delicate innocent warmth, heart-racing lovers embrace",
+    "promptProse": "In a steamy cedar hot spring with untied mint swimsuit, petite Chika Komari clings to partner chest with wet braids and heavily flushed skin.",
+    "promptTokens": [
+      "onsen",
+      "hot_spring",
+      "steam",
+      "wet_skin",
+      "wet_hair",
+      "untied_swimsuit",
+      "embracing",
+      "blushing_heavily",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Chika Komari with untied swimsuit embracing shyly in steamy hot spring.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

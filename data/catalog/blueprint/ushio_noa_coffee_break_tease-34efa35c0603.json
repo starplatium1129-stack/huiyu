@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "ushio_noa_coffee_break_tease",
+  "revision": 3,
+  "sortOrder": 2091,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "ushio_noa_coffee_break_tease",
+    "characterId": "ushio_noa",
+    "outfitId": "weekend_intellectual_trench",
+    "title": "生盐诺亚 · 咖啡馆角落的眼神拉扯",
+    "category": "休闲时光",
+    "description": "闹市角落静谧的复古咖啡馆，阳光穿透木质百叶窗在地板上留下明暗条纹。诺亚身穿柔软的高领针织衫，单手托腮，修长手指轻轻搅动面前的瓷杯咖啡。她的紫罗兰眼眸带着狡黠而迷人的笑意，轻启朱唇正欲开口调侃老师。",
+    "recommendedSize": "832x1216",
+    "location": "cozy sunlit vintage cafe corner",
+    "action": "resting chin on hand, stirring coffee with spoon, teasing charming smile",
+    "timeOfDay": "afternoon",
+    "lighting": "warm dappled sunlight filtering through wooden blinds",
+    "camera": "close-up",
+    "mood": "playful teasing intimacy and relaxed warmth",
+    "promptProse": "Sitting at a cozy sunlit cafe table, Ushio Noa rests her chin in one delicate hand, stirring her coffee while directing a sweet, playfully teasing gaze toward the viewer.",
+    "promptTokens": [
+      "chin_rest",
+      "holding_cup",
+      "cafe",
+      "table",
+      "afternoon",
+      "smile",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Noa smiling playfully across a sunlit cafe table.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

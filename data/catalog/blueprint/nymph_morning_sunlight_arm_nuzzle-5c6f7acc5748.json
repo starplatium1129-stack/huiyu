@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_morning_sunlight_arm_nuzzle",
+  "revision": 1,
+  "sortOrder": 2273,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "nymph_morning_sunlight_arm_nuzzle",
+    "characterId": "nymph",
+    "outfitId": "sheer_pastel_blue_nightshirt",
+    "title": "妮姆芙 · 晨曦微风中的臂弯依恋",
+    "category": "私密温存",
+    "description": "晨光洒满洁白被褥，整夜缱绻后的妮姆芙小巧的身躯蜷缩在你的臂弯深处。透明羽翼像小被子一样轻轻盖在你的腰间，少女嘴角挂着毫无防备的极甜睡颜，在晨曦中发出舒服的呢喃。",
+    "recommendedSize": "832x1216",
+    "location": "bright peaceful morning bedroom filled with sunshine",
+    "action": "curled up in white morning duvet, small face buried happily in partner crook of arm, wings wrapped softly around his waist like a cocoon in morning warmth",
+    "timeOfDay": "morning",
+    "lighting": "radiant golden morning sunbeams pouring across white bedspread",
+    "camera": "close-up",
+    "mood": "ultimate sweet security, eternal lover devotion, peaceful morning newlywed bliss",
+    "promptProse": "Curled in morning bed with wings wrapped around partner waist, Nymph nuzzles happily in his arm with flushed cheeks and an angelic sweet smile.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "wings",
+      "nuzzling",
+      "sweet_smile",
+      "blushing",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Nymph curled peacefully in partner arm in sunlit morning bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

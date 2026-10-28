@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kanzaki_morning_futon_warm_companion_bliss",
+  "revision": 1,
+  "sortOrder": 2303,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "kanzaki_morning_futon_warm_companion_bliss",
+    "characterId": "kanzaki_kaori",
+    "outfitId": "sheer_indigo_silk_nightrobe",
+    "title": "神裂火织 · 晨光微曦的圣洁人妻依偎",
+    "category": "私密温存",
+    "description": "清晨的金色阳光透过窗纱洒在被褥上。马尾解开后的黑发如瀑铺散，高挑曼妙的神裂火织像考拉一样紧紧拥着你的腰身，将脸颊埋在你的胸口，嘴角漾着满足安心的甜美笑颜。",
+    "recommendedSize": "832x1216",
+    "location": "sun-drenched morning bedroom with soft white futon",
+    "action": "tangled in morning sheets with loose cascading black hair, hugging partner chest tight with a peaceful affectionate smile in morning light",
+    "timeOfDay": "morning",
+    "lighting": "bright heavenly morning sunlight warming white sheets and smooth skin",
+    "camera": "close-up",
+    "mood": "morning newlywed tranquility, supreme romantic security, sweet possessive girlfriend peace",
+    "promptProse": "Tangled in morning sheets with loose cascading black hair, Kaori Kanzaki hugs partner chest with bare shoulders and a radiant peaceful wife smile.",
+    "promptTokens": [
+      "bedroom",
+      "futon",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "clinging_closely",
+      "sweet_smile",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kaori Kanzaki cuddling lovingly in morning bed with loose black hair.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

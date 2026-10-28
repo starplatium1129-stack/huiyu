@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "st_louis_cabana_sunbed_straddle",
+  "revision": 1,
+  "sortOrder": 2164,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "st_louis_cabana_sunbed_straddle",
+    "characterId": "st_louis_azur",
+    "outfitId": "passionate_sunset_bikini",
+    "title": "圣路易斯 · 海滨卧榻的反客为主",
+    "category": "私密温存",
+    "description": "私密海滨木屋深处的宽大软榻上，落日余晖染红了沙滩。圣路易斯跨坐在你身前，比基尼系带在指间轻晃，双眸迷离泛红，俯下身用柔软的唇瓣堵住你所有的推托。",
+    "recommendedSize": "832x1216",
+    "location": "secluded luxury beach resort cabana in late afternoon",
+    "action": "straddling partner on plush sunbed inside private beach cabana, bikini top strings untied in her hands, teasing smile with flushed cheeks and heavy breaths",
+    "timeOfDay": "sunset",
+    "lighting": "sensual golden hour warmth streaming through white cabana drapes",
+    "camera": "cowboy_shot",
+    "mood": "assertive seductive passion, tropical heat, complete romantic possession",
+    "promptProse": "Straddling partner on a plush cabana bed with her bikini top strings untied, St. Louis blushes with an irresistible tease in the sunset breeze.",
+    "promptTokens": [
+      "beach_cabana",
+      "sunbed",
+      "straddling",
+      "untied_bikini",
+      "teasing_smile",
+      "blushing",
+      "sunset_lighting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "St. Louis straddling intimately on a cabana bed with untied bikini at sunset.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

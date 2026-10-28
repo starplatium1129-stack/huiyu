@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "modernia/first_affection_knit",
+  "revision": 1,
+  "sortOrder": 1694,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "characterId": "modernia",
+    "outfit": {
+      "characterId": "modernia",
+      "id": "first_affection_knit",
+      "name": "怀旧之日·浅灰露肩针织裙",
+      "prose": "A soft grey off-shoulder ribbed knit sweater dress with relaxed long sleeves, accentuating bare collarbones and a tender domestic charm.",
+      "tokens": [
+        "grey_sweater_dress",
+        "off-shoulder_dress",
+        "knit_sweater",
+        "long_sleeves",
+        "ribbed_knit",
+        "bare_shoulders"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

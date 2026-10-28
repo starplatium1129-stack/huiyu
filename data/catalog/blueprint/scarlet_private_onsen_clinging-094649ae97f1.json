@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "scarlet_private_onsen_clinging",
+  "revision": 1,
+  "sortOrder": 2140,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "scarlet_private_onsen_clinging",
+    "characterId": "scarlet_nikke",
+    "outfitId": "ronin_casual_haori",
+    "title": "红莲 · 隐秘温泉的耳鬓厮磨",
+    "category": "私密温存",
+    "description": "夜色缭绕的竹林私人露天温泉中，滚烫泉水漫过腰际。湿透的雪白马尾贴在泛红的美背上，红莲主动跨坐入怀紧紧相拥，把滚烫的脸颊深深埋入你的颈窝低喘。",
+    "recommendedSize": "832x1216",
+    "location": "secluded outdoor natural hot spring surrounded by bamboo and night mist",
+    "action": "soaking in hot spring steam, wet white ponytail clinging to flushed back, embracing partner closely, warm water lapping waist, breathless whisper",
+    "timeOfDay": "night",
+    "lighting": "steamy moonlit mist illuminated by subtle stone lanterns",
+    "camera": "medium_shot",
+    "mood": "steamy sensual warmth, deep emotional resonance, passionate embrace",
+    "promptProse": "Embracing closely in a steamy outdoor hot spring, Scarlet clings tight with wet white hair and flushed skin under the moonlit mist.",
+    "promptTokens": [
+      "onsen",
+      "hot_spring",
+      "soaking",
+      "steam",
+      "wet_skin",
+      "wet_hair",
+      "blushing",
+      "embracing",
+      "night",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Scarlet embracing tenderly in a secluded steamy hot spring under moonlight.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

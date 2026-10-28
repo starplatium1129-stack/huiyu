@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "viper_morning_bed_clingy_affection",
+  "revision": 1,
+  "sortOrder": 2171,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "viper_morning_bed_clingy_affection",
+    "characterId": "viper_nikke",
+    "outfitId": "cozy_bedroom_lace_camisole",
+    "title": "毒蛇 · 晨光缠绵的黏人索爱",
+    "category": "私密温存",
+    "description": "清晨阳光透过薄纱洒在凌乱床单上。吊带睡裙散落一地，雪白与粉发交织的毒蛇像无骨的藤蔓般死死缠在你的身上，将滚烫的脸蛋贴在你颈窝处，带着甜腻坏笑索要晨安吻。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit morning bedroom with ruffled white sheets",
+    "action": "intertwined under messy silk sheets, camisole discarded on floor, wrapping both arms and legs around partner like a vine, sweet demanding whispers at his throat",
+    "timeOfDay": "morning",
+    "lighting": "warm golden early morning sun spilling over bed and bare shoulders",
+    "camera": "close-up",
+    "mood": "ultra-clingy morning sweetness, insatiable intimacy, loving devotion",
+    "promptProse": "Entangled in messy bedsheets in morning sunlight, Viper wraps arms and legs tightly around partner, smiling affectionately while whispering in his ear.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_skin",
+      "clinging_closely",
+      "blushing",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Viper clinging tightly to partner in bed in golden morning sunlight.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

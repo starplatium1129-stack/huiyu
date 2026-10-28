@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kotori_itsuka/fraxinus_commander_military_uniform",
+  "revision": 1,
+  "sortOrder": 1774,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "kotori_itsuka",
+    "outfit": {
+      "characterId": "kotori_itsuka",
+      "id": "fraxinus_commander_military_uniform",
+      "name": "佛拉克西纳斯·黑缎带傲娇司令官军服",
+      "prose": "The scarlet Fraxinus commander military jacket with gold epaulettes, black hair ribbons, black thigh-high boots, and a signature Chupa Chups lollipop.",
+      "tokens": [
+        "military_uniform",
+        "black_ribbon",
+        "red_coat",
+        "officer_jacket",
+        "epaulettes",
+        "pleated_skirt",
+        "thighhighs",
+        "lollipop"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

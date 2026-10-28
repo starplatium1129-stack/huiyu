@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kotori_white_ribbon_bedroom_timid_plea",
+  "revision": 1,
+  "sortOrder": 2253,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kotori_white_ribbon_bedroom_timid_plea",
+    "characterId": "kotori_itsuka",
+    "outfitId": "oversized_hoodie_loungewear",
+    "title": "五河琴里 · 卧室白缎带的娇羞求欢",
+    "category": "私密温存",
+    "description": "温馨的粉调卧室内，系着白发带的琴里跪坐在被单上，大号粉色卫衣滑落露出雪白香肩。小手紧紧拽住你的衣角，眼角含泪、呼吸急促地娇羞乞求你今晚不要离开。",
+    "recommendedSize": "832x1216",
+    "location": "quiet pastel-toned bedroom with fluffy plushies",
+    "action": "kneeling on bed in white ribbons with oversized hoodie slipping off bare shoulder, grasping partner sleeve with trembling hands and teary eyes, begging him not to run away tonight",
+    "timeOfDay": "night",
+    "lighting": "soft warm bedside nightlight casting gentle amber glows on flushed skin",
+    "camera": "close-up",
+    "mood": "pure innocent eroticism, trembling first love, tender gap moe surrender",
+    "promptProse": "Kneeling on bed with white ribbons and an off-shoulder pink hoodie, Kotori Itsuka clutches partner sleeve with tearful flushed devotion in warm lamp light.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tugging_sleeve",
+      "bare_shoulders",
+      "blushing_heavily",
+      "tears_in_eyes",
+      "panting",
+      "dim_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kotori Itsuka clutching partner sleeve with blushing tearful face on bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

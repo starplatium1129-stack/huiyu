@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "st_louis_sports_car_sunset_drive",
+  "revision": 1,
+  "sortOrder": 2160,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "st_louis_sports_car_sunset_drive",
+    "characterId": "st_louis_azur",
+    "outfitId": "cozy_casual_knit_trench",
+    "title": "圣路易斯 · 跑车副驾的落日兜风",
+    "category": "浪漫约会",
+    "description": "沿海观光公路在落日余晖中泛起金红流光。圣路易斯单手握着跑车方向盘，侧头向副驾的你轻眨蓝眸，水蓝单马尾随海风飞舞，唇下美人痣满是撩人的笑意。",
+    "recommendedSize": "832x1216",
+    "location": "open-top convertible driving along coastal highway at sunset",
+    "action": "sitting in luxury sports car passenger seat, sunglasses pushed up, looking over at driver with affectionate wink, golden hour ocean highway",
+    "timeOfDay": "sunset",
+    "lighting": "radiant golden hour sun reflecting on car chrome and sea waves",
+    "camera": "upper_body",
+    "mood": "luxurious romantic freedom, heart-fluttering cool girlfriend, coastal breeze",
+    "promptProse": "Driving an open-top sports car along the ocean road at sunset, St. Louis winks affectionately with sunglasses pushed into her blue hair.",
+    "promptTokens": [
+      "convertible",
+      "car_interior",
+      "sunglasses_on_head",
+      "winking",
+      "charming_smile",
+      "golden_hour",
+      "ocean_road",
+      "upper_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "St. Louis winking affectionately in an open convertible at coastal sunset.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

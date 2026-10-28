@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "d_wife_hotel_balcony_night_whisper",
+  "revision": 1,
+  "sortOrder": 2176,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "d_wife_hotel_balcony_night_whisper",
+    "characterId": "d_killer_wife",
+    "outfitId": "covert_honeymoon_gown",
+    "title": "D · 蜜月套房露台的解甲归真",
+    "category": "私密温存",
+    "description": "高层套房私密露台上夜风微凉。黑色晚礼裙拉链已滑至腰部，露出雪白光滑的美背。D反手轻按玻璃护栏仰头承受你的抚吻，呼吸促乱微颤，轻声承认自己早已假戏真做。",
+    "recommendedSize": "832x1216",
+    "location": "high-rise hotel suite balcony at midnight",
+    "action": "back pressed against hotel balcony glass, evening gown zipper pulled down exposing smooth back, breathless panting as partner kisses her neck under night breeze",
+    "timeOfDay": "night",
+    "lighting": "cool night skyline glow contrasting with warm suite interior spill",
+    "camera": "cowboy_shot",
+    "mood": "vulnerable confession, moonlight sensuality, thrilling nocturnal romance",
+    "promptProse": "Against a night hotel balcony with her evening gown zipper down, D pants breathlessly as partner kisses her neck in the cool night breeze.",
+    "promptTokens": [
+      "balcony",
+      "glass_railing",
+      "unzipped_dress",
+      "bare_back",
+      "neck_kiss",
+      "night_city_lights",
+      "breathless",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "D on a midnight balcony with unzipped gown receiving neck kisses.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

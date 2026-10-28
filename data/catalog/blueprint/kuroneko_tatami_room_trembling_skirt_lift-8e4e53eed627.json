@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kuroneko_tatami_room_trembling_skirt_lift",
+  "revision": 1,
+  "sortOrder": 2265,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kuroneko_tatami_room_trembling_skirt_lift",
+    "characterId": "kuroneko",
+    "outfitId": "queen_of_nightmare_gothic_lolita",
+    "title": "五更琉璃 · 榻榻米间的羞怯撩裙献身",
+    "category": "私密温存",
+    "description": "静谧的日式卧室地灯昏黄。跪坐在榻榻米上的黑猫满面羞红，双手颤抖着将黑蔷薇哥特长裙慢慢撩起至大腿上方，眼角含泪、断断续续地低语宣告“从现在起……把黑猫变成你的人吧”。",
+    "recommendedSize": "832x1216",
+    "location": "quiet traditional Japanese bedroom with sliding paper screens",
+    "action": "kneeling on tatami with gothic dress skirt lifted above thighs, face buried in hands with burning crimson blush, murmuring breathless submission to her destiny",
+    "timeOfDay": "night",
+    "lighting": "warm amber floor lantern casting soft reverent shadows",
+    "camera": "cowboy_shot",
+    "mood": "trembling tsundere surrender, profound gap moe, breathless erotic devotion",
+    "promptProse": "Kneeling on tatami in a gothic dress with skirt lifted above bare thighs, Ruri Gokou blushes heavily with trembling breathless devotion.",
+    "promptTokens": [
+      "tatami",
+      "bedroom",
+      "kneeling",
+      "skirt_lift",
+      "bare_legs",
+      "blushing_heavily",
+      "shy",
+      "panting",
+      "amber_lighting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ruri Gokou kneeling on tatami with lifted skirt in shy romantic surrender.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

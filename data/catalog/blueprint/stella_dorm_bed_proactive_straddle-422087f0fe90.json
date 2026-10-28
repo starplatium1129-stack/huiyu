@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "stella_dorm_bed_proactive_straddle",
+  "revision": 1,
+  "sortOrder": 2187,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "stella_dorm_bed_proactive_straddle",
+    "characterId": "stella_vermillion",
+    "outfitId": "hagun_academy_uniform",
+    "title": "史黛菈 · 宿舍房门反锁的强势推倒",
+    "category": "私密温存",
+    "description": "房门反锁的脆响过后，史黛菈一把将你推倒在单人床上。她双腿跨坐在你身上，校服领带已被扯松，红发散乱在胸前，满面滚烫地俯下身霸道索吻。",
+    "recommendedSize": "832x1216",
+    "location": "private student dormitory bedroom",
+    "action": "straddling partner on bed, loosened tie and unbuttoned collar, fiery red eyes full of desire, leaning down for deep kiss",
+    "timeOfDay": "night",
+    "lighting": "dim bedside lamp casting dramatic passionate shadows",
+    "camera": "close-up",
+    "mood": "fiery passionate dominance, uncontrollable love, assertive bride desire",
+    "promptProse": "Straddling partner on a dorm bed with an unbuttoned collar, Stella leans down assertively with flushed cheeks for a passionate kiss.",
+    "promptTokens": [
+      "bedroom",
+      "sitting_on_lap",
+      "straddling",
+      "open_collar",
+      "blushing_heavily",
+      "passionate_kiss",
+      "warm_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Stella straddling partner passionately on a bed with an unbuttoned collar.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

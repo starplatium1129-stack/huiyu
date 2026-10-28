@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "ayase_aragaki/fashion_model_elegant_off_shoulder",
+  "revision": 1,
+  "sortOrder": 1778,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "ayase_aragaki",
+    "outfit": {
+      "characterId": "ayase_aragaki",
+      "id": "fashion_model_elegant_off_shoulder",
+      "name": "时尚模特·浅紫露肩针织私服优雅长裙",
+      "prose": "A sophisticated pastel-lavender off-shoulder knit sweater showing off slender collarbones, paired with a flowy tiered white pleated midi skirt.",
+      "tokens": [
+        "sweater",
+        "off-shoulder_sweater",
+        "lavender_sweater",
+        "long_skirt",
+        "white_skirt",
+        "choker",
+        "collarbone"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

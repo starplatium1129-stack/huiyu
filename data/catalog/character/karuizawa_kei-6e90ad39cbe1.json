@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "karuizawa_kei",
+  "revision": 1,
+  "sortOrder": 232,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "karuizawa_kei",
+    "profile": {
+      "id": "karuizawa_kei",
+      "name": "轻井泽惠",
+      "alias": [
+        "Kei Karuizawa",
+        "轻井泽惠",
+        "小惠",
+        "惠",
+        "軽井沢恵",
+        "karuizawa kei"
+      ],
+      "type": "popular",
+      "icon": "🎀",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "轻井泽惠 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "亮金高扎柔顺侧马尾 · 标志蝴蝶结发饰 · 娇俏灵动刘海",
+        "hair_color": "纯金 / 亚麻金",
+        "eyes": "清澈透亮蓝宝石大眼 · 带着辣妹俏皮与深情湿润",
+        "hairstyle": "活泼亮金高马尾 · 灵动碎发垂耳 · 尽显娇小少女元气",
+        "uniform": "高度育成高中红西装外套 · 甜辣宽松米白厚开衫百褶裙 · 大号男友卫衣睡衣",
+        "expression": "人前的娇蛮强势辣妹 · 独处时毫无防备依偎索吻、眼神湿润的绝对忠犬女友",
+        "style": "irresistible devoted gyaru girlfriend with emotional vulnerability, secret romantic dates, and unshakeable lover trust",
+        "signature": "金发高马尾、蓝瞳蝴蝶结、红西装辣妹制服、纯爱正宫女友"
+      },
+      "personality": [
+        "人前光鲜强撑的辣妹班花",
+        "内心极度渴望被拯救与保护",
+        "与绫小路清隆之间无可替代的寄生与深爱",
+        "绝对信任且甘愿为爱人隐忍一切的纯情女友"
+      ],
+      "likes": [
+        "在咖啡厅享用草莓芭菲",
+        "和清隆深夜在阳台秘密通电话",
+        "穿着清隆大号卫衣光着双腿在房间晃悠",
+        "被紧紧抱住时埋在爱人胸膛撒娇"
+      ],
+      "classic_cg": {
+        "title": "高楼晚风中的真爱相拥与救赎",
+        "description": "学生公寓阳台的清凉晚风中，轻井泽惠穿着大号男友卫衣，整个人像考拉一样紧紧缩在少年怀里。金发高马尾散落，蓝眸倒映着绚丽夜景，带着轻颤的哭腔耳语：“不管发生什么事……只要有清隆在，惠就什么都不怕。”"
+      },
+      "identity": {
+        "role": "高度育成高中二年级D班（原D班）女生核心领袖 / 绫小路清隆公开正牌女友",
+        "age": "17岁（高中二年级）",
+        "occupation": "高中生 / 班级女生领袖",
+        "faction": "高度育成高中 / 绫小路清隆"
+      },
+      "tags": [
+        "金发",
+        "蓝瞳",
+        "高马尾",
+        "辣妹",
+        "正宫女友",
+        "纯爱",
+        "实力至上"
+      ],
+      "bg_story": "轻井泽惠是《欢迎来到实力至上主义的教室》第一女主角兼正牌女友。初中时期遭受极其残酷严重的校园霸凌，导致身心留下终生难愈的严重创伤。进入高度育成高中后，为了自我防卫而伪装成强势高傲的辣妹班花。在游轮特别考试与船底事件中，她宁愿承受残酷冷水酷刑也坚决不背叛绫小路清隆，这份超乎寻常的坚韧与忠诚彻底打破了清隆的冰冷防线。两人从最初的利益寄生关系逐渐蜕变为刻骨铭心的真正纯爱。在第一学年终章正式成为情侣后，惠展现出了无与伦比的极品女友力——对清隆全心全意的信任、吃醋时的娇憨可爱、独处时的无限依恋与柔情，成为全作最深入人心的真爱象征。",
+      "palette": [
+        "纯金",
+        "宝石蓝",
+        "学院红",
+        "纯白"
+      ],
+      "weather": [
+        "夜风微凉",
+        "晴朗咖啡街",
+        "金辉寝室"
+      ],
+      "speech": "笨蛋清隆！又在盯着我看什么啦……真是的，既然那么喜欢，那就快点过来抱紧我嘛！",
+      "source": "Classroom of the Elite",
+      "traits": [
+        "高度育成辣妹正宫",
+        "金发高马尾蓝眸",
+        "坚韧纯情绝对信任",
+        "极品女友力",
+        "绫小路清隆真爱"
+      ]
+    },
+    "popular": {
+      "id": "karuizawa_kei",
+      "displayName": "轻井泽惠",
+      "originalName": "Kei Karuizawa",
+      "franchise": "Classroom of the Elite",
+      "category": "动漫角色",
+      "aliases": [
+        "Kei Karuizawa",
+        "轻井泽惠",
+        "小惠",
+        "惠",
+        "軽井沢恵",
+        "karuizawa kei"
+      ],
+      "exactTokens": [
+        "karuizawa_kei"
+      ],
+      "characterTokens": [
+        "karuizawa_kei"
+      ],
+      "copyrightTokens": [
+        "youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e"
+      ],
+      "identityTokens": [
+        "karuizawa_kei",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "high_ponytail",
+        "blue_eyes"
+      ],
+      "identityProse": "Kei Karuizawa from Classroom of the Elite, the only character in the image, with long blonde hair tied in a high ponytail with a ribbon, bright blue eyes, and an adorable, fiercely devoted gyaru girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "tinkle"
+      ],
+      "animeStudio": "Lerche official anime style, Classroom of the Elite character art",
+      "canon": {
+        "era": "高度育成特别考试纪元",
+        "world": "东京都高度育成高级中学·学生宿舍",
+        "formNotes": "金发高马尾蝴蝶结蓝眸，辣妹正宫女友，全心全意深情依恋"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "advanced_nurturing_uniform",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

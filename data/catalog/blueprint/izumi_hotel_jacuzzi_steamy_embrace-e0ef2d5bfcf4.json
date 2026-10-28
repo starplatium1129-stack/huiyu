@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "izumi_hotel_jacuzzi_steamy_embrace",
+  "revision": 1,
+  "sortOrder": 2314,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "izumi_hotel_jacuzzi_steamy_embrace",
+    "characterId": "hashima_izumi",
+    "outfitId": "summer_sunlight_colorblock_bikini",
+    "title": "波岛出海 · 温泉套房水汽的丰腴紧贴",
+    "category": "私密温存",
+    "description": "度假酒店套房按摩浴缸中热水翻涌，撞色比基尼细带早已解开飘在水面。双马尾微湿，出海整个人跨坐在你的大腿上，丰腴饱满的娇躯紧贴着你的胸膛，在水雾与娇喘中献上青涩而炽烈的拥吻。",
+    "recommendedSize": "832x1216",
+    "location": "luxury resort suite jacuzzi bath overlooking night city lights",
+    "action": "straddling partner in bubbly jacuzzi with untied pink bikini, wet twintails clinging to bare shoulders, breathless loving kisses in heated water",
+    "timeOfDay": "night",
+    "lighting": "ambient warm spa lighting reflecting off swirling water and glistening skin",
+    "camera": "cowboy_shot",
+    "mood": "steamy water romance, lush curvaceous intimacy, breathless lovers ecstasy",
+    "promptProse": "In a steamy night jacuzzi with untied bikini, curvaceous Izumi Hashima straddles partner with wet twintails and heavy breathless passionate blushes.",
+    "promptTokens": [
+      "jacuzzi",
+      "bathtub",
+      "steam",
+      "straddling",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "blushing_heavily",
+      "panting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Izumi Hashima straddling partner passionately in steamy jacuzzi.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

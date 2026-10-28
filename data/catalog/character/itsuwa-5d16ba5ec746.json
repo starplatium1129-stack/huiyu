@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "itsuwa",
+  "revision": 1,
+  "sortOrder": 241,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "itsuwa",
+    "profile": {
+      "id": "itsuwa",
+      "name": "五和",
+      "alias": [
+        "Itsuwa",
+        "五和",
+        "五和(魔禁)",
+        "五和 (Toaru)",
+        "itsuwa",
+        "itsuwa (toaru majutsu no index)"
+      ],
+      "type": "popular",
+      "icon": "🍵",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "五和 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "柔顺茶褐色齐颈波波短发 · 额前自然分发 · 极具大和抚子清纯韵味",
+        "hair_color": "茶褐 / 深棕",
+        "eyes": "温润明亮琥珀棕双瞳 · 满溢纯情治愈、羞涩与无条件的奉献",
+        "hairstyle": "柔顺齐颈短发 · 发梢微内扣 · 温柔清纯",
+        "uniform": "天草式十字凄教战斗便装 · 贤惠人妻棉麻围裙配便裙 · 盛夏浅蓝分体比基尼",
+        "expression": "递热毛巾与泡茶时满脸通红、小鹿乱撞的纯情小媳妇神情 · 动情时楚楚可怜的完全顺从",
+        "style": "shy devoted traditional Japanese girlfriend with supreme comfort service, heartwarming bento dates, and deeply moving sweet surrender",
+        "signature": "茶色短发、递热毛巾、泡茶做便当、大和抚子、纯情奉献女友"
+      },
+      "personality": [
+        "天草式十字凄教的治愈系纯情少女",
+        "对上条当麻怀有极致纯洁与崇拜的真挚暗恋",
+        "体贴入微、擅长递湿毛巾与温茶的“大和抚子小娇妻”",
+        "害羞到极点但为了爱人幸福甘愿付出一切的坚贞"
+      ],
+      "likes": [
+        "用热毛巾为心上人擦脸擦手",
+        "亲手烹煮热腾腾的饭菜与研磨热茶",
+        "被当麻摸头夸奖便当好吃",
+        "在榻榻米被褥间被紧紧搂住温存"
+      ],
+      "classic_cg": {
+        "title": "雪夜宿舍的热毛巾与纯情心跳",
+        "description": "寒风呼啸的学园都市单身宿舍内，五和跪坐在榻榻米上，双手递上刚蒸好的温热毛巾。当少年接过毛巾并无意间握住她微颤的小手时，短发少女从耳根一路红到锁骨，慌乱地垂下眼帘，却悄悄把身子靠得更近。"
+      },
+      "identity": {
+        "role": "天草式十字凄教魔法师 / 枪术大师 / 上条当麻专属贤惠小护士兼伴侣",
+        "age": "成年初熟纯洁设定",
+        "occupation": "魔法师 / 天草式成员",
+        "faction": "天草式十字凄教 / 英国清教"
+      },
+      "tags": [
+        "短发",
+        "茶瞳",
+        "大和抚子",
+        "递毛巾",
+        "贤惠小媳妇",
+        "纯情",
+        "魔禁"
+      ],
+      "bg_story": "五和是《魔法禁书目录》中人气极高的治愈系正统女主角。作为天草式十字凄教的干练魔法师，擅长使用海军用枪与各种暗号魔术。虽然在战场上英勇果敢，但在日常生活里却是个极度纯情羞涩的典型大和抚子。在意大利亚得里亚海女王事件与法国后方之水事件中，她被上条当麻不惜粉身碎骨也要拯救众人的宏大善意深深打动，全心全意沦陷于爱河。天草式全员更将“支援五和与当麻谈恋爱”列为全教最高战略任务。她以标志性的“递热毛巾”、亲手做爱心便当与毫无保留的温暖照料，被无数漫迷尊为“魔禁第一理想老婆”。",
+      "palette": [
+        "茶褐",
+        "纯白",
+        "天青蓝",
+        "柔粉"
+      ],
+      "weather": [
+        "雪夜暖灯",
+        "冬日晴空",
+        "榻榻米暖意"
+      ],
+      "speech": "上、上条先生！这是刚热好的毛巾……今天也辛苦了！……能像这样照顾您，五和就是世界上最幸福的人了……",
+      "source": "A Certain Magical Index",
+      "traits": [
+        "茶褐色柔顺短发琥珀瞳",
+        "递热毛巾贤惠小娇妻",
+        "天草式纯情大和抚子",
+        "无微不至居家照料",
+        "全心奉献的温柔小妻子"
+      ]
+    },
+    "popular": {
+      "id": "itsuwa",
+      "displayName": "五和",
+      "originalName": "Itsuwa",
+      "franchise": "A Certain Scientific Railgun",
+      "category": "动漫角色",
+      "aliases": [
+        "Itsuwa",
+        "五和",
+        "五和(魔禁)",
+        "五和 (Toaru)",
+        "itsuwa",
+        "itsuwa (toaru majutsu no index)"
+      ],
+      "exactTokens": [
+        "itsuwa (toaru majutsu no index)"
+      ],
+      "characterTokens": [
+        "itsuwa (toaru majutsu no index)"
+      ],
+      "copyrightTokens": [
+        "toaru_majutsu_no_index"
+      ],
+      "identityTokens": [
+        "itsuwa (toaru majutsu no index)",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "short_hair",
+        "bob_cut",
+        "brown_eyes"
+      ],
+      "identityProse": "Itsuwa from Toaru Majutsu no Index, the only character in the image, with short neat brown bob hair, warm brown eyes, and a supremely gentle, sweetly blushing Japanese housewife girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "tinkle"
+      ],
+      "animeStudio": "J.C.Staff official anime style, Toaru series character art",
+      "canon": {
+        "era": "学园都市神魔大乱斗纪元",
+        "world": "极东·学园都市与英国清教",
+        "formNotes": "茶色短发琥珀眸，天草式大和抚子，递热毛巾与便当的无敌贤惠女友"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "amakusa_combat_casual_attire",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

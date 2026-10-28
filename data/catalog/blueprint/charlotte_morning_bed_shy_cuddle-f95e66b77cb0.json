@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "charlotte_morning_bed_shy_cuddle",
+  "revision": 1,
+  "sortOrder": 2183,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "charlotte_morning_bed_shy_cuddle",
+    "characterId": "charlotte_dunois",
+    "outfitId": "silk_peach_camisole",
+    "title": "夏洛特 · 晨光凌乱床单的新娘低喃",
+    "category": "私密温存",
+    "description": "假日的晨光铺满纯白床垫，睡裙褪在床尾。夏洛特双腿与你亲密交缠，双臂紧紧搂着你的脖颈，眼角闪着动情的泪花，在温热的耳语中轻诉“我已经是你的新娘了”。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit bedroom with rumpled white linen sheets",
+    "action": "lying tangled under sheets, arms tightly around partner neck, bare legs entwined, teary blissful smile, flushed skin",
+    "timeOfDay": "morning",
+    "lighting": "pure white morning sunlight streaming across bed and skin",
+    "camera": "close-up",
+    "mood": "eternal bridal devotion, profound emotional warmth, heavenly bliss",
+    "promptProse": "Tangled in rumpled white sheets in morning light, Charlotte hugs partner neck tight with tears of joy and flushed bare shoulders.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "arms_around_neck",
+      "blushing_heavily",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Charlotte embracing closely in messy morning sheets with joyful tears.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

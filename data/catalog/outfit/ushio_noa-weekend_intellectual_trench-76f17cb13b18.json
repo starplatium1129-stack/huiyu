@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "ushio_noa/weekend_intellectual_trench",
+  "revision": 1,
+  "sortOrder": 1672,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "data": {
+    "characterId": "ushio_noa",
+    "outfit": {
+      "characterId": "ushio_noa",
+      "id": "weekend_intellectual_trench",
+      "name": "周末知性米色风衣便装",
+      "prose": "A chic beige autumn trench coat worn over a soft lavender knit turtleneck sweater, pleated dark midi skirt, sheer stockings, and low-heeled loafers.",
+      "tokens": [
+        "beige trench coat",
+        "knit sweater",
+        "turtleneck",
+        "pleated skirt",
+        "stockings",
+        "loafers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

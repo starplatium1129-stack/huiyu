@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "charlotte_dunois/silk_peach_camisole",
+  "revision": 1,
+  "sortOrder": 1728,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "charlotte_dunois",
+    "outfit": {
+      "characterId": "charlotte_dunois",
+      "id": "silk_peach_camisole",
+      "name": "私密闺房·粉桃真丝细吊带睡裙",
+      "prose": "A delicate peach silk camisole slip dress trimmed with fine white scalloped lace, hugging her soft curves.",
+      "tokens": [
+        "peach_camisole",
+        "silk_nightgown",
+        "lace_trim",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

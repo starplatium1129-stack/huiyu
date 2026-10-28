@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "atago_sofa_pampering_hug",
+  "revision": 1,
+  "sortOrder": 2157,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "atago_sofa_pampering_hug",
+    "characterId": "atago_azur",
+    "outfitId": "cozy_domestic_apron",
+    "title": "爱宕 · 沙发上的沉溺大姐姐怀抱",
+    "category": "私密温存",
+    "description": "昏暗温暖的客厅沙发里，围裙衣领半解的爱宕将你紧紧搂入饱满怀中。黑色犬耳因情动泛起粉红，她在你耳边发出甜腻轻喘，用几乎能融化灵魂的力道将你拥抱入深渊。",
+    "recommendedSize": "832x1216",
+    "location": "cozy private living room couch by lamplight",
+    "action": "sitting on sofa pulling partner head into generous bust, apron untied, soft moaning whisper at ear, dog ears flushed pink, eyes filled with overwhelming motherly desire",
+    "timeOfDay": "night",
+    "lighting": "intimate warm ambient floor lamp casting amber shadows",
+    "camera": "close-up",
+    "mood": "smothering pampering affection, overwhelming sensual security, heated romance",
+    "promptProse": "Embracing partner tightly on a dim couch, Atago pulls partner head into her chest with flushed cheeks and breathless whispers of devotion.",
+    "promptTokens": [
+      "living_room",
+      "couch",
+      "embracing",
+      "head_in_chest",
+      "open_collar",
+      "blushing",
+      "dog_ears",
+      "warm_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Atago pulling partner into a deep pampering embrace on a living room couch.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

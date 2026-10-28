@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "komari_chika/tsuwabuki_oversized_sailor_uniform",
+  "revision": 1,
+  "sortOrder": 1793,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "komari_chika",
+    "outfit": {
+      "characterId": "komari_chika",
+      "id": "tsuwabuki_oversized_sailor_uniform",
+      "name": "石蕗高中微宽松夏日水手服",
+      "prose": "The Tsuwabuki High School sailor uniform worn slightly loose on her petite frame, with white blouse, teal collar, long pleated skirt, and modest white socks.",
+      "tokens": [
+        "school_uniform",
+        "sailor_suit",
+        "white_shirt",
+        "teal_collar",
+        "pleated_skirt",
+        "white_socks",
+        "loafers"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

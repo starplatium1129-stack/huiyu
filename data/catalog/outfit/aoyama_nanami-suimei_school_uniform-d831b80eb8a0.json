@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "aoyama_nanami/suimei_school_uniform",
+  "revision": 1,
+  "sortOrder": 1797,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "aoyama_nanami",
+    "outfit": {
+      "characterId": "aoyama_nanami",
+      "id": "suimei_school_uniform",
+      "name": "水明高中红边西装校服",
+      "prose": "The Suimei High School uniform with tailored blazer, crisp white collared shirt, red necktie, matching pleated skirt, and black tights.",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "white_shirt",
+        "necktie",
+        "pleated_skirt",
+        "black_tights",
+        "loafers",
+        "ponytail"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

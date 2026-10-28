@@ -1,0 +1,36 @@
+{
+  "kind": "blueprint",
+  "id": "amau_ako_prefect_office_overtime",
+  "revision": 3,
+  "sortOrder": 2094,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "amau_ako_prefect_office_overtime",
+    "characterId": "amau_ako",
+    "outfitId": "prefect_duty_vestment",
+    "title": "天雨亚子 · 风纪委办公室的通宵校对",
+    "category": "风纪日常",
+    "description": "歌赫娜风纪委员会高层办公室，深夜的台灯照亮了堆积如山的通报公文。亚子身着端庄严整的露胸风纪制服，神情专注而微带疲倦，修长玉指按在文件页边缘。她抬头望向进门的老师，湛蓝眼眸中带着严苛与悄然松口气的反差神采。",
+    "recommendedSize": "832x1216",
+    "location": "Gehenna Prefect Team executive office",
+    "action": "leaning over mahogany desk, checking paperwork, serious yet relieved expression",
+    "timeOfDay": "night",
+    "lighting": "focused warm desk lamp glow with deep shadows in the background",
+    "camera": "cowboy_shot",
+    "mood": "diligent authority and understated exhaustion",
+    "promptProse": "Working late at her vast mahogany office desk at Gehenna Prefect Team headquarters, Amau Ako leans forward with documents in hand, her blue eyes fixed forward in stern dedication.",
+    "promptTokens": [
+      "office",
+      "desk",
+      "paperwork",
+      "night",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ako working sternly over paperwork in her headquarters office.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

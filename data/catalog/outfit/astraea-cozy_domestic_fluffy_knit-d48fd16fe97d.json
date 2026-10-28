@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "astraea/cozy_domestic_fluffy_knit",
+  "revision": 1,
+  "sortOrder": 1746,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "astraea",
+    "outfit": {
+      "characterId": "astraea",
+      "id": "cozy_domestic_fluffy_knit",
+      "name": "居家日常·宽松落肩软糯粗针毛衣",
+      "prose": "An oversized cream cable-knit sweater slipping off both shoulders with cute pajama shorts, looking delightfully cozy and relaxed.",
+      "tokens": [
+        "oversized_sweater",
+        "knit_sweater",
+        "cream_sweater",
+        "bare_shoulders",
+        "short_shorts"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

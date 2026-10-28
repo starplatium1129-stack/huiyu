@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "itsuwa/amakusa_combat_casual_attire",
+  "revision": 1,
+  "sortOrder": 1801,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "itsuwa",
+    "outfit": {
+      "characterId": "itsuwa",
+      "id": "amakusa_combat_casual_attire",
+      "name": "天草式教团·修身牛仔夹克短裙便装",
+      "prose": "A tailored cropped denim jacket over a white scoop-neck shirt, blue pleated mini skirt, and practical black ankle boots.",
+      "tokens": [
+        "jacket",
+        "denim_jacket",
+        "white_shirt",
+        "pleated_skirt",
+        "boots",
+        "short_hair",
+        "collarbone"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "ayase_kitchen_homemade_bento_tasting",
+  "revision": 1,
+  "sortOrder": 2256,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "ayase_kitchen_homemade_bento_tasting",
+    "characterId": "ayase_aragaki",
+    "outfitId": "fashion_model_elegant_off_shoulder",
+    "title": "新垣绫濑 · 厨房便当的温柔喂食试吃",
+    "category": "现代日常",
+    "description": "晨光穿透明亮的现代化厨房，系着碎花围裙的绫濑正精心准备双人便当。她用筷子夹起一块金黄厚蛋烧喂到你嘴边，微红着脸庞，眼神中写满了专属于心上人的极度温柔。",
+    "recommendedSize": "832x1216",
+    "location": "bright spotless modern domestic kitchen",
+    "action": "standing in clean modern kitchen with a floral apron, holding up a freshly rolled tamagoyaki on chopsticks to partner mouth, blushing with an expectant gentle smile",
+    "timeOfDay": "morning",
+    "lighting": "warm sunny morning light pouring through kitchen window",
+    "camera": "medium_shot",
+    "mood": "devoted model girlfriend warmth, sweet domestic caring, heart-throbbing bride vibe",
+    "promptProse": "Standing in a sunlit kitchen with an apron, Ayase Aragaki blushes with a tender loving smile, feeding partner a rolled egg on chopsticks.",
+    "promptTokens": [
+      "kitchen",
+      "cooking",
+      "holding_chopsticks",
+      "tamagoyaki",
+      "feeding",
+      "blushing",
+      "sweet_smile",
+      "morning_sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ayase Aragaki feeding partner rolled egg lovingly in sunny kitchen.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

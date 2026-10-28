@@ -1,0 +1,145 @@
+{
+  "kind": "character",
+  "id": "yakishio_lemon",
+  "revision": 1,
+  "sortOrder": 238,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "yakishio_lemon",
+    "profile": {
+      "id": "yakishio_lemon",
+      "name": "烧盐柠檬",
+      "alias": [
+        "Lemon Yakishio",
+        "烧盐柠檬",
+        "烧盐",
+        "柠檬",
+        "焼塩檸檬",
+        "yakishio lemon"
+      ],
+      "type": "popular",
+      "icon": "🍋",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "烧盐柠檬 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "棕褐色利落短发 · 运动微卷发梢 · 散发夏日阳光气息",
+        "hair_color": "棕褐 / 暖棕",
+        "eyes": "明亮纯真琥珀棕双眸 · 带着健康阳光与直球心动",
+        "hairstyle": "清爽运动系短发 · 自然微蓬 · 充满田径少女活力",
+        "uniform": "石蕗高中夏日短袖水手服 · 田径队吸汗运动短裤背心 · 盛夏亮黄系带比基尼",
+        "expression": "灿烂露齿的阳光大笑 · 被近距离注视时瞬间慌乱红透的直球少女娇羞",
+        "style": "athletic sun-kissed tomboy girlfriend with honest heart, energetic summer dates, and surprisingly tender romantic vulnerability",
+        "signature": "小麦色肌肤、棕短发、田径运动服、柠檬汽水与纯真直球"
+      },
+      "personality": [
+        "精力充沛直率坦诚的田径部王牌",
+        "天真无邪充满行动力的运动系少女",
+        "感情上纯洁迟钝却格外真诚直球",
+        "恋爱时心跳加速不知所措的极度可爱反差"
+      ],
+      "likes": [
+        "运动后咕嘟咕嘟喝大口冰镇柠檬汽水",
+        "在操场跑道上尽情挥洒汗水",
+        "放学后坐在单车后座吹晚风",
+        "在恋人怀里感受安心的体温与心跳"
+      ],
+      "classic_cg": {
+        "title": "田径场黄昏的柠檬汽水与心动距离",
+        "description": "夕阳染成金橙色的学校看台阶梯上，训练结束的烧盐柠檬大口喝着冰柠檬汽水。当少年拿出毛巾为她擦拭额前汗珠并贴近时，健康小麦色的脸颊瞬间腾起绯红，琥珀色双眸闪烁着慌乱而甜美的心跳。"
+      },
+      "identity": {
+        "role": "石蕗高中一年级学生 / 田径部王牌短跑选手 / 文学社幽灵部员",
+        "age": "16岁（高中田径少女）",
+        "occupation": "高中生 / 田径运动员",
+        "faction": "石蕗高中 / 田径部"
+      },
+      "tags": [
+        "小麦色肌肤",
+        "短发",
+        "田径少女",
+        "元气",
+        "直球",
+        "败犬女主"
+      ],
+      "bg_story": "烧盐柠檬是《败犬女主太多了！》三大核心女主角之一。作为石蕗高中田径部的明星短跑王牌，她拥有常年日晒形成的健康小麦色肌肤、修长紧致的健美身材与阳光灿烂的天然性格。虽然在初恋的无望暗恋中悄然品尝了酸涩的失恋滋味，但随即便在与温水和彦的交流中找到了真正的归宿。她性格大大咧咧不拘小节，却在恋爱独处时拥有超乎想象的纯情与少女心。冰镇柠檬水、操场跑道上的晚风以及对认定恋人毫不保留的炽热真心，使她成为最具夏日生命力与健康女友魅力的代表。",
+      "palette": [
+        "小麦金",
+        "柠檬黄",
+        "石蕗水蓝",
+        "纯白"
+      ],
+      "weather": [
+        "夏日晴空",
+        "操场黄昏",
+        "海滨微风"
+      ],
+      "speech": "温水！来喝一口柠檬水吧，很冰很解渴的哦！……欸，间接接吻？呜哇！你在说什么奇怪的话啦，脸都热起来了！",
+      "source": "Too Many Losing Heroines!",
+      "traits": [
+        "小麦色阳光田径少女",
+        "棕褐清爽短发琥珀眸",
+        "直球元气纯情反差",
+        "柠檬汽水夏日浪漫",
+        "败犬女主高人气王牌"
+      ]
+    },
+    "popular": {
+      "id": "yakishio_lemon",
+      "displayName": "烧盐柠檬",
+      "originalName": "Lemon Yakishio",
+      "franchise": "Too Many Losing Heroines!",
+      "category": "动漫角色",
+      "aliases": [
+        "Lemon Yakishio",
+        "烧盐柠檬",
+        "烧盐",
+        "柠檬",
+        "焼塩檸檬",
+        "yakishio lemon"
+      ],
+      "exactTokens": [
+        "yakishio_lemon"
+      ],
+      "characterTokens": [
+        "yakishio_lemon"
+      ],
+      "copyrightTokens": [
+        "make_heroine_ga_oosugiru!"
+      ],
+      "identityTokens": [
+        "yakishio_lemon",
+        "1girl",
+        "solo",
+        "dark-skinned_female",
+        "brown_hair",
+        "short_hair",
+        "brown_eyes"
+      ],
+      "identityProse": "Lemon Yakishio from Too Many Losing Heroines, the only character in the image, with short sun-kissed brown hair, bright brown eyes, tanned skin, athletic healthy curves, and a cheerful honest tomboy girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "swav"
+      ],
+      "animeStudio": "A-1 Pictures official anime style, Makeine character art",
+      "canon": {
+        "era": "石蕗高中败犬恋爱纪元",
+        "world": "爱知县丰桥市·石蕗高中田径场",
+        "formNotes": "小麦肤色棕色短发琥珀眸，田径王牌，夏日直球运动系女友"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "tsuwabuki_summer_sailor_uniform",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "la_folia_rihavein/sheer_royal_silk_nightgown",
+  "revision": 1,
+  "sortOrder": 1740,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "la_folia_rihavein",
+    "outfit": {
+      "characterId": "la_folia_rihavein",
+      "id": "sheer_royal_silk_nightgown",
+      "name": "王室寝宫·半透冰丝睡袍",
+      "prose": "An ethereal pale-silver translucent silk bedchamber robe with sweeping sheer drapery, floating effortlessly around her nude silhouette.",
+      "tokens": [
+        "sheer_robe",
+        "silk_nightgown",
+        "translucent_fabric",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

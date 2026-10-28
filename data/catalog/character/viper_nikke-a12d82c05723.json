@@ -1,0 +1,149 @@
+{
+  "kind": "character",
+  "id": "viper_nikke",
+  "revision": 1,
+  "sortOrder": 220,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "viper_nikke",
+    "profile": {
+      "id": "viper_nikke",
+      "name": "毒蛇",
+      "alias": [
+        "Viper",
+        "毒蛇",
+        "毒蛇(NIKKE)",
+        "バイパー",
+        "viper (nikke)"
+      ],
+      "type": "popular",
+      "icon": "🐍",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "毒蛇 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "极其浓密华丽粉色大波浪长发 · 宛若棉花糖般蓬松卷曲",
+        "hair_color": "粉红 / 甜美草莓粉",
+        "eyes": "晶莹剔透翡翠绿瞳 · 带有极强魅惑电波与撒娇水光",
+        "hairstyle": "大波浪蓬松披肩长发 · 额角爱心金属发饰 · 娇俏灵动面容",
+        "uniform": "蛇系露脐短裙便装 · 绝艳黑漆皮兔女郎连体衣 · 亮粉挂脖系带比基尼",
+        "expression": "娇滴滴的甜美撒娇坏笑 · 吃醋查岗时鼓起腮帮子的绝顶可爱反差",
+        "style": "intensely clingy love-struck gyaru-style girlfriend with seductive charm and absolute emotional dependence",
+        "signature": "粉色大波浪、翡翠绿眸、爱心发饰与整天挂在身上的超甜撒娇"
+      },
+      "personality": [
+        "方舟外围异国风情部队（Exotic）成员，看似危险莫测、心机深沉的蛇蝎美人",
+        "在遇到命中注定的指挥官后彻底觉醒恋爱脑，变成了整天黏在心上人身边的小甜心",
+        "极度缺乏安全感且独占欲爆棚，最喜欢挂在指挥官手臂上、偷偷检查他的手机聊天记录并娇憨吃醋",
+        "善于利用自己无与伦比的容貌与娇滴滴的嗓音撒娇索吻，无论提出什么任性要求都让人无法拒绝",
+        "外在是光芒四射的辣妹偶像气质，内心深处却只渴望被指挥官一个人永远深爱与紧紧拥抱"
+      ],
+      "likes": [
+        "像小考拉一样整个人扑进指挥官怀里，双臂勾着脖子甜腻索吻",
+        "和指挥官在热闹的商业街大头贴机或手机前贴脸自拍秀恩爱",
+        "换上性感的兔女郎套装只在私密包厢里跳舞给指挥官一个人看",
+        "假装生气吃醋鼓起脸颊，直到被指挥官摸头亲吻才破涕为笑",
+        "深夜睡前把自己整个人塞进被窝，像藤蔓一样缠绕在指挥官身上"
+      ],
+      "classic_cg": {
+        "title": "繁华街头的双人依偎贴脸自拍",
+        "description": "人潮拥挤的方舟购物商业街中央，霓虹招牌闪烁。毒蛇双手紧紧搂住你的手臂，半边身子软绵绵地贴在你身上。她单手高举智能手机，侧着头俏皮地对镜头眨起一只翠绿眼眸，比出可爱的剪刀手，粉色大波浪发丝拂在你的脸颊上，满溢着甜蜜恋人气息。"
+      },
+      "identity": {
+        "role": "异国风情部队（Exotic）特工 / 外围区独立情报人员",
+        "age": "成年创作设定",
+        "occupation": "特勤间谍 / 极度黏人恋爱脑专属女友",
+        "faction": "异国风情部队 / 方舟中央情报署",
+        "school": "方舟外围区特勤谍报所（优秀受训）",
+        "classificationSource": "角色背景明确归属于异国风情部队。"
+      },
+      "tags": [
+        "粉发",
+        "大波浪",
+        "绿瞳",
+        "兔女郎",
+        "黏人",
+        "恋爱脑",
+        "撒娇女友",
+        "妮姬"
+      ],
+      "bg_story": "毒蛇曾是潜伏在方舟阴暗外围区最致命的伪装大师，擅长用甜美伪装瓦解所有目标的防线。然而当她执行任务试图诱惑反击部队的指挥官时，却被对方超乎常人的真诚、保护欲与无条件信任彻底攻陷了心防。从那一刻起，所谓的虚假谎言尽数化作了刻骨铭心的真实爱意。在摆脱枷锁后，毒蛇将所有的聪明才智全用在了如何成为指挥官最宠溺的女朋友上。成年设定下的毒蛇又娇又媚，兼具热烈奔放的辣妹魅力与对爱人绝对忠贞的纯情，是让人欲罢不能的黏人精。",
+      "palette": [
+        "草莓粉",
+        "纯黑",
+        "翡翠绿"
+      ],
+      "weather": [
+        "霓虹街景",
+        "甜蜜卧室",
+        "私密包厢"
+      ],
+      "speech": "达令～今天怎么又看别的女孩子了？毒蛇可是会吃醋的哦！不过呢……只要达令现在好好抱紧我、亲我一下，毒蛇就大方地原谅你啦～",
+      "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+      "traits": [
+        "viper_(nikke)",
+        "pink_hair",
+        "long_hair",
+        "wavy_hair",
+        "green_eyes",
+        "heart_hair_ornament"
+      ]
+    },
+    "popular": {
+      "id": "viper_nikke",
+      "displayName": "毒蛇",
+      "originalName": "Viper",
+      "franchise": "Goddess of Victory: NIKKE",
+      "category": "手游角色",
+      "aliases": [
+        "Viper",
+        "毒蛇",
+        "毒蛇(NIKKE)",
+        "バイパー",
+        "viper (nikke)"
+      ],
+      "exactTokens": [
+        "viper (nikke)"
+      ],
+      "characterTokens": [
+        "viper (nikke)"
+      ],
+      "copyrightTokens": [
+        "goddess_of_victory:_nikke"
+      ],
+      "identityTokens": [
+        "viper (nikke)",
+        "1girl",
+        "solo",
+        "pink_hair",
+        "long_hair",
+        "wavy_hair",
+        "green_eyes",
+        "heart_hair_ornament"
+      ],
+      "identityProse": "Viper from Goddess of Victory: NIKKE, the only character in the image, with long wavy pink hair, sparkling emerald green eyes, a subtle heart hair ornament, and a coquettish, teasingly sweet expression.",
+      "curatedArtistStyles": [
+        "range_murasaki",
+        "fkey",
+        "anmi"
+      ],
+      "animeStudio": "Goddess of Victory: NIKKE official art, SHIFT UP style",
+      "canon": {
+        "era": "方舟谍影与地表战后纪元",
+        "world": "方舟外围区·异国风情部队（Exotic）",
+        "formNotes": "粉波浪绿瞳蛇系娇媚美人，超强黏人恋爱脑女友感，兔女郎与撒娇反差"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "exotic_cropped_crop_top",
+      "negativeTokens": []
+    }
+  }
+}

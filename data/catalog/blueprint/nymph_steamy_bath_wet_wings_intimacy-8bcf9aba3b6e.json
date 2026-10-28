@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_steamy_bath_wet_wings_intimacy",
+  "revision": 1,
+  "sortOrder": 2272,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "nymph_steamy_bath_wet_wings_intimacy",
+    "characterId": "nymph",
+    "outfitId": "strawberry_frilled_summer_swimsuit",
+    "title": "妮姆芙 · 浴室水汽中的湿漉翅膀温存",
+    "category": "私密温存",
+    "description": "热水蒸腾的木桶浴缸中，草莓色比基尼早解开飘走。水蓝及膝长发和半透明双翼完全浸湿贴在身上，被烫得满面通红的妮姆芙紧紧跨坐在你的大腿上，随着爱意的抚摸发出甜腻柔弱的求欢。",
+    "recommendedSize": "832x1216",
+    "location": "steamy home cedar bathtub with swirling fragrant water",
+    "action": "sitting together in steamy deep bath, untied red bikini floating, wet blue twintails and translucent wings clinging to partner chest in heated embrace",
+    "timeOfDay": "night",
+    "lighting": "diffused warm ceiling light shining through misty water vapor",
+    "camera": "cowboy_shot",
+    "mood": "heated water warmth, delicate angelic intimacy, trembling lovers passion",
+    "promptProse": "In a steamy bathtub with an untied bikini, wet-haired Nymph clings to partner chest with glowing translucent wings and heavy blushing pants.",
+    "promptTokens": [
+      "bathroom",
+      "bathtub",
+      "steam",
+      "wet_skin",
+      "wet_hair",
+      "wings",
+      "untied_bikini",
+      "embracing",
+      "blushing_heavily",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Nymph in steamy bath with wet wings clinging to partner chest.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

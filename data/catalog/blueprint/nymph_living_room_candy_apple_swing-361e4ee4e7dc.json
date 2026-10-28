@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_living_room_candy_apple_swing",
+  "revision": 1,
+  "sortOrder": 2268,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "nymph_living_room_candy_apple_swing",
+    "characterId": "nymph",
+    "outfitId": "junior_high_navy_sailor_suit",
+    "title": "妮姆芙 · 客厅沙发的苹果糖晃脚依偎",
+    "category": "现代日常",
+    "description": "午后明媚的日式客厅沙发上，穿着水手服的妮姆芙双手捧着一颗晶莹红润的苹果糖小口舔着。双脚一晃一晃，小脑袋轻轻靠在你的手臂上，透明的双翼微微舒展，满溢着被宠溺的幸福。",
+    "recommendedSize": "832x1216",
+    "location": "sunny Japanese suburban living room with tatami mats",
+    "action": "sitting on living room sofa licking a glossy red candy apple, swinging legs rhythmically, leaning her small head against partner arm while demanding pats",
+    "timeOfDay": "afternoon",
+    "lighting": "warm peaceful afternoon sunshine flooding through glass doors",
+    "camera": "medium_shot",
+    "mood": "cute spoiled pet-girlfriend charm, sweet domestic innocence, relaxing afternoon",
+    "promptProse": "Sitting on a sunny sofa eating a red candy apple, Nymph swings her legs happily, leaning her head against partner arm with fluttering wings.",
+    "promptTokens": [
+      "living_room",
+      "sofa",
+      "candy_apple",
+      "sitting",
+      "eating",
+      "swinging_legs",
+      "leaning_on_partner",
+      "blushing",
+      "daylight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Nymph eating candy apple and leaning on partner on sunny sofa.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

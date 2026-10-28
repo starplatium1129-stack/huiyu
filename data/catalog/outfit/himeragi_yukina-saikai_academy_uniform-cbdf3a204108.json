@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "himeragi_yukina/saikai_academy_uniform",
+  "revision": 1,
+  "sortOrder": 1733,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "himeragi_yukina",
+    "outfit": {
+      "characterId": "himeragi_yukina",
+      "id": "saikai_academy_uniform",
+      "name": "彩海学园初中部制服",
+      "prose": "A crisp traditional sailor uniform featuring a navy sailor collar over a white short-sleeve shirt, red neckerchief, pleated navy skirt, and white socks.",
+      "tokens": [
+        "sailor_collar",
+        "white_shirt",
+        "blue_skirt",
+        "pleated_skirt",
+        "red_neckerchief",
+        "white_socks",
+        "loafers"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "shizuka_morning_kitchen_shirt_breakfast",
+  "revision": 1,
+  "sortOrder": 2249,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "shizuka_morning_kitchen_shirt_breakfast",
+    "characterId": "shizuka_hiratsuka",
+    "outfitId": "relaxing_home_oversized_sweatshirt",
+    "title": "平冢静 · 晨光厨房男友衬衫的完美人妻",
+    "category": "私密温存",
+    "description": "早晨阳光洒满厨房灶台，平冢静身上仅穿着你宽大的白色衬衫，纽扣随意系着两颗，露出修长紧致的美腿。一边煎着荷包蛋一边被你从身后抱住揉捏腰腹，她脸颊绯红回头，绽放出梦幻般的人妻笑容。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit morning apartment kitchen",
+    "action": "standing at kitchen stove in partner oversized unbuttoned white shirt, pinned against counter from behind while flipping eggs, blushing sweetly with a radiant wife smile",
+    "timeOfDay": "morning",
+    "lighting": "crisp morning sun pouring across counter and bare tanned legs",
+    "camera": "cowboy_shot",
+    "mood": "ultimate dream housewife fulfillment, cozy morning post-sex bliss, pure companion joy",
+    "promptProse": "Standing at the stove in an oversized unbuttoned white shirt, Shizuka Hiratsuka smiles with radiant newlywed bliss as partner hugs her from behind in morning sun.",
+    "promptTokens": [
+      "kitchen",
+      "cooking",
+      "bare_legs",
+      "hug_from_behind",
+      "blushing",
+      "sweet_smile",
+      "open_shirt",
+      "morning_sunlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shizuka cooking in partner oversized shirt with a sweet wife smile.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

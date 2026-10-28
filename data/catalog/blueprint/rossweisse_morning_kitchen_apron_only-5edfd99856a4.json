@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "rossweisse_morning_kitchen_apron_only",
+  "revision": 1,
+  "sortOrder": 2231,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "rossweisse_morning_kitchen_apron_only",
+    "characterId": "rossweisse",
+    "outfitId": "bargain_shopper_apron",
+    "title": "罗丝薇瑟 · 晨曦厨房的围裙私密温存",
+    "category": "私密温存",
+    "description": "清晨阳光照进整洁的厨房，罗丝薇瑟光洁娇躯上仅系着一条粉色围裙。被你从身后按在灶台边深情索吻，她娇躯轻颤、双颊通红，一边喘息一边幸福地紧扣你的双手。",
+    "recommendedSize": "832x1216",
+    "location": "sun-drenched morning kitchen counter",
+    "action": "standing at stove with only a thin apron over bare sun-warmed skin, pinned against counter by partner from behind, gasping with flushed face and loving teary smile",
+    "timeOfDay": "morning",
+    "lighting": "bright morning sunlight washing over bare legs and flushed skin",
+    "camera": "cowboy_shot",
+    "mood": "morning newlywed ecstasy, bare apron intimacy, sweet surrendered domestic passion",
+    "promptProse": "Pinned against the morning kitchen counter wearing only an apron, Rossweisse gasps with flushed cheeks, tightly holding partner hands in sweet bliss.",
+    "promptTokens": [
+      "kitchen",
+      "kitchen_counter",
+      "apron",
+      "bare_shoulders",
+      "bare_legs",
+      "hug_from_behind",
+      "blushing_heavily",
+      "panting",
+      "morning_sunlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Rossweisse pinned at kitchen counter in an apron with loving flushed face.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

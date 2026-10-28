@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "prinz_eugen/iron_blood_officer_uniform",
+  "revision": 1,
+  "sortOrder": 1705,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "characterId": "prinz_eugen",
+    "outfit": {
+      "characterId": "prinz_eugen",
+      "id": "iron_blood_officer_uniform",
+      "name": "铁血高阶露肩军官制服",
+      "prose": "A striking Iron Blood naval officer uniform with a tailored black and red off-shoulder jacket, white underbust bodice, officer peaked cap, and sleek black thigh-highs.",
+      "tokens": [
+        "iron_blood_uniform",
+        "off-shoulder_jacket",
+        "black_jacket",
+        "red_trim",
+        "peaked_cap",
+        "black_thighhighs"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

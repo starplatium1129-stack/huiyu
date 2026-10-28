@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "ayase_hallway_phone_pout_jealousy",
+  "revision": 1,
+  "sortOrder": 2257,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "ayase_hallway_phone_pout_jealousy",
+    "characterId": "ayase_aragaki",
+    "outfitId": "chiba_private_school_uniform",
+    "title": "新垣绫濑 · 玄关走廊的鼓腮吃醋查岗",
+    "category": "现代日常",
+    "description": "公寓玄关木地板上，刚进门的绫濑拿着你的手机，鼓起腮帮气呼呼地盯着你。明明在吃醋查岗，却因为满脸绯红与娇嗔的眼神，显得可爱到让人恨不得立刻把她抱紧。",
+    "recommendedSize": "832x1216",
+    "location": "apartment entryway genkan with wood flooring",
+    "action": "standing in entryway hallway holding partner smartphone, puffing cheeks in adorable jealousy while demanding a thorough explanation, eyes flashing with possessive love",
+    "timeOfDay": "afternoon",
+    "lighting": "warm indoor entrance spotlighting",
+    "camera": "cowboy_shot",
+    "mood": "adorable possessive jealousy, cute yandere undertone, deep exclusive devotion",
+    "promptProse": "Holding partner smartphone in the entryway, Ayase Aragaki puffs her cheeks in adorable jealousy, blushing furiously with possessive violet eyes.",
+    "promptTokens": [
+      "hallway",
+      "entryway",
+      "holding_phone",
+      "pouting",
+      "puffed_cheeks",
+      "looking_at_viewer",
+      "blushing",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ayase Aragaki pouting with puffed cheeks checking phone in hallway.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

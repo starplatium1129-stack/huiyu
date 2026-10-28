@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "komari_bedroom_trembling_confession_bed",
+  "revision": 1,
+  "sortOrder": 2283,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "komari_bedroom_trembling_confession_bed",
+    "characterId": "komari_chika",
+    "outfitId": "pure_cotton_lace_camisole_nightwear",
+    "title": "小鞠知花 · 卧室被单间的颤抖全心交托",
+    "category": "私密温存",
+    "description": "安静的卧室内，浅粉吊带睡衣滑落香肩。娇小幼嫩的身躯被你完全拥在怀中，知花紧紧咬着嘴唇，眼角满是幸福的泪水，用颤抖微弱的声音告白：“如果是温水同学的话……怎样……都可以哦。”",
+    "recommendedSize": "832x1216",
+    "location": "dim softly lit private bedroom with ruffled sheets",
+    "action": "nestled on bed with off-shoulder camisole, trembling in partner embrace, tearful eyes looking up with absolute sweet submission and love",
+    "timeOfDay": "night",
+    "lighting": "soft warm bedside nightlight casting gentle golden glow on pale skin",
+    "camera": "close-up",
+    "mood": "trembling virginal surrender, profound emotional trust, breathless tender love",
+    "promptProse": "On a soft bed with slipping pink camisole, petite Chika Komari clings to partner with tearful devoted eyes and breathless trembling kisses.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "bare_shoulders",
+      "camisole",
+      "clinging_closely",
+      "tears_of_happiness",
+      "blushing_heavily",
+      "panting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Chika Komari trembling with devoted tearful face in bed embrace.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

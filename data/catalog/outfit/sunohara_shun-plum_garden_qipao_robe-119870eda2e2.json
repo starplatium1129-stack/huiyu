@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "sunohara_shun/plum_garden_qipao_robe",
+  "revision": 1,
+  "sortOrder": 1684,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "data": {
+    "characterId": "sunohara_shun",
+    "outfit": {
+      "characterId": "sunohara_shun",
+      "id": "plum_garden_qipao_robe",
+      "name": "梅花园教官深红刺绣高叉旗袍",
+      "prose": "A luxurious form-fitting deep-red qipao with gold dragon and plum blossom embroidery, high side slits, sheer black pantyhose, and elegant heels.",
+      "tokens": [
+        "red qipao",
+        "cheongsam",
+        "embroidery",
+        "high slit",
+        "cleavage",
+        "black pantyhose",
+        "high heels"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kuroneko_night_festival_fireworks_handhold",
+  "revision": 1,
+  "sortOrder": 2264,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kuroneko_night_festival_fireworks_handhold",
+    "characterId": "kuroneko",
+    "outfitId": "queen_of_nightmare_gothic_lolita",
+    "title": "五更琉璃 · 夏夜祭典花火下的日记誓言",
+    "category": "假日出行",
+    "description": "夏夜神社高耸的石阶之上，漫天花火绽放。黑猫双手死死抓着你的手掌，眼泛晶莹热泪，姬发式黑发在风中舞动。在轰鸣与火光中，她用全部灵魂倾吐出日记里写下的永恒爱慕。",
+    "recommendedSize": "832x1216",
+    "location": "elevated Shinto shrine stone staircase overlooking illuminated night festival",
+    "action": "standing on shrine stone steps looking at bursting fireworks, tightly clutching partner hand with both hands, tears of joy welling in blue eyes beneath hime cut",
+    "timeOfDay": "night",
+    "lighting": "multicolored bursts of festival fireworks illuminating the dark summer sky",
+    "camera": "wide_shot",
+    "mood": "legendary romantic confession, emotional fireworks climax, unforgettable soulmate bond",
+    "promptProse": "On shrine stairs under exploding summer festival fireworks, Ruri Gokou clutches partner hand tightly with both hands, crying tears of passionate joy.",
+    "promptTokens": [
+      "shrine",
+      "stairs",
+      "night",
+      "fireworks",
+      "holding_hands",
+      "tears_of_joy",
+      "blushing",
+      "looking_at_viewer",
+      "wide_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ruri Gokou crying joyful tears under fireworks holding partner hands.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

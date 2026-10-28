@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "atago_night_peignoir_enticement",
+  "revision": 1,
+  "sortOrder": 2158,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "atago_night_peignoir_enticement",
+    "characterId": "atago_azur",
+    "outfitId": "silk_peignoir_nightgown",
+    "title": "爱宕 · 深夜卧榻的私密献身",
+    "category": "私密温存",
+    "description": "月光洒入的静谧卧室中，黑色薄纱睡袍完全滑落香肩。爱宕跪坐在床垫中央，黑色犬耳羞怯地伏在发间，金色眼眸含水微漾，主动牵引着你的双手抚上自己发烫的腰际。",
+    "recommendedSize": "832x1216",
+    "location": "dim moonlit bedroom with sheer curtains",
+    "action": "sitting on bed with silk robe sliding completely off bare shoulders, dog ears lowered with sweet vulnerability, golden eyes glossy with arousal, guiding partner hands to her waist",
+    "timeOfDay": "night",
+    "lighting": "pale silver moonlight highlighting soft curves and translucent fabric",
+    "camera": "close-up",
+    "mood": "tender surrender, sacred vulnerability, irresistible temptation",
+    "promptProse": "Sitting on the bed with her silk robe sliding off bare shoulders, Atago blushes heavily as she guides partner hands to her waist in the moonlight.",
+    "promptTokens": [
+      "bedroom",
+      "sitting_on_bed",
+      "off-shoulder",
+      "sheer_robe",
+      "glowing_eyes",
+      "blushing_heavily",
+      "moonlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Atago sitting on bed with sheer silk robe sliding off shoulders in moonlight.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

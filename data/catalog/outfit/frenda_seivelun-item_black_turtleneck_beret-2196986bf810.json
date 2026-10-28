@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "frenda_seivelun/item_black_turtleneck_beret",
+  "revision": 1,
+  "sortOrder": 1809,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "frenda_seivelun",
+    "outfit": {
+      "characterId": "frenda_seivelun",
+      "id": "item_black_turtleneck_beret",
+      "name": "暗部标志·黑色贝雷帽与露肩高领毛衣短裙",
+      "prose": "Her signature ITEM uniform: a cute black beret perched on blonde hair, off-shoulder ribbed dark-grey sweater, ruffled black mini skirt, and thigh-high black stockings.",
+      "tokens": [
+        "beret",
+        "black_hat",
+        "sweater",
+        "off-shoulder_sweater",
+        "pleated_skirt",
+        "thighhighs",
+        "boots",
+        "collarbone"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

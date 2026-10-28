@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "stella_onsen_steam_passionate_embrace",
+  "revision": 1,
+  "sortOrder": 2188,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "stella_onsen_steam_passionate_embrace",
+    "characterId": "stella_vermillion",
+    "outfitId": "summer_crimson_bikini",
+    "title": "史黛菈 · 露天温泉水汽的耳鬓厮磨",
+    "category": "私密温存",
+    "description": "隐秘私人温泉中滚烫泉水漫过腰际。比基尼系带微散，湿透的深红长发紧贴在雪白发烫的背上。史黛菈从身后环住你的脖颈，将发烫的侧脸深深埋入你的颈间娇喘。",
+    "recommendedSize": "832x1216",
+    "location": "secluded private outdoor hot spring bath surrounded by rocks",
+    "action": "embracing from behind in hot spring steam, wet crimson hair clinging to back, untied bikini strings, breathless moaning",
+    "timeOfDay": "night",
+    "lighting": "steamy lantern mist illuminated by warm amber water lights",
+    "camera": "cowboy_shot",
+    "mood": "steamy sensual immersion, flushed vulnerability, heated lovers embrace",
+    "promptProse": "Embracing closely in a steamy natural hot spring, Stella clings tight with wet crimson hair and flushed skin under amber lanterns.",
+    "promptTokens": [
+      "onsen",
+      "hot_spring",
+      "steam",
+      "embracing",
+      "wet_skin",
+      "wet_hair",
+      "blushing_heavily",
+      "untied_bikini",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Stella embracing passionately in a steamy secluded hot spring at night.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

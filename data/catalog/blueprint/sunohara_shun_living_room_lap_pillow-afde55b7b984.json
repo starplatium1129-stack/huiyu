@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "sunohara_shun_living_room_lap_pillow",
+  "revision": 2,
+  "sortOrder": 2115,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "sunohara_shun_living_room_lap_pillow",
+    "characterId": "sunohara_shun",
+    "outfitId": "casual_teacher_cardigan",
+    "title": "春原瞬 · 客室沙发上的安心膝枕",
+    "category": "治愈甜宠",
+    "description": "温暖静谧的私人客厅里，瞬身着软糯的米白针织开衫与吊带长裙，端坐在宽大柔软的布艺沙发上。她微笑着引导老师把脑袋枕在自己温热柔软的大腿上，修长指尖轻轻揉按着老师紧绷的太阳穴，垂落的黑发如屏障般隔绝了外界的一切喧嚣。",
+    "recommendedSize": "832x1216",
+    "location": "cozy warm living room sofa",
+    "action": "providing lap pillow, looking down lovingly, gently stroking hair, blissful smile",
+    "timeOfDay": "afternoon",
+    "lighting": "soft diffused daylight and warm indoor lamp glow",
+    "camera": "medium_shot",
+    "mood": "ultimate soothing relaxation, pure healing bliss, and unconditional love",
+    "promptProse": "Sitting comfortably on a soft sofa, Sunohara Shun provides a soothing lap pillow, gazing down with an all-forgiving doting smile as her fingers caress hair.",
+    "promptTokens": [
+      "sofa",
+      "living_room",
+      "lap_pillow",
+      "looking_down",
+      "stroking_hair",
+      "gentle_smile",
+      "day",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shun stroking her companion hair with a blissful, doting smile.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

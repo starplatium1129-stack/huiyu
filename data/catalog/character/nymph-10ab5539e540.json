@@ -1,0 +1,148 @@
+{
+  "kind": "character",
+  "id": "nymph",
+  "revision": 1,
+  "sortOrder": 237,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "nymph",
+    "profile": {
+      "id": "nymph",
+      "name": "妮姆芙",
+      "alias": [
+        "Nymph",
+        "妮姆芙",
+        "电子战天使",
+        "蓝色电波妖精",
+        "ニンフ",
+        "nymph (sora no otoshimono)"
+      ],
+      "type": "popular",
+      "icon": "🪽",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "妮姆芙 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "淡水蓝双马尾及踝长发 · 发梢微卷 · 散发梦幻微光",
+        "hair_color": "水蓝 / 冰蓝",
+        "eyes": "清澈澄明海蓝双眸 · 带着傲娇易怒与极度渴望温暖的纯情",
+        "hairstyle": "及踝水蓝长双马尾 · 背后生有半透明电子蝶翼翅膀",
+        "uniform": "西纳普斯电子战天使紧身装 · 空美町深蓝水手服 · 草莓红荷叶边比基尼",
+        "expression": "爱吃醋吃苹果糖时的鼓腮傲娇 · 被温柔抚摸羽翼时泪水汪汪、彻底沦陷的惹人怜爱",
+        "style": "petite angelic tsundere girlfriend with electronic fairy wings, candy addiction, and profoundly emotional devotion",
+        "signature": "蓝发双马尾、透明光翼、苹果糖、傲娇爱吃醋小娇妻"
+      },
+      "personality": [
+        "高傲易怒的电子战第一代娱乐用人造天使",
+        "吃苹果糖与薯片停不下来的零食狂魔",
+        "极易吃醋但内心极度缺乏安全感",
+        "彻底被拯救后忠贞不渝的黏人天使小妻子"
+      ],
+      "likes": [
+        "裹着厚厚焦糖的红彤彤苹果糖",
+        "晃着小腿看电视肥皂剧被揉脑袋",
+        "被爱人从身后轻柔梳理安抚敏感的双翼",
+        "在被窝里被当成宝物一样紧紧圈住"
+      ],
+      "classic_cg": {
+        "title": "樱花河畔的摸头与傲娇沦陷",
+        "description": "春樱纷飞的河堤草坪上，少年伸手轻抚妮姆芙的脑袋。蓝发天使本能地拍开少年的手鼓起腮帮娇嗔，然而下一秒，她颤抖的双翼缓缓收拢，小脑袋轻轻依偎进少年的掌心里，眼角泛起被爱意治愈的幸福泪光。"
+      },
+      "identity": {
+        "role": "电子战用人造天使Type β（Beta）「Nymph」 / 智树家同居天使",
+        "age": "成年初熟创作设定",
+        "occupation": "人造天使 / 学生",
+        "faction": "空美町 / 樱井宅"
+      },
+      "tags": [
+        "蓝发",
+        "蓝瞳",
+        "双马尾",
+        "天使翼",
+        "傲娇",
+        "苹果糖",
+        "治愈",
+        "天降之物"
+      ],
+      "bg_story": "妮姆芙是《天降之物》三大核心人造天使之一（代号Beta）。最初作为西纳普斯主人的奴仆被派遣至空美町执行回收伊卡洛斯的任务，因无法对善良的人类痛下杀手而遭到残酷虐待甚至撕裂羽翼。在濒临崩溃绝望之时，被樱井智树不顾自身安危的舍命保护彻底拯救，自此斩断与西纳普斯的项圈锁链，获得了真正的心灵与自由。她是个酷爱吃苹果糖、爱看肥皂剧、动不动就鼓起腮帮骂人“笨蛋”的傲娇少女，但只要感知到一丝被冷落就会泪水汪汪。在日常相处中，她以极具反差的依赖感、颤抖顺从的双翼与纯粹的爱慕，成为无数老漫迷心尖上的蓝发小天使。",
+      "palette": [
+        "水蓝",
+        "透白光翼",
+        "樱桃红",
+        "暗金"
+      ],
+      "weather": [
+        "河堤春风",
+        "祭典星空",
+        "晨光暖榻"
+      ],
+      "speech": "笨蛋！谁允许你摸我的翅膀了啦……呜，但是……不许停下来哦，今晚也必须一直抱紧妮姆芙才行！",
+      "source": "Sora no Otoshimono",
+      "traits": [
+        "水蓝及踝双马尾蓝眸",
+        "半透明电子蝶翼",
+        "苹果糖傲娇天使",
+        "项圈解脱真正自由",
+        "天降之物三天使大团圆"
+      ]
+    },
+    "popular": {
+      "id": "nymph",
+      "displayName": "妮姆芙",
+      "originalName": "Nymph",
+      "franchise": "Sora no Otoshimono",
+      "category": "动漫角色",
+      "aliases": [
+        "Nymph",
+        "妮姆芙",
+        "电子战天使",
+        "蓝色电波妖精",
+        "ニンフ",
+        "nymph (sora no otoshimono)"
+      ],
+      "exactTokens": [
+        "nymph (sora no otoshimono)"
+      ],
+      "characterTokens": [
+        "nymph (sora no otoshimono)"
+      ],
+      "copyrightTokens": [
+        "sora_no_otoshimono"
+      ],
+      "identityTokens": [
+        "nymph (sora no otoshimono)",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "long_hair",
+        "twintails",
+        "blue_eyes",
+        "wings"
+      ],
+      "identityProse": "Nymph from Sora no Otoshimono, the only character in the image, with long aqua-blue hair in floor-length twintails, luminous blue eyes, delicate translucent fairy wings, and an adorable tsundere Angeloid girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "tinkle"
+      ],
+      "animeStudio": "AIC ASTA official anime style, Sora no Otoshimono character art",
+      "canon": {
+        "era": "空美町人造天使归属纪元",
+        "world": "极东·空美町樱井宅与西纳普斯天空之城",
+        "formNotes": "水蓝及踝双马尾蓝眸透明蝶翼，苹果糖傲娇小娇妻"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "electronic_warfare_angeloid_armor",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

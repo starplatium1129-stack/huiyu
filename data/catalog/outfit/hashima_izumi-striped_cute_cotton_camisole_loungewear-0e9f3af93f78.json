@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hashima_izumi/striped_cute_cotton_camisole_loungewear",
+  "revision": 1,
+  "sortOrder": 1816,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "hashima_izumi",
+    "outfit": {
+      "characterId": "hashima_izumi",
+      "id": "striped_cute_cotton_camisole_loungewear",
+      "name": "居家乐居·粉白细条纹纯棉小吊带短裤",
+      "prose": "A sweet pink-and-white striped ribbed cotton camisole hugging her bust, matching comfortable boy-shorts, and bare sunlit thighs.",
+      "tokens": [
+        "camisole",
+        "striped_shirt",
+        "shorts",
+        "bare_shoulders",
+        "bare_legs",
+        "barefoot",
+        "cleavage",
+        "twintails"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

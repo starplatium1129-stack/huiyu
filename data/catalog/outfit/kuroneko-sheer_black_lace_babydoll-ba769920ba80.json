@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kuroneko/sheer_black_lace_babydoll",
+  "revision": 1,
+  "sortOrder": 1784,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "kuroneko",
+    "outfit": {
+      "characterId": "kuroneko",
+      "id": "sheer_black_lace_babydoll",
+      "name": "闺房私密·暗夜微透黑蕾丝吊带娃娃裙",
+      "prose": "A translucent black lace babydoll negligee with sheer ruffled hems and gossamer thin straps, revealing her porcelain curves.",
+      "tokens": [
+        "nightgown",
+        "babydoll",
+        "black_nightgown",
+        "sheer_fabric",
+        "lace_trim",
+        "spaghetti_straps",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

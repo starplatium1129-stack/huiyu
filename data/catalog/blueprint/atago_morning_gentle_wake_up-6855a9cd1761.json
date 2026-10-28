@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "atago_morning_gentle_wake_up",
+  "revision": 1,
+  "sortOrder": 2154,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "atago_morning_gentle_wake_up",
+    "characterId": "atago_azur",
+    "outfitId": "cozy_domestic_apron",
+    "title": "爱宕 · 清晨床畔的温柔唤醒",
+    "category": "日常约会",
+    "description": "阳光柔和地洒在卧室床头，爱宕系着围裙俯身坐在床沿。她嘴角含着无尽宠溺的笑意，玉手轻柔拂开你额前的碎发，黑色犬耳欢快地微动，厨房飘来早点的醇香。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit master bedroom in the morning",
+    "action": "leaning over bed with affectionate pampering smile, gently brushing hair from partner forehead, dog ears perking up happily, breakfast aroma from kitchen",
+    "timeOfDay": "morning",
+    "lighting": "warm gentle morning sunshine filtering through sheer white curtains",
+    "camera": "upper_body",
+    "mood": "sweet domestic awakening, overwhelming maternal care, tender love",
+    "promptProse": "Leaning over the bed in an apron in morning sunlight, Atago smiles with pure pampering devotion, gently brushing hair from partner forehead.",
+    "promptTokens": [
+      "bedroom",
+      "bedside",
+      "leaning_forward",
+      "gentle_touch",
+      "smiling_at_viewer",
+      "morning_sunlight",
+      "upper_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Atago gently waking up her partner with a loving smile in a sunlit bedroom.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

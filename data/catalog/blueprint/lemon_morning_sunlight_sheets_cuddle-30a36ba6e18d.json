@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "lemon_morning_sunlight_sheets_cuddle",
+  "revision": 1,
+  "sortOrder": 2279,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "lemon_morning_sunlight_sheets_cuddle",
+    "characterId": "yakishio_lemon",
+    "outfitId": "cozy_tank_top_lounge_shorts",
+    "title": "烧盐柠檬 · 晨曦微光中的元气依恋温存",
+    "category": "私密温存",
+    "description": "清晨金辉洒在白被单上。小麦色的健康美腿与你交缠，短发微乱的烧盐柠檬像只晒饱太阳的小鹿般，把脸深深埋在你的胸口，带着幸福的甜笑抱紧你不放，咕哝着不想起床。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit morning bedroom with bright white sheets",
+    "action": "tangled in morning sheets, bare tanned shoulders exposed, hugging partner chest tight with affectionate nuzzling and a sleepy radiant smile",
+    "timeOfDay": "morning",
+    "lighting": "bright golden morning sunshine warming bare skin and white sheets",
+    "camera": "close-up",
+    "mood": "morning newlywed warmth, sweet possessive girlfriend clinginess, blissful domestic peace",
+    "promptProse": "Tangled in morning sheets with bare tanned shoulders, Lemon Yakishio nuzzles partner chest tightly with a sleepy blissful smile in golden morning light.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "tanned_skin",
+      "clinging_closely",
+      "sweet_smile",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Lemon Yakishio nuzzling partner chest in sunny morning sheets.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

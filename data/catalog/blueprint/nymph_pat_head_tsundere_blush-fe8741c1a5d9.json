@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_pat_head_tsundere_blush",
+  "revision": 1,
+  "sortOrder": 2269,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "nymph_pat_head_tsundere_blush",
+    "characterId": "nymph",
+    "outfitId": "electronic_warfare_angeloid_armor",
+    "title": "妮姆芙 · 被摸头时傲娇拍开又偷偷蹭过来的反差",
+    "category": "现代日常",
+    "description": "落樱纷飞的河堤草坪上，当你伸手摸她的脑袋时，妮姆芙先是鼓起腮帮娇嗔着拍开你的手，下一秒却眼睫轻颤，把小脑袋主动蹭进你的掌心里，透明双翼轻轻扇动，展现无敌的反差萌。",
+    "recommendedSize": "832x1216",
+    "location": "grassy riverbank under shade of cherry blossom trees",
+    "action": "standing in front of partner, initially batting his hand away with a pouting blush before shyly leaning her forehead back into his palm with fluttering wings",
+    "timeOfDay": "afternoon",
+    "lighting": "dappled sunlight filtering through spring blossom canopy",
+    "camera": "close-up",
+    "mood": "pinnacle tsundere gap moe, adorable surrender, trembling emotional warmth",
+    "promptProse": "Under blooming cherry blossoms on a riverbank, Nymph pouts and bats away a hand before shyly nuzzling her forehead into partner palm with fluttering wings.",
+    "promptTokens": [
+      "riverbank",
+      "headpat",
+      "pouting",
+      "blushing_heavily",
+      "wings",
+      "fluttering_wings",
+      "gentle_smile",
+      "daylight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Nymph shyly nuzzling her head into partner palm under blossoms.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

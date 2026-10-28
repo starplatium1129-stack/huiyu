@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "rossweisse/sheer_indigo_silk_nightgown",
+  "revision": 1,
+  "sortOrder": 1760,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "rossweisse",
+    "outfit": {
+      "characterId": "rossweisse",
+      "id": "sheer_indigo_silk_nightgown",
+      "name": "闺房微醺·深蓝半透明真丝吊带睡裙",
+      "prose": "A seductive deep indigo silk slip nightgown edged with intricate black floral lace, hanging gently from gossamer spaghetti straps.",
+      "tokens": [
+        "nightgown",
+        "camisole",
+        "silk_slip",
+        "indigo_dress",
+        "lace_trim",
+        "thin_straps",
+        "cleavage",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

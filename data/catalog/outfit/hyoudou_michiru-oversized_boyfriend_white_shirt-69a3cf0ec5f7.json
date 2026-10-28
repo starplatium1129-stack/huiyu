@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hyoudou_michiru/oversized_boyfriend_white_shirt",
+  "revision": 1,
+  "sortOrder": 1820,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "hyoudou_michiru",
+    "outfit": {
+      "characterId": "hyoudou_michiru",
+      "id": "oversized_boyfriend_white_shirt",
+      "name": "同居诱惑·宽大男友白衬衫居家睡服",
+      "prose": "An oversized crisp white collared boyfriend shirt loosely buttoned, revealing bare sun-kissed shoulders, long bare legs, and wet short hair.",
+      "tokens": [
+        "shirt",
+        "white_shirt",
+        "collared_shirt",
+        "open_shirt",
+        "bare_legs",
+        "bare_shoulders",
+        "cleavage",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

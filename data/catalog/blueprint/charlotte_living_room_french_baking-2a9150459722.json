@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "charlotte_living_room_french_baking",
+  "revision": 1,
+  "sortOrder": 2179,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "charlotte_living_room_french_baking",
+    "characterId": "charlotte_dunois",
+    "outfitId": "cozy_french_apron",
+    "title": "夏洛特 · 温暖厨房的法式甜点投喂",
+    "category": "日常约会",
+    "description": "弥漫着黄油与香草香气的厨房内，刚出炉的羊角面包金黄酥脆。夏洛特系着浅黄围裙，用白皙的手指轻轻擦去你鼻尖的面粉，眉眼弯弯地发出轻快笑声。",
+    "recommendedSize": "832x1216",
+    "location": "warm sun-drenched home kitchen",
+    "action": "standing by baking tray, reaching up to wipe flour from partner nose with finger, gentle giggling smile",
+    "timeOfDay": "afternoon",
+    "lighting": "cozy warm ambient kitchen lighting mixed with soft afternoon daylight",
+    "camera": "medium_shot",
+    "mood": "heartwarming domestic bliss, playful couple affection, culinary warmth",
+    "promptProse": "Baking in a cozy kitchen wearing an apron, Charlotte laughs tenderly as she wipes a smudge of flour from partner nose.",
+    "promptTokens": [
+      "kitchen",
+      "apron",
+      "baking",
+      "croissant",
+      "finger_on_face",
+      "gentle_smile",
+      "warm_lighting",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Charlotte laughing tenderly while baking French pastries in a sunny kitchen.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

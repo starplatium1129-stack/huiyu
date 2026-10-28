@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "d_wife_ballroom_stealth_waltz",
+  "revision": 1,
+  "sortOrder": 2174,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "d_wife_ballroom_stealth_waltz",
+    "characterId": "d_killer_wife",
+    "outfitId": "covert_honeymoon_gown",
+    "title": "D · 假面华筵的暗线华尔兹",
+    "category": "浪漫约会",
+    "description": "璀璨水晶吊灯下的盛大舞池，身穿露背黑丝缎晚礼裙的D与你在乐声中旋转起舞。她一手搭在你的肩头，将脸颊凑近耳畔假借汇报搜查动向，眼中却闪烁着真切的深情。",
+    "recommendedSize": "832x1216",
+    "location": "luxurious crystal ballroom filled with dancing couples",
+    "action": "waltzing closely across grand ballroom floor, resting hand on partner shoulder, whispering covert mission secrets while eyes shimmer with genuine romance",
+    "timeOfDay": "night",
+    "lighting": "spectacular golden chandelier bokeh and opulent velvet ballroom ambiance",
+    "camera": "medium_shot",
+    "mood": "covert thrill, aristocratic elegance, secret lovers intimacy",
+    "promptProse": "Waltzing closely across a grand chandelier-lit ballroom in a black backless gown, D whispers secrets with glistening devoted purple eyes.",
+    "promptTokens": [
+      "ballroom",
+      "waltz",
+      "dancing",
+      "hand_on_shoulder",
+      "whispering",
+      "backless_dress",
+      "chandeliers",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "D dancing a close waltz in a backless black gown under crystal chandeliers.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

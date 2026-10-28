@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "amiya",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 193,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
   "data": {
     "id": "amiya",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "/assets/characters/portrait-pending.svg",
+        "image": "../assets/characters/portrait-pending.svg",
         "alt": "阿米娅 · 立绘待制作"
       },
       "visual_dna": {
@@ -1184,7 +1184,8 @@
             }
           }
         ]
-      }
+      },
+      "speech": "博士，手头的工作我整理好了。忙完这一份，我们都休息一下吧。"
     },
     "popular": {
       "id": "amiya",

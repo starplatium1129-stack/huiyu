@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "d_killer_wife/covert_honeymoon_gown",
+  "revision": 1,
+  "sortOrder": 1723,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "d_killer_wife",
+    "outfit": {
+      "characterId": "d_killer_wife",
+      "id": "covert_honeymoon_gown",
+      "name": "假面蜜月·高雅露背晚礼裙",
+      "prose": "A breathtaking backless black satin evening gown designed for undercover ballroom galas, featuring a deep slit and diamond pendant.",
+      "tokens": [
+        "black_evening_gown",
+        "backless_dress",
+        "high_slit",
+        "bare_shoulders",
+        "gold_necklace",
+        "high_heels"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

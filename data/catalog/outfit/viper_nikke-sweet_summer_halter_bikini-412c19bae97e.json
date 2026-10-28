@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "viper_nikke/sweet_summer_halter_bikini",
+  "revision": 1,
+  "sortOrder": 1719,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "viper_nikke",
+    "outfit": {
+      "characterId": "viper_nikke",
+      "id": "sweet_summer_halter_bikini",
+      "name": "盛夏甜心·亮粉挂脖系带泳装",
+      "prose": "A daring bubblegum pink halter neck bikini with heart charm accents on the hip ties and a matching thin choker.",
+      "tokens": [
+        "pink_bikini",
+        "halter_bikini",
+        "side-tie_bikini_bottom",
+        "heart_choker",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "kind": "character",
+  "id": "shinano",
+  "revision": 1,
+  "sortOrder": 216,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "shinano",
+    "profile": {
+      "id": "shinano",
+      "name": "信浓",
+      "alias": [
+        "Shinano",
+        "信浓",
+        "信浓(碧蓝航线)",
+        "しなの",
+        "信濃",
+        "shinano (azur lane)"
+      ],
+      "type": "popular",
+      "icon": "🦊",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "信浓 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "如银瀑般及膝超长发 · 宛如银月光华流转",
+        "hair_color": "银白 / 霜月银",
+        "eyes": "神秘高贵金眸 · 迷蒙中带着浩瀚星河般的眷恋",
+        "hairstyle": "披肩超长直发 · 毛茸茸雪白狐耳 · 九条极度蓬松饱满的白狐巨尾",
+        "uniform": "重樱神官天狐礼服 · 胧月十夜半透睡袍 · 浅紫软糯居家开衫",
+        "expression": "贪睡微醒时的迷蒙慵懒 · 被心上人拥入怀中时的极度安心与娇羞",
+        "style": "ethereal sleepy divine fox goddess girlfriend with fluffy tail wraps and gentle soulmate bond",
+        "signature": "及地银发、金眸狐耳、九条蓬松大狐尾与梦境依偎"
+      },
+      "personality": [
+        "重樱阵营宛若神明般受人敬仰的大和级装甲航母，天狐化身",
+        "拥有能预知与穿梭无数虚无梦境的灵能，因此在现实中常处于半睡半醒的极度慵懒状态",
+        "对指挥官怀有穿越梦境彼岸的至深宿命爱意，只有在指挥官身边才能安稳沉睡",
+        "看似清冷出尘的高贵神官，私下在被窝里却是个超喜欢撒娇、抱抱和暖桌剥橘子的小狐狸",
+        "喜欢在天冷或亲昵时用自己九条巨大的蓬松狐尾把心上人整个人密不透风地包裹取暖"
+      ],
+      "likes": [
+        "在早晨贪睡不想起，伸出双手迷迷糊糊地要指挥官晨安抱抱",
+        "冬天把指挥官拉进暖桌，用九条大尾巴严严实实裹住对方一起吃甜橘",
+        "在沐浴后被指挥官用软刷细心梳理敏感的狐耳与大尾巴毛发",
+        "夏夜祭典的花火下紧握指挥官的大手，许下生生世世的诺言",
+        "在梦境与现实的交界处，与挚爱灵魂合一的深度拥抱"
+      ],
+      "classic_cg": {
+        "title": "冬日暖桌与九尾拥抱的幸福安宁",
+        "description": "冬日飘雪的宁静和风居室内，中央暖桌散发着融融暖意。信浓身穿浅紫开衫，跪坐在你身旁。她将九条极其蓬松宽大的雪白狐尾展开，像一床厚实柔滑的天鹅绒被褥般将你整个人紧紧包裹在怀里。她微阖金眸，将剥好的一瓣甜橘喂到你嘴边，眼中尽是浓得化不开的依恋。"
+      },
+      "identity": {
+        "role": "重樱阵营装甲航母 / 天狐神明化身",
+        "age": "成年创作设定",
+        "occupation": "神官旗舰 / 命中注定的灵魂伴侣",
+        "faction": "重樱阵营（Sakura Empire）",
+        "school": "重樱神道大社（宗主）",
+        "classificationSource": "角色背景明确归属于重樱阵营旗舰。"
+      },
+      "tags": [
+        "银发",
+        "超长发",
+        "金瞳",
+        "狐耳",
+        "九尾",
+        "兽耳娘",
+        "软萌贪睡",
+        "碧蓝航线"
+      ],
+      "bg_story": "信浓是重樱阵营建造的大和级三号舰装甲航母，自诞生起便承载着重樱全族的夙愿与神圣祈福。她拥有行走于千万个平行世界梦境的奇特力量，但在冰冷无尽的预知梦中，她见证了太多毁灭与悲伤，以至于心灵常年被孤独与倦意笼罩。直到现实中的指挥官握住她的手，将她从无尽的噩梦迷雾中拉入温暖的怀抱。对信浓而言，指挥官就是她唯一停靠的港湾。成年设定下的信浓神圣而不失极具人妻感的女友魅力，愿意将自己全部的纯洁、九尾与柔情毫无保留地献给对方。",
+      "palette": [
+        "银白",
+        "天青",
+        "浅紫"
+      ],
+      "weather": [
+        "冬日暖炉",
+        "清晨薄雾",
+        "花火夏夜"
+      ],
+      "speech": "妾身乃信浓……无数次在梦中寻觅汝之身影，今日终得相逢。呼啊……好舒服，妾身的九尾……任汝随意抚摸便是。",
+      "source": "Manjuu / Yongshi《碧蓝航线 / Azur Lane》",
+      "traits": [
+        "shinano_(azur_lane)",
+        "silver_hair",
+        "very_long_hair",
+        "golden_eyes",
+        "fox_ears",
+        "multiple_tails"
+      ]
+    },
+    "popular": {
+      "id": "shinano",
+      "displayName": "信浓",
+      "originalName": "Shinano",
+      "franchise": "Azur Lane",
+      "category": "手游角色",
+      "aliases": [
+        "Shinano",
+        "信浓",
+        "信浓(碧蓝航线)",
+        "しなの",
+        "信濃",
+        "shinano (azur lane)"
+      ],
+      "exactTokens": [
+        "shinano (azur lane)"
+      ],
+      "characterTokens": [
+        "shinano (azur lane)"
+      ],
+      "copyrightTokens": [
+        "azur_lane"
+      ],
+      "identityTokens": [
+        "shinano (azur lane)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "very_long_hair",
+        "golden_eyes",
+        "fox_ears",
+        "multiple_tails"
+      ],
+      "identityProse": "Shinano from Azur Lane, the only character in the image, with cascading very long silver hair, mystical golden fox eyes, soft white fox ears, and magnificent fluffy multi-tails.",
+      "curatedArtistStyles": [
+        "dishwasher1910",
+        "swav",
+        "anmi"
+      ],
+      "animeStudio": "Azur Lane official art, Manjuu / Yongshi style",
+      "canon": {
+        "era": "重樱神代幻想航海纪元",
+        "world": "重樱阵营（Sakura Empire）· 装甲航母",
+        "formNotes": "大和级三号舰改装装甲航母；天狐神格，能漫游虚幻梦境，常处于半睡半醒的慵懒状态，深爱指挥官并喜欢用九尾包裹对方"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "sacred_miko_ceremony",
+      "negativeTokens": []
+    }
+  }
+}

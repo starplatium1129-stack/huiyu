@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kuroka/summer_black_cat_bikini",
+  "revision": 1,
+  "sortOrder": 1743,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "kuroka",
+    "outfit": {
+      "characterId": "kuroka",
+      "id": "summer_black_cat_bikini",
+      "name": "盛夏灵猫·系带猫咪比基尼",
+      "prose": "A micro string black triangle bikini with cute feline ear cutouts on the bust and narrow side-tie strings.",
+      "tokens": [
+        "black_bikini",
+        "triangle_bikini",
+        "strappy_bikini",
+        "side-tie_bikini_bottom",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

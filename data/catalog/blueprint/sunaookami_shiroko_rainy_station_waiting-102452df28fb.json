@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "sunaookami_shiroko_rainy_station_waiting",
+  "revision": 2,
+  "sortOrder": 2128,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "sunaookami_shiroko_rainy_station_waiting",
+    "characterId": "sunaookami_shiroko",
+    "outfitId": "abydos_foreclosure_uniform",
+    "title": "砂狼白子 · 雨夜车站屋檐下的贴近避雨",
+    "category": "私密温存",
+    "description": "夜雨淅淅沥沥的郊外无人车站屋檐下，潮湿的水汽与泥土香气在冷风中弥漫。白子的短发梢微微带着湿润水汽，她一言不发地贴在老师身侧，小手悄悄拉紧了老师的衣袖，将自己的狼耳轻轻靠在老师肩头。在这方寸庇护所里，两颗心跳声隔着雨声清晰可闻。",
+    "recommendedSize": "832x1216",
+    "location": "sheltered wooden bench under rainy railway station awning",
+    "action": "standing very close, holding companion sleeve, damp hair, subtle blush, peaceful quiet intimacy",
+    "timeOfDay": "night",
+    "lighting": "warm glowing station incandescent bulb reflecting on wet rain puddles",
+    "camera": "close-up",
+    "mood": "quiet romantic shelter, silent heartbeat, and breathless closeness",
+    "promptProse": "Sheltered closely under a rain-swept station roof at night, Sunaookami Shiroko clings gently to the viewer sleeve, her damp silver hair and wolf ears bathed in soft lantern glow.",
+    "promptTokens": [
+      "rain",
+      "train_station",
+      "wet_hair",
+      "blush",
+      "holding_arm",
+      "steam",
+      "night",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shiroko holding her companion arm close under the dripping station canopy at night.",
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

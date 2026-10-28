@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "izayoi_miku/casual_diva_off_shoulder_knit",
+  "revision": 1,
+  "sortOrder": 1751,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "izayoi_miku",
+    "outfit": {
+      "characterId": "izayoi_miku",
+      "id": "casual_diva_off_shoulder_knit",
+      "name": "假日私访·香芋紫落肩露锁骨针织衫",
+      "prose": "A stylish casual outfit with a soft lavender oversized off-shoulder sweater exposing delicate collarbones, paired with denim shorts.",
+      "tokens": [
+        "purple_sweater",
+        "off-shoulder_sweater",
+        "denim_shorts",
+        "choker",
+        "ankle_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

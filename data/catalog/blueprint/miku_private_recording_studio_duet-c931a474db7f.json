@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "miku_private_recording_studio_duet",
+  "revision": 1,
+  "sortOrder": 2214,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "miku_private_recording_studio_duet",
+    "characterId": "izayoi_miku",
+    "outfitId": "casual_diva_off_shoulder_knit",
+    "title": "诱宵美九 · 私人录音室的双人共鸣",
+    "category": "日常约会",
+    "description": "专业隔音录音室内暖光柔和，美九双手紧紧挽住你的手臂。两人共戴一副监听耳机，她紫发双马尾垂在胸前，紫晶眼眸盈满深情，与你轻声合唱着定情曲。",
+    "recommendedSize": "832x1216",
+    "location": "private luxury soundproof recording studio",
+    "action": "sharing studio headphones, clinging to partner arm, singing closely into microphone, loving star-struck gaze",
+    "timeOfDay": "afternoon",
+    "lighting": "warm moody acoustic studio lights with glowing equipment dials",
+    "camera": "cowboy_shot",
+    "mood": "intimate musical harmony, superstar girlfriend romance, tender devotion",
+    "promptProse": "Sharing studio headphones in a cozy recording booth, Miku Izayoi clings to partner arm, singing tenderly with glowing purple eyes.",
+    "promptTokens": [
+      "recording_studio",
+      "headphones",
+      "clinging_to_arm",
+      "microphone",
+      "singing",
+      "purple_sweater",
+      "sweet_smile",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Miku Izayoi singing a sweet duet while sharing headphones in a recording booth.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

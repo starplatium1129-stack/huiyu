@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "yukina_morning_sheets_sweet_confession",
+  "revision": 1,
+  "sortOrder": 2195,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "yukina_morning_sheets_sweet_confession",
+    "characterId": "himeragi_yukina",
+    "outfitId": "pure_white_cotton_camisole",
+    "title": "姬柊雪菜 · 晨光被单的永恒监视誓言",
+    "category": "私密温存",
+    "description": "清晨的薄光洒满凌乱的双人床。初尝禁果后的雪菜眼角含着动情的泪花，双手紧扣你的手掌，在发烫的耳语中羞涩低喃：“从今往后……雪菜会以妻子的身份，一辈子监视着前辈。”",
+    "recommendedSize": "832x1216",
+    "location": "sunlit morning bedroom with rumpled white linen sheets",
+    "action": "lying tangled under white sheets, interlocking fingers, teary blissful expression, blushing ears, breathless whisper",
+    "timeOfDay": "morning",
+    "lighting": "soft serene morning sunlight washing over tangled sheets and flushed skin",
+    "camera": "close-up",
+    "mood": "sacred romantic vow, heavenly morning peace, profound mutual devotion",
+    "promptProse": "Tangled in white morning sheets with interlocked fingers, Yukina sheds tears of ecstasy and happiness, whispering her eternal love vow.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "interlocked_fingers",
+      "bare_shoulders",
+      "tears_of_happiness",
+      "blushing_heavily",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Yukina whispering an eternal love vow in morning sheets with joyful tears.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

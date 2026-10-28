@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kakudate_karin/silk_bath_robe",
+  "revision": 1,
+  "sortOrder": 1680,
+  "createdAt": "2026-10-27T16:25:00+00:00",
+  "updatedAt": "2026-10-27T16:25:04.800168800+00:00",
+  "data": {
+    "characterId": "kakudate_karin",
+    "outfit": {
+      "characterId": "kakudate_karin",
+      "id": "silk_bath_robe",
+      "name": "奢华套房纯白丝绸睡袍",
+      "prose": "A flowing pure-white silk kimono bath robe loosely tied with a sash, draped over her dark-tanned shoulders and collarbones, showcasing bare legs in the warm room light.",
+      "tokens": [
+        "white silk robe",
+        "robe",
+        "silk robe",
+        "bare shoulders",
+        "collarbone",
+        "bare legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

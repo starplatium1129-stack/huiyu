@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kuroneko/queen_of_nightmare_gothic_lolita",
+  "revision": 1,
+  "sortOrder": 1781,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "kuroneko",
+    "outfit": {
+      "characterId": "kuroneko",
+      "id": "queen_of_nightmare_gothic_lolita",
+      "name": "夜魔女王·经典暗夜黑蔷薇哥特萝莉长裙",
+      "prose": "Her iconic Gothic Lolita dress in midnight black with tiered frills, white lace trims, a rose headband, and a Victorian crucifix necklace.",
+      "tokens": [
+        "gothic_lolita",
+        "black_dress",
+        "frilled_dress",
+        "headband",
+        "lace_trim",
+        "long_sleeves",
+        "corset",
+        "cross_necklace"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

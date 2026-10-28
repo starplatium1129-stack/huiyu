@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "himeragi_yukina/summer_resort_white_bikini",
+  "revision": 1,
+  "sortOrder": 1735,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "himeragi_yukina",
+    "outfit": {
+      "characterId": "himeragi_yukina",
+      "id": "summer_resort_white_bikini",
+      "name": "南国海滨·纯白荷叶边比基尼",
+      "prose": "A lovely pure white halter bikini detailed with delicate frills along the top and narrow side ties on the bottoms.",
+      "tokens": [
+        "white_bikini",
+        "frilled_bikini",
+        "halter_bikini",
+        "side-tie_bikini_bottom",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

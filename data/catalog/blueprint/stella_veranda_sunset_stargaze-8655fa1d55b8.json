@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "stella_veranda_sunset_stargaze",
+  "revision": 1,
+  "sortOrder": 2186,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "stella_veranda_sunset_stargaze",
+    "characterId": "stella_vermillion",
+    "outfitId": "vermillion_royal_gown",
+    "title": "史黛菈 · 宿所阳台的落日许诺",
+    "category": "浪漫约会",
+    "description": "黄昏落日将天际烧成金红，身穿绯红晚礼服的史黛菈轻轻把头靠在你的肩膀上。晚风吹拂着双马尾，她轻声诉说着想要与你并肩踏上世界巅峰、一生相随的心愿。",
+    "recommendedSize": "832x1216",
+    "location": "dormitory suite terrace at golden dusk",
+    "action": "leaning head on partner shoulder, looking out at orange sky, gentle contented expression, breeze in red hair",
+    "timeOfDay": "sunset",
+    "lighting": "rich fiery sunset orange glow washing over gown and skin",
+    "camera": "medium_shot",
+    "mood": "unbreakable romantic vow, warm tranquility, deep soulmate bond",
+    "promptProse": "Leaning her head on partner shoulder on a dusk balcony, Stella gazes at the crimson sunset with a serene, devoted smile.",
+    "promptTokens": [
+      "balcony",
+      "leaning_on_shoulder",
+      "sunset",
+      "golden_hour",
+      "gentle_smile",
+      "dusk",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Stella resting her head on partner shoulder watching the crimson sunset.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

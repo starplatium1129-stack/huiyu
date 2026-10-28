@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "astraea_living_room_lap_cuddle_kiss",
+  "revision": 1,
+  "sortOrder": 2211,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "astraea_living_room_lap_cuddle_kiss",
+    "characterId": "astraea",
+    "outfitId": "cozy_domestic_fluffy_knit",
+    "title": "阿斯特蕾亚 · 客厅地毯的笨拙热抱",
+    "category": "私密温存",
+    "description": "客厅柔软的地毯上，大毛衣滑落肩膀。笨拙的天使双手紧紧圈住你的脖子扑倒在你怀里，羽翼激动地扑棱轻颤，双颊泛着滚烫的红晕，急切又甜美地吻住你的唇瓣。",
+    "recommendedSize": "832x1216",
+    "location": "warm living room carpet beside cozy sofa",
+    "action": "straddling partner on carpet, off-shoulder sweater, wings trembling with excitement, passionate clumsy kiss, blushing furiously",
+    "timeOfDay": "night",
+    "lighting": "warm amber floor lamp casting cozy domestic shadows",
+    "camera": "close-up",
+    "mood": "clumsy puppy-like passion, overwhelming love, sweet needy embrace",
+    "promptProse": "Straddling partner on a living room carpet with her sweater slipping off, Astraea kisses eagerly with flushed cheeks and trembling angel wings.",
+    "promptTokens": [
+      "living_room",
+      "sitting_on_lap",
+      "straddling",
+      "off-shoulder",
+      "angel_wings",
+      "passionate_kiss",
+      "blushing_heavily",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Astraea kissing partner passionately on the living room rug with trembling wings.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

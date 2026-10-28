@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "astraea_park_lawn_nap_wings_cover",
+  "revision": 1,
+  "sortOrder": 2209,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "astraea_park_lawn_nap_wings_cover",
+    "characterId": "astraea",
+    "outfitId": "cozy_domestic_fluffy_knit",
+    "title": "阿斯特蕾亚 · 草坪暖阳的羽翼遮阳伞",
+    "category": "日常约会",
+    "description": "绿草如茵的小镇山坡上，阿斯特蕾亚与你并肩躺在草地上。她展开两面巨大洁白的羽毛翅膀，像轻柔的毛毯般将你遮挡住刺眼的阳光，像小狗一样亲昵地蹭着你的手臂。",
+    "recommendedSize": "832x1216",
+    "location": "grassy meadow hill under wide summer sky",
+    "action": "lying on grass side by side, wrapping large white angel wings overhead to shade partner, nuzzling arm affectionately",
+    "timeOfDay": "day",
+    "lighting": "brilliant summer daylight diffused softly by translucent white feathers",
+    "camera": "medium_shot",
+    "mood": "peaceful angelic devotion, supreme tenderness, warm idyllic nap",
+    "promptProse": "Lying in a wildflower meadow, Astraea wraps her huge white wings around partner to provide shade, smiling with pure dog-like devotion.",
+    "promptTokens": [
+      "meadow",
+      "lying_on_grass",
+      "angel_wings",
+      "wings_wrapped_around",
+      "nuzzling",
+      "happy_smile",
+      "sunny_day",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Astraea shielding partner from the sun with large white wings on a grassy hill.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

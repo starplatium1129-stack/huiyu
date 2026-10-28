@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kuroka_tatami_drunken_straddle_lap",
+  "revision": 1,
+  "sortOrder": 2205,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "kuroka_tatami_drunken_straddle_lap",
+    "characterId": "kuroka",
+    "outfitId": "loose_black_kimono",
+    "title": "黑歌 · 榻榻米间的微醺跨坐索爱",
+    "category": "私密温存",
+    "description": "和风寝殿榻榻米上酒香弥漫，和服衣襟完全敞开露出丰盈雪肌。微醺的黑歌跨坐在你的大腿上，两条黑尾巴死死缠在你的腰际，金眸醉眼迷离地低头含住你的双唇索吻。",
+    "recommendedSize": "832x1216",
+    "location": "private tatami room with overturned sake cup",
+    "action": "straddling partner lap with kimono wide open, twin cat tails wrapping around partner waist, drunken flushed cheeks, demanding deep kiss",
+    "timeOfDay": "night",
+    "lighting": "dim amber paper lantern glow highlighting glistening dewy skin",
+    "camera": "close-up",
+    "mood": "intoxicated feline lust, disarmed sensual passion, possessive seduction",
+    "promptProse": "Straddling partner lap on tatami with her kimono wide open, tipsy Kuroka wraps twin tails around his waist in a breathless deep kiss.",
+    "promptTokens": [
+      "tatami",
+      "sitting_on_lap",
+      "straddling",
+      "open_kimono",
+      "bare_shoulders",
+      "cat_ears",
+      "two_tails",
+      "blushing_heavily",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kuroka straddling partner lap on tatami with an open kimono in a deep kiss.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

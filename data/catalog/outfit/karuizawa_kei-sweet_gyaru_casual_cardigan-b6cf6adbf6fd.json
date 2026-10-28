@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "karuizawa_kei/sweet_gyaru_casual_cardigan",
+  "revision": 1,
+  "sortOrder": 1766,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "karuizawa_kei",
+    "outfit": {
+      "characterId": "karuizawa_kei",
+      "id": "sweet_gyaru_casual_cardigan",
+      "name": "甜辣萌妹·米白厚针织开衫百褶短裙",
+      "prose": "A fashionable slouchy beige knit cardigan worn loosely off one shoulder over a fitted camisole, stylish plaid mini skirt, and cute hair scrunchie.",
+      "tokens": [
+        "cardigan",
+        "oversized_cardigan",
+        "beige_cardigan",
+        "plaid_skirt",
+        "short_skirt",
+        "hair_scrunchie",
+        "collarbone"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

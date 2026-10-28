@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "scarlet_nikke/cozy_summer_camisole",
+  "revision": 1,
+  "sortOrder": 1700,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "characterId": "scarlet_nikke",
+    "outfit": {
+      "characterId": "scarlet_nikke",
+      "id": "cozy_summer_camisole",
+      "name": "居家私密·丝质细吊带睡裙",
+      "prose": "A lightweight crimson silk camisole slip dress with delicate lace edging, thin spaghetti shoulder straps, and a short ruffled hem.",
+      "tokens": [
+        "silk_camisole",
+        "spaghetti_strap",
+        "short_nightgown",
+        "lace_trim",
+        "bare_legs",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

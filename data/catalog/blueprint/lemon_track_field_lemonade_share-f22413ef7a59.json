@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "lemon_track_field_lemonade_share",
+  "revision": 1,
+  "sortOrder": 2274,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "lemon_track_field_lemonade_share",
+    "characterId": "yakishio_lemon",
+    "outfitId": "track_and_field_athletic_wear",
+    "title": "烧盐柠檬 · 田径场看台的冰柠檬汽水分享",
+    "category": "校园日常",
+    "description": "夕阳斜照的学校田径场看台上，满身微汗的烧盐柠檬将刚开罐冒着冷气的柠檬汽水递到你唇边。少女迎着落日余晖灿烂大笑，眼神真挚而明媚。",
+    "recommendedSize": "832x1216",
+    "location": "school stadium bleachers overlooking running track at sunset",
+    "action": "sitting on stadium bleachers after track practice, sharing a cold can of lemonade, laughing warmly with glowing tanned skin under sunset",
+    "timeOfDay": "sunset",
+    "lighting": "radiant golden hour sunlight illuminating sweat droplets and tanned shoulders",
+    "camera": "medium_shot",
+    "mood": "invigorating summer romance, youthful athletic camaraderie, sweet heart-pounding sincerity",
+    "promptProse": "Sitting on stadium bleachers at sunset, tanned Lemon Yakishio shares a cold lemonade with partner, laughing with joyful radiant brown eyes.",
+    "promptTokens": [
+      "stadium",
+      "bleachers",
+      "track_field",
+      "sitting",
+      "holding_drink",
+      "canned_drink",
+      "sweat",
+      "laughing",
+      "sunset",
+      "golden_hour",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Lemon Yakishio laughing happily while sharing lemonade on bleachers.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

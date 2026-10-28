@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "rossweisse/summer_silver_blue_bikini",
+  "revision": 1,
+  "sortOrder": 1759,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "rossweisse",
+    "outfit": {
+      "characterId": "rossweisse",
+      "id": "summer_silver_blue_bikini",
+      "name": "盛夏海滨·银蓝优雅露背比基尼",
+      "prose": "A stunning royal blue and silver halterneck bikini with delicate side-tie strings, accentuating her mature Nordic hourglass figure and fair skin.",
+      "tokens": [
+        "bikini",
+        "halterneck_bikini",
+        "blue_bikini",
+        "silver_trim",
+        "side-tie_bikini_bottom",
+        "collarbone",
+        "cleavage"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hashima_izumi/otaku_artist_casual_tshirt_skirt",
+  "revision": 1,
+  "sortOrder": 1814,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "hashima_izumi",
+    "outfit": {
+      "characterId": "hashima_izumi",
+      "id": "otaku_artist_casual_tshirt_skirt",
+      "name": "画师便装·同人展印花短T与百褶裙",
+      "prose": "A cute casual graphic T-shirt tucked into a pleated pastel plaid skirt, with drawing wrist guard and crossbody artist bag.",
+      "tokens": [
+        "t-shirt",
+        "graphic_t-shirt",
+        "plaid_skirt",
+        "pleated_skirt",
+        "bare_legs",
+        "sneakers",
+        "collarbone",
+        "twintails"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

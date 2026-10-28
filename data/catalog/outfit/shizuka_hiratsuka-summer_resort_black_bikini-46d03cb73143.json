@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "shizuka_hiratsuka/summer_resort_black_bikini",
+  "revision": 1,
+  "sortOrder": 1771,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "shizuka_hiratsuka",
+    "outfit": {
+      "characterId": "shizuka_hiratsuka",
+      "id": "summer_resort_black_bikini",
+      "name": "盛夏海风·成熟黑色细带露背比基尼",
+      "prose": "A mature jet-black halterneck bikini with thin backless straps, highlighting her toned athletic curves and striking feminine silhouette.",
+      "tokens": [
+        "bikini",
+        "black_bikini",
+        "halterneck_bikini",
+        "backless",
+        "cleavage",
+        "toned_body",
+        "side-tie_bikini_bottom"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

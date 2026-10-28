@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "kurodate_haruna_ballroom_wine_toast",
+  "revision": 2,
+  "sortOrder": 2120,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "kurodate_haruna_ballroom_wine_toast",
+    "characterId": "kurodate_haruna",
+    "outfitId": "gourmet_banquet_qipao",
+    "title": "黑馆晴奈 · 迎宾舞厅的红酒祝酒回眸",
+    "category": "礼服名流",
+    "description": "政商名流云集的迎宾宴会厅，金碧辉煌的宫殿穹顶下乐声悠扬。晴奈换上一袭深蓝近夜色、带金色牡丹刺绣的高叉露背旗袍，美背白皙耀目，曲线高挑迷人。她单手举起盛着醇厚红酒的高脚杯向身侧的老师侧身祝酒，猩红美眸中闪烁着致命的诱惑与心动。",
+    "recommendedSize": "832x1216",
+    "location": "opulent royal palace ballroom banquet",
+    "action": "raising red wine glass in elegant toast, turning back, showing backless cut, charming smile",
+    "timeOfDay": "night",
+    "lighting": "dazzling golden palace chandeliers casting rich warm highlights",
+    "camera": "cowboy_shot",
+    "mood": "dazzling high-society glamour, seductive royalty, and captivating grace",
+    "promptProse": "Inside a grand golden banquet hall, Kurodate Haruna turns gracefully in her backless midnight-blue silk dress, raising a crystal wine glass with an intoxicating gaze.",
+    "promptTokens": [
+      "holding_wine_glass",
+      "ballroom",
+      "chandelier",
+      "looking_back",
+      "charming_smile",
+      "night",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Haruna turning gracefully with a raised wine glass under grand chandeliers.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

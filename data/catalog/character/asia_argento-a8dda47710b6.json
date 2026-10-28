@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "asia_argento",
+  "revision": 1,
+  "sortOrder": 231,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "asia_argento",
+    "profile": {
+      "id": "asia_argento",
+      "name": "爱西亚·阿基多",
+      "alias": [
+        "Asia Argento",
+        "爱西亚·阿基多",
+        "爱西亚",
+        "亚细亚",
+        "アーシア・アルジェント",
+        "asia argento"
+      ],
+      "type": "popular",
+      "icon": "✨",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "爱西亚·阿基多 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "柔顺纯金及腰长发 · 额前齐刘海 · 散发圣洁纯真光晕",
+        "hair_color": "纯金 / 暖金",
+        "eyes": "无瑕纯澈祖母绿双眸 · 满溢令人心碎的治愈与依恋",
+        "hairstyle": "柔顺齐刘海及腰长直金发 · 清纯柔和 · 宛若天使降世",
+        "uniform": "圣洁黑白修女长袍 · 温柔浅粉针织开衫小花裙 · 纯白棉质荷叶边睡裙",
+        "expression": "惹人怜爱的纯洁羞涩 · 满心满眼只有一诚君的绝对奉献与甜美依恋",
+        "style": "angelic devoted healer girlfriend with pure innocent modesty, profound selfless love, and sacred trembling surrender",
+        "signature": "金发绿眸修女、圣母的微笑、满怀全心全意的依赖与纯白温存"
+      },
+      "personality": [
+        "圣洁纯真的治愈修女",
+        "毫无保留奉献一切的纯爱小妻子",
+        "害羞但面对爱意勇敢坚定的执着",
+        "令人心生极度保护欲的纯白之花"
+      ],
+      "likes": [
+        "在教堂庭院采集野花供奉",
+        "为一诚君亲手缝补衣物与做便当",
+        "被一诚君紧紧牵着手走在阳光下",
+        "双手合十为两人的未来安宁祈祷"
+      ],
+      "classic_cg": {
+        "title": "圣洁修女服下的纯白心迹奉献",
+        "description": "摇曳的烛光卧室内，爱西亚解开修女头巾，纯金长发如瀑布散落。少女在胸前双手合十，眼角泛着幸福的泪花，用轻柔而颤抖的声音宣告：“无论去往天国还是地狱……爱西亚身心全部都属于一诚君一个人。”"
+      },
+      "identity": {
+        "role": "前天主教修女 / 神器「圣母的微笑」持有者 / 吉蒙里眷属主教",
+        "age": "成年初熟纯洁设定",
+        "occupation": "修女 / 驹王学园学生 / 吉蒙里眷属",
+        "faction": "天主教教会 / 吉蒙里眷属"
+      },
+      "tags": [
+        "金发",
+        "绿瞳",
+        "修女",
+        "治愈系",
+        "纯情",
+        "小娇妻",
+        "全心奉献",
+        "恶魔高校"
+      ],
+      "bg_story": "爱西亚·阿基多是《恶魔高校 DxD》中无上圣洁与治愈的核心女主角。自幼在修道院作为孤儿被抚养长大，因觉醒了能治愈任何伤病乃至恶魔的神器「圣母的微笑」，被教会视为异端而惨遭残忍放逐。在绝望流浪至极东之地时与兵藤一诚相遇，被一诚纯粹真诚的善意与温柔彻底拯救，自此一诚成为了她照亮生命的唯一神明。转生为吉蒙里眷属主教后，爱西亚以其无瑕的善良感动了所有人。她虽然胆怯害羞，但只要涉及对一诚的爱与守候，便会爆发出超乎想象的勇气与坚定。在私密同居生活中，她以毫无保留的纯洁柔情包容着爱人，是任何疲惫心灵永恒的圣洁归宿。",
+      "palette": [
+        "纯金",
+        "翡翠绿",
+        "纯白",
+        "圣洁黑"
+      ],
+      "weather": [
+        "教堂暖阳",
+        "微风花园",
+        "烛光暖夜"
+      ],
+      "speech": "一诚君……哪怕被全世界的神明抛弃，只要能留在您的身边，爱西亚就是全宇宙最幸福的女孩子！",
+      "source": "High School DxD",
+      "traits": [
+        "圣洁治愈修女",
+        "金发瀑布翡翠绿眸",
+        "圣母微笑绝对奉献",
+        "纯白小娇妻",
+        "全心全意守候一诚"
+      ]
+    },
+    "popular": {
+      "id": "asia_argento",
+      "displayName": "爱西亚·阿基多",
+      "originalName": "Asia Argento",
+      "franchise": "High School DxD",
+      "category": "动漫角色",
+      "aliases": [
+        "Asia Argento",
+        "爱西亚·阿基多",
+        "爱西亚",
+        "亚细亚",
+        "アーシア・アルジェント",
+        "asia argento"
+      ],
+      "exactTokens": [
+        "asia_argento"
+      ],
+      "characterTokens": [
+        "asia_argento"
+      ],
+      "copyrightTokens": [
+        "high_school_dxd"
+      ],
+      "identityTokens": [
+        "asia_argento",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "green_eyes"
+      ],
+      "identityProse": "Asia Argento from High School DxD, the only character in the image, with long straight blonde hair and bangs, pure emerald green eyes, and an angelic, sweetly devoted girlfriend innocence.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "tinkle"
+      ],
+      "animeStudio": "TNK / Passione official anime style, High School DxD character art",
+      "canon": {
+        "era": "驹王学园神魔共生纪元",
+        "world": "极东·吉蒙里豪宅与驹王学园",
+        "formNotes": "金发齐刘海翡翠绿眸，圣洁纯真修女，全心奉献的小娇妻"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "holy_nun_habit",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

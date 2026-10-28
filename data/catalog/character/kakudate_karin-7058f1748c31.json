@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "kakudate_karin",
+  "revision": 4,
+  "sortOrder": 209,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
+  "data": {
+    "id": "kakudate_karin",
+    "profile": {
+      "id": "kakudate_karin",
+      "name": "角楯花凛",
+      "alias": [
+        "Kakudate Karin",
+        "花凛",
+        "角楯カリン",
+        "カリン",
+        "C&C 02"
+      ],
+      "type": "popular",
+      "icon": "🎯",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "角楯花凛 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "纯白无瑕的及踝直长发 · 两侧精巧细发辫自然垂散",
+        "hair_color": "纯白",
+        "eyes": "耀眼清澈的熔金色眼眸 · 嘴角右下方一颗诱人美人痣",
+        "hairstyle": "极长直白发 · 细麻花发辫 · 机械羽翼科技光环",
+        "uniform": "C&C 战术特勤高叉女仆装 · 超长紧绷黑丝过膝袜 · 战术大腿枪套",
+        "expression": "沉稳冷静 · 临战果断 · 被赞赏时极度羞涩反差",
+        "style": "tanned athletic tactical maid sniper with golden gaze",
+        "signature": "深小麦色健美肌肤、白长发、金瞳、美人痣与高叉女仆装"
+      },
+      "personality": [
+        "性格沉着冷静、不苟言笑的高级特勤专家",
+        "拥有超远距离百步穿杨的恐怖狙击造诣与战场直觉",
+        "外表高挑冷艳，实则对微小算术与理论测试感到苦手、心思极为单纯",
+        "对待主人（老师）忠心不二，极易因直球夸奖而脸颊通红、手足无措",
+        "成年后身材更加高挑曼妙，兼具特工的致命锋芒与极致人妻的体贴"
+      ],
+      "likes": [
+        "在极高建筑顶部架设重型反器材狙击枪巡视全城",
+        "被老师抚摸头顶由衷称赞「任务辛苦了」的时刻",
+        "擦拭保养得一尘不染的战术瞄准镜与枪械零件",
+        "与明日奈并肩执行完美的潜入配合",
+        "在训练后的淋浴间洗净汗水换上宽松便服喝冰水"
+      ],
+      "classic_cg": {
+        "title": "摩天楼顶的战术架枪与炽金凝望",
+        "description": "学园都市百米摩天楼边缘，高空夜风将长长的白发与女仆围裙猛烈扬起。花凛单膝跪地抵住沉重的反器材狙击步枪，小麦色的健美肌肤在冷光下线条分明。她微微侧过头，熔金般的眼眸隔着夜色凝望向身后赶来的老师，嘴角下方的美人痣在月光下格外动人心魄。"
+      },
+      "identity": {
+        "role": "千年科学学园秘密特勤组 C&C 特工（代号 02）/ 远程火力支援专家",
+        "age": "成年创作设定",
+        "occupation": "秘密特工 / 战斗女仆 / 高级战术狙击指导",
+        "faction": "基沃托斯 · 千年科技学园秘密特勤部（Cleaning & Clearing）",
+        "school": "千年科学学园",
+        "classificationSource": "本角色档案 identity.faction 中明确记载的学院；统一学院名称写法。"
+      },
+      "tags": [
+        "小麦色肌肤",
+        "白长发",
+        "金瞳",
+        "美人痣",
+        "女仆装",
+        "黑丝",
+        "兔女郎",
+        "狙击手"
+      ],
+      "bg_story": "角楯花凛是千年科技学园特勤组织C&C的核心特工（代号02），以无懈可击的高空超远距离狙击能力威震基沃托斯。尽管在理论计算方面偶尔会感到头疼，但在危机四伏的实战演习与潜入作战中，花凛凭借沉着过硬的心理素质与惊人弹道预判，数次在千钧一发之际为夏莱老师扫平致命阻碍。在豪华游轮潜入任务中，花凛换上破圈的高叉兔女郎伪装，展现出令全场惊艳的曼妙身材与沉稳风范。成年后的花凛更加熟稔从容，身材曲线更加性感健美，但无论身份如何变迁，这位平日冷酷精准的神枪手女仆，面对心爱的老师时依然会因为一句真挚的夸赞而耳根滚烫。在战斗之外，她甘愿成为守护老师生命与安宁的最锋利之盾与最温柔的归宿。",
+      "palette": [
+        "小麦色",
+        "雪白",
+        "纯黑",
+        "熔金"
+      ],
+      "weather": [
+        "高楼晴空",
+        "暗夜霓虹",
+        "晨昏私室"
+      ],
+      "speech": "C&C所属，角楯花凛。今日狙击任务与护卫工作已准备就绪……主人，请尽管向我下达指示。",
+      "source": "Blue Archive",
+      "traits": [
+        "dark_skin",
+        "white_hair",
+        "very_long_hair",
+        "yellow_eyes",
+        "mole_under_mouth",
+        "halo"
+      ]
+    },
+    "popular": {
+      "id": "kakudate_karin",
+      "displayName": "角楯花凛",
+      "originalName": "Kakudate Karin",
+      "franchise": "Blue Archive",
+      "category": "手游角色",
+      "aliases": [
+        "Kakudate Karin",
+        "角楯花凛",
+        "角楯カリン",
+        "花凛",
+        "karin (blue archive)"
+      ],
+      "exactTokens": [
+        "kakudate_karin"
+      ],
+      "characterTokens": [
+        "kakudate_karin",
+        "karin (blue archive)"
+      ],
+      "copyrightTokens": [
+        "blue_archive"
+      ],
+      "identityTokens": [
+        "kakudate_karin",
+        "1girl",
+        "solo",
+        "dark_skin",
+        "white_hair",
+        "very_long_hair",
+        "yellow_eyes",
+        "halo",
+        "mole_under_mouth"
+      ],
+      "identityProse": "Kakudate Karin from Blue Archive, the only character in the image, with radiant dark skin, long white hair, sharp yellow eyes, a mole under her mouth, and a glowing halo.",
+      "curatedArtistStyles": [
+        "kakao",
+        "mika_pikazo",
+        "morikura_en"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "world": "基沃托斯（Kivotos）· 千年科技学园",
+        "formNotes": "C&C 特勤狙击手，深肤色高挑健美，冷艳精准却对直球夸奖害羞"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "candc_maid_uniform",
+      "negativeTokens": []
+    }
+  }
+}

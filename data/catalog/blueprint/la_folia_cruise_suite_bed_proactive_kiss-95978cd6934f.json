@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "la_folia_cruise_suite_bed_proactive_kiss",
+  "revision": 1,
+  "sortOrder": 2199,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "la_folia_cruise_suite_bed_proactive_kiss",
+    "characterId": "la_folia_rihavein",
+    "outfitId": "aldikia_royal_uniform",
+    "title": "拉·芙利亚 · 游轮套房的逆推强吻",
+    "category": "私密温存",
+    "description": "游轮豪华套房门合上的瞬间，拉·芙利亚毫不犹豫地将你按在天鹅绒大床中央。军装披风散落，银发如瀑倾泻，她跨坐在身前，霸气俯身夺取缠绵深吻。",
+    "recommendedSize": "832x1216",
+    "location": "luxury cruise liner master stateroom",
+    "action": "pushing partner onto velvet bed, straddling lap with open military jacket, kissing hungrily with breathless royal passion",
+    "timeOfDay": "night",
+    "lighting": "soft bedside sconces illuminating silk bedcovers and flowing silver hair",
+    "camera": "close-up",
+    "mood": "dominant royal seduction, breathless passion, assertive romantic possession",
+    "promptProse": "Pushing partner onto a velvet bed in a stateroom, La Folia straddles his lap with her jacket unbuttoned, claiming a deep passionate kiss.",
+    "promptTokens": [
+      "bedroom",
+      "sitting_on_lap",
+      "straddling",
+      "open_jacket",
+      "passionate_kiss",
+      "blushing",
+      "warm_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "La Folia straddling partner passionately on a velvet bed in an open jacket.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

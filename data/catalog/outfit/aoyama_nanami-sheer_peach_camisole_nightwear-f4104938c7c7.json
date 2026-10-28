@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "aoyama_nanami/sheer_peach_camisole_nightwear",
+  "revision": 1,
+  "sortOrder": 1800,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "aoyama_nanami",
+    "outfit": {
+      "characterId": "aoyama_nanami",
+      "id": "sheer_peach_camisole_nightwear",
+      "name": "私密闺房·粉桃真丝细带吊带睡裙",
+      "prose": "A soft peach silk camisole slip dress trimmed with fine white lace, draping gently over her curves with loose ponytail resting on shoulder.",
+      "tokens": [
+        "nightgown",
+        "camisole",
+        "silk_slip",
+        "pink_dress",
+        "lace_trim",
+        "thin_straps",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

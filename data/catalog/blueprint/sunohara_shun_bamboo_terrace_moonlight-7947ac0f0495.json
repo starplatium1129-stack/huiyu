@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "sunohara_shun_bamboo_terrace_moonlight",
+  "revision": 2,
+  "sortOrder": 2114,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "sunohara_shun_bamboo_terrace_moonlight",
+    "characterId": "sunohara_shun",
+    "outfitId": "plum_garden_qipao_robe",
+    "title": "春原瞬 · 竹影月台的晚风侧颜",
+    "category": "古风月色",
+    "description": "高悬于山海经楼阁之上的露天竹影月台，夜空皎洁如银的圆月洒下清辉。瞬迎风而立，单手握着一把精巧的泥金折扇半遮朱唇，长达脚踝的如墨青丝在夜风中徐徐飘舞。她回首望向步入露台的老师，眼角泪痣在月光下分外动人，流露出风华绝代的大家风范。",
+    "recommendedSize": "1216x832",
+    "location": "high wooden palace terrace surrounded by bamboo under full moon",
+    "action": "standing near railing with folding fan, windblown ankle-length black hair, looking back",
+    "timeOfDay": "night",
+    "lighting": "ethereal silver moonlight and warm hanging paper lantern glow",
+    "camera": "cowboy_shot",
+    "mood": "breathtaking classical elegance and poetic romantic allure",
+    "promptProse": "Under a full moon on a high palace terrace framed by bamboo, Sunohara Shun turns gracefully with a folding fan, her ankle-length black hair trailing in the cool breeze.",
+    "promptTokens": [
+      "terrace",
+      "bamboo",
+      "night_sky",
+      "full_moon",
+      "moonlight",
+      "holding_fan",
+      "looking_back",
+      "night",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shun looking back gracefully holding a folding fan on the moonlit bamboo terrace.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

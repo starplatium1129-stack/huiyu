@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "st_louis_penthouse_wine_toast",
+  "revision": 1,
+  "sortOrder": 2161,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "st_louis_penthouse_wine_toast",
+    "characterId": "st_louis_azur",
+    "outfitId": "luxurious_wheels_cocktail",
+    "title": "圣路易斯 · 顶层酒廊的香槟私语",
+    "category": "浪漫约会",
+    "description": "俯瞰繁华都市夜景的云端高空酒廊，身着深蓝高开衩晚礼裙的圣路易斯轻倚吧台。她端起香槟杯与你轻轻相碰，清脆的声音掩盖不住她眼底浓烈温柔的爱意。",
+    "recommendedSize": "832x1216",
+    "location": "skyline luxury penthouse lounge at night",
+    "action": "standing by floor-to-ceiling window overlooking city lights, clinking champagne flutes, alluring eye contact with mole under mouth prominent",
+    "timeOfDay": "night",
+    "lighting": "glamorous amber chandelier glow blending with neon city panorama",
+    "camera": "medium_shot",
+    "mood": "sophisticated high-society romance, captivating allure, quiet devotion",
+    "promptProse": "Standing by a high penthouse window in an elegant blue gown, St. Louis clinks champagne glasses with partner with an alluring gaze.",
+    "promptTokens": [
+      "penthouse",
+      "city_lights",
+      "holding_wine_glass",
+      "toast",
+      "flirtatious_smile",
+      "night_skyline",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "St. Louis toasting champagne in a glamorous evening gown against city lights.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

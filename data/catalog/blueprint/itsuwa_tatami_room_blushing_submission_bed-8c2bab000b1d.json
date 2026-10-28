@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "itsuwa_tatami_room_blushing_submission_bed",
+  "revision": 1,
+  "sortOrder": 2295,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "itsuwa_tatami_room_blushing_submission_bed",
+    "characterId": "itsuwa",
+    "outfitId": "pure_white_cotton_nightdress",
+    "title": "五和 · 榻榻米被褥间的纯白羞涩献身",
+    "category": "私密温存",
+    "description": "静谧的日式卧室内暖光微昏。纯白棉质吊带睡裙从雪白香肩彻底滑落，双手按在胸前轻颤的五和满面绯红，眼泛泪光地依偎在你的胸膛上，软软低语“请让我……成为上条先生真正的人吧”。",
+    "recommendedSize": "832x1216",
+    "location": "traditional Japanese bedroom with soft white futon",
+    "action": "kneeling on futon with nightgown slipping off bare shoulders, tearful eyes looking up with breathless blushing submission and unconditional love",
+    "timeOfDay": "night",
+    "lighting": "soft warm amber floor lamp illuminating pale curves and flushed cheeks",
+    "camera": "close-up",
+    "mood": "pure sacred devotion, breathtaking maiden surrender, heartfelt lovers consummation",
+    "promptProse": "Kneeling on futon with white nightgown slipping off bare shoulders, Itsuwa blushes heavily with tearful devoted eyes and passionate kisses.",
+    "promptTokens": [
+      "tatami",
+      "futon",
+      "bare_shoulders",
+      "clinging_closely",
+      "tears_of_happiness",
+      "blushing_heavily",
+      "panting",
+      "dim_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Itsuwa with bare shoulders on futon in loving tearful submission.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

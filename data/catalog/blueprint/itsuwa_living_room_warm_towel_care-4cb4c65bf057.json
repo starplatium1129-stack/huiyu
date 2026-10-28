@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "itsuwa_living_room_warm_towel_care",
+  "revision": 1,
+  "sortOrder": 2292,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "itsuwa_living_room_warm_towel_care",
+    "characterId": "itsuwa",
+    "outfitId": "devoted_towel_maid_apron",
+    "title": "五和 · 客厅榻榻米上的热毛巾悉心照料",
+    "category": "现代日常",
+    "description": "温馨的单身公寓榻榻米上，围着围裙的五和跪坐在你身前，双手捧着冒着白气的热毛巾，温柔地为你擦拭脸颊与双手。少女眼波如水，满面通红却透着令人心融的极度贤惠。",
+    "recommendedSize": "832x1216",
+    "location": "warm domestic tatami living room with steaming kettle",
+    "action": "kneeling on tatami, gently wiping partner face and hands with a warm steaming towel, blushing furiously with tender devoted eyes",
+    "timeOfDay": "night",
+    "lighting": "warm amber indoor lantern light casting tender glows on flushed cheeks",
+    "camera": "close-up",
+    "mood": "unrivaled traditional Japanese wife devotion, sweet healing comfort, heartwarming intimacy",
+    "promptProse": "Kneeling on tatami in a green apron, Itsuwa gently wipes partner face with a warm steaming towel, blushing with immense tender devotion.",
+    "promptTokens": [
+      "tatami",
+      "living_room",
+      "kneeling",
+      "towel",
+      "steaming",
+      "wiping",
+      "blushing_heavily",
+      "sweet_smile",
+      "warm_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Itsuwa gently wiping partner face with warm towel in apron.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

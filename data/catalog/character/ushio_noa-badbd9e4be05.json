@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "ushio_noa",
+  "revision": 4,
+  "sortOrder": 207,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
+  "data": {
+    "id": "ushio_noa",
+    "profile": {
+      "id": "ushio_noa",
+      "name": "生盐诺亚",
+      "alias": [
+        "Ushio Noa",
+        "诺亚",
+        "生塩ノア",
+        "ノア",
+        "记录的书记官"
+      ],
+      "type": "popular",
+      "icon": "🖋️",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "生盐诺亚 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "银白如雪的及腰极长发 · 侧拢低双束柔顺发梢",
+        "hair_color": "银白 / 浅雪微紫",
+        "eyes": "澄澈幽邃的紫罗兰眼眸",
+        "hairstyle": "极长直发 · 低扎细束 · 优雅刘海与几何光环",
+        "uniform": "千禧年研讨会典雅白大衣制服 · 深灰透肤连裤袜 · 高跟鞋",
+        "expression": "端庄优雅 · 从容温柔 · 带着洞悉心绪的浅笑与迷人拉扯感",
+        "style": "intellectual elegant seminar recorder with charming alluring gaze",
+        "signature": "银白极长发、紫罗兰眼眸、白大衣制服与随身电子记录仪"
+      },
+      "personality": [
+        "知性优雅、端庄从容的研讨会书记",
+        "拥有过目不忘的超强记忆力与缜密思维",
+        "表面礼貌周全，实则带有轻快调侃与独占欲的反差小恶魔特质",
+        "深知优香的辛劳并默默守护，但面对老师时会展现专属的心动拉扯",
+        "成年后行事更为沉静干练，兼具职场女性的可靠与私下温柔"
+      ],
+      "likes": [
+        "与老师在夜深人静的办公室轻声整理全校备忘录",
+        "用录音笔收录老师微喘与心动的真实声音",
+        "研磨香醇的红茶并为优香送去点心",
+        "在雨天倚窗静听细雨敲打玻璃的节奏",
+        "观察老师因自己的一句温柔低语而脸红的表情"
+      ],
+      "classic_cg": {
+        "title": "雨夜研讨会的记录低语",
+        "description": "千禧年研讨会深夜的玻璃幕墙外下着淅沥沥的夜雨。诺亚身着剪裁贴身的白大衣，单手轻托微烫的热茶，紫罗兰眼眸在台灯光晕下凝望向近在咫尺的老师，唇角漾开一抹温柔而神秘的微笑。"
+      },
+      "identity": {
+        "role": "千禧年科学学园研讨会书记 / 夏莱特勤顾问",
+        "age": "成年创作设定",
+        "occupation": "学生会核心干部 / 行政统筹顾问",
+        "faction": "基沃托斯 · 千禧年科学学园 / 研讨会",
+        "school": "千年科学学园",
+        "classificationSource": "本角色档案 identity.faction 中明确记载的学院；统一学院名称写法。"
+      },
+      "tags": [
+        "银白发",
+        "紫瞳",
+        "白大衣",
+        "黑丝",
+        "知性",
+        "书记官",
+        "千禧年研讨会"
+      ],
+      "bg_story": "生盐诺亚是学园都市基沃托斯千禧年科学学园研讨会（Seminar）的书记，拥有能够将目睹与经历的一切事物以惊人细节彻底铭刻于脑海的「绝对记忆」天赋。在繁重的学园管理与科研事务中，诺亚与财务会计早濑优香亲密无间地协助会长调月莉音统御全校。在经历帕维内废墟危机与末日天灾洗礼后，成年后的诺亚正式协助夏莱承接都市跨学园的枢要档案统筹工作。褪去青涩之后，她的知性与洞察力越发从容，举手投足间带着让人难以抗拒的从容名媛气场。而在私密独处的空间里，这位能记住基沃托斯每一条法则的知性少女，唯独将最真实的心跳与柔情，无保留地献给了身边那位独一无二的老师。",
+      "palette": [
+        "纯白",
+        "淡紫",
+        "深灰"
+      ],
+      "weather": [
+        "雨夜办公",
+        "黄昏天台",
+        "微风庭院"
+      ],
+      "speech": "老师，今天的日程与所有需要批复的文件，我已经全部牢记于心了。要现在开始，还是……先听听我为您准备的特别录音呢？呵呵。",
+      "source": "Blue Archive",
+      "traits": [
+        "white_hair",
+        "very_long_hair",
+        "purple_eyes",
+        "halo"
+      ]
+    },
+    "popular": {
+      "id": "ushio_noa",
+      "displayName": "生盐诺亚",
+      "originalName": "Ushio Noa",
+      "franchise": "Blue Archive",
+      "category": "手游角色",
+      "aliases": [
+        "Ushio Noa",
+        "生盐诺亚",
+        "生塩ノア",
+        "诺亚",
+        "noa (blue archive)"
+      ],
+      "exactTokens": [
+        "ushio_noa"
+      ],
+      "characterTokens": [
+        "ushio_noa",
+        "noa (blue archive)"
+      ],
+      "copyrightTokens": [
+        "blue_archive"
+      ],
+      "identityTokens": [
+        "ushio_noa",
+        "1girl",
+        "solo",
+        "white_hair",
+        "very_long_hair",
+        "purple_eyes",
+        "halo"
+      ],
+      "identityProse": "Ushio Noa from Blue Archive, the only character in the image, with flowing silver-white hair, purple eyes, and a radiant geometric halo.",
+      "curatedArtistStyles": [
+        "kakao",
+        "mika_pikazo",
+        "morikura_en"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "world": "基沃托斯（Kivotos）· 千年科技学园",
+        "formNotes": "千禧年研讨会书记官，拥有绝对记忆，温和知性而带有反差恶魔拉扯感"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "millennium_seminar_suit",
+      "negativeTokens": []
+    }
+  }
+}

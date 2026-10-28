@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "viper_bedroom_bed_jealous_pout",
+  "revision": 1,
+  "sortOrder": 2167,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "viper_bedroom_bed_jealous_pout",
+    "characterId": "viper_nikke",
+    "outfitId": "cozy_bedroom_lace_camisole",
+    "title": "毒蛇 · 卧室床沿的吃醋查岗",
+    "category": "日常约会",
+    "description": "暖黄色小彩灯点缀的温馨卧室内，穿着粉色吊带裙的毒蛇坐在床边。她轻拽着你的领带，腮帮子微微鼓起吃醋撒娇，碧绿大眼睛眨巴眨巴地要你保证只爱她一个。",
+    "recommendedSize": "832x1216",
+    "location": "romantic private bedroom with fairy lights",
+    "action": "sitting on edge of bed holding partner tie, pouting adorably with cheeks puffed, demanding all of his attention with sparkling emerald eyes",
+    "timeOfDay": "night",
+    "lighting": "warm cozy fairy lights casting soft romantic golden bokeh",
+    "camera": "medium_shot",
+    "mood": "endearing playful jealousy, irresistible cute demand, romantic warmth",
+    "promptProse": "Sitting on the bed in a pink camisole, Viper pouts cutely while tugging partner tie, demanding attention with sparkling emerald eyes.",
+    "promptTokens": [
+      "bedroom",
+      "sitting_on_bed",
+      "holding_tie",
+      "pouting",
+      "blushing",
+      "demanding_expression",
+      "fairy_lights",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Viper pouting cutely on the bed tugging partner tie with jealousy.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

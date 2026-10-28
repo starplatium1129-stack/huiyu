@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "shizuka_ramen_stall_warm_coffee",
+  "revision": 1,
+  "sortOrder": 2244,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "shizuka_ramen_stall_warm_coffee",
+    "characterId": "shizuka_hiratsuka",
+    "outfitId": "sports_car_drive_leather_jacket",
+    "title": "平冢静 · 深夜拉面店外的暖罐咖啡",
+    "category": "现代日常",
+    "description": "深夜吃完拉面后的寂静街道上，平冢静倚在红色跑车车门旁。她将一罐温热的罐装黑咖啡贴在你的脸颊上，嘴角扬起带着几分痞气的帅气宠溺笑意。",
+    "recommendedSize": "832x1216",
+    "location": "quiet late-night Japanese street outside a cozy ramen stall",
+    "action": "leaning against her red sports car outside a steaming late-night ramen shop, pressing a hot canned coffee against partner cheek with a roguish affectionate grin",
+    "timeOfDay": "night",
+    "lighting": "warm yellow glow from ramen paper lanterns cutting through crisp night air",
+    "camera": "cowboy_shot",
+    "mood": "cool mature sister charm, midnight camaraderie, subtle heart-thumping romance",
+    "promptProse": "Leaning on her red sports car on a night street, Shizuka Hiratsuka presses a warm canned coffee against partner cheek with a roguish loving smirk.",
+    "promptTokens": [
+      "street",
+      "night",
+      "sports_car",
+      "leaning_on_car",
+      "canned_drink",
+      "lantern",
+      "smirk",
+      "warm_smile",
+      "night_lighting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shizuka Hiratsuka leaning on sports car with warm coffee at night.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

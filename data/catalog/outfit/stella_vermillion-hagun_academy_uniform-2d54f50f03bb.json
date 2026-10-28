@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "stella_vermillion/hagun_academy_uniform",
+  "revision": 1,
+  "sortOrder": 1729,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "stella_vermillion",
+    "outfit": {
+      "characterId": "stella_vermillion",
+      "id": "hagun_academy_uniform",
+      "name": "破军学园高开衩制服",
+      "prose": "A tailored black school blazer over a white collared blouse, high-slit red pleated mini skirt, and sheer black thigh-highs.",
+      "tokens": [
+        "school_uniform",
+        "black_jacket",
+        "white_shirt",
+        "red_skirt",
+        "high_slit",
+        "black_thighhighs",
+        "red_tie"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

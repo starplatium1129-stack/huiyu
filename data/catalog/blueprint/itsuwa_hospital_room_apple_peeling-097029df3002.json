@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "itsuwa_hospital_room_apple_peeling",
+  "revision": 1,
+  "sortOrder": 2293,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "itsuwa_hospital_room_apple_peeling",
+    "characterId": "itsuwa",
+    "outfitId": "amakusa_combat_casual_attire",
+    "title": "五和 · 病房床畔的小兔苹果雕刻",
+    "category": "现代日常",
+    "description": "阳光明媚的病房窗边，五和坐在床畔专注地将苹果削成可爱的小兔子形状。用牙签插起一块小心翼翼地递到你唇边，微仰着脸庞满眼心疼与羞涩。",
+    "recommendedSize": "832x1216",
+    "location": "clean bright hospital room with sunny window curtains",
+    "action": "sitting beside bed peeling apples into bunny shapes, feeding a slice to partner on a toothpick with shy blushing sweetness",
+    "timeOfDay": "afternoon",
+    "lighting": "gentle afternoon sunlight through clean white sheer curtains",
+    "camera": "medium_shot",
+    "mood": "tender bedside care, pure loving devotion, sweet peaceful romance",
+    "promptProse": "Sitting beside bed in a sunlit room, Itsuwa feeds partner a bunny-shaped apple slice on a toothpick, blushing with loving brown eyes.",
+    "promptTokens": [
+      "hospital_room",
+      "bed",
+      "sitting",
+      "apple",
+      "fruit",
+      "feeding",
+      "blushing",
+      "sweet_smile",
+      "afternoon_sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Itsuwa feeding partner rabbit-shaped apple slice in sunlit room.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

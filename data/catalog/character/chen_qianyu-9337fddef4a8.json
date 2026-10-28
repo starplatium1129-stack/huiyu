@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chen_qianyu",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 194,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
   "data": {
     "id": "chen_qianyu",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "/assets/characters/portrait-pending.svg",
+        "image": "../assets/characters/portrait-pending.svg",
         "alt": "陈千语 · 立绘待制作"
       },
       "visual_dna": {
@@ -402,7 +402,8 @@
             }
           }
         ]
-      }
+      },
+      "speech": "今天的练习我已经完成了。接下来有什么需要我帮忙的吗？"
     },
     "popular": {
       "id": "chen_qianyu",

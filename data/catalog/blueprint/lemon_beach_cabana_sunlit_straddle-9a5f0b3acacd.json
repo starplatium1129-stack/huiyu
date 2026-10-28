@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "lemon_beach_cabana_sunlit_straddle",
+  "revision": 1,
+  "sortOrder": 2278,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "lemon_beach_cabana_sunlit_straddle",
+    "characterId": "yakishio_lemon",
+    "outfitId": "summer_citrus_yellow_bikini",
+    "title": "烧盐柠檬 · 海滨凉亭里的夏日湿身交缠",
+    "category": "私密温存",
+    "description": "私密海滨遮阳凉亭内海浪声声，亮黄比基尼细带早已解开。浑身泛着晶莹海水的健康身躯紧密相贴，短发微湿，柠檬在急促的娇喘与浪潮声中紧抓你的双肩，眼神里全都是沦陷的爱恋。",
+    "recommendedSize": "832x1216",
+    "location": "private secluded beach cabana with wooden floorboards overlooking ocean",
+    "action": "straddling partner on cabana lounger with untied yellow bikini, wet tanned skin glistening with sea droplets, clinging tightly in heated embrace",
+    "timeOfDay": "afternoon",
+    "lighting": "dappled sea sunlight filtering through wooden slats onto glistening skin",
+    "camera": "cowboy_shot",
+    "mood": "steamy sun-kissed passion, vibrant tropical intimacy, breathless romantic bliss",
+    "promptProse": "In a beach cabana with an untied yellow bikini, tanned Lemon Yakishio straddles partner with wet glistening skin and heavy breathless blushes.",
+    "promptTokens": [
+      "cabana",
+      "beach",
+      "ocean",
+      "straddling",
+      "wet_skin",
+      "untied_bikini",
+      "tanned_skin",
+      "blushing_heavily",
+      "panting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Lemon Yakishio with untied bikini embracing passionately in beach cabana.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

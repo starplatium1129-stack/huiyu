@@ -1,0 +1,150 @@
+{
+  "kind": "character",
+  "id": "kuroneko",
+  "revision": 1,
+  "sortOrder": 236,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kuroneko",
+    "profile": {
+      "id": "kuroneko",
+      "name": "五更琉璃",
+      "alias": [
+        "Kuroneko",
+        "五更琉璃",
+        "黑猫",
+        "黑猫(俺妹)",
+        "五更 琉璃",
+        "黒猫",
+        "gokou ruri"
+      ],
+      "type": "popular",
+      "icon": "🐈‍⬛",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "五更琉璃 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "漆黑柔顺及腰姬发式长发 · 齐刘海平切两鬓 · 极富二次元古典美感",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "神秘清澈冰蓝双眸 · 带着傲娇中二的狡黠与纯情羞赧",
+        "hairstyle": "整齐姬发式（日式古典公主切）· 及腰黑直发 · 黑色蔷薇头饰",
+        "uniform": "暗夜魔道黑蔷薇哥特萝莉长裙 · 白衬衫牛仔半身裙私服 · 盛夏黑猫连体泳衣",
+        "expression": "中二扮演时的轻蔑浅笑 · 被直球告白后手足无措、用日记遮脸的殿堂级纯情女友",
+        "style": "gothic lolita tsundere girlfriend with intellectual chuunibyou charm, sweet clumsy domestic caring, and unforgettable soulmate romance",
+        "signature": "姬发式黑长直、冰蓝瞳孔、哥特萝莉、命运日记告白"
+      },
+      "personality": [
+        "重度同人创作爱好的中二病哥特少女",
+        "表面毒舌傲娇实则极度纯情容易害羞",
+        "照顾妹妹们无微不至的称职好姐姐",
+        "为了真爱甘愿手写满篇命运日记的殿堂级正宫"
+      ],
+      "likes": [
+        "创作暗黑幻想系同人志与Galgame脚本",
+        "喝红茶并听伴侣认真夸奖自己的作品",
+        "在夏夜神社祭典仰望璀璨烟火",
+        "被抱在怀里时用手指轻轻抠爱人手心"
+      ],
+      "classic_cg": {
+        "title": "夏夜神社花火下的命运日记告白",
+        "description": "夏日祭典神社的高高石阶上，漫天绚烂的烟花照亮夜空。五更琉璃双手紧紧抓着少年的双手，姬发式黑发在夜风中轻扬。冰蓝双眸中晶莹泪水滑落，微颤的双唇宣告出日记里写满的命运誓言：“请……请和我交往吧！”"
+      },
+      "identity": {
+        "role": "同人社团核心脚本创作者 / 现役高中生 / 五更家长女",
+        "age": "16岁（青春高一纯洁少女）",
+        "occupation": "高中生 / 同人作家",
+        "faction": "同人社团「俱乐部」 / 五更家"
+      },
+      "tags": [
+        "姬发式",
+        "黑发",
+        "蓝瞳",
+        "哥特萝莉",
+        "傲娇",
+        "中二病",
+        "白月光",
+        "俺妹"
+      ],
+      "bg_story": "五更琉璃（网名“黑猫”）是《我的妹妹哪有这么可爱！》中殿堂级的人气女主角，也是无数二次元老玩家心目中无可替代的傲娇白月光。平时总是一副黑色哥特萝莉打扮，沉浸在自创的中二暗黑世界观设定中，毒舌冷傲，极难接近。但在现实中，她是个在贫寒家庭里悉心照料两个幼小妹妹的贤惠好姐姐。在与高坂京介的交往中，她展现出了超凡脱俗的纯情与浪漫——为了给爱人一份完美恋情，她亲手写下了长达数十页、详尽规划两人幸福未来的「命运记录日记」。哪怕面对命运的分离与修罗场，她的深情与尊严也深深震撼了每一个观众，是动漫史上最让人心疼与热爱的女朋友代表。",
+      "palette": [
+        "漆黑",
+        "冰蓝",
+        "蔷薇白",
+        "深紫"
+      ],
+      "weather": [
+        "祭典烟火",
+        "榻榻米雨天",
+        "夏日微风"
+      ],
+      "speech": "愚蠢的人类啊……居然妄图以这种拙劣的温柔拘束暗夜的狂想……不过，既然是汝的话，就勉为其难允许汝牵着余的手吧！",
+      "source": "Oreimo",
+      "traits": [
+        "姬发式黑发冰蓝瞳",
+        "中二哥特萝莉",
+        "命运日记纯情告白",
+        "贤惠长女反差萌",
+        "殿堂级后宫白月光"
+      ]
+    },
+    "popular": {
+      "id": "kuroneko",
+      "displayName": "五更琉璃",
+      "originalName": "Ruri Gokou",
+      "franchise": "Oreimo",
+      "category": "动漫角色",
+      "aliases": [
+        "Kuroneko",
+        "五更琉璃",
+        "黑猫",
+        "黑猫(俺妹)",
+        "五更 琉璃",
+        "黒猫",
+        "gokou ruri"
+      ],
+      "exactTokens": [
+        "gokou_ruri"
+      ],
+      "characterTokens": [
+        "gokou_ruri"
+      ],
+      "copyrightTokens": [
+        "ore_no_imouto_ga_konna_ni_kawaii_wake_ga_nai"
+      ],
+      "identityTokens": [
+        "gokou_ruri",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "hime_cut",
+        "straight_hair",
+        "blue_eyes"
+      ],
+      "identityProse": "Ruri Gokou (Kuroneko) from Oreimo, the only character in the image, with long black hair styled in a traditional hime cut, clear blue eyes, and an intellectual Gothic Lolita tsundere girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "tinkle"
+      ],
+      "animeStudio": "AIC Build / A-1 Pictures official anime style, Oreimo character art",
+      "canon": {
+        "era": "千叶同人社团与命运日记纪元",
+        "world": "千叶市·五更宅与秋叶原",
+        "formNotes": "黑发姬发式蓝眸，暗夜哥特萝莉，命运日记殿堂级纯情女友"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "queen_of_nightmare_gothic_lolita",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

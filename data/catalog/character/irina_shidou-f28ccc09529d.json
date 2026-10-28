@@ -1,0 +1,148 @@
+{
+  "kind": "character",
+  "id": "irina_shidou",
+  "revision": 1,
+  "sortOrder": 229,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "irina_shidou",
+    "profile": {
+      "id": "irina_shidou",
+      "name": "紫藤伊莉娜",
+      "alias": [
+        "Irina Shidou",
+        "紫藤伊莉娜",
+        "伊莉娜",
+        "紫藤伊莉娜(DxD)",
+        "紫藤イリナ",
+        "irina shidou"
+      ],
+      "type": "popular",
+      "icon": "✨",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "紫藤伊莉娜 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "元气栗色及腰双马尾 · 柔顺灵动弧度",
+        "hair_color": "栗色 / 浅棕",
+        "eyes": "如琥珀般明亮纯真棕瞳 · 带有孩童般灿烂光彩",
+        "hairstyle": "高扎灵动双马尾 · 额前清爽碎刘海 · 挺拔傲人元气身姿",
+        "uniform": "驹王学园女生制服 · 教会圣剑天使连体衣 · 纯白棉麻吊带睡裙",
+        "expression": "太阳般灿烂无暇的露齿大笑 · 害羞提及生孩子时满脸通红的纯真娇羞",
+        "style": "sunshine childhood-friend angel girlfriend with innocent devotion, radiant energy, and holy bride enthusiasm",
+        "signature": "栗色双马尾、琥珀眸、青梅竹马与「为了天主生下圣剑的孩子」"
+      },
+      "personality": [
+        "兵藤一诚的青梅竹马，米迦勒的天使「转生天使Aces」，手持圣剑的虔诚圣女",
+        "性格极其阳光开朗、元气满满，像小太阳一样总是给身边的人带来无尽的笑容与温暖",
+        "对一诚怀有从小到大从未动摇过的至深初恋，重逢后便毫不犹豫地宣誓要成为他的正妻",
+        "思想极其单纯质朴，经常一本正经地说出「要为主人生下强大的圣剑继承人」这种虎狼之词",
+        "成年创作设定下青梅竹马的天真无邪与成熟女性的火爆身段形成绝杀反差，私密时刻幸福感拉满"
+      ],
+      "likes": [
+        "天台上元气满满地递出亲手做的特大号日式蛋包饭",
+        "在教会圣泉旁十指相扣与心上人一同闭目虔诚祈祷",
+        "放学后在黄昏街角飞奔扑进心上人的怀抱里撒娇",
+        "一本正经地红着脸研究育儿书籍并规划两人未来的大家庭",
+        "在深夜被窝里紧紧抱住心上人，感受青梅竹马变成合法伴侣的极致幸福"
+      ],
+      "classic_cg": {
+        "title": "天台暖阳下的特制蛋包饭与太阳微笑",
+        "description": "驹王学园天台铁丝网旁，正午阳光明媚耀眼。伊莉娜站在微风中，栗色双马尾欢快摇晃。她双手捧着画有巨大爱心番茄酱的特制蛋包饭送到你面前，双手托腮，露出如向日葵般灿烂元气的笑容：“一诚君，这可是充满爱的能量特餐哦，快张嘴～”"
+      },
+      "identity": {
+        "role": "米迦勒专属转生天使王牌（Aces） / 驹王学园特选生",
+        "age": "成年创作设定",
+        "occupation": "圣剑天使骑士 / 专属阳光青梅竹马新娘",
+        "faction": "天界天使军团 / 吉蒙里阵营联合战线",
+        "school": "驹王学园（三年级代表）",
+        "classificationSource": "角色背景明确归属于恶魔高校核心天使阵营主力。"
+      },
+      "tags": [
+        "栗发",
+        "双马尾",
+        "青梅竹马",
+        "天使",
+        "元气",
+        "初恋新娘",
+        "恶魔高校"
+      ],
+      "bg_story": "紫藤伊莉娜是一诚自幼一起长大的青梅竹马。小时候经常女扮男装被当成假小子，后来随父亲前往英国接受教会训练，成为侍奉米迦勒的拟造圣剑使。在重返日本与一诚重逢并知晓彼此的恶魔与天使身份后，两人的羁绊不仅没有断裂，反而化作了跨越种族界限的真爱。伊莉娜以转生天使的崇高身份常驻一诚身边，发誓成为他的守护天使与未来妻子。成年设定下的伊莉娜既有圣女的神圣与纯洁，又有青梅竹马毫无防备的赤诚，是一位能给生活注入无尽光彩与幸福的太阳恋人。",
+      "palette": [
+        "栗色",
+        "纯白",
+        "明橙"
+      ],
+      "weather": [
+        "正午暖阳",
+        "教会圣泉",
+        "黄昏放学"
+      ],
+      "speech": "一诚君！今天天主也在天上微笑着见证我们的爱情呢！所以……今天晚上也要好好努力，为了天主生下优秀的圣剑宝宝哦！哎呀……脸好烫，不准笑话伊莉娜啦！",
+      "source": "TNK《恶魔高校 DxD / High School DxD》",
+      "traits": [
+        "irina_shidou",
+        "brown_hair",
+        "long_hair",
+        "twintails",
+        "amber_eyes"
+      ]
+    },
+    "popular": {
+      "id": "irina_shidou",
+      "displayName": "紫藤伊莉娜",
+      "originalName": "Irina Shidou",
+      "franchise": "High School DxD",
+      "category": "动漫角色",
+      "aliases": [
+        "Irina Shidou",
+        "紫藤伊莉娜",
+        "伊莉娜",
+        "紫藤伊莉娜(DxD)",
+        "紫藤イリナ",
+        "irina shidou"
+      ],
+      "exactTokens": [
+        "irina_shidou"
+      ],
+      "characterTokens": [
+        "irina_shidou"
+      ],
+      "copyrightTokens": [
+        "high_school_dxd"
+      ],
+      "identityTokens": [
+        "irina_shidou",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "long_hair",
+        "twintails",
+        "amber_eyes"
+      ],
+      "identityProse": "Irina Shidou from High School DxD, the only character in the image, with long chestnut-brown twintails, sparkling amber-brown eyes, and a bright, passionately innocent, loving childhood-friend girlfriend expression.",
+      "curatedArtistStyles": [
+        "cutesexyrobutt",
+        "morikura_en",
+        "swav"
+      ],
+      "animeStudio": "High School DxD official anime art, TNK style",
+      "canon": {
+        "era": "三方同盟和平与天使转生纪元",
+        "world": "驹王町·兵藤邸天界眷属分室",
+        "formNotes": "栗发双马尾棕瞳，转生天使青梅竹马，元气阳光与生宝宝直球女友感"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "kuoh_academy_uniform",
+      "negativeTokens": []
+    }
+  }
+}

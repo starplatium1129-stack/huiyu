@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "la_folia_open_air_jacuzzi_intimacy",
+  "revision": 1,
+  "sortOrder": 2200,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "la_folia_open_air_jacuzzi_intimacy",
+    "characterId": "la_folia_rihavein",
+    "outfitId": "cruise_ship_gold_bikini",
+    "title": "拉·芙利亚 · 露天按摩浴缸的温热缠绵",
+    "category": "私密温存",
+    "description": "游轮顶层露天按摩浴缸里热水翻涌，夜空繁星点点。解开比基尼系带的王女跨坐在你的膝头，任由温热泉水拍打发烫雪肌，银发湿漉，喘息着将你深深拉入欲望旋涡。",
+    "recommendedSize": "832x1216",
+    "location": "private rooftop open-air jacuzzi under starry sky",
+    "action": "straddling partner in bubbling hot tub, untied gold bikini strings, wet silver hair clinging to body, breathless heavy moans",
+    "timeOfDay": "night",
+    "lighting": "aquamarine underwater pool lights mixed with pale silver starlight",
+    "camera": "cowboy_shot",
+    "mood": "steamy oceanic sensuality, uninhibited desire, royal indulgence",
+    "promptProse": "Straddling partner in a bubbling rooftop jacuzzi under stars, La Folia pants with pleasure, her untied bikini floating in the warm water.",
+    "promptTokens": [
+      "jacuzzi",
+      "hot_tub",
+      "straddling",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "blushing_heavily",
+      "starry_sky",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "La Folia straddling intimately in an open-air jacuzzi under the stars.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

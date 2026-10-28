@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togakushi_touko",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 190,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
   "data": {
     "id": "togakushi_touko",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "/assets/characters/portrait-pending.svg",
+        "image": "../assets/characters/portrait-pending.svg",
         "alt": "户隐憧子 · 立绘待制作"
       },
       "visual_dna": {
@@ -178,7 +178,8 @@
             }
           }
         ]
-      }
+      },
+      "speech": "先坐一会儿吧。要是有烦心事，我听你慢慢说。"
     },
     "popular": {
       "id": "togakushi_touko",

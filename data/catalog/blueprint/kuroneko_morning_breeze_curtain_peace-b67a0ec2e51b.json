@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kuroneko_morning_breeze_curtain_peace",
+  "revision": 1,
+  "sortOrder": 2267,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kuroneko_morning_breeze_curtain_peace",
+    "characterId": "kuroneko",
+    "outfitId": "sheer_black_lace_babydoll",
+    "title": "五更琉璃 · 晨风窗纱下的安宁拥吻",
+    "category": "私密温存",
+    "description": "清晨的微风拂动纯白窗纱，姬发式黑发如墨色铺散在枕头两旁。初醒的五更琉璃像只慵懒的小黑猫，闭着双眼用鼻尖亲昵蹭着你的锁骨，嘴角噙着沉醉在现世极乐里的安宁甜笑。",
+    "recommendedSize": "832x1216",
+    "location": "sun-drenched bedroom with billowing white sheer curtains",
+    "action": "tangled in white morning duvet, black hime cut spread across pillow, sleepily nuzzling partner collarbone with a radiant peaceful smile in morning sun",
+    "timeOfDay": "morning",
+    "lighting": "bright warm morning sunshine illuminating pale porcelain skin",
+    "camera": "close-up",
+    "mood": "morning newlywed serenity, tranquil eternal romance, sweet kitten girlfriend cuddles",
+    "promptProse": "Tangled in morning sheets with black hime cut spread on pillow, Ruri Gokou sleepily nuzzles partner collarbone with a radiant peaceful smile.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "nuzzling",
+      "peaceful_smile",
+      "blushing",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ruri Gokou nuzzling partner peacefully in morning sheets.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

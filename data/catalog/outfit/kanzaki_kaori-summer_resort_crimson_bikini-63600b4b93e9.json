@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kanzaki_kaori/summer_resort_crimson_bikini",
+  "revision": 1,
+  "sortOrder": 1807,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "kanzaki_kaori",
+    "outfit": {
+      "characterId": "kanzaki_kaori",
+      "id": "summer_resort_crimson_bikini",
+      "name": "盛夏海风·黑红交织成熟露背比基尼",
+      "prose": "A bold crimson and black string halterneck bikini with thin backless ties, highlighting her statuesque saintly proportions and slender waist.",
+      "tokens": [
+        "bikini",
+        "red_bikini",
+        "black_trim",
+        "halterneck",
+        "side-tie_bikini_bottom",
+        "collarbone",
+        "cleavage",
+        "toned_body"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

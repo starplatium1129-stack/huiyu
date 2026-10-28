@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kei_hotel_poolside_steamy_straddle",
+  "revision": 1,
+  "sortOrder": 2242,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kei_hotel_poolside_steamy_straddle",
+    "characterId": "karuizawa_kei",
+    "outfitId": "summer_tropical_sunlit_bikini",
+    "title": "轻井泽惠 · 假期泳池畔的湿发跨坐",
+    "category": "私密温存",
+    "description": "深夜无人的海岛度假村泳池凉亭内，粉色系带比基尼已被解开。浑身泛着水光、湿透的金发马尾垂落胸前，惠跨坐在你腿上，滚烫的身躯紧贴，在急促娇喘中享受着专属于恋人的禁断炽热。",
+    "recommendedSize": "832x1216",
+    "location": "private after-hours resort swimming pool cabana",
+    "action": "straddling partner on secluded resort poolside lounge chair, wet pink bikini straps untied, flushed face buried in his neck with gasping moans",
+    "timeOfDay": "night",
+    "lighting": "shimmering aqua reflections from water lamps beneath night stars",
+    "camera": "cowboy_shot",
+    "mood": "heated tropical passion, breathless lovers surrender, seductive gyaru charm",
+    "promptProse": "Straddling partner by a resort pool at night with untied pink bikini, Kei Karuizawa pants against his neck with shimmering wet skin.",
+    "promptTokens": [
+      "poolside",
+      "swimming_pool",
+      "night",
+      "straddling",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "blushing_heavily",
+      "panting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kei Karuizawa straddling partner passionately by a night resort pool.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

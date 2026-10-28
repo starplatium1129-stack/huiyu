@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "komari_chika/pure_cotton_lace_camisole_nightwear",
+  "revision": 1,
+  "sortOrder": 1796,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "komari_chika",
+    "outfit": {
+      "characterId": "komari_chika",
+      "id": "pure_cotton_lace_camisole_nightwear",
+      "name": "纯棉闺房·浅樱粉细带蕾丝短裤睡衣",
+      "prose": "A delicate pastel-pink cotton camisole with tiny scalloped lace trim paired with matching soft lounge shorts, delicate and pure.",
+      "tokens": [
+        "camisole",
+        "pink_camisole",
+        "shorts",
+        "cotton_dress",
+        "spaghetti_straps",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

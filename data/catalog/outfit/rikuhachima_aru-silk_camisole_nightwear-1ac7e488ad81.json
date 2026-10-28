@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "rikuhachima_aru/silk_camisole_nightwear",
+  "revision": 1,
+  "sortOrder": 1683,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "data": {
+    "characterId": "rikuhachima_aru",
+    "outfit": {
+      "characterId": "rikuhachima_aru",
+      "id": "silk_camisole_nightwear",
+      "name": "深夜事务所黑色真丝吊带睡衣",
+      "prose": "A delicate black silk camisole trimmed with burgundy lace, revealing bare shoulders and collarbones, paired with matching silk shorts in the warm dim lamplight.",
+      "tokens": [
+        "black camisole",
+        "lace trim",
+        "silk shorts",
+        "bare shoulders",
+        "collarbone",
+        "bare legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

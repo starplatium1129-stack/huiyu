@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "stella_shopping_mall_handheld_blush",
+  "revision": 1,
+  "sortOrder": 2185,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "stella_shopping_mall_handheld_blush",
+    "characterId": "stella_vermillion",
+    "outfitId": "vermillion_royal_gown",
+    "title": "史黛菈 · 华灯商业街的十指紧扣",
+    "category": "浪漫约会",
+    "description": "假日灯火通明的繁华商场中，盛装出席的史黛菈主动挽紧你的手臂。被过往路人夸奖是天生一对时，她整只耳朵瞬间红透，嘴角却得意洋洋地止不住上扬。",
+    "recommendedSize": "832x1216",
+    "location": "luxurious illuminated shopping mall atrium",
+    "action": "linking arms tightly, interlocking fingers, ear blushing furiously, proud triumphant smile",
+    "timeOfDay": "evening",
+    "lighting": "warm festive mall chandeliers and bokeh background lights",
+    "camera": "cowboy_shot",
+    "mood": "proud royal girlfriend, romantic happiness, public declaration of love",
+    "promptProse": "Linking arms closely in a grand shopping gallery, Stella Vermillion interlocks fingers with a radiant, ear-reddening proud smile.",
+    "promptTokens": [
+      "shopping_mall",
+      "holding_hands",
+      "interlocked_fingers",
+      "clinging_to_arm",
+      "blushing",
+      "proud_smile",
+      "evening",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Stella proudly clinging to partner arm with blushing ears in a shopping mall.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "atago_veranda_lap_pillow_ear_clean",
+  "revision": 1,
+  "sortOrder": 2155,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "atago_veranda_lap_pillow_ear_clean",
+    "characterId": "atago_azur",
+    "outfitId": "white_ceremony_uniform",
+    "title": "爱宕 · 缘侧廊下的惬意掏耳",
+    "category": "日常约会",
+    "description": "夏日午后的和风走廊，微风拂动庭院竹叶。爱宕端坐于木地板上让你枕在大腿上，手中轻捏细长竹掏耳勺，金眸专注而柔和地垂视着你，黑色犬耳随微风轻颤。",
+    "recommendedSize": "832x1216",
+    "location": "traditional wooden veranda overlooking Japanese garden",
+    "action": "sitting seiza on tatami giving lap pillow, holding ear pick with tender focused gaze, dog ears twitching affectionately, warm summer breeze",
+    "timeOfDay": "afternoon",
+    "lighting": "soft dappled garden shade with warm sunlight on deck",
+    "camera": "cowboy_shot",
+    "mood": "peaceful healing tranquility, supreme comfort, romantic indulgence",
+    "promptProse": "Giving a relaxing lap pillow on a wooden veranda, Atago gently cleans partner ears with focused affection as a summer breeze blows.",
+    "promptTokens": [
+      "engawa",
+      "sitting_seiza",
+      "lap_pillow",
+      "ear_cleaning",
+      "gentle_smile",
+      "summer_breeze",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Atago giving a soothing lap pillow on a traditional veranda in summer breeze.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

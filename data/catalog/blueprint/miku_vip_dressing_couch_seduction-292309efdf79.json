@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "miku_vip_dressing_couch_seduction",
+  "revision": 1,
+  "sortOrder": 2217,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "miku_vip_dressing_couch_seduction",
+    "characterId": "izayoi_miku",
+    "outfitId": "casual_diva_off_shoulder_knit",
+    "title": "诱宵美九 · 后台暗门后的绝对跨坐",
+    "category": "私密温存",
+    "description": "后台专属休息室反锁的门内，露肩针织衫半褪至腰间。美九双腿跨坐在达令的腿上，双臂环抱颈项，满面绯红主动将湿软唇瓣贴上，在深吻中发出甜腻的哭腔娇吟。",
+    "recommendedSize": "832x1216",
+    "location": "private locked VIP dressing suite with plush velvet couch",
+    "action": "straddling partner on velvet couch, sweater slipping off shoulders, arms tight around neck, intense deep French kiss, breathless moans",
+    "timeOfDay": "night",
+    "lighting": "dim romantic vanity lights creating sultry shadows on flushed skin",
+    "camera": "close-up",
+    "mood": "overwhelming idol adoration, uninhibited passionate surrender, breathless longing",
+    "promptProse": "Straddling partner lap on a backstage couch in dim lighting, Miku Izayoi kisses deeply with flushed cheeks, her sweater slipping off bare shoulders.",
+    "promptTokens": [
+      "dressing_room",
+      "sitting_on_lap",
+      "straddling",
+      "off-shoulder",
+      "passionate_kiss",
+      "blushing_heavily",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Miku Izayoi straddling partner lap on a backstage couch in a deep passionate kiss.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

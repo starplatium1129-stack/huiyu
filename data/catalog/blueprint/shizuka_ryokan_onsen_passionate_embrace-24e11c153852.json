@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "shizuka_ryokan_onsen_passionate_embrace",
+  "revision": 1,
+  "sortOrder": 2248,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "shizuka_ryokan_onsen_passionate_embrace",
+    "characterId": "shizuka_hiratsuka",
+    "outfitId": "summer_resort_black_bikini",
+    "title": "平冢静 · 温泉旅馆水汽的成熟娇躯交缠",
+    "category": "私密温存",
+    "description": "私密日式旅馆柏木温泉中热水翻涌，黑色比基尼细带在水中解开漂走。湿透的乌黑长发贴在白皙背脊上，成熟曼妙的娇躯紧紧贴合，在滚烫水汽与激烈热吻中彻底抛弃所有理智与禁忌。",
+    "recommendedSize": "832x1216",
+    "location": "secluded traditional ryokan cedarwood hot spring bath",
+    "action": "pressing partner against wooden tub rim in steamy private onsen, untied black bikini floating away, wet black hair clinging to back, kissing passionately with breathless intensity",
+    "timeOfDay": "night",
+    "lighting": "steamy lantern glow dancing on rippling hot water and glistening wet skin",
+    "camera": "close-up",
+    "mood": "intoxicating mature passion, heated water embrace, unreserved lovers ecstasy",
+    "promptProse": "In a steamy cedar hot spring with an untied black bikini, Shizuka Hiratsuka kisses partner passionately with glistening wet skin and breathless intensity.",
+    "promptTokens": [
+      "onsen",
+      "hot_spring",
+      "steam",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "kissing",
+      "blushing_heavily",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shizuka Hiratsuka kissing passionately in steamy cedar hot spring.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

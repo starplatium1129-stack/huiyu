@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "izumi_bedroom_bed_flustered_drawing_material",
+  "revision": 1,
+  "sortOrder": 2313,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "izumi_bedroom_bed_flustered_drawing_material",
+    "characterId": "hashima_izumi",
+    "outfitId": "striped_cute_cotton_camisole_loungewear",
+    "title": "波岛出海 · 卧室单人床上的取材借口交托",
+    "category": "私密温存",
+    "description": "反锁的单人卧室内，条纹吊带睡衣被推至丰满胸口上方。被你按在被单上的出海双手捂着通红的脸颊，眼角泛起幸福的泪花，断断续续地喘息：“如果是为了新连载的取材……前辈想做什么……都可以哦。”",
+    "recommendedSize": "832x1216",
+    "location": "cozy private bedroom with drawing tablets on desk nearby",
+    "action": "pinned on bed with camisole pushed up, covering face with hands in extreme blush before reaching around partner neck in passionate sweet surrender",
+    "timeOfDay": "night",
+    "lighting": "warm bedside reading lamp glowing softly on porcelain curves",
+    "camera": "close-up",
+    "mood": "intense junior maiden surrender, breathless lovers ecstasy, heartfelt pure devotion",
+    "promptProse": "Pinned on bed with lifted striped camisole, curvaceous Izumi Hashima blushes heavily, wrapping arms around partner neck with tearful passionate kisses.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "bare_shoulders",
+      "arms_around_neck",
+      "twintails",
+      "tears_of_happiness",
+      "blushing_heavily",
+      "panting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Izumi Hashima embracing partner passionately on bed with tearful joy.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "itsuwa/pure_white_cotton_nightdress",
+  "revision": 1,
+  "sortOrder": 1804,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "itsuwa",
+    "outfit": {
+      "characterId": "itsuwa",
+      "id": "pure_white_cotton_nightdress",
+      "name": "圣洁闺房·纯白棉质软蕾丝吊带睡裙",
+      "prose": "A pristine pure-white lightweight cotton slip nightgown with delicate lace edging, soft spaghetti straps, and bare sun-warmed shoulders.",
+      "tokens": [
+        "nightgown",
+        "white_nightgown",
+        "cotton_dress",
+        "spaghetti_straps",
+        "lace_trim",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

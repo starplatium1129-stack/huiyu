@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "sunohara_shun_intimate_bedroom_whisper",
+  "revision": 2,
+  "sortOrder": 2116,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "sunohara_shun_intimate_bedroom_whisper",
+    "characterId": "sunohara_shun",
+    "outfitId": "plum_garden_qipao_robe",
+    "title": "春原瞬 · 居室烛光下的深情私语",
+    "category": "私密温存",
+    "description": "檀香袅袅的静谧卧房，雕花烛台跳跃着暖橙色的微光。瞬被老师轻柔环住腰肢，向来稳重大方的大姐姐教官此刻双颊泛起动人情潮，美眸迷离含水。她微微前倾朱唇凑在老师耳际，呼出的热气带着淡淡梅香，低语着长久以来深埋心底的少女依恋。",
+    "recommendedSize": "832x1216",
+    "location": "dim oriental master bedroom beside wooden screen",
+    "action": "leaning close, whispering into ear, heavy blush, breathless affection, trembling gaze",
+    "timeOfDay": "night",
+    "lighting": "intimate warm candlelight flickering with soft shadows",
+    "camera": "close-up",
+    "mood": "deeply passionate vulnerability, intoxicating heat, and romantic surrender",
+    "promptProse": "Bathed in soft candlelight beside an oriental folding screen, Sunohara Shun leans intimately close with heavily flushed cheeks and melting crimson eyes, whispering softly.",
+    "promptTokens": [
+      "blush",
+      "heavy_blush",
+      "leaning_close",
+      "parted_lips",
+      "dim_lighting",
+      "candlelight",
+      "night",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shun leaning close with flushed cheeks and melting affectionate eyes.",
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

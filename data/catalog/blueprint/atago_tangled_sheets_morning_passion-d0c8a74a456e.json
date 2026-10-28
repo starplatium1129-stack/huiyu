@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "atago_tangled_sheets_morning_passion",
+  "revision": 1,
+  "sortOrder": 2159,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "atago_tangled_sheets_morning_passion",
+    "characterId": "atago_azur",
+    "outfitId": "silk_peignoir_nightgown",
+    "title": "爱宕 · 晨光被单间的极尽宠溺",
+    "category": "私密温存",
+    "description": "假日清晨凌乱的白床单上黑发如瀑铺展。爱宕跨坐在身前，汗湿的犬耳轻快摇晃，眼眸迷离含泪，在无休止的炙热喘息与颠簸中娇吟索吻，给予你至死不渝的全部宠爱。",
+    "recommendedSize": "832x1216",
+    "location": "sun-drenched morning bedroom with soft white linen",
+    "action": "lying amidst rumpled white bedsheets, long black hair spread out, breathless and smiling blissfully while straddling partner, dog tail wagging gently in ecstasy",
+    "timeOfDay": "morning",
+    "lighting": "golden morning sunlight streaming across tangled white bedding",
+    "camera": "medium_shot",
+    "mood": "ecstatic devotion, blissful morning heat, deep sensual communion",
+    "promptProse": "Straddling partner amidst rumpled white sheets in golden morning light, Atago smiles ecstatically with flushed cheeks and breathless moans.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "straddling",
+      "bare_skin",
+      "blushing_heavily",
+      "breathless",
+      "morning_sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Atago straddling passionately on a messy morning bed amidst sunlight.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

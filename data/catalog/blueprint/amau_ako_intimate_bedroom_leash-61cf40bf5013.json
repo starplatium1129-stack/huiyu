@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "amau_ako_intimate_bedroom_leash",
+  "revision": 3,
+  "sortOrder": 2099,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "amau_ako_intimate_bedroom_leash",
+    "characterId": "amau_ako",
+    "outfitId": "silk_camisole_nightwear",
+    "title": "天雨亚子 · 居室床榻的温顺信赖",
+    "category": "深层欢愉",
+    "description": "私密居所松软的床褥间，亚子身着轻薄的黑色蕾丝吊带。微卷的长发散落在枕间，她半跪在床榻上，眼眸泛着迷离水光，乖巧地倾身将头靠在老师掌心，展现出无与伦比的极尽柔顺与欢愉依赖。",
+    "recommendedSize": "832x1216",
+    "location": "intimate private bedroom soft bed",
+    "action": "kneeling on bed, head resting in hand, black lace camisole, devoted docile gaze",
+    "timeOfDay": "night",
+    "lighting": "warm golden bedside lamp casting deep seductive silhouettes",
+    "camera": "medium_shot",
+    "mood": "utterly devoted sensual surrender",
+    "promptProse": "Kneeling on a luxurious soft bed in sheer black lace camisole, Amau Ako tilts her head affectionately into the viewer's palm, looking up with profound, flushed devotion.",
+    "promptTokens": [
+      "camisole",
+      "black_camisole",
+      "bare_shoulders",
+      "collarbone",
+      "on_bed",
+      "kneeling",
+      "blush",
+      "sensual",
+      "night",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ako resting sweetly on the bed in a black camisole.",
+    "isNsfw": false,
+    "rating": "R18",
+    "sampleRating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

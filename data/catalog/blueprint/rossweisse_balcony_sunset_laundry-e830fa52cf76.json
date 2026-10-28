@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "rossweisse_balcony_sunset_laundry",
+  "revision": 1,
+  "sortOrder": 2228,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "rossweisse_balcony_sunset_laundry",
+    "characterId": "rossweisse",
+    "outfitId": "bargain_shopper_apron",
+    "title": "罗丝薇瑟 · 暮色阳台的晾衣回眸",
+    "category": "现代日常",
+    "description": "微风轻拂的高楼阳台上，白被单在金色晚霞中翻飞。挂好最后一角被单的罗丝薇瑟抬手将吹乱的银发别在耳后，回眸望向端来红茶的你，眼神中流淌着岁月静好的深情。",
+    "recommendedSize": "832x1216",
+    "location": "breezy apartment balcony with drying laundry against sunset city skyline",
+    "action": "hanging clean white sheets on balcony clothesline, turning back with fluttering silver hair and a radiant gentle loving smile at partner",
+    "timeOfDay": "sunset",
+    "lighting": "golden hour sunset light highlighting silver hair and fluttering sheets",
+    "camera": "medium_shot",
+    "mood": "pure domestic serenity, tranquil golden hour romance, tender companion feeling",
+    "promptProse": "Hanging clean sheets on a sunset balcony, Rossweisse turns back with windblown silver hair, smiling lovingly in golden hour light.",
+    "promptTokens": [
+      "balcony",
+      "hanging_clothes",
+      "laundry",
+      "bedsheet",
+      "looking_back",
+      "silver_hair",
+      "gentle_smile",
+      "sunset",
+      "golden_hour",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Rossweisse looking back gently while hanging laundry on a sunset balcony.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

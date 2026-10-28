@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "scarlet_midnight_futon_passion",
+  "revision": 1,
+  "sortOrder": 2141,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "scarlet_midnight_futon_passion",
+    "characterId": "scarlet_nikke",
+    "outfitId": "cozy_summer_camisole",
+    "title": "红莲 · 深夜卧榻的烈火缠绵",
+    "category": "私密温存",
+    "description": "深夜卧室内名刀静置一角，凌乱的软榻上红色丝质睡裙推至腰间。往日潇洒傲骨的剑客十指紧紧深嵌你的肩头，因情动而满面娇艳红晕，在月光下尽情诉说爱意。",
+    "recommendedSize": "832x1216",
+    "location": "quiet private bedroom illuminated by pale moonlight",
+    "action": "lying tangled in messy bedsheets, camisole pushed up to waist, fingers digging into shoulder, heavy blush on cheeks, breathless moaning smile",
+    "timeOfDay": "night",
+    "lighting": "cool silver moonlight slicing through shoji screen onto bed",
+    "camera": "close-up",
+    "mood": "intense passion, surrender of pride, irresistible mutual devotion",
+    "promptProse": "Tangled in messy bedding in moonlight, Scarlet blushes deeply with breathless ecstasy, clinging tightly in an overwhelming surge of passion.",
+    "promptTokens": [
+      "bed",
+      "messy_sheets",
+      "disheveled_clothes",
+      "blushing",
+      "heavy_breathing",
+      "fingers_on_shoulder",
+      "moonlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Scarlet tangled passionately in bed under soft moonlight.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

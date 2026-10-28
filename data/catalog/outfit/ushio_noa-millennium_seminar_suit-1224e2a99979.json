@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "ushio_noa/millennium_seminar_suit",
+  "revision": 1,
+  "sortOrder": 1671,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "data": {
+    "characterId": "ushio_noa",
+    "outfit": {
+      "characterId": "ushio_noa",
+      "id": "millennium_seminar_suit",
+      "name": "千禧年研讨会典雅白大衣制服",
+      "prose": "A tailored white trench coat over an ivory collared shirt with a dark necktie, black high-waisted pencil skirt, sheer black pantyhose, and elegant heels.",
+      "tokens": [
+        "white coat",
+        "white jacket",
+        "collared shirt",
+        "necktie",
+        "black pencil skirt",
+        "black pantyhose",
+        "pumps",
+        "gloves"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "ushio_noa/silk_slip_nightdress",
+  "revision": 1,
+  "sortOrder": 1673,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "data": {
+    "characterId": "ushio_noa",
+    "outfit": {
+      "characterId": "ushio_noa",
+      "id": "silk_slip_nightdress",
+      "name": "夜色深紫真丝吊带睡裙",
+      "prose": "A sensual deep-lavender silk slip nightgown with delicate floral lace trim along the sweetheart neckline, revealing bare shoulders and collarbones.",
+      "tokens": [
+        "purple nightgown",
+        "silk camisole",
+        "lace trim",
+        "bare shoulders",
+        "collarbone",
+        "bare legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kurodate_haruna/gourmet_executive_fur_coat",
+  "revision": 1,
+  "sortOrder": 1687,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "data": {
+    "characterId": "kurodate_haruna",
+    "outfit": {
+      "characterId": "kurodate_haruna",
+      "id": "gourmet_executive_fur_coat",
+      "name": "美食研究会高定皮草毛领黑红礼服",
+      "prose": "An aristocratic black dress with gold trim and a dramatic wine-red fur-lined capelet over the shoulders, white gloves, black stockings, and high heels.",
+      "tokens": [
+        "black dress",
+        "fur trim",
+        "capelet",
+        "white gloves",
+        "black pantyhose",
+        "high heels"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

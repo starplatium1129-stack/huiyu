@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "rikuhachima_aru_cafe_contract_negotiation",
+  "revision": 2,
+  "sortOrder": 2109,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "rikuhachima_aru_cafe_contract_negotiation",
+    "characterId": "rikuhachima_aru",
+    "outfitId": "hardboiled_casual_trench",
+    "title": "陆八魔阿露 · 街角咖啡厅的虚张声势谈判",
+    "category": "休闲时光",
+    "description": "街角阳光明媚的露天咖啡座，阿露换上了一身利落的米白风衣与高领针织衫。她双手捧着微烫的卡布奇诺咖啡杯，强行摆出一副老谋深算的商业大亨谈判架势。但在老师含笑的温柔注视下，她的耳尖悄悄红透，假装咳嗽轻抿奶泡。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit outdoor cafe table on street corner",
+    "action": "holding warm coffee cup, attempting stern poker face, subtle blush, coffee foam",
+    "timeOfDay": "afternoon",
+    "lighting": "warm dappled afternoon sunlight through terrace umbrella",
+    "camera": "close-up",
+    "mood": "playful pretension and sweet cafe warmth",
+    "promptProse": "Sitting across an outdoor cafe table in her beige trench coat, Rikuhachima Aru clutches a warm coffee cup, trying to look imposing while blushing nervously.",
+    "promptTokens": [
+      "holding_cup",
+      "coffee",
+      "cafe",
+      "table",
+      "chair",
+      "blush",
+      "nervous_smile",
+      "day",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Aru attempting a cool business negotiation across a sunlit cafe table.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

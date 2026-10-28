@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "la_folia_rihavein/regal_ballroom_emerald_gown",
+  "revision": 1,
+  "sortOrder": 1738,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "la_folia_rihavein",
+    "outfit": {
+      "characterId": "la_folia_rihavein",
+      "id": "regal_ballroom_emerald_gown",
+      "name": "翡翠王冠·祖母绿抹胸大摆晚礼服",
+      "prose": "A breathtaking emerald green silk ballgown with a sweetheart neckline, voluminous cascading skirt, diamond tiara, and elbow-length silk gloves.",
+      "tokens": [
+        "emerald_evening_gown",
+        "ballgown",
+        "bare_shoulders",
+        "jewelry_necklace",
+        "tiara",
+        "silk_gloves"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

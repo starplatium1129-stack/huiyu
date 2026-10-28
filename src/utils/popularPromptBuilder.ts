@@ -115,10 +115,10 @@ export function scanCharacterPollution(character: PopularCharacter): string[] {
   const leaks: string[] = []
   const textSources: Array<[string, string]> = [
     ['identityProse', character.identityProse],
-    ['aliases', character.aliases.join(', ')],
-    ['exactPrefixes', character.exactPrefixes.join(', ')],
-    ['identityTokens', character.identityTokens.join(', ')],
-    ['exactTokens', character.exactTokens.join(', ')],
+    ['aliases', (character.aliases || []).join(', ')],
+    ['exactPrefixes', (character.exactPrefixes || []).join(', ')],
+    ['identityTokens', (character.identityTokens || []).join(', ')],
+    ['exactTokens', (character.exactTokens || []).join(', ')],
   ]
   for (const [field, text] of textSources) {
     scanStudioTokenLeaks(text).forEach(leak => leaks.push(`${character.id}.${field}: ${leak}`))

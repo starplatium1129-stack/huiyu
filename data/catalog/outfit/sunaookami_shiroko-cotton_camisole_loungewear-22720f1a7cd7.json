@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "sunaookami_shiroko/cotton_camisole_loungewear",
+  "revision": 1,
+  "sortOrder": 1692,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "data": {
+    "characterId": "sunaookami_shiroko",
+    "outfit": {
+      "characterId": "sunaookami_shiroko",
+      "id": "cotton_camisole_loungewear",
+      "name": "晨昏独处浅蓝纯棉吊带居家便服",
+      "prose": "A soft pastel-blue ribbed cotton camisole and matching lounge shorts, revealing bare shoulders, collarbones, and toned midriff in the gentle morning breeze.",
+      "tokens": [
+        "camisole",
+        "blue camisole",
+        "shorts",
+        "bare shoulders",
+        "collarbone",
+        "bare legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

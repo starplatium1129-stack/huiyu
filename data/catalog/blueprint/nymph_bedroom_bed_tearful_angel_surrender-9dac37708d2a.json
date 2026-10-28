@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_bedroom_bed_tearful_angel_surrender",
+  "revision": 1,
+  "sortOrder": 2271,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "nymph_bedroom_bed_tearful_angel_surrender",
+    "characterId": "nymph",
+    "outfitId": "sheer_pastel_blue_nightshirt",
+    "title": "妮姆芙 · 散乱床单上的眼角带泪顺从",
+    "category": "私密温存",
+    "description": "安静的卧室内，浅蓝睡衬衫纽扣解开，透明小巧的光翼在被单上微颤。被你按在怀里的妮姆芙眼角泛着幸福的泪花，双臂紧紧搂住你的脖子，在喘息中将身心彻底交托给唯一的主人与爱人。",
+    "recommendedSize": "832x1216",
+    "location": "cozy quiet bedroom with drawn curtains",
+    "action": "pinned on single bed with oversized shirt unbuttoned, delicate translucent wings trembling on sheets, crying happy tears while wrapping arms tightly around partner neck",
+    "timeOfDay": "night",
+    "lighting": "warm dim bedside lamp glowing softly on porcelain skin and glowing wings",
+    "camera": "close-up",
+    "mood": "profound Angeloid emancipation, deep emotional consummation, sweet trembling surrender",
+    "promptProse": "Pinned on bed with unbuttoned blue shirt, Nymph wraps arms around partner neck with trembling glowing wings and joyful tearful kisses.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "arms_around_neck",
+      "wings",
+      "tears_of_happiness",
+      "blushing_heavily",
+      "panting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Nymph with glowing wings and joyful tears embracing partner on bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

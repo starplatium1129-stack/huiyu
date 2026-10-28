@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "charlotte_lavender_field_handhold",
+  "revision": 1,
+  "sortOrder": 2180,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "charlotte_lavender_field_handhold",
+    "characterId": "charlotte_dunois",
+    "outfitId": "summer_breeze_sundress",
+    "title": "夏洛特 · 薰衣草花田的裙摆回眸",
+    "category": "浪漫约会",
+    "description": "普罗旺斯起伏如紫色波浪的花田中，微风吹拂。身穿法式碎花裙的夏洛特一手按着草帽，另一手与你十指相扣，回眸浅笑，裙摆在紫色的花海与晴空间飞扬。",
+    "recommendedSize": "832x1216",
+    "location": "vast rolling lavender field under blue summer sky",
+    "action": "walking through flowers, looking back over shoulder with straw hat held, holding hands, sundress billowing",
+    "timeOfDay": "day",
+    "lighting": "brilliant summer daylight with soft purple flower reflections",
+    "camera": "cowboy_shot",
+    "mood": "idyllic romantic freedom, poetic travel bliss, sun-drenched beauty",
+    "promptProse": "Walking through a sea of blooming lavender in a floral sundress, Charlotte looks back holding hands with an enchanting smile.",
+    "promptTokens": [
+      "lavender_field",
+      "flowers",
+      "holding_hands",
+      "looking_back",
+      "straw_hat",
+      "summer_breeze",
+      "sunny_day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Charlotte holding hands amidst purple lavender fields under summer sunlight.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

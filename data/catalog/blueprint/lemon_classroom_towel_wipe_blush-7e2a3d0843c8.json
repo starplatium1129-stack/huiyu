@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "lemon_classroom_towel_wipe_blush",
+  "revision": 1,
+  "sortOrder": 2276,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "lemon_classroom_towel_wipe_blush",
+    "characterId": "yakishio_lemon",
+    "outfitId": "tsuwabuki_summer_sailor_uniform",
+    "title": "烧盐柠檬 · 空教室里被擦汗的瞬间慌乱",
+    "category": "校园日常",
+    "description": "放学后空无一人的教室窗口，当少年用毛巾轻柔按在她汗湿的颈侧时，平时大咧咧的田径少女身体猛地一僵，小麦色脸庞腾起大片红晕，害羞得眼神飘忽结结巴巴。",
+    "recommendedSize": "832x1216",
+    "location": "empty sunlit classroom by open window with fluttering curtains",
+    "action": "standing by classroom window as partner wipes sweat from her collarbone with a towel, blushing furiously with wide shy eyes and trembling smile",
+    "timeOfDay": "afternoon",
+    "lighting": "warm afternoon sunlight streaming through window onto tanned skin",
+    "camera": "close-up",
+    "mood": "adorable gap moe, sudden romantic awareness, sweet adolescent vulnerability",
+    "promptProse": "In an empty sunny classroom, Lemon Yakishio blushes intensely as partner gently wipes sweat from her cheek with a towel, eyes wide with shy realization.",
+    "promptTokens": [
+      "classroom",
+      "window",
+      "towel",
+      "blushing_heavily",
+      "looking_aside",
+      "sweat",
+      "shy_smile",
+      "afternoon_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Lemon Yakishio blushing furiously while partner wipes her face with towel.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

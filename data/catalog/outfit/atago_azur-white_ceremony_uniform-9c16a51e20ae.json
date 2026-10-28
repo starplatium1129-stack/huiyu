@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "atago_azur/white_ceremony_uniform",
+  "revision": 1,
+  "sortOrder": 1709,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "atago_azur",
+    "outfit": {
+      "characterId": "atago_azur",
+      "id": "white_ceremony_uniform",
+      "name": "白金高阶露肩军官制服",
+      "prose": "A crisp white and gold naval officer uniform featuring a tailored jacket over a black underbust top, matching mini skirt, sheer black pantyhose, and an officer peaked cap.",
+      "tokens": [
+        "white_jacket",
+        "military_uniform",
+        "gold_trim",
+        "short_skirt",
+        "black_pantyhose",
+        "peaked_cap",
+        "high_heels"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "modernia_rainy_bed_snuggle",
+  "revision": 1,
+  "sortOrder": 2133,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "modernia_rainy_bed_snuggle",
+    "characterId": "modernia",
+    "outfitId": "first_affection_knit",
+    "title": "神罚 · 细雨午后的被窝相拥",
+    "category": "私密温存",
+    "description": "窗外细雨蒙蒙打在玻璃上，昏暗温暖的卧室内两人紧裹在厚被子中。针织裙半滑下香肩，肌肤相贴温热发烫，她在你耳边带着微红双颊软语撒娇，满眼深情。",
+    "recommendedSize": "832x1216",
+    "location": "dimly lit cozy bedroom with rain on window",
+    "action": "lying in bed tangled under blankets, sweater slipping off shoulder, soft skin contact, blushing cheeks, whisper at ear",
+    "timeOfDay": "afternoon",
+    "lighting": "dim diffuse rainlight contrasted with warm bedside lamp glow",
+    "camera": "close-up",
+    "mood": "intimate, passionate, sweet clinging vulnerability",
+    "promptProse": "Tangled beneath soft bedsheets on a rainy afternoon, Modernia blushes with bare shoulders as she cuddles close and whispers tenderly.",
+    "promptTokens": [
+      "bedroom",
+      "lying_in_bed",
+      "under_blanket",
+      "bare_shoulders",
+      "blushing",
+      "whispering",
+      "rain_on_window",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Modernia cuddling intimately in bed under blankets on a rainy day.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

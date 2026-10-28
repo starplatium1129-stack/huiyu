@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "himeragi_yukina/cozy_domestic_knit_apron",
+  "revision": 1,
+  "sortOrder": 1734,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "himeragi_yukina",
+    "outfit": {
+      "characterId": "himeragi_yukina",
+      "id": "cozy_domestic_knit_apron",
+      "name": "同居生活·浅蓝针织衫配小猫围裙",
+      "prose": "A sweet domestic ensemble of a soft pastel blue cardigan with a cute cat-print white apron and plaid lounge skirt.",
+      "tokens": [
+        "blue_cardigan",
+        "white_apron",
+        "cute_apron",
+        "plaid_skirt",
+        "slippers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

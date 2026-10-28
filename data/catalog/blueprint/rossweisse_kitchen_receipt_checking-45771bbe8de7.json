@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "rossweisse_kitchen_receipt_checking",
+  "revision": 1,
+  "sortOrder": 2226,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "rossweisse_kitchen_receipt_checking",
+    "characterId": "rossweisse",
+    "outfitId": "bargain_shopper_apron",
+    "title": "罗丝薇瑟 · 厨房桌前的特卖小票核对",
+    "category": "现代日常",
+    "description": "阳光和煦的午后厨房餐桌旁，罗丝薇瑟围着粉色小碎花围裙，认真敲着计算器核对超市打折小票。被你从身后搂住时，她放下笔回头露出极甜的居家小妻子微笑。",
+    "recommendedSize": "832x1216",
+    "location": "warm cozy domestic kitchen and dining area",
+    "action": "sitting at kitchen table checking supermarket bargain receipts with a calculator, smiling warmly as partner hugs her shoulders from behind",
+    "timeOfDay": "afternoon",
+    "lighting": "gentle afternoon sunlight filtering through kitchen curtains",
+    "camera": "medium_shot",
+    "mood": "sweet domestic bliss, devoted housewife warmth, heart-melting thriftiness",
+    "promptProse": "Sitting at a kitchen table with a calculator and bargain receipts, Rossweisse smiles with pure domestic joy as partner hugs her shoulders.",
+    "promptTokens": [
+      "kitchen",
+      "dining_table",
+      "sitting",
+      "calculator",
+      "holding_pen",
+      "receipts",
+      "smiling",
+      "apron",
+      "warm_lighting",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Rossweisse in apron checking grocery receipts happily at the kitchen table.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

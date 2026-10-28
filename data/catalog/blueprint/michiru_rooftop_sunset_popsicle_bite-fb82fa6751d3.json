@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "michiru_rooftop_sunset_popsicle_bite",
+  "revision": 1,
+  "sortOrder": 2318,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "michiru_rooftop_sunset_popsicle_bite",
+    "characterId": "hyoudou_michiru",
+    "outfitId": "tsubaki_sleeveless_sailor_uniform",
+    "title": "冰堂美智留 · 学校天台夕阳下的双棒冰棍抢食",
+    "category": "校园日常",
+    "description": "夏日落日熔金的天台铁丝网旁，美智留无袖水手服下露出修长手臂。她毫无防备地凑上来一口咬住你手中的双棒冰棍，狡黠地眨眼咽下，微风吹乱黑色短发，洋溢着无限青梅竹马的心动。",
+    "recommendedSize": "832x1216",
+    "location": "school rooftop terrace surrounded by chain-link fence at dusk",
+    "action": "leaning forward to take a bite from partner popsicle, winking cheekily with windblown short black hair under crimson sunset sky",
+    "timeOfDay": "sunset",
+    "lighting": "brilliant golden hour twilight painting the rooftop in rich amber and orange",
+    "camera": "cowboy_shot",
+    "mood": "carefree nostalgic youth, playful tomboy charm, sweet twilight romance",
+    "promptProse": "On a windy school rooftop at sunset, short-haired Michiru Hyoudou takes a playful bite from partner popsicle, winking with her signature beauty mark in golden light.",
+    "promptTokens": [
+      "rooftop",
+      "fence",
+      "sunset",
+      "popsicle",
+      "eating",
+      "winking",
+      "wind_blown_hair",
+      "beauty_mark",
+      "golden_hour",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Michiru Hyoudou biting partner popsicle playfully on sunset rooftop.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kanzaki_kaori/saint_asymmetric_jeans_attire",
+  "revision": 1,
+  "sortOrder": 1805,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "kanzaki_kaori",
+    "outfit": {
+      "characterId": "kanzaki_kaori",
+      "id": "saint_asymmetric_jeans_attire",
+      "name": "圣人标志·单边牛仔裤配扎结白衬衫",
+      "prose": "Her signature attire with white cotton shirt tied above the navel showing a toned midriff, asymmetric denim jeans with one leg cut off into shorts, and leather boots.",
+      "tokens": [
+        "white_shirt",
+        "tied_shirt",
+        "midriff",
+        "jeans",
+        "asymmetrical_legwear",
+        "boots",
+        "high_ponytail"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

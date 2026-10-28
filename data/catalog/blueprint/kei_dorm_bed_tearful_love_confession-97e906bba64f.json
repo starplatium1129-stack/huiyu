@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kei_dorm_bed_tearful_love_confession",
+  "revision": 1,
+  "sortOrder": 2241,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kei_dorm_bed_tearful_love_confession",
+    "characterId": "karuizawa_kei",
+    "outfitId": "advanced_nurturing_uniform",
+    "title": "轻井泽惠 · 宿舍床榻的泪眼深情告白",
+    "category": "私密温存",
+    "description": "反锁的单人宿舍内，红色制服外套与领带早已松解，露出诱人锁骨。被你按在床榻上的惠眼泛热泪，紧紧抱住你的脖子热情深吻，断断续续地抽噎喘息着“从今往后……惠的整颗心和身体都只属于你”。",
+    "recommendedSize": "832x1216",
+    "location": "quiet locked dormitory bedroom with drawn blinds",
+    "action": "pinned on single dorm mattress with red blazer unbuttoned, hugging partner neck desperately with tears of relief, kissing passionately while yielding completely",
+    "timeOfDay": "night",
+    "lighting": "soft dim floor lamp casting warm amber glow on disheveled bed",
+    "camera": "close-up",
+    "mood": "cathartic emotional vulnerability, passionate redemption, desperate devotion",
+    "promptProse": "Pinned on dorm bed with an unbuttoned blazer, Kei Karuizawa clings to partner neck with joyful tears, kissing passionately in warm amber light.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "unbuttoned_shirt",
+      "bare_shoulders",
+      "arms_around_neck",
+      "tears_of_happiness",
+      "blushing_heavily",
+      "panting",
+      "dim_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kei Karuizawa clinging with tears of joy and passionate embrace on bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

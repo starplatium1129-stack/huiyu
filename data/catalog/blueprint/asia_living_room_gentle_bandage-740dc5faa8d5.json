@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "asia_living_room_gentle_bandage",
+  "revision": 1,
+  "sortOrder": 2233,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "asia_living_room_gentle_bandage",
+    "characterId": "asia_argento",
+    "outfitId": "holy_nun_habit",
+    "title": "爱西亚 · 客厅沙发的心疼包扎",
+    "category": "现代日常",
+    "description": "温馨的客厅沙发上，爱西亚双手托着你微小划伤的手指。她眼眶泛红、心疼不已地轻轻吹气，一边发动治愈圣光一边柔声安慰，宛如呵护挚爱至宝的温柔小天使。",
+    "recommendedSize": "832x1216",
+    "location": "cozy living room sofa in the Hyoudou residence",
+    "action": "sitting close on sofa applying a bandage to partner finger, blowing softly on it with worried teary green eyes and loving concern",
+    "timeOfDay": "afternoon",
+    "lighting": "warm soft indoor chandelier light",
+    "camera": "close-up",
+    "mood": "tender healing care, heartfelt maternal devotion, sweet girlfriend anxiety",
+    "promptProse": "Sitting close on a sofa, Asia gently blows on partner hurt finger with worried tearful emerald eyes and profound healing love.",
+    "promptTokens": [
+      "living_room",
+      "sofa",
+      "bandage",
+      "holding_hands",
+      "worried",
+      "tender_look",
+      "sweet_smile",
+      "warm_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Asia tending to partner hurt finger with teary loving green eyes.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

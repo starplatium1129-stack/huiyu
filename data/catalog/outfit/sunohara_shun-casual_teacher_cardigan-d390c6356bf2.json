@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "sunohara_shun/casual_teacher_cardigan",
+  "revision": 1,
+  "sortOrder": 1685,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "data": {
+    "characterId": "sunohara_shun",
+    "outfit": {
+      "characterId": "sunohara_shun",
+      "id": "casual_teacher_cardigan",
+      "name": "教官午后米白针织开衫长裙",
+      "prose": "A cozy cream-white knit cardigan draped over an apricot silk slip midi dress with slender straps, showing her graceful collarbone and gentle mature aura.",
+      "tokens": [
+        "cardigan",
+        "knit cardigan",
+        "slip dress",
+        "bare shoulders",
+        "collarbone",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "frenda_safehouse_sofa_mackerel_feed",
+  "revision": 1,
+  "sortOrder": 2304,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "frenda_safehouse_sofa_mackerel_feed",
+    "characterId": "frenda_seivelun",
+    "outfitId": "item_black_turtleneck_beret",
+    "title": "芙兰达 · 安全屋沙发的鲭鱼罐头得意投喂",
+    "category": "现代日常",
+    "description": "安全屋舒适的皮沙发上，芙兰达歪戴着贝雷帽，踢掉小皮鞋晃动长袜双腿。她用小叉子叉起一块美味的鲭鱼送到你嘴边，得意地眨眼坏笑，嘴角满是邀功的俏皮。",
+    "recommendedSize": "832x1216",
+    "location": "cozy hidden safehouse living room with soft leather sofa",
+    "action": "sitting on sofa kicking stockinged legs, holding up a piece of canned mackerel on a fork to partner mouth, winking playfully with deep blue eyes",
+    "timeOfDay": "afternoon",
+    "lighting": "warm ambient indoor spotlighting reflecting off blonde hair",
+    "camera": "medium_shot",
+    "mood": "cheeky playful girlfriend charm, cute domestic bragging, heart-fluttering intimacy",
+    "promptProse": "Sitting on a sofa kicking legs, blonde Frenda Seivelun winks playfully in her black beret, feeding partner canned fish on a fork with bright blue eyes.",
+    "promptTokens": [
+      "sofa",
+      "living_room",
+      "sitting",
+      "holding_fork",
+      "feeding",
+      "winking",
+      "beret",
+      "thighhighs",
+      "warm_lighting",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Frenda Seivelun winking and feeding partner canned fish on sofa.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

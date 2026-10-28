@@ -1,0 +1,149 @@
+{
+  "kind": "character",
+  "id": "hyoudou_michiru",
+  "revision": 1,
+  "sortOrder": 245,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "hyoudou_michiru",
+    "profile": {
+      "id": "hyoudou_michiru",
+      "name": "冰堂美智留",
+      "alias": [
+        "Michiru Hyoudou",
+        "冰堂美智留",
+        "美智留",
+        "美智留(路人女主)",
+        "冰堂 美智留",
+        "氷堂美智留",
+        "hyoudou michiru"
+      ],
+      "type": "popular",
+      "icon": "🎸",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "冰堂美智留 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "乌黑俏丽层次短发 · 发梢微翘碎发 · 帅气假小子与成熟女人味兼备",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "明亮狡黠深紫双瞳 · 眼角下方点缀标志性感泪痣",
+        "hairstyle": "清爽层次乌黑短发 · 露出纤长优美颈项",
+        "uniform": "椿姬女子高中无袖水手服 · 帅气摇滚乐队吉他吊带背心 · 盛夏热烈黑紫比基尼",
+        "expression": "弹吉他时自信肆意的摇滚笑容 · 毫无防备同居穿男主白衬衫时的极强人妻女友诱惑",
+        "style": "cool rock-guitarist childhood friend girlfriend with sexy beauty mark, zero-defense room coexistence, and passionately unreserved bed romance",
+        "signature": "黑短发、泪痣、电吉他乐队、毫无防备同居、青梅竹马"
+      },
+      "personality": [
+        "女子摇滚乐队「icy tail」灵魂吉他手兼主唱",
+        "性格大大咧咧、同居时对青梅竹马毫无防备",
+        "眼角泪痣散发着惊人的成熟女性荷尔蒙",
+        "一旦情窦初开便毫不掩饰狂热依恋的帅气直球女友"
+      ],
+      "likes": [
+        "抱着电吉他在房间地板上弹唱原创曲目",
+        "洗完澡只套着伦也宽大的白衬衫晃悠",
+        "与恋人共用同一副耳机分听新Demo",
+        "在被窝里用长腿缠住恋人索求深吻"
+      ],
+      "classic_cg": {
+        "title": "同居房间地板的白衬衫与电吉他",
+        "description": "单身公寓的地毯上，刚洗完澡的美智留湿漉着短发，身上只套着少年的宽大白色长衬衫，纽扣随意系着两颗，露出雪白的大片锁骨与修长美腿。她抱着电吉他弹了一小段旋律，转头咬着拨片对少年狡黠一笑：“伦也，今晚……陪我练习一整夜吧？”"
+      },
+      "identity": {
+        "role": "椿姬女子高中三年级生 / 女子摇滚乐队「icy tail」队长兼吉他手 / 同人社团音乐创作者",
+        "age": "成年初熟创作设定",
+        "occupation": "高中生 / 乐队主唱吉他手",
+        "faction": "icy tail / blessing software"
+      },
+      "tags": [
+        "短发",
+        "黑发",
+        "紫瞳",
+        "泪痣",
+        "青梅竹马",
+        "白衬衫",
+        "摇滚吉他",
+        "路人女主"
+      ],
+      "bg_story": "冰堂美智留是《路人女主的养成方法》中极具独特荷尔蒙魅力与野性活力的女主角。作为安艺伦也同天出生的表姐兼自幼形影不离的青梅竹马，拥有令人惊叹的音乐才华与运动神经。她是个性爽朗奔放的女子高中生摇滚乐队「icy tail」灵魂人物。在借住伦也房间期间，以毫不设防的“洗完澡只穿男主衬衫”、“随意睡在一张床上”等极具杀伤力的举动，彻底扰乱了伦也的心神。她的眼角泪痣、洒脱利落的短发与全心倾注的摇滚热情，在褪去舞台光芒后化作对恋人无比直接热烈的身心依恋，是青梅竹马同居系女友的终极梦幻模板。",
+      "palette": [
+        "纯黑",
+        "深紫",
+        "电吉他红",
+        "纯白"
+      ],
+      "weather": [
+        "Livehouse霓虹",
+        "房间夜月",
+        "晨曦微风"
+      ],
+      "speech": "伦也！少罗嗦，快把耳朵凑过来听这段新编曲！……哼，作为报酬，今晚你的床可就完全归本小姐征用了哦！",
+      "source": "Saenai Heroine no Sodatekata",
+      "traits": [
+        "乌黑层次短发深紫双瞳",
+        "眼角标志性感泪痣",
+        "摇滚乐队主唱吉他手",
+        "毫无防备同居白衬衫",
+        "热情直球青梅竹马女友"
+      ]
+    },
+    "popular": {
+      "id": "hyoudou_michiru",
+      "displayName": "冰堂美智留",
+      "originalName": "Michiru Hyoudou",
+      "franchise": "Saenai Heroine no Sodatekata",
+      "category": "动漫角色",
+      "aliases": [
+        "Michiru Hyoudou",
+        "冰堂美智留",
+        "美智留",
+        "美智留(路人女主)",
+        "冰堂 美智留",
+        "氷堂美智留",
+        "hyoudou michiru"
+      ],
+      "exactTokens": [
+        "hyoudou_michiru"
+      ],
+      "characterTokens": [
+        "hyoudou_michiru"
+      ],
+      "copyrightTokens": [
+        "saenai_heroine_no_sodatekata"
+      ],
+      "identityTokens": [
+        "hyoudou_michiru",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "purple_eyes",
+        "mole_under_eye"
+      ],
+      "identityProse": "Michiru Hyoudou from Saenai Heroine no Sodatekata, the only character in the image, with layered short black hair, expressive violet eyes, a distinctive beauty mark under her eye, athletic sexy curves, and a bold affectionate childhood friend girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "swav"
+      ],
+      "animeStudio": "CloverWorks / A-1 Pictures official anime style, Saekano character art",
+      "canon": {
+        "era": "同人游戏音乐制作纪元",
+        "world": "东京都·安艺宅同居与Livehouse",
+        "formNotes": "黑发短发紫瞳泪痣，摇滚主唱，毫无防备同居白衬衫青梅竹马"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "tsubaki_sleeveless_sailor_uniform",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

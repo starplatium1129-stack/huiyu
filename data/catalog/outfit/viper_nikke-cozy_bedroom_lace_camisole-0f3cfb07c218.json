@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "viper_nikke/cozy_bedroom_lace_camisole",
+  "revision": 1,
+  "sortOrder": 1720,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "viper_nikke",
+    "outfit": {
+      "characterId": "viper_nikke",
+      "id": "cozy_bedroom_lace_camisole",
+      "name": "居家私密·粉白真丝细吊带睡裙",
+      "prose": "A delicate blush pink silk camisole slip dress edged with white eyelash lace, hugging her curves with slender spaghetti straps.",
+      "tokens": [
+        "camisole",
+        "slip_dress",
+        "spaghetti_strap",
+        "lace_trim",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

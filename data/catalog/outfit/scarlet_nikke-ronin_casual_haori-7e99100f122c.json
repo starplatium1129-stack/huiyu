@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "scarlet_nikke/ronin_casual_haori",
+  "revision": 1,
+  "sortOrder": 1697,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "characterId": "scarlet_nikke",
+    "outfit": {
+      "characterId": "scarlet_nikke",
+      "id": "ronin_casual_haori",
+      "name": "随性白羽织与短裹胸",
+      "prose": "A loose white wanderer haori draped off one shoulder over a tight white cloth sarashi chest wrap, fingerless cloth gloves, and traditional tied sandals.",
+      "tokens": [
+        "white_haori",
+        "sarashi",
+        "crop_top",
+        "fingerless_gloves",
+        "wide_sleeves",
+        "straw_sandals"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

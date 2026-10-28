@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "nymph/electronic_warfare_angeloid_armor",
+  "revision": 1,
+  "sortOrder": 1785,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "nymph",
+    "outfit": {
+      "characterId": "nymph",
+      "id": "electronic_warfare_angeloid_armor",
+      "name": "电子战天使·西纳普斯半透明羽翼装束",
+      "prose": "The sleek Synapse electronic warfare Angeloid combat attire with form-fitting dark bodice, high-tech collar, detached arm sleeves, and translucent holographic wings.",
+      "tokens": [
+        "bodysuit",
+        "sleeveless",
+        "black_bodysuit",
+        "translucent_wings",
+        "collar",
+        "arm_warmers",
+        "thighhighs",
+        "choker"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

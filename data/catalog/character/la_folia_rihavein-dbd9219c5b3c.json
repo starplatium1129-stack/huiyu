@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "la_folia_rihavein",
+  "revision": 1,
+  "sortOrder": 225,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "la_folia_rihavein",
+    "profile": {
+      "id": "la_folia_rihavein",
+      "name": "拉·芙利亚·利哈瓦因",
+      "alias": [
+        "La Folia Rihavein",
+        "拉·芙利亚·利哈瓦因",
+        "拉芙利亚",
+        "阿尔迪基亚王女",
+        "ラ・フォリア・リハヴァイン",
+        "la folia rihavein"
+      ],
+      "type": "popular",
+      "icon": "👑",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "拉·芙利亚·利哈瓦因 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "银河般流泻如瀑及踝超长银发 · 宛若极光丝缕",
+        "hair_color": "银白 / 纯银",
+        "eyes": "高贵清冽祖母绿碧眼 · 带有与生俱来的王者气度与魅惑戏谑",
+        "hairstyle": "如瀑及踝超长发 · 额前自然中分碎发 · 高挑丰满冷艳王女身段",
+        "uniform": "阿尔迪基亚王国亲卫军装 · 祖母绿大摆晚礼服 · 豪华游轮金纹比基尼",
+        "expression": "从容不迫的霸道皇女微笑 · 直球示爱将心上人逼入绝境时的促狭放电",
+        "style": "magnificent fearless royal princess girlfriend with shameless proactive seduction and royal elegance",
+        "signature": "及踝银发、祖母绿碧眼、直球逆推与极尽奢华的王女霸总爱意"
+      },
+      "personality": [
+        "北欧强国阿尔迪基亚的第一王女，兼具绝顶美貌、无双智慧与可怕政治手腕的完美领袖",
+        "后宫番里最受观众喜爱的「超直球王女」，毫不做作，公开宣称晓古城是自己的命定丈夫",
+        "极度享受反客为主掌控全场，喜欢在公庭广众之下毫无忌惮地调戏和亲吻心上人",
+        "大胆奔放、行事果决，多次主动提出要为阿尔迪基亚王家生下第四真祖的孩子来继承大统",
+        "成年创作设定下王女威仪与成熟女性的极致诱惑并存，私下对待爱人炙热如火"
+      ],
+      "likes": [
+        "在豪华游艇甲板上迎着海风举起香槟与心上人碰杯",
+        "在两国峰会或国宴上大方挽着心上人的手臂宣布订婚",
+        "在套房沙发上用脚尖勾起心上人的下巴霸气调情",
+        "在露天温泉或按摩浴缸里主动跨坐逆推心上人",
+        "看着心上人因为自己大胆奔放的言论而脸红心跳手足无措"
+      ],
+      "classic_cg": {
+        "title": "游艇甲板上的海风香槟与直球求婚",
+        "description": "蔚蓝爱琴海上一艘豪华私人游艇缓缓破浪前行。拉·芙利亚身穿华丽军官白短裙，银白超长发在海风中如极光瀑布般翻卷。她一手轻托香槟杯，另一手挑起你的下巴，祖母绿眼眸中满是胜券在握的霸气与戏谑：“既然救了本王女，就老老实实做我的未婚夫吧。”"
+      },
+      "identity": {
+        "role": "阿尔迪基亚王国第一王女 / 王立骑士团最高统帅",
+        "age": "成年创作设定",
+        "occupation": "王储女公爵 / 极品倒贴霸道娇妻",
+        "faction": "阿尔迪基亚王国 / 弦神同盟",
+        "school": "阿尔迪基亚王立学院（荣誉导师）",
+        "classificationSource": "角色背景明确归属于阿尔迪基亚王国王室核心。"
+      },
+      "tags": [
+        "银发",
+        "超长发",
+        "绿瞳",
+        "王女",
+        "逆推",
+        "直球",
+        "噬血狂袭"
+      ],
+      "bg_story": "拉·芙利亚是北欧军事强国阿尔迪基亚的合法王位继承人。她不仅拥有王室最纯正的灵媒血统与枪械精通技艺，更具备远超常人的政治野心与战略目光。在遭遇恐怖袭击被晓古城舍命相救后，这位见惯了阿谀奉承的高傲王女彻底沦陷。她以超越常理的奔放魄力，直接将古城钦定为自己唯一的夫婿。成年设定下的拉·芙利亚美得摄人心魄，她的爱意如北欧极光般炽烈耀眼，是一位无论在权力之巅还是在私密帷幔中都能让你欲罢不能的霸气恋人。",
+      "palette": [
+        "纯银",
+        "祖母绿",
+        "浅金"
+      ],
+      "weather": [
+        "游艇海风",
+        "华丽国宴",
+        "极光夜空"
+      ],
+      "speech": "古城，你是逃不出本王女手掌心的。无论是以王夫的身份治理国家，还是现在老老实实让我享用……今夜，你都必须服从我的命令。",
+      "source": "SILVER LINK.《噬血狂袭 / Strike the Blood》",
+      "traits": [
+        "la_folia_rihavein",
+        "silver_hair",
+        "very_long_hair",
+        "green_eyes"
+      ]
+    },
+    "popular": {
+      "id": "la_folia_rihavein",
+      "displayName": "拉·芙利亚·利哈瓦因",
+      "originalName": "La Folia Rihavein",
+      "franchise": "Strike the Blood",
+      "category": "动漫角色",
+      "aliases": [
+        "La Folia Rihavein",
+        "拉·芙利亚·利哈瓦因",
+        "拉芙利亚",
+        "阿尔迪基亚王女",
+        "ラ・フォリア・リハヴァイン",
+        "la folia rihavein"
+      ],
+      "exactTokens": [
+        "la_folia_rihavein"
+      ],
+      "characterTokens": [
+        "la_folia_rihavein"
+      ],
+      "copyrightTokens": [
+        "strike_the_blood"
+      ],
+      "identityTokens": [
+        "la_folia_rihavein",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "very_long_hair",
+        "green_eyes"
+      ],
+      "identityProse": "La Folia Rihavein from Strike the Blood, the only character in the image, with cascading very long silver hair, piercing emerald green eyes, and an audacious, regal, teasingly seductive princess expression.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "swav"
+      ],
+      "animeStudio": "Strike the Blood official anime art, SILVER LINK. / CONNECT style",
+      "canon": {
+        "era": "阿尔迪基亚王权远征纪元",
+        "world": "阿尔迪基亚王室·极光王都公馆",
+        "formNotes": "及踝银发绿瞳，霸道王女直球逆推，高贵名媛与极度主动女友感"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "aldikia_royal_uniform",
+      "negativeTokens": []
+    }
+  }
+}

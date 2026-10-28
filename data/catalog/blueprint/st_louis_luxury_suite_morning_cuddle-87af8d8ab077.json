@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "st_louis_luxury_suite_morning_cuddle",
+  "revision": 1,
+  "sortOrder": 2165,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "st_louis_luxury_suite_morning_cuddle",
+    "characterId": "st_louis_azur",
+    "outfitId": "eagle_union_uniform",
+    "title": "圣路易斯 · 豪华套房的慵懒缠绵",
+    "category": "私密温存",
+    "description": "阳光洒满真丝大床，水蓝发丝凌乱散落。褪尽衣物的圣路易斯双腿与你亲密缠绕，整个人趴在你的胸膛上，双手微托香腮，用带着晨起微哑的气音对你吐露甜腻情话。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit penthouse master bed with silk sheets",
+    "action": "lying under silky duvet, bare legs entangled with partner, propping chin on hands on partner chest, whispering sweet nothings with a radiant affectionate smile",
+    "timeOfDay": "morning",
+    "lighting": "bright morning sunlight illuminating white silk duvet and bare skin",
+    "camera": "close-up",
+    "mood": "tender morning intimacy, blissful domestic sweetness, irresistible cuddle",
+    "promptProse": "Lying atop her partner chest under silk sheets in morning light, St. Louis whispers sweet nothings with an affectionate radiant smile.",
+    "promptTokens": [
+      "bedroom",
+      "lying_on_partner",
+      "bare_shoulders",
+      "chin_rest",
+      "tangled_sheets",
+      "blushing",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "St. Louis cuddling atop partner chest on a sunny morning silk bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

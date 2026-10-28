@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kurodate_haruna/gourmet_banquet_qipao",
+  "revision": 1,
+  "sortOrder": 1688,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "data": {
+    "characterId": "kurodate_haruna",
+    "outfit": {
+      "characterId": "kurodate_haruna",
+      "id": "gourmet_banquet_qipao",
+      "name": "美馔盛宴深蓝刺绣高叉晚装旗袍",
+      "prose": "A glamorous midnight-blue silk qipao dress with golden floral embroidery, deep backless cut, and high side slit accentuating her regal posture.",
+      "tokens": [
+        "blue dress",
+        "qipao",
+        "cheongsam",
+        "embroidery",
+        "high slit",
+        "bare shoulders",
+        "pumps"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

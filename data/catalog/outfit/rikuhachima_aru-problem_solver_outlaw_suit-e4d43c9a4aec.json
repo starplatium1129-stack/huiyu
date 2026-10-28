@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "rikuhachima_aru/problem_solver_outlaw_suit",
+  "revision": 1,
+  "sortOrder": 1681,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "data": {
+    "characterId": "rikuhachima_aru",
+    "outfit": {
+      "characterId": "rikuhachima_aru",
+      "id": "problem_solver_outlaw_suit",
+      "name": "便利屋社长深酒红风衣制服",
+      "prose": "A stylish crimson-red executive coat over a crisp black collared shirt with a red necktie, black tailored pencil skirt, sheer black stockings, and high heels.",
+      "tokens": [
+        "red coat",
+        "long coat",
+        "black shirt",
+        "collared shirt",
+        "necktie",
+        "black skirt",
+        "black pantyhose",
+        "high heels"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

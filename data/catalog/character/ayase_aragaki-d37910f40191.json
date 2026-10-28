@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "ayase_aragaki",
+  "revision": 1,
+  "sortOrder": 235,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "ayase_aragaki",
+    "profile": {
+      "id": "ayase_aragaki",
+      "name": "新垣绫濑",
+      "alias": [
+        "Ayase Aragaki",
+        "新垣绫濑",
+        "绫濑",
+        "新垣 绫濑",
+        "新垣あやせ",
+        "ayase aragaki"
+      ],
+      "type": "popular",
+      "icon": "🌸",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "新垣绫濑 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "乌黑柔亮齐腰直长发 · 优雅侧分齐整刘海 · 顶级杂志模特光泽",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "清澈澄明深紫双瞳 · 兼备温柔治愈、吃醋阴郁与深情沦陷",
+        "hairstyle": "如丝绸般倾泻的乌黑长直发 · 高挑清丽的模特气韵",
+        "uniform": "千叶私立女校贵族水手服 · 优雅浅紫露肩私服针织衫 · 盛夏纯白系带比基尼",
+        "expression": "平时端庄温柔的大和抚子微笑 · 吃醋鼓腮与病娇反差萌 · 动情时满溢泪光的至纯交托",
+        "style": "elegant fashion-model girlfriend with devoted housewife warmth, cute jealous gap moe, and profound exclusive surrender",
+        "signature": "黑发紫眸、时尚模特、人妻便当、吃醋鼓腮反差萌"
+      },
+      "personality": [
+        "举止端庄有礼的顶级时尚少女模特",
+        "家务全能照顾人无微不至的人妻属性",
+        "对爱人极度专一、容不得半点出轨的可爱独占欲",
+        "一旦确认心意便飞蛾扑火般深情献身的纯爱少女"
+      ],
+      "likes": [
+        "亲手制作营养均衡的爱心便当与甜点",
+        "突击检查心爱之人的手机查岗",
+        "并肩牵手在放学黄昏的小道上散步",
+        "在被单里被紧紧拥吻直至融化"
+      ],
+      "classic_cg": {
+        "title": "黄昏玄关的查岗与深情挽留",
+        "description": "公寓玄关的暖黄灯光下，绫濑拿着少年的手机鼓起双腮气呼呼地质问。当少年无奈苦笑并将她一把拉入怀中深吻时，模特少女原本凌厉的双眸瞬间化作满盈春水，娇躯发软，双手紧紧缠绕在少年腰后轻声求饶。"
+      },
+      "identity": {
+        "role": "时尚杂志专属人气读者模特 / 千叶县私立女校高中生 / 高坂桐乃挚友",
+        "age": "17岁（高中纯洁少女）",
+        "occupation": "时尚模特 / 高中生",
+        "faction": "千叶·新垣家 / 读者模特"
+      },
+      "tags": [
+        "黑长直",
+        "紫瞳",
+        "模特",
+        "人妻",
+        "吃醋反差萌",
+        "纯爱",
+        "俺妹"
+      ],
+      "bg_story": "新垣绫濑是《我的妹妹哪有这么可爱！》中最具超绝女友力与大和抚子气质的核心女主角。作为高坂桐乃的同班同学兼现役时尚杂志专属模特，她拥有全校公认的绝顶美貌、高挑修长的完美身材与近乎挑不出瑕疵的温婉家教。虽然最初因极端厌恶御宅文化而引发剧烈冲突，但随着与高坂京介的深入接触，被京介甘愿背负骂名也要守护心爱之人的笨拙温柔彻底征服。她表面上爱管闲事、时不时因为吃醋露出令人后背发凉的可爱病娇表情，骨子里却是个做饭打扫无所不能、一心一意只为了让爱人幸福的极品人妻女友。",
+      "palette": [
+        "纯黑",
+        "浅紫",
+        "纯白",
+        "典雅海军蓝"
+      ],
+      "weather": [
+        "黄昏余晖",
+        "厨房晴晨",
+        "静谧月夜"
+      ],
+      "speech": "京介哥哥……要是你敢多看别的女孩子一眼，绫濑可是绝对不会原谅你的哦！……但是，如果是绫濑的话，什么都可以给你……",
+      "source": "Oreimo",
+      "traits": [
+        "黑长直深紫眸",
+        "人气时尚模特",
+        "家务全能人妻属性",
+        "吃醋病娇反差萌",
+        "全心全意深情交托"
+      ]
+    },
+    "popular": {
+      "id": "ayase_aragaki",
+      "displayName": "新垣绫濑",
+      "originalName": "Ayase Aragaki",
+      "franchise": "Oreimo",
+      "category": "动漫角色",
+      "aliases": [
+        "Ayase Aragaki",
+        "新垣绫濑",
+        "绫濑",
+        "新垣 绫濑",
+        "新垣あやせ",
+        "ayase aragaki"
+      ],
+      "exactTokens": [
+        "ayase_aragaki"
+      ],
+      "characterTokens": [
+        "ayase_aragaki"
+      ],
+      "copyrightTokens": [
+        "ore_no_imouto_ga_konna_ni_kawaii_wake_ga_nai"
+      ],
+      "identityTokens": [
+        "ayase_aragaki",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "straight_hair",
+        "purple_eyes"
+      ],
+      "identityProse": "Ayase Aragaki from Oreimo, the only character in the image, with long straight black hair, deep violet eyes, an elegant slender fashion-model beauty, and an endearing devoted wife charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "swav"
+      ],
+      "animeStudio": "AIC Build / A-1 Pictures official anime style, Oreimo character art",
+      "canon": {
+        "era": "千叶高中御宅与模特青春纪元",
+        "world": "千叶市·新垣宅与千叶商业区",
+        "formNotes": "黑长直紫眸，时尚模特身材，极品做饭人妻与吃醋反差萌"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "chiba_private_school_uniform",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

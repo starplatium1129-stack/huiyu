@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "michiru_livehouse_backstage_towel_tease",
+  "revision": 1,
+  "sortOrder": 2317,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "michiru_livehouse_backstage_towel_tease",
+    "characterId": "hyoudou_michiru",
+    "outfitId": "rock_guitarist_tank_top_jeans",
+    "title": "冰堂美智留 · 演出后台走廊的搭肩贴耳私语",
+    "category": "现代日常",
+    "description": "演出结束喧嚣未平的后台走廊里，挂着毛巾满身热气的美智留一把搂过你的肩膀，整个人几乎贴在你胸口。少女眼角泪痣散发着极致诱惑，在你耳畔吐气如兰：“喂……今天的我帅不帅？”",
+    "recommendedSize": "832x1216",
+    "location": "dimly lit music livehouse backstage corridor with sound equipment",
+    "action": "slinging arm around partner shoulder, leaning close to whisper in his ear, sweating lightly after performance with sparkling violet eyes and beauty mark",
+    "timeOfDay": "night",
+    "lighting": "moody colored backstage stage lights with atmospheric neon glow",
+    "camera": "close-up",
+    "mood": "electrifying rockstar energy, bold childhood friend flirtation, breathless proximity",
+    "promptProse": "In a neon livehouse backstage, sweaty Michiru Hyoudou leans close against partner ear, whispering with sparkling violet eyes and a beauty mark smirk.",
+    "promptTokens": [
+      "backstage",
+      "corridor",
+      "towel",
+      "sweat",
+      "leaning_on_shoulder",
+      "whispering",
+      "beauty_mark",
+      "neon_lights",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Michiru Hyoudou whispering teasingly into partner ear backstage.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "la_folia_rihavein/cruise_ship_gold_bikini",
+  "revision": 1,
+  "sortOrder": 1739,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "la_folia_rihavein",
+    "outfit": {
+      "characterId": "la_folia_rihavein",
+      "id": "cruise_ship_gold_bikini",
+      "name": "豪华邮轮·华贵金纹系带比基尼",
+      "prose": "A glamorous metallic champagne gold string bikini with delicate chain accents and designer sunglasses nestled in her silver hair.",
+      "tokens": [
+        "gold_bikini",
+        "luxury_swimsuit",
+        "halter_bikini",
+        "side-tie_bikini_bottom",
+        "sunglasses_on_head"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

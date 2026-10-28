@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "izumi_sunset_slope_bicycle_walk_blush",
+  "revision": 1,
+  "sortOrder": 2312,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "izumi_sunset_slope_bicycle_walk_blush",
+    "characterId": "hashima_izumi",
+    "outfitId": "junior_school_sailor_cardigan",
+    "title": "波岛出海 · 黄昏坡道并肩推车的深情告白",
+    "category": "校园日常",
+    "description": "放学后红霞满天的长长樱花坡道上，并肩推着单车的出海突然停下脚步。少女双手揪着水手服开衫下摆，双马尾在晚风中轻晃，脸颊红透、用尽全身力气大喊“前辈是我一个人的”。",
+    "recommendedSize": "832x1216",
+    "location": "scenic sloping suburban street flanked by green hedges bathed in sunset",
+    "action": "stopped on sunset slope beside bicycle, clutching cardigan hem, looking up at partner with burning crimson blush and heartfelt earnest eyes",
+    "timeOfDay": "sunset",
+    "lighting": "brilliant golden hour sunset painting sky and asphalt in crimson gold",
+    "camera": "cowboy_shot",
+    "mood": "heartfelt youth confession, passionate junior devotion, unforgettable sunset memory",
+    "promptProse": "On a sunset suburban slope, Izumi Hashima clutches her cardigan hem, looking up at partner with a burning crimson blush and passionate brown eyes.",
+    "promptTokens": [
+      "slope",
+      "street",
+      "sunset",
+      "bicycle",
+      "tugging_clothes",
+      "blushing_heavily",
+      "looking_up",
+      "golden_hour",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Izumi Hashima blushing heavily on sunset slope looking at partner.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

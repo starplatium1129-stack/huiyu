@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "shinano_deep_night_soul_entwine",
+  "revision": 1,
+  "sortOrder": 2147,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "shinano_deep_night_soul_entwine",
+    "characterId": "shinano",
+    "outfitId": "hazy_moon_sheer_nightgown",
+    "title": "信浓 · 罗帐深宵的极乐沉沦",
+    "category": "私密温存",
+    "description": "帷幔深处的锦褥之上青丝交叠，九条巨大的白狐尾将两人严密包裹成独属于彼此的秘境。信浓金色眼眸中蓄满极乐的泪水，在无休止的炙热温存中低声倾诉永恒相伴。",
+    "recommendedSize": "832x1216",
+    "location": "intimate traditional bedchamber with gossamer silk canopy",
+    "action": "entangled in deep bedding under silk canopy, nine tails fully shielding them from outside world, silver hair intermingled, tears of ecstasy in golden eyes",
+    "timeOfDay": "night",
+    "lighting": "soft flickering candlelight casting dancing shadows on silk curtains",
+    "camera": "close-up",
+    "mood": "transcendent ecstasy, complete devotion, divine intimate bliss",
+    "promptProse": "Tangled deeply under a silk bed canopy shielded by nine fluffy tails, Shinano sheds tears of ecstasy with flushed cheeks in passionate communion.",
+    "promptTokens": [
+      "canopy_bed",
+      "tangled_hair",
+      "surrounded_by_tails",
+      "blushing_heavily",
+      "tears_of_pleasure",
+      "ecstatic_expression",
+      "candlelight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shinano in transcendent ecstasy wrapped in nine tails under bed canopy.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "asia_bedroom_trembling_nun_devotion",
+  "revision": 1,
+  "sortOrder": 2235,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "asia_bedroom_trembling_nun_devotion",
+    "characterId": "asia_argento",
+    "outfitId": "holy_nun_habit",
+    "title": "爱西亚 · 卧室烛光下的圣洁献身",
+    "category": "私密温存",
+    "description": "安静的烛光卧室内，黑色修女头巾早已褪去，如瀑金发散落床榻。胸前长袍纽扣完全解开，露出白皙无瑕的幼嫩香肩。爱西亚双手合十紧贴在颤抖的心口前，含泪向你献上全部的纯洁。",
+    "recommendedSize": "832x1216",
+    "location": "quiet candlelit bedroom with fluttering sheer curtains",
+    "action": "kneeling on white bedsheet with veil removed, habit fully unbuttoned exposing virginal pale chest, hands clasped over chest whispering breathless vows of love",
+    "timeOfDay": "night",
+    "lighting": "soft flickering golden candlelight creating intimate reverent shadows",
+    "camera": "close-up",
+    "mood": "sacred romantic consummation, virginal tremor, absolute selfless love",
+    "promptProse": "Kneeling on white sheets with an unbuttoned nun habit, Asia blushes heavily with clasped hands, declaring eternal love in soft candlelight.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "unbuttoned_clothes",
+      "bare_shoulders",
+      "praying_hands",
+      "blushing_heavily",
+      "tears_of_happiness",
+      "candlelight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Asia Argento kneeling with unbuttoned nun habit in romantic candlelight.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

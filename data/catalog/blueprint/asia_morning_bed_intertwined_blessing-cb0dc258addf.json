@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "asia_morning_bed_intertwined_blessing",
+  "revision": 1,
+  "sortOrder": 2237,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "asia_morning_bed_intertwined_blessing",
+    "characterId": "asia_argento",
+    "outfitId": "pure_cotton_frilled_nightdress",
+    "title": "爱西亚 · 晨光微曦的十指相扣圆满",
+    "category": "私密温存",
+    "description": "初升的金辉洒满纯白被褥，爱西亚整个人依偎在你的胸膛前。两人的十指在被单间紧紧交扣，少女眼角含着幸福圆满的晶莹泪花，甜甜微笑着感受这一刻宛如天堂的永恒安宁。",
+    "recommendedSize": "832x1216",
+    "location": "sun-drenched master bedroom with white linen curtains",
+    "action": "nestled deeply under white cotton sheets with bare shoulders exposed, ten fingers tightly intertwined with partner, tearful ecstatic smile of pure matrimonial fulfillment",
+    "timeOfDay": "morning",
+    "lighting": "radiant golden morning sunbeams pouring across white bedsheets",
+    "camera": "close-up",
+    "mood": "heavenly peace, holy matrimonial blessing, ultimate sweet surrender",
+    "promptProse": "Nestled in morning bedsheets with bare flushed shoulders, Asia interlocks fingers with partner, crying tears of supreme matrimonial joy.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "interlocked_fingers",
+      "crying_with_happiness",
+      "sweet_smile",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Asia Argento crying tears of sweet joy while holding hands in morning bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

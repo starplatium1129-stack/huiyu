@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kanzaki_onsen_steamy_passionate_soak",
+  "revision": 1,
+  "sortOrder": 2302,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "kanzaki_onsen_steamy_passionate_soak",
+    "characterId": "kanzaki_kaori",
+    "outfitId": "summer_resort_crimson_bikini",
+    "title": "神裂火织 · 露天温泉水汽的成熟娇躯交缠",
+    "category": "私密温存",
+    "description": "岩石掩映的私密露天温泉中，红黑比基尼细带早已解开漂在水面。温热泉水浸湿了乌黑马尾，神裂火织跨坐在你的腿上，修长曼妙的圣人体魄紧密贴合，在滚烫水汽中发出甜腻喘息。",
+    "recommendedSize": "832x1216",
+    "location": "secluded outdoor natural stone hot spring under starry night sky",
+    "action": "straddling partner in steamy onsen, untied red bikini floating, wet black hair clinging to back, kissing passionately with breathless intensity",
+    "timeOfDay": "night",
+    "lighting": "steamy lantern mist illuminated by warm underwater lamps",
+    "camera": "cowboy_shot",
+    "mood": "intense warrior passion, heated water embrace, breathless lovers surrender",
+    "promptProse": "In a steamy outdoor hot spring with untied bikini, Kaori Kanzaki straddles partner with glistening wet skin and breathless passionate kisses.",
+    "promptTokens": [
+      "onsen",
+      "hot_spring",
+      "steam",
+      "straddling",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "blushing_heavily",
+      "panting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kaori Kanzaki straddling partner passionately in steamy natural hot spring.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

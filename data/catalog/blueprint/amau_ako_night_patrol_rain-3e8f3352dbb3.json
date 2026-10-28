@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "amau_ako_night_patrol_rain",
+  "revision": 3,
+  "sortOrder": 2095,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "amau_ako_night_patrol_rain",
+    "characterId": "amau_ako",
+    "outfitId": "prefect_duty_vestment",
+    "title": "天雨亚子 · 霓虹夜雨中的严苛巡查",
+    "category": "战术治安",
+    "description": "歌赫娜商业街细雨纷飞的雨夜，街道两侧的红蓝霓虹灯倒映在积水街道上。亚子黑色风衣披在肩头，双手插袋快步行进，灰色双马尾发丝沾着点点晶莹雨雾。她目光锐利如刀，展现出作为歌赫娜治安二把手的冷艳威严。",
+    "recommendedSize": "832x1216",
+    "location": "neon-lit Gehenna rainy avenue",
+    "action": "walking with coat draped over shoulders, stern alert gaze, rain drizzle",
+    "timeOfDay": "night",
+    "lighting": "vibrant crimson and blue neon reflections on wet asphalt",
+    "camera": "cowboy_shot",
+    "mood": "sharp tactical vigilance and noir atmosphere",
+    "promptProse": "Striding through a neon-bathed Gehenna avenue in the pouring rain, Amau Ako looks sharply ahead with her black jacket slung over her shoulders and horns gleaming beneath the drizzle.",
+    "promptTokens": [
+      "jacket_draped_over_shoulders",
+      "rain",
+      "wet_street",
+      "neon_lights",
+      "night",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ako patrolling the neon-lit rainy street in Gehenna.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

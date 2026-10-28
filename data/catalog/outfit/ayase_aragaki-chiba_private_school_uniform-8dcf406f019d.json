@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "ayase_aragaki/chiba_private_school_uniform",
+  "revision": 1,
+  "sortOrder": 1777,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "ayase_aragaki",
+    "outfit": {
+      "characterId": "ayase_aragaki",
+      "id": "chiba_private_school_uniform",
+      "name": "千叶私立女校典雅贵族水手服",
+      "prose": "The Chiba private academy summer sailor uniform featuring a pristine white short-sleeve blouse, navy collar with blue ribbon, crisp pleated navy skirt, and neat black socks.",
+      "tokens": [
+        "school_uniform",
+        "sailor_suit",
+        "white_shirt",
+        "blue_skirt",
+        "pleated_skirt",
+        "white_collar",
+        "blue_necktie",
+        "black_socks"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

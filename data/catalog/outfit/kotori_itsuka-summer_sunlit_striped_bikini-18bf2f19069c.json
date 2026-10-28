@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kotori_itsuka/summer_sunlit_striped_bikini",
+  "revision": 1,
+  "sortOrder": 1775,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "kotori_itsuka",
+    "outfit": {
+      "characterId": "kotori_itsuka",
+      "id": "summer_sunlit_striped_bikini",
+      "name": "盛夏海滩·红白水手条纹荷叶边比基尼",
+      "prose": "A vibrant red-and-white striped sailor style bikini trimmed with playful white ruffles and sweet halterneck ties.",
+      "tokens": [
+        "bikini",
+        "striped_bikini",
+        "red_and_white_stripes",
+        "frilled_bikini",
+        "halterneck",
+        "slender_waist"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "la_folia_rihavein/aldikia_royal_uniform",
+  "revision": 1,
+  "sortOrder": 1737,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "la_folia_rihavein",
+    "outfit": {
+      "characterId": "la_folia_rihavein",
+      "id": "aldikia_royal_uniform",
+      "name": "阿尔迪基亚王国亲卫军装礼服",
+      "prose": "An immaculate white royal military parade uniform with gold fringed epaulets, short tailored skirt, black thigh-highs, and a flowing shoulder capelet.",
+      "tokens": [
+        "white_military_jacket",
+        "gold_epaulets",
+        "short_skirt",
+        "thighhighs",
+        "gloves",
+        "capelet"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

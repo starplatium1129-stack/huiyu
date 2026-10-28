@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "prinz_eugen_sofa_movie_cuddle",
+  "revision": 1,
+  "sortOrder": 2150,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "prinz_eugen_sofa_movie_cuddle",
+    "characterId": "prinz_eugen",
+    "outfitId": "cozy_oversized_knit",
+    "title": "欧根亲王 · 客厅沙发的爆米花偷吻",
+    "category": "日常约会",
+    "description": "深夜客厅光线昏暗，电视屏幕反光闪烁。欧根整个人蜷缩在你怀里共享大桶爆米花，趁你看屏幕出神时突然转头偷吻你的侧脸，得逞后发出甜腻轻快的坏笑。",
+    "recommendedSize": "832x1216",
+    "location": "dim living room illuminated only by television screen glow",
+    "action": "curled up on sofa leaning against partner, eating popcorn from shared bowl, suddenly leaning in to steal a quick kiss on cheek with triumphant giggle",
+    "timeOfDay": "night",
+    "lighting": "cool dynamic blue and warm screen reflections in dark room",
+    "camera": "medium_shot",
+    "mood": "heartwarming couple sweetness, mischievous romance, relaxed comfort",
+    "promptProse": "Cuddled up on a dim living room sofa eating popcorn, Prinz Eugen steals an affectionate kiss on the cheek with a triumphant grin.",
+    "promptTokens": [
+      "living_room",
+      "couch",
+      "sitting_close",
+      "eating_popcorn",
+      "kiss_on_cheek",
+      "mischievous_smile",
+      "dim_lighting",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Prinz Eugen stealing a sweet kiss on the couch in a dim living room.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

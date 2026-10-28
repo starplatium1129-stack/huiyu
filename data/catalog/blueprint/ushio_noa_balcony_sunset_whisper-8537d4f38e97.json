@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "ushio_noa_balcony_sunset_whisper",
+  "revision": 3,
+  "sortOrder": 2090,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "ushio_noa_balcony_sunset_whisper",
+    "characterId": "ushio_noa",
+    "outfitId": "millennium_seminar_suit",
+    "title": "生盐诺亚 · 黄昏天台的微风侧颜",
+    "category": "都市风景",
+    "description": "千年主楼高层天台花园，落日余晖将远方摩天大楼群染成一片壮丽的金红。诺亚迎风伫立在观景栏杆前，白大衣下摆在风中猎猎作响，极长的银白发丝曼妙飞舞。她回首望向老师，落日余晖勾勒出无可挑剔的侧颜轮廓，眼神从容而摄人心魄。",
+    "recommendedSize": "1216x832",
+    "location": "high-rise skyscraper rooftop garden",
+    "action": "standing near railing, turning back with windblown hair, sunset backdrop",
+    "timeOfDay": "sunset",
+    "lighting": "brilliant golden hour rim light and warm dusk twilight",
+    "camera": "medium_shot",
+    "mood": "breathtaking grandeur and poetic serenity",
+    "promptProse": "Standing on a high skyscraper rooftop garden overlooking a vast modern metropolis at sunset, Ushio Noa turns back with wind-swept silver hair, bathed in radiant golden twilight.",
+    "promptTokens": [
+      "wind",
+      "rooftop",
+      "cityscape",
+      "sunset",
+      "golden_hour",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Noa looking back with windswept hair on a sunset rooftop.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

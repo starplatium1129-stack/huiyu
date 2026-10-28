@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "komari_library_tiptoe_bookshelf_help",
+  "revision": 1,
+  "sortOrder": 2281,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "komari_library_tiptoe_bookshelf_help",
+    "characterId": "komari_chika",
+    "outfitId": "tsuwabuki_oversized_sailor_uniform",
+    "title": "小鞠知花 · 图书馆书架前踮脚被环抱",
+    "category": "校园日常",
+    "description": "安静的学校图书馆深处，知花踮起脚尖够不到高处的书本。当你从她身后伸出手取下书本并几乎将她整个人圈在怀里时，少女背脊僵住，双耳红透，小鹿乱撞地回头。",
+    "recommendedSize": "832x1216",
+    "location": "narrow quiet library aisle lined with tall wooden bookshelves",
+    "action": "reaching for a high book on tiptoes, partner reaches from behind encircling her, turning back with crimson ears and wide shy doe eyes",
+    "timeOfDay": "afternoon",
+    "lighting": "soft diffused daylight filtering through tall library windows",
+    "camera": "cowboy_shot",
+    "mood": "breathless close proximity, sweet library encounter, adorable small girlfriend gap",
+    "promptProse": "In a quiet library aisle reaching for a book on tiptoes, Chika Komari turns with crimson ears as partner embraces her from behind to help.",
+    "promptTokens": [
+      "library",
+      "bookshelf",
+      "tiptoe",
+      "hug_from_behind",
+      "blushing_heavily",
+      "surprised_expression",
+      "twin_braids",
+      "daylight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Chika Komari blushing with partner helping her reach book in library.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

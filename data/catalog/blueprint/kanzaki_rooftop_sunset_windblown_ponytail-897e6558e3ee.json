@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kanzaki_rooftop_sunset_windblown_ponytail",
+  "revision": 1,
+  "sortOrder": 2300,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "kanzaki_rooftop_sunset_windblown_ponytail",
+    "characterId": "kanzaki_kaori",
+    "outfitId": "saint_asymmetric_jeans_attire",
+    "title": "神裂火织 · 暮色天台上的晚风牵手",
+    "category": "假日出行",
+    "description": "高耸大厦天台边缘晚风猎猎，如瀑黑发马尾在漫天霞光中肆意飞扬。神裂火织侧身站立，十指与你紧扣，收起所有圣人的凌厉，眼神中流淌着毫无保留的信赖与温柔。",
+    "recommendedSize": "832x1216",
+    "location": "high-rise skyscraper rooftop terrace overlooking panoramic city sunset",
+    "action": "standing by rooftop railing at dusk, black ponytail dancing in wind, interlocking fingers with partner, looking at him with gentle loving violet eyes",
+    "timeOfDay": "sunset",
+    "lighting": "magnificent golden hour sunset bathing skyline and silhouettes in crimson gold",
+    "camera": "wide_shot",
+    "mood": "heroic cinematic romance, unshakeable trust, breathtaking sunset tranquility",
+    "promptProse": "Standing on a windy high-rise rooftop at golden sunset, Kaori Kanzaki holds hands with partner, black ponytail dancing in wind with a tender loving smile.",
+    "promptTokens": [
+      "rooftop",
+      "sunset",
+      "city_skyline",
+      "holding_hands",
+      "interlocked_fingers",
+      "wind_blown_hair",
+      "high_ponytail",
+      "gentle_smile",
+      "golden_hour",
+      "wide_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kaori Kanzaki holding hands lovingly on windy sunset rooftop.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "frenda_bedroom_bed_flustered_surrender",
+  "revision": 1,
+  "sortOrder": 2307,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "frenda_bedroom_bed_flustered_surrender",
+    "characterId": "frenda_seivelun",
+    "outfitId": "sheer_pink_lace_babydoll",
+    "title": "芙兰达 · 卧室软床上的贝雷帽卸下温存",
+    "category": "私密温存",
+    "description": "静谧的卧室内贝雷帽掉在一旁，波浪金发铺散在床单上。粉色透纱娃娃裙被推高，平时不可一世的小恶魔少女此刻满面烧红、双手捂着眼睛害羞求饶，在热烈的深吻中彻底融化。",
+    "recommendedSize": "832x1216",
+    "location": "dim softly lit private bedroom with ruffled sheets",
+    "action": "pinned on bed with pink babydoll negligee, blonde waves spread on pillow, hands covering blushing face before wrapping around partner neck in surrender",
+    "timeOfDay": "night",
+    "lighting": "soft warm bedside lamp glow illuminating bare curves and golden hair",
+    "camera": "close-up",
+    "mood": "delightful tsundere meltdown, heated intimate surrender, breathless lovers ecstasy",
+    "promptProse": "Pinned on bed with sheer pink babydoll, blonde Frenda Seivelun blushes furiously, wrapping arms around partner neck with breathless passionate kisses.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "bare_shoulders",
+      "arms_around_neck",
+      "blonde_hair",
+      "blushing_heavily",
+      "panting",
+      "dim_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Frenda Seivelun with bare shoulders embracing partner passionately on bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

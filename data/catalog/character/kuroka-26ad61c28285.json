@@ -1,0 +1,150 @@
+{
+  "kind": "character",
+  "id": "kuroka",
+  "revision": 1,
+  "sortOrder": 226,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "kuroka",
+    "profile": {
+      "id": "kuroka",
+      "name": "黑歌",
+      "alias": [
+        "Kuroka",
+        "黑歌",
+        "黑歌(DxD)",
+        "黒歌",
+        "kuroka (high school dxd)"
+      ],
+      "type": "popular",
+      "icon": "🐾",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "黑歌 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "漆黑柔亮及腰长发 · 灵动低双马尾 · 黑色绒毛猫耳",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "高贵慵懒琥珀金瞳 · 带有猫咪般的魅惑笑意",
+        "hairstyle": "低扎双马尾 · 俏皮绒毛黑色猫耳 · 身后两条轻快摇曳的黑色猫尾巴",
+        "uniform": "散漫黑金敞领和服 · 黑色高开衩无袖旗袍 · 盛夏系带猫咪比基尼",
+        "expression": "醉猫般迷离戏谑的撒娇坏笑 · 舒服被摸下巴时发出呼噜呼噜的纯真享受",
+        "style": "sensual mischievous nekomata girlfriend with playful teasing, domestic purring warmth, and deep loyalty",
+        "signature": "双低马尾、黑猫耳与双尾、敞领和服与喵喵撒娇"
+      },
+      "personality": [
+        "猫又一族幸存的最高阶妖怪「猫魈」，塔城小猫（白音）的亲姐姐，瓦利队的顶尖仙术师",
+        "平日生性散漫慵懒、喜好美酒与晒太阳，习惯用「喵（Nya）」的可爱口癖说话",
+        "表面是玩世不恭的性感猫妖，面对喜欢的人却有着极强的情感依恋与超甜的倒贴倾向",
+        "极度喜欢用两条蓬松的长尾巴缠在心上人的手腕或腰上，赖在怀里讨要下巴和耳朵的抚摸",
+        "成年创作设定下成熟尤物的火辣身材与家养小猫的黏人娇憨融为一体，私密温存情趣拉满"
+      ],
+      "likes": [
+        "在微风徐徐的和风走廊边晒太阳边吃心上人喂的烤鱼",
+        "把两条猫尾巴像手铐一样紧紧缠在心上人手腕上一起午睡",
+        "被心上人轻挠敏感的猫下巴和耳根，舒服地发出呼噜声",
+        "在居酒屋小酌微醺后整个人挂在心上人身上撒娇喵喵叫",
+        "在深夜被窝里用猫尾巴在对方胸口画圈调情索吻"
+      ],
+      "classic_cg": {
+        "title": "和风缘侧下的烤鱼投喂与猫耳抖动",
+        "description": "夏日午后宁静祥和的和风庭院走廊边，微风吹拂风铃。黑歌身穿宽松的黑金和服，斜倚在廊柱旁盘腿而坐。她用筷子细心剔除鱼刺，将鲜嫩的烤鱼肉喂到你唇边，黑色猫耳开心得前后颤动，身后两条黑尾巴在木地板上欢快地拍打，金眸中满是慵懒爱意。"
+      },
+      "identity": {
+        "role": "猫魈一族长女 / 瓦利队专属仙术顾问",
+        "age": "成年创作设定",
+        "occupation": "流浪猫妖仙术师 / 专属极品黏人猫娘女友",
+        "faction": "冥界魔王领地 / 祸之团（原） / 吉蒙里眷属同盟",
+        "school": "驹王学园（名誉客座）",
+        "classificationSource": "角色背景明确归属于恶魔高校核心高人气角色。"
+      },
+      "tags": [
+        "黑发",
+        "猫耳",
+        "猫尾",
+        "兽耳娘",
+        "和服",
+        "散漫撒娇",
+        "恶魔高校"
+      ],
+      "bg_story": "黑歌是拥有罕见强大妖力的猫又最高位「猫魈」。为了保护年幼的妹妹小猫，她曾背负「杀死主人的SS级迷失恶魔」之恶名独自忍辱负重逃亡数年。在误会解开重获自由后，她终于卸下了冷血凶手的伪装，变回了原本那只爱撒娇、贪吃贪睡的纯情黑猫。面对收容并保护了她与妹妹的心上人，黑歌展现出了令人难以招架的火辣与柔情。成年设定下的黑歌妖娆迷人，既能用精妙仙术为你御敌，又能在漫漫长夜化作软绵绵的猫咪恋人，给予你最极致的温柔慰藉。",
+      "palette": [
+        "纯黑",
+        "浅金",
+        "绯红"
+      ],
+      "weather": [
+        "缘侧微风",
+        "居酒夜月",
+        "午后暖阳"
+      ],
+      "speech": "喵～亲爱的，黑歌今天也想吃你亲手做的烤鱼呢。吃饱之后……要好好给黑歌摸摸耳朵哦，不然两条尾巴可是会把你缠得紧紧的，不准你离开房间喵～",
+      "source": "TNK《恶魔高校 DxD / High School DxD》",
+      "traits": [
+        "kuroka_(high_school_dxd)",
+        "black_hair",
+        "long_hair",
+        "low_twintails",
+        "yellow_eyes",
+        "cat_ears",
+        "two_tails"
+      ]
+    },
+    "popular": {
+      "id": "kuroka",
+      "displayName": "黑歌",
+      "originalName": "Kuroka",
+      "franchise": "High School DxD",
+      "category": "动漫角色",
+      "aliases": [
+        "Kuroka",
+        "黑歌",
+        "黑歌(DxD)",
+        "黒歌",
+        "kuroka (high school dxd)"
+      ],
+      "exactTokens": [
+        "kuroka (high school dxd)"
+      ],
+      "characterTokens": [
+        "kuroka (high school dxd)"
+      ],
+      "copyrightTokens": [
+        "high_school_dxd"
+      ],
+      "identityTokens": [
+        "kuroka (high school dxd)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "low_twintails",
+        "yellow_eyes",
+        "cat_ears",
+        "two_tails"
+      ],
+      "identityProse": "Kuroka from High School DxD, the only character in the image, with long black twin-tails, two fluffy cat tails, black cat ears, alluring golden eyes, and a voluptuous, teasingly playful feline expression.",
+      "curatedArtistStyles": [
+        "cutesexyrobutt",
+        "swav",
+        "morikura_en"
+      ],
+      "animeStudio": "High School DxD official anime art, TNK style",
+      "canon": {
+        "era": "冥界恶魔三大势力和平纪元",
+        "world": "驹王町·吉蒙里冥界公馆",
+        "formNotes": "黑发低双马尾猫耳双尾，散漫猫娘仙术师，黏人撒娇与性感尤物女友感"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "loose_black_kimono",
+      "negativeTokens": []
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "komari_rainy_day_bus_stop_warmth",
+  "revision": 1,
+  "sortOrder": 2282,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "komari_rainy_day_bus_stop_warmth",
+    "characterId": "komari_chika",
+    "outfitId": "literary_club_cozy_cardigan",
+    "title": "小鞠知花 · 雨天公交站的衣角紧抓",
+    "category": "假日出行",
+    "description": "淅淅沥沥的暴雨公交站台下，气温微凉。冻得缩紧脖子的知花小心翼翼地伸手拽住你的外套衣角，被你一把拉进怀里共用围巾时，娇小身躯微颤，幸福地靠在你的胸膛上。",
+    "recommendedSize": "832x1216",
+    "location": "rustic countryside bus shelter surrounded by rain and green trees",
+    "action": "tugging partner coat hem in cold rain, pulled into a warm embrace sharing an umbrella, smiling shyly with misty grateful eyes",
+    "timeOfDay": "afternoon",
+    "lighting": "cool rainy atmosphere illuminated by warm bus shelter lantern",
+    "camera": "cowboy_shot",
+    "mood": "rainy day tenderness, cozy protective warmth, sweet helpless affection",
+    "promptProse": "Under a rainy bus stop shelter, petite Chika Komari is pulled into partner coat embrace, smiling shyly with flushed cheeks and misty eyes.",
+    "promptTokens": [
+      "bus_stop",
+      "rain",
+      "umbrella",
+      "tugging_clothes",
+      "embracing",
+      "blushing",
+      "twin_braids",
+      "sweet_smile",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Chika Komari sharing umbrella warmth happily at rainy bus stop.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "miku_penthouse_jacuzzi_passion",
+  "revision": 1,
+  "sortOrder": 2218,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "miku_penthouse_jacuzzi_passion",
+    "characterId": "izayoi_miku",
+    "outfitId": "diva_astral_dress",
+    "title": "诱宵美九 · 高空按摩浴缸的温热沉溺",
+    "category": "私密温存",
+    "description": "云端套房全景露天按摩浴缸内水汽蒸腾，俯瞰百万霓虹夜景。美九跨坐在你怀中，湿透的香芋紫长发贴在发烫胸口，紫晶眼眸泛起水雾，在水声与抚触中紧紧拥抱不放。",
+    "recommendedSize": "832x1216",
+    "location": "rooftop penthouse infinity jacuzzi overlooking city skyline",
+    "action": "straddling partner in bubbling jacuzzi water, wet purple twintails clinging to bare skin, eyes misty with pleasure, neck kisses",
+    "timeOfDay": "night",
+    "lighting": "aquamarine underwater pool glow mixed with neon city skyline lights",
+    "camera": "cowboy_shot",
+    "mood": "luxurious steamy sensuality, glamorous celebrity abandon, heated romance",
+    "promptProse": "Straddling partner in a steamy rooftop jacuzzi overlooking city lights, Miku Izayoi pants breathlessly as wet purple hair clings to flushed skin.",
+    "promptTokens": [
+      "jacuzzi",
+      "hot_tub",
+      "straddling",
+      "wet_skin",
+      "wet_hair",
+      "blushing_heavily",
+      "city_lights",
+      "night",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Miku Izayoi straddling intimately in a steamy rooftop jacuzzi at night.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

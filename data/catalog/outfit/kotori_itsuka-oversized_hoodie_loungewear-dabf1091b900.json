@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kotori_itsuka/oversized_hoodie_loungewear",
+  "revision": 1,
+  "sortOrder": 1776,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "kotori_itsuka",
+    "outfit": {
+      "characterId": "kotori_itsuka",
+      "id": "oversized_hoodie_loungewear",
+      "name": "居家温存·长款宽松软棉连帽卫衣睡裙",
+      "prose": "An extra-large pastel pink fleece hoodie slipping over her petite frame, falling mid-thigh over bare legs with loose white ribbons.",
+      "tokens": [
+        "hoodie",
+        "oversized_hoodie",
+        "pink_hoodie",
+        "bare_legs",
+        "barefoot",
+        "white_ribbon",
+        "sleeves_past_fingers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

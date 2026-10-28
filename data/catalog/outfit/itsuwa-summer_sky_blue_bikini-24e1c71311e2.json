@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "itsuwa/summer_sky_blue_bikini",
+  "revision": 1,
+  "sortOrder": 1803,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "itsuwa",
+    "outfit": {
+      "characterId": "itsuwa",
+      "id": "summer_sky_blue_bikini",
+      "name": "盛夏海滨·清澈天蓝系带荷叶边比基尼",
+      "prose": "A modest and lovely sky-blue two-piece bikini with white ruffled trim and delicate side-tie strings, flattering her soft feminine curves.",
+      "tokens": [
+        "bikini",
+        "blue_bikini",
+        "frilled_bikini",
+        "halterneck",
+        "side-tie_bikini_bottom",
+        "collarbone",
+        "cleavage"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

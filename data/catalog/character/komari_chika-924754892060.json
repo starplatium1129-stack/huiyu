@@ -1,0 +1,149 @@
+{
+  "kind": "character",
+  "id": "komari_chika",
+  "revision": 1,
+  "sortOrder": 239,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "komari_chika",
+    "profile": {
+      "id": "komari_chika",
+      "name": "小鞠知花",
+      "alias": [
+        "Chika Komari",
+        "小鞠知花",
+        "小鞠",
+        "知花",
+        "小鞠同学",
+        "小鞠(败犬)",
+        "小鞠知花(Makeine)",
+        "小鞠 知花",
+        "komari chika"
+      ],
+      "type": "popular",
+      "icon": "🐹",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "小鞠知花 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "深棕柔顺微蓬双麻花辫 · 碎发自然垂于额前 · 惹人怜爱的文静娇小",
+        "hair_color": "深棕 / 暗茶",
+        "eyes": "湿润胆怯深茶色圆眸 · 带着仓鼠般的害羞与惹人怜爱",
+        "hairstyle": "文静可爱双细麻花辫 · 额前微卷碎刘海 · 娇小萝莉体格",
+        "uniform": "石蕗高中略显宽大的夏日水手服 · 文学社宽松米白厚开衫长裙 · 纯棉蕾丝小吊带睡裙",
+        "expression": "战战兢兢像小动物般容易受惊脸红 · 鼓起全身勇气牵手时的坚定与温柔依恋",
+        "style": "shy introverted literary club girlfriend with pet-like vulnerability, quiet library romance, and unexpectedly deep heartfelt devotion",
+        "signature": "双麻花辫、深茶瞳、娇小仓鼠系、极易脸红、文学少女"
+      },
+      "personality": [
+        "重度社恐怕生极易慌乱的文学社少女",
+        "像小仓鼠般惹人无限怜爱与保护欲",
+        "虽然胆怯却会在重要关头鼓起全部勇气的坚韧",
+        "一旦认定恋人就会全心全意依赖的小小妻子"
+      ],
+      "likes": [
+        "安安静静在文学社活动室阅读轻小说",
+        "被温柔摸头并小声称赞自己的努力",
+        "悄悄把手缩进恋人的外套口袋里牵手",
+        "在被窝里像小动物一样被整个抱紧"
+      ],
+      "classic_cg": {
+        "title": "黄昏活动室的并肩读书与偷握指尖",
+        "description": "夕阳西下的文学社活动室内，小鞠知花捧着厚厚的小说，睫毛轻颤。当少年的手指在桌下轻轻触碰她微凉的指尖时，娇小的文学少女整张脸瞬间烧成绯红，却没有抽回手，反而用尽全力轻轻回握。"
+      },
+      "identity": {
+        "role": "石蕗高中一年级学生 / 文学社新任社长 / 害羞文学少女",
+        "age": "16岁（高中娇小少女）",
+        "occupation": "高中生 / 文学社社长",
+        "faction": "石蕗高中 / 文学社"
+      },
+      "tags": [
+        "双麻花辫",
+        "茶发",
+        "茶瞳",
+        "娇小",
+        "社恐仓鼠系",
+        "文学少女",
+        "败犬女主"
+      ],
+      "bg_story": "小鞠知花是《败犬女主太多了！》中最让人心疼与保护欲爆发的核心女主角之一。性格极度内向害羞，患有严重的社交恐惧症，和陌生人对视都会吓得瑟瑟发抖结结巴巴。她默默暗恋着文学社的前辈玉木慎太郎，却只能将千言万语埋藏在厚重的原稿纸下。在失恋崩溃与社团存亡危机中，是温水和彦始终守护在她身旁，陪伴她一步步成长为能够独当一面的文学社新社长。她虽然胆怯如仓鼠，但面对真心相待的爱人，却能爆发出超乎一切的勇气与温柔，其无防备的娇小依赖感与动情时的纯真依偎，是治愈一切疲惫的纯白港湾。",
+      "palette": [
+        "深茶棕",
+        "暖白",
+        "水绿",
+        "浅樱粉"
+      ],
+      "weather": [
+        "夕阳活动室",
+        "微雨长廊",
+        "暖灯被窝"
+      ],
+      "speech": "温、温水同学……那、那个……今天也可以……稍微牵一下手吗……呜，太丢脸了……",
+      "source": "Too Many Losing Heroines!",
+      "traits": [
+        "双麻花辫深茶双眸",
+        "娇小社恐仓鼠系",
+        "文学社纯真守护",
+        "极度害羞动人反差",
+        "全力以赴的深情依恋"
+      ]
+    },
+    "popular": {
+      "id": "komari_chika",
+      "displayName": "小鞠知花",
+      "originalName": "Chika Komari",
+      "franchise": "Too Many Losing Heroines!",
+      "category": "动漫角色",
+      "aliases": [
+        "Chika Komari",
+        "小鞠知花",
+        "小鞠",
+        "知花",
+        "小鞠同学",
+        "komari chika"
+      ],
+      "exactTokens": [
+        "komari_chika"
+      ],
+      "characterTokens": [
+        "komari_chika"
+      ],
+      "copyrightTokens": [
+        "make_heroine_ga_oosugiru!"
+      ],
+      "identityTokens": [
+        "komari_chika",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "short_hair",
+        "twin_braids",
+        "brown_eyes"
+      ],
+      "identityProse": "Chika Komari from Too Many Losing Heroines, the only character in the image, with soft brown hair in twin braids, shy round brown eyes, petite delicate build, and an adorable introverted literary club girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "tinkle"
+      ],
+      "animeStudio": "A-1 Pictures official anime style, Makeine character art",
+      "canon": {
+        "era": "石蕗高中败犬恋爱纪元",
+        "world": "爱知县丰桥市·石蕗高中活动室",
+        "formNotes": "双麻花辫深茶双眸，娇小社恐仓鼠系，惹人怜爱的纯情文学少女"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "tsuwabuki_oversized_sailor_uniform",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

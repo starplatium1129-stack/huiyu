@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "la_folia_royal_garden_promenade",
+  "revision": 1,
+  "sortOrder": 2197,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "la_folia_royal_garden_promenade",
+    "characterId": "la_folia_rihavein",
+    "outfitId": "aldikia_royal_uniform",
+    "title": "拉·芙利亚 · 皇家花园的霸道挽臂",
+    "category": "浪漫约会",
+    "description": "王宫喷泉环绕的凡尔赛式玫瑰花园中，拉·芙利亚当着满朝亲贵大臣的面大大方方挽紧你的手臂，昂着下巴向全天下宣布你就是她唯一的准夫婿。",
+    "recommendedSize": "832x1216",
+    "location": "grand palace rose garden with marble fountains",
+    "action": "linking arms with partner possessively, chin raised proudly, walking among blooming roses, majestic smirk",
+    "timeOfDay": "afternoon",
+    "lighting": "regal golden afternoon sunshine pouring over classical marble statues",
+    "camera": "medium_shot",
+    "mood": "unabashed royal possession, aristocratic triumph, romantic pride",
+    "promptProse": "Strolling through a grand palace rose garden in royal uniform, La Folia links arms tightly with partner with a triumphant regal smile.",
+    "promptTokens": [
+      "garden",
+      "palace",
+      "fountain",
+      "roses",
+      "clinging_to_arm",
+      "proud_smile",
+      "afternoon_sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "La Folia proudly linking arms in a blooming royal palace garden.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

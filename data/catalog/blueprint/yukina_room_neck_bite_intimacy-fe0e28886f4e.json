@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "yukina_room_neck_bite_intimacy",
+  "revision": 1,
+  "sortOrder": 2193,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "yukina_room_neck_bite_intimacy",
+    "characterId": "himeragi_yukina",
+    "outfitId": "saikai_academy_uniform",
+    "title": "姬柊雪菜 · 昏暗卧榻的吸血献身",
+    "category": "私密温存",
+    "description": "夜色深沉的公寓卧室内，雪菜主动解开水手服衣领露出雪白修长的脖颈与精致锁骨。她微闭双眸承受深吻与吸血，温热体温发烫，在前辈耳边溢出酥软甜腻的轻喘。",
+    "recommendedSize": "832x1216",
+    "location": "dimly lit private apartment bedroom at night",
+    "action": "loosened sailor collar exposing bare neck and collarbone, eyes half-closed in sweet moaning ecstasy, fingers gripping partner shirt",
+    "timeOfDay": "night",
+    "lighting": "low moody amber bedroom light highlighting trembling flushed skin",
+    "camera": "close-up",
+    "mood": "intensely sensual surrender, vampiric sacrificial bliss, deep lovers union",
+    "promptProse": "Pulling her sailor collar open in a dim room, Yukina closes her eyes in blissful moaning surrender as partner kisses her neck.",
+    "promptTokens": [
+      "bedroom",
+      "open_collar",
+      "exposed_neck",
+      "bare_shoulders",
+      "blushing_heavily",
+      "breathless",
+      "dim_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Yukina opening her collar in a dim room with breathless sweet moans.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

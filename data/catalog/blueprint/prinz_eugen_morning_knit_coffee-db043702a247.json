@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "prinz_eugen_morning_knit_coffee",
+  "revision": 1,
+  "sortOrder": 2148,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "prinz_eugen_morning_knit_coffee",
+    "characterId": "prinz_eugen",
+    "outfitId": "cozy_oversized_knit",
+    "title": "欧根亲王 · 空心毛衣与清晨咖啡",
+    "category": "日常约会",
+    "description": "明亮通透的晨光厨房内，欧根仅穿大号粗针毛衣赤足而立，领口滑落香肩。她一手端着热咖啡，一手咬着吸管向你戏谑眨眼，眼角泪痣因坏笑而格外动人。",
+    "recommendedSize": "832x1216",
+    "location": "bright airy kitchen filled with morning sunshine",
+    "action": "standing barefoot in sunny kitchen wearing boyfriends oversized sweater slipping off shoulder, teasingly sipping from coffee mug, winking with a smug playful smirk",
+    "timeOfDay": "morning",
+    "lighting": "bright cheerful morning sunlight flooding through kitchen glass doors",
+    "camera": "cowboy_shot",
+    "mood": "playful morning teasing, adorable domestic flirtation, irresistible smirk",
+    "promptProse": "Standing barefoot in a sunny kitchen wearing an oversized off-shoulder sweater, Prinz Eugen sips coffee with a playful smug wink.",
+    "promptTokens": [
+      "kitchen",
+      "barefoot",
+      "holding_mug",
+      "drinking_coffee",
+      "off-shoulder",
+      "winking",
+      "smug_smile",
+      "morning_sunlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Prinz Eugen winking playfully in an oversized sweater while sipping coffee in a sunny kitchen.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

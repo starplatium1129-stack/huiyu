@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hashima_izumi/summer_sunlight_colorblock_bikini",
+  "revision": 1,
+  "sortOrder": 1815,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "hashima_izumi",
+    "outfit": {
+      "characterId": "hashima_izumi",
+      "id": "summer_sunlight_colorblock_bikini",
+      "name": "盛夏海滨·亮丽撞色荷叶边分体比基尼",
+      "prose": "A vibrant coral-pink and sunshine-yellow colorblock bikini with frilled edges and side-tie bottoms, showcasing her lush curvaceous proportions.",
+      "tokens": [
+        "bikini",
+        "pink_bikini",
+        "frilled_bikini",
+        "halterneck",
+        "side-tie_bikini_bottom",
+        "cleavage",
+        "collarbone",
+        "twintails"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

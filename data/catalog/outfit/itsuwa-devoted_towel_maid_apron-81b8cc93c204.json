@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "itsuwa/devoted_towel_maid_apron",
+  "revision": 1,
+  "sortOrder": 1802,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "itsuwa",
+    "outfit": {
+      "characterId": "itsuwa",
+      "id": "devoted_towel_maid_apron",
+      "name": "至高贤妻·棉麻浅绿碎花居家围裙",
+      "prose": "A gentle mint-green floral apron worn over a light cream blouse and domestic midi skirt, holding a steaming clean hand towel.",
+      "tokens": [
+        "apron",
+        "floral_apron",
+        "green_apron",
+        "blouse",
+        "long_skirt",
+        "holding_towel",
+        "slippers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

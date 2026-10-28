@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hyoudou_michiru/rock_guitarist_tank_top_jeans",
+  "revision": 1,
+  "sortOrder": 1818,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "hyoudou_michiru",
+    "outfit": {
+      "characterId": "hyoudou_michiru",
+      "id": "rock_guitarist_tank_top_jeans",
+      "name": "摇滚乐手·个性黑色挂脖背心撕边牛仔裤",
+      "prose": "A cool rock-inspired black halter tank top showing bare shoulders and toned waist, distressed denim jeans with chain belt, and leather wristbands.",
+      "tokens": [
+        "tank_top",
+        "black_shirt",
+        "halterneck",
+        "jeans",
+        "denim_pants",
+        "wristband",
+        "bare_shoulders",
+        "collarbone"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

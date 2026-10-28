@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "itsuwa_morning_futon_tea_fragrance_cuddle",
+  "revision": 1,
+  "sortOrder": 2297,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "itsuwa_morning_futon_tea_fragrance_cuddle",
+    "characterId": "itsuwa",
+    "outfitId": "pure_white_cotton_nightdress",
+    "title": "五和 · 晨光榻榻米被褥里的甜美依恋",
+    "category": "私密温存",
+    "description": "晨光洒满榻榻米被单，散发着初夜后温存的余香。五和整个人像小猫一样贴在你的怀中，小脸枕在你的臂弯里，双手紧紧搂着你的腰身，带着极致幸福的微笑安宁小憩。",
+    "recommendedSize": "832x1216",
+    "location": "sun-drenched morning Japanese tatami bedroom",
+    "action": "nestled deeply under white futon sheets with bare shoulders exposed, hugging partner waist tight with a blissful wife smile in morning light",
+    "timeOfDay": "morning",
+    "lighting": "golden morning sunlight streaming across white sheets and tatami",
+    "camera": "close-up",
+    "mood": "morning newlywed tranquility, sweet unconditional love, eternal matrimonial peace",
+    "promptProse": "Nestled in white morning sheets with bare flushed shoulders, Itsuwa hugs partner waist tightly with a sweet blissful smile in golden morning light.",
+    "promptTokens": [
+      "tatami",
+      "futon",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_shoulders",
+      "clinging_closely",
+      "sweet_smile",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Itsuwa cuddling lovingly in morning futon sheets with sweet smile.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

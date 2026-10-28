@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nymph/junior_high_navy_sailor_suit",
+  "revision": 1,
+  "sortOrder": 1786,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "nymph",
+    "outfit": {
+      "characterId": "nymph",
+      "id": "junior_high_navy_sailor_suit",
+      "name": "校园融入·深蓝水手服配百褶短裙",
+      "prose": "A classic Japanese school navy sailor suit with white contrast trim, bright red neckerchief, pleated navy mini skirt, and dark knee socks.",
+      "tokens": [
+        "school_uniform",
+        "sailor_suit",
+        "navy_shirt",
+        "white_collar",
+        "pleated_skirt",
+        "red_necktie",
+        "knee_socks"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

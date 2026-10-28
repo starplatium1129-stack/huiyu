@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "stella_bridal_suite_ecstatic_surrender",
+  "revision": 1,
+  "sortOrder": 2189,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "stella_bridal_suite_ecstatic_surrender",
+    "characterId": "stella_vermillion",
+    "outfitId": "honeymoon_sheer_camisole",
+    "title": "史黛菈 · 新婚套房床榻的极乐沉沦",
+    "category": "私密温存",
+    "description": "豪华双人套房白色大床上，黑色半透睡裙凌乱推在腰间。红莲皇女眼角泛着极致欢愉的泪光，十指紧紧深嵌你的后背，在滚烫颠簸中带着哭腔轻喘宣誓永远属于你。",
+    "recommendedSize": "832x1216",
+    "location": "luxury honeymoon master suite with white linen",
+    "action": "tangled in rumpled sheets, sheer black camisole pushed up, fingernails in partner back, ecstatic teary eyes, moaning breathlessly",
+    "timeOfDay": "night",
+    "lighting": "intimate soft candlelight flickering across flushed bare skin",
+    "camera": "close-up",
+    "mood": "transcendent bridal ecstasy, total emotional surrender, absolute romantic devotion",
+    "promptProse": "Tangled in white sheets in candlelight, Stella Vermillion sheds tears of ecstasy with flushed cheeks, clinging tightly in overwhelming passion.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "tangled_sheets",
+      "bare_skin",
+      "tears_of_pleasure",
+      "blushing_heavily",
+      "candlelight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Stella crying tears of joy and ecstasy in a romantic candlelit bedroom.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "irina_church_courtyard_handholding_prayer",
+  "revision": 1,
+  "sortOrder": 2221,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "irina_church_courtyard_handholding_prayer",
+    "characterId": "irina_shidou",
+    "outfitId": "church_angel_battle_attire",
+    "title": "紫藤伊莉娜 · 喷泉圣水前的十指紧扣祈祷",
+    "category": "浪漫约会",
+    "description": "大理石喷泉前，换上圣剑战斗服的伊莉娜紧紧握住你的双手闭目祈祷。阳光穿透水雾在她身上折射出七彩虹光，她睁开琥珀色双眸，温柔宣告你就是天主赐给她一生的奇迹。",
+    "recommendedSize": "832x1216",
+    "location": "ancient church courtyard fountain with rainbow mist",
+    "action": "interlocking fingers with partner, eyes opening gently from prayer, radiant halo glow, holy water mist in air",
+    "timeOfDay": "day",
+    "lighting": "ethereal divine sunbeams streaming through stained glass onto fountain",
+    "camera": "medium_shot",
+    "mood": "sacred holy romance, pure childhood devotion, uplifting spiritual joy",
+    "promptProse": "Interlocking fingers by a church courtyard fountain, Irina opens amber eyes from prayer, smiling with radiant holy devotion.",
+    "promptTokens": [
+      "church",
+      "courtyard",
+      "fountain",
+      "holding_hands",
+      "interlocked_fingers",
+      "divine_light",
+      "sweet_smile",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Irina holding hands in prayer by a holy fountain with a radiant smile.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

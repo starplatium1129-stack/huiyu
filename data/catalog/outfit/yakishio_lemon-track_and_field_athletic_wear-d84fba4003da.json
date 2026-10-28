@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "yakishio_lemon/track_and_field_athletic_wear",
+  "revision": 1,
+  "sortOrder": 1790,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "yakishio_lemon",
+    "outfit": {
+      "characterId": "yakishio_lemon",
+      "id": "track_and_field_athletic_wear",
+      "name": "田径王牌·吸汗运动背心与紧身短裤",
+      "prose": "An athletic yellow and navy sports tank top paired with fitted running shorts, sweatbands, and lightweight athletic running shoes.",
+      "tokens": [
+        "tank_top",
+        "sports_bra",
+        "yellow_shirt",
+        "running_shorts",
+        "gym_shorts",
+        "sweatband",
+        "bare_shoulders",
+        "toned_stomach"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

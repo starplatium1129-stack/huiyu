@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "yukina_apartment_kitchen_stew",
+  "revision": 1,
+  "sortOrder": 2190,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "yukina_apartment_kitchen_stew",
+    "characterId": "himeragi_yukina",
+    "outfitId": "cozy_domestic_knit_apron",
+    "title": "姬柊雪菜 · 公寓厨房的细致熬汤",
+    "category": "日常约会",
+    "description": "公寓厨房内飘散着浓郁的日式炖菜香气。系着围裙的雪菜用木勺尝完味道，转过头认真地对你眨着清澈褐瞳，娇嗔叮嘱前辈不能挑食，满脸初为人妻的羞赧甜意。",
+    "recommendedSize": "832x1216",
+    "location": "apartment kitchen beside cooking stove",
+    "action": "tasting soup from wooden spoon, turning to partner with earnest caring smile, blushing softly, steam from pot",
+    "timeOfDay": "evening",
+    "lighting": "warm cozy domestic lamplight shining on kitchen tiles",
+    "camera": "cowboy_shot",
+    "mood": "tender homemaker affection, junior-girlfriend sweetness, domestic comfort",
+    "promptProse": "Cooking in a warm apartment kitchen in a cute apron, Yukina Himeragi tastes soup from a wooden spoon, smiling with earnest affection at her senior.",
+    "promptTokens": [
+      "kitchen",
+      "apron",
+      "cooking",
+      "holding_spoon",
+      "tasting_food",
+      "blushing",
+      "sweet_smile",
+      "evening",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Yukina tasting soup in an apron with an affectionate blushing smile.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

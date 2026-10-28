@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kanzaki_kaori/sheer_indigo_silk_nightrobe",
+  "revision": 1,
+  "sortOrder": 1808,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "kanzaki_kaori",
+    "outfit": {
+      "characterId": "kanzaki_kaori",
+      "id": "sheer_indigo_silk_nightrobe",
+      "name": "私密寝居·深蓝真丝露肩吊带睡袍",
+      "prose": "A flowing midnight indigo silk slip nightgown edged with translucent white lace, draped loosely over her tall toned curves and bare shoulders.",
+      "tokens": [
+        "nightgown",
+        "camisole",
+        "silk_slip",
+        "indigo_dress",
+        "lace_trim",
+        "thin_straps",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

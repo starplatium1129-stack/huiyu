@@ -1,0 +1,36 @@
+{
+  "kind": "blueprint",
+  "id": "kakudate_karin_urban_street_coffee",
+  "revision": 3,
+  "sortOrder": 2103,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "kakudate_karin_urban_street_coffee",
+    "characterId": "kakudate_karin",
+    "outfitId": "urban_hoodie_loungewear",
+    "title": "角楯花凛 · 都会街角的运动便服等待",
+    "category": "都市日常",
+    "description": "周末喧闹的学园都市林荫街角，微风拂动行道树叶洒下斑驳光影。花凛身着深灰无袖短连帽衫与牛仔短裤，小麦色马甲线与修长健美的大长腿一览无余。她单手握着易拉罐冰咖啡倚靠在行道树旁，远远看到赶来的老师，熔金色的眼眸顿时浮现出安心的笑意。",
+    "recommendedSize": "832x1216",
+    "location": "sunny city street corner under green tree shade",
+    "action": "leaning casually against tree, holding iced drink can, relaxed athletic stance",
+    "timeOfDay": "day",
+    "lighting": "dappled sunlight through tree foliage onto tanned skin",
+    "camera": "cowboy_shot",
+    "mood": "relaxed weekend freedom and youthful athletic energy",
+    "promptProse": "Leaning casually against a sidewalk tree in a cropped sleeveless grey hoodie and denim shorts, Kakudate Karin holds an iced coffee, her golden eyes lighting up warmly.",
+    "promptTokens": [
+      "holding_can",
+      "street",
+      "trees",
+      "day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Karin waiting casually on the street corner in a sleeveless hoodie.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "sunaookami_shiroko_convenience_store_break",
+  "revision": 2,
+  "sortOrder": 2125,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "sunaookami_shiroko_convenience_store_break",
+    "characterId": "sunaookami_shiroko",
+    "outfitId": "road_bike_cycling_suit",
+    "title": "砂狼白子 · 便利店门前的运动饮料小憩",
+    "category": "日常相处",
+    "description": "烈日下街角静谧的便利店门前，白子的公路车斜靠在一旁。她单膝屈起坐在路肩水泥台阶上，额角渗出晶莹的汗珠，双手握着冰镇运动饮料罐贴在微热的脸颊上降温。她转动淡蓝眼眸静静注视着身旁的老师，眼神沉静而充满信任。",
+    "recommendedSize": "832x1216",
+    "location": "outside suburban convenience store sidewalk curb",
+    "action": "sitting on concrete curb, holding cold drink can to cheek, bead of sweat, calm quiet gaze",
+    "timeOfDay": "day",
+    "lighting": "bright midsummer sunlight with sharp cool shade under store awning",
+    "camera": "medium_shot",
+    "mood": "quiet post-workout tranquility, relaxed companionship, and peaceful bond",
+    "promptProse": "Resting on the curb outside a quiet convenience store after cycling, Sunaookami Shiroko presses a cold drink to her flushed cheek, looking forward with calm gentle eyes.",
+    "promptTokens": [
+      "holding_can",
+      "drink",
+      "convenience_store",
+      "curb",
+      "sweat",
+      "looking_at_viewer",
+      "day",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shiroko sitting on the curb outside a convenience store holding a cold sports drink.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

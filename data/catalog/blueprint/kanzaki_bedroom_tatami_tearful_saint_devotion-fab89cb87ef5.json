@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kanzaki_bedroom_tatami_tearful_saint_devotion",
+  "revision": 1,
+  "sortOrder": 2301,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "kanzaki_bedroom_tatami_tearful_saint_devotion",
+    "characterId": "kanzaki_kaori",
+    "outfitId": "sheer_indigo_silk_nightrobe",
+    "title": "神裂火织 · 卧房榻榻米上的圣人动情献身",
+    "category": "私密温存",
+    "description": "昏黄静谧的和风卧室内，深蓝真丝睡袍从高挑雪白的香肩滑落。平时威严无双的圣人跪伏在被单间，乌黑长马尾散落，双颊绯红、眼泛泪光地抱住你的颈项，在急促娇喘中奉献出全部身心。",
+    "recommendedSize": "832x1216",
+    "location": "dim peaceful Japanese bedroom with soft white futon",
+    "action": "kneeling on futon with nightgown slipping off bare shoulders, embracing partner passionately, weeping sweet tears of total surrender and love",
+    "timeOfDay": "night",
+    "lighting": "dim warm ambient lantern light glowing on statuesque curves and flushed skin",
+    "camera": "close-up",
+    "mood": "commanding warrior absolute surrender, breathtaking passion, sacred lovers consummation",
+    "promptProse": "On a bedroom futon with slipping indigo nightgown, Kaori Kanzaki embraces partner with tearful passionate devotion and flushed breathless kisses.",
+    "promptTokens": [
+      "bedroom",
+      "futon",
+      "bare_shoulders",
+      "arms_around_neck",
+      "high_ponytail",
+      "tears_of_happiness",
+      "blushing_heavily",
+      "panting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kaori Kanzaki with bare shoulders embracing partner passionately on futon.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

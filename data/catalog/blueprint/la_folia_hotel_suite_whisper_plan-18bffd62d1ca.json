@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "la_folia_hotel_suite_whisper_plan",
+  "revision": 1,
+  "sortOrder": 2198,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "la_folia_hotel_suite_whisper_plan",
+    "characterId": "la_folia_rihavein",
+    "outfitId": "regal_ballroom_emerald_gown",
+    "title": "拉·芙利亚 · 晚宴酒廊的耳畔低语",
+    "category": "浪漫约会",
+    "description": "国宾馆奢华套房长椅上，身穿祖母绿抹胸大礼服的王女侧坐在你身旁。她纤细如玉的脚尖轻蹭你的裤腿，凑近耳边用温热的气音述说让整个大陆震颤的双人蜜月计划。",
+    "recommendedSize": "832x1216",
+    "location": "opulent presidential hotel suite lounge",
+    "action": "seated close on velvet sofa, whispering secrets in partner ear with playful smirk, tiara glistening",
+    "timeOfDay": "night",
+    "lighting": "crystal chandelier warm bokeh with midnight city lights outside",
+    "camera": "upper_body",
+    "mood": "intimate political romance, playful conspiracy, irresistible high-society charm",
+    "promptProse": "Whispering cheekily in partner ear on a velvet sofa in an emerald gown, La Folia smiles with brilliant emerald eyes under crystal chandeliers.",
+    "promptTokens": [
+      "penthouse",
+      "couch",
+      "whispering",
+      "ear_whisper",
+      "tiara",
+      "emerald_dress",
+      "teasing_smile",
+      "upper_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "La Folia whispering intimately in an opulent ballroom gown on a velvet couch.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

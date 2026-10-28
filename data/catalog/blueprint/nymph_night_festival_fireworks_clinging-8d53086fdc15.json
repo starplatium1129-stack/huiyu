@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_night_festival_fireworks_clinging",
+  "revision": 1,
+  "sortOrder": 2270,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "nymph_night_festival_fireworks_clinging",
+    "characterId": "nymph",
+    "outfitId": "junior_high_navy_sailor_suit",
+    "title": "妮姆芙 · 夏夜祭典烟花下的紧抱手臂",
+    "category": "假日出行",
+    "description": "人声鼎沸的夏夜祭典上，第一记巨响的烟花在夜空炸开。被吓了一跳的妮姆芙整个人扑过来死死抱住你的手臂，小脸埋在你的臂弯里，眼眶微红又忍不住抬头看满天金辉。",
+    "recommendedSize": "832x1216",
+    "location": "bustling summer shrine festival terrace overlooking river fireworks",
+    "action": "standing in festive summer crowd, startled by sudden firework bangs, burying face in partner bicep with wings trembling, looking up with tearful awe",
+    "timeOfDay": "night",
+    "lighting": "colorful bursts of red and gold fireworks illuminating the night sky",
+    "camera": "cowboy_shot",
+    "mood": "sweet protective date, dependent girlfriend warmth, awe-inspiring festival night",
+    "promptProse": "Clinging tightly to partner arm in a festival crowd, startled Nymph buries her face in his bicep with trembling wings beneath exploding fireworks.",
+    "promptTokens": [
+      "festival",
+      "night",
+      "fireworks",
+      "clinging_to_arm",
+      "looking_up",
+      "blushing",
+      "wings",
+      "tears_in_eyes",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Nymph clinging tightly to partner arm under festival fireworks.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

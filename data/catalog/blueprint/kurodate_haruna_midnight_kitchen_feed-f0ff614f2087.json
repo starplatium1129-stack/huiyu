@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "kurodate_haruna_midnight_kitchen_feed",
+  "revision": 2,
+  "sortOrder": 2121,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "kurodate_haruna_midnight_kitchen_feed",
+    "characterId": "kurodate_haruna",
+    "outfitId": "penthouse_silk_bathrobe",
+    "title": "黑馆晴奈 · 深夜厨房的亲昵喂食",
+    "category": "私密日常",
+    "description": "私人高层套房现代感十足的极简大理石厨房内，暖黄色射灯打在光洁的料理台上。晴奈换上了宽松的黑金丝绸睡袍，领口微敞露出动人的锁骨。她手持小银勺，轻轻舀起一勺冒着热气的特制浓汤送至老师唇边，眼眸中褪去了所有杀伐果断，只剩下少女般的娇媚与期待。",
+    "recommendedSize": "832x1216",
+    "location": "luxury penthouse modern marble kitchen",
+    "action": "holding spoon feeding viewer, leaning forward, playful alluring smile, subtle blush",
+    "timeOfDay": "night",
+    "lighting": "warm focused spotlighting on marble kitchen counter",
+    "camera": "close-up",
+    "mood": "playful domestic affection, sweet pampering, and culinary intimacy",
+    "promptProse": "Leaning over a sleek marble kitchen counter in her loose black silk robe, Kurodate Haruna offers a silver spoon with a playful, heavily blushing smile.",
+    "promptTokens": [
+      "holding_spoon",
+      "feeding",
+      "kitchen",
+      "counter",
+      "blush",
+      "playful_smile",
+      "warm_lighting",
+      "night",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Haruna offering a spoonful of delicacy with an alluring, playful smile in the kitchen.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

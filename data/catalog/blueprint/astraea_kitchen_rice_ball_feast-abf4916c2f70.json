@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "astraea_kitchen_rice_ball_feast",
+  "revision": 1,
+  "sortOrder": 2208,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "astraea_kitchen_rice_ball_feast",
+    "characterId": "astraea",
+    "outfitId": "cozy_domestic_fluffy_knit",
+    "title": "阿斯特蕾亚 · 厨房里的特大号饭团分享",
+    "category": "日常约会",
+    "description": "明亮通透的厨房里，两腮塞得鼓鼓囊囊像小松鼠一样的阿斯特蕾亚双手捧着一个超大号饭团。她蓝宝石般的眼睛闪闪发光，开心地把热腾腾的饭团递到你嘴边邀你共享。",
+    "recommendedSize": "832x1216",
+    "location": "bright domestic kitchen in the morning",
+    "action": "holding gigantic onigiri rice ball with both hands, cheeks stuffed and puffed, offering bite to partner with radiant happy smile",
+    "timeOfDay": "morning",
+    "lighting": "cheerful morning sunlight pouring over kitchen table",
+    "camera": "cowboy_shot",
+    "mood": "endearing gluttonous innocence, puppy-like happiness, domestic joy",
+    "promptProse": "Standing in a sunny kitchen in a knit sweater, Astraea happily shares a giant rice ball with partner, her cheeks puffed like a hamster.",
+    "promptTokens": [
+      "kitchen",
+      "holding_onigiri",
+      "rice_ball",
+      "cheeks_puffed",
+      "eating",
+      "sweet_smile",
+      "angel_wings",
+      "morning_sunlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Astraea happily sharing a giant rice ball with puffed cheeks in the kitchen.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

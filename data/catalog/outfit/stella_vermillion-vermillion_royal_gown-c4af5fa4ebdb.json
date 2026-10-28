@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "stella_vermillion/vermillion_royal_gown",
+  "revision": 1,
+  "sortOrder": 1730,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "stella_vermillion",
+    "outfit": {
+      "characterId": "stella_vermillion",
+      "id": "vermillion_royal_gown",
+      "name": "绯红皇女·露肩盘金晚礼服",
+      "prose": "A magnificent crimson silk royal evening gown with an off-shoulder neckline, intricate gold embroidery, and a thigh-high slit.",
+      "tokens": [
+        "red_evening_gown",
+        "royal_dress",
+        "bare_shoulders",
+        "gold_trim",
+        "side_slit",
+        "high_heels"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

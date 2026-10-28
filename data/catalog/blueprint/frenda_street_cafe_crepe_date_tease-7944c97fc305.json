@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "frenda_street_cafe_crepe_date_tease",
+  "revision": 1,
+  "sortOrder": 2305,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "frenda_street_cafe_crepe_date_tease",
+    "characterId": "frenda_seivelun",
+    "outfitId": "casual_sweet_hoodie_denim",
+    "title": "芙兰达 · 街头露天甜品桌的奶油沾鼻尖",
+    "category": "假日出行",
+    "description": "学园都市繁华商业街的遮阳伞下，芙兰达鼻尖沾了一点草莓可丽饼奶油。当你失笑伸手替她擦拭并抿进口中时，金发少女瞬间整张脸涨红，慌乱地挥舞小拳头假装生气。",
+    "recommendedSize": "832x1216",
+    "location": "sunny outdoor pedestrian cafe under large white umbrella",
+    "action": "sitting at cafe table with cream on her nose, partner wipes it away, blushing furiously with wide blue eyes and a cute flustered pout",
+    "timeOfDay": "afternoon",
+    "lighting": "bright cheerful sunlit afternoon dappling through parasol",
+    "camera": "close-up",
+    "mood": "adorable flustered tsundere reaction, lively outdoor date, irresistible teasing chemistry",
+    "promptProse": "At a sunny cafe table, blonde Frenda Seivelun blushes furiously with wide blue eyes as partner wipes sweet cream from her nose.",
+    "promptTokens": [
+      "cafe",
+      "table",
+      "sitting",
+      "dessert",
+      "crepe",
+      "blushing_heavily",
+      "surprised_expression",
+      "pouting",
+      "daylight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Frenda Seivelun blushing furiously at cafe table with cream on nose.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

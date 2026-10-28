@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "viper_smartphone_selfie_cling",
+  "revision": 1,
+  "sortOrder": 2166,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "viper_smartphone_selfie_cling",
+    "characterId": "viper_nikke",
+    "outfitId": "exotic_cropped_crop_top",
+    "title": "毒蛇 · 街头依偎的双人自拍",
+    "category": "日常约会",
+    "description": "人流如织的购物街头，毒蛇双手紧紧挽住你的手臂，半个身子贴在怀里。她单手举起手机歪头眨眼比出剪刀手，甜美的大波浪卷发拂在你肩头，满脸幸福。",
+    "recommendedSize": "832x1216",
+    "location": "colorful trendy shopping avenue during the afternoon",
+    "action": "clinging tightly to partner arm, pressing cheek close, holding up smartphone with cute peace sign and playful wink, bustling city background",
+    "timeOfDay": "afternoon",
+    "lighting": "bright modern urban daylight with colorful storefront reflections",
+    "camera": "cowboy_shot",
+    "mood": "sweet romantic affection, adorable clingy girlfriend, youthful energy",
+    "promptProse": "Clinging tightly to partner arm on a busy city avenue, Viper takes a selfie with her smartphone, winking cutely with a peace sign.",
+    "promptTokens": [
+      "city_street",
+      "holding_phone",
+      "taking_selfie",
+      "clinging_to_arm",
+      "peace_sign",
+      "winking",
+      "happy_smile",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Viper clinging tightly to partner taking a cute smartphone selfie on a city street.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

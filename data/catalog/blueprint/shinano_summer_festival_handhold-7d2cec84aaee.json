@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "shinano_summer_festival_handhold",
+  "revision": 1,
+  "sortOrder": 2144,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "shinano_summer_festival_handhold",
+    "characterId": "shinano",
+    "outfitId": "sacred_miko_ceremony",
+    "title": "信浓 · 夏夜花火的十指交缠",
+    "category": "浪漫约会",
+    "description": "神社山顶俯瞰海湾夏日祭典，漫天璀璨烟花绽放。神官礼服随夜风飘逸的信浓停下脚步，双手紧紧握住你的大手，金眸中盛满了烟花的绚烂与誓死相随的眷恋。",
+    "recommendedSize": "832x1216",
+    "location": "shrine hill overlooking fireworks festival over bay",
+    "action": "standing under bursting fireworks, holding partner hand tightly with both hands, golden eyes reflecting vibrant colorful light, tranquil romantic vow",
+    "timeOfDay": "night",
+    "lighting": "vibrant multicolored illumination from bursting fireworks against night sky",
+    "camera": "cowboy_shot",
+    "mood": "ethereal romantic beauty, deep spiritual connection, summer nostalgia",
+    "promptProse": "Under colorful bursting fireworks at a night shrine, Shinano clasps hands tightly with a gentle serene smile reflecting the festival light.",
+    "promptTokens": [
+      "shrine",
+      "fireworks",
+      "night_sky",
+      "holding_hands",
+      "both_hands_holding",
+      "looking_at_viewer",
+      "gentle_smile",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shinano holding hands tenderly beneath brilliant fireworks at a shrine.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

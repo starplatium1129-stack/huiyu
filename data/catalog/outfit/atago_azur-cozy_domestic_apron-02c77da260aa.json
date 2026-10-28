@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "atago_azur/cozy_domestic_apron",
+  "revision": 1,
+  "sortOrder": 1711,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "atago_azur",
+    "outfit": {
+      "characterId": "atago_azur",
+      "id": "cozy_domestic_apron",
+      "name": "温馨日常·米色棉麻围裙便服",
+      "prose": "A lovely domestic beige cotton apron tied over a soft white short-sleeved blouse and knee-length pleated skirt, radiating cozy homemaker sweetness.",
+      "tokens": [
+        "apron",
+        "beige_apron",
+        "white_blouse",
+        "short_sleeves",
+        "pleated_skirt",
+        "slippers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

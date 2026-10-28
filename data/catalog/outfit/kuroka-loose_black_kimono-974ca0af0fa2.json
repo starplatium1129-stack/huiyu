@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kuroka/loose_black_kimono",
+  "revision": 1,
+  "sortOrder": 1741,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "kuroka",
+    "outfit": {
+      "characterId": "kuroka",
+      "id": "loose_black_kimono",
+      "name": "散漫和风黑金和服",
+      "prose": "A luxurious black silk kimono with gold geometric embroidery, worn casually loose around the collar to reveal fair shoulders.",
+      "tokens": [
+        "black_kimono",
+        "gold_trim",
+        "wide_sleeves",
+        "open_collar",
+        "obi",
+        "barefoot"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

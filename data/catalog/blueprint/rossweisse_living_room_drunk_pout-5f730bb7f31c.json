@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "rossweisse_living_room_drunk_pout",
+  "revision": 1,
+  "sortOrder": 2227,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "rossweisse_living_room_drunk_pout",
+    "characterId": "rossweisse",
+    "outfitId": "sheer_indigo_silk_nightgown",
+    "title": "罗丝薇瑟 · 客厅榻榻米的微醺撒娇",
+    "category": "现代日常",
+    "description": "客厅暖黄灯光下，刚喝了一小盅清酒的罗丝薇瑟双颊酡红，迷迷糊糊地跪坐在地毯上。她小手拉住你的领带，带着软糯的小哭腔撅嘴撒娇，急切询问到底什么时候娶她回家。",
+    "recommendedSize": "832x1216",
+    "location": "cozy evening living room with low wooden table",
+    "action": "kneeling slightly unsteadily on living room carpet with flushed cheeks, holding an empty sake cup, tugging partner tie while whining adorably about wanting to marry him",
+    "timeOfDay": "night",
+    "lighting": "warm amber indoor lamp casting soft tender glows on blushing skin",
+    "camera": "cowboy_shot",
+    "mood": "adorable drunken gap moe, desperate romantic longing, comedic girlfriend charm",
+    "promptProse": "Kneeling on carpet with flushed cheeks, slightly drunk Rossweisse tugs partner tie with a sake cup in hand, whining for marriage with a desperate cute pout.",
+    "promptTokens": [
+      "living_room",
+      "kneeling",
+      "blushing",
+      "sake_cup",
+      "drunk",
+      "pulling_clothes",
+      "pouting",
+      "amber_lighting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Rossweisse slightly drunk and pouting adorably on carpet holding a sake cup.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

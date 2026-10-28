@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "prinz_eugen_hotel_balcony_kiss",
+  "revision": 1,
+  "sortOrder": 2152,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "prinz_eugen_hotel_balcony_kiss",
+    "characterId": "prinz_eugen",
+    "outfitId": "unfading_smile_bikini",
+    "title": "欧根亲王 · 海景阳台的微风索求",
+    "category": "私密温存",
+    "description": "度假套房海景阳台被夜色与海风笼罩，比基尼挂脖细带已被解开。欧根后背轻靠着玻璃栏杆仰头承受深吻，红挑染在夜风中飘舞，海浪轰鸣掩盖着炽热滚烫的娇喘。",
+    "recommendedSize": "832x1216",
+    "location": "luxurious oceanfront suite balcony under moonlight and crashing waves",
+    "action": "pinned gently against private resort balcony glass railing, bikini halter neck strings untied, head tilted back in ecstasy during deep kiss, red hair streak whipped by sea breeze",
+    "timeOfDay": "night",
+    "lighting": "cool silver moonlight reflecting off the ocean waters below",
+    "camera": "cowboy_shot",
+    "mood": "passionate abandon, summer night heat, breathless romantic indulgence",
+    "promptProse": "Backed against a resort balcony railing in moonlight with her bikini strings undone, Prinz Eugen shares a deep breathless kiss in the sea breeze.",
+    "promptTokens": [
+      "balcony",
+      "glass_railing",
+      "untied_bikini",
+      "head_tilted_back",
+      "passionate_kiss",
+      "sea_breeze",
+      "moonlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Prinz Eugen in an untied bikini sharing a deep passionate kiss on an ocean balcony.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

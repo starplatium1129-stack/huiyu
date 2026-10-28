@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sawamura_spencer_eriri",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 197,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
   "data": {
     "id": "sawamura_spencer_eriri",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "/assets/characters/portrait-pending.svg",
+        "image": "../assets/characters/portrait-pending.svg",
         "alt": "泽村·斯宾塞·英梨梨 · 立绘待制作"
       },
       "visual_dna": {
@@ -289,7 +289,8 @@
             }
           }
         ]
-      }
+      },
+      "speech": "这张还没画完，先别凑过来……等我改好了，你再说哪里不对。"
     },
     "popular": {
       "id": "sawamura_spencer_eriri",

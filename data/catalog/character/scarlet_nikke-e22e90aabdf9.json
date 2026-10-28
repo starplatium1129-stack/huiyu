@@ -1,0 +1,153 @@
+{
+  "kind": "character",
+  "id": "scarlet_nikke",
+  "revision": 1,
+  "sortOrder": 215,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "scarlet_nikke",
+    "profile": {
+      "id": "scarlet_nikke",
+      "name": "红莲",
+      "alias": [
+        "Scarlet",
+        "红莲",
+        "红莲(NIKKE)",
+        "Guren",
+        "红莲剑客",
+        "scarlet (nikke)",
+        "guren (nikke)"
+      ],
+      "type": "popular",
+      "icon": "🍶",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "红莲 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "如雪白发 · 标志性高挑帅气马尾 · 灵动不羁呆毛",
+        "hair_color": "纯白 / 雪白",
+        "eyes": "锐利潇洒绯红眼眸 · 醉意微醺时流露迷人柔情",
+        "hairstyle": "清爽高马尾 · 额前自然碎发 · 头顶标志性呆毛",
+        "uniform": "浪人行者白羽织与裹胸 · 印花和风浴衣 · 都市高领露肩便装",
+        "expression": "豪爽洒脱的畅快笑容 · 醉酒被看穿时的促狭狡黠与娇艳酡红",
+        "style": "charismatic free-spirited samurai girlfriend with tipsy affection and deep loyalty",
+        "signature": "雪白高马尾、红眸呆毛、朱红酒盏与洒脱反差柔情"
+      },
+      "personality": [
+        "漫游地表荒野的开拓者部队顶尖剑客，生性豪迈不羁、嗜美酒如命",
+        "平日一副云淡风轻、仗剑天涯的浪人做派，说话带着古雅的剑士腔调",
+        "唯独面对心爱的指挥官时，会毫无顾忌地流露出醉意微醺的撒娇与撩人情趣",
+        "讨厌繁琐的束缚与虚伪的规矩，喜欢在夏夜缘侧或草地上无拘无束地依偎独处",
+        "看似洒脱实则重情至深，将对方视作值得托付此生与背后唯一的港湾"
+      ],
+      "likes": [
+        "在微风吹拂的庭院檐下与心上人同饮一盏醇香清酒",
+        "两人戴着同一副耳机并肩在都市街头散步漫游",
+        "醉意上头后整个人靠在心上人怀里，任性地索要拥抱与亲吻",
+        "微风吹动草甸的晴天，把斗笠当遮阳伞并肩午睡",
+        "用长刀削出好看的竹蜻蜓或者木雕送给对方"
+      ],
+      "classic_cg": {
+        "title": "走廊檐下的微风与微醺共饮",
+        "description": "夏日傍晚的和风庭院走廊上，清脆的风铃在微风中摇曳。红莲身穿白羽织与短裹胸，单膝屈起斜倚在木柱旁。她满面酡红，嘴角扬起戏谑而温柔的笑意，将斟满清酒的朱红酒盏递到你唇边，红眸中波光流转，尽显浪人剑客的极致反差柔情。"
+      },
+      "identity": {
+        "role": "开拓者部队（Pioneer）核心剑客 / 地表流浪浪人",
+        "age": "成年创作设定",
+        "occupation": "流浪行者 / 专属心仪之人",
+        "faction": "开拓者部队 / 地表反抗阵线",
+        "school": "方舟第一代近卫部队（原）",
+        "classificationSource": "角色背景明确归属于开拓者部队。"
+      },
+      "tags": [
+        "白发",
+        "马尾",
+        "红瞳",
+        "呆毛",
+        "女剑客",
+        "微醺",
+        "反差萌",
+        "妮姬"
+      ],
+      "bg_story": "红莲曾是方舟最早组建的近卫部队中最精锐的剑客，在历经无数次残酷的地面反击战与同伴牺牲后，她斩断了枷锁，选择孤身漫游满目疮痍的地表，以手中名刀为弱小开拓前路。嗜好美酒与大自然的她，一直渴望寻觅一片没有硝烟的桃花源。直到遇见那位敢于在地表与她并肩同饮的指挥官，她漂泊的心才终于找到了归宿。在刀光剑影之外，褪去防备的红莲展现出令人心动的娇憨与热烈，是一位既能为你斩尽千敌、又能为你斟满温柔的绝品恋人。",
+      "palette": [
+        "雪白",
+        "绯红",
+        "靛青"
+      ],
+      "weather": [
+        "檐下微风",
+        "黄昏暮色",
+        "月下居酒"
+      ],
+      "speech": "哟，吾之挚爱！今天天朗气清，正适合寻一处清幽之所畅饮三杯。来，坐到吾身旁，陪吾痛饮一番！",
+      "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+      "traits": [
+        "scarlet_(nikke)",
+        "white_hair",
+        "long_hair",
+        "high_ponytail",
+        "red_eyes",
+        "ahoge"
+      ]
+    },
+    "popular": {
+      "id": "scarlet_nikke",
+      "displayName": "红莲",
+      "originalName": "Scarlet",
+      "franchise": "Goddess of Victory: NIKKE",
+      "category": "手游角色",
+      "aliases": [
+        "Scarlet",
+        "红莲",
+        "红莲(NIKKE)",
+        "Guren",
+        "红莲剑客",
+        "scarlet (nikke)",
+        "guren (nikke)"
+      ],
+      "exactTokens": [
+        "scarlet (nikke)"
+      ],
+      "characterTokens": [
+        "scarlet (nikke)"
+      ],
+      "copyrightTokens": [
+        "goddess_of_victory:_nikke"
+      ],
+      "identityTokens": [
+        "scarlet (nikke)",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "high_ponytail",
+        "red_eyes",
+        "ahoge"
+      ],
+      "identityProse": "Scarlet from Goddess of Victory: NIKKE, the only character in the image, with long white hair tied in a high ponytail, a distinctive ahoge, sharp yet playful crimson eyes, and a confident roguish demeanor.",
+      "curatedArtistStyles": [
+        "swav",
+        "lack",
+        "krenz_cushart"
+      ],
+      "animeStudio": "Goddess of Victory: NIKKE official art, SHIFT UP style",
+      "canon": {
+        "era": "地表荒野流浪纪元",
+        "world": "方舟外地表荒野·开拓者部队（Pioneer）",
+        "formNotes": "原近卫部队剑客，后成为漫游地表的流浪浪人；嗜酒如命、刀法绝伦，平日豪放洒脱，私下对待心仪之人极具反差柔情与戏谑促狭"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "ronin_casual_haori",
+      "negativeTokens": []
+    }
+  }
+}

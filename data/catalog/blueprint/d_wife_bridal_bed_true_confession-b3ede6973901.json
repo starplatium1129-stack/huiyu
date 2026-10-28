@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "d_wife_bridal_bed_true_confession",
+  "revision": 1,
+  "sortOrder": 2177,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "d_wife_bridal_bed_true_confession",
+    "characterId": "d_killer_wife",
+    "outfitId": "bridal_white_silk_peignoir",
+    "title": "D · 新婚床榻的灵魂托付",
+    "category": "私密温存",
+    "description": "纯白新婚双人床上，半透明真丝睡袍滑落在旁。D紫眸中蓄满极乐与动情的泪水，十指深扣你的掌心，在极致温柔的颠簸中带着哭腔轻喘低喃：“我不是你的假妻子……我是你真正的妻子。”",
+    "recommendedSize": "832x1216",
+    "location": "intimate sunlit bedroom with billowing sheer curtains",
+    "action": "tangled in white silk bedsheets, sheer white peignoir half open, violet eyes misted with tears of ecstasy and genuine love, whispering I am truly your wife",
+    "timeOfDay": "morning",
+    "lighting": "ethereal morning sunlight filtering through sheer billowing white curtains",
+    "camera": "close-up",
+    "mood": "profound soul union, tearful true love confession, absolute bliss",
+    "promptProse": "Tangled in white silk bedsheets with a sheer peignoir open, D sheds tears of ecstasy with deep purple eyes, whispering her true love vow.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "white_sheets",
+      "sheer_robe",
+      "tears_of_happiness",
+      "blushing_heavily",
+      "morning_sunlight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "D whispering her true love confession on a bridal bed in morning sunlight.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

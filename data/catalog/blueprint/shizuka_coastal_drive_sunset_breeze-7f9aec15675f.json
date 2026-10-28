@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "shizuka_coastal_drive_sunset_breeze",
+  "revision": 1,
+  "sortOrder": 2245,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "shizuka_coastal_drive_sunset_breeze",
+    "characterId": "shizuka_hiratsuka",
+    "outfitId": "sports_car_drive_leather_jacket",
+    "title": "平冢静 · 沿海公路的副驾落日吹风",
+    "category": "假日出行",
+    "description": "千叶沿海悬崖公路上敞篷跑车飞驰，暮色晚霞将天际染成金红。黑色长发在海风中肆意飞扬，平冢静一手握着方向盘，另一只手紧紧扣住你的手，笑容肆意洒脱又无比深情。",
+    "recommendedSize": "832x1216",
+    "location": "coastal cliff highway overlooking the shimmering Pacific Ocean at dusk",
+    "action": "sitting in open convertible on coastal highway at sunset, black hair whipping in the sea breeze, laughing freely while resting hand on partner gear-shifting hand",
+    "timeOfDay": "sunset",
+    "lighting": "brilliant crimson and gold sunset reflecting on the car hood and waves",
+    "camera": "wide_shot",
+    "mood": "cinematic freedom, adult lover romance, breathtaking coastal sunset",
+    "promptProse": "Driving an open convertible along coastal cliffs at sunset, Shizuka laughs freely with windblown black hair, holding partner hand with glowing joy.",
+    "promptTokens": [
+      "car",
+      "convertible",
+      "driving",
+      "ocean",
+      "sunset",
+      "holding_hands",
+      "laughing",
+      "wind_blown_hair",
+      "golden_hour",
+      "wide_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shizuka Hiratsuka driving convertible happily along sunset coast.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

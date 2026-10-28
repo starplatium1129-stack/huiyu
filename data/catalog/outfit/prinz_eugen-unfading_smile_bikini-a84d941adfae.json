@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "prinz_eugen/unfading_smile_bikini",
+  "revision": 1,
+  "sortOrder": 1706,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "characterId": "prinz_eugen",
+    "outfit": {
+      "characterId": "prinz_eugen",
+      "id": "unfading_smile_bikini",
+      "name": "永不沉没的笑容·红白挂脖比基尼",
+      "prose": "A provocative crimson and white halter bikini with cross-torso straps, low-rise side-tie bottoms, and a sporty sun visor.",
+      "tokens": [
+        "red_bikini",
+        "white_trim",
+        "criss-cross_halter",
+        "strappy_bikini",
+        "side-tie_bikini_bottom",
+        "sun_visor"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

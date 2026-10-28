@@ -1,0 +1,147 @@
+{
+  "kind": "character",
+  "id": "kotori_itsuka",
+  "revision": 1,
+  "sortOrder": 234,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kotori_itsuka",
+    "profile": {
+      "id": "kotori_itsuka",
+      "name": "五河琴里",
+      "alias": [
+        "Kotori Itsuka",
+        "五河琴里",
+        "琴里",
+        "司令官",
+        "五河 琴里",
+        "kotori itsuka"
+      ],
+      "type": "popular",
+      "icon": "🍭",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "五河琴里 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "珊瑚绯红及腰双马尾 · 标志黑白双发带 · 俏皮元气长发",
+        "hair_color": "绯红 / 珊瑚红",
+        "eyes": "炽烈深邃红宝石双眸 · 兼具司令官凛然与软妹妹妹的纯真",
+        "hairstyle": "高扎及腰绯红双马尾 · 随缎带切换妹妹与司令官性格",
+        "uniform": "来禅高校初中水手校服 · 佛拉克西纳斯黑缎带司令官军服 · 盛夏红白水手比基尼",
+        "expression": "黑缎带时的傲娇威严与毒舌 · 白缎带时眼泪汪汪扑入怀抱撒娇的绝对兄控小娇妻",
+        "style": "dual-mode tsundere commander and sweet devoted sister girlfriend with dynamic gap moe and heartfelt romance",
+        "signature": "红发双马尾、黑白缎带切换、棒棒糖、司令官与娇柔软妹"
+      },
+      "personality": [
+        "白缎带时极度依赖欧尼酱的软萌爱哭鬼",
+        "黑缎带时冷静果断毒舌的佛拉克西纳斯司令官",
+        "为了至爱之人甘愿燃烧生命的炎之精灵",
+        "面对独处时害羞坦率的深情小恋人"
+      ],
+      "likes": [
+        "各种口味的珍宝珠棒棒糖",
+        "坐在客厅沙发上晃着脚被摸头",
+        "为心爱之人特调香浓豪华儿童套餐",
+        "在被窝里被紧紧搂住轻声耳语"
+      ],
+      "classic_cg": {
+        "title": "解开黑发带的软妹扑怀告白",
+        "description": "夕阳染红的空中舰桥内，琴里亲手解下了象征冷酷司令官的黑色发带。伴随着赤红双马尾柔顺垂落，少女瞬间变回眼角挂着泪滴的纯真软妹，不顾一切扑进少年的怀抱抽噎：“欧尼酱……琴里最喜欢你了！”"
+      },
+      "identity": {
+        "role": "拉塔托斯克空中要塞「佛拉克西纳斯」司令官 / 代号「Efreet（炎魔）」精灵 / 来禅高中初中部学生",
+        "age": "成年初熟创作设定",
+        "occupation": "司令官 / 初中生 / 精灵",
+        "faction": "拉塔托斯克 / 精灵阵营"
+      },
+      "tags": [
+        "红发",
+        "红瞳",
+        "双马尾",
+        "司令官",
+        "黑白缎带",
+        "反差萌",
+        "棒棒糖",
+        "约战"
+      ],
+      "bg_story": "五河琴里是《约会大作战》的核心女主角之一，五河士道的义妹同时也是空中舰艇「佛拉克西纳斯」的最高指挥官。通过佩戴白色缎带与黑色缎带自如切换“天真依赖兄长的小妹妹模式”与“冷静毒舌威严的司令官模式”。五年前在神秘人的诱导下变成操纵狱炎的强大精灵「Efreet」，并被士道封印力量以拯救生命。作为引导士道与各大精灵约会的总指挥，她深藏着对士道超越兄妹、至死不渝的刻骨爱恋。在私密同居与日常生活中，她时而以傲娇司令官的口吻吃醋挑逗，时而化身需要被无尽疼爱的软萌小女友，是全作最具情感张力与反差魅力的顶流女主角。",
+      "palette": [
+        "绯红",
+        "纯白",
+        "黑金",
+        "珊瑚粉"
+      ],
+      "weather": [
+        "夕阳舰桥",
+        "和煦午后",
+        "暖烛卧室"
+      ],
+      "speech": "笨蛋士道！黑缎带的司令官模式也是我，白缎带的妹妹也是我……不管哪一个琴里，最喜欢的永远都只有你一个人啊！",
+      "source": "Date A Live",
+      "traits": [
+        "红发双马尾红眸",
+        "黑白缎带双模式",
+        "棒棒糖傲娇司令官",
+        "深情依恋炎魔精灵",
+        "约会大作战顶流"
+      ]
+    },
+    "popular": {
+      "id": "kotori_itsuka",
+      "displayName": "五河琴里",
+      "originalName": "Kotori Itsuka",
+      "franchise": "Date A Live",
+      "category": "动漫角色",
+      "aliases": [
+        "Kotori Itsuka",
+        "五河琴里",
+        "琴里",
+        "司令官",
+        "五河 琴里",
+        "kotori itsuka"
+      ],
+      "exactTokens": [
+        "kotori_itsuka"
+      ],
+      "characterTokens": [
+        "kotori_itsuka"
+      ],
+      "copyrightTokens": [
+        "date_a_live"
+      ],
+      "identityTokens": [
+        "kotori_itsuka",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "twintails",
+        "red_eyes"
+      ],
+      "identityProse": "Kotori Itsuka from Date A Live, the only character in the image, with long coral-red hair in high twintails, ruby-red eyes, and a sweet, dynamically shifting tsundere girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "tinkle"
+      ],
+      "animeStudio": "AIC PLUS+ / J.C.Staff / GEEKTOYS official anime style, Date A Live character art",
+      "canon": {
+        "era": "天宫市空间震约会封印纪元",
+        "world": "极东·天宫市五河宅与空中舰艇佛拉克西纳斯",
+        "formNotes": "红发双马尾红眸，黑白缎带双人格反差，深情依恋的小娇妻"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "raizen_junior_uniform",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "amau_ako/silk_camisole_nightwear",
+  "revision": 1,
+  "sortOrder": 1676,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "data": {
+    "characterId": "amau_ako",
+    "outfit": {
+      "characterId": "amau_ako",
+      "id": "silk_camisole_nightwear",
+      "name": "居室晨昏黑色蕾丝吊带",
+      "prose": "A delicate black silk camisole trimmed with lace, paired with silk lounge shorts, showcasing bare shoulders and neckline in dim warm room light.",
+      "tokens": [
+        "black camisole",
+        "silk shorts",
+        "bare shoulders",
+        "collarbone",
+        "bare legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

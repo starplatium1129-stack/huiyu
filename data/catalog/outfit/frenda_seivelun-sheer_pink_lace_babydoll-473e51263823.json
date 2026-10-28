@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "frenda_seivelun/sheer_pink_lace_babydoll",
+  "revision": 1,
+  "sortOrder": 1812,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "frenda_seivelun",
+    "outfit": {
+      "characterId": "frenda_seivelun",
+      "id": "sheer_pink_lace_babydoll",
+      "name": "私密闺房·粉嫩微透蕾丝吊带娃娃睡裙",
+      "prose": "A flirty translucent pastel-pink chiffon babydoll nightgown with ruffled scalloped trims and thin delicate straps over bare thighs.",
+      "tokens": [
+        "nightgown",
+        "babydoll",
+        "pink_nightgown",
+        "sheer_fabric",
+        "lace_trim",
+        "spaghetti_straps",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

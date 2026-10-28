@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "d_killer_wife/bridal_white_silk_peignoir",
+  "revision": 1,
+  "sortOrder": 1724,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "d_killer_wife",
+    "outfit": {
+      "characterId": "d_killer_wife",
+      "id": "bridal_white_silk_peignoir",
+      "name": "秘密寝室·新婚纯白真丝睡袍",
+      "prose": "An exquisite bridal white translucent silk peignoir with scalloped French lace along the neckline, worn draped loosely over her curves.",
+      "tokens": [
+        "white_robe",
+        "silk_nightgown",
+        "lace_trim",
+        "translucent_fabric",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

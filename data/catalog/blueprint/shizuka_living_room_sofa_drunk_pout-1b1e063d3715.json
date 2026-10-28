@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "shizuka_living_room_sofa_drunk_pout",
+  "revision": 1,
+  "sortOrder": 2247,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "shizuka_living_room_sofa_drunk_pout",
+    "characterId": "shizuka_hiratsuka",
+    "outfitId": "relaxing_home_oversized_sweatshirt",
+    "title": "平冢静 · 客厅沙发微醺的恨嫁轻叹",
+    "category": "私密温存",
+    "description": "单身公寓客厅里空啤酒罐倒在一旁。微醺的平冢静被你按在沙发上，灰色大号卫衣滑下丰满香肩。修长美腿缠在你的腰间，眼角带着晶莹泪花，迷离而动情地低喘：“要是你早生十年……我早就把你拐去民政局了啊……”",
+    "recommendedSize": "832x1216",
+    "location": "lived-in cozy bachelor apartment living room with empty beer cans on table",
+    "action": "pinned on living room sofa with sweatshirt pulled down, flushed with beer, wrapping long legs around partner waist, whispering tearfully “if only you were born ten years earlier...”",
+    "timeOfDay": "night",
+    "lighting": "dim ambient corner lamp illuminating flushed skin and disheveled black hair",
+    "camera": "cowboy_shot",
+    "mood": "mature woman heartbreak transformed into passionate surrender, heated adult intimacy",
+    "promptProse": "Pinned on apartment sofa with an off-shoulder sweatshirt, slightly drunk Shizuka wraps legs around partner waist with flushed cheeks and tearful passionate eyes.",
+    "promptTokens": [
+      "living_room",
+      "sofa",
+      "straddling",
+      "bare_shoulders",
+      "pulled_down_clothes",
+      "blushing_heavily",
+      "panting",
+      "dim_lighting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shizuka Hiratsuka flushed on apartment sofa in passionate embrace.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

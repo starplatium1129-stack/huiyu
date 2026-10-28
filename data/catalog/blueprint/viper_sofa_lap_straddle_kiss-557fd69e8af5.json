@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "viper_sofa_lap_straddle_kiss",
+  "revision": 1,
+  "sortOrder": 2169,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "viper_sofa_lap_straddle_kiss",
+    "characterId": "viper_nikke",
+    "outfitId": "exotic_cropped_crop_top",
+    "title": "毒蛇 · 客厅沙发的热情纠缠",
+    "category": "私密温存",
+    "description": "昏暗温暖的客厅沙发上，短裙微乱的毒蛇跨坐在你腿上，双臂环住你的脖颈。她双颊绯红，微喘着主动覆上温软双唇深吻，整个人紧密贴合，发出甜腻诱人的鼻音。",
+    "recommendedSize": "832x1216",
+    "location": "dimly lit modern living room with soft ambient light",
+    "action": "straddling partner lap on plush sofa, crop top pushed up, arms draped over shoulders, kissing enthusiastically with breathless moans and flushed face",
+    "timeOfDay": "night",
+    "lighting": "low moody warm lamplight highlighting flushed skin and soft curves",
+    "camera": "close-up",
+    "mood": "unbridled passionate longing, deeply needy affection, breathless desire",
+    "promptProse": "Straddling partner lap on a soft sofa in dim lighting, Viper kisses deeply with flushed cheeks, her arms tight around partner neck.",
+    "promptTokens": [
+      "living_room",
+      "couch",
+      "straddling_lap",
+      "disheveled_clothes",
+      "passionate_kiss",
+      "blushing_heavily",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Viper straddling partner lap on a couch sharing an intense passionate kiss.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

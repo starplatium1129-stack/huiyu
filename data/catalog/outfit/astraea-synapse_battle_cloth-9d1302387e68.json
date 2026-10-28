@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "astraea/synapse_battle_cloth",
+  "revision": 1,
+  "sortOrder": 1745,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "astraea",
+    "outfit": {
+      "characterId": "astraea",
+      "id": "synapse_battle_cloth",
+      "name": "西纳普斯近战白金战斗服",
+      "prose": "A form-fitting futuristic white and gold leotard with detached sleeves, high-thigh armored cuffs, and large feathered angel wings.",
+      "tokens": [
+        "white_leotard",
+        "gold_trim",
+        "bare_shoulders",
+        "thighhighs",
+        "detached_sleeves",
+        "bare_legs"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

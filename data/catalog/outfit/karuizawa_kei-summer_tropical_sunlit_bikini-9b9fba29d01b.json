@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "karuizawa_kei/summer_tropical_sunlit_bikini",
+  "revision": 1,
+  "sortOrder": 1767,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "karuizawa_kei",
+    "outfit": {
+      "characterId": "karuizawa_kei",
+      "id": "summer_tropical_sunlit_bikini",
+      "name": "盛夏海岛·热带粉白系带比基尼",
+      "prose": "A playful pink-and-white striped halterneck bikini with cheeky side ties, highlighting her slender gyaru waistline and golden-kissed skin.",
+      "tokens": [
+        "bikini",
+        "pink_bikini",
+        "striped_bikini",
+        "side-tie_bikini_bottom",
+        "halterneck",
+        "slender_waist",
+        "cleavage"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

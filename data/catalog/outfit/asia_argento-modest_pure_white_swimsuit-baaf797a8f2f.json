@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "asia_argento/modest_pure_white_swimsuit",
+  "revision": 1,
+  "sortOrder": 1763,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "asia_argento",
+    "outfit": {
+      "characterId": "asia_argento",
+      "id": "modest_pure_white_swimsuit",
+      "name": "清澈盛夏·纯白荷叶边分体泳装",
+      "prose": "A virginal pure white two-piece swimsuit accented with dainty tiered ruffles and sweet modest frills along the neckline and hips.",
+      "tokens": [
+        "bikini",
+        "white_bikini",
+        "frilled_bikini",
+        "ruffled_trim",
+        "halterneck",
+        "modest_swimwear",
+        "bare_shoulders"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

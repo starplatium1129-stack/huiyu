@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kanzaki_fallen_angel_maid_tea_serving",
+  "revision": 1,
+  "sortOrder": 2298,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "kanzaki_fallen_angel_maid_tea_serving",
+    "characterId": "kanzaki_kaori",
+    "outfitId": "fallen_angel_maid_uniform",
+    "title": "神裂火织 · 客厅特制堕天使女仆装递茶",
+    "category": "现代日常",
+    "description": "公寓客厅的明媚阳光下，换上短款堕天使女仆装的神裂火织双手端着茶盘。平时威风凛凛的圣人满面绯红、眼角噙着娇羞泪水，双腿并拢结结巴巴地为你奉上红茶。",
+    "recommendedSize": "832x1216",
+    "location": "bright cozy modern living room with coffee table",
+    "action": "standing holding a tea tray, wearing an embarrassing maid outfit, blushing furiously from ears to collarbones, stammering with shy violet eyes",
+    "timeOfDay": "afternoon",
+    "lighting": "soft bright daylight pouring through sheer living room curtains",
+    "camera": "cowboy_shot",
+    "mood": "unbeatable legendary gap moe, adorable maid embarrassment, breathtaking mature charm",
+    "promptProse": "Standing in a living room holding a tea tray in a maid dress, Kaori Kanzaki blushes crimson with shy violet eyes and trembling lips.",
+    "promptTokens": [
+      "living_room",
+      "maid",
+      "serving_tray",
+      "teacup",
+      "standing",
+      "blushing_heavily",
+      "looking_down",
+      "high_ponytail",
+      "daylight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kaori Kanzaki blushing crimson serving tea in fallen angel maid outfit.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

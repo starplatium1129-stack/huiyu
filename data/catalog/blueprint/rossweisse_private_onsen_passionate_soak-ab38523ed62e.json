@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "rossweisse_private_onsen_passionate_soak",
+  "revision": 1,
+  "sortOrder": 2230,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "rossweisse_private_onsen_passionate_soak",
+    "characterId": "rossweisse",
+    "outfitId": "summer_silver_blue_bikini",
+    "title": "罗丝薇瑟 · 隐秘温泉的湿身沦陷",
+    "category": "私密温存",
+    "description": "竹林掩映的天然岩石私人温泉中，深蓝比基尼绑带早被解开漂在水面。温热泉水拍打着娇躯，湿漉漉的银发贴在锁骨上，动情至极的女武神紧紧贴在你的怀里，承受着一浪高过一浪的爱意。",
+    "recommendedSize": "832x1216",
+    "location": "secluded natural stone outdoor hot spring surrounded by bamboo",
+    "action": "untied blue bikini floating in hot spring water, wet silver hair clinging to flushed collarbones, wrapped tightly around partner waist in heated embrace",
+    "timeOfDay": "night",
+    "lighting": "warm underwater lamps illuminating swirling steam and glistening wet skin",
+    "camera": "close-up",
+    "mood": "steamy erotic surrender, intense water embrace, breathless lover passion",
+    "promptProse": "In a steamy hot spring with an untied bikini, Rossweisse clings to partner waist with wet silver hair and flushed skin, panting with pleasure.",
+    "promptTokens": [
+      "onsen",
+      "hot_spring",
+      "steam",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "embracing",
+      "blushing_heavily",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Rossweisse in steamy hot spring with untied bikini clinging passionately.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

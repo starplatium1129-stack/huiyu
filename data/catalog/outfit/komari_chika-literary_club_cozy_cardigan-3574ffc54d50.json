@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "komari_chika/literary_club_cozy_cardigan",
+  "revision": 1,
+  "sortOrder": 1794,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "komari_chika",
+    "outfit": {
+      "characterId": "komari_chika",
+      "id": "literary_club_cozy_cardigan",
+      "name": "文学社暖意·米白宽松厚开衫棉布长裙",
+      "prose": "A soft cream oversized knit cardigan with wooden buttons over a brown pinafore skirt and collared white blouse, looking wonderfully gentle and bookish.",
+      "tokens": [
+        "cardigan",
+        "cream_cardigan",
+        "oversized_sweater",
+        "pinafore_dress",
+        "collared_shirt",
+        "long_skirt",
+        "twin_braids"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

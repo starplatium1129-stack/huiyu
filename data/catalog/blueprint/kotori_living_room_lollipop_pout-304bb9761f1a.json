@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kotori_living_room_lollipop_pout",
+  "revision": 1,
+  "sortOrder": 2250,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kotori_living_room_lollipop_pout",
+    "characterId": "kotori_itsuka",
+    "outfitId": "raizen_junior_uniform",
+    "title": "五河琴里 · 客厅沙发的棒棒糖晃脚撒娇",
+    "category": "现代日常",
+    "description": "五河家明媚的客厅沙发上，系着纯白发带的琴里盘腿坐着。嘴里含着草莓棒棒糖，小脚丫一晃一晃，鼓着腮帮向你索要摸头与夸奖，充满令人融化的黏人娇憨。",
+    "recommendedSize": "832x1216",
+    "location": "cozy Itsuka household living room with television playing anime",
+    "action": "sitting cross-legged on living room sofa with white ribbons, twirling a strawberry lollipop in mouth, kicking bare feet playfully while demanding attention from partner",
+    "timeOfDay": "afternoon",
+    "lighting": "bright cheerful afternoon sunbeams across the tatami and sofa",
+    "camera": "medium_shot",
+    "mood": "sweet spoiled sister affection, lively domestic cheer, irresistible cute pout",
+    "promptProse": "Sitting cross-legged on a sunny sofa with white ribbons, Kotori Itsuka twirls a lollipop, kicking feet and pouting for pats with adorable red eyes.",
+    "promptTokens": [
+      "living_room",
+      "sofa",
+      "sitting",
+      "lollipop",
+      "candy",
+      "kicking_legs",
+      "pouting",
+      "blushing",
+      "daylight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kotori Itsuka twirling lollipop on living room sofa with cute pout.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

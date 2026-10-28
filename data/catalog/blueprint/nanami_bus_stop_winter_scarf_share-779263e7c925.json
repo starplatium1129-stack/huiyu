@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "nanami_bus_stop_winter_scarf_share",
+  "revision": 1,
+  "sortOrder": 2288,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "nanami_bus_stop_winter_scarf_share",
+    "characterId": "aoyama_nanami",
+    "outfitId": "suimei_school_uniform",
+    "title": "青山七海 · 寒风车站的共围一条围巾",
+    "category": "假日出行",
+    "description": "冬夜打工结束后的路灯下雪花轻舞，七海双手呵着白气。当你将红白针织围巾分出一半轻轻绕在她颈间时，马尾少女微微一愣，随即眉眼弯弯，悄悄把冰凉的小手塞进你的大衣口袋。",
+    "recommendedSize": "832x1216",
+    "location": "snowy winter street corner under a warm streetlamp",
+    "action": "standing close sharing a woolen scarf, hands tucked together into partner coat pocket, smiling radiantly with flushed cheeks under falling snow",
+    "timeOfDay": "night",
+    "lighting": "warm golden streetlamp casting soft glow on drifting snowflakes",
+    "camera": "close-up",
+    "mood": "romantic winter tenderness, heartwarming intimacy, unconditional lover bond",
+    "promptProse": "Under a snowy streetlamp at night, Nanami Aoyama shares a wool scarf with partner, tucking hands into his pocket with a tender radiant smile.",
+    "promptTokens": [
+      "street",
+      "night",
+      "snow",
+      "winter",
+      "sharing_scarf",
+      "holding_hands",
+      "blushing",
+      "sweet_smile",
+      "street_lamp",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Nanami Aoyama sharing warm scarf lovingly under snowy streetlamp.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

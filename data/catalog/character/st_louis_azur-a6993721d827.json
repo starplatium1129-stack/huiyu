@@ -1,0 +1,150 @@
+{
+  "kind": "character",
+  "id": "st_louis_azur",
+  "revision": 1,
+  "sortOrder": 219,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "st_louis_azur",
+    "profile": {
+      "id": "st_louis_azur",
+      "name": "圣路易斯",
+      "alias": [
+        "St. Louis",
+        "圣路易斯",
+        "圣路易斯(碧蓝航线)",
+        "セントルイス",
+        "st. louis (azur lane)",
+        "st_louis (azur lane)"
+      ],
+      "type": "popular",
+      "icon": "🚗",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "圣路易斯 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "轻盈柔顺天水蓝长发 · 优雅侧梳单马尾",
+        "hair_color": "天水蓝 / 浅靛蓝",
+        "eyes": "深邃清澈蓝宝石眼眸 · 唇角下方标志性魅惑美人痣",
+        "hairstyle": "偏分侧长单马尾 · 柔美额前斜刘海 · 优雅成熟成女身姿",
+        "uniform": "白蓝联邦露肩军官制服 · 华贵高开衩晚礼裙 · 都市米白针织开衫",
+        "expression": "从容自信的迷人微笑 · 戏谑调情时眨眼放电与微咬朱唇",
+        "style": "glamorous luxury-lifestyle modern girlfriend with sophisticated charm and playful romance",
+        "signature": "天水蓝侧马尾、唇下美人痣、跑车兜风与浪漫副驾驶"
+      },
+      "personality": [
+        "白鹰联邦布鲁克林级轻巡洋舰，以无可挑剔的高雅品味与浪漫情调著称的摩登名媛",
+        "极度擅长营造恋爱心动感，喜欢拉着指挥官坐上敞篷跑车的副驾在海滨公路上迎风兜风",
+        "言语轻声曼语、吐气如兰，举手投足间带着一种成熟都市女性特有的优雅自信与小促狭",
+        "视指挥官为生命中独一无二的专属副驾驶与灵魂挚爱，在私下极具反客为主的诱惑攻势",
+        "成女性感魅力完全释放，既是奢华名利场上的耀眼焦点，又是专属一人的深情恋人"
+      ],
+      "likes": [
+        "在黄昏落日时分载着指挥官沿海滨大道吹海风兜风",
+        "在顶层豪华酒廊并肩小酌香槟，隔着高脚杯相视微笑",
+        "在街角露天咖啡馆亲手用小叉子投喂指挥官草莓蛋糕",
+        "深夜落地窗前褪下晚礼服，享受没有旁人打扰的热烈拥吻",
+        "在假期清晨趴在指挥官胸口，有一搭没一搭地说着慵懒情话"
+      ],
+      "classic_cg": {
+        "title": "沿海公路的落日跑车与心跳侧颜",
+        "description": "落日金光将加州风情的海滨公路染上一片迷人的橙红。敞篷跑车停在观景路肩上，圣路易斯将墨镜推上额头，侧过身单手搭在方向盘上。她水蓝色的侧马尾在海风中轻盈飞扬，唇下美人痣在金晖中分外动人，正偏头对你眨动着摄人心魄的蓝眸。"
+      },
+      "identity": {
+        "role": "白鹰阵营轻巡洋舰核心主力 / 布鲁克林级五号舰",
+        "age": "成年创作设定",
+        "occupation": "高阶战术巡洋顾问 / 专属副驾驶极品女友",
+        "faction": "白鹰阵营（Eagle Union）",
+        "school": "白鹰海军军官学院（卓越校友）",
+        "classificationSource": "角色背景明确归属于白鹰阵营主力舰队。"
+      },
+      "tags": [
+        "蓝发",
+        "侧马尾",
+        "美人痣",
+        "跑车",
+        "御姐",
+        "名媛女友",
+        "碧蓝航线"
+      ],
+      "bg_story": "圣路易斯是白鹰阵营赫赫有名的布鲁克林级轻巡洋舰，代号「Lucky Lou」。她拥有令人倾倒的盛世美颜与对现代高品质生活的独特鉴赏力，无论是驾驭大马力跑车、鉴赏古董名酒还是出入高规格舞会，她都游刃有余。然而在她光鲜亮丽的社交名媛外表下，藏着一颗渴望真挚而专一爱情的心。自从将指挥官迎入自己的专属副驾驶座后，她的每一次出行、每一套精心挑选的礼服都只为取悦一人。成年设定下的圣路易斯温柔知性、极具女友感，是能满足所有浪漫幻想的完美恋人。",
+      "palette": [
+        "天水蓝",
+        "纯白",
+        "深蓝"
+      ],
+      "weather": [
+        "落日海风",
+        "都会霓虹",
+        "午后晴空"
+      ],
+      "speech": "呵呵，我的指挥官大人，今天的目的地由你来决定哦？无论是山顶观星还是海边露营……只要副驾驶坐着你，路易斯哪里都愿意去呢。",
+      "source": "Manjuu / Yongshi《碧蓝航线 / Azur Lane》",
+      "traits": [
+        "st._louis_(azur_lane)",
+        "blue_hair",
+        "long_hair",
+        "side_ponytail",
+        "blue_eyes",
+        "mole_under_mouth"
+      ]
+    },
+    "popular": {
+      "id": "st_louis_azur",
+      "displayName": "圣路易斯",
+      "originalName": "St. Louis",
+      "franchise": "Azur Lane",
+      "category": "手游角色",
+      "aliases": [
+        "St. Louis",
+        "圣路易斯",
+        "圣路易斯(碧蓝航线)",
+        "セントルイス",
+        "st. louis (azur lane)",
+        "st_louis (azur lane)"
+      ],
+      "exactTokens": [
+        "st. louis (azur lane)"
+      ],
+      "characterTokens": [
+        "st. louis (azur lane)"
+      ],
+      "copyrightTokens": [
+        "azur_lane"
+      ],
+      "identityTokens": [
+        "st. louis (azur lane)",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "long_hair",
+        "side_ponytail",
+        "blue_eyes",
+        "mole_under_mouth"
+      ],
+      "identityProse": "St. Louis from Azur Lane, the only character in the image, with long soft blue hair styled in an elegant side ponytail, alluring blue eyes, a distinct beauty mark beneath the left corner of her mouth, and a suave, charming smile.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "swav",
+        "cutesexyrobutt"
+      ],
+      "animeStudio": "Azur Lane official art, Manjuu / Yongshi style",
+      "canon": {
+        "era": "白鹰现代都市巡洋纪元",
+        "world": "白鹰阵营（Eagle Union）· 布鲁克林级轻巡洋舰五号舰",
+        "formNotes": "水蓝侧马尾唇下美人痣，跑车与都会名媛成熟女友感，浪漫温柔情趣拉满"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "eagle_union_uniform",
+      "negativeTokens": []
+    }
+  }
+}

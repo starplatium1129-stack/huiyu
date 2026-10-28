@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nymph/sheer_pastel_blue_nightshirt",
+  "revision": 1,
+  "sortOrder": 1788,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "nymph",
+    "outfit": {
+      "characterId": "nymph",
+      "id": "sheer_pastel_blue_nightshirt",
+      "name": "闺房私密·浅蓝微透软棉大号睡衬衫",
+      "prose": "An oversized sheer pastel-blue cotton nightshirt slipping off petite shoulders over bare thighs, with translucent fairy wings fluttering softly behind.",
+      "tokens": [
+        "shirt",
+        "oversized_shirt",
+        "blue_shirt",
+        "sheer_shirt",
+        "bare_legs",
+        "barefoot",
+        "collarbone"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

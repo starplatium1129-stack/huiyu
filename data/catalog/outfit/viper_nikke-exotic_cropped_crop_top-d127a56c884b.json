@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "viper_nikke/exotic_cropped_crop_top",
+  "revision": 1,
+  "sortOrder": 1717,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "viper_nikke",
+    "outfit": {
+      "characterId": "viper_nikke",
+      "id": "exotic_cropped_crop_top",
+      "name": "蛇系娇媚露脐短裙便装",
+      "prose": "A trendy cropped pink and black bolero jacket over a low-cut crop top revealing her midriff, paired with a pleated mini skirt and thigh-high socks.",
+      "tokens": [
+        "cropped_jacket",
+        "short_skirt",
+        "pink_top",
+        "crop_top",
+        "thighhighs",
+        "navel",
+        "necklace"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

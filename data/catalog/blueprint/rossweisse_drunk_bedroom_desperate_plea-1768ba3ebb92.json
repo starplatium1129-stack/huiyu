@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "rossweisse_drunk_bedroom_desperate_plea",
+  "revision": 1,
+  "sortOrder": 2229,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "rossweisse_drunk_bedroom_desperate_plea",
+    "characterId": "rossweisse",
+    "outfitId": "sheer_indigo_silk_nightgown",
+    "title": "罗丝薇瑟 · 卧室微醺的女武神求婚献身",
+    "category": "私密温存",
+    "description": "散发着甜腻酒香的昏暗卧室内，深蓝真丝睡裙从雪白香肩彻底滑落。眼泛泪光、满面娇红的罗丝薇瑟跨坐在你身上，颤抖着搂紧你的脖颈，断断续续地喘息着“今晚……就把我变成你真正的新娘吧”。",
+    "recommendedSize": "832x1216",
+    "location": "dim warm bedroom with ruffled bedsheets",
+    "action": "straddling partner on bed with flushed face and teary eyes, unbuttoned nightgown slipping down shoulders, begging with trembling lips to make her a bride tonight",
+    "timeOfDay": "night",
+    "lighting": "dim bedside amber lamp casting deep warm shadows on bare curves",
+    "camera": "cowboy_shot",
+    "mood": "passionate drunken surrender, desperate marriage craving, heated lover intimacy",
+    "promptProse": "Straddling partner on bed with nightgown sliding off bare shoulders, flushed Rossweisse begs for marriage with teary eyes and passionate breathless kisses.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "straddling",
+      "bare_shoulders",
+      "blushing_heavily",
+      "tears_in_eyes",
+      "breathless",
+      "dim_lighting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Rossweisse straddling partner on bed with teary eyes and bare shoulders.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

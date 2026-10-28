@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saten_ruiko",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 199,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
   "data": {
     "id": "saten_ruiko",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "/assets/characters/portrait-pending.svg",
+        "image": "../assets/characters/portrait-pending.svg",
         "alt": "佐天泪子 · 立绘待制作"
       },
       "visual_dna": {
@@ -243,7 +243,8 @@
             }
           }
         ]
-      }
+      },
+      "speech": "我听说附近新开了一家店，放学后一起去看看？初春应该也会感兴趣。"
     },
     "popular": {
       "id": "saten_ruiko",

@@ -1,0 +1,36 @@
+{
+  "kind": "blueprint",
+  "id": "amau_ako_intimate_desk_whisper",
+  "revision": 3,
+  "sortOrder": 2098,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "amau_ako_intimate_desk_whisper",
+    "characterId": "amau_ako",
+    "outfitId": "prefect_duty_vestment",
+    "title": "天雨亚子 · 深夜办公室的项圈轻语",
+    "category": "私密温存",
+    "description": "只有月光与百叶窗影子的静谧办公室。亚子被轻柔地抵在厚重的办公桌边缘，双手下意识抓紧了老师的衬衫衣领。脖颈上的皮质项圈在急促起伏的呼吸中微微晃动，她眼眶湿润、脸颊绯红，平日里傲岸的行政官，在此刻彻底融化在近在咫尺的体温中。",
+    "recommendedSize": "832x1216",
+    "location": "locked prefect office beside wooden desk",
+    "action": "leaning back against desk, trembling flushed cheeks, grabbing shirt collar, breathless gaze",
+    "timeOfDay": "night",
+    "lighting": "dramatic moonlight slanting through venetian blinds with warm shadows",
+    "camera": "close-up",
+    "mood": "breathless vulnerability, intense devotion, and surrender",
+    "promptProse": "Cornered gently against her executive desk late at night, Amau Ako clutches the viewer's shirt collar with watery blue eyes and trembling flushed cheeks, her leather choker visible.",
+    "promptTokens": [
+      "blush",
+      "heavy_blush",
+      "parted_lips",
+      "night",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ako blushing deeply against the office desk at night.",
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

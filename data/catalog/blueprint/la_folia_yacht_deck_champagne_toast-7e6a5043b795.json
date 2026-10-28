@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "la_folia_yacht_deck_champagne_toast",
+  "revision": 1,
+  "sortOrder": 2196,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "la_folia_yacht_deck_champagne_toast",
+    "characterId": "la_folia_rihavein",
+    "outfitId": "cruise_ship_gold_bikini",
+    "title": "拉·芙利亚 · 游艇甲板的海风香槟",
+    "category": "浪漫约会",
+    "description": "破浪前行的私人游艇甲板上，银发如瀑在烈烈海风中起舞。身着金纹比基尼的拉·芙利亚单手托起香槟杯，祖母绿眼眸充满王者的戏谑与挑逗，邀你共饮胜利的美酒。",
+    "recommendedSize": "832x1216",
+    "location": "luxury yacht teak deck cruising open ocean",
+    "action": "clinking champagne glass, windblown silver hair, leaning on railing with confident alluring smirk",
+    "timeOfDay": "day",
+    "lighting": "brilliant Mediterranean sun reflecting off deep blue ocean waves",
+    "camera": "cowboy_shot",
+    "mood": "dazzling royal glamour, audacious playfulness, sun-drenched opulence",
+    "promptProse": "Standing on a luxury yacht deck in a gold bikini, La Folia raises a champagne glass, her long silver hair flying in the ocean wind with a teasing smile.",
+    "promptTokens": [
+      "yacht",
+      "deck",
+      "holding_wine_glass",
+      "champagne",
+      "ocean",
+      "windblown_hair",
+      "confident_smile",
+      "sunny_day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "La Folia raising a champagne glass in the ocean breeze on a luxury yacht.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

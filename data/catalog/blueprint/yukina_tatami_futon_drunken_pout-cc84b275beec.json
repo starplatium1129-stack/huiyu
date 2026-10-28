@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "yukina_tatami_futon_drunken_pout",
+  "revision": 1,
+  "sortOrder": 2194,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "yukina_tatami_futon_drunken_pout",
+    "characterId": "himeragi_yukina",
+    "outfitId": "pure_white_cotton_camisole",
+    "title": "姬柊雪菜 · 温泉旅馆的吃醋撒娇",
+    "category": "私密温存",
+    "description": "温泉旅馆榻榻米被褥上，吃醋喝了点甜酒的雪菜整个人扑在你的怀里。纯白睡裙滑散，她把发烫的脸蛋埋在你的颈窝里，带着哭腔与酒意软软地要求前辈发誓永远不离开她。",
+    "recommendedSize": "832x1216",
+    "location": "traditional ryokan tatami room with futon spread out",
+    "action": "clinging tightly to partner chest on futon, camisole slipping down, flushed cheeks, demanding promises of love with teary eyes",
+    "timeOfDay": "night",
+    "lighting": "warm paper lantern glow casting soft silhouettes on shoji screen",
+    "camera": "cowboy_shot",
+    "mood": "tipsy possessive affection, disarmed vulnerability, sweet lovers warmth",
+    "promptProse": "Clinging tightly to partner on a ryokan futon, Yukina blushes intensely with tears in her eyes, her camisole slipping off bare shoulders.",
+    "promptTokens": [
+      "tatami",
+      "futon",
+      "clinging_closely",
+      "off-shoulder",
+      "blushing_heavily",
+      "tears_in_eyes",
+      "paper_lantern",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Yukina clinging tightly on a futon with tears of sweet possessiveness.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

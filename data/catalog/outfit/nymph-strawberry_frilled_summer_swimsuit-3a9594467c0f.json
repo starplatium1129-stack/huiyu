@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "nymph/strawberry_frilled_summer_swimsuit",
+  "revision": 1,
+  "sortOrder": 1787,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "nymph",
+    "outfit": {
+      "characterId": "nymph",
+      "id": "strawberry_frilled_summer_swimsuit",
+      "name": "盛夏海滩·草莓红荷叶边系带泳装",
+      "prose": "A cute strawberry-red two-piece swimsuit adorned with fluttery white ruffles and sweet neck ties, showing off her petite frame and delicate wings.",
+      "tokens": [
+        "bikini",
+        "red_bikini",
+        "frilled_bikini",
+        "halterneck",
+        "ruffled_trim",
+        "bare_shoulders",
+        "slender_waist"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

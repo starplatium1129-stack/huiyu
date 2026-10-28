@@ -1,0 +1,145 @@
+{
+  "kind": "character",
+  "id": "frenda_seivelun",
+  "revision": 1,
+  "sortOrder": 243,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "frenda_seivelun",
+    "profile": {
+      "id": "frenda_seivelun",
+      "name": "芙兰达·塞维伦",
+      "alias": [
+        "Frenda Seivelun",
+        "芙兰达·塞维伦",
+        "芙兰达",
+        "芙兰达(魔禁)",
+        "フレンダ＝セイヴェ伦",
+        "frenda seivelun"
+      ],
+      "type": "popular",
+      "icon": "🐟",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "芙兰达·塞维伦 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "纯金柔亮及腰波浪长发 · 蓬松丰盈金发 · 标志歪戴小贝雷帽",
+        "hair_color": "纯金 / 亮金",
+        "eyes": "清澈澄明深海蓝大眼 · 带着俏皮促狭与古灵精怪",
+        "hairstyle": "披肩及腰金发 · 自然微卷 · 歪戴俏皮黑色贝雷帽",
+        "uniform": "暗部ITEM黑色露肩针织衫配超短百褶裙 · 休闲金发夏日便装 · 盛夏蓝白荷叶边比基尼",
+        "expression": "吐舌眨眼的元气小恶魔笑颜 · 被壁咚捏脸时瞬间慌乱求饶的可爱炸毛小猫",
+        "style": "playful mischievous blonde girlfriend with cheeky humor, canned mackerel dates, and surprisingly loyal sweet affection",
+        "signature": "金发波浪、贝雷帽、深海蓝眸、青花鱼罐头、暗部小恶魔"
+      },
+      "personality": [
+        "暗部组织「ITEM」不可或缺的核心爆破专家",
+        "嗜吃鲭鱼罐头、喜欢用“结果”当作口癖的元气少女",
+        "古灵精怪爱搞恶作剧但极度重情重义",
+        "被宠溺时像只温顺波斯猫一样依偎撒娇的反差"
+      ],
+      "likes": [
+        "开各种口味的鲭鱼罐头并喂恋人吃一块",
+        "戴着贝雷帽在街头咖啡厅享用甜品",
+        "恶作剧成功后得意地吐舌眨眼",
+        "在被窝里被揉着金发小腿乱晃地撒娇"
+      ],
+      "classic_cg": {
+        "title": "安全屋沙发的鲭鱼罐头投喂与恶作剧",
+        "description": "学园都市安全屋昏暗却温馨的沙发上，芙兰达晃着穿长筒袜的小腿，用小叉子叉起一块鲜美的鲭鱼罐头送到你嘴边。金发少女得意地歪着头眨眨右眼：“结果，本小姐今天特意给你开的小灶哦，不许说不好吃！”"
+      },
+      "identity": {
+        "role": "学园都市暗部组织「道具（ITEM）」核心成员 / 爆破与重火器专家",
+        "age": "成年初熟创作设定",
+        "occupation": "暗部成员 / 高中生",
+        "faction": "学园都市 / ITEM"
+      },
+      "tags": [
+        "金发",
+        "蓝瞳",
+        "贝雷帽",
+        "小恶魔",
+        "青花鱼",
+        "暗部",
+        "超电磁炮",
+        "魔禁"
+      ],
+      "bg_story": "芙兰达·塞维伦是《魔法禁书目录》与《某科学的超电磁炮》中拥有极高人气的古灵精怪女角色。隶属于学园都市暗部组织「ITEM」，虽然身为无能力者（Level 0），却凭借着过人的战斗智慧、惊人的体术以及出神入化的引爆装置与胶带炸药，能够正面与高阶能力者抗衡。平时戴着一顶黑色贝雷帽，满嘴“结果就是这么回事”的口癖，酷爱吃鲭鱼罐头。她看似玩世不恭、喜欢捉弄同伴，但内心深处极度渴望被珍视与拥有安宁的日常。与爱人独处时，她会卸下所有暗部杀伐的伪装，化身为爱吃醋、爱撒娇、毫无防备的元气金发小猫咪。",
+      "palette": [
+        "纯金",
+        "深海蓝",
+        "暗夜黑",
+        "珊瑚粉"
+      ],
+      "weather": [
+        "街头阳光",
+        "秘密基地暖灯",
+        "夏日暴雨"
+      ],
+      "speech": "结果，你今天又迟到了三分钟哦！……作为惩罚，今天的鲭鱼罐头必须由你亲手喂给我吃，还要陪我一整晚才行！",
+      "source": "A Certain Scientific Railgun",
+      "traits": [
+        "及腰金发深蓝大眼",
+        "俏皮黑色贝雷帽",
+        "青花鱼罐头元气少女",
+        "口癖结果小恶魔",
+        "ITEM重情重义小娇妻"
+      ]
+    },
+    "popular": {
+      "id": "frenda_seivelun",
+      "displayName": "芙兰达·塞维伦",
+      "originalName": "Frenda Seivelun",
+      "franchise": "A Certain Scientific Railgun",
+      "category": "动漫角色",
+      "aliases": [
+        "Frenda Seivelun",
+        "芙兰达·塞维伦",
+        "芙兰达",
+        "芙兰达(魔禁)",
+        "frenda seivelun"
+      ],
+      "exactTokens": [
+        "frenda_seivelun"
+      ],
+      "characterTokens": [
+        "frenda_seivelun"
+      ],
+      "copyrightTokens": [
+        "toaru_kagaku_no_railgun"
+      ],
+      "identityTokens": [
+        "frenda_seivelun",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "identityProse": "Frenda Seivelun from Toaru Kagaku no Railgun, the only character in the image, with long blonde hair, bright deep blue eyes, a mischievous playful expression, and an irresistible cheeky girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "swav"
+      ],
+      "animeStudio": "J.C.Staff official anime style, Railgun character art",
+      "canon": {
+        "era": "学园都市暗部暗流纪元",
+        "world": "极东·学园都市暗部安全屋",
+        "formNotes": "金色长发深蓝眸，黑色贝雷帽，吃鲭鱼罐头的小恶魔女友"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "item_black_turtleneck_beret",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

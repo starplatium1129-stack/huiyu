@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "yukina_train_station_umbrella_share",
+  "revision": 1,
+  "sortOrder": 2191,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "yukina_train_station_umbrella_share",
+    "characterId": "himeragi_yukina",
+    "outfitId": "saikai_academy_uniform",
+    "title": "姬柊雪菜 · 雨后车站的倾斜伞面",
+    "category": "日常约会",
+    "description": "放学后雨水沥沥的电车站台外，雪菜与你共撑一把透明雨伞。她悄悄把伞面完全倾斜到你身上，任由自己半边制服肩膀被细雨微润，红着脸颊低下头不敢对视。",
+    "recommendedSize": "832x1216",
+    "location": "rainy train station entrance beside puddle reflections",
+    "action": "sharing transparent umbrella, tilting umbrella toward partner, wet shoulder, blushing shyly, looking down with sweet smile",
+    "timeOfDay": "afternoon",
+    "lighting": "diffuse cool rainlight with sparkling street puddle reflections",
+    "camera": "medium_shot",
+    "mood": "sweet adolescent romance, selfless devotion, gentle rainy nostalgia",
+    "promptProse": "Sharing an umbrella on a rainy street corner, Yukina tilts the umbrella toward her senior, blushing sweetly with rain-dampened shoulders.",
+    "promptTokens": [
+      "rain",
+      "umbrella",
+      "sharing_umbrella",
+      "rainy_day",
+      "blushing",
+      "sweet_smile",
+      "wet_clothes",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Yukina sharing an umbrella in the rain with a sweet blushing smile.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

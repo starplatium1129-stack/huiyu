@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "irina_tatami_room_blushing_confession",
+  "revision": 1,
+  "sortOrder": 2223,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "irina_tatami_room_blushing_confession",
+    "characterId": "irina_shidou",
+    "outfitId": "kuoh_academy_uniform",
+    "title": "紫藤伊莉娜 · 榻榻米间的神圣求子宣言",
+    "category": "私密温存",
+    "description": "卧室内制服纽扣完全解开，露出雪白诱人的肩颈。伊莉娜双手在胸前合十，满面绯红但眼神极其认真地注视着你，带着小颤音宣告“为了天主，今晚要和一诚君生下圣剑的孩子”。",
+    "recommendedSize": "832x1216",
+    "location": "traditional Japanese bedroom with tatami and sliding doors",
+    "action": "kneeling on tatami, unbuttoned uniform shirt exposing bare shoulders, praying hands at chest, blushing furiously, breathless loving gaze",
+    "timeOfDay": "night",
+    "lighting": "warm amber ambient lantern light casting tender shadows on bare skin",
+    "camera": "close-up",
+    "mood": "innocent erotic earnestness, pure holy devotion, heart-racing gap moe",
+    "promptProse": "Kneeling on tatami with an unbuttoned uniform, Irina blushes fiercely with praying hands, declaring her pure love with breathless amber eyes.",
+    "promptTokens": [
+      "tatami",
+      "open_shirt",
+      "bare_shoulders",
+      "praying_hands",
+      "blushing_heavily",
+      "breathless",
+      "warm_lighting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Irina kneeling on tatami with an open uniform shirt declaring her love.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

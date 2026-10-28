@@ -1,0 +1,153 @@
+{
+  "kind": "character",
+  "id": "sunaookami_shiroko",
+  "revision": 2,
+  "sortOrder": 213,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
+  "data": {
+    "id": "sunaookami_shiroko",
+    "profile": {
+      "id": "sunaookami_shiroko",
+      "name": "砂狼白子",
+      "alias": [
+        "Sunaookami Shiroko",
+        "砂狼白子",
+        "白子",
+        "砂狼シロコ",
+        "シロコ",
+        "阿拜多斯突击队长"
+      ],
+      "type": "popular",
+      "icon": "🐺",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "砂狼白子 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "清爽柔顺的浅银灰色短发 · 侧边佩戴一枚简约十字发卡",
+        "hair_color": "浅银灰",
+        "eyes": "澄澈纯净如极地寒冰般的淡蓝眼眸 · 眼神清冷淡定而专注",
+        "hairstyle": "短发 · 灵动敏锐的灰色狼耳 · 科技几何十字光环",
+        "uniform": "阿拜多斯对策委白衬衫深蓝百褶裙制服 · 经典蓝白粗斜条纹针织围巾 · 战术大腿枪套",
+        "expression": "话少冷静的面瘫少女 · 行动果决 · 偶尔冒出抢银行惊人之语时的天然呆可爱",
+        "style": "calm taciturn wolf-girl cyclist with athletic purity and devoted loyalty",
+        "signature": "浅灰短发、狼耳、蓝白围巾、十字发卡与公路自行车"
+      },
+      "personality": [
+        "阿拜多斯对策委员会的王牌先锋突击手兼运动达人",
+        "极度热爱公路自行车长途骑行与体能锻炼，耐力与爆发力惊人",
+        "性格冷静寡言、行动力极强，遇到危机时会冷静提出「要不要抢银行」的天然脑回路",
+        "对老师怀有最深沉纯粹的依恋，会默默以自己的方式随时守护在老师身侧",
+        "成年后身材修长健美、曲线玲珑紧致，平日冷峻干练，私下独处时有着专属的温存与依恋"
+      ],
+      "likes": [
+        "清晨在微风吹拂的沿海公路上痛快飞驰自行车",
+        "与老师并肩坐在路边长椅上喝同一罐冰镇运动饮料",
+        "擦拭保养自己的爱车与突击步枪零部件",
+        "在狂风漫天的阿拜多斯黄沙中听老师呼唤自己的名字",
+        "在安静的清晨悄悄将狼耳贴在老师掌心求轻抚"
+      ],
+      "classic_cg": {
+        "title": "海风公路的破风并肩与清爽回眸",
+        "description": "拂晓时分海浪拍打着蔚蓝的沿海公路，初升的朝阳洒在波光粼粼的海面上。白子身穿贴身的蓝白骑行服，修长健美的大长腿跨在公路自行车上，银灰色的短发与毛茸茸的狼耳在晨风中微微颤动。她转过头，淡蓝色的眼眸映着晨曦，嘴角扬起罕见而纯净的清爽笑意，向身边的老师递出微凉的饮品。"
+      },
+      "identity": {
+        "role": "阿拜多斯对策委员会突击队长 / 夏莱特勤先锋",
+        "age": "成年创作设定",
+        "occupation": "突击先锋 / 战术巡查员 / 竞技骑行手",
+        "faction": "阿拜多斯高中 / 对策委员会",
+        "school": "阿拜多斯高中",
+        "classificationSource": "本角色档案 identity.faction 中明确记载的学院；统一学院名称写法。"
+      },
+      "tags": [
+        "银灰短发",
+        "狼耳",
+        "蓝白围巾",
+        "公路车",
+        "天然呆",
+        "蓝瞳",
+        "阿拜多斯对策委"
+      ],
+      "bg_story": "砂狼白子是基沃托斯阿拜多斯高中对策委员会的核心突击手，也是全学园都市最耀眼的招牌少女之一。在阿拜多斯饱受沙漠化吞噬与巨额债务重压的艰难岁月里，白子日复一日在漫天黄沙与废墟间长跑巡查，以顽强的意志守卫着最后的校舍。作为行动派的极致代表，她既能在危机四伏的战场上孤身突进，又能在日常生活中展现出令人忍俊不禁的呆萌特质。在经历跨越时空的终章大战与重重磨砺后，成年后的白子退去了懵懂青涩，出落得越发矫健高挑。但无论世事如何变迁，这位在晨光中飞驰的狼耳少女，永远是老师最坚实、最可靠且最纯粹的心灵寄托。",
+      "palette": [
+        "浅灰",
+        "天蓝",
+        "深蓝",
+        "纯白"
+      ],
+      "weather": [
+        "晴空海岸",
+        "晨曦公路",
+        "荒漠微风"
+      ],
+      "speech": "呼……晨练十公里结束。老师，早上好。今天的阿拜多斯也很平静……接下来，要和我一起去骑行吗？",
+      "source": "Blue Archive",
+      "traits": [
+        "grey_hair",
+        "short_hair",
+        "blue_eyes",
+        "wolf_ears",
+        "halo",
+        "hair_clip"
+      ]
+    },
+    "popular": {
+      "id": "sunaookami_shiroko",
+      "displayName": "砂狼白子",
+      "originalName": "Sunaookami Shiroko",
+      "franchise": "Blue Archive",
+      "category": "手游角色",
+      "aliases": [
+        "Sunaookami Shiroko",
+        "砂狼白子",
+        "白子",
+        "砂狼シロコ",
+        "シロコ",
+        "shiroko (blue archive)"
+      ],
+      "exactTokens": [
+        "sunaookami_shiroko"
+      ],
+      "characterTokens": [
+        "sunaookami_shiroko",
+        "shiroko (blue archive)"
+      ],
+      "copyrightTokens": [
+        "blue_archive"
+      ],
+      "identityTokens": [
+        "sunaookami_shiroko",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "short_hair",
+        "blue_eyes",
+        "wolf_ears",
+        "halo",
+        "hair_clip"
+      ],
+      "identityProse": "Sunaookami Shiroko from Blue Archive, the only character in the image, with silver-grey short hair, wolf ears, calm blue eyes, a single hair clip, and a glowing geometric halo.",
+      "curatedArtistStyles": [
+        "kakao",
+        "mika_pikazo",
+        "morikura_en"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "world": "基沃托斯（Kivotos）· 阿拜多斯高中",
+        "formNotes": "阿拜多斯突击队长，银灰短发狼耳、蓝白围巾、蓝瞳，公路车运动健美与寡言纯净依恋"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "abydos_foreclosure_uniform",
+      "negativeTokens": []
+    }
+  }
+}

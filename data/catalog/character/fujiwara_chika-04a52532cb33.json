@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fujiwara_chika",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 196,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
   "data": {
     "id": "fujiwara_chika",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "/assets/characters/portrait-pending.svg",
+        "image": "../assets/characters/portrait-pending.svg",
         "alt": "藤原千花 · 立绘待制作"
       },
       "visual_dna": {
@@ -304,7 +304,8 @@
             }
           }
         ]
-      }
+      },
+      "speech": "今天玩什么？我带了桌游，这次可要认真听规则哦！"
     },
     "popular": {
       "id": "fujiwara_chika",

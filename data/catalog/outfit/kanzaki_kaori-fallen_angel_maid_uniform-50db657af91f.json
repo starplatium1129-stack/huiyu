@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kanzaki_kaori/fallen_angel_maid_uniform",
+  "revision": 1,
+  "sortOrder": 1806,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "kanzaki_kaori",
+    "outfit": {
+      "characterId": "kanzaki_kaori",
+      "id": "fallen_angel_maid_uniform",
+      "name": "极羞反差·天草式特制堕天使女仆短裙",
+      "prose": "The legendary embarrassing Fallen Angel maid outfit with ruffled frilly headband, deep sweetheart neckline maid dress, frilled apron, and black thigh-high stockings.",
+      "tokens": [
+        "maid",
+        "maid_uniform",
+        "apron",
+        "frilled_dress",
+        "headband",
+        "thighhighs",
+        "cleavage",
+        "bare_shoulders"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

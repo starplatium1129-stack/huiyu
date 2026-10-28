@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "kakudate_karin_intimate_locker_room_blush",
+  "revision": 3,
+  "sortOrder": 2104,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "kakudate_karin_intimate_locker_room_blush",
+    "characterId": "kakudate_karin",
+    "outfitId": "candc_maid_uniform",
+    "title": "角楯花凛 · 战术更衣室的受赞红晕",
+    "category": "私密温存",
+    "description": "射击训练后空无一人的特勤更衣室内，昏黄的壁灯映照着排排铁柜。花凛靠在柜门前，额前微带细汗，小麦色的肌肤泛着健康的红润光泽。近距离面对老师直接而专注的深情凝视，她的心跳如擂鼓般骤升，金眸轻颤，娇羞得几乎无法呼吸。",
+    "recommendedSize": "832x1216",
+    "location": "dim tactical locker room in front of metal lockers",
+    "action": "leaning back against lockers, heavy blush, bead of sweat, breathtaking close distance",
+    "timeOfDay": "night",
+    "lighting": "warm amber overhead lighting accentuating toned collarbone and facial blush",
+    "camera": "close-up",
+    "mood": "intense pounding heartbeat and melting shyness",
+    "promptProse": "Backed softly against a metal locker in dim evening light, Kakudate Karin looks up with intense golden eyes and heavily flushed tanned cheeks in breathless romantic proximity.",
+    "promptTokens": [
+      "blush",
+      "heavy_blush",
+      "sweat",
+      "lockers",
+      "night",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Karin blushing heavily against the locker in close proximity.",
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

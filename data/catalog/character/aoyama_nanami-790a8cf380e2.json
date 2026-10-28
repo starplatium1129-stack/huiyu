@@ -1,0 +1,147 @@
+{
+  "kind": "character",
+  "id": "aoyama_nanami",
+  "revision": 1,
+  "sortOrder": 240,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "aoyama_nanami",
+    "profile": {
+      "id": "aoyama_nanami",
+      "name": "青山七海",
+      "alias": [
+        "Nanami Aoyama",
+        "青山七海",
+        "七海",
+        "青山",
+        "七海(樱花庄)",
+        "青山 七海",
+        "aoyama nanami"
+      ],
+      "type": "popular",
+      "icon": "🎙️",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "青山七海 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "温暖深茶柔顺及肩马尾 · 标志侧马尾/高马尾发束 · 干净利落刘海",
+        "hair_color": "深茶 / 暖栗",
+        "eyes": "坚定清澈琥珀棕双眸 · 带着关西腔的活力与极致人妻温柔",
+        "hairstyle": "元气利落深茶色高马尾 · 柔顺垂发 · 充满努力派少女的清爽",
+        "uniform": "水明艺术大学附属高中红边西装校服 · 居家人妻粉白格纹围裙 · 盛夏深蓝分体比基尼",
+        "expression": "关西腔吐槽时的傲娇小脸红 · 照顾起居做便当时无微不至的完美人妻微笑",
+        "style": "hardworking devoted Osaka-dialect girlfriend with supreme housewife care, stubborn pride, and heart-melting romantic surrender",
+        "signature": "茶发单马尾、关西腔、居家人妻围裙、照顾起居、努力派女友"
+      },
+      "personality": [
+        "独立坚强拼命努力的声优养成所特待生",
+        "家务料理全能无微不至的极品大和抚子",
+        "傲娇害羞一紧张就会爆出软萌关西腔",
+        "全心全意为爱人默默奉献付出一切的真爱女友"
+      ],
+      "likes": [
+        "亲手烹饪营养美味的关西风家常料理与爱心便当",
+        "打工归来在樱花庄客厅喝一杯热麦茶",
+        "被恋人从身后抱住夸奖“今天也辛苦了”",
+        "在被窝里被紧紧搂住轻声耳语卸下所有疲惫"
+      ],
+      "classic_cg": {
+        "title": "深夜樱花庄厨房的热茶与关西腔撒娇",
+        "description": "深夜打工归来的樱花庄厨房内，青山七海围着围裙将热腾腾的玉子烧盛出。当少年走上前从背后轻柔环抱住她的腰身并将下巴垫在她肩上时，马尾少女身躯一颤，手里的铲子险些滑落，整张脸腾地烧红，带着关西腔软绵绵地嗔道：“真是的……空太，会被其他人看到的啦……”"
+      },
+      "identity": {
+        "role": "水明艺术大学附属高中普通科二年级生 / 樱花庄203号房房客 / 现役声优养成所研修生",
+        "age": "17岁（高中努力少女）",
+        "occupation": "高中生 / 兼职店员 / 研修声优",
+        "faction": "樱花庄 / 声优养成所"
+      },
+      "tags": [
+        "茶发",
+        "马尾",
+        "关西腔",
+        "努力少女",
+        "极品人妻",
+        "傲娇",
+        "樱花庄"
+      ],
+      "bg_story": "青山七海是《樱花庄的宠物女孩》中备受读者爱戴与心疼的第一努力派女主角。为了实现成为声优的梦想，不顾父母强烈反对毅然离家自立，每天兼职数份零工以支付昂贵的学费与生活费。入住樱花庄后，以其惊人的家务全能与超绝人妻力，成为了照顾包括神田空太与椎名真白在内全员生活起居的真正支柱。她性格自尊自强、绝不轻言放弃，在面对空太时总是嘴硬傲娇，但无论在空太遭遇挫折失意还是疲惫不堪时，她永远都是第一个送上温暖便当、热茶与毫无保留鼓励的人。她的深情与隐忍感动了无数观众，是ACG界公认的“娶妻当如青山七海”的绝对典范。",
+      "palette": [
+        "暖栗棕",
+        "水明红",
+        "围裙粉",
+        "象牙白"
+      ],
+      "weather": [
+        "深夜厨房暖灯",
+        "冬夜寒风",
+        "晨曦微风"
+      ],
+      "speech": "空太！今天也给你做了特制便当哦，不许挑食全部都要吃光！……欸，为什么一直盯着我看啦？笨蛋，脸都红透了……",
+      "source": "The Pet Girl of Sakurasou",
+      "traits": [
+        "深茶利落高马尾",
+        "软萌关西腔傲娇",
+        "家务全能人妻女友",
+        "拼搏坚毅声优梦想",
+        "樱花庄永远的白月光"
+      ]
+    },
+    "popular": {
+      "id": "aoyama_nanami",
+      "displayName": "青山七海",
+      "originalName": "Nanami Aoyama",
+      "franchise": "The Pet Girl of Sakurasou",
+      "category": "动漫角色",
+      "aliases": [
+        "Nanami Aoyama",
+        "青山七海",
+        "七海",
+        "青山",
+        "七海(樱花庄)",
+        "aoyama nanami"
+      ],
+      "exactTokens": [
+        "aoyama_nanami"
+      ],
+      "characterTokens": [
+        "aoyama_nanami"
+      ],
+      "copyrightTokens": [
+        "sakurasou_no_pet_na_kanojo"
+      ],
+      "identityTokens": [
+        "aoyama_nanami",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "long_hair",
+        "ponytail",
+        "brown_eyes"
+      ],
+      "identityProse": "Nanami Aoyama from The Pet Girl of Sakurasou, the only character in the image, with long brown hair tied in a high energetic ponytail, warm brown eyes, and an earnest, exceptionally devoted housewife girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "swav"
+      ],
+      "animeStudio": "J.C.Staff official anime style, Sakurasou character art",
+      "canon": {
+        "era": "樱花庄青春梦想纪元",
+        "world": "东京都·水明高职与樱花庄宿舍",
+        "formNotes": "栗色高马尾琥珀双眸，关西腔，全能照顾起居的人妻小女友"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "suimei_school_uniform",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

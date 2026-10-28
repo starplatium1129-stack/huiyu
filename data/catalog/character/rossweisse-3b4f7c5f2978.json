@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "rossweisse",
+  "revision": 1,
+  "sortOrder": 230,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "rossweisse",
+    "profile": {
+      "id": "rossweisse",
+      "name": "罗丝薇瑟",
+      "alias": [
+        "Rossweisse",
+        "罗丝薇瑟",
+        "女武神",
+        "洛丝维亚瑟",
+        "ロスヴァイセ",
+        "rossweisse (high school dxd)"
+      ],
+      "type": "popular",
+      "icon": "🛡️",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "罗丝薇瑟 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "银白柔顺及腰瀑布长发 · 额前自然分发 · 飘逸北欧神族光泽",
+        "hair_color": "银白 / 亮银",
+        "eyes": "清澈深邃冰蓝瞳 · 带有知性典雅与纯真神族气质",
+        "hairstyle": "柔顺自然披肩长发 · 散发神圣冷冽清辉",
+        "uniform": "北欧女武神银白铠甲战礼服 · 勤俭持家超市特卖粉色围裙 · 盛夏银蓝比基尼",
+        "expression": "清冷从容的严谨知性 · 喝醉后满脸通红急切想结婚的无敌恨嫁反差萌",
+        "style": "thrifty devoted Valkyrie girlfriend with mature beauty, hilarious marriage-craving gap moe, and unreserved bedtime passion",
+        "signature": "银白长发、冰蓝瞳孔、精打细算持家、醉酒恨嫁大姐姐反差萌"
+      },
+      "personality": [
+        "知性理智的北欧女武神",
+        "极度节俭热爱特卖小票",
+        "醉酒后极度想结婚的恨嫁大姐姐",
+        "面对认定爱意全身心奉献的温柔小妻子"
+      ],
+      "likes": [
+        "收集超市降价折价券",
+        "为爱人烹饪丰盛又省钱的美味家常菜",
+        "小酌日本清酒并被摸头夸奖持家",
+        "在被单里依偎索求承诺"
+      ],
+      "classic_cg": {
+        "title": "特卖小票与醉酒女武神的纯情求婚",
+        "description": "公寓客厅的暖光下，罗丝薇瑟一边微醺地拿着特卖小票核对开销，一边被少年从身后环抱。银发女武神脸颊泛起诱人的酡红，紧紧扯住少年的领带带哭腔撒娇，在滚烫的拥吻中交托全部。"
+      },
+      "identity": {
+        "role": "前北欧主神奥丁护卫女武神 / 吉蒙里眷属城堡 / 驹王学园教师",
+        "age": "成年初熟神族",
+        "occupation": "教师 / 女武神 / 吉蒙里眷属",
+        "faction": "北欧神话 / 吉蒙里眷属"
+      },
+      "tags": [
+        "银白发",
+        "蓝瞳",
+        "女武神",
+        "教师",
+        "大姐姐",
+        "恨嫁反差萌",
+        "持家小妻子",
+        "恶魔高校"
+      ],
+      "bg_story": "罗丝薇瑟原本是北欧神话中侍奉主神奥丁的高贵女武神，精通北欧古代防御魔术。因奥丁的粗心被遗留在极东之地，后被莉雅丝·吉蒙里收留转生为恶魔城堡。虽然拥有倾国倾城的北欧银发绝美姿容与惊人战力，私底下却是个为了几日元折扣精打细算、疯狂搜集超市特卖券的平民派持家狂人。最致命的萌点在于极度渴望谈恋爱与结婚，一旦喝醉就会化身为满面通红、抱着爱人不放哭诉“为什么没人娶我”的顶级恨嫁小女人。在与一诚朝夕相处的日常中，她被其毫不嫌弃的温柔彻底打动，全心全意扮演起贤淑而又热烈的小妻子角色。",
+      "palette": [
+        "银白",
+        "冰蓝",
+        "皇家深蓝",
+        "暖粉"
+      ],
+      "weather": [
+        "微醺夜月",
+        "超市特卖暖阳",
+        "温泉暖雾"
+      ],
+      "speech": "今天超市的鸡蛋打了七折呢！欸？只要一诚君喜欢……不管是省钱做饭还是……结婚生子，我随时都准备好了哦！",
+      "source": "High School DxD",
+      "traits": [
+        "北欧女武神",
+        "银发及腰冰蓝瞳",
+        "特卖持家小妻子",
+        "醉酒恨嫁大姐姐",
+        "深情献身女武神"
+      ]
+    },
+    "popular": {
+      "id": "rossweisse",
+      "displayName": "罗丝薇瑟",
+      "originalName": "Rossweisse",
+      "franchise": "High School DxD",
+      "category": "动漫角色",
+      "aliases": [
+        "Rossweisse",
+        "罗丝薇瑟",
+        "女武神",
+        "洛丝维亚瑟",
+        "ロスヴァイセ",
+        "rossweisse (high school dxd)"
+      ],
+      "exactTokens": [
+        "rossweisse (high school dxd)"
+      ],
+      "characterTokens": [
+        "rossweisse (high school dxd)"
+      ],
+      "copyrightTokens": [
+        "high_school_dxd"
+      ],
+      "identityTokens": [
+        "rossweisse (high school dxd)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "very_long_hair",
+        "blue_eyes"
+      ],
+      "identityProse": "Rossweisse from High School DxD, the only character in the image, with long cascading silver hair, gentle deep blue eyes, a mature curvaceous Valkyrie beauty, and an endearing thrifty girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "tinkle"
+      ],
+      "animeStudio": "TNK / Passione official anime style, High School DxD character art",
+      "canon": {
+        "era": "驹王学园神魔共生纪元",
+        "world": "极东·吉蒙里豪宅与驹王町公寓",
+        "formNotes": "银白瀑布长发冰蓝瞳，北欧高贵女武神，极度持家与醉酒恨嫁反差萌"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "valkyrie_battle_attire",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

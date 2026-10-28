@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "hashima_izumi",
+  "revision": 1,
+  "sortOrder": 244,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "hashima_izumi",
+    "profile": {
+      "id": "hashima_izumi",
+      "name": "波岛出海",
+      "alias": [
+        "Izumi Hashima",
+        "波岛出海",
+        "出海",
+        "出海酱",
+        "波島出海",
+        "hashima izumi"
+      ],
+      "type": "popular",
+      "icon": "🎨",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "波岛出海 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "柔顺茶褐色中长双马尾 · 俏皮微翘发梢 · 充满元气学妹活力",
+        "hair_color": "茶褐 / 栗色",
+        "eyes": "明亮活泼深茶色圆眼 · 满溢对学长的崇拜与小恶魔爱慕",
+        "hairstyle": "活泼元气及肩双马尾 · 灵动碎刘海 · 娇俏青春",
+        "uniform": "初中部清纯水手服配开衫 · 同人展画师便装短裙 · 盛夏撞色元气比基尼",
+        "expression": "灿烂叫“前辈”时的崇拜甜笑 · 创作取材被推倒时羞得满面绯红的后辈娇怯",
+        "style": "busty energetic junior girlfriend with creative passion, total admiration for her senpai, and adorably flustered romantic vulnerability",
+        "signature": "双马尾茶发、巨乳反差、叫前辈、同人展画师、崇拜学妹"
+      },
+      "personality": [
+        "天真烂漫全心崇拜安艺伦也的纯情学妹",
+        "拥有超凡同人漫画才能的元气画师",
+        "在学长面前毫无防备极易撒娇的小恶魔",
+        "为了回应学长期待甘愿全心交付的真爱少女"
+      ],
+      "likes": [
+        "和伦也学长热烈讨论最喜欢的同人漫画",
+        "在漫展摊位后递上冰镇饮料给学长擦汗",
+        "趴在学长的书桌旁看他认真工作的侧颜",
+        "在被窝里被紧紧抱住叫着自己的名字"
+      ],
+      "classic_cg": {
+        "title": "同人工作室书桌旁的取材与心跳",
+        "description": "同人游戏创作的深夜书桌旁，画完稿件的波岛出海趴在少年的膝盖上撒娇。当少年轻抚她柔软的双马尾并低头贴近时，元气学妹双眸满是受宠若惊的雾气，茶色双眸倒映着少年的面庞，红着脸小声嘟囔：“前辈……如果是为了取材的话，出海什么都可以哦。”"
+      },
+      "identity": {
+        "role": "丰之崎学园初中部/高中部学生 / 同人社团「rouge en rouge」与「blessing software」原画师",
+        "age": "成年初熟创作设定",
+        "occupation": "高中生 / 同人插画师",
+        "faction": "blessing software / 波岛家"
+      },
+      "tags": [
+        "双马尾",
+        "茶发",
+        "茶瞳",
+        "巨乳",
+        "学妹",
+        "画师",
+        "路人女主"
+      ],
+      "bg_story": "波岛出海是《路人女主的养成方法》中极具活力与女友魅力的核心女主角。作为安艺伦也初中时期的后辈，曾是个内向朴素的小女孩，因伦也的热情引荐而彻底踏入御宅与同人插画的大门，并在短时间内觉醒为名震业界的超一流同人画师。她扎着活泼的双马尾，拥有与娇小体格极具反差的傲人身材。在出海心中，伦也是赋予自己梦想、不可撼动的“神明”与初恋。重逢后，她以毫不掩饰的崇拜、热烈的后辈撒娇与无保留的深情，向伦也发起一轮轮甜蜜进攻，是无数观众心目中无可挑剔的极品学妹女友。",
+      "palette": [
+        "茶褐",
+        "纯白",
+        "天青",
+        "浅粉"
+      ],
+      "weather": [
+        "漫展晴空",
+        "工作室深夜",
+        "黄昏坡道"
+      ],
+      "speech": "伦也前辈！今天的原稿出海已经超额完成了哦！……欸，奖励？那、那就请前辈好好抱紧出海吧！",
+      "source": "Saenai Heroine no Sodatekata",
+      "traits": [
+        "茶褐色及肩双马尾茶眸",
+        "丰满曲线元气学妹",
+        "崇拜学长的天才画师",
+        "取材名义的纯情撒娇",
+        "路人女主核心台柱"
+      ]
+    },
+    "popular": {
+      "id": "hashima_izumi",
+      "displayName": "波岛出海",
+      "originalName": "Izumi Hashima",
+      "franchise": "Saenai Heroine no Sodatekata",
+      "category": "动漫角色",
+      "aliases": [
+        "Izumi Hashima",
+        "波岛出海",
+        "出海",
+        "出海酱",
+        "波島出海",
+        "hashima izumi"
+      ],
+      "exactTokens": [
+        "hashima_izumi"
+      ],
+      "characterTokens": [
+        "hashima_izumi"
+      ],
+      "copyrightTokens": [
+        "saenai_heroine_no_sodatekata"
+      ],
+      "identityTokens": [
+        "hashima_izumi",
+        "1girl",
+        "solo",
+        "brown_hair",
+        "long_hair",
+        "twintails",
+        "brown_eyes"
+      ],
+      "identityProse": "Izumi Hashima from Saenai Heroine no Sodatekata, the only character in the image, with brown hair in energetic twintails, warm brown eyes, a delightfully curvaceous figure, and an admiring devoted junior girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "tinkle"
+      ],
+      "animeStudio": "CloverWorks / A-1 Pictures official anime style, Saekano character art",
+      "canon": {
+        "era": "同人游戏制作梦想纪元",
+        "world": "东京都·丰之崎学园与秋叶原",
+        "formNotes": "茶色双马尾茶眸，丰满娇小天才画师，崇拜学长的小恶魔学妹"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "junior_school_sailor_cardigan",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

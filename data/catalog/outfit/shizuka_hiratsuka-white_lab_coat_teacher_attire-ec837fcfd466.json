@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "shizuka_hiratsuka/white_lab_coat_teacher_attire",
+  "revision": 1,
+  "sortOrder": 1769,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "shizuka_hiratsuka",
+    "outfit": {
+      "characterId": "shizuka_hiratsuka",
+      "id": "white_lab_coat_teacher_attire",
+      "name": "标志风采·白大褂职场衬衫干练裤装",
+      "prose": "A dashing white doctor coat over a crisp dark silk blouse, tailored charcoal trousers, and elegant black heels.",
+      "tokens": [
+        "lab_coat",
+        "white_coat",
+        "collared_shirt",
+        "black_shirt",
+        "pants",
+        "slacks",
+        "belt",
+        "high_heels"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

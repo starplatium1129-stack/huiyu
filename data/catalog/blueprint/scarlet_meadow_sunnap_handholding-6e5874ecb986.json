@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "scarlet_meadow_sunnap_handholding",
+  "revision": 1,
+  "sortOrder": 2138,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "scarlet_meadow_sunnap_handholding",
+    "characterId": "scarlet_nikke",
+    "outfitId": "ronin_casual_haori",
+    "title": "红莲 · 晴空草甸的十指相扣",
+    "category": "日常小酌",
+    "description": "微风吹拂的青草坡上，草帽放在一旁充当遮阳。两人并肩躺在盛开野花的绿茵中看白云流转，十指紧密相扣，雪白马尾在微风中轻抚你的手臂，岁月安好。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit grassy meadow with blooming wildflowers",
+    "action": "lying side by side on lush grass, woven sedge hat resting beside head, interlocking fingers, white ponytail spread on greenery, looking up at drifting clouds",
+    "timeOfDay": "day",
+    "lighting": "bright cheerful sunlit day with gentle flower dappled light",
+    "camera": "from_above",
+    "mood": "idyllic serenity, timeless peaceful love, gentle summer warmth",
+    "promptProse": "Lying side by side in a wildflower meadow, Scarlet holds hands with interlocked fingers while smiling up at the blue summer sky.",
+    "promptTokens": [
+      "meadow",
+      "lying_on_grass",
+      "holding_hands",
+      "interlocked_fingers",
+      "sedge_hat",
+      "wildflowers",
+      "sunny_day",
+      "from_above"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Scarlet holding hands while resting on a grassy meadow under the sunny sky.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

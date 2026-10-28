@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kuroka_garden_festival_bell_ribbon",
+  "revision": 1,
+  "sortOrder": 2204,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "kuroka_garden_festival_bell_ribbon",
+    "characterId": "kuroka",
+    "outfitId": "sensual_modern_cheongsam",
+    "title": "黑歌 · 夏夜祭典的红绳铜铃",
+    "category": "浪漫约会",
+    "description": "夏夜神社红灯笼小道上，身穿高开衩旗袍的黑歌牵着你的手快步漫步。她的猫尾巴上系着清脆的红色铜铃缎带，随着步伐叮咚作响，转过头对你吐舌眨眼喵喵叫。",
+    "recommendedSize": "832x1216",
+    "location": "traditional summer festival lantern path at night",
+    "action": "holding hands walking along red lantern path, ribbon and bell on cat tail, looking back with cheeky playful tongue poke",
+    "timeOfDay": "night",
+    "lighting": "warm scarlet paper lantern glow creating vibrant festive shadows",
+    "camera": "cowboy_shot",
+    "mood": "lively summer festival romance, coquettish mischief, vibrant feline energy",
+    "promptProse": "Walking hand in hand through a festival lantern path in a black cheongsam, Kuroka turns back with a cheeky wink and twin wagging tails.",
+    "promptTokens": [
+      "festival",
+      "lanterns",
+      "holding_hands",
+      "cheongsam",
+      "looking_back",
+      "cat_ears",
+      "two_tails",
+      "night",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kuroka walking through summer festival lanterns holding hands playfully.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

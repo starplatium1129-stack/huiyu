@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hiuchidani_mei",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 192,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:47:18.141766100+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
   "data": {
     "id": "hiuchidani_mei",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "/assets/characters/portrait-pending.svg",
+        "image": "../assets/characters/portrait-pending.svg",
         "alt": "火打谷爱衣 · 立绘待制作"
       },
       "visual_dna": {
@@ -288,7 +288,8 @@
             }
           }
         ]
-      }
+      },
+      "speech": "走啦，别一直闷在这里！有想做的事就先试试嘛。"
     },
     "popular": {
       "id": "hiuchidani_mei",

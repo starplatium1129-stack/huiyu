@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "yakishio_lemon/cozy_tank_top_lounge_shorts",
+  "revision": 1,
+  "sortOrder": 1792,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "yakishio_lemon",
+    "outfit": {
+      "characterId": "yakishio_lemon",
+      "id": "cozy_tank_top_lounge_shorts",
+      "name": "居家乐居·白色棉质背心与柔软居家短裤",
+      "prose": "A relaxed ribbed white cotton tank top over heather-grey jersey lounge shorts, showing sun-kissed shoulders and toned bare legs.",
+      "tokens": [
+        "tank_top",
+        "white_shirt",
+        "shorts",
+        "bare_shoulders",
+        "bare_legs",
+        "barefoot",
+        "collarbone"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

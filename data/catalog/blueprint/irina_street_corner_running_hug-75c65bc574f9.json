@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "irina_street_corner_running_hug",
+  "revision": 1,
+  "sortOrder": 2222,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "irina_street_corner_running_hug",
+    "characterId": "irina_shidou",
+    "outfitId": "kuoh_academy_uniform",
+    "title": "紫藤伊莉娜 · 黄昏街角的飞扑相拥",
+    "category": "日常约会",
+    "description": "放学后的黄昏十字路口，金红夕阳染红了街景。伊莉娜远远望见你，欢呼着飞奔过来一把扑进你的怀中，书包甩在身后，整个人挂在你身上开心地蹭着你的脸颊。",
+    "recommendedSize": "832x1216",
+    "location": "sunset urban street intersection near park",
+    "action": "running and leaping into partner arms, legs wrapping around waist, beaming giggling face nuzzling cheek",
+    "timeOfDay": "sunset",
+    "lighting": "warm nostalgic golden hour sunset glow washing over street",
+    "camera": "cowboy_shot",
+    "mood": "exuberant puppy-like affection, joyful reunion, pure energetic romance",
+    "promptProse": "Running and leaping into partner arms at a sunset street corner, Irina giggles with pure joy, nuzzling his cheek affectionately.",
+    "promptTokens": [
+      "street",
+      "sunset",
+      "running_hug",
+      "embracing",
+      "nuzzling",
+      "happy_smile",
+      "golden_hour",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Irina leaping into partner arms with an energetic hug at a sunset street corner.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

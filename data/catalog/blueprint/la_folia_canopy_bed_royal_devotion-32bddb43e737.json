@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "la_folia_canopy_bed_royal_devotion",
+  "revision": 1,
+  "sortOrder": 2201,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "la_folia_canopy_bed_royal_devotion",
+    "characterId": "la_folia_rihavein",
+    "outfitId": "sheer_royal_silk_nightgown",
+    "title": "拉·芙利亚 · 王家寝宫的极乐沉沦",
+    "category": "私密温存",
+    "description": "雕花四柱大床厚重帷幔深处，半透冰丝睡袍褪落在地。傲视群雄的帝国王女在无尽的炙热攻伐中眼角泛着欢愉泪水，双手紧抱你的后颈，娇啼求饶却又深情呼唤“我的王夫”。",
+    "recommendedSize": "832x1216",
+    "location": "ancient royal castle bedchamber with gossamer silk canopy",
+    "action": "tangled in deep silk bedding under canopy, silver hair intermingled, ecstatic teary eyes, arched back in intense pleasure",
+    "timeOfDay": "night",
+    "lighting": "intimate flickering candelabras casting golden dancing shadows",
+    "camera": "close-up",
+    "mood": "transcendent royal ecstasy, absolute lovers surrender, profound soulmate union",
+    "promptProse": "Tangled in a grand canopy bed in candlelight, La Folia sheds tears of ecstasy with flushed cheeks, whispering her complete submission of love.",
+    "promptTokens": [
+      "canopy_bed",
+      "messy_bed",
+      "tangled_hair",
+      "bare_skin",
+      "tears_of_pleasure",
+      "blushing_heavily",
+      "candlelight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "La Folia in ecstatic bridal surrender in a candlelit royal canopy bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

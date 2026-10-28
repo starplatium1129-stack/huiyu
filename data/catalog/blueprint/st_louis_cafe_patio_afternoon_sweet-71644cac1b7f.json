@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "st_louis_cafe_patio_afternoon_sweet",
+  "revision": 1,
+  "sortOrder": 2162,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "st_louis_cafe_patio_afternoon_sweet",
+    "characterId": "st_louis_azur",
+    "outfitId": "cozy_casual_knit_trench",
+    "title": "圣路易斯 · 街角咖啡馆的甜点投喂",
+    "category": "日常约会",
+    "description": "梧桐树荫下的欧式街角露天咖啡馆，微风徐徐。圣路易斯优雅地撑着下巴，用小银叉叉起一小块草莓蛋糕轻送到你唇边，歪着头带着调皮的笑意注视着你。",
+    "recommendedSize": "832x1216",
+    "location": "chic Parisian-style sidewalk cafe in the afternoon",
+    "action": "sitting at outdoor cafe table shaded by awning, feeding a piece of strawberry cake with a small fork, playful loving smile",
+    "timeOfDay": "afternoon",
+    "lighting": "pleasant dappled afternoon sunlight filtered through leafy trees",
+    "camera": "cowboy_shot",
+    "mood": "sweet romantic leisure, playful domestic indulgence, European charm",
+    "promptProse": "Sitting at a chic outdoor cafe terrace in afternoon sun, St. Louis playfully feeds a bite of strawberry cake to her partner with a fond smile.",
+    "promptTokens": [
+      "outdoor_cafe",
+      "cafe_table",
+      "feeding_viewer",
+      "holding_fork",
+      "cake",
+      "happy_smile",
+      "day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "St. Louis feeding a bite of cake at a sunny sidewalk cafe.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "st_louis_penthouse_balcony_deep_kiss",
+  "revision": 1,
+  "sortOrder": 2163,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "st_louis_penthouse_balcony_deep_kiss",
+    "characterId": "st_louis_azur",
+    "outfitId": "luxurious_wheels_cocktail",
+    "title": "圣路易斯 · 落地窗前的沉溺热吻",
+    "category": "私密温存",
+    "description": "顶层套房落地玻璃窗前，繁华霓虹在脚下延展。晚礼服背后拉链完全解开滑落腰际，圣路易斯双手环住你的肩膀仰头承受深吻，唇下美人痣在动情轻喘中格外娇艳。",
+    "recommendedSize": "832x1216",
+    "location": "private penthouse bedroom with dark city panorama",
+    "action": "pressed against floor-to-ceiling glass window overlooking city night lights, evening gown unzipped from back, head tilted in deep French kiss, breathless moaning",
+    "timeOfDay": "night",
+    "lighting": "cinematic blue city neon rim light accentuating smooth bare back",
+    "camera": "close-up",
+    "mood": "passionate surrender, glamorous high-rise intimacy, breathless indulgence",
+    "promptProse": "Pressed against a high penthouse window at night with her gown unzipped, St. Louis tilts her head in a deep breathless kiss overlooking the city.",
+    "promptTokens": [
+      "penthouse",
+      "window",
+      "deep_kiss",
+      "open_back",
+      "bare_shoulders",
+      "city_lights",
+      "night",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "St. Louis in a deep passionate kiss against a high penthouse window at night.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

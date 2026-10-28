@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kuroneko_kitchen_clumsy_vegetable_cutting",
+  "revision": 1,
+  "sortOrder": 2263,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kuroneko_kitchen_clumsy_vegetable_cutting",
+    "characterId": "kuroneko",
+    "outfitId": "sweet_casual_denim_summer_outfit",
+    "title": "五更琉璃 · 厨房灶台前的笨拙做饭与喂食",
+    "category": "现代日常",
+    "description": "换上白色便服短袖和围裙的琉璃在案板前认真切菜。被你从身后搂住纤腰时，她娇躯轻颤、双颊通红，却舀起一勺热腾腾的味噌汤吹凉喂给你，满是家常长姐的小妻子温情。",
+    "recommendedSize": "832x1216",
+    "location": "clean home kitchen with bubbling miso soup",
+    "action": "wearing a frilly pastel apron, carefully slicing vegetables while partner hugs her waist, turning back with crimson cheeks to offer a small taste on a spoon",
+    "timeOfDay": "morning",
+    "lighting": "warm sunny morning light washing over countertops",
+    "camera": "cowboy_shot",
+    "mood": "clumsy newlywed charm, sweet caring elder sister softness, blushing girlfriend vibe",
+    "promptProse": "Wearing an apron in a sunny morning kitchen, Ruri Gokou turns back with flushed cheeks to feed partner a spoon of soup as he hugs her waist.",
+    "promptTokens": [
+      "kitchen",
+      "cooking",
+      "apron",
+      "holding_spoon",
+      "feeding",
+      "hug_from_behind",
+      "blushing_heavily",
+      "sweet_smile",
+      "morning_sunlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ruri Gokou in apron feeding partner soup lovingly in morning kitchen.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "asia_park_fountain_pigeon_feeding",
+  "revision": 1,
+  "sortOrder": 2234,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "asia_park_fountain_pigeon_feeding",
+    "characterId": "asia_argento",
+    "outfitId": "cozy_domestic_cardigan_dress",
+    "title": "爱西亚 · 喷泉广场的白鸽与祈愿",
+    "category": "假日出行",
+    "description": "欧式风情的公园喷泉广场前水花飞溅，白鸽围绕着爱西亚翩翩起舞。少女双手合十贴在胸前，转头对你绽放出无瑕的纯真微笑，宛如从油画中走出的圣洁少女。",
+    "recommendedSize": "832x1216",
+    "location": "scenic European style park fountain plaza",
+    "action": "standing by stone fountain scattering breadcrumbs to white doves, turning to partner with hands clasped in prayer, smiling with pure angelic joy",
+    "timeOfDay": "morning",
+    "lighting": "bright golden morning sunlight glistening on fountain spray",
+    "camera": "wide_shot",
+    "mood": "pure idyllic serenity, storybook romance, blissful holiday date",
+    "promptProse": "Standing by a sparkling park fountain with white doves fluttering around, Asia clasps hands with an angelic smile under morning sunshine.",
+    "promptTokens": [
+      "park",
+      "fountain",
+      "pigeons",
+      "doves",
+      "clasped_hands",
+      "happy_smile",
+      "golden_sunlight",
+      "wide_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Asia Argento smiling angelic with doves at a sparkling park fountain.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

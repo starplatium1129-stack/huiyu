@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_intimate_autumn_onsen",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2011,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-26T13:01:02.369Z",
+  "updatedAt": "2026-10-27T16:50:58.656003700+00:00",
   "data": {
     "characterId": "sumizome_nozomi",
     "outfitId": "shrine_miko",
@@ -62,6 +62,8 @@
     "animaCaption": "Nozomi blushing in a secluded maple-lined hot spring at sunset.",
     "isNsfw": false,
     "rating": "R18",
-    "mature": true
+    "mature": true,
+    "adult": true,
+    "sampleRating": "R18"
   }
 }

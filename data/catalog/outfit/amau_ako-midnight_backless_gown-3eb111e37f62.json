@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "amau_ako/midnight_backless_gown",
+  "revision": 1,
+  "sortOrder": 1675,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "data": {
+    "characterId": "amau_ako",
+    "outfit": {
+      "characterId": "amau_ako",
+      "id": "midnight_backless_gown",
+      "name": "社交晚宴深蓝露背长裙",
+      "prose": "An alluring midnight-blue evening gown with a dramatic backless cut, elegant side slit, and delicate silver necklace highlighting her collarbone.",
+      "tokens": [
+        "evening gown",
+        "blue dress",
+        "backless dress",
+        "bare back",
+        "high slit",
+        "necklace",
+        "pumps"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

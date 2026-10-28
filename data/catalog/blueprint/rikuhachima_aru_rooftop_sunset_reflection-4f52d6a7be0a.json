@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "rikuhachima_aru_rooftop_sunset_reflection",
+  "revision": 2,
+  "sortOrder": 2108,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "rikuhachima_aru_rooftop_sunset_reflection",
+    "characterId": "rikuhachima_aru",
+    "outfitId": "problem_solver_outlaw_suit",
+    "title": "陆八魔阿露 · 黄昏天台的社长沉思",
+    "category": "都市风景",
+    "description": "老旧商业楼的高层天台，落日余晖将远处的都市地平线镀上一层壮丽熔金。阿露双手扶在生锈的铁栏杆上，大衣下摆与酒红色波浪发丝在晚风中猎猎翻飞。她微微侧过头望向身旁的老师，收敛了平日的夸张架势，琥珀色的眼眸在夕阳下泛着无比真挚而沉静的光芒。",
+    "recommendedSize": "1216x832",
+    "location": "weathered rooftop overlooking sunset metropolis",
+    "action": "leaning on railing, windblown hair and coat, looking back calmly, gentle smile",
+    "timeOfDay": "sunset",
+    "lighting": "brilliant golden hour rim lighting and warm dusk atmosphere",
+    "camera": "medium_shot",
+    "mood": "genuine quiet sincerity and poetic evening breeze",
+    "promptProse": "Leaning on a rusty rooftop railing overlooking a golden sunset cityscape, Rikuhachima Aru turns back calmly with windblown wine-red hair and a soft sincere gaze.",
+    "promptTokens": [
+      "wind",
+      "rooftop",
+      "sunset",
+      "golden_hour",
+      "cityscape",
+      "looking_back",
+      "calm_expression",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Aru turning back calmly on a windy sunset rooftop overlooking the city.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

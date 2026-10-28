@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "ayase_sunset_street_lingering_handhold",
+  "revision": 1,
+  "sortOrder": 2258,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "ayase_sunset_street_lingering_handhold",
+    "characterId": "ayase_aragaki",
+    "outfitId": "chiba_private_school_uniform",
+    "title": "新垣绫濑 · 黄昏街角的依依不舍牵手",
+    "category": "校园日常",
+    "description": "放学后安静的住宅区街角，夕阳余晖染红了整座城市。走到公寓楼下的绫濑停下脚步，十指与你紧紧交扣不肯松开，微仰起美丽的容颜，眼波流转中满是青涩的留恋。",
+    "recommendedSize": "832x1216",
+    "location": "quiet residential street corner bathed in sunset afterglow",
+    "action": "stopped at apartment entrance after walking home from school, fingers tightly entwined with partner, looking up with misty purple eyes reluctant to let go",
+    "timeOfDay": "sunset",
+    "lighting": "golden hour twilight casting deep romantic orange hues",
+    "camera": "close-up",
+    "mood": "sweet adolescent longing, reluctant parting, pure romantic tension",
+    "promptProse": "Holding hands tightly at a sunset street corner, Ayase Aragaki looks up with misty violet eyes and flushed cheeks, reluctant to let go.",
+    "promptTokens": [
+      "street",
+      "residential",
+      "holding_hands",
+      "interlocked_fingers",
+      "sunset",
+      "looking_up",
+      "blushing",
+      "golden_hour",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ayase Aragaki holding hands tightly with misty eyes at sunset.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

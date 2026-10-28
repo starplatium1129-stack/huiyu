@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "astraea_night_bed_submissive_whimper",
+  "revision": 1,
+  "sortOrder": 2212,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "astraea_night_bed_submissive_whimper",
+    "characterId": "astraea",
+    "outfitId": "synapse_battle_cloth",
+    "title": "阿斯特蕾亚 · 战衣半褪的敏感羽根",
+    "category": "私密温存",
+    "description": "寝室内白色战斗服被褪至腰间，当敏感的羽翼根部被你温柔抚摸时，阿斯特蕾亚整个人娇躯剧颤。她金色侧马尾散乱，湛蓝双眸蓄满迷离春水，带着细碎哭腔任由你肆意采撷。",
+    "recommendedSize": "832x1216",
+    "location": "dim private bedroom with moonlight shining on bed",
+    "action": "leotard unzipped, sensitive base of angel wings being caressed, arched back in shuddering bliss, breathless teary moans",
+    "timeOfDay": "night",
+    "lighting": "soft silver moonlight illuminating translucent white feathers and flushed skin",
+    "camera": "medium_shot",
+    "mood": "sensitive angelic vulnerability, shuddering ecstasy, total innocent submission",
+    "promptProse": "Arching her back on the bed with her leotard unzipped, Astraea shivers in sweet moaning ecstasy as her sensitive wing bases are caressed.",
+    "promptTokens": [
+      "bedroom",
+      "open_front",
+      "bare_shoulders",
+      "angel_wings",
+      "blushing_heavily",
+      "tears_in_eyes",
+      "breathless",
+      "moonlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Astraea shuddering in sweet ecstasy as her angel wings are lovingly caressed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

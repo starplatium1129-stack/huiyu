@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kuroneko/sweet_casual_denim_summer_outfit",
+  "revision": 1,
+  "sortOrder": 1782,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "kuroneko",
+    "outfit": {
+      "characterId": "kuroneko",
+      "id": "sweet_casual_denim_summer_outfit",
+      "name": "盛夏约会·白衬衫牛仔半身裙清纯私服",
+      "prose": "A breezy short-sleeved white collared blouse tucked into an A-line blue denim mini skirt with a woven sunhat, looking radiantly innocent.",
+      "tokens": [
+        "white_shirt",
+        "collared_shirt",
+        "short_sleeves",
+        "denim_skirt",
+        "belt",
+        "straw_hat",
+        "hair_tuck"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

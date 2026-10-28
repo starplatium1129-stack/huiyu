@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "karuizawa_kei/advanced_nurturing_uniform",
+  "revision": 1,
+  "sortOrder": 1765,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "karuizawa_kei",
+    "outfit": {
+      "characterId": "karuizawa_kei",
+      "id": "advanced_nurturing_uniform",
+      "name": "高度育成高中标准制服",
+      "prose": "The Advanced Nurturing High School uniform with a tailored red blazer, crisp white shirt, short white pleated skirt, and chic black thigh-highs.",
+      "tokens": [
+        "school_uniform",
+        "blazer",
+        "red_blazer",
+        "white_shirt",
+        "pleated_skirt",
+        "white_skirt",
+        "black_thighhighs",
+        "hair_ribbon"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

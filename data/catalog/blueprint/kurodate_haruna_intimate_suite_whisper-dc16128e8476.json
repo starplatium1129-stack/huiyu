@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "kurodate_haruna_intimate_suite_whisper",
+  "revision": 2,
+  "sortOrder": 2122,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "kurodate_haruna_intimate_suite_whisper",
+    "characterId": "kurodate_haruna",
+    "outfitId": "gourmet_executive_fur_coat",
+    "title": "黑馆晴奈 · 私密套房的红晕索吻",
+    "category": "私密温存",
+    "description": "只有城市夜景反光的高级套房落地玻璃幕墙前，晴奈被温柔抵在玻璃边缘。外衣领口被拉扯微开，向来高高在上的贵族大小姐双手紧紧抓着老师的领带，猩红美眸泛起从未见过的滚烫泪花与极致心动。近在咫尺的急促呼吸中，她微启双唇，等待着最终的亲吻。",
+    "recommendedSize": "832x1216",
+    "location": "luxury high-rise suite before panoramic night cityscape window",
+    "action": "backed against window glass, gripping necktie, heavy blush, breathless parted lips, intense gaze",
+    "timeOfDay": "night",
+    "lighting": "ambient city nightscape reflections from floor-to-ceiling windows",
+    "camera": "close-up",
+    "mood": "breathless emotional surrender, pounding passion, and irresistible allure",
+    "promptProse": "Pressed gently against the high-rise panoramic night window, Kurodate Haruna clutches the viewer necktie with flushed cheeks and melting ruby eyes, breathless with romantic passion.",
+    "promptTokens": [
+      "blush",
+      "heavy_blush",
+      "parted_lips",
+      "holding_collar",
+      "night_sky",
+      "city_lights",
+      "night",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Haruna looking up with heavy blush and trembling lips against the floor-to-ceiling night window.",
+    "isNsfw": false,
+    "rating": "R15",
+    "mature": false
+  }
+}

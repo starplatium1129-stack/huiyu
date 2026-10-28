@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "astraea/pure_white_lace_camisole",
+  "revision": 1,
+  "sortOrder": 1748,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "astraea",
+    "outfit": {
+      "characterId": "astraea",
+      "id": "pure_white_lace_camisole",
+      "name": "天使寝室·雪白真丝蕾丝吊带睡裙",
+      "prose": "A gossamer pure white silk camisole trimmed with delicate lace around the deep neckline, with wings resting gently behind her.",
+      "tokens": [
+        "white_camisole",
+        "silk_nightgown",
+        "lace_trim",
+        "spaghetti_strap",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

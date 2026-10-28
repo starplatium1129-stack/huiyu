@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "irina_onsen_steamy_innocent_straddle",
+  "revision": 1,
+  "sortOrder": 2224,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "irina_onsen_steamy_innocent_straddle",
+    "characterId": "irina_shidou",
+    "outfitId": "summer_sunlit_orange_bikini",
+    "title": "紫藤伊莉娜 · 温泉水汽的青梅跨坐",
+    "category": "私密温存",
+    "description": "隐秘私人温泉中滚烫泉水翻涌，橙色比基尼细带早已解开飘在水面。伊莉娜跨坐在你腿上，浑身湿透，青梅竹马的天真与成熟饱满的娇躯激烈交织，在紧拥中娇喘连连。",
+    "recommendedSize": "832x1216",
+    "location": "steamy outdoor secluded natural hot spring",
+    "action": "straddling partner in hot spring, untied orange bikini floating, wet chestnut twintails, passionate breathless embrace, blushing cheeks",
+    "timeOfDay": "night",
+    "lighting": "steamy lantern mist illuminated by warm amber water lamps",
+    "camera": "cowboy_shot",
+    "mood": "steamy sensual innocence, unreserved lovers passion, heated water embrace",
+    "promptProse": "Straddling partner in a steamy hot spring with an untied bikini, Irina pants with pleasure, hugging his neck tightly with wet twintails.",
+    "promptTokens": [
+      "onsen",
+      "hot_spring",
+      "steam",
+      "straddling",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "blushing_heavily",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Irina straddling passionately in a steamy natural hot spring with untied bikini.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

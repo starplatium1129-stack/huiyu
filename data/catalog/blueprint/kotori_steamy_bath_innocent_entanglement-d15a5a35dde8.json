@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kotori_steamy_bath_innocent_entanglement",
+  "revision": 1,
+  "sortOrder": 2254,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kotori_steamy_bath_innocent_entanglement",
+    "characterId": "kotori_itsuka",
+    "outfitId": "summer_sunlit_striped_bikini",
+    "title": "五河琴里 · 浴室暖雾中的青涩相拥",
+    "category": "私密温存",
+    "description": "雾气弥漫的家用浴缸内，红白条纹比基尼解开漂在水面。被热水蒸得通红的琴里双手环绕在你的颈后，湿漉漉的红发贴在娇躯上，随着炽热的相贴发出甜腻羞涩的呢喃。",
+    "recommendedSize": "832x1216",
+    "location": "steamy home cedar bathtub filled with aromatic bath salts",
+    "action": "wrapped together in steamy family tub, untied striped bikini floating, wet red twintails clinging to bare back, breathless moans as she clings tightly around partner neck",
+    "timeOfDay": "night",
+    "lighting": "warm diffused bathroom lights reflected on water ripples and glistening skin",
+    "camera": "cowboy_shot",
+    "mood": "heated water intimacy, trembling innocent passion, heart-racing lovers bond",
+    "promptProse": "Clinging tightly around partner neck in a steamy bathtub with untied bikini, wet-haired Kotori Itsuka pants with flushed skin in warm misty light.",
+    "promptTokens": [
+      "bathroom",
+      "bathtub",
+      "steam",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "embracing",
+      "blushing_heavily",
+      "panting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kotori Itsuka clinging passionately in steamy bath with untied bikini.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

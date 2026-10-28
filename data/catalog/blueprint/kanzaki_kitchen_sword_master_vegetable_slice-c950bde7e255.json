@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kanzaki_kitchen_sword_master_vegetable_slice",
+  "revision": 1,
+  "sortOrder": 2299,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "kanzaki_kitchen_sword_master_vegetable_slice",
+    "characterId": "kanzaki_kaori",
+    "outfitId": "saint_asymmetric_jeans_attire",
+    "title": "神裂火织 · 厨房灶台前的七天七刀神速切菜",
+    "category": "现代日常",
+    "description": "厨房案板前，神裂火织全神贯注地展现出神入化的神速刀法将蔬菜切得整整齐齐。被你从身后搂住纤细腰肢时，圣人娇躯一颤，刀光骤停，脸颊通红地回头轻声嗔怪。",
+    "recommendedSize": "832x1216",
+    "location": "clean domestic kitchen with ingredients lined up on counter",
+    "action": "slicing vegetables at lightning speed, partner hugs her midriff from behind, stopping knife and turning back with blushing cheeks and loving gaze",
+    "timeOfDay": "afternoon",
+    "lighting": "warm cheerful afternoon sunlight streaming onto kitchen counter",
+    "camera": "medium_shot",
+    "mood": "charming warrior wife domesticity, sweet close proximity, heart-throbbing romantic chemistry",
+    "promptProse": "In a sunny kitchen slicing vegetables, Kaori Kanzaki blushes warmly as partner hugs her toned midriff from behind, turning with loving purple eyes.",
+    "promptTokens": [
+      "kitchen",
+      "cooking",
+      "chopping_board",
+      "hug_from_behind",
+      "midriff",
+      "blushing",
+      "sweet_smile",
+      "high_ponytail",
+      "afternoon_sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kaori Kanzaki blushing happily as partner hugs her waist while cooking.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

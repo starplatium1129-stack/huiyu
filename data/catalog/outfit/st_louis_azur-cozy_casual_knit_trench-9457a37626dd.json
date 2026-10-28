@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "st_louis_azur/cozy_casual_knit_trench",
+  "revision": 1,
+  "sortOrder": 1715,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "st_louis_azur",
+    "outfit": {
+      "characterId": "st_louis_azur",
+      "id": "cozy_casual_knit_trench",
+      "name": "假日都市·米白针织衫配短裙",
+      "prose": "A trendy modern ensemble with a soft cream knit sweater, camel cardigan, high-waisted plaid mini skirt, and sheer black tights.",
+      "tokens": [
+        "knit_sweater",
+        "beige_cardigan",
+        "plaid_skirt",
+        "black_tights",
+        "ankle_boots"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

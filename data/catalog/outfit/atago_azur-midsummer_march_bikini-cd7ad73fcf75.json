@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "atago_azur/midsummer_march_bikini",
+  "revision": 1,
+  "sortOrder": 1710,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "atago_azur",
+    "outfit": {
+      "characterId": "atago_azur",
+      "id": "midsummer_march_bikini",
+      "name": "盛夏进行曲·纯白露背比基尼",
+      "prose": "A pristine white halter triangle bikini with delicate side-tie bottoms and a breezy semi-sheer chiffon sarong wrap.",
+      "tokens": [
+        "white_bikini",
+        "halter_bikini",
+        "triangle_bikini",
+        "side-tie_bikini_bottom",
+        "sheer_sarong",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

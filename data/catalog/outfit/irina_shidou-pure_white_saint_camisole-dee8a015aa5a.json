@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "irina_shidou/pure_white_saint_camisole",
+  "revision": 1,
+  "sortOrder": 1756,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "irina_shidou",
+    "outfit": {
+      "characterId": "irina_shidou",
+      "id": "pure_white_saint_camisole",
+      "name": "圣女闺房·纯白棉麻吊带睡裙",
+      "prose": "A simple, pure white cotton slip dress trimmed in modest lace, worn loosely with bare shoulders and bare legs.",
+      "tokens": [
+        "white_camisole",
+        "spaghetti_strap",
+        "lace_trim",
+        "bare_shoulders",
+        "bare_legs"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

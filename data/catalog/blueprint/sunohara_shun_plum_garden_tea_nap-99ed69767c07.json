@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "sunohara_shun_plum_garden_tea_nap",
+  "revision": 2,
+  "sortOrder": 2112,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "sunohara_shun_plum_garden_tea_nap",
+    "characterId": "sunohara_shun",
+    "outfitId": "plum_garden_qipao_robe",
+    "title": "春原瞬 · 梅花园庭院的午后品茗",
+    "category": "日常相处",
+    "description": "山海经梅花园充满古典韵味的阳光庭院，翠竹摇曳，微风送来清雅的花香。瞬端坐在雕花木石凳前，深红刺绣高叉旗袍勾勒出绝美的曼妙身段。她单手轻托青瓷茶杯，美眸含情脉脉地望向老师，嘴角漾开一抹极致包容与慈爱的成熟笑意。",
+    "recommendedSize": "832x1216",
+    "location": "traditional Shanhaijing plum blossom courtyard garden",
+    "action": "sitting gracefully holding celadon tea cup, serene maternal gaze, gentle smile",
+    "timeOfDay": "afternoon",
+    "lighting": "bright natural daylight filtering through green bamboo leaves",
+    "camera": "medium_shot",
+    "mood": "peaceful elegance, tranquil warmth, and gentle charm",
+    "promptProse": "Sitting gracefully in a tranquil bamboo garden holding a delicate tea cup, Sunohara Shun gazes forward in her crimson embroidered qipao with a serene, doting smile.",
+    "promptTokens": [
+      "holding_cup",
+      "tea_cup",
+      "garden",
+      "courtyard",
+      "bamboo",
+      "gentle_smile",
+      "dappled_sunlight",
+      "afternoon",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shun smiling gently while sipping tea in the sunny plum blossom courtyard.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

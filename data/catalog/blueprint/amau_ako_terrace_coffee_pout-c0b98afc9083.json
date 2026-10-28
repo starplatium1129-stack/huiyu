@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "amau_ako_terrace_coffee_pout",
+  "revision": 3,
+  "sortOrder": 2097,
+  "createdAt": "2026-10-27T16:23:09.430+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "amau_ako_terrace_coffee_pout",
+    "characterId": "amau_ako",
+    "outfitId": "midnight_backless_gown",
+    "title": "天雨亚子 · 露台咖啡座的别扭娇嗔",
+    "category": "日常相处",
+    "description": "晚宴间隙避开喧嚣的高空露台，夜空繁星点点，微凉的晚风吹拂着亚子的发梢。她双手抱胸倚靠在栏杆边，脸颊鼓起可爱的弧度娇嗔地别过头去，蔚蓝眼眸因老师的一句戏谑而闪烁着羞恼与掩饰不住的欢喜。",
+    "recommendedSize": "832x1216",
+    "location": "quiet outdoor terrace overlooking night skyline",
+    "action": "crossing arms, pouting adorably, flushed cheeks, breeze swaying twintails",
+    "timeOfDay": "night",
+    "lighting": "soft blue moonlight and distant city bokeh lights",
+    "camera": "medium_shot",
+    "mood": "charming tsundere petulance and sweet romantic spark",
+    "promptProse": "On a quiet balcony overlooking the city skyline under moonlight, Amau Ako crosses her arms with deeply blushing cheeks, pouting adorably as cool breezes rustle her twin tails.",
+    "promptTokens": [
+      "arms_crossed",
+      "blush",
+      "pout",
+      "balcony",
+      "night_sky",
+      "moonlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ako pouting and blushing on a moonlit terrace.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

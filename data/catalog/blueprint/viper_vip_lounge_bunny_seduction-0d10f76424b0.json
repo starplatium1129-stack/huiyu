@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "viper_vip_lounge_bunny_seduction",
+  "revision": 1,
+  "sortOrder": 2170,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "viper_vip_lounge_bunny_seduction",
+    "characterId": "viper_nikke",
+    "outfitId": "toxic_rabbit_velvet_bunny",
+    "title": "毒蛇 · 专属包厢的绝对占有",
+    "category": "私密温存",
+    "description": "门锁紧闭的绯红贵宾包厢内，兔女郎连体衣领口已被拉下。毒蛇双膝跪在你两腿之间，翠绿美眸水汽氤氲满是狂热痴恋，双手按在你的膝盖上娇吟着祈求更多爱抚。",
+    "recommendedSize": "832x1216",
+    "location": "locked VIP casino backroom with dim scarlet lighting",
+    "action": "kneeling between partner legs on plush velvet booth, bunny suit bodice pulled down, emerald eyes shimmering with lustful devotion, begging for more touch",
+    "timeOfDay": "night",
+    "lighting": "steamy deep crimson neon and velvet shadows",
+    "camera": "medium_shot",
+    "mood": "intense erotic submission, desperate devotion, seductive bunny allure",
+    "promptProse": "Kneeling between partner legs in a locked VIP lounge, Viper pulls down her bunny suit with emerald eyes full of flushed ecstatic desire.",
+    "promptTokens": [
+      "private_room",
+      "kneeling",
+      "open_front",
+      "blushing_heavily",
+      "glossy_eyes",
+      "breathless",
+      "dim_red_light",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Viper kneeling in an open bunny suit in a dimly lit VIP lounge.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

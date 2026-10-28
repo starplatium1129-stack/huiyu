@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hashima_izumi/junior_school_sailor_cardigan",
+  "revision": 1,
+  "sortOrder": 1813,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "characterId": "hashima_izumi",
+    "outfit": {
+      "characterId": "hashima_izumi",
+      "id": "junior_school_sailor_cardigan",
+      "name": "初中部清纯校服·水手服开衫百褶短裙",
+      "prose": "Her junior high sailor uniform with a light grey open knit cardigan over a white sailor blouse, red neckerchief, pleated navy skirt, and white socks.",
+      "tokens": [
+        "school_uniform",
+        "sailor_suit",
+        "cardigan",
+        "white_shirt",
+        "pleated_skirt",
+        "white_socks",
+        "loafers",
+        "twintails"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

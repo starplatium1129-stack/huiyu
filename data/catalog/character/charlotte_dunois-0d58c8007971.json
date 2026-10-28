@@ -1,0 +1,148 @@
+{
+  "kind": "character",
+  "id": "charlotte_dunois",
+  "revision": 1,
+  "sortOrder": 222,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "charlotte_dunois",
+    "profile": {
+      "id": "charlotte_dunois",
+      "name": "夏洛特·德诺阿",
+      "alias": [
+        "Charlotte Dunois",
+        "夏洛特·德诺阿",
+        "夏露",
+        "查尔斯",
+        "シャルロット・デュノア",
+        "charlotte dunois"
+      ],
+      "type": "popular",
+      "icon": "🥐",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "夏洛特·德诺阿 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "璀璨金黄长发 · 优雅侧单马尾 · 柔顺法式斜刘海",
+        "hair_color": "金黄 / 浅金",
+        "eyes": "温柔如水澄澈橙红眼眸 · 极易因害羞泛起水光",
+        "hairstyle": "偏分侧单马尾 · 浅色丝带扎发 · 纯净甜美面容",
+        "uniform": "IS学园女式双排扣制服 · 法式碎花长裙 · 浅黄棉麻围裙便服",
+        "expression": "轻柔温和的倾听微笑 · 娇羞被捉弄时把脸埋进手心的绝妙反差",
+        "style": "gentle sweet French domestic girlfriend with supreme homemaker tenderness and shy romantic devotion",
+        "signature": "金发侧马尾、橙眸、手作便当与法式人妻温柔"
+      },
+      "personality": [
+        "法国代表候补生，曾为掩盖身世假扮男生「查尔斯」，身份揭露后彻底成为温柔小娇妻",
+        "被誉为后宫动漫史上「国民级女朋友」天花板，人妻力与女子力极高，烧得一手绝妙法式料理",
+        "性格体贴入微、善解人意，习惯在暗中悉心照顾心上人的起居，从不争风吃醋却独占心扉",
+        "看似温婉柔弱，在关键恋爱节点上却极具法式浪漫的大胆，会趁对方假睡时偷偷亲吻",
+        "成年创作设定下成熟知性魅力绽放，是无数人心目中最完美的终身伴侣人选"
+      ],
+      "likes": [
+        "清晨精心早起为心上人制作营养均衡的爱心便当",
+        "在微风阳光下的薰衣草花田并肩漫步牵手",
+        "在宿舍沙发上为心上人掏耳朵或轻抚他的头发",
+        "偷偷穿上对方宽大的衬衫被发现时害羞撒娇",
+        "在静谧夜晚的小床上互道晚安并在额头烙下一吻"
+      ],
+      "classic_cg": {
+        "title": "晨光教室里递出爱心便当的微红侧颜",
+        "description": "IS学园早晨宁静的教室内，阳光洒落在木质课桌上。夏洛特侧身站着，将精心用碎花方巾包裹的爱心便当双手递到你面前。她金色的侧单马尾垂落胸前，双颊飞上一抹迷人的薄红，橙眸盈满期待与柔情。"
+      },
+      "identity": {
+        "role": "IS学园法国代表候补生 / 德诺阿公司专属测试机师",
+        "age": "成年创作设定",
+        "occupation": "高阶IS战术机师 / 专属法式甜心娇妻",
+        "faction": "IS学园 / 德诺阿联合特勤",
+        "school": "IS学园（二年级高阶班）",
+        "classificationSource": "角色背景明确归属于IS学园核心成员。"
+      },
+      "tags": [
+        "金发",
+        "侧马尾",
+        "人妻感",
+        "便当",
+        "法国女友",
+        "反差萌",
+        "IS"
+      ],
+      "bg_story": "夏洛特是IS学园最受欢迎的法国代表候补生。最初为了家族利益被迫女扮男装潜入学院，但在与男主角同寝共宿的生活中被对方无私真诚的关怀所救赎。身份公开后，她摆脱了沉重的枷锁，毫无保留地展现出无与伦比的温柔与母性。无论是制作精致的料理便当，还是在疲惫时刻递上一杯温红茶，夏洛特总能用最温暖细腻的方式治愈人心。成年设定下的夏洛特兼具优雅知性与柔情似水，是让人深感幸福的理想女友。",
+      "palette": [
+        "金黄",
+        "浅粉",
+        "纯白"
+      ],
+      "weather": [
+        "清晨阳光",
+        "薰衣草微风",
+        "雨后走廊"
+      ],
+      "speech": "一夏……咳，亲爱的，今天的便当里有你最喜欢的炸虾和煎蛋卷哦。中午一定要全部吃光……这样的话，放学后夏露会给你特别的奖励呢。",
+      "source": "8bit《无限斯特拉托斯 / Infinite Stratos》",
+      "traits": [
+        "charlotte_dunois",
+        "blonde_hair",
+        "long_hair",
+        "side_ponytail",
+        "orange_eyes"
+      ]
+    },
+    "popular": {
+      "id": "charlotte_dunois",
+      "displayName": "夏洛特·德诺阿",
+      "originalName": "Charlotte Dunois",
+      "franchise": "Infinite Stratos",
+      "category": "动漫角色",
+      "aliases": [
+        "Charlotte Dunois",
+        "夏洛特·德诺阿",
+        "夏露",
+        "查尔斯",
+        "シャルロット・デュノア",
+        "charlotte dunois"
+      ],
+      "exactTokens": [
+        "charlotte_dunois"
+      ],
+      "characterTokens": [
+        "charlotte_dunois"
+      ],
+      "copyrightTokens": [
+        "infinite_stratos"
+      ],
+      "identityTokens": [
+        "charlotte_dunois",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "side_ponytail",
+        "orange_eyes"
+      ],
+      "identityProse": "Charlotte Dunois from Infinite Stratos, the only character in the image, with long blonde hair tied in an elegant side ponytail, gentle orange eyes, and an affectionate, sweetly blushing French girlfriend charm.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "swav"
+      ],
+      "animeStudio": "Infinite Stratos official anime art, 8bit style",
+      "canon": {
+        "era": "第三世代IS战术纪元",
+        "world": "IS学园·法国代表专属公馆",
+        "formNotes": "金发侧马尾橙眸，国民级第一女友，法式人妻与极甜同居女友感"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "is_academy_uniform",
+      "negativeTokens": []
+    }
+  }
+}

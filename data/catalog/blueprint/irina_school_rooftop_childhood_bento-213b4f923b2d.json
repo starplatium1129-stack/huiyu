@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "irina_school_rooftop_childhood_bento",
+  "revision": 1,
+  "sortOrder": 2220,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "irina_school_rooftop_childhood_bento",
+    "characterId": "irina_shidou",
+    "outfitId": "kuoh_academy_uniform",
+    "title": "紫藤伊莉娜 · 学校天台的青梅便当",
+    "category": "日常约会",
+    "description": "正午阳光洒满学校天台，微风吹拂着栗色双马尾。伊莉娜双手捧着画有爱心番茄酱的蛋包饭送到你唇边，两手托腮露出如向日葵般灿烂元气的笑容，满心欢喜。",
+    "recommendedSize": "832x1216",
+    "location": "school rooftop under bright blue sunny sky",
+    "action": "offering omelet rice with spoon, chin resting on hands, beaming radiant smile, twintails fluttering in breeze",
+    "timeOfDay": "noon",
+    "lighting": "brilliant cheerful noon sunlight casting sharp clear shadows",
+    "camera": "cowboy_shot",
+    "mood": "sunshine childhood romance, boundless energy, warm nostalgia",
+    "promptProse": "Standing on the school rooftop in uniform, Irina Shidou beams happily as she feeds partner omelet rice with a spoon in the sunshine.",
+    "promptTokens": [
+      "rooftop",
+      "holding_spoon",
+      "omelet_rice",
+      "feeding_viewer",
+      "bright_smile",
+      "twintails",
+      "noon",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Irina Shidou feeding omelet rice on the school rooftop with a sunny beaming smile.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

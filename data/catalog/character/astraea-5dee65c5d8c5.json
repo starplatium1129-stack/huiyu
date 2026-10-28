@@ -1,0 +1,151 @@
+{
+  "kind": "character",
+  "id": "astraea",
+  "revision": 1,
+  "sortOrder": 227,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "id": "astraea",
+    "profile": {
+      "id": "astraea",
+      "name": "阿斯特蕾亚",
+      "alias": [
+        "Astraea",
+        "阿斯特蕾亚",
+        "笨蛋天使",
+        "Delta",
+        "アストレア",
+        "astraea (sora no otoshimono)"
+      ],
+      "type": "popular",
+      "icon": "🪽",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "阿斯特蕾亚 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "耀眼太阳般明黄长发 · 灵动单侧侧马尾",
+        "hair_color": "金黄 / 明黄",
+        "eyes": "如澄澈晴空般纯净湛蓝眼眸 · 充满小动物般的单纯崇拜",
+        "hairstyle": "高扎单侧马尾 · 额前自然碎刘海 · 纯白巨大天使羽翼 · 饱满挺拔巨乳体态",
+        "uniform": "西纳普斯近战白金战斗服 · 居家宽松软糯大毛衣 · 盛夏向日葵吊带沙滩裙",
+        "expression": "吃到美食时两颊塞得鼓鼓的天真傻笑 · 被摸头时舒服眯眼的忠犬式幸福",
+        "style": "innocent clumsy gluttonous angel girlfriend with puppy-like devotion, warm wings, and absolute loyalty",
+        "signature": "金发侧马尾、白羽翼、蓝眸、大号饭团与忠犬笨蛋天使"
+      },
+      "personality": [
+        "西纳普斯制造的近战强化型人造天使Δ（Delta），虽然感情与战斗力极强，但计算能力基本为零",
+        "动漫界最具代表性的「天然蠢萌天使」，单纯如一张白纸，只要给好吃的就会全心全意信任对方",
+        "对解除她枷锁的主人怀有神圣而至纯的绝对崇拜与依恋，像大型忠犬一样整天想被摸头蹭蹭",
+        "性格活泼直爽、毫无心机，在恋爱方面纯真坦率，喜欢用巨大的雪白羽翼把心上人整个抱住取暖",
+        "成年创作设定下天使神圣肉身与极度丰满身材形成绝妙反差，私密温存时又乖巧又毫无防备"
+      ],
+      "likes": [
+        "两手捧着特大号肉松饭团大口咀嚼并分享给主人",
+        "在阳光明媚的草坪上午睡，用羽翼把主人盖得严严实实遮阳",
+        "被主人用大手轻揉头顶和金发，舒服得呼噜呼噜摇尾巴",
+        "在夏日海滩上大口舔着双球冰淇淋，笑着递到主人嘴边",
+        "在深夜被窝里紧紧抱着主人，把脸颊贴在对方胸口安稳入眠"
+      ],
+      "classic_cg": {
+        "title": "草坪暖阳上午睡与羽翼避风港",
+        "description": "空美町微风吹拂的青草坡上，野花盛开。阿斯特蕾亚与你并肩躺在草地上，金黄侧马尾散落绿茵。她展开两面巨大洁白的羽毛翅膀，像一顶温暖纯洁的天鹅绒帐篷般将你完全笼罩避风，自己则像小奶狗一样依偎在你身侧，蓝眸清澈地傻笑着蹭你的手臂。"
+      },
+      "identity": {
+        "role": "西纳普斯近战人造天使Δ（Delta） / 铭刻守护者",
+        "age": "成年创作设定",
+        "occupation": "空美町自由家庭成员 / 专属笨蛋天使女友",
+        "faction": "空美町新大陆发现同盟 / 西纳普斯解放战线",
+        "school": "空美町普通中学（随班旁听）",
+        "classificationSource": "角色背景明确归属于天降之物核心主力。"
+      },
+      "tags": [
+        "金发",
+        "侧马尾",
+        "翅膀",
+        "天使",
+        "巨乳",
+        "笨蛋",
+        "忠犬女友",
+        "天降之物"
+      ],
+      "bg_story": "阿斯特蕾亚是西纳普斯创造出的局地战斗型人造天使，代号「Delta」。她拥有超越伊卡洛斯的超强近战速度与绝对防御「神之光剑」，但由于设计缺陷导致情感丰富却智力极低，原本被派去暗杀樱井智树，却被智树用简单的美食、温柔的摸头与平等的人格对待彻底感化。她断绝了与西纳普斯的主从刻印，选择留在人间成为陪伴在心上人身边的大吃货天使。成年设定下的阿斯特蕾亚天真烂漫依旧，但愈发懂得爱人的珍贵，是一位愿意为你献出一切乃至灵魂的纯真天使。",
+      "palette": [
+        "金黄",
+        "雪白",
+        "湛蓝"
+      ],
+      "weather": [
+        "晴空草坪",
+        "温暖厨房",
+        "夏日海滨"
+      ],
+      "speech": "主人！今天阿斯特蕾亚也做了超级超级大号的特制饭团哦！快看，很大吧？来，给你咬最大的一口！吃完之后……可以摸摸阿斯特蕾亚的头吗？",
+      "source": "AIC ASTA《天降之物 / Sora no Otoshimono》",
+      "traits": [
+        "astraea_(sora_no_otoshimono)",
+        "blonde_hair",
+        "long_hair",
+        "single_side_ponytail",
+        "blue_eyes",
+        "angel_wings"
+      ]
+    },
+    "popular": {
+      "id": "astraea",
+      "displayName": "阿斯特蕾亚",
+      "originalName": "Astraea",
+      "franchise": "Sora no Otoshimono",
+      "category": "动漫角色",
+      "aliases": [
+        "Astraea",
+        "阿斯特蕾亚",
+        "笨蛋天使",
+        "Delta",
+        "アストレア",
+        "astraea (sora no otoshimono)"
+      ],
+      "exactTokens": [
+        "astraea (sora no otoshimono)"
+      ],
+      "characterTokens": [
+        "astraea (sora no otoshimono)"
+      ],
+      "copyrightTokens": [
+        "sora_no_otoshimono"
+      ],
+      "identityTokens": [
+        "astraea (sora no otoshimono)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "single_side_ponytail",
+        "blue_eyes",
+        "angel_wings"
+      ],
+      "identityProse": "Astraea from Sora no Otoshimono, the only character in the image, with long golden-blonde hair tied in a single side ponytail, sparkling blue eyes, feathered white angel wings, and a sunny, innocent, puppy-like devoted expression.",
+      "curatedArtistStyles": [
+        "cutesexyrobutt",
+        "morikura_en",
+        "swav"
+      ],
+      "animeStudio": "Sora no Otoshimono official anime art, AIC ASTA style",
+      "canon": {
+        "era": "空美町人造天使日常生活纪元",
+        "world": "空美町·西纳普斯自由避风港",
+        "formNotes": "金发侧马尾蓝瞳白羽翼，近战笨蛋天使，贪吃犬系纯真女友感"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "synapse_battle_cloth",
+      "negativeTokens": []
+    }
+  }
+}

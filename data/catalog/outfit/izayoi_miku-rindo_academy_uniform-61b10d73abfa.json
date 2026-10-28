@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "izayoi_miku/rindo_academy_uniform",
+  "revision": 1,
+  "sortOrder": 1750,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "izayoi_miku",
+    "outfit": {
+      "characterId": "izayoi_miku",
+      "id": "rindo_academy_uniform",
+      "name": "凛道女子学院灰紫校服制服",
+      "prose": "An aristocratic all-girls private academy uniform with a tailored grey jacket, deep purple pleated skirt, and silk neck ribbon.",
+      "tokens": [
+        "school_uniform",
+        "grey_jacket",
+        "pleated_skirt",
+        "black_thighhighs",
+        "ribbon_tie"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

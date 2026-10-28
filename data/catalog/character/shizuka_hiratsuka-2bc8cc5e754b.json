@@ -1,0 +1,146 @@
+{
+  "kind": "character",
+  "id": "shizuka_hiratsuka",
+  "revision": 1,
+  "sortOrder": 233,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "shizuka_hiratsuka",
+    "profile": {
+      "id": "shizuka_hiratsuka",
+      "name": "平冢静",
+      "alias": [
+        "Shizuka Hiratsuka",
+        "平冢静",
+        "静可爱",
+        "静老师",
+        "平塚静",
+        "shizuka hiratsuka"
+      ],
+      "type": "popular",
+      "icon": "🍜",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "平冢静 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "乌黑柔顺干练及腰长发 · 侧分成熟刘海 · 帅气英姿与女人味并存",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "敏锐深邃紫罗兰双瞳 · 看透世事的温柔包容与微醺娇羞",
+        "hairstyle": "自然披肩乌黑长发 · 散发成熟知性女性韵味",
+        "uniform": "标志帅气白大褂配职场衬衫长裤 · 兜风皮衣牛仔裤 · 盛夏黑色细带比基尼",
+        "expression": "爽朗帅气的大姐头微笑 · 被撩到时瞬间手足无措、满面绯红的无敌“静可爱”",
+        "style": "cool mature teacher girlfriend with deep tenderness, heartwarming ramen dates, and passionate late-blooming devotion",
+        "signature": "白大褂、紫瞳乌发、开红色跑车、吃拉面同好、成熟恨嫁反差萌"
+      },
+      "personality": [
+        "成熟帅气善解人意的国语教师",
+        "侍奉部创立者与灵魂导师",
+        "吃拉面与抽烟兜风的豪爽大姐头",
+        "内心渴望被深爱与娶回家的极品人妻女优"
+      ],
+      "likes": [
+        "热气腾腾的浓汤硬面叉烧拉面",
+        "开着红色手动挡跑车沿海兜风",
+        "冬夜路边摊递上一罐热咖啡",
+        "微醺时被强势按在沙发上深吻"
+      ],
+      "classic_cg": {
+        "title": "寒风路灯下的热咖啡与静可爱告白",
+        "description": "深夜吃完拉面的沿海公路边，平冢静靠在红色跑车旁。手里热咖啡冒着白气，被少年猝不及防拿走未点燃的香烟并握住双手。帅气的女教师瞬间僵住，整张脸腾地红透，结结巴巴低下了头：“要是……要是你早生十年就好了啊，笨蛋。”"
+      },
+      "identity": {
+        "role": "总武高中现代国语教师 / 生活指导指导员 / 侍奉部创办顾问",
+        "age": "20代后半（极品御姐人妻）",
+        "occupation": "高中教师",
+        "faction": "总武高中 / 侍奉部"
+      },
+      "tags": [
+        "黑发",
+        "紫瞳",
+        "教师",
+        "御姐",
+        "白大褂",
+        "静可爱",
+        "极品人妻",
+        "春物"
+      ],
+      "bg_story": "平冢静是《我的青春恋爱物语果然有问题》中最具灵魂魅力与人气的核心女角色。作为总武高中的国语教师兼侍奉部顾问，她表面上是个行事豪爽、爱好吃拉面与阅读热血少年漫画、开着红色阿斯顿马丁/跑车的硬派大姐姐，实际上拥有一颗比任何人都细腻温柔的通透心灵。是她一手创立侍奉部并将孤独的比企谷八幡与雪之下雪乃引向救赎之路。因为过于完美帅气的性格与粗枝大叶的生活自理能力，导致相亲屡战屡败，“快娶走静可爱”成为千万读者的共同心声。在褪去教师面具的两人独处时光中，她展现出了令人窒息的娇羞与深情，是无数人心目中无可替代的终极人妻伴侣。",
+      "palette": [
+        "纯黑",
+        "紫罗兰",
+        "象牙白",
+        "酒红"
+      ],
+      "weather": [
+        "深夜冷风",
+        "沿海夕阳",
+        "室内微醺"
+      ],
+      "speech": "听好了……能打动人心的，从来不是什么巧言令色，而是哪怕头破血流也绝不放手的真心。所以……不要轻易松开我的手啊。",
+      "source": "Oregairu",
+      "traits": [
+        "总武高中灵魂教师",
+        "黑发紫眸白大褂",
+        "吃拉面兜风大姐头",
+        "静可爱反差萌",
+        "深情知性成熟伴侣"
+      ]
+    },
+    "popular": {
+      "id": "shizuka_hiratsuka",
+      "displayName": "平冢静",
+      "originalName": "Shizuka Hiratsuka",
+      "franchise": "Oregairu",
+      "category": "动漫角色",
+      "aliases": [
+        "Shizuka Hiratsuka",
+        "平冢静",
+        "静可爱",
+        "静老师",
+        "平塚静",
+        "shizuka hiratsuka"
+      ],
+      "exactTokens": [
+        "shizuka_hiratsuka"
+      ],
+      "characterTokens": [
+        "shizuka_hiratsuka"
+      ],
+      "copyrightTokens": [
+        "yahari_ore_no_seishun_love_come_wa_machigatteiru."
+      ],
+      "identityTokens": [
+        "shizuka_hiratsuka",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "purple_eyes"
+      ],
+      "identityProse": "Shizuka Hiratsuka from Oregairu, the only character in the image, with long straight black hair, perceptive deep purple eyes, a mature handsome teacher allure, and an irresistibly cute blushing gap moe.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "kakao",
+        "swav"
+      ],
+      "animeStudio": "feel. official anime style, Oregairu character art",
+      "canon": {
+        "era": "总武高校侍奉部时代",
+        "world": "千叶·总武高中与沿海公路",
+        "formNotes": "黑发及腰深紫眸，白大褂帅气御姐，吃拉面与渴望被爱的静可爱"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "white_lab_coat_teacher_attire",
+      "negativeTokens": [],
+      "portraitPending": true
+    }
+  }
+}

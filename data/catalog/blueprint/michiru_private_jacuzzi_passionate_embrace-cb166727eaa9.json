@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "michiru_private_jacuzzi_passionate_embrace",
+  "revision": 1,
+  "sortOrder": 2320,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "michiru_private_jacuzzi_passionate_embrace",
+    "characterId": "hyoudou_michiru",
+    "outfitId": "summer_resort_violet_bikini",
+    "title": "冰堂美智留 · 温泉浴池水汽的湿发热吻",
+    "category": "私密温存",
+    "description": "私密柏木温泉中水汽腾腾，深紫比基尼解开漂在水面。黑色短发湿漉漉地贴在修长颈项后，美智留紧紧将你按在浴池边缘，双手插进你的发丝中热烈拥吻，美妙娇躯在滚烫泉水中尽情索求。",
+    "recommendedSize": "832x1216",
+    "location": "secluded private ryokan onsen tub filled with steaming water",
+    "action": "pressing partner against wooden tub rim, untied purple bikini floating, wet black hair, kissing passionately with breathless intensity",
+    "timeOfDay": "night",
+    "lighting": "steamy lantern light reflecting off swirling hot spring water and wet skin",
+    "camera": "cowboy_shot",
+    "mood": "intense steamy passion, uninhibited lovers desire, heated water ecstasy",
+    "promptProse": "In a steamy hot spring with untied purple bikini, wet short-haired Michiru Hyoudou kisses partner passionately against the tub with glistening skin.",
+    "promptTokens": [
+      "onsen",
+      "hot_spring",
+      "steam",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "kissing",
+      "beauty_mark",
+      "blushing_heavily",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Michiru Hyoudou kissing partner passionately in steamy cedar hot spring.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

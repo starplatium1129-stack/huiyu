@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kei_balcony_night_breeze_cuddle",
+  "revision": 1,
+  "sortOrder": 2240,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "kei_balcony_night_breeze_cuddle",
+    "characterId": "karuizawa_kei",
+    "outfitId": "oversized_boyfriend_hoodie_night",
+    "title": "轻井泽惠 · 深夜阳台的晚风依偎",
+    "category": "现代日常",
+    "description": "宿舍高层阳台晚风习习，远方校园路灯如繁星闪耀。套着黑色大号卫衣的惠把脸颊贴在你的胸膛上，听着沉稳的心跳。无需多言的静谧中，少女嘴角扬起全心信赖的安心微笑。",
+    "recommendedSize": "832x1216",
+    "location": "private high-rise student dorm balcony overlooking illuminated night campus",
+    "action": "standing on dorm balcony in the cool night breeze, wrapped under partner arm, leaning head against his chest watching distant campus lights",
+    "timeOfDay": "night",
+    "lighting": "cool moonlight blended with warm ambient room spill",
+    "camera": "cowboy_shot",
+    "mood": "absolute psychological security, deep unshakeable trust, calm night tenderness",
+    "promptProse": "Leaning head against partner chest on a cool night balcony, Kei Karuizawa smiles with deep unshakeable trust overlooking campus lights.",
+    "promptTokens": [
+      "balcony",
+      "night",
+      "night_sky",
+      "city_lights",
+      "cuddling",
+      "leaning_on_shoulder",
+      "peaceful_expression",
+      "moonlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kei Karuizawa cuddling securely on a moonlit dorm balcony at night.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

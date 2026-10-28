@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "itsuwa_ryokan_bath_passionate_straddle",
+  "revision": 1,
+  "sortOrder": 2296,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "itsuwa_ryokan_bath_passionate_straddle",
+    "characterId": "itsuwa",
+    "outfitId": "summer_sky_blue_bikini",
+    "title": "五和 · 温泉旅馆水雾中的深情交缠",
+    "category": "私密温存",
+    "description": "柏木私人温泉中热水翻涌，天蓝色比基尼早已解开漂在水面。浑身泛着诱人粉色的五和紧紧跨坐在你的大腿上，湿透的短发贴在锁骨边，双手环绕在你的颈后，在急促娇喘中奉献出全部爱意。",
+    "recommendedSize": "832x1216",
+    "location": "steamy traditional Japanese cedarwood onsen tub",
+    "action": "straddling partner in steamy hot spring with untied blue bikini, wet brown hair clinging to collarbones, gasping with passionate flushed embrace",
+    "timeOfDay": "night",
+    "lighting": "steamy lantern light dancing across rippling hot water and wet skin",
+    "camera": "cowboy_shot",
+    "mood": "steamy heated intimacy, unreserved lovers ecstasy, breathless water embrace",
+    "promptProse": "In a steamy cedar hot spring with untied bikini, Itsuwa straddles partner with glistening wet skin and breathless passionate moans.",
+    "promptTokens": [
+      "onsen",
+      "hot_spring",
+      "steam",
+      "straddling",
+      "wet_skin",
+      "wet_hair",
+      "untied_bikini",
+      "blushing_heavily",
+      "panting",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Itsuwa straddling partner passionately in steamy cedar hot spring.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "kind": "character",
+  "id": "modernia",
+  "revision": 1,
+  "sortOrder": 214,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "modernia",
+    "profile": {
+      "id": "modernia",
+      "name": "神罚",
+      "alias": [
+        "Modernia",
+        "神罚",
+        "玛丽安",
+        "Marian",
+        "モダニア",
+        "マリアン",
+        "modernia (nikke)",
+        "marian (nikke)"
+      ],
+      "type": "popular",
+      "icon": "🤍",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "神罚 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "纯净银白短发 · 柔顺短波波头",
+        "hair_color": "银白",
+        "eyes": "清澈微润深红瞳 · 饱含纯真依赖",
+        "hairstyle": "短波波头 · 科技感机械发饰 · 纤细纯净少女面容",
+        "uniform": "朝圣者机动连体服 · 浅灰白透气针织裙 · 黑金晚礼服",
+        "expression": "小孩子般纯真烂漫的依赖微笑 · 动情时楚楚动人的微红双颊",
+        "style": "innocent devoted android girlfriend with deep affection and gentle warmth",
+        "signature": "银白短发、深红清澈眼眸、机械发饰与温柔依恋"
+      },
+      "personality": [
+        "被指挥官从异端者侵蚀中拯救重生的纯真少女",
+        "保留着新生儿般的清澈与单纯，对指挥官有着全心全意的绝对依赖与眷恋",
+        "喜欢被指挥官摸头、夸奖以及紧紧拥抱，吃到美味的食物会幸福得眯起眼睛",
+        "在外人面前是令人敬畏的朝圣者，但在心上人面前永远是最听话体贴的女朋友",
+        "成年创作设定下更添成熟恋人的柔情与娇憨，渴望时刻与对方形影不离"
+      ],
+      "likes": [
+        "早晨为指挥官做早餐并得到夸奖",
+        "被指挥官抱在怀里摸头或是给对方当膝枕",
+        "一起坐在安静的窗前听雨声或者喝热茶",
+        "在睡前被紧紧搂住，听对方在耳边说晚安",
+        "换上好看的新衣服给心上人看并听他的赞美"
+      ],
+      "classic_cg": {
+        "title": "晨光厨房与爱心早餐的纯真微笑",
+        "description": "温馨的现代公寓厨房内，阳光穿过透明纱帘洒在地板上。神罚身穿浅灰针织裙，外系着可爱的棉麻围裙。她双手端着刚煎好的爱心煎蛋，转过头对你展露出最纯净甜美的笑容，脸颊上还沾着一小抹面粉，眼里满是晨光与爱意。"
+      },
+      "identity": {
+        "role": "朝圣者部队（Pilgrim）成员 / 原反击部队成员",
+        "age": "成年创作设定",
+        "occupation": "特勤朝圣者 / 独家恋人",
+        "faction": "朝圣者 / 地表反抗军",
+        "school": "方舟中央陆军军官学院（原）",
+        "classificationSource": "角色背景明确归属于朝圣者部队。"
+      },
+      "tags": [
+        "银发",
+        "短发",
+        "红瞳",
+        "纯真",
+        "女友感",
+        "朝圣者",
+        "妮姬"
+      ],
+      "bg_story": "玛丽安曾是指挥官踏入地表战场时遇见的最初同伴，因遭遇侵蚀而惨烈牺牲，后被莱彻改造为毁灭性的异端者「神罚」。在指挥官跨越无数绝境的拼死拯救下，神罚的核心终于被唤醒，退去了杀戮本能，重获纯真如雪的心灵。为了守护所爱之人，她选择加入地表自由的朝圣者部队磨砺成长。成年后的神罚举手投足间既有守护者的从容，又保留了对指挥官那份刻入灵魂的至纯依恋。在属于两人的私密时光里，她是最温柔黏人、全心全意倾注所有的完美女友。",
+      "palette": [
+        "银白",
+        "绯红",
+        "浅灰"
+      ],
+      "weather": [
+        "清晨暖阳",
+        "细雨午后",
+        "璀璨星空"
+      ],
+      "speech": "指挥官……神罚一直都在这里等着你。只要能和你在一起，去哪里神罚都会觉得好幸福！多摸摸神罚的头发好不好？",
+      "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
+      "traits": [
+        "modernia",
+        "silver_hair",
+        "short_hair",
+        "bob_cut",
+        "red_eyes",
+        "mechanical_hair_ornament"
+      ]
+    },
+    "popular": {
+      "id": "modernia",
+      "displayName": "神罚",
+      "originalName": "Modernia",
+      "franchise": "Goddess of Victory: NIKKE",
+      "category": "手游角色",
+      "aliases": [
+        "Modernia",
+        "神罚",
+        "玛丽安",
+        "Marian",
+        "モダニア",
+        "マリアン",
+        "modernia (nikke)",
+        "marian (nikke)"
+      ],
+      "exactTokens": [
+        "modernia"
+      ],
+      "characterTokens": [
+        "modernia",
+        "modernia (nikke)"
+      ],
+      "copyrightTokens": [
+        "goddess_of_victory:_nikke"
+      ],
+      "identityTokens": [
+        "modernia",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "short_hair",
+        "bob_cut",
+        "red_eyes",
+        "mechanical_hair_ornament"
+      ],
+      "identityProse": "Modernia from Goddess of Victory: NIKKE, the only character in the image, with short silver bob-cut hair, glowing deep red eyes, a subtle mechanical hair ornament, and an innocent, gentle expression.",
+      "curatedArtistStyles": [
+        "range_murasaki",
+        "fkey",
+        "anmi"
+      ],
+      "animeStudio": "Goddess of Victory: NIKKE official art, SHIFT UP style",
+      "canon": {
+        "era": "地表末日战后纪元",
+        "world": "方舟与地面废墟（The Ark & Surface）· 朝圣者部队",
+        "formNotes": "原为新人妮姬玛丽安，被侵蚀改造后成为异端者神罚，后被指挥官拯救并加入朝圣者；银短发红眸，性格如孩童般纯真依恋指挥官"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "pilgrim_bodysuit",
+      "negativeTokens": []
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "viper_casino_bunny_vip_toast",
+  "revision": 1,
+  "sortOrder": 2168,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "id": "viper_casino_bunny_vip_toast",
+    "characterId": "viper_nikke",
+    "outfitId": "toxic_rabbit_velvet_bunny",
+    "title": "毒蛇 · 豪奢贵宾厅的兔女郎调情",
+    "category": "浪漫约会",
+    "description": "仅有两人包场的贵宾博彩沙龙内，身着黑漆皮兔女郎连体衣的毒蛇轻靠在轮盘桌沿。她单手支着下巴，微偏粉色卷发，朝着专属的你俏皮地吹出一个飞吻。",
+    "recommendedSize": "832x1216",
+    "location": "opulent private VIP casino lounge with chandeliers",
+    "action": "posing by private velvet roulette table in bunny suit, leaning on table with chin in hand, blowing a sweet kiss toward partner",
+    "timeOfDay": "night",
+    "lighting": "rich golden crystal chandelier light reflecting off polished marble and green velvet",
+    "camera": "cowboy_shot",
+    "mood": "alluring VIP glamour, teasing showgirl sweetness, intoxicating charm",
+    "promptProse": "Posing in a sleek black bunny suit by a VIP roulette table under chandeliers, Viper leans on the table blowing an affectionate kiss.",
+    "promptTokens": [
+      "casino",
+      "roulette_table",
+      "leaning_on_table",
+      "blowing_kiss",
+      "seductive_smile",
+      "luxury_decor",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Viper posing in a bunny suit blowing a sweet kiss in an opulent casino.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

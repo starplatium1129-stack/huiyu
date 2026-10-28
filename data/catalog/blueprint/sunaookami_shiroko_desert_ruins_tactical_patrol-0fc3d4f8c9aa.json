@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "sunaookami_shiroko_desert_ruins_tactical_patrol",
+  "revision": 2,
+  "sortOrder": 2126,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "sunaookami_shiroko_desert_ruins_tactical_patrol",
+    "characterId": "sunaookami_shiroko",
+    "outfitId": "abydos_foreclosure_uniform",
+    "title": "砂狼白子 · 阿拜多斯荒漠废墟的战术巡查",
+    "category": "战术特勤",
+    "description": "阿拜多斯风沙弥漫的古代废墟神殿前，残垣断壁在无垠黄沙中静静伫立。白子双手紧握战术突击步枪警惕前行，标志性的蓝白条纹围巾在干燥狂风中猛烈猎猎作响。她神色冷峻果断，狼耳敏锐竖起捕捉远方的动静，展现出顶尖先锋突击手的凌厉气魄。",
+    "recommendedSize": "832x1216",
+    "location": "wind-blown Abydos desert ruins amidst golden sand dunes",
+    "action": "patrolling with assault rifle, alert stance, wind sweeping striped scarf, sharp blue eyes",
+    "timeOfDay": "day",
+    "lighting": "bright desert sun casting harsh shadows across golden dunes and stone ruins",
+    "camera": "cowboy_shot",
+    "mood": "tactical vigilance, rugged frontier resilience, and solitary resolve",
+    "promptProse": "Striding alertly through sweeping golden desert sand dunes, Sunaookami Shiroko raises her assault rifle with sharp tactical focus as wind flutters her iconic striped scarf.",
+    "promptTokens": [
+      "holding_gun",
+      "assault_rifle",
+      "desert",
+      "sand",
+      "ruins",
+      "wind",
+      "serious",
+      "day",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shiroko holding her assault rifle alertly amidst the windy Abydos desert ruins.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "ayase_private_resort_balcony_moonlight_kiss",
+  "revision": 1,
+  "sortOrder": 2260,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "id": "ayase_private_resort_balcony_moonlight_kiss",
+    "characterId": "ayase_aragaki",
+    "outfitId": "summer_resort_pure_white_bikini",
+    "title": "新垣绫濑 · 滨海套房阳台的月光湿吻",
+    "category": "私密温存",
+    "description": "度假套房高层阳台前夜海如黛，白色比基尼细带早已解开随海风轻扬。绫濑背靠着玻璃栏杆，在灼热的相拥与热吻中仰起修长雪白的玉颈，模特级的曼妙曲线在月华下毫无防备地奉献。",
+    "recommendedSize": "832x1216",
+    "location": "luxury high-rise oceanfront hotel balcony",
+    "action": "pressed against glass balcony railing overlooking nocturnal ocean, untied white bikini strings fluttering, arched back as partner kisses her slender neck, breathless with pleasure",
+    "timeOfDay": "night",
+    "lighting": "cool ethereal moonlight blending with warm room light spilling outside",
+    "camera": "cowboy_shot",
+    "mood": "cinematic erotic passion, breathless sea breeze romance, model elegance exposed",
+    "promptProse": "On a moonlight ocean balcony with untied white bikini, Ayase Aragaki arches back as partner kisses her neck, panting with breathless passion.",
+    "promptTokens": [
+      "balcony",
+      "night",
+      "ocean",
+      "moonlight",
+      "untied_bikini",
+      "bare_shoulders",
+      "kissing_neck",
+      "arching_back",
+      "blushing_heavily",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ayase Aragaki with untied bikini on nocturnal moonlit balcony.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

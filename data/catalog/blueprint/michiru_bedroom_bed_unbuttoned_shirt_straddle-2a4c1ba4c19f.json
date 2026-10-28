@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "michiru_bedroom_bed_unbuttoned_shirt_straddle",
+  "revision": 1,
+  "sortOrder": 2319,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "michiru_bedroom_bed_unbuttoned_shirt_straddle",
+    "characterId": "hyoudou_michiru",
+    "outfitId": "oversized_boyfriend_white_shirt",
+    "title": "冰堂美智留 · 卧室床榻上的白衬衫强势跨坐",
+    "category": "私密温存",
+    "description": "昏暗的同居卧室内，白衬衫纽扣完全敞开，露出健美诱人的修长玉体。美智留帅气而霸道地跨坐在你腰间，修长双腿紧紧钳住，俯下身咬住你的下唇，在粗重而炽热的呼吸中彻底沉沦。",
+    "recommendedSize": "832x1216",
+    "location": "warm dim bedroom with disheveled white duvet",
+    "action": "straddling partner on bed with open white shirt slipping off shoulders, leaning down for a passionate deep kiss, gasping with flushed face and beauty mark",
+    "timeOfDay": "night",
+    "lighting": "dim bedside table lamp casting warm sensual shadows on bare curves",
+    "camera": "close-up",
+    "mood": "bold assertive passion, childhood friend barrier broken, unreserved heated ecstasy",
+    "promptProse": "Straddling partner on bed with open white shirt, short-haired Michiru Hyoudou kisses him deeply with flushed cheeks and breathless passionate moans.",
+    "promptTokens": [
+      "bedroom",
+      "messy_bed",
+      "straddling",
+      "open_shirt",
+      "bare_shoulders",
+      "kissing",
+      "beauty_mark",
+      "blushing_heavily",
+      "panting",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Michiru Hyoudou straddling partner passionately in open white shirt on bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

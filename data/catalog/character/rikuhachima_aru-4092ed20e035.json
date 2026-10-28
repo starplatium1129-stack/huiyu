@@ -1,0 +1,154 @@
+{
+  "kind": "character",
+  "id": "rikuhachima_aru",
+  "revision": 2,
+  "sortOrder": 210,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:34:14.376910600+00:00",
+  "data": {
+    "id": "rikuhachima_aru",
+    "profile": {
+      "id": "rikuhachima_aru",
+      "name": "陆八魔阿露",
+      "alias": [
+        "Rikuhachima Aru",
+        "阿露",
+        "陆八魔亚瑠",
+        "陸八魔アル",
+        "アル",
+        "便利屋68社长"
+      ],
+      "type": "popular",
+      "icon": "💼",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "陆八魔阿露 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "酒红色及腰大波浪卷发 · 标志性发梢自然卷曲",
+        "hair_color": "酒红 / 绯红",
+        "eyes": "明亮锐利琥珀金瞳 · 慌乱时极易露出招牌颜艺",
+        "hairstyle": "波浪长卷发 · 头顶两侧弯曲恶魔小尖角 · 背部一对小巧黑翼 · 格黑娜红黑尖刺光环",
+        "uniform": "便利屋黑色修身西装衬衫制服 · 鲜红修长领带 · 华贵深酒红毛领长风衣",
+        "expression": "故作冷酷的硬派大恶党 · 被看穿或计划受挫时的绝妙泪目慌乱",
+        "style": "hardboiled outlaw boss with endearing flustered panic and genuine heart",
+        "signature": "酒红波浪长发、弯角黑翼、深红大衣与狙击步枪"
+      },
+      "personality": [
+        "怀揣「冷酷硬派顶级恶党」崇高理想的便利屋68社长",
+        "表面摆出一丝不苟的黑道首领做派，实则心思纯善、充满道德底线",
+        "运气极其玄学，每次精心制定的敲诈或委托计划总会阴差阳错变成行侠仗义",
+        "在下属（佳代子、遥香、睦月）面前极力维持威严，但在老师面前瞬间方寸大乱",
+        "成年后举手投足更具大女主从容气场，但关键时刻的小慌张与依赖依旧纯真可爱"
+      ],
+      "likes": [
+        "收到大额报酬到账的一瞬间（虽然很快就会因为赔偿金而扣光）",
+        "在百叶窗紧闭的深夜事务所端着黑咖啡思考「恶党大计」",
+        "得到老师发自内心的肯定与夸奖（会极力忍住笑意但嘴角完全失控）",
+        "被便利屋社员们全心全意地簇拥信赖",
+        "在只有老师的安静空间里卸下首领重担，被摸头安抚"
+      ],
+      "classic_cg": {
+        "title": "昏暗事务所的硬派首领与心跳慌乱",
+        "description": "便利屋68略显杂乱却温馨的事务所内，深夜暖光从台灯倾斜而下。阿露双手抱胸倚靠在深红皮质沙发边缘，酒红色风衣衬托出修长傲人的身段。本想故作老练地向老师提出「非比寻常的恶党交易」，却因老师近在咫尺的认真注视而彻底红透了耳根，金瞳泛着不知所措的水光。"
+      },
+      "identity": {
+        "role": "便利屋68社长 / 歌赫娜学园自立通缉犯",
+        "age": "成年创作设定",
+        "occupation": "地下万事屋首领 / 独立特勤顾问",
+        "faction": "歌赫娜学园 / 便利屋68",
+        "school": "歌赫娜学园",
+        "classificationSource": "本角色档案 identity.faction 中明确记载的学院；统一学院名称写法。"
+      },
+      "tags": [
+        "酒红发",
+        "波浪卷",
+        "恶魔角",
+        "黑羽翼",
+        "大衣",
+        "反差萌",
+        "便利屋68"
+      ],
+      "bg_story": "陆八魔阿露是学园都市基沃托斯地下著名事务所「便利屋68」的社长。她自幼憧憬着成为君临法外之地的冷酷无情大恶党，并为此带领三位性格迥异的同伴在歌赫娜与全都市接取各种棘手委托。然而由于阿露天性善良正直且极度重情重义，她所执行的恶党任务往往在最后关头阴差阳错变成了拯救弱小的英勇事迹。在与夏莱老师经历数次生死交锋与并肩委托后，成年后的阿露逐渐领悟了真正的领袖担当。她依然保留着那件帅气的酒红大衣与硬派架势，但唯独在老师面前，这位看似霸气狂傲的红发首领，愿意展露出最毫无防备的羞怯与最炙热的依赖。",
+      "palette": [
+        "深酒红",
+        "纯黑",
+        "浅金"
+      ],
+      "weather": [
+        "夜雨事务所",
+        "黄昏天台",
+        "都会霓虹"
+      ],
+      "speech": "哼哼……你就是夏莱的老师吧？我是便利屋68的社长，陆八魔阿露！既然今天落在我手里……呃，我是说委托！任何危险工作都可以交给我们，报酬可不便宜哦！",
+      "source": "Blue Archive",
+      "traits": [
+        "red_hair",
+        "long_hair",
+        "wavy_hair",
+        "yellow_eyes",
+        "horns",
+        "black_wings",
+        "halo"
+      ]
+    },
+    "popular": {
+      "id": "rikuhachima_aru",
+      "displayName": "陆八魔阿露",
+      "originalName": "Rikuhachima Aru",
+      "franchise": "Blue Archive",
+      "category": "手游角色",
+      "aliases": [
+        "Rikuhachima Aru",
+        "陆八魔阿露",
+        "阿露",
+        "陆八魔亚瑠",
+        "陸八魔アル",
+        "aru (blue archive)"
+      ],
+      "exactTokens": [
+        "rikuhachima_aru"
+      ],
+      "characterTokens": [
+        "rikuhachima_aru",
+        "aru (blue archive)"
+      ],
+      "copyrightTokens": [
+        "blue_archive"
+      ],
+      "identityTokens": [
+        "rikuhachima_aru",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "wavy_hair",
+        "yellow_eyes",
+        "horns",
+        "black_wings",
+        "halo"
+      ],
+      "identityProse": "Rikuhachima Aru from Blue Archive, the only character in the image, with long wavy crimson-red hair, curved horns, small black demon wings, sharp yellow eyes, and a glowing halo.",
+      "curatedArtistStyles": [
+        "kakao",
+        "mika_pikazo",
+        "morikura_en"
+      ],
+      "animeStudio": "Blue Archive official art, Yostar / Nexon style",
+      "canon": {
+        "era": "近未来学园都市",
+        "world": "基沃托斯（Kivotos）· 歌赫娜学园",
+        "formNotes": "便利屋68社长，酒红波浪长发、弯角黑翼，硬派恶党梦想家与颜艺慌乱纯真反差"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "problem_solver_outlaw_suit",
+      "negativeTokens": []
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "karuizawa_kei/oversized_boyfriend_hoodie_night",
+  "revision": 1,
+  "sortOrder": 1768,
+  "createdAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "data": {
+    "characterId": "karuizawa_kei",
+    "outfit": {
+      "characterId": "karuizawa_kei",
+      "id": "oversized_boyfriend_hoodie_night",
+      "name": "秘密同居·大号男友连帽卫衣睡衣",
+      "prose": "An oversized black boyfriend hoodie with extra-long sleeves covering her hands, falling mid-thigh over bare legs in her private dorm room.",
+      "tokens": [
+        "hoodie",
+        "oversized_hoodie",
+        "black_hoodie",
+        "bare_legs",
+        "thighs",
+        "hood_down",
+        "sleeves_past_fingers"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

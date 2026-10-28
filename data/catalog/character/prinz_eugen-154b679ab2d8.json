@@ -1,0 +1,150 @@
+{
+  "kind": "character",
+  "id": "prinz_eugen",
+  "revision": 1,
+  "sortOrder": 217,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "prinz_eugen",
+    "profile": {
+      "id": "prinz_eugen",
+      "name": "欧根亲王",
+      "alias": [
+        "Prinz Eugen",
+        "欧根亲王",
+        "欧根",
+        "プリンツ・オイゲン",
+        "オイゲン",
+        "prinz eugen (azur lane)"
+      ],
+      "type": "popular",
+      "icon": "🌹",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "欧根亲王 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "优雅浅灰长发 · 标志性侧编双辫 · 额前一抹艳丽绯红挑染",
+        "hair_color": "浅灰 / 灰金配红挑染",
+        "eyes": "深邃摄人琥珀瞳 · 右眼下方标志性魅惑泪痣",
+        "hairstyle": "双股侧编发马尾 · 红色个性挑染 · 饱满性感的成熟身姿",
+        "uniform": "铁血高阶露肩军官制服 · 红白挂脖比基尼 · 米白粗针露肩大毛衣",
+        "expression": "戏谑反客为主的坏笑 · 动情时红唇轻咬、泪痣含情的极致妩媚",
+        "style": "alluring teasing commander-whisperer girlfriend with playful dominance and deep tender passion",
+        "signature": "灰发红挑染、右眼泪痣、戏谑笑意与空心大毛衣索吻"
+      },
+      "personality": [
+        "铁血阵营希佩尔海军上将级二号舰重巡洋舰，高贵优雅且极富个性的看板娘",
+        "言语间总带着三分调侃、七分诱惑，最喜欢看着指挥官因为自己的大胆举动而手足无措",
+        "看似漫不经心、游戏人间的恋爱猎手，实则将所有真心与独占欲都牢牢系在一人身上",
+        "极度擅长反客为主，清晨穿着指挥官的大号毛衣空心煮咖啡、在办公室桌沿强势索吻",
+        "成年设定下女人味彻底绽放，既是调情高手，又是懂得在私密时刻全情投入的热烈恋人"
+      ],
+      "likes": [
+        "早晨只穿指挥官的宽大毛衣煮咖啡，赤足踮脚索要晨安吻",
+        "在深夜办公室突然反锁房门，跨坐在办公桌沿看着慌乱的指挥官坏笑",
+        "并肩在客厅沙发上看电影时偷亲指挥官的脸颊，欣赏对方害羞的样子",
+        "用小勺碰杯子或者贴近耳边用气音低语让人脸红心跳的悄悄话",
+        "在假日被窝里任性纠缠，直到两人都精疲力竭才心满意足地依偎沉睡"
+      ],
+      "classic_cg": {
+        "title": "清晨厨房的空心毛衣与恶作剧索吻",
+        "description": "明亮通透的公寓厨房里，晨光将木质料理台照得一片暖洋。欧根亲王仅穿着一件属于你的米白粗针大号毛衣，毛衣领口大肆滑落露出白皙香肩。她赤着玉足轻倚吧台，一手端着冒热气的咖啡，另一手咬着吸管向你戏谑眨眼，眼角泪痣因坏笑而格外动人。"
+      },
+      "identity": {
+        "role": "铁血阵营重巡洋舰核心主力 / 亲王级旗舰",
+        "age": "成年创作设定",
+        "occupation": "高阶战术巡洋顾问 / 专属调情大师女友",
+        "faction": "铁血阵营（Iron Blood）",
+        "school": "铁血海军学院（荣誉将校）",
+        "classificationSource": "角色背景明确归属于铁血阵营核心主力。"
+      },
+      "tags": [
+        "灰发",
+        "挑染",
+        "泪痣",
+        "御姐",
+        "调戏",
+        "男友风毛衣",
+        "碧蓝航线"
+      ],
+      "bg_story": "欧根亲王是铁血阵营最具传奇色彩的重巡洋舰之一，以其在狂涛骇浪中永不沉没的运势与卓越战功闻名于世。她习惯用从容不迫的戏谑微笑与优雅言行构筑起心防，让旁人难以捉摸她的真心。唯有在那个敢于直面她挑逗目光、对她付出无私信任的指挥官面前，她才会卸下高傲的面具。她喜欢用各种充满情趣的日常小恶作剧考验对方的心跳，而每一次反客为主的攻势背后，都是她炽热如火、至死不渝的真情流露。",
+      "palette": [
+        "浅灰",
+        "绯红",
+        "纯黑"
+      ],
+      "weather": [
+        "清晨晨光",
+        "午后咖啡",
+        "海滨夜风"
+      ],
+      "speech": "呵呵，我的指挥官大人，今天的眼神似乎格外深情呢？门已经锁好了，现在的时间……只属于我们两个人哦。",
+      "source": "Manjuu / Yongshi《碧蓝航线 / Azur Lane》",
+      "traits": [
+        "prinz_eugen_(azur_lane)",
+        "grey_hair",
+        "twin_braids",
+        "red_hair_streak",
+        "amber_eyes",
+        "mole_under_right_eye"
+      ]
+    },
+    "popular": {
+      "id": "prinz_eugen",
+      "displayName": "欧根亲王",
+      "originalName": "Prinz Eugen",
+      "franchise": "Azur Lane",
+      "category": "手游角色",
+      "aliases": [
+        "Prinz Eugen",
+        "欧根亲王",
+        "欧根",
+        "プリンツ・オイゲン",
+        "オイゲン",
+        "prinz eugen (azur lane)"
+      ],
+      "exactTokens": [
+        "prinz eugen (azur lane)"
+      ],
+      "characterTokens": [
+        "prinz eugen (azur lane)"
+      ],
+      "copyrightTokens": [
+        "azur_lane"
+      ],
+      "identityTokens": [
+        "prinz eugen (azur lane)",
+        "1girl",
+        "solo",
+        "grey_hair",
+        "twin_braids",
+        "red_hair_streak",
+        "amber_eyes",
+        "mole_under_right_eye"
+      ],
+      "identityProse": "Prinz Eugen from Azur Lane, the only character in the image, with ash grey hair in elegant twin braids with a striking crimson streak, alluring amber eyes, and a signature beauty mark beneath her right eye.",
+      "curatedArtistStyles": [
+        "morikura_en",
+        "cutesexyrobutt",
+        "swav"
+      ],
+      "animeStudio": "Azur Lane official art, Manjuu / Yongshi style",
+      "canon": {
+        "era": "铁血重巡装甲纪元",
+        "world": "铁血阵营（Iron Blood）· 希佩尔海军上将级重巡洋舰",
+        "formNotes": "铁血二号舰；灰发红挑染与右眼泪痣，举止优雅、言辞戏谑，深爱指挥官且极度擅长主动掌控与反客为主的恋爱拉扯"
+      },
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "iron_blood_officer_uniform",
+      "negativeTokens": []
+    }
+  }
+}

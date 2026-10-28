@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "sunohara_shun_classroom_guidance_pat",
+  "revision": 2,
+  "sortOrder": 2113,
+  "createdAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "data": {
+    "id": "sunohara_shun_classroom_guidance_pat",
+    "characterId": "sunohara_shun",
+    "outfitId": "plum_garden_qipao_robe",
+    "title": "春原瞬 · 教室课后的温柔摸头指引",
+    "category": "训导日常",
+    "description": "梅花园空无一人的明亮教室，黄昏斜阳洒在整齐的课桌上。瞬教官立于老师桌旁，丰腴修长的身段在斜光下轮廓迷人。看到疲惫揉捏眉心的老师，她心疼地俯下身子，伸出柔弱无骨的温热玉手轻抚老师头顶，朱红眼眸满溢着让人卸下所有重担的宠溺关怀。",
+    "recommendedSize": "832x1216",
+    "location": "warm sunlit classroom after hours beside desk",
+    "action": "leaning down, reaching out hand for gentle headpat, deeply caring expression",
+    "timeOfDay": "sunset",
+    "lighting": "warm golden sunset brilliance streaming through classroom windows",
+    "camera": "cowboy_shot",
+    "mood": "profound maternal affection, soothing comfort, and doting warmth",
+    "promptProse": "Leaning over the desk in an empty sunset classroom, Sunohara Shun reaches out with a tender maternal hand to stroke hair, her red eyes shining with pure affectionate comfort.",
+    "promptTokens": [
+      "classroom",
+      "desk",
+      "reaching_out",
+      "loving_smile",
+      "blush",
+      "warm_lighting",
+      "sunset",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shun reaching out tenderly with an affectionate maternal gaze in the classroom.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

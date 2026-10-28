@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "st_louis_azur/passionate_sunset_bikini",
+  "revision": 1,
+  "sortOrder": 1716,
+  "createdAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "data": {
+    "characterId": "st_louis_azur",
+    "outfit": {
+      "characterId": "st_louis_azur",
+      "id": "passionate_sunset_bikini",
+      "name": "海滨奢享·紫蓝系带露背比基尼",
+      "prose": "A glamorous sapphire and lavender string bikini with cross-torso straps, low-rise ties, and designer sunglasses resting on her hair.",
+      "tokens": [
+        "blue_bikini",
+        "halter_bikini",
+        "cross_straps",
+        "side-tie_bikini_bottom",
+        "sunglasses_on_head",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

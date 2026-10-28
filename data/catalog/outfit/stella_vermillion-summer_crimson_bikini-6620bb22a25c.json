@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "stella_vermillion/summer_crimson_bikini",
+  "revision": 1,
+  "sortOrder": 1731,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "stella_vermillion",
+    "outfit": {
+      "characterId": "stella_vermillion",
+      "id": "summer_crimson_bikini",
+      "name": "盛夏绯焰·系带挂脖比基尼",
+      "prose": "A daring crimson triangle halter bikini with narrow side-tie bottoms, accentuating her regal athletic curves.",
+      "tokens": [
+        "crimson_bikini",
+        "halter_bikini",
+        "triangle_bikini",
+        "side-tie_bikini_bottom",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

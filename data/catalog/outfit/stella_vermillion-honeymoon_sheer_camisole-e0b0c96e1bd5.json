@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "stella_vermillion/honeymoon_sheer_camisole",
+  "revision": 1,
+  "sortOrder": 1732,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "stella_vermillion",
+    "outfit": {
+      "characterId": "stella_vermillion",
+      "id": "honeymoon_sheer_camisole",
+      "name": "新婚专属·纯黑半透蕾丝睡裙",
+      "prose": "A provocative sheer black silk camisole trimmed with delicate floral lace, worn off the shoulders with slender spaghetti straps.",
+      "tokens": [
+        "black_camisole",
+        "sheer_nightgown",
+        "lace_trim",
+        "spaghetti_strap",
+        "bare_shoulders"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

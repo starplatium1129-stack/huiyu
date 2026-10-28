@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "izumi_comiket_booth_cold_drink_wipe",
+  "revision": 1,
+  "sortOrder": 2311,
+  "createdAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "data": {
+    "id": "izumi_comiket_booth_cold_drink_wipe",
+    "characterId": "hashima_izumi",
+    "outfitId": "otaku_artist_casual_tshirt_skirt",
+    "title": "波岛出海 · 漫展摊位后的冷饮递送与擦汗",
+    "category": "假日出行",
+    "description": "人潮汹涌的漫展展馆摊位后，出海开心地将一罐冰镇乌龙茶贴在你额头上降温，随即拿出毛巾踮起脚尖认真替你擦汗，满脸是与学长共同奋斗的幸福与骄傲。",
+    "recommendedSize": "832x1216",
+    "location": "bustling convention hall booth behind folding tables and poster displays",
+    "action": "standing behind booth, pressing cold canned drink against partner forehead, smiling proudly with flushed cheeks and sparkling eyes",
+    "timeOfDay": "afternoon",
+    "lighting": "bright indoor convention center lighting overhead",
+    "camera": "close-up",
+    "mood": "energetic youth camaraderie, dedicated junior girlfriend care, proud shared triumph",
+    "promptProse": "Behind a convention booth, Izumi Hashima presses a cold drink to partner forehead, smiling radiantly with flushed cheeks and admiring brown eyes.",
+    "promptTokens": [
+      "convention",
+      "booth",
+      "canned_drink",
+      "wiping_sweat",
+      "blushing",
+      "happy_smile",
+      "twintails",
+      "daylight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Izumi Hashima smiling radiantly helping partner at convention booth.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

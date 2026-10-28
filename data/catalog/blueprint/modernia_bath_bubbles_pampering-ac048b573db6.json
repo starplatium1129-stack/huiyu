@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "modernia_bath_bubbles_pampering",
+  "revision": 1,
+  "sortOrder": 2135,
+  "createdAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "data": {
+    "id": "modernia_bath_bubbles_pampering",
+    "characterId": "modernia",
+    "outfitId": "pilgrim_bodysuit",
+    "title": "神罚 · 玫瑰泡沫的双人温存",
+    "category": "私密温存",
+    "description": "热气氤氲的宽大理石浴缸中，漂浮着绵密的玫瑰香氛泡沫。卸下武装的神罚羞怯又依恋地靠入你的怀中，任由你用温热清水细心洗涤她湿漉微卷的银发。",
+    "recommendedSize": "832x1216",
+    "location": "luxury private bathroom with steam and warm candlelight",
+    "action": "soaking in large bubble-filled marble bathtub, wet silver hair, blushing sweetly, leaning back into embrace, soapy suds on wet skin",
+    "timeOfDay": "night",
+    "lighting": "soft candlelight glowing through steamy vapor",
+    "camera": "medium_shot",
+    "mood": "sensual, deeply relaxing, trusting affection",
+    "promptProse": "Soaking in a steamy bubble bath by candlelight, Modernia leans back with wet silver hair and blushing cheeks, savoring gentle pampering.",
+    "promptTokens": [
+      "bathtub",
+      "soaking_in_tub",
+      "soap_bubbles",
+      "wet_skin",
+      "wet_hair",
+      "blushing",
+      "steam",
+      "candlelight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Modernia enjoying a steamy candlelit bubble bath with blushing cheeks.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

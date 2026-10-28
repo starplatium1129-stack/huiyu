@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "irina_shidou/kuoh_academy_uniform",
+  "revision": 1,
+  "sortOrder": 1753,
+  "createdAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "data": {
+    "characterId": "irina_shidou",
+    "outfit": {
+      "characterId": "irina_shidou",
+      "id": "kuoh_academy_uniform",
+      "name": "驹王学园女生制服",
+      "prose": "The signature Kuoh Academy girl uniform with a white blouse, black shoulder capelet, magenta pleated mini skirt, and black thigh-high socks.",
+      "tokens": [
+        "white_shirt",
+        "black_capelet",
+        "magenta_skirt",
+        "pleated_skirt",
+        "black_thighhighs",
+        "white_ribbon"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}
