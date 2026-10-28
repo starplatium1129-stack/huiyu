@@ -1,22 +1,32 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/grey_hoodie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1432,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "id": "grey_hoodie",
-      "name": "宽松灰色连帽衫",
+      "name": "解构落肩炭灰廓形卫衣与机能皮腿带",
+      "prose": "A premium heavyweight washed-charcoal oversized hoodie with an off-center silver zip funnel collar, hitting mid-thigh over tailored black micro shorts. Sheer black 20D over-knee stockings feature a snug elastic band that softly pinches the pale thigh, reinforced with a tactical leather thigh strap sporting a miniature matte-black clip, finished with lug-sole Chelsea boots.",
       "tokens": [
-        "grey hoodie",
-        "oversized clothes"
+        "oversized_hoodie",
+        "charcoal_hoodie",
+        "funnel_neck",
+        "short_shorts",
+        "black_thighhighs",
+        "sheer_stockings",
+        "thigh_strap",
+        "leather_strap",
+        "chelsea_boots",
+        "techwear_chic"
       ],
-      "prose": "An oversized grey cotton hoodie with a roomy hood and plain ribbed cuffs.",
+      "characterId": "shirogane_kei",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

@@ -1,24 +1,35 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/gal_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 272,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
-      "default": false,
       "id": "gal_casual",
-      "isDefault": false,
-      "name": "黑色短上衣与海梦粉格纹裙",
-      "prose": "A fitted black cotton crop top, pink plaid miniskirt, silver waist chain and chunky white sneakers.",
+      "name": "涩谷高街短款皮夹克与粉黑格纹裙",
+      "prose": "A cropped boxy black biker jacket in matte faux leather over a ribbed halter crop top, paired with a pleated low-waist pink-and-black tartan micro skirt and tiered silver waist chains. Her toned bare thigh is cinched by a wide black punk leather leg garter with chrome eyelets, worn with fishnet over-knee socks and platform combat boots.",
       "tokens": [
-        "black crop top",
-        "pink plaid miniskirt",
-        "silver waist chain",
-        "white sneakers"
-      ]
+        "biker_jacket",
+        "cropped_jacket",
+        "leather_jacket",
+        "halterneck",
+        "crop_top",
+        "plaid_skirt",
+        "miniskirt",
+        "waist_chain",
+        "fishnets",
+        "thigh_garter",
+        "leather_garter",
+        "platform_boots",
+        "y2k_punk"
+      ],
+      "characterId": "kitagawa_marin",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

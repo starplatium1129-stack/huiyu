@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "id": "sfw_refined_daily",
-      "isDefault": false,
-      "isNsfw": false,
-      "name": "杏色针织周末装",
-      "prose": "An apricot knit cardigan layers over a navy collared shirt, with a calf-length grey pleated skirt and brown loafers.",
+      "name": "英伦学院风粗花呢短外套与格纹裙",
+      "prose": "A cropped cream bouclé tweed collegiate jacket with dark horn buttons, layered over an ice-blue striped point-collar Oxford shirt and a charcoal micro pleated schoolgirl skirt. Paired with ribbed black knee-high socks, a slim burgundy leather thigh band, and chunky lug-sole platform penny loafers.",
       "tokens": [
-        "apricot knit cardigan",
-        "navy collared shirt",
-        "grey pleated skirt",
-        "calf-length skirt",
-        "brown loafers"
-      ]
+        "tweed_jacket",
+        "cropped_jacket",
+        "striped_shirt",
+        "collared_shirt",
+        "pleated_skirt",
+        "miniskirt",
+        "knee_socks",
+        "thigh_strap",
+        "leather_band",
+        "platform_loafers",
+        "preppy_chic"
+      ],
+      "characterId": "shirogane_kei",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

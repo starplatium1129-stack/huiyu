@@ -1,25 +1,33 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/sfw_evening_dining_cardigan",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1124,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "sfw_evening_dining_cardigan",
-      "name": "青灰开衫与炭灰中裙",
-      "prose": "A blue-grey button cardigan layers over a white cotton blouse and charcoal pleated midi skirt, with opaque navy tights and simple black loafers.",
+      "name": "冷灰小香风粗花呢套装与露肌过膝袜",
+      "prose": "A cropped silver-grey bouclé tweed jacket with faux-pearl buttons and piped pockets, layered over a black silk camisole and a matching A-line tweed mini skirt. Worn with opaque black over-knee stockings that gently indent the bare upper thigh, anchored by double-buckle leather garters and black leather penny loafers.",
       "tokens": [
-        "blue grey cardigan",
-        "white blouse",
-        "charcoal pleated skirt",
-        "navy tights",
-        "black loafers"
+        "tweed_jacket",
+        "cropped_jacket",
+        "pearl_buttons",
+        "camisole",
+        "tweed_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_garter",
+        "leather_strap",
+        "loafers",
+        "french_chic"
       ],
+      "characterId": "yukinoshita_yukino",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

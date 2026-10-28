@@ -1,22 +1,31 @@
 {
   "kind": "outfit",
   "id": "fubuki_one_punch/sfw_refined_daily",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 909,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "fubuki_one_punch",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "黑白格纹阔腿休息日套装",
-      "prose": "a neatly tailored black-and-white checked blazer over a forest-green blouse, cream wide-leg trousers and small pearl earrings",
+      "name": "垫肩千鸟格吸烟西装与高开衩包臀裙",
+      "prose": "A razor-sharp black-and-white houndstooth double-breasted power blazer with defined shoulders, open over a deep emerald silk camisole and a leather pencil skirt with a high side slit. Sheer black over-knee stockings are secured with a buckled leather thigh strap that visibly cinches the voluptuous thigh, finished with stiletto heels.",
       "tokens": [
-        "black and white checked blazer",
-        "forest green blouse",
-        "cream wide-leg pants",
-        "pearl earrings"
+        "houndstooth_blazer",
+        "power_suit",
+        "double-breasted",
+        "silk_camisole",
+        "leather_skirt",
+        "pencil_skirt",
+        "high_slit",
+        "black_thighhighs",
+        "thigh_strap",
+        "stiletto_heels",
+        "couture"
       ],
+      "characterId": "fubuki_one_punch",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

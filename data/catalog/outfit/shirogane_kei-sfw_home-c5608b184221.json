@@ -1,23 +1,31 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_home",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 780,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
-      "default": false,
       "id": "sfw_home",
-      "isDefault": false,
-      "name": "奶油色针织家居装",
-      "prose": "A cream cotton-knit pullover with ribbed cuffs pairs with soft navy lounge trousers.",
+      "name": "燕麦华夫格露肩针织衫与过膝袜",
+      "prose": "A soft oatmeal-hued waffle-knit slouchy pullover with an extra-wide neckline falling off the collarbones, layered over grey ribbed boy-shorts. Worn with thigh-high charcoal heather wool socks that hug the thigh snugly, creating a cute soft indentation around the top edge, barefoot on carpet.",
       "tokens": [
-        "cream sweater",
-        "ribbed cuffs",
-        "navy pants"
-      ]
+        "knit_sweater",
+        "slouchy_sweater",
+        "off_shoulder",
+        "waffle_knit",
+        "shorts",
+        "thighhighs",
+        "wool_socks",
+        "barefoot",
+        "cozy_chic"
+      ],
+      "characterId": "shirogane_kei",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

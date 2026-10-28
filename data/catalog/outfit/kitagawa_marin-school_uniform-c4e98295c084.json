@@ -1,25 +1,35 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/school_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 271,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
-      "default": true,
       "id": "school_uniform",
-      "isDefault": true,
-      "name": "深蓝西装与松领带制服",
-      "prose": "Her open navy school blazer over a white shirt with a loosely knotted tie, paired with a crisp navy pleated skirt.",
+      "name": "放学后辣妹微敞校服与绝对领域",
+      "prose": "Her unbuttoned navy school blazer draped casually, worn over a loose white collared shirt with the top three buttons undone to reveal a peek of a black lace bandeau beneath, paired with a loosely knotted striped tie. A micro pleated navy skirt sits high above sheer black thighhighs, which are held up by a buckled leather thigh band that creates a noticeable soft skin pinch.",
       "tokens": [
-        "navy blazer",
-        "open jacket",
-        "white shirt",
-        "loose tie",
-        "navy pleated skirt"
-      ]
+        "school_uniform",
+        "navy_blazer",
+        "open_jacket",
+        "white_shirt",
+        "unbuttoned_shirt",
+        "necktie",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "zettai_ryouiki",
+        "gyaru"
+      ],
+      "characterId": "kitagawa_marin",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
     }
   }
 }

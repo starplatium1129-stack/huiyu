@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/snow_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 195,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "snow_dress",
-      "name": "海军蓝牛角扣大衣",
-      "prose": "A navy wool duffle coat has dark horn toggles, paired with a blue-and-grey plaid scarf, dark tights and black winter boots.",
+      "name": "束腰羊毛排扣大衣与格纹暖融冬装",
+      "prose": "A tailored dark navy wool military-inspired double-breasted coat tightly cinched at the waist with an oversized buckle belt, draped with a blue-grey tartan cashmere scarf. Below the flared coat hem peek sheer black tights accented by an inner-thigh leather holster strap, paired with polished knee-high riding boots.",
       "tokens": [
-        "navy duffle coat",
-        "blue plaid scarf",
-        "dark tights",
-        "black winter boots"
+        "wool_coat",
+        "navy_coat",
+        "double-breasted",
+        "belted_coat",
+        "plaid_scarf",
+        "cashmere_scarf",
+        "black_tights",
+        "thigh_strap",
+        "riding_boots",
+        "winter_clothes"
       ],
+      "characterId": "yukinoshita_yukino",
+      "default": false,
       "isDefault": false,
-      "default": false
+      "isNsfw": false
     }
   }
 }

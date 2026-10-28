@@ -1,24 +1,32 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/sfw_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 864,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "sfw_casual",
-      "name": "灰色宽松帽衫与炭黑长裤",
-      "prose": "A dropped-shoulder heather-grey cotton hoodie, loose charcoal trousers and small blue zipper pull.",
+      "name": "高街水洗廓形卫衣与机能皮环私服",
+      "prose": "A heavy-wash charcoal grey oversized drop-shoulder hoodie hitting mid-thigh, layered over tight black bike shorts. A matte black utility leather leg harness with a miniature silver snap-hook gently pinches the bare thigh flesh, paired with slouchy white crew socks and high-top skate shoes.",
       "tokens": [
-        "heather grey cotton hoodie",
-        "oversized clothes",
-        "drop shoulders",
-        "loose charcoal pants"
+        "oversized_hoodie",
+        "charcoal_hoodie",
+        "drop_shoulder",
+        "cycling_shorts",
+        "thigh_strap",
+        "leg_harness",
+        "slouch_socks",
+        "sneakers",
+        "streetwear",
+        "casual"
       ],
+      "characterId": "takarada_rikka",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

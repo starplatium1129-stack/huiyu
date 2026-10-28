@@ -1,22 +1,30 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 868,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "浅色牛仔短外套周末装",
-      "prose": "A cropped light-denim jacket layers over a dark-green cotton shirt, black straight trousers and white canvas sneakers.",
+      "name": "解构短款牛仔夹克与收腰热裤",
+      "prose": "A distressed light-wash cropped denim trucker jacket worn open over an emerald green halterneck ribbed bodysuit, paired with tailored black high-waist micro shorts. An asymmetrical silver-chained black leather thigh garter hugs her soft thigh, worn with platform canvas sneakers.",
       "tokens": [
-        "cropped light blue denim jacket",
-        "dark green cotton shirt",
-        "black straight-leg pants",
-        "white canvas sneakers"
+        "denim_jacket",
+        "cropped_jacket",
+        "halterneck",
+        "bodysuit",
+        "short_shorts",
+        "high-waist_shorts",
+        "thigh_garter",
+        "leather_garter",
+        "chain",
+        "platform_sneakers"
       ],
+      "characterId": "takarada_rikka",
+      "default": false,
       "isDefault": false,
       "isNsfw": false
     }

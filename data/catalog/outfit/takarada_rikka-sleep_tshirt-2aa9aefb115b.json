@@ -1,23 +1,32 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/sleep_tshirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1445,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "sleep_tshirt",
-      "name": "浅灰宽松棉质睡衣",
+      "name": "晨间慵懒大号男友衬衫与蕾丝绑带",
+      "prose": "A roomy semi-sheer crisp white oversized boyfriend shirt with loose rolled sleeves and unbuttoned collar, revealing delicate scalloped black lace lingerie beneath. A deep navy satin ribbon garter is tied snugly around her upper thigh with soft indent, barefoot.",
       "tokens": [
-        "light grey t-shirt",
-        "grey panties",
-        "cotton"
+        "boyfriend_shirt",
+        "white_shirt",
+        "oversized_shirt",
+        "unbuttoned_shirt",
+        "lace_lingerie",
+        "black_bra",
+        "thigh_ribbon",
+        "garter_straps",
+        "barefoot",
+        "boudoir"
       ],
-      "prose": "A loose pale-grey cotton T-shirt and simple matching underwear.",
+      "characterId": "takarada_rikka",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

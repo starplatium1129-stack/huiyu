@@ -1,22 +1,33 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/white_bath_towel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1457,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "white_bath_towel",
-      "name": "白色棉浴巾",
+      "name": "晨雾私语缎面深V系带晨袍",
+      "prose": "A lustrous pearl white mulberry silk dressing robe tied loosely with a wide sash, sliding slightly off one shoulder to reveal collarbones. As the draped hem parts, it exposes bare legs adorned with a single delicate pale blue velvet thigh ribbon that subtly presses into the pale skin, barefoot.",
       "tokens": [
-        "white towel",
-        "cotton"
+        "dressing_gown",
+        "silk_robe",
+        "white_robe",
+        "plunging_neckline",
+        "off_shoulder",
+        "sash",
+        "thigh_ribbon",
+        "velvet_ribbon",
+        "bare_shoulders",
+        "barefoot",
+        "sensual"
       ],
-      "prose": "A plain white cotton bath towel.",
+      "characterId": "yukinoshita_yukino",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

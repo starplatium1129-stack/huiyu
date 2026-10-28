@@ -1,23 +1,35 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/beige_cardigan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1442,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "beige_cardigan",
-      "name": "米色长针织开衫",
+      "name": "原宿落肩粗花针织衫与双层皮腿环",
+      "prose": "An oversized chunky-knit beige wool cardigan sliding off one shoulder, layered over a ribbed black cropped tube top, a charcoal micro pleated skirt, and sheer black thighhighs. A signature dual-buckle leather thigh strap cinches the upper thigh with subtle soft indentation, finished with chunky retro sneakers.",
       "tokens": [
-        "beige cardigan",
-        "long cardigan",
-        "knit"
+        "chunky_knit",
+        "beige_cardigan",
+        "oversized_cardigan",
+        "off_shoulder",
+        "crop_top",
+        "pleated_skirt",
+        "miniskirt",
+        "black_thighhighs",
+        "thigh_strap",
+        "leather_strap",
+        "buckle",
+        "chunky_sneakers",
+        "layered_clothing"
       ],
-      "prose": "A long beige knit cardigan with loose sleeves and plain brown buttons.",
+      "characterId": "takarada_rikka",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }

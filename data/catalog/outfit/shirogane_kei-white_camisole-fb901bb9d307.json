@@ -1,22 +1,32 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/white_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1434,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "id": "white_camisole",
-      "name": "白色棉质吊带睡衣",
+      "name": "极简冰丝细吊带与滑肩条纹衬衫",
+      "prose": "A minimalist silk-touch ribbed ivory camisole with thread-thin spaghetti straps, worn under a breezy sky-blue striped cotton men's shirt slipping completely off one shoulder. Paired with relaxed linen drawstring lounge shorts and a single delicate silver chain looped around the upper thigh, barefoot.",
       "tokens": [
-        "white camisole",
-        "cotton"
+        "camisole",
+        "ribbed_camisole",
+        "spaghetti_straps",
+        "striped_shirt",
+        "off_shoulder",
+        "oversized_shirt",
+        "lounge_shorts",
+        "thigh_chain",
+        "barefoot",
+        "effortless"
       ],
-      "prose": "A plain white cotton sleep camisole with narrow straps.",
+      "characterId": "shirogane_kei",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "isNsfw": false
     }
   }
 }
