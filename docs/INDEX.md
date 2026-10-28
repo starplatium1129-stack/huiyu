@@ -1,6 +1,6 @@
 # 项目文档索引
 
-整理日期：2026-10-14。只保留现行文档，不保留报告或报告索引；已提交的历史资料可从 Git 历史读取。整理日期不表示重新执行模型、设备或全仓验收。
+从这里查找现行指南、架构和维护入口；已提交的历史资料可从 Git 历史读取。
 
 ## 日常入口
 
@@ -27,24 +27,16 @@
 - [远程内容投影](architecture/REMOTE-CONTENT-DESIGN.md)：发布索引、最小字段和未知状态拒绝。
 - [设备与外部条件验收清单](architecture/acceptance-checklist.md)：原 012 条件项及 009/010 场景，保留稳定 ID 和要求，不沿用旧 PASS。
 
-009、010、013 的剩余范围和 004 的暂停决定统一维护在[未来规划](roadmap.md)，不再并行维护专项进度副本。
-
-- [独立 Anima 推理接入](guides/independent-inference.md)：现有 Anima 主流程、独立运行库与使用范围。
+专项剩余范围和暂停事项统一维护在[未来规划](roadmap.md)。
 
 ## 专题指南
 
-[专题索引](guides/README.md)按环境、角色、美术、提示词、视频、桌面与工程分类。专题只维护可复用规则，当前状态不重复登记。
+[专题索引](guides/README.md)按环境、角色、美术、提示词、视频、桌面与工程分类。[研究来源](research/README.md)说明参考资料和采用边界。
 
-- 工程：[TypeScript](guides/engineering/typescript-development.md)、[Tailwind](guides/engineering/tailwind-styling.md)、[维护性边界](guides/engineering/maintainability-boundaries.md)。
-- 桌面：[Live2D](guides/desktop/live2d-native-runtime.md)、[安装界面](guides/desktop/game-installer.md)、[陪伴配置](guides/desktop/companion-dsh-agent-architecture.md)。
-- 内容：[角色接入](guides/characters/character-onboarding-workflow.md)、[粒子管线](guides/characters/particle-portrait-pipeline.md)、[视频工作流](guides/video/video-ai-storyboard.md)。
-- 写作：[humanizer-zh 项目指南](../.agents/skills/humanizer-zh/SKILL.md)用于角色档案与场景故事的中文创作、润色和审阅，保留设定与人物声音。
-- 提示词：[项目 skill](../.agents/skills/studio-prompt-craft/SKILL.md)负责创作流程与模型路由；语法、作者配方和编译消费分别维护在 Anima/Krea 与版本参考中，写入和定稿按交付参考执行。
-- UI：[设计规范查阅入口](../DESIGN.md#reading-guide)定位当前标准，[studio-ui-design](../.agents/skills/studio-ui-design/SKILL.md)提供实施路径，按需读取交互、动效和性能参考；引入新效果或更新上游时查[来源与采用边界](../.agents/skills/studio-ui-design/references/sources.md)，其中保留版本与许可。
-- [研究来源与采用边界](research/README.md)：只保留必要来源和未采纳条件，候选不等于实施承诺。
+角色档案与场景故事使用 [humanizer-zh](../.agents/skills/humanizer-zh/SKILL.md)，图像提示词使用 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md)，UI 工作使用 [studio-ui-design](../.agents/skills/studio-ui-design/SKILL.md) 和[设计规范](../DESIGN.md)。
 
 ## 维护方式
 
-同一事实只在一处维护：状态在 project-status，待办在 roadmap，命令在 workflow，长期规则在契约或指南。更新现有页优先于新建日期副本；原始 JSON、截图、日志写入被忽略的 runtime/，必要时在现行文档注明其本机路径，不另写报告，不生成干净检出不可用的链接或图片。第三方许可证、运行数据、测试夹具和正式阅读页资源不属于过期文档。
+同一事实只在一处维护：状态在 project-status，待办在 roadmap，命令在 workflow，长期规则在契约或指南。优先更新现有页；原始 JSON、截图和日志放入被忽略的 runtime/，不要链接干净检出中不存在的文件。第三方许可证和正式阅读页资源保留。
 
 增删文档同步本索引、分类索引、脚本引用和[旧地址映射](redirects.json)，运行 npm run wf -- docs:check。查旧过程使用 git log -- <路径> 与 git show <提交>:<路径>，不把历史文件重新复制到现行目录。

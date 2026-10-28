@@ -1,12 +1,12 @@
 # 绘遇 HUIYU 启动与排错
 
-本页是换机搭建和故障恢复入口。普通新机器先按 [离线资源发布与换机](docs/guides/offline-resources.md) 安装桌面程序、导入完整素材包，再按需要准备生图、视频、语音和聊天服务。完整素材浏览与本地 AI 推理分开验收；硬件、指定模型下载和运行环境见 [本地模型配置指南](docs/guides/setup-and-models.md)。最近登记的公开桌面版为 [1.9.2](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.2)，使用 Rust 产品后端；公开安装包、本机已安装版本与后续源码改动分别见[项目状态](docs/project-status.md)。[1.9.2 发行说明](docs/releases/v1.9.2.md)记录已交付范围，后续源码修复不因版本号相同而自动到达安装版。
+本页介绍换机、源码启动和常见故障。桌面安装与素材导入见[离线素材指南](docs/guides/offline-resources.md)，模型和硬件见[模型配置指南](docs/guides/setup-and-models.md)。已登记的发行版本为 [2.0.0](docs/releases/v2.0.0.md)；源码、发行与本机安装身份分别见[项目状态](docs/project-status.md)。
 
 ## 新机器的桌面离线安装
 
-准备 [1.9.2 完整桌面安装包](https://github.com/starplatium1129-stack/huiyu/releases/tag/v1.9.2)和[完整素材 `huiyu-resources-20261006-r1.zip`](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1)（481 项基础资源、2,092 条样张），保留发布页的校验文件与配套安装助手。程序安装不自动下载该 ZIP，程序升级也不代表已更新用户素材。图形助手自动检查内置审批指纹；维护者使用单独的 `Install-OfflineResources.ps1` 时，`-ExpectedReleaseSha256` 必须取自独立受信发布说明里的 `release.json` 审批 SHA-256，不能用 ZIP SHA-256 代替。
+准备 [2.0.0 完整桌面安装包](https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.0.0)和[现有完整素材包](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1)，保留发布页的校验文件与配套安装助手。程序与素材分开安装；2.0.0 尚未附带的新素材范围见[发行说明](docs/releases/v2.0.0.md)。维护者使用 `Install-OfflineResources.ps1` 时，`-ExpectedReleaseSha256` 必须取自独立受信说明中的 `release.json` 审批指纹，不能用 ZIP SHA-256 代替。
 
-本次公开附件不转载微软 VC++ 安装器。完全断网的新机须先在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器并带到新机，核对后手动安装，处理许可/UAC与可能的重启，再安装绘遇。1.9.2 完整安装包内嵌 WebView2 离线安装器。安装后完全退出绘遇及其运行时，以自己的普通用户身份双击安装目录 `gateway\tools\Install-OfflineResources.cmd`，选择上述 ZIP 校验并确认安装，成功后重启；也可从开始菜单打开资源安装助手。素材导入使用已安装的 Rust 原生入口，不要求新机具备 E 盘、开发机目录、Node、npm、Python 或克隆 Git。自定义安装/运行目录可按指南传 `-InstallDir` / `-RuntimeRoot`。
+完全断网的新机须在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器，带到新机核对并安装。完整安装包包含 WebView2 离线安装器。安装后退出绘遇及其运行时，以普通用户身份打开开始菜单中的资源安装助手，或双击安装目录 `gateway\tools\Install-OfflineResources.cmd`，选择素材包并确认导入。素材导入使用已安装的 Rust 原生入口，不需要 Node、npm、Python 或项目源码。
 
 微软材料可在联网准备机用 `scripts/maintenance/prepare-offline-prerequisites.ps1 -Out <新目录>` 查看只读计划，加 `-Apply` 才下载、验微软签名并记录实际版本/字节/SHA-256；脚本不会执行安装器。下载与新机安装步骤见 [原生前置说明](docs/guides/setup-and-models.md#windows-原生前置vc-x64-离线安装材料)。图片浏览、运行库安装与 PixAI 真实推理分别验收；源码已退出 ORT 依赖和新包载荷，不因此改变既有公开包或已安装文件。
 
@@ -33,7 +33,7 @@ AI 权重不在素材 ZIP 中。提前在联网准备机上取得所选能力的
 
 源码服务的 AI 外部工作区默认是应用同级 `AI/`，启动前可设置 `AI_WORKSPACE_ROOT`。**桌面端在 Companion「AI 工作区」设置中选新机实际目录**，该设置会重启网关，并用于 `ComfyUI/models/` 权重检查。现行反推使用 PixAI，可由 `AICS_PIXAI_CONFIG` 指定准备入口生成的本机回执；未指定时依次查运行目录的 `pixai/runtime-config.json` 与 AI 工作区的 `PixAI/runtime-config.json`，配置步骤见[模型指南](docs/guides/setup-and-models.md#pixai-默认图片反推)。翻译使用 `AICS_TRANSLATION_MODEL` / `TRANSLATION_PYTHON`。源码维护环境可运行 `npm run wf -- models:check --json`（默认只读取文件/硬件，`--verify-hashes` 另查已知权重 SHA-256）。体检的 `COMFYUI_MODELS_ROOT` 不改变网关模型路径。
 
-公共样张和图片按离线资源包安装；未公开的参考库可另用 `AICS_CHARACTER_REF_ROOT` 恢复，开发维护的外置样张可用 `SCENE_SHOWCASE_DIR` 指定。它们都不是 Git 克隆自动取得的媒体。可选 H3 下载入口为 `npm run wf -- models:download-h3 --models-root <ComfyUI模型目录>`，完整六文件约 46.38 GB，并需对应上游环境；不随普通安装自动下载。
+公共样张和图片按离线资源包安装；未公开的参考库可另用 `AICS_CHARACTER_REF_ROOT` 恢复，开发维护的外置样张可用 `SCENE_SHOWCASE_DIR` 指定。它们都不是 Git 克隆自动取得的媒体。可选 H3 下载入口为 `npm run wf -- models:download-h3 --models-root <ComfyUI模型目录>`，完整六文件约 43.99 GB，并需对应上游环境；不随普通安装自动下载。
 
 ## 运行配置与凭据恢复
 

@@ -29,6 +29,8 @@
 
 ---
 
+<a id="windows-原生前置vc-x64-离线安装材料"></a>
+
 ## 2. Windows 原生前置：VC++ x64 离线安装材料
 
 运行原生组件与模型环境需要 **Microsoft Visual C++ 2015-2022 Redistributable (x64)**。在联网准备机上可通过以下命令准备微软原始安装器：

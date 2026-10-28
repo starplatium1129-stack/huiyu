@@ -48,15 +48,14 @@ showcase/thumbs/...   # 画册缩略图
 
 ### 制作完整素材包（面向新装用户）
 ```powershell
-# 1. 编译维护运行时
-npm run build:runtime
-
-# 2. 预览打包规划（只读）
+# 1. 预览打包规划（只读）
 npm run wf -- offline:pack --showcase-root "D:\HuiyuContent\SceneShowcase\已发布版本" --release huiyu-resources-<版本号> --out "D:\HuiyuReleases\<输出目录>"
 
-# 3. 实际生成 ZIP 与校验清单
+# 2. 实际生成 ZIP 与校验清单
 npm run wf -- offline:pack --showcase-root "D:\HuiyuContent\SceneShowcase\已发布版本" --release huiyu-resources-<版本号> --out "D:\HuiyuReleases\<输出目录>" --apply
 ```
+
+仅维护工具源码或配置变化，或所需运行入口缺失时，先执行 `npm run build:runtime`。
 
 ### 制作增量素材包（已有素材的机器）
 增量包仅包含基础资源与画册新增/变化的文件，显著减小包体积：

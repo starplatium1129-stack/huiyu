@@ -1,6 +1,6 @@
 # 热门角色接入工作流
 
-> 2026-10-05。完整规则见 [工程契约](../../engineering-contracts.md#角色接入)。登记、生成、人工审核、发布、安装验收分别记录，不能相互替代。
+完整规则见[工程契约](../../engineering-contracts.md#角色接入)。登记、生成、人工审核、发布和安装验收分别确认。
 
 ## 日常维护入口
 
@@ -32,7 +32,7 @@
 | 阶段 | 入口与副作用 | 完成条件 |
 | --- | --- | --- |
 | 登记 | `reference:register --dry-run` 只读预览；去掉 dry-run 写源，按 popular→standards/view 的服装粒度差额补齐 | standards/view 占位一致，状态仍为 pending |
-| 候选 | `reference:render --output <隔离候选目录> --ids=<id>`，设计图用 `reference:design`；调用模型并写候选 | 有实际图片与生成清单；未审核 |
+| 候选 | `reference:render --output <隔离候选目录> --ids=<id>` 调用模型并写候选 | 有实际图片与生成清单；未审核 |
 | 检查 | `reference:inspect --from <候选清单>` 只读 | 核对图片、记录和输入身份 |
 | 人工审核 | 查看图片后写 decisions，再 `reference:review` 创建审核记录 | 每条决定绑定当前 recordId、sha256、inputVersion；漏审仍 pending |
 | 发布 | `reference:publish` 默认只读预览；显式 `--apply` 写新版本 | 所选图片均通过有效人工审核；保留旧版本 |
@@ -42,7 +42,7 @@
 
 ## 历史活跃库维护
 
-`character:onboard`、`sync-multi-outfit-standards` 与旧 URL 修复用于维护旧活跃库，可能直接写源/图片或调用模型，不能作为新候选发布入口。`character:onboard --skip-render` 仍有写入行为；`--deploy` 也不证明安装或设备验收。需要旧库维护时先检查当前帮助、计划和受控 diff；不以旧流水线的“成功”关闭新资产交付。
+`character:onboard`、`reference:design`、`sync-multi-outfit-standards` 与旧 URL 修复用于维护旧活跃库，可能直接写源/图片或调用模型，不能作为新候选发布入口。`reference:design` 出图后会回填参考索引；`character:onboard --skip-render` 仍有写入行为，`--deploy` 也不证明安装或设备验收。需要旧库维护时先检查当前帮助、计划和受控 diff；不以旧流水线的“成功”关闭新资产交付。
 
 ## 验收
 

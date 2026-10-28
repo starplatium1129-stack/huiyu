@@ -1,5 +1,7 @@
 # 项目内容维护手册
 
+<a id="文件职责"></a>
+
 人物、服装、场景和蓝图均采用记录化管理：
 - **工作权威**：运行时个人目录下的 `content/catalog.sqlite`。
 - **项目快照**：Git 跟踪的 `data/catalog/`（用于审查、版本控制与发布打包）。
@@ -18,9 +20,15 @@
 
 角色编辑中的“日常圈子”维护 `profile.identity.region`（档案出身地）、`race`（种族）、`school`（学院）及 `classificationSource`（出处）。关系页按作品已有分类展示圈子，缺失资料归入“待整理”；同组不会自动生成剧情关系，归属不从阵营散文或图像标签推断。
 
-内容库使用 SQLite 派生索引加速至少三个字符的包含搜索，最终仍核对完整关键词；一至两个字符保持原包含搜索，不改为分词或前缀搜索。首次使用新版运行时时会在事务中补齐搜索、角色排序、更新时间与历史索引，旧记录的内容和修订不变；搜索索引增加磁盘占用，后续写入由数据库触发器同步维护。目录字节缓存和筛选缓存按各自依赖的内容修订失效；界面连续保存时按回执刷新受影响的目录、场景分片和角色蓝图，首次保存或发现其他写入导致版本跳跃时全量作废，避免遗漏另一会话的变更。本机蓝图按角色单独读取；远程兜底只合并并发请求，继续遵循现有发布审核与撤销检查。历史记录继续保留，不自动清理。
+搜索使用包含匹配：三个及以上字符可由 SQLite 派生索引加速，最终仍核对完整关键词。索引随写入维护，内容缓存按修订失效；历史修订不会自动清理。
+
+成片下的“保存为场景”使用提交时冻结的角色、服装、提示词和参数；填写名称、画面说明并选择分级后保存，分级只升不降。工作室角色写入场景库，热门角色写入对应蓝图库，样张上传失败可单独重试。来源配方保留原始信息，重新选择时按当前规则编译，不保证与原图完全相同。
+
+角色档案的“更换立绘”使用本机维护入口：上传 PNG、JPEG 或 WebP 后，在个人运行目录生成原图、头像和粒子点阵并原子切换版本。最大 15 MiB、边长 8192、3200 万像素；失败保留旧形象，恢复内置不会删除旧版本。远程继续使用内置资源，样张、参考库和 Live2D 各走自己的入口。
 
 ---
+
+<a id="批量修改与快照"></a>
 
 ## 2. 命令行维护与批量补丁
 
@@ -54,7 +62,7 @@ npm run wf -- content:catalog authoring --runtime-root <运行目录> --kind sce
 人物档案的 `profile.name/source/speech/visual_dna.signature/portrait.image` 必须为非空字符串，`profile.traits` 沿用至少三项非空识别词条的契约，支持字符串或已有的含 `tag/label` 的对象。`speech` 是可直接使用的开场台词，不接收 `{intro,touch,special}` 对象；来源从真实作品信息填写，识别词条取该人物已有外貌锚点。界面保存、CLI 补丁和导入均在写入前核对这些字段；立绘未制作时使用项目自带的 `../assets/characters/portrait-pending.svg`，不把待产素材当成已有资产。
 
 ### 批量 Patch 更新
-编写 JSON 补丁文件 `patch.json`：
+在被忽略的 `runtime/` 中编写 JSON 补丁文件，例如 `runtime/patch.json`：
 ```json
 {
   "changes": [
@@ -70,10 +78,10 @@ npm run wf -- content:catalog authoring --runtime-root <运行目录> --kind sce
 预览并应用更新：
 ```powershell
 # 1. 预览补丁（只读）
-npm run wf -- content:catalog patch --runtime-root <运行目录> --file patch.json
+npm run wf -- content:catalog patch --runtime-root <运行目录> --file runtime/patch.json
 
 # 2. 实际应用
-npm run wf -- content:catalog patch --runtime-root <运行目录> --file patch.json --apply
+npm run wf -- content:catalog patch --runtime-root <运行目录> --file runtime/patch.json --apply
 ```
 
 ### 提示词写入检查
@@ -116,7 +124,11 @@ npm run wf -- content:catalog export --runtime-root <运行目录> --out data/ca
 
 ---
 
-## 4. 数据保护红线
+<a id="迁移与保护"></a>
+
+## 4. 迁移与数据保护
+
+旧分片与 `legacy:*` 仅用于支持范围内的未迁移资料；已启用记录库或项目快照时使用 `content:catalog`，不回写旧分片。具体旧入口先查看工作流帮助及其写入范围。
 
 1. **定稿场景保护**：`data/prompt-pinned-scenes.json` 为字节级基线保护文件。批量修改一律跳过；单条修改必须先真实出图验证，再执行 `npm run scenes:pin-capture -- --id=<场景ID>` 更新基线。
 2. **用户数据保留**：桌面升级与素材导入始终采用 `--preserve-local`，绝不静默覆盖用户的自定义修改。

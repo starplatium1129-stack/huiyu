@@ -170,17 +170,10 @@ destroyRuntime 保持全库唯一、Pixi-first 销毁顺序；双后端 capabili
 
 场景蓝图的 `compositionIntent` 可取 `single`（默认）、`group` 或 `triptych`。只有明确标记的 SFW 蓝图会放行多人或三格叙事；正文、人物数量、标签、镜头和画幅必须一起描述该构图。核心编译器与候选生成入口共用构图规则，不能在一端放行后又在另一端补回矛盾的单人/禁分格负面词。成人蓝图仍使用原有主体限制，构图字段不改变项目内角色的成年创作设定。未知取值视为无效蓝图。场景真实生成后由人工验收，不以参数通过替代画面通过。
 
-项目内角色统一按成年创作设定处理；成人内容不按本机、远程、内容开关或成年资格字段门控。列表缩略图保留 R18 默认模糊遮罩，大图预览直接展示并保留立体观画及原图缩放；设备、私人文件及工作区操作继续遵守各自权限。
+项目内角色统一按成年创作设定处理；分级和展示边界见 [AGENTS.md](../AGENTS.md#质量红线)。
 
-角色接入必须同步完成以下六层：
+接入时维护人物、服装和蓝图的稳定关联，并显式导出项目快照。角色强调色由 `profile.accent_color`、`characterTheme.ts` 和通用令牌派生；缺失或非法颜色回退默认值，普通新角色无需新增 CSS 选择器。立绘发布后用 `python scripts/maintenance/build-character-thumbs.py` 更新头像，并按需更新点云；主题和图片需分别验收。
 
-1. **数据层与大盘**：人物记录保存 profile/popular，服装和蓝图通过稳定 ID 关联；通过内容维护或 content:catalog 保存，显式 export 到 data/catalog/ 后进入项目构建。参考权威源仍为 data/references/<人物ID>.json 与 manifest，两个旧参考 JSON 仅为兼容聚合产物；资源登记、渲染和发布继续走各自入口；
-2. **UI 主题与强调色系统（必做项）**：通过人物记录的 `profile.accent_color` 维护有效十六进制颜色，保存到工作库，项目构建前显式导出 `data/catalog/` 快照；`data/characters.json` 为消费视图。由 `src/utils/characterTheme.ts` 和 `src/assets/css/director/tokens.css` 的通用令牌派生主题。既有 `CHARACTER_THEME_OVERRIDES` 调校优先，缺失或非法颜色回退默认强调色；普通新角色无需新增 CSS 选择器，特殊调校才加入例外。核对角色切换、默认/缺失/非法颜色及两主题实际效果，保留 WCAG AA 与图片叠字视觉验收；
-3. **全量场景蓝图（SFW/NSFW 姿势解剖防崩）**：每位角色配齐 10~11 套场景蓝图（6~7 SFW 唯美日常 + 4~5 R18 成人专属）；成人蓝图严格遵守**「后入/俯身 $\rightarrow$ 强制 `1536x1152` 横画幅 + POV扶腰受力」**与**「仰卧/POV $\rightarrow$ 强制 `1152x1536` 竖画幅 + 揉胸/分腿层级」**黄金法则，杜绝悬浮器官与断腰；
-4. **立绘原图与 WebP 紧凑头像缩略图**：在发布样张原图（`assets/characters/popular-<id>.png`）后，**必须同步执行 `python scripts/maintenance/build-character-thumbs.py`** 编译生成 `assets/characters/thumbs/popular-<id>.webp`，确保生图左侧选择器、首页横条卡片不掉头像；
-5. **可选参考素材**：新增角色和服装无需登记或补齐固定机位图库；档案不展示图库与完整度，分镜的身份/服装文字从内容目录读取，图片按项目需求手动上传。只有确有需要且已授权制作参考素材时，才使用以下旧参考库工具。先用 `reference:register --dry-run` 预览，再显式登记 pending（写源）；`reference:render`/`reference:design` 调用模型，仅写隔离候选。经 `reference:inspect` 只读核验、人工查看图片、`reference:review` 写入绑定当前候选的审核决定，再 `reference:publish` 预览，显式 `--apply` 发布到新版本目录。缺审核保持 pending，发布不自动激活或安装。参数以[候选审核与版本发布](workflow.md#参考库候选审核与版本发布)为准。旧 `sync-multi-outfit-standards` 与 URL 修复仅用于已核验旧库维护，不能代替新候选发布；
-6. **审查与桌面端同步**：按实际影响选择类型检查、产品构建与人工验收。安装获授权后使用唯一入口 `deploy-desktop.bat`；只有匹配构建才加 `-SkipBuild`，纯资源同步显式加 `-ResourcesOnly`。Git 提交、推送与发布分别按本次授权执行。
+场景按实际创作需要编写，不设角色场景数量、分级比例、姿势或画幅的固定配额。保留 SFW 可选、角色／服装有效关联和当前分级；默认服装不要求另配 SFW 蓝图，衣橱可保留未编排或仅用于成人场景的服装。`coverageTags` 为可选元数据，道具以实际模型载荷为准。编译通过不能代替真实画面验收，定稿字段按保护基线处理。
 
-自动化辅助入口见 [接入工作流](guides/characters/character-onboarding-workflow.md)。脚本执行成功不等于主题、头像、按需制作的参考图和真实样张全部验收通过；必须逐层核对。场景数量是接入目标，不能为凑数覆盖已定稿内容；现存更多场景无需删减。
-
-内容回归核对每位角色拥有可选 SFW、已编排蓝图的角色／衣装关联有效，以及当前分级与列表缩略图的默认遮罩。衣橱可保留未编排或仅用于成人场景的服装，默认衣装不要求另配 SFW 蓝图；coverageTags 为可选技术元数据，不按 iconic/daily/special_nsfw 强制类别配额。道具保真核对当前已写入的模型载荷，不从检索标签补入已退出的形状或其他美术细节；编译通过仍不代表真实渲染验收。
+参考图片按需制作，新增角色和服装无需补齐固定机位。制作候选时人工审核绑定当前记录和图片，pending 不算交付；发布不自动激活或安装。具体步骤见[角色接入工作流](guides/characters/character-onboarding-workflow.md)和[候选审核与发布](workflow.md#参考库候选审核与版本发布)。桌面同步和发布按各自授权执行，见[部署指南](desktop-deployment.md)。

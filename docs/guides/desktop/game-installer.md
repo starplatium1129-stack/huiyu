@@ -7,11 +7,11 @@
 
 ## 构建与预览
 
-发行入口一次完整构建后生成两份独立签名安装器：`AI-CG-Studio_<版本>_x64-full-setup.exe` 面向新用户、基础素材变化或修复，包含程序、基础素材和 WebView2 离线安装器；`AI-CG-Studio_<版本>_x64-upgrade-setup.exe` 面向已有完整安装，复用已安装的基础素材和 WebView2。约 1 GiB 的样张图片仍通过独立素材 ZIP 提供，两种程序包都不额外塞入样张合集。
+发行入口通常从同一构建生成完整包和升级包：`AI-CG-Studio_<版本>_x64-full-setup.exe` 包含程序、基础素材和 WebView2 离线安装器；`AI-CG-Studio_<版本>_x64-upgrade-setup.exe` 面向已有完整安装，复用已安装的基础素材和 WebView2。显式 `--full-only` 只生成完整包；2.0.0 使用该模式。样张图片通过独立素材 ZIP 提供。
 
 升级包在外层安装器和内层 NSIS 替换程序文件前核对安装登记、宿主版本、WebView2 与每个保留素材的大小/SHA-256，并拒绝链接路径。缺失、损坏或素材版本不匹配时明确要求使用本版本完整包；不把残缺安装升级成不可用状态。验证通过后使用既有 `/UPDATE` 原位覆盖程序，不调用旧卸载器。升级包保留完整的资源卸载清单，后续正常卸载仍清理程序自带素材，个人资料保持原有规则。
 
-两份安装器分别绑定源码、构建和分发字节，分别签名；`latest.json` 指向升级包，发布页同时提供完整包作为新装/修复入口。从同一构建派生升级包，不重复编译应用。新版绑定还覆盖渲染后的 NSIS 输入，旧回执缺少这项输入时需先完成一次正常桌面构建。
+安装器分别绑定源码、构建和分发字节，分别签名；双包发行时 `latest.json` 指向升级包，`--full-only` 时指向完整包。绑定也覆盖渲染后的 NSIS 输入，旧回执缺少这项输入时需先完成一次正常桌面构建。
 
 - `npm run workflow -- installer:modern --preview --capture --theme=dark --state=ready --dpi=144`：编译原生预览；主题支持 dark/light，状态支持 ready/installing/done/error，DPI 支持 96–240。预览版本以及任何 --capture 调用都禁止安装。
 - 上述预览加 `--upgrade` 展示老用户升级界面；截图文件名区分 `full`/`upgrade`。真实升级验证器由双包发行流程生成，预览不检查或修改已安装程序。
@@ -42,8 +42,7 @@ Windows 10/11 x64 使用系统 .NET Framework 4.x/WPF，不增加浏览器运行
 
 发行目标统一为公开主项目 `starplatium1129-stack/huiyu`。源码进入 `main`，安装包、
 updater 签名、`latest.json` 与 SHA-256 作为同版本 GitHub Release 附件；大型 exe 不入 Git。
-客户端只自动检测版本，用户点击后才下载安装。完整门禁中的失败必须在发布说明中列明，
-不伪称全绿；安装后的系统目录替换与 UAC 仍按 desktop-deployment.md 处理。
+客户端只自动检测版本，用户点击后才下载安装。按实际改动选择验证，失败和未验范围如实说明；安装与 UAC 按[部署指南](../../desktop-deployment.md)处理。
 
 
-当前发行、签名与本机安装范围见 [1.9.2 说明](../../releases/v1.9.2.md)和[项目状态](../../project-status.md)。updater 完整性签名不代表 Windows Authenticode 证书；具体设备/DPI 状态按当次实际验收记录。
+已登记的发行与本机安装范围见 [2.0.0 说明](../../releases/v2.0.0.md)和[项目状态](../../project-status.md)。updater 完整性签名不代表 Windows Authenticode 证书；具体设备/DPI 状态按实际验收记录。

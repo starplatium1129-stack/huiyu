@@ -22,15 +22,11 @@ all execution/protocol faults and timeouts. Stage events identify dependency
 preparation, fingerprinting, component loading/upload, encoding, decoding,
 upscaling and saving; no artificial loading percentage is reported.
 
-See the [inference guide](../../docs/guides/independent-inference.md)
-for current capabilities and limits. The authorized 2026-10-13 local acceptance
-completed 36 product-API images and 5 cancellations, plus installed-desktop
-cancel/recovery and user acceptance. On RTX 4070 Ti SUPER, MiaoMiao 1.6 /
-Nene 0.8 / 832x1216 / 24 steps / CFG 4, native warm median was 5.05 seconds
-versus ComfyUI 5.54 seconds. These bounded samples do not validate every model,
-shape, prompt or device. The worker completes dependency initialization before
-the request reader blocks again; completed jobs release idle allocator reserves
-while retaining model weights. API wall time includes result-to-ready cleanup.
+See the [inference guide](../../docs/guides/independent-inference.md) for current
+capabilities and limits, and [project status](../../docs/project-status.md) for
+recorded device acceptance. Earlier timings apply only to their source and device.
+Completed jobs release idle allocator reserves while retaining model weights;
+API wall time includes result-to-ready cleanup.
 
 ## Native desktop handoff and finite output boundaries
 
@@ -113,13 +109,12 @@ and the RCAS execution revision when sharpening actually ran.
 The desktop allowlist includes new helpers and the AP mask license notice.
 
 Source review and compilation do not establish output or performance parity.
-The requested mask/RCAS/Remacri/VAE mathematical paths are now implemented:
+The mask/RCAS/Remacri/VAE mathematical paths are implemented:
 contain/pad/red channel, tapered manual growth, masked model input/denoised
 history, mean-logit automatic smoothing/square growth/float feather, and the
 fixed KJ RCAS functional variant. FP32 accumulation order, device kernels and
-batching still prevent a source-only pixel-equivalence claim. The current host
-has AMD 880M and no usable NVIDIA CUDA. No model calls, tests, installs or
-deployment were performed.
+batching still prevent a source-only pixel-equivalence claim. Model, device and
+visual acceptance remain separate from source review.
 
 ## Explicit preparation
 
@@ -462,38 +457,11 @@ require separately recorded device acceptance within the user's authorization.
 
 The host sends trusted maskImagePath alongside inputImagePath. Input and oriented mask dimensions must match. Both share contain/Lanczos/center-black resize; the workflow reads the resized RGB red channel, not alpha multiplied by luminance. Repeated five-neighbour maxima implement growMaskBy's tapered diamond. Empty masks fail before Anima loads.
 
-Manual preparation resizes only the 8-bit band equivalent to RGB R. With
-straight RGBA and red-only masking, pinned Pillow 11.3.0's RGBA-to-RGB conversion
-only copies RGB and drops alpha, so the helper takes the same R directly and
-avoids a full RGB temporary. RGB is borrowed read-only; palette, grayscale,
-CMYK, premultiplied RGBa and other modes retain the original RGB conversion.
-Ordinary image resizing still converts non-RGB inputs. Pinned Pillow applies
-the same per-band Lanczos coefficients, rounding and clipping for RGB and L.
-The helper skips same-size intermediate copies and returns an independent new
-canvas without inherited EXIF/info. EXIF normalization, checks, contain geometry,
-black padding, FP32 division and downstream mask processing are retained.
-Historical stage timings, complete actual CPU preparation and fresh-process
-high-water RSS observations apply only to their source snapshots. Process maxRSS includes
-startup/imports and does not establish production residency, model or VRAM peaks.
-No behavior tests or pixel comparisons were run; image/EXIF behavior still needs
-device acceptance. Manual v3/Tea identity is retained on pinned source reasoning.
-
-The manual mask owns its decoded ImageFile inside `with`; EXIF transpose now
-runs in place there and the source is released before image resize/Torch growth.
-Non-RGB input images also transpose their owned decoder in place, then retain
-the original final RGB conversion and independent result. RGB input handling,
-including the necessary post-transpose EXIF normalization copy, is unchanged.
-This removes transient whole-image copies without adding a cache or sharing
-pixels across jobs. The same report records real repository image loader and
-mask-PIL-prefix CPU observations; EXIF/image behavior still needs device acceptance.
-
-Manual growth now reads each round from edge padding and writes the ordered
-five-neighbour maxima into its independent FP32 resized output. It no longer
-constructs a five-image stack or allocates a new output per round. At 4096² the
-removed stack is 320 MiB per round (10 GiB of cumulative stack construction at
-grow=32), a source-derived allocation count rather than measured RSS or speed.
-Soft masks and the manual v3/Tea identity remain unchanged; this revision has
-syntax and source review only.
+Manual preparation normalizes EXIF orientation and resizes the red channel;
+other color modes retain RGB conversion. It produces an independent canvas with
+contain geometry and black padding. Growth uses ordered five-neighbour maxima on
+the FP32 mask. Image orientation, mask boundaries and quality still require
+device acceptance.
 
 The bundled masked_anima.py replaces prepare/before/after denoiser leaves. Effective float masks are trilinear at single-frame latent resolution and nearest-exact for hires. With clean latent z, original noise epsilon, state x and white-edit mask m, model input is m*x+(1-m)*((1-sigma)*z+sigma*epsilon). Predicted denoised is blended with clean z before the scheduler integrates original x; RES therefore retains masked denoised history. Final pixel composite uses the same unquantized effective mask.
 
@@ -523,26 +491,15 @@ The CPU cache retains one model, one mean-logit map, at most 64 KiB conditioning
 
 Per-phrase 352x352 FP32 logits are averaged with duplicate phrases preserved, then Torch bilinear resized. AP postprocessing applies three 5x5 reflect box smooths, sigmoid >= threshold, square maximum growth, then three 25x25 reflect box blurs. Uniform boxes use separable horizontal/vertical convolutions to reduce full-image work; the mathematical filter matches, FP32 accumulation may differ. Float masks go directly to sampling/compositing without uint8 or a second growth pass. Retain MASK_PROCESSING_LICENSE.txt; real boundary quality and complete model-mask CPU cost are unverified.
 
-Square growth uses row and column prefix presence on the thresholded CPU FP32
-0/1 mask. Counts are exact integers bounded by each axis length; accumulator and
-output use the same sufficiently wide dtype. Clipped signed coordinates preserve
-the original Cartesian square window, including boundaries. The result owns FP32
-storage with the current threshold mask's canonical layout before the unchanged
-feather convolution. This private binary selector is not used for fractional
-manual masks. Smooth/feather convolutions, parameters, execution revision and cache
-scope are unchanged. Fixed Torch 2.8.0+cpu normal postprocessing observations,
-including the full helper and the preceding two-axis implementation, are recorded
-in the existing backend HTML report, including separate Linux Python 3.11/3.12
-timing, explicit 1536²/grow6 process-RSS, and separate 1024²/grow8 CPU
-observations (the standalone worker defaults) with Python 3.11 process high water. Real CLIPSeg outputs,
-Windows, model/cache residency, GPU speed and VRAM still need device acceptance.
-
-Earlier evidence includes CPU CLIPSeg segmentation and a GPU automatic-mask Remacri 2x result, tied to their recorded older source. It does not validate `clipseg-single-image-vision-v1`: changing the vision batch shape can change FP32 results near threshold boundaries. This revision has source/API and compilation review plus neutral-logit CPU postprocessing timing observations, with no tests or model calls. Actual masks, complete model-mask CPU cost and cache RAM need device acceptance. Raw historical evidence remains under ignored `runtime/`.
+Square growth uses row and column prefix presence on the thresholded binary CPU
+mask; fractional manual masks use their own path. Historical CPU and GPU evidence
+does not validate later changes to vision batching or threshold boundaries. Actual
+masks, model cost, cache memory and GPU behavior require device acceptance.
 
 
 ## Experimental calibrated TeaCache
 
-This section describes explicit maintenance profiles only. Ordinary product jobs use the built-in policy described above. No calibration or comparison commands may run while repository instructions prohibit tests.
+This section describes explicit maintenance profiles only. Ordinary product jobs use the built-in policy described above; model calls require the user's authorization.
 
 Profiles, collection traces and held-out reports must record `runtime.huiyuInference: "lora-eval-v1"` for post-injection LoRA evaluation mode; all older artifacts are rejected and require fresh collection/calibration and acceptance, including scopes without LoRAs, while installed files are never automatically rewritten.
 
@@ -649,56 +606,10 @@ Dependency/helper validation runs once per resident worker; standalone diagnosti
 
 TeaCache calibration disables this text cache on both baseline and cached jobs and verifies that evidence again at acceptance, so a first-side encoder miss cannot inflate the TeaCache speedup. Complete byte identity checks retain SHA-256 semantics while using the standard streaming file-digest buffer to reduce Python allocation peaks. Office CPU/protocol results do not establish GPU throughput or final artwork quality.
 
-The office validation environment uses Python 3.11 and all exact direct pins with Torch 2.8.0+cpu. A one-off real-library smoke used locally initialized miniature Qwen/Cosmos/text-conditioner/VAE and local toy tokenizers: stock/cached embeddings matched exactly, both LoRA components changed and restored strengths, fresh scheduling and full two-seed CPU pipeline execution succeeded. The test caught and fixed an output-boundary error: text outputs live in PipelineState, not the input-only BlockState. No actual Anima checkpoint, production artwork or CUDA workload was used. Raw local evidence stays under runtime/office-inference-20261010/, not the shipped resources.
-
 ## ComfyUI comparison evidence
 
-The existing `scripts/tests/benchmark-anima-teacache.ts` entry now requires an explicit, already-tested ComfyUI API workflow instead of hard-coded models, LoRAs or sampler choices. Use `npm run wf -- models:benchmark-anima-comfy --workflow <api.json> --sampler-node <KSampler id> --output-dir <new runtime directory>`; it prints the exact job count, seed/order plan and parity limitations with no network, subprocesses or writes. Only `--run` contacts the prepared literal-loopback HTTP endpoint (default `http://127.0.0.1:8188`). It never installs, starts/restarts ComfyUI, flushes caches or interrupts the server.
-
-Supply a graph with one KSampler and one SaveImage, producing one image. Unrelated nodes/outputs must be removed. For a ComfyUI TeaCache comparison, supply `--teacache-node <AnimaTeaCache id>` for the node directly feeding that sampler; the baseline bypasses only this node. Existing model, prompt, LoRA, precision and sampling inputs are retained. Every submitted graph is saved. This compares the supplied ComfyUI workflow variants, not native TeaCache implementations or equal-quality algorithms.
-
-Default execution performs one warm-up per variant, followed by six measured rounds; `--warmups 1..5` and `--repeats 2..50` set the bounded workload. Each round uses a fresh seed, shared by the two variants, and order alternates baseline/cache then cache/baseline. Warm-ups stay in evidence but are excluded from summary statistics. They are not verified GPU residency, process-cold or disk-cold measurements. The initial service/model/OS-cache state is uncontrolled; no cold-start claim is made. Prompt-conditioning node cache hits remain visible in each history record; they are not equivalent to native calibration's intentionally disabled text cache.
-
-The tool requires an empty queue before every submission and successful, matching history events; a cached sampler/output, interrupted/failed task, missing output or uncertain response stops the suite. Per-job `status.json` preserves its known prompt ID (or submission-unknown state) for manual inspection. It never resubmits after a timeout/error or sends a global interrupt that could affect another task. Use the device exclusively; queue preflight cannot prevent another client or process from starting later.
-
-Raw requests/history, environment snapshot, PNGs and timing JSON belong in the ignored `runtime/` directory. `review.html` provides local image pairs and statistics. Output SHA-256 identifies complete PNG file bytes, not decoded pixels: Comfy SaveImage can embed the prompt graph, so changing seed/prompt metadata changes the hash even when pixels match. Completion time covers submission through successful output history, including queue, text encoding, sampling, VAE decoding, PNG save and polling. Delivered time additionally includes local evidence IO, PNG download and validation. Server event duration covers graph execution, not synchronized sampler-only GPU work. The default 100 ms polling interval is recorded (`--poll-ms`); HTTP latency remains additional. Report median/min/max/sample count; nearest-rank p95 is omitted below 20 measured rounds. System stats do not provide peak VRAM. No automatic image-quality approval or cross-backend speedup is emitted.
-
-Use the existing gateway runner for authorized product timings. Keep cold process/load, warm novel prompt and warm repeated prompt separate. Establish checkpoint/export, LoRAs, prompt conditioning, sigmas, noise, dtype/kernel and cache scope, then inspect actual images before speed or quality claims. Current simple uses the training grid; identical seed/name alone never establishes cross-backend equality. Historical benchmark reports remain tied to their original source.
-
-For img2img, native slices the original step schedule by strength, whereas [ComfyUI KSampler at the inspected commit](https://github.com/Comfy-Org/ComfyUI/blob/b058ec652802e1de24f1d429b3c7c1fb868f791c/comfy/samplers.py#L1431-L1463) constructs a longer schedule before taking its requested-step suffix: with Euler, 28 steps at strength/denoise 0.5 means 14 native updates versus 28 Comfy updates, not matched work. The native worker uses a CUDA generator, while [ComfyUI's inspected noise path](https://github.com/Comfy-Org/ComfyUI/blob/b058ec652802e1de24f1d429b3c7c1fb868f791c/comfy/sample.py#L9-L38) draws CPU float32 noise before casting to the latent dtype; disclose this difference rather than treating equal seeds as equal noise or silently changing either backend's defaults.
-
-Official design references, inspected read-only: [ComfyUI model residency](https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/model_management.py), [input-dependent node caching](https://github.com/Comfy-Org/ComfyUI/blob/master/comfy_execution/caching.py), [PyTorch asynchronous timing](https://docs.pytorch.org/docs/main/notes/cuda.html#asynchronous-execution), [PyTorch warm-up benchmarking](https://docs.pytorch.org/tutorials/recipes/recipes/benchmark.html), [Diffusers scheduler synchronization](https://huggingface.co/docs/diffusers/en/optimization/fp16#gpu-sync), and [official Anima components](https://huggingface.co/docs/diffusers/main/api/pipelines/anima). These are architectural observations and candidate optimizations, not measurements of this worker. No ComfyUI source is copied into the independent inference runtime. Diffusers' Apache-2.0 code license and ComfyUI's GPL-3.0 license are separate from [Anima's model-weight license](https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md); independently implementing the backend does not grant commercial model rights.
+The former benchmark harness has been retired. When an authorized comparison is needed, record the exact model, inputs, environment and source revision, and review the generated images. Separate cold loading from warm tasks. Matching seeds or sampler names alone does not establish equivalent noise, schedules, precision or image quality across providers.
 
 ## Product gateway warm measurements
 
-Use `npm run wf -- models:benchmark-inference-gateway --payload <actual-api-payload.json> --expect-provider native --output-dir <new runtime directory>` to inspect a zero-network, no-write plan. The payload is the actual object submitted to `/api/anima/jobs`, not a Comfy graph or Python worker envelope. Supply an explicit nonnegative safe-integer `seed`; other parameters, including TeaCache, uploaded `initImage`/`maskImage` names, model/LoRAs and prompt, are retained. Upload any source images beforehand using the normal product flow. By default the runner only increments the seed. The default is one warm-up then six measured repeated-prompt jobs; `--warmups 1..5`, `--repeats 2..50`, `--poll-ms 100` and `--timeout 600` bound the workload. No recipe, model, adapter or cache flag is invented or silently aligned between engines.
-
-To request different positive text on a warmed model, optionally add `--prompt-variants <user-text.json>`. The file accepts only `{"warmup":["user warm-up text"],"measured":["user text A","user text B"]}`; this example requires `--warmups 1 --repeats 2`. Array lengths must exactly match those options; no automatic cycling, extra generation or invented text occurs. Every value must be a nonempty string of at most 12000 UTF-16 code units, matching the actual API limit. The variants file and each complete serialized job must fit 64 KiB. Warm-up texts may repeat; measured texts must differ from each other and every warm-up after the API's Unicode whitespace trimming. Original user text is preserved in each request, with `expectedNormalizedPrompt` recorded separately; only `prompt` and the existing seed sequence change, including preserving the original negative text. The plan lists every complete request, and execution uses those same requests. Completed variants jobs must independently report that normalized prompt in `serverMetadata.prompt`; absent/mismatched text stops the suite without a request-value fallback. JSON/HTML label this population `requested-distinct-prompts-within-suite` and retain the variants source SHA-256. This does not prove unseen historical text, different tokens or encoder cache misses; inspect actual cache counters and base reuse separately. Fixed negative text does not prove it was evaluated or reused (for example, CFG=1 may omit that branch). Keep the same supplied texts, order, seeds and counts when comparing runs, and keep this population separate from the default repeated-prompt measurements.
-
-`sampler` and `scheduler` are not accepted fields of this API payload; the provider/catalog selects them. The plan rejects either field rather than implying that they can be manually aligned through `/api/anima/jobs`. Inspect the server's normalized metadata and actual runtime schedules separately.
-
-For an uncached-algorithm baseline, explicitly set `teaCache: false` and remove `teaCacheThresh` from both payloads: omission enables Comfy TeaCache and the built-in Anima policy on native; actual native use is reported in runtime observations. This does not disable product model/text/mask residency. For editing, upload the same source/mask bytes through the normal product flow separately after selecting each engine: native uses `inference/input`, while Comfy uses `ComfyUI/input`. Reusing the other engine's upload name can fail. Retain each engine's actual payload and source-image hashes; their upload names may differ.
-
-Current Comfy ordinary img2img connects VAE-encoded source latents and denoisingStrength before the optional mask branch. Native v3 now implements the requested mask, KJ RCAS, RRDB assembly, quantization and VAE boundaries. Neither the implemented formulas nor old diagnostic workflows establish current device/pixel/performance parity; compare exact v3 outputs and recorded runtime operations on authorized CUDA hardware.
-
-Only append `--run` when the actual local gateway and model environment are prepared. `--gateway` accepts a literal-loopback HTTP origin, default `http://127.0.0.1:3000`. Run one provider at a time on an otherwise idle GPU: measure native, release its resident worker through the normal product controls, configure/restart for Comfy as required, then warm up and measure again with `--expect-provider comfy` and a different new output directory. Do not keep both engines resident or generating concurrently. This runner never changes settings, starts/restarts services, unloads models, flushes caches, downloads anything, retries an uncertain submission or sends cancellation/global interrupts. The operator owns exclusivity; the tool cannot prove no other GPU process exists.
-
-For an explicitly planned cross-provider comparison, balance separate suites in both native→Comfy and Comfy→native order. At each switch release the previous backend, verify only one is resident, and warm up again with the same plan, monitoring mode, seeds and supplied texts; keep repeated-prompt and distinct-prompt populations separate. One warm-up or balanced order does not establish an OS/disk-cold start, thermal steady state or equivalent inference. This is an operator-planned comparison, not additional automatic submissions, and the known compatibility differences below still prevent a parity verdict.
-
-Optional whole-device memory sampling requires **all three**: `--run --sample-device-memory GPU-<full-physical-UUID> --nvidia-smi "<absolute path to the already-installed official nvidia-smi executable>"`. Without the two sampling options, no sampler starts; plan mode only prints its proposed command and never spawns/probes the CLI. The executable must be named `nvidia-smi` or `nvidia-smi.exe`; the operator supplies/verifies the official installation, with no installation or PATH lookup by the runner. The fixed command queries UUID, PCI bus ID, driver version, total/used MiB and query timestamp every **1000 ms**, using one direct child per suite. A trustworthy first row is required within 10 seconds before any gateway submission; unavailable/N/A readings never become zero. Gaps exceeding 3500 ms, invalid rows or process errors stop further submissions after the current job follows the normal completion protocol. Images and a `partial-stopped` JSON/HTML report remain available. No retry/cancel is sent. SIGINT instead aborts local HTTP/poll waiting and closes the sampler; a submitted or uncertain server job may still be running, so inspect its saved status before another run. Cleanup targets only this child PID and waits up to 5 seconds for its `close` after the termination request; unconfirmed cleanup stays explicit. Forced termination or crashes cannot guarantee cleanup.
-
-Sampling reports `measurementMode: "monitoring-enabled"`, `deviceMemorySampling` and per-job windows plus `device-memory-samples.jsonl`, `device-memory-stderr.log`, an early `device-memory-stop-checkpoint.json`, and final `device-memory-sampling.json`. The suite-final sampling snapshot is identical in the final sidecar JSON and report, including any late observed close; historical timeout issues remain. `cleanup.pid` is diagnostic only, never an instruction to kill a possibly reused PID. The label is **sampled device-used maximum**, never true peak or job-attributed VRAM; `peakVram` remains null and native allocator metrics stay separate. Whole-suite values include warm-ups/gaps and must not be used as measured-job peaks. Windows use monotonic host full-line receipt times, retaining the pre-window sample, in-window count/maximum/observed gaps and next post-window sample when available. Missing window samples remain null/unverified; pipe buffering and scheduling can misassign boundary samples, and 1-second sampling misses short peaks. Other processes, desktop, driver accounting and resident models contribute; do not subtract the baseline as a job increment. Compare only equally monitored suites because sampling overhead is unmeasured. Verify each already-running backend actually uses the requested physical UUID: `CUDA_VISIBLE_DEVICES` can remap logical device 0, and this entry cannot prove backend binding or exclusivity. MIG/vGPU and multi-GPU workloads are outside this mode. See official [NVIDIA query/loop and memory caveats](https://docs.nvidia.com/deploy/nvidia-smi/index.html), [CUDA device visibility](https://docs.nvidia.com/cuda/cuda-programming-guide/05-appendices/environment-variables.html#cuda-visible-devices) and [Node child close/kill semantics](https://nodejs.org/api/child_process.html#subprocesskillsignal). Real NVIDIA CLI/Windows cleanup, sampling overhead and device accuracy still require operator validation; cloud tests only use mocks.
-
-Before each submission it reads `/api/inference/settings` and `/api/anima/status` outside the timer. The settings contract distinguishes the **active** engine from the saved **configured** target; an active mismatch or nonzero pending-job count stops before submission. Unavailable settings/status are saved as unverified, counted in JSON/HTML, and are never treated as proof of engine selection or an empty GPU. Every completed job must independently report the expected provider and the exact requested seed. A missing server seed is rejected rather than substituting the request seed. Requests use `no-store`, and duplicate job IDs or complete PNG file bytes stop the suite for investigation. This is not a decoded-pixel comparison: [Comfy SaveImage embeds prompt metadata when enabled](https://github.com/Comfy-Org/ComfyUI/blob/b058ec652802e1de24f1d429b3c7c1fb868f791c/nodes.py#L1538-L1548), and metadata or encoding differences can change file hashes without changing pixels. Identical bytes can also mean a degenerate output and are not definitive cache proof; different bytes do not prove fresh sampling. Gateway metadata still cannot prove sampler execution, noise tensors or node-cache misses.
-
-The tool reuses `scripts/lib/generation-gateway.ts` for submission, polling, same-origin result download and structural PNG validation. Native conditioning/model/mask residency and Comfy graph caches remain at their actual product settings; this is intentionally separate from TeaCache calibration's disabled-cache A/B. The timed wall interval includes submission, queueing, inference/output work, polling, PNG download/validation, hashing and synchronous local image save. It excludes preflight and setup of evidence folders. It does not isolate the sampler or GPU kernels. Polling adds up to one nominal polling interval only when request/processing latency is negligible; HTTP latency is additional, so `--poll-ms` is not a bound on the whole timing error.
-
-Each new output directory retains `plan.json`, per-job requests, settings/status observations, job IDs/status, provider, server-reported seed, terminal `serverMetadata` (including normalized sampling/cache parameters), request/PNG SHA-256, actual output dimensions, PNGs, `report.json` and `review.html`. Failed/cancelled jobs also preserve the server's `code` and `error` as `serverCode` and `serverError`, separate from the runner's local failure. Warm-ups remain visible but do not enter the measured median/min/max/count; p95 is omitted below 20 measured jobs. Failure preserves partial evidence and produces no successful aggregate report; inspect the recorded job before starting a new suite. All raw data belongs under ignored `runtime/`.
-
-`serverMetadata` is partial normalized request metadata plus available native observations, not a complete executed-workflow record. Current Comfy metadata omits mask prompt/threshold/growth and input/mask names; current native product jobs do not select calibration profiles. Their `nativeRuntime.teaCache` observations report actual enabled state and, when active, algorithm and threshold; missing or invalid worker observations remain unverified. Missing fields mean unobserved here, never default, disabled or equal. The runner does not capture effective mask pixels or establish matching resize/growth/threshold semantics. Explicit request values and diagnostic Comfy graphs remain useful evidence, but do not replace missing runtime observations or establish cross-backend equivalence.
-
-New native workers also report `job.metadata.nativeRuntime`, retained in each job JSON and the expandable server-parameter section of `review.html`. It includes actual completed scheduler updates, base reuse, current-job text/mask/TeaCache counters and CPU wall intervals for image preparation, model acquisition, the full encoding/denoising/decoding pipeline, compositing and output. These intervals overlap and are not additive; `workerWallSeconds` ends before emitting the result and excludes process startup and gateway delivery. `existingReportSynchronization` identifies pre-existing TeaCache/report synchronization; ordinary product observations add no CUDA synchronization or tensor readback.
-
-The native allocator observation resets once before image preparation and reads counters after the pipeline. A supported, already initialized PyTorch native CUDA allocator reports allocated/reserved interval peaks, including previously resident memory. This is process/device-0 allocator evidence, not total-device VRAM or incremental bytes attributable only to the job. Cold ordinary tasks, unsupported allocators or observation errors report null/unverified; an explicit existing measurement report preserves its one reset attempt without initializing CUDA or falling back to a historical peak. Legacy workers or malformed observations remain unverified and do not invalidate an otherwise valid image. Real GPU overhead and accuracy remain untested. Server metadata also retains normalized parameters; inspect them rather than assuming omitted request defaults match across engines.
-
-These are separate observed product wall distributions, never an automatic speedup, parity or quality verdict. Without opt-in sampling no GPU/driver fingerprint is collected. The runner alone cannot establish backend GPU binding, actual sigma capture, total-device true peak VRAM, precision match, checkpoint/export equivalence, process/disk-cold state or guaranteed residency. Record device/library/model provenance separately and review real images/edited boundaries. Product payload defaults can differ between providers; explicitly choose supported comparable parameters when comparison is intended, without assuming the same seed or sampler/scheduler name makes them equivalent. The linked 2026-10-11 reports contain real device runs for their recorded revisions. The current report separates new model/hires/weighting evidence from the still-pending final API comparison; no older timing population substitutes for it.
+Historical gateway measurements apply only to their recorded source and hardware; they do not establish performance for a later build. Observe one provider at a time, distinguish process-level allocator figures from whole-device memory, and retain unknown results when a measurement is unavailable.
