@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "aurora_starlit_whisper_farewell",
+  "revision": 1,
+  "sortOrder": 2490,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "aurora_starlit_whisper_farewell",
+    "characterId": "aurora_shadow",
+    "outfitId": "ethereal_violet_nightgown",
+    "title": "奥萝拉 · 星屑消散前的深情一吻",
+    "category": "魂影留恋",
+    "description": "星光弥漫的遗迹虚空中，奥萝拉的身躯泛起晶莹光粒开始缓缓消散。她双手环抱住暗影的脖颈，眼角噙着释怀的浅笑，献上深情而虚幻的告别之吻。",
+    "recommendedSize": "832x1216",
+    "location": "cosmic void filled with drifting starry motes and ancient glowing glyphs",
+    "action": "embracing Shadow neck closely as her lower body dissolves into sparkling light particles, smiling tenderly with closed eyes in a gentle kiss",
+    "timeOfDay": "night",
+    "lighting": "soft luminescent stardust glow enveloping the embracing couple",
+    "camera": "close-up",
+    "mood": "poignant bittersweet farewell, transcendent eternal bond, profound romantic peace",
+    "promptProse": "In a starry cosmic void, black-haired witch Aurora dissolves into glowing particles while sharing a gentle tender farewell kiss.",
+    "promptTokens": [
+      "space",
+      "starlight",
+      "dissolving",
+      "particles",
+      "hugging",
+      "kissing",
+      "gentle_smile",
+      "ethereal",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Aurora sharing a tender farewell embrace as her spirit dissolves into stardust.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

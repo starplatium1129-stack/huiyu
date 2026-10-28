@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "beta_shadow/natsume_author_dress",
+  "revision": 1,
+  "sortOrder": 1808,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "beta_shadow",
+    "outfit": {
+      "id": "natsume_author_dress",
+      "name": "夏目老师知性洋装",
+      "prose": "Scholarly brown vest over a crisp white blouse with a silk ribbon tie, pleated skirt, and author spectacles.",
+      "tokens": [
+        "brown_vest",
+        "white_blouse",
+        "long_skirt",
+        "ribbon_tie",
+        "spectacles",
+        "author_attire"
+      ],
+      "characterId": "beta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

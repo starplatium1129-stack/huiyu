@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rena_liechtenauer/inn_apron",
+  "revision": 1,
+  "sortOrder": 1869,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "rena_liechtenauer",
+    "outfit": {
+      "id": "inn_apron",
+      "name": "旅馆粉和服与围裙",
+      "prose": "a pink kimono with long sleeves and a dark apron for work at the inn; her hair is tied in a high ponytail with a white bow",
+      "tokens": [
+        "pink kimono",
+        "long sleeves",
+        "black apron",
+        "high ponytail",
+        "white hair bow"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

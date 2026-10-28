@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "delta_shadow/tribal_fur_bikini",
+  "revision": 1,
+  "sortOrder": 1812,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "delta_shadow",
+    "outfit": {
+      "id": "tribal_fur_bikini",
+      "name": "狂野毛皮狩猎装",
+      "prose": "Savage beastkin tribal leather and fur bikini set with raw hide straps, exposing athletic abs and muscular thighs.",
+      "tokens": [
+        "fur_trim",
+        "tribal_wear",
+        "bikini_top",
+        "shorts",
+        "bare_midriff",
+        "leather_straps"
+      ],
+      "characterId": "delta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

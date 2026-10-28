@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "alpha_combat_stance_slime_blade",
+  "revision": 1,
+  "sortOrder": 2469,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "alpha_combat_stance_slime_blade",
+    "characterId": "alpha_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "阿尔法 · 夜幕残垣的史莱姆剑弧",
+    "category": "战场锋芒",
+    "description": "荒凉的古代神殿废墟石柱间，阿尔法单手反握流动着暗金色魔力的史莱姆光刃，身姿凌厉轻盈，金发在强风中飞舞，蓝眸锐利地注视着前方战场。",
+    "recommendedSize": "832x1216",
+    "location": "ancient ruined stone sanctuary under a stormy dusk sky",
+    "action": "poised in a dynamic low combat stance, brandishing a sleek black slime blade with golden magical aura, golden hair fluttering in gusting wind",
+    "timeOfDay": "dusk",
+    "lighting": "dramatic rim lighting from glowing magical blade contrasting with dusky storm clouds",
+    "camera": "full_body",
+    "mood": "fierce combat grace, overwhelming tactical supremacy, breathtaking power",
+    "promptProse": "In ancient ruins, blonde elf Alpha in black bodysuit holds a magical slime sword in a poised combat stance as wind whips her hair.",
+    "promptTokens": [
+      "ruins",
+      "night_sky",
+      "windy",
+      "holding_sword",
+      "combat_stance",
+      "dynamic_angle",
+      "focused_eyes",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alpha ready to unleash devastating slime sword art amidst ancient ruins.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_guest_umbrella",
+  "revision": 1,
+  "sortOrder": 2426,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_guest_umbrella",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "inn_apron",
+    "title": "蕾娜·莉希特娜瓦 · 玄关里的雨伞",
+    "category": "旅馆工作",
+    "description": "门外刚下过雨，蕾娜把客人借用的伞收进玄关。她挑了一把还湿着的放到一旁，免得把地板弄湿。",
+    "location": "inn entrance",
+    "action": "sorting umbrellas beside the entrance",
+    "timeOfDay": "after rain",
+    "lighting": "overcast daylight",
+    "camera": "medium shot",
+    "mood": "细心",
+    "promptProse": "At the inn entrance after rain, Lena sorts borrowed umbrellas and sets a wet one aside.",
+    "promptTokens": [
+      "inn entrance",
+      "umbrella stand",
+      "holding umbrella",
+      "wet umbrella",
+      "daylight",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

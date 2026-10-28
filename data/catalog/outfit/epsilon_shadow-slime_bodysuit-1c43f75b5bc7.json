@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "epsilon_shadow/slime_bodysuit",
+  "revision": 1,
+  "sortOrder": 1813,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "epsilon_shadow",
+    "outfit": {
+      "id": "slime_bodysuit",
+      "name": "史莱姆精密雕琢战服",
+      "prose": "High-compression black slime suit meticulously enhanced with artificial curves, high-heeled boots, and gold filigree accents.",
+      "tokens": [
+        "black_bodysuit",
+        "slime_suit",
+        "tight",
+        "cleavage",
+        "high_heels",
+        "gold_accent"
+      ],
+      "characterId": "epsilon_shadow",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

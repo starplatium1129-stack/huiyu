@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "alexia_courtyard_bench_coin_toss",
+  "revision": 1,
+  "sortOrder": 2474,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "alexia_courtyard_bench_coin_toss",
+    "characterId": "alexia_midgar",
+    "outfitId": "midgar_academy_uniform",
+    "title": "阿蕾克希亚 · 黄昏长椅上的硬币挑衅",
+    "category": "契约日常",
+    "description": "落日余晖洒满中庭木长椅，阿蕾克希亚双腿交叠，抛玩着指尖的一枚闪亮银币，微仰下巴带着得意又傲娇的浅笑看着坐在身旁的少年。",
+    "recommendedSize": "832x1216",
+    "location": "academy cobblestone courtyard garden beside flowering rosebushes",
+    "action": "sitting on wooden bench with legs crossed in black stockings, flipping a silver coin with her thumb, smirking haughtily with a blush",
+    "timeOfDay": "sunset",
+    "lighting": "warm radiant dusk glow washing over silver ponytail and sleek legs",
+    "camera": "full_body",
+    "mood": "haughty tsundere charm, playful commanding arrogance, genuine fond warmth",
+    "promptProse": "Sitting on an outdoor bench at sunset with crossed black-stockinged legs, Alexia flips a silver coin with a smug smirk.",
+    "promptTokens": [
+      "outdoors",
+      "sunset",
+      "bench",
+      "coin",
+      "crossed_legs",
+      "smirk",
+      "blush",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alexia playfully commanding Cid on the courtyard bench with a coin toss.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

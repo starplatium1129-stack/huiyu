@@ -1,0 +1,154 @@
+{
+  "kind": "character",
+  "id": "epsilon_shadow",
+  "revision": 1,
+  "sortOrder": 265,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "epsilon_shadow",
+    "popular": {
+      "id": "epsilon_shadow",
+      "displayName": "厄普西隆",
+      "originalName": "Epsilon",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "epsilon_shadow",
+        "Epsilon",
+        "イプシロン",
+        "厄普西隆",
+        "席隆",
+        "精密",
+        "七阴第五席",
+        "Epsilon (Shadow Garden)",
+        "epsilon_(shadow_garden)",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Epsilon from The Eminence in Shadow, the Fifth of the Seven Shadows, with wavy light blue hair, sharp violet eyes, pointed elf ears, an elegant demeanor, and a meticulously sculpted figure.",
+      "identityTokens": [
+        "epsilon_(shadow_garden)",
+        "1girl",
+        "solo",
+        "light_blue_hair",
+        "long_hair",
+        "purple_eyes",
+        "pointy_ears",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "epsilon_(shadow_garden)"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "epsilon_(shadow_garden)"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "slime_bodysuit",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（米德加音乐厅与阴影庭园殿堂）",
+        "era": "阴影庭园扩张纪元",
+        "formNotes": "浅蓝发紫眸精灵女性；阴影庭园「七阴」第五席兼音乐家席隆",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "epsilon_shadow",
+      "name": "厄普西隆",
+      "alias": [
+        "Epsilon",
+        "イプシロン",
+        "精密",
+        "席隆",
+        "七阴第五席",
+        "钢琴名家"
+      ],
+      "type": "popular",
+      "icon": "🎹",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "厄普西隆 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "如清冽流水般的浅蓝色微卷长发",
+        "hair_color": "浅蓝 / 水蓝",
+        "eyes": "优雅敏锐的深紫罗兰双眸",
+        "hairstyle": "柔美大卷长发 · 精灵尖耳",
+        "uniform": "极致压缩雕琢的黑色史莱姆战服 / 午夜蓝天鹅绒钢琴演奏礼服",
+        "expression": "沉醉于琴键时的高雅静谧 · 独处微调身材被撞见时的极度羞恼",
+        "style": "perfectionist elf pianist girlfriend, combining refined musical artistry with meticulous hidden vanity and passionate devotion",
+        "signature": "浅蓝卷发、紫眸、精灵尖耳、施坦威钢琴与完美雕琢身段"
+      },
+      "personality": [
+        "高贵自矜",
+        "自尊心强",
+        "暗中要强",
+        "对暗影全心倾慕"
+      ],
+      "likes": [
+        "演奏古典钢琴曲",
+        "精细操控史莱姆塑造曲线",
+        "听暗影赞许音乐才华",
+        "优雅的红酒与茶点"
+      ],
+      "classic_cg": {
+        "title": "独奏殿堂的月光协奏",
+        "description": "宏伟的哥特式音乐殿堂内，厄普西隆身着深蓝晚礼服端坐于黑色施坦威三角钢琴前。修长的指尖在琴键上起伏跳跃，侧颜优雅从容，目光在间奏间隙投向阴影处的暗影，流露出独有的矜持与柔情。"
+      },
+      "identity": {
+        "role": "阴影庭园「七阴」第五席 / 天才音乐家“席隆”",
+        "age": "成年创作设定",
+        "occupation": "钢琴家 / 远距离魔力操控官",
+        "faction": "阴影庭园 (Shadow Garden)"
+      },
+      "tags": [
+        "浅蓝发",
+        "紫眸",
+        "精灵尖耳",
+        "钢琴家",
+        "七阴第五席",
+        "精密操控"
+      ],
+      "bg_story": "精灵贵族家庭出身，同样曾遭遇恶魔化被暗影治愈。在七阴中魔力控制精度位列顶尖，被冠以“精密”称号。表面上化名“席隆”将暗影所弹奏的《月光》等古典名曲复刻并闻名全大陆；私底下因身材娇小单薄而暗中利用出神入化的史莱姆微操技巧塑造出丰满身段，极度防备被他人识破，誓要在暗影大人面前展现最完美无瑕的淑女风范。",
+      "palette": [
+        "湖冰蓝",
+        "深紫",
+        "深渊黑",
+        "琴键纯白"
+      ],
+      "weather": [
+        "剧场晚风",
+        "雨打窗扉",
+        "静谧月夜"
+      ],
+      "speech": "暗影大人，今日的钢琴独奏，专为您一人准备。",
+      "voice": "暗影大人，这是我为您演奏的新曲《月光》。……能聆听您的教诲是厄普西隆无上的荣幸。绝不会输给贝塔那家伙……暗影大人身旁最完美的淑女，必然是我！",
+      "voiceJa": "シャドウ様、お聴きください。あなたのために捧げる『月光』を……ふふ、ベータになど負けませんわ",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "epsilon_(shadow_garden)",
+        "light_blue_hair",
+        "purple_eyes",
+        "pointy_ears",
+        "long_hair"
+      ],
+      "accent_color": "#06b6d4",
+      "bg_color": "#0a1724"
+    }
+  }
+}

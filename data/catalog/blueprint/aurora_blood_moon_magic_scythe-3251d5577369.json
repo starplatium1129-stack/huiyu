@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "aurora_blood_moon_magic_scythe",
+  "revision": 1,
+  "sortOrder": 2489,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "aurora_blood_moon_magic_scythe",
+    "characterId": "aurora_shadow",
+    "outfitId": "witch_crimson_dress",
+    "title": "奥萝拉 · 血月天穹下的血之狂舞",
+    "category": "魔女降临",
+    "description": "夜幕天穹中悬挂着巨大红月，奥萝拉凌空而立，手中凝聚着如血般猩红的魔力长镰，黑发狂舞，神态妖艳凌厉而从容。",
+    "recommendedSize": "832x1216",
+    "location": "open midnight sky dominated by a massive ominous blood-red moon",
+    "action": "floating gracefully in midair wielding a giant glowing crimson scythe of blood magic, long black hair billowing wildly, fierce regal smirk",
+    "timeOfDay": "night",
+    "lighting": "intense eerie scarlet moonlight backlighting her flowing silhouette",
+    "camera": "full_body",
+    "mood": "calamitous majestic power, intoxicating sinister elegance, overwhelming dominance",
+    "promptProse": "Floating beneath a giant blood moon, witch Aurora brandishes a massive glowing red blood scythe as wind whips her black hair.",
+    "promptTokens": [
+      "blood_moon",
+      "night_sky",
+      "floating",
+      "magic_weapon",
+      "scythe",
+      "flowing_hair",
+      "intense_look",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "The Witch of Calamity Aurora unleashing blood magic beneath the crimson moon.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

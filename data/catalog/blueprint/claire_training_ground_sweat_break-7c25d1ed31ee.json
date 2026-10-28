@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "claire_training_ground_sweat_break",
+  "revision": 1,
+  "sortOrder": 2486,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "claire_training_ground_sweat_break",
+    "characterId": "claire_kagenou",
+    "outfitId": "midgar_academy_uniform",
+    "title": "克莱尔 · 晨曦剑术训练场的微汗喘息",
+    "category": "晨曦剑影",
+    "description": "清晨的学院演武场草坪上，克莱尔将重剑插入地面，一手擦拭着颈间细汗。晨光勾勒出高马尾与挺拔脊背的优美弧线，转头望向来人时神采奕奕。",
+    "recommendedSize": "832x1216",
+    "location": "dewy morning grassy training field flanked by medieval stone arches",
+    "action": "leaning lightly on sword hilt stuck in grass, dabbing neck sweat with white towel, looking over shoulder with proud confident smirk",
+    "timeOfDay": "morning",
+    "lighting": "crisp golden morning sunlight illuminating athletic ponytail and dewy grass",
+    "camera": "medium_shot",
+    "mood": "athletic vigor, proud older sister charisma, fresh morning vitality",
+    "promptProse": "On a grassy training field at dawn, black-haired ponytail Claire leans on her sword hilt and wipes sweat with a confident smile.",
+    "promptTokens": [
+      "outdoors",
+      "morning",
+      "training_ground",
+      "holding_sword",
+      "sweat",
+      "wiping_sweat",
+      "confident",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Claire taking a refreshing breath after morning sword training.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

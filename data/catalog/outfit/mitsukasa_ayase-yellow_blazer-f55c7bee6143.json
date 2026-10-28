@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "mitsukasa_ayase/yellow_blazer",
+  "revision": 1,
+  "sortOrder": 1871,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "mitsukasa_ayase",
+    "outfit": {
+      "id": "yellow_blazer",
+      "name": "浅黄外套与灰格裙",
+      "prose": "a pale yellow blazer over a white shirt, a red necktie and a grey plaid skirt; a wing-shaped ornament sits in her hair",
+      "tokens": [
+        "yellow blazer",
+        "white shirt",
+        "red necktie",
+        "grey plaid skirt",
+        "wing hair ornament"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

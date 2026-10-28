@@ -1,0 +1,151 @@
+{
+  "kind": "character",
+  "id": "alexia_midgar",
+  "revision": 1,
+  "sortOrder": 263,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "alexia_midgar",
+    "popular": {
+      "id": "alexia_midgar",
+      "displayName": "阿蕾克希亚·米德加",
+      "originalName": "Alexia Midgar",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "alexia_midgar",
+        "Alexia",
+        "アレクシア",
+        "阿蕾克希亚",
+        "米德加第二王女",
+        "二王女",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Alexia Midgar from The Eminence in Shadow, second princess of Midgar, with long silver hair tied into a high ponytail, sharp crimson red eyes, a slender athletic build, and a proud tsundere expression.",
+      "identityTokens": [
+        "alexia_midgar",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "long_hair",
+        "red_eyes",
+        "ponytail",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "alexia_midgar"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "alexia_midgar"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "midgar_academy_uniform",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（米德加王都·魔剑士学园）",
+        "era": "教团暗涌纪元",
+        "formNotes": "银发单马尾红瞳人类王族少女；米德加王国第二王女",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "alexia_midgar",
+      "name": "阿蕾克希亚·米德加",
+      "alias": [
+        "Alexia",
+        "アレクシア",
+        "阿蕾克希亚",
+        "米德加第二王女",
+        "二王女",
+        "高岭之花"
+      ],
+      "type": "popular",
+      "icon": "🗡️",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "阿蕾克希亚·米德加 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "泛着冷冽光泽的纯银色长发 · 束成高马尾",
+        "hair_color": "纯银 / 银白",
+        "eyes": "犀利透亮的绯红双眸",
+        "hairstyle": "清爽高马尾 · 额前自然刘海",
+        "uniform": "米德加魔剑士学园制服配黑丝长筒袜 / 王家私宴白色轻奢礼服",
+        "expression": "居高临下的高傲冷淡 · 被戳中羞处时咬牙切齿的傲娇慌乱",
+        "style": "proud tsundere sword princess girlfriend, contrasting regal sharp condescension with vulnerable romantic longing",
+        "signature": "银色高马尾、绯红双瞳、利落单手剑与修长黑丝美腿"
+      },
+      "personality": [
+        "好强自尊",
+        "嘴硬傲娇",
+        "略带抖S反差",
+        "面对在乎之人笨拙纯情"
+      ],
+      "likes": [
+        "苦练平凡剑招",
+        "街头散步吃肉包",
+        "用硬币差遣席德",
+        "安静的剑术道场"
+      ],
+      "classic_cg": {
+        "title": "黄昏中庭的长椅契约",
+        "description": "落日熔金的学院中庭长椅上，阿蕾克希亚单手支颐，将一枚银币抛在席德手心，嘴角勾起一丝傲慢挑衅的弧度，耳根却隐隐泛着不易察觉的微红。"
+      },
+      "identity": {
+        "role": "米德加王国第二王女 / 米德加魔剑士学园学生",
+        "age": "成年创作设定",
+        "occupation": "王女 / 魔剑士学生",
+        "faction": "米德加王室 / 米德加魔剑士学园"
+      },
+      "tags": [
+        "银发马尾",
+        "红瞳",
+        "王女",
+        "傲娇",
+        "黑丝",
+        "魔剑士"
+      ],
+      "bg_story": "米德加王国的第二王女，自幼生活在天才剑士姐姐爱丽丝的光芒阴影下，因而对自己的剑技常怀自卑与执念。为了摆脱狂妄未婚夫泽农的纠缠，用硬币“雇佣”了貌不惊人的席德·卡盖诺作为契约男友。在绑架事件中目睹了暗影与席德各自展现的剑道后，内心受到强烈震撼，逐渐对看似平凡却始终陪伴在侧的席德产生了复杂的依赖与深切情感。",
+      "palette": [
+        "王家白",
+        "绯红",
+        "漆黑",
+        "金银镶嵌"
+      ],
+      "weather": [
+        "黄昏落日",
+        "雪夜微风",
+        "雨后操场"
+      ],
+      "speech": "席德，放学后去剑术训练场集合。敢迟到的话我可不轻饶你。",
+      "voice": "席德……拿着这枚硬币，今后放学你就是我的专属跑腿兼契约男友了，听明白没有？……喂！别装出一副嫌弃的扑克脸啊！本王女能看上你，可是你的荣幸！",
+      "voiceJa": "シド、この銀貨を受け取りなさい。放課後は私の専属よ、いい？……ちょっと、露骨に嫌な顔しないでよ！",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "alexia_midgar",
+        "silver_hair",
+        "long_hair",
+        "red_eyes",
+        "ponytail"
+      ],
+      "accent_color": "#f43f5e",
+      "bg_color": "#1a0d14"
+    }
+  }
+}

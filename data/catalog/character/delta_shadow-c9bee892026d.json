@@ -1,0 +1,156 @@
+{
+  "kind": "character",
+  "id": "delta_shadow",
+  "revision": 2,
+  "sortOrder": 264,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:15:40.584314600+00:00",
+  "data": {
+    "id": "delta_shadow",
+    "popular": {
+      "id": "delta_shadow",
+      "displayName": "德尔塔",
+      "originalName": "Delta",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "delta_shadow",
+        "Delta",
+        "デルタ",
+        "德尔塔",
+        "七阴第四席",
+        "特攻忠犬",
+        "Delta (Shadow Garden)",
+        "delta_(shadow_garden)",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Delta from The Eminence in Shadow, the Fourth of the Seven Shadows, a wolf therianthrope girl with messy long black hair, canine wolf ears and tail, sharp golden yellow eyes, small fangs, and a feral athletic body.",
+      "identityTokens": [
+        "delta_(shadow_garden)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "animal_ears",
+        "dog_ears",
+        "dog_tail",
+        "yellow_eyes",
+        "fangs",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "delta_(shadow_garden)"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "delta_(shadow_garden)"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "slime_bodysuit",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（狂野兽人部族与阴影庭园前线）",
+        "era": "阴影庭园特攻纪元",
+        "formNotes": "黑发金瞳狼兽人少女；阴影庭园「七阴」第四席突击特工",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "delta_shadow",
+      "name": "德尔塔",
+      "alias": [
+        "Delta",
+        "デルタ",
+        "特攻忠犬",
+        "七阴第四席",
+        "野性猎犬"
+      ],
+      "type": "popular",
+      "icon": "🐾",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "德尔塔 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "如黑夜般深邃微乱的长发 · 活泼灵动的兽耳",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "金黄璀璨如猛兽般的琥珀瞳孔",
+        "hairstyle": "野性蓬松长发 · 黑色犬耳与毛茸茸长尾巴",
+        "uniform": "极度暴露健美的贴身史莱姆战斗服 / 狂野兽皮部落狩猎装",
+        "expression": "面对猎物时狂傲嗜血的利齿大笑 · 面对暗影时满心依赖的摇尾娇憨",
+        "style": "wild devoted wolf-girl girlfriend, combining raw beastly physical ferocity with absolute innocent puppy-like loyalty",
+        "signature": "黑色兽耳、毛茸长尾、金色锐瞳、可爱虎牙与健美肌肉线条"
+      },
+      "personality": [
+        "纯真直率",
+        "野性本能",
+        "极度忠诚",
+        "喜欢黏人求爱抚"
+      ],
+      "likes": [
+        "大块烤肉与新鲜野味",
+        "追逐狩猎猎物",
+        "被暗影摸头揉耳朵",
+        "趴在暗影身旁打盹"
+      ],
+      "classic_cg": {
+        "title": "篝火营地的猛兽依偎",
+        "description": "原始森林的深夜篝火旁，德尔塔抱着刚烤熟的巨大肉骨大快朵颐。看到暗影走近，毛茸茸的黑犬耳猛地竖起，尾巴欢快地摇出残影，整个人毫无防备地扑进暗影怀中蹭着脸颊。"
+      },
+      "identity": {
+        "role": "阴影庭园「七阴」第四席 / 特攻主力",
+        "age": "成年创作设定",
+        "occupation": "兽人战士 / 突击手",
+        "faction": "阴影庭园 (Shadow Garden)"
+      },
+      "tags": [
+        "兽耳",
+        "兽尾",
+        "虎牙",
+        "金瞳",
+        "野性健美",
+        "忠犬属性"
+      ],
+      "bg_story": "狼族兽人名门之后，因力量过强且感染恶魔化而被家族当成怪物追杀抛弃。在命悬一线时被暗影以强大的力量治愈并收留，认同暗影为唯一的‘绝对族长’。在阴影庭园中担当破坏力突出的第四席特工，虽然战术逻辑简单直接，但在肉搏战场上几乎无可阻挡。性格纯粹直率，极度依恋暗影的抚摸与陪伴，将暗影视为唯一的伴侣与首领。",
+      "palette": [
+        "野性黑",
+        "琥珀金",
+        "暗影紫",
+        "肉色红润"
+      ],
+      "weather": [
+        "森林野风",
+        "篝火暖夜",
+        "荒野皓月"
+      ],
+      "speech": "暗影大人！德尔塔想吃肉！快带德尔塔去打猎吧汪！",
+      "voice": "暗影大人！德尔塔打猎抓到大猎物了汪！快看快看！……嘿嘿，暗影大人的气味好香！要摸头！还要跟暗影大人一起生很多很多厉害的小崽子汪！",
+      "voiceJa": "シャドウ様！大きな獲物狩ってきたよ、わん！……えへへ、いい匂い！なでなでして、わん！",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "delta_(shadow_garden)",
+        "animal_ears",
+        "dog_ears",
+        "dog_tail",
+        "yellow_eyes",
+        "fangs"
+      ],
+      "accent_color": "#eab308",
+      "bg_color": "#1a1608"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "epsilon_grand_piano_moonlight",
+  "revision": 1,
+  "sortOrder": 2479,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "epsilon_grand_piano_moonlight",
+    "characterId": "epsilon_shadow",
+    "outfitId": "pianist_midnight_gown",
+    "title": "厄普西隆 · 空旷音乐厅的月光独奏",
+    "category": "高雅琴韵",
+    "description": "巨型花窗透入皎洁月华的演奏大厅内，厄普西隆端坐于三角钢琴前。修长的指尖流转于黑白琴键之上，神情高贵圣洁，侧首回眸的眼神充满柔情。",
+    "recommendedSize": "832x1216",
+    "location": "grand gothic concert hall with giant rose window casting moonlight on polished ebony stage",
+    "action": "sitting at grand piano, slender fingers dancing over keys, head turned back with serene aristocrat gaze",
+    "timeOfDay": "night",
+    "lighting": "pure silvery moonlight beams cutting through darkness to spotlight the pianist and grand piano",
+    "camera": "medium_shot",
+    "mood": "classical artistic elegance, pure romantic reverence, moonlit serenade",
+    "promptProse": "At a grand piano under moonlight filtering through cathedral window, blue-haired elf Epsilon in velvet gown plays with graceful elegance.",
+    "promptTokens": [
+      "grand_piano",
+      "concert_hall",
+      "moonlight",
+      "stained_glass",
+      "playing_piano",
+      "elegant",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Epsilon playing the Moonlight Sonata for Shadow in the empty concert hall.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

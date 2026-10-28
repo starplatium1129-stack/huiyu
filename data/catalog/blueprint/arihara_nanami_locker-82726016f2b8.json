@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_locker",
+  "revision": 1,
+  "sortOrder": 2443,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_locker",
+    "characterId": "arihara_nanami",
+    "outfitId": "support_uniform",
+    "title": "在原七海 · 出发前的手套",
+    "category": "任务准备",
+    "description": "七海在储物柜前戴好手套，又检查了一遍随身的联络设备。柜门合上后，她确认帽檐没有挡住视线。",
+    "location": "locker room",
+    "action": "adjusting a white glove beside an open locker",
+    "timeOfDay": "evening",
+    "lighting": "indoor light",
+    "camera": "medium shot",
+    "mood": "准备",
+    "promptProse": "Beside an open locker, Nanami adjusts a white glove before setting out.",
+    "promptTokens": [
+      "locker room",
+      "open locker",
+      "adjusting glove",
+      "indoor light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

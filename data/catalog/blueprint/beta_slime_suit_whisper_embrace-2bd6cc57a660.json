@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "beta_slime_suit_whisper_embrace",
+  "revision": 1,
+  "sortOrder": 2471,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "beta_slime_suit_whisper_embrace",
+    "characterId": "beta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "贝塔 · 暗影身侧的史莱姆紧贴",
+    "category": "暗夜密语",
+    "description": "昏暗地宫通道内，贝塔双手轻抱在胸前紧挨在暗影身侧。紧贴身躯的黑色史莱姆战服泛着微光，少女仰起小脸，湛蓝眼眸中满是温热的倾慕。",
+    "recommendedSize": "832x1216",
+    "location": "shadowy underground stone corridor with glowing crystal moss",
+    "action": "pressing close beside Shadow with hands folded over her chest, gazing up with starry adoring blue eyes and flushed cheeks",
+    "timeOfDay": "night",
+    "lighting": "subtle blue magical ambiance highlighting sleek curves and alluring cleavage",
+    "camera": "close-up",
+    "mood": "intense romantic devotion, eager adoration, breathtaking proximity",
+    "promptProse": "In a dark stone corridor, busty silver-haired Beta in tight black bodysuit gazes up at Shadow with adoring flushed eyes.",
+    "promptTokens": [
+      "dungeon",
+      "dark",
+      "close-up",
+      "looking_up",
+      "blushing",
+      "large_breasts"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Beta gazing up at Lord Shadow in devoted adoration in the underground ruins.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shiiba_tsumugi/dark_jacket",
+  "revision": 1,
+  "sortOrder": 1865,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "shiiba_tsumugi",
+    "outfit": {
+      "id": "dark_jacket",
+      "name": "深色夹克与长裤",
+      "prose": "a black jacket over a white shirt, dark trousers and practical shoes",
+      "tokens": [
+        "black jacket",
+        "white shirt",
+        "black pants"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "delta_campfire_roast_meat_share",
+  "revision": 1,
+  "sortOrder": 2477,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "delta_campfire_roast_meat_share",
+    "characterId": "delta_shadow",
+    "outfitId": "tribal_fur_bikini",
+    "title": "德尔塔 · 深夜篝火旁的烤肉分享",
+    "category": "野营温存",
+    "description": "夜色深邃的林间营地，温暖的篝火噼啪作响。德尔塔席地而坐，双手高高举起热气腾腾的大块烤肉递到面前，小脸沾着一点炭灰，笑得灿烂纯真。",
+    "recommendedSize": "832x1216",
+    "location": "wilderness campfire campsite surrounded by dark ancient pine trees",
+    "action": "sitting cross-legged in fur bikini holding up a huge roasted meat on the bone, smiling proudly with smudge of soot on her cheek",
+    "timeOfDay": "night",
+    "lighting": "warm dancing campfire flames bathing toned skin in golden radiance",
+    "camera": "medium_shot",
+    "mood": "wholesome campfire warmth, adorable simple devotion, sweet feral camaraderie",
+    "promptProse": "Sitting beside a campfire at night in fur bikini, wolf-girl Delta proudly offers a huge roasted meat bone with a wide grin.",
+    "promptTokens": [
+      "night",
+      "campfire",
+      "sitting",
+      "holding_food",
+      "big_smile",
+      "open_mouth",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Delta proudly sharing her roasted meat catch beside the warm campfire.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

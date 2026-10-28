@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "claire_kagenou/midgar_academy_uniform",
+  "revision": 1,
+  "sortOrder": 1817,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "claire_kagenou",
+    "outfit": {
+      "id": "midgar_academy_uniform",
+      "name": "学园高级剑士制服",
+      "prose": "High-ranking student sword uniform with sharp black blazer, red trim, white shirt, pleated skirt and knee-high black stockings.",
+      "tokens": [
+        "school_uniform",
+        "black_jacket",
+        "red_trim",
+        "white_shirt",
+        "black_skirt",
+        "thighhighs",
+        "ponytail"
+      ],
+      "characterId": "claire_kagenou",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

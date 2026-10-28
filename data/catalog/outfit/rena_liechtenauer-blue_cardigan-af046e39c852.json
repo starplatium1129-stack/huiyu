@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "rena_liechtenauer/blue_cardigan",
+  "revision": 1,
+  "sortOrder": 1870,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "rena_liechtenauer",
+    "outfit": {
+      "id": "blue_cardigan",
+      "name": "浅蓝开衫便服",
+      "prose": "a light blue cardigan over a white shirt with a brown long skirt",
+      "tokens": [
+        "blue cardigan",
+        "white shirt",
+        "brown long skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

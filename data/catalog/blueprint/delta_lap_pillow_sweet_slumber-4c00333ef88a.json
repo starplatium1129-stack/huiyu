@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "delta_lap_pillow_sweet_slumber",
+  "revision": 1,
+  "sortOrder": 2478,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "delta_lap_pillow_sweet_slumber",
+    "characterId": "delta_shadow",
+    "outfitId": "tribal_fur_bikini",
+    "title": "德尔塔 · 阳光树荫下的忠犬打盹",
+    "category": "静谧小憩",
+    "description": "午后微风轻拂的大树草坪下，德尔塔将脸枕在少年的膝头甜美入睡，毛茸茸的长尾巴轻轻环在两人身边，犬耳不时因梦境微微抖动。",
+    "recommendedSize": "832x1216",
+    "location": "lush grassy hill under giant shady oak tree on a gentle breezy afternoon",
+    "action": "sleeping peacefully curled up with head resting on lap pillow, bushy tail wrapped around, dog ears twitching slightly",
+    "timeOfDay": "afternoon",
+    "lighting": "soft dappled leaf shadows and warm peaceful sunlight",
+    "camera": "full_body",
+    "mood": "serene domestic tenderness, absolute trust, peaceful cuddly slumber",
+    "promptProse": "Under a shady tree on grassy hill, black-haired wolf girl Delta sleeps curled up peacefully on a lap pillow.",
+    "promptTokens": [
+      "outdoors",
+      "day",
+      "grass",
+      "lap_pillow",
+      "sleeping",
+      "peaceful_expression",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Delta sleeping peacefully on a lap pillow under the summer tree.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

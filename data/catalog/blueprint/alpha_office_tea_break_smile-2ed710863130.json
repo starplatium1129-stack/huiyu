@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "alpha_office_tea_break_smile",
+  "revision": 1,
+  "sortOrder": 2468,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "alpha_office_tea_break_smile",
+    "characterId": "alpha_shadow",
+    "outfitId": "white_evening_dress",
+    "title": "阿尔法 · 指挥官书房的红茶片刻",
+    "category": "日常温情",
+    "description": "温暖壁炉火光映照着书房的大理石案几。阿尔法端着精致骨瓷茶杯递到身前，纯白露背长裙衬托着优雅温婉的身段，唇角勾起唯有独处时才会展露的会心笑意。",
+    "recommendedSize": "832x1216",
+    "location": "luxurious commander office with roaring stone fireplace and velvet drapery",
+    "action": "sitting elegantly beside antique mahogany desk, presenting a steaming porcelain teacup, looking at viewer with warm gentle gaze",
+    "timeOfDay": "night",
+    "lighting": "warm amber fireplace glow highlighting delicate bare shoulders and radiant blonde locks",
+    "camera": "medium_shot",
+    "mood": "intimate domestic serenity, relaxed noble elegance, warm respite",
+    "promptProse": "Sitting beside a fireplace in a white backless gown, blonde Alpha offers a steaming teacup with a fond gentle smile.",
+    "promptTokens": [
+      "indoors",
+      "fireplace",
+      "warm_lighting",
+      "teacup",
+      "saucer",
+      "sitting",
+      "smile",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alpha sharing a quiet tea break in her white gown beside the fireplace.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

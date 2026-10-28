@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "rose_oriana",
+  "revision": 1,
+  "sortOrder": 266,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "rose_oriana",
+    "popular": {
+      "id": "rose_oriana",
+      "displayName": "萝丝·奥利安娜",
+      "originalName": "Rose Oriana",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "rose_oriana",
+        "Rose",
+        "ローズ",
+        "萝丝",
+        "666号",
+        "奥利安娜公主",
+        "奥利安娜女王",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Rose Oriana from The Eminence in Shadow, former princess of Oriana, with blonde hair styled into elegant ringlet drills, warm amber eyes, and a noble determined chivalrous presence.",
+      "identityTokens": [
+        "rose_oriana",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "amber_eyes",
+        "drill_hair",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "rose_oriana"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "rose_oriana"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "oriana_knight_uniform",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（艺术之国奥利安娜与米德加学园）",
+        "era": "教团政变与王朝光复纪元",
+        "formNotes": "金发螺旋卷琥珀瞳人类公主；奥利安娜女王兼阴影庭园666号",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "rose_oriana",
+      "name": "萝丝·奥利安娜",
+      "alias": [
+        "Rose",
+        "ローズ",
+        "萝丝",
+        "666号",
+        "奥利安娜女王",
+        "剑术公主"
+      ],
+      "type": "popular",
+      "icon": "🌹",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "萝丝·奥利安娜 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "高贵温暖的淡金色波浪长发 · 优雅螺旋卷束",
+        "hair_color": "浅金 / 暖金",
+        "eyes": "温柔而坚韧的琥珀金眸",
+        "hairstyle": "披肩卷发带双侧钻形螺旋束",
+        "uniform": "奥利安娜王家细剑击剑制服 / 阴影庭园666号黑色潜行斗篷服",
+        "expression": "沉着英气的骑士眼神 · 面对席德时泛起纯情脑补的红晕",
+        "style": "noble tragic knight princess girlfriend, blending earnest chivalric heroism with intensely romantic loyal devotion",
+        "signature": "金色螺旋卷发、琥珀双眸、西洋细剑与端庄王族气质"
+      },
+      "personality": [
+        "正直纯真",
+        "充满骑士道",
+        "超级脑补帝",
+        "为爱敢于牺牲"
+      ],
+      "likes": [
+        "研读席德的平凡剑法",
+        "制作爱心手工便当",
+        "艺术与舞台戏剧",
+        "骑士道修行"
+      ],
+      "classic_cg": {
+        "title": "雨幕长廊的深情托付",
+        "description": "倾盆暴雨笼罩的学园回廊角落，萝丝紧紧握住席德的双手贴在自己胸口，琥珀色的双眸噙着泪水却无比坚定，将随身的家传戒指郑重递入少年掌中。"
+      },
+      "identity": {
+        "role": "奥利安娜王国女王 / 阴影庭园「666号」",
+        "age": "成年创作设定",
+        "occupation": "国家元首 / 魔剑士骑士",
+        "faction": "奥利安娜王室 / 阴影庭园"
+      },
+      "tags": [
+        "金发卷发",
+        "琥珀瞳",
+        "公主",
+        "骑士",
+        "666号",
+        "深情不渝"
+      ],
+      "bg_story": "艺术之国奥利安娜的掌上明珠与击剑冠军。在魔剑士学院与席德相识，因席德在恐怖袭击中为保护她“舍身挡刀”而坠入情网，脑补席德对她怀有深沉而悲壮的爱。面对教团操纵父亲、企图强夺王国的阴谋，她决然弑父抗争背负叛国之名，后被阿尔法引入阴影庭园化名“666号”经历严酷特训。在暗影的暗中援助下洗刷冤屈加冕为女王，誓死以举国之力支持暗影的征途。",
+      "palette": [
+        "玫瑰红",
+        "皇家白",
+        "琥珀金",
+        "深渊黑"
+      ],
+      "weather": [
+        "骤雨连绵",
+        "冬雪飘零",
+        "加冕金光"
+      ],
+      "speech": "席德同学，今天的便当是我亲手做的。请务必收下！",
+      "voice": "席德同学……哪怕背负叛国之名、哪怕与全世界为敌，我也一定会用这柄剑守护你！我知道的……你那平凡无奇的剑招之下，隐藏着为了我不惜牺牲一切的悲壮觉悟！",
+      "voiceJa": "シド君……たとえ世界を敵に回しても、私はあなたを守るわ！あなたの覚悟、私には分かっているから！",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "rose_oriana",
+        "blonde_hair",
+        "long_hair",
+        "amber_eyes",
+        "drill_hair"
+      ],
+      "accent_color": "#f59e0b",
+      "bg_color": "#1f1609"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "delta_shadow/slime_bodysuit",
+  "revision": 1,
+  "sortOrder": 1811,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "delta_shadow",
+    "outfit": {
+      "id": "slime_bodysuit",
+      "name": "史莱姆兽性特攻服",
+      "prose": "High-cut revealing black slime combat suit tailored for beastkin mobility, clawed gauntlets, and open back accommodating her bushy tail.",
+      "tokens": [
+        "black_bodysuit",
+        "slime_suit",
+        "cleavage",
+        "exposed_skin",
+        "clawed_gloves",
+        "tail_hole"
+      ],
+      "characterId": "delta_shadow",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

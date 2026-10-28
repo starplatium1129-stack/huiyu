@@ -1,0 +1,109 @@
+{
+  "kind": "character",
+  "id": "arihara_nanami",
+  "revision": 1,
+  "sortOrder": 261,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami",
+    "profile": {
+      "id": "arihara_nanami",
+      "name": "在原七海",
+      "icon": "character",
+      "source": "RIDDLE JOKER",
+      "alias": [
+        "在原 七海",
+        "Arihara Nanami",
+        "Nanami Arihara"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "在原七海 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "金色长发",
+        "eyes": "红色眼睛",
+        "hairstyle": "金色长发，工作时常束在两侧",
+        "uniform": "黑色制服、红领带与白手套",
+        "signature": "金色长发、红色眼睛与干练的黑色工作服"
+      },
+      "personality": [
+        "初见时有些拘谨，熟悉后会主动照顾别人",
+        "执行支援任务时冷静细致",
+        "对家务和准备工作很有条理",
+        "会认真提醒搭档注意风险"
+      ],
+      "likes": [
+        "整理任务所需的资料",
+        "为家人准备饭菜",
+        "安静地做手工"
+      ],
+      "classic_cg": {
+        "title": "行动前的确认",
+        "description": "七海核对完屏幕上的路线，抬手调整耳机，等待搭档的联络。"
+      },
+      "identity": {
+        "role": "秘密组织的支援人员",
+        "age": "成年创作设定",
+        "occupation": "情报与任务支援"
+      },
+      "tags": [
+        "秘密组织的支援人员",
+        "初见时有些拘谨，熟悉后会主动照顾别人",
+        "执行支援任务时冷静细致"
+      ],
+      "bg_story": "七海在组织里负责支援工作，常与搭档协调行动。她初见陌生人时比较拘谨，熟悉之后会显出细心的一面；日常生活中也很擅长料理和整理。这里采用成年创作设定，保留她工作时的谨慎与生活里的从容。",
+      "speech": "资料我已经整理好了。出发前再看一遍，别漏掉重要的地方。",
+      "voice": "资料我已经整理好了。出发前再看一遍，别漏掉重要的地方。",
+      "traits": [
+        "arihara_nanami",
+        "blonde hair",
+        "long hair",
+        "red eyes"
+      ],
+      "accent_color": "#a9464f"
+    },
+    "popular": {
+      "id": "arihara_nanami",
+      "displayName": "在原七海",
+      "originalName": "在原七海",
+      "franchise": "RIDDLE JOKER",
+      "aliases": [
+        "arihara_nanami",
+        "在原 七海",
+        "Arihara Nanami",
+        "Nanami Arihara"
+      ],
+      "identityProse": "Nanami Arihara from RIDDLE JOKER, with long blonde hair and red eyes.",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "arihara_nanami",
+        "blonde hair",
+        "long hair",
+        "red eyes"
+      ],
+      "characterTokens": [
+        "arihara_nanami"
+      ],
+      "copyrightTokens": [
+        "riddle_joker"
+      ],
+      "exactTokens": [
+        "arihara_nanami"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "support_uniform",
+      "negativeTokens": []
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_stage_spotlight",
+  "revision": 1,
+  "sortOrder": 2435,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_stage_spotlight",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "red_performance",
+    "title": "三司绫濑 · 聚光灯亮起",
+    "category": "舞台时刻",
+    "description": "灯光落下时，绫濑走到舞台中央，朝观众席挥手。她把紧张藏在动作里，站稳后才露出笑容。",
+    "location": "stage",
+    "action": "standing under a spotlight and waving toward the audience",
+    "timeOfDay": "evening",
+    "lighting": "spotlight",
+    "camera": "full body",
+    "mood": "明亮",
+    "promptProse": "On stage under a spotlight, Ayase stands facing the audience and raises one hand in greeting.",
+    "promptTokens": [
+      "stage",
+      "spotlight",
+      "standing",
+      "waving",
+      "smile",
+      "full body"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

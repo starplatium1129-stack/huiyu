@@ -1,0 +1,114 @@
+{
+  "kind": "character",
+  "id": "rena_liechtenauer",
+  "revision": 1,
+  "sortOrder": 259,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer",
+    "profile": {
+      "id": "rena_liechtenauer",
+      "name": "蕾娜·莉希特娜瓦",
+      "icon": "character",
+      "source": "千恋＊万花",
+      "alias": [
+        "蕾娜",
+        "Lena Liechtenauer",
+        "Rena Liechtenauer",
+        "レナ・リヒテナウアー"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "蕾娜·莉希特娜瓦 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "金色长发",
+        "eyes": "紫色眼睛",
+        "hairstyle": "金色长发与翘起的一缕头发",
+        "uniform": "白色和服上衣与红色袴裙",
+        "signature": "金色长发、紫色眼睛与一缕翘发"
+      },
+      "personality": [
+        "对日本的传统文化充满好奇",
+        "遇到新事物会主动提问和尝试",
+        "说话直率，容易与人熟络",
+        "在旅馆工作时认真照顾客人"
+      ],
+      "likes": [
+        "日本刀剑与传统工艺",
+        "穗织的温泉和街景",
+        "学习当地的语言与习惯"
+      ],
+      "classic_cg": {
+        "title": "穗织的第一张地图",
+        "description": "蕾娜站在街角展开地图，沿着纸上的路线找向通往神社的小路。"
+      },
+      "identity": {
+        "role": "来到穗织的海外旅人",
+        "age": "成年创作设定",
+        "occupation": "旅馆帮工"
+      },
+      "tags": [
+        "来到穗织的海外旅人",
+        "对日本的传统文化充满好奇",
+        "遇到新事物会主动提问和尝试"
+      ],
+      "bg_story": "蕾娜从海外来到穗织，在当地旅馆帮忙。她对日本刀剑和传统文化很感兴趣，也乐于向身边的人请教不熟悉的习惯。这里采用成年创作设定，围绕她在穗织的生活与工作展开。",
+      "speech": "这条路后面还有神社吗？太好了，我想再仔细看看。",
+      "voice": "这条路后面还有神社吗？太好了，我想再仔细看看。",
+      "traits": [
+        "lena_liechtenauer",
+        "blonde hair",
+        "long hair",
+        "purple eyes",
+        "ahoge"
+      ],
+      "accent_color": "#a75571"
+    },
+    "popular": {
+      "id": "rena_liechtenauer",
+      "displayName": "蕾娜·莉希特娜瓦",
+      "originalName": "レナ・リヒテナウアー",
+      "franchise": "千恋＊万花",
+      "aliases": [
+        "rena_liechtenauer",
+        "lena_liechtenauer",
+        "蕾娜",
+        "Lena Liechtenauer",
+        "Rena Liechtenauer",
+        "レナ・リヒテナウアー"
+      ],
+      "identityProse": "Lena Liechtenauer from Senren Banka, with long blonde hair, violet eyes and a small ahoge.",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "lena_liechtenauer",
+        "blonde hair",
+        "long hair",
+        "purple eyes",
+        "ahoge"
+      ],
+      "characterTokens": [
+        "lena_liechtenauer"
+      ],
+      "copyrightTokens": [
+        "senren_banka"
+      ],
+      "exactTokens": [
+        "lena_liechtenauer"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "hoori_kimono",
+      "negativeTokens": []
+    }
+  }
+}

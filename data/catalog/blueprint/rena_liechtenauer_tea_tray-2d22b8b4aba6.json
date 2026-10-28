@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_tea_tray",
+  "revision": 1,
+  "sortOrder": 2424,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_tea_tray",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "inn_apron",
+    "title": "蕾娜·莉希特娜瓦 · 送茶去客房",
+    "category": "旅馆工作",
+    "description": "蕾娜端着茶盘走到客房门前，先稳住轻轻晃动的茶杯。等托盘平了，她才抬手准备敲门。",
+    "location": "inn hallway",
+    "action": "holding a tray of tea in front of a guest room door",
+    "timeOfDay": "afternoon",
+    "lighting": "soft indoor light",
+    "camera": "cowboy shot",
+    "mood": "认真",
+    "promptProse": "In an inn hallway, Lena steadies a tray of tea before knocking on a guest room door.",
+    "promptTokens": [
+      "inn hallway",
+      "sliding door",
+      "holding tray",
+      "teacup",
+      "soft light",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

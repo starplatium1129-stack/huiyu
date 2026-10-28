@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_cafe_choice",
+  "revision": 1,
+  "sortOrder": 2412,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_cafe_choice",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "dark_jacket",
+    "title": "椎叶紬 · 甜点柜里的选择",
+    "category": "日常休息",
+    "description": "咖啡馆的点心柜里只剩两块蛋糕。紬在玻璃前来回看了好几次，最后指向带草莓的那一块。",
+    "location": "cafe",
+    "action": "pointing at a strawberry cake in a display case",
+    "timeOfDay": "afternoon",
+    "lighting": "warm indoor light",
+    "camera": "medium shot",
+    "mood": "期待",
+    "promptProse": "In a cafe, Tsumugi points at a strawberry cake behind the glass counter after considering the choices.",
+    "promptTokens": [
+      "cafe",
+      "glass display case",
+      "strawberry cake",
+      "pointing",
+      "warm light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

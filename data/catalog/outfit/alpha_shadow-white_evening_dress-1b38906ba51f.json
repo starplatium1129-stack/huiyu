@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "alpha_shadow/white_evening_dress",
+  "revision": 1,
+  "sortOrder": 1806,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "alpha_shadow",
+    "outfit": {
+      "id": "white_evening_dress",
+      "name": "月下盛宴纯白露背礼服",
+      "prose": "An elegant floor-length white backless silk gown with bare shoulders and delicate silver embroidery.",
+      "tokens": [
+        "white_dress",
+        "sleeveless_dress",
+        "backless_dress",
+        "bare_shoulders",
+        "elegant",
+        "jewelry"
+      ],
+      "characterId": "alpha_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

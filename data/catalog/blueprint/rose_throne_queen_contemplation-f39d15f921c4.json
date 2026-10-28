@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "rose_throne_queen_contemplation",
+  "revision": 1,
+  "sortOrder": 2483,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "rose_throne_queen_contemplation",
+    "characterId": "rose_oriana",
+    "outfitId": "oriana_knight_uniform",
+    "title": "萝丝 · 王座厅内的烛影沉思",
+    "category": "女王加冕",
+    "description": "恢弘而清冷的王宫正殿内，已加冕为女王的萝丝独自倚坐在雕花王座上，佩剑竖立身侧，琥珀眼眸凝望着窗外夜空中的明月，思念着心中的少年。",
+    "recommendedSize": "832x1216",
+    "location": "grand royal throne room of Oriana Palace with marble columns and velvet carpets",
+    "action": "seated regally on ornate golden throne holding rapier upright beside her knee, gazing softly at distant moon with fond longing",
+    "timeOfDay": "night",
+    "lighting": "warm flickering candelabra flames casting regal shadows in the vast silent hall",
+    "camera": "full_body",
+    "mood": "queenly burden, silent romantic longing, steadfast devotion to Shadow",
+    "promptProse": "Sitting on an ornate golden throne with her rapier, blonde Queen Rose gazes toward the moon with gentle longing.",
+    "promptTokens": [
+      "throne_room",
+      "sitting_on_throne",
+      "candlelight",
+      "holding_sword",
+      "looking_away",
+      "melancholic",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Queen Rose thinking of Cid in the quiet majesty of her throne room.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

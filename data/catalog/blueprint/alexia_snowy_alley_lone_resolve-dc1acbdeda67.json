@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "alexia_snowy_alley_lone_resolve",
+  "revision": 1,
+  "sortOrder": 2475,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "alexia_snowy_alley_lone_resolve",
+    "characterId": "alexia_midgar",
+    "outfitId": "midgar_academy_uniform",
+    "title": "阿蕾克希亚 · 雪夜后巷的执着挥剑",
+    "category": "雪夜誓言",
+    "description": "飘着细雪的砖石小巷尽头，单薄的制服下身姿挺拔。阿蕾克希亚握紧佩剑横于胸前，银发迎风舞动，红眸在雪光中显露出誓不屈服的坚决。",
+    "recommendedSize": "832x1216",
+    "location": "snow-covered narrow medieval cobblestone alleyway at night",
+    "action": "holding drawn rapier across her guard stance, silver ponytail whipping in snowy wind, white breath puffing in cold air",
+    "timeOfDay": "night",
+    "lighting": "cool bluish street lantern light reflecting off falling snow and polished blade",
+    "camera": "full_body",
+    "mood": "solitary stubborn courage, unyielding resolve, poignant chilly romance",
+    "promptProse": "In a snowy night alley, silver ponytail Alexia stands resolute holding her drawn sword as snowflakes drift around her.",
+    "promptTokens": [
+      "snow",
+      "night",
+      "alley",
+      "holding_sword",
+      "wind",
+      "determined",
+      "breath_steam",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alexia standing resolute with her sword in the snowy alleyway.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shiiba_tsumugi/witch_cape",
+  "revision": 1,
+  "sortOrder": 1866,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "shiiba_tsumugi",
+    "outfit": {
+      "id": "witch_cape",
+      "name": "白披肩魔女装",
+      "prose": "a white witch hat and cape over a dark blouse and a pink frilled skirt",
+      "tokens": [
+        "white witch hat",
+        "white cape",
+        "black blouse",
+        "pink skirt",
+        "frilled skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

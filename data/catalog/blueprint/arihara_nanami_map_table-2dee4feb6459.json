@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_map_table",
+  "revision": 1,
+  "sortOrder": 2441,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_map_table",
+    "characterId": "arihara_nanami",
+    "outfitId": "support_uniform",
+    "title": "在原七海 · 桌面上的标记",
+    "category": "任务准备",
+    "description": "桌上的地图被几张便签压住。七海将一枚标记移到新的位置，确认不会挡住旁边的重要路线。",
+    "location": "briefing room",
+    "action": "placing a marker on a paper map",
+    "timeOfDay": "evening",
+    "lighting": "desk lamp",
+    "camera": "medium shot",
+    "mood": "细心",
+    "promptProse": "At a briefing table, Nanami moves a marker on a paper map beneath the light of a desk lamp.",
+    "promptTokens": [
+      "briefing room",
+      "table",
+      "map",
+      "placing marker",
+      "desk lamp",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

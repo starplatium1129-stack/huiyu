@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "rose_rainy_corridor_confession",
+  "revision": 1,
+  "sortOrder": 2482,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "rose_rainy_corridor_confession",
+    "characterId": "rose_oriana",
+    "outfitId": "oriana_knight_uniform",
+    "title": "萝丝 · 暴雨走廊中的戒指托付",
+    "category": "深情托付",
+    "description": "水雾弥漫的石柱长廊外大雨倾盆。身着白金骑士礼服的萝丝紧紧握住少年的双手，琥珀色泪眼闪耀着破釜沉舟的决绝，将珍贵的戒指贴在胸口。",
+    "recommendedSize": "832x1216",
+    "location": "covered gothic academy stone arcade during a torrential thunderstorm",
+    "action": "holding Cid hands tightly against her chest, gazing with tear-glistening amber eyes full of tragic romantic devotion, offering ancestral ring",
+    "timeOfDay": "day",
+    "lighting": "dramatic overcast rainy skylight reflecting in puddle water on flagstone floor",
+    "camera": "medium_shot",
+    "mood": "tragic noble romance, desperate earnest devotion, sacrificial chivalry",
+    "promptProse": "In a rainswept stone corridor, blonde knight princess Rose holds hands against her chest with tearful amber eyes.",
+    "promptTokens": [
+      "rain",
+      "corridor",
+      "holding_hands",
+      "emotional",
+      "tears",
+      "ring",
+      "close-up",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Rose entrusting her heart and ring to Cid amidst the torrential rain.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_library",
+  "revision": 1,
+  "sortOrder": 2444,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_library",
+    "characterId": "arihara_nanami",
+    "outfitId": "yellow_cardigan",
+    "title": "在原七海 · 书架上的一本书",
+    "category": "日常休息",
+    "description": "七海在书架前找到想看的书，抽出来时小心扶住了旁边一排。她看了看封面，决定借回去慢慢读。",
+    "location": "library bookshelf",
+    "action": "taking a book from a bookshelf",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "安静",
+    "promptProse": "At a library shelf, Nanami carefully takes out a book while steadying the books beside it.",
+    "promptTokens": [
+      "library",
+      "bookshelf",
+      "holding book",
+      "reaching",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

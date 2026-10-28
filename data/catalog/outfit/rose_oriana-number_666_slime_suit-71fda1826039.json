@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "rose_oriana/number_666_slime_suit",
+  "revision": 1,
+  "sortOrder": 1816,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "rose_oriana",
+    "outfit": {
+      "id": "number_666_slime_suit",
+      "name": "代号666号战术潜行服",
+      "prose": "Shadow Garden initiate form-fitting black bodysuit with a hooded tactical cape concealing royal identity.",
+      "tokens": [
+        "black_bodysuit",
+        "slime_suit",
+        "hooded_cloak",
+        "combat_gear",
+        "tight"
+      ],
+      "characterId": "rose_oriana",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

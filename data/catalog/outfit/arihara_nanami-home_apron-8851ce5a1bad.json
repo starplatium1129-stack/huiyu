@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "arihara_nanami/home_apron",
+  "revision": 1,
+  "sortOrder": 1876,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "arihara_nanami",
+    "outfit": {
+      "id": "home_apron",
+      "name": "针织衫与深绿围裙",
+      "prose": "a cream knit sweater, dark green apron and a long dark skirt",
+      "tokens": [
+        "cream sweater",
+        "green apron",
+        "black long skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

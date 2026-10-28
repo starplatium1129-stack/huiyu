@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_town_map",
+  "revision": 1,
+  "sortOrder": 2420,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_town_map",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "hoori_kimono",
+    "title": "蕾娜·莉希特娜瓦 · 地图上的岔路",
+    "category": "穗织漫步",
+    "description": "走到街角时，蕾娜把地图摊开，发现自己刚才走过了一个路口。她用指尖沿着路线折回去，重新确认神社的方向。",
+    "location": "old town street",
+    "action": "studying an unfolded map at a street corner",
+    "timeOfDay": "morning",
+    "lighting": "morning sunlight",
+    "camera": "medium shot",
+    "mood": "好奇",
+    "promptProse": "At a corner of an old town street, Lena traces a route on an unfolded map while finding the way to the shrine.",
+    "promptTokens": [
+      "old town",
+      "street",
+      "holding map",
+      "looking at map",
+      "sunlight",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

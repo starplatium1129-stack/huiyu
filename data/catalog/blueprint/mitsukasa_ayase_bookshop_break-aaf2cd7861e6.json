@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_bookshop_break",
+  "revision": 1,
+  "sortOrder": 2437,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_bookshop_break",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "blue_jacket",
+    "title": "三司绫濑 · 书店里的安静角落",
+    "category": "独处时间",
+    "description": "书店里没有人认出她。绫濑在书架旁翻开一本书，看到有趣的地方，忍不住多站了一会儿。",
+    "location": "bookshop aisle",
+    "action": "reading an open book beside a bookshelf",
+    "timeOfDay": "afternoon",
+    "lighting": "soft shop light",
+    "camera": "medium shot",
+    "mood": "放松",
+    "promptProse": "In a quiet bookshop aisle, Ayase reads an open book beside a shelf.",
+    "promptTokens": [
+      "bookstore",
+      "bookshelf",
+      "holding book",
+      "reading",
+      "soft light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

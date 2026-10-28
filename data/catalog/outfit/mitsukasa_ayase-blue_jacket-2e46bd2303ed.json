@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mitsukasa_ayase/blue_jacket",
+  "revision": 1,
+  "sortOrder": 1873,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "mitsukasa_ayase",
+    "outfit": {
+      "id": "blue_jacket",
+      "name": "蓝外套与黑长裙",
+      "prose": "a blue jacket over a white shirt with a black pleated long skirt; her hair is in a side braid with a white ribbon",
+      "tokens": [
+        "blue jacket",
+        "white shirt",
+        "black long skirt",
+        "pleated skirt",
+        "side braid",
+        "white hair ribbon"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

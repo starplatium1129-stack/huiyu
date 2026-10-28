@@ -1,0 +1,109 @@
+{
+  "kind": "character",
+  "id": "mitsukasa_ayase",
+  "revision": 1,
+  "sortOrder": 260,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "mitsukasa_ayase",
+    "profile": {
+      "id": "mitsukasa_ayase",
+      "name": "三司绫濑",
+      "icon": "character",
+      "source": "RIDDLE JOKER",
+      "alias": [
+        "三司あやせ",
+        "Mitsukasa Ayase",
+        "Ayase Mitsukasa"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "三司绫濑 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "粉色长发",
+        "eyes": "粉色眼睛",
+        "hairstyle": "柔顺的粉色长发",
+        "uniform": "浅黄外套、红领带与灰色格裙",
+        "signature": "粉色长发与粉色眼睛"
+      },
+      "personality": [
+        "在人前习惯维持开朗得体的样子",
+        "独处时更喜欢随意放松",
+        "在意别人如何看待自己",
+        "对熟悉的人会露出不那么完美的一面"
+      ],
+      "likes": [
+        "安静的独处时间",
+        "在熟悉的人面前放松",
+        "让漂浮能力派上小用场"
+      ],
+      "classic_cg": {
+        "title": "访谈结束以后",
+        "description": "绫濑放下手中的访谈提纲，终于把一直维持的笑容松开了一点。"
+      },
+      "identity": {
+        "role": "拥有漂浮能力的能力者",
+        "age": "成年创作设定",
+        "occupation": "公众活动与日常生活"
+      },
+      "tags": [
+        "拥有漂浮能力的能力者",
+        "在人前习惯维持开朗得体的样子",
+        "独处时更喜欢随意放松"
+      ],
+      "bg_story": "绫濑在人前常被当作开朗可靠的焦点，私下却更喜欢一个人待着，也不总有精力维持完美形象。她拥有漂浮能力，平时谨慎地处理能力和旁人的期待。这里采用成年创作设定，场景区分她在人前与独处时的状态。",
+      "speech": "今天不用应付镜头了吧？那我可以先坐一会儿。",
+      "voice": "今天不用应付镜头了吧？那我可以先坐一会儿。",
+      "traits": [
+        "mitsukasa_ayase",
+        "pink hair",
+        "long hair",
+        "pink eyes"
+      ],
+      "accent_color": "#bd5f7f"
+    },
+    "popular": {
+      "id": "mitsukasa_ayase",
+      "displayName": "三司绫濑",
+      "originalName": "三司あやせ",
+      "franchise": "RIDDLE JOKER",
+      "aliases": [
+        "mitsukasa_ayase",
+        "三司あやせ",
+        "Mitsukasa Ayase",
+        "Ayase Mitsukasa"
+      ],
+      "identityProse": "Ayase Mitsukasa from RIDDLE JOKER, with long pink hair and pink eyes.",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "mitsukasa_ayase",
+        "pink hair",
+        "long hair",
+        "pink eyes"
+      ],
+      "characterTokens": [
+        "mitsukasa_ayase"
+      ],
+      "copyrightTokens": [
+        "riddle_joker"
+      ],
+      "exactTokens": [
+        "mitsukasa_ayase"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "yellow_blazer",
+      "negativeTokens": []
+    }
+  }
+}

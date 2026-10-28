@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "alpha_shadow/slime_bodysuit",
+  "revision": 1,
+  "sortOrder": 1805,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "alpha_shadow",
+    "outfit": {
+      "id": "slime_bodysuit",
+      "name": "史莱姆战术连体紧身服",
+      "prose": "High-purity black slime bodysuit contoured to the body with gold filigree piping, detached sleeves, and sleek combat boots.",
+      "tokens": [
+        "black_bodysuit",
+        "slime_suit",
+        "gold_trim",
+        "high_collar",
+        "thighhighs",
+        "detached_sleeves"
+      ],
+      "characterId": "alpha_shadow",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

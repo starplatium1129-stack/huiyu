@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_interview",
+  "revision": 1,
+  "sortOrder": 2430,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_interview",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "yellow_blazer",
+    "title": "三司绫濑 · 访谈前的提纲",
+    "category": "公众活动",
+    "description": "活动开始前，绫濑最后看了一遍提纲。工作人员在门外招呼她时，她把纸放好，换上熟悉的笑容。",
+    "location": "event waiting room",
+    "action": "holding interview notes beside a table",
+    "timeOfDay": "afternoon",
+    "lighting": "soft indoor light",
+    "camera": "medium shot",
+    "mood": "准备",
+    "promptProse": "In an event waiting room, Ayase holds her interview notes and looks toward the doorway with a practiced smile.",
+    "promptTokens": [
+      "waiting room",
+      "holding paper",
+      "smile",
+      "looking toward doorway",
+      "soft light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

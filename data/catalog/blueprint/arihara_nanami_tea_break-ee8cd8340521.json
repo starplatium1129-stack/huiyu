@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_tea_break",
+  "revision": 1,
+  "sortOrder": 2449,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_tea_break",
+    "characterId": "arihara_nanami",
+    "outfitId": "home_apron",
+    "title": "在原七海 · 收拾后的茶",
+    "category": "居家日常",
+    "description": "碗盘收好后，七海给自己倒了一杯茶。她坐在桌边等水凉一点，手边的抹布已经叠得方方正正。",
+    "location": "dining table",
+    "action": "sitting with a cup of tea at a tidy table",
+    "timeOfDay": "evening",
+    "lighting": "warm lamplight",
+    "camera": "medium shot",
+    "mood": "休息",
+    "promptProse": "At a tidy dining table, Nanami sits with a cup of tea after putting the dishes away.",
+    "promptTokens": [
+      "dining room",
+      "table",
+      "sitting",
+      "teacup",
+      "warm lamplight",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

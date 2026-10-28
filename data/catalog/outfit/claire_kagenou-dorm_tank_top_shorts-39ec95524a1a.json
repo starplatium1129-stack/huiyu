@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "claire_kagenou/dorm_tank_top_shorts",
+  "revision": 1,
+  "sortOrder": 1818,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "claire_kagenou",
+    "outfit": {
+      "id": "dorm_tank_top_shorts",
+      "name": "宿舍休闲背心热裤",
+      "prose": "Casual black racerback athletic tank top and grey stretch shorts, displaying toned collarbones and defined athletic arms.",
+      "tokens": [
+        "black_tank_top",
+        "gray_shorts",
+        "bare_shoulders",
+        "bare_legs",
+        "casual",
+        "messy_ponytail"
+      ],
+      "characterId": "claire_kagenou",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

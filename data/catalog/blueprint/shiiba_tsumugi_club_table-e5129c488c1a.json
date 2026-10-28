@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_club_table",
+  "revision": 1,
+  "sortOrder": 2411,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_club_table",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "dark_jacket",
+    "title": "椎叶紬 · 桌上的约定",
+    "category": "伙伴相处",
+    "description": "大家商量完事情先离开了，紬留下来把写好的约定压在桌角。她又添了一笔，免得有人忘记集合时间。",
+    "location": "club room",
+    "action": "writing a reminder at a table",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "cowboy shot",
+    "mood": "认真",
+    "promptProse": "At a table in the club room, Tsumugi writes one last reminder on a page before leaving it for her friends.",
+    "promptTokens": [
+      "club room",
+      "table",
+      "writing",
+      "paper",
+      "pencil",
+      "window light",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

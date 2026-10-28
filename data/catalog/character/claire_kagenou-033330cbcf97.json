@@ -1,0 +1,151 @@
+{
+  "kind": "character",
+  "id": "claire_kagenou",
+  "revision": 2,
+  "sortOrder": 267,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:15:40.584314600+00:00",
+  "data": {
+    "id": "claire_kagenou",
+    "popular": {
+      "id": "claire_kagenou",
+      "displayName": "克莱尔·卡盖诺",
+      "originalName": "Claire Kagenou",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "claire_kagenou",
+        "Claire",
+        "クレア",
+        "克莱尔",
+        "卡盖诺家长女",
+        "席德的姐姐",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Claire Kagenou from The Eminence in Shadow, Cid Kagenou elder sister, with glossy black hair tied in a high sleek ponytail, fierce violet eyes, an athletic toned figure, and an aggressive tsundere glare.",
+      "identityTokens": [
+        "claire_kagenou",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "purple_eyes",
+        "ponytail",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "claire_kagenou"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "claire_kagenou"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "midgar_academy_uniform",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（卡盖诺男爵领地与米德加学园）",
+        "era": "教团暗涌纪元",
+        "formNotes": "黑发高马尾紫瞳人类少女；卡盖诺男爵家长女兼学院剑士优等生",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "claire_kagenou",
+      "name": "克莱尔·卡盖诺",
+      "alias": [
+        "Claire",
+        "クレア",
+        "克莱尔",
+        "卡盖诺家长女",
+        "席德的姐姐",
+        "暴走弟控"
+      ],
+      "type": "popular",
+      "icon": "⚡",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "克莱尔·卡盖诺 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "乌黑光亮如缎的利落长发 · 束成飒爽高马尾",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "凌厉且富有压迫感的深邃紫眸",
+        "hairstyle": "利落高马尾 · 额前微翘碎发",
+        "uniform": "米德加魔剑士学园高级制服 / 私下宿舍无袖贴身背心与热裤",
+        "expression": "日常凶狠凌厉的逼视 · 保护弟弟时近乎病态执着的焦躁与温情",
+        "style": "aggressive fierce older-sister girlfriend, combining terrifying physical discipline with desperate protective devotion",
+        "signature": "乌黑高马尾、锐利紫眸、矫健剑技与锁喉动作"
+      },
+      "personality": [
+        "好胜傲蛮",
+        "外表严厉",
+        "重度弟控",
+        "保护欲过剩"
+      ],
+      "likes": [
+        "对席德施展锁喉与柔术",
+        "清晨剑道体能特训",
+        "提防接近弟弟的异性",
+        "给席德买新衣服"
+      ],
+      "classic_cg": {
+        "title": "宿舍走廊的亲昵锁喉",
+        "description": "学院宿舍走廊内，克莱尔一手利落地将席德揽在臂弯中施展锁喉技，紫眸挑起威吓的神色，另一手却悄悄将一袋刚出炉的热点心塞进弟弟的外套口袋。"
+      },
+      "identity": {
+        "role": "卡盖诺男爵家长女 / 米德加魔剑士学园顶尖优等生",
+        "age": "成年创作设定",
+        "occupation": "魔剑士学院高年生 / 家族继承人",
+        "faction": "卡盖诺男爵家 / 米德加魔剑士学园"
+      },
+      "tags": [
+        "黑发马尾",
+        "紫眸",
+        "弟控",
+        "强气姐系",
+        "魔剑士",
+        "反差萌"
+      ],
+      "bg_story": "席德·卡盖诺的亲生姐姐，卡盖诺男爵家出色的剑术优等生。在家里与学院中都保持着强势高傲的大姐头作风，动辄对不思进取的席德实行严格管教。然而这一切严苛的表象背后，是她将席德视作生命中最重要的家人，一旦察觉弟弟遭遇危险便会陷入不顾一切的焦急状态。在无意中被教团注入古代魔素后成为魔女奥萝拉灵魂的宿主，为了弟弟的安全不惜与任何强敌拼死搏杀。",
+      "palette": [
+        "暗夜黑",
+        "紫罗兰",
+        "亮银",
+        "鲜红"
+      ],
+      "weather": [
+        "清晨薄雾",
+        "雷雨交加",
+        "黄昏晚霞"
+      ],
+      "speech": "席德，今天的零花钱给你放在桌上了。在外面别给我惹事！",
+      "voice": "席德！放学之后立刻给我滚回宿舍！……要是敢在外面被不良剑士欺负，或者让哪个不知羞耻的狐狸精拐跑了，看我不把你的脖子拧断！……听到了没有？！",
+      "voiceJa": "シド！放課後はまっすぐ部屋に戻りなさい！変な女に引っかかったら、首を絞め上げてやるからね！",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "claire_kagenou",
+        "black_hair",
+        "long_hair",
+        "purple_eyes",
+        "ponytail"
+      ],
+      "accent_color": "#a855f7",
+      "bg_color": "#170c24"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shiiba_tsumugi/plaid_casual",
+  "revision": 1,
+  "sortOrder": 1867,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "shiiba_tsumugi",
+    "outfit": {
+      "id": "plaid_casual",
+      "name": "格纹衬衫与长裤",
+      "prose": "a red plaid shirt over a cream top with comfortable brown trousers",
+      "tokens": [
+        "red plaid shirt",
+        "cream shirt",
+        "brown pants"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

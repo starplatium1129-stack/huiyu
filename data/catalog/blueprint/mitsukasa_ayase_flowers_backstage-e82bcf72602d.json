@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_flowers_backstage",
+  "revision": 1,
+  "sortOrder": 2436,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_flowers_backstage",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "red_performance",
+    "title": "三司绫濑 · 后台的一束花",
+    "category": "舞台间隙",
+    "description": "后台桌上放着一束刚送来的花。绫濑拿起卡片读完，将它仔细塞回花束的包装纸里。",
+    "location": "backstage table",
+    "action": "reading a card beside a bouquet",
+    "timeOfDay": "evening",
+    "lighting": "warm dressing room light",
+    "camera": "medium shot",
+    "mood": "意外",
+    "promptProse": "At a backstage table, Ayase reads a small card tucked into the wrapping of a bouquet.",
+    "promptTokens": [
+      "backstage",
+      "table",
+      "bouquet",
+      "holding card",
+      "reading",
+      "warm light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "alpha_shadow",
+  "revision": 1,
+  "sortOrder": 261,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "alpha_shadow",
+    "popular": {
+      "id": "alpha_shadow",
+      "displayName": "阿尔法",
+      "originalName": "Alpha",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "alpha_shadow",
+        "Alpha",
+        "アルファ",
+        "阿尔法",
+        "七阴首席",
+        "七阴之首",
+        "Alpha (Shadow Garden)",
+        "alpha_(shadow_garden)",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Alpha from The Eminence in Shadow, the First of the Seven Shadows, with long golden blonde hair, crystal blue eyes, pointed elf ears, and a calm graceful aristocratic beauty.",
+      "identityTokens": [
+        "alpha_(shadow_garden)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "blue_eyes",
+        "pointy_ears",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "alpha_(shadow_garden)"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "alpha_(shadow_garden)"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "slime_bodysuit",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（米德加王国与阴影庭园地下城邦）",
+        "era": "阴影庭园扩张纪元",
+        "formNotes": "金发蓝眸精灵族女性；阴影庭园「七阴」首席兼战术总指挥官",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "alpha_shadow",
+      "name": "阿尔法",
+      "alias": [
+        "Alpha",
+        "アルファ",
+        "七阴首席",
+        "七阴之首",
+        "组织的完美超人"
+      ],
+      "type": "popular",
+      "icon": "🌙",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "阿尔法 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "璀璨如金的修长秀发 · 柔顺垂至腰际",
+        "hair_color": "金发 / 亮金",
+        "eyes": "清澈深邃的碧蓝眼眸",
+        "hairstyle": "自然披肩长发 · 优雅精灵尖耳",
+        "uniform": "标志性漆黑史莱姆连体战装配金色镶边 / 纯白露背宫廷晚装",
+        "expression": "冷静从容的指挥官目光 · 面对暗影时浮现深情浅笑",
+        "style": "mature noble elf commander girlfriend, combining supreme tactical composure with deep affectionate devotion",
+        "signature": "修长金发、精灵尖耳、清澈蓝眸与黑色史莱姆战服"
+      },
+      "personality": [
+        "沉着威严",
+        "深谋远虑",
+        "决断果敢",
+        "独处时温柔依恋"
+      ],
+      "likes": [
+        "与暗影对弈研讨",
+        "整理庭园全球情报网",
+        "品鉴红茶",
+        "月下漫步"
+      ],
+      "classic_cg": {
+        "title": "月下回廊的暗影密谋",
+        "description": "幽深的大理石柱廊外圆月高悬。阿尔法侧身轻倚在栏杆旁，金发在夜风中轻漾，回首望向身后的暗影，清冷的蓝眸泛起唯有独处时才会展露的温柔浅笑。"
+      },
+      "identity": {
+        "role": "阴影庭园「七阴」首席 / 组织总指挥官",
+        "age": "成年创作设定",
+        "occupation": "地下组织统帅 / 战术指挥官",
+        "faction": "阴影庭园 (Shadow Garden)"
+      },
+      "tags": [
+        "金发精灵",
+        "七阴首席",
+        "史莱姆战衣",
+        "蓝眸",
+        "指挥官",
+        "深情依恋"
+      ],
+      "bg_story": "精灵贵族出身，幼年因体内魔力暴走恶魔化而遭到王族遗弃放逐。在身体严重肉块化、面临绝境之际被席德·卡盖诺救下，通过史莱姆魔力调和治愈恶魔化并恢复了原本的容貌。为了报答暗影的救命之恩，她召集同样因恶魔化被迫害的少女们创立了“阴影庭园”，并以出色的统帅力与才智将组织扩展为横跨政商军多领域的庞大势力。对外她是冷静果决的战术领袖，但在暗影面前，始终保持着最纯粹的信任与深厚依恋。",
+      "palette": [
+        "深渊黑",
+        "璀璨金",
+        "冰晶蓝",
+        "纯净白"
+      ],
+      "weather": [
+        "月下微凉",
+        "殿堂烛影",
+        "拂晓微风"
+      ],
+      "speech": "暗影大人，所有部署已经就绪。随时等候您的指示。",
+      "voice": "暗影大人……阴影庭园的全员与这世间的一切情报，皆在您的掌握之中。请吩咐吧，无论您的意志通向何方，阿尔法都会为您扫清一切障碍。",
+      "voiceJa": "シャドウ様……陰の組織はすべて、あなたの手のひらの上に。どのようなご命令でも、お命じください",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "alpha_(shadow_garden)",
+        "blonde_hair",
+        "blue_eyes",
+        "pointy_ears",
+        "long_hair"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0b1329"
+    }
+  }
+}

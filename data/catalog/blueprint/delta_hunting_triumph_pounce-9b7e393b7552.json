@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "delta_hunting_triumph_pounce",
+  "revision": 1,
+  "sortOrder": 2476,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "delta_hunting_triumph_pounce",
+    "characterId": "delta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "德尔塔 · 林间凯旋的扑怀撒娇",
+    "category": "忠犬喜悦",
+    "description": "原始林地树影斑驳，刚击败魔物的德尔塔单膝跪地，金色眼眸闪烁兴奋光彩，黑犬耳与尾巴剧烈晃动，猛地扑向眼前的暗影寻求摸头奖赏。",
+    "recommendedSize": "832x1216",
+    "location": "dense primeval forest clearing with sunbeams cutting through giant trees",
+    "action": "leaping forward onto Shadow with eager outstretched arms, wagging fluffy tail, cute fangs showing in a wide beaming grin",
+    "timeOfDay": "day",
+    "lighting": "dappled forest canopy sunlight illuminating wild black hair and amber eyes",
+    "camera": "medium_shot",
+    "mood": "exuberant feral affection, pure canine loyalty, innocent loving playfulness",
+    "promptProse": "In a sunlit forest, wolf-girl Delta in black suit pounces forward joyfully with wagging tail and sparkling yellow eyes.",
+    "promptTokens": [
+      "forest",
+      "kneeling",
+      "pounce",
+      "smiling",
+      "wagging_tail",
+      "fangs",
+      "looking_up",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Delta pouncing forward with wagging tail to receive headpats from Shadow.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

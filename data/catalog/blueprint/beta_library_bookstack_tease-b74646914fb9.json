@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "beta_library_bookstack_tease",
+  "revision": 1,
+  "sortOrder": 2472,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "beta_library_bookstack_tease",
+    "characterId": "beta_shadow",
+    "outfitId": "natsume_author_dress",
+    "title": "贝塔 · 王都书库高架梯旁的偶遇",
+    "category": "知性风采",
+    "description": "王都大图书馆的高耸书架旁，贝塔单手扶着移动滑梯，怀中抱着厚厚的古典书籍，微侧过头带着知性而略具挑逗意味的目光望向来人。",
+    "recommendedSize": "832x1216",
+    "location": "grand royal archive library with soaring towering bookshelves",
+    "action": "holding heavy leatherbound tomes against her chest while leaning against wooden library ladder, smiling playfully",
+    "timeOfDay": "day",
+    "lighting": "dusted sunbeams filtering through tall arched windows",
+    "camera": "medium_shot",
+    "mood": "charming scholarly elegance, playful flirtation, serene archive atmosphere",
+    "promptProse": "In a sunlit high-ceiling library, silver-haired Beta holds thick leather books against her chest beside a tall rolling ladder.",
+    "promptTokens": [
+      "library",
+      "bookshelf",
+      "ladder",
+      "holding_books",
+      "standing",
+      "looking_at_viewer",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Beta posing playfully with books in the grand library of Midgar.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

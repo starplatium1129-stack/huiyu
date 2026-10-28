@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_comms",
+  "revision": 1,
+  "sortOrder": 2442,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_comms",
+    "characterId": "arihara_nanami",
+    "outfitId": "support_uniform",
+    "title": "在原七海 · 耳机里的回音",
+    "category": "任务支援",
+    "description": "联络短暂中断后，七海停在走廊里检查耳机。听到信号重新接通，她才放下另一只手中的记录本。",
+    "location": "building corridor",
+    "action": "checking her earpiece while holding a notebook",
+    "timeOfDay": "night",
+    "lighting": "corridor light",
+    "camera": "cowboy shot",
+    "mood": "警觉",
+    "promptProse": "In a building corridor, Nanami checks her earpiece and holds a notebook as the communication signal returns.",
+    "promptTokens": [
+      "corridor",
+      "holding notebook",
+      "touching earpiece",
+      "overhead light",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

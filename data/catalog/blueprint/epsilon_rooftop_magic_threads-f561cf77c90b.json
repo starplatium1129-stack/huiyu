@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "epsilon_rooftop_magic_threads",
+  "revision": 1,
+  "sortOrder": 2481,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "epsilon_rooftop_magic_threads",
+    "characterId": "epsilon_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "厄普西隆 · 夜空天台的隐形魔力丝线",
+    "category": "精密斩击",
+    "description": "王都钟塔尖顶的冷风呼啸，厄普西隆十指轻弹，指尖延伸出无数道如琴弦般晶莹剔透的暗影魔力丝线，紫眸在夜色中绽放从容敏锐的自信。",
+    "recommendedSize": "832x1216",
+    "location": "soaring gothic clocktower pinnacle overlooking sprawling capital city lights",
+    "action": "standing poised with ten fingertips extended, conjuring razor-sharp glowing magical threads like harp strings, confident sly smile",
+    "timeOfDay": "night",
+    "lighting": "cool starlight and cyan magical thread glow illuminating pale face and light blue hair",
+    "camera": "medium_shot",
+    "mood": "masterful precision, deadly assassin beauty, unshakeable confidence",
+    "promptProse": "On a clocktower roof at night, light blue-haired elf Epsilon extends glowing magical threads from her fingertips with a confident smirk.",
+    "promptTokens": [
+      "rooftop",
+      "night_sky",
+      "windy",
+      "magic_strings",
+      "fingers_spread",
+      "smirk",
+      "purple_eyes",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Epsilon controlling invisible magical threads from the clocktower pinnacle.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

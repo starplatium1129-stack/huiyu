@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "arihara_nanami/yellow_cardigan",
+  "revision": 1,
+  "sortOrder": 1875,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "arihara_nanami",
+    "outfit": {
+      "id": "yellow_cardigan",
+      "name": "浅黄开衫与灰裙",
+      "prose": "a pale yellow cardigan over a white shirt, a red bow and a grey plaid skirt; two sections of her hair are tied back",
+      "tokens": [
+        "yellow cardigan",
+        "white shirt",
+        "red bow",
+        "grey plaid skirt",
+        "two side up"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "claire_dorm_headlock_affection",
+  "revision": 1,
+  "sortOrder": 2485,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "claire_dorm_headlock_affection",
+    "characterId": "claire_kagenou",
+    "outfitId": "dorm_tank_top_shorts",
+    "title": "克莱尔 · 寝室门前的惯例锁喉",
+    "category": "姐弟日常",
+    "description": "单人宿舍房间门前，身穿黑色贴身背心的克莱尔单臂锁住席德的脖颈，凶狠微眯的紫眸近在咫尺，微喘的气息扫在对方耳畔，嘴里虽在训斥，眼角却透着浓浓的眷恋。",
+    "recommendedSize": "832x1216",
+    "location": "academy student dormitory doorway with warm wooden floor",
+    "action": "playfully putting Cid in a headlock under her arm, fierce yet fond violet eyes up close with an angry blush, leaning near his ear",
+    "timeOfDay": "evening",
+    "lighting": "warm hallway ceiling lamp casting intimate shadows on bare shoulders",
+    "camera": "close-up",
+    "mood": "intense aggressive tsundere sister affection, hilarious possessiveness, intimate proximity",
+    "promptProse": "In a dorm doorway, athletic black-haired ponytail Claire puts someone in a close headlock with a fierce blushing glare.",
+    "promptTokens": [
+      "indoors",
+      "doorway",
+      "headlock",
+      "holding_arm",
+      "close-up",
+      "angry_blush",
+      "scowling"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Claire affectionately headlocking Cid at the dorm doorway.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

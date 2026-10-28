@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "arihara_nanami/support_uniform",
+  "revision": 1,
+  "sortOrder": 1874,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "arihara_nanami",
+    "outfit": {
+      "id": "support_uniform",
+      "name": "黑色支援制服",
+      "prose": "a black cap and black uniform with a short capelet, red necktie, white gloves and dark stockings; her hair is tied into low twin tails with red ribbons",
+      "tokens": [
+        "black cap",
+        "black uniform",
+        "black capelet",
+        "red necktie",
+        "white gloves",
+        "black pantyhose",
+        "low twintails",
+        "red hair ribbons"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

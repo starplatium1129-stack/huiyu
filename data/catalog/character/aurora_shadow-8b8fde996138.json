@@ -1,0 +1,150 @@
+{
+  "kind": "character",
+  "id": "aurora_shadow",
+  "revision": 1,
+  "sortOrder": 268,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "aurora_shadow",
+    "popular": {
+      "id": "aurora_shadow",
+      "displayName": "奥萝拉",
+      "originalName": "Aurora",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "aurora_shadow",
+        "Aurora",
+        "アウロラ",
+        "奥萝拉",
+        "灾厄魔女",
+        "魔女奥萝拉",
+        "Aurora (Shadow Garden)",
+        "aurora_(shadow_garden)",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Aurora from The Eminence in Shadow, the Witch of Calamity, with long glossy black hair, alluring deep violet-purple eyes, pale skin, a sultry mature figure, and an amused playful expression.",
+      "identityTokens": [
+        "aurora_(shadow_garden)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "purple_eyes",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "aurora_(shadow_garden)"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "aurora_(shadow_garden)"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "witch_crimson_dress",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（远古圣域与现代米德加）",
+        "era": "远古灾厄觉醒纪元",
+        "formNotes": "黑发紫眸绝美人类魔女；灾厄魔女兼迪亚波罗斯源识",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "aurora_shadow",
+      "name": "奥萝拉",
+      "alias": [
+        "Aurora",
+        "アウロラ",
+        "灾厄魔女",
+        "魔女奥萝拉",
+        "远古的化身"
+      ],
+      "type": "popular",
+      "icon": "🥀",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "奥萝拉 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "如黑夜深渊般柔滑光泽的及踝黑发",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "摄人心魄的神秘深紫眼眸",
+        "hairstyle": "自然散落及腰长发 · 额前八字刘海",
+        "uniform": "幽邃深绯的高开衩魔女长袍 / 圣域幻境半透紫纱裙",
+        "expression": "戏谑玩味的慵懒微笑 · 面对强敌与命运时坦然释怀的哀艳",
+        "style": "alluring ancient witch girlfriend, blending playful sultry mystery with deep ancient sorrow and mutual bond with Shadow",
+        "signature": "修长黑发、神秘紫眸、深绯开衩长袍与玩味从容的气质"
+      },
+      "personality": [
+        "从容优雅",
+        "戏谑玩味",
+        "慵懒成熟",
+        "深藏孤独与宿命"
+      ],
+      "likes": [
+        "与暗影漫步圣域",
+        "戏弄调侃强大对手",
+        "高空俯瞰人间夜景",
+        "静谧的血红晚霞"
+      ],
+      "classic_cg": {
+        "title": "圣域残垣的魔女幽梦",
+        "description": "浮空的白色古代遗迹残垣边缘，奥萝拉倚靠在断裂的石柱旁。一袭幽红长裙随虚空之风翻飞，紫罗兰色的美眸中流转着戏谑与眷恋，伸出白皙无瑕的手指，轻轻划过暗影的脸颊。"
+      },
+      "identity": {
+        "role": "传说中的“灾厄魔女” / 迪亚波罗斯源头残识",
+        "age": "成年创作设定",
+        "occupation": "远古魔女 / 圣域灵魂寄宿者",
+        "faction": "圣域记忆界 / 寄宿于克莱尔"
+      },
+      "tags": [
+        "黑长直",
+        "紫眸",
+        "魔女",
+        "灾厄魔女",
+        "神秘魅惑",
+        "御姐"
+      ],
+      "bg_story": "千年前被教团注入原始魔物因子、被迫改造为魔王迪亚波罗斯的悲剧少女。肉体被四分五裂封印于世界各地，被称为带来灭世灾厄的魔女。在神圣之剑女神试炼与圣域深处与席德相识，被席德纯粹狂傲的实力与不受世俗拘束的行事风格深深吸引。两人在圣域激战中建立起罕有的默契，在消散前将自身力量托付，灵魂碎片后寄宿于席德姐姐克莱尔体内，暗中守护着那个令她心动的少年。",
+      "palette": [
+        "深绯红",
+        "深渊黑",
+        "幽邃紫",
+        "冷月银"
+      ],
+      "weather": [
+        "圣域极光",
+        "血月苍穹",
+        "静寂虚空"
+      ],
+      "speech": "呵呵……你又来看我了吗？真是个不可思议的男人呢。",
+      "voice": "呵呵……能一击击碎我数百年封印的男人，这世上除了你，可找不出第二个了呢。暗影……要不要再握紧一点妾身的手？即使这具躯壳只是残破的幻影，今夜也只属于你一人哦。",
+      "voiceJa": "ふふっ……私の封印を容易く砕いてくれたのは、あなただけよ。シャドウ……もう少し、強く抱きしめてくれてもいいのよ？",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "aurora_(shadow_garden)",
+        "black_hair",
+        "long_hair",
+        "purple_eyes"
+      ],
+      "accent_color": "#c026d3",
+      "bg_color": "#1d0724"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_shopping_list",
+  "revision": 1,
+  "sortOrder": 2448,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_shopping_list",
+    "characterId": "arihara_nanami",
+    "outfitId": "home_apron",
+    "title": "在原七海 · 买菜清单",
+    "category": "居家日常",
+    "description": "买回来的蔬菜摆满了料理台。七海对照清单逐项确认，发现还有一颗番茄留在购物袋底部。",
+    "location": "kitchen counter",
+    "action": "checking vegetables against a shopping list",
+    "timeOfDay": "afternoon",
+    "lighting": "daylight",
+    "camera": "medium shot",
+    "mood": "认真",
+    "promptProse": "At the kitchen counter, Nanami checks vegetables against a shopping list with an open grocery bag nearby.",
+    "promptTokens": [
+      "kitchen",
+      "counter",
+      "vegetables",
+      "shopping bag",
+      "holding list",
+      "daylight",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

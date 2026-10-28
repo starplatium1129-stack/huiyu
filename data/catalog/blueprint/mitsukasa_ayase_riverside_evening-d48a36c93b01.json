@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_riverside_evening",
+  "revision": 1,
+  "sortOrder": 2439,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_riverside_evening",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "blue_jacket",
+    "title": "三司绫濑 · 回家路上的河风",
+    "category": "休息日",
+    "description": "活动结束后，绫濑绕到河边走了一段。风吹乱了头发，她抬手拢好，继续沿着空荡的步道往前走。",
+    "location": "riverside path",
+    "action": "walking along the river and brushing hair from her face",
+    "timeOfDay": "sunset",
+    "lighting": "sunset light",
+    "camera": "cowboy shot",
+    "mood": "轻松",
+    "promptProse": "On a riverside path at sunset, Ayase walks home and brushes windblown hair away from her face.",
+    "promptTokens": [
+      "riverside",
+      "path",
+      "walking",
+      "wind",
+      "hand in hair",
+      "sunset",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

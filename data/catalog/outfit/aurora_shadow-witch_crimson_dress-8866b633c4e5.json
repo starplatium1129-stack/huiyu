@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "aurora_shadow/witch_crimson_dress",
+  "revision": 1,
+  "sortOrder": 1819,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "aurora_shadow",
+    "outfit": {
+      "id": "witch_crimson_dress",
+      "name": "幽邃深绯魔女长袍",
+      "prose": "Gothic crimson off-shoulder gown with thigh-high slit, billowing wide sleeves, and ornate gold arcane brooches.",
+      "tokens": [
+        "crimson_dress",
+        "long_dress",
+        "bare_shoulders",
+        "gothic",
+        "wide_sleeves",
+        "gold_ornament",
+        "slit_dress"
+      ],
+      "characterId": "aurora_shadow",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

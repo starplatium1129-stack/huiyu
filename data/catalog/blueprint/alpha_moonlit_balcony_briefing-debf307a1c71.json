@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "alpha_moonlit_balcony_briefing",
+  "revision": 1,
+  "sortOrder": 2467,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "alpha_moonlit_balcony_briefing",
+    "characterId": "alpha_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "阿尔法 · 月夜露台的独处汇报",
+    "category": "暗夜密谋",
+    "description": "幽暗庭园顶层露台上圆月当空，夜风轻拂金色发丝。阿尔法双手轻捧羊皮纸卷轴，身着紧致黑色史莱姆战服侧立在暗影身旁，清澈蓝眸迎向对方的目光，语气柔和从容。",
+    "recommendedSize": "832x1216",
+    "location": "grand marble balcony under a luminous full moon in starry night",
+    "action": "standing gracefully beside Shadow holding an ancient parchment scroll, looking back with fond crystal blue eyes and a soft warm smile",
+    "timeOfDay": "night",
+    "lighting": "cool silver moonlight casting soft luminescence on golden hair and sleek bodysuit",
+    "camera": "medium_shot",
+    "mood": "calm tactical romance, absolute loyalty, quiet midnight companionship",
+    "promptProse": "Standing on a marble balcony under the full moon, blonde elf Alpha in her sleek black slime bodysuit turns back with gentle blue eyes and a quiet smile.",
+    "promptTokens": [
+      "moon",
+      "night",
+      "balcony",
+      "scroll",
+      "standing",
+      "looking_at_viewer",
+      "gentle_smile",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alpha briefing Shadow on the moonlit balcony with devoted affection.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

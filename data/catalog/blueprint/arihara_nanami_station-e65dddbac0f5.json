@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_station",
+  "revision": 1,
+  "sortOrder": 2445,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_station",
+    "characterId": "arihara_nanami",
+    "outfitId": "yellow_cardigan",
+    "title": "在原七海 · 站台上的等候",
+    "category": "日常出行",
+    "description": "列车还要等几分钟，七海站在站台边查看路线。她把票收回包里，抬头寻找下一班车的信息。",
+    "location": "train platform",
+    "action": "holding a ticket and looking at the platform sign",
+    "timeOfDay": "morning",
+    "lighting": "morning daylight",
+    "camera": "cowboy shot",
+    "mood": "从容",
+    "promptProse": "On a train platform, Nanami holds her ticket and looks toward the departure sign while waiting.",
+    "promptTokens": [
+      "train platform",
+      "holding ticket",
+      "looking up",
+      "morning light",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

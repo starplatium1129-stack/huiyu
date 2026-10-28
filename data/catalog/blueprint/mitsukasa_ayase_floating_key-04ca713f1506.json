@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_floating_key",
+  "revision": 1,
+  "sortOrder": 2432,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_floating_key",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "yellow_blazer",
+    "title": "三司绫濑 · 够不到的钥匙",
+    "category": "能力日常",
+    "description": "钥匙掉到了柜子后面。绫濑蹲下查看，确认周围没人后，让它轻轻浮到自己伸出的手边。",
+    "location": "small room",
+    "action": "reaching toward a key floating beside a cabinet",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "谨慎",
+    "promptProse": "In a quiet room, Ayase reaches toward a small key floating beside a cabinet after making sure she is alone.",
+    "promptTokens": [
+      "indoors",
+      "cabinet",
+      "crouching",
+      "floating key",
+      "reaching",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

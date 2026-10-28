@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "alexia_dojo_afterschool_sparring",
+  "revision": 1,
+  "sortOrder": 2473,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "alexia_dojo_afterschool_sparring",
+    "characterId": "alexia_midgar",
+    "outfitId": "midgar_academy_uniform",
+    "title": "阿蕾克希亚 · 放学后道场的木剑对决",
+    "category": "剑道切磋",
+    "description": "放学后空荡的木地板剑术道场内，阿蕾克希亚单手持单手剑微喘，几缕银发贴在泛红的面颊上，红眸目光灼灼地迎视着对面的席德。",
+    "recommendedSize": "832x1216",
+    "location": "empty polished wooden dojo training hall in late afternoon",
+    "action": "holding one-handed training sword lowered, breathing softly with glowing crimson eyes locked onto opponent, hair strands clinging to flushed skin",
+    "timeOfDay": "late_afternoon",
+    "lighting": "slanting golden sunset beams through dojo lattice windows",
+    "camera": "medium_shot",
+    "mood": "intense swordplay camaraderie, prideful determination, hidden romantic tension",
+    "promptProse": "In a sunlit wooden dojo, silver-haired ponytail Alexia lowers her training sword with panting breath and fierce red eyes.",
+    "promptTokens": [
+      "dojo",
+      "wooden_floor",
+      "holding_sword",
+      "sweat_drop",
+      "looking_at_viewer",
+      "intense_look",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Alexia catching her breath after an intense sparring match in the dojo.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

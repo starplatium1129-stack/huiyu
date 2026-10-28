@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "rena_liechtenauer/hoori_kimono",
+  "revision": 1,
+  "sortOrder": 1868,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "rena_liechtenauer",
+    "outfit": {
+      "id": "hoori_kimono",
+      "name": "穗织白红和装",
+      "prose": "a white kimono top with detached sleeves, a red pleated hakama-style skirt and black stockings; her hair is in a low braided ponytail",
+      "tokens": [
+        "white kimono",
+        "detached sleeves",
+        "red skirt",
+        "pleated skirt",
+        "black thighhighs",
+        "low ponytail",
+        "braid"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "aurora_sanctuary_ruins_embrace",
+  "revision": 1,
+  "sortOrder": 2488,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "aurora_sanctuary_ruins_embrace",
+    "characterId": "aurora_shadow",
+    "outfitId": "witch_crimson_dress",
+    "title": "奥萝拉 · 圣域白石残垣上的指尖相触",
+    "category": "魔女契约",
+    "description": "虚空浮岛的白色古代残垣边缘，狂风掀起深绯色高开衩长裙。奥萝拉斜倚在白石上，纤长手指轻触在暗影唇角，神秘紫眸满含戏谑与依恋。",
+    "recommendedSize": "832x1216",
+    "location": "floating white marble ancient sanctuary ruins suspended over a vast glowing nebula void",
+    "action": "leaning back against broken marble column in high-slit crimson gown, touching Shadow cheek with slender pale fingers, sultry amused smile",
+    "timeOfDay": "night",
+    "lighting": "ethereal purple aurora luminescence washing over long black hair and pale skin",
+    "camera": "medium_shot",
+    "mood": "intoxicating ancient mystique, sultry playful intimacy, fated mutual understanding",
+    "promptProse": "On a floating marble ruin in void, long black-haired witch Aurora in crimson slit dress touches someone cheek with a sultry smile.",
+    "promptTokens": [
+      "floating_island",
+      "ancient_ruins",
+      "wind",
+      "touching_face",
+      "seductive_smile",
+      "slit_dress",
+      "looking_at_viewer",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Aurora sharing an intimate touch with Shadow on the floating sanctuary ruins.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

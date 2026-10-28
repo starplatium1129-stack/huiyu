@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_fold_towels",
+  "revision": 1,
+  "sortOrder": 2425,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_fold_towels",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "inn_apron",
+    "title": "蕾娜·莉希特娜瓦 · 刚晒好的毛巾",
+    "category": "旅馆工作",
+    "description": "庭院里的毛巾已经晒干。蕾娜把它们一条条叠整齐，发现最上面那条边角又歪了，便重新折了一次。",
+    "location": "inn veranda",
+    "action": "folding a towel on the veranda",
+    "timeOfDay": "afternoon",
+    "lighting": "sunlight",
+    "camera": "medium shot",
+    "mood": "专心",
+    "promptProse": "On the inn veranda, Lena refolds the edge of a freshly dried towel on a neat stack.",
+    "promptTokens": [
+      "veranda",
+      "folded towels",
+      "holding towel",
+      "sunlight",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

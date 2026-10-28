@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_sword_catalogue",
+  "revision": 1,
+  "sortOrder": 2422,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_sword_catalogue",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "hoori_kimono",
+    "title": "蕾娜·莉希特娜瓦 · 刀剑图录",
+    "category": "传统文化",
+    "description": "蕾娜在书店翻到一本刀剑图录，指尖停在刀镡的插图旁。她侧过头，想把新看到的细节讲给身边的人听。",
+    "location": "bookshop",
+    "action": "holding open an illustrated sword catalogue",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "兴奋",
+    "promptProse": "In a bookshop, Lena holds open an illustrated sword catalogue and points to a drawing of a sword guard.",
+    "promptTokens": [
+      "bookstore",
+      "holding book",
+      "open book",
+      "pointing",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

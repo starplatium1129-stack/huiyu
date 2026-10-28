@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_rain_stop",
+  "revision": 1,
+  "sortOrder": 2413,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_rain_stop",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "dark_jacket",
+    "title": "椎叶紬 · 借来的伞",
+    "category": "雨天",
+    "description": "雨来得突然，紬站在屋檐下整理刚借到的伞。她伸手试了试雨势，确认伞面撑开后才准备出发。",
+    "location": "street awning",
+    "action": "opening an umbrella beneath an awning",
+    "timeOfDay": "rainy afternoon",
+    "lighting": "overcast daylight",
+    "camera": "cowboy shot",
+    "mood": "从容",
+    "promptProse": "Under a street awning, Tsumugi opens a borrowed umbrella and watches the rain before stepping out.",
+    "promptTokens": [
+      "outdoors",
+      "awning",
+      "rain",
+      "holding umbrella",
+      "overcast",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_parcel",
+  "revision": 1,
+  "sortOrder": 2419,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_parcel",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "plaid_casual",
+    "title": "椎叶紬 · 拆开的小包裹",
+    "category": "居家日常",
+    "description": "包裹里是一枚小小的星形饰品。紬将它从纸盒中取出，转到光线下看清边缘的纹路。",
+    "location": "room table",
+    "action": "holding a small star ornament above an open parcel",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "close up",
+    "mood": "好奇",
+    "promptProse": "At a table, Tsumugi holds a small star ornament over an open parcel and turns it toward the window light.",
+    "promptTokens": [
+      "table",
+      "open box",
+      "holding ornament",
+      "star ornament",
+      "window light",
+      "close up"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

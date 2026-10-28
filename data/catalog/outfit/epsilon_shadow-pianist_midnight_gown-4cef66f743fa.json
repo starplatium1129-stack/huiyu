@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "epsilon_shadow/pianist_midnight_gown",
+  "revision": 1,
+  "sortOrder": 1814,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "epsilon_shadow",
+    "outfit": {
+      "id": "pianist_midnight_gown",
+      "name": "午夜蓝天鹅绒演奏礼服",
+      "prose": "Regal off-shoulder midnight blue velvet gown with floor-length flared skirt, tailored for classical stage performances.",
+      "tokens": [
+        "midnight_blue_dress",
+        "velvet_dress",
+        "bare_shoulders",
+        "elegant",
+        "long_dress",
+        "pianist_attire"
+      ],
+      "characterId": "epsilon_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

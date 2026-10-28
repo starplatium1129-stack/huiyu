@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "mitsukasa_ayase/red_performance",
+  "revision": 1,
+  "sortOrder": 1872,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "characterId": "mitsukasa_ayase",
+    "outfit": {
+      "id": "red_performance",
+      "name": "红色演出外套",
+      "prose": "a red beret and long red coat over a white blouse and a brown skirt",
+      "tokens": [
+        "red beret",
+        "red coat",
+        "white blouse",
+        "brown skirt"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

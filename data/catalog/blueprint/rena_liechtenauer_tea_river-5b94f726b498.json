@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_tea_river",
+  "revision": 1,
+  "sortOrder": 2429,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_tea_river",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "blue_cardigan",
+    "title": "蕾娜·莉希特娜瓦 · 河边的休息时间",
+    "category": "休息日",
+    "description": "办完事后，蕾娜在河边长椅上坐下，把买来的热茶捧在手里。她抬眼望向对岸，等茶稍微凉一些。",
+    "location": "riverside bench",
+    "action": "sitting on a bench holding a cup of tea",
+    "timeOfDay": "late afternoon",
+    "lighting": "late afternoon light",
+    "camera": "cowboy shot",
+    "mood": "放松",
+    "promptProse": "On a riverside bench, Lena holds a cup of hot tea and looks across the water in the late afternoon.",
+    "promptTokens": [
+      "riverside",
+      "bench",
+      "sitting",
+      "holding cup",
+      "looking across water",
+      "late afternoon light",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

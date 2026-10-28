@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_bridge_view",
+  "revision": 1,
+  "sortOrder": 2421,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_bridge_view",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "hoori_kimono",
+    "title": "蕾娜·莉希特娜瓦 · 桥上的停步",
+    "category": "穗织漫步",
+    "description": "木桥下的水流声让蕾娜停下脚步。她倚着栏杆往下看，等水面的一片落叶漂过桥洞。",
+    "location": "wooden bridge over a stream",
+    "action": "leaning on a bridge railing and watching a leaf in the water",
+    "timeOfDay": "afternoon",
+    "lighting": "daylight",
+    "camera": "cowboy shot",
+    "mood": "悠闲",
+    "promptProse": "On a wooden bridge, Lena leans against the railing and watches a leaf drift along the stream below.",
+    "promptTokens": [
+      "wooden bridge",
+      "railing",
+      "stream",
+      "leaning on railing",
+      "looking down",
+      "daylight",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

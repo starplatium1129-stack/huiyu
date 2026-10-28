@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_breakfast",
+  "revision": 1,
+  "sortOrder": 2447,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_breakfast",
+    "characterId": "arihara_nanami",
+    "outfitId": "home_apron",
+    "title": "在原七海 · 早餐快好了",
+    "category": "厨房日常",
+    "description": "锅里的汤快好了，七海把火调小，转身去拿碗。桌上已经摆好了筷子，只等最后一道菜。",
+    "location": "home kitchen",
+    "action": "reaching for a bowl beside the stove",
+    "timeOfDay": "morning",
+    "lighting": "morning window light",
+    "camera": "medium shot",
+    "mood": "平静",
+    "promptProse": "In the kitchen, Nanami reaches for a bowl beside the stove while a pot of soup simmers.",
+    "promptTokens": [
+      "kitchen",
+      "stove",
+      "pot",
+      "bowl",
+      "reaching",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_yarn",
+  "revision": 1,
+  "sortOrder": 2446,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_yarn",
+    "characterId": "arihara_nanami",
+    "outfitId": "yellow_cardigan",
+    "title": "在原七海 · 织到一半的围巾",
+    "category": "居家手作",
+    "description": "七海把织到一半的围巾摊在膝上，数了数刚完成的针脚。发现漏了一针，她拆回去一点，重新织好。",
+    "location": "living room sofa",
+    "action": "knitting a scarf while seated on a sofa",
+    "timeOfDay": "afternoon",
+    "lighting": "soft daylight",
+    "camera": "medium shot",
+    "mood": "耐心",
+    "promptProse": "Seated on a living room sofa, Nanami knits a scarf and checks the stitches on her lap.",
+    "promptTokens": [
+      "living room",
+      "sofa",
+      "sitting",
+      "knitting",
+      "yarn",
+      "daylight",
+      "medium shot"
+    ],
+    "animaCaption": "She knits a scarf laid across her lap.",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

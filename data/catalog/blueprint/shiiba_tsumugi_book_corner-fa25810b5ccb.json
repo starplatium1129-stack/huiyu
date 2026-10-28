@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_book_corner",
+  "revision": 1,
+  "sortOrder": 2418,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_book_corner",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "plaid_casual",
+    "title": "椎叶紬 · 书里夹着的清单",
+    "category": "居家日常",
+    "description": "翻到书页中间时，一张购物清单滑了出来。紬把纸摊在膝上，给已经找到的东西画了个圈。",
+    "location": "living room armchair",
+    "action": "reading a list on her lap",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "放松",
+    "promptProse": "Seated in an armchair, Tsumugi reads a shopping list that slipped from her book and marks an item on it.",
+    "promptTokens": [
+      "armchair",
+      "sitting",
+      "book",
+      "paper",
+      "pencil",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

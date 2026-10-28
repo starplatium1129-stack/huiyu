@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_magic_note",
+  "revision": 1,
+  "sortOrder": 2415,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_magic_note",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "witch_cape",
+    "title": "椎叶紬 · 魔法记事本",
+    "category": "魔女时刻",
+    "description": "紬把今天遇到的事记进本子，末尾画了一颗小星星。墨迹还没干，她小心地捏着纸页一角。",
+    "location": "wooden desk",
+    "action": "writing in a notebook at a desk",
+    "timeOfDay": "evening",
+    "lighting": "desk lamp",
+    "camera": "close up",
+    "mood": "专注",
+    "promptProse": "At a wooden desk, Tsumugi writes in a small notebook and holds the corner of the page away from the wet ink.",
+    "promptTokens": [
+      "desk",
+      "notebook",
+      "writing",
+      "desk lamp",
+      "close up"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

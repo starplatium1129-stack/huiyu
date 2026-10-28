@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_shrine_path",
+  "revision": 1,
+  "sortOrder": 2423,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_shrine_path",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "hoori_kimono",
+    "title": "蕾娜·莉希特娜瓦 · 神社前的石阶",
+    "category": "传统文化",
+    "description": "蕾娜在石阶前停下来，先把手里的小册子收好。抬头看到鸟居时，她忍不住笑了：这次没有走错路。",
+    "location": "shrine approach",
+    "action": "standing before the shrine steps and looking at the torii",
+    "timeOfDay": "morning",
+    "lighting": "soft morning light",
+    "camera": "full body",
+    "mood": "开心",
+    "promptProse": "At the foot of the shrine steps, Lena looks up toward the torii after putting away her guidebook.",
+    "promptTokens": [
+      "shrine",
+      "stone stairs",
+      "torii",
+      "standing",
+      "looking up",
+      "morning light",
+      "full body"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_sewing_box",
+  "revision": 1,
+  "sortOrder": 2417,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_sewing_box",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "plaid_casual",
+    "title": "椎叶紬 · 缎带盒里的线头",
+    "category": "居家手作",
+    "description": "紬从收纳盒里挑出一段缎带，拆开打结的线头。颜色已经选好了，只差把它整理平整。",
+    "location": "living room",
+    "action": "untangling a ribbon at a low table",
+    "timeOfDay": "morning",
+    "lighting": "soft daylight",
+    "camera": "medium shot",
+    "mood": "耐心",
+    "promptProse": "At a low table in the living room, Tsumugi carefully untangles a ribbon taken from a small sewing box.",
+    "promptTokens": [
+      "living room",
+      "low table",
+      "sewing box",
+      "holding ribbon",
+      "daylight",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

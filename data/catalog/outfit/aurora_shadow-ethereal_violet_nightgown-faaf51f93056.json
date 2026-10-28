@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "aurora_shadow/ethereal_violet_nightgown",
+  "revision": 1,
+  "sortOrder": 1820,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "aurora_shadow",
+    "outfit": {
+      "id": "ethereal_violet_nightgown",
+      "name": "圣域月影半透紫纱裙",
+      "prose": "Ethereal translucent violet gossamer nightgown drifting in the void breeze, revealing bare legs and pale skin.",
+      "tokens": [
+        "violet_dress",
+        "sheer_fabric",
+        "off-shoulder",
+        "side_slit",
+        "bare_legs",
+        "ethereal"
+      ],
+      "characterId": "aurora_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

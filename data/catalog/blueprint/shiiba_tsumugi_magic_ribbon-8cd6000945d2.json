@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_magic_ribbon",
+  "revision": 1,
+  "sortOrder": 2414,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_magic_ribbon",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "witch_cape",
+    "title": "椎叶紬 · 魔女帽上的缎带",
+    "category": "魔女时刻",
+    "description": "换上魔女服后，紬在镜前调整帽上的缎带。这套衣服不会触发平日的限制，她于是多花了点时间端详。",
+    "location": "dressing room",
+    "action": "adjusting the ribbon on her witch hat",
+    "timeOfDay": "evening",
+    "lighting": "warm lamplight",
+    "camera": "medium shot",
+    "mood": "欣喜",
+    "promptProse": "In a dressing room, Tsumugi adjusts the ribbon on her white witch hat while looking into a mirror.",
+    "promptTokens": [
+      "indoors",
+      "mirror",
+      "adjusting hat",
+      "ribbon",
+      "lamplight",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

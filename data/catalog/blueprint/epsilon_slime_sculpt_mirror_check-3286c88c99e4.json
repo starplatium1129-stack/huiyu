@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "epsilon_slime_sculpt_mirror_check",
+  "revision": 1,
+  "sortOrder": 2480,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "epsilon_slime_sculpt_mirror_check",
+    "characterId": "epsilon_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "厄普西隆 · 起居室内衣镜前的曲线微调",
+    "category": "傲娇秘辛",
+    "description": "私密起居室内的高大全身镜前，厄普西隆神情专注地调控着胸口史莱姆战服的聚拢弧度，突然察觉身后房门开启，瞬间双手捂胸、满脸通红地慌乱回眸。",
+    "recommendedSize": "832x1216",
+    "location": "opulent private dressing room before an ornate gilded full-length mirror",
+    "action": "clutching her slime-padded chest with both hands in startled panic, blushing intensely with teary flustered violet eyes",
+    "timeOfDay": "night",
+    "lighting": "warm vanity sconce lighting reflecting in the mirror",
+    "camera": "close-up",
+    "mood": "hilarious endearing tsundere vulnerability, secret vanity exposed, intense embarrassment",
+    "promptProse": "In front of a dressing room mirror, blue-haired elf Epsilon covers her chest with hands in deep blushing embarrassment.",
+    "promptTokens": [
+      "indoors",
+      "mirror",
+      "covering_breasts",
+      "blushing",
+      "flustered",
+      "embarrassed",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Epsilon startled while adjusting her slime padding in front of the mirror.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

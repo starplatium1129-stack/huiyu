@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "beta_shadow/slime_bodysuit",
+  "revision": 1,
+  "sortOrder": 1807,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "characterId": "beta_shadow",
+    "outfit": {
+      "id": "slime_bodysuit",
+      "name": "史莱姆深渊连体服",
+      "prose": "Voluptuous jet-black slime bodysuit showing generous cleavage with gold accents, matching gloves and form-fitting silhouette.",
+      "tokens": [
+        "black_bodysuit",
+        "slime_suit",
+        "cleavage",
+        "gold_trim",
+        "tight",
+        "gloves"
+      ],
+      "characterId": "beta_shadow",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

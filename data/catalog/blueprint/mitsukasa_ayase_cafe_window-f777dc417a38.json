@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_cafe_window",
+  "revision": 1,
+  "sortOrder": 2438,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_cafe_window",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "blue_jacket",
+    "title": "三司绫濑 · 靠窗的位置",
+    "category": "独处时间",
+    "description": "绫濑选了咖啡馆最靠窗的座位，把手机扣在桌上。饮料还热着，她先看了一会儿窗外的人来人往。",
+    "location": "cafe window table",
+    "action": "sitting at a window table beside a drink",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "安静",
+    "promptProse": "At a cafe window table, Ayase sits beside a warm drink and looks out at the street.",
+    "promptTokens": [
+      "cafe",
+      "window",
+      "table",
+      "sitting",
+      "cup",
+      "looking outside",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

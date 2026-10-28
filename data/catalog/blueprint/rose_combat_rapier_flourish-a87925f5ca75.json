@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "rose_combat_rapier_flourish",
+  "revision": 1,
+  "sortOrder": 2484,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "rose_combat_rapier_flourish",
+    "characterId": "rose_oriana",
+    "outfitId": "number_666_slime_suit",
+    "title": "萝丝 · 雪夜古堡之巅的细剑疾刺",
+    "category": "潜行觉醒",
+    "description": "风雪交加的雪山古堡城垛边缘，黑色斗篷在狂风中猎猎作响。萝丝单手持细剑直刺向前，剑尖凝聚着炽烈魔力，金色卷发如光辉般绚烂绽放。",
+    "recommendedSize": "832x1216",
+    "location": "snowy battlements atop a fortified mountain fortress under blizzard skies",
+    "action": "lunging forward in a graceful fencing thrust with glowing rapier, black cloak swirling in the biting blizzard, fierce golden curls",
+    "timeOfDay": "night",
+    "lighting": "chilly blue snowstorm lighting with brilliant crimson magical spark on rapier tip",
+    "camera": "full_body",
+    "mood": "heroic resolution, rebirth in shadows, fierce warrior princess spirit",
+    "promptProse": "On a snowy fortress wall in a blizzard, hooded Rose in black slime suit thrusts forward with her glowing rapier.",
+    "promptTokens": [
+      "snow",
+      "castle_wall",
+      "holding_rapier",
+      "fencing_stance",
+      "wind",
+      "determined",
+      "full_body"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Rose executing a graceful rapier thrust on the snowy fortress ramparts.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

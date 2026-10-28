@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "mitsukasa_ayase_quiet_notes",
+  "revision": 1,
+  "sortOrder": 2433,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "mitsukasa_ayase_quiet_notes",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "yellow_blazer",
+    "title": "三司绫濑 · 写给自己的备注",
+    "category": "日常整理",
+    "description": "绫濑把明天的安排写进本子，在一项活动后面添了个问号。想了一会儿，她决定先把这个问题留到明天。",
+    "location": "desk by window",
+    "action": "writing in a planner beside a window",
+    "timeOfDay": "afternoon",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "思索",
+    "promptProse": "At a desk by the window, Ayase adds a question mark beside an appointment in her planner.",
+    "promptTokens": [
+      "desk",
+      "planner",
+      "writing",
+      "pencil",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

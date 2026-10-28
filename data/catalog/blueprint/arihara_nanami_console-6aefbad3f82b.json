@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "arihara_nanami_console",
+  "revision": 1,
+  "sortOrder": 2440,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "arihara_nanami_console",
+    "characterId": "arihara_nanami",
+    "outfitId": "support_uniform",
+    "title": "在原七海 · 屏幕上的路线",
+    "category": "任务支援",
+    "description": "七海坐在终端前核对路线，屏幕上的标记已经更新到最后一处。她按住耳机，等待对面确认。",
+    "location": "operations room",
+    "action": "checking a route on a monitor with one hand on her earpiece",
+    "timeOfDay": "night",
+    "lighting": "monitor light",
+    "camera": "medium shot",
+    "mood": "专注",
+    "promptProse": "In an operations room, Nanami checks a route on the monitor and touches her earpiece while waiting for a reply.",
+    "promptTokens": [
+      "operations room",
+      "monitor",
+      "sitting",
+      "touching earpiece",
+      "monitor light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "shiiba_tsumugi_rooftop_stars",
+  "revision": 1,
+  "sortOrder": 2416,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi_rooftop_stars",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "witch_cape",
+    "title": "椎叶紬 · 屋顶的星星",
+    "category": "魔女时刻",
+    "description": "夜色落下来后，紬靠着屋顶栏杆辨认星星。她举起画着星图的纸，把纸上的线与天空一一对照。",
+    "location": "rooftop",
+    "action": "holding a star chart and looking at the sky",
+    "timeOfDay": "night",
+    "lighting": "moonlight",
+    "camera": "cowboy shot",
+    "mood": "好奇",
+    "promptProse": "On a rooftop at night, Tsumugi holds a star chart and compares its lines with the sky above the railing.",
+    "promptTokens": [
+      "rooftop",
+      "railing",
+      "night sky",
+      "holding paper",
+      "looking up",
+      "moonlight",
+      "cowboy shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

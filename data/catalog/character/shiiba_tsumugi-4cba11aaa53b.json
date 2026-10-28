@@ -1,0 +1,111 @@
+{
+  "kind": "character",
+  "id": "shiiba_tsumugi",
+  "revision": 1,
+  "sortOrder": 258,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "shiiba_tsumugi",
+    "profile": {
+      "id": "shiiba_tsumugi",
+      "name": "椎叶紬",
+      "icon": "character",
+      "source": "Sabbat of the Witch",
+      "alias": [
+        "椎葉 紬",
+        "Shiiba Tsumugi",
+        "Tsumugi Shiiba"
+      ],
+      "type": "popular",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "椎叶紬 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "棕色长发",
+        "eyes": "蓝色眼睛",
+        "hairstyle": "长发配红色发箍",
+        "uniform": "深色夹克与长裤",
+        "signature": "棕色长发、蓝色眼睛和红色发箍"
+      },
+      "personality": [
+        "喜欢可爱的事物，却会顾及契约带来的限制",
+        "对熟悉的人坦率，遇到不公平的事会出声",
+        "关心朋友的处境，也会替对方着想",
+        "认真挑选自己真正喜欢的东西"
+      ],
+      "likes": [
+        "可爱的服装与小饰品",
+        "和朋友分享新发现",
+        "魔女伙伴之间的约定"
+      ],
+      "classic_cg": {
+        "title": "橱窗前的红发箍",
+        "description": "紬停在服装店的橱窗前，拿起一只红发箍，仔细看它与外套是否相衬。"
+      },
+      "identity": {
+        "role": "与阿尔普签订契约的魔女",
+        "age": "成年创作设定",
+        "occupation": "魔女与社团伙伴"
+      },
+      "tags": [
+        "与阿尔普签订契约的魔女",
+        "喜欢可爱的事物，却会顾及契约带来的限制",
+        "对熟悉的人坦率，遇到不公平的事会出声"
+      ],
+      "bg_story": "紬与阿尔普签订了魔女契约，代价是穿着过于女性化的衣服会让她不适。她其实喜欢可爱的服装和饰品，也愿意与同样身为魔女的宁宁等人互相帮助。这里采用成年创作设定，保留她对契约限制的在意。",
+      "speech": "这个发箍怎么样？我看了好久，还是觉得它最合适。",
+      "voice": "这个发箍怎么样？我看了好久，还是觉得它最合适。",
+      "traits": [
+        "shiiba_tsumugi",
+        "brown hair",
+        "long hair",
+        "blue eyes",
+        "red hairband"
+      ],
+      "accent_color": "#a65458"
+    },
+    "popular": {
+      "id": "shiiba_tsumugi",
+      "displayName": "椎叶紬",
+      "originalName": "椎葉紬",
+      "franchise": "Sabbat of the Witch",
+      "aliases": [
+        "shiiba_tsumugi",
+        "椎葉 紬",
+        "Shiiba Tsumugi",
+        "Tsumugi Shiiba"
+      ],
+      "identityProse": "Tsumugi Shiiba from Sabbat of the Witch, with long brown hair, blue eyes and a red hairband.",
+      "identityTokens": [
+        "1girl",
+        "solo",
+        "shiiba_tsumugi",
+        "brown hair",
+        "long hair",
+        "blue eyes",
+        "red hairband"
+      ],
+      "characterTokens": [
+        "shiiba_tsumugi"
+      ],
+      "copyrightTokens": [
+        "sanoba_witch"
+      ],
+      "exactTokens": [
+        "shiiba_tsumugi"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "dark_jacket",
+      "negativeTokens": []
+    }
+  }
+}

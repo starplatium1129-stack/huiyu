@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_phrase_notes",
+  "revision": 1,
+  "sortOrder": 2427,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_phrase_notes",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "blue_cardigan",
+    "title": "蕾娜·莉希特娜瓦 · 新学会的词",
+    "category": "语言学习",
+    "description": "蕾娜把刚听来的词写在小本子上，又对照旁边的解释念了一遍。写错的地方被划掉，空白处留给下一句。",
+    "location": "cafe table",
+    "action": "writing vocabulary in a notebook",
+    "timeOfDay": "morning",
+    "lighting": "window light",
+    "camera": "medium shot",
+    "mood": "专注",
+    "promptProse": "At a cafe table, Lena writes a new Japanese word in her notebook and checks the explanation beside it.",
+    "promptTokens": [
+      "cafe",
+      "table",
+      "notebook",
+      "writing",
+      "pencil",
+      "window light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

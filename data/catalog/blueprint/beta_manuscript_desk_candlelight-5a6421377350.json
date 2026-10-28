@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "beta_manuscript_desk_candlelight",
+  "revision": 1,
+  "sortOrder": 2470,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "beta_manuscript_desk_candlelight",
+    "characterId": "beta_shadow",
+    "outfitId": "natsume_author_dress",
+    "title": "贝塔 · 深夜案前的暗影记事录",
+    "category": "文豪倾心",
+    "description": "静谧书房内烛火微明，桌面堆满摊开的原稿纸。贝塔手握精致羽毛笔快速书写，银白短发微散，嘴角带着满溢的崇拜微笑，眼角泪痣更添妩媚。",
+    "recommendedSize": "832x1216",
+    "location": "cozy private study desk stacked with parchment manuscripts and inkpots",
+    "action": "leaning over desk writing with ornate feather quill, blushing cheeks with a doting passionate smile, tear mole prominent",
+    "timeOfDay": "night",
+    "lighting": "warm flickering candlelight illuminating soft cleavage and silver hair curls",
+    "camera": "medium_shot",
+    "mood": "intellectual devotion, passionate fangirl adoration, cozy nighttime intimacy",
+    "promptProse": "Sitting at a candlelit desk surrounded by papers, silver-haired Beta writes passionately with a quill, smiling lovingly.",
+    "promptTokens": [
+      "indoors",
+      "desk",
+      "candle",
+      "quill",
+      "manuscript",
+      "sitting",
+      "smile",
+      "blush",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Beta writing the Chronicles of Shadow at her candlelit study desk.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

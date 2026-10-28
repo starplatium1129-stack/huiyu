@@ -1,0 +1,157 @@
+{
+  "kind": "character",
+  "id": "beta_shadow",
+  "revision": 1,
+  "sortOrder": 262,
+  "createdAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "data": {
+    "id": "beta_shadow",
+    "popular": {
+      "id": "beta_shadow",
+      "displayName": "贝塔",
+      "originalName": "Beta",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "beta_shadow",
+        "Beta",
+        "ベータ",
+        "贝塔",
+        "夏目老师",
+        "夏目",
+        "七阴第二席",
+        "Beta (Shadow Garden)",
+        "beta_(shadow_garden)",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Beta from The Eminence in Shadow, the Second of the Seven Shadows, with short wavy silver hair, a beauty mark under her right eye, bright blue eyes, pointed elf ears, and an extremely voluptuous busty figure.",
+      "identityTokens": [
+        "beta_(shadow_garden)",
+        "1girl",
+        "solo",
+        "silver_hair",
+        "short_hair",
+        "blue_eyes",
+        "pointy_ears",
+        "mole_under_eye",
+        "large_breasts",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "beta_(shadow_garden)"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "beta_(shadow_garden)"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "slime_bodysuit",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（米德加王都与阴影庭园商会）",
+        "era": "阴影庭园扩张纪元",
+        "formNotes": "银发短发蓝眸泪痣精灵女性；阴影庭园「七阴」第二席兼畅销作家夏目",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "beta_shadow",
+      "name": "贝塔",
+      "alias": [
+        "Beta",
+        "ベータ",
+        "夏目老师",
+        "夏目",
+        "七阴第二席",
+        "暗影大人第一信徒"
+      ],
+      "type": "popular",
+      "icon": "📖",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "贝塔 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "银白如雪的微卷短发 · 两侧垂下轻盈小发辫",
+        "hair_color": "银白 / 浅银",
+        "eyes": "湛蓝如水的清澈美眸",
+        "hairstyle": "波浪层次短发 · 精灵尖耳",
+        "uniform": "勾勒傲人身材的黑色史莱姆连体战装 / 文雅知性的夏目作家洋装",
+        "expression": "面对暗影时崇拜迷离的神态 · 私下腹黑狡黠的调侃笑意",
+        "style": "devoted author elf girlfriend, blending intellectual novelist charm with obsessive romantic adoration and voluptuous allure",
+        "signature": "银白短发、右眼角泪痣、丰满胸部、精灵尖耳与崇拜眼神"
+      },
+      "personality": [
+        "端庄知性",
+        "狂热崇拜",
+        "腹黑机敏",
+        "在意身材较劲"
+      ],
+      "likes": [
+        "撰写暗影大人记事录",
+        "研读古代文献",
+        "高档羽毛笔",
+        "与阿蕾克希亚暗中较劲"
+      ],
+      "classic_cg": {
+        "title": "昏黄烛台下的夏目手稿",
+        "description": "铺满厚重书籍的案几前，贝塔一手轻托着丰满的胸口，另一手握着羽毛笔飞速书写，眼角的泪痣在烛光摇曳下显得格外娇俏，眼眸中闪烁着迷恋的光芒。"
+      },
+      "identity": {
+        "role": "阴影庭园「七阴」第二席 / 畅销小说家“夏目”",
+        "age": "成年创作设定",
+        "occupation": "小说家 / 组织文书与谍报官",
+        "faction": "阴影庭园 (Shadow Garden)"
+      },
+      "tags": [
+        "银发短发",
+        "泪痣",
+        "巨乳",
+        "小说家",
+        "七阴第二席",
+        "狂热迷恋"
+      ],
+      "bg_story": "自幼遭遇恶魔化被暗影治愈并收留的精灵少女，对暗影抱有极度崇拜的信仰与爱意。在阴影庭园中担任第二席，主管情报记录与文书宣传。表面上以“夏目”为笔名将暗影随口提及的童话与故事写成小说，一跃成为名震王都的天才畅销作家；私底下则将暗影的一言一行详尽记录在《暗影大人英雄记事录》中，经常为了在暗影心中的地位而与阿蕾克希亚暗中交锋。",
+      "palette": [
+        "夜空紫",
+        "纯银白",
+        "湛蓝",
+        "墨水黑"
+      ],
+      "weather": [
+        "雨夜书房",
+        "烛光摇曳",
+        "黄昏街道"
+      ],
+      "speech": "暗影大人，贝塔随时为您记录一切荣光。",
+      "voice": "暗影大人！今天的《暗影大人英雄记事录》新篇章已经记录完毕了！关于大人刚刚那无可挑剔的背影与深邃台词……请务必让贝塔用最华丽的词藻传诵给世人！",
+      "voiceJa": "シャドウ様！本日の『シャドウ様英雄譚』の執筆、完了いたしました！あの素晴らしいお姿、しっかり記録しております！",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "beta_(shadow_garden)",
+        "silver_hair",
+        "short_hair",
+        "blue_eyes",
+        "mole_under_eye",
+        "large_breasts"
+      ],
+      "accent_color": "#818cf8",
+      "bg_color": "#111029"
+    }
+  }
+}

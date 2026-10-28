@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "rena_liechtenauer_souvenir",
+  "revision": 1,
+  "sortOrder": 2428,
+  "createdAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "data": {
+    "id": "rena_liechtenauer_souvenir",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "blue_cardigan",
+    "title": "蕾娜·莉希特娜瓦 · 给朋友的手信",
+    "category": "休息日",
+    "description": "小店的货架上摆着各色手信。蕾娜拿起一个布包，看过图案后又看看旁边的另一款，认真挑给朋友的礼物。",
+    "location": "souvenir shop",
+    "action": "comparing two small cloth gifts on a shelf",
+    "timeOfDay": "afternoon",
+    "lighting": "warm shop light",
+    "camera": "medium shot",
+    "mood": "期待",
+    "promptProse": "In a souvenir shop, Lena holds a small cloth gift while comparing it with another on the shelf.",
+    "promptTokens": [
+      "souvenir shop",
+      "shelf",
+      "holding pouch",
+      "looking at object",
+      "warm light",
+      "medium shot"
+    ],
+    "animaCaption": "",
+    "negativeTokens": [],
+    "recommendedSize": "832x1216",
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}
