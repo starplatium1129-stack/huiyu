@@ -66,6 +66,7 @@ export function parsePopularCharacter(value: unknown): PopularCharacter | null {
   return {
     id,
     displayName: requiredString(value, 'displayName'),
+    portraitPending: value.portraitPending === true,
     originalName: requiredString(value, 'originalName'),
     franchise: requiredString(value, 'franchise'),
     aliases: stringList(value.aliases),

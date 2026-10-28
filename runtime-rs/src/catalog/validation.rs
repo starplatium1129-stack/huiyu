@@ -40,12 +40,14 @@ pub(super) fn data(kind: &str, id: &str, value: &Value) -> Result<()> {
                     return Err(ApiError::invalid("人物档案和身份 ID 必须一致"));
                 }
             }
-            if value["profile"].is_object()
-                && value["profile"]["name"]
-                    .as_str()
-                    .is_none_or(|s| s.trim().is_empty())
-            {
-                return Err(ApiError::invalid("人物档案需要名称"));
+            if value["profile"].is_object() {
+                let issues = crate::maintenance::contracts::profile_field_issues(&value["profile"]);
+                if !issues.is_empty() {
+                    return Err(ApiError::invalid(format!(
+                        "character:{id}.profile: {}",
+                        issues.join("；")
+                    )));
+                }
             }
             if value["popular"].get("outfits").is_some() {
                 return Err(ApiError::invalid("服装应独立维护，不能嵌入人物身份"));
@@ -185,7 +187,7 @@ fn valid_pins(value: &Value) -> Result<()> {
     Ok(())
 }
 impl PinPolicy {
-    fn select(&mut self, connection: &Connection, source: &Path) -> Result<&Value> {
+    pub(super) fn select(&mut self, connection: &Connection, source: &Path) -> Result<&Value> {
         if self.0.is_none() {
             let policy = source.join("data/prompt-pinned-scenes.json");
             self.0 = Some(if policy.is_file() {

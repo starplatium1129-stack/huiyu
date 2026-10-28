@@ -1,13 +1,16 @@
 //! Record content authority. JSON is an explicit seed/export, never a second writer.
 mod authoring;
+mod cache_scope;
 mod check;
 mod cli;
 mod dependencies;
 mod facet_cache;
 mod http;
 mod import;
+mod indexes;
 mod migration;
 mod projection_cache;
+mod prompt_guard;
 mod provenance;
 mod query;
 mod showcase;
@@ -115,6 +118,39 @@ fn row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Record> {
 }
 const COLUMNS: &str = "kind,id,revision,sort_order,created_at,updated_at,payload";
 impl Catalog {
+    pub(crate) fn open_readonly(options: Options) -> Result<Self> {
+        if !options.database.is_file() {
+            return Err(ApiError::new(
+                503,
+                "CATALOG_MISSING",
+                "内容库不存在，请核对实际运行目录；只读命令不会初始化内容库",
+            ));
+        }
+        let connection = Connection::open_with_flags(
+            &options.database,
+            OpenFlags::SQLITE_OPEN_READ_ONLY | OpenFlags::SQLITE_OPEN_NO_MUTEX,
+        )?;
+        connection.busy_timeout(std::time::Duration::from_secs(10))?;
+        let schema: Option<String> = connection
+            .query_row(
+                "SELECT value FROM catalog_meta WHERE key='schema'",
+                [],
+                |row| row.get(0),
+            )
+            .optional()?;
+        if schema.as_deref() != Some("1") {
+            return Err(ApiError::new(
+                503,
+                "CATALOG_SCHEMA",
+                "内容库版本不受支持，请先使用匹配的程序维护",
+            ));
+        }
+        Ok(Self {
+            connection,
+            options,
+        })
+    }
+
     pub fn open(options: Options) -> Result<Self> {
         let marker = options.database.with_extension("identity.json");
         if marker.exists() && !options.database.is_file() {
@@ -169,7 +205,7 @@ impl Catalog {
         let journal: String = store
             .connection
             .query_row("PRAGMA journal_mode", [], |row| row.get(0))?;
-        if !indexed || journal != "wal" {
+        if !indexed || journal != "wal" || !indexes::ready(&store.connection)? {
             // Old/restored snapshots retain the additive index upgrade contract;
             // current authorities skip all DDL on ordinary reads and cache hits.
             store.ensure_schema(&marker, false)?;
@@ -204,6 +240,7 @@ impl Catalog {
                 revision INTEGER NOT NULL,at TEXT NOT NULL,record TEXT NOT NULL,deleted INTEGER NOT NULL,
                 UNIQUE(kind,id,revision));")?;
         self.validate_schema(initialize)?;
+        indexes::ensure(&self.connection)?;
         self.ensure_marker(marker)
     }
     fn validate_schema(&mut self, initialize: bool) -> Result<()> {

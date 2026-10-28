@@ -50,7 +50,7 @@ function views(records: RecordRow[]) {
   const documents = Object.fromEntries(records.filter(r => r.kind === 'document').map(r => [r.id, r.data]));
   const characters = records.filter(r => r.kind === 'character').map(r => r.data);
   const outfits = records.filter(r => r.kind === 'outfit');
-  const popular = characters.filter(c => c.popular).map(c => ({ ...c.popular, outfits: outfits.filter(r => r.data.characterId === c.id).map(r => r.data.outfit) }));
+  const popular = characters.filter(c => c.popular).map(c => ({ ...c.popular, portraitPending: c.profile?.portrait?.image === '../assets/characters/portrait-pending.svg', outfits: outfits.filter(r => r.data.characterId === c.id).map(r => r.data.outfit) }));
   const scenes = records.filter(r => r.kind === 'scene').map(r => ({ ...r.data, sortOrder: r.sortOrder, createdAt: r.createdAt, updatedAt: r.updatedAt }));
   const blueprints = records.filter(r => r.kind === 'blueprint').map(r => r.data);
   return { characters: characters.filter(c => c.profile).map(c => c.profile), popular, scenes, blueprints, documents };

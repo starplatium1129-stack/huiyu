@@ -80,8 +80,9 @@ function validateContent(data: any, fileExists: any) {
     });
     if (!character.portrait || typeof character.portrait.image !== 'string') errors.push(label + '.portrait.image is required');
     else if (!fileExists(character.portrait.image)) errors.push(label + '.portrait.image does not exist: ' + character.portrait.image);
-    if (!character.visual_dna || !character.visual_dna.signature) errors.push(label + '.visual_dna.signature is required');
-    if (!Array.isArray(character.traits) || character.traits.length < 3) errors.push(label + '.traits must contain identity anchors');
+    if (typeof character.visual_dna?.signature !== 'string' || !character.visual_dna.signature.trim()) errors.push(label + '.visual_dna.signature is required');
+    if (!Array.isArray(character.traits) || character.traits.length < 3 || character.traits.some((item: any) => typeof item === 'string' ? !item.trim()
+      : !item || Array.isArray(item) || ['tag', 'label'].some(key => typeof item[key] !== 'string' || !item[key].trim()))) errors.push(label + '.traits must contain at least three nonempty identity anchors');
     // 热门角色（type=popular）无 LoRA：仅 heroine 强制 lora.name/weight。
     if (character.type !== 'popular') {
       if (!character.lora || typeof character.lora.name !== 'string') errors.push(label + '.lora.name is required');

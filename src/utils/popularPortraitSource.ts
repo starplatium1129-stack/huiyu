@@ -19,8 +19,8 @@ export function adoptCatalogPendingPortraits(profiles: unknown): void {
   const pending = new Set<string>()
   if (Array.isArray(profiles)) for (const profile of profiles) {
     if (!profile || typeof profile !== 'object') continue
-    const row = profile as { id?: unknown; portrait?: { image?: unknown } }
-    if (typeof row.id === 'string' && row.portrait?.image === '../assets/characters/portrait-pending.svg') pending.add(row.id)
+    const row = profile as { id?: unknown; portraitPending?: unknown; portrait?: { image?: unknown } }
+    if (typeof row.id === 'string' && (row.portraitPending === true || row.portrait?.image === '../assets/characters/portrait-pending.svg')) pending.add(row.id)
   }
   catalogPendingIds.value = pending
 }

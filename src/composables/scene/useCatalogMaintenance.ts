@@ -156,7 +156,7 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
       const data = await catalogApi.query(query, controller.signal)
       if (seq !== listSeq) return
       result.value = data; listKind.value = query.kind; listScope.value = JSON.stringify({ ...query, page: data.page }); page.value = data.page
-      void loadCharacterNames(data.version)
+      void loadCharacterNames(data.characterVersion ?? data.version)
       if (data.version !== statsVersion) {
         const stats = await catalogApi.stats(controller.signal)
         if (seq === listSeq) { counts.value = stats.counts; nextSceneId.value = stats.nextSceneId; statsVersion = data.version }
@@ -337,9 +337,11 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
       else {
         lastOnboardedCharacter.value = submission.find(change => change.kind === 'character' && change.expectedRevision === 0
           && fieldValue(change.data ?? {}, 'popular') && submission.some(item => item.kind === 'outfit' && item.id.startsWith(change.id + '/')))?.id ?? ''
-        if (lastOnboardedCharacter.value) markCatalogPendingPortrait(lastOnboardedCharacter.value)
-        pending.value = []; resetEditor(); useSceneStore().invalidate()
-        hint.value = '已保存 ' + receipt.items.length + ' 项修改'; await load()
+        if (lastOnboardedCharacter.value && submission.some(change => change.kind === 'character' && change.id === lastOnboardedCharacter.value && fieldValue(change.data ?? {}, 'profile.portrait.image') === '../assets/characters/portrait-pending.svg')) markCatalogPendingPortrait(lastOnboardedCharacter.value)
+        pending.value = []; resetEditor(); useSceneStore().invalidateCatalog(receipt)
+        const warnings = receipt.promptReview?.issues.length ?? 0
+        if (warnings) preview.value = receipt
+        hint.value = '已保存 ' + receipt.items.length + ' 项修改' + (warnings ? `；有 ${warnings} 项提示词建议，请查看下方需复核内容` : ''); await load()
       }
     } catch (e) {
       hint.value = (e as Error).message
@@ -446,7 +448,7 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
     try {
       const receipt = await catalogApi.importSnapshot(clone(importSnapshot.value), previewOnly)
       preview.value = receipt; importPreview.value = previewOnly
-      if (!previewOnly) { resetEditor(); useSceneStore().invalidate(); hint.value = '快照已导入；本地修改与冲突按记录核对'; await load() }
+      if (!previewOnly) { resetEditor(); useSceneStore().invalidateCatalog(receipt); hint.value = '快照已导入；本地修改与冲突按记录核对'; await load() }
     } catch (e) { importPreview.value = false; hint.value = (e as Error).message }
     finally { busy.value = false }
   }

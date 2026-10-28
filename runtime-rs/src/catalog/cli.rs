@@ -79,19 +79,24 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
             .ok_or_else(|| ApiError::invalid(format!("缺少 {flag}")))?;
         Ok(std::path::absolute(value)?)
     };
-    let mut catalog = Catalog::open(Options {
+    let options = Options {
         source: absolute("--root")?,
         seed_source: flags
             .contains_key("--seed-root")
             .then(|| absolute("--seed-root"))
             .transpose()?,
         database: absolute("--runtime-root")?.join("content/catalog.sqlite"),
-    })?;
+    };
     if action == "authoring" && apply || action != "authoring" && flags.contains_key("--example") {
         return Err(ApiError::invalid(
             "authoring 只读，--example 仅用于 authoring",
         ));
     }
+    let mut catalog = if action == "authoring" {
+        Catalog::open_readonly(options)?
+    } else {
+        Catalog::open(options)?
+    };
     let required = |flag: &str| -> Result<&str> {
         flags
             .get(flag)
@@ -198,5 +203,8 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
         }
     };
     result["source"] = catalog.source_info();
+    if action == "authoring" {
+        result["promptPolicy"] = super::prompt_guard::policy();
+    }
     Ok(Some(result))
 }

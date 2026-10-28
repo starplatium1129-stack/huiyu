@@ -1,9 +1,11 @@
 <template>
   <section v-content-motion:up="preview" class="catalog-change-preview" aria-label="修改预览">
     <header><h2>修改预览</h2></header>
+    <p v-if="preview.promptReview?.checkedFields" class="catalog-note">已检查 {{ preview.promptReview.checkedFields }} 个提示词源字段；编译效果与真实画面仍需核对。</p>
     <details v-for="diff in diffs" :key="diff.kind + ':' + diff.id" open>
       <StudioDisclosureSummary>{{ diff.after ? recordTitle(diff.after) : diff.before ? recordTitle(diff.before) : '待整理的内容' }} <small>{{ !diff.before ? '新加入' : !diff.after ? '将归档' : '已编辑' }}</small></StudioDisclosureSummary>
       <div data-disclosure-content>
+        <p v-for="issue in preview.promptReview?.issues.filter(item => item.kind === diff.kind && item.id === diff.id) ?? []" :key="issue.field + issue.code" class="catalog-note">需复核 · {{ issue.field }}：{{ issue.message }}</p>
         <div v-for="field in diff.fields" :key="field.path" class="catalog-change-row">
           <strong>{{ field.label }}</strong><div><span>原来</span><p>{{ field.before || '尚未填写' }}</p></div><div><span>现在</span><p>{{ field.after || '尚未填写' }}</p></div>
         </div>

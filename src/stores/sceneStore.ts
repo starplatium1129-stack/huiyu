@@ -1,6 +1,7 @@
 import { runtimeFetch, runtimeResourceIdentity } from '../platform/runtimeUrl.ts'
-import { catalogApi } from '../api/catalogApi'
-import { isLocalStudioHost } from '../utils/runtimeEnvironment'
+import type { CatalogReceipt } from '../api/catalogApi'
+import { catalogInvalidation } from './catalogInvalidation'
+import { useBlueprintCatalog } from './useBlueprintCatalog'
 import { adoptCatalogPendingPortraits } from '../utils/popularPortraitSource.ts'
 import type { SceneRecord as Scene } from '../types/scene.ts'
 export type { SceneRecord as Scene } from '../types/scene.ts'
@@ -11,9 +12,7 @@ import { DATA_VERSION } from 'virtual:data-version'
 import { requireDataRecords, requireDataCollection } from '../utils/dataRecords.ts'
 import {
   parsePopularCharacters,
-  parseSceneBlueprints,
   type PopularCharacter,
-  type SceneBlueprint,
 } from '../utils/popularContent.ts'
 
 export interface CurationData {
@@ -120,7 +119,8 @@ export const useSceneStore = defineStore('scenes', () => {
   const tags = ref<TagMeta[]>([])
   const presets = ref<Record<string, unknown> | unknown[]>([])
   const popularCharacters = ref<PopularCharacter[]>([])
-  const sceneBlueprints = ref<SceneBlueprint[]>([])
+  const blueprintCatalog = useBlueprintCatalog(() => fetchJson('scene-blueprints.json', version.value))
+  const { sceneBlueprints, loadBlueprintCharacter, hasBlueprintCharacter } = blueprintCatalog
 
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -132,6 +132,7 @@ export const useSceneStore = defineStore('scenes', () => {
   const metaFailedFiles = ref<Set<string>>(new Set())
   /** 每次 force 加载都开启新的数据代际；旧响应只能完成自己的 promise，不能发布状态。 */
   let loadEpoch = 0
+  let catalogReceiptVersion: number | null = null
 
   /** 活跃加载数：loading 反映"任意入口在途"，避免多目标并发时先完成者提前熄灯。 */
   let activeLoads = 0
@@ -162,7 +163,7 @@ export const useSceneStore = defineStore('scenes', () => {
     { file: 'loras.json', required: false, lite: false, parse: (raw) => requireDataRecords(raw, 'LoRA资料'), apply: (d) => { loras.value = d as LoraMeta[] } },
     { file: 'tags.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
     { file: 'presets.json', required: false, lite: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
-    { file: 'popular-characters.json', required: true, lite: true, parse: (raw) => parsePopularCharacters(requireDataCollection(raw, 'characters')), apply: (d) => { popularCharacters.value = d as PopularCharacter[] } },
+    { file: 'popular-characters.json', required: true, lite: true, parse: (raw) => parsePopularCharacters(requireDataCollection(raw, 'characters')), apply: (d) => { popularCharacters.value = d as PopularCharacter[]; adoptCatalogPendingPortraits(d) } },
   ]
 
   interface MetaCacheEntry { epoch: number; data: unknown }
@@ -340,19 +341,26 @@ export const useSceneStore = defineStore('scenes', () => {
     return entry.promise
   }
 
-  function invalidate(sourceChanged = false) {
+  function invalidate(sourceChanged = false, scope?: ReturnType<typeof catalogInvalidation>) {
     loadEpoch += 1
     loaded.value = false
     activeLoads = 0
     loading.value = false
-    shardCache = {}
-    metaOk.clear()
+    if (!scope) { shardCache = {}; metaOk.clear(); catalogReceiptVersion = null }
+    else {
+      for (const [file, entry] of metaOk) {
+        if (scope.metadata.has(file)) metaOk.delete(file)
+        else entry.epoch = loadEpoch
+      }
+      for (const char of Object.keys(shardCache) as SceneShard[]) {
+        if (scope.shards.has(char)) delete shardCache[char]
+        else shardCache[char]!.epoch = loadEpoch
+      }
+    }
     metaLoadedEpoch = null
     metaFailuresByEpoch.clear()
     metaFailedFiles.value = new Set()
-    blueprintRequests.clear()
-    blueprintCharacters.value = new Set()
-    sceneBlueprints.value = []
+    blueprintCatalog.invalidate(scope?.blueprints)
     if (sourceChanged) {
       scenes.value = []; curation.value = {}; characters.value = []; loras.value = []
       adoptCatalogPendingPortraits([])
@@ -362,6 +370,15 @@ export const useSceneStore = defineStore('scenes', () => {
     // Do not cancel or clear old transports here. Their completion handlers
     // still run, but their epoch guards make the result harmless.
     version.value += 1
+  }
+  function invalidateCatalog(receipt: CatalogReceipt) {
+    if (!receipt.diffs.length && receipt.version === catalogReceiptVersion) return
+    // Only consecutive own receipts prove no other writer changed an omitted
+    // dependency. First saves and nonconsecutive revisions refresh broadly.
+    const scope = receipt.diffs.length && catalogReceiptVersion !== null && receipt.version === catalogReceiptVersion + 1
+      ? catalogInvalidation(receipt.diffs) : undefined
+    invalidate(false, scope)
+    catalogReceiptVersion = receipt.version
   }
 
   watch(runtimeResourceIdentity, () => {
@@ -439,26 +456,6 @@ export const useSceneStore = defineStore('scenes', () => {
       loadMetaSpec(META_SPECS.find(spec => spec.file === 'curation.json')!, loadEpoch, version.value, false),
     ])
   }
-
-  const blueprintRequests = new Map<string, Promise<void>>()
-  const blueprintCharacters = ref(new Set<string>())
-  function loadBlueprintCharacter(id: string): Promise<void> {
-    const existing = blueprintRequests.get(id)
-    if (existing) return existing
-    const epoch = loadEpoch
-    const request = (async () => {
-      const raw = isLocalStudioHost() ? (await catalogApi.character(id)).blueprints
-        : requireDataCollection(await fetchJson('scene-blueprints.json', version.value), 'blueprints')
-      const parsed = parseSceneBlueprints(raw).filter(item => item.characterId === id)
-      if (epoch === loadEpoch) {
-        sceneBlueprints.value = [...sceneBlueprints.value.filter(item => item.characterId !== id), ...parsed]
-        blueprintCharacters.value = new Set(blueprintCharacters.value).add(id)
-      }
-    })().catch(error => { if (blueprintRequests.get(id) === request) blueprintRequests.delete(id); throw error })
-    blueprintRequests.set(id, request)
-    return request
-  }
-
   /**
    * 目录页轻载（审计 2026-09-05 P2-02）：首页与全局搜索只吃 curation/角色目录
    * 与三分片；3.4MB 场景蓝图与 prompt 元数据不在此拉取，由创作页的 load()
@@ -479,8 +476,8 @@ export const useSceneStore = defineStore('scenes', () => {
 
   return {
     scenes, curation, characters, loras, tags, presets,
-    popularCharacters, sceneBlueprints, hasBlueprintCharacter: (id: string) => blueprintCharacters.value.has(id),
+    popularCharacters, sceneBlueprints, hasBlueprintCharacter,
     loading, error, loaded, version, metaFailedFiles,
-    load, loadBrowserScenes, loadBlueprintCatalog, loadBlueprintCharacter, loadCharacterShell, loadHome, loadLoraCatalog, loadPresetCatalog, invalidate,
+    load, loadBrowserScenes, loadBlueprintCatalog, loadBlueprintCharacter, loadCharacterShell, loadHome, loadLoraCatalog, loadPresetCatalog, invalidate, invalidateCatalog,
   }
 })

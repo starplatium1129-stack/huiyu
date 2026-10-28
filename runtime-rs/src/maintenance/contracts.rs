@@ -2,6 +2,8 @@ mod artifacts;
 mod core;
 mod popular;
 mod references;
+pub(crate) use core::profile_field_issues;
+pub(crate) use popular::authored_field_issues;
 
 use super::{Error, Result, fs};
 use serde_json::{Value, json};

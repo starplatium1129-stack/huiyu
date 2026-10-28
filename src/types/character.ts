@@ -12,6 +12,8 @@ export interface PopularOutfit {
 }
 
 export interface PopularCharacter {
+  /** Derived from the profile; carried by the lightweight portrait directory. */
+  portraitPending?: boolean
   id: string
   displayName: string
   originalName: string

@@ -4,6 +4,43 @@ use std::sync::LazyLock;
 static ID_RE: LazyLock<regex::Regex> =
     LazyLock::new(|| regex::Regex::new(r"^[a-z][a-z0-9_-]*$").unwrap());
 
+pub(crate) fn profile_field_issues(character: &Value) -> Vec<String> {
+    let mut issues = Vec::new();
+    for field in ["name", "source", "speech"] {
+        if character[field]
+            .as_str()
+            .is_none_or(|s| s.trim().is_empty())
+        {
+            issues.push(format!("{field} is required and must be a nonempty string"));
+        }
+    }
+    if character["portrait"]["image"]
+        .as_str()
+        .is_none_or(|s| s.trim().is_empty())
+    {
+        issues.push("portrait.image is required and must be a nonempty string".into());
+    }
+    if character["visual_dna"]["signature"]
+        .as_str()
+        .is_none_or(|s| s.trim().is_empty())
+    {
+        issues.push("visual_dna.signature is required and must be a nonempty string".into());
+    }
+    if character["traits"].as_array().is_none_or(|items| {
+        items.len() < 3
+            || items.iter().any(|v| match v {
+                Value::String(s) => s.trim().is_empty(),
+                Value::Object(_) => ["tag", "label"]
+                    .iter()
+                    .any(|key| v[*key].as_str().is_none_or(|s| s.trim().is_empty())),
+                _ => true,
+            })
+    }) {
+        issues.push("traits must contain at least three nonempty identity anchors".into());
+    }
+    issues
+}
+
 pub(super) fn validate(
     root: &DataRoot,
     characters: &Value,
@@ -39,29 +76,20 @@ pub(super) fn validate(
         if !character_ids.insert(key(character.get("id"))) {
             issues.push(format!("{label}.id is duplicated: {id}"));
         }
-        for field in ["name", "source", "speech"] {
-            if character[field]
-                .as_str()
-                .is_none_or(|s| s.trim().is_empty())
-            {
-                issues.push(format!("{label}.{field} is required"));
+        issues.extend(
+            profile_field_issues(character)
+                .into_iter()
+                .map(|issue| format!("{label}.{issue}")),
+        );
+        if let Some(image) = character["portrait"]["image"]
+            .as_str()
+            .filter(|s| !s.trim().is_empty())
+        {
+            let path = image.split('?').next().unwrap_or(image);
+            let file = root.join("data").join(path);
+            if !file.exists() {
+                issues.push(format!("{label}.portrait.image does not exist: {image}"));
             }
-        }
-        match character["portrait"]["image"].as_str() {
-            None => issues.push(format!("{label}.portrait.image is required")),
-            Some(image) => {
-                let path = image.split('?').next().unwrap_or(image);
-                let file = root.join("data").join(path);
-                if !file.exists() {
-                    issues.push(format!("{label}.portrait.image does not exist: {image}"));
-                }
-            }
-        }
-        if !truthy(&character["visual_dna"]["signature"]) {
-            issues.push(format!("{label}.visual_dna.signature is required"));
-        }
-        if list(&character["traits"]).len() < 3 {
-            issues.push(format!("{label}.traits must contain identity anchors"));
         }
         if character["type"] != "popular" {
             if let Some(name) = character["lora"]["name"].as_str() {

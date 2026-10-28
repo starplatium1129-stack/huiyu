@@ -6,6 +6,7 @@ use std::sync::Arc;
 pub(super) struct Page {
     ok: bool,
     version: i64,
+    character_version: i64,
     items: Vec<Value>,
     total: i64,
     page: i64,
@@ -40,13 +41,14 @@ impl Catalog {
         let Page {
             ok,
             version,
+            character_version,
             items,
             total,
             page,
             page_size,
             facets,
         } = self.query_cached(query, None)?;
-        let mut value = json!({"ok":ok,"version":version,"items":null,"total":total,"page":page,"pageSize":page_size,"facets":null});
+        let mut value = json!({"ok":ok,"version":version,"characterVersion":character_version,"items":null,"total":total,"page":page,"pageSize":page_size,"facets":null});
         value["items"] = Value::Array(items);
         value["facets"] = Arc::unwrap_or_clone(facets);
         Ok(value)
@@ -82,7 +84,7 @@ impl Catalog {
             // DESC already puts NULL last; a leading IS NULL expression
             // prevents catalog_newest from supplying the date order.
             "newest" => "created_at DESC,sort_order,id",
-            "updated" => "updated_at IS NULL,updated_at DESC,sort_order,id",
+            "updated" => "updated_at DESC,sort_order,id",
             "id" => "id",
             "" | "order" => "sort_order,id",
             _ => return Err(ApiError::invalid("排序方式无效")),
@@ -97,7 +99,7 @@ impl Catalog {
             .map(|cache| cache.select(self, &query.kind))
             .transpose()?;
         let version = match &cached {
-            Some((generation, _)) => generation.version,
+            Some((_, _, version)) => *version,
             None => self.version()?,
         };
         // Omitted filters must not hide indexed predicates behind optional ORs.
@@ -117,6 +119,14 @@ impl Catalog {
                 )
             };
         let search = query.search.trim().to_lowercase();
+        // Trigrams retain literal substring semantics, including Chinese and punctuation.
+        // Short searches have no trigram and keep the existing substring path.
+        if let Some(candidates) = super::indexes::literal_candidates(&search) {
+            filter.push_str(
+                " AND rowid IN (SELECT rowid FROM catalog_search WHERE catalog_search MATCH ?)",
+            );
+            values.push(candidates.into());
+        }
         let mut narrowed = false;
         for (predicate, value) in [
             ("instr(search_text,lower(?))>0", search.as_str()),
@@ -142,8 +152,10 @@ impl Catalog {
         // Facets and the unfiltered total share one scan and one revision.
         // Warm unfiltered pagination needs neither another count nor a full scan.
         let (publish_generation, (facets, unfiltered_total)) = match cached {
-            Some((_, Some(value))) => (None, value),
-            Some((generation, None)) => (Some(generation), self.facets(first_kind, second_kind)?),
+            Some((_, Some(value), _)) => (None, value),
+            Some((generation, None, _)) => {
+                (Some(generation), self.facets(first_kind, second_kind)?)
+            }
             None => (None, self.facets(first_kind, second_kind)?),
         };
         let total: i64 = if narrowed {
@@ -168,6 +180,7 @@ impl Catalog {
         let value = Page {
             ok: true,
             version,
+            character_version: self.kind_stamp("character")?,
             items,
             total,
             page: selected_page,

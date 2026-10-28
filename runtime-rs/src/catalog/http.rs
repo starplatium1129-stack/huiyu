@@ -18,6 +18,7 @@ pub fn router() -> Router<AppState> {
         .route("/api/catalog/record", get(detail))
         .route("/api/catalog/history", get(history))
         .route("/api/catalog/character", get(character))
+        .route("/api/catalog/blueprints", get(blueprints))
         .route("/api/catalog/export", get(export))
         .route("/api/catalog/changes", post(change))
         .layer(DefaultBodyLimit::max(20 * 1024 * 1024))
@@ -172,6 +173,15 @@ async fn character(
 ) -> Result<Response> {
     authorize(&app, &headers, peer)?;
     work(&app, move |c| c.character_bundle(&key.id)).await
+}
+async fn blueprints(
+    State(app): State<AppState>,
+    ConnectInfo(peer): ConnectInfo<std::net::SocketAddr>,
+    headers: HeaderMap,
+    QueryParam(key): QueryParam<Character>,
+) -> Result<Response> {
+    authorize(&app, &headers, peer)?;
+    work(&app, move |c| c.character_blueprints(&key.id)).await
 }
 async fn export(
     State(app): State<AppState>,

@@ -13,7 +13,8 @@
             <textarea v-else-if="field.type === 'long' || field.type === 'list'" class="input" :value="text(field)" :rows="field.path === 'story' || field.path === 'profile.bg_story' ? 7 : 4" :disabled="fieldsDisabled || locked(field.path)" :placeholder="placeholder(field)" :aria-invalid="fieldError?.field === field.path || undefined" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea>
             <input v-else class="input" :value="text(field)" :disabled="fieldsDisabled || locked(field.path)" :placeholder="placeholder(field)" :aria-invalid="fieldError?.field === field.path || undefined" @input="update(field, ($event.target as HTMLInputElement).value)" />
             <span v-if="field.type === 'list'" class="catalog-field-note">每行一项</span>
-            <span v-if="field.path === 'rating' || field.path === 'sampleRating'" class="catalog-field-note">成人内容标记随分级同步</span>
+            <span v-if="field.path === 'rating'" class="catalog-field-note">成人内容标记随分级同步</span>
+            <span v-if="field.path === 'sampleRating'" class="catalog-field-note">只影响样张展示，不改变绘制内容</span>
             <span v-if="field.path === 'outfitId' && outfitReadError" class="catalog-error" role="alert">服装列表暂时无法读取：{{ outfitReadError }}</span>
             <span v-if="fieldError?.field === field.path" class="catalog-error" role="alert">{{ fieldError.message }}</span>
           </label>
@@ -72,7 +73,7 @@ const fields = computed(() => CATALOG_FIELDS[record.value.kind].filter(field => 
 const title = computed(() => recordTitle(record.value) === '未命名内容' ? '从这里开始写' : recordTitle(record.value))
 const icon = computed<ArchiveIconName>(() => ({ character: 'character', outfit: 'image', scene: 'scene', blueprint: 'spark', document: 'manager' } as const)[record.value.kind])
 const technicalPaths = new Set(['outfit.id', 'popular.exactTokens', 'popular.exactPrefixes', 'popular.supportedEngines', 'profile.portrait', 'compositionIntent', 'coverageTags'])
-const derivedPaths = new Set(['mature', 'adult'])
+const derivedPaths = new Set(['mature'])
 const error = ref(''), advancedRevealed = ref(props.advanced !== null), advancedOpen = ref(props.advanced !== null)
 const owner = props.editorSession
 let disposed = false
@@ -165,13 +166,6 @@ function update(field: CatalogField, input: string | boolean) {
       const popular = fieldValue(record.value.data, 'popular') as Record<string, unknown>
       const supported = Array.isArray(popular.supportedEngines) ? popular.supportedEngines as string[] : []
       if (!supported.includes(String(input))) popular.supportedEngines = [...supported, String(input)]
-    }
-    if (record.value.kind === 'blueprint' && field.path === 'sampleRating') {
-      const data = record.value.data as Record<string, unknown>, adult = input === 'R18'
-      data.adult = adult
-      if ('rating' in data) data.rating = input
-      if ('mature' in data) data.mature = adult
-      if ('isNsfw' in data) data.isNsfw = adult
     }
     if (record.value.kind === 'scene' && field.path === 'rating') (record.value.data as Record<string, unknown>).mature = input === 'R18'
     if (record.value.kind === 'outfit' && !record.value.revision) record.value.id = String(fieldValue(record.value.data, 'characterId') ?? '') + '/' + String(fieldValue(record.value.data, 'outfit.id') ?? '')

@@ -35,7 +35,7 @@ const { LEGACY_WORKFLOWS } = require('./lib/workflow-legacy') as typeof import('
 const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   ...LEGACY_WORKFLOWS,
   'content:catalog': { desc: '记录式内容库：AI 创作上下文、整位角色、记录/历史读取、局部快照合并导出与字段补丁；patch/import 默认预览', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'catalog'], opts: '<stats|query|record|history|character|authoring|export|patch|import|check|colors> [--root <内容来源>] [--seed-root <随包默认目录>] --runtime-root <运行目录> [--kind <类型> --id <ID> --revision <修订>] [--character <ID> ...] [authoring: --example <参考角色ID> | --kind scene [--id <现有场景ID>]] [--record <kind:id> ...] [--created-from <RFC3339> --created-to <RFC3339>] [--sort <排序> --page <页> --page-size <数量>] [--file <JSON>] [--out <导出目录>] [--apply] [import: --preserve-local]', docs: 'docs/maintenance.md',
-    run: { nature: ['preview', 'self-heal-missing'], machine: ['node'], switches: { '--apply': ['writes-product'] }, resume: 'na', evidence: 'runtime-rs/src/catalog/cli.rs', notes: ['需要 Rust/Cargo；首次使用会初始化工作内容库；stats 和回执显示实际库路径。已有 export 目标必须指定 --record/--character，并核对来源历史；全量备份仅写新目录。导入拒绝上游修订回退。'], unknown: ['不执行模型调用或安装；快照不恢复跨机器的本机修订历史'] } },
+    run: { nature: ['preview', 'self-heal-missing'], machine: ['node'], switches: { '--apply': ['writes-product'] }, resume: 'na', evidence: 'runtime-rs/src/catalog/cli.rs', notes: ['需要 Rust/Cargo；authoring 只读打开已有库，路径错误不会初始化；其他命令首次使用会初始化工作内容库；stats 和回执显示实际库路径。已有 export 目标必须指定 --record/--character，并核对来源历史；全量备份仅写新目录。导入拒绝上游修订回退。'], unknown: ['不执行模型调用或安装；快照不恢复跨机器的本机修订历史'] } },
   'live2d:sync-local': {
     desc: '个人桌面同步已核验本机模型，保留目标旧版本；不进入安装包',
     cmd: ['node', 'scripts/maintenance/sync-local-live2d.js'], required: ['--source', '--target'],

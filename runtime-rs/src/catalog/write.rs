@@ -407,6 +407,8 @@ impl Catalog {
         }
         drop(current_query);
         validation::relations(&transaction)?;
+        let prompt_review =
+            super::prompt_guard::review(&diffs, &transaction, &self.options.source)?;
         if changes.clone().any(|c| {
             c.kind == "document" && ["tags", "tag-dictionary-policy"].contains(&c.id.as_str())
         }) {
@@ -482,6 +484,7 @@ impl Catalog {
         value["diffs"] = Value::Array(diffs);
         value["retiredImports"] = Value::Array(retired_imports);
         value["preservedLocal"] = Value::Array(preserved_local);
+        value["promptReview"] = prompt_review;
         pin_policy.check(&self.options.source)?;
         if preview {
             transaction.rollback()?;

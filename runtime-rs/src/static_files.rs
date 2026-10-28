@@ -77,7 +77,7 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
             {
                 return Ok(None);
             }
-            // Reuse encoded bytes while the SQLite authority has the same version.
+            // Reuse encoded bytes while this projection's dependencies are unchanged.
             projections
                 .read(crate::catalog::Options::from_config(&config), &selected)
                 .map(|value| {

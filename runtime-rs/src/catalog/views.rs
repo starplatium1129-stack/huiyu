@@ -13,6 +13,22 @@ fn scene_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Value> {
     Ok(data)
 }
 impl Catalog {
+    fn blueprint_rows(&self, id: &str) -> Result<Vec<Value>> {
+        let mut statement = self.connection.prepare("SELECT payload FROM content_records WHERE kind='blueprint' AND character_id=?1 AND deleted=0 ORDER BY sort_order,id")?;
+        Ok(statement
+            .query_map([id], |row| json_column(row, 0))?
+            .collect::<rusqlite::Result<Vec<_>>>()?)
+    }
+    pub fn character_blueprints(&self, id: &str) -> Result<Value> {
+        validation::key("character", id)?;
+        let transaction = self.connection.unchecked_transaction()?;
+        let version = self.version()?;
+        let blueprints = self.blueprint_rows(id)?;
+        transaction.commit()?;
+        let mut value = json!({"ok":true,"version":version,"blueprints":null});
+        value["blueprints"] = Value::Array(blueprints);
+        Ok(value)
+    }
     pub(crate) fn character_profile_exists(&self, id: &str) -> Result<bool> {
         // Match the profile identity exposed by characters.json.
         Ok(self
@@ -64,10 +80,7 @@ impl Catalog {
         if popular.is_object() {
             popular["outfits"] = outfits.into();
         }
-        let mut statement = self.connection.prepare("SELECT payload FROM content_records WHERE kind='blueprint' AND character_id=?1 AND deleted=0 ORDER BY sort_order,id")?;
-        let blueprints = statement
-            .query_map([id], |row| json_column(row, 0))?
-            .collect::<rusqlite::Result<Vec<_>>>()?;
+        let blueprints = self.blueprint_rows(id)?;
         // Move owned JSON bodies into the envelope instead of cloning them through json!.
         let mut value = json!({"ok":true,"version":self.version()?,"profile":null,"character":null,"blueprints":null});
         value["profile"] = character
@@ -131,8 +144,13 @@ impl Catalog {
                 .query_map([], |row| {
                     let id: String = row.get(0)?;
                     let mut data = json_column(row, 1)?;
+                    let portrait_pending = data
+                        .pointer("/profile/portrait/image")
+                        .and_then(Value::as_str)
+                        == Some("../assets/characters/portrait-pending.svg");
                     Ok(data.get_mut("popular").map(|popular| {
                         let mut value = popular.take();
+                        value["portraitPending"] = portrait_pending.into();
                         value["outfits"] = outfits.remove(&id).unwrap_or_default().into();
                         value
                     }))

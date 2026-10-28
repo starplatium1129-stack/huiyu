@@ -16,27 +16,28 @@ pub(crate) struct Projection {
 
 #[derive(Default)]
 struct Encoded {
-    identity: Option<(crate::file_identity::Identity, i64)>,
+    identities: HashMap<String, (crate::file_identity::Identity, Vec<i64>)>,
     entries: HashMap<String, Projection>,
     bytes: usize,
 }
 impl Encoded {
-    fn select(&mut self, identity: &(crate::file_identity::Identity, i64)) {
-        if self.identity.as_ref() != Some(identity) {
-            self.entries.clear();
-            self.bytes = 0;
-            self.identity = Some(identity.clone());
+    fn select(&mut self, name: &str, identity: &(crate::file_identity::Identity, Vec<i64>)) {
+        if self.identities.get(name) != Some(identity) {
+            if let Some(previous) = self.entries.remove(name) {
+                self.bytes -= previous.bytes.len();
+            }
+            self.identities.insert(name.into(), identity.clone());
         }
     }
     fn publish(
         &mut self,
-        identity: &(crate::file_identity::Identity, i64),
+        identity: &(crate::file_identity::Identity, Vec<i64>),
         name: &str,
         projection: &Projection,
     ) {
         // An older request can finish encoding after a newer commit has already
         // populated the cache. It may answer its own reader, never rewind the cache.
-        if self.identity.as_ref() != Some(identity) || projection.bytes.len() > MAX_BYTES {
+        if self.identities.get(name) != Some(identity) || projection.bytes.len() > MAX_BYTES {
             return;
         }
         if let Some(previous) = self.entries.remove(name) {
@@ -93,9 +94,9 @@ impl ProjectionCache {
                 // cannot arrive late and replace a newer generation before encoding.
                 let identity = (
                     crate::file_identity::path(&catalog.options.database, false)?,
-                    catalog.version()?,
+                    catalog.projection_stamp(name)?,
                 );
-                cache.select(&identity);
+                cache.select(name, &identity);
                 if let Some(projection) = cache.entries.get(name) {
                     return Ok(Some(projection.clone()));
                 }

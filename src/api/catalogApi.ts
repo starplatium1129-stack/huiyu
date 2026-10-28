@@ -6,9 +6,10 @@ export interface CatalogRecord {
 }
 export interface CatalogSummary extends Omit<CatalogRecord, 'data'> { title: string; characterId: string; category: string; rating: string }
 export interface CatalogQuery { kind: CatalogKind | 'media'; search?: string; character?: string; category?: string; rating?: string; sort?: string; page?: number; pageSize?: number; createdFrom?: string; createdTo?: string }
-export interface CatalogPage { ok: true; version: number; items: CatalogSummary[]; total: number; page: number; pageSize: number; facets: { characters: string[]; categories: string[]; ratings: string[] } }
+export interface CatalogPage { ok: true; version: number; characterVersion?: number; items: CatalogSummary[]; total: number; page: number; pageSize: number; facets: { characters: string[]; categories: string[]; ratings: string[] } }
 export interface CatalogChange { kind: CatalogKind; id: string; expectedRevision: number; data?: CatalogRecord['data']; patch?: Record<string, unknown>; sortOrder?: number; createdAt?: string; remove?: boolean }
-export interface CatalogReceipt { ok: true; preview: boolean; version: number; batch: string; items: Array<{ kind: CatalogKind; id: string; revision: number; removed: boolean }>; diffs: Array<{ kind: CatalogKind; id: string; before: CatalogRecord | null; after: CatalogRecord | null }>; retiredImports?: CatalogRecord[] }
+export interface CatalogPromptReview { policy: string; checkedFields: number; visualReview: 'not-performed'; issues: Array<{ kind: CatalogKind; id: string; field: string; code: string; severity: 'warning'; message: string }> }
+export interface CatalogReceipt { ok: true; preview: boolean; version: number; batch: string; items: Array<{ kind: CatalogKind; id: string; revision: number; removed: boolean }>; diffs: Array<{ kind: CatalogKind; id: string; before: CatalogRecord | null; after: CatalogRecord | null }>; retiredImports?: CatalogRecord[]; promptReview?: CatalogPromptReview }
 export interface CatalogSnapshot { version: 1; records: CatalogRecord[]; retired: CatalogRecord[] }
 const kinds: CatalogKind[] = ['character', 'outfit', 'scene', 'blueprint', 'document']
 const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v)
@@ -22,6 +23,7 @@ export function isCatalogRecord(v: unknown): v is CatalogRecord {
   return isCatalogMetadata(v) && object(v) && (object(v.data) || Array.isArray(v.data))
 }
 function isCatalogPage(v: ApiResponseObject): boolean {
+  if (v.characterVersion !== undefined && (!Number.isSafeInteger(v.characterVersion) || Number(v.characterVersion) < 0)) return false
   return v.ok === true && Number.isSafeInteger(v.version) && Number.isSafeInteger(v.total)
     && Number.isSafeInteger(v.page) && Number.isSafeInteger(v.pageSize)
     && Array.isArray(v.items) && v.items.every(row => isCatalogMetadata(row)
@@ -36,6 +38,9 @@ function isCatalogReceipt(v: ApiResponseObject): boolean {
       && (diff.before === null || isCatalogRecord(diff.before))
       && (diff.after === null || isCatalogRecord(diff.after)))
     && (v.retiredImports === undefined || Array.isArray(v.retiredImports) && v.retiredImports.every(isCatalogRecord))
+    && (v.promptReview === undefined || object(v.promptReview) && typeof v.promptReview.policy === 'string' && Number.isSafeInteger(v.promptReview.checkedFields)
+      && v.promptReview.visualReview === 'not-performed' && Array.isArray(v.promptReview.issues) && v.promptReview.issues.every(issue => object(issue) && key(issue)
+        && issue.severity === 'warning' && ['field', 'code', 'message'].every(field => typeof issue[field] === 'string')))
 }
 const success = (v: ApiResponseObject) => v.ok === true
 const options = (signal?: AbortSignal) => ({ cache: 'no-store' as const, cachePolicy: 'bypass' as const, timeoutMs: 15_000, signal })
@@ -65,5 +70,8 @@ export const catalogApi = {
   },
   character(id: string, signal?: AbortSignal) {
     return apiClient.request<{ ok: true; version: number; character: unknown; profile: unknown; blueprints: unknown[] }>(`/api/catalog/character?${queryString({ id })}`, { ...options(signal), validate: v => success(v) && Array.isArray(v.blueprints) })
+  },
+  blueprints(id: string, signal?: AbortSignal) {
+    return apiClient.request<{ ok: true; version: number; blueprints: unknown[] }>(`/api/catalog/blueprints?${queryString({ id })}`, { ...options(signal), validate: v => success(v) && Number.isSafeInteger(v.version) && Array.isArray(v.blueprints) })
   },
 }

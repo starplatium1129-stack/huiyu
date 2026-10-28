@@ -7,7 +7,7 @@ mod content_products;
 mod context;
 pub(crate) mod contracts;
 pub(crate) mod fs;
-mod generated;
+pub(crate) mod generated;
 mod identity;
 pub mod journal;
 mod prompt;

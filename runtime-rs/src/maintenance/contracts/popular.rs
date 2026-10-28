@@ -49,9 +49,39 @@ fn environment(tokens: Vec<&str>) -> Vec<&str> {
                 "bedroom",
                 "festival",
             ]
-            .contains(&t.to_lowercase().as_str())
+            .contains(&t.to_lowercase().replace(' ', "_").as_str())
         })
         .collect()
+}
+pub(crate) fn authored_field_issues(
+    kind: &str,
+    field: &str,
+    value: &Value,
+) -> Vec<(&'static str, String)> {
+    let body = value
+        .as_str()
+        .map(str::to_owned)
+        .unwrap_or_else(|| strings(value).join(", "));
+    let mut issues = Vec::new();
+    if kind != "scene" {
+        for leak in leaks(&body) {
+            issues.push((
+                "studio-identity-leak",
+                format!("混入工作室专用身份或控制词：{leak}"),
+            ));
+        }
+    }
+    if (kind == "character" && field == "popular.identityTokens")
+        || (kind == "outfit" && field == "outfit.tokens")
+    {
+        for token in environment(strings(value)) {
+            issues.push((
+                "environment-in-identity",
+                format!("身份或衣装词条混入环境词 {token}，请放入场景字段"),
+            ));
+        }
+    }
+    issues
 }
 pub(super) fn validate(root: &DataRoot, issues: &mut Vec<String>) {
     if let Err(error) = run(root, issues) {

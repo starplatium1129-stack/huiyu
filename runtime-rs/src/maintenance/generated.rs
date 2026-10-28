@@ -73,7 +73,7 @@ fn parameters(value: &Value) -> bool {
 }
 /// Captured prompts bypass editorial normalization only after their full contract is checked.
 /// They must remain byte-identical to the recipe used for an already generated image.
-pub(super) fn validate(scene: &Value, blueprint: bool) -> Result<bool> {
+pub(crate) fn validate(scene: &Value, blueprint: bool) -> Result<bool> {
     let Some(recipe) = scene.get("generatedRecipe") else {
         return Ok(false);
     };
