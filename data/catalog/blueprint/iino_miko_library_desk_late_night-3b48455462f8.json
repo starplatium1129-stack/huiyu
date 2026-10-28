@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_library_desk_late_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2005,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-27T13:24:26.413110100+00:00",
+  "updatedAt": "2026-10-28T04:03:33.409Z",
   "data": {
     "id": "iino_miko_library_desk_late_night",
     "characterId": "iino_miko",
@@ -40,20 +40,6 @@
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "score_1",
-      "score_2",
-      "score_3",
-      "bad anatomy",
-      "bad hands",
-      "blurry",
-      "artist name",
-      "jpeg artifacts",
-      "text",
-      "signature",
-      "watermark"
-    ]
+    "negativeTokens": []
   }
 }

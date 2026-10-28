@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_family_restaurant",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 342,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-28T04:03:33.409Z",
   "data": {
     "id": "yukinoshita_yukino_family_restaurant",
     "title": "雪之下雪乃 · 家庭餐厅",
@@ -43,9 +43,7 @@
       "pendant light",
       "window reflections"
     ],
-    "negativeTokens": [
-      "text"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "moody_night_scene",
     "animaStyleHint": "moody_night_scene",
