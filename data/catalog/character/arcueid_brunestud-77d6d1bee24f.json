@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "arcueid_brunestud",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 103,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.899Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "arcueid_brunestud",
     "profile": {
@@ -21,7 +21,9 @@
       "icon": "🌕",
       "portrait": {
         "image": "../assets/characters/popular-arcueid_brunestud.png?v=1",
-        "alt": "爱尔奎特·布伦史塔德 样张立绘"
+        "alt": "爱尔奎特·布伦史塔德 样张立绘",
+        "sourceShowcaseId": "pc_arcueid_brunestud_arcueid_amusement_park_crepe_date",
+        "sourceShowcaseSha256": "7856976822d85b5c1ef1a107b2a7c62c9692fabd5a2f30d9d8d4d4948771121d"
       },
       "visual_dna": {
         "hair": "齐颈柔顺金发 · 俏皮短刘海",

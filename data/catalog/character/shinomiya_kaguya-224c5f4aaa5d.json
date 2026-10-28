@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinomiya_kaguya",
-  "revision": 7,
+  "revision": 10,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "shinomiya_kaguya",
     "profile": {
@@ -21,7 +21,9 @@
       "icon": "🌙",
       "portrait": {
         "image": "../assets/characters/popular-shinomiya_kaguya.png?v=1",
-        "alt": "四宫辉夜 样张立绘"
+        "alt": "四宫辉夜 样张立绘",
+        "sourceShowcaseId": "pc_shinomiya_kaguya_kaguya_fireworks_furisode_okawaii",
+        "sourceShowcaseSha256": "3e525e7b810a73f19526dd12b76425bec143f68f9c0439b8e3225a50b499e7fd"
       },
       "visual_dna": {
         "hair": "黑色短发折叠马尾 · 红缎带",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "katou_megumi",
-  "revision": 7,
+  "revision": 11,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "katou_megumi",
     "profile": {
@@ -21,7 +21,9 @@
       "icon": "🌸",
       "portrait": {
         "image": "../assets/characters/popular-katou_megumi.png?v=1",
-        "alt": "加藤惠 样张立绘"
+        "alt": "加藤惠 样张立绘",
+        "sourceShowcaseId": "pc_katou_megumi_megumi_slope_white_beret",
+        "sourceShowcaseSha256": "179a221e3d6991f6ec817e68db209f70619beb819f6312e9e9a76e32a72db946"
       },
       "visual_dna": {
         "hair": "棕色波波头短发 · 后期长发马尾",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ryougi_shiki",
-  "revision": 7,
+  "revision": 10,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.898Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "ryougi_shiki",
     "profile": {
@@ -21,7 +21,9 @@
       "icon": "🗡️",
       "portrait": {
         "image": "../assets/characters/popular-ryougi_shiki.png?v=1",
-        "alt": "两仪式 样张立绘"
+        "alt": "两仪式 样张立绘",
+        "sourceShowcaseId": "pc_ryougi_shiki_shiki_hand_in_pocket_tsundere_blush",
+        "sourceShowcaseSha256": "10e6ad8b9b435738e9270bca1ee0be28ab32e60ba11992166b3e3f0bd74fef10"
       },
       "visual_dna": {
         "hair": "及肩碎发 · 乌黑柔顺",

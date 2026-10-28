@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "izumi_sagiri",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.905Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "izumi_sagiri",
     "profile": {
@@ -17,7 +17,9 @@
       "type": "popular",
       "portrait": {
         "image": "../assets/characters/popular-izumi_sagiri.png",
-        "alt": "和泉纱雾 全年龄日常立绘"
+        "alt": "和泉纱雾 全年龄日常立绘",
+        "sourceShowcaseId": "pc_izumi_sagiri_izumi_sagiri_sfw_b5_08",
+        "sourceShowcaseSha256": "ce9656e41d189591630be5fa6ff1fe2cfdada7c1ebfa6a165b8afd8920bc5b2e"
       },
       "visual_dna": {
         "signature": "Sagiri Izumi from Eromanga Sensei, a young illustrator with long silvery hair fading into pale pink-violet tips, ribbon-tied sidelocks and bright aqua-blue eyes. Her expressive face shifts readily between concentration, embarrassment and delight.",

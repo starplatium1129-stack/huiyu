@@ -2,6 +2,7 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { SceneBlueprint } from '@/utils/popularContent'
+import { blueprintContext } from '@/utils/popularScenePresentation'
 
 const props = defineProps<{
   pool: SceneBlueprint[]
@@ -96,7 +97,7 @@ const categoryChips = computed(() => {
           <span class="blueprint-desc tw:text-label-xs tw:text-secondary tw:leading-label tw:overflow-hidden">{{ blueprint.description }}</span>
           <span class="blueprint-meta tw:flex tw:gap-s-2 tw:flex-wrap tw:text-mono-xs tw:text-muted">
             <span>{{ blueprint.category }}</span>
-            <span>{{ blueprint.location }}</span>
+            <span v-if="blueprintContext(blueprint).source === 'location'">{{ blueprintContext(blueprint).text }}</span>
             <span>{{ blueprint.recommendedSize.replace('x', '×') }}</span>
           </span>
         </button>

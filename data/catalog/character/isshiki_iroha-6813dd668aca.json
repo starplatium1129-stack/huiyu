@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "isshiki_iroha",
-  "revision": 6,
+  "revision": 10,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.902Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "isshiki_iroha",
     "profile": {
@@ -22,7 +22,9 @@
       "icon": "🦊",
       "portrait": {
         "image": "../assets/characters/popular-isshiki_iroha.png?v=1",
-        "alt": "一色彩羽 样张立绘"
+        "alt": "一色彩羽 样张立绘",
+        "sourceShowcaseId": "pc_isshiki_iroha_iroha_corridor_chasing_pout",
+        "sourceShowcaseSha256": "aa2175d37cf44b0cbe65b2671d4fef5b2a878fbb11b0e8f047d0587f14b2e842"
       },
       "visual_dna": {
         "hair": "及肩的蜜糖棕微卷发，侧分刘海自然贴在脸侧。",

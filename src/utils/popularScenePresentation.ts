@@ -65,6 +65,24 @@ export function artistLabel(blueprint: SceneBlueprint): string {
   return blueprint.adultArtistHint?.replace(/^@/, '') ?? ''
 }
 
+export function displayBlueprintDescription(blueprint: SceneBlueprint): string {
+  const prefix = `[${blueprint.title}]`
+  return blueprint.description.startsWith(prefix) ? blueprint.description.slice(prefix.length).trim() : blueprint.description
+}
+
+export function blueprintContext(blueprint: SceneBlueprint): { source: 'location' | 'description'; text: string } {
+  const location = blueprint.location.trim()
+  const hasChinese = (value: string) => /[\u3400-\u9fff]/.test(value)
+  if (!/[a-z]/i.test(location) || hasChinese(location)) return { source: 'location', text: location }
+
+  // Some authored locations are English prompt text; use the existing Chinese story as a display cue.
+  const sentence = displayBlueprintDescription(blueprint).split(/[。！？\n]/, 1)[0].trim()
+  const clauses = sentence.split(/[，；]/, 2).map(clause => clause.trim()).filter(Boolean)
+  const firstClause = clauses[0] || ''
+  const cue = firstClause.length >= 6 ? firstClause : clauses.join('，')
+  return hasChinese(cue) ? { source: 'description', text: cue } : { source: 'location', text: location }
+}
+
 export function timeLabel(value: string): string {
   return ({ morning: '清晨', afternoon: '午后', sunset: '黄昏', evening: '傍晚', night: '夜晚', late_night: '深夜', day: '白天', noon: '中午' } as Record<string, string>)[value] || value || ''
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yamada_anna",
-  "revision": 9,
+  "revision": 12,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.903Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "yamada_anna",
     "profile": {
@@ -21,7 +21,9 @@
       "icon": "🍫",
       "portrait": {
         "image": "../assets/characters/popular-yamada_anna.png?v=1",
-        "alt": "山田杏奈 样张立绘"
+        "alt": "山田杏奈 样张立绘",
+        "sourceShowcaseId": "pc_yamada_anna_yamada_library_snack_caught",
+        "sourceShowcaseSha256": "f1a191b40be6b9120dad2cfd29af26ff3fec7e535454d22d9b3dbb1cc9064aa7"
       },
       "visual_dna": {
         "hair": "光泽柔顺如黑丝缎般的极长黑发 · 标志性高马尾",

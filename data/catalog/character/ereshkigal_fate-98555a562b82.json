@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ereshkigal_fate",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 63,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.869Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "ereshkigal_fate",
     "profile": {
@@ -21,7 +21,9 @@
       "icon": "🕯️",
       "portrait": {
         "image": "../assets/characters/popular-ereshkigal_fate.png?v=1",
-        "alt": "埃列什基伽勒 样张立绘"
+        "alt": "埃列什基伽勒 样张立绘",
+        "sourceShowcaseId": "pc_ereshkigal_fate_ereshkigal_christmas_snowdate",
+        "sourceShowcaseSha256": "a0ea8d36b29602a284c38a2578113cffc3e82aff33b3dc9ce1fc32f5d5dfceeb"
       },
       "visual_dna": {
         "hair": "金色超长发双马尾 · 三破散落",

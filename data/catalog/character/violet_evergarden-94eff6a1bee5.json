@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "violet_evergarden",
-  "revision": 6,
+  "revision": 10,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.900Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "violet_evergarden",
     "profile": {
@@ -20,7 +20,9 @@
       "icon": "✒️",
       "portrait": {
         "image": "../assets/characters/popular-violet_evergarden.png?v=1",
-        "alt": "薇尔莉特·伊芙加登 样张立绘"
+        "alt": "薇尔莉特·伊芙加登 样张立绘",
+        "sourceShowcaseId": "pc_violet_evergarden_violet_morning_cafe_letter_writing",
+        "sourceShowcaseSha256": "b2c1e21e0d6025701c268f23cfc8b0899a5d0134a6a33f50b78d5ae66c216e99"
       },
       "visual_dna": {
         "hair": "及背金发 · 麻花辫与红色发带",

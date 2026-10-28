@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yorha_2b",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.889Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "yorha_2b",
     "profile": {
@@ -20,7 +20,9 @@
       "icon": "⚔️",
       "portrait": {
         "image": "../assets/characters/popular-yorha_2b.png?v=5",
-        "alt": "2B 样张立绘"
+        "alt": "2B 样张立绘",
+        "sourceShowcaseId": "pc_yorha_2b_yorha_2b_bunker_corridor_pod_inspection",
+        "sourceShowcaseSha256": "25b52fafa291d33bc62a8e247fa8f35e9378614a6b59eaebd5237aa6568ac373"
       },
       "visual_dna": {
         "hair": "银白波波头短发 · 黑色发带",

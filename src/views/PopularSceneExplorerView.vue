@@ -84,14 +84,14 @@
           <div class="pop-card-body">
             <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span></div>
             <header class="pop-card-head"><h3>{{ blueprint.title }}</h3></header>
-            <div class="pop-meta"><span>{{ blueprint.location }}</span><span>{{ timeLabel(blueprint.timeOfDay) }}</span></div>
+            <div class="pop-meta"><span>{{ blueprintContext(blueprint).text }}</span><span>{{ timeLabel(blueprint.timeOfDay) }}</span></div>
             <footer class="pop-card-actions">
               <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
             </footer>
             <details class="pop-scene-details" :open="openDetails.has(blueprint.id)" @toggle="setDetailsOpen(blueprint.id, $event)">
               <StudioDisclosureSummary>场景细节</StudioDisclosureSummary>
               <div v-if="openDetails.has(blueprint.id)" data-disclosure-content>
-              <p v-if="blueprint.description" class="pop-full-description">{{ displayDescription(blueprint) }}</p>
+              <p v-if="blueprint.description" class="pop-full-description">{{ displayBlueprintDescription(blueprint) }}</p>
               <dl class="pop-decision">
                 <div><dt>镜头</dt><dd>{{ shotLabel(blueprint) }}</dd></div>
                 <div><dt>光线</dt><dd>{{ lightLabel(blueprint) }}</dd></div>
@@ -114,9 +114,9 @@
     <SceneArtworkViewer ref="previewViewer" v-model="previewId" :items="previewItems" :source-image="previewSource" @after-close="previewBlueprint = null">
       <template v-if="previewBlueprint" #info>
         <div class="viewer-meta">{{ selectedCharacter?.displayName }} · {{ previewBlueprint.category }} · {{ timeLabel(previewBlueprint.timeOfDay) }}</div>
-        <section class="viewer-section"><h3>场景设定</h3><p class="viewer-story">{{ displayDescription(previewBlueprint) }}</p></section>
+        <section class="viewer-section"><h3>场景设定</h3><p class="viewer-story">{{ displayBlueprintDescription(previewBlueprint) }}</p></section>
         <dl class="viewer-record">
-          <div><dt>地点</dt><dd>{{ previewBlueprint.location || '未指定' }}</dd></div>
+          <div v-if="blueprintContext(previewBlueprint).source === 'location'"><dt>地点</dt><dd>{{ blueprintContext(previewBlueprint).text || '未指定' }}</dd></div>
           <div><dt>镜头</dt><dd>{{ shotLabel(previewBlueprint) }}</dd></div>
           <div><dt>光线</dt><dd>{{ lightLabel(previewBlueprint) }}</dd></div>
           <div><dt>色调</dt><dd>{{ moodLabel(previewBlueprint) }}</dd></div>
@@ -150,7 +150,9 @@ import type { PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
 import {
   RATING_OPTS,
   artistLabel,
+  blueprintContext,
   buildPopularCategories,
+  displayBlueprintDescription,
   lightLabel,
   moodLabel,
   sampleRatingOf,
@@ -318,10 +320,6 @@ function selectCharacter(id: string) {
 }
 function drawUrl(blueprint: SceneBlueprint): string {
   return `/prompt-builder?popular=${encodeURIComponent(selectedId.value)}&blueprint=${encodeURIComponent(blueprint.id)}`
-}
-function displayDescription(blueprint: SceneBlueprint): string {
-  const prefix = `[${blueprint.title}]`
-  return blueprint.description.startsWith(prefix) ? blueprint.description.slice(prefix.length).trim() : blueprint.description
 }
 function resetFilters() {
   const previousFocus = document.activeElement

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sakurajima_mai",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.836Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "sakurajima_mai",
     "profile": {
@@ -18,7 +18,9 @@
       "icon": "🎬",
       "portrait": {
         "image": "../assets/characters/popular-sakurajima_mai.png?v=5",
-        "alt": "樱岛麻衣 样张立绘"
+        "alt": "樱岛麻衣 样张立绘",
+        "sourceShowcaseId": "pc_sakurajima_mai_sakurajima_mai_rooftop",
+        "sourceShowcaseSha256": "f598d4b481be56d4a4eea0af3a2f27b1e81e820e0875b8a0425e34ff87ce3e1d"
       },
       "visual_dna": {
         "hair": "黑色长直发",

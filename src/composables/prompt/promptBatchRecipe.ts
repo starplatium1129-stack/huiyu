@@ -16,6 +16,7 @@ import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { compilePromptRecipe } from '@/utils/promptRecipe'
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
+import { blueprintContext } from '@/utils/popularScenePresentation'
 import { findCharacter as findPopularCharacter, defaultOutfit, findOutfit, type DrawSubject, type SceneBlueprint, type PopularCharacter } from '@/utils/popularContent'
 import { CHAR_PROMPT, COLOR_MOODS, STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
 import { mutualGroupWithCategory, normalizeKey, tokenize, type ModelProfile } from '@/utils/promptPolicy'
@@ -323,7 +324,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         id,
         title: blueprint?.title || scene?.title || id,
         prose: blueprint ? batchSceneProse(blueprint) : scene?.animaCaption || scene?.prompt || '',
-        subtitle: blueprint?.location || blueprint?.category || scene?.location || scene?.category,
+        subtitle: blueprint ? blueprintContext(blueprint).text || blueprint.category : scene?.location || scene?.category,
         kind: 'scene' as const,
       }
     }).filter(item => item.prose)

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ichinose_asuna",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 81,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.889Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "ichinose_asuna",
     "profile": {
@@ -20,7 +20,9 @@
       "icon": "🐰",
       "portrait": {
         "image": "../assets/characters/popular-ichinose_asuna.png?v=5",
-        "alt": "一之濑明日奈 样张立绘"
+        "alt": "一之濑明日奈 样张立绘",
+        "sourceShowcaseId": "pc_ichinose_asuna_asuna_subway_platform_waiting_smile",
+        "sourceShowcaseSha256": "83978d37e99d5bbe1521c6e57e63df9438a6095b408a69ab7aeaa02151eda444"
       },
       "visual_dna": {
         "hair": "及踝灿金长瀑发 · 单眼遮发 · 纯正人类耳",

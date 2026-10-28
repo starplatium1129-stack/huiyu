@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ellen_joe",
-  "revision": 7,
+  "revision": 10,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.887Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "ellen_joe",
     "profile": {
@@ -20,7 +20,9 @@
       "icon": "🦈",
       "portrait": {
         "image": "../assets/characters/popular-ellen_joe.png?v=5",
-        "alt": "艾莲·乔 样张立绘"
+        "alt": "艾莲·乔 样张立绘",
+        "sourceShowcaseId": "pc_ellen_joe_ellen_maid_cafe_tea_service_deadpan",
+        "sourceShowcaseSha256": "565ffa1f535b8afe30c3d690aa47135e18a1484cd3bec71277b979243558c447"
       },
       "visual_dna": {
         "hair": "黑红渐变短发 · 内层亮红挑染 · 刀片发卡",

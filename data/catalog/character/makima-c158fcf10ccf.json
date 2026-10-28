@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makima",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.841Z",
+  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
   "data": {
     "id": "makima",
     "profile": {
@@ -18,7 +18,9 @@
       "icon": "🖤",
       "portrait": {
         "image": "../assets/characters/popular-makima.png?v=5",
-        "alt": "玛奇玛 样张立绘"
+        "alt": "玛奇玛 样张立绘",
+        "sourceShowcaseId": "pc_makima_makima_home_dinner",
+        "sourceShowcaseSha256": "f8f813629367b18aa90d990e811e2d4ee815d15bc91172a7b3751d1bc6c85dee"
       },
       "visual_dna": {
         "hair": "鲑粉色长发，编成松整的低麻花辫。",
