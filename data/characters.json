@@ -1138,7 +1138,9 @@
     "icon": "🎬",
     "portrait": {
       "image": "../assets/characters/popular-sakurajima_mai.png?v=5",
-      "alt": "樱岛麻衣 样张立绘"
+      "alt": "樱岛麻衣 样张立绘",
+      "sourceShowcaseId": "pc_sakurajima_mai_sakurajima_mai_rooftop",
+      "sourceShowcaseSha256": "f598d4b481be56d4a4eea0af3a2f27b1e81e820e0875b8a0425e34ff87ce3e1d"
     },
     "visual_dna": {
       "hair": "黑色长直发",
@@ -4573,7 +4575,9 @@
     "icon": "🖤",
     "portrait": {
       "image": "../assets/characters/popular-makima.png?v=5",
-      "alt": "玛奇玛 样张立绘"
+      "alt": "玛奇玛 样张立绘",
+      "sourceShowcaseId": "pc_makima_makima_home_dinner",
+      "sourceShowcaseSha256": "f8f813629367b18aa90d990e811e2d4ee815d15bc91172a7b3751d1bc6c85dee"
     },
     "visual_dna": {
       "hair": "鲑粉色长发，编成松整的低麻花辫。",
@@ -37295,7 +37299,9 @@
     "icon": "⚜️",
     "portrait": {
       "image": "../assets/characters/popular-jeanne_d_arc.png?v=1",
-      "alt": "圣女贞德 样张立绘"
+      "alt": "圣女贞德 样张立绘",
+      "sourceShowcaseId": "pc_jeanne_d_arc_jeanne_chapel_morning_prayer",
+      "sourceShowcaseSha256": "315b4e002ffe316453d0d9a4c7beee39d1bd20f281d27c22c0a5eba993c6bdd6"
     },
     "visual_dna": {
       "hair": "及腰金色长发 · 圣洁单长辫",
@@ -39019,7 +39025,9 @@
     "icon": "🌟",
     "portrait": {
       "image": "../assets/characters/popular-ishtar_fate.png?v=1",
-      "alt": "伊什塔尔 样张立绘"
+      "alt": "伊什塔尔 样张立绘",
+      "sourceShowcaseId": "pc_ishtar_fate_ishtar_modern_street_date",
+      "sourceShowcaseSha256": "92e1734762b4d2e059c2060ca3c42a67f7510b4ea5e26c6fd97d3b7eb5f54242"
     },
     "visual_dna": {
       "hair": "黑发 two-side_up 高双马尾",
@@ -39881,7 +39889,9 @@
     "icon": "🕯️",
     "portrait": {
       "image": "../assets/characters/popular-ereshkigal_fate.png?v=1",
-      "alt": "埃列什基伽勒 样张立绘"
+      "alt": "埃列什基伽勒 样张立绘",
+      "sourceShowcaseId": "pc_ereshkigal_fate_ereshkigal_christmas_snowdate",
+      "sourceShowcaseSha256": "a0ea8d36b29602a284c38a2578113cffc3e82aff33b3dc9ce1fc32f5d5dfceeb"
     },
     "visual_dna": {
       "hair": "金色超长发双马尾 · 三破散落",
@@ -47776,7 +47786,9 @@
     "icon": "🦈",
     "portrait": {
       "image": "../assets/characters/popular-ellen_joe.png?v=5",
-      "alt": "艾莲·乔 样张立绘"
+      "alt": "艾莲·乔 样张立绘",
+      "sourceShowcaseId": "pc_ellen_joe_ellen_maid_cafe_tea_service_deadpan",
+      "sourceShowcaseSha256": "565ffa1f535b8afe30c3d690aa47135e18a1484cd3bec71277b979243558c447"
     },
     "visual_dna": {
       "hair": "黑红渐变短发 · 内层亮红挑染 · 刀片发卡",
@@ -48115,7 +48127,9 @@
     "icon": "🦊",
     "portrait": {
       "image": "../assets/characters/popular-hoshimi_miyabi.png?v=5",
-      "alt": "星见雅 样张立绘"
+      "alt": "星见雅 样张立绘",
+      "sourceShowcaseId": "pc_hoshimi_miyabi_miyabi_bamboo_forest_snow_standing",
+      "sourceShowcaseSha256": "41cd246eb1839bf1174063f1fb07f87b636f954907fb93c3ca9757d93973a8d8"
     },
     "visual_dna": {
       "hair": "黑色长发 · 齐刘海与侧编发 · 深色狐耳",
@@ -49014,7 +49028,9 @@
     "icon": "🐰",
     "portrait": {
       "image": "../assets/characters/popular-ichinose_asuna.png?v=5",
-      "alt": "一之濑明日奈 样张立绘"
+      "alt": "一之濑明日奈 样张立绘",
+      "sourceShowcaseId": "pc_ichinose_asuna_asuna_subway_platform_waiting_smile",
+      "sourceShowcaseSha256": "83978d37e99d5bbe1521c6e57e63df9438a6095b408a69ab7aeaa02151eda444"
     },
     "visual_dna": {
       "hair": "及踝灿金长瀑发 · 单眼遮发 · 纯正人类耳",
@@ -49498,7 +49514,9 @@
     "icon": "🌙",
     "portrait": {
       "image": "../assets/characters/popular-lucy_cyberpunk.png?v=5",
-      "alt": "露西 样张立绘"
+      "alt": "露西 样张立绘",
+      "sourceShowcaseId": "pc_lucy_cyberpunk_lucy_deep_dive_tub_cyberspace_interface",
+      "sourceShowcaseSha256": "c822ca7eea8b35f543769ce26fab9fdccc937869371da64e664d9c35dddda1fc"
     },
     "visual_dna": {
       "hair": "不对称渐变短发 · 幻彩白粉紫微蓝",
@@ -49711,7 +49729,9 @@
     "icon": "⚔️",
     "portrait": {
       "image": "../assets/characters/popular-yorha_2b.png?v=5",
-      "alt": "2B 样张立绘"
+      "alt": "2B 样张立绘",
+      "sourceShowcaseId": "pc_yorha_2b_yorha_2b_bunker_corridor_pod_inspection",
+      "sourceShowcaseSha256": "25b52fafa291d33bc62a8e247fa8f35e9378614a6b59eaebd5237aa6568ac373"
     },
     "visual_dna": {
       "hair": "银白波波头短发 · 黑色发带",
@@ -57442,7 +57462,9 @@
     "icon": "🎭",
     "portrait": {
       "image": "../assets/characters/popular-sparkle_hsr.png?v=1",
-      "alt": "花火 样张立绘"
+      "alt": "花火 样张立绘",
+      "sourceShowcaseId": "pc_sparkle_hsr_sparkle_dreamscape_carnival_masks",
+      "sourceShowcaseSha256": "f61689214c9cfffa21e8c049404cd4466eefa3ad509e6219581d2dc4beebdb2c"
     },
     "visual_dna": {
       "hair": "乌黑如墨双马尾 · 鲜红发带",
@@ -57778,7 +57800,9 @@
     "icon": "🍕",
     "portrait": {
       "image": "../assets/characters/popular-cc_code_geass.png?v=1",
-      "alt": "C.C. 样张立绘"
+      "alt": "C.C. 样张立绘",
+      "sourceShowcaseId": "pc_cc_code_geass_cc_adjusting_necktie_caught_blush",
+      "sourceShowcaseSha256": "691e064412c5a2f0e0a1b4db46835b8c972a8f539fa9f81615e555ee637ebc05"
     },
     "visual_dna": {
       "hair": "及腰瀑布般翠绿长发 · 柔顺平刘海",
@@ -58078,7 +58102,9 @@
     "icon": "🗡️",
     "portrait": {
       "image": "../assets/characters/popular-ryougi_shiki.png?v=1",
-      "alt": "两仪式 样张立绘"
+      "alt": "两仪式 样张立绘",
+      "sourceShowcaseId": "pc_ryougi_shiki_shiki_hand_in_pocket_tsundere_blush",
+      "sourceShowcaseSha256": "10e6ad8b9b435738e9270bca1ee0be28ab32e60ba11992166b3e3f0bd74fef10"
     },
     "visual_dna": {
       "hair": "及肩碎发 · 乌黑柔顺",
@@ -58385,7 +58411,9 @@
     "icon": "🌕",
     "portrait": {
       "image": "../assets/characters/popular-arcueid_brunestud.png?v=1",
-      "alt": "爱尔奎特·布伦史塔德 样张立绘"
+      "alt": "爱尔奎特·布伦史塔德 样张立绘",
+      "sourceShowcaseId": "pc_arcueid_brunestud_arcueid_amusement_park_crepe_date",
+      "sourceShowcaseSha256": "7856976822d85b5c1ef1a107b2a7c62c9692fabd5a2f30d9d8d4d4948771121d"
     },
     "visual_dna": {
       "hair": "齐颈柔顺金发 · 俏皮短刘海",
@@ -58726,7 +58754,9 @@
     "icon": "🍛",
     "portrait": {
       "image": "../assets/characters/popular-ciel_tsukihime.png?v=1",
-      "alt": "希耶尔 样张立绘"
+      "alt": "希耶尔 样张立绘",
+      "sourceShowcaseId": "pc_ciel_tsukihime_ciel_seventh_scripture_cannon_strike",
+      "sourceShowcaseSha256": "46605ff7e44ec2c5c61ebc601347340f6e69f2fd7a47c4c13f2dfd990c919abe"
     },
     "visual_dna": {
       "hair": "齐下巴深蓝短发 · 层次分明",
@@ -59074,7 +59104,9 @@
     "icon": "🌹",
     "portrait": {
       "image": "../assets/characters/popular-asuna_yuuki.png?v=1",
-      "alt": "结城明日奈 样张立绘"
+      "alt": "结城明日奈 样张立绘",
+      "sourceShowcaseId": "pc_asuna_yuuki_asuna_after_school_crepe_date",
+      "sourceShowcaseSha256": "d6ef4d6ebc9b9a00ad6b51b9e55fc61d982f60dddfa82a80f3c75d45afaad081"
     },
     "visual_dna": {
       "hair": "腰际栗色长发 · 侧编发辫半扎",
@@ -59348,7 +59380,9 @@
     "icon": "✒️",
     "portrait": {
       "image": "../assets/characters/popular-violet_evergarden.png?v=1",
-      "alt": "薇尔莉特·伊芙加登 样张立绘"
+      "alt": "薇尔莉特·伊芙加登 样张立绘",
+      "sourceShowcaseId": "pc_violet_evergarden_violet_morning_cafe_letter_writing",
+      "sourceShowcaseSha256": "b2c1e21e0d6025701c268f23cfc8b0899a5d0134a6a33f50b78d5ae66c216e99"
     },
     "visual_dna": {
       "hair": "及背金发 · 麻花辫与红色发带",
@@ -59742,7 +59776,9 @@
     "icon": "🌙",
     "portrait": {
       "image": "../assets/characters/popular-shinomiya_kaguya.png?v=1",
-      "alt": "四宫辉夜 样张立绘"
+      "alt": "四宫辉夜 样张立绘",
+      "sourceShowcaseId": "pc_shinomiya_kaguya_kaguya_fireworks_furisode_okawaii",
+      "sourceShowcaseSha256": "3e525e7b810a73f19526dd12b76425bec143f68f9c0439b8e3225a50b499e7fd"
     },
     "visual_dna": {
       "hair": "黑色短发折叠马尾 · 红缎带",
@@ -60066,7 +60102,9 @@
     "icon": "🖋️",
     "portrait": {
       "image": "../assets/characters/popular-kasumigaoka_utaha.png?v=1",
-      "alt": "霞之丘诗羽 样张立绘"
+      "alt": "霞之丘诗羽 样张立绘",
+      "sourceShowcaseId": "pc_kasumigaoka_utaha_utaha_signing_event_author_line",
+      "sourceShowcaseSha256": "f43e8107ddb504151cae325413d0f88a2f0e04592dcc3ab6d4a2213727bbef8a"
     },
     "visual_dna": {
       "hair": "黑色长直发 · 白色发箍",
@@ -60629,7 +60667,9 @@
     "icon": "🌸",
     "portrait": {
       "image": "../assets/characters/popular-katou_megumi.png?v=1",
-      "alt": "加藤惠 样张立绘"
+      "alt": "加藤惠 样张立绘",
+      "sourceShowcaseId": "pc_katou_megumi_megumi_slope_white_beret",
+      "sourceShowcaseSha256": "179a221e3d6991f6ec817e68db209f70619beb819f6312e9e9a76e32a72db946"
     },
     "visual_dna": {
       "hair": "棕色波波头短发 · 后期长发马尾",
@@ -60938,7 +60978,9 @@
     "icon": "🪽",
     "portrait": {
       "image": "../assets/characters/popular-shiina_mahiru.png?v=1",
-      "alt": "椎名真昼 样张立绘"
+      "alt": "椎名真昼 样张立绘",
+      "sourceShowcaseId": "pc_shiina_mahiru_mahiru_kitchen_apron_morning",
+      "sourceShowcaseSha256": "b21194146b9c7c5030bb607a1b47272c452c6b04913f403f1af9517991a546a1"
     },
     "visual_dna": {
       "hair": "如亚麻般垂至腰际的丝滑浅金长发",
@@ -61136,7 +61178,9 @@
     "icon": "🍇",
     "portrait": {
       "image": "../assets/characters/popular-chitanda_eru.png?v=1",
-      "alt": "千反田爱瑠 样张立绘"
+      "alt": "千反田爱瑠 样张立绘",
+      "sourceShowcaseId": "pc_chitanda_eru_chitanda_curious_eyes_close_up",
+      "sourceShowcaseSha256": "db294dcc6acf3df512ebce090004a1e5938c02b566fd6e474a0c9b89d285da11"
     },
     "visual_dna": {
       "hair": "如墨般光滑垂直的极长黑发 · 齐刘海",
@@ -61323,7 +61367,9 @@
     "icon": "🦊",
     "portrait": {
       "image": "../assets/characters/popular-isshiki_iroha.png?v=1",
-      "alt": "一色彩羽 样张立绘"
+      "alt": "一色彩羽 样张立绘",
+      "sourceShowcaseId": "pc_isshiki_iroha_iroha_corridor_chasing_pout",
+      "sourceShowcaseSha256": "aa2175d37cf44b0cbe65b2671d4fef5b2a878fbb11b0e8f047d0587f14b2e842"
     },
     "visual_dna": {
       "hair": "及肩的蜜糖棕微卷发，侧分刘海自然贴在脸侧。",
@@ -61697,7 +61743,9 @@
     "icon": "🍷",
     "portrait": {
       "image": "../assets/characters/popular-yukinoshita_haruno.png?v=1",
-      "alt": "雪之下阳乃 样张立绘"
+      "alt": "雪之下阳乃 样张立绘",
+      "sourceShowcaseId": "pc_yukinoshita_haruno_haruno_cafe_terrace_teasing_gaze",
+      "sourceShowcaseSha256": "075078e4274756f8937ae5a2af4cf5204f693e2d9d30649e425a7a6844221e89"
     },
     "visual_dna": {
       "hair": "修剪至锁骨处的乌黑靓丽直发",
@@ -62069,7 +62117,9 @@
     "icon": "🍫",
     "portrait": {
       "image": "../assets/characters/popular-yamada_anna.png?v=1",
-      "alt": "山田杏奈 样张立绘"
+      "alt": "山田杏奈 样张立绘",
+      "sourceShowcaseId": "pc_yamada_anna_yamada_library_snack_caught",
+      "sourceShowcaseSha256": "f1a191b40be6b9120dad2cfd29af26ff3fec7e535454d22d9b3dbb1cc9064aa7"
     },
     "visual_dna": {
       "hair": "光泽柔顺如黑丝缎般的极长黑发 · 标志性高马尾",
@@ -62595,7 +62645,9 @@
     "type": "popular",
     "portrait": {
       "image": "../assets/characters/popular-izumi_sagiri.png",
-      "alt": "和泉纱雾 全年龄日常立绘"
+      "alt": "和泉纱雾 全年龄日常立绘",
+      "sourceShowcaseId": "pc_izumi_sagiri_izumi_sagiri_sfw_b5_08",
+      "sourceShowcaseSha256": "ce9656e41d189591630be5fa6ff1fe2cfdada7c1ebfa6a165b8afd8920bc5b2e"
     },
     "visual_dna": {
       "signature": "Sagiri Izumi from Eromanga Sensei, a young illustrator with long silvery hair fading into pale pink-violet tips, ribbon-tied sidelocks and bright aqua-blue eyes. Her expressive face shifts readily between concentration, embarrassment and delight.",
@@ -63377,7 +63429,9 @@
     "type": "popular",
     "portrait": {
       "image": "../assets/characters/popular-arima_kana.png",
-      "alt": "有马加奈 全年龄日常立绘"
+      "alt": "有马加奈 全年龄日常立绘",
+      "sourceShowcaseId": "pc_arima_kana_arima_kana_sfw_b5_01",
+      "sourceShowcaseSha256": "4805e377ae540bfcd48046a23aba27b51a9291dd05c50528fdae472c1573e55a"
     },
     "visual_dna": {
       "signature": "Kana Arima from Oshi no Ko, a hardworking young actress with a chin-length wine-red bob, straight bangs and ruby-red eyes. A small snaggletooth appears in her unguarded smile, while her expressive gaze moves between professional focus and prickly pride.",
@@ -63604,7 +63658,9 @@
     "type": "popular",
     "portrait": {
       "image": "../assets/characters/popular-hori_kyouko.png",
-      "alt": "堀京子 全年龄日常立绘"
+      "alt": "堀京子 全年龄日常立绘",
+      "sourceShowcaseId": "pc_hori_kyouko_hori_kyouko_sfw_b5_01",
+      "sourceShowcaseSha256": "3636a579350e01c8b9c8a2f0580b5e8ae34ab64368ed350565d6b6026fe87876"
     },
     "visual_dna": {
       "signature": "Kyouko Hori from Horimiya, an energetic schoolgirl with chestnut-brown hair, an M-shaped fringe, long sidelocks and warm brown eyes. Her confident expressions carry brisk, practical warmth, with a more relaxed manner at home.",
@@ -72554,7 +72610,9 @@
     "type": "popular",
     "portrait": {
       "image": "../assets/characters/popular-tachibana_mikari.png?v=dfa4e29fc05a",
-      "alt": "橘美花莉 · 摄影棚收工的三秒场景样张"
+      "alt": "橘美花莉 · 摄影棚收工的三秒场景样张",
+      "sourceShowcaseId": "pc_tachibana_mikari_tachibana_mikari_sfw_b8_02",
+      "sourceShowcaseSha256": "74c96c1698c854f82e9b8495a1fa563dac1c3ef67a6dfb17740e1a52debf085c"
     },
     "visual_dna": {
       "signature": "Mikari Tachibana from 2.5 Dimensional Seduction, a popular professional teen fashion model with long light chestnut brown hair parted off-center, strands falling between her eyes and long asymmetrical sidelocks, the upper strands gathered into two side-up bunches tied with pink ribbons, plus vivid pink eyes. Fashionable, composed, and fiercely devoted to her childhood sweetheart Okumura Masamune.",
