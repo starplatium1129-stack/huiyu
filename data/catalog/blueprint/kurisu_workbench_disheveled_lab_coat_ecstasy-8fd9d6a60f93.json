@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kurisu_workbench_disheveled_lab_coat_ecstasy",
+  "revision": 1,
+  "sortOrder": 2327,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kurisu_workbench_disheveled_lab_coat_ecstasy",
+    "characterId": "makise_kurisu",
+    "outfitId": "lab_coat_classic",
+    "title": "牧濑红莉栖 · 时间机器旁的禁断试验",
+    "category": "私密温存",
+    "description": "电话微波炉发出低沉的蜂鸣，昏暗的实验室内只有仪表盘微弱的光芒。红莉栖坐在工作台边沿，双腿微启挂在对方腰侧，散开的白大褂与凌乱的衬衫勾勒出极致的娇媚。",
+    "recommendedSize": "832x1216",
+    "location": "cluttered lab workbench surrounded by glowing vacuum tubes and oscilloscopes",
+    "action": "seated on sturdy wooden workbench edge with open white coat and unbuttoned shirt, legs hooked around partner waist, crying out in breathless unbridled pleasure",
+    "timeOfDay": "night",
+    "lighting": "vibrant neon amber and cyan nixie tube numeric glow flickering in darkness",
+    "camera": "medium_shot",
+    "mood": "intense breathless abandonment, forbidden sci-fi lab passion, overwhelming physical climax",
+    "promptProse": "Sitting on the lab workbench with disheveled shirt and open coat, Kurisu clings tightly in sheer ecstatic abandonment under glowing oscilloscope lights.",
+    "promptTokens": [
+      "lab",
+      "table",
+      "sitting_on_table",
+      "open_coat",
+      "open_shirt",
+      "disheveled_clothes",
+      "spread_legs",
+      "flushed_face",
+      "heavy_blush",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kurisu sitting on the lab table with parted shirt, swept up in overwhelming pleasure.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

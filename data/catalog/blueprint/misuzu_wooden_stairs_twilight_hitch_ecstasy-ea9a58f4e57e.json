@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "misuzu_wooden_stairs_twilight_hitch_ecstasy",
+  "revision": 1,
+  "sortOrder": 2357,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "misuzu_wooden_stairs_twilight_hitch_ecstasy",
+    "characterId": "kamio_misuzu",
+    "outfitId": "air_summer_uniform",
+    "title": "神尾观铃 · 旧校舍阶梯的黄昏印记",
+    "category": "私密温存",
+    "description": "放学后的黄昏旧校舍楼梯转角，橙色百褶裙被掀至腰际。观铃一手扶着木制扶手，另一只手按住自己被吻红的嘴唇，在高挑与纤细的交汇处战栗着迎接着极致的充实。",
+    "recommendedSize": "832x1216",
+    "location": "empty nostalgic wooden schoolhouse staircase landing bathed in fiery dusk",
+    "action": "supported against handrail with orange uniform skirt bunched high, hand pressed to swollen lips, shivering with breathless delight in twilight",
+    "timeOfDay": "sunset",
+    "lighting": "intense copper-red sunset beams pouring through tall arched windows",
+    "camera": "medium_shot",
+    "mood": "nostalgic schoolhouse passion, breathless youthful surrender, unforgettable twilight thrill",
+    "promptProse": "Supported against the wooden staircase banister at sunset, Misuzu pants with hitched skirt as twilight gold bathes her trembling hips.",
+    "promptTokens": [
+      "stairs",
+      "railing",
+      "sunset",
+      "golden_hour",
+      "lifted_skirt",
+      "bare_thighs",
+      "heavy_blush",
+      "parted_lips",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Misuzu supported on the wooden school staircase at dusk, overwhelmed by pleasure.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

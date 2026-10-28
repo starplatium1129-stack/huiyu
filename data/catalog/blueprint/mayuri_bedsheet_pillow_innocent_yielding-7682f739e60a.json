@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "mayuri_bedsheet_pillow_innocent_yielding",
+  "revision": 1,
+  "sortOrder": 2332,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "mayuri_bedsheet_pillow_innocent_yielding",
+    "characterId": "shiina_mayuri",
+    "outfitId": "soft_cotton_pajamas",
+    "title": "椎名真由理 · 被窝里的纯情袒露",
+    "category": "私密温存",
+    "description": "暖和的被褥中，平日里单纯的青梅竹马羞得将半张脸埋在枕头里。睡衣裤管早已褪落在一旁，感受着掌心覆上柔软腰际时的微颤，她带着鼻音软糯地回应着每一次触碰。",
+    "recommendedSize": "832x1216",
+    "location": "cozy cluttered bedroom under heavy cotton blankets with plush toys nearby",
+    "action": "lying face-down into soft feather pillow, cotton pajamas stripped down, shivering in sweet bashful ecstasy as hands stroke her bare thighs",
+    "timeOfDay": "night",
+    "lighting": "warm dim glow from an Upa nightlight casting gentle amber across smooth skin",
+    "camera": "cowboy_shot",
+    "mood": "innocent pure surrender, heart-pounding bashful pleasure, gentle childhood sweetheart devotion",
+    "promptProse": "Tucked beneath warm quilts with discarded pajama pants, Mayuri buries her blushing face into a pillow, gasping with shy sweet ecstasy.",
+    "promptTokens": [
+      "bed",
+      "futon",
+      "under_blanket",
+      "bare_legs",
+      "bare_thighs",
+      "face_in_pillow",
+      "heavy_blush",
+      "trembling",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Mayuri lying vulnerable under soft bedsheets, blushing deeply into her pillow with sweet surrender.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

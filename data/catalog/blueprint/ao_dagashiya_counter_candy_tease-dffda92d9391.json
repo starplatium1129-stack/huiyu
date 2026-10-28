@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "ao_dagashiya_counter_candy_tease",
+  "revision": 1,
+  "sortOrder": 2341,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "ao_dagashiya_counter_candy_tease",
+    "characterId": "sorakado_ao",
+    "outfitId": "dagashiya_apron_casual",
+    "title": "空门苍 · 粗点心店的狡黠投喂",
+    "category": "校园日常",
+    "description": "老街粗点心店的柜台后，苍围着绿色围裙趴在玻璃柜上。她用手指捏起一枚酸味软糖直接递到眼前，眉眼弯弯地带着恶作剧成功的狡黠笑容。",
+    "recommendedSize": "832x1216",
+    "location": "retro Japanese dagashi candy store filled with colorful jars and snack bags",
+    "action": "leaning over glass display case in green apron, holding up a sour gummy candy to feed the viewer, winking with a cheeky mischievous grin",
+    "timeOfDay": "afternoon",
+    "lighting": "warm amber glow of incandescent bulbs highlighting her energetic blue eyes and coral tee",
+    "camera": "close-up",
+    "mood": "playful girlfriend tease, sweet everyday banter, lively vibrant charm",
+    "promptProse": "Leaning across the candy shop glass counter in a green apron, Ao playfully feeds a sweet treat to the viewer with a sparkling cheeky smile.",
+    "promptTokens": [
+      "candy_shop",
+      "counter",
+      "green_apron",
+      "holding_candy",
+      "feeding",
+      "leaning_forward",
+      "playful_smile",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ao leaning over the retro candy counter offering a treat with a mischievous grin.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "renge_mangekyou/vermilion_mangekyou_kimono",
+  "revision": 1,
+  "sortOrder": 1845,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "renge_mangekyou",
+    "outfit": {
+      "id": "vermilion_mangekyou_kimono",
+      "name": "绯红浮世万华和服配金丝宽腰带",
+      "prose": "An opulent vermilion silk kimono adorned with cascading autumn spider lily and floral motifs, tied with a lavish gold-brocade obi sash and trailing long sleeves, worn barefoot.",
+      "tokens": [
+        "kimono",
+        "red_kimono",
+        "floral_print",
+        "long_sleeves",
+        "wide_sleeves",
+        "gold_obi",
+        "obi_sash",
+        "barefoot"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

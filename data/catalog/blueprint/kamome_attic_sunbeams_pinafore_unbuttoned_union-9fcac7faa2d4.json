@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kamome_attic_sunbeams_pinafore_unbuttoned_union",
+  "revision": 1,
+  "sortOrder": 2351,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kamome_attic_sunbeams_pinafore_unbuttoned_union",
+    "characterId": "kushima_kamome",
+    "outfitId": "traveler_bohemian_dress",
+    "title": "久岛鸥 · 阁楼木地板上的终极宝藏",
+    "category": "私密温存",
+    "description": "阳光从阁楼天窗倾泻而下，照亮空气中漂浮的微尘。背心裙的排扣被悉数解开，鸥双膝微分跪坐在木地板上，眼角带着喜悦的泪花，把最珍贵的自己作为唯一的宝藏献出。",
+    "recommendedSize": "832x1216",
+    "location": "high attic loft with circular stained glass window and warm cedar floorboards",
+    "action": "kneeling on cedar planks in unbuttoned parted pinafore dress, arms open wide with tears of profound joyful love, offering herself completely",
+    "timeOfDay": "morning",
+    "lighting": "dazzling golden god-rays cutting through dust motes enveloping both in celestial warmth",
+    "camera": "medium_shot",
+    "mood": "transcendent emotional catharsis, sacred lovers culmination, purest promise fulfilled",
+    "promptProse": "Bathed in celestial attic skylight, Kamome kneels with unbuttoned dress, weeping sweet tears of complete, ecstatic romantic union.",
+    "promptTokens": [
+      "attic",
+      "sunbeam",
+      "kneeling",
+      "open_dress",
+      "unbuttoned_shirt",
+      "exposed_skin",
+      "tears_of_joy",
+      "loving_expression",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kamome kneeling in golden attic light with parted dress, weeping joyful tears of love.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

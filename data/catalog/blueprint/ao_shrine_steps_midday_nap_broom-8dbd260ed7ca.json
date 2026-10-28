@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "ao_shrine_steps_midday_nap_broom",
+  "revision": 1,
+  "sortOrder": 2340,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "ao_shrine_steps_midday_nap_broom",
+    "characterId": "sorakado_ao",
+    "outfitId": "miko_shrine_garb",
+    "title": "空门苍 · 神社拜殿前的午后困意",
+    "category": "日常陪伴",
+    "description": "神社红色的鸟居在蝉鸣中投下斑驳的长影。苍手里的竹扫帚靠在廊柱旁，整个人蜷在木阶梯上打盹，侧马尾随着均匀的呼吸轻轻晃动，嘴角挂着满足的弧度。",
+    "recommendedSize": "832x1216",
+    "location": "weathered wooden steps of mountain shrine under grand vermilion torii gate and cedar trees",
+    "action": "dozing off peacefully on shrine porch steps, bamboo broom leaning against vermilion post, sleeping with sweet curled lips and messy side ponytail",
+    "timeOfDay": "afternoon",
+    "lighting": "dappled golden sunbeams filtering through cedar needles onto scarlet hakama",
+    "camera": "medium_shot",
+    "mood": "serene rustic peace, innocent sleepy vulnerability, warm lazy summer reverie",
+    "promptProse": "Napping peacefully on ancient shrine steps in her miko vestments, blue-haired Ao curls up with a broom resting beside her under warm tree shadows.",
+    "promptTokens": [
+      "shrine",
+      "torii_gate",
+      "sitting_on_steps",
+      "sleeping",
+      "broom",
+      "afternoon_sunlight",
+      "peaceful_expression",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ao Sorakado taking a sweet midday nap on shrine steps in miko attire.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

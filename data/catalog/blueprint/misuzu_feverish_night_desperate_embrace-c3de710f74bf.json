@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "misuzu_feverish_night_desperate_embrace",
+  "revision": 1,
+  "sortOrder": 2355,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "misuzu_feverish_night_desperate_embrace",
+    "characterId": "kamio_misuzu",
+    "outfitId": "airy_gauze_negligee",
+    "title": "神尾观铃 · 盛夏夜风中的脆弱依恋",
+    "category": "私密温存",
+    "description": "被高热折磨的夜里，观铃从噩梦中惊醒，薄薄的棉纱睡裙已被冷汗浸透。她像迷路的孩子一样伸出双臂死死抱住面前的人，把滚烫的额头贴在颈侧，泪水无声地滑落。",
+    "recommendedSize": "832x1216",
+    "location": "shadowy coastal bedroom with gauzy mosquito nets swaying in night sea breeze",
+    "action": "clinging desperately around partner neck with tearful eyes and fever-flushed cheeks, translucent damp nightdress sticking to trembling skin",
+    "timeOfDay": "night",
+    "lighting": "dim silver moonlight highlighting sweat drops and quivering golden ponytail",
+    "camera": "close-up",
+    "mood": "heartbreaking emotional vulnerability, tragic yearning for warmth, deeply touching intimacy",
+    "promptProse": "Clinging tightly with desperate tears in the moonlit bedroom, feverish Misuzu presses her burning cheek against her lover in deep need of love.",
+    "promptTokens": [
+      "bedroom",
+      "night",
+      "moonlight",
+      "clinging_closely",
+      "teary_eyes",
+      "crying",
+      "damp_clothes",
+      "bare_shoulders",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Misuzu clinging tearfully in the moonlit bedroom, desperately needing warmth.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

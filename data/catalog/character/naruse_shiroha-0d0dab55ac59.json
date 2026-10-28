@@ -1,0 +1,151 @@
+{
+  "kind": "character",
+  "id": "naruse_shiroha",
+  "revision": 1,
+  "sortOrder": 248,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "naruse_shiroha",
+    "popular": {
+      "id": "naruse_shiroha",
+      "displayName": "鸣濑白羽",
+      "originalName": "Naruse Shiroha",
+      "franchise": "Summer Pockets",
+      "aliases": [
+        "naruse_shiroha",
+        "shiroha naruse",
+        "summer pockets",
+        "key"
+      ],
+      "identityProse": "Shiroha Naruse from Summer Pockets, with long pure-white hair tied in low twin tails, crimson red eyes, and a quiet, standoffish yet deeply caring personality.",
+      "identityTokens": [
+        "naruse_shiroha",
+        "1girl",
+        "solo",
+        "white_hair",
+        "long_hair",
+        "low_twintails",
+        "red_eyes",
+        "summer pockets"
+      ],
+      "exactTokens": [
+        "naruse_shiroha"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "催泪青春（濑户内海·鸟白岛）",
+        "era": "现代日本（夏日海岛）",
+        "formNotes": "鸟白岛本土少女；鸣濑神社传承者；身负预知灾厄之力的孤高白羽",
+        "research": "2026-10 调研"
+      },
+      "animeStudio": "summer pockets, official anime art, visual arts key style",
+      "curatedArtistStyles": [
+        "na-ga",
+        "fumio",
+        "tiv"
+      ],
+      "characterTokens": [
+        "naruse_shiroha"
+      ],
+      "copyrightTokens": [
+        "summer pockets"
+      ]
+    },
+    "profile": {
+      "id": "naruse_shiroha",
+      "name": "鸣濑白羽",
+      "alias": [
+        "白羽",
+        "しろは",
+        "孤僻少女",
+        "西瓜杀手"
+      ],
+      "type": "popular",
+      "icon": "🍉",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "鸣濑白羽 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "雪白如银的顺滑及腰长发 · 发梢系成低双马尾",
+        "hair_color": "纯白 / 银白",
+        "eyes": "深邃澄澈的绯红朱赤眼眸",
+        "hairstyle": "低扎双马尾 · 细长红发带 · 随海风轻扬",
+        "uniform": "鸟白岛水手校服 · 夏日清凉白色无袖吊带裙与草帽 · 深色学校连体泳装",
+        "expression": "孤高警惕的冷淡凝视 · 吃西瓜被逗弄时笨拙通红的羞恼",
+        "style": "solitary island tsundere girlfriend, moving from standoffish fear of hurting others to fiercely tender, devoted love",
+        "signature": "银白低双马尾、绯红赤瞳、防波堤冰西瓜与海岛海风"
+      },
+      "personality": [
+        "孤僻笨拙不擅表达",
+        "害怕给他人招致不幸",
+        "内心极度柔弱善良",
+        "对待认定之人至死不渝"
+      ],
+      "likes": [
+        "冰镇红壤西瓜",
+        "海边防波堤静坐",
+        "料理自炊",
+        "海风吹拂的声音"
+      ],
+      "classic_cg": {
+        "title": "蔚蓝海浪与防波堤上的西瓜清甜",
+        "description": "坐在消波块旁边的防波堤边缘，白羽捧着冰镇西瓜，雪白的长发在海天一色间飘拂，转头投来带着警惕却又悄悄分享的可爱眼神。"
+      },
+      "identity": {
+        "role": "鸟白岛本土少女 / 鸣濑神社血脉继承人",
+        "age": "16岁（海岛高中生）",
+        "occupation": "高中生 / 神社传人",
+        "faction": "鸟白岛高校 / 鸣濑神社"
+      },
+      "tags": [
+        "孤高傲娇",
+        "白发赤瞳",
+        "鸟白岛",
+        "水手服",
+        "预知能力",
+        "深情母亲"
+      ],
+      "bg_story": "居住在濑户内海偏远海岛“鸟白岛”的少女，幼年因目睹母亲沉海事故并被岛民视为不祥之兆而逐渐远离人群，习惯了独自在海边防波堤静坐。性格笨拙内向、不擅表达，常以刻意冷淡的言语推开他人以防对方遭遇不幸，实则内心极为善良柔弱。酷爱食用西瓜，偶尔会流露出笨拙呆萌的反差面貌。在与外来少年鹰原羽依里的相处中，她封闭的心扉逐渐融化，共同经历了无数啼笑皆非的岛上夏日物语。然而围绕在她血脉中的宿命与轮回，也即将迎来最凄美而感人的抉择。",
+      "palette": [
+        "海天青",
+        "西瓜红",
+        "纯白",
+        "草木深绿"
+      ],
+      "weather": [
+        "濑户内海艳阳天",
+        "海滨阵雨",
+        "金色夕暮潮汐"
+      ],
+      "speech": "……别随便跟我搭话。靠近我的话，是会招来不幸的……真的是个不会看气氛的大笨蛋呢。",
+      "source": "Summer Pockets",
+      "traits": [
+        "海岛孤高白发少女",
+        "低双马尾与绯红眼眸",
+        "防波堤西瓜纯情反差",
+        "Key社泣系夏日象征",
+        "夏日口袋核心女一"
+      ],
+      "accent_color": "#38bdf8",
+      "bg_color": "#0f172a"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "misuzu_engawa_chilled_watermelon_gao_yawn",
+  "revision": 1,
+  "sortOrder": 2354,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "misuzu_engawa_chilled_watermelon_gao_yawn",
+    "characterId": "kamio_misuzu",
+    "outfitId": "dinosaur_home_tshirt",
+    "title": "神尾观铃 · 风铃回廊下的西瓜切盘",
+    "category": "日常陪伴",
+    "description": "缘侧木廊下的铁皮风铃叮咚作响。观铃抱着双腿坐在木地板上，看着盘子里切好的红西瓜，冷不丁打了个哈欠，发出“嘎欧”的可爱叹息，睫毛在阳光下镀上金边。",
+    "recommendedSize": "832x1216",
+    "location": "shady wooden veranda of a traditional Japanese coastal home overlooking lush yard",
+    "action": "hugging knees on polished cedar floor beside a plate of sliced watermelon, yawning cutely with golden eyelashes catching gentle rays",
+    "timeOfDay": "afternoon",
+    "lighting": "peaceful dappled shadows beneath overhanging roof tiles mixed with cicada hum",
+    "camera": "close-up",
+    "mood": "lazy idyllic seaside afternoon, adorable endearing quirkiness, comforting home sanctuary",
+    "promptProse": "Relaxing on the traditional porch beside fresh watermelon slices, blonde Misuzu yawns sweetly with knees hugged to her chest.",
+    "promptTokens": [
+      "engawa",
+      "porch",
+      "watermelon",
+      "wind_chime",
+      "yawning",
+      "sitting",
+      "hugging_knees",
+      "cute_expression",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Misuzu enjoying quiet afternoon watermelon on the shaded veranda, yawning cutely.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

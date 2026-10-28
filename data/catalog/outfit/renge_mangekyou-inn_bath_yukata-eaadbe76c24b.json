@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "renge_mangekyou/inn_bath_yukata",
+  "revision": 1,
+  "sortOrder": 1848,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "renge_mangekyou",
+    "outfit": {
+      "id": "inn_bath_yukata",
+      "name": "和风旅馆轻软浅青棉麻浴衣",
+      "prose": "A relaxed pale-slate cotton ryokan yukata with subtle wave lines, loosely knotted indigo sash, revealing a slender neck and collarbones, barefoot.",
+      "tokens": [
+        "yukata",
+        "pale_blue_yukata",
+        "simple_obi",
+        "loose_collar",
+        "bare_neck",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

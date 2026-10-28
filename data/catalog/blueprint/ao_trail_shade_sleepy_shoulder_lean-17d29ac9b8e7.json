@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "ao_trail_shade_sleepy_shoulder_lean",
+  "revision": 1,
+  "sortOrder": 2342,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "ao_trail_shade_sleepy_shoulder_lean",
+    "characterId": "sorakado_ao",
+    "outfitId": "torishiro_casual_vest",
+    "title": "空门苍 · 后山树荫下的肩膀借宿",
+    "category": "假日出行",
+    "description": "漫步在前往灯塔的林荫小道上，走着走着苍的步调就慢了下来。她自然而然地靠上身旁人的肩膀，微热的脸颊贴着衣料，任由海风撩起校服的领结。",
+    "recommendedSize": "832x1216",
+    "location": "narrow cobblestone island path through lush coastal forest toward lighthouse",
+    "action": "walking side-by-side then slowing down, resting her head comfortably against partner shoulder with half-closed drowsy eyes and a fond smile",
+    "timeOfDay": "afternoon",
+    "lighting": "soft sea breeze rustling green leaves casting moving shadows over school sweater vest",
+    "camera": "cowboy_shot",
+    "mood": "gentle domestic reliance, comfortable trusting romance, sweet peaceful bond",
+    "promptProse": "Resting her sleepy head against partner shoulder along a shaded island path, Ao walks slowly with contented half-closed eyes and fluttering tie.",
+    "promptTokens": [
+      "walking_path",
+      "trees",
+      "leaning_on_shoulder",
+      "half-closed_eyes",
+      "gentle_smile",
+      "dappled_sunlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ao leaning her sleepy head on her partner shoulder along a lush island path.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

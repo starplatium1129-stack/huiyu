@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "kamio_misuzu/air_summer_uniform",
+  "revision": 1,
+  "sortOrder": 1841,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kamio_misuzu",
+    "outfit": {
+      "id": "air_summer_uniform",
+      "name": "名作夏日高腰水手制服",
+      "prose": "The iconic high school summer uniform featuring an ivory short-sleeved blouse with an oversized sailor collar and dark tie, tucked into a bright golden-orange pleated high-waist skirt, white socks and brown dress shoes.",
+      "tokens": [
+        "sailor_suit",
+        "white_shirt",
+        "large_sailor_collar",
+        "black_tie",
+        "orange_skirt",
+        "high-waist_skirt",
+        "white_socks",
+        "brown_shoes"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

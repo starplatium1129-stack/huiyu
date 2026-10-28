@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kurisu_storage_room_pinned_kiss_intimacy",
+  "revision": 1,
+  "sortOrder": 2325,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kurisu_storage_room_pinned_kiss_intimacy",
+    "characterId": "makise_kurisu",
+    "outfitId": "summer_lab_camisole",
+    "title": "牧濑红莉栖 · 开发室里的突发吻痕",
+    "category": "私密温存",
+    "description": "狭窄的元器件储物间内，呼吸交叠得毫无缝隙。红莉栖被抵在木质货架旁，双手下意识攥紧对方的衣角，半咬着下唇承受着滚烫的吻，眼角泛起失控的水汽。",
+    "recommendedSize": "832x1216",
+    "location": "narrow secluded parts storage closet between tall wooden shelving units",
+    "action": "pinned gently against storage shelves, camisole slipping off one shoulder, gripping partner shirt with trembling fingers during a breathless heated embrace",
+    "timeOfDay": "night",
+    "lighting": "dim amber light filtering under door crack illuminating flushed damp skin",
+    "camera": "close-up",
+    "mood": "steamy enclosed passion, forbidden laboratory tryst, desperate sweet surrender",
+    "promptProse": "Pressed against a wooden bookshelf in the dark storage room, flushed Kurisu bites her lip with teary eyes as hands caress her bare trembling shoulder.",
+    "promptTokens": [
+      "shelf",
+      "storage_room",
+      "pinned_against_wall",
+      "off-shoulder",
+      "bare_shoulders",
+      "heavy_breathing",
+      "flushed_face",
+      "teary_eyes",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kurisu pinned gently against a backroom shelf, flushed with passionate desire.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kurisu_tatami_crimson_silk_nightgown_slip",
+  "revision": 1,
+  "sortOrder": 2326,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kurisu_tatami_crimson_silk_nightgown_slip",
+    "characterId": "makise_kurisu",
+    "outfitId": "crimson_silk_nightwear",
+    "title": "牧濑红莉栖 · 旅馆榻榻米上的真丝滑落",
+    "category": "私密温存",
+    "description": "离开学术会场的温泉旅馆夜里，深绯色的真丝睡裙滑过肩膀。平日里言辞锋利的理论派此刻完全卸下了武装，十指扣进床单，在被彻底占有时发出了断断续续的呜咽。",
+    "recommendedSize": "832x1216",
+    "location": "quiet traditional ryokan tatami room with sliding shoji paper doors",
+    "action": "lying back on pristine white futon mattress, crimson silk straps falling off shoulders to bare smooth skin, arching slender waist in helpless shivering ecstasy",
+    "timeOfDay": "night",
+    "lighting": "soft indirect bedside andon lantern glow casting warm gold over bare curves",
+    "camera": "cowboy_shot",
+    "mood": "vulnerable intellectual surrender, intoxicating sensual tenderness, deep emotional bonding",
+    "promptProse": "Reclining on a ryokan futon in a slipping crimson silk slip, auburn-haired Kurisu gasps with parted lips as loving touches trace her bare waist.",
+    "promptTokens": [
+      "tatami",
+      "futon",
+      "lying_on_back",
+      "strap_slip",
+      "bare_shoulders",
+      "exposed_cleavage",
+      "parted_lips",
+      "aroused",
+      "heavy_blush",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kurisu lying on tatami in a fallen crimson silk nightgown, trembling with ecstasy.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kushima_kamome/traveler_bohemian_dress",
+  "revision": 1,
+  "sortOrder": 1837,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kushima_kamome",
+    "outfit": {
+      "id": "traveler_bohemian_dress",
+      "name": "寻宝冒险家的墨绿背心裙与复古衬衫",
+      "prose": "A romantic traveler outfit composed of an ivory puff-sleeve blouse with a sunny yellow neck ribbon, dark forest-green pinafore dress, white knee-high socks and sturdy laced brown walking boots.",
+      "tokens": [
+        "white_blouse",
+        "puff_sleeves",
+        "dark_green_pinafore",
+        "overall_dress",
+        "yellow_ribbon",
+        "white_knee_socks",
+        "brown_boots"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

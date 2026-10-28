@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kamio_misuzu/dinosaur_home_tshirt",
+  "revision": 1,
+  "sortOrder": 1843,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kamio_misuzu",
+    "outfit": {
+      "id": "dinosaur_home_tshirt",
+      "name": "恐龙印花宽松居家T恤与棉短裤",
+      "prose": "A roomy white cotton crewneck t-shirt featuring a playful cartoon dinosaur graphic, pastel pink drawstring lounge shorts, bare legs and soft slippers.",
+      "tokens": [
+        "white_t-shirt",
+        "print_shirt",
+        "short_sleeves",
+        "pink_shorts",
+        "lounge_shorts",
+        "bare_legs",
+        "slippers"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

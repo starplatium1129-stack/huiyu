@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kirie_canopy_bed_vampire_fanged_neck_straddle",
+  "revision": 1,
+  "sortOrder": 2367,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kirie_canopy_bed_vampire_fanged_neck_straddle",
+    "characterId": "kagari_no_kirie",
+    "outfitId": "midnight_velvet_lingerie",
+    "title": "篝之雾枝 · 古堡四柱床的血之初拥",
+    "category": "私密温存",
+    "description": "挂满深色帷幔的古典四柱大床上，吊带黑丝与束腰勾勒出妖异至极的曲线。雾枝骑坐在对方腰间，獠牙刺入颈项吸吮血液的同时，下身紧紧贴合在一起，发出既痛苦又沉沦的喘息。",
+    "recommendedSize": "832x1216",
+    "location": "grand gothic bedchamber on ornate four-poster canopy bed with heavy velvet drapery",
+    "action": "straddling partner in black corset and garter straps, baring sharp white fangs as she bites his neck, hips grinding down in wild intoxicating lust",
+    "timeOfDay": "night",
+    "lighting": "flickering candelabra light reflecting off single droplet of blood on pale throat",
+    "camera": "close-up",
+    "mood": "intense vampire feeding eroticism, dangerous dominant passion, intoxicating lovers thrall",
+    "promptProse": "Straddling in black velvet lingerie on a canopy bed, vampire Kirie bites partner neck with sharp fangs amidst breathless erotic ecstasy.",
+    "promptTokens": [
+      "canopy_bed",
+      "straddling",
+      "sitting_on_lap",
+      "fangs",
+      "biting_neck",
+      "blood_trickle",
+      "black_corset",
+      "garter_straps",
+      "heavy_blush",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kirie biting her partner neck in black lingerie upon the four-poster bed.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

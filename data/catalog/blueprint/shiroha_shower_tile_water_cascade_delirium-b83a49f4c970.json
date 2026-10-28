@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "shiroha_shower_tile_water_cascade_delirium",
+  "revision": 1,
+  "sortOrder": 2339,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "shiroha_shower_tile_water_cascade_delirium",
+    "characterId": "naruse_shiroha",
+    "outfitId": "crimson_school_swimsuit",
+    "title": "鸣濑白羽 · 淋浴间瓷砖上的湿润贴合",
+    "category": "私密温存",
+    "description": "游泳馆闭馆后的淋浴室里，温水从莲蓬头倾泻而下。湿透的连体泳装被拉扯开来，白羽双手撑在湿滑的瓷砖墙壁上，弓着后背在一次次撞击中彻底瘫软。",
+    "recommendedSize": "832x1216",
+    "location": "steamy tiled communal shower room after hours with water echoing on floor",
+    "action": "leaning with palms flat against gleaming wet ceramic wall, wet swimsuit pulled aside, back arched in trembling helpless ecstasy as warm water streams over her",
+    "timeOfDay": "dusk",
+    "lighting": "dim waterproof overhead lamp creating glistening water trails on smooth porcelain skin",
+    "camera": "cowboy_shot",
+    "mood": "steamy wet abandon, echoing aquatic ecstasy, sheer physical exhaustion from bliss",
+    "promptProse": "Resting hands on wet shower tiles, Shiroha arches her back with pulled-aside swimsuit as hot water cascades over her trembling flushed curves.",
+    "promptTokens": [
+      "shower",
+      "wet_skin",
+      "hands_on_wall",
+      "swimsuit_aside",
+      "water_drops",
+      "steam",
+      "arched_back",
+      "intense_pleasure",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shiroha supported against shower tiles as cascading water warms her trembling curves.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

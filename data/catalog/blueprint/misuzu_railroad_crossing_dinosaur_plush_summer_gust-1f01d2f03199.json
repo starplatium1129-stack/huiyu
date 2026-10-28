@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "misuzu_railroad_crossing_dinosaur_plush_summer_gust",
+  "revision": 1,
+  "sortOrder": 2352,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "misuzu_railroad_crossing_dinosaur_plush_summer_gust",
+    "characterId": "kamio_misuzu",
+    "outfitId": "air_summer_uniform",
+    "title": "神尾观铃 · 沿海公路的电车与汽水",
+    "category": "校园日常",
+    "description": "沿着海岸延伸的单轨电车轨道旁，蝉鸣如同潮水般汹涌。观铃单手抱紧心爱的恐龙布偶，另一只手紧紧抓着罐装蜜桃汽水。电车呼啸而过时，高马尾在阳光下跃动着耀眼的金光。",
+    "recommendedSize": "832x1216",
+    "location": "coastal train crossing barrier beside sparkling turquoise sea and telephone poles",
+    "action": "standing by yellow-and-black crossing gate hugging a green dinosaur plushie, high ponytail whipped by the passing train draft, smiling warmly",
+    "timeOfDay": "noon",
+    "lighting": "dazzling white midsummer sunlight reflecting off steel rails and azure ocean",
+    "camera": "medium_shot",
+    "mood": "legendary nostalgic youth, bittersweet summer purity, iconic 2000s anime majesty",
+    "promptProse": "Standing by coastal train tracks clutching a plush dinosaur, golden-haired Misuzu smiles warmly under the vast blue summer sky.",
+    "promptTokens": [
+      "train_crossing",
+      "railroad_tracks",
+      "holding_plushie",
+      "dinosaur",
+      "ocean",
+      "blue_sky",
+      "wind",
+      "bright_sun",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Misuzu Kamio holding her plush dinosaur by the seaside railroad crossing.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "mayuri_maid_cafe_omelet_ketchup_heart",
+  "revision": 1,
+  "sortOrder": 2329,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "mayuri_maid_cafe_omelet_ketchup_heart",
+    "characterId": "shiina_mayuri",
+    "outfitId": "maid_mayqueen_uniform",
+    "title": "椎名真由理 · 猫耳女仆的午后特调",
+    "category": "校园日常",
+    "description": "在人声喧闹的MayQueen咖啡厅里，真由理端着盛有蛋包饭的餐盘快步走来。她微微倾身，用番茄酱画好笑脸后双手合十在胸前，眼睛弯成月牙。",
+    "recommendedSize": "832x1216",
+    "location": "bustling retro Akihabara maid cafe with checkered floors and warm booths",
+    "action": "leaning over wooden table holding decorated omelet rice plate, hands clasped happily over apron, beaming with cheerful sparkling eyes",
+    "timeOfDay": "afternoon",
+    "lighting": "warm cozy indoor chandelier lighting casting soft golden highlights on brown uniform",
+    "camera": "cowboy_shot",
+    "mood": "bubbly retro sweetness, energetic maid service, pure heart-melting charm",
+    "promptProse": "Leaning forward in her brown maid dress at a cafe table, Mayuri presents an omelet plate with joyful eyes and hands clasped together in delight.",
+    "promptTokens": [
+      "cafe",
+      "maid_uniform",
+      "frilled_apron",
+      "holding_tray",
+      "omelet",
+      "joyful_smile",
+      "leaning_forward",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Mayuri Shiina serving decorated food in her Victorian maid uniform with radiant joy.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

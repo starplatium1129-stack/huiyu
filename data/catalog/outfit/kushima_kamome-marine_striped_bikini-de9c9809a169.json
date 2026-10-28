@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kushima_kamome/marine_striped_bikini",
+  "revision": 1,
+  "sortOrder": 1839,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kushima_kamome",
+    "outfit": {
+      "id": "marine_striped_bikini",
+      "name": "浅蓝白条纹系带海滨比基尼",
+      "prose": "A playful nautical-striped bikini in sky-blue and white with a halterneck top and neat side-tie briefs, worn barefoot.",
+      "tokens": [
+        "striped_bikini",
+        "blue_and_white_bikini",
+        "halter_top",
+        "side-tie_bikini_bottom",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

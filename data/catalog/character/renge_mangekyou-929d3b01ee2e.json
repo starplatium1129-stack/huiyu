@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "renge_mangekyou",
+  "revision": 1,
+  "sortOrder": 252,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "renge_mangekyou",
+    "popular": {
+      "id": "renge_mangekyou",
+      "displayName": "莲华",
+      "originalName": "Renge",
+      "franchise": "Bishoujo Mangekyou",
+      "aliases": [
+        "renge",
+        "renge_(bishoujo_mangekyou)",
+        "renge_(biman)",
+        "bishoujo mangekyou",
+        "omega star"
+      ],
+      "identityProse": "Renge from Bishoujo Mangekyou, with waist-length straight black hair, hime cut bangs, piercing crimson red eyes, holding a kiseru pipe, with an enigmatic, seductive, and timeless presence.",
+      "identityTokens": [
+        "renge_(biman)",
+        "1girl",
+        "solo",
+        "black_hair",
+        "long_hair",
+        "hime_cut",
+        "red_eyes",
+        "bishoujo mangekyou"
+      ],
+      "exactTokens": [
+        "renge_(biman)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "幽玄艳丽奇谭（万华镜世界）",
+        "era": "无时间流逝之异界旅馆",
+        "formNotes": "万华镜全系列引导者与灵魂看板娘；手持铜制长烟管；穿梭于万千艳幻梦境之主的神秘少女",
+        "research": "2026-10 调研"
+      },
+      "animeStudio": "bishoujo mangekyou, official anime art, omega star style, happoubi jin style",
+      "curatedArtistStyles": [
+        "happoubi_jin",
+        "ask_(askzy)",
+        "tiv"
+      ],
+      "characterTokens": [
+        "renge_(biman)"
+      ],
+      "copyrightTokens": [
+        "bishoujo mangekyou"
+      ]
+    },
+    "profile": {
+      "id": "renge_mangekyou",
+      "name": "莲华",
+      "alias": [
+        "莲华大人",
+        "万华镜少女",
+        "旅馆引路人",
+        "烟管少女"
+      ],
+      "type": "popular",
+      "icon": "🪞",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "莲华 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "乌黑浓密如墨的长直秀发 · 垂至脚踝的经典大和姬发式",
+        "hair_color": "乌黑 / 漆黑",
+        "eyes": "摄人心魄妖异深邃的血红色赤瞳",
+        "hairstyle": "经典姬发式 · 齐刘海 · 垂腰及踝黑发",
+        "uniform": "绯红浮世万华锦缎和服系金丝宽腰带 · 大正浪漫暗紫细纹袴装 · 透薄绛红雪纺吊带睡裙",
+        "expression": "烟管青雾后优雅狡黠的小恶魔浅笑 · 动情时冷艳尽褪的满面娇羞与无助",
+        "style": "alluring, enigmatic mistress of kaleidoscopic dreams, blending vintage Japanese elegance with intoxicating erotic surrender",
+        "signature": "黑发姬发式、血红赤瞳、雕花铜烟管、绯红万华和服与神秘幽玄旅馆"
+      },
+      "personality": [
+        "神秘优雅捉摸不透",
+        "小恶魔般的戏谑狡黠",
+        "阅尽浮生悲欢的从容淡漠",
+        "深藏永世羁绊的至深纯情"
+      ],
+      "likes": [
+        "古董青铜长烟管",
+        "万华镜窥探梦境",
+        "山中温泉旅馆红茶",
+        "妖异民间怪谈"
+      ],
+      "classic_cg": {
+        "title": "幽微榻榻米上的青烟与金丝万华镜",
+        "description": "昏暗的和室深处，案几上的万华镜流转着瑰丽奇幻的光影。莲华侧卧在朱红软垫上，指尖捻着细长的烟管轻吐薄雾，赤瞳在青烟后带着看穿灵魂的笑意。"
+      },
+      "identity": {
+        "role": "万华镜全系列引导者与守望者 / 旅馆深处的神秘少女",
+        "age": "容貌如少女（拥有永生岁月）",
+        "occupation": "万华镜引路人",
+        "faction": "万华镜旅馆 / ωstar"
+      },
+      "tags": [
+        "姬发式",
+        "赤瞳",
+        "烟管",
+        "华丽和服",
+        "神秘幽玄",
+        "万华镜引导者"
+      ],
+      "bg_story": "静静伫立在幽深温泉旅馆深处、守望神秘万华镜的奇异美少女。留着一头极具大和抚子韵味的黑发姬发式与夺人心魄的血红眼瞳，手中常年握着一杆纤细的古典烟管，举手投足间散发着超越凡尘的妖娆与神秘。作为贯穿《美少女万华镜》全系列的灵魂核心，她引领着迷茫的旅行者透过万华镜窥探一个个爱恨交织的妖异世界。而在冷眼旁观无数悲欢离合的漫长岁月深处，她自身被禁锢于万华镜深渊的真正身世，也悄然寄托着唯有一人才能解开的至深羁绊。",
+      "palette": [
+        "血朱红",
+        "漆黑",
+        "流金",
+        "紫罗兰"
+      ],
+      "weather": [
+        "古旧温泉旅馆幽光",
+        "大正浪漫枫叶夜",
+        "月夜红莲烟雾"
+      ],
+      "speech": "呵呵……欢迎来到万华镜的世界。今夜你又渴望窥见怎样瑰丽而荒诞的美梦呢？可别陷得太深，连灵魂都被妾身吸走哦。",
+      "source": "Bishoujo Mangekyou",
+      "traits": [
+        "万华镜贯穿全系灵魂女主",
+        "黑发姬发式血红赤瞳",
+        "青铜长烟管神秘幽玄",
+        "绯红和服妖艳大和抚子",
+        "八宝备仁传世绘卷名作"
+      ],
+      "accent_color": "#e11d48",
+      "bg_color": "#0f172a"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kurisu_manseibashi_autumn_sunset_walk",
+  "revision": 1,
+  "sortOrder": 2323,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kurisu_manseibashi_autumn_sunset_walk",
+    "characterId": "makise_kurisu",
+    "outfitId": "tokyo_date_turtleneck",
+    "title": "牧濑红莉栖 · 万世桥畔的秋日私语",
+    "category": "假日出行",
+    "description": "秋叶原车站旁的长风吹乱了她的发梢。红莉栖双手插在高领毛衣的口袋里，停在桥栏前看着电车驶过。当掌心被悄悄握住的瞬间，她睫毛轻颤，没有把手抽开。",
+    "recommendedSize": "832x1216",
+    "location": "historic brick arch bridge over Kanda River with passing commuter trains",
+    "action": "standing at the iron bridge railing at sunset, fingers intertwined with partner, autumn wind fluttering auburn hair as trains pass beneath",
+    "timeOfDay": "sunset",
+    "lighting": "dazzling orange-gold dusk sunlight reflecting on river waves and red brickwork",
+    "camera": "cowboy_shot",
+    "mood": "melancholic nostalgic beauty, tender romantic connection, autumn city serenity",
+    "promptProse": "Standing on an autumn bridge during golden hour, Kurisu looks down at intertwined hands with soft flushed cheeks as commuter trains cross in the distance.",
+    "promptTokens": [
+      "bridge",
+      "railing",
+      "train_tracks",
+      "sunset",
+      "golden_hour",
+      "holding_hands",
+      "blush",
+      "autumn_leaves",
+      "wind_blown_hair",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kurisu standing on a Tokyo bridge at sunset holding hands with windblown hair.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

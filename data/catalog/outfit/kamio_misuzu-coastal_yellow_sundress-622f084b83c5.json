@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kamio_misuzu/coastal_yellow_sundress",
+  "revision": 1,
+  "sortOrder": 1842,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kamio_misuzu",
+    "outfit": {
+      "id": "coastal_yellow_sundress",
+      "name": "堤坝漫步淡黄荷叶边无袖吊带裙",
+      "prose": "A soft butter-yellow cotton sundress with delicate ruffled hem and slim shoulder straps, paired with a ribbon-trimmed straw sun hat and casual beach sandals.",
+      "tokens": [
+        "yellow_dress",
+        "pale_yellow_dress",
+        "sundress",
+        "ruffled_hem",
+        "sleeveless",
+        "straw_hat",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

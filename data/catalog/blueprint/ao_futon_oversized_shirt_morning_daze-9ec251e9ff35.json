@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "ao_futon_oversized_shirt_morning_daze",
+  "revision": 1,
+  "sortOrder": 2343,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "ao_futon_oversized_shirt_morning_daze",
+    "characterId": "sorakado_ao",
+    "outfitId": "oversized_sleep_shirt",
+    "title": "空门苍 · 清晨榻榻米上的无防备诱惑",
+    "category": "私密温存",
+    "description": "山间偏房的和室里，宽大的男士衬衫扣子崩开了好几颗。苍趴在被褥上揉着睡眼惺忪的双眼，衬衫下摆堆积在大腿根部，半梦半醒间嘟囔着蹭了过来。",
+    "recommendedSize": "832x1216",
+    "location": "sunlit airy mountain tatami bedroom with rumpled blue-and-white futon",
+    "action": "sprawling lazily on futon, unbuttoned oversized blue shirt sliding off shoulders, rubbing sleepy blue eyes while showing bare thighs and cleavage",
+    "timeOfDay": "morning",
+    "lighting": "bright cheerful morning sunshine pouring across tatami illuminating porcelain bare skin",
+    "camera": "cowboy_shot",
+    "mood": "lazy morning lovers bliss, effortless sensual allure, sweet innocent clinginess",
+    "promptProse": "Waking up lazily on the morning futon, Ao rubs her sleepy eyes in a loose open blue shirt with bare thighs exposed in warm sunlight.",
+    "promptTokens": [
+      "futon",
+      "tatami",
+      "oversized_shirt",
+      "open_shirt",
+      "bare_legs",
+      "bare_thighs",
+      "rubbing_eyes",
+      "sleepy_eyes",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ao sprawling sleepily on the morning futon in a loose unbuttoned shirt.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "mayuri_vending_machine_split_popsicle_sunshine",
+  "revision": 1,
+  "sortOrder": 2330,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "mayuri_vending_machine_split_popsicle_sunshine",
+    "characterId": "shiina_mayuri",
+    "outfitId": "sunflower_summer_tshirt",
+    "title": "椎名真由理 · 万宝屋前的夏日冰棒",
+    "category": "假日出行",
+    "description": "秋叶原街角的自动贩卖机旁，真由理掰开双棒冰，将多的一半递了过来。蝉鸣声中，她嘴里咬着冰棒，发梢随着蹦跳的脚步一晃一晃。",
+    "recommendedSize": "832x1216",
+    "location": "sun-baked Tokyo side street next to a colorful drink vending machine",
+    "action": "standing on asphalt road snapping a double popsicle into two pieces, offering the larger half with a cheerful playful wink",
+    "timeOfDay": "afternoon",
+    "lighting": "intense midsummer daylight casting sharp shadows and brilliant highlights on yellow t-shirt",
+    "camera": "medium_shot",
+    "mood": "carefree childhood nostalgia, refreshing summer sweetness, cheerful everyday happiness",
+    "promptProse": "Standing in bright summer sunshine by a vending machine, Mayuri happily shares a split popsicle, smiling radiantly in her yellow tee.",
+    "promptTokens": [
+      "vending_machine",
+      "street",
+      "summer_sunlight",
+      "holding_popsicle",
+      "sharing",
+      "cheerful_smile",
+      "yellow_shirt",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Mayuri offering half of a double popsicle on a sunny city corner with a sunny smile.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "renge_steaming_folding_screen_hitch_passionate_entwine",
+  "revision": 1,
+  "sortOrder": 2363,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "renge_steaming_folding_screen_hitch_passionate_entwine",
+    "characterId": "renge_mangekyou",
+    "outfitId": "inn_bath_yukata",
+    "title": "莲华 · 屏风暗处的热气纠缠",
+    "category": "私密温存",
+    "description": "更衣间绘有百鬼夜行的屏风背后，潮湿的浴衣被撩至腰腹。莲华被反扣着双手抵在温热的木屏上，纤细的小腿紧紧缠上对方的腰身，任由最深沉的爱欲将彼此彻底吞没。",
+    "recommendedSize": "832x1216",
+    "location": "shadow behind antique lacquered folding screen inside steamy cedar bathhouse",
+    "action": "pinned against painted folding screen with yukata bunched high, legs wrapped tightly around partner hips, panting into the hot misty air",
+    "timeOfDay": "night",
+    "lighting": "dim steamy glow from warm onsen lanterns filtering through cedar lattice",
+    "camera": "medium_shot",
+    "mood": "steamy breathless abandon, primal traditional intimacy, unreserved lovers union",
+    "promptProse": "Pinned against an antique Japanese screen in bathhouse steam, Renge wraps her legs around partner in frantic, breathless abandonment.",
+    "promptTokens": [
+      "against_folding_screen",
+      "Japanese_screen",
+      "steam",
+      "lifted_yukata",
+      "bare_hips",
+      "heavy_blush",
+      "open_mouth",
+      "arched_back",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Renge pinned against an ornate screen in the onsen steam, lost in passionate ecstasy.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

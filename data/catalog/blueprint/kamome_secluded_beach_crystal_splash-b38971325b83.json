@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kamome_secluded_beach_crystal_splash",
+  "revision": 1,
+  "sortOrder": 2348,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kamome_secluded_beach_crystal_splash",
+    "characterId": "kushima_kamome",
+    "outfitId": "marine_striped_bikini",
+    "title": "久岛鸥 · 白色沙滩上的水花嬉戏",
+    "category": "校园日常",
+    "description": "无人的隐秘海滩上，阳光将细沙烤得发烫。鸥在浅水区踢起一片晶莹的水花，转过身来双手叉腰，条纹比基尼勾勒出娇俏可人的身段，笑声如同风铃般清脆。",
+    "recommendedSize": "832x1216",
+    "location": "remote pristine white sand cove with crystal clear shallow turquoise water",
+    "action": "kicking up glistening water droplets with bare feet, hands on hips, laughing heartily in blue-and-white striped bikini",
+    "timeOfDay": "noon",
+    "lighting": "dazzling tropical sunshine creating caustic light patterns through transparent seawater",
+    "camera": "medium_shot",
+    "mood": "exuberant summer vitality, playful girlish radiance, sun-drenched coastal joy",
+    "promptProse": "Splashing crystal clear ocean water with bare feet, Kamome laughs freely in her striped bikini under the bright midday tropical sky.",
+    "promptTokens": [
+      "beach",
+      "ocean",
+      "standing_in_water",
+      "water_splash",
+      "striped_bikini",
+      "hands_on_hips",
+      "laughing",
+      "sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kamome kicking up sea spray playfully in her striped bikini on a sunny beach.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

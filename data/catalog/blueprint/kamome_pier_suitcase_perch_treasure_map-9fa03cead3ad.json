@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kamome_pier_suitcase_perch_treasure_map",
+  "revision": 1,
+  "sortOrder": 2346,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kamome_pier_suitcase_perch_treasure_map",
+    "characterId": "kushima_kamome",
+    "outfitId": "traveler_bohemian_dress",
+    "title": "久岛鸥 · 海风码头上的皮箱少女",
+    "category": "假日出行",
+    "description": "海轮离港的汽笛声还在回荡。鸥坐在巨大的皮箱上，双腿悬空轻快地晃悠着。她展开手中折痕累累的藏宝图，单手按住被风吹乱的双马尾，回眸发出灿烂的邀请。",
+    "recommendedSize": "832x1216",
+    "location": "sunny weathered wooden pier overlooking sparkling island harbor and white ferry",
+    "action": "sitting perched atop large brown leather vintage trunk, legs swinging, holding weathered parchment map and smiling cheerfully",
+    "timeOfDay": "morning",
+    "lighting": "brilliant maritime morning sun with blue ocean sparkles and sea gulls soaring",
+    "camera": "medium_shot",
+    "mood": "adventurous fairy-tale youth, whimsical seaside charm, delightful bright companionship",
+    "promptProse": "Sitting on an antique leather trunk on the wooden dock, lavender-haired Kamome holds a treasure map and beams with infectious joyful energy.",
+    "promptTokens": [
+      "pier",
+      "harbor",
+      "sitting_on_suitcase",
+      "vintage_suitcase",
+      "holding_map",
+      "bright_smile",
+      "ocean",
+      "blue_sky",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kamome Kushima sitting on her trunk at the pier with a treasure map in hand.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

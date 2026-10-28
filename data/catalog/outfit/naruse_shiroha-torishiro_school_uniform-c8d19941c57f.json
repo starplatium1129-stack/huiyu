@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "naruse_shiroha/torishiro_school_uniform",
+  "revision": 1,
+  "sortOrder": 1829,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "naruse_shiroha",
+    "outfit": {
+      "id": "torishiro_school_uniform",
+      "name": "鸟白岛水手校服",
+      "prose": "The official Torishirojima high school sailor uniform featuring a crisp white short-sleeve top, navy sailor collar, light blue neckerchief, navy pleated skirt, white socks and dark brown loafers.",
+      "tokens": [
+        "sailor_suit",
+        "white_sailor_collar",
+        "short_sleeves",
+        "blue_neckerchief",
+        "navy_blue_skirt",
+        "pleated_skirt",
+        "white_socks",
+        "brown_loafers"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

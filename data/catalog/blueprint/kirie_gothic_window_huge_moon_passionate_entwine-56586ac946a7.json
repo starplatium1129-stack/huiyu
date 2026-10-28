@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kirie_gothic_window_huge_moon_passionate_entwine",
+  "revision": 1,
+  "sortOrder": 2369,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kirie_gothic_window_huge_moon_passionate_entwine",
+    "characterId": "kagari_no_kirie",
+    "outfitId": "crimson_silk_peignoir",
+    "title": "篝之雾枝 · 月夜落地窗前的交颈缠绵",
+    "category": "私密温存",
+    "description": "巨大哥特式拱窗外是一轮硕大的圆月。真丝睡袍完全敞开滑落在脚踝处，雾枝双手环抱住对方的脖颈，双腿紧紧盘在腰间，眼底带着被彻底征服的迷离与无尽的依恋。",
+    "recommendedSize": "832x1216",
+    "location": "tower ballroom before towering stone arched window framing an enormous luminous full moon",
+    "action": "legs wrapped firmly around partner waist, arms hooked around his neck during deep kiss, red silk robe pooled on floor baring pale porcelain curves",
+    "timeOfDay": "night",
+    "lighting": "magnificent silver full moon backlighting their intertwined silhouette with ethereal silver glow",
+    "camera": "medium_shot",
+    "mood": "transcendent immortal romance, breathtaking celestial intimacy, total everlasting devotion",
+    "promptProse": "Embracing before an immense full moon window, naked Kirie wraps her legs around partner in a deep, passionate, moonlit lovers kiss.",
+    "promptTokens": [
+      "gothic_window",
+      "huge_moon",
+      "moonlight",
+      "silhouette",
+      "open_robe",
+      "bare_breasts",
+      "bare_butt",
+      "legs_wrapped_around",
+      "passionate_kiss",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kirie wrapped around her lover before a giant full moon gothic window.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

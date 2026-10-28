@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mayuri/soft_cotton_pajamas",
+  "revision": 1,
+  "sortOrder": 1828,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "shiina_mayuri",
+    "outfit": {
+      "id": "soft_cotton_pajamas",
+      "name": "薄荷绿点点系扣纯棉睡衣",
+      "prose": "A relaxed mint-green cotton pajama set with tiny white polka dots, soft rounded collar, loose matching pants and bare feet.",
+      "tokens": [
+        "mint_pajamas",
+        "polka_dot_pajamas",
+        "button-up_shirt",
+        "long_pants",
+        "pajama_pants",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

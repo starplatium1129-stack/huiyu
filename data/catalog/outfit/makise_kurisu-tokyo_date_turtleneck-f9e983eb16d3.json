@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "makise_kurisu/tokyo_date_turtleneck",
+  "revision": 1,
+  "sortOrder": 1822,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "makise_kurisu",
+    "outfit": {
+      "id": "tokyo_date_turtleneck",
+      "name": "秋叶原秋日约会高领针织与短裙",
+      "prose": "A fitted burgundy ribbed turtleneck sweater, charcoal wool pleated mini skirt, semi-opaque black thigh-high socks and polished dark loafers.",
+      "tokens": [
+        "burgundy_sweater",
+        "turtleneck_sweater",
+        "long_sleeves",
+        "charcoal_skirt",
+        "pleated_skirt",
+        "black_thighhighs",
+        "loafers"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

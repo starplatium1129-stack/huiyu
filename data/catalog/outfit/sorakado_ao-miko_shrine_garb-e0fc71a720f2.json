@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "sorakado_ao/miko_shrine_garb",
+  "revision": 1,
+  "sortOrder": 1833,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "sorakado_ao",
+    "outfit": {
+      "id": "miko_shrine_garb",
+      "name": "空门神社传统白衣绯袴巫女服",
+      "prose": "Traditional shrine maiden vestments comprising a crisp white wide-sleeved kosode kimono top, vibrant scarlet hakama skirt, white split-toe tabi and straw zori sandals.",
+      "tokens": [
+        "miko",
+        "white_kosode",
+        "red_hakama",
+        "hakama_skirt",
+        "wide_sleeves",
+        "tabi",
+        "zori"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

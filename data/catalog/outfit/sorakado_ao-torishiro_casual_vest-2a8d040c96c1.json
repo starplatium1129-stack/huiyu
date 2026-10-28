@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "sorakado_ao/torishiro_casual_vest",
+  "revision": 1,
+  "sortOrder": 1834,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "sorakado_ao",
+    "outfit": {
+      "id": "torishiro_casual_vest",
+      "name": "鸟白岛校服配米色针织背心",
+      "prose": "The Torishiro school uniform worn with a relaxed beige knit sweater vest over the sailor collar, navy pleated skirt, black over-knee socks and loafers.",
+      "tokens": [
+        "sailor_suit",
+        "beige_sweater_vest",
+        "sleeveless_vest",
+        "navy_skirt",
+        "pleated_skirt",
+        "black_over-knee_socks",
+        "brown_loafers"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

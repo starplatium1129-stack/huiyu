@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "kagari_no_kirie/gothic_vampire_gown",
+  "revision": 1,
+  "sortOrder": 1849,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kagari_no_kirie",
+    "outfit": {
+      "id": "gothic_vampire_gown",
+      "name": "血月玫瑰黑红层叠哥特宫廷长裙",
+      "prose": "A lavish Victorian vampire ballgown in jet-black velvet over crimson ruffled under-petticoats, featuring a laced bodice, lace choker, elbow-length satin gloves and pointed heels.",
+      "tokens": [
+        "gothic_dress",
+        "black_dress",
+        "red_petticoat",
+        "corset_dress",
+        "frills",
+        "ruffled_sleeves",
+        "choker",
+        "black_gloves",
+        "black_heels"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

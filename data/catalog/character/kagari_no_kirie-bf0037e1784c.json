@@ -1,0 +1,151 @@
+{
+  "kind": "character",
+  "id": "kagari_no_kirie",
+  "revision": 1,
+  "sortOrder": 253,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kagari_no_kirie",
+    "popular": {
+      "id": "kagari_no_kirie",
+      "displayName": "篝之雾枝",
+      "originalName": "Kagari no Kirie",
+      "franchise": "Bishoujo Mangekyou",
+      "aliases": [
+        "kagari_no_kirie",
+        "kirie kagari",
+        "bishoujo mangekyou",
+        "omega star"
+      ],
+      "identityProse": "Kagari no Kirie from Bishoujo Mangekyou, with floor-length straight black hair, striking ruby-red eyes, pale porcelain skin, and a haughty, aristocratic gothic vampire presence.",
+      "identityTokens": [
+        "kagari_no_kirie",
+        "1girl",
+        "solo",
+        "black_hair",
+        "straight_hair",
+        "very_long_hair",
+        "red_eyes",
+        "bishoujo mangekyou"
+      ],
+      "exactTokens": [
+        "kagari_no_kirie"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "哥特吸血鬼奇谭（欧洲古堡/异界）",
+        "era": "近现代（第一作《被诅咒之女》）",
+        "formNotes": "被诅咒之吸血鬼贵族少女；永生孤寂的暗夜女王；动情后极度依恋娇羞",
+        "research": "2026-10 调研"
+      },
+      "animeStudio": "bishoujo mangekyou, official anime art, omega star style, happoubi jin style",
+      "curatedArtistStyles": [
+        "happoubi_jin",
+        "ask_(askzy)",
+        "tiv"
+      ],
+      "characterTokens": [
+        "kagari_no_kirie"
+      ],
+      "copyrightTokens": [
+        "bishoujo mangekyou"
+      ]
+    },
+    "profile": {
+      "id": "kagari_no_kirie",
+      "name": "篝之雾枝",
+      "alias": [
+        "雾枝",
+        "雾枝大小姐",
+        "吸血鬼少女",
+        "诅咒之女"
+      ],
+      "type": "popular",
+      "icon": "🥀",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "篝之雾枝 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "如夜色般漆黑顺直的极长秀发 · 瀑布般垂曳至地面",
+        "hair_color": "漆黑 / 墨黑",
+        "eyes": "冰冷刺骨却暗藏烈火的血月猩红双眸",
+        "hairstyle": "极长黑直发 · 自然披肩 · 长度及地",
+        "uniform": "血月玫瑰黑红多层荷叶边哥特宫廷洋装 · 私立名门漆黑立领水手制服 · 午夜黑丝绒束腰吊带套组",
+        "expression": "居高临下的高傲冷酷与支配欲 · 被征服后泪光盈盈极致依恋的娇喘",
+        "style": "aristocratic gothic vampire mistress, commanding in haughty dominance yet deliciously vulnerable, yielding in desperate passion",
+        "signature": "及地黑直发、血月赤瞳、黑红哥特宫廷长裙、水晶高脚杯与反差娇羞"
+      },
+      "personality": [
+        "高傲冷酷自尊极高",
+        "以仆从使唤人类的微S倾向",
+        "受百年永生诅咒的深层孤独",
+        "动情后化为彻底沉沦的依恋娇妻"
+      ],
+      "likes": [
+        "甘甜的人类鲜血",
+        "古堡庭院的红玫瑰",
+        "水晶杯红茶",
+        "古典西洋钢琴乐"
+      ],
+      "classic_cg": {
+        "title": "烛火古堡王座上的傲慢审视",
+        "description": "昏暗阴森的哥特古堡大殿内，多头烛台洒下摇曳火光。雾枝斜靠在黑红天鹅绒王座上，晃动着杯中猩红的液体，居高临下地俯视阶下，薄唇微启吐出无情而魅惑的敕令。"
+      },
+      "identity": {
+        "role": "被诅咒之吸血鬼古贵族少女 / 洋馆的支配者",
+        "age": "外表少女（永生数百岁）",
+        "occupation": "古堡主人 / 吸血鬼贵族",
+        "faction": "深山欧式古堡"
+      },
+      "tags": [
+        "吸血鬼",
+        "哥特洋装",
+        "黑长直",
+        "傲慢女王",
+        "反差娇羞",
+        "万华镜初代女一"
+      ],
+      "bg_story": "《美少女万华镜》第一作《被诅咒之女》的核心女主角，沉睡在深山古老欧式洋馆深处的吸血鬼贵族少女。留着一头触及地面的乌黑长直发与血月般的猩红双眸，拥有近乎病态的冷艳美貌。由于吸血鬼的古老诅咒，她不得不依靠吸食人类男性的鲜血与生命力维系永恒的生命。外表高傲冷酷、言辞极尽蔑视，将人类视作卑微的仆从，内心深处却饱受数百年来永生孤独的折磨。在与被困教师深见彦一的博弈与纠缠中，这份主仆关系逐渐演变为深陷无法自拔的炽烈依恋，展现出极致的反差娇媚。",
+      "palette": [
+        "深渊黑",
+        "血月猩红",
+        "冷月银白",
+        "古铜金"
+      ],
+      "weather": [
+        "古堡雷雨之夜",
+        "血月满月凌空",
+        "拂晓带雾玫瑰园"
+      ],
+      "speech": "哼，卑微的人类，竟敢直视妾身的容颜？跪下……不过，如果你能乖乖献出温热的脖颈，妾身或许可以奖赏你成为我的专属血仆。",
+      "source": "Bishoujo Mangekyou",
+      "traits": [
+        "美少女万华镜初代封神女一",
+        "及地极长黑直发血月眸",
+        "黑红哥特洋装吸血鬼大小姐",
+        "傲慢施虐与极致反差娇喘",
+        "殿堂级传世视觉小说"
+      ],
+      "accent_color": "#e11d48",
+      "bg_color": "#0f172a"
+    }
+  }
+}

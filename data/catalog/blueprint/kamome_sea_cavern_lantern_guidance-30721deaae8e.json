@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "kamome_sea_cavern_lantern_guidance",
+  "revision": 1,
+  "sortOrder": 2347,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kamome_sea_cavern_lantern_guidance",
+    "characterId": "kushima_kamome",
+    "outfitId": "seaside_sailor_onepiece",
+    "title": "久岛鸥 · 秘密洞窟前的烛光相遇",
+    "category": "日常陪伴",
+    "description": "潮水退去的岩石洞窟入口，海浪在脚下沙沙作响。鸥举起提灯照亮潮湿的岩壁，回过头向落后的同伴伸出手，水手裙摆在幽暗的洞口宛如一朵静谧绽放的白花。",
+    "recommendedSize": "832x1216",
+    "location": "hidden sea cave entrance surrounded by tide pools and dripping mossy stalactites",
+    "action": "holding brass hurricane lantern aloft illuminating wet stone walls, extending her free hand toward partner with a gentle inviting smile",
+    "timeOfDay": "afternoon",
+    "lighting": "warm flickering golden lantern flame cutting through mysterious cool ocean shadows",
+    "camera": "cowboy_shot",
+    "mood": "romantic childhood exploration, secret shared world, sweet protective warmth",
+    "promptProse": "Holding a glowing lantern inside a tide cave, Kamome reaches out her hand with a sweet inviting expression, her sailor dress gleaming warmly.",
+    "promptTokens": [
+      "cave",
+      "holding_lantern",
+      "lantern_light",
+      "reaching_towards_viewer",
+      "sailor_dress",
+      "gentle_smile",
+      "rocks",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kamome holding a warm lantern in a sea cave, inviting her companion inside.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "kurisu_lab_desk_late_night_coffee",
+  "revision": 1,
+  "sortOrder": 2322,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kurisu_lab_desk_late_night_coffee",
+    "characterId": "makise_kurisu",
+    "outfitId": "lab_coat_classic",
+    "title": "牧濑红莉栖 · 深夜实验室的咖啡温度",
+    "category": "日常陪伴",
+    "description": "未来道具研究所的白炽灯嗡嗡作响，显示器上还跳动着复杂的脉冲代码。红莉栖将刚冲泡好的热咖啡推到桌角，别过脸轻哼一声，手指却无意识地卷弄着胸前的红色领带。",
+    "recommendedSize": "832x1216",
+    "location": "dimly lit cluttered Akihabara lab with vintage CRT monitors and cables",
+    "action": "sitting on lab swivel chair beside computer desk, sliding a warm ceramic mug across the table, looking away with a shy blush while twisting red tie",
+    "timeOfDay": "night",
+    "lighting": "cool bluish screen glow contrasting with warm incandescent desk lamp light",
+    "camera": "medium_shot",
+    "mood": "tender intellectual romance, cozy late-night camaraderie, bashful tsundere caring",
+    "promptProse": "Sitting at the lab desk in late night, red-haired Kurisu slides a hot coffee mug across the table, looking aside with a subtle fond blush under monitor light.",
+    "promptTokens": [
+      "lab",
+      "desk",
+      "computer_monitor",
+      "coffee_mug",
+      "sitting",
+      "looking_away",
+      "slight_blush",
+      "steam",
+      "night",
+      "ambient_lighting",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kurisu Makise sharing late night coffee at her lab desk with a shy blush.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

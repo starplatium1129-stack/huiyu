@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "ao_sacred_tree_midnight_miko_robe_frenzy",
+  "revision": 1,
+  "sortOrder": 2344,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "ao_sacred_tree_midnight_miko_robe_frenzy",
+    "characterId": "sorakado_ao",
+    "outfitId": "miko_shrine_garb",
+    "title": "空门苍 · 御神木下的深宵秘事",
+    "category": "私密温存",
+    "description": "满月洒在幽暗的后山御神木下。巫女服的白色襦袢散乱开来，苍双手攀着粗壮的树干，绯袴被完全褪至膝头，在夏夜清凉的山风中发出了甜腻的娇喘。",
+    "recommendedSize": "832x1216",
+    "location": "secluded clearing beneath gigantic ancient sacred cedar tied with shimenawa ropes",
+    "action": "pressed against mossy cedar trunk with miko robe disheveled and scarlet hakama pulled down, arching back in wild breathless bliss under silver moonlight",
+    "timeOfDay": "night",
+    "lighting": "luminous full moon casting dramatic silver beams and deep forest shadows",
+    "camera": "medium_shot",
+    "mood": "sacred mystical ecstasy, wild nighttime abandon, breathless heart-pounding passion",
+    "promptProse": "Clinging to the ancient sacred tree at midnight, miko Ao pants with open mouth as silver moonlight illuminates her exposed hips and disheveled robes.",
+    "promptTokens": [
+      "shrine",
+      "sacred_tree",
+      "night",
+      "moonlight",
+      "disheveled_clothes",
+      "lifted_skirt",
+      "bare_hips",
+      "heavy_blush",
+      "open_mouth",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ao pressed against the sacred tree in disheveled miko robes under the silver moon.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

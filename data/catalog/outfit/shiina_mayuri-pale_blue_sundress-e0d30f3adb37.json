@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mayuri/pale_blue_sundress",
+  "revision": 1,
+  "sortOrder": 1825,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "shiina_mayuri",
+    "outfit": {
+      "id": "pale_blue_sundress",
+      "name": "浅空蓝荷叶边吊带裙与便帽",
+      "prose": "A breezy pale sky-blue sundress with soft ruffle trim, matching brimmed sun hat, white crew socks and brown leather strap shoes.",
+      "tokens": [
+        "pale_blue_dress",
+        "sundress",
+        "frilled_dress",
+        "short_sleeves",
+        "blue_hat",
+        "sun_hat",
+        "white_socks",
+        "brown_shoes",
+        "strap_shoes"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

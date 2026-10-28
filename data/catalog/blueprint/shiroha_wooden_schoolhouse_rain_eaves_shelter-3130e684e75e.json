@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "shiroha_wooden_schoolhouse_rain_eaves_shelter",
+  "revision": 1,
+  "sortOrder": 2335,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "shiroha_wooden_schoolhouse_rain_eaves_shelter",
+    "characterId": "naruse_shiroha",
+    "outfitId": "island_white_sundress",
+    "title": "鸣濑白羽 · 木造旧校舍的避雨时光",
+    "category": "日常陪伴",
+    "description": "突如其来的骤雨敲打着旧校舍的走廊屋檐。白羽脱下浸湿的草帽抱在胸前，雨水顺着银白的发梢滴落。在狭窄的避雨檐下，两人的肩膀几乎紧紧贴在一起。",
+    "recommendedSize": "832x1216",
+    "location": "narrow wooden veranda of an antique rustic island school building during downpour",
+    "action": "standing side-by-side sheltered under rain eaves, clutching wet straw hat to chest, blushing deeply as water drips from silvery bangs",
+    "timeOfDay": "afternoon",
+    "lighting": "cool moody rain ambience with silver reflections splashing off dark wooden floorboards",
+    "camera": "cowboy_shot",
+    "mood": "quiet romantic intimacy, summer storm closeness, heart-melting unspoken affection",
+    "promptProse": "Sheltered under wooden school eaves during summer rain, Shiroha clutches her straw hat, standing close with flushed cheeks and dripping white hair.",
+    "promptTokens": [
+      "rain",
+      "rain_drops",
+      "eaves",
+      "wooden_building",
+      "holding_hat",
+      "wet_clothes",
+      "heavy_blush",
+      "shy_look",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shiroha sheltering from summer rain under school eaves, blushing in her white dress.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

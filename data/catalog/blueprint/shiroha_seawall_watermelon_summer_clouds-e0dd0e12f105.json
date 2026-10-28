@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "shiroha_seawall_watermelon_summer_clouds",
+  "revision": 1,
+  "sortOrder": 2334,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "shiroha_seawall_watermelon_summer_clouds",
+    "characterId": "naruse_shiroha",
+    "outfitId": "torishiro_school_uniform",
+    "title": "鸣濑白羽 · 防波堤上的西瓜清甜",
+    "category": "校园日常",
+    "description": "蔚蓝的海浪一下下拍打着消波块。白羽盘腿坐在防波堤边缘，小口啃着冰镇过的红壤西瓜。看见有人走近，她警惕地鼓起腮帮，却还是递出了一片切好的瓜。",
+    "recommendedSize": "832x1216",
+    "location": "concrete ocean breakwater embankment against sparkling turquoise sea and puffy cumulus clouds",
+    "action": "sitting cross-legged on seawall, eating a chilled slice of watermelon, turning with guarded yet bashful red eyes",
+    "timeOfDay": "noon",
+    "lighting": "dazzling seaside summer sun illuminating pure white hair and ocean foam",
+    "camera": "medium_shot",
+    "mood": "pristine island youth, nostalgic Key summer atmosphere, adorable tsundere gap moe",
+    "promptProse": "Perched on a seaside seawall under summer clouds, white-haired Shiroha eats watermelon, casting a shy tsundere glance with crimson eyes.",
+    "promptTokens": [
+      "seawall",
+      "ocean",
+      "blue_sky",
+      "cumulus_clouds",
+      "holding_watermelon",
+      "eating",
+      "sitting",
+      "wind_blown_hair",
+      "slight_blush",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shiroha Naruse eating fresh watermelon on a coastal breakwater under sunny skies.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

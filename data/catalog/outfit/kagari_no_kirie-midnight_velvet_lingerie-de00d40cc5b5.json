@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kagari_no_kirie/midnight_velvet_lingerie",
+  "revision": 1,
+  "sortOrder": 1851,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kagari_no_kirie",
+    "outfit": {
+      "id": "midnight_velvet_lingerie",
+      "name": "午夜深黑丝绒搭扣束腰内衣套组",
+      "prose": "An alluring midnight-black velvet corset-style lingerie set with delicate eyelash lace cups, attached satin garter straps and ultra-sheer black stockings, worn barefoot.",
+      "tokens": [
+        "black_corset",
+        "lace_bra",
+        "garter_straps",
+        "black_panties",
+        "sheer_thighhighs",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

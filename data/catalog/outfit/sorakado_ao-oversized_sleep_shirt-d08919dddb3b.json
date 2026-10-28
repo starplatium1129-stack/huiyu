@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "sorakado_ao/oversized_sleep_shirt",
+  "revision": 1,
+  "sortOrder": 1836,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "sorakado_ao",
+    "outfit": {
+      "id": "oversized_sleep_shirt",
+      "name": "松垮慵懒大号天蓝长款衬衫",
+      "prose": "An oversized pale-blue cotton button-up dress shirt with slouchy sleeves falling past her fingers, loose open collar, bare thighs and bare feet.",
+      "tokens": [
+        "blue_shirt",
+        "oversized_shirt",
+        "long_sleeves",
+        "unbuttoned_collar",
+        "bare_legs",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

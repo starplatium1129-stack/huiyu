@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "renge_tatami_kiseru_smoke_kaleidoscope_recline",
+  "revision": 1,
+  "sortOrder": 2358,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "renge_tatami_kiseru_smoke_kaleidoscope_recline",
+    "characterId": "renge_mangekyou",
+    "outfitId": "vermilion_mangekyou_kimono",
+    "title": "莲华 · 万华镜前的青烟萦绕",
+    "category": "日常陪伴",
+    "description": "昏暗的和室中央，鎏金的万华镜静静散发着幽微的光芒。莲华斜倚在朱红色的榻榻米案几旁，指尖拈着青铜烟管轻吐出一缕薄雾，赤瞳在袅袅青烟后带着看透一切的戏谑浅笑。",
+    "recommendedSize": "832x1216",
+    "location": "dim shadowy ryokan tatami chamber with antique brass kaleidoscope on lacquer table",
+    "action": "reclining elegantly on crimson velvet cushion, exhaling a graceful trail of smoke from kiseru pipe, piercing red eyes gleaming with amused mystery",
+    "timeOfDay": "night",
+    "lighting": "warm flickering paper lantern and glowing kaleidoscope gems casting jewel patterns",
+    "camera": "medium_shot",
+    "mood": "intoxicating traditional mystery, sultry enigmatic allure, mesmerizing gothic Japanese elegance",
+    "promptProse": "Lounging on tatami in a rich vermilion kimono, Renge blows scented curls of smoke from her pipe, watching through mysterious ruby eyes.",
+    "promptTokens": [
+      "tatami",
+      "holding_pipe",
+      "kiseru",
+      "smoke",
+      "kaleidoscope",
+      "reclining",
+      "mysterious_smile",
+      "lantern_light",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Renge smoking her slender kiseru pipe beside an ornate kaleidoscope on tatami.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

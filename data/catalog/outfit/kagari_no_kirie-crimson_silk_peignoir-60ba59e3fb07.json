@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kagari_no_kirie/crimson_silk_peignoir",
+  "revision": 1,
+  "sortOrder": 1852,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kagari_no_kirie",
+    "outfit": {
+      "id": "crimson_silk_peignoir",
+      "name": "吸血鬼古堡血红色真丝裹身睡袍",
+      "prose": "A floor-length deep blood-red mulberry silk peignoir robe with sweeping scalloped black lace edges and a trailing silk belt, casually tied over bare skin.",
+      "tokens": [
+        "red_robe",
+        "silk_robe",
+        "lace_trim",
+        "waist_sash",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "renge_onsen_cypress_edge_maple_drift",
+  "revision": 1,
+  "sortOrder": 2360,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "renge_onsen_cypress_edge_maple_drift",
+    "characterId": "renge_mangekyou",
+    "outfitId": "inn_bath_yukata",
+    "title": "莲华 · 桧木温泉畔的冷泉小憩",
+    "category": "假日出行",
+    "description": "月夜下的露天温泉水汽蒸腾。莲华赤足坐在桧木池畔，浅青色的浴衣下摆浸在水面。她用白皙的足尖拨开漂浮的红色枫叶，侧脸在水雾中显得格外清冷脱俗。",
+    "recommendedSize": "832x1216",
+    "location": "open-air natural hot spring bath surrounded by cypress wood and crimson autumn maples",
+    "action": "sitting on smooth cypress bath ledge with bare feet in steaming water, dipping toes into floating maple leaves with quiet aloof serenity",
+    "timeOfDay": "night",
+    "lighting": "luminous full moon reflecting on steamy hot spring ripples and red leaves",
+    "camera": "medium_shot",
+    "mood": "ethereal Japanese quietude, refined timeless grace, breath-stopping cool beauty",
+    "promptProse": "Sitting beside steaming moonlit onsen waters, Renge dips bare toes amidst floating maple leaves, loose yukata baring her graceful neck.",
+    "promptTokens": [
+      "hot_spring",
+      "onsen",
+      "steam",
+      "sitting_on_edge",
+      "feet_in_water",
+      "maple_leaves",
+      "night",
+      "full_moon",
+      "loose_collar",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Renge dipping bare feet into steaming outdoor onsen waters beneath autumn moonlight.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

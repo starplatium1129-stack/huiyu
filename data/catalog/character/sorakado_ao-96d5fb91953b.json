@@ -1,0 +1,151 @@
+{
+  "kind": "character",
+  "id": "sorakado_ao",
+  "revision": 1,
+  "sortOrder": 249,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "sorakado_ao",
+    "popular": {
+      "id": "sorakado_ao",
+      "displayName": "空门苍",
+      "originalName": "Sorakado Ao",
+      "franchise": "Summer Pockets",
+      "aliases": [
+        "sorakado_ao",
+        "ao sorakado",
+        "summer pockets",
+        "key"
+      ],
+      "identityProse": "Ao Sorakado from Summer Pockets, with vibrant blue medium-length hair in a side ponytail, lively blue eyes, and an energetic yet sleepy shrine maiden charm.",
+      "identityTokens": [
+        "sorakado_ao",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "medium_hair",
+        "side_ponytail",
+        "blue_eyes",
+        "summer pockets"
+      ],
+      "exactTokens": [
+        "sorakado_ao"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "催泪青春（濑户内海·鸟白岛）",
+        "era": "现代日本（夏日海岛）",
+        "formNotes": "空门神社巫女兼传承人；粗点心店打工常客；在岛上四处探寻记忆之光的引路人",
+        "research": "2026-10 调研"
+      },
+      "animeStudio": "summer pockets, official anime art, visual arts key style",
+      "curatedArtistStyles": [
+        "na-ga",
+        "fumio",
+        "tiv"
+      ],
+      "characterTokens": [
+        "sorakado_ao"
+      ],
+      "copyrightTokens": [
+        "summer pockets"
+      ]
+    },
+    "profile": {
+      "id": "sorakado_ao",
+      "name": "空门苍",
+      "alias": [
+        "苍",
+        "あお",
+        "睡觉狂人",
+        "打工巫女"
+      ],
+      "type": "popular",
+      "icon": "🦊",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "空门苍 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "清澈亮丽的天蓝色及肩中长发 · 束于一侧的侧马尾",
+        "hair_color": "天蓝 / 钴蓝",
+        "eyes": "明亮灵动的大海深蓝双瞳",
+        "hairstyle": "侧马尾 · 发尾微内扣 · 充满山林灵气",
+        "uniform": "空门神社传统白衣绯袴巫女服 · 粗点心店兼职围裙装 · 松垮慵懒男士长衬衫",
+        "expression": "睡眼惺忪的哈欠娇态 · 狡黠灵动的俏皮调侃",
+        "style": "sleepy shrine maiden girlfriend, blending casual energetic humor, intimate physical clinginess, and deep protective sacrifice",
+        "signature": "亮蓝侧马尾、深蓝双眸、绯袴巫女服、随时入睡与狐狸相伴"
+      },
+      "personality": [
+        "元气开朗不拘小节",
+        "走到哪里睡到哪里的嗜睡体质",
+        "直球调侃容易亲近",
+        "背负沉重执念坚韧奉献"
+      ],
+      "likes": [
+        "充足的睡眠",
+        "粗点心店的酸味软糖",
+        "与同伴狐狸打滚",
+        "靠在恋人肩头打盹"
+      ],
+      "classic_cg": {
+        "title": "神社拜殿红廊前的午后酣眠",
+        "description": "夏日午后的阳光洒在空门神社木廊上，竹扫帚靠在一侧，身着白衣绯袴的苍蜷缩在廊下睡得香甜，嘴角带着安稳的弧度。"
+      },
+      "identity": {
+        "role": "空门神社巫女兼继承人 / 岛上打工达人",
+        "age": "16岁（海岛高中生）",
+        "occupation": "高中生 / 巫女 / 店员",
+        "faction": "空门神社 / 粗点心店"
+      },
+      "tags": [
+        "侧马尾",
+        "巫女",
+        "嗜睡反差",
+        "打工达人",
+        "元气色气",
+        "深情姐姐"
+      ],
+      "bg_story": "鸟白岛空门神社的巫女，白天在岛上的粗点心店等多处店铺勤恳打工，夜间则带着狐狸同伴在山林中寻觅触碰岛民的记忆残光。因承担着净化岛上迷途灵魂的繁重职责而长期严重缺觉，无论走到何处都能靠着任何东西安然入睡，醒来时常展现出毫无防备的慵懒与娇憨。外表开朗大方、毫无心机，对男主直球调侃且极易拉近距离，实则背负着解救沉睡双胞胎姐姐蓝的沉重执念。在轻松欢快的盛夏日常背后，是一颗愿意为至亲牺牲一切的炽热内心。",
+      "palette": [
+        "神社朱红",
+        "深邃钴蓝",
+        "素白",
+        "翠竹绿"
+      ],
+      "weather": [
+        "林荫蝉鸣午后",
+        "满月深宵山林",
+        "清晨薄雾"
+      ],
+      "speech": "呼啊～好困啊……这里风吹得好舒服，借我靠一下肩膀好不好？就睡五分钟……呼噜噜……",
+      "source": "Summer Pockets",
+      "traits": [
+        "元气嗜睡神社巫女",
+        "亮蓝侧马尾深蓝眼瞳",
+        "随地入睡反差色气",
+        "深情执着守护至亲",
+        "夏日口袋超人气担当"
+      ],
+      "accent_color": "#2563eb",
+      "bg_color": "#0f172a"
+    }
+  }
+}

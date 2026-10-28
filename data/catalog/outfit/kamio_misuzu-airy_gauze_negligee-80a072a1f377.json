@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "kamio_misuzu/airy_gauze_negligee",
+  "revision": 1,
+  "sortOrder": 1844,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kamio_misuzu",
+    "outfit": {
+      "id": "airy_gauze_negligee",
+      "name": "盛夏蝉鸣纯白双层棉纱睡裙",
+      "prose": "A featherlight double-gauze white cotton nightdress with subtle eyelet lace detailing along the scoop neckline and bare feet.",
+      "tokens": [
+        "white_camisole",
+        "sheer_negligee",
+        "thin_straps",
+        "lace_trim",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

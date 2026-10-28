@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kamome_storm_cabin_candlelight_trembling_clasp",
+  "revision": 1,
+  "sortOrder": 2349,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kamome_storm_cabin_candlelight_trembling_clasp",
+    "characterId": "kushima_kamome",
+    "outfitId": "vintage_ruffle_nightdress",
+    "title": "久岛鸥 · 烛光木屋里的真情流露",
+    "category": "私密温存",
+    "description": "暴风雨夜的废弃山中小屋里，烛火在潮湿的风中摇曳。白色的长睡裙薄如蝉翼，鸥紧紧依偎在怀中，褪去了白天的古灵精怪，像一只容易受惊的小鹿般微微发抖。",
+    "recommendedSize": "832x1216",
+    "location": "rustic weathered mountain cabin with rain drumming fiercely against windowpanes",
+    "action": "huddling close on wool blanket, sheer heirloom nightdress slipping from trembling shoulders, clinging to partner chest with tear-brimmed eyes",
+    "timeOfDay": "night",
+    "lighting": "fragile amber glow of a single tallow candle dancing across damp wooden walls",
+    "camera": "close-up",
+    "mood": "fragile tender vulnerability, storm-sheltered passion, heartbreakingly sweet trust",
+    "promptProse": "Shivering in a dimly lit storm cabin, Kamome clings tightly in her sheer white nightgown, looking up with tearful affectionate eyes.",
+    "promptTokens": [
+      "wooden_cabin",
+      "candle_light",
+      "storm",
+      "rain_on_window",
+      "off-shoulder",
+      "clinging_closely",
+      "teary_eyes",
+      "heavy_blush",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kamome seeking shelter in a storm cabin, holding on tight in delicate nightwear.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

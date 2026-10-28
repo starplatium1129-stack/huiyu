@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "misuzu_tatami_moonlight_wings_surrender",
+  "revision": 1,
+  "sortOrder": 2356,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "misuzu_tatami_moonlight_wings_surrender",
+    "characterId": "kamio_misuzu",
+    "outfitId": "airy_gauze_negligee",
+    "title": "神尾观铃 · 榻榻米上的纯白羽翼",
+    "category": "私密温存",
+    "description": "夜风吹开虚掩的木格窗，月光洒满整张席面。观铃顺从地任由细带睡裙滑落至腰际，纤弱的脊背弓起优雅的弧度，在一次次深情的温柔占有中发出了如释重负的啼鸣。",
+    "recommendedSize": "832x1216",
+    "location": "quiet moonlit tatami room with sliding screen open to the ocean horizon",
+    "action": "lying back on tatami mats as sheer nightgown slips down baring alabaster breasts, slender back arching in trembling, tearful ecstatic release",
+    "timeOfDay": "night",
+    "lighting": "ethereal silver moonlight illuminating pure golden hair and glistening tears of pleasure",
+    "camera": "cowboy_shot",
+    "mood": "celestial lovers union, tragic curse dissolving into pure bliss, transcendent romantic catharsis",
+    "promptProse": "Illuminated by celestial silver moonlight on the tatami, Misuzu arches her back with fallen nightgown, crying tears of sheer ecstatic love.",
+    "promptTokens": [
+      "tatami",
+      "moonlight",
+      "lying_on_back",
+      "bare_breasts",
+      "bare_shoulders",
+      "arched_back",
+      "crying_pleasure",
+      "heavy_blush",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Misuzu bathed in silver moonlight on tatami, surrendered to radiant love.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

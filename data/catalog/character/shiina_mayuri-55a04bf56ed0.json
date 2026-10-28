@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "shiina_mayuri",
+  "revision": 1,
+  "sortOrder": 247,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "shiina_mayuri",
+    "popular": {
+      "id": "shiina_mayuri",
+      "displayName": "椎名真由理",
+      "originalName": "Shiina Mayuri",
+      "franchise": "Steins;Gate",
+      "aliases": [
+        "shiina_mayuri",
+        "mayuri shiina",
+        "mayushii",
+        "tuturu",
+        "steins;gate"
+      ],
+      "identityProse": "Mayuri Shiina from Steins;Gate, with short black hair, an ahoge, soft blue eyes, and an innocent, warm, and comforting presence.",
+      "identityTokens": [
+        "shiina_mayuri",
+        "1girl",
+        "solo",
+        "black_hair",
+        "short_hair",
+        "ahoge",
+        "blue_eyes",
+        "steins;gate"
+      ],
+      "exactTokens": [
+        "shiina_mayuri"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "科学科幻（秋叶原·未来道具研究所）",
+        "era": "现代日本（2010年夏）",
+        "formNotes": "私立花浅葱大学附属高中学生；未来道具研究所 LabMem No.002；MayQueen女仆侍应",
+        "research": "2026-10 调研"
+      },
+      "animeStudio": "steins;gate, official anime art, white fox style",
+      "curatedArtistStyles": [
+        "huke",
+        "bunbun",
+        "tiv"
+      ],
+      "characterTokens": [
+        "shiina_mayuri"
+      ],
+      "copyrightTokens": [
+        "steins;gate"
+      ]
+    },
+    "profile": {
+      "id": "shiina_mayuri",
+      "name": "椎名真由理",
+      "alias": [
+        "真由氏",
+        "Mayushii",
+        "嘟嘟噜",
+        "人质"
+      ],
+      "type": "popular",
+      "icon": "🌻",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "椎名真由理 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "墨黑色蓬松柔软短发 · 标志性微扬呆毛",
+        "hair_color": "墨黑 / 炭黑",
+        "eyes": "天真澄澈的柔和天蓝双眸",
+        "hairstyle": "微蓬自然短发 · 头顶可爱呆毛",
+        "uniform": "浅空蓝荷叶边吊带连衣裙与配套宽檐遮阳便帽 · 复古女仆侍应围裙装",
+        "expression": "纯真烂漫的暖心灿笑 · 专注观星时的宁静虔诚",
+        "style": "warm-hearted childhood friend girlfriend, bringing innocent warmth, unconditional emotional refuge and gentle joy",
+        "signature": "黑发短发呆毛、蓝瞳、浅蓝荷叶边吊带裙与遮阳便帽"
+      },
+      "personality": [
+        "温柔纯真体贴入微",
+        "情感直觉敏锐洞察",
+        "天真烂漫乐观包容",
+        "甘愿陪伴默默守护"
+      ],
+      "likes": [
+        "手工缝纫Cos服",
+        "乌帕（Upa）扭蛋玩偶",
+        "多汁炸鸡块No.1",
+        "仰望满天繁星"
+      ],
+      "classic_cg": {
+        "title": "神社石阶上仰望星辰的指引",
+        "description": "夏夜微风拂过神社的长阶，真由理单手举向浩瀚银河，蓝色的帽檐被风吹起，回眸露出纯净温柔的笑颜。"
+      },
+      "identity": {
+        "role": "未来道具研究所 LabMem No.002 / 女仆咖啡厅店员",
+        "age": "16岁（高中二年级）",
+        "occupation": "高中生 / 女仆咖啡厅侍应",
+        "faction": "私立花浅葱大学附属高中 / 未来道具研究所"
+      },
+      "tags": [
+        "嘟嘟噜",
+        "青梅竹马",
+        "治愈系",
+        "荷叶边便帽",
+        "天然呆",
+        "LabMem No.002"
+      ],
+      "bg_story": "冈部伦太郎自幼相识的青梅竹马，也是未来道具研究所的创立成员之一。在祖母去世后曾一度陷入精神失落，被冈部以“你是我的专属人质”为誓言唤醒，从此一直陪伴在对方身旁。她性格单纯乐观，对复杂的时空理论并不热衷，却拥有敏锐至极的情感直觉，总能察觉到身边人隐藏的悲伤与重担。擅长缝制Cosplay服饰并在女仆咖啡厅打工，是维系研究所日常平静与欢笑不可或缺的阳光。在残酷的世界线收束中，她的存在成为了逆转命运最深沉的动力源泉。",
+      "palette": [
+        "天空蓝",
+        "向日葵黄",
+        "乌帕绿",
+        "纯白"
+      ],
+      "weather": [
+        "盛夏蝉鸣午后",
+        "清朗星空",
+        "街道骤雨"
+      ],
+      "speech": "嘟嘟噜～！今天也是精神满满的一天呢！冈伦，你看你看，真由氏新做好的玩偶很可爱吧？",
+      "source": "Steins;Gate",
+      "traits": [
+        "嘟嘟噜治愈系青梅竹马",
+        "黑短发呆毛天蓝眸",
+        "浅蓝荷叶裙与遮阳帽",
+        "天然呆与纯真守护",
+        "命运石之门永恒白月光"
+      ],
+      "accent_color": "#0ea5e9",
+      "bg_color": "#0f172a"
+    }
+  }
+}

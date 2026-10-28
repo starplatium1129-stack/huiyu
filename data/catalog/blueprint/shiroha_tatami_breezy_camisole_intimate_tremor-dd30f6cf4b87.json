@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "shiroha_tatami_breezy_camisole_intimate_tremor",
+  "revision": 1,
+  "sortOrder": 2337,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "shiroha_tatami_breezy_camisole_intimate_tremor",
+    "characterId": "naruse_shiroha",
+    "outfitId": "pure_white_negligee",
+    "title": "鸣濑白羽 · 老屋榻榻米上的初次袒露",
+    "category": "私密温存",
+    "description": "海风吹拂着老旧和室的风铃。白羽咬着自己的银白发丝侧躺在席上，单薄的纯白睡衣被推至腰际，纤弱的锁骨与腹部剧烈起伏，任由灼热的手掌寸寸探索。",
+    "recommendedSize": "832x1216",
+    "location": "traditional seaside Japanese tatami room with open sliding doors to evening garden",
+    "action": "lying on side on woven tatami mats, white nightgown rolled up to bare slender stomach, biting her white hair lock in dizzying breathless passion",
+    "timeOfDay": "night",
+    "lighting": "soft moonlight filtering through bamboo blinds mixed with faint wind chime tinkling",
+    "camera": "close-up",
+    "mood": "tender island passion, bashful trembling vulnerability, complete romantic surrender",
+    "promptProse": "Reclining on tatami in a lifted white sleep camisole, Shiroha bites a strand of her silver hair, eyes shining with bashful overwhelming lust.",
+    "promptTokens": [
+      "tatami",
+      "lying_on_side",
+      "lifted_shirt",
+      "exposed_belly",
+      "exposed_cleavage",
+      "biting_hair",
+      "heavy_blush",
+      "teary_eyes",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shiroha lying on tatami in lifted sleepwear, biting her hair in bashful ecstasy.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

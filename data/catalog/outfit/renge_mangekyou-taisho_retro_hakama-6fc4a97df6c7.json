@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "renge_mangekyou/taisho_retro_hakama",
+  "revision": 1,
+  "sortOrder": 1846,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "renge_mangekyou",
+    "outfit": {
+      "id": "taisho_retro_hakama",
+      "name": "大正浪漫暗紫细纹袴装与系带皮靴",
+      "prose": "A refined Taisho-roman ensemble comprising an arrow-patterned cream and deep violet kimono top tucked into an eggplant-purple hakama skirt and polished black lace-up boots.",
+      "tokens": [
+        "hakama",
+        "purple_hakama",
+        "striped_kimono",
+        "long_sleeves",
+        "black_boots",
+        "lace-up_boots"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

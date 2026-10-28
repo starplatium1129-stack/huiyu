@@ -1,0 +1,152 @@
+{
+  "kind": "character",
+  "id": "kushima_kamome",
+  "revision": 1,
+  "sortOrder": 250,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kushima_kamome",
+    "popular": {
+      "id": "kushima_kamome",
+      "displayName": "久岛鸥",
+      "originalName": "Kushima Kamome",
+      "franchise": "Summer Pockets",
+      "aliases": [
+        "kushima_kamome",
+        "kamome kushima",
+        "summer pockets",
+        "key"
+      ],
+      "identityProse": "Kamome Kushima from Summer Pockets, with light purple twin tails, clear blue eyes, carrying a vintage suitcase, with an adventurous, whimsical, and sweet spirit.",
+      "identityTokens": [
+        "kushima_kamome",
+        "1girl",
+        "solo",
+        "purple_hair",
+        "light_purple_hair",
+        "long_hair",
+        "twin_tails",
+        "blue_eyes",
+        "summer pockets"
+      ],
+      "exactTokens": [
+        "kushima_kamome"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "催泪青春（濑户内海·鸟白岛）",
+        "era": "现代日本（夏日海岛）",
+        "formNotes": "拖着巨大旅行箱寻找儿时海盗宝藏的旅人少女；纯真浪漫的冒险家",
+        "research": "2026-10 调研"
+      },
+      "animeStudio": "summer pockets, official anime art, visual arts key style",
+      "curatedArtistStyles": [
+        "na-ga",
+        "fumio",
+        "tiv"
+      ],
+      "characterTokens": [
+        "kushima_kamome"
+      ],
+      "copyrightTokens": [
+        "summer pockets"
+      ]
+    },
+    "profile": {
+      "id": "kushima_kamome",
+      "name": "久岛鸥",
+      "alias": [
+        "鸥",
+        "かもめ",
+        "大箱子少女",
+        "海盗团长"
+      ],
+      "type": "popular",
+      "icon": "🧳",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "久岛鸥 立绘待补"
+      },
+      "visual_dna": {
+        "hair": "柔和梦幻的浅紫熏衣草色长发 · 扎成规整可爱的双马尾",
+        "hair_color": "浅紫 / 熏衣草紫",
+        "eyes": "水润清澈的浅宝蓝大眼睛",
+        "hairstyle": "对称双马尾 · 垂于胸前 · 随着跳跃轻快晃动",
+        "uniform": "墨绿复古寻宝背心裙配泡泡袖衬衫 · 盛夏水手领连身洋装与平顶草帽 · 蓝白条纹比基尼",
+        "expression": "发现宝藏线索时狡黠雀跃的笑颜 · 触及秘密时温柔略带忧伤的注视",
+        "style": "whimsical treasure-hunting traveler girlfriend, filling island days with fairy-tale romance, witty banter, and unforgettable promises",
+        "signature": "浅紫双马尾、复古大行李箱、手绘藏宝图与草帽水手裙"
+      },
+      "personality": [
+        "古灵精怪天马行空",
+        "行动力极强充满冒险精神",
+        "大小姐特有的优雅调皮",
+        "纯情真挚珍视诺言"
+      ],
+      "likes": [
+        "寻宝冒险",
+        "拉着巨大行李箱散步",
+        "古典冒险读物",
+        "香草甜筒冰淇淋"
+      ],
+      "classic_cg": {
+        "title": "木栈道码头与旧皮箱上的重逢",
+        "description": "海风吹拂的渡轮码头旁，久岛鸥坐在沉重的复古皮箱上晃荡着双腿，展开手中的藏宝图，单手按住草帽露出灿烂无邪的笑容。"
+      },
+      "identity": {
+        "role": "寻找十年前海盗宝藏的旅人大小姐",
+        "age": "16岁（冒险少女）",
+        "occupation": "旅人 / 寻宝家",
+        "faction": "海盗团（鸥与她的水手）"
+      },
+      "tags": [
+        "双马尾",
+        "大行李箱",
+        "寻宝冒险",
+        "大小姐",
+        "元气俏皮",
+        "梦中恋人"
+      ],
+      "bg_story": "在盛夏时节独自来到鸟白岛的神秘少女，无论何时都拖着一只沉重的复古皮质大行李箱。性格古灵精怪、充满好奇心与行动力，手持一张手绘的藏宝图四处寻找十年前与伙伴们定下的“海盗宝藏”。她对待男主既像对待自己手下的见习水手，又带着大小姐特有的调皮与温柔，给平淡的海岛生活带来了无穷的浪漫冒险色彩。然而随着藏宝图的谜题逐一解开，那只从未打开过的行李箱与她真实的处境，揭开了一段深藏于病榻与梦想之间的奇迹约定。",
+      "palette": [
+        "熏衣草紫",
+        "常春藤绿",
+        "宝蓝",
+        "暖象牙白"
+      ],
+      "weather": [
+        "海港清晨晴空",
+        "洞窟摇曳烛光",
+        "阁楼金色阳光"
+      ],
+      "speech": "找到你啦，我的第一个水手！快跟上来吧，我们的海盗宝藏可不会乖乖等在洞窟里哦！",
+      "source": "Summer Pockets",
+      "traits": [
+        "大皮箱寻宝冒险少女",
+        "浅紫熏衣草长双马尾",
+        "古灵精怪纯真浪漫",
+        "夏日口袋约定之花",
+        "Key社催泪梦幻女主"
+      ],
+      "accent_color": "#a855f7",
+      "bg_color": "#0f172a"
+    }
+  }
+}

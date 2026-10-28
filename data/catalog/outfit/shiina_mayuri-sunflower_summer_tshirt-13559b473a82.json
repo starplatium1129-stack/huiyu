@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mayuri/sunflower_summer_tshirt",
+  "revision": 1,
+  "sortOrder": 1827,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "shiina_mayuri",
+    "outfit": {
+      "id": "sunflower_summer_tshirt",
+      "name": "向日葵黄圆领T恤与白色短裙",
+      "prose": "A bright pastel-yellow cotton t-shirt with a relaxed collar, white cotton A-line skirt, cuffed ankle socks and canvas sneakers.",
+      "tokens": [
+        "yellow_t-shirt",
+        "short_sleeves",
+        "white_skirt",
+        "a-line_skirt",
+        "ankle_socks",
+        "sneakers"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

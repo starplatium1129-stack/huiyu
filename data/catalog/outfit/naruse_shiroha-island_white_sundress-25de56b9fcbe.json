@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "naruse_shiroha/island_white_sundress",
+  "revision": 1,
+  "sortOrder": 1830,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "naruse_shiroha",
+    "outfit": {
+      "id": "island_white_sundress",
+      "name": "夏日海风白色吊带棉裙",
+      "prose": "A pure white sleeveless cotton sundress swaying in the coastal breeze, accompanied by a wide-brim straw hat, bare legs and woven flat sandals.",
+      "tokens": [
+        "white_dress",
+        "sundress",
+        "sleeveless",
+        "flared_skirt",
+        "straw_hat",
+        "bare_legs",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

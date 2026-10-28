@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "shiroha_locker_room_muffled_gasp_corner",
+  "revision": 1,
+  "sortOrder": 2338,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "shiroha_locker_room_muffled_gasp_corner",
+    "characterId": "naruse_shiroha",
+    "outfitId": "torishiro_school_uniform",
+    "title": "鸣濑白羽 · 更衣室柜门后的无声缠绵",
+    "category": "私密温存",
+    "description": "体育馆幽暗的更衣柜狭缝中，水手裙被径直掀起堆叠在小腹。为了不被外面的巡查人员发现，白羽死死捂住自己的嘴唇，在猛烈的侵入下眼角渗出了甜腻的泪水。",
+    "recommendedSize": "832x1216",
+    "location": "shadowed narrow space between tall steel school lockers in an empty gym",
+    "action": "pressed back into metal locker alcove with sailor skirt hitched high, hand clamped tightly over her own mouth to stifle moans of intense ecstasy",
+    "timeOfDay": "afternoon",
+    "lighting": "slanted dusty sunbeams through high transom windows highlighting tear tracks on flushed cheeks",
+    "camera": "medium_shot",
+    "mood": "illicit heart-racing tension, stolen schoolhouse pleasure, intense breathless thrill",
+    "promptProse": "Trapped in the gym locker alcove with lifted sailor skirt, Shiroha covers her mouth in breathless tears as intense pleasure overwhelms her body.",
+    "promptTokens": [
+      "locker_room",
+      "against_wall",
+      "lifted_skirt",
+      "hand_over_mouth",
+      "bare_thighs",
+      "crying_pleasure",
+      "heavy_blush",
+      "trembling",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Shiroha pressed into gym locker corner, stifling gasps of overwhelming pleasure.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

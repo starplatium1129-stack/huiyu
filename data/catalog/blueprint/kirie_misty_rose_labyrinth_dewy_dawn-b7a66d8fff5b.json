@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kirie_misty_rose_labyrinth_dewy_dawn",
+  "revision": 1,
+  "sortOrder": 2366,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kirie_misty_rose_labyrinth_dewy_dawn",
+    "characterId": "kagari_no_kirie",
+    "outfitId": "crimson_silk_peignoir",
+    "title": "篝之雾枝 · 深红玫瑰园的拂晓凝视",
+    "category": "假日出行",
+    "description": "雾气未散的古堡庭院内，带刺的深红玫瑰在朝露中绽放。雾枝裹着真丝长袍漫步其间，指尖轻抚一片沾着露水的花瓣，平日里傲慢的神情在清晨的微光中化为一丝罕见的落寞。",
+    "recommendedSize": "832x1216",
+    "location": "ancient overgrown castle rose garden shrouded in ethereal morning ground mist",
+    "action": "wandering stone pathway wrapped loosely in trailing red silk peignoir, touching a thorny dark red rose petal with gentle melancholy longing",
+    "timeOfDay": "dawn",
+    "lighting": "cool pearlescent dawn mist illuminated by faint rosy morning sunbeams",
+    "camera": "medium_shot",
+    "mood": "lonely immortal melancholy, fragile noble beauty, breathtaking poetic stillness",
+    "promptProse": "Strolling through a misty rose garden at dawn, Kirie touches dark roses in her red silk robe with a serene, wistful expression.",
+    "promptTokens": [
+      "rose_garden",
+      "red_roses",
+      "morning_mist",
+      "dawn",
+      "dew_drops",
+      "touching_flower",
+      "melancholy",
+      "bare_shoulders",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kirie wandering an overgrown misty rose garden at dawn in her crimson silk robe.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

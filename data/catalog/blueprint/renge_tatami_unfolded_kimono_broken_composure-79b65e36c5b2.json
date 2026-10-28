@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "renge_tatami_unfolded_kimono_broken_composure",
+  "revision": 1,
+  "sortOrder": 2362,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "renge_tatami_unfolded_kimono_broken_composure",
+    "characterId": "renge_mangekyou",
+    "outfitId": "vermilion_mangekyou_kimono",
+    "title": "莲华 · 散落和服下的初次解禁",
+    "category": "私密温存",
+    "description": "华贵的金丝腰带被彻底扯开，层叠的绯红和服在榻榻米上铺散成一朵盛开的彼岸花。一贯从容优雅的引路人此刻双颊绯红，十指死死抓紧席面，在狂乱的侵入下彻底融化。",
+    "recommendedSize": "832x1216",
+    "location": "grand traditional tatami suite with gold leaf painted screens and unrolled futon",
+    "action": "sprawled on the floor amidst opulent unfolded silks, obi sash unfastened, crying out in helpless blissful breakdown as every defense shatters",
+    "timeOfDay": "night",
+    "lighting": "warm floor lantern illuminating flush across bare collarbones and silky raven hair spread wide",
+    "camera": "cowboy_shot",
+    "mood": "haughty composure completely shattered, profound erotic surrender, divine ecstasy",
+    "promptProse": "Sprawled on tatami amidst rich unfolded kimono silks, Renge gasps with parted lips as unbridled ecstasy shatters her eternal cool composure.",
+    "promptTokens": [
+      "tatami",
+      "open_kimono",
+      "untied_obi",
+      "spread_legs",
+      "bare_shoulders",
+      "bare_stomach",
+      "crying_pleasure",
+      "parted_lips",
+      "heavy_blush",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Renge sprawled amidst luxurious silk kimono folds on tatami in pure helpless ecstasy.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

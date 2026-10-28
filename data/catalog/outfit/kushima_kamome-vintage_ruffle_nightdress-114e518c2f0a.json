@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kushima_kamome/vintage_ruffle_nightdress",
+  "revision": 1,
+  "sortOrder": 1840,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kushima_kamome",
+    "outfit": {
+      "id": "vintage_ruffle_nightdress",
+      "name": "维多利亚复古荷叶边长款睡裙",
+      "prose": "A flowing heirloom-style white cotton nightgown with pintucked bodice, graceful ruffled flutter sleeves and scalloped lace hemline, worn barefoot.",
+      "tokens": [
+        "white_nightgown",
+        "long_nightgown",
+        "ruffled_sleeves",
+        "lace_trim",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

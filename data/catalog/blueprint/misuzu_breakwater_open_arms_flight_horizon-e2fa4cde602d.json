@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "misuzu_breakwater_open_arms_flight_horizon",
+  "revision": 1,
+  "sortOrder": 2353,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "misuzu_breakwater_open_arms_flight_horizon",
+    "characterId": "kamio_misuzu",
+    "outfitId": "coastal_yellow_sundress",
+    "title": "神尾观铃 · 海天一色处的张臂飞翔",
+    "category": "假日出行",
+    "description": "长堤的尽头直插海中央，天地之间只有澄澈的碧蓝。观铃扔下草帽，踩在窄窄的水泥堤顶张开双臂，宛如一只即将振翅飞向长空的白色雏鸟，回眸露出毫无杂质的微笑。",
+    "recommendedSize": "832x1216",
+    "location": "narrow concrete sea embankment extending into the infinite sapphire ocean horizon",
+    "action": "balancing barefoot on the seawall edge with arms spread wide like wings, yellow sundress billowing in sea winds, turning with a radiant smile",
+    "timeOfDay": "afternoon",
+    "lighting": "brilliant azure daylight enveloping sea and sky into one seamless expanse of blue",
+    "camera": "cowboy_shot",
+    "mood": "transcendent poetic freedom, innocent heart-aching longing, pure celestial grace",
+    "promptProse": "Balancing joyfully along the ocean seawall with arms outstretched, Misuzu turns with a breathtaking smile amidst endless blue sea and sky.",
+    "promptTokens": [
+      "seawall",
+      "ocean",
+      "horizon",
+      "arms_outstretched",
+      "balancing",
+      "radiant_smile",
+      "wind_blown_dress",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Misuzu balancing on the breakwater with arms spread wide in the sea breeze.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

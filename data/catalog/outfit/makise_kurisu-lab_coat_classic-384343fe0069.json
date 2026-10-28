@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "makise_kurisu/lab_coat_classic",
+  "revision": 1,
+  "sortOrder": 1821,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "makise_kurisu",
+    "outfit": {
+      "id": "lab_coat_classic",
+      "name": "经典白大褂与研讨会着装",
+      "prose": "A crisp white laboratory coat worn unbuttoned over a white collared dress shirt and loose red necktie, paired with dark tailored shorts, black belt, semi-sheer black tights and brown ankle boots.",
+      "tokens": [
+        "lab_coat",
+        "open_coat",
+        "white_shirt",
+        "collared_shirt",
+        "red_necktie",
+        "short_shorts",
+        "black_shorts",
+        "black_belt",
+        "black_tights",
+        "brown_boots",
+        "folded_sleeves"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kirie_gothic_throne_wine_goblet_command",
+  "revision": 1,
+  "sortOrder": 2364,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kirie_gothic_throne_wine_goblet_command",
+    "characterId": "kagari_no_kirie",
+    "outfitId": "gothic_vampire_gown",
+    "title": "篝之雾枝 · 古堡王座上的鲜血邀约",
+    "category": "日常陪伴",
+    "description": "蛛网与烛火交织的阴暗大厅中，雾枝优雅地斜倚在高背天鹅绒王座上。她摇晃着盛有暗红液体的水晶高脚杯，染血的薄唇扬起冰冷的弧度，向跪在阶下的俘虏投下命令般的目光。",
+    "recommendedSize": "832x1216",
+    "location": "grand decaying Victorian gothic hall with stone arches, spiderwebs, and crystal chandeliers",
+    "action": "reclining imperiously on tufted black velvet throne, swirling blood-red liquid in ornate goblet, looking down with icy commanding beauty",
+    "timeOfDay": "night",
+    "lighting": "flickering candelabra flame casting dancing sinister shadows across stone masonry",
+    "camera": "medium_shot",
+    "mood": "haughty vampire dominance, dark aristocratic elegance, chilling seductive power",
+    "promptProse": "Sitting on an ornate velvet throne in a gothic hall, black-haired Kirie swirls red wine in a crystal glass, staring down with imperious cold eyes.",
+    "promptTokens": [
+      "throne",
+      "castle_hall",
+      "chandelier",
+      "candlelight",
+      "wine_glass",
+      "red_liquid",
+      "choker",
+      "looking_down",
+      "haughty_gaze",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kagari no Kirie reigning from her gothic throne with a goblet of crimson wine.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

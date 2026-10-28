@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "makise_kurisu/crimson_silk_nightwear",
+  "revision": 1,
+  "sortOrder": 1824,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "makise_kurisu",
+    "outfit": {
+      "id": "crimson_silk_nightwear",
+      "name": "深绯色细带真丝吊带睡裙",
+      "prose": "A delicate crimson silk slip dress with fine black lace scalloping along the neckline and slender shoulder straps, worn barefoot.",
+      "tokens": [
+        "crimson_nightgown",
+        "silk_slip",
+        "lace_trim",
+        "spaghetti_straps",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

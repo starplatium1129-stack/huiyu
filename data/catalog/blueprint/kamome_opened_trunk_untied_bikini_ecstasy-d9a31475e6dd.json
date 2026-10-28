@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kamome_opened_trunk_untied_bikini_ecstasy",
+  "revision": 1,
+  "sortOrder": 2350,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kamome_opened_trunk_untied_bikini_ecstasy",
+    "characterId": "kushima_kamome",
+    "outfitId": "marine_striped_bikini",
+    "title": "久岛鸥 · 旧皮箱上的亲密约定",
+    "category": "私密温存",
+    "description": "在铺着厚绒毯的秘密基地内，巨大的复古皮箱被当成了临时桌榻。比基尼的系带被一根根解开，鸥双手支撑在箱体两角，仰起脖颈在接连不断的亲吻中娇声喘息。",
+    "recommendedSize": "832x1216",
+    "location": "secret wooden hideout decorated with ship ropes, nautical flags, and velvet rugs",
+    "action": "arching back atop her open antique steamer trunk, loosened bikini straps falling away, crying out softly in sweet shuddering bliss",
+    "timeOfDay": "afternoon",
+    "lighting": "warm dust-mote beams streaming through secret knotholes highlighting bare curves",
+    "camera": "cowboy_shot",
+    "mood": "whimsical treasure-chest passion, breathless maiden blossoming, unforgettable secret intimacy",
+    "promptProse": "Arching her slender back atop her vintage trunk, Kamome gasps with parted lips as untied bikini strings fall away in golden hideout light.",
+    "promptTokens": [
+      "vintage_trunk",
+      "secret_base",
+      "sitting_on_suitcase",
+      "untied_bikini",
+      "bare_breasts",
+      "arched_back",
+      "parted_lips",
+      "heavy_blush",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kamome surrendering atop her antique trunk, loosened bikini falling away in ecstasy.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

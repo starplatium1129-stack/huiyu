@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mayuri/maid_mayqueen_uniform",
+  "revision": 1,
+  "sortOrder": 1826,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "shiina_mayuri",
+    "outfit": {
+      "id": "maid_mayqueen_uniform",
+      "name": "MayQueen+Nyan2 女仆侍应制服",
+      "prose": "A classic Victorian-influenced retro maid uniform with a chocolate-brown flared skirt, frilled white bib apron, lace headdress, white thigh-high stockings and Mary Jane heels.",
+      "tokens": [
+        "maid_uniform",
+        "frilled_apron",
+        "brown_dress",
+        "puffy_short_sleeves",
+        "maid_headdress",
+        "white_thighhighs",
+        "mary_janes"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

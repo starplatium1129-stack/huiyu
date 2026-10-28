@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kushima_kamome/seaside_sailor_onepiece",
+  "revision": 1,
+  "sortOrder": 1838,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kushima_kamome",
+    "outfit": {
+      "id": "seaside_sailor_onepiece",
+      "name": "盛夏海浪水手领连身洋装",
+      "prose": "A retro white cotton sailor dress featuring a crisp navy nautical collar and crimson tie, paired with a flat-topped straw boater hat and buckled brown sandals.",
+      "tokens": [
+        "sailor_dress",
+        "white_dress",
+        "navy_blue_collar",
+        "red_necktie",
+        "short_sleeves",
+        "straw_boater_hat",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "naruse_shiroha/crimson_school_swimsuit",
+  "revision": 1,
+  "sortOrder": 1831,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "naruse_shiroha",
+    "outfit": {
+      "id": "crimson_school_swimsuit",
+      "name": "鸟白岛深红连体泳装",
+      "prose": "A classic navy-blue high-cut one-piece school swimsuit with snug seams, bare arms, sun-kissed legs and bare feet.",
+      "tokens": [
+        "one-piece_swimsuit",
+        "competition_swimsuit",
+        "navy_swimsuit",
+        "bare_arms",
+        "bare_legs",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

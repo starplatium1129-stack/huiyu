@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kirie_stormy_rooftop_whipping_hair_backlight",
+  "revision": 1,
+  "sortOrder": 2365,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "kirie_stormy_rooftop_whipping_hair_backlight",
+    "characterId": "kagari_no_kirie",
+    "outfitId": "kirie_private_academy",
+    "title": "篝之雾枝 · 午后天台上的逆光回眸",
+    "category": "校园日常",
+    "description": "旧校舍无人的天台铁丝网旁，狂风卷起雾枝拖曳至小腿的乌黑长发。黑色的制服裙摆在风中烈烈作响，她微微侧过苍白精致的脸颊，红瞳在刺目的逆光中闪烁着生人勿近的幽光。",
+    "recommendedSize": "832x1216",
+    "location": "abandoned high school rooftop next to rusted chainlink fencing against stormy dark skies",
+    "action": "standing in violent gale against wire fence, floor-length straight raven hair whipping across frame, turning head with chilling aloof red eyes",
+    "timeOfDay": "dusk",
+    "lighting": "dramatic backlit silver rim lighting from stormy clouds highlighting sheer black hair strands",
+    "camera": "cowboy_shot",
+    "mood": "ominous dramatic intensity, gothic school mystery, breathtaking cold perfection",
+    "promptProse": "Against a dark stormy sky on a school rooftop, Kirie floor-length black hair whips in the wind as she turns with piercing ruby eyes.",
+    "promptTokens": [
+      "rooftop",
+      "chainlink_fence",
+      "strong_wind",
+      "hair_flapping",
+      "black_skirt",
+      "black_thighhighs",
+      "overcast_sky",
+      "cold_gaze",
+      "backlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Kirie standing against the stormy sky on a school roof, immense black hair whipping in the wind.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

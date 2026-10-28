@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "mayuri_sewing_cushions_sundress_down_ecstasy",
+  "revision": 1,
+  "sortOrder": 2333,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "id": "mayuri_sewing_cushions_sundress_down_ecstasy",
+    "characterId": "shiina_mayuri",
+    "outfitId": "pale_blue_sundress",
+    "title": "椎名真由理 · 缝纫室里的悄然陷落",
+    "category": "私密温存",
+    "description": "散落着碎布与玩偶的缝纫桌旁，吊带裙的肩带滑落到臂弯。真由理仰躺在布匹堆砌的软垫上，双手无措地抓紧对方的肩膀，在纯真与动情的夹缝中彻底绽放。",
+    "recommendedSize": "832x1216",
+    "location": "colorful craft room with sewing machine, spools of thread, and soft fabric rolls",
+    "action": "reclining on a pile of plush velvet sewing cushions, pale blue sundress pulled down baring soft chest, arching back with joyful tearful moans",
+    "timeOfDay": "afternoon",
+    "lighting": "golden sunset beams filtering through lace window curtains illuminating velvet fabrics",
+    "camera": "medium_shot",
+    "mood": "irresistible sweet passion, total romantic blossoming, breathtaking innocence lost to love",
+    "promptProse": "Lying amidst colorful fabric rolls in the craft room, Mayuri sundress is pulled down, eyes wide with tears of profound ecstatic pleasure.",
+    "promptTokens": [
+      "fabric",
+      "cushions",
+      "sewing_room",
+      "strap_slip",
+      "bare_breasts",
+      "bare_shoulders",
+      "arched_back",
+      "crying_pleasure",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Mayuri lying among sewing cushions with parted dress, overwhelmed by sweet love.",
+    "isNsfw": true,
+    "rating": "R18",
+    "mature": true,
+    "adult": true
+  }
+}

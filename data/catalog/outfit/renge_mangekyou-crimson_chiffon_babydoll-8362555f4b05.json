@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "renge_mangekyou/crimson_chiffon_babydoll",
+  "revision": 1,
+  "sortOrder": 1847,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "renge_mangekyou",
+    "outfit": {
+      "id": "crimson_chiffon_babydoll",
+      "name": "深绛红暗纹透明雪纺吊带睡裙",
+      "prose": "A translucent crimson chiffon babydoll trimmed with midnight-black French lace, featuring delicate satin shoulder straps and floating sheer hemline, worn barefoot.",
+      "tokens": [
+        "red_babydoll",
+        "sheer_nightgown",
+        "black_lace_trim",
+        "spaghetti_straps",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

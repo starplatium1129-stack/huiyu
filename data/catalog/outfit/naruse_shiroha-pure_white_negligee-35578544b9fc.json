@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "naruse_shiroha/pure_white_negligee",
+  "revision": 1,
+  "sortOrder": 1832,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "naruse_shiroha",
+    "outfit": {
+      "id": "pure_white_negligee",
+      "name": "清晨海风细褶纯白薄纱睡衣",
+      "prose": "A semi-sheer white cotton-gauze sleep camisole with delicate pintuck pleats and lace hem, matched with frilled sleep shorts and bare feet.",
+      "tokens": [
+        "white_negligee",
+        "sheer_camisole",
+        "lace_trim",
+        "frilled_shorts",
+        "bare_shoulders",
+        "barefoot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

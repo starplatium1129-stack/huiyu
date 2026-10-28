@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "sorakado_ao/dagashiya_apron_casual",
+  "revision": 1,
+  "sortOrder": 1835,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "sorakado_ao",
+    "outfit": {
+      "id": "dagashiya_apron_casual",
+      "name": "粗点心店兼职围裙与短袖短裤",
+      "prose": "A bright coral-orange fitted t-shirt, hunter green canvas waist apron with deep utility pockets, washed denim shorts and casual slip-on sneakers.",
+      "tokens": [
+        "orange_t-shirt",
+        "short_sleeves",
+        "green_apron",
+        "waist_apron",
+        "denim_shorts",
+        "sneakers"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

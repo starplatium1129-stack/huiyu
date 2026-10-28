@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "kagari_no_kirie/kirie_private_academy",
+  "revision": 1,
+  "sortOrder": 1850,
+  "createdAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "data": {
+    "characterId": "kagari_no_kirie",
+    "outfit": {
+      "id": "kirie_private_academy",
+      "name": "私立名门漆黑立领水手制服",
+      "prose": "A dignified all-black high school sailor uniform with contrasting white trimmed collar and cuffs, matching black pleated mini skirt, matte black thigh-highs and dark leather loafers.",
+      "tokens": [
+        "black_sailor_suit",
+        "long_sleeves",
+        "white_sailor_collar",
+        "black_skirt",
+        "pleated_skirt",
+        "black_thighhighs",
+        "loafers"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}
