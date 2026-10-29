@@ -190,10 +190,9 @@ impl ControlService {
                     Ok(free)
                 });
                 let installed = runtime_ready(&runtime_root, &runtime_copy);
-                let recoverable = plan::recoverable_runtime(&base, &runtime_copy);
                 let required = if installed {
                     0
-                } else if recoverable > 0 && plan::candidate_ready(&base, &runtime_copy) {
+                } else if plan::candidate_ready(&base, &runtime_copy) {
                     64 * 1024 * 1024
                 } else {
                     runtime_copy
@@ -202,7 +201,6 @@ impl ControlService {
                             &base.join(".downloads").join(&runtime_copy.runtime_id),
                             &runtime_copy.files,
                         ))
-                        .saturating_sub(recoverable)
                 };
                 let retained = plan::retained(&pixai, &files);
                 let model_installed = files
@@ -268,7 +266,7 @@ impl ControlService {
             "model":{"id":"pixai-tagger-v1.0","label":"PixAI Tagger v1.0","revision":manifest.revision,
                 "installed":model_installed,"downloadBytes":model_bytes},
             "sources":sources,
-            "validation":"准备将核对完整 SHA-256、依赖导入和 CUDA/BF16；首次真实反推仍取决于设备及空闲显存"}),
+            "validation":"下载时校验一次文件，准备私有依赖后登记路径；采用已有运行库记录，不重复诊断"}),
         )
     }
 }

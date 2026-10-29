@@ -53,7 +53,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, useId, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, useId, watch } from 'vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -110,9 +110,17 @@ function updateAdvanced(event: Event) {
 }
 const revealedSections = ref(new Set<string>())
 const forcedOpen = ref(new Set<string>())
-watch(() => props.fieldError?.field, path => {
+watch(() => props.fieldError?.field, async path => {
+  if (!path) return
   const section = fields.value.find(field => field.path === path)?.section
   if (section) { revealedSections.value.add(section); forcedOpen.value.add(section) }
+  await nextTick()
+  const el = document.querySelector<HTMLElement>(`[data-catalog-field="${path}"]`)
+  if (el) {
+    el.scrollIntoView({ behavior: 'instant', block: 'nearest' })
+    const focusable = el.querySelector<HTMLElement>('input:not(:disabled), textarea:not(:disabled), [role="combobox"]:not(:disabled), button:not(:disabled)') ?? el
+    focusable.focus({ preventScroll: true })
+  }
 }, { immediate: true })
 function toggleSection(section: string, event: Event) {
   if ((event.target as HTMLDetailsElement).open) revealedSections.value.add(section)

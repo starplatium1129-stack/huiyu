@@ -62,11 +62,13 @@ export function readPageMappings(source: string): PageMapping[] {
 }
 
 export function pageBundleReport(manifest: Manifest, mappings: PageMapping[], sizeOf: (file: string) => number) {
-  const entries = Object.keys(manifest).filter(key => manifest[key].isEntry);
+  // The offline assistant is a separate bundled document, not an ancestor of
+  // router pages. Trace only their actual index.html entry.
+  const entries = Object.keys(manifest).filter(key => manifest[key].isEntry && (key === 'index.html' || manifest[key].src === 'index.html'));
   return mappings.map(mapping => {
     const unknown = [...mapping.unknown];
     const roots = [...entries];
-    if (entries.length !== 1) unknown.push(`expected one application entry, found ${entries.length}`);
+    if (entries.length !== 1) unknown.push(`expected one index.html application entry, found ${entries.length}`);
     for (const source of mapping.sources) {
       const exact = Object.keys(manifest).filter(key => key === source || manifest[key].src === source);
       // Rollup can omit src for facade-free named chunks. Accept only a unique

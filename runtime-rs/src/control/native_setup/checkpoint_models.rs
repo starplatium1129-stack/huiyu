@@ -6,9 +6,9 @@ pub(super) async fn stage_checkpoint(
     model: &ModelBundle,
     source: Option<&Path>,
     cancel: &CancellationToken,
-) -> Result<()> {
+) -> Result<Option<String>> {
     let Some(filename) = model.checkpoint_filename.as_ref() else {
-        return Ok(());
+        return Ok(None);
     };
     let workspace = service.config.ai_workspace_root.join("inference");
     let target = workspace.join("models").join(&model.id);
@@ -32,13 +32,13 @@ pub(super) async fn stage_checkpoint(
         .clone();
     let destination = root.join(&artifact.path);
     if destination.exists() {
-        jobs::verify_files(&root, &[artifact], cancel).await?;
-        return Ok(());
+        // Existing inputs are verified once by the normal model downloader.
+        return Ok(None);
     }
     // 2B checkpoints support either automatic download or an existing file.
     // The 2.9B author flow still requires a locally downloaded checkpoint.
     if source.is_none() && model.conversion_profile.as_deref() == Some("anima-cosmos2b-v041") {
-        return Ok(());
+        return Ok(None);
     }
     let source = source
         .filter(|path| path.is_absolute())
@@ -50,7 +50,7 @@ pub(super) async fn stage_checkpoint(
         .to_owned();
     let filename = filename.clone();
     let cancel = cancel.clone();
-    tokio::task::spawn_blocking(move || -> Result<()> {
+    tokio::task::spawn_blocking(move || -> Result<Option<String>> {
         use std::io::{Read, Write};
         stopped(&cancel)?;
         let mut input = std::fs::File::open(&source)?;
@@ -89,7 +89,7 @@ pub(super) async fn stage_checkpoint(
         temporary
             .persist_noclobber(destination)
             .map_err(|error| ApiError::from(error.error))?;
-        Ok(())
+        Ok(Some(artifact.path))
     })
     .await
     .map_err(|_| ApiError::new(503, "MODEL_IMPORT_FAILED", "本机作者权重读取未完成"))?

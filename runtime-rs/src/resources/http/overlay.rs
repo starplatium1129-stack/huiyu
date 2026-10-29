@@ -1,5 +1,7 @@
 use super::*;
 use axum::{body::Body, extract::Request, http::Method, middleware::Next};
+use futures_util::StreamExt;
+use tower_http::services::ServeFile;
 fn resource_path(raw: &str) -> Option<String> {
     let lower = raw.to_ascii_lowercase();
     if !(lower == "/assets" || lower.starts_with("/assets/"))
@@ -73,7 +75,11 @@ pub async fn overlay(
     let Some(relative) = resource_path(request.uri().path()) else {
         return next.run(request).await;
     };
-    let head = request.method() == Method::HEAD;
+    // Frontend scripts, styles and fonts are bundled assets. They never need
+    // to initialize the optional resource library before reaching ServeFile.
+    if !crate::resources::resolve::serviceable(&relative) {
+        return next.run(request).await;
+    }
     let no_cache = request
         .headers()
         .get("cache-control")
@@ -82,89 +88,64 @@ pub async fn overlay(
     let condition = request.headers().get("if-none-match").cloned();
     let owner = service.clone();
     let name = relative.clone();
-    let mounted = crate::resources::blocking(move || Ok(owner.mount(&name))).await;
-    let Ok(Some((configuration, snapshot))) = mounted else {
+    let mounted = crate::resources::blocking(move || {
+        let Some((_, snapshot)) = owner.mount(&name) else {
+            return Ok(None);
+        };
+        let path = crate::resources::fs::child(&snapshot.root, &name)?;
+        let stat = crate::resources::fs::safe(&path, true, false)?;
+        Ok(stat
+            .filter(|stat| stat.is_file())
+            .map(|stat| (snapshot, path, stat)))
+    })
+    .await;
+    let Ok(Some((snapshot, path, stat))) = mounted else {
         return next.run(request).await;
     };
-    let entry = snapshot.entries[&relative].clone();
-    let etag = format!("\"{}\"", entry.sha256);
+    let modified = stat
+        .modified()
+        .ok()
+        .and_then(|time| time.duration_since(std::time::UNIX_EPOCH).ok())
+        .map(|time| time.as_nanos())
+        .unwrap_or(0);
+    let etag = format!("\"{}-{:x}-{modified:x}\"", snapshot.identity, stat.len());
     let fresh = !no_cache
         && condition
             .as_ref()
-            .and_then(|v| v.to_str().ok())
+            .and_then(|value| value.to_str().ok())
             .is_some_and(|value| {
                 value.split(',').any(|part| {
                     let part = part.trim().strip_prefix("W/").unwrap_or(part.trim());
                     part == "*" || part == etag
                 })
             });
-    let group = snapshot.group_files.get(&relative).copied();
-    if relative.starts_with("assets/live2d/") && group.is_none() {
-        return next.run(request).await;
-    }
-    let collect = !head && !fresh;
-    let result = async {
-        if let Some((group, file)) = group {
-            let collect_group =
-                collect && crate::resources::group_reads::size(&snapshot, group).is_some();
-            // Large models share a concurrent hash-only flight without retaining
-            // their whole dependency group. Each body still verifies its own
-            // bytes after that flight; no completed verification is cached.
-            let bytes = service
-                .group_reads
-                .get(&service, snapshot.clone(), group, file, collect_group)
-                .await?;
-            if collect_group || !collect {
-                return Ok(collect.then_some(bytes));
-            }
-        }
-        service
-            .group_reads
-            .file(&service, snapshot.clone(), entry.clone(), collect)
-            .await
-    }
-    .await;
-    let bytes = match result {
-        Ok(bytes) => bytes,
-        Err(error) if error.code == "RESOURCE_BUSY" => return super::failure(error, 503),
-        Err(error) => {
-            if error.code != "CANCELLED" {
-                service.invalidate(&configuration, &snapshot, error);
-            }
-            return next.run(request).await;
-        }
-    };
-    let version = snapshot.identity.clone();
-    let (owner, name) = (service.clone(), relative.clone());
-    let current = crate::resources::blocking(move || {
-        Ok(owner
-            .mount(&name)
-            .is_some_and(|(latest_configuration, latest)| {
-                Arc::ptr_eq(&configuration, &latest_configuration)
-                    && Arc::ptr_eq(&snapshot, &latest)
-            }))
-    })
-    .await;
-    if !matches!(current, Ok(true)) {
-        return next.run(request).await;
-    }
-    let (mime, length) = (mime(&relative), entry.bytes);
+    // Installed content was admitted on import. Ordinary HTTP reads do not
+    // rehash a file, preload a Live2D group or buffer complete response bodies.
     let mut response = if fresh {
         StatusCode::NOT_MODIFIED.into_response()
     } else {
-        bytes
-            .map(Body::from)
-            .unwrap_or_else(Body::empty)
-            .into_response()
+        let mut request = request;
+        if condition.is_some() {
+            request.headers_mut().remove("if-modified-since");
+        }
+        match ServeFile::new_with_mime(path, &mime(&relative).parse().unwrap())
+            .try_call(request)
+            .await
+        {
+            Ok(response) => response.map(|body| {
+                Body::from_stream(
+                    Body::new(body)
+                        .into_data_stream()
+                        .take_until(service.read_cancel.clone().cancelled_owned()),
+                )
+            }),
+            Err(_) => return StatusCode::NOT_FOUND.into_response(),
+        }
     };
     let headers = response.headers_mut();
     headers.insert("cache-control", "private, no-cache".parse().unwrap());
     headers.insert("x-content-type-options", "nosniff".parse().unwrap());
-    headers.insert("x-resource-version", version.parse().unwrap());
+    headers.insert("x-resource-version", snapshot.identity.parse().unwrap());
     headers.insert("etag", etag.parse().unwrap());
-    headers.insert("content-type", mime.parse().unwrap());
-    if !fresh {
-        headers.insert("content-length", length.to_string().parse().unwrap());
-    }
     response
 }

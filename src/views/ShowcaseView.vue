@@ -65,7 +65,8 @@
       :kind="entries.length ? 'filtered' : 'empty'"
       :title="entries.length ? '没有匹配的参考样张' : '画册暂未收录样张'"
     >
-      <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFromControl">重置筛选</button>
+      <button v-if="hasFilters" class="btn btn-primary" type="button" @click="resetFromControl">重置筛选</button>
+      <RouterLink v-else class="btn btn-primary" to="/scene-explorer">去逛灵感场景</RouterLink>
     </ArchiveStatePanel>
 
     <div v-else ref="listRoot" data-route-arrive class="showcase-grid" :aria-busy="manifestLoading">

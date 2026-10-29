@@ -7,6 +7,7 @@ import { prefersReducedMotion } from '@/utils/motionPreference'
 import { needsDocumentReload } from './documentPolicy'
 import { createRoutePrefetcher } from './prefetch'
 import { captureScrollAnchor, restoreScrollAnchor } from '@/utils/scrollAnchor'
+import { loadRoom, type RoomPage } from './roomResources'
 export { needsDocumentReload } from './documentPolicy'
 export { prefetchRouteResources } from './prefetch'
 
@@ -73,7 +74,7 @@ const router = createRouter({
         { path: 'qwen-studio', redirect: to => ({ path: '/prompt-builder', query: { ...to.query, ...(to.query.artwork || to.query.job ? { editor: 'qwen' } : { engine: 'qwen' }) }, hash: to.hash }) },
         { path: 'moss-studio', redirect: to => ({ path: '/prompt-builder', query: { ...to.query, engine: 'moss' }, hash: to.hash }) },
         { path: 'video-studio',  name: 'video',         meta: { title: '故事短片' }, component: () => import('@/views/VideoStudioView.vue') },
-        { path: 'chat',           name: 'chat',          meta: { title: '角色房间' }, component: () => import('@/views/ChatView.vue') },
+        { path: 'chat',           name: 'chat',          meta: { title: '角色房间' }, component: () => import('@/views/RoomRouteView.vue'), props: { page: 'chat', label: '角色房间' } },
         { path: 'showcase',       name: 'showcase',      meta: { title: '参考画册' }, component: () => import('@/views/ShowcaseView.vue') },
         { path: 'gallery',        name: 'gallery',       meta: { title: '我的作品' }, component: () => import('@/views/GalleryView.vue') },
         { path: 'character',      name: 'character',     meta: { title: '角色档案' }, component: () => import('@/views/CharacterView.vue') },
@@ -87,9 +88,9 @@ const router = createRouter({
       ]
     },
     // 桌宠与控制面板都有独立完整布局，不套 AppLayout。
-    { path: '/companion', name: 'companion', meta: { title: '桌面陪伴' }, component: () => import('@/views/CompanionView.vue') },
+    { path: '/companion', name: 'companion', meta: { title: '桌面陪伴' }, component: () => import('@/views/RoomRouteView.vue'), props: { page: 'companion', label: '桌面陪伴' } },
     // 真双窗口：独立聊天窗（无 Live2D，严格 CSP，不进 LIVE2D_PATHS）
-    { path: '/companion-chat', name: 'companion-chat', meta: { title: '陪伴聊天' }, component: () => import('@/views/CompanionChatView.vue') },
+    { path: '/companion-chat', name: 'companion-chat', meta: { title: '陪伴聊天' }, component: () => import('@/views/RoomRouteView.vue'), props: { page: 'companion-chat', label: '陪伴聊天' } },
     { path: '/control', name: 'control', meta: { title: '控制面板' }, component: () => import('@/views/ControlView.vue') }
   ],
   // 路由切换回到顶部；带 hash 时定位到锚点，浏览器前进/后退时还原原位置
@@ -127,38 +128,13 @@ const router = createRouter({
 })
 
 const ROOM_RESOURCE_PATHS = new Set(['/chat', '/companion', '/companion-chat'])
-let roomResourcePreparation: Promise<void> | null = null
-function prepareRoomResources(): Promise<void> {
-  if (!roomResourcePreparation) {
-    roomResourcePreparation = Promise.all([
-      import('@/utils/localCompanions').then(module => module.loadLocalCompanions()),
-      import('@/platform/web/profileStorage').then(module => module.ensureProfileChatHistory()),
-    ]).then(() => undefined)
-  }
-  return roomResourcePreparation
-}
-
-// Begin room data before Vue Router resolves the lazy page component. Browser
-// policy transitions reload the document, so their old document does not start
-// work it cannot reuse; direct entries and desktop SPA navigation run in parallel.
+// Start data and page imports together, without holding up route commitment.
+// The room panel owns history admission so an unloaded history is never writable.
 router.beforeEach((to, from) => {
   if (!ROOM_RESOURCE_PATHS.has(to.path)) return
   if (from.matched.length && import.meta.env.MODE !== 'desktop' && needsDocumentReload(from.path, to.path)) return
-  void prepareRoomResources().catch(() => {})
+  void loadRoom(to.path.slice(1) as RoomPage).catch(() => {})
 })
-
-// The page still receives complete local characters and chat history. Awaiting
-// here preserves the existing boundary while overlapping its I/O with imports.
-router.beforeResolve(async to => {
-  if (!ROOM_RESOURCE_PATHS.has(to.path)) return
-  const pending = roomResourcePreparation ?? prepareRoomResources()
-  try {
-    await pending
-  } finally {
-    if (roomResourcePreparation === pending) roomResourcePreparation = null
-  }
-})
-
 // Capture while the old page is still laid out. Reading scrollY inside
 // scrollBehavior after the new DOM patch can itself force a full layout.
 router.beforeResolve(() => { navigationScrollStart = captureScrollAnchor() || { left: 0, top: 0 } })

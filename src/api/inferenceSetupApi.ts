@@ -21,12 +21,11 @@ export interface NativeSetupPlan {
   workspacePath: string
   paths: { runtimeRoot: string; modelsRoot: string; lorasRoot: string; cacheRoot: string; tempRoot: string }
   hardware: { devices: { name: string; type?: string; vramBytes?: number | null; driverVersion?: string }[]; otherDevices?: { name: string; driverVersion: string | null }[]; ramBytes: number | null }
-  network?: { runtimeSource: boolean; modelSource: boolean; message: string }
   supported: boolean
   reasons: string[]
   warnings?: string[]
   freeBytes: number | null
-  runtime: { id: string; label: string; downloadBytes: number; requiredBytes: number; recoverableBytes?: number; recoveryReady?: boolean; sources: { label: string; url: string; licenseUrl: string }[]; installed: boolean }
+  runtime: { id: string; label: string; downloadBytes: number; requiredBytes: number; recoveryReady?: boolean; sources: { label: string; url: string; licenseUrl: string }[]; installed: boolean }
   models: { preparation?: 'checkpoint-conversion' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; requiresAccess: boolean; family: string; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
   resources: NativeImageResource[]
   activeEngine: string
@@ -101,7 +100,6 @@ function validPlan(value: ApiResponseObject): boolean {
       && bytes(entry.requiredBytes) && typeof entry.present === 'boolean' && nonempty(entry.path))
     && object(paths) && ['runtimeRoot', 'modelsRoot', 'lorasRoot', 'cacheRoot', 'tempRoot'].every(key => nonempty(paths[key]))
     && object(hardware) && (hardware.ramBytes === null || bytes(hardware.ramBytes))
-    && (value.network === undefined || object(value.network) && typeof value.network.runtimeSource === 'boolean' && typeof value.network.modelSource === 'boolean' && typeof value.network.message === 'string')
     && Array.isArray(hardware.devices) && hardware.devices.every(device => object(device) && nonempty(device.name)
       && optionalBytes(device.vramBytes) && (device.type === undefined || typeof device.type === 'string')
       && (device.driverVersion === undefined || typeof device.driverVersion === 'string'))
@@ -111,7 +109,6 @@ function validPlan(value: ApiResponseObject): boolean {
     && (value.warnings === undefined || Array.isArray(value.warnings) && value.warnings.every(warning => typeof warning === 'string'))
     && (value.freeBytes === null || bytes(value.freeBytes))
     && object(runtime) && nonempty(runtime.id) && nonempty(runtime.label) && bytes(runtime.downloadBytes) && bytes(runtime.requiredBytes)
-    && (runtime.recoverableBytes === undefined || bytes(runtime.recoverableBytes))
     && (runtime.recoveryReady === undefined || typeof runtime.recoveryReady === 'boolean')
     && typeof runtime.installed === 'boolean' && Array.isArray(runtime.sources) && runtime.sources.every(source => object(source)
       && nonempty(source.label) && secureUrl(source.url) && secureUrl(source.licenseUrl))

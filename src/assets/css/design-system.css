@@ -170,9 +170,9 @@
   --shadow-sm: 0 3px 10px rgba(5, 11, 18, 0.20);
   --shadow-md: 0 8px 22px rgba(5, 11, 18, 0.30);
   --shadow-lg: 0 16px 38px rgba(5, 11, 18, 0.42);
-  /* 玻璃面高光内衬 — 水晶亚克力双层高光折射 (顶部 1px 晶莹雪白，底部环境微阴影) */
-  --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
-  --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
+  /* 玻璃面高光内衬 — 水晶亚克力双层高光折射 (顶部 1px 晶莹雪白，底部环境微阴影与紫夜漫射) */
+  --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), 0 2px 8px -1px rgba(9, 14, 23, 0.24), 0 1px 3px 0 rgba(183, 132, 246, 0.04);
+  --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), 0 8px 22px -3px rgba(7, 12, 20, 0.32), 0 2px 8px -1px rgba(183, 132, 246, 0.07);
   --shadow-glass-elevated: inset 0 1px 0 var(--glass-highlight), var(--shadow-lg);
   /* accent 光晕: 恋爱感柔光弥散 (Bloom) */
   --glow-md: 0 0 28px var(--accent-glow), 0 0 10px rgba(183, 132, 246, 0.25);
@@ -427,9 +427,11 @@ body > *:has(+ .footer),
               transform var(--motion-hover) var(--ease-out);
   @apply tw:text-body-lg tw:leading-flush;
 }
-.theme-toggle:hover {
-  @apply tw:border-strong tw:text-primary;
-  transform: rotate(-15deg);
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover {
+    @apply tw:border-strong tw:text-primary;
+    transform: rotate(-15deg);
+  }
 }
 .nav-menu-toggle .archive-icon { @apply tw:w-[1em] tw:h-[1em]; }
 
@@ -588,12 +590,10 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
 /* ---- Card ---- */
 .card {
   background: var(--bg-surface);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-soft);
   @apply tw:rounded-lg tw:p-s-5;
   backdrop-filter: none;
-  /* 修复:此处原有两条 box-shadow,后一条覆盖掉玻璃内衬高光,
-     导致 .card 与 .card-info/.card-create 的表面语言不一致 */
-  box-shadow: var(--shadow-glass-sm);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
   transition: transform var(--motion-hover);
 }
 .card:hover { @apply tw:border-strong; }
@@ -610,12 +610,12 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
    direct  L3 主操作 (单点入口/角色/项目)   — 高密度,accent 渐变边 + 强阴影
    阶梯: shadow-sm → md → lg
 */
-.card-info   { background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:p-s-5; backdrop-filter: none; box-shadow:var(--shadow-glass-sm); }
+.card-info   { background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:p-s-5; backdrop-filter: none; box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm); }
 .card-create {
   @apply tw:relative tw:overflow-hidden;
   background:linear-gradient(145deg,var(--glass-highlight),transparent 34%),var(--bg-surface);
   border:1px solid var(--border-strong); @apply tw:rounded-lg tw:p-s-3;
-  backdrop-filter:none; box-shadow:var(--shadow-glass-sm);
+  backdrop-filter:none; box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
   transition:transform var(--motion-hover) var(--ease-out);
 }
 .card-create::before {
@@ -629,7 +629,7 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
   background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface));
   border: 1px solid var(--accent);
   @apply tw:rounded-xl tw:p-s-5;
-  box-shadow: var(--shadow-sm);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
   transition: transform var(--motion-hover);
 }
 /* 战术切角：右上角 45° 斜切，档案终端质感（设计规范 §1.2） */
@@ -684,8 +684,27 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
 /* Anchor buttons retain contrasting primary/danger ink over the global link hover. */
 a.btn-primary, a.btn-primary:hover, a.btn-primary:active { @apply tw:text-inverse; }
 a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-text; }
-/* 按压位移由 interaction-motion 的控件层负责；按钮保留阴影反馈。 */
-.btn:active:not(:disabled):not([aria-disabled="true"]) { box-shadow: none; transform:var(--control-press-transform); }
+/* 按压反馈：微触感压缩与平滑回位，保留点击命中区与焦点环 */
+.btn:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) {
+  box-shadow: none;
+  transform: scale(0.98);
+}
+.btn:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) > :where(.studio-control-label,.studio-control-icon,.archive-icon:not(.spin),.u008-icons,.u008-label) {
+  transform: none;
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+  transform: none;
+}
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .btn:active {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .btn:active {
+    transform: none;
+  }
+}
 /* 统一禁用态:同时覆盖真 disabled 与 aria-disabled 链接
    2026-08-28 审计修复：不再用 opacity 压字。alpha 合成后实测文字对比度只剩
    3.45:1（深色 --bg-elevated 上），而按钮文案是「生成」「发送」这类需要读懂
@@ -940,6 +959,16 @@ tr:hover td { background: var(--bg-hover); }
   .layer-fade-leave-active) { transition:opacity var(--motion-control) ease-out; }
   html:not([data-motion='full']) { scroll-behavior:auto !important; }
 }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .nav-links > a::after,
+:root:is([data-motion='reduce'],[data-motion='reduced']) :is(.spin,
+.route-atmosphere *,
+[data-reveal], [class*="stagger-in"], .stagger-container > *) {
+  animation:none !important;
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) :is(
+.layer-fade-enter-active,
+.layer-fade-leave-active) { transition:opacity var(--motion-control) ease-out; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) { scroll-behavior:auto !important; }
 
 /* 内容密集页（导演台 / 训练台）右下角水印会与面板叠压，隐藏之；
    其余页面仍保留首屏水印（滚动后由 RouteAtmosphere 渐隐） */
@@ -1106,6 +1135,9 @@ tr:hover td { background: var(--bg-hover); }
   .fx-onome.is-popping) { animation: none; opacity: 1; }
   :root:not([data-motion='full']) .fx-speed-lines::before { animation: none; }
 }
+:root:is([data-motion='reduce'],[data-motion='reduced']) :is(.fx-focus-lines.is-bursting,
+.fx-onome.is-popping) { animation: none; opacity: 1; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .fx-speed-lines::before { animation: none; }
 [data-reveal][data-reveal-delay="1"] { transition-delay: var(--motion-press); }
 [data-reveal][data-reveal-delay="2"] { transition-delay: var(--motion-hover); }
 [data-reveal][data-reveal-delay="3"] { transition-delay: var(--motion-surface); }
@@ -1117,7 +1149,14 @@ tr:hover td { background: var(--bg-hover); }
 
 /* ── 浮动悬停（卡片增强） ── */
 
-/* ── 按钮加载状态 ── */
+/* ── 按钮加载与防重入状态 ── */
+.btn[data-loading],
+.btn[aria-busy="true"]:not([data-cancel]):not([data-action="cancel"]):not(.btn-cancel):not([data-gesture-toggle]) {
+  pointer-events: none;
+}
+.btn:is([data-cancel], [data-action="cancel"], .btn-cancel, [data-gesture-toggle]) {
+  pointer-events: auto !important;
+}
 .btn[data-loading]::after {
   content: '';
   @apply tw:inline-block tw:w-[.85em] tw:h-[.85em] tw:ml-[.5em];
@@ -1192,7 +1231,7 @@ tr:hover td { background: var(--bg-hover); }
    neighboring hit areas cannot overlap. Compact pointer controls stay intact. */
 @media (pointer: coarse) {
   :root .nav :is(button, summary, a:not(.nav-brand)),
-  :root :is(.btn, .appearance-button, .appearance-close, .app-theme-toggle, .sound-toggle) {
+  :root :is(.btn, .appearance-button, .appearance-close, .app-theme-toggle, .sound-toggle, .filter-pill) {
     @apply tw:min-w-[44px] tw:min-h-[44px];
   }
 }

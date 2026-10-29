@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kurodate_haruna",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 212,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
+  "updatedAt": "2026-10-29T16:22:35.549786+00:00",
   "data": {
     "id": "kurodate_haruna",
     "profile": {
@@ -27,14 +27,14 @@
         "sourceShowcaseSha256": "7bbf0d9017945be301e0eb60ab3fb4cdc1d97a6115660beaf947868e8d53f21c"
       },
       "visual_dna": {
-        "hair": "极长如缎的墨黑直发 · 发尾至内侧泛着鲜明纯正的朱红挑染渐变",
-        "hair_color": "纯黑 / 内侧渐变朱红",
-        "eyes": "高贵澄澈摄人心魄的猩红眼眸 · 傲然贵气的大小姐神采",
-        "hairstyle": "及腰飘逸直长发 · 优雅侧刘海 · 头顶一对黑色弯角 · 背部黑色恶魔蝙蝠翼 · 格黑娜红黑尖刺光环",
-        "uniform": "高定奢华黑红修身礼装长裙 · 纯白毛领披肩斗篷 · 白手套 · 黑色长筒袜 · 高跟鞋",
-        "expression": "高雅从容的贵族千金 · 谈及极品美食或炸毁劣质餐馆时的决绝狂热 · 面对老师时的娇贵任性",
-        "style": "aristocratic gourmet research president with passionate culinary obsession",
-        "signature": "黑发红挑染、恶魔翅膀弯角、高定毛领礼装与优雅危险感"
+        "hair": "银白色长发，侧边编有细辫",
+        "hair_color": "银白色",
+        "eyes": "红色眼眸",
+        "hairstyle": "银白长发与侧辫，背后有一只黑色蝙蝠形翼，身后有细长尾巴，头顶是红色准星状光环",
+        "uniform": "项目造型为黑红礼服配白色毛领披肩、白手套与黑色丝袜；原作常服为黑白制服和黑色军帽",
+        "expression": "举止优雅从容，提及美食时显露出强烈的热情",
+        "style": "elegant gourmet research president with silver hair, one black demon wing and a long tail",
+        "signature": "银白长发、侧辫、红眼、单侧黑翼、细长尾巴与红色光环"
       },
       "personality": [
         "优雅高贵",
@@ -51,24 +51,24 @@
       ],
       "classic_cg": {
         "title": "米其林包厢的红酒与致命喂食",
-        "description": "学园都市顶奢旋转餐厅高层包厢，璀璨的万家灯火在落地窗外如星河倾泻。晴奈身穿黑金剪裁的高定礼裙，红挑染的长发如丝缎般披散在雪白的毛领披肩上。她优雅地晃动着水晶杯中的红酒，猩红眼眸倒映着微光，用小银叉将一块极尽诱人的焦糖点心送至老师唇前，唇角泛起危险而迷醉的绝美浅笑。"
+        "description": "学园都市顶奢旋转餐厅高层包厢，璀璨的万家灯火在落地窗外如星河倾泻。晴奈身穿黑金剪裁的高定礼裙，银白长发如丝缎般披散在雪白的毛领披肩上。她优雅地晃动着水晶杯中的红酒，猩红眼眸倒映着微光，用小银叉将一块极尽诱人的焦糖点心送至老师唇前，唇角泛起危险而迷醉的绝美浅笑。"
       },
       "identity": {
-        "role": "歌赫娜学园美食研究会会长 / 跨学园美馔品鉴顾问",
+        "role": "歌赫娜学园美食研究会会长",
         "age": "成年创作设定",
-        "occupation": "美食家 / 美食研究社首长 / 特级资产继承人",
+        "occupation": "美食研究会会长",
         "faction": "歌赫娜学园 / 美食研究会",
         "school": "歌赫娜学园",
         "classificationSource": "本角色档案 identity.faction 中明确记载的学院；统一学院名称写法。"
       },
       "tags": [
-        "黑发红挑染",
-        "恶魔角",
-        "黑羽翼",
-        "大小姐",
-        "美食家",
+        "银白长发",
+        "侧辫",
+        "单侧黑翼",
+        "细长尾巴",
         "红瞳",
-        "歌赫娜美食委"
+        "红色光环",
+        "美食研究会"
       ],
       "bg_story": "黑馆晴奈是基沃托斯歌赫娜学园名门黑馆家族的千金小姐，亦是闻名全学园都市的「美食研究会」会长。她拥有无与伦比的天才味蕾与雄厚财力，一生只为追求料理艺术的至高极境。对于晴奈而言，追求美食是一场赌上尊严与美学的崇高圣战，任何亵渎食材与顾客的行为都值得用最华丽的爆炸予以制裁。在与夏莱老师无数次「美食远征」与并肩作战中，晴奈逐渐发现，世间最不可思议的终极调味料，正是身边那位无私包容自己所有任性与狂热的老师。成年后的晴奈不仅名震都市美食界，更将她那高傲骄矜的芳心与至死不渝的浪漫，无怨无悔地献给了她唯一的共餐者。",
       "palette": [
@@ -85,13 +85,15 @@
       "speech": "向您致以崇高的敬意，老师。我是歌赫娜美食研究会会长，黑馆晴奈。今天我已为您预定了跨越三个学园的终极品尝路线……您会陪伴我直到盘底朝天，对吧？",
       "source": "Blue Archive",
       "traits": [
-        "black_hair",
-        "very_long_hair",
-        "multicolored_hair",
+        "grey_hair",
+        "long_hair",
+        "side_braid",
         "red_eyes",
-        "horns",
+        "single_wing",
         "black_wings",
-        "halo"
+        "demon_wings",
+        "demon_tail",
+        "red_halo"
       ],
       "voice": "向您致以崇高的敬意，老师。今天我已为您安排了探访顶级美味的品尝路线……您会陪伴我直到盘底朝天，对吧？",
       "voiceJa": "ごきげんよう、先生。美食研究会の黒舘ハルナです。極上の味を求めに行きましょう"
@@ -124,16 +126,17 @@
         "kurodate_haruna",
         "1girl",
         "solo",
-        "black_hair",
-        "very_long_hair",
-        "red_hair",
-        "multicolored_hair",
+        "grey_hair",
+        "long_hair",
+        "side_braid",
         "red_eyes",
-        "horns",
+        "single_wing",
         "black_wings",
-        "halo"
+        "demon_wings",
+        "demon_tail",
+        "red_halo"
       ],
-      "identityProse": "Kurodate Haruna from Blue Archive, the only character in the image, with long black hair featuring vibrant red inner streaks, curved horns, black demon wings, crimson-red eyes, and a glowing halo.",
+      "identityProse": "Kurodate Haruna from Blue Archive, with long silver-gray hair, a side braid, red eyes, a single black demon wing, a slender tail, and a red halo.",
       "curatedArtistStyles": [
         "kakao",
         "mika_pikazo",
@@ -143,7 +146,7 @@
       "canon": {
         "era": "近未来学园都市",
         "world": "基沃托斯（Kivotos）· 歌赫娜学园",
-        "formNotes": "美食研究会会长，黑发红挑染、恶魔角羽翼、红瞳，高贵千金美食品鉴与优雅爆破狂热反差"
+        "formNotes": "歌赫娜美食研究会会长，银白长发、侧辫、红眼、单侧黑色蝙蝠形翼、细长尾巴与红色准星状光环；毛领礼服为项目造型。"
       },
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [

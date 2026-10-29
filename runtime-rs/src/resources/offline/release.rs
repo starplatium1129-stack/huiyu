@@ -24,6 +24,8 @@ pub(super) struct Release {
     showcase_payload: Option<Manifest>,
     pub baseline: Option<Value>,
     pub display: Value,
+    pub files: usize,
+    pub bytes: u64,
 }
 impl Release {
     pub(super) fn showcase_payload(&self) -> &Manifest {
@@ -127,6 +129,7 @@ pub(super) fn display(value: &Value) -> Result<HashMap<String, Cow<'_, Value>>> 
 pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Release> {
     config::cancelled(cancel)?;
     let raw = fs::bytes(&options.package.join("release.json"), fs::MAX_JSON, false)?;
+    let release_bytes = raw.len() as u64;
     if digest(&raw) != options.expected {
         return Err(Error::new(
             "PACKAGE_UNAPPROVED",
@@ -275,6 +278,16 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
     }
     drop(showcase_entries);
     let display_raw = fs::bytes(&showcase_root.join("manifest.json"), fs::MAX_JSON, false)?;
+    if !payload.entries.iter().any(|entry| {
+        entry.path == "manifest.json"
+            && entry.bytes == display_raw.len() as u64
+            && entry.sha256 == digest(&display_raw)
+    }) {
+        return Err(Error::new(
+            "CONTENT_INVALID",
+            "Showcase manifest differs from release",
+        ));
+    }
     let display_value: Value = serde_json::from_slice(&display_raw)
         .map_err(|_| Error::new("MANIFEST_INVALID", "Invalid display manifest"))?;
     drop(display_raw);
@@ -353,7 +366,11 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
     // The exact union above covers both payloads and their metadata. This
     // traversal checks every path, size and hash; verifying each subtree again
     // would immediately read and hash all payload bytes a second time.
-    manifest::verify(&options.package, &inventory, &["release.json"], cancel)?;
+    if !options.mount_directory {
+        manifest::verify(&options.package, &inventory, &["release.json"], cancel)?;
+    }
+    let files = inventory.entries.len() + 1;
+    let bytes = inventory.bytes() + release_bytes;
     drop(inventory);
     let catalog = if catalog_entry.is_null() {
         None
@@ -389,6 +406,8 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
         showcase_payload,
         baseline,
         display: display_value,
+        files,
+        bytes,
     })
 }
 pub(super) fn same_entry(left: Option<&Value>, right: Option<&Value>) -> bool {

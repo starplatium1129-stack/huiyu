@@ -6,8 +6,8 @@ import FluidTransition from '@/components/visual/FluidTransition.vue'
 
 withDefaults(defineProps<{ label: string; sideOffset?: number }>(), { sideOffset: 8 })
 const open = ref(false), pointerOpened = ref(false)
-const trigger = shallowRef<{ $el: HTMLElement } | null>(null)
-const { portalTarget, collisionBoundary } = useModalPortalHost(() => trigger.value?.$el, open)
+const trigger = shallowRef<{ $el?: unknown } | HTMLElement | null>(null)
+const { portalTarget, collisionBoundary } = useModalPortalHost(() => trigger.value, open)
 let viewActive = true, actionSelected = false, interactedOutside = false
 watch(open, value => { if (value) { actionSelected = false; interactedOutside = false } }, { flush: 'sync' })
 onActivated(() => { viewActive = true })
@@ -16,7 +16,10 @@ onDeactivated(deactivate)
 onBeforeUnmount(deactivate)
 
 function focusTrigger() {
-  const element = trigger.value?.$el
+  const raw = trigger.value
+  const element = (raw && typeof raw === 'object' && '$el' in raw && (raw as { $el?: unknown }).$el instanceof HTMLElement)
+    ? (raw as { $el: HTMLElement }).$el
+    : (raw instanceof HTMLElement ? raw : null)
   if (element?.isConnected && element.getClientRects().length && !element.closest('[inert], [hidden]') && !element.matches(':disabled'))
     element.focus({ preventScroll: true })
 }
@@ -38,10 +41,22 @@ function onInteractOutside() { interactedOutside = true }
 function onEscape(event: KeyboardEvent) {
   if (!open.value || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
   event.preventDefault()
+  event.stopPropagation()
   open.value = false
+  focusTrigger()
 }
-function onDismissEscape(event: KeyboardEvent) {
-  if (event.isComposing || event.keyCode === 229) event.preventDefault()
+function onDismissEscape(event: KeyboardEvent | CustomEvent<{ originalEvent?: KeyboardEvent }>) {
+  const customDetail = 'detail' in event && typeof event.detail === 'object' && event.detail !== null
+    ? (event.detail as { originalEvent?: KeyboardEvent })
+    : null
+  const orig = customDetail?.originalEvent ?? (event instanceof KeyboardEvent ? event : null)
+  if (orig?.isComposing || orig?.keyCode === 229) {
+    event.preventDefault()
+    orig?.preventDefault?.()
+    return
+  }
+  event.stopPropagation?.()
+  orig?.stopPropagation?.()
 }
 </script>
 

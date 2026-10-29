@@ -4,6 +4,12 @@ fn main() {
             tauri_build::AppManifest::new().commands(&[
                 "desktop_bootstrap",
                 "desktop_maintenance_ack",
+                "open_resource_assistant",
+                "resource_assistant_status",
+                "resource_assistant_pick",
+                "resource_assistant_install",
+                "resource_assistant_cancel",
+                "resource_assistant_finish",
                 "desktop_workspace_prepare",
                 "desktop_workspace_activate",
                 "desktop_workspace_enable_bundled",

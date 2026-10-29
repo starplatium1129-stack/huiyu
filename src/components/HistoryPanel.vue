@@ -16,6 +16,7 @@
     <div v-else-if="!items.length" class="history-empty" role="status">
       <ArchiveIcon name="image" class="history-empty-icon" />
       <span>还没有保存的作品。生成后点“存入作品册”，把喜欢的这一刻留在这里。</span>
+      <RouterLink to="/popular-scenes" class="btn btn-primary btn-sm tw:mt-s-2"><ArchiveIcon name="spark" />浏览精选场景</RouterLink>
     </div>
     <div v-if="error && items.length" class="history-empty" role="status">
       <span>{{ error }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="$emit('retry')">{{ loading ? '正在读取…' : '重新读取' }}</button>
@@ -66,6 +67,7 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import { computed, defineAsyncComponent, nextTick, ref, shallowRef, watch } from 'vue'
+import { RouterLink } from 'vue-router'
 const SavedArtworkPreview = defineAsyncComponent(() => import('@/components/gallery/SavedArtworkPreview.vue'))
 import { useHistoryThumbnails } from '@/composables/prompt/useHistoryThumbnails'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

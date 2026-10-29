@@ -19,6 +19,7 @@
 .catalog-breadcrumb span { margin-inline:var(--s-2); color:var(--text-muted); }
 .catalog-page-head h1 { font-size:var(--fs-title); font-weight:600; margin:0; line-height:1.3; }
 .catalog-head-actions { display:flex; align-items:center; gap:var(--s-2); flex-wrap:wrap; justify-content:flex-end; flex-shrink:0; }
+.catalog-head-actions .btn-primary { min-width: 108px; justify-content: center; }
 .catalog-save-status { display:inline-flex; color:var(--text-secondary); font-size:var(--fs-label-xs); margin-right:var(--s-3); }
 .catalog-save-status-content { display:inline-flex; align-items:center; gap:var(--s-2); }
 .catalog-save-status i { width:6px; height:6px; border-radius:50%; background:var(--success); }

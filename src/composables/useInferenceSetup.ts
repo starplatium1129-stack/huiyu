@@ -69,10 +69,8 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     planVersion++; planController?.abort(); checking.value = false
     void refreshPlan()
   }
-  const focused = () => { if (!locked.value) void refreshPlan() }
   if (desktop) {
     window.addEventListener('huiyu:ai-workspace-changed', workspaceChanged)
-    window.addEventListener('focus', focused)
   }
   function invalidateInspection() {
     inspectionVersion++; inspectionController?.abort(); inspection.value = null; importReviewed.value = false
@@ -373,7 +371,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   onScopeDispose(() => {
     hfToken.value = ''
     disposed = true; workspaceOpenVersion++; planVersion++; inspectionVersion++; planController?.abort(); inspectionController?.abort(); activationController?.abort()
-    window.removeEventListener('huiyu:ai-workspace-changed', workspaceChanged); window.removeEventListener('focus', focused)
+    window.removeEventListener('huiyu:ai-workspace-changed', workspaceChanged)
   })
   return { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, checkpointPath, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
     basePython, wheelhouse, workspacePath, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,

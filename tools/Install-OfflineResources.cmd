@@ -1,2 +1,6 @@
 @echo off
+if exist "%~dp0..\..\ai-cg-studio-desktop.exe" (
+  start "" "%~dp0..\..\ai-cg-studio-desktop.exe" --resource-assistant
+  exit /b
+)
 start "" "%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -STA -WindowStyle Hidden -ExecutionPolicy Bypass -File "%~dp0offline-resource-assistant.ps1"

@@ -4,6 +4,7 @@ import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import { runtimeResourceIdentity } from '../platform/runtimeUrl.ts'
 
 export const CHARACTER_ART_CHANNEL = 'huiyu-character-art'
+export const CHARACTER_ART_SENDER = crypto.randomUUID()
 export type CharacterArtSavePayload = { baseVersion: string; id: string; image?: string; reset?: true }
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
 function parseCharacterArtManifest(value: unknown): CharacterArtManifest {
@@ -36,7 +37,7 @@ async function request(body?: CharacterArtSavePayload, signal?: AbortSignal): Pr
   if (!signal?.aborted && identity === runtimeResourceIdentity() && (body ? writeToken === writeSequence : token === sequence)) {
     if (body && token !== sequence && characterArtManifest.value.version !== body.baseVersion
       && characterArtManifest.value.version !== value.version) {
-      // A focus/cross-window read may already have observed a later writer.
+      // A cross-window read may already have observed a later writer.
       // Re-read after our acknowledgement instead of restoring an older image.
       try { return await request(undefined, signal) } catch { return value }
     }
@@ -47,8 +48,8 @@ async function request(body?: CharacterArtSavePayload, signal?: AbortSignal): Pr
     let channel: BroadcastChannel | undefined
     try {
       channel = new BroadcastChannel(CHARACTER_ART_CHANNEL)
-      channel.postMessage({ changed: true })
-    } catch { /* Some desktop origins disable channels; focus refresh remains available. */ }
+      channel.postMessage({ sender: CHARACTER_ART_SENDER, identity })
+    } catch { /* Local state already adopted the saved manifest. */ }
     finally { channel?.close() }
   }
   return value

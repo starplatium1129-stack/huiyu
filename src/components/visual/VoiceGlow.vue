@@ -44,7 +44,7 @@ let stopFrames: (() => void) | null = null
 let logicalWidth = 0
 let smoothedLevel = 0
 let animationTime = 0
-let colors = { primary: '#F2A8BE', secondary: '#B784F6' }
+let colors = { primary: '#F2A8BE', secondary: '#B784F6', stroke: '#edf3fa' }
 const clampUnit = (value: number) => Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0
 const level = computed(() => clampUnit(props.level))
 const idleStrength = computed(() => clampUnit(props.idleStrength))
@@ -56,8 +56,9 @@ function readColors(): void {
   const styles = getComputedStyle(containerRef.value)
   const accent = styles.getPropertyValue('--accent').trim() || '#F2A8BE'
   const violet = styles.getPropertyValue('--accent-violet').trim() || '#B784F6'
-  colors = props.colorVariant === 'accent' ? { primary: accent, secondary: accent }
-    : props.colorVariant === 'violet' ? { primary: violet, secondary: violet } : { primary: accent, secondary: violet }
+  const stroke = styles.getPropertyValue('--text-primary').trim() || '#edf3fa'
+  colors = props.colorVariant === 'accent' ? { primary: accent, secondary: accent, stroke }
+    : props.colorVariant === 'violet' ? { primary: violet, secondary: violet, stroke } : { primary: accent, secondary: violet, stroke }
 }
 
 function updateCanvasSize(measuredWidth: number): void {
@@ -99,7 +100,7 @@ function prepareCurve(): void {
       const gradient=ctx.createLinearGradient(logicalWidth,h,logicalWidth,0)
       gradient.addColorStop(0,colors.primary);gradient.addColorStop(.5,colors.secondary);gradient.addColorStop(1,'transparent')
       ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();ctx.fillStyle=gradient;ctx.fill()
-    } else { ctx.strokeStyle='#ffffff';ctx.lineWidth=1.5;ctx.stroke() }
+    } else { ctx.strokeStyle=colors.stroke;ctx.lineWidth=1.5;ctx.stroke() }
   }
 }
 

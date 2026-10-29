@@ -1,31 +1,36 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_intimate_hair_down_mirror",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2007,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T14:03:36.453458500+00:00",
+  "updatedAt": "2026-10-29T16:34:20.355590400+00:00",
   "data": {
     "characterId": "togakushi_touko",
     "outfitId": "quiet_silk_robe",
     "id": "togakushi_touko_intimate_hair_down_mirror",
     "title": "户隐憧子 · 梳妆镜前解开发髻",
     "category": "私密温存",
-    "description": "深夜卧室内，憧子坐在梳妆镜前取下最后一根发簪。如丝缎般的浓密黑发瀑布般披散在雪白睡袍上。镜中倒映着站在她身后的身影，学姐微微仰起修长的脖颈，反手握住落在肩头的手掌，眼底尽是毫无保留的温柔。",
+    "description": "深夜卧室内，憧子独自坐在梳妆镜前，纤手轻轻取下最后一根发簪。如丝缎般的浓密长发如瀑般披散在微敞的雪白丝绸睡袍上，衬得肌肤如雪。她侧倚梳妆台，修长指尖穿过柔顺的发丝，眼波含情地注视着镜中倒映的自己，唇角微扬，流露出毫无保留的妩媚与温柔。",
     "recommendedSize": "832x1216",
     "location": "private bedroom vanity mirror",
-    "action": "letting hair down, holding hand on shoulder, looking through mirror",
+    "action": "taking off hairpin, letting luxuriant hair down over silk robe, fingers running through hair, looking into mirror with alluring gentle grace",
     "timeOfDay": "night",
     "lighting": "soft bedroom lamp casting warm golden glow",
     "camera": "medium_shot",
-    "mood": "intimate unconditional trust",
-    "promptProse": "Sitting before her vanity mirror at night, Togakushi Touko pulls out her hairpin, letting her luxuriant black hair tumble across her shoulders and silk robe. She catches the viewer's hand resting on her shoulder, meeting their eyes in the mirror with deep affection.",
+    "mood": "intimate unconditional trust, alluring nocturnal elegance",
+    "promptProse": "Sitting alone before her bedroom vanity mirror at night, Togakushi Touko pulls out her hairpin, letting her luxuriant black hair tumble across her bare collarbone and silk robe. She gently combs fingers through her hair, gazing into the mirror with alluring gentle grace and soft affection.",
     "promptTokens": [
       "togakushi_touko",
       "1girl",
+      "solo",
       "long_hair",
+      "hair_down",
       "robe",
       "silk_robe",
+      "white_robe",
+      "bare_shoulders",
+      "collarbone",
       "mirror",
       "reflection",
       "taking_off_hairpin",
@@ -33,14 +38,12 @@
       "bedroom",
       "night",
       "warm_lighting",
-      "holding_hands",
       "intimate",
-      "medium_shot",
-      "1boy",
-      "white_robe"
+      "alluring",
+      "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Her companion is reflected behind her in the mirror, with one hand resting on her shoulder.",
+    "animaCaption": "Togakushi Touko taking off her hairpin before the vanity mirror, letting her dark hair fall over her silk robe as she gazes into the reflection.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false,
@@ -52,6 +55,6 @@
       "yellow_eyes"
     ],
     "identityProseOverride": "Adult Togakushi Touko from Sabbat of the Witch. Long dark hair worn loose and amber-yellow eyes.",
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

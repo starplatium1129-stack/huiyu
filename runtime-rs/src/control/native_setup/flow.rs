@@ -33,7 +33,7 @@ impl ControlService {
                 "安装运行库",
                 "运行库就绪",
                 "下载完整模型",
-                "校验模型",
+                "登记模型组件",
                 "模型就绪",
                 "启用原生引擎",
                 "准备完成",
@@ -58,8 +58,8 @@ impl ControlService {
         let service = self.clone();
         let returned = operation.clone();
         self.tasks.spawn(async move {
-            let work =
-                service.prepare_native_chain(body, runtime, model, &operation, &cancel, &permit);
+            let work = service
+                .prepare_native_chain(body, runtime, model, plan, &operation, &cancel, &permit);
             tokio::pin!(work);
             let result = match tokio::time::timeout(Duration::from_secs(8 * 3600), &mut work).await
             {
@@ -96,33 +96,43 @@ impl ControlService {
         body: Request,
         runtime: Arc<RuntimeBundle>,
         model: Arc<ModelBundle>,
+        current: Value,
         operation: &Value,
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,
     ) -> Result<()> {
         stopped(cancel)?;
-        let current = self.native_setup_plan(body.model_id.as_deref()).await?;
-        require_supported(&current)?;
-        if model.checkpoint_filename.is_some() {
-            self.native_progress(operation, json!({"message":"校验并准备本机作者权重"}));
+        let target = self
+            .config
+            .ai_workspace_root
+            .join("inference/models")
+            .join(&model.id);
+        let installed = receipt_matches(&target, &model);
+        let imported = if installed {
+            None
+        } else {
             checkpoint_models::stage_checkpoint(
                 self,
                 &model,
                 body.checkpoint_path.as_deref(),
                 cancel,
             )
-            .await?;
-        }
-        if model.requires_access {
-            self.native_progress(operation, json!({"message":"检查模型访问权与固定文件清单"}));
-            let root = self
-                .config
-                .ai_workspace_root
-                .join("inference/models")
-                .join(&model.id);
-            image_models::resolve_files(self, &model, &root, body.hf_token.as_deref(), cancel)
-                .await?;
-        }
+            .await?
+        };
+        let resolved = if model.requires_access && !installed {
+            Some(
+                image_models::resolve_files(
+                    self,
+                    &model,
+                    &target,
+                    body.hf_token.as_deref(),
+                    cancel,
+                )
+                .await?,
+            )
+        } else {
+            None
+        };
         let runtime_bytes = runtime.download_bytes;
         let model_bytes = model.files.iter().map(|file| file.bytes).sum::<u64>();
         let mut runtime_operation = operation.clone();
@@ -171,7 +181,8 @@ impl ControlService {
                 cancel,
                 permit,
                 body.hf_token.as_deref(),
-                body.checkpoint_path.as_deref(),
+                imported.as_deref(),
+                resolved,
             )
             .await?;
         }

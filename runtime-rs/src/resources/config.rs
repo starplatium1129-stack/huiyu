@@ -13,6 +13,7 @@ pub(super) struct Context {
     pub file: PathBuf,
     pub bytes: Arc<Vec<u8>>,
     pub shutdown: CancellationToken,
+    pub directory: Option<super::directory::Registration>,
 }
 #[derive(Clone)]
 pub(super) struct Configuration {
@@ -186,6 +187,12 @@ pub(super) fn load(
     }
     let ctx = Context {
         store,
+        directory: value
+            .get("directory")
+            .filter(|value| !value.is_null())
+            .map(|value| serde_json::from_value(value.clone()))
+            .transpose()
+            .map_err(|_| Error::new("CONFIG_REQUIRED", "Invalid resource directory"))?,
         policy: Arc::new(value["policy"].take()),
         file: path.into(),
         bytes: Arc::new(bytes),

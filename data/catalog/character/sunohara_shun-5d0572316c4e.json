@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sunohara_shun",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 211,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
+  "updatedAt": "2026-10-29T16:15:37.047540800+00:00",
   "data": {
     "id": "sunohara_shun",
     "profile": {
@@ -27,14 +27,14 @@
         "sourceShowcaseSha256": "661b9cb26322fce8be903aecb97f80e65a8141785c068ac31cd10ad91ba34cad"
       },
       "visual_dna": {
-        "hair": "极长如墨的垂地黑发 · 优雅发髻盘发与两束柔顺垂落秀发",
-        "hair_color": "纯黑 / 墨色",
-        "eyes": "温柔深邃含情脉脉的朱红美眸 · 泪痣点缀眼角",
-        "hairstyle": "古典优雅盘发发髻 · 步摇流苏发饰 · 绝美及踝直黑发",
-        "uniform": "标志性深红刺绣高叉露背旗袍 · 黑色薄丝袜 · 细高跟鞋",
-        "expression": "极致温柔包容的圣母微笑 · 独处时掩饰不住的妩媚情思与心跳红晕",
-        "style": "graceful maternal instructor with mature sensual allure and deep devotion",
-        "signature": "及踝黑发盘发、朱红旗袍、眼角泪痣与成熟人妻韵味"
+        "hair": "黑色长发，后束高马尾，鬓侧留有长发",
+        "hair_color": "黑色",
+        "eyes": "绿色眼眸",
+        "hairstyle": "高束长发与虎耳，头顶有浅蓝色几何光环",
+        "uniform": "项目造型为深红刺绣旗袍、黑色丝袜与高跟鞋；原作常服为黑色旗袍配青绿色饰结",
+        "expression": "神情温和从容，关照他人时常带着笑意",
+        "style": "gentle Shanhaijing instructor with tiger ears and a blue halo",
+        "signature": "黑色长发、虎耳、绿眼与浅蓝色光环"
       },
       "personality": [
         "母性温柔",
@@ -51,23 +51,22 @@
       ],
       "classic_cg": {
         "title": "梅花园茶室的膝枕与温柔私语",
-        "description": "山海经古朴雅致的梅花园茶室，雕花木窗外落英缤纷。瞬跪坐在竹席软垫上，深红刺绣旗袍完美贴合出丰满曼妙的极致曲线，雪白玉腿若隐若现。她俯下身子，含情脉脉的朱红眼眸凝望着枕在自己膝头熟睡的老师，纤纤玉指温柔梳理着老师的发丝，嘴角溢满慈爱与炽热交织的红晕微笑。"
+        "description": "山海经古朴雅致的梅花园茶室，雕花木窗外落英缤纷。瞬跪坐在竹席软垫上，深红刺绣旗袍完美贴合出丰满曼妙的极致曲线，雪白玉腿若隐若现。她俯下身子，含情脉脉的绿色眼眸凝望着枕在自己膝头熟睡的老师，纤纤玉指温柔梳理着老师的发丝，嘴角溢满慈爱与炽热交织的红晕微笑。"
       },
       "identity": {
-        "role": "山海经高级中学梅花园教官 / 幼教总监",
+        "role": "山海经高级中学梅花园教官",
         "age": "成年创作设定",
-        "occupation": "训导教官 / 传统文化讲师",
+        "occupation": "梅花园教官",
         "faction": "山海经高级中学 / 梅花园",
         "school": "山海经高级中学",
         "classificationSource": "本角色档案 identity.faction 中明确记载的学院；统一学院名称写法。"
       },
       "tags": [
         "黑长发",
-        "盘发",
+        "虎耳",
+        "绿瞳",
+        "蓝色光环",
         "旗袍",
-        "高叉",
-        "人妻",
-        "泪痣",
         "山海经梅花园"
       ],
       "bg_story": "春原瞬是学园都市基沃托斯山海经高级中学梅花园的首席教官。作为负责全校年幼学生启蒙与生活起居的庇护者，瞬以超凡的包容力、高尚的品德与无私的慈爱深受所有学园的敬仰。在面对外界危机与都市动荡时，看似温婉如水的瞬亦能展现出雷霆手腕护卫家园。在与夏莱老师日复一日的相处中，瞬那颗长年只为他人奉献的心灵终于找到了可以依靠的港湾。褪去教官身份之后，她渴望成为专属于老师一人的温柔港湾。她不仅具备基沃托斯最具杀伤力的成熟风韵，更将灵魂深处最真挚无瑕的爱恋与温存，尽数倾注于老师身侧。",
@@ -86,11 +85,10 @@
       "source": "Blue Archive",
       "traits": [
         "black_hair",
-        "very_long_hair",
-        "hair_bun",
-        "red_eyes",
-        "mole_under_eye",
-        "halo"
+        "long_hair",
+        "tiger_ears",
+        "green_eyes",
+        "blue_halo"
       ],
       "voice": "欢迎来到梅花园，老师。今天也辛苦了……来，请坐到瞬的身边，先喝一杯温热的药膳花茶吧。呵呵，今天就由我来照顾您。",
       "voiceJa": "おかえりなさい、先生。今日も頑張りましたね。よしよし、甘えていいんですよ？"
@@ -124,13 +122,12 @@
         "1girl",
         "solo",
         "black_hair",
-        "very_long_hair",
-        "hair_bun",
-        "red_eyes",
-        "mole_under_eye",
-        "halo"
+        "long_hair",
+        "tiger_ears",
+        "green_eyes",
+        "blue_halo"
       ],
-      "identityProse": "Sunohara Shun from Blue Archive, the only character in the image, with floor-length black hair styled in an elegant chignon, crimson-red eyes, a beauty mark under her eye, and a radiant halo.",
+      "identityProse": "Sunohara Shun from Blue Archive, with long black hair, tiger ears, green eyes, and a pale blue halo.",
       "curatedArtistStyles": [
         "kakao",
         "mika_pikazo",
@@ -140,7 +137,7 @@
       "canon": {
         "era": "近未来学园都市",
         "world": "基沃托斯（Kivotos）· 山海经高级中学",
-        "formNotes": "梅花园教官，及踝黑发盘发、朱红旗袍、眼角泪痣，成熟母性人妻魅力与深情依恋"
+        "formNotes": "梅花园教官，黑色长发、虎耳、绿眼和浅蓝色光环；深红旗袍为项目造型。"
       },
       "recommendedEngine": "anima-miaomiao-v1.6",
       "supportedEngines": [

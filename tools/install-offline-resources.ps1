@@ -7,7 +7,10 @@ param(
   [switch]$Verify,
   [switch]$TrustedRelease,
   [hashtable]$ProgressState,
-  [string]$ResumeStaging
+  [string]$ResumeStaging,
+  [string]$GatewayRoot,
+  [string]$NativeExecutable,
+  [switch]$DirectMount
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
@@ -48,7 +51,7 @@ function Read-EntryBytes($Entry, [long]$Limit) {
   $inputStream = $Entry.Open()
   $outputStream = New-Object IO.MemoryStream
   try {
-    $buffer = New-Object byte[] 65536
+    $buffer = New-Object byte[] 1048576
     while (($count = $inputStream.Read($buffer, 0, $buffer.Length)) -gt 0) {
       Check-Cancel
       if ($outputStream.Length + $count -gt $Limit) { throw 'Decompressed metadata exceeds its size limit.' }
@@ -57,10 +60,12 @@ function Read-EntryBytes($Entry, [long]$Limit) {
     return ,$outputStream.ToArray()
   } finally { $inputStream.Dispose(); $outputStream.Dispose() }
 }
-function Invoke-NativeImport([string]$Package, [switch]$Probe) {
+function Invoke-NativeImport([string]$Package, [switch]$Probe, [switch]$Preview) {
   $arguments = @('offline-import', '--package-root', $Package, '--expected-release-sha256', $ExpectedReleaseSha256,
     '--app-root', $gateway, '--runtime-root', $runtimePath, '--apply')
   if ($ProgressState) { $arguments += '--cancel-stdin' }
+  if ($mountPackage) { $arguments += '--mount-directory' }
+  if ($Preview) { $arguments = @($arguments | Where-Object { $_ -ne '--apply' }) }
   if ($Probe) { $arguments = @('offline-import', '--help') }
   $start = New-Object Diagnostics.ProcessStartInfo
   $start.FileName = $runtimeExe
@@ -104,6 +109,10 @@ function Invoke-NativeImport([string]$Package, [switch]$Probe) {
       if ($release.catalog -and $result.offlineCatalog -ne $true) { throw 'USAGE: This resource ZIP includes character content. Update to a desktop build supporting offlineCatalog first.' }
       return
     }
+    if ($Preview) {
+      if (-not $result.ok -or $result.kind -ne 'huiyu-offline-directory-plan') { throw 'Directory preview did not complete.' }
+      return $result
+    }
     if (-not $result.ok -or $result.kind -ne 'huiyu-offline-import-result') { throw 'Native import did not confirm success.' }
     if ($release.catalog -and $result.catalog.included -ne $true) { throw 'Native import did not confirm character content. Installation is incomplete.' }
     return $result
@@ -132,20 +141,28 @@ if (-not $InstallDir) {
   $InstallDir = if ($locations) { @($locations)[0] } else { 'C:\Program Files\AI-CG-Studio' }
 }
 $installPath = Assert-OrdinaryPath $InstallDir
-$gateway = Join-Path $installPath 'gateway'
-$runtimeExe = Assert-OrdinaryPath (Join-Path $gateway 'huiyu-runtime.exe')
+$gateway = if ($GatewayRoot) { Assert-OrdinaryPath $GatewayRoot } else { Join-Path $installPath 'gateway' }
+$runtimeExe = Assert-OrdinaryPath $(if ($NativeExecutable) { $NativeExecutable } else { Join-Path $gateway 'huiyu-runtime.exe' })
 if (-not $RuntimeRoot) { $RuntimeRoot = Join-Path $env:APPDATA 'com.aics.studio\gateway' }
 $runtimePath = Assert-OrdinaryPath $RuntimeRoot -AllowMissing
 $archivePath = Assert-OrdinaryPath $Archive
-$zip = [IO.Compression.ZipFile]::OpenRead($archivePath)
+$isDirectory = Test-Path -LiteralPath $archivePath -PathType Container
+if ($isDirectory -and -not $DirectMount) { throw 'Use -DirectMount to select an extracted package directory.' }
+$zip = if (-not $isDirectory) { [IO.Compression.ZipFile]::OpenRead($archivePath) } else { $null }
 $staging = $null
 $complete = $false
 try {
   Report-Progress 'inventory' 0 0
-  if ($zip.Entries.Count -gt 50000) { throw 'Too many ZIP files.' }
-  $releaseEntry = $zip.GetEntry('release.json')
-  if (-not $releaseEntry) { throw 'release.json is missing.' }
-  $releaseBytes = Read-EntryBytes $releaseEntry 16777216
+  if ($isDirectory) {
+    $releaseFile = Assert-OrdinaryPath (Join-Path $archivePath 'release.json')
+    if ((Get-Item -LiteralPath $releaseFile).Length -gt 16777216) { throw 'Metadata exceeds its size limit.' }
+    $releaseBytes = [IO.File]::ReadAllBytes($releaseFile)
+  } else {
+    if ($zip.Entries.Count -gt 50000) { throw 'Too many ZIP files.' }
+    $releaseEntry = $zip.GetEntry('release.json')
+    if (-not $releaseEntry) { throw 'release.json is missing.' }
+    $releaseBytes = Read-EntryBytes $releaseEntry 16777216
+  }
   $releaseHash = Get-BytesHash $releaseBytes
   $trustedSource = $null
   if ($TrustedRelease) {
@@ -180,6 +197,15 @@ try {
   $release = [Text.Encoding]::UTF8.GetString($releaseBytes) | ConvertFrom-Json
   if ($TrustedRelease -and $release.releaseId -cne $approved.id) { throw 'Trusted release identity mismatch.' }
   if ($release.schemaVersion -ne 1 -or $release.kind -ne 'huiyu-offline-release' -or -not $release.files) { throw 'Unsupported offline release.' }
+  $storageRoot = [IO.Path]::GetFullPath((Join-Path (Split-Path $runtimePath -Parent) 'resource-packages')) + '\'
+  $fastExtract = $DirectMount -and $release.mode -ne 'delta'
+  $mountPackage = $isDirectory
+  if ($isDirectory) {
+    if ($Apply) { Report-Progress 'connecting' 0 0; $result = Invoke-NativeImport $archivePath }
+    else { $result = Invoke-NativeImport $archivePath -Preview; $result | Add-Member -NotePropertyName trustedSource -NotePropertyValue $trustedSource }
+    $result | ConvertTo-Json -Depth 8
+    return
+  }
   $expected = @{}
   $expected['release.json'] = @{ bytes = $releaseBytes.Length; sha256 = $ExpectedReleaseSha256 }
   foreach ($file in $release.files) {
@@ -203,9 +229,10 @@ try {
   if ($seen.Count -ne $expected.Count) { throw 'ZIP is incomplete.' }
   # Fail during graphical verification, before inviting the user to install or
   # extracting gigabytes with an incompatible native runtime.
-  if ($ProgressState -or (($Apply -or $Verify) -and $release.mode -eq 'delta')) { Invoke-NativeImport '' -Probe }
+  if (-not $DirectMount -and ($ProgressState -or (($Apply -or $Verify) -and $release.mode -eq 'delta'))) { Invoke-NativeImport '' -Probe }
   # TEMP may use an 8.3 alias; the native importer requires the physical long path.
   $tempRoot = [IO.Path]::GetFullPath((Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'Temp')) + '\'
+  if ($DirectMount -and $release.mode -ne 'delta') { $tempRoot = $storageRoot }
   if ($Apply) {
     Check-Cancel
     if ($ResumeStaging) {
@@ -219,7 +246,8 @@ try {
           (Assert-OrdinaryPath $record.installDir).TrimEnd('\') -ine $installPath.TrimEnd('\') -or
           (Assert-OrdinaryPath $record.runtimeRoot -AllowMissing).TrimEnd('\') -ine $runtimePath.TrimEnd('\')) { throw 'Recovery record does not match approved release or selected directories.' }
       if ($ProgressState) { $ProgressState.Staging = $staging; $ProgressState.CanResume = $true }
-      # The native importer rechecks every retained byte and its complete inventory.
+      # Direct mounts verify assets on request. Transaction imports recheck
+      # retained bytes before copying into the managed version store.
     } else {
       Assert-OrdinaryPath $tempRoot -AllowMissing | Out-Null
       $drive = New-Object IO.DriveInfo ([IO.Path]::GetPathRoot($tempRoot))
@@ -234,7 +262,8 @@ try {
   if (($Verify -or $Apply) -and -not $ResumeStaging) {
     [long]$done = 0
     $phase = if ($Apply) { 'extracting' } else { 'verifying' }
-    $buffer = New-Object byte[] 65536
+    $buffer = New-Object byte[] 1048576
+    $createdFolders = @{}
     foreach ($entry in $zip.Entries) {
       Check-Cancel
       $outputStream = $null
@@ -242,6 +271,18 @@ try {
         $target = [IO.Path]::GetFullPath((Join-Path $staging $entry.FullName.Replace('/', '\')))
         if (-not $target.StartsWith($staging + '\', [StringComparison]::OrdinalIgnoreCase)) { throw 'ZIP target escaped staging.' }
         $parent = [IO.Path]::GetDirectoryName($target)
+        if ($fastExtract) {
+          # This is a fresh owned directory and all ZIP names were checked above.
+          # Use the native stream copy, then verify public assets when requested.
+          if (-not $createdFolders.ContainsKey($parent)) {
+            [IO.Directory]::CreateDirectory($parent) | Out-Null
+            $createdFolders[$parent] = $true
+          }
+          [IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $target)
+          $done += $entry.Length
+          Report-Progress $phase $done $totalBytes
+          continue
+        }
         Assert-OrdinaryPath $parent -AllowMissing | Out-Null
         [IO.Directory]::CreateDirectory($parent) | Out-Null
         $outputStream = [IO.File]::Open($target, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write)
@@ -279,8 +320,8 @@ try {
     return
   }
   if (-not $ResumeStaging) {
-    # Keep recovery metadata outside the package's exact native inventory. Publish
-    # only after every extracted byte passed its independently approved hash.
+    # Publish recovery metadata only after every archive entry was extracted.
+    # It stays outside the package inventory; it never grants read authorization.
     $recordPath = $staging + '.resume.json'
     $recordTemp = $recordPath + '.tmp'
     $record = @{ schemaVersion=1; kind='huiyu-offline-staging'; releaseId=$release.releaseId;
@@ -295,14 +336,15 @@ try {
   }
   if ($ProgressState) { $ProgressState.CanResume = $true }
   Check-Cancel
-  Report-Progress 'installing' 0 0
+  $mountPackage = $DirectMount -and $release.mode -ne 'delta'
+  Report-Progress $(if ($mountPackage) { 'connecting' } else { 'installing' }) 0 0
   $result = Invoke-NativeImport $staging
   $complete = $true
   $result | ConvertTo-Json -Depth 8
 } finally {
-  $zip.Dispose()
+  if ($zip) { $zip.Dispose() }
   if ($staging) {
-    if ($complete) {
+    if ($complete -and -not $mountPackage) {
       try {
         $cleanup = Assert-OrdinaryPath $staging
         if (-not $cleanup.StartsWith($tempRoot, [StringComparison]::OrdinalIgnoreCase) -or [IO.Path]::GetFileName($cleanup) -notmatch '^huiyu-offline-import-[a-f0-9-]{36}$') { throw 'Unsafe cleanup target.' }
@@ -316,6 +358,10 @@ try {
       try { if (Test-Path -LiteralPath $recordPath) { Remove-Item -LiteralPath (Assert-OrdinaryPath $recordPath) -Force } }
       catch { Write-Warning "Installed successfully; recovery record retained: $recordPath. $_" }
       if ($ProgressState) { $ProgressState.CanResume = $false }
+    } elseif ($complete) {
+      if ($ProgressState) { $ProgressState.Staging = $null; $ProgressState.CanResume = $false }
+      try { if (Test-Path -LiteralPath $recordPath) { Remove-Item -LiteralPath (Assert-OrdinaryPath $recordPath) -Force } }
+      catch { Write-Warning "Connected successfully; recovery record retained: $recordPath. $_" }
     } else { Write-Warning "Incomplete import staging retained: $staging" }
   }
 }

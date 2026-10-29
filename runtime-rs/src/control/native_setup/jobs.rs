@@ -1,4 +1,3 @@
-use super::super::setup_verify::{ModelFile, inspect};
 use super::*;
 use std::process::Stdio;
 
@@ -104,6 +103,22 @@ impl ControlService {
             let result = async {
                 let work = async {
                     if let Some(model) = model {
+                        let target = service
+                            .config
+                            .ai_workspace_root
+                            .join("inference/models")
+                            .join(&model.id);
+                        let imported = if receipt_matches(&target, &model) {
+                            None
+                        } else {
+                            checkpoint_models::stage_checkpoint(
+                                &service,
+                                &model,
+                                body.checkpoint_path.as_deref(),
+                                &cancel,
+                            )
+                            .await?
+                        };
                         service
                             .install_native_model(
                                 &model,
@@ -111,7 +126,8 @@ impl ControlService {
                                 &cancel,
                                 &permit,
                                 body.hf_token.as_deref(),
-                                body.checkpoint_path.as_deref(),
+                                imported.as_deref(),
+                                None,
                             )
                             .await
                     } else {
@@ -231,14 +247,17 @@ impl ControlService {
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,
         hf_token: Option<&str>,
-        checkpoint_path: Option<&Path>,
+        imported: Option<&str>,
+        resolved: Option<Vec<Artifact>>,
     ) -> Result<()> {
-        checkpoint_models::stage_checkpoint(self, model, checkpoint_path, cancel).await?;
         let workspace = &self.config.ai_workspace_root;
         let target = workspace.join("inference/models").join(&model.id);
+        if receipt_matches(&target, model) {
+            return Ok(());
+        }
         if model.conversion_profile.is_some() {
             return self
-                .install_anima_checkpoint(model, &target, operation, cancel, permit)
+                .install_anima_checkpoint(model, &target, imported, operation, cancel, permit)
                 .await;
         }
         let staged = workspace
@@ -250,10 +269,17 @@ impl ControlService {
         self.native_stage(operation, 1);
         // Reuses matching files and downloads only missing components; a corrupt
         // user-owned file is a conflict, never silently replaced.
-        let files = image_models::resolve_files(self, model, root, hf_token, cancel).await?;
+        let files = match resolved {
+            Some(files) => files,
+            None => image_models::resolve_files(self, model, root, hf_token, cancel).await?,
+        };
+        let pending: Vec<_> = files
+            .into_iter()
+            .filter(|file| imported != Some(file.path.as_str()))
+            .collect();
         self.download_native_files_authorized(
             root,
-            &files,
+            &pending,
             operation,
             cancel,
             hf_token,
@@ -261,15 +287,10 @@ impl ControlService {
         )
         .await?;
         self.native_stage(operation, 2);
-        verify_files(root, &files, cancel).await?;
-        let runtime = image_models::runtime_for(Some(&model.id))?;
-        let settings = image_models::settings(self, &runtime)?;
-        self.validate_native_model(&settings, root, &model.id, cancel, permit)
-            .await?;
         stopped(cancel)?;
         self.native_stage(operation, 3);
         let document = json!({"schemaVersion":1,"modelId":model.id,"revision":model.revision,
-            "scope":"fixed-files-sha256-and-layout-imports","readyForGeneration":false});
+            "scope":"downloaded-files-sha256","readyForGeneration":false});
         let bytes = serde_json::to_vec_pretty(&document)?;
         let root = root.clone();
         let target_copy = target.clone();
@@ -304,45 +325,6 @@ impl ControlService {
             operation,
             json!({"result":{"modelId":model.id,"path":target,"verified":true}}),
         );
-        Ok(())
-    }
-
-    pub(super) async fn validate_native_model(
-        &self,
-        settings: &crate::generation::native::Settings,
-        model: &Path,
-        model_id: &str,
-        cancel: &CancellationToken,
-        permit: &Arc<OwnedSemaphorePermit>,
-    ) -> Result<()> {
-        let inspect = model.to_owned();
-        let id = model_id.to_owned();
-        let issue = tokio::task::spawn_blocking(move || image_models::model_issue(&inspect, &id))
-            .await
-            .map_err(|_| ApiError::new(503, "NATIVE_MODEL_INCOMPLETE", "模型目录读取未完成"))?;
-        if let Some(issue) = issue {
-            return Err(ApiError::new(409, "NATIVE_MODEL_INCOMPLETE", issue));
-        }
-        let mut command = settings.worker_command();
-        command
-            .arg("--validate")
-            .arg(model)
-            .stdin(Stdio::null())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::piped());
-        if crate::generation::native::adapters::model(model_id).is_some() {
-            command.arg("--model-id").arg(model_id);
-        }
-        let value = self
-            .run_setup_helper(&mut command, cancel, 120, permit.clone(), None, None)
-            .await?;
-        if value["event"] != "validation" || value["valid"] != true {
-            return Err(ApiError::new(
-                502,
-                "NATIVE_MODEL_INVALID",
-                "模型或依赖检查未完成，请重新准备",
-            ));
-        }
         Ok(())
     }
 
@@ -403,48 +385,4 @@ impl ControlService {
             update.get("stage").is_some() || update.get("cancelAllowed").is_some(),
         );
     }
-}
-pub(super) async fn verify_files(
-    root: &Path,
-    files: &[Artifact],
-    cancel: &CancellationToken,
-) -> Result<()> {
-    let files = files
-        .iter()
-        .map(|file| ModelFile {
-            path: file.path.clone(),
-            bytes: file.bytes,
-            sha256: file.sha256.clone(),
-        })
-        .collect();
-    verify_model_files(root, files, cancel).await
-}
-pub(super) async fn verify_model_files(
-    root: &Path,
-    files: Vec<ModelFile>,
-    cancel: &CancellationToken,
-) -> Result<()> {
-    let root = root.to_owned();
-    let token = cancel.clone();
-    tokio::task::spawn_blocking(move || -> Result<()> {
-        plan::safe_directory(&root)?;
-        let (send, _receive) = tokio::sync::mpsc::unbounded_channel();
-        for file in files {
-            stopped(&token)?;
-            let result = inspect(&root, &file, "native", &send, &token);
-            if result["state"] != "sha256-match" {
-                return Err(ApiError::new(
-                    409,
-                    "NATIVE_MODEL_INCOMPLETE",
-                    format!(
-                        "模型组件 {} 缺失或完整性校验失败；请检查已有文件或继续下载",
-                        file.path
-                    ),
-                ));
-            }
-        }
-        stopped(&token)
-    })
-    .await
-    .map_err(|_| ApiError::new(503, "NATIVE_MODEL_VERIFY_FAILED", "模型校验未完成"))?
 }

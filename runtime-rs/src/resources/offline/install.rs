@@ -9,7 +9,7 @@ use crate::resources::{
 use std::sync::Arc;
 use tokio_util::sync::CancellationToken;
 
-fn configuration(options: &Options, paths: &Paths, release: &Release) -> Result<Value> {
+pub(super) fn configuration(options: &Options, paths: &Paths, release: &Release) -> Result<Value> {
     let mut value = fs::json(&paths.policy, true, false)?.unwrap_or_else(|| json!({"userDataRoot":paths.user,"protectedRoots":[],"policy":{"sources":{},"releases":{}}}));
     if value["userDataRoot"] != paths.user.to_string_lossy().as_ref()
         || !value["protectedRoots"].is_array()
@@ -40,6 +40,8 @@ fn configuration(options: &Options, paths: &Paths, release: &Release) -> Result<
     }
     value["policy"]["sources"][&release.id] = json!({"approved":true,"kind":"offline","root":options.package,"approvalSha256":options.expected});
     value["policy"]["releases"][&release.id] = release.approved.clone();
+    // A transaction import explicitly switches back from reading in place.
+    value.as_object_mut().unwrap().remove("directory");
     Ok(value)
 }
 fn pending(options: &Options, paths: &Paths, release: &Release) -> Result<Option<Value>> {

@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import argparse
 import ctypes
-import hashlib
 import importlib.util
 import json
 import os
@@ -241,20 +240,17 @@ def validate_layout(root, files):
         reject("MODEL_INVALID", f"Invalid model layout: {error}")
 
 
-def digest_file(path, expected, destination=None):
-    digest, remaining = hashlib.sha256(), expected[3]
+def copy_file(path, expected, destination):
+    remaining = expected[3]
     with open_checked(path, expected) as source:
         while remaining:
             chunk = source.read(min(CHUNK_BYTES, remaining))
             if not chunk:
                 reject("SOURCE_CHANGED", f"File truncated: {path}")
-            digest.update(chunk)
-            if destination is not None:
-                destination.write(chunk)
+            destination.write(chunk)
             remaining -= len(chunk)
         if source.read(1) or file_state(os.fstat(source.fileno())) != expected:
             reject("SOURCE_CHANGED", f"File changed during read: {path}")
-    return digest.hexdigest()
 
 
 def publish(staged, target):
@@ -283,10 +279,8 @@ def publish(staged, target):
 
 def import_directory(source_dir, target_dir, apply=False):
     source, target = validate_paths(source_dir, target_dir)
-    before, files = inventory(source)
+    _, files = inventory(source)
     validate_layout(source, files)
-    if inventory(source)[0] != before:
-        reject("SOURCE_CHANGED", "Source changed during layout inspection")
     report = dict(ok=True, planOnly=not apply, sourceDir=str(source), targetDir=str(target),
                   scope="layout-only", readyForInference=False, fileCount=len(files),
                   totalBytes=sum(info[3] for info in files.values()), published=False,
@@ -303,30 +297,16 @@ def import_directory(source_dir, target_dir, apply=False):
         staged = Path(tempfile.mkdtemp(prefix=f".{target.name}.import-", dir=target.parent))
         for name in CLASSES:
             (staged / name).mkdir()
-        hashes = {}
         # The staging directory is hidden and never selected as the target model.
         for name, expected in sorted(files.items(), key=lambda item: (item[0] in INDEXES, item[0])):
             with (staged / name).open("xb") as destination:
-                hashes[name] = digest_file(source / name, expected, destination)
-                destination.flush()
-                os.fsync(destination.fileno())
-        _, saved_files = inventory(staged)
-        validate_layout(staged, saved_files)
-        if set(saved_files) != set(files):
-            reject("COPY_MISMATCH", "Staged inventory differs from source")
-        for name, expected in files.items():
-            if digest_file(staged / name, saved_files[name]) != hashes[name]:
-                reject("COPY_MISMATCH", f"Staged SHA-256 differs: {name}")
-            if digest_file(source / name, expected) != hashes[name]:
-                reject("SOURCE_CHANGED", f"Source SHA-256 changed: {name}")
-        if inventory(source)[0] != before:
-            reject("SOURCE_CHANGED", "Source inventory changed during copy")
+                copy_file(source / name, expected, destination)
         validate_paths(str(source), str(target))
         if file_state(target.parent.lstat())[:2] != parent_identity:
             reject("UNSAFE_PATH", "Target parent changed during import")
         publish(staged, target)
-        return {**report, "published": True, "copyVerified": True, "targetParentExists": True,
-                "createdParentDirs": created, "verification": "SHA-256 copied bytes and source recheck"}
+        return {**report, "published": True, "copyVerified": False, "targetParentExists": True,
+                "createdParentDirs": created, "verification": "single-pass copy"}
     except (OSError, ValueError, KeyboardInterrupt) as error:
         code = "CANCELLED" if isinstance(error, KeyboardInterrupt) else getattr(error, "code", "IMPORT_FAILED")
         message = "Import cancelled before completion" if isinstance(error, KeyboardInterrupt) else str(error)

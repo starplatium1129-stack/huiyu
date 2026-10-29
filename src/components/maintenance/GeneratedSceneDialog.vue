@@ -26,8 +26,8 @@
         <details class="generated-scene-details">
           <StudioDisclosureSummary>高级：查看这张图的生成记录</StudioDisclosureSummary><div data-disclosure-content>
           <p class="generated-scene-note">来源提示词只读保留，不需要手动填写。</p>
-          <label class="form-group"><span class="field-label">实际正向提示词</span><textarea class="input" :value="source.recipe.prompt" rows="4" readonly /></label>
-          <label class="form-group"><span class="field-label">实际负向提示词</span><textarea class="input" :value="source.recipe.negative" rows="2" readonly /></label>
+          <label class="form-group"><span class="field-label">实际正向提示词</span><textarea class="input" :value="source.recipe.prompt" rows="4" readonly spellcheck="false" autocorrect="off" autocapitalize="off" /></label>
+          <label class="form-group"><span class="field-label">实际负向提示词</span><textarea class="input" :value="source.recipe.negative" rows="2" readonly spellcheck="false" autocorrect="off" autocapitalize="off" /></label>
           <p class="generated-scene-note">尺寸 {{ source.recipe.size || '未记录' }} · Seed {{ source.recipe.seed ?? '未记录' }} · Steps {{ source.recipe.steps ?? '未记录' }} · CFG {{ source.recipe.cfg ?? '未记录' }}</p></div>
         </details>
         <p v-if="loading" class="generated-scene-note" role="status">正在读取场景库…</p>

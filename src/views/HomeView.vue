@@ -170,7 +170,7 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
+import { resolveRuntimeUrl, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import { useHomeHeroes } from '@/composables/useHomeHeroes'
 import { useHomeRecentWorks } from '@/composables/useHomeRecentWorks'
@@ -301,9 +301,9 @@ const creationEntries = computed(() => [
 ])
 const heroImmediate = ref(false)
 const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')
-const { heroes, ready: heroesReady } = useHomeHeroes()
-const { image: neneHero, loaded: neneLoaded, failed: neneFailed, retry: retryNene } = useRuntimeImage(() => heroesReady.value ? heroes.value.nene.image : undefined)
-const { image: natsumeHero, loaded: natsumeLoaded, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage(() => heroesReady.value ? heroes.value.natsume.image : undefined)
+const { heroes } = useHomeHeroes()
+const { image: neneHero, loaded: neneLoaded, failed: neneFailed, retry: retryNene } = useRuntimeImage(() => heroes.value.nene.image)
+const { image: natsumeHero, loaded: natsumeLoaded, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage(() => heroes.value.natsume.image)
 const heroFailed = computed(() => ({ nene: neneFailed.value, natsume: natsumeFailed.value }))
 const heroLoaded = computed(() => ({ nene: neneLoaded.value, natsume: natsumeLoaded.value }))
 const displayedMuse = ref<'nene' | 'natsume' | null>(null)
@@ -320,7 +320,7 @@ watch(natsumeLoaded, loaded => {
 watch([homeMuse, () => paintedHeroes[homeMuse.value]], ([muse, painted]) => {
   if (painted) displayedMuse.value = muse
 }, { immediate: true, flush: 'sync' })
-watch(heroesReady, ready => { if (!ready) { delete paintedHeroes.nene; delete paintedHeroes.natsume; displayedMuse.value = null } }, { flush: 'sync' })
+watch(runtimeResourceIdentity, () => { delete paintedHeroes.nene; delete paintedHeroes.natsume; displayedMuse.value = null }, { flush: 'sync' })
 function selectMuse(muse: 'nene' | 'natsume', event: MouseEvent) {
   heroImmediate.value = event.detail === 0
   homeMuse.value = muse

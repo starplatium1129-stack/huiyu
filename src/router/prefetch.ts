@@ -3,6 +3,7 @@ import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 import type { Router } from 'vue-router'
 import { DATA_VERSION } from 'virtual:data-version'
 import { loadPromptDrawingWorkspace } from './routeFeatures'
+import { loadRoomComponent, type RoomPage } from './roomResources'
 
 const CORE_RESOURCE_ROUTES = new Set(['/scene-explorer', '/popular-scenes'])
 const CORE_RESOURCE_FILES = ['curation.json', 'scenes-core.json', 'scenes-shared.json']
@@ -12,6 +13,10 @@ let drawingResourcePrefetch: Promise<void> | null = null
 let galleryResourcePrefetch: Promise<void> | null = null
 
 async function prefetchPrimaryRouteFeature(path: string): Promise<boolean> {
+  if (['/chat', '/companion', '/companion-chat'].includes(path)) {
+    try { await loadRoomComponent(path.slice(1) as RoomPage); return true }
+    catch { return false }
+  }
   if (path !== '/prompt-builder') return true
   try {
     await loadPromptDrawingWorkspace()

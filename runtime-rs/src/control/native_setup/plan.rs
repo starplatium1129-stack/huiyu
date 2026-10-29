@@ -17,14 +17,6 @@ pub(super) fn safe_workspace(workspace: &Path, app: &Path) -> Result<u64> {
         ));
     }
     safe_directory(workspace)?;
-    let probe = tempfile::NamedTempFile::new_in(workspace).map_err(|_| {
-        ApiError::new(
-            409,
-            "WORKSPACE_NOT_WRITABLE",
-            "AI 工作区不可写，请选择有写入权限的目录",
-        )
-    })?;
-    drop(probe);
     crate::resources::available_space(workspace)
         .map_err(|e| ApiError::new(409, &e.code, "无法检查磁盘空间，请选择本机可写磁盘"))
 }
@@ -84,20 +76,6 @@ fn capacity_warnings(hardware: &Value) -> Vec<String> {
         );
     }
     warnings
-}
-async fn source_accessible(client: &reqwest::Client, source: &str, allow_mirror: bool) -> bool {
-    if allow_mirror
-        && let Some(mirror) = crate::download_transport::public_mirror(source)
-        && client
-            .head(mirror)
-            .send()
-            .await
-            .is_ok_and(|r| r.status().is_success())
-    {
-        return true;
-    }
-    let response = client.head(source).send().await;
-    response.is_ok_and(|r| r.status().is_success())
 }
 pub(super) fn runtime_support(
     hardware: &Value,
@@ -187,37 +165,13 @@ impl ControlService {
     ) -> Result<Value> {
         let (_, models) = bundles()?;
         let selected = selected.unwrap_or(&models[0].id).to_owned();
-        let selected_model = models
-            .iter()
-            .find(|model| model.id == selected)
-            .ok_or_else(|| ApiError::invalid("请选择已登记的原生图像模型"))?;
+        if !models.iter().any(|model| model.id == selected) {
+            return Err(ApiError::invalid("请选择已登记的原生图像模型"));
+        }
         let runtime = image_models::runtime_for(Some(&selected))?;
-        let network = match reqwest::Client::builder()
-            .https_only(true)
-            .timeout(Duration::from_secs(4))
-            .build()
-        {
-            Ok(client) => {
-                let (python, model) = tokio::join!(
-                    source_accessible(&client, &runtime.files[0].url, true),
-                    source_accessible(
-                        &client,
-                        &selected_model.files[0].url,
-                        !selected_model.requires_access
-                    )
-                );
-                let runtime_source = python;
-                let model_source = model;
-                json!({"runtimeSource":runtime_source,"modelSource":model_source,
-                    "message":if runtime_source && model_source {"下载来源可连接；公开模型与 Python 依赖优先尝试国内镜像，失败切换原始来源并有限重试，固定版本与 SHA-256 校验保持一致"} else {"部分下载来源不可连接。公开模型与 Python 依赖会优先尝试国内镜像；Civitai 权重可在来源页面下载后填写已有权重路径。运行库来源受限时可使用高级选项中的离线运行库；完整缓存可离线继续"}})
-            }
-            Err(_) => {
-                json!({"runtimeSource":false,"modelSource":false,"message":"网络检查未完成，请检查连接后重试"})
-            }
-        };
         let hardware = hardware::local_hardware().await;
         let service = self.clone();
-        // Keep discovery and recursive recovery scans off the async request worker.
+        // Keep local metadata reads off the async request worker.
         // Tracking also keeps shutdown waiting if the requesting page disconnects.
         self.tasks.spawn_blocking(move || {
             let mut reasons = support(&hardware, &runtime);
@@ -242,9 +196,8 @@ impl ControlService {
                     .as_str()
                     .is_none_or(|path| Path::new(path) == service.config.ai_workspace_root);
             let runtime_ready = receipt.is_some();
-            let recoverable = recoverable_runtime(&root, &runtime);
-            let recovery_ready = recoverable > 0 && candidate_ready(&root, &runtime);
-            let required = if recovery_ready {
+            let recovery_ready = !runtime_ready && candidate_ready(&root, &runtime);
+            let required = if runtime_ready { 0 } else if recovery_ready {
                 64 * 1024 * 1024
             } else {
                 runtime
@@ -253,26 +206,26 @@ impl ControlService {
                         &root.join(".downloads").join(&runtime.runtime_id),
                         &runtime.files,
                     ))
-                    .saturating_sub(recoverable)
             };
             let model_views: Vec<_> = models.iter().map(|model| {
                 let model_root = root.join("models").join(&model.id);
+                let installed = receipt_matches(&model_root, model);
                 json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
                     "preparation":if model.conversion_profile.is_some(){"checkpoint-conversion"}else{"complete-model"},
                     "licenseUrl":model.license_url,"sourceUrl":model.source_url,
                     "checkpointFilename":model.checkpoint_filename,"checkpointOptional":model.conversion_profile.as_deref()==Some("anima-cosmos2b-v041"),
                     "requiresAccess":model.requires_access,"family":if model.id.starts_with("krea2-"){"krea2"}else if model.id.starts_with("qwen-"){"qwen-image"}else if model.id.starts_with("moss-"){"moss-image"}else{"anima"},
-                    "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":model_needed(&root, model),
-                    "installed":receipt_matches(&model_root, model),"path":model_root})
+                    "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":if installed {0}else{model_needed(&root, model)},
+                    "installed":installed,"path":model_root})
             }).collect();
             let model_ready = model_views.iter().any(|value| value["id"] == selected && value["installed"] == true);
             Ok(
                 json!({"ok":true,"selectedModelId":selected,"planId":plan_id(&service.config.ai_workspace_root),"workspacePath":service.config.ai_workspace_root,
                 "paths":{"runtimeRoot":receipt.as_ref().and_then(|(path, _)|path.parent()).map(Path::to_path_buf).unwrap_or_else(||root.join(&runtime.runtime_id)),"modelsRoot":root.join("models"),
                     "lorasRoot":discovered.loras_root,"cacheRoot":root.join(".downloads"),"tempRoot":root.join(".staging")},
-                "warnings":capacity_warnings(&hardware),"hardware":hardware,"network":network,"supported":reasons.is_empty(),"reasons":reasons,"freeBytes":free,
+                "warnings":capacity_warnings(&hardware),"hardware":hardware,"supported":reasons.is_empty(),"reasons":reasons,"freeBytes":free,
                 "runtime":{"id":runtime.runtime_id,"label":if image_models::is_adapter_runtime(&runtime){"原生图像 · Python 3.11 · PyTorch 2.9 · CUDA 12.8"}else{"Anima · Python 3.11 · CUDA 12.8"},
-                    "downloadBytes":runtime.download_bytes,"requiredBytes":required,"recoverableBytes":recoverable,"recoveryReady":recovery_ready,"sources":runtime.sources,
+                    "downloadBytes":runtime.download_bytes,"requiredBytes":required,"recoveryReady":recovery_ready,"sources":runtime.sources,
                     "installed":runtime_ready,"python":runtime_python},"models":model_views,
                 "resources":image_resources::views(&root, &configured, &service.config.app_root)?,
                 "activeEngine":active.engine,"configuredEngine":configured.engine,"restartRequired":active != &configured,
@@ -280,78 +233,12 @@ impl ControlService {
                 "steps":{"runtime":if runtime_ready{"installed"}else{"not-downloaded"},
                     "model":if model_ready{"verified"}else{"not-downloaded-or-incomplete"},
                     "engine":if reasons.is_empty() && active == &configured && active.engine == "native" && workspace_matches && model_ready && runtime_ready{"enabled"}else{"not-enabled"}},
-                "validation":"组件和安装记录检查；启用前会重新核对完整 SHA-256 与依赖，真实生成仍需验收"}),
+                "validation":"读取组件与安装记录；文件在下载或导入时校验一次，启用不扫描整库"}),
             )
         })
         .await
         .map_err(|_| ApiError::new(503, "WORKSPACE_CHECK_FAILED", "工作区检查未完成"))?
     }
-}
-pub(super) fn recoverable_runtime(root: &Path, runtime: &RuntimeBundle) -> u64 {
-    let candidate = root.join(".staging").join(&runtime.runtime_id);
-    if safe_directory(&candidate).is_err()
-        || candidate.join("runtime-config.json").exists() && !candidate_ready(root, runtime)
-    {
-        return 0;
-    }
-    let owner = std::fs::read(candidate.join(".huiyu-candidate.json"))
-        .ok()
-        .filter(|bytes| bytes.len() < 65536)
-        .and_then(|bytes| String::from_utf8(bytes).ok())
-        .and_then(|text| serde_json::from_str::<Value>(text.trim_start_matches('\u{feff}')).ok());
-    let Some(owner) = owner else {
-        return 0;
-    };
-    if owner["schemaVersion"] != 1
-        || owner["runtimeId"] != runtime.runtime_id
-        || owner["manifestSha256"] != image_models::manifest_hash(runtime)
-        || !owner["targetRoot"]
-            .as_str()
-            .is_some_and(|path| Path::new(path) == root.join(&runtime.runtime_id))
-    {
-        return 0;
-    }
-    let mut folders = vec![candidate];
-    let mut bytes = 0u64;
-    let mut count = 0usize;
-    while let Some(folder) = folders.pop() {
-        let Ok(entries) = std::fs::read_dir(folder) else {
-            return 0;
-        };
-        for entry in entries {
-            count += 1;
-            if count > 100000 {
-                return 0;
-            }
-            let Ok(entry) = entry else {
-                return 0;
-            };
-            let Ok(meta) = std::fs::symlink_metadata(entry.path()) else {
-                return 0;
-            };
-            if meta.file_type().is_symlink() {
-                return 0;
-            }
-            #[cfg(windows)]
-            {
-                use std::os::windows::fs::MetadataExt;
-                if meta.file_attributes() & 0x400 != 0 {
-                    return 0;
-                }
-            }
-            if meta.is_dir() {
-                folders.push(entry.path());
-            } else if meta.is_file()
-                && crate::file_identity::path(&entry.path(), false)
-                    .is_ok_and(|identity| identity.links == 1)
-            {
-                bytes = bytes.saturating_add(meta.len());
-            } else {
-                return 0;
-            }
-        }
-    }
-    bytes
 }
 pub(super) fn candidate_ready(root: &Path, runtime: &RuntimeBundle) -> bool {
     let candidate = root.join(".staging").join(&runtime.runtime_id);

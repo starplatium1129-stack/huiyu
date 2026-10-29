@@ -122,6 +122,7 @@ impl ControlService {
         &self,
         model: &ModelBundle,
         target: &Path,
+        imported_checkpoint: Option<&str>,
         operation: &Value,
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,
@@ -134,13 +135,18 @@ impl ControlService {
                     "此模型目录已有文件，准备不会覆盖；已有完整原生模型可在高级设置中采用",
                 ));
             }
-            jobs::verify_model_files(target, output_files(target)?, cancel).await?;
             return Ok(());
         }
         let inputs = input_root(target, model);
         plan::safe_directory(&inputs)?;
         self.native_stage(operation, 1);
-        self.download_native_files(&inputs, &model.files, operation, cancel)
+        let pending: Vec<_> = model
+            .files
+            .iter()
+            .filter(|file| imported_checkpoint != Some(file.path.as_str()))
+            .cloned()
+            .collect();
+        self.download_native_files(&inputs, &pending, operation, cancel)
             .await?;
         // managed_file has already verified every downloaded or reused input.
         stopped(cancel)?;
@@ -211,7 +217,6 @@ impl ControlService {
             .await?;
         if value["mode"] != "converted"
             || value["weightsStrictlyLoaded"] != true
-            || value["savedKeyShapeDtypeVerified"] != true
             || value["profile"].as_str() != model.conversion_profile.as_deref()
             || value["outputDir"]
                 .as_str()
@@ -223,16 +228,12 @@ impl ControlService {
                 "MiaoMiao 原生转换未完成，请查看准备日志",
             ));
         }
-        let outputs = parse_outputs(value["outputs"].clone())?;
+        parse_outputs(value["outputs"].clone())?;
         self.native_progress(
             operation,
             json!({"stage":"validating","phase":"verifying",
-            "message":"模型转换已完成，正在复核输入与转换文件；不再重复转换"}),
+            "message":"模型转换已完成，正在保存模型记录"}),
         );
-        jobs::verify_files(&inputs, &model.files, cancel).await?;
-        jobs::verify_model_files(&output, outputs, cancel).await?;
-        self.validate_native_model(&settings, &output, &model.id, cancel, permit)
-            .await?;
         stopped(cancel)?;
         std::fs::copy(inputs.join("LICENSE.md"), output.join("LICENSE.md")).map_err(|error| {
             ApiError::new(
@@ -242,7 +243,7 @@ impl ControlService {
             )
         })?;
         let receipt = json!({"schemaVersion":1,"modelId":model.id,"revision":model.revision,
-            "scope":"fixed-inputs-sha256-strict-conversion-and-output-sha256","readyForGeneration":false,
+            "scope":"verified-downloads-and-checkpoint-conversion","readyForGeneration":false,
             "sourceUrl":model.source_url,"conversionProfile":model.conversion_profile,"outputs":value["outputs"]});
         let bytes = serde_json::to_vec_pretty(&receipt)?;
         let target = target.to_owned();

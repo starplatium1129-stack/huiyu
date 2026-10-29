@@ -1,6 +1,7 @@
 //! An explicit local import. The approval anchor comes from the operator, never
 //! from a flag or checksum inside the downloaded archive.
 mod catalog;
+mod directory;
 mod install;
 mod paths;
 mod release;
@@ -20,6 +21,7 @@ struct Options {
     runtime: PathBuf,
     apply: bool,
     cancel_stdin: bool,
+    mount_directory: bool,
 }
 impl Options {
     fn gateway(&self) -> Config {
@@ -62,9 +64,15 @@ fn parse(args: &[String]) -> Result<Options> {
     let mut flags = HashMap::new();
     let mut apply = false;
     let mut cancel_stdin = false;
+    let mut mount_directory = false;
     let mut index = 1;
     while index < args.len() {
         let key = &args[index];
+        if key == "--mount-directory" && !mount_directory {
+            mount_directory = true;
+            index += 1;
+            continue;
+        }
         if key == "--cancel-stdin" {
             if cancel_stdin {
                 return Err(Error::new("USAGE", "Duplicate --cancel-stdin"));
@@ -116,6 +124,7 @@ fn parse(args: &[String]) -> Result<Options> {
         expected,
         apply,
         cancel_stdin,
+        mount_directory,
     })
 }
 
@@ -125,7 +134,7 @@ pub async fn cli(args: &[String]) -> Result<Option<Value>> {
     }
     if args.len() == 2 && ["--help", "-h"].contains(&args[1].as_str()) {
         return Ok(Some(
-            json!({"ok":true,"offlineDelta":true,"offlineCatalog":true,"usage":"huiyu-runtime offline-import --package-root <absolute extracted directory> --expected-release-sha256 <SHA256 from trusted release page> --app-root <installed gateway> --runtime-root <user gateway directory> [--apply] [--cancel-stdin]","preview":"Default: validate all files without writing. Close the desktop application before --apply. Repeat the same command to recover an interrupted import.","cancellation":"With --cancel-stdin, a byte or EOF on stdin requests cooperative cancellation."}),
+            json!({"ok":true,"offlineDelta":true,"offlineCatalog":true,"directoryMount":true,"usage":"huiyu-runtime offline-import --package-root <absolute extracted directory> --expected-release-sha256 <SHA256 from trusted release page> --app-root <installed gateway> --runtime-root <user gateway directory> [--apply] [--cancel-stdin] [--mount-directory]","preview":"Default: validate all files without writing. --mount-directory reads metadata and uses the full extracted package in place, verifying assets on request. Close the desktop application before --apply.","cancellation":"With --cancel-stdin, a byte or EOF on stdin requests cooperative cancellation."}),
         ));
     }
     let options = parse(args)?;
@@ -159,16 +168,25 @@ fn cancel_on_input(mut input: impl std::io::Read, cancel: &CancellationToken) {
 }
 fn execute(options: &Options, cancel: &CancellationToken) -> Result<Value> {
     let paths = paths::Paths::new(options)?;
-    let release = release::load(options, cancel)?;
-    let preview = install::preview(options, &paths, &release, cancel)?;
-    if !options.apply {
-        return Ok(preview);
+    if options.mount_directory {
+        let _guard = if options.apply {
+            Some(session(&options.runtime)?)
+        } else {
+            None
+        };
+        let release = release::load(options, cancel)?;
+        return directory::attach(options, &paths, &release, cancel);
     }
-    drop((release, preview));
+    if !options.apply {
+        let release = release::load(options, cancel)?;
+        return install::preview(options, &paths, &release, cancel);
+    }
     let _guard = session(&options.runtime)?;
     config::cancelled(cancel)?;
-    // Re-read approval and every source file after admission, before any install.
+    // Admit first, then validate the source and existing installation once while
+    // holding the runtime lease. Never reuse a previous process's preview.
     let release = release::load(options, cancel)?;
+    install::preview(options, &paths, &release, cancel)?;
     install::apply(options, &paths, &release, cancel)
 }
 

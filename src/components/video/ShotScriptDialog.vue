@@ -20,6 +20,9 @@
                 rows="5"
                 maxlength="2000"
                 placeholder="例如：宁宁在咖啡店值夜班，打烊前收到一封旧信，读完决定去找写信的人……"
+                spellcheck="false"
+                autocorrect="off"
+                autocapitalize="off"
                 @input="emit('update:story', inputValue($event))"
               ></textarea>
             </label>

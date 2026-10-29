@@ -28,6 +28,7 @@
     "allow-pick-workspace",
     "allow-notify",
     "allow-open-atelier",
+    "allow-open-resource-assistant",
     "allow-open-companion-chat",
     "allow-hide-companion-chat",
     "allow-set-chat-docked",

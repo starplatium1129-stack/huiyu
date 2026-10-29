@@ -329,26 +329,6 @@ impl ControlService {
             }
             self.log(&String::from_utf8_lossy(&out));
             self.stage(operation, 2);
-            if environment.starts_with("comfy-") {
-                comfy::integrity::establish(
-                    &self
-                        .config
-                        .ai_workspace_root
-                        .join(".runtimes/comfy/ComfyUI"),
-                    &model_file(&format!("runtime-{environment}"))?.sha256,
-                    cancel,
-                    &self.config.runtime_root.join("comfy-code-verified.json"),
-                    |done, total, file| {
-                        self.work_progress(
-                            operation,
-                            done,
-                            total,
-                            &format!("正在校验环境文件（{done}/{total}）：{file}"),
-                        )
-                    },
-                )
-                .await?;
-            }
             Ok(())
         }
     }

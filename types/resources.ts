@@ -33,6 +33,7 @@ export interface ResourceStatus {
   managementEnabled: boolean
   busy: boolean
   mounted: boolean
+  directoryRoot?: string
   current: { identity: string; releaseId: string; files: number } | null
   canRollback: boolean
   recoveryRequired: boolean

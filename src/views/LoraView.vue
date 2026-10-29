@@ -288,7 +288,7 @@ onMounted(() => { void loadCatalog() })
 .evaluation-panel code { @apply tw:whitespace-normal; }
 
 .model-details summary:focus-visible, .evaluation-panel summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-@media (max-width:800px) { .lora-grid { grid-template-columns:minmax(0,1fr); } }
+@media (max-width:768px) { .lora-grid { grid-template-columns:minmax(0,1fr); } }
 @media (hover:hover) and (pointer:fine) { .lora-card:hover:not(:focus-within) { transform:translateY(-2px); } .lora-card:hover:not(:focus-within) .model-identity .archive-icon { transform:rotate(-8deg) translateY(-3px); } }
 @media (hover:hover) and (pointer:fine) { .lora-card:hover:not(:focus-within) .model-portrait img { transform:rotate(-4deg) translateY(-3px); } }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .lora-page :is(.lora-card,.model-identity .archive-icon,.model-portrait img) { transition:none; transform:none; } }

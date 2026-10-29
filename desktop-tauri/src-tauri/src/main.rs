@@ -29,6 +29,7 @@ mod chat_dock;
 mod live2d_framing;
 mod maintenance;
 mod maintenance_protocol;
+mod resource_assistant;
 
 use std::sync::atomic::Ordering;
 use std::time::{Duration, Instant};
@@ -165,6 +166,7 @@ fn main() {
             tauri::plugin::Builder::new("isolated-instance").build()
         } else { tauri_plugin_single_instance::init(|app, argv, _cwd| {
             if maintenance::handle(app, &argv) || maintenance::active(app) { return; }
+            if argv.iter().any(|arg| arg == "--resource-assistant") { let _ = resource_assistant::open(app); return; }
             let state = app.state::<AppState>();
             for arg in argv {
                 if arg.starts_with("aics://") {
@@ -192,6 +194,12 @@ fn main() {
             let handler: fn(tauri::ipc::Invoke) -> bool = tauri::generate_handler![
             bridge::desktop_bootstrap,
             maintenance::desktop_maintenance_ack,
+            resource_assistant::open_resource_assistant,
+            resource_assistant::resource_assistant_status,
+            resource_assistant::resource_assistant_pick,
+            resource_assistant::resource_assistant_install,
+            resource_assistant::resource_assistant_cancel,
+            resource_assistant::resource_assistant_finish,
             bridge::desktop_workspace_prepare,
             bridge::desktop_workspace_activate,
             bridge::desktop_workspace_enable_bundled,
@@ -241,13 +249,14 @@ fn main() {
             ];
             move |invoke: tauri::ipc::Invoke| {
                 let view = invoke.message.webview();
+                let assistant = resource_assistant::trusted(&view) && resource_assistant::command(invoke.message.command());
                 let trusted = matches!(view.label(), "atelier" | "companion" | "companion-chat")
                     && view.url().map(|url| main_shared::is_gateway_origin(view.app_handle(), &url)).unwrap_or(false);
-                if !trusted {
+                if !trusted && !assistant {
                     invoke.resolver.reject("IPC requires the current authenticated gateway origin");
                     return true;
                 }
-                if !maintenance::admits(view.app_handle(), invoke.message.command()) {
+                if !assistant && !maintenance::admits(view.app_handle(), invoke.message.command()) {
                     invoke.resolver.reject("DESKTOP_MAINTENANCE: new host operations are frozen");
                     return true;
                 }
@@ -265,6 +274,8 @@ fn main() {
             app.manage(window_persistence::WindowStateWriter::new());
             let state = app.state::<AppState>();
             app.manage(host);
+            app.manage(resource_assistant::ResourceAssistant::default());
+            if (std::env::args().any(|arg| arg == "--resource-assistant") && !state.paths.config_root.join("resource-restart.json").exists()) || resource_assistant::recovery_pending(app.handle()) { resource_assistant::open(app.handle()).map_err(std::io::Error::other)?; }
 
             state.info("Companion starting (tauri shell)");
 
@@ -357,13 +368,18 @@ fn main() {
                         s.info(&format!("Gateway {} at {url}", if supervisor.owns_gateway() { "started" } else { "attached" }));
                         let _ = handle.emit("aics:gateway-ready", &url);
                         let resume = s.paths.config_root.join("setup-restart.json");
+                        let resources = s.paths.config_root.join("resource-restart.json");
+                        if std::fs::read(&resources).ok().as_deref() == Some(b"true") {
+                            main_shared::open_atelier(&handle, &url, Some("/control?section=control-library"));
+                            let _ = std::fs::remove_file(resources);
+                        }
                         if std::fs::read(&resume).ok().as_deref() == Some(b"true") {
                             main_shared::open_atelier(&handle, &url, Some("/control?section=control-setup"));
                         }
                     }
                     Err(e) => {
                         s.error(&format!("Gateway start failed: {e}"));
-                        if ui_entry::bundled(&handle) {
+                        if ui_entry::bundled(&handle) || resource_assistant::recovery_pending(&handle) {
                             return;
                         }
                         use tauri_plugin_dialog::DialogExt;
@@ -378,6 +394,7 @@ fn main() {
             let handle = app.handle().clone();
             let show_on_start = !std::env::args().any(|arg| arg == "--hidden");
             tauri::async_runtime::spawn(async move {
+                if resource_assistant::recovery_pending(&handle) { return; }
                 let start = Instant::now();
                 while !ui_entry::bundled(&handle) {
                     tokio::time::sleep(Duration::from_millis(200)).await;

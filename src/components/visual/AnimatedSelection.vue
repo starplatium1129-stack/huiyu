@@ -33,16 +33,19 @@ function keyboard(event: KeyboardEvent) {
   // managed tablists still retain ownership of their own roving focus.
   // Focus and content commit immediately; the decorative spring keeps its
   // current position/velocity through repeated arrow keys and pointer presses.
+  if (event.defaultPrevented || event.isComposing || event.keyCode === 229) return
+  if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return
   keyboardInput = true; schedule()
-  if (parent?.classList.contains('studio-segments') && event.target instanceof HTMLButtonElement) {
-    // Reka owns tab/radio roving focus. Plain pressed-button groups use the same keys.
-    if (parent.getAttribute('role') === 'tablist' || parent.dataset.segmentKeyboard === 'managed' || event.altKey || event.ctrlKey || event.metaKey) return
+  if (parent && event.target instanceof HTMLButtonElement && parent.contains(event.target)) {
+    // Reka tabs with data-orientation own their own roving focus. Plain button groups and custom tablists use roving keys here.
+    if (parent.dataset.segmentKeyboard === 'managed' || parent.hasAttribute('data-orientation') || parent.closest('[data-reka-tabs-list]')) return
     const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End']
     if (!keys.includes(event.key)) return
     const buttons = Array.from(parent.querySelectorAll<HTMLButtonElement>('button')).filter(button =>
-      !button.disabled && button.getAttribute('aria-disabled') !== 'true' && button.getBoundingClientRect().width > 0)
+      !button.disabled && button.getAttribute('aria-disabled') !== 'true' && button.getBoundingClientRect().width > 0
+      && (button.parentElement === parent || button.parentElement?.classList.contains('studio-tooltip-anchor') || button.closest('.studio-segments') === parent))
     const index = buttons.indexOf(event.target)
-    if (index < 0 || !buttons.length) return
+    if (index < 0 || buttons.length <= 1) return
     const rtl = getComputedStyle(parent).direction === 'rtl'
     const previous = event.key === 'ArrowUp' || event.key === (rtl ? 'ArrowRight' : 'ArrowLeft')
     const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (index + (previous ? -1 : 1) + buttons.length) % buttons.length

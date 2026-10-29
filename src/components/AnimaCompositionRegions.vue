@@ -41,7 +41,7 @@ async function remove() {
     <div v-if="selectedRegion" v-content-motion:fade="selectedId" class="composition-region-form">
       <label class="composition-field"><span>区域 {{ regions.indexOf(selectedRegion) + 1 }} 的正向提示词</span>
         <textarea ref="promptInput" v-model="selectedRegion.prompt" :disabled="locked" rows="4" :maxlength="ANIMA_REGION_PROMPT_LIMIT"
-          placeholder="描述这个区域里的人物、物体或背景…" />
+          placeholder="描述这个区域里的人物、物体或背景…" spellcheck="false" autocorrect="off" autocapitalize="off" />
       </label>
       <div class="composition-presets" role="group" aria-label="快速设置区域位置">
         <button v-for="preset in presets" :key="preset.id" class="btn btn-quiet btn-sm" type="button" :disabled="locked"

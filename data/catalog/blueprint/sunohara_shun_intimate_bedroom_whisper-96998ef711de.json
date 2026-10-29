@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_intimate_bedroom_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2116,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-10-29T16:15:37.047540800+00:00",
   "data": {
     "id": "sunohara_shun_intimate_bedroom_whisper",
     "characterId": "sunohara_shun",
@@ -19,7 +19,7 @@
     "lighting": "intimate warm candlelight flickering with soft shadows",
     "camera": "close-up",
     "mood": "deeply passionate vulnerability, intoxicating heat, and romantic surrender",
-    "promptProse": "Bathed in soft candlelight beside an oriental folding screen, Sunohara Shun leans intimately close with heavily flushed cheeks and melting crimson eyes, whispering softly.",
+    "promptProse": "Bathed in soft candlelight beside an oriental folding screen, Sunohara Shun leans intimately close with heavily flushed cheeks and melting green eyes, whispering softly.",
     "promptTokens": [
       "blush",
       "heavy_blush",

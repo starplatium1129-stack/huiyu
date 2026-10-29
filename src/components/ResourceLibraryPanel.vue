@@ -1,22 +1,24 @@
 <template>
   <section id="control-library" ref="libraryRegion" class="resource-library tw:p-s-5 tw:rounded-xl tw:text-primary tw:min-w-0" aria-labelledby="resource-library-title" tabindex="-1" :aria-busy="loading">
     <header class="resource-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3">
-      <div><span class="resource-eyebrow">资源管理</span><h2 id="resource-library-title">离线资源库</h2></div>
+      <div><span class="resource-eyebrow">资源管理</span><h2 id="resource-library-title">资源与素材</h2></div>
       <button v-if="isLocal" class="btn btn-ghost btn-sm" type="button" :disabled="loading || submitting" :aria-busy="loading" @click="recheck"><ArchiveIcon name="refresh" />{{ loading ? '检查中…' : '重新检查' }}</button>
     </header>
     <p v-if="!isLocal" role="status">资源管理仅在本机控制室开放。</p>
     <template v-else>
-      <div class="resource-version"><span class="resource-label">当前使用</span><strong>{{ !status ? '状态待确认' : status.mounted ? '已安装资源' : '随包基础资源' }}</strong>
+      <ResourceInstallEntry v-if="desktop" />
+      <div class="resource-version"><span class="resource-label">当前使用</span><strong>{{ !status ? '状态待确认' : status.mounted ? status.directoryRoot ? '直接使用素材目录' : '已安装资源' : '随包基础资源' }}</strong>
         <StudioTooltip v-if="status?.mounted && status.current" :content="status.current.identity">
           <code tabindex="0">{{ status.current.releaseId }} · {{ status.current.identity.slice(0, 12) }}</code>
         </StudioTooltip>
+        <code v-if="status?.directoryRoot">{{ status.directoryRoot }}</code>
       </div>
       <p v-if="!status && loading && !error" role="status">正在读取资源库…</p>
       <p v-if="error" class="resource-notice" role="alert">{{ error }}</p>
       <p v-if="status?.issue" class="resource-notice" role="alert">{{ status.issue.message }}</p>
-      <p v-if="status && !status.configured" class="resource-description">尚未配置已批准的资源库；基础展示不受影响。</p>
-      <p v-else-if="status && !status.managementEnabled" class="resource-description">资源管理尚未启用，请由本机管理员完成配置。</p>
-      <div v-if="status?.releases.length" class="resource-selection tw:grid tw:gap-s-2">
+      <p v-if="!desktop && status && !status.configured" class="resource-description">在绘遇桌面端打开资源安装助手，即可导入官方素材 ZIP。</p>
+      <p v-else-if="!desktop && status && !status.managementEnabled" class="resource-description">已配置资源库的管理操作需在本机启用。</p>
+      <div v-if="!desktop && status?.releases.length && !status.directoryRoot" class="resource-selection tw:grid tw:gap-s-2">
         <label for="resource-release">选择资源版本</label>
         <StudioSelect id="resource-release" v-model="selectedId" :disabled="busy"
           :options="status?.releases.map(release => ({ value: release.id, label: `${release.label} · ${release.kind === 'delta' ? '增量更新' : '完整资源'}` }))" />
@@ -32,7 +34,7 @@
         </template>
         <p v-if="status.task.error" class="resource-task-error" role="alert">{{ status.task.error.message }}</p>
       </div>
-      <div class="resource-actions">
+      <div v-if="!desktop && !status?.directoryRoot" class="resource-actions">
         <div class="resource-primary-actions">
           <button v-if="selected?.source === 'http'" class="btn" :class="selected.downloaded || status?.recoveryRequired ? 'btn-ghost' : 'btn-primary'" type="button" :disabled="!canDownload" @click="run('download')"><ArchiveIcon name="download" />下载资源</button>
           <button v-if="selected" class="btn" :class="canImport && !status?.recoveryRequired ? 'btn-primary' : 'btn-ghost'" type="button" :disabled="!canImport" @click="run('import')"><ArchiveIcon name="image" />安装所选版本</button>
@@ -52,8 +54,11 @@ import ArchiveIcon from './visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import SetupTransferProgress from '@/components/control/SetupTransferProgress.vue'
+import ResourceInstallEntry from '@/components/control/ResourceInstallEntry.vue'
+import { hasResourceAssistant } from '@/platform/desktop/resourceAssistant'
 import { useResourceLibrary } from '../composables/useResourceLibrary'
 const library = useResourceLibrary()
+const desktop = hasResourceAssistant()
 const { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,
   taskMessage, taskDetail, refresh, run, cancel } = library
 const libraryRegion = ref<HTMLElement | null>(null)

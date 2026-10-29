@@ -63,7 +63,7 @@ const negativeCount = computed(() => tokenize(result.value?.negative || '').leng
         <p v-if="!capabilities.negative" class="catalog-note">此模型不使用负向提示词。</p>
         <details class="catalog-prompt-raw">
           <StudioDisclosureSummary>完整正向文本</StudioDisclosureSummary>
-          <textarea class="input" rows="8" readonly :value="result.prompt" aria-label="编译后的完整正向提示词"></textarea>
+          <textarea class="input" rows="8" readonly :value="result.prompt" aria-label="编译后的完整正向提示词" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
         </details>
       </template>
     </div>

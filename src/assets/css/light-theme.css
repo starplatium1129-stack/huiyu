@@ -31,10 +31,13 @@
   --glass-fill-strong: var(--bg-surface);
   --glass-edge: var(--border-soft);
   --glass-highlight: rgba(255, 255, 255, .72);
-  --glass-shadow: 0 18px 48px rgba(55, 32, 65, .12);
-  --shadow-sm: 0 3px 12px rgba(55, 32, 65, .06);
-  --shadow-md: 0 10px 28px rgba(55, 32, 65, .09);
-  --shadow-lg: 0 18px 48px rgba(55, 32, 65, .13);
+  --glass-shadow: 0 16px 44px rgba(79, 59, 65, .12);
+  --shadow-sm: 0 1px 3px rgba(79, 59, 65, .07), 0 3px 10px rgba(79, 59, 65, .05);
+  --shadow-md: 0 2px 6px rgba(79, 59, 65, .06), 0 10px 24px -2px rgba(79, 59, 65, .09);
+  --shadow-lg: 0 4px 10px rgba(79, 59, 65, .06), 0 18px 44px -4px rgba(79, 59, 65, .13);
+  --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
+  --shadow-glass-elevated: inset 0 1px 0 var(--glass-highlight), var(--shadow-lg);
   --stage-violet: linear-gradient(145deg, #ebe0f4, #faf6fd);
   --stage-amber: linear-gradient(145deg, #f4e7d1, #fffaf1);
   --success: #126239;
@@ -91,3 +94,40 @@
   --desktop-titlebar-hover-bg: var(--bg-elevated);
   --desktop-titlebar-press-bg: var(--bg-hover);
 }
+
+/* Elevated surfaces on light theme: crisp 1px borders and warm paper shadow tiers */
+:root[data-theme="light"] :is(.card, .card-create, .card-info, .card-direct, .panel, .result-frame, .history-panel, .local-status-panel, .recent-card, .pop-card-mini) {
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-glass-sm);
+}
+
+:root[data-theme="light"] :is(.studio-popover, .studio-select-content, .chat-more-menu, .modal-card, .confirm-panel, .task-center, .appearance-dialog, [data-elevation='2'], .card-level-2) {
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-glass-md);
+}
+
+:root[data-theme="light"] :is([data-elevation='3'], .card-level-3) {
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-glass-elevated);
+}
+
+:root[data-theme="light"] .pb.journal-workspace :is(.pb-canvas-wrap, .stage-viewport) {
+  border: 1px solid var(--border-soft);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 16px 40px -16px color-mix(in srgb, var(--character-accent, var(--accent)) 12%, rgba(79, 59, 65, 0.15)),
+    0 2px 10px rgba(79, 59, 65, 0.06);
+}
+
+:root[data-theme="light"] .pb.journal-workspace .stage-placeholder {
+  background:
+    radial-gradient(ellipse at 50% 18%, color-mix(in srgb, var(--character-accent, var(--accent)) 6%, transparent), transparent 60%),
+    radial-gradient(ellipse at 85% 95%, color-mix(in srgb, var(--character-soft) 40%, transparent), transparent 50%),
+    var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 12px 32px -12px rgba(79, 59, 65, 0.09),
+    0 2px 6px rgba(79, 59, 65, 0.04);
+}
+

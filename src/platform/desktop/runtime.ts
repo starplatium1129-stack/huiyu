@@ -39,7 +39,12 @@ export const desktopRuntimeFetch: FetchImplementation = async (input, init = {})
   // browser provenance; send only the origin while retaining the document's
   // no-referrer policy for unrelated requests and never emitting a private URL.
   const referrerPolicy = privateRequest && new URL(url).origin === window.location.origin ? 'origin' : init.referrerPolicy
-  const response = await fetch(url, { ...init, headers, signal, referrerPolicy })
+  let response: Response
+  try { response = await fetch(url, { ...init, headers, signal, referrerPolicy }) }
+  catch (error) {
+    if (!signal.aborted) void refreshDesktopRuntime()
+    throw error
+  }
   if (response.status === 401) void refreshDesktopRuntime()
   return response
 }
@@ -84,7 +89,13 @@ export async function initializeDesktopRuntime(): Promise<() => void> {
   configureApiTransport(desktopRuntimeFetch)
   await refreshDesktopRuntime()
   let disposed = false
-  const timer = setInterval(() => { if (!disposed) void refreshDesktopRuntime() }, 10_000)
+  const timer = setInterval(() => {
+    if (disposed) return
+    const session = state.bootstrap?.runtime?.workspace
+    // Gateway-ready events and failed requests handle reconnection. Renew only
+    // near token expiry; an idle connected window needs no health RPC loop.
+    if (state.connection !== 'ready' || session && session.expiresAt <= Date.now() + 30_000) void refreshDesktopRuntime()
+  }, 10_000)
   let unlisten: (() => void) | undefined
   const events = hostApi()?.event
   void events?.listen('aics:gateway-ready', () => { if (!disposed) void refreshDesktopRuntime() }).then(remove => { if (disposed) remove(); else unlisten = remove })

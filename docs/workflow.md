@@ -172,6 +172,8 @@
 
 本机 `/api/resources/status` 查询状态，`/api/resources/tasks` 创建已批准的导入、下载、恢复或回退任务，取消使用任务的 cancel 入口。重启后未完成任务显示 interrupted，可按原操作恢复；已安装资源按允许清单核验，Live2D 依赖组整体采用或回退。
 
+官方素材在桌面端控制室「资源与素材」的内置助手接入；可选择 ZIP 或已解压的完整素材文件夹。助手保存并排空网关后登记本地目录，不依赖 HTTP 管理授权。完整 ZIP 一次解压到固定 `resource-packages/`，直接读取原目录，不进行整库搬运或多轮扫描；资产沿用按请求读取校验。原生维护入口 `offline-import --mount-directory` 默认只读识别元数据，`--apply` 写入位置与人物合并结果；增量 ZIP 沿原事务导入。取消使用 stdin，完成后正常重启返回控制室。
+
 桌面暂存默认 `AICS_DESKTOP_RESOURCE_PROFILE=full`；显式 `base` 只处理隔离暂存副本，保留原资产和已安装程序。设备和画质需另行验收。
 
 ## 门禁与构建
@@ -261,7 +263,7 @@ Windows x64 MSVC 后端保留原链接器；桌面 dev 默认使用当前活动 
 
 新机在「控制室 → 图片反推」点击「一键准备」：按随包固定清单自动下载独立 CPython 3.11、PyTorch CUDA 12.8 及其依赖、PixAI v1.0 模型与 timm，无需 ComfyUI、系统 Python、pip 或单独安装 CUDA Toolkit。运行库复用 AI 工作区内 `inference/<固定运行库版本>/`，仅准备环境，不下载生图模型；PixAI 模型在 `PixAI/model/`，timm 在按 wheel 版本与 SHA 命名的 `PixAI/deps/` 子目录。来源、空间、路径、进度和取消在同一面板显示，下载支持续传并核对完整 SHA-256；Windows VC++ 共享组件如需提权由系统 UAC 处理，系统安装阶段须等待结束或在 Windows 安装器中取消。
 
-准备成功后原子写入运行目录 `pixai/runtime-config.json` 并刷新反推服务，无需重启；失败保留既有环境和下载缓存，重新准备可继续。关闭页面仅停止进度观察。显式 `AICS_PIXAI_*` 路径覆盖须先移除并重启后才能一键准备，避免下载完成却仍使用旧环境。受管包支持 Windows x64、单张兼容 NVIDIA CUDA/BF16 显卡与清单规定驱动；反推时需要约 4 GiB **空闲**显存。准备只核验文件、依赖导入和设备能力，不执行真实模型反推。以下 CLI 为复用已有环境的高级维护入口。
+准备成功后原子写入运行目录 `pixai/runtime-config.json` 并刷新反推服务，无需重启；失败保留既有环境和下载缓存，重新准备可继续。关闭页面仅停止进度观察。显式 `AICS_PIXAI_*` 路径覆盖须先移除并重启后才能一键准备，避免下载完成却仍使用旧环境。受管包支持 Windows x64、单张兼容 NVIDIA CUDA/BF16 显卡与清单规定驱动；反推时需要约 4 GiB **空闲**显存。下载器负责一次文件完整性校验，后续准备只安装私有 timm 并采用已完成的运行库记录，不重复哈希模型、遍历依赖目录或启动 Torch/CUDA 诊断。以下 CLI 为复用已有环境的高级维护入口。
 
 `npm run wf -- models:prepare-pixai [--target-dir <独立可写runtime根>] [--python <已有Python或venv>] [--torch-site-packages <已有torch包目录>] [--reuse-from <已下载候选根>]` 准备固定 PixAI v1.0：官方 revision 为 `9fe10addf9326e292da8a85a98ea74cd91b41771`，FP32 safetensors 为 1,945,425,796 字节，模型、代码、配置逐项核对固定大小与 SHA-256。默认根为运行目录下的 `pixai/`；模型在 `model/`，固定 timm 1.0.30 仅装入独立 `deps/`，现有 Comfy/Python 包和生图模型不修改。已匹配文件直接复用；`--reuse-from` 核验既有候选，优先硬链权重、复制代码/配置，避免重复下载。
 

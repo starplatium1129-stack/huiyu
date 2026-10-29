@@ -53,7 +53,9 @@
       <button class="btn btn-ghost btn-sm" type="button" :disabled="page === pageCount" @click="page++">下一页</button>
     </nav>
     <ArchiveStatePanel v-if="!trashItems.length && !trashLoading && !trashError" kind="empty" title="回收站是空的"
-      message="删除的作品会在这里保留 30 天，随时可以恢复。" />
+      message="删除的作品会在这里保留 30 天，随时可以恢复。">
+      <button class="btn btn-primary" type="button" @click="emit('back-to-gallery')">返回作品画廊</button>
+    </ArchiveStatePanel>
   </div>
 </template>
 
@@ -92,6 +94,7 @@ const emit = defineEmits<{
   (e: 'restore', id: string | number): void
   (e: 'clear'): void
   (e: 'reload'): void
+  (e: 'back-to-gallery'): void
 }>()
 </script>
 

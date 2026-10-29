@@ -4,10 +4,16 @@
     <textarea id="directorStoryInput" class="story-input" v-model="pb.story"
       aria-label="故事"
       placeholder="写下这一幕发生的事，或一句想留在画里的对白…"
+      spellcheck="false"
+      autocorrect="off"
+      autocapitalize="off"
       @input="onStoryInput"></textarea>
     <label class="visual-description-label" for="visualDescription">画面描述 · Visual description</label>
     <textarea id="visualDescription" class="visual-description-input" v-model="pb.visualDescription"
-      placeholder="描述角色的动作、表情、服装，以及周围的光线…"></textarea>
+      placeholder="描述角色的动作、表情、服装，以及周围的光线…"
+      spellcheck="false"
+      autocorrect="off"
+      autocapitalize="off"></textarea>
     <div v-if="pb.activeScene" class="scene-context">
       <span class="scene-context-title">{{ pb.activeScene.title }}</span>
       <button class="btn btn-quiet btn-sm" type="button" @click="detachScene()"><ArchiveIcon name="close" />解除场景绑定</button>

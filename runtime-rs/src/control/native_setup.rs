@@ -220,20 +220,21 @@ fn receipt_matches(root: &Path, model: &ModelBundle) -> bool {
         .ok()
         .filter(|bytes| bytes.len() < 65536)
         .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok());
-    let inputs = anima_models::input_root(root, model);
     receipt.is_some_and(|value| value["modelId"] == model.id && value["revision"] == model.revision)
         && image_models::model_issue(root, &model.id).is_none()
-        && model.files.iter().all(|file| {
-            std::fs::symlink_metadata(inputs.join(&file.path))
-                .is_ok_and(|meta| meta.is_file() && meta.len() == file.bytes)
-        })
-        && (model.conversion_profile.is_none()
-            || anima_models::output_files(root).is_ok_and(|files| {
+        && if model.conversion_profile.is_some() {
+            anima_models::output_files(root).is_ok_and(|files| {
                 files.iter().all(|file| {
                     std::fs::symlink_metadata(root.join(&file.path))
                         .is_ok_and(|meta| meta.is_file() && meta.len() == file.bytes)
                 })
-            }))
+            })
+        } else {
+            model.files.iter().all(|file| {
+                std::fs::symlink_metadata(root.join(&file.path))
+                    .is_ok_and(|meta| meta.is_file() && meta.len() == file.bytes)
+            })
+        }
 }
 fn runtime_paths(service: &ControlService, runtime: &RuntimeBundle) -> Value {
     let root = service.config.ai_workspace_root.join("inference");
@@ -299,7 +300,7 @@ async fn activate(
                     _ => Err(ApiError::new(
                         504,
                         "NATIVE_ACTIVATION_TIMEOUT",
-                        "启用前校验超时，未确认保存；请重新读取配置后再继续",
+                        "启用配置保存超时，请重新读取配置确认结果",
                     )),
                 }
             }

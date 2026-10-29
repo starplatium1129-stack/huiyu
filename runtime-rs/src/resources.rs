@@ -1,8 +1,8 @@
 mod config;
 mod delta;
+mod directory;
 mod download;
 mod fs;
-mod group_reads;
 mod http;
 mod lease;
 mod lifecycle;

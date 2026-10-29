@@ -51,6 +51,6 @@ const modelArt = useThemeIllustration(modelOriginal, 'model')
 const features: Array<{ id: string; icon: ArchiveIconName; title: string; description: string; action: string }> = [
   { id: 'setup-chat-options', icon: 'chat', title: '与角色互动聊天', description: '接入本地大模型或云端 API，与喜欢的角色开启自由对话。', action: '配置本地聊天' },
   { id: 'control-interrogate', icon: 'search', title: '图片提示词反推', description: '智能分析参考图片，提炼出可用于二次创作的风格与标签描述。', action: '配置图片反推' },
-  { id: 'control-library', icon: 'image', title: '离线素材画册', description: '导入并管理官方素材包与参考画册，无需联网随时翻阅。', action: '管理资源库' },
+  { id: 'control-library', icon: 'image', title: '素材与画册', description: '一键安装角色图片与场景素材，让喜欢的故事随时可见。', action: '安装素材包' },
 ]
 </script>

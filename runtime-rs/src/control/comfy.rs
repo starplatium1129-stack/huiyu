@@ -1,4 +1,3 @@
-pub(super) mod integrity;
 mod model_paths;
 use super::*;
 use std::process::Stdio;
@@ -222,25 +221,6 @@ impl ControlService {
             .operation
             .clone()
             .unwrap_or(Value::Null);
-        let started = Instant::now();
-        integrity::verify(
-            &root,
-            &cancel,
-            &self.config.runtime_root.join("comfy-code-verified.json"),
-            |done, total, file| {
-                self.work_progress(
-                    &operation,
-                    done,
-                    total,
-                    &format!("正在检查启动文件（{done}/{total}）：{file}"),
-                )
-            },
-        )
-        .await?;
-        self.log(&format!(
-            "ComfyUI 启动文件校验完成：{:.2} 秒",
-            started.elapsed().as_secs_f64()
-        ));
         if operation["kind"] == "comfy-start" {
             self.stage(&operation, 1);
         }

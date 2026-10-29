@@ -1,5 +1,5 @@
 <template>
-  <form class="api-settings" @submit.prevent="canSave && emit('save')">
+  <form class="api-settings" novalidate @submit="handleSubmit">
     <div class="api-settings-head">
       <div class="api-title-lockup">
         <span class="api-mark" aria-hidden="true"><ArchiveIcon name="chat" /></span>
@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref, useId, watch } from 'vue'
+import { nextTick, onUnmounted, ref, useId, watch } from 'vue'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { useChatApiEditor, type ChatApiEditorProps } from '../composables/chat/useChatApiEditor'
@@ -129,6 +129,35 @@ const { preset, needsKey, providerGroups, addressError, baseUrlProxy, modelProxy
   fetchingModels, clearingKey, state, statusText, modelOptions, freeModelsOnly, filteringFreeModels, usageNote, connectionHint, saveHint, canFetchModels, canSave,
   selectVendor, fetchModels, cancelFetch, clearPersonalKey } = useChatApiEditor(props, emit)
 function onConnectionToggle(event: Event) { connectionOpen.value = (event.currentTarget as HTMLDetailsElement).open }
+
+function handleSubmit(event: Event) {
+  event.preventDefault()
+  if (canSave.value) {
+    emit('save')
+    return
+  }
+  const form = event.currentTarget as HTMLElement
+  if (addressError.value) {
+    connectionOpen.value = true
+    void nextTick(() => {
+      const el = form.querySelector<HTMLInputElement>('input[type="url"]')
+      el?.scrollIntoView({ behavior: 'instant', block: 'nearest' })
+      el?.focus()
+    })
+    return
+  }
+  if (needsKey.value && !props.apiKey.trim()) {
+    const el = form.querySelector<HTMLInputElement>('input[aria-label="API 密钥"]')
+    el?.scrollIntoView({ behavior: 'instant', block: 'nearest' })
+    el?.focus()
+    return
+  }
+  if (!props.model.trim()) {
+    const el = form.querySelector<HTMLElement>('[aria-label="聊天模型"], [role="combobox"]')
+    el?.scrollIntoView({ behavior: 'instant', block: 'nearest' })
+    el?.focus()
+  }
+}
 </script>
 
 <style scoped>

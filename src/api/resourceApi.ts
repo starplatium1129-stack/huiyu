@@ -26,6 +26,7 @@ function task(value: unknown): boolean {
 function status(value: ApiResponseObject): boolean {
   return value.ok === true && ['configured', 'managementEnabled', 'busy', 'mounted', 'canRollback', 'recoveryRequired']
     .every(key => typeof value[key] === 'boolean')
+    && (value.directoryRoot === undefined || typeof value.directoryRoot === 'string')
     && (value.current === null || (object(value.current) && /^[a-f\d]{64}$/.test(String(value.current.identity))
       && typeof value.current.releaseId === 'string' && count(value.current.files)))
     && issue(value.issue) && (value.task === null || task(value.task))

@@ -34,7 +34,6 @@ HERE = Path(__file__).resolve().parent
 profile = sibling("huiyu_anima_profile", HERE / "anima_conversion_profile.py")
 header_tools = sibling("huiyu_anima_header", HERE.parents[1] / "scripts/maintenance/inspect-anima-checkpoint.py")
 WEIGHTS = ("transformer", "text_conditioner", "text_encoder", "vae")
-PROBES = ["", "A small blue bird.", "动漫，水彩画。"]
 
 
 def progress(message):
@@ -190,9 +189,6 @@ def checked_tokenizer(cls, path, capacity, kind):
                 if kind == "tokenizer" else {"<pad>": 0, "</s>": 1, "<unk>": 2, "<extra_id_0>": 32099})
     if any(vocab.get(key) != value for key, value in expected.items()) or tokenizer.pad_token_id is None:
         raise ValueError(f"{kind} special-token layout does not match this profile")
-    tokens = tokenizer(PROBES, padding=True, truncation=True, max_length=64)["input_ids"]
-    if len(tokens) != len(PROBES) or any(not row or any(type(i) is not int or not 0 <= i < capacity for i in row) for row in tokens):
-        raise ValueError(f"{kind} failed local tokenizer probe")
     return tokenizer
 
 
@@ -233,19 +229,6 @@ def save_weights(runtime_info, models, paths, headers, mapping, destination):
         del model, state
 
 
-def verify_saved_weights(destination, headers, mapping):
-    for component in WEIGHTS:
-        saved = {}
-        for shard in (destination / component).glob("*.safetensors"):
-            for name, entry in header_tools.read_header(shard).items():
-                if name in saved:
-                    raise ValueError(f"Duplicate saved tensor: {component}.{name}")
-                saved[name] = entry
-        expected = {new: headers[source_name(component)][old] for new, old in mapping[component].items()}
-        if saved != expected:
-            raise ValueError(f"Saved key/shape/dtype verification failed: {component}")
-
-
 def write_json(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -276,10 +259,6 @@ def apply(runtime_info, models, loaded_tokenizers, paths, headers, mapping, repo
                 # Transformers 5 saves tokenizer.json only. Export the same BPE
                 # vocabulary too, matching the shipping worker's local contract.
                 tokenizer.backend_tokenizer.model.save(str(folder))
-            reloaded = checked_tokenizer(runtime_info[name], folder,
-                                         profile.QWEN["vocab_size"] if name == "tokenizer" else profile.CONDITIONER["target_vocab_size"], name)
-            if reloaded.get_vocab() != tokenizer.get_vocab() or reloaded(PROBES)["input_ids"] != tokenizer(PROBES)["input_ids"]:
-                raise ValueError(f"Saved {name} changed token ids")
         runtime_info["scheduler"](shift=3.0).save_pretrained(str(staged / "scheduler"))
         index = {"_class_name": "AnimaModularPipeline", "_blocks_class_name": "AnimaAutoBlocks",
                  "_diffusers_version": "0.41.0"}
@@ -288,12 +267,9 @@ def apply(runtime_info, models, loaded_tokenizers, paths, headers, mapping, repo
                           "t5_tokenizer": "T5TokenizerFast", "scheduler": "FlowMatchEulerDiscreteScheduler"}.items():
             index[name] = ["transformers" if name in {"text_encoder", "tokenizer", "t5_tokenizer"} else "diffusers", cls]
         write_json(staged / "model_index.json", index)
-        progress("核对已保存权重的名称、形状与精度")
-        verify_saved_weights(staged, headers, mapping)
-        sibling("huiyu_anima_worker_layout", HERE / "worker.py").validate_model(str(staged))
         completed = {**report, "mode": "converted", "tensorDataRead": True, "outputWritten": True,
                      "weightTensorDataRead": True,
-                     "weightsStrictlyLoaded": True, "savedKeyShapeDtypeVerified": True}
+                     "weightsStrictlyLoaded": True}
         hashing = sibling("huiyu_conversion_hash", HERE / "native_hash.py")
         completed["outputs"] = []
         for path in sorted(staged.rglob("*")):

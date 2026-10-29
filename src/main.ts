@@ -41,7 +41,8 @@ void (async () => {
   const taskCenterPromise = import('./composables/useTaskCenter')
   const { useTaskCenter } = await taskCenterPromise
   const center = useTaskCenter()
-  stopPlatform = await initializePlatform(() => center.activeCount.value > 0)
+  const platform = await initializePlatform(() => center.activeCount.value > 0)
+  stopPlatform = platform.stop
   initializeTheme()
   // The platform authority is ready. Theme CSS, UI modules and the artwork
   // lease can now prepare together; all three still finish before mounting.
@@ -61,6 +62,7 @@ void (async () => {
   app.mount('#app')
   let fontFrame = requestAnimationFrame(() => {
     fontFrame = requestAnimationFrame(() => {
+      if (!disposed) void platform.afterMount().catch(error => console.warn('桌面辅助功能暂未就绪', error))
       const load = () => { if (!disposed) void import('./assets/fonts').catch(error => console.warn('本地字体暂未加载', error)) }
       if ('requestIdleCallback' in window) {
         const idle = window.requestIdleCallback(load, { timeout: 1000 })

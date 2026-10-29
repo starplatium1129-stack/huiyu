@@ -213,6 +213,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     // 固定构建目标，别随 Vite 默认值漂移；与 package.json 的 browserslist 对齐
     target: ['chrome111', 'edge111', 'firefox128', 'safari16.4'],
     rolldownOptions: {
+      input: { main: resolve('index.html'), 'resource-assistant': resolve('resource-assistant.html') },
       preserveEntrySignatures: false,
       output: {
         strictExecutionOrder: true,

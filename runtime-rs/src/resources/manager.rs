@@ -34,7 +34,6 @@ pub struct Service {
     closed: AtomicBool,
     active: AtomicBool,
     pub(super) workers: TaskTracker,
-    pub(super) group_reads: Arc<super::group_reads::GroupReads>,
     data: Mutex<Data>,
 }
 impl Service {
@@ -76,7 +75,6 @@ impl Service {
             closed: AtomicBool::new(false),
             active: AtomicBool::new(false),
             workers: TaskTracker::new(),
-            group_reads: Arc::new(super::group_reads::GroupReads::default()),
             data: Mutex::new(Data::default()),
         })
     }
@@ -110,11 +108,13 @@ impl Service {
         let result = (|| {
             let configuration = Arc::new(config::load(&self.gateway, file, self.shutdown.clone())?);
             data.config = Some(configuration.clone());
-            data.task = tasks::saved(&configuration.ctx)?;
+            if configuration.ctx.directory.is_none() {
+                data.task = tasks::saved(&configuration.ctx)?;
+            }
             let snapshot = resolve::snapshot(&configuration.ctx, &self.read_cancel)?.map(Arc::new);
             if let Some(snapshot) = &snapshot {
                 data.last_installed = Some(
-                    json!({"identity":snapshot.identity,"releaseId":snapshot.release_id,"files":snapshot.verified_files}),
+                    json!({"identity":snapshot.identity,"releaseId":snapshot.release_id,"files":snapshot.files}),
                 );
                 data.previous = snapshot.previous;
             }
@@ -256,8 +256,16 @@ impl Service {
                     .collect::<Vec<_>>()
             })
             .unwrap_or_default();
-        let current=data.snapshot.as_ref().map(|snapshot|json!({"identity":snapshot.identity,"releaseId":snapshot.release_id,"files":snapshot.verified_files})).or_else(||if active{data.last_installed.clone()}else{None});
+        let current=data.snapshot.as_ref().map(|snapshot|json!({"identity":snapshot.identity,"releaseId":snapshot.release_id,"files":snapshot.files})).or_else(||if active{data.last_installed.clone()}else{None});
         let mut value = json!({"ok":true,"configured":data.config.is_some(),"managementEnabled":data.config.is_some()&&self.management&&!self.closed.load(Ordering::Acquire),"busy":active,"mounted":data.snapshot.is_some()&&!active,"current":null,"canRollback":data.previous,"recoveryRequired":recovery,"issue":data.issue,"releases":null,"task":data.task});
+        if let Some(directory) = data
+            .config
+            .as_ref()
+            .and_then(|config| config.ctx.directory.as_ref())
+        {
+            value["directoryRoot"] = json!(directory.package_root);
+            value["managementEnabled"] = false.into();
+        }
         value["current"] = current.unwrap_or_default();
         value["releases"] = Value::Array(releases);
         value

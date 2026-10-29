@@ -1,4 +1,5 @@
 import { desktopRuntimeFetch, getDesktopRuntime } from '@/platform/desktop/runtime'
+import { publishProfileChange } from '@/platform/desktop/profileChanges'
 import { abortableTask } from '@/utils/abortableTask'
 import type { WorkspaceJobProgress } from './workspaceJobs'
 export type { WorkspaceJobProgress } from './workspaceJobs'
@@ -96,6 +97,10 @@ async function requestOnce<T>(command: Record<string, unknown>, signal?: AbortSi
   const result = await response.json()
   if (!response.ok) throw new WorkspaceRequestError(result.error || result.message || '工作区操作未完成', result.code, command.operationId, response.status)
   if (result.workspaceId !== session.workspaceId || result.runtimeEpoch !== session.runtimeEpoch) throw new Error('工作区连接已变化，请重新读取')
+  if (command.kind === 'profile.saveSetting') publishProfileChange('settings')
+  else if (command.kind === 'profile.saveChatRecord') publishProfileChange('chat')
+  else if (command.kind === 'profile.saveDraft') publishProfileChange('draft')
+  else if (command.kind === 'profile.resetChat') publishProfileChange()
   return result.result as T
 }
 

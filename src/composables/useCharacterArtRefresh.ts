@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted, watch } from 'vue'
-import { characterArtApi, CHARACTER_ART_CHANNEL } from '@/api/characterArtApi'
+import { characterArtApi, CHARACTER_ART_CHANNEL, CHARACTER_ART_SENDER } from '@/api/characterArtApi'
 import { clearCharacterArtManifest } from '@/platform/characterArtState'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
@@ -17,13 +17,14 @@ export function useCharacterArtRefresh() {
   watch(runtimeResourceIdentity, () => { clearCharacterArtManifest(); void refresh() })
   onMounted(() => {
     void refresh()
-    window.addEventListener('focus', refresh)
     if (isLocalStudioHost() && typeof BroadcastChannel !== 'undefined') {
       try {
         channel = new BroadcastChannel(CHARACTER_ART_CHANNEL)
-        channel.onmessage = () => { void refresh() }
-      } catch { /* Window focus still refreshes overrides if this origin disallows channels. */ }
+        channel.onmessage = ({ data }) => {
+          if (data?.identity === runtimeResourceIdentity() && data?.sender !== CHARACTER_ART_SENDER) void refresh()
+        }
+      } catch { /* Builtin art remains available if this origin disallows channels. */ }
     }
   })
-  onUnmounted(() => { controller?.abort(); window.removeEventListener('focus', refresh); channel?.close() })
+  onUnmounted(() => { controller?.abort(); channel?.close() })
 }

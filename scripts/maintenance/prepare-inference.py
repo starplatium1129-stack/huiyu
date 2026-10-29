@@ -132,9 +132,8 @@ def prepare(args: argparse.Namespace) -> dict:
         if not worker.is_file() or not requirements.is_file():
             raise ValueError("Native inference worker or pinned requirements are missing")
         wheels = offline_wheels(wheelhouse)
-        resolution = preflight(requirements, wheels)
         if preview:
-            return {"ok": True, "preflightOnly": True, "preflight": resolution, **plan}
+            return {"ok": True, "preflightOnly": True, "preflight": preflight(requirements, wheels), **plan}
         root.mkdir(parents=True, exist_ok=True)
         run([sys.executable, "-I", "-m", "venv", str(root / "venv")])
         run(pip_command(python, requirements, wheels))

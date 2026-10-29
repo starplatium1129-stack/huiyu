@@ -85,8 +85,17 @@ function restoreTrigger(event: Event) {
 const title = defineModel<string>('title', { required: true })
 const rule = defineModel<SmartAlbumRule>('rule', { required: true })
 const nameInput = ref<HTMLInputElement | null>(null), nameTouched = ref(false)
-const nameId = `album-name-${useId()}`, nameErrorId = `${nameId}-error`
-const nameError = computed(() => nameTouched.value && !title.value.trim() ? '请填写画册名称。' : '')
+const nameId = useId()
+const nameErrorId = `${nameId}-error`
+const nameError = computed(() => {
+  if (!nameTouched.value) return ''
+  const trimmed = title.value.trim()
+  if (!trimmed) return '请填写画册名称（不能为空）。'
+  if (trimmed.length > ARTWORK_PROJECT_TITLE_LIMIT) {
+    return `画册名称不能超过 ${ARTWORK_PROJECT_TITLE_LIMIT} 个字（当前 ${trimmed.length} 字），请缩减名称。`
+  }
+  return ''
+})
 watch(() => props.open, open => { if (open) nameTouched.value = false })
 const roleOptions = computed(() => [{ value: '', label: '全部角色' }, ...props.characters,
   ...(rule.value.characterId && !props.characters.some(item => item.value === rule.value.characterId) ? [{ value: rule.value.characterId, label: rule.value.characterId }] : [])])

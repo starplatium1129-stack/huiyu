@@ -25,7 +25,7 @@ let port: ProfilePort | null = null
 let windowId = ''
 let generation = 0
 let writeVersion = 0
-let refreshVersion = 0
+let refreshTail = Promise.resolve()
 let resetRevision = ''
 let historyLoaded = false, archiveLoaded = false
 let archiveVersion: string | undefined
@@ -200,18 +200,27 @@ export async function activateProfileStorage(next: ProfilePort, id: string): Pro
   revisions.clear()
   for (const [key, record] of values) revisions.set(key, record.revision)
 }
-export async function refreshProfileStorage(): Promise<void> {
+export function refreshProfileStorage(domains: readonly ProfileDomain[] = ['settings', 'chat', 'draft']): Promise<void> {
+  const current = refreshTail.catch(() => {}).then(() => readProfileStorage(domains))
+  refreshTail = current
+  return current
+}
+async function readProfileStorage(domains: readonly ProfileDomain[]): Promise<void> {
   if (!port) return
-  const refresh = ++refreshVersion
   await flushProfileWrites()
-  if (refresh !== refreshVersion) return
   const current = generation, writes = writeVersion, known = snapshotVersions, projection = chatProjection
-  const [settings, chat, drafts] = await Promise.all([port.readSettings(known.settings), port.readChat(known.chat, undefined, projection), port.readDrafts(windowId, known.draft)])
-  // A save may have started AND drained while these snapshots were in flight.
-  // A later refresh captures the new write version and can publish normally.
-  if (current !== generation || refresh !== refreshVersion || writes !== writeVersion || known !== snapshotVersions || outbox.length) return
-  // Never pair pre-reset chat drafts with a newer chat reset fence. The next
-  // health sync retries the whole snapshot without publishing partial data.
+  const unchanged = (domain: ProfileDomain): ProfileSnapshot => ({ records: [], revision: 0, resetRevision, version: known[domain], unchanged: true })
+  const [settings, chat, drafts] = await Promise.all([
+    domains.includes('settings') ? port.readSettings(known.settings) : unchanged('settings'),
+    domains.includes('chat') ? port.readChat(known.chat, undefined, projection) : unchanged('chat'),
+    domains.includes('draft') ? port.readDrafts(windowId, known.draft) : unchanged('draft'),
+  ])
+  if (current !== generation) throw new Error('资料来源在读取期间变化，请重新连接。')
+  // Only an actual concurrent write invalidates this read. Catch up after that
+  // write instead of discarding another consumer's history admission silently.
+  if (writes !== writeVersion || known !== snapshotVersions || outbox.length) return readProfileStorage(domains)
+  // Never pair pre-reset chat drafts with a newer chat reset fence. Explicit
+  // reconciliation reads the whole snapshot without publishing partial data.
   if (settings.resetRevision !== chat.resetRevision || drafts.resetRevision !== chat.resetRevision) throw new Error('聊天资料在同步期间被清空，请重新读取。')
   if (settings.unchanged && chat.unchanged && drafts.unchanged) return
   const archiveIdentity = cacheKey('aics_chat_archive_v1',false)
@@ -240,7 +249,7 @@ export async function refreshProfileStorage(): Promise<void> {
   // A reset between these three reads must not give old chat data a newer
   // reset fence. As before, the chat snapshot alone owns this token.
   resetRevision = chat.resetRevision
-  if (projection === 'history') historyLoaded = true
+  if (projection === 'history' && domains.includes('chat')) historyLoaded = true
   const changedKeys: string[] = []
   for (const [identity, record] of values) {
     if (!changedDomain(record)) continue
@@ -264,7 +273,7 @@ export async function ensureProfileChatHistory(): Promise<void> {
   if (historyFlight) return historyFlight
   chatProjection = 'history'; snapshotVersions = { ...snapshotVersions, chat: undefined }
   const current = generation
-  const loading = refreshProfileStorage().then(() => {
+  const loading = refreshProfileStorage(['chat']).then(() => {
     if (current !== generation || !historyLoaded) throw new Error('聊天资料在加载期间发生变化，请重新读取。')
   }).finally(() => { if (historyFlight === loading) historyFlight = undefined })
   historyFlight = loading

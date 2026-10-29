@@ -96,7 +96,7 @@
             <div class="batch-field">
               <label class="field-label" :for="descriptionId">通用画面描述（英文，可选）</label>
               <textarea :id="descriptionId" v-model="universalDescription" class="input" rows="4" lang="en"
-                :aria-describedby="`${descriptionId}-hint`" placeholder="Describe the shared action, composition and lighting…"></textarea>
+                :aria-describedby="`${descriptionId}-hint`" placeholder="Describe the shared action, composition and lighting…" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
               <p :id="`${descriptionId}-hint`" class="batch-description">填写后将替代原场景正文，留空则沿用原文。请保留需要的动作、构图与光影，把原角色的姓名和专属特征改成适用于各角色的通用描述。</p>
             </div>
 
@@ -146,10 +146,11 @@
             <button
               class="btn btn-primary"
               type="button"
-              :disabled="isRunning || batchDraw.resetting.value || !engineReady || (batchMode === 'scene' ? !selectedSceneCount : !selectedCharCount)"
+              :disabled="submitting || isRunning || batchDraw.resetting.value || !engineReady || (batchMode === 'scene' ? !selectedSceneCount : !selectedCharCount)"
+              :aria-busy="submitting || undefined"
               @click="submit"
             >
-              <ArchiveIcon name="spark" /> {{ engineReady ? '开始批量出图' : '请选择可用的 Anima / Krea 2 引擎' }}
+              <ArchiveIcon name="spark" /> {{ submitting ? '正在启动批量…' : engineReady ? '开始批量出图' : '请选择可用的 Anima / Krea 2 引擎' }}
             </button>
           </footer>
         </template>
@@ -421,19 +422,26 @@ function clearCharSelection() {
   franchiseFilter.value = ''
 }
 
+const submitting = ref(false)
+
 async function submit() {
-  if (isRunning.value || !engineReady.value) return
-  let started = false
-  if (batchMode.value === 'scene') {
-    const sceneIds = props.scenes.map(s => s.id).filter(id => selectedSceneSet.has(id))
-    if (!sceneIds.length) return
-    started = await onBatchStart({ sceneIds, count: count.value }) === true
-  } else {
-    const characterIds = allCharacters.value.map(c => c.id).filter(id => selectedCharSet.has(id))
-    if (!characterIds.length) return
-    started = await onBatchStartCharacters({ characterIds, count: count.value, basePrompt: universalDescription.value.trim() || undefined }) === true
+  if (submitting.value || isRunning.value || !engineReady.value) return
+  submitting.value = true
+  try {
+    let started = false
+    if (batchMode.value === 'scene') {
+      const sceneIds = props.scenes.map(s => s.id).filter(id => selectedSceneSet.has(id))
+      if (!sceneIds.length) return
+      started = await onBatchStart({ sceneIds, count: count.value }) === true
+    } else {
+      const characterIds = allCharacters.value.map(c => c.id).filter(id => selectedCharSet.has(id))
+      if (!characterIds.length) return
+      started = await onBatchStartCharacters({ characterIds, count: count.value, basePrompt: universalDescription.value.trim() || undefined }) === true
+    }
+    if (started && jobs.value.length) phase.value = 'results'
+  } finally {
+    submitting.value = false
   }
-  if (started && jobs.value.length) phase.value = 'results'
 }
 
 async function resetToConfig() {

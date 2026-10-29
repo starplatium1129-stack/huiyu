@@ -114,7 +114,7 @@ function onAnchorBlur(e: FocusEvent) {
   dispatchToChild("blur", e)
 }
 
-const { portalTarget, syncPortalHost } = useModalPortalHost(() => anchorEl.value)
+const { portalTarget, syncPortalHost } = useModalPortalHost(() => anchorEl.value, open)
 const inDialog = computed(() => !!portalTarget.value)
 let observer: MutationObserver | null = null
 let active = true

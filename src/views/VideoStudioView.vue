@@ -119,6 +119,9 @@
             maxlength="4000"
             rows="7"
             placeholder="例如：黄昏的电车站，少女回头看向镜头，风吹起发丝和裙摆，镜头缓慢推进，暖色逆光，动作自然连续。"
+            spellcheck="false"
+            autocorrect="off"
+            autocapitalize="off"
           ></textarea>
         </section>
         </div>
@@ -172,11 +175,14 @@
                   rows="3"
                   maxlength="1000"
                   placeholder="可选。基础质量与稳定性负向词已由工作室自动补全。"
+                  spellcheck="false"
+                  autocorrect="off"
+                  autocapitalize="off"
                 ></textarea>
               </label>
               <label class="field">
                 <span class="field-label">固定 Seed</span>
-                <input v-model="seedText" class="input input-mono" inputmode="numeric" placeholder="留空则随机" />
+                <input v-model="seedText" class="input input-mono" inputmode="numeric" placeholder="留空则随机" spellcheck="false" autocorrect="off" />
               </label>
             </div>
           </details>

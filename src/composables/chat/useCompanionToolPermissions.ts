@@ -1,4 +1,4 @@
-import { computed, onMounted, onScopeDispose, readonly, shallowRef } from 'vue'
+import { computed, onMounted, onScopeDispose, readonly, shallowRef, watch } from 'vue'
 import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
@@ -7,8 +7,8 @@ export interface CompanionToolPermissions {
 }
 const closed = (): CompanionToolPermissions => ({ enabled: false, readFiles: false, writeFiles: false, captureScreen: false, commands: false })
 const permissions = shallowRef(closed()), error = shallowRef(''), saving = shallowRef(false)
-let users = 0, timer: ReturnType<typeof setInterval> | undefined, channel: BroadcastChannel | undefined
-let request = 0, polling = false
+let users = 0, channel: BroadcastChannel | undefined, stopIdentity: (() => void) | undefined
+let request = 0, polling = false, reloadQueued = false
 async function exchange(patch?: Partial<CompanionToolPermissions>, signal?: AbortSignal) {
   const owner = runtimeResourceIdentity(), sequence = ++request
   if (!isLocalStudioHost()) { permissions.value = closed(); return permissions.value }
@@ -38,12 +38,20 @@ async function update(key: keyof CompanionToolPermissions, enabled: boolean) {
   if (!enabled) permissions.value = { ...permissions.value, [key]: false }
   try { await exchange({ [key]: enabled }); channel?.postMessage('changed') }
   catch (reason) { permissions.value = closed(); error.value = reason instanceof Error ? reason.message : '工具权限未保存' }
-  finally { saving.value = false }
+  finally {
+    saving.value = false
+    if (reloadQueued) { reloadQueued = false; reload() }
+  }
 }
 const reload = () => {
-  if (saving.value || polling) return
+  if (!users) return
+  if (saving.value) { reloadQueued = true; return }
+  if (polling) { reloadQueued = true; return }
   polling = true
-  void loadCompanionToolPermissions().catch(() => {}).finally(() => { polling = false })
+  void loadCompanionToolPermissions().catch(() => {}).finally(() => {
+    polling = false
+    if (reloadQueued) { reloadQueued = false; reload() }
+  })
 }
 export function useCompanionToolPermissions() {
   let mounted = false
@@ -52,13 +60,12 @@ export function useCompanionToolPermissions() {
     if (users++ === 0) {
       channel = typeof BroadcastChannel === 'function' ? new BroadcastChannel('huiyu-local-tool-permissions') : undefined
       if (channel) channel.onmessage = reload
-      window.addEventListener('focus', reload)
-      timer = setInterval(reload, 2000)
+      stopIdentity = watch(runtimeResourceIdentity, () => { permissions.value = closed(); reload() })
+      reload()
     }
-    reload()
   })
   onScopeDispose(() => {
-    if (mounted && --users === 0) { clearInterval(timer); channel?.close(); channel = undefined; window.removeEventListener('focus', reload) }
+    if (mounted && --users === 0) { stopIdentity?.(); stopIdentity = undefined; channel?.close(); channel = undefined; reloadQueued = false }
   })
   return { permissions: readonly(permissions), error: readonly(error), saving: readonly(saving), update,
     companionTools: computed({ get: () => permissions.value.enabled, set: value => { void update('enabled', value) } }) }

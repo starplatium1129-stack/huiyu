@@ -251,25 +251,6 @@ pub(super) fn file_matches(
     entry: &super::manifest::Entry,
     cancel: &tokio_util::sync::CancellationToken,
 ) -> Result<bool> {
-    read_verified(path, entry, cancel, None)
-}
-pub(super) fn verified_bytes(
-    path: &Path,
-    entry: &super::manifest::Entry,
-    cancel: &tokio_util::sync::CancellationToken,
-) -> Result<Vec<u8>> {
-    let mut bytes = Vec::new();
-    if !read_verified(path, entry, cancel, Some(&mut bytes))? {
-        return Err(Error::new("CONTENT_INVALID", "Installed bytes changed"));
-    }
-    Ok(bytes)
-}
-fn read_verified(
-    path: &Path,
-    entry: &super::manifest::Entry,
-    cancel: &tokio_util::sync::CancellationToken,
-    mut output: Option<&mut Vec<u8>>,
-) -> Result<bool> {
     super::config::cancelled(cancel)?;
     let Some(stat) = safe(path, true, false)? else {
         return Ok(false);
@@ -281,13 +262,6 @@ fn read_verified(
         return Ok(false);
     }
     let mut file = open_checked(path, entry.bytes, false, &stat)?;
-    if let Some(bytes) = &mut output {
-        let size = usize::try_from(entry.bytes)
-            .map_err(|_| Error::new("RESOURCE_BUSY", "Resource does not fit in memory"))?;
-        bytes
-            .try_reserve_exact(size)
-            .map_err(|_| Error::new("RESOURCE_BUSY", "Resource memory is unavailable"))?;
-    }
     let mut hash = sha2::Sha256::new();
     use sha2::Digest;
     let mut buffer = vec![0; entry.bytes.saturating_add(1).min(512 * 1024) as usize];
@@ -303,9 +277,6 @@ fn read_verified(
             return Ok(false);
         }
         hash.update(&buffer[..count]);
-        if let Some(bytes) = &mut output {
-            bytes.extend_from_slice(&buffer[..count]);
-        }
     }
     super::config::cancelled(cancel)?;
 

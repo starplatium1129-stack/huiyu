@@ -77,6 +77,7 @@
         :trash-loading="trashLoading" :trash-error="trashError" @reload="loadTrash"
         @clear="clearTrash"
         @restore="restoreTrashItem"
+        @back-to-gallery="toggleTrashMode()"
       /></KeepAlive>
       <template v-if="!trashMode">
       <ArchiveStatePanel
@@ -105,11 +106,12 @@
       <ArchiveStatePanel
         v-else-if="!galleryLoading && libraryTotal && !visible.length"
         kind="filtered"
-        :title="galleryIndexLoading ? '正在查找其余作品…' : '当前筛选下没有作品'"
+        :title="galleryIndexLoading ? '正在查找其余作品…' : favoriteOnly ? '还没有收藏的作品' : '当前筛选下没有作品'"
+        :message="favoriteOnly ? '在作品卡片上点击爱心，把心仪的画面加入收藏。' : undefined"
       >
-        <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
+        <button class="btn btn-primary" type="button" @click="resetGalleryFilters">{{ favoriteOnly ? '查看全部作品' : '重置筛选' }}</button>
       </ArchiveStatePanel>
-      <div v-else-if="!galleryLoading && visible.length" class="gallery-wall stagger-container" data-route-arrive>
+      <div v-else-if="!galleryLoading && visible.length" class="gallery-wall" data-route-arrive>
         <template v-for="group in masonryGroups" :key="group.key">
           <div class="gallery-section">{{ group.key }}</div>
             <GalleryVirtualRows

@@ -27,17 +27,62 @@
 /* The material drawer already provides a reading surface and a category label. */
 .pb.journal-workspace .material-content .panel { border: 0; border-radius: 0; box-shadow: none; background: transparent; @apply tw:p-0 tw:m-0; }
 .pb.journal-workspace .material-content #stepChar > .panel-title { @apply tw:hidden; }
-.pb.journal-workspace .stage-placeholder { min-height: clamp(280px, calc(var(--drawing-viewport-height) - 390px), 580px); max-height: none; @apply tw:border-soft tw:rounded-xl; background: radial-gradient(ellipse at 85% 100%, var(--character-soft), transparent 60%), var(--bg-deep); box-shadow: none; transition: none; }
+/* Canvas stage framing: quiet ambient back-mat glow that harmonizes with active character's mood/accent */
+.pb-canvas-wrap,
+.pb.journal-workspace .stage-viewport {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 16px 40px -16px color-mix(in srgb, var(--character-accent, var(--accent)) 14%, rgba(5, 11, 18, 0.45)),
+    0 2px 10px rgba(5, 11, 18, 0.22);
+}
+.pb.journal-workspace .stage-placeholder {
+  min-height: clamp(280px, calc(var(--drawing-viewport-height) - 390px), 580px);
+  max-height: none;
+  @apply tw:border-soft tw:rounded-xl;
+  background:
+    radial-gradient(ellipse at 50% 18%, color-mix(in srgb, var(--character-accent, var(--accent)) 8%, transparent), transparent 60%),
+    radial-gradient(ellipse at 85% 95%, var(--character-soft), transparent 55%),
+    var(--bg-deep);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 16px 40px -16px color-mix(in srgb, var(--character-accent, var(--accent)) 14%, rgba(5, 11, 18, 0.45)),
+    0 2px 10px rgba(5, 11, 18, 0.22);
+  transition: none;
+}
 .pb.journal-workspace .stage-placeholder::before { background: none; }
 .pb.journal-workspace .stage-idle { @apply tw:relative; z-index: var(--z-raised); padding: var(--s-6) var(--s-4); }
 .pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide { padding-block:var(--s-3); }
 .pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide :is(.atelier-canvas-illustration, .stage-placeholder-title, .stage-placeholder-copy) { @apply tw:hidden; }
-.pb.journal-workspace .stage-placeholder-title { @apply tw:text-title-sm tw:leading-label; }
-.pb.journal-workspace .stage-placeholder-copy { @apply tw:max-w-[380px] tw:text-secondary tw:text-body-sm; }
-.pb.journal-workspace .stage-quick-actions { @apply tw:gap-s-2; }
-.pb.journal-workspace .stage-quick-actions .btn { @apply tw:text-label; }
+.pb.journal-workspace .stage-idle-guide .atelier-canvas-illustration {
+  filter: drop-shadow(0 14px 28px color-mix(in srgb, var(--character-accent, var(--accent)) 12%, rgba(5, 11, 18, 0.35)));
+  opacity: 0.94;
+  margin-bottom: var(--s-2);
+}
+.pb.journal-workspace .stage-placeholder-title {
+  margin: var(--s-2) 0;
+  font: 500 var(--fs-title-sm)/var(--lh-tight) var(--font-serif);
+  @apply tw:text-primary;
+  letter-spacing: 0.02em;
+}
+.pb.journal-workspace .stage-placeholder-copy {
+  @apply tw:max-w-[400px] tw:text-secondary tw:text-body-sm;
+  line-height: var(--lh-loose);
+  margin-inline: auto;
+}
+.pb.journal-workspace .stage-quick-actions { @apply tw:gap-s-2 tw:mt-s-4; }
+.pb.journal-workspace .stage-quick-actions .btn { @apply tw:text-label; box-shadow: var(--shadow-sm); }
 .pb.journal-workspace .stage-quick-actions .btn-ghost { background: var(--bg-surface); }
-.pb.journal-workspace .result-image-wrap { @apply tw:border-soft tw:rounded-xl; box-shadow: none; }
+.pb.journal-workspace .result-image-wrap {
+  @apply tw:border-soft tw:rounded-xl;
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    0 16px 40px -16px color-mix(in srgb, var(--character-accent, var(--accent)) 14%, rgba(5, 11, 18, 0.45)),
+    0 2px 10px rgba(5, 11, 18, 0.22);
+}
 .pb.journal-workspace .drawing-jump-links { @apply tw:hidden; }
 /* Materials and parameters use the same tabs; AnimatedSelection owns motion. */
 .pb .workbench-tabs { position:relative; display:flex; flex-shrink:0; gap:var(--s-1); margin:0 var(--s-4); padding:0; border-bottom:1px solid var(--border-soft); }

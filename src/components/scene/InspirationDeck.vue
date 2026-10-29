@@ -41,6 +41,15 @@
       </article>
     </div>
   </section>
+  <section v-else class="inspiration-deck inspiration-deck--empty" aria-label="灵感手帖">
+    <div class="card card-info tw:p-s-4 tw:flex tw:items-center tw:justify-between tw:gap-s-3">
+      <div class="tw:flex tw:items-center tw:gap-s-2">
+        <ArchiveIcon name="spark" class="tw:text-accent" />
+        <span class="tw:text-secondary tw:text-body-sm">暂无当前条件的推荐灵感</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" type="button" @click="$emit('reset')">重置筛选</button>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -54,7 +63,7 @@ import { analyzeQuery, matchesSearch, prepareSceneSearch, searchScore } from '@/
 
 interface MoodRail { character: string; icon?: string; title: string; subtitle: string; query: string }
 const props = withDefaults(defineProps<{ rails: MoodRail[]; scenes?: ExplorerScene[] }>(), { scenes: () => [] })
-const emit = defineEmits<{ select: [rail: MoodRail]; open: [scene: ExplorerScene] }>()
+const emit = defineEmits<{ select: [rail: MoodRail]; open: [scene: ExplorerScene]; reset: [] }>()
 const hintId = useId()
 const host = ref<HTMLElement | null>(null)
 // Visible recommendations share the loaded catalog, with one distinct
@@ -136,7 +145,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
   .inspiration-deck-copy { grid-template-columns:minmax(0,1fr); align-content:center; padding:0; }
   .inspiration-deck-copy .inspiration-deck-open { grid-column:1; grid-row:auto; }
 }
-@media (max-width:700px) {
+@media (max-width:768px) {
   .inspiration-deck-stage { grid-template-columns:minmax(0,1fr); gap:var(--s-3); }
   .inspiration-feature { gap:var(--s-2); padding:var(--s-3); }
   .inspiration-deck-card:not(.front) { height:140px; }

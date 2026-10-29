@@ -7,7 +7,7 @@ export const controlSections: Array<{ id: string; group: string; label: string; 
   { id: 'control-overview', group: '开始使用', label: '总览与入门', icon: 'eye', description: '开启创作旅程，快速检查画室环境与各模块就绪状态。' },
   { id: 'control-setup', group: '开始使用', label: '绘图与模型', icon: 'download', description: '推荐底模、完整下载清单与一键环境配置，支持按需接入本地对话。' },
   { id: 'control-interrogate', group: '按需扩展', label: '图片反推', icon: 'search', description: '从参考图片中智能提取风格与标签描述，为二次创作带来灵感。' },
-  { id: 'control-library', group: '按需扩展', label: '离线资源库', icon: 'image', description: '管理角色样张、场景卡片与离线素材包，支持断网离线浏览。' },
+  { id: 'control-library', group: '开始使用', label: '资源与素材', icon: 'image', description: '一键安装官方素材包，管理角色图片、场景卡片与离线画册。' },
   { id: 'control-personalization', group: '偏好与管理', label: '外观与桌面', icon: 'palette', description: '定制界面主题、动效流畅度、视窗缩放与桌面启动偏好。' },
   { id: 'control-services', group: '偏好与管理', label: '服务与连接', icon: 'gear', description: '监控 AI 服务连接、管理显存释放策略，自定义服务地址与角色声线。' },
   { id: 'control-share', group: '偏好与管理', label: '分享与访问', icon: 'upload', description: '生成临时局域网或公网访问链接，便捷与好友分享画室创作。' },

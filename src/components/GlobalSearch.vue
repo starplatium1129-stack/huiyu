@@ -34,9 +34,13 @@
           <template v-if="query.trim()">
             <p v-if="worksError" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="alert">{{ worksError }}</p>
             <p v-else-if="worksLoading" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="status">正在读取作品…</p>
-            <p v-if="!scenesLoading && !scenesError && !worksError && !worksLoading && !flat.length" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm">
-              没有匹配的结果，试试角色、服装、场景标题或作品名。
-            </p>
+            <div v-if="!scenesLoading && !scenesError && !worksError && !worksLoading && !flat.length" class="gs-empty tw:text-center tw:py-s-3">
+              <p class="tw:text-muted tw:text-body-sm tw:mb-s-3">没有匹配的结果，试试角色、服装、场景标题或作品名。</p>
+              <div class="tw:flex tw:justify-center tw:gap-s-2">
+                <button type="button" class="btn btn-ghost btn-sm" @click="query = ''">清空搜索词</button>
+                <RouterLink to="/scene-explorer" class="btn btn-primary btn-sm" @click="close">浏览全部场景</RouterLink>
+              </div>
+            </div>
           </template>
         </div>
         </ListboxContent>
@@ -57,6 +61,7 @@
 
 <script setup lang="ts">
 import { ref, computed, nextTick, useId, watch } from 'vue'
+import { RouterLink } from 'vue-router'
 import { ListboxRoot, ListboxFilter, ListboxContent, ListboxGroup, ListboxGroupLabel, ListboxItem } from 'reka-ui'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

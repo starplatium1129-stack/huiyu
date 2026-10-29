@@ -1,11 +1,19 @@
 import { computed, onActivated, onMounted, shallowRef, watch, type Ref } from 'vue'
 
 /** Reka content stays inside its owning native/custom modal and focus scope. */
-export function useModalPortalHost(source: () => HTMLElement | null | undefined,
+export function useModalPortalHost(source: () => HTMLElement | { $el?: unknown } | null | undefined,
   open?: Readonly<Ref<boolean>>, fallback?: () => HTMLElement | null | undefined) {
   const portalTarget = shallowRef<HTMLElement>()
+  function resolveTarget(raw: unknown): HTMLElement | null | undefined {
+    if (!raw) return undefined
+    if (typeof raw === 'object' && '$el' in raw && (raw as { $el?: unknown }).$el instanceof HTMLElement) {
+      return (raw as { $el: HTMLElement }).$el
+    }
+    return raw instanceof HTMLElement ? raw : undefined
+  }
   function syncPortalHost() {
-    portalTarget.value = source()?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]')
+    const el = resolveTarget(source())
+    portalTarget.value = el?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]')
       ?? fallback?.() ?? undefined
   }
   onMounted(syncPortalHost)

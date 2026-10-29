@@ -103,7 +103,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <div class="anima-field anima-seed-field">
           <label :for="idOf('seed')">随机种子</label>
           <div class="anima-seed-control">
-            <input :id="idOf('seed')" v-model.number="seed" type="number" min="0" step="1" placeholder="随机" class="input input-sm anima-num" :disabled="busy" />
+            <input :id="idOf('seed')" v-model.number="seed" type="number" min="0" step="1" placeholder="随机" class="input input-sm anima-num" :disabled="busy" spellcheck="false" autocorrect="off" />
             <StudioTooltip content="生成随机种子" anchor><button type="button" class="btn btn-ghost btn-icon btn-sm" aria-label="生成随机种子" :disabled="busy" @click="randomSeed"><ArchiveIcon name="refresh" /></button></StudioTooltip>
           </div>
         </div>
@@ -169,11 +169,11 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 
       <details class="anima-prompt-details"><StudioDisclosureSummary>查看引擎接收的提示词</StudioDisclosureSummary><div data-disclosure-content>
       <label :for="idOf('prompt')" class="anima-label">正向提示词</label>
-      <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="input anima-textarea" readonly></textarea>
+      <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="input anima-textarea" readonly spellcheck="false" autocorrect="off"></textarea>
 
        <template v-if="capabilities.negative">
          <label :for="idOf('negative')" class="anima-label">负向提示词</label>
-         <textarea :id="idOf('negative')" :value="state.negative" rows="2" class="input anima-textarea" readonly></textarea>
+         <textarea :id="idOf('negative')" :value="state.negative" rows="2" class="input anima-textarea" readonly spellcheck="false" autocorrect="off"></textarea>
        </template>
 
       </div></details>

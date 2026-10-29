@@ -132,6 +132,28 @@ pub async fn prepare_update(app: &AppHandle) -> Result<String, String> {
     Ok(id)
 }
 
+/// The assistant has its own bundled window; ordinary editors stay sealed until
+/// normal restart, while the same save/drain handshake releases the runtime lease.
+pub async fn prepare_resources(app: &AppHandle) -> Result<(), String> {
+    let mut nonce = [0u8; 16];
+    SystemRandom::new().fill(&mut nonce).map_err(|_| "MAINTENANCE_RANDOM")?;
+    let id = nonce.iter().map(|byte| format!("{byte:02x}")).collect::<String>();
+    if crate::resource_assistant::recovery_pending(app)
+        && app.webview_windows().keys().all(|label| label == "resource-assistant") {
+        {
+            let host = app.state::<MaintenanceHost>(); let mut handoff = host.handoff.lock().unwrap();
+            if handoff.is_some() { return Err("MAINTENANCE_BUSY".into()); }
+            *handoff = Some(Handoff { id:id.clone(), phase:"draining", acknowledgements:BTreeMap::new() });
+        }
+        let gateway = app.state::<crate::gateway::GatewaySupervisor>();
+        if let Err(error) = gateway.maintenance_idle().await {
+            complete(app, &id, "blocked", &error); return Err(error);
+        }
+        return Ok(());
+    }
+    prepare_shutdown(app, &id).await
+}
+
 pub fn update_failed(app: &AppHandle, id: &str) {
     complete(app, id, "blocked", "UPDATE_INSTALL_FAILED");
 }

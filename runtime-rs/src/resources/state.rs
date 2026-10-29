@@ -42,11 +42,7 @@ pub(super) struct Version {
     pub manifest: Manifest,
     pub reference: Value,
 }
-pub(super) fn verify(
-    ctx: &Context,
-    reference: &Value,
-    cancel: &CancellationToken,
-) -> Result<Version> {
+pub(super) fn load(ctx: &Context, reference: &Value) -> Result<Version> {
     let root = version_root(ctx, reference)?;
     let manifest = Manifest::parse(&fs::json(&root.join("manifest.json"), false, false)?.unwrap())?;
     if manifest.identity() != reference["identity"] {
@@ -64,12 +60,25 @@ pub(super) fn verify(
             "Installed receipt invalid",
         ));
     }
-    manifest::verify(&root, &manifest, &["manifest.json", "receipt.json"], cancel)?;
     Ok(Version {
         root,
         manifest,
         reference: reference.clone(),
     })
+}
+pub(super) fn verify(
+    ctx: &Context,
+    reference: &Value,
+    cancel: &CancellationToken,
+) -> Result<Version> {
+    let version = load(ctx, reference)?;
+    manifest::verify(
+        &version.root,
+        &version.manifest,
+        &["manifest.json", "receipt.json"],
+        cancel,
+    )?;
+    Ok(version)
 }
 pub(super) fn existing(
     ctx: &Context,

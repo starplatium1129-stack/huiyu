@@ -4,18 +4,18 @@
 :global(.gallery-wall[data-list-motion] .artwork[data-reveal]) { opacity:1; transform:none; transition:none; }
 /* Keep card geometry real when a cached wall is reattached. A shared intrinsic
    height collapses mixed portrait/landscape rows before their next paint. */
-.artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+.artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 :root body .gallery-page .artwork { border-radius:var(--r-lg); transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-surface) var(--ease-out); }
-:root body .gallery-page .artwork:not(.artwork-selected) { box-shadow:none; }
+:root body .gallery-page .artwork:not(.artwork-selected) { box-shadow:inset 0 1px 0 var(--glass-highlight); }
 :root body .gallery-page .artwork { --card-focus-lift:-6px; --card-focus-scale:1.06; }
-:root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) { border-color:var(--border-strong); box-shadow:var(--shadow-md); }
+:root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) { border-color:var(--border-strong); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-md); }
 .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) .artwork-media::after { opacity:1; }
 .artwork:has(:focus-visible) .artwork-name { color:var(--text-primary); }
 .artwork-button { @apply tw:block tw:w-full; padding:0; border:0; background:transparent; color:inherit; font:inherit; cursor:zoom-in; }
 .artwork-selectable .artwork-button { cursor:pointer; }
 .artwork-selectable { scroll-margin-bottom:calc(50vh + var(--s-4)); }
 .artwork-button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.artwork-tools { --text-disabled:var(--on-art-secondary); @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:flex tw:items-center tw:gap-[3px] tw:p-[3px]; opacity:0; transform:translateY(-4px); @apply tw:pointer-events-none; border:1px solid var(--on-art-line); @apply tw:rounded-md; background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
+.artwork-tools { --text-disabled:var(--on-art-secondary); @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:flex tw:items-center tw:gap-[3px] tw:p-[3px]; opacity:0; transform:translateY(-4px); @apply tw:pointer-events-none; border:1px solid var(--on-art-line); @apply tw:rounded-md; background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); }
 .artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; @apply tw:pointer-events-auto; }
 /* 选中只改变画框与题注，不改变展墙几何。 */
 .artwork-selected,.artwork-selected:hover { border-color:var(--border-strong); box-shadow:var(--selection-shadow); }
@@ -65,7 +65,7 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-mark { flex:0 0 auto; @apply tw:text-accent tw:text-label-sm; }
 
 @media (hover: hover) and (pointer: fine) {
-  :root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):hover { transform:translateY(var(--card-focus-lift)); border-color:var(--border-strong); box-shadow:var(--shadow-md); }
+  :root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):hover { transform:translateY(var(--card-focus-lift)); border-color:var(--border-strong); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-md); }
   .artwork:not(.artwork-selectable):not(.artwork-pending):hover .artwork-image { transform:scale(var(--card-focus-scale)); }
   .artwork:not(.artwork-selectable):not(.artwork-pending):hover .artwork-media::after { opacity:1; }
   .artwork:hover .artwork-name { color:var(--text-primary); }

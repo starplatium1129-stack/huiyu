@@ -110,13 +110,13 @@ export function chatApiVendorFor(baseUrl: string): ApiVendor {
   return 'custom'
 }
 export function chatApiAddressError(baseUrl: string): string {
-  if (!baseUrl.trim()) return '请填写 API 地址。'
+  if (!baseUrl.trim()) return '请填写完整 API 地址，例如 https://api.example.com/v1。'
   try {
     const url = new URL(baseUrl)
     const local = ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)
-    if (url.protocol !== 'https:' && !(url.protocol === 'http:' && local)) return '远程地址必须使用 HTTPS；只有本机回环地址可用 HTTP。'
-    if (url.username || url.password || url.search || url.hash) return '地址不能带账号、密钥、查询参数或锚点；Key 请填在专用输入框。'
-    if (baseUrl.length > 500) return 'API 地址过长。'
+    if (url.protocol !== 'https:' && !(url.protocol === 'http:' && local)) return '远程服务地址必须以 https:// 开头；只有本地回环地址（localhost / 127.0.0.1）允许 http://。'
+    if (url.username || url.password || url.search || url.hash) return '地址不能带有账号、查询参数（?）或锚点（#）；请只保留基础端点路径，密钥请填在下方的 API Key 框。'
+    if (baseUrl.length > 500) return `API 地址不能超过 500 个字符（当前 ${baseUrl.length} 字），请缩减或检查是否多复制了冗余内容。`
     return ''
-  } catch { return '请填写完整 API 地址，例如 https://api.example.com/v1。' }
+  } catch { return 'URL 格式无效，请填写格式正确的完整 API 地址，例如 https://api.example.com/v1。' }
 }

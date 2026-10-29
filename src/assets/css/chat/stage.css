@@ -291,7 +291,11 @@
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--character-accent) 28%, transparent), transparent 72%),
     color-mix(in srgb, var(--bg-deep) 82%, transparent);
-  transform: translateX(-50%) translateY(-2px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .chat-page .live2d-enable-cta:hover {
+    transform: translateX(-50%) translateY(-2px);
+  }
 }
 
 .chat-page .live2d-enable-cta-kicker {
@@ -330,3 +334,18 @@
   0%, 100% { opacity: 0; }
   45% { opacity: 1; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .chat-page :is(.character-card, .conversation-card) {
+    animation: none !important;
+  }
+  :root:not([data-motion='full']) .chat-page .portrait-stage.live2d-reacting .live2d-host::before {
+    animation: none !important;
+  }
+}
+
+:root:is([data-motion='reduce'],[data-motion='reduced']) .chat-page :is(.character-card, .conversation-card),
+:root:is([data-motion='reduce'],[data-motion='reduced']) .chat-page .portrait-stage.live2d-reacting .live2d-host::before {
+  animation: none !important;
+}
+

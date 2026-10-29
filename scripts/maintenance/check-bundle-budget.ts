@@ -71,7 +71,7 @@ function lazyChunks(manifest: Manifest) {
 function entryEntry(manifest: Manifest) {
   return Object.entries(manifest)
     .map(([key, entry]) => ({ key, ...entry }))
-    .find(entry => entry.isEntry === true) || null;
+    .find(entry => entry.isEntry === true && (entry.key === 'index.html' || entry.src === 'index.html')) || null;
 }
 
 // 静态 import 闭包（不含 dynamicImports）：从起点沿 imports BFS 收集全部

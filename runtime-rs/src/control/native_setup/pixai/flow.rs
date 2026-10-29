@@ -113,10 +113,7 @@ impl ControlService {
             .await?;
         } else {
             self.stage(operation, 3);
-            self.native_progress(
-                operation,
-                json!({"message":"复用已安装的独立运行库，稍后重新检查依赖与显卡"}),
-            );
+            self.native_progress(operation, json!({"message":"采用已安装的独立运行库"}));
         }
         stopped(cancel)?;
         self.stage(operation, 4);
@@ -130,7 +127,7 @@ impl ControlService {
         self.native_progress(
             operation,
             json!({"phase":"validating", "currentFile":"",
-            "message":"核验模型 SHA-256、独立依赖和 CUDA/BF16，暂不加载模型"}),
+            "message":"准备反推私有依赖并登记模型路径"}),
         );
         let expected = expected_paths(self, &runtime, &manifest);
         let python = Path::new(expected["python"].as_str().unwrap());

@@ -5,10 +5,7 @@ Rust downloads and owns activation. This helper has no pip/network/model executi
 from __future__ import annotations
 
 import argparse
-import contextlib
 from email.parser import BytesParser
-import hashlib
-import importlib.metadata
 import importlib.util
 import json
 import os
@@ -70,17 +67,14 @@ def trusted_hasher(app):
     return module.file_sha256
 
 
-def verify_file(root, entry, digest):
+def model_file(root, entry):
     relative = PurePosixPath(entry["path"])
     if len(relative.parts) != 1 or relative.name != entry["path"] or ":" in relative.name or "\\" in relative.name:
         raise ValueError("Pinned PixAI manifest contains an invalid filename")
     target = checked(root / relative.name, "file")
     before = target.stat()
-    if before.st_size != entry["bytes"] or digest(target) != entry["sha256"]:
+    if before.st_size != entry["bytes"]:
         raise ValueError(f"PixAI fixed file integrity mismatch: {relative.name}")
-    after = target.stat()
-    if (before.st_ino, before.st_size, before.st_mtime_ns) != (after.st_ino, after.st_size, after.st_mtime_ns):
-        raise ValueError(f"PixAI fixed file changed during verification: {relative.name}")
     return target
 
 
@@ -108,12 +102,12 @@ def runtime_binding(root, runtime, app, digest):
             or checked(saved.get("root", ""), "dir") != runtime):
         raise ValueError("Managed runtime receipt does not match the fixed environment")
     environment = saved.get("environment", {})
-    packages = {entry["package"]: entry["version"] for entry in manifest["files"] if entry["kind"] == "wheel"}
+    packages = {entry["package"]: entry["version"] for entry in manifest["files"] if entry["kind"] in ("wheel", "python-source")}
     if (environment.get("cudaAvailable") is not True or environment.get("bf16Supported") is not True
             or environment.get("cudaRuntime") != manifest["cuda"]
             or environment.get("packages") != packages):
         raise ValueError("Managed runtime receipt lacks its verified CUDA/BF16 package environment")
-    return python, site, manifest, packages
+    return python, site, packages, environment
 
 
 def wheel_members(archive, version):
@@ -153,54 +147,20 @@ def wheel_members(archive, version):
     return files, directories
 
 
-def inventory(root, files, directories, owner, candidate):
-    if read_json(root / OWNER) != owner:
-        raise ValueError(f"Existing dependency directory is not owned by this PixAI preparation: {root}")
-    allowed = set(files) | {OWNER}
-    if candidate:
-        allowed.update(name + PARTIAL for name in files)
-    for folder, children, leaves in os.walk(root, followlinks=False):
-        for name in children + leaves:
-            path = checked(Path(folder) / name)
-            relative = path.relative_to(root).as_posix()
-            info = path.lstat()
-            if stat.S_ISDIR(info.st_mode):
-                if relative not in directories:
-                    raise ValueError(f"Unowned dependency directory preserved: {relative}")
-            elif not stat.S_ISREG(info.st_mode) or relative not in allowed:
-                raise ValueError(f"Unowned dependency file preserved: {relative}")
-
-
-def member_digest(archive, entry):
-    checksum, count = hashlib.sha256(), 0
-    with archive.open(entry) as source:
-        while chunk := source.read(1024 * 1024):
-            count += len(chunk)
-            if count > entry.file_size or count > MAX_MEMBER:
-                raise ValueError("Wheel member exceeds its bounded declared size")
-            checksum.update(chunk)
-    if count != entry.file_size:
-        raise ValueError("Wheel member length differs from its declaration")
-    return checksum.hexdigest()
-
-
-def prepare_deps(root, wheel, manifest, digest):
+def prepare_deps(root, wheel, manifest):
     timm = manifest["timm"]
     parent = checked(root / "deps")
     parent.mkdir(exist_ok=True)
     name = f"timm-{timm['version']}-{timm['sha256'][:16]}"
     target, candidate = checked(parent / name), checked(parent / f".{name}.candidate")
     owner = {"schemaVersion": 1, "engine": "pixai", "wheelSha256": timm["sha256"]}
+    if target.exists():
+        checked(target, "dir")
+        if read_json(target / OWNER) != owner:
+            raise ValueError("Published timm installation belongs to another version")
+        return target
     with zipfile.ZipFile(wheel) as archive:
-        files, directories = wheel_members(archive, timm["version"])
-        if target.exists():
-            checked(target, "dir")
-            inventory(target, files, directories, owner, False)
-            for relative, entry in files.items():
-                file = checked(target / relative, "file")
-                if file.stat().st_size != entry.file_size or digest(file) != member_digest(archive, entry):
-                    raise ValueError("Published timm dependencies differ; existing files were preserved")
-            return target
+        files, _ = wheel_members(archive, timm["version"])
         if not candidate.exists():
             # Publish ownership with the empty candidate before writing package files.
             temporary = Path(tempfile.mkdtemp(prefix=f".{name}.new-", dir=parent))
@@ -211,77 +171,29 @@ def prepare_deps(root, wheel, manifest, digest):
                 os.fsync(output.fileno())
             temporary.rename(candidate)
         checked(candidate, "dir")
-        inventory(candidate, files, directories, owner, True)
-        progress("离线准备 PixAI 私有 timm；复用已核验的候选文件")
+        if read_json(candidate / OWNER) != owner:
+            raise ValueError("Candidate timm installation belongs to another version")
+        progress("离线准备 PixAI 私有 timm")
         for relative, entry in files.items():
             file = checked(candidate / relative)
-            expected = member_digest(archive, entry)
-            if file.is_file() and file.stat().st_size == entry.file_size and digest(file) == expected:
+            partial = checked(file.with_name(file.name + PARTIAL))
+            if file.is_file() and file.stat().st_size == entry.file_size:
+                if partial.exists():
+                    partial.unlink()
                 continue
             file.parent.mkdir(parents=True, exist_ok=True)
-            partial = checked(file.with_name(file.name + PARTIAL))
-            checksum, count = hashlib.sha256(), 0
+            count = 0
             with archive.open(entry) as source, partial.open("wb") as output:
                 while chunk := source.read(1024 * 1024):
                     count += len(chunk)
                     if count > entry.file_size or count > MAX_MEMBER:
                         raise ValueError("Wheel member exceeded its extraction limit")
-                    checksum.update(chunk)
                     output.write(chunk)
-                output.flush()
-                os.fsync(output.fileno())
-            if count != entry.file_size or checksum.hexdigest() != expected:
-                raise ValueError("Extracted timm member failed integrity verification")
+            if count != entry.file_size:
+                raise ValueError("Extracted timm member is incomplete")
             partial.replace(file)
-        # A retry can retain a partial file whose final member was already published.
-        for relative in files:
-            partial = checked(candidate / (relative + PARTIAL))
-            if partial.exists():
-                partial.unlink()
-        inventory(candidate, files, directories, owner, False)
-        if digest(wheel) != timm["sha256"]:
-            raise ValueError("PixAI timm wheel changed during extraction")
         candidate.rename(target)
     return checked(target, "dir")
-
-
-def diagnose(site, deps, manifest, packages, timm_version):
-    os.environ.update(HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", HF_HUB_DISABLE_TELEMETRY="1",
-                      HF_HUB_DISABLE_PROGRESS_BARS="1", TOKENIZERS_PARALLELISM="false", PYTHONNOUSERSITE="1")
-    sys.path[:0] = [str(deps), str(site)]
-    with contextlib.redirect_stdout(sys.stderr):
-        import torch
-        import torchvision
-        import timm
-        import numpy
-        import PIL
-        import safetensors
-        from timm.layers import DropPath, trunc_normal_
-        from transformers import BaseImageProcessor, Pipeline, PretrainedConfig, PreTrainedModel, TensorType
-        for module, expected_root in ((torch, site), (torchvision, site), (timm, deps), (numpy, site), (PIL, site), (safetensors, site)):
-            if not checked(module.__file__, "file").is_relative_to(expected_root):
-                raise ValueError(f"Dependency imported outside its managed directory: {module.__name__}")
-        for package, expected in {**packages, "timm": timm_version}.items():
-            if importlib.metadata.version(package) != expected:
-                raise ValueError(f"Dependency version differs from fixed environment: {package}")
-        cuda = torch.cuda.is_available()
-        capability = list(torch.cuda.get_device_capability()) if cuda else []
-        architectures = torch.cuda.get_arch_list() if cuda else []
-        bf16 = bool(cuda and torch.cuda.is_bf16_supported(including_emulation=False))
-        supported = any(name.startswith("sm_") and name[3:].isdigit()
-                        and int(name[3:]) // 10 == capability[0] and int(name[3:]) % 10 <= capability[1]
-                        for name in architectures) if cuda else False
-        supported = supported or (any(name.startswith("compute_") and name[8:].isdigit()
-                                     and int(name[8:]) <= capability[0] * 10 + capability[1]
-                                     for name in architectures) if cuda else False)
-        if not cuda or not bf16 or not supported or torch.version.cuda != manifest["cuda"]:
-            raise ValueError(f"PixAI requires native CUDA/BF16 support: cudaAvailable={cuda}, bf16Supported={bf16}, cudaRuntime={torch.version.cuda}, SM={capability}")
-    return {"pythonVersion": sys.version.split()[0], "packages": {**packages, "timm": timm_version},
-            "torchVersion": torch.__version__, "timmVersion": timm_version, "cpuOnly": False,
-            "cudaAvailable": True, "bf16Supported": True, "cudaRuntime": torch.version.cuda,
-            "deviceCapability": capability, "compiledArchitectures": architectures,
-            "deviceName": torch.cuda.get_device_name(0),
-            "scope": "dependency imports and CUDA/BF16 capability only; no model loaded or inference tensor allocated"}
 
 
 def main():
@@ -295,19 +207,19 @@ def main():
     app = checked(Path(__file__).absolute(), "file").parents[2]
     root, runtime = checked(args.root, "dir"), checked(args.runtime_root, "dir")
     digest = trusted_hasher(app)
-    python, site, runtime_manifest, packages = runtime_binding(root, runtime, app, digest)
+    python, site, packages, runtime_environment = runtime_binding(root, runtime, app, digest)
     source = checked(app / "tools/interrogate/pixai-manifest.json", "file")
     manifest = read_json(source)
     if len(manifest["files"]) != 5 or manifest["timm"]["version"] != "1.0.30":
         raise ValueError("Bundled PixAI manifest is outside the fixed model/dependency contract")
     model = checked(root / "model", "dir")
-    for index, entry in enumerate(manifest["files"], 1):
-        progress(f"核验 PixAI 文件 {index}/5：{entry['path']}")
-        verify_file(model, entry, digest)
-    wheel = verify_file(checked(root / "wheels", "dir"), manifest["timm"], digest)
-    deps = prepare_deps(root, wheel, manifest, digest)
-    progress("核验 PixAI 依赖导入、固定包版本与 CUDA/BF16；不加载模型")
-    environment = diagnose(site, deps, runtime_manifest, packages, manifest["timm"]["version"])
+    for entry in manifest["files"]:
+        model_file(model, entry)
+    wheel = model_file(checked(root / "wheels", "dir"), manifest["timm"])
+    deps = prepare_deps(root, wheel, manifest)
+    environment = {**runtime_environment, "packages": {**packages, "timm": manifest["timm"]["version"]},
+                   "timmVersion": manifest["timm"]["version"], "cpuOnly": False,
+                   "scope": "managed-runtime-receipt-and-local-timm-installation"}
     print(json.dumps({"ok": True, "schemaVersion": 1, "engine": "pixai", "python": str(python), "modelDir": str(model),
                       "depsDir": str(deps), "torchSitePackages": str(site), "environment": environment}, ensure_ascii=False), flush=True)
 

@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" @open="drawerScene = $event" />
+      <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" @open="drawerScene = $event" @reset="resetFilters" />
 
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
     <div class="browse-toolbar scene-toolbar">
@@ -129,13 +129,16 @@
       v-else-if="scenes.length === 0"
       kind="empty"
       title="暂无收录的场景"
-    />
+    >
+      <button class="btn btn-primary" type="button" @click="init">重新加载场景库</button>
+    </ArchiveStatePanel>
     <ArchiveStatePanel
       v-else-if="!loading && paged.length === 0"
       kind="filtered"
-      title="没有符合当前条件的场景"
+      :title="sortBy === 'favorite' && !showHidden && !searchQuery ? '还没有收藏的场景' : '没有符合当前条件的场景'"
+      :message="sortBy === 'favorite' && !showHidden && !searchQuery ? '在心动的场景卡片上点击星标即可收藏。' : undefined"
     >
-      <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
+      <button class="btn btn-primary" type="button" @click="sortBy === 'favorite' && !showHidden && !searchQuery ? showAllScenes() : resetFilters()">{{ sortBy === 'favorite' && !showHidden && !searchQuery ? '浏览全部场景' : '重置筛选' }}</button>
     </ArchiveStatePanel>
     <div v-else ref="listRoot" data-route-arrive class="scene-grid" :aria-busy="loading">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags

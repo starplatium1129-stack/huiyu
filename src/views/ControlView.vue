@@ -41,7 +41,7 @@
               <ControlWelcome v-if="item.id === 'control-overview'" />
               <AsyncPanel v-else-if="item.id === 'control-setup'" :loader="loadSetup" label="绘图与模型" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <AsyncPanel v-else-if="item.id === 'control-interrogate'" :loader="loadInterrogateSetup" label="图片反推" v-slot="{ component }"><component :is="component" /></AsyncPanel>
-              <AsyncPanel v-else-if="item.id === 'control-library'" :loader="loadLibrary" label="离线资源库" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
+              <AsyncPanel v-else-if="item.id === 'control-library'" :loader="loadLibrary" label="资源与素材" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <div v-else-if="item.id === 'control-personalization'" class="control-panel-stack">
                 <section class="panel-card"><div class="panel-kicker">随时调整 · 自动保存</div><h2 class="panel-heading">让画室更合你心意</h2><p class="control-section-note">主题、字号和动态效果可在外观面板中调整。</p><AppearancePreferences launcher-only /></section>
                 <DesktopPreferences />

@@ -197,7 +197,7 @@ function keyboardPan(event: KeyboardEvent) {
         </div>
         <div class="relations-heading-actions">
           <span class="relations-summary">{{ pendingPeople.length }} 位原作人物</span>
-          <button ref="fullscreenButton" class="btn btn-ghost btn-sm" type="button" :aria-expanded="isFullscreen" :title="isFullscreen ? '退出全屏沉浸（Esc）' : '全屏沉浸画板'" @click="toggleFullscreen">
+          <button ref="fullscreenButton" class="btn btn-ghost btn-sm" type="button" :aria-expanded="isFullscreen" @click="toggleFullscreen">
             <ArchiveIcon :name="isFullscreen ? 'compress' : 'expand'" />
             <span>{{ isFullscreen ? '退出沉浸' : '沉浸全屏' }}</span>
           </button>
@@ -225,7 +225,6 @@ function keyboardPan(event: KeyboardEvent) {
           ref="inspectorToggle"
           class="btn btn-ghost btn-sm"
           type="button"
-          :title="inspectorCollapsed ? '展开右侧说明栏' : '收起右侧说明栏以拓宽画布'"
           :aria-expanded="!inspectorCollapsed"
           @click="setInspectorCollapsed(!inspectorCollapsed)"
         >
@@ -337,7 +336,7 @@ function keyboardPan(event: KeyboardEvent) {
           <section v-if="selectedRelation" :key="selectedRelation.id" v-content-motion:fade="selectedRelation.id" class="relation-description">
             <div class="relation-description-head">
               <span class="page-kicker">{{ selectedRelation.spoiler ? '剧透关系' : '原作关系' }}</span>
-              <button class="btn btn-ghost btn-sm btn-icon" type="button" title="收起说明栏" @click="setInspectorCollapsed(true)">
+              <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="收起说明栏" @click="setInspectorCollapsed(true)">
                 <ArchiveIcon name="minus" />
               </button>
             </div>
@@ -355,7 +354,7 @@ function keyboardPan(event: KeyboardEvent) {
           <section v-else-if="selectedPerson" :key="selectedPerson.id" v-content-motion:fade="selectedPerson.id" class="relation-description">
             <div class="relation-description-head">
               <span class="page-kicker">{{ selectedProfile ? '已收录图鉴' : '原作背景人物' }}</span>
-              <button class="btn btn-ghost btn-sm btn-icon" type="button" title="收起说明栏" @click="setInspectorCollapsed(true)">
+              <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="收起说明栏" @click="setInspectorCollapsed(true)">
                 <ArchiveIcon name="minus" />
               </button>
             </div>
@@ -375,7 +374,7 @@ function keyboardPan(event: KeyboardEvent) {
           <section v-else class="relation-description relation-description--idle">
             <div class="relation-description-head">
               <span class="page-kicker">全貌探索</span>
-              <button class="btn btn-ghost btn-sm btn-icon" type="button" title="收起说明栏" @click="setInspectorCollapsed(true)">
+              <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="收起说明栏" @click="setInspectorCollapsed(true)">
                 <ArchiveIcon name="minus" />
               </button>
             </div>

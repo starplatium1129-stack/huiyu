@@ -242,7 +242,7 @@ defineExpose({ focusSelected, snapshot })
   .bookshelf-characters { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .bookshelf-header { @apply tw:items-start; }
 }
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .character-bookshelf { @apply tw:p-s-5; }
   .bookshelf-header { @apply tw:flex-col tw:gap-s-4; }
   .bookshelf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-x-s-4; }

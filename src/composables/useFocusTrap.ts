@@ -191,8 +191,14 @@ export function useFocusTrap(
     syncModalBackground()
     unlockScroll?.(); unlockScroll = undefined
     if (restoreFocus && top) {
-      if (returnFocus.value && isAvailable(returnFocus.value)) returnFocus.value.focus({ preventScroll: true })
-      else trapStack.at(-1)?.focus()
+      if (returnFocus.value && isAvailable(returnFocus.value)) {
+        returnFocus.value.focus({ preventScroll: true })
+      } else if (trapStack.length) {
+        trapStack.at(-1)?.focus()
+      } else {
+        const fallback = document.querySelector<HTMLElement>('main [tabindex="0"], main button:not([disabled]), [role="main"] button:not([disabled]), #app header button, nav a.active')
+        fallback?.focus({ preventScroll: true })
+      }
     }
     returnFocus.value = null
     activeRoot = null

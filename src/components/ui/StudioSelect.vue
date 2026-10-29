@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onActivated, onBeforeUnmount, onDeactivated, ref, useAttrs, watch } from 'vue'
+import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, ref, useAttrs, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
 import { usePageScrollLock } from '@/composables/usePageScrollLock'
@@ -108,16 +108,33 @@ function onCloseAutoFocus(event: Event) {
   if (!viewActive || open.value || !wrapperEl.value?.getClientRects().length) {
     event.preventDefault()
     if (viewActive && !open.value && wrapperEl.value && !wrapperEl.value.getClientRects().length) emit('trigger-hidden')
+  } else {
+    void nextTick(() => {
+      if (document.activeElement === document.body) {
+        selectTrigger.value?.$el?.focus?.({ preventScroll: true })
+      }
+    })
   }
 }
 function onEscape(event: KeyboardEvent) {
   if (!open.value || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
   event.preventDefault()
+  event.stopPropagation()
   open.value = false
 }
-function onDismissEscape(event: KeyboardEvent) {
+function onDismissEscape(event: KeyboardEvent | CustomEvent<{ originalEvent?: KeyboardEvent }>) {
   // Reka also handles Escape at window level, after the trigger/content handler.
-  if (event.isComposing || event.keyCode === 229) event.preventDefault()
+  const customDetail = 'detail' in event && typeof event.detail === 'object' && event.detail !== null
+    ? (event.detail as { originalEvent?: KeyboardEvent })
+    : null
+  const orig = customDetail?.originalEvent ?? (event instanceof KeyboardEvent ? event : null)
+  if (orig?.isComposing || orig?.keyCode === 229) {
+    event.preventDefault()
+    orig?.preventDefault?.()
+    return
+  }
+  event.stopPropagation?.()
+  orig?.stopPropagation?.()
 }
 // class 落在外层包裹上，便于页面按上下文控制宽度与布局；其余属性（data-*、
 // aria-*）连同 id 一起加到可见 trigger。布局与外观由共享 class 负责，style 不透传。

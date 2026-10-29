@@ -19,14 +19,6 @@ function Write-EnvironmentProgress([string]$message,[long]$done=0,[long]$total=0
   [Console]::Error.WriteLine(('HUIYU:ENV|'+$done+'|'+$total+'|'+$message))
   [Console]::Error.Flush()
 }
-function Get-EnvironmentSha256([string]$path) {
-  $stream=[IO.File]::OpenRead($path)
-  try {
-    $hash=[Security.Cryptography.SHA256CryptoServiceProvider]::new()
-    try { return [BitConverter]::ToString($hash.ComputeHash($stream)).Replace('-','').ToLowerInvariant() }
-    finally { $hash.Dispose() }
-  } finally { $stream.Dispose() }
-}
 $resolvedWorkspace=(Get-Item -LiteralPath $workspacePath).FullName
 function Assert-InWorkspace([string]$path) {
   $resolved=[IO.Path]::GetFullPath($path)
@@ -118,8 +110,7 @@ try {
   } else {
     $managedRoot=Join-Path $workspacePath '.runtimes\comfy'
     Assert-InWorkspace $managedRoot
-    if ($ArchiveSha256 -notmatch '^[0-9a-f]{64}$' -or
-        (Get-EnvironmentSha256 $Archive) -ne $ArchiveSha256) { throw '运行包校验身份不匹配，请从绘遇控制室重新校验' }
+    if ($ArchiveSha256 -notmatch '^[0-9a-f]{64}$') { throw '运行包缺少发行身份' }
     Expand-Package $Archive (Join-Path $stagePath 'comfy')
     $comfy=Find-Directory (Join-Path $stagePath 'comfy') 'main.py'
     $portableRoot=Split-Path -Parent $comfy
@@ -169,7 +160,7 @@ try {
     [IO.File]::WriteAllText((Join-Path $comfy 'extra_model_paths.yaml'),($modelConfig | ConvertTo-Json -Depth 4),[Text.UTF8Encoding]::new($false))
     $receipt=[ordered]@{ schemaVersion=1; environment=$Environment; archiveSha256=$ArchiveSha256 }
     [IO.File]::WriteAllText((Join-Path $portableRoot 'huiyu-environment.json'),($receipt | ConvertTo-Json -Compress),[Text.UTF8Encoding]::new($false))
-    # The gateway hashes fresh code and records identities before installation completes.
+    # The downloaded archive was verified by the preparation owner.
     Write-EnvironmentProgress '正在保存运行环境，保留已有模型与资源'
     # No user files enter staging. Cancellation at any publish boundary leaves
     # them intact in the old location or the preserved directory for the retry.

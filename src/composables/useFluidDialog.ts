@@ -73,7 +73,17 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
     const target = returnFocus
     returnFocus = null
     if (target?.isConnected && scrollLocation() === returnLocation && !target.closest('[inert], [hidden]')
-      && (!modalLocks || target.closest('dialog[open]'))) target.focus({ preventScroll: true })
+      && (!modalLocks || target.closest('dialog[open]'))) {
+      target.focus({ preventScroll: true })
+    } else if (document.activeElement === document.body) {
+      const activeDialog = Array.from(document.querySelectorAll<HTMLDialogElement>('dialog[open]'))
+        .filter(d => !d.hasAttribute('data-fluid-leaving'))
+        .pop()
+      const fallback = activeDialog
+        ? activeDialog.querySelector<HTMLElement>('button:not([disabled]), [tabindex="0"], input:not([disabled]), a[href]')
+        : document.querySelector<HTMLElement>('main [tabindex="0"], main button:not([disabled]), [role="main"] button:not([disabled]), #app header button, nav a.active')
+      fallback?.focus({ preventScroll: true })
+    }
     // close() invokes this synchronously; the eventual native event may itself
     // follow another focus scroll, so repeat the guarded correction at that event.
     restoreAfterClose?.()

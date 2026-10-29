@@ -27,6 +27,9 @@ $appRoot=[IO.Path]::GetFullPath([IO.Path]::Combine($scriptRoot,'../..'))
 $manifestName=if ($RuntimeId -eq 'cpython3119-torch290-cu128-images-v2') { 'managed-adapter-runtime.windows-x64.json' } else { 'managed-runtime.windows-x64.json' }
 $manifestPath=Join-Path $appRoot ('tools/inference/'+$manifestName)
 $manifest=Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+$manifestHash=Get-NativeSha256 $manifestPath
+$requirementsName=if ($RuntimeId -eq 'cpython3119-torch290-cu128-images-v2') { 'requirements-adapters.txt' } else { 'requirements.txt' }
+$requirementsHash=Get-NativeSha256 (Join-Path $appRoot ('tools/inference/'+$requirementsName))
 if ($manifest.schemaVersion -ne 1 -or $manifest.platform -ne 'win32-x64' -or $RuntimeId -ne $manifest.runtimeId -or $RuntimeId -notmatch '^[a-z0-9][a-z0-9-]{0,79}$') { throw '固定运行库清单或版本标识无效' }
 if (-not [Environment]::Is64BitOperatingSystem -or $env:PROCESSOR_ARCHITECTURE -eq 'ARM64' -or $env:PROCESSOR_ARCHITEW6432 -eq 'ARM64') { throw '原生运行库仅支持 Windows x64；ARM64 与 32 位 Windows 尚不支持' }
 if ([Environment]::OSVersion.Version.Build -lt $manifest.minimumWindowsBuild) { throw '此固定运行库支持 Windows 10 22H2 或 Windows 11；请先更新 Windows' }
@@ -48,22 +51,14 @@ function Assert-NoLinks([string]$path) {
 Assert-NoLinks $workspacePath
 Assert-NoLinks $cachePath
 if (-not $cachePath.StartsWith($workspacePath.TrimEnd('\')+'\',[StringComparison]::OrdinalIgnoreCase)) { throw '运行库缓存必须位于已确认的 AI 工作区内' }
-$smi=@((Join-Path $env:SystemRoot 'System32/nvidia-smi.exe'),(Join-Path $env:ProgramFiles 'NVIDIA Corporation/NVSMI/nvidia-smi.exe')) | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } | Select-Object -First 1
-if (-not $smi) { throw '未找到 NVIDIA 驱动的设备检查工具；请从 NVIDIA 官网安装兼容显卡驱动。绘遇不会安装或修改驱动' }
-$deviceInfo=@(& $smi '--query-gpu=driver_version,compute_cap' '--format=csv,noheader,nounits')
-if ($LASTEXITCODE -ne 0 -or $deviceInfo.Count -eq 0) { throw 'NVIDIA 驱动或设备信息无法读取，请更新驱动后重试' }
-$device=$deviceInfo[0].Split(',') | ForEach-Object { $_.Trim() }
-if ($device.Count -ne 2 -or [version]$device[0] -lt [version]$manifest.minimumNvidiaDriver) { throw ('此运行库需要 NVIDIA Windows 驱动 '+$manifest.minimumNvidiaDriver+' 或更新版本，请从 NVIDIA 官网更新后重试') }
-if ([version]$device[1] -lt [version]'8.0') { throw '当前首选显卡不支持原生 BF16；此固定运行库支持 NVIDIA Ampere 及更新架构，AMD、Intel 与旧 NVIDIA 显卡尚不支持' }
 $inferenceRoot=Join-Path $workspacePath 'inference'
 $targetRoot=Join-Path $inferenceRoot $RuntimeId
 $helper=Join-Path $scriptRoot 'install-native-runtime.py'
 Assert-NoLinks $targetRoot
-function Invoke-Helper([string]$root,[bool]$check) {
+function Invoke-Helper([string]$root) {
   $python=Join-Path $root 'venv/Scripts/python.exe'
   if (-not (Test-Path -LiteralPath $python -PathType Leaf)) { throw '受管 Python 文件缺失；未覆盖已有目录' }
   $helperArgs=@('-I','-X','utf8','-B','-u',$helper,'--root',$root,'--target-root',$targetRoot,'--cache-dir',$cachePath,'--manifest',$manifestPath)
-  if ($check) { $helperArgs+='--check' }
   # Windows PowerShell 5.1 can surface native progress on its error stream.
   $previousPreference=$ErrorActionPreference
   try { $ErrorActionPreference='Continue'; $output=& $python @helperArgs; $helperExit=$LASTEXITCODE }
@@ -71,6 +66,14 @@ function Invoke-Helper([string]$root,[bool]$check) {
   if ($helperExit -ne 0) { throw '原生运行库依赖或显卡校验未通过；失败目录保留，已有环境未改动' }
   $document=($output -join "`n") | ConvertFrom-Json
   if ($document.schemaVersion -ne 1 -or $document.engine -ne 'native' -or -not $document.environment.cudaAvailable -or (Resolve-NativePath $document.root) -ne $targetRoot) { throw '原生运行库校验回执不完整' }
+  return $document
+}
+function Read-Runtime([string]$root) {
+  $document=Get-Content -LiteralPath (Join-Path $root 'runtime-config.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  if ($document.schemaVersion -ne 1 -or $document.engine -ne 'native' -or
+      $document.managedRuntimeId -ne $RuntimeId -or $document.manifestSha256 -ne $manifestHash -or $document.requirementsSha256 -ne $requirementsHash -or
+      (Resolve-NativePath $document.root) -ne $targetRoot -or
+      -not (Test-Path -LiteralPath (Join-Path $root 'venv/Scripts/python.exe') -PathType Leaf)) { throw '运行库安装记录不完整，请重新准备' }
   return $document
 }
 function VisualCpp-Ready {
@@ -85,18 +88,18 @@ if ($existingRuntime) {
   if (-not (Test-Path -LiteralPath (Join-Path $targetRoot 'runtime-config.json') -PathType Leaf)) { throw '该版本目录已存在但缺少完成记录；请保留并检查冲突目录，不会覆盖' }
 }
 if ($existingRuntime -and (VisualCpp-Ready)) {
-  Write-Stage '重新校验已有的完整受管运行库'
-  $document=Invoke-Helper $targetRoot $true
+  Write-Stage '采用已安装的受管运行库'
+  $document=Read-Runtime $targetRoot
   $document | ConvertTo-Json -Depth 20 -Compress
   exit 0
 }
-Write-Stage '复核已下载缓存的长度与 SHA-256'
+Write-Stage '准备已下载的运行库文件'
 foreach ($file in $manifest.files) {
   if ($existingRuntime -and $file.kind -ne 'vc-redist') { continue }
   if ([IO.Path]::GetFileName($file.filename) -ne $file.filename -or $file.sha256 -notmatch '^[0-9a-f]{64}$') { throw '固定资源文件名或 SHA-256 无效' }
   $path=Join-Path $cachePath $file.filename
   Assert-NoLinks $path
-  if (-not (Test-Path -LiteralPath $path -PathType Leaf) -or (Get-Item -LiteralPath $path).Length -ne $file.bytes -or (Get-NativeSha256 $path) -ne $file.sha256) { throw ('下载缓存未完整或校验失败：'+$file.filename+'。请重新下载此文件后重试。') }
+  if (-not (Test-Path -LiteralPath $path -PathType Leaf) -or (Get-Item -LiteralPath $path).Length -ne $file.bytes) { throw ('下载缓存未完整：'+$file.filename+'。请重新下载此文件后重试。') }
 }
 $vcFile=@($manifest.files | Where-Object { $_.kind -eq 'vc-redist' })
 if ($vcFile.Count -ne 1) { throw '固定清单缺少微软 VC++ x64 运行库' }
@@ -119,8 +122,8 @@ if (-not (VisualCpp-Ready)) {
   } finally { Write-Stage 'HUIYU:VC_END' }
 }
 if ($existingRuntime) {
-  Write-Stage '微软共享运行库已就绪，重新校验并复用已有的完整受管环境'
-  $document=Invoke-Helper $targetRoot $true
+  Write-Stage '微软共享运行库已就绪，采用已有受管环境'
+  $document=Read-Runtime $targetRoot
   $document | ConvertTo-Json -Depth 20 -Compress
   exit 0
 }
@@ -130,7 +133,6 @@ New-Item -ItemType Directory -Force -Path $stageParent | Out-Null
 $stageRoot=Join-Path $stageParent $RuntimeId
 Assert-NoLinks $stageRoot
 $ownerPath=Join-Path $stageRoot '.huiyu-candidate.json'
-$manifestHash=Get-NativeSha256 $manifestPath
 $reuseCandidate=$false
 if (Test-Path -LiteralPath $stageRoot) {
   if (-not (Test-Path -LiteralPath $ownerPath -PathType Leaf)) { throw '候选目录缺少绘遇管理标记；未清理或覆盖，请检查目录冲突' }
@@ -162,7 +164,7 @@ if (-not $reuseCandidate) {
 }
 Write-Stage ('准备新的独立版本目录：'+$stageRoot)
 try {
-  if ($reuseCandidate) { $document=Invoke-Helper $stageRoot $true }
+  if ($reuseCandidate) { $document=Read-Runtime $stageRoot }
   else {
   $pythonFiles=@($manifest.files | Where-Object { $_.kind -eq 'python' })
   if ($pythonFiles.Count -ne 1) { throw '固定清单缺少唯一的嵌入 Python' }
@@ -184,7 +186,7 @@ try {
   # No system/user site, registry, cwd, PYTHONPATH, pip, or system interpreter.
   [IO.File]::WriteAllText((Join-Path $scripts 'python311._pth'),"python311.zip`n.`n../Lib/site-packages`n",[Text.UTF8Encoding]::new($false))
   New-Item -ItemType Directory -Path (Join-Path $stageRoot 'venv/Lib/site-packages') -Force | Out-Null
-  $document=Invoke-Helper $stageRoot $false
+  $document=Invoke-Helper $stageRoot
   }
   foreach ($name in @('models','loras')) { New-Item -ItemType Directory -Path (Join-Path $inferenceRoot $name) -Force | Out-Null }
   # Receipt is hidden with the verified candidate until same-volume publication.

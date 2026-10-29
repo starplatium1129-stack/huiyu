@@ -422,6 +422,9 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
               class="textarea"
               rows="3"
               placeholder="例如：wearing white frilled bikini, swimsuit..."
+              spellcheck="false"
+              autocorrect="off"
+              autocapitalize="off"
             ></textarea>
           </div>
 

@@ -119,6 +119,12 @@ pub(super) fn start(
         .clone()
         .ok_or_else(|| Error::new("CONFIG_REQUIRED", "Resource policy required"))?;
     let ctx = configuration.ctx.clone();
+    if ctx.directory.is_some() {
+        return Err(Error::new(
+            "MANAGEMENT_DISABLED",
+            "请从桌面安装助手切换素材目录。",
+        ));
+    }
     let mut release = release.map(str::to_owned);
     let mut resume: Option<String> = None;
     if action == "recover"

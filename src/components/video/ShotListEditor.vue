@@ -93,6 +93,9 @@
             rows="2"
             maxlength="600"
             placeholder="英文身份锚点：a girl with long silver hair and red eyes, wearing a dark coat …"
+            spellcheck="false"
+            autocorrect="off"
+            autocapitalize="off"
           ></textarea>
         </label>
 
@@ -290,6 +293,9 @@
                 maxlength="4000"
                 :disabled="batchActive || submitting"
                 placeholder="写清：主体动作、环境、光线、镜头意图；身份细节交给角色锚点。"
+                spellcheck="false"
+                autocorrect="off"
+                autocapitalize="off"
               ></textarea>
             </label>
 

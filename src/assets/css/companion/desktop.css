@@ -183,11 +183,16 @@ html.companion-desktop.companion-immersive .companion-desktop-float {
   @apply tw:w-[15px] tw:h-[15px];
   color: color-mix(in srgb, var(--character-accent) 82%, var(--companion-ink));
 }
-.companion-chat-chip:hover,
 .companion-chat-chip:focus-visible {
   border-color: var(--border-strong);
   background: var(--art-scrim);
-  transform: translateY(-2px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .companion-chat-chip:hover {
+    border-color: var(--border-strong);
+    background: var(--art-scrim);
+    transform: translateY(-2px);
+  }
 }
 
 .companion-live-dot {

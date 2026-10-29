@@ -28,7 +28,10 @@
             <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ displayTag(tag.en) }}</small>
           </button>
         </StudioTooltip>
-        <p v-if="!visibleTags.length" class="tag-results-empty" role="status">没有匹配的词条，试试其他关键词或分类。</p>
+        <div v-if="!visibleTags.length" class="tag-results-empty" role="status">
+          <span>没有匹配的词条，试试其他关键词或分类。</span>
+          <button v-if="tagSearch || tagCategory !== 'all'" class="btn btn-ghost btn-sm tw:mt-s-2" type="button" @click="tagSearch = ''; tagCategory = 'all'">重置词条筛选</button>
+        </div>
       </div>
       <p v-if="hiddenTagCount" class="tag-more-hint">
         另有 {{ hiddenTagCount }} 个匹配词条未展示；可细化搜索，或在「自选词条」中粘贴添加。
@@ -43,6 +46,7 @@
       </div>
     </div>
     <input id="manual-tag-entry" ref="tagInput" v-model="tagInputText" class="tag-input" type="text" aria-label="添加词条" list="prompt-tag-suggestions" placeholder="输入或批量粘贴词条，按回车添加…"
+      spellcheck="false" autocorrect="off" autocapitalize="off"
       @keydown.enter="onTagEnter" />
     <small class="tag-entry-hint">支持逗号、顿号或换行分隔，按回车添加。</small>
     <datalist id="prompt-tag-suggestions">

@@ -15,8 +15,8 @@
       <p class="manga-hint">按原图比例建议尺寸，按 32 像素对齐；可手动调整。总像素不超过约 200 万，极端长图可能改变比例。</p>
       <details><StudioDisclosureSummary>重绘指令与种子</StudioDisclosureSummary>
         <div class="manga-fields" data-disclosure-content>
-          <label class="manga-field"><span>重绘指令</span><textarea class="input" v-model="rewrite.prompt" rows="6" maxlength="12000" :disabled="disabled" /></label>
-          <label class="manga-field"><span>随机种子</span><input class="input" v-model.number="rewrite.seed" type="number" min="0" max="2147483647" step="1" :disabled="disabled" /></label>
+          <label class="manga-field"><span>重绘指令</span><textarea class="input" v-model="rewrite.prompt" rows="6" maxlength="12000" :disabled="disabled" spellcheck="false" autocorrect="off" autocapitalize="off" /></label>
+          <label class="manga-field"><span>随机种子</span><input class="input" v-model.number="rewrite.seed" type="number" min="0" max="2147483647" step="1" :disabled="disabled" spellcheck="false" autocorrect="off" /></label>
           <p class="manga-hint">使用模型官方步数与 CFG；此入口暂不提供负向提示词或重绘强度。</p>
         </div>
       </details>

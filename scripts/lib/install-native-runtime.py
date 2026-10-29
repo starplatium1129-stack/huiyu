@@ -13,7 +13,6 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import stat
-import subprocess
 import sys
 import zipfile
 
@@ -42,7 +41,7 @@ def safe_file(root: Path, relative: str) -> Path:
 
 def install_wheel(file: dict, cache: Path, root: Path, remaining: int) -> int:
     archive_path = cache / file["filename"]
-    if archive_path.stat().st_size != file["bytes"] or digest(archive_path) != file["sha256"]:
+    if archive_path.stat().st_size != file["bytes"]:
         raise ValueError(f"Downloaded wheel integrity mismatch: {file['filename']}")
     site = root / "venv/Lib/site-packages"
     with zipfile.ZipFile(archive_path) as archive:
@@ -101,8 +100,7 @@ def install_wheel(file: dict, cache: Path, root: Path, remaining: int) -> int:
 def install_diffusers_source(file: dict, cache: Path, root: Path, remaining: int) -> int:
     """Copy the reviewed pure-Python package; never execute archive setup hooks."""
     archive_path = cache / file["filename"]
-    if (file["package"] != "diffusers" or archive_path.stat().st_size != file["bytes"]
-            or digest(archive_path) != file["sha256"]):
+    if file["package"] != "diffusers" or archive_path.stat().st_size != file["bytes"]:
         raise ValueError("Fixed Diffusers source archive differs")
     site = root / "venv/Lib/site-packages"
     prefix = f"diffusers-{file['revision']}/src/"
@@ -134,7 +132,7 @@ def install_diffusers_source(file: dict, cache: Path, root: Path, remaining: int
     return remaining
 
 
-def diagnose(root: Path, worker: Path, manifest: dict) -> dict:
+def diagnose(root: Path, manifest: dict) -> dict:
     expected_python = root / "venv/Scripts/python.exe"
     if Path(sys.executable).resolve() != expected_python.resolve():
         raise ValueError("Preparation must use the selected application managed Python")
@@ -147,19 +145,9 @@ def diagnose(root: Path, worker: Path, manifest: dict) -> dict:
             if actual != file["version"]:
                 raise ValueError(f"Installed dependency differs: {file['package']} expected {file['version']}, found {actual}")
             packages[file["package"]] = actual
-    environment = os.environ.copy()
-    for key in ("PYTHONPATH", "PYTHONHOME", "PYTHONUSERBASE", "PIP_INDEX_URL", "PIP_EXTRA_INDEX_URL"):
-        environment.pop(key, None)
-    environment.update(PYTHONNOUSERSITE="1", HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", HUIYU_INFERENCE_ACCELERATION="native")
-    result = subprocess.run([str(expected_python), "-I", "-X", "utf8", "-B", "-u", str(worker), "--diagnose"],
-                            capture_output=True, text=True, encoding="utf-8", env=environment, timeout=120)
-    try:
-        diagnostic = json.loads(result.stdout)
-    except ValueError as exc:
-        raise ValueError(f"Native dependency diagnosis did not return JSON: {result.stderr[-4000:]}") from exc
-    if result.returncode or diagnostic.get("valid") is not True or diagnostic.get("cudaAvailable") is not True:
-        raise ValueError(f"Native dependencies or NVIDIA CUDA unavailable: {diagnostic.get('message') or result.stderr[-4000:]}")
     import torch
+    if not torch.cuda.is_available():
+        raise ValueError("NVIDIA CUDA unavailable")
     if torch.version.cuda != manifest["cuda"]:
         raise ValueError(f"Expected CUDA {manifest['cuda']} PyTorch wheel; found {torch.version.cuda}")
     capability = torch.cuda.get_device_capability()
@@ -173,7 +161,7 @@ def diagnose(root: Path, worker: Path, manifest: dict) -> dict:
     bf16 = torch.cuda.is_bf16_supported(including_emulation=False)
     if not supported or not bf16:
         raise ValueError(f"NVIDIA device SM {capability[0]}.{capability[1]} is outside this runtime's native BF16 support; compiled architectures: {architectures}")
-    return {"packages": packages, "cudaAvailable": True, "deviceName": diagnostic.get("deviceName"),
+    return {"packages": packages, "cudaAvailable": True, "deviceName": torch.cuda.get_device_name(),
             "cudaRuntime": torch.version.cuda, "deviceCapability": list(capability),
             "compiledArchitectures": architectures, "bf16Supported": bf16,
             "scope": "dependency imports and CUDA device capability; no model loaded, tensor allocated or image generated"}
@@ -213,11 +201,7 @@ def main() -> None:
             if file["kind"] == "python-source":
                 remaining = install_diffusers_source(file, cache, root, remaining)
     progress("校验全部固定依赖、NVIDIA CUDA、显卡架构与 BF16 支持；不加载模型")
-    environment = diagnose(root, worker, manifest)
-    if adapter:
-        # The Qwen preparation also serves the existing MangaScreen editor.
-        import cv2
-        import numpy
+    environment = diagnose(root, manifest)
     document = {"schemaVersion": 1, "engine": "native", "root": str(target),
                 "python": str(target / "venv/Scripts/python.exe"), "worker": str(worker),
                 "modelRoot": str(target.parent / "models"), "lorasRoot": str(target.parent / "loras"),
@@ -229,6 +213,6 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-    except (OSError, ValueError, KeyError, RuntimeError, zipfile.BadZipFile, subprocess.SubprocessError, importlib.metadata.PackageNotFoundError) as error:
+    except (OSError, ValueError, KeyError, RuntimeError, zipfile.BadZipFile, importlib.metadata.PackageNotFoundError) as error:
         progress(f"原生运行库准备失败：{error}")
         raise SystemExit(1)

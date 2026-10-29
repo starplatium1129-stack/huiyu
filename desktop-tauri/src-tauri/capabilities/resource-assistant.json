@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "resource-assistant",
+  "description": "Bundled resource installer; fixed local paths and publisher approvals remain owned by the host.",
+  "windows": ["resource-assistant"],
+  "local": true,
+  "permissions": [
+    "allow-resource-assistant-status",
+    "allow-resource-assistant-pick",
+    "allow-resource-assistant-install",
+    "allow-resource-assistant-cancel",
+    "allow-resource-assistant-finish"
+  ]
+}

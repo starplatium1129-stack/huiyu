@@ -62,5 +62,6 @@ async function keyboard(event: KeyboardEvent) {
 html body .page-numbers[role] { gap:0; padding:2px; border-radius:var(--r-md); --selection-radius:var(--r-sm); }
 html body .page-numbers[role] > button { flex:0 0 auto; min-width:32px; min-height:32px; padding:var(--s-1); font:inherit; }
 .page-gap { display:grid; place-items:center; min-width:12px; }
+@media (pointer: coarse) { .page-arrow { min-width: 44px; min-height: 44px; } }
 @media (forced-colors:active) { .page-arrow:focus-visible { outline:2px solid Highlight; } }
 </style>

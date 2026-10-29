@@ -198,13 +198,10 @@ export function useInterrogateSetup() {
     } finally { if (!disposed) await reconcile() }
   }
   function workspaceChanged() { workspacePending.value = true; planVersion++; void refreshPlan().then(reconcile) }
-  function focused() { if (!submitting.value && !checking.value) void refresh() }
   window.addEventListener('huiyu:ai-workspace-changed', workspaceChanged)
-  window.addEventListener('focus', focused)
   onScopeDispose(() => {
     disposed = true; planVersion++; operationVersion++; life.abort(); clearTimeout(timer); wake?.()
     window.removeEventListener('huiyu:ai-workspace-changed', workspaceChanged)
-    window.removeEventListener('focus', focused)
     // Detach HTTP/polling only. The accepted installation belongs to the runtime.
   })
   return { plan, operation, readiness, checking, submitting, running, busy, ready, enoughSpace, canPrepare, canCancel, retryAvailable, retry,

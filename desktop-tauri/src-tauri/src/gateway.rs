@@ -393,6 +393,22 @@ impl GatewaySupervisor {
 
     /// Deployment requires a positive authenticated drain receipt. A timeout
     /// retains the child and its owner for repair; it never authorizes install.
+    /// Interrupted offline import prevents startup. Freeze future starts without
+    /// terminating a possibly live writer; the importer still acquires its lease.
+    pub async fn maintenance_idle(&self) -> Result<(), String> {
+        self.stopping.store(true, Ordering::SeqCst);
+        let _start_guard = self.start_lock.lock().await;
+        self.stop_generation.fetch_add(1, Ordering::SeqCst);
+        let mut slot = self.child.lock().unwrap();
+        if let Some(child) = slot.as_mut() {
+            if child.process.try_wait().map_err(|_| "MAINTENANCE_CHILD_WAIT")?.is_none() {
+                return Err("MAINTENANCE_CHILD_RUNNING".into());
+            }
+        }
+        slot.take(); self.owned.store(false, Ordering::SeqCst); self.authenticated.store(false, Ordering::SeqCst);
+        Ok(())
+    }
+
     pub async fn maintenance_stop(&self) -> Result<(), String> {
         self.stopping.store(true, Ordering::SeqCst);
         let _start_guard = self.start_lock.lock().await;

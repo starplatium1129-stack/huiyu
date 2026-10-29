@@ -148,7 +148,7 @@
   @apply tw:text-label-xs tw:text-muted;
 }
 .batch-prompt-preview-text {
-  @apply tw:m-0 tw:text-label-xs; line-height: 1.4; @apply tw:text-secondary tw:max-h-[4.2em] tw:overflow-y-auto; word-break: break-all;
+  @apply tw:m-0 tw:text-label-xs; line-height: 1.4; @apply tw:text-secondary tw:max-h-[4.2em] tw:overflow-y-auto; overflow-wrap: anywhere;
 }
 
 /* ── 结果态 ── */
@@ -202,6 +202,7 @@
 
 .batch-foot { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3; }
 .batch-foot .btn { max-width:100%; white-space:normal; text-align:center; }
+.batch-foot .btn-primary { min-width: 140px; justify-content: center; }
 .batch-foot-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:min-w-0 tw:max-w-full; }
 .batch-foot-actions > * { min-width:0; max-width:100%; }
 .batch-hint { @apply tw:text-muted tw:text-label-xs; }

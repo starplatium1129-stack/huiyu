@@ -18,7 +18,7 @@
 .pb.atelier-workspace .inspector-heading strong { font-size:inherit; font-weight:600; letter-spacing:0; }
 .pb.atelier-workspace .inspector-heading span { font-size:var(--fs-label-xs); color:var(--text-muted); }
 .pb.atelier-workspace .panel,.pb.atelier-workspace .result-frame { border-radius:var(--r-lg); box-shadow:none; }
-.pb.journal-workspace.atelier-workspace .stage-placeholder { border:0; border-radius:0; background:var(--bg-surface); box-shadow:none; }
+.pb.journal-workspace.atelier-workspace .stage-placeholder { border:0; border-radius:0; box-shadow:none; }
 .pb.atelier-workspace .stage-placeholder::before { display:none; }
 .pb.atelier-workspace .stage-message { width:100%; min-width:0; transform:none; }
 .pb.atelier-workspace .stage-idle { padding:24px; }
