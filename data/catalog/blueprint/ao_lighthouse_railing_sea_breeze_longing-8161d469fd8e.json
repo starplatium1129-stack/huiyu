@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "ao_lighthouse_railing_sea_breeze_longing",
+  "revision": 2,
+  "sortOrder": 2577,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "ao_lighthouse_railing_sea_breeze_longing",
+    "title": "空门苍 · 白色灯塔护栏边的夏风憧憬",
+    "category": "假日出行",
+    "outfitId": "torishiro_casual_vest",
+    "description": "鸟白岛陡峭海角上的白色灯塔观景台上，海风呼啸。苍身穿校服针织背心双手抓着铁栏杆远眺海天相接之处，双马尾高高扬起，眼中闪动着向往。",
+    "location": "high lighthouse observation balcony overlooking endless sapphire ocean under blue summer sky",
+    "action": "gripping white painted railing, leaning forward against ocean gust, hair ties fluttering, sparkling lively gaze toward open horizon",
+    "timeOfDay": "白天",
+    "lighting": "海角烈日高照与海面反射强光",
+    "camera": "wide shot, landscape composition",
+    "mood": "明快飒爽",
+    "promptProse": "Ao leans eagerly against the lighthouse railing high above the blue sea, sea winds whipping her blue twintails as she gazes across the horizon.",
+    "promptTokens": [
+      "lighthouse_balcony",
+      "railing",
+      "ocean_view",
+      "open_sea",
+      "horizon",
+      "leaning_on_railing",
+      "holding_railing",
+      "wind_blown_hair",
+      "bright_sunlight",
+      "summer_sky",
+      "wide_shot"
+    ],
+    "animaCaption": "Strong coastal winds sweep her twintails as she leans toward the sparkling ocean panorama.",
+    "characterId": "sorakado_ao",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "kamome_white_lighthouse_stair_sailor_turn",
+  "revision": 3,
+  "sortOrder": 2582,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "data": {
+    "id": "kamome_white_lighthouse_stair_sailor_turn",
+    "title": "久岛鸥 · 白色灯塔旋梯的水手回眸",
+    "category": "校园日常",
+    "outfitId": "seaside_sailor_onepiece",
+    "description": "鸟白岛洁白灯塔外的螺旋石阶上，海风阵阵。鸥一手扶着水手裙摆，一手按住水手帽子，在阶梯中央停步回首，展露无忧无虑的俏皮笑颜。",
+    "location": "spiral stone staircase encircling a pristine white seaside lighthouse",
+    "action": "paused mid-step on lighthouse spiral stairs, holding sailor cap with one hand while turning back with an energetic playful grin",
+    "timeOfDay": "白天",
+    "lighting": "纯白灯塔漫射日光与蔚蓝晴空",
+    "camera": "cowboy shot",
+    "mood": "俏皮活泼",
+    "promptProse": "Kamome pauses on the white lighthouse steps, looking back with a bright, mischievous grin against the summer blue sky.",
+    "promptTokens": [
+      "lighthouse",
+      "spiral_stairs",
+      "blue_sky",
+      "holding_hat",
+      "turning_back",
+      "playful_smile",
+      "fluttering",
+      "bright_sunlight",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Ocean wind whips around her as she pauses on the lighthouse stairs with a sunny grin.",
+    "characterId": "kushima_kamome",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

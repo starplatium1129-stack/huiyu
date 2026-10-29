@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "itsuwa_kamijou_dorm_steamy_towel_maid_blush",
+  "revision": 2,
+  "sortOrder": 2608,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "itsuwa_kamijou_dorm_steamy_towel_maid_blush",
+    "title": "五和 · 上条宿舍的湿毛巾极限害羞",
+    "category": "现代日常",
+    "outfitId": "devoted_towel_maid_apron",
+    "description": "上条当麻乱糟糟的单身公寓榻榻米上，五和双手毕恭毕敬捧着冒着热气的特制擦拭毛巾，依照天草式长辈的“贤妻指导”服侍当麻，脸蛋早已涨成红番茄，羞得抬不起头。",
+    "location": "cozy cluttered student apartment tatami room with tea table and sliding shoji screens",
+    "action": "kneeling formally on tatami presenting a steaming rolled hand towel with both hands, face completely crimson with shy trembling smile",
+    "timeOfDay": "下午",
+    "lighting": "客厅吸顶灯与毛巾升腾的温热白雾",
+    "camera": "wide medium shot",
+    "mood": "极度纯情",
+    "promptProse": "Itsuwa kneels formally on the tatami offering a hot steaming towel with trembling hands, blushing furiously from ear to ear in bashful devotion.",
+    "promptTokens": [
+      "tatami_room",
+      "tea_table",
+      "kneeling",
+      "holding_towel",
+      "steaming_towel",
+      "extreme_blush",
+      "shy_smile",
+      "trembling",
+      "warm_lighting",
+      "steam",
+      "wide_shot"
+    ],
+    "animaCaption": "Delicate steam rises from the fresh towel as her purple eyes flutter with overwhelming shyness.",
+    "characterId": "itsuwa",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

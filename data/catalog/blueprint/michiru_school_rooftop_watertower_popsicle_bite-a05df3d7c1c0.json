@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "michiru_school_rooftop_watertower_popsicle_bite",
+  "revision": 2,
+  "sortOrder": 2625,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "michiru_school_rooftop_watertower_popsicle_bite",
+    "title": "冰堂美智留 · 椿姬校舍天台水箱下的冰棒抢食",
+    "category": "校园日常",
+    "outfitId": "tsubaki_sleeveless_sailor_uniform",
+    "description": "烈日炎炎的高中教学楼天台水箱阴凉下，美智留身穿无袖水手服短裙豪爽地坐在铁管栏杆上，大口咬碎苏打冰棒，海风拂过短发，向你展示毫无防备的元气青春。",
+    "location": "sun-baked school rooftop under vast summer sky in the shade of a water tank tower",
+    "action": "sitting perched casually on rooftop guardrail eating a double soda popsicle, swinging legs, bright sun-kissed smile with sparkling eyes",
+    "timeOfDay": "白天",
+    "lighting": "盛夏暴晒强光与天台水箱投下的深蓝阴凉",
+    "camera": "wide shot, landscape composition",
+    "mood": "洒脱夏日",
+    "promptProse": "Michiru sits perched on the sunny school rooftop railing swinging her legs while chomping on an ice popsicle, smiling carefree in the summer sea breeze.",
+    "promptTokens": [
+      "school_rooftop",
+      "watertower",
+      "rooftop_railing",
+      "blue_sky",
+      "cumulonimbus",
+      "popsicle",
+      "eating_popsicle",
+      "sitting_on_railing",
+      "carefree_smile",
+      "bright_sunlight",
+      "wide_shot"
+    ],
+    "animaCaption": "Deep rooftop shadow contrasts with the blinding sky as she munches on her popsicle.",
+    "characterId": "hyoudou_michiru",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

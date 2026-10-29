@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "epsilon_shadow_vanity_mirror_corset_pride",
+  "revision": 2,
+  "sortOrder": 2550,
+  "createdAt": "2026-10-28T17:14:16.489731500+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "epsilon_shadow_vanity_mirror_corset_pride",
+    "title": "厄普西隆 · 闺阁明镜前的自豪测量",
+    "category": "傲娇秘辛",
+    "outfitId": "dressing_silk_chemise",
+    "description": "私密寝阁华丽金边穿衣镜前，厄普西隆单手叉腰，一手按在胸前史莱姆软垫上仔细校准曲线，扬起尖下巴露出绝对自信的得意笑容。",
+    "location": "opulent private bedchamber with gilded full-length cheval dressing mirror and plush curtains",
+    "action": "standing before mirror, one hand checking breast curve line, the other hand on hip, admiring reflection with proud smug blushing smirk",
+    "timeOfDay": "早晨",
+    "lighting": "晨曦落地窗光与梳妆台暖灯",
+    "camera": "cowboy shot",
+    "mood": "自信得意",
+    "promptProse": "Epsilon in a silk dressing chemise stands before her ornate full-length mirror, hands adjusting her curves with an adorably smug blushing smile.",
+    "promptTokens": [
+      "bedchamber",
+      "full-length_mirror",
+      "dressing_room",
+      "hand_on_chest",
+      "hand_on_hip",
+      "smug_expression",
+      "blushing",
+      "curvy_silhouette",
+      "morning_light",
+      "soft_lighting",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Morning mirror reflections capture her proud, self-satisfied adjustments.",
+    "characterId": "epsilon_shadow",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "renge_vermilion_kimono_crimson_glance",
+  "revision": 2,
+  "sortOrder": 2590,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "renge_vermilion_kimono_crimson_glance",
+    "title": "莲华 · 绯红浮世万华的深凝",
+    "category": "日常陪伴",
+    "outfitId": "vermilion_mangekyou_kimono",
+    "description": "漆黑屏风前，莲华端立正中，绯红浮世和服上的金色刺绣在微弱烛火中流光溢彩。她双手交叠于广袖之内，赤红双眸穿透迷雾，仿佛能洞悉一切前世今生。",
+    "location": "dark minimalist tatami interior with subtle gold-accented black partition",
+    "action": "standing tall with hands folded inside wide kimono sleeves, head held high, piercing crimson eyes staring directly at viewer",
+    "timeOfDay": "夜晚",
+    "lighting": "案头烛光侧射与神秘轮廓光",
+    "camera": "cowboy shot",
+    "mood": "妖艳威严",
+    "promptProse": "Renge stands with hands tucked inside her vermilion kimono sleeves against a dark screen, fixing the viewer with an intense, unblinking red gaze.",
+    "promptTokens": [
+      "dark_room",
+      "black_screen",
+      "wide_sleeves",
+      "hands_in_sleeves",
+      "standing",
+      "intense_gaze",
+      "candlelight",
+      "rim_light",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Side candlelight reveals the shimmering gold patterns on her sleeves as her crimson eyes pierce the gloom.",
+    "characterId": "renge_mangekyou",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "ao_sacred_forest_spirit_butterflies_lantern",
+  "revision": 2,
+  "sortOrder": 2575,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "ao_sacred_forest_spirit_butterflies_lantern",
+    "title": "空门苍 · 幽夜古林与七影蝶之引",
+    "category": "日常陪伴",
+    "outfitId": "miko_shrine_garb",
+    "description": "鸟白岛后山幽深的神社古木深处，成百上千只泛着幽蓝荧光的“七影蝶”在空中盘旋。身着巫女服的苍手执提灯静静走过古树根，神情专注而庄严。",
+    "location": "mystical nocturnal forest clearing surrounded by giant mossy roots and glowing blue spirit butterflies",
+    "action": "walking through ancient forest path holding a warm paper lantern, watching glowing butterflies flutter around her, serene spiritual expression",
+    "timeOfDay": "夜晚",
+    "lighting": "手中提灯暖光与漫天幽蓝七影蝶荧光",
+    "camera": "wide cinematic landscape",
+    "mood": "神秘幽邃",
+    "promptProse": "Ao walks along a mossy forest trail in traditional miko robes holding a glowing lantern as luminous blue butterflies swirl around her.",
+    "promptTokens": [
+      "ancient_forest",
+      "mossy_trees",
+      "butterflies",
+      "glowing_butterflies",
+      "blue_butterflies",
+      "holding_lantern",
+      "paper_lantern",
+      "blue_glow",
+      "lantern_light",
+      "particles",
+      "wide_shot"
+    ],
+    "animaCaption": "Ethereal blue butterfly lights swirl past her lantern as she navigates the sacred night forest.",
+    "characterId": "sorakado_ao",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

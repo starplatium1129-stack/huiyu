@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "nanami_sakurasou_kitchen_morning_cooking_rush",
+  "revision": 2,
+  "sortOrder": 2603,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "nanami_sakurasou_kitchen_morning_cooking_rush",
+    "title": "青山七海 · 樱花庄厨房的破晓早餐颠锅",
+    "category": "现代日常",
+    "outfitId": "devoted_housewife_gingham_apron",
+    "description": "清晨樱花庄宽敞的公共厨房内，晨光穿透大玻璃窗洒在不锈钢料理台上。七海系着粉白格纹围裙一手熟练颠锅一手撒调味料，高马尾利落摇晃，元气满满准备全员早餐。",
+    "location": "spacious rustic kitchen of Sakurasou dorm with steaming pots and sunlit stainless countertops",
+    "action": "standing at stove tossing vegetables in a frying pan, seasoning food with poised culinary skill, hair ponytail bouncing, bright determined smile",
+    "timeOfDay": "早晨",
+    "lighting": "朝阳晨光穿透高窗的逆光辉映与热气缭绕",
+    "camera": "wide medium shot",
+    "mood": "元气贤惠",
+    "promptProse": "Nanami expertly tosses vegetables in a sizzling pan inside the sun-drenched Sakurasou kitchen, her high ponytail swinging as she cooks breakfast.",
+    "promptTokens": [
+      "kitchen",
+      "stove",
+      "frying_pan",
+      "cooking",
+      "steam",
+      "food_preparation",
+      "energetic_smile",
+      "determined_eyes",
+      "morning_sunlight",
+      "sunbeams",
+      "wide_shot"
+    ],
+    "animaCaption": "Bright morning light and cooking steam swirl around her gingham apron as she finishes the dish.",
+    "characterId": "aoyama_nanami",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

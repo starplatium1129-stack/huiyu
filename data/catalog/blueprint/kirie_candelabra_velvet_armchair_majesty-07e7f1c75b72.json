@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "kirie_candelabra_velvet_armchair_majesty",
+  "revision": 2,
+  "sortOrder": 2594,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "kirie_candelabra_velvet_armchair_majesty",
+    "title": "篝之雾枝 · 银烛暗室里的血族威严",
+    "category": "日常陪伴",
+    "outfitId": "gothic_vampire_gown",
+    "description": "四柱大床旁的幽暗寝室，多头银烛台静静燃烧。雾枝端坐在暗红天鹅绒高背扶手椅中，双手交叠于蕾丝裙裾之上，赤红双眸在跳跃的火苗中流转着至高威严。",
+    "location": "opulent gothic private bedchamber beside heavy velvet curtains and tall candelabra",
+    "action": "sitting tall in velvet wingback armchair, hands folded over black lace gown, gazing forward with calm hypnotic vampire authority",
+    "timeOfDay": "夜晚",
+    "lighting": "高银烛台跳跃火光与暗室深阴影",
+    "camera": "cowboy shot",
+    "mood": "高贵神秘",
+    "promptProse": "Kirie sits upright in a velvet wingback chair beside a candelabra, hands folded in her lap as her hypnotic crimson gaze holds the viewer.",
+    "promptTokens": [
+      "gothic_room",
+      "candelabra",
+      "candlelight",
+      "armchair",
+      "velvet_chair",
+      "sitting",
+      "hands_folded",
+      "hypnotic_gaze",
+      "warm_firelight",
+      "dark_shadows",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Flickering candlelight casts dancing shadows across her black gown and piercing crimson gaze.",
+    "characterId": "kagari_no_kirie",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

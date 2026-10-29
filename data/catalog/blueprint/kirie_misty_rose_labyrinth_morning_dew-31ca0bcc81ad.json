@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "kirie_misty_rose_labyrinth_morning_dew",
+  "revision": 2,
+  "sortOrder": 2592,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "kirie_misty_rose_labyrinth_morning_dew",
+    "title": "篝之雾枝 · 晨雾玫瑰迷宫的微光指尖",
+    "category": "假日出行",
+    "outfitId": "crimson_silk_peignoir",
+    "description": "古堡后方盛开的血红玫瑰迷宫深处，破晓白雾如轻纱弥漫。身着丝绸长袍的雾枝指尖轻拈带露的花瓣，清晨第一缕阳光穿透雾霭，映出吸血鬼少女隐秘的脆弱与优雅。",
+    "location": "blooming red rose labyrinth garden shrouded in mystical morning ground fog at dawn",
+    "action": "strolling through misty rose arbor, delicate fingers lightly caressing a dewy red blossom, wistful distant crimson gaze",
+    "timeOfDay": "清晨",
+    "lighting": "破晓薄雾中的微光与湿润花瓣反光",
+    "camera": "wide shot, landscape composition",
+    "mood": "凄美幽玄",
+    "promptProse": "Kirie wanders through a fog-laden red rose maze at dawn, her slender fingers caressing a dew-covered rose with quiet, introspective elegance.",
+    "promptTokens": [
+      "rose_garden",
+      "red_roses",
+      "morning_fog",
+      "mist",
+      "holding_flower",
+      "touching_rose",
+      "wistful_expression",
+      "dew_drops",
+      "dawn_light",
+      "soft_white_light",
+      "wide_shot"
+    ],
+    "animaCaption": "Morning mist swirls around her crimson robe as her fingers touch the dewy rose petals.",
+    "characterId": "kagari_no_kirie",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

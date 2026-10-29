@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "michiru_rehearsal_studio_headphone_share_tease",
+  "revision": 2,
+  "sortOrder": 2624,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "michiru_rehearsal_studio_headphone_share_tease",
+    "title": "冰堂美智留 · 排练室地毯上的耳机强塞分享",
+    "category": "现代日常",
+    "outfitId": "rock_guitarist_tank_top_jeans",
+    "description": "隔音乐器排练室木地板上，美智留大大咧咧盘腿坐在吉他音箱旁，单手把大号头戴式耳机的一侧强行塞进你耳朵，贴得极近眨眼大笑，分享刚录好的新歌Demo。",
+    "location": "soundproof band rehearsal studio floor scattered with cable coils and amplifier heads",
+    "action": "sitting cross-legged close to partner, pressing one earcup of studio headphones to his ear, laughing boisterously with playful arm draped on shoulder",
+    "timeOfDay": "下午",
+    "lighting": "排练室天顶日光灯管与柔和补光",
+    "camera": "wide medium shot",
+    "mood": "亲昵不设防",
+    "promptProse": "Michiru sits cross-legged on the studio floor, playfully pressing a headphone cup to partner ear as she shares her latest track with a wide laugh.",
+    "promptTokens": [
+      "rehearsal_studio",
+      "music_studio",
+      "amplifiers",
+      "cables",
+      "sitting_cross-legged",
+      "sharing_headphones",
+      "holding_headphones",
+      "leaning_close",
+      "boisterous_laugh",
+      "indoor_lighting",
+      "wide_shot"
+    ],
+    "animaCaption": "Studio fluorescent light reflects off the amplifier chrome as she leans close to share her music.",
+    "characterId": "hyoudou_michiru",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

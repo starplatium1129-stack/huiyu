@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "delta_shadow_hearth_pajamas_headpat_plea",
+  "revision": 2,
+  "sortOrder": 2546,
+  "createdAt": "2026-10-28T17:14:16.489731500+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "delta_shadow_hearth_pajamas_headpat_plea",
+    "title": "德尔塔 · 暖炉沙发旁的撒娇求摸头",
+    "category": "温情依偎",
+    "outfitId": "fluffy_dog_hoodie",
+    "description": "壁炉火光跳动的温暖起居室内，德尔塔穿着毛绒长衫跪在厚绒毯上，两只犬耳垂下，双手轻轻按在暗影膝头，仰头满眼期待。",
+    "location": "cozy private living quarters with roaring brick fireplace and soft fur rug",
+    "action": "kneeling on a plush rug by a sofa, resting chin and paws on partner knee, looking up with big pleading dewy eyes and drooped dog ears",
+    "timeOfDay": "夜晚",
+    "lighting": "壁炉红火光与温馨环境光",
+    "camera": "medium close-up",
+    "mood": "粘人娇憨",
+    "promptProse": "Delta in an oversized fluffy hoodie kneels beside the hearth resting her chin on partner knee, looking up with melting puppy eyes begging for headpats.",
+    "promptTokens": [
+      "living_room",
+      "fireplace",
+      "fur_rug",
+      "kneeling",
+      "chin_on_knee",
+      "pleading_eyes",
+      "drooped_ears",
+      "fluffy_hoodie",
+      "warm_lighting",
+      "fire_glow",
+      "close-up"
+    ],
+    "animaCaption": "Flickering firelight casts a cozy glow on her drooped ears and expectant amber eyes.",
+    "characterId": "delta_shadow",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

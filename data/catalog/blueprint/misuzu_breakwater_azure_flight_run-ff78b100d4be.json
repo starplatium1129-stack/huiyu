@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "misuzu_breakwater_azure_flight_run",
+  "revision": 2,
+  "sortOrder": 2583,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "misuzu_breakwater_azure_flight_run",
+    "title": "神尾观铃 · 苍穹长堤上的展翼飞奔",
+    "category": "假日出行",
+    "outfitId": "coastal_yellow_sundress",
+    "description": "海天一色的盛夏海岸长堤上，观铃张开双臂像雏鸟般摇晃奔跑，仿佛下一刻就要飞入那辽阔的长空。淡黄荷叶裙摆随海风高高翻卷，笑颜宛若天使。",
+    "location": "sunlit coastal seawall stretching toward an endless cerulean ocean and sky",
+    "action": "running joyfully along concrete breakwater with arms outstretched like airplane wings, sundress fluttering, ecstatic radiant smile",
+    "timeOfDay": "白天",
+    "lighting": "盛夏纯白艳阳与波光反射",
+    "camera": "wide shot, landscape composition",
+    "mood": "向阳翱翔",
+    "promptProse": "Misuzu runs gleefully along the ocean breakwater with arms spread wide like wings, the sea breeze whipping around her beneath the open sky.",
+    "promptTokens": [
+      "seawall",
+      "breakwater",
+      "ocean",
+      "horizon",
+      "arms_outstretched",
+      "running",
+      "radiant_smile",
+      "bright_sunlight",
+      "summer_sky",
+      "wide_shot"
+    ],
+    "animaCaption": "Dazzling summer sun illuminates her outstretched arms as she runs along the seawall toward the horizon.",
+    "characterId": "kamio_misuzu",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

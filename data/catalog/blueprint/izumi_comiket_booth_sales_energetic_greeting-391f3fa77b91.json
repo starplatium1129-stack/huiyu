@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "izumi_comiket_booth_sales_energetic_greeting",
+  "revision": 2,
+  "sortOrder": 2619,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "izumi_comiket_booth_sales_energetic_greeting",
+    "title": "波岛出海 · 东京夏Comi摊位前的战意爆发",
+    "category": "现代日常",
+    "outfitId": "otaku_artist_casual_tshirt_skirt",
+    "description": "东京Big Sight漫展西馆人潮汹涌的展厅内，热浪与快门闪光交织。出海双手按在堆满新刊同人志的桌面上，胸前挂着参展牌，双马尾飞舞，元气满满地向读者鞠躬招揽。",
+    "location": "bustling Tokyo Big Sight convention hall booth crowded with anime banners and fan book stacks",
+    "action": "leaning forward over display table lined with artbooks, arms spread, shouting enthusiastic greeting with radiant beaming smile",
+    "timeOfDay": "上午",
+    "lighting": "漫展展馆巨大天顶聚光射灯与闪光灯",
+    "camera": "wide shot, landscape composition",
+    "mood": "元气热烈",
+    "promptProse": "Izumi leans energetically across her doujinshi booth at the crowded comic convention, greeting readers with wide beaming pride and bouncing twintails.",
+    "promptTokens": [
+      "convention_hall",
+      "exhibition_booth",
+      "art_books",
+      "doujinshi",
+      "posters",
+      "standing",
+      "leaning_forward",
+      "beaming_smile",
+      "bright_indoor_lighting",
+      "crowd_background",
+      "wide_shot"
+    ],
+    "animaCaption": "Exhibition hall floodlights illuminate her colorful artbook display as she welcomes visitors.",
+    "characterId": "hashima_izumi",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

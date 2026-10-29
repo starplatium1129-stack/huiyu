@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "kirie_stormy_rooftop_sailor_gaze_lightning",
+  "revision": 3,
+  "sortOrder": 2593,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "data": {
+    "id": "kirie_stormy_rooftop_sailor_gaze_lightning",
+    "title": "篝之雾枝 · 暴雨学园天台的逆风审视",
+    "category": "校园日常",
+    "outfitId": "kirie_private_academy",
+    "description": "暴风雨即将降临的私立学园天台铁丝网前，铅云低垂，闪电划破长空。身穿黑水手制服的雾枝迎风伫立，长发狂舞，回眸冷冷俯视凡人，高贵而危险。",
+    "location": "school rooftop balcony against dark storm clouds and distant lightning flashes",
+    "action": "standing near chainlink fence against gusting pre-storm wind, school uniform skirt flaring, looking back over shoulder with piercing predatory red eyes",
+    "timeOfDay": "下午",
+    "lighting": "乌云背光与雷暴天际闪光",
+    "camera": "wide shot, landscape composition",
+    "mood": "危险冷酷",
+    "promptProse": "Kirie stands on an overcast academy rooftop as storm winds whip her black uniform, glancing over her shoulder with piercing, predatory red eyes.",
+    "promptTokens": [
+      "school_rooftop",
+      "chainlink_fence",
+      "storm_clouds",
+      "lightning",
+      "windy",
+      "standing",
+      "looking_over_shoulder",
+      "wind_blown_hair",
+      "predatory_glare",
+      "dramatic_lighting",
+      "wide_shot"
+    ],
+    "animaCaption": "Lightning illuminates the dark thunderheads behind her as the pre-storm wind whips her black uniform.",
+    "characterId": "kagari_no_kirie",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

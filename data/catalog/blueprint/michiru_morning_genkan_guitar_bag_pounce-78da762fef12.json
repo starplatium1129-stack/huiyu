@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "michiru_morning_genkan_guitar_bag_pounce",
+  "revision": 2,
+  "sortOrder": 2626,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "michiru_morning_genkan_guitar_bag_pounce",
+    "title": "冰堂美智留 · 清晨玄关前挂人式的“表弟早安”",
+    "category": "校园日常",
+    "outfitId": "tsubaki_sleeveless_sailor_uniform",
+    "description": "安芸家清晨阳光普照的玄关前，美智留身后背着沉重的吉他软包，两手一把挂在你脖子上整个人向前扑抱过来，笑容灿烂又大大咧咧，毫无男女边界感。",
+    "location": "bright morning suburban home entrance entryway bathed in golden doorway sunlight",
+    "action": "lunging forward enthusiastically with arms around viewer neck, heavy guitar gig-bag on back, laughing loudly right up close",
+    "timeOfDay": "早晨",
+    "lighting": "大门照入的灿烂清晨朝霞金芒",
+    "camera": "close-up medium shot",
+    "mood": "大条率直",
+    "promptProse": "Michiru lunges forward at the front door with her heavy guitar gig-bag, wrapping her arms around partner neck with a loud, radiant morning greeting.",
+    "promptTokens": [
+      "house_entrance",
+      "doorway",
+      "guitar_case",
+      "guitar_bag",
+      "arms_around_neck",
+      "close_face",
+      "beaming_smile",
+      "morning_sunlight",
+      "sunbeams",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Golden morning doorway sunbeams halo her short hair as she leans in close with a laughing shout.",
+    "characterId": "hyoudou_michiru",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

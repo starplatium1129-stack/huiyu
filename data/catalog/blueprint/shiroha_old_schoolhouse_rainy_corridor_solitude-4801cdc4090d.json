@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "shiroha_old_schoolhouse_rainy_corridor_solitude",
+  "revision": 2,
+  "sortOrder": 2574,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "shiroha_old_schoolhouse_rainy_corridor_solitude",
+    "title": "鸣濑白羽 · 木造旧校舍走廊的抱膝听雨",
+    "category": "日常陪伴",
+    "outfitId": "torishiro_school_uniform",
+    "description": "古旧木造海岛小学的空旷走廊深处，窗外大雨淅淅沥沥。白羽双手抱膝坐在木地板窗台下，下巴搁在膝盖上，静静看着窗外雨水顺着屋檐滴落。",
+    "location": "rustic wooden hallway of an abandoned island elementary school on a rainy afternoon",
+    "action": "sitting on polished wooden floor hugging knees against chest, chin resting on knees, listening to rain with quiet thoughtful purple eyes",
+    "timeOfDay": "下午",
+    "lighting": "雨天窗棂透入的清幽漫射冷光",
+    "camera": "cowboy shot",
+    "mood": "静谧安详",
+    "promptProse": "Shiroha sits on the wooden floor of an old island school hugging her knees, peacefully listening to raindrops fall past the window.",
+    "promptTokens": [
+      "wooden_hallway",
+      "schoolhouse",
+      "rain_on_window",
+      "rainy_day",
+      "sitting_on_floor",
+      "hugging_knees",
+      "chin_on_knees",
+      "diffuse_light",
+      "cool_lighting",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Soft grey rainlight through the tall glass window outlines her quiet pose on the wooden floor.",
+    "characterId": "naruse_shiroha",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

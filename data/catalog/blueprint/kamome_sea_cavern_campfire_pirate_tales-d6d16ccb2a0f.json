@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kamome_sea_cavern_campfire_pirate_tales",
+  "revision": 2,
+  "sortOrder": 2581,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "kamome_sea_cavern_campfire_pirate_tales",
+    "title": "久岛鸥 · 海蚀洞窟的篝火夜话",
+    "category": "日常陪伴",
+    "outfitId": "seaside_sailor_onepiece",
+    "description": "避风海蚀洞窟内，潮声回荡。中央生起一堆噼啪作响的篝火，鸥裹着薄毯盘腿坐在干草铺上，手握小树枝拨动火星，兴致勃勃地讲述古老航海传说。",
+    "location": "sheltered sea cave cavern with opening framing a moonlit night ocean tide",
+    "action": "sitting cross-legged by a crackling campfire, gesturing with a small stick, golden eyes lit up by firelight as she narrates tales",
+    "timeOfDay": "夜晚",
+    "lighting": "篝火跳跃火光与洞口清冷月华",
+    "camera": "wide medium shot",
+    "mood": "温馨奇趣",
+    "promptProse": "Kamome sits beside a cozy campfire inside a coastal sea cave, animatedly recounting pirate legends by the dancing firelight.",
+    "promptTokens": [
+      "sea_cave",
+      "campfire",
+      "fire_sparks",
+      "cave_walls",
+      "sitting_cross-legged",
+      "gesturing",
+      "fire_glow",
+      "warm_lighting",
+      "moonlight_in_distance",
+      "wide_shot"
+    ],
+    "animaCaption": "Flickering campfire flames illuminate the rough cave walls and her glowing yellow eyes.",
+    "characterId": "kushima_kamome",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

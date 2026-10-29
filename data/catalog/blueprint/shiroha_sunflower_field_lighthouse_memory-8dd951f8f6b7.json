@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "shiroha_sunflower_field_lighthouse_memory",
+  "revision": 2,
+  "sortOrder": 2573,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "shiroha_sunflower_field_lighthouse_memory",
+    "title": "鸣濑白羽 · 盛夏向日葵海与白色灯塔",
+    "category": "日常陪伴",
+    "outfitId": "island_white_sundress",
+    "description": "鸟白岛怒放的金黄向日葵花田尽头矗立着洁白灯塔。白羽伫立在花海中央回首凝望，银白发丝在微风中飞舞，宛如夏日梦境中的孤岛精灵。",
+    "location": "vast blooming yellow sunflower meadow on coastal hill leading to a white lighthouse",
+    "action": "standing among tall sunflowers, looking back over shoulder with a serene faint smile, silver hair shimmering in warm sunlight",
+    "timeOfDay": "下午",
+    "lighting": "盛夏明媚艳阳与向日葵花海金光",
+    "camera": "wide shot, landscape composition",
+    "mood": "梦幻空灵",
+    "promptProse": "Shiroha stands amid a vibrant sea of blooming sunflowers below a white coastal lighthouse, looking back with a serene, gentle gaze.",
+    "promptTokens": [
+      "sunflower_field",
+      "sunflowers",
+      "lighthouse",
+      "blue_sky",
+      "standing",
+      "looking_over_shoulder",
+      "faint_smile",
+      "bright_sunlight",
+      "golden_light",
+      "wide_shot"
+    ],
+    "animaCaption": "Golden sunlight bathes the tall sunflowers as she turns with a faint, peaceful smile.",
+    "characterId": "naruse_shiroha",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

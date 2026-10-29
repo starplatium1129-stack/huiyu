@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "lemon_vending_machine_cold_soda_cheek_blush",
+  "revision": 2,
+  "sortOrder": 2598,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "lemon_vending_machine_cold_soda_cheek_blush",
+    "title": "烧盐柠檬 · 体育馆绿荫售货机前的冰汽水贴颊",
+    "category": "校园日常",
+    "outfitId": "tsuwabuki_summer_sailor_uniform",
+    "description": "体育馆外绿树成荫的红砖小径上，自动贩卖机旁。柠檬将刚掉落出来的冷凝水珠结霜的冰柠檬苏打罐一把贴在你脸颊上，露出虎牙调皮大笑，眼底满是阳光般的元气。",
+    "location": "shady red brick pathway beside school gymnasium and glowing beverage vending machine",
+    "action": "pressing a chilled condensation-beaded soda can playfully toward viewer cheek, laughing with cute snaggletooth fangs and sweaty flushed cheeks",
+    "timeOfDay": "下午",
+    "lighting": "树荫遮蔽下的清凉柔光与贩卖机亮光",
+    "camera": "cowboy shot",
+    "mood": "亲昵搞怪",
+    "promptProse": "Lemon playfully presses a chilled condensation-covered soda can against the viewer cheek, laughing heartily with her cute snaggletooth under the summer trees.",
+    "promptTokens": [
+      "vending_machine",
+      "gymnasium",
+      "brick_path",
+      "trees",
+      "holding_can",
+      "soda_can",
+      "can_to_cheek",
+      "laughing",
+      "sweat_droplet",
+      "dappled_sunlight",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Condensation beads gleam on the cold soda can as she laughs playfully in the gym shade.",
+    "characterId": "yakishio_lemon",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

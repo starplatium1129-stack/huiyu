@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "komari_stationery_corner_hamster_curled",
+  "revision": 2,
+  "sortOrder": 2602,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "komari_stationery_corner_hamster_curled",
+    "title": "小鞠知花 · 旧文具店角落的仓鼠式蜷缩",
+    "category": "日常陪伴",
+    "outfitId": "literary_club_cozy_cardigan",
+    "description": "下课后拥挤温馨的旧文具店内，各色笔记本与笔架环绕。小鞠穿着宽松大开衫，整个人像小仓鼠一样蜷缩在角落小圆凳上，双手捧着刚挑好的橡皮擦，胆怯又依恋。",
+    "location": "cramped warm stationery shop aisle surrounded by colorful pen racks and paper goods",
+    "action": "curled up small on a round stool hugging knees, clutching a novel and cute eraser in hands, peeking up shyly from behind cardigan collar",
+    "timeOfDay": "下午",
+    "lighting": "文具店暖黄吊灯与柔和室内光",
+    "camera": "cowboy shot",
+    "mood": "娇小治愈",
+    "promptProse": "Chika Komari curls up small on a wooden stool in a cozy stationery shop, clutching a novel to her chest with a shy hamster-like gaze.",
+    "promptTokens": [
+      "stationery_shop",
+      "shelves",
+      "notebooks",
+      "sitting_on_stool",
+      "curled_up",
+      "hugging_knees",
+      "holding_eraser",
+      "shy_peeking",
+      "warm_lighting",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Warm shop lamps cast a protective glow around her small curled figure in the oversized cardigan.",
+    "characterId": "komari_chika",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

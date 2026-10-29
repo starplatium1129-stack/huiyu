@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "shiroha_island_seawall_summer_horizon_solitude",
+  "revision": 3,
+  "sortOrder": 2571,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "data": {
+    "id": "shiroha_island_seawall_summer_horizon_solitude",
+    "title": "鸣濑白羽 · 鸟白岛防波堤的碧海孤影",
+    "category": "假日出行",
+    "outfitId": "island_white_sundress",
+    "description": "鸟白岛湛蓝无垠的海岸线防波堤上，海风吹拂。白羽单手按着白色草帽走在长长的堤坝边缘，纯白吊带棉裙轻拂小腿，身后是辽阔的大海与洁白浪花。",
+    "location": "long concrete ocean breakwater surrounded by glittering turquoise sea waters under open summer sky",
+    "action": "walking along narrow seawall, holding straw sun hat with one hand, gazing toward distant sea horizon with calm wistful violet eyes",
+    "timeOfDay": "白天",
+    "lighting": "盛夏明丽艳阳与海面波光粼粼",
+    "camera": "wide shot, landscape composition",
+    "mood": "孤寂清澈",
+    "promptProse": "Shiroha walks along the ocean seawall holding her straw hat, looking out over the turquoise island waters with calm wistful purple eyes.",
+    "promptTokens": [
+      "seawall",
+      "breakwater",
+      "ocean",
+      "horizon",
+      "waves",
+      "straw_hat",
+      "holding_hat",
+      "fluttering",
+      "sunlight",
+      "water_glare",
+      "wide_shot"
+    ],
+    "animaCaption": "Sparkling sea glare and ocean wind whip her white sundress along the edge of the seawall.",
+    "characterId": "naruse_shiroha",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

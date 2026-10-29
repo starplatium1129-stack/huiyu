@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "ao_sacred_tree_trunk_broom_snooze",
+  "revision": 2,
+  "sortOrder": 2578,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "ao_sacred_tree_trunk_broom_snooze",
+    "title": "空门苍 · 千年御神木下的扫帚瞌睡",
+    "category": "日常陪伴",
+    "outfitId": "miko_shrine_garb",
+    "description": "空门神社参天御神木下，巨大盘根铺满青苔。本该清扫落叶的苍抱着竹扫帚靠在古树干上沉沉睡去，树叶在白衣绯袴上洒下一道道温柔光束。",
+    "location": "mossy roots of a colossal sacred cedar tree on peaceful shrine grounds",
+    "action": "sitting leaning against massive tree trunk, arms wrapped around bamboo broom, snoozing peacefully with head tilted and soft smile",
+    "timeOfDay": "上午",
+    "lighting": "林荫筛下的丁达尔晨曦光束",
+    "camera": "cowboy shot",
+    "mood": "纯真安恬",
+    "promptProse": "Ao dozes off leaning against the mossy trunk of a colossal sacred cedar, hugging her bamboo broom in the dappled forest sunlight.",
+    "promptTokens": [
+      "sacred_tree",
+      "tree_roots",
+      "moss",
+      "broom",
+      "holding_broom",
+      "sitting_against_tree",
+      "sleeping",
+      "peaceful_face",
+      "sunbeams",
+      "forest_light",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Morning sunbeams through ancient cedar boughs illuminate her peaceful sleeping face.",
+    "characterId": "sorakado_ao",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

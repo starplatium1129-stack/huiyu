@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "izumi_school_gate_steps_playful_hop_headpat",
+  "revision": 2,
+  "sortOrder": 2622,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "izumi_school_gate_steps_playful_hop_headpat",
+    "title": "波岛出海 · 初中校门石阶的欢快飞跃",
+    "category": "校园日常",
+    "outfitId": "junior_school_sailor_cardigan",
+    "description": "阳光明丽的初中正门石阶上，出海双手抱着装满原稿的书包轻盈跳下两级台阶，双马尾在半空中飞扬，回眸仰头满脸期待地等待前辈的摸头奖励。",
+    "location": "sunlit brick stairs outside school main gate framed by green hedges and blooming flowers",
+    "action": "hopping down stone stairs clutching schoolbag, turning back with expectant puppy-like sparkle in amber eyes, seeking praise",
+    "timeOfDay": "下午",
+    "lighting": "校门正上方倾泻而下的清澈午后阳光",
+    "camera": "cowboy shot",
+    "mood": "娇憨灵动",
+    "promptProse": "Izumi hops down the school gate steps with her bag clutched tight, turning with an eager, sparkling smile waiting for headpats.",
+    "promptTokens": [
+      "school_gate",
+      "brick_stairs",
+      "holding_bag",
+      "schoolbag",
+      "jumping_pose",
+      "midair_hop",
+      "expectant_smile",
+      "sparkling_eyes",
+      "bright_sunlight",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Bright afternoon sunlight catches her floating twintails as she lands lightly on the stairs.",
+    "characterId": "hashima_izumi",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

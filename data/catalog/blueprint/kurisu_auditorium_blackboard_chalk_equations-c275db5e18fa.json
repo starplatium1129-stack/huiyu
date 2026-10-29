@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "kurisu_auditorium_blackboard_chalk_equations",
+  "revision": 2,
+  "sortOrder": 2566,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "kurisu_auditorium_blackboard_chalk_equations",
+    "title": "牧濑红莉栖 · 大学阶梯教室的黑板推演",
+    "category": "校园日常",
+    "outfitId": "lab_coat_classic",
+    "description": "空旷的大学学术演讲厅黑板前，写满了复杂的神经科学与相对论公式。红莉栖两指夹着白色粉笔转身回眸，白大褂下是利落干练的天才学者风姿。",
+    "location": "vast university lecture hall with massive slate blackboard filled with chalk equations",
+    "action": "standing at chalkboard holding piece of chalk, turning toward viewer with an arched eyebrow and proud teasing smirk",
+    "timeOfDay": "下午",
+    "lighting": "高窗斜射的学术阶梯光束",
+    "camera": "cowboy shot",
+    "mood": "意气风发",
+    "promptProse": "Kurisu turns from a blackboard dense with theoretical formulas holding chalk, raising an eyebrow with an amused, superior smirk.",
+    "promptTokens": [
+      "lecture_hall",
+      "chalkboard",
+      "equations",
+      "holding_chalk",
+      "turning_around",
+      "lab_coat",
+      "shorts",
+      "smirk",
+      "afternoon_light",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Chalk dust settles in the afternoon sunbeams as she turns back from the completed equation.",
+    "characterId": "makise_kurisu",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

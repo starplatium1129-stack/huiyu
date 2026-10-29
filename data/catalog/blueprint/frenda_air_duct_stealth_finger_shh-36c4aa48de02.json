@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "frenda_air_duct_stealth_finger_shh",
+  "revision": 2,
+  "sortOrder": 2618,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "frenda_air_duct_stealth_finger_shh",
+    "title": "芙兰达 · 通风管道栅栏后的嘘声警示",
+    "category": "现代日常",
+    "outfitId": "item_black_turtleneck_beret",
+    "description": "高科技大厦昏暗的通风管道栅栏后，芙兰达探出半张精致小脸，修长食指轻立在唇边示意噤声，狡黠灵动的蓝眸闪烁着猎手般的算计与顽皮。",
+    "location": "dim metal air conditioning vent shaft peering out through slotted metal grating",
+    "action": "peeking from shadow behind vent grille, finger raised to lips in a quiet \"shh\" gesture, conspiratorial sly azure gaze",
+    "timeOfDay": "夜晚",
+    "lighting": "栅栏缝隙透入的一道利落冷光",
+    "camera": "close-up shot",
+    "mood": "机警搞怪",
+    "promptProse": "Frenda peeks from the shadows of an air duct grate with a finger pressed to her lips in a mischievous \"shh\", her blue eyes gleaming with tactical glee.",
+    "promptTokens": [
+      "vent_shaft",
+      "metal_grate",
+      "shadows",
+      "peeking",
+      "finger_to_lips",
+      "shushing",
+      "sly_smile",
+      "light_beam",
+      "close-up"
+    ],
+    "animaCaption": "A slit of harsh corridor light falls across her eyes and raised finger in the vent shaft.",
+    "characterId": "frenda_seivelun",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

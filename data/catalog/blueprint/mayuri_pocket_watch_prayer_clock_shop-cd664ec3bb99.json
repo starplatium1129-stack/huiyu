@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "mayuri_pocket_watch_prayer_clock_shop",
+  "revision": 2,
+  "sortOrder": 2570,
+  "createdAt": "2026-10-28T17:18:25.856155900+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "mayuri_pocket_watch_prayer_clock_shop",
+    "title": "椎名真由理 · 老钟表行廊下的金怀表祈愿",
+    "category": "日常陪伴",
+    "outfitId": "sunflower_summer_tshirt",
+    "description": "下町老钟表铺斑驳木檐下，古老挂钟滴答作响。真由理双手将金色的老怀表轻贴在心口，闭上双眼虔诚祈祷伙伴们都能平安，神情圣洁柔和。",
+    "location": "vintage clock repair shop eaves with antique wall clocks ticking quietly in background",
+    "action": "clasping antique gold pocket watch against chest with both hands, closed eyes in gentle earnest prayer, soft peaceful smile",
+    "timeOfDay": "下午",
+    "lighting": "檐下柔和天光与橱窗微光",
+    "camera": "cowboy shot",
+    "mood": "深情祈福",
+    "promptProse": "Mayuri presses an antique gold pocket watch against her heart outside a quiet clockmaker shop, eyes closed in heartfelt, tender prayer.",
+    "promptTokens": [
+      "clock_shop",
+      "antique_clocks",
+      "holding_pocket_watch",
+      "hands_on_chest",
+      "closed_eyes",
+      "prayer_pose",
+      "gentle_smile",
+      "natural_light",
+      "cowboy_shot"
+    ],
+    "animaCaption": "Soft natural light falls across her folded hands cradling the gold pocket watch.",
+    "characterId": "shiina_mayuri",
+    "recommendedSize": "832x1216",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

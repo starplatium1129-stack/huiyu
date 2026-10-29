@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "nanami_voice_acting_studio_mic_passionate_audition",
+  "revision": 2,
+  "sortOrder": 2604,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "data": {
+    "id": "nanami_voice_acting_studio_mic_passionate_audition",
+    "title": "青山七海 · 录音棚麦克风前的全力试音",
+    "category": "现代日常",
+    "outfitId": "suimei_school_uniform",
+    "description": "专业声优录音棚厚重的隔音室内，七海戴着监听耳机双手紧握台本站在专业悬挂麦克风前。她全情投入演绎台词，眼中泛着对梦想的滚烫泪光，神情坚毅动人。",
+    "location": "professional voice recording booth with soundproof foam walls and suspended studio condenser microphone",
+    "action": "standing before studio microphone wearing monitoring headphones, holding script with both hands, passionately delivering lines with glistening tearful amber eyes",
+    "timeOfDay": "下午",
+    "lighting": "录音棚顶棚聚光射灯与指示灯幽光",
+    "camera": "wide medium shot",
+    "mood": "梦想燃烧",
+    "promptProse": "Nanami stands before a professional studio microphone wearing headphones, clutching her audition script as she pours her soul into the performance.",
+    "promptTokens": [
+      "recording_studio",
+      "studio_microphone",
+      "headphones",
+      "holding_script",
+      "soundproof_walls",
+      "passionate_expression",
+      "teary_eyes",
+      "speaking",
+      "spotlight",
+      "indoor_lighting",
+      "wide_shot"
+    ],
+    "animaCaption": "Studio spotlight reflects in her determined, glistening amber eyes as she speaks into the microphone.",
+    "characterId": "aoyama_nanami",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

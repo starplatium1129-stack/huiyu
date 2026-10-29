@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "aurora_shadow_snowy_memory_school_perch",
+  "revision": 3,
+  "sortOrder": 2560,
+  "createdAt": "2026-10-28T17:14:16.489731500+00:00",
+  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "data": {
+    "id": "aurora_shadow_snowy_memory_school_perch",
+    "title": "奥萝拉 · 记忆苍雪中的单杠远眺",
+    "category": "残响旧忆",
+    "outfitId": "sanctuary_memory_sailor",
+    "description": "旧时代记忆幻境的雪原操场旁，老旧木制单杠被积雪覆盖。身穿朴素水手服的少女奥萝拉双手撑在单杠上晃荡双腿，仰望漫天大雪。",
+    "location": "snowy schoolyard clearing framed by weathered rustic wooden fences and pine trees",
+    "action": "perched seated on wooden gymnastic bar, legs swinging freely above snow, head tilted toward falling snowflakes with serene nostalgic gaze",
+    "timeOfDay": "下午",
+    "lighting": "风雪漫射柔白光与雪原反光",
+    "camera": "wide shot, landscape composition",
+    "mood": "落寞怀古",
+    "promptProse": "Young Aurora in a vintage sailor uniform perches atop a wooden exercise bar in the snow, watching snowflakes drift down with quiet nostalgia.",
+    "promptTokens": [
+      "snowy_field",
+      "playground",
+      "snowfall",
+      "pine_trees",
+      "sitting_on_bars",
+      "legs_swinging",
+      "looking_up",
+      "falling_snowflakes",
+      "overcast",
+      "soft_white_light",
+      "wide_shot"
+    ],
+    "animaCaption": "Snowflakes collect softly in her dark hair as she idly swings her legs.",
+    "characterId": "aurora_shadow",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}

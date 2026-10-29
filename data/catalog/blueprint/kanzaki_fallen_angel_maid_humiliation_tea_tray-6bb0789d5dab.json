@@ -1,0 +1,43 @@
+{
+  "kind": "blueprint",
+  "id": "kanzaki_fallen_angel_maid_humiliation_tea_tray",
+  "revision": 3,
+  "sortOrder": 2612,
+  "createdAt": "2026-10-28T17:22:27.857664300+00:00",
+  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "data": {
+    "id": "kanzaki_fallen_angel_maid_humiliation_tea_tray",
+    "title": "神裂火织 · 堕天使女仆装的极致羞愤端茶",
+    "category": "现代日常",
+    "outfitId": "fallen_angel_maid_uniform",
+    "description": "高级常盘台公馆客厅内，被迫穿上天草式特制“堕天使女仆装”的神裂火织双手端着红茶托盘，低着头从耳根一直红到脖颈，咬紧红唇羞耻得几乎想要自刎。",
+    "location": "luxurious western parlor room with ornate carpet, sofa, and crystal chandelier",
+    "action": "standing stiffly holding a silver tea service tray, head bowed deeply with extreme blushing face, biting lip in mortified indignation",
+    "timeOfDay": "下午",
+    "lighting": "客厅水晶吊灯暖光与窗外斜阳",
+    "camera": "wide medium shot",
+    "mood": "反差羞耻",
+    "promptProse": "Kaori Kanzaki stands rigidly holding a tea tray in her backless Fallen Angel maid attire, head bowed in agonizing, mortified embarrassment.",
+    "promptTokens": [
+      "parlor",
+      "chandelier",
+      "holding_tray",
+      "teacup",
+      "tea_tray",
+      "standing_stiffly",
+      "extreme_blush",
+      "biting_lip",
+      "embarrassed",
+      "warm_lighting",
+      "wide_shot"
+    ],
+    "animaCaption": "Chandelier light glints on the silver tea tray as crimson blushes cover her face down to her neck.",
+    "characterId": "kanzaki_kaori",
+    "recommendedSize": "1216x832",
+    "negativeTokens": [],
+    "adult": false,
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
+  }
+}
