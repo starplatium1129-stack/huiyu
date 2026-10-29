@@ -12,6 +12,7 @@ echo   -UseInstaller Reuse existing upgrade    -NoRestart Leave app closed
 echo   -ResourcesOnly Sync static resources with matching EXE/DLL only
 echo   -QuietInstall Silent installer after Windows UAC consent
 echo   -StartupRepair Repair startup resources and shortcuts
+echo   -AdoptProjectCatalog Replace the content catalog with the project snapshot after backup
 echo   -InstallDir Select the installed application directory
 echo   -InstallerPath Select an exact bound EXE with -UseInstaller
 echo                  Fresh/repair auto-uses the current full package if present;

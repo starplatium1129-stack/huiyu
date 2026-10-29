@@ -28,6 +28,7 @@ param(
   [switch]$QuietInstall,
   [switch]$NoRestart,
   [switch]$StartupRepair,
+  [switch]$AdoptProjectCatalog,
   # 内部使用：提权子进程完成安装后交由非提权父进程启动，避免跨桌面维护握手。
   [switch]$DeferRestart,
   # 内部使用：父进程已在 UAC 前完成检测并选定模式，子进程不再重复检测。
@@ -212,8 +213,8 @@ if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or
     switch ($plan.mode) {
       'current' {
         $retiredResources = @($STALE_ASSETS | Where-Object { Test-Path -LiteralPath (Resolve-DesktopChildPath -Root $gatewayDir -Relative $_) })
-        if (($Cleanup -and $retiredResources.Count -gt 0) -or $SyncLocalModels) {
-          Write-Host '[desktop:auto] 程序已是最新；改为资源同步，完成废弃资源清理或本机模型同步。' -ForegroundColor Cyan
+        if (($Cleanup -and $retiredResources.Count -gt 0) -or $SyncLocalModels -or $AdoptProjectCatalog) {
+          Write-Host '[desktop:auto] 程序已是最新；改为资源同步，执行指定的维护操作。' -ForegroundColor Cyan
           $ResourcesOnly = $true
           $SkipBuild = $true
           $QuietInstall = $false
@@ -240,7 +241,7 @@ if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or
   $DeploymentPlanApplied = $true
 }
 
-if ($StartupRepair -and $UseInstaller) { throw '-StartupRepair 与 -UseInstaller 不能同时使用' }
+if ($StartupRepair -and ($UseInstaller -or $AdoptProjectCatalog)) { throw '-StartupRepair 不能与 -UseInstaller 或 -AdoptProjectCatalog 同时使用' }
 if ($ResourcesOnly -and $UseInstaller) { throw '-ResourcesOnly 与 -UseInstaller 不能同时使用' }
 $buildUpgrade = -not ($UseInstaller -or $ResourcesOnly -or $StartupRepair)
 if ($ForceBuild -and (-not $buildUpgrade -or $SkipBuild)) { throw '-ForceBuild 仅用于默认部署，不能与显式复用/修复模式组合' }
@@ -308,6 +309,7 @@ if (-not $isElevated) {
   if ($QuietInstall) { $argList += '-QuietInstall' }
   if ($NoRestart)    { $argList += '-NoRestart' }
   if ($StartupRepair) { $argList += '-StartupRepair' }
+  if ($AdoptProjectCatalog) { $argList += '-AdoptProjectCatalog' }
   if ($SyncLocalModels) { $argList += '-SyncLocalModels' }
   if ($DeploymentPlanApplied) { $argList += '-DeploymentPlanApplied' }
   # The elevated process must not launch the desktop client: its window station
@@ -501,7 +503,8 @@ if ($installWithPackage) { Assert-FixedInstaller -Installed }
 else { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
 Write-DesktopDuration '安装后校验'
 if (-not $StartupRepair) {
-  & node (Join-Path $root 'scripts\lib\desktop-catalog-update.js') $gatewayDir (Join-Path $configRoot 'gateway')
+  $catalogMode = if ($AdoptProjectCatalog) { @('--adopt-project-catalog') } else { @() }
+  & node (Join-Path $root 'scripts\lib\desktop-catalog-update.js') $gatewayDir (Join-Path $configRoot 'gateway') @catalogMode
   if ($LASTEXITCODE -ne 0) { throw '内容库更新未完成；个人修改保留。请检查快照或合并冲突后再部署，不能仅凭素材安装成功判断人物已更新。' }
   Write-DesktopDuration '内容快照导入与核对'
 }
