@@ -76,6 +76,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     const route = recommendDrawingRoute({
       subjectKind: pb.isPopular ? 'popular' : 'studio',
       character: pb.char,
+      popularCharacterId: pb.subject.kind === 'popular' ? pb.subject.characterId : null,
       recommendedModelId: popularCharacter.value?.recommendedEngine,
     })
     managedRoute.value = route
@@ -145,8 +146,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       if (pb.popularCharacters.length) {
         const first = pb.popularCharacters[0]
         pb.setPopularSubject(first.id, first.outfits.find(o => o.default)?.id ?? first.outfits[0].id, null)
-        // 2026-08-29 修复：热门角色为无 LoRA 创作，必须清掉 anima 侧残留的
-        // studio loraId（默认 L_NENE_V21_ANIMA），否则后端会拿宁宁 lora 生成热门角色。
+        // 按当前角色恢复专用绑定，避免沿用上一角色的 LoRA。
         const binding = endfieldAnimaBinding(first.id, 'anima', first.recommendedEngine)
         patchAnimaState({ modelId: first.recommendedEngine, loraId: binding?.loraId ?? '',
           ...(binding ? { loraStrength: binding.loraStrength } : {}) })
@@ -303,7 +303,10 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       applyRecommendedSize(pb.lastRecommendedSize)
     } else {
       if (animaState.value.modelId !== targetModelId) applyModel(targetModelId)
-      patchAnimaState({ loraId: route.loraId, styleLoraId: '' })
+      const binding = pb.subject.kind === 'popular'
+        ? endfieldAnimaBinding(pb.subject.characterId, route.engine, targetModelId) : null
+      patchAnimaState({ loraId: route.loraId, styleLoraId: '',
+        ...(binding && animaState.value.loraId !== binding.loraId ? { loraStrength: binding.loraStrength } : {}) })
       await refreshAnimaBackend()
     }
     if (!options.silent) flash(`已采用${route.title}`)
@@ -316,7 +319,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     void (pb.directorMode === 'basic' && !savedRecipe ? applyManagedRoute({ silent: true }) : refreshManagedRoute())
   }
 
-  /** 热门角色草稿恢复：同步无 LoRA 底模与蓝图尺寸/导演决策，并立即刷新 backend，
+  /** 热门角色草稿恢复：同步角色绑定与蓝图尺寸/导演决策，并立即刷新 backend，
    *  让面板的 model/lora 列表立刻收敛到热门角色（不等 15s 轮询）。
    *  由宿主 onMounted 在 loadData/loadHistory 之后调用。 */
   function restorePopularDraft() {
@@ -338,7 +341,9 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     }
     const recommendedEngine = popularCharacter.value?.recommendedEngine === 'krea2-turbo-fp8' ? 'krea2-turbo-fp8' : 'anima-miaomiao-v1.6'
     if (animaState.value.models.some(model => model.id === recommendedEngine)) {
-      patchAnimaState({ modelId: recommendedEngine, loraId: '' })
+      const binding = endfieldAnimaBinding(pb.subject.characterId, 'anima', recommendedEngine)
+      patchAnimaState({ modelId: recommendedEngine, loraId: binding?.loraId ?? '',
+        ...(binding && animaState.value.loraId !== binding.loraId ? { loraStrength: binding.loraStrength } : {}) })
     }
     if (pb.subject.blueprintId) {
       const restoredBlueprint = findPopularBlueprint(pb.sceneBlueprints, pb.subject.blueprintId)

@@ -11,7 +11,7 @@
       <button type="button" class="char-source-btn"
         :aria-pressed="pb.isPopular" @click="$emit('selectSource', 'popular')">
         <ArchiveIcon name="spark" class="char-source-icon" />
-        <span class="studio-control-label"><span class="char-source-label">热门角色</span><span class="char-source-note">无需 LoRA</span></span>
+        <span class="studio-control-label"><span class="char-source-label">热门角色</span><span class="char-source-note">按角色配置</span></span>
       </button>
       <button type="button" class="char-source-btn"
         :aria-pressed="pb.isUnbound" @click="$emit('selectSource', 'none')">

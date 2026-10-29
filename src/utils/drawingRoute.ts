@@ -1,3 +1,5 @@
+import { endfieldAnimaBinding } from '@/utils/loraCatalog'
+
 export type ManagedDrawEngine = 'sd' | 'anima' | 'krea2'
 export type ManagedPromptFormat = 'danbooru' | 'anima-tags' | 'natural-language'
 export type StudioCharacter = 'nene' | 'natsume' | 'triad' | 'none'
@@ -5,6 +7,7 @@ export type StudioCharacter = 'nene' | 'natsume' | 'triad' | 'none'
 export interface DrawingRouteInput {
   subjectKind: 'studio' | 'popular'
   character: StudioCharacter
+  popularCharacterId?: string | null
   recommendedModelId?: string | null
 }
 
@@ -60,17 +63,18 @@ export function recommendDrawingRoute(input: DrawingRouteInput): DrawingRouteRec
         experimental: true,
       }
     }
+    const binding = endfieldAnimaBinding(input.popularCharacterId, 'anima', 'anima-miaomiao-v1.6')
     return {
       id: 'popular-anima',
       engine: 'anima',
       modelId: 'anima-miaomiao-v1.6',
-      loraId: '',
+      loraId: binding?.loraId ?? '',
       generationCharacter: null,
       promptFormat: 'anima-tags',
-      title: '热门角色通用高质路线',
-      summary: 'MiaoMiao Harem v1.6 · 模型原生标签 · 无角色 LoRA',
+      title: binding ? '角色 LoRA 高质路线' : '热门角色通用高质路线',
+      summary: `MiaoMiao Harem v1.6 · 模型原生标签 · ${binding ? '角色专属 LoRA' : '无角色 LoRA'}`,
       reasons: [
-        '热门角色不混入宁宁或夏目的 LoRA',
+        binding ? '自动采用当前角色绑定的 LoRA' : '热门角色不混入宁宁或夏目的 LoRA',
         '身份、服装和场景蓝图由系统组合',
       ],
       experimental: false,
