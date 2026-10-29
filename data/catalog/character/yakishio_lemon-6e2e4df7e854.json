@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yakishio_lemon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 238,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:48:45.559283800+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "yakishio_lemon",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🍋",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "烧盐柠檬 立绘待补"
+        "image": "../assets/characters/popular-yakishio_lemon.png?v=00abdc08e8de",
+        "alt": "烧盐柠檬样张立绘",
+        "sourceShowcaseId": "pc_yakishio_lemon_lemon_vending_machine_cold_soda_cheek_blush",
+        "sourceShowcaseSha256": "2100c0f27ecf0d933d205c723a7e497b9c4c48751aa5a0542731769353c6af78"
       },
       "visual_dna": {
         "hair": "棕褐色利落短发 · 运动微卷发梢 · 散发夏日阳光气息",

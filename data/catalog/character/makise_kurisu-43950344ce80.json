@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makise_kurisu",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 246,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:48:45.559283800+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "makise_kurisu",
     "popular": {
@@ -82,8 +82,10 @@
       "type": "popular",
       "icon": "🧠",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "牧濑红莉栖 立绘待补"
+        "image": "../assets/characters/popular-makise_kurisu.png?v=1d02727e97b1",
+        "alt": "牧濑红莉栖样张立绘",
+        "sourceShowcaseId": "pc_makise_kurisu_kurisu_auditorium_blackboard_chalk_equations",
+        "sourceShowcaseSha256": "059d6b63e005f1a53fe87e368239f1e0e912ec2c5e9b9edf97c1887083ba800a"
       },
       "visual_dna": {
         "hair": "红褐色微卷修长秀发 · 柔顺垂至腰际",

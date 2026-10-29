@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "astraea",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 227,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "astraea",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🪽",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "阿斯特蕾亚 立绘待补"
+        "image": "../assets/characters/popular-astraea.png?v=36077e2fd53b",
+        "alt": "阿斯特蕾亚样张立绘",
+        "sourceShowcaseId": "pc_astraea_astraea_kitchen_rice_ball_feast",
+        "sourceShowcaseSha256": "65f7110a33cbf2de0771f6723802f96f18b346ea2263efbafa02d31222e17fd3"
       },
       "visual_dna": {
         "hair": "耀眼太阳般明黄长发 · 灵动单侧侧马尾",

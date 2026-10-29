@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rose_oriana",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 266,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "rose_oriana",
     "popular": {
@@ -79,8 +79,10 @@
       "type": "popular",
       "icon": "🌹",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "萝丝·奥利安娜 立绘待补"
+        "image": "../assets/characters/popular-rose_oriana.png?v=222c4a1b981c",
+        "alt": "萝丝·奥利安娜样张立绘",
+        "sourceShowcaseId": "pc_rose_oriana_rose_oriana_campus_bench_bread_blush",
+        "sourceShowcaseSha256": "e43568f120faead1a318aea5b2eac259646ecc1fc1b1504c1b91aed8c34a148a"
       },
       "visual_dna": {
         "hair": "高贵温暖的淡金色波浪长发 · 优雅螺旋卷束",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "stella_vermillion",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 223,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "stella_vermillion",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🔥",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "史黛菈·法米利昂 立绘待补"
+        "image": "../assets/characters/popular-stella_vermillion.png?v=e07adf6f641b",
+        "alt": "史黛菈·法米利昂样张立绘",
+        "sourceShowcaseId": "pc_stella_vermillion_stella_rooftop_lunch_jealous_feed",
+        "sourceShowcaseSha256": "a307d29c8c9dfb8f56a8ff3ed1fcf40f9617980f553f9b9ddd997a7bfe2be251"
       },
       "visual_dna": {
         "hair": "璀璨如烈焰般深红及腰双马尾 · 发梢自然内卷",

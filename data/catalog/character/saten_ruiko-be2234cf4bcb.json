@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saten_ruiko",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 199,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "saten_ruiko",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "佐天泪子 · 立绘待制作"
+        "image": "../assets/characters/popular-saten_ruiko.png?v=97ebf98293fb",
+        "alt": "佐天泪子样张立绘",
+        "sourceShowcaseId": "pc_saten_ruiko_saten_ruiko_daily_rumor_notice",
+        "sourceShowcaseSha256": "3e11cc94c37f2a93cb3884c376b7aa349859ae3c24cfe430d4814f742827ed41"
       },
       "visual_dna": {
         "signature": "Long black hair, green eyes, and a small white flower hair ornament",

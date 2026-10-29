@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "faln_touden",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 200,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "faln_touden",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "法琳 · 立绘待制作"
+        "image": "../assets/characters/popular-faln_touden.png?v=4d5910b6187b",
+        "alt": "法琳样张立绘",
+        "sourceShowcaseId": "pc_faln_touden_faln_touden_intimate_forest_stream_barefoot",
+        "sourceShowcaseSha256": "fb3b68017e3ae0c9aa55ad833fa86e7f74c31740065ec97c0df58cf7c787f845"
       },
       "visual_dna": {
         "signature": "Short pale ash-blonde hair, soft facial features, and golden eyes",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "renge_mangekyou",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 252,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:48:45.559283800+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "renge_mangekyou",
     "popular": {
@@ -81,8 +81,10 @@
       "type": "popular",
       "icon": "🪞",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "莲华 立绘待补"
+        "image": "../assets/characters/popular-renge_mangekyou.png?v=98a82f36cfb1",
+        "alt": "莲华样张立绘",
+        "sourceShowcaseId": "pc_renge_mangekyou_renge_vermilion_kimono_crimson_glance",
+        "sourceShowcaseSha256": "19926b6cf9a790e2cc4a6181e00eb729154d81b55921b42921f2254a055342d4"
       },
       "visual_dna": {
         "hair": "乌黑浓密如墨的长直秀发 · 垂至脚踝的经典大和姬发式",

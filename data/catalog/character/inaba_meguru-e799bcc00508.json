@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "inaba_meguru",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 189,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "inaba_meguru",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "因幡巡 · 立绘待制作"
+        "image": "../assets/characters/popular-inaba_meguru.png?v=b8a08bdb158a",
+        "alt": "因幡巡样张立绘",
+        "sourceShowcaseId": "pc_inaba_meguru_inaba_meguru_daily_used_guidebook",
+        "sourceShowcaseSha256": "51766f77ed3bf92dd719705ea65d579c788f13359d22b3410e2dc66e16d3f6db"
       },
       "visual_dna": {
         "signature": "Coral-orange hair in a long side ponytail and pink eyes",

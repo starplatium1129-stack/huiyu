@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aozaki_aoko",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 198,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "aozaki_aoko",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "✨",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "苍崎青子 立绘待补"
+        "image": "../assets/characters/popular-aozaki_aoko.png?v=ce2010eae274",
+        "alt": "苍崎青子样张立绘",
+        "sourceShowcaseId": "pc_aozaki_aoko_aozaki_aoko_snowy_station_departure",
+        "sourceShowcaseSha256": "70710cfe5cf35d2a41d28c11efea91f3d2b00992302cea2c32cbcddf7066daff"
       },
       "visual_dna": {
         "hair": "栗红微卷长发 · 随性披散发梢",

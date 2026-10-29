@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rossweisse",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 230,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "rossweisse",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🛡️",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "罗丝薇瑟 立绘待补"
+        "image": "../assets/characters/popular-rossweisse.png?v=ec642afd4aee",
+        "alt": "罗丝薇瑟样张立绘",
+        "sourceShowcaseId": "pc_rossweisse_rossweisse_kitchen_receipt_checking",
+        "sourceShowcaseSha256": "579c528a6671c9e9250a3d2a61dea50fda366e7032d6e399e909df7288c88d42"
       },
       "visual_dna": {
         "hair": "银白柔顺及腰瀑布长发 · 额前自然分发 · 飘逸北欧神族光泽",

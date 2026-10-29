@@ -87932,8 +87932,10 @@
     "type": "popular",
     "icon": "⭐",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "中野五月 立绘待补"
+      "image": "../assets/characters/popular-nakano_itsuki.png?v=01825e3f5904",
+      "alt": "中野五月样张立绘",
+      "sourceShowcaseId": "pc_nakano_itsuki_nakano_itsuki_intimate_library_nook",
+      "sourceShowcaseSha256": "0402d9ebe0af68c088e93dda6ed76ad6ffc31b7a3c3d318548935e1660c2d69c"
     },
     "visual_dna": {
       "hair": "及腰微卷赤红长发 · 两侧黄色五角星发夹 · 头顶大呆毛",
@@ -88240,8 +88242,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "因幡巡 · 立绘待制作"
+      "image": "../assets/characters/popular-inaba_meguru.png?v=b8a08bdb158a",
+      "alt": "因幡巡样张立绘",
+      "sourceShowcaseId": "pc_inaba_meguru_inaba_meguru_daily_used_guidebook",
+      "sourceShowcaseSha256": "51766f77ed3bf92dd719705ea65d579c788f13359d22b3410e2dc66e16d3f6db"
     },
     "visual_dna": {
       "signature": "Coral-orange hair in a long side ponytail and pink eyes",
@@ -88416,8 +88420,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "户隐憧子 · 立绘待制作"
+      "image": "../assets/characters/popular-togakushi_touko.png?v=04c5a028f1e5",
+      "alt": "户隐憧子样张立绘",
+      "sourceShowcaseId": "pc_togakushi_touko_togakushi_touko_daily_flower_choice",
+      "sourceShowcaseSha256": "b52e13cd97d0449c6912b394f91ecde4fc4bf338b87bc9a834be5ed9030734dd"
     },
     "visual_dna": {
       "signature": "Long dark hair tied into twin tails and amber-yellow eyes",
@@ -89167,8 +89173,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "阿米娅 · 立绘待制作"
+      "image": "../assets/characters/popular-amiya.png?v=de0ceffb406a",
+      "alt": "阿米娅样张立绘",
+      "sourceShowcaseId": "pc_amiya_amiya_daily_rain_herb_stall",
+      "sourceShowcaseSha256": "de1630a400cd5a3f3e5c50a378b5ef92d76e5e823cca51e7ac56ce4101e05cdb"
     },
     "visual_dna": {
       "signature": "Long brown hair, upright rabbit ears, and blue eyes",
@@ -90349,8 +90357,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "陈千语 · 立绘待制作"
+      "image": "../assets/characters/popular-chen_qianyu.png?v=e7a2df841898",
+      "alt": "陈千语样张立绘",
+      "sourceShowcaseId": "pc_chen_qianyu_chen_qianyu_intimate_workshop_hand_hold",
+      "sourceShowcaseSha256": "c00f5cafabe04319ae2fe9d664253960ebc33d71bf9c3771530aee1f90f01453"
     },
     "visual_dna": {
       "signature": "Long black hair, two small dragon horns, and a dark dragon tail",
@@ -91269,8 +91279,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "泽村·斯宾塞·英梨梨 · 立绘待制作"
+      "image": "../assets/characters/popular-sawamura_spencer_eriri.png?v=c607ef9e2cbe",
+      "alt": "泽村·斯宾塞·英梨梨样张立绘",
+      "sourceShowcaseId": "pc_sawamura_spencer_eriri_sawamura_spencer_eriri_intimate_art_room_pencil_gaze",
+      "sourceShowcaseSha256": "b0d765eaa46a060a0237dec1f08aa3b611d4e4670724600995da0b19f0ca2768"
     },
     "visual_dna": {
       "signature": "Long blonde twin tails, blue eyes, and ribbon hair ties",
@@ -91561,8 +91573,10 @@
     "type": "popular",
     "icon": "✨",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "苍崎青子 立绘待补"
+      "image": "../assets/characters/popular-aozaki_aoko.png?v=ce2010eae274",
+      "alt": "苍崎青子样张立绘",
+      "sourceShowcaseId": "pc_aozaki_aoko_aozaki_aoko_snowy_station_departure",
+      "sourceShowcaseSha256": "70710cfe5cf35d2a41d28c11efea91f3d2b00992302cea2c32cbcddf7066daff"
     },
     "visual_dna": {
       "hair": "栗红微卷长发 · 随性披散发梢",
@@ -91826,8 +91840,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "白井黑子 · 立绘待制作"
+      "image": "../assets/characters/popular-shirai_kuroko.png?v=5899303e19df",
+      "alt": "白井黑子样张立绘",
+      "sourceShowcaseId": "pc_shirai_kuroko_shirai_kuroko_daily_station_map",
+      "sourceShowcaseSha256": "b5ea72fd2b28533ea58eaadab778aef6988311ef186ad47d09d62be29dfb529e"
     },
     "visual_dna": {
       "signature": "Brown twin tails tied with ribbons and brown eyes",
@@ -92372,8 +92388,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "佐天泪子 · 立绘待制作"
+      "image": "../assets/characters/popular-saten_ruiko.png?v=97ebf98293fb",
+      "alt": "佐天泪子样张立绘",
+      "sourceShowcaseId": "pc_saten_ruiko_saten_ruiko_daily_rumor_notice",
+      "sourceShowcaseSha256": "3e11cc94c37f2a93cb3884c376b7aa349859ae3c24cfe430d4814f742827ed41"
     },
     "visual_dna": {
       "signature": "Long black hair, green eyes, and a small white flower hair ornament",
@@ -92613,8 +92631,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "法琳 · 立绘待制作"
+      "image": "../assets/characters/popular-faln_touden.png?v=4d5910b6187b",
+      "alt": "法琳样张立绘",
+      "sourceShowcaseId": "pc_faln_touden_faln_touden_intimate_forest_stream_barefoot",
+      "sourceShowcaseSha256": "fb3b68017e3ae0c9aa55ad833fa86e7f74c31740065ec97c0df58cf7c787f845"
     },
     "visual_dna": {
       "signature": "Short pale ash-blonde hair, soft facial features, and golden eyes",
@@ -93319,8 +93339,10 @@
     "type": "popular",
     "icon": "⚖️",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "伊井野弥子 立绘待补"
+      "image": "../assets/characters/popular-iino_miko.png?v=b3a43ee54306",
+      "alt": "伊井野弥子样张立绘",
+      "sourceShowcaseId": "pc_iino_miko_iino_miko_courtroom_resolute_justice",
+      "sourceShowcaseSha256": "39b482d702712acea809abf515ddd6c97a8e150f5771d92354a78a0404dfbe46"
     },
     "visual_dna": {
       "hair": "柔顺深褐齐肩双低马尾 · 发尾自然落在双肩",
@@ -94514,8 +94536,10 @@
     "type": "popular",
     "icon": "🤍",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "神罚 立绘待补"
+      "image": "../assets/characters/popular-modernia.png?v=0fd3d468c154",
+      "alt": "神罚样张立绘",
+      "sourceShowcaseId": "pc_modernia_modernia_morning_apron_breakfast",
+      "sourceShowcaseSha256": "8757847375b890178887e3ee0572a2a61f39938f8c66452f6096c64a9d37d5ab"
     },
     "visual_dna": {
       "hair": "纯净银白短发 · 柔顺短波波头",
@@ -94600,8 +94624,10 @@
     "type": "popular",
     "icon": "🍶",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "红莲 立绘待补"
+      "image": "../assets/characters/popular-scarlet_nikke.png?v=ef17890b75be",
+      "alt": "红莲样张立绘",
+      "sourceShowcaseId": "pc_scarlet_nikke_scarlet_street_date_earphones",
+      "sourceShowcaseSha256": "89622b2230f1c85bf894399e0310d03c7699fbc7be59e70db558919340efbc0d"
     },
     "visual_dna": {
       "hair": "如雪白发 · 标志性高挑帅气马尾 · 灵动不羁呆毛",
@@ -94686,8 +94712,10 @@
     "type": "popular",
     "icon": "🦊",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "信浓 立绘待补"
+      "image": "../assets/characters/popular-shinano.png?v=fcfabbcba7a9",
+      "alt": "信浓样张立绘",
+      "sourceShowcaseId": "pc_shinano_shinano_summer_festival_handhold",
+      "sourceShowcaseSha256": "e9945af96243e5d133a048e1b7f0a263d856026558ba7b4b994f780d9f903c96"
     },
     "visual_dna": {
       "hair": "如银瀑般及膝超长发 · 宛如银月光华流转",
@@ -94859,8 +94887,10 @@
     "type": "popular",
     "icon": "🐕",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "爱宕 立绘待补"
+      "image": "../assets/characters/popular-atago_azur.png?v=273d696fbc17",
+      "alt": "爱宕样张立绘",
+      "sourceShowcaseId": "pc_atago_azur_atago_veranda_lap_pillow_ear_clean",
+      "sourceShowcaseSha256": "04003223f039e4165f1ebbcdd33f48b057c891fce344b2df97cc768ce412d8ca"
     },
     "visual_dna": {
       "hair": "柔顺及腰纯黑长直发 · 标志性灵动黑色犬耳 · 头顶呆毛",
@@ -94944,8 +94974,10 @@
     "type": "popular",
     "icon": "🚗",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "圣路易斯 立绘待补"
+      "image": "../assets/characters/popular-st_louis_azur.png?v=b31b67ef6b04",
+      "alt": "圣路易斯样张立绘",
+      "sourceShowcaseId": "pc_st_louis_azur_st_louis_cafe_patio_afternoon_sweet",
+      "sourceShowcaseSha256": "6b354e1fa2f9aefb76dbdbf76c9e5c36dff939fbfcc8226afdc510c24dda560a"
     },
     "visual_dna": {
       "hair": "轻盈柔顺天水蓝长发 · 优雅侧梳单马尾",
@@ -95028,8 +95060,10 @@
     "type": "popular",
     "icon": "🐍",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "毒蛇 立绘待补"
+      "image": "../assets/characters/popular-viper_nikke.png?v=34fc208db95f",
+      "alt": "毒蛇样张立绘",
+      "sourceShowcaseId": "pc_viper_nikke_viper_smartphone_selfie_cling",
+      "sourceShowcaseSha256": "d14ab110259bdcf6f65b5ddbc6788541fd9b23ab54a08ada508a01f260bc4f2b"
     },
     "visual_dna": {
       "hair": "极其浓密华丽粉色大波浪长发 · 宛若棉花糖般蓬松卷曲",
@@ -95115,8 +95149,10 @@
     "type": "popular",
     "icon": "💍",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "D：杀手妻子 立绘待补"
+      "image": "../assets/characters/popular-d_killer_wife.png?v=6cf77fd92400",
+      "alt": "D：杀手妻子样张立绘",
+      "sourceShowcaseId": "pc_d_killer_wife_d_wife_kitchen_cooking_tasting",
+      "sourceShowcaseSha256": "3601c5fb3de53c7cda3480cfdee64032994d03b9cb56ba30707a89731e5d7725"
     },
     "visual_dna": {
       "hair": "及腰墨灰长直发 · 整齐冷艳碎刘海 · 标志性深红金属发夹",
@@ -95287,8 +95323,10 @@
     "type": "popular",
     "icon": "🔥",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "史黛菈·法米利昂 立绘待补"
+      "image": "../assets/characters/popular-stella_vermillion.png?v=e07adf6f641b",
+      "alt": "史黛菈·法米利昂样张立绘",
+      "sourceShowcaseId": "pc_stella_vermillion_stella_rooftop_lunch_jealous_feed",
+      "sourceShowcaseSha256": "a307d29c8c9dfb8f56a8ff3ed1fcf40f9617980f553f9b9ddd997a7bfe2be251"
     },
     "visual_dna": {
       "hair": "璀璨如烈焰般深红及腰双马尾 · 发梢自然内卷",
@@ -95371,8 +95409,10 @@
     "type": "popular",
     "icon": "🗡️",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "姬柊雪菜 立绘待补"
+      "image": "../assets/characters/popular-himeragi_yukina.png?v=fd8e4d64a4cf",
+      "alt": "姬柊雪菜样张立绘",
+      "sourceShowcaseId": "pc_himeragi_yukina_yukina_apartment_kitchen_stew",
+      "sourceShowcaseSha256": "1d001696cea92b205bc7eb88e49981eebece0807448a3fa63355bc5190528d98"
     },
     "visual_dna": {
       "hair": "如墨长直发 · 整齐刘海 · 柔顺垂落至腰际",
@@ -95455,8 +95495,10 @@
     "type": "popular",
     "icon": "👑",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "拉·芙利亚·利哈瓦因 立绘待补"
+      "image": "../assets/characters/popular-la_folia_rihavein.png?v=d5d5c1fd3313",
+      "alt": "拉·芙利亚·利哈瓦因样张立绘",
+      "sourceShowcaseId": "pc_la_folia_rihavein_la_folia_royal_garden_promenade",
+      "sourceShowcaseSha256": "b4dbda869a8398d8a655183bd7f6a65c3c33334280ba9ea62fd5dc20893d84c2"
     },
     "visual_dna": {
       "hair": "银河般流泻如瀑及踝超长银发 · 宛若极光丝缕",
@@ -95537,8 +95579,10 @@
     "type": "popular",
     "icon": "🐾",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "黑歌 立绘待补"
+      "image": "../assets/characters/popular-kuroka.png?v=7101a8654abf",
+      "alt": "黑歌样张立绘",
+      "sourceShowcaseId": "pc_kuroka_kuroka_engawa_sake_fish_feed",
+      "sourceShowcaseSha256": "8b0e3fdb3f8936f2627e79662bea2eb97dccd04be2ccefa585d955c18cb87568"
     },
     "visual_dna": {
       "hair": "漆黑柔亮及腰长发 · 灵动低双马尾 · 黑色绒毛猫耳",
@@ -95623,8 +95667,10 @@
     "type": "popular",
     "icon": "🪽",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "阿斯特蕾亚 立绘待补"
+      "image": "../assets/characters/popular-astraea.png?v=36077e2fd53b",
+      "alt": "阿斯特蕾亚样张立绘",
+      "sourceShowcaseId": "pc_astraea_astraea_kitchen_rice_ball_feast",
+      "sourceShowcaseSha256": "65f7110a33cbf2de0771f6723802f96f18b346ea2263efbafa02d31222e17fd3"
     },
     "visual_dna": {
       "hair": "耀眼太阳般明黄长发 · 灵动单侧侧马尾",
@@ -95714,8 +95760,10 @@
     "type": "popular",
     "icon": "🎤",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "诱宵美九 立绘待补"
+      "image": "../assets/characters/popular-izayoi_miku.png?v=dc235c7a17f8",
+      "alt": "诱宵美九样张立绘",
+      "sourceShowcaseId": "pc_izayoi_miku_miku_private_recording_studio_duet",
+      "sourceShowcaseSha256": "86ffd91e2d3ad7bb7231407c66e7f1af3061fbb91440bea8bf272fe02ae346f2"
     },
     "visual_dna": {
       "hair": "紫罗兰般华丽柔顺双马尾 · 及膝波浪长卷发",
@@ -95884,8 +95932,10 @@
     "type": "popular",
     "icon": "🛡️",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "罗丝薇瑟 立绘待补"
+      "image": "../assets/characters/popular-rossweisse.png?v=ec642afd4aee",
+      "alt": "罗丝薇瑟样张立绘",
+      "sourceShowcaseId": "pc_rossweisse_rossweisse_kitchen_receipt_checking",
+      "sourceShowcaseSha256": "579c528a6671c9e9250a3d2a61dea50fda366e7032d6e399e909df7288c88d42"
     },
     "visual_dna": {
       "hair": "银白柔顺及腰瀑布长发 · 额前自然分发 · 飘逸北欧神族光泽",
@@ -96052,8 +96102,10 @@
     "type": "popular",
     "icon": "🎀",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "轻井泽惠 立绘待补"
+      "image": "../assets/characters/popular-karuizawa_kei.png?v=da679975d297",
+      "alt": "轻井泽惠样张立绘",
+      "sourceShowcaseId": "pc_karuizawa_kei_kei_stairwell_secret_whisper",
+      "sourceShowcaseSha256": "2be623172dbd5d961b9ca15c4bdc2ef9f439236d4977d5534ecf152d1dbb7272"
     },
     "visual_dna": {
       "hair": "亮金高扎柔顺侧马尾 · 标志蝴蝶结发饰 · 娇俏灵动刘海",
@@ -96134,8 +96186,10 @@
     "type": "popular",
     "icon": "🍜",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "平冢静 立绘待补"
+      "image": "../assets/characters/popular-shizuka_hiratsuka.png?v=4fe47e2e43e7",
+      "alt": "平冢静样张立绘",
+      "sourceShowcaseId": "pc_shizuka_hiratsuka_shizuka_school_rooftop_confiscated_cigarette",
+      "sourceShowcaseSha256": "a33febb761db839b50fffa3818cad0d651bf50df6dc965ed63cddfa6c0333cf3"
     },
     "visual_dna": {
       "hair": "乌黑柔顺干练及腰长发 · 侧分成熟刘海 · 帅气英姿与女人味并存",
@@ -96472,8 +96526,10 @@
     "type": "popular",
     "icon": "🪽",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "妮姆芙 立绘待补"
+      "image": "../assets/characters/popular-nymph.png?v=bc440cf0a62a",
+      "alt": "妮姆芙样张立绘",
+      "sourceShowcaseId": "pc_nymph_nymph_night_festival_fireworks_clinging",
+      "sourceShowcaseSha256": "428cfb92e13322485a33d890e8909536b5615ed231ff8f90e8095a2501d66fe9"
     },
     "visual_dna": {
       "hair": "淡水蓝双马尾及踝长发 · 发梢微卷 · 散发梦幻微光",
@@ -96555,8 +96611,10 @@
     "type": "popular",
     "icon": "🍋",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "烧盐柠檬 立绘待补"
+      "image": "../assets/characters/popular-yakishio_lemon.png?v=00abdc08e8de",
+      "alt": "烧盐柠檬样张立绘",
+      "sourceShowcaseId": "pc_yakishio_lemon_lemon_vending_machine_cold_soda_cheek_blush",
+      "sourceShowcaseSha256": "2100c0f27ecf0d933d205c723a7e497b9c4c48751aa5a0542731769353c6af78"
     },
     "visual_dna": {
       "hair": "棕褐色利落短发 · 运动微卷发梢 · 散发夏日阳光气息",
@@ -96724,8 +96782,10 @@
     "type": "popular",
     "icon": "🎙️",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "青山七海 立绘待补"
+      "image": "../assets/characters/popular-aoyama_nanami.png?v=9106aaaea5a4",
+      "alt": "青山七海样张立绘",
+      "sourceShowcaseId": "pc_aoyama_nanami_nanami_bus_stop_winter_scarf_share",
+      "sourceShowcaseSha256": "04d2c9ee6ce030d120af8db5e2792373460eda012dde7235eb1399dda3d8a33e"
     },
     "visual_dna": {
       "hair": "温暖深茶柔顺及肩马尾 · 标志侧马尾/高马尾发束 · 干净利落刘海",
@@ -96806,8 +96866,10 @@
     "type": "popular",
     "icon": "🍵",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "五和 立绘待补"
+      "image": "../assets/characters/popular-itsuwa.png?v=4a338b729bc2",
+      "alt": "五和样张立绘",
+      "sourceShowcaseId": "pc_itsuwa_itsuwa_winter_park_bench_thermos_tea_care",
+      "sourceShowcaseSha256": "ec0e0475a81d705413faf7a20ddfb20f010df8ce8a4523394514b11ae580e140"
     },
     "visual_dna": {
       "hair": "柔顺茶褐色齐颈波波短发 · 额前自然分发 · 极具大和抚子清纯韵味",
@@ -96888,8 +96950,10 @@
     "type": "popular",
     "icon": "🗡️",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "神裂火织 立绘待补"
+      "image": "../assets/characters/popular-kanzaki_kaori.png?v=d838eebab505",
+      "alt": "神裂火织样张立绘",
+      "sourceShowcaseId": "pc_kanzaki_kaori_kanzaki_shrine_dojo_bokken_stance_serenity",
+      "sourceShowcaseSha256": "2bc7285b462a093fd76f31210ea728772f1c83902201690fb3ee45a82973b164"
     },
     "visual_dna": {
       "hair": "乌黑柔亮及膝瀑布长发 · 高高扎起单马尾 · 气场凌厉威严",
@@ -97140,8 +97204,10 @@
     "type": "popular",
     "icon": "🎸",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "冰堂美智留 立绘待补"
+      "image": "../assets/characters/popular-hyoudou_michiru.png?v=6826c42944c2",
+      "alt": "冰堂美智留样张立绘",
+      "sourceShowcaseId": "pc_hyoudou_michiru_michiru_livehouse_backstage_towel_tease",
+      "sourceShowcaseSha256": "c5fb04f1e0e98eb86275cfd472a80ee49e2b198f3914801ca35f8e1a25dee68a"
     },
     "visual_dna": {
       "hair": "乌黑俏丽层次短发 · 发梢微翘碎发 · 帅气假小子与成熟女人味兼备",
@@ -97222,8 +97288,10 @@
     "type": "popular",
     "icon": "🧠",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "牧濑红莉栖 立绘待补"
+      "image": "../assets/characters/popular-makise_kurisu.png?v=1d02727e97b1",
+      "alt": "牧濑红莉栖样张立绘",
+      "sourceShowcaseId": "pc_makise_kurisu_kurisu_auditorium_blackboard_chalk_equations",
+      "sourceShowcaseSha256": "059d6b63e005f1a53fe87e368239f1e0e912ec2c5e9b9edf97c1887083ba800a"
     },
     "visual_dna": {
       "hair": "红褐色微卷修长秀发 · 柔顺垂至腰际",
@@ -97303,8 +97371,10 @@
     "type": "popular",
     "icon": "🌻",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "椎名真由理 立绘待补"
+      "image": "../assets/characters/popular-shiina_mayuri.png?v=4da40fdb2d56",
+      "alt": "椎名真由理样张立绘",
+      "sourceShowcaseId": "pc_shiina_mayuri_mayuri_maid_cafe_omelet_ketchup_heart",
+      "sourceShowcaseSha256": "51138f5cd37c831842d25b180bb564ba1427673a479c82fdccda9380e28d8bff"
     },
     "visual_dna": {
       "hair": "墨黑色蓬松柔软短发 · 标志性微扬呆毛",
@@ -97467,8 +97537,10 @@
     "type": "popular",
     "icon": "🦊",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "空门苍 立绘待补"
+      "image": "../assets/characters/popular-sorakado_ao.png?v=82e08876b4f6",
+      "alt": "空门苍样张立绘",
+      "sourceShowcaseId": "pc_sorakado_ao_ao_dagashiya_counter_candy_tease",
+      "sourceShowcaseSha256": "3dbfe0022580b59aab32b205b60c3e1dcaf36082d00b4cd93f00005b07737229"
     },
     "visual_dna": {
       "hair": "清澈亮丽的天蓝色及肩中长发 · 束于一侧的侧马尾",
@@ -97631,8 +97703,10 @@
     "type": "popular",
     "icon": "🦖",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "神尾观铃 立绘待补"
+      "image": "../assets/characters/popular-kamio_misuzu.png?v=d7ca5109b10f",
+      "alt": "神尾观铃样张立绘",
+      "sourceShowcaseId": "pc_kamio_misuzu_misuzu_sunflower_slope_straw_hat_wave",
+      "sourceShowcaseSha256": "2881d82190df1dadb087aa9e6b45a5ba2eeae49c9761f90a8e927065719b5d21"
     },
     "visual_dna": {
       "hair": "灿烂夺目的纯金金色长发 · 束成高挑利落的单马尾",
@@ -97713,8 +97787,10 @@
     "type": "popular",
     "icon": "🪞",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "莲华 立绘待补"
+      "image": "../assets/characters/popular-renge_mangekyou.png?v=98a82f36cfb1",
+      "alt": "莲华样张立绘",
+      "sourceShowcaseId": "pc_renge_mangekyou_renge_vermilion_kimono_crimson_glance",
+      "sourceShowcaseSha256": "19926b6cf9a790e2cc4a6181e00eb729154d81b55921b42921f2254a055342d4"
     },
     "visual_dna": {
       "hair": "乌黑浓密如墨的长直秀发 · 垂至脚踝的经典大和姬发式",
@@ -97794,8 +97870,10 @@
     "type": "popular",
     "icon": "🥀",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "篝之雾枝 立绘待补"
+      "image": "../assets/characters/popular-kagari_no_kirie.png?v=249cf6f78a03",
+      "alt": "篝之雾枝样张立绘",
+      "sourceShowcaseId": "pc_kagari_no_kirie_kirie_candelabra_velvet_armchair_majesty",
+      "sourceShowcaseSha256": "732725a32613d5f7df4d115a832442b5bbdbf25773de234657839639ef745389"
     },
     "visual_dna": {
       "hair": "如夜色般漆黑顺直的极长秀发 · 瀑布般垂曳至地面",
@@ -97875,8 +97953,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "小木曾雪菜 立绘待补"
+      "image": "../assets/characters/popular-ogiso_setsuna.png?v=0fda82cf70e1",
+      "alt": "小木曾雪菜样张立绘",
+      "sourceShowcaseId": "pc_ogiso_setsuna_ogiso_setsuna_stage",
+      "sourceShowcaseSha256": "ed68a99d8381b3466e2a5781e79e03c48b80453dd0e9287e5fd55083f5eb7573"
     },
     "visual_dna": {
       "hair": "棕色长发",
@@ -97936,8 +98016,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "冬马和纱 立绘待补"
+      "image": "../assets/characters/popular-touma_kazusa.png?v=bc055ad5d614",
+      "alt": "冬马和纱样张立绘",
+      "sourceShowcaseId": "pc_touma_kazusa_touma_kazusa_metronome",
+      "sourceShowcaseSha256": "4d7b299283946ff561c371f0a6be8ffd8880e8a0a990bca5993d61c9db13abff"
     },
     "visual_dna": {
       "hair": "黑色长发",
@@ -98059,8 +98141,10 @@
     ],
     "type": "popular",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "巴泽特·弗拉加·马克雷米兹 立绘待补"
+      "image": "../assets/characters/popular-bazett_fraga_mcremitz.png?v=8ad494dd0ded",
+      "alt": "巴泽特·弗拉加·马克雷米兹样张立绘",
+      "sourceShowcaseId": "pc_bazett_fraga_mcremitz_bazett_fraga_mcremitz_gloves",
+      "sourceShowcaseSha256": "64d72b1d865e194b0039c9f3cc5747d65d5413418e2b08057421102c7bccab97"
     },
     "visual_dna": {
       "hair": "暗红紫色短发",
@@ -98303,8 +98387,10 @@
     "type": "popular",
     "icon": "🌙",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "阿尔法 立绘待补"
+      "image": "../assets/characters/popular-alpha_shadow.png?v=ce550f5a93d4",
+      "alt": "阿尔法样张立绘",
+      "sourceShowcaseId": "pc_alpha_shadow_alpha_moonlit_balcony_briefing",
+      "sourceShowcaseSha256": "67038a434bbb8d4de80f75ae4fc0dfdfcfdf3b23c91513763e1af830cbc5a2ac"
     },
     "visual_dna": {
       "hair": "璀璨如金的修长秀发 · 柔顺垂至腰际",
@@ -98446,8 +98532,10 @@
     "type": "popular",
     "icon": "📖",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "贝塔 立绘待补"
+      "image": "../assets/characters/popular-beta_shadow.png?v=5d61921ea655",
+      "alt": "贝塔样张立绘",
+      "sourceShowcaseId": "pc_beta_shadow_beta_library_bookstack_tease",
+      "sourceShowcaseSha256": "3d804af3888b167ae58b1d3eb16e6eb376568f25598853ca4dbe5d1c8d9d2c5f"
     },
     "visual_dna": {
       "hair": "银白如雪的微卷短发 · 两侧垂下轻盈小发辫",
@@ -98614,8 +98702,10 @@
     "type": "popular",
     "icon": "🐾",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "德尔塔 立绘待补"
+      "image": "../assets/characters/popular-delta_shadow.png?v=97a90ea2e787",
+      "alt": "德尔塔样张立绘",
+      "sourceShowcaseId": "pc_delta_shadow_delta_garage_meat_jerky_snack",
+      "sourceShowcaseSha256": "f23ef0f45977b31a4d2e6d2ee9ad596b06ca3a5ec8cb6a93cd14ae1e0e7d880f"
     },
     "visual_dna": {
       "hair": "如黑夜般深邃微乱的长发 · 活泼灵动的兽耳",
@@ -98698,8 +98788,10 @@
     "type": "popular",
     "icon": "🎹",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "厄普西隆 立绘待补"
+      "image": "../assets/characters/popular-epsilon_shadow.png?v=23305e3cc012",
+      "alt": "厄普西隆样张立绘",
+      "sourceShowcaseId": "pc_epsilon_shadow_epsilon_rooftop_magic_threads",
+      "sourceShowcaseSha256": "98ec98ad27cf2a7064723247b2c64cdbc32580efc08f3ea7b7871fd9957fe3fe"
     },
     "visual_dna": {
       "hair": "如清冽流水般的浅蓝色微卷长发",
@@ -98781,8 +98873,10 @@
     "type": "popular",
     "icon": "🌹",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "萝丝·奥利安娜 立绘待补"
+      "image": "../assets/characters/popular-rose_oriana.png?v=222c4a1b981c",
+      "alt": "萝丝·奥利安娜样张立绘",
+      "sourceShowcaseId": "pc_rose_oriana_rose_oriana_campus_bench_bread_blush",
+      "sourceShowcaseSha256": "e43568f120faead1a318aea5b2eac259646ecc1fc1b1504c1b91aed8c34a148a"
     },
     "visual_dna": {
       "hair": "高贵温暖的淡金色波浪长发 · 优雅螺旋卷束",
@@ -98948,8 +99042,10 @@
     "type": "popular",
     "icon": "🥀",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "奥萝拉 立绘待补"
+      "image": "../assets/characters/popular-aurora_shadow.png?v=e7bbda3eb70e",
+      "alt": "奥萝拉样张立绘",
+      "sourceShowcaseId": "pc_aurora_shadow_aurora_night_market_cider_toast",
+      "sourceShowcaseSha256": "94ed3fc2fa9d6bec6c717ff92c6363a30953eac40f79f442d6abc9c0b4a3dd3a"
     },
     "visual_dna": {
       "hair": "如黑夜深渊般柔滑光泽的及踝黑发",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kamio_misuzu",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 251,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:48:45.559283800+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "kamio_misuzu",
     "popular": {
@@ -80,8 +80,10 @@
       "type": "popular",
       "icon": "🦖",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "神尾观铃 立绘待补"
+        "image": "../assets/characters/popular-kamio_misuzu.png?v=d7ca5109b10f",
+        "alt": "神尾观铃样张立绘",
+        "sourceShowcaseId": "pc_kamio_misuzu_misuzu_sunflower_slope_straw_hat_wave",
+        "sourceShowcaseSha256": "2881d82190df1dadb087aa9e6b45a5ba2eeae49c9761f90a8e927065719b5d21"
       },
       "visual_dna": {
         "hair": "灿烂夺目的纯金金色长发 · 束成高挑利落的单马尾",

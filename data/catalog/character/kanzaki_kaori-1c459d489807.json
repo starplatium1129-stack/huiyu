@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kanzaki_kaori",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 242,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:48:45.559283800+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "kanzaki_kaori",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "神裂火织 立绘待补"
+        "image": "../assets/characters/popular-kanzaki_kaori.png?v=d838eebab505",
+        "alt": "神裂火织样张立绘",
+        "sourceShowcaseId": "pc_kanzaki_kaori_kanzaki_shrine_dojo_bokken_stance_serenity",
+        "sourceShowcaseSha256": "2bc7285b462a093fd76f31210ea728772f1c83902201690fb3ee45a82973b164"
       },
       "visual_dna": {
         "hair": "乌黑柔亮及膝瀑布长发 · 高高扎起单马尾 · 气场凌厉威严",

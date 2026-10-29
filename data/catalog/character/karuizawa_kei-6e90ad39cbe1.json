@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "karuizawa_kei",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 232,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "karuizawa_kei",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🎀",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "轻井泽惠 立绘待补"
+        "image": "../assets/characters/popular-karuizawa_kei.png?v=da679975d297",
+        "alt": "轻井泽惠样张立绘",
+        "sourceShowcaseId": "pc_karuizawa_kei_kei_stairwell_secret_whisper",
+        "sourceShowcaseSha256": "2be623172dbd5d961b9ca15c4bdc2ef9f439236d4977d5534ecf152d1dbb7272"
       },
       "visual_dna": {
         "hair": "亮金高扎柔顺侧马尾 · 标志蝴蝶结发饰 · 娇俏灵动刘海",

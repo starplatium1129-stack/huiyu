@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alpha_shadow",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 261,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "alpha_shadow",
     "popular": {
@@ -79,8 +79,10 @@
       "type": "popular",
       "icon": "🌙",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "阿尔法 立绘待补"
+        "image": "../assets/characters/popular-alpha_shadow.png?v=ce550f5a93d4",
+        "alt": "阿尔法样张立绘",
+        "sourceShowcaseId": "pc_alpha_shadow_alpha_moonlit_balcony_briefing",
+        "sourceShowcaseSha256": "67038a434bbb8d4de80f75ae4fc0dfdfcfdf3b23c91513763e1af830cbc5a2ac"
       },
       "visual_dna": {
         "hair": "璀璨如金的修长秀发 · 柔顺垂至腰际",

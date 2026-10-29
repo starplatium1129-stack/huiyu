@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "viper_nikke",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 220,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "viper_nikke",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🐍",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "毒蛇 立绘待补"
+        "image": "../assets/characters/popular-viper_nikke.png?v=34fc208db95f",
+        "alt": "毒蛇样张立绘",
+        "sourceShowcaseId": "pc_viper_nikke_viper_smartphone_selfie_cling",
+        "sourceShowcaseSha256": "d14ab110259bdcf6f65b5ddbc6788541fd9b23ab54a08ada508a01f260bc4f2b"
       },
       "visual_dna": {
         "hair": "极其浓密华丽粉色大波浪长发 · 宛若棉花糖般蓬松卷曲",

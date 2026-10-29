@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuroka",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 226,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "kuroka",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🐾",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "黑歌 立绘待补"
+        "image": "../assets/characters/popular-kuroka.png?v=7101a8654abf",
+        "alt": "黑歌样张立绘",
+        "sourceShowcaseId": "pc_kuroka_kuroka_engawa_sake_fish_feed",
+        "sourceShowcaseSha256": "8b0e3fdb3f8936f2627e79662bea2eb97dccd04be2ccefa585d955c18cb87568"
       },
       "visual_dna": {
         "hair": "漆黑柔亮及腰长发 · 灵动低双马尾 · 黑色绒毛猫耳",

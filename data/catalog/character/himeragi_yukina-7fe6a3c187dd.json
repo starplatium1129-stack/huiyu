@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "himeragi_yukina",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 224,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "himeragi_yukina",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "姬柊雪菜 立绘待补"
+        "image": "../assets/characters/popular-himeragi_yukina.png?v=fd8e4d64a4cf",
+        "alt": "姬柊雪菜样张立绘",
+        "sourceShowcaseId": "pc_himeragi_yukina_yukina_apartment_kitchen_stew",
+        "sourceShowcaseSha256": "1d001696cea92b205bc7eb88e49981eebece0807448a3fa63355bc5190528d98"
       },
       "visual_dna": {
         "hair": "如墨长直发 · 整齐刘海 · 柔顺垂落至腰际",

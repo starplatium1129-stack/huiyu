@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ogiso_setsuna",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 254,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:58:36.451279400+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "ogiso_setsuna",
     "profile": {
@@ -19,8 +19,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "小木曾雪菜 立绘待补"
+        "image": "../assets/characters/popular-ogiso_setsuna.png?v=0fda82cf70e1",
+        "alt": "小木曾雪菜样张立绘",
+        "sourceShowcaseId": "pc_ogiso_setsuna_ogiso_setsuna_stage",
+        "sourceShowcaseSha256": "ed68a99d8381b3466e2a5781e79e03c48b80453dd0e9287e5fd55083f5eb7573"
       },
       "visual_dna": {
         "hair": "棕色长发",

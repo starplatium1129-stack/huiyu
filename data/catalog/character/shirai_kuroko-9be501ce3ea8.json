@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shirai_kuroko",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 198,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "shirai_kuroko",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "白井黑子 · 立绘待制作"
+        "image": "../assets/characters/popular-shirai_kuroko.png?v=5899303e19df",
+        "alt": "白井黑子样张立绘",
+        "sourceShowcaseId": "pc_shirai_kuroko_shirai_kuroko_daily_station_map",
+        "sourceShowcaseSha256": "b5ea72fd2b28533ea58eaadab778aef6988311ef186ad47d09d62be29dfb529e"
       },
       "visual_dna": {
         "signature": "Brown twin tails tied with ribbons and brown eyes",

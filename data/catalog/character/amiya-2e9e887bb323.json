@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "amiya",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 193,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "amiya",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "阿米娅 · 立绘待制作"
+        "image": "../assets/characters/popular-amiya.png?v=de0ceffb406a",
+        "alt": "阿米娅样张立绘",
+        "sourceShowcaseId": "pc_amiya_amiya_daily_rain_herb_stall",
+        "sourceShowcaseSha256": "de1630a400cd5a3f3e5c50a378b5ef92d76e5e823cca51e7ac56ce4101e05cdb"
       },
       "visual_dna": {
         "signature": "Long brown hair, upright rabbit ears, and blue eyes",

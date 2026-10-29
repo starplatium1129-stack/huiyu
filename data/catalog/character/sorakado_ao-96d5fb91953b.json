@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sorakado_ao",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 249,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:48:45.559283800+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "sorakado_ao",
     "popular": {
@@ -80,8 +80,10 @@
       "type": "popular",
       "icon": "🦊",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "空门苍 立绘待补"
+        "image": "../assets/characters/popular-sorakado_ao.png?v=82e08876b4f6",
+        "alt": "空门苍样张立绘",
+        "sourceShowcaseId": "pc_sorakado_ao_ao_dagashiya_counter_candy_tease",
+        "sourceShowcaseSha256": "3dbfe0022580b59aab32b205b60c3e1dcaf36082d00b4cd93f00005b07737229"
       },
       "visual_dna": {
         "hair": "清澈亮丽的天蓝色及肩中长发 · 束于一侧的侧马尾",

@@ -334,7 +334,7 @@
     {
       "id": "nakano_ichika",
       "batch": 7,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "pending",
       "samples": "pending",
       "sceneCount": 10
@@ -342,7 +342,7 @@
     {
       "id": "nakano_yotsuba",
       "batch": 7,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "pending",
       "samples": "pending",
       "sceneCount": 10
@@ -350,7 +350,7 @@
     {
       "id": "nakano_itsuki",
       "batch": 7,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "pending",
       "samples": "pending",
       "sceneCount": 10
@@ -358,7 +358,7 @@
     {
       "id": "inaba_meguru",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -367,7 +367,7 @@
     {
       "id": "togakushi_touko",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -376,7 +376,7 @@
     {
       "id": "sumizome_nozomi",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -385,7 +385,7 @@
     {
       "id": "hiuchidani_mei",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -394,7 +394,7 @@
     {
       "id": "amiya",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -403,7 +403,7 @@
     {
       "id": "chen_qianyu",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -412,7 +412,7 @@
     {
       "id": "ijichi_nijika",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -421,7 +421,7 @@
     {
       "id": "fujiwara_chika",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -430,7 +430,7 @@
     {
       "id": "sawamura_spencer_eriri",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -439,7 +439,7 @@
     {
       "id": "shirai_kuroko",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -448,7 +448,7 @@
     {
       "id": "saten_ruiko",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -457,7 +457,7 @@
     {
       "id": "faln_touden",
       "batch": 11,
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 8,
@@ -465,7 +465,7 @@
     },
     {
       "id": "alice_sao",
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 6,
@@ -473,7 +473,7 @@
     },
     {
       "id": "aozaki_aoko",
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 6,
@@ -481,7 +481,7 @@
     },
     {
       "id": "iino_miko",
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 6,
@@ -489,7 +489,7 @@
     },
     {
       "id": "kouzuki_kallen",
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 6,
@@ -497,7 +497,7 @@
     },
     {
       "id": "power",
-      "portraitPending": true,
+      "portraitPending": false,
       "references": "not-requested",
       "samples": "pending",
       "sceneCount": 6,

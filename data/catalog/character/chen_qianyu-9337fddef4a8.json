@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chen_qianyu",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 194,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
   "data": {
     "id": "chen_qianyu",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "陈千语 · 立绘待制作"
+        "image": "../assets/characters/popular-chen_qianyu.png?v=e7a2df841898",
+        "alt": "陈千语样张立绘",
+        "sourceShowcaseId": "pc_chen_qianyu_chen_qianyu_intimate_workshop_hand_hold",
+        "sourceShowcaseSha256": "c00f5cafabe04319ae2fe9d664253960ebc33d71bf9c3771530aee1f90f01453"
       },
       "visual_dna": {
         "signature": "Long black hair, two small dragon horns, and a dark dragon tail",
