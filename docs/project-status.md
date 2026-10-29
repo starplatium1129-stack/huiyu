@@ -34,7 +34,7 @@
 
 | 数据 | 工作权威 / 项目来源 |
 | --- | --- |
-| 人物、服装、场景、蓝图、记录式文档 | 实际运行目录 `content/catalog.sqlite`；通过 `content:catalog` 或内容维护页面读写 |
+| 人物、服装、场景、蓝图、记录式文档 | 项目开发使用 `runtime/content/catalog.sqlite`；桌面端使用个人运行目录下的工作库，通过 `content:catalog` 或内容维护页面读写 |
 | 项目初始化/发行快照 | 显式导出的 `data/catalog/`；构建读取快照，安装不覆盖个人工作库 |
 | 参考资料 | `data/references/<人物ID>.json` 与 manifest；本机 API 懒加载，旧聚合仅兼容 |
 

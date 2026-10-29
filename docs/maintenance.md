@@ -3,7 +3,7 @@
 <a id="文件职责"></a>
 
 人物、服装、场景和蓝图均采用记录化管理：
-- **工作权威**：运行时个人目录下的 `content/catalog.sqlite`。
+- **工作权威**：项目开发固定使用 `runtime/content/catalog.sqlite`，维护命令传 `--runtime-root runtime`；已安装桌面端使用其个人运行目录下的 `content/catalog.sqlite`，两者通过项目快照同步。
 - **项目快照**：Git 跟踪的 `data/catalog/`（用于审查、版本控制与发布打包）。
 
 ---

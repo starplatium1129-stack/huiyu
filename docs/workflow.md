@@ -54,7 +54,7 @@
 
 ## 数据维护
 
-人物、服装、场景、蓝图及记录式文档通过 `content:catalog patch/import --runtime-root <实际运行目录>` 维护；先用 stats 核对实际库路径，默认预览，`--apply` 写入工作库，随后显式 `export --out data/catalog --record <kind:id>` 或 `--character <id>` 交付项目快照。已有目标拒绝无范围整库覆盖及来源不明的记录替换；全库备份使用新目录，升级导入拒绝已接收上游版本回退。具体格式见[维护手册](maintenance.md#3-导出与快照同步)。构建工具消费项目快照，不反向修改工作库，并核对定稿文档与保护基线一致。
+人物、服装、场景、蓝图及记录式文档通过 `content:catalog patch/import --runtime-root <实际运行目录>` 维护；项目开发固定使用 `--runtime-root runtime`，先用 stats 核对实际库路径。默认预览，`--apply` 写入工作库，随后显式 `export --out data/catalog --record <kind:id>` 或 `--character <id>` 交付项目快照。已有目标拒绝无范围整库覆盖及来源不明的记录替换；全库备份使用新目录，升级导入拒绝已接收上游版本回退。具体格式见[维护手册](maintenance.md#3-导出与快照同步)。构建工具消费项目快照，不反向修改工作库，并核对定稿文档与保护基线一致。
 
 | 操作 | 入口 | 注意事项 |
 | --- | --- | --- |
