@@ -503,9 +503,15 @@ if ($installWithPackage) { Assert-FixedInstaller -Installed }
 else { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
 Write-DesktopDuration '安装后校验'
 if (-not $StartupRepair) {
-  $catalogMode = if ($AdoptProjectCatalog) { @('--adopt-project-catalog') } else { @() }
-  & node (Join-Path $root 'scripts\lib\desktop-catalog-update.js') $gatewayDir (Join-Path $configRoot 'gateway') @catalogMode
-  if ($LASTEXITCODE -ne 0) { throw '内容库更新未完成；个人修改保留。请检查快照或合并冲突后再部署，不能仅凭素材安装成功判断人物已更新。' }
+  $catalogArguments = @((Join-Path $root 'scripts\lib\desktop-catalog-update.js'), $gatewayDir, (Join-Path $configRoot 'gateway'))
+  if ($AdoptProjectCatalog) { $catalogArguments += '--adopt-project-catalog' }
+  $previousPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = 'Continue'
+    & node @catalogArguments 2>&1 | ForEach-Object { Write-Host $_.ToString() }
+    $catalogExitCode = $LASTEXITCODE
+  } finally { $ErrorActionPreference = $previousPreference }
+  if ($catalogExitCode -ne 0) { throw '内容库更新未完成；请检查上述原始错误及备份，不能仅凭素材安装成功判断人物已更新。' }
   Write-DesktopDuration '内容快照导入与核对'
 }
 Write-Host '[5/6] Rust EXE、宿主和两份 native DLL 与候选哈希一致；不冒充模型验收' -ForegroundColor DarkGray
