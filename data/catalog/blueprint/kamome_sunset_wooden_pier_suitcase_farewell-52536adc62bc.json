@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kamome_sunset_wooden_pier_suitcase_farewell",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2580,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "kamome_sunset_wooden_pier_suitcase_farewell",
     "title": "久岛鸥 · 夕阳木栈桥上的皮箱回望",
@@ -30,9 +30,11 @@
       "bittersweet_smile",
       "backlight",
       "water_reflection",
-      "wide_shot"
+      "wide_shot",
+      "golden_fill_light",
+      "soft_shadows"
     ],
-    "animaCaption": "Golden sunset reflections flood the calm waters around the wooden pier as she waves softly.",
+    "animaCaption": "Golden sunset reflections flood the calm waters around the wooden pier as she waves softly. Light reflected from the sea reveals her face, suitcase and the pier.",
     "characterId": "kushima_kamome",
     "recommendedSize": "1216x832",
     "negativeTokens": [],

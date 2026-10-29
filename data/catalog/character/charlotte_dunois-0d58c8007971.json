@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "charlotte_dunois",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 222,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
   "data": {
     "id": "charlotte_dunois",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🥐",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "夏洛特·德诺阿 立绘待补"
+        "image": "../assets/characters/popular-charlotte_dunois.png?v=4e175238c50e",
+        "alt": "夏洛特·德诺阿样张立绘",
+        "sourceShowcaseId": "pc_charlotte_dunois_charlotte_bento_box_handover",
+        "sourceShowcaseSha256": "4cf37e9fffa844b56f8b2972fd4c35f71e98ad8ad8865eb80c9b88578ed92b3d"
       },
       "visual_dna": {
         "hair": "璀璨金黄长发 · 优雅侧单马尾 · 柔顺法式斜刘海",

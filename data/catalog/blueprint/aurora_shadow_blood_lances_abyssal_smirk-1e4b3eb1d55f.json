@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_shadow_blood_lances_abyssal_smirk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2561,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "aurora_shadow_blood_lances_abyssal_smirk",
     "title": "奥萝拉 · 血月封印渊薮的千刃齐发",
@@ -30,12 +30,20 @@
       "regal_posture",
       "dramatic_lighting",
       "red_glow",
-      "wide_shot"
+      "wide_shot",
+      "crimson_ambient_light",
+      "reflected_light",
+      "volcanic_rocks",
+      "crimson_glow",
+      "soft_front_lighting"
     ],
-    "animaCaption": "Vivid crimson spears hum with power around her billowing robe under the blood moon.",
+    "animaCaption": "Vivid crimson spears hum with power around her billowing robe under the blood moon. Crimson light reveals her face and the spears and rocks around her.",
     "characterId": "aurora_shadow",
     "recommendedSize": "1216x832",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

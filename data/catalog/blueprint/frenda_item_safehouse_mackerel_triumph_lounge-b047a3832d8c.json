@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frenda_item_safehouse_mackerel_triumph_lounge",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2616,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "frenda_item_safehouse_mackerel_triumph_lounge",
     "title": "芙兰达 · ITEM安全屋的鲭鱼罐头大宴",
@@ -30,9 +30,12 @@
       "cat_smile",
       "neon_lighting",
       "warm_spotlight",
-      "wide_shot"
+      "wide_shot",
+      "bar_lighting",
+      "warm_ambient_light",
+      "leather_sofa"
     ],
-    "animaCaption": "Warm lounge lighting highlights her tilted beret as she savors her favorite canned mackerel.",
+    "animaCaption": "Warm lounge lighting highlights her tilted beret as she savors her favorite canned mackerel. Warm bar lighting reveals her face, the can and the surrounding lounge.",
     "characterId": "frenda_seivelun",
     "recommendedSize": "1216x832",
     "negativeTokens": [],

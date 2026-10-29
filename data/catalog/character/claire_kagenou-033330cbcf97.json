@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "claire_kagenou",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 267,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:15:40.584314600+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "claire_kagenou",
     "popular": {
@@ -78,8 +78,10 @@
       "type": "popular",
       "icon": "⚡",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "克莱尔·卡盖诺 立绘待补"
+        "image": "../assets/characters/popular-claire_kagenou.png?v=eb6288d8b9e5",
+        "alt": "克莱尔·卡盖诺样张立绘",
+        "sourceShowcaseId": "pc_claire_kagenou_claire_training_ground_sweat_break",
+        "sourceShowcaseSha256": "814f73b25ad3ad1a1c2fac67dffec3fc457f8589488c22c71820f0349cef4b73"
       },
       "visual_dna": {
         "hair": "乌黑光亮如缎的利落长发 · 束成飒爽高马尾",

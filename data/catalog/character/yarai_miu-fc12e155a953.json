@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yarai_miu",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 256,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:58:36.451279400+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "yarai_miu",
     "profile": {
@@ -19,8 +19,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "矢来美羽 立绘待补"
+        "image": "../assets/characters/popular-yarai_miu.png?v=9cd7a9334e59",
+        "alt": "矢来美羽样张立绘",
+        "sourceShowcaseId": "pc_yarai_miu_yarai_miu_dispatch",
+        "sourceShowcaseSha256": "cf62a01d8f1dd392171556ad457a54a0d5322938e3fc2f825e89c278439e3dab"
       },
       "visual_dna": {
         "hair": "红色长发",

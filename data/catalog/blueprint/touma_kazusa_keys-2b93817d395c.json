@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_keys",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2389,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-29T08:54:33.119184700+00:00",
   "data": {
     "id": "touma_kazusa_keys",
     "characterId": "touma_kazusa",
@@ -25,12 +25,17 @@
       "piano bench",
       "hands on keys",
       "night",
-      "soft light",
+      "backstage light",
+      "warm lighting",
+      "soft shadows",
       "medium shot"
     ],
-    "animaCaption": "",
-    "negativeTokens": [],
-    "recommendedSize": "832x1216",
+    "animaCaption": "Soft backstage light illuminates her face and fingers as she plays the piano.",
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
+    "recommendedSize": "1216x832",
     "adult": false,
     "isNsfw": false,
     "rating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "naruse_shiroha",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 248,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:48:45.559283800+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "naruse_shiroha",
     "popular": {
@@ -80,8 +80,10 @@
       "type": "popular",
       "icon": "🍉",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "鸣濑白羽 立绘待补"
+        "image": "../assets/characters/popular-naruse_shiroha.png?v=19580ab61d8d",
+        "alt": "鸣濑白羽样张立绘",
+        "sourceShowcaseId": "pc_naruse_shiroha_shiroha_seawall_watermelon_summer_clouds",
+        "sourceShowcaseSha256": "a02bfb730250164c98cd83473419a3aaed01b114575285ea4c47deac53187684"
       },
       "visual_dna": {
         "hair": "雪白如银的顺滑及腰长发 · 发梢系成低双马尾",

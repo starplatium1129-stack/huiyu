@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hiuchidani_mei_intimate_eaves_rain_shelter",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2013,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "characterId": "hiuchidani_mei",
     "outfitId": "sailor_blue",
@@ -42,10 +42,13 @@
       "glowing",
       "soft_lighting",
       "overcast",
-      "warm_lighting"
+      "warm_lighting",
+      "shop_window",
+      "warm_window_light",
+      "soft_shadows"
     ],
     "negativeTokens": [],
-    "animaCaption": "Mei wrapped in a warm coat hugging tightly under the rainy eaves.",
+    "animaCaption": "Mei wrapped in a warm coat hugging tightly under the rainy eaves. Warm shop-window light reveals her face and the rainy shelter around her.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "power",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 200,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
+  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
   "data": {
     "id": "power",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🩸",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "帕瓦 立绘待补"
+        "image": "../assets/characters/popular-power.png?v=7c27499dd274",
+        "alt": "帕瓦样张立绘",
+        "sourceShowcaseId": "pc_power_power_rooftop_blood_scythe_smirk",
+        "sourceShowcaseSha256": "c7de63ba91f94fa546e0481888e6e23cd544415a210973740933bcf788f3578f"
       },
       "visual_dna": {
         "hair": "浅金草莓金及腰长直发 · 微凌乱野性蓬松感",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_diplomatic_summit_speech",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1999,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "alice_sao_diplomatic_summit_speech",
     "characterId": "alice_sao",
@@ -33,9 +33,11 @@
       "dignified",
       "cowboy_shot",
       "glowing",
-      "soft_lighting"
+      "soft_lighting",
+      "overhead_lighting",
+      "bright_interior"
     ],
-    "animaCaption": "Alice addressing an international summit with regal diplomatic grace.",
+    "animaCaption": "Alice addressing an international summit with regal diplomatic grace. The hall lighting clearly reveals her face, podium and conference room.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

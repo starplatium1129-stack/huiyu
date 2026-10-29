@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_shadow_tactical_holo_sandbox_briefing",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2537,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "beta_shadow_tactical_holo_sandbox_briefing",
     "title": "贝塔 · 地下指控所的沙盘谍报复盘",
@@ -29,11 +29,13 @@
       "focused_eyes",
       "sharp_expression",
       "blue_glow",
-      "dimly_lit",
       "volumetric_lighting",
-      "wide_shot"
+      "wide_shot",
+      "soft_fill_light",
+      "blue_ambient_light",
+      "illuminated_background"
     ],
-    "animaCaption": "Blue map glow illuminates her silver hair and focused expression as she guides the threads.",
+    "animaCaption": "Blue map glow illuminates her silver hair and focused expression as she guides the threads. The holographic table and soft room lighting reveal her face, hands and the surrounding command room.",
     "characterId": "beta_shadow",
     "recommendedSize": "1216x832",
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "epsilon_shadow_spire_rooftop_thread_slashes",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2549,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "epsilon_shadow_spire_rooftop_thread_slashes",
     "title": "厄普西隆 · 哥特尖塔之巅的月夜罗网",
@@ -30,9 +30,11 @@
       "purple_magic_glow",
       "moonlight",
       "rim_light",
-      "wide_shot"
+      "wide_shot",
+      "soft_fill_light",
+      "illuminated_city"
     ],
-    "animaCaption": "Phosphorescent purple threads crisscross the moonlight behind her poised silhouette.",
+    "animaCaption": "Phosphorescent purple threads crisscross the moonlight behind her poised silhouette. Moonlight and the glowing threads illuminate her face, the spire and the city behind her.",
     "characterId": "epsilon_shadow",
     "recommendedSize": "1216x832",
     "negativeTokens": [],

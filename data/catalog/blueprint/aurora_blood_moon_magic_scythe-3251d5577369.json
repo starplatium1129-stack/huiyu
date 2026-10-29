@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_blood_moon_magic_scythe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2489,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "aurora_blood_moon_magic_scythe",
     "characterId": "aurora_shadow",
@@ -28,10 +28,17 @@
       "scythe",
       "flowing_hair",
       "intense_look",
-      "full_body"
+      "full_body",
+      "crimson_moonlight",
+      "soft_fill_light",
+      "visible_face",
+      "soft_front_lighting"
     ],
-    "negativeTokens": [],
-    "animaCaption": "The Witch of Calamity Aurora unleashing blood magic beneath the crimson moon.",
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
+    "animaCaption": "The Witch of Calamity Aurora unleashing blood magic beneath the crimson moon. Crimson moonlight reveals her face, dress and scythe.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

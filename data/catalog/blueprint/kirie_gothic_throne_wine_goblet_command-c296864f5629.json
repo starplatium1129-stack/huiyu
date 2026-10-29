@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_gothic_throne_wine_goblet_command",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2364,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-29T08:54:33.119184700+00:00",
   "data": {
     "id": "kirie_gothic_throne_wine_goblet_command",
     "characterId": "kagari_no_kirie",
@@ -12,7 +12,7 @@
     "title": "篝之雾枝 · 古堡王座上的鲜血邀约",
     "category": "日常陪伴",
     "description": "蛛网与烛火交织的阴暗大厅中，雾枝优雅地斜倚在高背天鹅绒王座上。她摇晃着盛有暗红液体的水晶高脚杯，染血的薄唇扬起冰冷的弧度，向跪在阶下的俘虏投下命令般的目光。",
-    "recommendedSize": "832x1216",
+    "recommendedSize": "1216x832",
     "location": "grand decaying Victorian gothic hall with stone arches, spiderwebs, and crystal chandeliers",
     "action": "reclining imperiously on tufted black velvet throne, swirling blood-red liquid in ornate goblet, looking down with icy commanding beauty",
     "timeOfDay": "night",
@@ -24,7 +24,10 @@
       "throne",
       "castle_hall",
       "chandelier",
+      "candelabra",
       "candlelight",
+      "warm_lighting",
+      "soft_shadows",
       "wine_glass",
       "red_liquid",
       "choker",
@@ -32,8 +35,11 @@
       "haughty_gaze",
       "medium_shot"
     ],
-    "negativeTokens": [],
-    "animaCaption": "Kagari no Kirie reigning from her gothic throne with a goblet of crimson wine.",
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
+    "animaCaption": "The candelabra lights her face and crimson goblet while she looks down from the gothic throne.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_study_glasses_focus",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1970,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "nakano_itsuki_study_glasses_focus",
     "title": "中野五月 · 深夜书桌前的专注题海",
@@ -38,10 +38,13 @@
       "desk_lamp",
       "night",
       "focused",
-      "medium_shot"
+      "medium_shot",
+      "warm_ambient_light",
+      "soft_shadows",
+      "bookshelf"
     ],
     "negativeTokens": [],
-    "animaCaption": "Itsuki studying diligently at her desk late at night wearing glasses.",
+    "animaCaption": "Itsuki studying diligently at her desk late at night wearing glasses. The desk lamp and room light reveal her face, open books and nearby shelves.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alpha_moonlit_balcony_briefing",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2467,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T14:27:34.348995300+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "alpha_moonlit_balcony_briefing",
     "characterId": "alpha_shadow",
@@ -35,10 +35,13 @@
       "soft_fill_light",
       "lantern",
       "warm_lighting",
-      "medium_shot"
+      "medium_shot",
+      "lantern_light",
+      "balcony_railing",
+      "warm_ambient_light"
     ],
     "negativeTokens": [],
-    "animaCaption": "A lantern on the railing softly lights Alpha's face and scroll while the moon shines behind her.",
+    "animaCaption": "A lantern on the railing softly lights Alpha's face and scroll while the moon shines behind her. The railing lantern illuminates her face and scroll while the balcony stays moonlit.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

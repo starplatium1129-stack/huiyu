@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fujiwara_chika",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 196,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
   "data": {
     "id": "fujiwara_chika",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "藤原千花 · 立绘待制作"
+        "image": "../assets/characters/popular-fujiwara_chika.png?v=627ceb6dd278",
+        "alt": "藤原千花样张立绘",
+        "sourceShowcaseId": "pc_fujiwara_chika_fujiwara_chika_daily_council_dice",
+        "sourceShowcaseSha256": "3da2c0b73d9065f862af04f10bd656db445f61e480f63f90cd542e8162fabd79"
       },
       "visual_dna": {
         "signature": "Soft pink shoulder-length hair, blue eyes, and a black hair bow",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_balcony_night_breeze_cuddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2240,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "kei_balcony_night_breeze_cuddle",
     "characterId": "karuizawa_kei",
@@ -29,10 +29,18 @@
       "leaning_on_shoulder",
       "peaceful_expression",
       "moonlight",
-      "cowboy_shot"
+      "cowboy_shot",
+      "warm_window_light",
+      "soft_fill_light",
+      "balcony_railing",
+      "room_lighting",
+      "soft_front_lighting"
     ],
-    "negativeTokens": [],
-    "animaCaption": "Kei Karuizawa cuddling securely on a moonlit dorm balcony at night.",
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
+    "animaCaption": "Kei Karuizawa cuddling securely on a moonlit dorm balcony at night. Light from the room reaches her face and the balcony railing.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

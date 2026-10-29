@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kouzuki_kallen",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 199,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
+  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
   "data": {
     "id": "kouzuki_kallen",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🔥",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "红月卡莲 立绘待补"
+        "image": "../assets/characters/popular-kouzuki_kallen.png?v=de82f8f37f45",
+        "alt": "红月卡莲样张立绘",
+        "sourceShowcaseId": "pc_kouzuki_kallen_kouzuki_kallen_guren_hangar_rest",
+        "sourceShowcaseSha256": "18727ac3239237ab4908872a509b624ad53df087ded953c02bbb26bc1075290d"
       },
       "visual_dna": {
         "hair": "明亮艳红齐肩短发 · 略带张扬翘发梢",

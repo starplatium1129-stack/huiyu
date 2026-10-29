@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mayuri_stargazing_shrine_starry_reach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2567,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "mayuri_stargazing_shrine_starry_reach",
     "title": "椎名真由理 · 神社参道长阶的星尘握手",
@@ -31,12 +31,18 @@
       "innocent_smile",
       "starlight",
       "lantern_light",
-      "wide_shot"
+      "wide_shot",
+      "stone_lantern_light",
+      "warm_ambient_light",
+      "soft_fill_light"
     ],
-    "animaCaption": "Starlight sparkles in her wide innocent eyes as she reaches upward into the night sky.",
+    "animaCaption": "Starlight sparkles in her wide innocent eyes as she reaches upward into the night sky. The shrine lantern lights her face and the stone steps under the stars.",
     "characterId": "shiina_mayuri",
     "recommendedSize": "1216x832",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

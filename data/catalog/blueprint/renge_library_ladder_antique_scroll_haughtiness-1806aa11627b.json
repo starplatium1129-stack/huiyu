@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_library_ladder_antique_scroll_haughtiness",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2359,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "renge_library_ladder_antique_scroll_haughtiness",
     "characterId": "renge_mangekyou",
@@ -29,10 +29,13 @@
       "hakama",
       "elegant",
       "dusty_light",
-      "cowboy_shot"
+      "cowboy_shot",
+      "window_light",
+      "ambient_light",
+      "wooden_bookshelves"
     ],
     "negativeTokens": [],
-    "animaCaption": "Renge perched on a rolling library ladder in Taisho hakama, examining ancient scrolls.",
+    "animaCaption": "Renge perched on a rolling library ladder in Taisho hakama, examining ancient scrolls. Light from the lattice windows reveals her face, scroll and cedar shelves.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

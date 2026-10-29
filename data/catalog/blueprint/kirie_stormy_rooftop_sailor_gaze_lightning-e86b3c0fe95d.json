@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_stormy_rooftop_sailor_gaze_lightning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2593,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "kirie_stormy_rooftop_sailor_gaze_lightning",
     "title": "篝之雾枝 · 暴雨学园天台的逆风审视",
@@ -29,12 +29,20 @@
       "wind_blown_hair",
       "predatory_glare",
       "dramatic_lighting",
-      "wide_shot"
+      "wide_shot",
+      "diffused_storm_light",
+      "reflected_light",
+      "rooftop_fence",
+      "diffused_light",
+      "soft_front_lighting"
     ],
-    "animaCaption": "Lightning illuminates the dark thunderheads behind her as the pre-storm wind whips her black uniform.",
+    "animaCaption": "Lightning illuminates the dark thunderheads behind her as the pre-storm wind whips her black uniform. Diffused storm light reveals her face and the rooftop fence.",
     "characterId": "kagari_no_kirie",
     "recommendedSize": "1216x832",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

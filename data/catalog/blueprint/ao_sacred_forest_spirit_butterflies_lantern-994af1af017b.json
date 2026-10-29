@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_sacred_forest_spirit_butterflies_lantern",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2575,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "ao_sacred_forest_spirit_butterflies_lantern",
     "title": "空门苍 · 幽夜古林与七影蝶之引",
@@ -29,9 +29,10 @@
       "blue_glow",
       "lantern_light",
       "particles",
-      "wide_shot"
+      "wide_shot",
+      "illuminated_forest"
     ],
-    "animaCaption": "Ethereal blue butterfly lights swirl past her lantern as she navigates the sacred night forest.",
+    "animaCaption": "Ethereal blue butterfly lights swirl past her lantern as she navigates the sacred night forest. Her lantern and the butterflies illuminate her face and the mossy roots.",
     "characterId": "sorakado_ao",
     "recommendedSize": "1216x832",
     "negativeTokens": [],

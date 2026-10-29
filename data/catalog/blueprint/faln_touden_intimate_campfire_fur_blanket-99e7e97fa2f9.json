@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "faln_touden_intimate_campfire_fur_blanket",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2044,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T14:29:16.215024+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "characterId": "faln_touden",
     "outfitId": "camp_tunic",
@@ -35,10 +35,13 @@
       "warm_lighting",
       "peaceful",
       "serene",
-      "medium_shot"
+      "medium_shot",
+      "campfire_light",
+      "warm_ambient_light",
+      "stone_walls"
     ],
     "negativeTokens": [],
-    "animaCaption": "Falin rests her cheek on the viewer's shoulder under a shared fur blanket; only the shoulder enters the frame.",
+    "animaCaption": "Falin rests her cheek on the viewer's shoulder under a shared fur blanket; only the shoulder enters the frame. Firelight reaches her face, fur blanket and the surrounding cavern walls.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false

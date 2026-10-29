@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiiba_tsumugi",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 258,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "shiiba_tsumugi",
     "profile": {
@@ -19,8 +19,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "椎叶紬 立绘待补"
+        "image": "../assets/characters/popular-shiiba_tsumugi.png?v=964c11cc6852",
+        "alt": "椎叶紬样张立绘",
+        "sourceShowcaseId": "pc_shiiba_tsumugi_shiiba_tsumugi_shop_window",
+        "sourceShowcaseSha256": "56baeed98a4016ffccdc0ca4406c2a5ee18d071c025320d574ec3214676c17c5"
       },
       "visual_dna": {
         "hair": "棕色长发",

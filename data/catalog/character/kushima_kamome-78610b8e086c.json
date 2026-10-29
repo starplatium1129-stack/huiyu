@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kushima_kamome",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 250,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:48:45.559283800+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "kushima_kamome",
     "popular": {
@@ -81,8 +81,10 @@
       "type": "popular",
       "icon": "🧳",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "久岛鸥 立绘待补"
+        "image": "../assets/characters/popular-kushima_kamome.png?v=330c7cd25afc",
+        "alt": "久岛鸥样张立绘",
+        "sourceShowcaseId": "pc_kushima_kamome_kamome_pier_suitcase_perch_treasure_map",
+        "sourceShowcaseSha256": "8a12fac111ad85a56c4fb947bdafc35347d696a0aa4e92af5784529c1d224d9e"
       },
       "visual_dna": {
         "hair": "柔和梦幻的浅紫熏衣草色长发 · 扎成规整可爱的双马尾",

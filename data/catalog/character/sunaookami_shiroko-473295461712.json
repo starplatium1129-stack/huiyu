@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sunaookami_shiroko",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 213,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
   "data": {
     "id": "sunaookami_shiroko",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🐺",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "砂狼白子 立绘待补"
+        "image": "../assets/characters/popular-sunaookami_shiroko.png?v=625155dd4748",
+        "alt": "砂狼白子样张立绘",
+        "sourceShowcaseId": "pc_sunaookami_shiroko_sunaookami_shiroko_desert_ruins_tactical_patrol",
+        "sourceShowcaseSha256": "0ec4116c43529e20d40befbceb418274e61b10c9a891aa1ebc082dc97559082a"
       },
       "visual_dna": {
         "hair": "清爽柔顺的浅银灰色短发 · 侧边佩戴一枚简约十字发卡",

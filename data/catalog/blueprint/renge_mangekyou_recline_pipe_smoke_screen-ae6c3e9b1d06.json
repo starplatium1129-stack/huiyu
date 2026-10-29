@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_mangekyou_recline_pipe_smoke_screen",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2587,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "renge_mangekyou_recline_pipe_smoke_screen",
     "title": "莲华 · 屏风红榻前的青烟万华",
@@ -30,9 +30,12 @@
       "mysterious_smile",
       "lantern_light",
       "soft_lighting",
-      "wide_shot"
+      "wide_shot",
+      "paper_lantern",
+      "warm_ambient_light",
+      "gold_folding_screen"
     ],
-    "animaCaption": "Faint lantern glow illuminates the curling pipe smoke against the gold folding screen.",
+    "animaCaption": "Faint lantern glow illuminates the curling pipe smoke against the gold folding screen. The lantern illuminates her face, pipe and the painted folding screen.",
     "characterId": "renge_mangekyou",
     "recommendedSize": "1216x832",
     "negativeTokens": [],

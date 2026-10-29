@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kurodate_haruna",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 212,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
   "data": {
     "id": "kurodate_haruna",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🍽️",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "黑馆晴奈 立绘待补"
+        "image": "../assets/characters/popular-kurodate_haruna.png?v=f7763ec7874e",
+        "alt": "黑馆晴奈样张立绘",
+        "sourceShowcaseId": "pc_kurodate_haruna_kurodate_haruna_restaurant_gourmet_critique",
+        "sourceShowcaseSha256": "7bbf0d9017945be301e0eb60ab3fb4cdc1d97a6115660beaf947868e8d53f21c"
       },
       "visual_dna": {
         "hair": "极长如缎的墨黑直发 · 发尾至内侧泛着鲜明纯正的朱红挑染渐变",

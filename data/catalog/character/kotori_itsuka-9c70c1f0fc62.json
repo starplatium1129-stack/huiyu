@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kotori_itsuka",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 234,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "kotori_itsuka",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🍭",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "五河琴里 立绘待补"
+        "image": "../assets/characters/popular-kotori_itsuka.png?v=fe3da8cd1d71",
+        "alt": "五河琴里样张立绘",
+        "sourceShowcaseId": "pc_kotori_itsuka_kotori_living_room_lollipop_pout",
+        "sourceShowcaseSha256": "1728cbcd7211a01c052d205a7c063f9ac1f9c6b7007d80b4ba16beef0c04301a"
       },
       "visual_dna": {
         "hair": "珊瑚绯红及腰双马尾 · 标志黑白双发带 · 俏皮元气长发",

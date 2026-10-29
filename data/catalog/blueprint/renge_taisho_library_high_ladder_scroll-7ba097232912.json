@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_taisho_library_high_ladder_scroll",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2588,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "renge_taisho_library_high_ladder_scroll",
     "title": "莲华 · 大正洋风文库的高梯秘卷",
@@ -30,12 +30,19 @@
       "haughty_smirk",
       "stained_glass_light",
       "dust_motes",
-      "wide_shot"
+      "wide_shot",
+      "ambient_light",
+      "mahogany_bookshelves",
+      "interior_lighting",
+      "warm_ambient_light"
     ],
-    "animaCaption": "Stained glass window patterns project jewel tones across her hakama as she looks down.",
+    "animaCaption": "Stained glass window patterns project jewel tones across her hakama as she looks down. Warm library light illuminates her face, scroll and the nearby bookshelves.",
     "characterId": "renge_mangekyou",
     "recommendedSize": "1216x832",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

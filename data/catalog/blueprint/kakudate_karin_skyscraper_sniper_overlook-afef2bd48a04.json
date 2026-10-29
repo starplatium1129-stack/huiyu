@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_skyscraper_sniper_overlook",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2100,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-29T08:54:33.119184700+00:00",
   "data": {
     "id": "kakudate_karin_skyscraper_sniper_overlook",
     "characterId": "kakudate_karin",
@@ -12,7 +12,7 @@
     "title": "角楯花凛 · 摩天钟楼上的精准架枪",
     "category": "战术特勤",
     "description": "基沃托斯百米摩天钟楼顶端的狭窄平台，凌冽的高空夜风呼啸而过。花凛单膝跪地，将沉重威严的反器材狙击步枪架在围墙边缘。深小麦色的修长双腿与高叉女仆装在冷冽月光下线条凌厉，熔金色的眼眸透过瞄准镜锁死千里之外的目标，冷艳沉静。",
-    "recommendedSize": "832x1216",
+    "recommendedSize": "1216x832",
     "location": "narrow platform on top of high clock tower",
     "action": "kneeling with heavy sniper rifle on parapet, sharp focused golden eyes",
     "timeOfDay": "night",
@@ -21,17 +21,23 @@
     "mood": "deadly tactical precision and silent tension",
     "promptProse": "Perched atop a skyscraper roof at night, Kakudate Karin aims a heavy sniper rifle with one knee down, her long white locks whipped by wind under dramatic city searchlights.",
     "promptTokens": [
-      "holding_gun",
+      "kneeling",
+      "holding_sniper_rifle",
       "sniper_rifle",
-      "rooftop",
+      "parapet",
+      "clock_tower",
+      "city_skyline",
       "night",
-      "cowboy_shot",
-      "sunbeams",
       "moonlight",
-      "soft_lighting"
+      "searchlight",
+      "soft_shadows",
+      "cowboy_shot"
     ],
-    "negativeTokens": [],
-    "animaCaption": "Karin aiming her sniper rifle on the skyscraper rooftop at night.",
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
+    "animaCaption": "She braces the rifle on the parapet as a searchlight illuminates her face, dark skin and golden eyes.",
     "isNsfw": false,
     "rating": "All",
     "mature": false

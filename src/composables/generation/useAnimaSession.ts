@@ -192,7 +192,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const models = Array.isArray(data.models) ? data.models : []
       const loras = (Array.isArray(data.loras) ? data.loras : [])
         .filter(lora => options.isPopular()
-          ? lora.characters?.includes(options.getPopularCharacterId?.() || '')
+          ? lora.character === options.getPopularCharacterId?.() || lora.characters?.includes(options.getPopularCharacterId?.() || '')
           : options.getCharacter() !== 'none' && lora.character === options.getCharacter())
       const family = options.getFamily()
       const styleLoras = family === 'krea2' ? (data.styleLoras || []) : []

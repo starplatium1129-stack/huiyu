@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_a2_factory_gate",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2083,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "yorha_a2_factory_gate",
     "title": "A2 · 工厂门前",
@@ -24,12 +24,20 @@
       "holding sword down",
       "light through doorway",
       "night",
-      "cowboy shot"
+      "cowboy shot",
+      "doorway_light",
+      "reflected_light",
+      "factory_interior",
+      "industrial_lighting",
+      "soft_front_lighting"
     ],
-    "animaCaption": "A single light shows through the gate.",
+    "animaCaption": "A single light shows through the gate. Factory lighting reveals her face and the machinery around the open gate.",
     "characterId": "yorha_a2",
     "recommendedSize": "832x1216",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_shadow_starlit_ruins_water_touch",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2559,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "aurora_shadow_starlit_ruins_water_touch",
     "title": "奥萝拉 · 星穹回廊的赤足戏水",
@@ -32,9 +32,11 @@
       "mysterious_smile",
       "purple_glow",
       "starlight",
-      "wide_shot"
+      "wide_shot",
+      "nebula_light",
+      "illuminated_colonnade"
     ],
-    "animaCaption": "Nebula reflections ripple beneath her bare feet as she beckons softly.",
+    "animaCaption": "Nebula reflections ripple beneath her bare feet as she beckons softly. Nebula light reflected from the pool reveals her face and the sanctuary columns.",
     "characterId": "aurora_shadow",
     "recommendedSize": "1216x832",
     "negativeTokens": [],

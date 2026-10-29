@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_seminar_archive_record",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2088,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-29T08:54:33.119184700+00:00",
   "data": {
     "id": "ushio_noa_seminar_archive_record",
     "characterId": "ushio_noa",
@@ -22,16 +22,21 @@
     "promptProse": "In a quiet futuristic seminar server archive at midnight, Ushio Noa leans gracefully against a console in her tailored white coat, holding a glowing tablet and looking forward with a gentle, knowing smile.",
     "promptTokens": [
       "holding_tablet",
+      "leaning_against_console",
       "control_panel",
+      "server_racks",
       "server_room",
       "night",
-      "medium_shot",
-      "glowing",
-      "soft_lighting",
-      "warm_lighting"
+      "overhead_light",
+      "warm_lighting",
+      "soft_shadows",
+      "medium_shot"
     ],
-    "negativeTokens": [],
-    "animaCaption": "Noa standing calmly in the server archive room at night.",
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
+    "animaCaption": "She leans against the console holding her tablet; the warm overhead task light illuminates her face against the cool server racks.",
     "isNsfw": false,
     "rating": "All",
     "mature": false

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_intimate_stage_closing_time",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2024,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfitId": "livehouse_staff",
@@ -38,10 +38,13 @@
       "drumsticks",
       "night",
       "sweet_smile",
-      "medium_shot"
+      "medium_shot",
+      "warm_stage_lighting",
+      "ambient_light",
+      "soft_shadows"
     ],
     "negativeTokens": [],
-    "animaCaption": "Nijika relaxing on the dark stage steps after the band performance.",
+    "animaCaption": "Nijika relaxing on the dark stage steps after the band performance. Warm stage light reveals her face, drumsticks and the steps around her.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false

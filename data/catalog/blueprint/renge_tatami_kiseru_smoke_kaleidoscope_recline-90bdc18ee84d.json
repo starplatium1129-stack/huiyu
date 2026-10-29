@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_tatami_kiseru_smoke_kaleidoscope_recline",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2358,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "renge_tatami_kiseru_smoke_kaleidoscope_recline",
     "characterId": "renge_mangekyou",
@@ -29,10 +29,14 @@
       "reclining",
       "mysterious_smile",
       "lantern_light",
-      "medium_shot"
+      "medium_shot",
+      "paper_lantern",
+      "warm_ambient_light",
+      "lacquer_table",
+      "soft_shadows"
     ],
     "negativeTokens": [],
-    "animaCaption": "Renge smoking her slender kiseru pipe beside an ornate kaleidoscope on tatami.",
+    "animaCaption": "Renge smoking her slender kiseru pipe beside an ornate kaleidoscope on tatami. Lantern light reveals her face, the pipe and the kaleidoscope on the lacquer table.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

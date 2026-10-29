@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "acheron_hotel_window",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2065,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "acheron_hotel_window",
     "title": "黄泉 · 旅店雨声",
@@ -23,12 +23,20 @@
       "rain on window",
       "distant streetlights",
       "night",
-      "medium shot"
+      "medium shot",
+      "rainy_window",
+      "streetlight",
+      "soft_ambient_light",
+      "room_lighting",
+      "soft_front_lighting"
     ],
-    "animaCaption": "The streetlights blur beyond the rain.",
+    "animaCaption": "The streetlights blur beyond the rain. Gentle room light reaches her face and the hotel room beside the rainy window.",
     "characterId": "acheron",
     "recommendedSize": "832x1216",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

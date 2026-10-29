@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sunohara_shun",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 211,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
   "data": {
     "id": "sunohara_shun",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "春原瞬 立绘待补"
+        "image": "../assets/characters/popular-sunohara_shun.png?v=a37431cbfb9d",
+        "alt": "春原瞬样张立绘",
+        "sourceShowcaseId": "pc_sunohara_shun_sunohara_shun_plum_garden_tea_nap",
+        "sourceShowcaseSha256": "661b9cb26322fce8be903aecb97f80e65a8141785c068ac31cd10ad91ba34cad"
       },
       "visual_dna": {
         "hair": "极长如墨的垂地黑发 · 优雅发髻盘发与两束柔顺垂落秀发",

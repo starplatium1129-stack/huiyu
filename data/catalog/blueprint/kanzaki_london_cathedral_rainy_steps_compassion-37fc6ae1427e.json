@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_london_cathedral_rainy_steps_compassion",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2613,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "kanzaki_london_cathedral_rainy_steps_compassion",
     "title": "神裂火织 · 伦敦大教堂雨阶的圣人孤影",
@@ -30,12 +30,20 @@
       "compassionate_expression",
       "rainy_reflections",
       "dramatic_lighting",
-      "wide_shot"
+      "wide_shot",
+      "cathedral_lighting",
+      "stone_steps",
+      "reflected_light",
+      "diffused_light",
+      "soft_front_lighting"
     ],
-    "animaCaption": "Sheets of rain wash down the stone cathedral steps around her solitary, powerful figure.",
+    "animaCaption": "Sheets of rain wash down the stone cathedral steps around her solitary, powerful figure. Soft reflected light reveals her face and the wet cathedral steps.",
     "characterId": "kanzaki_kaori",
     "recommendedSize": "1216x832",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

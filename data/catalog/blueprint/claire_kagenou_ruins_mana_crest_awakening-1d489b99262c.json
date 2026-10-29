@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_kagenou_ruins_mana_crest_awakening",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2557,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "claire_kagenou_ruins_mana_crest_awakening",
     "title": "克莱尔 · 遗迹祭坛前的魔力回溯",
@@ -31,12 +31,21 @@
       "energy_blast",
       "purple_glow",
       "dramatic_lighting",
-      "wide_shot"
+      "wide_shot",
+      "purple_magic_light",
+      "illuminated_stone_pillars",
+      "soft_fill_light",
+      "magic_light",
+      "ambient_light",
+      "soft_front_lighting"
     ],
-    "animaCaption": "Vivid purple magical crests flare across her arm, lighting up the subterranean stones.",
+    "animaCaption": "Vivid purple magical crests flare across her arm, lighting up the subterranean stones. The magic glow illuminates her face, altar and stone pillars.",
     "characterId": "claire_kagenou",
     "recommendedSize": "1216x832",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

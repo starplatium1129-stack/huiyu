@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hiuchidani_mei",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 192,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
   "data": {
     "id": "hiuchidani_mei",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "火打谷爱衣 · 立绘待制作"
+        "image": "../assets/characters/popular-hiuchidani_mei.png?v=ca9c6c45b9bb",
+        "alt": "火打谷爱衣样张立绘",
+        "sourceShowcaseId": "pc_hiuchidani_mei_hiuchidani_mei_daily_desk_sticker",
+        "sourceShowcaseSha256": "83f2b8e867bff9ad9085a85815a1140f14944116f21a24829d5c7e0bfb3181f6"
       },
       "visual_dna": {
         "signature": "Short lavender hair falling over one eye, green eyes, and a sun-tanned complexion",

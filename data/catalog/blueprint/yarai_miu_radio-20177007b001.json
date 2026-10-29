@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_radio",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2393,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "yarai_miu_radio",
     "characterId": "yarai_miu",
@@ -27,10 +27,18 @@
       "night",
       "cowboy shot",
       "moonlight",
-      "soft_lighting"
+      "soft_lighting",
+      "rooftop_light",
+      "soft_fill_light",
+      "sea_horizon",
+      "ambient_light",
+      "soft_front_lighting"
     ],
-    "animaCaption": "",
-    "negativeTokens": [],
+    "animaCaption": "Soft rooftop light reveals her face, radio and the sea horizon.",
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "recommendedSize": "832x1216",
     "adult": false,
     "isNsfw": false,

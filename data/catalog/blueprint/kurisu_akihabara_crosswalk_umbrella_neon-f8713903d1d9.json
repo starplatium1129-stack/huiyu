@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurisu_akihabara_crosswalk_umbrella_neon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2565,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "kurisu_akihabara_crosswalk_umbrella_neon",
     "title": "牧濑红莉栖 · 雨夜十字路口的并肩轻语",
@@ -31,12 +31,19 @@
       "looking_aside",
       "colorful_reflections",
       "urban_lighting",
-      "wide_shot"
+      "wide_shot",
+      "storefront_light",
+      "neon_reflection",
+      "soft_fill_light",
+      "soft_front_lighting"
     ],
-    "animaCaption": "Vivid neon store signs cast shimmering multi-colored reflections on the wet asphalt around their shared umbrella.",
+    "animaCaption": "Vivid neon store signs cast shimmering multi-colored reflections on the wet asphalt around their shared umbrella. Storefront reflections reach her face and umbrella at the wet crossing.",
     "characterId": "makise_kurisu",
     "recommendedSize": "1216x832",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurisu_lab_oscilloscope_dr_pepper_debate",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2563,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "kurisu_lab_oscilloscope_dr_pepper_debate",
     "title": "牧濑红莉栖 · 实验室屏幕前的学术交锋",
@@ -30,10 +30,12 @@
       "lab_coat",
       "confident_smile",
       "blue_screen_glow",
-      "dimly_lit",
-      "wide_shot"
+      "wide_shot",
+      "desk_lamp",
+      "warm_ambient_light",
+      "soft_shadows"
     ],
-    "animaCaption": "Blue monitor glow reflects across her lab coat and chestnut hair as she gestures with the soda can.",
+    "animaCaption": "Blue monitor glow reflects across her lab coat and chestnut hair as she gestures with the soda can. The desk lamp reveals her face, oscilloscopes and cables beside the glowing monitors.",
     "characterId": "makise_kurisu",
     "recommendedSize": "1216x832",
     "negativeTokens": [],

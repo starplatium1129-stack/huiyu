@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_slime_suit_whisper_embrace",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2471,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "beta_slime_suit_whisper_embrace",
     "characterId": "beta_shadow",
@@ -22,16 +22,19 @@
     "promptProse": "In a dark stone corridor, busty silver-haired Beta in tight black bodysuit gazes up at Shadow with adoring flushed eyes.",
     "promptTokens": [
       "dungeon",
-      "dark",
       "close-up",
       "looking_up",
       "blushing",
       "large_breasts",
       "glowing",
-      "soft_lighting"
+      "soft_lighting",
+      "stone_corridor",
+      "crystal_moss",
+      "blue_glow",
+      "ambient_light"
     ],
     "negativeTokens": [],
-    "animaCaption": "Beta gazing up at Lord Shadow in devoted adoration in the underground ruins.",
+    "animaCaption": "Beta gazing up at Lord Shadow in devoted adoration in the underground ruins. Glowing crystal moss softly illuminates her face and the nearby stone corridor.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

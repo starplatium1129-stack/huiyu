@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mitsukasa_ayase",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 260,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "mitsukasa_ayase",
     "profile": {
@@ -19,8 +19,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "三司绫濑 立绘待补"
+        "image": "../assets/characters/popular-mitsukasa_ayase.png?v=a0e6b42edb9f",
+        "alt": "三司绫濑样张立绘",
+        "sourceShowcaseId": "pc_mitsukasa_ayase_mitsukasa_ayase_interview",
+        "sourceShowcaseSha256": "8b13cca7d9eab72e3a71db8d6a35527624dad86b5e957bf33b48e1d00e9a62b9"
       },
       "visual_dna": {
         "hair": "粉色长发",

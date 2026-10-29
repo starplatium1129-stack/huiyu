@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_candelabra_velvet_armchair_majesty",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2594,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "kirie_candelabra_velvet_armchair_majesty",
     "title": "篝之雾枝 · 银烛暗室里的血族威严",
@@ -28,10 +28,12 @@
       "hands_folded",
       "hypnotic_gaze",
       "warm_firelight",
-      "dark_shadows",
-      "cowboy_shot"
+      "cowboy_shot",
+      "candelabra_light",
+      "warm_ambient_light",
+      "soft_shadows"
     ],
-    "animaCaption": "Flickering candlelight casts dancing shadows across her black gown and piercing crimson gaze.",
+    "animaCaption": "Flickering candlelight casts dancing shadows across her black gown and piercing crimson gaze. Candlelight reveals her face, the velvet chair and nearby curtains.",
     "characterId": "kagari_no_kirie",
     "recommendedSize": "832x1216",
     "negativeTokens": [],

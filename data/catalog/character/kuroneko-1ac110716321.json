@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuroneko",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 236,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "kuroneko",
     "profile": {
@@ -22,8 +22,10 @@
       "type": "popular",
       "icon": "🐈‍⬛",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "五更琉璃 立绘待补"
+        "image": "../assets/characters/popular-kuroneko.png?v=44c1cef617ea",
+        "alt": "五更琉璃样张立绘",
+        "sourceShowcaseId": "pc_kuroneko_kuroneko_living_room_visual_novel_testing",
+        "sourceShowcaseSha256": "cd7f8f827cc25375ba76d93fd3463a8472bfe9520868fdd98b93d53b2e427c31"
       },
       "visual_dna": {
         "hair": "漆黑柔顺及腰姬发式长发 · 齐刘海平切两鬓 · 极富二次元古典美感",

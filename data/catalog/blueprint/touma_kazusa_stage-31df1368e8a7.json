@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_stage",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2381,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "touma_kazusa_stage",
     "characterId": "touma_kazusa",
@@ -25,9 +25,12 @@
       "standing",
       "bowing",
       "stage lighting",
-      "full body"
+      "full body",
+      "warm_stage_lighting",
+      "soft_fill_light",
+      "grand_piano"
     ],
-    "animaCaption": "",
+    "animaCaption": "Stage light reveals her face and the grand piano as she bows.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

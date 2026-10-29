@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_gothic_throne_wine_goblet_royalty",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2591,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "kirie_gothic_throne_wine_goblet_royalty",
     "title": "篝之雾枝 · 古堡王座上的深红审视",
@@ -30,12 +30,19 @@
       "regal_smirk",
       "dramatic_lighting",
       "crimson_glow",
-      "wide_shot"
+      "wide_shot",
+      "candelabra",
+      "candlelight",
+      "warm_ambient_light",
+      "soft_front_lighting"
     ],
-    "animaCaption": "Blood-red light through the rose window outlines her throne silhouette as she holds the wine glass.",
+    "animaCaption": "Blood-red light through the rose window outlines her throne silhouette as she holds the wine glass. Candlelight reaches her face, goblet and the stone throne.",
     "characterId": "kagari_no_kirie",
     "recommendedSize": "1216x832",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurisu_radio_building_rooftop_wind_worldline",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2564,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "kurisu_radio_building_rooftop_wind_worldline",
     "title": "牧濑红莉栖 · 广播会馆天台的世界线风暴",
@@ -30,12 +30,20 @@
       "resolute_expression",
       "dusk_lighting",
       "cool_lighting",
-      "wide_shot"
+      "wide_shot",
+      "diffused_sunset_light",
+      "city_reflection",
+      "soft_fill_light",
+      "reflected_light",
+      "soft_front_lighting"
     ],
-    "animaCaption": "Sunset breaks through storm clouds above the city as wind lashes her hair against the chainlink fence.",
+    "animaCaption": "Sunset breaks through storm clouds above the city as wind lashes her hair against the chainlink fence. Warm reflected sunset light reveals her face and the rooftop fence.",
     "characterId": "makise_kurisu",
     "recommendedSize": "1216x832",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "underexposed",
+      "silhouette"
+    ],
     "adult": false,
     "isNsfw": false,
     "rating": "All",

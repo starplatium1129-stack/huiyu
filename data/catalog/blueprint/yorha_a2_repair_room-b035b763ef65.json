@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_a2_repair_room",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2084,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "yorha_a2_repair_room",
     "title": "A2 · 维修室的灯",
@@ -23,9 +23,12 @@
       "looking at arm",
       "repair tools on table",
       "warm lamp",
-      "medium shot"
+      "medium shot",
+      "workbench_lamp",
+      "warm_ambient_light",
+      "repair_tools"
     ],
-    "animaCaption": "The repair tools remain on the bench beside her.",
+    "animaCaption": "The repair tools remain on the bench beside her. The workbench lamp lights her face, arm and the tools around the repair room.",
     "characterId": "yorha_a2",
     "recommendedSize": "832x1216",
     "negativeTokens": [],

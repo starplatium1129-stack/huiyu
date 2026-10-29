@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_vermilion_kimono_crimson_glance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2590,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "renge_vermilion_kimono_crimson_glance",
     "title": "莲华 · 绯红浮世万华的深凝",
@@ -19,7 +19,6 @@
     "mood": "妖艳威严",
     "promptProse": "Renge stands with hands tucked inside her vermilion kimono sleeves against a dark screen, fixing the viewer with an intense, unblinking red gaze.",
     "promptTokens": [
-      "dark_room",
       "black_screen",
       "wide_sleeves",
       "hands_in_sleeves",
@@ -27,9 +26,12 @@
       "intense_gaze",
       "candlelight",
       "rim_light",
-      "cowboy_shot"
+      "cowboy_shot",
+      "warm_ambient_light",
+      "tatami_room",
+      "gold_partition"
     ],
-    "animaCaption": "Side candlelight reveals the shimmering gold patterns on her sleeves as her crimson eyes pierce the gloom.",
+    "animaCaption": "Side candlelight reveals the shimmering gold patterns on her sleeves as her crimson eyes pierce the gloom. The candle and warm room light reveal her face and the gold-accented partition.",
     "characterId": "renge_mangekyou",
     "recommendedSize": "832x1216",
     "negativeTokens": [],

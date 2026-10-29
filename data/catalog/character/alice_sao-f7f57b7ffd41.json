@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alice_sao",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 201,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-27T14:11:46.778657800+00:00",
+  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
   "data": {
     "id": "alice_sao",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "爱丽丝 立绘待补"
+        "image": "../assets/characters/popular-alice_sao.png?v=ba5a673ce5bf",
+        "alt": "爱丽丝·辛赛西斯·萨蒂样张立绘",
+        "sourceShowcaseId": "pc_alice_sao_alice_sao_osmanthus_tree_sacred_vow",
+        "sourceShowcaseSha256": "35b71a2e5a2d59a40536e7ae0266afeea48c05619d200d8072704e5172611581"
       },
       "visual_dna": {
         "hair": "璀璨金黄及腰长发 · 侧边单股编发",

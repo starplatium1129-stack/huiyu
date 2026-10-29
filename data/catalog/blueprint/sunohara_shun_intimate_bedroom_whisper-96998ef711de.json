@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_intimate_bedroom_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2116,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
   "data": {
     "id": "sunohara_shun_intimate_bedroom_whisper",
     "characterId": "sunohara_shun",
@@ -29,10 +29,14 @@
       "night",
       "close-up",
       "warm_lighting",
-      "soft_lighting"
+      "soft_lighting",
+      "warm_ambient_light",
+      "soft_fill_light",
+      "bedroom",
+      "folding_screen"
     ],
     "negativeTokens": [],
-    "animaCaption": "Shun leaning close with flushed cheeks and melting affectionate eyes.",
+    "animaCaption": "Shun leaning close with flushed cheeks and melting affectionate eyes. Warm candlelight and gentle room light reveal her face and the wooden screen nearby.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false

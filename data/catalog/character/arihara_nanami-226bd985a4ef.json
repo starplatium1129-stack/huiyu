@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "arihara_nanami",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 261,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "arihara_nanami",
     "profile": {
@@ -19,8 +19,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "在原七海 立绘待补"
+        "image": "../assets/characters/popular-arihara_nanami.png?v=a87507d9cb37",
+        "alt": "在原七海样张立绘",
+        "sourceShowcaseId": "pc_arihara_nanami_arihara_nanami_console",
+        "sourceShowcaseSha256": "3801e6ea5d3d10cd48dd7e37538dfb262c25c757470886ee3eb9578f3e6373b4"
       },
       "visual_dna": {
         "hair": "金色长发",

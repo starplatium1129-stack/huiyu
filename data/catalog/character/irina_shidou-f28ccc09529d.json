@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "irina_shidou",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 229,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
   "data": {
     "id": "irina_shidou",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "✨",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "紫藤伊莉娜 立绘待补"
+        "image": "../assets/characters/popular-irina_shidou.png?v=25b649e542d7",
+        "alt": "紫藤伊莉娜样张立绘",
+        "sourceShowcaseId": "pc_irina_shidou_irina_school_rooftop_childhood_bento",
+        "sourceShowcaseSha256": "63a11fc376cbaae39493f30173f9ee058758c9a8537e4e01501e03f4b94ce0bb"
       },
       "visual_dna": {
         "hair": "元气栗色及腰双马尾 · 柔顺灵动弧度",
