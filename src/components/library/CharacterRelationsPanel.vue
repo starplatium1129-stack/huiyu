@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onDeactivated, ref, toRef, useId, watch } from 'vue'
-import { VueFlow, useVueFlow, type EdgeChange } from '@vue-flow/core'
+import { VueFlow, useVueFlow, type Edge, type EdgeChange } from '@vue-flow/core'
 import { useElementSize } from '@vueuse/core'
 import '@vue-flow/core/dist/style.css'
 import type { CharacterProfile } from '@/types/character'
@@ -28,27 +28,33 @@ const canvasSize = computed(() => ({ width: canvasWidth.value, height: canvasHei
 
 const {
   graph, invalid, scope, showSpoilers, pendingOnly, pendingPeople, visiblePeople, visibleRelations,
-  centerPerson, selectedPerson, selectedProfile, selectedRelation, selectedConnections, nodes, edges,
-  selectPerson, selectRelation, setHoveredPerson, setHoveredRelation, isAnyActive, expandPerson, reset,
+  centerPerson, selectedPerson, selectedProfile, selectedRelation, selectedPair, selectedConnections, nodes, edges,
+  selectPerson, selectPair, selectRelation, setHoveredPerson, setHoveredRelation, isAnyActive, expandPerson, reset,
   personQuery, matchingPeople, listedRelations, locatePerson, clearSelection,
   safePeople, safeRelations, profileFor,
 } = useCharacterRelations(toRef(props, 'profiles'), toRef(props, 'characterId'))
 
 const circlePeople = computed(() => pendingOnly.value ? safePeople.value.filter(person => !profileFor(person)) : safePeople.value)
 const {
-  mode, dimension, options: circleOptions, enabled: circlesEnabled, dimensionLabel, groups, groupId, activeGroup,
+  mode, dimension, options: circleOptions, enabled: circlesEnabled, usesTerritories, dimensionLabel, groups, groupId, activeGroup,
   members, groupRelations, outsideConnections, hoveredGroup, overview, openGroup, reveal, canvasNodes, canvasEdges,
   backGroup, trail, page, pageSize, pageCount, setPage,
   rememberPositions, movePerson, resetPositions, hasManualPositions,
-} = useRelationCircles({ work: computed(() => graph.value?.work || ''), people: circlePeople, classificationPeople: safePeople, relations: safeRelations,
+} = useRelationCircles({ work: computed(() => graph.value?.work || ''),
+  workSize: computed(() => new Set(graph.value?.people.flatMap(person => {
+    const profile = profileFor(person)
+    return profile ? [profile.id] : []
+  })).size),
+  people: circlePeople, classificationPeople: safePeople, relations: safeRelations,
   nodes, edges, profileFor, clearSelection, size: canvasSize })
 watch([circlesEnabled, toRef(props, 'characterId')], ([enabled]) => {
   if (enabled) { scope.value = 'work'; overview() }
 }, { immediate: true, flush: 'post' })
-const inspectorRelations = computed(() => circlesEnabled.value ? groupRelations.value.filter(relation => !selectedPerson.value || selectedRelation.value
+const inspectorRelations = computed(() => selectedPair.value ? listedRelations.value : circlesEnabled.value ? groupRelations.value.filter(relation => !selectedPerson.value || selectedRelation.value
   || relation.source === selectedPerson.value.id || relation.target === selectedPerson.value.id) : listedRelations.value)
 const inspectorOutside = computed(() => outsideConnections.value.filter(connection => !selectedPerson.value ||
   connection.relation.source === selectedPerson.value.id || connection.relation.target === selectedPerson.value.id))
+const pairIncludesGroup = computed(() => !!selectedPair.value && [selectedPair.value.source, selectedPair.value.target].some(id => id.startsWith('territory:')))
 function explorePerson(id: string) { mode.value = 'person'; expandPerson(id) }
 async function enterGroup(id: string) {
   inspectorCollapsed.value = true; openGroup(id)
@@ -69,22 +75,29 @@ const { fitView, zoomIn, zoomOut, getViewport, setViewport } = useVueFlow(flowId
 
 const isFullscreen = ref(false)
 const inspectorCollapsed = ref(true)
-const showInspector = computed(() => !inspectorCollapsed.value && (!circlesEnabled.value || !!activeGroup.value && (!!selectedPerson.value || !!selectedRelation.value)))
+const showInspector = computed(() => !inspectorCollapsed.value && (!circlesEnabled.value || !!activeGroup.value && (!!selectedPerson.value || !!selectedRelation.value || !!selectedPair.value)))
 const inspectorToggle = ref<HTMLButtonElement | null>(null)
 const fullscreenDialog = ref<HTMLDialogElement | null>(null)
 const fullscreenButton = ref<HTMLButtonElement | null>(null)
 const { open: openFullscreen, close: closeFullscreen } = useFluidDialog(fullscreenDialog)
 
-const name = (id: string) => graph.value?.people.find(person => person.id === id)?.name || ''
+const name = (id: string) => id.startsWith('territory:') ? id.slice('territory:'.length) + '分组'
+  : graph.value?.people.find(person => person.id === id)?.name || ''
 const viewKey = computed(() => `${graph.value?.work}:${props.characterId}:${mode.value}:${dimension.value}:${groupId.value}:${page.value}:${scope.value}:${centerPerson.value?.id}:${pendingOnly.value}:${showSpoilers.value}:${canvasNodes.value.filter(node => !node.data.portal).map(node => node.id).join(',')}`)
 const duration = () => prefersReducedMotion() ? 0 : cssTimeToMilliseconds(getComputedStyle(document.documentElement).getPropertyValue('--motion-control'))
 
 function fit() {
+  if (!circlesEnabled.value && !usesTerritories.value) {
+    void fitView({ padding: .16, minZoom: .55, maxZoom: 1, duration: duration() }); return
+  }
   if (!circlesEnabled.value || activeGroup.value) { reframe(); return }
   void fitView({ padding: .12, minZoom: .65, maxZoom: 1, duration: duration() })
 }
 function frameMap() {
   if (!circlesEnabled.value) {
+    if (!usesTerritories.value) {
+      void fitView({ padding: .16, minZoom: .55, maxZoom: 1, duration: duration() }); return
+    }
     const person = canvasNodes.value.find(node => node.type === 'portrait' && node.id === centerPerson.value?.id)
       || canvasNodes.value.find(node => node.type === 'portrait')
     if (person) void setViewport({ x: (canvas.value?.clientWidth || 1000) / 2 - (person.position.x + 54) * 1.1,
@@ -136,6 +149,11 @@ async function toggleFullscreen() {
 
 function inspectPerson(id: string) { inspectorCollapsed.value = false; selectPerson(id) }
 function inspectRelation(id: string) { inspectorCollapsed.value = false; selectRelation(id) }
+function inspectConnection(edge: Edge) {
+  const ids = Array.isArray(edge.data?.relationIds) ? edge.data.relationIds : [edge.id]
+  if (ids.length === 1) { inspectRelation(ids[0]); return }
+  inspectorCollapsed.value = false; selectPair(edge.source, edge.target, ids)
+}
 async function locate(id: string) {
   inspectorCollapsed.value = false
   const person = safePeople.value.find(person => person.id === id)
@@ -162,7 +180,10 @@ function fitOnDoubleClick(event: MouseEvent) {
 
 function edgeSelection(changes: EdgeChange[]) {
   for (const change of changes) if (change.type === 'select') {
-    if (change.selected) inspectRelation(change.id)
+    if (change.selected) {
+      const edge = canvasEdges.value.find(item => item.id === change.id)
+      if (edge) inspectConnection(edge)
+    }
     else if (selectedRelation.value?.id === change.id) selectRelation('')
   }
 }
@@ -255,7 +276,10 @@ function keyboardPan(event: KeyboardEvent) {
               </div>
               <span>{{ activeGroup ? members.length + ' 位人物' : groups.length + ' 个' + dimensionLabel + ' · ' + circlePeople.length + ' 位人物' }}</span>
             </template>
-            <template v-else><strong>{{ scope === 'nearby' ? centerPerson?.name + '的关系' : '作品人物关系' }}</strong><span>{{ visiblePeople.length }} 人 · {{ visibleRelations.length }} 条关系</span></template>
+            <template v-else>
+              <strong>{{ scope === 'nearby' ? centerPerson?.name + '的关系' : selectedRelation ? '作品全貌 · 所选关系' : selectedPair ? '作品全貌 · 两人的关系' : '作品全貌 · ' + (selectedPerson?.name || centerPerson?.name) + '的连线' }}</strong>
+              <span>{{ visiblePeople.length }} 人 · {{ visibleRelations.length }} 条已收录关系</span>
+            </template>
           </div>
           <div v-if="circlesEnabled && activeGroup" v-content-motion:fade="groupId" class="atlas-group-strip">
             <CharacterRelationGroupControls :group="activeGroup.id" :members="members" :page="page" :page-size="pageSize" :page-count="pageCount" @page="changePage" @locate="locate" />
@@ -296,7 +320,7 @@ function keyboardPan(event: KeyboardEvent) {
               :fit-view-on-init="false"
               @init="initializeViewport"
               @nodes-change="rememberPositions"
-              @edge-click="(!circlesEnabled || activeGroup) && inspectRelation($event.edge.id)"
+              @edge-click="(!circlesEnabled || activeGroup) && inspectConnection($event.edge)"
               @edge-mouse-enter="(!circlesEnabled || activeGroup) && setHoveredRelation($event.edge.id)"
               @edge-mouse-leave="setHoveredRelation('')"
               @pane-click="clearSelection"
@@ -324,15 +348,16 @@ function keyboardPan(event: KeyboardEvent) {
           </div>
 
           <p :id="helpId" class="relations-map-help">
-            {{ circlesEnabled && !activeGroup ? '单击区域进入 · 空白处拖动 · 滚轮缩放' : '拖动人物调整位置 · 空白处拖动画布 · 滚轮缩放 · Shift＋方向键移动人物' }}
+            {{ circlesEnabled && !activeGroup ? '单击区域进入 · 空白处拖动 · 滚轮缩放' : '点击人物查看相关连线 · 点击连线查看各条关系 · 拖动人物调整位置' }}
           </p>
           <p v-if="circlesEnabled && !circlePeople.length" class="relations-map-empty" role="status">当前没有符合筛选的人物，请取消“只看原作人物”。</p>
           <p v-else-if="!circlesEnabled && !visibleRelations.length" class="relations-map-empty" role="status">
             {{ pendingOnly ? '当前范围内没有原作人物的关系，可切换作品全貌。' : '当前人物在此范围内暂无公开关系。' }}
           </p>
+          <p v-else-if="!circlesEnabled && !usesTerritories && !canvasEdges.length" class="relations-map-empty" role="status">当前人物没有符合筛选的关系，请选择其他人物。</p>
         </div>
 
-        <aside v-if="showInspector" v-content-motion:fade="selectedRelation?.id || selectedPerson?.id" class="relations-inspector" aria-label="人物与关系说明">
+        <aside v-if="showInspector" v-content-motion:fade="selectedRelation?.id || selectedPair?.source || selectedPerson?.id" class="relations-inspector" aria-label="人物与关系说明">
           <section v-if="selectedRelation" :key="selectedRelation.id" v-content-motion:fade="selectedRelation.id" class="relation-description">
             <div class="relation-description-head">
               <span class="page-kicker">{{ selectedRelation.spoiler ? '剧透关系' : '原作关系' }}</span>
@@ -349,6 +374,17 @@ function keyboardPan(event: KeyboardEvent) {
             </div>
             <span class="relation-stage">{{ selectedRelation.stage }}</span>
             <a class="relation-evidence" :href="selectedRelation.evidence.url" target="_blank" rel="noopener noreferrer">{{ selectedRelation.evidence.title }} ↗</a>
+          </section>
+
+          <section v-else-if="selectedPair" :key="selectedPair.source + selectedPair.target" v-content-motion:fade="selectedPair.source + selectedPair.target" class="relation-description">
+            <div class="relation-description-head">
+              <span class="page-kicker">人物关系</span>
+              <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="收起说明栏" @click="setInspectorCollapsed(true)">
+                <ArchiveIcon name="minus" />
+              </button>
+            </div>
+            <h3>{{ name(selectedPair.source) }} 与 {{ name(selectedPair.target) }}</h3>
+            <p>{{ pairIncludesGroup ? '这里' : '两人' }}有 {{ inspectorRelations.length }} 条关系，选择下方条目查看详情。</p>
           </section>
 
           <section v-else-if="selectedPerson" :key="selectedPerson.id" v-content-motion:fade="selectedPerson.id" class="relation-description">
@@ -383,8 +419,8 @@ function keyboardPan(event: KeyboardEvent) {
           </section>
 
           <section class="relation-list" aria-label="可见关系列表">
-            <div class="relation-list-heading"><h3>{{ selectedPerson && !selectedRelation ? selectedPerson.name + '的关系' : circlesEnabled ? '本区关系' : '关系一览' }}</h3><span>{{ inspectorRelations.length }}</span></div>
-            <button v-if="!circlesEnabled && selectedPerson && !selectedRelation" class="btn btn-ghost btn-sm" type="button" @click="clearSelection">查看全部可见关系</button>
+            <div class="relation-list-heading"><h3>{{ selectedPair ? pairIncludesGroup ? '相关关系' : '两人的关系' : selectedPerson && !selectedRelation ? selectedPerson.name + '的关系' : circlesEnabled ? '本区关系' : '关系一览' }}</h3><span>{{ inspectorRelations.length }}</span></div>
+            <button v-if="!circlesEnabled && (selectedPair || selectedPerson || selectedRelation)" class="btn btn-ghost btn-sm" type="button" @click="clearSelection">查看全部可见关系</button>
             <p v-if="!inspectorRelations.length">{{ circlesEnabled ? '当前人物在本区暂无已收录的直接关系。' : '当前范围暂无关系。' }}</p>
             <button
               v-for="relation in inspectorRelations"
@@ -400,7 +436,7 @@ function keyboardPan(event: KeyboardEvent) {
               <strong>{{ relation.label }}</strong>
               <small>{{ relation.stage }}</small>
             </button>
-            <template v-if="circlesEnabled && inspectorOutside.length"><h3 class="relations-outside-title">跨{{ dimensionLabel }}联系</h3>
+            <template v-if="circlesEnabled && !selectedPair && inspectorOutside.length"><h3 class="relations-outside-title">跨{{ dimensionLabel }}联系</h3>
               <button v-for="connection in inspectorOutside" :key="connection.relation.id" class="relation-list-item" type="button" @click="locate(connection.person.id)"><span>{{ connection.group }} · {{ connection.person.name }}<ArchiveIcon name="search" /></span><strong>{{ connection.relation.label }}</strong></button>
             </template>
           </section>

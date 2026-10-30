@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yukinoshita_haruno",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 115,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "yukinoshita_haruno",
     "profile": {
@@ -158,7 +158,8 @@
               "平冢老师"
             ],
             "role": "总武高校国语教师 / 侍奉部顾问",
-            "summary": "豪爽仗义、热爱拉面与热血漫画的单身教师。一眼看穿八幡与雪乃身上的别扭与要强自尊，通过成立侍奉部将两人引上正轨，是雪乃与八幡最敬重的恩师。"
+            "summary": "豪爽仗义、热爱拉面与热血漫画的单身教师。一眼看穿八幡与雪乃身上的别扭与要强自尊，通过成立侍奉部将两人引上正轨，是雪乃与八幡最敬重的恩师。",
+            "characterId": "shizuka_hiratsuka"
           },
           {
             "id": "hikigaya_komachi",
@@ -375,6 +376,20 @@
             "evidence": {
               "title": "TBS电视台《我的青春恋爱物语果然有问题。完》官网",
               "url": "https://www.tbs.co.jp/anime/oregairu/"
+            }
+          },
+          {
+            "id": "oregairu-shizuka-yukino",
+            "source": "hiratsuka_shizuka",
+            "target": "yukinoshita_yukino",
+            "label": "侍奉部顾问与部长",
+            "description": "平冢静担任侍奉部顾问，雪乃是社团部长；平冢也将八幡带到社团，让两人相识。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "总武高中 · 侍奉部",
+            "evidence": {
+              "title": "TBS动画作品介绍",
+              "url": "https://www.tbs.co.jp/tbs-ch/item/a0106/"
             }
           }
         ]

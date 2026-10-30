@@ -1,7 +1,7 @@
 import { computed, ref, watch, type Ref } from 'vue'
 import { MarkerType, type Edge, type Node } from '@vue-flow/core'
 import type { CharacterProfile } from '@/types/character'
-import type { RelationPerson } from '@/types/characterRelations'
+import type { CharacterRelation, RelationPerson } from '@/types/characterRelations'
 import { relationProfile } from '@/utils/characterRelations'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
@@ -13,12 +13,14 @@ export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, charact
   const profileFor = (person: RelationPerson) => relationProfile(person, graph.value?.work || '', profiles.value)
   const personForProfile = computed(() => graph.value?.people.find(person => profileFor(person)?.id === characterId.value)?.id || '')
   const centerId = ref(''), selectedPersonId = ref(''), selectedRelationId = ref('')
+  const selectedPair = ref<{ source: string; target: string; relationIds: string[] } | null>(null)
   const hoveredPersonId = ref(''), hoveredRelationId = ref('')
   const scope = ref<'nearby' | 'work'>('nearby'), showSpoilers = ref(false), pendingOnly = ref(false)
   const personQuery = ref('')
 
   watch([characterId, personForProfile], () => {
     centerId.value = personForProfile.value; selectedPersonId.value = ''; selectedRelationId.value = ''
+    selectedPair.value = null
     hoveredPersonId.value = ''; hoveredRelationId.value = ''
     scope.value = 'nearby'; showSpoilers.value = false; pendingOnly.value = false
     personQuery.value = ''
@@ -44,6 +46,9 @@ export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, charact
   const visiblePeople = computed(() => safePeople.value.filter(person => person.id === centerId.value
     || visibleRelations.value.some(relation => relation.source === person.id || relation.target === person.id)
     || (scope.value === 'work' && !pendingOnly.value)))
+  function isSelectedPair(relation: CharacterRelation) {
+    return !!selectedPair.value?.relationIds.includes(relation.id)
+  }
 
   watch(visiblePeople, people => {
     if (selectedPersonId.value && !people.some(person => person.id === selectedPersonId.value)) selectedPersonId.value = ''
@@ -51,20 +56,28 @@ export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, charact
   })
   watch(visibleRelations, relations => {
     if (!relations.some(relation => relation.id === selectedRelationId.value)) selectedRelationId.value = ''
+    if (selectedPair.value && !relations.some(isSelectedPair)) selectedPair.value = null
   })
 
   const selectedPerson = computed(() => safePeople.value.find(person => person.id === selectedPersonId.value))
   const selectedProfile = computed(() => selectedPerson.value && profileFor(selectedPerson.value))
   const selectedRelation = computed(() => visibleRelations.value.find(relation => relation.id === selectedRelationId.value))
+  const pairRelations = computed(() => selectedPair.value ? visibleRelations.value.filter(isSelectedPair) : [])
   const selectedConnections = computed(() => safeRelations.value.filter(relation => relation.source === selectedPersonId.value || relation.target === selectedPersonId.value))
   const centerPerson = computed(() => safePeople.value.find(person => person.id === centerId.value))
 
-  const listedRelations = computed(() => selectedRelation.value || !selectedPerson.value ? visibleRelations.value
+  const listedRelations = computed(() => selectedPair.value ? pairRelations.value : selectedRelation.value || !selectedPerson.value ? visibleRelations.value
     : visibleRelations.value.filter(relation => relation.source === selectedPersonId.value || relation.target === selectedPersonId.value))
 
-  function selectPerson(id: string) { selectedPersonId.value = id; selectedRelationId.value = ''; hoveredRelationId.value = '' }
-  function selectRelation(id: string) { selectedRelationId.value = id; hoveredPersonId.value = '' }
-  function clearSelection() { selectedPersonId.value = ''; selectedRelationId.value = ''; hoveredPersonId.value = ''; hoveredRelationId.value = '' }
+  function selectPerson(id: string) { selectedPair.value = null; selectedPersonId.value = id; selectedRelationId.value = ''; hoveredRelationId.value = '' }
+  function selectPair(source: string, target: string, relationIds: string[]) {
+    selectedPair.value = { source, target, relationIds: [...relationIds] }; selectedRelationId.value = ''; hoveredPersonId.value = ''
+  }
+  function selectRelation(id: string) {
+    if (!pairRelations.value.some(relation => relation.id === id)) selectedPair.value = null
+    selectedRelationId.value = id; hoveredPersonId.value = ''
+  }
+  function clearSelection() { selectedPair.value = null; selectedPersonId.value = ''; selectedRelationId.value = ''; hoveredPersonId.value = ''; hoveredRelationId.value = '' }
   function setHoveredPerson(id: string) { hoveredPersonId.value = id }
   function setHoveredRelation(id: string) { hoveredRelationId.value = id }
   function expandPerson(id: string) { centerId.value = id; selectPerson(id); scope.value = 'nearby' }
@@ -75,7 +88,7 @@ export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, charact
   function locatePerson(id: string) { pendingOnly.value = false; expandPerson(id); personQuery.value = '' }
   // Contextual focus & dimming logic
   const activePersonId = computed(() => hoveredPersonId.value || selectedPersonId.value)
-  const isAnyActive = computed(() => Boolean(hoveredPersonId.value || hoveredRelationId.value || selectedPersonId.value || selectedRelationId.value))
+  const isAnyActive = computed(() => Boolean(hoveredPersonId.value || hoveredRelationId.value || selectedPersonId.value || selectedRelationId.value || selectedPair.value))
 
   const highlightedPersonIds = computed(() => {
     if (hoveredRelationId.value) {
@@ -86,6 +99,7 @@ export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, charact
       const rel = visibleRelations.value.find(r => r.id === selectedRelationId.value)
       if (rel) return new Set([rel.source, rel.target])
     }
+    if (selectedPair.value && !hoveredPersonId.value) return new Set([selectedPair.value.source, selectedPair.value.target])
     if (!activePersonId.value) return new Set<string>()
     const set = new Set<string>([activePersonId.value])
     for (const rel of visibleRelations.value) {
@@ -98,6 +112,7 @@ export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, charact
   const highlightedRelationIds = computed(() => {
     if (hoveredRelationId.value) return new Set<string>([hoveredRelationId.value])
     if (selectedRelationId.value && !hoveredPersonId.value) return new Set<string>([selectedRelationId.value])
+    if (selectedPair.value && !hoveredPersonId.value) return new Set(pairRelations.value.map(relation => relation.id))
     if (!activePersonId.value) return new Set<string>()
     const set = new Set<string>()
     for (const rel of visibleRelations.value) {
@@ -194,7 +209,7 @@ export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, charact
     safePeople, safeRelations,
     graph, invalid, scope, showSpoilers, pendingOnly, pendingPeople, visiblePeople, visibleRelations, centerPerson,
     personQuery, matchingPeople, listedRelations, locatePerson, clearSelection,
-    selectedPerson, selectedProfile, selectedRelation, selectedConnections, nodes, edges, profileFor,
-    selectPerson, selectRelation, setHoveredPerson, setHoveredRelation, isAnyActive, expandPerson, reset,
+    selectedPerson, selectedProfile, selectedRelation, selectedPair, selectedConnections, nodes, edges, profileFor,
+    selectPerson, selectPair, selectRelation, setHoveredPerson, setHoveredRelation, isAnyActive, expandPerson, reset,
   }
 }

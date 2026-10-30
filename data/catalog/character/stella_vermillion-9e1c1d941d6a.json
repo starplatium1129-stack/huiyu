@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "stella_vermillion",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 223,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-30T03:43:55.959144800+00:00",
   "data": {
     "id": "stella_vermillion",
     "profile": {
@@ -91,7 +91,86 @@
         "red_eyes"
       ],
       "voice": "一、一辉！你今天为什么又和那个女孩子说话那么久？！本皇女可是你的未婚妻哦！罚你……罚你今晚老老实实抱紧我！",
-      "voiceJa": "い、一輝！よそ見しちゃダメなんだからね！私はアンタの婚約者なんだから！"
+      "voiceJa": "い、一輝！よそ見しちゃダメなんだからね！私はアンタの婚約者なんだから！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "落第骑士英雄谭",
+        "people": [
+          {
+            "id": "stella_vermillion",
+            "name": "史黛菈·法米利昂",
+            "aliases": [
+              "ステラ・ヴァーミリオン",
+              "Stella Vermillion"
+            ],
+            "characterId": "stella_vermillion"
+          },
+          {
+            "id": "kurogane_ikki",
+            "name": "黑铁一辉",
+            "aliases": [
+              "黒鉄一輝",
+              "Kurogane Ikki"
+            ],
+            "role": "破军学园学生",
+            "summary": "以剑术弥补魔导骑士能力不足，努力参加选拔的学员。"
+          },
+          {
+            "id": "kurogane_shizuku",
+            "name": "黑铁珠雫",
+            "aliases": [
+              "黒鉄珠雫",
+              "Kurogane Shizuku"
+            ],
+            "role": "破军学园学生",
+            "summary": "一辉的妹妹，后来也进入破军学园。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "rakudai-stella-ikki",
+            "source": "stella_vermillion",
+            "target": "kurogane_ikki",
+            "label": "室友与训练伙伴",
+            "description": "史黛菈向一辉发起决斗，两人随后成为室友，一起为选拔战训练。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第1、2集 · 破军学园",
+            "evidence": {
+              "title": "《落第骑士英雄谭》动画第2集梗概",
+              "url": "https://www.ittoshura.com/story/epsode2.html"
+            }
+          },
+          {
+            "id": "rakudai-stella-ikki-feelings",
+            "source": "stella_vermillion",
+            "target": "kurogane_ikki",
+            "label": "逐渐萌生的好感",
+            "description": "看着一辉以努力克服不利条件，史黛菈逐渐被他吸引。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "学园选拔战",
+            "evidence": {
+              "title": "FlyingDog动画作品介绍",
+              "url": "https://www.jvcmusic.co.jp/flyingdog/-/Animedata/Z0457.html"
+            }
+          },
+          {
+            "id": "rakudai-ikki-shizuku",
+            "source": "kurogane_ikki",
+            "target": "kurogane_shizuku",
+            "label": "兄妹",
+            "description": "珠雫是一辉的妹妹，后来进入哥哥就读的破军学园。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "破军学园 · 入学式",
+            "evidence": {
+              "title": "《落第骑士英雄谭》动画第2集梗概",
+              "url": "https://www.ittoshura.com/story/epsode2.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "stella_vermillion",

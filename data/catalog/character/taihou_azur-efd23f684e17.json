@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "taihou_azur",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.888Z",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "taihou_azur",
     "profile": {
@@ -168,6 +168,62 @@
             ],
             "role": "皇家女仆队队长 / 轻巡洋舰",
             "summary": "追求完美的皇家女仆长。全权负责港区内务与指挥官的生活起居，对柴郡等性格跳脱的同伴给予温和而严谨的教导。"
+          },
+          {
+            "id": "atago_azur",
+            "name": "爱宕",
+            "aliases": [
+              "愛宕",
+              "Atago"
+            ],
+            "characterId": "atago_azur"
+          },
+          {
+            "id": "prinz_eugen",
+            "name": "欧根亲王",
+            "aliases": [
+              "プリンツ・オイゲン",
+              "Prinz Eugen"
+            ],
+            "characterId": "prinz_eugen"
+          },
+          {
+            "id": "st_louis_azur",
+            "name": "圣路易斯",
+            "aliases": [
+              "セントルイス",
+              "St. Louis"
+            ],
+            "characterId": "st_louis_azur"
+          },
+          {
+            "id": "shinano",
+            "name": "信浓",
+            "aliases": [
+              "信濃",
+              "Shinano"
+            ],
+            "characterId": "shinano"
+          },
+          {
+            "id": "takao_azur",
+            "name": "高雄",
+            "aliases": [
+              "高雄",
+              "Takao"
+            ],
+            "role": "重樱重巡洋舰",
+            "summary": "爱宕的姐妹舰。"
+          },
+          {
+            "id": "admiral_hipper_azur",
+            "name": "希佩尔海军上将",
+            "aliases": [
+              "Admiral Hipper",
+              "アドミラル・ヒッパー"
+            ],
+            "role": "铁血重巡洋舰",
+            "summary": "欧根亲王的姐妹舰。"
           }
         ],
         "relations": [
@@ -281,6 +337,90 @@
             "evidence": {
               "title": "碧蓝航线四格漫画与母港日常纪事",
               "url": "https://wiki.biligame.com/blhx/%E6%9F%B4%E9%83%A1"
+            }
+          },
+          {
+            "id": "azur-atago-takao",
+            "source": "atago_azur",
+            "target": "takao_azur",
+            "label": "姐妹舰",
+            "description": "爱宕与高雄同为重樱的高雄级重巡洋舰，也是姐妹舰。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "重樱",
+            "evidence": {
+              "title": "《碧蓝航线》爱宕与高雄官方授权商品介绍",
+              "url": "https://www.amiami.jp/top/detail/detail?gcode=FIGURE-147280-R"
+            }
+          },
+          {
+            "id": "azur-atago-commander",
+            "source": "atago_azur",
+            "target": "commander_azur",
+            "label": "港区中的陪伴",
+            "description": "爱宕与指挥官在港区相处，曾邀请他一同外出。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "爱宕角色故事",
+            "evidence": {
+              "title": "《碧蓝航线》角色故事：和姐姐的一日约会",
+              "url": "https://moegirl.uk/index.php?title=%E7%A2%A7%E8%93%9D%E8%88%AA%E7%BA%BF%2F%E5%89%A7%E6%83%85%2F%E5%92%8C%E5%A7%90%E5%A7%90%E7%9A%84%E4%B8%80%E6%97%A5%E7%BA%A6%E4%BC%9A&variant=zh-hans"
+            }
+          },
+          {
+            "id": "azur-eugen-hipper",
+            "source": "prinz_eugen",
+            "target": "admiral_hipper_azur",
+            "label": "姐妹舰",
+            "description": "欧根亲王与希佩尔是姐妹舰，欧根常带着玩笑口吻与姐姐说话。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "铁血 · 港区日常",
+            "evidence": {
+              "title": "《碧蓝航线》角色故事台词整理",
+              "url": "https://azurlane.nagami.moe/story/552/1466"
+            }
+          },
+          {
+            "id": "azur-eugen-commander",
+            "source": "prinz_eugen",
+            "target": "commander_azur",
+            "label": "任务中的协作",
+            "description": "行动中，欧根亲王向指挥官提供情报，并与他商量下一步安排。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "活动剧情 · 愚者的天秤",
+            "evidence": {
+              "title": "《碧蓝航线》活动剧情台词整理",
+              "url": "https://azurlane.nagami.moe/story/254/2877"
+            }
+          },
+          {
+            "id": "azur-stlouis-commander",
+            "source": "st_louis_azur",
+            "target": "commander_azur",
+            "label": "情人节邀约",
+            "description": "圣路易斯在情人节为指挥官准备惊喜，邀请他一起度过这一天。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "情人节特别语音",
+            "evidence": {
+              "title": "圣路易斯游戏台词整理",
+              "url": "https://wiki.biligame.com/blhx/%E5%9C%A3%E8%B7%AF%E6%98%93%E6%96%AF"
+            }
+          },
+          {
+            "id": "azur-shinano-commander",
+            "source": "shinano",
+            "target": "commander_azur",
+            "label": "梦中的相遇",
+            "description": "信浓在梦中找到指挥官，与他谈起这个时间静止的地方以及如何离开。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "角色故事 · 梦境",
+            "evidence": {
+              "title": "《碧蓝航线》剧情台词整理",
+              "url": "https://azurlane.nagami.moe/story/166/3212"
             }
           }
         ]

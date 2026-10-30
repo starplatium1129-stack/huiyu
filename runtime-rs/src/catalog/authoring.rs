@@ -57,7 +57,7 @@ impl Catalog {
         }
         let transaction = self.connection.unchecked_transaction()?;
         let character = self.get("character", reference)?;
-        if !character.data["popular"].is_object() {
+        if example.is_some() && !character.data["popular"].is_object() {
             return Err(ApiError::invalid("参考角色缺少绘图身份"));
         }
         let mut outfit_query = self.connection.prepare(

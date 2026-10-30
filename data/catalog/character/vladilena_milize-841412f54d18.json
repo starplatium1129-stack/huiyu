@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "vladilena_milize",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 107,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.900Z",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "vladilena_milize",
     "profile": {
@@ -204,7 +204,7 @@
           },
           {
             "id": "eightysix-shin-theo",
-            "source": "shin_nouzen",
+            "source": "shinei_nouzen",
             "target": "theoto_rikka",
             "label": "先锋战队生死与共的战友",
             "description": "在第86区的无数次死生绝境中并肩操纵机甲浴血突围的生死伙伴，彼此托付后背。",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yamada_anna",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "yamada_anna",
     "profile": {
@@ -179,7 +179,7 @@
           },
           {
             "id": "bokuyaba-kyotaro-kana",
-            "source": "ichikawa_kyotaro",
+            "source": "ichikawa_kyoutarou",
             "target": "ichikawa_kana",
             "label": "感情深厚的摇滚姐姐",
             "description": "大学生兼乐队主唱姐姐，虽然偶尔大大咧咧，但比谁都关心内向的弟弟，暗中为其恋爱助攻。",

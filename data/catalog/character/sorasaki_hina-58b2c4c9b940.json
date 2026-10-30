@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sorasaki_hina",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 47,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.859Z",
+  "updatedAt": "2026-10-30T03:38:59.936649200+00:00",
   "data": {
     "id": "sorasaki_hina",
     "profile": {
@@ -257,6 +257,79 @@
             ],
             "role": "阿里乌斯特殊小队队长",
             "summary": "从小接受仇恨与刺杀训练的年轻队长。在击伤老师后历经悔悟，为了保护小队同伴四处流浪打工赎罪，最终走上属于自己的救赎之路。"
+          },
+          {
+            "id": "amau_ako",
+            "name": "天雨亚子",
+            "aliases": [
+              "天雨アコ",
+              "Amau Ako"
+            ],
+            "characterId": "amau_ako"
+          },
+          {
+            "id": "ushio_noa",
+            "name": "生盐诺亚",
+            "aliases": [
+              "生塩ノア",
+              "Ushio Noa"
+            ],
+            "characterId": "ushio_noa"
+          },
+          {
+            "id": "kakudate_karin",
+            "name": "角楯花凛",
+            "aliases": [
+              "角楯カリン",
+              "Kakudate Karin"
+            ],
+            "characterId": "kakudate_karin"
+          },
+          {
+            "id": "rikuhachima_aru",
+            "name": "陆八魔阿露",
+            "aliases": [
+              "陸八魔アル",
+              "Rikuhachima Aru"
+            ],
+            "characterId": "rikuhachima_aru"
+          },
+          {
+            "id": "sunaookami_shiroko",
+            "name": "砂狼白子",
+            "aliases": [
+              "砂狼シロコ",
+              "Sunaookami Shiroko"
+            ],
+            "characterId": "sunaookami_shiroko"
+          },
+          {
+            "id": "sunohara_shun",
+            "name": "春原瞬",
+            "aliases": [
+              "春原シュン",
+              "Sunohara Shun"
+            ],
+            "characterId": "sunohara_shun"
+          },
+          {
+            "id": "kurodate_haruna",
+            "name": "黑馆晴奈",
+            "aliases": [
+              "黒館ハルナ",
+              "Kurodate Haruna"
+            ],
+            "characterId": "kurodate_haruna"
+          },
+          {
+            "id": "sunohara_kokona",
+            "name": "春原心奈",
+            "aliases": [
+              "春原ココナ",
+              "Sunohara Kokona"
+            ],
+            "role": "梅花园教官",
+            "summary": "瞬的妹妹，与姐姐一起在梅花园担任教官。"
           }
         ],
         "relations": [
@@ -499,17 +572,129 @@
             }
           },
           {
-            "id": "misono_mika-kyouyama_kazusa-trinity_students",
-            "source": "misono_mika",
-            "target": "kyouyama_kazusa",
-            "label": "崔尼蒂同校学妹与退隐默契",
-            "description": "同为崔尼蒂自治区中曾背负显赫恶名与沉重目光的风云人物，一个洗尽铅华回归普通学员，一个褪去街头不良领袖外衣安享甜点青春，彼此在喧闹学园中形成不言而喻的默契共鸣。",
+            "id": "blue-ako-hina",
+            "source": "amau_ako",
+            "target": "sorasaki_hina",
+            "label": "行政官与委员长",
+            "description": "亚子在风纪委员会担任行政官，常在日奈身边协助处理委员会的事务。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "歌赫娜 · 风纪委员会",
+            "evidence": {
+              "title": "《蔚蓝档案》风纪委员会人物介绍",
+              "url": "https://game8.jp/blue-archive/655193"
+            }
+          },
+          {
+            "id": "blue-noa-yuuka",
+            "source": "ushio_noa",
+            "target": "hayase_yuuka",
+            "label": "研讨会同事与朋友",
+            "description": "诺亚和优香都在研讨会工作，私下关系亲近；诺亚也常拿优香开玩笑。",
             "directed": false,
             "spoiler": false,
-            "stage": "崔尼蒂综合学院日常生活",
+            "stage": "千禧年 · 研讨会",
             "evidence": {
-              "title": "崔尼蒂综合学院学生自治档案",
-              "url": "https://wiki.biligame.com/bluearchive/%E5%B4%94%E5%B0%BC%E8%92%82%E7%BB%BC%E5%90%88%E5%AD%A6%E9%99%A2"
+              "title": "诺亚人物介绍与剧情整理",
+              "url": "https://gameranbu.jp/bluearchive/457639134da6b4aa6075"
+            }
+          },
+          {
+            "id": "blue-karin-asuna",
+            "source": "kakudate_karin",
+            "target": "ichinose_asuna",
+            "label": "C&C行动搭档",
+            "description": "花凛与明日奈同属C&C。在商讨要塞行动时，两人都向其他学生解释了认真执行任务的部长。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "发条之花的帕凡舞曲 · 作战会议",
+            "evidence": {
+              "title": "主线第2卷第2章剧情台词整理",
+              "url": "https://wikiwiki.jp/ba_storytext/2-2-12%20%E4%BD%9C%E6%88%A6%E4%BC%9A%E8%AD%B0"
+            }
+          },
+          {
+            "id": "blue-shiroko-sensei",
+            "source": "sunaookami_shiroko",
+            "target": "sensei",
+            "label": "学生与老师",
+            "description": "白子是阿拜多斯对策委员会的成员，在学校面临废校时遇到了受联邦学生会派遣而来的老师。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第1集 · 阿拜多斯",
+            "evidence": {
+              "title": "《蔚蓝档案》动画第1集梗概",
+              "url": "https://sh-anime.shochiku.co.jp/bluearchive-anime/story/"
+            }
+          },
+          {
+            "id": "blue-aru-shiroko",
+            "source": "rikuhachima_aru",
+            "target": "sunaookami_shiroko",
+            "label": "委托中的交锋",
+            "description": "阿露率领便利屋68接受委托袭击阿拜多斯，白子与对策委员会迎战；双方此前刚在拉面店结识。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第3集 · 便利屋68",
+            "evidence": {
+              "title": "《蔚蓝档案》动画第3集梗概",
+              "url": "https://sh-anime.shochiku.co.jp/bluearchive-anime/story/"
+            }
+          },
+          {
+            "id": "blue-aru-sensei",
+            "source": "rikuhachima_aru",
+            "target": "sensei",
+            "label": "拉面店的相遇",
+            "description": "阿露带领的便利屋68与老师和对策委员会在拉面店偶遇，双方当时聊得投机。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第3集 · 便利屋68",
+            "evidence": {
+              "title": "《蔚蓝档案》动画第3集梗概",
+              "url": "https://sh-anime.shochiku.co.jp/bluearchive-anime/story/"
+            }
+          },
+          {
+            "id": "blue-shun-kokona",
+            "source": "sunohara_shun",
+            "target": "sunohara_kokona",
+            "label": "姐妹与同事",
+            "description": "瞬是心奈的姐姐，两人都在梅花园担任教官。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "山海经 · 梅花园",
+            "evidence": {
+              "title": "心奈人物介绍与关系整理",
+              "url": "https://gameranbu.jp/bluearchive/e945ea1da1cf2e553a0b"
+            }
+          },
+          {
+            "id": "blue-shun-sensei",
+            "source": "sunohara_shun",
+            "target": "sensei",
+            "label": "梅花园的访客",
+            "description": "老师曾到访梅花园，也和瞬一起为园里的孩子挑选礼物。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "瞬的羁绊故事",
+            "evidence": {
+              "title": "春原瞬羁绊故事整理",
+              "url": "https://rojiuragame.com/2023/06/02/%E3%80%90%E3%83%96%E3%83%AB%E3%83%BC%E3%82%A2%E3%83%BC%E3%82%AB%E3%82%A4%E3%83%96%E3%80%91%E3%82%AD%E3%83%A3%E3%83%A9%E3%82%AF%E3%82%BF%E3%83%BC%E7%B4%B9%E4%BB%8B%E3%80%9C%E3%80%8C%E6%98%A5%E5%8E%9F-2/"
+            }
+          },
+          {
+            "id": "blue-haruna-iori",
+            "source": "kurodate_haruna",
+            "target": "shiromi_iori",
+            "label": "美食研究会与风纪委员",
+            "description": "晴奈带领的美食研究会曾与前来制止她们的风纪委员会发生冲突；伊织也卷入过双方的争执。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "歌赫娜 · 委员会日常",
+            "evidence": {
+              "title": "风纪委员会剧情台词整理",
+              "url": "https://wikiwiki.jp/ba_storytext/%E9%A2%A8%E7%B4%80%E5%A7%94%E5%93%A1%E4%BC%9A%E3%83%BB%E9%80%B1%E6%AC%A1%E5%AE%9A%E4%BE%8B"
             }
           }
         ]

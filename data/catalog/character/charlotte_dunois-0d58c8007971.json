@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "charlotte_dunois",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 222,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
+  "updatedAt": "2026-10-30T03:43:55.959144800+00:00",
   "data": {
     "id": "charlotte_dunois",
     "profile": {
@@ -91,7 +91,73 @@
         "orange_eyes"
       ],
       "voice": "一夏……今天的便当里有你喜欢的煎蛋卷和炸虾哦。放学后……可以去你房间一起复习功课吗？",
-      "voiceJa": "一夏……今日の放課後、部屋に行ってもいいかな？二人で勉強しようよ"
+      "voiceJa": "一夏……今日の放課後、部屋に行ってもいいかな？二人で勉強しようよ",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "无限斯特拉托斯",
+        "people": [
+          {
+            "id": "charlotte_dunois",
+            "name": "夏洛特·德诺阿",
+            "aliases": [
+              "シャルロット・デュノア",
+              "Charlotte Dunois",
+              "夏尔"
+            ],
+            "characterId": "charlotte_dunois"
+          },
+          {
+            "id": "orimura_ichika",
+            "name": "织斑一夏",
+            "aliases": [
+              "織斑一夏",
+              "Orimura Ichika"
+            ],
+            "role": "IS学园学生",
+            "summary": "能够操纵IS的男性学员。"
+          },
+          {
+            "id": "laura_bodewig",
+            "name": "劳拉·博德维希",
+            "aliases": [
+              "ラウラ・ボーデヴィッヒ",
+              "Laura Bodewig"
+            ],
+            "role": "IS学园学生",
+            "summary": "拥有专用IS的德国代表候补生。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "is-charlotte-ichika",
+            "source": "charlotte_dunois",
+            "target": "orimura_ichika",
+            "label": "同学与搭档",
+            "description": "夏洛特转入IS学园后与一夏结识，两人在班级对抗赛中并肩作战。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第一季 · 学园",
+            "evidence": {
+              "title": "TBS动画第8集梗概",
+              "url": "https://www.tbs.co.jp/anime/is/story/story08.html"
+            }
+          },
+          {
+            "id": "is-charlotte-laura",
+            "source": "charlotte_dunois",
+            "target": "laura_bodewig",
+            "label": "比赛中的对手",
+            "description": "在班级对抗赛中，夏洛特与一夏配合，迎战驾驶专用IS的劳拉。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第一季 · 班级对抗赛",
+            "evidence": {
+              "title": "TBS动画第8集梗概",
+              "url": "https://www.tbs.co.jp/anime/is/story/story08.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "charlotte_dunois",

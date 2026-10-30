@@ -11,19 +11,21 @@ const dimensions: Array<{ value: CircleDimension; label: string }> = [
 
 /** Classifications arrange people; only authored relations create connecting lines. */
 export function useRelationCircles(input: {
-  work: Ref<string>; people: Ref<RelationPerson[]>; classificationPeople: Ref<RelationPerson[]>; relations: Ref<CharacterRelation[]>
+  work: Ref<string>; workSize: Ref<number>; people: Ref<RelationPerson[]>; classificationPeople: Ref<RelationPerson[]>; relations: Ref<CharacterRelation[]>
   nodes: Ref<Node[]>; edges: Ref<Edge[]>; profileFor: (person: RelationPerson) => CharacterProfile | undefined
   size: Ref<{ width: number; height: number }>
   clearSelection: () => void
 }) {
-  const mode = ref<'circles' | 'person'>('circles')
+  const usesTerritories = computed(() => input.workSize.value > 10)
+  const mode = ref<'circles' | 'person'>(usesTerritories.value ? 'circles' : 'person')
   const dimension = ref<CircleDimension>('region')
   const groupId = ref(''), hoveredGroup = ref('')
   const page = ref(0)
   const readingAnchor = ref('')
   const readingPlaces = new Map<string, string>()
   const trail = ref<Array<{ id: string; first: string }>>([])
-  const options = computed(() => dimensions.filter(item => input.classificationPeople.value.some(person => input.profileFor(person)?.identity?.[item.value])))
+  const options = computed(() => usesTerritories.value
+    ? dimensions.filter(item => input.classificationPeople.value.some(person => input.profileFor(person)?.identity?.[item.value])) : [])
   const enabled = computed(() => mode.value === 'circles' && options.value.length > 0)
   const dimensionLabel = computed(() => dimensions.find(item => item.value === dimension.value)!.label)
   const groupFor = (person: RelationPerson) => input.profileFor(person)?.identity?.[dimension.value]?.trim() || '待整理'
@@ -75,7 +77,7 @@ export function useRelationCircles(input: {
     mode.value = 'circles'; openGroup(groupFor(person))
     anchorAt(person.id)
   }
-  watch(input.work, () => { readingPlaces.clear(); mode.value = 'circles'; overview() })
+  watch([input.work, usesTerritories], () => { readingPlaces.clear(); mode.value = usesTerritories.value ? 'circles' : 'person'; overview() })
   watch(options, items => {
     if (!items.some(item => item.value === dimension.value)) dimension.value = items[0]?.value || 'region'
   }, { immediate: true })
@@ -136,7 +138,8 @@ export function useRelationCircles(input: {
   }
 
   const portraitMembership = computed(() => input.nodes.value.map(node => node.id).join('\0'))
-  const layoutKey = computed(() => `${input.work.value}:${mode.value}:${dimension.value}:${enabled.value ? groupId.value : portraitMembership.value}\0`)
+  const centerId = computed(() => input.nodes.value.find(node => node.data.center)?.id || '')
+  const layoutKey = computed(() => `${input.work.value}:${mode.value}:${dimension.value}:${enabled.value ? groupId.value : portraitMembership.value}:${usesTerritories.value ? '' : centerId.value}\0`)
   const manualPositions = shallowRef(new Map<string, { x: number; y: number }>())
   const hasManualPositions = computed(() => [...manualPositions.value.keys()].some(key => key.startsWith(layoutKey.value)))
   function rememberPositions(changes: NodeChange[]) {
@@ -158,6 +161,7 @@ export function useRelationCircles(input: {
   function portraitField(group: { id: string; people: RelationPerson[] }, portraits: Node[]) {
     const moved = portraits.map(node => ({ ...node, draggable: true,
       position: manualPositions.value.get(layoutKey.value + node.id) || node.position }))
+    if (!usesTerritories.value) return moved
     const field = atlasPortraitField(moved.map(node => ({ x: node.position.x + 54, y: node.position.y + 74 })))
     const ground = territoryNode(group, field.origin, true, false, field.shape)
     return [ground, ...moved]
@@ -187,18 +191,38 @@ export function useRelationCircles(input: {
     return { shapes, positions }
   })
 
+  const hasClass = (edge: Edge, name: string) => typeof edge.class === 'object' && !Array.isArray(edge.class) && edge.class?.[name]
+  function bundleEdges(list: Edge[]): Edge[] {
+    const names = new Map(canvasNodes.value.map(node => [node.id,
+      node.type === 'portrait' ? node.data.person.name : `${node.data.label}分组`]))
+    const pairs = new Map<string, Edge[]>()
+    for (const edge of list) {
+      const key = [edge.source, edge.target].sort().join('\0')
+      if (!pairs.has(key)) pairs.set(key, [])
+      pairs.get(key)!.push(edge)
+    }
+    return [...pairs.values()].map(relations => {
+      const edge = relations[0], count = relations.length
+      const showLabel = hasClass(edge, 'relation-edge-hovered') || hasClass(edge, 'relation-edge-selected')
+      return { ...edge, type: 'straight',
+        class: { 'relation-edge-active': relations.some(relation => hasClass(relation, 'relation-edge-active')),
+          'relation-edge-hovered': relations.some(relation => hasClass(relation, 'relation-edge-hovered')),
+          'relation-edge-selected': relations.some(relation => hasClass(relation, 'relation-edge-selected')),
+          'relation-edge-person-selected': relations.some(relation => hasClass(relation, 'relation-edge-person-selected')),
+          'relation-edge-dimmed': relations.every(relation => hasClass(relation, 'relation-edge-dimmed')) },
+        markerStart: count > 1 ? undefined : edge.markerStart, markerEnd: count > 1 ? undefined : edge.markerEnd,
+        ariaLabel: count > 1 ? `${names.get(edge.source)}与${names.get(edge.target)}：${count} 条关系` : edge.ariaLabel,
+        data: { ...edge.data, relationIds: relations.map(relation => relation.id) },
+        label: count > 1 ? `${count} 条关系` : showLabel ? edge.label : undefined, zIndex: 1 }
+    })
+  }
   function portraitEdges(list: Edge[]): Edge[] {
     const positions = new Map(canvasNodes.value.filter(node => node.type === 'portrait').map(node => [node.id, node.position]))
     const opposite = { right: 'left', left: 'right', top: 'bottom', bottom: 'top' }
-    return list.map(edge => {
+    return bundleEdges(list).map(edge => {
       const a = positions.get(edge.source)!, b = positions.get(edge.target)!, dx = b.x - a.x, dy = b.y - a.y
       const side = Math.abs(dx) > Math.abs(dy) ? dx > 0 ? 'right' : 'left' : dy > 0 ? 'bottom' : 'top'
-      const parallels = list.filter(item => [edge.source, edge.target].includes(item.source) && [edge.source, edge.target].includes(item.target))
-      const index = parallels.findIndex(item => item.id === edge.id)
-      const showLabel = typeof edge.class === 'object' && !Array.isArray(edge.class) && (edge.class?.['relation-edge-hovered'] || edge.class?.['relation-edge-selected'])
-      return { ...edge, type: index ? 'smoothstep' : 'straight', sourceHandle: `source-${side}`, targetHandle: `target-${opposite[side]}`,
-        pathOptions: index ? { offset: 50 * (index + 1), borderRadius: 14 } : undefined,
-        label: showLabel ? edge.label : undefined, zIndex: 1 }
+      return { ...edge, sourceHandle: `source-${side}`, targetHandle: `target-${opposite[side]}` }
     })
   }
 
@@ -206,7 +230,10 @@ export function useRelationCircles(input: {
     if (!enabled.value) return portraitGroups.value.flatMap(group => {
       const shape = portraitLayout.value.shapes.get(group.id)!, origin = portraitLayout.value.positions.get(group.id)!
       const byId = new Map(input.nodes.value.map(node => [node.id, node]))
-      return portraitField(group, group.people.map((person, index) => {
+      const people = usesTerritories.value ? group.people : [
+        ...group.people.filter(person => person.id === centerId.value), ...group.people.filter(person => person.id !== centerId.value),
+      ]
+      return portraitField(group, people.map((person, index) => {
         const cell = shape.cells[index], node = byId.get(person.id)!
         return { ...node, type: 'portrait', draggable: false, zIndex: 2,
           position: { x: origin.x + cell.x - 54, y: origin.y + cell.y - 74 }, data: { ...node.data, center: false } }
@@ -227,13 +254,17 @@ export function useRelationCircles(input: {
     }
     return groups.value.map(group => territoryNode(group, territoryPositions.value.get(group.id)!))
   })
-  const requestedEdges = computed(() => {
-    const hasClass = (edge: Edge, name: string) => typeof edge.class === 'object' && !Array.isArray(edge.class) && edge.class?.[name]
-    const selected = input.edges.value.filter(edge => hasClass(edge, 'relation-edge-selected'))
-    return selected.length ? selected : input.edges.value.filter(edge => hasClass(edge, 'relation-edge-person-selected'))
-  })
+  const selectedEdges = computed(() => input.edges.value.filter(edge => hasClass(edge, 'relation-edge-selected')))
+  const requestedEdges = computed(() => selectedEdges.value.length ? selectedEdges.value
+    : input.edges.value.filter(edge => hasClass(edge, 'relation-edge-person-selected')))
   const canvasEdges = computed<Edge[]>(() => {
-    if (!enabled.value) return portraitEdges(requestedEdges.value)
+    if (!enabled.value) {
+      if (usesTerritories.value) return portraitEdges(requestedEdges.value)
+      const focus = input.nodes.value.find(node => node.data.selected)?.id || centerId.value
+      const relations = selectedEdges.value.length ? selectedEdges.value
+        : input.edges.value.filter(edge => edge.source === focus || edge.target === focus)
+      return portraitEdges(relations)
+    }
     if (activeGroup.value) {
       const internal = portraitEdges(requestedEdges.value.filter(edge => pageIds.value.has(edge.source) && pageIds.value.has(edge.target)))
       const external = outsideConnections.value.flatMap(connection => {
@@ -246,11 +277,11 @@ export function useRelationCircles(input: {
           sourceHandle: sourceInside ? 'source-right' : undefined, targetHandle: sourceInside ? undefined : 'target-right',
           type: 'straight', label: showLabel ? edge.label : undefined, zIndex: 1 }]
       })
-      return [...internal, ...external]
+      return [...internal, ...bundleEdges(external)]
     }
     return []
   })
-  return { mode, dimension, options, enabled, dimensionLabel, groups, groupId, activeGroup, members, groupRelations,
+  return { mode, dimension, options, enabled, usesTerritories, dimensionLabel, groups, groupId, activeGroup, members, groupRelations,
     outsideConnections, hoveredGroup, overview, openGroup, backGroup, trail, reveal, canvasNodes, canvasEdges,
     page, pageSize, pageCount, pageMembers, setPage, rememberPositions, movePerson, resetPositions, hasManualPositions }
 }

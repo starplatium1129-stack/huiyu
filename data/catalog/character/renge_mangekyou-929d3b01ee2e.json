@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "renge_mangekyou",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 252,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-30T03:43:55.959144800+00:00",
   "data": {
     "id": "renge_mangekyou",
     "popular": {
@@ -150,7 +150,81 @@
       "accent_color": "#e11d48",
       "bg_color": "#0f172a",
       "voice": "呵呵……欢迎来到万华镜的世界。今夜你又渴望窥见怎样瑰丽而荒诞的美梦呢？可别陷得太深，连灵魂都被妾身吸走哦。",
-      "voiceJa": "ふふっ、今宵はどんな夢を覗き見たいのかしら？"
+      "voiceJa": "ふふっ、今宵はどんな夢を覗き見たいのかしら？",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "美少女万华镜",
+        "people": [
+          {
+            "id": "renge_mangekyou",
+            "name": "莲华",
+            "aliases": [
+              "蓮華",
+              "Renge"
+            ],
+            "characterId": "renge_mangekyou"
+          },
+          {
+            "id": "kagari_no_kirie",
+            "name": "篝之雾枝",
+            "aliases": [
+              "篝ノ霧枝",
+              "Kagari no Kirie"
+            ],
+            "characterId": "kagari_no_kirie"
+          },
+          {
+            "id": "fukami_natsuhiko",
+            "name": "深见夏彦",
+            "aliases": [
+              "深見夏彦",
+              "Fukami Natsuhiko"
+            ],
+            "role": "恐怖作家",
+            "summary": "为了取材来到旅馆，在那里遇见莲华。"
+          },
+          {
+            "id": "onogami_shigehiko",
+            "name": "斧神滋比古",
+            "aliases": [
+              "斧神滋比古",
+              "Onogami Shigehiko"
+            ],
+            "role": "音乐教师",
+            "summary": "《被诅咒的传说少女》中的人物，因学生雾枝而卷入故事。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "mangekyou-renge-fukami",
+            "source": "renge_mangekyou",
+            "target": "fukami_natsuhiko",
+            "label": "旅馆中的相遇",
+            "description": "为取材而来的深见夏彦在旅馆遇见莲华，随后透过她的万华镜看见另一个故事。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "系列第一作 · 故事开端",
+            "evidence": {
+              "title": "《美少女万华镜》作品介绍",
+              "url": "https://www.newton.com.tw/wiki/%E7%BE%8E%E5%B0%91%E5%A5%B3%E8%90%AC%E8%8F%AF%E9%8F%A1"
+            }
+          },
+          {
+            "id": "mangekyou-kirie-onogami",
+            "source": "kagari_no_kirie",
+            "target": "onogami_shigehiko",
+            "label": "学生与音乐教师",
+            "description": "雾枝与音乐教师斧神滋比古的相遇，是《被诅咒的传说少女》的故事起点。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "《被诅咒的传说少女》",
+            "evidence": {
+              "title": "《美少女万华镜》系列作品介绍",
+              "url": "https://zh.wikipedia.org/wiki/%E7%BE%8E%E5%B0%91%E5%A5%B3%E4%B8%87%E5%8D%8E%E9%95%9C%E7%B3%BB%E5%88%97"
+            }
+          }
+        ]
+      }
     }
   }
 }

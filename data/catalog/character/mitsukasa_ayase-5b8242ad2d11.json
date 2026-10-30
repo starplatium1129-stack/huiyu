@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mitsukasa_ayase",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 260,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
+  "updatedAt": "2026-10-30T03:35:43.106480900+00:00",
   "data": {
     "id": "mitsukasa_ayase",
     "profile": {
@@ -65,7 +65,109 @@
         "long hair",
         "pink eyes"
       ],
-      "accent_color": "#bd5f7f"
+      "accent_color": "#bd5f7f",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "密命王牌",
+        "people": [
+          {
+            "id": "mitsukasa_ayase",
+            "name": "三司绫濑",
+            "aliases": [
+              "三司あやせ",
+              "Mitsukasa Ayase"
+            ],
+            "characterId": "mitsukasa_ayase"
+          },
+          {
+            "id": "arihara_nanami",
+            "name": "在原七海",
+            "aliases": [
+              "在原七海",
+              "Arihara Nanami"
+            ],
+            "characterId": "arihara_nanami"
+          },
+          {
+            "id": "arihara_satoru",
+            "name": "在原晓",
+            "aliases": [
+              "在原暁",
+              "Arihara Satoru"
+            ],
+            "role": "潜入学院的调查员",
+            "summary": "进入异能者学院执行任务的调查员，也是七海的哥哥和搭档。"
+          },
+          {
+            "id": "arihara_ryunosuke",
+            "name": "在原隆之介",
+            "aliases": [
+              "在原隆之介",
+              "Arihara Ryunosuke"
+            ],
+            "role": "晓与七海的养父",
+            "summary": "收养晓和七海的人。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "riddle-nanami-satoru",
+            "source": "arihara_nanami",
+            "target": "arihara_satoru",
+            "label": "兄妹与搭档",
+            "description": "七海是晓没有血缘关系的妹妹，也在组织中担任他的支援搭档。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "潜入任务",
+            "evidence": {
+              "title": "《RIDDLE JOKER》官方人物介绍",
+              "url": "https://www.yuzu-soft.com/products/riddle/character.html"
+            }
+          },
+          {
+            "id": "riddle-ayase-satoru",
+            "source": "mitsukasa_ayase",
+            "target": "arihara_satoru",
+            "label": "同班同学",
+            "description": "晓潜入异能者学院后与绫濑成为同班同学；绫濑在学院里颇受欢迎。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学院生活",
+            "evidence": {
+              "title": "《RIDDLE JOKER》漫画版官方简介",
+              "url": "https://comic-walker.com/detail/KC_004736_S"
+            }
+          },
+          {
+            "id": "riddle-ayase-satoru-secret",
+            "source": "mitsukasa_ayase",
+            "target": "arihara_satoru",
+            "label": "发现潜入身份",
+            "description": "执行潜入任务的晓被绫濑发现真实身份，两人的交往因此有了新的处境。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "学院潜入事件",
+            "evidence": {
+              "title": "《RIDDLE JOKER》漫画版官方简介",
+              "url": "https://comic-walker.com/detail/KC_004736_S"
+            }
+          },
+          {
+            "id": "riddle-nanami-ryunosuke",
+            "source": "arihara_nanami",
+            "target": "arihara_ryunosuke",
+            "label": "养女与养父",
+            "description": "隆之介是七海和晓的养父。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "在原家",
+            "evidence": {
+              "title": "《RIDDLE JOKER》官方人物介绍",
+              "url": "https://www.yuzu-soft.com/products/riddle/character.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "mitsukasa_ayase",

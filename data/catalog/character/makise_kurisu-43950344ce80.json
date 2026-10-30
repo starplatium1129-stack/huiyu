@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makise_kurisu",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 246,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-30T03:52:57.719709400+00:00",
   "data": {
     "id": "makise_kurisu",
     "popular": {
@@ -151,7 +151,136 @@
       "accent_color": "#c2410c",
       "bg_color": "#0f172a",
       "voice": "……别、别用那种眼神看我！我才没有特意为你煮咖啡呢，只是恰好水烧多了而已！笨蛋！",
-      "voiceJa": "ば、バカじゃないの！？別にアンタのために淹れたんじゃないんだから！"
+      "voiceJa": "ば、バカじゃないの！？別にアンタのために淹れたんじゃないんだから！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "命运石之门",
+        "people": [
+          {
+            "id": "makise_kurisu",
+            "name": "牧濑红莉栖",
+            "aliases": [
+              "牧瀬紅莉栖",
+              "Makise Kurisu"
+            ],
+            "characterId": "makise_kurisu"
+          },
+          {
+            "id": "shiina_mayuri",
+            "name": "椎名真由理",
+            "aliases": [
+              "椎名まゆり",
+              "Shiina Mayuri",
+              "真由氏"
+            ],
+            "characterId": "shiina_mayuri"
+          },
+          {
+            "id": "okabe_rintaro",
+            "name": "冈部伦太郎",
+            "aliases": [
+              "岡部倫太郎",
+              "Okabe Rintaro",
+              "凤凰院凶真"
+            ],
+            "role": "未来道具研究所所长",
+            "summary": "在秋叶原建立未来道具研究所的大学生。"
+          },
+          {
+            "id": "hashida_itaru",
+            "name": "桥田至",
+            "aliases": [
+              "橋田至",
+              "Hashida Itaru",
+              "桶子"
+            ],
+            "role": "未来道具研究所成员",
+            "summary": "冈部高中时期的朋友，擅长程序与计算机技术。"
+          },
+          {
+            "id": "hiyajo_maho",
+            "name": "比屋定真帆",
+            "aliases": [
+              "比屋定真帆",
+              "Hiyajo Maho"
+            ],
+            "role": "脑科学研究员",
+            "summary": "红莉栖在大学研究所的前辈。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "steins-mayuri-okabe",
+            "source": "shiina_mayuri",
+            "target": "okabe_rintaro",
+            "label": "青梅竹马",
+            "description": "真由理与冈部从小认识，也是未来道具研究所的成员，常留意冈部的状态。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "未来道具研究所",
+            "evidence": {
+              "title": "《STEINS;GATE 0》官方人物介绍",
+              "url": "https://steinsgate0.jp/cast/"
+            }
+          },
+          {
+            "id": "steins-kurisu-okabe",
+            "source": "makise_kurisu",
+            "target": "okabe_rintaro",
+            "label": "研究所伙伴",
+            "description": "红莉栖与冈部相识后参与研究所的活动，以研究员的知识协助他们讨论和研究。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "未来道具研究所",
+            "evidence": {
+              "title": "《STEINS;GATE 0》官方人物介绍",
+              "url": "https://steinsgate0.jp/cast/"
+            }
+          },
+          {
+            "id": "steins-kurisu-mayuri",
+            "source": "makise_kurisu",
+            "target": "shiina_mayuri",
+            "label": "研究所里的朋友",
+            "description": "红莉栖加入研究所后，与真由理在相处中成了朋友。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "未来道具研究所",
+            "evidence": {
+              "title": "《命运石之门》动画配音演员访谈",
+              "url": "https://www.animatetimes.com/news/details.php?id=1314891212"
+            }
+          },
+          {
+            "id": "steins-okabe-daru",
+            "source": "okabe_rintaro",
+            "target": "hashida_itaru",
+            "label": "老友与研究伙伴",
+            "description": "桥田至从高中时期就认识冈部，在研究所负责他擅长的计算机工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "未来道具研究所",
+            "evidence": {
+              "title": "《STEINS;GATE RE:BOOT》官方人物介绍",
+              "url": "https://steinsgate.jp/reboot/ja-jp/"
+            }
+          },
+          {
+            "id": "steins-kurisu-maho",
+            "source": "makise_kurisu",
+            "target": "hiyajo_maho",
+            "label": "大学研究所的前后辈",
+            "description": "真帆是红莉栖在大学脑科学研究所的前辈，两人都从事研究工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "大学研究所",
+            "evidence": {
+              "title": "《STEINS;GATE 0》官方人物介绍",
+              "url": "https://steinsgate0.jp/cast/"
+            }
+          }
+        ]
+      }
     }
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misaka_mikoto",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "misaka_mikoto",
     "profile": {
@@ -172,6 +172,25 @@
             "role": "栅川中学学生 / 都市传说爱好者",
             "summary": "元气豁达、充满好奇心的普通初中生。曾因无能力而迷茫，后以无畏的勇气与棒球棍参与多场都市传说事件，是美琴最宝贵且无拘无束的日常好友。",
             "characterId": "saten_ruiko"
+          },
+          {
+            "id": "frenda_seivelun",
+            "name": "芙兰达·塞维伦",
+            "aliases": [
+              "フレンダ＝セイヴェルン",
+              "Frenda Seivelun"
+            ],
+            "characterId": "frenda_seivelun"
+          },
+          {
+            "id": "mugino_shizuri",
+            "name": "麦野沈利",
+            "aliases": [
+              "麦野沈利",
+              "Mugino Shizuri"
+            ],
+            "role": "暗部组织ITEM成员",
+            "summary": "学园都市的超能力者，也是ITEM的成员。"
           }
         ],
         "relations": [
@@ -271,6 +290,34 @@
             "evidence": {
               "title": "J.C.STAFF《某科学的超电磁炮T》动画官网",
               "url": "https://toaru-project.com/railgun_t/"
+            }
+          },
+          {
+            "id": "railgun-frenda-saten",
+            "source": "frenda_seivelun",
+            "target": "saten_ruiko",
+            "label": "鲭鱼罐头结下的缘分",
+            "description": "芙兰达与佐天偶然相识，之后为报答一顿鲭鱼罐头出手救下遭人绑架的佐天。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "《超电磁炮T》第19、20集",
+            "evidence": {
+              "title": "《超电磁炮T》第20集梗概",
+              "url": "https://toaru-project.com/railgun_t/story/20.html"
+            }
+          },
+          {
+            "id": "railgun-frenda-mugino",
+            "source": "frenda_seivelun",
+            "target": "mugino_shizuri",
+            "label": "ITEM成员",
+            "description": "芙兰达与麦野同属暗部组织ITEM；前者擅长爆炸物和陷阱，后者拥有强大的超能力。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学园都市 · 暗部",
+            "evidence": {
+              "title": "《某暗部的少女共栖》官方故事介绍",
+              "url": "https://toaru-project.com/item/story/index.html"
             }
           }
         ]

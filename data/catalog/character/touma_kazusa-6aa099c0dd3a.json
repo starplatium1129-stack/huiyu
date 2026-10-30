@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "touma_kazusa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 255,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-30T03:35:43.106480900+00:00",
   "data": {
     "id": "touma_kazusa",
     "profile": {
@@ -67,7 +67,113 @@
       ],
       "accent_color": "#7c69a5",
       "voiceJa": "ちょっと黙ってて。このフレーズが終わるまで、音を聴きたいから",
-      "bg_color": "#140f1f"
+      "bg_color": "#140f1f",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "白色相簿2",
+        "people": [
+          {
+            "id": "touma_kazusa",
+            "name": "冬马和纱",
+            "aliases": [
+              "冬馬かずさ",
+              "Touma Kazusa"
+            ],
+            "characterId": "touma_kazusa"
+          },
+          {
+            "id": "ogiso_setsuna",
+            "name": "小木曾雪菜",
+            "aliases": [
+              "小木曽雪菜",
+              "Ogiso Setsuna"
+            ],
+            "characterId": "ogiso_setsuna"
+          },
+          {
+            "id": "kitahara_haruki",
+            "name": "北原春希",
+            "aliases": [
+              "北原春希",
+              "Kitahara Haruki"
+            ],
+            "role": "轻音乐同好会成员",
+            "summary": "为了学园祭演出重新召集轻音乐同好会的学生，负责吉他。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "wa2-kazusa-haruki-band",
+            "source": "touma_kazusa",
+            "target": "kitahara_haruki",
+            "label": "同好会搭档",
+            "description": "春希邀请和纱加入轻音乐同好会。为准备学园祭演出，和纱还帮他练习吉他。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学园祭前",
+            "evidence": {
+              "title": "《WHITE ALBUM2》动画第3、4集梗概",
+              "url": "https://whitealbum2.jp/story/"
+            }
+          },
+          {
+            "id": "wa2-setsuna-haruki-band",
+            "source": "ogiso_setsuna",
+            "target": "kitahara_haruki",
+            "label": "歌手与吉他手",
+            "description": "春希听见雪菜在屋顶唱歌后，邀请她加入同好会，和大家一起准备学园祭的舞台。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学园祭前",
+            "evidence": {
+              "title": "《WHITE ALBUM2》动画第2集梗概",
+              "url": "https://whitealbum2.jp/story/"
+            }
+          },
+          {
+            "id": "wa2-kazusa-setsuna-friends",
+            "source": "touma_kazusa",
+            "target": "ogiso_setsuna",
+            "label": "同台演出的朋友",
+            "description": "雪菜主动接近和纱，两人与春希一起练习、登台，演出后也努力维持三个人的友谊。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "轻音乐同好会",
+            "evidence": {
+              "title": "《WHITE ALBUM2》动画第3、7集梗概",
+              "url": "https://whitealbum2.jp/story/"
+            }
+          },
+          {
+            "id": "wa2-setsuna-haruki-couple",
+            "source": "ogiso_setsuna",
+            "target": "kitahara_haruki",
+            "label": "交往",
+            "description": "学园祭演出后，雪菜与春希成为恋人；两人仍希望和和纱继续像以前一样相处。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "动画第8集 · 学园祭之后",
+            "evidence": {
+              "title": "《WHITE ALBUM2》动画第8集梗概",
+              "url": "https://whitealbum2.jp/story/"
+            }
+          },
+          {
+            "id": "wa2-kazusa-haruki-feelings",
+            "source": "touma_kazusa",
+            "target": "kitahara_haruki",
+            "label": "未说出口的心意",
+            "description": "和纱把对春希的感情藏在心里，三人的关系也因此变得难以维持。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "动画第10、11集",
+            "evidence": {
+              "title": "《WHITE ALBUM2》动画第10、11集梗概",
+              "url": "https://whitealbum2.jp/story/"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "touma_kazusa",

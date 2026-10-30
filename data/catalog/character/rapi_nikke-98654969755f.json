@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rapi_nikke",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 172,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T08:46:52.926Z",
+  "updatedAt": "2026-10-30T03:38:59.936649200+00:00",
   "data": {
     "id": "rapi_nikke",
     "profile": {
@@ -184,7 +184,8 @@
               "マリアン"
             ],
             "role": "反击部队元老 / 朝圣者异端儿",
-            "summary": "在首次出击中遭侵蚀脑死被异化为莱彻异端儿「神罚」的少女。在指挥官拼死呼唤下找回部分心智，作为朝圣者在地面徘徊守护指挥官。"
+            "summary": "在首次出击中遭侵蚀脑死被异化为莱彻异端儿「神罚」的少女。在指挥官拼死呼唤下找回部分心智，作为朝圣者在地面徘徊守护指挥官。",
+            "characterId": "modernia"
           },
           {
             "id": "red_hood",
@@ -209,6 +210,56 @@
             ],
             "role": "北方雪原救援队「无限轨道」领袖",
             "summary": "严寒雪原上的女王级妮姬。以尊贵的仪表庇护在极地迷途的人类与妮姬，在严酷生态中构筑起坚不可摧的诺斯菲尔庇护所。"
+          },
+          {
+            "id": "scarlet_nikke",
+            "name": "红莲",
+            "aliases": [
+              "Scarlet",
+              "スカーレット",
+              "红莲"
+            ],
+            "characterId": "scarlet_nikke"
+          },
+          {
+            "id": "viper_nikke",
+            "name": "毒蛇",
+            "aliases": [
+              "Viper",
+              "バイパー",
+              "毒蛇"
+            ],
+            "characterId": "viper_nikke"
+          },
+          {
+            "id": "d_killer_wife",
+            "name": "D：杀手妻子",
+            "aliases": [
+              "D: Killer Wife",
+              "D:キラーワイフ",
+              "D"
+            ],
+            "characterId": "d_killer_wife"
+          },
+          {
+            "id": "snow_white_nikke",
+            "name": "白雪公主",
+            "aliases": [
+              "Snow White",
+              "スノーホワイト"
+            ],
+            "role": "朝圣者 / 先驱者成员",
+            "summary": "在地表行动、致力于对抗莱彻的妮姬。"
+          },
+          {
+            "id": "jackal_nikke",
+            "name": "豺狼",
+            "aliases": [
+              "Jackal",
+              "ジャッカル"
+            ],
+            "role": "外来者部队成员",
+            "summary": "与毒蛇同属外来者部队的妮姬。"
           }
         ],
         "relations": [
@@ -392,6 +443,90 @@
             "evidence": {
               "title": "泰特拉工业极地据点记录 · 鲁德米拉档案",
               "url": "https://wiki.biligame.com/nikke/%E9%B2%81%E5%BE%B7%E7%B1%B3%E6%8B%89"
+            }
+          },
+          {
+            "id": "nikke-scarlet-snowwhite",
+            "source": "scarlet_nikke",
+            "target": "snow_white_nikke",
+            "label": "先驱者战友",
+            "description": "红莲与白雪公主同属先驱者，长期在地表行动，寻找对抗莱彻的办法。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "地表 · 先驱者",
+            "evidence": {
+              "title": "《NIKKE》主线第17章剧情整理",
+              "url": "https://www.gacha.gg/nikke/story/chapter-17-purpose"
+            }
+          },
+          {
+            "id": "nikke-scarlet-dorothy",
+            "source": "scarlet_nikke",
+            "target": "dorothy_nikke",
+            "label": "昔日女神部队战友",
+            "description": "红莲与桃乐丝曾一同在女神部队作战；过去的经历让她们各自选择了不同的道路。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "女神部队时期",
+            "evidence": {
+              "title": "《NIKKE》RED ASH剧情整理",
+              "url": "https://www.gacha.gg/nikke/story/red-ash"
+            }
+          },
+          {
+            "id": "nikke-scarlet-redhood",
+            "source": "scarlet_nikke",
+            "target": "red_hood",
+            "label": "女神部队战友",
+            "description": "小红帽离开前曾与红莲交谈，把一些不愿让其他同伴担心的事托付给她。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "RED ASH · 分别之前",
+            "evidence": {
+              "title": "《NIKKE》RED ASH剧情整理",
+              "url": "https://www.gacha.gg/nikke/story/red-ash"
+            }
+          },
+          {
+            "id": "nikke-viper-jackal",
+            "source": "viper_nikke",
+            "target": "jackal_nikke",
+            "label": "外来者部队成员",
+            "description": "毒蛇与豺狼同属外来者部队，曾一起在外围区行动。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "外围区 · 外来者部队",
+            "evidence": {
+              "title": "《NIKKE》D-OUTSIDERS剧情整理",
+              "url": "https://www.gacha.gg/nikke/story/d-outsiders"
+            }
+          },
+          {
+            "id": "nikke-viper-commander",
+            "source": "viper_nikke",
+            "target": "commander_nikke",
+            "label": "外围区任务的交集",
+            "description": "指挥官在外围区的事件中与毒蛇和豺狼打交道；他们的立场并不总是一致。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "外围区事件",
+            "evidence": {
+              "title": "《NIKKE》D-OUTSIDERS剧情整理",
+              "url": "https://www.gacha.gg/nikke/story/d-outsiders"
+            }
+          },
+          {
+            "id": "nikke-d-commander",
+            "source": "d_killer_wife",
+            "target": "commander_nikke",
+            "label": "潜入任务中的搭档",
+            "description": "D与指挥官为执行任务扮演夫妻，并在相处中练习如何维持这层身份。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "D：杀手妻子 · 角色故事",
+            "evidence": {
+              "title": "D：杀手妻子角色故事整理",
+              "url": "https://nikke-goddess-of-victory-international.fandom.com/wiki/D%3A_Killer_Wife/Story"
             }
           }
         ]

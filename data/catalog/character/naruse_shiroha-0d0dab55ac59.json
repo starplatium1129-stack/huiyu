@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "naruse_shiroha",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 248,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
+  "updatedAt": "2026-10-30T03:35:43.106480900+00:00",
   "data": {
     "id": "naruse_shiroha",
     "popular": {
@@ -149,7 +149,132 @@
       "accent_color": "#38bdf8",
       "bg_color": "#0f172a",
       "voice": "……别随便跟我搭话。靠近我的话，是会招来不幸的……真的是个不会看气氛的大笨蛋呢。",
-      "voiceJa": "……近寄らないで。あんたにも、不幸がうつるから"
+      "voiceJa": "……近寄らないで。あんたにも、不幸がうつるから",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "夏日口袋",
+        "people": [
+          {
+            "id": "naruse_shiroha",
+            "name": "鸣濑白羽",
+            "aliases": [
+              "鳴瀬しろは",
+              "Naruse Shiroha"
+            ],
+            "characterId": "naruse_shiroha"
+          },
+          {
+            "id": "sorakado_ao",
+            "name": "空门苍",
+            "aliases": [
+              "空門蒼",
+              "Sorakado Ao"
+            ],
+            "characterId": "sorakado_ao"
+          },
+          {
+            "id": "kushima_kamome",
+            "name": "久岛鸥",
+            "aliases": [
+              "久島鴎",
+              "Kushima Kamome"
+            ],
+            "characterId": "kushima_kamome"
+          },
+          {
+            "id": "takahara_hairi",
+            "name": "鹰原羽依里",
+            "aliases": [
+              "鷹原羽依里",
+              "Takahara Hairi"
+            ],
+            "role": "暑期来到鸟白岛的少年",
+            "summary": "为了帮忙整理祖母的遗物来到鸟白岛，在岛上结识了许多人。"
+          },
+          {
+            "id": "sorakado_ai",
+            "name": "空门蓝",
+            "aliases": [
+              "空門藍",
+              "Sorakado Ai"
+            ],
+            "role": "苍的双胞胎姐姐",
+            "summary": "空门苍的双胞胎姐姐。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "summer-shiroha-hairi",
+            "source": "naruse_shiroha",
+            "target": "takahara_hairi",
+            "label": "岛上的相遇",
+            "description": "羽依里在鸟白岛度暑假时，遇见独自在夜间泳池练习游泳的白羽。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第1集 · 鸟白岛",
+            "evidence": {
+              "title": "《Summer Pockets》动画第1集梗概",
+              "url": "https://summerpockets-anime.jp/"
+            }
+          },
+          {
+            "id": "summer-ao-hairi",
+            "source": "sorakado_ao",
+            "target": "takahara_hairi",
+            "label": "岛上的玩伴",
+            "description": "羽依里在岛上与苍相识，之后一起参加少年团的活动，逐渐熟悉起来。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第2集 · 少年团",
+            "evidence": {
+              "title": "《Summer Pockets》动画第2集梗概",
+              "url": "https://summerpockets-anime.jp/"
+            }
+          },
+          {
+            "id": "summer-kamome-hairi",
+            "source": "kushima_kamome",
+            "target": "takahara_hairi",
+            "label": "寻宝伙伴",
+            "description": "鸥和羽依里循着地图前往岬角，寻找鸥儿时与伙伴们发现的海盗船。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第5集 · 寻宝",
+            "evidence": {
+              "title": "《Summer Pockets》动画第5集梗概",
+              "url": "https://summerpockets-anime.jp/"
+            }
+          },
+          {
+            "id": "summer-shiroha-ao",
+            "source": "naruse_shiroha",
+            "target": "sorakado_ao",
+            "label": "岛上的朋友",
+            "description": "白羽和苍都与岛上的伙伴来往，也曾一起帮羽依里和紬筹备夏日活动。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第10集 · 夏日活动",
+            "evidence": {
+              "title": "《Summer Pockets》动画第10集梗概",
+              "url": "https://summerpockets-anime.jp/"
+            }
+          },
+          {
+            "id": "summer-ao-ai",
+            "source": "sorakado_ao",
+            "target": "sorakado_ai",
+            "label": "双胞胎姐妹",
+            "description": "苍一直寻找与长期昏睡的姐姐蓝有关的七影蝶，并把自己的心事告诉了羽依里。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "动画第13集 · 空门姐妹",
+            "evidence": {
+              "title": "《Summer Pockets》动画第13集梗概",
+              "url": "https://summerpockets-anime.jp/"
+            }
+          }
+        ]
+      }
     }
   }
 }

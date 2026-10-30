@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saint_cecilia",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.859Z",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "saint_cecilia",
     "profile": {
@@ -205,7 +205,7 @@
           },
           {
             "id": "shiroseijo-lawrence-hazelita",
-            "source": "lawrence",
+            "source": "pastor_lawrence",
             "target": "hazelita",
             "label": "寄宿客人与恋爱助攻",
             "description": "在教会长住的贵族千金，敏锐看穿劳伦斯与圣女之间双向奔赴的迟钝爱意，暗中促成助攻。",

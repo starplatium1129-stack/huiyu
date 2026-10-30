@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kanzaki_kaori",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 242,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-30T03:43:55.959144800+00:00",
   "data": {
     "id": "kanzaki_kaori",
     "profile": {
@@ -89,7 +89,109 @@
         "无上深情忠贞伴侣"
       ],
       "voice": "在下是天草式十字凄教前任教皇，神裂火织。……那、那个，这件衣服纯粹是同伴们擅自准备的！请不要用那种眼神打量在下！",
-      "voiceJa": "我が名は神裂火織。……み、見ないでください！"
+      "voiceJa": "我が名は神裂火織。……み、見ないでください！",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "魔法禁书目录",
+        "people": [
+          {
+            "id": "kanzaki_kaori",
+            "name": "神裂火织",
+            "aliases": [
+              "神裂火織",
+              "Kanzaki Kaori"
+            ],
+            "characterId": "kanzaki_kaori"
+          },
+          {
+            "id": "itsuwa",
+            "name": "五和",
+            "aliases": [
+              "Itsuwa",
+              "いつわ"
+            ],
+            "characterId": "itsuwa"
+          },
+          {
+            "id": "kamijou_touma",
+            "name": "上条当麻",
+            "aliases": [
+              "上条当麻",
+              "Kamijou Touma"
+            ],
+            "role": "学园都市学生",
+            "summary": "右手拥有能消除异能之力的少年。"
+          },
+          {
+            "id": "index_librorum",
+            "name": "茵蒂克丝",
+            "aliases": [
+              "インデックス",
+              "Index"
+            ],
+            "role": "英国清教魔法师",
+            "summary": "与当麻相识的修女，记忆中保存着大量魔道书。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "index-kaori-itsuwa",
+            "source": "kanzaki_kaori",
+            "target": "itsuwa",
+            "label": "天草式的同伴",
+            "description": "神裂曾领导天草式，五和是其中的魔法师。面对后方之水时，神裂赶来支援五和等人。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "天草式 · 后方之水事件",
+            "evidence": {
+              "title": "《魔法禁书目录》漫画第26卷介绍",
+              "url": "https://magazine.jp.square-enix.com/top/comics/detail/9784757575226/"
+            }
+          },
+          {
+            "id": "index-itsuwa-touma",
+            "source": "itsuwa",
+            "target": "kamijou_touma",
+            "label": "护卫与共同作战",
+            "description": "五和在阿维尼翁与当麻相遇，后来也为保护他免受后方之水袭击而行动。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第三季 · 法国与学园都市",
+            "evidence": {
+              "title": "魔法与科学系列官方剧情年表",
+              "url": "https://toaru-project.com/world/chronicle/"
+            }
+          },
+          {
+            "id": "index-kaori-touma",
+            "source": "kanzaki_kaori",
+            "target": "kamijou_touma",
+            "label": "从交锋到协力",
+            "description": "神裂为带走茵蒂克丝而与当麻交手；之后两人又在对抗后方之水时共同作战。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第一季至第三季",
+            "evidence": {
+              "title": "魔法与科学系列官方剧情年表",
+              "url": "https://toaru-project.com/world/chronicle/"
+            }
+          },
+          {
+            "id": "index-kaori-index",
+            "source": "kanzaki_kaori",
+            "target": "index_librorum",
+            "label": "为保护她而行动",
+            "description": "神裂为保护茵蒂克丝而追寻她，并因此与试图阻止她的当麻交锋。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第一季 · 茵蒂克丝事件",
+            "evidence": {
+              "title": "动画第一季第4集梗概",
+              "url": "https://toaru-project.com/index_1_2/story/1st/04.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "kanzaki_kaori",

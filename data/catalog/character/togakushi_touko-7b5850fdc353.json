@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togakushi_touko",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 190,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-30T04:15:27.061010900+00:00",
   "data": {
     "id": "togakushi_touko",
     "profile": {
@@ -106,6 +106,35 @@
             "role": "学生会长 / 宁宁的学姐",
             "summary": "容貌秀丽、待人温和的学生会长。深受后辈仰慕，在校内事务与社团活动上多次为宁宁与柊史提供关照和指引。",
             "characterId": "togakushi_touko"
+          },
+          {
+            "id": "shiiba_tsumugi",
+            "name": "椎叶紬",
+            "aliases": [
+              "椎葉紬",
+              "Shiiba Tsumugi"
+            ],
+            "characterId": "shiiba_tsumugi"
+          },
+          {
+            "id": "akagi_alp",
+            "name": "赤城",
+            "aliases": [
+              "アカギ",
+              "Akagi"
+            ],
+            "role": "与紬缔约的妖精",
+            "summary": "能在人形与鸟形之间变化，与紬订立魔女契约。"
+          },
+          {
+            "id": "kariya_wakana",
+            "name": "假屋和奏",
+            "aliases": [
+              "仮屋和奏",
+              "Kariya Wakana"
+            ],
+            "role": "柊史的同班同学",
+            "summary": "柊史的朋友，喜欢音乐，也擅长弹吉他。"
           }
         ],
         "relations": [
@@ -177,6 +206,188 @@
             "evidence": {
               "title": "柚子社官方角色介绍",
               "url": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+            }
+          },
+          {
+            "id": "sabbat-tsumugi-shuuji",
+            "source": "shiiba_tsumugi",
+            "target": "hoshina_shuuji",
+            "label": "转学生与同班同学",
+            "description": "紬转入姬松学园后与柊史同班，后来接触了他所在的超自然研究社。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 转学之后",
+            "evidence": {
+              "title": "《魔女的夜宴》人物与剧情资料",
+              "url": "https://zh.wikipedia.org/wiki/%E9%AD%94%E5%A5%B3%E7%9A%84%E5%A4%9C%E5%AE%B4"
+            }
+          },
+          {
+            "id": "sabbat-tsumugi-nene",
+            "source": "shiiba_tsumugi",
+            "target": "nene",
+            "label": "社团同伴",
+            "description": "紬在试入部后与宁宁互相得知魔女身份，两人开始合作回收心之碎片。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "超自然研究社",
+            "evidence": {
+              "title": "《魔女的夜宴》人物与剧情资料",
+              "url": "https://zh.wikipedia.org/wiki/%E9%AD%94%E5%A5%B3%E7%9A%84%E5%A4%9C%E5%AE%B4"
+            }
+          },
+          {
+            "id": "sabbat-tsumugi-akagi",
+            "source": "shiiba_tsumugi",
+            "target": "akagi_alp",
+            "label": "契约者与妖精",
+            "description": "紬与妖精赤城订立契约，也把她当作家人和朋友；两人对契约规则有时意见不同。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "紬的魔女契约",
+            "evidence": {
+              "title": "《魔女的夜宴》人物与剧情资料",
+              "url": "https://zh.wikipedia.org/wiki/%E9%AD%94%E5%A5%B3%E7%9A%84%E5%A4%9C%E5%AE%B4"
+            }
+          },
+          {
+            "label": "社团里的穿搭话题",
+            "directed": false,
+            "target": "inaba_meguru",
+            "evidence": {
+              "title": "《魔女的夜宴》人物资料 · 椎叶紬",
+              "url": "https://newikis.com/ja/%E3%82%B5%E3%83%8E%E3%83%90%E3%82%A6%E3%82%A3%E3%83%83%E3%83%81"
+            },
+            "id": "sabbat-tsumugi-meguru",
+            "spoiler": false,
+            "stage": "超自然研究社日常",
+            "description": "紬喜欢可爱的服装，巡会和她一起讨论适合她的装扮。",
+            "source": "shiiba_tsumugi"
+          },
+          {
+            "id": "sabbat-nene-shuuji-romance",
+            "source": "nene",
+            "target": "hoshina_shuuji",
+            "label": "恋人",
+            "description": "两人在共同面对宁宁的魔女契约时相恋；宁宁回到过去后，柊史再次与她相遇。",
+            "stage": "宁宁线 · 恋人与重逢",
+            "directed": false,
+            "spoiler": true,
+            "evidence": {
+              "title": "《魔女的夜宴》宁宁线剧情感想",
+              "url": "https://siragaairi.exblog.jp/24832076/"
+            }
+          },
+          {
+            "id": "sabbat-meguru-shuuji-romance",
+            "source": "inaba_meguru",
+            "target": "hoshina_shuuji",
+            "label": "恋人",
+            "description": "巡与柊史在寻找旧友、解开心结的过程中逐渐靠近，并在巡的个人路线成为恋人。",
+            "stage": "巡线 · 恋人与旧友",
+            "directed": false,
+            "spoiler": true,
+            "evidence": {
+              "title": "《魔女的夜宴》巡线剧情记录",
+              "url": "https://ameblo.jp/orixbw-bs/entry-11995915441.html"
+            }
+          },
+          {
+            "id": "sabbat-touko-shuuji-romance",
+            "source": "togakushi_touko",
+            "target": "hoshina_shuuji",
+            "label": "恋人",
+            "description": "憧子和柊史在相处中相恋。憧子陷入昏睡后，柊史陪伴着她，也与社团伙伴寻找唤醒她的办法。",
+            "stage": "憧子线 · 恋人与觉醒",
+            "directed": false,
+            "spoiler": true,
+            "evidence": {
+              "title": "《魔女的夜宴》憧子线剧情感想",
+              "url": "https://note.com/as__ax785/n/n8618c3cf8f44"
+            }
+          },
+          {
+            "id": "sabbat-tsumugi-shuuji-romance",
+            "source": "shiiba_tsumugi",
+            "target": "hoshina_shuuji",
+            "label": "恋人",
+            "description": "紬和柊史成为恋人后，柊史私下为她分担契约代价，好让她能短暂穿上喜欢的衣服。",
+            "stage": "紬线 · 恋人与契约",
+            "directed": false,
+            "spoiler": true,
+            "evidence": {
+              "title": "《魔女的夜宴》紬线人物与剧情资料",
+              "url": "https://zh.wikipedia.org/wiki/%E9%AD%94%E5%A5%B3%E7%9A%84%E5%A4%9C%E5%AE%B4"
+            }
+          },
+          {
+            "id": "sabbat-wakana-shuuji-romance",
+            "source": "kariya_wakana",
+            "target": "hoshina_shuuji",
+            "label": "恋人",
+            "description": "和奏与柊史是儿时旧识，在乐队排练与演出中重新走近，最终成为恋人。",
+            "stage": "和奏线 · 从朋友到恋人",
+            "directed": false,
+            "spoiler": true,
+            "evidence": {
+              "title": "《魔女的夜宴》和奏线剧情记录",
+              "url": "https://ameblo.jp/orixbw-bs/entry-11996066396.html"
+            }
+          },
+          {
+            "id": "sabbat-nene-meguru-route-support",
+            "source": "nene",
+            "target": "inaba_meguru",
+            "label": "前辈的建议",
+            "description": "巡为感情发愁时，宁宁会给她建议，帮助她与柊史走近。",
+            "stage": "巡线 · 前辈的支持",
+            "directed": true,
+            "spoiler": true,
+            "evidence": {
+              "title": "《魔女的夜宴》巡线人物关系记录",
+              "url": "https://ameblo.jp/lecord000/entry-12001731396.html"
+            }
+          },
+          {
+            "id": "sabbat-tsumugi-meguru-old-friend",
+            "source": "shiiba_tsumugi",
+            "target": "inaba_meguru",
+            "label": "帮忙寻找旧友",
+            "description": "得知巡与旧友失去联系后，紬与宁宁一起帮忙寻找她的下落。",
+            "stage": "巡线 · 寻找千穗子",
+            "directed": true,
+            "spoiler": true,
+            "evidence": {
+              "title": "《魔女的夜宴》巡线剧情记录",
+              "url": "https://ameblo.jp/orixbw-bs/entry-11995915441.html"
+            }
+          },
+          {
+            "id": "sabbat-touko-meguru-old-friend",
+            "source": "togakushi_touko",
+            "target": "inaba_meguru",
+            "label": "帮忙调查旧友",
+            "description": "憧子帮忙调查巡的旧友千穗子，并把查到的情况告诉了宁宁。",
+            "stage": "巡线 · 寻找千穗子",
+            "directed": true,
+            "spoiler": true,
+            "evidence": {
+              "title": "《魔女的夜宴》巡线剧情记录",
+              "url": "https://ameblo.jp/orixbw-bs/entry-11995915441.html"
+            }
+          },
+          {
+            "id": "sabbat-akagi-meguru-truth",
+            "source": "akagi_alp",
+            "target": "inaba_meguru",
+            "label": "说出旧友的秘密",
+            "description": "赤城向巡说出自己曾与千穗子缔约的事，让巡得知旧友离开的真正原因。",
+            "stage": "巡线 · 千穗子的契约",
+            "directed": true,
+            "spoiler": true,
+            "evidence": {
+              "title": "《魔女的夜宴》巡线剧情记录",
+              "url": "https://ameblo.jp/orixbw-bs/entry-11995915441.html"
             }
           }
         ]

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yarai_miu",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 256,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
+  "updatedAt": "2026-10-30T03:52:57.719709400+00:00",
   "data": {
     "id": "yarai_miu",
     "profile": {
@@ -68,7 +68,86 @@
       ],
       "accent_color": "#c25a66",
       "voiceJa": "今夜の見回りルート、決まったから。はぐれないように、ちゃんとついてきなさいよね",
-      "bg_color": "#1c0d10"
+      "bg_color": "#1c0d10",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "吸血鬼暴动！",
+        "people": [
+          {
+            "id": "yarai_miu",
+            "name": "矢来美羽",
+            "aliases": [
+              "矢来美羽",
+              "Yarai Miu"
+            ],
+            "characterId": "yarai_miu"
+          },
+          {
+            "id": "mutsura_yuuto",
+            "name": "六连佑斗",
+            "aliases": [
+              "六連佑斗",
+              "Mutsura Yuuto"
+            ],
+            "role": "风纪班见习成员",
+            "summary": "来到人工岛Aqua Eden的青年，在岛上开始新的生活。"
+          },
+          {
+            "id": "mera_azusa",
+            "name": "布良梓",
+            "aliases": [
+              "布良梓",
+              "Mera Azusa"
+            ],
+            "role": "风纪班成员",
+            "summary": "与美羽在同一风纪班工作的岛上居民。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "dracu-miu-yuuto",
+            "source": "yarai_miu",
+            "target": "mutsura_yuuto",
+            "label": "风纪班同事",
+            "description": "佑斗留在Aqua Eden生活后，在美羽所属的风纪班工作，两人因此共同处理岛上的事务。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Aqua Eden · 风纪班",
+            "evidence": {
+              "title": "《DRACU-RIOT!》作品介绍",
+              "url": "https://they2nd.blog116.fc2.com/blog-entry-192.html"
+            }
+          },
+          {
+            "id": "dracu-miu-azusa",
+            "source": "yarai_miu",
+            "target": "mera_azusa",
+            "label": "风纪班同事",
+            "description": "美羽与梓都是风纪班成员，一起维护岛上的秩序。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Aqua Eden · 风纪班",
+            "evidence": {
+              "title": "《DRACU-RIOT!》角色卡 · 风纪班同事",
+              "url": "https://tcgrepublic.com/product/product_page_2000149157.html"
+            }
+          },
+          {
+            "id": "dracu-yuuto-azusa",
+            "source": "mutsura_yuuto",
+            "target": "mera_azusa",
+            "label": "宿舍与工作伙伴",
+            "description": "佑斗住进梓负责的宿舍，后来也与她一起在风纪班工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Aqua Eden · 岛上生活",
+            "evidence": {
+              "title": "《DRACU-RIOT!》人物关系整理",
+              "url": "https://w.atwiki.jp/aniwotawiki/pages/22024.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "yarai_miu",

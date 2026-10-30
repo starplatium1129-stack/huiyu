@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rias_gremory",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.896Z",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "rias_gremory",
     "profile": {
@@ -222,6 +222,43 @@
             ],
             "role": "白龙皇宿主 / 李泽维姆血脉继承人",
             "summary": "宿敌白龙皇阿鲁比昂宿主，魔王血脉的绝顶天才。视一诚为宿命对手，多次在冥界危机关头与莉雅丝眷属联手抵御外敌。"
+          },
+          {
+            "id": "rossweisse",
+            "name": "罗丝薇瑟",
+            "aliases": [
+              "ロスヴァイセ",
+              "Rossweisse"
+            ],
+            "characterId": "rossweisse"
+          },
+          {
+            "id": "kuroka",
+            "name": "黑歌",
+            "aliases": [
+              "黒歌",
+              "Kuroka"
+            ],
+            "characterId": "kuroka"
+          },
+          {
+            "id": "irina_shidou",
+            "name": "紫藤伊莉娜",
+            "aliases": [
+              "紫藤イリナ",
+              "Shidou Irina"
+            ],
+            "characterId": "irina_shidou"
+          },
+          {
+            "id": "odin_dxd",
+            "name": "奥丁",
+            "aliases": [
+              "オーディン",
+              "Odin"
+            ],
+            "role": "北欧主神",
+            "summary": "北欧神话的主神，罗丝薇瑟曾担任他的护卫。"
           }
         ],
         "relations": [
@@ -447,6 +484,76 @@
             "evidence": {
               "title": "恶魔高校DxD制作委员会 · 官方动画人物档案",
               "url": "https://www.hxdxd.tv/"
+            }
+          },
+          {
+            "id": "dxd-kuroka-koneko",
+            "source": "kuroka",
+            "target": "toujou_koneko",
+            "label": "姐妹",
+            "description": "黑歌是小猫的姐姐。两人多年后在森林相遇，一诚和莉雅丝也目击了这次重逢。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第三季 · 森林",
+            "evidence": {
+              "title": "《恶魔高校D×D BorN》第3集梗概",
+              "url": "https://haremking.tv/season3/story/story_03.html"
+            }
+          },
+          {
+            "id": "dxd-irina-issei",
+            "source": "irina_shidou",
+            "target": "hyoudou_issei",
+            "label": "青梅竹马",
+            "description": "伊莉娜与一诚从小认识，后来作为教会派遣的圣剑使重返他的生活。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "童年与教会任务",
+            "evidence": {
+              "title": "电击在线 · 动画人物介绍",
+              "url": "https://dengekionline.com/elem/000/001/718/1718891/"
+            }
+          },
+          {
+            "id": "dxd-irina-xenovia",
+            "source": "irina_shidou",
+            "target": "xenovia_quarta",
+            "label": "教会派遣的搭档",
+            "description": "伊莉娜与洁诺薇亚曾作为圣剑使一起受教会派遣，处理圣剑相关事件。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "教会圣剑任务",
+            "evidence": {
+              "title": "电击在线 · 动画人物介绍",
+              "url": "https://dengekionline.com/elem/000/001/718/1718891/"
+            }
+          },
+          {
+            "id": "dxd-rossweisse-odin",
+            "source": "rossweisse",
+            "target": "odin_dxd",
+            "label": "女武神与护卫对象",
+            "description": "罗丝薇瑟曾作为女武神护卫北欧主神奥丁。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "北欧 · 奥丁的护卫",
+            "evidence": {
+              "title": "罗丝薇瑟人物资料整理",
+              "url": "https://w.atwiki.jp/hsddmatome/pages/76.html"
+            }
+          },
+          {
+            "id": "dxd-rossweisse-rias",
+            "source": "rossweisse",
+            "target": "rias_gremory",
+            "label": "加入吉蒙里眷属",
+            "description": "留在日本后，罗丝薇瑟受莉雅丝邀请加入吉蒙里眷属，并在驹王学园任教。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "北欧事件之后",
+            "evidence": {
+              "title": "罗丝薇瑟人物资料整理",
+              "url": "https://w.atwiki.jp/hsddmatome/pages/76.html"
             }
           }
         ]

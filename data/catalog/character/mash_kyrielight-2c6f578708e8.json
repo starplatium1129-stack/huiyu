@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mash_kyrielight",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.865Z",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "mash_kyrielight",
     "profile": {
@@ -366,6 +366,25 @@
             ],
             "role": "妖精国不列颠妖精骑士高文",
             "summary": "摩根的养女兼妖精骑士。性格骄横残忍以掩饰内心的极度恐惧与渴望认可，被摩根视作最重要的女儿与唯一的弱点。"
+          },
+          {
+            "id": "bazett_fraga_mcremitz",
+            "name": "巴泽特·弗拉加·马克雷米兹",
+            "aliases": [
+              "バゼット・フラガ・マクレミッツ",
+              "Bazett Fraga McRemitz"
+            ],
+            "characterId": "bazett_fraga_mcremitz"
+          },
+          {
+            "id": "avenger_hollow",
+            "name": "复仇者",
+            "aliases": [
+              "アヴェンジャー",
+              "Avenger"
+            ],
+            "role": "巴泽特的从者",
+            "summary": "与巴泽特缔结契约，参与重复四日之夜战的从者。"
           }
         ],
         "relations": [
@@ -871,6 +890,48 @@
             "evidence": {
               "title": "TYPE-MOON · Fate/stay night 官方设定",
               "url": "https://typemoon.com/products/fate/"
+            }
+          },
+          {
+            "id": "fate-bazett-avenger",
+            "source": "bazett_fraga_mcremitz",
+            "target": "avenger_hollow",
+            "label": "御主与从者",
+            "description": "在《Fate/hollow ataraxia》中，巴泽特与复仇者缔结契约，在反复的四日里经历夜晚的战斗。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "《Fate/hollow ataraxia》",
+            "evidence": {
+              "title": "TYPE-MOON官方人物介绍 · Avenger",
+              "url": "https://typemoon.com/products/f-ha/character/03/"
+            }
+          },
+          {
+            "id": "fate-bazett-cu",
+            "source": "bazett_fraga_mcremitz",
+            "target": "cu_chulainn",
+            "label": "第五次圣杯战争的契约",
+            "description": "巴泽特原本召唤了作为Lancer的库·丘林，成为他的御主。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第五次圣杯战争之前",
+            "evidence": {
+              "title": "《Fate/side material》术语资料整理",
+              "url": "https://www.tmdict.com/ja/ha.bazett-fraga-mcremitz"
+            }
+          },
+          {
+            "id": "fate-bazett-kirei",
+            "source": "bazett_fraga_mcremitz",
+            "target": "kotomine_kirei",
+            "label": "旧识与背叛",
+            "description": "巴泽特曾信任旧识言峰绮礼，却在圣杯战争开始前遭到他的袭击。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "第五次圣杯战争之前",
+            "evidence": {
+              "title": "《Fate/side material》术语资料整理",
+              "url": "https://www.tmdict.com/ja/ha.bazett-fraga-mcremitz"
             }
           }
         ]

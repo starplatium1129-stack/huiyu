@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuroneko",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 236,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
+  "updatedAt": "2026-10-30T03:35:43.106480900+00:00",
   "data": {
     "id": "kuroneko",
     "profile": {
@@ -91,7 +91,125 @@
         "殿堂级后宫白月光"
       ],
       "voice": "愚蠢的人类啊……居然妄图以这种拙劣的温柔拘束暗夜的狂想……不过，既然是汝的话，就勉为其难允许汝牵着余的手吧！",
-      "voiceJa": "愚かな人間め……この闇の狂想に囚われたいと申すか……ふふっ、特別に許してやろう。"
+      "voiceJa": "愚かな人間め……この闇の狂想に囚われたいと申すか……ふふっ、特別に許してやろう。",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "我的妹妹哪有这么可爱！",
+        "people": [
+          {
+            "id": "kuroneko",
+            "name": "五更琉璃",
+            "aliases": [
+              "黒猫",
+              "黑猫",
+              "五更瑠璃",
+              "Gokou Ruri"
+            ],
+            "characterId": "kuroneko"
+          },
+          {
+            "id": "ayase_aragaki",
+            "name": "新垣绫濑",
+            "aliases": [
+              "新垣あやせ",
+              "Aragaki Ayase"
+            ],
+            "characterId": "ayase_aragaki"
+          },
+          {
+            "id": "kousaka_kirino",
+            "name": "高坂桐乃",
+            "aliases": [
+              "高坂桐乃",
+              "Kousaka Kirino"
+            ],
+            "role": "学生 / 杂志读者模特",
+            "summary": "京介的妹妹，喜欢动画和游戏。"
+          },
+          {
+            "id": "kousaka_kyosuke",
+            "name": "高坂京介",
+            "aliases": [
+              "高坂京介",
+              "Kousaka Kyosuke"
+            ],
+            "role": "学生",
+            "summary": "桐乃的哥哥，曾帮妹妹处理有关爱好的烦恼。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "oreimo-kuroneko-kirino",
+            "source": "kuroneko",
+            "target": "kousaka_kirino",
+            "label": "同好与朋友",
+            "description": "黑猫与桐乃在御宅爱好者的线下聚会上相识，两人有共同话题，也会为了各自喜欢的作品争执。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "线下聚会之后",
+            "evidence": {
+              "title": "动画官方人物介绍 · 黑猫",
+              "url": "https://www.oreimo-anime.com/1st/chara/kuroneko.html"
+            }
+          },
+          {
+            "id": "oreimo-ayase-kirino",
+            "source": "ayase_aragaki",
+            "target": "kousaka_kirino",
+            "label": "同班好友",
+            "description": "绫濑与桐乃既是同班同学，也一起为时尚杂志担任读者模特，平时关系亲近。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "学校日常",
+            "evidence": {
+              "title": "动画官方人物介绍 · 新垣绫濑",
+              "url": "https://www.oreimo-anime.com/1st/chara/ayase.html"
+            }
+          },
+          {
+            "id": "oreimo-kirino-kyosuke",
+            "source": "kousaka_kirino",
+            "target": "kousaka_kyosuke",
+            "label": "兄妹",
+            "description": "桐乃与京介是兄妹。两人原本关系疏远，桐乃却因自己的爱好向哥哥寻求帮助。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "人生咨询",
+            "evidence": {
+              "title": "动画官方人物介绍 · 高坂京介",
+              "url": "https://www.oreimo-anime.com/1st/chara/kyosuke.html"
+            }
+          },
+          {
+            "id": "oreimo-kuroneko-kyosuke",
+            "source": "kuroneko",
+            "target": "kousaka_kyosuke",
+            "label": "学园前后辈",
+            "description": "黑猫进入京介就读的高中后成了他的后辈，两人还一起加入游戏研究会。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第一季 · 第13集",
+            "evidence": {
+              "title": "动画第一季第13集梗概",
+              "url": "https://www.oreimo-anime.com/1st/story/13.html"
+            }
+          },
+          {
+            "id": "oreimo-ayase-kyosuke",
+            "source": "ayase_aragaki",
+            "target": "kousaka_kyosuke",
+            "label": "朋友的哥哥",
+            "description": "绫濑担心桐乃沉迷游戏，曾找桐乃的哥哥京介商量，希望他帮忙劝说。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第二季 · 第2集",
+            "evidence": {
+              "title": "动画第二季第2集梗概",
+              "url": "https://www.oreimo-anime.com/story/02.html"
+            }
+          }
+        ]
+      }
     },
     "popular": {
       "id": "kuroneko",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tokisaki_kurumi",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.837Z",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "tokisaki_kurumi",
     "profile": {
@@ -145,7 +145,8 @@
               "Itsuka Kotori"
             ],
             "role": "Ratatoskr司令官 / 士道的义妹",
-            "summary": "兼具红丝带傲娇与白丝带天真双重性格的义妹，也是拥有炎之力量的精灵。在战舰佛拉克西纳斯上指挥支援士道封印精灵，时刻警惕狂三的动向。"
+            "summary": "兼具红丝带傲娇与白丝带天真双重性格的义妹，也是拥有炎之力量的精灵。在战舰佛拉克西纳斯上指挥支援士道封印精灵，时刻警惕狂三的动向。",
+            "characterId": "kotori_itsuka"
           },
           {
             "id": "yoshino",
@@ -156,6 +157,15 @@
             ],
             "role": "第二精灵 / 纯真少女",
             "summary": "性格内向胆小的冰雪精灵，依靠手偶四糸奈表达内心情感。被士道温柔封印后定居精灵公寓，对时崎狂三既有敬畏也怀有纯真的善意。"
+          },
+          {
+            "id": "izayoi_miku",
+            "name": "诱宵美九",
+            "aliases": [
+              "誘宵美九",
+              "Izayoi Miku"
+            ],
+            "characterId": "izayoi_miku"
           }
         ],
         "relations": [
@@ -245,7 +255,7 @@
           },
           {
             "id": "dal-shido-yoshino",
-            "source": "itsuka_shido",
+            "source": "itsuka_shidou",
             "target": "yoshino",
             "label": "水之精灵与纯真信赖",
             "description": "士道以温柔拯救封印灵力的第二个精灵，四糸乃视其为可以全心依靠的大哥哥与保护者。",
@@ -269,6 +279,34 @@
             "evidence": {
               "title": "《约会大作战》官方角色介绍",
               "url": "https://date-a-live.net/"
+            }
+          },
+          {
+            "id": "dal-miku-shido-stage",
+            "source": "izayoi_miku",
+            "target": "itsuka_shidou",
+            "label": "舞台对决",
+            "description": "天央祭期间，美九与化名士织的士道进行舞台比赛；十香和折纸也参加了演出。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画第二季 · 天央祭",
+            "evidence": {
+              "title": "《约会大作战Ⅱ》第6集梗概",
+              "url": "https://www.date-a-live-anime.com/1st-2nd/story/season2_06.html"
+            }
+          },
+          {
+            "id": "dal-miku-shido-trust",
+            "source": "izayoi_miku",
+            "target": "itsuka_shidou",
+            "label": "从戒备到亲近",
+            "description": "美九原本十分厌恶男性，力量被封印后，她对士道的态度变得亲近。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "动画第二季之后",
+            "evidence": {
+              "title": "《约会大作战Ⅲ》美九人物介绍",
+              "url": "https://date-a-live-anime.com/character/character_miku.html"
             }
           }
         ]

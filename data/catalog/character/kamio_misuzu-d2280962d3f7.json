@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kamio_misuzu",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 251,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-30T03:43:55.959144800+00:00",
   "data": {
     "id": "kamio_misuzu",
     "popular": {
@@ -150,7 +150,86 @@
       "accent_color": "#f59e0b",
       "bg_color": "#0f172a",
       "voice": "嘎欧……！啊，又忍不住发出这种声音了，晴子会生气的。但是……如果是你的话，不讨厌嘎欧对不对？",
-      "voiceJa": "がお……また言っちゃった。怒られちゃう"
+      "voiceJa": "がお……また言っちゃった。怒られちゃう",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "青空",
+        "people": [
+          {
+            "id": "kamio_misuzu",
+            "name": "神尾观铃",
+            "aliases": [
+              "神尾観鈴",
+              "Kamio Misuzu"
+            ],
+            "characterId": "kamio_misuzu"
+          },
+          {
+            "id": "kunisaki_yukito",
+            "name": "国崎往人",
+            "aliases": [
+              "国崎往人",
+              "Kunisaki Yukito"
+            ],
+            "role": "旅行中的人偶艺人",
+            "summary": "来到海边小镇的青年，靠表演人偶技艺维持旅途。"
+          },
+          {
+            "id": "kamio_haruko",
+            "name": "神尾晴子",
+            "aliases": [
+              "神尾晴子",
+              "Kamio Haruko"
+            ],
+            "role": "观铃的监护人",
+            "summary": "与观铃共同生活的家人，工作繁忙。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "air-misuzu-yukito",
+            "source": "kamio_misuzu",
+            "target": "kunisaki_yukito",
+            "label": "海边小镇的相遇",
+            "description": "旅途中的往人因饥饿倒在堤岸时遇见观铃，后来暂住在她家。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "动画开篇 · 夏日小镇",
+            "evidence": {
+              "title": "TBS《AIR》动画分集梗概",
+              "url": "https://www.tbs.co.jp/tbs-ch/item/a0058/"
+            }
+          },
+          {
+            "id": "air-misuzu-haruko",
+            "source": "kamio_misuzu",
+            "target": "kamio_haruko",
+            "label": "共同生活的家人",
+            "description": "观铃与晴子住在一起；晴子经常外出，母女间能好好交谈的时间并不多。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "神尾家",
+            "evidence": {
+              "title": "TBS《AIR》人物介绍 · 神尾晴子",
+              "url": "https://www.tbs.co.jp/anime/air/chara/haruko.html"
+            }
+          },
+          {
+            "id": "air-yukito-haruko",
+            "source": "kunisaki_yukito",
+            "target": "kamio_haruko",
+            "label": "寄住与照应",
+            "description": "往人寄住在观铃家，也会陪晴子在晚上喝酒。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "神尾家的夏天",
+            "evidence": {
+              "title": "TBS《AIR》人物介绍 · 神尾晴子",
+              "url": "https://www.tbs.co.jp/anime/air/chara/haruko.html"
+            }
+          }
+        ]
+      }
     }
   }
 }

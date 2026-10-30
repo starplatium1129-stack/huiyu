@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ichinose_honami",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 182,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T08:46:52.942Z",
+  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
   "data": {
     "id": "ichinose_honami",
     "profile": {
@@ -139,6 +139,25 @@
             ],
             "role": "C班绝对统治者 / 暴君",
             "summary": "行事不择手段、擅长心理战与暴力威慑的狂妄野心家。在屋顶决战被绫小路清隆无情击溃后放下盲目自大，重组班级成为更危险的劲敌。"
+          },
+          {
+            "id": "karuizawa_kei",
+            "name": "轻井泽惠",
+            "aliases": [
+              "軽井沢恵",
+              "Karuizawa Kei"
+            ],
+            "characterId": "karuizawa_kei"
+          },
+          {
+            "id": "hirata_yosuke",
+            "name": "平田洋介",
+            "aliases": [
+              "平田洋介",
+              "Hirata Yosuke"
+            ],
+            "role": "轻井泽的同班同学",
+            "summary": "在班级中备受信任，常协调同学之间的关系。"
           }
         ],
         "relations": [
@@ -182,6 +201,48 @@
             "evidence": {
               "title": "角川 · 《欢迎来到实力至上主义的教室》官方主页",
               "url": "https://you-zitsu.com/"
+            }
+          },
+          {
+            "id": "youzitsu-kei-kiyotaka",
+            "source": "karuizawa_kei",
+            "target": "ayanokouji_kiyotaka",
+            "label": "秘密合作的同班同学",
+            "description": "绫小路得知轻井泽的过去后，两人达成交易；她在得到保护的同时，也开始协助他。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "一年级 · 班级生活",
+            "evidence": {
+              "title": "动画第三季官方人物介绍",
+              "url": "https://you-zitsu.com/3rd/character.html"
+            }
+          },
+          {
+            "id": "youzitsu-kei-hirata",
+            "source": "karuizawa_kei",
+            "target": "hirata_yosuke",
+            "label": "曾假扮恋人",
+            "description": "为避免再次成为欺凌目标，轻井泽在入学后与平田假扮情侣；平田也愿意帮助她。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "一年级 · 班级生活",
+            "evidence": {
+              "title": "动画第三季官方人物介绍",
+              "url": "https://you-zitsu.com/3rd/character.html"
+            }
+          },
+          {
+            "id": "youzitsu-kei-kiyotaka-dating",
+            "source": "karuizawa_kei",
+            "target": "ayanokouji_kiyotaka",
+            "label": "交往",
+            "description": "一年级结束后的春假，轻井泽与绫小路成为恋人。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "一年级末 · 春假",
+            "evidence": {
+              "title": "动画第四季官方人物介绍",
+              "url": "https://you-zitsu.com/character.html"
             }
           }
         ]
