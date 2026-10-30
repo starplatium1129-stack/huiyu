@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc123",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her flour-dusted hands rest against the viewer's chest while her bare legs dangle from the counter.",
     "auditRevision": "careful-batch04-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "thighhighs",
-    "prompt": "adult, 1girl, nene_r18, ayachi_nene, cream oversized cable knit sweater, pink ribbed cuffs, off shoulder, no underwear, bare legs, sitting on counter, flour, blush, kitchen, afternoon, full body, <lora:ayachi_nene_v18_wd14:0.8>, hands on chest, dangling legs",
+    "prompt": "adult, 1girl, nene_r18, ayachi_nene, cream oversized cable knit sweater, pink ribbed cuffs, off shoulder, no underwear, bare legs, sitting on counter, flour, blush, kitchen, afternoon, full body, <lora:ayachi_nene_v18_wd14:0.8>, hands on chest, dangling legs, counter, window_light, soft_lighting, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "R18",
     "season": "春",
     "story": "午后阳光慵懒的公寓厨房里，空气中弥漫着烘焙的微热甜香。宁宁在你的惩罚要求下，身上仅仅套着一件你送的大号粗线针织毛衣，里面完全真空未着寸缕。她面红耳赤地被你抱上了大理石工作台，松垮的衣领随性地向一侧完全滑落，展现出大片柔嫩圆润的香肩与若隐若现的侧乳轮廓。她有些羞怯地用沾着面粉的双手抵住你的胸口，头顶的呆毛早已因为情绪过载软瘫成完美的爱心螺旋——「呜...柊史...大白天就在厨房做这种事...面粉都要蹭到身上了啦...快点抱紧人家...」",

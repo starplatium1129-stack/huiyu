@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc169",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 166,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She draws the viewer into the kiss from their lap on the safehouse floor.",
     "auditRevision": "careful-batch12-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, charcoal side panels, burgundy seam piping, torn black bodysuit, cleavage, exposed abdomen, straddling, kissing, hands on neck, sweat, blush, concrete floor, safehouse, dim lighting, pulling, arms around neck",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, charcoal side panels, burgundy seam piping, torn black bodysuit, cleavage, exposed abdomen, straddling, kissing, hands on neck, sweat, blush, concrete floor, safehouse, dim lighting, pulling, arms around neck, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "不限",
     "story": "刚刚结束激烈遭遇战的地下安全屋，空气中弥漫着硝烟与荷尔蒙的微热。夏目那一身漆黑的特工连体衣从领口被一路拉开、撕裂到了腹部，露出了里面让人血脉偾张的饱满线条。她跨坐在地板上的你身上，大汗淋漓，黑色发丝凌乱地贴在潮红的脸颊上。眼角的泪痣因为极度亢奋和动情而闪烁着近乎疯狂的独占欲。她纤细的双手死死掐住你的脖子将你带入深吻，一边急促喘息一边在你耳边呢喃——「长官...任务成功了...现在...我要收回属于我的全部战利品...」",

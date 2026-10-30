@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc016",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She reaches toward the viewer's phone, whose screen shows her tilted photograph of the stars.",
     "auditRevision": "careful-batch05-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "day",
-    "prompt": "1girl, shiki_natsume, olive hooded windbreaker, black shoulder panels, burgundy zipper, charcoal tapered pants, sitting, phone, camping stool, campfire, tent, starry sky, medium shot, reaching, embarrassed smile, blush, firelight, night",
+    "prompt": "1girl, shiki_natsume, olive hooded windbreaker, black shoulder panels, burgundy zipper, charcoal tapered pants, sitting, phone, camping stool, campfire, tent, starry sky, medium shot, reaching, embarrassed smile, blush, firelight, night, phone_screen, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",

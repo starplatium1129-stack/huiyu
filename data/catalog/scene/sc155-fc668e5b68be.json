@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc155",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 152,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:59:12.062933900+00:00",
   "data": {
     "animaCaption": "She gathers the viewer's shirt front while reclining across their lap; the empty glasses remain clear of their hands.",
     "auditRevision": "careful-batch07-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through clothes, broken glass",
-    "prompt": "1girl, ayachi_nene, cream loose knit dress, boat neckline, pink ribbon at cuffs, lap pillow, holding shirt, living room, empty wine glasses, television glow, close up, lying, looking up, blush",
+    "prompt": "1girl, ayachi_nene, cream loose knit dress, boat neckline, pink ribbon at cuffs, lap pillow, holding shirt, living room, empty wine glasses, television glow, close up, lying, looking up, blush, cinematic_lighting, depth_of_field, screen_light, dim_lighting",
     "rating": "R15",
     "season": "不限",
     "story": "客厅地毯上散落着空酒杯。平时容易害羞的宁宁今晚在酒精的催化下彻底放下了所有防线。她换上了一件领口松垮的居家私服，发带微微散落，整个人软绵绵地扑在你的膝盖上。她满脸滚烫的红晕，水汪汪的眼睛紧紧盯着你，头顶的呆毛因为醉意弯成了一个极其可爱的波浪形，双手死死揪住你的衣襟不放——「柊史...不准推开我...魔女的魔法今晚全部失效了...我现在...只要你抱紧我...」",

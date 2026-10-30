@@ -29,6 +29,7 @@
         "obsessive_smile"
       ],
       "promptProse": "Stepping forward along an imperial vermilion temple veranda showered in cherry blossom petals, Taihou greets her commander in an opulent flowing red and obsidian kimono dress. Sunlight illuminates her magnificent cleavage, floor-sweeping dark twintails, and burning devoted amber-red eyes.",
+      "animaCaption": "Stepping forward along an imperial vermilion temple veranda showered in cherry blossom petals, Taihou greets her commander in an opulent flowing red and obsidian kimono dress. Sunlight illuminates her magnificent cleavage, floor-sweeping dark twintails, and burning devoted amber-red eyes.",
       "promptTokens": [
         "shinto_temple",
         "vermilion_veranda",
@@ -40,7 +41,8 @@
         "folding_fan",
         "detailed_background",
         "cinematic_lighting",
-        "volumetric_lighting"
+        "volumetric_lighting",
+        "depth_of_field"
       ],
       "negativeTokens": [
         "worst quality",

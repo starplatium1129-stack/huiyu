@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_cathedral_balcony_coronation_wave",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2522,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T13:08:39.422196400+00:00",
+  "updatedAt": "2026-10-30T11:25:24.593936100+00:00",
   "data": {
     "id": "rose_cathedral_balcony_coronation_wave",
     "characterId": "rose_oriana",
@@ -32,7 +32,7 @@
       "wide_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Queen Rose waving to her kingdom from the sunlit palace balcony in coronation regalia.",
+    "animaCaption": "Waving to the cheering kingdom from the sunlit palace balcony in coronation regalia.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

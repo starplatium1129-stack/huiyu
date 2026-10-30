@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_throne_queen_contemplation",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2483,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-30T11:25:24.593936100+00:00",
   "data": {
     "id": "rose_throne_queen_contemplation",
     "characterId": "rose_oriana",
@@ -30,7 +30,7 @@
       "full_body"
     ],
     "negativeTokens": [],
-    "animaCaption": "Queen Rose thinking of Cid in the quiet majesty of her throne room.",
+    "animaCaption": "Sitting on the regal throne in the candlelit hall, gazing into the distance with deep yearning.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

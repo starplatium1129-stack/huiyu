@@ -33,6 +33,30 @@ fn size(value: &Value) -> bool {
                 .is_ok_and(|n| (512..=4096).contains(&n) && n % 8 == 0)
         })
 }
+fn director_sources(value: &Value) -> bool {
+    value.as_object().is_some_and(|sources| {
+        sources.iter().all(|(key, source)| {
+            matches!(key.as_str(), "shot" | "lighting" | "composition" | "colorMood")
+                && matches!(source.as_str(), Some("scene" | "manual"))
+        })
+    })
+}
+fn outfit_override(value: &Value) -> bool {
+    value.is_null()
+        || value.as_object().is_some_and(|outfit| {
+            outfit.len() == 2
+                && outfit.get("tokens").is_some_and(|tokens| {
+                    tokens.as_array().is_some_and(|tokens| {
+                        !tokens.is_empty()
+                            && tokens.len() <= 256
+                            && tokens.iter().all(|token| string(token, 512, false))
+                    })
+                })
+                && outfit.get("replaced").is_some_and(|replaced| {
+                    replaced.is_null() || string(replaced, 512, true)
+                })
+        })
+}
 fn parameters(value: &Value) -> bool {
     let Some(values) = value.as_object() else {
         return false;
@@ -47,9 +71,11 @@ fn parameters(value: &Value) -> bool {
         "hiresScale" => number(v, 1.0, 4.0, false),
         "hiresDenoise" => number(v, 0.0, 1.0, false),
         "loraStrength" => v.is_null() || number(v, -4.0, 4.0, false),
-        "hiresFix" | "faceDetailer" | "noLora" | "preview" => v.is_boolean(),
+        "hiresFix" | "faceDetailer" | "noLora" | "preview" | "outfitExplicit" => v.is_boolean(),
         "size" => size(v),
-        "provider" => matches!(v.as_str(), Some("comfy" | "webui")),
+        "provider" => matches!(v.as_str(), Some("comfy" | "webui" | "native")),
+        "directorSources" => director_sources(v),
+        "outfitOverride" => outfit_override(v),
         "lora" | "loraId" | "styleLoraId" => v.is_null() || string(v, 512, true),
         "model" | "profile" | "checkpoint" | "sampler" | "scheduler" | "hiresUpscaler"
         | "outfitId" | "character" | "characterId" | "blueprintId" | "subject" | "scene"

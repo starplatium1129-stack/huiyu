@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_convenience_red_bean_bun",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2514,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "alexia_convenience_red_bean_bun",
     "characterId": "alexia_midgar",
@@ -35,7 +35,7 @@
       "warm_lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Sitting on the stone steps, Alexia offers half of the warm bun toward the viewer.",
+    "animaCaption": "Sitting on the stone steps, she offers half of the warm bun toward the viewer.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

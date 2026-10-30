@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc202",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 197,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc202",
     "title": "深网之下的特工禁区",
@@ -49,7 +49,7 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "adult, 1girl, solo, shiki_natsume, black utility jacket, charcoal shoulder panels, burgundy zipper, dark tapered cargo pants, natsume_r18, open zipper, leaning on desk, hands on desk, looking back, defiant expression, file folders, office, blinds, night, side lighting, medium shot, desk lamp, shadows",
+    "prompt": "adult, 1girl, solo, shiki_natsume, black utility jacket, charcoal shoulder panels, burgundy zipper, dark tapered cargo pants, natsume_r18, open zipper, leaning on desk, hands on desk, looking back, defiant expression, file folders, office, blinds, night, side lighting, medium shot, desk lamp, shadows, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "negative": "skirt, thighhighs, bare legs",
     "storyJa": "【夏目・タクティカルベストの下にある制御不能アラーム】深夜、機密指令センターのオフィスは施錠された。普段は冷静でタフな夏目が、少し涼しい机に閉じ込められていた。黒い戦術服のジッパーが腰まで緩んでいた。制服のシャープなラインが赤い肌と対照的だった。懸命に平静を保とうと努めたが、目の端の泣きぼくろが乱れた呼吸で微かに震えていた。夏目はあなたを振り返り、その声にはまだ敗北を認めない鋭さが溢れています。――「店長の権限を悪用するなんて……自由になったら、この作戦は必ず最高機密に指定するから！」",
     "rating": "R15",

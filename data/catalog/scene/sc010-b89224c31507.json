@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc010",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Sandals hang from one hand while the other gathers her cardigan at the receding waterline.",
     "camera": "全身远景",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white sundress, scalloped hem, pale pink cropped cardigan, barefoot, holding shoes, looking back, beach, sunset, full body, standing, wet sand, long shadow, gentle smile",
+    "prompt": "1girl, ayachi_nene, white sundress, scalloped hem, pale pink cropped cardigan, barefoot, holding shoes, looking back, beach, sunset, full body, standing, wet sand, long shadow, gentle smile, sand, ocean_waves, warm_lighting, golden_hour, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "recommendedSize": "1216×832",
     "season": "夏",

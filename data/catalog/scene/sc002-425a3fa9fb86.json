@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc002",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She waves with one hand while hiding the folded letter behind her opposite hip.",
     "camera": "半身中景",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, tiptoes, waving, letter, behind back, cherry blossoms, park, morning, medium shot, looking at viewer, blush, standing on tiptoe, soft lighting, sunlight",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, tiptoes, waving, letter, behind back, cherry blossoms, park, morning, medium shot, looking at viewer, blush, standing on tiptoe, soft lighting, sunlight, falling_petals, trees, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "春",
     "story": "清晨的公园还没有多少行人，宁宁站在盛开的樱花树下，双手小心护着一封写了又改的短笺。看到你沿小路走来，她踮起脚挥手，花瓣落进银白色的低双马尾。她把短笺藏到身后，红着脸望向你——「先、先说好，这不是告白信，只是想约你明年也一起看樱花。」",

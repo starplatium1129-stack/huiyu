@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc132",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 130,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "The loosened bikini rests at her waist as she covers her chest and turns away.",
     "auditRevision": "careful-batch08-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "one-piece swimsuit",
-    "prompt": "adult, 1girl, solo, shiki_natsume, burgundy edging, natsume_r18, black string bikini, untied bikini, covering chest, sitting, poolside, wet skin, blush, looking away, indoor pool, moonlight, <lora:shiki_natsume_v18_wd14:0.85>, water reflections, window",
+    "prompt": "adult, 1girl, solo, shiki_natsume, burgundy edging, natsume_r18, black string bikini, untied bikini, covering chest, sitting, poolside, wet skin, blush, looking away, indoor pool, moonlight, <lora:shiki_natsume_v18_wd14:0.85>, water reflections, window, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "夏",
     "story": "夏夜寂静无人的私人别墅室内泳池。水波荡漾倒映着落地窗外的满天星斗。夏目今晚在你的激将法下，破天荒换出了一套极小款的黑色系带微型比基尼。因为在水里的激烈打闹，泳衣的系带彻底滑落断开，整件比基尼松垮垮地悬挂在腰际，胸前饱满性感的双峰和光洁的小腹完全暴露在空气之中。她浑身挂满晶莹剔透的水珠，双手羞耻地护在胸前，眼角的泪痣挂着池水，偏过头发出羞耻至极的呻吟——「哈？！你这家伙...绝对是算好了的吧？不准看...再看把你淹死哦，笨蛋...」",

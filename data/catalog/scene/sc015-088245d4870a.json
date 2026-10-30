@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc015",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She slides the exam sheet toward the viewer, pointing to one problem.",
     "camera": "半身中景",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, sitting, pointing, paper, desk, classroom, window light, medium shot, exam paper, worried, blush",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, sitting, pointing, paper, desk, classroom, window light, medium shot, exam paper, worried, blush, school_desk, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "期中考试前的教室里，宁宁对着同一道题看了很久，草稿纸上已经画满凌乱的推导。见你经过，她先把卷子压住，几秒后又认命地推到你面前，呆毛也跟着垂下——「我知道平时应该早点复习……所以别说教了。教会这一题的话，放学后我请你喝东西。」",

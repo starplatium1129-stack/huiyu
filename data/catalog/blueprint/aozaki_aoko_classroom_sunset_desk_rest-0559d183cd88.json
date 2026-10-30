@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_classroom_sunset_desk_rest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2681,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "aozaki_aoko_classroom_sunset_desk_rest",
     "characterId": "aozaki_aoko",
@@ -21,9 +21,6 @@
     "mood": "nostalgic school-days youth, charismatic student council president charm",
     "promptProse": "Sitting casually on a wooden desk in an empty sun-drenched classroom, Aoko wears her high school uniform with blazer unbuttoned. Sunset streams across the chalkboard as she turns with a confident, nostalgic smile.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "aozaki_aoko",
       "red_hair",
       "long_hair",
       "blue_eyes",
@@ -42,7 +39,7 @@
       "cowboy_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Aoko sitting on a classroom desk at sunset in her high school uniform, smiling with poise.",
+    "animaCaption": "Sitting on a classroom desk at sunset in her high school uniform, she smiles with poise.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,

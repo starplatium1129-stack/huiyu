@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc006",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 5,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She offers the closed gift box in both mittened hands.",
     "auditRevision": "careful-batch14-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "open box",
-    "prompt": "1girl, ayachi_nene, beige duffle coat, capelet, red plaid scarf, mittens, gift box, snow, street, christmas lights, night, medium shot, holding gift, outstretched arms, blush, shy, light smile",
+    "prompt": "1girl, ayachi_nene, beige duffle coat, capelet, red plaid scarf, mittens, gift box, snow, street, christmas lights, night, medium shot, holding gift, outstretched arms, blush, shy, light smile, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",

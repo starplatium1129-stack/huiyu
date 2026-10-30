@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc074",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She holds the cotton candy away from her cheek while offering the Ferris-wheel tickets in her free hand.",
     "auditRevision": "careful-batch08-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white puff sleeve blouse, peter pan collar, ice blue box pleated skirt, pink waist ribbon, cotton candy, tickets, ferris wheel, amusement park, sunset, medium shot, holding food, holding tickets, outstretched hand, light smile",
+    "prompt": "1girl, ayachi_nene, white puff sleeve blouse, peter pan collar, ice blue box pleated skirt, pink waist ribbon, cotton candy, tickets, ferris wheel, amusement park, sunset, medium shot, holding food, holding tickets, outstretched hand, light smile, warm_lighting, golden_hour, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",

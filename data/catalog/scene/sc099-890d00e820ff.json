@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc099",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her finger stays on the emergency-call button beside the viewer's forearm braced against the wall.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, charcoal tailored blazer, burgundy lapel facing, matching tapered trousers, ivory blouse, pressing button, elevator, mirror, emergency light, close up, surprised, looking at viewer, forearm",
+    "prompt": "1girl, shiki_natsume, charcoal tailored blazer, burgundy lapel facing, matching tapered trousers, ivory blouse, pressing button, elevator, mirror, emergency light, close up, surprised, looking at viewer, forearm, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "秋夜电梯突然停层，夏目被晃得退到角落，你下意识撑住墙面保护她。应急灯亮起后，她先冷静按下呼叫按钮，随后才意识到彼此距离过近，呼吸明显停顿了一拍——「救援已经联系了。你可以不用退得太远……只是保持这个姿势比较安全。」",

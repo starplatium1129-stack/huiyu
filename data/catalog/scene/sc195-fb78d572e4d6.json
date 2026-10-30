@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc195",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 192,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her open back faces the fireplace as she turns from the rug to glare at the viewer.",
     "auditRevision": "careful-batch07-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, grey virgin killer sweater, bare back, sideboob, cross-legged, looking back, glare, blush, rug, fireplace, winter night, <lora:shiki_natsume_v18_wd14:0.85>, sitting, firelight",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, grey virgin killer sweater, bare back, sideboob, cross-legged, looking back, glare, blush, rug, fireplace, winter night, <lora:shiki_natsume_v18_wd14:0.85>, sitting, firelight, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "冬",
     "story": "寒冷冬夜的秘密安全屋。卸下冰冷防线的夏目，在你的恶作剧要求下，换上了一件后背完全镂空、毫无防备的灰色针织童贞杀手毛衣。她面红耳赤地盘腿坐在地毯上，背对着壁炉的火光。毛衣两侧大片袒露的惊人侧乳与完全暴露的性感裸背在火光照耀下泛着诱人的温润红晕。她眼角的泪痣因为承受着你从身后的霸道爱抚而剧烈颤动，扭过头用死硬却充满情欲的羞嗔眼神瞪着你——「哈？！你这变态笨蛋...眼睛到底在往哪里看啊...再乱摸...今晚就让你彻底融化在这里哦...」",

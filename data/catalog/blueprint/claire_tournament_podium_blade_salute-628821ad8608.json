@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_tournament_podium_blade_salute",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2527,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
   "data": {
     "id": "claire_tournament_podium_blade_salute",
     "characterId": "claire_kagenou",
@@ -37,7 +37,7 @@
       "rim_light"
     ],
     "negativeTokens": [],
-    "animaCaption": "Claire saluting with drawn steel after another flawless victory in the arena ring.",
+    "animaCaption": "Standing tall on the sunlit arena stage, she raises her polished blade in a proud martial salute.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

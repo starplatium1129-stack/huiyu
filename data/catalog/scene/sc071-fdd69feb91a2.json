@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc071",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:35:33.041852700+00:00",
   "data": {
     "animaCaption": "She offers the thermos cup while indicating the meteor's direction with the unlit flashlight.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "flashlight beam, day",
-    "prompt": "1girl, shiki_natsume, olive parka, navy shoulder panels, cream ribbed scarf, charcoal hiking pants, sitting on rock, thermos cup, flashlight, tent, milky way, lantern, wide shot, offering cup, holding flashlight, warm lighting, night",
+    "prompt": "1girl, shiki_natsume, olive parka, navy shoulder panels, cream ribbed scarf, charcoal hiking pants, sitting on rock, thermos cup, flashlight, tent, milky way, lantern, wide shot, offering cup, holding flashlight, warm lighting, night, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "recommendedSize": "1216×832",
     "season": "夏",

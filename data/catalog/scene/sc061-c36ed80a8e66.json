@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc061",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc061",
     "title": "浴室门口的失衡",
@@ -46,7 +46,7 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, bath towel, slipping, reaching, doorway, bathroom, wet floor, steam, cowboy shot, holding towel, blush, warm lighting, forearms",
+    "prompt": "1girl, shiki_natsume, bath towel, slipping, reaching, doorway, bathroom, wet floor, steam, cowboy shot, holding towel, blush, warm lighting, forearms, water_droplets, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "negative": "open towel, nudity",
     "storyJa": "【夏目・浴室の出入り口のバランスが崩れている】ある冬の夜、夏目はバスタオルを巻いてバスルームから出てきました。水蒸気で濡れた足元の床タイルが滑り、彼女はあなたの腕の中に落ちてしまいました。彼女がしっかり立っているのを確認すると、すぐにタオルの端を押さえた。彼女の顔全体は耳まで赤くなりましたが、それでもあなたが最初に彼女を殴ったかどうかを確認しました。――「私は平気。さっきは足元が滑っただけ……先に向こうを向いて。服を着たら、次はあなたの腕を手当てするから。」",
     "rating": "R15",

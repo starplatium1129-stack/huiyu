@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc241",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 236,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her basket holds the bento, last pudding and hot coffee as she nods toward the off-frame clerk.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, black zip hoodie, burgundy hood lining, dark straight leg jeans, shopping basket, bento, pudding, canned coffee, convenience store, counter, night, holding basket, nodding, tired, blush, warm lighting",
+    "prompt": "1girl, shiki_natsume, black zip hoodie, burgundy hood lining, dark straight leg jeans, shopping basket, bento, pudding, canned coffee, convenience store, counter, night, holding basket, nodding, tired, blush, warm lighting, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "不限",
     "story": "凌晨一点，打烊后独自整理完库存的夏目拖着疲惫的身体走进隔壁24小时便利店。她机械地往购物篮里扔着速食便当，直到看见货架上最后一盒你最爱吃的限定布丁。犹豫了三秒，她还是把它放进了篮子里，顺手又拿了一罐热咖啡。结账时店员问要不要加热，她面无表情地点了点头，耳根却在暖黄的灯光下悄悄泛红。推开公寓门时，她把布丁和咖啡轻轻放在熟睡的你床头，用只有自己能听见的声音嘟囔——「……只是顺便买的。不吃的话明天就过期了，属于合理的资源回收。大笨蛋……晚安。」",

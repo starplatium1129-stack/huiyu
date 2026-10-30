@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc058",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her face turns toward the viewer behind her in the mirror; the phone stays hidden at her back.",
     "auditRevision": "careful-batch13-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, ayachi_nene, white lace lingerie, small pink bows, ivory silk robe, pink piping, adjusting clothes, phone, mirror, bedroom, morning, close up, looking back, blush, embarrassed, window light, behind back",
+    "prompt": "adult, 1girl, ayachi_nene, white lace lingerie, small pink bows, ivory silk robe, pink piping, adjusting clothes, phone, mirror, bedroom, morning, close up, looking back, blush, embarrassed, window light, behind back, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "春",
     "story": "同居后的春日清晨，成年的宁宁在卧室镜前试穿新买的内衣，本想悄悄拍下搭配效果，却从镜子里看见刚醒来的你。她慌忙把手机藏到身后，红着脸侧过身想遮掩，最后又慢慢转了回来——「本来想等准备好再给你看的……既然已经醒了，只能由你负责告诉我合不合适。」",

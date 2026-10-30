@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc197",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 193,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:39:58.915038600+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "The gown rests at her waist as she holds the viewer's neck from the hotel bed.",
     "auditRevision": "careful-batch12-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy satin lining, small gold clasp, black silk evening gown, backless dress, unzipped, dress slip, sideboob, black thighhighs, on bed, arms around neck, blush, hotel suite, neon lights, bedside lamp, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, lying",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy satin lining, small gold clasp, black silk evening gown, backless dress, unzipped, dress slip, sideboob, black thighhighs, on bed, arms around neck, blush, hotel suite, neon lights, bedside lamp, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, lying, bedroom, balcony, railing, neon_glow, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "不限",
     "story": "夜幕下的酒店高层阳台，晚风习习。夏目卸下了紧绷的晚礼服，披着一件宽松的羊毛披风靠在扶手旁，手中托着冰镇苏打水，望着远处绵延的霓虹。听到你推门走出，她转过身递来另一只玻璃杯：「外勤收工了。今晚不用再提心吊胆地演戏，陪我吹会儿风吧。」",

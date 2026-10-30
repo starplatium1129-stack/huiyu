@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "waguri_bakery_window_sweet_wave",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1502,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
   "data": {
     "id": "waguri_bakery_window_sweet_wave",
     "title": "和栗薰子 · 烘焙课后的窗口招手",
-    "category": "战斗高光",
+    "category": "烘焙日常",
     "characterId": "waguri_kaoruko",
     "outfitId": "bakery_pastry_apron",
     "description": "烘焙体验结束，薰子还穿着黄毛衣和棕围裙，站在教室临街窗口举起一袋自己做的饼干。黑紫色长发被方巾束好，她用空着的一只手轻轻挥挥，蓝眼里的笑意坦率明亮；这里是体验课堂，并非她家的店铺。",

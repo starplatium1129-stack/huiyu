@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc184",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 181,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her shoulders align above her planted hands, both knees on the mat as she looks toward the viewer's camera.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, pink sports top, white side panels, grey bike shorts, white side stripe, all fours, yoga mat, sweat, looking at viewer, training room, rain, evening light, medium shot, kneeling, blinds shadows, wet hair",
+    "prompt": "1girl, ayachi_nene, pink sports top, white side panels, grey bike shorts, white side stripe, all fours, yoga mat, sweat, looking at viewer, training room, rain, evening light, medium shot, kneeling, blinds shadows, wet hair, rainy_street, wet_pavement, water_puddle, reflection, sunset, warm_lighting, golden_hour, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "不限",
     "story": "成年同居后的周末，窗外暴雨敲打着公寓私人训练室的玻璃。为了记录新训练计划，宁宁主动换上贴身运动背心与骑行短裤，在拉伸垫上双膝跪坐、双手撑地调整姿势。运动后的薄汗让她的银白发丝贴在脸侧，发现你的镜头停留太久，她立刻红着脸抬头抗议——「这只是姿势记录，不准擅自放大看……要拍就快一点。拍完以后，记得陪宁宁做放松拉伸。」",

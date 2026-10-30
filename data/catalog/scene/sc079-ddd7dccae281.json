@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc079",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She looks down toward the viewer steadying her ladder, the found book held against her chest.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, cream cable knit sweater, burgundy cuffs, brown accordion pleated midi skirt, ladder, holding book, looking down, bookstore, window light, side view, medium shot, book hug, on ladder",
+    "prompt": "1girl, shiki_natsume, cream cable knit sweater, burgundy cuffs, brown accordion pleated midi skirt, ladder, holding book, looking down, bookstore, window light, side view, medium shot, book hug, on ladder, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "秋日下午，夏目站在旧书店的木梯上翻找绝版书，黑色长发垂过肩侧。你在下方扶住梯子，她低头道谢，却因为视线角度突然脸红，立刻用书挡住胸前——「扶稳就好，不准抬头乱看。找到以后……我可以把第一章借给你。」",

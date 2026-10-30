@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc215",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 210,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She holds the magic-history book against her chest and looks up between the receding shelves.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, holding book, standing, library, bookshelves, moonlight, desk lamp, medium shot, book hug, looking up, rim light, warm lighting",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, holding book, standing, library, bookshelves, moonlight, desk lamp, medium shot, book hug, looking up, rim light, warm lighting, bookshelf, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "闭馆前的图书馆安静得只剩翻页声。宁宁把一本关于魔法史的旧书抱在胸前，犹豫了很久才邀请你一起核对笔记。窗外的月光落在她银白色的发丝与粉色发带上，她明明紧张得指尖发凉，却还是认真地抬起眼睛——「这次不是因为害怕才找你帮忙。只是……我想和你一起把它读完。」",

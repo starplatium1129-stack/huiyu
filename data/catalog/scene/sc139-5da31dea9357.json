@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc139",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She draws the viewer down for a kiss from the bed's edge as the sea breeze lifts her hair.",
     "auditRevision": "careful-batch13-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "pants, underwear, stockings",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pintucked bodice, pink waist ribbon, white sundress, see-through, sitting on bed, kissing, sweat, beach house, ocean view, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>, wind, hair blowing",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pintucked bodice, pink waist ribbon, white sundress, see-through, sitting on bed, kissing, sweat, beach house, ocean view, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>, wind, hair blowing, bedroom, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "夏",
     "story": "黎明拂晓的海滨度假木屋，落地窗外是初升的金色朝阳与海浪翻滚。宁宁穿着一件极其轻薄的白色夏日无袖连衣裙，薄薄的布料被拂晓的逆光照得近乎透明，胸前迷人的傲然轮廓与凸显的饱满痕迹极其诱人地印刻出来。她大汗淋漓地坐在床边，任由海风吹乱她的银白长发，头顶的呆毛温顺且深情地弯成了完美的爱心形状。她主动伸手狠狠拉住你的脖子将你带入深吻——「大色狼...看傻了吗？既然天已经亮了...那就从现在开始...把昨天没做完的契约继续填满吧...」",

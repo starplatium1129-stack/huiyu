@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc180",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Only her face and hands show above the blanket as she clings to the viewer beneath it.",
     "auditRevision": "careful-batch09-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "clothes",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, nude, under covers, hugging, gripping blanket, blush, watery eyes, bed, morning light, <lora:ayachi_nene_v18_wd14:0.8>, face focus, hands visible",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, nude, under covers, hugging, gripping blanket, blush, watery eyes, bed, morning light, <lora:ayachi_nene_v18_wd14:0.8>, face focus, hands visible, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 晨间完全真空极致温柔】一个慵懒的假日清晨，温暖的碎光透过窗帘泼洒下来。你从暖烘烘的床铺中醒来，震惊地发现宁宁整个人一丝不挂地钻在你的被窝里，白皙如玉的娇躯像八爪鱼一样死死缠绕在你身上。因为你的苏醒，她缩在被子里只露出一个红透的俏脸，头顶的呆毛因为极度的安心与羞涩而温顺地弯成了一个完美的心形螺旋。她攥紧被角，亮晶晶的眼睛里蒙着一层水汽，声音软绵绵的娇嗔着——「早安...大色狼...不准在被子里乱摸啦...宁宁的身体...今晚之前都随你处置了啦...」",

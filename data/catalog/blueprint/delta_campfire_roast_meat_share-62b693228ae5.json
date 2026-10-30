@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_campfire_roast_meat_share",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2477,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
   "data": {
     "id": "delta_campfire_roast_meat_share",
     "characterId": "delta_shadow",
@@ -30,7 +30,7 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Delta proudly sharing her roasted meat catch beside the warm campfire.",
+    "animaCaption": "Sitting by the crackling campfire, she proudly offers a large roast meat skewer with a radiant fanged smile.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

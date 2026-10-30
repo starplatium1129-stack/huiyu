@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc020",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "The viewer's hand enters from below to straighten her collar while she holds the script against her chest.",
     "auditRevision": "careful-batch08-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, black ribbed turtleneck, brown plaid midi skirt, asymmetrical hem, thin gold belt, holding script, curtain, backstage, medium shot, standing, nervous smile, blush, warm lighting, book hug",
+    "prompt": "1girl, shiki_natsume, black ribbed turtleneck, brown plaid midi skirt, asymmetrical hem, thin gold belt, holding script, curtain, backstage, medium shot, standing, nervous smile, blush, warm lighting, book hug, stage_curtain, lamp_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",

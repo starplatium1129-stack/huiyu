@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukina_beachside_floating_ring",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2192,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
   "data": {
     "id": "yukina_beachside_floating_ring",
     "characterId": "himeragi_yukina",
@@ -27,11 +27,12 @@
       "pouting",
       "blushing",
       "holding_hands",
-      "sunny_day",
+      "bright_sunlight",
+      "sunbeams",
       "cowboy_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Yukina wading in shallow water with a swim ring pouting cutely.",
+    "animaCaption": "Wading in the sunny shallow water with her swim ring, she pouts adorably while holding hands.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

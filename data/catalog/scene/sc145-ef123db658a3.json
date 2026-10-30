@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc145",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:35:33.041852700+00:00",
   "data": {
     "animaCaption": "Her cold hands slip into the viewer's palm as she looks up at the aurora reflected on the snow.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "cropped feet",
-    "prompt": "1girl, ayachi_nene, cream quilted winter coat, cape hood, red cable knit scarf, fur boots, holding hands, looking up, happy tears, snowfield, aurora, stars, full body, night, green light, reflected light",
+    "prompt": "1girl, ayachi_nene, cream quilted winter coat, cape hood, red cable knit scarf, fur boots, holding hands, looking up, happy tears, snowfield, aurora, stars, full body, night, green light, reflected light, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "season": "冬",
     "story": "北欧澄澈的雪原深夜，漫天璀璨的绿色极光如轻纱般在星空中起舞。宁宁穿着厚厚的冬装外套，脖子上围着你送的红线围巾。她将冻得微红的小手塞进你的掌心，仰头望着壮丽的极光，眼里闪烁着幸福的泪光，头顶的呆毛在夜风中轻轻颤动——「柊史，谢谢你带我来看世界的尽头。作为魔女的妻子，我的余生协议早就无法解约了哦。」",

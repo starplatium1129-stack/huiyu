@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc100",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 98,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She offers the wrapped gift in both hands, the sheet resting around her shoulders.",
     "auditRevision": "careful-batch10-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, red velvet lingerie, white scalloped trim, small gold bow, sheet around shoulders, sitting on bed, gift box, shy smile, snowy window, christmas, morning, close up, <lora:ayachi_nene_v18_wd14:0.8>, holding gift, outstretched arms, window light, soft shadow",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, red velvet lingerie, white scalloped trim, small gold bow, sheet around shoulders, sitting on bed, gift box, shy smile, snowy window, christmas, morning, close up, <lora:ayachi_nene_v18_wd14:0.8>, holding gift, outstretched arms, window light, soft shadow, bedroom, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "冬",
     "story": "婚后圣诞清晨，成年的宁宁换上精心挑选的节日内衣，披着被单坐在床边等你醒来。她原本准备了从容的台词，却在你睁眼的瞬间全忘了，只能红着脸把礼物盒塞进你怀里——「先拆盒子里的礼物，不准跳过顺序……至于我准备的这一份，要等你认真说喜欢以后。」",

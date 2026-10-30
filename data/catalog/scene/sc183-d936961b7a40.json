@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc183",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 180,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "One hand holds the wine glass while the other draws the viewer closer by the collar.",
     "camera": "近景特写",
@@ -20,7 +20,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_official_qipao, natsume_r18, dark red silk embroidered china dress, high slit, black thighhighs, sitting on barstool, leaning forward, grabbing collar, wine glass, blush, lounge, night, neon lighting, close up, holding wine glass",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_official_qipao, natsume_r18, dark red silk embroidered china dress, high slit, black thighhighs, sitting on barstool, leaning forward, grabbing collar, wine glass, blush, lounge, night, neon lighting, close up, holding wine glass, neon_lights, neon_glow, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "不限",
     "story": "潜伏任务结束后的复古私人酒廊包厢。平时高冷刻板的夏目此时换上了一件华丽的高开叉暗红丝绸旗袍，修长笔直的丰满美腿包裹在性感的超薄黑丝袜中。她面红耳赤地坐在包厢吧台前的高脚凳上朝你举杯，高开的旗袍下摆滑落到腿根，大片极具肉感的绝对领域随着交叠的长腿若隐若现。她手里摇晃着红酒杯，眼角的泪痣被脸颊的潮红彻底浸透，一边剧烈娇喘一边扯住你的衣领将你拉近深吻——「哼...长官...今晚这里没有特工任务...只有属于我的...绝对独占时间...笨蛋...」",

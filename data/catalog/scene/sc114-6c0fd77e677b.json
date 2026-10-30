@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc114",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 112,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She pulls the collar away to cool down, the towel hanging loose in her other hand.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, navy athletic t-shirt, white shoulder panels, navy gym shorts, burgundy side stripe, sitting, bench, holding towel, sneakers, locker room, sunset, medium shot, pulling collar, wet hair, sunbeam",
+    "prompt": "1girl, shiki_natsume, navy athletic t-shirt, white shoulder panels, navy gym shorts, burgundy side stripe, sitting, bench, holding towel, sneakers, locker room, sunset, medium shot, pulling collar, wet hair, sunbeam, warm_lighting, golden_hour, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "夏",
     "story": "放学后彻底空无一人的体育馆更衣室。刚刚结束高强度体能训练的夏目，正脱力地靠在长椅上喘息。她身上那件紧身的深蓝色体操服和短裤已经被汗水完全浸透，紧紧贴在极具多肉线条的饱满身躯上。见你走进来，她有些羞耻地用手扯了扯衣领试图散热，眼角的泪痣挂着亮晶晶的汗珠，偏过头去发出最后防线的毒舌娇嗔——「哈啊...变态大笨蛋...盯着女孩子的体操服看...你想被我秘密处决吗...」",

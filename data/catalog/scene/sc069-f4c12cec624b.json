@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc069",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She tilts the umbrella toward the viewer with one hand and links her free arm through theirs.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas",
-    "prompt": "1girl, shiki_natsume, navy single button blazer, burgundy piping, ivory blouse, umbrella, arm in arm, looking away, blush, rain, street, night, close up, holding umbrella, wet shoulder, streetlamp",
+    "prompt": "1girl, shiki_natsume, navy single button blazer, burgundy piping, ivory blouse, umbrella, arm in arm, looking away, blush, rain, street, night, close up, holding umbrella, wet shoulder, streetlamp, rainy_street, wet_pavement, water_puddle, reflection, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "夏",
     "story": "夏夜雨势渐大，夏目把伞往你这边倾斜，自己一侧的肩膀却被打湿。你把她拉近，她先皱眉说走路不方便，手臂却自然挽得更紧。路灯在积水里拉出长长倒影——「靠近一点确实不会淋到。这个结论只在伞太小的时候成立……到家之前都别松开。」",

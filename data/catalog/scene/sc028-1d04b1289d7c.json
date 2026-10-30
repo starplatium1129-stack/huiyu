@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc028",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Nene, in ivory chiffon with a pink waist ribbon, sits left holding the agreement and the viewer's hand. Natsume, in pearl-white satin with a boat neckline, sits right and straightens Nene's hair ornament.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "",
-    "prompt": "2girls, ayachi_nene, shiki_natsume, wedding dresses, sitting, canopy bed, marriage contract, holding hands, hair ornament, candlelight, medium shot, ivory chiffon, pink waist ribbon, pearl white satin, boat neckline, reaching",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, wedding dresses, sitting, canopy bed, marriage contract, holding hands, hair ornament, candlelight, medium shot, ivory chiffon, pink waist ribbon, pearl white satin, boat neckline, reaching, warm_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",

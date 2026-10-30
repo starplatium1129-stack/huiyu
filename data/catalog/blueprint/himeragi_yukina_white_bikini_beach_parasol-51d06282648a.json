@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "himeragi_yukina_white_bikini_beach_parasol",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2739,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-10-30T10:54:40.615496400+00:00",
   "data": {
     "id": "himeragi_yukina_white_bikini_beach_parasol",
     "characterId": "himeragi_yukina",
@@ -21,12 +21,6 @@
     "mood": "pure innocent bashfulness, heart-melting seaside sweetness",
     "promptProse": "Sitting under a colorful beach umbrella on a tropical shore, Himeragi Yukina wears a modest white frilled bikini. Her dark hair shines in the sunlight as she crosses her arms shyly with an adorable, full-face blush.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "himeragi_yukina",
-      "black_hair",
-      "long_hair",
-      "brown_eyes",
       "bikini",
       "white_bikini",
       "frills",
@@ -44,7 +38,7 @@
       "cowboy_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Yukina sitting under a beach umbrella in a white bikini, blushing shyly.",
+    "animaCaption": "Sitting under a beach umbrella in a white frilled bikini, she blushes shyly with hands held gently over her chest.",
     "isNsfw": true,
     "rating": "R18",
     "mature": true,

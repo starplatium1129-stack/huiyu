@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc095",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc095",
     "title": "滑落前被接住的浴巾",
@@ -38,7 +38,7 @@
     "weather": "晴",
     "camera": "肩后回避视角中景",
     "lighting": "浴室柔光与蒸汽漫射",
-    "prompt": "1girl, shiki_natsume, bath towel, bathrobe, reaching, doorway, bathroom, steam, over shoulder, medium shot, holding towel, receiving clothes, looking away",
+    "prompt": "1girl, shiki_natsume, bath towel, bathrobe, reaching, doorway, bathroom, steam, over shoulder, medium shot, holding towel, receiving clothes, looking away, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field, bathroom_doorway, soft_lighting",
     "negative": "open towel, nudity, see-through bathrobe",
     "usage": [
       "展示图",

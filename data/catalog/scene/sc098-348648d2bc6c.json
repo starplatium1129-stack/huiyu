@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc098",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her head rests on the viewer's clothed lap as one fingertip traces their open palm.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, ayachi_nene, pink satin camisole, cream silk robe, pink scalloped trim, lap pillow, looking up, smile, tatami, window light, close up, lying, touching palm",
+    "prompt": "1girl, ayachi_nene, pink satin camisole, cream silk robe, pink scalloped trim, lap pillow, looking up, smile, tatami, window light, close up, lying, touching palm, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "秋日下午，宁宁躺在你腿上看窗外摇动的树影，忽然转过脸认真端详你。她说从这个角度能看见平时忽略的表情，随后用手指轻轻描过你的掌纹。被问在想什么，她眯起眼笑——「在确认我喜欢的人是不是还在这里。答案没有变，所以可以放心睡一会儿了。」",

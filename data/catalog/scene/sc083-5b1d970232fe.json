@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc083",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 81,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She lifts the maple leaf from the viewer's shoulder, holding it between two fingers.",
     "auditRevision": "careful-batch09-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, beige cropped cardigan, navy border, white blouse, brown windowpane plaid midi skirt, maple leaf, reaching, autumn path, medium shot, holding leaf, looking up",
+    "prompt": "1girl, shiki_natsume, beige cropped cardigan, navy border, white blouse, brown windowpane plaid midi skirt, maple leaf, reaching, autumn path, medium shot, holding leaf, looking up, soft_lighting, cinematic_lighting, depth_of_field, fallen_leaves, autumn_leaves, warm_lighting, afternoon_sun",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "秋",

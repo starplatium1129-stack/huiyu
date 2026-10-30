@@ -3,6 +3,7 @@ import { parseGeneratedRecipe } from '@/utils/generatedSceneDraft'
 import type { AnimaGenerationState } from '@/types/anima'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import { sceneDirectorSources } from '@/utils/promptDirector'
+import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
 
 /** Apply the recorded engine before its settings; unsupported resources are reported explicitly. */
 export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPopularInput): string[] {
@@ -18,7 +19,7 @@ export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPo
   // The saved prompt already contains the original manual input. Leaving a previous
   // scene's extra layers here would silently add different clothes/actions on reuse.
   pb.manualTags = new Set()
-  pb.outfitOverride = null
+  pb.outfitOverride = parseOutfitOverride(parameters.outfitOverride)
   pb.visualDescription = ''
   pb.selections.emotion = [...(parameters.emotion || [])]
   // These recorded controls now belong to the selected generated scene.

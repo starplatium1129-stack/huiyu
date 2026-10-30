@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc031",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Nene in white chiffon with a pink waist ribbon stands left; Natsume in black satin with a burgundy sash stands right. Each clasps the nearer foreground hand beneath three glowing heart-rate curves.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "",
-    "prompt": "2girls, ayachi_nene, shiki_natsume, formal dresses, holding hands, ritual hall, dome, heart rate curves, halo, wide shot, standing, white chiffon gown, pink waist ribbon, black satin gown, burgundy sash, tears of joy, glowing halo",
+    "prompt": "2girls, ayachi_nene, shiki_natsume, formal dresses, holding hands, ritual hall, dome, heart rate curves, halo, wide shot, standing, white chiffon gown, pink waist ribbon, black satin gown, burgundy sash, tears of joy, glowing halo, soft_lighting, cinematic_lighting, depth_of_field, detailed_background, radiant_light, volumetric_lighting",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc291",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 286,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her legs rest across the viewer's lap as she tilts the art book toward them and meets their gaze.",
     "auditRevision": "careful-batch04-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, ayachi_nene, oversized grey cable knit sweater, wide ribbed neckline, shorts, couch, open book, teacup, rain, window, afternoon, from side, close-up, sitting, legs on lap, holding book, looking at viewer, bare shoulder, window light",
+    "prompt": "1girl, ayachi_nene, oversized grey cable knit sweater, wide ribbed neckline, shorts, couch, open book, teacup, rain, window, afternoon, from side, close-up, sitting, legs on lap, holding book, looking at viewer, bare shoulder, window light, rainy_street, wet_pavement, water_puddle, reflection, soft_lighting, overcast, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "秋",
     "story": "周末的雨从早上就没有停过。宁宁穿着一件宽大的灰色毛衣——那是你的，长度几乎盖住短裤——蜷在沙发角落翻着一本旧画集。你泡了两杯红茶出来时，她已经把位置挪到沙发中间，空出了半边。你坐下后她顺势侧过身，把腿搭在你膝上，画集搁在你手臂旁边让你一起看。雨声填满了窗外的世界，屋内只有翻页和偶尔的啜饮声。她翻到某一页时动作顿了顿，偏过头来看你，紫色瞳孔里映着窗外的灰色天光——「这张的构图……很像上次你拍我的角度。」她说完没有移开视线，毛衣的宽领在她侧身时滑落一截，露出圆润的肩头和锁骨的浅凹。她感觉到你的目光，脸颊慢慢泛红，却没有拉回衣领——「雨好像不会停了……那今天的预定，是不是也可以全部取消？」",

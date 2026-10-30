@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc116",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her hands support her at the counter's edge beneath the cafe's dim amber light.",
     "auditRevision": "careful-batch02-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "cafe uniform",
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, black lace lingerie, sheer black tights, garter straps, heels, sitting on counter, crossed legs, blush, cafe, night, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>, hands on counter, warm lighting",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, black lace lingerie, sheer black tights, garter straps, heels, sitting on counter, crossed legs, blush, cafe, night, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>, hands on counter, warm lighting, table, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "不限",
     "story": "深夜闭店后的星光咖啡馆。在一片寂静的昏暗中，夏目在你的霸道惩罚下，褪去了所有的校服外套，仅仅穿着一套充满了危险禁忌感的黑色蕾丝内衣和超薄黑丝袜坐在吧台上。平时高冷克制的她此时面红赤，双手撑在吧台边缘，眼角的泪痣被脸颊的红晕彻底浸透。她大汗淋漓地斜睨着居高临下的你，咬着银牙发出最后的傲娇宣言——「喂，大色狼。今晚不准让我回家...你最好做足了被我彻底吃掉的觉悟。」",

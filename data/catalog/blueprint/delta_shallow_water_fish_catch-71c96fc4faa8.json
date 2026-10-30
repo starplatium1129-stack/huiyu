@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_shallow_water_fish_catch",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2516,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
   "data": {
     "id": "delta_shallow_water_fish_catch",
     "characterId": "delta_shadow",
@@ -37,7 +37,7 @@
       "water_reflection"
     ],
     "negativeTokens": [],
-    "animaCaption": "Delta proudly holding up a freshly caught fish in a sparkling mountain river.",
+    "animaCaption": "Standing in the sparkling stream shallows, morning sunlight sparkles on water droplets as she hoists her fresh catch.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

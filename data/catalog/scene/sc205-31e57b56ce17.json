@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc205",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 200,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc205",
     "title": "破晓露台的半透晨光",
@@ -38,7 +38,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, white cotton sundress, square neckline, pink waist ribbon, hands on railing, smile, veranda, beach house, ocean, dawn, backlighting, close up, looking back, wooden railing",
+    "prompt": "1girl, ayachi_nene, white cotton sundress, square neckline, pink waist ribbon, hands on railing, smile, veranda, beach house, ocean, dawn, backlighting, close up, looking back, wooden railing, balcony, railing, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "negative": "see-through dress",
     "storyJa": "【寧々・大人のアフターストーリー・・・夏の軽やかなスカートと夜明けの逆光】夜明けに目覚めると、海辺の木造住宅のテラスでは、手すりを伝って湿った海風が吹き抜けていた。寧々は、薄い白いノースリーブのドレスを着て、朝の光の中に立っていた。柔らかい布地が風によって彼女の体に押し付けられ、彼女のぼんやりとした輪郭が朝日に照らされました。彼女は顔を赤らめて振り返り、その目には恥じらいと抑えがたい幸福感が表れていた。彼女の頭のてっぺんは小さなハートの形に素直に曲がっていました――「もう見飽きた？　風が少し冷たいんです……早く後ろから、寧々を抱きしめてください。」",
     "rating": "R15",

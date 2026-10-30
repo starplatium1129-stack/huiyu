@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc280",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "The pastry rests in a folded kraft-paper pouch held between both hands toward the viewer.",
     "audit": {
@@ -29,7 +29,7 @@
     "mature": false,
     "negative": "transparent bag",
     "officialCgCandidate": "ocs14",
-    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, apron, offering food, paper bag, smile, cup, shelf, cafe, night, upper body, holding food, both hands, wooden shelves, soft lighting",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, apron, offering food, paper bag, smile, cup, shelf, cafe, night, upper body, holding food, both hands, wooden shelves, soft lighting, table, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",

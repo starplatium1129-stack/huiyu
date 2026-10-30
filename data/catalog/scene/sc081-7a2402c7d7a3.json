@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc081",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:35:33.041852700+00:00",
   "data": {
     "animaCaption": "She catches the blanket corner as the viewer draws it over her beside the travel notes on the low table.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, beige waffle knit t-shirt, burgundy collar trim, charcoal cotton shorts, on side, cushion, blanket, travel notes, tatami, full body, lying on side, holding blanket, sunlight, shoji, low table",
+    "prompt": "1girl, shiki_natsume, beige waffle knit t-shirt, burgundy collar trim, charcoal cotton shorts, on side, cushion, blanket, travel notes, tatami, full body, lying on side, holding blanket, sunlight, shoji, low table, soft_lighting, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",

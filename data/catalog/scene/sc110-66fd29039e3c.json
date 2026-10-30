@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc110",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc110",
     "title": "特工长官的越界特权",
@@ -44,7 +44,7 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, shiki_natsume, white shirt, concealed placket, charcoal pencil skirt, burgundy waist belt, natsume_r18, skirt lift, torn black stockings, sitting on desk, hands behind body, blush, office, blinds, moonlight, <lora:shiki_natsume_v18_wd14:0.85>, looking away",
+    "prompt": "adult, 1girl, solo, shiki_natsume, white shirt, concealed placket, charcoal pencil skirt, burgundy waist belt, natsume_r18, skirt lift, torn black stockings, sitting on desk, hands behind body, blush, office, blinds, moonlight, <lora:shiki_natsume_v18_wd14:0.85>, looking away, soft_ambient_light, cinematic_lighting, depth_of_field",
     "negative": "",
     "storyJa": "【夏目・職場の狭いスカートは絶対ダメだよ】司令官の独立した執務室は深夜に施錠された。飄々とした職場で、OL夏目は顔を赤らめながら、あなたに大きな机の端に強引に抱きしめられました。彼女の体のプロ仕様のお尻を覆うスカートはあなたによって腰まで完全に持ち上げられ、彼女の脚のセクシーな薄い黒のストッキングはあなたによって完全に引き裂かれ、白く繊細な絶対領域の広い範囲が露出しています。彼女は両手を後ろでしっかりと握り、大きな感覚の衝撃に目頭の泣きぼくろが激しく震えた。彼女はすぐに息を呑み、顔を向けて恥ずかしさのあまりうめき声を上げました。――「もう、この変態……ストッキングをこんなにして。どうやって埋め合わせてくれるつもり？」",
     "rating": "R18",

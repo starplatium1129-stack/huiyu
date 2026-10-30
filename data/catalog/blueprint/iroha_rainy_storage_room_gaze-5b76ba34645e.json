@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_rainy_storage_room_gaze",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 361,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "iroha_rainy_storage_room_gaze",
     "title": "一色彩羽 · 雨天收好的活动横幅",
@@ -31,8 +31,6 @@
     ],
     "promptProse": "Iroha hugs the rolled damp banner across her knees after the thunder, trying to keep a composed smile. Broad overhead light reveals the wet fabric and equipment stacked beside her low stool.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "sitting",
       "banner",
       "storage room",

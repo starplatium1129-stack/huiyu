@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc203",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 198,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc203",
     "title": "夏夜花火的滑落余温",
@@ -41,7 +41,7 @@
       "新手推荐",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, blush pink yukata, moonflower print, cream obi, lavender obijime, sitting, holding collar, white tabi, tatami, ryokan, lantern light, close up, sleeve to face, blush, paper lantern, warm lighting",
+    "prompt": "1girl, ayachi_nene, blush pink yukata, moonflower print, cream obi, lavender obijime, sitting, holding collar, white tabi, tatami, ryokan, lantern light, close up, sleeve to face, blush, paper lantern, warm lighting, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "negative": "exposed breasts, shoes",
     "storyJa": "【寧々・大人のアフターストーリー・・・花火のあとの浴衣の余韻】夏祭りが終わり、古風な旅館もようやく静かになった。畳の上では寧々の浴衣の帯が緩み、幅広のスカートが肩まで滑り落ち、夜風で少し赤くなった肩と首が露わになっていた。慌てて袖を掴んで顔を覆ったが、頭のアホ毛はすでに恥ずかしそうにハート型に丸まっていた。花火の最後のくぐもった音が遠くから聞こえ、彼女は静かに文句を言い、あなたに近づきました。――「もう、道中ずっとふざけるから……笑ってないで、早く寧々の服を整えるのを手伝ってください。」",
     "rating": "R15",

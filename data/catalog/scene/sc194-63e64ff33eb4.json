@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc194",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 191,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc194",
     "title": "魔女的特别诊疗：私密护士服协议",
@@ -38,7 +38,7 @@
       "核心协议",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pink and white nurse costume, nurse cap, low neckline, white thighhighs, kneeling, leaning forward, reaching, teary eyes, blush, bed, warm lighting, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>, hands on shoulders, bedside lamp, tilted headwear",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pink and white nurse costume, nurse cap, low neckline, white thighhighs, kneeling, leaning forward, reaching, teary eyes, blush, bed, warm lighting, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>, hands on shoulders, bedside lamp, tilted headwear, bedroom, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "negative": "black thighhighs, stethoscope",
     "storyJa": "【寧々・大人のアフターストーリー・・ナース服でのセクシープレイが最高にエモい】深夜の閉ざされたアパートの寝室。何日も残業したあなたを慰めるために、寧々は顔を赤らめ、非常に汚いピンクと白のセクシーなナース服と白いストッキングを履きました。彼女はベッドの端であなたの足にまたがり、小柄な看護師の帽子は片側に傾き、ローカットのネックラインがあなたによってそっと開かれ、雪のように白い波状の大きな官能的な部分が現れました。彼女は慌てて両手であなたの肩をつかみました。頭上のアホ毛は、過剰な感情と恥ずかしさでハート型の螺旋に完全に崩壊していた。彼女の目は水蒸気の層で覆われ、彼女は急速にあえいでいました。――「柊史……『特別健康診断』なんて言って、からかいすぎです。もう十分ですから、早く抱きしめてください。」",
     "rating": "R18",

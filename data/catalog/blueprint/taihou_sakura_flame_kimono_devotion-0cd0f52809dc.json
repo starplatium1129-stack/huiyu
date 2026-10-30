@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_sakura_flame_kimono_devotion",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1075,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:14:58.878553700+00:00",
   "data": {
     "id": "taihou_sakura_flame_kimono_devotion",
     "title": "大凤 · 重樱绯焰华服的深情相迎",
@@ -31,21 +31,23 @@
       "cherry_blossoms",
       "obsessive_smile"
     ],
-    "promptProse": "Taihou holds a red-and-gold fan before her smiling lips, gaze following the viewer beneath the temple corridor; golden-hour light filters through cherry branches onto her sleeves.",
+    "promptProse": "Stepping forward along an imperial vermilion temple veranda showered in cherry blossom petals, Taihou greets her commander in an opulent flowing red and obsidian kimono dress. Sunlight illuminates her magnificent cleavage, floor-sweeping dark twintails, and burning devoted amber-red eyes.",
     "promptTokens": [
-      "folding fan",
-      "cherry blossoms",
-      "temple",
-      "sunset",
-      "full body",
-      "holding fan",
-      "fan over mouth",
-      "looking at viewer",
-      "windblown sleeves",
-      "dappled sunlight"
+      "shinto_temple",
+      "vermilion_veranda",
+      "cherry_blossoms",
+      "kimono",
+      "cleavage",
+      "deep_cleavage",
+      "twintails",
+      "folding_fan",
+      "detailed_background",
+      "cinematic_lighting",
+      "volumetric_lighting",
+      "depth_of_field"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "animaCaption": "The open fan rests before her smiling lips as her gaze follows the viewer beneath the temple corridor."
+    "animaCaption": "Stepping forward along an imperial vermilion temple veranda showered in cherry blossom petals, Taihou greets her commander in an opulent flowing red and obsidian kimono dress. Sunlight illuminates her magnificent cleavage, floor-sweeping dark twintails, and burning devoted amber-red eyes."
   }
 }

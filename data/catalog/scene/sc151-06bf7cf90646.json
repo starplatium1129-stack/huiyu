@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc151",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Nene in pink silk with white piping lies left, holding the viewer's sleeve. Natsume in blue silk with burgundy piping props herself on one elbow at the right beneath their shared blanket.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "",
-    "prompt": "2girls, ayachi_nene, silk pajamas, shiki_natsume, blanket, sleeve grab, on elbow, sleepy smile, bedroom, morning light, close up, lying, pink silk pajamas, white piping, blue silk pajamas, burgundy piping",
+    "prompt": "2girls, ayachi_nene, silk pajamas, shiki_natsume, blanket, sleeve grab, on elbow, sleepy smile, bedroom, morning light, close up, lying, pink silk pajamas, white piping, blue silk pajamas, burgundy piping, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",

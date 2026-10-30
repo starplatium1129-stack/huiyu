@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc013",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "A single cherry petal rests in the palm she offers toward the viewer.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, cream blouse, pleated collar, sand beige midi skirt, burgundy waist belt, brown tights, petal, cherry blossoms, profile, blush, close up, outstretched hand, open hand, looking away, soft lighting",
+    "prompt": "1girl, shiki_natsume, cream blouse, pleated collar, sand beige midi skirt, burgundy waist belt, brown tights, petal, cherry blossoms, profile, blush, close up, outstretched hand, open hand, looking away, soft lighting, falling_petals, park, trees, morning_sunlight, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "春",
     "story": "春日公园的樱花正盛，夏目安静地走在外侧，替你挡开迎面的人群。一片花瓣落进她掌心，你说很适合她，她便故作冷淡地把花瓣递来，视线却不肯与你相接——「只是碰巧接到而已。既然你这么喜欢，就收好……不准笑，我没有在特意送你什么。」",

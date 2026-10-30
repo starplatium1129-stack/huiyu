@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_shopping_hairband_mirror",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 362,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
   "data": {
     "id": "iroha_shopping_hairband_mirror",
     "title": "一色彩羽 · 商业街试戴发饰的镜前戏谑·「这个发箍好看吗？……前辈要是夸我可爱，我就买下来哦」",
@@ -33,20 +33,20 @@
     ],
     "promptProse": "Iroha tries a cat-ear headband and winks at her reflection with both cheeks in her palms. Warm display lights frame her face in the mirror.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "isshiki_iroha",
-      "animal ear headband",
-      "hands on cheeks",
-      "wink",
+      "shopping_mall",
+      "boutique",
       "mirror",
-      "shop",
-      "medium shot",
-      "warm lighting"
+      "reflection",
+      "animal_ear_headband",
+      "hands_on_cheeks",
+      "winking",
+      "playful_smile",
+      "blush",
+      "store_lighting",
+      "warm_lighting",
+      "medium_shot"
     ],
-    "negativeTokens": [
-      "extra person in mirror"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -57,6 +57,6 @@
       "date"
     ],
     "allowRepeatedSubject": true,
-    "animaCaption": "She cups both cheeks and winks at the cat-ear headband in her reflection."
+    "animaCaption": "Trying on an animal-ear headband in the boutique mirror, she poses with hands on her blushing cheeks."
   }
 }

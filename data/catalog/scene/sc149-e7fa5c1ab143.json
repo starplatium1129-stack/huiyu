@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc149",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 146,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "One hand touches the viewer's cheek while the other keeps her towel securely closed.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "open towel, nudity",
-    "prompt": "1girl, ayachi_nene, white bath towel, wet hair, hair_down, no_hair_ribbon, sitting on bed, touching face, blush, bedside lamp, close up, holding towel, warm lighting",
+    "prompt": "1girl, ayachi_nene, white bath towel, wet hair, hair_down, no_hair_ribbon, sitting on bed, touching face, blush, bedside lamp, close up, holding towel, warm lighting, bedroom, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "不限",
     "story": "公寓里弥漫着沐浴后的柠檬香气。宁宁刚洗完澡，赤脚坐在你的床边，湿漉漉的银白色长发散落，没有绑平时的发带。她用温热的手指轻轻贴住你的脸颊，脸红得快要滴出水来，头顶的呆毛也害羞地耷拉着——「大笨蛋...眼睛往哪里看呢。不准乱动，先帮人家把头发吹干啦...」",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc004",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She peeks around the shelf with the top book drawn against her chest.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, peeking, holding books, bookshelf, library, window light, medium shot, looking at viewer, book hug",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, peeking, holding books, bookshelf, library, window light, medium shot, looking at viewer, book hug, multiple_books, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "午后的图书馆里只有翻页声。宁宁抱着几本神秘学资料从高书架后探出头，发现来人是你时明显松了口气，又慌忙把最上面那本藏进怀里。窗光落在她发梢，她故作自然地挪出半个位置——「你也来查资料吗？那就坐这里吧。不过，不准问我为什么借了这一本。」",

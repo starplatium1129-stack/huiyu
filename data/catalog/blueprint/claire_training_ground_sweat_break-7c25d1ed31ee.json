@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_training_ground_sweat_break",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2486,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "claire_training_ground_sweat_break",
     "characterId": "claire_kagenou",
@@ -33,7 +33,7 @@
       "warm_lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Claire taking a refreshing breath after morning sword training.",
+    "animaCaption": "Taking a refreshing breath with a gentle flush after morning sword practice on the grounds.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc182",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 179,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She presses the veil against her cheek and turns her gaze toward the viewer.",
     "auditRevision": "careful-batch13-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "standing, black thighhighs",
-    "prompt": "adult, 1girl, nene_r18, ayachi_nene, white bridal lace lingerie, garter stockings, veil, on stomach, blush, teary eyes, bed, rose petals, candlelight, <lora:ayachi_nene_v18_wd14:0.8>, lying on stomach, holding veil, looking at viewer",
+    "prompt": "adult, 1girl, nene_r18, ayachi_nene, white bridal lace lingerie, garter stockings, veil, on stomach, blush, teary eyes, bed, rose petals, candlelight, <lora:ayachi_nene_v18_wd14:0.8>, lying on stomach, holding veil, looking at viewer, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "春",
     "story": "新婚的奢华卧室内，玫瑰的甜香弥漫。宁宁在你的要求下，羞红着脸换上了极具禁忌感的纯白新娘蕾丝内衣与吊带袜，头上还覆着一层半透明的白色头纱。她软榻榻地趴在白色天鹅绒大床中央，白皙的娇躯因为极度紧张而微微战栗。她扯着头纱试图遮住滚烫的脸颊，头顶的呆毛早已因为爱意过载而瘫软成完美的工口心形螺旋，含泪的眼睛意乱情迷地凝视着你——「柊史...这套衣服太犯规了啦...宁宁从今天起...真的完全变成你的新娘了哦...」",

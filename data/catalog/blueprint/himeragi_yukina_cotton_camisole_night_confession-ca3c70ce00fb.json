@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "himeragi_yukina_cotton_camisole_night_confession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2742,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-10-30T10:54:40.615496400+00:00",
   "data": {
     "id": "himeragi_yukina_cotton_camisole_night_confession",
     "characterId": "himeragi_yukina",
@@ -21,12 +21,6 @@
     "mood": "pure unvarnished first love, delicate trembling devotion",
     "promptProse": "Sitting on her bed in a simple white cotton camisole, Himeragi Yukina hugs a pillow to her chest. Her long black hair cascades over bare shoulders as her face burns with an earnest, heartfelt confession under warm lamplight.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "himeragi_yukina",
-      "black_hair",
-      "long_hair",
-      "brown_eyes",
       "camisole",
       "nightgown",
       "bare_shoulders",
@@ -41,7 +35,7 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Yukina sitting on her bed in a white cotton camisole hugging a pillow, blushing deeply.",
+    "animaCaption": "Sitting on her bed in a white cotton camisole and hugging a pillow to her chest, she blushes deeply under the warm lamplight.",
     "isNsfw": true,
     "rating": "R18",
     "mature": true,

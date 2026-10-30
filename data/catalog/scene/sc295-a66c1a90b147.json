@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc295",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 290,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She pats the mattress beside her, her yukata tied closed with platform lights faint beyond the window.",
     "auditRevision": "skill-refine-sc295-2026-09-05",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "open yukata",
-    "prompt": "1girl, shiki_natsume, ivory cotton yukata, navy geometric border, navy obi, sitting, bed, smile, japanese room, window, warm lighting, cowboy shot, patting bed, platform lights, closed yukata",
+    "prompt": "1girl, shiki_natsume, ivory cotton yukata, navy geometric border, navy obi, sitting, bed, smile, japanese room, window, warm lighting, cowboy shot, patting bed, platform lights, closed yukata, train_platform, station, water_droplets, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "冬",
     "story": "旅行最后一晚错过了末班车，两人在小站旁边的老旅馆找到最后一间房。房间很小，窗户正对着车站月台，夜里只剩下零星几盏灯。夏目洗完澡出来，穿着旅馆的浴衣，用毛巾擦着湿漉漉的黑发。她站在窗前往外看了一会儿，然后转身坐到床沿，浴衣的下摆在她坐下时微微敞开，露出修长的腿线。她拍了拍身边的位置，语气里带着旅途特有的那种松弛——「床不算大……不过应该够两个人躺。前提是你不乱动。」她把毛巾挂在一旁，侧过脸看着你，湿发贴着脖颈，水珠顺着锁骨往下滑。窗外的站台灯光在她瞳孔里微微晃动，她低声补了一句——「明天就要回去了……今晚至少暖气够足。」",

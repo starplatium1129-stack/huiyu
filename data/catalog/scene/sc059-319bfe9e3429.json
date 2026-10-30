@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc059",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc059",
     "title": "白衬衫与两颗空扣",
@@ -38,7 +38,7 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, shiki_natsume, oversized white cotton shirt, fine blue pinstripes, indigo denim shorts, holding mug, adjusting collar, kitchen, morning light, medium shot, blush, unbuttoned shirt, window light",
+    "prompt": "1girl, shiki_natsume, oversized white cotton shirt, fine blue pinstripes, indigo denim shorts, holding mug, adjusting collar, kitchen, morning light, medium shot, blush, unbuttoned shirt, window light, counter, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "negative": "",
     "storyJa": "【夏目・空のボタンが2つ付いた白いシャツ】秋の朝、夏目はあなたの白いシャツを一時的なパジャマとして扱い、キッチンに立ってコーヒーが淹れるのを待ちます。上の２つのボタンは外されていました。あなたの視線に気づいた彼女は、まず襟を引っ張り、それからわざとカップをかざして顔の半分を覆いました。――「荷物に入れていたパジャマがまだ乾いてないから、借りただけ。これ以上見ていたら、今日のコーヒーはブラックだけにする。」",
     "rating": "All",

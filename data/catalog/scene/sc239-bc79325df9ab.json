@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc239",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She freezes while the viewer wipes white paint from her collarbone, one overall strap hanging loose.",
     "auditRevision": "fix-no-burn-ears-sc239-2026-09-05",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, shiki_natsume, dark indigo denim overalls, brass buckles, white sleeveless shirt, burgundy collar trim, strap slip, paint, surprised, art studio, afternoon, window light, close-up, blush, paint on collarbone",
+    "prompt": "1girl, shiki_natsume, dark indigo denim overalls, brass buckles, white sleeveless shirt, burgundy collar trim, strap slip, paint, surprised, art studio, afternoon, window light, close-up, blush, paint on collarbone, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "春",
     "story": "午后阳光洒满堆放木材与画板的手工工作室。为了修缮咖啡店的桌椅，夏目换上了利落帅气的深蓝丹宁工装背带裤与无袖白上衣，修长的脖颈与锁骨线条格外干净。搬运木料时背带扣不慎滑下一侧，白皙的锁骨处还沾上了一抹白色木工漆。你自然地上前抬手帮她擦拭，夏目身子猛地一僵，半垂着清冷的金瞳动弹不得。午后明亮的窗光把她红透的耳根照得无所遁形，她小声嘟囔着——「……别误会。我只是觉得让你顺手擦掉最省事而已。要是蹭在衣服上更难洗。……真是的，离得太近了啦。」",

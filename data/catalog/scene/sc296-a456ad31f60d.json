@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc296",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 291,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc296",
     "title": "打烊后的同人庆功",
@@ -43,7 +43,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, black henley shirt, burgundy buttons, dark denim midi skirt, asymmetrical seam, grabbing clothes, tired, izakaya, noren, warm lighting, from side, close up, forehead on shoulder, blush, paper lantern",
+    "prompt": "1girl, shiki_natsume, black henley shirt, burgundy buttons, dark denim midi skirt, asymmetrical seam, grabbing clothes, tired, izakaya, noren, warm lighting, from side, close up, forehead on shoulder, blush, paper lantern, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "negative": "",
     "storyJa": "【夏目・大人のAfter Story・閉店後の同人打ち上げ】新刊発売後の打ち上げが終わり、他のメンバーは既に帰路についた。居酒屋の暖簾も半分ほど垂れていた。夏目は座敷の隅に座り、ほろ酔いで頬を薄赤く染めていた。黒い髪が何本か顔の横に落ちている。彼女は襟元の第一ボタンを外し、息をついた。顔を上げてあなたを見た時、金色の瞳はいつもよりずっと柔らかかった——「今日は予想より売れた……あなたの選んだレイアウト方向は正しかったね。」その評価は突然だが誠実だった。あなたが隣に座って彼女の上着を取りに行こうとすると、彼女は立ち上がらず、むしろ寄りかかってきて額をあなたの肩に預けた。声はBGMにかき消されそうなほど小さかった——「あと一分だけ……一日中立ちっぱなしで、足がすごく痛い。」彼女の息からは梅酒の甘い香りがした。指があなたの上着の裾をそっと掴んでいた——あなたが彼女の言葉を聞く前に立ち去ってしまうのが怖いかのように。",
     "animaCaption": "Her forehead rests on the viewer's shoulder while one finger hooks into their coat hem.",

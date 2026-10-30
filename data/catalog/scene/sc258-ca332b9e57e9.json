@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc258",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 253,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "The viewer supports her waist from the lower stair as she stumbles over her hakama, the props held against her chest.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, red and white arrow print kimono, purple hakama, black boots, tripping, blush, shrine, stairs, maple leaf, sunset, red hair bow, tied hair, dappled light, hands against chest",
+    "prompt": "1girl, ayachi_nene, red and white arrow print kimono, purple hakama, black boots, tripping, blush, shrine, stairs, maple leaf, sunset, red hair bow, tied hair, dappled light, hands against chest, warm_lighting, golden_hour, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "秋意浓郁、漫天红枫如火般飘落的学院古老神社后山石阶。为了参加民俗部的传统节日拍摄，宁宁换上了一整套极其优雅华丽的大正风格袴裙：上身是红白相间的正统箭羽纹和服，下身搭配深紫色的传统袴裙与一双秀气的黑色系带皮靴，银白色的长发用巨大的红色蝴蝶结发带优雅地束在脑后，显得格外的明艳端庄。然而由于袴裙摆过于繁复，她在抱着道具走下石阶时下摆不慎绊了一下，整个人惊呼着直接失去了平稳。你眼疾手快地跨上一步将她稳稳抱进怀里，宁宁在对视的瞬间瞬间面红耳赤，头顶那根心形呆毛在漫天飘落的红色枫叶中慌乱地打着卷，挂着眼泪当场语无伦次自曝——「呜啊！柊、柊史！为什么每次你都能接住人家啦！人家、人家绝对没有故意借助被裙子绊倒来让你抱住哦……呜，越解释越像在狡辩了，笨蛋快闭上眼睛不准看！」",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc014",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:35:33.041852700+00:00",
   "data": {
     "animaCaption": "She grips the viewer's forearm as the wave reaches her feet in the shallows.",
     "auditRevision": "careful-batch11-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, laughing, splashing, shallow water, beach, full body, holding arm, standing, sunlight, water splashes",
+    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, laughing, splashing, shallow water, beach, full body, holding arm, standing, sunlight, water splashes, sand, ocean_waves, soft_lighting, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "recommendedSize": "1216×832",
     "season": "夏",

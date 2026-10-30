@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc026",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She turns from the closed door toward the viewer standing close behind her.",
     "auditRevision": "careful-batch08-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white ringer t-shirt, burgundy collar, charcoal gym shorts, side stripe, standing, door, equipment room, blush, looking at viewer, window light, close up, holding door handle, closed door, light beam",
+    "prompt": "1girl, shiki_natsume, white ringer t-shirt, burgundy collar, charcoal gym shorts, side stripe, standing, door, equipment room, blush, looking at viewer, window light, close up, holding door handle, closed door, light beam, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "夏",
     "story": "大学体育馆活动结束后，夏目请你帮忙归还器材，门却被风意外带上。狭小仓库里只剩高窗漏进来的光，她检查门锁时还很冷静，转身发现你们距离过近才迅速红了耳根——「先想办法开门，别露出那种表情。还有……退后一点，我不是在紧张，只是这里太闷。」",

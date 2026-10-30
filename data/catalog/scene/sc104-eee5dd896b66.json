@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc104",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Seated on the office desk after the rain, she adjusts her slipping glasses with one hand.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "dry clothes, jacket",
-    "prompt": "adult, 1girl, solo, shiki_natsume, wet white pinstripe shirt, black high waist pencil skirt, burgundy waistband, natsume_r18, see-through, black lace bra, sitting on desk, blush, office, rainy night, city lights, <lora:shiki_natsume_v18_wd14:0.85>, adjusting glasses, glasses, desk lamp, side lighting",
+    "prompt": "adult, 1girl, solo, shiki_natsume, wet white pinstripe shirt, black high waist pencil skirt, burgundy waistband, natsume_r18, see-through, black lace bra, sitting on desk, blush, office, rainy night, city lights, <lora:shiki_natsume_v18_wd14:0.85>, adjusting glasses, glasses, desk lamp, side lighting, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "夏",
     "story": "夏日深夜突降暴雨，刚跑回公司指挥中心的夏目全身被雨水彻底淋透。她面红耳赤地坐在你宽大的办公桌边缘，身上那件轻薄的白衬衫被雨水打得半透明，死死贴紧在她饱满高耸的优美身躯上，里面黑色的性感内衣轮廓和光洁的小腹肌肤被透光勾勒得一清二楚。她细长的双腿交叠，推了推滑落的镜框，眼角的泪痣在桌上台灯的强阴影下显得欲气满满——「哈？变态长官，把我反锁在办公室，盯着淋湿的我...这就是你的特殊命令吗？」",

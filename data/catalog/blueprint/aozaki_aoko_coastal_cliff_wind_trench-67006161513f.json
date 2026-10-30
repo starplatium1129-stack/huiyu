@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_coastal_cliff_wind_trench",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2680,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "aozaki_aoko_coastal_cliff_wind_trench",
     "characterId": "aozaki_aoko",
@@ -21,9 +21,6 @@
     "mood": "epic sovereign freedom, breathtaking wind-swept power",
     "promptProse": "Standing atop a rugged coastal cliff against a blazing sunset, Aoko Aozaki wears a flowing trench coat caught in the ocean gale. Wind whips her long red hair as she looks forward with untamed, confident brilliance.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "aozaki_aoko",
       "red_hair",
       "long_hair",
       "blue_eyes",
@@ -42,7 +39,7 @@
       "full_body"
     ],
     "negativeTokens": [],
-    "animaCaption": "Aoko standing on a coastal cliff edge at sunset, her trench coat and red hair whipping in the wind.",
+    "animaCaption": "Standing on a coastal cliff edge at sunset, her trench coat and long hair whip in the wind.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,

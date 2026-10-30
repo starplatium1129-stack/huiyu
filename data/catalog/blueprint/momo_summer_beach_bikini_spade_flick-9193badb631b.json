@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "momo_summer_beach_bikini_spade_flick",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1249,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:52:30.480291800+00:00",
   "data": {
     "action": "踩在清凉海水中侧身回眸，浅紫比基尼勾勒极致三围，爱心尾巴在水中划水挑逗",
-    "camera": "full-body shot, three-quarter view",
+    "camera": "cowboy shot, three-quarter view, dutch angle",
     "category": "盛夏海滨",
     "characterId": "momo_velia_deviluke",
     "coverageTags": [
@@ -15,23 +15,40 @@
     ],
     "description": "碧海连天的热带海岛沙滩上，浪花欢快拍打礁石。梦梦身穿一套极度惹火的浅紫色荷叶边细带分体比基尼，饱满沉甸甸的玉乳与纤细柔软的柳腰形成了完美的沙漏曲线。她站在清澈的海水泡沫中侧身回眸，金色细链腰链在腰腹微晃，身后的黑色爱心恶魔尾巴尖端狡黠地在海水中轻划水花，眼神带着令人心跳加速的挑逗——「梨斗先生，视线移不开了吗？想看的话……可以再靠近一点哦♪」",
     "id": "momo_summer_beach_bikini_spade_flick",
-    "lighting": "明烈热带阳光与水面反射的跳跃焦散水波光斑",
+    "lighting": "热带日光从侧后方照亮发梢与肩侧轮廓，碧绿海浪反光补亮脸庞，浪峰与白色泡沫闪烁高光",
     "location": "热带海岛细白沙滩浅水浪花边",
     "mood": "娇媚撩人",
     "negativeTokens": [
-      "nude"
+      "nude",
+      "multiple tails",
+      "overexposure"
     ],
     "outfitId": "summer_bikini",
-    "promptProse": "Adult Momo looks back while standing in the shallow surf, her tail tip tracing a small splash beside her feet. Tropical sunlight catches the splash while reflected water patterns ripple over her legs.",
+    "promptProse": "Momo stands amid foamy turquoise surf and turns toward the viewer with a gentle smile, one hand near her shoulder and the other relaxed at her side. Frame her from head to mid-thigh in a gently tilted three-quarter view. Breaking waves fill the background immediately behind her, with the distant coastline at the top of the frame. Sunlight rims her windblown hair, reflected sea light illuminates her face, and caustic patterns and bright glints move across the waves. Her single heart-tipped tail curves along the water.",
     "promptTokens": [
-      "wet skin",
-      "looking back",
-      "beach",
-      "sunlight",
       "standing",
+      "looking back",
+      "gentle smile",
+      "windblown hair",
+      "wet skin",
+      "single tail",
+      "hand up",
+      "arm at side",
+      "ocean waves",
+      "waves",
+      "sea foam",
       "water splash",
-      "water reflection",
-      "full body"
+      "sunlight",
+      "backlighting",
+      "rim light",
+      "reflected light",
+      "sun glint",
+      "caustics",
+      "detailed background",
+      "cinematic lighting",
+      "distant coastline",
+      "cowboy shot",
+      "dutch angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +65,6 @@
     "title": "梦梦 · 碧波金沙的浅紫比基尼回眸",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "Her tail tip traces a small splash beside her feet in the shallow surf."
+    "animaCaption": "Foamy turquoise breakers fill the background immediately behind her, with the distant coast at the top of the tilted frame. Her single heart-tipped tail curves along the water."
   }
 }

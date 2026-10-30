@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc225",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "One hand holds the broom while the other receives warm tea from the viewer beside her on the steps.",
     "auditRevision": "careful-batch07-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, miko, broom, canned tea, shrine, torii, morning, fog, dappled sunlight, from side, red hair ribbon, hair tied back, holding broom, receiving drink",
+    "prompt": "1girl, shiki_natsume, miko, broom, canned tea, shrine, torii, morning, fog, dappled sunlight, from side, red hair ribbon, hair tied back, holding broom, receiving drink, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "冬",
     "story": "清晨被淡淡薄雾笼罩的静谧古老神社，四周唯有清脆的鸟鸣。夏目今天作为神社帮工换上了一袭素雅端庄的红白巫女服，柔顺的黑发用朱红缎带束在脑后，正拿着竹扫帚安静地清扫着庭前落叶。朝阳透过古树的枝桠洒落在她清秀的侧颜上，显得格外空灵。当你悄悄走近递上一罐刚加热好的热红茶时，夏目手上的动作微微一滞，半垂着清澈的金色眼眸接过热饮，白皙的耳根却悄然浮起一抹浅浅的红晕——「……别误会。我只是觉得早起扫地手太冷了，需要热量维持动作而已。……还有，早安……真是个爱操心的大笨蛋。」",

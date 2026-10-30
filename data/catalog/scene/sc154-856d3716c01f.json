@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc154",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 151,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Nene keeps her fingers interlocked with the viewer's; Natsume embraces the viewer from behind with her face at their neck.",
     "auditRevision": "careful-batch15-2026-08-27",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": true,
     "negative": "clothes, girls kissing each other, pink ribbons on black hair, mole on white-haired woman",
-    "prompt": "adult, 2girls, pov, nude, bed, dim warm lighting, ayachi_nene, nene_r18, white hair, low twintails, pink ribbons, cowgirl position, interlocked fingers BREAK shiki_natsume, natsume_r18, black hair, mole under eye, embracing from behind, biting neck, sweat, blush, close up, <lora:shiki_natsume_v18_wd14:0.52>, <lora:ayachi_nene_v18_wd14:0.52>, tangled sheets",
+    "prompt": "adult, 2girls, pov, nude, bed, dim warm lighting, ayachi_nene, nene_r18, white hair, low twintails, pink ribbons, cowgirl position, interlocked fingers BREAK shiki_natsume, natsume_r18, black hair, mole under eye, embracing from behind, biting neck, sweat, blush, close up, <lora:shiki_natsume_v18_wd14:0.52>, <lora:ayachi_nene_v18_wd14:0.52>, tangled sheets, bedroom, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "recommendedSize": "1344×896",
     "season": "不限",

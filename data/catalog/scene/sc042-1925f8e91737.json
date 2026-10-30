@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc042",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Facing the pillow, she reaches back past the blanket edge to find the viewer's palm.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "see-through blanket",
-    "prompt": "1girl, shiki_natsume, black ribbed camisole, burgundy piping, grey cotton pajama pants, on side, blanket, pillow, holding hands, bedside lamp, close up, lying on side, from behind, reaching, blush, warm lighting",
+    "prompt": "1girl, shiki_natsume, black ribbed camisole, burgundy piping, grey cotton pajama pants, on side, blanket, pillow, holding hands, bedside lamp, close up, lying on side, from behind, reaching, blush, warm lighting, bedroom, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",

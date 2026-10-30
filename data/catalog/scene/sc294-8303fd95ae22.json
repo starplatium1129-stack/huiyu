@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc294",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 289,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc294",
     "title": "拂晓的被窝温度",
@@ -44,7 +44,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, burgundy edging, black camisole, lying, on side, blanket, pillow, sleepy, bedroom, dawn, from side, close-up, reaching, holding wrist, blue lighting, window light",
+    "prompt": "1girl, shiki_natsume, burgundy edging, black camisole, lying, on side, blanket, pillow, sleepy, bedroom, dawn, from side, close-up, reaching, holding wrist, blue lighting, window light, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "negative": "uncovered body",
     "storyJa": "【夏目・大人のAfter Story・夜明け前の布団の温度】空はまだ完全には明るくなっておらず、カーテンの隙間から淡い青色の光が差し込んでいた。夏目はあなたに背を向けて横向きに寝ていた。黒い長髪が枕に広がり、呼吸は穏やかでまだ起きていないようだった。しかし、あなたがそっと起き上がろうとすると、彼女の手が布団から伸びてあなたの腕を押さえた——力は強くなかったが、その意思は明確で無視できなかった。振り返ると、彼女はまだ目を開けていなかったが、あなたの方へ少し移動した。声には起きたばかりのかすれがあった——「5時47分……週末は仕事ないよ。」そう言っても手を離さず、指先があなたの前腕をゆっくりと伝い、手首にそっと絡まった。布団の中では彼女の体温とあなたの体温が混ざり合っていた。彼女は片目だけ開けてあなたを見て、また閉じた——「眠れないなら……一緒に横になって話してていいよ。でも、朝ごはんを作りに行くなら——あと30分待って。」",
     "animaCaption": "She reaches from beneath the duvet to catch the viewer's wrist as they start to rise.",

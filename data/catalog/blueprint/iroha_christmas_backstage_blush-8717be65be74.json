@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_christmas_backstage_blush",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 364,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
   "data": {
     "id": "iroha_christmas_backstage_blush",
     "title": "一色彩羽 · 圣诞晚会后台的微醺红晕·「前辈……今晚可不可以只当我的圣诞老人呢」",
@@ -31,20 +31,16 @@
     ],
     "promptProse": "Holding the wrapped gift with both hands, Iroha offers it toward the viewer from the auditorium wings. Colored backstage lights warm her shy smile against the cold blue night outside.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "isshiki_iroha",
-      "gift box",
-      "red capelet",
-      "smile",
       "backstage",
-      "christmas",
-      "medium shot",
-      "holding gift",
-      "both hands",
-      "heavy blush",
-      "shy smile",
-      "colored lighting"
+      "christmas_tree",
+      "gift_box",
+      "holding_present",
+      "offering_gift",
+      "shy_smile",
+      "heavy_blush",
+      "fairy_lights",
+      "warm_lighting",
+      "medium_shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +53,6 @@
       "romance",
       "iconic"
     ],
-    "animaCaption": "Both hands offer the wrapped gift toward the viewer from the auditorium wings."
+    "animaCaption": "Holding out a wrapped Christmas gift backstage, she looks up with an adorable, flustered blush under fairy lights."
   }
 }

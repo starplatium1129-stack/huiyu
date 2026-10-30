@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc096",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She steadies the ice-cream tub for the viewer's spoon while keeping her own spoon in her right hand.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, oversized white cotton t-shirt, navy ribbed collar, blue drawstring shorts, white piping, cross-legged, ice cream, spoon, open refrigerator, night, medium shot, sitting, holding spoon, refrigerator light, warm lighting, guilty smile",
+    "prompt": "1girl, ayachi_nene, oversized white cotton t-shirt, navy ribbed collar, blue drawstring shorts, white piping, cross-legged, ice cream, spoon, open refrigerator, night, medium shot, sitting, holding spoon, refrigerator light, warm lighting, guilty smile, kitchen, counter, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",

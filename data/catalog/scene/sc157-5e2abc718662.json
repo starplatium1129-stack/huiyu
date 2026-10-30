@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc157",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Nene in cream knit with pink cuffs sits left, holding the viewer's left hand. Natsume in charcoal knit with a burgundy collar sits right with an arm around their shoulder; both faces remain visible.",
     "auditRevision": "careful-batch13-2026-08-27",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "pink ribbons on black hair, mole on white-haired woman",
-    "prompt": "adult, 2girls, pov, sitting on bed, casual clothes, holding hands, arm around shoulder, bedside lamp, night, medium shot, ayachi_nene, nene_r18, white hair, low twintails, pink ribbons, cream cable knit top, pink cuffs BREAK shiki_natsume, natsume_r18, black hair, red hairclips, mole under eye, <lora:shiki_natsume_v18_wd14:0.7>, <lora:ayachi_nene_v18_wd14:0.7>, charcoal knit top, burgundy collar, two shot",
+    "prompt": "adult, 2girls, pov, sitting on bed, casual clothes, holding hands, arm around shoulder, bedside lamp, night, medium shot, ayachi_nene, nene_r18, white hair, low twintails, pink ribbons, cream cable knit top, pink cuffs BREAK shiki_natsume, natsume_r18, black hair, red hairclips, mole under eye, <lora:shiki_natsume_v18_wd14:0.7>, <lora:ayachi_nene_v18_wd14:0.7>, charcoal knit top, burgundy collar, two shot, bedroom, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "recommendedSize": "1216×832",
     "season": "不限",

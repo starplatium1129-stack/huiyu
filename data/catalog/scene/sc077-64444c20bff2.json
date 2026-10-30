@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc077",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 75,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She offers the tea bowl level in both hands, kneeling opposite the viewer.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "spilling",
-    "prompt": "1girl, shiki_natsume, dark green silk kimono, gold leaf pattern, cream obi, red obijime, seiza, tea bowl, offering, tatami, shoji, medium shot, holding bowl, looking down, soft lighting",
+    "prompt": "1girl, shiki_natsume, dark green silk kimono, gold leaf pattern, cream obi, red obijime, seiza, tea bowl, offering, tatami, shoji, medium shot, holding bowl, looking down, soft lighting, window_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "秋日下午的茶道室里，夏目跪坐在榻榻米上，动作认真得近乎一丝不苟。她把亲手点好的茶转到最适合入口的角度，双手递给你，随后才发现彼此距离过近。她低下眼睛掩住动摇——「只是练习礼法，别想得太复杂。味道……如果不合适，我可以再做一碗。」",

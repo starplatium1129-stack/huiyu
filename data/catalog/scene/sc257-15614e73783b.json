@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc257",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 252,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She holds the cup in one hand and offers its spoon across the table with the other.",
     "auditRevision": "skill-refine-sc257-2026-09-05",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white off shoulder chiffon blouse, navy edging, high waisted denim shorts, brown woven belt, spoon, ice cream, looking away, blush, cafe, summer, afternoon, cowboy shot, holding ice cream, offering spoon, sunlight",
+    "prompt": "1girl, shiki_natsume, white off shoulder chiffon blouse, navy edging, high waisted denim shorts, brown woven belt, spoon, ice cream, looking away, blush, cafe, summer, afternoon, cowboy shot, holding ice cream, offering spoon, sunlight, bright_sunlight, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "夏",
     "story": "盛夏午后阳光明媚的冷饮店。夏目身着轻盈的纯白一字领雪纺衫与牛仔短裤，修长的双肩与锁骨在冷气中透着清凉。她正握着小勺吃着手里的双色冰淇淋，看到你一直目不转睛地看着，便有些不解地将自己刚尝过一口的冰淇淋勺递到了你嘴边。间接接触的暧昧气氛瞬间蔓延，夏目手腕一顿，半垂着金瞳，耳根在明媚的夏日日光下迅速泛红，催促着移开视线——「……别误会。我只是看你一直盯着，怕冰淇淋融化太快才分你一口而已。……真是的，别愣着了，快点吃掉啦。」",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_mansion_fireplace_knit_wine",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2679,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "aozaki_aoko_mansion_fireplace_knit_wine",
     "characterId": "aozaki_aoko",
@@ -21,9 +21,6 @@
     "mood": "mature comfortable intimacy, mesmerizing magical hearth warmth",
     "promptProse": "Sitting gracefully on a plush rug before a stone fireplace in the Kuonji mansion, Aoko Aozaki wears an off-shoulder knit sweater. Warm firelight dances across her auburn hair and bare collarbones as she sips wine with fond, relaxed eyes.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "aozaki_aoko",
       "red_hair",
       "long_hair",
       "blue_eyes",
@@ -43,7 +40,7 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Aoko sitting on a rug by a mansion fireplace in an off-shoulder sweater, holding a wine glass.",
+    "animaCaption": "Sitting on a rug by a mansion fireplace in an off-shoulder sweater, she holds a wine glass with relaxed affection.",
     "isNsfw": true,
     "rating": "R18",
     "mature": true,

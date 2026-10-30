@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc093",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "The viewer holds the umbrella while she links her arm through theirs, facing ahead.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas",
-    "prompt": "1girl, shiki_natsume, grey ribbed boat neck sweater, navy wrap skirt, small gold buckle, umbrella, arm in arm, rainy street, puddles, night, medium shot, looking ahead, blush, streetlamp, reflected light",
+    "prompt": "1girl, shiki_natsume, grey ribbed boat neck sweater, navy wrap skirt, small gold buckle, umbrella, arm in arm, rainy street, puddles, night, medium shot, looking ahead, blush, streetlamp, reflected light, wet_pavement, water_puddle, reflection, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "夏",
     "story": "夏夜回家途中，雨势让伞下的空间越来越窄。夏目主动挽住你的手臂，把两个人拉到不会淋湿的距离，脸上却努力维持平静。你提醒她耳朵红了，她立刻看向前方——「只是走得太快。伞这么小，靠近是合理选择……别故意把路走短。」",

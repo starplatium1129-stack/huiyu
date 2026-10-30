@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_summer_beach_bikini_volleyball",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1178,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:50:30.495203100+00:00",
   "data": {
     "id": "amane_summer_beach_bikini_volleyball",
     "title": "周防天音 · 耀阳金滩的细带艳红惊艳",
@@ -31,7 +31,7 @@
       "hair_rings",
       "large_breasts"
     ],
-    "promptProse": "Beside the court, she holds the volleyball on one palm and looks back toward the viewer; sea light flashes beyond the net as the breeze lifts her sarong.",
+    "promptProse": "Beside the beach-volleyball net, Amane balances the ball on one palm and looks back with a confident smile as the sea breeze lifts her hair and sarong. Wet sand in the foreground leads to white surf and the blue ocean; noon sunlight lights the ball and glitters across the water.",
     "promptTokens": [
       "beach",
       "volleyball",
@@ -43,10 +43,14 @@
       "ocean",
       "wind",
       "volleyball net",
-      "sunlight"
+      "sunlight",
+      "waves",
+      "sea foam",
+      "wet sand",
+      "water reflection"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "animaCaption": "She balances the volleyball on one palm beside the court."
+    "animaCaption": "She balances the volleyball on one palm beside the net; wet sand leads toward white surf and the blue sea behind her."
   }
 }

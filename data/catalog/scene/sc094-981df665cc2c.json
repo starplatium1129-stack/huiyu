@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc094",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:35:33.041852700+00:00",
   "data": {
     "animaCaption": "Finishing her turn, she keeps one hand on the gown hem and reaches toward the viewer with the other.",
     "auditRevision": "careful-batch14-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through bodice, cropped dress",
-    "prompt": "1girl, ayachi_nene, white wedding dress, lined lace bodice, heart shaped neckline, full length chiffon skirt, pink waist ribbon, white shoes, twirling, holding skirt, reaching, mirror, fitting room, full body, window light",
+    "prompt": "1girl, ayachi_nene, white wedding dress, lined lace bodice, heart shaped neckline, full length chiffon skirt, pink waist ribbon, white shoes, twirling, holding skirt, reaching, mirror, fitting room, full body, window light, soft_lighting, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc029",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 27,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her free hand rests over her heart beside the monitor's rising waveform.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white fitted lab coat, pink A-line dress, peter pan collar, small bow at waist, heart rate sensor, monitor, notebook, laboratory, medium shot, holding notebook, open book, hand on own chest, smile, blush, cool lighting",
+    "prompt": "1girl, ayachi_nene, white fitted lab coat, pink A-line dress, peter pan collar, small bow at waist, heart rate sensor, monitor, notebook, laboratory, medium shot, holding notebook, open book, hand on own chest, smile, blush, cool lighting, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "不限",
     "story": "明亮实验室里，成年的宁宁戴着轻量心率感应器，呆毛随着屏幕上的情绪曲线轻轻晃动。你的快乐被设备放大后，她也忍不住跟着笑起来，却认真记录每一次波峰。发现同步率持续上升，她红着脸按住胸口——「原来安心也会有这么清楚的形状……这组数据，不可以交给别人看。」",

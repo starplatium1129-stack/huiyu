@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc289",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 284,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her hand stays on the viewer's sleeve as she stands close outside the warehouse with her eyes closed.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, navy yukata, white camellia print, burgundy obi, mole under eye, loose obi, bare shoulders, geta, closed eyes, blush, shrine, warehouse, summer, night, moonlight, <lora:shiki_natsume_v18_wd14:0.85>, standing, holding sleeve, fireworks",
+    "prompt": "1girl, shiki_natsume, navy yukata, white camellia print, burgundy obi, mole under eye, loose obi, bare shoulders, geta, closed eyes, blush, shrine, warehouse, summer, night, <lora:shiki_natsume_v18_wd14:0.85>, standing, holding sleeve, fireworks, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "夏",
     "story": "夏日祭典的最后一发巨大花火在空中散尽，人群的欢呼声渐渐变为离去的脚步声。夏目穿着深色浴衣，拉着你的袖子逆着人潮拐进神社主殿后方的古老仓库阴影里。远离灯笼的光线，只有远处零星的花火余烬映在她金色的瞳孔里。她松开你的袖子，却没有后退，反而往前迈了半步。浴衣的襟口在奔跑中微微敞开，露出了锁骨和泪痣旁泛红的肌肤。她抬眼望着你，呼吸有些乱，却还是努力维持着平静的语调——「人太多了……在这里等他们走完再回去。」然而她没有再说话，只是静静地靠近你，直到浴衣的腰带被你轻轻一拉便散开。她闭上眼，睫毛在花火余烬的微光中颤动——「只是今晚……可以不必马上回家。」",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_village_path_arm_hook",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2526,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "claire_village_path_arm_hook",
     "characterId": "claire_kagenou",
@@ -31,7 +31,7 @@
       "cowboy_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Claire clinging possessively to her brothers arm while lecturing him on a country walk.",
+    "animaCaption": "Clinging possessively to partner's arm while strolling along a quiet country path.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

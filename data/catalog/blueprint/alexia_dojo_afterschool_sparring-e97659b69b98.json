@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_dojo_afterschool_sparring",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2473,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "alexia_dojo_afterschool_sparring",
     "characterId": "alexia_midgar",
@@ -34,7 +34,7 @@
       "warm_lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Alexia catching her breath after an intense sparring match in the dojo.",
+    "animaCaption": "Catching her breath after an intense sparring match in the dojo, a gentle flush warms her cheeks.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

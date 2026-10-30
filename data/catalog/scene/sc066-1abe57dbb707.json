@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc066",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She holds the cover-up hem down while turning toward the viewer's camera.",
     "auditRevision": "careful-batch05-2026-08-27",
@@ -23,7 +23,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "cropped feet, see-through clothes",
-    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, white beach coverup, scalloped hem, holding hem, looking back, beach, sunset, full body, wet hair, backlighting, ocean",
+    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, white beach coverup, scalloped hem, holding hem, looking back, beach, sunset, full body, wet hair, backlighting, ocean, sand, ocean_waves, warm_lighting, golden_hour, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "recommendedSize": "832×1216",
     "sampler": "res_multistep",

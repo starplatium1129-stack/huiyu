@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc216",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Both forearms reach toward the viewer's shoulders; the folded fan and empty mug stay on the side table.",
     "auditRevision": "careful-batch13-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "coat, sweater",
-    "prompt": "adult, 1girl, solo, shiki_natsume, black cotton camisole, burgundy edging, charcoal lounge shorts, natsume_r18, reclining, reaching, tired expression, sofa, paper fan, mug, staff lounge, night, warm side light, close up, <lora:shiki_natsume_v18_wd14:0.85>, blush, reading lamp, side table",
+    "prompt": "adult, 1girl, solo, shiki_natsume, black cotton camisole, burgundy edging, charcoal lounge shorts, natsume_r18, reclining, reaching, tired expression, sofa, paper fan, mug, staff lounge, night, warm side light, close up, <lora:shiki_natsume_v18_wd14:0.85>, blush, reading lamp, side table, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "夏",
     "story": "闭店后的 Café Stella 员工休息室里，冷气暂时坏了。夏目换上不透的黑色棉吊带与舒适短裤，连班后的疲倦让她重新靠进窄沙发，伸出双臂向你借一个支撑。左侧阅读灯照亮泛红的耳尖和靠垫，侧桌上放着折纸扇与空杯，身后的储物格留在柔暗里。她仍用短促的口吻掩饰不好意思——「……别误会。我只是觉得这样起身的动作最有效率。既然你进来了，就老老实实当我的靠垫。大变态，不准乱看……不然真的把你秘密处决哦。」",

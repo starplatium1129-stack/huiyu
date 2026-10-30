@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc070",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 68,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her right hand lowers the watering can while her left draws the curtain; the viewer reaches around to help.",
     "auditRevision": "careful-batch11-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "stockings, thighhighs",
-    "prompt": "1girl, ayachi_nene, ivory silk nightdress, pink piping, scalloped neckline, watering can, curtain, window, potted flowers, cityscape, dusk, silhouette, backlighting, medium shot, holding watering can, holding curtain",
+    "prompt": "1girl, ayachi_nene, ivory silk nightdress, pink piping, scalloped neckline, watering can, curtain, window, potted flowers, cityscape, dusk, silhouette, backlighting, medium shot, holding watering can, holding curtain, sunset, warm_lighting, golden_hour, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "夏",
     "story": "成年后的夏日黄昏，宁宁刚冲完凉，赤足站在公寓窗边给花浇水，逆光将身影映在纱帘上。听见你回家，她才意识到布料在夕阳下过于通透，慌忙拉拢窗帘。你从身后帮忙，她红着脸靠进怀里——「不准故意站在光后面看……先把窗帘关好，然后再让我抱一下。」",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_bedroom_morning_sheet_stretch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2682,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "aozaki_aoko_bedroom_morning_sheet_stretch",
     "characterId": "aozaki_aoko",
@@ -21,9 +21,6 @@
     "mood": "unguarded tender domesticity, rare vulnerable magical morning",
     "promptProse": "Waking up on rumpled white sheets in an antique mansion bedroom, Aoko Aozaki stretches on her side in an off-shoulder knit top. Her long auburn hair flows across pillows as she looks up with sleepy, affectionate eyes in the morning light.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "aozaki_aoko",
       "red_hair",
       "long_hair",
       "blue_eyes",
@@ -43,7 +40,7 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Aoko waking up on white sheets in an off-shoulder knit top, smiling with sleepy affection.",
+    "animaCaption": "Waking up on white sheets in an off-shoulder knit top, she smiles with sleepy affection.",
     "isNsfw": true,
     "rating": "R18",
     "mature": true,

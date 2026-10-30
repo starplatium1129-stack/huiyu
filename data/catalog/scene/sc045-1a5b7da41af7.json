@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc045",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She accepts the clothes through the door gap, brushing the viewer's fingertips; her towel remains hidden behind the door.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "open towel, nudity",
-    "prompt": "1girl, ayachi_nene, bath towel, reaching, door, bathroom, steam, warm light, close up, peeking, blush, receiving clothes, touching fingers",
+    "prompt": "1girl, ayachi_nene, bath towel, reaching, door, bathroom, steam, warm light, close up, peeking, blush, receiving clothes, touching fingers, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "冬",
     "story": "冬夜浴室里水汽未散，成年的宁宁发现换洗衣物忘在外面，只好把门推开一道细缝。她刚出浴的身子还带着水汽，双腿光裸地并拢藏在门板之后，伸出的手却因为害羞一直发抖。你把衣服递过去，她又轻轻勾住你的指尖——「谢谢……还有，不准根据这一点缝隙胡乱想象。等我换好，再抱你一下当作谢礼。」",

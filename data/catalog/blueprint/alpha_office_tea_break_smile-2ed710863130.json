@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alpha_office_tea_break_smile",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2468,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
   "data": {
     "id": "alpha_office_tea_break_smile",
     "characterId": "alpha_shadow",
@@ -31,7 +31,7 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Alpha sharing a quiet tea break in her white gown beside the fireplace.",
+    "animaCaption": "Sitting beside the crackling fireplace with a teacup and saucer, she smiles with warm affection in the hearth glow.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

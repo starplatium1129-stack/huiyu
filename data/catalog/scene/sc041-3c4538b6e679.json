@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc041",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "One hand holds their shared umbrella; the other clasps the viewer's beneath it.",
     "auditRevision": "careful-batch05-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas",
-    "prompt": "1girl, ayachi_nene, navy long sleeve dress, white sailor collar, pink neck ribbon, flared skirt, umbrella, holding hands, rain, streetlamp, night, close up, holding umbrella, leaning forward, smile, wet pavement, reflected light",
+    "prompt": "1girl, ayachi_nene, navy long sleeve dress, white sailor collar, pink neck ribbon, flared skirt, umbrella, holding hands, rain, streetlamp, night, close up, holding umbrella, leaning forward, smile, wet pavement, reflected light, rainy_street, water_puddle, reflection, shared_umbrella, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",

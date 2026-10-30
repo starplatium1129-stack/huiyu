@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc120",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She shields her chest with both arms while straddling the viewer's lap on the sofa.",
     "auditRevision": "careful-batch04-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy bow tie, gold cuff buttons, black latex bunny suit, highleg, black tights, straddling, covering chest, blush, glare, sofa, lounge, spotlight, pov, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, on lap, crossed arms, leather sofa",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy bow tie, gold cuff buttons, black latex bunny suit, highleg, black tights, straddling, covering chest, blush, glare, sofa, lounge, spotlight, pov, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, on lap, crossed arms, leather sofa, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "不限",
     "story": "私人高级休息室的皮革沙发上。作为任务失败的惩罚要求，高冷傲娇的特工少女夏目被迫换上了极其性感的漆黑高叉兔女郎连体衣与超薄黑丝袜。她正面红耳赤地跨坐在你的怀里，紧身乳胶衣死死勾勒出她惊人饱满的侧乳轮廓与双峰线条。她眼角的泪痣因为极度羞耻蒙上了一层朦胧的水汽，修长的双手遮挡在胸前，咬着银牙对你发出最后的虚弱警告——「哈？！你是无可救药的变态笨蛋吗？敢用这种衣服来羞辱我...明天绝对会把你秘密处决的...唔嗯...」",

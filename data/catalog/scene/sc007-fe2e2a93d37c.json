@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc007",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her hand rests over the viewer's on their shared umbrella handle, near her shoulder.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, umbrella, holding hands, rain, wet pavement, close up, holding umbrella, smile, shy, daylight",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, umbrella, holding hands, rain, wet pavement, close up, holding umbrella, smile, shy, daylight, rainy_street, water_puddle, reflection, shared_umbrella, soft_lighting, overcast, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "夏",
     "story": "骤雨困住了放学后的街道。宁宁原本想独自跑回去，却看见你带着伞从雨幕里赶来。两个人挤在不算宽的伞下，她沉默地听完你的心意，手指越攥越紧，最终主动握住伞柄旁的手——「让我想了这么久，太狡猾了……我的回答是愿意。所以，从今天开始不准把我落在雨里。」",

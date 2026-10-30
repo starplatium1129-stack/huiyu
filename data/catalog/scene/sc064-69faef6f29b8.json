@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc064",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 62,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "One hand steadies the book face-down on her chest; the other loosely meets the viewer's hand beside their lap.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, cream ribbed henley shirt, pink wide leg pajama pants, sleeping, lap pillow, sofa, book, holding hands, from above, close up, lying, open book, hand on book",
+    "prompt": "1girl, ayachi_nene, cream ribbed henley shirt, pink wide leg pajama pants, sleeping, lap pillow, sofa, book, holding hands, from above, close up, lying, open book, hand on book, window_light, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "秋",

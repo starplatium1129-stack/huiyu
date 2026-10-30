@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukina_apartment_kitchen_stew",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2190,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
   "data": {
     "id": "yukina_apartment_kitchen_stew",
     "characterId": "himeragi_yukina",
@@ -22,19 +22,19 @@
     "promptProse": "Cooking in a warm apartment kitchen in a cute apron, Yukina Himeragi tastes soup from a wooden spoon, smiling with earnest affection at her senior.",
     "promptTokens": [
       "kitchen",
-      "apron",
       "cooking",
       "holding_spoon",
       "tasting_food",
       "blushing",
       "sweet_smile",
+      "steaming_pot",
       "evening",
-      "cowboy_shot",
       "lamp",
-      "warm_lighting"
+      "warm_lighting",
+      "cowboy_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Yukina tasting soup in an apron with an affectionate blushing smile.",
+    "animaCaption": "Tasting the evening stew in her apron, she turns with an affectionate blushing smile.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

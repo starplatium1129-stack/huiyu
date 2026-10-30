@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc091",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc091",
     "title": "门外递来的换洗衣物",
@@ -37,7 +37,7 @@
     "weather": "晴",
     "camera": "门缝半身近景",
     "lighting": "浴室暖灯与夜间暗部",
-    "prompt": "1girl, shiki_natsume, bath towel, peeking, folded clothes, doorway, bathroom, steam, night, close up, blush, receiving clothes, warm lighting",
+    "prompt": "1girl, shiki_natsume, bath towel, peeking, folded clothes, doorway, bathroom, steam, night, close up, blush, receiving clothes, warm lighting, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "negative": "open towel",
     "usage": [
       "展示图",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc224",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:39:58.915038600+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Both hands catch the hem as she turns toward the viewer at the rooftop door, her costume wings spread behind her.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "extra wings, cropped feet",
-    "prompt": "1girl, ayachi_nene, petal layered skirt, pearl waist chain, scalloped neckline, white angel dress, feathered costume wings, costume halo, holding hem, rooftop, sunset, full body, centered composition, looking at viewer, spread wings, wind, hair blowing, rim light, shoes",
+    "prompt": "1girl, ayachi_nene, petal layered skirt, pearl waist chain, scalloped neckline, white angel dress, feathered costume wings, costume halo, holding hem, rooftop, sunset, full body, centered composition, looking at viewer, spread wings, wind, hair blowing, rim light, shoes, fence, sky, warm_lighting, golden_hour, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "season": "秋",
     "story": "天台被晚霞染成一片温暖的绯橙色。宁宁正对着落地玻璃试穿戏剧部的白色天使裙道具，轻抚着背后的羽毛翅膀练习动作。一转头发现你不知何时站在安全门边，她吓了一跳，脸颊瞬间涨得通红，连忙拽住裙角，头顶的呆毛也慌张地晃动起来：「呜啊！柊、柊史！你怎么不敲门呀……快转过头去，只是帮社团试尺寸啦，不许笑！」",

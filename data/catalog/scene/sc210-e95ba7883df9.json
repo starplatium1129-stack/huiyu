@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc210",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 205,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc210",
     "title": "月下露天风吕的黑发水痕",
@@ -44,7 +44,7 @@
       "旅行氛围",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, wet hair, hair tuck, looking up, outdoor onsen, steam, moonlight, lantern reflections, side view, close up, looking at moon, face focus",
+    "prompt": "1girl, shiki_natsume, wet hair, hair tuck, looking up, outdoor onsen, steam, moonlight, lantern reflections, side view, close up, looking at moon, face focus, soft_ambient_light, cinematic_lighting, depth_of_field",
     "negative": "exposed torso, additional bathers",
     "storyJa": "【大人のAfter Story・夏目・月下の露天風呂での小休戦】旅の最終夜、露天風呂の外には虫の声と遠い山風だけが残っていた。夏目は濡れた黒髪を背中へ払って湯の縁にもたれ、月を見上げている。普段は鋭い眼差しも、湯気の中では少しずつほどけていった。あなたの足音に気づいても振り返らず、隣の場所だけを空けて言う。――「今回の休暇は、あなたの勝ちでいい。ここに座りなさい。でも、この静けさを騒がしくするのは許さないから。」",
     "animaCaption": "She brushes back her wet hair; the close view stays on her face above the bath water.",

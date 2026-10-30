@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc235",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 230,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc235",
     "recommendedSize": "1344×768",
@@ -46,7 +46,7 @@
       "绝对独占",
       "成人向"
     ],
-    "prompt": "1girl, adult, shiki_natsume, black cotton camisole, burgundy edging, charcoal lounge shorts, natsume_r18, mole under eye, no underwear, straddling, grabbing clothes, blush, teary eyes, bedroom, night, screen light, <lora:shiki_natsume_v18_wd14:0.85>, on lap",
+    "prompt": "1girl, adult, shiki_natsume, black cotton camisole, burgundy edging, charcoal lounge shorts, natsume_r18, mole under eye, no underwear, straddling, grabbing clothes, blush, teary eyes, bedroom, night, screen light, <lora:shiki_natsume_v18_wd14:0.85>, on lap, cinematic_lighting, depth_of_field",
     "negative": "",
     "storyJa": "【夏目】【ナツメ・二人きりの寝室で】深夜、画面の淡い光だけが照らす静かな部屋。普段カフェで見せる冷淡さを解いたナツメは、部屋着のままあなたに寄り添っていた。温かな抱擁を受け止めながら、澄んだ金の瞳に潤みを帯び、耳まで紅潮させている。彼女はそっとあなたのシャツを掴み、震える声で呟いた――「……勘違いしないで。あなた相手なら、もう無理に強がらなくていいと思っただけ。……バカ、優しく抱きしめて」",
     "rating": "R18",

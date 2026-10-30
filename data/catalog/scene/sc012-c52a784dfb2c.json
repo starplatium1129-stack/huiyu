@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc012",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She offers the pass case while holding her scarf against the draft from the train door.",
     "auditRevision": "audit-v25-2026-08-26-batch3",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, beige wool coat, rounded collar, red plaid scarf, heart shaped buttons, pass case, train platform, open door, winter, morning, medium shot, outstretched hand, holding card, wind, backlighting",
+    "prompt": "1girl, ayachi_nene, beige wool coat, rounded collar, red plaid scarf, heart shaped buttons, pass case, train platform, open door, winter, morning, medium shot, outstretched hand, holding card, wind, backlighting, station, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",

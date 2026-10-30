@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc023",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 22,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her fingers gather the viewer's sleeve beside the railing as she turns toward them.",
     "auditRevision": "careful-batch06-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "day",
-    "prompt": "1girl, ayachi_nene, dusty pink shawl collar cardigan, patch pockets, ivory blouse, navy pleated midi skirt, sleeve grab, railing, observatory, shooting star, night, medium shot, looking at viewer, light smile, moonlight, starry sky",
+    "prompt": "1girl, ayachi_nene, dusty pink shawl collar cardigan, patch pockets, ivory blouse, navy pleated midi skirt, sleeve grab, railing, observatory, shooting star, night, medium shot, looking at viewer, light smile, moonlight, starry sky, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "秋",

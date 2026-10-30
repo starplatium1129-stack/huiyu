@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc161",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 158,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her hands press the viewer's shoulders as she leans down toward their collarbone.",
     "auditRevision": "careful-batch14-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "clothes",
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, nude, straddling, hands on shoulders, biting collarbone, sweat, blush, bedroom, rain, night, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>, on bed, leaning forward",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, nude, straddling, hands on shoulders, biting collarbone, sweat, blush, bedroom, rain, night, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>, on bed, leaning forward, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "不限",
     "story": "深夜凌乱的卧室里，窗外暴雨如注。平时永远保持理智的夏目此时彻底撕下了冷酷的防线。她衣衫尽褪，一反常态地主动将你狠狠推倒在床榻上，大汗淋漓地跨坐在你的腰间。她纤细的双手死死按住你的肩膀，眼角的泪痣因为眼神里燃起的极度占有欲而闪烁着危险的魅惑，她一边剧烈娇喘，一边俯身发狠地咬在你的锁骨上——「你是我的...哪怕身体和理智全部坏掉，我这辈子也绝对不会放过你了，笨蛋...」",

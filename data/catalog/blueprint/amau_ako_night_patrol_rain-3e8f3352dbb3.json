@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_night_patrol_rain",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2095,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-10-30T12:50:30.495203100+00:00",
   "data": {
     "id": "amau_ako_night_patrol_rain",
     "characterId": "amau_ako",
@@ -26,10 +26,18 @@
       "wet_street",
       "neon_lights",
       "night",
-      "cowboy_shot"
+      "cowboy_shot",
+      "walking",
+      "hands in pockets",
+      "serious",
+      "looking ahead",
+      "puddles",
+      "red lighting",
+      "blue lighting",
+      "reflected light"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ako patrolling the neon-lit rainy street in Gehenna.",
+    "animaCaption": "She strides forward with both hands in her pockets; red and blue shop signs reflect across the rain-wet street.",
     "isNsfw": false,
     "rating": "All",
     "mature": false

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc057",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She draws a corner of her shoulder towel over the viewer's knee while holding the drink in her other hand.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, navy one-piece swimsuit, diagonal white panel, small gold clasp, towel, holding cup, sitting, bench, parasol, beach, medium shot, towel around shoulders, wet hair, shade, reflected light, light smile",
+    "prompt": "1girl, shiki_natsume, navy one-piece swimsuit, diagonal white panel, small gold clasp, towel, holding cup, sitting, bench, parasol, beach, medium shot, towel around shoulders, wet hair, shade, reflected light, light smile, sand, ocean_waves, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",

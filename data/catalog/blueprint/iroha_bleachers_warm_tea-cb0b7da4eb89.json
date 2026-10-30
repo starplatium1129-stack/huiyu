@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_bleachers_warm_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 359,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "iroha_bleachers_warm_tea",
     "title": "一色彩羽 · 看台上尚热的红茶",
@@ -32,8 +32,6 @@
     ],
     "promptProse": "Iroha slides one warm tea can toward the empty seat and holds the second against her lap, hiding a grin behind her lifted chin. Sunset and reflected stand light warm her face, with the distant goal behind her.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "sitting",
       "bench",
       "canned drink",

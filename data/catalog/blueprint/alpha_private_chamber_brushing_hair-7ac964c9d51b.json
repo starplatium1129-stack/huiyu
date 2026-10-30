@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alpha_private_chamber_brushing_hair",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2509,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
   "data": {
     "id": "alpha_private_chamber_brushing_hair",
     "characterId": "alpha_shadow",
@@ -31,7 +31,7 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Alpha brushing her hair in front of a mirror in her candlelit private chamber.",
+    "animaCaption": "Brushing long golden hair before the vanity mirror, soft candlelight illuminates her peaceful reflection.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

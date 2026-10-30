@@ -5350,6 +5350,66 @@
     },
     {
       "kind": "blueprint",
+      "id": "momo_halloween_ghost_pumpkin_prank",
+      "revision": 2,
+      "sortOrder": 2627,
+      "createdAt": "2026-10-30T10:23:46.846358200+00:00",
+      "updatedAt": "2026-10-30T11:25:45.462828800+00:00",
+      "data": {
+        "id": "momo_halloween_ghost_pumpkin_prank",
+        "characterId": "momo_velia_deviluke",
+        "title": "梦梦 · 南瓜灯旁的幽灵恶作剧",
+        "category": "万圣节扮装",
+        "description": "夜里的庭院摆着几盏南瓜灯。梦梦坐在覆着白布的长椅上，幽灵兜帽垂在粉色卷发两侧，连衣裙上的层叠布条随着前倾的动作轻轻晃动。她抬起双手，蜷着手指朝你装鬼，努力绷住表情，尾巴尖却已经在身后翘了起来。",
+        "location": "结城家庭院的南瓜灯长椅旁",
+        "action": "坐在覆白布的长椅上，上身微微前倾，双手抬至脸颊两侧，蜷起手指朝观众装鬼",
+        "timeOfDay": "night",
+        "lighting": "warm jack-o-lantern light, cool night ambient light",
+        "camera": "cowboy shot, eye level, front view",
+        "mood": "假装认真吓人，藏不住恶作剧的笑意",
+        "sceneTags": [
+          "halloween",
+          "ghost costume",
+          "jack-o-lantern",
+          "garden",
+          "playful prank"
+        ],
+        "promptTokens": [
+          "safe",
+          "sitting",
+          "bench",
+          "white cloth",
+          "leaning forward",
+          "hands up",
+          "claw pose",
+          "looking at viewer",
+          "playful expression",
+          "slightly open mouth",
+          "halloween",
+          "jack-o-lantern",
+          "pumpkin",
+          "garden",
+          "night",
+          "warm light",
+          "cool ambient light",
+          "cowboy shot",
+          "eye level",
+          "front view"
+        ],
+        "promptProse": "Momo sits on a white-draped garden bench at night, leaning slightly toward the viewer with both hands beside her cheeks and her fingers curled in a playful ghost gesture. Her expression is mock-serious, and her tail curves out beside the bench. Glowing jack-o-lanterns behind her cast warm orange light against the cool night surroundings. The frontal eye-level composition includes her hood, both hands and the layered dress.",
+        "animaCaption": "Her hood has two black oval eye patches; she curls both hands beside her cheeks to play a ghost toward the viewer, with glowing jack-o-lanterns behind the white-draped bench.",
+        "negativeTokens": [],
+        "recommendedSize": "1152x1536",
+        "outfitId": "halloween_ghost_wrap_dress",
+        "adult": false,
+        "nsfwTokens": [],
+        "nsfwProse": "",
+        "kreaStyleHint": "",
+        "animaStyleHint": ""
+      }
+    },
+    {
+      "kind": "blueprint",
       "id": "rapi_armory_maintenance_rifle_cleaning",
       "revision": 1,
       "sortOrder": 1916,
@@ -6257,6 +6317,37 @@
           "prose": "A plain light purple silk veil.",
           "default": false,
           "isDefault": false
+        }
+      }
+    },
+    {
+      "kind": "outfit",
+      "id": "momo_velia_deviluke/halloween_ghost_wrap_dress",
+      "revision": 2,
+      "sortOrder": 1920,
+      "createdAt": "2026-10-30T10:23:46.846358200+00:00",
+      "updatedAt": "2026-10-30T11:25:45.462828800+00:00",
+      "data": {
+        "characterId": "momo_velia_deviluke",
+        "outfit": {
+          "id": "halloween_ghost_wrap_dress",
+          "name": "幽灵兜帽层叠布条连衣裙",
+          "default": false,
+          "isDefault": false,
+          "tokens": [
+            "white dress",
+            "knee-length dress",
+            "hood",
+            "ghost costume",
+            "long sleeves",
+            "high collar",
+            "opaque fabric",
+            "layered fabric",
+            "bandaged wrists",
+            "white tights",
+            "white ankle boots"
+          ],
+          "prose": "An opaque white long-sleeved, high-necked knee-length dress with overlapping fabric strips, a loose ghost hood with two black oval appliques, decorative gauze wraps at the wrists, white tights and ankle boots."
         }
       }
     },

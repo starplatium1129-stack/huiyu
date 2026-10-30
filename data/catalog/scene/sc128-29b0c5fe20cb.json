@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc128",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:39:58.915038600+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She swirls the glass while sitting cross-legged on the redwood daybed.",
     "camera": "主观略微仰视",
@@ -20,7 +20,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "day",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, natsume_official_qipao, dark red silk china dress, high slit, black thighhighs, cross-legged, wine glass, tipsy, blush, lounge, night, lamp light, low angle, <lora:shiki_natsume_v18_wd14:0.85>, sitting, holding wine glass, city lights, window",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, natsume_official_qipao, dark red silk china dress, high slit, black thighhighs, cross-legged, wine glass, tipsy, blush, lounge, night, lamp light, low angle, <lora:shiki_natsume_v18_wd14:0.85>, sitting, holding wine glass, city lights, window, neon_lights, neon_glow, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "不限",
     "story": "中式茶楼的静谧包间里飘着清淡茶香。夏目换上一身暗红丝绸改良旗袍，侧坐在罗汉榻的茶台前，修长的手指捏着白瓷盖碗，眼角的泪痣在古朴灯影下格外分明。见你进门，她微微挑眉，唇角扬起一抹胸有成竹的弧度：「坐。外头的眼线都清理干净了，接下来该听听你的报告了。」",

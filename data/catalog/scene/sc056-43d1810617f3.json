@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc056",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:35:33.041852700+00:00",
   "data": {
     "animaCaption": "She catches the windblown cover-up hem while turning from the shallows toward the viewer.",
     "camera": "全身回眸远景",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "cropped feet",
-    "prompt": "1girl, ayachi_nene, pale aqua one-piece swimsuit, ruffled neckline, pink cotton beach coverup, scalloped hem, walking, looking back, shallow water, beach, full body, holding hem, wind, wet hair, shy smile, reflected light",
+    "prompt": "1girl, ayachi_nene, pale aqua one-piece swimsuit, ruffled neckline, pink cotton beach coverup, scalloped hem, walking, looking back, shallow water, beach, full body, holding hem, wind, wet hair, shy smile, reflected light, sand, ocean_waves, soft_lighting, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "season": "夏",
     "story": "盛夏午后，宁宁穿着新泳装从浅水区走来，外罩被海风吹得不断扬起。她察觉你的视线后先是害羞地拉了拉衣摆，随后又鼓起勇气转身让你看清整体搭配——「选了很久才决定这一套。你可以说感想，但不准只盯着一个地方……要认真地全部看完。」",

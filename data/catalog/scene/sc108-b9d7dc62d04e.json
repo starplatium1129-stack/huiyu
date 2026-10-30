@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc108",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "id": "sc108",
     "title": "同居协议的微醺惩罚",
@@ -43,7 +43,7 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, red lace lingerie, bra lift, bare breasts, crotchless panties, torn thighhighs, garter straps, kneeling, leaning forward, arched back, blush, tipsy, bedroom, candlelight, close up, <lora:shiki_natsume_v18_wd14:0.85>, on bed, biting lip",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, red lace lingerie, bra lift, bare breasts, crotchless panties, torn thighhighs, garter straps, kneeling, leaning forward, arched back, blush, tipsy, bedroom, candlelight, close up, <lora:shiki_natsume_v18_wd14:0.85>, on bed, biting lip, warm_lighting, cinematic_lighting, depth_of_field",
     "negative": "cafe uniform",
     "storyJa": "【夏目・家にある大きなセーターは絶対に特別なもの】深夜、同棲しているアパートのリビング。普段は理性を語るエージェント女子夏目が、今夜は酒の影響で完全に防御力を失っていた。彼女はあなたをソファに乱暴に放り投げると、彼女が着ていた緩い厚手のニットのセーターが片方の腕から完全に滑り落ち、内部は完全な真空状態になりました。露出した面積の広い肩と豊満でセクシーな胸がテレビ画面の薄明かりの中で眩しかった。彼女の目の隅にある泣きぼくろは、究極の独占欲で輝いていました。彼女は頭を下げ、ささやきながらあなたの鎖骨を強く噛みました。――「あなたは私のもの。これから先も、絶対に手放してあげないんだから……ばか。」",
     "rating": "R18",

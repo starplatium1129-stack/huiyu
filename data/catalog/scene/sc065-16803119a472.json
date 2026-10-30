@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc065",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 63,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Seen from the aisle, she peeks over the burgundy book concealing her lower face.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "book covering eyes",
-    "prompt": "1girl, shiki_natsume, beige belted trench coat, storm flap, black turtleneck, burgundy pleated midi skirt, book, library, window seat, blush, side view, medium shot, holding book, peeking, looking at viewer, window light",
+    "prompt": "1girl, shiki_natsume, beige belted trench coat, storm flap, black turtleneck, burgundy pleated midi skirt, book, library, window seat, blush, side view, medium shot, holding book, peeking, looking at viewer, window light, bookshelf, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "秋日午后，夏目坐在图书馆窗边阅读，阳光沿着黑色长发落在书页上。她早已发现你隔着书架偷看，直到同一页停了太久才把书抬高，遮住泛红的下半张脸——「公共场合一直盯着别人很没礼貌。真想坐在这里就过来……别像可疑人物一样躲着。」",

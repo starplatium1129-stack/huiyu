@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc078",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Turning from the angled mirror, she offers the hand warmer in both hands.",
     "auditRevision": "careful-batch04-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "shoes",
-    "prompt": "1girl, ayachi_nene, pale blue kimono, snowflake print, ivory obi, pink obijime, white tabi, hand warmer, mirror, guest room, morning, full body, offering, outstretched arms, window light, wooden floor",
+    "prompt": "1girl, ayachi_nene, pale blue kimono, snowflake print, ivory obi, pink obijime, white tabi, hand warmer, mirror, guest room, morning, full body, offering, outstretched arms, window light, wooden floor, shrine, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field, detailed_background",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",

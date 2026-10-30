@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc048",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She offers the blanket edge while the viewer's raised hand shades her eyes from the sun.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, shiki_natsume, powder blue pajamas, burgundy piping, notched collar, matching shorts, pillow, blanket, sleepy, smile, bedroom, morning, close up, lying, reaching, sunlight",
+    "prompt": "1girl, shiki_natsume, powder blue pajamas, burgundy piping, notched collar, matching shorts, pillow, blanket, sleepy, smile, bedroom, morning, close up, lying, reaching, sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "春",
     "story": "春日晨光穿过窗帘，夏目还缩在被子里熟睡。你替她挡住刺眼的光，她醒来后本想把脸藏起来，却发现你的手一直停在窗边。沉默几秒，她把被角分给你一半——「一直看别人睡觉很没礼貌。不过今天不用道歉……再躺十分钟，闹钟响了再起来。」",

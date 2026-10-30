@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc062",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Both her hands hold the viewer's wrist gently against her cheek.",
     "auditRevision": "careful-batch02-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, blue pajamas, cat print, white piping, on side, closed eyes, pillow, holding wrist, alarm clock, morning light, close up, lying on side, holding hands, sleepy",
+    "prompt": "1girl, ayachi_nene, blue pajamas, cat print, white piping, on side, closed eyes, pillow, holding wrist, alarm clock, morning light, close up, lying on side, holding hands, sleepy, bedroom, blanket, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",

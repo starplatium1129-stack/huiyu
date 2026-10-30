@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_commuter_train_shoulder_lean",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 360,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
   "data": {
     "id": "iroha_commuter_train_shoulder_lean",
     "title": "一色彩羽 · 电车里的半张车票",
@@ -30,8 +30,6 @@
     ],
     "promptProse": "Iroha smooths the folded ticket against her knee with one hand, bracing the other on the swaying train seat. Gentle carriage lamps reach her small smile as the city passes outside.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "sitting",
       "train interior",
       "ticket",

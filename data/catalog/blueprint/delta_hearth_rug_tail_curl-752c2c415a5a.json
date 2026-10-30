@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_hearth_rug_tail_curl",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2518,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
   "data": {
     "id": "delta_hearth_rug_tail_curl",
     "characterId": "delta_shadow",
@@ -31,7 +31,7 @@
       "wide_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Delta fast asleep by the crackling fireplace hugging her giant fluffy tail.",
+    "animaCaption": "Curled up asleep on the hearth rug by the fireplace, warm firelight illuminates her fluffy tail.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

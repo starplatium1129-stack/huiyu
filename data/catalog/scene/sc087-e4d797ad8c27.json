@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc087",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Rubbing one eye at the bed's edge, she gestures toward the coffee machine for the viewer carrying her papers.",
     "auditRevision": "careful-batch11-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, shiki_natsume, grey cotton pajamas, burgundy piping, notched collar, matching trousers, sitting on bed, rubbing eyes, messy hair, bedroom, coffee maker, morning light, medium shot, sleepy, pointing, window light",
+    "prompt": "1girl, shiki_natsume, grey cotton pajamas, burgundy piping, notched collar, matching trousers, sitting on bed, rubbing eyes, messy hair, bedroom, coffee maker, morning light, medium shot, sleepy, pointing, window light, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "春",
     "story": "春日清晨，夏目穿着宽松睡衣坐在宿舍床边，黑色长发还有些凌乱。你送来借走的资料，她揉着眼睛确认时间，随后把门再打开一点让你进来——「这么早来的人也有责任。咖啡机在那边……等我清醒以后再谈正事。」",

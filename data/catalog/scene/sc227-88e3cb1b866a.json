@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc227",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 222,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "She places the prize plush into the viewer's waiting arms beside the rhythm-game cabinet.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, black cropped zip jacket, burgundy sleeve panels, dark indigo slim jeans, black baseball cap, black choker, holding stuffed toy, arcade, neon lights, medium shot, offering stuffed toy, blush, blue lighting, purple lighting",
+    "prompt": "1girl, shiki_natsume, black cropped zip jacket, burgundy sleeve panels, dark indigo slim jeans, black baseball cap, black choker, holding stuffed toy, arcade, neon lights, medium shot, offering stuffed toy, blush, blue lighting, purple lighting, neon_glow, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "秋",
     "story": "深夜光影交错、充满赛博霓虹色彩的街头复古电玩城。脱下咖啡馆制服的夏目今天穿得极为率性休闲：一顶纯黑色的棒球帽斜斜扣在乌黑的长发上，脖子上戴着一条酷劲十足的窄黑色Choker，修身的长袖夹克与利落的紧身牛仔裤勾勒出她完美的双腿线条。她正全神贯注地用极为高效灵敏的手速操作着音乐街机，在以绝对完美的积分通关后，她微微转过头，眼角的泪痣在粉紫色的霓虹灯光下折射出极具个性的光芒。她将机器吐出来的限量版玩偶一把塞进你怀里，用毫无起伏却微微有些别扭的冷淡口吻掩饰动摇——「……拿着。这只是通关的附赠产物，放在包里很占空间，属于多余的负重。不准露出那种感动的表情……大变态。」",

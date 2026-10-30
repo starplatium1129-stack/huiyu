@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc001",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "Her left arm cradles the papers while her right hand adjusts the ribbon.",
     "camera": "半身中景",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, standing, adjusting hair ribbon, holding papers, classroom, window, sunset, medium shot, three quarter view, gentle smile, looking at viewer, window light, blush, shy",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, standing, adjusting hair ribbon, holding papers, classroom, window, sunset, medium shot, three quarter view, gentle smile, looking at viewer, window light, blush, shy, school_desk, warm_lighting, golden_hour, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "春",
     "story": "夕阳把空教室染成柔软的橙色。宁宁抱着替你收好的讲义站在窗边，明明已经等了很久，听见门响却先装作整理发带。直到你走近，她才把讲义递来，紫色眼睛里藏不住安心的亮光——「你总算来了。那个……如果不急着回家，要不要陪我去一趟社团活动室？」",

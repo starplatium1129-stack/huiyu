@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc111",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
   "data": {
     "animaCaption": "The knife rests flat on the board as the viewer's arms circle her waist from behind.",
     "auditRevision": "careful-batch02-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "knife touching hands",
-    "prompt": "1girl, ayachi_nene, cream apron, strawberry embroidery, pink gingham pocket, white tank top, cutting fruit, strawberries, knife, flour, back hug, kitchen, window light, close up, cutting board, surprised, arms around waist",
+    "prompt": "1girl, ayachi_nene, cream apron, strawberry embroidery, pink gingham pocket, white tank top, cutting fruit, strawberries, knife, flour, back hug, kitchen, window light, close up, cutting board, surprised, arms around waist, counter, soft_lighting, cinematic_lighting, depth_of_field",
     "rating": "R15",
     "season": "不限",
     "story": "午后的公寓厨房，阳光斜照。宁宁破天荒换上了一件有些松垮的居家围裙，里面只有单薄的居家背心。因为正专心切着草莓，她没有注意到你从身后的悄然逼近。当你温柔地环抱住她的纤腰时，她慌乱得差点切到手指，头顶的呆毛瞬间害羞得疯狂卷曲成完美的工口心形——「呜啊！大色狼...什么时候进来的啦...不准从后面抱着人家，面粉都要蹭到你身上了...」",

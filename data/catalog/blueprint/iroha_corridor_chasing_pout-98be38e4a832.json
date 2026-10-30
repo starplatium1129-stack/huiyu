@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_corridor_chasing_pout",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 363,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
   "data": {
     "id": "iroha_corridor_chasing_pout",
     "title": "一色彩羽 · 走廊小跑追赶的娇嗔鼓腮·「八幡前辈！走太快了啦，等等我！」",
@@ -31,21 +31,17 @@
     ],
     "promptProse": "Iroha takes the last hurried step toward the viewer with the council papers held firmly in both arms, cheeks puffed in a playful pout. Orange sunset stripes the corridor floor beneath her.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "isshiki_iroha",
+      "school_hallway",
       "running",
-      "holding papers",
-      "pout",
-      "school hallway",
+      "holding_papers",
+      "pouting",
+      "flustered_blush",
+      "looking_at_viewer",
       "sunset",
-      "full body",
-      "both arms",
-      "out of breath"
+      "window_light",
+      "cowboy_shot"
     ],
-    "negativeTokens": [
-      "extra people"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",
@@ -55,6 +51,6 @@
       "daily",
       "school"
     ],
-    "animaCaption": "Both arms hold the council papers firmly during her last hurried step toward the viewer."
+    "animaCaption": "Chasing after the viewer through the sunset hallway with papers in hand, she pouts with an embarrassed blush."
   }
 }
