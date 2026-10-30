@@ -111,23 +111,11 @@
   box-shadow: var(--shadow-glass-elevated);
 }
 
-:root[data-theme="light"] .pb.journal-workspace :is(.pb-canvas-wrap, .stage-viewport) {
+:root[data-theme="light"] .pb.journal-workspace .pb-canvas-wrap {
   border: 1px solid var(--border-soft);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     0 16px 40px -16px color-mix(in srgb, var(--character-accent, var(--accent)) 12%, rgba(79, 59, 65, 0.15)),
     0 2px 10px rgba(79, 59, 65, 0.06);
-}
-
-:root[data-theme="light"] .pb.journal-workspace .stage-placeholder {
-  background:
-    radial-gradient(ellipse at 50% 18%, color-mix(in srgb, var(--character-accent, var(--accent)) 6%, transparent), transparent 60%),
-    radial-gradient(ellipse at 85% 95%, color-mix(in srgb, var(--character-soft) 40%, transparent), transparent 50%),
-    var(--bg-surface);
-  border: 1px solid var(--border-soft);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 12px 32px -12px rgba(79, 59, 65, 0.09),
-    0 2px 6px rgba(79, 59, 65, 0.04);
 }
 

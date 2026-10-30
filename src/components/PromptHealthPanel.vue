@@ -2,12 +2,12 @@
   <section class="advanced-decision prompt-health-panel" id="promptMonitor" aria-labelledby="prompt-preview-heading">
     <header class="prompt-preview-heading">
       <div class="prompt-preview-title"><span class="prompt-preview-mark"><ArchiveIcon name="spark" /></span><h3 id="prompt-preview-heading">提示词预览</h3></div>
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="!prompt" aria-label="展开阅读完整提示词" @click="openReader"><ArchiveIcon name="expand" />阅读</button>
+      <p class="prompt-health-status" :class="report.level">{{ report.label }}</p>
     </header>
-    <p class="prompt-health-status" :class="report.level">{{ report.label }}</p>
     <div class="prompt-preview-actions">
-      <StudioCopyButton class="btn btn-primary" label="复制提示词" :action="copyAction" :content-key="prompt" :disabled="!prompt" />
-      <button class="btn btn-ghost" type="button" @click="emit('save')">保存草稿</button>
+      <StudioCopyButton class="btn btn-primary btn-sm" label="复制" aria-label="复制提示词" :action="copyAction" :content-key="prompt" :disabled="!prompt" />
+      <button class="btn btn-quiet btn-sm" type="button" aria-label="保存提示词草稿" @click="emit('save')">保存</button>
+      <button class="btn btn-quiet btn-sm" type="button" :disabled="!prompt" aria-label="展开阅读完整提示词" @click="openReader"><ArchiveIcon name="expand" />阅读</button>
     </div>
     <ul v-if="warnings.length" class="prompt-health-warnings" aria-label="提示词优化建议">
       <li v-for="warning in warnings" :key="warning">{{ warning }}</li>

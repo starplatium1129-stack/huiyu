@@ -1,7 +1,7 @@
 <template>
   <button class="prompt-workbench-entry" data-control-motion type="button" @click="openWorkbench">
     <span class="prompt-workbench-mark studio-control-icon"><ArchiveIcon name="palette" /></span>
-    <span class="prompt-workbench-copy studio-control-label"><strong>词条工作台</strong><small>{{ pb.directorMode === 'pro' ? (pb.manualTags.size ? '已选 ' + pb.manualTags.size + ' 个词条 · 搜索与编辑' : '搜索词条 · 服装预设 · 批量添加') : '进入专家模式，搜索与编辑词条' }}</small></span>
+    <span class="prompt-workbench-copy studio-control-label"><strong>词条工作台</strong><small v-if="pb.manualTags.size">已选 {{ pb.manualTags.size }} 个词条</small></span>
     <ArchiveIcon class="prompt-workbench-arrow" name="chevron-down" />
   </button>
   <PromptHealthPanel class="advanced-decision basic-visible"

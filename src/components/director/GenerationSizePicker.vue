@@ -54,21 +54,21 @@ function change(value: string | number) { if (value !== '') emit('update:size', 
 .size-picker-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-3); }
 .size-picker-heading strong { font-size:var(--fs-label); font-weight:600; color:var(--text-primary); }
 .size-picker-heading>span { font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); color:var(--text-secondary); }
-.size-picker-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,104px),1fr)); gap:var(--s-2); }
-.size-picker-grid button { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-1); min-width:0; min-height:calc(2 * var(--control-height)); padding:var(--s-2) var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-secondary); background:var(--bg-base); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; }
+.size-picker-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,128px),1fr)); gap:var(--s-2); }
+.size-picker-grid button { position:relative; display:grid; grid-template-columns:28px minmax(0,1fr); align-content:center; align-items:center; column-gap:var(--s-2); row-gap:var(--s-1); min-width:0; min-height:calc(var(--control-height) + var(--s-4)); padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-secondary); background:var(--bg-base); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); text-align:left; cursor:pointer; }
 .size-picker-grid button[aria-pressed=true] { color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-elevated); box-shadow:var(--shadow-sm); }
 .size-picker-grid button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .size-picker-grid button:disabled { color:var(--text-disabled); cursor:not-allowed; }
-.size-picker-grid i { height:21px; max-width:28px; border:1.4px solid currentColor; border-radius:2px; }
-.size-picker-grid small { font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
-.size-picker-grid .size-picker-check { position:absolute; top:var(--s-2); right:var(--s-2); width:16px; height:16px; transform:none; transition:none; }
+.size-picker-grid i { grid-row:1/3; justify-self:center; height:21px; max-width:28px; border:1.4px solid currentColor; border-radius:2px; }
+.size-picker-grid small { grid-column:2; font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
+.size-picker-grid .size-picker-check { position:absolute; top:var(--s-2); right:var(--s-2); width:12px; height:12px; transform:none; transition:none; }
 .generation-size-picker p { margin:var(--s-3) 0 0; font-size:var(--fs-label-xs); line-height:var(--lh-body); color:var(--text-secondary); }
 .is-compact { display:flex; align-items:center; gap:var(--s-3); }
 .is-compact .size-picker-heading { margin:0; }.is-compact .size-picker-heading>span { display:none; }
 .is-compact .studio-select-wrapper { flex:1; min-width:0; }
-/* Three cards need 3 × 104px plus two gaps; narrower parameter rails wrap
-   without shrinking the resolution text. The action bar stays a compact select. */
-@container generation-size (min-width:328px) { .size-picker-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+/* Horizontal cards keep the size readable in narrow rails; a third column
+   is useful only when each card has room for its icon and resolution. */
+@container generation-size (min-width:440px) { .size-picker-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media (hover:hover) and (pointer:fine) { .size-picker-grid button:hover:not(:disabled) { border-color:var(--border-strong); background:var(--bg-hover); } }
 @media (forced-colors:active) { .size-picker-grid button[aria-pressed=true] { outline:2px solid Highlight; } }
 </style>

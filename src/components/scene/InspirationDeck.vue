@@ -107,7 +107,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-count { color:var(--text-muted); font:500 var(--fs-label-xs)/1 var(--font-mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
 .previous-icon { transform:rotate(90deg); }
 .next-icon { transform:rotate(-90deg); }
-.inspiration-deck-stage { --inspiration-height:clamp(280px,28dvh,320px); display:grid; grid-template-columns:minmax(0,1.8fr) repeat(var(--inspiration-side-count),minmax(0,1fr)); align-items:stretch; gap:var(--s-4); position:relative; min-width:0; touch-action:pan-y; border-radius:var(--r-lg); }
+.inspiration-deck-stage { --inspiration-height:clamp(216px,22dvh,256px); display:grid; grid-template-columns:minmax(0,1.8fr) repeat(var(--inspiration-side-count),minmax(0,1fr)); align-items:stretch; gap:var(--s-4); position:relative; min-width:0; touch-action:pan-y; border-radius:var(--r-lg); }
 .inspiration-deck-stage.dragging { cursor:grabbing; user-select:none; }
 .inspiration-deck-card { --card-focus-lift:0px; --card-focus-scale:1; display:grid; grid-template-rows:minmax(0,1fr) auto; height:var(--inspiration-height); min-width:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); transform:translateY(var(--card-focus-lift)); transition:transform var(--motion-surface) var(--ease-out); }
 .inspiration-deck-card.only-card { grid-column:1/-1; }

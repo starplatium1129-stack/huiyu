@@ -1,7 +1,7 @@
 <template>
   <!-- stage-slot：col-center 的画布槽位锚点（layout.css 以它固定中栏排序首位） -->
   <div class="stage-slot">
-    <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>{{ displayResultUrl ? '当前成片' : sceneTitle || '画布预览' }}</strong><span>{{ displayResultUrl ? '生成结果' : sceneTitle ? '场景参考 · 非本次生成' : '等待创作' }}</span></div><button class="btn btn-quiet btn-sm" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" />挑选场景</button></div>
+    <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>{{ displayResultUrl ? '当前成片' : sceneTitle || '画布' }}</strong><span v-if="sceneTitle && !displayResultUrl">场景参考 · 非本次生成</span></div><button v-if="sceneTitle || displayResultUrl" class="btn btn-quiet btn-sm" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" />更换场景</button></div>
     <Transition name="stage-beam">
       <BorderBeam v-if="generationBusy || waitingForResult" class="canvas-generation-beam"
         :duration="8.8" :border-width="1.1" color-variant="dual" :glow="true" border-radius="var(--r-xl)" />
@@ -68,10 +68,11 @@
           <AtelierEmptyArt class="atelier-canvas-illustration" />
           <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
           <div class="stage-placeholder-copy">
-            挑一幕心动场景，或写下你的构想。静待画面绽放，留存这一帧温柔。
+            选择场景，或写下你的画面构想。
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
+            <button class="btn btn-quiet" type="button" @click="$emit('editDescription')"><ArchiveIcon name="spark" />写画面描述</button>
           </div>
         </div>
         </template>
@@ -242,6 +243,7 @@ const emit = defineEmits<{
   generate: []
   openRecovery: []
   exploreScenes: []
+  editDescription: []
   saveScene: []
   saveResult: []
   clearResult: []

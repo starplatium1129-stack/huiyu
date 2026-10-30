@@ -19,10 +19,12 @@
 .pb.atelier-workspace .inspector-heading span { font-size:var(--fs-label-xs); color:var(--text-muted); }
 .pb.atelier-workspace .panel,.pb.atelier-workspace .result-frame { border-radius:var(--r-lg); box-shadow:none; }
 .pb.journal-workspace.atelier-workspace .stage-placeholder { border:0; border-radius:0; box-shadow:none; }
+.pb.journal-workspace.atelier-workspace .stage-viewport,
+.pb.journal-workspace.atelier-workspace .result-image-wrap { border:0; border-radius:0; box-shadow:none; }
 .pb.atelier-workspace .stage-placeholder::before { display:none; }
 .pb.atelier-workspace .stage-message { width:100%; min-width:0; transform:none; }
 .pb.atelier-workspace .stage-idle { padding:24px; }
-.pb.atelier-workspace .atelier-canvas-illustration { width:min(336px,70%); margin:0 auto 24px; }
+.pb.atelier-workspace .atelier-canvas-illustration { width:min(280px,60%); margin:0 auto var(--s-4); }
 .pb.atelier-workspace .stage-placeholder-title { color:var(--text-primary); font-weight:600; }
 .pb.atelier-workspace .stage-placeholder-copy { margin-inline:auto; color:var(--text-secondary); line-height:1.8; }
 .pb.atelier-workspace .stage-quick-actions { flex-wrap:wrap; }

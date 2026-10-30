@@ -4,19 +4,19 @@
 .scene-atlas-copy { grid-area:copy; min-width:0; }
 .scene-atlas .title { margin:0; color:var(--text-primary); font:600 var(--fs-title)/var(--lh-tight) var(--font-sans); letter-spacing:0; }
 .curation-intro { grid-area:choices; display:flex; align-items:center; gap:var(--s-3); min-width:0; }
-.scene-atlas-portrait { flex:0 0 auto; position:relative; width:clamp(128px,10vw,156px); aspect-ratio:1; margin:0; }
+.scene-atlas-portrait { flex:0 0 auto; position:relative; width:112px; aspect-ratio:1; margin:0; }
 .scene-atlas-portrait img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .scene-atlas-portrait img.current { opacity:1; }
 .scene-atlas-portrait .companion-fallback { position:absolute; inset:0; display:grid; place-content:center; justify-items:center; gap:var(--s-2); padding:var(--s-2); color:var(--text-secondary); text-align:center; opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .scene-atlas-portrait .companion-fallback.current { opacity:1; }
-.scene-atlas-caption { position:absolute; z-index:var(--z-raised); inset:auto 0 0; padding:var(--s-4) var(--s-2) 0; background:linear-gradient(0deg,var(--bg-base) 68%,transparent); color:var(--text-primary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-serif); text-align:center; text-wrap:balance; overflow-wrap:anywhere; }
+.scene-atlas-caption { position:absolute; z-index:var(--z-raised); inset:auto 0 0; padding:var(--s-3) var(--s-1) 0; background:linear-gradient(0deg,var(--bg-base) 68%,transparent); color:var(--text-primary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-serif); text-align:center; text-wrap:balance; overflow-wrap:anywhere; }
 .scene-atlas-portrait .companion-fallback { padding-bottom:var(--s-7); }
 .companion-fallback .archive-icon { width:24px; height:24px; }
 .companion-fallback-text { font-size:var(--fs-label-xs); line-height:var(--lh-label); overflow-wrap:anywhere; }
 .companion-choices { display:grid; justify-items:start; gap:var(--s-1); min-width:0; }
 .companion-label { color:var(--text-muted); font-size:var(--fs-label-xs); }
 .companion-switch { flex-wrap:wrap; width:fit-content; max-width:100%; }
-.companion-avatar { display:block; flex:0 0 48px; width:48px; height:48px; object-fit:contain; }
+.companion-avatar { display:block; flex:0 0 32px; width:32px; height:32px; object-fit:contain; }
 
 .scene-toolbar { grid-area:filters; display:grid; grid-template-columns:auto minmax(240px,1fr); align-items:center; }
 .toolbar-primary { grid-column:2; grid-row:1; display:flex; align-items:center; justify-content:flex-end; gap:var(--s-2); min-width:0; }

@@ -6,7 +6,7 @@
       <span>{{ savingResult ? '正在入册…' : resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册' }}</span>
     </span>
     <RouterLink v-if="hasResult && resultArchived" class="btn btn-quiet result-archive-action" to="/gallery"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon name="gallery" /><span>查看作品册</span></span></RouterLink>
-    <button v-else class="btn btn-ghost result-archive-action" type="button" :disabled="savingResult || !hasResult" :aria-busy="savingResult" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '正在入册…' : '存入作品册' }}</span></span></button>
+    <button v-else class="btn result-archive-action" :class="hasResult ? 'btn-primary' : 'btn-quiet'" type="button" :disabled="savingResult || !hasResult" :aria-busy="savingResult" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '正在入册…' : '存入作品册' }}</span></span></button>
     <component :is="placeholder ? 'span' : StudioTooltip" :class="{ 'result-action-placeholder': placeholder }" v-bind="placeholder ? {} : { anchor: true, content: canSaveScene === false ? '当前引擎暂不支持将配方存为场景，可先存入作品册' : '将当前成片保存为场景' }">
       <button class="btn btn-quiet canvas-secondary-action" type="button" :aria-label="capturingScene ? '正在读取成片…' : '保存为场景'" :disabled="!hasResult || generationBusy || capturingScene || canSaveScene === false" @click="$emit('saveScene')"><ArchiveIcon name="scene" /><span>{{ capturingScene ? '正在读取成片…' : '保存为场景' }}</span></button>
     </component>
