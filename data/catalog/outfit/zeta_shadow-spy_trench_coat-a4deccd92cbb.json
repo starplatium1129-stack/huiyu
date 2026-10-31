@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "zeta_shadow/spy_trench_coat",
+  "revision": 1,
+  "sortOrder": 1928,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "characterId": "zeta_shadow",
+    "outfit": {
+      "id": "spy_trench_coat",
+      "name": "谍报员长风衣便装",
+      "prose": "Long dark trench coat over a black turtleneck and boots, the plain-clothes look of an agent blending into a royal capital crowd.",
+      "tokens": [
+        "trench_coat",
+        "turtleneck",
+        "boots",
+        "gloves"
+      ],
+      "characterId": "zeta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

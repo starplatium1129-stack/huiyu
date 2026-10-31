@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_moonlit_forest_scout",
+  "revision": 1,
+  "sortOrder": 2813,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "zeta_shadow_moonlit_forest_scout",
+    "characterId": "zeta_shadow",
+    "outfitId": "desert_traveler_cloak",
+    "title": "泽塔 · 月夜森林的侦察",
+    "category": "谍报潜行",
+    "description": "月夜的密林里，泽塔无声地穿行在枝叶之间。教团的秘密集会就在林间空地——她伏在树冠上，把每个人的脸都记进脑海。",
+    "recommendedSize": "832x1216",
+    "location": "dense moonlit forest with a clearing where hooded figures gather around a fire",
+    "action": "perched silently on a tree branch above a clearing, watching a secret gathering below",
+    "timeOfDay": "night",
+    "lighting": "密林间漏下的皎洁月光与空地篝火",
+    "camera": "full_shot",
+    "mood": "noiseless infiltration, hunter in the canopy",
+    "promptProse": "From the moonlit canopy, Zeta memorizes every hooded face around the fire. None of them look up.",
+    "promptTokens": [
+      "forest",
+      "moonlight",
+      "tree branch",
+      "clearing",
+      "campfire",
+      "scouting"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Twenty faces around a fire, and not one of them knows the leopard is watching.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

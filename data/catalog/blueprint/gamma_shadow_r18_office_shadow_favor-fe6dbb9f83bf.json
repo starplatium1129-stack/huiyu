@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_r18_office_shadow_favor",
+  "revision": 1,
+  "sortOrder": 2838,
+  "createdAt": "2026-10-31T04:42:34.298429000+00:00",
+  "updatedAt": "2026-10-31T04:42:34.298429000+00:00",
+  "data": {
+    "id": "gamma_shadow_r18_office_shadow_favor",
+    "characterId": "gamma_shadow",
+    "outfitId": "luna_president_dress",
+    "title": "伽玛 · 办公桌上的恩赏",
+    "category": "主君侍奉",
+    "description": "深夜来访的暗影没有敲门。他站在办公桌后，指尖勾开露娜礼服的后拉链，只说了一句“继续算”。伽玛扶着账本伏在桌沿，礼服堆在腰间，随着身后的律动一页页算错了数字。金币也好、银行也好——她替他打下的整座江山，都不如这一刻伏在桌上的自己更让他满意。「错、错了也……没有关系……暗影大人……」",
+    "recommendedSize": "1152x1536",
+    "location": "四越商会会长办公室·深夜",
+    "action": "伏在办公桌沿，礼服褪至腰间，被从身后进入，手扶账本",
+    "timeOfDay": "深夜",
+    "lighting": "single desk lamp in the dark office, gold coins glinting",
+    "camera": "cowboy shot, rear three-quarter view",
+    "mood": "侍奉沉沦",
+    "sceneTags": [
+      "office",
+      "desk",
+      "night",
+      "evening_gown",
+      "sex"
+    ],
+    "promptProse": "Shadow visits without knocking. Adult Gamma bends over her own president desk, gown pooled at her waist, gripping the ledgers as he takes her from behind in the lamplight — still trying, and failing, to keep count.",
+    "promptTokens": [
+      "office",
+      "desk",
+      "evening gown",
+      "bent over desk",
+      "sex",
+      "vaginal",
+      "from behind",
+      "ledger",
+      "night"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@rella",
+    "nsfwTokens": [
+      "sex",
+      "vaginal",
+      "bent_over"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "He tells her to keep counting. For the first time in her life, Gamma gets every number wrong — gladly."
+  }
+}

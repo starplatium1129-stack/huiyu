@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "zeta_shadow/rooftop_hoodie",
+  "revision": 1,
+  "sortOrder": 1930,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "characterId": "zeta_shadow",
+    "outfit": {
+      "id": "rooftop_hoodie",
+      "name": "屋顶蹲守连帽卫衣",
+      "prose": "Oversized grey hoodie with a cat-ear hood and shorts, worn while staking out a rooftop under the afternoon sun.",
+      "tokens": [
+        "hoodie",
+        "cat_ear_hood",
+        "shorts",
+        "sneakers"
+      ],
+      "characterId": "zeta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

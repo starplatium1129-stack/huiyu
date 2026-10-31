@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_r18_report_reward",
+  "revision": 1,
+  "sortOrder": 2841,
+  "createdAt": "2026-10-31T04:42:34.298429000+00:00",
+  "updatedAt": "2026-10-31T04:42:34.298429000+00:00",
+  "data": {
+    "id": "zeta_shadow_r18_report_reward",
+    "characterId": "zeta_shadow",
+    "outfitId": "spy_trench_coat",
+    "title": "泽塔 · 情报的奖赏",
+    "category": "主君侍奉",
+    "description": "泽塔单膝跪着汇报完最后一处据点的情报，风衣还带着夜里的寒气。暗影大人听完，只伸手把她拉进了怀里。风衣散开，战服的拉链被一路拉到底，冷面谍报员的呼吸第一次乱了方寸——「……这也是……任务的一部分吗……」她问得一本正经，手却先一步攥紧了他的衣襟。",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园地下谒见厅·深夜",
+    "action": "被拉坐在暗影腿上，风衣敞开，战服拉链拉开，攥紧对方衣襟",
+    "timeOfDay": "深夜",
+    "lighting": "cold blue magic-stone light of the audience chamber",
+    "camera": "cowboy shot, eye level",
+    "mood": "冷面破防",
+    "sceneTags": [
+      "audience_chamber",
+      "trench_coat",
+      "night",
+      "lap",
+      "report"
+    ],
+    "promptProse": "Kneeling to deliver her final report, adult Zeta is pulled into Shadow's lap instead. Her trench coat falls open, her suit unzipped to the bottom — the Garden's coldest spy forgets every word of her report.",
+    "promptTokens": [
+      "audience chamber",
+      "trench coat",
+      "sitting on lap",
+      "unzipped bodysuit",
+      "sex",
+      "vaginal",
+      "blush",
+      "night"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "sex",
+      "vaginal",
+      "unzipped_bodysuit"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "The report was flawless. Its delivery was not — Zeta’s voice breaks first, and she stops pretending it is business."
+  }
+}

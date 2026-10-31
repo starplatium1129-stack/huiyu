@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "eta_shadow/sleepy_pajama",
+  "revision": 1,
+  "sortOrder": 1935,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "characterId": "eta_shadow",
+    "outfit": {
+      "id": "sleepy_pajama",
+      "name": "实验室午睡宽松睡衣",
+      "prose": "Oversized sleepy pajama shirt with loose shorts and slippers, worn for naps between experiments on the lab sofa.",
+      "tokens": [
+        "pajamas",
+        "oversized_shirt",
+        "shorts",
+        "slippers",
+        "sleepy"
+      ],
+      "characterId": "eta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_slime_fitting_measurement",
+  "revision": 1,
+  "sortOrder": 2820,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "eta_shadow_slime_fitting_measurement",
+    "characterId": "eta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "埃塔 · 战服数据测量日",
+    "category": "疯狂研究",
+    "description": "埃塔穿着自己的史莱姆战服站在测量台上，任由助手们记录各项数据。百褶裙式的战服是她亲手改的设计——实用之外，也要一点点可爱。",
+    "recommendedSize": "832x1216",
+    "location": "laboratory fitting platform with measuring tapes, mirrors and data crystals",
+    "action": "standing on a fitting platform in her pleated slime outfit while measurements are taken, bored sleepy expression",
+    "timeOfDay": "day",
+    "lighting": "测量室均匀的白色灯光",
+    "camera": "full_shot",
+    "mood": "clinical fitting, drowsy vanity",
+    "promptProse": "On the fitting platform, Eta endures her own measurements. The pleated slime dress was her design — science can be cute.",
+    "promptTokens": [
+      "fitting",
+      "platform",
+      "mirror",
+      "measuring tape",
+      "slime suit"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Eta measures everyone else all year. Today the clipboard is pointed at her.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

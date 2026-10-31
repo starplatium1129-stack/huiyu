@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "zeta_shadow/slime_bodysuit",
+  "revision": 1,
+  "sortOrder": 1926,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "characterId": "zeta_shadow",
+    "outfit": {
+      "id": "slime_bodysuit",
+      "name": "史莱姆潜行披风战服",
+      "prose": "Black slime bodysuit with gold trim, a large cape over the left shoulder and a fur-collared short jacket, built for silent infiltration.",
+      "tokens": [
+        "black_bodysuit",
+        "slime_suit",
+        "cape",
+        "fur_trim",
+        "cat_ears",
+        "gold_accent"
+      ],
+      "characterId": "zeta_shadow",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "eta_shadow/experiment_apron",
+  "revision": 1,
+  "sortOrder": 1936,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "characterId": "eta_shadow",
+    "outfit": {
+      "id": "experiment_apron",
+      "name": "实验防护皮围裙装",
+      "prose": "Sturdy leather experiment apron with thick gloves and a belt of potion vials, for brewing trials that occasionally smoke.",
+      "tokens": [
+        "apron",
+        "leather_apron",
+        "gloves",
+        "vial",
+        "potion"
+      ],
+      "characterId": "eta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

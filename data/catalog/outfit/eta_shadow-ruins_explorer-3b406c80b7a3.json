@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "eta_shadow/ruins_explorer",
+  "revision": 1,
+  "sortOrder": 1937,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "characterId": "eta_shadow",
+    "outfit": {
+      "id": "ruins_explorer",
+      "name": "古迹考察探险装",
+      "prose": "Dusty explorer outfit with shorts, sturdy boots and a backpack of rubbing tools, for decoding ancient runes on site.",
+      "tokens": [
+        "explorer",
+        "shorts",
+        "boots",
+        "backpack",
+        "hat"
+      ],
+      "characterId": "eta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

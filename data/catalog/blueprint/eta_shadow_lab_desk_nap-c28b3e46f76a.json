@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_lab_desk_nap",
+  "revision": 1,
+  "sortOrder": 2817,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "eta_shadow_lab_desk_nap",
+    "characterId": "eta_shadow",
+    "outfitId": "sleepy_pajama",
+    "title": "埃塔 · 实验台上的午睡",
+    "category": "疯狂研究",
+    "description": "实验做到一半，埃塔直接趴在实验台上睡着了，脸旁还摊着写满公式的笔记。同僚们轻手轻脚地绕开——吵醒她的代价，是被拉去试新药。",
+    "recommendedSize": "832x1216",
+    "location": "laboratory bench with open formula notebooks, beakers and a sleeping researcher",
+    "action": "sleeping face-down on a lab bench in pajamas, arms folded under her head, notebooks scattered around",
+    "timeOfDay": "afternoon",
+    "lighting": "实验室午后斜射的柔和光线",
+    "camera": "medium_shot",
+    "mood": "comic lab peace, dangerous to disturb",
+    "promptProse": "Eta is asleep on the bench again. The whole lab tiptoes — waking her means volunteering for the next trial.",
+    "promptTokens": [
+      "laboratory",
+      "bench",
+      "nap",
+      "notebooks",
+      "beakers",
+      "pajamas"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Do not wake the scientist. The last volunteer still glows faintly.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

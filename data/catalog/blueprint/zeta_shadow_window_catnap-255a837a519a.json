@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_window_catnap",
+  "revision": 1,
+  "sortOrder": 2814,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "zeta_shadow_window_catnap",
+    "characterId": "zeta_shadow",
+    "outfitId": "rooftop_hoodie",
+    "title": "泽塔 · 窗边的猫式午睡",
+    "category": "猫系日常",
+    "description": "据点的窗边，午后阳光正好。泽塔抱着靠垫蜷成一团睡着了，耳朵偶尔轻轻抖一下——就算睡着，金豹的警觉也没有完全放下。",
+    "recommendedSize": "832x1216",
+    "location": "hideout window seat with cushions, afternoon sunlight and a view of rooftops",
+    "action": "curled up asleep on a window seat hugging a cushion, cat ears twitching slightly in her sleep",
+    "timeOfDay": "afternoon",
+    "lighting": "窗边午后的金色阳光",
+    "camera": "medium_shot",
+    "mood": "tender feline rest, guarded peace",
+    "promptProse": "Curled on the window seat with a cushion, Zeta sleeps — ears still twitching at every third sound.",
+    "promptTokens": [
+      "window seat",
+      "cushion",
+      "nap",
+      "sunlight",
+      "cat ears"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Even asleep, a Shadow Garden cat sleeps with one ear open.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

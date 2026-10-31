@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_cafe_tasting",
+  "revision": 1,
+  "sortOrder": 2800,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "gamma_shadow_cafe_tasting",
+    "characterId": "gamma_shadow",
+    "outfitId": "cafe_apron_serve",
+    "title": "伽玛 · 咖啡馆新品试吃",
+    "category": "盛典巡店",
+    "description": "四越咖啡馆的吧台前，伽玛系着围裙试饮新调的饮品。她闭目细品片刻，店员们紧张地等她的评价——那将决定这款饮品的命运。",
+    "recommendedSize": "832x1216",
+    "location": "cozy trading company cafe interior with a wooden counter, cups and pastry displays",
+    "action": "tasting a new drink at the counter with eyes closed, wearing a cafe apron, thoughtful expression",
+    "timeOfDay": "afternoon",
+    "lighting": "咖啡馆午后透过格窗的柔和日光",
+    "camera": "medium_shot",
+    "mood": "gentle inspection, warm cafe calm",
+    "promptProse": "Apron on, Gamma tastes the cafe's new drink in silence while the staff hold their breath for her verdict.",
+    "promptTokens": [
+      "cafe",
+      "counter",
+      "cup",
+      "tasting",
+      "apron",
+      "pastry display"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "One sip, three seconds of silence — the whole cafe waits on Gamma's palate.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

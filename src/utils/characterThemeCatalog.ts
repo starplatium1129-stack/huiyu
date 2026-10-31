@@ -52,6 +52,7 @@ export const POPULAR_CHARACTER_THEMES: CharacterThemeCatalog = Object.freeze({
   epsilon_shadow: { accent: '#06b6d4', aura: 'rgba(6,182,212,.32)', auraSecondary: 'rgba(168,85,247,.22)' },
   ereshkigal_fate: { accent: '#60a5fa', aura: 'rgba(30,64,175,.34)', auraSecondary: 'rgba(253,230,138,.22)' },
   eris_greyrat: { accent: '#ef4444', aura: 'rgba(220,38,38,.32)', auraSecondary: 'rgba(245,158,11,.22)' },
+  eta_shadow: { accent: '#2dd4bf', aura: 'rgba(45,212,191,.32)', auraSecondary: 'rgba(168,85,247,.22)' },
   eunectes_arknights: { accent: '#edc15a', aura: 'rgba(237,163,90,.30)', auraSecondary: 'rgba(212,237,90,.20)' },
   exusiai_arknights: { accent: '#ccd1e1', aura: 'rgba(204,213,225,.30)', auraSecondary: 'rgba(208,204,225,.20)' },
   eyjafjalla_arknights: { accent: '#ec8db0', aura: 'rgba(236,141,195,.30)', auraSecondary: 'rgba(236,151,141,.20)' },
@@ -61,6 +62,7 @@ export const POPULAR_CHARACTER_THEMES: CharacterThemeCatalog = Object.freeze({
   fubuki_one_punch: { accent: '#86ad9c' },
   furina: { accent: '#38bdf8', aura: 'rgba(56,189,248,.32)', auraSecondary: 'rgba(147,197,253,.22)' },
   futaba_rio: { accent: '#b1acbd' },
+  gamma_shadow: { accent: '#6366f1', aura: 'rgba(99,102,241,.32)', auraSecondary: 'rgba(250,204,21,.22)' },
   golden_darkness: { accent: '#eab308', aura: 'rgba(234,179,8,.32)', auraSecondary: 'rgba(239,68,68,.24)' },
   goldenglow_arknights: { accent: '#66d6c7', aura: 'rgba(102,214,177,.30)', auraSecondary: 'rgba(102,177,214,.20)' },
   gotoh_hitori: { accent: '#f472b6', aura: 'rgba(244,114,182,.30)', auraSecondary: 'rgba(56,189,248,.20)' },
@@ -231,4 +233,5 @@ export const POPULAR_CHARACTER_THEMES: CharacterThemeCatalog = Object.freeze({
   yuzuriha_inori: { accent: '#ff85ad', aura: 'rgba(255,115,160,.34)', auraSecondary: 'rgba(120,210,255,.22)' },
   yvonne_arknights: { accent: '#f59e0b', aura: 'rgba(217,119,6,.32)', auraSecondary: 'rgba(56,189,248,.22)' },
   zero_two: { accent: '#db9eae' },
+  zeta_shadow: { accent: '#a78bfa', aura: 'rgba(167,139,250,.32)', auraSecondary: 'rgba(250,204,21,.22)' },
 })

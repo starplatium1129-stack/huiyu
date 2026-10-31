@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "gamma_shadow/slime_bodysuit",
+  "revision": 1,
+  "sortOrder": 1920,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "characterId": "gamma_shadow",
+    "outfit": {
+      "id": "slime_bodysuit",
+      "name": "史莱姆金纹统御战服",
+      "prose": "Black slime bodysuit with golden accents, a sleeved keyhole jacket with popped collar, and strap-up heeled boots with a violet gem at the thigh.",
+      "tokens": [
+        "black_bodysuit",
+        "slime_suit",
+        "jacket",
+        "gold_accent",
+        "thigh_strap",
+        "high_heels"
+      ],
+      "characterId": "gamma_shadow",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

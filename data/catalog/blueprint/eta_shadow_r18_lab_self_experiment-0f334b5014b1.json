@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_r18_lab_self_experiment",
+  "revision": 1,
+  "sortOrder": 2843,
+  "createdAt": "2026-10-31T04:42:34.298429000+00:00",
+  "updatedAt": "2026-10-31T04:42:34.298429000+00:00",
+  "data": {
+    "id": "eta_shadow_r18_lab_self_experiment",
+    "characterId": "eta_shadow",
+    "outfitId": "researcher_lab_coat",
+    "title": "埃塔 · 自体愉悦反应实验",
+    "category": "私密自持",
+    "description": "《实验记录·第玖拾柒号：自体愉悦反应测定》。埃塔赤裸着躺在实验台上，白大褂垫在身下，双腿在无影灯下分开，指尖有条不紊地碾磨着自己，另一只手还举着秒表。她盯着天花板面无表情地读数：「心率一百三十二……分泌量，超出预期……结论——」笔尖顿了顿，「……暗影的智慧，果然什么都包括。」",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园地下实验室·深夜",
+    "action": "赤裸仰躺实验台，双腿分开，指尖在腿间动作，一手举着秒表读数",
+    "timeOfDay": "深夜",
+    "lighting": "shadowless surgical lamp over the lab table",
+    "camera": "medium shot, side view",
+    "mood": "平淡疯狂",
+    "sceneTags": [
+      "laboratory",
+      "lab_table",
+      "nude",
+      "stopwatch",
+      "experiment",
+      "solo"
+    ],
+    "promptProse": "Experiment log number ninety-seven: adult Eta lies naked on her own lab table under the shadowless lamp, legs spread, one hand pleasuring herself with clinical rhythm, the other holding a stopwatch, reading out her own data deadpan.",
+    "promptTokens": [
+      "laboratory",
+      "lab table",
+      "nude",
+      "masturbation",
+      "spread legs",
+      "stopwatch",
+      "clipboard",
+      "deadpan"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "nude",
+      "masturbation",
+      "spread legs"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "'Heart rate one thirty-two. Conclusion: Shadow's wisdom covers everything.' Eta writes it down and starts round two."
+  }
+}

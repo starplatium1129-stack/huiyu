@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_chocolate_launch",
+  "revision": 1,
+  "sortOrder": 2797,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "gamma_shadow_chocolate_launch",
+    "characterId": "gamma_shadow",
+    "outfitId": "bank_office_suit",
+    "title": "伽玛 · 巧克力新品发布会",
+    "category": "商会帝国",
+    "description": "四越商会新品发布会上，伽玛身着头取套装，亲手揭开盖在巧克力礼盒上的绸布。王都的贵妇与商人们屏息以待——这又是暗影大人随口提过的味道。",
+    "recommendedSize": "832x1216",
+    "location": "elegant product launch hall with a display table of chocolate gift boxes and gathered noble guests",
+    "action": "unveiling a chocolate gift box with a flourish, graceful presenter smile, business suit",
+    "timeOfDay": "day",
+    "lighting": "发布会大厅水晶吊灯的璀璨灯光",
+    "camera": "medium_shot",
+    "mood": "triumphant merchant showmanship, refined excitement",
+    "promptProse": "Gamma unveils Mitsugoshi's new chocolate line before the capital's nobility, another of Shadow's casual ideas turned into gold.",
+    "promptTokens": [
+      "chocolate",
+      "gift box",
+      "unveiling",
+      "launch event",
+      "chandelier",
+      "guests"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "One cloth lifted, and the capital's purses open — Gamma smiles like she planned it all along. She did.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

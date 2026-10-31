@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_r18_inspection_reward",
+  "revision": 1,
+  "sortOrder": 2844,
+  "createdAt": "2026-10-31T04:42:34.298429000+00:00",
+  "updatedAt": "2026-10-31T04:42:34.298429000+00:00",
+  "data": {
+    "id": "eta_shadow_r18_inspection_reward",
+    "characterId": "eta_shadow",
+    "outfitId": "sleepy_pajama",
+    "title": "埃塔 · 视察日的特别奖励",
+    "category": "主君侍奉",
+    "description": "暗影大人深夜视察实验室时，埃塔正趴在图纸上睡着，睡衣滑下大半个肩膀。他伸手探了探她的额头，她却迷迷糊糊攥住他的手腕往怀里带：「……奖励……研究经费之外……还要这个……」无影灯下，睡衣被彻底褪下，困得睁不开眼的研究者第一次不用数据，也表达得明明白白。",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园地下实验室·深夜",
+    "action": "趴在图纸上被抱起，睡衣褪下，睡眼朦胧地攥着对方手腕",
+    "timeOfDay": "深夜",
+    "lighting": "single lab lamp and sleeping monitors glow",
+    "camera": "cowboy shot, eye level",
+    "mood": "困倦索求",
+    "sceneTags": [
+      "laboratory",
+      "drafting_table",
+      "night",
+      "pajamas",
+      "sleepy"
+    ],
+    "promptProse": "Found asleep on her blueprints during his midnight inspection, adult Eta sleepily pulls Shadow's hand to her chest and asks for a different kind of funding. Her pajamas come off under the lab lamp.",
+    "promptTokens": [
+      "laboratory",
+      "drafting table",
+      "pajamas removed",
+      "nude",
+      "sex",
+      "vaginal",
+      "sleepy",
+      "night"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@rella",
+    "nsfwTokens": [
+      "sex",
+      "vaginal",
+      "nude"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "Half asleep and completely honest, Eta asks for the one budget line Alpha would never approve."
+  }
+}
