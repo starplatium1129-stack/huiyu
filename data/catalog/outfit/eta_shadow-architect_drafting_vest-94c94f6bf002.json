@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "eta_shadow/architect_drafting_vest",
+  "revision": 1,
+  "sortOrder": 1934,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "characterId": "eta_shadow",
+    "outfit": {
+      "id": "architect_drafting_vest",
+      "name": "建筑师绘图马甲装",
+      "prose": "Practical drafting vest with rolled sleeves, tool belt and blueprint tube, worn by the famed architect Eta Lloyd Wright.",
+      "tokens": [
+        "vest",
+        "rolled_sleeves",
+        "tool_belt",
+        "blueprint",
+        "boots"
+      ],
+      "characterId": "eta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

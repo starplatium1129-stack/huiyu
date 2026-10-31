@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "gamma_shadow/private_nightwear",
+  "revision": 1,
+  "sortOrder": 1925,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "characterId": "gamma_shadow",
+    "outfit": {
+      "id": "private_nightwear",
+      "name": "会长寝居靛蓝丝绸睡裙",
+      "prose": "Indigo silk nightgown with lace trim, worn in the president's private quarters while reading ledgers by lamplight.",
+      "tokens": [
+        "nightgown",
+        "silk",
+        "lace_trim",
+        "robe",
+        "slippers"
+      ],
+      "characterId": "gamma_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

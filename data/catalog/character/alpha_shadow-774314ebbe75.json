@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alpha_shadow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 261,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-30T03:33:17.030095900+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
   "data": {
     "id": "alpha_shadow",
     "popular": {
@@ -172,6 +172,15 @@
             "characterId": "beta_shadow"
           },
           {
+            "id": "gamma_shadow",
+            "name": "伽玛",
+            "aliases": [
+              "ガンマ",
+              "Gamma"
+            ],
+            "characterId": "gamma_shadow"
+          },
+          {
             "id": "delta_shadow",
             "name": "德尔塔",
             "aliases": [
@@ -188,6 +197,24 @@
               "Epsilon"
             ],
             "characterId": "epsilon_shadow"
+          },
+          {
+            "id": "zeta_shadow",
+            "name": "泽塔",
+            "aliases": [
+              "ゼータ",
+              "Zeta"
+            ],
+            "characterId": "zeta_shadow"
+          },
+          {
+            "id": "eta_shadow",
+            "name": "埃塔",
+            "aliases": [
+              "イータ",
+              "Eta"
+            ],
+            "characterId": "eta_shadow"
           },
           {
             "id": "alexia_midgar",
